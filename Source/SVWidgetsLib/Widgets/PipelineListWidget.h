@@ -45,10 +45,10 @@ class SVWidgetsLib_EXPORT PipelineListWidget : public QFrame, private Ui::Pipeli
     virtual ~PipelineListWidget();
 
     /**
-     * @brief getPipelineViewWidget
+     * @brief getPipelineView
      * @return
      */
-    SVPipelineViewWidget* getPipelineViewWidget();
+    SVPipelineView* getPipelineView();
 
     /**
      * @brief setProgressValue

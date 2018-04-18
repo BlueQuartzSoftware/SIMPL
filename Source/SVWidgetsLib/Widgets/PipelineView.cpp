@@ -73,7 +73,6 @@
 #include "SIMPLib/SIMPLib.h"
 
 #include "SVWidgetsLib/Core/FilterWidgetManager.h"
-#include "SVWidgetsLib/Core/PipelineViewPtrMimeData.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
 #include "SVWidgetsLib/QtSupport/QtSDroppableScrollArea.h"

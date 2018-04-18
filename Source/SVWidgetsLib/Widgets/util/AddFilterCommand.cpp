@@ -45,108 +45,46 @@
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
 
 #include "SVWidgetsLib/Widgets/BreakpointFilterWidget.h"
-#include "SVWidgetsLib/Widgets/PipelineFilterObject.h"
-#include "SVWidgetsLib/Widgets/SVPipelineViewWidget.h"
-#include "SVWidgetsLib/Widgets/SIMPLViewMenuItems.h"
+#include "SVWidgetsLib/Widgets/PipelineModel.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, PipelineView* destination, QString actionText, QVariant value, QUuid previousNode, QUuid nextNode, QUndoCommand* parent)
+AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, PipelineModel* model, const QModelIndex &pipelineIndex, int insertIndex, QString actionText, QUndoCommand* parent)
 : QUndoCommand(parent)
 , m_FilterCount(1)
 , m_ActionText(actionText)
-, m_Destination(destination)
-, m_Value(value)
-, m_PreviousNodeId(previousNode)
-, m_NextNodeId(nextNode)
+, m_PipelineModel(model)
+, m_PipelineIndex(pipelineIndex)
+, m_InsertIndex(insertIndex)
 {
-  if(m_Value.canConvert<int>())
+  if(insertIndex < 0)
   {
-    int index = value.toInt();
-    if(index < 0)
-    {
-      m_Value.setValue(destination->filterCount());
-    }
+    m_InsertIndex = model->rowCount(m_PipelineIndex);
   }
 
   setText(QObject::tr("\"%1 '%2'\"").arg(actionText).arg(filter->getHumanLabel()));
 
-  FilterPipeline::Pointer pipeline = FilterPipeline::New();
-  pipeline->pushBack(filter);
-  JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
-  m_JsonString = jsonWriter->writePipelineToString(pipeline, "");
+  m_Filters.push_back(filter);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFilterCommand::AddFilterCommand(QList<AbstractFilter::Pointer> filters, PipelineView* destination, QString actionText, QVariant value, QUuid previousNode, QUuid nextNode, QUndoCommand* parent)
+AddFilterCommand::AddFilterCommand(std::vector<AbstractFilter::Pointer> filters, PipelineModel* model, const QModelIndex &pipelineIndex, int insertIndex, QString actionText, QUndoCommand* parent)
 : QUndoCommand(parent)
+, m_Filters(filters)
 , m_FilterCount(filters.size())
 , m_ActionText(actionText)
-, m_Destination(destination)
-, m_Value(value)
-, m_PreviousNodeId(previousNode)
-, m_NextNodeId(nextNode)
+, m_PipelineModel(model)
+, m_InsertIndex(insertIndex)
 {
-  if(m_Value.canConvert<int>())
+  if(insertIndex < 0)
   {
-    int index = value.toInt();
-    if(index < 0)
-    {
-      m_Value.setValue(destination->filterCount());
-    }
+    m_InsertIndex = model->rowCount(m_PipelineIndex);
   }
 
   setText(QObject::tr("\"%1 %2 Filters\"").arg(actionText).arg(filters.size()));
-
-  FilterPipeline::Pointer pipeline = FilterPipeline::New();
-  for(int i = 0; i < filters.size(); i++)
-  {
-    pipeline->pushBack(filters[i]);
-  }
-  JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
-  m_JsonString = jsonWriter->writePipelineToString(pipeline, "");
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-AddFilterCommand::AddFilterCommand(QString jsonString, PipelineView* destination, QString actionText, QVariant value, QUuid previousNode, QUuid nextNode, QUndoCommand* parent)
-: QUndoCommand(parent)
-, m_ActionText(actionText)
-, m_Destination(destination)
-, m_Value(value)
-, m_PreviousNodeId(previousNode)
-, m_NextNodeId(nextNode)
-{
-  if(m_Value.canConvert<int>())
-  {
-    int index = value.toInt();
-    if(index < 0)
-    {
-      m_Value.setValue(destination->filterCount());
-    }
-  }
-
-  QJsonParseError parseError;
-  QByteArray byteArray = QByteArray::fromStdString(jsonString.toStdString());
-  QJsonDocument doc = QJsonDocument::fromJson(byteArray, &parseError);
-  if(parseError.error == QJsonParseError::NoError)
-  {
-    QJsonObject rootObject = doc.object();
-    
-    FilterPipeline::Pointer pipeline = FilterPipeline::FromJson(rootObject);
-    
-    FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
-    
-    m_FilterCount = container.size();
-    
-    setText(QObject::tr("\"%1 %2 Filters\"").arg(actionText).arg(m_FilterCount));
-    
-    m_JsonString = jsonString;
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -159,38 +97,18 @@ AddFilterCommand::~AddFilterCommand() = default;
 // -----------------------------------------------------------------------------
 void AddFilterCommand::undo()
 {
-  if(m_Value.canConvert<int>())
+  m_PipelineModel->blockSignals(true);
+  for(int i = 0; i < m_Filters.size(); i++)
   {
-    int index = m_Value.toInt();
+    QModelIndex filterIndex = m_PipelineModel->indexOfFilter(m_Filters[i], m_PipelineIndex);
 
-    for(int i = 0; i < m_FilterCount; i++)
-    {
-      m_Destination->removeFilterObject(m_Destination->filterObjectAt(index));
-      // No need to increment index, because after removing the filter above, the next filter
-      // will move up to this index
-    }
+    m_PipelineModel->removeFilter(filterIndex.row(), m_PipelineIndex);
   }
-  else if(m_Value.canConvert<QPointF>())
-  {
-    QPointF pointF = m_Value.toPointF();
+  m_PipelineModel->blockSignals(false);
 
-    for(int i = 0; i < m_FilterCount; i++)
-    {
-      m_Destination->removeFilterObject(m_Destination->filterObjectAt(pointF));
-      pointF.setX(pointF.x() + 50);
-      pointF.setY(pointF.y() + 50);
-    }
-  }
-
-  m_Destination->reindexWidgetTitles();
-  m_Destination->recheckWindowTitleAndModification();
-  m_Destination->preflightPipeline();
-
-  if (m_Destination->getFilterPipeline()->getFilterContainer().size() <= 0)
-  {
-//    SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
-//    menuItems->getActionClearPipeline()->setDisabled(true);
-  }
+  //  m_PipelineView->reindexWidgetTitles();
+  emit m_PipelineModel->pipelineDataChanged(m_PipelineIndex);
+  emit m_PipelineModel->preflightTriggered(m_PipelineIndex);
 }
 
 // -----------------------------------------------------------------------------
@@ -198,53 +116,16 @@ void AddFilterCommand::undo()
 // -----------------------------------------------------------------------------
 void AddFilterCommand::redo()
 {
-  QJsonParseError parseError;
-  QByteArray byteArray = QByteArray::fromStdString(m_JsonString.toStdString());
-  QJsonDocument doc = QJsonDocument::fromJson(byteArray, &parseError);
-  if(parseError.error != QJsonParseError::NoError)
+  int index = m_InsertIndex;
+  m_PipelineModel->blockSignals(true);
+  for(int i = 0; i < m_Filters.size(); i++)
   {
-    return;
+    m_PipelineModel->addFilter(m_Filters[i], m_PipelineIndex, index);
+    index++;
   }
-  QJsonObject rootObject = doc.object();
-  
-  FilterPipeline::Pointer pipeline = FilterPipeline::FromJson(rootObject);
-  
-  FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
-  
-  PipelineFilterObject* filterObject = nullptr;
-  if(m_Value.canConvert<int>())
-  {
-    int index = m_Value.toInt();
+  m_PipelineModel->blockSignals(false);
 
-    for(int i = 0; i < container.size(); i++)
-    {
-      filterObject = m_Destination->createFilterObjectFromFilter(container[i]);
-      m_Destination->addFilterObject(filterObject, index);
-      index++;
-    }
-  }
-  else if(m_Value.canConvert<QPointF>())
-  {
-    QPointF pointF = m_Value.toPointF();
-
-    for(int i = 0; i < container.size(); i++)
-    {
-      filterObject = m_Destination->createFilterObjectFromFilter(container[i]);
-      m_Destination->addFilterObject(filterObject, pointF);
-      pointF.setX(pointF.x() + 50);
-      pointF.setY(pointF.y() + 50);
-    }
-  }
-
-  m_Destination->reindexWidgetTitles();
-  m_Destination->recheckWindowTitleAndModification();
-  m_Destination->preflightPipeline();
-  SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(filterObject);
-  if(filterWidget)
-  {
-    emit filterWidget->filterWidgetPressed(filterObject, qApp->queryKeyboardModifiers());
-  }
-
-//  SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
-//  menuItems->getActionClearPipeline()->setEnabled(true);
+  //  m_PipelineView->reindexWidgetTitles();
+  emit m_PipelineModel->pipelineDataChanged(m_PipelineIndex);
+  emit m_PipelineModel->preflightTriggered(m_PipelineIndex);
 }

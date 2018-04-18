@@ -62,84 +62,15 @@
     </widget>
    </item>
    <item row="0" column="0">
-    <widget class="QScrollArea" name="pipelineViewScrollArea">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="mouseTracking">
-      <bool>false</bool>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::StrongFocus</enum>
-     </property>
-     <property name="acceptDrops">
-      <bool>true</bool>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Panel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="lineWidth">
-      <number>1</number>
-     </property>
-     <property name="widgetResizable">
-      <bool>true</bool>
-     </property>
-     <widget class="SVPipelineViewWidget" name="pipelineViewWidget">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>398</width>
-        <height>257</height>
-       </rect>
-      </property>
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>250</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="contextMenuPolicy">
-       <enum>Qt::CustomContextMenu</enum>
-      </property>
-      <property name="acceptDrops">
-       <bool>true</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">PipelineViewWidget
-  {
-  background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(233, 236, 241, 255), stop:1.0 rgba(211, 216, 224, 255));
-  }</string>
-      </property>
-     </widget>
-    </widget>
+    <widget class="SVPipelineView" name="pipelineView"/>
    </item>
   </layout>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>SVPipelineViewWidget</class>
-   <extends>QWidget</extends>
-   <header location="global">SVPipelineViewWidget.h</header>
-   <container>1</container>
+   <class>SVPipelineView</class>
+   <extends>QListView</extends>
+   <header location="global">SVPipelineView.h</header>
   </customwidget>
  </customwidgets>
  <resources>

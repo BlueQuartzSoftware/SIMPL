@@ -50,10 +50,13 @@
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/BookmarksItemDelegate.h"
-#include "SVWidgetsLib/Widgets/SIMPLViewMenuItems.h"
 #include "SVWidgetsLib/Widgets/SIMPLViewToolbox.h"
+#include "SVWidgetsLib/QtSupport/QtSFileUtils.h"
 
-
+enum ErrorCodes
+{
+  UNRECOGNIZED_EXT = -1
+};
 
 // -----------------------------------------------------------------------------
 //
@@ -72,12 +75,395 @@ BookmarksTreeView::BookmarksTreeView(QWidget* parent)
 
   BookmarksItemDelegate* dlg = new BookmarksItemDelegate(this);
   setItemDelegate(dlg);
+
+#if defined(Q_OS_WIN)
+  m_ActionShowBookmarkInFileSystem->setText("Show in Windows Explorer");
+#elif defined(Q_OS_MAC)
+  m_ActionShowBookmarkInFileSystem->setText("Show in Finder");
+#else
+  m_ActionShowBookmarkInFileSystem->setText("Show in File System");
+#endif
+
+  m_ActionAddBookmark->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_B));
+  m_ActionAddBookmarkFolder->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F));
+
+  connect(m_ActionAddBookmark, &QAction::triggered, this, &BookmarksTreeView::listenAddBookmarkTriggered);
+  connect(m_ActionAddBookmarkFolder, &QAction::triggered, this, &BookmarksTreeView::listenAddBookmarkFolderTriggered);
+  connect(m_ActionShowBookmarkInFileSystem, &QAction::triggered, this, &BookmarksTreeView::listenShowBookmarkInFileSystemTriggered);
+  connect(m_ActionRenameBookmark, &QAction::triggered, this, &BookmarksTreeView::listenRenameBookmarkTriggered);
+  connect(m_ActionRemoveBookmark, &QAction::triggered, this, &BookmarksTreeView::listenRemoveBookmarkTriggered);
+  connect(m_ActionOpenBookmark, &QAction::triggered, this, &BookmarksTreeView::listenOpenBookmarkTriggered);
+  connect(m_ActionExecuteBookmark, &QAction::triggered, this, &BookmarksTreeView::listenExecuteBookmarkTriggered);
+  connect(m_ActionClearBookmarks, &QAction::triggered, this, &BookmarksTreeView::listenClearBookmarksTriggered);
+  connect(m_ActionLocateFile, &QAction::triggered, this, &BookmarksTreeView::listenLocateBookmarkTriggered);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 BookmarksTreeView::~BookmarksTreeView() = default;
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void BookmarksTreeView::addBookmark(const QString& filePath, const QModelIndex& parent)
+{
+  BookmarksModel* model = BookmarksModel::Instance();
+  QFileInfo fi(filePath);
+  QString fileTitle = fi.baseName();
+  int err = addTreeItem(parent, fileTitle, QIcon(":/bookmark.png"), filePath, model->rowCount(parent), true, false, false);
+  if(err >= 0)
+  {
+    emit updateStatusBar("The pipeline '" + fileTitle + "' has been added successfully.");
+    expand(parent);
+  }
+  else if(err == UNRECOGNIZED_EXT)
+  {
+    emit updateStatusBar("The pipeline '" + fileTitle + "' could not be added, because the pipeline file extension was not recognized.");
+  }
+  else
+  {
+    emit updateStatusBar("The pipeline '" + fileTitle + "' could not be added.  An unknown error has occurred.  Please contact the SIMPLView developers.");
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int BookmarksTreeView::addTreeItem(QModelIndex parent, QString& favoriteTitle, QIcon icon, QString favoritePath, int insertIndex, bool allowEditing, bool editState, bool isExpanded)
+{
+
+  favoritePath = QDir::toNativeSeparators(favoritePath);
+
+  QFileInfo fileInfo(favoritePath);
+  QString ext = fileInfo.completeSuffix();
+  if(fileInfo.isFile() && ext != "dream3d" && ext != "json" && ext != "ini" && ext != "txt")
+  {
+    return UNRECOGNIZED_EXT;
+  }
+
+  BookmarksModel* model = BookmarksModel::Instance();
+
+  blockSignals(true);
+  // Add a new Item to the Tree
+  model->insertRow(insertIndex, parent);
+  QModelIndex nameIndex = model->index(insertIndex, BookmarksItem::Name, parent);
+  model->setData(nameIndex, favoriteTitle, Qt::DisplayRole);
+  QModelIndex pathIndex = model->index(insertIndex, BookmarksItem::Path, parent);
+  model->setData(pathIndex, favoritePath, Qt::DisplayRole);
+  model->setData(nameIndex, icon, Qt::DecorationRole);
+
+  sortByColumn(BookmarksItem::Name, Qt::AscendingOrder);
+  blockSignals(false);
+
+  if(favoritePath.isEmpty())
+  {
+    // This is a node
+    blockSignals(true);
+    if(isExpanded)
+    {
+      expand(nameIndex);
+      setExpanded(nameIndex, true);
+      setExpanded(pathIndex, true);
+    }
+    else
+    {
+      setExpanded(nameIndex, false);
+      setExpanded(pathIndex, false);
+    }
+    blockSignals(false);
+    if(editState == true)
+    {
+      edit(nameIndex);
+    }
+  }
+  else
+  {
+    model->getFileSystemWatcher()->addPath(favoritePath);
+  }
+  // resizeColumnToContents(1);
+  return 0;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void BookmarksTreeView::listenAddBookmarkTriggered()
+{
+  QString proposedDir = m_OpenDialogLastFilePath;
+  QList<QString> newPrefPaths;
+
+  newPrefPaths =
+      QFileDialog::getOpenFileNames(this, tr("Choose Pipeline File(s)"), proposedDir, tr("Json File (*.json);;DREAM3D File (*.dream3d);;Text File (*.txt);;Ini File (*.ini);;All Files (*.*)"));
+  if(true == newPrefPaths.isEmpty())
+  {
+    return;
+  }
+
+  QModelIndex parent = currentIndex();
+
+  if(parent.isValid() == false)
+  {
+    parent = QModelIndex();
+  }
+
+  for(int i = 0; i < newPrefPaths.size(); i++)
+  {
+    QString newPrefPath = newPrefPaths[i];
+    newPrefPath = QDir::toNativeSeparators(newPrefPath);
+    addBookmark(newPrefPath, parent);
+  }
+
+  if(newPrefPaths.size() > 0)
+  {
+    // Cache the directory from the last path added
+    m_OpenDialogLastFilePath = newPrefPaths[newPrefPaths.size() - 1];
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void BookmarksTreeView::listenAddBookmarkFolderTriggered()
+{
+  QModelIndex parent = currentIndex();
+
+  if(parent.isValid() == false)
+  {
+    parent = QModelIndex();
+  }
+
+  QString name = "New Folder";
+
+  BookmarksModel* model = BookmarksModel::Instance();
+
+  addTreeItem(parent, name, QIcon(":/folder_blue.png"), "", model->rowCount(parent), true, true, false);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void BookmarksTreeView::listenShowBookmarkInFileSystemTriggered()
+{
+  BookmarksModel* model = BookmarksModel::Instance();
+
+  QModelIndex index = currentIndex();
+  if(index.isValid())
+  {
+    QString pipelinePath = model->index(index.row(), BookmarksItem::Path, index.parent()).data().toString();
+
+    QFileInfo fi(pipelinePath);
+    QString path;
+    if(fi.isFile())
+    {
+      path = fi.absoluteFilePath();
+    }
+    else
+    {
+      path = fi.absolutePath();
+    }
+
+    QtSFileUtils::ShowPathInGui(this, path);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void BookmarksTreeView::listenRenameBookmarkTriggered()
+{
+  edit(currentIndex());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void BookmarksTreeView::listenRemoveBookmarkTriggered()
+{
+  BookmarksModel* model = BookmarksModel::Instance();
+
+  QModelIndexList indexList = selectionModel()->selectedRows(BookmarksItem::Name);
+
+  indexList = filterOutDescendants(indexList);
+
+  if(indexList.size() <= 0)
+  {
+    return;
+  }
+
+  QList<QPersistentModelIndex> persistentList;
+  for(int i = 0; i < indexList.size(); i++)
+  {
+    persistentList.push_back(indexList[i]);
+  }
+
+  QModelIndex singleIndex = model->index(indexList[0].row(), BookmarksItem::Name, indexList[0].parent());
+
+  QMessageBox msgBox;
+  if(indexList.size() > 1)
+  {
+    msgBox.setWindowTitle("Remove Bookmark Items");
+    msgBox.setText("Are you sure that you want to remove these bookmark items? The original bookmark files will not be removed.");
+  }
+  else if(model->flags(singleIndex).testFlag(Qt::ItemIsDropEnabled) == false)
+  {
+    msgBox.setWindowTitle("Remove Bookmark");
+    msgBox.setText("Are you sure that you want to remove the bookmark \"" + singleIndex.data().toString() + "\"? The original file will not be removed.");
+  }
+  else
+  {
+    msgBox.setWindowTitle("Remove Folder");
+    msgBox.setText("Are you sure that you want to remove the folder \"" + singleIndex.data().toString() + "\"? The folder's contents will also be removed.");
+  }
+  msgBox.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+  msgBox.setDefaultButton(QMessageBox::Yes);
+  int ret = msgBox.exec();
+
+  if(ret == QMessageBox::Yes)
+  {
+    for(int i = 0; i < persistentList.size(); i++)
+    {
+      QModelIndex nameIndex = model->index(persistentList[i].row(), BookmarksItem::Name, persistentList[i].parent());
+      QString name = nameIndex.data().toString();
+
+      // Remove bookmark from the SIMPLView interface
+      model->removeRow(persistentList[i].row(), persistentList[i].parent());
+    }
+
+    // Write these changes out to the preferences file
+    emit fireWriteSettings();
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void BookmarksTreeView::listenOpenBookmarkTriggered()
+{
+  BookmarksModel* model = BookmarksModel::Instance();
+
+  QModelIndexList indexList = selectionModel()->selectedRows(BookmarksItem::Name);
+
+  QModelIndex pathIndex = indexList.at(0);
+  QModelIndex actualIndex = model->index(pathIndex.row(), BookmarksItem::Path, pathIndex.parent());
+
+  QString pipelinePath = actualIndex.data().toString();
+  if(pipelinePath.isEmpty())
+  {
+    return; // The user double clicked a folder, so don't do anything
+  }
+  else
+  {
+    QFileInfo fi(pipelinePath);
+    if(fi.exists())
+    {
+      emit newSIMPLViewInstanceTriggered(pipelinePath);
+
+      // Cache the last directory on old instance
+      m_OpenDialogLastFilePath = pipelinePath;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void BookmarksTreeView::listenExecuteBookmarkTriggered()
+{
+  BookmarksModel* model = BookmarksModel::Instance();
+
+  QModelIndexList indexList = selectionModel()->selectedRows(BookmarksItem::Name);
+
+  QModelIndex pathIndex = indexList.at(0);
+  QModelIndex actualIndex = model->index(pathIndex.row(), BookmarksItem::Path, pathIndex.parent());
+
+  QString pipelinePath = actualIndex.data().toString();
+  if(pipelinePath.isEmpty())
+  {
+    return; // The user double clicked a folder, so don't do anything
+  }
+  else
+  {
+    QFileInfo fi(pipelinePath);
+    if(fi.exists())
+    {
+      emit newSIMPLViewInstanceTriggered(pipelinePath, true);
+
+      // Cache the last directory on old instance
+      m_OpenDialogLastFilePath = pipelinePath;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void BookmarksTreeView::listenClearBookmarksTriggered()
+{
+  QMessageBox msgBox;
+  QString title = QString("Clear %1 Bookmarks").arg(QApplication::applicationName());
+  msgBox.setWindowTitle(title);
+  msgBox.setText(QString("Are you sure that you want to clear all %1 bookmarks?").arg(QApplication::applicationName()));
+
+  msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+  msgBox.setDefaultButton(QMessageBox::Yes);
+  int response = msgBox.exec();
+
+  if(response == QMessageBox::Yes)
+  {
+    BookmarksModel* model = BookmarksModel::Instance();
+    if(model->isEmpty() == false)
+    {
+      model->removeRows(0, model->rowCount(QModelIndex()));
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void BookmarksTreeView::listenLocateBookmarkTriggered()
+{
+  BookmarksModel* model = BookmarksModel::Instance();
+
+  QModelIndex current = currentIndex();
+
+  QModelIndex nameIndex = model->index(current.row(), BookmarksItem::Name, current.parent());
+  QModelIndex pathIndex = model->index(current.row(), BookmarksItem::Path, current.parent());
+
+  QFileInfo fi(pathIndex.data().toString());
+  QString restrictions;
+  if(fi.completeSuffix() == "json")
+  {
+    restrictions = "Json File (*.json)";
+  }
+  else if(fi.completeSuffix() == "dream3d")
+  {
+    restrictions = "Dream3d File(*.dream3d)";
+  }
+  else if(fi.completeSuffix() == "txt")
+  {
+    restrictions = "Text File (*.txt)";
+  }
+  else
+  {
+    restrictions = "Ini File (*.ini)";
+  }
+
+  QString filePath = QFileDialog::getOpenFileName(this, tr("Locate Pipeline File"), pathIndex.data().toString(), tr(restrictions.toStdString().c_str()));
+  if(true == filePath.isEmpty())
+  {
+    return;
+  }
+
+  filePath = QDir::toNativeSeparators(filePath);
+
+  // Set the new path into the item
+  model->setData(pathIndex, filePath, Qt::DisplayRole);
+
+  // Change item back to default look and functionality
+  model->setData(nameIndex, false, Qt::UserRole);
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -154,55 +540,96 @@ void BookmarksTreeView::requestContextMenu(const QPoint& pos)
     mapped = mapToGlobal(pos);
   }
 
+  BookmarksModel* model = BookmarksModel::Instance();
+  SIMPLViewToolbox* toolbox = SIMPLViewToolbox::Instance();
+
   QModelIndexList indexList = selectionModel()->selectedRows(BookmarksItem::Name);
 
-  emit contextMenuRequested(index, indexList, mapped);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void BookmarksTreeView::on_actionLocateFile_triggered()
-{
-  BookmarksModel* model = BookmarksModel::Instance();
-
-  QModelIndex current = currentIndex();
-
-  QModelIndex nameIndex = model->index(current.row(), BookmarksItem::Name, current.parent());
-  QModelIndex pathIndex = model->index(current.row(), BookmarksItem::Path, current.parent());
-
-  QFileInfo fi(pathIndex.data().toString());
-  QString restrictions;
-  if(fi.completeSuffix() == "json")
+  QMenu menu;
+  if(index.isValid() == false)
   {
-    restrictions = "Json File (*.json)";
-  }
-  else if(fi.completeSuffix() == "dream3d")
-  {
-    restrictions = "Dream3d File(*.dream3d)";
-  }
-  else if(fi.completeSuffix() == "txt")
-  {
-    restrictions = "Text File (*.txt)";
+    menu.addAction(m_ActionAddBookmark);
+    {
+      QAction* separator = new QAction(this);
+      separator->setSeparator(true);
+      menu.addAction(separator);
+    }
+    menu.addAction(m_ActionAddBookmarkFolder);
   }
   else
   {
-    restrictions = "Ini File (*.ini)";
+    QModelIndex actualIndex = model->index(index.row(), BookmarksItem::Path, index.parent());
+    QString path = actualIndex.data().toString();
+    if(indexList.size() > 1)
+    {
+      m_ActionRemoveBookmark->setText("Remove Items");
+      menu.addAction(m_ActionRemoveBookmark);
+    }
+    else if(path.isEmpty() == false)
+    {
+      bool itemHasErrors = model->data(actualIndex, Qt::UserRole).value<bool>();
+      if(itemHasErrors == true)
+      {
+        menu.addAction(m_ActionLocateFile);
+
+        {
+          QAction* separator = new QAction(this);
+          separator->setSeparator(true);
+          menu.addAction(separator);
+        }
+
+        m_ActionRemoveBookmark->setText("Remove Bookmark");
+        menu.addAction(m_ActionRemoveBookmark);
+      }
+      else
+      {
+        menu.addAction(m_ActionOpenBookmark);
+        menu.addAction(m_ActionExecuteBookmark);
+        {
+          QAction* separator = new QAction(this);
+          separator->setSeparator(true);
+          menu.addAction(separator);
+        }
+        m_ActionRenameBookmark->setText("Rename Bookmark");
+        menu.addAction(m_ActionRenameBookmark);
+        m_ActionRemoveBookmark->setText("Remove Bookmark");
+        menu.addAction(m_ActionRemoveBookmark);
+        {
+          QAction* separator = new QAction(this);
+          separator->setSeparator(true);
+          menu.addAction(separator);
+        }
+
+        menu.addAction(m_ActionShowBookmarkInFileSystem);
+      }
+    }
+    else if(path.isEmpty())
+    {
+      menu.addAction(m_ActionAddBookmark);
+
+      m_ActionRenameBookmark->setText("Rename Folder");
+      menu.addAction(m_ActionRenameBookmark);
+
+      {
+        QAction* separator = new QAction(this);
+        separator->setSeparator(true);
+        menu.addAction(separator);
+      }
+
+      m_ActionRemoveBookmark->setText("Remove Folder");
+      menu.addAction(m_ActionRemoveBookmark);
+
+      {
+        QAction* separator = new QAction(this);
+        separator->setSeparator(true);
+        menu.addAction(separator);
+      }
+
+      menu.addAction(m_ActionAddBookmarkFolder);
+    }
   }
 
-  QString filePath = QFileDialog::getOpenFileName(this, tr("Locate Pipeline File"), pathIndex.data().toString(), tr(restrictions.toStdString().c_str()));
-  if(true == filePath.isEmpty())
-  {
-    return;
-  }
-
-  filePath = QDir::toNativeSeparators(filePath);
-
-  // Set the new path into the item
-  model->setData(pathIndex, filePath, Qt::DisplayRole);
-
-  // Change item back to default look and functionality
-  model->setData(nameIndex, false, Qt::UserRole);
+  menu.exec(mapped);
 }
 
 // -----------------------------------------------------------------------------

@@ -40,6 +40,7 @@
 #include <QtWidgets/QUndoStack>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
@@ -62,20 +63,6 @@ class SVWidgetsLib_EXPORT SIMPLController : public QObject
     void setupUndoStack();
 
     /**
-     * @brief getFilterPipeline
-     * @param pipelineIndex
-     * @param model
-     * @return
-     */
-    FilterPipeline::Pointer getFilterPipeline(const QModelIndex &pipelineIndex, PipelineModel *model);
-
-    /**
-     * @brief addPipelineMessageObserver
-     * @param pipelineMessageObserver
-     */
-    void addPipelineMessageObserver(QObject* pipelineMessageObserver);
-
-    /**
      * @brief fromJsonObject
      * @param modelObject
      * @param model
@@ -91,12 +78,6 @@ class SVWidgetsLib_EXPORT SIMPLController : public QObject
     QJsonObject toJsonObject(PipelineModel *model);
 
     /**
-     * @brief getActivePipelineIndex
-     * @return
-     */
-    QModelIndex getActivePipelineIndex();
-
-    /**
      * @brief Determines whether or not the pipeline that begins at the specified index is currently running
      * @param pipelineIndex
      * @return
@@ -104,22 +85,11 @@ class SVWidgetsLib_EXPORT SIMPLController : public QObject
     bool isPipelineCurrentlyRunning(const QModelIndex &pipelineIndex);
 
   public slots:
-
-    /**
-     * @brief addPipelineToModelFromFile
-     * @param filePath
-     * @param model
-     * @param parentIndex
-     * @param insertionIndex
-     * @return
-     */
-    int addPipelineToModelFromFile(const QString& filePath, PipelineModel* model, const QModelIndex &parentIndex = QModelIndex(), int insertionIndex = -1);
-
     /**
      * @brief preflightPipeline
      * @param pipelineIndex
      */
-    void preflightPipeline(const QModelIndex &pipelineIndex, PipelineModel* model);
+    void preflightPipeline(const QModelIndex &pipelineIndex, PipelineModel *model);
 
     /**
      * @brief runPipeline
@@ -177,6 +147,7 @@ class SVWidgetsLib_EXPORT SIMPLController : public QObject
     void redoActionGenerated(QAction* actionRedo);
 
     void displayIssuesTriggered();
+    void clearIssuesTriggered();
 
     void writeSIMPLViewSettingsTriggered();
 
@@ -201,20 +172,12 @@ class SVWidgetsLib_EXPORT SIMPLController : public QObject
     QSignalMapper*                                    m_PipelineSignalMapper;
     bool                                              m_BlockPreflight = false;
     QStack<bool>                                      m_BlockPreflightStack;
-    QList<QObject*>                                   m_PipelineMessageObservers;
 
     QSharedPointer<QUndoStack>                        m_UndoStack;
     QString                                           m_CurrentUndoText = "";
     QString                                           m_CurrentRedoText = "";
     QString                                           m_PreviousUndoText = "";
     QString                                           m_PreviousRedoText = "";
-
-    /**
-     * @brief getPipelineFromFile
-     * @param filePath
-     * @return
-     */
-    FilterPipeline::Pointer getPipelineFromFile(const QString& filePath);
 
     /**
      * @brief wrapModel

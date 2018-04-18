@@ -36,9 +36,7 @@
 #ifndef _addfilterscommand_h_
 #define _addfilterscommand_h_
 
-#include <QtCore/QMap>
-#include <QtCore/QUuid>
-#include <QtCore/QRect>
+#include <QtCore/QModelIndex>
 
 #include <QtWidgets/QUndoCommand>
 
@@ -46,19 +44,14 @@
 #include <SIMPLib/Filtering/AbstractFilter.h>
 
 class PipelineFilterObject;
-class PipelineView;
+class PipelineModel;
 
 class SVWidgetsLib_EXPORT AddFilterCommand : public QUndoCommand
 {
   public:
-    AddFilterCommand(AbstractFilter::Pointer filter, PipelineView* destination, QString actionText, QVariant value,
-                     QUuid previousNode = QUuid(), QUuid nextNode = QUuid(), QUndoCommand* parent = nullptr);
+    AddFilterCommand(AbstractFilter::Pointer filter, PipelineModel* model, const QModelIndex &pipelineIndex, int insertIndex, QString actionText, QUndoCommand* parent = nullptr);
 
-    AddFilterCommand(QList<AbstractFilter::Pointer> filters, PipelineView* destination, QString actionText, QVariant value,
-                     QUuid previousNode = QUuid(), QUuid nextNode = QUuid(), QUndoCommand* parent = nullptr);
-
-    AddFilterCommand(QString jsonString, PipelineView* destination, QString actionText, QVariant value,
-                     QUuid previousNode = QUuid(), QUuid nextNode = QUuid(), QUndoCommand* parent = nullptr);
+    AddFilterCommand(std::vector<AbstractFilter::Pointer> filters, PipelineModel* model, const QModelIndex &pipelineIndex, int insertIndex, QString actionText, QUndoCommand* parent = nullptr);
 
     ~AddFilterCommand() override;
 
@@ -67,13 +60,12 @@ class SVWidgetsLib_EXPORT AddFilterCommand : public QUndoCommand
     void redo() override;
 
   private:
-    QString                                             m_JsonString;
+    std::vector<AbstractFilter::Pointer>                m_Filters;
     int                                                 m_FilterCount;
+    int                                                 m_InsertIndex;
     QString                                             m_ActionText;
-    PipelineView*                                       m_Destination;
-    QVariant                                            m_Value;
-    QUuid                                               m_PreviousNodeId;
-    QUuid                                               m_NextNodeId;
+    QModelIndex                                         m_PipelineIndex;
+    PipelineModel*                                      m_PipelineModel;
 
     AddFilterCommand(const AddFilterCommand&) = delete; // Copy Constructor Not Implemented
     void operator=(const AddFilterCommand&) = delete;   // Move assignment Not Implemented

@@ -41,7 +41,6 @@
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 
-#include "SVWidgetsLib/Widgets/BreakpointFilterWidget.h"
 #include "SVWidgetsLib/Widgets/PipelineModel.h"
 #include "SVWidgetsLib/Widgets/PipelineItem.h"
 #include "SVWidgetsLib/QtSupport/QtSRecentFileList.h"
@@ -143,7 +142,7 @@ void SIMPLController::preflightPipeline(const QModelIndex &pipelineIndex, Pipeli
 
   emit clearIssuesTriggered();
   // Create a Pipeline Object and fill it with the filters from this View
-  FilterPipeline::Pointer pipeline = getFilterPipeline(pipelineIndex, model);
+  FilterPipeline::Pointer pipeline = model->getFilterPipeline(pipelineIndex);
 
   FilterPipeline::FilterContainerType filters = pipeline->getFilterContainer();
   for(int i = 0; i < filters.size(); i++)
@@ -218,14 +217,11 @@ void SIMPLController::runPipeline(const QModelIndex &pipelineIndex, PipelineMode
   connect(m_PipelineSignalMapper, SIGNAL(mapped(const QModelIndex &)), m_WorkerThread, SIGNAL(finished(const QModelIndex &)));
 
   // Clear out the Issues Table
-  if (pipelineIndex == m_ActivePipelineIndex)
-  {
-    emit clearIssuesTriggered();
-  }
+  emit clearIssuesTriggered();
 
   // Create a FilterPipeline Object
 //  m_PipelineInFlight = getCopyOfFilterPipeline();
-  m_PipelineInFlight = getFilterPipeline(pipelineIndex, model);
+  m_PipelineInFlight = model->getFilterPipeline(pipelineIndex);
 
   emit standardOutputMessageGenerated("<b>Preflight Pipeline.....</b>");
   // Give the pipeline one last chance to preflight and get all the latest values from the GUI
@@ -344,97 +340,6 @@ void SIMPLController::processPipelineMessage(const PipelineMessage& msg)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterPipeline::Pointer SIMPLController::getFilterPipeline(const QModelIndex &pipelineIndex, PipelineModel* model)
-{
-  // Create a Pipeline Object and fill it with the filters from this View
-  FilterPipeline::Pointer pipeline = FilterPipeline::New();
-
-  qint32 count = model->rowCount(pipelineIndex);
-  for(qint32 i = 0; i < count; ++i)
-  {
-    QModelIndex childIndex = model->index(i, PipelineItem::Name, pipelineIndex);
-    if(childIndex.isValid())
-    {
-      AbstractFilter::Pointer filter = model->filter(childIndex);
-      Breakpoint::Pointer breakpoint = std::dynamic_pointer_cast<Breakpoint>(filter);
-      if(nullptr != breakpoint)
-      {
-        connect(pipeline.get(), SIGNAL(pipelineCanceled()), breakpoint.get(), SLOT(resumePipeline()));
-      }
-
-      pipeline->pushBack(filter);
-    }
-  }
-  for (int i = 0; i < m_PipelineMessageObservers.size(); i++)
-  {
-    pipeline->addMessageReceiver(m_PipelineMessageObservers[i]);
-  }
-  return pipeline;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int SIMPLController::addPipelineToModelFromFile(const QString& filePath, PipelineModel* model, const QModelIndex &parentIndex, int insertionIndex)
-{
-  QFileInfo fi(filePath);
-  if(fi.exists() == false)
-  {
-    QMessageBox::warning(nullptr, QString::fromLatin1("Pipeline Read Error"), QString::fromLatin1("There was an error opening the specified pipeline file. The pipeline file does not exist."));
-    return -1;
-  }
-
-  QString ext = fi.suffix();
-  QString name = fi.fileName();
-  QString baseName = fi.baseName();
-
-  // Read the pipeline from the file
-  FilterPipeline::Pointer pipeline = getPipelineFromFile(filePath);
-
-  // Check that a valid extension was read...
-  if(pipeline == FilterPipeline::NullPointer())
-  {
-    emit statusMessageGenerated(tr("The pipeline was not read correctly from file '%1'. '%2' is an unsupported file extension.").arg(name).arg(ext));
-    emit standardOutputMessageGenerated(tr("The pipeline was not read correctly from file '%1'. '%2' is an unsupported file extension.").arg(name).arg(ext));
-    return -1;
-  }
-
-  // Notify user of successful read
-  emit statusMessageGenerated(tr("Opened \"%1\" Pipeline").arg(baseName));
-  emit standardOutputMessageGenerated(tr("Opened \"%1\" Pipeline").arg(baseName));
-
-  // Populate the pipeline view
-  addPipelineToModel(fi.fileName(), pipeline, model, true, parentIndex, insertionIndex);
-
-  return 0;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-FilterPipeline::Pointer SIMPLController::getPipelineFromFile(const QString& filePath)
-{
-  QFileInfo fi(filePath);
-  QString ext = fi.suffix();
-
-  FilterPipeline::Pointer pipeline = FilterPipeline::NullPointer();
-  if(ext == "dream3d")
-  {
-    H5FilterParametersReader::Pointer dream3dReader = H5FilterParametersReader::New();
-    pipeline = dream3dReader->readPipelineFromFile(filePath);
-  }
-  else if(ext == "json")
-  {
-    JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
-    pipeline = jsonReader->readPipelineFromFile(filePath);
-  }
-
-  return pipeline;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void SIMPLController::blockPreflightSignals(bool b)
 {
   if(b)
@@ -447,14 +352,6 @@ void SIMPLController::blockPreflightSignals(bool b)
   }
 
   m_BlockPreflight = (m_BlockPreflightStack.size() > 0) ? true : false;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void SIMPLController::addPipelineMessageObserver(QObject* pipelineMessageObserver)
-{
-  m_PipelineMessageObservers.push_back(pipelineMessageObserver);
 }
 
 // -----------------------------------------------------------------------------
@@ -579,14 +476,6 @@ void SIMPLController::unwrapModel(QString objectName, QJsonObject object, Pipeli
 bool SIMPLController::isPipelineCurrentlyRunning(const QModelIndex &pipelineIndex)
 {
   return m_CurrentlyRunningPipelines.contains(pipelineIndex);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QModelIndex SIMPLController::getActivePipelineIndex()
-{
-  return m_ActivePipelineIndex;
 }
 
 

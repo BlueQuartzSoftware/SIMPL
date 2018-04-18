@@ -40,6 +40,7 @@
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Filtering/FilterPipeline.h"
 
 #include "SVWidgetsLib/Widgets/PipelineItem.h"
 
@@ -62,11 +63,78 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionUndo)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionRedo)
 
+    /**
+     * @brief addPipeline
+     * @param pipelineName
+     * @param pipeline
+     * @param setAsActive
+     */
+    void addPipeline(const QString &pipelineName, FilterPipeline::Pointer pipeline, bool setAsActive = false, QModelIndex parentIndex = QModelIndex(), int insertionIndex = -1);
+
+    /**
+     * @brief addPipelineFromFile
+     * @param filePath
+     * @param parentIndex
+     * @param insertionIndex
+     * @return
+     */
+    int addPipelineFromFile(const QString& filePath, const QModelIndex &parentIndex = QModelIndex(), int insertionIndex = -1);
+
+    /**
+     * @brief addFilter
+     * @param filter
+     * @param parentIndex
+     */
+    void addFilter(AbstractFilter::Pointer filter, const QModelIndex &parentIndex = QModelIndex(), int insertionIndex = -1);
+
+    /**
+     * @brief removePipelineFromModel
+     * @param pipelineIndex
+     * @param parentIndex
+     */
+    void removePipeline(QModelIndex pipelineIndex);
+
+    /**
+     * @brief removeFilter
+     * @param filterIndex
+     * @param pipelineIndex
+     */
+    void removeFilter(int filterIndex, const QModelIndex &pipelineIndex);
+
+    /**
+     * @brief updateActivePipeline
+     * @param pipelineIdx
+     */
+    void updateActivePipeline(const QModelIndex &pipelineIdx);
+
+    /**
+     * @brief getFilterPipeline
+     * @param pipelineIndex
+     * @return
+     */
+    FilterPipeline::Pointer getFilterPipeline(const QModelIndex &pipelineIndex);
+
+    /**
+     * @brief writePipeline
+     * @param pipelineIndex
+     * @param outputPath
+     * @return
+     */
+    int writePipeline(const QModelIndex &pipelineIndex, const QString &outputPath);
+
+    /**
+     * @brief addPipelineMessageObserver
+     * @param pipelineMessageObserver
+     */
+    void addPipelineMessageObserver(QObject* pipelineMessageObserver);
+
     QVariant data(const QModelIndex& index, int role) const Q_DECL_OVERRIDE;
 //    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
 
     AbstractFilter::Pointer filter(const QModelIndex &index);
     void setFilter(const QModelIndex &index, AbstractFilter::Pointer filter);
+
+    QModelIndex indexOfFilter(AbstractFilter::Pointer filter, const QModelIndex &parent);
 
     FilterInputWidget* filterInputWidget(const QModelIndex &index);
 
@@ -107,7 +175,7 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
     bool pipelineSaved(const QModelIndex &index);
     void setPipelineSaved(const QModelIndex &index, bool saved);
 
-    bool isActivePipeline(const QModelIndex &index);
+    QModelIndex getActivePipeline();
     void setActivePipeline(const QModelIndex &index, bool value);
     void clearActivePipeline();
 
@@ -116,12 +184,33 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
 
     PipelineItem* getRootItem();
 
+  signals:
+    void clearIssuesTriggered();
+
+    void preflightTriggered(const QModelIndex &pipelineIndex);
+
+    void pipelineDataChanged(const QModelIndex &pipelineIndex);
+
+    void statusMessageGenerated(const QString &msg);
+    void standardOutputMessageGenerated(const QString &msg);
+
   private:
     PipelineItem*                       m_RootItem;
+
+    QPersistentModelIndex               m_ActivePipelineIndex;
+
+    QList<QObject*>                     m_PipelineMessageObservers;
 
     PipelineItem* getItem(const QModelIndex& index) const;
 
     QColor getForegroundColor(const QModelIndex &index) const;
+
+    /**
+     * @brief getPipelineFromFile
+     * @param filePath
+     * @return
+     */
+    FilterPipeline::Pointer getPipelineFromFile(const QString& filePath);
 
     PipelineModel(const PipelineModel&);    // Copy Constructor Not Implemented
     void operator=(const PipelineModel&);  // Operator '=' Not Implemented

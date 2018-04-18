@@ -96,8 +96,32 @@ class SVWidgetsLib_EXPORT BookmarksTreeView : public QTreeView
     void setModel(QAbstractItemModel* model) Q_DECL_OVERRIDE;
 
     /**
+    * @brief BookmarksToolboxWidget::addBookmark
+    * @param filePath
+    * @param parent
+    */
+    void addBookmark(const QString& filePath, const QModelIndex& parent);
+
+    /**
+    * @brief BookmarksToolboxWidget::addFavoriteTreeItem
+    * @param parent
+    * @param favoriteTitle
+    * @param icon
+    * @param favoritePath
+    * @param allowEditing
+    */
+    int addTreeItem(QModelIndex parent,
+                    QString& favoriteTitle,
+                    QIcon icon,
+                    QString favoritePath,
+                    int insertIndex,
+                    bool allowEditing,
+                    bool editState,
+                    bool isExpanded);
+
+    /**
     * @brief filterOutDescendants
-    * @param indexList
+    * @param indexLis
     */
     QModelIndexList filterOutDescendants(QModelIndexList indexList);
 
@@ -122,11 +146,25 @@ class SVWidgetsLib_EXPORT BookmarksTreeView : public QTreeView
   protected slots:
     void on_actionLocateFile_triggered();
 
+    void listenAddBookmarkTriggered();
+    void listenAddBookmarkFolderTriggered();
+    void listenRenameBookmarkTriggered();
+    void listenRemoveBookmarkTriggered();
+    void listenShowBookmarkInFileSystemTriggered();
+    void listenExecuteBookmarkTriggered();
+    void listenClearBookmarksTriggered();
+    void listenOpenBookmarkTriggered();
+    void listenLocateBookmarkTriggered();
+
   signals:
     void itemWasDropped(QModelIndex parent, QString& title, QIcon icon, QString path, int index, bool allowEditing, bool editState, bool isExpanding);
     void currentIndexChanged(const QModelIndex& current, const QModelIndex& previous);
     void folderChangedState(const QModelIndex& index, bool expand);
-    void contextMenuRequested(QModelIndex index, QModelIndexList selectedIndexes, const QPoint &mappedPos);
+
+    void newSIMPLViewInstanceTriggered(const QString &filePath = "", bool execute = false);
+
+    void fireWriteSettings();
+    void updateStatusBar(const QString& msg);
 
   private slots:
 
@@ -139,12 +177,8 @@ class SVWidgetsLib_EXPORT BookmarksTreeView : public QTreeView
     void requestContextMenu(const QPoint &pos);
 
   private:
-    void performDrag();
-    void expandChildren(const QModelIndex& parent, BookmarksModel* model);
-    QJsonObject wrapModel(QModelIndex index);
-    static void UnwrapModel(QString objectName, QJsonObject object, BookmarksModel* model, QModelIndex parentIndex);
-
     QPoint                                        m_StartPos;
+    QString                                       m_OpenDialogLastFilePath;
     QMenu                                         m_Menu;
     QList<QAction*>                               m_NodeActions;
     QList<QAction*>                               m_LeafActions;
@@ -153,6 +187,31 @@ class SVWidgetsLib_EXPORT BookmarksTreeView : public QTreeView
     QList<QPersistentModelIndex>                  m_IndexesBeingDragged;
     QPersistentModelIndex                         m_ActiveIndexBeingDragged;
     QModelIndex                                   m_TopLevelItemPlaceholder;
+
+    QAction* m_ActionRenameBookmark = new QAction("Rename Pipeline", this);
+    QAction* m_ActionRemoveBookmark = new QAction("Remove Bookmark", this);
+    QAction* m_ActionShowBookmarkInFileSystem = new QAction(this);
+    QAction* m_ActionClearBookmarks = new QAction("Clear Bookmarks", this);
+    QAction* m_ActionAddBookmark = new QAction("Add Bookmark", this);
+    QAction* m_ActionAddBookmarkFolder = new QAction("Add Bookmark Folder", this);
+    QAction* m_ActionLocateFile = new QAction("Locate File", this);
+    QAction* m_ActionOpenBookmark = new QAction("Open Bookmark", this);
+    QAction* m_ActionExecuteBookmark = new QAction("Execute Bookmark", this);
+
+    SIMPL_GET_PROPERTY(QAction*, ActionRenameBookmark)
+    SIMPL_GET_PROPERTY(QAction*, ActionRemoveBookmark)
+    SIMPL_GET_PROPERTY(QAction*, ActionShowBookmarkInFileSystem)
+    SIMPL_GET_PROPERTY(QAction*, ActionClearBookmarks)
+    SIMPL_GET_PROPERTY(QAction*, ActionAddBookmark)
+    SIMPL_GET_PROPERTY(QAction*, ActionAddBookmarkFolder)
+    SIMPL_GET_PROPERTY(QAction*, ActionLocateFile)
+    SIMPL_GET_PROPERTY(QAction*, ActionOpenBookmark)
+    SIMPL_GET_PROPERTY(QAction*, ActionExecuteBookmark)
+
+    void performDrag();
+    void expandChildren(const QModelIndex& parent, BookmarksModel* model);
+    QJsonObject wrapModel(QModelIndex index);
+    static void UnwrapModel(QString objectName, QJsonObject object, BookmarksModel* model, QModelIndex parentIndex);
 };
 
 #endif /* _BookmarksTreeView_H_ */

@@ -50,7 +50,6 @@
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/PipelineTreeItemDelegate.h"
 #include "SVWidgetsLib/Widgets/PipelineItem.h"
-#include "SVWidgetsLib/Widgets/SIMPLViewMenuItems.h"
 #include "SVWidgetsLib/Widgets/PipelineModel.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
@@ -84,10 +83,10 @@ PipelineTreeView::~PipelineTreeView()
 void PipelineTreeView::setupGui()
 {
   m_ActionNewPipeline = new QAction("New Pipeline", this);
-  m_ActionCut = new QAction("Paste", this);
-  m_ActionCopy = new QAction("Paste", this);
+  m_ActionCut = new QAction("Cut", this);
+  m_ActionCopy = new QAction("Copy", this);
   m_ActionPaste = new QAction("Paste", this);
-  m_ActionClearFilters = new QAction("Clear Pipeline", this);
+  m_ActionClearFilters = new QAction("Clear Filters", this);
 
   connectSignalsSlots();
 
@@ -318,7 +317,7 @@ void PipelineTreeView::requestSinglePipelineContextMenu(QMenu &menu, const QMode
     menu.addSeparator();
 
     QAction* activePipelineAction = new QAction(tr("Set '%1' as Active Pipeline").arg(model->data(pipelineIdx, Qt::DisplayRole).toString()));
-    connect(activePipelineAction, &QAction::triggered, [=] { updateActivePipeline(pipelineIdx); });
+    connect(activePipelineAction, &QAction::triggered, [=] { emit activePipelineChanged(pipelineIdx, model); });
     menu.addAction(activePipelineAction);
   }
 
@@ -331,7 +330,7 @@ void PipelineTreeView::requestSinglePipelineContextMenu(QMenu &menu, const QMode
     {
       // We are trying to delete the active pipeline, so find another pipeline to set as the active pipeline
       QModelIndex nextActivePipeline = findNewActivePipeline(pipelineIdx);
-      updateActivePipeline(nextActivePipeline);
+      emit activePipelineChanged(nextActivePipeline, model);
     }
     model->removeRow(pipelineIdx.row());
   });
@@ -392,7 +391,7 @@ void PipelineTreeView::requestMultiplePipelineContextMenu(QMenu &menu, QModelInd
       {
         // We are trying to delete the active pipeline, so find another pipeline to set as the active pipeline
         QModelIndex nextActivePipeline = findNewActivePipeline(persistentList[i]);
-        updateActivePipeline(nextActivePipeline);
+        emit activePipelineChanged(nextActivePipeline, model);
       }
 
       model->removeRow(persistentList[i].row(), persistentList[i].parent());
@@ -430,236 +429,12 @@ void PipelineTreeView::requestDefaultContextMenu(const QPoint &pos)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeView::listenCutTriggered()
-{
-  // SIMPL-FIXME: Implement Cut using one window
-
-//    SVPipelineViewWidget* viewWidget = m_ActiveWindow->getPipelineViewWidget();
-
-//    QList<PipelineFilterObject*> filterWidgets = viewWidget->getSelectedFilterObjects();
-
-//    FilterPipeline::Pointer pipeline = FilterPipeline::New();
-//    for(int i = 0; i < filterWidgets.size(); i++)
-//    {
-//      pipeline->pushBack(filterWidgets[i]->getFilter());
-//    }
-
-//    JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
-//    QString jsonString = jsonWriter->writePipelineToString(pipeline, "Pipeline");
-
-//    QClipboard* clipboard = QApplication::clipboard();
-//    clipboard->setText(jsonString);
-
-//    RemoveFilterCommand* removeCmd = new RemoveFilterCommand(filterWidgets, viewWidget, "Cut");
-//    viewWidget->addUndoCommand(removeCmd);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineTreeView::listenCopyTriggered()
-{
-  // SIMPL-FIXME: Implement Copy using one window
-
-//    SVPipelineViewWidget* viewWidget = m_ActiveWindow->getPipelineViewWidget();
-
-//    FilterPipeline::Pointer pipeline = FilterPipeline::New();
-//    QList<PipelineFilterObject*> filterWidgets = viewWidget->getSelectedFilterObjects();
-//    for(int i = 0; i < filterWidgets.size(); i++)
-//    {
-//      pipeline->pushBack(filterWidgets[i]->getFilter());
-//    }
-
-//    JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
-//    QString json = jsonWriter->writePipelineToString(pipeline, "Copy - Pipeline");
-//    QClipboard* clipboard = QApplication::clipboard();
-//    clipboard->setText(json);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineTreeView::listenPasteTriggered()
-{
-  // SIMPL-FIXME: Implement Paste using one window
-
-//    SVPipelineViewWidget* viewWidget = m_ActiveWindow->getPipelineViewWidget();
-
-//    QClipboard* clipboard = QApplication::clipboard();
-//    QString jsonString = clipboard->text();
-
-//    JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
-//    FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(jsonString);
-//    FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
-
-//    AddFilterCommand* addCmd = new AddFilterCommand(container, viewWidget, "Paste", -1);
-//    viewWidget->addUndoCommand(addCmd);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void PipelineTreeView::listenNewPipelineTriggered()
 {
   QString pipelineName = "Untitled Pipeline";
   bool setPipelineAsActive = true;
 
-  addPipeline(pipelineName, FilterPipeline::New(), setPipelineAsActive);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineTreeView::listenClearPipelineTriggered()
-{
-  PipelineModel* model = getPipelineModel();
-
-  if(model->rowCount() > 0)
-  {
-    removePipeline
-    m_ActionClearFilters->setDisabled(true);
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineTreeView::addPipeline(const QString &pipelineName, FilterPipeline::Pointer pipeline, bool setAsActive, QModelIndex parentIndex, int insertionIndex)
-{
-  PipelineModel* model = getPipelineModel();
-
-  if (parentIndex == QModelIndex())
-  {
-    if (model->getMaxNumberOfPipelines() == 1)
-    {
-      updateActivePipeline(QModelIndex());
-      model->removeRow(0);
-    }
-
-    int row = model->rowCount();
-    model->insertRow(row);
-    QModelIndex pipelineIndex = model->index(row, PipelineItem::Name);
-    model->setData(pipelineIndex, pipelineName, Qt::DisplayRole);
-    model->setItemType(pipelineIndex, PipelineItem::ItemType::Pipeline);
-    parentIndex = pipelineIndex;
-  }
-
-  if (insertionIndex == -1)
-  {
-    insertionIndex = model->rowCount(parentIndex);
-  }
-
-  FilterPipeline::FilterContainerType filters = pipeline->getFilterContainer();
-  QModelIndexList list;
-  for (int i = 0; i < filters.size(); i++)
-  {
-    AbstractFilter::Pointer filter = filters[i];
-    blockSignals(true);
-    addFilterToModel(filter, parentIndex, insertionIndex);
-    blockSignals(false);
-
-    QModelIndex filterIndex = model->index(insertionIndex, PipelineItem::Name, parentIndex);
-    list.push_back(filterIndex);
-
-    insertionIndex++;
-  }
-
-  if (setAsActive == true)
-  {
-    updateActivePipeline(parentIndex);
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineTreeView::addFilterToModel(AbstractFilter::Pointer filter, const QModelIndex &parentIndex, int insertionIndex)
-{
-  PipelineModel* model = getPipelineModel();
-
-  QModelIndex pipelineIndex = parentIndex;
-  if (pipelineIndex.isValid() == false)
-  {
-    pipelineIndex = m_ActivePipelineIndex;
-    if (pipelineIndex.isValid() == false)
-    {
-      FilterPipeline::Pointer pipeline = FilterPipeline::New();
-      pipeline->pushBack(filter);
-      addPipeline("Untitled Pipeline", pipeline, true);
-    }
-  }
-
-  model->insertRow(insertionIndex, pipelineIndex);
-  QModelIndex filterIndex = model->index(insertionIndex, PipelineItem::Name, pipelineIndex);
-  model->setData(filterIndex, filter->getHumanLabel(), Qt::DisplayRole);
-  model->setItemType(filterIndex, PipelineItem::ItemType::Filter);
-  model->setFilter(filterIndex, filter);
-
-  if (m_ActivePipelineIndex.isValid() == false)
-  {
-    updateActivePipeline(pipelineIndex);
-  }
-
-  QModelIndexList list;
-  list.push_back(filterIndex);
-
-  emit needsPreflight(m_ActivePipelineIndex, model);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineTreeView::updateActivePipeline(const QModelIndex &pipelineIdx)
-{
-  emit clearIssuesTriggered();
-
-  PipelineModel* model = getPipelineModel();
-  model->setActivePipeline(m_ActivePipelineIndex, false);
-
-  m_ActivePipelineIndex = pipelineIdx;
-
-  if (m_ActivePipelineIndex.isValid() == true)
-  {
-    model->setActivePipeline(pipelineIdx, true);
-    emit needsPreflight(m_ActivePipelineIndex, model);
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineTreeView::removePipeline(int pipelineIndex, QModelIndex parentIndex)
-{
-  PipelineModel* model = getPipelineModel();
-
-  QModelIndex pipelineModelIdx = model->index(pipelineIndex, 0, parentIndex);
-  for (int i = 0; i < model->rowCount(pipelineModelIdx); i++)
-  {
-    model->removeRow(0, pipelineModelIdx);
-  }
-
-  int removalRow = pipelineModelIdx.row();
-  model->removeRow(pipelineModelIdx.row(), parentIndex);
-
-  QModelIndex newActivePipelineIdx;
-  if (model->index(removalRow, 0, parentIndex).isValid())
-  {
-    newActivePipelineIdx = model->index(removalRow, 0, parentIndex);
-  }
-  else if (model->index(removalRow + 1, 0, parentIndex).isValid())
-  {
-    newActivePipelineIdx = model->index(removalRow + 1, 0, parentIndex);
-  }
-  else if (model->index(removalRow - 1, 0, parentIndex).isValid())
-  {
-    newActivePipelineIdx = model->index(removalRow - 1, 0, parentIndex);
-  }
-  else
-  {
-    newActivePipelineIdx = QModelIndex();
-  }
-
-  updateActivePipeline(newActivePipelineIdx);
+  emit needsNewPipeline(pipelineName, FilterPipeline::New(), setPipelineAsActive);
 }
 
 // -----------------------------------------------------------------------------
@@ -826,7 +601,10 @@ void PipelineTreeView::updateActionEnableFilter()
   // Also, this needs to be disconnected before changing the checked state
   m_ActionEnableFilter->setChecked(widgetEnabled);
 
-  connect(m_ActionEnableFilter, &QAction::toggled, [=] { setSelectedFiltersEnabled(m_ActionEnableFilter->isChecked()); });
+  connect(m_ActionEnableFilter, &QAction::toggled, [=] {
+    QModelIndexList selectedIndices = selectionModel()->selectedRows(PipelineItem::Name);
+    setFiltersEnabled(selectedIndices, m_ActionEnableFilter->isChecked());
+  });
 }
 
 // -----------------------------------------------------------------------------

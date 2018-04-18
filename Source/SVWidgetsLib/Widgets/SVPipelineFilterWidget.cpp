@@ -59,9 +59,6 @@
 #include "SVWidgetsLib/FilterParameterWidgets/ChoiceWidget.h"
 #include "SVWidgetsLib/FilterParameterWidgets/LinkedBooleanWidget.h"
 #include "SVWidgetsLib/Widgets/DataContainerArrayWidget.h"
-#include "SVWidgetsLib/Widgets/SVPipelineViewWidget.h"
-
-
 
 // -----------------------------------------------------------------------------
 //

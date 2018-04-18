@@ -121,32 +121,6 @@ class SVWidgetsLib_EXPORT BookmarksToolboxWidget : public QWidget, private Ui::B
 
     void readPrebuiltPipelines();
 
-  public slots:
-
-    /**
-    * @brief BookmarksToolboxWidget::addBookmark
-    * @param filePath
-    * @param parent
-    */
-    void addBookmark(const QString& filePath, const QModelIndex& parent);
-
-    /**
-    * @brief BookmarksToolboxWidget::addFavoriteTreeItem
-    * @param parent
-    * @param favoriteTitle
-    * @param icon
-    * @param favoritePath
-    * @param allowEditing
-    */
-    int addTreeItem(QModelIndex parent,
-                    QString& favoriteTitle,
-                    QIcon icon,
-                    QString favoritePath,
-                    int insertIndex,
-                    bool allowEditing,
-                    bool editState,
-                    bool isExpanded);
-
   protected:
     QStringList generateFilterListFromPipelineFile(QString path);
     QString generateHtmlFilterListFromPipelineFile(QString path);
@@ -182,11 +156,12 @@ class SVWidgetsLib_EXPORT BookmarksToolboxWidget : public QWidget, private Ui::B
     void filterListGenerated(const QStringList& filterList, bool sort);
 
     /**
-    * @brief The signal is emitted when the user double clicks on a pipeline file
-    * @param filePath The absolute path to the pipeline file
-    * @param newWindow A boolean that decides whether to open a new window.
+    * @brief This signal is emitted when a new SIMPLView instance is needed.  A filePath is used to populate the new
+    * SIMPLView instance with a pipeline, if necessary.
+    * @param filePath The absolute path to the pipeline file.  If empty, the instance will not have a pipeline in it.
+    * @param execute A boolean that decides whether to execute the pipeline or not
     */
-    void pipelineFileActivated(const QString& filePath);
+    void newSIMPLViewInstanceTriggered(const QString& filePath, bool execute = false);
 
     void updateStatusBar(const QString& msg);
 

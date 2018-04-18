@@ -59,13 +59,7 @@
 #include "SVWidgetsLib/Widgets/BookmarksModel.h"
 #include "SVWidgetsLib/Widgets/FilterListToolboxWidget.h"
 
-
-
 #define PREBUILT_PIPELINES_DIR "PrebuiltPipelines"
-enum ErrorCodes
-{
-  UNRECOGNIZED_EXT = -1
-};
 
 // -----------------------------------------------------------------------------
 //
@@ -108,6 +102,12 @@ void BookmarksToolboxWidget::setupGui()
 
   connect(bookmarksTreeView, SIGNAL(itemWasDropped(QModelIndex, QString&, QIcon, QString, int, bool, bool, bool)), this,
           SLOT(addTreeItem(QModelIndex, QString&, QIcon, QString, int, bool, bool, bool)));
+
+  connect(bookmarksTreeView, &BookmarksTreeView::updateStatusBar, this, &BookmarksToolboxWidget::updateStatusBar);
+
+  connect(bookmarksTreeView, &BookmarksTreeView::newSIMPLViewInstanceTriggered, this, &BookmarksToolboxWidget::newSIMPLViewInstanceTriggered);
+
+  connect(bookmarksTreeView, &BookmarksTreeView::fireWriteSettings, this, &BookmarksToolboxWidget::fireWriteSettings);
 
   //bookmarksTreeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
@@ -185,30 +185,6 @@ QStringList BookmarksToolboxWidget::generateFilterListFromPipelineFile(QString p
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void BookmarksToolboxWidget::addBookmark(const QString& filePath, const QModelIndex& parent)
-{
-  BookmarksModel* model = BookmarksModel::Instance();
-  QFileInfo fi(filePath);
-  QString fileTitle = fi.baseName();
-  int err = addTreeItem(parent, fileTitle, QIcon(":/bookmark.png"), filePath, model->rowCount(parent), true, false, false);
-  if(err >= 0)
-  {
-    emit updateStatusBar("The pipeline '" + fileTitle + "' has been added successfully.");
-    getBookmarksTreeView()->expand(parent);
-  }
-  else if(err == UNRECOGNIZED_EXT)
-  {
-    emit updateStatusBar("The pipeline '" + fileTitle + "' could not be added, because the pipeline file extension was not recognized.");
-  }
-  else
-  {
-    emit updateStatusBar("The pipeline '" + fileTitle + "' could not be added.  An unknown error has occurred.  Please contact the SIMPLView developers.");
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void BookmarksToolboxWidget::readPrebuiltPipelines()
 {
   QDir pipelinesDir = findPipelinesDirectory();
@@ -223,7 +199,7 @@ void BookmarksToolboxWidget::readPrebuiltPipelines()
 
   // Add top-level folder and then load up all the pipelines into the folder
   QString dirName = "Prebuilt Pipelines";
-  addTreeItem(QModelIndex(), dirName, QIcon(":/folder_blue.png"), pPath, 0, true, false, false);
+  bookmarksTreeView->addTreeItem(QModelIndex(), dirName, QIcon(":/folder_blue.png"), pPath, 0, true, false, false);
   QModelIndex index = model->index(0, BookmarksItem::Name, QModelIndex());
   addPipelinesRecursively(pipelinesDir, index, iconFileName, allowEditing, fileExtension, itemType);
 }
@@ -251,7 +227,7 @@ void BookmarksToolboxWidget::addPipelinesRecursively(QDir currentDir, QModelInde
       // qDebug() << fi.absoluteFilePath();
       int row = model->rowCount(parent);
       QString baseName = fi.baseName();
-      addTreeItem(parent, baseName, QIcon(":/folder_blue.png"), fi.absoluteFilePath(), row, true, false, false);
+      bookmarksTreeView->addTreeItem(parent, baseName, QIcon(":/folder_blue.png"), fi.absoluteFilePath(), row, true, false, false);
       nextIndex = model->index(row, BookmarksItem::Name, parent);
       addPipelinesRecursively(QDir(fi.absoluteFilePath()), nextIndex, iconFileName, allowEditing, filters, itemType); // Recursive call
     }
@@ -279,7 +255,7 @@ void BookmarksToolboxWidget::addPipelinesRecursively(QDir currentDir, QModelInde
 #endif
     // Add tree widget for this Prebuilt Pipeline
     int row = model->rowCount(parent);
-    addTreeItem(parent, itemName, QIcon(iconFileName), itemInfo.absoluteFilePath(), row, true, false, false);
+    bookmarksTreeView->addTreeItem(parent, itemName, QIcon(iconFileName), itemInfo.absoluteFilePath(), row, true, false, false);
     nextIndex = model->index(row, BookmarksItem::Name, parent);
 
 //    QString htmlFormattedString = generateHtmlFilterListFromPipelineFile(itemInfo.absoluteFilePath());
@@ -389,7 +365,7 @@ void BookmarksToolboxWidget::on_bookmarksTreeView_doubleClicked(const QModelInde
         model->setData(nameIndex, false, Qt::UserRole);
         model->getFileSystemWatcher()->addPath(path);
       }
-      emit pipelineFileActivated(pipelinePath);
+      emit newSIMPLViewInstanceTriggered(pipelinePath);
     }
   }
 }
@@ -422,64 +398,6 @@ QString BookmarksToolboxWidget::writeNewFavoriteFilePath(QString newFavoriteTitl
   bookmarksTreeView->blockSignals(false);
 
   return newPath;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int BookmarksToolboxWidget::addTreeItem(QModelIndex parent, QString& favoriteTitle, QIcon icon, QString favoritePath, int insertIndex, bool allowEditing, bool editState, bool isExpanded)
-{
-
-  favoritePath = QDir::toNativeSeparators(favoritePath);
-
-  QFileInfo fileInfo(favoritePath);
-  QString ext = fileInfo.completeSuffix();
-  if(fileInfo.isFile() && ext != "dream3d" && ext != "json" && ext != "ini" && ext != "txt")
-  {
-    return UNRECOGNIZED_EXT;
-  }
-
-  BookmarksModel* model = BookmarksModel::Instance();
-
-  bookmarksTreeView->blockSignals(true);
-  // Add a new Item to the Tree
-  model->insertRow(insertIndex, parent);
-  QModelIndex nameIndex = model->index(insertIndex, BookmarksItem::Name, parent);
-  model->setData(nameIndex, favoriteTitle, Qt::DisplayRole);
-  QModelIndex pathIndex = model->index(insertIndex, BookmarksItem::Path, parent);
-  model->setData(pathIndex, favoritePath, Qt::DisplayRole);
-  model->setData(nameIndex, icon, Qt::DecorationRole);
-
-  bookmarksTreeView->sortByColumn(BookmarksItem::Name, Qt::AscendingOrder);
-  bookmarksTreeView->blockSignals(false);
-
-  if(favoritePath.isEmpty())
-  {
-    // This is a node
-    bookmarksTreeView->blockSignals(true);
-    if(isExpanded)
-    {
-      bookmarksTreeView->expand(nameIndex);
-      bookmarksTreeView->setExpanded(nameIndex, true);
-      bookmarksTreeView->setExpanded(pathIndex, true);
-    }
-    else
-    {
-      bookmarksTreeView->setExpanded(nameIndex, false);
-      bookmarksTreeView->setExpanded(pathIndex, false);
-    }
-    bookmarksTreeView->blockSignals(false);
-    if(editState == true)
-    {
-      bookmarksTreeView->edit(nameIndex);
-    }
-  }
-  else
-  {
-    model->getFileSystemWatcher()->addPath(favoritePath);
-  }
-  // bookmarksTreeView->resizeColumnToContents(1);
-  return 0;
 }
 
 // -----------------------------------------------------------------------------

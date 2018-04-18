@@ -34,19 +34,19 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _svpipelineviewwidget_h_
-#define _svpipelineviewwidget_h_
+#pragma once
 
 #include <vector>
 #include <stack>
 
 #include <QtCore/QSharedPointer>
-#include <QtCore/QTimer>
+
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QListView>
 #include <QtGui/QPainter>
 
 #include "SIMPLib/Common/PipelineMessage.h"
@@ -75,42 +75,23 @@ class PipelineModel;
 /*
  *
  */
-class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineView
+class SVWidgetsLib_EXPORT SVPipelineView : public QListView
 {
     Q_OBJECT
 
   public:
+    typedef std::pair<int, PipelineFilterObject*> IndexedFilterObject;
+
     SIMPL_INSTANCE_PROPERTY(bool, PipelineIsRunning)
 
-    SVPipelineViewWidget(QWidget* parent = 0);
-    virtual ~SVPipelineViewWidget();
+    SVPipelineView(QWidget* parent = 0);
+    virtual ~SVPipelineView();
 
     /**
      * @brief filterCount
      * @return
      */
-    int filterCount(QUuid startId = QUuid()) override;
-
-    /**
-     * @brief filterObjectAt
-     * @param index
-     * @return
-     */
-    PipelineFilterObject* filterObjectAt(QVariant value) override;
-
-    /**
-    * @brief containsFilterWidget
-    * @param filterWidget
-    * @return
-    */
-    bool containsFilterWidget(PipelineFilterObject* filterWidget) override;
-
-    /**
-    * @brief valueOfFilterWidget
-    * @param filterWidget
-    * @return
-    */
-    QVariant valueOfFilterWidget(PipelineFilterObject* filterObject) override;
+    int filterCount();
 
     /**
      * @brief Returns a FilterPipeline Object with a new filter instance that has the input parameters copied
@@ -118,42 +99,26 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      * a DEEP copy of the filter.
      * @return
      */
-    FilterPipeline::Pointer getCopyOfFilterPipeline() override;
-
-    /**
-    * @brief clearSelectedFilterObjects
-    */
-    void clearSelectedFilterObjects() override;
+    FilterPipeline::Pointer getCopyOfFilterPipeline();
 
     /**
     * @brief getSelectedFilterWidgets
     * @return
     */
-    QList<PipelineFilterObject*> getSelectedFilterObjects() override;
+    QList<PipelineFilterObject*> getSelectedFilterObjects();
 
     /**
     * @brief getSelectedIndexedFilterObject
     * @return
     */
-    QList<IndexedFilterObject> getSelectedIndexedFilterObjects() override;
-
-    /**
-     * @brief recheckWindowTitleAndModification
-     */
-    void recheckWindowTitleAndModification() override;
-
-    /**
-     * @brief eventFilter
-     * @return
-     */
-    bool eventFilter(QObject*, QEvent*) override;
+    QList<IndexedFilterObject> getSelectedIndexedFilterObjects();
 
     /**
      * @brief createFilterObjectFromFilter
      * @param filter
      * @return
      */
-    PipelineFilterObject* createFilterObjectFromFilter(AbstractFilter::Pointer filter) override;
+    PipelineFilterObject* createFilterObjectFromFilter(AbstractFilter::Pointer filter);
 
     /**
      * @brief readPipelineFromFile
@@ -163,63 +128,10 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     FilterPipeline::Pointer readPipelineFromFile(const QString& filePath);
 
     /**
-    * @brief Write pipeline to a file
-    */
-    int writePipeline(QString filePath);
-
-    /**
      * @brief setPipelineMessageObserver
      * @param pipelineMessageObserver
      */
     void addPipelineMessageObserver(QObject* pipelineMessageObserver);
-
-    /**
-     * @brief setScrollArea
-     * @param sa
-     */
-    void setScrollArea(QScrollArea* sa);
-
-    /**
-     * @brief setAutoScroll
-     * @param scroll
-     */
-    void setAutoScroll(bool scroll) {m_AutoScroll = scroll;}
-
-    /**
-     * @brief hasAutoScroll
-     * @return
-     */
-    bool hasAutoScroll() {return m_AutoScroll;}
-
-    /**
-     * @brief setAutoScrollMargin
-     * @param margin
-     */
-    void setAutoScrollMargin(int margin) {m_AutoScrollMargin = margin;}
-
-    /**
-     * @brief getAutoScrollMargin
-     * @return
-     */
-    int getAutoScrollMargin() {return m_AutoScrollMargin;}
-
-    /**
-     * @brief stopAutoScroll Stops the time so the Auto Scrolling will cease.
-     */
-    void stopAutoScroll();
-
-    /**
-     * @brief startAutoScroll Starts the QTimer in charge of auto scrolling the view
-     */
-    void startAutoScroll();
-
-    /**
-     * @brief shouldAutoScroll Figures out if the mouse position is in the margin area that would trigger an
-     * autoscroll
-     * @param pos
-     * @return
-     */
-    bool shouldAutoScroll(const QPoint& pos);
 
     /**
      * @brief newEmptyPipelineViewLayout
@@ -235,7 +147,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      * @brief setDataStructureWidget
      * @param w
      */
-    virtual void setDataStructureWidget(DataStructureWidget* w) override;
+    virtual void setDataStructureWidget(DataStructureWidget* w);
 
     /**
      * @brief getDataStructureWidget
@@ -246,13 +158,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     virtual QAction* getActionEnableFilter();
 
     /**
-     * @brief setModel
-     * @param model
-     */
-    void setModel(PipelineModel* model);
-
-    /**
-     * @brief getPipelineTreeModel
+     * @brief getPipelineModel
      * @return
      */
     PipelineModel* getPipelineModel();
@@ -275,33 +181,23 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      * @param w
      * @param modifiers
      */
-    void setSelectedFilterObject(PipelineFilterObject* w, Qt::KeyboardModifiers modifiers) override;
-
-    /**
-     * @brief preflightPipeline
-     */
-    void preflightPipeline(QUuid id = QUuid()) override;
+    void setSelectedFilterObject(PipelineFilterObject* w, Qt::KeyboardModifiers modifiers);
 
     /**
      * @brief addSIMPLViewReaderFilter
      * @param filePath
      */
-    void addSIMPLViewReaderFilter(const QString& filePath, QVariant value) override;
+    void addSIMPLViewReaderFilter(const QString& filePath, int insertIndex);
 
     /**
-    * @brief clearWidgets
+    * @brief clearPipeline
     */
-    void clearFilterWidgets(bool addToUndoStack = true);
+    void clearPipeline(bool addToUndoStack = true);
 
     /**
      * @brief reindexWidgetTitles
      */
-    void reindexWidgetTitles() override;
-
-    /**
-     * @brief doAutoScroll This does the actual scrolling of the Widget
-     */
-    void doAutoScroll();
+    void reindexWidgetTitles();
 
     /**
      * @brief toReadyState
@@ -323,9 +219,8 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     void undoRequested();
     void pipelineDropped(const QString &filePath, PipelineModel* model, const QModelIndex &parentIndex, int insertionIndex);
     void pipelineIssuesCleared();
+    void preflightTriggered();
     void preflightFinished(int err);
-
-
 
     void addPlaceHolderFilter(QPoint p);
     void removePlaceHolderFilter();
@@ -334,7 +229,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     void pipelineHasErrorsSignal();
     void pipelineHasNoErrors();
     void pipelineTitleUpdated(QString name);
-    void windowNeedsRecheck();
+    void windowTitleNeedsRefresh();
 
     void pipelineFilterObjectSelected(PipelineFilterObject* object);
     void filterInputWidgetChanged(FilterInputWidget* widget);
@@ -348,7 +243,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
 
     void deleteKeyPressed();
 
-    void contextMenuRequested(SVPipelineViewWidget* widget, const QPoint &pos);
+    void contextMenuRequested(SVPipelineView* widget, const QPoint &pos);
 
     void statusMessage(const QString& message);
     void stdOutMessage(const QString& message);
@@ -356,17 +251,13 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
   protected:
     void setupGui();
 
+    void connectSignalsSlots();
+
     int getIndexAtPoint(const QPoint& point);
     SVPipelineFilterWidget* getFilterWidgetAtIndex(int index);
 
-    void dragEnterEvent(QDragEnterEvent* event) override;
-    void dragLeaveEvent(QDragLeaveEvent* event) override;
-    void dragMoveEvent(QDragMoveEvent* event) override;
-    void dropEvent(QDropEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
     void keyPressEvent(QKeyEvent *event) override;
-    void focusInEvent(QFocusEvent* event) override;
-    void focusOutEvent(QFocusEvent* event) override;
 
     void setFiltersEnabled(QList<PipelineFilterObject*> widgets, bool enabled);
     void setSelectedFiltersEnabled(bool enabled);
@@ -383,59 +274,58 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
 
     void requestContextMenu(const QPoint& pos);
 
-  private slots:
-
-    /**
-     * @brief removeFilterWidget
-     * @param filterWidget
-     */
-    void removeFilterObject(PipelineFilterObject* filterObject, bool deleteWidget) override;
-
-    /**
-     * @brief removeFilterObject
-     * @param filterObject
-     */
-    void removeFilterObject(PipelineFilterObject* filterObject);
+    void listenCutTriggered();
+    void listenCopyTriggered();
+    void listenPasteTriggered();
+    void listenClearPipelineTriggered();
 
   private:
-    SVPipelineFilterWidget*                           m_ShiftStart = nullptr;
-    PipelineModel*                                m_PipelineModel = nullptr;
-    QVBoxLayout*                                      m_FilterWidgetLayout = nullptr;
-    int                                               m_FilterOrigPos;
     SVPipelineFilterOutlineWidget*                    m_FilterOutlineWidget = nullptr;
     QLabel*                                           m_EmptyPipelineLabel = nullptr;
     QList<QObject*>                                   m_PipelineMessageObservers;
-    QScrollArea*                                      m_ScrollArea = nullptr;
-    QTimer                                            m_autoScrollTimer;
-    bool                                              m_AutoScroll;
-    int                                               m_AutoScrollMargin;
-    int                                               m_autoScrollCount;
-    QMenu*                                            m_ContextMenu = nullptr;
     bool                                              m_BlockPreflight = false;
     std::stack<bool>                                  m_BlockPreflightStack;
     DataStructureWidget*                              m_DataStructureWidget = nullptr;
     bool                                              m_LoadingJson = false;
-    QAction*                                          m_ActionEnableFilter = nullptr;
+
+    QAction*                                          m_ActionEnableFilter = new QAction("Enable", this);
+    QAction*                                          m_ActionCut = new QAction("Cut", this);
+    QAction*                                          m_ActionCopy = new QAction("Copy", this);
+    QAction*                                          m_ActionPaste = new QAction("Paste", this);
+    QAction*                                          m_ActionClearPipeline = new QAction("Clear Pipeline", this);
+
+    SIMPL_GET_PROPERTY(QAction*, ActionEnableFilter)
+    SIMPL_GET_PROPERTY(QAction*, ActionCut)
+    SIMPL_GET_PROPERTY(QAction*, ActionCopy)
+    SIMPL_GET_PROPERTY(QAction*, ActionPaste)
+    SIMPL_GET_PROPERTY(QAction*, ActionClearPipeline)
 
     /**
-     * @brief addFilterObject
-     * @param filterObject
-     * @param value
+     * @brief requestFilterContextMenu
+     * @param pos
+     * @param index
      */
-    virtual void addFilterObject(PipelineFilterObject* filterObject, QVariant value) override;
+    void requestFilterItemContextMenu(const QPoint &pos, const QModelIndex &index);
 
     /**
-     * @brief removeFilterObjects
-     * @param filterObjects
+     * @brief requestPipelineContextMenu
+     * @param pos
      */
-    void removeFilterObjects(QList<PipelineFilterObject*> filterObjects);
+    void requestPipelineItemContextMenu(const QPoint &pos);
 
-    QMenu* createPipelineFilterWidgetMenu(SVPipelineFilterWidget* filterWidget);
-    void createPipelineViewWidgetMenu();
+    /**
+     * @brief requestSinglePipelineContextMenu
+     * @param menu
+     */
+    void requestSinglePipelineContextMenu(QMenu &menu);
 
-    SVPipelineViewWidget(const SVPipelineViewWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const SVPipelineViewWidget&) = delete;       // Move assignment Not Implemented
+    /**
+     * @brief requestDefaultContextMenu
+     * @param pos
+     */
+    void requestDefaultContextMenu(const QPoint &pos);
+
+    SVPipelineView(const SVPipelineView&) = delete; // Copy Constructor Not Implemented
+    void operator=(const SVPipelineView&) = delete;       // Move assignment Not Implemented
 };
-
-#endif /* _svpipelineviewwidget_H */
 

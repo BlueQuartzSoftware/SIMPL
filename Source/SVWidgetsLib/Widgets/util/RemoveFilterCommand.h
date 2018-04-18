@@ -38,19 +38,21 @@
 
 #include <QtCore/QVariant>
 #include <QtCore/QUuid>
+#include <QtCore/QModelIndex>
 
 #include <QtWidgets/QUndoCommand>
 
+#include "SIMPLib/Filtering/AbstractFilter.h"
+
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
-class PipelineFilterObject;
-class PipelineView;
+class PipelineModel;
 
 class SVWidgetsLib_EXPORT RemoveFilterCommand : public QUndoCommand
 {
 public:
-  RemoveFilterCommand(PipelineFilterObject* fw, PipelineView* pipelineView, QString actionText, QUuid prevNodeId = QUuid(), QUuid nextNodeId = QUuid(), QUndoCommand* parent = 0);
-  RemoveFilterCommand(QList<PipelineFilterObject*> filterObjects, PipelineView *pipelineView, QString actionText, QUuid prevNodeId = QUuid(), QUuid nextNodeId = QUuid(), QUndoCommand* parent = 0);
+  RemoveFilterCommand(AbstractFilter::Pointer filter, const QModelIndex &pipelineIndex, PipelineModel* pipelineModel, QString actionText, QUndoCommand* parent = 0);
+  RemoveFilterCommand(std::vector<AbstractFilter::Pointer> filters, const QModelIndex &pipelineIndex, PipelineModel* pipelineModel, QString actionText, QUndoCommand* parent = 0);
   virtual ~RemoveFilterCommand();
 
   virtual void undo();
@@ -58,11 +60,10 @@ public:
   virtual void redo();
 
 private:
-  PipelineView*                           m_PipelineView;
-  QString                                 m_JsonString;
-  QList<QVariant>                         m_FilterPositions;
-  QUuid                                   m_PrevNodeId;
-  QUuid                                   m_NextNodeId;
+  PipelineModel*                          m_PipelineModel;
+  std::vector<AbstractFilter::Pointer>    m_Filters;
+  std::vector<int>                        m_RemovalIndexes;
+  const QModelIndex                       m_PipelineIndex;
 
   RemoveFilterCommand(const RemoveFilterCommand&) = delete; // Copy Constructor Not Implemented
   void operator=(const RemoveFilterCommand&) = delete;      // Move assignment Not Implemented

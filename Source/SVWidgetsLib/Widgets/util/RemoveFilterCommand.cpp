@@ -35,64 +35,41 @@
 
 #include "RemoveFilterCommand.h"
 
-#include <QtCore/QObject>
-
-#include "SVWidgetsLib/Widgets/PipelineFilterObject.h"
-#include "SVWidgetsLib/Widgets/PipelineView.h"
-#include "SVWidgetsLib/Widgets/SIMPLViewMenuItems.h"
-
-#include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
+#include "SVWidgetsLib/Widgets/PipelineModel.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RemoveFilterCommand::RemoveFilterCommand(PipelineFilterObject* fw, PipelineView* pipelineView, QString actionText, QUuid prevNodeId, QUuid nextNodeId, QUndoCommand* parent)
-: QUndoCommand(parent)
-, m_PipelineView(pipelineView)
-, m_PrevNodeId(prevNodeId)
-, m_NextNodeId(nextNodeId)
+RemoveFilterCommand::RemoveFilterCommand(AbstractFilter::Pointer filter, const QModelIndex &pipelineIndex, PipelineModel* pipelineModel, QString actionText, QUndoCommand* parent)
+  : QUndoCommand(parent)
+  , m_PipelineModel(pipelineModel)
+  , m_PipelineIndex(pipelineIndex)
 {
-  if(nullptr == fw || nullptr == pipelineView)
+  if(nullptr == filter || nullptr == pipelineModel)
   {
     return;
   }
 
-  m_FilterPositions.push_back(pipelineView->valueOfFilterWidget(fw));
+  setText(QObject::tr("\"%1 '%2'\"").arg(actionText).arg(filter->getHumanLabel()));
 
-  setText(QObject::tr("\"%1 '%2'\"").arg(actionText).arg(fw->getHumanLabel()));
-
-  FilterPipeline::Pointer pipeline = FilterPipeline::New();
-  pipeline->pushBack(fw->getFilter());
-  JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
-  m_JsonString = jsonWriter->writePipelineToString(pipeline, "");
+  m_Filters.push_back(filter);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RemoveFilterCommand::RemoveFilterCommand(QList<PipelineFilterObject*> filterObjects, PipelineView* pipelineView, QString actionText, QUuid prevNodeId, QUuid nextNodeId, QUndoCommand* parent)
-: QUndoCommand(parent)
-, m_PipelineView(pipelineView)
-, m_PrevNodeId(prevNodeId)
-, m_NextNodeId(nextNodeId)
+RemoveFilterCommand::RemoveFilterCommand(std::vector<AbstractFilter::Pointer> filters, const QModelIndex &pipelineIndex, PipelineModel* pipelineModel, QString actionText, QUndoCommand* parent)
+  : QUndoCommand(parent)
+  , m_PipelineModel(pipelineModel)
+  , m_Filters(filters)
+  , m_PipelineIndex(pipelineIndex)
 {
-  if(NULL == pipelineView)
+  if(nullptr == pipelineModel)
   {
     return;
   }
 
-  setText(QObject::tr("\"%1 %2 Filters\"").arg(actionText).arg(filterObjects.size()));
-
-  FilterPipeline::Pointer pipeline = FilterPipeline::New();
-  for(int i = 0; i < filterObjects.size(); i++)
-  {
-    m_FilterPositions.push_back(m_PipelineView->valueOfFilterWidget(filterObjects[i]));
-    pipeline->pushBack(filterObjects[i]->getFilter());
-  }
-
-  JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
-  m_JsonString = jsonWriter->writePipelineToString(pipeline, "");
+  setText(QObject::tr("\"%1 %2 Filters\"").arg(actionText).arg(filters.size()));
 }
 
 // -----------------------------------------------------------------------------
@@ -105,26 +82,21 @@ RemoveFilterCommand::~RemoveFilterCommand() = default;
 // -----------------------------------------------------------------------------
 void RemoveFilterCommand::undo()
 {
-  QList<QVariant> ascendingList = m_FilterPositions;
-  std::sort(ascendingList.begin(), ascendingList.end());
-
-  JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
-  jsonReader->setMaxFilterIndex(ascendingList.size());
-  FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(m_JsonString);
-  FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
-
-  for(int i = 0; i < container.size(); i++)
+  m_PipelineModel->blockSignals(true);
+  for(int i = 0; i < m_RemovalIndexes.size(); i++)
   {
-    PipelineFilterObject* filterObject = m_PipelineView->createFilterObjectFromFilter(container[i]);
-    m_PipelineView->addFilterObject(filterObject, ascendingList[i]);
+    int insertIndex = m_RemovalIndexes[i];
+    AbstractFilter::Pointer filter = m_Filters[i];
+
+    m_PipelineModel->addFilter(filter, m_PipelineIndex, insertIndex);
   }
+  m_PipelineModel->blockSignals(false);
 
-  m_PipelineView->reindexWidgetTitles();
-  m_PipelineView->recheckWindowTitleAndModification();
-  m_PipelineView->preflightPipeline();
+  m_RemovalIndexes.clear();
 
-//  SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
-//  menuItems->getActionClearPipeline()->setEnabled(true);
+  //  m_PipelineView->reindexWidgetTitles();
+  emit m_PipelineModel->pipelineDataChanged(m_PipelineIndex);
+  emit m_PipelineModel->preflightTriggered(m_PipelineIndex);
 }
 
 // -----------------------------------------------------------------------------
@@ -132,7 +104,7 @@ void RemoveFilterCommand::undo()
 // -----------------------------------------------------------------------------
 bool variantCompare(const QVariant &v1, const QVariant &v2)
 {
-    return v1.toInt() > v2.toInt();
+  return v1.toInt() > v2.toInt();
 }
 
 
@@ -141,21 +113,21 @@ bool variantCompare(const QVariant &v1, const QVariant &v2)
 // -----------------------------------------------------------------------------
 void RemoveFilterCommand::redo()
 {
-  QList<QVariant> descendingList = m_FilterPositions;
-  qSort(descendingList.begin(), descendingList.end(), variantCompare);
-
-  for(int i = 0; i < descendingList.size(); i++)
+  int filterOffset = 0;
+  m_PipelineModel->blockSignals(true);
+  for(int i = 0; i < m_Filters.size(); i++)
   {
-    m_PipelineView->removeFilterObject(m_PipelineView->filterObjectAt(descendingList[i]));
-  }
+    QModelIndex filterIndex = m_PipelineModel->indexOfFilter(m_Filters[i], m_PipelineIndex);
 
-  m_PipelineView->reindexWidgetTitles();
-  m_PipelineView->recheckWindowTitleAndModification();
-  m_PipelineView->preflightPipeline();
+    m_RemovalIndexes.push_back(filterIndex.row() + filterOffset);
 
-  if (m_PipelineView->getFilterPipeline()->getFilterContainer().size() <= 0)
-  {
-//    SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
-//    menuItems->getActionClearPipeline()->setDisabled(true);
+    m_PipelineModel->removeFilter(filterIndex.row(), m_PipelineIndex);
+
+    filterOffset++;
   }
+  m_PipelineModel->blockSignals(false);
+
+  //  m_PipelineView->reindexWidgetTitles();
+  emit m_PipelineModel->pipelineDataChanged(m_PipelineIndex);
+  emit m_PipelineModel->preflightTriggered(m_PipelineIndex);
 }

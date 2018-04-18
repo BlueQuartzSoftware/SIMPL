@@ -65,7 +65,7 @@ void PipelineListWidget::setupGui()
 // -----------------------------------------------------------------------------
 void PipelineListWidget::on_startPipelineBtn_clicked()
 {
-  PipelineModel* model = pipelineViewWidget->getPipelineModel();
+  PipelineModel* model = pipelineView->getPipelineModel();
   if(startPipelineBtn->text().compare("Cancel Pipeline") == 0)
   {
     QModelIndex pipelineIndex = model->index(0, PipelineItem::Name);
@@ -197,7 +197,7 @@ QString PipelineListWidget::getStartPipelineInProgressStyle(float percent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SVPipelineViewWidget* PipelineListWidget::getPipelineViewWidget()
+SVPipelineView* PipelineListWidget::getPipelineView()
 {
-  return pipelineViewWidget;
+  return pipelineView;
 }

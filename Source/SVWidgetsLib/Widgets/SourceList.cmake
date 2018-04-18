@@ -32,12 +32,11 @@ set(SVWidgetsLib_Widgets_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeItemDelegate.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLController.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineModel.h
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeView.h
+  # ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeView.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterOutlineWidget.h
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineViewWidget.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineView.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLViewToolbox.h
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLViewMenuItems.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarButton.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PopUpWidget.h
@@ -79,17 +78,16 @@ set(SVWidgetsLib_Widgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/ImportHDF5TreeModelItem.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterOutlineWidget.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineViewWidget.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineView.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineFilterObject.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineListWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLController.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeItemDelegate.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineModel.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeView.cpp
+  # ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeView.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineItem.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineView.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLViewToolbox.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLViewMenuItems.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarButton.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PopUpWidget.cpp

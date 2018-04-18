@@ -30,8 +30,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _PipelineTreeView_h_
-#define _PipelineTreeView_h_
+#pragma once
 
 #include <QApplication>
 
@@ -136,7 +135,6 @@ class SVWidgetsLib_EXPORT PipelineTreeView : public QTreeView
     void currentChanged(const QModelIndex& current, const QModelIndex& previous) Q_DECL_OVERRIDE;
 
     void setFiltersEnabled(QModelIndexList indices, bool enabled);
-    void setSelectedFiltersEnabled(bool enabled);
 
     void updateActionEnableFilter();
 
@@ -148,11 +146,7 @@ class SVWidgetsLib_EXPORT PipelineTreeView : public QTreeView
   protected slots:
     void contextMenuRequested(const QPoint &pos);
 
-    void listenCutTriggered();
-    void listenCopyTriggered();
-    void listenPasteTriggered();
     void listenNewPipelineTriggered();
-    void listenClearPipelineTriggered();
 
   signals:
     void itemWasDropped(QModelIndex parent, QString& title, QIcon icon, QString path, int index, bool allowEditing, bool editState, bool isExpanding);
@@ -163,7 +157,8 @@ class SVWidgetsLib_EXPORT PipelineTreeView : public QTreeView
     void needsPreflight(const QModelIndex &pipelineIndex, PipelineModel* model);
     void clearIssuesTriggered();
 
-    void needsNewPipeline(const QString &pipelineName, bool setAsActive);
+    void needsNewPipeline(const QString &pipelineName, FilterPipeline::Pointer pipeline, bool setAsActive);
+    void activePipelineChanged(const QModelIndex &pipelineIdx, PipelineModel* model);
 
   private:
     QPoint                                        m_StartPos;
@@ -186,35 +181,6 @@ class SVWidgetsLib_EXPORT PipelineTreeView : public QTreeView
      * @brief connectSignalsSlots
      */
     void connectSignalsSlots();
-
-    /**
-     * @brief addPipeline
-     * @param pipelineName
-     * @param pipeline
-     * @param setAsActive
-     */
-    void addPipeline(const QString &pipelineName, FilterPipeline::Pointer pipeline, bool setAsActive = false, QModelIndex parentIndex = QModelIndex(), int insertionIndex = -1);
-
-    /**
-     * @brief removePipeline
-     * @param pipelineName
-     * @param pipeline
-     * @param setAsActive
-     */
-    void removePipeline(int pipelineIndex, QModelIndex parentIndex = QModelIndex());
-
-    /**
-     * @brief addFilterToModel
-     * @param filter
-     * @param parentIndex
-     */
-    void addFilterToModel(AbstractFilter::Pointer filter, const QModelIndex &parentIndex = QModelIndex(), int insertionIndex = -1);
-
-    /**
-     * @brief updateActivePipeline
-     * @param pipelineIdx
-     */
-    void updateActivePipeline(const QModelIndex &pipelineIdx);
 
     /**
      * @brief requestFilterContextMenu
@@ -259,5 +225,3 @@ class SVWidgetsLib_EXPORT PipelineTreeView : public QTreeView
 
     void expandChildren(const QModelIndex& parent, PipelineModel* model);
 };
-
-#endif /* _PipelineTreeView_H_ */
