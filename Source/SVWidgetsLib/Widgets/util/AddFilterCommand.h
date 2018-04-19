@@ -40,8 +40,10 @@
 
 #include <QtWidgets/QUndoCommand>
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
 #include <SIMPLib/Filtering/AbstractFilter.h>
+#include <SIMPLib/Filtering/FilterPipeline.h>
+
+#include "SVWidgetsLib/SVWidgetsLib.h"
 
 class PipelineFilterObject;
 class PipelineModel;
@@ -49,9 +51,9 @@ class PipelineModel;
 class SVWidgetsLib_EXPORT AddFilterCommand : public QUndoCommand
 {
   public:
-    AddFilterCommand(AbstractFilter::Pointer filter, PipelineModel* model, const QModelIndex &pipelineIndex, int insertIndex, QString actionText, QUndoCommand* parent = nullptr);
+    AddFilterCommand(AbstractFilter::Pointer filter, PipelineModel* model, int insertIndex, QString actionText, QUndoCommand* parent = nullptr);
 
-    AddFilterCommand(std::vector<AbstractFilter::Pointer> filters, PipelineModel* model, const QModelIndex &pipelineIndex, int insertIndex, QString actionText, QUndoCommand* parent = nullptr);
+    AddFilterCommand(std::vector<AbstractFilter::Pointer> filters, PipelineModel* model, int insertIndex, QString actionText, QUndoCommand* parent = nullptr);
 
     ~AddFilterCommand() override;
 
@@ -61,11 +63,24 @@ class SVWidgetsLib_EXPORT AddFilterCommand : public QUndoCommand
 
   private:
     std::vector<AbstractFilter::Pointer>                m_Filters;
-    int                                                 m_FilterCount;
-    int                                                 m_InsertIndex;
+    size_t                                              m_FilterCount;
+    size_t                                              m_InsertIndex;
     QString                                             m_ActionText;
-    QModelIndex                                         m_PipelineIndex;
     PipelineModel*                                      m_PipelineModel;
+
+    /**
+     * @brief addFilter
+     * @param filter
+     * @param parentIndex
+     */
+    void addFilter(AbstractFilter::Pointer filter, int insertionIndex = -1);
+
+    /**
+     * @brief removeFilter
+     * @param filterIndex
+     * @param pipelineIndex
+     */
+    void removeFilter(int filterIndex);
 
     AddFilterCommand(const AddFilterCommand&) = delete; // Copy Constructor Not Implemented
     void operator=(const AddFilterCommand&) = delete;   // Move assignment Not Implemented

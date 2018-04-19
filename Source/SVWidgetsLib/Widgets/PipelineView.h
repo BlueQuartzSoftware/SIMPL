@@ -61,7 +61,6 @@
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/Widgets/SVPipelineFilterWidget.h"
 #include "SVWidgetsLib/Widgets/SVPipelineFilterOutlineWidget.h"
-#include "SVWidgetsLib/Widgets/util/AddFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/MoveFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/RemoveFilterCommand.h"
 #include "SVWidgetsLib/QtSupport/QtSFileDragMessageBox.h"
@@ -71,7 +70,6 @@ class QContextMenuEvent;
 class QLabel;
 class QEvent;
 class QUndoStack;
-class QUndoCommand;
 class DataStructureWidget;
 
 /*
@@ -86,26 +84,6 @@ class SVWidgetsLib_EXPORT PipelineView
 
     PipelineView(QWidget* parent = 0);
     virtual ~PipelineView();
-
-    // -----------------------------------------------------------------------------
-    // We normally don't use the friend keyword, but we have to here so that the
-    // undo command classes are able to add/remove filter objects with the private
-    // addFilterObject(...) and removeFilterObject(...) PipelineView functions.
-    // This allows us to keep these functions private from everything else except
-    // this class and the undo commands.  The undo commands have to call these
-    // functions in their undo and redo functions.
-    // -----------------------------------------------------------------------------
-    friend void AddFilterCommand::undo();
-    friend void AddFilterCommand::redo();
-
-    friend void MoveFilterCommand::undo();
-    friend void MoveFilterCommand::redo();
-
-    friend void RemoveFilterCommand::undo();
-    friend void RemoveFilterCommand::redo();
-    // -----------------------------------------------------------------------------
-    // *****************************************************************************
-    // -----------------------------------------------------------------------------
 
     /**
      * @brief filterCount

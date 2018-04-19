@@ -51,7 +51,6 @@
 SIMPLController::SIMPLController(QObject* parent)
 : QObject(parent)
 , m_PipelineSignalMapper(new QSignalMapper(this))
-, m_UndoStack(new QUndoStack(this))
 {
 
 }
@@ -61,73 +60,10 @@ SIMPLController::SIMPLController(QObject* parent)
 // -----------------------------------------------------------------------------
 SIMPLController::~SIMPLController()
 {
-  // These need to be disconnected to avoid a crash when closing the program
-  disconnect(m_UndoStack.data(), &QUndoStack::undoTextChanged, 0, 0);
-  disconnect(m_UndoStack.data(), &QUndoStack::redoTextChanged, 0, 0);
-
   if(m_WorkerThread)
   {
     delete m_WorkerThread;
   }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void SIMPLController::setupUndoStack()
-{
-  m_UndoStack->setUndoLimit(10);
-  QAction* actionUndo = m_UndoStack->createUndoAction(nullptr);
-  QAction* actionRedo = m_UndoStack->createRedoAction(nullptr);
-  actionUndo->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z));
-  actionRedo->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Z));
-
-  connect(m_UndoStack.data(), &QUndoStack::undoTextChanged, [=] (const QString &text) {
-    m_PreviousUndoText = m_CurrentUndoText;
-    m_CurrentUndoText = text;
-  });
-  connect(m_UndoStack.data(), &QUndoStack::redoTextChanged, [=] (const QString &text) {
-    m_PreviousRedoText = m_CurrentRedoText;
-    m_CurrentRedoText = text;
-  });
-
-  connect(actionUndo, &QAction::triggered, [=] {
-    emit standardOutputMessageGenerated("Undo " + m_PreviousUndoText);
-    //  QString text = m_ActionUndo->text();
-    //  emit standardOutputMessageGenerated(text);
-  });
-  connect(actionRedo, &QAction::triggered, [=] {
-    emit standardOutputMessageGenerated("Redo " + m_PreviousRedoText);
-    //  QString text = m_ActionRedo->text();
-    //  emit standardOutputMessageGenerated(text);
-  });
-
-  emit undoActionGenerated(actionUndo);
-  emit redoActionGenerated(actionRedo);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void SIMPLController::addUndoCommand(QUndoCommand* cmd)
-{
-  m_UndoStack->push(cmd);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void SIMPLController::undo()
-{
-  m_UndoStack->undo();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void SIMPLController::redo()
-{
-  m_UndoStack->redo();
 }
 
 // -----------------------------------------------------------------------------
@@ -195,7 +131,7 @@ void SIMPLController::preflightPipeline(const QModelIndex &pipelineIndex, Pipeli
       }
     }
   }
-  emit preflightFinished(err);
+  emit preflightFinished(pipelineIndex, err);
 }
 
 // -----------------------------------------------------------------------------
@@ -245,12 +181,7 @@ void SIMPLController::runPipeline(const QModelIndex &pipelineIndex, PipelineMode
   // Save the preferences file NOW in case something happens
   emit writeSIMPLViewSettingsTriggered();
 
-  emit pipelineEnteringReadyState(pipelineIndex);
-
-//  // Connect signals and slots between SIMPLView_UI and SIMPLViewApplication
-//  connect(this, SIGNAL(pipelineStarted()), dream3dApp, SLOT(toPipelineRunningState()));
-//  connect(this, SIGNAL(pipelineCanceled()), dream3dApp, SLOT(toPipelineIdleState()));
-//  connect(this, SIGNAL(pipelineFinished()), dream3dApp, SLOT(toPipelineIdleState()));
+  emit pipelineReady(pipelineIndex);
 
 //  // Block FilterListToolboxWidget signals, so that we can't add filters to the view while running the pipeline
 //  getFilterListToolboxWidget()->blockSignals(true);
@@ -278,7 +209,7 @@ void SIMPLController::runPipeline(const QModelIndex &pipelineIndex, PipelineMode
   // When the QThread finishes, tell this object that it has finished.
   connect(m_WorkerThread, SIGNAL(finished()), this, SLOT(finishPipeline()));
 
-  emit pipelineEnteringRunningState(pipelineIndex);
+  emit pipelineStarted(pipelineIndex);
   m_CurrentlyRunningPipelines.push_back(pipelineIndex);
   m_WorkerThread->start();
   standardOutputMessageGenerated("");
@@ -293,8 +224,7 @@ void SIMPLController::cancelPipeline(const QModelIndex &pipelineIndex)
   m_PipelineInFlight->cancelPipeline();
   m_CurrentlyRunningPipelines.removeAll(pipelineIndex);
   emit displayIssuesTriggered();
-  emit pipelineEnteringStoppedState(pipelineIndex);
-  emit pipelineCanceled();
+  emit pipelineFinished(pipelineIndex);
 }
 
 // -----------------------------------------------------------------------------
@@ -325,8 +255,7 @@ void SIMPLController::finishPipeline(const QModelIndex &pipelineIndex)
   m_CurrentlyRunningPipelines.removeAll(pipelineIndex);
 
   emit displayIssuesTriggered();
-  emit pipelineEnteringStoppedState(pipelineIndex);
-  emit pipelineFinished();
+  emit pipelineFinished(pipelineIndex);
 }
 
 // -----------------------------------------------------------------------------

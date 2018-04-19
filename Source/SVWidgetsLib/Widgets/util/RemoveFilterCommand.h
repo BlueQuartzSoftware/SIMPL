@@ -51,8 +51,8 @@ class PipelineModel;
 class SVWidgetsLib_EXPORT RemoveFilterCommand : public QUndoCommand
 {
 public:
-  RemoveFilterCommand(AbstractFilter::Pointer filter, const QModelIndex &pipelineIndex, PipelineModel* pipelineModel, QString actionText, QUndoCommand* parent = 0);
-  RemoveFilterCommand(std::vector<AbstractFilter::Pointer> filters, const QModelIndex &pipelineIndex, PipelineModel* pipelineModel, QString actionText, QUndoCommand* parent = 0);
+  RemoveFilterCommand(AbstractFilter::Pointer filter, PipelineModel* pipelineModel, QString actionText, QUndoCommand* parent = 0);
+  RemoveFilterCommand(std::vector<AbstractFilter::Pointer> filters, PipelineModel* pipelineModel, QString actionText, QUndoCommand* parent = 0);
   virtual ~RemoveFilterCommand();
 
   virtual void undo();
@@ -63,7 +63,20 @@ private:
   PipelineModel*                          m_PipelineModel;
   std::vector<AbstractFilter::Pointer>    m_Filters;
   std::vector<int>                        m_RemovalIndexes;
-  const QModelIndex                       m_PipelineIndex;
+
+  /**
+   * @brief addFilter
+   * @param filter
+   * @param parentIndex
+   */
+  void addFilter(AbstractFilter::Pointer filter, int insertionIndex = -1);
+
+  /**
+   * @brief removeFilter
+   * @param filterIndex
+   * @param pipelineIndex
+   */
+  void removeFilter(int filterIndex);
 
   RemoveFilterCommand(const RemoveFilterCommand&) = delete; // Copy Constructor Not Implemented
   void operator=(const RemoveFilterCommand&) = delete;      // Move assignment Not Implemented

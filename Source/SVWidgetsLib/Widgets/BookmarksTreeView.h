@@ -67,6 +67,16 @@ class SVWidgetsLib_EXPORT BookmarksTreeView : public QTreeView
       Unknown_Item_Type = 3
     };
 
+    SIMPL_GET_PROPERTY(QAction*, ActionRenameBookmark)
+    SIMPL_GET_PROPERTY(QAction*, ActionRemoveBookmark)
+    SIMPL_GET_PROPERTY(QAction*, ActionShowBookmarkInFileSystem)
+    SIMPL_GET_PROPERTY(QAction*, ActionClearBookmarks)
+    SIMPL_GET_PROPERTY(QAction*, ActionAddBookmark)
+    SIMPL_GET_PROPERTY(QAction*, ActionAddBookmarkFolder)
+    SIMPL_GET_PROPERTY(QAction*, ActionLocateFile)
+    SIMPL_GET_PROPERTY(QAction*, ActionOpenBookmark)
+    SIMPL_GET_PROPERTY(QAction*, ActionExecuteBookmark)
+
     /**
     * @brief BookmarksTreeView
     * @param parent
@@ -79,15 +89,10 @@ class SVWidgetsLib_EXPORT BookmarksTreeView : public QTreeView
     ~BookmarksTreeView();
 
     /**
-    * @brief fromJsonObject
-    * @param modelObject
-    */
-    static BookmarksModel* FromJsonObject(QJsonObject modelObject);
-
-    /**
-    * @brief toJsonObject
-    */
-    QJsonObject toJsonObject();
+     * @brief getBookmarksModel
+     * @return
+     */
+    BookmarksModel* getBookmarksModel();
 
     /**
     * @brief setModel
@@ -144,10 +149,9 @@ class SVWidgetsLib_EXPORT BookmarksTreeView : public QTreeView
     void addActionList(QList<QAction*> actionList);
 
   protected slots:
-    void on_actionLocateFile_triggered();
-
     void listenAddBookmarkTriggered();
     void listenAddBookmarkFolderTriggered();
+    void listenBookmarkSelectionChanged(const QModelIndex& current, const QModelIndex& previous);
     void listenRenameBookmarkTriggered();
     void listenRemoveBookmarkTriggered();
     void listenShowBookmarkInFileSystemTriggered();
@@ -198,20 +202,8 @@ class SVWidgetsLib_EXPORT BookmarksTreeView : public QTreeView
     QAction* m_ActionOpenBookmark = new QAction("Open Bookmark", this);
     QAction* m_ActionExecuteBookmark = new QAction("Execute Bookmark", this);
 
-    SIMPL_GET_PROPERTY(QAction*, ActionRenameBookmark)
-    SIMPL_GET_PROPERTY(QAction*, ActionRemoveBookmark)
-    SIMPL_GET_PROPERTY(QAction*, ActionShowBookmarkInFileSystem)
-    SIMPL_GET_PROPERTY(QAction*, ActionClearBookmarks)
-    SIMPL_GET_PROPERTY(QAction*, ActionAddBookmark)
-    SIMPL_GET_PROPERTY(QAction*, ActionAddBookmarkFolder)
-    SIMPL_GET_PROPERTY(QAction*, ActionLocateFile)
-    SIMPL_GET_PROPERTY(QAction*, ActionOpenBookmark)
-    SIMPL_GET_PROPERTY(QAction*, ActionExecuteBookmark)
-
     void performDrag();
     void expandChildren(const QModelIndex& parent, BookmarksModel* model);
-    QJsonObject wrapModel(QModelIndex index);
-    static void UnwrapModel(QString objectName, QJsonObject object, BookmarksModel* model, QModelIndex parentIndex);
 };
 
 #endif /* _BookmarksTreeView_H_ */

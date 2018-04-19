@@ -40,10 +40,11 @@
 
 #include <QtWidgets/QUndoCommand>
 
+#include <SIMPLib/Filtering/AbstractFilter.h>
+
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
-class PipelineFilterObject;
-class PipelineView;
+class PipelineModel;
 
 /**
  * @brief The MoveFilterCommand class
@@ -54,32 +55,23 @@ public:
 
     /**
    * @brief MoveFilterCommand
-   * @param filterWidget
-   * @param origin
-   * @param destination
-   * @param pipelineView
+   * @param filter
+   * @param originModel
+   * @param destinationModel
+   * @param destinationIndex
    * @param parent
    */
-  MoveFilterCommand(PipelineFilterObject* filterWidget, QVariant origin, QVariant destination, PipelineView* pipelineView, QUndoCommand* parent = 0);
+  MoveFilterCommand(AbstractFilter::Pointer filter, PipelineModel* originModel, PipelineModel* destinationModel, int destinationIndex = -1, QUndoCommand* parent = 0);
 
   /**
    * @brief MoveFilterCommand
-   * @param filterWidget
-   * @param destination
-   * @param pipelineView
+   * @param filters
+   * @param originModel
+   * @param destinationModel
+   * @param destinationIndex
    * @param parent
    */
-  MoveFilterCommand(QList<std::pair<int, PipelineFilterObject*>> filterWidget, QVariant destination, PipelineView* pipelineView, QUndoCommand* parent = 0);
-
-  /**
-   * @brief MoveFilterCommand
-   * @param filterWidget
-   * @param destination
-   * @param originView
-   * @param destinationView
-   * @param parent
-   */
-  MoveFilterCommand(QList<std::pair<int, PipelineFilterObject*>> filterWidget, QVariant destination, PipelineView* originView, PipelineView* destinationView, QUndoCommand* parent = 0);
+  MoveFilterCommand(std::vector<AbstractFilter::Pointer> filters, PipelineModel* originModel, PipelineModel* destinationModel, int destinationIndex = -1, QUndoCommand* parent = 0);
 
   virtual ~MoveFilterCommand();
 
@@ -94,13 +86,26 @@ public:
   virtual void redo();
 
 private:
-  QList<std::pair<int, PipelineFilterObject*>> m_FilterWidgets;
-  PipelineView* m_OriginView;
-  PipelineView* m_DestinationView;
-  QString m_JsonString;
-  QVariant m_Destination;
-  bool m_WindowIsModified;
-  bool m_FirstRun;
+  std::vector<AbstractFilter::Pointer> m_Filters;
+  PipelineModel* m_OriginModel;
+  PipelineModel* m_DestinationModel;
+  size_t m_OriginIndex;
+  size_t m_DestinationIndex;
+  std::vector<size_t> originIndexes;
+
+  /**
+   * @brief addFilter
+   * @param filter
+   * @param parentIndex
+   */
+  void addFilter(AbstractFilter::Pointer filter, PipelineModel* model, size_t insertionIndex);
+
+  /**
+   * @brief removeFilter
+   * @param filterIndex
+   * @param pipelineIndex
+   */
+  void removeFilter(int filterIndex, PipelineModel* model);
 
   MoveFilterCommand(const MoveFilterCommand&) = delete; // Copy Constructor Not Implemented
   void operator=(const MoveFilterCommand&);             // Move assignment Not Implemented

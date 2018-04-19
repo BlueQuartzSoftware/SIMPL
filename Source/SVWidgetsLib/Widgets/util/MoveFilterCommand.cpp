@@ -35,55 +35,43 @@
 
 #include "MoveFilterCommand.h"
 
-#include <QtCore/QObject>
-
-#include "SVWidgetsLib/Widgets/PipelineFilterObject.h"
-#include "SVWidgetsLib/Widgets/PipelineView.h"
-
-#include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
+#include "SVWidgetsLib/Widgets/PipelineModel.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MoveFilterCommand::MoveFilterCommand(PipelineFilterObject* filterWidget, QVariant origin, QVariant destination, PipelineView* pipelineView, QUndoCommand* parent)
+MoveFilterCommand::MoveFilterCommand(AbstractFilter::Pointer filter, PipelineModel* originModel, PipelineModel* destinationModel, int destinationIndex, QUndoCommand* parent)
 : QUndoCommand(parent)
-, m_OriginView(pipelineView)
-, m_DestinationView(pipelineView)
-, m_Destination(destination)
-, m_FirstRun(true)
+, m_OriginModel(originModel)
+, m_DestinationModel(destinationModel)
 {
-  m_FilterWidgets.push_back(std::make_pair(origin.toInt(), filterWidget));
+  m_Filters.push_back(filter);
 
-  setText(QObject::tr("\"Move '%1'\"").arg(filterWidget->getFilter()->getHumanLabel()));
+  if (destinationIndex < 0)
+  {
+    destinationIndex = m_DestinationModel->rowCount();
+  }
+  m_DestinationIndex = destinationIndex;
+
+  setText(QObject::tr("\"Move '%1'\"").arg(filter->getHumanLabel()));
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MoveFilterCommand::MoveFilterCommand(QList<std::pair<int, PipelineFilterObject*>> filterWidgets, QVariant destination, PipelineView* pipelineView, QUndoCommand* parent)
+MoveFilterCommand::MoveFilterCommand(std::vector<AbstractFilter::Pointer> filters, PipelineModel* originModel, PipelineModel* destinationModel, int destinationIndex, QUndoCommand* parent)
 : QUndoCommand(parent)
-, m_FilterWidgets(filterWidgets)
-, m_OriginView(pipelineView)
-, m_DestinationView(pipelineView)
-, m_Destination(destination)
-, m_FirstRun(true)
+, m_Filters(filters)
+, m_OriginModel(originModel)
+, m_DestinationModel(destinationModel)
 {
-  setText(QObject::tr("\"Move '%1' Filters\"").arg(filterWidgets.size()));
-}
+  if (destinationIndex < 0)
+  {
+    destinationIndex = m_DestinationModel->rowCount();
+  }
+  m_DestinationIndex = destinationIndex;
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-MoveFilterCommand::MoveFilterCommand(QList<std::pair<int, PipelineFilterObject*>> filterWidgets, QVariant destination, PipelineView* originView, PipelineView* destinationView, QUndoCommand* parent)
-: QUndoCommand(parent)
-, m_FilterWidgets(filterWidgets)
-, m_OriginView(originView)
-, m_DestinationView(destinationView)
-, m_Destination(destination)
-, m_FirstRun(true)
-{
-  setText(QObject::tr("\"Move '%1' Filters\"").arg(filterWidgets.size()));
+  setText(QObject::tr("\"Move '%1' Filters\"").arg(m_Filters.size()));
 }
 
 // -----------------------------------------------------------------------------
@@ -96,46 +84,53 @@ MoveFilterCommand::~MoveFilterCommand() = default;
 // -----------------------------------------------------------------------------
 void MoveFilterCommand::undo()
 {
-  // If the destination is not valid, do not do anything
-  bool ok;
-  m_Destination.toInt(&ok);
-  if(ok == false)
+  if(m_OriginModel == nullptr || m_DestinationModel == nullptr)
   {
     return;
   }
 
-  // Remove all moved items first to correct any potential ordering mistakes
-  for(int i = 0; i < m_FilterWidgets.size(); i++)
+  PipelineModel* originModel = m_DestinationModel;
+  PipelineModel* destinationModel = m_OriginModel;
+
+  bool itemsMoved = false;
+
+  originModel->blockSignals(true);
+  destinationModel->blockSignals(true);
+  size_t destinationIndex = m_DestinationIndex;
+  for (size_t i = 0; i < m_Filters.size(); i++)
   {
-    m_DestinationView->removeFilterObject(m_FilterWidgets[i].second, false);
+    AbstractFilter::Pointer filter = m_Filters[i];
+    QModelIndex originModelIndex = originModel->indexOfFilter(filter);
+    size_t originIndex = originModelIndex.row();
+
+    removeFilter(originIndex, originModel);
+
+    addFilter(filter, destinationModel, originIndexes[i]);
+
+    itemsMoved = true;
+    destinationIndex++;
   }
+  originModel->blockSignals(false);
+  destinationModel->blockSignals(false);
 
-  // After removing all moved items, items may now be reinserted at the correct index
-  for(int i = 0; i < m_FilterWidgets.size(); i++)
+  if (itemsMoved)
   {
-    PipelineFilterObject* filterObject = m_FilterWidgets[i].second;
+    emit originModel->preflightTriggered(QModelIndex(), originModel);
+    emit originModel->pipelineDataChanged(QModelIndex());
 
-    m_OriginView->addFilterObject(filterObject, m_FilterWidgets[i].first);
-  }
+    emit destinationModel->preflightTriggered(QModelIndex(), destinationModel);
+    emit destinationModel->pipelineDataChanged(QModelIndex());
 
-  // After adding all moved items, items may now be selected
-  for(int i = 0; i < m_FilterWidgets.size(); i++)
-  {
-    PipelineFilterObject* filterObject = m_FilterWidgets[i].second;
-
-    m_OriginView->setSelectedFilterObject(filterObject, Qt::ControlModifier);
-  }
-
-  m_OriginView->reindexWidgetTitles();
-  m_OriginView->recheckWindowTitleAndModification();
-  m_OriginView->preflightPipeline();
-
-  // index the destination view as well if it is not the same as the origin view
-  if(m_OriginView != m_DestinationView)
-  {
-    m_DestinationView->reindexWidgetTitles();
-    m_DestinationView->recheckWindowTitleAndModification();
-    m_DestinationView->preflightPipeline();
+    if (m_Filters.size() == 1)
+    {
+      emit destinationModel->statusMessageGenerated(QObject::tr("Moved \"%1\" filter").arg(m_Filters[0]->getHumanLabel()));
+      emit destinationModel->standardOutputMessageGenerated(QObject::tr("Moved \"%1\" filter").arg(m_Filters[0]->getHumanLabel()));
+    }
+    else
+    {
+      emit destinationModel->statusMessageGenerated(QObject::tr("Moved %1 filters").arg(m_Filters.size()));
+      emit destinationModel->standardOutputMessageGenerated(QObject::tr("Moved %1 filters").arg(m_Filters.size()));
+    }
   }
 }
 
@@ -144,55 +139,79 @@ void MoveFilterCommand::undo()
 // -----------------------------------------------------------------------------
 void MoveFilterCommand::redo()
 {
-  // If the destination is not valid, do not do anything
-  bool ok;
-  int destinationIndex = m_Destination.toInt(&ok);
-  if(ok == false)
+  if(m_OriginModel == nullptr || m_DestinationModel == nullptr)
   {
     return;
   }
 
-  // Check if this is the first occurance of the QUndoCommand,
-  // If it is not, remove all moved items first
-  if(m_FirstRun == true)
-  {
-    m_FirstRun = false;
-  }
-  else
-  {
-    // Remove all moved items first to correct any potential ordering mistakes
-    for(int i = 0; i < m_FilterWidgets.size(); i++)
-    {
-      PipelineFilterObject* filterObject = m_FilterWidgets[i].second;
+  bool itemsMoved = false;
 
-      m_OriginView->removeFilterObject(filterObject, false);
+  m_OriginModel->blockSignals(true);
+  m_DestinationModel->blockSignals(true);
+  for (size_t i = 0; i < m_Filters.size(); i++)
+  {
+    AbstractFilter::Pointer filter = m_Filters[i];
+    QModelIndex originModelIndex = m_OriginModel->indexOfFilter(filter);
+    size_t originIndex = originModelIndex.row();
+    originIndexes.push_back(originIndex);
+
+    removeFilter(originIndex, m_OriginModel);
+
+    addFilter(filter, m_DestinationModel, m_DestinationIndex);
+
+    itemsMoved = true;
+  }
+  m_OriginModel->blockSignals(false);
+  m_DestinationModel->blockSignals(false);
+
+  if (itemsMoved)
+  {
+    emit m_OriginModel->preflightTriggered(QModelIndex(), m_OriginModel);
+    emit m_OriginModel->pipelineDataChanged(QModelIndex());
+
+    emit m_DestinationModel->preflightTriggered(QModelIndex(), m_DestinationModel);
+    emit m_DestinationModel->pipelineDataChanged(QModelIndex());
+
+    if (m_Filters.size() == 1)
+    {
+      emit m_DestinationModel->statusMessageGenerated(QObject::tr("Moved \"%1\" filter").arg(m_Filters[0]->getHumanLabel()));
+      emit m_DestinationModel->standardOutputMessageGenerated(QObject::tr("Moved \"%1\" filter").arg(m_Filters[0]->getHumanLabel()));
+    }
+    else
+    {
+      emit m_DestinationModel->statusMessageGenerated(QObject::tr("Moved %1 filters").arg(m_Filters.size()));
+      emit m_DestinationModel->standardOutputMessageGenerated(QObject::tr("Moved %1 filters").arg(m_Filters.size()));
     }
   }
+}
 
-  // After removing all moved items, items may now be reinserted at the correct index
-  for(int i = 0; i < m_FilterWidgets.size(); i++)
-  {
-    PipelineFilterObject* filterObject = m_FilterWidgets[i].second;
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MoveFilterCommand::addFilter(AbstractFilter::Pointer filter, PipelineModel* model, size_t insertionIndex)
+{
+  model->insertRow(insertionIndex);
+  QModelIndex filterIndex = model->index(insertionIndex, PipelineItem::Name);
+  model->setData(filterIndex, filter->getHumanLabel(), Qt::DisplayRole);
+  model->setItemType(filterIndex, PipelineItem::ItemType::Filter);
+  model->setFilter(filterIndex, filter);
 
-    m_DestinationView->addFilterObject(filterObject, destinationIndex + i);
-  }
+  QModelIndexList list;
+  list.push_back(filterIndex);
 
-  // After adding all moved items, items may now be selected
-  for(int i = 0; i < m_FilterWidgets.size(); i++)
-  {
-    PipelineFilterObject* filterObject = m_FilterWidgets[i].second;
-    m_DestinationView->setSelectedFilterObject(filterObject, Qt::ControlModifier);
-  }
+  emit model->preflightTriggered(QModelIndex(), model);
+  emit model->pipelineDataChanged(QModelIndex());
 
-  m_OriginView->reindexWidgetTitles();
-  m_OriginView->recheckWindowTitleAndModification();
-  m_OriginView->preflightPipeline();
+  emit model->statusMessageGenerated(QObject::tr("Added \"%1\" filter").arg(filter->getHumanLabel()));
+  emit model->standardOutputMessageGenerated(QObject::tr("Added \"%1\" filter").arg(filter->getHumanLabel()));
+}
 
-  // index the destination view as well if it is not the same as the origin view
-  if(m_OriginView != m_DestinationView)
-  {
-    m_DestinationView->reindexWidgetTitles();
-    m_DestinationView->recheckWindowTitleAndModification();
-    m_DestinationView->preflightPipeline();
-  }
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MoveFilterCommand::removeFilter(int filterIndex, PipelineModel* model)
+{
+  model->removeRow(filterIndex);
+
+  emit model->preflightTriggered(QModelIndex(), model);
 }

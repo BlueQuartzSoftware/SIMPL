@@ -42,6 +42,8 @@
 
 #include <QtGui/QIcon>
 
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 
@@ -59,6 +61,7 @@ class SVWidgetsLib_EXPORT BookmarksItem
       Path
     };
 
+    SIMPL_BOOL_PROPERTY(Expanded)
 
     BookmarksItem* child(int number);
     BookmarksItem* parent();
@@ -77,9 +80,6 @@ class SVWidgetsLib_EXPORT BookmarksItem
 
     QIcon getIcon();
     bool setIcon(const QIcon& icon);
-
-    bool needsToBeExpanded();
-    void setNeedsToBeExpanded(bool value);
 
     bool insertChild(int position, BookmarksItem* child);
     bool insertChildren(int position, int count, int columns);

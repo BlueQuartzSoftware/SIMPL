@@ -84,34 +84,36 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView
 
     SIMPL_INSTANCE_PROPERTY(bool, PipelineIsRunning)
 
+    SIMPL_GET_PROPERTY(QAction*, ActionEnableFilter)
+    SIMPL_GET_PROPERTY(QAction*, ActionCut)
+    SIMPL_GET_PROPERTY(QAction*, ActionCopy)
+    SIMPL_GET_PROPERTY(QAction*, ActionPaste)
+    SIMPL_GET_PROPERTY(QAction*, ActionClearPipeline)
+
     SVPipelineView(QWidget* parent = 0);
     virtual ~SVPipelineView();
+
+    /**
+     * @brief addUndoCommand
+     * @param cmd
+     */
+    void addUndoCommand(QUndoCommand* cmd);
+
+    /**
+     * @brief undo
+     */
+    void undo();
+
+    /**
+     * @brief redo
+     */
+    void redo();
 
     /**
      * @brief filterCount
      * @return
      */
     int filterCount();
-
-    /**
-     * @brief Returns a FilterPipeline Object with a new filter instance that has the input parameters copied
-     * from the filter instance that is embedded in the SVPipelineFilterWidget instance. This function does NOT perform
-     * a DEEP copy of the filter.
-     * @return
-     */
-    FilterPipeline::Pointer getCopyOfFilterPipeline();
-
-    /**
-    * @brief getSelectedFilterWidgets
-    * @return
-    */
-    QList<PipelineFilterObject*> getSelectedFilterObjects();
-
-    /**
-    * @brief getSelectedIndexedFilterObject
-    * @return
-    */
-    QList<IndexedFilterObject> getSelectedIndexedFilterObjects();
 
     /**
      * @brief createFilterObjectFromFilter
@@ -126,12 +128,6 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView
      * @return FilterPipeline::Pointer
      */
     FilterPipeline::Pointer readPipelineFromFile(const QString& filePath);
-
-    /**
-     * @brief setPipelineMessageObserver
-     * @param pipelineMessageObserver
-     */
-    void addPipelineMessageObserver(QObject* pipelineMessageObserver);
 
     /**
      * @brief newEmptyPipelineViewLayout
@@ -165,12 +161,6 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView
 
   public slots:
     /**
-     * @brief addFiltersFromIndices
-     * @param filterIndices
-     */
-    void addFiltersFromIndices(QModelIndexList filterIndices);
-
-    /**
      * @brief Should be block this class from either emitting a preflight signal or otherwise running a preflight.
      * @param b
      */
@@ -182,12 +172,6 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView
      * @param modifiers
      */
     void setSelectedFilterObject(PipelineFilterObject* w, Qt::KeyboardModifiers modifiers);
-
-    /**
-     * @brief addSIMPLViewReaderFilter
-     * @param filePath
-     */
-    void addSIMPLViewReaderFilter(const QString& filePath, int insertIndex);
 
     /**
     * @brief clearPipeline
@@ -215,12 +199,9 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView
     void toStoppedState();
 
   signals:
-    void undoCommandCreated(QUndoCommand* cmd);
-    void undoRequested();
     void pipelineDropped(const QString &filePath, PipelineModel* model, const QModelIndex &parentIndex, int insertionIndex);
     void pipelineIssuesCleared();
-    void preflightTriggered();
-    void preflightFinished(int err);
+    void preflightTriggered(const QModelIndex &pipelineIndex, PipelineModel* model);
 
     void addPlaceHolderFilter(QPoint p);
     void removePlaceHolderFilter();
@@ -253,13 +234,10 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView
 
     void connectSignalsSlots();
 
-    int getIndexAtPoint(const QPoint& point);
-    SVPipelineFilterWidget* getFilterWidgetAtIndex(int index);
-
     void mousePressEvent(QMouseEvent* event) override;
     void keyPressEvent(QKeyEvent *event) override;
 
-    void setFiltersEnabled(QList<PipelineFilterObject*> widgets, bool enabled);
+    void setFiltersEnabled(QModelIndexList indexes, bool enabled);
     void setSelectedFiltersEnabled(bool enabled);
 
     void updateActionEnableFilter();
@@ -274,6 +252,11 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView
 
     void requestContextMenu(const QPoint& pos);
 
+    /**
+     * @brief Slot that executes when the delete key gets pressed
+     */
+    void listenDeleteKeyTriggered();
+
     void listenCutTriggered();
     void listenCopyTriggered();
     void listenPasteTriggered();
@@ -282,11 +265,13 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView
   private:
     SVPipelineFilterOutlineWidget*                    m_FilterOutlineWidget = nullptr;
     QLabel*                                           m_EmptyPipelineLabel = nullptr;
-    QList<QObject*>                                   m_PipelineMessageObservers;
     bool                                              m_BlockPreflight = false;
     std::stack<bool>                                  m_BlockPreflightStack;
     DataStructureWidget*                              m_DataStructureWidget = nullptr;
     bool                                              m_LoadingJson = false;
+    QUndoStack*                                       m_UndoStack = nullptr;
+    QAction*                                          m_ActionUndo = nullptr;
+    QAction*                                          m_ActionRedo = nullptr;
 
     QAction*                                          m_ActionEnableFilter = new QAction("Enable", this);
     QAction*                                          m_ActionCut = new QAction("Cut", this);
@@ -294,11 +279,10 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView
     QAction*                                          m_ActionPaste = new QAction("Paste", this);
     QAction*                                          m_ActionClearPipeline = new QAction("Clear Pipeline", this);
 
-    SIMPL_GET_PROPERTY(QAction*, ActionEnableFilter)
-    SIMPL_GET_PROPERTY(QAction*, ActionCut)
-    SIMPL_GET_PROPERTY(QAction*, ActionCopy)
-    SIMPL_GET_PROPERTY(QAction*, ActionPaste)
-    SIMPL_GET_PROPERTY(QAction*, ActionClearPipeline)
+    /**
+     * @brief setupUndoStack
+     */
+    void setupUndoStack();
 
     /**
      * @brief requestFilterContextMenu

@@ -99,9 +99,16 @@ void PipelineListWidget::on_startPipelineBtn_clicked()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineListWidget::preflightFinished(bool hasErrors)
+void PipelineListWidget::preflightFinished(const QModelIndex &pipelineIndex, int err)
 {
-  startPipelineBtn->setDisabled(hasErrors);
+  if (pipelineIndex.isValid() == false || err < 0)
+  {
+    startPipelineBtn->setDisabled(true);
+  }
+  else
+  {
+    startPipelineBtn->setEnabled(true);
+  }
 }
 
 // -----------------------------------------------------------------------------

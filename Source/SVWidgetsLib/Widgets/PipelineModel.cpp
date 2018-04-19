@@ -68,196 +68,6 @@ PipelineModel::~PipelineModel()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineModel::addPipeline(const QString &pipelineName, FilterPipeline::Pointer pipeline, bool setAsActive, QModelIndex parentIndex, int insertionIndex)
-{
-  if (parentIndex == QModelIndex())
-  {
-    if (getMaxNumberOfPipelines() == 1)
-    {
-      updateActivePipeline(QModelIndex());
-      removeRow(0);
-    }
-
-    int row = rowCount();
-    insertRow(row);
-    QModelIndex pipelineIndex = index(row, PipelineItem::Name);
-    setData(pipelineIndex, pipelineName, Qt::DisplayRole);
-    setItemType(pipelineIndex, PipelineItem::ItemType::Pipeline);
-    parentIndex = pipelineIndex;
-  }
-
-  if (insertionIndex == -1)
-  {
-    insertionIndex = rowCount(parentIndex);
-  }
-
-  FilterPipeline::FilterContainerType filters = pipeline->getFilterContainer();
-  QModelIndexList list;
-  for (int i = 0; i < filters.size(); i++)
-  {
-    AbstractFilter::Pointer filter = filters[i];
-    blockSignals(true);
-    addFilter(filter, parentIndex, insertionIndex);
-    blockSignals(false);
-
-    QModelIndex filterIndex = index(insertionIndex, PipelineItem::Name, parentIndex);
-    list.push_back(filterIndex);
-
-    insertionIndex++;
-  }
-
-  if (setAsActive == true)
-  {
-    updateActivePipeline(parentIndex);
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineModel::removePipeline(QModelIndex pipelineIndex)
-{
-  for (int i = 0; i < rowCount(pipelineIndex); i++)
-  {
-    removeRow(0, pipelineIndex);
-  }
-
-  if (pipelineIndex.isValid())
-  {
-    int removalRow = pipelineIndex.row();
-    removeRow(pipelineIndex.row());
-
-    QModelIndex newActivePipelineIdx;
-    if (this->index(removalRow, 0).isValid())
-    {
-      newActivePipelineIdx = this->index(removalRow, 0);
-    }
-    else if (this->index(removalRow + 1, 0).isValid())
-    {
-      newActivePipelineIdx = this->index(removalRow + 1, 0);
-    }
-    else if (this->index(removalRow - 1, 0).isValid())
-    {
-      newActivePipelineIdx = this->index(removalRow - 1, 0);
-    }
-    else
-    {
-      newActivePipelineIdx = QModelIndex();
-    }
-
-    updateActivePipeline(newActivePipelineIdx);
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineModel::removeFilter(int filterIndex, const QModelIndex &pipelineIndex)
-{
-  removeRow(filterIndex, pipelineIndex);
-
-  emit pipelineDataChanged(pipelineIndex);
-  emit preflightTriggered(pipelineIndex);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int PipelineModel::addPipelineFromFile(const QString& filePath, const QModelIndex &parentIndex, int insertionIndex)
-{
-  QFileInfo fi(filePath);
-  if(fi.exists() == false)
-  {
-    QMessageBox::warning(nullptr, QString::fromLatin1("Pipeline Read Error"), QString::fromLatin1("There was an error opening the specified pipeline file. The pipeline file does not exist."));
-    return -1;
-  }
-
-  QString ext = fi.suffix();
-  QString name = fi.fileName();
-  QString baseName = fi.baseName();
-
-  // Read the pipeline from the file
-  FilterPipeline::Pointer pipeline = getPipelineFromFile(filePath);
-
-  // Check that a valid extension was read...
-  if(pipeline == FilterPipeline::NullPointer())
-  {
-    emit statusMessageGenerated(tr("The pipeline was not read correctly from file '%1'. '%2' is an unsupported file extension.").arg(name).arg(ext));
-    emit standardOutputMessageGenerated(tr("The pipeline was not read correctly from file '%1'. '%2' is an unsupported file extension.").arg(name).arg(ext));
-    return -1;
-  }
-
-  // Notify user of successful read
-  emit statusMessageGenerated(tr("Opened \"%1\" Pipeline").arg(baseName));
-  emit standardOutputMessageGenerated(tr("Opened \"%1\" Pipeline").arg(baseName));
-
-  // Populate the pipeline view
-  addPipeline(fi.fileName(), pipeline, true, parentIndex, insertionIndex);
-
-  return 0;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-FilterPipeline::Pointer PipelineModel::getPipelineFromFile(const QString& filePath)
-{
-  QFileInfo fi(filePath);
-  QString ext = fi.suffix();
-
-  FilterPipeline::Pointer pipeline = FilterPipeline::NullPointer();
-  if(ext == "dream3d")
-  {
-    H5FilterParametersReader::Pointer dream3dReader = H5FilterParametersReader::New();
-    pipeline = dream3dReader->readPipelineFromFile(filePath);
-  }
-  else if(ext == "json")
-  {
-    JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
-    pipeline = jsonReader->readPipelineFromFile(filePath);
-  }
-
-  return pipeline;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineModel::addFilter(AbstractFilter::Pointer filter, const QModelIndex &parentIndex, int insertionIndex)
-{
-  QModelIndex pipelineIndex = parentIndex;
-  if (pipelineIndex.isValid() == false)
-  {
-    pipelineIndex = m_ActivePipelineIndex;
-    if (pipelineIndex.isValid() == false)
-    {
-      FilterPipeline::Pointer pipeline = FilterPipeline::New();
-      pipeline->pushBack(filter);
-      addPipeline("Untitled Pipeline", pipeline, true);
-    }
-  }
-
-  insertRow(insertionIndex, pipelineIndex);
-  QModelIndex filterIndex = index(insertionIndex, PipelineItem::Name, pipelineIndex);
-  setData(filterIndex, filter->getHumanLabel(), Qt::DisplayRole);
-  setItemType(filterIndex, PipelineItem::ItemType::Filter);
-  setFilter(filterIndex, filter);
-
-  if (m_ActivePipelineIndex.isValid() == false)
-  {
-    updateActivePipeline(pipelineIndex);
-  }
-
-  QModelIndexList list;
-  list.push_back(filterIndex);
-
-  emit preflightTriggered(m_ActivePipelineIndex);
-  emit pipelineDataChanged(m_ActivePipelineIndex);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void PipelineModel::updateActivePipeline(const QModelIndex &pipelineIdx)
 {
   emit clearIssuesTriggered();
@@ -269,7 +79,7 @@ void PipelineModel::updateActivePipeline(const QModelIndex &pipelineIdx)
 
   if (m_ActivePipelineIndex.isValid() == true)
   {
-    emit preflightTriggered(m_ActivePipelineIndex);
+    emit preflightTriggered(m_ActivePipelineIndex, this);
   }
 }
 
@@ -307,6 +117,29 @@ FilterPipeline::Pointer PipelineModel::getFilterPipeline(const QModelIndex &pipe
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+FilterPipeline::Pointer PipelineModel::getCopyOfFilterPipeline()
+{
+  // Create a Pipeline Object and fill it with the filters from this View
+  FilterPipeline::Pointer pipeline = FilterPipeline::New();
+
+  for(int i = 0; i < rowCount(); i++)
+  {
+    QModelIndex filterIndex = index(i, PipelineItem::Name);
+    AbstractFilter::Pointer filter = this->filter(filterIndex);
+    AbstractFilter::Pointer copy = filter->newFilterInstance(true);
+    pipeline->pushBack(copy);
+  }
+  for (int i = 0; i < m_PipelineMessageObservers.size(); i++)
+  {
+    pipeline->addMessageReceiver(m_PipelineMessageObservers[i]);
+  }
+
+  return pipeline;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 int PipelineModel::writePipeline(const QModelIndex &pipelineIndex, const QString &outputPath)
 {
   QFileInfo fi(outputPath);
@@ -318,7 +151,7 @@ int PipelineModel::writePipeline(const QModelIndex &pipelineIndex, const QString
     QFile f(outputPath);
     if(f.remove() == false)
     {
-      QMessageBox::warning(this, QString::fromLatin1("Pipeline Write Error"), QString::fromLatin1("There was an error removing the existing pipeline file. The pipeline was NOT saved."));
+      QMessageBox::warning(nullptr, QString::fromLatin1("Pipeline Write Error"), QString::fromLatin1("There was an error removing the existing pipeline file. The pipeline was NOT saved."));
       return -1;
     }
   }
@@ -379,21 +212,6 @@ int PipelineModel::columnCount(const QModelIndex& parent) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QModelIndex PipelineModel::sibling(int row, int column, const QModelIndex& currentIndex) const
-{
-  if(currentIndex.column() == PipelineItem::Name)
-  {
-    return index(currentIndex.row(), PipelineItem::FilterEnabledBtn, currentIndex.parent());
-  }
-  else
-  {
-    return index(currentIndex.row(), PipelineItem::Name, currentIndex.parent());
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 QVariant PipelineModel::data(const QModelIndex& index, int role) const
 {
   if(!index.isValid())
@@ -449,7 +267,7 @@ QVariant PipelineModel::data(const QModelIndex& index, int role) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer PipelineModel::filter(const QModelIndex &index)
+AbstractFilter::Pointer PipelineModel::filter(const QModelIndex &index) const
 {
   if(!index.isValid())
   {
@@ -764,7 +582,7 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineItem::WidgetState PipelineModel::widgetState(const QModelIndex &index)
+PipelineItem::WidgetState PipelineModel::widgetState(const QModelIndex &index) const
 {
   PipelineItem* item = getItem(index);
   return item->getWidgetState();
@@ -782,7 +600,7 @@ void PipelineModel::setWidgetState(const QModelIndex &index, PipelineItem::Widge
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineItem::ErrorState PipelineModel::errorState(const QModelIndex &index)
+PipelineItem::ErrorState PipelineModel::errorState(const QModelIndex &index) const
 {
   PipelineItem* item = getItem(index);
   return item->getErrorState();
@@ -800,7 +618,7 @@ void PipelineModel::setErrorState(const QModelIndex &index, PipelineItem::ErrorS
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineItem::PipelineState PipelineModel::pipelineState(const QModelIndex &index)
+PipelineItem::PipelineState PipelineModel::pipelineState(const QModelIndex &index) const
 {
   PipelineItem* item = getItem(index);
   return item->getPipelineState();
@@ -831,6 +649,105 @@ void PipelineModel::setItemType(const QModelIndex &index, PipelineItem::ItemType
 {
   PipelineItem* item = getItem(index);
   item->setItemType(type);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool PipelineModel::isHovering(const QModelIndex &index) const
+{
+  PipelineItem* item = getItem(index);
+  return item->getHovering();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineModel::setHovering(const QModelIndex &index)
+{
+  if (m_CurrentHoveringIndex.isValid())
+  {
+    PipelineItem* item = getItem(m_CurrentHoveringIndex);
+    item->setHovering(false);
+  }
+
+  PipelineItem* item = getItem(index);
+  item->setHovering(true);
+  m_CurrentHoveringIndex = index;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineModel::setFilterIndexString(const QModelIndex &index, int i)
+{
+  QString paddedIndex = "";
+  int numFilters = rowCount();
+
+  if(numFilters < 10)
+  {
+    numFilters = 11;
+  }
+  QString numStr = QString::number(i);
+
+  if(numFilters > 9)
+  {
+    int mag = 0;
+    int max = numFilters;
+    while(max > 0)
+    {
+      mag++;
+      max = max / 10;
+    }
+    numStr = "";             // Clear the string
+    QTextStream ss(&numStr); // Create a QTextStream to set up the padding
+    ss.setFieldWidth(mag);
+    ss.setPadChar('0');
+    ss << i;
+  }
+  paddedIndex = numStr;
+
+  PipelineItem* item = getItem(index);
+  item->setFilterIndex(paddedIndex);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString PipelineModel::filterIndexString(const QModelIndex &index) const
+{
+  PipelineItem* item = getItem(index);
+  return item->getFilterIndex();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int PipelineModel::getMaxFilterCount() const
+{
+  int numFilters = rowCount();
+  int maxFilterCount = 0;
+  if(numFilters < 10)
+  {
+    numFilters = 11;
+    maxFilterCount = 99;
+  }
+
+  if(numFilters > 9)
+  {
+    int mag = 0;
+    int max = numFilters;
+    maxFilterCount = 1;
+    while(max > 0)
+    {
+      mag++;
+      max = max / 10;
+      maxFilterCount *= 10;
+    }
+    maxFilterCount -= 1;
+  }
+
+  return maxFilterCount;
 }
 
 // -----------------------------------------------------------------------------
@@ -971,4 +888,12 @@ QColor PipelineModel::getForegroundColor(const QModelIndex &index) const
 void PipelineModel::addPipelineMessageObserver(QObject* pipelineMessageObserver)
 {
   m_PipelineMessageObservers.push_back(pipelineMessageObserver);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QList<QObject*> PipelineModel::getPipelineMessageObservers()
+{
+  return m_PipelineMessageObservers;
 }

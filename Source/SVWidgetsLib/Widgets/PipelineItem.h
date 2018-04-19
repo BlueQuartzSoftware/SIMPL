@@ -57,12 +57,15 @@ class SVWidgetsLib_EXPORT PipelineItem
     SIMPL_BOOL_PROPERTY(PipelineSaved)
     SIMPL_INSTANCE_PROPERTY(QIcon, Icon)
     SIMPL_INSTANCE_PROPERTY(bool, Expanded)
+    SIMPL_INSTANCE_PROPERTY(bool, Hovering)
     SIMPL_INSTANCE_PROPERTY(QString, ItemTooltip)
+    SIMPL_INSTANCE_PROPERTY(QString, FilterIndex)
 
     enum TreeItemData
     {
       Name,
-      FilterEnabledBtn
+      DisableBtn,
+      DeleteBtn
     };
 
     using EnumType = unsigned int;
@@ -127,10 +130,10 @@ class SVWidgetsLib_EXPORT PipelineItem
     static QString TopLevelString();
 
   private:
-    QList<PipelineItem*>                m_ChildItems;
+    QList<PipelineItem*>                    m_ChildItems;
     QVector<QVariant>                       m_ItemData;
     AbstractFilter::Pointer                 m_Filter = nullptr;
-    PipelineItem*                       m_ParentItem;
+    PipelineItem*                           m_ParentItem;
 
     void setupFilterInputWidget();
 

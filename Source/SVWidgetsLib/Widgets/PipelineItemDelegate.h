@@ -29,21 +29,25 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _pipelinetreeitemdelegate_h_
-#define _pipelinetreeitemdelegate_h_
+#ifndef _PipelineItemDelegate_h_
+#define _PipelineItemDelegate_h_
 
 #include <QtCore/QModelIndex>
+#include <QtCore/QTimer>
 
 #include <QStyledItemDelegate>
 
-class PipelineTreeItemDelegate : public QStyledItemDelegate
+class PipelineModel;
+class SVPipelineView;
+
+class PipelineItemDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 
-  public:
-    explicit PipelineTreeItemDelegate(QObject* parent = 0);
+  public:    
+    explicit PipelineItemDelegate(SVPipelineView* view);
 
-    virtual ~PipelineTreeItemDelegate();
+    virtual ~PipelineItemDelegate();
 
   protected:
     QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const Q_DECL_OVERRIDE;
@@ -53,8 +57,17 @@ class PipelineTreeItemDelegate : public QStyledItemDelegate
     void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const Q_DECL_OVERRIDE;
 
   private:
-    PipelineTreeItemDelegate(const PipelineTreeItemDelegate&) = delete; // Copy Constructor Not Implemented
-    void operator=(const PipelineTreeItemDelegate&) = delete;        // Operator '=' Not Implemented
+    SVPipelineView* m_View = nullptr;
+    QTimer m_AnimationTimer;
+
+    qreal m_SelectionBorderWidth = 4.0;
+    qreal m_BorderThickness = 0.0;
+    qreal m_BorderIncrement = 1.0;
+
+    void updateBorderThickness();
+
+    PipelineItemDelegate(const PipelineItemDelegate&) = delete; // Copy Constructor Not Implemented
+    void operator=(const PipelineItemDelegate&) = delete;        // Operator '=' Not Implemented
 };
 
-#endif // _pipelinetreeitemdelegate_h_
+#endif // _PipelineItemDelegate_h_

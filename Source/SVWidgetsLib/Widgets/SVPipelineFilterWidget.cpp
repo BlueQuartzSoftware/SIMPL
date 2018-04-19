@@ -272,7 +272,6 @@ void SVPipelineFilterWidget::setFilterIndex(int i, int numFilters)
   {
     fiw->setFilterIndex(m_PaddedIndex);
   }
-  
 }
 
 // -----------------------------------------------------------------------------

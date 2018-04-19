@@ -59,7 +59,6 @@
 #include <QtWidgets/QProgressDialog>
 #include <QtWidgets/QScrollArea>
 #include <QtWidgets/QScrollBar>
-#include <QtWidgets/QUndoCommand>
 #include <QtWidgets/QUndoStack>
 #include <QtWidgets/QVBoxLayout>
 
@@ -77,9 +76,6 @@
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
 #include "SVWidgetsLib/QtSupport/QtSDroppableScrollArea.h"
 #include "SVWidgetsLib/Widgets/BreakpointFilterWidget.h"
-#include "SVWidgetsLib/Widgets/util/AddFilterCommand.h"
-#include "SVWidgetsLib/Widgets/util/MoveFilterCommand.h"
-#include "SVWidgetsLib/Widgets/util/RemoveFilterCommand.h"
 
 // -----------------------------------------------------------------------------
 //

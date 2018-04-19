@@ -189,7 +189,7 @@ void BookmarksToolboxWidget::readPrebuiltPipelines()
 {
   QDir pipelinesDir = findPipelinesDirectory();
   QString pPath = pipelinesDir.absolutePath();
-  BookmarksModel* model = BookmarksModel::Instance();
+  BookmarksModel* model = bookmarksTreeView->getBookmarksModel();
 
   FilterLibraryTreeWidget::ItemType itemType = FilterLibraryTreeWidget::Leaf_Item_Type;
   QString iconFileName(":/bookmark.png");
@@ -209,7 +209,7 @@ void BookmarksToolboxWidget::readPrebuiltPipelines()
 // -----------------------------------------------------------------------------
 void BookmarksToolboxWidget::addPipelinesRecursively(QDir currentDir, QModelIndex parent, QString iconFileName, bool allowEditing, QStringList filters, FilterLibraryTreeWidget::ItemType itemType)
 {
-  BookmarksModel* model = BookmarksModel::Instance();
+  BookmarksModel* model = bookmarksTreeView->getBookmarksModel();
 
   QModelIndex nextIndex;
 
@@ -326,7 +326,7 @@ void BookmarksToolboxWidget::on_bookmarksTreeView_clicked(const QModelIndex& ind
 // -----------------------------------------------------------------------------
 void BookmarksToolboxWidget::on_bookmarksTreeView_doubleClicked(const QModelIndex& index)
 {
-  BookmarksModel* model = BookmarksModel::Instance();
+  BookmarksModel* model = bookmarksTreeView->getBookmarksModel();
 
   QModelIndex nameIndex = model->index(index.row(), BookmarksItem::Name, index.parent());
   QModelIndex pathIndex = model->index(index.row(), BookmarksItem::Path, index.parent());
@@ -443,7 +443,7 @@ void BookmarksToolboxWidget::readSettings(QtSSettings* prefs)
   QByteArray headerState = prefs->value("Horizontal Header State", QByteArray());
   bookmarksTreeView->header()->restoreState(headerState);
 
-  BookmarksModel* model = BookmarksModel::Instance();
+  BookmarksModel* model = bookmarksTreeView->getBookmarksModel();
   if(model->isEmpty())
   {
     // Check the new bookmarks settings file first
@@ -452,7 +452,10 @@ void BookmarksToolboxWidget::readSettings(QtSSettings* prefs)
     if(bookmarksPrefs->contains("Bookmarks"))
     {
       bookmarksPrefs->beginGroup("Bookmarks");
-      model = BookmarksModel::NewInstance(bookmarksPrefs.data());
+
+      QJsonObject modelObj = bookmarksPrefs->value("Bookmarks Model", QJsonObject());
+      model = new BookmarksModel(modelObj, this);
+
       bookmarksPrefs->endGroup();
     }
     else
@@ -460,7 +463,10 @@ void BookmarksToolboxWidget::readSettings(QtSSettings* prefs)
       // If no bookmarks were found in the new location, check the old location
       prefs->beginGroup("DockWidgetSettings");
       prefs->beginGroup("Bookmarks Dock Widget");
-      model = BookmarksModel::NewInstance(prefs);
+
+      QJsonObject modelObj = prefs->value("Bookmarks Model", QJsonObject());
+      model = new BookmarksModel(modelObj, this);
+
       prefs->endGroup();
       prefs->endGroup();
     }
@@ -493,7 +499,8 @@ void BookmarksToolboxWidget::writeSettings(QtSSettings* prefs)
 
   bookmarksPrefs->beginGroup("Bookmarks");
 
-  QJsonObject modelObj = bookmarksTreeView->toJsonObject();
+  BookmarksModel* model = getBookmarksTreeView()->getBookmarksModel();
+  QJsonObject modelObj = model->toJsonObject();
   bookmarksPrefs->setValue("Bookmarks Model", modelObj);
 
   bookmarksPrefs->endGroup();

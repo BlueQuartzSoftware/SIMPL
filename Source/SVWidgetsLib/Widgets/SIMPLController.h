@@ -58,11 +58,6 @@ class SVWidgetsLib_EXPORT SIMPLController : public QObject
     ~SIMPLController();
 
     /**
-     * @brief setupUndoStack
-     */
-    void setupUndoStack();
-
-    /**
      * @brief fromJsonObject
      * @param modelObject
      * @param model
@@ -116,22 +111,6 @@ class SVWidgetsLib_EXPORT SIMPLController : public QObject
      */
     void blockPreflightSignals(bool b);
 
-    /**
-     * @brief addUndoCommand
-     * @param cmd
-     */
-    void addUndoCommand(QUndoCommand* cmd);
-
-    /**
-     * @brief undo
-     */
-    void undo();
-
-    /**
-     * @brief redo
-     */
-    void redo();
-
   protected slots:
     /**
      * @brief processPipelineMessage
@@ -151,18 +130,16 @@ class SVWidgetsLib_EXPORT SIMPLController : public QObject
 
     void writeSIMPLViewSettingsTriggered();
 
-    void pipelineEnteringReadyState(const QModelIndex &pipelineIndex);
-    void pipelineEnteringRunningState(const QModelIndex &pipelineIndex);
-    void pipelineEnteringStoppedState(const QModelIndex &pipelineIndex);
+    void pipelineReady(const QModelIndex &pipelineIndex);
 
     void pipelineMessageGenerated(const PipelineMessage& msg);
 
     void filtersAddedToModel(QModelIndexList filterIndices);
 
-    void preflightFinished(int err);
+    void preflightFinished(const QModelIndex &pipelineIndex, int err);
 
-    void pipelineCanceled();
-    void pipelineFinished();
+    void pipelineStarted(const QModelIndex &pipelineIndex);
+    void pipelineFinished(const QModelIndex &pipelineIndex);
 
   private:
     QThread*                                          m_WorkerThread = nullptr;
@@ -173,7 +150,6 @@ class SVWidgetsLib_EXPORT SIMPLController : public QObject
     bool                                              m_BlockPreflight = false;
     QStack<bool>                                      m_BlockPreflightStack;
 
-    QSharedPointer<QUndoStack>                        m_UndoStack;
     QString                                           m_CurrentUndoText = "";
     QString                                           m_CurrentRedoText = "";
     QString                                           m_PreviousUndoText = "";

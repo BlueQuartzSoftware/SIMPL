@@ -64,44 +64,6 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionRedo)
 
     /**
-     * @brief addPipeline
-     * @param pipelineName
-     * @param pipeline
-     * @param setAsActive
-     */
-    void addPipeline(const QString &pipelineName, FilterPipeline::Pointer pipeline, bool setAsActive = false, QModelIndex parentIndex = QModelIndex(), int insertionIndex = -1);
-
-    /**
-     * @brief addPipelineFromFile
-     * @param filePath
-     * @param parentIndex
-     * @param insertionIndex
-     * @return
-     */
-    int addPipelineFromFile(const QString& filePath, const QModelIndex &parentIndex = QModelIndex(), int insertionIndex = -1);
-
-    /**
-     * @brief addFilter
-     * @param filter
-     * @param parentIndex
-     */
-    void addFilter(AbstractFilter::Pointer filter, const QModelIndex &parentIndex = QModelIndex(), int insertionIndex = -1);
-
-    /**
-     * @brief removePipelineFromModel
-     * @param pipelineIndex
-     * @param parentIndex
-     */
-    void removePipeline(QModelIndex pipelineIndex);
-
-    /**
-     * @brief removeFilter
-     * @param filterIndex
-     * @param pipelineIndex
-     */
-    void removeFilter(int filterIndex, const QModelIndex &pipelineIndex);
-
-    /**
      * @brief updateActivePipeline
      * @param pipelineIdx
      */
@@ -113,6 +75,14 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
      * @return
      */
     FilterPipeline::Pointer getFilterPipeline(const QModelIndex &pipelineIndex);
+
+    /**
+     * @brief Returns a FilterPipeline Object with a new filter instance that has the input parameters copied
+     * from the filter instance that is embedded in the SVPipelineFilterWidget instance. This function does NOT perform
+     * a DEEP copy of the filter.
+     * @return
+     */
+    FilterPipeline::Pointer getCopyOfFilterPipeline();
 
     /**
      * @brief writePipeline
@@ -131,17 +101,18 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
     QVariant data(const QModelIndex& index, int role) const Q_DECL_OVERRIDE;
 //    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
 
-    AbstractFilter::Pointer filter(const QModelIndex &index);
+    AbstractFilter::Pointer filter(const QModelIndex &index) const;
     void setFilter(const QModelIndex &index, AbstractFilter::Pointer filter);
 
-    QModelIndex indexOfFilter(AbstractFilter::Pointer filter, const QModelIndex &parent);
+    QModelIndex indexOfFilter(AbstractFilter::Pointer filter, const QModelIndex &parent = QModelIndex());
 
     FilterInputWidget* filterInputWidget(const QModelIndex &index);
 
     bool filterEnabled(const QModelIndex &index);
     void setFilterEnabled(const QModelIndex &index, bool enabled);
 
-    virtual QModelIndex sibling(int row, int column, const QModelIndex& idx) const Q_DECL_OVERRIDE;
+    bool isHovering(const QModelIndex &index) const;
+    void setHovering(const QModelIndex &index);
 
     bool isEmpty();
 
@@ -160,13 +131,13 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
 
     bool setData(const QModelIndex& index, const QVariant& value, int role) Q_DECL_OVERRIDE;
 
-    PipelineItem::WidgetState widgetState(const QModelIndex &index);
+    PipelineItem::WidgetState widgetState(const QModelIndex &index) const;
     void setWidgetState(const QModelIndex &index, PipelineItem::WidgetState state);
 
-    PipelineItem::ErrorState errorState(const QModelIndex &index);
+    PipelineItem::ErrorState errorState(const QModelIndex &index) const;
     void setErrorState(const QModelIndex &index, PipelineItem::ErrorState state);
 
-    PipelineItem::PipelineState pipelineState(const QModelIndex &index);
+    PipelineItem::PipelineState pipelineState(const QModelIndex &index) const;
     void setPipelineState(const QModelIndex &index, PipelineItem::PipelineState state);
 
     PipelineItem::ItemType itemType(const QModelIndex &index);
@@ -184,10 +155,17 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
 
     PipelineItem* getRootItem();
 
+    int getMaxFilterCount() const;
+
+    void setFilterIndexString(const QModelIndex &index, int i);
+    QString filterIndexString(const QModelIndex &index) const;
+
+    QList<QObject*> getPipelineMessageObservers();
+
   signals:
     void clearIssuesTriggered();
 
-    void preflightTriggered(const QModelIndex &pipelineIndex);
+    void preflightTriggered(const QModelIndex &pipelineIndex, PipelineModel* model);
 
     void pipelineDataChanged(const QModelIndex &pipelineIndex);
 
@@ -198,19 +176,13 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
     PipelineItem*                       m_RootItem;
 
     QPersistentModelIndex               m_ActivePipelineIndex;
+    QPersistentModelIndex               m_CurrentHoveringIndex;
 
     QList<QObject*>                     m_PipelineMessageObservers;
 
     PipelineItem* getItem(const QModelIndex& index) const;
 
     QColor getForegroundColor(const QModelIndex &index) const;
-
-    /**
-     * @brief getPipelineFromFile
-     * @param filePath
-     * @return
-     */
-    FilterPipeline::Pointer getPipelineFromFile(const QString& filePath);
 
     PipelineModel(const PipelineModel&);    // Copy Constructor Not Implemented
     void operator=(const PipelineModel&);  // Operator '=' Not Implemented

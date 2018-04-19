@@ -63,11 +63,15 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
   public:
     SIMPL_TYPE_MACRO(BookmarksModel)
 
+    BookmarksModel(QObject* parent = nullptr);
+    BookmarksModel(QJsonObject treeObject, QObject* parent = nullptr);
+
     ~BookmarksModel();
 
-    static BookmarksModel* Instance();
-
-    static BookmarksModel* NewInstance(QtSSettings* prefs);
+    /**
+    * @brief toJsonObject
+    */
+    QJsonObject toJsonObject();
 
     QVariant data(const QModelIndex& index, int role) const Q_DECL_OVERRIDE;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
@@ -91,8 +95,8 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
 
     bool setData(const QModelIndex& index, const QVariant& value, int role) Q_DECL_OVERRIDE;
 
-    bool needsToBeExpanded(const QModelIndex& index);
-    void setNeedsToBeExpanded(const QModelIndex& index, bool value);
+    bool isExpanded(const QModelIndex& index);
+    void setExpanded(const QModelIndex& index, bool value);
 
     BookmarksItem* getRootItem();
 
@@ -106,7 +110,7 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
     QFileSystemWatcher* getFileSystemWatcher();
 
   protected:
-    BookmarksModel(QObject* parent = 0);
+    void initialize();
 
   protected slots:
     void updateRowState(const QString& path);
@@ -116,13 +120,20 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
     BookmarksItem*            rootItem;
     QFileSystemWatcher*       m_Watcher;
 
-    static BookmarksModel* self;
-
     BookmarksItem* getItem(const QModelIndex& index) const;
 
     QStringList getFilePaths(BookmarksItem* item);
 
     QModelIndexList findIndexByPath(const QModelIndex& index, QString filePath);
+
+    /**
+    * @brief fromJsonObject
+    * @param modelObject
+    */
+    void fromJsonObject(QJsonObject modelObject);
+
+    QJsonObject wrapModel(QModelIndex index);
+    void unwrapModel(QString objectName, QJsonObject object, QModelIndex parentIndex);
 
     BookmarksModel(const BookmarksModel&);    // Copy Constructor Not Implemented
     void operator=(const BookmarksModel&);    // Move assignment Not Implemented
