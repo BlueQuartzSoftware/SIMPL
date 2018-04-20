@@ -366,6 +366,16 @@ std::list<DataArrayPath> AbstractFilter::getCreatedPaths()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+DataArrayPath::RenameContainer AbstractFilter::getRenamedPaths()
+{
+  // Implemented in filters that rename existing paths
+  DataArrayPath::RenameContainer container;
+  return container;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void AbstractFilter::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   Q_ASSERT(reader != nullptr);

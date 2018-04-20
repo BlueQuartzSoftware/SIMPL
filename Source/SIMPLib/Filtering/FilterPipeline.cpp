@@ -513,13 +513,6 @@ int FilterPipeline::preflightPipeline()
   setErrorCondition(0);
   int preflightError = 0;
 
-  // Connect this object to anything that wants to know about PipelineMessages
-  for(int i = 0; i < m_MessageReceivers.size(); i++)
-  {
-    connect(this, SIGNAL(pipelineGeneratedMessage(const PipelineMessage&)), m_MessageReceivers.at(i), SLOT(processPipelineMessage(const PipelineMessage&)));
-  }
-  PipelineMessage renameMessage("", "", 0, PipelineMessage::MessageType::StandardOutputMessage);
-  QString renameStr = "Renamed path '%1' to '%2' in '%3'";
   DataArrayPath::RenameContainer renamedPaths;
 
   // Start looping through each filter in the Pipeline and preflight everything
@@ -546,12 +539,13 @@ int FilterPipeline::preflightPipeline()
       DataArrayPath::RenameContainer newRenamedPaths = DataArrayPath::CheckForRenamedPaths(oldDca, dca, oldCreatedPaths, currentCreatedPaths);
       for(DataArrayPath::RenameType renameType : newRenamedPaths)
       {
-        DataArrayPath oldPath;
-        DataArrayPath newPath;
-        std::tie(oldPath, newPath) = renameType;
-        renameMessage.setText(renameStr.arg(oldPath.serialize("/")).arg(newPath.serialize("/")).arg((*filter)->getHumanLabel()));
-        emit pipelineGeneratedMessage(renameMessage);
+        renamedPaths.push_back(renameType);
+      }
 
+      // Filter renamed existing DataArrayPaths
+      DataArrayPath::RenameContainer filterRenamedPaths = (*filter)->getRenamedPaths();
+      for(DataArrayPath::RenameType renameType : filterRenamedPaths)
+      {
         renamedPaths.push_back(renameType);
       }
     }
@@ -560,15 +554,21 @@ int FilterPipeline::preflightPipeline()
       // Some widgets require the updated path to be valid before it can be set in the widget
       (*filter)->setDataContainerArray(dca->deepCopy(false));
       (*filter)->renameDataArrayPaths(renamedPaths);
+
+      // Undo filter renaming
+      DataArrayPath::RenameContainer filterRenamedPaths = (*filter)->getRenamedPaths();
+      for(DataArrayPath::RenameType renameType : filterRenamedPaths)
+      {
+        DataArrayPath oldPath;
+        DataArrayPath newPath;
+        std::tie(oldPath, newPath) = renameType;
+        renameType = std::make_pair(newPath, oldPath);
+
+        renamedPaths.push_back(renameType);
+      }
     }
   }
   setCurrentFilter(AbstractFilter::NullPointer());
-
-  // Connect this object to anything that wants to know about PipelineMessages
-  for(int i = 0; i < m_MessageReceivers.size(); i++)
-  {
-    disconnect(this, SIGNAL(pipelineGeneratedMessage(const PipelineMessage&)), m_MessageReceivers.at(i), SLOT(processPipelineMessage(const PipelineMessage&)));
-  }
 
   return preflightError;
 }

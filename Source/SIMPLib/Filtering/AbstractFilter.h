@@ -267,6 +267,12 @@ public:
    */
   std::list<DataArrayPath> getCreatedPaths();
 
+  /**
+   * @brief Returns a list of DataArrayPaths that have been renamed along with their corresponding renamed value
+   * @return
+   */
+  virtual DataArrayPath::RenameContainer getRenamedPaths();
+
   // ------------------------------
   // These methods are over ridden from the superclass in order to add the
   // pipeline index to the PipelineMessage Object.
