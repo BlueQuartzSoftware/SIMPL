@@ -155,7 +155,7 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
      * @param rhs
      * @return
      */
-    bool operator==(const DataArrayPath& rhs);
+    bool operator==(const DataArrayPath& rhs) const;
 
     /**
      * @brief serialize Returns the path using the '|' charater by default. This can be over ridden by the programmer

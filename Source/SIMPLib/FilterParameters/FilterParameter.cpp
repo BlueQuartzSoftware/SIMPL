@@ -84,9 +84,6 @@ void FilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath
     DataArrayPath path = var.value<DataArrayPath>();
     if(path.updatePath(oldPath, newPath))
     {
-      //QString ss = QString("Updated property '%1' in %2").arg(name).arg(getHumanLabel());
-      //notifyStandardOutputMessage(getHumanLabel(), getPipelineIndex(), ss);
-      //notifyStatusMessage(getHumanLabel(), ss);
       var.setValue(path);
       filter->setProperty(qPrintable(getPropertyName()), var);
       emit filter->dataArrayPathUpdated(getPropertyName(), oldPath, newPath);

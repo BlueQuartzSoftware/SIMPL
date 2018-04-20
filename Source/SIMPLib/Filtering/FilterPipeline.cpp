@@ -513,6 +513,13 @@ int FilterPipeline::preflightPipeline()
   setErrorCondition(0);
   int preflightError = 0;
 
+  // Connect this object to anything that wants to know about PipelineMessages
+  for(int i = 0; i < m_MessageReceivers.size(); i++)
+  {
+    connect(this, SIGNAL(pipelineGeneratedMessage(const PipelineMessage&)), m_MessageReceivers.at(i), SLOT(processPipelineMessage(const PipelineMessage&)));
+  }
+  PipelineMessage renameMessage("", "", 0, PipelineMessage::MessageType::StandardOutputMessage);
+  QString renameStr = "Renamed path '%1' to '%2' in '%3'";
   DataArrayPath::RenameContainer renamedPaths;
 
   // Start looping through each filter in the Pipeline and preflight everything
@@ -521,8 +528,6 @@ int FilterPipeline::preflightPipeline()
     // Do not preflight disabled filters
     if((*filter)->getEnabled())
     {
-      // Update old DCA paths for a better comparison
-      //(*filter)->renameDataArrayPaths(renamedPaths);
       std::list<DataArrayPath> oldCreatedPaths = (*filter)->getCreatedPaths();
       DataContainerArray::Pointer oldDca = (*filter)->getDataContainerArray();
 
@@ -538,10 +543,16 @@ int FilterPipeline::preflightPipeline()
       (*filter)->setDataContainerArray(dca->deepCopy(false));
       std::list<DataArrayPath> currentCreatedPaths = (*filter)->getCreatedPaths();
 
-      DataArrayPath::RenameContainer newPaths = DataArrayPath::CheckForRenamedPaths(oldDca, dca, oldCreatedPaths, currentCreatedPaths);
-      for(auto iter = newPaths.begin(); iter != newPaths.end(); iter++)
+      DataArrayPath::RenameContainer newRenamedPaths = DataArrayPath::CheckForRenamedPaths(oldDca, dca, oldCreatedPaths, currentCreatedPaths);
+      for(DataArrayPath::RenameType renameType : newRenamedPaths)
       {
-        renamedPaths.push_back(*iter);
+        DataArrayPath oldPath;
+        DataArrayPath newPath;
+        std::tie(oldPath, newPath) = renameType;
+        renameMessage.setText(renameStr.arg(oldPath.serialize("/")).arg(newPath.serialize("/")).arg((*filter)->getHumanLabel()));
+        emit pipelineGeneratedMessage(renameMessage);
+
+        renamedPaths.push_back(renameType);
       }
     }
     else
@@ -552,6 +563,13 @@ int FilterPipeline::preflightPipeline()
     }
   }
   setCurrentFilter(AbstractFilter::NullPointer());
+
+  // Connect this object to anything that wants to know about PipelineMessages
+  for(int i = 0; i < m_MessageReceivers.size(); i++)
+  {
+    disconnect(this, SIGNAL(pipelineGeneratedMessage(const PipelineMessage&)), m_MessageReceivers.at(i), SLOT(processPipelineMessage(const PipelineMessage&)));
+  }
+
   return preflightError;
 }
 

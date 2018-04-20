@@ -38,6 +38,7 @@
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/DataArrays/NeighborList.hpp"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 
 // -----------------------------------------------------------------------------
@@ -130,7 +131,7 @@ void DataArrayPath::operator=(const DataArrayPath& rhs)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataArrayPath::operator==(const DataArrayPath& rhs)
+bool DataArrayPath::operator==(const DataArrayPath& rhs) const
 {
   if(m_DataContainerName == rhs.getDataContainerName() && m_AttributeMatrixName == rhs.getAttributeMatrixName() && m_DataArrayName == rhs.getDataArrayName())
   {
@@ -247,7 +248,10 @@ bool DataArrayPath::CheckRenamePath(DataContainerArrayShPtr oldDca, DataContaine
         IDataArray::Pointer newDa = newAm->getAttributeArray(newPath.getDataArrayName());
 
         bool hasDataArray = oldDa && newDa;
-        if(hasDataArray && oldDa->getTypeAsString() == newDa->getTypeAsString() && oldDa->getComponentDimensions() == newDa->getComponentDimensions())
+        bool hasSameType = oldDa->getTypeAsString() == newDa->getTypeAsString();
+        bool hasSameCompDims = oldDa->getComponentDimensions() == newDa->getComponentDimensions();
+        bool isNeighborList = hasSameType && newDa->getTypeAsString().startsWith("NeighborList");
+        if(hasDataArray && hasSameType  && (hasSameCompDims || isNeighborList))
         {
           return true;
         }
@@ -270,14 +274,22 @@ DataArrayPath::RenameContainer DataArrayPath::CheckForRenamedPaths(DataContainer
   // For each older path, check for any matching new paths.  If only one new path matches, add it as a possibility
   for(DataArrayPath oldPath : oldPaths)
   {
+    // If the same path exists in both oldPaths and newPaths, it was not renamed
     if(std::find(newPaths.begin(), newPaths.end(), oldPath) != newPaths.end())
     {
       continue;
     }
 
+    // Find any potential renames in newPaths for the given oldPath
     std::list<DataArrayPath> matches;
     for(DataArrayPath newPath : newPaths)
     {
+      // If the same path exists in both oldPaths and newPaths, it was not renamed
+      if(std::find(oldPaths.begin(), oldPaths.end(), newPath) != oldPaths.end())
+      {
+        continue;
+      }
+
       // Check that all geometries, AttributeMatrices, and DataArrays are compatible
       if(CheckRenamePath(oldDca, newDca, oldPath, newPath))
       {
