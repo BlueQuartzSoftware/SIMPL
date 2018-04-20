@@ -109,7 +109,7 @@ class SVWidgetsLib_EXPORT AttributeMatrixSelectionWidget : public FilterParamete
     void createSelectionMenu();
 
   protected slots:
-    void updateDataArrayPath(QString propertyName, DataArrayPath oldPath, DataArrayPath newPath);
+    void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
   signals:
     void errorSettingFilterParameter(const QString& msg);

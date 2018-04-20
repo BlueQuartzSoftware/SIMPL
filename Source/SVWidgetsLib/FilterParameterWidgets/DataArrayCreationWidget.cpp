@@ -137,8 +137,8 @@ void DataArrayCreationWidget::setupGui()
   connect(stringEdit, SIGNAL(valueChanged(const QString&)), this, SIGNAL(parametersChanged()));
 
   // If the DataArrayPath is updated in the filter, update the widget
-  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath, DataArrayPath)),
-    this, SLOT(updateDataArrayPath(QString, DataArrayPath, DataArrayPath)));
+  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
+    this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   DataArrayPath amPath(defaultPath.getDataContainerName(), defaultPath.getAttributeMatrixName(), "");
@@ -290,7 +290,7 @@ bool DataArrayCreationWidget::eventFilter(QObject* obj, QEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayCreationWidget::updateDataArrayPath(QString propertyName, DataArrayPath oldPath, DataArrayPath newPath)
+void DataArrayCreationWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
 {
   if(propertyName.compare(getFilterParameter()->getPropertyName()) == 0)
   {

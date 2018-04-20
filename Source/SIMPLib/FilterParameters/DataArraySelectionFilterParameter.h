@@ -194,8 +194,10 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
 
     /**
      * @brief Handle DataArrayPath changes if necessary
+     * @param filter
+     * @param renamePath
      */
-    void dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath oldPath, DataArrayPath newPath) override;
+    void dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath) override;
 
   protected:
       /**

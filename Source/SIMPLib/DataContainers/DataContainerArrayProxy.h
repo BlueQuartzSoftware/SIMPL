@@ -166,10 +166,9 @@ class SIMPLib_EXPORT DataContainerArrayProxy
 
     /**
      * @brief Updates the proxy to match a renamed DataArrayPath
-     * @param oldPath
-     * @param newPath
+     * @param renamePath
      */
-    void updatePath(DataArrayPath oldPath, DataArrayPath newPath);
+    void updatePath(DataArrayPath::RenameType renamePath);
 
     /**
     * @brief Writes the contents of the proxy to the json object 'json'

@@ -131,8 +131,12 @@ void ComparisonSelectionFilterParameter::writeJson(QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath oldPath, DataArrayPath newPath)
+void ComparisonSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath)
 {
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
   ComparisonInputs inputs = m_GetterCallback();
   bool hasChanges = false;
 
@@ -166,6 +170,6 @@ void ComparisonSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* fi
 
   if(hasChanges)
   {
-    emit filter->dataArrayPathUpdated(getPropertyName(), oldPath, newPath);
+    emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
 }

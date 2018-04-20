@@ -111,7 +111,7 @@ void AbstractFilter::setCancel(bool value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::renameDataArrayPath(DataArrayPath oldPath, DataArrayPath newPath)
+void AbstractFilter::renameDataArrayPath(DataArrayPath::RenameType renamePath)
 {
   // Updates any DataArrayPath or proxy property assigned to this filter.
   // A signal is emitted if a change was required stating the property name, old path, and new path.
@@ -184,7 +184,7 @@ void AbstractFilter::renameDataArrayPath(DataArrayPath oldPath, DataArrayPath ne
   FilterParameterVector filterParams = getFilterParameters();
   for(FilterParameter::Pointer filterParam : filterParams)
   {
-    filterParam->dataArrayPathRenamed(this, oldPath, newPath);
+    filterParam->dataArrayPathRenamed(this, renamePath);
   }
 }
 
@@ -195,9 +195,7 @@ void AbstractFilter::renameDataArrayPaths(DataArrayPath::RenameContainer renamed
 {
   for(DataArrayPath::RenameType rename : renamedPaths)
   {
-    DataArrayPath first, second;
-    std::tie(first, second) = rename;
-    renameDataArrayPath(first, second);
+    renameDataArrayPath(rename);
   }
 }
 

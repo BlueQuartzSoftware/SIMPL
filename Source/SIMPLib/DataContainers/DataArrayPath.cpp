@@ -492,8 +492,12 @@ bool DataArrayPath::possibleRename(const DataArrayPath& updated) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataArrayPath::updatePath(const DataArrayPath& oldPath, const DataArrayPath& newPath)
+bool DataArrayPath::updatePath(const DataArrayPath::RenameType& renamePath)
 {
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
   // Check for differences with original path
   if(false == hasSameDataArray(oldPath) && false == oldPath.getDataArrayName().isEmpty())
   {

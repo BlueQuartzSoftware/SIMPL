@@ -312,8 +312,12 @@ DataArrayProxy::PrimitiveTypeFlag DataArrayProxy::PrimitiveTypeToFlag(const QStr
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayProxy::updatePath(DataArrayPath oldPath, DataArrayPath newPath)
+void DataArrayProxy::updatePath(DataArrayPath::RenameType renamePath)
 {
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
   if(oldPath.getDataArrayName().isEmpty())
   {
     return;

@@ -366,9 +366,10 @@ signals:
 
   /**
   * @brief Signal is emitted when a DataArrayPath property is updated
-  * @param name
+  * @param propertyName
+  * @param renamePath
   */
-  void dataArrayPathUpdated(QString propertyName, DataArrayPath oldPath, DataArrayPath newPath);
+  void dataArrayPathUpdated(QString propertyName, DataArrayPath::RenameType renamePath);
 
 public slots:
 
@@ -380,10 +381,9 @@ public slots:
   /**
    * @brief Updates any DataArrayPath properties from the old path to a new path
    * For DataArrayPaths longer than the given path, only the specified values are modified
-   * @param oldPath
-   * @param newPath
+   * @param renamePath
    */
-  virtual void renameDataArrayPath(DataArrayPath oldPath, DataArrayPath newPath);
+  virtual void renameDataArrayPath(DataArrayPath::RenameType renamePath);
 
   /**
   * @brief Updates any DataArrayPath properties from the old paths to their corresponding new paths.

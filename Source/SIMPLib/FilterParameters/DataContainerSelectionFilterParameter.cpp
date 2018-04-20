@@ -106,11 +106,15 @@ void DataContainerSelectionFilterParameter::writeJson(QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath oldPath, DataArrayPath newPath)
+void DataContainerSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath)
 {
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
   if(m_GetterCallback() == oldPath.getDataContainerName())
   {
     m_SetterCallback(newPath.getDataContainerName());
-    emit filter->dataArrayPathUpdated(getPropertyName(), oldPath, newPath);
+    emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
 }

@@ -106,8 +106,8 @@ void DataContainerArrayProxyWidget::setupGui()
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
   // If the DataArrayPath is updated in the filter, update the widget
-  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath, DataArrayPath)),
-    this, SLOT(updateDataArrayPath(QString, DataArrayPath, DataArrayPath)));
+  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
+    this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
   // setStyleSheet("QColumnView { text-decoration-color: red; }");
 
@@ -350,8 +350,12 @@ void DataContainerArrayProxyWidget::toggleStrikeOutFont(QListWidgetItem* item, Q
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerArrayProxyWidget::updateDataArrayPath(QString propertyName, DataArrayPath oldPath, DataArrayPath newPath)
+void DataContainerArrayProxyWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
 {
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
   blockSignals(true);
   
   // Attribute Matrix and Data Array lists are dependent on the current Data Container item

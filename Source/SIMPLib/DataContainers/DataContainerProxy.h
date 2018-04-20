@@ -133,10 +133,9 @@ class SIMPLib_EXPORT DataContainerProxy
 
     /**
      * @brief Updates the proxy to match a renamed DataArrayPath
-     * @param oldPath
-     * @param newPath
+     * @param renamePath
      */
-    void updatePath(DataArrayPath oldPath, DataArrayPath newPath);
+    void updatePath(DataArrayPath::RenameType renamePath);
 
     //----- Our variables, publicly available
     uint8_t flag;

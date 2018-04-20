@@ -91,7 +91,7 @@ class SVWidgetsLib_EXPORT DataContainerCreationWidget : public FilterParameterWi
     void parametersChanged();
 
   protected slots:
-    void updateDataArrayPath(QString propertyName, DataArrayPath oldPath, DataArrayPath newPath);
+    void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
   private:
     DataContainerCreationFilterParameter*                 m_FilterParameter;

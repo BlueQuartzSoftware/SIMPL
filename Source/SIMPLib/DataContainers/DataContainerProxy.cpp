@@ -91,8 +91,12 @@ bool DataContainerProxy::operator==(const DataContainerProxy& amp) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerProxy::updatePath(DataArrayPath oldPath, DataArrayPath newPath)
+void DataContainerProxy::updatePath(DataArrayPath::RenameType renamePath)
 {
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
   if(oldPath.getDataContainerName() != newPath.getDataContainerName())
   {
     name = newPath.getDataContainerName();
@@ -111,7 +115,7 @@ void DataContainerProxy::updatePath(DataArrayPath oldPath, DataArrayPath newPath
     attributeMatricies.remove(oldPath.getAttributeMatrixName());
   }
 
-  amProxy.updatePath(oldPath, newPath);
+  amProxy.updatePath(renamePath);
 }
 
 // -----------------------------------------------------------------------------

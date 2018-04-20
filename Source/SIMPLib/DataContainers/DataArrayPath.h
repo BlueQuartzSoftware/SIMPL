@@ -239,11 +239,10 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
 
     /**
      * @brief updates the current path based on the newPath if it matches the given previous value
-     * @param oldPath
-     * @param newPath
+     * @param renamePath
      * return
      */
-    bool updatePath(const DataArrayPath& oldPath, const DataArrayPath& newPath);
+    bool updatePath(const DataArrayPath::RenameType& renamePath);
 
     /**
     * @brief Writes the contents of the proxy to the json object 'json'

@@ -137,7 +137,7 @@ public:
   * @param oldPath
   * @param newPath
   */
-  void updatePath(DataArrayPath oldPath, DataArrayPath newPath);
+  void updatePath(DataArrayPath::RenameType renamePath);
 
   /**
   * @brief operator = method

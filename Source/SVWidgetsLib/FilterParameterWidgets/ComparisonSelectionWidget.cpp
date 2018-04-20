@@ -122,8 +122,8 @@ void ComparisonSelectionWidget::setupGui()
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
   // If the DataArrayPath is updated in the filter, update the widget
-  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath, DataArrayPath)),
-    this, SLOT(updateDataArrayPath(QString, DataArrayPath, DataArrayPath)));
+  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
+    this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
   // Create the table model
   m_ComparisonSelectionTableModel = createComparisonModel();
@@ -637,10 +637,14 @@ void ComparisonSelectionWidget::createSelectionMenu()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonSelectionWidget::updateDataArrayPath(QString propertyName, DataArrayPath oldPath, DataArrayPath newPath)
+void ComparisonSelectionWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
 {
   if(propertyName.compare(getFilterParameter()->getPropertyName()) == 0)
   {
+    DataArrayPath oldPath;
+    DataArrayPath newPath;
+    std::tie(oldPath, newPath) = renamePath;
+
     QVariant var = getFilter()->property(PROPERTY_NAME_AS_CHAR);
     DataArrayPath amPath = newPath;
     QString dataArrayName = amPath.getDataArrayName();

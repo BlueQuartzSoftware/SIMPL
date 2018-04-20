@@ -488,8 +488,12 @@ DataContainerProxy& DataContainerArrayProxy::getDataContainerProxy(const QString
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerArrayProxy::updatePath(DataArrayPath oldPath, DataArrayPath newPath)
+void DataContainerArrayProxy::updatePath(DataArrayPath::RenameType renamePath)
 {
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
   DataContainerProxy dcProxy = dataContainers[oldPath.getDataContainerName()];
 
   if(oldPath.getDataContainerName() != newPath.getDataContainerName())
@@ -498,7 +502,7 @@ void DataContainerArrayProxy::updatePath(DataArrayPath oldPath, DataArrayPath ne
     dataContainers.remove(oldPath.getDataContainerName());
   }
 
-  dcProxy.updatePath(oldPath, newPath);
+  dcProxy.updatePath(renamePath);
 }
 
 // -----------------------------------------------------------------------------
