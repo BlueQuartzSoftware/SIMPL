@@ -62,45 +62,9 @@ PipelineItemDelegate::~PipelineItemDelegate() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QWidget* PipelineItemDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
+QSize PipelineItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &) const
 {
-  QLineEdit* editor = new QLineEdit(parent);
-  return editor;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineItemDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
-{
-  QString value = index.model()->data(index, Qt::DisplayRole).toString();
-  QLineEdit* line = static_cast<QLineEdit*>(editor);
-  line->setText(value);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineItemDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const
-{
-  PipelineModel* bModel = qobject_cast<PipelineModel*>(model);
-
-  QLineEdit* line = static_cast<QLineEdit*>(editor);
-  QString value = line->text();
-
-  if(value.isEmpty() == false)
-  {
-    QModelIndex bIndex = bModel->index(index.row(), PipelineItem::Name, index.parent());
-    bModel->setData(bIndex, value, Qt::DisplayRole);
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineItemDelegate::updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const
-{
-  editor->setGeometry(option.rect);
+  return {option.rect.width(), 36};
 }
 
 // -----------------------------------------------------------------------------
@@ -108,7 +72,7 @@ void PipelineItemDelegate::updateEditorGeometry(QWidget* editor, const QStyleOpt
 // -----------------------------------------------------------------------------
 void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-  const PipelineModel* model = dynamic_cast<const PipelineModel*>(index.model());
+  const PipelineModel* model = getPipelineModel(index);
   painter->setRenderHint(QPainter::Antialiasing);
 
   PipelineItem::WidgetState wState = model->widgetState(index);
@@ -231,27 +195,27 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
 
   // Draw the Index number
   painter->setPen(QPen(indexFontColor));
-  QString number = model->filterIndexString(index); // format the index number with a leading zero
+  QString number = getFilterIndexString(index); // format the index number with a leading zero
   painter->drawText(rect.x() + textMargin, rect.y() + fontMargin + fontHeight, number);
 
   // Compute the Width to draw the text based on the visibility of the various buttons
   int fullWidth = rect.width() - indexBoxWidth;
   int allowableWidth = fullWidth;
 
-  QModelIndex deleteIndex = model->index(index.row(), PipelineItem::DeleteBtn, index.parent());
-  QWidget* deleteBtn = m_View->indexWidget(deleteIndex);
+//  QModelIndex deleteIndex = model->index(index.row(), PipelineItem::DeleteBtn, index.parent());
+//  QWidget* deleteBtn = m_View->indexWidget(deleteIndex);
 
-  if(deleteBtn->isVisible())
-  {
-    allowableWidth -= deleteBtn->width();
-  }
+//  if(deleteBtn->isVisible())
+//  {
+//    allowableWidth -= deleteBtn->width();
+//  }
 
-  QModelIndex disableIndex = model->index(index.row(), PipelineItem::DisableBtn, index.parent());
-  QWidget* disableBtn = m_View->indexWidget(disableIndex);
-  if(disableBtn->isVisible())
-  {
-    allowableWidth -= disableBtn->width();
-  }
+//  QModelIndex disableIndex = model->index(index.row(), PipelineItem::DisableBtn, index.parent());
+//  QWidget* disableBtn = m_View->indexWidget(disableIndex);
+//  if(disableBtn->isVisible())
+//  {
+//    allowableWidth -= disableBtn->width();
+//  }
   // QString elidedHumanLabel = fontMetrics.elidedText(m_FilterHumanLabel, Qt::ElideRight, allowableWidth);
   int humanLabelWidth = fontMetrics.width(filter->getHumanLabel());
 
@@ -281,26 +245,61 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
 
   painter->drawText(rect.x() + indexBoxWidth + textMargin, rect.y() + fontMargin + fontHeight, filter->getHumanLabel());
 
-//  // If the filter widget is selected, draw a border around it.
-//  if(isSelected() == true)
-//  {
-//    QColor selectedColor = QColor::fromHsv(bgColor.hue(), 180, 150);
-//    QPainterPath path;
-//    path.addRect(rect);
-//    QPen pen(selectedColor, m_BorderThickness);
-//    painter->setPen(pen);
-//    painter->drawPath(path);
-//    if(m_BorderThickness < 1.0)
-//    {
+  // If the filter widget is selected, draw a border around it.
+  if(model->isSelected(index) == true)
+  {
+    QColor selectedColor = QColor::fromHsv(bgColor.hue(), 180, 150);
+    QPainterPath path;
+    path.addRect(rect);
+    QPen pen(selectedColor, m_BorderThickness);
+    painter->setPen(pen);
+    painter->drawPath(path);
+    if(m_BorderThickness < 1.0)
+    {
 //      m_AnimationTimer.start(33);
-//    }
-//  }
-//  else
-//  {
+    }
+  }
+  else
+  {
 //    m_AnimationTimer.stop();
-//  }
+  }
 
   QStyledItemDelegate::paint(painter, option, index);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString PipelineItemDelegate::getFilterIndexString(const QModelIndex &index) const
+{
+  const PipelineModel* model = getPipelineModel(index);
+  int numFilters = model->rowCount();
+  int i = index.row() + 1;
+
+  if(numFilters < 10)
+  {
+    numFilters = 11;
+  }
+  QString numStr = QString::number(i);
+
+  if(numFilters > 9)
+  {
+    int mag = 0;
+    int max = numFilters;
+    while(max > 0)
+    {
+      mag++;
+      max = max / 10;
+    }
+    numStr = "";             // Clear the string
+    QTextStream ss(&numStr); // Create a QTextStream to set up the padding
+    ss.setFieldWidth(mag);
+    ss.setPadChar('0');
+    ss << i;
+  }
+  QString paddedIndex = numStr;
+
+  return paddedIndex;
 }
 
 // -----------------------------------------------------------------------------
@@ -319,4 +318,12 @@ void PipelineItemDelegate::updateBorderThickness()
     m_BorderIncrement = 1.0;
     m_BorderThickness = 0.0;
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const PipelineModel* PipelineItemDelegate::getPipelineModel(const QModelIndex &index) const
+{
+  return dynamic_cast<const PipelineModel*>(index.model());
 }

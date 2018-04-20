@@ -59,8 +59,6 @@
 #include "SVWidgetsLib/Widgets/BookmarksModel.h"
 #include "SVWidgetsLib/Widgets/FilterListToolboxWidget.h"
 
-#define PREBUILT_PIPELINES_DIR "PrebuiltPipelines"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -100,8 +98,10 @@ void BookmarksToolboxWidget::setupGui()
               }");
   bookmarksTreeView->setStyleSheet(css);
 
-  connect(bookmarksTreeView, SIGNAL(itemWasDropped(QModelIndex, QString&, QIcon, QString, int, bool, bool, bool)), this,
-          SLOT(addTreeItem(QModelIndex, QString&, QIcon, QString, int, bool, bool, bool)));
+  BookmarksModel* model = BookmarksModel::Instance();
+
+  connect(bookmarksTreeView, SIGNAL(itemWasDropped(QModelIndex, QString&, QIcon, QString, int, bool)), model,
+          SLOT(addTreeItem(QModelIndex, QString&, QIcon, QString, int, bool)));
 
   connect(bookmarksTreeView, &BookmarksTreeView::updateStatusBar, this, &BookmarksToolboxWidget::updateStatusBar);
 
@@ -185,138 +185,6 @@ QStringList BookmarksToolboxWidget::generateFilterListFromPipelineFile(QString p
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void BookmarksToolboxWidget::readPrebuiltPipelines()
-{
-  QDir pipelinesDir = findPipelinesDirectory();
-  QString pPath = pipelinesDir.absolutePath();
-  BookmarksModel* model = bookmarksTreeView->getBookmarksModel();
-
-  FilterLibraryTreeWidget::ItemType itemType = FilterLibraryTreeWidget::Leaf_Item_Type;
-  QString iconFileName(":/bookmark.png");
-  bool allowEditing = false;
-  QStringList fileExtension;
-  fileExtension.append("*.json");
-
-  // Add top-level folder and then load up all the pipelines into the folder
-  QString dirName = "Prebuilt Pipelines";
-  bookmarksTreeView->addTreeItem(QModelIndex(), dirName, QIcon(":/folder_blue.png"), pPath, 0, true, false, false);
-  QModelIndex index = model->index(0, BookmarksItem::Name, QModelIndex());
-  addPipelinesRecursively(pipelinesDir, index, iconFileName, allowEditing, fileExtension, itemType);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void BookmarksToolboxWidget::addPipelinesRecursively(QDir currentDir, QModelIndex parent, QString iconFileName, bool allowEditing, QStringList filters, FilterLibraryTreeWidget::ItemType itemType)
-{
-  BookmarksModel* model = bookmarksTreeView->getBookmarksModel();
-
-  QModelIndex nextIndex;
-
-  // Get a list of all the directories
-  QFileInfoList dirList = currentDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
-  if(dirList.size() > 0)
-  {
-    foreach(QFileInfo fi, dirList)
-    {
-      // At this point we have the first level of directories and we want to do 2 things:
-      // 1.Create an entry in the tree widget with this name
-      // 2.drop into the directory and look for all the .json files and add entries for those items.
-      // qDebug() << fi.absoluteFilePath() << "\n";
-      // Add a tree widget item for this  Group
-      // qDebug() << fi.absoluteFilePath();
-      int row = model->rowCount(parent);
-      QString baseName = fi.baseName();
-      bookmarksTreeView->addTreeItem(parent, baseName, QIcon(":/folder_blue.png"), fi.absoluteFilePath(), row, true, false, false);
-      nextIndex = model->index(row, BookmarksItem::Name, parent);
-      addPipelinesRecursively(QDir(fi.absoluteFilePath()), nextIndex, iconFileName, allowEditing, filters, itemType); // Recursive call
-    }
-  }
-
-  QFileInfoList itemList = currentDir.entryInfoList(filters);
-  foreach(QFileInfo itemInfo, itemList)
-  {
-    QString itemFilePath = itemInfo.absoluteFilePath();
-    QString itemName;
-    if(itemInfo.suffix().compare("json") == 0)
-    {
-      QString dVers;
-      JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
-      jsonReader->readNameOfPipelineFromFile(itemFilePath, itemName, dVers, nullptr);
-    }
-#if 0
-    else if(itemInfo.suffix().compare("ini") == 0 || itemInfo.suffix().compare("txt") == 0)
-    {
-      QSettings itemPref(itemFilePath, QSettings::IniFormat);
-      itemPref.beginGroup(SIMPL::Settings::PipelineBuilderGroup);
-      itemName = itemPref.value(SIMPL::Settings::PipelineName).toString();
-      itemPref.endGroup();
-    }
-#endif
-    // Add tree widget for this Prebuilt Pipeline
-    int row = model->rowCount(parent);
-    bookmarksTreeView->addTreeItem(parent, itemName, QIcon(iconFileName), itemInfo.absoluteFilePath(), row, true, false, false);
-    nextIndex = model->index(row, BookmarksItem::Name, parent);
-
-//    QString htmlFormattedString = generateHtmlFilterListFromPipelineFile(itemInfo.absoluteFilePath());
-//    model->setData(nextIndex, htmlFormattedString, Qt::ToolTipRole);
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QDir BookmarksToolboxWidget::findPipelinesDirectory()
-{
-  QString dirName(PREBUILT_PIPELINES_DIR);
-
-  QString appPath = QCoreApplication::applicationDirPath();
-  QDir pipelinesDir = QDir(appPath);
-#if defined(Q_OS_WIN)
-  QFileInfo fi(pipelinesDir.absolutePath() + QDir::separator() + dirName);
-  if(fi.exists() == false)
-  {
-    // The PrebuiltPipelines file does not exist at the default location because we are probably running from visual studio.
-    // Try up one more directory
-    pipelinesDir.cdUp();
-  }
-#elif defined(Q_OS_MAC)
-  if(pipelinesDir.dirName() == "MacOS")
-  {
-    pipelinesDir.cdUp();
-    // Can we change directory into the "PrebuiltPipeliines" directory at this level.
-    QString pbpDir = QString("Resources/%1").arg(PREBUILT_PIPELINES_DIR);
-    if (pipelinesDir.cd(pbpDir))
-    {
-      return pipelinesDir;
-    }
-    pipelinesDir.cdUp();
-    pipelinesDir.cdUp();
-    if (pipelinesDir.cd(PREBUILT_PIPELINES_DIR) )
-    {
-      return pipelinesDir;
-    }
-  }
-#else
-  // We are on Linux - I think
-  QFileInfo fi(pipelinesDir.absolutePath() + QDir::separator() + dirName);
-  // qDebug() << fi.absolutePath();
-  // Look for the PREBUILT_PIPELINES_DIR directory in the current app directory
-  if(fi.exists() == false)
-  {
-    // Try up one more directory
-    pipelinesDir.cdUp();
-  }
-
-#endif
-
-  pipelinesDir = pipelinesDir.absolutePath() + QDir::separator() + dirName;
-  return pipelinesDir;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void BookmarksToolboxWidget::on_bookmarksTreeView_clicked(const QModelIndex& index)
 {
 }
@@ -326,7 +194,7 @@ void BookmarksToolboxWidget::on_bookmarksTreeView_clicked(const QModelIndex& ind
 // -----------------------------------------------------------------------------
 void BookmarksToolboxWidget::on_bookmarksTreeView_doubleClicked(const QModelIndex& index)
 {
-  BookmarksModel* model = bookmarksTreeView->getBookmarksModel();
+  BookmarksModel* model = BookmarksModel::Instance();
 
   QModelIndex nameIndex = model->index(index.row(), BookmarksItem::Name, index.parent());
   QModelIndex pathIndex = model->index(index.row(), BookmarksItem::Path, index.parent());
@@ -443,38 +311,9 @@ void BookmarksToolboxWidget::readSettings(QtSSettings* prefs)
   QByteArray headerState = prefs->value("Horizontal Header State", QByteArray());
   bookmarksTreeView->header()->restoreState(headerState);
 
-  BookmarksModel* model = bookmarksTreeView->getBookmarksModel();
-  if(model->isEmpty())
-  {
-    // Check the new bookmarks settings file first
-    QSharedPointer<QtSSettings> bookmarksPrefs = QSharedPointer<QtSSettings>(new QtSSettings(getBookmarksPrefsPath()));
-
-    if(bookmarksPrefs->contains("Bookmarks"))
-    {
-      bookmarksPrefs->beginGroup("Bookmarks");
-
-      QJsonObject modelObj = bookmarksPrefs->value("Bookmarks Model", QJsonObject());
-      model = new BookmarksModel(modelObj, this);
-
-      bookmarksPrefs->endGroup();
-    }
-    else
-    {
-      // If no bookmarks were found in the new location, check the old location
-      prefs->beginGroup("DockWidgetSettings");
-      prefs->beginGroup("Bookmarks Dock Widget");
-
-      QJsonObject modelObj = prefs->value("Bookmarks Model", QJsonObject());
-      model = new BookmarksModel(modelObj, this);
-
-      prefs->endGroup();
-      prefs->endGroup();
-    }
-  }
+  BookmarksModel* model = BookmarksModel::Instance();
 
   bookmarksTreeView->setModel(model);
-
-  readPrebuiltPipelines();
 }
 
 // -----------------------------------------------------------------------------
@@ -494,16 +333,6 @@ void BookmarksToolboxWidget::writeSettings(QtSSettings* prefs)
   prefs->setValue(objectName(), isHidden());
 
   prefs->setValue("Horizontal Header State", bookmarksTreeView->header()->saveState());
-
-  QSharedPointer<QtSSettings> bookmarksPrefs = QSharedPointer<QtSSettings>(new QtSSettings(getBookmarksPrefsPath()));
-
-  bookmarksPrefs->beginGroup("Bookmarks");
-
-  BookmarksModel* model = getBookmarksTreeView()->getBookmarksModel();
-  QJsonObject modelObj = model->toJsonObject();
-  bookmarksPrefs->setValue("Bookmarks Model", modelObj);
-
-  bookmarksPrefs->endGroup();
 }
 
 // -----------------------------------------------------------------------------
@@ -529,43 +358,4 @@ QList<QString> BookmarksToolboxWidget::deserializeTreePath(QString treePath)
   }
 
   return list;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString BookmarksToolboxWidget::getBookmarksPrefsPath()
-{
-  QtSSettings prefs;
-  QFileInfo fi(prefs.fileName());
-  QString parentPath = fi.absolutePath();
-
-  QString appName = QCoreApplication::applicationName();
-  if(appName.isEmpty())
-  {
-    appName = QString("Application");
-  }
-
-#if defined(Q_OS_MAC)
-
-  QString domain = QCoreApplication::organizationDomain();
-  if(domain.isEmpty())
-  {
-    domain = QString("Domain");
-  }
-  QStringList tokens = domain.split(".");
-  QStringListIterator iter(tokens);
-  iter.toBack();
-  domain = QString("");
-  while(iter.hasPrevious())
-  {
-    domain = domain + iter.previous() + QString(".");
-  }
-
-  QString bookmarksPrefsPath = parentPath + "/" + domain + appName + "_BookmarksModel.json";
-#else
-  QString bookmarksPrefsPath = QDir::toNativeSeparators(parentPath + "/" + appName + "_BookmarksModel.json");
-#endif
-
-  return bookmarksPrefsPath;
 }

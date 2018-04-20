@@ -58,21 +58,6 @@ class SVWidgetsLib_EXPORT SIMPLController : public QObject
     ~SIMPLController();
 
     /**
-     * @brief fromJsonObject
-     * @param modelObject
-     * @param model
-     * @return
-     */
-    PipelineModel* fromJsonObject(QJsonObject modelObject, PipelineModel* model);
-
-    /**
-     * @brief toJsonObject
-     * @param model
-     * @return
-     */
-    QJsonObject toJsonObject(PipelineModel *model);
-
-    /**
      * @brief Determines whether or not the pipeline that begins at the specified index is currently running
      * @param pipelineIndex
      * @return
@@ -154,22 +139,6 @@ class SVWidgetsLib_EXPORT SIMPLController : public QObject
     QString                                           m_CurrentRedoText = "";
     QString                                           m_PreviousUndoText = "";
     QString                                           m_PreviousRedoText = "";
-
-    /**
-     * @brief wrapModel
-     * @param index
-     * @return
-     */
-    QJsonObject wrapModel(QModelIndex index, PipelineModel* model);
-
-    /**
-     * @brief unwrapModel
-     * @param objectName
-     * @param object
-     * @param model
-     * @param parentIndex
-     */
-    void unwrapModel(QString objectName, QJsonObject object, PipelineModel* model, QModelIndex parentIndex);
 
     SIMPLController(const SIMPLController&);    // Copy Constructor Not Implemented
     void operator=(const SIMPLController&);  // Operator '=' Not Implemented

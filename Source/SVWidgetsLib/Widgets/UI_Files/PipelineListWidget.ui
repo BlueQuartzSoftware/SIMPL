@@ -62,7 +62,11 @@
     </widget>
    </item>
    <item row="0" column="0">
-    <widget class="SVPipelineView" name="pipelineView"/>
+    <widget class="SVPipelineView" name="pipelineView">
+     <property name="spacing">
+      <number>2</number>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

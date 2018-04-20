@@ -98,11 +98,6 @@ class SVWidgetsLib_EXPORT BookmarksToolboxWidget : public QWidget, private Ui::B
     BookmarksTreeView* getBookmarksTreeView();
 
     /**
-    * @brief getBookmarksPrefsPath
-    */
-    QString getBookmarksPrefsPath();
-
-    /**
     * @brief Reads the preferences from the users pref file
     */
     void readSettings(QtSSettings* prefs);
@@ -119,18 +114,12 @@ class SVWidgetsLib_EXPORT BookmarksToolboxWidget : public QWidget, private Ui::B
 
     virtual QDir findV4FavoritesDirectory();
 
-    void readPrebuiltPipelines();
-
   protected:
     QStringList generateFilterListFromPipelineFile(QString path);
     QString generateHtmlFilterListFromPipelineFile(QString path);
 
     void populateFilterList(QStringList filterNames);
     QString writeNewFavoriteFilePath(QString newFavoriteTitle, QString favoritePath, QTreeWidgetItem* item);
-
-    QDir findPipelinesDirectory();
-    void addPipelinesRecursively(QDir currentDir, QModelIndex parent, QString iconFileName,
-                                 bool allowEditing, QStringList filters, FilterLibraryTreeWidget::ItemType itemType);
 
   protected slots:
 

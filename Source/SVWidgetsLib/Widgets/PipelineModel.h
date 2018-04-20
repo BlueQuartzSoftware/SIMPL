@@ -114,6 +114,9 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
     bool isHovering(const QModelIndex &index) const;
     void setHovering(const QModelIndex &index);
 
+    bool isSelected(const QModelIndex &index) const;
+    void setSelected(const QModelIndex &index);
+
     bool isEmpty();
 
     QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
@@ -156,9 +159,6 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
     PipelineItem* getRootItem();
 
     int getMaxFilterCount() const;
-
-    void setFilterIndexString(const QModelIndex &index, int i);
-    QString filterIndexString(const QModelIndex &index) const;
 
     QList<QObject*> getPipelineMessageObservers();
 

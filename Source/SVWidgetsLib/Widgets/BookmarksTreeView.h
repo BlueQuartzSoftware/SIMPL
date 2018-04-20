@@ -89,12 +89,6 @@ class SVWidgetsLib_EXPORT BookmarksTreeView : public QTreeView
     ~BookmarksTreeView();
 
     /**
-     * @brief getBookmarksModel
-     * @return
-     */
-    BookmarksModel* getBookmarksModel();
-
-    /**
     * @brief setModel
     * @param model
     */
@@ -106,23 +100,6 @@ class SVWidgetsLib_EXPORT BookmarksTreeView : public QTreeView
     * @param parent
     */
     void addBookmark(const QString& filePath, const QModelIndex& parent);
-
-    /**
-    * @brief BookmarksToolboxWidget::addFavoriteTreeItem
-    * @param parent
-    * @param favoriteTitle
-    * @param icon
-    * @param favoritePath
-    * @param allowEditing
-    */
-    int addTreeItem(QModelIndex parent,
-                    QString& favoriteTitle,
-                    QIcon icon,
-                    QString favoritePath,
-                    int insertIndex,
-                    bool allowEditing,
-                    bool editState,
-                    bool isExpanded);
 
     /**
     * @brief filterOutDescendants
@@ -151,7 +128,6 @@ class SVWidgetsLib_EXPORT BookmarksTreeView : public QTreeView
   protected slots:
     void listenAddBookmarkTriggered();
     void listenAddBookmarkFolderTriggered();
-    void listenBookmarkSelectionChanged(const QModelIndex& current, const QModelIndex& previous);
     void listenRenameBookmarkTriggered();
     void listenRemoveBookmarkTriggered();
     void listenShowBookmarkInFileSystemTriggered();
@@ -161,7 +137,7 @@ class SVWidgetsLib_EXPORT BookmarksTreeView : public QTreeView
     void listenLocateBookmarkTriggered();
 
   signals:
-    void itemWasDropped(QModelIndex parent, QString& title, QIcon icon, QString path, int index, bool allowEditing, bool editState, bool isExpanding);
+    void itemWasDropped(QModelIndex parent, QString& title, QIcon icon, QString path, int index, bool isExpanding);
     void currentIndexChanged(const QModelIndex& current, const QModelIndex& previous);
     void folderChangedState(const QModelIndex& index, bool expand);
 

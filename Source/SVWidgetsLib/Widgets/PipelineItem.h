@@ -58,8 +58,8 @@ class SVWidgetsLib_EXPORT PipelineItem
     SIMPL_INSTANCE_PROPERTY(QIcon, Icon)
     SIMPL_INSTANCE_PROPERTY(bool, Expanded)
     SIMPL_INSTANCE_PROPERTY(bool, Hovering)
+    SIMPL_BOOL_PROPERTY(Selected)
     SIMPL_INSTANCE_PROPERTY(QString, ItemTooltip)
-    SIMPL_INSTANCE_PROPERTY(QString, FilterIndex)
 
     enum TreeItemData
     {

@@ -32,7 +32,6 @@ set(SVWidgetsLib_Widgets_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineItemDelegate.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLController.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineModel.h
-  # ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeView.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterOutlineWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineView.h
@@ -84,7 +83,6 @@ set(SVWidgetsLib_Widgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLController.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineItemDelegate.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineModel.cpp
-  # ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeView.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineItem.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineView.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLViewToolbox.cpp

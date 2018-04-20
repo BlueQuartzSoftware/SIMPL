@@ -29,8 +29,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _PipelineItemDelegate_h_
-#define _PipelineItemDelegate_h_
+#pragma once
 
 #include <QtCore/QModelIndex>
 #include <QtCore/QTimer>
@@ -50,11 +49,12 @@ class PipelineItemDelegate : public QStyledItemDelegate
     virtual ~PipelineItemDelegate();
 
   protected:
-    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const Q_DECL_OVERRIDE;
-    void setEditorData(QWidget* editor, const QModelIndex& index) const Q_DECL_OVERRIDE;
-    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const Q_DECL_OVERRIDE;
-    void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const Q_DECL_OVERRIDE;
-    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const Q_DECL_OVERRIDE;
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &) const override;
+
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+
+  private slots:
+    void updateBorderThickness();
 
   private:
     SVPipelineView* m_View = nullptr;
@@ -64,10 +64,20 @@ class PipelineItemDelegate : public QStyledItemDelegate
     qreal m_BorderThickness = 0.0;
     qreal m_BorderIncrement = 1.0;
 
-    void updateBorderThickness();
+    /**
+     * @brief Gets the proper filter index string that refers to the specified index
+     * @param index
+     * @return
+     */
+    QString getFilterIndexString(const QModelIndex &index) const;
+
+    /**
+     * @brief Convenience method to get the PipelineModel instance
+     * @param index
+     * @return
+     */
+    const PipelineModel* getPipelineModel(const QModelIndex &index) const;
 
     PipelineItemDelegate(const PipelineItemDelegate&) = delete; // Copy Constructor Not Implemented
     void operator=(const PipelineItemDelegate&) = delete;        // Operator '=' Not Implemented
 };
-
-#endif // _PipelineItemDelegate_h_

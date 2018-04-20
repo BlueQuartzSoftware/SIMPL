@@ -30,7 +30,7 @@
     <number>0</number>
    </property>
    <item row="0" column="0">
-    <widget class="FilterLibraryTreeWidget" name="bookmarksTreeView">
+    <widget class="FilterLibraryTreeWidget" name="filterLibrary">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
        <horstretch>0</horstretch>

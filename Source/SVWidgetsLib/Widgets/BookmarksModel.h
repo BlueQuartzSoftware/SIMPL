@@ -39,6 +39,7 @@
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QModelIndex>
 #include <QtCore/QVariant>
+#include <QtCore/QDir>
 #include <QtCore/QFileSystemWatcher>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -63,10 +64,18 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
   public:
     SIMPL_TYPE_MACRO(BookmarksModel)
 
-    BookmarksModel(QObject* parent = nullptr);
-    BookmarksModel(QJsonObject treeObject, QObject* parent = nullptr);
+    enum ErrorCodes
+    {
+      UNRECOGNIZED_EXT = -1
+    };
 
     ~BookmarksModel();
+
+    /**
+     * @brief Instance
+     * @return
+     */
+    static BookmarksModel* Instance();
 
     /**
     * @brief toJsonObject
@@ -109,14 +118,54 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
     void setFileSystemWatcher(QFileSystemWatcher* watcher);
     QFileSystemWatcher* getFileSystemWatcher();
 
+    /**
+     * @brief readPrebuiltPipelines
+     */
+    void readPrebuiltPipelines();
+
+    /**
+     * @brief readBookmarksFromPrefsFile
+     */
+    void readBookmarksFromPrefsFile();
+
+    /**
+     * @brief writeBookmarksToPrefsFile
+     */
+    void writeBookmarksToPrefsFile();
+
+  public slots:
+    /**
+    * @brief BookmarksToolboxWidget::addFavoriteTreeItem
+    * @param parent
+    * @param favoriteTitle
+    * @param icon
+    * @param favoritePath
+    * @param allowEditing
+    */
+    int addTreeItem(QModelIndex parent,
+                    QString& favoriteTitle,
+                    QIcon icon,
+                    QString favoritePath,
+                    int insertIndex,
+                    bool isExpanded);
+
   protected:
+    BookmarksModel(QObject* parent = nullptr);
+
     void initialize();
+
+    QDir findPipelinesDirectory();
+
+    void addPipelinesRecursively(QDir currentDir, QModelIndex parent, QString iconFileName,
+                                 bool allowEditing, QStringList filters, FilterLibraryTreeWidget::ItemType itemType);
 
   protected slots:
     void updateRowState(const QString& path);
     void updateModel(const QModelIndex& topLeft, const QModelIndex& bottomRight);
 
   private:
+    static BookmarksModel*    self;
+
     BookmarksItem*            rootItem;
     QFileSystemWatcher*       m_Watcher;
 
@@ -134,6 +183,11 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
 
     QJsonObject wrapModel(QModelIndex index);
     void unwrapModel(QString objectName, QJsonObject object, QModelIndex parentIndex);
+
+    /**
+    * @brief getBookmarksPrefsPath
+    */
+    QString getBookmarksPrefsPath();
 
     BookmarksModel(const BookmarksModel&);    // Copy Constructor Not Implemented
     void operator=(const BookmarksModel&);    // Move assignment Not Implemented

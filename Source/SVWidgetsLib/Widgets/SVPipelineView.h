@@ -161,6 +161,25 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView
 
   public slots:
     /**
+     * @brief Adds a filter with the specified filterClassName to the current model
+     * @param filterClassName
+     */
+    void addFilterFromClassName(const QString &filterClassName, int insertIndex = -1);
+
+    /**
+     * @brief Adds a filter to the current model at insertIndex.  If insertIndex is < 0,
+     * the filter gets appended to the end of the model
+     * @param filter
+     */
+    void addFilter(AbstractFilter::Pointer filter, int insertIndex = -1);
+
+    /**
+     * @brief Adds multiple filters to the current model
+     * @param filters
+     */
+    void addFilters(std::vector<AbstractFilter::Pointer> filters);
+
+    /**
      * @brief Should be block this class from either emitting a preflight signal or otherwise running a preflight.
      * @param b
      */
@@ -234,6 +253,12 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView
 
     void connectSignalsSlots();
 
+    /**
+     * @brief Paints the "Creating a Pipeline" instructions on the view when the model is empty
+     * @param event
+     */
+//    void paintEvent(QPaintEvent *event);
+
     void mousePressEvent(QMouseEvent* event) override;
     void keyPressEvent(QKeyEvent *event) override;
 
@@ -251,6 +276,11 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView
     void on_focusOutEventStarted(QFocusEvent* event);
 
     void requestContextMenu(const QPoint& pos);
+
+    /**
+     * @brief updatePasteAvailability
+     */
+    void updatePasteAvailability();
 
     /**
      * @brief Slot that executes when the delete key gets pressed
@@ -273,10 +303,10 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView
     QAction*                                          m_ActionUndo = nullptr;
     QAction*                                          m_ActionRedo = nullptr;
 
-    QAction*                                          m_ActionEnableFilter = new QAction("Enable", this);
-    QAction*                                          m_ActionCut = new QAction("Cut", this);
-    QAction*                                          m_ActionCopy = new QAction("Copy", this);
-    QAction*                                          m_ActionPaste = new QAction("Paste", this);
+    QAction*                                          m_ActionEnableFilter = nullptr;
+    QAction*                                          m_ActionCut = nullptr;
+    QAction*                                          m_ActionCopy = nullptr;
+    QAction*                                          m_ActionPaste = nullptr;
     QAction*                                          m_ActionClearPipeline = new QAction("Clear Pipeline", this);
 
     /**

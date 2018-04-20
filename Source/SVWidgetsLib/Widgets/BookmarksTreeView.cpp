@@ -53,11 +53,6 @@
 #include "SVWidgetsLib/Widgets/SIMPLViewToolbox.h"
 #include "SVWidgetsLib/QtSupport/QtSFileUtils.h"
 
-enum ErrorCodes
-{
-  UNRECOGNIZED_EXT = -1
-};
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -73,9 +68,6 @@ BookmarksTreeView::BookmarksTreeView(QWidget* parent)
   connect(this, &BookmarksTreeView::collapsed, this, &BookmarksTreeView::collapseIndex);
 
   connect(this, &BookmarksTreeView::expanded, this, &BookmarksTreeView::expandIndex);
-
-  connect(this, SIGNAL(currentIndexChanged(const QModelIndex&, const QModelIndex&)), this,
-          SLOT(listenBookmarkSelectionChanged(const QModelIndex&, const QModelIndex&)));
 
   BookmarksItemDelegate* dlg = new BookmarksItemDelegate(this);
   setItemDelegate(dlg);
@@ -112,16 +104,16 @@ BookmarksTreeView::~BookmarksTreeView() = default;
 // -----------------------------------------------------------------------------
 void BookmarksTreeView::addBookmark(const QString& filePath, const QModelIndex& parent)
 {
-  BookmarksModel* model = getBookmarksModel();
+  BookmarksModel* model = BookmarksModel::Instance();
   QFileInfo fi(filePath);
   QString fileTitle = fi.baseName();
-  int err = addTreeItem(parent, fileTitle, QIcon(":/bookmark.png"), filePath, model->rowCount(parent), true, false, false);
+  int err = model->addTreeItem(parent, fileTitle, QIcon(":/bookmark.png"), filePath, model->rowCount(parent), false);
   if(err >= 0)
   {
     emit updateStatusBar("The pipeline '" + fileTitle + "' has been added successfully.");
     expand(parent);
   }
-  else if(err == UNRECOGNIZED_EXT)
+  else if(err == BookmarksModel::UNRECOGNIZED_EXT)
   {
     emit updateStatusBar("The pipeline '" + fileTitle + "' could not be added, because the pipeline file extension was not recognized.");
   }
@@ -129,64 +121,6 @@ void BookmarksTreeView::addBookmark(const QString& filePath, const QModelIndex& 
   {
     emit updateStatusBar("The pipeline '" + fileTitle + "' could not be added.  An unknown error has occurred.  Please contact the SIMPLView developers.");
   }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int BookmarksTreeView::addTreeItem(QModelIndex parent, QString& favoriteTitle, QIcon icon, QString favoritePath, int insertIndex, bool allowEditing, bool editState, bool isExpanded)
-{
-
-  favoritePath = QDir::toNativeSeparators(favoritePath);
-
-  QFileInfo fileInfo(favoritePath);
-  QString ext = fileInfo.completeSuffix();
-  if(fileInfo.isFile() && ext != "dream3d" && ext != "json" && ext != "ini" && ext != "txt")
-  {
-    return UNRECOGNIZED_EXT;
-  }
-
-  BookmarksModel* model = getBookmarksModel();
-
-  blockSignals(true);
-  // Add a new Item to the Tree
-  model->insertRow(insertIndex, parent);
-  QModelIndex nameIndex = model->index(insertIndex, BookmarksItem::Name, parent);
-  model->setData(nameIndex, favoriteTitle, Qt::DisplayRole);
-  QModelIndex pathIndex = model->index(insertIndex, BookmarksItem::Path, parent);
-  model->setData(pathIndex, favoritePath, Qt::DisplayRole);
-  model->setData(nameIndex, icon, Qt::DecorationRole);
-
-  sortByColumn(BookmarksItem::Name, Qt::AscendingOrder);
-  blockSignals(false);
-
-  if(favoritePath.isEmpty())
-  {
-    // This is a node
-    blockSignals(true);
-    if(isExpanded)
-    {
-      expand(nameIndex);
-      setExpanded(nameIndex, true);
-      setExpanded(pathIndex, true);
-    }
-    else
-    {
-      setExpanded(nameIndex, false);
-      setExpanded(pathIndex, false);
-    }
-    blockSignals(false);
-    if(editState == true)
-    {
-      edit(nameIndex);
-    }
-  }
-  else
-  {
-    model->getFileSystemWatcher()->addPath(favoritePath);
-  }
-  // resizeColumnToContents(1);
-  return 0;
 }
 
 // -----------------------------------------------------------------------------
@@ -228,25 +162,6 @@ void BookmarksTreeView::listenAddBookmarkTriggered()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void BookmarksTreeView::listenBookmarkSelectionChanged(const QModelIndex& current, const QModelIndex& previous)
-{
-  BookmarksModel* model = getBookmarksModel();
-
-  if(model->index(current.row(), BookmarksItem::Path, current.parent()).data().toString().isEmpty() == true)
-  {
-    m_ActionAddBookmark->setEnabled(true);
-    m_ActionAddBookmarkFolder->setEnabled(true);
-  }
-  else
-  {
-    m_ActionAddBookmark->setDisabled(true);
-    m_ActionAddBookmarkFolder->setDisabled(true);
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void BookmarksTreeView::listenAddBookmarkFolderTriggered()
 {
   QModelIndex parent = currentIndex();
@@ -258,9 +173,9 @@ void BookmarksTreeView::listenAddBookmarkFolderTriggered()
 
   QString name = "New Folder";
 
-  BookmarksModel* model = getBookmarksModel();
+  BookmarksModel* model = BookmarksModel::Instance();
 
-  addTreeItem(parent, name, QIcon(":/folder_blue.png"), "", model->rowCount(parent), true, true, false);
+  model->addTreeItem(parent, name, QIcon(":/folder_blue.png"), "", model->rowCount(parent), false);
 }
 
 // -----------------------------------------------------------------------------
@@ -268,7 +183,7 @@ void BookmarksTreeView::listenAddBookmarkFolderTriggered()
 // -----------------------------------------------------------------------------
 void BookmarksTreeView::listenShowBookmarkInFileSystemTriggered()
 {
-  BookmarksModel* model = getBookmarksModel();
+  BookmarksModel* model = BookmarksModel::Instance();
 
   QModelIndex index = currentIndex();
   if(index.isValid())
@@ -303,7 +218,7 @@ void BookmarksTreeView::listenRenameBookmarkTriggered()
 // -----------------------------------------------------------------------------
 void BookmarksTreeView::listenRemoveBookmarkTriggered()
 {
-  BookmarksModel* model = getBookmarksModel();
+  BookmarksModel* model = BookmarksModel::Instance();
 
   QModelIndexList indexList = selectionModel()->selectedRows(BookmarksItem::Name);
 
@@ -363,7 +278,7 @@ void BookmarksTreeView::listenRemoveBookmarkTriggered()
 // -----------------------------------------------------------------------------
 void BookmarksTreeView::listenOpenBookmarkTriggered()
 {
-  BookmarksModel* model = getBookmarksModel();
+  BookmarksModel* model = BookmarksModel::Instance();
 
   QModelIndexList indexList = selectionModel()->selectedRows(BookmarksItem::Name);
 
@@ -393,7 +308,7 @@ void BookmarksTreeView::listenOpenBookmarkTriggered()
 // -----------------------------------------------------------------------------
 void BookmarksTreeView::listenExecuteBookmarkTriggered()
 {
-  BookmarksModel* model = getBookmarksModel();
+  BookmarksModel* model = BookmarksModel::Instance();
 
   QModelIndexList indexList = selectionModel()->selectedRows(BookmarksItem::Name);
 
@@ -434,7 +349,7 @@ void BookmarksTreeView::listenClearBookmarksTriggered()
 
   if(response == QMessageBox::Yes)
   {
-    BookmarksModel* model = getBookmarksModel();
+    BookmarksModel* model = BookmarksModel::Instance();
     if(model->isEmpty() == false)
     {
       model->removeRows(0, model->rowCount(QModelIndex()));
@@ -447,7 +362,7 @@ void BookmarksTreeView::listenClearBookmarksTriggered()
 // -----------------------------------------------------------------------------
 void BookmarksTreeView::listenLocateBookmarkTriggered()
 {
-  BookmarksModel* model = getBookmarksModel();
+  BookmarksModel* model = BookmarksModel::Instance();
 
   QModelIndex current = currentIndex();
 
@@ -527,9 +442,9 @@ void BookmarksTreeView::mousePressEvent(QMouseEvent* event)
 // -----------------------------------------------------------------------------
 void BookmarksTreeView::mouseMoveEvent(QMouseEvent* event)
 {
-  BookmarksModel* model = getBookmarksModel();
+  BookmarksModel* model = BookmarksModel::Instance();
 
-  if(event->buttons() & Qt::LeftButton)
+  if(model != nullptr && event->buttons() & Qt::LeftButton)
   {
     QModelIndex index = model->index(currentIndex().row(), BookmarksItem::Name, currentIndex().parent());
     bool itemHasErrors = model->data(index, Qt::UserRole).value<bool>();
@@ -563,7 +478,7 @@ void BookmarksTreeView::requestContextMenu(const QPoint& pos)
     mapped = mapToGlobal(pos);
   }
 
-  BookmarksModel* model = getBookmarksModel();
+  BookmarksModel* model = BookmarksModel::Instance();
 
   QModelIndexList indexList = selectionModel()->selectedRows(BookmarksItem::Name);
 
@@ -659,7 +574,7 @@ void BookmarksTreeView::requestContextMenu(const QPoint& pos)
 // -----------------------------------------------------------------------------
 QModelIndexList BookmarksTreeView::filterOutDescendants(QModelIndexList indexList)
 {
-  BookmarksModel* model = getBookmarksModel();
+  BookmarksModel* model = BookmarksModel::Instance();
 
   for(int i = indexList.size() - 1; i >= 0; i--)
   {
@@ -701,7 +616,7 @@ void BookmarksTreeView::performDrag()
     m_IndexesBeingDragged.push_back(list[i]);
   }
 
-  BookmarksModel* model = getBookmarksModel();
+  BookmarksModel* model = BookmarksModel::Instance();
   QJsonObject obj;
   for(int i = 0; i < m_IndexesBeingDragged.size(); i++)
   {
@@ -747,7 +662,7 @@ void BookmarksTreeView::dragEnterEvent(QDragEnterEvent* event)
 // -----------------------------------------------------------------------------
 void BookmarksTreeView::dragLeaveEvent(QDragLeaveEvent* event)
 {
-  BookmarksModel* model = getBookmarksModel();
+  BookmarksModel* model = BookmarksModel::Instance();
 
   if(m_TopLevelItemPlaceholder.isValid())
   {
@@ -770,7 +685,7 @@ void BookmarksTreeView::dragLeaveEvent(QDragLeaveEvent* event)
 // -----------------------------------------------------------------------------
 void BookmarksTreeView::dragMoveEvent(QDragMoveEvent* event)
 {
-  BookmarksModel* model = getBookmarksModel();
+  BookmarksModel* model = BookmarksModel::Instance();
   int topLevelPHPos = model->rowCount();
 
   QModelIndex index = indexAt(event->pos());
@@ -824,7 +739,7 @@ void BookmarksTreeView::dragMoveEvent(QDragMoveEvent* event)
 // -----------------------------------------------------------------------------
 void BookmarksTreeView::dropEvent(QDropEvent* event)
 {
-  BookmarksModel* model = getBookmarksModel();
+  BookmarksModel* model = BookmarksModel::Instance();
 
   const QMimeData* mimedata = event->mimeData();
   if(mimedata->hasFormat(SIMPLView::DragAndDrop::BookmarkItem))
@@ -977,7 +892,7 @@ void BookmarksTreeView::collapseIndex(const QModelIndex& index)
 {
   if(index.isValid())
   {
-    BookmarksModel* model = getBookmarksModel();
+    BookmarksModel* model = BookmarksModel::Instance();
     QModelIndex sibling = model->sibling(0, 0, index);
 
     QTreeView::collapse(index);
@@ -991,7 +906,7 @@ void BookmarksTreeView::collapseIndex(const QModelIndex& index)
 // -----------------------------------------------------------------------------
 void BookmarksTreeView::expandIndex(const QModelIndex& index)
 {
-  BookmarksModel* model = getBookmarksModel();
+  BookmarksModel* model = BookmarksModel::Instance();
   QModelIndex sibling = model->sibling(0, 0, index);
 
   QTreeView::expand(index);
@@ -1005,12 +920,4 @@ void BookmarksTreeView::expandIndex(const QModelIndex& index)
 void BookmarksTreeView::currentChanged(const QModelIndex& current, const QModelIndex& previous)
 {
   emit currentIndexChanged(current, previous);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-BookmarksModel* BookmarksTreeView::getBookmarksModel()
-{
-  return dynamic_cast<BookmarksModel*>(model());
 }

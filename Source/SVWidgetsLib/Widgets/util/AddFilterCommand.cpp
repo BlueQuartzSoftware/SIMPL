@@ -96,14 +96,12 @@ AddFilterCommand::~AddFilterCommand() = default;
 // -----------------------------------------------------------------------------
 void AddFilterCommand::undo()
 {
-  m_PipelineModel->blockSignals(true);
   for(int i = 0; i < m_Filters.size(); i++)
   {
     QModelIndex filterIndex = m_PipelineModel->indexOfFilter(m_Filters[i]);
 
     removeFilter(filterIndex.row());
   }
-  m_PipelineModel->blockSignals(false);
 
   //  m_PipelineView->reindexWidgetTitles();
   emit m_PipelineModel->pipelineDataChanged(QModelIndex());
@@ -116,17 +114,11 @@ void AddFilterCommand::undo()
 void AddFilterCommand::redo()
 {
   int index = m_InsertIndex;
-  m_PipelineModel->blockSignals(true);
   for(int i = 0; i < m_Filters.size(); i++)
   {
     addFilter(m_Filters[i], index);
     index++;
   }
-  m_PipelineModel->blockSignals(false);
-
-  //  m_PipelineView->reindexWidgetTitles();
-  emit m_PipelineModel->pipelineDataChanged(QModelIndex());
-  emit m_PipelineModel->preflightTriggered(QModelIndex(), m_PipelineModel);
 }
 
 // -----------------------------------------------------------------------------
@@ -136,7 +128,6 @@ void AddFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertionIn
 {
   m_PipelineModel->insertRow(insertionIndex);
   QModelIndex filterIndex = m_PipelineModel->index(insertionIndex, PipelineItem::Name);
-  m_PipelineModel->setData(filterIndex, filter->getHumanLabel(), Qt::DisplayRole);
   m_PipelineModel->setItemType(filterIndex, PipelineItem::ItemType::Filter);
   m_PipelineModel->setFilter(filterIndex, filter);
 

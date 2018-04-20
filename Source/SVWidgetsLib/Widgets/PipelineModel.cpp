@@ -39,7 +39,6 @@
 #include "SIMPLib/FilterParameters/H5FilterParametersWriter.h"
 
 #include "SVWidgetsLib/Widgets/PipelineItem.h"
-#include "SVWidgetsLib/Widgets/PipelineTreeView.h"
 #include "SVWidgetsLib/Widgets/BreakpointFilterWidget.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
@@ -679,45 +678,19 @@ void PipelineModel::setHovering(const QModelIndex &index)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineModel::setFilterIndexString(const QModelIndex &index, int i)
+bool PipelineModel::isSelected(const QModelIndex &index) const
 {
-  QString paddedIndex = "";
-  int numFilters = rowCount();
-
-  if(numFilters < 10)
-  {
-    numFilters = 11;
-  }
-  QString numStr = QString::number(i);
-
-  if(numFilters > 9)
-  {
-    int mag = 0;
-    int max = numFilters;
-    while(max > 0)
-    {
-      mag++;
-      max = max / 10;
-    }
-    numStr = "";             // Clear the string
-    QTextStream ss(&numStr); // Create a QTextStream to set up the padding
-    ss.setFieldWidth(mag);
-    ss.setPadChar('0');
-    ss << i;
-  }
-  paddedIndex = numStr;
-
   PipelineItem* item = getItem(index);
-  item->setFilterIndex(paddedIndex);
+  return item->isSelected();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString PipelineModel::filterIndexString(const QModelIndex &index) const
+void PipelineModel::setSelected(const QModelIndex &index)
 {
   PipelineItem* item = getItem(index);
-  return item->getFilterIndex();
+  item->setSelected(true);
 }
 
 // -----------------------------------------------------------------------------

@@ -123,14 +123,25 @@ void SVPipelineView::setupGui()
     delete m_ActionEnableFilter;
   }
 
+  m_ActionEnableFilter = new QAction("Enable", this);
   m_ActionEnableFilter->setCheckable(true);
   m_ActionEnableFilter->setChecked(true);
   m_ActionEnableFilter->setEnabled(false);
+
+  m_ActionCut = new QAction("Cut", this);
+  m_ActionCopy = new QAction("Copy", this);
+  m_ActionPaste = new QAction("Paste", this);
 
   m_ActionCut->setShortcut(QKeySequence::Cut);
   m_ActionCopy->setShortcut(QKeySequence::Copy);
   m_ActionPaste->setShortcut(QKeySequence::Paste);
   m_ActionClearPipeline->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Backspace));
+
+  QClipboard* clipboard = QApplication::clipboard();
+  connect(clipboard, SIGNAL(dataChanged()), this, SLOT(updatePasteAvailability()));
+
+  // Run this once, so that the Paste button availability is updated for what is currently on the system clipboard
+  updatePasteAvailability();
 
   m_FilterOutlineWidget = new SVPipelineFilterOutlineWidget(nullptr);
   m_FilterOutlineWidget->setObjectName("m_DropBox");
@@ -162,6 +173,67 @@ void SVPipelineView::connectSignalsSlots()
   connect(m_ActionCopy, &QAction::triggered, this, &SVPipelineView::listenCopyTriggered);
   connect(m_ActionPaste, &QAction::triggered, this, &SVPipelineView::listenPasteTriggered);
   connect(m_ActionClearPipeline, &QAction::triggered, this, &SVPipelineView::listenClearPipelineTriggered);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineView::addFilterFromClassName(const QString &filterClassName, int insertIndex)
+{
+  FilterManager* fm = FilterManager::Instance();
+  if (fm != nullptr)
+  {
+    IFilterFactory::Pointer factory = fm->getFactoryFromClassName(filterClassName);
+    if (factory.get() != nullptr)
+    {
+      AbstractFilter::Pointer filter = factory->create();
+      addFilter(filter, insertIndex);
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineView::addFilter(AbstractFilter::Pointer filter, int insertIndex)
+{
+  PipelineModel* model = getPipelineModel();
+
+  AddFilterCommand* cmd = new AddFilterCommand(filter, model, insertIndex, "Add");
+  addUndoCommand(cmd);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineView::addFilters(std::vector<AbstractFilter::Pointer> filters)
+{
+  for (size_t i = 0; i < filters.size(); i++)
+  {
+    AbstractFilter::Pointer filter = filters[i];
+    addFilter(filter);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------s
+void SVPipelineView::updatePasteAvailability()
+{
+  QClipboard* clipboard = QApplication::clipboard();
+  QString text = clipboard->text();
+
+  JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
+  FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(text);
+
+  if(text.isEmpty() || FilterPipeline::NullPointer() == pipeline)
+  {
+    m_ActionPaste->setDisabled(true);
+  }
+  else
+  {
+    m_ActionPaste->setEnabled(true);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -326,6 +398,16 @@ void SVPipelineView::updateActionEnableFilter()
 
   connect(m_ActionEnableFilter, &QAction::toggled, [=] { setSelectedFiltersEnabled(m_ActionEnableFilter->isChecked()); });
 }
+
+//// -----------------------------------------------------------------------------
+////
+//// -----------------------------------------------------------------------------
+//void SVPipelineView::paintEvent(QPaintEvent *event)
+//{
+//  QPainter* painter = new QPainter();
+
+//  painter->
+//}
 
 // -----------------------------------------------------------------------------
 //
