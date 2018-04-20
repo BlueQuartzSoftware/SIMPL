@@ -59,15 +59,15 @@ const QString DataContainerName = "DataContainer";
 const QString AttributeMatrixName = "AttributeMatrix";
 const QString DataArrayName = "Array1";
 
-const QVector<int> inputIntVector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
-const QVector<int> inputHexVector({0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A});
-const QVector<int> inputOctVector({001, 002, 003, 004, 005, 006, 007});
-const QVector<double> inputDoubleVector({1.5, 2.2, 3.65, 4.34, 5.76, 6.534, 7.0, 8.342, 9.8723, 10.89});
-const QVector<QString> inputCharErrorVector({"sdstrg", "2.2", "3.65", "&(^$#", "5.76", "sjtyr", "7.0", "8.342", "&*^#F", "youikjhgf"});
-const QVector<double> inputScientificNotation({0.15e1, 2.2e0, 3.65, 43.4e-1, 0.576e1, 653.4e-2, 7.0, 8.342, 9.8723, 10.89});
+const std::vector<int> inputIntVector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+const std::vector<int> inputHexVector({0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A});
+const std::vector<int> inputOctVector({001, 002, 003, 004, 005, 006, 007});
+const std::vector<double> inputDoubleVector({1.5, 2.2, 3.65, 4.34, 5.76, 6.534, 7.0, 8.342, 9.8723, 10.89});
+const std::vector<QString> inputCharErrorVector({"sdstrg", "2.2", "3.65", "&(^$#", "5.76", "sjtyr", "7.0", "8.342", "&*^#F", "youikjhgf"});
+const std::vector<double> inputScientificNotation({0.15e1, 2.2e0, 3.65, 43.4e-1, 0.576e1, 653.4e-2, 7.0, 8.342, 9.8723, 10.89});
 
-const QVector<double> outputDoubleVector({1.5, 2.2, 3.65, 4.34, 5.76, 6.534, 7.0, 8.342, 9.8723, 10.89});
-const QVector<double> outputIntAsDoubleVector({1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0});
+const std::vector<double> outputDoubleVector({1.5, 2.2, 3.65, 4.34, 5.76, 6.534, 7.0, 8.342, 9.8723, 10.89});
+const std::vector<double> outputIntAsDoubleVector({1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0});
 
 class ReadASCIIDataTest
 {
@@ -112,14 +112,14 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void CreateFile(const QString& filePath, QVector<T> values, char delimiter)
+  template <typename T> void CreateFile(const QString& filePath, std::vector<T> values, char /* delimiter */)
   {
     QFile data(filePath);
     if(data.open(QFile::WriteOnly))
     {
       QTextStream out(&data);
 
-      for(int row = 0; row < values.size(); row++)
+      for(size_t row = 0; row < values.size(); row++)
       {
         out << values[row];
         if(row + 1 < values.size())
@@ -137,7 +137,7 @@ public:
   AbstractFilter::Pointer PrepFilter(ASCIIWizardData data)
   {
     DataContainerArray::Pointer dca = DataContainerArray::New();
-    DataContainer::Pointer dc = DataContainer::New("DataContainerName");
+    DataContainer::Pointer dc = DataContainer::New(DataContainerName);
     AttributeMatrix::Pointer am = AttributeMatrix::New(QVector<size_t>(1, data.numberOfLines), AttributeMatrixName, AttributeMatrix::Type::Cell);
     dc->addAttributeMatrix(AttributeMatrixName, am);
     dca->addDataContainer(dc);
@@ -176,11 +176,11 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename O> void ConvertType()
+  template <typename T> void ConvertType()
   {
     char delimiter = '\t';
-
-    typename DataArray<O>::Pointer output = DataArray<O>::CreateArray(1, "OutputArray", false);
+    using DataArrayType = DataArray<T>;
+    typename DataArrayType::Pointer output = DataArrayType::CreateArray(1, "OutputArray", false);
     QString outputType = output->getTypeAsString();
 
     ASCIIWizardData data;
@@ -207,12 +207,12 @@ public:
       DREAM3D_REQUIRE_EQUAL(err, 0)
 
       AttributeMatrix::Pointer am = importASCIIData->getDataContainerArray()->getAttributeMatrix(DataArrayPath(DataContainerName, AttributeMatrixName, ""));
-      typename DataArray<O>::Pointer results = std::dynamic_pointer_cast<DataArray<O>>(am->getAttributeArray(DataArrayName));
+      typename DataArrayType::Pointer results = std::dynamic_pointer_cast<DataArrayType>(am->getAttributeArray(DataArrayName));
 
       DREAM3D_REQUIRE_EQUAL(results->getSize(), data.numberOfLines)
 
-      O* resultsRaw = results->getPointer(0);
-      for(int i = 0; i < results->getSize(); i++)
+      T* resultsRaw = results->getPointer(0);
+      for(size_t i = 0; i < results->getSize(); i++)
       {
         if(outputType == SIMPL::TypeNames::Double || outputType == SIMPL::TypeNames::Float)
         {
@@ -240,12 +240,12 @@ public:
       DREAM3D_REQUIRE_EQUAL(err, 0)
 
       AttributeMatrix::Pointer am = importASCIIData->getDataContainerArray()->getAttributeMatrix(DataArrayPath(DataContainerName, AttributeMatrixName, ""));
-      typename DataArray<O>::Pointer results = std::dynamic_pointer_cast<DataArray<O>>(am->getAttributeArray(DataArrayName));
+      typename DataArrayType::Pointer results = std::dynamic_pointer_cast<DataArrayType>(am->getAttributeArray(DataArrayName));
 
       DREAM3D_REQUIRE_EQUAL(results->getSize(), data.numberOfLines)
 
-      O* resultsRaw = results->getPointer(0);
-      for(int i = 0; i < results->getSize(); i++)
+      T* resultsRaw = results->getPointer(0);
+      for(size_t i = 0; i < results->getSize(); i++)
       {
         if(outputType == SIMPL::TypeNames::Double || outputType == SIMPL::TypeNames::Float)
         {
@@ -287,11 +287,11 @@ public:
       DREAM3D_REQUIRE_EQUAL(err, 0)
 
       AttributeMatrix::Pointer am = importASCIIData->getDataContainerArray()->getAttributeMatrix(DataArrayPath(DataContainerName, AttributeMatrixName, ""));
-      typename DataArray<O>::Pointer results = std::dynamic_pointer_cast<DataArray<O>>(am->getAttributeArray(DataArrayName));
+      typename DataArrayType::Pointer results = std::dynamic_pointer_cast<DataArrayType>(am->getAttributeArray(DataArrayName));
 
       DREAM3D_REQUIRE_EQUAL(results->getSize(), inputScientificNotation.size())
 
-      O* resultsRaw = results->getPointer(0);
+      T* resultsRaw = results->getPointer(0);
       for(size_t i = 0; i < results->getSize(); i++)
       {
         if(outputType == SIMPL::TypeNames::Double || outputType == SIMPL::TypeNames::Float)
@@ -321,11 +321,11 @@ public:
       DREAM3D_REQUIRE_EQUAL(err, 0)
 
       AttributeMatrix::Pointer am = importASCIIData->getDataContainerArray()->getAttributeMatrix(DataArrayPath(DataContainerName, AttributeMatrixName, ""));
-      typename DataArray<O>::Pointer results = std::dynamic_pointer_cast<DataArray<O>>(am->getAttributeArray(DataArrayName));
+      typename DataArrayType::Pointer results = std::dynamic_pointer_cast<DataArrayType>(am->getAttributeArray(DataArrayName));
 
       DREAM3D_REQUIRE_EQUAL(results->getSize(), inputHexVector.size())
 
-      O* resultsRaw = results->getPointer(0);
+      T* resultsRaw = results->getPointer(0);
       for(int i = 0; i < results->getSize(); i++)
       {
         DREAM3D_REQUIRE_EQUAL(resultsRaw[i], inputIntVector[i])
@@ -349,11 +349,11 @@ public:
       DREAM3D_REQUIRE_EQUAL(err, 0)
 
       AttributeMatrix::Pointer am = importASCIIData->getDataContainerArray()->getAttributeMatrix(DataArrayPath(DataContainerName, AttributeMatrixName, ""));
-      typename DataArray<O>::Pointer results = std::dynamic_pointer_cast<DataArray<O>>(am->getAttributeArray(DataArrayName));
+      typename DataArrayType::Pointer results = std::dynamic_pointer_cast<DataArrayType>(am->getAttributeArray(DataArrayName));
 
       DREAM3D_REQUIRE_EQUAL(results->getSize(), inputOctVector.size())
 
-      O* resultsRaw = results->getPointer(0);
+      T* resultsRaw = results->getPointer(0);
       for(int i = 0; i < results->getSize(); i++)
       {
         DREAM3D_REQUIRE_EQUAL(resultsRaw[i], inputIntVector[i])
@@ -362,9 +362,9 @@ public:
 
     // Max Overflow Test
     {
-      QString maxValue = QString::number(std::numeric_limits<O>().max());
+      QString maxValue = QString::number(std::numeric_limits<T>().max());
       maxValue = maxValue.append('0');
-      QVector<QString> inputMaxVector({maxValue});
+      std::vector<QString> inputMaxVector({maxValue});
       CreateFile(UnitTest::ReadASCIIDataTest::TestFile1, inputMaxVector, delimiter);
 
       data.numberOfLines = 1;
@@ -395,12 +395,12 @@ public:
       }
       else
       {
-        int64_t store = std::numeric_limits<O>().min();
+        int64_t store = std::numeric_limits<T>().min();
         store = store - 1;
         minValue = QString::number(store);
       }
 
-      QVector<QString> inputMinVector({minValue});
+      std::vector<QString> inputMinVector({minValue});
       CreateFile(UnitTest::ReadASCIIDataTest::TestFile1, inputMinVector, delimiter);
 
       data.numberOfLines = 1;

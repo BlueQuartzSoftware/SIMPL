@@ -116,6 +116,11 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
      */
     virtual void showFileInFileSystem();
 
+    /**
+     * @brief loadData
+     */
+    virtual void loadData();
+
   protected:
 
     /**

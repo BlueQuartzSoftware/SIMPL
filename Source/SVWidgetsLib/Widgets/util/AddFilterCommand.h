@@ -51,20 +51,19 @@ class PipelineView;
 class SVWidgetsLib_EXPORT AddFilterCommand : public QUndoCommand
 {
   public:
-    AddFilterCommand(AbstractFilter::Pointer filter, PipelineView* destination, QString actionText, QVariant value,
-                     QUuid previousNode = QUuid(), QUuid nextNode = QUuid(), QUndoCommand* parent = 0);
+    AddFilterCommand(AbstractFilter::Pointer filter, PipelineView* destination, QString actionText, QVariant value, QUuid previousNode = QUuid(), QUuid nextNode = QUuid(),
+                     QUndoCommand* parent = nullptr);
 
-    AddFilterCommand(QList<AbstractFilter::Pointer> filters, PipelineView* destination, QString actionText, QVariant value,
-                     QUuid previousNode = QUuid(), QUuid nextNode = QUuid(), QUndoCommand* parent = 0);
+    AddFilterCommand(QList<AbstractFilter::Pointer> filters, PipelineView* destination, QString actionText, QVariant value, QUuid previousNode = QUuid(), QUuid nextNode = QUuid(),
+                     QUndoCommand* parent = nullptr);
 
-    AddFilterCommand(QString jsonString, PipelineView* destination, QString actionText, QVariant value,
-                     QUuid previousNode = QUuid(), QUuid nextNode = QUuid(), QUndoCommand* parent = 0);
+    AddFilterCommand(QString jsonString, PipelineView* destination, QString actionText, QVariant value, QUuid previousNode = QUuid(), QUuid nextNode = QUuid(), QUndoCommand* parent = nullptr);
 
-    virtual ~AddFilterCommand();
+    ~AddFilterCommand() override;
 
-    virtual void undo();
+    void undo() override;
 
-    virtual void redo();
+    void redo() override;
 
   private:
     QString                                             m_JsonString;

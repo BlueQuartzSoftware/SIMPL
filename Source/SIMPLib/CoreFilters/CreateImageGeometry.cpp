@@ -183,11 +183,15 @@ QString CreateImageGeometry::getBoxDimensions()
 {
   QString desc;
   QTextStream ss(&desc);
-
-  ss << "X Range: " << m_Origin.x << " to " << (m_Origin.x + (m_Dimensions.x * m_Resolution.x)) << " (Delta: " << (m_Dimensions.x * m_Resolution.x) << ")\n";
-  ss << "Y Range: " << m_Origin.y << " to " << (m_Origin.y + (m_Dimensions.y * m_Resolution.y)) << " (Delta: " << (m_Dimensions.y * m_Resolution.y) << ")\n";
-  ss << "Z Range: " << m_Origin.z << " to " << (m_Origin.z + (m_Dimensions.z * m_Resolution.z)) << " (Delta: " << (m_Dimensions.z * m_Resolution.z) << ")";
-
+  float halfRes[3] = {m_Resolution.x / 2.0f, m_Resolution.y / 2.0f, m_Resolution.z / 2.0f};
+  ss << "Extents:\n"
+     << "X Extent: 0 to " << m_Dimensions.x - 1 << " (dimension: " << m_Dimensions.x << ")\n"
+     << "Y Extent: 0 to " << m_Dimensions.y - 1 << " (dimension: " << m_Dimensions.y << ")\n"
+     << "Z Extent: 0 to " << m_Dimensions.z - 1 << " (dimension: " << m_Dimensions.z << ")\n"
+     << "Bounds:\n"
+     << "X Range: " << (m_Origin.x - halfRes[0]) << " to " << (m_Origin.x - halfRes[0] + m_Dimensions.x * m_Resolution.x) << " (delta: " << (m_Dimensions.x * m_Resolution.x) << ")\n"
+     << "Y Range: " << (m_Origin.y - halfRes[1]) << " to " << (m_Origin.y - halfRes[1] + m_Dimensions.y * m_Resolution.y) << " (delta: " << (m_Dimensions.y * m_Resolution.y) << ")\n"
+     << "Z Range: " << (m_Origin.z - halfRes[2]) << " to " << (m_Origin.z - halfRes[2] + m_Dimensions.z * m_Resolution.z) << " (delta: " << (m_Dimensions.z * m_Resolution.z) << ")\n";
   return desc;
 }
 

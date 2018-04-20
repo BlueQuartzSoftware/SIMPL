@@ -415,7 +415,7 @@ include(${PROJECT_RESOURCES_DIR}/CPack/PackageProject.cmake)
 
 # --------------------------------------------------------------------------
 # Find the Pybind11 installation
-option(SIMPL_WRAP_PYTHON "Generate and/or compile Python wrapping codes" OFF)
+option(SIMPL_WRAP_PYTHON "Generate and Compile Python wrapping codes" OFF)
 message(STATUS "SIMPL_WRAP_PYTHON: ${SIMPL_WRAP_PYTHON}")
 if(SIMPL_WRAP_PYTHON)
   # --------------------------------------------------------------------

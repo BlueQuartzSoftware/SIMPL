@@ -36,6 +36,8 @@
 #ifndef _colorutilities_h_
 #define _colorutilities_h_
 
+#include <QtCore/QVector>
+
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Utilities/ColorTable.h"
 
@@ -44,7 +46,33 @@ class SIMPLib_EXPORT ColorUtilities
   public:
     ~ColorUtilities();
 
-    static SIMPL::Rgb convertHSVtoRgb(float h, float s, float v);
+    /**
+     * @brief
+     * @param h 0-1 Range
+     * @param s 0-1 Range
+     * @param v 0-1 Range
+     * @return Rgb Conversion
+     */
+    static SIMPL::Rgb ConvertHSVtoRgb(float h, float s, float v);
+
+    /**
+     * @brief
+     * @param h angle in degrees
+     * @param s a fraction between 0 and 1
+     * @param v a fraction between 0 and 1
+     * @return Rgb Conversion
+     */
+    static SIMPL::Rgb Hsv2Rgb(float h, float s, float v);
+
+    /**
+     * @brief Generates a vector of colors based on the HSV color wheel. The colors
+     * are evenly distributed around the color wheel by taking 360/count.
+     * @param count The total number of colors
+     * @param saturation Range between 0-255
+     * @param value      Range between 0-255
+     * @return
+     */
+    static QVector<SIMPL::Rgb> GenerateColors(int count, int saturation = 255, int value = 255);
 
   protected:
     ColorUtilities();

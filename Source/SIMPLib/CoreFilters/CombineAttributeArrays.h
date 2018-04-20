@@ -67,6 +67,9 @@ class SIMPLib_EXPORT CombineAttributeArrays : public AbstractFilter
     SIMPL_FILTER_PARAMETER(bool, NormalizeData)
     Q_PROPERTY(bool NormalizeData READ getNormalizeData WRITE setNormalizeData)
 
+    SIMPL_FILTER_PARAMETER(bool, MoveValues)
+    Q_PROPERTY(bool MoveValues READ getMoveValues WRITE setMoveValues)
+
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */

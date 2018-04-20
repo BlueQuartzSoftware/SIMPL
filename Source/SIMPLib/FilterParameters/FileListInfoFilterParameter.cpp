@@ -35,6 +35,9 @@
 
 #include "FileListInfoFilterParameter.h"
 
+#include <QtCore/QJsonObject>
+#include <QtCore/QJsonValue>
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

@@ -29,19 +29,22 @@ function(CreatePybind11Module)
   endif()
 
   # Give our module a name. Python standards dictate ALL lowercase for the module name
-  set(pybind_module_name "${ARGS_MODULE_NAME}")
+  set(pybind_module_name "${ARGS_MODULE_NAME}py11")
+  string(TOLOWER ${pybind_module_name} pybind_module_name)
 
-  if(1)
+  set(pybind_module_output_name "${ARGS_MODULE_NAME}")
+  string(TOLOWER ${pybind_module_output_name} pybind_module_output_name)
+
+
   # Now create a custom task to scrape through our code and generate all the binding sources
   add_custom_target(${pybind_module_name}CreatePythonBindings ALL
-      COMMAND GeneratePythonBindings "${ARGS_SOURCE_DIR}" 
+      COMMAND GeneratePythonBindings "${ARGS_SOURCE_DIR}"
       "${ARGS_PATH_TO_STRIP}"
       "${pybind_module_name}"
       "${ARGS_OUTPUT_PATH}" "${ARGS_MODULE_TEMPLATE_FILE}"
       DEPENDS GeneratePythonBindings ${COPY_LIBRARY_TARGETS}
-      COMMENT "GeneratePythonBindings: Creating Python Bindings for ${pybind_module_name} using pybind11"
+      COMMENT "GeneratePythonBindings: Creating Python Bindings for ${ARGS_MODULE_NAME} using pybind11"
     )
-  endif()
 
   # --------------------------------------------------------------------------
   # Now compile the Python module using pybind11 cmake functions
@@ -52,7 +55,7 @@ function(CreatePybind11Module)
       )
 
   if(NOT EXISTS "${ARGS_BINARY_DIR}/Wrapping/PythonCore/${pybind_module_name}_pybind11_module.cxx")
-    FILE(WRITE "${ARGS_BINARY_DIR}/Wrapping/PythonCore/${pybind_module_name}_pybind11_module.cxx" "/* SOMETHING */\n") 
+    FILE(WRITE "${ARGS_BINARY_DIR}/Wrapping/PythonCore/${pybind_module_name}_pybind11_module.cxx" "/* Pybind11 Module code */\n") 
   endif()
 
   set_source_files_properties("${ARGS_BINARY_DIR}/Wrapping/PythonCore/${pybind_module_name}_pybind11_module.cxx"
@@ -73,6 +76,7 @@ function(CreatePybind11Module)
   target_compile_features(${pybind_module_name} PRIVATE cxx_local_type_template_args)
   set_target_properties(${pybind_module_name} PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}"
                                             SUFFIX "${PYTHON_MODULE_EXTENSION}"
+                                            OUTPUT_NAME ${pybind_module_output_name}
                                             LIBRARY_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/python/site-packages
                                             )
   if(TARGET ${pybind_module_name}CreatePythonBindings)                                            

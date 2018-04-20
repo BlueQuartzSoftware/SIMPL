@@ -51,8 +51,6 @@
 #include <QtCore/QString>
 #include <QtCore/QtDebug>
 
-#include <QtGui/QGuiApplication>
-
 // DREAM3DLib includes
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
@@ -73,7 +71,7 @@ int main(int argc, char* argv[])
 {
 
   // Instantiate the QCoreApplication that we need to get the current path and load plugins.
-  QGuiApplication* app = new QGuiApplication(argc, argv);
+  QCoreApplication* app = new QCoreApplication(argc, argv);
   app->setOrganizationName("BlueQuartz Software");
   app->setOrganizationDomain("bluequartz.net");
   app->setApplicationName("PipelineRunner");
