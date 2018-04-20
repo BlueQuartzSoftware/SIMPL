@@ -34,12 +34,14 @@
 #include <QtCore/QModelIndex>
 #include <QtCore/QTimer>
 
-#include <QStyledItemDelegate>
+#include <QtWidgets/QStyledItemDelegate>
+
+#include "SVWidgetsLib/SVWidgetsLib.h"
 
 class PipelineModel;
 class SVPipelineView;
 
-class PipelineItemDelegate : public QStyledItemDelegate
+class SVWidgetsLib_EXPORT PipelineItemDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 
