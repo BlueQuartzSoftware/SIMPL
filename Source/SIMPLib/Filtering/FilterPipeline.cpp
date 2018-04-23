@@ -514,6 +514,7 @@ int FilterPipeline::preflightPipeline()
   int preflightError = 0;
 
   DataArrayPath::RenameContainer renamedPaths;
+  DataArrayPath::RenameContainer filterRenamedPaths;
 
   // Start looping through each filter in the Pipeline and preflight everything
   for(FilterContainerType::iterator filter = m_Pipeline.begin(); filter != m_Pipeline.end(); ++filter)
@@ -521,8 +522,13 @@ int FilterPipeline::preflightPipeline()
     // Do not preflight disabled filters
     if((*filter)->getEnabled())
     {
-      std::list<DataArrayPath> oldCreatedPaths = (*filter)->getCreatedPaths();
+      // Update renamed paths before getting old created paths
       DataContainerArray::Pointer oldDca = (*filter)->getDataContainerArray();
+      oldDca->renameDataArrayPaths(filterRenamedPaths);
+      (*filter)->setDataContainerArray(oldDca);
+      (*filter)->renameDataArrayPaths(filterRenamedPaths);
+      
+      std::list<DataArrayPath> oldCreatedPaths = (*filter)->getCreatedPaths();
 
       (*filter)->setDataContainerArray(dca);
       (*filter)->renameDataArrayPaths(renamedPaths);
@@ -543,10 +549,11 @@ int FilterPipeline::preflightPipeline()
       }
 
       // Filter renamed existing DataArrayPaths
-      DataArrayPath::RenameContainer filterRenamedPaths = (*filter)->getRenamedPaths();
-      for(DataArrayPath::RenameType renameType : filterRenamedPaths)
+      DataArrayPath::RenameContainer hardRenamePaths = (*filter)->getRenamedPaths();
+      for(DataArrayPath::RenameType renameType : hardRenamePaths)
       {
         renamedPaths.push_back(renameType);
+        filterRenamedPaths.push_back(renameType);
       }
     }
     else

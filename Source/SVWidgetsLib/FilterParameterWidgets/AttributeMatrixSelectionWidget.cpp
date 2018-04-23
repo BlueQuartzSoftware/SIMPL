@@ -322,6 +322,15 @@ void AttributeMatrixSelectionWidget::setSelectedPath(DataArrayPath amPath)
     QString html = am->getInfoString(SIMPL::HtmlFormat);
     m_SelectedAttributeMatrixPath->setToolTip(html);
     m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
+    changeStyleSheet(Style::FS_STANDARD_STYLE);
+  }
+  else
+  {
+    m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
+    //
+    m_SelectedAttributeMatrixPath->setToolTip(wrapStringInHtml("DataArrayPath does not exist."));
+    m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
+    changeStyleSheet(Style::FS_DOESNOTEXIST_STYLE);
   }
 }
 

@@ -646,9 +646,9 @@ void ComparisonSelectionWidget::updateDataArrayPath(QString propertyName, DataAr
     std::tie(oldPath, newPath) = renamePath;
 
     QVariant var = getFilter()->property(PROPERTY_NAME_AS_CHAR);
-    DataArrayPath amPath = newPath;
-    QString dataArrayName = amPath.getDataArrayName();
-    amPath.setDataArrayName("");
+    ComparisonInputs inputs = var.value<ComparisonInputs>();
+    ComparisonInput_t input = inputs.getInput(0);
+    DataArrayPath amPath(input.dataContainerName, input.attributeMatrixName, "");
 
     blockSignals(true);
     // Update the AttributeMatrix path
@@ -665,6 +665,11 @@ void ComparisonSelectionWidget::updateDataArrayPath(QString propertyName, DataAr
         QString html = am->getInfoString(SIMPL::HtmlFormat);
         m_SelectedAttributeMatrixPath->setToolTip(html);
         m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
+      }
+      else
+      {
+        m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
+        //
       }
     }
 

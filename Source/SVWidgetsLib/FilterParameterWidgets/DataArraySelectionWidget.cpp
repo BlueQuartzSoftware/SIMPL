@@ -360,6 +360,8 @@ void DataArraySelectionWidget::setSelectedPath(DataArrayPath daPath)
   }
   else
   {
+    m_SelectedDataArrayPath->setText(daPath.serialize(Detail::Delimiter));
+    //
     m_SelectedDataArrayPath->setToolTip(wrapStringInHtml("DataArrayPath does not exist."));
     m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
     changeStyleSheet(Style::FS_DOESNOTEXIST_STYLE);

@@ -539,3 +539,37 @@ DataContainerArray::Pointer DataContainerArray::deepCopy(bool forceNoAllocate)
 
   return dcaCopy;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArray::renameDataArrayPaths(DataArrayPath::RenameContainer renamePaths)
+{
+  for(DataArrayPath::RenameType renameType : renamePaths)
+  {
+    DataArrayPath oldPath;
+    DataArrayPath newPath;
+    std::tie(oldPath, newPath) = renameType;
+
+    if(oldPath.getDataContainerName() != newPath.getDataContainerName())
+    {
+      renameDataContainer(oldPath.getDataContainerName(), newPath.getDataContainerName());
+    }
+    if(oldPath.getAttributeMatrixName() != newPath.getAttributeMatrixName())
+    {
+      DataContainer::Pointer dc = getDataContainer(newPath);
+      if(dc)
+      {
+        dc->renameAttributeMatrix(oldPath.getAttributeMatrixName(), newPath.getAttributeMatrixName());
+      }
+    }
+    if(oldPath.getDataArrayName() != newPath.getDataArrayName())
+    {
+      AttributeMatrix::Pointer am = getAttributeMatrix(newPath);
+      if(am)
+      {
+        am->renameAttributeArray(oldPath.getDataArrayName(), newPath.getDataArrayName());
+      }
+    }
+  }
+}
