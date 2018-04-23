@@ -51,7 +51,7 @@ PipelineItemDelegate::PipelineItemDelegate(SVPipelineView* view)
 : QStyledItemDelegate(nullptr)
 , m_View(view)
 {
-  connect(&m_AnimationTimer, SIGNAL(timeout()), this, SLOT(updateBorderThickness()));
+
 }
 
 // -----------------------------------------------------------------------------
@@ -62,7 +62,7 @@ PipelineItemDelegate::~PipelineItemDelegate() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QSize PipelineItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &) const
+QSize PipelineItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
   return {option.rect.width(), 36};
 }
@@ -73,7 +73,6 @@ QSize PipelineItemDelegate::sizeHint(const QStyleOptionViewItem &option, const Q
 void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
   const PipelineModel* model = getPipelineModel(index);
-  painter->setRenderHint(QPainter::Antialiasing);
 
   PipelineItem::WidgetState wState = model->widgetState(index);
   PipelineItem::PipelineState pState = model->pipelineState(index);
@@ -90,12 +89,12 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
   QColor bgColor = grpColor;
   QColor disabledBgColor = QColor(124, 124, 124);
 
-  QColor hoveredColor = grpColor;
-  hoveredColor.setRedF((hoveredColor.redF() * 1.10 > 1.0) ? 1.0 : hoveredColor.redF() * 1.10);
-  hoveredColor.setGreenF((hoveredColor.greenF() * 1.10 > 1.0) ? 1.0 : hoveredColor.greenF() * 1.10);
-  hoveredColor.setBlueF((hoveredColor.blueF() * 1.10 > 1.0) ? 1.0 : hoveredColor.blueF() * 1.10);
-  if(model->isHovering(index) == true)
+  if(option.state & QStyle::State_MouseOver)
   {
+    QColor hoveredColor = grpColor;
+    hoveredColor.setRedF((hoveredColor.redF() * 1.10 > 1.0) ? 1.0 : hoveredColor.redF() * 1.10);
+    hoveredColor.setGreenF((hoveredColor.greenF() * 1.10 > 1.0) ? 1.0 : hoveredColor.greenF() * 1.10);
+    hoveredColor.setBlueF((hoveredColor.blueF() * 1.10 > 1.0) ? 1.0 : hoveredColor.blueF() * 1.10);
     bgColor = hoveredColor;
   }
   switch(wState)
@@ -229,7 +228,7 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
   {
     QRect fadedRect = coloredRect;
     fadedRect.setWidth(fullWidth);
-    if(model->isHovering(index) == true)
+    if(option.state & QStyle::State_MouseOver)
     {
       fadedRect.setWidth(allowableWidth);
     }
@@ -245,8 +244,8 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
 
   painter->drawText(rect.x() + indexBoxWidth + textMargin, rect.y() + fontMargin + fontHeight, filter->getHumanLabel());
 
-  // If the filter widget is selected, draw a border around it.
-  if(model->isSelected(index) == true)
+  // If the filter is selected, draw a border around it.
+  if(option.state & QStyle::State_Selected)
   {
     QColor selectedColor = QColor::fromHsv(bgColor.hue(), 180, 150);
     QPainterPath path;
@@ -254,17 +253,7 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
     QPen pen(selectedColor, m_BorderThickness);
     painter->setPen(pen);
     painter->drawPath(path);
-    if(m_BorderThickness < 1.0)
-    {
-//      m_AnimationTimer.start(33);
-    }
   }
-  else
-  {
-//    m_AnimationTimer.stop();
-  }
-
-  QStyledItemDelegate::paint(painter, option, index);
 }
 
 // -----------------------------------------------------------------------------
@@ -300,24 +289,6 @@ QString PipelineItemDelegate::getFilterIndexString(const QModelIndex &index) con
   QString paddedIndex = numStr;
 
   return paddedIndex;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineItemDelegate::updateBorderThickness()
-{
-  m_BorderThickness += m_BorderIncrement;
-  if(m_BorderThickness > m_SelectionBorderWidth)
-  {
-    // m_BorderIncrement = -1.0;
-    m_AnimationTimer.stop();
-  }
-  else if(m_BorderThickness < 0.0)
-  {
-    m_BorderIncrement = 1.0;
-    m_BorderThickness = 0.0;
-  }
 }
 
 // -----------------------------------------------------------------------------

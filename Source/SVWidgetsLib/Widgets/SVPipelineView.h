@@ -116,23 +116,11 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView
     int filterCount();
 
     /**
-     * @brief createFilterObjectFromFilter
-     * @param filter
-     * @return
-     */
-    PipelineFilterObject* createFilterObjectFromFilter(AbstractFilter::Pointer filter);
-
-    /**
      * @brief readPipelineFromFile
      * @param filePath
      * @return FilterPipeline::Pointer
      */
     FilterPipeline::Pointer readPipelineFromFile(const QString& filePath);
-
-    /**
-     * @brief newEmptyPipelineViewLayout
-     */
-    void newEmptyPipelineViewLayout();
 
     /**
      * @brief resetLayout
@@ -144,6 +132,12 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView
      * @param w
      */
     virtual void setDataStructureWidget(DataStructureWidget* w);
+
+    /**
+     * @brief setModel
+     * @param model
+     */
+    void setModel(QAbstractItemModel* model) override;
 
     /**
      * @brief getDataStructureWidget
@@ -158,6 +152,18 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView
      * @return
      */
     PipelineModel* getPipelineModel();
+
+    /**
+     * @brief getActionUndo
+     * @return
+     */
+    QAction* getActionUndo();
+
+    /**
+     * @brief getActionRedo
+     * @return
+     */
+    QAction* getActionRedo();
 
   public slots:
     /**
@@ -180,27 +186,27 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView
     void addFilters(std::vector<AbstractFilter::Pointer> filters);
 
     /**
+     * @brief Removes filter from the current model
+     * @param filter
+     */
+    void removeFilter(AbstractFilter::Pointer filter);
+
+    /**
+     * @brief Removes multiple filters from the current model
+     * @param filters
+     */
+    void removeFilters(std::vector<AbstractFilter::Pointer> filters);
+
+    /**
      * @brief Should be block this class from either emitting a preflight signal or otherwise running a preflight.
      * @param b
      */
     void blockPreflightSignals(bool b);
 
     /**
-     * @brief setSelectedFilterObject
-     * @param w
-     * @param modifiers
-     */
-    void setSelectedFilterObject(PipelineFilterObject* w, Qt::KeyboardModifiers modifiers);
-
-    /**
     * @brief clearPipeline
     */
-    void clearPipeline(bool addToUndoStack = true);
-
-    /**
-     * @brief reindexWidgetTitles
-     */
-    void reindexWidgetTitles();
+    void clearPipeline();
 
     /**
      * @brief toReadyState
@@ -253,12 +259,6 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView
 
     void connectSignalsSlots();
 
-    /**
-     * @brief Paints the "Creating a Pipeline" instructions on the view when the model is empty
-     * @param event
-     */
-//    void paintEvent(QPaintEvent *event);
-
     void mousePressEvent(QMouseEvent* event) override;
     void keyPressEvent(QKeyEvent *event) override;
 
@@ -271,9 +271,6 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView
     void startDrag(QMouseEvent* event, SVPipelineFilterWidget *fw);
 
     void handleFilterParameterChanged(QUuid id);
-
-    void on_focusInEventStarted(QFocusEvent* event);
-    void on_focusOutEventStarted(QFocusEvent* event);
 
     void requestContextMenu(const QPoint& pos);
 
@@ -294,7 +291,7 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView
 
   private:
     SVPipelineFilterOutlineWidget*                    m_FilterOutlineWidget = nullptr;
-    QLabel*                                           m_EmptyPipelineLabel = nullptr;
+    QPersistentModelIndex                             m_CurrentHoveringIndex;
     bool                                              m_BlockPreflight = false;
     std::stack<bool>                                  m_BlockPreflightStack;
     DataStructureWidget*                              m_DataStructureWidget = nullptr;

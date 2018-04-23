@@ -80,7 +80,6 @@ RemoveFilterCommand::~RemoveFilterCommand() = default;
 // -----------------------------------------------------------------------------
 void RemoveFilterCommand::undo()
 {
-  m_PipelineModel->blockSignals(true);
   for(size_t i = 0; i < m_RemovalIndexes.size(); i++)
   {
     int insertIndex = m_RemovalIndexes[i];
@@ -88,13 +87,24 @@ void RemoveFilterCommand::undo()
 
     addFilter(filter, insertIndex);
   }
-  m_PipelineModel->blockSignals(false);
 
   m_RemovalIndexes.clear();
 
-  //  m_PipelineView->reindexWidgetTitles();
   emit m_PipelineModel->pipelineDataChanged(QModelIndex());
   emit m_PipelineModel->preflightTriggered(QModelIndex(), m_PipelineModel);
+
+  QString statusMessage;
+  if (m_Filters.size() > 1)
+  {
+    statusMessage = QObject::tr("Undo \"Removed %1 filters\"").arg(m_Filters.size());
+  }
+  else
+  {
+    statusMessage = QObject::tr("Undo \"Removed '%1' filter\"").arg(m_Filters[0]->getHumanLabel());
+  }
+
+  emit m_PipelineModel->statusMessageGenerated(statusMessage);
+  emit m_PipelineModel->standardOutputMessageGenerated(statusMessage);
 }
 
 // -----------------------------------------------------------------------------
@@ -112,7 +122,6 @@ bool variantCompare(const QVariant &v1, const QVariant &v2)
 void RemoveFilterCommand::redo()
 {
   int filterOffset = 0;
-  m_PipelineModel->blockSignals(true);
   for(size_t i = 0; i < m_Filters.size(); i++)
   {
     QModelIndex filterIndex = m_PipelineModel->indexOfFilter(m_Filters[i]);
@@ -123,9 +132,30 @@ void RemoveFilterCommand::redo()
 
     filterOffset++;
   }
-  m_PipelineModel->blockSignals(false);
 
-  //  m_PipelineView->reindexWidgetTitles();
+  QString statusMessage;
+  if (m_Filters.size() > 1)
+  {
+    statusMessage = QObject::tr("Removed %1 filters").arg(m_Filters.size());
+  }
+  else
+  {
+    statusMessage = QObject::tr("Removed '%1' filter").arg(m_Filters[0]->getHumanLabel());
+  }
+
+  if (m_FirstRun == false)
+  {
+    statusMessage.prepend("Redo \"");
+    statusMessage.append('\"');
+  }
+  else
+  {
+    m_FirstRun = false;
+  }
+
+  emit m_PipelineModel->statusMessageGenerated(statusMessage);
+  emit m_PipelineModel->standardOutputMessageGenerated(statusMessage);
+
   emit m_PipelineModel->pipelineDataChanged(QModelIndex());
   emit m_PipelineModel->preflightTriggered(QModelIndex(), m_PipelineModel);
 }
@@ -143,12 +173,6 @@ void RemoveFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertio
 
   QModelIndexList list;
   list.push_back(filterIndex);
-
-  emit m_PipelineModel->preflightTriggered(QModelIndex(), m_PipelineModel);
-  emit m_PipelineModel->pipelineDataChanged(QModelIndex());
-
-  emit m_PipelineModel->statusMessageGenerated(QObject::tr("Added \"%1\" filter").arg(filter->getHumanLabel()));
-  emit m_PipelineModel->standardOutputMessageGenerated(QObject::tr("Added \"%1\" filter").arg(filter->getHumanLabel()));
 }
 
 // -----------------------------------------------------------------------------
@@ -157,6 +181,4 @@ void RemoveFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertio
 void RemoveFilterCommand::removeFilter(int filterIndex)
 {
   m_PipelineModel->removeRow(filterIndex);
-
-  emit m_PipelineModel->preflightTriggered(QModelIndex(), m_PipelineModel);
 }

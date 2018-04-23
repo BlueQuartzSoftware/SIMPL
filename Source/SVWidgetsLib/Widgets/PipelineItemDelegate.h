@@ -51,20 +51,13 @@ class SVWidgetsLib_EXPORT PipelineItemDelegate : public QStyledItemDelegate
     virtual ~PipelineItemDelegate();
 
   protected:
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &) const override;
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
     void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 
-  private slots:
-    void updateBorderThickness();
-
   private:
     SVPipelineView* m_View = nullptr;
-    QTimer m_AnimationTimer;
-
-    qreal m_SelectionBorderWidth = 4.0;
-    qreal m_BorderThickness = 0.0;
-    qreal m_BorderIncrement = 1.0;
+    qreal m_BorderThickness = 4.0;
 
     /**
      * @brief Gets the proper filter index string that refers to the specified index

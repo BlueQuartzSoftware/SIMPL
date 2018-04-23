@@ -45,17 +45,20 @@
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
 
 #include "SVWidgetsLib/Widgets/BreakpointFilterWidget.h"
+#include "SVWidgetsLib/Widgets/SVPipelineView.h"
 #include "SVWidgetsLib/Widgets/PipelineModel.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, PipelineModel* model, int insertIndex, QString actionText, QUndoCommand* parent)
+AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, int insertIndex, QString actionText, QUndoCommand* parent)
 : QUndoCommand(parent)
 , m_FilterCount(1)
 , m_ActionText(actionText)
-, m_PipelineModel(model)
+, m_PipelineView(view)
 {
+  PipelineModel* model = m_PipelineView->getPipelineModel();
+
   if(insertIndex < 0)
   {
     insertIndex = model->rowCount();
@@ -70,13 +73,15 @@ AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, PipelineModel
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFilterCommand::AddFilterCommand(std::vector<AbstractFilter::Pointer> filters, PipelineModel* model, int insertIndex, QString actionText, QUndoCommand* parent)
+AddFilterCommand::AddFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, int insertIndex, QString actionText, QUndoCommand* parent)
 : QUndoCommand(parent)
 , m_Filters(filters)
 , m_FilterCount(filters.size())
 , m_ActionText(actionText)
-, m_PipelineModel(model)
+, m_PipelineView(view)
 {
+  PipelineModel* model = m_PipelineView->getPipelineModel();
+
   if(insertIndex < 0)
   {
     insertIndex = model->rowCount();
@@ -96,16 +101,35 @@ AddFilterCommand::~AddFilterCommand() = default;
 // -----------------------------------------------------------------------------
 void AddFilterCommand::undo()
 {
+  if (m_Filters.size() <= 0)
+  {
+    return;
+  }
+
+  PipelineModel* model = m_PipelineView->getPipelineModel();
+
   for(int i = 0; i < m_Filters.size(); i++)
   {
-    QModelIndex filterIndex = m_PipelineModel->indexOfFilter(m_Filters[i]);
+    QModelIndex filterIndex = model->indexOfFilter(m_Filters[i]);
 
     removeFilter(filterIndex.row());
   }
 
-  //  m_PipelineView->reindexWidgetTitles();
-  emit m_PipelineModel->pipelineDataChanged(QModelIndex());
-  emit m_PipelineModel->preflightTriggered(QModelIndex(), m_PipelineModel);
+  emit model->pipelineDataChanged(QModelIndex());
+  emit model->preflightTriggered(QModelIndex(), model);
+
+  QString statusMessage;
+  if (m_Filters.size() > 1)
+  {
+    statusMessage = QObject::tr("Undo \"Added %1 filters\"").arg(m_Filters.size());
+  }
+  else
+  {
+    statusMessage = QObject::tr("Undo \"Added '%1' filter\"").arg(m_Filters[0]->getHumanLabel());
+  }
+
+  emit model->statusMessageGenerated(statusMessage);
+  emit model->standardOutputMessageGenerated(statusMessage);
 }
 
 // -----------------------------------------------------------------------------
@@ -113,12 +137,45 @@ void AddFilterCommand::undo()
 // -----------------------------------------------------------------------------
 void AddFilterCommand::redo()
 {
+  if (m_Filters.size() <= 0)
+  {
+    return;
+  }
+
+  PipelineModel* model = m_PipelineView->getPipelineModel();
+
   int index = m_InsertIndex;
   for(int i = 0; i < m_Filters.size(); i++)
   {
     addFilter(m_Filters[i], index);
     index++;
   }
+
+  emit model->preflightTriggered(QModelIndex(), model);
+  emit model->pipelineDataChanged(QModelIndex());
+
+  QString statusMessage;
+  if (m_Filters.size() > 1)
+  {
+    statusMessage = QObject::tr("Added %1 filters").arg(m_Filters.size());
+  }
+  else
+  {
+    statusMessage = QObject::tr("Added '%1' filter").arg(m_Filters[0]->getHumanLabel());
+  }
+
+  if (m_FirstRun == false)
+  {
+    statusMessage.prepend("Redo \"");
+    statusMessage.append('\"');
+  }
+  else
+  {
+    m_FirstRun = false;
+  }
+
+  emit model->statusMessageGenerated(statusMessage);
+  emit model->standardOutputMessageGenerated(statusMessage);
 }
 
 // -----------------------------------------------------------------------------
@@ -126,19 +183,21 @@ void AddFilterCommand::redo()
 // -----------------------------------------------------------------------------
 void AddFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertionIndex)
 {
-  m_PipelineModel->insertRow(insertionIndex);
-  QModelIndex filterIndex = m_PipelineModel->index(insertionIndex, PipelineItem::Name);
-  m_PipelineModel->setItemType(filterIndex, PipelineItem::ItemType::Filter);
-  m_PipelineModel->setFilter(filterIndex, filter);
+  PipelineModel* model = m_PipelineView->getPipelineModel();
 
-  QModelIndexList list;
-  list.push_back(filterIndex);
+  model->insertRow(insertionIndex);
 
-  emit m_PipelineModel->preflightTriggered(QModelIndex(), m_PipelineModel);
-  emit m_PipelineModel->pipelineDataChanged(QModelIndex());
+  QModelIndex filterIndex = model->index(insertionIndex, PipelineItem::Name);
+  model->setItemType(filterIndex, PipelineItem::ItemType::Filter);
+  model->setFilter(filterIndex, filter);
 
-  emit m_PipelineModel->statusMessageGenerated(QObject::tr("Added \"%1\" filter").arg(filter->getHumanLabel()));
-  emit m_PipelineModel->standardOutputMessageGenerated(QObject::tr("Added \"%1\" filter").arg(filter->getHumanLabel()));
+  QPushButton* disableBtn = createDisableButton();
+  QModelIndex disableBtnIndex = model->index(insertionIndex, PipelineItem::DisableBtn);
+  m_PipelineView->setIndexWidget(disableBtnIndex, disableBtn);
+
+  QPushButton* deleteBtn = createDeleteButton();
+  QModelIndex deleteBtnIndex = model->index(insertionIndex, PipelineItem::DeleteBtn);
+  m_PipelineView->setIndexWidget(deleteBtnIndex, deleteBtn);
 }
 
 // -----------------------------------------------------------------------------
@@ -146,7 +205,81 @@ void AddFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertionIn
 // -----------------------------------------------------------------------------
 void AddFilterCommand::removeFilter(int filterIndex)
 {
-  m_PipelineModel->removeRow(filterIndex);
+  PipelineModel* model = m_PipelineView->getPipelineModel();
 
-  emit m_PipelineModel->preflightTriggered(QModelIndex(), m_PipelineModel);
+  model->removeRow(filterIndex);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QPushButton* AddFilterCommand::createDeleteButton()
+{
+  QPushButton* deleteBtn = new QPushButton();
+  deleteBtn->setMaximumSize(QSize(24, 24));
+  deleteBtn->setStyleSheet(QLatin1String("QPushButton#deleteBtn:pressed \n"
+                                         "{\n"
+                                         "	border: 0px inset black;\n"
+                                         "}\n"
+                                         "\n"
+                                         "QPushButton#deleteBtn:checked \n"
+                                         "{\n"
+                                         " 	border: 0px inset black;\n"
+                                         "}\n"
+                                         ""));
+  QIcon icon1;
+  icon1.addFile(QStringLiteral(":/trash.png"), QSize(), QIcon::Normal, QIcon::Off);
+  deleteBtn->setIcon(icon1);
+  deleteBtn->setIconSize(QSize(24, 24));
+  deleteBtn->setCheckable(true);
+  deleteBtn->setChecked(true);
+  deleteBtn->setFlat(true);
+
+#ifndef QT_NO_TOOLTIP
+  deleteBtn->setToolTip("Click to remove filter from pipeline");
+#endif // QT_NO_TOOLTIP
+  deleteBtn->setText(QString());
+
+  return deleteBtn;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QPushButton* AddFilterCommand::createDisableButton()
+{
+  QPushButton* disableBtn = new QPushButton();
+  QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Fixed);
+  sizePolicy1.setHorizontalStretch(0);
+  sizePolicy1.setVerticalStretch(0);
+  sizePolicy1.setHeightForWidth(disableBtn->sizePolicy().hasHeightForWidth());
+  disableBtn->setSizePolicy(sizePolicy1);
+  disableBtn->setMaximumSize(QSize(24, 24));
+  disableBtn->setStyleSheet(QLatin1String("QPushButton#disableBtn:pressed \n"
+                                          "{\n"
+                                          "	border: 0px inset black;\n"
+                                          "}\n"
+                                          "\n"
+                                          "QPushButton#disableBtn:checked \n"
+                                          "{\n"
+                                          " 	border: 0px inset black;\n"
+                                          "}\n"
+                                          ""));
+  QIcon icon;
+  icon.addFile(QStringLiteral(":/ban.png"), QSize(), QIcon::Normal, QIcon::Off);
+  icon.addFile(QStringLiteral(":/ban_red.png"), QSize(), QIcon::Normal, QIcon::On);
+  icon.addFile(QStringLiteral(":/ban_red.png"), QSize(), QIcon::Active, QIcon::On);
+  icon.addFile(QStringLiteral(":/ban_red.png"), QSize(), QIcon::Selected, QIcon::On);
+  disableBtn->setIcon(icon);
+  disableBtn->setIconSize(QSize(24, 24));
+  disableBtn->setCheckable(true);
+  disableBtn->setChecked(false);
+  disableBtn->setFlat(true);
+
+#ifndef QT_NO_TOOLTIP
+  disableBtn->setToolTip("Click to disable filter.");
+#endif // QT_NO_TOOLTIP
+  disableBtn->setText(QString());
+
+  return disableBtn;
 }

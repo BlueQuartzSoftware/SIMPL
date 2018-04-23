@@ -63,6 +63,7 @@ private:
   PipelineModel*                          m_PipelineModel;
   std::vector<AbstractFilter::Pointer>    m_Filters;
   std::vector<int>                        m_RemovalIndexes;
+  bool                                    m_FirstRun = true;
 
   /**
    * @brief addFilter

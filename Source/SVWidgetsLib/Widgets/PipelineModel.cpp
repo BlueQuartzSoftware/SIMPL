@@ -48,8 +48,6 @@
 PipelineModel::PipelineModel(QObject* parent)
 : QAbstractItemModel(parent)
 , m_MaxNumberOfPipelines(std::numeric_limits<int>::max())
-, m_ActionUndo(nullptr)
-, m_ActionRedo(nullptr)
 {
   QVector<QVariant> vector;
   vector.push_back("");
@@ -648,49 +646,6 @@ void PipelineModel::setItemType(const QModelIndex &index, PipelineItem::ItemType
 {
   PipelineItem* item = getItem(index);
   item->setItemType(type);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool PipelineModel::isHovering(const QModelIndex &index) const
-{
-  PipelineItem* item = getItem(index);
-  return item->getHovering();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineModel::setHovering(const QModelIndex &index)
-{
-  if (m_CurrentHoveringIndex.isValid())
-  {
-    PipelineItem* item = getItem(m_CurrentHoveringIndex);
-    item->setHovering(false);
-  }
-
-  PipelineItem* item = getItem(index);
-  item->setHovering(true);
-  m_CurrentHoveringIndex = index;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool PipelineModel::isSelected(const QModelIndex &index) const
-{
-  PipelineItem* item = getItem(index);
-  return item->isSelected();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineModel::setSelected(const QModelIndex &index)
-{
-  PipelineItem* item = getItem(index);
-  item->setSelected(true);
 }
 
 // -----------------------------------------------------------------------------

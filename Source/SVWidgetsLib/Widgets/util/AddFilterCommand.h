@@ -46,14 +46,15 @@
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 class PipelineFilterObject;
-class PipelineModel;
+class SVPipelineView;
+class QPushButton;
 
 class SVWidgetsLib_EXPORT AddFilterCommand : public QUndoCommand
 {
   public:
-    AddFilterCommand(AbstractFilter::Pointer filter, PipelineModel* model, int insertIndex, QString actionText, QUndoCommand* parent = nullptr);
+    AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, int insertIndex, QString actionText, QUndoCommand* parent = nullptr);
 
-    AddFilterCommand(std::vector<AbstractFilter::Pointer> filters, PipelineModel* model, int insertIndex, QString actionText, QUndoCommand* parent = nullptr);
+    AddFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, int insertIndex, QString actionText, QUndoCommand* parent = nullptr);
 
     ~AddFilterCommand() override;
 
@@ -66,7 +67,8 @@ class SVWidgetsLib_EXPORT AddFilterCommand : public QUndoCommand
     size_t                                              m_FilterCount;
     size_t                                              m_InsertIndex;
     QString                                             m_ActionText;
-    PipelineModel*                                      m_PipelineModel;
+    SVPipelineView*                                     m_PipelineView;
+    bool                                                m_FirstRun = true;
 
     /**
      * @brief addFilter
@@ -81,6 +83,18 @@ class SVWidgetsLib_EXPORT AddFilterCommand : public QUndoCommand
      * @param pipelineIndex
      */
     void removeFilter(int filterIndex);
+
+    /**
+     * @brief createDeleteButton
+     * @return
+     */
+    QPushButton* createDeleteButton();
+
+    /**
+     * @brief createDisableButton
+     * @return
+     */
+    QPushButton* createDisableButton();
 
     AddFilterCommand(const AddFilterCommand&) = delete; // Copy Constructor Not Implemented
     void operator=(const AddFilterCommand&) = delete;   // Move assignment Not Implemented

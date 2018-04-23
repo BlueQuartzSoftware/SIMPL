@@ -60,8 +60,6 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
     ~PipelineModel();
 
     SIMPL_INSTANCE_PROPERTY(int, MaxNumberOfPipelines)
-    SIMPL_INSTANCE_PROPERTY(QAction*, ActionUndo)
-    SIMPL_INSTANCE_PROPERTY(QAction*, ActionRedo)
 
     /**
      * @brief updateActivePipeline
@@ -110,12 +108,6 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
 
     bool filterEnabled(const QModelIndex &index);
     void setFilterEnabled(const QModelIndex &index, bool enabled);
-
-    bool isHovering(const QModelIndex &index) const;
-    void setHovering(const QModelIndex &index);
-
-    bool isSelected(const QModelIndex &index) const;
-    void setSelected(const QModelIndex &index);
 
     bool isEmpty();
 
@@ -176,7 +168,6 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
     PipelineItem*                       m_RootItem;
 
     QPersistentModelIndex               m_ActivePipelineIndex;
-    QPersistentModelIndex               m_CurrentHoveringIndex;
 
     QList<QObject*>                     m_PipelineMessageObservers;
 
