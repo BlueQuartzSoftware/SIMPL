@@ -238,7 +238,6 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView
     void windowTitleNeedsRefresh();
 
     void pipelineFilterObjectSelected(PipelineFilterObject* object);
-    void filterInputWidgetChanged(FilterInputWidget* widget);
     void filterInputWidgetNeedsCleared();
 
     void filterInputWidgetEdited();

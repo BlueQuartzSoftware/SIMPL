@@ -59,11 +59,9 @@ class SVWidgetsLib_EXPORT PipelineItem
     SIMPL_INSTANCE_PROPERTY(bool, Expanded)
     SIMPL_INSTANCE_PROPERTY(QString, ItemTooltip)
 
-    enum TreeItemData
+    enum PipelineItemData
     {
-      Name,
-      DisableBtn,
-      DeleteBtn
+      Contents
     };
 
     using EnumType = unsigned int;

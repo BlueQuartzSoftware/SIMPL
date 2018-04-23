@@ -166,7 +166,7 @@ void RemoveFilterCommand::redo()
 void RemoveFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertionIndex)
 {
   m_PipelineModel->insertRow(insertionIndex);
-  QModelIndex filterIndex = m_PipelineModel->index(insertionIndex, PipelineItem::Name);
+  QModelIndex filterIndex = m_PipelineModel->index(insertionIndex, PipelineItem::Contents);
   m_PipelineModel->setData(filterIndex, filter->getHumanLabel(), Qt::DisplayRole);
   m_PipelineModel->setItemType(filterIndex, PipelineItem::ItemType::Filter);
   m_PipelineModel->setFilter(filterIndex, filter);

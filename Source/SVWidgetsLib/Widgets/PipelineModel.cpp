@@ -91,7 +91,7 @@ FilterPipeline::Pointer PipelineModel::getFilterPipeline(const QModelIndex &pipe
   qint32 count = rowCount(pipelineIndex);
   for(qint32 i = 0; i < count; ++i)
   {
-    QModelIndex childIndex = index(i, PipelineItem::Name, pipelineIndex);
+    QModelIndex childIndex = index(i, PipelineItem::Contents, pipelineIndex);
     if(childIndex.isValid())
     {
       AbstractFilter::Pointer filter = this->filter(childIndex);
@@ -121,7 +121,7 @@ FilterPipeline::Pointer PipelineModel::getCopyOfFilterPipeline()
 
   for(int i = 0; i < rowCount(); i++)
   {
-    QModelIndex filterIndex = index(i, PipelineItem::Name);
+    QModelIndex filterIndex = index(i, PipelineItem::Contents);
     AbstractFilter::Pointer filter = this->filter(filterIndex);
     AbstractFilter::Pointer copy = filter->newFilterInstance(true);
     pipeline->pushBack(copy);
@@ -246,7 +246,7 @@ QVariant PipelineModel::data(const QModelIndex& index, int role) const
   }
   else if(role == Qt::DecorationRole)
   {
-    QModelIndex nameIndex = this->index(index.row(), PipelineItem::Name, index.parent());
+    QModelIndex nameIndex = this->index(index.row(), PipelineItem::Contents, index.parent());
     if(nameIndex == index)
     {
       PipelineItem* item = getItem(index);
@@ -306,7 +306,7 @@ QModelIndex PipelineModel::indexOfFilter(AbstractFilter::Pointer filter, const Q
 {
   for (int i = 0; i < rowCount(parent); i++)
   {
-    QModelIndex childIndex = index(i, PipelineItem::Name, parent);
+    QModelIndex childIndex = index(i, PipelineItem::Contents, parent);
     if (this->filter(childIndex) == filter)
     {
       return childIndex;
@@ -507,7 +507,7 @@ bool PipelineModel::moveRows(const QModelIndex& sourceParent, int sourceRow, int
 
   for(int i = sourceRow; i < sourceRow + count; i++)
   {
-    QModelIndex srcIndex = index(i, PipelineItem::Name, sourceParent);
+    QModelIndex srcIndex = index(i, PipelineItem::Contents, sourceParent);
     PipelineItem* srcItem = getItem(srcIndex);
 
     destParentItem->insertChild(destinationChild, srcItem);

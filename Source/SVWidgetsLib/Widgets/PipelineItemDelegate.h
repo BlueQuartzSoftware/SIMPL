@@ -40,6 +40,7 @@
 
 class PipelineModel;
 class SVPipelineView;
+class QPushButton;
 
 class SVWidgetsLib_EXPORT PipelineItemDelegate : public QStyledItemDelegate
 {
@@ -52,12 +53,16 @@ class SVWidgetsLib_EXPORT PipelineItemDelegate : public QStyledItemDelegate
 
   protected:
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
-
     void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
 
   private:
     SVPipelineView* m_View = nullptr;
-    qreal m_BorderThickness = 4.0;
+    const qreal m_BorderThickness = 3.0;
+    int m_MousePressIndex = -1;
+
+    QPushButton*              m_DisableBtn = nullptr;
+    QPushButton*              m_DeleteBtn = nullptr;
 
     /**
      * @brief Gets the proper filter index string that refers to the specified index
@@ -65,6 +70,18 @@ class SVWidgetsLib_EXPORT PipelineItemDelegate : public QStyledItemDelegate
      * @return
      */
     QString getFilterIndexString(const QModelIndex &index) const;
+
+    /**
+     * @brief createDeleteButton
+     * @return
+     */
+    void createDeleteButton();
+
+    /**
+     * @brief createDisableButton
+     * @return
+     */
+    void createDisableButton();
 
     /**
      * @brief Convenience method to get the PipelineModel instance

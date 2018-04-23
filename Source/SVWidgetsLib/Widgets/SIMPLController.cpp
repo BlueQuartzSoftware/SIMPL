@@ -86,7 +86,7 @@ void SIMPLController::preflightPipeline(const QModelIndex &pipelineIndex, Pipeli
     filters.at(i)->setErrorCondition(0);
     filters.at(i)->setCancel(false);
 
-    QModelIndex childIndex = model->index(i, PipelineItem::Name, pipelineIndex);
+    QModelIndex childIndex = model->index(i, PipelineItem::Contents, pipelineIndex);
     if(childIndex.isValid())
     {
       model->setErrorState(childIndex, PipelineItem::ErrorState::Ok);
@@ -117,7 +117,7 @@ void SIMPLController::preflightPipeline(const QModelIndex &pipelineIndex, Pipeli
   // outline on the filter widget if there were errors or warnings
   for(qint32 i = 0; i < count; ++i)
   {
-    QModelIndex childIndex = model->index(i, PipelineItem::Name, pipelineIndex);
+    QModelIndex childIndex = model->index(i, PipelineItem::Contents, pipelineIndex);
     if(childIndex.isValid())
     {
       AbstractFilter::Pointer filter = model->filter(childIndex);

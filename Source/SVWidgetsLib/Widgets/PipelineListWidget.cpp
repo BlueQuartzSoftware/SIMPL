@@ -68,7 +68,7 @@ void PipelineListWidget::on_startPipelineBtn_clicked()
   PipelineModel* model = pipelineView->getPipelineModel();
   if(startPipelineBtn->text().compare("Cancel Pipeline") == 0)
   {
-    QModelIndex pipelineIndex = model->index(0, PipelineItem::Name);
+    QModelIndex pipelineIndex = model->index(0, PipelineItem::Contents);
     emit pipelineCanceled(pipelineIndex);
 
     startPipelineBtn->setText("Canceling...");
@@ -88,7 +88,7 @@ void PipelineListWidget::on_startPipelineBtn_clicked()
 
   if (model->rowCount() == 1)
   {
-    QModelIndex pipelineIndex = model->index(0, PipelineItem::Name);
+    QModelIndex pipelineIndex = model->index(0, PipelineItem::Contents);
     emit pipelineStarted(pipelineIndex, model);
     startPipelineBtn->setText("Cancel Pipeline");
     startPipelineBtn->setIcon(QIcon(":/media_stop_white.png"));

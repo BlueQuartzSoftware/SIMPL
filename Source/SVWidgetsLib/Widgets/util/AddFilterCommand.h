@@ -84,18 +84,6 @@ class SVWidgetsLib_EXPORT AddFilterCommand : public QUndoCommand
      */
     void removeFilter(int filterIndex);
 
-    /**
-     * @brief createDeleteButton
-     * @return
-     */
-    QPushButton* createDeleteButton();
-
-    /**
-     * @brief createDisableButton
-     * @return
-     */
-    QPushButton* createDisableButton();
-
     AddFilterCommand(const AddFilterCommand&) = delete; // Copy Constructor Not Implemented
     void operator=(const AddFilterCommand&) = delete;   // Move assignment Not Implemented
 };

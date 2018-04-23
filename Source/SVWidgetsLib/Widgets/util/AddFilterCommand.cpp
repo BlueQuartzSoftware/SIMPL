@@ -187,17 +187,10 @@ void AddFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertionIn
 
   model->insertRow(insertionIndex);
 
-  QModelIndex filterIndex = model->index(insertionIndex, PipelineItem::Name);
+  QModelIndex filterIndex = model->index(insertionIndex, PipelineItem::Contents);
+//  model->setData(filterIndex, filter->getHumanLabel(), Qt::DisplayRole);
   model->setItemType(filterIndex, PipelineItem::ItemType::Filter);
   model->setFilter(filterIndex, filter);
-
-  QPushButton* disableBtn = createDisableButton();
-  QModelIndex disableBtnIndex = model->index(insertionIndex, PipelineItem::DisableBtn);
-  m_PipelineView->setIndexWidget(disableBtnIndex, disableBtn);
-
-  QPushButton* deleteBtn = createDeleteButton();
-  QModelIndex deleteBtnIndex = model->index(insertionIndex, PipelineItem::DeleteBtn);
-  m_PipelineView->setIndexWidget(deleteBtnIndex, deleteBtn);
 }
 
 // -----------------------------------------------------------------------------
@@ -208,78 +201,4 @@ void AddFilterCommand::removeFilter(int filterIndex)
   PipelineModel* model = m_PipelineView->getPipelineModel();
 
   model->removeRow(filterIndex);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QPushButton* AddFilterCommand::createDeleteButton()
-{
-  QPushButton* deleteBtn = new QPushButton();
-  deleteBtn->setMaximumSize(QSize(24, 24));
-  deleteBtn->setStyleSheet(QLatin1String("QPushButton#deleteBtn:pressed \n"
-                                         "{\n"
-                                         "	border: 0px inset black;\n"
-                                         "}\n"
-                                         "\n"
-                                         "QPushButton#deleteBtn:checked \n"
-                                         "{\n"
-                                         " 	border: 0px inset black;\n"
-                                         "}\n"
-                                         ""));
-  QIcon icon1;
-  icon1.addFile(QStringLiteral(":/trash.png"), QSize(), QIcon::Normal, QIcon::Off);
-  deleteBtn->setIcon(icon1);
-  deleteBtn->setIconSize(QSize(24, 24));
-  deleteBtn->setCheckable(true);
-  deleteBtn->setChecked(true);
-  deleteBtn->setFlat(true);
-
-#ifndef QT_NO_TOOLTIP
-  deleteBtn->setToolTip("Click to remove filter from pipeline");
-#endif // QT_NO_TOOLTIP
-  deleteBtn->setText(QString());
-
-  return deleteBtn;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QPushButton* AddFilterCommand::createDisableButton()
-{
-  QPushButton* disableBtn = new QPushButton();
-  QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Fixed);
-  sizePolicy1.setHorizontalStretch(0);
-  sizePolicy1.setVerticalStretch(0);
-  sizePolicy1.setHeightForWidth(disableBtn->sizePolicy().hasHeightForWidth());
-  disableBtn->setSizePolicy(sizePolicy1);
-  disableBtn->setMaximumSize(QSize(24, 24));
-  disableBtn->setStyleSheet(QLatin1String("QPushButton#disableBtn:pressed \n"
-                                          "{\n"
-                                          "	border: 0px inset black;\n"
-                                          "}\n"
-                                          "\n"
-                                          "QPushButton#disableBtn:checked \n"
-                                          "{\n"
-                                          " 	border: 0px inset black;\n"
-                                          "}\n"
-                                          ""));
-  QIcon icon;
-  icon.addFile(QStringLiteral(":/ban.png"), QSize(), QIcon::Normal, QIcon::Off);
-  icon.addFile(QStringLiteral(":/ban_red.png"), QSize(), QIcon::Normal, QIcon::On);
-  icon.addFile(QStringLiteral(":/ban_red.png"), QSize(), QIcon::Active, QIcon::On);
-  icon.addFile(QStringLiteral(":/ban_red.png"), QSize(), QIcon::Selected, QIcon::On);
-  disableBtn->setIcon(icon);
-  disableBtn->setIconSize(QSize(24, 24));
-  disableBtn->setCheckable(true);
-  disableBtn->setChecked(false);
-  disableBtn->setFlat(true);
-
-#ifndef QT_NO_TOOLTIP
-  disableBtn->setToolTip("Click to disable filter.");
-#endif // QT_NO_TOOLTIP
-  disableBtn->setText(QString());
-
-  return disableBtn;
 }

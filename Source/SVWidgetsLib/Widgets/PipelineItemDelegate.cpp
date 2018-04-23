@@ -35,6 +35,7 @@
 
 #include <QtGui/QIntValidator>
 #include <QtGui/QPainter>
+#include <QtGui/QMouseEvent>
 
 #include <QtWidgets/QStylePainter>
 
@@ -44,14 +45,19 @@
 #include "SVWidgetsLib/Widgets/SVPipelineView.h"
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
+const int BUTTON_SIZE = 24;
+const int TEXT_MARGIN = 4;
+
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 PipelineItemDelegate::PipelineItemDelegate(SVPipelineView* view)
-: QStyledItemDelegate(nullptr)
-, m_View(view)
+  : QStyledItemDelegate(nullptr)
+  , m_View(view)
 {
-
+  createDisableButton();
+  createDeleteButton();
 }
 
 // -----------------------------------------------------------------------------
@@ -72,6 +78,8 @@ QSize PipelineItemDelegate::sizeHint(const QStyleOptionViewItem &option, const Q
 // -----------------------------------------------------------------------------
 void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
+  painter->setRenderHint(QPainter::Antialiasing);
+
   const PipelineModel* model = getPipelineModel(index);
 
   PipelineItem::WidgetState wState = model->widgetState(index);
@@ -99,27 +107,27 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
   }
   switch(wState)
   {
-  case PipelineItem::WidgetState::Ready:
-    widgetBackgroundColor = bgColor;
-    labelColor = QColor(190, 190, 190);
-    indexBackgroundColor = QColor(48, 48, 48);
-    break;
-  case PipelineItem::WidgetState::Executing:
-    widgetBackgroundColor = QColor(130, 130, 130);
-    labelColor = QColor(190, 190, 190);
-    indexBackgroundColor = QColor(6, 140, 190);
-    break;
-  case PipelineItem::WidgetState::Completed:
-    widgetBackgroundColor = bgColor.name();
-    labelColor = QColor(190, 190, 190);
-    indexBackgroundColor = QColor(6, 118, 6);
-    break;
-  case PipelineItem::WidgetState::Disabled:
-    bgColor = disabledBgColor;
-    widgetBackgroundColor = disabledBgColor.name();
-    labelColor = QColor(190, 190, 190);
-    indexBackgroundColor = QColor(96, 96, 96);
-    break;
+    case PipelineItem::WidgetState::Ready:
+      widgetBackgroundColor = bgColor;
+      labelColor = QColor(190, 190, 190);
+      indexBackgroundColor = QColor(48, 48, 48);
+      break;
+    case PipelineItem::WidgetState::Executing:
+      widgetBackgroundColor = QColor(130, 130, 130);
+      labelColor = QColor(190, 190, 190);
+      indexBackgroundColor = QColor(6, 140, 190);
+      break;
+    case PipelineItem::WidgetState::Completed:
+      widgetBackgroundColor = bgColor.name();
+      labelColor = QColor(190, 190, 190);
+      indexBackgroundColor = QColor(6, 118, 6);
+      break;
+    case PipelineItem::WidgetState::Disabled:
+      bgColor = disabledBgColor;
+      widgetBackgroundColor = disabledBgColor.name();
+      labelColor = QColor(190, 190, 190);
+      indexBackgroundColor = QColor(96, 96, 96);
+      break;
   }
   QColor selectedColor = QColor::fromHsv(bgColor.hue(), 100, 120);
 
@@ -128,32 +136,32 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
   {
     switch(pState)
     {
-    case PipelineItem::PipelineState::Running:
-      widgetBackgroundColor = selectedColor.name();
-      labelColor = QColor(190, 190, 190);
-      break;
-    case PipelineItem::PipelineState::Stopped:
-      widgetBackgroundColor = bgColor.name();
-      labelColor = QColor(0, 0, 0);
-      break;
-    case PipelineItem::PipelineState::Paused:
-      widgetBackgroundColor = QColor(160, 160, 160);
-      labelColor = QColor(0, 0, 0);
-      break;
+      case PipelineItem::PipelineState::Running:
+        widgetBackgroundColor = selectedColor.name();
+        labelColor = QColor(190, 190, 190);
+        break;
+      case PipelineItem::PipelineState::Stopped:
+        widgetBackgroundColor = bgColor.name();
+        labelColor = QColor(0, 0, 0);
+        break;
+      case PipelineItem::PipelineState::Paused:
+        widgetBackgroundColor = QColor(160, 160, 160);
+        labelColor = QColor(0, 0, 0);
+        break;
     }
   }
 
   switch(eState)
   {
-  case PipelineItem::ErrorState::Ok:
+    case PipelineItem::ErrorState::Ok:
 
-    break;
-  case PipelineItem::ErrorState::Error:
-    indexBackgroundColor = QColor(179, 2, 5);
-    break;
-  case PipelineItem::ErrorState::Warning:
-    indexBackgroundColor = QColor(215, 197, 1);
-    break;
+      break;
+    case PipelineItem::ErrorState::Error:
+      indexBackgroundColor = QColor(179, 2, 5);
+      break;
+    case PipelineItem::ErrorState::Warning:
+      indexBackgroundColor = QColor(215, 197, 1);
+      break;
   }
 
   QColor indexFontColor(242, 242, 242);
@@ -167,10 +175,9 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
   font.setPointSize(font.pointSize() - 1);
 #endif
 
-  int maxHeight = option.rect.height();
   QFontMetrics fontMetrics(font);
   int fontHeight = fontMetrics.height();
-  int fontMargin = ((maxHeight - fontHeight) / 2) - 1;
+  int fontMargin = ((option.rect.height() - fontHeight) / 2) - 1;
 
   int indexFontWidth = fontMetrics.width(QString::number(model->getMaxFilterCount()));
 
@@ -201,20 +208,20 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
   int fullWidth = rect.width() - indexBoxWidth;
   int allowableWidth = fullWidth;
 
-//  QModelIndex deleteIndex = model->index(index.row(), PipelineItem::DeleteBtn, index.parent());
-//  QWidget* deleteBtn = m_View->indexWidget(deleteIndex);
+  //  QModelIndex deleteIndex = model->index(index.row(), PipelineItem::DeleteBtn, index.parent());
+  //  QWidget* deleteBtn = m_View->indexWidget(deleteIndex);
 
-//  if(deleteBtn->isVisible())
-//  {
-//    allowableWidth -= deleteBtn->width();
-//  }
+  //  if(deleteBtn->isVisible())
+  //  {
+  //    allowableWidth -= deleteBtn->width();
+  //  }
 
-//  QModelIndex disableIndex = model->index(index.row(), PipelineItem::DisableBtn, index.parent());
-//  QWidget* disableBtn = m_View->indexWidget(disableIndex);
-//  if(disableBtn->isVisible())
-//  {
-//    allowableWidth -= disableBtn->width();
-//  }
+  //  QModelIndex disableIndex = model->index(index.row(), PipelineItem::DisableBtn, index.parent());
+  //  QWidget* disableBtn = m_View->indexWidget(disableIndex);
+  //  if(disableBtn->isVisible())
+  //  {
+  //    allowableWidth -= disableBtn->width();
+  //  }
   // QString elidedHumanLabel = fontMetrics.elidedText(m_FilterHumanLabel, Qt::ElideRight, allowableWidth);
   int humanLabelWidth = fontMetrics.width(filter->getHumanLabel());
 
@@ -244,16 +251,137 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
 
   painter->drawText(rect.x() + indexBoxWidth + textMargin, rect.y() + fontMargin + fontHeight, filter->getHumanLabel());
 
+  // Draw the "delete" button
+  QRect deleteBtnRect;
+  deleteBtnRect.setX(option.rect.width() - BUTTON_SIZE - TEXT_MARGIN);
+  deleteBtnRect.setY(option.rect.y() + ( (option.rect.height() / 2) - (BUTTON_SIZE / 2) ) );
+  deleteBtnRect.setWidth(BUTTON_SIZE);
+  deleteBtnRect.setHeight(BUTTON_SIZE);
+
+  QPoint mousePos = QCursor::pos();
+  mousePos = m_View->viewport()->mapFromGlobal(mousePos);
+
+//  QStyleOptionButton deleteBtnOptions;
+//  deleteBtnOptions.rect = deleteBtnRect;
+//  deleteBtnOptions.features |= QStyleOptionButton::Flat;
+  QPixmap deleteBtnPixmap;
+  if(deleteBtnRect.contains(mousePos))
+  {
+    deleteBtnPixmap = QPixmap(":/trash_hover.png");
+  }
+  else
+  {
+    deleteBtnPixmap = QPixmap(":/trash.png");
+  }
+
+  painter->drawPixmap(deleteBtnRect.center().x() - (deleteBtnPixmap.width() / 2), deleteBtnRect.center().y() - (deleteBtnPixmap.height() / 2 + 1), deleteBtnPixmap);  // y is 1px offset due to how the images were cut
+
+  // Draw the "disable" button
+  QRect disableBtnRect = deleteBtnRect;
+  disableBtnRect.setX(disableBtnRect.x() - TEXT_MARGIN - BUTTON_SIZE - BUTTON_SIZE);
+
+//  QStyleOptionButton button;
+//  button.rect = disableBtnRect;
+//  button.features |= QStyleOptionButton::Flat;
+  QPixmap disableBtnPixmap;
+  if(disableBtnRect.contains(mousePos))
+  {
+    disableBtnPixmap = QPixmap(":/ban_hover.png");
+  }
+//  else if (model->)
+//  {
+
+//  }
+  else
+  {
+    disableBtnPixmap = QPixmap(":/ban.png");
+  }
+
+  painter->drawPixmap(disableBtnRect.center().x() - (disableBtnPixmap.width() / 2), disableBtnRect.center().y() - (disableBtnPixmap.height() / 2 + 1), disableBtnPixmap);  // y is 1px offset due to how the images were cut
+
   // If the filter is selected, draw a border around it.
   if(option.state & QStyle::State_Selected)
   {
     QColor selectedColor = QColor::fromHsv(bgColor.hue(), 180, 150);
-    QPainterPath path;
-    path.addRect(rect);
-    QPen pen(selectedColor, m_BorderThickness);
+    QPen pen(QBrush(selectedColor), m_BorderThickness);
     painter->setPen(pen);
-    painter->drawPath(path);
+
+    // Draw inside option.rect to avoid painting artifacts
+    qreal x = option.rect.x() + (m_BorderThickness / 2);
+    qreal y = option.rect.y() + (m_BorderThickness / 2);
+    painter->drawRoundedRect(QRectF(x, y, option.rect.width() - m_BorderThickness  + 0.5 , option.rect.height() - m_BorderThickness + 0.5), 1, 1);
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool PipelineItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem &option, const QModelIndex &index)
+{
+  PipelineModel* pipelineModel = dynamic_cast<PipelineModel*>(model);
+
+//  // Ignore mouse events if the filter is disabled (pipeline running)
+//  if (pipelineModel->filterEnabled(index) == false)
+//  {
+//    return true; // don't call the base class
+//  }
+
+  // Ignore everything except mouse release
+  if(event->type() != QEvent::MouseButtonPress && event->type() != QEvent::MouseButtonRelease && event->type() != QEvent::MouseMove)
+  {
+    // Nothing we are interested in, call the base class
+    return QStyledItemDelegate::editorEvent(event, model, option, index);
+  }
+
+  QRect deleteBtnRect;
+  deleteBtnRect.setX(option.rect.width() - BUTTON_SIZE - TEXT_MARGIN);
+  deleteBtnRect.setY(option.rect.y() + (option.rect.height()/2 - BUTTON_SIZE/2));
+  deleteBtnRect.setWidth(BUTTON_SIZE);
+  deleteBtnRect.setHeight(BUTTON_SIZE);
+
+  QRect disableBtnRect = deleteBtnRect;
+  disableBtnRect.setX(disableBtnRect.x() - TEXT_MARGIN - BUTTON_SIZE);
+
+  // Looking for click in the delete button area
+  QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
+  if(!deleteBtnRect.contains(mouseEvent->pos()) && !disableBtnRect.contains(mouseEvent->pos()))
+  {
+    // If not in our button hotspot, call the base class
+    return QStyledItemDelegate::editorEvent(event, model, option, index);
+  }
+
+  if(event->type() == QEvent::MouseButtonPress)
+  {
+    m_MousePressIndex = index.row();
+    return true;  // don't call the base class, we handled the event here
+  }
+
+
+  if(event->type() == QEvent::MouseButtonRelease)
+  {
+    m_MousePressIndex = -1;
+    //qDebug() << "Clicked the Pipeline Filter delete button on: " << index.data(Qt::DisplayRole).toString();
+
+    if (deleteBtnRect.contains(mouseEvent->pos()))
+    {
+      AbstractFilter::Pointer filter = pipelineModel->filter(index);
+      m_View->removeFilter(filter);
+      return true;
+    }
+    else if (disableBtnRect.contains(mouseEvent->pos()))
+    {
+      bool enabled = pipelineModel->filterEnabled(index);
+      pipelineModel->setFilterEnabled(index, !enabled);
+      return true;
+    }
+  }
+
+  if(event->type() == QEvent::MouseMove)
+  {
+    return true;  // don't call the base class, we handled the event here
+  }
+
+  return QStyledItemDelegate::editorEvent(event, model, option, index);
 }
 
 // -----------------------------------------------------------------------------
@@ -289,6 +417,76 @@ QString PipelineItemDelegate::getFilterIndexString(const QModelIndex &index) con
   QString paddedIndex = numStr;
 
   return paddedIndex;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineItemDelegate::createDeleteButton()
+{
+  m_DeleteBtn = new QPushButton();
+  m_DeleteBtn->setMaximumSize(QSize(24, 24));
+  m_DeleteBtn->setStyleSheet(QLatin1String("QPushButton#deleteBtn:pressed \n"
+                                           "{\n"
+                                           "	border: 0px inset black;\n"
+                                           "}\n"
+                                           "\n"
+                                           "QPushButton#deleteBtn:checked \n"
+                                           "{\n"
+                                           " 	border: 0px inset black;\n"
+                                           "}\n"
+                                           ""));
+  QIcon icon1;
+  icon1.addFile(QStringLiteral(":/trash.png"), QSize(), QIcon::Normal, QIcon::Off);
+  m_DeleteBtn->setIcon(icon1);
+  m_DeleteBtn->setIconSize(QSize(24, 24));
+  m_DeleteBtn->setCheckable(true);
+  m_DeleteBtn->setChecked(true);
+  m_DeleteBtn->setFlat(true);
+
+#ifndef QT_NO_TOOLTIP
+  m_DeleteBtn->setToolTip("Click to remove filter from pipeline");
+#endif // QT_NO_TOOLTIP
+  m_DeleteBtn->setText(QString());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineItemDelegate::createDisableButton()
+{
+  m_DisableBtn = new QPushButton();
+  QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Fixed);
+  sizePolicy1.setHorizontalStretch(0);
+  sizePolicy1.setVerticalStretch(0);
+  sizePolicy1.setHeightForWidth(m_DisableBtn->sizePolicy().hasHeightForWidth());
+  m_DisableBtn->setSizePolicy(sizePolicy1);
+  m_DisableBtn->setMaximumSize(QSize(24, 24));
+  m_DisableBtn->setStyleSheet(QLatin1String("QPushButton#disableBtn:pressed \n"
+                                            "{\n"
+                                            "	border: 0px inset black;\n"
+                                            "}\n"
+                                            "\n"
+                                            "QPushButton#disableBtn:checked \n"
+                                            "{\n"
+                                            " 	border: 0px inset black;\n"
+                                            "}\n"
+                                            ""));
+  QIcon icon;
+  icon.addFile(QStringLiteral(":/ban.png"), QSize(), QIcon::Normal, QIcon::Off);
+  icon.addFile(QStringLiteral(":/ban_red.png"), QSize(), QIcon::Normal, QIcon::On);
+  icon.addFile(QStringLiteral(":/ban_red.png"), QSize(), QIcon::Active, QIcon::On);
+  icon.addFile(QStringLiteral(":/ban_red.png"), QSize(), QIcon::Selected, QIcon::On);
+  m_DisableBtn->setIcon(icon);
+  m_DisableBtn->setIconSize(QSize(24, 24));
+  m_DisableBtn->setCheckable(true);
+  m_DisableBtn->setChecked(false);
+  m_DisableBtn->setFlat(true);
+
+#ifndef QT_NO_TOOLTIP
+  m_DisableBtn->setToolTip("Click to disable filter.");
+#endif // QT_NO_TOOLTIP
+  m_DisableBtn->setText(QString());
 }
 
 // -----------------------------------------------------------------------------

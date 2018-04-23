@@ -434,7 +434,7 @@ void SVPipelineView::clearPipeline()
   std::vector<AbstractFilter::Pointer> filters;
   for (int i = 0; i < model->rowCount(); i++)
   {
-    QModelIndex filterIndex = model->index(i, PipelineItem::Name);
+    QModelIndex filterIndex = model->index(i, PipelineItem::Contents);
     filters.push_back(model->filter(filterIndex));
   }
 
@@ -572,7 +572,7 @@ void SVPipelineView::toReadyState()
   PipelineModel* model = getPipelineModel();
   for(int i = 0; i < model->rowCount(); i++)
   {
-    QModelIndex index = model->index(i, PipelineItem::Name);
+    QModelIndex index = model->index(i, PipelineItem::Contents);
     model->setWidgetState(index, PipelineItem::WidgetState::Ready);
   }
 }
@@ -588,7 +588,7 @@ void SVPipelineView::toRunningState()
   PipelineModel* model = getPipelineModel();
   for(int i = 0; i < model->rowCount(); i++)
   {
-    QModelIndex index = model->index(i, PipelineItem::Name);
+    QModelIndex index = model->index(i, PipelineItem::Contents);
     model->setPipelineState(index, PipelineItem::PipelineState::Running);
     FilterInputWidget* inputWidget = model->filterInputWidget(index);
     inputWidget->toRunningState();
@@ -610,7 +610,7 @@ void SVPipelineView::toStoppedState()
   PipelineModel* model = getPipelineModel();
   for(int i = 0; i < model->rowCount(); i++)
   {
-    QModelIndex index = model->index(i, PipelineItem::Name);
+    QModelIndex index = model->index(i, PipelineItem::Contents);
     model->setPipelineState(index, PipelineItem::PipelineState::Stopped);
     FilterInputWidget* inputWidget = model->filterInputWidget(index);
     inputWidget->toIdleState();

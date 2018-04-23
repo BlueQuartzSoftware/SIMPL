@@ -191,7 +191,7 @@ void MoveFilterCommand::redo()
 void MoveFilterCommand::addFilter(AbstractFilter::Pointer filter, PipelineModel* model, size_t insertionIndex)
 {
   model->insertRow(insertionIndex);
-  QModelIndex filterIndex = model->index(insertionIndex, PipelineItem::Name);
+  QModelIndex filterIndex = model->index(insertionIndex, PipelineItem::Contents);
   model->setData(filterIndex, filter->getHumanLabel(), Qt::DisplayRole);
   model->setItemType(filterIndex, PipelineItem::ItemType::Filter);
   model->setFilter(filterIndex, filter);
