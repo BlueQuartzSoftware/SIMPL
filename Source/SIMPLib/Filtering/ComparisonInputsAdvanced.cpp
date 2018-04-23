@@ -65,14 +65,6 @@ ComparisonInputsAdvanced::ComparisonInputsAdvanced(const ComparisonInputsAdvance
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-// ComparisonInputs::ComparisonInputs(ComparisonInputs& rhs)
-//{
-//  m_Inputs = rhs.m_Inputs;
-//}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 ComparisonInputsAdvanced::~ComparisonInputsAdvanced() = default;
 
 // -----------------------------------------------------------------------------
@@ -244,7 +236,9 @@ void ComparisonInputsAdvanced::operator=(const ComparisonInputsAdvanced& rhs)
 bool ComparisonInputsAdvanced::hasComparisonValue()
 {
   if(m_Inputs.size() == 0)
+  {
     return false;
+  }
 
   for(int i = 0; i < m_Inputs.size(); i++)
   {
