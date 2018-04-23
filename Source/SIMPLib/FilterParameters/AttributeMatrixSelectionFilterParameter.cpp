@@ -162,19 +162,3 @@ void AttributeMatrixSelectionFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = obj;
   }
 }
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void AttributeMatrixSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath)
-{
-  DataArrayPath oldPath;
-  DataArrayPath newPath;
-  std::tie(oldPath, newPath) = renamePath;
-
-  if(m_GetterCallback() == oldPath)
-  {
-    m_SetterCallback(newPath);
-    emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
-  }
-}

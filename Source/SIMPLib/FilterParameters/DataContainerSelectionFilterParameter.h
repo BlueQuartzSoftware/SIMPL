@@ -140,13 +140,6 @@ class SIMPLib_EXPORT DataContainerSelectionFilterParameter : public FilterParame
     */
     SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
-    /**
-     * @brief Handle DataArrayPath changes if necessary
-     * @param filter
-     * @param renamePath
-     */
-    void dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath) override;
-
   protected:
       /**
        * @brief DataContainerSelectionFilterParameter The default constructor.  It is protected because this
