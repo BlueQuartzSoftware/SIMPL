@@ -143,8 +143,8 @@ void ComparisonSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* fi
   int count = inputs.size();
   for(int i = 0; i < count; i++)
   {
-    ComparisonInput_t input = inputs.getInput(i);
-    
+    ComparisonInput_t& input = inputs.getInput(i);
+
     bool hasAttributeMatrix = oldPath.getAttributeMatrixName().isEmpty() == false;
     bool hasDataArray = oldPath.getDataArrayName().isEmpty() == false;
 
@@ -170,6 +170,7 @@ void ComparisonSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* fi
 
   if(hasChanges)
   {
+    m_SetterCallback(inputs);
     emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
 }
