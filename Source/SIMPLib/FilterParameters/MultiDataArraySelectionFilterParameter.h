@@ -174,6 +174,13 @@ class SIMPLib_EXPORT MultiDataArraySelectionFilterParameter : public FilterParam
     */
     SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
+    /**
+     * @brief Handle DataArrayPath changes if necessary
+     * @param filter
+     * @param renamePath
+     */
+    void dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath) override;
+
   protected:
       /**
        * @brief MultiDataArraySelectionFilterParameter The default constructor.  It is protected because this

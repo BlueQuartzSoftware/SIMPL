@@ -132,6 +132,10 @@ void MultiAttributeMatrixSelectionWidget::setupGui()
   // Catch when the filter wants its values updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
+  // If the DataArrayPath is updated in the filter, update the widget
+  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
+    this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
+
   QVector<DataArrayPath> selectedPaths = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QVector<DataArrayPath>>();
   DataArrayPath amPath = DataArrayPath::GetAttributeMatrixPath(selectedPaths);
   m_SelectedDataContainerPath->setText(amPath.serialize(Detail::Delimiter));
@@ -631,5 +635,66 @@ void MultiAttributeMatrixSelectionWidget::filterNeedsInputParameters(AbstractFil
   if(false == ok)
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MultiAttributeMatrixSelectionWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
+{
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
+  if(propertyName.compare(getFilterParameter()->getPropertyName()) == 0)
+  {
+    QVariant var = getFilter()->property(PROPERTY_NAME_AS_CHAR);
+    DataArrayPath updatedPath = var.value<DataArrayPath>();
+    QString dataArrayName = updatedPath.getDataArrayName();
+    updatedPath.setDataArrayName("");
+
+    blockSignals(true);
+    DataArrayPath currentPath = DataArrayPath::Deserialize(m_SelectedDataContainerPath->text(), Detail::Delimiter);
+    if(currentPath.getDataContainerName() == oldPath.getDataContainerName())
+    {
+      if(oldPath.getDataContainerName() != newPath.getDataContainerName())
+      {
+        DataArrayPath updatedPath(newPath.getDataContainerName(), "", "");
+        m_SelectedDataContainerPath->setText(updatedPath.serialize(Detail::Delimiter));
+      }
+      else if(oldPath.getAttributeMatrixName() != newPath.getAttributeMatrixName())
+      {
+        // Unselected list widget
+        {
+          QList<QListWidgetItem*> renamedItems = attributeMatricesSelectWidget->findItems(oldPath.getAttributeMatrixName(), Qt::MatchFlag::MatchCaseSensitive);
+
+          int renamedCount = renamedItems.size();
+          for(int i = 0; i < renamedCount; i++)
+          {
+            QListWidgetItem* item = renamedItems[i];
+            item->setText(newPath.getAttributeMatrixName());
+          }
+        }
+
+        // Selected list widget
+        {
+          QList<QListWidgetItem*> renamedItems = attributeMatricesOrderWidget->findItems(oldPath.getAttributeMatrixName(), Qt::MatchFlag::MatchCaseSensitive);
+
+          int renamedCount = renamedItems.size();
+          for(int i = 0; i < renamedCount; i++)
+          {
+            QListWidgetItem* item = renamedItems[i];
+            if(item->text() == oldPath.getAttributeMatrixName())
+            {
+              item->setText(newPath.getAttributeMatrixName());
+            }
+          }
+        }
+        // End AttributeMatrix section
+      }
+    }
+
+    blockSignals(false);
   }
 }
