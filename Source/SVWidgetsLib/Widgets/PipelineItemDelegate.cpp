@@ -97,6 +97,7 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
   QColor bgColor = grpColor;
   QColor disabledBgColor = QColor(124, 124, 124);
 
+  bool drawButtons = false;
   if(option.state & QStyle::State_MouseOver)
   {
     QColor hoveredColor = grpColor;
@@ -104,6 +105,8 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
     hoveredColor.setGreenF((hoveredColor.greenF() * 1.10 > 1.0) ? 1.0 : hoveredColor.greenF() * 1.10);
     hoveredColor.setBlueF((hoveredColor.blueF() * 1.10 > 1.0) ? 1.0 : hoveredColor.blueF() * 1.10);
     bgColor = hoveredColor;
+
+    drawButtons = true;
   }
   switch(wState)
   {
@@ -251,53 +254,53 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
 
   painter->drawText(rect.x() + indexBoxWidth + textMargin, rect.y() + fontMargin + fontHeight, filter->getHumanLabel());
 
-  // Draw the "delete" button
-  QRect deleteBtnRect;
-  deleteBtnRect.setX(option.rect.width() - BUTTON_SIZE - TEXT_MARGIN);
-  deleteBtnRect.setY(option.rect.y() + ( (option.rect.height() / 2) - (BUTTON_SIZE / 2) ) );
-  deleteBtnRect.setWidth(BUTTON_SIZE);
-  deleteBtnRect.setHeight(BUTTON_SIZE);
-
-  QPoint mousePos = QCursor::pos();
-  mousePos = m_View->viewport()->mapFromGlobal(mousePos);
-
-//  QStyleOptionButton deleteBtnOptions;
-//  deleteBtnOptions.rect = deleteBtnRect;
-//  deleteBtnOptions.features |= QStyleOptionButton::Flat;
-  QPixmap deleteBtnPixmap;
-  if(deleteBtnRect.contains(mousePos))
+  if (drawButtons == true)
   {
-    deleteBtnPixmap = QPixmap(":/trash_hover.png");
+    // Draw the "delete" button
+    QRect deleteBtnRect;
+    deleteBtnRect.setX(option.rect.width() - BUTTON_SIZE - TEXT_MARGIN);
+    deleteBtnRect.setY(option.rect.y() + ( (option.rect.height() / 2) - (BUTTON_SIZE / 2) ) );
+    deleteBtnRect.setWidth(BUTTON_SIZE);
+    deleteBtnRect.setHeight(BUTTON_SIZE);
+
+    QPoint mousePos = QCursor::pos();
+    mousePos = m_View->viewport()->mapFromGlobal(mousePos);
+
+    QPixmap deleteBtnPixmap;
+    if(deleteBtnRect.contains(mousePos))
+    {
+      deleteBtnPixmap = QPixmap(":/trash_hover.png");
+    }
+    else
+    {
+      deleteBtnPixmap = QPixmap(":/trash.png");
+    }
+
+    painter->drawPixmap(deleteBtnRect.center().x() - (deleteBtnPixmap.width() / 2), deleteBtnRect.center().y() - (deleteBtnPixmap.height() / 2 + 1), deleteBtnPixmap);  // y is 1px offset due to how the images were cut
+
+    // Draw the "disable" button
+    QRect disableBtnRect;
+    disableBtnRect.setX(deleteBtnRect.x() - TEXT_MARGIN - BUTTON_SIZE);
+    disableBtnRect.setY(option.rect.y() + ( (option.rect.height() / 2) - (BUTTON_SIZE / 2) ) );
+    disableBtnRect.setWidth(BUTTON_SIZE);
+    disableBtnRect.setHeight(BUTTON_SIZE);
+
+    QPixmap disableBtnPixmap;
+    if(disableBtnRect.contains(mousePos))
+    {
+      disableBtnPixmap = QPixmap(":/ban_hover.png");
+    }
+  //  else if (model->)
+  //  {
+
+  //  }
+    else
+    {
+      disableBtnPixmap = QPixmap(":/ban.png");
+    }
+
+    painter->drawPixmap(disableBtnRect.center().x() - (disableBtnPixmap.width() / 2), disableBtnRect.center().y() - (disableBtnPixmap.height() / 2 + 1), disableBtnPixmap);  // y is 1px offset due to how the images were cut
   }
-  else
-  {
-    deleteBtnPixmap = QPixmap(":/trash.png");
-  }
-
-  painter->drawPixmap(deleteBtnRect.center().x() - (deleteBtnPixmap.width() / 2), deleteBtnRect.center().y() - (deleteBtnPixmap.height() / 2 + 1), deleteBtnPixmap);  // y is 1px offset due to how the images were cut
-
-  // Draw the "disable" button
-  QRect disableBtnRect = deleteBtnRect;
-  disableBtnRect.setX(disableBtnRect.x() - TEXT_MARGIN - BUTTON_SIZE - BUTTON_SIZE);
-
-//  QStyleOptionButton button;
-//  button.rect = disableBtnRect;
-//  button.features |= QStyleOptionButton::Flat;
-  QPixmap disableBtnPixmap;
-  if(disableBtnRect.contains(mousePos))
-  {
-    disableBtnPixmap = QPixmap(":/ban_hover.png");
-  }
-//  else if (model->)
-//  {
-
-//  }
-  else
-  {
-    disableBtnPixmap = QPixmap(":/ban.png");
-  }
-
-  painter->drawPixmap(disableBtnRect.center().x() - (disableBtnPixmap.width() / 2), disableBtnRect.center().y() - (disableBtnPixmap.height() / 2 + 1), disableBtnPixmap);  // y is 1px offset due to how the images were cut
 
   // If the filter is selected, draw a border around it.
   if(option.state & QStyle::State_Selected)
@@ -326,13 +329,6 @@ bool PipelineItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model,
 //    return true; // don't call the base class
 //  }
 
-  // Ignore everything except mouse release
-  if(event->type() != QEvent::MouseButtonPress && event->type() != QEvent::MouseButtonRelease && event->type() != QEvent::MouseMove)
-  {
-    // Nothing we are interested in, call the base class
-    return QStyledItemDelegate::editorEvent(event, model, option, index);
-  }
-
   QRect deleteBtnRect;
   deleteBtnRect.setX(option.rect.width() - BUTTON_SIZE - TEXT_MARGIN);
   deleteBtnRect.setY(option.rect.y() + (option.rect.height()/2 - BUTTON_SIZE/2));
@@ -344,41 +340,57 @@ bool PipelineItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model,
 
   // Looking for click in the delete button area
   QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
-  if(!deleteBtnRect.contains(mouseEvent->pos()) && !disableBtnRect.contains(mouseEvent->pos()))
+  if (mouseEvent != nullptr)
   {
-    // If not in our button hotspot, call the base class
-    return QStyledItemDelegate::editorEvent(event, model, option, index);
-  }
-
-  if(event->type() == QEvent::MouseButtonPress)
-  {
-    m_MousePressIndex = index.row();
-    return true;  // don't call the base class, we handled the event here
-  }
-
-
-  if(event->type() == QEvent::MouseButtonRelease)
-  {
-    m_MousePressIndex = -1;
-    //qDebug() << "Clicked the Pipeline Filter delete button on: " << index.data(Qt::DisplayRole).toString();
-
-    if (deleteBtnRect.contains(mouseEvent->pos()))
+    if(event->type() == QEvent::MouseMove)
     {
-      AbstractFilter::Pointer filter = pipelineModel->filter(index);
-      m_View->removeFilter(filter);
-      return true;
+      if (deleteBtnRect.contains(mouseEvent->pos()) && m_CurrentlyHoveredItem != HoverItem::DeleteButton)
+      {
+        m_CurrentlyHoveredItem = HoverItem::DeleteButton;
+        return true;
+      }
+      else if (disableBtnRect.contains(mouseEvent->pos()) && m_CurrentlyHoveredItem != HoverItem::DisableButton)
+      {
+        m_CurrentlyHoveredItem = HoverItem::DisableButton;
+        return true;
+      }
+      else if (m_CurrentlyHoveredItem != HoverItem::Widget)
+      {
+        m_CurrentlyHoveredItem = HoverItem::Widget;
+        return true;
+      }
     }
-    else if (disableBtnRect.contains(mouseEvent->pos()))
-    {
-      bool enabled = pipelineModel->filterEnabled(index);
-      pipelineModel->setFilterEnabled(index, !enabled);
-      return true;
-    }
-  }
 
-  if(event->type() == QEvent::MouseMove)
-  {
-    return true;  // don't call the base class, we handled the event here
+    if(event->type() == QEvent::MouseButtonPress)
+    {
+      if(deleteBtnRect.contains(mouseEvent->pos()) || disableBtnRect.contains(mouseEvent->pos()))
+      {
+        m_MousePressIndex = index.row();
+        return true;  // don't call the base class, we handled the event here
+      }
+    }
+
+    if(event->type() == QEvent::MouseButtonRelease)
+    {
+      if(deleteBtnRect.contains(mouseEvent->pos()) || disableBtnRect.contains(mouseEvent->pos()))
+      {
+        m_MousePressIndex = -1;
+        //qDebug() << "Clicked the Pipeline Filter delete button on: " << index.data(Qt::DisplayRole).toString();
+
+        if (deleteBtnRect.contains(mouseEvent->pos()))
+        {
+          AbstractFilter::Pointer filter = pipelineModel->filter(index);
+          m_View->removeFilter(filter);
+          return true;
+        }
+        else if (disableBtnRect.contains(mouseEvent->pos()))
+        {
+          bool enabled = pipelineModel->filterEnabled(index);
+          pipelineModel->setFilterEnabled(index, !enabled);
+          return true;
+        }
+      }
+    }
   }
 
   return QStyledItemDelegate::editorEvent(event, model, option, index);

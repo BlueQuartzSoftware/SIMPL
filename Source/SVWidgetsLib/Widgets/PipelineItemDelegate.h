@@ -57,9 +57,18 @@ class SVWidgetsLib_EXPORT PipelineItemDelegate : public QStyledItemDelegate
     bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
 
   private:
+    enum class HoverItem : unsigned int
+    {
+      DeleteButton,
+      DisableButton,
+      Widget,
+      Unknown
+    };
+
     SVPipelineView* m_View = nullptr;
     const qreal m_BorderThickness = 3.0;
     int m_MousePressIndex = -1;
+    HoverItem m_CurrentlyHoveredItem = HoverItem::Unknown;
 
     QPushButton*              m_DisableBtn = nullptr;
     QPushButton*              m_DeleteBtn = nullptr;
