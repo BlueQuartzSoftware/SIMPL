@@ -74,10 +74,10 @@ public slots:
 
   /**
    * @brief Updates the DataStructureWidget with the latest DataContainerArray from
-   * the PipelineFilterObject
-   * @param object
+   * the filter
+   * @param filter
    */
-  void filterObjectActivated(PipelineFilterObject* object);
+  void filterActivated(AbstractFilter::Pointer filter);
 
   /**
    * @brief Updates the DataStructureWidget with the latest DataContainerArray from

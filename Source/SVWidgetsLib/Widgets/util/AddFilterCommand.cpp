@@ -116,7 +116,7 @@ void AddFilterCommand::undo()
   }
 
   emit model->pipelineDataChanged(QModelIndex());
-  emit model->preflightTriggered(QModelIndex(), model);
+  emit m_PipelineView->preflightPipeline();
 
   QString statusMessage;
   if (m_Filters.size() > 1)
@@ -151,7 +151,7 @@ void AddFilterCommand::redo()
     index++;
   }
 
-  emit model->preflightTriggered(QModelIndex(), model);
+  emit m_PipelineView->preflightPipeline();
   emit model->pipelineDataChanged(QModelIndex());
 
   QString statusMessage;
@@ -191,6 +191,10 @@ void AddFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertionIn
 //  model->setData(filterIndex, filter->getHumanLabel(), Qt::DisplayRole);
   model->setItemType(filterIndex, PipelineItem::ItemType::Filter);
   model->setFilter(filterIndex, filter);
+
+  FilterInputWidget* fiw = model->filterInputWidget(filterIndex);
+
+  QObject::connect(fiw, &FilterInputWidget::filterParametersChanged, m_PipelineView, &SVPipelineView::preflightPipeline);
 }
 
 // -----------------------------------------------------------------------------
@@ -199,6 +203,11 @@ void AddFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertionIn
 void AddFilterCommand::removeFilter(int filterIndex)
 {
   PipelineModel* model = m_PipelineView->getPipelineModel();
+  QModelIndex index = model->index(filterIndex, PipelineItem::Contents);
+
+  FilterInputWidget* fiw = model->filterInputWidget(index);
+
+  QObject::disconnect(fiw, &FilterInputWidget::filterParametersChanged, m_PipelineView, &SVPipelineView::preflightPipeline);
 
   model->removeRow(filterIndex);
 }

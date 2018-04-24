@@ -41,6 +41,7 @@
 // -----------------------------------------------------------------------------
 PipelineItem::PipelineItem(const QVector<QVariant>& data, PipelineItem* parent)
 : m_FilterInputWidget(nullptr)
+, m_FilterEnabled(true)
 , m_ActivePipeline(false)
 , m_PipelineSaved(true)
 , m_Icon(QIcon())

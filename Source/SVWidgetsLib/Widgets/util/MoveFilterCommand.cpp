@@ -36,20 +36,22 @@
 #include "MoveFilterCommand.h"
 
 #include "SVWidgetsLib/Widgets/PipelineModel.h"
+#include "SVWidgetsLib/Widgets/SVPipelineView.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MoveFilterCommand::MoveFilterCommand(AbstractFilter::Pointer filter, PipelineModel* originModel, PipelineModel* destinationModel, int destinationIndex, QUndoCommand* parent)
+MoveFilterCommand::MoveFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* originView, SVPipelineView* destinationView, int destinationIndex, QUndoCommand* parent)
 : QUndoCommand(parent)
-, m_OriginModel(originModel)
-, m_DestinationModel(destinationModel)
+, m_OriginView(originView)
+, m_DestinationView(destinationView)
 {
   m_Filters.push_back(filter);
 
   if (destinationIndex < 0)
   {
-    destinationIndex = m_DestinationModel->rowCount();
+    PipelineModel* destinationModel = destinationView->getPipelineModel();
+    destinationIndex = destinationModel->rowCount();
   }
   m_DestinationIndex = destinationIndex;
 
@@ -59,15 +61,16 @@ MoveFilterCommand::MoveFilterCommand(AbstractFilter::Pointer filter, PipelineMod
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MoveFilterCommand::MoveFilterCommand(std::vector<AbstractFilter::Pointer> filters, PipelineModel* originModel, PipelineModel* destinationModel, int destinationIndex, QUndoCommand* parent)
+MoveFilterCommand::MoveFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* originView, SVPipelineView* destinationView, int destinationIndex, QUndoCommand* parent)
 : QUndoCommand(parent)
 , m_Filters(filters)
-, m_OriginModel(originModel)
-, m_DestinationModel(destinationModel)
+, m_OriginView(originView)
+, m_DestinationView(destinationView)
 {
   if (destinationIndex < 0)
   {
-    destinationIndex = m_DestinationModel->rowCount();
+    PipelineModel* destinationModel = destinationView->getPipelineModel();
+    destinationIndex = destinationModel->rowCount();
   }
   m_DestinationIndex = destinationIndex;
 
@@ -84,13 +87,13 @@ MoveFilterCommand::~MoveFilterCommand() = default;
 // -----------------------------------------------------------------------------
 void MoveFilterCommand::undo()
 {
-  if(m_OriginModel == nullptr || m_DestinationModel == nullptr)
+  if(m_OriginView == nullptr || m_DestinationView == nullptr)
   {
     return;
   }
 
-  PipelineModel* originModel = m_DestinationModel;
-  PipelineModel* destinationModel = m_OriginModel;
+  PipelineModel* originModel = m_DestinationView->getPipelineModel();
+  PipelineModel* destinationModel = m_OriginView->getPipelineModel();
 
   bool itemsMoved = false;
 
@@ -115,21 +118,18 @@ void MoveFilterCommand::undo()
 
   if (itemsMoved)
   {
-    emit originModel->preflightTriggered(QModelIndex(), originModel);
-    emit originModel->pipelineDataChanged(QModelIndex());
-
-    emit destinationModel->preflightTriggered(QModelIndex(), destinationModel);
-    emit destinationModel->pipelineDataChanged(QModelIndex());
+    m_OriginView->preflightPipeline();
+    m_DestinationView->preflightPipeline();
 
     if (m_Filters.size() == 1)
     {
-      emit destinationModel->statusMessageGenerated(QObject::tr("Moved \"%1\" filter").arg(m_Filters[0]->getHumanLabel()));
-      emit destinationModel->standardOutputMessageGenerated(QObject::tr("Moved \"%1\" filter").arg(m_Filters[0]->getHumanLabel()));
+      emit m_DestinationView->statusMessage(QObject::tr("Moved \"%1\" filter").arg(m_Filters[0]->getHumanLabel()));
+      emit m_DestinationView->stdOutMessage(QObject::tr("Moved \"%1\" filter").arg(m_Filters[0]->getHumanLabel()));
     }
     else
     {
-      emit destinationModel->statusMessageGenerated(QObject::tr("Moved %1 filters").arg(m_Filters.size()));
-      emit destinationModel->standardOutputMessageGenerated(QObject::tr("Moved %1 filters").arg(m_Filters.size()));
+      emit m_DestinationView->statusMessage(QObject::tr("Moved %1 filters").arg(m_Filters.size()));
+      emit m_DestinationView->stdOutMessage(QObject::tr("Moved %1 filters").arg(m_Filters.size()));
     }
   }
 }
@@ -139,48 +139,48 @@ void MoveFilterCommand::undo()
 // -----------------------------------------------------------------------------
 void MoveFilterCommand::redo()
 {
-  if(m_OriginModel == nullptr || m_DestinationModel == nullptr)
+  if(m_OriginView == nullptr || m_DestinationView == nullptr)
   {
     return;
   }
 
+  PipelineModel* originModel = m_OriginView->getPipelineModel();
+  PipelineModel* destinationModel = m_DestinationView->getPipelineModel();
+
   bool itemsMoved = false;
 
-  m_OriginModel->blockSignals(true);
-  m_DestinationModel->blockSignals(true);
+  m_OriginView->blockSignals(true);
+  m_DestinationView->blockSignals(true);
   for (size_t i = 0; i < m_Filters.size(); i++)
   {
     AbstractFilter::Pointer filter = m_Filters[i];
-    QModelIndex originModelIndex = m_OriginModel->indexOfFilter(filter);
+    QModelIndex originModelIndex = originModel->indexOfFilter(filter);
     size_t originIndex = originModelIndex.row();
     originIndexes.push_back(originIndex);
 
-    removeFilter(originIndex, m_OriginModel);
+    removeFilter(originIndex, originModel);
 
-    addFilter(filter, m_DestinationModel, m_DestinationIndex);
+    addFilter(filter, destinationModel, m_DestinationIndex);
 
     itemsMoved = true;
   }
-  m_OriginModel->blockSignals(false);
-  m_DestinationModel->blockSignals(false);
+  m_OriginView->blockSignals(false);
+  m_DestinationView->blockSignals(false);
 
   if (itemsMoved)
   {
-    emit m_OriginModel->preflightTriggered(QModelIndex(), m_OriginModel);
-    emit m_OriginModel->pipelineDataChanged(QModelIndex());
-
-    emit m_DestinationModel->preflightTriggered(QModelIndex(), m_DestinationModel);
-    emit m_DestinationModel->pipelineDataChanged(QModelIndex());
+    m_OriginView->preflightPipeline();
+    m_DestinationView->preflightPipeline();
 
     if (m_Filters.size() == 1)
     {
-      emit m_DestinationModel->statusMessageGenerated(QObject::tr("Moved \"%1\" filter").arg(m_Filters[0]->getHumanLabel()));
-      emit m_DestinationModel->standardOutputMessageGenerated(QObject::tr("Moved \"%1\" filter").arg(m_Filters[0]->getHumanLabel()));
+      emit m_DestinationView->statusMessage(QObject::tr("Moved \"%1\" filter").arg(m_Filters[0]->getHumanLabel()));
+      emit m_DestinationView->stdOutMessage(QObject::tr("Moved \"%1\" filter").arg(m_Filters[0]->getHumanLabel()));
     }
     else
     {
-      emit m_DestinationModel->statusMessageGenerated(QObject::tr("Moved %1 filters").arg(m_Filters.size()));
-      emit m_DestinationModel->standardOutputMessageGenerated(QObject::tr("Moved %1 filters").arg(m_Filters.size()));
+      emit m_DestinationView->statusMessage(QObject::tr("Moved %1 filters").arg(m_Filters.size()));
+      emit m_DestinationView->stdOutMessage(QObject::tr("Moved %1 filters").arg(m_Filters.size()));
     }
   }
 }
@@ -198,12 +198,6 @@ void MoveFilterCommand::addFilter(AbstractFilter::Pointer filter, PipelineModel*
 
   QModelIndexList list;
   list.push_back(filterIndex);
-
-  emit model->preflightTriggered(QModelIndex(), model);
-  emit model->pipelineDataChanged(QModelIndex());
-
-  emit model->statusMessageGenerated(QObject::tr("Added \"%1\" filter").arg(filter->getHumanLabel()));
-  emit model->standardOutputMessageGenerated(QObject::tr("Added \"%1\" filter").arg(filter->getHumanLabel()));
 }
 
 // -----------------------------------------------------------------------------
@@ -212,6 +206,4 @@ void MoveFilterCommand::addFilter(AbstractFilter::Pointer filter, PipelineModel*
 void MoveFilterCommand::removeFilter(int filterIndex, PipelineModel* model)
 {
   model->removeRow(filterIndex);
-
-  emit model->preflightTriggered(QModelIndex(), model);
 }

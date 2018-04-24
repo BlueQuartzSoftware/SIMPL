@@ -34,43 +34,17 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _PipelineView_h_
-#define _PipelineView_h_
+#pragma once
 
-#include <vector>
+#include <QtCore/QSharedPointer>
 
-#include <QtCore/QList>
-#include <QtCore/QTimer>
-#include <QtCore/QUuid>
-
-#include <QtWidgets/QFrame>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QTextEdit>
-#include <QtWidgets/QTableWidget>
-#include <QtWidgets/QStatusBar>
-
-#include <QtGui/QPainter>
-
-#include "SIMPLib/Common/PipelineMessage.h"
-#include "SIMPLib/CoreFilters/DataContainerReader.h"
-#include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
-#include "SIMPLib/FilterParameters/H5FilterParametersWriter.h"
-#include "SIMPLib/Filtering/FilterPipeline.h"
+#include <QtWidgets/QAction>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
-#include "SVWidgetsLib/Widgets/SVPipelineFilterWidget.h"
-#include "SVWidgetsLib/Widgets/SVPipelineFilterOutlineWidget.h"
-#include "SVWidgetsLib/Widgets/util/MoveFilterCommand.h"
-#include "SVWidgetsLib/Widgets/util/RemoveFilterCommand.h"
-#include "SVWidgetsLib/QtSupport/QtSFileDragMessageBox.h"
 
-class QScrollArea;
-class QContextMenuEvent;
-class QLabel;
-class QEvent;
+class QWidget;
+class QUndoCommand;
 class QUndoStack;
-class DataStructureWidget;
 
 /*
  *
@@ -79,150 +53,48 @@ class SVWidgetsLib_EXPORT PipelineView
 {
   public:
 
-    typedef std::pair<int, PipelineFilterObject*> IndexedFilterObject;
-    SIMPL_INSTANCE_PROPERTY(QList<IndexedFilterObject>, DraggedFilterObjects)
-
-    PipelineView(QWidget* parent = 0);
+    PipelineView();
     virtual ~PipelineView();
 
     /**
-     * @brief filterCount
+     * @brief addUndoCommand
+     * @param cmd
+     */
+    void addUndoCommand(QUndoCommand* cmd);
+
+    /**
+     * @brief undo
+     */
+    void undo();
+
+    /**
+     * @brief redo
+     */
+    void redo();
+
+    /**
+     * @brief getActionUndo
      * @return
      */
-    virtual int filterCount(QUuid startId = QUuid());
+    QAction* getActionUndo();
 
     /**
-     * @brief filterObjectAt
-     * @param index
+     * @brief getActionRedo
      * @return
      */
-    virtual PipelineFilterObject* filterObjectAt(QVariant value);
-
-    /**
-    * @brief getAllFilterObjects
-    * @return
-    */
-    virtual QList<PipelineFilterObject*> getAllFilterObjects();
-
-    /**
-    * @brief containsFilterWidget
-    * @param filterWidget
-    * @return
-    */
-    virtual bool containsFilterWidget(PipelineFilterObject* filterWidget);
-
-    /**
-    * @brief valueOfFilterWidget
-    * @param filterWidget
-    * @return
-    */
-    virtual QVariant valueOfFilterWidget(PipelineFilterObject* filterWidget);
-
-    /**
-     * @brief getFilterPipeline
-     * @return
-     */
-    virtual FilterPipeline::Pointer getFilterPipeline(QUuid startId = QUuid());
-
-    /**
-     * @brief Returns a FilterPipeline Object with a new filter instance that has the input parameters copied
-     * from the filter instance that is embedded in the SVPipelineFilterWidget instance. This function does NOT perform
-     * a DEEP copy of the filter.
-     * @return
-     */
-    virtual FilterPipeline::Pointer getCopyOfFilterPipeline();
-
-    /**
-    * @brief clearSelectedFilterObjects
-    */
-    virtual void clearSelectedFilterObjects();
-
-    /**
-    * @brief getSelectedFilterWidgets
-    * @return
-    */
-    virtual QList<PipelineFilterObject*> getSelectedFilterObjects();
-
-    /**
-    * @brief getSelectedIndexedFilterObject
-    * @return
-    */
-    virtual QList<IndexedFilterObject> getSelectedIndexedFilterObjects();
-
-    /**
-     * @brief moveFilterWidget
-     * @param fw
-     * @param origin
-     * @param destination
-     */
-    virtual void moveFilterWidget(PipelineFilterObject* fw, QVariant origin, QVariant destination);
-
-    /**
-     * @brief setSelectedFilterObject
-     * @param w
-     * @param modifiers
-     */
-    virtual void setSelectedFilterObject(PipelineFilterObject* w, Qt::KeyboardModifiers modifiers);
-
-    /**
-     * @brief setDataStructureWidget
-     * @param w
-     */
-    virtual void setDataStructureWidget(DataStructureWidget* w);
-
-    /**
-     * @brief recheckWindowTitleAndModification
-     */
-    virtual void recheckWindowTitleAndModification();
-
-    /**
-     * @brief preflightPipeline
-     */
-    virtual void preflightPipeline(QUuid id = QUuid());
-
-    /**
-     * @brief addSIMPLViewReaderFilter
-     * @param filePath
-     */
-    virtual void addSIMPLViewReaderFilter(const QString& filePath, QVariant value);
-
-    /**
-     * @brief reindexWidgetTitles
-     */
-    virtual void reindexWidgetTitles();
-
-    /**
-     * @brief showFilterHelp
-     * @param className
-     */
-    void showFilterHelp(const QString& className);
-
-    /**
-     * @brief createFilterObjectFromFilter
-     * @param filter
-     * @return
-     */
-    virtual PipelineFilterObject* createFilterObjectFromFilter(AbstractFilter::Pointer filter);
-
-  protected:
-    /**
-     * @brief addFilterObject
-     * @param filterObject
-     * @param value
-     */
-    virtual void addFilterObject(PipelineFilterObject* filterObject, QVariant value);
-
-    /**
-     * @brief removeFilterObject
-     * @param filterWidget
-     * @param deleteWidget
-     */
-    virtual void removeFilterObject(PipelineFilterObject* filterWidget, bool deleteWidget = true);
+    QAction* getActionRedo();
 
   private:
+    QSharedPointer<QUndoStack> m_UndoStack;
+    QAction* m_ActionUndo = nullptr;
+    QAction* m_ActionRedo = nullptr;
+
+    /**
+     * @brief setupUndoStack
+     */
+    void setupUndoStack();
+
     PipelineView(const PipelineView&) = delete;   // Copy Constructor Not Implemented
     void operator=(const PipelineView&) = delete; // Move assignment Not Implemented
 };
-
-#endif /* _PipelineView_H */
 

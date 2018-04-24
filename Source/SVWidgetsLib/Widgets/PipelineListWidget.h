@@ -65,7 +65,7 @@ class SVWidgetsLib_EXPORT PipelineListWidget : public QFrame, private Ui::Pipeli
     /**
      * @brief preflightFinished
      */
-    void preflightFinished(const QModelIndex &pipelineIndex, int err);
+    void preflightFinished(int err);
 
     /**
      * @brief pipelineFinished
@@ -80,7 +80,6 @@ class SVWidgetsLib_EXPORT PipelineListWidget : public QFrame, private Ui::Pipeli
     void setupGui();
 
   signals:
-    void pipelineStarted(const QModelIndex &pipelineIndex, PipelineModel* model);
     void pipelineCanceled(const QModelIndex &pipelineIndex);
 
   private:

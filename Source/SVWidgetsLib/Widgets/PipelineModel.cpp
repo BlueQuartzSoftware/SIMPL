@@ -83,124 +83,6 @@ void PipelineModel::updateActivePipeline(const QModelIndex &pipelineIdx)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterPipeline::Pointer PipelineModel::getFilterPipeline(const QModelIndex &pipelineIndex)
-{
-  // Create a Pipeline Object and fill it with the filters from this View
-  FilterPipeline::Pointer pipeline = FilterPipeline::New();
-
-  qint32 count = rowCount(pipelineIndex);
-  for(qint32 i = 0; i < count; ++i)
-  {
-    QModelIndex childIndex = index(i, PipelineItem::Contents, pipelineIndex);
-    if(childIndex.isValid())
-    {
-      AbstractFilter::Pointer filter = this->filter(childIndex);
-      Breakpoint::Pointer breakpoint = std::dynamic_pointer_cast<Breakpoint>(filter);
-      if(nullptr != breakpoint)
-      {
-        connect(pipeline.get(), SIGNAL(pipelineCanceled()), breakpoint.get(), SLOT(resumePipeline()));
-      }
-
-      pipeline->pushBack(filter);
-    }
-  }
-  for (int i = 0; i < m_PipelineMessageObservers.size(); i++)
-  {
-    pipeline->addMessageReceiver(m_PipelineMessageObservers[i]);
-  }
-  return pipeline;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-FilterPipeline::Pointer PipelineModel::getCopyOfFilterPipeline()
-{
-  // Create a Pipeline Object and fill it with the filters from this View
-  FilterPipeline::Pointer pipeline = FilterPipeline::New();
-
-  for(int i = 0; i < rowCount(); i++)
-  {
-    QModelIndex filterIndex = index(i, PipelineItem::Contents);
-    AbstractFilter::Pointer filter = this->filter(filterIndex);
-    AbstractFilter::Pointer copy = filter->newFilterInstance(true);
-    pipeline->pushBack(copy);
-  }
-  for (int i = 0; i < m_PipelineMessageObservers.size(); i++)
-  {
-    pipeline->addMessageReceiver(m_PipelineMessageObservers[i]);
-  }
-
-  return pipeline;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int PipelineModel::writePipeline(const QModelIndex &pipelineIndex, const QString &outputPath)
-{
-  QFileInfo fi(outputPath);
-  QString ext = fi.completeSuffix();
-
-  // If the filePath already exists - delete it so that we get a clean write to the file
-  if(fi.exists() == true && (ext == "dream3d" || ext == "json"))
-  {
-    QFile f(outputPath);
-    if(f.remove() == false)
-    {
-      QMessageBox::warning(nullptr, QString::fromLatin1("Pipeline Write Error"), QString::fromLatin1("There was an error removing the existing pipeline file. The pipeline was NOT saved."));
-      return -1;
-    }
-  }
-
-  // Create a Pipeline Object and fill it with the filters from this View
-  FilterPipeline::Pointer pipeline = getFilterPipeline(pipelineIndex);
-
-  int err = 0;
-  if(ext == "dream3d")
-  {
-    QList<IObserver*> observers;
-    for (int i = 0; i < m_PipelineMessageObservers.size(); i++)
-    {
-      observers.push_back(reinterpret_cast<IObserver*>(m_PipelineMessageObservers[i]));
-    }
-
-    H5FilterParametersWriter::Pointer dream3dWriter = H5FilterParametersWriter::New();
-    err = dream3dWriter->writePipelineToFile(pipeline, fi.absoluteFilePath(), fi.fileName(), observers);
-  }
-  else if(ext == "json")
-  {
-    QList<IObserver*> observers;
-    for (int i = 0; i < m_PipelineMessageObservers.size(); i++)
-    {
-      observers.push_back(reinterpret_cast<IObserver*>(m_PipelineMessageObservers[i]));
-    }
-
-    JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
-    jsonWriter->writePipelineToFile(pipeline, fi.absoluteFilePath(), fi.fileName(), observers);
-  }
-  else
-  {
-    emit statusMessageGenerated(tr("The pipeline was not written to file '%1'. '%2' is an unsupported file extension.").arg(fi.fileName()).arg(ext));
-    return -1;
-  }
-
-  if(err < 0)
-  {
-    emit statusMessageGenerated(tr("There was an error while saving the pipeline to file '%1'.").arg(fi.fileName()));
-    return -1;
-  }
-  else
-  {
-    emit statusMessageGenerated(tr("The pipeline has been saved successfully to '%1'.").arg(fi.fileName()));
-  }
-
-  return 0;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 int PipelineModel::columnCount(const QModelIndex& parent) const
 {
   return m_RootItem->columnCount();
@@ -319,7 +201,7 @@ QModelIndex PipelineModel::indexOfFilter(AbstractFilter::Pointer filter, const Q
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineModel::filterEnabled(const QModelIndex &index)
+bool PipelineModel::filterEnabled(const QModelIndex &index) const
 {
   if(!index.isValid())
   {
@@ -808,20 +690,4 @@ QColor PipelineModel::getForegroundColor(const QModelIndex &index) const
   }
 
   return fgColor;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineModel::addPipelineMessageObserver(QObject* pipelineMessageObserver)
-{
-  m_PipelineMessageObservers.push_back(pipelineMessageObserver);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QList<QObject*> PipelineModel::getPipelineMessageObservers()
-{
-  return m_PipelineMessageObservers;
 }

@@ -86,10 +86,9 @@ void PipelineListWidget::on_startPipelineBtn_clicked()
     return;
   }
 
-  if (model->rowCount() == 1)
+  if (model->rowCount() > 0)
   {
-    QModelIndex pipelineIndex = model->index(0, PipelineItem::Contents);
-    emit pipelineStarted(pipelineIndex, model);
+    pipelineView->executePipeline();
     startPipelineBtn->setText("Cancel Pipeline");
     startPipelineBtn->setIcon(QIcon(":/media_stop_white.png"));
     update();
@@ -99,9 +98,9 @@ void PipelineListWidget::on_startPipelineBtn_clicked()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineListWidget::preflightFinished(const QModelIndex &pipelineIndex, int err)
+void PipelineListWidget::preflightFinished(int err)
 {
-  if (pipelineIndex.isValid() == false || err < 0)
+  if (err < 0)
   {
     startPipelineBtn->setDisabled(true);
   }

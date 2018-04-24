@@ -44,6 +44,7 @@
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
+class SVPipelineView;
 class PipelineModel;
 
 /**
@@ -56,22 +57,22 @@ public:
     /**
    * @brief MoveFilterCommand
    * @param filter
-   * @param originModel
-   * @param destinationModel
+   * @param originView
+   * @param destinationView
    * @param destinationIndex
    * @param parent
    */
-  MoveFilterCommand(AbstractFilter::Pointer filter, PipelineModel* originModel, PipelineModel* destinationModel, int destinationIndex = -1, QUndoCommand* parent = 0);
+  MoveFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* originView, SVPipelineView* destinationView, int destinationIndex = -1, QUndoCommand* parent = 0);
 
   /**
    * @brief MoveFilterCommand
    * @param filters
-   * @param originModel
-   * @param destinationModel
+   * @param originView
+   * @param destinationView
    * @param destinationIndex
    * @param parent
    */
-  MoveFilterCommand(std::vector<AbstractFilter::Pointer> filters, PipelineModel* originModel, PipelineModel* destinationModel, int destinationIndex = -1, QUndoCommand* parent = 0);
+  MoveFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* originView, SVPipelineView* destinationView, int destinationIndex = -1, QUndoCommand* parent = 0);
 
   virtual ~MoveFilterCommand();
 
@@ -87,8 +88,8 @@ public:
 
 private:
   std::vector<AbstractFilter::Pointer> m_Filters;
-  PipelineModel* m_OriginModel;
-  PipelineModel* m_DestinationModel;
+  SVPipelineView* m_OriginView;
+  SVPipelineView* m_DestinationView;
   size_t m_OriginIndex;
   size_t m_DestinationIndex;
   std::vector<size_t> originIndexes;
@@ -96,14 +97,15 @@ private:
   /**
    * @brief addFilter
    * @param filter
-   * @param parentIndex
+   * @param model
+   * @param insertionIndex
    */
   void addFilter(AbstractFilter::Pointer filter, PipelineModel* model, size_t insertionIndex);
 
   /**
    * @brief removeFilter
    * @param filterIndex
-   * @param pipelineIndex
+   * @param model
    */
   void removeFilter(int filterIndex, PipelineModel* model);
 

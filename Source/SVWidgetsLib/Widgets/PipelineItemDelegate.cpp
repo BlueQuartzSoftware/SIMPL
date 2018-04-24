@@ -257,7 +257,7 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
   if (drawButtons == true)
   {
     // Draw the "delete" button
-    QRect deleteBtnRect;
+    QRectF deleteBtnRect;
     deleteBtnRect.setX(option.rect.width() - BUTTON_SIZE - TEXT_MARGIN);
     deleteBtnRect.setY(option.rect.y() + ( (option.rect.height() / 2) - (BUTTON_SIZE / 2) ) );
     deleteBtnRect.setWidth(BUTTON_SIZE);
@@ -279,7 +279,7 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
     painter->drawPixmap(deleteBtnRect.center().x() - (deleteBtnPixmap.width() / 2), deleteBtnRect.center().y() - (deleteBtnPixmap.height() / 2 + 1), deleteBtnPixmap);  // y is 1px offset due to how the images were cut
 
     // Draw the "disable" button
-    QRect disableBtnRect;
+    QRectF disableBtnRect;
     disableBtnRect.setX(deleteBtnRect.x() - TEXT_MARGIN - BUTTON_SIZE);
     disableBtnRect.setY(option.rect.y() + ( (option.rect.height() / 2) - (BUTTON_SIZE / 2) ) );
     disableBtnRect.setWidth(BUTTON_SIZE);
@@ -288,12 +288,19 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
     QPixmap disableBtnPixmap;
     if(disableBtnRect.contains(mousePos))
     {
-      disableBtnPixmap = QPixmap(":/ban_hover.png");
+      if (model->filterEnabled(index) == false)
+      {
+        disableBtnPixmap = QPixmap(":/ban_red.png");
+      }
+      else
+      {
+        disableBtnPixmap = QPixmap(":/ban_hover.png");
+      }
     }
-  //  else if (model->)
-  //  {
-
-  //  }
+    else if (model->filterEnabled(index) == false)
+    {
+      disableBtnPixmap = QPixmap(":/ban_red.png");
+    }
     else
     {
       disableBtnPixmap = QPixmap(":/ban.png");
@@ -344,15 +351,21 @@ bool PipelineItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model,
   {
     if(event->type() == QEvent::MouseMove)
     {
-      if (deleteBtnRect.contains(mouseEvent->pos()) && m_CurrentlyHoveredItem != HoverItem::DeleteButton)
+      if (deleteBtnRect.contains(mouseEvent->pos()))
       {
-        m_CurrentlyHoveredItem = HoverItem::DeleteButton;
-        return true;
+        if (m_CurrentlyHoveredItem != HoverItem::DeleteButton)
+        {
+          m_CurrentlyHoveredItem = HoverItem::DeleteButton;
+          return true;
+        }
       }
-      else if (disableBtnRect.contains(mouseEvent->pos()) && m_CurrentlyHoveredItem != HoverItem::DisableButton)
+      else if (disableBtnRect.contains(mouseEvent->pos()))
       {
-        m_CurrentlyHoveredItem = HoverItem::DisableButton;
-        return true;
+        if (m_CurrentlyHoveredItem != HoverItem::DisableButton)
+        {
+          m_CurrentlyHoveredItem = HoverItem::DisableButton;
+          return true;
+        }
       }
       else if (m_CurrentlyHoveredItem != HoverItem::Widget)
       {

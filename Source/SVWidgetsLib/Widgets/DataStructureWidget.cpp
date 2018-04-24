@@ -228,21 +228,19 @@ void DataStructureWidget::refreshData()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataStructureWidget::filterObjectActivated(PipelineFilterObject* object)
+void DataStructureWidget::filterActivated(AbstractFilter::Pointer filter)
 {
   m_Dca = DataContainerArray::NullPointer();
-  if(object)
+
+  if(filter.get())
   {
-    AbstractFilter::Pointer filter = object->getFilter();
-    if(filter.get())
+    DataContainerArray::Pointer dca = filter->getDataContainerArray();
+    if(dca.get())
     {
-      DataContainerArray::Pointer dca = filter->getDataContainerArray();
-      if(dca.get())
-      {
-        m_Dca = dca->deepCopy(true);
-      }
+      m_Dca = dca->deepCopy(true);
     }
   }
+
   refreshData();
 }
 
@@ -261,7 +259,7 @@ void DataStructureWidget::handleFilterRemoved(PipelineFilterObject* object)
 // -----------------------------------------------------------------------------
 void DataStructureWidget::handleFilterParameterChanged(PipelineFilterObject* object)
 {
-  filterObjectActivated(object);
+//  filterActivated(object);
 }
 
 // -----------------------------------------------------------------------------
