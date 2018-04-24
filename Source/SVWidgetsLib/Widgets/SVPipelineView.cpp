@@ -690,8 +690,7 @@ void SVPipelineView::listenDeleteKeyTriggered()
     filters.push_back(filter);
   }
 
-  RemoveFilterCommand* removeCmd = new RemoveFilterCommand(filters, this, "Remove");
-  addUndoCommand(removeCmd);
+  removeFilters(filters);
 }
 
 // -----------------------------------------------------------------------------
