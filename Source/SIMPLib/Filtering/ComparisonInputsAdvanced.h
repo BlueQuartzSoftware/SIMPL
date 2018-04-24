@@ -127,6 +127,11 @@ public:
   QString getAttributeMatrixName();
 
   /**
+  * @brief Returns the DataArrayPath to the selected AttributeMatrix
+  */
+  DataArrayPath getAttributeMatrixPath();
+
+  /**
    * @brief Sets the DataContainer name used by the group of comparisons
    * @param dcName
    */

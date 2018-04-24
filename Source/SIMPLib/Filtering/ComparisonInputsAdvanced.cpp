@@ -205,6 +205,14 @@ QString ComparisonInputsAdvanced::getAttributeMatrixName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+DataArrayPath ComparisonInputsAdvanced::getAttributeMatrixPath()
+{
+  return DataArrayPath(m_dataContainerName, m_attributeMatrixName, "");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void ComparisonInputsAdvanced::setDataContainerName(QString dcName)
 {
   m_dataContainerName = dcName;
