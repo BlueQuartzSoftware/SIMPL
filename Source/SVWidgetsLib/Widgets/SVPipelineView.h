@@ -198,6 +198,35 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     void removeFilters(std::vector<AbstractFilter::Pointer> filters);
 
     /**
+     * @brief Cuts filter from the current model
+     * @param filter
+     */
+    void cutFilter(AbstractFilter::Pointer filter);
+
+    /**
+     * @brief Cuts multiple filters from the current model
+     * @param filters
+     */
+    void cutFilters(std::vector<AbstractFilter::Pointer> filters);
+
+    /**
+     * @brief Copies the currently selected filters from the current model into the system clipboard
+     */
+    void copySelectedFilters();
+
+    /**
+     * @brief Pastes filter from the system clipboard to the current model
+     * @param filter
+     */
+    void pasteFilter(AbstractFilter::Pointer filter);
+
+    /**
+     * @brief Pastes multiple filters from the system clipboard to the current model
+     * @param filters
+     */
+    void pasteFilters(std::vector<AbstractFilter::Pointer> filters);
+
+    /**
      * @brief preflightPipeline
      * @param pipelineIndex
      */
@@ -336,6 +365,12 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     QAction*                                          m_ActionCopy = nullptr;
     QAction*                                          m_ActionPaste = nullptr;
     QAction*                                          m_ActionClearPipeline = new QAction("Clear Pipeline", this);
+
+    /**
+     * @brief Gets the currently selected filters
+     * @return
+     */
+    std::vector<AbstractFilter::Pointer> getSelectedFilters();
 
     /**
      * @brief requestFilterContextMenu

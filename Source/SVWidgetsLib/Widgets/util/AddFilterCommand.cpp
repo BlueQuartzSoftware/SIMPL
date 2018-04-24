@@ -192,6 +192,11 @@ void AddFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertionIn
   model->setItemType(filterIndex, PipelineItem::ItemType::Filter);
   model->setFilter(filterIndex, filter);
 
+  if (filter->getEnabled() == false)
+  {
+    model->setWidgetState(filterIndex, PipelineItem::WidgetState::Disabled);
+  }
+
   FilterInputWidget* fiw = model->filterInputWidget(filterIndex);
 
   QObject::connect(fiw, &FilterInputWidget::filterParametersChanged, m_PipelineView, &SVPipelineView::preflightPipeline);

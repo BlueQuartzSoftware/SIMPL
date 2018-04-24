@@ -146,11 +146,14 @@ void SVPipelineView::setupGui()
   m_ActionPaste->setShortcut(QKeySequence::Paste);
   m_ActionClearPipeline->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Backspace));
 
-  QClipboard* clipboard = QApplication::clipboard();
-  connect(clipboard, SIGNAL(dataChanged()), this, SLOT(updatePasteAvailability()));
+  m_ActionCut->setDisabled(true);
+  m_ActionCopy->setDisabled(true);
 
   // Run this once, so that the Paste button availability is updated for what is currently on the system clipboard
   updatePasteAvailability();
+
+  QClipboard* clipboard = QApplication::clipboard();
+  connect(clipboard, SIGNAL(dataChanged()), this, SLOT(updatePasteAvailability()));
 
   m_FilterOutlineWidget = new SVPipelineFilterOutlineWidget(nullptr);
   m_FilterOutlineWidget->setObjectName("m_DropBox");
@@ -235,6 +238,42 @@ void SVPipelineView::removeFilters(std::vector<AbstractFilter::Pointer> filters)
 {
   RemoveFilterCommand* cmd = new RemoveFilterCommand(filters, this, "Remove");
   addUndoCommand(cmd);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineView::cutFilter(AbstractFilter::Pointer filter)
+{
+  RemoveFilterCommand* cmd = new RemoveFilterCommand(filter, this, "Cut");
+  addUndoCommand(cmd);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineView::cutFilters(std::vector<AbstractFilter::Pointer> filters)
+{
+  RemoveFilterCommand* cmd = new RemoveFilterCommand(filters, this, "Cut");
+  addUndoCommand(cmd);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineView::pasteFilter(AbstractFilter::Pointer filter)
+{
+  AddFilterCommand* addCmd = new AddFilterCommand(filter, this, -1, "Paste");
+  addUndoCommand(addCmd);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineView::pasteFilters(std::vector<AbstractFilter::Pointer> filters)
+{
+  AddFilterCommand* addCmd = new AddFilterCommand(filters, this, -1, "Paste");
+  addUndoCommand(addCmd);
 }
 
 // -----------------------------------------------------------------------------
@@ -559,26 +598,10 @@ void SVPipelineView::updatePasteAvailability()
 // -----------------------------------------------------------------------------
 void SVPipelineView::listenCutTriggered()
 {
-  // SIMPL-FIXME: Implement Cut using one window
+  copySelectedFilters();
 
-//    SVPipelineView* viewWidget = m_ActiveWindow->getPipelineViewWidget();
-
-//    QList<PipelineFilterObject*> filterWidgets = viewWidget->getSelectedFilterObjects();
-
-//    FilterPipeline::Pointer pipeline = FilterPipeline::New();
-//    for(int i = 0; i < filterWidgets.size(); i++)
-//    {
-//      pipeline->pushBack(filterWidgets[i]->getFilter());
-//    }
-
-//    JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
-//    QString jsonString = jsonWriter->writePipelineToString(pipeline, "Pipeline");
-
-//    QClipboard* clipboard = QApplication::clipboard();
-//    clipboard->setText(jsonString);
-
-//    RemoveFilterCommand* removeCmd = new RemoveFilterCommand(filterWidgets, viewWidget, "Cut");
-//    viewWidget->addUndoCommand(removeCmd);
+  std::vector<AbstractFilter::Pointer> filters = getSelectedFilters();
+  cutFilters(filters);
 }
 
 // -----------------------------------------------------------------------------
@@ -586,41 +609,65 @@ void SVPipelineView::listenCutTriggered()
 // -----------------------------------------------------------------------------
 void SVPipelineView::listenCopyTriggered()
 {
-  // SIMPL-FIXME: Implement Copy using one window
+  copySelectedFilters();
+}
 
-//    SVPipelineView* viewWidget = m_ActiveWindow->getPipelineViewWidget();
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineView::copySelectedFilters()
+{
+  FilterPipeline::Pointer pipeline = FilterPipeline::New();
+  std::vector<AbstractFilter::Pointer> filters = getSelectedFilters();
+  for(int i = 0; i < filters.size(); i++)
+  {
+    pipeline->pushBack(filters[i]);
+  }
 
-//    FilterPipeline::Pointer pipeline = FilterPipeline::New();
-//    QList<PipelineFilterObject*> filterWidgets = viewWidget->getSelectedFilterObjects();
-//    for(int i = 0; i < filterWidgets.size(); i++)
-//    {
-//      pipeline->pushBack(filterWidgets[i]->getFilter());
-//    }
+  JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
+  QString jsonString = jsonWriter->writePipelineToString(pipeline, "Pipeline");
 
-//    JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
-//    QString json = jsonWriter->writePipelineToString(pipeline, "Copy - Pipeline");
-//    QClipboard* clipboard = QApplication::clipboard();
-//    clipboard->setText(json);
+  QClipboard* clipboard = QApplication::clipboard();
+  clipboard->setText(jsonString);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+std::vector<AbstractFilter::Pointer> SVPipelineView::getSelectedFilters()
+{
+  QModelIndexList selectedIndexes = selectionModel()->selectedRows();
+
+  std::vector<AbstractFilter::Pointer> filters;
+  PipelineModel* model = getPipelineModel();
+  for(int i = 0; i < selectedIndexes.size(); i++)
+  {
+    AbstractFilter::Pointer filter = model->filter(selectedIndexes[i]);
+    filters.push_back(filter);
+  }
+
+  return filters;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void SVPipelineView::listenPasteTriggered()
-{
-  // SIMPL-FIXME: Implement Paste using one window
+{  
+  QClipboard* clipboard = QApplication::clipboard();
+  QString jsonString = clipboard->text();
 
-//    SVPipelineView* viewWidget = m_ActiveWindow->getPipelineViewWidget();
+  JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
+  FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(jsonString);
+  FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
 
-//    QClipboard* clipboard = QApplication::clipboard();
-//    QString jsonString = clipboard->text();
+  std::vector<AbstractFilter::Pointer> filters;
+  for (int i = 0; i < container.size(); i++)
+  {
+    filters.push_back(container[i]);
+  }
 
-//    JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
-//    FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(jsonString);
-//    FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
-
-//    AddFilterCommand* addCmd = new AddFilterCommand(container, viewWidget, "Paste", -1);
-//    viewWidget->addUndoCommand(addCmd);
+  pasteFilters(filters);
 }
 
 // -----------------------------------------------------------------------------
@@ -1267,6 +1314,8 @@ void SVPipelineView::setModel(QAbstractItemModel* model)
     delete oldModel;
   }
 
+  QListView::setModel(model);
+
   PipelineModel* pipelineModel = dynamic_cast<PipelineModel*>(model);
 
   if (pipelineModel != nullptr)
@@ -1284,9 +1333,12 @@ void SVPipelineView::setModel(QAbstractItemModel* model)
     });
   }
 
-  m_ActionClearPipeline->setEnabled(model->rowCount() > 0);
+  connect(selectionModel(), &QItemSelectionModel::selectionChanged, [=] (const QItemSelection &selected, const QItemSelection &deselected) {
+    m_ActionCut->setEnabled(selected.size() > 0);
+    m_ActionCopy->setEnabled(selected.size() > 0);
+  });
 
-  QListView::setModel(model);
+  m_ActionClearPipeline->setEnabled(model->rowCount() > 0);
 }
 
 // -----------------------------------------------------------------------------
