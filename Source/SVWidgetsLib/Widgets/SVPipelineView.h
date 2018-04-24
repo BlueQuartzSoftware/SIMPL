@@ -147,14 +147,6 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     FilterPipeline::Pointer getFilterPipeline();
 
     /**
-     * @brief Returns a FilterPipeline Object with a new filter instance that has the input parameters copied
-     * from the filter instance that is embedded in the SVPipelineFilterWidget instance. This function does NOT perform
-     * a DEEP copy of the filter.
-     * @return
-     */
-    FilterPipeline::Pointer getCopyOfFilterPipeline();
-
-    /**
      * @brief writePipeline
      * @param outputPath
      * @return
@@ -262,7 +254,7 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     void addPlaceHolderFilter(QPoint p);
     void removePlaceHolderFilter();
 
-    void preflightFinished(int err);
+    void preflightFinished(FilterPipeline::Pointer pipeline, int err);
     void preflightHasMessage(PipelineMessage msg);
 
     void pipelineStarted();

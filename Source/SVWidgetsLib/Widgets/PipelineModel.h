@@ -77,9 +77,6 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
 
     FilterInputWidget* filterInputWidget(const QModelIndex &index);
 
-    bool filterEnabled(const QModelIndex &index) const;
-    void setFilterEnabled(const QModelIndex &index, bool enabled);
-
     bool isEmpty();
 
     QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;

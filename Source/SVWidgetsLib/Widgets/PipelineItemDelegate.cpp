@@ -152,19 +152,19 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
         labelColor = QColor(0, 0, 0);
         break;
     }
-  }
 
-  switch(eState)
-  {
-    case PipelineItem::ErrorState::Ok:
+    switch(eState)
+    {
+      case PipelineItem::ErrorState::Ok:
 
-      break;
-    case PipelineItem::ErrorState::Error:
-      indexBackgroundColor = QColor(179, 2, 5);
-      break;
-    case PipelineItem::ErrorState::Warning:
-      indexBackgroundColor = QColor(215, 197, 1);
-      break;
+        break;
+      case PipelineItem::ErrorState::Error:
+        indexBackgroundColor = QColor(179, 2, 5);
+        break;
+      case PipelineItem::ErrorState::Warning:
+        indexBackgroundColor = QColor(215, 197, 1);
+        break;
+    }
   }
 
   QColor indexFontColor(242, 242, 242);
@@ -286,20 +286,13 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
     disableBtnRect.setHeight(BUTTON_SIZE);
 
     QPixmap disableBtnPixmap;
-    if(disableBtnRect.contains(mousePos))
-    {
-      if (model->filterEnabled(index) == false)
-      {
-        disableBtnPixmap = QPixmap(":/ban_red.png");
-      }
-      else
-      {
-        disableBtnPixmap = QPixmap(":/ban_hover.png");
-      }
-    }
-    else if (model->filterEnabled(index) == false)
+    if (model->widgetState(index) == PipelineItem::WidgetState::Disabled)
     {
       disableBtnPixmap = QPixmap(":/ban_red.png");
+    }
+    else if(disableBtnRect.contains(mousePos))
+    {
+      disableBtnPixmap = QPixmap(":/ban_hover.png");
     }
     else
     {
@@ -353,22 +346,28 @@ bool PipelineItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model,
     {
       if (deleteBtnRect.contains(mouseEvent->pos()))
       {
+        // We are inside the delete button
         if (m_CurrentlyHoveredItem != HoverItem::DeleteButton)
         {
+          // We were not inside the delete button before, so set the current hovered item to DeleteButton and schedule a repaint
           m_CurrentlyHoveredItem = HoverItem::DeleteButton;
           return true;
         }
       }
       else if (disableBtnRect.contains(mouseEvent->pos()))
       {
+        // We are inside the disable button
         if (m_CurrentlyHoveredItem != HoverItem::DisableButton)
         {
+          // We were not inside the disable button before, so set the current hovered item to DisableButton and schedule a repaint
           m_CurrentlyHoveredItem = HoverItem::DisableButton;
           return true;
         }
       }
       else if (m_CurrentlyHoveredItem != HoverItem::Widget)
       {
+        // Otherwise, we have to be inside the main widget.
+        // We were not inside the main widget before, so set the current hovered item to Widget and schedule a repaint
         m_CurrentlyHoveredItem = HoverItem::Widget;
         return true;
       }
@@ -398,8 +397,20 @@ bool PipelineItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model,
         }
         else if (disableBtnRect.contains(mouseEvent->pos()))
         {
-          bool enabled = pipelineModel->filterEnabled(index);
-          pipelineModel->setFilterEnabled(index, !enabled);
+          AbstractFilter::Pointer filter = pipelineModel->filter(index);
+          bool enabled = filter->getEnabled();
+          if (enabled)
+          {
+            filter->setEnabled(false);
+            pipelineModel->setWidgetState(index, PipelineItem::WidgetState::Disabled);
+          }
+          else
+          {
+            filter->setEnabled(true);
+            pipelineModel->setWidgetState(index, PipelineItem::WidgetState::Ready);
+          }
+
+          m_View->preflightPipeline();
           return true;
         }
       }

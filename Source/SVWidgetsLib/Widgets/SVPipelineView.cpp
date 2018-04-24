@@ -264,7 +264,8 @@ void SVPipelineView::preflightPipeline()
     if(childIndex.isValid())
     {
       model->setErrorState(childIndex, PipelineItem::ErrorState::Ok);
-      if(PipelineItem::WidgetState::Disabled != model->widgetState(childIndex))
+      AbstractFilter::Pointer filter = model->filter(childIndex);
+      if(filter->getEnabled() == true)
       {
         model->setWidgetState(childIndex, PipelineItem::WidgetState::Ready);
       }
@@ -306,7 +307,7 @@ void SVPipelineView::preflightPipeline()
     }
   }
 
-  emit preflightFinished(err);
+  emit preflightFinished(pipeline, err);
 }
 
 // -----------------------------------------------------------------------------
@@ -448,7 +449,8 @@ FilterPipeline::Pointer SVPipelineView::getFilterPipeline()
   for(qint32 i = 0; i < count; ++i)
   {
     QModelIndex childIndex = model->index(i, PipelineItem::Contents);
-    if(childIndex.isValid())
+    PipelineItem::WidgetState widgetState = model->widgetState(childIndex);
+    if(childIndex.isValid() && widgetState != PipelineItem::WidgetState::Disabled)
     {
       AbstractFilter::Pointer filter = model->filter(childIndex);
       Breakpoint::Pointer breakpoint = std::dynamic_pointer_cast<Breakpoint>(filter);
@@ -464,31 +466,6 @@ FilterPipeline::Pointer SVPipelineView::getFilterPipeline()
   {
     pipeline->addMessageReceiver(m_PipelineMessageObservers[i]);
   }
-  return pipeline;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-FilterPipeline::Pointer SVPipelineView::getCopyOfFilterPipeline()
-{
-  // Create a Pipeline Object and fill it with the filters from this View
-  FilterPipeline::Pointer pipeline = FilterPipeline::New();
-
-  PipelineModel* model = getPipelineModel();
-
-  for(int i = 0; i < model->rowCount(); i++)
-  {
-    QModelIndex filterIndex = model->index(i, PipelineItem::Contents);
-    AbstractFilter::Pointer filter = model->filter(filterIndex);
-    AbstractFilter::Pointer copy = filter->newFilterInstance(true);
-    pipeline->pushBack(copy);
-  }
-  for (int i = 0; i < m_PipelineMessageObservers.size(); i++)
-  {
-    pipeline->addMessageReceiver(m_PipelineMessageObservers[i]);
-  }
-
   return pipeline;
 }
 
@@ -699,17 +676,24 @@ void SVPipelineView::updateActionEnableFilter()
 
   // Set checked state
   int count = selectedIndexes.size();
-  bool widgetEnabled = true;
+  PipelineItem::WidgetState widgetState = PipelineItem::WidgetState::Ready;
   PipelineModel* model = getPipelineModel();
-  for(int i = 0; i < count && widgetEnabled; i++)
+  for(int i = 0; i < count && widgetState != PipelineItem::WidgetState::Disabled; i++)
   {
     QModelIndex index = selectedIndexes[i];
-    widgetEnabled = model->filterEnabled(index);
+    widgetState = model->widgetState(index);
   }
 
   // Lambda connections don't allow Qt::UniqueConnection
   // Also, this needs to be disconnected before changing the checked state
-  m_ActionEnableFilter->setChecked(widgetEnabled);
+  if (widgetState == PipelineItem::WidgetState::Disabled)
+  {
+    m_ActionEnableFilter->setChecked(false);
+  }
+  else
+  {
+    m_ActionEnableFilter->setChecked(true);
+  }
 
   connect(m_ActionEnableFilter, &QAction::toggled, [=] { setSelectedFiltersEnabled(m_ActionEnableFilter->isChecked()); });
 }
@@ -853,7 +837,17 @@ void SVPipelineView::setFiltersEnabled(QModelIndexList indexes, bool enabled)
   for(int i = 0; i < count; i++)
   {
     QModelIndex index = indexes[i];
-    model->setFilterEnabled(index, enabled);
+    AbstractFilter::Pointer filter = model->filter(index);
+    if (enabled == true)
+    {
+      filter->setEnabled(true);
+      model->setWidgetState(index, PipelineItem::WidgetState::Ready);
+    }
+    else
+    {
+      filter->setEnabled(false);
+      model->setWidgetState(index, PipelineItem::WidgetState::Disabled);
+    }
   }
 
   preflightPipeline();
@@ -939,17 +933,12 @@ void SVPipelineView::toStoppedState()
     QModelIndex index = model->index(i, PipelineItem::Contents);
     model->setPipelineState(index, PipelineItem::PipelineState::Stopped);
     FilterInputWidget* inputWidget = model->filterInputWidget(index);
+    AbstractFilter::Pointer filter = model->filter(index);
     inputWidget->toIdleState();
 
-    if (model->filterEnabled(index) == true)
+    if (filter->getEnabled() == true)
     {
       model->setWidgetState(index, PipelineItem::WidgetState::Ready);
-//      disableBtn->setChecked(false);
-    }
-    else
-    {
-      model->setWidgetState(index, PipelineItem::WidgetState::Disabled);
-//      disableBtn->setChecked(true);
     }
   }
 

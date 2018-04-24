@@ -179,6 +179,8 @@ void PipelineModel::setFilter(const QModelIndex &index, AbstractFilter::Pointer 
   }
 
   item->setFilter(filter);
+
+  emit dataChanged(index, index);
 }
 
 // -----------------------------------------------------------------------------
@@ -201,44 +203,6 @@ QModelIndex PipelineModel::indexOfFilter(AbstractFilter::Pointer filter, const Q
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineModel::filterEnabled(const QModelIndex &index) const
-{
-  if(!index.isValid())
-  {
-    return false;
-  }
-
-  PipelineItem* item = getItem(index);
-  if (item == nullptr)
-  {
-    return false;
-  }
-
-  return item->getFilterEnabled();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineModel::setFilterEnabled(const QModelIndex &index, bool enabled)
-{
-  if(!index.isValid())
-  {
-    return;
-  }
-
-  PipelineItem* item = getItem(index);
-  if (item == nullptr)
-  {
-    return;
-  }
-
-  item->setFilterEnabled(enabled);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 QModelIndex PipelineModel::getActivePipeline()
 {
   return m_ActivePipelineIndex;
@@ -251,7 +215,7 @@ void PipelineModel::setActivePipeline(const QModelIndex &index, bool value)
 {
   PipelineItem* item = getItem(index);
   item->setActivePipeline(value);
-
+  
   if (value)
   {
     m_ActivePipelineIndex = index;
@@ -260,6 +224,8 @@ void PipelineModel::setActivePipeline(const QModelIndex &index, bool value)
   {
     m_ActivePipelineIndex = QModelIndex();
   }
+
+  emit dataChanged(index, index);
 }
 
 // -----------------------------------------------------------------------------
@@ -474,6 +440,8 @@ void PipelineModel::setWidgetState(const QModelIndex &index, PipelineItem::Widge
 {
   PipelineItem* item = getItem(index);
   item->setWidgetState(state);
+
+  emit dataChanged(index, index);
 }
 
 // -----------------------------------------------------------------------------
@@ -492,6 +460,8 @@ void PipelineModel::setErrorState(const QModelIndex &index, PipelineItem::ErrorS
 {
   PipelineItem* item = getItem(index);
   item->setErrorState(state);
+
+  emit dataChanged(index, index);
 }
 
 // -----------------------------------------------------------------------------
@@ -510,6 +480,8 @@ void PipelineModel::setPipelineState(const QModelIndex &index, PipelineItem::Pip
 {
   PipelineItem* item = getItem(index);
   item->setPipelineState(state);
+
+  emit dataChanged(index, index);
 }
 
 // -----------------------------------------------------------------------------
@@ -528,6 +500,8 @@ void PipelineModel::setItemType(const QModelIndex &index, PipelineItem::ItemType
 {
   PipelineItem* item = getItem(index);
   item->setItemType(type);
+
+  emit dataChanged(index, index);
 }
 
 // -----------------------------------------------------------------------------
@@ -576,6 +550,8 @@ void PipelineModel::setPipelineSaved(const QModelIndex &index, bool saved)
 {
   PipelineItem* item = getItem(index);
   item->setPipelineSaved(saved);
+
+  emit dataChanged(index, index);
 }
 
 // -----------------------------------------------------------------------------
@@ -585,6 +561,8 @@ void PipelineModel::setNeedsToBeExpanded(const QModelIndex& index, bool value)
 {
   PipelineItem* item = getItem(index);
   item->setExpanded(value);
+
+  emit dataChanged(index, index);
 }
 
 // -----------------------------------------------------------------------------

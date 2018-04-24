@@ -98,15 +98,15 @@ void PipelineListWidget::on_startPipelineBtn_clicked()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineListWidget::preflightFinished(int err)
-{
-  if (err < 0)
+void PipelineListWidget::preflightFinished(FilterPipeline::Pointer pipeline, int err)
+{  
+  if (err >= 0 && pipeline->getFilterContainer().size() > 0)
   {
-    startPipelineBtn->setDisabled(true);
+    startPipelineBtn->setEnabled(true);
   }
   else
   {
-    startPipelineBtn->setEnabled(true);
+    startPipelineBtn->setDisabled(true);
   }
 }
 
