@@ -141,6 +141,8 @@ class SVWidgetsLib_EXPORT DataContainerArrayProxyWidget : public FilterParameter
     QString m_DcName;
     QString m_AmName;
     bool m_DidCausePreflight;
+    DataContainerProxy m_EmptyDcProxy;
+    AttributeMatrixProxy m_EmptyAmProxy;
 
     void toggleStrikeOutFont(QListWidgetItem* item, Qt::CheckState state);
 

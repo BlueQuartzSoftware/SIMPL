@@ -53,6 +53,8 @@
 DataContainerArrayProxyWidget::DataContainerArrayProxyWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 , m_DidCausePreflight(false)
+, m_EmptyDcProxy(DataContainerProxy())
+, m_EmptyAmProxy(AttributeMatrixProxy())
 {
   m_FilterParameter = dynamic_cast<DataContainerArrayProxyFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "DataContainerArrayProxyWidget can ONLY be used with a DataContainerArrayProxyFilterParameter object");
@@ -352,39 +354,56 @@ void DataContainerArrayProxyWidget::toggleStrikeOutFont(QListWidgetItem* item, Q
 // -----------------------------------------------------------------------------
 void DataContainerArrayProxyWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
 {
+  blockSignals(true);
+
+  // Update private values
+  m_DcaProxy.updatePath(renamePath);
+
   DataArrayPath oldPath;
   DataArrayPath newPath;
   std::tie(oldPath, newPath) = renamePath;
 
-  blockSignals(true);
-  
-  // Attribute Matrix and Data Array lists are dependent on the current Data Container item
-  if(dataContainerList->currentItem()->text() == oldPath.getDataContainerName())
+  if(oldPath.getDataContainerName() == m_DcName)
   {
-    // Data Array list is dependent on the current Attribute Matrix item
-    if(attributeMatrixList->currentItem()->text() == oldPath.getAttributeMatrixName())
-    {
-      // Data Array
-      QList<QListWidgetItem*> daItems = dataArrayList->findItems(oldPath.getDataArrayName(), Qt::MatchExactly);
-      for(QListWidgetItem* daItem : daItems)
-      {
-        daItem->setText(newPath.getDataContainerName());
-      }
-    }
+    m_DcName = newPath.getDataContainerName();
 
-    // Attribute Matrix
-    QList<QListWidgetItem*> amItems = attributeMatrixList->findItems(oldPath.getAttributeMatrixName(), Qt::MatchExactly);
-    for(QListWidgetItem* amItem : amItems)
+    if(oldPath.getAttributeMatrixName() == m_AmName)
     {
-      amItem->setText(newPath.getAttributeMatrixName());
+      m_AmName = newPath.getAttributeMatrixName();
     }
   }
 
-  // Data Container
-  QList<QListWidgetItem*> dcItems = dataContainerList->findItems(oldPath.getDataContainerName(), Qt::MatchExactly);
-  for(QListWidgetItem* dcItem : dcItems)
+  // Update widget values
+  bool oldDcSelected = dataContainerList->currentItem() && dataContainerList->currentItem()->text() == oldPath.getDataContainerName();
+  bool oldAmSelected = oldDcSelected && attributeMatrixList->currentItem() && attributeMatrixList->currentItem()->text() == oldPath.getAttributeMatrixName();
+
+  // Update DataContainer list names
+  QList<QListWidgetItem*> dcItems = dataContainerList->findItems(oldPath.getDataContainerName(), Qt::MatchFlag::MatchCaseSensitive);
+  for(QListWidgetItem* item : dcItems)
   {
-    dcItem->setText(newPath.getDataContainerName());
+    item->setText(newPath.getDataContainerName());
+  }
+
+  // Selected DataContainer Renamed
+  if(oldDcSelected)
+  {
+    // Update AttributeMatrix list names
+    QList<QListWidgetItem*> amItems = dataContainerList->findItems(oldPath.getAttributeMatrixName(), Qt::MatchFlag::MatchCaseSensitive);
+    for(QListWidgetItem* item : amItems)
+    {
+      item->setText(newPath.getAttributeMatrixName());
+    }
+
+    // Selected AttributeMatrix Renamed
+    if(oldAmSelected)
+    {
+      // Update DataArray list names
+      QList<QListWidgetItem*> daItems = dataContainerList->findItems(oldPath.getDataArrayName(), Qt::MatchFlag::MatchCaseSensitive);
+      for(QListWidgetItem* item : daItems)
+      {
+        item->setText(newPath.getDataArrayName());
+      }
+    }
   }
 
   blockSignals(false);
@@ -498,7 +517,12 @@ void DataContainerArrayProxyWidget::selectAttributeMatrix(QString name)
 // -----------------------------------------------------------------------------
 DataContainerProxy& DataContainerArrayProxyWidget::getDataContainerProxy()
 {
-  return m_DcaProxy.dataContainers.find(m_DcName).value();
+  if(m_DcaProxy.dataContainers.contains(m_DcName))
+  {
+    return m_DcaProxy.dataContainers.find(m_DcName).value();
+  }
+
+  return m_EmptyDcProxy;
 }
 
 // -----------------------------------------------------------------------------
@@ -506,7 +530,12 @@ DataContainerProxy& DataContainerArrayProxyWidget::getDataContainerProxy()
 // -----------------------------------------------------------------------------
 AttributeMatrixProxy& DataContainerArrayProxyWidget::getAttributeMatrixProxy()
 {
-  return getDataContainerProxy().attributeMatricies.find(m_AmName).value();
+  if(getDataContainerProxy().attributeMatricies.contains(m_AmName))
+  {
+    return getDataContainerProxy().attributeMatricies.find(m_AmName).value();
+  }
+
+  return m_EmptyAmProxy;
 }
 
 // -----------------------------------------------------------------------------

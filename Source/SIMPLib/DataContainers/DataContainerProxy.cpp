@@ -41,7 +41,7 @@
 DataContainerProxy::DataContainerProxy() :
   flag(Qt::Unchecked),
   name(""),
-  dcType(0)
+  dcType(static_cast<unsigned int>(IGeometry::Type::Any))
 {}
 
 // -----------------------------------------------------------------------------
@@ -107,15 +107,10 @@ void DataContainerProxy::updatePath(DataArrayPath::RenameType renamePath)
     return;
   }
 
-  AttributeMatrixProxy amProxy = attributeMatricies[oldPath.getAttributeMatrixName()];
-
-  if(oldPath.getAttributeMatrixName() != newPath.getAttributeMatrixName())
-  {
-    attributeMatricies.insert(newPath.getAttributeMatrixName(), amProxy);
-    attributeMatricies.remove(oldPath.getAttributeMatrixName());
-  }
-
+  AttributeMatrixProxy amProxy = attributeMatricies.take(oldPath.getAttributeMatrixName());
   amProxy.updatePath(renamePath);
+
+  attributeMatricies.insert(newPath.getAttributeMatrixName(), amProxy);
 }
 
 // -----------------------------------------------------------------------------
