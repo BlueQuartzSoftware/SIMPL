@@ -494,10 +494,12 @@ void DataContainerArrayProxy::updatePath(DataArrayPath::RenameType renamePath)
   DataArrayPath newPath;
   std::tie(oldPath, newPath) = renamePath;
 
-  DataContainerProxy dcProxy = dataContainers.take(oldPath.getDataContainerName());
-  dcProxy.updatePath(renamePath);
-
-  dataContainers.insert(newPath.getDataContainerName(), dcProxy);
+  if(dataContainers.contains(oldPath.getDataContainerName()))
+  {
+    DataContainerProxy dcProxy = dataContainers.take(oldPath.getDataContainerName());
+    dcProxy.updatePath(renamePath);
+    dataContainers.insert(newPath.getDataContainerName(), dcProxy);
+  }
 }
 
 // -----------------------------------------------------------------------------

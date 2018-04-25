@@ -283,13 +283,10 @@ void AttributeMatrixProxy::updatePath(DataArrayPath::RenameType renamePath)
     name = newPath.getAttributeMatrixName();
   }
 
-  if(oldPath.getDataArrayName().isEmpty())
+  if(dataArrays.contains(oldPath.getDataArrayName()))
   {
-    return;
+    DataArrayProxy daProxy = dataArrays.take(oldPath.getDataArrayName());
+    daProxy.updatePath(renamePath);
+    dataArrays.insert(newPath.getDataArrayName(), daProxy);
   }
-
-  DataArrayProxy daProxy = dataArrays.take(oldPath.getDataArrayName());
-  daProxy.updatePath(renamePath);
-
-  dataArrays.insert(newPath.getDataArrayName(), daProxy);
 }

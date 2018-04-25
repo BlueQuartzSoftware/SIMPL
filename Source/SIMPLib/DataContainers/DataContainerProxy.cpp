@@ -102,15 +102,12 @@ void DataContainerProxy::updatePath(DataArrayPath::RenameType renamePath)
     name = newPath.getDataContainerName();
   }
 
-  if(oldPath.getAttributeMatrixName().isEmpty())
+  if(attributeMatricies.contains(oldPath.getAttributeMatrixName()))
   {
-    return;
+    AttributeMatrixProxy amProxy = attributeMatricies.take(oldPath.getAttributeMatrixName());
+    amProxy.updatePath(renamePath);
+    attributeMatricies.insert(newPath.getAttributeMatrixName(), amProxy);
   }
-
-  AttributeMatrixProxy amProxy = attributeMatricies.take(oldPath.getAttributeMatrixName());
-  amProxy.updatePath(renamePath);
-
-  attributeMatricies.insert(newPath.getAttributeMatrixName(), amProxy);
 }
 
 // -----------------------------------------------------------------------------
