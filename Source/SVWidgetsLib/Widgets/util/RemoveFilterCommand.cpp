@@ -172,6 +172,11 @@ void RemoveFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertio
   model->setData(filterIndex, filter->getHumanLabel(), Qt::DisplayRole);
   model->setItemType(filterIndex, PipelineItem::ItemType::Filter);
   model->setFilter(filterIndex, filter);
+
+  if (filter->getEnabled() == false)
+  {
+    model->setWidgetState(filterIndex, PipelineItem::WidgetState::Disabled);
+  }
 }
 
 // -----------------------------------------------------------------------------
