@@ -36,6 +36,7 @@
 #include "CalculatorFilterParameter.h"
 
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/CoreFilters/ArrayCalculator.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -109,9 +110,28 @@ void CalculatorFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, Dat
   DataArrayPath newPath;
   std::tie(oldPath, newPath) = renamePath;
 
-  QString inputStr = m_GetterCallback();
-  inputStr.replace(oldPath.getDataArrayName(), newPath.getDataArrayName());
-  m_SetterCallback(inputStr);
+  // This filter parameter requires an ArrayCalculator filter
+  ArrayCalculator* calc = dynamic_cast<ArrayCalculator*>(filter);
+  if(nullptr != calc)
+  {
+    DataArrayPath amPath = calc->getSelectedAttributeMatrix();
 
-  emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+    bool dcChanged = oldPath.getDataContainerName() != newPath.getDataContainerName();
+    bool amChanged = !dcChanged && oldPath.getAttributeMatrixName() != newPath.getAttributeMatrixName();
+    bool daChanged = !amChanged && oldPath.getDataArrayName() != newPath.getDataArrayName();
+
+    bool amConsistent = false == dcChanged && false == amChanged
+      && amPath.getDataContainerName() == oldPath.getDataContainerName()
+      && amPath.getAttributeMatrixName() == oldPath.getAttributeMatrixName();
+
+    // Only update the widget if the DataContainer and AttributeMatrix match and were not renamed
+    if(daChanged && amConsistent)
+    {
+      QString inputStr = m_GetterCallback();
+      inputStr.replace(oldPath.getDataArrayName(), newPath.getDataArrayName());
+      m_SetterCallback(inputStr);
+
+      emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+    }
+  }
 }

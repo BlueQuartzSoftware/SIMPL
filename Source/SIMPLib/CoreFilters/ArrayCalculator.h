@@ -157,13 +157,6 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
     */
     void preflight() override;
 
-    /**
-    * @brief Updates any DataArrayPath properties from the old path to a new path
-    * For DataArrayPaths longer than the given path, only the specified values are modified
-    * @param renamePath
-    */
-    void renameDataArrayPath(DataArrayPath::RenameType renamePath) override;
-
   signals:
     /**
      * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
