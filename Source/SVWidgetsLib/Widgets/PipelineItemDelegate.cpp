@@ -45,8 +45,10 @@
 #include "SVWidgetsLib/Widgets/SVPipelineView.h"
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
-const int BUTTON_SIZE = 24;
-const int TEXT_MARGIN = 4;
+namespace {
+  const int k_ButtonSize = 24;
+  const int k_TextMargin = 4;
+}
 
 
 // -----------------------------------------------------------------------------
@@ -258,10 +260,10 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
   {
     // Draw the "delete" button
     QRectF deleteBtnRect;
-    deleteBtnRect.setX(option.rect.width() - BUTTON_SIZE - TEXT_MARGIN);
-    deleteBtnRect.setY(option.rect.y() + ( (option.rect.height() / 2) - (BUTTON_SIZE / 2) ) );
-    deleteBtnRect.setWidth(BUTTON_SIZE);
-    deleteBtnRect.setHeight(BUTTON_SIZE);
+    deleteBtnRect.setX(option.rect.width() - ::k_ButtonSize - ::k_TextMargin);
+    deleteBtnRect.setY(option.rect.y() + ( (option.rect.height() / 2) - (::k_ButtonSize / 2) ) );
+    deleteBtnRect.setWidth(::k_ButtonSize);
+    deleteBtnRect.setHeight(::k_ButtonSize);
 
     QPoint mousePos = QCursor::pos();
     mousePos = m_View->viewport()->mapFromGlobal(mousePos);
@@ -270,36 +272,56 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
     if(deleteBtnRect.contains(mousePos))
     {
       deleteBtnPixmap = QPixmap(":/trash_hover.png");
+      if (painter->device()->devicePixelRatio() == 2)
+      {
+        deleteBtnPixmap = QPixmap(":/trash_hover@2x.png");
+      }
     }
     else
     {
       deleteBtnPixmap = QPixmap(":/trash.png");
+      if (painter->device()->devicePixelRatio() == 2)
+      {
+        deleteBtnPixmap = QPixmap(":/trash@2x.png");
+      }
     }
 
-    painter->drawPixmap(deleteBtnRect.center().x() - (deleteBtnPixmap.width() / 2), deleteBtnRect.center().y() - (deleteBtnPixmap.height() / 2 + 1), deleteBtnPixmap);  // y is 1px offset due to how the images were cut
+    painter->drawPixmap(deleteBtnRect.center().x() - (deleteBtnRect.width() / 2), deleteBtnRect.center().y() - (deleteBtnRect.height() / 2 + 1), deleteBtnPixmap);  // y is 1px offset due to how the images were cut
 
     // Draw the "disable" button
     QRectF disableBtnRect;
-    disableBtnRect.setX(deleteBtnRect.x() - TEXT_MARGIN - BUTTON_SIZE);
-    disableBtnRect.setY(option.rect.y() + ( (option.rect.height() / 2) - (BUTTON_SIZE / 2) ) );
-    disableBtnRect.setWidth(BUTTON_SIZE);
-    disableBtnRect.setHeight(BUTTON_SIZE);
+    disableBtnRect.setX(deleteBtnRect.x() - ::k_TextMargin - ::k_ButtonSize);
+    disableBtnRect.setY(option.rect.y() + ( (option.rect.height() / 2) - (::k_ButtonSize / 2) ) );
+    disableBtnRect.setWidth(::k_ButtonSize);
+    disableBtnRect.setHeight(::k_ButtonSize);
 
     QPixmap disableBtnPixmap;
     if (model->widgetState(index) == PipelineItem::WidgetState::Disabled)
     {
       disableBtnPixmap = QPixmap(":/ban_red.png");
+      if (painter->device()->devicePixelRatio() == 2)
+      {
+         disableBtnPixmap = QPixmap(":/ban_red@2x.png");
+      }
     }
     else if(disableBtnRect.contains(mousePos))
     {
       disableBtnPixmap = QPixmap(":/ban_hover.png");
+      if (painter->device()->devicePixelRatio() == 2)
+      {
+         disableBtnPixmap = QPixmap(":/ban_hover@2x.png");
+      }
     }
     else
     {
       disableBtnPixmap = QPixmap(":/ban.png");
+      if (painter->device()->devicePixelRatio() == 2)
+      {
+         disableBtnPixmap = QPixmap(":/ban@2x.png");
+      }
     }
 
-    painter->drawPixmap(disableBtnRect.center().x() - (disableBtnPixmap.width() / 2), disableBtnRect.center().y() - (disableBtnPixmap.height() / 2 + 1), disableBtnPixmap);  // y is 1px offset due to how the images were cut
+    painter->drawPixmap(disableBtnRect.center().x() - (disableBtnRect.width() / 2), disableBtnRect.center().y() - (disableBtnRect.height() / 2 + 1), disableBtnPixmap);  // y is 1px offset due to how the images were cut
   }
 
   // If the filter is selected, draw a border around it.
@@ -330,13 +352,13 @@ bool PipelineItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model,
 //  }
 
   QRect deleteBtnRect;
-  deleteBtnRect.setX(option.rect.width() - BUTTON_SIZE - TEXT_MARGIN);
-  deleteBtnRect.setY(option.rect.y() + (option.rect.height()/2 - BUTTON_SIZE/2));
-  deleteBtnRect.setWidth(BUTTON_SIZE);
-  deleteBtnRect.setHeight(BUTTON_SIZE);
+  deleteBtnRect.setX(option.rect.width() - ::k_ButtonSize - ::k_TextMargin);
+  deleteBtnRect.setY(option.rect.y() + (option.rect.height()/2 - ::k_ButtonSize/2));
+  deleteBtnRect.setWidth(::k_ButtonSize);
+  deleteBtnRect.setHeight(::k_ButtonSize);
 
   QRect disableBtnRect = deleteBtnRect;
-  disableBtnRect.setX(disableBtnRect.x() - TEXT_MARGIN - BUTTON_SIZE);
+  disableBtnRect.setX(disableBtnRect.x() - ::k_TextMargin - ::k_ButtonSize);
 
   // Looking for click in the delete button area
   QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
