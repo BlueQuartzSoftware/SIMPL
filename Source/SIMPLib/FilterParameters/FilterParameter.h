@@ -102,8 +102,10 @@ class SIMPLib_EXPORT FilterParameter
     virtual void writeJson(QJsonObject &json);
 
     /**
-    * @brief Handle DataArrayPath changes if necessary
-    */
+     * @brief Handle DataArrayPath changes if necessary
+     * @param filter
+     * @param renamePath
+     */
     virtual void dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath);
 
   protected:

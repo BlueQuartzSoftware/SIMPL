@@ -35,6 +35,8 @@
 
 #include "CalculatorFilterParameter.h"
 
+#include "SIMPLib/Filtering/AbstractFilter.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -96,4 +98,20 @@ void CalculatorFilterParameter::writeJson(QJsonObject& json)
   {
     json[getPropertyName()] = m_GetterCallback();
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void CalculatorFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath)
+{
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
+  QString inputStr = m_GetterCallback();
+  inputStr.replace(oldPath.getDataArrayName(), newPath.getDataArrayName());
+  m_SetterCallback(inputStr);
+
+  emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
 }

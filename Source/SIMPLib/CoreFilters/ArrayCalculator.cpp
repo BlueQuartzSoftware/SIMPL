@@ -213,6 +213,45 @@ void ArrayCalculator::initialize()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void ArrayCalculator::renameDataArrayPath(DataArrayPath::RenameType renamePath)
+{
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
+  DataArrayPath amPath = getSelectedAttributeMatrix();
+
+  bool dcChanged = oldPath.getDataContainerName() != newPath.getDataContainerName();
+  bool amChanged = !dcChanged && oldPath.getAttributeMatrixName() != newPath.getAttributeMatrixName();
+  bool daChanged = !amChanged && oldPath.getDataArrayName() != newPath.getDataArrayName();
+
+  bool amConsistent = false == dcChanged && false == amChanged
+    && amPath.getDataContainerName() == oldPath.getDataContainerName()
+    && amPath.getAttributeMatrixName() == oldPath.getAttributeMatrixName();
+
+  for(FilterParameter::Pointer parameter : getFilterParameters())
+  {
+    // Only update the CalculatorFilterParameter when a DataArray changed
+    // This allows the parameter to run on the assumption that if this method gets called, 
+    // everything before the DataArray part of the path already matches because the parameter
+    // has no way of performing that check itself.
+    if(std::dynamic_pointer_cast<CalculatorFilterParameter>(parameter))
+    {
+      if(daChanged && amConsistent)
+      {
+        parameter->dataArrayPathRenamed(this, renamePath);
+      }
+    }
+    else
+    {
+      parameter->dataArrayPathRenamed(this, renamePath);
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void ArrayCalculator::dataCheck()
 {
   setErrorCondition(0);
