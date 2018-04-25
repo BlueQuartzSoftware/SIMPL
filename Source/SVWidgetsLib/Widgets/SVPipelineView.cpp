@@ -1220,6 +1220,10 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint &pos, const QMode
 
   menu.addSeparator();
 
+  menu.addAction(m_ActionClearPipeline);
+
+  menu.addSeparator();
+
   QAction* actionLaunchHelp = new QAction("Filter Help", this);
   connect(actionLaunchHelp, &QAction::triggered, [=] {
     AbstractFilter::Pointer filter = model->filter(index);
