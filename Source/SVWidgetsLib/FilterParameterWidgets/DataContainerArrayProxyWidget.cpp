@@ -373,38 +373,40 @@ void DataContainerArrayProxyWidget::updateDataArrayPath(QString propertyName, Da
     }
   }
 
-  // Update widget values
-  bool oldDcSelected = dataContainerList->currentItem() && dataContainerList->currentItem()->text() == oldPath.getDataContainerName();
-  bool oldAmSelected = oldDcSelected && attributeMatrixList->currentItem() && attributeMatrixList->currentItem()->text() == oldPath.getAttributeMatrixName();
+  applyDataContainerArrayProxy(m_DcaProxy);
 
-  // Update DataContainer list names
-  QList<QListWidgetItem*> dcItems = dataContainerList->findItems(oldPath.getDataContainerName(), Qt::MatchFlag::MatchCaseSensitive);
-  for(QListWidgetItem* item : dcItems)
-  {
-    item->setText(newPath.getDataContainerName());
-  }
+  //// Update widget values
+  //bool oldDcSelected = dataContainerList->currentItem() && dataContainerList->currentItem()->text() == oldPath.getDataContainerName();
+  //bool oldAmSelected = oldDcSelected && attributeMatrixList->currentItem() && attributeMatrixList->currentItem()->text() == oldPath.getAttributeMatrixName();
 
-  // Selected DataContainer Renamed
-  if(oldDcSelected)
-  {
-    // Update AttributeMatrix list names
-    QList<QListWidgetItem*> amItems = dataContainerList->findItems(oldPath.getAttributeMatrixName(), Qt::MatchFlag::MatchCaseSensitive);
-    for(QListWidgetItem* item : amItems)
-    {
-      item->setText(newPath.getAttributeMatrixName());
-    }
+  //// Selected DataContainer Renamed
+  //if(oldDcSelected)
+  //{
+  //  // Selected AttributeMatrix Renamed
+  //  if(oldAmSelected)
+  //  {
+  //    // Update DataArray list names
+  //    QList<QListWidgetItem*> daItems = dataContainerList->findItems(oldPath.getDataArrayName(), Qt::MatchFlag::MatchCaseSensitive);
+  //    for(QListWidgetItem* item : daItems)
+  //    {
+  //      item->setText(newPath.getDataArrayName());
+  //    }
+  //  } // End DataArray
 
-    // Selected AttributeMatrix Renamed
-    if(oldAmSelected)
-    {
-      // Update DataArray list names
-      QList<QListWidgetItem*> daItems = dataContainerList->findItems(oldPath.getDataArrayName(), Qt::MatchFlag::MatchCaseSensitive);
-      for(QListWidgetItem* item : daItems)
-      {
-        item->setText(newPath.getDataArrayName());
-      }
-    }
-  }
+  //  // Update AttributeMatrix list names
+  //  QList<QListWidgetItem*> amItems = dataContainerList->findItems(oldPath.getAttributeMatrixName(), Qt::MatchFlag::MatchCaseSensitive);
+  //  for(QListWidgetItem* item : amItems)
+  //  {
+  //    item->setText(newPath.getAttributeMatrixName());
+  //  } // End AttributeMatrix
+  //}
+
+  //// Update DataContainer list names
+  //QList<QListWidgetItem*> dcItems = dataContainerList->findItems(oldPath.getDataContainerName(), Qt::MatchFlag::MatchCaseSensitive);
+  //for(QListWidgetItem* item : dcItems)
+  //{
+  //  item->setText(newPath.getDataContainerName());
+  //}
 
   blockSignals(false);
 }
