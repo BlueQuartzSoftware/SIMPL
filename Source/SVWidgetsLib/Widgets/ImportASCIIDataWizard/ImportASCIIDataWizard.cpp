@@ -511,3 +511,15 @@ int ImportASCIIDataWizard::getAttributeMatrixType()
 
   return static_cast<int>(AttributeMatrix::Type::Generic);
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ImportASCIIDataWizard::updateDataArrayPath(DataArrayPath::RenameType renamePath)
+{
+  DataFormatPage* dfPage = dynamic_cast<DataFormatPage*>(page(DataFormat));
+  if(NULL != dfPage)
+  {
+    dfPage->updateDataArrayPath(renamePath);
+  }
+}

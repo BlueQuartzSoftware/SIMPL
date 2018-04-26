@@ -517,17 +517,21 @@ bool DataArrayPath::updatePath(const DataArrayPath::RenameType& renamePath)
   }
 
   // Substitude in the new DataArrayPath
-  setDataContainerName(newPath.getDataContainerName());
-  if(false == newPath.getAttributeMatrixName().isEmpty())
+  if(hasSameDataContainer(oldPath))
   {
-    setAttributeMatrixName(newPath.getAttributeMatrixName());
+    setDataContainerName(newPath.getDataContainerName());
 
-    if(false == newPath.getDataArrayName().isEmpty())
+    if(hasSameAttributeMatrix(oldPath))
     {
-      setDataArrayName(newPath.getDataArrayName());
+      setAttributeMatrixName(newPath.getAttributeMatrixName());
+
+      if(hasSameDataArray(oldPath))
+      {
+        setDataArrayName(newPath.getDataArrayName());
+      }
     }
   }
-
+  
   return true;
 }
 
