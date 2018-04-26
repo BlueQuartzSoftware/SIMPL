@@ -1381,6 +1381,10 @@ void DataFormatPage::updateDataArrayPath(DataArrayPath::RenameType renamePath)
         currentPath.setAttributeMatrixName(newPath.getAttributeMatrixName());
       }
     }
+    else
+    {
+      currentPath.setDataContainerName(newPath.getDataContainerName());
+    }
   }
 
   // Update the widget
