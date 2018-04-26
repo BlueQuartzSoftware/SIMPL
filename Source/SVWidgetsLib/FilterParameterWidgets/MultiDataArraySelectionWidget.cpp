@@ -681,14 +681,13 @@ void MultiDataArraySelectionWidget::updateDataArrayPath(QString propertyName, Da
 
     blockSignals(true);
     DataArrayPath currentPath = DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter);
-    if(currentPath.getDataContainerName() == oldPath.getDataContainerName())
+    if(currentPath.hasSameDataContainer(oldPath))
     {
-      if(oldPath.getDataContainerName() != newPath.getDataContainerName() || oldPath.getAttributeMatrixName() != newPath.getAttributeMatrixName())
-      {
-        DataArrayPath updatedPath(newPath.getDataContainerName(), newPath.getAttributeMatrixName(), "");
-        m_SelectedAttributeMatrixPath->setText(updatedPath.serialize(Detail::Delimiter));
-      }
-      else if(oldPath.getDataArrayName() != newPath.getDataArrayName())
+      bool hasAM = false == newPath.getAttributeMatrixName().isEmpty();
+      bool hasDA = false == newPath.getDataArrayName().isEmpty();
+
+      // Update the DataArray options
+      if(hasDA && currentPath.hasSameAttributeMatrix(oldPath))
       {
         // Unselected list widget
         {
@@ -717,7 +716,24 @@ void MultiDataArraySelectionWidget::updateDataArrayPath(QString propertyName, Da
             }
           }
         }
-        // End DataArray section
+      }// End DataArray section
+
+      // Update the AttributeMatrix Selection widget
+      if(false == hasDA)
+      {
+        if(false == hasAM)
+        {
+          DataArrayPath updatedPath(newPath.getDataContainerName(), currentPath.getAttributeMatrixName(), "");
+          m_SelectedAttributeMatrixPath->setText(updatedPath.serialize(Detail::Delimiter));
+        }
+        else
+        {
+          if(currentPath.hasSameAttributeMatrix(oldPath))
+          {
+            DataArrayPath updatedPath(newPath.getDataContainerName(), newPath.getAttributeMatrixName(), "");
+            m_SelectedAttributeMatrixPath->setText(updatedPath.serialize(Detail::Delimiter));
+          }
+        }
       }
     }
 
