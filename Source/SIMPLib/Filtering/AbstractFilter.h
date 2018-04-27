@@ -260,6 +260,10 @@ public:
    */
   virtual bool doesPipelineContainFilterAfterThis(const QString& name);
 
+  // ------------------------------
+  // These functions allow renaming DataArrayPaths to update proceeding filters in the pipeline
+  // ------------------------------
+
   /**
    * @brief Returns a set of DataArrayPaths created by this filter.
    * This method requires preflight() or execute() to have already run.
