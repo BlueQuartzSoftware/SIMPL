@@ -83,7 +83,7 @@ class FilterManager;
 class FilterWidgetManager;
 
 /**
- * @class ISIMPLibPlugin ISIMPLibPlugin.h IPHelper/plugins/ISIMPLibPlugin.h
+ * @class ISIMPLibPlugin ISIMPLibPlugin.hIPHelper/plugins/ISIMPLibPlugin.h
  * @brief This class defines the interface used by plugins that would like to process
  * images and display their output.
  *
@@ -103,7 +103,8 @@ class FilterWidgetManager;
  *    The developer should create a C++ class that inherits publicly from ISIMPLibPlugin and
  *    QObject.
  *    @code
- *    class MyPlugin : public QObject, public ISIMPLibPlugin {
+ *    class My_EXPORT MyPlugin : public QObject, public ISIMPLibPlugin
+ {
  *    @endcode
  *
  *    The developer will also need to add some macro declarations to their class declaration (usually

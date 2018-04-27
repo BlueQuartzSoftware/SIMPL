@@ -38,9 +38,8 @@
 
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 
-
 /**
- * @class CorePlugin CorePlugin.h Core/CorePlugin.h
+ * @class CorePlugin CorePlugin.hCore/CorePlugin.h
  * @brief
  *
  * @date April 06, 2016
