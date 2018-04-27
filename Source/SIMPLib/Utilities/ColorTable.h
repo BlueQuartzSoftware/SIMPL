@@ -89,10 +89,12 @@ class SIMPLib_EXPORT RgbColor
       return left == right;
     }
 
+    inline static std::tuple<float, float, float> fRgb(SIMPL::Rgb rgb)
+    {
+      return std::make_tuple(static_cast<float>(((rgb >> 16) & 0xff)/255.0f), static_cast<float>(((rgb >> 8) & 0xff)/255.0f), static_cast<float>((rgb & 0xff)/255.0f));
+    }
   protected:
-    RgbColor() {};
-
-
+    RgbColor() {}
 
 };
 
