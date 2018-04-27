@@ -126,6 +126,13 @@ public:
     */
     SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
+    /**
+     * @brief Handles DataArrayPath changes wwith the assumption that the DataContainer and AttributeMatrix both match the input
+     * @param filter
+     * @param renamePath
+     */
+    void dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath) override;
+
   protected:
     /**
      * @brief CalculatorFilterParameter The default constructor.  It is protected because this

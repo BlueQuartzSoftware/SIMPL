@@ -194,6 +194,12 @@ class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
      */
     bool eventFilter(QObject* obj, QEvent* event);
 
+    /**
+    * @brief Handle DataArrayPath changes if necessary
+    * @param renamePath
+    */
+    void updateDataArrayPath(DataArrayPath::RenameType renamePath);
+
   public slots:
     /**
      * @brief dcaItemSelected

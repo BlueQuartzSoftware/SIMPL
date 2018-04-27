@@ -534,3 +534,25 @@ QStringList ComparisonSelectionTableModel::getPossibleFeatures()
 {
   return m_PossibleFeatures;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonSelectionTableModel::updateFeatureName(QString oldName, QString newName)
+{
+  QVector<QString> featureNames;
+  QVector<float> featureValues;
+  QVector<int> featureOperators;
+
+  getTableData(featureNames, featureValues, featureOperators);
+
+  for(int i = 0; i < m_RowCount; i++)
+  {
+    if(featureNames[i] == oldName)
+    {
+      featureNames[i] = newName;
+    }
+  }
+
+  setTableData(featureNames, featureValues, featureOperators);
+}

@@ -39,6 +39,7 @@
 #include <QtWidgets/QWidget>
 
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/Filtering/AbstractComparison.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
@@ -91,6 +92,12 @@ public:
   * @param am
   */
   virtual void setAttributeMatrix(AttributeMatrix::Pointer am);
+
+  /**
+  * @brief Updates the comparison's DataArray options based on the renamed path
+  * @param renamePath
+  */
+  virtual void renameDataArrayPath(DataArrayPath::RenameType renamePath) = 0;
 
 signals:
   /**
