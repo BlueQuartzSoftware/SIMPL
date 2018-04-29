@@ -44,6 +44,9 @@
 #include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/SIMPLib.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
@@ -97,6 +100,11 @@ public slots:
    * @param object
    */
   void handleFilterRemoved(PipelineFilterObject* object);
+
+  void setViewReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs);
+  void setViewReqs(AttributeMatrixSelectionFilterParameter::RequirementType dcReqs);
+  void setViewReqs(DataArraySelectionFilterParameter::RequirementType daReqs);
+  void clearViewRequirements();
 
 protected:
   /**

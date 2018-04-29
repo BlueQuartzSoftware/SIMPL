@@ -298,3 +298,36 @@ void DataStructureWidget::removeNonexistingEntries(QStandardItem* rootItem, QLis
     }
   }
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureWidget::setViewReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs)
+{
+  // TODO: filter DataArrayPaths
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureWidget::setViewReqs(AttributeMatrixSelectionFilterParameter::RequirementType dcReqs)
+{
+  // TODO: filter DataArrayPaths
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureWidget::setViewReqs(DataArraySelectionFilterParameter::RequirementType daReqs)
+{
+  // TODO: filter DataArrayPaths
+  int x = 0;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureWidget::clearViewRequirements()
+{
+  // TODO: clear requirements
+}

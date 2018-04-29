@@ -49,6 +49,9 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
@@ -102,6 +105,12 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
     QString wrapStringInHtml(const QString& message);
 
     virtual void changeStyleSheet(Style style);
+
+  signals:
+    void viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs);
+    void viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType amReqs);
+    void viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType daReqs);
+    void endViewPaths();
 
   public slots:
 
