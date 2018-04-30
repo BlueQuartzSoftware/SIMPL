@@ -100,6 +100,10 @@ void ReadASCIIDataWidget::setupGui()
   // Catch when the filter wants its values updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
+  // If the DataArrayPath is updated in the filter, update the widget
+  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
+    this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
+
   // If the filter was loaded from a pipeline file, fill in the information in the widget
   if(m_Filter->getWizardData().isEmpty() == false)
   {
@@ -477,4 +481,19 @@ void ReadASCIIDataWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void ReadASCIIDataWidget::afterPreflight()
 {
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ReadASCIIDataWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
+{
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
+  if(propertyName.compare(getFilterParameter()->getPropertyName()) == 0)
+  {
+    m_ImportWizard->updateDataArrayPath(renamePath);
+  }
 }

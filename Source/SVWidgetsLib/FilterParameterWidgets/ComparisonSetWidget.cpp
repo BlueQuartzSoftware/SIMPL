@@ -446,3 +446,16 @@ void ComparisonSetWidget::setArrayNames(QStringList names)
 
   blockSignals(false);
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonSetWidget::renameDataArrayPath(DataArrayPath::RenameType renamePath)
+{
+  QVector<IComparisonWidget*> comparisonWidgets = getComparisonWidgets();
+  int count = comparisonWidgets.size();
+  for(int i = 0; i < count; i++)
+  {
+    comparisonWidgets[i]->renameDataArrayPath(renamePath);
+  }
+}

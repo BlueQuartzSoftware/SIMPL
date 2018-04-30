@@ -281,6 +281,23 @@ public:
   virtual bool doesPipelineContainFilterAfterThis(const QString& name);
 
   // ------------------------------
+  // These functions allow renaming DataArrayPaths to update proceeding filters in the pipeline
+  // ------------------------------
+
+  /**
+   * @brief Returns a set of DataArrayPaths created by this filter.
+   * This method requires preflight() or execute() to have already run.
+   * @return
+   */
+  std::list<DataArrayPath> getCreatedPaths();
+
+  /**
+   * @brief Returns a list of DataArrayPaths that have been renamed along with their corresponding renamed value
+   * @return
+   */
+  virtual DataArrayPath::RenameContainer getRenamedPaths();
+
+  // ------------------------------
   // These methods are over ridden from the superclass in order to add the
   // pipeline index to the PipelineMessage Object.
   // ------------------------------
@@ -371,12 +388,33 @@ signals:
    */
   void filterInProgress();
 
+  /**
+  * @brief Signal is emitted when a DataArrayPath property is updated
+  * @param propertyName
+  * @param renamePath
+  */
+  void dataArrayPathUpdated(QString propertyName, DataArrayPath::RenameType renamePath);
+
 public slots:
 
   /**
     * @brief Cancel the operation
     */
   virtual void setCancel(bool value);
+
+  /**
+   * @brief Updates any DataArrayPath properties from the old path to a new path
+   * For DataArrayPaths longer than the given path, only the specified values are modified
+   * @param renamePath
+   */
+  virtual void renameDataArrayPath(DataArrayPath::RenameType renamePath);
+
+  /**
+  * @brief Updates any DataArrayPath properties from the old paths to their corresponding new paths.
+  * For DataArrayPaths longer than the new path, only the values provided by the new path are modified
+  * @param renamedPaths
+  */
+  virtual void renameDataArrayPaths(DataArrayPath::RenameContainer renamedPaths);
 
 protected:
   AbstractFilter();

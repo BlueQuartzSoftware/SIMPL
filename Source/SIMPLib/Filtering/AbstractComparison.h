@@ -37,6 +37,7 @@
 #define _AbstractComparison_h_
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/SIMPLib.h"
 
 #include <QtCore/QJsonObject>
@@ -64,6 +65,7 @@ public:
   * @return
   */
   int getUnionOperator();
+
   /**
   * @brief Sets the union operator for the comparison
   * @param unionOperator
@@ -80,6 +82,12 @@ public:
   * @param json
   */
   virtual bool readJson(QJsonObject& json) = 0;
+
+  /**
+  * @brief Updates the comparison's DataArray options based on the renamed path
+  * @param renamePath
+  */
+  virtual bool renameDataArrayPath(DataArrayPath::RenameType renamePath) = 0;
 
 protected:
   int m_unionOperator;

@@ -37,6 +37,9 @@
 
 #include <QtCore/QJsonArray>
 
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Filtering/ComparisonValue.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -111,5 +114,49 @@ void ComparisonSelectionAdvancedFilterParameter::writeJson(QJsonObject& json)
     inputs.writeJson(inputsObj);
 
     json[getPropertyName()] = inputsObj;
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonSelectionAdvancedFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath)
+{
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
+  ComparisonInputsAdvanced inputs = m_GetterCallback();
+  bool hasChanges = false;
+
+  bool hasAttributeMatrix = oldPath.getAttributeMatrixName().isEmpty() == false;
+  bool hasDataArray = oldPath.getDataArrayName().isEmpty() == false;
+
+  // Update the values contained by ComparisonInputsAdvanced
+  bool sameDC = inputs.getDataContainerName() == oldPath.getDataContainerName();
+  bool sameAM = inputs.getAttributeMatrixName() == oldPath.getAttributeMatrixName();
+  if(sameDC && (!hasAttributeMatrix || (sameAM && !hasDataArray)))
+  {
+    inputs.setDataContainerName(newPath.getDataContainerName());
+
+    if(hasAttributeMatrix)
+    {
+      inputs.setAttributeMatrixName(newPath.getAttributeMatrixName());
+    }
+
+    hasChanges = true;
+  }
+
+  // Update all comparisons in ComparisonInputsAdvanced
+  QVector<AbstractComparison::Pointer> comparisons = inputs.getComparisonValues();
+  for(AbstractComparison::Pointer comparison : comparisons)
+  {
+    hasChanges |= comparison->renameDataArrayPath(renamePath);
+  }
+  
+  if(hasChanges)
+  {
+    m_SetterCallback(inputs);
+    emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
 }

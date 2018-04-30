@@ -134,6 +134,8 @@ class SVWidgetsLib_EXPORT MultiDataArraySelectionWidget : public FilterParameter
     void on_availableArraysListWidget_itemDoubleClicked(QListWidgetItem* item);
     void on_selectedArraysListWidget_itemDoubleClicked(QListWidgetItem* item);
 
+    void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
+
   signals:
     void errorSettingFilterParameter(const QString& msg);
     void parametersChanged();

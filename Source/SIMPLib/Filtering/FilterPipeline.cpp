@@ -513,13 +513,25 @@ int FilterPipeline::preflightPipeline()
   setErrorCondition(0);
   int preflightError = 0;
 
+  DataArrayPath::RenameContainer renamedPaths;
+  DataArrayPath::RenameContainer filterRenamedPaths;
+
   // Start looping through each filter in the Pipeline and preflight everything
   for(FilterContainerType::iterator filter = m_Pipeline.begin(); filter != m_Pipeline.end(); ++filter)
   {
     // Do not preflight disabled filters
     if((*filter)->getEnabled())
     {
+      // Update renamed paths before getting old created paths
+      DataContainerArray::Pointer oldDca = (*filter)->getDataContainerArray();
+      oldDca->renameDataArrayPaths(filterRenamedPaths);
+      (*filter)->setDataContainerArray(oldDca);
+      (*filter)->renameDataArrayPaths(filterRenamedPaths);
+      
+      std::list<DataArrayPath> oldCreatedPaths = (*filter)->getCreatedPaths();
+
       (*filter)->setDataContainerArray(dca);
+      (*filter)->renameDataArrayPaths(renamedPaths);
       setCurrentFilter(*filter);
       connectFilterNotifications((*filter).get());
       (*filter)->preflight();
@@ -528,9 +540,43 @@ int FilterPipeline::preflightPipeline()
       (*filter)->setCancel(false); // Reset the cancel flag
       preflightError |= (*filter)->getErrorCondition();
       (*filter)->setDataContainerArray(dca->deepCopy(false));
+      std::list<DataArrayPath> currentCreatedPaths = (*filter)->getCreatedPaths();
+
+      DataArrayPath::RenameContainer newRenamedPaths = DataArrayPath::CheckForRenamedPaths(oldDca, dca, oldCreatedPaths, currentCreatedPaths);
+      for(DataArrayPath::RenameType renameType : newRenamedPaths)
+      {
+        renamedPaths.push_back(renameType);
+      }
+
+      // Filter renamed existing DataArrayPaths
+      DataArrayPath::RenameContainer hardRenamePaths = (*filter)->getRenamedPaths();
+      for(DataArrayPath::RenameType renameType : hardRenamePaths)
+      {
+        renamedPaths.push_back(renameType);
+        filterRenamedPaths.push_back(renameType);
+      }
+    }
+    else
+    {
+      // Some widgets require the updated path to be valid before it can be set in the widget
+      (*filter)->setDataContainerArray(dca->deepCopy(false));
+      (*filter)->renameDataArrayPaths(renamedPaths);
+
+      // Undo filter renaming
+      DataArrayPath::RenameContainer filterRenamedPaths = (*filter)->getRenamedPaths();
+      for(DataArrayPath::RenameType renameType : filterRenamedPaths)
+      {
+        DataArrayPath oldPath;
+        DataArrayPath newPath;
+        std::tie(oldPath, newPath) = renameType;
+        renameType = std::make_pair(newPath, oldPath);
+
+        renamedPaths.push_back(renameType);
+      }
     }
   }
   setCurrentFilter(AbstractFilter::NullPointer());
+
   return preflightError;
 }
 

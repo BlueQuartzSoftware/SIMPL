@@ -118,43 +118,51 @@ class SIMPLib_EXPORT ReadASCIIData : public AbstractFilter
     */
     void preflight() override;
 
-signals:
-  /**
-   * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
-   * be pushed from a user-facing control (such as a widget)
-   * @param filter Filter instance pointer
-   */
-  void updateFilterParameters(AbstractFilter* filter);
+    /**
+    * @brief Updates any DataArrayPath properties from the old path to a new path
+    * For DataArrayPaths longer than the given path, only the specified values are modified
+    * @param renamePath
+    */
+    void renameDataArrayPath(DataArrayPath::RenameType renamePath) override;
 
-  /**
-   * @brief parametersChanged Emitted when any Filter parameter is changed internally
-   */
-  void parametersChanged();
+  signals:
+    /**
+     * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
+     * be pushed from a user-facing control (such as a widget)
+     * @param filter Filter instance pointer 
+     */
+    void updateFilterParameters(AbstractFilter* filter);
 
-  /**
-   * @brief preflightAboutToExecute Emitted just before calling dataCheck()
-   */
-  void preflightAboutToExecute();
+    /**
+     * @brief parametersChanged Emitted when any Filter parameter is changed internally
+     */
+    void parametersChanged();
 
-  /**
-   * @brief preflightExecuted Emitted just after calling dataCheck()
-   */
-  void preflightExecuted();
+    /**
+     * @brief preflightAboutToExecute Emitted just before calling dataCheck()
+     */
+    void preflightAboutToExecute();
 
-protected:
-  ReadASCIIData();
-  /**
-   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-   */
-  void dataCheck();
+    /**
+     * @brief preflightExecuted Emitted just after calling dataCheck()
+     */
+    void preflightExecuted();
 
-  /**
-   * @brief Initializes all the private instance variables.
-   */
-  void initialize();
+  protected:
+    ReadASCIIData();
+    /**
+     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+     */
+    void dataCheck();
 
-private:
-  QMap<int, IDataArray::Pointer> m_ASCIIArrayMap;
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
+
+  private:
+    QMap<int, IDataArray::Pointer>        m_ASCIIArrayMap;
 
   public:
     ReadASCIIData(const ReadASCIIData&) = delete;  // Copy Constructor Not Implemented

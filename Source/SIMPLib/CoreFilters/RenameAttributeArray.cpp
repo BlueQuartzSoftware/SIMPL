@@ -237,3 +237,18 @@ const QString RenameAttributeArray::getHumanLabel() const
 {
   return "Rename Attribute Array";
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataArrayPath::RenameContainer RenameAttributeArray::getRenamedPaths()
+{
+  DataArrayPath oldPath = getSelectedArrayPath();
+  DataArrayPath newPath = getSelectedArrayPath();
+  newPath.setDataArrayName(getNewArrayName());
+
+  DataArrayPath::RenameContainer container;
+  container.push_back(DataArrayPath::RenameType(oldPath, newPath));
+
+  return container;
+}

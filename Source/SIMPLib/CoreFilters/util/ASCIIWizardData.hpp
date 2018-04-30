@@ -72,6 +72,31 @@ public:
   bool consecutiveDelimiters = false;
   bool automaticAM = false;
 
+  void updateDataArrayPath(DataArrayPath::RenameType renamePath)
+  {
+    DataArrayPath oldPath;
+    DataArrayPath newPath;
+    std::tie(oldPath, newPath) = renamePath;
+
+    bool hasAM = false == oldPath.getAttributeMatrixName().isEmpty();
+
+    if(selectedPath.hasSameDataContainer(oldPath))
+    {
+      if(hasAM)
+      {
+        if(selectedPath.hasSameAttributeMatrix(oldPath))
+        {
+          selectedPath.setDataContainerName(newPath.getDataContainerName());
+          selectedPath.setAttributeMatrixName(newPath.getAttributeMatrixName());
+        }
+      }
+      else
+      {
+        selectedPath.setDataContainerName(newPath.getDataContainerName());
+      }
+    }
+  }
+
   bool isEmpty()
   {
     if (inputFilePath.isEmpty() && dataHeaders.isEmpty() && dataTypes.isEmpty() && tupleDims.isEmpty() && beginIndex < 0 && numberOfLines < 0 && selectedPath.isEmpty())

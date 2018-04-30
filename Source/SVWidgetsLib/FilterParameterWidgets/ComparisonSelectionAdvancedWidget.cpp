@@ -118,6 +118,10 @@ void ComparisonSelectionAdvancedWidget::setupGui()
   // Catch when the filter wants its values updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
+  // If the DataArrayPath is updated in the filter, update the widget
+  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
+    this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
+
   // Create the Comparison Set
   comparisonSetWidget->setComparisonSet(ComparisonSet::New());
   connect(comparisonSetWidget, SIGNAL(comparisonChanged()), this, SIGNAL(parametersChanged()));
@@ -555,5 +559,53 @@ void ComparisonSelectionAdvancedWidget::createSelectionMenu()
         action->setDisabled(true);
       }
     }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonSelectionAdvancedWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
+{
+  if(propertyName.compare(getFilterParameter()->getPropertyName()) == 0)
+  {
+    DataArrayPath oldPath;
+    DataArrayPath newPath;
+    std::tie(oldPath, newPath) = renamePath;
+
+    QVariant var = getFilter()->property(PROPERTY_NAME_AS_CHAR);
+    ComparisonInputsAdvanced inputs = var.value<ComparisonInputsAdvanced>();
+    DataArrayPath amPath = inputs.getAttributeMatrixPath();
+    AbstractComparison::Pointer input = inputs[0];
+
+    blockSignals(true);
+    // Update the AttributeMatrix path
+    {
+      DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
+      if(nullptr == dca.get())
+      {
+        return;
+      }
+
+      if(dca->doesAttributeMatrixExist(amPath))
+      {
+        AttributeMatrix::Pointer am = dca->getAttributeMatrix(amPath);
+        QString html = am->getInfoString(SIMPL::HtmlFormat);
+        m_SelectedAttributeMatrixPath->setToolTip(html);
+        m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
+      }
+      else
+      {
+        m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
+        //
+      }
+    }
+
+    // Update the DataArray choices
+    if(false == oldPath.getDataArrayName().isEmpty() && oldPath.getDataArrayName() != newPath.getDataArrayName())
+    {
+      comparisonSetWidget->renameDataArrayPath(renamePath);
+    }
+    blockSignals(false);
   }
 }

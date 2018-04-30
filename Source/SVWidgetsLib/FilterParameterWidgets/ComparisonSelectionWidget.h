@@ -211,6 +211,13 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
 
     void setSelectedPath(DataArrayPath amPath);
 
+    /**
+     * @brief Handles changes to an affected DataArrayPath
+     * @param propertyName
+     * @param renamePath
+     */
+    void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
+
   private:
     DataContainerArrayProxy m_DcaProxy;
 

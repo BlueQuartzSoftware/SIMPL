@@ -44,6 +44,7 @@
 #include <vector>
 
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/Filtering/ComparisonSet.h"
 
 #include "SVWidgetsLib/FilterParameterWidgets/IComparisonWidget.h"
@@ -127,6 +128,12 @@ public:
   * @brief This method does additional GUI widget connections
   */
   void setupGui();
+
+  /**
+  * @brief Updates all comparisons contained in the set with the updated path
+  * @param renamePath
+  */
+  void renameDataArrayPath(DataArrayPath::RenameType renamePath) override;
   
 protected:
   /**

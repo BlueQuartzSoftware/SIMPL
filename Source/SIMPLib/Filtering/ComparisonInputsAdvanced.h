@@ -63,38 +63,133 @@ class SIMPLib_EXPORT ComparisonInputsAdvanced : public QObject
 public:
   ComparisonInputsAdvanced();
   ComparisonInputsAdvanced(const ComparisonInputsAdvanced& rhs);
-  // explicit ComparisonInputsAdvanced(ComparisonInputsAdvanced& rhs);
 
   virtual ~ComparisonInputsAdvanced();
 
+  /**
+   * @brief size
+   * @return
+   */
   int size();
 
+  /**
+    * @brief Adds a new input to the list of comparisons
+    * @param unionOperator
+    * @param arrayName
+    * @param compOperator
+    * @param compValue
+    */
   void addInput(int unionOperator, const QString arrayName, int compOperator, double compValue);
+
+  /**
+   * @brief Adds a new input to the list of comparisons
+   * @param unionOperator
+   * @param invertComparison
+   * @param comparisons
+   */
   void addInput(int unionOperator, bool invertComparison, QVector<AbstractComparison::Pointer> comparisons);
+
+  /**
+   * @brief Adds new inputs to the list of comparisons
+   * @param input
+   */
   void addInput(const AbstractComparison::Pointer input);
 
+  /**
+   * @brief Returns the nth comparison
+   * @param index
+   * @return
+   */
   AbstractComparison::Pointer getInput(int index);
+
+  /**
+   * @brief Returns the vector of comparisons
+   * @return
+   */
   QVector<AbstractComparison::Pointer>& getInputs();
 
+  /**
+   * @brief Sets the comparisons to be used
+   * @param comparisons
+   */
   void setInputs(QVector<AbstractComparison::Pointer> comparisons);
 
+  /**
+   * @brief Returns the DataContainer name used by the group
+   * @return
+   */
   QString getDataContainerName();
+
+  /**
+   * @brief Returns the AttributeMatrix name used by the group
+   * @return
+   */
   QString getAttributeMatrixName();
 
+  /**
+  * @brief Returns the DataArrayPath to the selected AttributeMatrix
+  */
+  DataArrayPath getAttributeMatrixPath();
+
+  /**
+   * @brief Sets the DataContainer name used by the group of comparisons
+   * @param dcName
+   */
   void setDataContainerName(QString dcName);
+
+  /**
+   * @brief Sets the AttributeMatrix name used by the group of comparisons
+   * @brief amName
+   */
   void setAttributeMatrixName(QString amName);
 
+  /**
+   * @brief Assignment operator
+   * @param
+   */
   void operator=(const ComparisonInputsAdvanced&);
 
+  /**
+   * @brief operator overload[]
+   * @param index
+   * @return
+   */
   AbstractComparison::Pointer operator[](int index);
 
+  /**
+   * @brief Returns true if there exists at least one comparison value
+   * @return
+   */
   bool hasComparisonValue();
+
+  /**
+   * @brief Returns a vector of comparisons for the group
+   * @return
+   */
   QVector<AbstractComparison::Pointer> getComparisonValues();
 
+  /**
+   * @brief Returns true if the resulting comparison should be inverted
+   * @return
+   */
   bool shouldInvert();
+
+  /**
+   * @brief Sets whether or not the resulting comparison should be inverted
+   * @param invert
+   */
   void setInvert(bool invert);
 
+  /**
+   * @brief Loads data from json 
+   * @param obj
+   */
   void readJson(QJsonObject obj);
+
+  /**
+   * @brief Writes data to json
+   * @param obj
+   */
   void writeJson(QJsonObject& obj);
 
 private:

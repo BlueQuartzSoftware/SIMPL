@@ -268,3 +268,25 @@ void AttributeMatrixProxy::setFlags(uint8_t flag, DataArrayProxy::PrimitiveTypeF
     }
   }
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixProxy::updatePath(DataArrayPath::RenameType renamePath)
+{
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
+  if(oldPath.getAttributeMatrixName() != newPath.getAttributeMatrixName())
+  {
+    name = newPath.getAttributeMatrixName();
+  }
+
+  if(dataArrays.contains(oldPath.getDataArrayName()))
+  {
+    DataArrayProxy daProxy = dataArrays.take(oldPath.getDataArrayName());
+    daProxy.updatePath(renamePath);
+    dataArrays.insert(newPath.getDataArrayName(), daProxy);
+  }
+}

@@ -168,6 +168,12 @@ class SIMPLib_EXPORT DataContainerArrayProxy
     DataContainerProxy& getDataContainerProxy(const QString& name);
 
     /**
+     * @brief Updates the proxy to match a renamed DataArrayPath
+     * @param renamePath
+     */
+    void updatePath(DataArrayPath::RenameType renamePath);
+
+    /**
     * @brief Writes the contents of the proxy to the json object 'json'
     * @param json
     * @return
