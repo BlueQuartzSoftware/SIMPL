@@ -90,6 +90,10 @@ void DataContainerCreationWidget::setupGui()
   // Catch when the filter wants its dataContainerNames updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
+  // If the DataArrayPath is updated in the filter, update the widget
+  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
+    this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
+
   connect(stringEdit, SIGNAL(valueChanged(const QString&)), this, SIGNAL(parametersChanged()));
   changeStyleSheet(Style::FS_STANDARD_STYLE);
 
@@ -118,5 +122,23 @@ void DataContainerCreationWidget::filterNeedsInputParameters(AbstractFilter* fil
   if(false == ok)
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerCreationWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
+{
+  if(propertyName.compare(PROPERTY_NAME_AS_CHAR) == 0)
+  {
+    QVariant var = getFilter()->property(PROPERTY_NAME_AS_CHAR);
+    DataArrayPath updatedPath = var.value<DataArrayPath>();
+    QString dcName = updatedPath.getDataContainerName();
+    updatedPath.setDataContainerName("");
+
+    blockSignals(true);
+    stringEdit->setText(dcName);
+    blockSignals(false);
   }
 }

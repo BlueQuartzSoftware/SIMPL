@@ -109,6 +109,13 @@ public:
   */
   QVector<AbstractComparison::Pointer> getComparisonValues();
 
+  /**
+  * @brief Checks the comparison's DataArray options based on the renamed path. Returns true if the comparison was changed
+  * @param renamePath
+  * @return
+  */
+  bool renameDataArrayPath(DataArrayPath::RenameType renamePath) override;
+
 protected:
   bool m_invertComparison;
   QVector<AbstractComparison::Pointer> m_comparisons;

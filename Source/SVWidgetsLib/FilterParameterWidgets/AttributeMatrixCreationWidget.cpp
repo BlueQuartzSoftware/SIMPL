@@ -135,6 +135,10 @@ void AttributeMatrixCreationWidget::setupGui()
   // Catch when the filter wants its values updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
+  // If the DataArrayPath is updated in the filter, update the widget
+  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
+    this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
+
   connect(stringEdit, SIGNAL(valueChanged(const QString&)), this, SIGNAL(parametersChanged()));
 
   m_SelectedDataContainerPath->blockSignals(true);
@@ -247,6 +251,25 @@ bool AttributeMatrixCreationWidget::eventFilter(QObject* obj, QEvent* event)
     return true;
   }
   return false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixCreationWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
+{
+  if(propertyName.compare(PROPERTY_NAME_AS_CHAR) == 0)
+  {
+    QVariant var = getFilter()->property(PROPERTY_NAME_AS_CHAR);
+    DataArrayPath updatedPath = var.value<DataArrayPath>();
+    QString amName = updatedPath.getAttributeMatrixName();
+    updatedPath.setAttributeMatrixName("");
+
+    blockSignals(true);
+    setSelectedPath(updatedPath);
+    stringEdit->setText(amName);
+    blockSignals(false);
+  }
 }
 
 // -----------------------------------------------------------------------------

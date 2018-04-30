@@ -37,6 +37,9 @@
 
 #include <QtCore/QJsonObject>
 
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -68,4 +71,54 @@ void FilterParameter::readJson(const QJsonObject& json)
 void FilterParameter::writeJson(QJsonObject& json)
 {
   Q_UNUSED(json)
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath)
+{
+  QVariant var = filter->property(qPrintable(getPropertyName()));
+  if(var.isValid() && var.canConvert<DataArrayPath>())
+  {
+    DataArrayPath path = var.value<DataArrayPath>();
+    if(path.updatePath(renamePath))
+    {
+      var.setValue(path);
+      filter->setProperty(qPrintable(getPropertyName()), var);
+      emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+    }
+  }
+  else if(var.isValid() && var.canConvert<DataContainerArrayProxy>())
+  {
+    DataContainerArrayProxy proxy = var.value<DataContainerArrayProxy>();
+    proxy.updatePath(renamePath);
+    var.setValue(proxy);
+    filter->setProperty(qPrintable(getPropertyName()), var);
+    emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+  }
+  else if(var.isValid() && var.canConvert<DataContainerProxy>())
+  {
+    DataContainerProxy proxy = var.value<DataContainerProxy>();
+    proxy.updatePath(renamePath);
+    var.setValue(proxy);
+    filter->setProperty(qPrintable(getPropertyName()), var);
+    emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+  }
+  else if(var.isValid() && var.canConvert<AttributeMatrixProxy>())
+  {
+    AttributeMatrixProxy proxy = var.value<AttributeMatrixProxy>();
+    proxy.updatePath(renamePath);
+    var.setValue(proxy);
+    filter->setProperty(qPrintable(getPropertyName()), var);
+    emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+  }
+  else if(var.isValid() && var.canConvert<DataArrayProxy>())
+  {
+    DataArrayProxy proxy = var.value<DataArrayProxy>();
+    proxy.updatePath(renamePath);
+    var.setValue(proxy);
+    filter->setProperty(qPrintable(getPropertyName()), var);
+    emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+  }
 }

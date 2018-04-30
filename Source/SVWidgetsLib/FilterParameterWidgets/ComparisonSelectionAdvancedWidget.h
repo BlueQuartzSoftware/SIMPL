@@ -135,11 +135,6 @@ class ComparisonSelectionAdvancedWidget : public FilterParameterWidget, private 
     void createSelectionMenu();
 
     /**
-    * @brief populateAttributeMatrixList
-    */
-    //void populateAttributeMatrixList();
-
-    /**
     * @brief generateAttributeArrayList
     * @param currentDCName
     * @param currentAttrMatName
@@ -171,16 +166,25 @@ class ComparisonSelectionAdvancedWidget : public FilterParameterWidget, private 
     * @param text
     */
     void widgetChanged(const QString& text);
+
     /**
     * @brief setSelectedPath
     * @param path
     */
     void setSelectedPath(QString path);
+
     /**
     * @brief setSelectedPath
     * @param amPath
     */
     void setSelectedPath(DataArrayPath amPath);
+
+    /**
+    * @brief Handles changes to an affected DataArrayPath
+    * @param propertyName
+    * @param renamePath
+    */
+    void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
   private:
     DataContainerArrayProxy m_DcaProxy;

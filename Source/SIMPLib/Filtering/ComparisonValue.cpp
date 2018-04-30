@@ -152,3 +152,26 @@ void ComparisonValue::setParentSet(ComparisonSet::Pointer parentSet)
 {
   m_parentSet = parentSet;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool ComparisonValue::renameDataArrayPath(DataArrayPath::RenameType renamePath)
+{
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
+  if(oldPath.getDataArrayName().isEmpty() || newPath.getDataArrayName().isEmpty() || oldPath.getDataArrayName() == newPath.getDataArrayName())
+  {
+    return false;
+  }
+
+  if(oldPath.getDataArrayName() == m_attributeArrayName)
+  {
+    m_attributeArrayName = newPath.getDataArrayName();
+    return true;
+  }
+
+  return false;
+}

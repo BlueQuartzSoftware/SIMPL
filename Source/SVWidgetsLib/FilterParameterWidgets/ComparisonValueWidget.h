@@ -89,6 +89,12 @@ public:
   */
   void setupGui();
 
+  /**
+  * @brief Updates the comparison array paths based on the renamed DataArrayPath
+  * @param renamePath
+  */
+  void renameDataArrayPath(DataArrayPath::RenameType renamePath) override;
+
 protected:
   /**
   * @brief Updates the DataArray combo box with names from the given AttributeMatrix

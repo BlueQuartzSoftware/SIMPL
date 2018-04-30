@@ -41,9 +41,15 @@
 #include <QtCore/QString>
 #include <QtCore/QVector>
 
+#include <list>
+#include <set>
+#include <tuple>
+
 #include "SIMPLib/Common/SIMPLibDLLExport.h"     // for SIMPLib_EXPORT
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"  // for SIMPL_PIMPL_PROPERTY_DECL
 
+class DataContainerArray;
+using DataContainerArrayShPtr = std::shared_ptr<DataContainerArray>;
 
 /**
  * @brief The DataArrayPath class holds a complete or partial path to a data array starting at the DataContainer
@@ -54,6 +60,10 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
     Q_OBJECT
 
   public:
+    // tuple <oldPath, newPath>
+    using RenameType = std::tuple<DataArrayPath, DataArrayPath>;
+    using RenameContainer = std::list<RenameType>;
+
     DataArrayPath();
 
     /**
@@ -113,6 +123,22 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
     */
     static DataArrayPath Deserialize(QString str, QString delimiter);
 
+    /**
+     * @brief checks for and returns any updated DataArrayPaths between two sets
+     * @param oldPaths
+     * @param newPaths
+     * @return
+     */
+    static RenameContainer CheckForRenamedPaths(DataContainerArrayShPtr oldDca, DataContainerArrayShPtr newDca, std::list<DataArrayPath> oldPaths, std::list<DataArrayPath> newPaths);
+
+    /**
+     * @brief checks if the targets of the old DataArrayPath and new DataArrayPath are compatible in their given DataContainerArrays
+     * @param oldDca
+     * @param newDca
+     * @param oldPath
+     * @param newPath
+     */
+    static bool CheckRenamePath(DataContainerArrayShPtr oldDca, DataContainerArrayShPtr newDca, DataArrayPath oldPath, DataArrayPath newPath);
 
     SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
     SIMPL_INSTANCE_STRING_PROPERTY(AttributeMatrixName)
@@ -129,7 +155,7 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
      * @param rhs
      * @return
      */
-    bool operator==(const DataArrayPath& rhs);
+    bool operator==(const DataArrayPath& rhs) const;
 
     /**
      * @brief serialize Returns the path using the '|' charater by default. This can be over ridden by the programmer
@@ -201,6 +227,22 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
      * @return true if the two paths share the same data array, false otherwise
      */
     bool hasSameDataArray(const DataArrayPath& other) const;
+
+    /**
+     * @brief checks if the given DataArrayPath could indicate a possible renamed path.
+     * This requires that the given path be no longer than the current path and only one value is changed.
+     * Returns true if this is a possible rename and returns false otherwise.
+     * @param updated
+     * @return
+     */
+    bool possibleRename(const DataArrayPath& updated) const;
+
+    /**
+     * @brief updates the current path based on the newPath if it matches the given previous value
+     * @param renamePath
+     * return
+     */
+    bool updatePath(const DataArrayPath::RenameType& renamePath);
 
     /**
     * @brief Writes the contents of the proxy to the json object 'json'
