@@ -100,6 +100,9 @@ void DataContainerSelectionWidget::setupGui()
   {
     return;
   }
+
+  m_SelectedDataContainerPath->setDataContainerRequirements(m_FilterParameter->getRequirements());
+
   // Catch when the filter is about to execute the preflight
   connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
@@ -112,6 +115,9 @@ void DataContainerSelectionWidget::setupGui()
   // If the DataArrayPath is updated in the filter, update the widget
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
     this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
+
+  connect(m_SelectedDataContainerPath, SIGNAL(viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType)));
+  connect(m_SelectedDataContainerPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
 
   if(getFilterParameter() == nullptr)
   {

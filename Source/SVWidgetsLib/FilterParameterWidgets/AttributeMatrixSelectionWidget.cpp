@@ -100,6 +100,8 @@ void AttributeMatrixSelectionWidget::setupGui()
     return;
   }
 
+  m_SelectedAttributeMatrixPath->setAttrMatrixRequirements(m_FilterParameter->getRequirements());
+
   label->setText(getFilterParameter()->getHumanLabel());
 
   m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
@@ -120,6 +122,10 @@ void AttributeMatrixSelectionWidget::setupGui()
   // If the DataArrayPath is updated in the filter, update the widget
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)), 
     this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
+
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)),
+    this, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
 
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedAttributeMatrixPath->setText(defaultPath.serialize(Detail::Delimiter));

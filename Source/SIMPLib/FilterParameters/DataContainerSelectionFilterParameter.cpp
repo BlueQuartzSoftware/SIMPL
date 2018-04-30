@@ -118,3 +118,14 @@ void DataContainerSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter*
     emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataContainerSelectionFilterParameter::RequirementType DataContainerSelectionFilterParameter::getRequirements()
+{
+  RequirementType reqs;
+  reqs.dcGeometryTypes = getDefaultGeometryTypes();
+
+  return reqs;
+}

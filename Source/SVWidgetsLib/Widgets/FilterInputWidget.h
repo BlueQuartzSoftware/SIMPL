@@ -43,6 +43,9 @@
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
@@ -83,6 +86,11 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget
   signals:
     void filterParametersChanged();
     void errorSettingFilterParameter(const QString &text);
+
+    void viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs);
+    void viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType amReqs);
+    void viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType daReqs);
+    void endViewPaths();
 
   private slots:
     void fadeInWidget(QWidget* widget);

@@ -37,6 +37,7 @@
 #define _dataBrowserWidget_h_
 
 #include <QtCore/QUuid>
+#include <QtGui/QBrush>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QWidget>
 
@@ -102,7 +103,7 @@ public slots:
   void handleFilterRemoved(PipelineFilterObject* object);
 
   void setViewReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs);
-  void setViewReqs(AttributeMatrixSelectionFilterParameter::RequirementType dcReqs);
+  void setViewReqs(AttributeMatrixSelectionFilterParameter::RequirementType amReqs);
   void setViewReqs(DataArraySelectionFilterParameter::RequirementType daReqs);
   void clearViewRequirements();
 
@@ -129,9 +130,17 @@ protected:
    */
   void removeNonexistingEntries(QStandardItem* rootItem, QList<QString> existing, int column);
 
+  /**
+  * @brief Clears the filter effects from the given QStandardItem and its children
+  * @param item
+  */
+  void clearFilter(QStandardItem* item);
+
 private:
   DataContainerArray::Pointer  m_Dca = nullptr;
   QSharedPointer<Ui::DataStructureWidget>       m_Ui;
+  QBrush m_CompliantBrush;
+  QBrush m_NoncompliantBrush;
 
   DataStructureWidget(const DataStructureWidget&) = delete; // Copy Constructor Not Implemented
   void operator=(const DataStructureWidget&);               // Move assignment Not Implemented
