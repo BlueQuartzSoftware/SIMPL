@@ -114,6 +114,7 @@ void DataArraySelectionWidget::setupGui()
 
   m_SelectedDataArrayPath->setDataArrayRequirements(m_FilterParameter->getRequirements());
   m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
+  m_SelectedDataArrayPath->setFilter(getFilter());
 
   // Generate the text for the QLabel
   label->setText(getFilterParameter()->getHumanLabel());
@@ -137,6 +138,7 @@ void DataArraySelectionWidget::setupGui()
 
   connect(m_SelectedDataArrayPath, SIGNAL(viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType)));
   connect(m_SelectedDataArrayPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
+  connect(m_SelectedDataArrayPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
 
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedDataArrayPath->setText(defaultPath.serialize(Detail::Delimiter));

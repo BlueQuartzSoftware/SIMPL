@@ -102,6 +102,7 @@ void DataContainerSelectionWidget::setupGui()
   }
 
   m_SelectedDataContainerPath->setDataContainerRequirements(m_FilterParameter->getRequirements());
+  m_SelectedDataContainerPath->setFilter(getFilter());
 
   // Catch when the filter is about to execute the preflight
   connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
@@ -118,6 +119,7 @@ void DataContainerSelectionWidget::setupGui()
 
   connect(m_SelectedDataContainerPath, SIGNAL(viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType)));
   connect(m_SelectedDataContainerPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
+  connect(m_SelectedDataContainerPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
 
   if(getFilterParameter() == nullptr)
   {

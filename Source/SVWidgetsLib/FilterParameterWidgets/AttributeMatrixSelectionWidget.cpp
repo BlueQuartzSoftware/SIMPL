@@ -101,6 +101,7 @@ void AttributeMatrixSelectionWidget::setupGui()
   }
 
   m_SelectedAttributeMatrixPath->setAttrMatrixRequirements(m_FilterParameter->getRequirements());
+  m_SelectedAttributeMatrixPath->setFilter(getFilter());
 
   label->setText(getFilterParameter()->getHumanLabel());
 
@@ -126,6 +127,7 @@ void AttributeMatrixSelectionWidget::setupGui()
   connect(m_SelectedAttributeMatrixPath, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)),
     this, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
   connect(m_SelectedAttributeMatrixPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
 
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedAttributeMatrixPath->setText(defaultPath.serialize(Detail::Delimiter));

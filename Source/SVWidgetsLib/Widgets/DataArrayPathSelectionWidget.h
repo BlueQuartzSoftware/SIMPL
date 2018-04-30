@@ -36,11 +36,17 @@
 #pragma once
 
 #include <QtWidgets/QToolButton>
+#include <QtGui/QDragEnterEvent>
+#include <QtGui/QDragLeaveEvent>
+#include <QtGui/QDropEvent>
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
+
+#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
 /**
 * @class DataArrayPathSelectionWidget DataArrayPathSelectionWidget.h 
@@ -109,21 +115,39 @@ public:
   * @brief Sets the DataArrayPath without checking requirements
   * @param dap
   */
-  void setPath(DataArrayPath dap);
+  void setDataArrayPath(DataArrayPath dap);
 
   /**
   * @brief Returns the DataArrayPath
   * @retrurn
   */
-  DataArrayPath getPath();
+  DataArrayPath getDataArrayPath();
+
+  /**
+  * @brief Sets the filter the selection widget operates on
+  * @param filter
+  */
+  void setFilter(AbstractFilter* filter);
 
 signals:
   void viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs);
   void viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType amReqs);
   void viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType daReqs);
   void endViewPaths();
+  void pathChanged();
 
 protected:
+  enum class Style
+  {
+    Normal,
+    Hover,
+    NotFound,
+    DragEnabled,
+    DragDisabled
+  };
+
+  void changeStyleSheet(Style styleType);
+
   /**
   * @brief Handles the mouse-enter event and emits the appropriate viewPaths signal
   * @param event
@@ -136,8 +160,23 @@ protected:
   */
   void leaveEvent(QEvent* event) override;
 
+  /**
+  * @brief Checks the requirements for the current path
+  * @return
+  */
+  bool checkCurrentPath();
+  bool checkPathReqs(DataArrayPath path);
+  bool checkDataContainerReqs(DataArrayPath path);
+  bool checkAttributeMatrixReqs(DataArrayPath path);
+  bool checkDataArrayReqs(DataArrayPath path);
+
+  void dragEnterEvent(QDragEnterEvent* event) override;
+  void dragLeaveEvent(QDragLeaveEvent* event) override;
+  void dropEvent(QDropEvent* event) override;
+
 private:
   DataType m_DataType = DataType::None;
+  AbstractFilter* m_Filter = nullptr;
   DataContainerSelectionFilterParameter::RequirementType m_DataContainerReqs;
   AttributeMatrixSelectionFilterParameter::RequirementType m_AttrMatrixReqs;
   DataArraySelectionFilterParameter::RequirementType m_DataArrayReqs;

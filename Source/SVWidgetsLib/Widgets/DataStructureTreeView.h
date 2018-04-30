@@ -41,32 +41,21 @@
 
 #include <QtCore/QJsonObject>
 
-#include <QtWidgets/QMenu>
 #include <QtGui/QMouseEvent>
-#include <QtWidgets/QTreeWidget>
-#include <QtWidgets/QTreeWidgetItem>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QTreeView>
+#include <QtCore/QModelIndex>
+
+#include "SIMPLib/DataContainers/DataArrayPath.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
-#include "SVWidgetsLib/Widgets/DataStructureModel.h"
-
-
-class PipelineBuilderWidget;
-class QAction;
-class QTreeWidgetItem;
 
 class SVWidgetsLib_EXPORT DataStructureTreeView : public QTreeView
 {
     Q_OBJECT
 
   public:
-    enum ItemType
-    {
-      Node_Item_Type = 1,
-      Leaf_Item_Type = 2,
-      Unknown_Item_Type = 3
-    };
-
     /**
     * @brief DataStructureTreeView
     * @param parent
@@ -76,23 +65,14 @@ class SVWidgetsLib_EXPORT DataStructureTreeView : public QTreeView
     /**
     * @brief ~DataStructureTreeView()
     */
-    ~DataStructureTreeView();
+    virtual ~DataStructureTreeView();
 
     /**
-    * @brief setModel
-    * @param model
+    * @brief Returns the DataArrayPath for the given QModelIndex
+    * @param index
+    * @return
     */
-    void setModel(QAbstractItemModel* model) Q_DECL_OVERRIDE;
-
-    /**
-    * @brief filterOutDescendants
-    * @param indexList
-    */
-    QModelIndexList filterOutDescendants(QModelIndexList indexList);
-
-  public slots:
-    void collapseIndex(const QModelIndex& index);
-    void expandIndex(const QModelIndex& index);
+    DataArrayPath getDataArrayPath(QModelIndex index);
 
   protected:
     void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
@@ -100,20 +80,7 @@ class SVWidgetsLib_EXPORT DataStructureTreeView : public QTreeView
 //    void dragLeaveEvent(QDragLeaveEvent* event) Q_DECL_OVERRIDE;
 //    void dragMoveEvent(QDragMoveEvent* event) Q_DECL_OVERRIDE;
 
-    void currentChanged(const QModelIndex& current, const QModelIndex& previous) Q_DECL_OVERRIDE;
-
-    /**
-    * @brief Adds the actions in the actionList parameter to the right-click menu
-    */
-    void addActionList(QList<QAction*> actionList);
-
-  signals:
-    void itemWasDropped(QModelIndex parent, QString& title, QIcon icon, QString path, int index, bool allowEditing, bool editState, bool isExpanding);
-    void currentIndexChanged(const QModelIndex& current, const QModelIndex& previous);
-    void contextMenuRequested(const QPoint& pos);
-
   private slots:
-
     /**
     * @brief mousePressEvent
     * @param event
@@ -124,35 +91,15 @@ class SVWidgetsLib_EXPORT DataStructureTreeView : public QTreeView
      * @brief requestContextMenu
      * @param pos
      */
-    void requestContextMenu(const QPoint &pos);
+    //void requestContextMenu(const QPoint &pos);
 
   private:
-
-
     QPoint                                        m_StartPos;
-    QMenu                                         m_Menu;
-    QList<QAction*>                               m_NodeActions;
-    QList<QAction*>                               m_LeafActions;
-    QList<QAction*>                               m_LeafErrorActions;
-    QList<QAction*>                               m_DefaultActions;
-    QList<QPersistentModelIndex>                  m_IndexesBeingDragged;
-    QPersistentModelIndex                         m_ActiveIndexBeingDragged;
-    QModelIndex                                   m_TopLevelItemPlaceholder;
-
-    DataStructureModel*                             m_Model = nullptr;
-
+    
     /**
      * @brief performDrag
      */
-//    void performDrag();
-
-    /**
-     * @brief expandChildren
-     * @param parent
-     * @param model
-     */
-    void expandChildren(const QModelIndex& parent, DataStructureModel* model);
-
+    void performDrag();
 };
 
 #endif /* _dataBrowserTreeView_H_ */

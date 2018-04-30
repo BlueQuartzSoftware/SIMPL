@@ -44,6 +44,7 @@
 #include <QtCore/QMimeData>
 #include <QtGui/QDrag>
 #include <QtGui/QMouseEvent>
+#include <QtGui/QStandardItemModel>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
@@ -60,44 +61,54 @@
 // -----------------------------------------------------------------------------
 DataStructureTreeView::DataStructureTreeView(QWidget* parent)
 : QTreeView(parent)
-, m_ActiveIndexBeingDragged(QPersistentModelIndex())
-, m_TopLevelItemPlaceholder(QModelIndex())
 {
-  setContextMenuPolicy(Qt::CustomContextMenu);
-
-  connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(requestContextMenu(const QPoint&)));
-
-  connect(this, SIGNAL(collapsed(const QModelIndex&)), SLOT(collapseIndex(const QModelIndex&)));
-  connect(this, SIGNAL(expanded(const QModelIndex&)), SLOT(expandIndex(const QModelIndex&)));
-
-  DataStructureItemDelegate* dlg = new DataStructureItemDelegate(this);
-  setItemDelegate(dlg);
-
-  m_Model = new DataStructureModel(this);
-  this->setModel(m_Model);
-
+  //setContextMenuPolicy(Qt::CustomContextMenu);
+  //connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(requestContextMenu(const QPoint&)));
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataStructureTreeView::~DataStructureTreeView()
-{
-  if (m_Model != nullptr)
-  {
-    delete m_Model;
-  }
-}
+DataStructureTreeView::~DataStructureTreeView() = default;
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataStructureTreeView::addActionList(QList<QAction*> actionList)
+DataArrayPath DataStructureTreeView::getDataArrayPath(QModelIndex index)
 {
-  for(int i = 0; i < actionList.size(); i++)
+  DataArrayPath path;
+  QStandardItemModel* stdModel = dynamic_cast<QStandardItemModel*>(model());
+  
+  if(nullptr == stdModel)
   {
-    m_Menu.addAction(actionList[i]);
+    return path;
   }
+
+  if(index.isValid())
+  {
+    QStandardItem* item = stdModel->itemFromIndex(index);
+    if(item->parent())
+    {
+      QStandardItem* parentItem = item->parent();
+      if(parentItem->parent())
+      {
+        path.setDataContainerName(parentItem->parent()->text());
+        path.setAttributeMatrixName(parentItem->text());
+        path.setDataArrayName(item->text());
+      }
+      else
+      {
+        path.setDataContainerName(parentItem->text());
+        path.setAttributeMatrixName(item->text());
+      }
+    }
+    else
+    {
+      path.setDataContainerName(item->text());
+    }
+  }
+
+  return path;
 }
 
 // -----------------------------------------------------------------------------
@@ -110,16 +121,6 @@ void DataStructureTreeView::mousePressEvent(QMouseEvent* event)
     m_StartPos = event->pos();
   }
 
-  QModelIndex index = indexAt(event->pos());
-
-  if(index.isValid() == false)
-  {
-    // Deselect the current item
-    clearSelection();
-    clearFocus();
-    setCurrentIndex(QModelIndex());
-  }
-
   QTreeView::mousePressEvent(event);
 }
 
@@ -128,117 +129,39 @@ void DataStructureTreeView::mousePressEvent(QMouseEvent* event)
 // -----------------------------------------------------------------------------
 void DataStructureTreeView::mouseMoveEvent(QMouseEvent* event)
 {
-
-
   if(event->buttons() & Qt::LeftButton)
   {
-    QModelIndex index = m_Model->index(currentIndex().row(), DataStructureItem::Name, currentIndex().parent());
-    bool itemHasErrors = m_Model->data(index, Qt::UserRole).value<bool>();
+    QModelIndex index = indexAt(m_StartPos);
     int distance = (event->pos() - m_StartPos).manhattanLength();
-    if(distance >= QApplication::startDragDistance() && itemHasErrors == false)
+    if(distance >= QApplication::startDragDistance() && index.isValid())
     {
-//      performDrag();
+      performDrag();
     }
   }
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataStructureTreeView::requestContextMenu(const QPoint& pos)
-{
-  activateWindow();
-
-  QModelIndex index = indexAt(pos);
-
-  QPoint mapped;
-  if(index.isValid())
-  {
-    // Note: We must map the point to global from the viewport to
-    // account for the header.
-    mapped = viewport()->mapToGlobal(pos);
-  }
-  else
-  {
-    index = QModelIndex();
-    mapped = mapToGlobal(pos);
-  }
-
-
-  //TODO: to be filled out if needed
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QModelIndexList DataStructureTreeView::filterOutDescendants(QModelIndexList indexList)
-{
-
-  for(int i = indexList.size() - 1; i >= 0; i--)
-  {
-    QPersistentModelIndex index = indexList[i];
-    QString name = m_Model->index(index.row(), DataStructureItem::Name, index.parent()).data().toString();
-    // Walk up the tree from the index...if an ancestor is selected, remove the index
-    while(index.isValid() == true)
-    {
-      QPersistentModelIndex parent = index.parent();
-      QString parentName = m_Model->index(parent.row(), DataStructureItem::Name, parent.parent()).data().toString();
-      if(indexList.contains(index.parent()) == true)
-      {
-        indexList.removeAt(i);
-        break;
-      }
-      index = index.parent();
-    }
-  }
-
-  return indexList;
-}
-
-#if 0
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void DataStructureTreeView::performDrag()
 {
-  m_ActiveIndexBeingDragged = QPersistentModelIndex(currentIndex());
-
-  m_IndexesBeingDragged.clear();
-
-  QModelIndexList list = selectionModel()->selectedRows();
-
-  // We need to filter out all indexes that already have parents/ancestors selected
-  list = filterOutDescendants(list);
-
-  for(int i = 0; i < list.size(); i++)
+  QModelIndex index = indexAt(m_StartPos);
+  if(false == index.isValid())
   {
-    m_IndexesBeingDragged.push_back(list[i]);
+    return;
   }
 
-
-  QJsonObject obj;
-  for(int i = 0; i < m_IndexesBeingDragged.size(); i++)
-  {
-    QModelIndex draggedIndex = m_IndexesBeingDragged[i];
-    QString name = m_Model->index(draggedIndex.row(), DataStructureItem::Name, draggedIndex.parent()).data(Qt::DisplayRole).toString();
-    QString path = m_Model->index(draggedIndex.row(), DataStructureItem::Path, draggedIndex.parent()).data(Qt::DisplayRole).toString();
-    if(path.isEmpty() == false)
-    {
-      obj[name] = path;
-    }
-  }
-
-  QJsonDocument doc(obj);
-  QByteArray jsonArray = doc.toJson();
+  DataArrayPath path = getDataArrayPath(index);
 
   QMimeData* mimeData = new QMimeData;
-  mimeData->setData(SIMPLView::DragAndDrop::BookmarkItem, jsonArray);
+  mimeData->setData(SIMPLView::DragAndDrop::BookmarkItem, path.serialize().toUtf8());
 
   QDrag* drag = new QDrag(this);
   drag->setMimeData(mimeData);
   drag->exec(Qt::CopyAction);
 }
 
+#if 0
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -332,72 +255,31 @@ void DataStructureTreeView::dragMoveEvent(QDragMoveEvent* event)
     event->acceptProposedAction();
   }
 }
-#endif
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataStructureTreeView::setModel(QAbstractItemModel* m_Model)
+void DataStructureTreeView::requestContextMenu(const QPoint& pos)
 {
-  // Set the m_Model
-  QTreeView::setModel(m_Model);
+  activateWindow();
 
-  DataStructureModel* bModel = qobject_cast<DataStructureModel*>(m_Model);
+  QModelIndex index = indexAt(pos);
 
-  // Expand indexes that have their expand member set to true
-  expandChildren(QModelIndex(), bModel);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataStructureTreeView::expandChildren(const QModelIndex& parent, DataStructureModel* m_Model)
-{
-  for(int row = 0; row < m_Model->rowCount(parent); row++)
-  {
-    QModelIndex index = m_Model->index(row, 0, parent);
-    if(m_Model->needsToBeExpanded(index))
-    {
-      expand(index);
-    }
-
-    // Recursive call, to expand all items in the tree
-    expandChildren(index, m_Model);
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataStructureTreeView::collapseIndex(const QModelIndex& index)
-{
+  QPoint mapped;
   if(index.isValid())
   {
-
-    QModelIndex sibling = m_Model->sibling(0, 0, index);
-
-    QTreeView::collapse(index);
-    m_Model->setNeedsToBeExpanded(index, false);
-    m_Model->setNeedsToBeExpanded(sibling, false);
+    // Note: We must map the point to global from the viewport to
+    // account for the header.
+    mapped = viewport()->mapToGlobal(pos);
   }
-}
+  else
+  {
+    index = QModelIndex();
+    mapped = mapToGlobal(pos);
+  }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataStructureTreeView::expandIndex(const QModelIndex& index)
-{
-  QModelIndex sibling = m_Model->sibling(0, 0, index);
 
-  QTreeView::expand(index);
-  m_Model->setNeedsToBeExpanded(index, true);
-  m_Model->setNeedsToBeExpanded(sibling, true);
+  //TODO: to be filled out if needed
 }
+#endif
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataStructureTreeView::currentChanged(const QModelIndex& current, const QModelIndex& previous)
-{
-  emit currentIndexChanged(current, previous);
-}
