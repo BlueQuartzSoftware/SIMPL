@@ -102,9 +102,27 @@ public slots:
    */
   void handleFilterRemoved(PipelineFilterObject* object);
 
+  /**
+  * @brief Sets the DataContainer requirements
+  * @param dcReqs
+  */
   void setViewReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs);
+
+  /**
+  * @brief Sets the AttributeMatrix requirements
+  * @param amReqs
+  */
   void setViewReqs(AttributeMatrixSelectionFilterParameter::RequirementType amReqs);
+
+  /**
+  * @brief Sets the DataArray requirements
+  * @param daReqs
+  */
   void setViewReqs(DataArraySelectionFilterParameter::RequirementType daReqs);
+
+  /**
+  * @brief Clears the requirements
+  */
   void clearViewRequirements();
 
 protected:

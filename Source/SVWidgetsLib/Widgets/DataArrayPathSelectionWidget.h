@@ -146,6 +146,10 @@ protected:
     DragDisabled
   };
 
+  /**
+  * @brief Change the stylesheet based on the widget state
+  * @param styleType
+  */
   void changeStyleSheet(Style styleType);
 
   /**
@@ -165,13 +169,51 @@ protected:
   * @return
   */
   bool checkCurrentPath();
+
+  /**
+  * @brief Checks requirements against the given DataArrayPath
+  * @param path
+  * @return
+  */
   bool checkPathReqs(DataArrayPath path);
+
+  /**
+  * @brief Checks DataContainer requirements against the given DataArrayPath
+  * @param path
+  * @return
+  */
   bool checkDataContainerReqs(DataArrayPath path);
+
+  /**
+  * @brief Checks AttributeMatrix requirements against the given DataArrayPath
+  * @param path
+  * @return
+  */
   bool checkAttributeMatrixReqs(DataArrayPath path);
+
+  /**
+  * @brief Checks DataArray requirements against the given DataArrayPath
+  * @param path
+  * @return
+  */
   bool checkDataArrayReqs(DataArrayPath path);
 
+  /**
+  * @brief dragEnterEvent
+  * @param event
+  */
   void dragEnterEvent(QDragEnterEvent* event) override;
+
+  /**
+  * @brief dragLeaveEvent
+  * @param event
+  */
   void dragLeaveEvent(QDragLeaveEvent* event) override;
+
+  /**
+  * @brief dropEvent
+  * @param event
+  */
   void dropEvent(QDropEvent* event) override;
 
 private:
