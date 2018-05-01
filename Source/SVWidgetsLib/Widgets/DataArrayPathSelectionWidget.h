@@ -129,6 +129,13 @@ public:
   */
   void setFilter(AbstractFilter* filter);
 
+public slots:
+  /**
+  * @brief Sets whether or not filtering is forced active or not
+  * @param active
+  */
+  void setPathFiltering(bool active);
+
 signals:
   void viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs);
   void viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType amReqs);
@@ -215,6 +222,34 @@ protected:
   * @param event
   */
   void dropEvent(QDropEvent* event) override;
+
+  /**
+  * @brief Create the IGeometry::Type requirements part of the tooltip
+  * @param geomTypes
+  * @return
+  */
+  QString createGeomReqString(QVector<IGeometry::Type> geomTypes);
+
+  /**
+  * @brief Create the AttributeMatrix::Type requirements part of the tooltip
+  * @param amTypes
+  * @return
+  */
+  QString createAttrMatrixReqString(QVector<AttributeMatrix::Type> amTypes);
+
+  /**
+  * @brief Create the DataArray type requirements part of the tooltip
+  * @param daTypes
+  * @return
+  */
+  QString createDataArrayTypeString(QVector<QString> daTypes);
+
+  /**
+  * @brief Create the component requirements part of the tooltip
+  * @param compDims
+  * @return
+  */
+  QString createComponentReqString(QVector<QVector<size_t>> compDims);
 
 private:
   DataType m_DataType = DataType::None;

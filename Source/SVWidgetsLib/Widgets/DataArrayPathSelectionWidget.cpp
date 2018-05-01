@@ -44,7 +44,8 @@
 namespace {
   const QString kNormalColor("#8f8f91");
   const QString kErrorColor("#BC0000");
-  const QString kAcceptColor("#8f8f91");
+  const QString kFilterColor("#0072ff");
+  const QString kAcceptColor("#009104");
   const QString kRejectColor("#BC0000");
 }
 
@@ -56,6 +57,7 @@ DataArrayPathSelectionWidget::DataArrayPathSelectionWidget(QWidget* parent)
 {
   setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
   setAcceptDrops(true);
+  setCheckable(true);
 }
 
 // -----------------------------------------------------------------------------
@@ -73,6 +75,19 @@ void DataArrayPathSelectionWidget::setDataContainerRequirements(DataContainerSel
 {
   m_DataType = DataType::DataContainer;
   m_DataContainerReqs = dcReqs;
+
+  QString html;
+  QTextStream ss(&html);
+  ss << "<html><head></head>\n";
+  ss << "<body>\n";
+  ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
+  ss << "<tbody>\n";
+  ss << "<tr><td colspan=2><b><i>Drag and Drop from the DataStructure</i></b></td></tr>";
+  ss << createGeomReqString(dcReqs.dcGeometryTypes);
+  ss << "</tbody></table><br/>";
+  ss << "</body></html>";
+
+  setToolTip(html);
 }
 
 // -----------------------------------------------------------------------------
@@ -82,6 +97,20 @@ void DataArrayPathSelectionWidget::setAttrMatrixRequirements(AttributeMatrixSele
 {
   m_DataType = DataType::AttributeMatrix;
   m_AttrMatrixReqs = amReqs;
+
+  QString html;
+  QTextStream ss(&html);
+  ss << "<html><head></head>\n";
+  ss << "<body>\n";
+  ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
+  ss << "<tbody>\n";
+  ss << "<tr><td colspan=2><b><i>Drag and Drop from the DataStructure</i></b></td></tr>";
+  ss << createGeomReqString(amReqs.dcGeometryTypes);
+  ss << createAttrMatrixReqString(amReqs.amTypes);
+  ss << "</tbody></table><br/>";
+  ss << "</body></html>";
+
+  setToolTip(html);
 }
 
 // -----------------------------------------------------------------------------
@@ -91,6 +120,202 @@ void DataArrayPathSelectionWidget::setDataArrayRequirements(DataArraySelectionFi
 {
   m_DataType = DataType::DataArray;
   m_DataArrayReqs = daReqs;
+
+  QString html;
+  QTextStream ss(&html);
+  ss << "<html><head></head>\n";
+  ss << "<body>\n";
+  ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
+  ss << "<tbody>\n";
+  ss << "<tr><td colspan=2><b><i>Drag and Drop from the DataStructure</i></b></td></tr>";
+  ss << createGeomReqString(daReqs.dcGeometryTypes);
+  ss << createAttrMatrixReqString(daReqs.amTypes);
+  ss << createDataArrayTypeString(daReqs.daTypes);
+  ss << createComponentReqString(daReqs.componentDimensions);
+  ss << "</tbody></table><br/>";
+  ss << "</body></html>";
+
+  setToolTip(html);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString DataArrayPathSelectionWidget::createGeomReqString(QVector<IGeometry::Type> geomTypes)
+{
+  QString reqStr = "<tr><td><i>Required Geometries:</i></td>";
+  if(geomTypes.size() == 0)
+  {
+    reqStr += "<td>None</td>";
+  }
+  else
+  {
+    for(IGeometry::Type type : geomTypes)
+    {
+      switch(type)
+      {
+      case IGeometry::Type::Any:
+        reqStr += "<td>Any</td>";
+        break;
+      case IGeometry::Type::Edge:
+        reqStr += "<td>Edge</td>";
+        break;
+      case IGeometry::Type::Image:
+        reqStr += "<td>Image</td>";
+        break;
+      case IGeometry::Type::Quad:
+        reqStr += "<td>Quad</td>";
+        break;
+      case IGeometry::Type::RectGrid:
+        reqStr += "<td>RectGrid</td>";
+        break;
+      case IGeometry::Type::Tetrahedral:
+        reqStr += "<td>Tetrahedral</td>";
+        break;
+      case IGeometry::Type::Triangle:
+        reqStr += "<td>Triangle</td>";
+        break;
+      case IGeometry::Type::Unknown:
+        reqStr += "<td>Unknown</td>";
+        break;
+      case IGeometry::Type::Vertex:
+        reqStr += "<td>Vertex</td>";
+        break;
+      }
+    }
+  }
+
+  reqStr += "</tr>";
+  return reqStr;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString DataArrayPathSelectionWidget::createAttrMatrixReqString(QVector<AttributeMatrix::Type> amTypes)
+{
+  QString reqStr = "<tr><td><i>Required Matrix Type:</i></td>";
+  if(amTypes.size() == 0)
+  {
+    reqStr += "<td>None</td>";
+  }
+  else
+  {
+    for(AttributeMatrix::Type type : amTypes)
+    {
+      switch(type)
+      {
+      case AttributeMatrix::Type::Any:
+        reqStr += "<td>Any</td>";
+        break;
+      case AttributeMatrix::Type::Cell:
+        reqStr += "<td>Cell</td>";
+        break;
+      case AttributeMatrix::Type::CellEnsemble:
+        reqStr += "<td>Cell Ensemble</td>";
+        break;
+      case AttributeMatrix::Type::CellFeature:
+        reqStr += "<td>Cell Feature</td>";
+        break;
+      case AttributeMatrix::Type::Edge:
+        reqStr += "<td>Edge</td>";
+        break;
+      case AttributeMatrix::Type::EdgeEnsemble:
+        reqStr += "<td>Edge Ensemble</td>";
+        break;
+      case AttributeMatrix::Type::EdgeFeature:
+        reqStr += "<td>Edge Feature</td>";
+        break;
+      case AttributeMatrix::Type::Face:
+        reqStr += "<td>Face</td>";
+        break;
+      case AttributeMatrix::Type::FaceEnsemble:
+        reqStr += "<td>Face Ensemble</td>";
+        break;
+      case AttributeMatrix::Type::FaceFeature:
+        reqStr += "<td>Face Feature</td>";
+        break;
+      case AttributeMatrix::Type::Generic:
+        reqStr += "<td>Generic</td>";
+        break;
+      case AttributeMatrix::Type::MetaData:
+        reqStr += "<td>MetaData</td>";
+        break;
+      case AttributeMatrix::Type::Unknown:
+        reqStr += "<td>Unknown</td>";
+        break;
+      case AttributeMatrix::Type::Vertex:
+        reqStr += "<td>Vertex</td>";
+        break;
+      case AttributeMatrix::Type::VertexEnsemble:
+        reqStr += "<td>Vertex Ensemble</td>";
+        break;
+      case AttributeMatrix::Type::VertexFeature:
+        reqStr += "<td>Vertex Feature</td>";
+        break;
+      }
+    }
+  }
+
+  reqStr += "</tr>";
+  return reqStr;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString DataArrayPathSelectionWidget::createDataArrayTypeString(QVector<QString> daTypes)
+{
+  QString reqStr = "<tr><td><i>Required Array Type:</i></td>";
+  if(daTypes.size() == 0)
+  {
+    reqStr += "<td>None</td>";
+  }
+  else
+  {
+    for(QString type : daTypes)
+    {
+      reqStr += "<td>" + type + "</td>";
+    }
+  }
+
+  reqStr += "</tr>";
+  return reqStr;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString DataArrayPathSelectionWidget::createComponentReqString(QVector<QVector<size_t>> comps)
+{
+  QString reqStr = "<tr><td><i>Required Component Size:</i></td>";
+  if(comps.size() == 0)
+  {
+    reqStr += "<td>None</td>";
+  }
+  else
+  {
+    for(QVector<size_t> comp : comps)
+    {
+      reqStr += "<td>[";
+
+      int compSize = comp.size();
+      for(int i = 0; i < compSize; i++)
+      {
+        if(i != 0)
+        {
+          reqStr += ",";
+        }
+
+        reqStr += QString::number(comp[i]);
+      }
+
+      reqStr += "]</tr></td>";
+    }
+  }
+
+  reqStr += "</tr>";
+  return reqStr;
 }
 
 // -----------------------------------------------------------------------------
@@ -248,7 +473,7 @@ bool DataArrayPathSelectionWidget::checkAttributeMatrixReqs(DataArrayPath path)
     return false;
   }
 
-  if(false == m_AttrMatrixReqs.amTypes.size() == 0 || m_AttrMatrixReqs.amTypes.contains(am->getType()))
+  if(m_AttrMatrixReqs.amTypes.size() > 0 && false == m_AttrMatrixReqs.amTypes.contains(am->getType()))
   {
     return false;
   }
@@ -298,7 +523,7 @@ bool DataArrayPathSelectionWidget::checkDataArrayReqs(DataArrayPath path)
     return false;
   }
 
-  if(false == m_DataArrayReqs.amTypes.size() == 0 || m_DataArrayReqs.amTypes.contains(am->getType()))
+  if(m_DataArrayReqs.amTypes.size() > 0 && false == m_DataArrayReqs.amTypes.contains(am->getType()))
   {
     return false;
   }
@@ -310,12 +535,12 @@ bool DataArrayPathSelectionWidget::checkDataArrayReqs(DataArrayPath path)
     return false;
   }
 
-  if(false == m_DataArrayReqs.daTypes.size() == 0 || m_DataArrayReqs.daTypes.contains(da->getTypeAsString()))
+  if(m_DataArrayReqs.daTypes.size() > 0 && false == m_DataArrayReqs.daTypes.contains(da->getTypeAsString()))
   {
     return false;
   }
 
-  if(false == m_DataArrayReqs.componentDimensions.size() == 0 || m_DataArrayReqs.componentDimensions.contains(da->getComponentDimensions()))
+  if(m_DataArrayReqs.componentDimensions.size() > 0 && false == m_DataArrayReqs.componentDimensions.contains(da->getComponentDimensions()))
   {
     return false;
   }
@@ -349,8 +574,21 @@ void DataArrayPathSelectionWidget::enterEvent(QEvent* event)
 // -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::leaveEvent(QEvent* event)
 {
+  // Do not end filtering if the button state is checked
+  if(isChecked())
+  {
+    return;
+  }
+
   emit endViewPaths();
-  changeStyleSheet(Style::Normal);
+  if(checkCurrentPath())
+  {
+    changeStyleSheet(Style::Normal);
+  }
+  else
+  {
+    changeStyleSheet(Style::NotFound);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -358,8 +596,13 @@ void DataArrayPathSelectionWidget::leaveEvent(QEvent* event)
 // -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::dragEnterEvent(QDragEnterEvent* event)
 {
+  if(false == event->mimeData()->hasFormat(SIMPLView::DragAndDrop::DataArrayPath))
+  {
+    return;
+  }
+
   const QMimeData* mime = event->mimeData();
-  QByteArray data = mime->data(SIMPLView::DragAndDrop::BookmarkItem);
+  QByteArray data = mime->data(SIMPLView::DragAndDrop::DataArrayPath);
   QString dataStr = QString::fromUtf8(data);
 
   DataArrayPath path = DataArrayPath::Deserialize(dataStr, "|");
@@ -380,7 +623,14 @@ void DataArrayPathSelectionWidget::dragEnterEvent(QDragEnterEvent* event)
 // -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::dragLeaveEvent(QDragLeaveEvent* event)
 {
-  changeStyleSheet(Style::Normal);
+  if(checkCurrentPath())
+  {
+    changeStyleSheet(Style::Normal);
+  }
+  else
+  {
+    changeStyleSheet(Style::NotFound);
+  }
 
   QToolButton::dragLeaveEvent(event);
 }
@@ -391,10 +641,13 @@ void DataArrayPathSelectionWidget::dragLeaveEvent(QDragLeaveEvent* event)
 void DataArrayPathSelectionWidget::dropEvent(QDropEvent* event)
 {
   const QMimeData* mime = event->mimeData();
-  QByteArray data = mime->data(SIMPLView::DragAndDrop::BookmarkItem);
+  QByteArray data = mime->data(SIMPLView::DragAndDrop::DataArrayPath);
   QString dataStr = QString::fromUtf8(data);
 
   setDataArrayPath(DataArrayPath::Deserialize(dataStr, "|"));
+  
+  setChecked(false);
+
   event->accept();
 }
 
@@ -404,6 +657,26 @@ void DataArrayPathSelectionWidget::dropEvent(QDropEvent* event)
 void DataArrayPathSelectionWidget::setFilter(AbstractFilter* filter)
 {
   m_Filter = filter;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::setPathFiltering(bool active)
+{
+  setChecked(active);
+  
+  if(false == active && false == underMouse())
+  {
+    if(checkCurrentPath())
+    {
+      changeStyleSheet(Style::Normal);
+    }
+    else
+    {
+      changeStyleSheet(Style::NotFound);
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -442,15 +715,13 @@ void DataArrayPathSelectionWidget::changeStyleSheet(Style styleType)
   switch(styleType)
   {
   case Style::Normal:
+    ss << " border: 1px solid " << ::kNormalColor << ";\n";
+    break;
   case Style::Hover:
-    if(exists)
-    {
-      ss << " border: 1px solid " << ::kNormalColor << ";\n";
-    }
-    else
-    {
-      ss << " border: 1px solid " << ::kErrorColor << ";\n";
-    }
+    ss << " border: 1px solid " << ::kFilterColor << ";\n";
+    break;
+  case Style::NotFound:
+    ss << " border: 1px solid " << ::kErrorColor << ";\n";
     break;
   case Style::DragEnabled:
     ss << " border: 1px solid " << ::kAcceptColor << ";\n";

@@ -154,7 +154,7 @@ void DataStructureTreeView::performDrag()
   DataArrayPath path = getDataArrayPath(index);
 
   QMimeData* mimeData = new QMimeData;
-  mimeData->setData(SIMPLView::DragAndDrop::BookmarkItem, path.serialize().toUtf8());
+  mimeData->setData(SIMPLView::DragAndDrop::DataArrayPath, path.serialize().toUtf8());
 
   QDrag* drag = new QDrag(this);
   drag->setMimeData(mimeData);

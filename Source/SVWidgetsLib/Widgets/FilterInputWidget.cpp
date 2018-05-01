@@ -296,9 +296,9 @@ void FilterInputWidget::layoutWidgets(AbstractFilter* filter)
     QWidget* filterParameterWidget = fwm->createWidget(parameter, filter, this);
     m_PropertyToWidget.insert(parameter->getPropertyName(), filterParameterWidget); // Update our Map of Filter Parameter Properties to the Widget
     // Alert to DataArrayPath requirements
-    connect(filterParameterWidget, SIGNAL(viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType)));
-    connect(filterParameterWidget, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
-    connect(filterParameterWidget, SIGNAL(viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType)));
+    connect(filterParameterWidget, SIGNAL(viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType)), this, SLOT(getEmittedPathReqs(DataContainerSelectionFilterParameter::RequirementType)));
+    connect(filterParameterWidget, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)), this, SLOT(getEmittedPathReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
+    connect(filterParameterWidget, SIGNAL(viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType)), this, SLOT(getEmittedPathReqs(DataArraySelectionFilterParameter::RequirementType)));
     connect(filterParameterWidget, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
 
     if(nullptr == filterParameterWidget)
@@ -718,6 +718,40 @@ void FilterInputWidget::fadeOutWidget(QWidget* widget)
   connect(m_FaderWidget, SIGNAL(animationComplete()), widget, SLOT(hide()));
   m_FaderWidget->start();
   m_AdvFadedOut = true;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterInputWidget::getEmittedPathReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs)
+{
+  emit viewPathsMatchingReqs(dcReqs);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterInputWidget::getEmittedPathReqs(AttributeMatrixSelectionFilterParameter::RequirementType amReqs)
+{
+  emit viewPathsMatchingReqs(amReqs);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterInputWidget::getEmittedPathReqs(DataArraySelectionFilterParameter::RequirementType daReqs)
+{
+  emit viewPathsMatchingReqs(daReqs);
+
+  QObject* obj = this->sender();
+  for(QWidget* widget : m_PropertyToWidget)
+  {
+    FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
+    if(fpWidget && fpWidget != obj)
+    {
+      fpWidget->endViewPathRequirements();
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------

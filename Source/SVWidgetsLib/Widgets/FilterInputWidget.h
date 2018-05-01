@@ -95,6 +95,10 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget
   private slots:
     void fadeInWidget(QWidget* widget);
     void fadeOutWidget(QWidget* widget);
+    
+    void getEmittedPathReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs);
+    void getEmittedPathReqs(AttributeMatrixSelectionFilterParameter::RequirementType amReqs);
+    void getEmittedPathReqs(DataArraySelectionFilterParameter::RequirementType daReqs);
 
   private:
     QSharedPointer<Ui::FilterInputWidget> m_Ui;

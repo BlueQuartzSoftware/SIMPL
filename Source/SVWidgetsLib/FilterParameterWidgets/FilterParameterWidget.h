@@ -106,6 +106,8 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
 
     virtual void changeStyleSheet(Style style);
 
+    virtual void endViewPathRequirements();
+
   signals:
     void viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs);
     void viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType amReqs);

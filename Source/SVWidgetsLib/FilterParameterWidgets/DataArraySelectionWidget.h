@@ -107,6 +107,10 @@ class SVWidgetsLib_EXPORT DataArraySelectionWidget : public FilterParameterWidge
     void dropEvent(QDropEvent* event);
     void dragLeaveEvent(QDragLeaveEvent* event);
 
+    /**
+    * @brief Uncheck the DataArrayPathSelectionWidget so that it does not try to filter the DataStructure
+    */
+    void endViewPathRequirements() override;
 
   public slots:
     void beforePreflight();
