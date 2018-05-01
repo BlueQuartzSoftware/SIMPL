@@ -31,6 +31,9 @@
    </property>
    <item row="0" column="0">
     <widget class="DataStructureTreeView" name="dataBrowserTreeView">
+     <property name="acceptDrops">
+      <bool>true</bool>
+     </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
@@ -40,8 +43,11 @@
      <property name="dragEnabled">
       <bool>true</bool>
      </property>
+     <property name="dragDropOverwriteMode">
+      <bool>true</bool>
+     </property>
      <property name="dragDropMode">
-      <enum>QAbstractItemView::NoDragDrop</enum>
+      <enum>QAbstractItemView::DragDrop</enum>
      </property>
      <property name="alternatingRowColors">
       <bool>true</bool>

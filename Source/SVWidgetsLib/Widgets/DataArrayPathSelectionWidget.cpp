@@ -36,7 +36,8 @@
 #include "DataArrayPathSelectionWidget.h"
 
 #include <QtCore/QMimeData>
-#include <QtWidgets\QApplication>
+#include <QtGui/QDrag>
+#include <QtWidgets/QApplication>
 
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
@@ -348,6 +349,7 @@ DataArraySelectionFilterParameter::RequirementType DataArrayPathSelectionWidget:
 void DataArrayPathSelectionWidget::setDataArrayPath(DataArrayPath dap)
 {
   setText(dap.serialize(Detail::Delimiter));
+  resetStyle();
   emit pathChanged();
 }
 
@@ -623,6 +625,13 @@ void DataArrayPathSelectionWidget::dragEnterEvent(QDragEnterEvent* event)
 // -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::dragLeaveEvent(QDragLeaveEvent* event)
 {
+  QToolButton::dragLeaveEvent(event);
+
+  if(isChecked())
+  {
+    return;
+  }
+
   if(checkCurrentPath())
   {
     changeStyleSheet(Style::Normal);
@@ -631,8 +640,6 @@ void DataArrayPathSelectionWidget::dragLeaveEvent(QDragLeaveEvent* event)
   {
     changeStyleSheet(Style::NotFound);
   }
-
-  QToolButton::dragLeaveEvent(event);
 }
 
 // -----------------------------------------------------------------------------
@@ -649,6 +656,53 @@ void DataArrayPathSelectionWidget::dropEvent(QDropEvent* event)
   setChecked(false);
 
   event->accept();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::mousePressEvent(QMouseEvent* event)
+{
+  if(event->button() == Qt::LeftButton)
+  {
+    m_StartPos = event->pos();
+  }
+
+  QToolButton::mousePressEvent(event);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::mouseMoveEvent(QMouseEvent* event)
+{
+  if(event->buttons() & Qt::LeftButton)
+  {
+    int distance = (event->pos() - m_StartPos).manhattanLength();
+    if(distance >= QApplication::startDragDistance())
+    {
+      performDrag();
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::performDrag()
+{
+  setChecked(true);
+  DataArrayPath path = getDataArrayPath();
+
+  // MimeData stores the current path AND marks itself as a SelectionWidget drag 
+  // for connecting to the DataStructureWidget.
+  QMimeData* mimeData = new QMimeData;
+  mimeData->setData(SIMPLView::DragAndDrop::DataArrayPath, path.serialize().toUtf8());
+  mimeData->setData(SIMPLView::DragAndDrop::SelectionWidget, path.serialize().toUtf8());
+
+  QDrag* drag = new QDrag(this);
+  drag->setMimeData(mimeData);
+  drag->exec(Qt::CopyAction);
 }
 
 // -----------------------------------------------------------------------------
@@ -677,6 +731,14 @@ void DataArrayPathSelectionWidget::setPathFiltering(bool active)
       changeStyleSheet(Style::NotFound);
     }
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::resetStyle()
+{
+  setPathFiltering(false);
 }
 
 // -----------------------------------------------------------------------------

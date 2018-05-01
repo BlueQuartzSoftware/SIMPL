@@ -35,6 +35,7 @@
 
 #pragma once
 
+#include <QtCore/QPoint>
 #include <QtWidgets/QToolButton>
 #include <QtGui/QDragEnterEvent>
 #include <QtGui/QDragLeaveEvent>
@@ -112,6 +113,33 @@ public:
   DataArraySelectionFilterParameter::RequirementType getDataArrayRequirements();
 
   /**
+  * @brief Checks the requirements for the current path
+  * @return
+  */
+  bool checkCurrentPath();
+
+  /**
+  * @brief Checks requirements against the given DataArrayPath
+  * @param path
+  * @return
+  */
+  bool checkPathReqs(DataArrayPath path);
+
+  /**
+  * @brief Checks DataContainer requirements against the given DataArrayPath
+  * @param path
+  * @return
+  */
+  bool checkDataContainerReqs(DataArrayPath path);
+
+  /**
+  * @brief Checks AttributeMatrix requirements against the given DataArrayPath
+  * @param path
+  * @return
+  */
+  bool checkAttributeMatrixReqs(DataArrayPath path);
+
+  /**
   * @brief Sets the DataArrayPath without checking requirements
   * @param dap
   */
@@ -135,6 +163,11 @@ public slots:
   * @param active
   */
   void setPathFiltering(bool active);
+
+  /**
+  * @brief Resets the styling and clears the check state
+  */
+  void resetStyle();
 
 signals:
   void viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs);
@@ -170,33 +203,6 @@ protected:
   * @param event
   */
   void leaveEvent(QEvent* event) override;
-
-  /**
-  * @brief Checks the requirements for the current path
-  * @return
-  */
-  bool checkCurrentPath();
-
-  /**
-  * @brief Checks requirements against the given DataArrayPath
-  * @param path
-  * @return
-  */
-  bool checkPathReqs(DataArrayPath path);
-
-  /**
-  * @brief Checks DataContainer requirements against the given DataArrayPath
-  * @param path
-  * @return
-  */
-  bool checkDataContainerReqs(DataArrayPath path);
-
-  /**
-  * @brief Checks AttributeMatrix requirements against the given DataArrayPath
-  * @param path
-  * @return
-  */
-  bool checkAttributeMatrixReqs(DataArrayPath path);
 
   /**
   * @brief Checks DataArray requirements against the given DataArrayPath
@@ -251,10 +257,26 @@ protected:
   */
   QString createComponentReqString(QVector<QVector<size_t>> compDims);
 
+  /**
+  * @brief mouseMoveEvent
+  * @param event
+  */
+  void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+
+private slots:
+  /**
+  * @brief mousePressEvent
+  * @param event
+  */
+  void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+
 private:
   DataType m_DataType = DataType::None;
   AbstractFilter* m_Filter = nullptr;
   DataContainerSelectionFilterParameter::RequirementType m_DataContainerReqs;
   AttributeMatrixSelectionFilterParameter::RequirementType m_AttrMatrixReqs;
   DataArraySelectionFilterParameter::RequirementType m_DataArrayReqs;
+  QPoint m_StartPos;
+
+  void performDrag();
 };

@@ -41,6 +41,9 @@
 
 #include <QtCore/QJsonObject>
 
+#include <QtGui/QDragEnterEvent>
+#include <QtGui/QDragMoveEvent>
+#include <QtGui/QDropEvent>
 #include <QtGui/QMouseEvent>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QTreeView>
@@ -76,9 +79,10 @@ class SVWidgetsLib_EXPORT DataStructureTreeView : public QTreeView
 
   protected:
     void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
-//    void dragEnterEvent(QDragEnterEvent* event) Q_DECL_OVERRIDE;
+    void dragEnterEvent(QDragEnterEvent* event) Q_DECL_OVERRIDE;
 //    void dragLeaveEvent(QDragLeaveEvent* event) Q_DECL_OVERRIDE;
-//    void dragMoveEvent(QDragMoveEvent* event) Q_DECL_OVERRIDE;
+    void dragMoveEvent(QDragMoveEvent* event) Q_DECL_OVERRIDE;
+    void dropEvent(QDropEvent* event) Q_DECL_OVERRIDE;
 
   private slots:
     /**

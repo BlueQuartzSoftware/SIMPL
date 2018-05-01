@@ -50,6 +50,7 @@
 #include <QtWidgets/QMessageBox>
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
+#include "SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h"
 #include "SVWidgetsLib/Widgets/DataStructureItemDelegate.h"
 #include "SVWidgetsLib/Widgets/SIMPLViewMenuItems.h"
 #include "SVWidgetsLib/Widgets/SIMPLViewToolbox.h"
@@ -64,6 +65,7 @@ DataStructureTreeView::DataStructureTreeView(QWidget* parent)
 {
   //setContextMenuPolicy(Qt::CustomContextMenu);
   //connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(requestContextMenu(const QPoint&)));
+  setAcceptDrops(true);
 }
 
 // -----------------------------------------------------------------------------
@@ -161,24 +163,25 @@ void DataStructureTreeView::performDrag()
   drag->exec(Qt::CopyAction);
 }
 
-#if 0
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void DataStructureTreeView::dragEnterEvent(QDragEnterEvent* event)
 {
-  DataStructureTreeView* source = qobject_cast<DataStructureTreeView*>(event->source());
-  if(source && source != this)
+  if(event->mimeData()->hasFormat(SIMPLView::DragAndDrop::SelectionWidget))
   {
-    event->setDropAction(Qt::MoveAction);
-    event->accept();
+    DataArrayPathSelectionWidget* selectionWidget = dynamic_cast<DataArrayPathSelectionWidget*>(event->source());
+    if(selectionWidget)
+    {
+      event->accept();
+      return;
+    }
   }
-  else
-  {
-    event->acceptProposedAction();
-  }
+
+  event->ignore();
 }
 
+#if 0
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -201,61 +204,72 @@ void DataStructureTreeView::dragLeaveEvent(QDragLeaveEvent* event)
     selectionModel()->select(m_IndexesBeingDragged[i], QItemSelectionModel::Select);
   }
 }
+#endif
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void DataStructureTreeView::dragMoveEvent(QDragMoveEvent* event)
 {
-
-  int topLevelPHPos = m_Model->rowCount();
-
-  QModelIndex index = indexAt(event->pos());
-  if(index.isValid() == false || index.row() == m_TopLevelItemPlaceholder.row())
+  // If Source is DataArrayPathSelectionWidget
+  if(event->mimeData()->hasFormat(SIMPLView::DragAndDrop::SelectionWidget))
   {
-    if(m_TopLevelItemPlaceholder.isValid() == false)
+    DataArrayPathSelectionWidget* selectionWidget = dynamic_cast<DataArrayPathSelectionWidget*>(event->source());
+    if(selectionWidget)
     {
-      clearSelection();
-      blockSignals(true);
-      m_Model->insertRow(topLevelPHPos, rootIndex());
-      m_TopLevelItemPlaceholder = m_Model->index(topLevelPHPos, 0, rootIndex());
-      m_Model->setData(m_TopLevelItemPlaceholder, DataStructureItem::TopLevelString(), Qt::DisplayRole);
-      setCurrentIndex(m_TopLevelItemPlaceholder);
-      blockSignals(false);
-    }
-  }
-  else if(index.isValid() && index.row() != m_TopLevelItemPlaceholder.row())
-  {
-    if(m_TopLevelItemPlaceholder.isValid())
-    {
-      m_Model->removeRow(topLevelPHPos - 1, rootIndex());
-      m_TopLevelItemPlaceholder = QModelIndex();
-    }
-    clearSelection();
+      // Get the DataArrayPath under the cursor
+      QModelIndex index = indexAt(event->pos());
+      if(false == index.isValid())
+      {
+        return;
+      }
+      DataArrayPath path = getDataArrayPath(index);
 
-    if(m_Model->flags(index).testFlag(Qt::ItemIsDropEnabled) == true)
-    {
-      setCurrentIndex(index);
+      // Check path requirements
+      if(selectionWidget->checkPathReqs(path))
+      {
+        event->accept();
+        return;
+      }
     }
-    else
-    {
-      // Set the current index back to the index being dragged, but don't highlight it
-      selectionModel()->setCurrentIndex(m_ActiveIndexBeingDragged, QItemSelectionModel::NoUpdate);
-    }
+    // End SelectionWidget
   }
 
-  DataStructureTreeView* source = qobject_cast<DataStructureTreeView*>(event->source());
-  if(source && source != this)
-  {
-    event->setDropAction(Qt::MoveAction);
-    event->accept();
-  }
-  else
-  {
-    event->acceptProposedAction();
-  }
+  event->ignore();
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureTreeView::dropEvent(QDropEvent* event)
+{
+  // If Source is DataArrayPathSelectionWidget
+  if(event->mimeData()->hasFormat(SIMPLView::DragAndDrop::SelectionWidget))
+  {
+    DataArrayPathSelectionWidget* selectionWidget = dynamic_cast<DataArrayPathSelectionWidget*>(event->source());
+    if(selectionWidget)
+    {
+      QModelIndex index = indexAt(event->pos());
+      if(false == index.isValid())
+      {
+        return;
+      }
+      DataArrayPath path = getDataArrayPath(index);
+
+      // Check path requirements
+      if(selectionWidget->checkPathReqs(path))
+      {
+        selectionWidget->setDataArrayPath(path);
+        event->accept();
+        return;
+      }
+    }
+  }
+
+  event->ignore();
+}
+
+#if 0
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
