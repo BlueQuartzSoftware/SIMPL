@@ -51,6 +51,8 @@
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
 
+//#define MENU_SELECTION
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -129,9 +131,11 @@ void DataContainerSelectionWidget::setupGui()
 
   m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
 
+#ifdef MENU_SELECTION
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)),
             this, SLOT(dataContainerSelected(QString)));
+#endif
 
   QString dcName = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QString>();
   m_SelectedDataContainerPath->setText(dcName);
@@ -167,6 +171,7 @@ QString DataContainerSelectionWidget::checkStringValues(QString curDcName, QStri
 // -----------------------------------------------------------------------------
 void DataContainerSelectionWidget::createSelectionMenu()
 {
+#ifdef MENU_SELECTION
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
@@ -224,6 +229,7 @@ void DataContainerSelectionWidget::createSelectionMenu()
       action->setDisabled(true);
     }
   }
+#endif
 }
 
 // -----------------------------------------------------------------------------
@@ -285,7 +291,7 @@ void DataContainerSelectionWidget::setSelectedPath(DataArrayPath dcPath)
   if (dcPath.isEmpty()) { return; }
 
   m_SelectedDataContainerPath->setText("");
-  m_SelectedDataContainerPath->setToolTip("");
+  //m_SelectedDataContainerPath->setToolTip("");
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if(nullptr == dca.get())
@@ -297,7 +303,7 @@ void DataContainerSelectionWidget::setSelectedPath(DataArrayPath dcPath)
   {
     DataContainer::Pointer dc = dca->getDataContainer(dcPath.getDataContainerName());
     QString html = dc->getInfoString(SIMPL::HtmlFormat);
-    m_SelectedDataContainerPath->setToolTip(html);
+    //m_SelectedDataContainerPath->setToolTip(html);
     m_SelectedDataContainerPath->setText(dcPath.getDataContainerName());
   }
 }
@@ -333,7 +339,7 @@ void DataContainerSelectionWidget::afterPreflight()
     DataContainer::Pointer dc = dca->getDataContainer(m_SelectedDataContainerPath->text());
     if (nullptr != dc.get()) {
       QString html = dc->getInfoString(SIMPL::HtmlFormat);
-      m_SelectedDataContainerPath->setToolTip(html);
+      //m_SelectedDataContainerPath->setToolTip(html);
       m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
     }
   }
@@ -359,4 +365,12 @@ void DataContainerSelectionWidget::filterNeedsInputParameters(AbstractFilter* fi
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerSelectionWidget::endViewPathRequirements()
+{
+  m_SelectedDataContainerPath->setPathFiltering(false);
 }

@@ -50,6 +50,8 @@
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
 
+//#define MENU_SELECTION
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -107,8 +109,10 @@ void AttributeMatrixSelectionWidget::setupGui()
 
   m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
 
+#ifdef MENU_SELECTION
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(attributeMatrixSelected(QString)));
+#endif
 
   // Catch when the filter is about to execute the preflight
   connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
@@ -161,6 +165,7 @@ QString AttributeMatrixSelectionWidget::checkStringValues(QString curDcName, QSt
 // -----------------------------------------------------------------------------
 void AttributeMatrixSelectionWidget::createSelectionMenu()
 {
+#ifdef MENU_SELECTION
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
@@ -255,6 +260,7 @@ void AttributeMatrixSelectionWidget::createSelectionMenu()
       dcMenu->setDisabled(true);
     }
   }
+#endif
 }
 
 // -----------------------------------------------------------------------------
@@ -316,7 +322,7 @@ void AttributeMatrixSelectionWidget::setSelectedPath(DataArrayPath amPath)
   if (amPath.isEmpty()) { return; }
 
   m_SelectedAttributeMatrixPath->setText("");
-  m_SelectedAttributeMatrixPath->setToolTip("");
+  //m_SelectedAttributeMatrixPath->setToolTip("");
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if(nullptr == dca.get())
@@ -328,7 +334,7 @@ void AttributeMatrixSelectionWidget::setSelectedPath(DataArrayPath amPath)
   {
     AttributeMatrix::Pointer am = dca->getAttributeMatrix(amPath);
     QString html = am->getInfoString(SIMPL::HtmlFormat);
-    m_SelectedAttributeMatrixPath->setToolTip(html);
+    //m_SelectedAttributeMatrixPath->setToolTip(html);
     m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
     changeStyleSheet(Style::FS_STANDARD_STYLE);
   }
@@ -336,7 +342,7 @@ void AttributeMatrixSelectionWidget::setSelectedPath(DataArrayPath amPath)
   {
     m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
     //
-    m_SelectedAttributeMatrixPath->setToolTip(wrapStringInHtml("DataArrayPath does not exist."));
+    //m_SelectedAttributeMatrixPath->setToolTip(wrapStringInHtml("DataArrayPath does not exist."));
     m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
     changeStyleSheet(Style::FS_DOESNOTEXIST_STYLE);
   }
@@ -373,7 +379,7 @@ void AttributeMatrixSelectionWidget::afterPreflight()
     AttributeMatrix::Pointer am = dca->getAttributeMatrix(DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter));
     if (nullptr != am.get()) {
       QString html = am->getInfoString(SIMPL::HtmlFormat);
-      m_SelectedAttributeMatrixPath->setToolTip(html);
+      //m_SelectedAttributeMatrixPath->setToolTip(html);
       m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
     }
   }
@@ -399,4 +405,12 @@ void AttributeMatrixSelectionWidget::filterNeedsInputParameters(AbstractFilter* 
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixSelectionWidget::endViewPathRequirements()
+{
+  m_SelectedAttributeMatrixPath->setPathFiltering(false);
 }

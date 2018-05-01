@@ -104,6 +104,10 @@ class SVWidgetsLib_EXPORT DataContainerSelectionWidget : public FilterParameterW
      */
     bool eventFilter(QObject* obj, QEvent* event);
 
+    /**
+    * @brief Uncheck the DataArrayPathSelectionWidget so that it does not try to filter the DataStructure
+    */
+    void endViewPathRequirements() override;
 
   public slots:
     void beforePreflight();
