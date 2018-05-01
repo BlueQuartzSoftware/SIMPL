@@ -206,7 +206,10 @@ void AddFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertionIn
 
   FilterInputWidget* fiw = model->filterInputWidget(filterIndex);
 
-  QObject::connect(fiw, &FilterInputWidget::filterParametersChanged, m_PipelineView, &SVPipelineView::preflightPipeline);
+  QObject::connect(fiw, &FilterInputWidget::filterParametersChanged, [=] {
+    m_PipelineView->preflightPipeline();
+    emit m_PipelineView->filterParametersChanged(filter);
+  });
 }
 
 // -----------------------------------------------------------------------------
@@ -219,7 +222,7 @@ void AddFilterCommand::removeFilter(int filterIndex)
 
   FilterInputWidget* fiw = model->filterInputWidget(index);
 
-  QObject::disconnect(fiw, &FilterInputWidget::filterParametersChanged, m_PipelineView, &SVPipelineView::preflightPipeline);
+  QObject::disconnect(fiw, &FilterInputWidget::filterParametersChanged, 0, 0);
 
   model->removeRow(filterIndex);
 }

@@ -299,6 +299,8 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     void preflightFinished(FilterPipeline::Pointer pipeline, int err);
     void preflightHasMessage(PipelineMessage msg);
 
+    void filterParametersChanged(AbstractFilter::Pointer filter);
+
     void pipelineStarted();
     void pipelineFinished();
 
