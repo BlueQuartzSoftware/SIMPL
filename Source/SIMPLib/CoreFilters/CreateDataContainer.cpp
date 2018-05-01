@@ -118,7 +118,7 @@ void CreateDataContainer::execute()
     return;
   }
 
-  if(getCancel() == true)
+  if(getCancel())
   {
     return;
   }

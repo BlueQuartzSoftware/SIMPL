@@ -129,7 +129,7 @@ void ErrorWarningFilter::execute()
     return;
   }
 
-  if(getCancel() == true)
+  if(getCancel())
   {
     return;
   }

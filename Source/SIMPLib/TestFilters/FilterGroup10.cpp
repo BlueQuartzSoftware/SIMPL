@@ -102,7 +102,7 @@ void FilterGroup10::execute()
     return;
   }
 
-  if(getCancel() == true)
+  if(getCancel())
   {
     return;
   }

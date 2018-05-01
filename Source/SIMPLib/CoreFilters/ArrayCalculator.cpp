@@ -392,7 +392,7 @@ void ArrayCalculator::execute()
       }
     }
 
-    if(getCancel() == true)
+    if(getCancel())
     {
       return;
     }

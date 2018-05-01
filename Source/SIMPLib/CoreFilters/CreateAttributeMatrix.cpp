@@ -178,7 +178,7 @@ void CreateAttributeMatrix::execute()
     return;
   }
 
-  if(getCancel() == true)
+  if(getCancel())
   {
     return;
   }
