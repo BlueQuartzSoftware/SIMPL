@@ -57,22 +57,20 @@ public:
     /**
    * @brief MoveFilterCommand
    * @param filter
-   * @param originView
-   * @param destinationView
-   * @param destinationIndex
+   * @param view
+   * @param insertIndex
    * @param parent
    */
-  MoveFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* originView, SVPipelineView* destinationView, int destinationIndex = -1, QUndoCommand* parent = 0);
+  MoveFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, int insertIndex, QUndoCommand* parent = nullptr);
 
   /**
    * @brief MoveFilterCommand
    * @param filters
-   * @param originView
-   * @param destinationView
-   * @param destinationIndex
+   * @param view
+   * @param insertIndex
    * @param parent
    */
-  MoveFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* originView, SVPipelineView* destinationView, int destinationIndex = -1, QUndoCommand* parent = 0);
+  MoveFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, int insertIndex, QUndoCommand* parent = nullptr);
 
   virtual ~MoveFilterCommand();
 
@@ -88,26 +86,22 @@ public:
 
 private:
   std::vector<AbstractFilter::Pointer> m_Filters;
-  SVPipelineView* m_OriginView;
-  SVPipelineView* m_DestinationView;
-  size_t m_OriginIndex;
-  size_t m_DestinationIndex;
-  std::vector<size_t> originIndexes;
+  SVPipelineView* m_PipelineView = nullptr;
+  int m_InsertIndex;
+  bool m_FirstRun = true;
 
   /**
    * @brief addFilter
    * @param filter
-   * @param model
    * @param insertionIndex
    */
-  void addFilter(AbstractFilter::Pointer filter, PipelineModel* model, size_t insertionIndex);
+  void addFilter(AbstractFilter::Pointer filter, int insertionIndex);
 
   /**
    * @brief removeFilter
    * @param filterIndex
-   * @param model
    */
-  void removeFilter(int filterIndex, PipelineModel* model);
+  void removeFilter(int filterIndex);
 
   MoveFilterCommand(const MoveFilterCommand&) = delete; // Copy Constructor Not Implemented
   void operator=(const MoveFilterCommand&);             // Move assignment Not Implemented

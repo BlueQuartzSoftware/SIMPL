@@ -111,7 +111,7 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
      * @param filePath
      * @return
      */
-    int openPipeline(const QString& filePath);
+    int openPipeline(const QString& filePath, int insertIndex = -1);
 
     /**
      * @brief readPipelineFromFile
@@ -180,10 +180,23 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     void addFilter(AbstractFilter::Pointer filter, int insertIndex = -1);
 
     /**
-     * @brief Adds multiple filters to the current model
+     * @brief Adds multiple filters to the current model.  If insertIndex is < 0,
+     * the filters get appended to the end of the model
      * @param filters
      */
-    void addFilters(std::vector<AbstractFilter::Pointer> filters);
+    void addFilters(std::vector<AbstractFilter::Pointer> filters, int insertIndex = -1);
+
+    /**
+     * @brief Moves a filter to insertIndex in the current model.
+     * @param filter
+     */
+    void moveFilter(AbstractFilter::Pointer filter, int insertIndex);
+
+    /**
+     * @brief Moves multiple filters to insertIndex in the current model.
+     * @param filters
+     */
+    void moveFilters(std::vector<AbstractFilter::Pointer> filters, int insertIndex);
 
     /**
      * @brief Removes filter from the current model
@@ -289,9 +302,11 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     void pipelineStarted();
     void pipelineFinished();
 
+    void pipelineHasMessage(const PipelineMessage &msg);
     void pipelineHasErrorsSignal();
     void pipelineHasNoErrors();
     void pipelineFilePathUpdated(const QString &name);
+    void pipelineChanged();
     void filePathOpened(const QString &filePath);
 
     void pipelineFilterObjectSelected(PipelineFilterObject* object);
@@ -315,7 +330,16 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
 
     void connectSignalsSlots();
 
+    /**
+     * @brief startDrag
+     * @param supportedActions
+     */
+    void startDrag(Qt::DropActions supportedActions) override;
+
     void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void dragMoveEvent(QDragMoveEvent* event) override;
+    void dropEvent(QDropEvent* event) override;
     void keyPressEvent(QKeyEvent *event) override;
 
     void setFiltersEnabled(QModelIndexList indexes, bool enabled);
@@ -324,8 +348,6 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     void updateActionEnableFilter();
 
   protected slots:
-//    void startDrag(QMouseEvent* event, SVPipelineFilterWidget *fw);
-
     void handleFilterParameterChanged(QUuid id);
 
     void requestContextMenu(const QPoint& pos);
@@ -345,15 +367,29 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     void listenPasteTriggered();
     void listenClearPipelineTriggered();
 
+  private slots:
+    /**
+     * @brief finishPipeline
+     * @param pipelineIndex
+     */
+    void finishPipeline();
+
+    /**
+     * @brief processPipelineMessage
+     * @param msg
+     */
+    void processPipelineMessage(const PipelineMessage& msg);
+
   private:
     QThread*                                          m_WorkerThread = nullptr;
-    QSignalMapper*                                    m_PipelineSignalMapper = nullptr;
     FilterPipeline::Pointer                           m_PipelineInFlight;
     QVector<DataContainerArray::Pointer>              m_PreflightDataContainerArrays;
     QList<QObject*>                                   m_PipelineMessageObservers;
 
     bool                                              m_PipelineRunning = false;
 
+    QUndoCommand*                                     m_DragCommand = nullptr;
+    QPoint                                            m_DragStartPosition;
     SVPipelineFilterOutlineWidget*                    m_FilterOutlineWidget = nullptr;
     QPersistentModelIndex                             m_CurrentHoveringIndex;
     bool                                              m_BlockPreflight = false;
@@ -396,12 +432,6 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
      * @param pos
      */
     void requestDefaultContextMenu(const QPoint &pos);
-
-    /**
-     * @brief finishPipeline
-     * @param pipelineIndex
-     */
-    void finishPipeline();
 
     SVPipelineView(const SVPipelineView&) = delete; // Copy Constructor Not Implemented
     void operator=(const SVPipelineView&) = delete;       // Move assignment Not Implemented

@@ -38,8 +38,10 @@
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersWriter.h"
 
+#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/PipelineItem.h"
 #include "SVWidgetsLib/Widgets/BreakpointFilterWidget.h"
+#include "SVWidgetsLib/Widgets/PipelineFilterMimeData.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
 // -----------------------------------------------------------------------------
@@ -241,24 +243,63 @@ void PipelineModel::clearActivePipeline()
 // -----------------------------------------------------------------------------
 Qt::ItemFlags PipelineModel::flags(const QModelIndex& index) const
 {
-  if(!index.isValid())
+  if (!index.isValid() || index.model() != this)
   {
-    return 0;
+    return Qt::ItemIsDropEnabled;
   }
 
-  Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);
+  return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsDragEnabled;
+}
 
-  PipelineItem* item = getItem(index);
-  if(item->childCount() > 0)
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QStringList PipelineModel::mimeTypes() const
+{
+  QStringList types;
+  types << SIMPLView::DragAndDrop::FilterPipelineItem;
+  types << SIMPLView::DragAndDrop::FilterListItem;
+  types << SIMPLView::DragAndDrop::BookmarkItem;
+  types << SIMPLView::DragAndDrop::Url;
+  return types;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool PipelineModel::canDropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) const
+{
+  Q_UNUSED(row);
+  Q_UNUSED(parent);
+
+  if (action == Qt::IgnoreAction)
   {
-    // This is a node
-    return (defaultFlags | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+    return false;
   }
-  else
+
+  if (!data->hasFormat(SIMPLView::DragAndDrop::FilterPipelineItem)
+      && !data->hasFormat(SIMPLView::DragAndDrop::FilterListItem)
+      && !data->hasFormat(SIMPLView::DragAndDrop::BookmarkItem)
+      && !data->hasFormat(SIMPLView::DragAndDrop::Url))
   {
-    // This is a leaf
-    return (defaultFlags | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsDragEnabled);
+    return false;
   }
+
+  if (column > 0)
+  {
+    return false;
+  }
+
+  return true;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool PipelineModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
+{
+  m_DropIndex = row;
+  return QAbstractItemModel::dropMimeData(data, action, row, column, parent);
 }
 
 // -----------------------------------------------------------------------------
@@ -422,6 +463,14 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
   emit dataChanged(index, index);
 
   return true;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+Qt::DropActions PipelineModel::supportedDropActions() const
+{
+  return Qt::CopyAction | Qt::MoveAction;
 }
 
 // -----------------------------------------------------------------------------

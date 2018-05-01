@@ -82,7 +82,7 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
 {
   painter->setRenderHint(QPainter::Antialiasing);
 
-  const PipelineModel* model = getPipelineModel(index);
+  PipelineModel* model = m_View->getPipelineModel();
 
   PipelineItem::WidgetState wState = model->widgetState(index);
   PipelineItem::PipelineState pState = model->pipelineState(index);
@@ -100,7 +100,7 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
   QColor disabledBgColor = QColor(124, 124, 124);
 
   bool drawButtons = false;
-  if(option.state & QStyle::State_MouseOver)
+  if((option.state & QStyle::State_MouseOver) && !(QApplication::mouseButtons() & Qt::LeftButton) )
   {
     QColor hoveredColor = grpColor;
     hoveredColor.setRedF((hoveredColor.redF() * 1.10 > 1.0) ? 1.0 : hoveredColor.redF() * 1.10);
@@ -344,12 +344,6 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
 bool PipelineItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem &option, const QModelIndex &index)
 {
   PipelineModel* pipelineModel = dynamic_cast<PipelineModel*>(model);
-
-//  // Ignore mouse events if the filter is disabled (pipeline running)
-//  if (pipelineModel->filterEnabled(index) == false)
-//  {
-//    return true; // don't call the base class
-//  }
 
   QRect deleteBtnRect;
   deleteBtnRect.setX(option.rect.width() - ::k_ButtonSize - ::k_TextMargin);

@@ -88,7 +88,14 @@ AddFilterCommand::AddFilterCommand(std::vector<AbstractFilter::Pointer> filters,
   }
   m_InsertIndex = insertIndex;
 
-  setText(QObject::tr("\"%1 %2 Filters\"").arg(actionText).arg(filters.size()));
+  if (filters.size() == 1)
+  {
+    setText(QObject::tr("\"%1 '%2'\"").arg(actionText).arg(filters[0]->getHumanLabel()));
+  }
+  else
+  {
+    setText(QObject::tr("\"%1 %2 Filters\"").arg(actionText).arg(filters.size()));
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -152,7 +159,7 @@ void AddFilterCommand::redo()
   }
 
   emit m_PipelineView->preflightPipeline();
-  emit model->pipelineDataChanged(QModelIndex());
+  emit m_PipelineView->pipelineChanged();
 
   QString statusMessage;
   if (m_Filters.size() > 1)

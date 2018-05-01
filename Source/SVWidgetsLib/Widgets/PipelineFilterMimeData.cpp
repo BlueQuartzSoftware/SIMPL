@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+* Copyright (c) 2017 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -25,38 +25,23 @@
 * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _SVWidgetsLibconstants_h_
-#define _SVWidgetsLibconstants_h_
+#include "PipelineFilterMimeData.h"
 
-#include <QtGui/QColor>
-
-
-namespace SIMPLView
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+PipelineFilterMimeData::PipelineFilterMimeData()
+  : QMimeData()
 {
 
-  namespace Defaults
-  {
-    static const QColor BasicColor(215, 215, 215);
-    static const QColor AdvancedColor(200, 200, 212);
-  }
-
-
-  namespace DragAndDrop
-  {
-    const QString FilterListItem("Filter List Item");
-    const QString FilterPipelineItem("Filter Pipeline Item");
-    const QString BookmarkItem("Bookmark Item");
-    const QString Url("text/uri-list");
-  }
-  
 }
 
-#endif /* _SVWidgetsLibConstants_H_ */
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+PipelineFilterMimeData::~PipelineFilterMimeData()
+{
+
+}

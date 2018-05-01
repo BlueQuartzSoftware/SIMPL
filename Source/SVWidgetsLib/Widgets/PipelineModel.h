@@ -60,6 +60,7 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
     ~PipelineModel();
 
     SIMPL_INSTANCE_PROPERTY(int, MaxNumberOfPipelines)
+    SIMPL_INSTANCE_PROPERTY(int, DropIndex)
 
     /**
      * @brief updateActivePipeline
@@ -67,7 +68,7 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
      */
     void updateActivePipeline(const QModelIndex &pipelineIdx);
 
-    QVariant data(const QModelIndex& index, int role) const Q_DECL_OVERRIDE;
+    QVariant data(const QModelIndex& index, int role) const override;
 //    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
 
     AbstractFilter::Pointer filter(const QModelIndex &index) const;
@@ -79,20 +80,28 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
 
     bool isEmpty();
 
-    QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
-    QModelIndex parent(const QModelIndex& index) const Q_DECL_OVERRIDE;
+    QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
+    QModelIndex parent(const QModelIndex& index) const override;
 
-    int rowCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
-    int columnCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 
-    bool insertRows(int position, int rows, const QModelIndex& parent = QModelIndex()) Q_DECL_OVERRIDE;
-    bool removeRows(int position, int rows, const QModelIndex& parent = QModelIndex()) Q_DECL_OVERRIDE;
+    bool insertRows(int position, int rows, const QModelIndex& parent = QModelIndex()) override;
+    bool removeRows(int position, int rows, const QModelIndex& parent = QModelIndex()) override;
 
-    bool moveRows(const QModelIndex & sourceParent, int sourceRow, int count, const QModelIndex & destinationParent, int destinationChild) Q_DECL_OVERRIDE;
+    bool moveRows(const QModelIndex & sourceParent, int sourceRow, int count, const QModelIndex & destinationParent, int destinationChild) override;
 
-    Qt::ItemFlags flags(const QModelIndex& index) const Q_DECL_OVERRIDE;
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
 
-    bool setData(const QModelIndex& index, const QVariant& value, int role) Q_DECL_OVERRIDE;
+    Qt::DropActions supportedDropActions() const override;
+
+    QStringList mimeTypes() const override;
+    
+    bool canDropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) const override;
+
+    bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) override;
+
+    bool setData(const QModelIndex& index, const QVariant& value, int role) override;
 
     PipelineItem::WidgetState widgetState(const QModelIndex &index) const;
     void setWidgetState(const QModelIndex &index, PipelineItem::WidgetState state);
