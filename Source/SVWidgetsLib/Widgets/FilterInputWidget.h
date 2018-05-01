@@ -74,12 +74,11 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget
     QWidget* getVariablesTabContentsWidget();
 
   public slots :
-    void on_filterHelpBtn_clicked();
-
     void clearInputWidgets();
     void displayFilterParameters(PipelineFilterObject* w);
     void removeWidgetInputs(SVPipelineFilterWidget* w);
-
+    void showHelp();
+    
   signals:
     void filterParametersChanged();
     void errorSettingFilterParameter(const QString &text);

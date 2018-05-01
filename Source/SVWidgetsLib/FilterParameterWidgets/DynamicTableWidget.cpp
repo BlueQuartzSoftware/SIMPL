@@ -48,6 +48,8 @@
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/FilterParameterWidgets/DynamicTableItemDelegate.h"
+#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+
 
 const QString addRowTT = "Adds a row to the table.";
 const QString addColTT = "Adds a column to the table.";
@@ -72,10 +74,7 @@ DynamicTableWidget::DynamicTableWidget(FilterParameter* parameter, AbstractFilte
 // -----------------------------------------------------------------------------
 DynamicTableWidget::~DynamicTableWidget()
 {
-  if(m_ItemDelegate)
-  {
-    delete m_ItemDelegate;
-  }
+  delete m_ItemDelegate;
 }
 
 // -----------------------------------------------------------------------------
@@ -138,19 +137,24 @@ void DynamicTableWidget::setupGui()
 
   dynamicTable->resizeRowsToContents();
 
-  // Set Icons
-  QIcon addIcon = QIcon(QString(":/add.png"));
-  QIcon deleteIcon = QIcon(QString(":/delete.png"));
-  addRowBtn->setIcon(addIcon);
-  addColBtn->setIcon(addIcon);
-  deleteRowBtn->setIcon(deleteIcon);
-  deleteColBtn->setIcon(deleteIcon);
+  updateButtonStyles();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DynamicTableWidget::on_dynamicTable_cellChanged(int row, int col)
+void DynamicTableWidget::updateButtonStyles()
+{
+  // Set Style
+  addRowBtn->setStyleSheet(QtSStyles::StyleSheetForButton(addRowBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::AddImagePath));
+  addColBtn->setStyleSheet(QtSStyles::StyleSheetForButton(addColBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::AddImagePath));
+  deleteColBtn->setStyleSheet(QtSStyles::StyleSheetForButton(deleteColBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::DeleteImagePath));
+  deleteRowBtn->setStyleSheet(QtSStyles::StyleSheetForButton(deleteRowBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::DeleteImagePath));
+}
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DynamicTableWidget::on_dynamicTable_cellChanged(int /* row */, int /* col */)
 {
   m_DidCausePreflight = true;
   emit parametersChanged();
@@ -570,4 +574,5 @@ void DynamicTableWidget::updateDynamicButtons()
     deleteColBtn->setEnabled(true);
     deleteColBtn->setToolTip(deleteColTT);
   }
+  updateButtonStyles();
 }

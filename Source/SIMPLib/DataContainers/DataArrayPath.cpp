@@ -224,7 +224,7 @@ bool DataArrayPath::CheckRenamePath(DataContainerArrayShPtr oldDca, DataContaine
     IGeometry::Pointer newGeom = newDc->getGeometry();
 
     bool hasGeom = oldGeom && newGeom;
-    if(hasGeom && oldGeom->getGeometryType() == newGeom->getGeometryType() || false == hasGeom)
+    if(hasGeom && (oldGeom->getGeometryType() == newGeom->getGeometryType() || false == hasGeom))
     {
       // No Attribute Matrix path
       if(oldPath.getAttributeMatrixName().isEmpty() && newPath.getAttributeMatrixName().isEmpty())

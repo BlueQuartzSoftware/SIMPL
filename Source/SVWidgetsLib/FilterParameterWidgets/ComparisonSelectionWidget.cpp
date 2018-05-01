@@ -41,6 +41,7 @@
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
@@ -140,7 +141,9 @@ void ComparisonSelectionWidget::setupGui()
 
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedAttributeMatrixPath->setText(defaultPath.serialize(Detail::Delimiter));
-
+  addComparison->setStyleSheet(QtSStyles::StyleSheetForButton(addComparison->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::AddImagePath));
+  removeComparison->setStyleSheet(QtSStyles::StyleSheetForButton(removeComparison->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::DeleteImagePath));
+ 
 #if 0
   // is the filter parameter tied to a boolean property of the Filter Instance, if it is then we need to make the check box visible
   if(getFilterParameter()->isConditional() == true)

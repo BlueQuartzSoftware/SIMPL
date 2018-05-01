@@ -66,6 +66,8 @@
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/DataContainerArrayWidget.h"
 #include "SVWidgetsLib/Widgets/SVPipelineFilterWidget.h"
+#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+
 
 #if 0
 #include "ctkCollapsibleGroupBox.h"
@@ -192,6 +194,10 @@ void FilterInputWidget::setupGui()
     m_Ui->brandingLabel->setFont(brandingFont);
     m_Ui->brandingLabel->installEventFilter(this);
   }
+  
+  m_Ui->informationBtn->setStyleSheet(QtSStyles::StyleSheetForButton(m_Ui->informationBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::InformationImagePath));  
+  connect(m_Ui->informationBtn, SIGNAL(clicked()),
+           this, SLOT(showHelp()));
 }
 
 // -----------------------------------------------------------------------------
@@ -574,7 +580,7 @@ void FilterInputWidget::linkConditionalWidgets(QVector<FilterParameter::Pointer>
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterInputWidget::on_filterHelpBtn_clicked()
+void FilterInputWidget::showHelp()
 {
   DocRequestManager* docRequester = DocRequestManager::Instance();
   docRequester->requestFilterDocs(m_FilterClassName);

@@ -91,7 +91,7 @@ class SVWidgetsLib_EXPORT DynamicTableWidget : public FilterParameterWidget, pri
 
     std::vector<std::vector<double> > getData();
 
-
+    void updateButtonStyles();
 
   public slots:
     void on_dynamicTable_cellChanged(int row, int col);

@@ -178,7 +178,7 @@
         </property>
         <property name="icon">
          <iconset resource="../../icons/images/Icons.qrc">
-          <normaloff>:/reload.png</normaloff>:/reload.png</iconset>
+          <normaloff>:/refresh.png</normaloff>:/refresh.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -213,7 +213,7 @@
   <customwidget>
    <class>QtSHoverButton</class>
    <extends>QPushButton</extends>
-   <header location="global">QtSHoverButton.h</header>
+   <header>QtSHoverButton.h</header>
   </customwidget>
  </customwidgets>
  <resources>
