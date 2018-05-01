@@ -44,6 +44,7 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
+#include "SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h"
 #include "SVWidgetsLib/Widgets/PipelineFilterObject.h"
 
 
@@ -313,6 +314,8 @@ void DataStructureWidget::setViewReqs(DataContainerSelectionFilterParameter::Req
   QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
   QStandardItem* rootItem = model->invisibleRootItem();
 
+  m_CompliantBrush.setColor(DataArrayPathSelectionWidget::GetActiveColor(DataArrayPathSelectionWidget::DataType::DataContainer));
+
   int dcCount = rootItem->rowCount();
   for(int i = 0; i < dcCount; i++)
   {
@@ -357,6 +360,8 @@ void DataStructureWidget::setViewReqs(AttributeMatrixSelectionFilterParameter::R
   // Filter DataArrayPaths
   QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
   QStandardItem* rootItem = model->invisibleRootItem();
+
+  m_CompliantBrush.setColor(DataArrayPathSelectionWidget::GetActiveColor(DataArrayPathSelectionWidget::DataType::AttributeMatrix));
 
   int dcCount = rootItem->rowCount();
   for(int i = 0; i < dcCount; i++)
@@ -404,6 +409,8 @@ void DataStructureWidget::setViewReqs(DataArraySelectionFilterParameter::Require
   // Filter DataArrayPaths
   QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
   QStandardItem* rootItem = model->invisibleRootItem();
+
+  m_CompliantBrush.setColor(DataArrayPathSelectionWidget::GetActiveColor(DataArrayPathSelectionWidget::DataType::DataArray));
 
   int dcCount = rootItem->rowCount();
   for(int i = 0; i < dcCount; i++)

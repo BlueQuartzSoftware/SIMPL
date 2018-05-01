@@ -42,12 +42,55 @@
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 
-namespace {
-  const QString kNormalColor("#8f8f91");
-  const QString kErrorColor("#BC0000");
-  const QString kFilterColor("#0072ff");
-  const QString kAcceptColor("#009104");
-  const QString kRejectColor("#BC0000");
+namespace DataArrayPathColors
+{
+  namespace DataContainer
+  {
+    const QString NormalColor("#8f8f91");
+    const QString ErrorColor("#BC0000");
+    const QString FilterColor("#35d62c");
+    const QString AcceptColor("#009104");
+    const QString RejectColor("#BC0000");
+  }
+
+  namespace AttributeMatrix
+  {
+    const QString NormalColor("#8f8f91");
+    const QString ErrorColor("#BC0000");
+    const QString FilterColor("#b25df7");
+    const QString AcceptColor("#009104");
+    const QString RejectColor("#BC0000");
+  }
+
+  namespace DataArray
+  {
+    const QString NormalColor("#8f8f91");
+    const QString ErrorColor("#BC0000");
+    const QString FilterColor("#0072ff");
+    const QString AcceptColor("#009104");
+    const QString RejectColor("#BC0000");
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString DataArrayPathSelectionWidget::GetActiveColor(DataType type)
+{
+  switch(type)
+  {
+  case DataType::DataContainer:
+    return DataArrayPathColors::DataContainer::FilterColor;
+    break;
+  case DataType::AttributeMatrix:
+    return DataArrayPathColors::AttributeMatrix::FilterColor;
+    break;
+  case DataType::DataArray:
+    return DataArrayPathColors::DataArray::FilterColor;
+    break;
+  }
+
+  return "#000000";
 }
 
 // -----------------------------------------------------------------------------
@@ -568,7 +611,7 @@ void DataArrayPathSelectionWidget::enterEvent(QEvent* event)
     break;
   }
 
-  changeStyleSheet(Style::Hover);
+  changeStyleSheet(Style::Active);
 }
 
 // -----------------------------------------------------------------------------
@@ -744,6 +787,78 @@ void DataArrayPathSelectionWidget::resetStyle()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QString DataArrayPathSelectionWidget::getColor(Style style)
+{
+  switch(getDataType())
+  {
+  case DataType::DataContainer:
+    switch(style)
+    {
+    case Style::Normal:
+      return DataArrayPathColors::DataContainer::NormalColor;
+      break;
+    case Style::Active:
+      return DataArrayPathColors::DataContainer::FilterColor;
+      break;
+    case Style::NotFound:
+      return DataArrayPathColors::DataContainer::ErrorColor;
+      break;
+    case Style::DragEnabled:
+      return DataArrayPathColors::DataContainer::AcceptColor;
+      break;
+    case Style::DragDisabled:
+      return DataArrayPathColors::DataContainer::RejectColor;
+      break;
+    }
+    break;
+  case DataType::AttributeMatrix:
+    switch(style)
+    {
+    case Style::Normal:
+      return DataArrayPathColors::AttributeMatrix::NormalColor;
+      break;
+    case Style::Active:
+      return DataArrayPathColors::AttributeMatrix::FilterColor;
+      break;
+    case Style::NotFound:
+      return DataArrayPathColors::AttributeMatrix::ErrorColor;
+      break;
+    case Style::DragEnabled:
+      return DataArrayPathColors::AttributeMatrix::AcceptColor;
+      break;
+    case Style::DragDisabled:
+      return DataArrayPathColors::AttributeMatrix::RejectColor;
+      break;
+    }
+    break;
+  case DataType::DataArray:
+    switch(style)
+    {
+    case Style::Normal:
+      return DataArrayPathColors::DataArray::NormalColor;
+      break;
+    case Style::Active:
+      return DataArrayPathColors::DataArray::FilterColor;
+      break;
+    case Style::NotFound:
+      return DataArrayPathColors::DataArray::ErrorColor;
+      break;
+    case Style::DragEnabled:
+      return DataArrayPathColors::DataArray::AcceptColor;
+      break;
+    case Style::DragDisabled:
+      return DataArrayPathColors::DataArray::RejectColor;
+      break;
+    }
+    break;
+  }
+
+  return "#000000";
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::changeStyleSheet(Style styleType)
 {
   bool exists = checkCurrentPath();
@@ -774,24 +889,7 @@ void DataArrayPathSelectionWidget::changeStyleSheet(Style styleType)
   in << "font: " << font.weight() << " " << font.pointSize() << "pt \"" << font.family() << "\";";
 
   ss << "QToolButton {\n";
-  switch(styleType)
-  {
-  case Style::Normal:
-    ss << " border: 1px solid " << ::kNormalColor << ";\n";
-    break;
-  case Style::Hover:
-    ss << " border: 1px solid " << ::kFilterColor << ";\n";
-    break;
-  case Style::NotFound:
-    ss << " border: 1px solid " << ::kErrorColor << ";\n";
-    break;
-  case Style::DragEnabled:
-    ss << " border: 1px solid " << ::kAcceptColor << ";\n";
-    break;
-  case Style::DragDisabled:
-    ss << " border: 1px solid " << ::kRejectColor << ";\n";
-    break;
-  }
+  ss << " border: 1px solid " << getColor(styleType) << ";\n";
   ss << " border-radius: 4px;\n";
   ss << " background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #DDDDDD, stop: 1 #FFFFFF);\n";
   ss << fontString << "\n";

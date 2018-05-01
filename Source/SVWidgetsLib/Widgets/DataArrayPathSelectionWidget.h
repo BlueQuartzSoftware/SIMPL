@@ -67,6 +67,8 @@ public:
     None
   };
 
+  static const QString GetActiveColor(DataType type);
+
   DataArrayPathSelectionWidget(QWidget* parent = nullptr);
   virtual ~DataArrayPathSelectionWidget() = default;
 
@@ -180,7 +182,7 @@ protected:
   enum class Style
   {
     Normal,
-    Hover,
+    Active,
     NotFound,
     DragEnabled,
     DragDisabled
@@ -262,6 +264,12 @@ protected:
   * @param event
   */
   void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+
+  /**
+  * @brief Returns the color code for the given Style
+  * @param style
+  */
+  const QString getColor(Style style);
 
 private slots:
   /**
