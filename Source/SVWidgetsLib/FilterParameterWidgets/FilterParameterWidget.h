@@ -132,6 +132,17 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
      */
     virtual void loadData();
 
+    /**
+    * @brief Handle custom actions if the FilterParameterWidget cannot handle the given path
+    * @param path
+    */
+    virtual void checkFilterPath(DataArrayPath path);
+
+    /**
+    * @brief Clear the effects of checkFilterPath
+    */
+    virtual void clearPathFiltering();
+
   protected:
 
     /**

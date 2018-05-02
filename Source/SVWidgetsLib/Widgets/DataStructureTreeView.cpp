@@ -66,6 +66,7 @@ DataStructureTreeView::DataStructureTreeView(QWidget* parent)
   //setContextMenuPolicy(Qt::CustomContextMenu);
   //connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(requestContextMenu(const QPoint&)));
   setAcceptDrops(true);
+  setMouseTracking(true);
 }
 
 // -----------------------------------------------------------------------------
@@ -116,6 +117,21 @@ DataArrayPath DataStructureTreeView::getDataArrayPath(QModelIndex index)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void DataStructureTreeView::emitFilterPath(QModelIndex& index)
+{
+  if(false == index.isValid())
+  {
+    emit endPathFiltering();
+    return;
+  }
+
+  DataArrayPath path = getDataArrayPath(index);
+  emit filterPath(path);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataStructureTreeView::mousePressEvent(QMouseEvent* event)
 {
   if(event->button() == Qt::LeftButton)
@@ -140,6 +156,24 @@ void DataStructureTreeView::mouseMoveEvent(QMouseEvent* event)
       performDrag();
     }
   }
+  else
+  {
+    QModelIndex index = indexAt(event->pos());
+    emitFilterPath(index);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureTreeView::leaveEvent(QEvent* event)
+{
+  if(m_Dragging)
+  {
+    return;
+  }
+
+  emit endPathFiltering();
 }
 
 // -----------------------------------------------------------------------------
@@ -154,13 +188,42 @@ void DataStructureTreeView::performDrag()
   }
 
   DataArrayPath path = getDataArrayPath(index);
+  DataArrayPathSelectionWidget::DataType dataType;
+  if(false == path.getDataArrayName().isEmpty())
+  {
+    dataType = DataArrayPathSelectionWidget::DataType::DataArray;
+  }
+  else if(false == path.getAttributeMatrixName().isEmpty())
+  {
+    dataType = DataArrayPathSelectionWidget::DataType::AttributeMatrix;
+  }
+  else
+  {
+    dataType = DataArrayPathSelectionWidget::DataType::DataContainer;
+  }
 
   QMimeData* mimeData = new QMimeData;
   mimeData->setData(SIMPLView::DragAndDrop::DataArrayPath, path.serialize().toUtf8());
+  QPixmap dragIcon = DataArrayPathSelectionWidget::GetDragIcon(dataType);
 
+  m_Dragging = true;
   QDrag* drag = new QDrag(this);
   drag->setMimeData(mimeData);
+  drag->setPixmap(dragIcon);
+  //drag->setDragCursor(dragIcon, Qt::DropAction::CopyAction);
   drag->exec(Qt::CopyAction);
+
+  // drag->exec is a blocking method
+  dragComplete();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureTreeView::dragComplete()
+{
+  emit endPathFiltering();
+  m_Dragging = false;
 }
 
 // -----------------------------------------------------------------------------

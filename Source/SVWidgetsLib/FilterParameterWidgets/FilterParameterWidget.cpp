@@ -555,3 +555,17 @@ void FilterParameterWidget::loadData()
 void FilterParameterWidget::endViewPathRequirements()
 {
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterParameterWidget::checkFilterPath(DataArrayPath path)
+{
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterParameterWidget::clearPathFiltering()
+{
+}

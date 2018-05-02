@@ -77,12 +77,20 @@ class SVWidgetsLib_EXPORT DataStructureTreeView : public QTreeView
     */
     DataArrayPath getDataArrayPath(QModelIndex index);
 
+  signals:
+    void filterPath(DataArrayPath path);
+    void endPathFiltering();
+
   protected:
     void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
     void dragEnterEvent(QDragEnterEvent* event) Q_DECL_OVERRIDE;
 //    void dragLeaveEvent(QDragLeaveEvent* event) Q_DECL_OVERRIDE;
     void dragMoveEvent(QDragMoveEvent* event) Q_DECL_OVERRIDE;
     void dropEvent(QDropEvent* event) Q_DECL_OVERRIDE;
+    void leaveEvent(QEvent* event) Q_DECL_OVERRIDE;
+
+    void emitFilterPath(QModelIndex& index);
+    void dragComplete();
 
   private slots:
     /**
@@ -99,6 +107,7 @@ class SVWidgetsLib_EXPORT DataStructureTreeView : public QTreeView
 
   private:
     QPoint                                        m_StartPos;
+    bool                                          m_Dragging = false;
     
     /**
      * @brief performDrag

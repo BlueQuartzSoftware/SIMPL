@@ -125,6 +125,10 @@ public slots:
   */
   void clearViewRequirements();
 
+signals:
+  void filterPath(DataArrayPath path);
+  void endPathFiltering();
+
 protected:
   /**
    * @brief Basic GUI customization code.

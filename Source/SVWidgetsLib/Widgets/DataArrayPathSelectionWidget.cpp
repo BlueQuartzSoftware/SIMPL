@@ -38,6 +38,7 @@
 #include <QtCore/QMimeData>
 #include <QtGui/QDrag>
 #include <QtWidgets/QApplication>
+#include <QtGui/QPainter>
 
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
@@ -72,6 +73,90 @@ namespace DataArrayPathColors
   }
 }
 
+QPixmap* DataArrayPathSelectionWidget::s_BaseIcon = nullptr;
+QPixmap* DataArrayPathSelectionWidget::s_DataContainerIcon = nullptr;
+QPixmap* DataArrayPathSelectionWidget::s_AttributeMatrixIcon = nullptr;
+QPixmap* DataArrayPathSelectionWidget::s_DataArrayIcon = nullptr;
+
+const int ICON_SIZE = 35;
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::SetupDragIcons()
+{
+  if(s_BaseIcon)
+  {
+    return;
+  }
+
+  s_BaseIcon = new QPixmap(":bullet_ball_blue.png");
+  *s_BaseIcon = s_BaseIcon->scaled(ICON_SIZE, ICON_SIZE);
+  QImage baseImage = s_BaseIcon->toImage();
+  baseImage.convertToFormat(QImage::Format_Indexed8);
+  QImage dcImage = baseImage.copy();
+  QImage amImage = baseImage.copy();
+  QImage daImage = baseImage.copy();
+
+  int height = baseImage.height();
+  int width = baseImage.width();
+  for(int y = 0; y < height; y++)
+  {
+    for(int x = 0; x < width; x++)
+    {
+      QColor baseColor = baseImage.pixelColor(x, y);
+      QColor dcColor = QColor(GetActiveColor(DataType::DataContainer));
+      QColor amColor = QColor(GetActiveColor(DataType::AttributeMatrix));
+      QColor daColor = QColor(GetActiveColor(DataType::DataArray));
+
+      int hue;
+      int saturation;
+      int lightness;
+      int alpha;
+      baseColor.getHsl(&hue, &saturation, &lightness, &alpha);
+
+      dcColor = QColor::fromHsl(dcColor.hue(), 255, lightness, alpha);
+      amColor = QColor::fromHsl(amColor.hue(), 255, lightness, alpha);
+      daColor = QColor::fromHsl(daColor.hue(), 255, lightness, alpha);
+
+      //dcColor.setAlpha(alpha);
+      //amColor.setAlpha(alpha);
+      //daColor.setAlpha(alpha);
+
+      dcImage.setPixelColor(x, y, dcColor);
+      amImage.setPixelColor(x, y, amColor);
+      daImage.setPixelColor(x, y, daColor);
+    }
+  }
+  
+  s_DataContainerIcon = new QPixmap(QPixmap::fromImage(dcImage));
+  s_AttributeMatrixIcon = new QPixmap(QPixmap::fromImage(amImage));
+  s_DataArrayIcon = new QPixmap(QPixmap::fromImage(daImage));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QPixmap DataArrayPathSelectionWidget::GetDragIcon(DataType type)
+{
+  if(nullptr == s_BaseIcon)
+  {
+    SetupDragIcons();
+  }
+
+  switch(type)
+  {
+  case DataType::DataContainer:
+    return *s_DataContainerIcon;
+  case DataType::AttributeMatrix:
+    return *s_AttributeMatrixIcon;
+  case DataType::DataArray:
+    return *s_DataArrayIcon;
+  }
+
+  return *s_BaseIcon;
+}
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -102,6 +187,12 @@ DataArrayPathSelectionWidget::DataArrayPathSelectionWidget(QWidget* parent)
   setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
   setAcceptDrops(true);
   setCheckable(true);
+
+  // Create drag icons if they do not already exist
+  if(nullptr == s_BaseIcon)
+  {
+    SetupDragIcons();
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -657,10 +748,6 @@ void DataArrayPathSelectionWidget::dragEnterEvent(QDragEnterEvent* event)
     changeStyleSheet(Style::DragEnabled);
     event->accept();
   }
-  else
-  {
-    changeStyleSheet(Style::DragDisabled);
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -675,14 +762,7 @@ void DataArrayPathSelectionWidget::dragLeaveEvent(QDragLeaveEvent* event)
     return;
   }
 
-  if(checkCurrentPath())
-  {
-    changeStyleSheet(Style::Normal);
-  }
-  else
-  {
-    changeStyleSheet(Style::NotFound);
-  }
+  resetStyle();
 }
 
 // -----------------------------------------------------------------------------
@@ -745,7 +825,13 @@ void DataArrayPathSelectionWidget::performDrag()
 
   QDrag* drag = new QDrag(this);
   drag->setMimeData(mimeData);
+  drag->setPixmap(GetDragIcon(m_DataType));
+  //drag->setDragCursor(GetDragIcon(m_DataType), Qt::DropAction::CopyAction);
   drag->exec(Qt::CopyAction);
+
+  // drag->exec is a blocking method
+  resetStyle();
+  emit endViewPaths();
 }
 
 // -----------------------------------------------------------------------------
@@ -861,7 +947,7 @@ const QString DataArrayPathSelectionWidget::getColor(Style style)
 // -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::changeStyleSheet(Style styleType)
 {
-  bool exists = checkCurrentPath();
+  m_Style = styleType;
 
   QString styleSheet;
   QTextStream ss(&styleSheet);
@@ -937,4 +1023,42 @@ void DataArrayPathSelectionWidget::changeStyleSheet(Style styleType)
   //  ss << "}\n";
 
   setStyleSheet(styleSheet);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
+{
+  QToolButton::paintEvent(event);
+
+  int rectWidth = height();
+  int penWidth = 2;
+  int radius = 6;
+  QRect rect(width() - rectWidth - penWidth / 2, penWidth / 2, rectWidth, height() - penWidth);
+  QColor penColor(getColor(Style::Active));
+  QColor fillColor(getColor(Style::Active));
+  if(m_Style == Style::NotFound)
+  {
+    penColor = getColor(Style::NotFound);
+  }
+  
+  QPen pen;
+  pen.setColor(penColor);
+  pen.setWidth(penWidth);
+
+  QPainter painter{ this };
+  painter.setPen(pen);
+  painter.fillRect(rect, fillColor);
+  painter.drawRoundRect(rect, radius, radius);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QSize DataArrayPathSelectionWidget::minimumSizeHint() const
+{
+  QSize minHint = QToolButton::minimumSizeHint();
+  minHint.setWidth(minHint.width() + 2 * minHint.height());
+  return minHint;
 }

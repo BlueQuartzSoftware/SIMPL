@@ -67,6 +67,7 @@ public:
     None
   };
 
+  static const QPixmap GetDragIcon(DataType type);
   static const QString GetActiveColor(DataType type);
 
   DataArrayPathSelectionWidget(QWidget* parent = nullptr);
@@ -158,6 +159,11 @@ public:
   * @param filter
   */
   void setFilter(AbstractFilter* filter);
+
+  /**
+  * @brief Override the minimumSizeHint for extending the widget enough to paint the active color
+  */
+  QSize minimumSizeHint() const override;
 
 public slots:
   /**
@@ -271,6 +277,12 @@ protected:
   */
   const QString getColor(Style style);
 
+  /**
+  * @brief Override the paint event to mark the DataType required
+  * @param event
+  */
+  void paintEvent(QPaintEvent* event) override;
+
 private slots:
   /**
   * @brief mousePressEvent
@@ -280,11 +292,19 @@ private slots:
 
 private:
   DataType m_DataType = DataType::None;
+  Style m_Style = Style::Normal;
   AbstractFilter* m_Filter = nullptr;
   DataContainerSelectionFilterParameter::RequirementType m_DataContainerReqs;
   AttributeMatrixSelectionFilterParameter::RequirementType m_AttrMatrixReqs;
   DataArraySelectionFilterParameter::RequirementType m_DataArrayReqs;
   QPoint m_StartPos;
+
+  static QPixmap* s_BaseIcon;
+  static QPixmap* s_DataContainerIcon;
+  static QPixmap* s_AttributeMatrixIcon;
+  static QPixmap* s_DataArrayIcon;
+
+  static void SetupDragIcons();
 
   void performDrag();
 };

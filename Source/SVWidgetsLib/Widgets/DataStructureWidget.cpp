@@ -72,6 +72,9 @@ DataStructureWidget::~DataStructureWidget() = default;
 // -----------------------------------------------------------------------------
 void DataStructureWidget::setupGui()
 {
+  connect(m_Ui->dataBrowserTreeView, SIGNAL(filterPath(DataArrayPath)), this, SIGNAL(filterPath(DataArrayPath)));
+  connect(m_Ui->dataBrowserTreeView, SIGNAL(endPathFiltering()), this, SIGNAL(endPathFiltering()));
+
   QStandardItemModel* model = new QStandardItemModel();
   m_Ui->dataBrowserTreeView->setModel(model);
   model->setColumnCount(1);

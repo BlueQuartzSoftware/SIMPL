@@ -91,6 +91,8 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget
     void viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType amReqs);
     void viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType daReqs);
     void endViewPaths();
+    void filterPath(DataArrayPath path);
+    void endPathFiltering();
 
   private slots:
     void fadeInWidget(QWidget* widget);

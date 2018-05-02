@@ -300,6 +300,9 @@ void FilterInputWidget::layoutWidgets(AbstractFilter* filter)
     connect(filterParameterWidget, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)), this, SLOT(getEmittedPathReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
     connect(filterParameterWidget, SIGNAL(viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType)), this, SLOT(getEmittedPathReqs(DataArraySelectionFilterParameter::RequirementType)));
     connect(filterParameterWidget, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
+    connect(this, SIGNAL(filterPath(DataArrayPath)), filterParameterWidget, SLOT(checkFilterPath(DataArrayPath)));
+    connect(this, SIGNAL(endPathFiltering()), filterParameterWidget, SLOT(clearPathFiltering()));
+
 
     if(nullptr == filterParameterWidget)
     {
