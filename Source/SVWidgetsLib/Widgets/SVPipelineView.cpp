@@ -656,6 +656,7 @@ void SVPipelineView::copySelectedFilters()
 std::vector<AbstractFilter::Pointer> SVPipelineView::getSelectedFilters()
 {
   QModelIndexList selectedIndexes = selectionModel()->selectedRows();
+  qSort(selectedIndexes);
 
   std::vector<AbstractFilter::Pointer> filters;
   PipelineModel* model = getPipelineModel();
@@ -700,6 +701,8 @@ void SVPipelineView::listenDeleteKeyTriggered()
     return;
   }
 
+  qSort(selectedIndexes);
+
   PipelineModel* model = getPipelineModel();
 
   std::vector<AbstractFilter::Pointer> filters;
@@ -734,6 +737,7 @@ QAction* SVPipelineView::getActionEnableFilter()
 void SVPipelineView::updateActionEnableFilter()
 {
   QModelIndexList selectedIndexes = selectionModel()->selectedRows();
+  qSort(selectedIndexes);
 
   // Set Enabled / Disabled
   disconnect(m_ActionEnableFilter, &QAction::toggled, 0, 0);
@@ -868,7 +872,7 @@ QPixmap SVPipelineView::getDraggingPixmap(QModelIndexList indexes)
 // -----------------------------------------------------------------------------
 void SVPipelineView::mouseMoveEvent(QMouseEvent* event)
 {
-  if((event->buttons() & Qt::LeftButton) && (event->pos() - m_DragStartPosition).manhattanLength() >= 1)
+  if((event->buttons() & Qt::LeftButton) && (event->pos() - m_DragStartPosition).manhattanLength() >= 2)
   {
     beginDrag(event);
   }
@@ -886,6 +890,8 @@ void SVPipelineView::beginDrag(QMouseEvent* event)
   {
     return;
   }
+
+  qSort(selectedIndexes);
 
 //  QPixmap dragPixmap = getDraggingPixmap(selectedIndexes);
 
@@ -1380,6 +1386,7 @@ void SVPipelineView::setFiltersEnabled(QModelIndexList indexes, bool enabled)
 void SVPipelineView::setSelectedFiltersEnabled(bool enabled)
 {
   QModelIndexList indexes = selectionModel()->selectedRows();
+  qSort(indexes);
   setFiltersEnabled(indexes, enabled);
 }
 
@@ -1625,6 +1632,7 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint &pos, const QMode
 {
   PipelineModel* model = getPipelineModel();
   QModelIndexList selectedIndexes = selectionModel()->selectedRows();
+  qSort(selectedIndexes);
 
   QMenu menu;
 
@@ -1749,6 +1757,8 @@ void SVPipelineView::requestPipelineItemContextMenu(const QPoint &pos)
   {
     return;
   }
+
+  qSort(selectedIndexes);
 
   // Build up the contextual menu
   QMenu menu;

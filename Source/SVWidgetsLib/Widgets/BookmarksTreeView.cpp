@@ -221,6 +221,7 @@ void BookmarksTreeView::listenRemoveBookmarkTriggered()
   BookmarksModel* model = BookmarksModel::Instance();
 
   QModelIndexList indexList = selectionModel()->selectedRows(BookmarksItem::Name);
+  qSort(indexList);
 
   indexList = filterOutDescendants(indexList);
 
@@ -281,6 +282,7 @@ void BookmarksTreeView::listenOpenBookmarkTriggered()
   BookmarksModel* model = BookmarksModel::Instance();
 
   QModelIndexList indexList = selectionModel()->selectedRows(BookmarksItem::Name);
+  qSort(indexList);
 
   QModelIndex pathIndex = indexList.at(0);
   QModelIndex actualIndex = model->index(pathIndex.row(), BookmarksItem::Path, pathIndex.parent());
@@ -311,6 +313,7 @@ void BookmarksTreeView::listenExecuteBookmarkTriggered()
   BookmarksModel* model = BookmarksModel::Instance();
 
   QModelIndexList indexList = selectionModel()->selectedRows(BookmarksItem::Name);
+  qSort(indexList);
 
   QModelIndex pathIndex = indexList.at(0);
   QModelIndex actualIndex = model->index(pathIndex.row(), BookmarksItem::Path, pathIndex.parent());
@@ -481,6 +484,7 @@ void BookmarksTreeView::requestContextMenu(const QPoint& pos)
   BookmarksModel* model = BookmarksModel::Instance();
 
   QModelIndexList indexList = selectionModel()->selectedRows(BookmarksItem::Name);
+  qSort(indexList);
 
   QMenu menu;
   if(index.isValid() == false)
@@ -607,6 +611,7 @@ void BookmarksTreeView::performDrag()
   m_IndexesBeingDragged.clear();
 
   QModelIndexList list = selectionModel()->selectedRows();
+  qSort(list);
 
   // We need to filter out all indexes that already have parents/ancestors selected
   list = filterOutDescendants(list);
