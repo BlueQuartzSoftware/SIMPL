@@ -36,6 +36,7 @@
 #pragma once
 
 #include <QtCore/QPoint>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QToolButton>
 #include <QtGui/QDragEnterEvent>
 #include <QtGui/QDragLeaveEvent>
@@ -186,6 +187,8 @@ protected:
     DragDisabled
   };
 
+  void setupGui();
+
   /**
   * @brief Change the stylesheet based on the widget state
   * @param styleType
@@ -274,6 +277,19 @@ protected:
   * @param event
   */
   void paintEvent(QPaintEvent* event) override;
+
+  /**
+  * @brief Creates the legacy selection menu
+  * @return
+  */
+  QMenu* createSelectionMenu();
+
+protected slots:
+  /**
+  * @brief Show the legacy menu when right-clicking
+  * @param pos
+  */
+  void showContextMenu(const QPoint& pos);
 
 private slots:
   /**

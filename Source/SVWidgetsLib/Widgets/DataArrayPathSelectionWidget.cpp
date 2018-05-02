@@ -184,15 +184,26 @@ const QString DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataTy
 DataArrayPathSelectionWidget::DataArrayPathSelectionWidget(QWidget* parent)
   : QToolButton(parent)
 {
-  setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
-  setAcceptDrops(true);
-  setCheckable(true);
-
   // Create drag icons if they do not already exist
   if(nullptr == s_BaseIcon)
   {
     SetupDragIcons();
   }
+
+  setupGui();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::setupGui()
+{
+  setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
+  setContextMenuPolicy(Qt::CustomContextMenu);
+  setAcceptDrops(true);
+  setCheckable(true);
+
+  connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenu(const QPoint&)));
 }
 
 // -----------------------------------------------------------------------------
@@ -480,11 +491,36 @@ DataArraySelectionFilterParameter::RequirementType DataArrayPathSelectionWidget:
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayPathSelectionWidget::setDataArrayPath(DataArrayPath dap)
+void DataArrayPathSelectionWidget::setDataArrayPath(DataArrayPath path)
 {
-  setText(dap.serialize(Detail::Delimiter));
-  resetStyle();
-  emit pathChanged();
+  if(checkPathReqs(path))
+  {
+    setText(path.serialize(Detail::Delimiter));
+    resetStyle();
+    emit pathChanged();
+  }
+  else
+  {
+    // Clear DataArrayPath
+    switch(getDataType())
+    {
+    case DataArrayPath::DataType::DataContainer:
+      setText("");
+      break;
+    case DataArrayPath::DataType::AttributeMatrix:
+      setText("\t / \t");
+      break;
+    case DataArrayPath::DataType::DataArray:
+      setText("\t / \t / \t");
+      break;
+    default:
+      setText("");
+      break;
+    }
+
+    resetStyle();
+    emit pathChanged();
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -1061,4 +1097,104 @@ QSize DataArrayPathSelectionWidget::minimumSizeHint() const
   QSize minHint = QToolButton::minimumSizeHint();
   minHint.setWidth(minHint.width() + 2 * minHint.height());
   return minHint;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::showContextMenu(const QPoint& pos)
+{
+  createSelectionMenu()->exec(mapToGlobal(pos));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QMenu* DataArrayPathSelectionWidget::createSelectionMenu()
+{
+  if(nullptr == m_Filter || DataArrayPath::DataType::None == m_DataType)
+  {
+    return nullptr;
+  }
+
+  DataContainerArray::Pointer dca = m_Filter->getDataContainerArray();
+  if(nullptr == dca.get())
+  {
+    return nullptr;
+  }
+
+  QMenu* menu = new QMenu(this);
+  DataArrayPath path;
+
+  // Populate Menu with DataContainers
+  QList<DataContainer::Pointer> containers = dca->getDataContainers();
+  for(DataContainer::Pointer dc : containers)
+  {
+    path.setDataContainerName(dc->getName());
+
+    if(DataArrayPath::DataType::DataContainer == m_DataType)
+    {
+      QAction* action = menu->addAction(dc->getName());
+      action->setEnabled(checkPathReqs(path));
+      connect(action, &QAction::triggered, this, [=] {setDataArrayPath(path); } );
+    }
+    else
+    {
+      QMenu* dcMenu = new QMenu(dc->getName());
+      menu->addMenu(dcMenu);
+      bool dcMenuEnabled = false;
+
+      DataContainer::AttributeMatrixMap_t attrMats = dc->getAttributeMatrices();
+      for(AttributeMatrix::Pointer am : attrMats)
+      {
+        path.setAttributeMatrixName(am->getName());
+
+        // Populate DataContainer menu
+        if(DataArrayPath::DataType::AttributeMatrix == m_DataType)
+        {
+          QAction* action = dcMenu->addAction(am->getName());
+          action->setEnabled(checkPathReqs(path));
+          connect(action, &QAction::triggered, this, [=] {setDataArrayPath(path); });
+          
+          if(checkPathReqs(path))
+          {
+            dcMenuEnabled = true;
+          }
+        }
+        else
+        {
+          QMenu* amMenu = new QMenu(am->getName());
+          dcMenu->addMenu(amMenu);
+          bool amMenuEnabled = false;
+
+          // Populate AttributeMatrix menu
+          QList<QString> attrArrayNames = am->getAttributeArrayNames();
+          for(QString daName : attrArrayNames)
+          {
+            path.setDataArrayName(daName);
+
+            QAction* action = amMenu->addAction(daName);
+            action->setEnabled(checkPathReqs(path));
+            connect(action, &QAction::triggered, this, [=] {setDataArrayPath(path); });
+
+            if(checkPathReqs(path))
+            {
+              amMenuEnabled = true;
+            }
+          } // End DataArray
+
+          amMenu->setEnabled(amMenuEnabled);
+
+          if(amMenuEnabled)
+          {
+            dcMenuEnabled = true;
+          }
+        }
+      } // End AttributeMatrix
+
+      dcMenu->setEnabled(dcMenuEnabled);
+    }
+  } // End DataContainer
+
+  return menu;
 }
