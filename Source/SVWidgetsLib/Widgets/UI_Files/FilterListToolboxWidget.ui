@@ -12,8 +12,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>250</width>
-    <height>140</height>
+    <width>0</width>
+    <height>0</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -91,8 +91,8 @@ QLineEdit:edit-focus {
     <widget class="FilterListWidget" name="filterList" native="true">
      <property name="minimumSize">
       <size>
-       <width>250</width>
-       <height>50</height>
+       <width>0</width>
+       <height>0</height>
       </size>
      </property>
      <property name="contextMenuPolicy">
@@ -116,14 +116,14 @@ QLineEdit:edit-focus {
  </widget>
  <customwidgets>
   <customwidget>
-   <class>FilterListWidget</class>
-   <extends>QWidget</extends>
-   <header location="global">FilterListWidget.h</header>
-  </customwidget>
-  <customwidget>
    <class>QtSLineEdit</class>
    <extends>QLineEdit</extends>
    <header location="global">QtSLineEdit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>FilterListWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">FilterListWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
