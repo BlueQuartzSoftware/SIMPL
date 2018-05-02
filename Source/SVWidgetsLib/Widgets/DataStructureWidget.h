@@ -162,7 +162,9 @@ private:
   DataContainerArray::Pointer  m_Dca = nullptr;
   QSharedPointer<Ui::DataStructureWidget>       m_Ui;
   QBrush m_CompliantBrush;
+  QBrush m_CompliantBgBrush;
   QBrush m_NoncompliantBrush;
+  QBrush m_NoncompliantBgBrush;
 
   DataStructureWidget(const DataStructureWidget&) = delete; // Copy Constructor Not Implemented
   void operator=(const DataStructureWidget&);               // Move assignment Not Implemented

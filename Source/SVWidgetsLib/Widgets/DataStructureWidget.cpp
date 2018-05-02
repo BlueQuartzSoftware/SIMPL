@@ -80,10 +80,17 @@ void DataStructureWidget::setupGui()
   model->setColumnCount(1);
   model->setParent(m_Ui->dataBrowserTreeView); // Set the parent so it gets cleaned up
 
-  QColor filterColor(0, 100, 255);
+  // Forground brushes
+  QColor filterColor(255, 255, 255);
   QColor invalidColor(100, 100, 100);
   m_CompliantBrush.setColor(filterColor);
   m_NoncompliantBrush.setColor(invalidColor);
+
+  // Background brushes
+  m_CompliantBgBrush.setColor(filterColor);
+  m_CompliantBgBrush.setStyle(Qt::BrushStyle::SolidPattern);
+  m_NoncompliantBgBrush.setColor(QColor(255, 255, 255, 0));
+  m_NoncompliantBgBrush.setStyle(Qt::BrushStyle::SolidPattern);
 
   QString css(" QToolTip {\
               border: 2px solid #434343;\
@@ -317,7 +324,7 @@ void DataStructureWidget::setViewReqs(DataContainerSelectionFilterParameter::Req
   QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
   QStandardItem* rootItem = model->invisibleRootItem();
 
-  m_CompliantBrush.setColor(DataArrayPathSelectionWidget::GetActiveColor(DataArrayPathSelectionWidget::DataType::DataContainer));
+  m_CompliantBgBrush.setColor(DataArrayPathSelectionWidget::GetActiveColor(DataArrayPathSelectionWidget::DataType::DataContainer));
 
   int dcCount = rootItem->rowCount();
   for(int i = 0; i < dcCount; i++)
@@ -333,10 +340,12 @@ void DataStructureWidget::setViewReqs(DataContainerSelectionFilterParameter::Req
     if(geomType)
     {
       dcItem->setForeground(m_CompliantBrush);
+      dcItem->setBackground(m_CompliantBgBrush);
     }
     else
     {
       dcItem->setForeground(m_NoncompliantBrush);
+      dcItem->setForeground(m_NoncompliantBgBrush);
     }
 
     int amCount = dcItem->rowCount();
@@ -344,12 +353,14 @@ void DataStructureWidget::setViewReqs(DataContainerSelectionFilterParameter::Req
     {
       QStandardItem* amItem = dcItem->child(j);
       amItem->setForeground(m_NoncompliantBrush);
+      amItem->setBackground(m_NoncompliantBgBrush);
       
       int daCount = amItem->rowCount();
       for(int k = 0; k < daCount; k++)
       {
         QStandardItem* daItem = amItem->child(k);
         daItem->setForeground(m_NoncompliantBrush);
+        daItem->setBackground(m_NoncompliantBgBrush);
       }
     }
   }
@@ -364,13 +375,14 @@ void DataStructureWidget::setViewReqs(AttributeMatrixSelectionFilterParameter::R
   QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
   QStandardItem* rootItem = model->invisibleRootItem();
 
-  m_CompliantBrush.setColor(DataArrayPathSelectionWidget::GetActiveColor(DataArrayPathSelectionWidget::DataType::AttributeMatrix));
+  m_CompliantBgBrush.setColor(DataArrayPathSelectionWidget::GetActiveColor(DataArrayPathSelectionWidget::DataType::AttributeMatrix));
 
   int dcCount = rootItem->rowCount();
   for(int i = 0; i < dcCount; i++)
   {
     QStandardItem* dcItem = rootItem->child(i);
     dcItem->setForeground(m_NoncompliantBrush);
+    dcItem->setBackground(m_NoncompliantBgBrush);
 
     int amCount = dcItem->rowCount();
     for(int j = 0; j < amCount; j++)
@@ -388,10 +400,12 @@ void DataStructureWidget::setViewReqs(AttributeMatrixSelectionFilterParameter::R
       if(amType && geomType)
       {
         amItem->setForeground(m_CompliantBrush);
+        amItem->setBackground(m_CompliantBgBrush);
       }
       else
       {
         amItem->setForeground(m_NoncompliantBrush);
+        amItem->setBackground(m_NoncompliantBgBrush);
       }
 
       int daCount = amItem->rowCount();
@@ -399,6 +413,7 @@ void DataStructureWidget::setViewReqs(AttributeMatrixSelectionFilterParameter::R
       {
         QStandardItem* daItem = amItem->child(k);
         daItem->setForeground(m_NoncompliantBrush);
+        daItem->setBackground(m_NoncompliantBgBrush);
       }
     }
   }
@@ -413,19 +428,21 @@ void DataStructureWidget::setViewReqs(DataArraySelectionFilterParameter::Require
   QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
   QStandardItem* rootItem = model->invisibleRootItem();
 
-  m_CompliantBrush.setColor(DataArrayPathSelectionWidget::GetActiveColor(DataArrayPathSelectionWidget::DataType::DataArray));
+  m_CompliantBgBrush.setColor(DataArrayPathSelectionWidget::GetActiveColor(DataArrayPathSelectionWidget::DataType::DataArray));
 
   int dcCount = rootItem->rowCount();
   for(int i = 0; i < dcCount; i++)
   {
     QStandardItem* dcItem = rootItem->child(i);
     dcItem->setForeground(m_NoncompliantBrush);
+    dcItem->setBackground(m_NoncompliantBgBrush);
 
     int amCount = dcItem->rowCount();
     for(int j = 0; j < amCount; j++)
     {
       QStandardItem* amItem = dcItem->child(j);
       amItem->setForeground(m_NoncompliantBrush);
+      amItem->setBackground(m_NoncompliantBgBrush);
 
       int daCount = amItem->rowCount();
       for(int k = 0; k < daCount; k++)
@@ -445,10 +462,12 @@ void DataStructureWidget::setViewReqs(DataArraySelectionFilterParameter::Require
         if(amType && compDims && daType && geomType)
         {
           daItem->setForeground(m_CompliantBrush);
+          daItem->setBackground(m_CompliantBgBrush);
         }
         else
         {
           daItem->setForeground(m_NoncompliantBrush);
+          daItem->setBackground(m_NoncompliantBgBrush);
         }
       }
     }
@@ -472,6 +491,7 @@ void DataStructureWidget::clearFilter(QStandardItem* item)
 {
   QBrush defaultBrush;
   item->setForeground(defaultBrush);
+  item->setBackground(defaultBrush);
 
   int rows = item->rowCount();
   for(int i = 0; i < rows; i++)
