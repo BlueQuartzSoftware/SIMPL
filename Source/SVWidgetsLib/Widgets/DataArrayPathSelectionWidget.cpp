@@ -530,7 +530,7 @@ bool DataArrayPathSelectionWidget::checkDataContainerReqs(DataArrayPath path)
   {
     return false;
   }
-  if(false == path.getAttributeMatrixName().isEmpty() && path.getDataArrayName().isEmpty())
+  if(false == path.getAttributeMatrixName().isEmpty() || false == path.getDataArrayName().isEmpty())
   {
     return false;
   }
