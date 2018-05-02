@@ -995,7 +995,7 @@ void DataArrayPathSelectionWidget::changeStyleSheet(Style styleType)
   ss << "}\n";
 
   ss << "QToolButton:checked {\n";
-  ss << " background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\nstop: 0 " << getColor(styleType) << ", stop: 1 #FFFFFF);\n";
+  ss << " background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\nstop: 0 " << getColor(Style::Active) << ", stop: 1 #FFFFFF);\n";
   ss << "}\n";
 
   ss << "QToolButton:flat {\n";
