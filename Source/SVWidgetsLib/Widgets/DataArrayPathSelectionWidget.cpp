@@ -49,7 +49,7 @@ namespace DataArrayPathColors
   {
     const QString NormalColor("#8f8f91");
     const QString ErrorColor("#BC0000");
-    const QString FilterColor("#35d62c");
+    const QString FilterColor("#08a500");
     const QString AcceptColor("#009104");
     const QString RejectColor("#BC0000");
   }
@@ -58,7 +58,7 @@ namespace DataArrayPathColors
   {
     const QString NormalColor("#8f8f91");
     const QString ErrorColor("#BC0000");
-    const QString FilterColor("#b25df7");
+    const QString FilterColor("#8c00ff");
     const QString AcceptColor("#009104");
     const QString RejectColor("#BC0000");
   }
