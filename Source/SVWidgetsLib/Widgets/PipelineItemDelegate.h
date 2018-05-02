@@ -74,9 +74,6 @@ class SVWidgetsLib_EXPORT PipelineItemDelegate : public QStyledItemDelegate
     int m_MousePressIndex = -1;
     HoverItem m_CurrentlyHoveredItem = HoverItem::Unknown;
 
-    QPushButton*              m_DisableBtn = nullptr;
-    QPushButton*              m_DeleteBtn = nullptr;
-
     /**
      * @brief Gets the proper filter index string that refers to the specified index
      * @param index

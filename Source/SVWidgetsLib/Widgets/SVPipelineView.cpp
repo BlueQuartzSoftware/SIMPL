@@ -868,15 +868,12 @@ QPixmap SVPipelineView::getDraggingPixmap(QModelIndexList indexes)
 // -----------------------------------------------------------------------------
 void SVPipelineView::mouseMoveEvent(QMouseEvent* event)
 {
-  if(!(event->buttons() & Qt::LeftButton))
-  {
-    return;
-  }
-
-  if((event->pos() - m_DragStartPosition).manhattanLength() >= 1)
+  if((event->buttons() & Qt::LeftButton) && (event->pos() - m_DragStartPosition).manhattanLength() >= 1)
   {
     beginDrag(event);
   }
+
+  QListView::mouseMoveEvent(event);
 }
 
 // -----------------------------------------------------------------------------
