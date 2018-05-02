@@ -923,10 +923,10 @@ void SVPipelineView::beginDrag(QMouseEvent* event)
 
   if (modifiers.testFlag(Qt::AltModifier) == false)
   {
-    m_DragCommand = new QUndoCommand();
+    m_MoveCommand = new QUndoCommand();
 
-    RemoveFilterCommand* cmd = new RemoveFilterCommand(filters, this, "Remove", m_DragCommand);
-    m_DragCommand->setText(cmd->text());
+    RemoveFilterCommand* cmd = new RemoveFilterCommand(filters, this, "Remove", m_MoveCommand);
+    m_MoveCommand->setText(cmd->text());
 
     int dropIndicatorRow = currentIndex().row();
 
@@ -941,7 +941,7 @@ void SVPipelineView::beginDrag(QMouseEvent* event)
       dropIndicatorText = QObject::tr("Place %1 Filters Here").arg(selectedIndexes.size());
     }
 
-    addUndoCommand(m_DragCommand);
+    addUndoCommand(m_MoveCommand);
 
     addDropIndicator(dropIndicatorText, dropIndicatorRow);
   }
@@ -1014,6 +1014,12 @@ void SVPipelineView::dragMoveEvent(QDragMoveEvent* event)
     QString filePath = iter.value().toString();
 
     QFileInfo fi(filePath);
+    if (fi.isDir() == true)
+    {
+      event->ignore();
+      return;
+    }
+
     dropIndicatorText = QObject::tr("Place '%1' Here").arg(fi.baseName());
   }
   else if (mimedata->hasFormat(SIMPLView::DragAndDrop::FilterListItem))
@@ -1234,15 +1240,16 @@ void SVPipelineView::dropEvent(QDropEvent* event)
       filters.push_back(dragData[i].first);
     }
 
-    if (event->source() == this)
+    Qt::KeyboardModifiers modifiers = QApplication::queryKeyboardModifiers();
+    if (event->source() == this && modifiers.testFlag(Qt::AltModifier) == false)
     {
-      // This is an internal move, so we need to create an Add command and add it as a child to the overall drag command.
-      AddFilterCommand* cmd = new AddFilterCommand(filters, this, dropRow, "Move", m_DragCommand);
+      // This is an internal move, so we need to create an Add command and add it as a child to the overall move command.
+      AddFilterCommand* cmd = new AddFilterCommand(filters, this, dropRow, "Move", m_MoveCommand);
 
       // Set the text of the drag command
       QString text = cmd->text();
 
-      m_DragCommand->setText(text);
+      m_MoveCommand->setText(text);
 
       // The overall drag command already has a child command that removed the filters initially, and
       // has already been placed on the undo stack and executed.  This new child command needs to be executed

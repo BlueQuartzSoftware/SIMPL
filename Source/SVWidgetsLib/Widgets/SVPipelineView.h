@@ -392,7 +392,7 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
 
     bool                                              m_PipelineRunning = false;
 
-    QUndoCommand*                                     m_DragCommand = nullptr;
+    QUndoCommand*                                     m_MoveCommand = nullptr;
     QPoint                                            m_DragStartPosition;
     QModelIndex                                       m_DropIndicatorIndex;
     QPersistentModelIndex                             m_CurrentHoveringIndex;
