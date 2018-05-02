@@ -158,13 +158,30 @@ protected:
   */
   void clearFilter(QStandardItem* item);
 
+  /**
+  * @brief Mark DataArrayPaths created in the current filter
+  */
+  void markNewItems();
+
+  /**
+   * @brief Returns a QStandardItem from the given DataArrayPath
+   * @param path
+   * @return
+   */
+  QStandardItem* findItemByPath(DataArrayPath path);
+
 private:
   DataContainerArray::Pointer  m_Dca = nullptr;
+  std::list<DataArrayPath> m_CreatedPaths;
   QSharedPointer<Ui::DataStructureWidget>       m_Ui;
   QBrush m_CompliantBrush;
   QBrush m_CompliantBgBrush;
   QBrush m_NoncompliantBrush;
   QBrush m_NoncompliantBgBrush;
+  QBrush m_NewItemBrush;
+  QColor m_DcColor;
+  QColor m_AmColor;
+  QColor m_DaColor;
 
   DataStructureWidget(const DataStructureWidget&) = delete; // Copy Constructor Not Implemented
   void operator=(const DataStructureWidget&);               // Move assignment Not Implemented

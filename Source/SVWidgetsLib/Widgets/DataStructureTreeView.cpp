@@ -188,19 +188,7 @@ void DataStructureTreeView::performDrag()
   }
 
   DataArrayPath path = getDataArrayPath(index);
-  DataArrayPathSelectionWidget::DataType dataType;
-  if(false == path.getDataArrayName().isEmpty())
-  {
-    dataType = DataArrayPathSelectionWidget::DataType::DataArray;
-  }
-  else if(false == path.getAttributeMatrixName().isEmpty())
-  {
-    dataType = DataArrayPathSelectionWidget::DataType::AttributeMatrix;
-  }
-  else
-  {
-    dataType = DataArrayPathSelectionWidget::DataType::DataContainer;
-  }
+  DataArrayPath::DataType dataType = path.getDataType();
 
   QMimeData* mimeData = new QMimeData;
   mimeData->setData(SIMPLView::DragAndDrop::DataArrayPath, path.serialize().toUtf8());

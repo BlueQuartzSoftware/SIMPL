@@ -80,6 +80,10 @@ void DataStructureWidget::setupGui()
   model->setColumnCount(1);
   model->setParent(m_Ui->dataBrowserTreeView); // Set the parent so it gets cleaned up
 
+  m_DcColor = QColor(DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType::DataContainer));
+  m_AmColor = QColor(DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType::AttributeMatrix));
+  m_DaColor = QColor(DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType::DataArray));
+
   // Forground brushes
   QColor filterColor(255, 255, 255);
   QColor invalidColor(100, 100, 100);
@@ -244,9 +248,37 @@ void DataStructureWidget::refreshData()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void DataStructureWidget::markNewItems()
+{
+  for(DataArrayPath path : m_CreatedPaths)
+  {
+    QStandardItem* newItem = findItemByPath(path);
+    if(newItem)
+    {
+      switch(path.getDataType())
+      {
+      case DataArrayPath::DataType::DataContainer:
+        m_NewItemBrush.setColor(m_DcColor);
+        break;
+      case DataArrayPath::DataType::AttributeMatrix:
+        m_NewItemBrush.setColor(m_AmColor);
+        break;
+      case DataArrayPath::DataType::DataArray:
+        m_NewItemBrush.setColor(m_DaColor);
+        break;
+      }
+      newItem->setForeground(m_NewItemBrush);
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataStructureWidget::filterObjectActivated(PipelineFilterObject* object)
 {
   m_Dca = DataContainerArray::NullPointer();
+  m_CreatedPaths.clear();
   if(object)
   {
     AbstractFilter::Pointer filter = object->getFilter();
@@ -256,10 +288,13 @@ void DataStructureWidget::filterObjectActivated(PipelineFilterObject* object)
       if(dca.get())
       {
         m_Dca = dca->deepCopy(true);
+        m_CreatedPaths = filter->getCreatedPaths();
       }
     }
   }
   refreshData();
+  update();
+  markNewItems();
 }
 
 // -----------------------------------------------------------------------------
@@ -285,6 +320,11 @@ void DataStructureWidget::handleFilterParameterChanged(PipelineFilterObject* obj
 // -----------------------------------------------------------------------------
 QStandardItem* DataStructureWidget::findChildByName(QStandardItem* rootItem, const QString &name, int column)
 {
+  if(nullptr == rootItem)
+  {
+    return nullptr;
+  }
+
   QStandardItem* item = nullptr;
   int rowCount = rootItem->rowCount();
   for (int row = 0; row < rowCount; ++row)
@@ -297,6 +337,47 @@ QStandardItem* DataStructureWidget::findChildByName(QStandardItem* rootItem, con
     }
   }
   return item;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QStandardItem* DataStructureWidget::findItemByPath(DataArrayPath path)
+{
+  DataArrayPath::DataType dataType = path.getDataType();
+  if(dataType == DataArrayPath::DataType::None)
+  {
+    return nullptr;
+  }
+
+  QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
+  if(!model)
+  {
+    Q_ASSERT_X(model, "Model was not a QStandardItemModel in QColumnView", "");
+    return nullptr;
+  }
+
+  QStandardItem* rootItem = model->invisibleRootItem();
+  QStandardItem* targetItem = nullptr;
+  QStandardItem* dcItem = findChildByName(rootItem, path.getDataContainerName(), 0);
+  if(dataType == DataArrayPath::DataType::DataContainer)
+  {
+    targetItem = dcItem;
+  }
+  else
+  {
+    QStandardItem* amItem = findChildByName(dcItem, path.getAttributeMatrixName(), 0);
+    if(dataType == DataArrayPath::DataType::AttributeMatrix)
+    {
+      targetItem = amItem;
+    }
+    else
+    {
+      targetItem = findChildByName(amItem, path.getDataArrayName(), 0);
+    }
+  }
+
+  return targetItem;
 }
 
 // -----------------------------------------------------------------------------
@@ -324,7 +405,7 @@ void DataStructureWidget::setViewReqs(DataContainerSelectionFilterParameter::Req
   QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
   QStandardItem* rootItem = model->invisibleRootItem();
 
-  m_CompliantBgBrush.setColor(DataArrayPathSelectionWidget::GetActiveColor(DataArrayPathSelectionWidget::DataType::DataContainer));
+  m_CompliantBgBrush.setColor(m_DcColor);
 
   int dcCount = rootItem->rowCount();
   for(int i = 0; i < dcCount; i++)
@@ -375,7 +456,7 @@ void DataStructureWidget::setViewReqs(AttributeMatrixSelectionFilterParameter::R
   QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
   QStandardItem* rootItem = model->invisibleRootItem();
 
-  m_CompliantBgBrush.setColor(DataArrayPathSelectionWidget::GetActiveColor(DataArrayPathSelectionWidget::DataType::AttributeMatrix));
+  m_CompliantBgBrush.setColor(m_AmColor);
 
   int dcCount = rootItem->rowCount();
   for(int i = 0; i < dcCount; i++)
@@ -428,7 +509,7 @@ void DataStructureWidget::setViewReqs(DataArraySelectionFilterParameter::Require
   QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
   QStandardItem* rootItem = model->invisibleRootItem();
 
-  m_CompliantBgBrush.setColor(DataArrayPathSelectionWidget::GetActiveColor(DataArrayPathSelectionWidget::DataType::DataArray));
+  m_CompliantBgBrush.setColor(m_DaColor);
 
   int dcCount = rootItem->rowCount();
   for(int i = 0; i < dcCount; i++)
@@ -482,6 +563,8 @@ void DataStructureWidget::clearViewRequirements()
   // Clear requirements
   QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
   clearFilter(model->invisibleRootItem());
+  
+  markNewItems();
 }
 
 // -----------------------------------------------------------------------------

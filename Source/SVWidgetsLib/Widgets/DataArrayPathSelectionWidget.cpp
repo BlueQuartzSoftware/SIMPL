@@ -105,9 +105,9 @@ void DataArrayPathSelectionWidget::SetupDragIcons()
     for(int x = 0; x < width; x++)
     {
       QColor baseColor = baseImage.pixelColor(x, y);
-      QColor dcColor = QColor(GetActiveColor(DataType::DataContainer));
-      QColor amColor = QColor(GetActiveColor(DataType::AttributeMatrix));
-      QColor daColor = QColor(GetActiveColor(DataType::DataArray));
+      QColor dcColor = QColor(GetActiveColor(DataArrayPath::DataType::DataContainer));
+      QColor amColor = QColor(GetActiveColor(DataArrayPath::DataType::AttributeMatrix));
+      QColor daColor = QColor(GetActiveColor(DataArrayPath::DataType::DataArray));
 
       int hue;
       int saturation;
@@ -137,7 +137,7 @@ void DataArrayPathSelectionWidget::SetupDragIcons()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QPixmap DataArrayPathSelectionWidget::GetDragIcon(DataType type)
+const QPixmap DataArrayPathSelectionWidget::GetDragIcon(DataArrayPath::DataType type)
 {
   if(nullptr == s_BaseIcon)
   {
@@ -146,11 +146,11 @@ const QPixmap DataArrayPathSelectionWidget::GetDragIcon(DataType type)
 
   switch(type)
   {
-  case DataType::DataContainer:
+  case DataArrayPath::DataType::DataContainer:
     return *s_DataContainerIcon;
-  case DataType::AttributeMatrix:
+  case DataArrayPath::DataType::AttributeMatrix:
     return *s_AttributeMatrixIcon;
-  case DataType::DataArray:
+  case DataArrayPath::DataType::DataArray:
     return *s_DataArrayIcon;
   }
 
@@ -160,17 +160,17 @@ const QPixmap DataArrayPathSelectionWidget::GetDragIcon(DataType type)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataArrayPathSelectionWidget::GetActiveColor(DataType type)
+const QString DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType type)
 {
   switch(type)
   {
-  case DataType::DataContainer:
+  case DataArrayPath::DataType::DataContainer:
     return DataArrayPathColors::DataContainer::FilterColor;
     break;
-  case DataType::AttributeMatrix:
+  case DataArrayPath::DataType::AttributeMatrix:
     return DataArrayPathColors::AttributeMatrix::FilterColor;
     break;
-  case DataType::DataArray:
+  case DataArrayPath::DataType::DataArray:
     return DataArrayPathColors::DataArray::FilterColor;
     break;
   }
@@ -198,7 +198,7 @@ DataArrayPathSelectionWidget::DataArrayPathSelectionWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayPathSelectionWidget::DataType DataArrayPathSelectionWidget::getDataType()
+DataArrayPath::DataType DataArrayPathSelectionWidget::getDataType()
 {
   return m_DataType;
 }
@@ -208,7 +208,7 @@ DataArrayPathSelectionWidget::DataType DataArrayPathSelectionWidget::getDataType
 // -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::setDataContainerRequirements(DataContainerSelectionFilterParameter::RequirementType dcReqs)
 {
-  m_DataType = DataType::DataContainer;
+  m_DataType = DataArrayPath::DataType::DataContainer;
   m_DataContainerReqs = dcReqs;
 
   QString html;
@@ -230,7 +230,7 @@ void DataArrayPathSelectionWidget::setDataContainerRequirements(DataContainerSel
 // -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::setAttrMatrixRequirements(AttributeMatrixSelectionFilterParameter::RequirementType amReqs)
 {
-  m_DataType = DataType::AttributeMatrix;
+  m_DataType = DataArrayPath::DataType::AttributeMatrix;
   m_AttrMatrixReqs = amReqs;
 
   QString html;
@@ -253,7 +253,7 @@ void DataArrayPathSelectionWidget::setAttrMatrixRequirements(AttributeMatrixSele
 // -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::setDataArrayRequirements(DataArraySelectionFilterParameter::RequirementType daReqs)
 {
-  m_DataType = DataType::DataArray;
+  m_DataType = DataArrayPath::DataType::DataArray;
   m_DataArrayReqs = daReqs;
 
   QString html;
@@ -510,11 +510,11 @@ bool DataArrayPathSelectionWidget::checkPathReqs(DataArrayPath path)
 {
   switch(m_DataType)
   {
-  case DataType::DataContainer:
+  case DataArrayPath::DataType::DataContainer:
     return checkDataContainerReqs(path);
-  case DataType::AttributeMatrix:
+  case DataArrayPath::DataType::AttributeMatrix:
     return checkAttributeMatrixReqs(path);
-  case DataType::DataArray:
+  case DataArrayPath::DataType::DataArray:
     return checkDataArrayReqs(path);
   }
 
@@ -691,13 +691,13 @@ void DataArrayPathSelectionWidget::enterEvent(QEvent* event)
 {
   switch(m_DataType)
   {
-  case DataType::DataContainer:
+  case DataArrayPath::DataType::DataContainer:
     emit viewPathsMatchingReqs(m_DataContainerReqs);
     break;
-  case DataType::AttributeMatrix:
+  case DataArrayPath::DataType::AttributeMatrix:
     emit viewPathsMatchingReqs(m_AttrMatrixReqs);
     break;
-  case DataType::DataArray:
+  case DataArrayPath::DataType::DataArray:
     emit viewPathsMatchingReqs(m_DataArrayReqs);
     break;
   }
@@ -877,7 +877,7 @@ const QString DataArrayPathSelectionWidget::getColor(Style style)
 {
   switch(getDataType())
   {
-  case DataType::DataContainer:
+  case DataArrayPath::DataType::DataContainer:
     switch(style)
     {
     case Style::Normal:
@@ -897,7 +897,7 @@ const QString DataArrayPathSelectionWidget::getColor(Style style)
       break;
     }
     break;
-  case DataType::AttributeMatrix:
+  case DataArrayPath::DataType::AttributeMatrix:
     switch(style)
     {
     case Style::Normal:
@@ -917,7 +917,7 @@ const QString DataArrayPathSelectionWidget::getColor(Style style)
       break;
     }
     break;
-  case DataType::DataArray:
+  case DataArrayPath::DataType::DataArray:
     switch(style)
     {
     case Style::Normal:

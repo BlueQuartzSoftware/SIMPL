@@ -59,16 +59,8 @@ class DataArrayPathSelectionWidget : public QToolButton
   Q_OBJECT
 
 public:
-  enum class DataType
-  {
-    DataContainer,
-    AttributeMatrix,
-    DataArray,
-    None
-  };
-
-  static const QPixmap GetDragIcon(DataType type);
-  static const QString GetActiveColor(DataType type);
+  static const QPixmap GetDragIcon(DataArrayPath::DataType type);
+  static const QString GetActiveColor(DataArrayPath::DataType type);
 
   DataArrayPathSelectionWidget(QWidget* parent = nullptr);
   virtual ~DataArrayPathSelectionWidget() = default;
@@ -77,7 +69,7 @@ public:
   * @brief Returns the type of DataArrayPath this widget can handle
   * @return
   */
-  DataType getDataType();
+  DataArrayPath::DataType getDataType();
 
   /**
   * @brief Sets the DataContainer requirements and sets the DataType to DataContainer
@@ -291,7 +283,7 @@ private slots:
   void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
 
 private:
-  DataType m_DataType = DataType::None;
+  DataArrayPath::DataType m_DataType = DataArrayPath::DataType::None;
   Style m_Style = Style::Normal;
   AbstractFilter* m_Filter = nullptr;
   DataContainerSelectionFilterParameter::RequirementType m_DataContainerReqs;
