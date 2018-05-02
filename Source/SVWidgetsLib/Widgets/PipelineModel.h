@@ -60,7 +60,6 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
     ~PipelineModel();
 
     SIMPL_INSTANCE_PROPERTY(int, MaxNumberOfPipelines)
-    SIMPL_INSTANCE_PROPERTY(int, DropIndex)
 
     /**
      * @brief updateActivePipeline
@@ -73,6 +72,9 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
 
     AbstractFilter::Pointer filter(const QModelIndex &index) const;
     void setFilter(const QModelIndex &index, AbstractFilter::Pointer filter);
+
+    QString dropIndicatorText(const QModelIndex &index) const;
+    void setDropIndicatorText(const QModelIndex &index, const QString &text);
 
     QModelIndex indexOfFilter(AbstractFilter::Pointer filter, const QModelIndex &parent = QModelIndex());
 
@@ -98,8 +100,6 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
     QStringList mimeTypes() const override;
     
     bool canDropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) const override;
-
-    bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) override;
 
     bool setData(const QModelIndex& index, const QVariant& value, int role) override;
 

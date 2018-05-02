@@ -188,6 +188,46 @@ void PipelineModel::setFilter(const QModelIndex &index, AbstractFilter::Pointer 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QString PipelineModel::dropIndicatorText(const QModelIndex &index) const
+{
+  if(!index.isValid())
+  {
+    return QString();
+  }
+
+  PipelineItem* item = getItem(index);
+  if (item == nullptr)
+  {
+    return QString();
+  }
+
+  return item->getDropIndicatorText();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineModel::setDropIndicatorText(const QModelIndex &index, const QString &text)
+{
+  if(!index.isValid())
+  {
+    return;
+  }
+
+  PipelineItem* item = getItem(index);
+  if (item == nullptr)
+  {
+    return;
+  }
+
+  item->setDropIndicatorText(text);
+
+  emit dataChanged(index, index);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 QModelIndex PipelineModel::indexOfFilter(AbstractFilter::Pointer filter, const QModelIndex &parent)
 {
   for (int i = 0; i < rowCount(parent); i++)
@@ -291,15 +331,6 @@ bool PipelineModel::canDropMimeData(const QMimeData *data, Qt::DropAction action
   }
 
   return true;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool PipelineModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
-{
-  m_DropIndex = row;
-  return QAbstractItemModel::dropMimeData(data, action, row, column, parent);
 }
 
 // -----------------------------------------------------------------------------

@@ -333,14 +333,16 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     void connectSignalsSlots();
 
     /**
-     * @brief startDrag
-     * @param supportedActions
+     * @brief beginDrag
+     * @param event
      */
-    void startDrag(Qt::DropActions supportedActions) override;
+    void beginDrag(QMouseEvent* event);
 
     void mousePressEvent(QMouseEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void dragMoveEvent(QDragMoveEvent* event) override;
+    void dragEnterEvent(QDragEnterEvent* event) override;
+    void dragLeaveEvent(QDragLeaveEvent* event) override;
     void dropEvent(QDropEvent* event) override;
     void keyPressEvent(QKeyEvent *event) override;
 
@@ -392,7 +394,7 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
 
     QUndoCommand*                                     m_DragCommand = nullptr;
     QPoint                                            m_DragStartPosition;
-    SVPipelineFilterOutlineWidget*                    m_FilterOutlineWidget = nullptr;
+    QModelIndex                                       m_DropIndicatorIndex;
     QPersistentModelIndex                             m_CurrentHoveringIndex;
     bool                                              m_BlockPreflight = false;
     std::stack<bool>                                  m_BlockPreflightStack;
@@ -434,6 +436,39 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
      * @param pos
      */
     void requestDefaultContextMenu(const QPoint &pos);
+
+    /**
+     * @brief addDropIndicator
+     * @param text
+     * @param insertIndex
+     */
+    void addDropIndicator(const QString &text, int insertIndex);
+
+    /**
+     * @brief removeDropIndicator
+     */
+    void removeDropIndicator();
+
+    /**
+     * @brief findNextRow
+     * @param pos
+     * @return
+     */
+    int findNextRow(const QPoint &pos);
+
+    /**
+     * @brief findPreviousRow
+     * @param pos
+     * @return
+     */
+    int findPreviousRow(const QPoint &pos);
+
+    /**
+     * @brief getDraggingPixmap
+     * @param indexes
+     * @return
+     */
+    QPixmap getDraggingPixmap(QModelIndexList indexes);
 
     SVPipelineView(const SVPipelineView&) = delete; // Copy Constructor Not Implemented
     void operator=(const SVPipelineView&) = delete;       // Move assignment Not Implemented

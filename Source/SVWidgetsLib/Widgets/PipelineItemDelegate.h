@@ -36,6 +36,8 @@
 
 #include <QtWidgets/QStyledItemDelegate>
 
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 class PipelineModel;
@@ -50,6 +52,8 @@ class SVWidgetsLib_EXPORT PipelineItemDelegate : public QStyledItemDelegate
     explicit PipelineItemDelegate(SVPipelineView* view);
 
     virtual ~PipelineItemDelegate();
+
+    QPixmap getPixmap(const QModelIndex &index) const;
 
   protected:
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
@@ -79,18 +83,6 @@ class SVWidgetsLib_EXPORT PipelineItemDelegate : public QStyledItemDelegate
      * @return
      */
     QString getFilterIndexString(const QModelIndex &index) const;
-
-    /**
-     * @brief createDeleteButton
-     * @return
-     */
-    void createDeleteButton();
-
-    /**
-     * @brief createDisableButton
-     * @return
-     */
-    void createDisableButton();
 
     /**
      * @brief Convenience method to get the PipelineModel instance

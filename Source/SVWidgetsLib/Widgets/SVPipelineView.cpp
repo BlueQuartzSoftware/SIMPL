@@ -81,6 +81,7 @@
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
 #include "SVWidgetsLib/Widgets/BreakpointFilterWidget.h"
 #include "SVWidgetsLib/Widgets/PipelineModel.h"
+#include "SVWidgetsLib/Widgets/PipelineItemDelegate.h"
 #include "SVWidgetsLib/Widgets/PipelineFilterMimeData.h"
 #include "SVWidgetsLib/Widgets/util/AddFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/MoveFilterCommand.h"
@@ -110,10 +111,7 @@ SVPipelineView::~SVPipelineView()
   {
     delete m_WorkerThread;
   }
-  if(m_FilterOutlineWidget && !m_FilterOutlineWidget->parent())
-  {
-    delete m_FilterOutlineWidget;
-  }
+
   // Delete action if it exists
   if(m_ActionEnableFilter)
   {
@@ -154,9 +152,6 @@ void SVPipelineView::setupGui()
 
   QClipboard* clipboard = QApplication::clipboard();
   connect(clipboard, SIGNAL(dataChanged()), this, SLOT(updatePasteAvailability()));
-
-  m_FilterOutlineWidget = new SVPipelineFilterOutlineWidget(nullptr);
-  m_FilterOutlineWidget->setObjectName("m_DropBox");
 
   setContextMenuPolicy(Qt::CustomContextMenu);
   setFocusPolicy(Qt::StrongFocus);
@@ -509,8 +504,9 @@ FilterPipeline::Pointer SVPipelineView::getFilterPipeline()
 
   qint32 count = model->rowCount();
   for(qint32 i = 0; i < count; ++i)
-  {
+  {    
     QModelIndex childIndex = model->index(i, PipelineItem::Contents);
+
     PipelineItem::WidgetState widgetState = model->widgetState(childIndex);
     if(childIndex.isValid() && widgetState != PipelineItem::WidgetState::Disabled)
     {
@@ -829,37 +825,84 @@ void SVPipelineView::clearPipeline()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::mouseMoveEvent(QMouseEvent* event)
+QPixmap SVPipelineView::getDraggingPixmap(QModelIndexList indexes)
 {
-//  if(!(event->buttons() & Qt::LeftButton))
-//  {
-//    return;
-//  }
-//  if((event->pos() - m_DragStartPosition).manhattanLength() < QApplication::startDragDistance())
-//  {
-//    return;
-//  }
+  if (indexes.size() <= 0)
+  {
+    return QPixmap();
+  }
 
-//  beginDrag(event);
+  PipelineItemDelegate* delegate = dynamic_cast<PipelineItemDelegate*>(itemDelegate());
+  if (delegate == nullptr)
+  {
+    return QPixmap();
+  }
 
-  QListView::mouseMoveEvent(event);
+  QPixmap indexPixmap = delegate->getPixmap(indexes[0]);
+
+  int dragPixmapWidth = indexPixmap.size().width();
+  int dragPixmapHeight = indexPixmap.size().height() * indexes.size() + (spacing() * (indexes.size() - 1));
+
+  QPixmap dragPixmap(dragPixmapWidth, dragPixmapHeight);
+  dragPixmap.fill(Qt::transparent);
+
+  QPainter p;
+  p.begin(&dragPixmap);
+  p.setOpacity(0.70);
+  int offset = 0;
+  for (int i = 0; i < indexes.size(); i++)
+  {
+    indexPixmap = delegate->getPixmap(indexes[i]);
+
+//    QPixmap currentPixmap = filterWidget->grab();
+//    p.drawPixmap(0, offset, currentPixmap);
+//    offset = offset + pixmap.size().height() + 3;
+  }
+  p.end();
+
+  return indexPixmap;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::startDrag(Qt::DropActions supportedActions)
+void SVPipelineView::mouseMoveEvent(QMouseEvent* event)
 {
-  Q_UNUSED(supportedActions)
+  if(!(event->buttons() & Qt::LeftButton))
+  {
+    return;
+  }
+
+  if((event->pos() - m_DragStartPosition).manhattanLength() >= 1)
+  {
+    beginDrag(event);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineView::beginDrag(QMouseEvent* event)
+{
+  QModelIndexList selectedIndexes = selectionModel()->selectedRows();
+  if (selectedIndexes.size() <= 0)
+  {
+    return;
+  }
+
+//  QPixmap dragPixmap = getDraggingPixmap(selectedIndexes);
+
+  PipelineItemDelegate* delegate = dynamic_cast<PipelineItemDelegate*>(itemDelegate());
+  QPixmap dragPixmap = delegate->getPixmap(selectedIndexes[0]);
 
   std::vector<PipelineFilterMimeData::FilterDragMetadata> filtersDragData;
   std::vector<AbstractFilter::Pointer> filters;
   PipelineModel* model = getPipelineModel();
 
-  QModelIndexList selectedIndexes = selectionModel()->selectedRows();
   for (int i = 0; i < selectedIndexes.size(); i++)
   {
     QModelIndex selectedIndex = selectedIndexes[i];
+
     AbstractFilter::Pointer filter = model->filter(selectedIndex);
 
     PipelineFilterMimeData::FilterDragMetadata filterDragData;
@@ -883,11 +926,31 @@ void SVPipelineView::startDrag(Qt::DropActions supportedActions)
     RemoveFilterCommand* cmd = new RemoveFilterCommand(filters, this, "Remove", m_DragCommand);
     m_DragCommand->setText(cmd->text());
 
+    int dropIndicatorRow = currentIndex().row();
+
+    QString dropIndicatorText;
+    if (selectedIndexes.size() == 1)
+    {
+      AbstractFilter::Pointer filter = model->filter(selectedIndexes[0]);
+      dropIndicatorText = filter->getHumanLabel();
+    }
+    else
+    {
+      dropIndicatorText = QObject::tr("Place %1 Filters Here").arg(selectedIndexes.size());
+    }
+
     addUndoCommand(m_DragCommand);
+
+    addDropIndicator(dropIndicatorText, dropIndicatorRow);
   }
+
+  QRect currentIndexRect = visualRect(indexAt(event->pos()));
 
   QDrag* drag = new QDrag(this);
   drag->setMimeData(mimeData);
+  drag->setPixmap(dragPixmap);
+  QPoint dragPos(event->pos().x() - currentIndexRect.x(), event->pos().y() - currentIndexRect.y());
+  drag->setHotSpot(dragPos);
 
   if (modifiers.testFlag(Qt::AltModifier))
   {
@@ -903,208 +966,250 @@ void SVPipelineView::startDrag(Qt::DropActions supportedActions)
 //
 // -----------------------------------------------------------------------------
 void SVPipelineView::dragMoveEvent(QDragMoveEvent* event)
-{  
-  QListView::dragMoveEvent(event);
+{
+  PipelineModel* model = getPipelineModel();
 
-//  const QMimeData* mimedata = event->mimeData();
+  QString dropIndicatorText;
+  const QMimeData* mimedata = event->mimeData();
+  const PipelineFilterMimeData* filterData = dynamic_cast<const PipelineFilterMimeData*>(mimedata);
+  if (filterData != nullptr)
+  {
+    // This drag has filter data, so set the appropriate drop indicator text
+    std::vector<PipelineFilterMimeData::FilterDragMetadata> dragData = filterData->getFilterDragData();
+    if (dragData.size() == 1)
+    {
+      AbstractFilter::Pointer filter = dragData[0].first;
+      dropIndicatorText = filter->getHumanLabel();
+    }
+    else
+    {
+      dropIndicatorText = QObject::tr("Place %1 Filters Here").arg(dragData.size());
+    }
+  }
+  else if(mimedata->hasUrls())
+  {
+    // This drag has URL data, so set the appropriate drop indicator text
+    QString data = mimedata->text();
+    QUrl url(data);
+    QString filePath = url.toLocalFile();
 
-//  if(nullptr != dynamic_cast<const PipelineViewPtrMimeData*>(mimedata))
-//  {
-//    // The user is moving existing filter widgets, either within the same pipeline view or between pipeline views
-//    SVPipelineViewWidget* origin = dynamic_cast<SVPipelineViewWidget*>(dynamic_cast<const PipelineViewPtrMimeData*>(mimedata)->getPipelineViewPtr());
+    QFileInfo fi(filePath);
+    dropIndicatorText = QObject::tr("Place '%1' Here").arg(fi.baseName());
+  }
+  else if (mimedata->hasFormat(SIMPLView::DragAndDrop::BookmarkItem))
+  {
+    // This drag has Bookmark data, so set the appropriate drop indicator text
+    QByteArray jsonArray = mimedata->data(SIMPLView::DragAndDrop::BookmarkItem);
+    QJsonDocument doc = QJsonDocument::fromJson(jsonArray);
+    QJsonObject obj = doc.object();
 
-//    if(origin == this)
-//    {
-//      if(qApp->queryKeyboardModifiers() != Qt::AltModifier)
-//      {
-//        QList<IndexedFilterObject> draggedFilterObjects = getDraggedFilterObjects();
+    if(obj.size() > 1)
+    {
+      QMessageBox::warning(nullptr, "Warning", "This application currently does not support dragging and dropping multiple bookmarks.", QMessageBox::Ok);
+      event->ignore();
+      return;
+    }
 
-//        for(int i = 0; i < draggedFilterObjects.size(); i++)
-//        {
-//          // Remove the filter widget
-//          if(nullptr != m_FilterWidgetLayout && origin->containsFilterWidget(draggedFilterObjects[i].second))
-//          {
-//            PipelineFilterObject* draggedObject = draggedFilterObjects[i].second;
-//            SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(draggedObject);
-//            if(filterWidget == nullptr)
-//            {
-//              return;
-//            }
+    QJsonObject::iterator iter = obj.begin();
+    QString filePath = iter.value().toString();
 
-//            m_FilterOrigPos = origin->valueOfFilterWidget(filterWidget).toInt();
-//            m_FilterWidgetLayout->removeWidget(filterWidget);
-//            filterWidget->setParent(nullptr);
-//          }
-//        }
-//      }
-//    }
+    QFileInfo fi(filePath);
+    dropIndicatorText = QObject::tr("Place '%1' Here").arg(fi.baseName());
+  }
+  else if (mimedata->hasFormat(SIMPLView::DragAndDrop::FilterListItem))
+  {
+    // This drag has Filter List data, so set the appropriate drop indicator text
+    QByteArray jsonArray = mimedata->data(SIMPLView::DragAndDrop::FilterListItem);
+    QJsonDocument doc = QJsonDocument::fromJson(jsonArray);
+    QJsonObject obj = doc.object();
+    QJsonObject::iterator iter = obj.begin();
+    QString filterClassName = iter.value().toString();
 
-//    int count = filterCount();
-//    if(count <= 0)
-//    {
-//      return;
-//    }
+    FilterManager* fm = FilterManager::Instance();
+    if(nullptr == fm)
+    {
+      event->ignore();
+      return;
+    }
 
-//    // insert filter
-//    {
-//      int i = getIndexAtPoint(event->pos());
+    IFilterFactory::Pointer wf = fm->getFactoryFromClassName(filterClassName);
+    if(nullptr == wf)
+    {
+      event->ignore();
+      return;
+    }
 
-//      if(i < 0)
-//      {
-//        i = filterCount();
-//      }
+    AbstractFilter::Pointer filter = wf->create();
+    dropIndicatorText = filter->getHumanLabel();
+  }
+  else
+  {
+    // We don't know what type of data this drag is, so ignore the event
+    event->ignore();
+    return;
+  }
 
-//      SVPipelineFilterWidget* w = getFilterWidgetAtIndex(i);
+  QPoint mousePos = event->pos();
 
-//      if (w != nullptr)
-//      {
-//        if ((i >= count && event->pos().y() >= w->geometry().y() + w->geometry().height() / 2) || (event->pos().y() <= w->geometry().y() + w->geometry().height() / 2))
-//        {
-//          QList<IndexedFilterObject> draggedObjects = origin->getDraggedFilterObjects();
-//          if (draggedObjects.size() > 1)
-//          {
-//           // m_FilterOutlineWidget->setFilter(nullptr);
-//            m_FilterOutlineWidget->setFilterIndex(i + 1, count);
-//            m_FilterOutlineWidget->setFilterTitle("Place " + QString::number(draggedObjects.size()) + " Filters Here");
-//          }
-//          else if (draggedObjects.size() == 1)
-//          {
-//            AbstractFilter::Pointer f = draggedObjects[0].second->getFilter();
-//            m_FilterOutlineWidget->setFilter(f.get());
-//            m_FilterOutlineWidget->setFilterIndex(i + 1, count);
-//            m_FilterOutlineWidget->setFilterTitle(draggedObjects[0].second->getHumanLabel());
-//          }
-//          else
-//          {
-//            event->ignore();
-//            return;
-//          }
-//          m_FilterWidgetLayout->insertWidget(i, m_FilterOutlineWidget);
-//          m_FilterOutlineWidget->show();
-//          reindexWidgetTitles();
-//        }
-//      }
-//      else if(i == count)
-//      {
-//        QList<IndexedFilterObject> draggedObjects = origin->getDraggedFilterObjects();
-//        if (draggedObjects.size() == 1)
-//        {
-//          m_FilterOutlineWidget->setFilter(draggedObjects[0].second->getFilter().get());
-//          m_FilterOutlineWidget->setFilterIndex(i + 1, count);
-//          m_FilterOutlineWidget->setFilterTitle(draggedObjects[0].second->getHumanLabel());
-//        }
+  QModelIndex index = this->indexAt(mousePos);
 
-//        m_FilterWidgetLayout->insertWidget(i, m_FilterOutlineWidget);
-//        m_FilterOutlineWidget->show();
-//        reindexWidgetTitles();
-//      }
+  int itemHeight = sizeHintForRow(0);
 
-//      event->accept();
-//    }
-//  }
-//  else if(mimedata->hasUrls() || mimedata->hasFormat(SIMPLView::DragAndDrop::BookmarkItem) || mimedata->hasFormat(SIMPLView::DragAndDrop::FilterItem))
-//  {
-//    QString data;
-//    if(mimedata->hasUrls())
-//    {
-//      data = mimedata->text();
-//      QUrl url(data);
-//      data = url.toLocalFile();
-//    }
-//    else if(mimedata->hasText())
-//    {
-//      data = mimedata->text();
-//    }
-//    else if(mimedata->hasFormat(SIMPLView::DragAndDrop::BookmarkItem))
-//    {
-//      QByteArray jsonArray = mimedata->data(SIMPLView::DragAndDrop::BookmarkItem);
-//      QJsonDocument doc = QJsonDocument::fromJson(jsonArray);
-//      QJsonObject obj = doc.object();
+  if (index.isValid() == false)
+  {
+    // The drag is occurring in an empty space of the view, either between items or at the beginning or end of the list
+    int dropIndicatorRow = findPreviousRow(mousePos);
 
-//      if(obj.size() > 1)
-//      {
-//        event->accept();
-//        return;
-//      }
+    if (m_DropIndicatorIndex.isValid() && dropIndicatorRow != m_DropIndicatorIndex.row())
+    {
+      removeDropIndicator();
+      addDropIndicator(dropIndicatorText, dropIndicatorRow);
+    }
+    else if (m_DropIndicatorIndex.isValid() == false)
+    {
+      addDropIndicator(dropIndicatorText, dropIndicatorRow);
+    }
+  }
+  else if (model->itemType(index) == PipelineItem::ItemType::Filter)
+  {
+    // The drag is occurring on top of a filter item
+    QRect indexRect = visualRect(index);
 
-//      QJsonObject::iterator iter = obj.begin();
-//      data = iter.value().toString();
-//    }
-//    else
-//    {
-//      QByteArray jsonArray = mimedata->data(SIMPLView::DragAndDrop::FilterItem);
-//      QJsonDocument doc = QJsonDocument::fromJson(jsonArray);
-//      QJsonObject obj = doc.object();
-//      QJsonObject::iterator iter = obj.begin();
-//      data = iter.value().toString();
-//    }
+    int dropIndicatorRow;
+    if (mousePos.y() <= indexRect.y() + itemHeight / 2)
+    {
+      // The drag is in the upper half of the item
+      dropIndicatorRow = index.row();
+    }
+    else
+    {
+      // The drag is in the lower half of the item
+      dropIndicatorRow = index.row() + 1;
+    }
 
-//    QFileInfo fi(data);
-//    QString ext = fi.completeSuffix();
-//    FilterManager* fm = FilterManager::Instance();
-//    if(nullptr == fm)
-//    {
-//      return;
-//    }
-//    IFilterFactory::Pointer wf = fm->getFactoryFromClassName(data);
+    removeDropIndicator();
+    addDropIndicator(dropIndicatorText, dropIndicatorRow);
+  }
 
-//    // If the dragged item is a filter item...
-//    if(nullptr != wf)
-//    {
-//      QString humanName = wf->getFilterHumanLabel();
+  event->accept();
+}
 
-//      //bool didInsert = false;
-//      // This path is taken if a filter is dragged from the list of filters
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineView::dragEnterEvent(QDragEnterEvent* event)
+{
+  event->accept();
+}
 
-//      int i = getIndexAtPoint(event->pos());
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineView::dragLeaveEvent(QDragLeaveEvent* event)
+{
+  removeDropIndicator();
 
-//      if(i < 0 || i > filterCount())
-//      {
-//        return;
-//      }
+  event->accept();
+}
 
-//      m_FilterOutlineWidget->setFilterIndex(i + 1, filterCount());
-//      m_FilterOutlineWidget->setFilterTitle(humanName);
-//      m_FilterWidgetLayout->insertWidget(i, m_FilterOutlineWidget);
-//      m_FilterOutlineWidget->show();
-//      reindexWidgetTitles();
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int SVPipelineView::findNextRow(const QPoint &pos)
+{
+  if (filterCount() == 0)
+  {
+    return 0;
+  }
 
-//      event->accept();
-//    }
-//    // If the dragged item is a pipeline file...
-//    else if(ext == "dream3d" || ext == "json" )
-//    {
-//      if(nullptr == m_FilterOutlineWidget)
-//      {
-//        event->ignore();
-//        return;
-//      }
+  int stepHeight = sizeHintForRow(0);
+  if (spacing() < stepHeight)
+  {
+    stepHeight = spacing();
+  }
 
-//      QString pipelineName = fi.baseName();
+  QPoint currentPos = pos;
 
-//      //bool didInsert = false;
-//      // This path is taken if a filter is dragged from the list of filters
+  while(indexAt(currentPos).isValid() == false && currentPos.y() <= viewport()->size().height())
+  {
+    currentPos.setY(currentPos.y() + stepHeight);
+  }
 
-//      int i = getIndexAtPoint(event->pos());
+  QModelIndex index = indexAt(currentPos);
+  int nextRow;
+  if (index.isValid())
+  {
+    nextRow = index.row();
+  }
+  else
+  {
+    nextRow = filterCount() - 1;
+  }
 
-//      if (i < 0 || i > filterCount())
-//      {
-//        return;
-//      }
+  return nextRow;
+}
 
-//      m_FilterOutlineWidget->setFilterIndex(i + 1, filterCount());
-//      m_FilterOutlineWidget->setFilterTitle("Place '" + pipelineName + "' Here");
-//      m_FilterWidgetLayout->insertWidget(i, m_FilterOutlineWidget);
-//      m_FilterOutlineWidget->show();
-//      reindexWidgetTitles();
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int SVPipelineView::findPreviousRow(const QPoint &pos)
+{
+  if (filterCount() == 0)
+  {
+    return 0;
+  }
 
-//      event->accept();
-//    }
-//    else
-//    {
-//      event->ignore();
-//    }
-//  }
+  int stepHeight = sizeHintForRow(0);
+  if (spacing() < stepHeight)
+  {
+    stepHeight = spacing();
+  }
+
+  QPoint currentPos = pos;
+
+  while(indexAt(currentPos).isValid() == false && currentPos.y() >= 0)
+  {
+    currentPos.setY(currentPos.y() - stepHeight);
+  }
+
+  QModelIndex index = indexAt(currentPos);
+  if (index.isValid())
+  {
+    return index.row();
+  }
+  else
+  {
+    return 0;
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineView::addDropIndicator(const QString &text, int insertIndex)
+{
+  PipelineModel* model = getPipelineModel();
+
+  model->insertRow(insertIndex);
+
+  QModelIndex dropIndicatorIndex = model->index(insertIndex, PipelineItem::Contents);
+  model->setItemType(dropIndicatorIndex, PipelineItem::ItemType::DropIndicator);
+  model->setDropIndicatorText(dropIndicatorIndex, text);
+
+  m_DropIndicatorIndex = dropIndicatorIndex;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineView::removeDropIndicator()
+{
+  if (m_DropIndicatorIndex.isValid())
+  {
+    PipelineModel* model = getPipelineModel();
+    model->removeRow(m_DropIndicatorIndex.row());
+    m_DropIndicatorIndex = QModelIndex();
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -1112,17 +1217,15 @@ void SVPipelineView::dragMoveEvent(QDragMoveEvent* event)
 // -----------------------------------------------------------------------------
 void SVPipelineView::dropEvent(QDropEvent* event)
 {
-  QListView::dropEvent(event);
+  int dropRow = m_DropIndicatorIndex.row();
 
-  PipelineModel* model = getPipelineModel();
+  removeDropIndicator();
 
   const QMimeData* mimedata = event->mimeData();
   const PipelineFilterMimeData* filterData = dynamic_cast<const PipelineFilterMimeData*>(mimedata);
   if (filterData != nullptr)
   {
     // This is filter data from an SVPipelineView instance
-    int dropRow = model->getDropIndex();
-
     std::vector<PipelineFilterMimeData::FilterDragMetadata> dragData = filterData->getFilterDragData();
 
     std::vector<AbstractFilter::Pointer> filters;
@@ -1159,7 +1262,7 @@ void SVPipelineView::dropEvent(QDropEvent* event)
     QUrl url(data);
     QString filePath = url.toLocalFile();
 
-    int err = openPipeline(filePath, model->getDropIndex());
+    int err = openPipeline(filePath, dropRow);
 
     if (err >= 0)
     {
@@ -1186,7 +1289,7 @@ void SVPipelineView::dropEvent(QDropEvent* event)
     QJsonObject::iterator iter = obj.begin();
     QString filePath = iter.value().toString();
 
-    int err = openPipeline(filePath, model->getDropIndex());
+    int err = openPipeline(filePath, dropRow);
 
     if (err >= 0)
     {
@@ -1220,7 +1323,7 @@ void SVPipelineView::dropEvent(QDropEvent* event)
     }
 
     AbstractFilter::Pointer filter = wf->create();
-    addFilter(filter, model->getDropIndex());
+    addFilter(filter, dropRow);
 
     event->accept();
   }
