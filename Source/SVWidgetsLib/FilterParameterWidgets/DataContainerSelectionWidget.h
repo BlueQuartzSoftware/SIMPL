@@ -109,6 +109,17 @@ class SVWidgetsLib_EXPORT DataContainerSelectionWidget : public FilterParameterW
     */
     void endViewPathRequirements() override;
 
+    /**
+    * @brief Enable the widget when the path meets requirements and disable it otherwise.
+    * @param path
+    */
+    void checkFilterPath(DataArrayPath path) override;
+
+    /**
+    * @brief Clears the effects of checkFilterPath
+    */
+    void clearPathFiltering() override;
+
   public slots:
     void beforePreflight();
     void afterPreflight();

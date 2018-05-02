@@ -414,3 +414,19 @@ void AttributeMatrixSelectionWidget::endViewPathRequirements()
 {
   m_SelectedAttributeMatrixPath->setPathFiltering(false);
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixSelectionWidget::checkFilterPath(DataArrayPath path)
+{
+  setEnabled(m_SelectedAttributeMatrixPath->checkPathReqs(path));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixSelectionWidget::clearPathFiltering()
+{
+  setEnabled(true);
+}
