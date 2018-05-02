@@ -51,7 +51,7 @@ namespace {
 
   const QColor k_DropIndicatorWidgetBackgroundColor = QColor(150, 150, 150);
   const QColor k_DropIndicatorIndexBackgroundColor = QColor(48, 48, 48);
-  const QColor k_DropIndicatorIndexLabelColor = QColor(190, 190, 190);
+  const QColor k_DropIndicatorLabelColor = QColor(242, 242, 242);
 }
 
 
@@ -175,14 +175,16 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
     }
   }
 
+  QColor indexFontColor(242, 242, 242);
+
   if (model->itemType(index) == PipelineItem::ItemType::DropIndicator)
   {
     indexBackgroundColor = k_DropIndicatorIndexBackgroundColor;
     widgetBackgroundColor = k_DropIndicatorWidgetBackgroundColor;
-    labelColor = k_DropIndicatorIndexLabelColor;
+    labelColor = k_DropIndicatorLabelColor;
+    indexFontColor = k_DropIndicatorLabelColor;
   }
 
-  QColor indexFontColor(242, 242, 242);
   QFont font = QtSStyles::GetHumanLabelFont();
 
 #if defined(Q_OS_MAC)
@@ -222,74 +224,14 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
   QString number = getFilterIndexString(index); // format the index number with a leading zero
   painter->drawText(rect.x() + textMargin, rect.y() + fontMargin + fontHeight, number);
 
-  // Compute the Width to draw the text based on the visibility of the various buttons
-  int fullWidth = rect.width() - indexBoxWidth;
-  int allowableWidth = fullWidth;
-
-  //  QModelIndex deleteIndex = model->index(index.row(), PipelineItem::DeleteBtn, index.parent());
-  //  QWidget* deleteBtn = m_View->indexWidget(deleteIndex);
-
-  //  if(deleteBtn->isVisible())
-  //  {
-  //    allowableWidth -= deleteBtn->width();
-  //  }
-
-  //  QModelIndex disableIndex = model->index(index.row(), PipelineItem::DisableBtn, index.parent());
-  //  QWidget* disableBtn = m_View->indexWidget(disableIndex);
-  //  if(disableBtn->isVisible())
-  //  {
-  //    allowableWidth -= disableBtn->width();
-  //  }
-  // QString elidedHumanLabel = fontMetrics.elidedText(m_FilterHumanLabel, Qt::ElideRight, allowableWidth);
-  int humanLabelWidth;
-  if (model->itemType(index) == PipelineItem::ItemType::DropIndicator)
-  {
-    QString dropIndicatorText = model->dropIndicatorText(index);
-    humanLabelWidth = fontMetrics.width(dropIndicatorText);
-  }
-  else
-  {
-    humanLabelWidth = fontMetrics.width(filter->getHumanLabel());
-  }
-
-  // Draw the filter human label
-  painter->setPen(QPen(labelColor));
-  font.setWeight(QFont::Normal);
-  painter->setFont(font);
-
-  // Compute a Fade out of the text if it is too long to fit in the widget
-  if(humanLabelWidth > allowableWidth)
-  {
-    QRect fadedRect = coloredRect;
-    fadedRect.setWidth(fullWidth);
-    if(option.state & QStyle::State_MouseOver)
-    {
-      fadedRect.setWidth(allowableWidth);
-    }
-
-    QLinearGradient gradient(fadedRect.topLeft(), fadedRect.topRight());
-    gradient.setColorAt(0.8, labelColor);
-    gradient.setColorAt(1.0, QColor(0, 0, 0, 10));
-
-    QPen pen;
-    pen.setBrush(QBrush(gradient));
-    painter->setPen(pen);
-  }
-
-  if (model->itemType(index) == PipelineItem::ItemType::DropIndicator)
-  {
-    QString text = model->dropIndicatorText(index);
-    painter->drawText(rect.x() + indexBoxWidth + textMargin, rect.y() + fontMargin + fontHeight, text);
-  }
-  else if (model->itemType(index) == PipelineItem::ItemType::Filter)
-  {
-    painter->drawText(rect.x() + indexBoxWidth + textMargin, rect.y() + fontMargin + fontHeight, filter->getHumanLabel());
-  }
-
   if (model->itemType(index) == PipelineItem::ItemType::DropIndicator)
   {
     drawButtons = false;
   }
+
+  // Compute the Width to draw the text based on the visibility of the various buttons
+  int fullWidth = rect.width() - indexBoxWidth;
+  int allowableWidth = fullWidth;
 
   if (drawButtons == true)
   {
@@ -356,7 +298,57 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
       }
     }
 
+    allowableWidth -= deleteBtnRect.width();
+    allowableWidth -= disableBtnRect.width();
+
     painter->drawPixmap(disableBtnRect.center().x() - (disableBtnRect.width() / 2), disableBtnRect.center().y() - (disableBtnRect.height() / 2 + 1), disableBtnPixmap);  // y is 1px offset due to how the images were cut
+  }
+
+//  QString elidedHumanLabel = fontMetrics.elidedText(m_FilterHumanLabel, Qt::ElideRight, allowableWidth);
+
+  int humanLabelWidth;
+  if (model->itemType(index) == PipelineItem::ItemType::DropIndicator)
+  {
+    QString dropIndicatorText = model->dropIndicatorText(index);
+    humanLabelWidth = fontMetrics.width(dropIndicatorText);
+  }
+  else
+  {
+    humanLabelWidth = fontMetrics.width(filter->getHumanLabel());
+  }
+
+  // Draw the filter human label
+  painter->setPen(QPen(labelColor));
+  font.setWeight(QFont::Normal);
+  painter->setFont(font);
+
+  // Compute a Fade out of the text if it is too long to fit in the widget
+  if(humanLabelWidth > allowableWidth)
+  {
+    QRect fadedRect = coloredRect;
+    fadedRect.setWidth(fullWidth);
+    if(option.state & QStyle::State_MouseOver)
+    {
+      fadedRect.setWidth(allowableWidth);
+    }
+
+    QLinearGradient gradient(fadedRect.topLeft(), fadedRect.topRight());
+    gradient.setColorAt(0.8, labelColor);
+    gradient.setColorAt(1.0, QColor(0, 0, 0, 10));
+
+    QPen pen;
+    pen.setBrush(QBrush(gradient));
+    painter->setPen(pen);
+  }
+
+  if (model->itemType(index) == PipelineItem::ItemType::DropIndicator)
+  {
+    QString text = model->dropIndicatorText(index);
+    painter->drawText(rect.x() + indexBoxWidth + textMargin, rect.y() + fontMargin + fontHeight, text);
+  }
+  else if (model->itemType(index) == PipelineItem::ItemType::Filter)
+  {
+    painter->drawText(rect.x() + indexBoxWidth + textMargin, rect.y() + fontMargin + fontHeight, filter->getHumanLabel());
   }
 
   // If the filter is selected, draw a border around it.

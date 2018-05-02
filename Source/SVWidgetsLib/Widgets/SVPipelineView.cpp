@@ -856,15 +856,13 @@ QPixmap SVPipelineView::getDraggingPixmap(QModelIndexList indexes)
   int offset = 0;
   for (int i = 0; i < indexes.size(); i++)
   {
-    indexPixmap = delegate->getPixmap(indexes[i]);
-
-//    QPixmap currentPixmap = filterWidget->grab();
-//    p.drawPixmap(0, offset, currentPixmap);
-//    offset = offset + pixmap.size().height() + 3;
+    QPixmap currentPixmap = delegate->getPixmap(indexes[i]);
+    p.drawPixmap(0, offset, currentPixmap);
+    offset = offset + indexPixmap.size().height() + spacing();
   }
   p.end();
 
-  return indexPixmap;
+  return dragPixmap;
 }
 
 // -----------------------------------------------------------------------------
@@ -876,8 +874,10 @@ void SVPipelineView::mouseMoveEvent(QMouseEvent* event)
   {
     beginDrag(event);
   }
-
-  QListView::mouseMoveEvent(event);
+  else
+  {
+    QListView::mouseMoveEvent(event);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -893,10 +893,7 @@ void SVPipelineView::beginDrag(QMouseEvent* event)
 
   qSort(selectedIndexes);
 
-//  QPixmap dragPixmap = getDraggingPixmap(selectedIndexes);
-
-  PipelineItemDelegate* delegate = dynamic_cast<PipelineItemDelegate*>(itemDelegate());
-  QPixmap dragPixmap = delegate->getPixmap(selectedIndexes[0]);
+  QPixmap dragPixmap = getDraggingPixmap(selectedIndexes);
 
   std::vector<PipelineFilterMimeData::FilterDragMetadata> filtersDragData;
   std::vector<AbstractFilter::Pointer> filters;
@@ -921,6 +918,8 @@ void SVPipelineView::beginDrag(QMouseEvent* event)
   mimeData->setData(SIMPLView::DragAndDrop::FilterPipelineItem, QByteArray());
 
   Qt::KeyboardModifiers modifiers = QApplication::queryKeyboardModifiers();
+
+  QRect firstSelectionRect = visualRect(selectedIndexes[0]);
 
   if (modifiers.testFlag(Qt::AltModifier) == false)
   {
@@ -947,12 +946,10 @@ void SVPipelineView::beginDrag(QMouseEvent* event)
     addDropIndicator(dropIndicatorText, dropIndicatorRow);
   }
 
-  QRect currentIndexRect = visualRect(indexAt(event->pos()));
-
   QDrag* drag = new QDrag(this);
   drag->setMimeData(mimeData);
   drag->setPixmap(dragPixmap);
-  QPoint dragPos(event->pos().x() - currentIndexRect.x(), event->pos().y() - currentIndexRect.y());
+  QPoint dragPos(event->pos().x() - firstSelectionRect.x(), event->pos().y() - firstSelectionRect.y());
   drag->setHotSpot(dragPos);
 
   if (modifiers.testFlag(Qt::AltModifier))
@@ -1251,6 +1248,15 @@ void SVPipelineView::dropEvent(QDropEvent* event)
       // has already been placed on the undo stack and executed.  This new child command needs to be executed
       // so that it matches up with the state of its parent command.
       cmd->redo();
+
+      clearSelection();
+
+      PipelineModel* model = getPipelineModel();
+      QModelIndex leftIndex = model->index(dropRow, PipelineItem::Contents);
+      QModelIndex rightIndex = model->index(dropRow + filters.size() - 1, PipelineItem::Contents);
+      QItemSelection selection(leftIndex, rightIndex);
+
+      selectionModel()->select(selection, QItemSelectionModel::Select);
     }
     else
     {
