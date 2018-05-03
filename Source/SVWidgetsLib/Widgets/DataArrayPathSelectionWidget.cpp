@@ -228,7 +228,8 @@ void DataArrayPathSelectionWidget::setDataContainerRequirements(DataContainerSel
   ss << "<body>\n";
   ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
   ss << "<tbody>\n";
-  ss << "<tr><td colspan=2><b><i>Drag and Drop from the DataStructure</i></b></td></tr>";
+  ss << "<tr><td colspan=2><b><i>Drag and Drop from the Data Structure</i></b></td></tr>";
+  ss << "<tr><td colspan=2><b><i>Right-Click for legacy menu</i></b></td></tr>";
   ss << createGeomReqString(dcReqs.dcGeometryTypes);
   ss << "</tbody></table><br/>";
   ss << "</body></html>";
@@ -250,7 +251,8 @@ void DataArrayPathSelectionWidget::setAttrMatrixRequirements(AttributeMatrixSele
   ss << "<body>\n";
   ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
   ss << "<tbody>\n";
-  ss << "<tr><td colspan=2><b><i>Drag and Drop from the DataStructure</i></b></td></tr>";
+  ss << "<tr><td colspan=2><b><i>Drag and Drop from the Data Structure</i></b></td></tr>";
+  ss << "<tr><td colspan=2><b><i>Right-Click for legacy menu</i></b></td></tr>";
   ss << createGeomReqString(amReqs.dcGeometryTypes);
   ss << createAttrMatrixReqString(amReqs.amTypes);
   ss << "</tbody></table><br/>";
@@ -273,7 +275,8 @@ void DataArrayPathSelectionWidget::setDataArrayRequirements(DataArraySelectionFi
   ss << "<body>\n";
   ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
   ss << "<tbody>\n";
-  ss << "<tr><td colspan=2><b><i>Drag and Drop from the DataStructure</i></b></td></tr>";
+  ss << "<tr><td colspan=2><b><i>Drag and Drop from the Data Structure</i></b></td></tr>";
+  ss << "<tr><td colspan=2><b><i>Right-Click for legacy menu</i></b></td></tr>";
   ss << createGeomReqString(daReqs.dcGeometryTypes);
   ss << createAttrMatrixReqString(daReqs.amTypes);
   ss << createDataArrayTypeString(daReqs.daTypes);
