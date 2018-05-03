@@ -44,7 +44,7 @@
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
 
-#include "SVWidgetsLib/Widgets/BreakpointFilterWidget.h"
+#include "SVWidgetsLib/Widgets/FilterInputWidget.h"
 #include "SVWidgetsLib/Widgets/SVPipelineView.h"
 #include "SVWidgetsLib/Widgets/PipelineModel.h"
 

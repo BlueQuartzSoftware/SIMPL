@@ -57,8 +57,6 @@
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/Widgets/PipelineView.h"
-#include "SVWidgetsLib/Widgets/SVPipelineFilterWidget.h"
-#include "SVWidgetsLib/Widgets/SVPipelineFilterOutlineWidget.h"
 
 #include "SVWidgetsLib/QtSupport/QtSFileDragMessageBox.h"
 

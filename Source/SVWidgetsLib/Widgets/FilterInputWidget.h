@@ -78,7 +78,6 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget
 
     void clearInputWidgets();
     void displayFilterParameters(AbstractFilter::Pointer filter);
-    void removeWidgetInputs(SVPipelineFilterWidget* w);
 
   signals:
     void filterParametersChanged();

@@ -44,10 +44,6 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
-#include "SVWidgetsLib/Widgets/PipelineFilterObject.h"
-
-
-
 
 // -----------------------------------------------------------------------------
 //

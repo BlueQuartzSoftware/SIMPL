@@ -65,7 +65,6 @@
 #include "SVWidgetsLib/Core/FilterWidgetManager.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/DataContainerArrayWidget.h"
-#include "SVWidgetsLib/Widgets/SVPipelineFilterWidget.h"
 
 #if 0
 #include "ctkCollapsibleGroupBox.h"
@@ -600,15 +599,6 @@ void FilterInputWidget::clearInputWidgets()
   m_Ui->filterHumanLabel->setText("No Filter Selected");
   m_Ui->brandingLabel->clear();
   m_Ui->filterIndex->hide();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void FilterInputWidget::removeWidgetInputs(SVPipelineFilterWidget* w)
-{
-  m_VariablesWidget->setParent(w);
-  clearInputWidgets();
 }
 
 // -----------------------------------------------------------------------------

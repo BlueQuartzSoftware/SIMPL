@@ -50,9 +50,6 @@
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/DataStructureItemDelegate.h"
-#include "SVWidgetsLib/Widgets/SIMPLViewToolbox.h"
-
-
 
 // -----------------------------------------------------------------------------
 //

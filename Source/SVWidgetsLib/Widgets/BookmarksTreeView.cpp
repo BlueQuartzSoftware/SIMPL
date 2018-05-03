@@ -50,7 +50,6 @@
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/BookmarksItemDelegate.h"
-#include "SVWidgetsLib/Widgets/SIMPLViewToolbox.h"
 #include "SVWidgetsLib/QtSupport/QtSFileUtils.h"
 
 // -----------------------------------------------------------------------------

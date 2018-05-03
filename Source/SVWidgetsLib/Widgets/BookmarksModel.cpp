@@ -40,7 +40,6 @@
 
 #include "SVWidgetsLib/Widgets/BookmarksModel.h"
 #include "SVWidgetsLib/Widgets/BookmarksTreeView.h"
-#include "SVWidgetsLib/Widgets/SIMPLViewToolbox.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
 #define PREBUILT_PIPELINES_DIR "PrebuiltPipelines"
@@ -340,8 +339,7 @@ bool BookmarksModel::removeRows(int position, int rows, const QModelIndex& paren
   success = parentItem->removeChildren(position, rows);
   endRemoveRows();
 
-  SIMPLViewToolbox* toolbox = SIMPLViewToolbox::Instance();
-  toolbox->getBookmarksWidget()->writeSettings();
+  writeBookmarksToPrefsFile();
 
   return success;
 }
@@ -368,8 +366,7 @@ bool BookmarksModel::moveRows(const QModelIndex& sourceParent, int sourceRow, in
 
   endMoveRows();
 
-  SIMPLViewToolbox* toolbox = SIMPLViewToolbox::Instance();
-  toolbox->getBookmarksWidget()->writeSettings();
+  writeBookmarksToPrefsFile();
 
   return true;
 }

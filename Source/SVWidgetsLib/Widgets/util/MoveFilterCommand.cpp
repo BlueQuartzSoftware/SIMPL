@@ -35,6 +35,7 @@
 
 #include "MoveFilterCommand.h"
 
+#include "SVWidgetsLib/Widgets/FilterInputWidget.h"
 #include "SVWidgetsLib/Widgets/PipelineModel.h"
 #include "SVWidgetsLib/Widgets/SVPipelineView.h"
 
