@@ -773,7 +773,13 @@ void SVPipelineView::updateActionEnableFilter()
 int SVPipelineView::filterCount()
 {
   PipelineModel* model = getPipelineModel();
-  return model->rowCount();
+  int count = model->rowCount();
+  if (m_DropIndicatorIndex.isValid())
+  {
+    count--;
+  }
+
+  return count;
 }
 
 // -----------------------------------------------------------------------------
@@ -1061,10 +1067,22 @@ void SVPipelineView::dragMoveEvent(QDragMoveEvent* event)
 
   int itemHeight = sizeHintForRow(0);
 
+  QModelIndex lastIndex = model->index(model->rowCount() - 1, PipelineItem::Contents);
+  QRect lastIndexRect = visualRect(lastIndex);
+
   if (index.isValid() == false)
   {
-    // The drag is occurring in an empty space of the view, either between items or at the beginning or end of the list
-    int dropIndicatorRow = findPreviousRow(mousePos);
+    int dropIndicatorRow;
+    if (mousePos.y() > lastIndexRect.y())
+    {
+      // The drag is occurring in an empty space at the end of the view
+      dropIndicatorRow = filterCount();
+    }
+    else
+    {
+      // The drag is occurring in an empty space between filters
+      dropIndicatorRow = findPreviousRow(mousePos);
+    }
 
     if (m_DropIndicatorIndex.isValid() && dropIndicatorRow != m_DropIndicatorIndex.row())
     {
@@ -1149,7 +1167,7 @@ int SVPipelineView::findNextRow(const QPoint &pos)
   }
   else
   {
-    nextRow = filterCount() - 1;
+    nextRow = filterCount();
   }
 
   return nextRow;
