@@ -21,11 +21,6 @@ class SVWidgetsLib_EXPORT StatusBarButton : public QToolButton
     void paintEvent(QPaintEvent* event) override;
     
     void setFlat(bool b){};
-    
-  public slots:
-
-    void setErrorBadgeCount(int count);
-    void setWarningBadgeCount(int count);
 
   protected:
     
@@ -41,27 +36,18 @@ class SVWidgetsLib_EXPORT StatusBarButton : public QToolButton
      */
     virtual void mouseReleaseEvent( QMouseEvent* event ) override;
 
-    void updateMinimumWidth();
-
-  private:
-    int m_OriginalWidth = 0;
-    int m_ErrorBadgeCount = 0;
-    int m_WarningBadgeCount = 0;
-    int m_TextMargin = 6;
-    
-    qreal m_BorderThickness = 0.0;
-    qreal m_BorderIncrement = 1.0;
-
-    int m_BadgeWidth = 0;
-    int m_BadgeMargin = 4;
-    int m_Spacing = 3;
-    bool m_Pressed = false;
+    virtual void updateMinimumWidth();
 
     /**
-   * @brief initialize Calls all the necessary initialization code for the widget
-   * @param filter
-   */
-    void initialize();
+     * @brief getTextMargin
+     * @return
+     */
+    int getTextMargin();
+
+  private:
+    int m_TextMargin = 6;
+    
+    bool m_Pressed = false;
     
     StatusBarButton(const StatusBarButton&) = delete; // Copy Constructor Not Implemented
     void operator=(const StatusBarButton&) = delete;  // Move assignment Not Implemented

@@ -37,6 +37,7 @@ set(SVWidgetsLib_Widgets_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLViewToolbox.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarButton.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarIssuesButton.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PopUpWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/ProgressDialog.h
 )
@@ -88,6 +89,7 @@ set(SVWidgetsLib_Widgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLViewToolbox.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarButton.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarIssuesButton.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PopUpWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/ProgressDialog.cpp
   )
