@@ -59,6 +59,7 @@ public:
   * @param json
   */
   void writeJson(QJsonObject& json);
+
   /**
   * @brief Reads the ComparisonValue from JSon
   * @param json
@@ -70,11 +71,13 @@ public:
   * @return
   */
   QString getAttributeArrayName();
+
   /**
   * @brief Returns the comparison operator used
   * @return
   */
   int getCompOperator();
+
   /**
   * @brief Returns the value used by the ComparisonValue
   */
@@ -85,11 +88,13 @@ public:
   * @param name
   */
   void setAttributeArrayName(QString name);
+
   /**
   * @brief Sets the comparison operator used
   * @param compOperator
   */
   void setCompOperator(int compOperator);
+
   /**
   * @brief Sets the value used by the comparison
   * @param value
@@ -101,11 +106,19 @@ public:
   * @return
   */
   ComparisonSet::Pointer getParentSet();
+
   /**
   * @brief Changes the parent ComparisonSet
   * @param parentSet
   */
   void setParentSet(ComparisonSet::Pointer parentSet);
+
+  /**
+  * @brief Checks the comparison's DataArray options based on the renamed path. Returns true if the comparison was changed
+  * @param renamePath
+  * @return
+  */
+  bool renameDataArrayPath(DataArrayPath::RenameType renamePath) override;
 
 protected:
   QString m_attributeArrayName;

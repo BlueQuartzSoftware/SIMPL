@@ -1346,3 +1346,55 @@ int DataFormatPage::nextId() const
   // There is no "Next" page
   return -1;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataFormatPage::updateDataArrayPath(DataArrayPath::RenameType renamePath)
+{
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
+  bool hasAm = false == oldPath.getAttributeMatrixName().isEmpty();
+
+  // Get current path
+  DataArrayPath currentPath;
+  if(createAMRadio->isChecked())
+  {
+    currentPath = DataArrayPath::Deserialize(selectedDCBtn->text(), Detail::Delimiter);
+    currentPath.setAttributeMatrixName(amName->text());
+  }
+  else
+  {
+    currentPath = DataArrayPath::Deserialize(selectedAMBtn->text(), Detail::Delimiter);
+  }
+
+  // Update current path
+  if(oldPath.getDataContainerName() == currentPath.getDataContainerName())
+  {
+    if(hasAm)
+    {
+      if(oldPath.getAttributeMatrixName() == currentPath.getAttributeMatrixName())
+      {
+        currentPath.setDataContainerName(newPath.getDataContainerName());
+        currentPath.setAttributeMatrixName(newPath.getAttributeMatrixName());
+      }
+    }
+    else
+    {
+      currentPath.setDataContainerName(newPath.getDataContainerName());
+    }
+  }
+
+  // Update the widget
+  if(createAMRadio->isChecked())
+  {
+    selectedDCBtn->setText(currentPath.getDataContainerName());
+    amName->setText(currentPath.getAttributeMatrixName());
+  }
+  else
+  {
+    selectedAMBtn->setText(currentPath.serialize(Detail::Delimiter));
+  }
+}

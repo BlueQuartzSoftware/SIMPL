@@ -46,7 +46,9 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/DataContainers/DataArrayPath.h"
 
+class AbstractFilter;
 
 /**
  * @class FilterParameter FilterParameter.h DREAM3DLib/FilterParameters/FilterParameter.h
@@ -98,6 +100,13 @@ class SIMPLib_EXPORT FilterParameter
      * @return
      */
     virtual void writeJson(QJsonObject &json);
+
+    /**
+     * @brief Handle DataArrayPath changes if necessary
+     * @param filter
+     * @param renamePath
+     */
+    virtual void dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath);
 
   protected:
     FilterParameter();

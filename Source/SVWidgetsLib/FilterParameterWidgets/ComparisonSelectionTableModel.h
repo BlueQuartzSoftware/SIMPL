@@ -166,6 +166,7 @@ class SVWidgetsLib_EXPORT ComparisonSelectionTableModel : public QAbstractTableM
 
     void setNumberOfPhases(int n);
 
+    void updateFeatureName(QString oldName, QString newName);
 
   private:
     int m_ColumnCount;

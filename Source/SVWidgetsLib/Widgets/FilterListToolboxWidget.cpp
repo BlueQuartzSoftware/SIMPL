@@ -315,18 +315,32 @@ void FilterListToolboxWidget::matchFilter(QMapIterator<QString, IFilterFactory::
   {
     iter.next();
     IFilterFactory::Pointer factory = iter.value();
-    if(nullptr == factory.get())
+    if(nullptr == factory)
     {
       continue;
     }
 
     AbstractFilter::Pointer filter = factory->create();
-    if(nullptr == filter.get())
+    if(nullptr == filter)
     {
       continue;
     }
 
     QString filterHumanLabel = filter->getHumanLabel();
+    QString filterClassName = filter->getNameOfClass();
+    QString filterGroupName = filter->getGroupName();
+    QString filterSubgroupName = filter->getSubGroupName();
+    QString filterBrandingName = filter->getBrandingString();
+    QString filterCompiledLibraryName = filter->getCompiledLibraryName();
+    
+    
+    QString filterAllSearchTerms = QString("%1 %2 %3 %4 %5 %6").arg(filterHumanLabel)
+        .arg(filterClassName)
+        .arg(filterGroupName)
+        .arg(filterSubgroupName)
+        .arg(filterBrandingName)
+        .arg(filterCompiledLibraryName);
+    
     QBitArray bitArray(wordList.size(), false);
 
     int consecutiveWordsCount = 0, maxConsecutiveWordsCount = 0, consecutiveWordsStartingIndex = 0;
@@ -334,7 +348,8 @@ void FilterListToolboxWidget::matchFilter(QMapIterator<QString, IFilterFactory::
     {
       QString keyword = wordList[i];
 
-      if(filterHumanLabel.contains(keyword, Qt::CaseInsensitive) == true && filterList->findItems(filterHumanLabel, Qt::MatchExactly).size() <= 0)
+      if(filterAllSearchTerms.contains(keyword, Qt::CaseInsensitive) 
+            && filterList->findItems(filterAllSearchTerms, Qt::MatchExactly).isEmpty())
       {
         bitArray.setBit(i, true);
 
@@ -345,7 +360,7 @@ void FilterListToolboxWidget::matchFilter(QMapIterator<QString, IFilterFactory::
         }
         QString phrase = deserializeString(phraseList, ' ');
 
-        if(filterHumanLabel.contains(phrase, Qt::CaseInsensitive) && consecutiveWordsCount < phraseList.size())
+        if(filterAllSearchTerms.contains(phrase, Qt::CaseInsensitive) && consecutiveWordsCount < phraseList.size())
         {
           consecutiveWordsCount++;
         }
@@ -366,7 +381,7 @@ void FilterListToolboxWidget::matchFilter(QMapIterator<QString, IFilterFactory::
       maxConsecutiveWordsCount = consecutiveWordsCount;
     }
 
-    if(wordCountMap.contains(filter) == false && bitArray.count(true) > 0)
+    if(!wordCountMap.contains(filter) && bitArray.count(true) > 0)
     {
       wordCountMap.insert(filter, bitArray.count(true));
       relevanceMap.insert(maxConsecutiveWordsCount, filter);
@@ -478,7 +493,7 @@ void FilterListToolboxWidget::keyPressEvent(QKeyEvent* event)
 
     if(event->key() == Qt::Key_Down)
     {
-      if(selectedList.size() == 0)
+      if(selectedList.isEmpty())
       {
         filterList->setItemSelected(filterList->item(0), true);
         filterList->setFocus();
@@ -502,7 +517,7 @@ void FilterListToolboxWidget::searchFieldsChanged(bool isChecked)
 {
   QAction* senderAction = qobject_cast<QAction*>(sender());
 
-  if(isChecked == true)
+  if(isChecked)
   {
     m_ActionExactPhrase->blockSignals(true);
     m_ActionAllWords->blockSignals(true);

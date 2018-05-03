@@ -53,6 +53,13 @@ public:
 
     QString getWidgetType() const override;
 
+    /**
+     * @brief Handle DataArrayPath changes if necessary
+     * @param filter
+     * @param renamePath
+     */
+    void dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath) override;
+
   protected:
     ReadASCIIDataFilterParameter();
 

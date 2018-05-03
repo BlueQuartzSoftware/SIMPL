@@ -90,6 +90,9 @@ class SVWidgetsLib_EXPORT DataContainerCreationWidget : public FilterParameterWi
     void errorSettingFilterParameter(const QString& msg);
     void parametersChanged();
 
+  protected slots:
+    void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
+
   private:
     DataContainerCreationFilterParameter*                 m_FilterParameter;
 

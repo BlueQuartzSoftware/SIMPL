@@ -149,3 +149,27 @@ void ComparisonValueWidget::setArrayNames(QStringList names)
     arrayNameComboBox->setCurrentIndex(-1);
   }
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonValueWidget::renameDataArrayPath(DataArrayPath::RenameType renamePath)
+{
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
+  if(oldPath.getDataArrayName().isEmpty())
+  {
+    return;
+  }
+
+  int index = arrayNameComboBox->findText(oldPath.getDataArrayName());
+  if(index >= 0)
+  {
+    arrayNameComboBox->setItemText(index, newPath.getDataArrayName());
+  }
+
+  arrayNameComboBox->update();
+  arrayNameComboBox->setCurrentText(getComparisonValue()->getAttributeArrayName());
+}

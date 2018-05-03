@@ -37,6 +37,8 @@
 
 #include <QtCore/QJsonArray>
 
+#include "SIMPLib/Filtering/AbstractFilter.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -123,5 +125,52 @@ void ComparisonSelectionFilterParameter::writeJson(QJsonObject& json)
     }
 
     json[getPropertyName()] = inputsArray;
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath)
+{
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
+  ComparisonInputs inputs = m_GetterCallback();
+  bool hasChanges = false;
+
+  int count = inputs.size();
+  for(int i = 0; i < count; i++)
+  {
+    ComparisonInput_t& input = inputs.getInput(i);
+
+    bool hasAttributeMatrix = oldPath.getAttributeMatrixName().isEmpty() == false;
+    bool hasDataArray = oldPath.getDataArrayName().isEmpty() == false;
+
+    bool sameDC = input.dataContainerName == oldPath.getDataContainerName();
+    bool sameAM = input.attributeMatrixName == oldPath.getAttributeMatrixName();
+    bool sameDA = input.attributeArrayName == oldPath.getDataArrayName();
+    if(sameDC && (!hasAttributeMatrix || (sameAM && (!hasDataArray || sameDA))))
+    {
+      input.dataContainerName = newPath.getDataContainerName();
+
+      if(hasAttributeMatrix)
+      {
+        input.attributeMatrixName = newPath.getAttributeMatrixName();
+        if(hasDataArray)
+        {
+          input.attributeArrayName = newPath.getDataArrayName();
+        }
+      }
+
+      hasChanges = true;
+    }
+  }
+
+  if(hasChanges)
+  {
+    m_SetterCallback(inputs);
+    emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
 }

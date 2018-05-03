@@ -44,8 +44,8 @@
 // -----------------------------------------------------------------------------
 ComparisonSet::ComparisonSet()
 : AbstractComparison()
+, m_invertComparison(false)
 {
-  m_invertComparison = false;
 }
 
 // -----------------------------------------------------------------------------
@@ -225,4 +225,28 @@ QVector<AbstractComparison::Pointer> ComparisonSet::getComparisonValues()
   }
 
   return comparisonValues;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool ComparisonSet::renameDataArrayPath(DataArrayPath::RenameType renamePath)
+{
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
+  if(oldPath.getDataArrayName().isEmpty() || oldPath.getDataArrayName() == newPath.getDataArrayName())
+  {
+    return false;
+  }
+
+  bool updated = false;
+  QVector<AbstractComparison::Pointer> comparisons = getComparisonValues();
+  for(AbstractComparison::Pointer comparison : comparisons)
+  {
+    updated |= comparison->renameDataArrayPath(renamePath);
+  }
+
+  return updated;
 }
