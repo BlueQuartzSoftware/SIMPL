@@ -266,6 +266,9 @@ void DataStructureWidget::markNewItems()
       case DataArrayPath::DataType::DataArray:
         m_NewItemBrush.setColor(m_DaColor);
         break;
+      case DataArrayPath::DataType::None:
+        m_NewItemBrush.setColor(Qt::GlobalColor::black);
+        break;
       }
       newItem->setForeground(m_NewItemBrush);
     }
@@ -293,7 +296,6 @@ void DataStructureWidget::filterObjectActivated(PipelineFilterObject* object)
     }
   }
   refreshData();
-  update();
   markNewItems();
 }
 

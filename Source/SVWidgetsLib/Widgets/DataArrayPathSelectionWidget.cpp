@@ -152,6 +152,8 @@ const QPixmap DataArrayPathSelectionWidget::GetDragIcon(DataArrayPath::DataType 
     return *s_AttributeMatrixIcon;
   case DataArrayPath::DataType::DataArray:
     return *s_DataArrayIcon;
+  case DataArrayPath::DataType::None:
+    break;
   }
 
   return *s_BaseIcon;
@@ -172,6 +174,8 @@ const QString DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataTy
     break;
   case DataArrayPath::DataType::DataArray:
     return DataArrayPathColors::DataArray::FilterColor;
+    break;
+  case DataArrayPath::DataType::None:
     break;
   }
 
@@ -556,6 +560,8 @@ bool DataArrayPathSelectionWidget::checkPathReqs(DataArrayPath path)
     return checkAttributeMatrixReqs(path);
   case DataArrayPath::DataType::DataArray:
     return checkDataArrayReqs(path);
+  case DataArrayPath::DataType::None:
+    break;
   }
 
   return false;
@@ -739,6 +745,8 @@ void DataArrayPathSelectionWidget::enterEvent(QEvent* event)
     break;
   case DataArrayPath::DataType::DataArray:
     emit viewPathsMatchingReqs(m_DataArrayReqs);
+    break;
+  case DataArrayPath::DataType::None:
     break;
   }
 
@@ -976,6 +984,8 @@ const QString DataArrayPathSelectionWidget::getColor(Style style)
       return DataArrayPathColors::DataArray::RejectColor;
       break;
     }
+    break;
+  case DataArrayPath::DataType::None:
     break;
   }
 
