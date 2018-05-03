@@ -55,6 +55,8 @@
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
 
+#define MENU_SELECTION
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -117,10 +119,16 @@ void MultiAttributeMatrixSelectionWidget::setupGui()
   // Generate the text for the QLabel
   label->setText(getFilterParameter()->getHumanLabel());
 
+#ifdef MENU_SELECTION
   m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
 
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(dataContainerSelected(QString)));
+#endif
+
+  DataContainerSelectionFilterParameter::RequirementType reqs;
+  m_SelectedDataContainerPath->setDataContainerRequirements(reqs);
+  m_SelectedDataContainerPath->setFilter(getFilter());
 
   // Lastly, hook up the filter's signals and slots to our own signals and slots
   // Catch when the filter is about to execute the preflight
@@ -135,6 +143,10 @@ void MultiAttributeMatrixSelectionWidget::setupGui()
   // If the DataArrayPath is updated in the filter, update the widget
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
     this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
+
+  connect(m_SelectedDataContainerPath, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
+  connect(m_SelectedDataContainerPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
+  connect(m_SelectedDataContainerPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
 
   QVector<DataArrayPath> selectedPaths = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QVector<DataArrayPath>>();
   DataArrayPath amPath = DataArrayPath::GetAttributeMatrixPath(selectedPaths);
@@ -177,6 +189,7 @@ QString MultiAttributeMatrixSelectionWidget::checkStringValues(QString curDcName
 // -----------------------------------------------------------------------------
 void MultiAttributeMatrixSelectionWidget::createSelectionMenu()
 {
+#ifdef MENU_SELECTION
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
@@ -235,6 +248,7 @@ void MultiAttributeMatrixSelectionWidget::createSelectionMenu()
       dcAction->setDisabled(true);
     }
   }
+#endif
 }
 
 // -----------------------------------------------------------------------------
@@ -291,7 +305,7 @@ void MultiAttributeMatrixSelectionWidget::setSelectedPath(DataArrayPath dcPath)
   }
 
   m_SelectedDataContainerPath->setText("");
-  m_SelectedDataContainerPath->setToolTip("");
+  //m_SelectedDataContainerPath->setToolTip("");
   attributeMatricesSelectWidget->clear();
   attributeMatricesOrderWidget->clear();
 
@@ -305,7 +319,7 @@ void MultiAttributeMatrixSelectionWidget::setSelectedPath(DataArrayPath dcPath)
   {
     DataContainer::Pointer dataCon = dca->getDataContainer(dcPath);
     QString html = dataCon->getInfoString(SIMPL::HtmlFormat);
-    m_SelectedDataContainerPath->setToolTip(html);
+    //m_SelectedDataContainerPath->setToolTip(html);
     m_SelectedDataContainerPath->setText(dcPath.serialize(Detail::Delimiter));
   }
 }
@@ -560,7 +574,7 @@ void MultiAttributeMatrixSelectionWidget::beforePreflight()
     DataContainer::Pointer dc = dca->getDataContainer(DataArrayPath::Deserialize(m_SelectedDataContainerPath->text(), Detail::Delimiter));
     if(nullptr != dc.get()) {
       QString html = dc->getInfoString(SIMPL::HtmlFormat);
-      m_SelectedDataContainerPath->setToolTip(html);
+      //m_SelectedDataContainerPath->setToolTip(html);
       m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
 
       QList<QString> matrixNames = dc->getAttributeMatrixNames();

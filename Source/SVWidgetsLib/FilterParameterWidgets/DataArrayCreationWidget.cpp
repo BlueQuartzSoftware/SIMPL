@@ -51,6 +51,8 @@
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
 
+//#define MENU_SELECTION
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -120,10 +122,16 @@ void DataArrayCreationWidget::setupGui()
   // Do not allow the user to put a forward slash into the attributeMatrixName line edit
   stringEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("[^/]*"), this));
 
+#ifdef MENU_SELECTION
   m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
 
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(attributeMatrixSelected(QString)));
+#endif
+
+  AttributeMatrixSelectionFilterParameter::RequirementType req;
+  m_SelectedAttributeMatrixPath->setAttrMatrixRequirements(req);
+  m_SelectedAttributeMatrixPath->setFilter(getFilter());
 
   // Catch when the filter is about to execute the preflight
   connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
@@ -139,6 +147,10 @@ void DataArrayCreationWidget::setupGui()
   // If the DataArrayPath is updated in the filter, update the widget
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
     this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
+
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
 
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   DataArrayPath amPath(defaultPath.getDataContainerName(), defaultPath.getAttributeMatrixName(), "");
@@ -175,6 +187,7 @@ QString DataArrayCreationWidget::checkStringValues(QString curDcName, QString fi
 // -----------------------------------------------------------------------------
 void DataArrayCreationWidget::createSelectionMenu()
 {
+#ifdef MENU_SELECTION
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
@@ -271,6 +284,7 @@ void DataArrayCreationWidget::createSelectionMenu()
       dcMenu->setDisabled(true);
     }
   }
+#endif
 }
 
 // -----------------------------------------------------------------------------
@@ -335,7 +349,7 @@ void DataArrayCreationWidget::setSelectedPath(DataArrayPath amPath)
   if (amPath.isEmpty()) { return; }
 
   m_SelectedAttributeMatrixPath->setText("");
-  m_SelectedAttributeMatrixPath->setToolTip("");
+  //m_SelectedAttributeMatrixPath->setToolTip("");
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if(nullptr == dca.get())
@@ -347,7 +361,7 @@ void DataArrayCreationWidget::setSelectedPath(DataArrayPath amPath)
   {
     AttributeMatrix::Pointer am = dca->getAttributeMatrix(amPath);
     QString html = am->getInfoString(SIMPL::HtmlFormat);
-    m_SelectedAttributeMatrixPath->setToolTip(html);
+    //m_SelectedAttributeMatrixPath->setToolTip(html);
     m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
   }
 }
@@ -383,7 +397,7 @@ void DataArrayCreationWidget::afterPreflight()
     AttributeMatrix::Pointer am = dca->getAttributeMatrix(DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter));
     if (nullptr != am.get()) {
       QString html = am->getInfoString(SIMPL::HtmlFormat);
-      m_SelectedAttributeMatrixPath->setToolTip(html);
+      //m_SelectedAttributeMatrixPath->setToolTip(html);
       m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
     }
   }

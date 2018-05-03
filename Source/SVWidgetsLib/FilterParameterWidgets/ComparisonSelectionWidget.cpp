@@ -45,6 +45,8 @@
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
 
+//#define MENU_SELECTION
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -112,6 +114,10 @@ void ComparisonSelectionWidget::setupGui()
     return;
   }
 
+  AttributeMatrixSelectionFilterParameter::RequirementType reqs;
+  m_SelectedAttributeMatrixPath->setAttrMatrixRequirements(reqs);
+  m_SelectedAttributeMatrixPath->setFilter(getFilter());
+
   // Catch when the filter is about to execute the preflight
   connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
@@ -125,6 +131,10 @@ void ComparisonSelectionWidget::setupGui()
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
     this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
+
   // Create the table model
   m_ComparisonSelectionTableModel = createComparisonModel();
 
@@ -132,11 +142,13 @@ void ComparisonSelectionWidget::setupGui()
   ComparisonInputs comps = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<ComparisonInputs>();
   m_ComparisonSelectionTableModel->setTableData(comps);
 
+#ifdef MENU_SELECTION
   m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
 
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)),
             this, SLOT(attributeMatrixSelected(QString)));
+#endif
 
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedAttributeMatrixPath->setText(defaultPath.serialize(Detail::Delimiter));
@@ -390,7 +402,7 @@ void ComparisonSelectionWidget::afterPreflight()
     AttributeMatrix::Pointer am = dca->getAttributeMatrix(DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter));
     if (nullptr != am.get()) {
       QString html = am->getInfoString(SIMPL::HtmlFormat);
-      m_SelectedAttributeMatrixPath->setToolTip(html);
+      //m_SelectedAttributeMatrixPath->setToolTip(html);
       m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
     }
   }
@@ -489,7 +501,7 @@ void ComparisonSelectionWidget::setSelectedPath(DataArrayPath amPath)
   if (amPath.isEmpty()) { return; }
 
   m_SelectedAttributeMatrixPath->setText("");
-  m_SelectedAttributeMatrixPath->setToolTip("");
+  //m_SelectedAttributeMatrixPath->setToolTip("");
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if(nullptr == dca.get())
@@ -501,7 +513,7 @@ void ComparisonSelectionWidget::setSelectedPath(DataArrayPath amPath)
   {
     AttributeMatrix::Pointer am = dca->getAttributeMatrix(amPath);
     QString html = am->getInfoString(SIMPL::HtmlFormat);
-    m_SelectedAttributeMatrixPath->setToolTip(html);
+    //m_SelectedAttributeMatrixPath->setToolTip(html);
     m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
   }
 
@@ -551,6 +563,7 @@ ComparisonSelectionTableModel* ComparisonSelectionWidget::createComparisonModel(
 // -----------------------------------------------------------------------------
 void ComparisonSelectionWidget::createSelectionMenu()
 {
+#ifdef MENU_SELECTION
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
@@ -632,6 +645,7 @@ void ComparisonSelectionWidget::createSelectionMenu()
       }
     }
   }
+#endif
 }
 
 // -----------------------------------------------------------------------------
@@ -663,7 +677,7 @@ void ComparisonSelectionWidget::updateDataArrayPath(QString propertyName, DataAr
       {
         AttributeMatrix::Pointer am = dca->getAttributeMatrix(amPath);
         QString html = am->getInfoString(SIMPL::HtmlFormat);
-        m_SelectedAttributeMatrixPath->setToolTip(html);
+        //m_SelectedAttributeMatrixPath->setToolTip(html);
         m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
       }
       else

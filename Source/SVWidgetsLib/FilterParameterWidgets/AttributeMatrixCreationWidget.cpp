@@ -51,6 +51,8 @@
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
 
+//#define MENU_SELECTION
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -121,10 +123,16 @@ void AttributeMatrixCreationWidget::setupGui()
   // Do not allow the user to put a forward slash into the attributeMatrixName line edit
   stringEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("[^/]*"), this));
 
+#ifdef MENU_SELECTION
   m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
 
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(dataContainerSelected(QString)));
+#endif
+
+  DataContainerSelectionFilterParameter::RequirementType req;
+  m_SelectedDataContainerPath->setDataContainerRequirements(req);
+  m_SelectedDataContainerPath->setFilter(getFilter());
 
   // Catch when the filter is about to execute the preflight
   connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
@@ -138,6 +146,10 @@ void AttributeMatrixCreationWidget::setupGui()
   // If the DataArrayPath is updated in the filter, update the widget
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
     this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
+
+  connect(m_SelectedDataContainerPath, SIGNAL(viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType)));
+  connect(m_SelectedDataContainerPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
+  connect(m_SelectedDataContainerPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
 
   connect(stringEdit, SIGNAL(valueChanged(const QString&)), this, SIGNAL(parametersChanged()));
 
@@ -177,6 +189,7 @@ QString AttributeMatrixCreationWidget::checkStringValues(QString curDcName, QStr
 // -----------------------------------------------------------------------------
 void AttributeMatrixCreationWidget::createSelectionMenu()
 {
+#ifdef MENU_SELECTION
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
@@ -237,6 +250,7 @@ void AttributeMatrixCreationWidget::createSelectionMenu()
       dcAction->setDisabled(true);
     }
   }
+#endif
 }
 
 // -----------------------------------------------------------------------------
@@ -301,7 +315,7 @@ void AttributeMatrixCreationWidget::setSelectedPath(DataArrayPath dcPath)
   if (dcPath.isEmpty()) { return; }
 
   m_SelectedDataContainerPath->setText("");
-  m_SelectedDataContainerPath->setToolTip("");
+  //m_SelectedDataContainerPath->setToolTip("");
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if(nullptr == dca.get())
@@ -313,7 +327,7 @@ void AttributeMatrixCreationWidget::setSelectedPath(DataArrayPath dcPath)
   {
     DataContainer::Pointer dc = dca->getDataContainer(dcPath.getDataContainerName());
     QString html = dc->getInfoString(SIMPL::HtmlFormat);
-    m_SelectedDataContainerPath->setToolTip(html);
+    //m_SelectedDataContainerPath->setToolTip(html);
     m_SelectedDataContainerPath->setText(dcPath.getDataContainerName());
   }
 }
@@ -349,7 +363,7 @@ void AttributeMatrixCreationWidget::afterPreflight()
     DataContainer::Pointer dc = dca->getDataContainer(m_SelectedDataContainerPath->text());
     if (nullptr != dc.get()) {
       QString html = dc->getInfoString(SIMPL::HtmlFormat);
-      m_SelectedDataContainerPath->setToolTip(html);
+      //m_SelectedDataContainerPath->setToolTip(html);
       m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
     }
   }

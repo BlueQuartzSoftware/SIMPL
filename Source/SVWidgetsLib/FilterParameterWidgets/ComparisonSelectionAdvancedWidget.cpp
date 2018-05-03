@@ -45,6 +45,8 @@
 
 #include "SIMPLib/Filtering/ComparisonValue.h"
 
+//#define MENU_SELECTION
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -109,6 +111,10 @@ void ComparisonSelectionAdvancedWidget::setupGui()
     return;
   }
 
+  AttributeMatrixSelectionFilterParameter::RequirementType reqs;
+  m_SelectedAttributeMatrixPath->setAttrMatrixRequirements(reqs);
+  m_SelectedAttributeMatrixPath->setFilter(getFilter());
+
   // Catch when the filter is about to execute the preflight
   connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
@@ -122,6 +128,10 @@ void ComparisonSelectionAdvancedWidget::setupGui()
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
     this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
+
   // Create the Comparison Set
   comparisonSetWidget->setComparisonSet(ComparisonSet::New());
   connect(comparisonSetWidget, SIGNAL(comparisonChanged()), this, SIGNAL(parametersChanged()));
@@ -129,11 +139,13 @@ void ComparisonSelectionAdvancedWidget::setupGui()
   // Copy the data into the Comparison Set
   ComparisonInputsAdvanced comps = dynamic_cast<ComparisonSelectionAdvancedFilterParameter*>(getFilterParameter())->getGetterCallback()();
 
+#ifdef MENU_SELECTION
   m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
 
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)),
     this, SLOT(attributeMatrixSelected(QString)));
+#endif
 
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedAttributeMatrixPath->setText(defaultPath.serialize(Detail::Delimiter));
@@ -337,7 +349,7 @@ void ComparisonSelectionAdvancedWidget::afterPreflight()
     AttributeMatrix::Pointer am = dca->getAttributeMatrix(DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter));
     if (nullptr != am.get()) {
       QString html = am->getInfoString(SIMPL::HtmlFormat);
-      m_SelectedAttributeMatrixPath->setToolTip(html);
+      //m_SelectedAttributeMatrixPath->setToolTip(html);
       m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
 
       DataArrayPath path = DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter);
@@ -442,7 +454,7 @@ void ComparisonSelectionAdvancedWidget::setSelectedPath(DataArrayPath amPath)
   if (amPath.isEmpty()) { return; }
 
   m_SelectedAttributeMatrixPath->setText("");
-  m_SelectedAttributeMatrixPath->setToolTip("");
+  //m_SelectedAttributeMatrixPath->setToolTip("");
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if (nullptr == dca.get())
@@ -454,7 +466,7 @@ void ComparisonSelectionAdvancedWidget::setSelectedPath(DataArrayPath amPath)
   {
     AttributeMatrix::Pointer am = dca->getAttributeMatrix(amPath);
     QString html = am->getInfoString(SIMPL::HtmlFormat);
-    m_SelectedAttributeMatrixPath->setToolTip(html);
+    //m_SelectedAttributeMatrixPath->setToolTip(html);
     m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
 
     if (nullptr != comparisonSetWidget->getComparisonSet())
@@ -479,6 +491,7 @@ void ComparisonSelectionAdvancedWidget::presetAttributeMatrix(DataArrayPath amPa
 // -----------------------------------------------------------------------------
 void ComparisonSelectionAdvancedWidget::createSelectionMenu()
 {
+#ifdef MENU_SELECTION
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
@@ -560,6 +573,7 @@ void ComparisonSelectionAdvancedWidget::createSelectionMenu()
       }
     }
   }
+#endif
 }
 
 // -----------------------------------------------------------------------------
@@ -591,7 +605,7 @@ void ComparisonSelectionAdvancedWidget::updateDataArrayPath(QString propertyName
       {
         AttributeMatrix::Pointer am = dca->getAttributeMatrix(amPath);
         QString html = am->getInfoString(SIMPL::HtmlFormat);
-        m_SelectedAttributeMatrixPath->setToolTip(html);
+        //m_SelectedAttributeMatrixPath->setToolTip(html);
         m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
       }
       else
