@@ -55,7 +55,7 @@
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
 
-#define MENU_SELECTION
+//#define MENU_SELECTION
 
 // -----------------------------------------------------------------------------
 //
