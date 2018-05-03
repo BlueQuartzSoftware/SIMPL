@@ -150,7 +150,7 @@ void MultiAttributeMatrixSelectionWidget::setupGui()
 
   QVector<DataArrayPath> selectedPaths = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QVector<DataArrayPath>>();
   DataArrayPath amPath = DataArrayPath::GetAttributeMatrixPath(selectedPaths);
-  m_SelectedDataContainerPath->setText(amPath.serialize(Detail::Delimiter));
+  m_SelectedDataContainerPath->setText(amPath.getDataContainerName());
   for (int i=0; i<selectedPaths.size(); i++)
   {
     DataArrayPath selectedPath = selectedPaths[i];
