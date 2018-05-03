@@ -509,4 +509,5 @@ void DataArraySelectionWidget::checkFilterPath(DataArrayPath path)
 void DataArraySelectionWidget::clearPathFiltering()
 {
   setEnabled(true);
+  m_SelectedDataArrayPath->setPathFiltering(false);
 }
