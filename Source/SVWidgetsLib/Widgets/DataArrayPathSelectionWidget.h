@@ -233,6 +233,18 @@ protected:
   void dropEvent(QDropEvent* event) override;
 
   /**
+   * @brief Creates and returns the header part of the tooltip HTML
+   * @return
+   */
+  QString createTooltipHeader();
+
+  /**
+   * @brief Creates and returns the closing part of the tooltip HTML
+   * @return
+   */
+  QString createTooltipFooter();
+
+  /**
   * @brief Create the IGeometry::Type requirements part of the tooltip
   * @param geomTypes
   * @return

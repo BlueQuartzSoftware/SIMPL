@@ -228,15 +228,9 @@ void DataArrayPathSelectionWidget::setDataContainerRequirements(DataContainerSel
 
   QString html;
   QTextStream ss(&html);
-  ss << "<html><head></head>\n";
-  ss << "<body>\n";
-  ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
-  ss << "<tbody>\n";
-  ss << "<tr><td colspan=2><b><i>Drag and Drop from the Data Structure</i></b></td></tr>";
-  ss << "<tr><td colspan=2><b><i>Right-Click for legacy menu</i></b></td></tr>";
+  ss << createTooltipHeader();
   ss << createGeomReqString(dcReqs.dcGeometryTypes);
-  ss << "</tbody></table><br/>";
-  ss << "</body></html>";
+  ss << createTooltipFooter();
 
   setToolTip(html);
 }
@@ -251,16 +245,10 @@ void DataArrayPathSelectionWidget::setAttrMatrixRequirements(AttributeMatrixSele
 
   QString html;
   QTextStream ss(&html);
-  ss << "<html><head></head>\n";
-  ss << "<body>\n";
-  ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
-  ss << "<tbody>\n";
-  ss << "<tr><td colspan=2><b><i>Drag and Drop from the Data Structure</i></b></td></tr>";
-  ss << "<tr><td colspan=2><b><i>Right-Click for legacy menu</i></b></td></tr>";
+  ss << createTooltipHeader();
   ss << createGeomReqString(amReqs.dcGeometryTypes);
   ss << createAttrMatrixReqString(amReqs.amTypes);
-  ss << "</tbody></table><br/>";
-  ss << "</body></html>";
+  ss << createTooltipFooter();
 
   setToolTip(html);
 }
@@ -275,20 +263,44 @@ void DataArrayPathSelectionWidget::setDataArrayRequirements(DataArraySelectionFi
 
   QString html;
   QTextStream ss(&html);
-  ss << "<html><head></head>\n";
-  ss << "<body>\n";
-  ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
-  ss << "<tbody>\n";
-  ss << "<tr><td colspan=2><b><i>Drag and Drop from the Data Structure</i></b></td></tr>";
-  ss << "<tr><td colspan=2><b><i>Right-Click for legacy menu</i></b></td></tr>";
+  ss << createTooltipHeader();
   ss << createGeomReqString(daReqs.dcGeometryTypes);
   ss << createAttrMatrixReqString(daReqs.amTypes);
   ss << createDataArrayTypeString(daReqs.daTypes);
   ss << createComponentReqString(daReqs.componentDimensions);
+  ss << createTooltipFooter();
+
+  setToolTip(html);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString DataArrayPathSelectionWidget::createTooltipHeader()
+{
+  QString html;
+  QTextStream ss(&html);
+  ss << "<html><head></head>\n";
+  ss << "<body>\n";
+  ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
+  ss << "<tbody>\n";
+  ss << "<tr><td colspan=3><b><i>Drag and Drop from the Data Structure</i></b></td></tr>";
+  ss << "<tr><td colspan=3><b><i>Right-Click for legacy menu</i></b></td></tr>";
+
+  return html;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString DataArrayPathSelectionWidget::createTooltipFooter()
+{
+  QString html;
+  QTextStream ss(&html);
   ss << "</tbody></table><br/>";
   ss << "</body></html>";
 
-  setToolTip(html);
+  return html;
 }
 
 // -----------------------------------------------------------------------------
