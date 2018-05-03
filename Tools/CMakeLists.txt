@@ -155,7 +155,7 @@ AddSIMPLUnitTest(TESTNAME FilterParameterCallbackExample
       VERSION_PATCH ${SIMPL_VER_PATCH}
       BINARY_DIR    ${${PROJECT_NAME}_BINARY_DIR}
       COMPONENT     Tools
-      INSTALL_DEST  "}${install_dir}"
+      INSTALL_DEST  "${install_dir}"
       LINK_LIBRARIES SIMPLib
   )
 if (FALSE)
