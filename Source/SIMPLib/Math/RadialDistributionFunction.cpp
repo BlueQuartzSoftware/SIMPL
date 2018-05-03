@@ -281,7 +281,8 @@ std::vector<float> RadialDistributionFunction::GenerateRandomDistribution(float 
       }
     }
   }
-
+  
+  // Normalize the frequencies
   for(size_t i = 0; i < current_num_bins + 1; i++)
   {
     freq[i] = freq[i] / (numDistances);

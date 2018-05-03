@@ -105,10 +105,13 @@ class SIMPLib_EXPORT RadialDistributionFunction
     virtual ~RadialDistributionFunction();
 
     /**
-     * @brief GenerateRandomDistribution
+     * @brief GenerateRandomDistribution This will generate a random distribution
+     * binned up and normalized.
      * @param minDistance The minimum distance between objects
      * @param maxDistance The maximum distance between objects
      * @param numBins The number of bins to generate
+     * @param boxdims
+     * @param boxres
      * @return An array of values that are the frequency values for the histogram
      */
     static std::vector<float> GenerateRandomDistribution(float minDistance, float maxDistance, int numBins, std::vector<float> boxdims, std::vector<float> boxres);
