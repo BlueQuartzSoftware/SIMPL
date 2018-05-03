@@ -7,6 +7,7 @@
 #include <QtWidgets/QStyleOption>
 
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
 // -----------------------------------------------------------------------------
 //

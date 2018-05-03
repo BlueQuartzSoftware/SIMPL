@@ -23,7 +23,6 @@ class SVWidgetsLib_EXPORT StatusBarButton : public QToolButton
     void setFlat(bool b){};
 
   protected:
-    
     /**
      * @brief mousePressEvent
      * @param event
@@ -43,6 +42,9 @@ class SVWidgetsLib_EXPORT StatusBarButton : public QToolButton
      * @return
      */
     int getTextMargin();
+
+  signals:
+    void visibilityChanged(bool visible);
 
   private:
     int m_TextMargin = 6;

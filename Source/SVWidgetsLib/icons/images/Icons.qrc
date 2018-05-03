@@ -30,6 +30,9 @@
 
   <file>home.png</file>
   <file>home@2x.png</file>
+
+  <file>list.png</file>
+  <file>list@2x.png</file>
   
   <file>circle-x.png</file>
   <file>circle-x@2x.png</file>
