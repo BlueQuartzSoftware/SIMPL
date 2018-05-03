@@ -498,6 +498,7 @@ void DataArrayPathSelectionWidget::setDataArrayPath(DataArrayPath path)
     setText(path.serialize(Detail::Delimiter));
     resetStyle();
     emit pathChanged();
+    emit endViewPaths();
   }
   else
   {
