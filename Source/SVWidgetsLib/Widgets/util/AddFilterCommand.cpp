@@ -122,7 +122,7 @@ void AddFilterCommand::undo()
     removeFilter(filterIndex.row());
   }
 
-  emit model->pipelineDataChanged(QModelIndex());
+  emit m_PipelineView->pipelineChanged();
   emit m_PipelineView->preflightPipeline();
 
   QString statusMessage;

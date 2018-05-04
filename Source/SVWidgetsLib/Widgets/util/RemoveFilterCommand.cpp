@@ -94,6 +94,8 @@ void RemoveFilterCommand::undo()
 
   m_PipelineView->preflightPipeline();
 
+  emit m_PipelineView->pipelineChanged();
+
   QString statusMessage;
   if (m_Filters.size() > 1)
   {
@@ -156,6 +158,8 @@ void RemoveFilterCommand::redo()
   }
 
   m_PipelineView->preflightPipeline();
+
+  emit m_PipelineView->pipelineChanged();
 
   emit m_PipelineView->statusMessage(statusMessage);
   emit m_PipelineView->stdOutMessage(statusMessage);
