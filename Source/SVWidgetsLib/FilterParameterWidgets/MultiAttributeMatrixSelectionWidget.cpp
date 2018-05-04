@@ -147,10 +147,12 @@ void MultiAttributeMatrixSelectionWidget::setupGui()
   connect(m_SelectedDataContainerPath, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
   connect(m_SelectedDataContainerPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
   connect(m_SelectedDataContainerPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
+  connect(m_SelectedDataContainerPath, SIGNAL(filterPath(DataArrayPath)), this, SIGNAL(filterPath(DataArrayPath)));
 
   QVector<DataArrayPath> selectedPaths = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QVector<DataArrayPath>>();
   DataArrayPath amPath = DataArrayPath::GetAttributeMatrixPath(selectedPaths);
   m_SelectedDataContainerPath->setText(amPath.getDataContainerName());
+  m_SelectedDataContainerPath->setPropertyName(getFilterParameter()->getHumanLabel());
   for (int i=0; i<selectedPaths.size(); i++)
   {
     DataArrayPath selectedPath = selectedPaths[i];
@@ -711,4 +713,20 @@ void MultiAttributeMatrixSelectionWidget::updateDataArrayPath(QString propertyNa
 
     blockSignals(false);
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MultiAttributeMatrixSelectionWidget::checkFilterPath(DataArrayPath path)
+{
+  setEnabled(m_SelectedDataContainerPath->checkPathReqs(path));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MultiAttributeMatrixSelectionWidget::clearPathFiltering()
+{
+  setEnabled(true);
 }

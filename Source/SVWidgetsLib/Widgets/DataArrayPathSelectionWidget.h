@@ -60,7 +60,8 @@ class DataArrayPathSelectionWidget : public QToolButton
   Q_OBJECT
 
 public:
-  static const QPixmap CreateDragIcon(DataArrayPath);
+  static const QPixmap CreateDragIcon(DataArrayPath path);
+  static const QPixmap CreateDragIcon(QString text, DataArrayPath::DataType dataType);
   static const QString GetActiveColor(DataArrayPath::DataType type);
 
   DataArrayPathSelectionWidget(QWidget* parent = nullptr);
@@ -158,6 +159,18 @@ public:
   */
   QSize minimumSizeHint() const override;
 
+  /**
+  * @brief Returns the property name set for this widget
+  * @return
+  */
+  QString getPropertyName();
+
+  /**
+  * @brief Sets the property name
+  * @param propName
+  */
+  void setPropertyName(QString propName);
+
 public slots:
   /**
   * @brief Sets whether or not filtering is forced active or not
@@ -171,6 +184,7 @@ public slots:
   void resetStyle();
 
 signals:
+  void filterPath(DataArrayPath path);
   void viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs);
   void viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType amReqs);
   void viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType daReqs);
@@ -318,6 +332,7 @@ private:
   AttributeMatrixSelectionFilterParameter::RequirementType m_AttrMatrixReqs;
   DataArraySelectionFilterParameter::RequirementType m_DataArrayReqs;
   QPoint m_StartPos;
+  QString m_PropName;
 
   void performDrag();
 };

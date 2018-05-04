@@ -122,6 +122,7 @@ void DataContainerSelectionWidget::setupGui()
   connect(m_SelectedDataContainerPath, SIGNAL(viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType)));
   connect(m_SelectedDataContainerPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
   connect(m_SelectedDataContainerPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
+  connect(m_SelectedDataContainerPath, SIGNAL(filterPath(DataArrayPath)), this, SIGNAL(filterPath(DataArrayPath)));
 
   if(getFilterParameter() == nullptr)
   {
@@ -139,6 +140,7 @@ void DataContainerSelectionWidget::setupGui()
 
   QString dcName = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QString>();
   m_SelectedDataContainerPath->setText(dcName);
+  m_SelectedDataContainerPath->setPropertyName(getFilterParameter()->getHumanLabel());
 
 
   changeStyleSheet(Style::FS_STANDARD_STYLE);

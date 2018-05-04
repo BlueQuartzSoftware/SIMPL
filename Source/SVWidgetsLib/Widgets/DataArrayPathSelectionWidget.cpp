@@ -80,6 +80,14 @@ namespace DataArrayPathColors
 // -----------------------------------------------------------------------------
 const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(DataArrayPath path)
 {
+  return CreateDragIcon(path.serialize(Detail::Delimiter), path.getDataType());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(QString text, DataArrayPath::DataType dataType)
+{
   int minHeight = 26;
 
   QFont font;
@@ -90,7 +98,7 @@ const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(DataArrayPath path)
 
   QTextDocument* doc = new QTextDocument();
   doc->setDefaultFont(font);
-  doc->setPlainText("  " + path.serialize(Detail::Delimiter) + "  ");
+  doc->setPlainText("  " + text + "  ");
   qreal textWidth = doc->idealWidth();
   qreal textHeight = doc->pageSize().height();
   if(textHeight < minHeight)
@@ -104,7 +112,7 @@ const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(DataArrayPath path)
   int width = 4;
   int halfWidth = width / 2;
   QPen backgroundPen;
-  backgroundPen.setColor(GetActiveColor(path.getDataType()));
+  backgroundPen.setColor(GetActiveColor(dataType));
   backgroundPen.setWidth(width);
   QRect contentRect(halfWidth, halfWidth, textWidth - width, textHeight - width);
 
@@ -114,7 +122,7 @@ const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(DataArrayPath path)
   painter.setFont(font);
   painter.setPen(backgroundPen);
   painter.drawRoundedRect(contentRect, radius, radius);
-  painter.fillRect(contentRect, GetActiveColor(path.getDataType()));
+  painter.fillRect(contentRect, GetActiveColor(dataType));
   painter.setPen(textPen);
   painter.drawText(contentRect, Qt::AlignCenter | Qt::AlignVCenter, doc->toRawText());
 
@@ -755,6 +763,10 @@ void DataArrayPathSelectionWidget::dragEnterEvent(QDragEnterEvent* event)
   {
     return;
   }
+  if(this == event->source())
+  {
+    return;
+  }
 
   const QMimeData* mime = event->mimeData();
   QByteArray data = mime->data(SIMPLView::DragAndDrop::DataArrayPath);
@@ -835,6 +847,7 @@ void DataArrayPathSelectionWidget::performDrag()
 {
   setChecked(true);
   DataArrayPath path = getDataArrayPath();
+  emit filterPath(path);
 
   // MimeData stores the current path AND marks itself as a SelectionWidget drag 
   // for connecting to the DataStructureWidget.
@@ -844,7 +857,7 @@ void DataArrayPathSelectionWidget::performDrag()
 
   QDrag* drag = new QDrag(this);
   drag->setMimeData(mimeData);
-  drag->setPixmap(CreateDragIcon(path));
+  drag->setPixmap(CreateDragIcon(getPropertyName(), path.getDataType()));
   drag->exec(Qt::CopyAction);
 
   // drag->exec is a blocking method
@@ -1081,6 +1094,22 @@ QSize DataArrayPathSelectionWidget::minimumSizeHint() const
   QSize minHint = QToolButton::minimumSizeHint();
   minHint.setWidth(minHint.width() + 2 * minHint.height());
   return minHint;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString DataArrayPathSelectionWidget::getPropertyName()
+{
+  return m_PropName;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::setPropertyName(QString propName)
+{
+  m_PropName = propName;
 }
 
 // -----------------------------------------------------------------------------

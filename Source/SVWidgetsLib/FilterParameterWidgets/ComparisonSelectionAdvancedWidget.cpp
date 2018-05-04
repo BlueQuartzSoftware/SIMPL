@@ -131,6 +131,7 @@ void ComparisonSelectionAdvancedWidget::setupGui()
   connect(m_SelectedAttributeMatrixPath, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
   connect(m_SelectedAttributeMatrixPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
   connect(m_SelectedAttributeMatrixPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(filterPath(DataArrayPath)), this, SIGNAL(filterPath(DataArrayPath)));
 
   // Create the Comparison Set
   comparisonSetWidget->setComparisonSet(ComparisonSet::New());
@@ -149,6 +150,10 @@ void ComparisonSelectionAdvancedWidget::setupGui()
 
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedAttributeMatrixPath->setText(defaultPath.serialize(Detail::Delimiter));
+  QString matrixPropertyName = getFilterParameter()->getHumanLabel();
+  matrixPropertyName = matrixPropertyName.replace("Arrays", "Matrix");
+  matrixPropertyName = matrixPropertyName.replace("arrays", "matrix");
+  m_SelectedAttributeMatrixPath->setPropertyName(matrixPropertyName);
 
   DataArrayPath currentPath;
   currentPath.setDataContainerName(comps.getDataContainerName());
@@ -622,4 +627,20 @@ void ComparisonSelectionAdvancedWidget::updateDataArrayPath(QString propertyName
     }
     blockSignals(false);
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonSelectionAdvancedWidget::checkFilterPath(DataArrayPath path)
+{
+  setEnabled(m_SelectedAttributeMatrixPath->checkPathReqs(path));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonSelectionAdvancedWidget::clearPathFiltering()
+{
+  setEnabled(true);
 }

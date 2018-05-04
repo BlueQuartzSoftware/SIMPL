@@ -300,8 +300,12 @@ void FilterInputWidget::layoutWidgets(AbstractFilter* filter)
     connect(filterParameterWidget, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)), this, SLOT(getEmittedPathReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
     connect(filterParameterWidget, SIGNAL(viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType)), this, SLOT(getEmittedPathReqs(DataArraySelectionFilterParameter::RequirementType)));
     connect(filterParameterWidget, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
+    // Alert to DataArrayPaths from the DataStructureWidget
     connect(this, SIGNAL(filterPath(DataArrayPath)), filterParameterWidget, SLOT(checkFilterPath(DataArrayPath)));
     connect(this, SIGNAL(endPathFiltering()), filterParameterWidget, SLOT(clearPathFiltering()));
+    // Alert to DataArrayPaths from other FilterParameters
+    connect(filterParameterWidget, SIGNAL(filterPath(DataArrayPath)), this, SLOT(emitFilterPath(DataArrayPath)));
+    connect(filterParameterWidget, SIGNAL(endViewPaths()), this, SIGNAL(endPathFiltering()));
 
 
     if(nullptr == filterParameterWidget)
@@ -753,6 +757,22 @@ void FilterInputWidget::getEmittedPathReqs(DataArraySelectionFilterParameter::Re
     if(fpWidget && fpWidget != obj)
     {
       fpWidget->endViewPathRequirements();
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterInputWidget::emitFilterPath(DataArrayPath path)
+{
+  QObject* obj = this->sender();
+  for(QWidget* widget : m_PropertyToWidget)
+  {
+    FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
+    if(fpWidget && fpWidget != obj)
+    {
+      fpWidget->checkFilterPath(path);
     }
   }
 }

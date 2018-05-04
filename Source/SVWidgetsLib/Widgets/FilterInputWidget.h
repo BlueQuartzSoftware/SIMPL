@@ -101,6 +101,7 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget
     void getEmittedPathReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs);
     void getEmittedPathReqs(AttributeMatrixSelectionFilterParameter::RequirementType amReqs);
     void getEmittedPathReqs(DataArraySelectionFilterParameter::RequirementType daReqs);
+    void emitFilterPath(DataArrayPath path);
 
   private:
     QSharedPointer<Ui::FilterInputWidget> m_Ui;

@@ -150,12 +150,14 @@ void AttributeMatrixCreationWidget::setupGui()
   connect(m_SelectedDataContainerPath, SIGNAL(viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType)));
   connect(m_SelectedDataContainerPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
   connect(m_SelectedDataContainerPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
+  connect(m_SelectedDataContainerPath, SIGNAL(filterPath(DataArrayPath)), this, SIGNAL(filterPath(DataArrayPath)));
 
   connect(stringEdit, SIGNAL(valueChanged(const QString&)), this, SIGNAL(parametersChanged()));
 
   m_SelectedDataContainerPath->blockSignals(true);
   DataArrayPath amPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedDataContainerPath->setText(amPath.getDataContainerName());
+  m_SelectedDataContainerPath->setPropertyName(getFilterParameter()->getHumanLabel());
   stringEdit->setText(amPath.getAttributeMatrixName(), true);
   m_SelectedDataContainerPath->blockSignals(false);
 
@@ -390,4 +392,20 @@ void AttributeMatrixCreationWidget::filterNeedsInputParameters(AbstractFilter* f
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixCreationWidget::checkFilterPath(DataArrayPath path)
+{
+  setEnabled(m_SelectedDataContainerPath->checkPathReqs(path));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixCreationWidget::clearPathFiltering()
+{
+  setEnabled(true);
 }

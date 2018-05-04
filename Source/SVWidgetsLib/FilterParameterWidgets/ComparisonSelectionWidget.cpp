@@ -134,6 +134,7 @@ void ComparisonSelectionWidget::setupGui()
   connect(m_SelectedAttributeMatrixPath, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
   connect(m_SelectedAttributeMatrixPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
   connect(m_SelectedAttributeMatrixPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(filterPath(DataArrayPath)), this, SIGNAL(filterPath(DataArrayPath)));
 
   // Create the table model
   m_ComparisonSelectionTableModel = createComparisonModel();
@@ -152,6 +153,10 @@ void ComparisonSelectionWidget::setupGui()
 
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedAttributeMatrixPath->setText(defaultPath.serialize(Detail::Delimiter));
+  QString matrixPropertyName = getFilterParameter()->getHumanLabel();
+  matrixPropertyName = matrixPropertyName.replace("Arrays", "Matrix");
+  matrixPropertyName = matrixPropertyName.replace("arrays", "matrix");
+  m_SelectedAttributeMatrixPath->setPropertyName(matrixPropertyName);
 
 #if 0
   // is the filter parameter tied to a boolean property of the Filter Instance, if it is then we need to make the check box visible
@@ -700,4 +705,20 @@ void ComparisonSelectionWidget::updateDataArrayPath(QString propertyName, DataAr
     }
     blockSignals(false);
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonSelectionWidget::checkFilterPath(DataArrayPath path)
+{
+  setEnabled(m_SelectedAttributeMatrixPath->checkPathReqs(path));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonSelectionWidget::clearPathFiltering()
+{
+  setEnabled(true);
 }
