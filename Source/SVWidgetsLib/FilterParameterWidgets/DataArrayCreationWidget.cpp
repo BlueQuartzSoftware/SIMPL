@@ -431,6 +431,14 @@ void DataArrayCreationWidget::filterNeedsInputParameters(AbstractFilter* filter)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void DataArrayCreationWidget::endViewPathRequirements()
+{
+  m_SelectedAttributeMatrixPath->setPathFiltering(false);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataArrayCreationWidget::checkFilterPath(DataArrayPath path)
 {
   setEnabled(m_SelectedAttributeMatrixPath->checkPathReqs(path));

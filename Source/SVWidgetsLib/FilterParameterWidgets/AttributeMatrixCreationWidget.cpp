@@ -397,6 +397,14 @@ void AttributeMatrixCreationWidget::filterNeedsInputParameters(AbstractFilter* f
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void AttributeMatrixCreationWidget::endViewPathRequirements()
+{
+  m_SelectedDataContainerPath->setPathFiltering(false);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void AttributeMatrixCreationWidget::checkFilterPath(DataArrayPath path)
 {
   setEnabled(m_SelectedDataContainerPath->checkPathReqs(path));

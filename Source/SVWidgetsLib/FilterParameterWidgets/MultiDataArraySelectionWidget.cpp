@@ -760,6 +760,14 @@ void MultiDataArraySelectionWidget::updateDataArrayPath(QString propertyName, Da
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void MultiDataArraySelectionWidget::endViewPathRequirements()
+{
+  m_SelectedAttributeMatrixPath->setPathFiltering(false);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void MultiDataArraySelectionWidget::checkFilterPath(DataArrayPath path)
 {
   setEnabled(m_SelectedAttributeMatrixPath->checkPathReqs(path));

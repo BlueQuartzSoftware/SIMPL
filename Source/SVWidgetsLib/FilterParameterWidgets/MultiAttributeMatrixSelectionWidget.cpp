@@ -718,6 +718,14 @@ void MultiAttributeMatrixSelectionWidget::updateDataArrayPath(QString propertyNa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void MultiAttributeMatrixSelectionWidget::endViewPathRequirements()
+{
+  m_SelectedDataContainerPath->setPathFiltering(false);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void MultiAttributeMatrixSelectionWidget::checkFilterPath(DataArrayPath path)
 {
   setEnabled(m_SelectedDataContainerPath->checkPathReqs(path));

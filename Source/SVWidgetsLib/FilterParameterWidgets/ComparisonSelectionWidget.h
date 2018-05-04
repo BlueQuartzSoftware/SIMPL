@@ -104,6 +104,11 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
     bool eventFilter(QObject* obj, QEvent* event);
 
     /**
+    * @brief Uncheck the DataArrayPathSelectionWidget so that it does not try to filter the DataStructure
+    */
+    void endViewPathRequirements() override;
+
+    /**
     * @brief Enable the widget when the path meets requirements and disable it otherwise.
     * @param path
     */

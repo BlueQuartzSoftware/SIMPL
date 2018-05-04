@@ -733,6 +733,16 @@ void FilterInputWidget::fadeOutWidget(QWidget* widget)
 void FilterInputWidget::getEmittedPathReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs)
 {
   emit viewPathsMatchingReqs(dcReqs);
+
+  QObject* obj = this->sender();
+  for(QWidget* widget : m_PropertyToWidget)
+  {
+    FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
+    if(fpWidget && fpWidget != obj)
+    {
+      fpWidget->endViewPathRequirements();
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -741,6 +751,16 @@ void FilterInputWidget::getEmittedPathReqs(DataContainerSelectionFilterParameter
 void FilterInputWidget::getEmittedPathReqs(AttributeMatrixSelectionFilterParameter::RequirementType amReqs)
 {
   emit viewPathsMatchingReqs(amReqs);
+
+  QObject* obj = this->sender();
+  for(QWidget* widget : m_PropertyToWidget)
+  {
+    FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
+    if(fpWidget && fpWidget != obj)
+    {
+      fpWidget->endViewPathRequirements();
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------

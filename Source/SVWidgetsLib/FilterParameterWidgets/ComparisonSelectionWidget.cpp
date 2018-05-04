@@ -710,6 +710,14 @@ void ComparisonSelectionWidget::updateDataArrayPath(QString propertyName, DataAr
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void ComparisonSelectionWidget::endViewPathRequirements()
+{
+  m_SelectedAttributeMatrixPath->setPathFiltering(false);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void ComparisonSelectionWidget::checkFilterPath(DataArrayPath path)
 {
   setEnabled(m_SelectedAttributeMatrixPath->checkPathReqs(path));
