@@ -84,6 +84,18 @@ class SVWidgetsLib_EXPORT AddFilterCommand : public QUndoCommand
      */
     void removeFilter(int filterIndex);
 
+    /**
+     * @brief connectFilterSignalsSlots
+     * @param filter
+     */
+    void connectFilterSignalsSlots(AbstractFilter::Pointer filter);
+
+    /**
+     * @brief disconnectFilterSignalsSlots
+     * @param filter
+     */
+    void disconnectFilterSignalsSlots(AbstractFilter::Pointer filter);
+
     AddFilterCommand(const AddFilterCommand&) = delete; // Copy Constructor Not Implemented
     void operator=(const AddFilterCommand&) = delete;   // Move assignment Not Implemented
 };

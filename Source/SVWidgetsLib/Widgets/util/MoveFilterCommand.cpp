@@ -139,7 +139,7 @@ void MoveFilterCommand::redo()
     int filterOffset = 0;
     for(size_t i = 0; i < m_Filters.size(); i++)
     {
-      QModelIndex filterIndex = model->indexOfFilter(m_Filters[i]);
+      QModelIndex filterIndex = model->indexOfFilter(m_Filters[i].get());
 
   //    m_RemovalIndexes.push_back(filterIndex.row() + filterOffset);
 
@@ -195,12 +195,12 @@ void MoveFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertionI
 
   QModelIndex filterIndex = model->index(insertionIndex, PipelineItem::Contents);
 //  model->setData(filterIndex, filter->getHumanLabel(), Qt::DisplayRole);
-  model->setItemType(filterIndex, PipelineItem::ItemType::Filter);
+  model->setData(filterIndex, static_cast<int>(PipelineItem::ItemType::Filter), PipelineModel::ItemTypeRole);
   model->setFilter(filterIndex, filter);
 
   if (filter->getEnabled() == false)
   {
-    model->setWidgetState(filterIndex, PipelineItem::WidgetState::Disabled);
+    model->setData(filterIndex, static_cast<int>(PipelineItem::WidgetState::Disabled), PipelineModel::WidgetStateRole);
   }
 
   FilterInputWidget* fiw = model->filterInputWidget(filterIndex);

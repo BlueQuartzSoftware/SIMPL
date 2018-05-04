@@ -101,7 +101,27 @@ QVariant PipelineModel::data(const QModelIndex& index, int role) const
 
   PipelineItem* item = getItem(index);
 
-  if(role == Qt::DisplayRole)
+  if (role == PipelineModel::Roles::WidgetStateRole)
+  {
+    return static_cast<int>(item->getWidgetState());
+  }
+  else if (role == PipelineModel::Roles::ErrorStateRole)
+  {
+    return static_cast<int>(item->getErrorState());
+  }
+  else if (role == PipelineModel::Roles::PipelineStateRole)
+  {
+    return static_cast<int>(item->getPipelineState());
+  }
+  else if (role == PipelineModel::Roles::ItemTypeRole)
+  {
+    return static_cast<int>(item->getItemType());
+  }
+  else if (role == PipelineModel::Roles::ExpandedRole)
+  {
+    return item->getExpanded();
+  }
+  else if(role == Qt::DisplayRole)
   {
     return item->data(index.column());
   }
@@ -227,12 +247,12 @@ void PipelineModel::setDropIndicatorText(const QModelIndex &index, const QString
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QModelIndex PipelineModel::indexOfFilter(AbstractFilter::Pointer filter, const QModelIndex &parent)
+QModelIndex PipelineModel::indexOfFilter(AbstractFilter* filter, const QModelIndex &parent)
 {
   for (int i = 0; i < rowCount(parent); i++)
   {
     QModelIndex childIndex = index(i, PipelineItem::Contents, parent);
-    if (this->filter(childIndex) == filter)
+    if (this->filter(childIndex).get() == filter)
     {
       return childIndex;
     }
@@ -477,7 +497,36 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
 {
   PipelineItem* item = getItem(index);
 
-  if(role == Qt::DecorationRole)
+  if (role == PipelineModel::Roles::WidgetStateRole)
+  {
+    int intValue = value.toInt();
+    PipelineItem::WidgetState value = static_cast<PipelineItem::WidgetState>(intValue);
+    item->setWidgetState(value);
+  }
+  else if (role == PipelineModel::Roles::ErrorStateRole)
+  {
+    int intValue = value.toInt();
+    PipelineItem::ErrorState value = static_cast<PipelineItem::ErrorState>(intValue);
+    item->setErrorState(value);
+  }
+  else if (role == PipelineModel::Roles::PipelineStateRole)
+  {
+    int intValue = value.toInt();
+    PipelineItem::PipelineState value = static_cast<PipelineItem::PipelineState>(intValue);
+    item->setPipelineState(value);
+  }
+  else if (role == PipelineModel::Roles::ItemTypeRole)
+  {
+    int intValue = value.toInt();
+    PipelineItem::ItemType value = static_cast<PipelineItem::ItemType>(intValue);
+    item->setItemType(value);
+  }
+  else if (role == PipelineModel::Roles::ExpandedRole)
+  {
+    int expanded = value.toBool();
+    item->setExpanded(expanded);
+  }
+  else if(role == Qt::DecorationRole)
   {
     item->setIcon(value.value<QIcon>());
   }
@@ -485,9 +534,13 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
   {
     item->setItemTooltip(value.toString());
   }
-  else
+  else if (role == Qt::DisplayRole)
   {
     item->setData(index.column(), value);
+  }
+  else
+  {
+    return false;
   }
 
   emit dataChanged(index, index);
@@ -501,86 +554,6 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
 Qt::DropActions PipelineModel::supportedDropActions() const
 {
   return Qt::CopyAction | Qt::MoveAction;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-PipelineItem::WidgetState PipelineModel::widgetState(const QModelIndex &index) const
-{
-  PipelineItem* item = getItem(index);
-  return item->getWidgetState();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineModel::setWidgetState(const QModelIndex &index, PipelineItem::WidgetState state)
-{
-  PipelineItem* item = getItem(index);
-  item->setWidgetState(state);
-
-  emit dataChanged(index, index);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-PipelineItem::ErrorState PipelineModel::errorState(const QModelIndex &index) const
-{
-  PipelineItem* item = getItem(index);
-  return item->getErrorState();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineModel::setErrorState(const QModelIndex &index, PipelineItem::ErrorState state)
-{
-  PipelineItem* item = getItem(index);
-  item->setErrorState(state);
-
-  emit dataChanged(index, index);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-PipelineItem::PipelineState PipelineModel::pipelineState(const QModelIndex &index) const
-{
-  PipelineItem* item = getItem(index);
-  return item->getPipelineState();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineModel::setPipelineState(const QModelIndex &index, PipelineItem::PipelineState state)
-{
-  PipelineItem* item = getItem(index);
-  item->setPipelineState(state);
-
-  emit dataChanged(index, index);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-PipelineItem::ItemType PipelineModel::itemType(const QModelIndex &index)
-{
-  PipelineItem* item = getItem(index);
-  return item->getItemType();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineModel::setItemType(const QModelIndex &index, PipelineItem::ItemType type)
-{
-  PipelineItem* item = getItem(index);
-  item->setItemType(type);
-
-  emit dataChanged(index, index);
 }
 
 // -----------------------------------------------------------------------------
@@ -631,26 +604,6 @@ void PipelineModel::setPipelineSaved(const QModelIndex &index, bool saved)
   item->setPipelineSaved(saved);
 
   emit dataChanged(index, index);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineModel::setNeedsToBeExpanded(const QModelIndex& index, bool value)
-{
-  PipelineItem* item = getItem(index);
-  item->setExpanded(value);
-
-  emit dataChanged(index, index);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool PipelineModel::needsToBeExpanded(const QModelIndex& index)
-{
-  PipelineItem* item = getItem(index);
-  return item->getExpanded();
 }
 
 // -----------------------------------------------------------------------------

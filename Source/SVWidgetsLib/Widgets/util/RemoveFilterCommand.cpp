@@ -35,6 +35,7 @@
 
 #include "RemoveFilterCommand.h"
 
+#include "SVWidgetsLib/Widgets/FilterInputWidget.h"
 #include "SVWidgetsLib/Widgets/PipelineModel.h"
 #include "SVWidgetsLib/Widgets/SVPipelineView.h"
 
@@ -125,7 +126,7 @@ void RemoveFilterCommand::redo()
   PipelineModel* model = m_PipelineView->getPipelineModel();
   for(size_t i = 0; i < m_Filters.size(); i++)
   {
-    QModelIndex filterIndex = model->indexOfFilter(m_Filters[i]);
+    QModelIndex filterIndex = model->indexOfFilter(m_Filters[i].get());
 
     m_RemovalIndexes.push_back(filterIndex.row() + filterOffset);
 
@@ -169,22 +170,64 @@ void RemoveFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertio
 
   model->insertRow(insertionIndex);
   QModelIndex filterIndex = model->index(insertionIndex, PipelineItem::Contents);
-  model->setData(filterIndex, filter->getHumanLabel(), Qt::DisplayRole);
-  model->setItemType(filterIndex, PipelineItem::ItemType::Filter);
+  model->setData(filterIndex, static_cast<int>(PipelineItem::ItemType::Filter), PipelineModel::ItemTypeRole);
   model->setFilter(filterIndex, filter);
+
+  connectFilterSignalsSlots(filter);
 
   if (filter->getEnabled() == false)
   {
-    model->setWidgetState(filterIndex, PipelineItem::WidgetState::Disabled);
+    model->setData(filterIndex, static_cast<int>(PipelineItem::WidgetState::Disabled), PipelineModel::WidgetStateRole);
   }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RemoveFilterCommand::removeFilter(int filterIndex)
+void RemoveFilterCommand::removeFilter(int row)
 {
   PipelineModel* model = m_PipelineView->getPipelineModel();
+  QModelIndex index = model->index(row, PipelineItem::Contents);
+  AbstractFilter::Pointer filter = model->filter(index);
 
-  model->removeRow(filterIndex);
+  disconnectFilterSignalsSlots(filter);
+
+  model->removeRow(row);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RemoveFilterCommand::connectFilterSignalsSlots(AbstractFilter::Pointer filter)
+{
+  PipelineModel* model = m_PipelineView->getPipelineModel();
+  QModelIndex index = model->indexOfFilter(filter.get());
+
+  QObject::connect(filter.get(), SIGNAL(filterCompleted(AbstractFilter*)), m_PipelineView, SLOT(listenFilterCompleted(AbstractFilter*)));
+
+  QObject::connect(filter.get(), SIGNAL(filterInProgress(AbstractFilter*)), m_PipelineView, SLOT(listenFilterInProgress(AbstractFilter*)));
+
+  FilterInputWidget* fiw = model->filterInputWidget(index);
+
+  QObject::connect(fiw, &FilterInputWidget::filterParametersChanged, [=] {
+    m_PipelineView->preflightPipeline();
+    emit m_PipelineView->filterParametersChanged(filter);
+  });
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RemoveFilterCommand::disconnectFilterSignalsSlots(AbstractFilter::Pointer filter)
+{
+  PipelineModel* model = m_PipelineView->getPipelineModel();
+  QModelIndex index = model->indexOfFilter(filter.get());
+
+  QObject::disconnect(filter.get(), &AbstractFilter::filterCompleted, 0, 0);
+
+  QObject::disconnect(filter.get(), &AbstractFilter::filterInProgress, 0, 0);
+
+  FilterInputWidget* fiw = model->filterInputWidget(index);
+
+  QObject::disconnect(fiw, &FilterInputWidget::filterParametersChanged, 0, 0);
 }

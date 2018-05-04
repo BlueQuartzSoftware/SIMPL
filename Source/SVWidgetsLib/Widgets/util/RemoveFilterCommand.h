@@ -69,16 +69,27 @@ private:
   /**
    * @brief addFilter
    * @param filter
-   * @param parentIndex
+   * @param insertionIndex
    */
   void addFilter(AbstractFilter::Pointer filter, int insertionIndex = -1);
 
   /**
    * @brief removeFilter
-   * @param filterIndex
-   * @param pipelineIndex
+   * @param row
    */
-  void removeFilter(int filterIndex);
+  void removeFilter(int row);
+
+  /**
+   * @brief connectFilterSignalsSlots
+   * @param filter
+   */
+  void connectFilterSignalsSlots(AbstractFilter::Pointer filter);
+
+  /**
+   * @brief disconnectFilterSignalsSlots
+   * @param filter
+   */
+  void disconnectFilterSignalsSlots(AbstractFilter::Pointer filter);
 
   RemoveFilterCommand(const RemoveFilterCommand&) = delete; // Copy Constructor Not Implemented
   void operator=(const RemoveFilterCommand&) = delete;      // Move assignment Not Implemented

@@ -222,24 +222,6 @@ void SVPipelineView::addFilters(std::vector<AbstractFilter::Pointer> filters, in
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::moveFilter(AbstractFilter::Pointer filter, int insertIndex)
-{
-  MoveFilterCommand* cmd = new MoveFilterCommand(filter, this, insertIndex);
-  addUndoCommand(cmd);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void SVPipelineView::moveFilters(std::vector<AbstractFilter::Pointer> filters, int insertIndex)
-{
-  MoveFilterCommand* cmd = new MoveFilterCommand(filters, this, insertIndex);
-  addUndoCommand(cmd);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void SVPipelineView::removeFilter(AbstractFilter::Pointer filter)
 {
   RemoveFilterCommand* cmd = new RemoveFilterCommand(filter, this, "Remove");
@@ -253,6 +235,36 @@ void SVPipelineView::removeFilters(std::vector<AbstractFilter::Pointer> filters)
 {
   RemoveFilterCommand* cmd = new RemoveFilterCommand(filters, this, "Remove");
   addUndoCommand(cmd);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineView::listenFilterInProgress(AbstractFilter* filter)
+{
+  PipelineModel* model = getPipelineModel();
+  QModelIndex index = model->indexOfFilter(filter);
+
+  model->setData(index, static_cast<int>(PipelineItem::WidgetState::Executing), PipelineModel::WidgetStateRole);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineView::listenFilterCompleted(AbstractFilter* filter)
+{
+  PipelineModel* model = getPipelineModel();
+  QModelIndex index = model->indexOfFilter(filter);
+
+  model->setData(index, static_cast<int>(PipelineItem::WidgetState::Completed), PipelineModel::WidgetStateRole);
+  if(filter->getWarningCondition() < 0)
+  {
+    model->setData(index, static_cast<int>(PipelineItem::ErrorState::Warning), PipelineModel::ErrorStateRole);
+  }
+  if(filter->getErrorCondition() < 0)
+  {
+    model->setData(index, static_cast<int>(PipelineItem::ErrorState::Error), PipelineModel::ErrorStateRole);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -317,11 +329,11 @@ void SVPipelineView::preflightPipeline()
     QModelIndex childIndex = model->index(i, PipelineItem::Contents);
     if(childIndex.isValid())
     {
-      model->setErrorState(childIndex, PipelineItem::ErrorState::Ok);
+      model->setData(childIndex, static_cast<int>(PipelineItem::ErrorState::Ok), PipelineModel::ErrorStateRole);
       AbstractFilter::Pointer filter = model->filter(childIndex);
       if(filter->getEnabled() == true)
       {
-        model->setWidgetState(childIndex, PipelineItem::WidgetState::Ready);
+        model->setData(childIndex, static_cast<int>(PipelineItem::WidgetState::Ready), PipelineModel::WidgetStateRole);
       }
     }
   }
@@ -352,11 +364,11 @@ void SVPipelineView::preflightPipeline()
       AbstractFilter::Pointer filter = model->filter(childIndex);
       if(filter->getWarningCondition() < 0)
       {
-        model->setErrorState(childIndex, PipelineItem::ErrorState::Warning);
+        model->setData(childIndex, static_cast<int>(PipelineItem::ErrorState::Warning), PipelineModel::ErrorStateRole);
       }
       if(filter->getErrorCondition() < 0)
       {
-        model->setErrorState(childIndex, PipelineItem::ErrorState::Error);
+        model->setData(childIndex, static_cast<int>(PipelineItem::ErrorState::Error), PipelineModel::ErrorStateRole);
       }
     }
   }
@@ -509,8 +521,8 @@ FilterPipeline::Pointer SVPipelineView::getFilterPipeline()
   {    
     QModelIndex childIndex = model->index(i, PipelineItem::Contents);
 
-    PipelineItem::WidgetState widgetState = model->widgetState(childIndex);
-    if(childIndex.isValid() && widgetState != PipelineItem::WidgetState::Disabled)
+    PipelineItem::WidgetState wState = static_cast<PipelineItem::WidgetState>(model->data(childIndex, PipelineModel::WidgetStateRole).toInt());
+    if(childIndex.isValid() && wState != PipelineItem::WidgetState::Disabled)
     {
       AbstractFilter::Pointer filter = model->filter(childIndex);
       Breakpoint::Pointer breakpoint = std::dynamic_pointer_cast<Breakpoint>(filter);
@@ -752,7 +764,7 @@ void SVPipelineView::updateActionEnableFilter()
   for(int i = 0; i < count && widgetState != PipelineItem::WidgetState::Disabled; i++)
   {
     QModelIndex index = selectedIndexes[i];
-    widgetState = model->widgetState(index);
+    widgetState = static_cast<PipelineItem::WidgetState>(model->data(index, PipelineModel::WidgetStateRole).toInt());
   }
 
   // Lambda connections don't allow Qt::UniqueConnection
@@ -1072,6 +1084,8 @@ void SVPipelineView::dragMoveEvent(QDragMoveEvent* event)
   QModelIndex lastIndex = model->index(model->rowCount() - 1, PipelineItem::Contents);
   QRect lastIndexRect = visualRect(lastIndex);
 
+  PipelineItem::ItemType itemType = static_cast<PipelineItem::ItemType>(model->data(index, PipelineModel::ItemTypeRole).toInt());
+
   if (index.isValid() == false)
   {
     int dropIndicatorRow;
@@ -1096,7 +1110,7 @@ void SVPipelineView::dragMoveEvent(QDragMoveEvent* event)
       addDropIndicator(dropIndicatorText, dropIndicatorRow);
     }
   }
-  else if (model->itemType(index) == PipelineItem::ItemType::Filter)
+  else if (itemType == PipelineItem::ItemType::Filter)
   {
     // The drag is occurring on top of a filter item
     QRect indexRect = visualRect(index);
@@ -1219,7 +1233,7 @@ void SVPipelineView::addDropIndicator(const QString &text, int insertIndex)
   model->insertRow(insertIndex);
 
   QModelIndex dropIndicatorIndex = model->index(insertIndex, PipelineItem::Contents);
-  model->setItemType(dropIndicatorIndex, PipelineItem::ItemType::DropIndicator);
+  model->setData(dropIndicatorIndex, static_cast<int>(PipelineItem::ItemType::DropIndicator), PipelineModel::ItemTypeRole);
   model->setDropIndicatorText(dropIndicatorIndex, text);
 
   m_DropIndicatorIndex = dropIndicatorIndex;
@@ -1262,7 +1276,7 @@ void SVPipelineView::dropEvent(QDropEvent* event)
 
     Qt::KeyboardModifiers modifiers = QApplication::queryKeyboardModifiers();
     if (event->source() == this && modifiers.testFlag(Qt::AltModifier) == false)
-    {
+    { 
       // This is an internal move, so we need to create an Add command and add it as a child to the overall move command.
       AddFilterCommand* cmd = new AddFilterCommand(filters, this, dropRow, "Move", m_MoveCommand);
 
@@ -1400,12 +1414,12 @@ void SVPipelineView::setFiltersEnabled(QModelIndexList indexes, bool enabled)
     if (enabled == true)
     {
       filter->setEnabled(true);
-      model->setWidgetState(index, PipelineItem::WidgetState::Ready);
+      model->setData(index, static_cast<int>(PipelineItem::WidgetState::Ready), PipelineModel::WidgetStateRole);
     }
     else
     {
       filter->setEnabled(false);
-      model->setWidgetState(index, PipelineItem::WidgetState::Disabled);
+      model->setData(index, static_cast<int>(PipelineItem::WidgetState::Disabled), PipelineModel::WidgetStateRole);
     }
   }
 
@@ -1453,7 +1467,7 @@ void SVPipelineView::toReadyState()
   for(int i = 0; i < model->rowCount(); i++)
   {
     QModelIndex index = model->index(i, PipelineItem::Contents);
-    model->setWidgetState(index, PipelineItem::WidgetState::Ready);
+    model->setData(index, static_cast<int>(PipelineItem::WidgetState::Ready), PipelineModel::WidgetStateRole);
   }
 }
 
@@ -1469,7 +1483,7 @@ void SVPipelineView::toRunningState()
   for(int i = 0; i < model->rowCount(); i++)
   {
     QModelIndex index = model->index(i, PipelineItem::Contents);
-    model->setPipelineState(index, PipelineItem::PipelineState::Running);
+    model->setData(index, static_cast<int>(PipelineItem::PipelineState::Running), PipelineModel::PipelineStateRole);
     FilterInputWidget* inputWidget = model->filterInputWidget(index);
     inputWidget->toRunningState();
   }
@@ -1491,14 +1505,14 @@ void SVPipelineView::toStoppedState()
   for(int i = 0; i < model->rowCount(); i++)
   {
     QModelIndex index = model->index(i, PipelineItem::Contents);
-    model->setPipelineState(index, PipelineItem::PipelineState::Stopped);
+    model->setData(index, static_cast<int>(PipelineItem::PipelineState::Stopped), PipelineModel::PipelineStateRole);
     FilterInputWidget* inputWidget = model->filterInputWidget(index);
     AbstractFilter::Pointer filter = model->filter(index);
     inputWidget->toIdleState();
 
     if (filter->getEnabled() == true)
     {
-      model->setWidgetState(index, PipelineItem::WidgetState::Ready);
+      model->setData(index, static_cast<int>(PipelineItem::WidgetState::Ready), PipelineModel::WidgetStateRole);
     }
   }
 
@@ -1631,11 +1645,12 @@ void SVPipelineView::requestContextMenu(const QPoint& pos)
   PipelineModel* model = getPipelineModel();
   QPoint mapped;
 
-  if(model->itemType(index) == PipelineItem::ItemType::Filter)
+  PipelineItem::ItemType itemType = static_cast<PipelineItem::ItemType>(model->data(index, PipelineModel::ItemTypeRole).toInt());
+  if(itemType == PipelineItem::ItemType::Filter)
   {
     mapped = viewport()->mapToGlobal(pos);
   }
-  else if (model->itemType(index) == PipelineItem::ItemType::Pipeline)
+  else if (itemType == PipelineItem::ItemType::Pipeline)
   {
     mapped = viewport()->mapToGlobal(pos);
   }
@@ -1644,11 +1659,11 @@ void SVPipelineView::requestContextMenu(const QPoint& pos)
     mapped = mapToGlobal(pos);
   }
 
-  if(model->itemType(index) == PipelineItem::ItemType::Filter)
+  if(itemType == PipelineItem::ItemType::Filter)
   {
     requestFilterItemContextMenu(mapped, index);
   }
-  else if (model->itemType(index) == PipelineItem::ItemType::Pipeline)
+  else if (itemType == PipelineItem::ItemType::Pipeline)
   {
     requestPipelineItemContextMenu(mapped);
   }
@@ -1802,7 +1817,8 @@ void SVPipelineView::requestPipelineItemContextMenu(const QPoint &pos)
   bool allPipelines = true;
   for (int i = 0; i < selectedIndexes.size(); i++)
   {
-    if (model->itemType(selectedIndexes[i]) != PipelineItem::ItemType::Pipeline)
+    PipelineItem::ItemType itemType = static_cast<PipelineItem::ItemType>(model->data(selectedIndexes[i], PipelineModel::ItemTypeRole).toInt());
+    if (itemType != PipelineItem::ItemType::Pipeline)
     {
       allPipelines = false;
     }

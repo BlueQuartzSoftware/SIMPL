@@ -87,9 +87,9 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
 
   PipelineModel* model = m_View->getPipelineModel();
 
-  PipelineItem::WidgetState wState = model->widgetState(index);
-  PipelineItem::PipelineState pState = model->pipelineState(index);
-  PipelineItem::ErrorState eState = model->errorState(index);
+  PipelineItem::WidgetState wState = static_cast<PipelineItem::WidgetState>(model->data(index, PipelineModel::WidgetStateRole).toInt());
+  PipelineItem::PipelineState pState = static_cast<PipelineItem::PipelineState>(model->data(index, PipelineModel::PipelineStateRole).toInt());
+  PipelineItem::ErrorState eState = static_cast<PipelineItem::ErrorState>(model->data(index, PipelineModel::ErrorStateRole).toInt());
 
   AbstractFilter::Pointer filter = model->filter(index);
   QColor grpColor;
@@ -177,12 +177,15 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
 
   QColor indexFontColor(242, 242, 242);
 
-  if (model->itemType(index) == PipelineItem::ItemType::DropIndicator)
+  PipelineItem::ItemType itemType = static_cast<PipelineItem::ItemType>(model->data(index, PipelineModel::ItemTypeRole).toInt());
+  if (itemType == PipelineItem::ItemType::DropIndicator)
   {
     indexBackgroundColor = k_DropIndicatorIndexBackgroundColor;
     widgetBackgroundColor = k_DropIndicatorWidgetBackgroundColor;
     labelColor = k_DropIndicatorLabelColor;
     indexFontColor = k_DropIndicatorLabelColor;
+
+    drawButtons = false;
   }
 
   QFont font = QtSStyles::GetHumanLabelFont();
@@ -223,11 +226,6 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
   painter->setPen(QPen(indexFontColor));
   QString number = getFilterIndexString(index); // format the index number with a leading zero
   painter->drawText(rect.x() + textMargin, rect.y() + fontMargin + fontHeight, number);
-
-  if (model->itemType(index) == PipelineItem::ItemType::DropIndicator)
-  {
-    drawButtons = false;
-  }
 
   // Compute the Width to draw the text based on the visibility of the various buttons
   int fullWidth = rect.width() - indexBoxWidth;
@@ -273,7 +271,8 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
     disableBtnRect.setHeight(::k_ButtonSize);
 
     QPixmap disableBtnPixmap;
-    if (model->widgetState(index) == PipelineItem::WidgetState::Disabled)
+    PipelineItem::WidgetState wState = static_cast<PipelineItem::WidgetState>(model->data(index, PipelineModel::WidgetStateRole).toInt());
+    if (wState == PipelineItem::WidgetState::Disabled)
     {
       disableBtnPixmap = QPixmap(":/ban_red.png");
       if (painter->device()->devicePixelRatio() == 2)
@@ -306,8 +305,8 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
 
 //  QString elidedHumanLabel = fontMetrics.elidedText(m_FilterHumanLabel, Qt::ElideRight, allowableWidth);
 
-  int humanLabelWidth;
-  if (model->itemType(index) == PipelineItem::ItemType::DropIndicator)
+  int humanLabelWidth;  
+  if (itemType == PipelineItem::ItemType::DropIndicator)
   {
     QString dropIndicatorText = model->dropIndicatorText(index);
     humanLabelWidth = fontMetrics.width(dropIndicatorText);
@@ -341,12 +340,12 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
     painter->setPen(pen);
   }
 
-  if (model->itemType(index) == PipelineItem::ItemType::DropIndicator)
+  if (itemType == PipelineItem::ItemType::DropIndicator)
   {
     QString text = model->dropIndicatorText(index);
     painter->drawText(rect.x() + indexBoxWidth + textMargin, rect.y() + fontMargin + fontHeight, text);
   }
-  else if (model->itemType(index) == PipelineItem::ItemType::Filter)
+  else if (itemType == PipelineItem::ItemType::Filter)
   {
     painter->drawText(rect.x() + indexBoxWidth + textMargin, rect.y() + fontMargin + fontHeight, filter->getHumanLabel());
   }
@@ -445,12 +444,12 @@ bool PipelineItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model,
           if (enabled)
           {
             filter->setEnabled(false);
-            pipelineModel->setWidgetState(index, PipelineItem::WidgetState::Disabled);
+            model->setData(index, static_cast<int>(PipelineItem::WidgetState::Disabled), PipelineModel::WidgetStateRole);
           }
           else
           {
             filter->setEnabled(true);
-            pipelineModel->setWidgetState(index, PipelineItem::WidgetState::Ready);
+            model->setData(index, static_cast<int>(PipelineItem::WidgetState::Ready), PipelineModel::WidgetStateRole);
           }
 
           m_View->preflightPipeline();

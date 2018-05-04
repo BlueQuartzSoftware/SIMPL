@@ -59,6 +59,15 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
 
     ~PipelineModel();
 
+    enum Roles
+    {
+        WidgetStateRole = Qt::UserRole + 1,
+        ErrorStateRole,
+        PipelineStateRole,
+        ItemTypeRole,
+        ExpandedRole
+    };
+
     SIMPL_INSTANCE_PROPERTY(int, MaxNumberOfPipelines)
 
     /**
@@ -76,7 +85,7 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
     QString dropIndicatorText(const QModelIndex &index) const;
     void setDropIndicatorText(const QModelIndex &index, const QString &text);
 
-    QModelIndex indexOfFilter(AbstractFilter::Pointer filter, const QModelIndex &parent = QModelIndex());
+    QModelIndex indexOfFilter(AbstractFilter *filter, const QModelIndex &parent = QModelIndex());
 
     FilterInputWidget* filterInputWidget(const QModelIndex &index);
 
@@ -103,27 +112,12 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
 
     bool setData(const QModelIndex& index, const QVariant& value, int role) override;
 
-    PipelineItem::WidgetState widgetState(const QModelIndex &index) const;
-    void setWidgetState(const QModelIndex &index, PipelineItem::WidgetState state);
-
-    PipelineItem::ErrorState errorState(const QModelIndex &index) const;
-    void setErrorState(const QModelIndex &index, PipelineItem::ErrorState state);
-
-    PipelineItem::PipelineState pipelineState(const QModelIndex &index) const;
-    void setPipelineState(const QModelIndex &index, PipelineItem::PipelineState state);
-
-    PipelineItem::ItemType itemType(const QModelIndex &index);
-    void setItemType(const QModelIndex &index, PipelineItem::ItemType type);
-
     bool pipelineSaved(const QModelIndex &index);
     void setPipelineSaved(const QModelIndex &index, bool saved);
 
     QModelIndex getActivePipeline();
     void setActivePipeline(const QModelIndex &index, bool value);
     void clearActivePipeline();
-
-    bool needsToBeExpanded(const QModelIndex& index);
-    void setNeedsToBeExpanded(const QModelIndex& index, bool value);
 
     PipelineItem* getRootItem();
 

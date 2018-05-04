@@ -185,18 +185,6 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     void addFilters(std::vector<AbstractFilter::Pointer> filters, int insertIndex = -1);
 
     /**
-     * @brief Moves a filter to insertIndex in the current model.
-     * @param filter
-     */
-    void moveFilter(AbstractFilter::Pointer filter, int insertIndex);
-
-    /**
-     * @brief Moves multiple filters to insertIndex in the current model.
-     * @param filters
-     */
-    void moveFilters(std::vector<AbstractFilter::Pointer> filters, int insertIndex);
-
-    /**
      * @brief Removes filter from the current model
      * @param filter
      */
@@ -370,6 +358,17 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     void listenClearPipelineTriggered();
 
   private slots:
+    /**
+     * @brief listenFilterInProgress
+     * @param filter
+     */
+    void listenFilterInProgress(AbstractFilter *filter);
+
+    /**
+     * @brief listenFilterCompleted
+     */
+    void listenFilterCompleted(AbstractFilter *filter);
+
     /**
      * @brief finishPipeline
      * @param pipelineIndex
