@@ -173,6 +173,7 @@ void SVPipelineView::connectSignalsSlots()
   connect(m_ActionCut, &QAction::triggered, this, &SVPipelineView::listenCutTriggered);
   connect(m_ActionCopy, &QAction::triggered, this, &SVPipelineView::listenCopyTriggered);
   connect(m_ActionPaste, &QAction::triggered, this, &SVPipelineView::listenPasteTriggered);
+
   connect(m_ActionClearPipeline, &QAction::triggered, this, &SVPipelineView::listenClearPipelineTriggered);
 }
 
@@ -288,18 +289,22 @@ void SVPipelineView::cutFilters(std::vector<AbstractFilter::Pointer> filters)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::pasteFilter(AbstractFilter::Pointer filter)
+void SVPipelineView::pasteFilters(int insertIndex)
 {
-  AddFilterCommand* addCmd = new AddFilterCommand(filter, this, -1, "Paste");
-  addUndoCommand(addCmd);
-}
+  QClipboard* clipboard = QApplication::clipboard();
+  QString jsonString = clipboard->text();
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void SVPipelineView::pasteFilters(std::vector<AbstractFilter::Pointer> filters)
-{
-  AddFilterCommand* addCmd = new AddFilterCommand(filters, this, -1, "Paste");
+  JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
+  FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(jsonString);
+  FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
+
+  std::vector<AbstractFilter::Pointer> filters;
+  for (int i = 0; i < container.size(); i++)
+  {
+    filters.push_back(container[i]);
+  }
+
+  AddFilterCommand* addCmd = new AddFilterCommand(filters, this, insertIndex, "Paste");
   addUndoCommand(addCmd);
 }
 
@@ -688,20 +693,7 @@ std::vector<AbstractFilter::Pointer> SVPipelineView::getSelectedFilters()
 // -----------------------------------------------------------------------------
 void SVPipelineView::listenPasteTriggered()
 {  
-  QClipboard* clipboard = QApplication::clipboard();
-  QString jsonString = clipboard->text();
-
-  JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
-  FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(jsonString);
-  FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
-
-  std::vector<AbstractFilter::Pointer> filters;
-  for (int i = 0; i < container.size(); i++)
-  {
-    filters.push_back(container[i]);
-  }
-
-  pasteFilters(filters);
+  pasteFilters();
 }
 
 // -----------------------------------------------------------------------------
@@ -1688,6 +1680,21 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint &pos, const QMode
   menu.addAction(m_ActionCopy);
   menu.addSeparator();
 
+  QAction* actionPasteAbove = new QAction("Paste Above", this);
+  QAction* actionPasteBelow = new QAction("Paste Below", this);
+
+  connect(actionPasteAbove, &QAction::triggered, this, [=] {
+    pasteFilters(index.row());
+  });
+
+  connect(actionPasteBelow, &QAction::triggered, this, [=] {
+    pasteFilters(index.row() + 1);
+  });
+
+  menu.addAction(actionPasteAbove);
+  menu.addAction(actionPasteBelow);
+  menu.addSeparator();
+
   int count = selectedIndexes.size();
   bool widgetEnabled = true;
 
@@ -1798,31 +1805,9 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint &pos, const QMode
 // -----------------------------------------------------------------------------
 void SVPipelineView::requestPipelineItemContextMenu(const QPoint &pos)
 {
-  PipelineModel* model = getPipelineModel();
-  QModelIndexList selectedIndexes = selectionModel()->selectedRows();
-
-  if (selectedIndexes.size() <= 0)
-  {
-    return;
-  }
-
-  qSort(selectedIndexes);
-
-  // Build up the contextual menu
   QMenu menu;
-  menu.addAction(m_ActionCut);
-  menu.addAction(m_ActionCopy);
 
-  // Check to see if all the selected items are pipeline items
-  bool allPipelines = true;
-  for (int i = 0; i < selectedIndexes.size(); i++)
-  {
-    PipelineItem::ItemType itemType = static_cast<PipelineItem::ItemType>(model->data(selectedIndexes[i], PipelineModel::ItemTypeRole).toInt());
-    if (itemType != PipelineItem::ItemType::Pipeline)
-    {
-      allPipelines = false;
-    }
-  }
+  menu.addAction(m_ActionPaste);
 
   requestSinglePipelineContextMenu(menu);
 
@@ -1834,6 +1819,8 @@ void SVPipelineView::requestPipelineItemContextMenu(const QPoint &pos)
 // -----------------------------------------------------------------------------
 void SVPipelineView::requestSinglePipelineContextMenu(QMenu &menu)
 {
+  menu.addSeparator();
+
   menu.addAction(m_ActionClearPipeline);
 }
 

@@ -214,16 +214,10 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     void copySelectedFilters();
 
     /**
-     * @brief Pastes filter from the system clipboard to the current model
-     * @param filter
-     */
-    void pasteFilter(AbstractFilter::Pointer filter);
-
-    /**
      * @brief Pastes multiple filters from the system clipboard to the current model
-     * @param filters
+     * @param insertIndex
      */
-    void pasteFilters(std::vector<AbstractFilter::Pointer> filters);
+    void pasteFilters(int insertIndex = -1);
 
     /**
      * @brief preflightPipeline
