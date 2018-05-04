@@ -150,7 +150,7 @@ class SVWidgetsLib_EXPORT BookmarksToolboxWidget : public QWidget, private Ui::B
     * @param filePath The absolute path to the pipeline file.  If empty, the instance will not have a pipeline in it.
     * @param execute A boolean that decides whether to execute the pipeline or not
     */
-    void newSIMPLViewInstanceTriggered(const QString& filePath, bool execute = false);
+    void bookmarkActivated(const QString& filePath, bool execute = false);
 
     void updateStatusBar(const QString& msg);
 

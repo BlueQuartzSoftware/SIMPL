@@ -105,7 +105,7 @@ void BookmarksToolboxWidget::setupGui()
 
   connect(bookmarksTreeView, &BookmarksTreeView::updateStatusBar, this, &BookmarksToolboxWidget::updateStatusBar);
 
-  connect(bookmarksTreeView, &BookmarksTreeView::newSIMPLViewInstanceTriggered, this, &BookmarksToolboxWidget::newSIMPLViewInstanceTriggered);
+  connect(bookmarksTreeView, &BookmarksTreeView::newSIMPLViewInstanceTriggered, this, &BookmarksToolboxWidget::bookmarkActivated);
 
   connect(bookmarksTreeView, &BookmarksTreeView::fireWriteSettings, this, &BookmarksToolboxWidget::fireWriteSettings);
 
@@ -233,7 +233,7 @@ void BookmarksToolboxWidget::on_bookmarksTreeView_doubleClicked(const QModelInde
         model->setData(nameIndex, false, Qt::UserRole);
         model->getFileSystemWatcher()->addPath(path);
       }
-      emit newSIMPLViewInstanceTriggered(pipelinePath);
+      emit bookmarkActivated(pipelinePath);
     }
   }
 }
