@@ -500,7 +500,7 @@ QString PipelineItemDelegate::getFilterIndexString(const QModelIndex &index) con
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QPixmap PipelineItemDelegate::getPixmap(const QModelIndex &index) const
+QPixmap PipelineItemDelegate::createPixmap(const QModelIndex &index) const
 {
   QRect indexRect = m_View->visualRect(index);
 
@@ -508,6 +508,7 @@ QPixmap PipelineItemDelegate::getPixmap(const QModelIndex &index) const
   QPainter painter;
 
   QStyleOptionViewItem option;
+  indexRect.setHeight(indexRect.height() - indexRect.y());
   indexRect.setY(0);
   indexRect.setX(0);
   option.rect = indexRect;

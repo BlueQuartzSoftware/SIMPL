@@ -53,7 +53,7 @@ class SVWidgetsLib_EXPORT PipelineItemDelegate : public QStyledItemDelegate
 
     virtual ~PipelineItemDelegate();
 
-    QPixmap getPixmap(const QModelIndex &index) const;
+    QPixmap createPixmap(const QModelIndex &index) const;
 
   protected:
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;

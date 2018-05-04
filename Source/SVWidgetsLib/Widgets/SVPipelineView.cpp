@@ -862,7 +862,7 @@ QPixmap SVPipelineView::getDraggingPixmap(QModelIndexList indexes)
     return QPixmap();
   }
 
-  QPixmap indexPixmap = delegate->getPixmap(indexes[0]);
+  QPixmap indexPixmap = delegate->createPixmap(indexes[0]);
 
   int dragPixmapWidth = indexPixmap.size().width();
   int dragPixmapHeight = indexPixmap.size().height() * indexes.size() + (spacing() * (indexes.size() - 1));
@@ -876,7 +876,7 @@ QPixmap SVPipelineView::getDraggingPixmap(QModelIndexList indexes)
   int offset = 0;
   for (int i = 0; i < indexes.size(); i++)
   {
-    QPixmap currentPixmap = delegate->getPixmap(indexes[i]);
+    QPixmap currentPixmap = delegate->createPixmap(indexes[i]);
     p.drawPixmap(0, offset, currentPixmap);
     offset = offset + indexPixmap.size().height() + spacing();
   }
