@@ -60,7 +60,7 @@ class DataArrayPathSelectionWidget : public QToolButton
   Q_OBJECT
 
 public:
-  static const QPixmap GetDragIcon(DataArrayPath::DataType type);
+  static const QPixmap CreateDragIcon(DataArrayPath);
   static const QString GetActiveColor(DataArrayPath::DataType type);
 
   DataArrayPathSelectionWidget(QWidget* parent = nullptr);
@@ -318,13 +318,6 @@ private:
   AttributeMatrixSelectionFilterParameter::RequirementType m_AttrMatrixReqs;
   DataArraySelectionFilterParameter::RequirementType m_DataArrayReqs;
   QPoint m_StartPos;
-
-  static QPixmap* s_BaseIcon;
-  static QPixmap* s_DataContainerIcon;
-  static QPixmap* s_AttributeMatrixIcon;
-  static QPixmap* s_DataArrayIcon;
-
-  static void SetupDragIcons();
 
   void performDrag();
 };

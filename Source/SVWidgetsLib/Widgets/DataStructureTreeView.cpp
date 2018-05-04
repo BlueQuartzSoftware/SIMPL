@@ -192,12 +192,12 @@ void DataStructureTreeView::performDrag()
 
   QMimeData* mimeData = new QMimeData;
   mimeData->setData(SIMPLView::DragAndDrop::DataArrayPath, path.serialize().toUtf8());
-  QPixmap dragIcon = DataArrayPathSelectionWidget::GetDragIcon(dataType);
+  QPixmap dragIcon = DataArrayPathSelectionWidget::CreateDragIcon(path);
 
   m_Dragging = true;
   QDrag* drag = new QDrag(this);
   drag->setMimeData(mimeData);
-  //drag->setPixmap(dragIcon);
+  drag->setPixmap(dragIcon);
   drag->exec(Qt::CopyAction);
 
   // drag->exec is a blocking method

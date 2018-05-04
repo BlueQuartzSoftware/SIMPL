@@ -37,8 +37,9 @@
 
 #include <QtCore/QMimeData>
 #include <QtGui/QDrag>
-#include <QtWidgets/QApplication>
 #include <QtGui/QPainter>
+#include <QtGui/QTextDocument>
+#include <QtWidgets/QApplication>
 
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
@@ -73,90 +74,54 @@ namespace DataArrayPathColors
   }
 }
 
-QPixmap* DataArrayPathSelectionWidget::s_BaseIcon = nullptr;
-QPixmap* DataArrayPathSelectionWidget::s_DataContainerIcon = nullptr;
-QPixmap* DataArrayPathSelectionWidget::s_AttributeMatrixIcon = nullptr;
-QPixmap* DataArrayPathSelectionWidget::s_DataArrayIcon = nullptr;
-
-const int ICON_SIZE = 35;
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayPathSelectionWidget::SetupDragIcons()
+const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(DataArrayPath path)
 {
-  if(s_BaseIcon)
+  int minHeight = 26;
+
+  QFont font;
+  font.setBold(true);
+  font.setWeight(QFont::Bold);
+  font.setStyleStrategy(QFont::PreferAntialias);
+  font.setFamily(QtSStyles::GetUIFont());
+
+  QTextDocument* doc = new QTextDocument();
+  doc->setDefaultFont(font);
+  doc->setPlainText("  " + path.serialize(Detail::Delimiter) + "  ");
+  qreal textWidth = doc->idealWidth();
+  qreal textHeight = doc->pageSize().height();
+  if(textHeight < minHeight)
   {
-    return;
+    textHeight = minHeight;
   }
 
-  s_BaseIcon = new QPixmap(":bullet_ball_blue.png");
-  *s_BaseIcon = s_BaseIcon->scaled(ICON_SIZE, ICON_SIZE);
-  QImage baseImage = s_BaseIcon->toImage();
-  baseImage.convertToFormat(QImage::Format_Indexed8);
-  QImage dcImage = baseImage.copy();
-  QImage amImage = baseImage.copy();
-  QImage daImage = baseImage.copy();
+  QPen textPen;
+  textPen.setColor(QColor(255, 255, 255));
+  int radius = 5;
+  int width = 4;
+  int halfWidth = width / 2;
+  QPen backgroundPen;
+  backgroundPen.setColor(GetActiveColor(path.getDataType()));
+  backgroundPen.setWidth(width);
+  QRect contentRect(halfWidth, halfWidth, textWidth - width, textHeight - width);
 
-  int height = baseImage.height();
-  int width = baseImage.width();
-  for(int y = 0; y < height; y++)
-  {
-    for(int x = 0; x < width; x++)
-    {
-      QColor baseColor = baseImage.pixelColor(x, y);
-      QColor dcColor = QColor(GetActiveColor(DataArrayPath::DataType::DataContainer));
-      QColor amColor = QColor(GetActiveColor(DataArrayPath::DataType::AttributeMatrix));
-      QColor daColor = QColor(GetActiveColor(DataArrayPath::DataType::DataArray));
+  QImage image(textWidth, textHeight, QImage::Format::Format_ARGB32);
+  image.fill(QColor(0, 0, 0, 0));
+  QPainter painter(&image);
+  painter.setFont(font);
+  painter.setPen(backgroundPen);
+  painter.drawRoundedRect(contentRect, radius, radius);
+  painter.fillRect(contentRect, GetActiveColor(path.getDataType()));
+  painter.setPen(textPen);
+  painter.drawText(contentRect, Qt::AlignCenter | Qt::AlignVCenter, doc->toRawText());
 
-      int hue;
-      int saturation;
-      int lightness;
-      int alpha;
-      baseColor.getHsl(&hue, &saturation, &lightness, &alpha);
+  doc->deleteLater();
 
-      dcColor = QColor::fromHsl(dcColor.hue(), 255, lightness, alpha);
-      amColor = QColor::fromHsl(amColor.hue(), 255, lightness, alpha);
-      daColor = QColor::fromHsl(daColor.hue(), 255, lightness, alpha);
-
-      //dcColor.setAlpha(alpha);
-      //amColor.setAlpha(alpha);
-      //daColor.setAlpha(alpha);
-
-      dcImage.setPixelColor(x, y, dcColor);
-      amImage.setPixelColor(x, y, amColor);
-      daImage.setPixelColor(x, y, daColor);
-    }
-  }
-  
-  s_DataContainerIcon = new QPixmap(QPixmap::fromImage(dcImage));
-  s_AttributeMatrixIcon = new QPixmap(QPixmap::fromImage(amImage));
-  s_DataArrayIcon = new QPixmap(QPixmap::fromImage(daImage));
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-const QPixmap DataArrayPathSelectionWidget::GetDragIcon(DataArrayPath::DataType type)
-{
-  if(nullptr == s_BaseIcon)
-  {
-    SetupDragIcons();
-  }
-
-  switch(type)
-  {
-  case DataArrayPath::DataType::DataContainer:
-    return *s_DataContainerIcon;
-  case DataArrayPath::DataType::AttributeMatrix:
-    return *s_AttributeMatrixIcon;
-  case DataArrayPath::DataType::DataArray:
-    return *s_DataArrayIcon;
-  case DataArrayPath::DataType::None:
-    break;
-  }
-
-  return *s_BaseIcon;
+  QPixmap pixmap = QPixmap::fromImage(image);
+  return pixmap;
 }
 
 // -----------------------------------------------------------------------------
@@ -188,12 +153,6 @@ const QString DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataTy
 DataArrayPathSelectionWidget::DataArrayPathSelectionWidget(QWidget* parent)
   : QToolButton(parent)
 {
-  // Create drag icons if they do not already exist
-  if(nullptr == s_BaseIcon)
-  {
-    SetupDragIcons();
-  }
-
   setupGui();
 }
 
@@ -885,7 +844,7 @@ void DataArrayPathSelectionWidget::performDrag()
 
   QDrag* drag = new QDrag(this);
   drag->setMimeData(mimeData);
-  //drag->setPixmap(GetDragIcon(m_DataType));
+  drag->setPixmap(CreateDragIcon(path));
   drag->exec(Qt::CopyAction);
 
   // drag->exec is a blocking method
