@@ -197,8 +197,7 @@ void DataStructureTreeView::performDrag()
   m_Dragging = true;
   QDrag* drag = new QDrag(this);
   drag->setMimeData(mimeData);
-  drag->setPixmap(dragIcon);
-  //drag->setDragCursor(dragIcon, Qt::DropAction::CopyAction);
+  //drag->setPixmap(dragIcon);
   drag->exec(Qt::CopyAction);
 
   // drag->exec is a blocking method

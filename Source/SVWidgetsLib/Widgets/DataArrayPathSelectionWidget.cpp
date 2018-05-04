@@ -885,8 +885,7 @@ void DataArrayPathSelectionWidget::performDrag()
 
   QDrag* drag = new QDrag(this);
   drag->setMimeData(mimeData);
-  drag->setPixmap(GetDragIcon(m_DataType));
-  //drag->setDragCursor(GetDragIcon(m_DataType), Qt::DropAction::CopyAction);
+  //drag->setPixmap(GetDragIcon(m_DataType));
   drag->exec(Qt::CopyAction);
 
   // drag->exec is a blocking method
