@@ -6,26 +6,26 @@ function(CreatePybind11Module)
   set(multiValueArgs )
   cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
   if(ARGS_VERBOSE)
-    message(STATUS "## START CreatePybind11Module")
+  message(STATUS "[${pybind_module_name}] ## End CreatePybind11Module ")
   endif()
   # --------------------------------------------------------------------------
   # Find the Pybind11 installation
   set(PYBIND11_PYTHON_VERSION "3")
   find_package(pybind11 CONFIG REQUIRED)
   if(ARGS_VERBOSE)
-    message(STATUS "PYTHON_EXECUTABLE: ${PYTHON_EXECUTABLE}")
-    message(STATUS "Found pybind11 v${pybind11_VERSION}: ${pybind11_INCLUDE_DIRS}")
-    message(STATUS "PYTHONLIBS_FOUND: ${PYTHONLIBS_FOUND}")
-    message(STATUS "PYTHON_PREFIX: ${PYTHON_PREFIX}")
-    message(STATUS "PYTHON_LIBRARIES: ${PYTHON_LIBRARIES}")
-    message(STATUS "PYTHON_INCLUDE_DIRS: ${PYTHON_INCLUDE_DIRS}")
-    message(STATUS "PYTHON_MODULE_EXTENSION: ${PYTHON_MODULE_EXTENSION}")
-    message(STATUS "PYTHON_MODULE_PREFIX: ${PYTHON_MODULE_PREFIX}")
-    message(STATUS "PYTHON_SITE_PACKAGES: ${PYTHON_SITE_PACKAGES}")
-    message(STATUS "PYTHON_IS_DEBUG: ${PYTHON_IS_DEBUG}")
+    message(STATUS "[${pybind_module_name}] PYTHON_EXECUTABLE: ${PYTHON_EXECUTABLE}")
+    message(STATUS "[${pybind_module_name}] Found pybind11 v${pybind11_VERSION}: ${pybind11_INCLUDE_DIRS}")
+    message(STATUS "[${pybind_module_name}] PYTHONLIBS_FOUND: ${PYTHONLIBS_FOUND}")
+    message(STATUS "[${pybind_module_name}] PYTHON_PREFIX: ${PYTHON_PREFIX}")
+    message(STATUS "[${pybind_module_name}] PYTHON_LIBRARIES: ${PYTHON_LIBRARIES}")
+    message(STATUS "[${pybind_module_name}] PYTHON_INCLUDE_DIRS: ${PYTHON_INCLUDE_DIRS}")
+    message(STATUS "[${pybind_module_name}] PYTHON_MODULE_EXTENSION: ${PYTHON_MODULE_EXTENSION}")
+    message(STATUS "[${pybind_module_name}] PYTHON_MODULE_PREFIX: ${PYTHON_MODULE_PREFIX}")
+    message(STATUS "[${pybind_module_name}] PYTHON_SITE_PACKAGES: ${PYTHON_SITE_PACKAGES}")
+    message(STATUS "[${pybind_module_name}] PYTHON_IS_DEBUG: ${PYTHON_IS_DEBUG}")
   endif()
   if(NOT pybind11_FOUND)
-    message(FATAL_ERROR "pybind11 is REQUIRED to build the SIMPL Python bindings")
+    message(FATAL_ERROR "[${pybind_module_name}] pybind11 is REQUIRED to build the SIMPL Python bindings")
   endif()
 
   # Give our module a name. Python standards dictate ALL lowercase for the module name
@@ -50,15 +50,17 @@ function(CreatePybind11Module)
   # Now compile the Python module using pybind11 cmake functions
   # Note the name of source file is also explicitly used in the CodeScraper program. If you change
   # the name below you need to update the CodeScraper program
+
+  set(pybind_module_file_name "${ARGS_BINARY_DIR}/Wrapping/PythonCore/${pybind_module_name}_pybind11_module.cxx")
   pybind11_add_module(${pybind_module_name}
-      "${ARGS_BINARY_DIR}/Wrapping/PythonCore/${pybind_module_name}_pybind11_module.cxx"
+      ${pybind_module_file_name}
       )
 
-  if(NOT EXISTS "${ARGS_BINARY_DIR}/Wrapping/PythonCore/${pybind_module_name}_pybind11_module.cxx")
-    FILE(WRITE "${ARGS_BINARY_DIR}/Wrapping/PythonCore/${pybind_module_name}_pybind11_module.cxx" "/* Pybind11 Module code */\n") 
+  if(NOT EXISTS "${pybind_module_file_name}")
+    FILE(WRITE "${pybind_module_file_name}" "/* Pybind11 Module code */\n") 
   endif()
 
-  set_source_files_properties("${ARGS_BINARY_DIR}/Wrapping/PythonCore/${pybind_module_name}_pybind11_module.cxx"
+  set_source_files_properties("${pybind_module_file_name}"
                                 PROPERTIES  
                                     #GENERATED TRUE
                                     SKIP_AUTOMOC ON)
@@ -84,12 +86,33 @@ function(CreatePybind11Module)
   endif()
 
                                             
-  install (TARGETS ${pybind_module_name} 
-            DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages
-          )
+  # install (TARGETS ${pybind_module_name} 
+  #           DESTINATION ./lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages
+  # )
   
+  set(install_dir "bin")
+  set(lib_install_dir "lib")
+
+  if(APPLE)
+    get_property(DREAM3D_PACKAGE_DEST_PREFIX GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX)
+    set(install_dir "${DREAM3D_PACKAGE_DEST_PREFIX}bin")
+    set(lib_install_dir "${DREAM3D_PACKAGE_DEST_PREFIX}lib")
+  elseif(WIN32)
+    set(install_dir ".")
+    set(lib_install_dir ".")
+  endif()
+
+
+  INSTALL(TARGETS ${pybind_module_name}
+      COMPONENT Applications
+      RUNTIME DESTINATION ${install_dir}/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages
+      LIBRARY DESTINATION ${lib_install_dir}/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages
+      ARCHIVE DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages
+      BUNDLE DESTINATION "."
+  )
+
   if(ARGS_VERBOSE)
-    message(STATUS "## END CreatePybind11Module")
+    message(STATUS "[${pybind_module_name}] ## End CreatePybind11Module ")
   endif()
 
 endfunction()
