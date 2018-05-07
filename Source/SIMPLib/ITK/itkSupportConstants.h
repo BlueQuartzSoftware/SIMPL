@@ -46,8 +46,6 @@
 
 #include "SIMPLib/DataArrays/DataArray.hpp"
 
-#include "ImageProcessing/ImageProcessingConfig.h"
-
 /**
  * @brief This namespace is used to define some Constants for the plugin itself.
  */
