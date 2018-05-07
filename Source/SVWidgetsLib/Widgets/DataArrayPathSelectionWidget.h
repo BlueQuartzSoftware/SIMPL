@@ -315,6 +315,13 @@ protected:
   */
   QMenu* createSelectionMenu();
 
+  /**
+  * @brief Returns true if the given path is created by this filter. Returns false otherwise.
+  * @param path
+  * @return
+  */
+  bool isCreatedPath(DataArrayPath path);
+
 protected slots:
   /**
   * @brief Show the legacy menu when right-clicking

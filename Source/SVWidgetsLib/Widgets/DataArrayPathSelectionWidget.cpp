@@ -1193,6 +1193,15 @@ void DataArrayPathSelectionWidget::setPropertyName(QString propName)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+bool DataArrayPathSelectionWidget::isCreatedPath(DataArrayPath path)
+{
+  std::list<DataArrayPath> createdPaths = m_Filter->getCreatedPaths();
+  return std::find(createdPaths.begin(), createdPaths.end(), path) != createdPaths.end();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::showContextMenu(const QPoint& pos)
 {
   createSelectionMenu()->exec(mapToGlobal(pos));
@@ -1222,6 +1231,10 @@ QMenu* DataArrayPathSelectionWidget::createSelectionMenu()
   for(DataContainer::Pointer dc : containers)
   {
     path.setDataContainerName(dc->getName());
+    if(isCreatedPath(path))
+    {
+      continue;
+    }
 
     if(DataArrayPath::DataType::DataContainer == m_DataType)
     {
@@ -1239,6 +1252,10 @@ QMenu* DataArrayPathSelectionWidget::createSelectionMenu()
       for(AttributeMatrix::Pointer am : attrMats)
       {
         path.setAttributeMatrixName(am->getName());
+        if(isCreatedPath(path))
+        {
+          continue;
+        }
 
         // Populate DataContainer menu
         if(DataArrayPath::DataType::AttributeMatrix == m_DataType)
@@ -1263,6 +1280,10 @@ QMenu* DataArrayPathSelectionWidget::createSelectionMenu()
           for(QString daName : attrArrayNames)
           {
             path.setDataArrayName(daName);
+            if(isCreatedPath(path))
+            {
+              continue;
+            }
 
             QAction* action = amMenu->addAction(daName);
             action->setEnabled(checkPathReqs(path));
