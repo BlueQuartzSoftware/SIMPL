@@ -285,6 +285,7 @@ void DataStructureWidget::filterObjectActivated(PipelineFilterObject* object)
   if(object)
   {
     m_Filter = object->getFilter();
+    m_Ui->dataBrowserTreeView->setActiveFilter(m_Filter);
     if(m_Filter.get())
     {
       DataContainerArray::Pointer dca = m_Filter->getDataContainerArray();
