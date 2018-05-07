@@ -56,6 +56,7 @@ class SIMPLib_EXPORT Observable : public QObject
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(Observable)
+    PYB11_METHOD(void notifyErrorMessage ARGS humanLabel ss code)
 
   public:
     SIMPL_TYPE_MACRO(Observable)
