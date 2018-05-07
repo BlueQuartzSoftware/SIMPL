@@ -77,6 +77,14 @@ DataStructureTreeView::~DataStructureTreeView() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void DataStructureTreeView::setActiveFilter(AbstractFilter::Pointer filter)
+{
+  m_Filter = filter;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 DataArrayPath DataStructureTreeView::getDataArrayPath(QModelIndex index)
 {
   DataArrayPath path;
@@ -189,6 +197,13 @@ void DataStructureTreeView::performDrag()
 
   DataArrayPath path = getDataArrayPath(index);
   DataArrayPath::DataType dataType = path.getDataType();
+
+  // Do not allow dragging paths created by the current filter
+  std::list<DataArrayPath> createdPaths = m_Filter->getCreatedPaths();
+  if(std::find(createdPaths.begin(), createdPaths.end(), path) != createdPaths.end())
+  {
+    return;
+  }
 
   QMimeData* mimeData = new QMimeData;
   mimeData->setData(SIMPLView::DragAndDrop::DataArrayPath, path.serialize().toUtf8());

@@ -170,10 +170,18 @@ protected:
    */
   QStandardItem* findItemByPath(DataArrayPath path);
 
+  /**
+  * @brief Returns true if the given path is created by the current filter.  Returns false otherwise.
+  * @param path
+  * @return
+  */
+  bool isCreatedPath(DataArrayPath path);
+
 private:
   DataContainerArray::Pointer  m_Dca = nullptr;
   std::list<DataArrayPath> m_CreatedPaths;
   QSharedPointer<Ui::DataStructureWidget>       m_Ui;
+  AbstractFilter::Pointer m_Filter = nullptr;
   QBrush m_CompliantBrush;
   QBrush m_CompliantBgBrush;
   QBrush m_NoncompliantBrush;

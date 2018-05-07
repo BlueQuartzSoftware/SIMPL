@@ -284,14 +284,14 @@ void DataStructureWidget::filterObjectActivated(PipelineFilterObject* object)
   m_CreatedPaths.clear();
   if(object)
   {
-    AbstractFilter::Pointer filter = object->getFilter();
-    if(filter.get())
+    m_Filter = object->getFilter();
+    if(m_Filter.get())
     {
-      DataContainerArray::Pointer dca = filter->getDataContainerArray();
+      DataContainerArray::Pointer dca = m_Filter->getDataContainerArray();
       if(dca.get())
       {
         m_Dca = dca->deepCopy(true);
-        m_CreatedPaths = filter->getCreatedPaths();
+        m_CreatedPaths = m_Filter->getCreatedPaths();
       }
     }
   }
@@ -401,6 +401,15 @@ void DataStructureWidget::removeNonexistingEntries(QStandardItem* rootItem, QLis
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+bool DataStructureWidget::isCreatedPath(DataArrayPath path)
+{
+  std::list<DataArrayPath> createdPaths = m_Filter->getCreatedPaths();
+  return std::find(createdPaths.begin(), createdPaths.end(), path) != createdPaths.end();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataStructureWidget::setViewReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs)
 {
   // Filter DataArrayPaths
@@ -420,7 +429,7 @@ void DataStructureWidget::setViewReqs(DataContainerSelectionFilterParameter::Req
 
     bool geomType = dcReqs.dcGeometryTypes.size() == 0 || (geom && dcReqs.dcGeometryTypes.contains(geom->getGeometryType()));
 
-    if(geomType)
+    if(geomType && false == isCreatedPath(path))
     {
       dcItem->setForeground(m_CompliantBrush);
       dcItem->setBackground(m_CompliantBgBrush);
@@ -480,7 +489,7 @@ void DataStructureWidget::setViewReqs(AttributeMatrixSelectionFilterParameter::R
       bool amType = amReqs.amTypes.size() == 0 || (am && amReqs.amTypes.contains(am->getType()));
       bool geomType = amReqs.dcGeometryTypes.size() == 0 || (geom && amReqs.dcGeometryTypes.contains(geom->getGeometryType()));
 
-      if(amType && geomType)
+      if(amType && geomType && false == isCreatedPath(path))
       {
         amItem->setForeground(m_CompliantBrush);
         amItem->setBackground(m_CompliantBgBrush);
@@ -542,7 +551,7 @@ void DataStructureWidget::setViewReqs(DataArraySelectionFilterParameter::Require
         bool daType = daReqs.daTypes.size() == 0 || (da && daReqs.daTypes.contains(da->getTypeAsString()));
         bool geomType = daReqs.dcGeometryTypes.size() == 0 || (geom && daReqs.dcGeometryTypes.contains(geom->getGeometryType()));
 
-        if(amType && compDims && daType && geomType)
+        if(amType && compDims && daType && geomType && false == isCreatedPath(path))
         {
           daItem->setForeground(m_CompliantBrush);
           daItem->setBackground(m_CompliantBgBrush);

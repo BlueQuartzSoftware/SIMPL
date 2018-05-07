@@ -537,6 +537,14 @@ bool DataArrayPathSelectionWidget::checkCurrentPath()
 // -----------------------------------------------------------------------------
 bool DataArrayPathSelectionWidget::checkPathReqs(DataArrayPath path)
 {
+  // Do not allow DataArrayPaths created by the current filter to be used as inputs for that same filter.
+  std::list<DataArrayPath> createdPaths = m_Filter->getCreatedPaths();
+  if(std::find(createdPaths.begin(), createdPaths.end(), path) != createdPaths.end())
+  {
+    return false;
+  }
+
+  // Check requirements
   switch(m_DataType)
   {
   case DataArrayPath::DataType::DataContainer:
