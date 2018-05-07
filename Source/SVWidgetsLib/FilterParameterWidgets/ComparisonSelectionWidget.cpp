@@ -381,8 +381,6 @@ void ComparisonSelectionWidget::beforePreflight()
   {
     populateButtonText();
   }
-
-  createSelectionMenu();
 }
 
 // -----------------------------------------------------------------------------
