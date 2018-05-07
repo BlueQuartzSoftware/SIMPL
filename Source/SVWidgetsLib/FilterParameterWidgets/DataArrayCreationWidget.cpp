@@ -243,6 +243,8 @@ void DataArrayCreationWidget::beforePreflight()
     // std::cout << "***  DataArrayCreationWidget already caused a preflight, just returning" << std::endl;
     return;
   }
+
+  m_SelectedAttributeMatrixPath->beforePreflight();
 }
 
 // -----------------------------------------------------------------------------

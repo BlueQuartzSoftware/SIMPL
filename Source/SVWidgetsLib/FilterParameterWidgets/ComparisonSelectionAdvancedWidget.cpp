@@ -300,6 +300,8 @@ void ComparisonSelectionAdvancedWidget::beforePreflight()
   {
     populateButtonText();
   }
+
+  m_SelectedAttributeMatrixPath->beforePreflight();
 }
 
 // -----------------------------------------------------------------------------

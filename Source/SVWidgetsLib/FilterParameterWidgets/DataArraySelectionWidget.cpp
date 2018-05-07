@@ -241,6 +241,8 @@ void DataArraySelectionWidget::beforePreflight()
     // std::cout << "***  DataArraySelectionWidget already caused a preflight, just returning" << std::endl;
     return;
   }
+
+  m_SelectedDataArrayPath->beforePreflight();
 }
 
 // -----------------------------------------------------------------------------

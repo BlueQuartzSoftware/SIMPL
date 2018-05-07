@@ -520,6 +520,8 @@ void MultiDataArraySelectionWidget::beforePreflight()
       }
     }
   }
+
+  m_SelectedAttributeMatrixPath->beforePreflight();
 }
 
 // -----------------------------------------------------------------------------

@@ -908,6 +908,14 @@ void DataArrayPathSelectionWidget::setFilter(AbstractFilter* filter)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::beforePreflight()
+{
+  m_SelectionMenu = createSelectionMenu();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::afterPreflight()
 {
   if(false == m_Filter && m_Filter->getDataContainerArray())
@@ -1204,7 +1212,12 @@ bool DataArrayPathSelectionWidget::isCreatedPath(DataArrayPath path)
 // -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::showContextMenu(const QPoint& pos)
 {
-  createSelectionMenu()->exec(mapToGlobal(pos));
+  if(nullptr == m_SelectionMenu)
+  {
+    m_SelectionMenu = createSelectionMenu();
+  }
+
+  m_SelectionMenu->exec(mapToGlobal(pos));
 }
 
 // -----------------------------------------------------------------------------

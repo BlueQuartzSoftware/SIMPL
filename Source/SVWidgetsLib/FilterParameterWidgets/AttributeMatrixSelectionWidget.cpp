@@ -225,6 +225,8 @@ void AttributeMatrixSelectionWidget::beforePreflight()
     // std::cout << "***  AttributeMatrixSelectionWidget already caused a preflight, just returning" << std::endl;
     return;
   }
+
+  m_SelectedAttributeMatrixPath->beforePreflight();
 }
 
 // -----------------------------------------------------------------------------

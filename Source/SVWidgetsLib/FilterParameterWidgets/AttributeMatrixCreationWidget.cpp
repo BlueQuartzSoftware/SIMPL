@@ -247,6 +247,8 @@ void AttributeMatrixCreationWidget::beforePreflight()
     // std::cout << "***  AttributeMatrixCreationWidget already caused a preflight, just returning" << std::endl;
     return;
   }
+
+  m_SelectedDataContainerPath->beforePreflight();
 }
 
 // -----------------------------------------------------------------------------

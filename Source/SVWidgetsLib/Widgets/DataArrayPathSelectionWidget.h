@@ -155,6 +155,11 @@ public:
   void setFilter(AbstractFilter* filter);
 
   /**
+   * @brief Handles operations performed before Preflight()
+   */
+  void beforePreflight();
+
+  /**
   * @brief Checks path validity
   */
   void afterPreflight();
@@ -345,6 +350,7 @@ private:
   DataArraySelectionFilterParameter::RequirementType m_DataArrayReqs;
   QPoint m_StartPos;
   QString m_PropName;
+  QMenu* m_SelectionMenu = nullptr;
 
   void performDrag();
 };

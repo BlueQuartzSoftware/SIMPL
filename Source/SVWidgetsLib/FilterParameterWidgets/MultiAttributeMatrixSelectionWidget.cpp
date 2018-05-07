@@ -515,6 +515,8 @@ void MultiAttributeMatrixSelectionWidget::beforePreflight()
       }
     }
   }
+
+  m_SelectedDataContainerPath->beforePreflight();
 }
 
 // -----------------------------------------------------------------------------

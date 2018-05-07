@@ -235,6 +235,8 @@ void DataContainerSelectionWidget::beforePreflight()
     // std::cout << "***  DataContainerSelectionWidget already caused a preflight, just returning" << std::endl;
     return;
   }
+
+  m_SelectedDataContainerPath->beforePreflight();
 }
 
 // -----------------------------------------------------------------------------
