@@ -118,12 +118,6 @@ class SVWidgetsLib_EXPORT AttributeMatrixSelectionWidget : public FilterParamete
 
     void attributeMatrixSelected(QString path);
 
-  protected:
-    /**
-     * @brief createSelectionMenu
-     */
-    void createSelectionMenu();
-
   protected slots:
     void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
@@ -134,8 +128,6 @@ class SVWidgetsLib_EXPORT AttributeMatrixSelectionWidget : public FilterParamete
   private:
 
     bool m_DidCausePreflight;
-
-    QPointer<QSignalMapper> m_MenuMapper;
 
     AttributeMatrixSelectionFilterParameter*  m_FilterParameter;
 

@@ -45,8 +45,6 @@
 
 #include "SIMPLib/Filtering/ComparisonValue.h"
 
-//#define MENU_SELECTION
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -140,14 +138,6 @@ void ComparisonSelectionAdvancedWidget::setupGui()
 
   // Copy the data into the Comparison Set
   ComparisonInputsAdvanced comps = dynamic_cast<ComparisonSelectionAdvancedFilterParameter*>(getFilterParameter())->getGetterCallback()();
-
-#ifdef MENU_SELECTION
-  m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
-
-  m_MenuMapper = new QSignalMapper(this);
-  connect(m_MenuMapper, SIGNAL(mapped(QString)),
-    this, SLOT(attributeMatrixSelected(QString)));
-#endif
 
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedAttributeMatrixPath->setText(defaultPath.serialize(Detail::Delimiter));
@@ -310,8 +300,6 @@ void ComparisonSelectionAdvancedWidget::beforePreflight()
   {
     populateButtonText();
   }
-
-  createSelectionMenu();
 }
 
 // -----------------------------------------------------------------------------
@@ -460,96 +448,6 @@ void ComparisonSelectionAdvancedWidget::presetAttributeMatrix(DataArrayPath amPa
 {
   m_presetPath = amPath;
   m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ComparisonSelectionAdvancedWidget::createSelectionMenu()
-{
-#ifdef MENU_SELECTION
-  // Now get the DataContainerArray from the Filter instance
-  // We are going to use this to get all the current DataContainers
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if (nullptr == dca.get())
-  {
-    return;
-  }
-
-  // Get the menu and clear it out
-  QMenu* menu = m_SelectedAttributeMatrixPath->menu();
-  if (!menu)
-  {
-    menu = new QMenu();
-    m_SelectedAttributeMatrixPath->setMenu(menu);
-    menu->installEventFilter(this);
-  }
-  if (menu)
-  {
-    menu->clear();
-  }
-
-  // Cache the DataContainerArray Structure for our use during all the selections
-  m_DcaProxy = DataContainerArrayProxy(dca.get());
-
-  // Get the DataContainerArray object
-  // Loop over the data containers until we find the proper data container
-  QList<DataContainer::Pointer> containers = dca->getDataContainers();
-  QVector<AttributeMatrix::Type> amTypes = m_FilterParameter->getDefaultAttributeMatrixTypes();
-  IGeometry::Types geomTypes = m_FilterParameter->getDefaultGeometryTypes();
-
-  QListIterator<DataContainer::Pointer> containerIter(containers);
-  while (containerIter.hasNext())
-  {
-    DataContainer::Pointer dc = containerIter.next();
-
-    IGeometry::Pointer geom = IGeometry::NullPointer();
-    IGeometry::Type geomType = IGeometry::Type::Unknown;
-    if (nullptr != dc.get())
-    {
-      geom = dc->getGeometry();
-    }
-    if (nullptr != geom.get())
-    {
-      geomType = geom->getGeometryType();
-    }
-
-    QMenu* dcMenu = new QMenu(dc->getName());
-    dcMenu->setDisabled(false);
-    menu->addMenu(dcMenu);
-    if (geomTypes.isEmpty() == false && geomTypes.contains(geomType) == false)
-    {
-      dcMenu->setDisabled(true);
-    }
-
-    // We found the proper Data Container, now populate the AttributeMatrix List
-    DataContainer::AttributeMatrixMap_t attrMats = dc->getAttributeMatrices();
-    QMapIterator<QString, AttributeMatrix::Pointer> attrMatsIter(attrMats);
-    while (attrMatsIter.hasNext())
-    {
-      attrMatsIter.next();
-      QString amName = attrMatsIter.key();
-      AttributeMatrix::Pointer am = attrMatsIter.value();
-
-      QAction* action = new QAction(amName, dcMenu);
-      DataArrayPath daPath(dc->getName(), amName, "");
-      QString path = daPath.serialize(Detail::Delimiter);
-      action->setData(path);
-
-      connect(action, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
-      m_MenuMapper->setMapping(action, path);
-      dcMenu->addAction(action);
-
-      bool amIsNotNull = (nullptr != am.get()) ? true : false;
-      bool amValidType = (amTypes.isEmpty() == false && amTypes.contains(am->getType()) == false) ? true : false;
-
-      if (amIsNotNull && amValidType)
-      {
-        action->setDisabled(true);
-      }
-    }
-  }
-#endif
 }
 
 // -----------------------------------------------------------------------------

@@ -126,13 +126,6 @@ class SVWidgetsLib_EXPORT DataArraySelectionWidget : public FilterParameterWidge
 
     void dataArraySelected(QString path);
 
-  protected:
-
-    /**
-     * @brief createSelectionMenu
-     */
-    void createSelectionMenu();
-
   protected slots:
     void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
@@ -142,8 +135,6 @@ class SVWidgetsLib_EXPORT DataArraySelectionWidget : public FilterParameterWidge
 
   private:
     bool m_DidCausePreflight;
-
-    QPointer<QSignalMapper> m_MenuMapper;
 
     DataArraySelectionFilterParameter* m_FilterParameter;
 

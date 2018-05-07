@@ -127,12 +127,6 @@ class SVWidgetsLib_EXPORT DataContainerSelectionWidget : public FilterParameterW
 
     void dataContainerSelected(QString path);
 
-  protected:
-    /**
-     * @brief createSelectionMenu
-     */
-    void createSelectionMenu();
-
   protected slots:
     void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
@@ -145,8 +139,6 @@ class SVWidgetsLib_EXPORT DataContainerSelectionWidget : public FilterParameterW
     bool m_DidCausePreflight;
 
     DataContainerSelectionFilterParameter* m_FilterParameter;
-
-    QPointer<QSignalMapper> m_MenuMapper;
 
     void setSelectedPath(QString path);
 

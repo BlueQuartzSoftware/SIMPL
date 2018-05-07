@@ -51,8 +51,6 @@
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
 
-//#define MENU_SELECTION
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -83,14 +81,6 @@ AttributeMatrixCreationWidget::AttributeMatrixCreationWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 AttributeMatrixCreationWidget::~AttributeMatrixCreationWidget()
 {
-  if(m_OwnsMenuPtr && m_MenuPtr)
-  {
-    delete m_MenuPtr;
-  }
-  if(m_MenuMapper)
-  {
-    delete m_MenuMapper;
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -122,13 +112,6 @@ void AttributeMatrixCreationWidget::setupGui()
 
   // Do not allow the user to put a forward slash into the attributeMatrixName line edit
   stringEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("[^/]*"), this));
-
-#ifdef MENU_SELECTION
-  m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
-
-  m_MenuMapper = new QSignalMapper(this);
-  connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(dataContainerSelected(QString)));
-#endif
 
   DataContainerSelectionFilterParameter::RequirementType req;
   m_SelectedDataContainerPath->setDataContainerRequirements(req);
@@ -184,75 +167,6 @@ QString AttributeMatrixCreationWidget::checkStringValues(QString curDcName, QStr
   }
 
   return filtDcName;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void AttributeMatrixCreationWidget::createSelectionMenu()
-{
-#ifdef MENU_SELECTION
-  // Now get the DataContainerArray from the Filter instance
-  // We are going to use this to get all the current DataContainers
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get())
-  {
-    return;
-  }
-
-  // Get the menu and clear it out
-  QMenu* btnMenu = m_SelectedDataContainerPath->menu();
-  if(btnMenu)
-  {
-    btnMenu->clear();
-  }
-  else
-  {
-    m_OwnsMenuPtr = true;
-    m_MenuPtr = new QMenu;
-    btnMenu = m_MenuPtr;
-    m_SelectedDataContainerPath->setMenu(btnMenu);
-    btnMenu->installEventFilter(this);
-  }
-
-  // Get the DataContainerArray object
-  // Loop over the data containers until we find the proper data container
-  QList<DataContainer::Pointer> containers = dca->getDataContainers();
-  IGeometry::Types geomTypes = m_FilterParameter->getDefaultGeometryTypes();
-
-  QListIterator<DataContainer::Pointer> containerIter(containers);
-  while(containerIter.hasNext())
-  {
-    DataContainer::Pointer dc = containerIter.next();
-
-    IGeometry::Pointer geom = IGeometry::NullPointer();
-    IGeometry::Type geomType = IGeometry::Type::Unknown;
-    if(nullptr != dc.get())
-    {
-      geom = dc->getGeometry();
-    }
-    if(nullptr != geom.get())
-    {
-      geomType = geom->getGeometryType();
-    }
-
-    QString dcName = dc->getName();
-
-    QAction* dcAction = btnMenu->addAction(dcName); // btnMenu owns the created QAction
-
-    DataArrayPath dcPath(dcName, "", "");
-    QString path = dcPath.serialize(Detail::Delimiter);
-    dcAction->setData(path);
-
-    connect(dcAction, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
-    m_MenuMapper->setMapping(dcAction, path);
-
-    if(!geomTypes.isEmpty() && !geomTypes.contains(geomType) && !geomTypes.contains(IGeometry::Type::Any))
-    {
-      dcAction->setDisabled(true);
-    }
-  }
-#endif
 }
 
 // -----------------------------------------------------------------------------
@@ -333,8 +247,6 @@ void AttributeMatrixCreationWidget::beforePreflight()
     // std::cout << "***  AttributeMatrixCreationWidget already caused a preflight, just returning" << std::endl;
     return;
   }
-
-  createSelectionMenu();
 }
 
 // -----------------------------------------------------------------------------

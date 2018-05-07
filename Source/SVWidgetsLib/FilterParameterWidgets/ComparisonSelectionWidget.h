@@ -164,11 +164,6 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
     ComparisonInputs getComparisonInputs();
 
     /**
-     * @brief createSelectionMenu
-     */
-    void createSelectionMenu();
-
-    /**
      * @brief populateAttributeMatrixList
      */
     void populateAttributeMatrixList();
@@ -243,8 +238,6 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
     DataContainerArrayProxy m_DcaProxy;
 
     bool m_DidCausePreflight;
-
-    QPointer<QSignalMapper> m_MenuMapper;
 
     ComparisonSelectionTableModel* m_ComparisonSelectionTableModel;
 

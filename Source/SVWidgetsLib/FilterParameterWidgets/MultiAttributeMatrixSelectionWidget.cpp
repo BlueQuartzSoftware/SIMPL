@@ -55,8 +55,6 @@
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
 
-//#define MENU_SELECTION
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -119,13 +117,6 @@ void MultiAttributeMatrixSelectionWidget::setupGui()
   // Generate the text for the QLabel
   label->setText(getFilterParameter()->getHumanLabel());
 
-#ifdef MENU_SELECTION
-  m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
-
-  m_MenuMapper = new QSignalMapper(this);
-  connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(dataContainerSelected(QString)));
-#endif
-
   DataContainerSelectionFilterParameter::RequirementType reqs;
   m_SelectedDataContainerPath->setDataContainerRequirements(reqs);
   m_SelectedDataContainerPath->setFilter(getFilter());
@@ -184,73 +175,6 @@ QString MultiAttributeMatrixSelectionWidget::checkStringValues(QString curDcName
   }
 
   return filtDcName;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiAttributeMatrixSelectionWidget::createSelectionMenu()
-{
-#ifdef MENU_SELECTION
-  // Now get the DataContainerArray from the Filter instance
-  // We are going to use this to get all the current DataContainers
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get())
-  {
-    return;
-  }
-
-  // Get the menu and clear it out
-  QMenu* menu = m_SelectedDataContainerPath->menu();
-  if(!menu)
-  {
-    menu = new QMenu();
-    m_SelectedDataContainerPath->setMenu(menu);
-    menu->installEventFilter(this);
-  }
-  if(menu)
-  {
-    menu->clear();
-  }
-
-  // Get the DataContainerArray object
-  // Loop over the data containers until we find the proper data container
-  QList<DataContainer::Pointer> containers = dca->getDataContainers();
-  IGeometry::Types geomTypes = m_FilterParameter->getDefaultGeometryTypes();
-
-  QListIterator<DataContainer::Pointer> containerIter(containers);
-  while(containerIter.hasNext())
-  {
-    DataContainer::Pointer dc = containerIter.next();
-
-    IGeometry::Pointer geom = IGeometry::NullPointer();
-    IGeometry::Type geomType = IGeometry::Type::Unknown;
-    if(nullptr != dc.get())
-    {
-      geom = dc->getGeometry();
-    }
-    if(nullptr != geom.get())
-    {
-      geomType = geom->getGeometryType();
-    }
-
-    QAction* dcAction = new QAction(dc->getName(), menu);
-    dcAction->setDisabled(false);
-    
-    DataArrayPath dcPath(dc->getName(), "", "");
-    QString path = dcPath.serialize(Detail::Delimiter);
-    dcAction->setData(path);
-
-    connect(dcAction, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
-    m_MenuMapper->setMapping(dcAction, path);
-    menu->addAction(dcAction);
-
-    if(!geomTypes.isEmpty() && !geomTypes.contains(geomType) && !geomTypes.contains(IGeometry::Type::Any))
-    {
-      dcAction->setDisabled(true);
-    }
-  }
-#endif
 }
 
 // -----------------------------------------------------------------------------
@@ -546,10 +470,6 @@ void MultiAttributeMatrixSelectionWidget::beforePreflight()
   if(nullptr == getFilter())
   {
     return;
-  }
-  if(m_DidCausePreflight == false)
-  {
-    createSelectionMenu();
   }
 
   // Previously in afterPreflight()

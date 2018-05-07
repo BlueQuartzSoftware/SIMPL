@@ -125,12 +125,6 @@ class SVWidgetsLib_EXPORT DataArrayCreationWidget : public FilterParameterWidget
 
     void attributeMatrixSelected(QString path);
 
-  protected:
-    /**
-     * @brief createSelectionMenu
-     */
-    void createSelectionMenu();
-
   protected slots:
     void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
@@ -141,11 +135,6 @@ class SVWidgetsLib_EXPORT DataArrayCreationWidget : public FilterParameterWidget
   private:
 
     bool m_DidCausePreflight;
-
-    QPointer<QSignalMapper> m_MenuMapper;
-
-    QMenu*        m_MenuPtr = nullptr;
-    bool          m_OwnsMenuPtr = false;
 
     DataArrayCreationFilterParameter* m_FilterParameter;
 

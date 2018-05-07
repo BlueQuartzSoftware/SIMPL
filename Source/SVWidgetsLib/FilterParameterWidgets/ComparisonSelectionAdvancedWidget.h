@@ -146,11 +146,6 @@ class ComparisonSelectionAdvancedWidget : public FilterParameterWidget, private 
     ComparisonInputsAdvanced getComparisonInputs();
 
     /**
-    * @brief createSelectionMenu
-    */
-    void createSelectionMenu();
-
-    /**
     * @brief generateAttributeArrayList
     * @param currentDCName
     * @param currentAttrMatName
@@ -213,8 +208,6 @@ class ComparisonSelectionAdvancedWidget : public FilterParameterWidget, private 
     DataArrayPath m_presetPath;
 
     bool m_DidCausePreflight;
-
-    QPointer<QSignalMapper> m_MenuMapper;
 
     ComparisonSelectionAdvancedFilterParameter* m_FilterParameter;
 };

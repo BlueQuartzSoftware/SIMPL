@@ -131,12 +131,6 @@ class SVWidgetsLib_EXPORT MultiAttributeMatrixSelectionWidget : public FilterPar
 
     void dataContainerSelected(QString path);
 
-  protected:
-    /**
-     * @brief createSelectionMenu
-     */
-    void createSelectionMenu();
-
   protected slots:
     void on_upBtn_clicked();
     void on_downBtn_clicked();
@@ -155,8 +149,6 @@ class SVWidgetsLib_EXPORT MultiAttributeMatrixSelectionWidget : public FilterPar
 
   private:
     bool m_DidCausePreflight;
-
-    QPointer<QSignalMapper> m_MenuMapper;
 
     MultiAttributeMatrixSelectionFilterParameter* m_FilterParameter;
 

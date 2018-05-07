@@ -132,11 +132,6 @@ public slots:
 
 protected:
   /**
-   * @brief createSelectionMenu
-   */
-  void createSelectionMenu();
-
-  /**
    * @brief setSelectedPath
    * @param dcName
    * @param attrMatName
@@ -144,7 +139,7 @@ protected:
    */
   void setSelectedPath(QString dcName, QString attrMatName, QString attrArrName);
 
-  protected slots:
+protected slots:
     void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
 signals:
@@ -157,11 +152,6 @@ private:
   bool                                            m_DidCausePreflight;
 
   AttributeMatrixCreationFilterParameter*         m_FilterParameter;
-
-  QSignalMapper*                                  m_MenuMapper = nullptr;
-
-  QMenu*                                          m_MenuPtr = nullptr;
-  bool                                            m_OwnsMenuPtr = false;
 
   void setSelectedPath(QString path);
 

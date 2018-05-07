@@ -51,8 +51,6 @@
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
 
-//#define MENU_SELECTION
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -132,12 +130,6 @@ void DataContainerSelectionWidget::setupGui()
 
   m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
 
-#ifdef MENU_SELECTION
-  m_MenuMapper = new QSignalMapper(this);
-  connect(m_MenuMapper, SIGNAL(mapped(QString)),
-            this, SLOT(dataContainerSelected(QString)));
-#endif
-
   QString dcName = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QString>();
   m_SelectedDataContainerPath->setText(dcName);
   m_SelectedDataContainerPath->setPropertyName(getFilterParameter()->getHumanLabel());
@@ -166,72 +158,6 @@ QString DataContainerSelectionWidget::checkStringValues(QString curDcName, QStri
   }
 
   return filtDcName;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataContainerSelectionWidget::createSelectionMenu()
-{
-#ifdef MENU_SELECTION
-  // Now get the DataContainerArray from the Filter instance
-  // We are going to use this to get all the current DataContainers
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get())
-  {
-    return;
-  }
-
-  // Get the menu and clear it out
-  QMenu* menu = m_SelectedDataContainerPath->menu();
-  if(!menu)
-  {
-    menu = new QMenu();
-    m_SelectedDataContainerPath->setMenu(menu);
-    menu->installEventFilter(this);
-  }
-  if(menu)
-  {
-    menu->clear();
-  }
-
-  // Get the DataContainerArray object
-  // Loop over the data containers until we find the proper data container
-  QList<DataContainer::Pointer> containers = dca->getDataContainers();
-  IGeometry::Types geomTypes = m_FilterParameter->getDefaultGeometryTypes();
-
-  QListIterator<DataContainer::Pointer> containerIter(containers);
-  while(containerIter.hasNext())
-  {
-    DataContainer::Pointer dc = containerIter.next();
-
-    IGeometry::Pointer geom = IGeometry::NullPointer();
-    IGeometry::Type geomType = IGeometry::Type::Unknown;
-    if(nullptr != dc.get())
-    {
-      geom = dc->getGeometry();
-    }
-    if(nullptr != geom.get())
-    {
-      geomType = geom->getGeometryType();
-    }
-
-    QString dcName = dc->getName();
-    QAction* action = new QAction(dcName, menu);
-    DataArrayPath dcPath(dcName, "", "");
-    QString path = dcPath.serialize(Detail::Delimiter);
-    action->setData(path);
-
-    connect(action, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
-    m_MenuMapper->setMapping(action, path);
-    menu->addAction(action);
-
-    if(!geomTypes.isEmpty() && !geomTypes.contains(geomType) && !geomTypes.contains(IGeometry::Type::Any))
-    {
-      action->setDisabled(true);
-    }
-  }
-#endif
 }
 
 // -----------------------------------------------------------------------------
@@ -309,8 +235,6 @@ void DataContainerSelectionWidget::beforePreflight()
     // std::cout << "***  DataContainerSelectionWidget already caused a preflight, just returning" << std::endl;
     return;
   }
-
-  createSelectionMenu();
 }
 
 // -----------------------------------------------------------------------------
