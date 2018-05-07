@@ -418,7 +418,7 @@ void DataStructureWidget::setViewReqs(DataContainerSelectionFilterParameter::Req
     DataContainer::Pointer dc = m_Dca->getDataContainer(path);
     IGeometry::Pointer geom = dc->getGeometry();
 
-    bool geomType = dcReqs.dcGeometryTypes.size() == 0 || dcReqs.dcGeometryTypes.contains(geom->getGeometryType());
+    bool geomType = dcReqs.dcGeometryTypes.size() == 0 || (geom && dcReqs.dcGeometryTypes.contains(geom->getGeometryType()));
 
     if(geomType)
     {
@@ -428,7 +428,7 @@ void DataStructureWidget::setViewReqs(DataContainerSelectionFilterParameter::Req
     else
     {
       dcItem->setForeground(m_NoncompliantBrush);
-      dcItem->setForeground(m_NoncompliantBgBrush);
+      dcItem->setBackground(m_NoncompliantBgBrush);
     }
 
     int amCount = dcItem->rowCount();
@@ -476,9 +476,9 @@ void DataStructureWidget::setViewReqs(AttributeMatrixSelectionFilterParameter::R
       DataContainer::Pointer dc = m_Dca->getDataContainer(path);
       IGeometry::Pointer geom = dc->getGeometry();
       AttributeMatrix::Pointer am = m_Dca->getAttributeMatrix(path);
-
-      bool amType = amReqs.amTypes.size() == 0 || amReqs.amTypes.contains(am->getType());
-      bool geomType = amReqs.dcGeometryTypes.size() == 0 || amReqs.dcGeometryTypes.contains(geom->getGeometryType());
+      
+      bool amType = amReqs.amTypes.size() == 0 || (am && amReqs.amTypes.contains(am->getType()));
+      bool geomType = amReqs.dcGeometryTypes.size() == 0 || (geom && amReqs.dcGeometryTypes.contains(geom->getGeometryType()));
 
       if(amType && geomType)
       {
@@ -537,9 +537,9 @@ void DataStructureWidget::setViewReqs(DataArraySelectionFilterParameter::Require
         AttributeMatrix::Pointer am = m_Dca->getAttributeMatrix(path);
         IDataArray::Pointer da = am->getAttributeArray(path.getDataArrayName());
         
-        bool amType = daReqs.amTypes.size() == 0 || daReqs.amTypes.contains(am->getType());
-        bool compDims = daReqs.componentDimensions.size() == 0 || daReqs.componentDimensions.contains(da->getComponentDimensions());
-        bool daType = daReqs.daTypes.size() == 0 || daReqs.daTypes.contains(da->getTypeAsString());
+        bool amType = daReqs.amTypes.size() == 0 || (am && daReqs.amTypes.contains(am->getType()));
+        bool compDims = daReqs.componentDimensions.size() == 0 || (da && daReqs.componentDimensions.contains(da->getComponentDimensions()));
+        bool daType = daReqs.daTypes.size() == 0 || (da && daReqs.daTypes.contains(da->getTypeAsString()));
         bool geomType = daReqs.dcGeometryTypes.size() == 0 || (geom && daReqs.dcGeometryTypes.contains(geom->getGeometryType()));
 
         if(amType && compDims && daType && geomType)
