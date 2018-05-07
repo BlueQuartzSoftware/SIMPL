@@ -41,37 +41,20 @@
 #include <QtGui/QTextDocument>
 #include <QtWidgets/QApplication>
 
+#include "SVWidgetsLib/QtSupport/QtSSettings.h"
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 
-namespace DataArrayPathColors
+namespace DataArrayPathColors_Defaults
 {
-  namespace DataContainer
-  {
-    const QString NormalColor("#8f8f91");
-    const QString ErrorColor("#BC0000");
-    const QString FilterColor("#08a500");
-    const QString AcceptColor("#009104");
-    const QString RejectColor("#BC0000");
-  }
+  const QString NormalColor("#8f8f91");
+  const QString ErrorColor("#BC0000");
+  const QString AcceptColor("#009104");
+  const QString RejectColor("#BC0000");
 
-  namespace AttributeMatrix
-  {
-    const QString NormalColor("#8f8f91");
-    const QString ErrorColor("#BC0000");
-    const QString FilterColor("#8c00ff");
-    const QString AcceptColor("#009104");
-    const QString RejectColor("#BC0000");
-  }
-
-  namespace DataArray
-  {
-    const QString NormalColor("#8f8f91");
-    const QString ErrorColor("#BC0000");
-    const QString FilterColor("#0072ff");
-    const QString AcceptColor("#009104");
-    const QString RejectColor("#BC0000");
-  }
+  const QString DataContainerColor("#08a500");
+  const QString AttributeMatrixColor("#8c00ff");
+  const QString DataArrayColor("#0072ff");
 }
 
 
@@ -137,22 +120,29 @@ const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(QString text, DataArr
 // -----------------------------------------------------------------------------
 const QString DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType type)
 {
+  QSharedPointer<QtSSettings> prefs = QSharedPointer<QtSSettings>(new QtSSettings());
+  prefs->beginGroup("DataArrayPath Colors");
+
+  QString color = "#000000";
+
   switch(type)
   {
   case DataArrayPath::DataType::DataContainer:
-    return DataArrayPathColors::DataContainer::FilterColor;
+    color = prefs->value("DataContainer", DataArrayPathColors_Defaults::DataContainerColor).toString();
     break;
   case DataArrayPath::DataType::AttributeMatrix:
-    return DataArrayPathColors::AttributeMatrix::FilterColor;
+    color = prefs->value("AttributeMatrix", DataArrayPathColors_Defaults::AttributeMatrixColor).toString();
     break;
   case DataArrayPath::DataType::DataArray:
-    return DataArrayPathColors::DataArray::FilterColor;
+    color = prefs->value("DataArray", DataArrayPathColors_Defaults::DataArrayColor).toString();
     break;
   case DataArrayPath::DataType::None:
+    color = prefs->value("None", QString("#000000")).toString();
     break;
   }
 
-  return "#000000";
+  prefs->endGroup();
+  return color;
 }
 
 // -----------------------------------------------------------------------------
@@ -991,73 +981,32 @@ void DataArrayPathSelectionWidget::resetStyle()
 // -----------------------------------------------------------------------------
 const QString DataArrayPathSelectionWidget::getColor(Style style)
 {
-  switch(getDataType())
+  QSharedPointer<QtSSettings> prefs = QSharedPointer<QtSSettings>(new QtSSettings());
+  prefs->beginGroup("DataArrayPath Styles");
+
+  QString color = "#000000";
+
+  switch(style)
   {
-  case DataArrayPath::DataType::DataContainer:
-    switch(style)
-    {
-    case Style::Normal:
-      return DataArrayPathColors::DataContainer::NormalColor;
-      break;
-    case Style::Active:
-      return DataArrayPathColors::DataContainer::FilterColor;
-      break;
-    case Style::NotFound:
-      return DataArrayPathColors::DataContainer::ErrorColor;
-      break;
-    case Style::DragEnabled:
-      return DataArrayPathColors::DataContainer::AcceptColor;
-      break;
-    case Style::DragDisabled:
-      return DataArrayPathColors::DataContainer::RejectColor;
-      break;
-    }
+  case Style::Normal:
+    color = prefs->value("Normal", DataArrayPathColors_Defaults::NormalColor).toString();
     break;
-  case DataArrayPath::DataType::AttributeMatrix:
-    switch(style)
-    {
-    case Style::Normal:
-      return DataArrayPathColors::AttributeMatrix::NormalColor;
-      break;
-    case Style::Active:
-      return DataArrayPathColors::AttributeMatrix::FilterColor;
-      break;
-    case Style::NotFound:
-      return DataArrayPathColors::AttributeMatrix::ErrorColor;
-      break;
-    case Style::DragEnabled:
-      return DataArrayPathColors::AttributeMatrix::AcceptColor;
-      break;
-    case Style::DragDisabled:
-      return DataArrayPathColors::AttributeMatrix::RejectColor;
-      break;
-    }
+  case Style::Active:
+    color = GetActiveColor(m_DataType);
     break;
-  case DataArrayPath::DataType::DataArray:
-    switch(style)
-    {
-    case Style::Normal:
-      return DataArrayPathColors::DataArray::NormalColor;
-      break;
-    case Style::Active:
-      return DataArrayPathColors::DataArray::FilterColor;
-      break;
-    case Style::NotFound:
-      return DataArrayPathColors::DataArray::ErrorColor;
-      break;
-    case Style::DragEnabled:
-      return DataArrayPathColors::DataArray::AcceptColor;
-      break;
-    case Style::DragDisabled:
-      return DataArrayPathColors::DataArray::RejectColor;
-      break;
-    }
+  case Style::NotFound:
+    color = prefs->value("NotFount", DataArrayPathColors_Defaults::ErrorColor).toString();
     break;
-  case DataArrayPath::DataType::None:
+  case Style::DragEnabled:
+    color = prefs->value("DragEnabled", DataArrayPathColors_Defaults::AcceptColor).toString();
+    break;
+  case Style::DragDisabled:
+    color = prefs->value("DragDisabled", DataArrayPathColors_Defaults::RejectColor).toString();
     break;
   }
 
-  return "#000000";
+  prefs->endGroup();
+  return color;
 }
 
 // -----------------------------------------------------------------------------
