@@ -343,42 +343,7 @@ void DataArraySelectionWidget::setSelectedPath(QString path)
 // -----------------------------------------------------------------------------
 void DataArraySelectionWidget::setSelectedPath(DataArrayPath daPath)
 {
-  if(daPath.isEmpty())
-  {
-    //m_SelectedDataArrayPath->setToolTip(wrapStringInHtml("DataArrayPath is empty."));
-    m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
-    changeStyleSheet(Style::FS_DOESNOTEXIST_STYLE);
-    return;
-  }
-
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get())
-  {
-    m_SelectedDataArrayPath->setText(daPath.serialize(Detail::Delimiter));
-    m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
-    //m_SelectedDataArrayPath->setToolTip(wrapStringInHtml("DataContainerArray is not available to verify path."));
-    changeStyleSheet(Style::FS_DOESNOTEXIST_STYLE);
-    return;
-  }
-
-  if(dca->doesAttributeArrayExist(daPath))
-  {
-    AttributeMatrix::Pointer attMat = dca->getAttributeMatrix(daPath);
-    IDataArray::Pointer attrArray = attMat->getAttributeArray(daPath.getDataArrayName());
-    QString html = attrArray->getInfoString(SIMPL::HtmlFormat);
-    //m_SelectedDataArrayPath->setToolTip(html);
-    m_SelectedDataArrayPath->setText(daPath.serialize(Detail::Delimiter));
-    m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
-    changeStyleSheet(Style::FS_STANDARD_STYLE);
-  }
-  else
-  {
-    m_SelectedDataArrayPath->setText(daPath.serialize(Detail::Delimiter));
-    //
-    //m_SelectedDataArrayPath->setToolTip(wrapStringInHtml("DataArrayPath does not exist."));
-    m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
-    changeStyleSheet(Style::FS_DOESNOTEXIST_STYLE);
-  }
+  m_SelectedDataArrayPath->setDataArrayPath(daPath);
 }
 
 // -----------------------------------------------------------------------------
@@ -426,8 +391,7 @@ void DataArraySelectionWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void DataArraySelectionWidget::afterPreflight()
 {
-  DataArrayPath daPath = DataArrayPath::Deserialize(m_SelectedDataArrayPath->text(), Detail::Delimiter);
-  setSelectedPath(daPath);
+  m_SelectedDataArrayPath->afterPreflight();
 }
 
 // -----------------------------------------------------------------------------
@@ -436,7 +400,7 @@ void DataArraySelectionWidget::afterPreflight()
 void DataArraySelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   // Generate the path to the AttributeArray
-  DataArrayPath selectedPath = DataArrayPath::Deserialize(m_SelectedDataArrayPath->text(), Detail::Delimiter);
+  DataArrayPath selectedPath = m_SelectedDataArrayPath->getDataArrayPath();
   QString dc = selectedPath.getDataContainerName();
   QString am = selectedPath.getAttributeMatrixName();
   QString da = selectedPath.getDataArrayName();

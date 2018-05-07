@@ -155,6 +155,11 @@ public:
   void setFilter(AbstractFilter* filter);
 
   /**
+  * @brief Checks path validity
+  */
+  void afterPreflight();
+
+  /**
   * @brief Override the minimumSizeHint for extending the widget enough to paint the active color
   */
   QSize minimumSizeHint() const override;

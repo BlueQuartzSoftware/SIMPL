@@ -306,24 +306,9 @@ void MultiAttributeMatrixSelectionWidget::setSelectedPath(DataArrayPath dcPath)
     return;
   }
 
-  m_SelectedDataContainerPath->setText("");
-  //m_SelectedDataContainerPath->setToolTip("");
+  m_SelectedDataContainerPath->setDataArrayPath(dcPath);
   attributeMatricesSelectWidget->clear();
   attributeMatricesOrderWidget->clear();
-
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get())
-  {
-    return;
-  }
-
-  if(dca->doesDataContainerExist(dcPath.getDataContainerName()))
-  {
-    DataContainer::Pointer dataCon = dca->getDataContainer(dcPath);
-    QString html = dataCon->getInfoString(SIMPL::HtmlFormat);
-    //m_SelectedDataContainerPath->setToolTip(html);
-    m_SelectedDataContainerPath->setText(dcPath.serialize(Detail::Delimiter));
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -571,14 +556,11 @@ void MultiAttributeMatrixSelectionWidget::beforePreflight()
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if(NULL == dca.get()) { return; }
 
-  if(dca->doesDataContainerExist(DataArrayPath::Deserialize(m_SelectedDataContainerPath->text(), Detail::Delimiter).getDataContainerName()))
+  if(dca->doesDataContainerExist(m_SelectedDataContainerPath->getDataArrayPath().getDataContainerName()))
   {
-    DataContainer::Pointer dc = dca->getDataContainer(DataArrayPath::Deserialize(m_SelectedDataContainerPath->text(), Detail::Delimiter));
-    if(nullptr != dc.get()) {
-      QString html = dc->getInfoString(SIMPL::HtmlFormat);
-      //m_SelectedDataContainerPath->setToolTip(html);
-      m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
-
+    DataContainer::Pointer dc = dca->getDataContainer(m_SelectedDataContainerPath->getDataArrayPath());
+    if(nullptr != dc.get()) 
+    {
       QList<QString> matrixNames = dc->getAttributeMatrixNames();
 
       QList<QString> selectListNames;
@@ -613,10 +595,6 @@ void MultiAttributeMatrixSelectionWidget::beforePreflight()
       }
     }
   }
-  else
-  {
-    m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -624,7 +602,7 @@ void MultiAttributeMatrixSelectionWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void MultiAttributeMatrixSelectionWidget::afterPreflight()
 {
-  
+  m_SelectedDataContainerPath->afterPreflight();
 }
 
 // -----------------------------------------------------------------------------

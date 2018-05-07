@@ -322,14 +322,11 @@ void ComparisonSelectionAdvancedWidget::afterPreflight()
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if (NULL == dca.get()) { return; }
 
-  if (dca->doesAttributeMatrixExist(DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter)))
+  if (dca->doesAttributeMatrixExist(m_SelectedAttributeMatrixPath->getDataArrayPath()))
   {
-    AttributeMatrix::Pointer am = dca->getAttributeMatrix(DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter));
-    if (nullptr != am.get()) {
-      QString html = am->getInfoString(SIMPL::HtmlFormat);
-      //m_SelectedAttributeMatrixPath->setToolTip(html);
-      m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
-
+    AttributeMatrix::Pointer am = dca->getAttributeMatrix(m_SelectedAttributeMatrixPath->getDataArrayPath());
+    if (nullptr != am.get()) 
+    {
       DataArrayPath path = m_SelectedAttributeMatrixPath->getDataArrayPath();
       QStringList arrayNames = generateAttributeArrayList(path.getDataContainerName(), path.getAttributeMatrixName());
       
@@ -343,10 +340,8 @@ void ComparisonSelectionAdvancedWidget::afterPreflight()
       }
     }
   }
-  else
-  {
-    m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
-  }
+
+  m_SelectedAttributeMatrixPath->afterPreflight();
 }
 
 // -----------------------------------------------------------------------------
@@ -440,9 +435,6 @@ void ComparisonSelectionAdvancedWidget::setSelectedPath(DataArrayPath amPath)
 {
   if (amPath.isEmpty()) { return; }
 
-  //m_SelectedAttributeMatrixPath->setText("");
-  //m_SelectedAttributeMatrixPath->setToolTip("");
-
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if (nullptr == dca.get())
   {
@@ -452,9 +444,6 @@ void ComparisonSelectionAdvancedWidget::setSelectedPath(DataArrayPath amPath)
   if (dca->doesAttributeMatrixExist(amPath))
   {
     AttributeMatrix::Pointer am = dca->getAttributeMatrix(amPath);
-    QString html = am->getInfoString(SIMPL::HtmlFormat);
-    //m_SelectedAttributeMatrixPath->setToolTip(html);
-    //m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
 
     if (nullptr != comparisonSetWidget->getComparisonSet())
     {
@@ -588,18 +577,7 @@ void ComparisonSelectionAdvancedWidget::updateDataArrayPath(QString propertyName
         return;
       }
 
-      if(dca->doesAttributeMatrixExist(amPath))
-      {
-        AttributeMatrix::Pointer am = dca->getAttributeMatrix(amPath);
-        QString html = am->getInfoString(SIMPL::HtmlFormat);
-        //m_SelectedAttributeMatrixPath->setToolTip(html);
-        m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
-      }
-      else
-      {
-        m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
-        //
-      }
+      m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
     }
 
     // Update the DataArray choices

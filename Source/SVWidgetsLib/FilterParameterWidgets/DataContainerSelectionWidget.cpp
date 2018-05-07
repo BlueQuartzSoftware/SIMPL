@@ -292,22 +292,7 @@ void DataContainerSelectionWidget::setSelectedPath(DataArrayPath dcPath)
 {
   if (dcPath.isEmpty()) { return; }
 
-  m_SelectedDataContainerPath->setText("");
-  //m_SelectedDataContainerPath->setToolTip("");
-
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get())
-  {
-    return;
-  }
-
-  if (dca->doesDataContainerExist(dcPath.getDataContainerName()))
-  {
-    DataContainer::Pointer dc = dca->getDataContainer(dcPath.getDataContainerName());
-    QString html = dc->getInfoString(SIMPL::HtmlFormat);
-    //m_SelectedDataContainerPath->setToolTip(html);
-    m_SelectedDataContainerPath->setText(dcPath.getDataContainerName());
-  }
+  m_SelectedDataContainerPath->setDataArrayPath(dcPath);
 }
 
 // -----------------------------------------------------------------------------
@@ -336,19 +321,7 @@ void DataContainerSelectionWidget::afterPreflight()
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if (NULL == dca.get()) { return; }
 
-  if (dca->doesDataContainerExist(m_SelectedDataContainerPath->text()))
-  {
-    DataContainer::Pointer dc = dca->getDataContainer(m_SelectedDataContainerPath->text());
-    if (nullptr != dc.get()) {
-      QString html = dc->getInfoString(SIMPL::HtmlFormat);
-      //m_SelectedDataContainerPath->setToolTip(html);
-      m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
-    }
-  }
-  else
-  {
-    m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
-  }
+  m_SelectedDataContainerPath->afterPreflight();
 }
 
 // -----------------------------------------------------------------------------

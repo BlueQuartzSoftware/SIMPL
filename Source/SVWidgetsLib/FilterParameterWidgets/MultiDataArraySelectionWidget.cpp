@@ -324,24 +324,9 @@ void MultiDataArraySelectionWidget::setSelectedPath(DataArrayPath amPath)
     return;
   }
 
-  m_SelectedAttributeMatrixPath->setText("");
-  //m_SelectedAttributeMatrixPath->setToolTip("");
+  m_SelectedAttributeMatrixPath->setDataArrayPath(amPath);
   availableArraysListWidget->clear();
   selectedArraysListWidget->clear();
-
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get())
-  {
-    return;
-  }
-
-  if(dca->doesAttributeMatrixExist(amPath))
-  {
-    AttributeMatrix::Pointer attrMat = dca->getAttributeMatrix(amPath);
-    QString html = attrMat->getInfoString(SIMPL::HtmlFormat);
-    //m_SelectedAttributeMatrixPath->setToolTip(html);
-    m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -593,14 +578,11 @@ void MultiDataArraySelectionWidget::beforePreflight()
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if(NULL == dca.get()) { return; }
 
-  if(dca->doesAttributeMatrixExist(DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter)))
+  if(dca->doesAttributeMatrixExist(m_SelectedAttributeMatrixPath->getDataArrayPath()))
   {
-    AttributeMatrix::Pointer am = dca->getAttributeMatrix(DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter));
-    if(nullptr != am.get()) {
-      QString html = am->getInfoString(SIMPL::HtmlFormat);
-      //m_SelectedAttributeMatrixPath->setToolTip(html);
-      m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
-
+    AttributeMatrix::Pointer am = dca->getAttributeMatrix(m_SelectedAttributeMatrixPath->getDataArrayPath());
+    if(nullptr != am.get()) 
+    {
       QList<QString> arrayNames = am->getAttributeArrayNames();
 
       QList<QString> selectListNames;
@@ -638,10 +620,6 @@ void MultiDataArraySelectionWidget::beforePreflight()
       }
     }
   }
-  else
-  {
-    m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -649,7 +627,7 @@ void MultiDataArraySelectionWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void MultiDataArraySelectionWidget::afterPreflight()
 {
-  
+  m_SelectedAttributeMatrixPath->afterPreflight();
 }
 
 // -----------------------------------------------------------------------------
@@ -657,7 +635,7 @@ void MultiDataArraySelectionWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 void MultiDataArraySelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  DataArrayPath amPath = DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter);
+  DataArrayPath amPath = m_SelectedAttributeMatrixPath->getDataArrayPath();
 
   QVector<DataArrayPath> selectedPaths;
   for(int i = 0; i < selectedArraysListWidget->count(); i++)

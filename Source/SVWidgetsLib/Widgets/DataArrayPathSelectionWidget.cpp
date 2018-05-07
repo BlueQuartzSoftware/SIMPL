@@ -479,6 +479,12 @@ DataArraySelectionFilterParameter::RequirementType DataArrayPathSelectionWidget:
 // -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::setDataArrayPath(DataArrayPath path)
 {
+  // Do not check the path if there are no changes
+  if(getDataArrayPath() == path)
+  {
+    return;
+  }
+
   if(checkPathReqs(path))
   {
     setText(path.serialize(Detail::Delimiter));
@@ -871,6 +877,52 @@ void DataArrayPathSelectionWidget::performDrag()
 void DataArrayPathSelectionWidget::setFilter(AbstractFilter* filter)
 {
   m_Filter = filter;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::afterPreflight()
+{
+  if(false == m_Filter && m_Filter->getDataContainerArray())
+  {
+    return;
+  }
+
+  DataContainerArray::Pointer dca = m_Filter->getDataContainerArray();
+  bool found = false;
+  switch(getDataType())
+  {
+  case DataArrayPath::DataType::DataContainer:
+    if(dca->getDataContainer(getDataArrayPath()))
+    {
+      found = true;
+    }
+    break;
+  case DataArrayPath::DataType::AttributeMatrix:
+    if(dca->getAttributeMatrix(getDataArrayPath()))
+    {
+      found = true;
+    }
+    break;
+  case DataArrayPath::DataType::DataArray:
+    AttributeMatrix::Pointer am = dca->getAttributeMatrix(getDataArrayPath());
+    if(am && am->getAttributeArray(getDataArrayPath().getDataArrayName()))
+    {
+      found = true;
+    }
+    break;
+  }
+
+  // Update StyleSheet
+  if(found)
+  {
+    changeStyleSheet(Style::Normal);
+  }
+  else
+  {
+    changeStyleSheet(Style::NotFound);
+  }
 }
 
 // -----------------------------------------------------------------------------

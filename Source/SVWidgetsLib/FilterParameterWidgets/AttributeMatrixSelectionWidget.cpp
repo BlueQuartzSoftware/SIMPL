@@ -323,31 +323,7 @@ void AttributeMatrixSelectionWidget::setSelectedPath(DataArrayPath amPath)
 {
   if (amPath.isEmpty()) { return; }
 
-  m_SelectedAttributeMatrixPath->setText("");
-  //m_SelectedAttributeMatrixPath->setToolTip("");
-
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get())
-  {
-    return;
-  }
-
-  if (dca->doesAttributeMatrixExist(amPath))
-  {
-    AttributeMatrix::Pointer am = dca->getAttributeMatrix(amPath);
-    QString html = am->getInfoString(SIMPL::HtmlFormat);
-    //m_SelectedAttributeMatrixPath->setToolTip(html);
-    m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
-    changeStyleSheet(Style::FS_STANDARD_STYLE);
-  }
-  else
-  {
-    m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
-    //
-    //m_SelectedAttributeMatrixPath->setToolTip(wrapStringInHtml("DataArrayPath does not exist."));
-    m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
-    changeStyleSheet(Style::FS_DOESNOTEXIST_STYLE);
-  }
+  m_SelectedAttributeMatrixPath->setDataArrayPath(amPath);
 }
 
 // -----------------------------------------------------------------------------
@@ -376,19 +352,7 @@ void AttributeMatrixSelectionWidget::afterPreflight()
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if (NULL == dca.get()) { return; }
 
-  if (dca->doesAttributeMatrixExist(DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter)))
-  {
-    AttributeMatrix::Pointer am = dca->getAttributeMatrix(DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter));
-    if (nullptr != am.get()) {
-      QString html = am->getInfoString(SIMPL::HtmlFormat);
-      //m_SelectedAttributeMatrixPath->setToolTip(html);
-      m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
-    }
-  }
-  else
-  {
-    m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
-  }
+  m_SelectedAttributeMatrixPath->afterPreflight();
 }
 
 // -----------------------------------------------------------------------------
@@ -397,7 +361,7 @@ void AttributeMatrixSelectionWidget::afterPreflight()
 void AttributeMatrixSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   // Geenerate the path to the AttributeArray
-  DataArrayPath selectedPath = DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter);
+  DataArrayPath selectedPath = m_SelectedAttributeMatrixPath->getDataArrayPath();
   QVariant var;
   var.setValue(selectedPath);
   bool ok = false;
