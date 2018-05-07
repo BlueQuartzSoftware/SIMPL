@@ -252,7 +252,6 @@ QString DataArrayPathSelectionWidget::createTooltipHeader()
   ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
   ss << "<tbody>\n";
   ss << "<tr><td colspan=3><b><i>Drag and Drop from the Data Structure</i></b></td></tr>";
-  ss << "<tr><td colspan=3><b><i>Right-Click for legacy menu</i></b></td></tr>";
 
   return html;
 }
