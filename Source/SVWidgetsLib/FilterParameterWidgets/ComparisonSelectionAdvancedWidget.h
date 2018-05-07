@@ -202,6 +202,11 @@ class ComparisonSelectionAdvancedWidget : public FilterParameterWidget, private 
     */
     void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
+    /**
+    * @brief Handles AttributeMatrix path changes through DataArrayPathSelectionWidget
+    */
+    void attributeMatrixUpdated();
+
   private:
     DataContainerArrayProxy m_DcaProxy;
 

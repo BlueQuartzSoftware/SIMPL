@@ -133,8 +133,9 @@ void ComparisonSelectionWidget::setupGui()
 
   connect(m_SelectedAttributeMatrixPath, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
   connect(m_SelectedAttributeMatrixPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
-  connect(m_SelectedAttributeMatrixPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
+  //connect(m_SelectedAttributeMatrixPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
   connect(m_SelectedAttributeMatrixPath, SIGNAL(filterPath(DataArrayPath)), this, SIGNAL(filterPath(DataArrayPath)));
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(pathChanged()), this, SLOT(attributeMatrixUpdated()));
 
   // Create the table model
   m_ComparisonSelectionTableModel = createComparisonModel();
@@ -480,6 +481,15 @@ bool ComparisonSelectionWidget::eventFilter(QObject* obj, QEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void ComparisonSelectionWidget::attributeMatrixUpdated()
+{
+  DataArrayPath path = m_SelectedAttributeMatrixPath->getDataArrayPath();
+  attributeMatrixSelected(path.serialize(Detail::Delimiter));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void ComparisonSelectionWidget::attributeMatrixSelected(QString path)
 {
   setSelectedPath(path);
@@ -505,7 +515,7 @@ void ComparisonSelectionWidget::setSelectedPath(DataArrayPath amPath)
 {
   if (amPath.isEmpty()) { return; }
 
-  m_SelectedAttributeMatrixPath->setText("");
+  //m_SelectedAttributeMatrixPath->setText("");
   //m_SelectedAttributeMatrixPath->setToolTip("");
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
@@ -519,7 +529,7 @@ void ComparisonSelectionWidget::setSelectedPath(DataArrayPath amPath)
     AttributeMatrix::Pointer am = dca->getAttributeMatrix(amPath);
     QString html = am->getInfoString(SIMPL::HtmlFormat);
     //m_SelectedAttributeMatrixPath->setToolTip(html);
-    m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
+    //m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
   }
 
   if(nullptr != m_ComparisonSelectionTableModel)
