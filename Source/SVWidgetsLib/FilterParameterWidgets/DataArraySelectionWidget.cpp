@@ -456,42 +456,6 @@ void DataArraySelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArraySelectionWidget::dragEnterEvent(QDragEnterEvent* event)
-{
-  qDebug() << "DataArraySelectionWidget::dragEnterEvent";
-  changeStyleSheet(Style::FS_DRAGGING_STYLE);
-  event->acceptProposedAction();
-
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataArraySelectionWidget::dragLeaveEvent(QDragLeaveEvent* event)
-{
-  qDebug() << "DataArraySelectionWidget::dragLeaveEvent";
-  changeStyleSheet(Style::FS_STANDARD_STYLE);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataArraySelectionWidget::dropEvent(QDropEvent* event)
-{
-  qDebug() << "DataArraySelectionWidget::dropEvent";
-  if(event->mimeData()->hasText())
-  {
-    QByteArray dropData = event->mimeData()->data("text/plain");
-    QString name(dropData);
-    qDebug() << name;
-  }
-  changeStyleSheet(Style::FS_STANDARD_STYLE);
-
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void DataArraySelectionWidget::endViewPathRequirements()
 {
   m_SelectedDataArrayPath->setPathFiltering(false);
