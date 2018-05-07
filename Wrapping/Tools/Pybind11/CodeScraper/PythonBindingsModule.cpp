@@ -125,68 +125,100 @@ void PythonBindingsModule::addDependency(QString superClassName, QString classNa
     m_ClassVector.push_back(obj);
   }
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QByteArray PythonBindingsModule::md5FileContents(const QString &filename)
+{
+  QFile destination(filename);
+  destination.open(QFile::ReadOnly);
+  QCryptographicHash destHash(QCryptographicHash::Md5);
+  bool destFileAdded = destHash.addData(&destination);
+  if(!destFileAdded)
+  {
+    qDebug() << "[PythonBindingsModule] QCryptographicHash.add(" << filename << ") FAILED.";
+    return QByteArray(0);
+  }
+  QByteArray desHashResult = destHash.result();
+  destination.close();
+  //qDebug() << "MD5: " << desHashResult.toHex();
+  return desHashResult;
+}
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void PythonBindingsModule::writeOutput(bool didReplace, const QString& outLines, QString filename)
-{
+{ 
+  //qDebug() << "Writing File: " << filename;
   if(didReplace == true)
   {
     QFileInfo fi2(filename);
     QString parentPath = fi2.path();
     QDir dir;
-    // std::cout << "Creating Path: " << parentPath.toStdString() << std::endl;
+    //std::cout << "Creating Path: " << parentPath.toStdString() << std::endl;
     if(!dir.mkpath(parentPath))
     {
-      QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath);
+      QString ss = QObject::tr("[PythonBindingsModule] Error creating parent path '%1'").arg(parentPath);
       qDebug() << ss;
       return;
     }
     
     QTemporaryFile tempfile;
     QString tempFileName;
-    if (tempfile.open()) {
+    QString extraTemp = QString("/tmp/%1.cxx").arg(fi2.baseName());
+    if (tempfile.open()) 
+    {
       tempFileName = tempfile.fileName(); // returns the unique file name
       QTextStream stream(&tempfile);
       stream << outLines;
       tempfile.close();
+      #if 0
+      QFile temp(extraTemp);
+      QTextStream tstream(&temp);
+      temp.open(QFile::WriteOnly);
+      tstream << outLines;
+
+      qDebug() << "Temp File: " << tempFileName;
+      #endif
     }
     
     if(!fi2.exists())
     {
       if(!tempfile.copy(filename))
       {
-        std::cout << "Temp file '" << tempFileName.toStdString() << "' could not be copied to '"
+        std::cout << "[PythonBindingsModule] Temp file '" << tempFileName.toStdString() << "' could not be copied to '"
                   << filename.toStdString() << "'" << std::endl;
       }
       else
       {
-        qDebug() << "Pybind11 Module Generated for: " << fi2.absoluteFilePath();
+        qDebug() << "[PythonBindingsModule] Fresh File Generated: " << fi2.absoluteFilePath();
       }
     }
     else
     {
-      QFile source(filename);
 
-      QCryptographicHash origHash(QCryptographicHash::Md5);
-      origHash.addData(&source);
-      QByteArray oHashResult = origHash.result();
-      
-      origHash.reset();
-      origHash.addData(&tempfile);
-      QByteArray nHasResult = origHash.result();
-      
+      QByteArray destMd5Hash = md5FileContents(filename);
+      QByteArray sourceMd5Hash = md5FileContents(tempfile.fileName());
+
       // The hashes are different so copy the file over.
-      if(oHashResult != nHasResult)
+      if(destMd5Hash != sourceMd5Hash)
       {
+        QFile destFile(filename);
+        bool didDelete = destFile.remove();
+        if(!didDelete)
+        {
+          qDebug() << "[PythonBindingsModule] Dest File was NOT removed: " << filename;
+        }
         if(!tempfile.copy(filename))
         {
-          std::cout << "Temp file '" << tempFileName.toStdString() << "' could not be copied to '"
+          std::cout << "[PythonBindingsModule] Temp file '" << tempFileName.toStdString() << "' could not be copied to '"
                     << filename.toStdString() << "'" << std::endl;
         }
         else
         {
-            qDebug() << "Pybind11 Module Generated for: " << fi2.absoluteFilePath();
+          qDebug() << "[PythonBindingsModule]: New File Generated: " << fi2.absoluteFilePath();
         }
       }
     }

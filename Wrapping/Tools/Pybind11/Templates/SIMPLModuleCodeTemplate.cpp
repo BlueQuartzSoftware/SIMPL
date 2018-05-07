@@ -1,7 +1,6 @@
 /* This file is auto-genereated from a template file. If you want changes
 * then edit the template file.
 *
-* Generated on: @DATE_TIME_GENERATED@
 */
 
 #include <pybind11/numpy.h>

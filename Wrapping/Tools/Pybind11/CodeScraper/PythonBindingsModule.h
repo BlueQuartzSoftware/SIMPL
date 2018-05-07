@@ -52,6 +52,8 @@ protected:
 
   void dumpRecursiveInitCode(int level, const QObject* object, QTextStream& out);
 
+  QByteArray md5FileContents(const QString &filename);
+
 private:
   std::vector<QObject*> m_ClassVector;
 };

@@ -66,7 +66,8 @@ void PythonBindingClass::clearEnumerations()
 {
   m_Enumerations.clear();
 }
-
+#if 0
+#endif
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -76,13 +77,54 @@ void PythonBindingClass::writeBindingFile(const QString& outputFilePath)
   {
     QString output;
     QTextStream out(&output);
+    bool hasInstanceVar = false;
+//    out << "#if 0\n";
+//    out << "Properties.size(): " << m_Properties.size() << "\n";
+//    out << "Methods.size(): " << m_Methods.size() << "\n";
+//    out << "StaticNewMethods.size(): " << m_StaticNewMethods.size() << "\n";
+//    out << "Constructors.size(): " << m_Constructors.size() << "\n";
+//    out << "Enumerations.size(): " << m_Enumerations.size() << "\n";
+
+//    out << "#endif\n";
+    
     out << generateTopMatterCode();
     out << generateSharedPointerInitCode();
+    
+    if(getHasStaticNewMacro() || !m_StaticNewMethods.isEmpty())
+    {
+      out << "  /* Instantiate the class instance variable*/\n";
+      out << "  instance\n";
+      hasInstanceVar = true;
+    }
     out << generateStaticNewCode();
+    
+    if(!getIsSharedPointer())
+    {
+      hasInstanceVar = true;
+    }
     out << generateConstructorsCodes();
+
+    if(!m_Properties.isEmpty() && !hasInstanceVar)
+    {
+      out << "  /* Instantiate the class instance variable*/\n";
+      out << "  instance\n";
+      hasInstanceVar = true;
+    }    
     out << generatePropertiesCode();
+    
+    
+    if(!m_Methods.isEmpty() && !hasInstanceVar)
+    {
+      out << "  /* Instantiate the class instance variable*/\n";
+      out << "  instance\n";
+      hasInstanceVar = true;
+    }    
     out << generateMethodCode();
-    out << "  ;\n";
+    
+    if(hasInstanceVar)
+    {
+      out << "  ;\n";
+    }
     out << generateEnumerationCode();
     out << generateFooterCode();
 
@@ -96,10 +138,10 @@ void PythonBindingClass::writeBindingFile(const QString& outputFilePath)
     if(getHasSuperClass())
     {
       init << "pybind11_init_" << getLibName() << "_" << getClassName() << "(mod\n"
-           << "#ifdef simpl_EXPORTS\n"
+           << "#ifdef simplpy11_EXPORTS\n"
            << "        , " << getLibName() << "_" << getSuperClass() << "\n"
            << "#endif\n"
-           << ");\n";
+           << "  );\n";
     }
     else
     {
@@ -116,6 +158,26 @@ void PythonBindingClass::writeBindingFile(const QString& outputFilePath)
 QString quote(const QString& str)
 {
   return QString("\"%1\"").arg(str);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QByteArray PythonBindingClass::md5FileContents(const QString &filename)
+{
+  QFile destination(filename);
+  destination.open(QFile::ReadOnly);
+  QCryptographicHash destHash(QCryptographicHash::Md5);
+  bool destFileAdded = destHash.addData(&destination);
+  if(!destFileAdded)
+  {
+    qDebug() << "[PythonBindingClass] QCryptographicHash.add(" << filename << ") FAILED.";
+    return QByteArray(nullptr);
+  }
+  QByteArray desHashResult = destHash.result();
+  destination.close();
+  // qDebug() << "MD5: " << desHashResult.toHex();
+  return desHashResult;
 }
 
 // -----------------------------------------------------------------------------
@@ -151,44 +213,39 @@ void PythonBindingClass::writeOutput(bool didReplace, const QString& outLines, Q
       //qDebug() << "DOES NOT EXIST: " << filename;
       if(!tempfile.copy(filename))
       {
-        std::cout << "Temp file '" << tempFileName.toStdString() << "' could not be copied to '"
+        std::cout << "[PythonBindingClass] Temp file '" << tempFileName.toStdString() << "' could not be copied to '"
                   << filename.toStdString() << "'" << std::endl;
       }
       else
       {
-        qDebug() << "Pybind11 Module Generated for: " << fi2.absoluteFilePath();
+        qDebug() << "[PythonBindingClass] Pybind11 Module Generated for: " << fi2.absoluteFilePath();
       }
     }
     else
     {
-      //qDebug() << "DOES EXIST    : " << filename;
-      QFile source(filename);
 
-      QCryptographicHash origHash(QCryptographicHash::Md5);
-      origHash.addData(&source);
-      QByteArray oHashResult = origHash.result();
-      
-      origHash.reset();
-      origHash.addData(&tempfile);
-      QByteArray nHasResult = origHash.result();
-      
+      QByteArray destMd5Hash = md5FileContents(filename);
+      QByteArray sourceMd5Hash = md5FileContents(tempfile.fileName());
+
       // The hashes are different so copy the file over.
-      if(oHashResult != nHasResult)
+      if(destMd5Hash != sourceMd5Hash)
       {
+        QFile destFile(filename);
+        bool didDelete = destFile.remove();
+        if(!didDelete)
+        {
+          qDebug() << "[PythonBindingClass] Dest File was NOT removed: " << filename;
+        }
         if(!tempfile.copy(filename))
         {
-          std::cout << "Temp file '" << tempFileName.toStdString() << "' could not be copied to '"
+          std::cout << "[PythonBindingClass] Temp file '" << tempFileName.toStdString() << "' could not be copied to '"
                     << filename.toStdString() << "'" << std::endl;
         }
         else
         {
-            qDebug() << "Pybind11 Module Generated for: " << fi2.absoluteFilePath();
+          qDebug() << "[PythonBindingClass]: New File Generated: " << fi2.absoluteFilePath();
         }
       }
-//      else
-//      {
-//        qDebug() << "Hashes are EQUAL";
-//      }
     }
     
     
@@ -354,22 +411,24 @@ QString PythonBindingClass::generateConstructorsCodes()
   subPath = subPath.replace(m_SourceDir.absolutePath(), ""); // Remove the system dependent file path
   subPath = subPath.remove(0, 1);                            // Remove the front / character
 
-  QString headerPath = QString("%1/%2.h").arg(subPath).arg(getClassName());
+  QString headerPath = QString("%1/%2.h").arg(subPath, getClassName());
   headerTemplate = headerTemplate.replace(HEADER_PATH, headerPath);
   headerTemplate = headerTemplate.replace(SUPERCLASS_NAME, getSuperClass());
   headerTemplate = headerTemplate.replace(LIB_NAME, m_LibName);
 
   constructors << headerTemplate;
-
+  constructors << TAB << "/* Begin default constructor declarations */" << NEWLINE_SIMPL;
   constructors << TAB << ".def(py::init<" << getClassName() << ">())" << NEWLINE_SIMPL;
   constructors << TAB << ".def(py::init<" << getClassName() << " const &>())" << NEWLINE_SIMPL;
-
-  constructors << TAB << "/* Number of costructors: " <<  m_Constructors.size()  << "*/" << NEWLINE_SIMPL;
+  if(!m_Constructors.isEmpty())
+  {
+    constructors << TAB << "/* Number of non-default constructors: " <<  m_Constructors.size()  << "*/" << NEWLINE_SIMPL;
+  }
   for(auto line : m_Constructors)
   {
     QStringList tokens = line.split("(");
     tokens = tokens[1].replace(")", "").trimmed().split(" ");
-    QString keyword = tokens[0];
+    //QString keyword = tokens[0];
     //.def(py::init<const std::string &>())
     constructors << TAB << ".def(py::init<";
     for(int i = 1; i < tokens.size(); i++)
@@ -380,7 +439,7 @@ QString PythonBindingClass::generateConstructorsCodes()
     constructors << ">())" << NEWLINE_SIMPL;
   }
 
-  QString pybind11HeaderPath = QString("%1/%2_PY11.h").arg(subPath).arg(getClassName());
+  QString pybind11HeaderPath = QString("%1/%2_PY11.h").arg(subPath, getClassName());
   if(!m_CharsToStrip.isEmpty())
   {
     pybind11HeaderPath = pybind11HeaderPath.replace(m_CharsToStrip, "");
@@ -439,7 +498,7 @@ QString PythonBindingClass::generateMethodCode()
   {
     QStringList tokens = line.split("(");
     tokens = tokens[1].replace(")", "").trimmed().split(" ");
-    QString returnType = tokens[0];
+   // QString returnType = tokens[0];
     QString methodName = tokens[1];
     out << TAB << "/* Class instance method " << methodName << " */" << NEWLINE_SIMPL;
     bool methodIsConst = false;

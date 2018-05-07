@@ -89,6 +89,8 @@ protected:
 
   QString generateFooterCode();
 
+  QByteArray md5FileContents(const QString &filename);
+
 private:
   PythonBindingsModule* m_Module = nullptr;
   PythonBindingClass(const PythonBindingClass&) = delete; // Copy Constructor Not Implemented

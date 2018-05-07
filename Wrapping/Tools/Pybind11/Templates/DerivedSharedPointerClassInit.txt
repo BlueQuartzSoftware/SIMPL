@@ -28,16 +28,15 @@ using PyAbstractFilterSharedPtrClass = py::class_<T, AbstractFilter, std::shared
 * initialized.
 */
 PySharedPtrClass<@CLASS_NAME@> pybind11_init_@LIB_NAME@_@CLASS_NAME@(py::module &m
-#ifdef simpl_EXPORTS
+#ifdef simplpy11_EXPORTS
                                     , PySharedPtrClass<@SUPERCLASS_NAME@>& parent
 #endif
 )
 {
-#ifdef simpl_EXPORTS
+#ifdef simplpy11_EXPORTS
   PySharedPtrClass<@CLASS_NAME@> instance(m, "@CLASS_NAME@", parent);
 #else
   py::module::import("simpl");
   PyAbstractFilterSharedPtrClass<@CLASS_NAME@> instance(m, "@CLASS_NAME@");
 #endif
 
-  instance

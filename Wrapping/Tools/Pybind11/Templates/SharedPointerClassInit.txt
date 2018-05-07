@@ -28,4 +28,4 @@ using PyAbstractFilterSharedPtrClass = py::class_<T, AbstractFilter, std::shared
 PySharedPtrClass<@CLASS_NAME@> pybind11_init_@LIB_NAME@_@CLASS_NAME@(py::module &m)
 {
   PySharedPtrClass<@CLASS_NAME@> instance(m, "@CLASS_NAME@");
-  instance
+  

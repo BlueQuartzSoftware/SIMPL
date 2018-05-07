@@ -19,4 +19,6 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 PySharedPtrClass<@CLASS_NAME@> pybind11_init_@LIB_NAME@_@CLASS_NAME@(py::module &m)
 {
   PySharedPtrClass<@CLASS_NAME@> instance(m, "@CLASS_NAME@");
+  
+  /* Begin the python properties and methods definitions section */
   instance
