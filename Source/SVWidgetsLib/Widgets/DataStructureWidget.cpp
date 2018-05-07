@@ -428,6 +428,10 @@ void DataStructureWidget::setViewReqs(DataContainerSelectionFilterParameter::Req
     IGeometry::Pointer geom = dc->getGeometry();
 
     bool geomType = dcReqs.dcGeometryTypes.size() == 0 || (geom && dcReqs.dcGeometryTypes.contains(geom->getGeometryType()));
+    if((nullptr == geom && dcReqs.dcGeometryTypes.contains(IGeometry::Type::Unknown)) || (geom && dcReqs.dcGeometryTypes.contains(IGeometry::Type::Any)))
+    {
+      geomType = true;
+    }
 
     if(geomType && false == isCreatedPath(path))
     {
@@ -488,6 +492,14 @@ void DataStructureWidget::setViewReqs(AttributeMatrixSelectionFilterParameter::R
       
       bool amType = amReqs.amTypes.size() == 0 || (am && amReqs.amTypes.contains(am->getType()));
       bool geomType = amReqs.dcGeometryTypes.size() == 0 || (geom && amReqs.dcGeometryTypes.contains(geom->getGeometryType()));
+      if((nullptr == geom && amReqs.dcGeometryTypes.contains(IGeometry::Type::Unknown)) || (geom && amReqs.dcGeometryTypes.contains(IGeometry::Type::Any)))
+      {
+        geomType = true;
+      }
+      if(amReqs.amTypes.contains(AttributeMatrix::Type::Unknown) || amReqs.amTypes.contains(AttributeMatrix::Type::Any))
+      {
+        amType = true;
+      }
 
       if(amType && geomType && false == isCreatedPath(path))
       {
@@ -550,6 +562,14 @@ void DataStructureWidget::setViewReqs(DataArraySelectionFilterParameter::Require
         bool compDims = daReqs.componentDimensions.size() == 0 || (da && daReqs.componentDimensions.contains(da->getComponentDimensions()));
         bool daType = daReqs.daTypes.size() == 0 || (da && daReqs.daTypes.contains(da->getTypeAsString()));
         bool geomType = daReqs.dcGeometryTypes.size() == 0 || (geom && daReqs.dcGeometryTypes.contains(geom->getGeometryType()));
+        if((nullptr == geom && daReqs.dcGeometryTypes.contains(IGeometry::Type::Unknown)) || (geom && daReqs.dcGeometryTypes.contains(IGeometry::Type::Any)))
+        {
+          geomType = true;
+        }
+        if(daReqs.amTypes.contains(AttributeMatrix::Type::Unknown) || daReqs.amTypes.contains(AttributeMatrix::Type::Any))
+        {
+          amType = true;
+        }
 
         if(amType && compDims && daType && geomType && false == isCreatedPath(path))
         {
