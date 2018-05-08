@@ -292,7 +292,7 @@ void ComparisonContainerWidget::deselect()
   }
 
   setObjectName(m_BaseName);
-  update();
+  setStyleSheet(ComparisonContainerWidget::BorderStyleSheet);
 }
 
 // -----------------------------------------------------------------------------
@@ -315,8 +315,9 @@ void ComparisonContainerWidget::mouseMoveEvent(QMouseEvent* event)
   QMimeData *mimeData = new QMimeData;
 
   drag->setMimeData(mimeData);
-
   drag->exec(Qt::MoveAction);
+
+  deselect();
 }
 
 // -----------------------------------------------------------------------------
