@@ -275,10 +275,11 @@ void ComparisonSetWidget::updateItems()
   bool firstItemFound = false;
 
   QVector<AbstractComparison::Pointer> updatedChildComparisons;
+  int count = conditionalLayout->count();
 
-  for (int i = 0; i < conditionalWidgetContents->children().size(); i++)
+  for (int i = 0; i < count; i++)
   {
-    ComparisonContainerWidget* itemWidget = dynamic_cast<ComparisonContainerWidget*>(conditionalWidgetContents->children().at(i));
+    ComparisonContainerWidget* itemWidget = dynamic_cast<ComparisonContainerWidget*>(conditionalLayout->itemAt(i)->widget());
 
     if (itemWidget)
     {
