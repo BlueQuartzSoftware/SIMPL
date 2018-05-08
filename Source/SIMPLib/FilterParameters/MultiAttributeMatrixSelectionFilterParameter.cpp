@@ -38,6 +38,7 @@
 #include <QtCore/QJsonArray>
 
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -203,4 +204,30 @@ void MultiAttributeMatrixSelectionFilterParameter::writeJson(QJsonObject& json)
 
     json[getPropertyName()] = arrayObj;
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MultiAttributeMatrixSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath)
+{
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
+  QVector<DataArrayPath> paths = m_GetterCallback();
+  int count = paths.size();
+  bool updated = false;
+
+  for(int i = 0; i < count; i++)
+  {
+    if(paths[i] == oldPath)
+    {
+      paths[i] = newPath;
+      updated = true;
+    }
+  }
+
+  m_SetterCallback(paths);
+  emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
 }

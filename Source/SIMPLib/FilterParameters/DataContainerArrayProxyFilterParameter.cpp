@@ -35,6 +35,8 @@
 
 #include "DataContainerArrayProxyFilterParameter.h"
 
+#include "SIMPLib/Filtering/AbstractFilter.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -107,4 +109,17 @@ void DataContainerArrayProxyFilterParameter::writeJson(QJsonObject& json)
     proxy.writeJson(obj);
     json[getPropertyName()] = obj;
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArrayProxyFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath)
+{
+  QVariant var = filter->property(qPrintable(getPropertyName()));
+  DataContainerArrayProxy dcaProxy = var.value<DataContainerArrayProxy>();
+  dcaProxy.updatePath(renamePath);
+  var.setValue(dcaProxy);
+  filter->setProperty(qPrintable(getPropertyName()), var);
+  emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
 }

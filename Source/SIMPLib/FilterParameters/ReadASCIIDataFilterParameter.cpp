@@ -36,6 +36,7 @@
 #include "ReadASCIIDataFilterParameter.h"
 
 #include "SIMPLib/CoreFilters/util/ASCIIWizardData.hpp"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -71,4 +72,16 @@ ReadASCIIDataFilterParameter::Pointer ReadASCIIDataFilterParameter::New(const QS
 QString ReadASCIIDataFilterParameter::getWidgetType() const
 {
   return QString("ReadASCIIDataWidget");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ReadASCIIDataFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath)
+{
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
+  emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
 }

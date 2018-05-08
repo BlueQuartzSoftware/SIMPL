@@ -185,7 +185,7 @@ PipelineFilterObject* SVPipelineViewWidget::createFilterObjectFromFilter(Abstrac
 
   // Create a FilterWidget object
   SVPipelineFilterWidget* fw;
-  if(NULL != breakpoint)
+  if(nullptr != breakpoint)
   {
     fw = new BreakpointFilterWidget(filter, nullptr, this);
   }
@@ -731,7 +731,7 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
 
   bool ok;
   int index = value.toInt(&ok);
-  if(ok == false)
+  if(!ok)
   {
     return;
   }
@@ -743,14 +743,14 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
   bool addSpacer = false;
   if(filterCount() <= 0)
   {
-    if(NULL != m_EmptyPipelineLabel)
+    if(nullptr != m_EmptyPipelineLabel)
     {
       m_EmptyPipelineLabel->hide();
       delete m_EmptyPipelineLabel;
-      m_EmptyPipelineLabel = NULL;
+      m_EmptyPipelineLabel = nullptr;
     }
     QLayout* l = layout();
-    if(NULL != l)
+    if(nullptr != l)
     {
       qDeleteAll(l->children());
       delete l;
@@ -761,7 +761,7 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
       }
     }
 
-    if(m_FilterWidgetLayout)
+    if(nullptr != m_FilterWidgetLayout)
     {
       delete m_FilterWidgetLayout;
       m_FilterWidgetLayout = nullptr;
@@ -820,7 +820,7 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
   connect(filterWidget, SIGNAL(focusOutEventStarted(QFocusEvent*)),
           this, SLOT(on_focusOutEventStarted(QFocusEvent*)));
 
-  if(m_DataStructureWidget)
+  if(nullptr != m_DataStructureWidget)
   {
     connect(filterWidget, SIGNAL(parametersChanged1(PipelineFilterObject*)),
             m_DataStructureWidget, SLOT(handleFilterParameterChanged(PipelineFilterObject*)));

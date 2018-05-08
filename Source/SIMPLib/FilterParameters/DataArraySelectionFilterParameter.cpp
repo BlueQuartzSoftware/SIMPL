@@ -35,6 +35,7 @@
 
 #include "DataArraySelectionFilterParameter.h"
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 // -----------------------------------------------------------------------------
 //

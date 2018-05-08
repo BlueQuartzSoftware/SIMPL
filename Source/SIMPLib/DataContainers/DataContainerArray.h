@@ -237,6 +237,12 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
     void removeDataContainerFromBundles(const QString& name);
 
     /**
+    * @brief renameDataArrayPaths
+    * @param renamePaths
+    */
+    void renameDataArrayPaths(DataArrayPath::RenameContainer renamePaths);
+
+    /**
      * @brief getPrereqDataContainer
      * @param name
      * @param createIfNotExists

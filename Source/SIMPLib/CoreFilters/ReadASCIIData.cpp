@@ -216,6 +216,16 @@ void ReadASCIIData::writeFilterParameters(QJsonObject& obj)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void ReadASCIIData::renameDataArrayPath(DataArrayPath::RenameType renamePath)
+{
+  getWizardData().updateDataArrayPath(renamePath);
+
+  AbstractFilter::renameDataArrayPath(renamePath);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void ReadASCIIData::initialize()
 {
   m_ASCIIArrayMap.clear();

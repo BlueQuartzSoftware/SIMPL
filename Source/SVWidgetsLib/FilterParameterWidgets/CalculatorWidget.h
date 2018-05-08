@@ -92,7 +92,7 @@ class SVWidgetsLib_EXPORT CalculatorWidget : public FilterParameterWidget, priva
 
     void hideButton();
 
-    protected slots:
+  protected slots:
     void printUnaryButtonName();
     void printButtonName();
     void printActionName();
@@ -108,6 +108,8 @@ class SVWidgetsLib_EXPORT CalculatorWidget : public FilterParameterWidget, priva
     void on_scalarsBtn_clicked();
     void on_vectorsBtn_clicked();
     void on_piBtn_clicked();
+
+    void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
   signals:
     void errorSettingFilterParameter(const QString& msg);

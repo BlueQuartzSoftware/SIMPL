@@ -125,6 +125,12 @@ class ImportASCIIDataWizard : public QWizard
     */
     static void InsertLines(QStringList lines, int firstRowHeaderIndex, ASCIIDataModel* model);
 
+    /**
+    * @brief Updates the DataArrayPath used for importing data
+    * @param renamePath
+    */
+    void updateDataArrayPath(DataArrayPath::RenameType renamePath);
+
     QList<char> getDelimiters();
     bool getConsecutiveDelimiters();
     QStringList getHeaders();
