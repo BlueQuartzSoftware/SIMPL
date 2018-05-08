@@ -69,6 +69,14 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
       UNRECOGNIZED_EXT = -1
     };
 
+    enum class Roles : unsigned int
+    {
+      PathRole = Qt::UserRole + 1,
+      ExpandedRole,
+      ErrorsRole,
+      ItemTypeRole
+    };
+
     ~BookmarksModel();
 
     /**
@@ -83,9 +91,6 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
     QJsonObject toJsonObject();
 
     QVariant data(const QModelIndex& index, int role) const Q_DECL_OVERRIDE;
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
-
-    virtual QModelIndex sibling(int row, int column, const QModelIndex& idx) const Q_DECL_OVERRIDE;
 
     bool isEmpty();
 
@@ -103,9 +108,6 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
     Qt::ItemFlags flags(const QModelIndex& index) const Q_DECL_OVERRIDE;
 
     bool setData(const QModelIndex& index, const QVariant& value, int role) Q_DECL_OVERRIDE;
-
-    bool isExpanded(const QModelIndex& index);
-    void setExpanded(const QModelIndex& index, bool value);
 
     BookmarksItem* getRootItem();
 
@@ -135,18 +137,21 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
 
   public slots:
     /**
-    * @brief BookmarksToolboxWidget::addFavoriteTreeItem
-    * @param parent
-    * @param favoriteTitle
-    * @param icon
-    * @param favoritePath
-    * @param allowEditing
-    */
-    int addTreeItem(QModelIndex parent,
+     * @brief addTreeItem
+     * @param parent
+     * @param favoriteTitle
+     * @param icon
+     * @param favoritePath
+     * @param insertIndex
+     * @param type
+     * @param isExpanded
+     * @return
+     */
+    QModelIndex addTreeItem(QModelIndex parent,
                     QString& favoriteTitle,
                     QIcon icon,
                     QString favoritePath,
-                    int insertIndex,
+                    int insertIndex, BookmarksItem::ItemType type,
                     bool isExpanded);
 
   protected:
@@ -156,7 +161,7 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
 
     QDir findPipelinesDirectory();
 
-    void addPipelinesRecursively(QDir currentDir, QModelIndex parent, QString iconFileName,
+    void addPipelinesRecursively(QDir currentDir, QModelIndex parent, QJsonObject prebuiltsObj, QString iconFileName,
                                  bool allowEditing, QStringList filters, FilterLibraryTreeWidget::ItemType itemType);
 
   protected slots:
@@ -165,6 +170,7 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
 
   private:
     static BookmarksModel*    self;
+    bool m_LoadingModel = false;
 
     BookmarksItem*            rootItem;
     QFileSystemWatcher*       m_Watcher;
@@ -188,6 +194,17 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
     * @brief getBookmarksPrefsPath
     */
     QString getBookmarksPrefsPath();
+
+    /**
+     * @brief getBookmarksPrefsObject
+     * @return
+     */
+    QJsonObject getBookmarksPrefsObject();
+
+    /**
+     * @brief loadModel
+     */
+    void loadModel();
 
     BookmarksModel(const BookmarksModel&);    // Copy Constructor Not Implemented
     void operator=(const BookmarksModel&);    // Move assignment Not Implemented

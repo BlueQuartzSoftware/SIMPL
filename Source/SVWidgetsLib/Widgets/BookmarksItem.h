@@ -46,48 +46,41 @@
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
-
-
-
 class SVWidgetsLib_EXPORT BookmarksItem
 {
   public:
-    BookmarksItem(const QVector<QVariant>& data, BookmarksItem* parent = 0);
+    BookmarksItem(const QString &name, const QString &path = "", BookmarksItem* parent = 0);
     virtual ~BookmarksItem();
 
-    enum ColumnData
+    enum BookmarkItemData
     {
-      Name,
-      Path
+      Contents
+    };
+
+    enum class ItemType : unsigned int
+    {
+      Folder,
+      Bookmark
     };
 
     SIMPL_BOOL_PROPERTY(Expanded)
+    SIMPL_INSTANCE_PROPERTY(QString, Name)
+    SIMPL_INSTANCE_PROPERTY(QString, Path)
+    SIMPL_INSTANCE_PROPERTY(bool, HasErrors)
+    SIMPL_INSTANCE_PROPERTY(QString, ItemTooltip)
+    SIMPL_INSTANCE_PROPERTY(QIcon, Icon)
+    SIMPL_INSTANCE_PROPERTY(ItemType, ItemType)
 
     BookmarksItem* child(int number);
     BookmarksItem* parent();
 
     int childCount() const;
-    int columnCount() const;
-
-    QVariant data(int column) const;
-    bool setData(int column, const QVariant& value);
-
-    bool getItemHasErrors();
-    bool setItemHasErrors(const bool& value);
-
-    QString getItemTooltip();
-    bool setItemTooltip(const QString& value);
-
-    QIcon getIcon();
-    bool setIcon(const QIcon& icon);
 
     bool insertChild(int position, BookmarksItem* child);
     bool insertChildren(int position, int count, int columns);
-    bool insertColumns(int position, int columns);
 
     bool removeChild(int position);
     bool removeChildren(int position, int count);
-    bool removeColumns(int position, int columns);
 
     int childNumber() const;
 
@@ -97,12 +90,7 @@ class SVWidgetsLib_EXPORT BookmarksItem
 
   private:
     QList<BookmarksItem*>               m_ChildItems;
-    QVector<QVariant>                   m_ItemData;
     BookmarksItem*                      m_ParentItem;
-    bool                                m_ItemHasErrors;
-    QString                             m_ItemTooltip;
-    bool                                m_NeedsToBeExpanded;
-    QIcon                               m_Icon;
 
     BookmarksItem(const BookmarksItem&);    // Copy Constructor Not Implemented
     void operator=(const BookmarksItem&);   // Move assignment Not Implemented

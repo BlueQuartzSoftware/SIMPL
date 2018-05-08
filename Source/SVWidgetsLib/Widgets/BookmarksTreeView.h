@@ -137,7 +137,6 @@ class SVWidgetsLib_EXPORT BookmarksTreeView : public QTreeView
     void listenLocateBookmarkTriggered();
 
   signals:
-    void itemWasDropped(QModelIndex parent, QString& title, QIcon icon, QString path, int index, bool isExpanding);
     void currentIndexChanged(const QModelIndex& current, const QModelIndex& previous);
     void folderChangedState(const QModelIndex& index, bool expand);
 

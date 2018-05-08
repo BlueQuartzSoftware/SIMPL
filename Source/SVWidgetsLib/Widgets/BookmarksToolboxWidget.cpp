@@ -98,11 +98,6 @@ void BookmarksToolboxWidget::setupGui()
               }");
   bookmarksTreeView->setStyleSheet(css);
 
-  BookmarksModel* model = BookmarksModel::Instance();
-
-  connect(bookmarksTreeView, SIGNAL(itemWasDropped(QModelIndex, QString&, QIcon, QString, int, bool)), model,
-          SLOT(addTreeItem(QModelIndex, QString&, QIcon, QString, int, bool)));
-
   connect(bookmarksTreeView, &BookmarksTreeView::updateStatusBar, this, &BookmarksToolboxWidget::updateStatusBar);
 
   connect(bookmarksTreeView, &BookmarksTreeView::newSIMPLViewInstanceTriggered, this, &BookmarksToolboxWidget::bookmarkActivated);
@@ -196,45 +191,38 @@ void BookmarksToolboxWidget::on_bookmarksTreeView_doubleClicked(const QModelInde
 {
   BookmarksModel* model = BookmarksModel::Instance();
 
-  QModelIndex nameIndex = model->index(index.row(), BookmarksItem::Name, index.parent());
-  QModelIndex pathIndex = model->index(index.row(), BookmarksItem::Path, index.parent());
-
-  QString pipelinePath = pathIndex.data().toString();
-  if(pipelinePath.isEmpty())
+  QString path = model->data(index, static_cast<int>(BookmarksModel::Roles::PathRole)).toString();
+  if(path.isEmpty())
   {
     return; // The user double clicked a folder, so don't do anything
   }
 
-  QFileInfo finfo(pipelinePath);
-  if(finfo.isDir())
+  QFileInfo fi(path);
+  if(fi.isDir())
   {
     return;
   }
+  else if(fi.exists() == false)
+  {
+    bookmarksTreeView->blockSignals(true);
+    QtSBookmarkMissingDialog* dialog = new QtSBookmarkMissingDialog(this, Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint | Qt::WindowTitleHint);
+    connect(dialog, SIGNAL(locateBtnPressed()), bookmarksTreeView, SLOT(on_actionLocateFile_triggered()));
+    QString name = model->data(index, Qt::DisplayRole).toString();
+    dialog->setBookmarkName(name);
+    dialog->exec();
+    delete dialog;
+    bookmarksTreeView->blockSignals(false);
+  }
   else
   {
-    QString path = pathIndex.data().toString();
-    QFileInfo fi(path);
-    if(fi.exists() == false)
+    bool itemHasErrors = model->data(index, static_cast<int>(BookmarksModel::Roles::ErrorsRole)).toBool();
+    if(itemHasErrors == true)
     {
-      bookmarksTreeView->blockSignals(true);
-      QtSBookmarkMissingDialog* dialog = new QtSBookmarkMissingDialog(this, Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint | Qt::WindowTitleHint);
-      connect(dialog, SIGNAL(locateBtnPressed()), bookmarksTreeView, SLOT(on_actionLocateFile_triggered()));
-      dialog->setBookmarkName(nameIndex.data().toString());
-      dialog->exec();
-      delete dialog;
-      bookmarksTreeView->blockSignals(false);
+      // Set the itemHasError variable, and have the watcher monitor the file again
+      model->setData(index, false, static_cast<int>(BookmarksModel::Roles::ErrorsRole));
+      model->getFileSystemWatcher()->addPath(path);
     }
-    else
-    {
-      bool itemHasErrors = model->data(pathIndex, Qt::UserRole).value<bool>();
-      if(itemHasErrors == true)
-      {
-        // Set the itemHasError variable, and have the watcher monitor the file again
-        model->setData(nameIndex, false, Qt::UserRole);
-        model->getFileSystemWatcher()->addPath(path);
-      }
-      emit bookmarkActivated(pipelinePath);
-    }
+    emit bookmarkActivated(path);
   }
 }
 
@@ -262,7 +250,7 @@ QString BookmarksToolboxWidget::writeNewFavoriteFilePath(QString newFavoriteTitl
   }
 
   bookmarksTreeView->blockSignals(true);
-  item->setData(0, Qt::UserRole, QVariant(newPath));
+  item->setData(BookmarksItem::Contents, static_cast<int>(BookmarksModel::Roles::ErrorsRole), newPath);
   bookmarksTreeView->blockSignals(false);
 
   return newPath;
