@@ -53,6 +53,8 @@ namespace SIMPLView
   {
     const QString FilterItem("Filter Item");
     const QString BookmarkItem("Bookmark Item");
+    const QString DataArrayPath("DataArrayPath");
+    const QString SelectionWidget("Selection Widget");
   }
   
 }

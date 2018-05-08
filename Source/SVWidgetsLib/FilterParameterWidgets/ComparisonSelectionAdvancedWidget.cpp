@@ -109,6 +109,10 @@ void ComparisonSelectionAdvancedWidget::setupGui()
     return;
   }
 
+  AttributeMatrixSelectionFilterParameter::RequirementType reqs;
+  m_SelectedAttributeMatrixPath->setAttrMatrixRequirements(reqs);
+  m_SelectedAttributeMatrixPath->setFilter(getFilter());
+
   // Catch when the filter is about to execute the preflight
   connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
@@ -122,6 +126,12 @@ void ComparisonSelectionAdvancedWidget::setupGui()
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
     this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
+  //connect(m_SelectedAttributeMatrixPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(filterPath(DataArrayPath)), this, SIGNAL(filterPath(DataArrayPath)));
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(pathChanged()), this, SLOT(attributeMatrixUpdated()));
+
   // Create the Comparison Set
   comparisonSetWidget->setComparisonSet(ComparisonSet::New());
   connect(comparisonSetWidget, SIGNAL(comparisonChanged()), this, SIGNAL(parametersChanged()));
@@ -129,14 +139,12 @@ void ComparisonSelectionAdvancedWidget::setupGui()
   // Copy the data into the Comparison Set
   ComparisonInputsAdvanced comps = dynamic_cast<ComparisonSelectionAdvancedFilterParameter*>(getFilterParameter())->getGetterCallback()();
 
-  m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
-
-  m_MenuMapper = new QSignalMapper(this);
-  connect(m_MenuMapper, SIGNAL(mapped(QString)),
-    this, SLOT(attributeMatrixSelected(QString)));
-
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedAttributeMatrixPath->setText(defaultPath.serialize(Detail::Delimiter));
+  QString matrixPropertyName = getFilterParameter()->getHumanLabel();
+  matrixPropertyName = matrixPropertyName.replace("Arrays", "Matrix");
+  matrixPropertyName = matrixPropertyName.replace("arrays", "matrix");
+  m_SelectedAttributeMatrixPath->setPropertyName(matrixPropertyName);
 
   DataArrayPath currentPath;
   currentPath.setDataContainerName(comps.getDataContainerName());
@@ -200,43 +208,15 @@ void ComparisonSelectionAdvancedWidget::on_conditionalCB_stateChanged(int state)
 // -----------------------------------------------------------------------------
 QStringList ComparisonSelectionAdvancedWidget::generateAttributeArrayList(const QString& currentDCName, const QString& currentAttrMatName)
 {
-  //  std::cout << "ComparisonSelectionAdvancedWidget::generateAttributeArrayList()" << std::endl;
-  QStringList attributeArrayList;
-
-  // Loop over the data containers until we find the proper data container
-  QList<DataContainerProxy> containers = m_DcaProxy.dataContainers.values();
-  QListIterator<DataContainerProxy> containerIter(containers);
-  while (containerIter.hasNext())
+  DataArrayPath path(currentDCName, currentAttrMatName, "");
+  AttributeMatrix::Pointer am = getFilter()->getDataContainerArray()->getAttributeMatrix(path);
+  
+  if(nullptr == am)
   {
-    DataContainerProxy dc = containerIter.next();
-    if (dc.name.compare(currentDCName) == 0)
-    {
-      // We found the proper Data Container, now populate the AttributeMatrix List
-      QMap<QString, AttributeMatrixProxy> attrMats = dc.attributeMatricies;
-      QMapIterator<QString, AttributeMatrixProxy> attrMatsIter(attrMats);
-      while (attrMatsIter.hasNext())
-      {
-        attrMatsIter.next();
-        QString amName = attrMatsIter.key();
-        if (amName.compare(currentAttrMatName) == 0)
-        {
-          // We found the selected AttributeMatrix, so loop over this attribute matrix arrays and populate the list widget
-          AttributeMatrixProxy amProxy = attrMatsIter.value();
-          QMap<QString, DataArrayProxy> dataArrays = amProxy.dataArrays;
-          QMapIterator<QString, DataArrayProxy> dataArraysIter(dataArrays);
-          while (dataArraysIter.hasNext())
-          {
-            dataArraysIter.next();
-            // DataArrayProxy daProxy = dataArraysIter.value();
-            QString daName = dataArraysIter.key();
-            attributeArrayList << daName;
-          }
-        }
-      }
-    }
+    return QStringList();
   }
-
-  return attributeArrayList;
+  
+  return am->getAttributeArrayNames();
 }
 
 // -----------------------------------------------------------------------------
@@ -321,7 +301,7 @@ void ComparisonSelectionAdvancedWidget::beforePreflight()
     populateButtonText();
   }
 
-  createSelectionMenu();
+  m_SelectedAttributeMatrixPath->beforePreflight();
 }
 
 // -----------------------------------------------------------------------------
@@ -332,15 +312,12 @@ void ComparisonSelectionAdvancedWidget::afterPreflight()
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if (nullptr == dca) { return; }
 
-  if (dca->doesAttributeMatrixExist(DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter)))
+  if (dca->doesAttributeMatrixExist(m_SelectedAttributeMatrixPath->getDataArrayPath()))
   {
-    AttributeMatrix::Pointer am = dca->getAttributeMatrix(DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter));
-    if (nullptr != am.get()) {
-      QString html = am->getInfoString(SIMPL::HtmlFormat);
-      m_SelectedAttributeMatrixPath->setToolTip(html);
-      m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
-
-      DataArrayPath path = DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter);
+    AttributeMatrix::Pointer am = dca->getAttributeMatrix(m_SelectedAttributeMatrixPath->getDataArrayPath());
+    if (nullptr != am.get()) 
+    {
+      DataArrayPath path = m_SelectedAttributeMatrixPath->getDataArrayPath();
       QStringList arrayNames = generateAttributeArrayList(path.getDataContainerName(), path.getAttributeMatrixName());
       
       comparisonSetWidget->setArrayNames(arrayNames);
@@ -353,10 +330,8 @@ void ComparisonSelectionAdvancedWidget::afterPreflight()
       }
     }
   }
-  else
-  {
-    m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
-  }
+
+  m_SelectedAttributeMatrixPath->afterPreflight();
 }
 
 // -----------------------------------------------------------------------------
@@ -416,6 +391,15 @@ bool ComparisonSelectionAdvancedWidget::eventFilter(QObject* obj, QEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void ComparisonSelectionAdvancedWidget::attributeMatrixUpdated()
+{
+  DataArrayPath path = m_SelectedAttributeMatrixPath->getDataArrayPath();
+  attributeMatrixSelected(path.serialize(Detail::Delimiter));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void ComparisonSelectionAdvancedWidget::attributeMatrixSelected(QString path)
 {
   setSelectedPath(path);
@@ -441,9 +425,6 @@ void ComparisonSelectionAdvancedWidget::setSelectedPath(DataArrayPath amPath)
 {
   if (amPath.isEmpty()) { return; }
 
-  m_SelectedAttributeMatrixPath->setText("");
-  m_SelectedAttributeMatrixPath->setToolTip("");
-
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if (nullptr == dca)
   {
@@ -453,9 +434,6 @@ void ComparisonSelectionAdvancedWidget::setSelectedPath(DataArrayPath amPath)
   if (dca->doesAttributeMatrixExist(amPath))
   {
     AttributeMatrix::Pointer am = dca->getAttributeMatrix(amPath);
-    QString html = am->getInfoString(SIMPL::HtmlFormat);
-    m_SelectedAttributeMatrixPath->setToolTip(html);
-    m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
 
     if (nullptr != comparisonSetWidget->getComparisonSet())
     {
@@ -472,94 +450,6 @@ void ComparisonSelectionAdvancedWidget::presetAttributeMatrix(DataArrayPath amPa
 {
   m_presetPath = amPath;
   m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ComparisonSelectionAdvancedWidget::createSelectionMenu()
-{
-  // Now get the DataContainerArray from the Filter instance
-  // We are going to use this to get all the current DataContainers
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if (nullptr == dca)
-  {
-    return;
-  }
-
-  // Get the menu and clear it out
-  QMenu* menu = m_SelectedAttributeMatrixPath->menu();
-  if (!menu)
-  {
-    menu = new QMenu();
-    m_SelectedAttributeMatrixPath->setMenu(menu);
-    menu->installEventFilter(this);
-  }
-  if (menu)
-  {
-    menu->clear();
-  }
-
-  // Cache the DataContainerArray Structure for our use during all the selections
-  m_DcaProxy = DataContainerArrayProxy(dca.get());
-
-  // Get the DataContainerArray object
-  // Loop over the data containers until we find the proper data container
-  QList<DataContainer::Pointer> containers = dca->getDataContainers();
-  QVector<AttributeMatrix::Type> amTypes = m_FilterParameter->getDefaultAttributeMatrixTypes();
-  IGeometry::Types geomTypes = m_FilterParameter->getDefaultGeometryTypes();
-
-  QListIterator<DataContainer::Pointer> containerIter(containers);
-  while (containerIter.hasNext())
-  {
-    DataContainer::Pointer dc = containerIter.next();
-
-    IGeometry::Pointer geom = IGeometry::NullPointer();
-    IGeometry::Type geomType = IGeometry::Type::Unknown;
-    if (nullptr != dc.get())
-    {
-      geom = dc->getGeometry();
-    }
-    if (nullptr != geom.get())
-    {
-      geomType = geom->getGeometryType();
-    }
-
-    QMenu* dcMenu = new QMenu(dc->getName());
-    dcMenu->setDisabled(false);
-    menu->addMenu(dcMenu);
-    if (geomTypes.isEmpty() == false && geomTypes.contains(geomType) == false)
-    {
-      dcMenu->setDisabled(true);
-    }
-
-    // We found the proper Data Container, now populate the AttributeMatrix List
-    DataContainer::AttributeMatrixMap_t attrMats = dc->getAttributeMatrices();
-    QMapIterator<QString, AttributeMatrix::Pointer> attrMatsIter(attrMats);
-    while (attrMatsIter.hasNext())
-    {
-      attrMatsIter.next();
-      QString amName = attrMatsIter.key();
-      AttributeMatrix::Pointer am = attrMatsIter.value();
-
-      QAction* action = new QAction(amName, dcMenu);
-      DataArrayPath daPath(dc->getName(), amName, "");
-      QString path = daPath.serialize(Detail::Delimiter);
-      action->setData(path);
-
-      connect(action, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
-      m_MenuMapper->setMapping(action, path);
-      dcMenu->addAction(action);
-
-      bool amIsNotNull = (nullptr != am.get()) ? true : false;
-      bool amValidType = (amTypes.isEmpty() == false && amTypes.contains(am->getType()) == false) ? true : false;
-
-      if (amIsNotNull && amValidType)
-      {
-        action->setDisabled(true);
-      }
-    }
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -587,18 +477,7 @@ void ComparisonSelectionAdvancedWidget::updateDataArrayPath(QString propertyName
         return;
       }
 
-      if(dca->doesAttributeMatrixExist(amPath))
-      {
-        AttributeMatrix::Pointer am = dca->getAttributeMatrix(amPath);
-        QString html = am->getInfoString(SIMPL::HtmlFormat);
-        m_SelectedAttributeMatrixPath->setToolTip(html);
-        m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
-      }
-      else
-      {
-        m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
-        //
-      }
+      m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
     }
 
     // Update the DataArray choices
@@ -608,4 +487,28 @@ void ComparisonSelectionAdvancedWidget::updateDataArrayPath(QString propertyName
     }
     blockSignals(false);
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonSelectionAdvancedWidget::endViewPathRequirements()
+{
+  m_SelectedAttributeMatrixPath->setPathFiltering(false);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonSelectionAdvancedWidget::checkFilterPath(DataArrayPath path)
+{
+  setEnabled(m_SelectedAttributeMatrixPath->checkPathReqs(path));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonSelectionAdvancedWidget::clearPathFiltering()
+{
+  setEnabled(true);
 }

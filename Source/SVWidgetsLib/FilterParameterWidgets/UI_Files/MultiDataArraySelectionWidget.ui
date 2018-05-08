@@ -45,7 +45,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="m_SelectedAttributeMatrixPath">
+      <widget class="DataArrayPathSelectionWidget" name="m_SelectedAttributeMatrixPath">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -410,6 +410,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DataArrayPathSelectionWidget</class>
+   <extends>QToolButton</extends>
+   <header>DataArrayPathSelectionWidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../icons/images/Icons.qrc"/>
  </resources>

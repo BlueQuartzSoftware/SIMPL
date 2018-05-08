@@ -218,6 +218,7 @@ void ComparisonContainerWidget::setComparisonSetWidget(ComparisonSetWidget* comp
   }
 
   m_comparisonSetWidget = comparisonSetWidget;
+  getComparisonWidget()->setAttributeMatrix(comparisonSetWidget->getAttributeMatrix());
   getComparisonWidget()->setArrayNames(comparisonSetWidget->getArrayNames());
 
   if (comparisonSetWidget)

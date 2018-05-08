@@ -332,6 +332,31 @@ DataArrayPath::RenameContainer DataArrayPath::CheckForRenamedPaths(DataContainer
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+DataArrayPath::DataType DataArrayPath::getDataType()
+{
+  if(getDataContainerName().isEmpty())
+  {
+    return DataType::None;
+  }
+  else if(getAttributeMatrixName().isEmpty() && getDataArrayName().isEmpty())
+  {
+    return DataType::DataContainer;
+  }
+  else if(getDataArrayName().isEmpty())
+  {
+    return DataType::AttributeMatrix;
+  }
+  else if(false == getAttributeMatrixName().isEmpty())
+  {
+    return DataType::DataArray;
+  }
+
+  return DataType::None;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 QVector<QString> DataArrayPath::toQVector()
 {
   QVector<QString> v(3);

@@ -43,6 +43,9 @@
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
@@ -84,9 +87,21 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget
     void filterParametersChanged();
     void errorSettingFilterParameter(const QString &text);
 
+    void viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs);
+    void viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType amReqs);
+    void viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType daReqs);
+    void endViewPaths();
+    void filterPath(DataArrayPath path);
+    void endPathFiltering();
+
   private slots:
     void fadeInWidget(QWidget* widget);
     void fadeOutWidget(QWidget* widget);
+    
+    void getEmittedPathReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs);
+    void getEmittedPathReqs(AttributeMatrixSelectionFilterParameter::RequirementType amReqs);
+    void getEmittedPathReqs(DataArraySelectionFilterParameter::RequirementType daReqs);
+    void emitFilterPath(DataArrayPath path);
 
   private:
     QSharedPointer<Ui::FilterInputWidget> m_Ui;
