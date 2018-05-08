@@ -4,13 +4,13 @@
 #include <fstream>
 #include <iostream>
 
-#include <QtCore/QFileInfo>
-#include <QtCore/QFile>
 #include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
 
+#include "H5Support/H5ScopedSentinel.h"
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
-#include "H5Support/H5ScopedSentinel.h"
 
 #include "SIMPLib/Common/Observer.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
@@ -194,8 +194,6 @@ public:
       }
     }
 
-
-
     hid_t file_id = QH5Utilities::createFile(m_FilePath);
     DREAM3D_REQUIRE(file_id > 0);
     H5ScopedFileSentinel sentinel(&file_id, false);
@@ -310,8 +308,10 @@ public:
     filter->setErrorCondition(0);
 
     // Check incorrect dataset path error
-    var.setValue(QString("/Foo"));
-    propSet = filter->setProperty("DatasetPath", var);
+    QStringList paths;
+    paths.push_back("/Foo");
+    var.setValue(paths);
+    propSet = filter->setProperty("DatasetPaths", var);
     DREAM3D_REQUIRE_EQUAL(propSet, true);
 
     filter->execute();
@@ -319,10 +319,12 @@ public:
     filter->setErrorCondition(0);
 
     // Fill in Dataset Path with a valid path so that we can continue our error checks
+    paths.clear();
     int8_t dummyVal = 0x0;
     QString typeStr = QH5Lite::HDFTypeForPrimitiveAsStr(dummyVal);
-    var.setValue("Pointer/Pointer1DArrayDataset<" + typeStr + ">");
-    propSet = filter->setProperty("DatasetPath", var);
+    paths.push_back("Pointer/Pointer1DArrayDataset<" + typeStr + ">");
+    var.setValue(paths);
+    propSet = filter->setProperty("DatasetPaths", var);
     DREAM3D_REQUIRE_EQUAL(propSet, true);
 
     // Check empty component dimensions
@@ -405,9 +407,11 @@ public:
     bool propSet = filter->setProperty("ComponentDimensions", var);
     DREAM3D_REQUIRE_EQUAL(propSet, true);
 
+    QStringList paths;
     dsetPath = dsetPath.replace("@TYPE_STRING@", typeStr);
-    var.setValue(dsetPath);
-    propSet = filter->setProperty("DatasetPath", var);
+    paths.push_back(dsetPath);
+    var.setValue(paths);
+    propSet = filter->setProperty("DatasetPaths", var);
     DREAM3D_REQUIRE_EQUAL(propSet, true);
 
     // Execute Dataset Test
@@ -459,8 +463,8 @@ public:
   void RemoveTestFiles()
   {
 #if REMOVE_TEST_FILES
- bool success = QFile::remove(m_FilePath);
- DREAM3D_REQUIRE_EQUAL(success, true);
+    bool success = QFile::remove(m_FilePath);
+    DREAM3D_REQUIRE_EQUAL(success, true);
 #endif
   }
 
@@ -472,7 +476,6 @@ public:
     writeHDF5File();
 
     //  // ******************* Test Reading Data *************************************
-
 
     // Create tuple and component dimensions for all tests
     QVector<QVector<size_t>> tDimsVector;
@@ -612,16 +615,15 @@ public:
 
     int err = EXIT_SUCCESS;
 
-//#if !REMOVE_TEST_FILES
-//    DREAM3D_REGISTER_TEST(RemoveTestFiles())
-//#endif
+    //#if !REMOVE_TEST_FILES
+    //    DREAM3D_REGISTER_TEST(RemoveTestFiles())
+    //#endif
 
-  DREAM3D_REGISTER_TEST(RunImportHDF5DatasetTest())
+    DREAM3D_REGISTER_TEST(RunImportHDF5DatasetTest())
 
-//#if REMOVE_TEST_FILES
-//    DREAM3D_REGISTER_TEST(RemoveTestFiles())
-//#endif
-
+    //#if REMOVE_TEST_FILES
+    //    DREAM3D_REGISTER_TEST(RemoveTestFiles())
+    //#endif
   }
 
 private:

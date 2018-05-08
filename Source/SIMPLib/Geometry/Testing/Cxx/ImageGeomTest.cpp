@@ -37,7 +37,6 @@ public:
     size_t dims[3] = {10, 20, 30};
     float res[3] = {0.4f, 2.3f, 5.0f};
     float origin[3] = {-1.0f, 6.0f, 10.0f};
-    size_t totalCells = dims[0] * dims[1] * dims[2];
 
     geom->setDimensions(dims);
     geom->setOrigin(origin);

@@ -54,8 +54,8 @@ public:
   SIMPL_INSTANCE_PROPERTY(QString, HDF5FilePath)
   Q_PROPERTY(QString HDF5FilePath READ getHDF5FilePath WRITE setHDF5FilePath)
 
-  SIMPL_INSTANCE_PROPERTY(QString, DatasetPath)
-  Q_PROPERTY(QString DatasetPath READ getDatasetPath WRITE setDatasetPath)
+  SIMPL_INSTANCE_PROPERTY(QStringList, DatasetPaths)
+  Q_PROPERTY(QStringList DatasetPaths READ getDatasetPaths WRITE setDatasetPaths)
 
   QString getHDF5Dimensions();
   Q_PROPERTY(QString HDF5Dimensions READ getHDF5Dimensions)
@@ -75,7 +75,7 @@ public:
    * @brief getBrandingString Returns the branding string for the filter, which is a tag
    * used to denote the filter's association with specific plugins
    * @return Branding string
-  */
+   */
   const QString getBrandingString() const override;
 
   /**
@@ -122,8 +122,8 @@ public:
   void execute() override;
 
   /**
-  * @brief preflight Reimplemented from @see AbstractFilter class
-  */
+   * @brief preflight Reimplemented from @see AbstractFilter class
+   */
   void preflight() override;
 
 signals:
@@ -153,13 +153,13 @@ protected:
   ImportHDF5Dataset();
 
   /**
-  * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-  */
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
   void dataCheck();
 
   /**
-  * @brief Initializes all the private instance variables.
-  */
+   * @brief Initializes all the private instance variables.
+   */
   void initialize();
 
 private:

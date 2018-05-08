@@ -65,8 +65,6 @@
 
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
 
-
-
 // Initialize private static member variable
 QString ImportHDF5DatasetWidget::m_OpenDialogLastDirectory = "";
 
@@ -130,20 +128,6 @@ void ImportHDF5DatasetWidget::setupGui()
   // Catch when the filter wants its values updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  connect(dsetPathLE, &QLineEdit::textChanged, [=] { emit parametersChanged(); });
-
-  // When a dataset in the treeview is double-clicked, write its path to the dataset path line edit
-  connect(hdfTreeView, &QTreeView::doubleClicked, [=](const QModelIndex& index) {
-    ImportHDF5TreeModel* treeModel = dynamic_cast<ImportHDF5TreeModel*>(hdfTreeView->model());
-    if(treeModel != nullptr)
-    {
-      if(treeModel->hasChildren(index) == false)
-      {
-        dsetPathLE->setText(treeModel->hdfPathForIndex(index));
-      }
-    }
-  });
-
   // Allow the widget to fill the entire FilterInputWidget space
   setWidgetIsExpanding(true);
 
@@ -164,13 +148,11 @@ void ImportHDF5DatasetWidget::setupGui()
   AbstractFilter* filter = getFilter();
   if(filter != nullptr)
   {
-    ImportHDF5DatasetFilterParameter::GetterCallbackType callback = m_FilterParameter->getFilePathGetterCallback();
-    QString hdf5FilePath = callback();
+    ImportHDF5DatasetFilterParameter::FilePathGetterCallbackType filePathCallback = m_FilterParameter->getFilePathGetterCallback();
+    QString hdf5FilePath = filePathCallback();
 
-    callback = m_FilterParameter->getDataSetGetterCallback();
-    QString dsetPath = callback();
-
-    dsetPathLE->setText(dsetPath);
+    ImportHDF5DatasetFilterParameter::DatasetGetterCallbackType dSetCallback = m_FilterParameter->getDataSetGetterCallback();
+    QStringList hdf5Paths = dSetCallback();
 
     if(hdf5FilePath.isEmpty() == false)
     {
@@ -182,28 +164,40 @@ void ImportHDF5DatasetWidget::setupGui()
         ImportHDF5TreeModel* treeModel = dynamic_cast<ImportHDF5TreeModel*>(hdfTreeView->model());
         if(treeModel != nullptr)
         {
-          QStringList dsetTokens = dsetPath.split("/", QString::SkipEmptyParts);
-          QModelIndex parentIdx = treeModel->index(0, 0);
-          hdfTreeView->expand(parentIdx);
-          while(dsetTokens.size() > 0)
+          for(int i = 0; i < hdf5Paths.size(); i++)
           {
-            QString dsetToken = dsetTokens.front();
-            dsetTokens.pop_front();
-            QModelIndexList idxList = treeModel->match(treeModel->index(0, 0, parentIdx), Qt::DisplayRole, dsetToken);
-            if(idxList.size() > 0)
+            QString hdf5Path = hdf5Paths[i];
+            QStringList hdf5PathTokens = hdf5Path.split("/", QString::SkipEmptyParts);
+            QModelIndex parentIdx = treeModel->index(0, 0);
+            hdfTreeView->expand(parentIdx);
+            treeModel->setData(parentIdx, Qt::Checked, Qt::CheckStateRole);
+            while(hdf5PathTokens.size() > 0)
             {
-              QModelIndex foundIdx = idxList[0];
-              hdfTreeView->expand(foundIdx);
-              parentIdx = foundIdx;
-            }
-            else
-            {
-              dsetTokens.clear();
-            }
-          }
+              QString hdf5PathToken = hdf5PathTokens.front();
+              QString dsetToken = hdf5PathTokens.back();
+              hdf5PathTokens.pop_front();
+              QModelIndexList idxList = treeModel->match(treeModel->index(0, 0, parentIdx), Qt::DisplayRole, hdf5PathToken);
+              if(idxList.size() > 0)
+              {
+                QModelIndex foundIdx = idxList[0];
+                hdfTreeView->expand(foundIdx);
 
-          // Select the dataset
-          hdfTreeView->setCurrentIndex(parentIdx);
+                if(treeModel->data(foundIdx, Qt::DisplayRole).toString() == dsetToken)
+                {
+                  treeModel->setData(foundIdx, Qt::Checked, Qt::CheckStateRole);
+                }
+
+                parentIdx = foundIdx;
+              }
+              else
+              {
+                hdf5PathTokens.clear();
+              }
+            }
+
+            // Select the dataset
+            hdfTreeView->setCurrentIndex(parentIdx);
+          }
         }
       }
     }
@@ -404,7 +398,7 @@ void ImportHDF5DatasetWidget::hdfTreeView_currentChanged(const QModelIndex& curr
   }
 
   ImportHDF5TreeModel* model = static_cast<ImportHDF5TreeModel*>(hdfTreeView->model());
-  QString path = model->hdfPathForIndex(current);
+  QString path = model->indexToHDF5Path(current);
 
   updateGeneralTable(path);
   updateAttributeTable(path);
@@ -670,11 +664,15 @@ void ImportHDF5DatasetWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   Q_UNUSED(filter)
 
-  ImportHDF5DatasetFilterParameter::SetterCallbackType callback = m_FilterParameter->getFilePathSetterCallback();
+  ImportHDF5DatasetFilterParameter::FilePathSetterCallbackType callback = m_FilterParameter->getFilePathSetterCallback();
   callback(value->text());
 
-  callback = m_FilterParameter->getDataSetSetterCallback();
-  callback(dsetPathLE->text());
+  ImportHDF5TreeModel* treeModel = dynamic_cast<ImportHDF5TreeModel*>(hdfTreeView->model());
+  if(treeModel != nullptr)
+  {
+    ImportHDF5DatasetFilterParameter::DatasetSetterCallbackType callback = m_FilterParameter->getDataSetSetterCallback();
+    callback(treeModel->getSelectedHDF5Paths());
+  }
 }
 
 // -----------------------------------------------------------------------------
