@@ -93,10 +93,10 @@ public:
 
 #ifndef PySharedPtrClass_TEMPLATE
 #define PySharedPtrClass_TEMPLATE
-template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>;
+template <typename T> 
+using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>;
 #endif
 
-#include "SIMPLib/Filtering/AbstractFilter_PY11.h"
 
 @HEADER_PATH@
 
@@ -107,7 +107,7 @@ template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>
   */
 PYBIND11_MODULE(@LIB_NAME@, m)
 {
-  py::module mod = m.def_submodule("@LIB_NAME@", "  Python wrapping for @LIB_NAME@");
+  py::module mod = m.def_submodule("@LIB_NAME@", "    Python wrapping for @LIB_NAME@");
 
   /* Init codes for classes in the Module */
   @MODULE_INIT_CODE@

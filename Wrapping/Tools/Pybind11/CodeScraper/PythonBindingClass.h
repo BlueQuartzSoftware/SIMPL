@@ -16,7 +16,7 @@ class PythonBindingClass : public QObject
 {
 
 public:
-  PythonBindingClass(PythonBindingsModule* moduleCode);
+  PythonBindingClass(PythonBindingsModule* moduleCode, const QString& isSIMPLib);
   ~PythonBindingClass();
 
   SIMPL_INSTANCE_PROPERTY(QString, ClassName)
@@ -93,6 +93,8 @@ protected:
 
 private:
   PythonBindingsModule* m_Module = nullptr;
+  QString m_IsSIMPLib;
+
   PythonBindingClass(const PythonBindingClass&) = delete; // Copy Constructor Not Implemented
   void operator=(const PythonBindingClass&) = delete;     // Operator '=' Not Implemented
 };

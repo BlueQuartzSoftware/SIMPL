@@ -15,12 +15,14 @@
 PythonBindingsModule::PythonBindingsModule()
 {
 }
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 PythonBindingsModule::~PythonBindingsModule()
 {
 }
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -28,6 +30,7 @@ void PythonBindingsModule::addHeader(const QString& className, const QString& he
 {
   m_Headers[className] = header;
 }
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -35,6 +38,7 @@ void PythonBindingsModule::clearHeaders()
 {
   m_Headers.clear();
 }
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -42,6 +46,7 @@ void PythonBindingsModule::addInitCode(const QString& className, const QString& 
 {
   m_InitCodes[className] = initCode;
 }
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -49,6 +54,23 @@ void PythonBindingsModule::clearInitCodes()
 {
   m_InitCodes.clear();
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PythonBindingsModule::addPythonCodes(const QString& className, const QString& pyCode)
+{
+  m_PythonCodes[className] = pyCode;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PythonBindingsModule::clearPythonCodes()
+{
+  m_PythonCodes.clear();
+}
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -138,7 +160,7 @@ QByteArray PythonBindingsModule::md5FileContents(const QString &filename)
   if(!destFileAdded)
   {
     qDebug() << "[PythonBindingsModule] QCryptographicHash.add(" << filename << ") FAILED.";
-    return QByteArray(0);
+    return QByteArray(nullptr);
   }
   QByteArray desHashResult = destHash.result();
   destination.close();
@@ -167,21 +189,12 @@ void PythonBindingsModule::writeOutput(bool didReplace, const QString& outLines,
     
     QTemporaryFile tempfile;
     QString tempFileName;
-    QString extraTemp = QString("/tmp/%1.cxx").arg(fi2.baseName());
     if (tempfile.open()) 
     {
       tempFileName = tempfile.fileName(); // returns the unique file name
       QTextStream stream(&tempfile);
       stream << outLines;
       tempfile.close();
-      #if 0
-      QFile temp(extraTemp);
-      QTextStream tstream(&temp);
-      temp.open(QFile::WriteOnly);
-      tstream << outLines;
-
-      qDebug() << "Temp File: " << tempFileName;
-      #endif
     }
     
     if(!fi2.exists())
@@ -222,30 +235,17 @@ void PythonBindingsModule::writeOutput(bool didReplace, const QString& outLines,
         }
       }
     }
-    
-    
-    #if 0
-#if OVERWRITE_SOURCE_FILE
-    QFile hOut(filename);
-#else
-    QString tmpPath = "/tmp/" + fi2.fileName();
-    QFile hOut(tmpPath);
-#endif
-    hOut.open(QFile::WriteOnly);
-    QTextStream stream(&hOut);
-    stream << outLines;
-    hOut.close();
-#endif
-
+  
   }
 }
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PythonBindingsModule::generateModuleFile(const QString& outputPath)
+void PythonBindingsModule::generateModuleFile(const QString& outputPath, const QString& isSIMPLib)
 {
+  Q_UNUSED(isSIMPLib);
+  
   // Create the Top part of the file from a template file
-  //  QFile source(SIMPL::PyBind11::TemplateDir + "/ModuleCode_Template.cpp");
   QFile source(m_TemplatePath);
 
   source.open(QFile::ReadOnly);
@@ -263,6 +263,7 @@ void PythonBindingsModule::generateModuleFile(const QString& outputPath)
 
   headerTemplate = headerTemplate.replace(HEADER_PATH, code);
   headerTemplate = headerTemplate.replace(LIB_NAME, m_LibName);
+  headerTemplate = headerTemplate.replace(FULL_LIB_NAME, m_LibName.toUpper());
 
   code.clear();
   out << "/* These are all the pybind11 instantiations for each of the exported classes */";
@@ -277,6 +278,99 @@ void PythonBindingsModule::generateModuleFile(const QString& outputPath)
 
   writeOutput(true, headerTemplate, outputPath);
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PythonBindingsModule::generatePythonTestFile(const QString& outputPath, const QString& isSIMPLib)
+{ 
+  QFileInfo fi(outputPath);
+  QString libOutputPath = QString("%1/%2").arg(SIMPL::PyBind11::LibraryOutputDirectory).arg(fi.fileName());
+  
+  QString code;
+  QTextStream out(&code);
+  out << "\"\"\"\n"
+      << "This is a basic unit test file to ensure that the filters can be instantiated\n"
+      << "\"\"\"\n";
+  
+  out << "from "<< SIMPL::PyBind11::SIMPL_LibraryName << SIMPL::PyBind11::PythonModuleSuffix << " import *\n";
+  out << "from " << m_LibName << " import *\n";
+  out << "\n\n";
+  
+  out << "def " << m_LibName << "UnitTest () :\n"
+      << "  \"\"\"\n"
+      << "  Just Try to instantiate all the filters\n"
+      << "  \"\"\"\n";
+  
+  for(auto object : m_ClassVector)
+  {
+    out << "\n";
+    dumpRecursivePythonCode(0, object, out);
+  }
+  
+  
+  out << "\n\n";
+  out << "\"\"\"\n"
+      << "Main Entry point for the python script\n"
+      << "\"\"\"\n";
+  out << "if __name__ == \"__main__\":\n"
+      << "  " << m_LibName << "UnitTest()\n"
+      << "  print(\"" << m_LibName << " UnitTest Complete\")\n";
+  
+  writeOutput(true, code, libOutputPath);
+  
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PythonBindingsModule::dumpRecursivePythonCode(int level, const QObject* object, QTextStream& out)
+{
+  if(object)
+  {
+    QByteArray buf;
+    buf.fill(' ', level / 2 * 8);
+    if(level % 2) {
+      buf += "    ";
+    }
+    
+    QString initCode = m_PythonCodes[object->objectName()];
+    
+    const char* pycode = R"PY(
+  # @FILTER_NAME@
+  # @INIT_CODE@
+  print("# --- @FILTER_NAME@ ")
+  filter = @LIB_NAME@.@FILTER_NAME@.New()
+  filter.preflight()
+  # print("  Preflight Error Code:%s" % filter.ErrorCondition)
+  filterName = filter.NameOfClass;
+  if filterName != "@FILTER_NAME@" :
+    print("  Error: Filter class name is not correct. %s != @FILTER_NAME@" % filterName)
+
+)PY";
+    
+      
+    
+    if(object->objectName().compare("AbstractFilter") != 0) 
+    {
+      QString code(pycode);
+      code.replace("@LIB_NAME@", m_LibName);
+      code.replace("@FILTER_NAME@", object->objectName());
+      code.replace("@INIT_CODE@", initCode);
+      out << code;
+    }
+    QObjectList children = object->children();
+    if(!children.isEmpty())
+    {
+      // out << "\n";
+      for(int i = 0; i < children.size(); ++i) {
+        dumpRecursivePythonCode(level + 1, children.at(i), out);
+      }
+    }
+  }
+}
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -286,10 +380,11 @@ void PythonBindingsModule::dumpRecursiveIncludeList(int level, const QObject* ob
   {
     QByteArray buf;
     buf.fill(' ', level / 2 * 8);
-    if(level % 2)
+    if(level % 2) {
       buf += "    ";
-    QString name = object->objectName();
-    QString flags = QLatin1String("");
+    }
+    //    QString name = object->objectName();
+    //    QString flags = QLatin1String("");
     QString header = m_Headers[object->objectName()];
     if(header.isEmpty())
     {
@@ -302,11 +397,13 @@ void PythonBindingsModule::dumpRecursiveIncludeList(int level, const QObject* ob
     QObjectList children = object->children();
     if(!children.isEmpty())
     {
-      for(int i = 0; i < children.size(); ++i)
+      for(int i = 0; i < children.size(); ++i) {
         dumpRecursiveIncludeList(level + 1, children.at(i), out);
+      }
     }
   }
 }
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -316,10 +413,10 @@ void PythonBindingsModule::dumpRecursiveInitCode(int level, const QObject* objec
   {
     QByteArray buf;
     buf.fill(' ', level / 2 * 8);
-    if(level % 2)
+    if(level % 2) {
       buf += "    ";
-    QString name = object->objectName();
-    QString flags = QLatin1String("");
+    }
+    
     QString initCode = m_InitCodes[object->objectName()];
 
     out << "  " << initCode << "\n";
@@ -327,8 +424,9 @@ void PythonBindingsModule::dumpRecursiveInitCode(int level, const QObject* objec
     if(!children.isEmpty())
     {
       // out << "\n";
-      for(int i = 0; i < children.size(); ++i)
+      for(int i = 0; i < children.size(); ++i) {
         dumpRecursiveInitCode(level + 1, children.at(i), out);
+      }
     }
   }
 }

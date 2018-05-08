@@ -7,12 +7,13 @@
 #include "CodeScraper/CodeScraperConstants.h"
 
 //-----------------------------------------------------------------------------
-PyBind11Generator::PyBind11Generator(const QDir& topLevelDir, const QString& charsToStrip, const QString& libName, const QString& genDir, const QString& moduleTemplatePath)
+PyBind11Generator::PyBind11Generator(const QDir& topLevelDir, const QString& charsToStrip, const QString& libName, const QString& genDir, const QString& moduleTemplatePath, const QString& isSIMPLib)
 : m_TopLevelDir(topLevelDir)
 , m_CharsToStrip(charsToStrip)
 , m_LibName(libName)
 , m_GenDir(genDir)
 , m_ModuleTemplatePath(moduleTemplatePath)
+, m_IsSIMPLib(isSIMPLib)
 {
   m_SourceDir = m_TopLevelDir;
   m_SourceDir.cdUp();
@@ -34,7 +35,11 @@ void PyBind11Generator::execute()
   QTextStream ss(&genHeaderPath);
   ss << m_GenDir << "/" << m_LibName << "_pybind11_module.cxx";
 
-  m_ModuleCode.generateModuleFile(genHeaderPath);
+  m_ModuleCode.generateModuleFile(genHeaderPath, m_IsSIMPLib);
+  
+  genHeaderPath = QString("");
+  ss << m_GenDir << "/" << m_LibName << "_UnitTest.py";
+  m_ModuleCode.generatePythonTestFile(genHeaderPath, m_IsSIMPLib);
 }
 
 //-----------------------------------------------------------------------------
@@ -102,7 +107,7 @@ void PyBind11Generator::generatePybind11Header(const QString& hFile)
   QStringList list = contents.split(QRegExp("\\n"));
   QStringListIterator sourceLines(list);
 
-  PythonBindingClass bindingClass(&m_ModuleCode);
+  PythonBindingClass bindingClass(&m_ModuleCode, m_IsSIMPLib);
   bindingClass.setClassName(baseName);
   bindingClass.setLibName(m_LibName);
   bindingClass.setCharsToStrip(m_CharsToStrip);
@@ -146,6 +151,10 @@ void PyBind11Generator::generatePybind11Header(const QString& hFile)
       bindingClass.setIsSharedPointer(true);
     }
     else if(bindingClass.getNeedsWrapping() && line.contains(::kSIMPL_STATIC_NEW_MACRO))
+    {
+      bindingClass.setHasStaticNewMacro(true);
+    }
+    else if(bindingClass.getNeedsWrapping() && line.contains(::kSIMPL_FILTER_NEW_MACRO))
     {
       bindingClass.setHasStaticNewMacro(true);
     }

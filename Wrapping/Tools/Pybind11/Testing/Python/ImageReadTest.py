@@ -11,8 +11,8 @@ except ImportError:
     raise RuntimeError("This module depends on the numpy module. Please make\
 sure that it is installed properly.")
 
-# These are the SIMPL python modules
-from simpl import *
+# These are the simpl_py python modules
+from simpl_py import *
 import simpl_dirs as sd
 import simpl_common as sc
 
@@ -44,18 +44,18 @@ def ImageReadTest():
     dca.addDataContainer(dc)
 
     # Create an AttributeMatrix and add it to the DataContainer
-    amShape = simpl.VectorSizeT([shape[1], shape[0], 1])
-    cellAm = sc.CreateAttributeMatrix(amShape, "CellAttributeMatrix", simpl.AttributeMatrix.Type.Cell)
+    amShape = simpl_py.VectorSizeT([shape[1], shape[0], 1])
+    cellAm = sc.CreateAttributeMatrix(amShape, "CellAttributeMatrix", simpl_py.AttributeMatrix.Type.Cell)
     dc.addAttributeMatrix(cellAm.Name, cellAm)
 
     # Create an AttributeArray from the image data and add it to the AttributeMatrix
-    cDims = simpl.VectorSizeT([1])
+    cDims = simpl_py.VectorSizeT([1])
     name = "slice_11.tiff"
-    array = simpl.UInt8ArrayType(z_flat, cDims, name, False)
+    array = simpl_py.UInt8ArrayType(z_flat, cDims, name, False)
     cellAm.addAttributeArray(array.Name, array)
 
     # Create a Geometry Object and store it in the DataContainer
-    imageGeom = simpl.ImageGeom.CreateGeometry("ImageGeometry")
+    imageGeom = simpl_py.ImageGeom.CreateGeometry("ImageGeometry")
     imageGeom.setDimensions(shape[1], shape[0], 1)
     imageGeom.setResolution(1.0, 1.0, 1.0)
     imageGeom.setOrigin(20, 45, 70)

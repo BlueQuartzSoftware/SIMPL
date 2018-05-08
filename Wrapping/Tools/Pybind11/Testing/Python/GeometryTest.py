@@ -11,14 +11,14 @@ except ImportError:
     raise RuntimeError("This module depends on the numpy module. Please make\
 sure that it is installed properly.")
 
-# These are the SIMPL python modules
-from simpl import *
+# These are the simpl_py python modules
+from simpl_py import *
 import simpl_dirs as sd
 import simpl_common as sc
 
 
 def GeometryTest():
-  imageGeom = simpl.ImageGeom.CreateGeometry("ImageGeometry")
+  imageGeom = simpl_py.ImageGeom.CreateGeometry("ImageGeometry")
   assert imageGeom.Name == "ImageGeometry"
 
   imageGeom.setDimensions(100, 1001, 200)
@@ -39,7 +39,7 @@ def GeometryTest():
   assert origin[1] == 45
   assert origin[2] == 70
   
-  infoString = imageGeom.getInfoString(simpl.HtmlFormat)
+  infoString = imageGeom.getInfoString(simpl_py.HtmlFormat)
 
   boundingBox = imageGeom.getBoundingBox()
   assert boundingBox[0] == 20

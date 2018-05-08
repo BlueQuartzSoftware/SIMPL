@@ -1,13 +1,14 @@
 import time
 
-from simpl import *
+from simpl_py import *
 
+# This is a test
 
 def BasicTest () :
   """
   This will test the basic AbstractFilter methods
   """
-  filter = simpl.AbstractFilter.New()
+  filter = simpl_py.AbstractFilter.New()
 
   groupName = filter.GroupName
   assert groupName == "YOUR CLASS SHOULD IMPLEMENT THIS"

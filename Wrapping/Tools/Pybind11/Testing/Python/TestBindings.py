@@ -2,31 +2,13 @@
 
 import time
 
-from simpl import *
+from simpl_py import *
 import simpl_dirs as sd
 import simpl_common as sc
 
-def Test():
-
-  amType = simpl.AttributeMatrix.Type.Cell
-  print("amType: %s " % amType)
-
-  v_size_t = simpl.VectorSizeT([4,3,2])
-
-  attributeMatrix = simpl.AttributeMatrix.Create([100,100,100], "Python AM", simpl.AttributeMatrix.Type.Cell)
-  err = 0
-
-#-------------------------------------
-
-#proxyRequirements = simpl.SIMPLH5DataReaderRequirements()
-#simplH5Reader = simpl.SIMPLH5DataReader()
-#simplH5Reader.openFile("/Users/Shared/DREAM3D_SDK/DREAM3D_Data/Data/CubicSingleEquiaxed.dream3d")
-#dataContainerProxy = simplH5Reader.readDataContainerArrayStructure(proxyRequirements, err)
-#simplH5Reader.closeFile()
-
 def PipelineTest():
   inputPath = sd.GetTestTempDirectory() + "/SmallIN100.dream3d"
-  reader = simpl.DataContainerReader.New()
+  reader = simpl_py.DataContainerReader.New()
   reader.InputFile = (inputPath)
   reader.OverwriteExistingDataContainers = (True)
   # This must be called to generate a default DataContainerArrayProxy object from the file structure
@@ -41,7 +23,7 @@ def PipelineTest():
   print("compiledLibraryName: %s " % reader.CompiledLibraryName)
 
 
-  writer = simpl.DataContainerWriter.New()
+  writer = simpl_py.DataContainerWriter.New()
   writer.OutputFile = (sd.GetTestTempDirectory() + "/TestBindings.dream3d")
   print("humanLabel: %s " % writer.HumanLabel)
   print("groupName: %s " % writer.GroupName)
@@ -50,7 +32,7 @@ def PipelineTest():
   print("compiledLibraryName: %s " % writer.CompiledLibraryName)
 
 
-  pipeline = simpl.FilterPipeline.New()
+  pipeline = simpl_py.FilterPipeline.New()
   pipeline.Name = ("New Pipeline")
   print("Pipeline Name: %s " % pipeline.Name)
 
@@ -70,10 +52,10 @@ def PipelineTest():
   filterCount = pipeline.size()
   print("Filter Count: %d" % filterCount)
 
-  pipeline = simpl.FilterPipeline.New()
+  pipeline = simpl_py.FilterPipeline.New()
   print("Pipeline to Null")
-  reader = simpl.AbstractFilter.New()
-  writer = simpl.AbstractFilter.New()
+  reader = simpl_py.AbstractFilter.New()
+  writer = simpl_py.AbstractFilter.New()
   print("Filter to null")
 
   time.sleep(2)

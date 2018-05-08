@@ -1,5 +1,5 @@
 
-from simpl import *
+from simpl_py import *
 import simpl_dirs as sd
 import simpl_common as sc
 
@@ -15,13 +15,13 @@ def AttributeMatrixAccessTest():
   dc = sc.CreateDataContainer("AM Test")
   dca.addDataContainer(dc)
   
-  amType = simpl.AttributeMatrix.Type.Cell
-  tupleDims = simpl.VectorSizeT([5,4,3])
-  am = simpl.AttributeMatrix.Create(tupleDims, "CellAttributeMatrix", amType)
+  amType = simpl_py.AttributeMatrix.Type.Cell
+  tupleDims = simpl_py.VectorSizeT([5,4,3])
+  am = simpl_py.AttributeMatrix.Create(tupleDims, "CellAttributeMatrix", amType)
   dc.addAttributeMatrix(am.Name, am)
 
   # See if we can get the AttributeMatrix based on a DataArrayPath object
-  dap = simpl.DataArrayPath("AM Test", "CellAttributeMatrix", "")
+  dap = simpl_py.DataArrayPath("AM Test", "CellAttributeMatrix", "")
   am0 = dca.getAttributeMatrix(dap)
   assert am0 == am
   assert True == dca.doesAttributeMatrixExist(dap)

@@ -1,7 +1,7 @@
 
 
 function(CreatePybind11Module)
-  set(options VERBOSE)
+  set(options VERBOSE SIMPLIB)
   set(oneValueArgs MODULE_NAME SOURCE_DIR PATH_TO_STRIP OUTPUT_PATH BINARY_DIR MODULE_TEMPLATE_FILE MODULE_LINK_LIBRARIES)
   set(multiValueArgs )
   cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
@@ -27,12 +27,14 @@ function(CreatePybind11Module)
   if(NOT pybind11_FOUND)
     message(FATAL_ERROR "[${pybind_module_name}] pybind11 is REQUIRED to build the SIMPL Python bindings")
   endif()
+  
+  get_property(SIMPL_PYTHON_MODULE_SUFFIX GLOBAL PROPERTY SIMPL_PYTHON_MODULE_SUFFIX)
 
   # Give our module a name. Python standards dictate ALL lowercase for the module name
-  set(pybind_module_name "${ARGS_MODULE_NAME}py11")
+  set(pybind_module_name "${ARGS_MODULE_NAME}${SIMPL_PYTHON_MODULE_SUFFIX}")
   string(TOLOWER ${pybind_module_name} pybind_module_name)
 
-  set(pybind_module_output_name "${ARGS_MODULE_NAME}")
+  set(pybind_module_output_name "${ARGS_MODULE_NAME}${SIMPL_PYTHON_MODULE_SUFFIX}")
   string(TOLOWER ${pybind_module_output_name} pybind_module_output_name)
 
 
@@ -41,7 +43,9 @@ function(CreatePybind11Module)
       COMMAND GeneratePythonBindings "${ARGS_SOURCE_DIR}"
       "${ARGS_PATH_TO_STRIP}"
       "${pybind_module_name}"
-      "${ARGS_OUTPUT_PATH}" "${ARGS_MODULE_TEMPLATE_FILE}"
+      "${ARGS_OUTPUT_PATH}" 
+      "${ARGS_MODULE_TEMPLATE_FILE}"
+      "${ARGS_SIMPLIB}"
       DEPENDS GeneratePythonBindings ${COPY_LIBRARY_TARGETS}
       COMMENT "GeneratePythonBindings: Creating Python Bindings for ${ARGS_MODULE_NAME} using pybind11"
     )

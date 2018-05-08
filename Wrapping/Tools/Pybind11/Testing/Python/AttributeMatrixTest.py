@@ -1,12 +1,12 @@
 
-from simpl import *
+from simpl_py import *
 import simpl_dirs as sd
 import simpl_common as sc
 
 def AttributeMatrixTest() :
   # Create an AttributeMatrix
-  amType = simpl.AttributeMatrix.Type.Cell
-  tupleDims = simpl.VectorSizeT([5,4,3])
+  amType = simpl_py.AttributeMatrix.Type.Cell
+  tupleDims = simpl_py.VectorSizeT([5,4,3])
   amName = "CellAttributeMatrix"
   am = sc.CreateAttributeMatrix(tupleDims, amName, amType)
 

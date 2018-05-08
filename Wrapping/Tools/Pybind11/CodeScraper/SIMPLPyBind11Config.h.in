@@ -35,13 +35,29 @@ namespace SIMPL
       {
         return QString("@SIMPLPyBind11_BINARY_DIR_NORM@");
       }
-   #endif
-      
+  #endif
+         
       /**
-       * @brief GetSIMPLPyBind11_TemplatesDir
+       * @brief Returns the path to where the Python C++ modules will be created.
+       * @return 
+       */
+      static const QString LibraryOutputDirectory("@SIMPLPyBind11_LIBRARY_OUTPUT_DIR@");
+  
+      /**
+       * @brief TemplateDir
        * @return 
        */
       static const QString TemplateDir("@SIMPLPyBind11_SOURCE_DIR_NORM@/Templates");
+      
+      /**
+       * @brief PythonModuleSuffix
+       */
+      static const QString PythonModuleSuffix("@SIMPL_PYTHON_MODULE_SUFFIX@");
+      
+      /**
+       * @brief SIMPL_LibraryName
+       */
+      static const QString SIMPL_LibraryName("@SIMPL_PYTHON_MODULE_NAME@");
 
   }
   

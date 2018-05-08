@@ -10,13 +10,14 @@
 #include "CodeScraper/SIMPLPyBind11Config.h"
 #include "PythonBindingsModule.h"
 
-PythonBindingClass::PythonBindingClass(PythonBindingsModule* moduleCode)
+PythonBindingClass::PythonBindingClass(PythonBindingsModule* moduleCode, const QString& isSIMPLib)
 : QObject(nullptr)
 , m_NeedsWrapping(false)
 , m_HasSuperClass(false)
 , m_IsSharedPointer(false)
 , m_HasStaticNewMacro(false)
 , m_Module(moduleCode)
+, m_IsSIMPLib(isSIMPLib)
 {
 }
 
@@ -84,7 +85,6 @@ void PythonBindingClass::writeBindingFile(const QString& outputFilePath)
 //    out << "StaticNewMethods.size(): " << m_StaticNewMethods.size() << "\n";
 //    out << "Constructors.size(): " << m_Constructors.size() << "\n";
 //    out << "Enumerations.size(): " << m_Enumerations.size() << "\n";
-
 //    out << "#endif\n";
     
     out << generateTopMatterCode();
@@ -137,18 +137,27 @@ void PythonBindingClass::writeBindingFile(const QString& outputFilePath)
     init << getLibName() << "_" << getClassName() << " = ";
     if(getHasSuperClass())
     {
-      init << "pybind11_init_" << getLibName() << "_" << getClassName() << "(mod\n"
-           << "#ifdef simplpy11_EXPORTS\n"
-           << "        , " << getLibName() << "_" << getSuperClass() << "\n"
-           << "#endif\n"
-           << "  );\n";
+      if(m_IsSIMPLib.compare("TRUE") == 0)
+      {
+      //  init << "pybind11_init_" << getLibName() << "_" << getClassName() << "(mod, " << getLibName() << "_" << getSuperClass() << ");\n";
+        init << "declare" << getClassName() << "(mod, " << getLibName() << "_" << getSuperClass() << ");\n";
+      }
+      else
+      {
+      //  init << "pybind11_init_" << getLibName() << "_" << getClassName() << "(mod"
+      init << "declare" << getClassName() << "(mod"
+
+             << ");\n";
+      }
     }
     else
     {
-      init << "pybind11_init_" << getLibName() << "_" << getClassName() << "(mod);";
+      //init << "pybind11_init_" << getLibName() << "_" << getClassName() << "(mod);";
+      init << "declare" << getClassName() << "(mod);";
     }
 
     m_Module->addInitCode(getClassName(), initCode);
+    m_Module->addPythonCodes(getClassName(), "");
   }
 }
 
@@ -281,7 +290,7 @@ QString PythonBindingClass::generateTopMatterCode()
   QString headerTemplate = source.readAll();
   source.close();
   headerTemplate = headerTemplate.replace(CLASS_NAME, getClassName());
-  QString headerPath = QString("%1/%2.h").arg(subPath).arg(getClassName());
+  QString headerPath = QString("%1/%2.h").arg(subPath, 1).arg(getClassName(), 2);
   if(!m_CharsToStrip.isEmpty())
   {
     headerPath = headerPath.replace(m_CharsToStrip, "");
@@ -303,18 +312,46 @@ QString PythonBindingClass::generateSharedPointerInitCode()
     return QString("");
   }
   QFile source;
+  QString headerTemplate;
 
   if(getHasSuperClass() && !getSuperClass().isEmpty())
   {
     source.setFileName(SIMPL::PyBind11::TemplateDir + "/DerivedSharedPointerClassInit.txt");
+    source.open(QFile::ReadOnly);
+    headerTemplate = source.readAll();
+    source.close();
+
+    QTextStream out(&headerTemplate);
+    
+    out << "PySharedPtrClass<@CLASS_NAME@> declare@CLASS_NAME@(py::module &m";
+    if(m_IsSIMPLib.compare("TRUE") == 0)
+    {
+      out << ", PySharedPtrClass<@SUPERCLASS_NAME@>& parent";
+    }
+    out << ")\n{\n";
+
+    if(m_IsSIMPLib.compare("TRUE") == 0)
+    {
+      out << "  PySharedPtrClass<@CLASS_NAME@> instance(m, \"@CLASS_NAME@\", parent);";
+    }
+    else
+    {
+      out << "  /* Create an alias to shorten up the declarations */\n";
+      out << "  using Py@CLASS_NAME@Type = py::class_<@CLASS_NAME@, AbstractFilter, std::shared_ptr<@CLASS_NAME@>>;\n";
+      out << "\n";
+      out << "  /* Import the SIMPL pybind11 module so that we can inherit from AbstractFilter */\n";
+      out << "  py::module::import(\""<< SIMPL::PyBind11::SIMPL_LibraryName << SIMPL::PyBind11::PythonModuleSuffix << "\");\n"
+          << "  Py@CLASS_NAME@Type instance(m, \"@CLASS_NAME@\");\n"
+          << "\n";
+    }
   }
   else
   {
     source.setFileName(SIMPL::PyBind11::TemplateDir + "/SharedPointerClassInit.txt");
+    source.open(QFile::ReadOnly);
+    headerTemplate = source.readAll();
+    source.close();
   }
-  source.open(QFile::ReadOnly);
-  QString headerTemplate = source.readAll();
-  source.close();
 
   QFileInfo fi(m_SourceFile);
   QString subPath = fi.absolutePath();
@@ -322,18 +359,18 @@ QString PythonBindingClass::generateSharedPointerInitCode()
   subPath = subPath.remove(0, 1);                            // Remove the front / character
 
   headerTemplate = headerTemplate.replace(CLASS_NAME, getClassName());
-  QString headerPath = QString("%1/%2.h").arg(subPath).arg(getClassName());
+  QString headerPath = QString("%1/%2.h").arg(subPath, 1).arg(getClassName(), 2);
   headerTemplate = headerTemplate.replace(HEADER_PATH, headerPath);
   headerTemplate = headerTemplate.replace(SUPERCLASS_NAME, getSuperClass());
   headerTemplate = headerTemplate.replace(LIB_NAME, m_LibName);
 
 //  QString pybind11HeaderPath = QString("%1/pybind11/%2_PY11.h").arg(subPath).arg(getClassName());
-  QString pybind11HeaderPath = QString("%1/%2_PY11.h").arg(subPath).arg(getClassName());
+  QString pybind11HeaderPath = QString("%1/%2_PY11.h").arg(subPath, 1).arg(getClassName(), 2);
   if(!m_CharsToStrip.isEmpty())
   {
     pybind11HeaderPath = pybind11HeaderPath.replace(m_CharsToStrip, "");
   }
-
+    
   m_Module->addHeader(getClassName(), pybind11HeaderPath);
   m_Module->addDependency(getSuperClass(), getClassName());
 
@@ -618,6 +655,9 @@ QString PythonBindingClass::generateFooterCode()
   out << TAB << "return instance;" << NEWLINE_SIMPL;
   out << "}" << NEWLINE_SIMPL;
   out << "\n\n";
- // out << "#endif /* pybind_" << getClassName() << "_H_  */" << NEWLINE_SIMPL;
+  
+  // Close up the Anonymous namespace
+  out << "} /* End anonymous namespace */\n\n";
   return code;
+  
 }

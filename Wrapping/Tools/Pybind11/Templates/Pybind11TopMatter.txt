@@ -1,5 +1,7 @@
 #pragma once
 
+/* Template file used is called Pybind11TopMatter.txt */
+
 /**
 * @brief This header file is genererated from a program. Make changes with caution.
 * 
@@ -14,3 +16,5 @@
 namespace py = pybind11;
 
 #include "@HEADER_PATH@"
+
+namespace { /* Anonymous namespace */

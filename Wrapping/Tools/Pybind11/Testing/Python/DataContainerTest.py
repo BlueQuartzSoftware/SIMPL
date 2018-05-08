@@ -1,5 +1,5 @@
 
-from simpl import *
+from simpl_py import *
 import simpl_dirs as sd
 import simpl_common as sc
 
@@ -8,7 +8,7 @@ def CreateAttributeMatrix():
   Creates a Cell AttributeMatrix and returns it.
   """
   
-  am = simpl.AttributeMatrix.Create(tupleDims, "CellAttributeMatrix", amType)
+  am = simpl_py.AttributeMatrix.Create(tupleDims, "CellAttributeMatrix", amType)
   return am
 
 def DataContainerTest() :
@@ -19,13 +19,13 @@ def DataContainerTest() :
   dca = sc.CreateDataContainerArray()
 
   # Create a DataContainer
-  dc = simpl.DataContainer.New("Default Name")
+  dc = simpl_py.DataContainer.New("Default Name")
   assert dc.Name == "Default Name"
   dc.Name = "ImageDataContainer"
   assert dc.Name == "ImageDataContainer"
   
-  amType = simpl.AttributeMatrix.Type.Cell
-  tupleDims = simpl.VectorSizeT([5,4,3])
+  amType = simpl_py.AttributeMatrix.Type.Cell
+  tupleDims = simpl_py.VectorSizeT([5,4,3])
   amName = "CellAttributeMatrix"
   am = sc.CreateAttributeMatrix(tupleDims, amName, amType)
 

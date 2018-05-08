@@ -8,7 +8,7 @@ except ImportError:
 sure that it is installed properly.")
 
 # These are the SIMPL python modules
-from simpl import *
+from simpl_py import *
 import simpl_dirs as sd
 import simpl_common as sc
 
@@ -23,12 +23,12 @@ def DataArrayTest():
     dc = sc.CreateDataContainer("ImageDataContainer")
     dca.addDataContainer(dc)
 
-    shape = simpl.VectorSizeT([4,5,2])
-    cellAm = sc.CreateAttributeMatrix(shape, "CellAttributeMatrix", simpl.AttributeMatrix.Type.Cell )
+    shape = simpl_py.VectorSizeT([4,5,2])
+    cellAm = sc.CreateAttributeMatrix(shape, "CellAttributeMatrix", simpl_py.AttributeMatrix.Type.Cell )
     dc.addAttributeMatrix(cellAm.Name, cellAm)
 
     # Create the Component Dimensions for the Array, 1 Component in this case
-    cDims = simpl.VectorSizeT([1])
+    cDims = simpl_py.VectorSizeT([1])
 
     arrayTypes = [np.int8, np.uint8, np.int16, np.uint16, np.int32, np.uint32, np.int64, np.uint64, np.float32, np.double]
     for index, item in enumerate(arrayTypes):

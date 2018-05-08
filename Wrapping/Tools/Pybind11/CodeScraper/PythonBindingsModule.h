@@ -30,6 +30,10 @@ public:
   void addInitCode(const QString& className, const QString& initCode);
   void clearInitCodes();
 
+  SIMPL_INSTANCE_PROPERTY(MapperType, PythonCodes)
+  void addPythonCodes(const QString& className, const QString& pyCode);
+  void clearPythonCodes();
+  
   /**
    * @brief addDependency
    * @param superClassName
@@ -45,13 +49,51 @@ public:
    */
   void writeOutput(bool didReplace, const QString& outLines, QString filename);
 
-  void generateModuleFile(const QString& outputPath);
-
+  /**
+   * @brief generateModuleFile
+   * @param outputPath
+   * @param isSIMPLib
+   */
+  void generateModuleFile(const QString& outputPath, const QString& isSIMPLib);
+  
+  /**
+   * @brief generatePythonTestFile
+   * @param outputPath
+   * @param isSIMPLib
+   */
+  void generatePythonTestFile(const QString& outputPath, const QString& isSIMPLib);
+  
+  
 protected:
+  /**
+   * @brief dumpRecursivePythonCode
+   * @param level
+   * @param object
+   * @param out
+   */
+  void dumpRecursivePythonCode(int level, const QObject* object, QTextStream& out);
+
+  /**
+   * @brief dumpRecursiveIncludeList
+   * @param level
+   * @param object
+   * @param out
+   */
   void dumpRecursiveIncludeList(int level, const QObject* object, QTextStream& out);
 
+  /**
+   * @brief dumpRecursiveInitCode
+   * @param level
+   * @param object
+   * @param out
+   */
   void dumpRecursiveInitCode(int level, const QObject* object, QTextStream& out);
 
+  /**
+   * @brief md5FileContents
+   * @param filename
+   * @return 
+   */
   QByteArray md5FileContents(const QString &filename);
 
 private:

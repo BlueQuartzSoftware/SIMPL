@@ -1,13 +1,12 @@
 import time
 
-from simpl import *
+from simpl_py import *
 import simpl_dirs as sd
 import simpl_common as sc
-from generic import *
 
 def PipelineTest():
   inputPath = sd.GetTestTempDirectory() + "/SmallIN100.dream3d"
-  reader = simpl.DataContainerReader.New()
+  reader = simpl_py.DataContainerReader.New()
   reader.InputFile = (inputPath)
   reader.OverwriteExistingDataContainers = (True)
   print("Reading data structure from input file.....")
@@ -23,7 +22,7 @@ def PipelineTest():
   print("compiledLibraryName: %s " % reader.CompiledLibraryName)
 
   print("Creating DREAM3D Writer filter....")
-  writer = simpl.DataContainerWriter.New()
+  writer = simpl_py.DataContainerWriter.New()
   writer.OutputFile = (sd.GetTestTempDirectory() + "/PipelineTest.dream3d")
   print("humanLabel: %s " % writer.HumanLabel)
   print("groupName: %s " % writer.GroupName)
@@ -32,7 +31,7 @@ def PipelineTest():
   print("compiledLibraryName: %s " % writer.CompiledLibraryName)
 
 
-  pipeline = simpl.FilterPipeline.New()
+  pipeline = simpl_py.FilterPipeline.New()
   pipeline.Name = ("New Pipeline")
   print("Pipeline Name: %s " % pipeline.Name)
 
@@ -52,16 +51,11 @@ def PipelineTest():
   filterCount = pipeline.size()
   print("Filter Count: %d" % filterCount)
 
-  pipeline = simpl.FilterPipeline.New()
+  pipeline = simpl_py.FilterPipeline.New()
   print("Pipeline to Null")
-  reader = simpl.AbstractFilter.New()
-  writer = simpl.AbstractFilter.New()
+  reader = simpl_py.AbstractFilter.New()
+  writer = simpl_py.AbstractFilter.New()
   print("Filter to null")
-
-  fbc = generic.FindBoundaryCells.New()
-  pipeline.pushBack(fbc)
-  err = pipeline.preflightPipeline()
-  print("FBC: err %s" % err)
 
   time.sleep(2)
 

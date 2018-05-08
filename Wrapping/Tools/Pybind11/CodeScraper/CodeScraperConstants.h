@@ -12,6 +12,7 @@
 #define HEADER_PATH "@HEADER_PATH@"
 #define SUPERCLASS_NAME "@SUPERCLASS_NAME@"
 #define LIB_NAME "@LIB_NAME@"
+#define FULL_LIB_NAME "@FULL_LIB_NAME@"
 #define MODULE_INIT_CODE "@MODULE_INIT_CODE@"
 #define DATE_TIME_GENERATED "@DATE_TIME_GENERATED@"
 
@@ -28,6 +29,7 @@ namespace
   /* These are for the macros that appear in the header files */
   static const QString kPYB11_CREATE_BINDINGS("PYB11_CREATE_BINDINGS");
   static const QString kSIMPL_STATIC_NEW_MACRO("SIMPL_STATIC_NEW_MACRO");
+  static const QString kSIMPL_FILTER_NEW_MACRO("SIMPL_FILTER_NEW_MACRO");
   static const QString kSIMPL_SHARED_POINTERS("SIMPL_SHARED_POINTERS");
   static const QString kPYB11_PROPERTY("PYB11_PROPERTY");
   static const QString kPYB11_METHOD("PYB11_METHOD");

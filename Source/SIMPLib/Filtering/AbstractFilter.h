@@ -76,6 +76,7 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   
   // This line MUST be first when exposing a class and properties to Python
   PYB11_CREATE_BINDINGS(AbstractFilter)
+  PYB11_PROPERTY(QString NameOfClass READ getNameOfClass)  
   PYB11_PROPERTY(QString GroupName READ getGroupName)
   PYB11_PROPERTY(QString SubGroupName READ getSubGroupName)
   PYB11_PROPERTY(QString HumanLabel READ getHumanLabel)

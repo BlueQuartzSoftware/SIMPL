@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
   QCoreApplication::setOrganizationDomain("bluequartz.net");
   QCoreApplication::setApplicationName("GeneratePythonBindings");
 
-  if(argc != 6)
+  if(argc != 7)
   {
     std::cout << "GeneratePythonBindings needs 5 arguments:" << std::endl;
     std::cout << "   [1] Path to the source directory to recursively search" << std::endl;
@@ -71,8 +71,9 @@ int main(int argc, char* argv[])
   QString libName = QString::fromLatin1(argv[3]);
   QString genDir = QString::fromLatin1(argv[4]);
   QString modTemplateFile = QString::fromLatin1(argv[5]);
+  QString isSIMPLib = QString::fromLatin1(argv[6]);
 
-  PyBind11Generator bindingsGenerator(QDir(QString::fromLatin1(argv[1])), charsToStrip, libName, genDir, modTemplateFile);
+  PyBind11Generator bindingsGenerator(QDir(QString::fromLatin1(argv[1])), charsToStrip, libName, genDir, modTemplateFile, isSIMPLib);
 
   bindingsGenerator.execute();
 

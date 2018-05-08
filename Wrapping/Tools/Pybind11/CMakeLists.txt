@@ -23,8 +23,15 @@ ConvertPathToHeaderCompatible(${SIMPLPyBind11_SOURCE_DIR_NORM})
 set(SIMPLPyBind11_BINARY_DIR_NORM ${SIMPLPyBind11_BINARY_DIR})
 ConvertPathToHeaderCompatible(${SIMPLPyBind11_BINARY_DIR_NORM})
 
+set(SIMPLPyBind11_LIBRARY_OUTPUT_DIR "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/python/site-packages")
+ConvertPathToHeaderCompatible(${SIMPLPyBind11_LIBRARY_OUTPUT_DIR})
+
 # --------------------------------------------------------------------------
 # Configure the header file with build specific paths
+set(SIMPL_PYTHON_MODULE_SUFFIX "_py")
+set_property(GLOBAL PROPERTY SIMPL_PYTHON_MODULE_SUFFIX ${SIMPL_PYTHON_MODULE_SUFFIX})
+set(SIMPL_PYTHON_MODULE_NAME "simpl")
+
 configure_file( ${SIMPLPyBind11_SOURCE_DIR}/CodeScraper/SIMPLPyBind11Config.h.in
                 ${SIMPLPyBind11_BINARY_DIR}/CodeScraper/SIMPLPyBind11Config.h
                 )
@@ -53,13 +60,21 @@ target_link_libraries(GeneratePythonBindings Qt5::Core)
 
 # --------------------------------------------------------------------------
 # Configure a python __init__.py file for simpl_dirs                
-set(SIMPLib_PyInit_File "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/python/site-packages/simpl_dirs/__init__.py")
+set(SIMPLib_PyInit_File "${SIMPLPyBind11_LIBRARY_OUTPUT_DIR}/simpl_dirs/__init__.py")
 configure_file( ${SIMPLPyBind11_SOURCE_DIR}/Testing/Python/simpl_dirs.in.py
                 "${SIMPLib_PyInit_File}"
-              )
+)
+
 # --------------------------------------------------------------------------
-# Configure a python setup.py file for simpl_dirs  
-set(SIMPLib_PySetup_File "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/python/site-packages/setup.py")
+# Configure a python __init__.py file for simpl_common                
+set(SIMPLib_PyInit_File "${SIMPLPyBind11_LIBRARY_OUTPUT_DIR}/simpl_common/__init__.py")
+configure_file( ${SIMPLPyBind11_SOURCE_DIR}/Testing/Python/simpl_common.in.py
+                "${SIMPLib_PyInit_File}"
+)
+
+# --------------------------------------------------------------------------
+# Configure a python setup.py file  
+set(SIMPLib_PySetup_File "${SIMPLPyBind11_LIBRARY_OUTPUT_DIR}/setup.py")
 configure_file( ${SIMPLPyBind11_SOURCE_DIR}/Testing/Python/setup.py
                 "${SIMPLib_PySetup_File}"
               )
@@ -69,13 +84,14 @@ configure_file( ${SIMPLPyBind11_SOURCE_DIR}/Testing/Python/setup.py
 include("${SIMPLProj_SOURCE_DIR}/Wrapping/Tools/Pybind11/cmake/WrappingFunctions.cmake")
 
 
-CreatePybind11Module(MODULE_NAME simpl
+CreatePybind11Module(MODULE_NAME ${SIMPL_PYTHON_MODULE_NAME}
                     SOURCE_DIR "${SIMPLProj_SOURCE_DIR_NORM}/Source/SIMPLib"
                     PATH_TO_STRIP "SIMPL/Source/"
                     OUTPUT_PATH "${SIMPLProj_BINARY_DIR}/Wrapping/PythonCore"
                     BINARY_DIR "${SIMPLProj_BINARY_DIR}"
                     MODULE_TEMPLATE_FILE "${SIMPLPyBind11_SOURCE_DIR}/Templates/SIMPLModuleCodeTemplate.cpp"
                     MODULE_LINK_LIBRARIES SIMPLib
+                    SIMPLIB
 )
 
 
