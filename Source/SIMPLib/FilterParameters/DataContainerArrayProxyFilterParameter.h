@@ -134,6 +134,10 @@ class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParam
     */
     SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
+    /**
+     * @brief Handle DataArrayPath changes if necessary
+     */
+    void dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath) override;
 
   protected:
       /**

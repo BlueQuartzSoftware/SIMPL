@@ -45,6 +45,7 @@
 #include <hdf5.h>
 
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/DataContainers/DataArrayPath.h"
 
 class SIMPLH5DataReaderRequirements;
 
@@ -130,6 +131,13 @@ public:
    * @param h5InternalPath
    */
   static void ReadDataArrayStructure(hid_t attrMatGid, QMap<QString, DataArrayProxy>& dataArrays, SIMPLH5DataReaderRequirements* req, QString h5InternalPath);
+
+  /**
+  * @brief Updates the proxy to match a renamed DataArrayPath
+  * @param oldPath
+  * @param newPath
+  */
+  void updatePath(DataArrayPath::RenameType renamePath);
 
   /**
   * @brief operator = method

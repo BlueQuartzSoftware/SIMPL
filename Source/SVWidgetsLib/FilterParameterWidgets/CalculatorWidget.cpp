@@ -92,6 +92,10 @@ void CalculatorWidget::setupGui()
   // Catch when the filter wants its values updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
+  // If the DataArrayPath is updated in the filter, update the widget
+  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
+    this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
+
   connect(equation, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
 
   connect(equation, SIGNAL(selectionChanged()), this, SLOT(updateSelection()));
@@ -441,4 +445,21 @@ void CalculatorWidget::on_applyChangesBtn_clicked()
   faderWidget->setFadeOut();
   connect(faderWidget, SIGNAL(animationComplete()), this, SLOT(hideButton()));
   faderWidget->start();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void CalculatorWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
+{
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
+  if(propertyName.compare(getFilterParameter()->getPropertyName()) == 0)
+  {
+    QString inputStr = equation->text();
+    inputStr.replace(oldPath.getDataArrayName(), newPath.getDataArrayName());
+    equation->setText(inputStr);
+  }
 }

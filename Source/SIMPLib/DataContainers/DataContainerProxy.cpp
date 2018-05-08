@@ -41,7 +41,7 @@
 DataContainerProxy::DataContainerProxy() :
   flag(Qt::Unchecked),
   name(""),
-  dcType(0)
+  dcType(static_cast<unsigned int>(IGeometry::Type::Any))
 {}
 
 // -----------------------------------------------------------------------------
@@ -86,6 +86,28 @@ bool DataContainerProxy::operator==(const DataContainerProxy& amp) const
   }
 
   return false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerProxy::updatePath(DataArrayPath::RenameType renamePath)
+{
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
+  if(oldPath.getDataContainerName() != newPath.getDataContainerName())
+  {
+    name = newPath.getDataContainerName();
+  }
+
+  if(attributeMatricies.contains(oldPath.getAttributeMatrixName()))
+  {
+    AttributeMatrixProxy amProxy = attributeMatricies.take(oldPath.getAttributeMatrixName());
+    amProxy.updatePath(renamePath);
+    attributeMatricies.insert(newPath.getAttributeMatrixName(), amProxy);
+  }
 }
 
 // -----------------------------------------------------------------------------

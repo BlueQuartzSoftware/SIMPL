@@ -125,6 +125,12 @@ class SIMPLib_EXPORT RenameDataContainer : public AbstractFilter
     */
     void preflight() override;
 
+    /**
+    * @brief Returns a list of DataArrayPaths that have been renamed along with their corresponding renamed value
+    * @return
+    */
+    DataArrayPath::RenameContainer getRenamedPaths() override;
+
   signals:
     /**
      * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters

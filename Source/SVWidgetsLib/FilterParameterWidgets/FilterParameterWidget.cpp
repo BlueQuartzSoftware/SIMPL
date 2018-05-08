@@ -540,3 +540,11 @@ void FilterParameterWidget::showFileInFileSystem()
 
   QtSFileUtils::ShowPathInGui(this, fi.absoluteFilePath());
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterParameterWidget::loadData()
+{
+  
+}

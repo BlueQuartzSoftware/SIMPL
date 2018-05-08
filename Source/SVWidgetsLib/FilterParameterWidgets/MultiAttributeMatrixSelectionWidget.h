@@ -131,6 +131,8 @@ class SVWidgetsLib_EXPORT MultiAttributeMatrixSelectionWidget : public FilterPar
     void on_attributeMatricesSelectWidget_itemSelectionChanged();
     void on_attributeMatricesOrderWidget_itemSelectionChanged();
 
+    void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
+
   signals:
     void errorSettingFilterParameter(const QString& msg);
     void parametersChanged();

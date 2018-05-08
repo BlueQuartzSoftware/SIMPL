@@ -117,6 +117,10 @@ void AttributeMatrixSelectionWidget::setupGui()
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
           this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
+  // If the DataArrayPath is updated in the filter, update the widget
+  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)), 
+    this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
+
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedAttributeMatrixPath->setText(defaultPath.serialize(Detail::Delimiter));
 
@@ -262,6 +266,22 @@ bool AttributeMatrixSelectionWidget::eventFilter(QObject* obj, QEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void AttributeMatrixSelectionWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
+{
+  if(propertyName.compare(PROPERTY_NAME_AS_CHAR) == 0)
+  {
+    QVariant var = getFilter()->property(PROPERTY_NAME_AS_CHAR);
+    DataArrayPath updatedPath = var.value<DataArrayPath>();
+
+    blockSignals(true);
+    setSelectedPath(updatedPath);
+    blockSignals(false);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void AttributeMatrixSelectionWidget::attributeMatrixSelected(QString path)
 {
   setSelectedPath(path);
@@ -302,6 +322,15 @@ void AttributeMatrixSelectionWidget::setSelectedPath(DataArrayPath amPath)
     QString html = am->getInfoString(SIMPL::HtmlFormat);
     m_SelectedAttributeMatrixPath->setToolTip(html);
     m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
+    changeStyleSheet(Style::FS_STANDARD_STYLE);
+  }
+  else
+  {
+    m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
+    //
+    m_SelectedAttributeMatrixPath->setToolTip(wrapStringInHtml("DataArrayPath does not exist."));
+    m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
+    changeStyleSheet(Style::FS_DOESNOTEXIST_STYLE);
   }
 }
 

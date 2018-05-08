@@ -41,6 +41,8 @@
 
 #include <QtGui/QMovie>
 
+#include "SIMPLib/DataContainers/DataArrayPath.h"
+
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 
 #include "ui_ReadASCIIDataWidget.h"
@@ -83,6 +85,8 @@ class SVWidgetsLib_EXPORT ReadASCIIDataWidget : public FilterParameterWidget, pr
 
     void lineCountDidFinish();
     void updateProgress(double percentage);
+
+    void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
   signals:
     void errorSettingFilterParameter(const QString& msg);

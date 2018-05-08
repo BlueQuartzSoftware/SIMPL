@@ -37,6 +37,7 @@
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 // -----------------------------------------------------------------------------
 //

@@ -224,3 +224,18 @@ const QString RenameAttributeMatrix::getHumanLabel() const
 {
   return "Rename Attribute Matrix";
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataArrayPath::RenameContainer RenameAttributeMatrix::getRenamedPaths()
+{
+  DataArrayPath oldPath = getSelectedAttributeMatrixPath();
+  DataArrayPath newPath = getSelectedAttributeMatrixPath();
+  newPath.setAttributeMatrixName(getNewAttributeMatrix());
+
+  DataArrayPath::RenameContainer container;
+  container.push_back(DataArrayPath::RenameType(oldPath, newPath));
+
+  return container;
+}
