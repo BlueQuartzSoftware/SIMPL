@@ -75,7 +75,7 @@ PipelineItemDelegate::~PipelineItemDelegate() = default;
 // -----------------------------------------------------------------------------
 QSize PipelineItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-  return {0, 36};
+  return {0, 26};
 }
 
 // -----------------------------------------------------------------------------

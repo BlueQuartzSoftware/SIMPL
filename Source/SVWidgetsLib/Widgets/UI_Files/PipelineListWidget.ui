@@ -97,7 +97,7 @@
       <enum>QListView::Snap</enum>
      </property>
      <property name="spacing">
-      <number>2</number>
+      <number>1</number>
      </property>
     </widget>
    </item>
