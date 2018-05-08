@@ -43,7 +43,7 @@
 
 // Border stylesheet requires QFrame
 ComparisonContainerWidget* ComparisonContainerWidget::SelectedItem = nullptr;
-QString ComparisonContainerWidget::BorderStyleSheet = "ComparisonContainerWidget { border-style: outset; border-width: 2px; border-radius: 5px; border-color: blue; }";
+QString ComparisonContainerWidget::BorderStyleSheet = "ComparisonContainerWidget#SelectedItem { border-style: outset; border-width: 2px; border-radius: 5px; border-color: blue; }";
 
 // -----------------------------------------------------------------------------
 //
@@ -54,6 +54,7 @@ ComparisonContainerWidget::ComparisonContainerWidget(QWidget* parent, AbstractCo
 
   m_comparisonWidget = nullptr;
   m_comparisonSetWidget = nullptr;
+  m_BaseName = objectName();
   setComparison(comparison);
 
   setupGui();
@@ -71,6 +72,8 @@ void ComparisonContainerWidget::setupGui()
 {
   contentsLayout->setAlignment(Qt::AlignTop);
   contentsLayout->setDirection(QBoxLayout::Direction::TopToBottom);
+
+  setStyleSheet(ComparisonContainerWidget::BorderStyleSheet);
 
   connect(removeBtn, SIGNAL(clicked()),
     this, SLOT(deleteItem()));
@@ -91,7 +94,7 @@ int ComparisonContainerWidget::getUnionOperator()
 // -----------------------------------------------------------------------------
 void ComparisonContainerWidget::setUnionOperator(int unionOperator)
 {
-  if (m_comparisonWidget)
+  if (nullptr != m_comparisonWidget)
   {
     m_comparisonWidget->getComparison()->setUnionOperator(unionOperator);
   }
@@ -103,7 +106,7 @@ void ComparisonContainerWidget::setUnionOperator(int unionOperator)
 // -----------------------------------------------------------------------------
 void ComparisonContainerWidget::unionOperatorChanged(int unionOp)
 {
-  if (m_comparisonWidget)
+  if (nullptr != m_comparisonWidget)
   {
     m_comparisonWidget->getComparison()->setUnionOperator(unionOp);
     emit comparisonChanged();
@@ -269,15 +272,14 @@ void ComparisonContainerWidget::mousePressEvent(QMouseEvent* event)
 // -----------------------------------------------------------------------------
 void ComparisonContainerWidget::select()
 {
-  setStyleSheet(ComparisonContainerWidget::BorderStyleSheet);
-  update();
-
   if (nullptr != ComparisonContainerWidget::SelectedItem && this != ComparisonContainerWidget::SelectedItem)
   {
     ComparisonContainerWidget::SelectedItem->deselect();
   }
 
+  setObjectName("SelectedItem");
   ComparisonContainerWidget::SelectedItem = this;
+  setStyleSheet(ComparisonContainerWidget::BorderStyleSheet);
 }
 
 // -----------------------------------------------------------------------------
@@ -290,7 +292,8 @@ void ComparisonContainerWidget::deselect()
     ComparisonContainerWidget::SelectedItem = nullptr;
   }
 
-  setStyleSheet("");
+  setObjectName(m_BaseName);
+  setStyleSheet(ComparisonContainerWidget::BorderStyleSheet);
 }
 
 // -----------------------------------------------------------------------------
@@ -313,8 +316,9 @@ void ComparisonContainerWidget::mouseMoveEvent(QMouseEvent* event)
   QMimeData *mimeData = new QMimeData;
 
   drag->setMimeData(mimeData);
-
   drag->exec(Qt::MoveAction);
+
+  deselect();
 }
 
 // -----------------------------------------------------------------------------

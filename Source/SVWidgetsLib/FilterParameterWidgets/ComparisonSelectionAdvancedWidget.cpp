@@ -224,15 +224,15 @@ QStringList ComparisonSelectionAdvancedWidget::generateAttributeArrayList(const 
 // -----------------------------------------------------------------------------
 QString ComparisonSelectionAdvancedWidget::checkStringValues(QString curDcName, QString filtDcName)
 {
-  if (curDcName.isEmpty() == true && filtDcName.isEmpty() == false)
+  if (curDcName.isEmpty() && !filtDcName.isEmpty())
   {
     return filtDcName;
   }
-  else if (curDcName.isEmpty() == false && filtDcName.isEmpty() == true)
+  else if (!curDcName.isEmpty()  && filtDcName.isEmpty() )
   {
     return curDcName;
   }
-  else if (curDcName.isEmpty() == false && filtDcName.isEmpty() == false && m_DidCausePreflight == true)
+  else if (!curDcName.isEmpty()  && !filtDcName.isEmpty() && m_DidCausePreflight)
   {
     return curDcName;
   }
@@ -275,7 +275,7 @@ void ComparisonSelectionAdvancedWidget::filterNeedsInputParameters(AbstractFilte
   bool ok = false;
   // Set the value into the Filter
   ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-  if (false == ok)
+  if (!ok)
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }
@@ -290,7 +290,7 @@ void ComparisonSelectionAdvancedWidget::beforePreflight()
   {
     return;
   }
-  if (m_DidCausePreflight == true)
+  if (m_DidCausePreflight)
   {
     // std::cout << "***  ComparisonSelectionAdvancedWidget already caused a preflight, just returning" << std::endl;
     return;
@@ -310,7 +310,7 @@ void ComparisonSelectionAdvancedWidget::beforePreflight()
 void ComparisonSelectionAdvancedWidget::afterPreflight()
 {
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if (NULL == dca.get()) { return; }
+  if (nullptr == dca) { return; }
 
   if (dca->doesAttributeMatrixExist(m_SelectedAttributeMatrixPath->getDataArrayPath()))
   {
@@ -344,13 +344,13 @@ void ComparisonSelectionAdvancedWidget::populateButtonText()
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if (nullptr == dca.get())
+  if (nullptr == dca)
   {
     return;
   }
 
   // Check to see if we have any DataContainers to actually populate drop downs with.
-  if (dca->getDataContainers().size() == 0)
+  if (dca->getDataContainers().isEmpty())
   {
     return;
   }
@@ -426,7 +426,7 @@ void ComparisonSelectionAdvancedWidget::setSelectedPath(DataArrayPath amPath)
   if (amPath.isEmpty()) { return; }
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if (nullptr == dca.get())
+  if (nullptr == dca)
   {
     return;
   }
