@@ -103,10 +103,21 @@ class SVWidgetsLib_EXPORT DataArraySelectionWidget : public FilterParameterWidge
 
     bool eventFilter(QObject* obj, QEvent* event);
 
-    void dragEnterEvent(QDragEnterEvent* event);
-    void dropEvent(QDropEvent* event);
-    void dragLeaveEvent(QDragLeaveEvent* event);
+    /**
+    * @brief Uncheck the DataArrayPathSelectionWidget so that it does not try to filter the DataStructure
+    */
+    void endViewPathRequirements() override;
 
+    /**
+    * @brief Enable the widget when the path meets requirements and disable it otherwise.
+    * @param path
+    */
+    void checkFilterPath(DataArrayPath path) override;
+
+    /**
+    * @brief Clears the effects of checkFilterPath
+    */
+    void clearPathFiltering() override;
 
   public slots:
     void beforePreflight();
@@ -114,13 +125,6 @@ class SVWidgetsLib_EXPORT DataArraySelectionWidget : public FilterParameterWidge
     void filterNeedsInputParameters(AbstractFilter* filter);
 
     void dataArraySelected(QString path);
-
-  protected:
-
-    /**
-     * @brief createSelectionMenu
-     */
-    void createSelectionMenu();
 
   protected slots:
     void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
@@ -131,8 +135,6 @@ class SVWidgetsLib_EXPORT DataArraySelectionWidget : public FilterParameterWidge
 
   private:
     bool m_DidCausePreflight;
-
-    QPointer<QSignalMapper> m_MenuMapper;
 
     DataArraySelectionFilterParameter* m_FilterParameter;
 

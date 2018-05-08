@@ -124,6 +124,12 @@ class SIMPLib_EXPORT DataContainerSelectionFilterParameter : public FilterParame
      */
     void writeJson(QJsonObject& json) override;
 
+    /**
+    * @brief Returns the RequirementType for the filter parameter
+    * @return
+    */
+    RequirementType getRequirements();
+
     SIMPL_INSTANCE_PROPERTY(IGeometry::Types, DefaultGeometryTypes)
 
     /**

@@ -81,14 +81,6 @@ AttributeMatrixCreationWidget::AttributeMatrixCreationWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 AttributeMatrixCreationWidget::~AttributeMatrixCreationWidget()
 {
-  if(m_OwnsMenuPtr && m_MenuPtr)
-  {
-    delete m_MenuPtr;
-  }
-  if(m_MenuMapper)
-  {
-    delete m_MenuMapper;
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -121,10 +113,9 @@ void AttributeMatrixCreationWidget::setupGui()
   // Do not allow the user to put a forward slash into the attributeMatrixName line edit
   stringEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("[^/]*"), this));
 
-  m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
-
-  m_MenuMapper = new QSignalMapper(this);
-  connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(dataContainerSelected(QString)));
+  DataContainerSelectionFilterParameter::RequirementType req;
+  m_SelectedDataContainerPath->setDataContainerRequirements(req);
+  m_SelectedDataContainerPath->setFilter(getFilter());
 
   // Catch when the filter is about to execute the preflight
   connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
@@ -139,11 +130,17 @@ void AttributeMatrixCreationWidget::setupGui()
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
     this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
+  connect(m_SelectedDataContainerPath, SIGNAL(viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType)));
+  connect(m_SelectedDataContainerPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
+  connect(m_SelectedDataContainerPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
+  connect(m_SelectedDataContainerPath, SIGNAL(filterPath(DataArrayPath)), this, SIGNAL(filterPath(DataArrayPath)));
+
   connect(stringEdit, SIGNAL(valueChanged(const QString&)), this, SIGNAL(parametersChanged()));
 
   m_SelectedDataContainerPath->blockSignals(true);
   DataArrayPath amPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedDataContainerPath->setText(amPath.getDataContainerName());
+  m_SelectedDataContainerPath->setPropertyName(getFilterParameter()->getHumanLabel());
   stringEdit->setText(amPath.getAttributeMatrixName(), true);
   m_SelectedDataContainerPath->blockSignals(false);
 
@@ -170,73 +167,6 @@ QString AttributeMatrixCreationWidget::checkStringValues(QString curDcName, QStr
   }
 
   return filtDcName;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void AttributeMatrixCreationWidget::createSelectionMenu()
-{
-  // Now get the DataContainerArray from the Filter instance
-  // We are going to use this to get all the current DataContainers
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get())
-  {
-    return;
-  }
-
-  // Get the menu and clear it out
-  QMenu* btnMenu = m_SelectedDataContainerPath->menu();
-  if(btnMenu)
-  {
-    btnMenu->clear();
-  }
-  else
-  {
-    m_OwnsMenuPtr = true;
-    m_MenuPtr = new QMenu;
-    btnMenu = m_MenuPtr;
-    m_SelectedDataContainerPath->setMenu(btnMenu);
-    btnMenu->installEventFilter(this);
-  }
-
-  // Get the DataContainerArray object
-  // Loop over the data containers until we find the proper data container
-  QList<DataContainer::Pointer> containers = dca->getDataContainers();
-  IGeometry::Types geomTypes = m_FilterParameter->getDefaultGeometryTypes();
-
-  QListIterator<DataContainer::Pointer> containerIter(containers);
-  while(containerIter.hasNext())
-  {
-    DataContainer::Pointer dc = containerIter.next();
-
-    IGeometry::Pointer geom = IGeometry::NullPointer();
-    IGeometry::Type geomType = IGeometry::Type::Unknown;
-    if(nullptr != dc.get())
-    {
-      geom = dc->getGeometry();
-    }
-    if(nullptr != geom.get())
-    {
-      geomType = geom->getGeometryType();
-    }
-
-    QString dcName = dc->getName();
-
-    QAction* dcAction = btnMenu->addAction(dcName); // btnMenu owns the created QAction
-
-    DataArrayPath dcPath(dcName, "", "");
-    QString path = dcPath.serialize(Detail::Delimiter);
-    dcAction->setData(path);
-
-    connect(dcAction, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
-    m_MenuMapper->setMapping(dcAction, path);
-
-    if(!geomTypes.isEmpty() && !geomTypes.contains(geomType) && !geomTypes.contains(IGeometry::Type::Any))
-    {
-      dcAction->setDisabled(true);
-    }
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -300,22 +230,7 @@ void AttributeMatrixCreationWidget::setSelectedPath(DataArrayPath dcPath)
 {
   if (dcPath.isEmpty()) { return; }
 
-  m_SelectedDataContainerPath->setText("");
-  m_SelectedDataContainerPath->setToolTip("");
-
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get())
-  {
-    return;
-  }
-
-  if (dca->doesDataContainerExist(dcPath.getDataContainerName()))
-  {
-    DataContainer::Pointer dc = dca->getDataContainer(dcPath.getDataContainerName());
-    QString html = dc->getInfoString(SIMPL::HtmlFormat);
-    m_SelectedDataContainerPath->setToolTip(html);
-    m_SelectedDataContainerPath->setText(dcPath.getDataContainerName());
-  }
+  m_SelectedDataContainerPath->setDataArrayPath(dcPath);
 }
 
 // -----------------------------------------------------------------------------
@@ -333,7 +248,7 @@ void AttributeMatrixCreationWidget::beforePreflight()
     return;
   }
 
-  createSelectionMenu();
+  m_SelectedDataContainerPath->beforePreflight();
 }
 
 // -----------------------------------------------------------------------------
@@ -344,19 +259,7 @@ void AttributeMatrixCreationWidget::afterPreflight()
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if (NULL == dca.get()) { return; }
 
-  if (dca->doesDataContainerExist(m_SelectedDataContainerPath->text()))
-  {
-    DataContainer::Pointer dc = dca->getDataContainer(m_SelectedDataContainerPath->text());
-    if (nullptr != dc.get()) {
-      QString html = dc->getInfoString(SIMPL::HtmlFormat);
-      m_SelectedDataContainerPath->setToolTip(html);
-      m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
-    }
-  }
-  else
-  {
-    m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
-  }
+  m_SelectedDataContainerPath->afterPreflight();
 }
 
 // -----------------------------------------------------------------------------
@@ -365,7 +268,7 @@ void AttributeMatrixCreationWidget::afterPreflight()
 void AttributeMatrixCreationWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   // Generate the path to the AttributeArray
-  DataArrayPath selectedPath = DataArrayPath::Deserialize(m_SelectedDataContainerPath->text(), Detail::Delimiter);
+  DataArrayPath selectedPath = m_SelectedDataContainerPath->getDataArrayPath();
   selectedPath.setAttributeMatrixName(stringEdit->getText());
   QVariant var;
   var.setValue(selectedPath);
@@ -376,4 +279,28 @@ void AttributeMatrixCreationWidget::filterNeedsInputParameters(AbstractFilter* f
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixCreationWidget::endViewPathRequirements()
+{
+  m_SelectedDataContainerPath->setPathFiltering(false);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixCreationWidget::checkFilterPath(DataArrayPath path)
+{
+  setEnabled(m_SelectedDataContainerPath->checkPathReqs(path));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixCreationWidget::clearPathFiltering()
+{
+  setEnabled(true);
 }
