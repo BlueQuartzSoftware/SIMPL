@@ -48,7 +48,51 @@
 #include "SVWidgetsLib/Widgets/PipelineFilterObject.h"
 
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureWidget::createNewPathIcons()
+{
+  QImage baseImage(":bullet_ball_green.png");
+  QImage dcImage = baseImage.copy();
+  QImage amImage = baseImage.copy();
+  QImage daImage = baseImage.copy();
+  QImage invalidImage = baseImage.copy();
 
+  QColor invalidColor = DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType::None);
+
+  int height = baseImage.height();
+  int width = baseImage.width();
+
+  for(int y = 0; y < height; y++)
+  {
+    for(int x = 0; x < width; x++)
+    {
+      QColor color = baseImage.pixelColor(x, y);
+      qreal alpha = color.alphaF();
+
+      QColor dcPixel = m_DcColor;
+      QColor amPixel = m_AmColor;
+      QColor daPixel = m_DaColor;
+      QColor invalidPixel = invalidColor;
+
+      dcPixel.setAlphaF(alpha);
+      amPixel.setAlphaF(alpha);
+      daPixel.setAlphaF(alpha);
+      invalidPixel.setAlphaF(alpha);
+
+      dcImage.setPixelColor(x, y, dcPixel);
+      amImage.setPixelColor(x, y, amPixel);
+      daImage.setPixelColor(x, y, daPixel);
+      invalidImage.setPixelColor(x, y, invalidPixel);
+    }
+  }
+
+  m_CreatedDcIcon = QIcon(QPixmap::fromImage(dcImage));
+  m_CreatedAmIcon = QIcon(QPixmap::fromImage(amImage));
+  m_CreatedDaIcon = QIcon(QPixmap::fromImage(daImage));
+  m_CreatedInvalidIcon = QIcon(QPixmap::fromImage(invalidImage));
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -83,6 +127,9 @@ void DataStructureWidget::setupGui()
   m_DcColor = QColor(DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType::DataContainer));
   m_AmColor = QColor(DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType::AttributeMatrix));
   m_DaColor = QColor(DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType::DataArray));
+
+  // Make icons to mark created DataArrayPaths
+  createNewPathIcons();
 
   // Forground brushes
   QColor filterColor(255, 255, 255);
@@ -179,6 +226,7 @@ void DataStructureWidget::refreshData()
     }
     dcItem->setData(dc->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
     dcItem->setToolTip(dc->getInfoString(SIMPL::HtmlFormat));
+    dcItem->setIcon(QIcon());
 
     if(path.size() > 0 && dc->getName().compare(path[0]) == 0)
     {
@@ -204,6 +252,7 @@ void DataStructureWidget::refreshData()
       }
       amItem->setData(am->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
       amItem->setToolTip(am->getInfoString(SIMPL::HtmlFormat));
+      amItem->setIcon(QIcon());
 
       if(path.size() > 1 && am->getName().compare(path[1]) == 0)
       {
@@ -231,6 +280,7 @@ void DataStructureWidget::refreshData()
         //        }
         aaItem->setData(attrArray->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
         aaItem->setToolTip(attrArray->getInfoString(SIMPL::HtmlFormat));
+        aaItem->setIcon(QIcon());
 
         if(path.size() > 2 && attrArrayName.compare(path[2]) == 0)
         {
@@ -259,15 +309,19 @@ void DataStructureWidget::markNewItems()
       {
       case DataArrayPath::DataType::DataContainer:
         m_NewItemBrush.setColor(m_DcColor);
+        newItem->setIcon(m_CreatedDcIcon);
         break;
       case DataArrayPath::DataType::AttributeMatrix:
         m_NewItemBrush.setColor(m_AmColor);
+        newItem->setIcon(m_CreatedAmIcon);
         break;
       case DataArrayPath::DataType::DataArray:
         m_NewItemBrush.setColor(m_DaColor);
+        newItem->setIcon(m_CreatedDaIcon);
         break;
       case DataArrayPath::DataType::None:
         m_NewItemBrush.setColor(Qt::GlobalColor::black);
+        newItem->setIcon(m_CreatedInvalidIcon);
         break;
       }
       newItem->setForeground(m_NewItemBrush);

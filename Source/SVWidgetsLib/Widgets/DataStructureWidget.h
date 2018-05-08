@@ -164,6 +164,11 @@ protected:
   void markNewItems();
 
   /**
+  * @brief Create icons for marking DataContainers, AttributeMatrices, and DataArrays created by the current filter
+  */
+  void createNewPathIcons();
+
+  /**
    * @brief Returns a QStandardItem from the given DataArrayPath
    * @param path
    * @return
@@ -190,6 +195,10 @@ private:
   QColor m_DcColor;
   QColor m_AmColor;
   QColor m_DaColor;
+  QIcon m_CreatedDcIcon;
+  QIcon m_CreatedAmIcon;
+  QIcon m_CreatedDaIcon;
+  QIcon m_CreatedInvalidIcon;
 
   DataStructureWidget(const DataStructureWidget&) = delete; // Copy Constructor Not Implemented
   void operator=(const DataStructureWidget&);               // Move assignment Not Implemented
