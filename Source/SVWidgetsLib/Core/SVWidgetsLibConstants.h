@@ -57,6 +57,17 @@ namespace SIMPLView
     const QString SelectionWidget("Selection Widget");
   }
   
+namespace GeometryIcons
+  {
+    const QString Image(":BlankGroup_Icon.png");
+    const QString RectGrid(":BlankGroup_Icon.png");
+    const QString Vertex(":BlankGroup_Icon.png");
+    const QString Edge(":BlankGroup_Icon.png");
+    const QString Triangle(":BlankGroup_Icon.png");
+    const QString Quad(":BlankGroup_Icon.png");
+    const QString Tetrahedral(":BlankGroup_Icon.png");
+  }
+
 }
 
 #endif /* _SVWidgetsLibConstants_H_ */
