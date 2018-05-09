@@ -51,7 +51,6 @@
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h"
-#include "SVWidgetsLib/Widgets/DataStructureItemDelegate.h"
 #include "SVWidgetsLib/Widgets/SIMPLViewMenuItems.h"
 #include "SVWidgetsLib/Widgets/SIMPLViewToolbox.h"
 
@@ -67,6 +66,9 @@ DataStructureTreeView::DataStructureTreeView(QWidget* parent)
   //connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(requestContextMenu(const QPoint&)));
   setAcceptDrops(true);
   setMouseTracking(true);
+
+  m_Delegate = new DataStructureItemDelegate(this);
+  setItemDelegate(m_Delegate);
 }
 
 // -----------------------------------------------------------------------------
@@ -80,6 +82,43 @@ DataStructureTreeView::~DataStructureTreeView() = default;
 void DataStructureTreeView::setActiveFilter(AbstractFilter::Pointer filter)
 {
   m_Filter = filter;
+  m_Delegate->setActiveFilter(filter);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureTreeView::setViewRequirements(DataContainerSelectionFilterParameter::RequirementType reqs)
+{
+  m_Delegate->setViewRequirements(reqs);
+  viewport()->repaint();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureTreeView::setViewRequirements(AttributeMatrixSelectionFilterParameter::RequirementType reqs)
+{
+  m_Delegate->setViewRequirements(reqs);
+  viewport()->repaint();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureTreeView::setViewRequirements(DataArraySelectionFilterParameter::RequirementType reqs)
+{
+  m_Delegate->setViewRequirements(reqs);
+  viewport()->repaint();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureTreeView::clearViewRequirements()
+{
+  m_Delegate->clearRequirements();
+  viewport()->repaint();
 }
 
 // -----------------------------------------------------------------------------

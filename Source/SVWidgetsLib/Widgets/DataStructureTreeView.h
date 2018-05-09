@@ -51,6 +51,8 @@
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
+#include "SVWidgetsLib/Widgets/DataStructureItemDelegate.h"
+
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 class SVWidgetsLib_EXPORT DataStructureTreeView : public QTreeView
@@ -82,6 +84,11 @@ public:
    * @param filter
    */
   void setActiveFilter(AbstractFilter::Pointer filter);
+
+  void setViewRequirements(DataContainerSelectionFilterParameter::RequirementType reqs);
+  void setViewRequirements(AttributeMatrixSelectionFilterParameter::RequirementType reqs);
+  void setViewRequirements(DataArraySelectionFilterParameter::RequirementType reqs);
+  void clearViewRequirements();
 
 signals:
   void filterPath(DataArrayPath path);
@@ -115,6 +122,7 @@ private:
   QPoint m_StartPos;
   bool m_Dragging = false;
   AbstractFilter::Pointer m_Filter = nullptr;
+  DataStructureItemDelegate* m_Delegate = nullptr;
 
   /**
    * @brief performDrag

@@ -56,8 +56,8 @@ namespace SIMPLView
     const QString DataArrayPath("DataArrayPath");
     const QString SelectionWidget("Selection Widget");
   }
-  
-namespace GeometryIcons
+
+  namespace GeometryIcons
   {
     const QString Image(":BlankGroup_Icon.png");
     const QString RectGrid(":BlankGroup_Icon.png");

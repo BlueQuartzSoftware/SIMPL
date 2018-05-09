@@ -153,52 +153,15 @@ protected:
   void removeNonexistingEntries(QStandardItem* rootItem, QList<QString> existing, int column);
 
   /**
-  * @brief Clears the filter effects from the given QStandardItem and its children
-  * @param item
-  */
-  void clearFilter(QStandardItem* item);
-
-  /**
-  * @brief Mark DataArrayPaths created in the current filter
-  */
-  void markNewItems();
-
-  /**
-  * @brief Create icons for marking DataContainers, AttributeMatrices, and DataArrays created by the current filter
-  */
-  void createNewPathIcons();
-
-  /**
    * @brief Returns a QStandardItem from the given DataArrayPath
    * @param path
    * @return
    */
   QStandardItem* findItemByPath(DataArrayPath path);
 
-  /**
-  * @brief Returns true if the given path is created by the current filter.  Returns false otherwise.
-  * @param path
-  * @return
-  */
-  bool isCreatedPath(DataArrayPath path);
-
 private:
   DataContainerArray::Pointer  m_Dca = nullptr;
-  std::list<DataArrayPath> m_CreatedPaths;
   QSharedPointer<Ui::DataStructureWidget>       m_Ui;
-  AbstractFilter::Pointer m_Filter = nullptr;
-  QBrush m_CompliantBrush;
-  QBrush m_CompliantBgBrush;
-  QBrush m_NoncompliantBrush;
-  QBrush m_NoncompliantBgBrush;
-  QBrush m_NewItemBrush;
-  QColor m_DcColor;
-  QColor m_AmColor;
-  QColor m_DaColor;
-  QIcon m_CreatedDcIcon;
-  QIcon m_CreatedAmIcon;
-  QIcon m_CreatedDaIcon;
-  QIcon m_CreatedInvalidIcon;
 
   DataStructureWidget(const DataStructureWidget&) = delete; // Copy Constructor Not Implemented
   void operator=(const DataStructureWidget&);               // Move assignment Not Implemented

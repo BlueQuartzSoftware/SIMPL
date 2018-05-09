@@ -48,6 +48,7 @@
 #include "SVWidgetsLib/Widgets/PipelineFilterObject.h"
 
 
+#if 0
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -93,6 +94,7 @@ void DataStructureWidget::createNewPathIcons()
   m_CreatedDaIcon = QIcon(QPixmap::fromImage(daImage));
   m_CreatedInvalidIcon = QIcon(QPixmap::fromImage(invalidImage));
 }
+#endif
 
 // -----------------------------------------------------------------------------
 //
@@ -124,24 +126,8 @@ void DataStructureWidget::setupGui()
   model->setColumnCount(1);
   model->setParent(m_Ui->dataBrowserTreeView); // Set the parent so it gets cleaned up
 
-  m_DcColor = QColor(DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType::DataContainer));
-  m_AmColor = QColor(DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType::AttributeMatrix));
-  m_DaColor = QColor(DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType::DataArray));
-
   // Make icons to mark created DataArrayPaths
-  createNewPathIcons();
-
-  // Forground brushes
-  QColor filterColor(255, 255, 255);
-  QColor invalidColor(100, 100, 100);
-  m_CompliantBrush.setColor(filterColor);
-  m_NoncompliantBrush.setColor(invalidColor);
-
-  // Background brushes
-  m_CompliantBgBrush.setColor(filterColor);
-  m_CompliantBgBrush.setStyle(Qt::BrushStyle::SolidPattern);
-  m_NoncompliantBgBrush.setColor(QColor(255, 255, 255, 0));
-  m_NoncompliantBgBrush.setStyle(Qt::BrushStyle::SolidPattern);
+  //createNewPathIcons();
 
   QString css(" QToolTip {\
               border: 2px solid #434343;\
@@ -293,40 +279,9 @@ void DataStructureWidget::refreshData()
     removeNonexistingEntries(dcItem, dc->getAttributeMatrixNames(), 0);
   }
   removeNonexistingEntries(rootItem, m_Dca->getDataContainerNames(), 0);
-}
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataStructureWidget::markNewItems()
-{
-  for(DataArrayPath path : m_CreatedPaths)
-  {
-    QStandardItem* newItem = findItemByPath(path);
-    if(newItem)
-    {
-      switch(path.getDataType())
-      {
-      case DataArrayPath::DataType::DataContainer:
-        m_NewItemBrush.setColor(m_DcColor);
-        newItem->setIcon(m_CreatedDcIcon);
-        break;
-      case DataArrayPath::DataType::AttributeMatrix:
-        m_NewItemBrush.setColor(m_AmColor);
-        newItem->setIcon(m_CreatedAmIcon);
-        break;
-      case DataArrayPath::DataType::DataArray:
-        m_NewItemBrush.setColor(m_DaColor);
-        newItem->setIcon(m_CreatedDaIcon);
-        break;
-      case DataArrayPath::DataType::None:
-        m_NewItemBrush.setColor(Qt::GlobalColor::black);
-        newItem->setIcon(m_CreatedInvalidIcon);
-        break;
-      }
-      newItem->setForeground(m_NewItemBrush);
-    }
-  }
+  // repaint the DataStructureTreeView
+  m_Ui->dataBrowserTreeView->repaint();
 }
 
 // -----------------------------------------------------------------------------
@@ -335,23 +290,25 @@ void DataStructureWidget::markNewItems()
 void DataStructureWidget::filterObjectActivated(PipelineFilterObject* object)
 {
   m_Dca = DataContainerArray::NullPointer();
-  m_CreatedPaths.clear();
   if(object)
   {
-    m_Filter = object->getFilter();
-    m_Ui->dataBrowserTreeView->setActiveFilter(m_Filter);
-    if(m_Filter.get())
+    AbstractFilter::Pointer filter = object->getFilter();
+    m_Ui->dataBrowserTreeView->setActiveFilter(filter);
+    if(filter.get())
     {
-      DataContainerArray::Pointer dca = m_Filter->getDataContainerArray();
+      DataContainerArray::Pointer dca = filter->getDataContainerArray();
       if(dca.get())
       {
         m_Dca = dca->deepCopy(true);
-        m_CreatedPaths = m_Filter->getCreatedPaths();
       }
     }
   }
+  else
+  {
+    m_Ui->dataBrowserTreeView->setActiveFilter(nullptr);
+  }
+
   refreshData();
-  markNewItems();
 }
 
 // -----------------------------------------------------------------------------
@@ -456,65 +413,9 @@ void DataStructureWidget::removeNonexistingEntries(QStandardItem* rootItem, QLis
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataStructureWidget::isCreatedPath(DataArrayPath path)
-{
-  std::list<DataArrayPath> createdPaths = m_Filter->getCreatedPaths();
-  return std::find(createdPaths.begin(), createdPaths.end(), path) != createdPaths.end();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void DataStructureWidget::setViewReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs)
 {
-  // Filter DataArrayPaths
-  QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
-  QStandardItem* rootItem = model->invisibleRootItem();
-
-  m_CompliantBgBrush.setColor(m_DcColor);
-
-  int dcCount = rootItem->rowCount();
-  for(int i = 0; i < dcCount; i++)
-  {
-    QStandardItem* dcItem = rootItem->child(i);
-
-    DataArrayPath path(dcItem->text(), "", "");
-    DataContainer::Pointer dc = m_Dca->getDataContainer(path);
-    IGeometry::Pointer geom = dc->getGeometry();
-
-    bool geomType = dcReqs.dcGeometryTypes.size() == 0 || (geom && dcReqs.dcGeometryTypes.contains(geom->getGeometryType()));
-    if((nullptr == geom && dcReqs.dcGeometryTypes.contains(IGeometry::Type::Unknown)) || (geom && dcReqs.dcGeometryTypes.contains(IGeometry::Type::Any)))
-    {
-      geomType = true;
-    }
-
-    if(geomType && false == isCreatedPath(path))
-    {
-      dcItem->setForeground(m_CompliantBrush);
-      dcItem->setBackground(m_CompliantBgBrush);
-    }
-    else
-    {
-      dcItem->setForeground(m_NoncompliantBrush);
-      dcItem->setBackground(m_NoncompliantBgBrush);
-    }
-
-    int amCount = dcItem->rowCount();
-    for(int j = 0; j < amCount; j++)
-    {
-      QStandardItem* amItem = dcItem->child(j);
-      amItem->setForeground(m_NoncompliantBrush);
-      amItem->setBackground(m_NoncompliantBgBrush);
-      
-      int daCount = amItem->rowCount();
-      for(int k = 0; k < daCount; k++)
-      {
-        QStandardItem* daItem = amItem->child(k);
-        daItem->setForeground(m_NoncompliantBrush);
-        daItem->setBackground(m_NoncompliantBgBrush);
-      }
-    }
-  }
+  m_Ui->dataBrowserTreeView->setViewRequirements(dcReqs);
 }
 
 // -----------------------------------------------------------------------------
@@ -522,60 +423,7 @@ void DataStructureWidget::setViewReqs(DataContainerSelectionFilterParameter::Req
 // -----------------------------------------------------------------------------
 void DataStructureWidget::setViewReqs(AttributeMatrixSelectionFilterParameter::RequirementType amReqs)
 {
-  // Filter DataArrayPaths
-  QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
-  QStandardItem* rootItem = model->invisibleRootItem();
-
-  m_CompliantBgBrush.setColor(m_AmColor);
-
-  int dcCount = rootItem->rowCount();
-  for(int i = 0; i < dcCount; i++)
-  {
-    QStandardItem* dcItem = rootItem->child(i);
-    dcItem->setForeground(m_NoncompliantBrush);
-    dcItem->setBackground(m_NoncompliantBgBrush);
-
-    int amCount = dcItem->rowCount();
-    for(int j = 0; j < amCount; j++)
-    {
-      QStandardItem* amItem = dcItem->child(j);
-
-      DataArrayPath path(dcItem->text(), amItem->text(), "");
-      DataContainer::Pointer dc = m_Dca->getDataContainer(path);
-      IGeometry::Pointer geom = dc->getGeometry();
-      AttributeMatrix::Pointer am = m_Dca->getAttributeMatrix(path);
-      
-      bool amType = amReqs.amTypes.size() == 0 || (am && amReqs.amTypes.contains(am->getType()));
-      bool geomType = amReqs.dcGeometryTypes.size() == 0 || (geom && amReqs.dcGeometryTypes.contains(geom->getGeometryType()));
-      if((nullptr == geom && amReqs.dcGeometryTypes.contains(IGeometry::Type::Unknown)) || (geom && amReqs.dcGeometryTypes.contains(IGeometry::Type::Any)))
-      {
-        geomType = true;
-      }
-      if(amReqs.amTypes.contains(AttributeMatrix::Type::Unknown) || amReqs.amTypes.contains(AttributeMatrix::Type::Any))
-      {
-        amType = true;
-      }
-
-      if(amType && geomType && false == isCreatedPath(path))
-      {
-        amItem->setForeground(m_CompliantBrush);
-        amItem->setBackground(m_CompliantBgBrush);
-      }
-      else
-      {
-        amItem->setForeground(m_NoncompliantBrush);
-        amItem->setBackground(m_NoncompliantBgBrush);
-      }
-
-      int daCount = amItem->rowCount();
-      for(int k = 0; k < daCount; k++)
-      {
-        QStandardItem* daItem = amItem->child(k);
-        daItem->setForeground(m_NoncompliantBrush);
-        daItem->setBackground(m_NoncompliantBgBrush);
-      }
-    }
-  }
+  m_Ui->dataBrowserTreeView->setViewRequirements(amReqs);
 }
 
 // -----------------------------------------------------------------------------
@@ -583,62 +431,7 @@ void DataStructureWidget::setViewReqs(AttributeMatrixSelectionFilterParameter::R
 // -----------------------------------------------------------------------------
 void DataStructureWidget::setViewReqs(DataArraySelectionFilterParameter::RequirementType daReqs)
 {
-  // Filter DataArrayPaths
-  QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
-  QStandardItem* rootItem = model->invisibleRootItem();
-
-  m_CompliantBgBrush.setColor(m_DaColor);
-
-  int dcCount = rootItem->rowCount();
-  for(int i = 0; i < dcCount; i++)
-  {
-    QStandardItem* dcItem = rootItem->child(i);
-    dcItem->setForeground(m_NoncompliantBrush);
-    dcItem->setBackground(m_NoncompliantBgBrush);
-
-    int amCount = dcItem->rowCount();
-    for(int j = 0; j < amCount; j++)
-    {
-      QStandardItem* amItem = dcItem->child(j);
-      amItem->setForeground(m_NoncompliantBrush);
-      amItem->setBackground(m_NoncompliantBgBrush);
-
-      int daCount = amItem->rowCount();
-      for(int k = 0; k < daCount; k++)
-      {
-        QStandardItem* daItem = amItem->child(k);
-        DataArrayPath path(dcItem->text(), amItem->text(), daItem->text());
-        DataContainer::Pointer dc = m_Dca->getDataContainer(path);
-        IGeometry::Pointer geom = dc->getGeometry();
-        AttributeMatrix::Pointer am = m_Dca->getAttributeMatrix(path);
-        IDataArray::Pointer da = am->getAttributeArray(path.getDataArrayName());
-        
-        bool amType = daReqs.amTypes.size() == 0 || (am && daReqs.amTypes.contains(am->getType()));
-        bool compDims = daReqs.componentDimensions.size() == 0 || (da && daReqs.componentDimensions.contains(da->getComponentDimensions()));
-        bool daType = daReqs.daTypes.size() == 0 || (da && daReqs.daTypes.contains(da->getTypeAsString()));
-        bool geomType = daReqs.dcGeometryTypes.size() == 0 || (geom && daReqs.dcGeometryTypes.contains(geom->getGeometryType()));
-        if((nullptr == geom && daReqs.dcGeometryTypes.contains(IGeometry::Type::Unknown)) || (geom && daReqs.dcGeometryTypes.contains(IGeometry::Type::Any)))
-        {
-          geomType = true;
-        }
-        if(daReqs.amTypes.contains(AttributeMatrix::Type::Unknown) || daReqs.amTypes.contains(AttributeMatrix::Type::Any))
-        {
-          amType = true;
-        }
-
-        if(amType && compDims && daType && geomType && false == isCreatedPath(path))
-        {
-          daItem->setForeground(m_CompliantBrush);
-          daItem->setBackground(m_CompliantBgBrush);
-        }
-        else
-        {
-          daItem->setForeground(m_NoncompliantBrush);
-          daItem->setBackground(m_NoncompliantBgBrush);
-        }
-      }
-    }
-  }
+  m_Ui->dataBrowserTreeView->setViewRequirements(daReqs);
 }
 
 // -----------------------------------------------------------------------------
@@ -646,25 +439,6 @@ void DataStructureWidget::setViewReqs(DataArraySelectionFilterParameter::Require
 // -----------------------------------------------------------------------------
 void DataStructureWidget::clearViewRequirements()
 {
-  // Clear requirements
-  QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
-  clearFilter(model->invisibleRootItem());
-  
-  markNewItems();
+  m_Ui->dataBrowserTreeView->clearViewRequirements();
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataStructureWidget::clearFilter(QStandardItem* item)
-{
-  QBrush defaultBrush;
-  item->setForeground(defaultBrush);
-  item->setBackground(defaultBrush);
-
-  int rows = item->rowCount();
-  for(int i = 0; i < rows; i++)
-  {
-    clearFilter(item->child(i));
-  }
-}

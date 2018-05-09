@@ -148,6 +148,179 @@ const QString DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataTy
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, DataContainerSelectionFilterParameter::RequirementType reqs)
+{
+  if(DataArrayPath::DataType::DataContainer != path.getDataType())
+  {
+    return false;
+  }
+  if(nullptr == filter)
+  {
+    return false;
+  }
+
+  // Check that the DataContainer exists
+  DataContainer::Pointer dc = filter->getDataContainerArray()->getDataContainer(path);
+  if(nullptr == dc)
+  {
+    return false;
+  }
+
+  // Check Geometry
+  if(reqs.dcGeometryTypes.size() > 0)
+  {
+    // Unknown Geometry gets a pass
+    if(false == reqs.dcGeometryTypes.contains(IGeometry::Type::Unknown))
+    {
+      IGeometry::Pointer geom = dc->getGeometry();
+      if(nullptr == geom)
+      {
+        return false;
+      }
+      if(false == reqs.dcGeometryTypes.contains(geom->getGeometryType()) && false == reqs.dcGeometryTypes.contains(IGeometry::Type::Any))
+      {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, AttributeMatrixSelectionFilterParameter::RequirementType reqs)
+{
+  if(DataArrayPath::DataType::AttributeMatrix != path.getDataType())
+  {
+    return false;
+  }
+  if(nullptr == filter)
+  {
+    return false;
+  }
+
+  // Check that the DataContainer exists
+  DataContainer::Pointer dc = filter->getDataContainerArray()->getDataContainer(path);
+  if(nullptr == dc)
+  {
+    return false;
+  }
+
+  // Check if geometry exists and matches the requirements only if a geometry is required
+  if(reqs.dcGeometryTypes.size() > 0)
+  {
+    // Unknown Geometry gets a pass
+    if(false == reqs.dcGeometryTypes.contains(IGeometry::Type::Unknown))
+    {
+      IGeometry::Pointer geom = dc->getGeometry();
+      if(nullptr == geom)
+      {
+        return false;
+      }
+      if(false == reqs.dcGeometryTypes.contains(geom->getGeometryType()) && false == reqs.dcGeometryTypes.contains(IGeometry::Type::Any))
+      {
+        return false;
+      }
+    }
+  }
+
+  // Check AttributeMatrix
+  AttributeMatrix::Pointer am = dc->getAttributeMatrix(path);
+  if(nullptr == am)
+  {
+    return false;
+  }
+
+  if(false == reqs.amTypes.contains(AttributeMatrix::Type::Unknown))
+  {
+    if(reqs.amTypes.size() > 0 && false == (reqs.amTypes.contains(am->getType()) || reqs.amTypes.contains(AttributeMatrix::Type::Any)))
+    {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, DataArraySelectionFilterParameter::RequirementType reqs)
+{
+  if(DataArrayPath::DataType::DataArray != path.getDataType())
+  {
+    return false;
+  }
+  if(nullptr == filter)
+  {
+    return false;
+  }
+
+  // Check that the DataContainer exists
+  DataContainer::Pointer dc = filter->getDataContainerArray()->getDataContainer(path);
+  if(nullptr == dc)
+  {
+    return false;
+  }
+
+  // Check if geometry exists and matches the requirements only if a geometry is required
+  if(reqs.dcGeometryTypes.size() > 0)
+  {
+    // Unknown Geometry gets a pass
+    if(false == reqs.dcGeometryTypes.contains(IGeometry::Type::Unknown))
+    {
+      IGeometry::Pointer geom = dc->getGeometry();
+      if(nullptr == geom)
+      {
+        return false;
+      }
+      if(false == reqs.dcGeometryTypes.contains(geom->getGeometryType()) && false == reqs.dcGeometryTypes.contains(IGeometry::Type::Any))
+      {
+        return false;
+      }
+    }
+  }
+
+  // Check AttributeMatrix
+  AttributeMatrix::Pointer am = dc->getAttributeMatrix(path);
+  if(nullptr == am)
+  {
+    return false;
+  }
+
+  if(false == reqs.amTypes.contains(AttributeMatrix::Type::Unknown))
+  {
+    if(reqs.amTypes.size() > 0 && false == reqs.amTypes.contains(am->getType()) && false == reqs.amTypes.contains(AttributeMatrix::Type::Any))
+    {
+      return false;
+    }
+  }
+
+  // Check DataArray
+  IDataArray::Pointer da = am->getAttributeArray(path.getDataArrayName());
+  if(nullptr == da)
+  {
+    return false;
+  }
+
+  if(reqs.daTypes.size() > 0 && false == reqs.daTypes.contains(da->getTypeAsString()))
+  {
+    return false;
+  }
+
+  if(reqs.componentDimensions.size() > 0 && false == reqs.componentDimensions.contains(da->getComponentDimensions()))
+  {
+    return false;
+  }
+
+  return true;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 DataArrayPathSelectionWidget::DataArrayPathSelectionWidget(QWidget* parent)
   : QToolButton(parent)
 {
@@ -554,45 +727,7 @@ bool DataArrayPathSelectionWidget::checkPathReqs(DataArrayPath path)
 // -----------------------------------------------------------------------------
 bool DataArrayPathSelectionWidget::checkDataContainerReqs(DataArrayPath path)
 {
-  if(path.getDataContainerName().isEmpty())
-  {
-    return false;
-  }
-  if(false == path.getAttributeMatrixName().isEmpty() || false == path.getDataArrayName().isEmpty())
-  {
-    return false;
-  }
-  if(nullptr == m_Filter)
-  {
-    return false;
-  }
-
-  // Check that the DataContainer exists
-  DataContainer::Pointer dc = m_Filter->getDataContainerArray()->getDataContainer(path);
-  if(nullptr == dc)
-  {
-    return false;
-  }
-
-  // Check Geometry
-  if(m_DataContainerReqs.dcGeometryTypes.size() > 0)
-  {
-    // Unknown Geometry gets a pass
-    if(false == m_DataArrayReqs.dcGeometryTypes.contains(IGeometry::Type::Unknown))
-    {
-      IGeometry::Pointer geom = dc->getGeometry();
-      if(nullptr == geom)
-      {
-        return false;
-      }
-      if(false == m_DataContainerReqs.dcGeometryTypes.contains(geom->getGeometryType()) && false == m_DataArrayReqs.dcGeometryTypes.contains(IGeometry::Type::Any))
-      {
-        return false;
-      }
-    }
-  }
-
-  return true;
+  return CheckPathRequirements(m_Filter, path, m_DataContainerReqs);
 }
 
 // -----------------------------------------------------------------------------
@@ -600,60 +735,7 @@ bool DataArrayPathSelectionWidget::checkDataContainerReqs(DataArrayPath path)
 // -----------------------------------------------------------------------------
 bool DataArrayPathSelectionWidget::checkAttributeMatrixReqs(DataArrayPath path)
 {
-  if(path.getDataContainerName().isEmpty() || path.getAttributeMatrixName().isEmpty())
-  {
-    return false;
-  }
-  if(false == path.getDataArrayName().isEmpty())
-  {
-    return false;
-  }
-  if(nullptr == m_Filter)
-  {
-    return false;
-  }
-
-  // Check that the DataContainer exists
-  DataContainer::Pointer dc = m_Filter->getDataContainerArray()->getDataContainer(path);
-  if(nullptr == dc)
-  {
-    return false;
-  }
-
-  // Check if geometry exists and matches the requirements only if a geometry is required
-  if(m_AttrMatrixReqs.dcGeometryTypes.size() > 0)
-  {
-    // Unknown Geometry gets a pass
-    if(false == m_DataArrayReqs.dcGeometryTypes.contains(IGeometry::Type::Unknown))
-    {
-      IGeometry::Pointer geom = dc->getGeometry();
-      if(nullptr == geom)
-      {
-        return false;
-      }
-      if(false == m_AttrMatrixReqs.dcGeometryTypes.contains(geom->getGeometryType()) && false == m_DataArrayReqs.dcGeometryTypes.contains(IGeometry::Type::Any))
-      {
-        return false;
-      }
-    }
-  }
-
-  // Check AttributeMatrix
-  AttributeMatrix::Pointer am = dc->getAttributeMatrix(path);
-  if(nullptr == am)
-  {
-    return false;
-  }
-
-  if(false == m_AttrMatrixReqs.amTypes.contains(AttributeMatrix::Type::Unknown))
-  {
-    if(m_AttrMatrixReqs.amTypes.size() > 0 && false == m_AttrMatrixReqs.amTypes.contains(am->getType()) && false == m_AttrMatrixReqs.amTypes.contains(AttributeMatrix::Type::Any))
-    {
-      return false;
-    }
-  }
-
-  return true;
+  return CheckPathRequirements(m_Filter, path, m_AttrMatrixReqs);
 }
 
 // -----------------------------------------------------------------------------
@@ -661,73 +743,7 @@ bool DataArrayPathSelectionWidget::checkAttributeMatrixReqs(DataArrayPath path)
 // -----------------------------------------------------------------------------
 bool DataArrayPathSelectionWidget::checkDataArrayReqs(DataArrayPath path)
 {
-  if(path.getDataContainerName().isEmpty() || path.getAttributeMatrixName().isEmpty() || path.getDataArrayName().isEmpty())
-  {
-    return false;
-  }
-  if(nullptr == m_Filter)
-  {
-    return false;
-  }
-
-  // Check that the DataContainer exists
-  DataContainer::Pointer dc = m_Filter->getDataContainerArray()->getDataContainer(path);
-  if(nullptr == dc)
-  {
-    return false;
-  }
-
-  // Check if geometry exists and matches the requirements only if a geometry is required
-  if(m_DataArrayReqs.dcGeometryTypes.size() > 0)
-  {
-    // Unknown Geometry gets a pass
-    if(false == m_DataArrayReqs.dcGeometryTypes.contains(IGeometry::Type::Unknown))
-    {
-      IGeometry::Pointer geom = dc->getGeometry();
-      if(nullptr == geom)
-      {
-        return false;
-      }
-      if(false == m_DataArrayReqs.dcGeometryTypes.contains(geom->getGeometryType()) && false == m_DataArrayReqs.dcGeometryTypes.contains(IGeometry::Type::Any))
-      {
-        return false;
-      }
-    }
-  }
-
-  // Check AttributeMatrix
-  AttributeMatrix::Pointer am = dc->getAttributeMatrix(path);
-  if(nullptr == am)
-  {
-    return false;
-  }
-
-  if(false == m_DataArrayReqs.amTypes.contains(AttributeMatrix::Type::Unknown))
-  {
-    if(m_DataArrayReqs.amTypes.size() > 0 && false == m_DataArrayReqs.amTypes.contains(am->getType()) && false == m_DataArrayReqs.amTypes.contains(AttributeMatrix::Type::Any))
-    {
-      return false;
-    }
-  }
-
-  // Check DataArray
-  IDataArray::Pointer da = am->getAttributeArray(path.getDataArrayName());
-  if(nullptr == da)
-  {
-    return false;
-  }
-
-  if(m_DataArrayReqs.daTypes.size() > 0 && false == m_DataArrayReqs.daTypes.contains(da->getTypeAsString()))
-  {
-    return false;
-  }
-
-  if(m_DataArrayReqs.componentDimensions.size() > 0 && false == m_DataArrayReqs.componentDimensions.contains(da->getComponentDimensions()))
-  {
-    return false;
-  }
-
-  return true;
+  return CheckPathRequirements(m_Filter, path, m_DataArrayReqs);
 }
 
 // -----------------------------------------------------------------------------
