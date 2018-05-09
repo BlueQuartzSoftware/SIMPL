@@ -148,6 +148,18 @@
 
   <file>toggle_on.png</file>
   <file>toggle_on@2x.png</file>
+
+  <file>VertexGeometry.png</file>
+  <file>VertexGeometry@2x.png</file>
+  <file>EdgeGeometry.png</file>
+  <file>EdgeGeometry@2x.png</file>
+  <file>TriangleGeometry.png</file>
+  <file>TriangleGeometry@2x.png</file>
+  <file>QuadGeometry.png</file>
+  <file>QuadGeometry@2x.png</file>
+  <file>ImageGeometry.png</file>
+  <file>ImageGeometry@2x.png</file>
+
  </qresource>
  </RCC>
 
