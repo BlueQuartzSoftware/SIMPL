@@ -907,7 +907,7 @@ void DataArrayPathSelectionWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::afterPreflight()
 {
-  if(false == m_Filter && m_Filter->getDataContainerArray())
+  if(nullptr != m_Filter && m_Filter->getDataContainerArray())
   {
     return;
   }
