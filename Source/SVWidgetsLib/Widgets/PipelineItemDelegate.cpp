@@ -75,7 +75,7 @@ PipelineItemDelegate::~PipelineItemDelegate() = default;
 // -----------------------------------------------------------------------------
 QSize PipelineItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-  return {0, 26};
+  return {0, 28};
 }
 
 // -----------------------------------------------------------------------------
@@ -83,6 +83,8 @@ QSize PipelineItemDelegate::sizeHint(const QStyleOptionViewItem &option, const Q
 // -----------------------------------------------------------------------------
 void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
+  painter->save();
+
   painter->setRenderHint(QPainter::Antialiasing);
 
   PipelineModel* model = m_View->getPipelineModel();
@@ -351,17 +353,23 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
   }
 
   // If the filter is selected, draw a border around it.
-  if(option.state & QStyle::State_Selected)
+  bool ok;
+  int borderSize = index.data(PipelineModel::Roles::BorderSizeRole).toInt(&ok);
+
+  if((option.state & QStyle::State_Selected) && borderSize > 0 && ok)
   {
     QColor selectedColor = QColor::fromHsv(bgColor.hue(), 180, 150);
-    QPen pen(QBrush(selectedColor), m_BorderThickness);
+
+    QPen pen(QBrush(selectedColor), borderSize);
     painter->setPen(pen);
 
     // Draw inside option.rect to avoid painting artifacts
-    qreal x = option.rect.x() + (m_BorderThickness / 2);
-    qreal y = option.rect.y() + (m_BorderThickness / 2);
-    painter->drawRoundedRect(QRectF(x, y, option.rect.width() - m_BorderThickness  + 0.5 , option.rect.height() - m_BorderThickness + 0.5), 1, 1);
+    qreal x = option.rect.x() + (borderSize / 2);
+    qreal y = option.rect.y() + (borderSize / 2);
+    painter->drawRoundedRect(QRectF(x, y, option.rect.width() - borderSize  + 0.5 , option.rect.height() - borderSize + 0.5), 1, 1);
   }
+
+  painter->restore();
 }
 
 // -----------------------------------------------------------------------------

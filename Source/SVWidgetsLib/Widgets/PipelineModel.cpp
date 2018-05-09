@@ -117,6 +117,10 @@ QVariant PipelineModel::data(const QModelIndex& index, int role) const
   {
     return static_cast<int>(item->getItemType());
   }
+  else if (role == PipelineModel::Roles::BorderSizeRole)
+  {
+    return item->getBorderSize();
+  }
   else if (role == PipelineModel::Roles::ExpandedRole)
   {
     return item->getExpanded();
@@ -499,27 +503,62 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
 
   if (role == PipelineModel::Roles::WidgetStateRole)
   {
-    int intValue = value.toInt();
+    bool ok = false;
+    int intValue = value.toInt(&ok);
+    if (ok == false)
+    {
+      return false;
+    }
+
     PipelineItem::WidgetState value = static_cast<PipelineItem::WidgetState>(intValue);
     item->setWidgetState(value);
   }
   else if (role == PipelineModel::Roles::ErrorStateRole)
   {
-    int intValue = value.toInt();
+    bool ok = false;
+    int intValue = value.toInt(&ok);
+    if (ok == false)
+    {
+      return false;
+    }
+
     PipelineItem::ErrorState value = static_cast<PipelineItem::ErrorState>(intValue);
     item->setErrorState(value);
   }
   else if (role == PipelineModel::Roles::PipelineStateRole)
   {
-    int intValue = value.toInt();
+    bool ok = false;
+    int intValue = value.toInt(&ok);
+    if (ok == false)
+    {
+      return false;
+    }
+
     PipelineItem::PipelineState value = static_cast<PipelineItem::PipelineState>(intValue);
     item->setPipelineState(value);
   }
   else if (role == PipelineModel::Roles::ItemTypeRole)
   {
-    int intValue = value.toInt();
+    bool ok = false;
+    int intValue = value.toInt(&ok);
+    if (ok == false)
+    {
+      return false;
+    }
+
     PipelineItem::ItemType value = static_cast<PipelineItem::ItemType>(intValue);
     item->setItemType(value);
+  }
+  else if (role == PipelineModel::Roles::BorderSizeRole)
+  {
+    bool ok = false;
+    int borderSize = value.toInt(&ok);
+    if (ok == false)
+    {
+      return false;
+    }
+
+    item->setBorderSize(borderSize);
   }
   else if (role == PipelineModel::Roles::ExpandedRole)
   {

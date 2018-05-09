@@ -61,11 +61,12 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
 
     enum Roles
     {
-        WidgetStateRole = Qt::UserRole + 1,
-        ErrorStateRole,
-        PipelineStateRole,
-        ItemTypeRole,
-        ExpandedRole
+      WidgetStateRole = Qt::UserRole + 1,
+      ErrorStateRole,
+      PipelineStateRole,
+      ItemTypeRole,
+      ExpandedRole,
+      BorderSizeRole
     };
 
     SIMPL_INSTANCE_PROPERTY(int, MaxNumberOfPipelines)
