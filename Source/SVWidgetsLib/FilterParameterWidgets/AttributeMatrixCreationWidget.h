@@ -107,7 +107,23 @@ public:
    */
   bool eventFilter(QObject* obj, QEvent* event);
 
-  public slots:
+  /**
+   * @brief Uncheck the DataArrayPathSelectionWidget so that it does not try to filter the DataStructure
+   */
+  void endViewPathRequirements() override;
+
+  /**
+  * @brief Enable the widget when the path meets requirements and disable it otherwise.
+  * @param path
+  */
+  void checkFilterPath(DataArrayPath path) override;
+
+  /**
+  * @brief Clears the effects of checkFilterPath
+  */
+  void clearPathFiltering() override;
+
+public slots:
   void beforePreflight();
   void afterPreflight();
   void filterNeedsInputParameters(AbstractFilter* filter);
@@ -116,11 +132,6 @@ public:
 
 protected:
   /**
-   * @brief createSelectionMenu
-   */
-  void createSelectionMenu();
-
-  /**
    * @brief setSelectedPath
    * @param dcName
    * @param attrMatName
@@ -128,7 +139,7 @@ protected:
    */
   void setSelectedPath(QString dcName, QString attrMatName, QString attrArrName);
 
-  protected slots:
+protected slots:
     void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
 signals:
@@ -141,11 +152,6 @@ private:
   bool                                            m_DidCausePreflight;
 
   AttributeMatrixCreationFilterParameter*         m_FilterParameter;
-
-  QSignalMapper*                                  m_MenuMapper = nullptr;
-
-  QMenu*                                          m_MenuPtr = nullptr;
-  bool                                            m_OwnsMenuPtr = false;
 
   void setSelectedPath(QString path);
 
