@@ -59,13 +59,11 @@ namespace SIMPLView
 
   namespace GeometryIcons
   {
-    const QString Image(":BlankGroup_Icon.png");
-    const QString RectGrid(":BlankGroup_Icon.png");
-    const QString Vertex(":BlankGroup_Icon.png");
-    const QString Edge(":BlankGroup_Icon.png");
-    const QString Triangle(":BlankGroup_Icon.png");
-    const QString Quad(":BlankGroup_Icon.png");
-    const QString Tetrahedral(":BlankGroup_Icon.png");
+    const QString Image(":ImageGeometry.png");
+    const QString Vertex(":VertexGeometry.png");
+    const QString Edge(":EdgeGeometry.png");
+    const QString Triangle(":TriangleGeometry.png");
+    const QString Quad(":QuadGeometry.png");
   }
 
 }

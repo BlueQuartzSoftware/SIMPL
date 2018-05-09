@@ -268,7 +268,7 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
     imgRect.setHeight(imgSize);
 
     // Create placeholder image for marking created paths
-    QImage image(":bullet_ball_yellow.png");
+    QImage image(":delete_plain.png");
     painter->drawImage(imgRect, image);
   }
 }
