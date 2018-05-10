@@ -245,6 +245,10 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
   {
     return false;
   }
+  if(nullptr == filter->getDataContainerArray())
+  {
+    return false;
+  }
 
   // Check that the DataContainer exists
   DataContainer::Pointer dc = filter->getDataContainerArray()->getDataContainer(path);
