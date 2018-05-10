@@ -63,6 +63,9 @@ public:
   static const QPixmap CreateDragIcon(DataArrayPath path);
   static const QPixmap CreateDragIcon(QString text, DataArrayPath::DataType dataType);
   static const QString GetActiveColor(DataArrayPath::DataType type);
+  static bool CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, DataContainerSelectionFilterParameter::RequirementType reqs);
+  static bool CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, AttributeMatrixSelectionFilterParameter::RequirementType reqs);
+  static bool CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, DataArraySelectionFilterParameter::RequirementType reqs);
 
   DataArrayPathSelectionWidget(QWidget* parent = nullptr);
   virtual ~DataArrayPathSelectionWidget() = default;
