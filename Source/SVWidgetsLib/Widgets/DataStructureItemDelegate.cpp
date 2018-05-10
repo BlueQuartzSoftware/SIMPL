@@ -320,9 +320,9 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
 
   // Draw Text - drawStaticText renders rich text
   QFontMetrics fm(op.font);
-  QPoint textPoint(op.rect.x() + textOffset, op.rect.y() + fm.descent() / 2);
+  QRect textRect(op.rect.x() + textOffset, op.rect.y() + fm.descent() / 2, op.rect.width(), op.rect.height());
   painter->setPen(op.palette.color(QPalette::Normal, QPalette::WindowText));
-  painter->drawStaticText(textPoint, text);
+  painter->drawText(textRect, text);
 
   // Draw icon for created paths
   if(isCreatedPath)
