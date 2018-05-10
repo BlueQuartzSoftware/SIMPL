@@ -37,6 +37,7 @@
 #define _dataBrowserWidget_h_
 
 #include <QtCore/QUuid>
+#include <QtGui/QBrush>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QWidget>
 
@@ -44,6 +45,9 @@
 #include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/SIMPLib.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
@@ -80,13 +84,6 @@ public slots:
   void filterActivated(AbstractFilter::Pointer filter);
 
   /**
-   * @brief Updates the DataStructureWidget with the latest DataContainerArray from
-   * the PipelineFilterObject
-   * @param object
-   */
-  void handleFilterParameterChanged(PipelineFilterObject* object);
-
-  /**
    * @brief Forces a refresh of the TreeView from the internal copy of the DataContainerArray
    */
   void refreshData();
@@ -97,6 +94,33 @@ public slots:
    * @param object
    */
   void handleFilterRemoved(PipelineFilterObject* object);
+
+  /**
+  * @brief Sets the DataContainer requirements
+  * @param dcReqs
+  */
+  void setViewReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs);
+
+  /**
+  * @brief Sets the AttributeMatrix requirements
+  * @param amReqs
+  */
+  void setViewReqs(AttributeMatrixSelectionFilterParameter::RequirementType amReqs);
+
+  /**
+  * @brief Sets the DataArray requirements
+  * @param daReqs
+  */
+  void setViewReqs(DataArraySelectionFilterParameter::RequirementType daReqs);
+
+  /**
+  * @brief Clears the requirements
+  */
+  void clearViewRequirements();
+
+signals:
+  void filterPath(DataArrayPath path);
+  void endPathFiltering();
 
 protected:
   /**
@@ -121,9 +145,44 @@ protected:
    */
   void removeNonexistingEntries(QStandardItem* rootItem, QList<QString> existing, int column);
 
+  /**
+  * @brief Clears the filter effects from the given QStandardItem and its children
+  * @param item
+  */
+  void clearFilter(QStandardItem* item);
+
+  /**
+  * @brief Mark DataArrayPaths created in the current filter
+  */
+  void markNewItems();
+
+  /**
+   * @brief Returns a QStandardItem from the given DataArrayPath
+   * @param path
+   * @return
+   */
+  QStandardItem* findItemByPath(DataArrayPath path);
+
+  /**
+  * @brief Returns true if the given path is created by the current filter.  Returns false otherwise.
+  * @param path
+  * @return
+  */
+  bool isCreatedPath(DataArrayPath path);
+
 private:
   DataContainerArray::Pointer  m_Dca = nullptr;
+  std::list<DataArrayPath> m_CreatedPaths;
   QSharedPointer<Ui::DataStructureWidget>       m_Ui;
+  AbstractFilter::Pointer m_Filter = nullptr;
+  QBrush m_CompliantBrush;
+  QBrush m_CompliantBgBrush;
+  QBrush m_NoncompliantBrush;
+  QBrush m_NoncompliantBgBrush;
+  QBrush m_NewItemBrush;
+  QColor m_DcColor;
+  QColor m_AmColor;
+  QColor m_DaColor;
 
   DataStructureWidget(const DataStructureWidget&) = delete; // Copy Constructor Not Implemented
   void operator=(const DataStructureWidget&);               // Move assignment Not Implemented

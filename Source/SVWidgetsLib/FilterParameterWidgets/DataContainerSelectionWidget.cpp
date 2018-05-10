@@ -100,6 +100,10 @@ void DataContainerSelectionWidget::setupGui()
   {
     return;
   }
+
+  m_SelectedDataContainerPath->setDataContainerRequirements(m_FilterParameter->getRequirements());
+  m_SelectedDataContainerPath->setFilter(getFilter());
+
   // Catch when the filter is about to execute the preflight
   connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
@@ -113,6 +117,11 @@ void DataContainerSelectionWidget::setupGui()
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
     this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
+  connect(m_SelectedDataContainerPath, SIGNAL(viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType)));
+  connect(m_SelectedDataContainerPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
+  connect(m_SelectedDataContainerPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
+  connect(m_SelectedDataContainerPath, SIGNAL(filterPath(DataArrayPath)), this, SIGNAL(filterPath(DataArrayPath)));
+
   if(getFilterParameter() == nullptr)
   {
     return;
@@ -121,12 +130,9 @@ void DataContainerSelectionWidget::setupGui()
 
   m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
 
-  m_MenuMapper = new QSignalMapper(this);
-  connect(m_MenuMapper, SIGNAL(mapped(QString)),
-            this, SLOT(dataContainerSelected(QString)));
-
   QString dcName = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QString>();
   m_SelectedDataContainerPath->setText(dcName);
+  m_SelectedDataContainerPath->setPropertyName(getFilterParameter()->getHumanLabel());
 
 
   changeStyleSheet(Style::FS_STANDARD_STYLE);
@@ -152,70 +158,6 @@ QString DataContainerSelectionWidget::checkStringValues(QString curDcName, QStri
   }
 
   return filtDcName;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataContainerSelectionWidget::createSelectionMenu()
-{
-  // Now get the DataContainerArray from the Filter instance
-  // We are going to use this to get all the current DataContainers
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get())
-  {
-    return;
-  }
-
-  // Get the menu and clear it out
-  QMenu* menu = m_SelectedDataContainerPath->menu();
-  if(!menu)
-  {
-    menu = new QMenu();
-    m_SelectedDataContainerPath->setMenu(menu);
-    menu->installEventFilter(this);
-  }
-  if(menu)
-  {
-    menu->clear();
-  }
-
-  // Get the DataContainerArray object
-  // Loop over the data containers until we find the proper data container
-  QList<DataContainer::Pointer> containers = dca->getDataContainers();
-  IGeometry::Types geomTypes = m_FilterParameter->getDefaultGeometryTypes();
-
-  QListIterator<DataContainer::Pointer> containerIter(containers);
-  while(containerIter.hasNext())
-  {
-    DataContainer::Pointer dc = containerIter.next();
-
-    IGeometry::Pointer geom = IGeometry::NullPointer();
-    IGeometry::Type geomType = IGeometry::Type::Unknown;
-    if(nullptr != dc.get())
-    {
-      geom = dc->getGeometry();
-    }
-    if(nullptr != geom.get())
-    {
-      geomType = geom->getGeometryType();
-    }
-
-    QString dcName = dc->getName();
-    QAction* action = new QAction(dcName, menu);
-    DataArrayPath dcPath(dcName, "", "");
-    QString path = dcPath.serialize(Detail::Delimiter);
-    action->setData(path);
-
-    connect(action, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
-    m_MenuMapper->setMapping(action, path);
-    menu->addAction(action);
-
-    if(!geomTypes.isEmpty() && !geomTypes.contains(geomType) && !geomTypes.contains(IGeometry::Type::Any))
-    {
-      action->setDisabled(true);
-    }
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -276,22 +218,7 @@ void DataContainerSelectionWidget::setSelectedPath(DataArrayPath dcPath)
 {
   if (dcPath.isEmpty()) { return; }
 
-  m_SelectedDataContainerPath->setText("");
-  m_SelectedDataContainerPath->setToolTip("");
-
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get())
-  {
-    return;
-  }
-
-  if (dca->doesDataContainerExist(dcPath.getDataContainerName()))
-  {
-    DataContainer::Pointer dc = dca->getDataContainer(dcPath.getDataContainerName());
-    QString html = dc->getInfoString(SIMPL::HtmlFormat);
-    m_SelectedDataContainerPath->setToolTip(html);
-    m_SelectedDataContainerPath->setText(dcPath.getDataContainerName());
-  }
+  m_SelectedDataContainerPath->setDataArrayPath(dcPath);
 }
 
 // -----------------------------------------------------------------------------
@@ -309,7 +236,7 @@ void DataContainerSelectionWidget::beforePreflight()
     return;
   }
 
-  createSelectionMenu();
+  m_SelectedDataContainerPath->beforePreflight();
 }
 
 // -----------------------------------------------------------------------------
@@ -320,19 +247,7 @@ void DataContainerSelectionWidget::afterPreflight()
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if (NULL == dca.get()) { return; }
 
-  if (dca->doesDataContainerExist(m_SelectedDataContainerPath->text()))
-  {
-    DataContainer::Pointer dc = dca->getDataContainer(m_SelectedDataContainerPath->text());
-    if (nullptr != dc.get()) {
-      QString html = dc->getInfoString(SIMPL::HtmlFormat);
-      m_SelectedDataContainerPath->setToolTip(html);
-      m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
-    }
-  }
-  else
-  {
-    m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
-  }
+  m_SelectedDataContainerPath->afterPreflight();
 }
 
 // -----------------------------------------------------------------------------
@@ -351,4 +266,28 @@ void DataContainerSelectionWidget::filterNeedsInputParameters(AbstractFilter* fi
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerSelectionWidget::endViewPathRequirements()
+{
+  m_SelectedDataContainerPath->setPathFiltering(false);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerSelectionWidget::checkFilterPath(DataArrayPath path)
+{
+  setEnabled(m_SelectedDataContainerPath->checkPathReqs(path));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerSelectionWidget::clearPathFiltering()
+{
+  setEnabled(true);
 }

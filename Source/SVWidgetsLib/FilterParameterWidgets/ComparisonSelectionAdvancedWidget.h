@@ -81,7 +81,23 @@ class ComparisonSelectionAdvancedWidget : public FilterParameterWidget, private 
     */
     bool eventFilter(QObject* obj, QEvent* event);
 
-    public slots:
+    /**
+    * @brief Uncheck the DataArrayPathSelectionWidget so that it does not try to filter the DataStructure
+    */
+    void endViewPathRequirements() override;
+
+    /**
+    * @brief Enable the widget when the path meets requirements and disable it otherwise.
+    * @param path
+    */
+    void checkFilterPath(DataArrayPath path) override;
+
+    /**
+    * @brief Clears the effects of checkFilterPath
+    */
+    void clearPathFiltering() override;
+
+  public slots:
     /**
     * @brief beforePreflight
     */
@@ -128,11 +144,6 @@ class ComparisonSelectionAdvancedWidget : public FilterParameterWidget, private 
     * @return
     */
     ComparisonInputsAdvanced getComparisonInputs();
-
-    /**
-    * @brief createSelectionMenu
-    */
-    void createSelectionMenu();
 
     /**
     * @brief generateAttributeArrayList
@@ -186,14 +197,17 @@ class ComparisonSelectionAdvancedWidget : public FilterParameterWidget, private 
     */
     void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
+    /**
+    * @brief Handles AttributeMatrix path changes through DataArrayPathSelectionWidget
+    */
+    void attributeMatrixUpdated();
+
   private:
     DataContainerArrayProxy m_DcaProxy;
 
     DataArrayPath m_presetPath;
 
     bool m_DidCausePreflight;
-
-    QPointer<QSignalMapper> m_MenuMapper;
 
     ComparisonSelectionAdvancedFilterParameter* m_FilterParameter;
 };

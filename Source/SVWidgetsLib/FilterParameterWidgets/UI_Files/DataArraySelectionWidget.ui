@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="acceptDrops">
-   <bool>true</bool>
+   <bool>false</bool>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="leftMargin">
@@ -40,7 +40,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QToolButton" name="m_SelectedDataArrayPath">
+    <widget class="DataArrayPathSelectionWidget" name="m_SelectedDataArrayPath">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -92,6 +92,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DataArrayPathSelectionWidget</class>
+   <extends>QToolButton</extends>
+   <header>DataArrayPathSelectionWidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../icons/images/Icons.qrc"/>
  </resources>

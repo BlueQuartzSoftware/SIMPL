@@ -64,7 +64,7 @@ public:
   * @brief Sets the ComparisonValue used by this widget
   * @param value New ComparisonValue::Pointer to use
   */
-  void setComparisonValue(ComparisonValue::Pointer value);
+  void setComparisonValue(const ComparisonValue::Pointer &value);
 
   /**
   * @brief Returns the ComparisonValue used by this widget as an AbstractComparison::Pointer
@@ -117,7 +117,7 @@ protected slots:
   * @brief Changes the value used by the ComparisonValue
   * @param value Specifies the new value to use
   */
-  void comparisonValueChanged(double value);
+  void comparisonValueChanged();
 
 private:
   ComparisonValue::Pointer m_comparisonValue;

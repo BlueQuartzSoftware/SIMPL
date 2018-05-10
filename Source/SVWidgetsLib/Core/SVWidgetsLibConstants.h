@@ -55,6 +55,8 @@ namespace SIMPLView
     const QString FilterPipelineItem("Filter Pipeline Item");
     const QString BookmarkItem("Bookmark Item");
     const QString Url("text/uri-list");
+    const QString DataArrayPath("DataArrayPath");
+    const QString SelectionWidget("Selection Widget");
   }
   
 }

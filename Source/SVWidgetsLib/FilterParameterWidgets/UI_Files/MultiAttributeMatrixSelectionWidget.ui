@@ -314,7 +314,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="m_SelectedDataContainerPath">
+      <widget class="DataArrayPathSelectionWidget" name="m_SelectedDataContainerPath">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -365,6 +365,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DataArrayPathSelectionWidget</class>
+   <extends>QToolButton</extends>
+   <header>DataArrayPathSelectionWidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../icons/images/Icons.qrc"/>
  </resources>

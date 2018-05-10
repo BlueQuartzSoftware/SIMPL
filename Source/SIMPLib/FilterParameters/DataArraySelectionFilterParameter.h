@@ -155,6 +155,12 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
     void writeJson(QJsonObject& json) override;
 
     /**
+    * @brief Returns the RequirementType for the filter parameter
+    * @return
+    */
+    RequirementType getRequirements();
+
+    /**
     * @param DefaultGeometryTypes Default geometry types required for Data Container selections
     * @return
     */

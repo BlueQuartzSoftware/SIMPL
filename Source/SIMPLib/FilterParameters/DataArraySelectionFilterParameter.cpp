@@ -194,3 +194,17 @@ void DataArraySelectionFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = obj;
   }
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParameter::getRequirements()
+{
+  RequirementType reqs;
+  reqs.dcGeometryTypes = getDefaultGeometryTypes();
+  reqs.amTypes = getDefaultAttributeMatrixTypes();
+  reqs.daTypes = getDefaultAttributeArrayTypes();
+  reqs.componentDimensions = getDefaultComponentDimensions();
+
+  return reqs;
+}

@@ -162,3 +162,15 @@ void AttributeMatrixSelectionFilterParameter::writeJson(QJsonObject& json)
     json[getPropertyName()] = obj;
   }
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AttributeMatrixSelectionFilterParameter::RequirementType AttributeMatrixSelectionFilterParameter::getRequirements()
+{
+  RequirementType reqs;
+  reqs.dcGeometryTypes = getDefaultGeometryTypes();
+  reqs.amTypes = getDefaultAttributeMatrixTypes();
+
+  return reqs;
+}
