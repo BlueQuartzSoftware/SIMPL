@@ -62,8 +62,6 @@
 DataStructureTreeView::DataStructureTreeView(QWidget* parent)
 : QTreeView(parent)
 {
-  //setContextMenuPolicy(Qt::CustomContextMenu);
-  //connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(requestContextMenu(const QPoint&)));
   setAcceptDrops(true);
   setMouseTracking(true);
 
@@ -286,31 +284,6 @@ void DataStructureTreeView::dragEnterEvent(QDragEnterEvent* event)
   event->ignore();
 }
 
-#if 0
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataStructureTreeView::dragLeaveEvent(QDragLeaveEvent* event)
-{
-
-
-  if(m_TopLevelItemPlaceholder.isValid())
-  {
-    m_Model->removeRow(m_Model->rowCount() - 1, rootIndex());
-    m_TopLevelItemPlaceholder = QModelIndex();
-  }
-
-  clearSelection();
-
-  setCurrentIndex(m_ActiveIndexBeingDragged);
-
-  for(int i = 0; i < m_IndexesBeingDragged.size(); i++)
-  {
-    selectionModel()->select(m_IndexesBeingDragged[i], QItemSelectionModel::Select);
-  }
-}
-#endif
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -373,32 +346,3 @@ void DataStructureTreeView::dropEvent(QDropEvent* event)
 
   event->ignore();
 }
-
-#if 0
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataStructureTreeView::requestContextMenu(const QPoint& pos)
-{
-  activateWindow();
-
-  QModelIndex index = indexAt(pos);
-
-  QPoint mapped;
-  if(index.isValid())
-  {
-    // Note: We must map the point to global from the viewport to
-    // account for the header.
-    mapped = viewport()->mapToGlobal(pos);
-  }
-  else
-  {
-    index = QModelIndex();
-    mapped = mapToGlobal(pos);
-  }
-
-
-  //TODO: to be filled out if needed
-}
-#endif
-
