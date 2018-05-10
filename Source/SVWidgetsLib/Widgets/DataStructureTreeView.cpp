@@ -83,6 +83,7 @@ void DataStructureTreeView::setActiveFilter(AbstractFilter::Pointer filter)
 {
   m_Filter = filter;
   m_Delegate->setActiveFilter(filter);
+  viewport()->repaint();
 }
 
 // -----------------------------------------------------------------------------
