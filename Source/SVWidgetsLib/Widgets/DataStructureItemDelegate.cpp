@@ -64,12 +64,62 @@ QColor InvalidColor(100, 100, 100);
 DataStructureItemDelegate::DataStructureItemDelegate(QObject* parent)
 : QStyledItemDelegate(parent)
 {
+  createNewPathIcons();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 DataStructureItemDelegate::~DataStructureItemDelegate() = default;
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureItemDelegate::createNewPathIcons()
+{
+  QImage baseImage(SIMPLView::DataArrayPath::BaseNewPathIcon);
+  QImage dcImage = baseImage.copy();
+  QImage amImage = baseImage.copy();
+  QImage daImage = baseImage.copy();
+  QImage invalidImage = baseImage.copy();
+
+  QColor invalidColor = DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType::None);
+  QColor dcColor = DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType::DataContainer);
+  QColor amColor = DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType::AttributeMatrix);
+  QColor daColor = DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType::DataArray);
+
+  int height = baseImage.height();
+  int width = baseImage.width();
+
+  for(int y = 0; y < height; y++)
+  {
+    for(int x = 0; x < width; x++)
+    {
+      QColor color = baseImage.pixelColor(x, y);
+      qreal alpha = color.alphaF();
+
+      QColor dcPixel = dcColor;
+      QColor amPixel = amColor;
+      QColor daPixel = daColor;
+      QColor invalidPixel = invalidColor;
+
+      dcPixel.setAlphaF(alpha);
+      amPixel.setAlphaF(alpha);
+      daPixel.setAlphaF(alpha);
+      invalidPixel.setAlphaF(alpha);
+
+      dcImage.setPixelColor(x, y, dcPixel);
+      amImage.setPixelColor(x, y, amPixel);
+      daImage.setPixelColor(x, y, daPixel);
+      invalidImage.setPixelColor(x, y, invalidPixel);
+    }
+  }
+
+  m_CreatedDcIcon = QIcon(QPixmap::fromImage(dcImage));
+  m_CreatedAmIcon = QIcon(QPixmap::fromImage(amImage));
+  m_CreatedDaIcon = QIcon(QPixmap::fromImage(daImage));
+  m_CreatedInvalidIcon = QIcon(QPixmap::fromImage(invalidImage));
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -189,9 +239,23 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
   }
   QString text = var.toString();
   DataArrayPath path = getDataArrayPath(index);
+  int textOffset = 4;
 
   bool filterData = (m_ReqType != DataArrayPath::DataType::None);
   bool isCreatedPath = std::find(m_CreatedPaths.begin(), m_CreatedPaths.end(), path) != m_CreatedPaths.end();
+  
+  // Check for a corresponding icon
+  QIcon icon;
+  int iconSize = op.rect.height();
+  var = index.model()->itemData(index)[Qt::DecorationRole];
+  if(var.isValid() && var.canConvert<QIcon>())
+  {
+    icon = var.value<QIcon>();
+    if(icon.isNull())
+    {
+      iconSize = 0;
+    }
+  }
 
   // Check if the view is being filtered
   if(filterData)
@@ -246,30 +310,48 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
     }
   }
 
-  // Draw Text
-  int textOffset = 4;
-  QPoint textPoint(op.rect.x() + textOffset, op.rect.y());
+  // Draw the decoration role if available
+  if(iconSize > 0)
+  {
+    QRect iconRect(op.rect.x(), op.rect.y(), iconSize, iconSize);
+    icon.paint(painter, iconRect);
+    textOffset = textOffset + iconSize;
+  }
+
+  // Draw Text - drawStaticText renders rich text
+  QFontMetrics fm(op.font);
+  QPoint textPoint(op.rect.x() + textOffset, op.rect.y() + fm.descent() / 2);
   painter->setPen(op.palette.color(QPalette::Normal, QPalette::WindowText));
-  // drawStaticText renders rich text
   painter->drawStaticText(textPoint, text);
 
   // Draw icon for created paths
   if(isCreatedPath)
   {
-    QFontMetrics fm(op.font);
     int textWidth = fm.width(text);
 
     QRect imgRect;
     int xOffset = 5;
-    int imgSize = op.rect.height();
+    iconSize = op.rect.height();
     imgRect.setX(op.rect.x() + textWidth + textOffset + xOffset);
     imgRect.setY(op.rect.y());
-    imgRect.setWidth(imgSize);
-    imgRect.setHeight(imgSize);
+    imgRect.setWidth(iconSize);
+    imgRect.setHeight(iconSize);
 
-    // Create placeholder image for marking created paths
-    QImage image(":delete_plain.png");
-    painter->drawImage(imgRect, image);
+    switch(path.getDataType())
+    {
+    case DataArrayPath::DataType::DataContainer:
+      m_CreatedDcIcon.paint(painter, imgRect);
+      break;
+    case DataArrayPath::DataType::AttributeMatrix:
+      m_CreatedAmIcon.paint(painter, imgRect);
+      break;
+    case DataArrayPath::DataType::DataArray:
+      m_CreatedDaIcon.paint(painter, imgRect);
+      break;
+    default:
+      m_CreatedInvalidIcon.paint(painter, imgRect);
+      break;
+    }
   }
 }
 

@@ -48,54 +48,6 @@
 #include "SVWidgetsLib/Widgets/PipelineFilterObject.h"
 
 
-#if 0
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataStructureWidget::createNewPathIcons()
-{
-  QImage baseImage(":bullet_ball_green.png");
-  QImage dcImage = baseImage.copy();
-  QImage amImage = baseImage.copy();
-  QImage daImage = baseImage.copy();
-  QImage invalidImage = baseImage.copy();
-
-  QColor invalidColor = DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType::None);
-
-  int height = baseImage.height();
-  int width = baseImage.width();
-
-  for(int y = 0; y < height; y++)
-  {
-    for(int x = 0; x < width; x++)
-    {
-      QColor color = baseImage.pixelColor(x, y);
-      qreal alpha = color.alphaF();
-
-      QColor dcPixel = m_DcColor;
-      QColor amPixel = m_AmColor;
-      QColor daPixel = m_DaColor;
-      QColor invalidPixel = invalidColor;
-
-      dcPixel.setAlphaF(alpha);
-      amPixel.setAlphaF(alpha);
-      daPixel.setAlphaF(alpha);
-      invalidPixel.setAlphaF(alpha);
-
-      dcImage.setPixelColor(x, y, dcPixel);
-      amImage.setPixelColor(x, y, amPixel);
-      daImage.setPixelColor(x, y, daPixel);
-      invalidImage.setPixelColor(x, y, invalidPixel);
-    }
-  }
-
-  m_CreatedDcIcon = QIcon(QPixmap::fromImage(dcImage));
-  m_CreatedAmIcon = QIcon(QPixmap::fromImage(amImage));
-  m_CreatedDaIcon = QIcon(QPixmap::fromImage(daImage));
-  m_CreatedInvalidIcon = QIcon(QPixmap::fromImage(invalidImage));
-}
-#endif
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -138,6 +90,12 @@ void DataStructureWidget::setupGui()
               color: #000000;\
               }");
   this->setStyleSheet(css);
+
+  m_ImageGeomIcon = QIcon(SIMPLView::GeometryIcons::Image);
+  m_VertexGeomIcon = QIcon(SIMPLView::GeometryIcons::Vertex);
+  m_EdgeGeomIcon = QIcon(SIMPLView::GeometryIcons::Edge);
+  m_TriangleGeomIcon = QIcon(SIMPLView::GeometryIcons::Triangle);
+  m_QuadGeomIcon = QIcon(SIMPLView::GeometryIcons::Quad);
 }
 
 // -----------------------------------------------------------------------------
@@ -212,7 +170,34 @@ void DataStructureWidget::refreshData()
     }
     dcItem->setData(dc->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
     dcItem->setToolTip(dc->getInfoString(SIMPL::HtmlFormat));
-    dcItem->setIcon(QIcon());
+    if(dc->getGeometry())
+    {
+      switch(dc->getGeometry()->getGeometryType())
+      {
+      case IGeometry::Type::Image:
+        dcItem->setIcon(m_ImageGeomIcon);
+        break;
+      case IGeometry::Type::Vertex:
+        dcItem->setIcon(m_VertexGeomIcon);
+        break;
+      case IGeometry::Type::Edge:
+        dcItem->setIcon(m_EdgeGeomIcon);
+        break;
+      case IGeometry::Type::Triangle:
+        dcItem->setIcon(m_TriangleGeomIcon);
+        break;
+      case IGeometry::Type::Quad:
+        dcItem->setIcon(m_QuadGeomIcon);
+        break;
+      default:
+        dcItem->setIcon(QIcon());
+        break;
+      }
+    }
+    else
+    {
+      dcItem->setIcon(QIcon());
+    }
 
     if(path.size() > 0 && dc->getName().compare(path[0]) == 0)
     {

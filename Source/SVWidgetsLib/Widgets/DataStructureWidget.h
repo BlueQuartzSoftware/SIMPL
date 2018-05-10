@@ -162,6 +162,11 @@ protected:
 private:
   DataContainerArray::Pointer  m_Dca = nullptr;
   QSharedPointer<Ui::DataStructureWidget>       m_Ui;
+  QIcon m_ImageGeomIcon;
+  QIcon m_VertexGeomIcon;
+  QIcon m_EdgeGeomIcon;
+  QIcon m_TriangleGeomIcon;
+  QIcon m_QuadGeomIcon;
 
   DataStructureWidget(const DataStructureWidget&) = delete; // Copy Constructor Not Implemented
   void operator=(const DataStructureWidget&);               // Move assignment Not Implemented

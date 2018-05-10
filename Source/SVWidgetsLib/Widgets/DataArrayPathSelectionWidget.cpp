@@ -45,18 +45,6 @@
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 
-namespace DataArrayPathColors_Defaults
-{
-  const QString NormalColor("#8f8f91");
-  const QString ErrorColor("#BC0000");
-  const QString AcceptColor("#009104");
-  const QString RejectColor("#BC0000");
-
-  const QString DataContainerColor("#08a500");
-  const QString AttributeMatrixColor("#8c00ff");
-  const QString DataArrayColor("#0072ff");
-}
-
 
 // -----------------------------------------------------------------------------
 //
@@ -128,13 +116,13 @@ const QString DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataTy
   switch(type)
   {
   case DataArrayPath::DataType::DataContainer:
-    color = prefs->value("DataContainer", DataArrayPathColors_Defaults::DataContainerColor).toString();
+    color = prefs->value("DataContainer", SIMPLView::DataArrayPath::DefaultColors::DataContainerColor).toString();
     break;
   case DataArrayPath::DataType::AttributeMatrix:
-    color = prefs->value("AttributeMatrix", DataArrayPathColors_Defaults::AttributeMatrixColor).toString();
+    color = prefs->value("AttributeMatrix", SIMPLView::DataArrayPath::DefaultColors::AttributeMatrixColor).toString();
     break;
   case DataArrayPath::DataType::DataArray:
-    color = prefs->value("DataArray", DataArrayPathColors_Defaults::DataArrayColor).toString();
+    color = prefs->value("DataArray", SIMPLView::DataArrayPath::DefaultColors::DataArrayColor).toString();
     break;
   case DataArrayPath::DataType::None:
     color = prefs->value("None", QString("#000000")).toString();
@@ -1005,19 +993,19 @@ const QString DataArrayPathSelectionWidget::getColor(Style style)
   switch(style)
   {
   case Style::Normal:
-    color = prefs->value("Normal", DataArrayPathColors_Defaults::NormalColor).toString();
+    color = prefs->value("Normal", SIMPLView::DataArrayPath::DefaultColors::NormalColor).toString();
     break;
   case Style::Active:
     color = GetActiveColor(m_DataType);
     break;
   case Style::NotFound:
-    color = prefs->value("NotFount", DataArrayPathColors_Defaults::ErrorColor).toString();
+    color = prefs->value("NotFount", SIMPLView::DataArrayPath::DefaultColors::ErrorColor).toString();
     break;
   case Style::DragEnabled:
-    color = prefs->value("DragEnabled", DataArrayPathColors_Defaults::AcceptColor).toString();
+    color = prefs->value("DragEnabled", SIMPLView::DataArrayPath::DefaultColors::AcceptColor).toString();
     break;
   case Style::DragDisabled:
-    color = prefs->value("DragDisabled", DataArrayPathColors_Defaults::RejectColor).toString();
+    color = prefs->value("DragDisabled", SIMPLView::DataArrayPath::DefaultColors::RejectColor).toString();
     break;
   }
 

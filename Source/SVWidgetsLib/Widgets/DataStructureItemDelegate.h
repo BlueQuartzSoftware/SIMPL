@@ -106,6 +106,11 @@ protected:
   */
   bool pathMatchesReqs(DataArrayPath path) const;
 
+  /**
+  * @brief Create colored icons for new DataArrayPath from the base image
+  */
+  void createNewPathIcons();
+
 private:
   DataStructureItemDelegate(const DataStructureItemDelegate&) = delete; // Copy Constructor Not Implemented
   void operator=(const DataStructureItemDelegate&) = delete;            // Move assignment Not Implemented
@@ -116,6 +121,10 @@ private:
   DataContainerSelectionFilterParameter::RequirementType m_DcReqs;
   AttributeMatrixSelectionFilterParameter::RequirementType m_AmReqs;
   DataArraySelectionFilterParameter::RequirementType m_DaReqs;
+  QIcon m_CreatedDcIcon;
+  QIcon m_CreatedAmIcon;
+  QIcon m_CreatedDaIcon;
+  QIcon m_CreatedInvalidIcon;
 };
 
 #endif // _DataStructureItemDelegate_H

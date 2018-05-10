@@ -66,6 +66,23 @@ namespace SIMPLView
     const QString Quad(":QuadGeometry.png");
   }
 
+  namespace DataArrayPath
+  {
+    const QString BaseNewPathIcon(":bullet_ball_green.png");
+    
+    namespace DefaultColors
+    {
+      const QString NormalColor("#8f8f91");
+      const QString ErrorColor("#BC0000");
+      const QString AcceptColor("#009104");
+      const QString RejectColor("#BC0000");
+
+      const QString DataContainerColor("#08a500");
+      const QString AttributeMatrixColor("#8c00ff");
+      const QString DataArrayColor("#0072ff");
+    }
+  }
+
 }
 
 #endif /* _SVWidgetsLibConstants_H_ */
