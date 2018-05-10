@@ -76,9 +76,6 @@ void DataStructureWidget::setupGui()
   model->setColumnCount(1);
   model->setParent(m_Ui->dataBrowserTreeView); // Set the parent so it gets cleaned up
 
-  // Make icons to mark created DataArrayPaths
-  //createNewPathIcons();
-
   QString css(" QToolTip {\
               border: 2px solid #434343;\
               padding: 2px;\

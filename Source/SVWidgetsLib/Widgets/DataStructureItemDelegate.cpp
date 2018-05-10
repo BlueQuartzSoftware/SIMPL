@@ -42,20 +42,20 @@
 #include <QtGui/QPalette>
 #include <QtGui/QStaticText>
 
+#include "SVWidgetsLib/QtSupport/QtSStyles.h"
 #include "SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h"
 #include "SVWidgetsLib/Widgets/DataStructureItem.h"
 #include "SVWidgetsLib/Widgets/DataStructureItemDelegate.h"
 #include "SVWidgetsLib/Widgets/DataStructureModel.h"
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
 namespace Detail
 {
-const QString Delimiter(" / ");
+  const QString Delimiter(" / ");
 }
 
 namespace
 {
-QColor InvalidColor(100, 100, 100);
+  QColor InvalidColor(100, 100, 100);
 }
 
 // -----------------------------------------------------------------------------
@@ -224,9 +224,7 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
   // QStyledItemDelegate::paint(painter, op, index);
 
   // Place any painting code here
-  //QFont font = QtSStyles::GetCategoryFont();
   QStyleOptionViewItem op(option);
-  //op.font = font;
   painter->setPen(QPen());
   painter->setBrush(QBrush());
   painter->setFont(op.font);
@@ -243,7 +241,7 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
 
   bool filterData = (m_ReqType != DataArrayPath::DataType::None);
   bool isCreatedPath = std::find(m_CreatedPaths.begin(), m_CreatedPaths.end(), path) != m_CreatedPaths.end();
-  
+
   // Check for a corresponding icon
   QIcon icon;
   int iconSize = op.rect.height();
@@ -274,7 +272,7 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
     if(matchesReqs)
     {
       color = DataArrayPathSelectionWidget::GetActiveColor(path.getDataType());
-      
+
       if(false == isCreatedPath)
       {
         // Set text color white
@@ -283,7 +281,7 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
         QBrush brush(color);
         painter->setBrush(brush);
       }
-      
+
       pen.setColor(color);
       pen.setWidth(radius);
       painter->setPen(pen);
