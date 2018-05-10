@@ -945,11 +945,15 @@ void DataArrayPathSelectionWidget::afterPreflight()
     }
     break;
   case DataArrayPath::DataType::DataArray:
-    AttributeMatrix::Pointer am = dca->getAttributeMatrix(getDataArrayPath());
-    if(am && am->getAttributeArray(getDataArrayPath().getDataArrayName()))
     {
-      found = true;
+      AttributeMatrix::Pointer am = dca->getAttributeMatrix(getDataArrayPath());
+      if(am && am->getAttributeArray(getDataArrayPath().getDataArrayName()))
+      {
+        found = true;
+      }
     }
+    break;
+  case DataArrayPath::DataType::None:
     break;
   }
 
