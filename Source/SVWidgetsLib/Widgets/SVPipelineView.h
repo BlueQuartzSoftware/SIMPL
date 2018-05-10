@@ -168,45 +168,45 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
      * @brief Adds a filter with the specified filterClassName to the current model
      * @param filterClassName
      */
-    void addFilterFromClassName(const QString &filterClassName, int insertIndex = -1);
+    void addFilterFromClassName(const QString &filterClassName, int insertIndex = -1, bool useAnimationOnFirstRun = true);
 
     /**
      * @brief Adds a filter to the current model at insertIndex.  If insertIndex is < 0,
      * the filter gets appended to the end of the model
      * @param filter
      */
-    void addFilter(AbstractFilter::Pointer filter, int insertIndex = -1);
+    void addFilter(AbstractFilter::Pointer filter, int insertIndex = -1, bool useAnimationOnFirstRun = true);
 
     /**
      * @brief Adds multiple filters to the current model.  If insertIndex is < 0,
      * the filters get appended to the end of the model
      * @param filters
      */
-    void addFilters(std::vector<AbstractFilter::Pointer> filters, int insertIndex = -1);
+    void addFilters(std::vector<AbstractFilter::Pointer> filters, int insertIndex = -1, bool useAnimationOnFirstRun = true);
 
     /**
      * @brief Removes filter from the current model
      * @param filter
      */
-    void removeFilter(AbstractFilter::Pointer filter);
+    void removeFilter(AbstractFilter::Pointer filter, bool useAnimationOnFirstRun = true);
 
     /**
      * @brief Removes multiple filters from the current model
      * @param filters
      */
-    void removeFilters(std::vector<AbstractFilter::Pointer> filters);
+    void removeFilters(std::vector<AbstractFilter::Pointer> filters, bool useAnimationOnFirstRun = true);
 
     /**
      * @brief Cuts filter from the current model
      * @param filter
      */
-    void cutFilter(AbstractFilter::Pointer filter);
+    void cutFilter(AbstractFilter::Pointer filter, bool useAnimationOnFirstRun = true);
 
     /**
      * @brief Cuts multiple filters from the current model
      * @param filters
      */
-    void cutFilters(std::vector<AbstractFilter::Pointer> filters);
+    void cutFilters(std::vector<AbstractFilter::Pointer> filters, bool useAnimationOnFirstRun = true);
 
     /**
      * @brief Copies the currently selected filters from the current model into the system clipboard
@@ -217,7 +217,7 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
      * @brief Pastes multiple filters from the system clipboard to the current model
      * @param insertIndex
      */
-    void pasteFilters(int insertIndex = -1);
+    void pasteFilters(int insertIndex = -1, bool useAnimationOnFirstRun = true);
 
     /**
      * @brief preflightPipeline

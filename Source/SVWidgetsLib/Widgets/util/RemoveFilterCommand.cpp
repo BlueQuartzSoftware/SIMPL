@@ -43,9 +43,10 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RemoveFilterCommand::RemoveFilterCommand(AbstractFilter::Pointer filter, SVPipelineView *view, QString actionText, QUndoCommand* parent)
+RemoveFilterCommand::RemoveFilterCommand(AbstractFilter::Pointer filter, SVPipelineView *view, QString actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
   : QUndoCommand(parent)
   , m_PipelineView(view)
+  , m_UseAnimationOnFirstRun(useAnimationOnFirstRun)
 {
   if(nullptr == filter || nullptr == view)
   {
@@ -60,10 +61,11 @@ RemoveFilterCommand::RemoveFilterCommand(AbstractFilter::Pointer filter, SVPipel
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RemoveFilterCommand::RemoveFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView *view, QString actionText, QUndoCommand* parent)
+RemoveFilterCommand::RemoveFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView *view, QString actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
   : QUndoCommand(parent)
   , m_PipelineView(view)
   , m_Filters(filters)
+  , m_UseAnimationOnFirstRun(useAnimationOnFirstRun)
 {
   if(nullptr == view)
   {
@@ -205,11 +207,18 @@ void RemoveFilterCommand::removeFilter(AbstractFilter::Pointer filter)
 
   QRect filterRect = m_PipelineView->visualRect(index);
 
-  PipelineItemSlideAnimation* animation = new PipelineItemSlideAnimation(model, persistentIndex, filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::Left);
-  QObject::connect(animation, &PipelineItemSlideAnimation::finished, [=] {
+  if (m_UseAnimationOnFirstRun == false && m_FirstRun == true)
+  {
     model->removeRow(persistentIndex.row());
-  });
-  animation->start(QAbstractAnimation::DeleteWhenStopped);
+  }
+  else
+  {
+    PipelineItemSlideAnimation* animation = new PipelineItemSlideAnimation(model, persistentIndex, filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::Left);
+    QObject::connect(animation, &PipelineItemSlideAnimation::finished, [=] {
+      model->removeRow(persistentIndex.row());
+    });
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
+  }
 }
 
 // -----------------------------------------------------------------------------

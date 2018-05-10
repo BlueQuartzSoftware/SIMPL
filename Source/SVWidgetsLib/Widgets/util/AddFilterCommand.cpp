@@ -53,11 +53,12 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, int insertIndex, QString actionText, QUndoCommand* parent)
+AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, int insertIndex, QString actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
 : QUndoCommand(parent)
 , m_FilterCount(1)
 , m_ActionText(actionText)
 , m_PipelineView(view)
+, m_UseAnimationOnFirstRun(useAnimationOnFirstRun)
 {
   PipelineModel* model = m_PipelineView->getPipelineModel();
 
@@ -75,12 +76,13 @@ AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineVie
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFilterCommand::AddFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, int insertIndex, QString actionText, QUndoCommand* parent)
+AddFilterCommand::AddFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, int insertIndex, QString actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
 : QUndoCommand(parent)
 , m_Filters(filters)
 , m_FilterCount(filters.size())
 , m_ActionText(actionText)
 , m_PipelineView(view)
+, m_UseAnimationOnFirstRun(useAnimationOnFirstRun)
 {
   PipelineModel* model = m_PipelineView->getPipelineModel();
 
@@ -208,10 +210,18 @@ void AddFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertionIn
     model->setData(filterIndex, static_cast<int>(PipelineItem::WidgetState::Disabled), PipelineModel::WidgetStateRole);
   }
 
-  QRect filterRect = m_PipelineView->visualRect(filterIndex);
+  if (m_UseAnimationOnFirstRun == false && m_FirstRun == true)
+  {
+    QSize size = model->data(filterIndex, Qt::SizeHintRole).toSize();
+    model->setData(filterIndex, size.height(), PipelineModel::Roles::HeightRole);
+  }
+  else
+  {
+    QRect filterRect = m_PipelineView->visualRect(filterIndex);
 
-  PipelineItemSlideAnimation* slideAnimation = new PipelineItemSlideAnimation(model, QPersistentModelIndex(filterIndex), filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::Right);
-  slideAnimation->start(QAbstractAnimation::DeleteWhenStopped);
+    PipelineItemSlideAnimation* slideAnimation = new PipelineItemSlideAnimation(model, QPersistentModelIndex(filterIndex), filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::Right);
+    slideAnimation->start(QAbstractAnimation::DeleteWhenStopped);
+  }
 
 //  PipelineItemHeightAnimation* heightAnimation = new PipelineItemHeightAnimation(model, QPersistentModelIndex(filterIndex), PipelineItemHeightAnimation::AnimationDirection::Open);
 

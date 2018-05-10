@@ -190,7 +190,7 @@ void SVPipelineView::addPipelineMessageObserver(QObject* pipelineMessageObserver
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::addFilterFromClassName(const QString &filterClassName, int insertIndex)
+void SVPipelineView::addFilterFromClassName(const QString &filterClassName, int insertIndex, bool useAnimationOnFirstRun)
 {
   FilterManager* fm = FilterManager::Instance();
   if (fm != nullptr)
@@ -199,7 +199,7 @@ void SVPipelineView::addFilterFromClassName(const QString &filterClassName, int 
     if (factory.get() != nullptr)
     {
       AbstractFilter::Pointer filter = factory->create();
-      addFilter(filter, insertIndex);
+      addFilter(filter, insertIndex, useAnimationOnFirstRun);
     }
   }
 }
@@ -207,36 +207,36 @@ void SVPipelineView::addFilterFromClassName(const QString &filterClassName, int 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::addFilter(AbstractFilter::Pointer filter, int insertIndex)
+void SVPipelineView::addFilter(AbstractFilter::Pointer filter, int insertIndex, bool useAnimationOnFirstRun)
 {
-  AddFilterCommand* cmd = new AddFilterCommand(filter, this, insertIndex, "Add");
+  AddFilterCommand* cmd = new AddFilterCommand(filter, this, insertIndex, "Add", useAnimationOnFirstRun);
   addUndoCommand(cmd);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::addFilters(std::vector<AbstractFilter::Pointer> filters, int insertIndex)
+void SVPipelineView::addFilters(std::vector<AbstractFilter::Pointer> filters, int insertIndex, bool useAnimationOnFirstRun)
 {
-  AddFilterCommand* cmd = new AddFilterCommand(filters, this, insertIndex, "Add");
+  AddFilterCommand* cmd = new AddFilterCommand(filters, this, insertIndex, "Add", useAnimationOnFirstRun);
   addUndoCommand(cmd);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::removeFilter(AbstractFilter::Pointer filter)
+void SVPipelineView::removeFilter(AbstractFilter::Pointer filter, bool useAnimationOnFirstRun)
 {
-  RemoveFilterCommand* cmd = new RemoveFilterCommand(filter, this, "Remove");
+  RemoveFilterCommand* cmd = new RemoveFilterCommand(filter, this, "Remove", useAnimationOnFirstRun);
   addUndoCommand(cmd);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::removeFilters(std::vector<AbstractFilter::Pointer> filters)
+void SVPipelineView::removeFilters(std::vector<AbstractFilter::Pointer> filters, bool useAnimationOnFirstRun)
 {
-  RemoveFilterCommand* cmd = new RemoveFilterCommand(filters, this, "Remove");
+  RemoveFilterCommand* cmd = new RemoveFilterCommand(filters, this, "Remove", useAnimationOnFirstRun);
   addUndoCommand(cmd);
 }
 
@@ -273,25 +273,25 @@ void SVPipelineView::listenFilterCompleted(AbstractFilter* filter)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::cutFilter(AbstractFilter::Pointer filter)
+void SVPipelineView::cutFilter(AbstractFilter::Pointer filter, bool useAnimationOnFirstRun)
 {
-  RemoveFilterCommand* cmd = new RemoveFilterCommand(filter, this, "Cut");
+  RemoveFilterCommand* cmd = new RemoveFilterCommand(filter, this, "Cut", useAnimationOnFirstRun);
   addUndoCommand(cmd);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::cutFilters(std::vector<AbstractFilter::Pointer> filters)
+void SVPipelineView::cutFilters(std::vector<AbstractFilter::Pointer> filters, bool useAnimationOnFirstRun)
 {
-  RemoveFilterCommand* cmd = new RemoveFilterCommand(filters, this, "Cut");
+  RemoveFilterCommand* cmd = new RemoveFilterCommand(filters, this, "Cut", useAnimationOnFirstRun);
   addUndoCommand(cmd);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::pasteFilters(int insertIndex)
+void SVPipelineView::pasteFilters(int insertIndex, bool useAnimationOnFirstRun)
 {
   QClipboard* clipboard = QApplication::clipboard();
   QString jsonString = clipboard->text();
@@ -306,7 +306,7 @@ void SVPipelineView::pasteFilters(int insertIndex)
     filters.push_back(container[i]);
   }
 
-  AddFilterCommand* addCmd = new AddFilterCommand(filters, this, insertIndex, "Paste");
+  AddFilterCommand* addCmd = new AddFilterCommand(filters, this, insertIndex, "Paste", useAnimationOnFirstRun);
   addUndoCommand(addCmd);
 }
 
@@ -939,7 +939,7 @@ void SVPipelineView::beginDrag(QMouseEvent* event)
   {
     m_MoveCommand = new QUndoCommand();
 
-    RemoveFilterCommand* cmd = new RemoveFilterCommand(filters, this, "Remove", m_MoveCommand);
+    RemoveFilterCommand* cmd = new RemoveFilterCommand(filters, this, "Remove", false, m_MoveCommand);
     m_MoveCommand->setText(cmd->text());
 
     int dropIndicatorRow = currentIndex().row();
@@ -1282,7 +1282,7 @@ void SVPipelineView::dropEvent(QDropEvent* event)
     if (event->source() == this && modifiers.testFlag(Qt::AltModifier) == false)
     { 
       // This is an internal move, so we need to create an Add command and add it as a child to the overall move command.
-      AddFilterCommand* cmd = new AddFilterCommand(filters, this, dropRow, "Move", m_MoveCommand);
+      AddFilterCommand* cmd = new AddFilterCommand(filters, this, dropRow, "Move", true, m_MoveCommand);
 
       // Set the text of the drag command
       QString text = cmd->text();
