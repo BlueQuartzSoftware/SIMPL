@@ -87,13 +87,13 @@ void StatusBarWidget::readSettings()
   prefs->beginGroup("Status Bar Widget");
 
   prefs->beginGroup("Button Visibility");
-  m_FilterListBtnToggleAction->setChecked(prefs->value("Filter List", false).toBool());
-  m_FilterLibraryBtnToggleAction->setChecked(prefs->value("Filter Library", false).toBool());
-  m_BookmarksBtnToggleAction->setChecked(prefs->value("Bookmarks", false).toBool());
-  m_PipelineBtnToggleAction->setChecked(prefs->value("Pipeline", true).toBool());
-  m_IssuesBtnToggleAction->setChecked(prefs->value("Issues", true).toBool());
-  m_DataBrowserBtnToggleAction->setChecked(prefs->value("Data Browser", true).toBool());
-  m_ConsoleBtnToggleAction->setChecked(prefs->value("Console", true).toBool());
+  m_FilterListBtnToggleAction->setChecked(prefs->value("Filter List", QVariant(false)).toBool());
+  m_FilterLibraryBtnToggleAction->setChecked(prefs->value("Filter Library", QVariant(false)).toBool());
+  m_BookmarksBtnToggleAction->setChecked(prefs->value("Bookmarks", QVariant(false)).toBool());
+  m_PipelineBtnToggleAction->setChecked(prefs->value("Pipeline", QVariant(true)).toBool());
+  m_IssuesBtnToggleAction->setChecked(prefs->value("Issues", QVariant(true)).toBool());
+  m_DataBrowserBtnToggleAction->setChecked(prefs->value("Data Browser", QVariant(true)).toBool());
+  m_ConsoleBtnToggleAction->setChecked(prefs->value("Console", QVariant(true)).toBool());
   prefs->endGroup();
 
   prefs->endGroup();

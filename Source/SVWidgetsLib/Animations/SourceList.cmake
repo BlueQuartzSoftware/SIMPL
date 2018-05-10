@@ -26,9 +26,9 @@ cmp_IDE_SOURCE_PROPERTIES( "SVWidgetsLib/Animations" "${SVWidgetsLib_Animations_
 
 # --------------------------------------------------------------------
 # and finally this will run moc:
-QT5_WRAP_CPP( SVWidgetsLib_Animations_Generated_MOC_SRCS ${SVWidgetsLib_Animations_MOC_HDRS} )
-set_source_files_properties( ${SVWidgetsLib_Widgets_Generated_MOC_SRCS} PROPERTIES GENERATED TRUE)
-#set_source_files_properties( ${SVWidgetsLib_Widgets_Generated_MOC_SRCS} PROPERTIES HEADER_FILE_ONLY TRUE)
+# QT5_WRAP_CPP( SVWidgetsLib_Animations_Generated_MOC_SRCS ${SVWidgetsLib_Animations_MOC_HDRS} )
+# set_source_files_properties( ${SVWidgetsLib_Animations_Generated_MOC_SRCS} PROPERTIES GENERATED TRUE)
+set_source_files_properties( ${SVWidgetsLib_Animations_Generated_MOC_SRCS} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 # --------------------------------------------------------------------
 #-- Put the Qt generated files into their own group for IDEs
