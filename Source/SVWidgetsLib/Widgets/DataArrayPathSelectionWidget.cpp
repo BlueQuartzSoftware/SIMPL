@@ -146,6 +146,10 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
   {
     return false;
   }
+  if(nullptr == filter->getDataContainerArray())
+  {
+    return false;
+  }
 
   // Check that the DataContainer exists
   DataContainer::Pointer dc = filter->getDataContainerArray()->getDataContainer(path);
@@ -185,6 +189,10 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
     return false;
   }
   if(nullptr == filter)
+  {
+    return false;
+  }
+  if(nullptr == filter->getDataContainerArray())
   {
     return false;
   }
@@ -1168,6 +1176,12 @@ bool DataArrayPathSelectionWidget::isCreatedPath(DataArrayPath path)
 // -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::showContextMenu(const QPoint& pos)
 {
+  // Do not create the menu if the widget is disabled
+  if(false == isEnabled())
+  {
+    return;
+  }
+
   if(nullptr == m_SelectionMenu)
   {
     m_SelectionMenu = createSelectionMenu();

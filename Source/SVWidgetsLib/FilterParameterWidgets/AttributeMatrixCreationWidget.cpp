@@ -294,7 +294,7 @@ void AttributeMatrixCreationWidget::endViewPathRequirements()
 // -----------------------------------------------------------------------------
 void AttributeMatrixCreationWidget::checkFilterPath(DataArrayPath path)
 {
-  setEnabled(m_SelectedDataContainerPath->checkPathReqs(path));
+  m_SelectedDataContainerPath->setEnabled(m_SelectedDataContainerPath->checkPathReqs(path));
 }
 
 // -----------------------------------------------------------------------------
@@ -302,5 +302,5 @@ void AttributeMatrixCreationWidget::checkFilterPath(DataArrayPath path)
 // -----------------------------------------------------------------------------
 void AttributeMatrixCreationWidget::clearPathFiltering()
 {
-  setEnabled(true);
+  m_SelectedDataContainerPath->setEnabled(true);
 }
