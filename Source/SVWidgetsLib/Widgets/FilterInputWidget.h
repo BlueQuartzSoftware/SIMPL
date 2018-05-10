@@ -62,7 +62,7 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget
     Q_OBJECT
 
   public:
-    FilterInputWidget(const QString &filterClassName, PipelineFilterObject *filterObj, QWidget* parent = nullptr);
+    FilterInputWidget(AbstractFilter::Pointer filter, QWidget* parent);
     virtual ~FilterInputWidget();
 
     virtual void setupGui();
@@ -80,8 +80,7 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget
     void on_filterHelpBtn_clicked();
 
     void clearInputWidgets();
-    void displayFilterParameters(PipelineFilterObject* w);
-    void removeWidgetInputs(SVPipelineFilterWidget* w);
+    void displayFilterParameters(AbstractFilter::Pointer filter);
 
   signals:
     void filterParametersChanged();

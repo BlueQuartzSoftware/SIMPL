@@ -59,14 +59,6 @@
 #include "SVWidgetsLib/Widgets/BookmarksModel.h"
 #include "SVWidgetsLib/Widgets/FilterListToolboxWidget.h"
 
-
-
-#define PREBUILT_PIPELINES_DIR "PrebuiltPipelines"
-enum ErrorCodes
-{
-  UNRECOGNIZED_EXT = -1
-};
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -106,8 +98,11 @@ void BookmarksToolboxWidget::setupGui()
               }");
   bookmarksTreeView->setStyleSheet(css);
 
-  connect(bookmarksTreeView, SIGNAL(itemWasDropped(QModelIndex, QString&, QIcon, QString, int, bool, bool, bool)), this,
-          SLOT(addTreeItem(QModelIndex, QString&, QIcon, QString, int, bool, bool, bool)));
+  connect(bookmarksTreeView, &BookmarksTreeView::updateStatusBar, this, &BookmarksToolboxWidget::updateStatusBar);
+
+  connect(bookmarksTreeView, &BookmarksTreeView::newSIMPLViewInstanceTriggered, this, &BookmarksToolboxWidget::bookmarkActivated);
+
+  connect(bookmarksTreeView, &BookmarksTreeView::fireWriteSettings, this, &BookmarksToolboxWidget::fireWriteSettings);
 
   //bookmarksTreeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
@@ -185,162 +180,6 @@ QStringList BookmarksToolboxWidget::generateFilterListFromPipelineFile(QString p
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void BookmarksToolboxWidget::addBookmark(const QString& filePath, const QModelIndex& parent)
-{
-  BookmarksModel* model = BookmarksModel::Instance();
-  QFileInfo fi(filePath);
-  QString fileTitle = fi.baseName();
-  int err = addTreeItem(parent, fileTitle, QIcon(":/bookmark.png"), filePath, model->rowCount(parent), true, false, false);
-  if(err >= 0)
-  {
-    emit updateStatusBar("The pipeline '" + fileTitle + "' has been added successfully.");
-    getBookmarksTreeView()->expand(parent);
-  }
-  else if(err == UNRECOGNIZED_EXT)
-  {
-    emit updateStatusBar("The pipeline '" + fileTitle + "' could not be added, because the pipeline file extension was not recognized.");
-  }
-  else
-  {
-    emit updateStatusBar("The pipeline '" + fileTitle + "' could not be added.  An unknown error has occurred.  Please contact the SIMPLView developers.");
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void BookmarksToolboxWidget::readPrebuiltPipelines()
-{
-  QDir pipelinesDir = findPipelinesDirectory();
-  QString pPath = pipelinesDir.absolutePath();
-  BookmarksModel* model = BookmarksModel::Instance();
-
-  FilterLibraryTreeWidget::ItemType itemType = FilterLibraryTreeWidget::Leaf_Item_Type;
-  QString iconFileName(":/bookmark.png");
-  bool allowEditing = false;
-  QStringList fileExtension;
-  fileExtension.append("*.json");
-
-  // Add top-level folder and then load up all the pipelines into the folder
-  QString dirName = "Prebuilt Pipelines";
-  addTreeItem(QModelIndex(), dirName, QIcon(":/folder_blue.png"), pPath, 0, true, false, false);
-  QModelIndex index = model->index(0, BookmarksItem::Name, QModelIndex());
-  addPipelinesRecursively(pipelinesDir, index, iconFileName, allowEditing, fileExtension, itemType);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void BookmarksToolboxWidget::addPipelinesRecursively(QDir currentDir, QModelIndex parent, QString iconFileName, bool allowEditing, QStringList filters, FilterLibraryTreeWidget::ItemType itemType)
-{
-  BookmarksModel* model = BookmarksModel::Instance();
-
-  QModelIndex nextIndex;
-
-  // Get a list of all the directories
-  QFileInfoList dirList = currentDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
-  if(dirList.size() > 0)
-  {
-    foreach(QFileInfo fi, dirList)
-    {
-      // At this point we have the first level of directories and we want to do 2 things:
-      // 1.Create an entry in the tree widget with this name
-      // 2.drop into the directory and look for all the .json files and add entries for those items.
-      // qDebug() << fi.absoluteFilePath() << "\n";
-      // Add a tree widget item for this  Group
-      // qDebug() << fi.absoluteFilePath();
-      int row = model->rowCount(parent);
-      QString baseName = fi.baseName();
-      addTreeItem(parent, baseName, QIcon(":/folder_blue.png"), fi.absoluteFilePath(), row, true, false, false);
-      nextIndex = model->index(row, BookmarksItem::Name, parent);
-      addPipelinesRecursively(QDir(fi.absoluteFilePath()), nextIndex, iconFileName, allowEditing, filters, itemType); // Recursive call
-    }
-  }
-
-  QFileInfoList itemList = currentDir.entryInfoList(filters);
-  foreach(QFileInfo itemInfo, itemList)
-  {
-    QString itemFilePath = itemInfo.absoluteFilePath();
-    QString itemName;
-    if(itemInfo.suffix().compare("json") == 0)
-    {
-      QString dVers;
-      JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
-      jsonReader->readNameOfPipelineFromFile(itemFilePath, itemName, dVers, nullptr);
-    }
-#if 0
-    else if(itemInfo.suffix().compare("ini") == 0 || itemInfo.suffix().compare("txt") == 0)
-    {
-      QSettings itemPref(itemFilePath, QSettings::IniFormat);
-      itemPref.beginGroup(SIMPL::Settings::PipelineBuilderGroup);
-      itemName = itemPref.value(SIMPL::Settings::PipelineName).toString();
-      itemPref.endGroup();
-    }
-#endif
-    // Add tree widget for this Prebuilt Pipeline
-    int row = model->rowCount(parent);
-    addTreeItem(parent, itemName, QIcon(iconFileName), itemInfo.absoluteFilePath(), row, true, false, false);
-    nextIndex = model->index(row, BookmarksItem::Name, parent);
-
-//    QString htmlFormattedString = generateHtmlFilterListFromPipelineFile(itemInfo.absoluteFilePath());
-//    model->setData(nextIndex, htmlFormattedString, Qt::ToolTipRole);
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QDir BookmarksToolboxWidget::findPipelinesDirectory()
-{
-  QString dirName(PREBUILT_PIPELINES_DIR);
-
-  QString appPath = QCoreApplication::applicationDirPath();
-  QDir pipelinesDir = QDir(appPath);
-#if defined(Q_OS_WIN)
-  QFileInfo fi(pipelinesDir.absolutePath() + QDir::separator() + dirName);
-  if(fi.exists() == false)
-  {
-    // The PrebuiltPipelines file does not exist at the default location because we are probably running from visual studio.
-    // Try up one more directory
-    pipelinesDir.cdUp();
-  }
-#elif defined(Q_OS_MAC)
-  if(pipelinesDir.dirName() == "MacOS")
-  {
-    pipelinesDir.cdUp();
-    // Can we change directory into the "PrebuiltPipeliines" directory at this level.
-    QString pbpDir = QString("Resources/%1").arg(PREBUILT_PIPELINES_DIR);
-    if (pipelinesDir.cd(pbpDir))
-    {
-      return pipelinesDir;
-    }
-    pipelinesDir.cdUp();
-    pipelinesDir.cdUp();
-    if (pipelinesDir.cd(PREBUILT_PIPELINES_DIR) )
-    {
-      return pipelinesDir;
-    }
-  }
-#else
-  // We are on Linux - I think
-  QFileInfo fi(pipelinesDir.absolutePath() + QDir::separator() + dirName);
-  // qDebug() << fi.absolutePath();
-  // Look for the PREBUILT_PIPELINES_DIR directory in the current app directory
-  if(fi.exists() == false)
-  {
-    // Try up one more directory
-    pipelinesDir.cdUp();
-  }
-
-#endif
-
-  pipelinesDir = pipelinesDir.absolutePath() + QDir::separator() + dirName;
-  return pipelinesDir;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void BookmarksToolboxWidget::on_bookmarksTreeView_clicked(const QModelIndex& index)
 {
 }
@@ -352,45 +191,38 @@ void BookmarksToolboxWidget::on_bookmarksTreeView_doubleClicked(const QModelInde
 {
   BookmarksModel* model = BookmarksModel::Instance();
 
-  QModelIndex nameIndex = model->index(index.row(), BookmarksItem::Name, index.parent());
-  QModelIndex pathIndex = model->index(index.row(), BookmarksItem::Path, index.parent());
-
-  QString pipelinePath = pathIndex.data().toString();
-  if(pipelinePath.isEmpty())
+  QString path = model->data(index, static_cast<int>(BookmarksModel::Roles::PathRole)).toString();
+  if(path.isEmpty())
   {
     return; // The user double clicked a folder, so don't do anything
   }
 
-  QFileInfo finfo(pipelinePath);
-  if(finfo.isDir())
+  QFileInfo fi(path);
+  if(fi.isDir())
   {
     return;
   }
+  else if(fi.exists() == false)
+  {
+    bookmarksTreeView->blockSignals(true);
+    QtSBookmarkMissingDialog* dialog = new QtSBookmarkMissingDialog(this, Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint | Qt::WindowTitleHint);
+    connect(dialog, SIGNAL(locateBtnPressed()), bookmarksTreeView, SLOT(on_actionLocateFile_triggered()));
+    QString name = model->data(index, Qt::DisplayRole).toString();
+    dialog->setBookmarkName(name);
+    dialog->exec();
+    delete dialog;
+    bookmarksTreeView->blockSignals(false);
+  }
   else
   {
-    QString path = pathIndex.data().toString();
-    QFileInfo fi(path);
-    if(fi.exists() == false)
+    bool itemHasErrors = model->data(index, static_cast<int>(BookmarksModel::Roles::ErrorsRole)).toBool();
+    if(itemHasErrors == true)
     {
-      bookmarksTreeView->blockSignals(true);
-      QtSBookmarkMissingDialog* dialog = new QtSBookmarkMissingDialog(this, Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint | Qt::WindowTitleHint);
-      connect(dialog, SIGNAL(locateBtnPressed()), bookmarksTreeView, SLOT(on_actionLocateFile_triggered()));
-      dialog->setBookmarkName(nameIndex.data().toString());
-      dialog->exec();
-      delete dialog;
-      bookmarksTreeView->blockSignals(false);
+      // Set the itemHasError variable, and have the watcher monitor the file again
+      model->setData(index, false, static_cast<int>(BookmarksModel::Roles::ErrorsRole));
+      model->getFileSystemWatcher()->addPath(path);
     }
-    else
-    {
-      bool itemHasErrors = model->data(pathIndex, Qt::UserRole).value<bool>();
-      if(itemHasErrors == true)
-      {
-        // Set the itemHasError variable, and have the watcher monitor the file again
-        model->setData(nameIndex, false, Qt::UserRole);
-        model->getFileSystemWatcher()->addPath(path);
-      }
-      emit pipelineFileActivated(pipelinePath, true, true);
-    }
+    emit bookmarkActivated(path);
   }
 }
 
@@ -418,68 +250,10 @@ QString BookmarksToolboxWidget::writeNewFavoriteFilePath(QString newFavoriteTitl
   }
 
   bookmarksTreeView->blockSignals(true);
-  item->setData(0, Qt::UserRole, QVariant(newPath));
+  item->setData(BookmarksItem::Contents, static_cast<int>(BookmarksModel::Roles::ErrorsRole), newPath);
   bookmarksTreeView->blockSignals(false);
 
   return newPath;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int BookmarksToolboxWidget::addTreeItem(QModelIndex parent, QString& favoriteTitle, QIcon icon, QString favoritePath, int insertIndex, bool allowEditing, bool editState, bool isExpanded)
-{
-
-  favoritePath = QDir::toNativeSeparators(favoritePath);
-
-  QFileInfo fileInfo(favoritePath);
-  QString ext = fileInfo.completeSuffix();
-  if(fileInfo.isFile() && ext != "dream3d" && ext != "json" && ext != "ini" && ext != "txt")
-  {
-    return UNRECOGNIZED_EXT;
-  }
-
-  BookmarksModel* model = BookmarksModel::Instance();
-
-  bookmarksTreeView->blockSignals(true);
-  // Add a new Item to the Tree
-  model->insertRow(insertIndex, parent);
-  QModelIndex nameIndex = model->index(insertIndex, BookmarksItem::Name, parent);
-  model->setData(nameIndex, favoriteTitle, Qt::DisplayRole);
-  QModelIndex pathIndex = model->index(insertIndex, BookmarksItem::Path, parent);
-  model->setData(pathIndex, favoritePath, Qt::DisplayRole);
-  model->setData(nameIndex, icon, Qt::DecorationRole);
-
-  bookmarksTreeView->sortByColumn(BookmarksItem::Name, Qt::AscendingOrder);
-  bookmarksTreeView->blockSignals(false);
-
-  if(favoritePath.isEmpty())
-  {
-    // This is a node
-    bookmarksTreeView->blockSignals(true);
-    if(isExpanded)
-    {
-      bookmarksTreeView->expand(nameIndex);
-      bookmarksTreeView->setExpanded(nameIndex, true);
-      bookmarksTreeView->setExpanded(pathIndex, true);
-    }
-    else
-    {
-      bookmarksTreeView->setExpanded(nameIndex, false);
-      bookmarksTreeView->setExpanded(pathIndex, false);
-    }
-    bookmarksTreeView->blockSignals(false);
-    if(editState == true)
-    {
-      bookmarksTreeView->edit(nameIndex);
-    }
-  }
-  else
-  {
-    model->getFileSystemWatcher()->addPath(favoritePath);
-  }
-  // bookmarksTreeView->resizeColumnToContents(1);
-  return 0;
 }
 
 // -----------------------------------------------------------------------------
@@ -526,31 +300,8 @@ void BookmarksToolboxWidget::readSettings(QtSSettings* prefs)
   bookmarksTreeView->header()->restoreState(headerState);
 
   BookmarksModel* model = BookmarksModel::Instance();
-  if(model->isEmpty())
-  {
-    // Check the new bookmarks settings file first
-    QSharedPointer<QtSSettings> bookmarksPrefs = QSharedPointer<QtSSettings>(new QtSSettings(getBookmarksPrefsPath()));
-
-    if(bookmarksPrefs->contains("Bookmarks"))
-    {
-      bookmarksPrefs->beginGroup("Bookmarks");
-      model = BookmarksModel::NewInstance(bookmarksPrefs.data());
-      bookmarksPrefs->endGroup();
-    }
-    else
-    {
-      // If no bookmarks were found in the new location, check the old location
-      prefs->beginGroup("DockWidgetSettings");
-      prefs->beginGroup("Bookmarks Dock Widget");
-      model = BookmarksModel::NewInstance(prefs);
-      prefs->endGroup();
-      prefs->endGroup();
-    }
-  }
 
   bookmarksTreeView->setModel(model);
-
-  readPrebuiltPipelines();
 }
 
 // -----------------------------------------------------------------------------
@@ -570,15 +321,6 @@ void BookmarksToolboxWidget::writeSettings(QtSSettings* prefs)
   prefs->setValue(objectName(), isHidden());
 
   prefs->setValue("Horizontal Header State", bookmarksTreeView->header()->saveState());
-
-  QSharedPointer<QtSSettings> bookmarksPrefs = QSharedPointer<QtSSettings>(new QtSSettings(getBookmarksPrefsPath()));
-
-  bookmarksPrefs->beginGroup("Bookmarks");
-
-  QJsonObject modelObj = bookmarksTreeView->toJsonObject();
-  bookmarksPrefs->setValue("Bookmarks Model", modelObj);
-
-  bookmarksPrefs->endGroup();
 }
 
 // -----------------------------------------------------------------------------
@@ -604,43 +346,4 @@ QList<QString> BookmarksToolboxWidget::deserializeTreePath(QString treePath)
   }
 
   return list;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString BookmarksToolboxWidget::getBookmarksPrefsPath()
-{
-  QtSSettings prefs;
-  QFileInfo fi(prefs.fileName());
-  QString parentPath = fi.absolutePath();
-
-  QString appName = QCoreApplication::applicationName();
-  if(appName.isEmpty())
-  {
-    appName = QString("Application");
-  }
-
-#if defined(Q_OS_MAC)
-
-  QString domain = QCoreApplication::organizationDomain();
-  if(domain.isEmpty())
-  {
-    domain = QString("Domain");
-  }
-  QStringList tokens = domain.split(".");
-  QStringListIterator iter(tokens);
-  iter.toBack();
-  domain = QString("");
-  while(iter.hasPrevious())
-  {
-    domain = domain + iter.previous() + QString(".");
-  }
-
-  QString bookmarksPrefsPath = parentPath + "/" + domain + appName + "_BookmarksModel.json";
-#else
-  QString bookmarksPrefsPath = QDir::toNativeSeparators(parentPath + "/" + appName + "_BookmarksModel.json");
-#endif
-
-  return bookmarksPrefsPath;
 }

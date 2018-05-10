@@ -33,19 +33,13 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include <QtCore/QVector>
-
 
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 
-
 #include "SVWidgetsLib/Widgets/DataStructureModel.h"
 #include "SVWidgetsLib/Widgets/DataStructureTreeView.h"
-#include "SVWidgetsLib/Widgets/SIMPLViewToolbox.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
-
-
 
 // -----------------------------------------------------------------------------
 //

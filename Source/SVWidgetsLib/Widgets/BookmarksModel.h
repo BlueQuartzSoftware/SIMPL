@@ -39,6 +39,7 @@
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QModelIndex>
 #include <QtCore/QVariant>
+#include <QtCore/QDir>
 #include <QtCore/QFileSystemWatcher>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -63,16 +64,33 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
   public:
     SIMPL_TYPE_MACRO(BookmarksModel)
 
+    enum ErrorCodes
+    {
+      UNRECOGNIZED_EXT = -1
+    };
+
+    enum class Roles : unsigned int
+    {
+      PathRole = Qt::UserRole + 1,
+      ExpandedRole,
+      ErrorsRole,
+      ItemTypeRole
+    };
+
     ~BookmarksModel();
 
+    /**
+     * @brief Instance
+     * @return
+     */
     static BookmarksModel* Instance();
 
-    static BookmarksModel* NewInstance(QtSSettings* prefs);
+    /**
+    * @brief toJsonObject
+    */
+    QJsonObject toJsonObject();
 
     QVariant data(const QModelIndex& index, int role) const Q_DECL_OVERRIDE;
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
-
-    virtual QModelIndex sibling(int row, int column, const QModelIndex& idx) const Q_DECL_OVERRIDE;
 
     bool isEmpty();
 
@@ -91,9 +109,6 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
 
     bool setData(const QModelIndex& index, const QVariant& value, int role) Q_DECL_OVERRIDE;
 
-    bool needsToBeExpanded(const QModelIndex& index);
-    void setNeedsToBeExpanded(const QModelIndex& index, bool value);
-
     BookmarksItem* getRootItem();
 
     void addFileToTree(QString& path, QModelIndex& specifiedParent);
@@ -105,24 +120,91 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
     void setFileSystemWatcher(QFileSystemWatcher* watcher);
     QFileSystemWatcher* getFileSystemWatcher();
 
+    /**
+     * @brief readPrebuiltPipelines
+     */
+    void readPrebuiltPipelines();
+
+    /**
+     * @brief readBookmarksFromPrefsFile
+     */
+    void readBookmarksFromPrefsFile();
+
+    /**
+     * @brief writeBookmarksToPrefsFile
+     */
+    void writeBookmarksToPrefsFile();
+
+  public slots:
+    /**
+     * @brief addTreeItem
+     * @param parent
+     * @param favoriteTitle
+     * @param icon
+     * @param favoritePath
+     * @param insertIndex
+     * @param type
+     * @param isExpanded
+     * @return
+     */
+    QModelIndex addTreeItem(QModelIndex parent,
+                    QString& favoriteTitle,
+                    QIcon icon,
+                    QString favoritePath,
+                    int insertIndex, BookmarksItem::ItemType type,
+                    bool isExpanded);
+
   protected:
-    BookmarksModel(QObject* parent = 0);
+    BookmarksModel(QObject* parent = nullptr);
+
+    void initialize();
+
+    QDir findPipelinesDirectory();
+
+    void addPipelinesRecursively(QDir currentDir, QModelIndex parent, QJsonObject prebuiltsObj, QString iconFileName,
+                                 bool allowEditing, QStringList filters, FilterLibraryTreeWidget::ItemType itemType);
 
   protected slots:
     void updateRowState(const QString& path);
     void updateModel(const QModelIndex& topLeft, const QModelIndex& bottomRight);
 
   private:
+    static BookmarksModel*    self;
+    bool m_LoadingModel = false;
+
     BookmarksItem*            rootItem;
     QFileSystemWatcher*       m_Watcher;
-
-    static BookmarksModel* self;
 
     BookmarksItem* getItem(const QModelIndex& index) const;
 
     QStringList getFilePaths(BookmarksItem* item);
 
     QModelIndexList findIndexByPath(const QModelIndex& index, QString filePath);
+
+    /**
+    * @brief fromJsonObject
+    * @param modelObject
+    */
+    void fromJsonObject(QJsonObject modelObject);
+
+    QJsonObject wrapModel(QModelIndex index);
+    void unwrapModel(QString objectName, QJsonObject object, QModelIndex parentIndex);
+
+    /**
+    * @brief getBookmarksPrefsPath
+    */
+    QString getBookmarksPrefsPath();
+
+    /**
+     * @brief getBookmarksPrefsObject
+     * @return
+     */
+    QJsonObject getBookmarksPrefsObject();
+
+    /**
+     * @brief loadModel
+     */
+    void loadModel();
 
     BookmarksModel(const BookmarksModel&);    // Copy Constructor Not Implemented
     void operator=(const BookmarksModel&);    // Move assignment Not Implemented

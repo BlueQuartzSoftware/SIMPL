@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+* Copyright (c) 2017 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -25,37 +25,30 @@
 * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _pipelineviewptrmimedata_h_
-#define _pipelineviewptrmimedata_h_
+#pragma once
 
 #include <QtCore/QMimeData>
 
-#include "SVWidgetsLib/Widgets/SVPipelineViewWidget.h"
-
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
-class SVWidgetsLib_EXPORT PipelineViewPtrMimeData : public QMimeData
+#include "SVWidgetsLib/SVWidgetsLib.h"
+
+class SVWidgetsLib_EXPORT PipelineFilterMimeData : public QMimeData
 {
     Q_OBJECT
 
   public:
-    PipelineViewPtrMimeData();
-    virtual ~PipelineViewPtrMimeData();
+    PipelineFilterMimeData();
+    virtual ~PipelineFilterMimeData();
 
-    SIMPL_INSTANCE_PROPERTY(PipelineView*, PipelineViewPtr)
+    typedef std::pair<AbstractFilter::Pointer, int> FilterDragMetadata;
+
+    SIMPL_INSTANCE_PROPERTY(std::vector<FilterDragMetadata>, FilterDragData)
 
   private:
-    PipelineViewPtrMimeData(const PipelineViewPtrMimeData&) = delete; // Copy Constructor Not Implemented
-    void operator=(const PipelineViewPtrMimeData&) = delete;          // Move assignment Not Implemented
+    PipelineFilterMimeData(const PipelineFilterMimeData&) = delete; // Copy Constructor Not Implemented
+    void operator=(const PipelineFilterMimeData&) = delete;  // Operator '=' Not Implemented
 };
-
-#endif /* _pipelineviewptrmimedata_h_ */
-

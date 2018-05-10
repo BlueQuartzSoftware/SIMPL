@@ -51,10 +51,7 @@
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h"
-#include "SVWidgetsLib/Widgets/SIMPLViewMenuItems.h"
-#include "SVWidgetsLib/Widgets/SIMPLViewToolbox.h"
-
-
+#include "SVWidgetsLib/Widgets/DataStructureItemDelegate.h"
 
 // -----------------------------------------------------------------------------
 //

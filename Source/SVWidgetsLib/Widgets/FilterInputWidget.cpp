@@ -65,7 +65,6 @@
 #include "SVWidgetsLib/Core/FilterWidgetManager.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/DataContainerArrayWidget.h"
-#include "SVWidgetsLib/Widgets/SVPipelineFilterWidget.h"
 
 #if 0
 #include "ctkCollapsibleGroupBox.h"
@@ -130,10 +129,10 @@ QFileInfo getFilterParameterPath(AbstractFilter* filter, FilterParameter* parame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterInputWidget::FilterInputWidget(const QString &filterClassName, PipelineFilterObject* filterObj, QWidget* parent)
+FilterInputWidget::FilterInputWidget(AbstractFilter::Pointer filter, QWidget* parent)
 : QWidget(parent)
 , m_Ui(new Ui::FilterInputWidget)
-, m_FilterClassName(filterClassName)
+, m_FilterClassName(filter->getNameOfClass())
 , m_AdvFadedOut(false)
 {
   m_Ui->setupUi(this);
@@ -144,7 +143,7 @@ FilterInputWidget::FilterInputWidget(const QString &filterClassName, PipelineFil
     m_OpenDialogLastFilePath = QDir::homePath();
   }
 
-  layoutWidgets(filterObj->getFilter().get());
+  layoutWidgets(filter.get());
 }
 
 // -----------------------------------------------------------------------------
@@ -617,16 +616,7 @@ void FilterInputWidget::clearInputWidgets()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterInputWidget::removeWidgetInputs(SVPipelineFilterWidget* w)
-{
-  m_VariablesWidget->setParent(w);
-  clearInputWidgets();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void FilterInputWidget::displayFilterParameters(PipelineFilterObject* w)
+void FilterInputWidget::displayFilterParameters(AbstractFilter::Pointer filter)
 {
   clearInputWidgets();
 
@@ -636,23 +626,21 @@ void FilterInputWidget::displayFilterParameters(PipelineFilterObject* w)
     m_VariablesWidget->setVisible(true);
   }
 
-  AbstractFilter::Pointer f = w->getFilter();
-  if(nullptr != f)
-  {
-    ISIMPLibPlugin* plug = f->getPluginInstance();
+
+    ISIMPLibPlugin* plug = filter->getPluginInstance();
     if(nullptr != plug)
     {
-      m_BrandingLabel = QString("Plugin: %1 (%2) Filter Name: %3").arg(plug->getPluginDisplayName()).arg(plug->getVersion()).arg(w->getFilterClassName());
+      m_BrandingLabel = QString("Plugin: %1 (%2) Filter Name: %3").arg(plug->getPluginDisplayName()).arg(plug->getVersion()).arg(filter->getNameOfClass());
     }
     else
     {
-      m_BrandingLabel = QString("Plugin: Unknown Plugin. Filter Name: %1").arg(w->getFilterClassName());
+      m_BrandingLabel = QString("Plugin: Unknown Plugin. Filter Name: %1").arg(filter->getNameOfClass());
     }
     m_Ui->brandingLabel->setText(m_BrandingLabel);
-  }
+
   // Add a label at the top of the Inputs Tabs to show what filter we are working on
-  m_Ui->filterHumanLabel->setText(w->getHumanLabel());
-  m_Ui->filterIndex->setText(QString::number(w->getFilter()->getPipelineIndex()));
+  m_Ui->filterHumanLabel->setText(filter->getHumanLabel());
+  m_Ui->filterIndex->setText(QString::number(filter->getPipelineIndex()));
   m_Ui->filterIndex->show();
   //m_Ui->filterIndex->clear();
   QString style;
@@ -660,17 +648,17 @@ void FilterInputWidget::displayFilterParameters(PipelineFilterObject* w)
 
   QString filterGroup;
   QTextStream groupStream(&filterGroup);
-  groupStream << "Group: " << w->getFilterGroup() << "\n";
-  groupStream << "Subgroup: " << w->getFilterSubGroup();
+  groupStream << "Group: " << filter->getGroupName() << "\n";
+  groupStream << "Subgroup: " << filter->getSubGroupName();
   m_Ui->filterHumanLabel->setToolTip(filterGroup);
 
-  QColor bgColor =  w->getGroupColor();
-  QColor borderColor = QColor::fromHsv(bgColor.hue(), 100, 120);
+//  QColor bgColor =  w->getGroupColor();
+//  QColor borderColor = QColor::fromHsv(bgColor.hue(), 100, 120);
 
   QTextStream styleStream(&style);
   styleStream << "QFrame#" << m_Ui->labelFrame->objectName() << "{";
   styleStream << "border-bottom: 0px solid;";
-  styleStream << "border-bottom-color: " << borderColor.name() << ";";
+//  styleStream << "border-bottom-color: " << borderColor.name() << ";";
  // styleStream << "background-color: " << bgColor.name() << ";";
  // styleStream << "border-radius: 0 0 0 0px;";
   styleStream << "}";

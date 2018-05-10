@@ -145,7 +145,7 @@ class SVWidgetsLib_EXPORT FilterListToolboxWidget : public QWidget, private Ui::
      * @param filterName
      */
     //void filterItemDoubleClicked(const QString& filterName, int index);
-    void filterItemDoubleClicked(const QString& filterName);
+    void filterItemDoubleClicked(const QString& filterName, int insertIndex = -1);
 
   protected:
 

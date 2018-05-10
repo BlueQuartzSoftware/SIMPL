@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+* Copyright (c) 2017 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -25,56 +25,80 @@
 * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _sVPipelineFilterOutlineWidget_h_
-#define _sVPipelineFilterOutlineWidget_h_
+#ifndef _pipelinelistwidget_h_
+#define _pipelinelistwidget_h_
 
 #include <QtWidgets/QFrame>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
-#include "ui_SVPipelineFilterOutlineWidget.h"
+#include "ui_PipelineListWidget.h"
 
-class AbstractFilter;
-
-/**
- * @brief The SVPipelineFilterOutlineWidget class
- */
-class SVWidgetsLib_EXPORT SVPipelineFilterOutlineWidget : public QFrame, public Ui::SVPipelineFilterOutlineWidget
+class SVWidgetsLib_EXPORT PipelineListWidget : public QFrame, private Ui::PipelineListWidget
 {
     Q_OBJECT
 
   public:
-    SVPipelineFilterOutlineWidget(AbstractFilter* filter, QWidget* parent = 0);
+    PipelineListWidget(QWidget* parent = 0);
+    virtual ~PipelineListWidget();
 
-    virtual ~SVPipelineFilterOutlineWidget();
+    /**
+     * @brief getPipelineView
+     * @return
+     */
+    SVPipelineView* getPipelineView();
 
+    /**
+     * @brief setProgressValue
+     * @param percent
+     */
+    void setProgressValue(float percent);
+
+  public slots:
+    /**
+     * @brief on_startPipelineBtn_clicked
+     */
+    void on_startPipelineBtn_clicked();
+
+    /**
+     * @brief preflightFinished
+     */
+    void preflightFinished(FilterPipeline::Pointer pipeline, int err);
+
+    /**
+     * @brief pipelineFinished
+     */
+    void pipelineFinished();
+
+  protected:
+
+    /**
+     * @brief setupGui
+     */
     void setupGui();
 
-    void setFilterTitle(QString name);
-
-    void setFilterIndex(int i, int numFilters);
-
-    void setFilter(AbstractFilter* filter);
-
-    bool isSelected();
-
-    bool hasRightClickTarget();
+  signals:
+    void pipelineCanceled(const QModelIndex &pipelineIndex);
 
   private:
-    void changeStyle();
 
-    AbstractFilter*   m_Filter = nullptr;
+    /**
+     * @brief getStartPipelineIdleStyle
+     * @return
+     */
+    QString getStartPipelineIdleStyle();
 
-    SVPipelineFilterOutlineWidget(const SVPipelineFilterOutlineWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const SVPipelineFilterOutlineWidget&) = delete;                // Move assignment Not Implemented
+    /**
+     * @brief getStartPipelineInProgressStyle
+     * @param percent
+     * @return
+     */
+    QString getStartPipelineInProgressStyle(float percent);
+
+    PipelineListWidget(const PipelineListWidget&) = delete; // Copy Constructor Not Implemented
+    void operator=(const PipelineListWidget&) = delete;  // Operator '=' Not Implemented
 };
 
-#endif /* _sVPipelineFilterOutlineWidget_H */
+#endif /* _pipelinelistwidget_h_ */
