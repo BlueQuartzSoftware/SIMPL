@@ -75,6 +75,14 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
     using RenameType = std::tuple<DataArrayPath, DataArrayPath>;
     using RenameContainer = std::list<RenameType>;
 
+    enum class DataType
+    {
+      DataContainer,
+      AttributeMatrix,
+      DataArray,
+      None
+    };
+
     DataArrayPath();
 
     /**
@@ -150,6 +158,12 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
      * @param newPath
      */
     static bool CheckRenamePath(DataContainerArrayShPtr oldDca, DataContainerArrayShPtr newDca, DataArrayPath oldPath, DataArrayPath newPath);
+
+    /**
+    * @brief Returns the DataType matching the current path
+    * @return
+    */
+    DataType getDataType();
 
     SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
     SIMPL_INSTANCE_STRING_PROPERTY(AttributeMatrixName)

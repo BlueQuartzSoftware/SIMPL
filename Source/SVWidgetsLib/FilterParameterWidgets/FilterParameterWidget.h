@@ -49,6 +49,9 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
@@ -103,6 +106,15 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
 
     virtual void changeStyleSheet(Style style);
 
+    virtual void endViewPathRequirements();
+
+  signals:
+    void filterPath(DataArrayPath path);
+    void viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs);
+    void viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType amReqs);
+    void viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType daReqs);
+    void endViewPaths();
+
   public slots:
 
     void setLinkedConditionalState(int state);
@@ -120,6 +132,17 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
      * @brief loadData
      */
     virtual void loadData();
+
+    /**
+    * @brief Handle custom actions if the FilterParameterWidget cannot handle the given path
+    * @param path
+    */
+    virtual void checkFilterPath(DataArrayPath path);
+
+    /**
+    * @brief Clear the effects of checkFilterPath
+    */
+    virtual void clearPathFiltering();
 
   protected:
 

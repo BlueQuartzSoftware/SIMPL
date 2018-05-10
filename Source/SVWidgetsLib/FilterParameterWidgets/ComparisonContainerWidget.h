@@ -172,7 +172,7 @@ protected slots:
 private:
   IComparisonWidget* m_comparisonWidget;
   ComparisonSetWidget* m_comparisonSetWidget;
-
+  QString m_BaseName;
   QPoint m_startDragPoint;
 };
 

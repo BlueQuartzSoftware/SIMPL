@@ -117,10 +117,9 @@ void MultiAttributeMatrixSelectionWidget::setupGui()
   // Generate the text for the QLabel
   label->setText(getFilterParameter()->getHumanLabel());
 
-  m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
-
-  m_MenuMapper = new QSignalMapper(this);
-  connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(dataContainerSelected(QString)));
+  DataContainerSelectionFilterParameter::RequirementType reqs;
+  m_SelectedDataContainerPath->setDataContainerRequirements(reqs);
+  m_SelectedDataContainerPath->setFilter(getFilter());
 
   // Lastly, hook up the filter's signals and slots to our own signals and slots
   // Catch when the filter is about to execute the preflight
@@ -136,9 +135,15 @@ void MultiAttributeMatrixSelectionWidget::setupGui()
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
     this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
+  connect(m_SelectedDataContainerPath, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
+  connect(m_SelectedDataContainerPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
+  connect(m_SelectedDataContainerPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
+  connect(m_SelectedDataContainerPath, SIGNAL(filterPath(DataArrayPath)), this, SIGNAL(filterPath(DataArrayPath)));
+
   QVector<DataArrayPath> selectedPaths = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QVector<DataArrayPath>>();
   DataArrayPath amPath = DataArrayPath::GetAttributeMatrixPath(selectedPaths);
-  m_SelectedDataContainerPath->setText(amPath.serialize(Detail::Delimiter));
+  m_SelectedDataContainerPath->setText(amPath.getDataContainerName());
+  m_SelectedDataContainerPath->setPropertyName(getFilterParameter()->getHumanLabel());
   for (int i=0; i<selectedPaths.size(); i++)
   {
     DataArrayPath selectedPath = selectedPaths[i];
@@ -170,71 +175,6 @@ QString MultiAttributeMatrixSelectionWidget::checkStringValues(QString curDcName
   }
 
   return filtDcName;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiAttributeMatrixSelectionWidget::createSelectionMenu()
-{
-  // Now get the DataContainerArray from the Filter instance
-  // We are going to use this to get all the current DataContainers
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get())
-  {
-    return;
-  }
-
-  // Get the menu and clear it out
-  QMenu* menu = m_SelectedDataContainerPath->menu();
-  if(!menu)
-  {
-    menu = new QMenu();
-    m_SelectedDataContainerPath->setMenu(menu);
-    menu->installEventFilter(this);
-  }
-  if(menu)
-  {
-    menu->clear();
-  }
-
-  // Get the DataContainerArray object
-  // Loop over the data containers until we find the proper data container
-  QList<DataContainer::Pointer> containers = dca->getDataContainers();
-  IGeometry::Types geomTypes = m_FilterParameter->getDefaultGeometryTypes();
-
-  QListIterator<DataContainer::Pointer> containerIter(containers);
-  while(containerIter.hasNext())
-  {
-    DataContainer::Pointer dc = containerIter.next();
-
-    IGeometry::Pointer geom = IGeometry::NullPointer();
-    IGeometry::Type geomType = IGeometry::Type::Unknown;
-    if(nullptr != dc.get())
-    {
-      geom = dc->getGeometry();
-    }
-    if(nullptr != geom.get())
-    {
-      geomType = geom->getGeometryType();
-    }
-
-    QAction* dcAction = new QAction(dc->getName(), menu);
-    dcAction->setDisabled(false);
-    
-    DataArrayPath dcPath(dc->getName(), "", "");
-    QString path = dcPath.serialize(Detail::Delimiter);
-    dcAction->setData(path);
-
-    connect(dcAction, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
-    m_MenuMapper->setMapping(dcAction, path);
-    menu->addAction(dcAction);
-
-    if(!geomTypes.isEmpty() && !geomTypes.contains(geomType) && !geomTypes.contains(IGeometry::Type::Any))
-    {
-      dcAction->setDisabled(true);
-    }
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -290,24 +230,9 @@ void MultiAttributeMatrixSelectionWidget::setSelectedPath(DataArrayPath dcPath)
     return;
   }
 
-  m_SelectedDataContainerPath->setText("");
-  m_SelectedDataContainerPath->setToolTip("");
+  m_SelectedDataContainerPath->setDataArrayPath(dcPath);
   attributeMatricesSelectWidget->clear();
   attributeMatricesOrderWidget->clear();
-
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get())
-  {
-    return;
-  }
-
-  if(dca->doesDataContainerExist(dcPath.getDataContainerName()))
-  {
-    DataContainer::Pointer dataCon = dca->getDataContainer(dcPath);
-    QString html = dataCon->getInfoString(SIMPL::HtmlFormat);
-    m_SelectedDataContainerPath->setToolTip(html);
-    m_SelectedDataContainerPath->setText(dcPath.serialize(Detail::Delimiter));
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -546,23 +471,16 @@ void MultiAttributeMatrixSelectionWidget::beforePreflight()
   {
     return;
   }
-  if(m_DidCausePreflight == false)
-  {
-    createSelectionMenu();
-  }
 
   // Previously in afterPreflight()
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if(NULL == dca.get()) { return; }
 
-  if(dca->doesDataContainerExist(DataArrayPath::Deserialize(m_SelectedDataContainerPath->text(), Detail::Delimiter).getDataContainerName()))
+  if(dca->doesDataContainerExist(m_SelectedDataContainerPath->getDataArrayPath().getDataContainerName()))
   {
-    DataContainer::Pointer dc = dca->getDataContainer(DataArrayPath::Deserialize(m_SelectedDataContainerPath->text(), Detail::Delimiter));
-    if(nullptr != dc.get()) {
-      QString html = dc->getInfoString(SIMPL::HtmlFormat);
-      m_SelectedDataContainerPath->setToolTip(html);
-      m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
-
+    DataContainer::Pointer dc = dca->getDataContainer(m_SelectedDataContainerPath->getDataArrayPath());
+    if(nullptr != dc.get()) 
+    {
       QList<QString> matrixNames = dc->getAttributeMatrixNames();
 
       QList<QString> selectListNames;
@@ -597,10 +515,8 @@ void MultiAttributeMatrixSelectionWidget::beforePreflight()
       }
     }
   }
-  else
-  {
-    m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
-  }
+
+  m_SelectedDataContainerPath->beforePreflight();
 }
 
 // -----------------------------------------------------------------------------
@@ -608,7 +524,7 @@ void MultiAttributeMatrixSelectionWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void MultiAttributeMatrixSelectionWidget::afterPreflight()
 {
-  
+  m_SelectedDataContainerPath->afterPreflight();
 }
 
 // -----------------------------------------------------------------------------
@@ -697,4 +613,28 @@ void MultiAttributeMatrixSelectionWidget::updateDataArrayPath(QString propertyNa
 
     blockSignals(false);
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MultiAttributeMatrixSelectionWidget::endViewPathRequirements()
+{
+  m_SelectedDataContainerPath->setPathFiltering(false);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MultiAttributeMatrixSelectionWidget::checkFilterPath(DataArrayPath path)
+{
+  setEnabled(m_SelectedDataContainerPath->checkPathReqs(path));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MultiAttributeMatrixSelectionWidget::clearPathFiltering()
+{
+  setEnabled(true);
 }

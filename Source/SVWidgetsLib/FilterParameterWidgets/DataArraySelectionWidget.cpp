@@ -112,13 +112,12 @@ void DataArraySelectionWidget::setupGui()
     return;
   }
 
+  m_SelectedDataArrayPath->setDataArrayRequirements(m_FilterParameter->getRequirements());
   m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
+  m_SelectedDataArrayPath->setFilter(getFilter());
 
   // Generate the text for the QLabel
   label->setText(getFilterParameter()->getHumanLabel());
-
-  m_MenuMapper = new QSignalMapper(this);
-  connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(dataArraySelected(QString)));
 
   // Lastly, hook up the filter's signals and slots to our own signals and slots
   // Catch when the filter is about to execute the preflight
@@ -134,144 +133,17 @@ void DataArraySelectionWidget::setupGui()
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
     this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
+  connect(m_SelectedDataArrayPath, SIGNAL(viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType)));
+  connect(m_SelectedDataArrayPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
+  connect(m_SelectedDataArrayPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
+  connect(m_SelectedDataArrayPath, SIGNAL(filterPath(DataArrayPath)), this, SIGNAL(filterPath(DataArrayPath)));
+
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedDataArrayPath->setText(defaultPath.serialize(Detail::Delimiter));
+  m_SelectedDataArrayPath->setPropertyName(getFilterParameter()->getHumanLabel());
 
   changeStyleSheet(Style::FS_STANDARD_STYLE);
 
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataArraySelectionWidget::createSelectionMenu()
-{
-
-  // Now get the DataContainerArray from the Filter instance
-  // We are going to use this to get all the current DataContainers
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get())
-  {
-    return;
-  }
-
-  // Get the menu and clear it out
-  QMenu* menu = m_SelectedDataArrayPath->menu();
-  if(!menu)
-  {
-    menu = new QMenu();
-    m_SelectedDataArrayPath->setMenu(menu);
-    menu->installEventFilter(this);
-  }
-  if(menu)
-  {
-    menu->clear();
-  }
-
-  // Get the DataContainerArray object
-  // Loop over the data containers until we find the proper data container
-  QList<DataContainer::Pointer> containers = dca->getDataContainers();
-  QVector<QString> daTypes = m_FilterParameter->getDefaultAttributeArrayTypes();
-  QVector<QVector<size_t>> cDims = m_FilterParameter->getDefaultComponentDimensions();
-  QVector<AttributeMatrix::Type> amTypes = m_FilterParameter->getDefaultAttributeMatrixTypes();
-  IGeometry::Types geomTypes = m_FilterParameter->getDefaultGeometryTypes();
-
-  QListIterator<DataContainer::Pointer> containerIter(containers);
-  while(containerIter.hasNext())
-  {
-    DataContainer::Pointer dc = containerIter.next();
-
-    IGeometry::Pointer geom = IGeometry::NullPointer();
-    IGeometry::Type geomType = IGeometry::Type::Unknown;
-    if(nullptr != dc.get())
-    {
-      geom = dc->getGeometry();
-    }
-    if(nullptr != geom.get())
-    {
-      geomType = geom->getGeometryType();
-    }
-
-    QMenu* dcMenu = new QMenu(dc->getName());
-    dcMenu->setDisabled(false);
-    menu->addMenu(dcMenu);
-    if(!geomTypes.isEmpty() && !geomTypes.contains(geomType) && !geomTypes.contains(IGeometry::Type::Any))
-    {
-      dcMenu->setDisabled(true);
-    }
-    if (dc->getAttributeMatrixNames().size() == 0)
-    {
-      dcMenu->setDisabled(true);
-    }
-
-    bool validAmFound = false;
-
-    // We found the proper Data Container, now populate the AttributeMatrix List
-    DataContainer::AttributeMatrixMap_t attrMats = dc->getAttributeMatrices();
-    QMapIterator<QString, AttributeMatrix::Pointer> attrMatsIter(attrMats);
-    while(attrMatsIter.hasNext())
-    {
-      attrMatsIter.next();
-      QString amName = attrMatsIter.key();
-      AttributeMatrix::Pointer am = attrMatsIter.value();
-
-      QMenu* amMenu = new QMenu(amName);
-      dcMenu->addMenu(amMenu);
-
-      if(nullptr != am.get() && amTypes.isEmpty() == false && amTypes.contains(am->getType()) == false)
-      {
-        amMenu->setDisabled(true);
-      }
-
-      bool validDaFound = false;
-
-      // We found the selected AttributeMatrix, so loop over this attribute matrix arrays and populate the menus
-      QList<QString> attrArrayNames = am->getAttributeArrayNames();
-      QListIterator<QString> dataArraysIter(attrArrayNames);
-      while(dataArraysIter.hasNext())
-      {
-        QString attrArrayName = dataArraysIter.next();
-        IDataArray::Pointer da = am->getAttributeArray(attrArrayName);
-        QAction* action = new QAction(attrArrayName, amMenu);
-        DataArrayPath daPath(dc->getName(), amName, attrArrayName);
-        QString path = daPath.serialize(Detail::Delimiter);
-        action->setData(path);
-
-        connect(action, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
-        m_MenuMapper->setMapping(action, path);
-        amMenu->addAction(action);
-
-        bool daIsNotNull = (nullptr != da.get()) ? true : false;
-        bool daValidType = (daTypes.isEmpty() == false && daTypes.contains(da->getTypeAsString()) == false) ? true : false;
-        bool daValidDims = (cDims.isEmpty() == false && cDims.contains(da->getComponentDimensions()) == false) ? true : false;
-
-        if(daIsNotNull && (daValidType || daValidDims))
-        {
-          action->setDisabled(true);
-        }
-        else
-        {
-          validDaFound = true;
-        }
-      }
-
-      // Disable AttributeMatrix menu if no valid DataArray found
-      if(validDaFound)
-      {
-        validAmFound = true;
-      }
-      if(!validAmFound)
-      {
-        amMenu->setDisabled(true);
-      }
-    }
-
-    // Disable DataContainer menu if no valid AttributeMatrixes found
-    if(!validAmFound)
-    {
-      dcMenu->setDisabled(true);
-    }
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -330,42 +202,7 @@ void DataArraySelectionWidget::setSelectedPath(QString path)
 // -----------------------------------------------------------------------------
 void DataArraySelectionWidget::setSelectedPath(DataArrayPath daPath)
 {
-  if(daPath.isEmpty())
-  {
-    m_SelectedDataArrayPath->setToolTip(wrapStringInHtml("DataArrayPath is empty."));
-    m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
-    changeStyleSheet(Style::FS_DOESNOTEXIST_STYLE);
-    return;
-  }
-
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get())
-  {
-    m_SelectedDataArrayPath->setText(daPath.serialize(Detail::Delimiter));
-    m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
-    m_SelectedDataArrayPath->setToolTip(wrapStringInHtml("DataContainerArray is not available to verify path."));
-    changeStyleSheet(Style::FS_DOESNOTEXIST_STYLE);
-    return;
-  }
-
-  if(dca->doesAttributeArrayExist(daPath))
-  {
-    AttributeMatrix::Pointer attMat = dca->getAttributeMatrix(daPath);
-    IDataArray::Pointer attrArray = attMat->getAttributeArray(daPath.getDataArrayName());
-    QString html = attrArray->getInfoString(SIMPL::HtmlFormat);
-    m_SelectedDataArrayPath->setToolTip(html);
-    m_SelectedDataArrayPath->setText(daPath.serialize(Detail::Delimiter));
-    m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
-    changeStyleSheet(Style::FS_STANDARD_STYLE);
-  }
-  else
-  {
-    m_SelectedDataArrayPath->setText(daPath.serialize(Detail::Delimiter));
-    //
-    m_SelectedDataArrayPath->setToolTip(wrapStringInHtml("DataArrayPath does not exist."));
-    m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
-    changeStyleSheet(Style::FS_DOESNOTEXIST_STYLE);
-  }
+  m_SelectedDataArrayPath->setDataArrayPath(daPath);
 }
 
 // -----------------------------------------------------------------------------
@@ -405,7 +242,7 @@ void DataArraySelectionWidget::beforePreflight()
     return;
   }
 
-  createSelectionMenu();
+  m_SelectedDataArrayPath->beforePreflight();
 }
 
 // -----------------------------------------------------------------------------
@@ -413,8 +250,7 @@ void DataArraySelectionWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void DataArraySelectionWidget::afterPreflight()
 {
-  DataArrayPath daPath = DataArrayPath::Deserialize(m_SelectedDataArrayPath->text(), Detail::Delimiter);
-  setSelectedPath(daPath);
+  m_SelectedDataArrayPath->afterPreflight();
 }
 
 // -----------------------------------------------------------------------------
@@ -423,7 +259,7 @@ void DataArraySelectionWidget::afterPreflight()
 void DataArraySelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   // Generate the path to the AttributeArray
-  DataArrayPath selectedPath = DataArrayPath::Deserialize(m_SelectedDataArrayPath->text(), Detail::Delimiter);
+  DataArrayPath selectedPath = m_SelectedDataArrayPath->getDataArrayPath();
   QString dc = selectedPath.getDataContainerName();
   QString am = selectedPath.getAttributeMatrixName();
   QString da = selectedPath.getDataArrayName();
@@ -443,35 +279,24 @@ void DataArraySelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArraySelectionWidget::dragEnterEvent(QDragEnterEvent* event)
+void DataArraySelectionWidget::endViewPathRequirements()
 {
-  qDebug() << "DataArraySelectionWidget::dragEnterEvent";
-  changeStyleSheet(Style::FS_DRAGGING_STYLE);
-  event->acceptProposedAction();
-
+  m_SelectedDataArrayPath->setPathFiltering(false);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArraySelectionWidget::dragLeaveEvent(QDragLeaveEvent* event)
+void DataArraySelectionWidget::checkFilterPath(DataArrayPath path)
 {
-  qDebug() << "DataArraySelectionWidget::dragLeaveEvent";
-  changeStyleSheet(Style::FS_STANDARD_STYLE);
+  setEnabled(m_SelectedDataArrayPath->checkPathReqs(path));
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArraySelectionWidget::dropEvent(QDropEvent* event)
+void DataArraySelectionWidget::clearPathFiltering()
 {
-  qDebug() << "DataArraySelectionWidget::dropEvent";
-  if(event->mimeData()->hasText())
-  {
-    QByteArray dropData = event->mimeData()->data("text/plain");
-    QString name(dropData);
-    qDebug() << name;
-  }
-  changeStyleSheet(Style::FS_STANDARD_STYLE);
-
+  setEnabled(true);
+  m_SelectedDataArrayPath->setPathFiltering(false);
 }
