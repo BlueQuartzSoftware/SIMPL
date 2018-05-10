@@ -121,6 +121,22 @@ QVariant PipelineModel::data(const QModelIndex& index, int role) const
   {
     return item->getBorderSize();
   }
+  else if (role == PipelineModel::Roles::HeightRole)
+  {
+    return item->getHeight();
+  }
+  else if (role == PipelineModel::Roles::WidthRole)
+  {
+    return item->getWidth();
+  }
+  else if (role == PipelineModel::Roles::XOffsetRole)
+  {
+    return item->getXOffset();
+  }
+  else if (role == PipelineModel::Roles::YOffsetRole)
+  {
+    return item->getYOffset();
+  }
   else if (role == PipelineModel::Roles::ExpandedRole)
   {
     return item->getExpanded();
@@ -128,6 +144,10 @@ QVariant PipelineModel::data(const QModelIndex& index, int role) const
   else if(role == Qt::DisplayRole)
   {
     return item->data(index.column());
+  }
+  else if(role == Qt::SizeHintRole)
+  {
+    return item->getSize();
   }
   else if (role == Qt::FontRole)
   {
@@ -560,6 +580,50 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
 
     item->setBorderSize(borderSize);
   }
+  else if (role == PipelineModel::Roles::HeightRole)
+  {
+    bool ok = false;
+    int height = value.toInt(&ok);
+    if (ok == false)
+    {
+      return false;
+    }
+
+    item->setHeight(height);
+  }
+  else if (role == PipelineModel::Roles::WidthRole)
+  {
+    bool ok = false;
+    int width = value.toInt(&ok);
+    if (ok == false)
+    {
+      return false;
+    }
+
+    item->setWidth(width);
+  }
+  else if (role == PipelineModel::Roles::XOffsetRole)
+  {
+    bool ok = false;
+    int offset = value.toInt(&ok);
+    if (ok == false)
+    {
+      return false;
+    }
+
+    item->setXOffset(offset);
+  }
+  else if (role == PipelineModel::Roles::YOffsetRole)
+  {
+    bool ok = false;
+    int offset = value.toInt(&ok);
+    if (ok == false)
+    {
+      return false;
+    }
+
+    item->setYOffset(offset);
+  }
   else if (role == PipelineModel::Roles::ExpandedRole)
   {
     int expanded = value.toBool();
@@ -576,6 +640,10 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
   else if (role == Qt::DisplayRole)
   {
     item->setData(index.column(), value);
+  }
+  else if (role == Qt::SizeHintRole)
+  {
+    item->setSize(value.toSize());
   }
   else
   {

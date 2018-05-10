@@ -77,7 +77,7 @@ private:
    * @brief removeFilter
    * @param row
    */
-  void removeFilter(int row);
+  void removeFilter(AbstractFilter::Pointer filter);
 
   /**
    * @brief connectFilterSignalsSlots

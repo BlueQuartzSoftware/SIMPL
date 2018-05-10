@@ -31,62 +31,35 @@
 
 #pragma once
 
-#include <QtCore/QModelIndex>
-#include <QtCore/QTimer>
+#include <QtCore/QPersistentModelIndex>
 #include <QtCore/QVariantAnimation>
-
-#include <QtWidgets/QStyledItemDelegate>
-
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
-class SVPipelineView;
-class QPushButton;
 class PipelineModel;
 
-class SVWidgetsLib_EXPORT PipelineItemDelegate : public QStyledItemDelegate
+class SVWidgetsLib_EXPORT PipelineItemSlideAnimation : public QVariantAnimation
 {
     Q_OBJECT
 
-  public:    
-    explicit PipelineItemDelegate(SVPipelineView* view);
-
-    virtual ~PipelineItemDelegate();
-
-    QPixmap createPixmap(const QModelIndex &index) const;
-
-  protected:
-    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
-    bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
-
-  private:
-    enum class HoverItem : unsigned int
+  public:
+    enum class AnimationDirection : unsigned int
     {
-      DeleteButton,
-      DisableButton,
-      Widget,
-      Unknown
+      Left,
+      Right
     };
 
-    SVPipelineView* m_View = nullptr;
-    int m_MousePressIndex = -1;
-    HoverItem m_CurrentlyHoveredItem = HoverItem::Unknown;
+    PipelineItemSlideAnimation(PipelineModel* model, QPersistentModelIndex index, int numberOfPixels, AnimationDirection direction, QObject* parent = nullptr);
 
-    /**
-     * @brief Gets the proper filter index string that refers to the specified index
-     * @param index
-     * @return
-     */
-    QString getFilterIndexString(const QModelIndex &index) const;
+  private slots:
+    void listenValueChanged(const QVariant & value);
 
-    /**
-     * @brief Convenience method to get the PipelineModel instance
-     * @param index
-     * @return
-     */
-    const PipelineModel* getPipelineModel(const QModelIndex &index) const;
+  private:
+    QPersistentModelIndex m_Index;
+    PipelineModel* m_PipelineModel;
+    AnimationDirection m_Direction;
+    int m_NumberOfPixels;
 
-    PipelineItemDelegate(const PipelineItemDelegate&) = delete; // Copy Constructor Not Implemented
-    void operator=(const PipelineItemDelegate&) = delete;        // Operator '=' Not Implemented
+    PipelineItemSlideAnimation(const PipelineItemSlideAnimation&) = delete; // Copy Constructor Not Implemented
+    void operator=(const PipelineItemSlideAnimation&) = delete;        // Operator '=' Not Implemented
 };

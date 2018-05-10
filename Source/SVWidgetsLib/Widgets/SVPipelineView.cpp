@@ -78,6 +78,8 @@
 
 #include "SVWidgetsLib/QtSupport/QtSDroppableScrollArea.h"
 
+#include "SVWidgetsLib/Animations/PipelineItemSlideAnimation.h"
+#include "SVWidgetsLib/Animations/PipelineItemHeightAnimation.h"
 #include "SVWidgetsLib/Core/FilterWidgetManager.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
@@ -1223,10 +1225,20 @@ void SVPipelineView::addDropIndicator(const QString &text, int insertIndex)
   PipelineModel* model = getPipelineModel();
 
   model->insertRow(insertIndex);
-
   QModelIndex dropIndicatorIndex = model->index(insertIndex, PipelineItem::Contents);
   model->setData(dropIndicatorIndex, static_cast<int>(PipelineItem::ItemType::DropIndicator), PipelineModel::ItemTypeRole);
   model->setDropIndicatorText(dropIndicatorIndex, text);
+
+  QRect rect = visualRect(dropIndicatorIndex);
+  model->setData(dropIndicatorIndex, rect.height(), PipelineModel::Roles::HeightRole);
+
+//  PipelineItemHeightAnimation* heightAnimation = new PipelineItemHeightAnimation(model, QPersistentModelIndex(dropIndicatorIndex), PipelineItemHeightAnimation::AnimationDirection::Open);
+
+//  QObject::connect(heightAnimation, &PipelineItemHeightAnimation::finished, [=]{
+//    model->setData(dropIndicatorIndex, rect.height(), PipelineModel::Roles::HeightRole);
+//  });
+
+//  heightAnimation->start(QAbstractAnimation::DeleteWhenStopped);
 
   m_DropIndicatorIndex = dropIndicatorIndex;
 }

@@ -60,6 +60,13 @@ class SVWidgetsLib_EXPORT PipelineItem
     SIMPL_INSTANCE_PROPERTY(QString, ItemTooltip)
     SIMPL_INSTANCE_PROPERTY(QString, DropIndicatorText)
     SIMPL_INSTANCE_PROPERTY(int, BorderSize)
+    SIMPL_INSTANCE_PROPERTY(QSize, Size)
+    SIMPL_INSTANCE_PROPERTY(int, Height)
+    SIMPL_INSTANCE_PROPERTY(int, Width)
+    SIMPL_INSTANCE_PROPERTY(int, XOffset)
+    SIMPL_INSTANCE_PROPERTY(int, YOffset)
+
+    static const int MaxHeight = 28;
 
     enum PipelineItemData
     {

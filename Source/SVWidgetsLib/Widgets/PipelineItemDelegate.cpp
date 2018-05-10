@@ -54,7 +54,6 @@ namespace {
   const QColor k_DropIndicatorLabelColor = QColor(242, 242, 242);
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -69,14 +68,6 @@ PipelineItemDelegate::PipelineItemDelegate(SVPipelineView* view)
 //
 // -----------------------------------------------------------------------------
 PipelineItemDelegate::~PipelineItemDelegate() = default;
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QSize PipelineItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
-  return {0, 28};
-}
 
 // -----------------------------------------------------------------------------
 //
@@ -213,21 +204,38 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
 
   const int textMargin = 6;
   const int indexBoxWidth = 35;
+  int xOffset = model->data(index, PipelineModel::Roles::XOffsetRole).toInt();
+  int yOffset = model->data(index, PipelineModel::Roles::YOffsetRole).toInt();
 
   // Draw the Index area
   QRect rect = option.rect;
   QRect indexRect = option.rect;
+  indexRect.setX(indexRect.x() + xOffset);
+  indexRect.setY(indexRect.y() + yOffset);
+  indexRect.setHeight(model->data(index, PipelineModel::Roles::HeightRole).toInt());
   indexRect.setWidth(2 * textMargin + indexFontWidth);
+
+  // If the width hint is less than the index area, draw only part of the index area
+//  int itemWidth = model->data(index, Qt::SizeHintRole).toSize().width();
+//  qDebug() << "ItemWidth: " << itemWidth;
+//  if (itemWidth < indexRect.width())
+//  {
+//    indexRect.setWidth(itemWidth);
+//  }
+//  qDebug() << "IndexRect: " << indexRect;
   painter->fillRect(indexRect, indexBackgroundColor);
 
   // Draw the Title area
-  QRect coloredRect(2 * textMargin + indexFontWidth, rect.y(), rect.width() - (2 * textMargin + indexFontWidth), rect.height()); // +4? without it it does not paint to the edge
+  QRect coloredRect(2 * textMargin + indexFontWidth + xOffset, rect.y() + yOffset, rect.width() - (2 * textMargin + indexFontWidth), indexRect.height()); // +4? without it it does not paint to the edge
   painter->fillRect(coloredRect, widgetBackgroundColor);
 
   // Draw the Index number
   painter->setPen(QPen(indexFontColor));
   QString number = getFilterIndexString(index); // format the index number with a leading zero
-  painter->drawText(rect.x() + textMargin, rect.y() + fontMargin + fontHeight, number);
+  if (fontHeight <= indexRect.height())
+  {
+    painter->drawText(rect.x() + textMargin + xOffset, rect.y() + fontMargin + fontHeight + yOffset, number);
+  }
 
   // Compute the Width to draw the text based on the visibility of the various buttons
   int fullWidth = rect.width() - indexBoxWidth;
@@ -263,7 +271,7 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
       }
     }
 
-    painter->drawPixmap(deleteBtnRect.center().x() - (deleteBtnRect.width() / 2), deleteBtnRect.center().y() - (deleteBtnRect.height() / 2 + 1), deleteBtnPixmap);  // y is 1px offset due to how the images were cut
+    painter->drawPixmap(deleteBtnRect.center().x() - (deleteBtnRect.width() / 2) + xOffset, deleteBtnRect.center().y() - (deleteBtnRect.height() / 2 + 1) + yOffset, deleteBtnPixmap);  // y is 1px offset due to how the images were cut
 
     // Draw the "disable" button
     QRectF disableBtnRect;
@@ -302,7 +310,7 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
     allowableWidth -= deleteBtnRect.width();
     allowableWidth -= disableBtnRect.width();
 
-    painter->drawPixmap(disableBtnRect.center().x() - (disableBtnRect.width() / 2), disableBtnRect.center().y() - (disableBtnRect.height() / 2 + 1), disableBtnPixmap);  // y is 1px offset due to how the images were cut
+    painter->drawPixmap(disableBtnRect.center().x() - (disableBtnRect.width() / 2) + xOffset, disableBtnRect.center().y() - (disableBtnRect.height() / 2 + 1) + yOffset, disableBtnPixmap);  // y is 1px offset due to how the images were cut
   }
 
 //  QString elidedHumanLabel = fontMetrics.elidedText(m_FilterHumanLabel, Qt::ElideRight, allowableWidth);
@@ -342,14 +350,17 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
     painter->setPen(pen);
   }
 
-  if (itemType == PipelineItem::ItemType::DropIndicator)
+  if (fontHeight <= indexRect.height())
   {
-    QString text = model->dropIndicatorText(index);
-    painter->drawText(rect.x() + indexBoxWidth + textMargin, rect.y() + fontMargin + fontHeight, text);
-  }
-  else if (itemType == PipelineItem::ItemType::Filter)
-  {
-    painter->drawText(rect.x() + indexBoxWidth + textMargin, rect.y() + fontMargin + fontHeight, filter->getHumanLabel());
+    if (itemType == PipelineItem::ItemType::DropIndicator)
+    {
+      QString text = model->dropIndicatorText(index);
+      painter->drawText(rect.x() + indexBoxWidth + textMargin + xOffset, rect.y() + fontMargin + fontHeight + yOffset, text);
+    }
+    else if (itemType == PipelineItem::ItemType::Filter)
+    {
+      painter->drawText(rect.x() + indexBoxWidth + textMargin + xOffset, rect.y() + fontMargin + fontHeight + yOffset, filter->getHumanLabel());
+    }
   }
 
   // If the filter is selected, draw a border around it.
@@ -366,7 +377,7 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
     // Draw inside option.rect to avoid painting artifacts
     qreal x = option.rect.x() + (borderSize / 2);
     qreal y = option.rect.y() + (borderSize / 2);
-    painter->drawRoundedRect(QRectF(x, y, option.rect.width() - borderSize  + 0.5 , option.rect.height() - borderSize + 0.5), 1, 1);
+    painter->drawRoundedRect(QRectF(x + xOffset, y + yOffset, option.rect.width() - borderSize  + 0.5 , option.rect.height() - borderSize + 0.5), 1, 1);
   }
 
   painter->restore();

@@ -82,7 +82,7 @@ class SVWidgetsLib_EXPORT AddFilterCommand : public QUndoCommand
      * @param filterIndex
      * @param pipelineIndex
      */
-    void removeFilter(int filterIndex);
+    void removeFilter(const QPersistentModelIndex &index);
 
     /**
      * @brief connectFilterSignalsSlots

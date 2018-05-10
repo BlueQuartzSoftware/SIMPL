@@ -8,6 +8,8 @@ set(SVWidgetsLib_Animations_UIS "")
 # inheritance through a .ui file
 set(SVWidgetsLib_Animations_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Animations/PipelineItemBorderSizeAnimation.h
+  ${SVWidgetsLib_SOURCE_DIR}/Animations/PipelineItemHeightAnimation.h
+  ${SVWidgetsLib_SOURCE_DIR}/Animations/PipelineItemSlideAnimation.h
 )
 
 set(SVWidgetsLib_Animations_HDRS
@@ -16,6 +18,8 @@ set(SVWidgetsLib_Animations_HDRS
 
 set(SVWidgetsLib_Animations_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Animations/PipelineItemBorderSizeAnimation.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Animations/PipelineItemHeightAnimation.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Animations/PipelineItemSlideAnimation.cpp
   )
 
 cmp_IDE_SOURCE_PROPERTIES( "SVWidgetsLib/Animations" "${SVWidgetsLib_Animations_MOC_HDRS};${SVWidgetsLib_Animations_HDRS}" "${SVWidgetsLib_Animations_SRCS}" "0")
