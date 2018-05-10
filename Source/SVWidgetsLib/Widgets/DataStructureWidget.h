@@ -78,17 +78,10 @@ public slots:
 
   /**
    * @brief Updates the DataStructureWidget with the latest DataContainerArray from
-   * the PipelineFilterObject
-   * @param object
+   * the filter
+   * @param filter
    */
-  void filterObjectActivated(PipelineFilterObject* object);
-
-  /**
-   * @brief Updates the DataStructureWidget with the latest DataContainerArray from
-   * the PipelineFilterObject
-   * @param object
-   */
-  void handleFilterParameterChanged(PipelineFilterObject* object);
+  void filterActivated(AbstractFilter::Pointer filter);
 
   /**
    * @brief Forces a refresh of the TreeView from the internal copy of the DataContainerArray

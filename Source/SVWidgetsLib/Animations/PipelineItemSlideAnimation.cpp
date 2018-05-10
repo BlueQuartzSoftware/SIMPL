@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+* Copyright (c) 2017 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -11,7 +11,7 @@
 * list of conditions and the following disclaimer in the documentation and/or
 * other materials provided with the distribution.
 *
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+* Neither the name of BlueQuartz Software nor the names of its
 * contributors may be used to endorse or promote products derived from this software
 * without specific prior written permission.
 *
@@ -26,26 +26,57 @@
 * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "PipelineViewPtrMimeData.h"
+#include "PipelineItemSlideAnimation.h"
 
-
+#include "SVWidgetsLib/Widgets/PipelineModel.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineViewPtrMimeData::PipelineViewPtrMimeData()
-: QMimeData()
+PipelineItemSlideAnimation::PipelineItemSlideAnimation(PipelineModel* model, QPersistentModelIndex index, int numberOfPixels, AnimationDirection direction, QObject* parent)
+  : QVariantAnimation(parent),
+    m_Index(index),
+    m_PipelineModel(model),
+    m_Direction(direction),
+    m_NumberOfPixels(numberOfPixels)
 {
+  setStartValue(0);
+  setEndValue(200);
+
+  setDuration(150);
+
+  if (m_Direction == AnimationDirection::Right)
+  {
+    m_PipelineModel->setData(m_Index, -m_NumberOfPixels, PipelineModel::Roles::XOffsetRole);
+  }
+
+  QSize size = m_PipelineModel->data(m_Index, Qt::SizeHintRole).toSize();
+  m_PipelineModel->setData(m_Index, size.height(), PipelineModel::Roles::HeightRole);
+
+  connect(this, &PipelineItemSlideAnimation::valueChanged, this, &PipelineItemSlideAnimation::listenValueChanged);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineViewPtrMimeData::~PipelineViewPtrMimeData() = default;
+void PipelineItemSlideAnimation::listenValueChanged(const QVariant & value)
+{
+  if(m_PipelineModel)
+  {
+    if (m_Direction == AnimationDirection::Left)
+    {
+      m_PipelineModel->setData(m_Index, -(m_NumberOfPixels * currentValue().toInt() * 0.005), PipelineModel::Roles::XOffsetRole);
+    }
+    else if (m_Direction == AnimationDirection::Right)
+    {
+      m_PipelineModel->setData(m_Index, -m_NumberOfPixels + (m_NumberOfPixels * currentValue().toInt() * 0.005), PipelineModel::Roles::XOffsetRole);
+    }
+  }
+  else
+  {
+    stop();
+  }
+}

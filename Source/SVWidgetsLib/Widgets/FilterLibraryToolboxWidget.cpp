@@ -90,10 +90,10 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
   qSort(grpNameSorted);
 
   // Clear out the default stuff
-  bookmarksTreeView->clear();
+  filterLibrary->clear();
 
 #if 1
-  QTreeWidgetItem* library = new QTreeWidgetItem(bookmarksTreeView);
+  QTreeWidgetItem* library = new QTreeWidgetItem(filterLibrary);
   library->setText(0, SIMPL::Settings::Library);
   library->setIcon(0, QIcon(":/BlankGroup_Icon.png"));
   library->setData(0, Qt::UserRole, QVariant(LIBRARY_NODE_TYPE));
@@ -176,7 +176,7 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
     }
   }
   library->setExpanded(true);
-  on_bookmarksTreeView_currentItemChanged(library, nullptr);
+  on_filterLibrary_currentItemChanged(library, nullptr);
 }
 
 // -----------------------------------------------------------------------------
@@ -195,23 +195,9 @@ void FilterLibraryToolboxWidget::setupGui()
 //              }");
 //  bookmarksTreeView->setStyleSheet(css);
 
-  bookmarksTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
+  filterLibrary->setContextMenuPolicy(Qt::CustomContextMenu);
 
-  connect(bookmarksTreeView, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenuForWidget(const QPoint&)));
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void FilterLibraryToolboxWidget::on_bookmarksTreeView_itemClicked(QTreeWidgetItem* item, int column)
-{
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void FilterLibraryToolboxWidget::on_bookmarksTreeView_itemChanged(QTreeWidgetItem* item, int column)
-{
+  connect(filterLibrary, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenuForWidget(const QPoint&)));
 }
 
 // -----------------------------------------------------------------------------
@@ -219,7 +205,7 @@ void FilterLibraryToolboxWidget::on_bookmarksTreeView_itemChanged(QTreeWidgetIte
 // -----------------------------------------------------------------------------
 void FilterLibraryToolboxWidget::showContextMenuForWidget(const QPoint& pos)
 {
-  QTreeWidgetItem* item = bookmarksTreeView->itemAt(pos);
+  QTreeWidgetItem* item = filterLibrary->itemAt(pos);
 
   if(nullptr != item && item->childCount() == 0)
   {
@@ -271,7 +257,7 @@ void FilterLibraryToolboxWidget::launchHelpForItem(QString humanLabel)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterLibraryToolboxWidget::on_bookmarksTreeView_currentItemChanged(QTreeWidgetItem* item, QTreeWidgetItem* previous)
+void FilterLibraryToolboxWidget::on_filterLibrary_currentItemChanged(QTreeWidgetItem* item, QTreeWidgetItem* previous)
 {
   if(nullptr == item)
   {
@@ -298,17 +284,12 @@ void FilterLibraryToolboxWidget::on_bookmarksTreeView_currentItemChanged(QTreeWi
     factories = fm->getFactories(item->parent()->text(0), item->text(0));
     updateFilterGroupList(factories);
   }
-  else
-  {
-    // Update filter list with preview of current item
-    on_bookmarksTreeView_itemClicked(item, 0);
-  }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterLibraryToolboxWidget::on_bookmarksTreeView_itemDoubleClicked(QTreeWidgetItem* item, int column)
+void FilterLibraryToolboxWidget::on_filterLibrary_itemDoubleClicked(QTreeWidgetItem* item, int column)
 {
   Q_UNUSED(column)
 

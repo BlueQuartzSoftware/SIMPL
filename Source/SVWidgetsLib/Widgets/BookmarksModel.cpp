@@ -40,10 +40,9 @@
 
 #include "SVWidgetsLib/Widgets/BookmarksModel.h"
 #include "SVWidgetsLib/Widgets/BookmarksTreeView.h"
-#include "SVWidgetsLib/Widgets/SIMPLViewToolbox.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
-
+#define PREBUILT_PIPELINES_DIR "PrebuiltPipelines"
 
 BookmarksModel* BookmarksModel::self = nullptr;
 
@@ -53,14 +52,7 @@ BookmarksModel* BookmarksModel::self = nullptr;
 BookmarksModel::BookmarksModel(QObject* parent)
 : QAbstractItemModel(parent)
 {
-  QVector<QVariant> vector;
-  vector.push_back("Name");
-  vector.push_back("Path");
-  rootItem = new BookmarksItem(vector);
-
-  m_Watcher = new QFileSystemWatcher(this);
-
-  connect(this, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)), this, SLOT(updateModel(const QModelIndex&, const QModelIndex&)));
+  initialize();
 }
 
 // -----------------------------------------------------------------------------
@@ -79,27 +71,23 @@ BookmarksModel* BookmarksModel::Instance()
   if(self == nullptr)
   {
     self = new BookmarksModel();
+    self->loadModel();
   }
 
   return self;
 }
 
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-BookmarksModel* BookmarksModel::NewInstance(QtSSettings* prefs)
+void BookmarksModel::initialize()
 {
-  // Erase the old content
-  if(self)
-  {
-    delete self;
-    self = nullptr;
-  }
+  rootItem = new BookmarksItem("");
 
-  QJsonObject modelObj = prefs->value("Bookmarks Model", QJsonObject());
-  self = BookmarksTreeView::FromJsonObject(modelObj);
+  m_Watcher = new QFileSystemWatcher(this);
 
-  return self;
+  connect(this, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)), this, SLOT(updateModel(const QModelIndex&, const QModelIndex&)));
 }
 
 // -----------------------------------------------------------------------------
@@ -128,10 +116,10 @@ void BookmarksModel::updateRowState(const QString& path)
   QModelIndexList indexList = findIndexByPath(path);
   for(int i = 0; i < indexList.size(); i++)
   {
-    QModelIndex nameIndex = index(indexList[i].row(), BookmarksItem::Name, indexList[i].parent());
+    QModelIndex nameIndex = index(indexList[i].row(), BookmarksItem::Contents, indexList[i].parent());
 
     // Set the itemHasError variable
-    setData(nameIndex, !fi.exists(), Qt::UserRole);
+    setData(nameIndex, !fi.exists(), static_cast<int>(Roles::ErrorsRole));
   }
 }
 
@@ -140,22 +128,7 @@ void BookmarksModel::updateRowState(const QString& path)
 // -----------------------------------------------------------------------------
 int BookmarksModel::columnCount(const QModelIndex& parent) const
 {
-  return rootItem->columnCount();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QModelIndex BookmarksModel::sibling(int row, int column, const QModelIndex& currentIndex) const
-{
-  if(currentIndex.column() == BookmarksItem::Name)
-  {
-    return index(currentIndex.row(), BookmarksItem::Path, currentIndex.parent());
-  }
-  else
-  {
-    return index(currentIndex.row(), BookmarksItem::Name, currentIndex.parent());
-  }
+  return 1;
 }
 
 // -----------------------------------------------------------------------------
@@ -172,15 +145,28 @@ QVariant BookmarksModel::data(const QModelIndex& index, int role) const
 
   if(role == Qt::DisplayRole)
   {
-    return item->data(index.column());
+    return item->getName();
   }
-  else if(role == Qt::UserRole)
+  else if(role == static_cast<int>(Roles::PathRole))
   {
-    return item->getItemHasErrors();
+    return item->getPath();
+  }
+  else if(role == static_cast<int>(Roles::ErrorsRole))
+  {
+    return item->getHasErrors();
+  }
+  else if(role == static_cast<int>(Roles::ExpandedRole))
+  {
+    return item->isExpanded();
+  }
+
+  else if(role == static_cast<int>(Roles::ItemTypeRole))
+  {
+    return static_cast<int>(item->getItemType());
   }
   else if(role == Qt::BackgroundRole)
   {
-    if(item->getItemHasErrors() == true)
+    if(item->getHasErrors() == true)
     {
       return QColor(235, 110, 110);
     }
@@ -191,7 +177,7 @@ QVariant BookmarksModel::data(const QModelIndex& index, int role) const
   }
   else if(role == Qt::ForegroundRole)
   {
-    if(item->getItemHasErrors() == true)
+    if(item->getHasErrors() == true)
     {
       return QColor(240, 240, 240);
     }
@@ -202,39 +188,26 @@ QVariant BookmarksModel::data(const QModelIndex& index, int role) const
   }
   else if(role == Qt::ToolTipRole)
   {
-    QString path = item->data(1).toString();
+    QString path = item->getPath();
     QFileInfo info(path);
-    if(info.exists() == false)
+    if(info.isDir() == false && info.exists() == false)
     {
-      QString tooltip = "'" + this->index(index.row(), BookmarksItem::Path, index.parent()).data().toString() +
-                        "' was not found on the file system.\nYou can either locate the file or delete the entry from the table.";
+      QString tooltip = tr("'%1' was not found on the file system.\nYou can either locate the file or delete the entry from the table.").arg(item->getPath());
       return tooltip;
     }
-    else
+    else if(info.suffix().compare("json") == 0)
     {
-      if(info.suffix().compare("json") == 0)
-      {
-        QString html = JsonFilterParametersReader::HtmlSummaryFromFile(path, nullptr);
-        return html;
-      }
-      else
-      {
-        return path;
-      }
-    }
-  }
-  else if(role == Qt::DecorationRole)
-  {
-    QModelIndex nameIndex = this->index(index.row(), BookmarksItem::Name, index.parent());
-    if(nameIndex == index)
-    {
-      BookmarksItem* item = getItem(index);
-      return item->getIcon();
+      QString html = JsonFilterParametersReader::HtmlSummaryFromFile(path, nullptr);
+      return html;
     }
     else
     {
       return QVariant();
     }
+  }
+  else if(role == Qt::DecorationRole)
+  {
+    return item->getIcon();
   }
 
   return QVariant();
@@ -253,8 +226,8 @@ Qt::ItemFlags BookmarksModel::flags(const QModelIndex& index) const
   Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);
 
   BookmarksItem* item = getItem(index);
-  QString name = item->data(BookmarksItem::Name).toString();
-  if(item->data(BookmarksItem::Path).toString().isEmpty())
+  QString name = item->getName();
+  if(item->getItemType() == BookmarksItem::ItemType::Folder)
   {
     // This is a node
     return (defaultFlags | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
@@ -280,19 +253,6 @@ BookmarksItem* BookmarksModel::getItem(const QModelIndex& index) const
     }
   }
   return rootItem;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QVariant BookmarksModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-  if(orientation == Qt::Horizontal && role == Qt::DisplayRole)
-  {
-    return rootItem->data(section);
-  }
-
-  return QVariant();
 }
 
 // -----------------------------------------------------------------------------
@@ -327,11 +287,13 @@ bool BookmarksModel::insertRows(int position, int rows, const QModelIndex& paren
   bool success;
 
   beginInsertRows(parent, position, position + rows - 1);
-  success = parentItem->insertChildren(position, rows, rootItem->columnCount());
+  success = parentItem->insertChildren(position, rows, columnCount());
   endInsertRows();
 
-  SIMPLViewToolbox* toolbox = SIMPLViewToolbox::Instance();
-  toolbox->getBookmarksWidget()->writeSettings();
+  if (m_LoadingModel == false)
+  {
+    writeBookmarksToPrefsFile();
+  }
 
   return success;
 }
@@ -348,8 +310,10 @@ bool BookmarksModel::removeRows(int position, int rows, const QModelIndex& paren
   success = parentItem->removeChildren(position, rows);
   endRemoveRows();
 
-  SIMPLViewToolbox* toolbox = SIMPLViewToolbox::Instance();
-  toolbox->getBookmarksWidget()->writeSettings();
+  if (m_LoadingModel == false)
+  {
+    writeBookmarksToPrefsFile();
+  }
 
   return success;
 }
@@ -366,7 +330,7 @@ bool BookmarksModel::moveRows(const QModelIndex& sourceParent, int sourceRow, in
 
   for(int i = sourceRow; i < sourceRow + count; i++)
   {
-    QModelIndex srcIndex = index(i, BookmarksItem::Name, sourceParent);
+    QModelIndex srcIndex = index(i, BookmarksItem::Contents, sourceParent);
     BookmarksItem* srcItem = getItem(srcIndex);
 
     destParentItem->insertChild(destinationChild, srcItem);
@@ -376,8 +340,10 @@ bool BookmarksModel::moveRows(const QModelIndex& sourceParent, int sourceRow, in
 
   endMoveRows();
 
-  SIMPLViewToolbox* toolbox = SIMPLViewToolbox::Instance();
-  toolbox->getBookmarksWidget()->writeSettings();
+  if (m_LoadingModel == false)
+  {
+    writeBookmarksToPrefsFile();
+  }
 
   return true;
 }
@@ -419,55 +385,48 @@ int BookmarksModel::rowCount(const QModelIndex& parent) const
 bool BookmarksModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
   BookmarksItem* item = getItem(index);
-  bool result = false;
 
-  if(role == Qt::UserRole)
+  if(role == Qt::DisplayRole)
   {
-    result = item->setItemHasErrors(value.value<bool>());
+    item->setName(value.toString());
+  }
+  else if(role == static_cast<int>(Roles::PathRole))
+  {
+    item->setPath(value.toString());
+  }
+  else if(role == static_cast<int>(Roles::ExpandedRole))
+  {
+    item->setExpanded(value.toBool());
+  }
+  else if(role == static_cast<int>(Roles::ErrorsRole))
+  {
+    item->setHasErrors(value.toBool());
+  }
+  else if(role == static_cast<int>(Roles::ItemTypeRole))
+  {
+    item->setItemType(static_cast<BookmarksItem::ItemType>(value.toInt()));
   }
   else if(role == Qt::DecorationRole)
   {
-    result = item->setIcon(value.value<QIcon>());
+    item->setIcon(value.value<QIcon>());
   }
   else if(role == Qt::ToolTipRole)
   {
-    result = item->setItemTooltip(value.toString());
+    item->setItemTooltip(value.toString());
   }
   else
   {
-    result = item->setData(index.column(), value);
+    return false;
   }
 
-  if(result)
+  emit dataChanged(index, index);
+
+  if (m_LoadingModel == false)
   {
-    emit dataChanged(index, index);
-
-    SIMPLViewToolbox* toolbox = SIMPLViewToolbox::Instance();
-    toolbox->getBookmarksWidget()->writeSettings();
+    writeBookmarksToPrefsFile();
   }
 
-  return result;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void BookmarksModel::setNeedsToBeExpanded(const QModelIndex& index, bool value)
-{
-  BookmarksItem* item = getItem(index);
-  item->setNeedsToBeExpanded(value);
-
-  SIMPLViewToolbox* toolbox = SIMPLViewToolbox::Instance();
-  toolbox->getBookmarksWidget()->writeSettings();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool BookmarksModel::needsToBeExpanded(const QModelIndex& index)
-{
-  BookmarksItem* item = getItem(index);
-  return item->needsToBeExpanded();
+  return true;
 }
 
 // -----------------------------------------------------------------------------
@@ -499,30 +458,29 @@ void BookmarksModel::addFileToTree(QString& path, QModelIndex& specifiedParent)
 
   QFileInfo fi(path);
 
-  int rowPos = self->rowCount(specifiedParent);
-  self->insertRow(rowPos, specifiedParent);
-  QModelIndex newNameIndex = self->index(rowPos, BookmarksItem::Name, specifiedParent);
+  int rowPos = rowCount(specifiedParent);
+  insertRow(rowPos, specifiedParent);
+  QModelIndex index = this->index(rowPos, BookmarksItem::Contents, specifiedParent);
 
   if(fi.isFile())
   {
     QString name = fi.baseName();
-    self->setData(newNameIndex, name, Qt::DisplayRole);
+    setData(index, name, Qt::DisplayRole);
   }
   else
   {
     QDir dir(path);
-    self->setData(newNameIndex, dir.dirName(), Qt::DisplayRole);
+    setData(index, dir.dirName(), Qt::DisplayRole);
   }
 
   if(fi.isFile())
   {
-    QModelIndex newPathIndex = self->index(rowPos, BookmarksItem::Path, specifiedParent);
-    self->setData(newPathIndex, path, Qt::DisplayRole);
-    self->setData(newNameIndex, QIcon(":/bookmark.png"), Qt::DecorationRole);
+    setData(index, path, static_cast<int>(Roles::PathRole));
+    setData(index, QIcon(":/bookmark.png"), Qt::DecorationRole);
   }
   else
   {
-    self->setData(newNameIndex, QIcon(":/folder_blue.png"), Qt::DecorationRole);
+    setData(index, QIcon(":/folder_blue.png"), Qt::DecorationRole);
 
     QStringList filters;
     filters << "*.dream3d"
@@ -533,7 +491,136 @@ void BookmarksModel::addFileToTree(QString& path, QModelIndex& specifiedParent)
     while(iter.hasNext())
     {
       QString nextPath = iter.next();
-      addFileToTree(nextPath, newNameIndex);
+      addFileToTree(nextPath, index);
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void BookmarksModel::fromJsonObject(QJsonObject treeObject)
+{
+  QStringList keys = treeObject.keys();
+  keys.sort(Qt::CaseInsensitive);
+  for(int i = 0; i < keys.size(); i++)
+  {
+    if(keys[i].compare("Prebuilt Pipelines") == 0)
+    {
+      continue;
+    }
+    QJsonValue val = treeObject.value(keys[i]);
+    if(val.isObject())
+    {
+      unwrapModel(keys[i], val.toObject(), QModelIndex());
+    }
+  }
+
+  QStringList paths = getFilePaths();
+  if(!paths.isEmpty())
+  {
+    getFileSystemWatcher()->addPaths(paths);
+  }
+  connect(getFileSystemWatcher(), SIGNAL(fileChanged(const QString&)), SLOT(updateRowState(const QString&)));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QJsonObject BookmarksModel::toJsonObject()
+{
+  BookmarksItem* rootItem = getRootItem();
+
+  QJsonObject treeObj;
+  for(int i = 0; i < rootItem->childCount(); i++)
+  {
+    QModelIndex childIndex = index(i, BookmarksItem::Contents, QModelIndex());
+    BookmarksItem* childItem = getItem(childIndex);
+
+    QString name = childItem->getName();
+
+    QJsonObject childObj = wrapModel(childIndex);
+    treeObj.insert(name, childObj);
+  }
+
+  return treeObj;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QJsonObject BookmarksModel::wrapModel(QModelIndex currentIndex)
+{
+  QJsonObject obj;
+
+  for(int i = 0; i < rowCount(currentIndex); i++)
+  {
+    QModelIndex childIndex = this->index(i, BookmarksItem::Contents, currentIndex);
+    BookmarksItem* childItem = getItem(childIndex);
+
+    QString childName = childItem->getName();
+
+    QJsonObject childObj = wrapModel(childIndex);
+    obj[childName] = childObj;
+  }
+
+  BookmarksItem* item = getItem(currentIndex);
+
+  QString path = item->getPath();
+  obj.insert("Path", path);
+
+  BookmarksItem::ItemType type = item->getItemType();
+  obj.insert("Item Type", static_cast<int>(type));
+
+  bool expanded = item->isExpanded();
+  obj.insert("Expanded", expanded);
+
+  return obj;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void BookmarksModel::unwrapModel(QString objectName, QJsonObject object, QModelIndex parentIndex)
+{
+  int row = rowCount(parentIndex);
+  insertRow(row, parentIndex);
+  QModelIndex index = this->index(row, BookmarksItem::Contents, parentIndex);
+
+  QString path = object["Path"].toString();
+  bool expanded = object["Expanded"].toBool();
+  int type = object["Item Type"].toInt();
+
+  QFileInfo fi(path);
+  if(path.isEmpty() == false)
+  {
+    setData(index, QIcon(":/bookmark.png"), Qt::DecorationRole);
+    if(fi.exists() == false)
+    {
+      // Set the itemHasError variable
+      setData(index, true, static_cast<int>(Roles::ErrorsRole));
+    }
+  }
+  else
+  {
+    setData(index, QIcon(":/folder_blue.png"), Qt::DecorationRole);
+  }
+
+  path = QDir::toNativeSeparators(path);
+
+  setData(index, objectName, Qt::DisplayRole);
+  setData(index, path, static_cast<int>(Roles::PathRole));
+  setData(index, expanded, static_cast<int>(Roles::ExpandedRole));
+  setData(index, type, static_cast<int>(Roles::ItemTypeRole));
+
+  QStringList keys = object.keys();
+  keys.sort(Qt::CaseInsensitive);
+  for(int i = 0; i < keys.size(); i++)
+  {
+    QJsonValue val = object.value(keys[i]);
+    if(val.isObject())
+    {
+      unwrapModel(keys[i], val.toObject(), index);
     }
   }
 }
@@ -554,7 +641,7 @@ QStringList BookmarksModel::getFilePaths(BookmarksItem* item)
   QStringList list;
   if(item != rootItem && item->childCount() <= 0)
   {
-    QString filePath = item->data(BookmarksItem::Path).toString();
+    QString filePath = item->getPath();
     if(filePath.isEmpty() == false)
     {
       list.append(filePath);
@@ -578,8 +665,8 @@ QModelIndexList BookmarksModel::findIndexByPath(QString filePath)
   QModelIndexList list;
   for(int i = 0; i < rootItem->childCount(); i++)
   {
-    QModelIndex child = index(i, BookmarksItem::Path, QModelIndex());
-    if(rowCount(child) <= 0 && child.data().toString() == filePath)
+    QModelIndex child = index(i, BookmarksItem::Contents);
+    if(rowCount(child) <= 0 && data(child, static_cast<int>(Roles::PathRole)).toString() == filePath)
     {
       list.append(child);
     }
@@ -599,19 +686,19 @@ QModelIndexList BookmarksModel::findIndexByPath(QString filePath)
 // -----------------------------------------------------------------------------
 QModelIndexList BookmarksModel::findIndexByPath(const QModelIndex& current, QString filePath)
 {
-  QModelIndex actual = index(current.row(), BookmarksItem::Name, current.parent());
+  QModelIndex actual = index(current.row(), BookmarksItem::Contents, current.parent());
 
   QModelIndexList list;
   for(int i = 0; i < rowCount(actual); i++)
   {
-    QModelIndex pathIndex = index(i, BookmarksItem::Path, actual);
+    QModelIndex index = this->index(i, BookmarksItem::Contents, actual);
 
-    if(rowCount(pathIndex) <= 0 && pathIndex.data().toString() == filePath)
+    if(rowCount(index) <= 0 && data(index, static_cast<int>(Roles::PathRole)).toString() == filePath)
     {
-      list.append(pathIndex);
+      list.append(index);
     }
 
-    QModelIndexList subList = findIndexByPath(pathIndex, filePath);
+    QModelIndexList subList = findIndexByPath(index, filePath);
     list.append(subList);
   }
 
@@ -625,7 +712,8 @@ void BookmarksModel::updateModel(const QModelIndex& topLeft, const QModelIndex& 
 {
   if(topLeft.isValid())
   {
-    QString path = index(topLeft.row(), BookmarksItem::Path, topLeft.parent()).data().toString();
+    QModelIndex index = this->index(topLeft.row(), BookmarksItem::Contents, topLeft.parent());
+    QString path = data(index, static_cast<int>(Roles::PathRole)).toString();
     QFileInfo fi(path);
     if(nullptr != m_Watcher && path.isEmpty() == false && fi.exists())
     {
@@ -634,11 +722,292 @@ void BookmarksModel::updateModel(const QModelIndex& topLeft, const QModelIndex& 
   }
   else if(bottomRight.isValid())
   {
-    QString path = index(bottomRight.row(), BookmarksItem::Path, bottomRight.parent()).data().toString();
+    QModelIndex index = this->index(bottomRight.row(), BookmarksItem::Contents, bottomRight.parent());
+    QString path = data(index, static_cast<int>(Roles::PathRole)).toString();
     QFileInfo fi(path);
     if(nullptr != m_Watcher && path.isEmpty() == false && fi.exists())
     {
       m_Watcher->addPath(path);
     }
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void BookmarksModel::readBookmarksFromPrefsFile()
+{
+  QJsonObject object = getBookmarksPrefsObject();
+  fromJsonObject(object);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QJsonObject BookmarksModel::getBookmarksPrefsObject()
+{
+  QSharedPointer<QtSSettings> prefs = QSharedPointer<QtSSettings>(new QtSSettings(getBookmarksPrefsPath()));
+
+  QJsonObject object;
+  if(prefs->contains("Bookmarks"))
+  {
+    prefs->beginGroup("Bookmarks");
+
+    object = prefs->value("Bookmarks Model", QJsonObject());
+
+    prefs->endGroup();
+  }
+  else
+  {
+    // If no bookmarks were found in the new location, check the old location
+    prefs->beginGroup("DockWidgetSettings");
+    prefs->beginGroup("Bookmarks Dock Widget");
+
+    object = prefs->value("Bookmarks Model", QJsonObject());
+
+    prefs->endGroup();
+    prefs->endGroup();
+  }
+
+  return object;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void BookmarksModel::writeBookmarksToPrefsFile()
+{
+  QSharedPointer<QtSSettings> prefs = QSharedPointer<QtSSettings>(new QtSSettings(getBookmarksPrefsPath()));
+
+  prefs->beginGroup("Bookmarks");
+
+  QJsonObject modelObj = toJsonObject();
+  prefs->setValue("Bookmarks Model", modelObj);
+
+  prefs->endGroup();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void BookmarksModel::loadModel()
+{
+  m_LoadingModel = true;
+  readPrebuiltPipelines();
+  readBookmarksFromPrefsFile();
+  m_LoadingModel = false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void BookmarksModel::readPrebuiltPipelines()
+{
+  QDir pipelinesDir = findPipelinesDirectory();
+  QString pPath = pipelinesDir.absolutePath();
+
+  FilterLibraryTreeWidget::ItemType itemType = FilterLibraryTreeWidget::Leaf_Item_Type;
+  QString iconFileName(":/bookmark.png");
+  bool allowEditing = false;
+  QStringList fileExtension;
+  fileExtension.append("*.json");
+
+  // Add top-level folder and then load up all the pipelines into the folder
+  QString dirName = "Prebuilt Pipelines";
+  QJsonObject prefsObject = getBookmarksPrefsObject();
+  QJsonObject prebuiltsObject = prefsObject["Prebuilt Pipelines"].toObject();
+  bool expanded = prebuiltsObject["Expanded"].toBool();
+  QModelIndex index = addTreeItem(QModelIndex(), dirName, QIcon(":/folder_blue.png"), pPath, 0, BookmarksItem::ItemType::Folder, expanded);
+
+  addPipelinesRecursively(pipelinesDir, index, prebuiltsObject, iconFileName, allowEditing, fileExtension, itemType);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QDir BookmarksModel::findPipelinesDirectory()
+{
+  QString dirName(PREBUILT_PIPELINES_DIR);
+
+  QString appPath = QCoreApplication::applicationDirPath();
+  QDir pipelinesDir = QDir(appPath);
+#if defined(Q_OS_WIN)
+  QFileInfo fi(pipelinesDir.absolutePath() + QDir::separator() + dirName);
+  if(fi.exists() == false)
+  {
+    // The PrebuiltPipelines file does not exist at the default location because we are probably running from visual studio.
+    // Try up one more directory
+    pipelinesDir.cdUp();
+  }
+#elif defined(Q_OS_MAC)
+  if(pipelinesDir.dirName() == "MacOS")
+  {
+    pipelinesDir.cdUp();
+    // Can we change directory into the "PrebuiltPipeliines" directory at this level.
+    QString pbpDir = QString("Resources/%1").arg(PREBUILT_PIPELINES_DIR);
+    if (pipelinesDir.cd(pbpDir))
+    {
+      return pipelinesDir;
+    }
+    pipelinesDir.cdUp();
+    pipelinesDir.cdUp();
+    if (pipelinesDir.cd(PREBUILT_PIPELINES_DIR) )
+    {
+      return pipelinesDir;
+    }
+  }
+#else
+  // We are on Linux - I think
+  QFileInfo fi(pipelinesDir.absolutePath() + QDir::separator() + dirName);
+  // qDebug() << fi.absolutePath();
+  // Look for the PREBUILT_PIPELINES_DIR directory in the current app directory
+  if(fi.exists() == false)
+  {
+    // Try up one more directory
+    pipelinesDir.cdUp();
+  }
+
+#endif
+
+  pipelinesDir = pipelinesDir.absolutePath() + QDir::separator() + dirName;
+  return pipelinesDir;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void BookmarksModel::addPipelinesRecursively(QDir currentDir, QModelIndex parent, QJsonObject prebuiltsObj, QString iconFileName, bool allowEditing, QStringList filters, FilterLibraryTreeWidget::ItemType itemType)
+{
+  QModelIndex nextIndex;
+
+  // Get a list of all the directories
+  QFileInfoList dirList = currentDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
+  if(dirList.size() > 0)
+  {
+    foreach(QFileInfo fi, dirList)
+    {
+      // At this point we have the first level of directories and we want to do 2 things:
+      // 1.Create an entry in the tree widget with this name
+      // 2.drop into the directory and look for all the .json files and add entries for those items.
+      // qDebug() << fi.absoluteFilePath() << "\n";
+      // Add a tree widget item for this  Group
+      // qDebug() << fi.absoluteFilePath();
+      int row = rowCount(parent);
+      QString baseName = fi.baseName();
+      QJsonObject folderPrefsObj = prebuiltsObj[baseName].toObject();
+      bool expanded = folderPrefsObj["Expanded"].toBool();
+      nextIndex = addTreeItem(parent, baseName, QIcon(":/folder_blue.png"), fi.absoluteFilePath(), row, BookmarksItem::ItemType::Folder, expanded);
+
+      addPipelinesRecursively(QDir(fi.absoluteFilePath()), nextIndex, folderPrefsObj, iconFileName, allowEditing, filters, itemType); // Recursive call
+    }
+  }
+
+  QFileInfoList itemList = currentDir.entryInfoList(filters);
+  foreach(QFileInfo itemInfo, itemList)
+  {
+    QString itemFilePath = itemInfo.absoluteFilePath();
+    QString itemName;
+    if(itemInfo.suffix().compare("json") == 0)
+    {
+      QString dVers;
+      JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
+      jsonReader->readNameOfPipelineFromFile(itemFilePath, itemName, dVers, nullptr);
+    }
+#if 0
+    else if(itemInfo.suffix().compare("ini") == 0 || itemInfo.suffix().compare("txt") == 0)
+    {
+      QSettings itemPref(itemFilePath, QSettings::IniFormat);
+      itemPref.beginGroup(SIMPL::Settings::PipelineBuilderGroup);
+      itemName = itemPref.value(SIMPL::Settings::PipelineName).toString();
+      itemPref.endGroup();
+    }
+#endif
+    // Add tree widget for this Prebuilt Pipeline
+    int row = rowCount(parent);
+    addTreeItem(parent, itemName, QIcon(iconFileName), itemInfo.absoluteFilePath(), row, BookmarksItem::ItemType::Bookmark, false);
+    nextIndex = index(row, BookmarksItem::Contents, parent);
+
+//    QString htmlFormattedString = generateHtmlFilterListFromPipelineFile(itemInfo.absoluteFilePath());
+//    model->setData(nextIndex, htmlFormattedString, Qt::ToolTipRole);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QModelIndex BookmarksModel::addTreeItem(QModelIndex parent, QString& favoriteTitle, QIcon icon, QString favoritePath, int insertIndex, BookmarksItem::ItemType type, bool isExpanded)
+{
+  favoritePath = QDir::toNativeSeparators(favoritePath);
+
+  QFileInfo fileInfo(favoritePath);
+  QString ext = fileInfo.completeSuffix();
+  if(fileInfo.isFile() && ext != "dream3d" && ext != "json" && ext != "ini" && ext != "txt")
+  {
+    return QModelIndex();
+  }
+
+  // Add a new Item to the Tree
+  insertRow(insertIndex, parent);
+  QModelIndex index = this->index(insertIndex, BookmarksItem::Contents, parent);
+  setData(index, favoriteTitle, Qt::DisplayRole);
+  setData(index, favoritePath, static_cast<int>(Roles::PathRole));
+  setData(index, icon, Qt::DecorationRole);
+  setData(index, static_cast<int>(type), static_cast<int>(Roles::ItemTypeRole));
+
+  sort(BookmarksItem::Contents, Qt::AscendingOrder);
+
+  if(isExpanded)
+  {
+    setData(index, true, static_cast<int>(Roles::ExpandedRole));
+  }
+  else
+  {
+    setData(index, false, static_cast<int>(Roles::ExpandedRole));
+  }
+
+  if(type == BookmarksItem::ItemType::Bookmark)
+  {
+    m_Watcher->addPath(favoritePath);
+  }
+
+  return index;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString BookmarksModel::getBookmarksPrefsPath()
+{
+  QtSSettings prefs;
+  QFileInfo fi(prefs.fileName());
+  QString parentPath = fi.absolutePath();
+
+  QString appName = QCoreApplication::applicationName();
+  if(appName.isEmpty())
+  {
+    appName = QString("Application");
+  }
+
+#if defined(Q_OS_MAC)
+
+  QString domain = QCoreApplication::organizationDomain();
+  if(domain.isEmpty())
+  {
+    domain = QString("Domain");
+  }
+  QStringList tokens = domain.split(".");
+  QStringListIterator iter(tokens);
+  iter.toBack();
+  domain = QString("");
+  while(iter.hasPrevious())
+  {
+    domain = domain + iter.previous() + QString(".");
+  }
+
+  QString bookmarksPrefsPath = parentPath + "/" + domain + appName + "_BookmarksModel.json";
+#else
+  QString bookmarksPrefsPath = QDir::toNativeSeparators(parentPath + "/" + appName + "_BookmarksModel.json");
+#endif
+
+  return bookmarksPrefsPath;
 }

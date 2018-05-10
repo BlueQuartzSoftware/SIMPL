@@ -11,13 +11,12 @@ set(SVWidgetsLib_Core_HDRS
 )
 
 set(SVWidgetsLib_Core_MOC_HDRS
-  ${SVWidgetsLib_SOURCE_DIR}/Core/PipelineViewPtrMimeData.h
+  
 )
 
 set(SVWidgetsLib_Core_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Core/FilterWidgetManager.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Core/IFilterWidgetFactory.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Core/PipelineViewPtrMimeData.cpp
 )
 
 cmp_IDE_SOURCE_PROPERTIES( "SVWidgetsLib" "${SVWidgetsLib_Core_HDRS};${SVWidgetsLib_Core_MOC_HDRS}" "${SVWidgetsLib_Core_SRCS}" "0")

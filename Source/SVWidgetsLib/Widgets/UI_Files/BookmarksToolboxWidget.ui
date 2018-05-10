@@ -39,8 +39,8 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>250</width>
-       <height>50</height>
+       <width>0</width>
+       <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
@@ -102,13 +102,16 @@ padding-left: 5px;
       <bool>true</bool>
      </property>
      <property name="headerHidden">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
+     <attribute name="headerVisible">
+      <bool>false</bool>
+     </attribute>
      <attribute name="headerDefaultSectionSize">
       <number>150</number>
      </attribute>
      <attribute name="headerStretchLastSection">
-      <bool>false</bool>
+      <bool>true</bool>
      </attribute>
     </widget>
    </item>

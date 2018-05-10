@@ -40,14 +40,16 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-BookmarksItem::BookmarksItem(const QVector<QVariant>& data, BookmarksItem* parent)
-: m_ItemData(data)
-, m_ParentItem(parent)
-, m_ItemHasErrors(false)
+BookmarksItem::BookmarksItem(const QString &name, const QString &path, BookmarksItem* parent)
+: m_Expanded(false)
+, m_Name(name)
+, m_Path(path)
+, m_HasErrors(false)
 , m_ItemTooltip("")
-, m_NeedsToBeExpanded(false)
 , m_Icon(QIcon())
+, m_ParentItem(parent)
 {
+
 }
 
 // -----------------------------------------------------------------------------
@@ -98,22 +100,6 @@ int BookmarksItem::childNumber() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int BookmarksItem::columnCount() const
-{
-  return m_ItemData.count();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QVariant BookmarksItem::data(int column) const
-{
-  return m_ItemData.value(column);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 bool BookmarksItem::insertChild(int position, BookmarksItem* child)
 {
   m_ChildItems.insert(position, child);
@@ -132,32 +118,8 @@ bool BookmarksItem::insertChildren(int position, int count, int columns)
 
   for(int row = 0; row < count; ++row)
   {
-    QVector<QVariant> data(columns);
-    BookmarksItem* item = new BookmarksItem(data, this);
+    BookmarksItem* item = new BookmarksItem("", "", this);
     insertChild(position, item);
-  }
-
-  return true;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool BookmarksItem::insertColumns(int position, int columns)
-{
-  if(position < 0 || position > m_ItemData.size())
-  {
-    return false;
-  }
-
-  for(int column = 0; column < columns; ++column)
-  {
-    m_ItemData.insert(position, QVariant());
-  }
-
-  foreach(BookmarksItem* child, m_ChildItems)
-  {
-    child->insertColumns(position, columns);
   }
 
   return true;
@@ -196,110 +158,6 @@ bool BookmarksItem::removeChildren(int position, int count)
   }
 
   return true;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool BookmarksItem::removeColumns(int position, int columns)
-{
-  if(position < 0 || position + columns > m_ItemData.size())
-  {
-    return false;
-  }
-
-  for(int column = 0; column < columns; ++column)
-  {
-    m_ItemData.remove(position);
-  }
-
-  foreach(BookmarksItem* child, m_ChildItems)
-  {
-    child->removeColumns(position, columns);
-  }
-
-  return true;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool BookmarksItem::setData(int column, const QVariant& value)
-{
-  if(column < 0 || column >= m_ItemData.size())
-  {
-    return false;
-  }
-
-  m_ItemData[column] = value;
-  return true;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool BookmarksItem::getItemHasErrors()
-{
-  return m_ItemHasErrors;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool BookmarksItem::setItemHasErrors(const bool& value)
-{
-  m_ItemHasErrors = value;
-  return true;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString BookmarksItem::getItemTooltip()
-{
-  return m_ItemTooltip;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool BookmarksItem::setItemTooltip(const QString& value)
-{
-  m_ItemTooltip = value;
-  return true;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QIcon BookmarksItem::getIcon()
-{
-  return m_Icon;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool BookmarksItem::setIcon(const QIcon& icon)
-{
-  m_Icon = icon;
-  return true;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool BookmarksItem::needsToBeExpanded()
-{
-  return m_NeedsToBeExpanded;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void BookmarksItem::setNeedsToBeExpanded(bool value)
-{
-  m_NeedsToBeExpanded = value;
 }
 
 // -----------------------------------------------------------------------------

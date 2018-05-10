@@ -45,10 +45,6 @@
 
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 #include "SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h"
-#include "SVWidgetsLib/Widgets/PipelineFilterObject.h"
-
-
-
 
 // -----------------------------------------------------------------------------
 //
@@ -278,24 +274,23 @@ void DataStructureWidget::markNewItems()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataStructureWidget::filterObjectActivated(PipelineFilterObject* object)
+void DataStructureWidget::filterActivated(AbstractFilter::Pointer filter)
 {
   m_Dca = DataContainerArray::NullPointer();
   m_CreatedPaths.clear();
-  if(object)
+  m_Ui->dataBrowserTreeView->setActiveFilter(filter);
+  if(filter.get())
   {
-    m_Filter = object->getFilter();
-    m_Ui->dataBrowserTreeView->setActiveFilter(m_Filter);
-    if(m_Filter.get())
+    DataContainerArray::Pointer dca = filter->getDataContainerArray();
+    if(dca.get())
     {
-      DataContainerArray::Pointer dca = m_Filter->getDataContainerArray();
-      if(dca.get())
-      {
-        m_Dca = dca->deepCopy(true);
-        m_CreatedPaths = m_Filter->getCreatedPaths();
-      }
+      m_Dca = dca->deepCopy(true);
+      m_CreatedPaths = filter->getCreatedPaths();
     }
   }
+
+  m_Filter = filter;
+
   refreshData();
   markNewItems();
 }
@@ -308,14 +303,6 @@ void DataStructureWidget::handleFilterRemoved(PipelineFilterObject* object)
   Q_UNUSED(object);
   m_Dca = DataContainerArray::NullPointer();
   refreshData();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataStructureWidget::handleFilterParameterChanged(PipelineFilterObject* object)
-{
-  filterObjectActivated(object);
 }
 
 // -----------------------------------------------------------------------------

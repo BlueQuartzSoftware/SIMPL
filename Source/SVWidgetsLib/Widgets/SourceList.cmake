@@ -17,7 +17,6 @@ set(SVWidgetsLib_Widgets_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksModel.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksToolboxWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksTreeView.h
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/BreakpointFilterWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DREAM3DListWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataArrayPathSelectionWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataContainerArrayWidget.h
@@ -29,13 +28,13 @@ set(SVWidgetsLib_Widgets_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StandardOutputWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterInputWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/ImportHDF5TreeModel.h
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterWidget.h
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterOutlineWidget.h
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineViewWidget.h
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLViewToolbox.h
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLViewMenuItems.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineListWidget.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineItemDelegate.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineModel.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineView.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarButton.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarIssuesButton.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PopUpWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/ProgressDialog.h
 )
@@ -44,7 +43,8 @@ set(SVWidgetsLib_Widgets_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksItem.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataStructureItem.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/ImportHDF5TreeModelItem.h
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineFilterObject.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineFilterMimeData.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineItem.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineView.h
 )
 
@@ -60,7 +60,6 @@ set(SVWidgetsLib_Widgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksModel.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksToolboxWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksTreeView.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/BreakpointFilterWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DREAM3DListWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataArrayPathSelectionWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataContainerArrayWidget.cpp
@@ -73,15 +72,16 @@ set(SVWidgetsLib_Widgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterInputWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/ImportHDF5TreeModel.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/ImportHDF5TreeModelItem.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterWidget.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterOutlineWidget.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineViewWidget.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineFilterObject.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineView.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineFilterMimeData.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineListWidget.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineItemDelegate.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineModel.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineItem.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineView.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLViewToolbox.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLViewMenuItems.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarButton.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarIssuesButton.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PopUpWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/ProgressDialog.cpp
   )
@@ -96,6 +96,7 @@ set(SVWidgetsLib_Widgets_UIS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/IssuesWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/SVPipelineFilterWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/SVPipelineFilterOutlineWidget.ui
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/PipelineListWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/PrebuiltsToolboxWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/SIMPLViewToolbox.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/StandardOutputWidget.ui

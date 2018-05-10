@@ -109,7 +109,7 @@ void FilterListWidget::performDrag()
     QByteArray jsonArray = doc.toJson();
 
     QMimeData* mimeData = new QMimeData;
-    mimeData->setData(SIMPLView::DragAndDrop::FilterItem, jsonArray);
+    mimeData->setData(SIMPLView::DragAndDrop::FilterListItem, jsonArray);
 
     QDrag* drag = new QDrag(this);
     drag->setMimeData(mimeData);

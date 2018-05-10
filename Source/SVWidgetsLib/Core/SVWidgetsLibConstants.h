@@ -51,8 +51,10 @@ namespace SIMPLView
 
   namespace DragAndDrop
   {
-    const QString FilterItem("Filter Item");
+    const QString FilterListItem("Filter List Item");
+    const QString FilterPipelineItem("Filter Pipeline Item");
     const QString BookmarkItem("Bookmark Item");
+    const QString Url("text/uri-list");
     const QString DataArrayPath("DataArrayPath");
     const QString SelectionWidget("Selection Widget");
   }

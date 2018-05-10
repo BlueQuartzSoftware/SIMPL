@@ -98,11 +98,6 @@ class SVWidgetsLib_EXPORT BookmarksToolboxWidget : public QWidget, private Ui::B
     BookmarksTreeView* getBookmarksTreeView();
 
     /**
-    * @brief getBookmarksPrefsPath
-    */
-    QString getBookmarksPrefsPath();
-
-    /**
     * @brief Reads the preferences from the users pref file
     */
     void readSettings(QtSSettings* prefs);
@@ -119,44 +114,12 @@ class SVWidgetsLib_EXPORT BookmarksToolboxWidget : public QWidget, private Ui::B
 
     virtual QDir findV4FavoritesDirectory();
 
-    void readPrebuiltPipelines();
-
-  public slots:
-
-    /**
-    * @brief BookmarksToolboxWidget::addBookmark
-    * @param filePath
-    * @param parent
-    */
-    void addBookmark(const QString& filePath, const QModelIndex& parent);
-
-    /**
-    * @brief BookmarksToolboxWidget::addFavoriteTreeItem
-    * @param parent
-    * @param favoriteTitle
-    * @param icon
-    * @param favoritePath
-    * @param allowEditing
-    */
-    int addTreeItem(QModelIndex parent,
-                    QString& favoriteTitle,
-                    QIcon icon,
-                    QString favoritePath,
-                    int insertIndex,
-                    bool allowEditing,
-                    bool editState,
-                    bool isExpanded);
-
   protected:
     QStringList generateFilterListFromPipelineFile(QString path);
     QString generateHtmlFilterListFromPipelineFile(QString path);
 
     void populateFilterList(QStringList filterNames);
     QString writeNewFavoriteFilePath(QString newFavoriteTitle, QString favoritePath, QTreeWidgetItem* item);
-
-    QDir findPipelinesDirectory();
-    void addPipelinesRecursively(QDir currentDir, QModelIndex parent, QString iconFileName,
-                                 bool allowEditing, QStringList filters, FilterLibraryTreeWidget::ItemType itemType);
 
   protected slots:
 
@@ -182,13 +145,12 @@ class SVWidgetsLib_EXPORT BookmarksToolboxWidget : public QWidget, private Ui::B
     void filterListGenerated(const QStringList& filterList, bool sort);
 
     /**
-    * @brief The signal is emitted when the user double clicks on a pipeline file
-    * @param filePath The absolute path to the pipeline file
-    * @param setOpenedFilePath A boolean that decides whether to cache the opened file path to use when re-saving.
-    * @param addToRecentFiles A boolean that decides whether to add filePath to the recents file list.
-    * @param newWindow A boolean that decides whether to open a new window.
+    * @brief This signal is emitted when a new SIMPLView instance is needed.  A filePath is used to populate the new
+    * SIMPLView instance with a pipeline, if necessary.
+    * @param filePath The absolute path to the pipeline file.  If empty, the instance will not have a pipeline in it.
+    * @param execute A boolean that decides whether to execute the pipeline or not
     */
-    void pipelineFileActivated(const QString& filePath, const bool& setOpenedFilePath, const bool& addToRecentFiles);
+    void bookmarkActivated(const QString& filePath, bool execute = false);
 
     void updateStatusBar(const QString& msg);
 
