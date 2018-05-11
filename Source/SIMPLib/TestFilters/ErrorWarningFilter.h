@@ -40,7 +40,7 @@
 /**
  * @brief The ErrorWarningFilter class. See [Filter documentation](@ref ErrorWarningFilter) for details.
  */
-class ErrorWarningFilter : public AbstractFilter
+class SIMPLib_EXPORT ErrorWarningFilter : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(ErrorWarningFilter SUPERCLASS AbstractFilter)
