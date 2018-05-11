@@ -300,8 +300,8 @@ void FilterInputWidget::layoutWidgets(AbstractFilter* filter)
     connect(filterParameterWidget, SIGNAL(viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType)), this, SLOT(getEmittedPathReqs(DataArraySelectionFilterParameter::RequirementType)));
     connect(filterParameterWidget, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
     // Alert to DataArrayPaths from the DataStructureWidget
-    connect(this, SIGNAL(filterPath(DataArrayPath)), filterParameterWidget, SLOT(checkFilterPath(DataArrayPath)));
-    connect(this, SIGNAL(endPathFiltering()), filterParameterWidget, SLOT(clearPathFiltering()));
+    connect(this, SIGNAL(filterPath(DataArrayPath)), filterParameterWidget, SIGNAL(filterPathInput(DataArrayPath)));
+    connect(this, SIGNAL(endPathFiltering()), filterParameterWidget, SIGNAL(endViewPathRequirements()));
     // Alert to DataArrayPaths from other FilterParameters
     connect(filterParameterWidget, SIGNAL(filterPath(DataArrayPath)), this, SLOT(emitFilterPath(DataArrayPath)));
     connect(filterParameterWidget, SIGNAL(endViewPaths()), this, SIGNAL(endPathFiltering()));

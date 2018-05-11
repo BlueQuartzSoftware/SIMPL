@@ -133,7 +133,7 @@ void DataArraySelectionWidget::setupGui()
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
     this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
-  connect(this, SIGNAL(filterPathInput(DataArrayPath)), m_SelectedDataArrayPath, SLOT(checkFilterPath(DataArrayPath)));
+  connect(this, SIGNAL(filterPathInput(DataArrayPath)), m_SelectedDataArrayPath, SLOT(checkDragPath(DataArrayPath)));
   connect(this, SIGNAL(endViewPathRequirements()), m_SelectedDataArrayPath, SLOT(clearPathFiltering()));
 
   connect(m_SelectedDataArrayPath, SIGNAL(viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType)));
