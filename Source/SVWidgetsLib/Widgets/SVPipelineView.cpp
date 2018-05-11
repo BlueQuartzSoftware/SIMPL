@@ -1419,8 +1419,8 @@ void SVPipelineView::toRunningState()
   }
 
   m_ActionClearPipeline->setDisabled(true);
-
-//  deleteBtn->setDisabled(true);
+  getActionUndo()->setDisabled(true);
+  getActionRedo()->setDisabled(true);
 }
 
 // -----------------------------------------------------------------------------
@@ -1449,7 +1449,8 @@ void SVPipelineView::toStoppedState()
 
   m_ActionClearPipeline->setEnabled(model->rowCount() > 0);
 
-//  deleteBtn->setEnabled(true);
+  getActionUndo()->setEnabled(true);
+  getActionRedo()->setEnabled(true);
 }
 
 // -----------------------------------------------------------------------------
