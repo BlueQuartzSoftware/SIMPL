@@ -66,7 +66,6 @@ private:
   std::vector<int>                        m_RemovalIndexes;
   bool                                    m_FirstRun = true;
   bool                                    m_UseAnimationOnFirstRun = true;
-  size_t                                  m_FiltersFinishedCount = 0;
 
   /**
    * @brief addFilter
@@ -76,20 +75,10 @@ private:
   void addFilter(AbstractFilter::Pointer filter, int insertionIndex = -1);
 
   /**
-   * @brief finishAddingFilter
-   */
-  void finishAddingFilters();
-
-  /**
    * @brief removeFilter
    * @param row
    */
   void removeFilter(AbstractFilter::Pointer filter);
-
-  /**
-   * @brief finishRemovingFilter
-   */
-  void finishRemovingFilters();
 
   /**
    * @brief connectFilterSignalsSlots

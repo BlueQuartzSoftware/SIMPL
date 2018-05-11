@@ -69,7 +69,6 @@ class SVWidgetsLib_EXPORT AddFilterCommand : public QUndoCommand
     SVPipelineView*                                     m_PipelineView = nullptr;
     bool                                                m_FirstRun = true;
     bool                                                m_UseAnimationOnFirstRun;
-    size_t                                              m_FiltersFinishedCount = 0;
 
     /**
      * @brief addFilter
@@ -84,11 +83,6 @@ class SVWidgetsLib_EXPORT AddFilterCommand : public QUndoCommand
      * @param pipelineIndex
      */
     void removeFilter(const QPersistentModelIndex &index);
-
-    /**
-     * @brief finishRemovingFilter
-     */
-    void finishRemovingFilters();
 
     /**
      * @brief connectFilterSignalsSlots

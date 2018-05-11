@@ -123,6 +123,23 @@ void AddFilterCommand::undo()
 
     removeFilter(filterIndex);
   }
+
+  QString statusMessage;
+  if (m_Filters.size() > 1)
+  {
+    statusMessage = QObject::tr("Undo \"Added %1 filters\"").arg(m_Filters.size());
+  }
+  else
+  {
+    statusMessage = QObject::tr("Undo \"Added '%1' filter\"").arg(m_Filters[0]->getHumanLabel());
+  }
+
+  m_PipelineView->preflightPipeline();
+
+  emit m_PipelineView->pipelineChanged();
+
+  emit m_PipelineView->statusMessage(statusMessage);
+  emit m_PipelineView->stdOutMessage(statusMessage);
 }
 
 // -----------------------------------------------------------------------------
@@ -202,6 +219,11 @@ void AddFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertionIn
     QRect filterRect = m_PipelineView->visualRect(filterIndex);
 
     PipelineItemSlideAnimation* slideAnimation = new PipelineItemSlideAnimation(model, QPersistentModelIndex(filterIndex), filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::Right);
+    model->setData(QPersistentModelIndex(filterIndex), PipelineItem::AnimationType::Add, PipelineModel::Roles::AnimationTypeRole);
+
+    QObject::connect(slideAnimation, &PipelineItemSlideAnimation::finished, [=] {
+      model->setData(QPersistentModelIndex(filterIndex), PipelineItem::AnimationType::None, PipelineModel::Roles::AnimationTypeRole);
+    });
     slideAnimation->start(QAbstractAnimation::DeleteWhenStopped);
   }
 }
@@ -219,41 +241,12 @@ void AddFilterCommand::removeFilter(const QPersistentModelIndex &index)
   QRect filterRect = m_PipelineView->visualRect(index);
 
   PipelineItemSlideAnimation* animation = new PipelineItemSlideAnimation(model, QPersistentModelIndex(index), filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::Left);
+  model->setData(QPersistentModelIndex(index), PipelineItem::AnimationType::Remove, PipelineModel::Roles::AnimationTypeRole);
 
   QObject::connect(animation, &PipelineItemSlideAnimation::finished, [=] () mutable {
     model->removeRow(index.row());
-
-    m_FiltersFinishedCount++;
-    if (m_FiltersFinishedCount == m_Filters.size())
-    {
-      finishRemovingFilters();
-      m_FiltersFinishedCount = 0;
-    }
   });
   animation->start(QAbstractAnimation::DeleteWhenStopped);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void AddFilterCommand::finishRemovingFilters()
-{
-  QString statusMessage;
-  if (m_Filters.size() > 1)
-  {
-    statusMessage = QObject::tr("Undo \"Added %1 filters\"").arg(m_Filters.size());
-  }
-  else
-  {
-    statusMessage = QObject::tr("Undo \"Added '%1' filter\"").arg(m_Filters[0]->getHumanLabel());
-  }
-
-  m_PipelineView->preflightPipeline();
-
-  emit m_PipelineView->pipelineChanged();
-
-  emit m_PipelineView->statusMessage(statusMessage);
-  emit m_PipelineView->stdOutMessage(statusMessage);
 }
 
 // -----------------------------------------------------------------------------

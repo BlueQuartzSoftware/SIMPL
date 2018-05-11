@@ -141,6 +141,10 @@ QVariant PipelineModel::data(const QModelIndex& index, int role) const
   {
     return item->getExpanded();
   }
+  else if (role == PipelineModel::Roles::AnimationTypeRole)
+  {
+    return item->getCurrentAnimationType();
+  }
   else if(role == Qt::DisplayRole)
   {
     return item->data(index.column());
@@ -623,6 +627,18 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
     }
 
     item->setYOffset(offset);
+  }
+  else if (role == PipelineModel::Roles::AnimationTypeRole)
+  {
+    bool ok = false;
+    int animationInt = value.toInt(&ok);
+    if (ok == false)
+    {
+      return false;
+    }
+
+    PipelineItem::AnimationType animationType = static_cast<PipelineItem::AnimationType>(animationInt);
+    item->setCurrentAnimationType(animationType);
   }
   else if (role == PipelineModel::Roles::ExpandedRole)
   {

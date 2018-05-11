@@ -92,66 +92,7 @@ void RemoveFilterCommand::undo()
 
     addFilter(filter, insertIndex);
   }
-}
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool variantCompare(const QVariant &v1, const QVariant &v2)
-{
-  return v1.toInt() > v2.toInt();
-}
-
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void RemoveFilterCommand::redo()
-{
-  for(size_t i = 0; i < m_Filters.size(); i++)
-  {
-    removeFilter(m_Filters[i]);
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void RemoveFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertionIndex)
-{
-  PipelineModel* model = m_PipelineView->getPipelineModel();
-
-  model->insertRow(insertionIndex);
-  QModelIndex filterIndex = model->index(insertionIndex, PipelineItem::Contents);
-  model->setData(filterIndex, static_cast<int>(PipelineItem::ItemType::Filter), PipelineModel::ItemTypeRole);
-  model->setFilter(filterIndex, filter);
-
-  connectFilterSignalsSlots(filter);
-
-  if (filter->getEnabled() == false)
-  {
-    model->setData(filterIndex, static_cast<int>(PipelineItem::WidgetState::Disabled), PipelineModel::WidgetStateRole);
-  }
-
-  QRect filterRect = m_PipelineView->visualRect(filterIndex);
-
-  PipelineItemSlideAnimation* animation = new PipelineItemSlideAnimation(model, QPersistentModelIndex(filterIndex), filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::Right);
-  QObject::connect(animation, &PipelineItemSlideAnimation::finished, [=] () mutable {
-    m_FiltersFinishedCount++;
-    if (m_FiltersFinishedCount == m_Filters.size())
-    {
-      finishAddingFilters();
-      m_FiltersFinishedCount = 0;
-    }
-  });
-  animation->start(QAbstractAnimation::DeleteWhenStopped);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void RemoveFilterCommand::finishAddingFilters()
-{
   PipelineModel* model = m_PipelineView->getPipelineModel();
   QModelIndex firstAddedIndex = model->index(m_RemovalIndexes.front(), PipelineItem::Contents);
   m_PipelineView->scrollTo(firstAddedIndex, QAbstractItemView::PositionAtTop);
@@ -179,6 +120,83 @@ void RemoveFilterCommand::finishAddingFilters()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+bool variantCompare(const QVariant &v1, const QVariant &v2)
+{
+  return v1.toInt() > v2.toInt();
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RemoveFilterCommand::redo()
+{
+  for(size_t i = 0; i < m_Filters.size(); i++)
+  {
+    removeFilter(m_Filters[i]);
+  }
+
+  QString statusMessage;
+  if (m_Filters.size() > 1)
+  {
+    statusMessage = QObject::tr("Removed %1 filters").arg(m_Filters.size());
+  }
+  else
+  {
+    statusMessage = QObject::tr("Removed '%1' filter").arg(m_Filters[0]->getHumanLabel());
+  }
+
+  if (m_FirstRun == false)
+  {
+    statusMessage.prepend("Redo \"");
+    statusMessage.append('\"');
+  }
+  else
+  {
+    m_FirstRun = false;
+  }
+
+  m_PipelineView->preflightPipeline();
+
+  emit m_PipelineView->pipelineChanged();
+
+  emit m_PipelineView->statusMessage(statusMessage);
+  emit m_PipelineView->stdOutMessage(statusMessage);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RemoveFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertionIndex)
+{
+  PipelineModel* model = m_PipelineView->getPipelineModel();
+
+  model->insertRow(insertionIndex);
+  QModelIndex filterIndex = model->index(insertionIndex, PipelineItem::Contents);
+  model->setData(filterIndex, static_cast<int>(PipelineItem::ItemType::Filter), PipelineModel::ItemTypeRole);
+  model->setFilter(filterIndex, filter);
+
+  connectFilterSignalsSlots(filter);
+
+  if (filter->getEnabled() == false)
+  {
+    model->setData(filterIndex, static_cast<int>(PipelineItem::WidgetState::Disabled), PipelineModel::WidgetStateRole);
+  }
+
+  QRect filterRect = m_PipelineView->visualRect(filterIndex);
+
+  PipelineItemSlideAnimation* animation = new PipelineItemSlideAnimation(model, QPersistentModelIndex(filterIndex), filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::Right);
+  model->setData(QPersistentModelIndex(filterIndex), PipelineItem::AnimationType::Add, PipelineModel::Roles::AnimationTypeRole);
+
+  QObject::connect(animation, &PipelineItemSlideAnimation::finished, [=] {
+    model->setData(QPersistentModelIndex(filterIndex), PipelineItem::AnimationType::None, PipelineModel::Roles::AnimationTypeRole);
+  });
+  animation->start(QAbstractAnimation::DeleteWhenStopped);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void RemoveFilterCommand::removeFilter(AbstractFilter::Pointer filter)
 {
   PipelineModel* model = m_PipelineView->getPipelineModel();
@@ -195,58 +213,17 @@ void RemoveFilterCommand::removeFilter(AbstractFilter::Pointer filter)
   if (m_UseAnimationOnFirstRun == false && m_FirstRun == true)
   {
     model->removeRow(persistentIndex.row());
-    finishRemovingFilters();
   }
   else
   {
     PipelineItemSlideAnimation* animation = new PipelineItemSlideAnimation(model, persistentIndex, filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::Left);
-    QObject::connect(animation, &PipelineItemSlideAnimation::finished, [=] () mutable {
-      model->removeRow(persistentIndex.row());
+    model->setData(persistentIndex, PipelineItem::AnimationType::Remove, PipelineModel::Roles::AnimationTypeRole);
 
-      m_FiltersFinishedCount++;
-      if (m_FiltersFinishedCount == m_Filters.size())
-      {
-        finishRemovingFilters();
-        m_FiltersFinishedCount = 0;
-      }
+    QObject::connect(animation, &PipelineItemSlideAnimation::finished, [=] {
+      model->removeRow(persistentIndex.row());
     });
     animation->start(QAbstractAnimation::DeleteWhenStopped);
   }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void RemoveFilterCommand::finishRemovingFilters()
-{
-  //  std::sort(m_RemovalIndexes.front(), m_RemovalIndexes.back());
-
-    QString statusMessage;
-    if (m_Filters.size() > 1)
-    {
-      statusMessage = QObject::tr("Removed %1 filters").arg(m_Filters.size());
-    }
-    else
-    {
-      statusMessage = QObject::tr("Removed '%1' filter").arg(m_Filters[0]->getHumanLabel());
-    }
-
-    if (m_FirstRun == false)
-    {
-      statusMessage.prepend("Redo \"");
-      statusMessage.append('\"');
-    }
-    else
-    {
-      m_FirstRun = false;
-    }
-
-    m_PipelineView->preflightPipeline();
-
-    emit m_PipelineView->pipelineChanged();
-
-    emit m_PipelineView->statusMessage(statusMessage);
-    emit m_PipelineView->stdOutMessage(statusMessage);
 }
 
 // -----------------------------------------------------------------------------
