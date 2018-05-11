@@ -1099,7 +1099,7 @@ void DataArrayPathSelectionWidget::changeStyleSheet(Style styleType)
   ss << "}\n";
 
   ss << "QToolButton:checked {\n";
-  ss << " background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\nstop: 0 " << getColor(Style::Active) << ", stop: 1 #FFFFFF);\n";
+  ss << " border: 2px solid " << getColor(styleType) << ";\n";
   ss << "}\n";
 
   ss << "QToolButton:flat {\n";
@@ -1135,6 +1135,11 @@ void DataArrayPathSelectionWidget::changeStyleSheet(Style styleType)
 void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
 {
   QToolButton::paintEvent(event);
+
+  if(false == isEnabled())
+  {
+    return;
+  }
 
   int rectWidth = height();
   int penWidth = 2;
