@@ -64,12 +64,12 @@ class SVWidgetsLib_EXPORT AddFilterCommand : public QUndoCommand
 
   private:
     std::vector<AbstractFilter::Pointer>                m_Filters;
-    size_t                                              m_FilterCount;
-    size_t                                              m_InsertIndex;
+    size_t                                              m_InsertIndex = 0;
     QString                                             m_ActionText;
-    SVPipelineView*                                     m_PipelineView;
+    SVPipelineView*                                     m_PipelineView = nullptr;
     bool                                                m_FirstRun = true;
     bool                                                m_UseAnimationOnFirstRun;
+    size_t                                              m_FiltersFinishedCount = 0;
 
     /**
      * @brief addFilter
@@ -84,6 +84,11 @@ class SVWidgetsLib_EXPORT AddFilterCommand : public QUndoCommand
      * @param pipelineIndex
      */
     void removeFilter(const QPersistentModelIndex &index);
+
+    /**
+     * @brief finishRemovingFilter
+     */
+    void finishRemovingFilters();
 
     /**
      * @brief connectFilterSignalsSlots

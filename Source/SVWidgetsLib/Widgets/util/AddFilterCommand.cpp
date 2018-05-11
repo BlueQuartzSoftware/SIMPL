@@ -55,7 +55,6 @@
 // -----------------------------------------------------------------------------
 AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, int insertIndex, QString actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
 : QUndoCommand(parent)
-, m_FilterCount(1)
 , m_ActionText(actionText)
 , m_PipelineView(view)
 , m_UseAnimationOnFirstRun(useAnimationOnFirstRun)
@@ -79,7 +78,6 @@ AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineVie
 AddFilterCommand::AddFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, int insertIndex, QString actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
 : QUndoCommand(parent)
 , m_Filters(filters)
-, m_FilterCount(filters.size())
 , m_ActionText(actionText)
 , m_PipelineView(view)
 , m_UseAnimationOnFirstRun(useAnimationOnFirstRun)
@@ -125,22 +123,6 @@ void AddFilterCommand::undo()
 
     removeFilter(filterIndex);
   }
-
-  emit m_PipelineView->pipelineChanged();
-  emit m_PipelineView->preflightPipeline();
-
-  QString statusMessage;
-  if (m_Filters.size() > 1)
-  {
-    statusMessage = QObject::tr("Undo \"Added %1 filters\"").arg(m_Filters.size());
-  }
-  else
-  {
-    statusMessage = QObject::tr("Undo \"Added '%1' filter\"").arg(m_Filters[0]->getHumanLabel());
-  }
-
-  emit model->statusMessageGenerated(statusMessage);
-  emit model->standardOutputMessageGenerated(statusMessage);
 }
 
 // -----------------------------------------------------------------------------
@@ -222,15 +204,6 @@ void AddFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertionIn
     PipelineItemSlideAnimation* slideAnimation = new PipelineItemSlideAnimation(model, QPersistentModelIndex(filterIndex), filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::Right);
     slideAnimation->start(QAbstractAnimation::DeleteWhenStopped);
   }
-
-//  PipelineItemHeightAnimation* heightAnimation = new PipelineItemHeightAnimation(model, QPersistentModelIndex(filterIndex), PipelineItemHeightAnimation::AnimationDirection::Open);
-
-//  QObject::connect(heightAnimation, &PipelineItemHeightAnimation::finished, [=]{
-//    PipelineItemSlideAnimation* slideAnimation = new PipelineItemSlideAnimation(model, QPersistentModelIndex(filterIndex), filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::Right);
-//    slideAnimation->start(QAbstractAnimation::DeleteWhenStopped);
-//  });
-
-//  heightAnimation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
 // -----------------------------------------------------------------------------
@@ -247,13 +220,40 @@ void AddFilterCommand::removeFilter(const QPersistentModelIndex &index)
 
   PipelineItemSlideAnimation* animation = new PipelineItemSlideAnimation(model, QPersistentModelIndex(index), filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::Left);
 
-  QObject::connect(animation, &PipelineItemSlideAnimation::finished, [=] {
-//    PipelineItemHeightAnimation* heightAnimation = new PipelineItemHeightAnimation(model, QPersistentModelIndex(index), PipelineItemHeightAnimation::AnimationDirection::Close);
-//    heightAnimation->start(QAbstractAnimation::DeleteWhenStopped);
-
+  QObject::connect(animation, &PipelineItemSlideAnimation::finished, [=] () mutable {
     model->removeRow(index.row());
+
+    m_FiltersFinishedCount++;
+    if (m_FiltersFinishedCount == m_Filters.size())
+    {
+      finishRemovingFilters();
+      m_FiltersFinishedCount = 0;
+    }
   });
   animation->start(QAbstractAnimation::DeleteWhenStopped);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AddFilterCommand::finishRemovingFilters()
+{
+  QString statusMessage;
+  if (m_Filters.size() > 1)
+  {
+    statusMessage = QObject::tr("Undo \"Added %1 filters\"").arg(m_Filters.size());
+  }
+  else
+  {
+    statusMessage = QObject::tr("Undo \"Added '%1' filter\"").arg(m_Filters[0]->getHumanLabel());
+  }
+
+  m_PipelineView->preflightPipeline();
+
+  emit m_PipelineView->pipelineChanged();
+
+  emit m_PipelineView->statusMessage(statusMessage);
+  emit m_PipelineView->stdOutMessage(statusMessage);
 }
 
 // -----------------------------------------------------------------------------

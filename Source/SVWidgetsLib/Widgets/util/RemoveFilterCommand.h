@@ -61,11 +61,12 @@ public:
   virtual void redo();
 
 private:
-  SVPipelineView*                         m_PipelineView;
+  SVPipelineView*                         m_PipelineView = nullptr;
   std::vector<AbstractFilter::Pointer>    m_Filters;
   std::vector<int>                        m_RemovalIndexes;
   bool                                    m_FirstRun = true;
-  bool                                    m_UseAnimationOnFirstRun;
+  bool                                    m_UseAnimationOnFirstRun = true;
+  size_t                                  m_FiltersFinishedCount = 0;
 
   /**
    * @brief addFilter
@@ -75,10 +76,20 @@ private:
   void addFilter(AbstractFilter::Pointer filter, int insertionIndex = -1);
 
   /**
+   * @brief finishAddingFilter
+   */
+  void finishAddingFilters();
+
+  /**
    * @brief removeFilter
    * @param row
    */
   void removeFilter(AbstractFilter::Pointer filter);
+
+  /**
+   * @brief finishRemovingFilter
+   */
+  void finishRemovingFilters();
 
   /**
    * @brief connectFilterSignalsSlots
