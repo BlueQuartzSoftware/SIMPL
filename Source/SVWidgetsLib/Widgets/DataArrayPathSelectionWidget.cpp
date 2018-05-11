@@ -1106,8 +1106,13 @@ void DataArrayPathSelectionWidget::changeStyleSheet(Style styleType)
   ss << " position: relative;\n";
   ss << "}\n";
 
+  QColor checkedColor = getColor(styleType);
+  int hue = checkedColor.hsvHue();
+  int saturation = 50;
+  int value = 255;
+  checkedColor.setHsv(hue, saturation, value);
   ss << "QToolButton:checked {\n";
-  ss << " background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\nstop: 0 " << getColor(Style::Active) << ", stop: 1 #FFFFFF);\n";
+  ss << " background-color: " << checkedColor.name() << ";\n";
   ss << "}\n";
 
   ss << "QToolButton:flat {\n";
@@ -1153,6 +1158,10 @@ void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
   if(m_Style == Style::NotFound)
   {
     penColor = getColor(Style::NotFound);
+  }
+  if(false == isEnabled())
+  {
+    fillColor = QColor("#DDDDDD");
   }
   
   QPen pen;
