@@ -136,8 +136,6 @@ void RemoveFilterCommand::redo()
     removeFilter(m_Filters[i]);
   }
 
-//  std::sort(m_RemovalIndexes.front(), m_RemovalIndexes.back());
-
   QString statusMessage;
   if (m_Filters.size() > 1)
   {
@@ -188,6 +186,11 @@ void RemoveFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertio
   QRect filterRect = m_PipelineView->visualRect(filterIndex);
 
   PipelineItemSlideAnimation* animation = new PipelineItemSlideAnimation(model, QPersistentModelIndex(filterIndex), filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::Right);
+  model->setData(QPersistentModelIndex(filterIndex), PipelineItem::AnimationType::Add, PipelineModel::Roles::AnimationTypeRole);
+
+  QObject::connect(animation, &PipelineItemSlideAnimation::finished, [=] {
+    model->setData(QPersistentModelIndex(filterIndex), PipelineItem::AnimationType::None, PipelineModel::Roles::AnimationTypeRole);
+  });
   animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
@@ -214,6 +217,8 @@ void RemoveFilterCommand::removeFilter(AbstractFilter::Pointer filter)
   else
   {
     PipelineItemSlideAnimation* animation = new PipelineItemSlideAnimation(model, persistentIndex, filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::Left);
+    model->setData(persistentIndex, PipelineItem::AnimationType::Remove, PipelineModel::Roles::AnimationTypeRole);
+
     QObject::connect(animation, &PipelineItemSlideAnimation::finished, [=] {
       model->removeRow(persistentIndex.row());
     });

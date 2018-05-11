@@ -68,6 +68,15 @@ class SVWidgetsLib_EXPORT PipelineItem
 
     static const int MaxHeight = 28;
 
+    enum AnimationType
+    {
+      None,
+      Add,
+      Remove
+    };
+
+    SIMPL_INSTANCE_PROPERTY(AnimationType, CurrentAnimationType)
+
     enum PipelineItemData
     {
       Contents
@@ -94,9 +103,9 @@ class SVWidgetsLib_EXPORT PipelineItem
 
     enum class ErrorState : EnumType
     {
-        Ok = 0,
-        Error = 1,
-        Warning = 2,
+      Ok = 0,
+      Error = 1,
+      Warning = 2,
     };
     SIMPL_INSTANCE_PROPERTY(ErrorState, ErrorState)
 
