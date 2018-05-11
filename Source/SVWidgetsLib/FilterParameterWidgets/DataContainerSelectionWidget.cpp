@@ -281,7 +281,7 @@ void DataContainerSelectionWidget::endViewPathRequirements()
 // -----------------------------------------------------------------------------
 void DataContainerSelectionWidget::checkFilterPath(DataArrayPath path)
 {
-  setEnabled(m_SelectedDataContainerPath->checkPathReqs(path));
+  m_SelectedDataContainerPath->setEnabled(m_SelectedDataContainerPath->checkPathReqs(path));
 }
 
 // -----------------------------------------------------------------------------
@@ -289,5 +289,5 @@ void DataContainerSelectionWidget::checkFilterPath(DataArrayPath path)
 // -----------------------------------------------------------------------------
 void DataContainerSelectionWidget::clearPathFiltering()
 {
-  setEnabled(true);
+  m_SelectedDataContainerPath->setEnabled(true);
 }

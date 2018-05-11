@@ -40,10 +40,12 @@
 
 #include <QtWidgets/QUndoCommand>
 
+#include <SIMPLib/Filtering/AbstractFilter.h>
+
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
-class PipelineFilterObject;
-class PipelineView;
+class SVPipelineView;
+class PipelineModel;
 
 /**
  * @brief The MoveFilterCommand class
@@ -54,32 +56,21 @@ public:
 
     /**
    * @brief MoveFilterCommand
-   * @param filterWidget
-   * @param origin
-   * @param destination
-   * @param pipelineView
+   * @param filter
+   * @param view
+   * @param insertIndex
    * @param parent
    */
-  MoveFilterCommand(PipelineFilterObject* filterWidget, QVariant origin, QVariant destination, PipelineView* pipelineView, QUndoCommand* parent = 0);
+  MoveFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, int insertIndex, QUndoCommand* parent = nullptr);
 
   /**
    * @brief MoveFilterCommand
-   * @param filterWidget
-   * @param destination
-   * @param pipelineView
+   * @param filters
+   * @param view
+   * @param insertIndex
    * @param parent
    */
-  MoveFilterCommand(QList<std::pair<int, PipelineFilterObject*>> filterWidget, QVariant destination, PipelineView* pipelineView, QUndoCommand* parent = 0);
-
-  /**
-   * @brief MoveFilterCommand
-   * @param filterWidget
-   * @param destination
-   * @param originView
-   * @param destinationView
-   * @param parent
-   */
-  MoveFilterCommand(QList<std::pair<int, PipelineFilterObject*>> filterWidget, QVariant destination, PipelineView* originView, PipelineView* destinationView, QUndoCommand* parent = 0);
+  MoveFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, int insertIndex, QUndoCommand* parent = nullptr);
 
   virtual ~MoveFilterCommand();
 
@@ -94,13 +85,23 @@ public:
   virtual void redo();
 
 private:
-  QList<std::pair<int, PipelineFilterObject*>> m_FilterWidgets;
-  PipelineView* m_OriginView;
-  PipelineView* m_DestinationView;
-  QString m_JsonString;
-  QVariant m_Destination;
-  bool m_WindowIsModified;
-  bool m_FirstRun;
+  std::vector<AbstractFilter::Pointer> m_Filters;
+  SVPipelineView* m_PipelineView = nullptr;
+  int m_InsertIndex;
+  bool m_FirstRun = true;
+
+  /**
+   * @brief addFilter
+   * @param filter
+   * @param insertionIndex
+   */
+  void addFilter(AbstractFilter::Pointer filter, int insertionIndex);
+
+  /**
+   * @brief removeFilter
+   * @param filterIndex
+   */
+  void removeFilter(int filterIndex);
 
   MoveFilterCommand(const MoveFilterCommand&) = delete; // Copy Constructor Not Implemented
   void operator=(const MoveFilterCommand&);             // Move assignment Not Implemented

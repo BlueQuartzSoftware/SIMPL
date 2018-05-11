@@ -51,6 +51,8 @@
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
+#include "SVWidgetsLib/Widgets/DataStructureItemDelegate.h"
+
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 class SVWidgetsLib_EXPORT DataStructureTreeView : public QTreeView
@@ -83,19 +85,74 @@ public:
    */
   void setActiveFilter(AbstractFilter::Pointer filter);
 
+  /**
+  * @brief Sets the filter requirements and forces a repaint
+  * @param reqs
+  */
+  void setViewRequirements(DataContainerSelectionFilterParameter::RequirementType reqs);
+
+  /**
+   * @brief Sets the filter requirements and forces a repaint
+   * @param reqs
+   */
+  void setViewRequirements(AttributeMatrixSelectionFilterParameter::RequirementType reqs);
+
+  /**
+   * @brief Sets the filter requirements and forces a repaint
+   * @param reqs
+   */
+  void setViewRequirements(DataArraySelectionFilterParameter::RequirementType reqs);
+
+  /**
+   * @brief Clears the filter requirements and forces a repaint
+   * @param reqs
+   */
+  void clearViewRequirements();
+
 signals:
   void filterPath(DataArrayPath path);
   void endPathFiltering();
 
 protected:
+  /**
+   * @brief mouseMoveEvent
+   * @param event
+   */
   void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+
+  /**
+   * @brief dragEnterEvent
+   * @param event
+   */
   void dragEnterEvent(QDragEnterEvent* event) Q_DECL_OVERRIDE;
-  //    void dragLeaveEvent(QDragLeaveEvent* event) Q_DECL_OVERRIDE;
+
+  /**
+   * @brief dragMoveEvent
+   * @param event
+   */
   void dragMoveEvent(QDragMoveEvent* event) Q_DECL_OVERRIDE;
+
+  /**
+   * @brief dropEvent
+   * @param event
+   */
   void dropEvent(QDropEvent* event) Q_DECL_OVERRIDE;
+
+  /**
+   * @brief leaveEvent
+   * @param event
+   */
   void leaveEvent(QEvent* event) Q_DECL_OVERRIDE;
 
+  /**
+   * @brief Emits the filter path for the given model index
+   * @param index
+   */
   void emitFilterPath(QModelIndex& index);
+
+  /**
+   * @brief End the drag process
+   */
   void dragComplete();
 
 private slots:
@@ -105,16 +162,11 @@ private slots:
    */
   void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
 
-  /**
-   * @brief requestContextMenu
-   * @param pos
-   */
-  // void requestContextMenu(const QPoint &pos);
-
 private:
   QPoint m_StartPos;
   bool m_Dragging = false;
   AbstractFilter::Pointer m_Filter = nullptr;
+  DataStructureItemDelegate* m_Delegate = nullptr;
 
   /**
    * @brief performDrag

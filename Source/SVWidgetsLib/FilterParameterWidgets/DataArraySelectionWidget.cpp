@@ -289,7 +289,7 @@ void DataArraySelectionWidget::endViewPathRequirements()
 // -----------------------------------------------------------------------------
 void DataArraySelectionWidget::checkFilterPath(DataArrayPath path)
 {
-  setEnabled(m_SelectedDataArrayPath->checkPathReqs(path));
+  m_SelectedDataArrayPath->setEnabled(m_SelectedDataArrayPath->checkPathReqs(path));
 }
 
 // -----------------------------------------------------------------------------
@@ -297,6 +297,6 @@ void DataArraySelectionWidget::checkFilterPath(DataArrayPath path)
 // -----------------------------------------------------------------------------
 void DataArraySelectionWidget::clearPathFiltering()
 {
-  setEnabled(true);
+  m_SelectedDataArrayPath->setEnabled(true);
   m_SelectedDataArrayPath->setPathFiltering(false);
 }

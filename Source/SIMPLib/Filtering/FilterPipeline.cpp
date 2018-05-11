@@ -614,7 +614,7 @@ DataContainerArray::Pointer FilterPipeline::execute()
     progValue.setType(PipelineMessage::MessageType::StatusMessage);
     progValue.setText(ss);
     emit pipelineGeneratedMessage(progValue);
-    emit filt->filterInProgress();
+    emit filt->filterInProgress(filt.get());
 
     // Do not execute disabled filters
     if(filt->getEnabled())
@@ -639,7 +639,7 @@ DataContainerArray::Pointer FilterPipeline::execute()
         progValue.setPipelineIndex((*filter)->getPipelineIndex());
         progValue.setCode(filt->getErrorCondition());
         emit pipelineGeneratedMessage(progValue);
-        emit filt->filterCompleted();
+        emit filt->filterCompleted(filt.get());
         emit pipelineFinished();
         disconnectSignalsSlots();
 
@@ -653,7 +653,7 @@ DataContainerArray::Pointer FilterPipeline::execute()
     }
 
     // Emit that the filter is completed for those objects that care, even the disabled ones.
-    emit filt->filterCompleted();
+    emit filt->filterCompleted(filt.get());
   }
 
   emit pipelineFinished();

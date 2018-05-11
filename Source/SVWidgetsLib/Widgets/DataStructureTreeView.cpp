@@ -52,10 +52,6 @@
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h"
 #include "SVWidgetsLib/Widgets/DataStructureItemDelegate.h"
-#include "SVWidgetsLib/Widgets/SIMPLViewMenuItems.h"
-#include "SVWidgetsLib/Widgets/SIMPLViewToolbox.h"
-
-
 
 // -----------------------------------------------------------------------------
 //
@@ -63,10 +59,11 @@
 DataStructureTreeView::DataStructureTreeView(QWidget* parent)
 : QTreeView(parent)
 {
-  //setContextMenuPolicy(Qt::CustomContextMenu);
-  //connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(requestContextMenu(const QPoint&)));
   setAcceptDrops(true);
   setMouseTracking(true);
+
+  m_Delegate = new DataStructureItemDelegate(this);
+  setItemDelegate(m_Delegate);
 }
 
 // -----------------------------------------------------------------------------
@@ -80,6 +77,44 @@ DataStructureTreeView::~DataStructureTreeView() = default;
 void DataStructureTreeView::setActiveFilter(AbstractFilter::Pointer filter)
 {
   m_Filter = filter;
+  m_Delegate->setActiveFilter(filter);
+  viewport()->repaint();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureTreeView::setViewRequirements(DataContainerSelectionFilterParameter::RequirementType reqs)
+{
+  m_Delegate->setViewRequirements(reqs);
+  viewport()->repaint();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureTreeView::setViewRequirements(AttributeMatrixSelectionFilterParameter::RequirementType reqs)
+{
+  m_Delegate->setViewRequirements(reqs);
+  viewport()->repaint();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureTreeView::setViewRequirements(DataArraySelectionFilterParameter::RequirementType reqs)
+{
+  m_Delegate->setViewRequirements(reqs);
+  viewport()->repaint();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureTreeView::clearViewRequirements()
+{
+  m_Delegate->clearRequirements();
+  viewport()->repaint();
 }
 
 // -----------------------------------------------------------------------------
@@ -246,31 +281,6 @@ void DataStructureTreeView::dragEnterEvent(QDragEnterEvent* event)
   event->ignore();
 }
 
-#if 0
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataStructureTreeView::dragLeaveEvent(QDragLeaveEvent* event)
-{
-
-
-  if(m_TopLevelItemPlaceholder.isValid())
-  {
-    m_Model->removeRow(m_Model->rowCount() - 1, rootIndex());
-    m_TopLevelItemPlaceholder = QModelIndex();
-  }
-
-  clearSelection();
-
-  setCurrentIndex(m_ActiveIndexBeingDragged);
-
-  for(int i = 0; i < m_IndexesBeingDragged.size(); i++)
-  {
-    selectionModel()->select(m_IndexesBeingDragged[i], QItemSelectionModel::Select);
-  }
-}
-#endif
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -333,32 +343,3 @@ void DataStructureTreeView::dropEvent(QDropEvent* event)
 
   event->ignore();
 }
-
-#if 0
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataStructureTreeView::requestContextMenu(const QPoint& pos)
-{
-  activateWindow();
-
-  QModelIndex index = indexAt(pos);
-
-  QPoint mapped;
-  if(index.isValid())
-  {
-    // Note: We must map the point to global from the viewport to
-    // account for the header.
-    mapped = viewport()->mapToGlobal(pos);
-  }
-  else
-  {
-    index = QModelIndex();
-    mapped = mapToGlobal(pos);
-  }
-
-
-  //TODO: to be filled out if needed
-}
-#endif
-

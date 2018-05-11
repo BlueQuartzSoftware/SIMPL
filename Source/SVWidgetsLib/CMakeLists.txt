@@ -98,6 +98,7 @@ foreach(h ${SVWidgetsLib_Generated_RC_SRCS})
   set_property(SOURCE ${h} PROPERTY SKIP_AUTOMOC ON)
 endforeach()
 
+include(${SVWidgetsLib_SOURCE_DIR}/Animations/SourceList.cmake)
 include(${SVWidgetsLib_SOURCE_DIR}/Core/SourceList.cmake)
 include(${SVWidgetsLib_SOURCE_DIR}/Dialogs/SourceList.cmake)
 include(${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/SourceList.cmake)
@@ -123,6 +124,7 @@ set(Project_SRCS
   ${SVWidgetsLib_Generated_RC_SRCS}
 
   #---------------
+  ${SVWidgets_Animations_Files}
   ${SVWidgets_Core_Files}
   ${SVWidgets_Dialogs_Files}
   ${SVWidgetsLib_ParameterFilterWidgets_Files}
@@ -160,12 +162,14 @@ target_include_directories(SVWidgetsLib
                             PUBLIC
                               ${SIMPLProj_SOURCE_DIR}/Source
                               ${SIMPLProj_BINARY_DIR}
+                              ${SVWidgetsLib_SOURCE_DIR}/Animations
                               ${SVWidgetsLib_SOURCE_DIR}/Core
                               ${SVWidgetsLib_SOURCE_DIR}/Dialogs
                               ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets
                               ${SVWidgetsLib_SOURCE_DIR}/QtSupport
                               ${SVWidgetsLib_SOURCE_DIR}/Widgets
                               ${SVWidgetsLib_SOURCE_DIR}/Widgets/ImportASCIIDataWizard
+                              ${SVWidgetsLib_BINARY_DIR}/Animations
                               ${SVWidgetsLib_BINARY_DIR}/Core
                               ${SVWidgetsLib_BINARY_DIR}/Dialogs
                               ${SVWidgetsLib_BINARY_DIR}/FilterParameterWidgets

@@ -48,7 +48,6 @@
 #include "SVWidgetsLib/QtSupport/QtSPluginFrame.h"
 
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
-#include "SVWidgetsLib/Widgets/SVPipelineFilterWidget.h"
 
 #include "ui_FileListInfoWidget.h"
 

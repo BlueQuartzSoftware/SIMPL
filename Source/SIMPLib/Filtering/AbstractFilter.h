@@ -382,12 +382,12 @@ signals:
   /**
    * @brief Signal is emitted when filter has completed the execute() method
    */
-  void filterCompleted();
+  void filterCompleted(AbstractFilter* filter);
 
   /**
    * @brief Signal is emitted when filter is executing
    */
-  void filterInProgress();
+  void filterInProgress(AbstractFilter* filter);
 
   /**
   * @brief Signal is emitted when a DataArrayPath property is updated

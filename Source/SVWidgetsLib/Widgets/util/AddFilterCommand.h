@@ -36,28 +36,25 @@
 #ifndef _addfilterscommand_h_
 #define _addfilterscommand_h_
 
-#include <QtCore/QMap>
-#include <QtCore/QUuid>
-#include <QtCore/QRect>
+#include <QtCore/QModelIndex>
 
 #include <QtWidgets/QUndoCommand>
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
 #include <SIMPLib/Filtering/AbstractFilter.h>
+#include <SIMPLib/Filtering/FilterPipeline.h>
+
+#include "SVWidgetsLib/SVWidgetsLib.h"
 
 class PipelineFilterObject;
-class PipelineView;
+class SVPipelineView;
+class QPushButton;
 
 class SVWidgetsLib_EXPORT AddFilterCommand : public QUndoCommand
 {
   public:
-    AddFilterCommand(AbstractFilter::Pointer filter, PipelineView* destination, QString actionText, QVariant value, QUuid previousNode = QUuid(), QUuid nextNode = QUuid(),
-                     QUndoCommand* parent = nullptr);
+    AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, int insertIndex, QString actionText, bool useAnimationOnFirstRun = true, QUndoCommand* parent = nullptr);
 
-    AddFilterCommand(QList<AbstractFilter::Pointer> filters, PipelineView* destination, QString actionText, QVariant value, QUuid previousNode = QUuid(), QUuid nextNode = QUuid(),
-                     QUndoCommand* parent = nullptr);
-
-    AddFilterCommand(QString jsonString, PipelineView* destination, QString actionText, QVariant value, QUuid previousNode = QUuid(), QUuid nextNode = QUuid(), QUndoCommand* parent = nullptr);
+    AddFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, int insertIndex, QString actionText, bool useAnimationOnFirstRun = true, QUndoCommand* parent = nullptr);
 
     ~AddFilterCommand() override;
 
@@ -66,13 +63,39 @@ class SVWidgetsLib_EXPORT AddFilterCommand : public QUndoCommand
     void redo() override;
 
   private:
-    QString                                             m_JsonString;
-    int                                                 m_FilterCount;
+    std::vector<AbstractFilter::Pointer>                m_Filters;
+    size_t                                              m_FilterCount;
+    size_t                                              m_InsertIndex;
     QString                                             m_ActionText;
-    PipelineView*                                       m_Destination;
-    QVariant                                            m_Value;
-    QUuid                                               m_PreviousNodeId;
-    QUuid                                               m_NextNodeId;
+    SVPipelineView*                                     m_PipelineView;
+    bool                                                m_FirstRun = true;
+    bool                                                m_UseAnimationOnFirstRun;
+
+    /**
+     * @brief addFilter
+     * @param filter
+     * @param parentIndex
+     */
+    void addFilter(AbstractFilter::Pointer filter, int insertionIndex = -1);
+
+    /**
+     * @brief removeFilter
+     * @param filterIndex
+     * @param pipelineIndex
+     */
+    void removeFilter(const QPersistentModelIndex &index);
+
+    /**
+     * @brief connectFilterSignalsSlots
+     * @param filter
+     */
+    void connectFilterSignalsSlots(AbstractFilter::Pointer filter);
+
+    /**
+     * @brief disconnectFilterSignalsSlots
+     * @param filter
+     */
+    void disconnectFilterSignalsSlots(AbstractFilter::Pointer filter);
 
     AddFilterCommand(const AddFilterCommand&) = delete; // Copy Constructor Not Implemented
     void operator=(const AddFilterCommand&) = delete;   // Move assignment Not Implemented

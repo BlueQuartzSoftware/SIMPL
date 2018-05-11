@@ -95,10 +95,8 @@ class SVWidgetsLib_EXPORT FilterLibraryToolboxWidget : public QWidget, private U
     void updateFilterGroupList(FilterManager::Collection& factories);
 
   protected slots:
-    void on_bookmarksTreeView_itemClicked( QTreeWidgetItem* item, int column );
-    void on_bookmarksTreeView_itemChanged( QTreeWidgetItem* item, int column );
-    void on_bookmarksTreeView_currentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous );
-    void on_bookmarksTreeView_itemDoubleClicked( QTreeWidgetItem* item, int column );
+    void on_filterLibrary_currentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous );
+    void on_filterLibrary_itemDoubleClicked( QTreeWidgetItem* item, int column );
 
     /**
     * @brief showContextMenuForWidget
@@ -117,7 +115,7 @@ class SVWidgetsLib_EXPORT FilterLibraryToolboxWidget : public QWidget, private U
      * @brief filterItemDoubleClicked
      * @param filterName
      */
-    void filterItemDoubleClicked(const QString& filterName);
+    void filterItemDoubleClicked(const QString& filterName, int insertIndex = -1, bool useAnimationOnFirstRun = true);
 
     /**
      * @brief filterListGenerated

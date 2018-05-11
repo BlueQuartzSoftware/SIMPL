@@ -44,108 +44,61 @@
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
 
-#include "SVWidgetsLib/Widgets/BreakpointFilterWidget.h"
-#include "SVWidgetsLib/Widgets/PipelineFilterObject.h"
-#include "SVWidgetsLib/Widgets/SVPipelineViewWidget.h"
-#include "SVWidgetsLib/Widgets/SIMPLViewMenuItems.h"
+#include "SVWidgetsLib/Animations/PipelineItemSlideAnimation.h"
+#include "SVWidgetsLib/Animations/PipelineItemHeightAnimation.h"
+#include "SVWidgetsLib/Widgets/FilterInputWidget.h"
+#include "SVWidgetsLib/Widgets/SVPipelineView.h"
+#include "SVWidgetsLib/Widgets/PipelineModel.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, PipelineView* destination, QString actionText, QVariant value, QUuid previousNode, QUuid nextNode, QUndoCommand* parent)
+AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, int insertIndex, QString actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
 : QUndoCommand(parent)
 , m_FilterCount(1)
 , m_ActionText(actionText)
-, m_Destination(destination)
-, m_Value(value)
-, m_PreviousNodeId(previousNode)
-, m_NextNodeId(nextNode)
+, m_PipelineView(view)
+, m_UseAnimationOnFirstRun(useAnimationOnFirstRun)
 {
-  if(m_Value.canConvert<int>())
+  PipelineModel* model = m_PipelineView->getPipelineModel();
+
+  if(insertIndex < 0)
   {
-    int index = value.toInt();
-    if(index < 0)
-    {
-      m_Value.setValue(destination->filterCount());
-    }
+    insertIndex = model->rowCount();
   }
+  m_InsertIndex = insertIndex;
 
   setText(QObject::tr("\"%1 '%2'\"").arg(actionText).arg(filter->getHumanLabel()));
 
-  FilterPipeline::Pointer pipeline = FilterPipeline::New();
-  pipeline->pushBack(filter);
-  JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
-  m_JsonString = jsonWriter->writePipelineToString(pipeline, "");
+  m_Filters.push_back(filter);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFilterCommand::AddFilterCommand(QList<AbstractFilter::Pointer> filters, PipelineView* destination, QString actionText, QVariant value, QUuid previousNode, QUuid nextNode, QUndoCommand* parent)
+AddFilterCommand::AddFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, int insertIndex, QString actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
 : QUndoCommand(parent)
+, m_Filters(filters)
 , m_FilterCount(filters.size())
 , m_ActionText(actionText)
-, m_Destination(destination)
-, m_Value(value)
-, m_PreviousNodeId(previousNode)
-, m_NextNodeId(nextNode)
+, m_PipelineView(view)
+, m_UseAnimationOnFirstRun(useAnimationOnFirstRun)
 {
-  if(m_Value.canConvert<int>())
+  PipelineModel* model = m_PipelineView->getPipelineModel();
+
+  if(insertIndex < 0)
   {
-    int index = value.toInt();
-    if(index < 0)
-    {
-      m_Value.setValue(destination->filterCount());
-    }
+    insertIndex = model->rowCount();
   }
+  m_InsertIndex = insertIndex;
 
-  setText(QObject::tr("\"%1 %2 Filters\"").arg(actionText).arg(filters.size()));
-
-  FilterPipeline::Pointer pipeline = FilterPipeline::New();
-  for(int i = 0; i < filters.size(); i++)
+  if (filters.size() == 1)
   {
-    pipeline->pushBack(filters[i]);
+    setText(QObject::tr("\"%1 '%2'\"").arg(actionText).arg(filters[0]->getHumanLabel()));
   }
-  JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
-  m_JsonString = jsonWriter->writePipelineToString(pipeline, "");
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-AddFilterCommand::AddFilterCommand(QString jsonString, PipelineView* destination, QString actionText, QVariant value, QUuid previousNode, QUuid nextNode, QUndoCommand* parent)
-: QUndoCommand(parent)
-, m_ActionText(actionText)
-, m_Destination(destination)
-, m_Value(value)
-, m_PreviousNodeId(previousNode)
-, m_NextNodeId(nextNode)
-{
-  if(m_Value.canConvert<int>())
+  else
   {
-    int index = value.toInt();
-    if(index < 0)
-    {
-      m_Value.setValue(destination->filterCount());
-    }
-  }
-
-  QJsonParseError parseError;
-  QByteArray byteArray = QByteArray::fromStdString(jsonString.toStdString());
-  QJsonDocument doc = QJsonDocument::fromJson(byteArray, &parseError);
-  if(parseError.error == QJsonParseError::NoError)
-  {
-    QJsonObject rootObject = doc.object();
-    
-    FilterPipeline::Pointer pipeline = FilterPipeline::FromJson(rootObject);
-    
-    FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
-    
-    m_FilterCount = container.size();
-    
-    setText(QObject::tr("\"%1 %2 Filters\"").arg(actionText).arg(m_FilterCount));
-    
-    m_JsonString = jsonString;
+    setText(QObject::tr("\"%1 %2 Filters\"").arg(actionText).arg(filters.size()));
   }
 }
 
@@ -159,38 +112,35 @@ AddFilterCommand::~AddFilterCommand() = default;
 // -----------------------------------------------------------------------------
 void AddFilterCommand::undo()
 {
-  if(m_Value.canConvert<int>())
+  if (m_Filters.size() <= 0)
   {
-    int index = m_Value.toInt();
-
-    for(int i = 0; i < m_FilterCount; i++)
-    {
-      m_Destination->removeFilterObject(m_Destination->filterObjectAt(index));
-      // No need to increment index, because after removing the filter above, the next filter
-      // will move up to this index
-    }
-  }
-  else if(m_Value.canConvert<QPointF>())
-  {
-    QPointF pointF = m_Value.toPointF();
-
-    for(int i = 0; i < m_FilterCount; i++)
-    {
-      m_Destination->removeFilterObject(m_Destination->filterObjectAt(pointF));
-      pointF.setX(pointF.x() + 50);
-      pointF.setY(pointF.y() + 50);
-    }
+    return;
   }
 
-  m_Destination->reindexWidgetTitles();
-  m_Destination->recheckWindowTitleAndModification();
-  m_Destination->preflightPipeline();
+  PipelineModel* model = m_PipelineView->getPipelineModel();
 
-  if (m_Destination->getFilterPipeline()->getFilterContainer().size() <= 0)
+  for(int i = 0; i < m_Filters.size(); i++)
   {
-    SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
-    menuItems->getActionClearPipeline()->setDisabled(true);
+    QPersistentModelIndex filterIndex = model->indexOfFilter(m_Filters[i].get());
+
+    removeFilter(filterIndex);
   }
+
+  emit m_PipelineView->pipelineChanged();
+  emit m_PipelineView->preflightPipeline();
+
+  QString statusMessage;
+  if (m_Filters.size() > 1)
+  {
+    statusMessage = QObject::tr("Undo \"Added %1 filters\"").arg(m_Filters.size());
+  }
+  else
+  {
+    statusMessage = QObject::tr("Undo \"Added '%1' filter\"").arg(m_Filters[0]->getHumanLabel());
+  }
+
+  emit model->statusMessageGenerated(statusMessage);
+  emit model->standardOutputMessageGenerated(statusMessage);
 }
 
 // -----------------------------------------------------------------------------
@@ -198,53 +148,147 @@ void AddFilterCommand::undo()
 // -----------------------------------------------------------------------------
 void AddFilterCommand::redo()
 {
-  QJsonParseError parseError;
-  QByteArray byteArray = QByteArray::fromStdString(m_JsonString.toStdString());
-  QJsonDocument doc = QJsonDocument::fromJson(byteArray, &parseError);
-  if(parseError.error != QJsonParseError::NoError)
+  if (m_Filters.size() <= 0)
   {
     return;
   }
-  QJsonObject rootObject = doc.object();
-  
-  FilterPipeline::Pointer pipeline = FilterPipeline::FromJson(rootObject);
-  
-  FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
-  
-  PipelineFilterObject* filterObject = nullptr;
-  if(m_Value.canConvert<int>())
-  {
-    int index = m_Value.toInt();
 
-    for(int i = 0; i < container.size(); i++)
-    {
-      filterObject = m_Destination->createFilterObjectFromFilter(container[i]);
-      m_Destination->addFilterObject(filterObject, index);
-      index++;
-    }
-  }
-  else if(m_Value.canConvert<QPointF>())
-  {
-    QPointF pointF = m_Value.toPointF();
+  PipelineModel* model = m_PipelineView->getPipelineModel();
 
-    for(int i = 0; i < container.size(); i++)
-    {
-      filterObject = m_Destination->createFilterObjectFromFilter(container[i]);
-      m_Destination->addFilterObject(filterObject, pointF);
-      pointF.setX(pointF.x() + 50);
-      pointF.setY(pointF.y() + 50);
-    }
+  int row = m_InsertIndex;
+  for(size_t i = 0; i < m_Filters.size(); i++)
+  {
+    addFilter(m_Filters[i], row);
+    row++;
   }
 
-  m_Destination->reindexWidgetTitles();
-  m_Destination->recheckWindowTitleAndModification();
-  m_Destination->preflightPipeline();
-  SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(filterObject);
-  if(filterWidget)
+  emit m_PipelineView->preflightPipeline();
+  emit m_PipelineView->pipelineChanged();
+
+  QString statusMessage;
+  if (m_Filters.size() > 1)
   {
-    emit filterWidget->filterWidgetPressed(filterObject, qApp->queryKeyboardModifiers());
+    statusMessage = QObject::tr("Added %1 filters").arg(m_Filters.size());
+  }
+  else
+  {
+    statusMessage = QObject::tr("Added '%1' filter").arg(m_Filters[0]->getHumanLabel());
   }
 
-  SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
-  menuItems->getActionClearPipeline()->setEnabled(true);
+  if (m_FirstRun == false)
+  {
+    statusMessage.prepend("Redo \"");
+    statusMessage.append('\"');
+  }
+  else
+  {
+    m_FirstRun = false;
+  }
+
+  emit model->statusMessageGenerated(statusMessage);
+  emit model->standardOutputMessageGenerated(statusMessage);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AddFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertionIndex)
+{  
+  PipelineModel* model = m_PipelineView->getPipelineModel();
+
+  model->insertRow(insertionIndex);
+
+  QModelIndex filterIndex = model->index(insertionIndex, PipelineItem::Contents);
+//  model->setData(filterIndex, filter->getHumanLabel(), Qt::DisplayRole);
+  model->setData(filterIndex, static_cast<int>(PipelineItem::ItemType::Filter), PipelineModel::ItemTypeRole);
+  model->setFilter(filterIndex, filter);
+
+  connectFilterSignalsSlots(filter);
+
+  if (filter->getEnabled() == false)
+  {
+    model->setData(filterIndex, static_cast<int>(PipelineItem::WidgetState::Disabled), PipelineModel::WidgetStateRole);
+  }
+
+  if (m_UseAnimationOnFirstRun == false && m_FirstRun == true)
+  {
+    QSize size = model->data(filterIndex, Qt::SizeHintRole).toSize();
+    model->setData(filterIndex, size.height(), PipelineModel::Roles::HeightRole);
+  }
+  else
+  {
+    QRect filterRect = m_PipelineView->visualRect(filterIndex);
+
+    PipelineItemSlideAnimation* slideAnimation = new PipelineItemSlideAnimation(model, QPersistentModelIndex(filterIndex), filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::Right);
+    slideAnimation->start(QAbstractAnimation::DeleteWhenStopped);
+  }
+
+//  PipelineItemHeightAnimation* heightAnimation = new PipelineItemHeightAnimation(model, QPersistentModelIndex(filterIndex), PipelineItemHeightAnimation::AnimationDirection::Open);
+
+//  QObject::connect(heightAnimation, &PipelineItemHeightAnimation::finished, [=]{
+//    PipelineItemSlideAnimation* slideAnimation = new PipelineItemSlideAnimation(model, QPersistentModelIndex(filterIndex), filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::Right);
+//    slideAnimation->start(QAbstractAnimation::DeleteWhenStopped);
+//  });
+
+//  heightAnimation->start(QAbstractAnimation::DeleteWhenStopped);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AddFilterCommand::removeFilter(const QPersistentModelIndex &index)
+{
+  PipelineModel* model = m_PipelineView->getPipelineModel();
+  AbstractFilter::Pointer filter = model->filter(index);
+
+  disconnectFilterSignalsSlots(filter);
+
+  QRect filterRect = m_PipelineView->visualRect(index);
+
+  PipelineItemSlideAnimation* animation = new PipelineItemSlideAnimation(model, QPersistentModelIndex(index), filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::Left);
+
+  QObject::connect(animation, &PipelineItemSlideAnimation::finished, [=] {
+//    PipelineItemHeightAnimation* heightAnimation = new PipelineItemHeightAnimation(model, QPersistentModelIndex(index), PipelineItemHeightAnimation::AnimationDirection::Close);
+//    heightAnimation->start(QAbstractAnimation::DeleteWhenStopped);
+
+    model->removeRow(index.row());
+  });
+  animation->start(QAbstractAnimation::DeleteWhenStopped);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AddFilterCommand::connectFilterSignalsSlots(AbstractFilter::Pointer filter)
+{
+  PipelineModel* model = m_PipelineView->getPipelineModel();
+  QModelIndex index = model->indexOfFilter(filter.get());
+
+  QObject::connect(filter.get(), SIGNAL(filterCompleted(AbstractFilter*)), m_PipelineView, SLOT(listenFilterCompleted(AbstractFilter*)));
+
+  QObject::connect(filter.get(), SIGNAL(filterInProgress(AbstractFilter*)), m_PipelineView, SLOT(listenFilterInProgress(AbstractFilter*)));
+
+  FilterInputWidget* fiw = model->filterInputWidget(index);
+
+  QObject::connect(fiw, &FilterInputWidget::filterParametersChanged, [=] {
+    m_PipelineView->preflightPipeline();
+    emit m_PipelineView->filterParametersChanged(filter);
+  });
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AddFilterCommand::disconnectFilterSignalsSlots(AbstractFilter::Pointer filter)
+{
+  PipelineModel* model = m_PipelineView->getPipelineModel();
+  QModelIndex index = model->indexOfFilter(filter.get());
+
+  QObject::disconnect(filter.get(), &AbstractFilter::filterCompleted, 0, 0);
+
+  QObject::disconnect(filter.get(), &AbstractFilter::filterInProgress, 0, 0);
+
+  FilterInputWidget* fiw = model->filterInputWidget(index);
+
+  QObject::disconnect(fiw, &FilterInputWidget::filterParametersChanged, 0, 0);
 }

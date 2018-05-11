@@ -43,6 +43,7 @@
 #include <QtWidgets/QMenu>
 
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/FileListInfoFilterParameter.h"
 #include "SIMPLib/Utilities/FilePathGenerator.h"
 #include "SIMPLib/Utilities/StringOperations.h"

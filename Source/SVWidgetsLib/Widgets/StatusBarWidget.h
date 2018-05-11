@@ -41,6 +41,7 @@
 #include "ui_StatusBarWidget.h"
 
 class QDockWidget;
+class QMainWindow;
 
 class SVWidgetsLib_EXPORT StatusBarWidget : public QFrame, private Ui::StatusBarWidget
 {
@@ -59,10 +60,21 @@ class SVWidgetsLib_EXPORT StatusBarWidget : public QFrame, private Ui::StatusBar
       Issues = 0,
       Console = 1,
       DataStructure = 2,
-      Toolbox = 3,
-      Pipeline = 4
+      Pipeline = 3,
+      FilterList = 4,
+      FilterLibrary = 5,
+      Bookmarks = 6
     };
 
+    /**
+     * @brief readSettings
+     */
+    void readSettings();
+
+    /**
+     * @brief writeSettings
+     */
+    void writeSettings();
 
     /**
      * @brief setButtonAction
@@ -90,10 +102,10 @@ class SVWidgetsLib_EXPORT StatusBarWidget : public QFrame, private Ui::StatusBar
      */
     void issuesVisibilityChanged(bool b);
     /**
-     * @brief consolVisibilityChanged
+     * @brief consoleVisibilityChanged
      * @param b
      */
-    void consolVisibilityChanged(bool b);
+    void consoleVisibilityChanged(bool b);
     /**
      * @brief dataBrowserVisibilityChanged
      * @param b
@@ -101,16 +113,28 @@ class SVWidgetsLib_EXPORT StatusBarWidget : public QFrame, private Ui::StatusBar
     void dataBrowserVisibilityChanged(bool b);
 
     /**
-     * @brief toolboxVisibilityChanged
-     * @param b
-     */
-    void toolboxVisibilityChanged(bool b);
-
-    /**
      * @brief pipelineVisibilityChanged
      * @param b
      */
     void pipelineVisibilityChanged(bool b);
+
+    /**
+     * @brief filterListVisibilityChanged
+     * @param b
+     */
+    void filterListVisibilityChanged(bool b);
+
+    /**
+     * @brief filterLibraryVisibilityChanged
+     * @param b
+     */
+    void filterLibraryVisibilityChanged(bool b);
+
+    /**
+     * @brief bookmarksVisibilityChanged
+     * @param b
+     */
+    void bookmarksVisibilityChanged(bool b);
     
     /**
      * @brief issuesTableHasErrors
@@ -126,6 +150,22 @@ class SVWidgetsLib_EXPORT StatusBarWidget : public QFrame, private Ui::StatusBar
     void setupGui();
 
   private:
+    QMenu* m_ButtonListMenu = nullptr;
+
+    QAction* m_IssuesBtnToggleAction = nullptr;
+    QAction* m_ConsoleBtnToggleAction = nullptr;
+    QAction* m_DataBrowserBtnToggleAction = nullptr;
+    QAction* m_PipelineBtnToggleAction = nullptr;
+    QAction* m_FilterListBtnToggleAction = nullptr;
+    QAction* m_FilterLibraryBtnToggleAction = nullptr;
+    QAction* m_BookmarksBtnToggleAction = nullptr;
+
+    /**
+     * @brief addButtonVisibilityAction
+     * @param button
+     */
+    QAction* addButtonVisibilityAction(StatusBarButton* button);
+
     StatusBarWidget(const StatusBarWidget&) = delete; // Copy Constructor Not Implemented
     void operator=(const StatusBarWidget&) = delete;  // Move assignment Not Implemented
 };

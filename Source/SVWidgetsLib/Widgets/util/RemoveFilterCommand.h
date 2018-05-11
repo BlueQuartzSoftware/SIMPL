@@ -38,19 +38,22 @@
 
 #include <QtCore/QVariant>
 #include <QtCore/QUuid>
+#include <QtCore/QModelIndex>
 
 #include <QtWidgets/QUndoCommand>
 
+#include "SIMPLib/Filtering/AbstractFilter.h"
+
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
-class PipelineFilterObject;
-class PipelineView;
+class PipelineModel;
+class SVPipelineView;
 
 class SVWidgetsLib_EXPORT RemoveFilterCommand : public QUndoCommand
 {
 public:
-  RemoveFilterCommand(PipelineFilterObject* fw, PipelineView* pipelineView, QString actionText, QUuid prevNodeId = QUuid(), QUuid nextNodeId = QUuid(), QUndoCommand* parent = 0);
-  RemoveFilterCommand(QList<PipelineFilterObject*> filterObjects, PipelineView *pipelineView, QString actionText, QUuid prevNodeId = QUuid(), QUuid nextNodeId = QUuid(), QUndoCommand* parent = 0);
+  RemoveFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, QString actionText, bool useAnimationOnFirstRun = true, QUndoCommand* parent = 0);
+  RemoveFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, QString actionText, bool useAnimationOnFirstRun = true, QUndoCommand* parent = 0);
   virtual ~RemoveFilterCommand();
 
   virtual void undo();
@@ -58,11 +61,36 @@ public:
   virtual void redo();
 
 private:
-  PipelineView*                           m_PipelineView;
-  QString                                 m_JsonString;
-  QList<QVariant>                         m_FilterPositions;
-  QUuid                                   m_PrevNodeId;
-  QUuid                                   m_NextNodeId;
+  SVPipelineView*                         m_PipelineView;
+  std::vector<AbstractFilter::Pointer>    m_Filters;
+  std::vector<int>                        m_RemovalIndexes;
+  bool                                    m_FirstRun = true;
+  bool                                    m_UseAnimationOnFirstRun;
+
+  /**
+   * @brief addFilter
+   * @param filter
+   * @param insertionIndex
+   */
+  void addFilter(AbstractFilter::Pointer filter, int insertionIndex = -1);
+
+  /**
+   * @brief removeFilter
+   * @param row
+   */
+  void removeFilter(AbstractFilter::Pointer filter);
+
+  /**
+   * @brief connectFilterSignalsSlots
+   * @param filter
+   */
+  void connectFilterSignalsSlots(AbstractFilter::Pointer filter);
+
+  /**
+   * @brief disconnectFilterSignalsSlots
+   * @param filter
+   */
+  void disconnectFilterSignalsSlots(AbstractFilter::Pointer filter);
 
   RemoveFilterCommand(const RemoveFilterCommand&) = delete; // Copy Constructor Not Implemented
   void operator=(const RemoveFilterCommand&) = delete;      // Move assignment Not Implemented
