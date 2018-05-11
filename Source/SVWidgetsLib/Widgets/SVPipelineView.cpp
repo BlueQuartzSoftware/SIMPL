@@ -458,7 +458,6 @@ void SVPipelineView::executePipeline()
   connect(m_WorkerThread, SIGNAL(finished()), this, SLOT(finishPipeline()));
 
   toRunningState();
-  m_PipelineRunning = true;
   m_WorkerThread->start();
   stdOutMessage("");
   stdOutMessage("<b>*************** PIPELINE STARTED ***************</b>");
@@ -811,7 +810,7 @@ QPixmap SVPipelineView::getDraggingPixmap(QModelIndexList indexes)
 // -----------------------------------------------------------------------------
 void SVPipelineView::mouseMoveEvent(QMouseEvent* event)
 {
-  if((event->buttons() & Qt::LeftButton) && (event->pos() - m_DragStartPosition).manhattanLength() >= 2)
+  if((event->buttons() & Qt::LeftButton) && (event->pos() - m_DragStartPosition).manhattanLength() >= 2 && dragEnabled() == true)
   {
     beginDrag(event);
   }
@@ -1409,6 +1408,7 @@ void SVPipelineView::toRunningState()
 {
   setPipelineIsRunning(true);
   setAcceptDrops(false);
+  setDragEnabled(false);
 
   PipelineModel* model = getPipelineModel();
   for(int i = 0; i < model->rowCount(); i++)
@@ -1431,6 +1431,7 @@ void SVPipelineView::toStoppedState()
 {
   setPipelineIsRunning(false);
   setAcceptDrops(true);
+  setDragEnabled(true);
 
   PipelineModel* model = getPipelineModel();
   for(int i = 0; i < model->rowCount(); i++)
