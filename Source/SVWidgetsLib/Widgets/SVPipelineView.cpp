@@ -93,6 +93,7 @@
 #include "SVWidgetsLib/Widgets/DataStructureWidget.h"
 #include "SVWidgetsLib/Widgets/ProgressDialog.h"
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/QtSupport/QtSRecentFileList.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -734,50 +735,6 @@ void SVPipelineView::listenClearPipelineTriggered()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QAction* SVPipelineView::getActionEnableFilter()
-{
-  return m_ActionEnableFilter;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void SVPipelineView::updateActionEnableFilter()
-{
-  QModelIndexList selectedIndexes = selectionModel()->selectedRows();
-  qSort(selectedIndexes);
-
-  // Set Enabled / Disabled
-  disconnect(m_ActionEnableFilter, &QAction::toggled, 0, 0);
-  m_ActionEnableFilter->setEnabled(selectedIndexes.size());
-
-  // Set checked state
-  int count = selectedIndexes.size();
-  PipelineItem::WidgetState widgetState = PipelineItem::WidgetState::Ready;
-  PipelineModel* model = getPipelineModel();
-  for(int i = 0; i < count && widgetState != PipelineItem::WidgetState::Disabled; i++)
-  {
-    QModelIndex index = selectedIndexes[i];
-    widgetState = static_cast<PipelineItem::WidgetState>(model->data(index, PipelineModel::WidgetStateRole).toInt());
-  }
-
-  // Lambda connections don't allow Qt::UniqueConnection
-  // Also, this needs to be disconnected before changing the checked state
-  if (widgetState == PipelineItem::WidgetState::Disabled)
-  {
-    m_ActionEnableFilter->setChecked(false);
-  }
-  else
-  {
-    m_ActionEnableFilter->setChecked(true);
-  }
-
-  connect(m_ActionEnableFilter, &QAction::toggled, [=] { setSelectedFiltersEnabled(m_ActionEnableFilter->isChecked()); });
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 int SVPipelineView::filterCount()
 {
   PipelineModel* model = getPipelineModel();
@@ -788,36 +745,6 @@ int SVPipelineView::filterCount()
   }
 
   return count;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void SVPipelineView::resetLayout()
-{
-//  // Check to see if we have removed all the filters
-//  if(filterCount() <= 0)
-//  {
-//    // Emit a signal to tell SIMPLView_UI to erase the Filter Input Widget.
-//    emit filterInputWidgetNeedsCleared();
-
-//    // Remove the current Layout
-//    QLayout* l = layout();
-//    if(nullptr != l && l == m_FilterWidgetLayout)
-//    {
-//      qDeleteAll(l->children());
-//      delete l;
-//      m_FilterWidgetLayout = nullptr;
-//    }
-
-//    // and add the empty pipeline layout instead
-//    newEmptyPipelineViewLayout();
-
-//    if(m_DataStructureWidget)
-//    {
-//      m_DataStructureWidget->filterObjectActivated(nullptr);
-//    }
-//  }
 }
 
 // -----------------------------------------------------------------------------
@@ -1852,16 +1779,6 @@ void SVPipelineView::requestDefaultContextMenu(const QPoint &pos)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::handleFilterParameterChanged(QUuid id)
-{
-  Q_UNUSED(id)
-
-  emit filterInputWidgetEdited();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void SVPipelineView::setModel(QAbstractItemModel* model)
 {
   QAbstractItemModel* oldModel = this->model();
@@ -1912,12 +1829,4 @@ bool SVPipelineView::isPipelineCurrentlyRunning()
 PipelineModel* SVPipelineView::getPipelineModel()
 {
   return static_cast<PipelineModel*>(model());
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QList<QObject*> SVPipelineView::getPipelineMessageObservers()
-{
-  return m_PipelineMessageObservers;
 }

@@ -41,6 +41,8 @@
 #include <QtCore/QSettings>
 #include <QtWidgets/QMenu>
 
+QtSRecentFileList* QtSRecentFileList::self = nullptr;
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -64,16 +66,13 @@ QtSRecentFileList::~QtSRecentFileList()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSRecentFileList* QtSRecentFileList::instance(int maxListSize, QObject* parent)
+QtSRecentFileList* QtSRecentFileList::Instance(int maxListSize, QObject* parent)
 {
-  // qDebug() << "QtSRecentFileList::instance()" << "\n";
-  static QtSRecentFileList* singleton;
-
-  if(singleton == nullptr)
+  if(self == nullptr)
   {
-    singleton = new QtSRecentFileList(maxListSize, parent);
+    self = new QtSRecentFileList(maxListSize, parent);
   }
-  return singleton;
+  return self;
 }
 
 // -----------------------------------------------------------------------------

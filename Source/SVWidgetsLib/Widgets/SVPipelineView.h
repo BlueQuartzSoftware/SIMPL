@@ -119,17 +119,10 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     FilterPipeline::Pointer readPipelineFromFile(const QString& filePath);
 
     /**
-     * @brief resetLayout
-     */
-    void resetLayout();
-
-    /**
      * @brief setModel
      * @param model
      */
     void setModel(QAbstractItemModel* model) override;
-
-    virtual QAction* getActionEnableFilter();
 
     /**
      * @brief getPipelineModel
@@ -150,12 +143,6 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
      * @return
      */
     int writePipeline(const QString &outputPath);
-
-    /**
-     * @brief getPipelineMessageObservers
-     * @return
-     */
-    QList<QObject*> getPipelineMessageObservers();
 
     /**
      * @brief isPipelineCurrentlyRunning
@@ -265,8 +252,6 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     void toStoppedState();
 
   signals:
-    void pipelineDropped(const QString &filePath, PipelineModel* model, const QModelIndex &parentIndex, int insertionIndex);
-
     void displayIssuesTriggered();
     void clearIssuesTriggered();
     void clearDataStructureWidgetTriggered();
@@ -277,7 +262,6 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     void removePlaceHolderFilter();
 
     void preflightFinished(FilterPipeline::Pointer pipeline, int err);
-    void preflightHasMessage(PipelineMessage msg);
 
     void filterParametersChanged(AbstractFilter::Pointer filter);
 
@@ -285,24 +269,17 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     void pipelineFinished();
 
     void pipelineHasMessage(const PipelineMessage &msg);
-    void pipelineHasErrorsSignal();
-    void pipelineHasNoErrors();
     void pipelineFilePathUpdated(const QString &name);
     void pipelineChanged();
     void filePathOpened(const QString &filePath);
 
-    void pipelineFilterObjectSelected(PipelineFilterObject* object);
     void filterInputWidgetNeedsCleared();
 
     void filterInputWidgetEdited();
 
-    void filterWidgetsDropped(int insertIndex, Qt::KeyboardModifiers modifiers);
-
     void filterEnabledStateChanged();
 
     void deleteKeyPressed();
-
-    void contextMenuRequested(SVPipelineView* widget, const QPoint &pos);
 
     void statusMessage(const QString& message);
     void stdOutMessage(const QString& message);
@@ -329,11 +306,7 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     void setFiltersEnabled(QModelIndexList indexes, bool enabled);
     void setSelectedFiltersEnabled(bool enabled);
 
-    void updateActionEnableFilter();
-
   protected slots:
-    void handleFilterParameterChanged(QUuid id);
-
     void requestContextMenu(const QPoint& pos);
 
     /**
@@ -386,10 +359,8 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     QUndoCommand*                                     m_MoveCommand = nullptr;
     QPoint                                            m_DragStartPosition;
     QModelIndex                                       m_DropIndicatorIndex;
-    QPersistentModelIndex                             m_CurrentHoveringIndex;
     bool                                              m_BlockPreflight = false;
     std::stack<bool>                                  m_BlockPreflightStack;
-    bool                                              m_LoadingJson = false;
 
     QAction*                                          m_ActionEnableFilter = nullptr;
     QAction*                                          m_ActionCut = nullptr;
