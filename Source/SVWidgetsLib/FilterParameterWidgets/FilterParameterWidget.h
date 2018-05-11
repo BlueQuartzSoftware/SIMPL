@@ -106,14 +106,14 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
 
     virtual void changeStyleSheet(Style style);
 
-    virtual void endViewPathRequirements();
-
   signals:
     void filterPath(DataArrayPath path);
     void viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs);
     void viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType amReqs);
     void viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType daReqs);
     void endViewPaths();
+    void filterPathInput(DataArrayPath);
+    void endViewPathRequirements();
 
   public slots:
 
@@ -132,17 +132,6 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
      * @brief loadData
      */
     virtual void loadData();
-
-    /**
-    * @brief Handle custom actions if the FilterParameterWidget cannot handle the given path
-    * @param path
-    */
-    virtual void checkFilterPath(DataArrayPath path);
-
-    /**
-    * @brief Clear the effects of checkFilterPath
-    */
-    virtual void clearPathFiltering();
 
   protected:
 

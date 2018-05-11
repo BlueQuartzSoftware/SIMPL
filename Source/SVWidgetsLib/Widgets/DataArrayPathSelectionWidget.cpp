@@ -749,6 +749,23 @@ bool DataArrayPathSelectionWidget::checkDataArrayReqs(DataArrayPath path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::checkDragPath(DataArrayPath inputPath)
+{
+  setEnabled(checkPathReqs(inputPath));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::clearPathFiltering()
+{
+  setEnabled(true);
+  setPathFiltering(false);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::enterEvent(QEvent* event)
 {
   switch(m_DataType)

@@ -116,6 +116,9 @@ void AttributeMatrixSelectionWidget::setupGui()
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)), 
     this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
+  connect(this, SIGNAL(filterPathInput(DataArrayPath)), m_SelectedAttributeMatrixPath, SLOT(checkFilterPath(DataArrayPath)));
+  connect(this, SIGNAL(endViewPathRequirements()), m_SelectedAttributeMatrixPath, SLOT(clearPathFiltering()));
+
   connect(m_SelectedAttributeMatrixPath, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)),
     this, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
   connect(m_SelectedAttributeMatrixPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
@@ -256,28 +259,4 @@ void AttributeMatrixSelectionWidget::filterNeedsInputParameters(AbstractFilter* 
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void AttributeMatrixSelectionWidget::endViewPathRequirements()
-{
-  m_SelectedAttributeMatrixPath->setPathFiltering(false);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void AttributeMatrixSelectionWidget::checkFilterPath(DataArrayPath path)
-{
-  m_SelectedAttributeMatrixPath->setEnabled(m_SelectedAttributeMatrixPath->checkPathReqs(path));
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void AttributeMatrixSelectionWidget::clearPathFiltering()
-{
-  m_SelectedAttributeMatrixPath->setEnabled(true);
 }

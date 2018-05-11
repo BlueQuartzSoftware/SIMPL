@@ -728,7 +728,7 @@ void FilterInputWidget::getEmittedPathReqs(DataContainerSelectionFilterParameter
     FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
     if(fpWidget && fpWidget != obj)
     {
-      fpWidget->endViewPathRequirements();
+      emit fpWidget->endViewPathRequirements();
     }
   }
 }
@@ -746,7 +746,7 @@ void FilterInputWidget::getEmittedPathReqs(AttributeMatrixSelectionFilterParamet
     FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
     if(fpWidget && fpWidget != obj)
     {
-      fpWidget->endViewPathRequirements();
+      emit fpWidget->endViewPathRequirements();
     }
   }
 }
@@ -764,7 +764,7 @@ void FilterInputWidget::getEmittedPathReqs(DataArraySelectionFilterParameter::Re
     FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
     if(fpWidget && fpWidget != obj)
     {
-      fpWidget->endViewPathRequirements();
+      emit fpWidget->endViewPathRequirements();
     }
   }
 }
@@ -780,7 +780,7 @@ void FilterInputWidget::emitFilterPath(DataArrayPath path)
     FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
     if(fpWidget && fpWidget != obj)
     {
-      fpWidget->checkFilterPath(path);
+      emit fpWidget->filterPathInput(path);
     }
   }
 }

@@ -135,6 +135,9 @@ void MultiAttributeMatrixSelectionWidget::setupGui()
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
     this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
+  connect(this, SIGNAL(filterPathInput(DataArrayPath)), m_SelectedDataContainerPath, SLOT(checkFilterPath(DataArrayPath)));
+  connect(this, SIGNAL(endViewPathRequirements()), m_SelectedDataContainerPath, SLOT(clearPathFiltering()));
+
   connect(m_SelectedDataContainerPath, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
   connect(m_SelectedDataContainerPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
   connect(m_SelectedDataContainerPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
@@ -613,28 +616,4 @@ void MultiAttributeMatrixSelectionWidget::updateDataArrayPath(QString propertyNa
 
     blockSignals(false);
   }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiAttributeMatrixSelectionWidget::endViewPathRequirements()
-{
-  m_SelectedDataContainerPath->setPathFiltering(false);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiAttributeMatrixSelectionWidget::checkFilterPath(DataArrayPath path)
-{
-  m_SelectedDataContainerPath->setEnabled(m_SelectedDataContainerPath->checkPathReqs(path));
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiAttributeMatrixSelectionWidget::clearPathFiltering()
-{
-  m_SelectedDataContainerPath->setEnabled(true);
 }

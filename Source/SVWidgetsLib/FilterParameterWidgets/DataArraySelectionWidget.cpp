@@ -133,6 +133,9 @@ void DataArraySelectionWidget::setupGui()
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
     this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
+  connect(this, SIGNAL(filterPathInput(DataArrayPath)), m_SelectedDataArrayPath, SLOT(checkFilterPath(DataArrayPath)));
+  connect(this, SIGNAL(endViewPathRequirements()), m_SelectedDataArrayPath, SLOT(clearPathFiltering()));
+
   connect(m_SelectedDataArrayPath, SIGNAL(viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType)));
   connect(m_SelectedDataArrayPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
   connect(m_SelectedDataArrayPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
@@ -274,29 +277,4 @@ void DataArraySelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataArraySelectionWidget::endViewPathRequirements()
-{
-  m_SelectedDataArrayPath->setPathFiltering(false);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataArraySelectionWidget::checkFilterPath(DataArrayPath path)
-{
-  m_SelectedDataArrayPath->setEnabled(m_SelectedDataArrayPath->checkPathReqs(path));
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataArraySelectionWidget::clearPathFiltering()
-{
-  m_SelectedDataArrayPath->setEnabled(true);
-  m_SelectedDataArrayPath->setPathFiltering(false);
 }

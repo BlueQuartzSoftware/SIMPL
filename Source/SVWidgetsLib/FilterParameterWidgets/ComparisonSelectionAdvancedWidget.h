@@ -81,22 +81,6 @@ class ComparisonSelectionAdvancedWidget : public FilterParameterWidget, private 
     */
     bool eventFilter(QObject* obj, QEvent* event);
 
-    /**
-    * @brief Uncheck the DataArrayPathSelectionWidget so that it does not try to filter the DataStructure
-    */
-    void endViewPathRequirements() override;
-
-    /**
-    * @brief Enable the widget when the path meets requirements and disable it otherwise.
-    * @param path
-    */
-    void checkFilterPath(DataArrayPath path) override;
-
-    /**
-    * @brief Clears the effects of checkFilterPath
-    */
-    void clearPathFiltering() override;
-
   public slots:
     /**
     * @brief beforePreflight
