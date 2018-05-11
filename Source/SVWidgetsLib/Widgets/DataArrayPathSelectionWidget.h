@@ -196,6 +196,17 @@ public slots:
   */
   void resetStyle();
 
+  /**
+   * @brief Checks if the input path is compatible with the requirements and disables the widget if it does not.
+   * @param inputPath
+   */
+  void checkDragPath(DataArrayPath inputPath);
+
+  /**
+   * @brief Clears the enable / disable state from checkDragPath
+   */
+  void clearPathFiltering();
+
 signals:
   void filterPath(DataArrayPath path);
   void viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs);

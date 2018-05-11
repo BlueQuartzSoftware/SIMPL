@@ -300,8 +300,8 @@ void FilterInputWidget::layoutWidgets(AbstractFilter* filter)
     connect(filterParameterWidget, SIGNAL(viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType)), this, SLOT(getEmittedPathReqs(DataArraySelectionFilterParameter::RequirementType)));
     connect(filterParameterWidget, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
     // Alert to DataArrayPaths from the DataStructureWidget
-    connect(this, SIGNAL(filterPath(DataArrayPath)), filterParameterWidget, SLOT(checkFilterPath(DataArrayPath)));
-    connect(this, SIGNAL(endPathFiltering()), filterParameterWidget, SLOT(clearPathFiltering()));
+    connect(this, SIGNAL(filterPath(DataArrayPath)), filterParameterWidget, SIGNAL(filterPathInput(DataArrayPath)));
+    connect(this, SIGNAL(endPathFiltering()), filterParameterWidget, SIGNAL(endViewPathRequirements()));
     // Alert to DataArrayPaths from other FilterParameters
     connect(filterParameterWidget, SIGNAL(filterPath(DataArrayPath)), this, SLOT(emitFilterPath(DataArrayPath)));
     connect(filterParameterWidget, SIGNAL(endViewPaths()), this, SIGNAL(endPathFiltering()));
@@ -728,7 +728,7 @@ void FilterInputWidget::getEmittedPathReqs(DataContainerSelectionFilterParameter
     FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
     if(fpWidget && fpWidget != obj)
     {
-      fpWidget->endViewPathRequirements();
+      emit fpWidget->endViewPathRequirements();
     }
   }
 }
@@ -746,7 +746,7 @@ void FilterInputWidget::getEmittedPathReqs(AttributeMatrixSelectionFilterParamet
     FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
     if(fpWidget && fpWidget != obj)
     {
-      fpWidget->endViewPathRequirements();
+      emit fpWidget->endViewPathRequirements();
     }
   }
 }
@@ -764,7 +764,7 @@ void FilterInputWidget::getEmittedPathReqs(DataArraySelectionFilterParameter::Re
     FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
     if(fpWidget && fpWidget != obj)
     {
-      fpWidget->endViewPathRequirements();
+      emit fpWidget->endViewPathRequirements();
     }
   }
 }
@@ -780,7 +780,7 @@ void FilterInputWidget::emitFilterPath(DataArrayPath path)
     FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
     if(fpWidget && fpWidget != obj)
     {
-      fpWidget->checkFilterPath(path);
+      emit fpWidget->filterPathInput(path);
     }
   }
 }
