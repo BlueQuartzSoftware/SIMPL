@@ -946,7 +946,6 @@ void SVPipelineView::dragMoveEvent(QDragMoveEvent* event)
 
     if(obj.size() > 1)
     {
-      QMessageBox::warning(nullptr, "Warning", "This application currently does not support dragging and dropping multiple bookmarks.", QMessageBox::Ok);
       event->ignore();
       return;
     }
@@ -1262,7 +1261,6 @@ void SVPipelineView::dropEvent(QDropEvent* event)
 
     if(obj.size() > 1)
     {
-      QMessageBox::warning(nullptr, "Warning", "This application currently does not support dragging and dropping multiple bookmarks.", QMessageBox::Ok);
       event->ignore();
       return;
     }

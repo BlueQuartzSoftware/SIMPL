@@ -61,9 +61,11 @@ class SVWidgetsLib_EXPORT FilterListWidget: public QListWidget
     void dropEvent(QDropEvent* event);
 
   private:
+    QPoint startPos;
+
     void performDrag();
 
-    QPoint startPos;
+    const QPixmap CreateDragIcon(QString text);
 };
 
 #endif /* _FilterListWidget_H_ */

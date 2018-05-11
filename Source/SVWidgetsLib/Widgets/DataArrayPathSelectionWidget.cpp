@@ -59,6 +59,14 @@ const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(DataArrayPath path)
 // -----------------------------------------------------------------------------
 const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(QString text, DataArrayPath::DataType dataType)
 {
+  return CreateDragIcon(text, GetActiveColor(dataType));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(QString text, QColor backgroundColor)
+{
   int minHeight = 26;
 
   QFont font;
@@ -83,7 +91,7 @@ const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(QString text, DataArr
   int width = 4;
   int halfWidth = width / 2;
   QPen backgroundPen;
-  backgroundPen.setColor(GetActiveColor(dataType));
+  backgroundPen.setColor(backgroundColor);
   backgroundPen.setWidth(width);
   QRect contentRect(halfWidth, halfWidth, textWidth - width, textHeight - width);
 
@@ -93,7 +101,7 @@ const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(QString text, DataArr
   painter.setFont(font);
   painter.setPen(backgroundPen);
   painter.drawRoundedRect(contentRect, radius, radius);
-  painter.fillRect(contentRect, GetActiveColor(dataType));
+  painter.fillRect(contentRect, backgroundColor);
   painter.setPen(textPen);
   painter.drawText(contentRect, Qt::AlignCenter | Qt::AlignVCenter, doc->toRawText());
 
