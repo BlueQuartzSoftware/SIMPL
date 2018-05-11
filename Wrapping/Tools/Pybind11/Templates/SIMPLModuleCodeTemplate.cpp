@@ -19,7 +19,14 @@ PYBIND11_MAKE_OPAQUE(std::vector<uint64_t>);
 PYBIND11_MAKE_OPAQUE(std::vector<float>);
 PYBIND11_MAKE_OPAQUE(std::vector<double>);
 
+/*
+* Linux does not like the below line because unsigned long int and size_t are
+* the same thing. Apple (clang) and Windows (MSVC) do not seem to have a problem
+* with the line.
+*/
+#if defined(__APPLE__) || defined(_MSC_VER)
 PYBIND11_MAKE_OPAQUE(std::vector<size_t>);
+#endif
 
 #include <utility>
 
@@ -186,9 +193,9 @@ PYBIND11_MODULE(@LIB_NAME@, m)
 
   py::bind_vector<std::vector<float>>(mod, "VectorFloat");
   py::bind_vector<std::vector<double>>(mod, "VectorDouble");
-
+#if defined(__APPLE__) || defined(_MSC_VER)
   py::bind_vector<std::vector<size_t>>(mod, "VectorSizeT");
-
+#endif
   /* Init codes for classes in the Module */
   @MODULE_INIT_CODE@
 
