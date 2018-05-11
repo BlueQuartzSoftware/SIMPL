@@ -596,7 +596,7 @@ void ComparisonSelectionWidget::endViewPathRequirements()
 // -----------------------------------------------------------------------------
 void ComparisonSelectionWidget::checkFilterPath(DataArrayPath path)
 {
-  setEnabled(m_SelectedAttributeMatrixPath->checkPathReqs(path));
+  m_SelectedAttributeMatrixPath->setEnabled(m_SelectedAttributeMatrixPath->checkPathReqs(path));
 }
 
 // -----------------------------------------------------------------------------
@@ -604,5 +604,5 @@ void ComparisonSelectionWidget::checkFilterPath(DataArrayPath path)
 // -----------------------------------------------------------------------------
 void ComparisonSelectionWidget::clearPathFiltering()
 {
-  setEnabled(true);
+  m_SelectedAttributeMatrixPath->setEnabled(true);
 }

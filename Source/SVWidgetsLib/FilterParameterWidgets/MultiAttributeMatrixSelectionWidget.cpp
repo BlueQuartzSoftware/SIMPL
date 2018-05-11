@@ -628,7 +628,7 @@ void MultiAttributeMatrixSelectionWidget::endViewPathRequirements()
 // -----------------------------------------------------------------------------
 void MultiAttributeMatrixSelectionWidget::checkFilterPath(DataArrayPath path)
 {
-  setEnabled(m_SelectedDataContainerPath->checkPathReqs(path));
+  m_SelectedDataContainerPath->setEnabled(m_SelectedDataContainerPath->checkPathReqs(path));
 }
 
 // -----------------------------------------------------------------------------
@@ -636,5 +636,5 @@ void MultiAttributeMatrixSelectionWidget::checkFilterPath(DataArrayPath path)
 // -----------------------------------------------------------------------------
 void MultiAttributeMatrixSelectionWidget::clearPathFiltering()
 {
-  setEnabled(true);
+  m_SelectedDataContainerPath->setEnabled(true);
 }
