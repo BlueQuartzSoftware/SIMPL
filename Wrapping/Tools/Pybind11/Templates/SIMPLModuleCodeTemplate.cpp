@@ -24,7 +24,7 @@ PYBIND11_MAKE_OPAQUE(std::vector<double>);
 * the same thing. Apple (clang) and Windows (MSVC) do not seem to have a problem
 * with the line.
 */
-#if defined(__APPLE__) || defined(_MSC_VER)
+#if defined(__APPLE__)
 PYBIND11_MAKE_OPAQUE(std::vector<size_t>);
 #endif
 
@@ -193,7 +193,7 @@ PYBIND11_MODULE(@LIB_NAME@, m)
 
   py::bind_vector<std::vector<float>>(mod, "VectorFloat");
   py::bind_vector<std::vector<double>>(mod, "VectorDouble");
-#if defined(__APPLE__) || defined(_MSC_VER)
+#if defined(__APPLE__)
   py::bind_vector<std::vector<size_t>>(mod, "VectorSizeT");
 #endif
   /* Init codes for classes in the Module */
