@@ -70,7 +70,7 @@ namespace SIMPLView
 
   namespace DataArrayPath
   {
-    const QString BaseNewPathIcon(":Star.png");
+    const QString BaseNewPathIcon(":Asterisk.png");
     
     namespace DefaultColors
     {
