@@ -185,7 +185,7 @@ void RemoveFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertio
 
   QRect filterRect = m_PipelineView->visualRect(filterIndex);
 
-  PipelineItemSlideAnimation* animation = new PipelineItemSlideAnimation(model, QPersistentModelIndex(filterIndex), filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::Right);
+  PipelineItemSlideAnimation* animation = new PipelineItemSlideAnimation(model, QPersistentModelIndex(filterIndex), filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::EnterRight);
   model->setData(QPersistentModelIndex(filterIndex), PipelineItem::AnimationType::Add, PipelineModel::Roles::AnimationTypeRole);
 
   QObject::connect(animation, &PipelineItemSlideAnimation::finished, [=] {
@@ -216,7 +216,7 @@ void RemoveFilterCommand::removeFilter(AbstractFilter::Pointer filter)
   }
   else
   {
-    PipelineItemSlideAnimation* animation = new PipelineItemSlideAnimation(model, persistentIndex, filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::Left);
+    PipelineItemSlideAnimation* animation = new PipelineItemSlideAnimation(model, persistentIndex, filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::ExitRight);
     model->setData(persistentIndex, PipelineItem::AnimationType::Remove, PipelineModel::Roles::AnimationTypeRole);
 
     QObject::connect(animation, &PipelineItemSlideAnimation::finished, [=] {
