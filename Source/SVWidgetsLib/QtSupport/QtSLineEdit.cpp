@@ -386,6 +386,15 @@ void QtSLineEdit::dropEvent(QDropEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void QtSLineEdit::keyPressEvent(QKeyEvent* event)
+{
+  emit keyPressed(event);
+  QLineEdit::keyPressEvent(event);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void QtSLineEdit::setButtonPixmap(Side side, const QPixmap& buttonPixmap)
 {
   d->m_IconButtons[side]->setPixmap(buttonPixmap);
