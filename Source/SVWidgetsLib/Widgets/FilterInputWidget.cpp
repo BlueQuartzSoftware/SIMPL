@@ -640,7 +640,7 @@ void FilterInputWidget::displayFilterParameters(AbstractFilter::Pointer filter)
 
   // Add a label at the top of the Inputs Tabs to show what filter we are working on
   m_Ui->filterHumanLabel->setText(filter->getHumanLabel());
-  m_Ui->filterIndex->setText(QString::number(filter->getPipelineIndex()));
+  m_Ui->filterIndex->setText(QString::number(filter->getPipelineIndex() + 1));
   m_Ui->filterIndex->show();
   //m_Ui->filterIndex->clear();
   QString style;
