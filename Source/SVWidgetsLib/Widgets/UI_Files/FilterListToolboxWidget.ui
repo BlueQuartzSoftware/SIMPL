@@ -88,16 +88,16 @@ QLineEdit:edit-focus {
     </widget>
    </item>
    <item>
-    <widget class="FilterListWidget" name="filterList" native="true">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
+    <widget class="FilterListView" name="filterListView">
+     <property name="alternatingRowColors">
+      <bool>true</bool>
      </property>
-     <property name="contextMenuPolicy">
-      <enum>Qt::NoContextMenu</enum>
+     <property name="itemsExpandable">
+      <bool>false</bool>
      </property>
+     <attribute name="headerVisible">
+      <bool>false</bool>
+     </attribute>
     </widget>
    </item>
    <item>
@@ -121,9 +121,9 @@ QLineEdit:edit-focus {
    <header location="global">QtSLineEdit.h</header>
   </customwidget>
   <customwidget>
-   <class>FilterListWidget</class>
-   <extends>QWidget</extends>
-   <header location="global">FilterListWidget.h</header>
+   <class>FilterListView</class>
+   <extends>QTreeView</extends>
+   <header location="global">FilterListView.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

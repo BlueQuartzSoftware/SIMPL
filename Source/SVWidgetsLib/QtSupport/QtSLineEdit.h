@@ -61,6 +61,7 @@ class SVWidgetsLib_EXPORT IconButton : public QAbstractButton
 
     void setAutoHide(bool hide) { m_autoHide = hide; }
     bool hasAutoHide() const { return m_autoHide; }
+
   private:
     float         m_iconOpacity;
     bool          m_autoHide;
@@ -121,12 +122,16 @@ class SVWidgetsLib_EXPORT QtSLineEdit : public QLineEdit
     void rightButtonClicked();
     void fileDropped(const QString& file);
 
+    void keyPressed(QKeyEvent* event);
+
   private slots:
     void checkButtons(const QString&);
     void iconClicked();
 
   protected:
     virtual void resizeEvent(QResizeEvent* e);
+
+    void keyPressEvent(QKeyEvent* event);
 
   private:
 
