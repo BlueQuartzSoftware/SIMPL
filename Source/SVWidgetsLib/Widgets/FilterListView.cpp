@@ -162,11 +162,6 @@ void FilterListView::addGroup(SearchGroup group)
       model->setData(index, "Human Label", Qt::DisplayRole);
       break;
     }
-    case SearchGroup::ClassName:
-    {
-      model->setData(index, "Class Name", Qt::DisplayRole);
-      break;
-    }
     case SearchGroup::GroupName:
     {
       model->setData(index, "Group Name", Qt::DisplayRole);

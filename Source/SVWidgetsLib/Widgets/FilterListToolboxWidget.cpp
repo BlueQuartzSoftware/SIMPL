@@ -185,277 +185,6 @@ void FilterListToolboxWidget::loadFilterList()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QList<QString> FilterListToolboxWidget::serializeString(QString string, char token)
-{
-  std::string stringString = string.toStdString();
-  QList<QString> list;
-  int currentIndex = 0;
-  int spaceIndex = 0;
-  QString strPart = "";
-
-  while(spaceIndex >= 0 && string.isEmpty() == false)
-  {
-    spaceIndex = string.indexOf(token);
-    strPart = string.left(spaceIndex);
-    strPart = strPart.simplified();
-    if(strPart != "")
-    {
-      list.push_back(strPart);
-    }
-    string = string.remove(currentIndex, spaceIndex + 1);
-    stringString = string.toStdString();
-  }
-
-  return list;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString FilterListToolboxWidget::deserializeString(QList<QString> list, char token)
-{
-  QString str = "";
-  for(int i = 0; i < list.size(); i++)
-  {
-    str.append(list[i]);
-    str.append(" ");
-  }
-  str.chop(1);
-
-  return str;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int FilterListToolboxWidget::matchFiltersToSearchGroup(std::vector<AbstractFilter::Pointer> filters, QString fullWord, FilterListView::SearchGroup searchGroup)
-{
-  QList<QString> wordList = serializeString(fullWord, ' ');
-  QMap<AbstractFilter::Pointer, int> wordCountMap;
-  QMultiMap<int, AbstractFilter::Pointer> relevanceMap;
-
-  for (int i = 0; i < filters.size(); i++)
-  {
-    AbstractFilter::Pointer filter = filters[i];
-
-    int wordCount = getMatchingWordCountForFilter(fullWord, filter, searchGroup);
-    int relevance = getMatchingRelevanceForFilter(fullWord, filter, searchGroup);
-
-    if(!wordCountMap.contains(filter) && wordCount > 0)
-    {
-      wordCountMap.insert(filter, wordCount);
-      relevanceMap.insert(relevance, filter);
-    }
-  }
-
-  int filterCount = 0;
-
-  // Match according to "Exact Phrase"
-  if(m_ActionExactPhrase->isChecked())
-  {
-    QList<AbstractFilter::Pointer> filterList = relevanceMap.values(wordList.size());
-    for(QList<AbstractFilter::Pointer>::iterator iter = filterList.begin(); iter != filterList.end(); ++iter)
-    {
-      // Do not display results that have the exact phrase in the middle or end of the search phrase
-      if((*iter)->getHumanLabel().startsWith(fullWord))
-      {
-        filterListView->addFilter(*iter, searchGroup);
-        filterCount++;
-      }
-    }
-  }
-  // Match according to "All Words"
-  else if(m_ActionAllWords->isChecked())
-  {
-    QList<AbstractFilter::Pointer> filterList = wordCountMap.keys(wordList.size());
-    QMapIterator<int, AbstractFilter::Pointer> iter(relevanceMap);
-    iter.toBack();
-    while(iter.hasPrevious())
-    {
-      iter.previous();
-      AbstractFilter::Pointer filter = iter.value();
-
-      if(filterList.contains(filter))
-      {
-        filterListView->addFilter(filter, searchGroup);
-        filterCount++;
-      }
-    }
-  }
-  // Match according to "Any Words"
-  else if(m_ActionAnyWords->isChecked())
-  {
-    // QList<AbstractFilter::Pointer> filterListView = wordCountMap.keys();
-    QMapIterator<int, AbstractFilter::Pointer> iter(relevanceMap);
-    iter.toBack();
-    while(iter.hasPrevious())
-    {
-      iter.previous();
-      AbstractFilter::Pointer filter = iter.value();
-
-      filterListView->addFilter(filter, searchGroup);
-      filterCount++;
-    }
-  }
-
-  return filterCount;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int FilterListToolboxWidget::getMatchingWordCountForFilter(const QString &searchPhrase, AbstractFilter::Pointer filter, FilterListView::SearchGroup searchGroup)
-{
-  QList<QString> wordList = serializeString(searchPhrase, ' ');
-
-  QString searchGroupTerm = "";
-  switch(searchGroup)
-  {
-    case FilterListView::SearchGroup::HumanLabel:
-    {
-      searchGroupTerm = filter->getHumanLabel();
-      break;
-    }
-    case FilterListView::SearchGroup::ClassName:
-    {
-      searchGroupTerm = filter->getNameOfClass();
-      break;
-    }
-    case FilterListView::SearchGroup::GroupName:
-    {
-      searchGroupTerm = filter->getGroupName();
-      break;
-    }
-    case FilterListView::SearchGroup::SubgroupName:
-    {
-      searchGroupTerm = filter->getSubGroupName();
-      break;
-    }
-    case FilterListView::SearchGroup::BrandingName:
-    {
-      searchGroupTerm = filter->getBrandingString();
-      break;
-    }
-    case FilterListView::SearchGroup::CompiledLibraryName:
-    {
-      searchGroupTerm = filter->getCompiledLibraryName();
-      break;
-    }
-    case FilterListView::SearchGroup::Keywords:
-    {
-      // Implement Keywords
-      break;
-    }
-  }
-
-  QBitArray bitArray(wordList.size(), false);
-
-  for(int i = 0; i < wordList.size(); i++)
-  {
-    QString keyword = wordList[i];
-
-    if(searchGroupTerm.contains(keyword, Qt::CaseInsensitive))
-    {
-      bitArray.setBit(i, true);
-    }
-  }
-
-  return bitArray.count(true);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int FilterListToolboxWidget::getMatchingRelevanceForFilter(const QString &searchPhrase, AbstractFilter::Pointer filter, FilterListView::SearchGroup searchGroup)
-{
-  QList<QString> wordList = serializeString(searchPhrase, ' ');
-
-  QString searchGroupTerm = "";
-  switch(searchGroup)
-  {
-    case FilterListView::SearchGroup::HumanLabel:
-    {
-      searchGroupTerm = filter->getHumanLabel();
-      break;
-    }
-    case FilterListView::SearchGroup::ClassName:
-    {
-      searchGroupTerm = filter->getNameOfClass();
-      break;
-    }
-    case FilterListView::SearchGroup::GroupName:
-    {
-      searchGroupTerm = filter->getGroupName();
-      break;
-    }
-    case FilterListView::SearchGroup::SubgroupName:
-    {
-      searchGroupTerm = filter->getSubGroupName();
-      break;
-    }
-    case FilterListView::SearchGroup::BrandingName:
-    {
-      searchGroupTerm = filter->getBrandingString();
-      break;
-    }
-    case FilterListView::SearchGroup::CompiledLibraryName:
-    {
-      searchGroupTerm = filter->getCompiledLibraryName();
-      break;
-    }
-    case FilterListView::SearchGroup::Keywords:
-    {
-      // Implement Keywords
-      break;
-    }
-  }
-
-  QBitArray bitArray(wordList.size(), false);
-
-  int consecutiveWordsCount = 0, maxConsecutiveWordsCount = 0, consecutiveWordsStartingIndex = 0;
-  for(int i = 0; i < wordList.size(); i++)
-  {
-    QString keyword = wordList[i];
-
-    if(searchGroupTerm.contains(keyword, Qt::CaseInsensitive)
-          && filterListView->findIndexByName(searchGroupTerm).isValid() == false)
-    {
-      bitArray.setBit(i, true);
-
-      QList<QString> phraseList;
-      for(int j = consecutiveWordsStartingIndex; j <= i; j++)
-      {
-        phraseList.append(wordList[j]);
-      }
-      QString phrase = deserializeString(phraseList, ' ');
-
-      if(searchGroupTerm.contains(phrase, Qt::CaseInsensitive) && consecutiveWordsCount < phraseList.size())
-      {
-        consecutiveWordsCount++;
-      }
-      else
-      {
-        if(consecutiveWordsCount > maxConsecutiveWordsCount)
-        {
-          maxConsecutiveWordsCount = consecutiveWordsCount;
-        }
-        consecutiveWordsCount = 1;
-        consecutiveWordsStartingIndex = i;
-      }
-    }
-  }
-
-  if(consecutiveWordsCount > maxConsecutiveWordsCount)
-  {
-    maxConsecutiveWordsCount = consecutiveWordsCount;
-  }
-
-  return maxConsecutiveWordsCount;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void FilterListToolboxWidget::searchFilters(QString text)
 {
   // Set scroll bar back to the top
@@ -492,17 +221,221 @@ void FilterListToolboxWidget::searchFilters(QString text)
     filters.push_back(filter);
   }
 
-  matchFiltersToSearchGroup(filters, text, FilterListView::SearchGroup::HumanLabel);
-  matchFiltersToSearchGroup(filters, text, FilterListView::SearchGroup::ClassName);
-  matchFiltersToSearchGroup(filters, text, FilterListView::SearchGroup::GroupName);
-  matchFiltersToSearchGroup(filters, text, FilterListView::SearchGroup::SubgroupName);
-  matchFiltersToSearchGroup(filters, text, FilterListView::SearchGroup::BrandingName);
-  matchFiltersToSearchGroup(filters, text, FilterListView::SearchGroup::CompiledLibraryName);
-//  matchFiltersToSearchGroup(iter, text, FilterListView::SearchGroup::Keywords);
+  QStringList searchTokens = text.split(' ');
+  QSet<AbstractFilter*> addedFiltersSet;
 
-//  QString countText = QObject::tr("Filter Count: %1").arg(filterCount);
-//  filterCountLabel->setText(countText);
-  filterCountLabel->setText("");
+  matchFiltersToSearchGroup(filters, addedFiltersSet, searchTokens, FilterListView::SearchGroup::HumanLabel);
+  matchFiltersToSearchGroup(filters, addedFiltersSet, searchTokens, FilterListView::SearchGroup::GroupName);
+  matchFiltersToSearchGroup(filters, addedFiltersSet, searchTokens, FilterListView::SearchGroup::SubgroupName);
+  matchFiltersToSearchGroup(filters, addedFiltersSet, searchTokens, FilterListView::SearchGroup::BrandingName);
+  matchFiltersToSearchGroup(filters, addedFiltersSet, searchTokens, FilterListView::SearchGroup::CompiledLibraryName);
+//  matchFiltersToSearchGroup(filters, addedFiltersSet, searchTokens, FilterListView::SearchGroup::Keywords);
+
+  QString countText = QObject::tr("Unique Filter Count: %1").arg(addedFiltersSet.size());
+  filterCountLabel->setText(countText);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterListToolboxWidget::matchFiltersToSearchGroup(std::vector<AbstractFilter::Pointer> filters, QSet<AbstractFilter*> &addedFiltersSet, QStringList searchTokens, FilterListView::SearchGroup searchGroup)
+{
+  QMap<AbstractFilter::Pointer, int> wordCountMap;
+  QMultiMap<int, AbstractFilter::Pointer> relevanceMap;
+
+  for (size_t i = 0; i < filters.size(); i++)
+  {
+    AbstractFilter::Pointer filter = filters[i];
+
+    int wordCount = getMatchingWordCountForFilter(searchTokens, filter, searchGroup);
+    int relevance = getMatchingRelevanceForFilter(searchTokens, filter, searchGroup);
+
+    if(!wordCountMap.contains(filter) && wordCount > 0)
+    {
+      wordCountMap.insert(filter, wordCount);
+      relevanceMap.insert(relevance, filter);
+    }
+  }
+
+  // Match according to "Exact Phrase"
+  if(m_ActionExactPhrase->isChecked())
+  {
+    QList<AbstractFilter::Pointer> filterList = relevanceMap.values(searchTokens.size());
+    for(QList<AbstractFilter::Pointer>::iterator iter = filterList.begin(); iter != filterList.end(); ++iter)
+    {
+      AbstractFilter::Pointer filter = *iter;
+
+      // Do not display results that have the exact phrase in the middle or end of the search phrase
+      QString searchPhrase = searchTokens.join(' ');
+      if(filter->getHumanLabel().startsWith(searchPhrase))
+      {
+        filterListView->addFilter(filter, searchGroup);
+        addedFiltersSet.insert(filter.get());
+      }
+    }
+  }
+  // Match according to "All Words"
+  else if(m_ActionAllWords->isChecked())
+  {
+    QList<AbstractFilter::Pointer> filterList = wordCountMap.keys(searchTokens.size());
+    QMapIterator<int, AbstractFilter::Pointer> iter(relevanceMap);
+    iter.toBack();
+    while(iter.hasPrevious())
+    {
+      iter.previous();
+      AbstractFilter::Pointer filter = iter.value();
+
+      if(filterList.contains(filter))
+      {
+        filterListView->addFilter(filter, searchGroup);
+        addedFiltersSet.insert(filter.get());
+      }
+    }
+  }
+  // Match according to "Any Words"
+  else
+  {
+    // QList<AbstractFilter::Pointer> filterListView = wordCountMap.keys();
+    QMapIterator<int, AbstractFilter::Pointer> iter(relevanceMap);
+    iter.toBack();
+    while(iter.hasPrevious())
+    {
+      iter.previous();
+      AbstractFilter::Pointer filter = iter.value();
+
+      filterListView->addFilter(filter, searchGroup);
+      addedFiltersSet.insert(filter.get());
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int FilterListToolboxWidget::getMatchingWordCountForFilter(QStringList searchTokens, AbstractFilter::Pointer filter, FilterListView::SearchGroup searchGroup)
+{
+  QString searchGroupTerm = "";
+  switch(searchGroup)
+  {
+    case FilterListView::SearchGroup::HumanLabel:
+    {
+      searchGroupTerm = filter->getHumanLabel();
+      break;
+    }
+    case FilterListView::SearchGroup::GroupName:
+    {
+      searchGroupTerm = filter->getGroupName();
+      break;
+    }
+    case FilterListView::SearchGroup::SubgroupName:
+    {
+      searchGroupTerm = filter->getSubGroupName();
+      break;
+    }
+    case FilterListView::SearchGroup::BrandingName:
+    {
+      searchGroupTerm = filter->getBrandingString();
+      break;
+    }
+    case FilterListView::SearchGroup::CompiledLibraryName:
+    {
+      searchGroupTerm = filter->getCompiledLibraryName();
+      break;
+    }
+    case FilterListView::SearchGroup::Keywords:
+    {
+      // Implement Keywords
+      break;
+    }
+  }
+
+  QBitArray bitArray(searchTokens.size(), false);
+
+  for(int i = 0; i < searchTokens.size(); i++)
+  {
+    QString keyword = searchTokens[i];
+
+    if(searchGroupTerm.contains(keyword, Qt::CaseInsensitive))
+    {
+      bitArray.setBit(i, true);
+    }
+  }
+
+  return bitArray.count(true);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int FilterListToolboxWidget::getMatchingRelevanceForFilter(QStringList searchTokens, AbstractFilter::Pointer filter, FilterListView::SearchGroup searchGroup)
+{
+  QString searchGroupTerm = "";
+  switch(searchGroup)
+  {
+    case FilterListView::SearchGroup::HumanLabel:
+    {
+      searchGroupTerm = filter->getHumanLabel();
+      break;
+    }
+    case FilterListView::SearchGroup::GroupName:
+    {
+      searchGroupTerm = filter->getGroupName();
+      break;
+    }
+    case FilterListView::SearchGroup::SubgroupName:
+    {
+      searchGroupTerm = filter->getSubGroupName();
+      break;
+    }
+    case FilterListView::SearchGroup::BrandingName:
+    {
+      searchGroupTerm = filter->getBrandingString();
+      break;
+    }
+    case FilterListView::SearchGroup::CompiledLibraryName:
+    {
+      searchGroupTerm = filter->getCompiledLibraryName();
+      break;
+    }
+    case FilterListView::SearchGroup::Keywords:
+    {
+      // Implement Keywords
+      break;
+    }
+  }
+
+  QBitArray bitArray(searchTokens.size(), false);
+
+  int consecutiveWordsCount = 0, consecutiveWordsStartingIndex = 0;
+  for(int i = 0; i < searchTokens.size(); i++)
+  {
+    QString keyword = searchTokens[i];
+
+    if(searchGroupTerm.contains(keyword, Qt::CaseInsensitive)
+          && filterListView->findIndexByName(searchGroupTerm).isValid() == false)
+    {
+      bitArray.setBit(i, true);
+
+      QList<QString> phraseList;
+      for(int j = consecutiveWordsStartingIndex; j <= i; j++)
+      {
+        phraseList.append(searchTokens[j]);
+      }
+      QString phrase = phraseList.join(' ');
+
+      if(searchGroupTerm.contains(phrase, Qt::CaseInsensitive) && consecutiveWordsCount < phraseList.size())
+      {
+        consecutiveWordsCount++;
+      }
+      else
+      {
+        consecutiveWordsCount = 1;
+        consecutiveWordsStartingIndex = i;
+      }
+    }
+  }
+
+  return consecutiveWordsCount;
 }
 
 // -----------------------------------------------------------------------------
