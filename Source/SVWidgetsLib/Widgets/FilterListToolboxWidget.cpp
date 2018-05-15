@@ -228,26 +228,15 @@ QString FilterListToolboxWidget::deserializeString(QList<QString> list, char tok
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int FilterListToolboxWidget::matchFiltersToSearchGroup(QMapIterator<QString, IFilterFactory::Pointer> iter, QString fullWord, FilterListView::SearchGroup searchGroup)
+int FilterListToolboxWidget::matchFiltersToSearchGroup(std::vector<AbstractFilter::Pointer> filters, QString fullWord, FilterListView::SearchGroup searchGroup)
 {
   QList<QString> wordList = serializeString(fullWord, ' ');
   QMap<AbstractFilter::Pointer, int> wordCountMap;
   QMultiMap<int, AbstractFilter::Pointer> relevanceMap;
 
-  while(iter.hasNext())
+  for (int i = 0; i < filters.size(); i++)
   {
-    iter.next();
-    IFilterFactory::Pointer factory = iter.value();
-    if(nullptr == factory)
-    {
-      continue;
-    }
-
-    AbstractFilter::Pointer filter = factory->create();
-    if(nullptr == filter)
-    {
-      continue;
-    }
+    AbstractFilter::Pointer filter = filters[i];
 
     int wordCount = getMatchingWordCountForFilter(fullWord, filter, searchGroup);
     int relevance = getMatchingRelevanceForFilter(fullWord, filter, searchGroup);
@@ -484,13 +473,31 @@ void FilterListToolboxWidget::searchFilters(QString text)
   // The user is typing something in the search box so lets search the filter class name and human label
   // int listWidgetSize = m_LoadedFilters.size();
   QMapIterator<QString, IFilterFactory::Pointer> iter(m_LoadedFilters);
+  std::vector<AbstractFilter::Pointer> filters;
+  while(iter.hasNext())
+  {
+    iter.next();
+    IFilterFactory::Pointer factory = iter.value();
+    if(factory == nullptr)
+    {
+      continue;
+    }
 
-  matchFiltersToSearchGroup(iter, text, FilterListView::SearchGroup::HumanLabel);
-  matchFiltersToSearchGroup(iter, text, FilterListView::SearchGroup::ClassName);
-  matchFiltersToSearchGroup(iter, text, FilterListView::SearchGroup::GroupName);
-  matchFiltersToSearchGroup(iter, text, FilterListView::SearchGroup::SubgroupName);
-  matchFiltersToSearchGroup(iter, text, FilterListView::SearchGroup::BrandingName);
-  matchFiltersToSearchGroup(iter, text, FilterListView::SearchGroup::CompiledLibraryName);
+    AbstractFilter::Pointer filter = factory->create();
+    if (filter == nullptr)
+    {
+      continue;
+    }
+
+    filters.push_back(filter);
+  }
+
+  matchFiltersToSearchGroup(filters, text, FilterListView::SearchGroup::HumanLabel);
+  matchFiltersToSearchGroup(filters, text, FilterListView::SearchGroup::ClassName);
+  matchFiltersToSearchGroup(filters, text, FilterListView::SearchGroup::GroupName);
+  matchFiltersToSearchGroup(filters, text, FilterListView::SearchGroup::SubgroupName);
+  matchFiltersToSearchGroup(filters, text, FilterListView::SearchGroup::BrandingName);
+  matchFiltersToSearchGroup(filters, text, FilterListView::SearchGroup::CompiledLibraryName);
 //  matchFiltersToSearchGroup(iter, text, FilterListView::SearchGroup::Keywords);
 
 //  QString countText = QObject::tr("Filter Count: %1").arg(filterCount);

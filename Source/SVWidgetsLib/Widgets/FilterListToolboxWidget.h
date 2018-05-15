@@ -138,7 +138,7 @@ class SVWidgetsLib_EXPORT FilterListToolboxWidget : public QWidget, private Ui::
 
     QMap<QString, AbstractFilter::Pointer> getHumanNameMap(QList<AbstractFilter::Pointer> list);
 
-    int matchFiltersToSearchGroup(QMapIterator<QString, IFilterFactory::Pointer> iter, QString fullWord, FilterListView::SearchGroup searchGroup);
+    int matchFiltersToSearchGroup(std::vector<AbstractFilter::Pointer> filters, QString fullWord, FilterListView::SearchGroup searchGroup);
 
     int getMatchingWordCountForFilter(const QString &searchPhrase, AbstractFilter::Pointer filter, FilterListView::SearchGroup searchGroup);
 
