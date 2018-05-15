@@ -213,6 +213,11 @@ bool FilterListModel::insertRows(int position, int rows, const QModelIndex& pare
 // -----------------------------------------------------------------------------
 bool FilterListModel::removeRows(int position, int rows, const QModelIndex& parent)
 {
+  if(rows <= 0)
+  {
+    return false;
+  }
+
   FilterListItem* parentItem = getItem(parent);
   bool success = true;
 
