@@ -33,68 +33,68 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _removefiltercommand_h_
-#define _removefiltercommand_h_
+#pragma once
 
-#include <QtCore/QVariant>
-#include <QtCore/QUuid>
-#include <QtCore/QModelIndex>
+#include <QtCore/QAbstractItemModel>
 
-#include <QtWidgets/QUndoCommand>
-
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
-class PipelineModel;
-class SVPipelineView;
+class FilterListItem;
 
-class SVWidgetsLib_EXPORT RemoveFilterCommand : public QUndoCommand
+/**
+ * @brief The FilterListModel class
+ */
+class SVWidgetsLib_EXPORT FilterListModel : public QAbstractItemModel
 {
-public:
-  RemoveFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, QString actionText, bool useAnimationOnFirstRun = true, QUndoCommand* parent = 0);
-  RemoveFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, QString actionText, bool useAnimationOnFirstRun = true, QUndoCommand* parent = 0);
-  virtual ~RemoveFilterCommand();
+    Q_OBJECT
 
-  virtual void undo();
+  public:
+    SIMPL_TYPE_MACRO(FilterListModel)
 
-  virtual void redo();
+    enum Column
+    {
+      Contents
+    };
 
-private:
-  SVPipelineView*                         m_PipelineView = nullptr;
-  std::vector<AbstractFilter::Pointer>    m_Filters;
-  std::vector<int>                        m_RemovalIndexes;
-  bool                                    m_FirstRun = true;
-  bool                                    m_UseAnimationOnFirstRun = true;
+    enum Roles
+    {
+      ItemTypeRole = Qt::UserRole + 1,
+      ClassNameRole
+    };
 
-  /**
-   * @brief addFilter
-   * @param filter
-   * @param insertionIndex
-   */
-  void addFilter(AbstractFilter::Pointer filter, int insertionIndex = -1);
+    FilterListModel(QObject* parent = nullptr);
 
-  /**
-   * @brief removeFilter
-   * @param row
-   */
-  void removeFilter(AbstractFilter::Pointer filter);
+    ~FilterListModel();
 
-  /**
-   * @brief connectFilterSignalsSlots
-   * @param filter
-   */
-  void connectFilterSignalsSlots(AbstractFilter::Pointer filter);
+    QVariant data(const QModelIndex& index, int role) const Q_DECL_OVERRIDE;
 
-  /**
-   * @brief disconnectFilterSignalsSlots
-   * @param filter
-   */
-  void disconnectFilterSignalsSlots(AbstractFilter::Pointer filter);
+    bool isEmpty();
 
-  RemoveFilterCommand(const RemoveFilterCommand&) = delete; // Copy Constructor Not Implemented
-  void operator=(const RemoveFilterCommand&) = delete;      // Move assignment Not Implemented
+    QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
+    QModelIndex parent(const QModelIndex& index) const Q_DECL_OVERRIDE;
+
+    int rowCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
+    int columnCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
+
+    bool insertRows(int position, int rows, const QModelIndex& parent = QModelIndex()) Q_DECL_OVERRIDE;
+    bool removeRows(int position, int rows, const QModelIndex& parent = QModelIndex()) Q_DECL_OVERRIDE;
+
+    Qt::ItemFlags flags(const QModelIndex& index) const Q_DECL_OVERRIDE;
+
+    bool setData(const QModelIndex& index, const QVariant& value, int role) Q_DECL_OVERRIDE;
+
+    FilterListItem* getRootItem();
+
+  protected:
+    void initialize();
+
+  private:
+    FilterListItem*            rootItem;
+
+    FilterListItem* getItem(const QModelIndex& index) const;
+
+    FilterListModel(const FilterListModel&);    // Copy Constructor Not Implemented
+    void operator=(const FilterListModel&);    // Move assignment Not Implemented
 };
-
-#endif /* _removefiltercommand_h_ */
-

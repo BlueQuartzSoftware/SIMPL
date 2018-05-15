@@ -231,7 +231,6 @@ void DataStructureTreeView::performDrag()
   }
 
   DataArrayPath path = getDataArrayPath(index);
-  DataArrayPath::DataType dataType = path.getDataType();
 
   // Do not allow dragging paths created by the current filter
   std::list<DataArrayPath> createdPaths = m_Filter->getCreatedPaths();

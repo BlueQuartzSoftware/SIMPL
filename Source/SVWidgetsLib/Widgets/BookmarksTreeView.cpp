@@ -52,6 +52,7 @@
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/BookmarksItemDelegate.h"
+#include "SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h"
 #include "SVWidgetsLib/QtSupport/QtSFileUtils.h"
 
 // -----------------------------------------------------------------------------
@@ -637,7 +638,26 @@ void BookmarksTreeView::performDrag()
   QMimeData* mimeData = new QMimeData;
   mimeData->setData(SIMPLView::DragAndDrop::BookmarkItem, jsonArray);
 
+  QString dragText = "";
+  if (m_IndexesBeingDragged.size() == 1)
+  {
+    BookmarksItem::ItemType type = static_cast<BookmarksItem::ItemType>(model->data(m_IndexesBeingDragged[0], static_cast<int>(BookmarksModel::Roles::ItemTypeRole)).toInt());
+    if (type == BookmarksItem::ItemType::Bookmark)
+    {
+      dragText = model->data(m_IndexesBeingDragged[0], Qt::DisplayRole).toString();
+    }
+  }
+  else
+  {
+    dragText = "Multiple Bookmarks Items";
+  }
+
   QDrag* drag = new QDrag(this);
+
+  QColor backgroundColor = QColor(Qt::gray);
+  QPixmap dragIcon = DataArrayPathSelectionWidget::CreateDragIcon(dragText, backgroundColor);
+
+  drag->setPixmap(dragIcon);
   drag->setMimeData(mimeData);
   drag->exec(Qt::CopyAction);
 }

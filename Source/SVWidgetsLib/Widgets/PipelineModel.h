@@ -70,7 +70,8 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
       HeightRole,
       WidthRole,
       XOffsetRole,
-      YOffsetRole
+      YOffsetRole,
+      AnimationTypeRole
     };
 
     SIMPL_INSTANCE_PROPERTY(int, MaxNumberOfPipelines)

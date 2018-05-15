@@ -59,6 +59,14 @@ const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(DataArrayPath path)
 // -----------------------------------------------------------------------------
 const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(QString text, DataArrayPath::DataType dataType)
 {
+  return CreateDragIcon(text, GetActiveColor(dataType));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(QString text, QColor backgroundColor)
+{
   int minHeight = 26;
 
   QFont font;
@@ -83,7 +91,7 @@ const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(QString text, DataArr
   int width = 4;
   int halfWidth = width / 2;
   QPen backgroundPen;
-  backgroundPen.setColor(GetActiveColor(dataType));
+  backgroundPen.setColor(backgroundColor);
   backgroundPen.setWidth(width);
   QRect contentRect(halfWidth, halfWidth, textWidth - width, textHeight - width);
 
@@ -93,7 +101,7 @@ const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(QString text, DataArr
   painter.setFont(font);
   painter.setPen(backgroundPen);
   painter.drawRoundedRect(contentRect, radius, radius);
-  painter.fillRect(contentRect, GetActiveColor(dataType));
+  painter.fillRect(contentRect, backgroundColor);
   painter.setPen(textPen);
   painter.drawText(contentRect, Qt::AlignCenter | Qt::AlignVCenter, doc->toRawText());
 
@@ -749,6 +757,23 @@ bool DataArrayPathSelectionWidget::checkDataArrayReqs(DataArrayPath path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::checkDragPath(DataArrayPath inputPath)
+{
+  setEnabled(checkPathReqs(inputPath));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::clearPathFiltering()
+{
+  setEnabled(true);
+  setPathFiltering(false);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::enterEvent(QEvent* event)
 {
   switch(m_DataType)
@@ -945,11 +970,15 @@ void DataArrayPathSelectionWidget::afterPreflight()
     }
     break;
   case DataArrayPath::DataType::DataArray:
-    AttributeMatrix::Pointer am = dca->getAttributeMatrix(getDataArrayPath());
-    if(am && am->getAttributeArray(getDataArrayPath().getDataArrayName()))
     {
-      found = true;
+      AttributeMatrix::Pointer am = dca->getAttributeMatrix(getDataArrayPath());
+      if(am && am->getAttributeArray(getDataArrayPath().getDataArrayName()))
+      {
+        found = true;
+      }
     }
+    break;
+  case DataArrayPath::DataType::None:
     break;
   }
 
@@ -1077,8 +1106,13 @@ void DataArrayPathSelectionWidget::changeStyleSheet(Style styleType)
   ss << " position: relative;\n";
   ss << "}\n";
 
+  QColor checkedColor = getColor(styleType);
+  int hue = checkedColor.hsvHue();
+  int saturation = 50;
+  int value = 255;
+  checkedColor.setHsv(hue, saturation, value);
   ss << "QToolButton:checked {\n";
-  ss << " background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\nstop: 0 " << getColor(Style::Active) << ", stop: 1 #FFFFFF);\n";
+  ss << " background-color: " << checkedColor.name() << ";\n";
   ss << "}\n";
 
   ss << "QToolButton:flat {\n";
@@ -1124,6 +1158,10 @@ void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
   if(m_Style == Style::NotFound)
   {
     penColor = getColor(Style::NotFound);
+  }
+  if(false == isEnabled())
+  {
+    fillColor = QColor("#DDDDDD");
   }
   
   QPen pen;

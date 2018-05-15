@@ -126,6 +126,9 @@ void ComparisonSelectionAdvancedWidget::setupGui()
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
     this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
+  connect(this, SIGNAL(filterPathInput(DataArrayPath)), m_SelectedAttributeMatrixPath, SLOT(checkDragPath(DataArrayPath)));
+  connect(this, SIGNAL(endViewPathRequirements()), m_SelectedAttributeMatrixPath, SLOT(clearPathFiltering()));
+
   connect(m_SelectedAttributeMatrixPath, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
   connect(m_SelectedAttributeMatrixPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
   //connect(m_SelectedAttributeMatrixPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
@@ -487,28 +490,4 @@ void ComparisonSelectionAdvancedWidget::updateDataArrayPath(QString propertyName
     }
     blockSignals(false);
   }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ComparisonSelectionAdvancedWidget::endViewPathRequirements()
-{
-  m_SelectedAttributeMatrixPath->setPathFiltering(false);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ComparisonSelectionAdvancedWidget::checkFilterPath(DataArrayPath path)
-{
-  m_SelectedAttributeMatrixPath->setEnabled(m_SelectedAttributeMatrixPath->checkPathReqs(path));
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ComparisonSelectionAdvancedWidget::clearPathFiltering()
-{
-  m_SelectedAttributeMatrixPath->setEnabled(true);
 }

@@ -74,7 +74,7 @@ class SVWidgetsLib_EXPORT QtSRecentFileList: public QObject
      * @brief Returns the singleton instance of this class.
      * @return Instance of this class
      */
-    static QtSRecentFileList* instance(int maxListSize = 7, QObject* parent = nullptr);
+    static QtSRecentFileList* Instance(int maxListSize = 7, QObject* parent = nullptr);
 
     /**
      * @brief Stripps the path from a file argument given as a full path.
@@ -145,6 +145,8 @@ class SVWidgetsLib_EXPORT QtSRecentFileList: public QObject
     bool contains(const QString& file);
 
   private:
+    static QtSRecentFileList* self;
+
     ~QtSRecentFileList();
 
     QStringList recentFiles;

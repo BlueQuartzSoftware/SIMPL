@@ -1,6 +1,8 @@
  <!DOCTYPE RCC>
  <RCC version="1.0">
   <qresource>
+    <file>Asterisk.png</file>
+    <file>Asterisk@2x.png</file>
     <file>Star.png</file>
     <file>Star@2x.png</file>
     <file>graph.png</file>

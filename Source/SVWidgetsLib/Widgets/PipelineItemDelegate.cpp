@@ -180,6 +180,10 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
 
     drawButtons = false;
   }
+  else if (m_View->getPipelineIsRunning() == true)
+  {
+    drawButtons = false;
+  }
 
   QFont font = QtSStyles::GetHumanLabelFont();
 
@@ -450,13 +454,13 @@ bool PipelineItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model,
         m_MousePressIndex = -1;
         //qDebug() << "Clicked the Pipeline Filter delete button on: " << index.data(Qt::DisplayRole).toString();
 
-        if (deleteBtnRect.contains(mouseEvent->pos()))
+        if (deleteBtnRect.contains(mouseEvent->pos()) && m_View->getPipelineIsRunning() == false)
         {
           AbstractFilter::Pointer filter = pipelineModel->filter(index);
           m_View->removeFilter(filter);
           return true;
         }
-        else if (disableBtnRect.contains(mouseEvent->pos()))
+        else if (disableBtnRect.contains(mouseEvent->pos()) && m_View->getPipelineIsRunning() == false)
         {
           AbstractFilter::Pointer filter = pipelineModel->filter(index);
           bool enabled = filter->getEnabled();

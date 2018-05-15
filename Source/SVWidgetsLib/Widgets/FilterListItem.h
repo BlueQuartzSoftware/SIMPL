@@ -33,68 +33,56 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _removefiltercommand_h_
-#define _removefiltercommand_h_
+#pragma once
 
+#include <QtCore/QList>
 #include <QtCore/QVariant>
-#include <QtCore/QUuid>
-#include <QtCore/QModelIndex>
+#include <QtCore/QVector>
 
-#include <QtWidgets/QUndoCommand>
+#include <QtGui/QIcon>
 
-#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
-class PipelineModel;
-class SVPipelineView;
-
-class SVWidgetsLib_EXPORT RemoveFilterCommand : public QUndoCommand
+class SVWidgetsLib_EXPORT FilterListItem
 {
-public:
-  RemoveFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, QString actionText, bool useAnimationOnFirstRun = true, QUndoCommand* parent = 0);
-  RemoveFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, QString actionText, bool useAnimationOnFirstRun = true, QUndoCommand* parent = 0);
-  virtual ~RemoveFilterCommand();
+  public:
+    FilterListItem(const QString &name, FilterListItem* parent = 0);
+    virtual ~FilterListItem();
 
-  virtual void undo();
+    enum ItemType
+    {
+      Filter,
+      Group,
+      Unknown
+    };
 
-  virtual void redo();
+    SIMPL_INSTANCE_PROPERTY(QString, Name)
+    SIMPL_INSTANCE_PROPERTY(QString, ItemTooltip)
+    SIMPL_INSTANCE_PROPERTY(QString, ClassName)
+    SIMPL_INSTANCE_PROPERTY(QIcon, Icon)
+    SIMPL_INSTANCE_PROPERTY(ItemType, ItemType)
 
-private:
-  SVPipelineView*                         m_PipelineView = nullptr;
-  std::vector<AbstractFilter::Pointer>    m_Filters;
-  std::vector<int>                        m_RemovalIndexes;
-  bool                                    m_FirstRun = true;
-  bool                                    m_UseAnimationOnFirstRun = true;
+    FilterListItem* child(int number);
+    FilterListItem* parent();
 
-  /**
-   * @brief addFilter
-   * @param filter
-   * @param insertionIndex
-   */
-  void addFilter(AbstractFilter::Pointer filter, int insertionIndex = -1);
+    int childCount() const;
 
-  /**
-   * @brief removeFilter
-   * @param row
-   */
-  void removeFilter(AbstractFilter::Pointer filter);
+    bool insertChild(int position, FilterListItem* child);
+    bool insertChildren(int position, int count, int columns);
 
-  /**
-   * @brief connectFilterSignalsSlots
-   * @param filter
-   */
-  void connectFilterSignalsSlots(AbstractFilter::Pointer filter);
+    bool removeChild(int position);
+    bool removeChildren(int position, int count);
 
-  /**
-   * @brief disconnectFilterSignalsSlots
-   * @param filter
-   */
-  void disconnectFilterSignalsSlots(AbstractFilter::Pointer filter);
+    int childNumber() const;
 
-  RemoveFilterCommand(const RemoveFilterCommand&) = delete; // Copy Constructor Not Implemented
-  void operator=(const RemoveFilterCommand&) = delete;      // Move assignment Not Implemented
+    void setParent(FilterListItem* parent);
+
+  private:
+    QList<FilterListItem*>               m_ChildItems;
+    FilterListItem*                      m_ParentItem;
+
+    FilterListItem(const FilterListItem&);    // Copy Constructor Not Implemented
+    void operator=(const FilterListItem&);   // Move assignment Not Implemented
 };
-
-#endif /* _removefiltercommand_h_ */
-

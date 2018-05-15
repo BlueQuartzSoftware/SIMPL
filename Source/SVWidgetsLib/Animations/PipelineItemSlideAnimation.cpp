@@ -48,9 +48,17 @@ PipelineItemSlideAnimation::PipelineItemSlideAnimation(PipelineModel* model, QPe
 
   setDuration(150);
 
-  if (m_Direction == AnimationDirection::Right)
+  if (m_Direction == AnimationDirection::EnterLeft)
   {
     m_PipelineModel->setData(m_Index, -m_NumberOfPixels, PipelineModel::Roles::XOffsetRole);
+  }
+  else if (m_Direction == AnimationDirection::EnterRight)
+  {
+    m_PipelineModel->setData(m_Index, m_NumberOfPixels, PipelineModel::Roles::XOffsetRole);
+  }
+  else if (m_Direction == AnimationDirection::ExitLeft || m_Direction == AnimationDirection::ExitRight)
+  {
+    m_PipelineModel->setData(m_Index, 0, PipelineModel::Roles::XOffsetRole);
   }
 
   QSize size = m_PipelineModel->data(m_Index, Qt::SizeHintRole).toSize();
@@ -66,13 +74,21 @@ void PipelineItemSlideAnimation::listenValueChanged(const QVariant & value)
 {
   if(m_PipelineModel)
   {
-    if (m_Direction == AnimationDirection::Left)
-    {
-      m_PipelineModel->setData(m_Index, -(m_NumberOfPixels * currentValue().toInt() * 0.005), PipelineModel::Roles::XOffsetRole);
-    }
-    else if (m_Direction == AnimationDirection::Right)
+    if (m_Direction == AnimationDirection::EnterLeft)
     {
       m_PipelineModel->setData(m_Index, -m_NumberOfPixels + (m_NumberOfPixels * currentValue().toInt() * 0.005), PipelineModel::Roles::XOffsetRole);
+    }
+    else if (m_Direction == AnimationDirection::EnterRight)
+    {
+      m_PipelineModel->setData(m_Index, m_NumberOfPixels - (m_NumberOfPixels * currentValue().toInt() * 0.005), PipelineModel::Roles::XOffsetRole);
+    }
+    if (m_Direction == AnimationDirection::ExitLeft)
+    {
+      m_PipelineModel->setData(m_Index, 0 - (m_NumberOfPixels * currentValue().toInt() * 0.005), PipelineModel::Roles::XOffsetRole);
+    }
+    else if (m_Direction == AnimationDirection::ExitRight)
+    {
+      m_PipelineModel->setData(m_Index, 0 + (m_NumberOfPixels * currentValue().toInt() * 0.005), PipelineModel::Roles::XOffsetRole);
     }
   }
   else

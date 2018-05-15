@@ -55,7 +55,6 @@
 // -----------------------------------------------------------------------------
 AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, int insertIndex, QString actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
 : QUndoCommand(parent)
-, m_FilterCount(1)
 , m_ActionText(actionText)
 , m_PipelineView(view)
 , m_UseAnimationOnFirstRun(useAnimationOnFirstRun)
@@ -79,7 +78,6 @@ AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineVie
 AddFilterCommand::AddFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, int insertIndex, QString actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
 : QUndoCommand(parent)
 , m_Filters(filters)
-, m_FilterCount(filters.size())
 , m_ActionText(actionText)
 , m_PipelineView(view)
 , m_UseAnimationOnFirstRun(useAnimationOnFirstRun)
@@ -126,9 +124,6 @@ void AddFilterCommand::undo()
     removeFilter(filterIndex);
   }
 
-  emit m_PipelineView->pipelineChanged();
-  emit m_PipelineView->preflightPipeline();
-
   QString statusMessage;
   if (m_Filters.size() > 1)
   {
@@ -139,8 +134,12 @@ void AddFilterCommand::undo()
     statusMessage = QObject::tr("Undo \"Added '%1' filter\"").arg(m_Filters[0]->getHumanLabel());
   }
 
-  emit model->statusMessageGenerated(statusMessage);
-  emit model->standardOutputMessageGenerated(statusMessage);
+  m_PipelineView->preflightPipeline();
+
+  emit m_PipelineView->pipelineChanged();
+
+  emit m_PipelineView->statusMessage(statusMessage);
+  emit m_PipelineView->stdOutMessage(statusMessage);
 }
 
 // -----------------------------------------------------------------------------
@@ -219,18 +218,14 @@ void AddFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertionIn
   {
     QRect filterRect = m_PipelineView->visualRect(filterIndex);
 
-    PipelineItemSlideAnimation* slideAnimation = new PipelineItemSlideAnimation(model, QPersistentModelIndex(filterIndex), filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::Right);
+    PipelineItemSlideAnimation* slideAnimation = new PipelineItemSlideAnimation(model, QPersistentModelIndex(filterIndex), filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::EnterRight);
+    model->setData(QPersistentModelIndex(filterIndex), PipelineItem::AnimationType::Add, PipelineModel::Roles::AnimationTypeRole);
+
+    QObject::connect(slideAnimation, &PipelineItemSlideAnimation::finished, [=] {
+      model->setData(QPersistentModelIndex(filterIndex), PipelineItem::AnimationType::None, PipelineModel::Roles::AnimationTypeRole);
+    });
     slideAnimation->start(QAbstractAnimation::DeleteWhenStopped);
   }
-
-//  PipelineItemHeightAnimation* heightAnimation = new PipelineItemHeightAnimation(model, QPersistentModelIndex(filterIndex), PipelineItemHeightAnimation::AnimationDirection::Open);
-
-//  QObject::connect(heightAnimation, &PipelineItemHeightAnimation::finished, [=]{
-//    PipelineItemSlideAnimation* slideAnimation = new PipelineItemSlideAnimation(model, QPersistentModelIndex(filterIndex), filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::Right);
-//    slideAnimation->start(QAbstractAnimation::DeleteWhenStopped);
-//  });
-
-//  heightAnimation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
 // -----------------------------------------------------------------------------
@@ -245,12 +240,10 @@ void AddFilterCommand::removeFilter(const QPersistentModelIndex &index)
 
   QRect filterRect = m_PipelineView->visualRect(index);
 
-  PipelineItemSlideAnimation* animation = new PipelineItemSlideAnimation(model, QPersistentModelIndex(index), filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::Left);
+  PipelineItemSlideAnimation* animation = new PipelineItemSlideAnimation(model, QPersistentModelIndex(index), filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::ExitRight);
+  model->setData(QPersistentModelIndex(index), PipelineItem::AnimationType::Remove, PipelineModel::Roles::AnimationTypeRole);
 
-  QObject::connect(animation, &PipelineItemSlideAnimation::finished, [=] {
-//    PipelineItemHeightAnimation* heightAnimation = new PipelineItemHeightAnimation(model, QPersistentModelIndex(index), PipelineItemHeightAnimation::AnimationDirection::Close);
-//    heightAnimation->start(QAbstractAnimation::DeleteWhenStopped);
-
+  QObject::connect(animation, &PipelineItemSlideAnimation::finished, [=] () mutable {
     model->removeRow(index.row());
   });
   animation->start(QAbstractAnimation::DeleteWhenStopped);

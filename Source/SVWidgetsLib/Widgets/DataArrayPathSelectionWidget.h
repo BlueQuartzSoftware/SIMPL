@@ -62,6 +62,7 @@ class DataArrayPathSelectionWidget : public QToolButton
 public:
   static const QPixmap CreateDragIcon(DataArrayPath path);
   static const QPixmap CreateDragIcon(QString text, DataArrayPath::DataType dataType);
+  static const QPixmap CreateDragIcon(QString text, QColor backgroundColor);
   static const QString GetActiveColor(DataArrayPath::DataType type);
   static bool CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, DataContainerSelectionFilterParameter::RequirementType reqs);
   static bool CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, AttributeMatrixSelectionFilterParameter::RequirementType reqs);
@@ -147,7 +148,7 @@ public:
 
   /**
   * @brief Returns the DataArrayPath
-  * @retrurn
+  * @return
   */
   DataArrayPath getDataArrayPath();
 
@@ -195,6 +196,17 @@ public slots:
   * @brief Resets the styling and clears the check state
   */
   void resetStyle();
+
+  /**
+   * @brief Checks if the input path is compatible with the requirements and disables the widget if it does not.
+   * @param inputPath
+   */
+  void checkDragPath(DataArrayPath inputPath);
+
+  /**
+   * @brief Clears the enable / disable state from checkDragPath
+   */
+  void clearPathFiltering();
 
 signals:
   void filterPath(DataArrayPath path);

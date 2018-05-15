@@ -32,165 +32,127 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include "FilterListItem.h"
 
-#include "QtSRecentFileList.h"
-
-#include <QtCore/QDir>
-#include <QtCore/QFile>
-#include <QtCore/QFileInfo>
-#include <QtCore/QSettings>
-#include <QtWidgets/QMenu>
-
-QtSRecentFileList* QtSRecentFileList::self = nullptr;
+#include <QtCore/QStringList>
+#include <QtGui/QColor>
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSRecentFileList::QtSRecentFileList(int maxListSize, QObject* parent)
-: QObject(parent)
-, m_MaxListSize(maxListSize)
-, m_Watcher(new QFileSystemWatcher(this))
+FilterListItem::FilterListItem(const QString &name, FilterListItem* parent)
+  : m_Name(name)
+  , m_ItemTooltip("")
+  , m_Icon(QIcon())
+  , m_ParentItem(parent)
 {
-  connect(m_Watcher, SIGNAL(fileChanged(const QString&)), this, SLOT(removeFile(const QString&)));
+
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSRecentFileList::~QtSRecentFileList()
+FilterListItem::~FilterListItem()
 {
-  delete m_Watcher;
-  m_Watcher = nullptr;
+  qDeleteAll(m_ChildItems);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSRecentFileList* QtSRecentFileList::Instance(int maxListSize, QObject* parent)
+FilterListItem* FilterListItem::child(int number)
 {
-  if(self == nullptr)
+  return m_ChildItems.value(number);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int FilterListItem::childCount() const
+{
+  return m_ChildItems.count();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int FilterListItem::childNumber() const
+{
+  if(m_ParentItem)
   {
-    self = new QtSRecentFileList(maxListSize, parent);
+    return m_ParentItem->m_ChildItems.indexOf(const_cast<FilterListItem*>(this));
   }
-  return self;
+
+  return 0;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool QtSRecentFileList::contains(const QString& file)
+bool FilterListItem::insertChild(int position, FilterListItem* child)
 {
-  return this->recentFiles.contains(file);
+  m_ChildItems.insert(position, child);
+  return true;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSRecentFileList::addFile(const QString& file, AddType type)
+bool FilterListItem::insertChildren(int position, int count, int columns)
 {
-  if(QFile::exists(file) == true)
+  if(position < 0 || position > m_ChildItems.size())
   {
-    if(recentFiles.contains(file))
-    {
-      // Remove the file from wherever it is in the list
-      removeFile(file);
-    }
-
-    if(recentFiles.size() == m_MaxListSize)
-    {
-      recentFiles.pop_back();
-    }
-
-    if(type == APPEND)
-    {
-      this->recentFiles.append(file);
-    }
-    else
-    {
-      this->recentFiles.prepend(file);
-    }
-
-    // Add the path to the watcher
-    m_Watcher->addPath(file);
-
-    emit fileListChanged(file); // Emit the signal so all the menus can update their contents
+    return false;
   }
-}
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QStringList QtSRecentFileList::fileList()
-{
-  return this->recentFiles;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void QtSRecentFileList::removeFile(const QString& file)
-{
-  this->recentFiles.removeAll(file);
-
-  // Remove the path from the watcher
-  m_Watcher->removePath(file);
-
-  emit fileListChanged(file); // Emit the signal so all the menus can update their contents
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void QtSRecentFileList::clear()
-{
-  this->recentFiles.clear();
-
-  emit fileListChanged(""); // Emit the signal so all the menus can update their contents
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void QtSRecentFileList::writeList(QtSSettings* prefs)
-{
-  prefs->setValue("Recent Files", this->fileList());
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void QtSRecentFileList::readList(QtSSettings* prefs)
-{
-  this->clear();
-
-  QStringList list = prefs->value("Recent Files", QStringList());
-
-  for(int i = 0; i < list.size(); i++)
+  for(int row = 0; row < count; ++row)
   {
-    QString filePath = list[i];
-    QFile file(filePath);
-    if(file.exists())
-    {
-      this->addFile(filePath, APPEND);
-    }
+    FilterListItem* item = new FilterListItem("", this);
+    insertChild(position, item);
   }
+
+  return true;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString QtSRecentFileList::strippedName(const QString& fullFileName)
+FilterListItem* FilterListItem::parent()
 {
-  return QFileInfo(fullFileName).fileName();
+  return m_ParentItem;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString QtSRecentFileList::parentAndFileName(const QString& file)
+bool FilterListItem::removeChild(int position)
 {
-  QFileInfo fileinfo(file);
+  m_ChildItems.removeAt(position);
+  return true;
+}
 
-  QDir parent = fileinfo.dir();
-  return parent.dirName() + QDir::separator() + fileinfo.fileName();
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool FilterListItem::removeChildren(int position, int count)
+{
+  if(position < 0 || position + count > m_ChildItems.size())
+  {
+    return false;
+  }
+
+  for(int row = 0; row < count; ++row)
+  {
+    delete m_ChildItems.takeAt(position);
+  }
+
+  return true;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterListItem::setParent(FilterListItem* parent)
+{
+  m_ParentItem = parent;
 }

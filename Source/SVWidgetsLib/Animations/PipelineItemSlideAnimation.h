@@ -45,8 +45,10 @@ class SVWidgetsLib_EXPORT PipelineItemSlideAnimation : public QVariantAnimation
   public:
     enum class AnimationDirection : unsigned int
     {
-      Left,
-      Right
+      EnterLeft,
+      EnterRight,
+      ExitLeft,
+      ExitRight
     };
 
     PipelineItemSlideAnimation(PipelineModel* model, QPersistentModelIndex index, int numberOfPixels, AnimationDirection direction, QObject* parent = nullptr);
@@ -58,7 +60,8 @@ class SVWidgetsLib_EXPORT PipelineItemSlideAnimation : public QVariantAnimation
     QPersistentModelIndex m_Index;
     PipelineModel* m_PipelineModel;
     AnimationDirection m_Direction;
-    int m_NumberOfPixels;
+    int m_NumberOfPixels = 0;
+    int m_StartX = 0;
 
     PipelineItemSlideAnimation(const PipelineItemSlideAnimation&) = delete; // Copy Constructor Not Implemented
     void operator=(const PipelineItemSlideAnimation&) = delete;        // Operator '=' Not Implemented

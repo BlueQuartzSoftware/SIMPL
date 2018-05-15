@@ -117,6 +117,9 @@ void DataContainerSelectionWidget::setupGui()
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
     this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
+  connect(this, SIGNAL(filterPathInput(DataArrayPath)), m_SelectedDataContainerPath, SLOT(checkDragPath(DataArrayPath)));
+  connect(this, SIGNAL(endViewPathRequirements()), m_SelectedDataContainerPath, SLOT(clearPathFiltering()));
+
   connect(m_SelectedDataContainerPath, SIGNAL(viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType)));
   connect(m_SelectedDataContainerPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
   connect(m_SelectedDataContainerPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
@@ -266,28 +269,4 @@ void DataContainerSelectionWidget::filterNeedsInputParameters(AbstractFilter* fi
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataContainerSelectionWidget::endViewPathRequirements()
-{
-  m_SelectedDataContainerPath->setPathFiltering(false);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataContainerSelectionWidget::checkFilterPath(DataArrayPath path)
-{
-  m_SelectedDataContainerPath->setEnabled(m_SelectedDataContainerPath->checkPathReqs(path));
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataContainerSelectionWidget::clearPathFiltering()
-{
-  m_SelectedDataContainerPath->setEnabled(true);
 }

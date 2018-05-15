@@ -51,11 +51,11 @@
 
 #include "ui_FilterListToolboxWidget.h"
 
-
-
+/**
+ * @brief The FilterListToolboxWidget class
+ */
 class SVWidgetsLib_EXPORT FilterListToolboxWidget : public QWidget, private Ui::FilterListToolboxWidget
 {
-
     Q_OBJECT
 
   public:
@@ -64,8 +64,6 @@ class SVWidgetsLib_EXPORT FilterListToolboxWidget : public QWidget, private Ui::
 
     QList<QString> serializeString(QString string, char token);
     QString deserializeString(QList<QString> list, char token);
-
-    void matchFilter(QMapIterator<QString, IFilterFactory::Pointer> iter, QString fullWord, int& filterCount);
 
     /**
     * @brief Reads the preferences from the users pref file
@@ -77,23 +75,7 @@ class SVWidgetsLib_EXPORT FilterListToolboxWidget : public QWidget, private Ui::
     */
     void writeSettings(QtSSettings* prefs);
 
-    /**
-    * @brief Returns true if a search is in progress, else returns false
-    */
-    bool searchInProgress();
-
-    /**
-    * @brief Returns the filter list widget
-    */
-    FilterListWidget* getFilterListWidget();
-
   public slots:
-
-    /**
-     * @brief on_filterList_itemDoubleClicked
-     * @param item
-     */
-    void on_filterList_itemDoubleClicked( QListWidgetItem* item );
 
     /**
     * @brief searchFilters triggered when the user types something in the Search Field
@@ -104,19 +86,7 @@ class SVWidgetsLib_EXPORT FilterListToolboxWidget : public QWidget, private Ui::
      * @brief updateFilterList This method extracts all the names of the filters that have been
      * loaded into the application
      */
-    void updateFilterList(bool sortItems = true);
-
-    /**
-    * @brief showContextMenuForWidget
-    * @param pos
-    */
-    void showContextMenuForWidget(const QPoint& pos);
-
-    /**
-    * @brief launchHelpForItem
-    * @param name
-    */
-    void launchHelpForItem(QString name);
+    void loadFilterList();
 
     /**
     * @brief searchFieldsChanged
@@ -138,22 +108,7 @@ class SVWidgetsLib_EXPORT FilterListToolboxWidget : public QWidget, private Ui::
     */
     QList<QAction*> getSearchActionList();
 
-  signals:
-
-    /**
-     * @brief filterItemDoubleClicked
-     * @param filterName
-     */
-    //void filterItemDoubleClicked(const QString& filterName, int index);
-    void filterItemDoubleClicked(const QString& filterName, int insertIndex = -1, bool useAnimationOnFirstRun = true);
-
   protected:
-
-    /**
-    * @brief Detect a key press
-    */
-    void keyPressEvent(QKeyEvent* event);
-
     /**
      * @brief setupGui Called to get everything in the GUI setup correctly
      */
@@ -164,11 +119,8 @@ class SVWidgetsLib_EXPORT FilterListToolboxWidget : public QWidget, private Ui::
      */
     void setupSearchField();
 
-    /**
-     * @brief addItemToList
-     * @param filter
-     */
-    void addItemToList(AbstractFilter::Pointer filter);
+  signals:
+    void filterItemDoubleClicked(const QString& filterName, int insertIndex = -1, bool useAnimationOnFirstRun = true);
 
   private:
     QMenu* m_ContextMenu;
@@ -185,6 +137,12 @@ class SVWidgetsLib_EXPORT FilterListToolboxWidget : public QWidget, private Ui::
     FilterManager::Collection  m_LoadedFilters;
 
     QMap<QString, AbstractFilter::Pointer> getHumanNameMap(QList<AbstractFilter::Pointer> list);
+
+    int matchFiltersToSearchGroup(std::vector<AbstractFilter::Pointer> filters, QString fullWord, FilterListView::SearchGroup searchGroup);
+
+    int getMatchingWordCountForFilter(const QString &searchPhrase, AbstractFilter::Pointer filter, FilterListView::SearchGroup searchGroup);
+
+    int getMatchingRelevanceForFilter(const QString &searchPhrase, AbstractFilter::Pointer filter, FilterListView::SearchGroup searchGroup);
 
     FilterListToolboxWidget(const FilterListToolboxWidget&) = delete; // Copy Constructor Not Implemented
     void operator=(const FilterListToolboxWidget&) = delete;          // Move assignment Not Implemented

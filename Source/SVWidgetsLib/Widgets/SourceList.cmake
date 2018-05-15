@@ -24,6 +24,9 @@ set(SVWidgetsLib_Widgets_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterLibraryTreeWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterListToolboxWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterListWidget.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterListItem.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterListModel.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterListView.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/IssuesWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StandardOutputWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterInputWidget.h
@@ -67,6 +70,9 @@ set(SVWidgetsLib_Widgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterLibraryTreeWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterListToolboxWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterListWidget.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterListItem.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterListModel.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterListView.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/IssuesWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StandardOutputWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterInputWidget.cpp

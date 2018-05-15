@@ -42,9 +42,12 @@
 #include <QtGui/QMouseEvent>
 #include <QtWidgets/QApplication>
 
+#include "SIMPLib/Filtering/FilterFactory.hpp"
+#include "SIMPLib/Filtering/FilterManager.h"
+
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
-
-
+#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -96,6 +99,7 @@ void FilterLibraryTreeWidget::performDrag()
   QTreeWidgetItem* item = currentItem();
   if(item)
   {
+    QString filterHumanLabel = item->text(0);
     QString filterClassName = item->data(0, Qt::UserRole + 1).toString();
     if(filterClassName.isEmpty() == false)
     {
@@ -108,8 +112,24 @@ void FilterLibraryTreeWidget::performDrag()
       QMimeData* mimeData = new QMimeData;
       mimeData->setData(SIMPLView::DragAndDrop::FilterListItem, jsonArray);
 
+      QString grpName = "";
+      FilterManager* fm = FilterManager::Instance();
+      if(nullptr != fm)
+      {
+        IFilterFactory::Pointer wf = fm->getFactoryFromClassName(filterClassName);
+        if(nullptr != wf)
+        {
+          AbstractFilter::Pointer filter = wf->create();
+          grpName = filter->getGroupName();
+        }
+      }
+
+      QColor grpColor = QtSStyles::ColorForFilterGroup(grpName);
+      const QPixmap dragIcon = DataArrayPathSelectionWidget::CreateDragIcon(filterHumanLabel, grpColor);
+
       QDrag* drag = new QDrag(this);
       drag->setMimeData(mimeData);
+      drag->setPixmap(dragIcon);
       drag->exec(Qt::CopyAction);
     }
   }
