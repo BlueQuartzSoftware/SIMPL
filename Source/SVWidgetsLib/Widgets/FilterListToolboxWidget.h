@@ -62,9 +62,6 @@ class SVWidgetsLib_EXPORT FilterListToolboxWidget : public QWidget, private Ui::
     FilterListToolboxWidget(QWidget* parent = nullptr);
     virtual ~FilterListToolboxWidget();
 
-    QList<QString> serializeString(QString string, char token);
-    QString deserializeString(QList<QString> list, char token);
-
     /**
     * @brief Reads the preferences from the users pref file
     */
@@ -138,11 +135,11 @@ class SVWidgetsLib_EXPORT FilterListToolboxWidget : public QWidget, private Ui::
 
     QMap<QString, AbstractFilter::Pointer> getHumanNameMap(QList<AbstractFilter::Pointer> list);
 
-    int matchFiltersToSearchGroup(std::vector<AbstractFilter::Pointer> filters, QString fullWord, FilterListView::SearchGroup searchGroup);
+    void matchFiltersToSearchGroup(std::vector<AbstractFilter::Pointer> filters, QSet<AbstractFilter*> &addedFiltersSet, QStringList searchTokens, FilterListView::SearchGroup searchGroup);
 
-    int getMatchingWordCountForFilter(const QString &searchPhrase, AbstractFilter::Pointer filter, FilterListView::SearchGroup searchGroup);
+    int getMatchingWordCountForFilter(QStringList searchTokens, AbstractFilter::Pointer filter, FilterListView::SearchGroup searchGroup);
 
-    int getMatchingRelevanceForFilter(const QString &searchPhrase, AbstractFilter::Pointer filter, FilterListView::SearchGroup searchGroup);
+    int getMatchingRelevanceForFilter(QStringList searchTokens, AbstractFilter::Pointer filter, FilterListView::SearchGroup searchGroup);
 
     FilterListToolboxWidget(const FilterListToolboxWidget&) = delete; // Copy Constructor Not Implemented
     void operator=(const FilterListToolboxWidget&) = delete;          // Move assignment Not Implemented

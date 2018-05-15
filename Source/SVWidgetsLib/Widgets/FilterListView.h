@@ -67,7 +67,6 @@ class SVWidgetsLib_EXPORT FilterListView : public QTreeView
     enum class SearchGroup : unsigned int
     {
       HumanLabel,
-      ClassName,
       GroupName,
       SubgroupName,
       BrandingName,

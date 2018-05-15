@@ -88,6 +88,12 @@ QVariant FilterListModel::data(const QModelIndex& index, int role) const
 
   if(role == Qt::DisplayRole)
   {
+    if (item->getItemType() == FilterListItem::ItemType::Group)
+    {
+      QString text = item->getName();
+      text.append(tr(" (%1)").arg(rowCount(index)));
+      return text;
+    }
     return item->getName();
   }
   else if(role == static_cast<int>(Roles::ItemTypeRole))
