@@ -148,7 +148,7 @@ public:
 
   /**
   * @brief Returns the DataArrayPath
-  * @retrurn
+  * @return
   */
   DataArrayPath getDataArrayPath();
 
