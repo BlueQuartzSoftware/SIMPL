@@ -121,6 +121,7 @@ public slots:
 signals:
   void filterPath(DataArrayPath path);
   void endPathFiltering();
+  void applyPathToFilteringParameter(DataArrayPath path);
 
 protected:
   /**

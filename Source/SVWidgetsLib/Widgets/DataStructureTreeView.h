@@ -112,6 +112,7 @@ public:
 signals:
   void filterPath(DataArrayPath path);
   void endPathFiltering();
+  void applyPathToFilteringParameter(DataArrayPath path);
 
 protected:
   /**
@@ -143,6 +144,12 @@ protected:
    * @param event
    */
   void leaveEvent(QEvent* event) Q_DECL_OVERRIDE;
+
+  /**
+   * @brief mouseDoubleClickEvent
+   * @param event
+   */
+  void mouseDoubleClickEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
 
   /**
    * @brief Emits the filter path for the given model index

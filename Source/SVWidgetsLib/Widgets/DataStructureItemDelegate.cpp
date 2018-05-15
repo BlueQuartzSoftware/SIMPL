@@ -33,8 +33,10 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <QtWidgets/QApplication>
 #include <QtCore/QFileInfo>
 
+#include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QLineEdit>
 
 #include <QtGui/QIntValidator>
@@ -239,8 +241,18 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
   DataArrayPath path = getDataArrayPath(index);
   int textOffset = 4;
 
+  // Get mouse position for mouseOver effects
+  QPoint mousePos = QCursor::pos();
+  int mouseScreen = qApp->desktop()->screenNumber(mousePos);
+  QRect mouseScreenGeometry = qApp->desktop()->screen(mouseScreen)->geometry();
+  if(dynamic_cast<QWidget*>(parent()))
+  {
+    mousePos -= dynamic_cast<QWidget*>(parent())->rect().topLeft();
+  }
+
   bool filterData = (m_ReqType != DataArrayPath::DataType::None);
   bool isCreatedPath = std::find(m_CreatedPaths.begin(), m_CreatedPaths.end(), path) != m_CreatedPaths.end();
+  bool mouseOver = op.rect.contains(mousePos);
 
   // Check for a corresponding icon
   QIcon icon;
@@ -254,6 +266,8 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
       iconSize = 0;
     }
   }
+
+  bool drawMarker = mouseOver;
 
   // Check if the view is being filtered
   if(filterData)
@@ -276,21 +290,23 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
       if(false == isCreatedPath)
       {
         // Set text color white
-        op.palette.setColor(QPalette::Normal, QPalette::WindowText, QColor(255, 255, 255));
+        op.palette.setColor(QPalette::Normal, QPalette::WindowText, color);
 
         QBrush brush(color);
         painter->setBrush(brush);
+
+        // Make sure we draw the filtering marker later
+        drawMarker = true;
       }
 
       pen.setColor(color);
       pen.setWidth(radius);
       painter->setPen(pen);
-
-      painter->drawRoundedRect(borderRect, rounded, rounded);
+      //painter->drawRoundedRect(borderRect, rounded, rounded);
 
       if(false == isCreatedPath)
       {
-        painter->setPen(QColor(255, 255, 255));
+        painter->setPen(color);
       }
     }
     else
@@ -314,6 +330,16 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
     QRect iconRect(op.rect.x(), op.rect.y(), iconSize, iconSize);
     icon.paint(painter, iconRect);
     textOffset = textOffset + iconSize;
+  }
+
+  // Draw filtering dot
+  if(drawMarker)
+  {
+    int markerSize = op.rect.height() / 2;
+    int markerOffset = (op.rect.height() - markerSize) / 3;
+    QRect markerRect(op.rect.x() + iconSize, op.rect.y() + markerOffset, markerSize, markerSize);
+    painter->drawChord(markerRect, 0, 360 * 16);
+    textOffset += markerSize;
   }
 
   // Draw Text - drawStaticText renders rich text

@@ -141,9 +141,9 @@ public:
   bool checkAttributeMatrixReqs(DataArrayPath path);
 
   /**
-  * @brief Sets the DataArrayPath without checking requirements
-  * @param dap
-  */
+   * @brief Sets the DataArrayPath without checking requirements
+   * @param dap
+   */
   void setDataArrayPath(DataArrayPath dap);
 
   /**
@@ -207,6 +207,17 @@ public slots:
    * @brief Clears the enable / disable state from checkDragPath
    */
   void clearPathFiltering();
+
+  /**
+  * @brief Clears the enable / disable state but leaves the checked state.  This is used for filtering from the DataStructure.
+  */
+  void endExternalFiltering();
+
+  /**
+   * @brief Sets the DataArrayPath if this widget is being used to filter the DataStructure and the path matches.
+   * @param path
+   */
+  void setFilteredDataArrayPath(DataArrayPath path);
 
 signals:
   void filterPath(DataArrayPath path);
@@ -366,6 +377,7 @@ private:
   QPoint m_StartPos;
   QString m_PropName;
   QMenu* m_SelectionMenu = nullptr;
+  bool m_FilteringPassed = false;
 
   void performDrag();
 };

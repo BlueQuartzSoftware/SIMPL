@@ -342,3 +342,21 @@ void DataStructureTreeView::dropEvent(QDropEvent* event)
 
   event->ignore();
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureTreeView::mouseDoubleClickEvent(QMouseEvent* event)
+{
+  QModelIndex index = indexAt(event->pos());
+  if(false == index.isValid())
+  {
+    return;
+  }
+
+  DataArrayPath path = getDataArrayPath(index);
+  if(m_Delegate->pathMatchesReqs(path))
+  {
+    emit applyPathToFilteringParameter(path);
+  }
+}

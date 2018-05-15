@@ -689,6 +689,22 @@ void DataArrayPathSelectionWidget::setDataArrayPath(DataArrayPath path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::setFilteredDataArrayPath(DataArrayPath path)
+{
+  if(false == isChecked())
+  {
+    return;
+  }
+
+  if(checkPathReqs(path))
+  {
+    setDataArrayPath(path);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 DataArrayPath DataArrayPathSelectionWidget::getDataArrayPath()
 {
   return DataArrayPath::Deserialize(text(), Detail::Delimiter);
@@ -759,7 +775,9 @@ bool DataArrayPathSelectionWidget::checkDataArrayReqs(DataArrayPath path)
 // -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::checkDragPath(DataArrayPath inputPath)
 {
-  setEnabled(checkPathReqs(inputPath));
+  m_FilteringPassed = checkPathReqs(inputPath);
+  setEnabled(m_FilteringPassed);
+  repaint();
 }
 
 // -----------------------------------------------------------------------------
@@ -774,8 +792,19 @@ void DataArrayPathSelectionWidget::clearPathFiltering()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::endExternalFiltering()
+{
+  setEnabled(true);
+  setPathFiltering(isChecked());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::enterEvent(QEvent* event)
 {
+  m_FilteringPassed = true;
+
   switch(m_DataType)
   {
   case DataArrayPath::DataType::DataContainer:
@@ -805,6 +834,7 @@ void DataArrayPathSelectionWidget::leaveEvent(QEvent* event)
     return;
   }
 
+  m_FilteringPassed = false;
   emit endViewPaths();
   if(checkCurrentPath())
   {
@@ -999,6 +1029,7 @@ void DataArrayPathSelectionWidget::afterPreflight()
 void DataArrayPathSelectionWidget::setPathFiltering(bool active)
 {
   setChecked(active);
+  m_FilteringPassed = false;
   
   if(false == active && false == underMouse())
   {
@@ -1011,6 +1042,8 @@ void DataArrayPathSelectionWidget::setPathFiltering(bool active)
       changeStyleSheet(Style::NotFound);
     }
   }
+
+  repaint();
 }
 
 // -----------------------------------------------------------------------------
@@ -1170,8 +1203,21 @@ void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
 
   QPainter painter{ this };
   painter.setPen(pen);
-  painter.fillRect(rect, fillColor);
+  painter.setBrush(fillColor);
   painter.drawRoundRect(rect, radius, radius);
+
+  if(isEnabled() && (isChecked() || m_FilteringPassed))
+  {
+    int fillBorder = 8;
+    int size = rect.width() - fillBorder;
+    QRect filteringRect = rect;
+    filteringRect.setX(rect.x() + fillBorder / 2);
+    filteringRect.setY(rect.y() + fillBorder / 2 - 1);
+    filteringRect.setWidth(size);
+    filteringRect.setHeight(size);
+    painter.setBrush(QColor(255,255,255));
+    painter.drawChord(filteringRect, 0, 360 * 16);
+  }
 }
 
 // -----------------------------------------------------------------------------

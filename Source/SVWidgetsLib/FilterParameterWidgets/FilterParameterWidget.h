@@ -114,6 +114,8 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
     void endViewPaths();
     void filterPathInput(DataArrayPath);
     void endViewPathRequirements();
+    void endDataStructureRequirements();
+    void applyPathToFilteringParameter(DataArrayPath path);
 
   public slots:
 
