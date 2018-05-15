@@ -243,11 +243,9 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
 
   // Get mouse position for mouseOver effects
   QPoint mousePos = QCursor::pos();
-  int mouseScreen = qApp->desktop()->screenNumber(mousePos);
-  QRect mouseScreenGeometry = qApp->desktop()->screen(mouseScreen)->geometry();
   if(dynamic_cast<QWidget*>(parent()))
   {
-    mousePos -= dynamic_cast<QWidget*>(parent())->rect().topLeft();
+    mousePos = dynamic_cast<QWidget*>(parent())->mapFromGlobal(mousePos);
   }
 
   bool filterData = (m_ReqType != DataArrayPath::DataType::None);
@@ -268,6 +266,7 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
   }
 
   bool drawMarker = mouseOver;
+  bool fillMarker = true;
 
   // Check if the view is being filtered
   if(filterData)
@@ -286,6 +285,8 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
     if(matchesReqs)
     {
       color = DataArrayPathSelectionWidget::GetActiveColor(path.getDataType());
+      // Make sure we draw the filtering marker later
+      drawMarker = true;
 
       if(false == isCreatedPath)
       {
@@ -294,9 +295,10 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
 
         QBrush brush(color);
         painter->setBrush(brush);
-
-        // Make sure we draw the filtering marker later
-        drawMarker = true;
+      }
+      else
+      {
+        fillMarker = false;
       }
 
       pen.setColor(color);
@@ -335,9 +337,20 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
   // Draw filtering dot
   if(drawMarker)
   {
+    QColor pathColor = DataArrayPathSelectionWidget::GetActiveColor(path.getDataType());
     int markerSize = op.rect.height() / 2;
     int markerOffset = (op.rect.height() - markerSize) / 3;
     QRect markerRect(op.rect.x() + iconSize, op.rect.y() + markerOffset, markerSize, markerSize);
+    if(fillMarker)
+    {
+      painter->setPen(QColor(0, 0, 0));
+      painter->setBrush(pathColor);
+    }
+    else
+    {
+      painter->setPen(pathColor);
+      painter->setBrush(QColor(255, 255, 255));
+    }
     painter->drawChord(markerRect, 0, 360 * 16);
     textOffset += markerSize;
   }
