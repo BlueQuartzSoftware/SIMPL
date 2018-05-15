@@ -36,6 +36,7 @@
 #ifndef _filelistinfofilterparameter_h_
 #define _filelistinfofilterparameter_h_
 
+#include <QtCore/QString>
 #include <QtCore/QJsonObject>
 #include <QtCore/QMetaType>
 
@@ -43,8 +44,7 @@
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/SIMPLib.h"
 
-typedef struct
-{
+typedef struct {
   qint32 PaddingDigits = 3;
   quint32 Ordering = 0; /* Ordering=0 = Ascending, Ordering=1 = Descending */
   qint32 StartIndex = 0;
