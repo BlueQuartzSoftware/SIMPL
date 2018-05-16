@@ -101,6 +101,12 @@ class SVWidgetsLib_EXPORT QtSStyles : public QObject
     static QFont GetTitleFont();
 
     /**
+     * @brief GetFilterBackgroundColor
+     * @return
+     */
+    static QColor GetFilterBackgroundColor();
+
+    /**
      * @brief LineEditErrorStyle
      * @param lineEdit
      */
