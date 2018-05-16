@@ -106,10 +106,6 @@ void RemoveFilterCommand::undo()
     addFilter(filter, insertIndex);
   }
 
-  PipelineModel* model = m_PipelineView->getPipelineModel();
-  QModelIndex firstAddedIndex = model->index(m_FilterRows.front(), PipelineItem::Contents);
-  m_PipelineView->scrollTo(firstAddedIndex, QAbstractItemView::PositionAtTop);
-
   m_PipelineView->preflightPipeline();
 
   emit m_PipelineView->pipelineChanged();
