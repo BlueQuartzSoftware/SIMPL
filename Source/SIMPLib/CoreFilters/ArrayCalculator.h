@@ -52,6 +52,11 @@
 class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(ArrayCalculator SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(DataArrayPath SelectedAttributeMatrix READ getSelectedAttributeMatrix WRITE setSelectedAttributeMatrix)
+    PYB11_PROPERTY(QString InfixEquation READ getInfixEquation WRITE setInfixEquation)
+    PYB11_PROPERTY(DataArrayPath CalculatedArray READ getCalculatedArray WRITE setCalculatedArray)
+    PYB11_PROPERTY(AngleUnits Units READ getUnits WRITE setUnits)
 
   public:
     enum AngleUnits

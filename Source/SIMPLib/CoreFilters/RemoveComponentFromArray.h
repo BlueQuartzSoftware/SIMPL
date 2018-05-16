@@ -47,6 +47,13 @@
 class SIMPLib_EXPORT RemoveComponentFromArray : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(RemoveComponentFromArray SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
+    PYB11_PROPERTY(int CompNumber READ getCompNumber WRITE setCompNumber)
+    PYB11_PROPERTY(bool SaveRemovedComponent READ getSaveRemovedComponent WRITE setSaveRemovedComponent)
+    PYB11_PROPERTY(QString NewArrayArrayName READ getNewArrayArrayName WRITE setNewArrayArrayName)
+    PYB11_PROPERTY(QString ReducedArrayArrayName READ getReducedArrayArrayName WRITE setReducedArrayArrayName)
+
   public:
     SIMPL_SHARED_POINTERS(RemoveComponentFromArray)
     SIMPL_FILTER_NEW_MACRO(RemoveComponentFromArray)

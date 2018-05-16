@@ -546,5 +546,4 @@ void FilterParameterWidget::showFileInFileSystem()
 // -----------------------------------------------------------------------------
 void FilterParameterWidget::loadData()
 {
-  
 }

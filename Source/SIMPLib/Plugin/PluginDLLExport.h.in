@@ -1,0 +1,29 @@
+#pragma once
+
+/* CMake will define @plug_target_name@_EXPORTS on Windows when it
+configures to build a shared library. If you are going to use
+another build system on windows or create the visual studio
+projects by hand you need to define @PLUGIN_NAME@_EXPORTS when
+building the MXADatModel DLL on windows.
+*/
+
+
+#if defined (@plug_target_name@_EXPORTS)  /* Compiling the Plugin as a DLL/Dylib */
+    #if defined (_MSC_VER)  /* MSVC Compiler Case */
+        #define  @PLUGIN_NAME@_EXPORT __declspec(dllexport)
+    #elif (__GNUC__ >= 4)  /* GCC 4.x has support for visibility options */
+        #define @PLUGIN_NAME@_EXPORT __attribute__ ((visibility("default")))
+    #endif
+#else  /* Importing the DLL into another project */
+    #if defined (_MSC_VER)  /* MSVC Compiler Case */
+        #define  @PLUGIN_NAME@_EXPORT __declspec(dllimport)
+    #elif (__GNUC__ >= 4)  /* GCC 4.x has support for visibility options */
+        #define @PLUGIN_NAME@_EXPORT __attribute__ ((visibility("default")))
+    #endif
+#endif
+
+/* If @PLUGIN_NAME@_EXPORT was never defined, define it here */
+#ifndef @PLUGIN_NAME@_EXPORT
+    #define @PLUGIN_NAME@_EXPORT
+#endif
+

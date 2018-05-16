@@ -53,9 +53,12 @@ using Tuple3SVec = std::tuple<size_t, size_t, size_t>;
  */
 class SIMPLib_EXPORT IGeometryGrid : public IGeometry
 {
+  // This class needs to be wrapped so Python/Pybind11 can do the proper casting
+  PYB11_CREATE_BINDINGS(IGeometryGrid SUPERCLASS IGeometry)
+
   public:
     SIMPL_SHARED_POINTERS(IGeometryGrid)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometryGrid, Observable)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometryGrid, Observable)
 
     IGeometryGrid();
     virtual ~IGeometryGrid();

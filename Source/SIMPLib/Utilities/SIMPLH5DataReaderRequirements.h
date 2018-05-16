@@ -44,6 +44,9 @@
  */
 class SIMPLib_EXPORT SIMPLH5DataReaderRequirements
 {
+
+    PYB11_CREATE_BINDINGS(SIMPLH5DataReaderRequirements)
+
   public:
     SIMPLH5DataReaderRequirements();
     SIMPLH5DataReaderRequirements(const QString &primitiveType, size_t allowedCompDim, AttributeMatrix::Type attributeMatrixType, IGeometry::Type geometryType);

@@ -1,4 +1,5 @@
-<RCC>
+ <!DOCTYPE RCC>
+ <RCC version="1.0">
   <qresource>
     <file>Asterisk.png</file>
     <file>Asterisk@2x.png</file>
@@ -52,6 +53,8 @@
     <file>warning@2x.png</file>
     <file>reload.png</file>
     <file>reload@2x.png</file>
+    <file>refresh.png</file>
+    <file>refresh@2x.png</file>
     <file>cog.png</file>
     <file>cog@2x.png</file>
     <file>zoom_in.png</file>

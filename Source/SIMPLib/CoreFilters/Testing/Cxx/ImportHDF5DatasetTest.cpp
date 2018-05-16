@@ -1,4 +1,5 @@
 
+
 #include <stdlib.h>
 
 #include <fstream>
@@ -351,8 +352,7 @@ public:
   {
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
-    DataContainer::Pointer dc = DataContainer::New();
-    dc->setName("DataContainer");
+    DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
     dca->addDataContainer(dc);
 

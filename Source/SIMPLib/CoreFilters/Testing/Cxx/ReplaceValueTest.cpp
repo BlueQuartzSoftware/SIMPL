@@ -154,8 +154,7 @@ public:
 
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
-    DataContainer::Pointer m = DataContainer::New();
-    m->setName("ReplaceValueTest");
+    DataContainer::Pointer m = DataContainer::New("ReplaceValueTest");
 
     // Create Attribute Matrices with different tDims to test validation of tuple compatibility
     QVector<size_t> tDims(1, 100);

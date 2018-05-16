@@ -39,18 +39,44 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Geometry/IGeometryGrid.h"
 
+namespace SIMPL {
+  using Tuple3FVec = std::tuple<float,float,float>;
+  using Tuple6FVec = std::tuple<float,float,float,float,float,float>;
+  using Tuple3SVec = std::tuple<size_t,size_t,size_t>;
+}
+
 /**
  * @brief The ImageGeom class represents a structured rectlinear grid
  */
 class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
 {
+  PYB11_CREATE_BINDINGS(ImageGeom SUPERCLASS IGeometryGrid)
+  PYB11_STATIC_CREATION(CreateGeometry ARGS QString)
+  
+  PYB11_ENUMERATION(ErrorType)
+
+  PYB11_METHOD(void setDimensions OVERLOAD size_t,x size_t,y size_t,z)
+  PYB11_METHOD(SIMPL::Tuple3SVec getDimensions)
+
+  PYB11_METHOD(void setResolution OVERLOAD float,x float,y float,z)
+  PYB11_METHOD(SIMPL::Tuple3FVec getResolution OVERLOAD CONST_METHOD)
+
+  PYB11_METHOD(size_t getXPoints)
+  PYB11_METHOD(size_t getYPoints)
+  PYB11_METHOD(size_t getZPoints)
+  
+  PYB11_METHOD(void setOrigin OVERLOAD float,x float,y float,z)
+  PYB11_METHOD(SIMPL::Tuple3FVec getOrigin OVERLOAD CONST_METHOD)
+
+  PYB11_METHOD(SIMPL::Tuple6FVec getBoundingBox OVERLOAD)
+
 
   public:
     SIMPL_SHARED_POINTERS(ImageGeom)
     SIMPL_STATIC_NEW_MACRO(ImageGeom)
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ImageGeom, Observable)
 
-    virtual ~ImageGeom();
+    ~ImageGeom() override;
 
     using EnumType = unsigned int;
     enum class ErrorType : EnumType
@@ -81,25 +107,20 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
     * @brief Sets/Gets the Origin property
     */
     SIMPL_INSTANCE_VEC3_PROPERTY(float, Origin)
-
-    /**
-     * @brief Returns the bounding box for this geometry
-     * @param xMin
-     * @param xMax
-     * @param yMin
-     * @param yMax
-     * @param zMin
-     * @param zMax
-     */
-    void getBoundingBox(float &xMin, float &xMax, float &yMin, float &yMax, float &zMin, float &zMax);
-
+    
     /**
      * @brief getBoundingBox
      * @param boundingBox The bounding box will be stored in the input argument in the following order:
      * xMin, xMax, yMin, yMax, zMin, zMax
      */
-    void getBoundingBox(float boundingBox[6]);
-
+    void getBoundingBox(float* boundingBox);
+    
+    /**
+     * @brief getBoundingBox
+     * @param boundingBox The bounding box will be stored in the input argument in the following order:
+     * xMin, xMax, yMin, yMax, zMin, zMax
+     */
+    SIMPL::Tuple6FVec getBoundingBox();
 
 // -----------------------------------------------------------------------------
 // Inherited from IGeometry

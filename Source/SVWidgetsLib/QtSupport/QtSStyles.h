@@ -47,12 +47,32 @@
 class QLineEdit;
 class QPushButton;
 
+
+namespace SVWidgets
+{
+namespace Styles
+{
+
+static const QString PushButtonStyleSheet(":/SIMPLPushButton.css");
+static const QString AddImagePath(":/add.png");
+static const QString DeleteImagePath(":/delete.png");
+static const QString LoadImagePath(":/data-transfer-upload.png");
+static const QString SaveImagePath(":/data-transfer-download.png");
+static const QString ReloadImagePath(":/reload.png");
+static const QString RefreshImagePath(":/refresh.png");
+static const QString CogImagePath(":/cog.png");
+static const QString HDFImagePath(":/data-transfer-hdf.png");
+static const QString InformationImagePath(":/information.png");
+
+} // namespace Styles
+} // namespace SVWidgets
+
 class SVWidgetsLib_EXPORT QtSStyles : public QObject
 {
     Q_OBJECT
   public:
     QtSStyles();
-    virtual ~QtSStyles();
+    ~QtSStyles() override;
 
     static QString GetUIFont();
 
@@ -79,6 +99,12 @@ class SVWidgetsLib_EXPORT QtSStyles : public QObject
      * @return
      */
     static QFont GetTitleFont();
+
+    /**
+     * @brief GetFilterBackgroundColor
+     * @return
+     */
+    static QColor GetFilterBackgroundColor();
 
     /**
      * @brief LineEditErrorStyle
@@ -118,6 +144,16 @@ class SVWidgetsLib_EXPORT QtSStyles : public QObject
      * @return
      */
     static QIcon IconForGroup(const QString &grpName);
+
+    /**
+     * @brief QtSStyles::IconForGroup
+     * @param objectName
+     * @param cssName
+     * @param imageName
+     * @return
+     */
+    static QString StyleSheetForButton(const QString &objectName, const QString &cssName, const QString &imageName);
+    
 };
 
 #endif /* _SIMPLViewStyles_H_ */

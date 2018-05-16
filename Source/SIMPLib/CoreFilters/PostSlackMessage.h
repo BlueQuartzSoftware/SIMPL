@@ -45,9 +45,14 @@ class QNetworkReply;
 /**
  * @brief The PostSlackMessage class. See [Filter documentation](@ref postslackmessage) for details.
  */
-class PostSlackMessage : public AbstractFilter
+class SIMPLib_EXPORT PostSlackMessage : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(PostSlackMessage SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(QString SlackUser READ getSlackUser WRITE setSlackUser)
+  PYB11_PROPERTY(QString SlackUrl READ getSlackUrl WRITE setSlackUrl)
+  PYB11_PROPERTY(QString SlackMessage READ getSlackMessage WRITE setSlackMessage)
+  PYB11_PROPERTY(bool WarningsAsError READ getWarningsAsError WRITE setWarningsAsError)
 
   public:
     SIMPL_SHARED_POINTERS(PostSlackMessage)
@@ -56,17 +61,17 @@ class PostSlackMessage : public AbstractFilter
 
     ~PostSlackMessage() override;
 
-    SIMPL_INSTANCE_STRING_PROPERTY(SlackUser)
-    Q_PROPERTY(QString SlackUser READ getSlackUser WRITE setSlackUser)
+  SIMPL_FILTER_PARAMETER(QString, SlackUser)
+  Q_PROPERTY(QString SlackUser READ getSlackUser WRITE setSlackUser)
 
-    SIMPL_INSTANCE_STRING_PROPERTY(SlackUrl)
-    Q_PROPERTY(QString SlackUrl READ getSlackUrl WRITE setSlackUrl)
+  SIMPL_FILTER_PARAMETER(QString, SlackUrl)
+  Q_PROPERTY(QString SlackUrl READ getSlackUrl WRITE setSlackUrl)
 
-    SIMPL_INSTANCE_STRING_PROPERTY(SlackMessage)
-    Q_PROPERTY(QString SlackMessage READ getSlackMessage WRITE setSlackMessage)
+  SIMPL_FILTER_PARAMETER(QString, SlackMessage)
+  Q_PROPERTY(QString SlackMessage READ getSlackMessage WRITE setSlackMessage)
 
-    SIMPL_INSTANCE_PROPERTY(bool, WarningsAsError)
-    Q_PROPERTY(bool WarningsAsError READ getWarningsAsError WRITE setWarningsAsError)
+  SIMPL_FILTER_PARAMETER(bool, WarningsAsError)
+  Q_PROPERTY(bool WarningsAsError READ getWarningsAsError WRITE setWarningsAsError)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
@@ -128,46 +133,46 @@ class PostSlackMessage : public AbstractFilter
     */
     void preflight() override;
 
-  signals:
-    /**
-     * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
-     * be pushed from a user-facing control (such as a widget)
-     * @param filter Filter instance pointer
-     */
-    void updateFilterParameters(AbstractFilter* filter);
+signals:
+  /**
+   * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
+   * be pushed from a user-facing control (such as a widget)
+   * @param filter Filter instance pointer
+   */
+  void updateFilterParameters(AbstractFilter* filter);
 
-    /**
-     * @brief parametersChanged Emitted when any Filter parameter is changed internally
-     */
-    void parametersChanged();
+  /**
+   * @brief parametersChanged Emitted when any Filter parameter is changed internally
+   */
+  void parametersChanged();
 
-    /**
-     * @brief preflightAboutToExecute Emitted just before calling dataCheck()
-     */
-    void preflightAboutToExecute();
+  /**
+   * @brief preflightAboutToExecute Emitted just before calling dataCheck()
+   */
+  void preflightAboutToExecute();
 
-    /**
-     * @brief preflightExecuted Emitted just after calling dataCheck()
-     */
-    void preflightExecuted();
+  /**
+   * @brief preflightExecuted Emitted just after calling dataCheck()
+   */
+  void preflightExecuted();
 
-  protected:
-    PostSlackMessage();
+protected:
+  PostSlackMessage();
 
-    /**
-    * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-    */
-    void dataCheck();
+  /**
+  * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+  */
+  void dataCheck();
 
-    /**
-    * @brief Initializes all the private instance variables.
-    */
-    void initialize();
+  /**
+  * @brief Initializes all the private instance variables.
+  */
+  void initialize();
 
-  private:
-    QWaitCondition                          m_WaitCondition;
-    QMutex                                  m_Mutex;
-    QNetworkAccessManager* m_NetworkManager;
+private:
+  QWaitCondition m_WaitCondition;
+  QMutex m_Mutex;
+  QNetworkAccessManager* m_NetworkManager;
 
   public:
     PostSlackMessage(const PostSlackMessage&) = delete; // Copy Constructor Not Implemented

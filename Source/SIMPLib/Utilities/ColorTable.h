@@ -36,6 +36,8 @@
 #ifndef _colortable_h_
 #define _colortable_h_
 
+#include <iostream>
+
 #include <QtCore/QVector>
 
 #include "SIMPLib/SIMPLib.h"
@@ -47,9 +49,6 @@ class SIMPLib_EXPORT RgbColor
     /**
     * @brief Rgb An ARGB quadruplet on the format #AARRGGBB, equivalent to an unsigned int and The type also holds a value for the alpha-channel.
     */
-
-
-
     inline static int dRed(SIMPL::Rgb rgb)
     {
       return ((rgb >> 16) & 0xff);
@@ -80,10 +79,22 @@ class SIMPLib_EXPORT RgbColor
       return ((a & 0xff) << 24) | ((r & 0xff) << 16) | ((g & 0xff) << 8) | (b & 0xff);
     }
 
+    inline static void print(std::ostream& out, const char& sep, const SIMPL::Rgb& rgb)
+    {
+      out << "rgb: " << RgbColor::dRed(rgb) << sep << RgbColor::dGreen(rgb) << sep << RgbColor::dBlue(rgb);
+    }
+
+    inline static bool compare(const SIMPL::Rgb& left, const SIMPL::Rgb& right)
+    {
+      return left == right;
+    }
+
+    inline static std::tuple<float, float, float> fRgb(SIMPL::Rgb rgb)
+    {
+      return std::make_tuple(static_cast<float>(((rgb >> 16) & 0xff)/255.0f), static_cast<float>(((rgb >> 8) & 0xff)/255.0f), static_cast<float>((rgb & 0xff)/255.0f));
+    }
   protected:
-    RgbColor() {};
-
-
+    RgbColor() {}
 
 };
 

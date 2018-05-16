@@ -47,6 +47,10 @@
 class SIMPLib_EXPORT RenameAttributeArray : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(RenameAttributeArray SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
+    PYB11_PROPERTY(QString NewArrayName READ getNewArrayName WRITE setNewArrayName)
+
   public:
     SIMPL_SHARED_POINTERS(RenameAttributeArray)
     SIMPL_FILTER_NEW_MACRO(RenameAttributeArray)

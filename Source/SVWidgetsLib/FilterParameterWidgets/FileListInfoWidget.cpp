@@ -63,7 +63,6 @@ QString FileListInfoWidget::m_OpenDialogLastFilePath = "";
 FileListInfoWidget::FileListInfoWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 , m_Ui(new Ui::FileListInfoWidget)
-, m_OrderingGroup(nullptr)
 , m_DidCausePreflight(false)
 {
   FileListInfoFilterParameter* fli = dynamic_cast<FileListInfoFilterParameter*>(parameter);
@@ -321,7 +320,7 @@ void FileListInfoWidget::checkIOFiles()
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::inputDirBtn_clicked()
 {
-  QString outputFile = QFileDialog::getExistingDirectory(this, tr("Select EBSD Directory"), getInputDirectory());
+  QString outputFile = QFileDialog::getExistingDirectory(this, tr("Select Input Directory"), getInputDirectory());
 
   if(!outputFile.isNull())
   {
@@ -367,13 +366,13 @@ uint32_t FileListInfoWidget::getOrdering()
 {
   if(m_Ui->orderAscending->isChecked())
   {
-    return 0;
+    return SIMPL::RefFrameZDir::LowtoHigh;
   }
   if(m_Ui->orderDescending->isChecked())
   {
-    return 1;
+    return SIMPL::RefFrameZDir::HightoLow;
   }
-  return 999;
+  return SIMPL::RefFrameZDir::UnknownRefFrameZDirection;
 }
 
 // -----------------------------------------------------------------------------
@@ -381,11 +380,11 @@ uint32_t FileListInfoWidget::getOrdering()
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::setOrdering(uint32_t ref)
 {
-  if(ref == 0)
+  if(ref == SIMPL::RefFrameZDir::LowtoHigh)
   {
     m_Ui->orderAscending->setChecked(true);
   }
-  if(ref == 1)
+  if(ref == SIMPL::RefFrameZDir::HightoLow)
   {
     m_Ui->orderDescending->setChecked(true);
   }
@@ -607,5 +606,9 @@ void FileListInfoWidget::setInputDirectory(QString val)
 // -----------------------------------------------------------------------------
 QString FileListInfoWidget::getInputDirectory()
 {
+  if(m_Ui->inputDir->text().isEmpty())
+  {
+    return QDir::homePath();
+  }
   return m_Ui->inputDir->text();
 }

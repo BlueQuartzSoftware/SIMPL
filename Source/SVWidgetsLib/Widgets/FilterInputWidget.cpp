@@ -66,6 +66,7 @@
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/DataContainerArrayWidget.h"
 
+
 #if 0
 #include "ctkCollapsibleGroupBox.h"
 #define QGroupBox ctkCollapsibleGroupBox
@@ -191,14 +192,18 @@ void FilterInputWidget::setupGui()
     m_Ui->brandingLabel->setFont(brandingFont);
     m_Ui->brandingLabel->installEventFilter(this);
   }
+  
+  m_Ui->informationBtn->setStyleSheet(QtSStyles::StyleSheetForButton(m_Ui->informationBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::InformationImagePath));  
+  connect(m_Ui->informationBtn, SIGNAL(clicked()),
+           this, SLOT(showHelp()));
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterInputWidget::setFilterIndex(const QString &index)
+void FilterInputWidget::setFilterIndex(const QString& index)
 {
-  m_Ui->filterIndex->setText(index);  
+  m_Ui->filterIndex->setText(index);
 }
 
 // -----------------------------------------------------------------------------
@@ -377,7 +382,7 @@ void FilterInputWidget::layoutWidgets(AbstractFilter* filter)
   }
 
   // If there are widgets in the created arrays group box, add it to the overall layout.  If not, remove the group box.
-  if(!cLayout->isEmpty()  || cCount > 0)
+  if(!cLayout->isEmpty() || cCount > 0)
   {
     m_VariablesVerticalLayout->addWidget(createdGroupBox);
   }
@@ -419,7 +424,7 @@ void FilterInputWidget::validateFileSystemFilterParameter(FilterParameter* param
 
   QString currentPath = fi.absoluteFilePath();
 
-  if(!currentPath.isEmpty()  && !fi.exists())
+  if(!currentPath.isEmpty() && !fi.exists())
   {
 
     QString s = fType + QString(" Files (*") + ext + QString(");;All Files (*.*)");
@@ -536,7 +541,7 @@ void FilterInputWidget::linkConditionalWidgets(QVector<FilterParameter::Pointer>
         {
           w = m_PropertyToWidget[propName];
         }
-         
+
         if(nullptr != w)
         {
           // qDebug() << "Connecting: " << optionPtr2->getPropertyName() << " to " << propName;
@@ -586,7 +591,7 @@ void FilterInputWidget::linkConditionalWidgets(QVector<FilterParameter::Pointer>
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterInputWidget::on_filterHelpBtn_clicked()
+void FilterInputWidget::showHelp()
 {
   DocRequestManager* docRequester = DocRequestManager::Instance();
   docRequester->requestFilterDocs(m_FilterClassName);
@@ -643,7 +648,7 @@ void FilterInputWidget::displayFilterParameters(AbstractFilter::Pointer filter)
   m_Ui->filterHumanLabel->setText(filter->getHumanLabel());
   m_Ui->filterIndex->setText(QString::number(filter->getPipelineIndex() + 1));
   m_Ui->filterIndex->show();
-  //m_Ui->filterIndex->clear();
+  // m_Ui->filterIndex->clear();
   QString style;
 
 

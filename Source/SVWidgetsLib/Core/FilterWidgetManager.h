@@ -100,9 +100,9 @@ class SVWidgetsLib_EXPORT FilterWidgetManager
      * @param parameter
      * @param filter
      * @param parent
-     * @return 
+     * @return
      */
-    QWidget* createWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget *parent);
+    QWidget* createWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent);
 
   protected:
     FilterWidgetManager();

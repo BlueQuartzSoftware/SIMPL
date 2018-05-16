@@ -88,7 +88,12 @@ cmp_IDE_GENERATED_PROPERTIES("Generated" "${${PROJECT_NAME}_Generated_HDRS}" "${
 
 
 # -- Run MOC and UIC on the necessary files
-QT5_ADD_RESOURCES( SVWidgetsLib_Generated_RC_SRCS "${SVWidgetsLib_SOURCE_DIR}/icons/images/Icons.qrc" "${SVWidgetsLib_SOURCE_DIR}/fonts/fonts.qrc")
+QT5_ADD_RESOURCES( SVWidgetsLib_Generated_RC_SRCS 
+              "${SVWidgetsLib_SOURCE_DIR}/icons/images/Icons.qrc" 
+              "${SVWidgetsLib_SOURCE_DIR}/fonts/fonts.qrc"
+              "${SVWidgetsLib_SOURCE_DIR}/StyleSheets/StyleSheets.qrc"
+)
+
 foreach(h ${SVWidgetsLib_Generated_RC_SRCS})
   set_property(SOURCE ${h} PROPERTY SKIP_AUTOMOC ON)
 endforeach()
@@ -171,7 +176,7 @@ target_include_directories(SVWidgetsLib
                               ${SVWidgetsLib_BINARY_DIR}/QtSupport
                               ${SVWidgetsLib_BINARY_DIR}/Widgets
                               ${SVWidgetsLib_BINARY_DIR}/Widgets/ImportASCIIDataWizard
-                              ${SIMPLProj_SOURCE_DIR}/3rdParty
+                              ${SIMPLProj_SOURCE_DIR}/ThirdParty
 )
 if(WIN32 AND BUILD_SHARED_LIBS)
 		target_compile_definitions(SVWidgetsLib PUBLIC "-DSVWidgetsLib_BUILT_AS_DYNAMIC_LIB")

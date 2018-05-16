@@ -246,7 +246,7 @@ INSTALL(TARGETS ${PROJECT_NAME}
     COMPONENT Applications
     RUNTIME DESTINATION ${install_dir}
     LIBRARY DESTINATION ${lib_install_dir}
-    ARCHIVE DESTINATION ${lib_install_dir}
+    ARCHIVE DESTINATION lib
     BUNDLE DESTINATION "."
 )
 
@@ -283,6 +283,8 @@ endif()
 
 
 # ------- Enable the CTest testing. ---------------
+# -------------------------------------------------------------------- 
+# If Testing is enabled, turn on the Unit Tests 
 if(SIMPL_BUILD_TESTING)
     include(${SIMPLib_SOURCE_DIR}/Testing/CMakeLists.txt)
 endif()

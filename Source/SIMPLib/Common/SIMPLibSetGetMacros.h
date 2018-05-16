@@ -296,11 +296,6 @@ public:     \
       SIMPL_SET_PROPERTY_DEF(class, type, prpty)\
       SIMPL_GET_PROPERTY_DEF(class, type, prpty)
 
-#define SIMPL_VIRTUAL_INSTANCE_PROPERTY_DEF(class, type, prpty)\
-      SIMPL_SET_PROPERTY_DEF(class, type, prpty)\
-      SIMPL_GET_PROPERTY_DEF(class, type, prpty)
-
-
 /**
 * @brief
 */
@@ -326,6 +321,58 @@ public:     \
   public:\
   SIMPL_GET_PROPERTY(type, prpty)
 
+
+/* *****************************************************************************'
+ * PyBind11 Macros that we can use to explicitly define which setters & getters
+ * will be exposed to the Python library
+ */
+/* This macro declares a class that needs to be wrapped in Python */
+#define PYB11_CREATE_BINDINGS(...)
+#define PYB11_NO_BINDINGS(...)
+#define PYB11_STATIC_CREATION(...)
+#define PYB11_CREATION(...)
+#define PYB11_ENUMERATION(...)
+#define PYB11_PROPERTY(...)
+/**
+* @brief This macro is used to expose a method to the Python bindings. The signature
+* of the macro should be the following:
+* PYB11_METHOD( _return_type_ _name_of_method_ [ARGS|OVERLOAD] ....)
+* If the ARGS command is used the simply list the variable names for each argument.
+* For example if you have a method "void getFoo(const QString &foo)" that you want
+* to expose:
+* @code
+* PYB11_METHOD(void getFoo ARGS Foo)
+* @endcode
+* 
+* If your method does not take any arguments then leave out the ARGS keyword.
+* 
+* If you are have overloads of the method that you want to expose to Python then
+* the "OVERLOAD" version of the method should be used. Again, say we have two 
+* methods that we want to expose.
+* @code
+* void setPath(const QString &name)
+* void setPath(const DataArrayPath &path)
+* @endcode
+* 
+* then we would use the following set of invocations:
+* @code
+* PYB11_METHOD(void setPath OVERLOAD const.QString.&,Name)
+* PYB11_METHOD(void setPath OVERLOAD const.DataArrayPath.&,Path)
+* @endcode
+* Note that in order to get the (const QString &) correct we used the '.' charater
+* to declare the type. This is required as the macro is split using spaces. When
+* then end code is generated the '.' characters will be replaced with spaces.
+*/ 
+#define PYB11_METHOD(...)
+
+#define PYB11_METHOD_MAPPER(...)
+
+
+#define SIMPL_SET_PROPERTY_DECL(type, prpty)\
+  void set##prpty(type value);
+
+#define SIMPL_GET_PROPERTY_DECL(type, prpty)\
+  type get##prpty() const;
 
 
 #define SIMPL_PIMPL_PROPERTY_DECL(type, prpty)\
@@ -382,6 +429,8 @@ public:     \
   public:\
   SIMPL_SET_PROPERTY(type, prpty)\
   SIMPL_GET_PROPERTY(type, prpty)
+  
+  
 
 // -----------------------------------------------------------------------------
 //

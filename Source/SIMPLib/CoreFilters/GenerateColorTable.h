@@ -18,6 +18,11 @@
 class SIMPLib_EXPORT GenerateColorTable : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(GenerateColorTable SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(QString SelectedPresetName READ getSelectedPresetName WRITE setSelectedPresetName)
+  PYB11_PROPERTY(QJsonArray SelectedPresetControlPoints READ getSelectedPresetControlPoints WRITE setSelectedPresetControlPoints)
+  PYB11_PROPERTY(DataArrayPath SelectedDataArrayPath READ getSelectedDataArrayPath WRITE setSelectedDataArrayPath)
+  PYB11_PROPERTY(QString RgbArrayName READ getRgbArrayName WRITE setRgbArrayName)
 
   public:
     SIMPL_SHARED_POINTERS(GenerateColorTable)
@@ -35,8 +40,8 @@ class SIMPLib_EXPORT GenerateColorTable : public AbstractFilter
     SIMPL_INSTANCE_PROPERTY(DataArrayPath, SelectedDataArrayPath)
     Q_PROPERTY(DataArrayPath SelectedDataArrayPath READ getSelectedDataArrayPath WRITE setSelectedDataArrayPath)
 
-    SIMPL_INSTANCE_PROPERTY(QString, RGB_ArrayName)
-    Q_PROPERTY(QString RGB_ArrayName READ getRGB_ArrayName WRITE setRGB_ArrayName)
+    SIMPL_INSTANCE_PROPERTY(QString, RgbArrayName)
+    Q_PROPERTY(QString RgbArrayName READ getRgbArrayName WRITE setRgbArrayName)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class

@@ -77,6 +77,7 @@
 template<typename T>
 class DataArray : public IDataArray
 {
+
   public:
 
     SIMPL_SHARED_POINTERS(DataArray<T> )
@@ -360,7 +361,7 @@ class DataArray : public IDataArray
     }
 
     /**
-     * @brief FromPointer
+     * @brief FromPointer Creates a DataArray<T> object with a <b>DEEP COPY</b> of the data
      * @param data
      * @param size
      * @param name
@@ -378,7 +379,9 @@ class DataArray : public IDataArray
 
 
     /**
-     * @brief WrapPointer
+     * @brief WrapPointer Creates a DataArray<T> object that references the pointer. The original caller can
+     * set if the memory should be "free()'ed" when the object goes away. The original memory MUST have been
+     * "alloc()'ed" and <b>NOT</b> new 'ed.
      * @param data
      * @param numTuples
      * @param cDims
@@ -390,7 +393,7 @@ class DataArray : public IDataArray
     {
       // Allocate on the heap
       DataArray* d = new DataArray(numTuples, cDims, name, false);
-      // Wrap that heap pointer with a shared_pointer from boost to make it reference counted
+      // Wrap that heap pointer with a shared_pointer to make it reference counted
       Pointer p(d);
 
       p->m_Array = data; // Now set the internal array to the raw pointer
@@ -399,6 +402,7 @@ class DataArray : public IDataArray
 
       return p;
     }
+
 
     // This line must be here, because we are overloading the copyData pure virtual function in IDataArray.
     // This is required so that other classes can call this version of copyData from the subclasses.
@@ -922,7 +926,7 @@ class DataArray : public IDataArray
     void setTuple(size_t tupleIndex, T* data)
     {
 #ifndef NDEBUG
-      if (m_Size > 0) { Q_ASSERT(tupleIndex * m_NumComponents+ m_NumComponents  < m_Size);}
+      if (m_Size > 0) { Q_ASSERT(tupleIndex * m_NumComponents + (m_NumComponents-1)  < m_Size);}
 #endif
       std::memcpy(getTuplePointer(tupleIndex), data, m_NumComponents * sizeof(T));
     }

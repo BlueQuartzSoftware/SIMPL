@@ -37,11 +37,11 @@
 
 #include <QtCore/QTextStream>
 
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
-#include "SIMPLib/DataContainers/AttributeMatrix.h"
-#include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Geometry/EdgeGeom.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/QuadGeom.h"
@@ -49,6 +49,7 @@
 #include "SIMPLib/Geometry/TetrahedralGeom.h"
 #include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
+#include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
 
 #include "H5Support/QH5Utilities.h"
 #include "H5Support/H5ScopedSentinel.h"
@@ -826,4 +827,104 @@ QString DataContainer::getInfoString(SIMPL::InfoStringFormat format)
   {
   }
   return info;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AttributeMatrixShPtr DataContainer::getPrereqAttributeMatrix(AbstractFilter* filter, QString attributeMatrixName, int err)
+{
+  QString ss;
+  AttributeMatrixShPtr attributeMatrix(nullptr);
+  // Make sure the name is not empty for teh AttributeMatrix and the AttributeArray Name. This would be detected below
+  // in the call to get either one BUT the reason for the failure would not be evident so we make these explicit checks
+  // here and send back nice error messages to ther user/programmer.
+  if(attributeMatrixName.isEmpty() == true)
+  {
+    if(filter)
+    {
+      filter->setErrorCondition(err * 1000);
+      ss = QObject::tr("DataContainer:'%1' The name of the AttributeMatrix was empty. Please provide a name for this AttributeMatrix").arg(getName());
+      filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+    }
+    return attributeMatrix;
+  }
+  // Now attempt to get the AttributeMatrix which could still come back nullptr because the name does not match.
+  attributeMatrix = getAttributeMatrix(attributeMatrixName);
+  if(nullptr == attributeMatrix.get())
+  {
+    if(filter)
+    {
+      filter->setErrorCondition(err * 1020);
+      ss = QObject::tr("DataContainer:'%1' An AttributeMatrix with name '%2' does not exist and is required for this filter to execute.").arg(getName()).arg(attributeMatrixName);
+      filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+    }
+    return attributeMatrix;
+  }
+  if(false == attributeMatrix->validateAttributeArraySizes())
+  {
+    if(filter)
+    {
+      filter->setErrorCondition(err * 1030);
+      ss = QObject::tr("DataContainer:'%1' AttributeMatrix: '%2' Attribute Matrix has Attribute Arrays with mismatched number of objects.").arg(getName()).arg(attributeMatrixName);
+      filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+    }
+    return attributeMatrix;
+  }
+  return attributeMatrix;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilter* filter, const QString& attributeMatrixName, QVector<size_t> tDims, AttributeMatrix::Type amType)
+{
+  AttributeMatrixShPtr attributeMatrix(nullptr);
+
+  QString ss;
+  if(attributeMatrixName.isEmpty() == true)
+  {
+    if(filter)
+    {
+      filter->setErrorCondition(-10011);
+      ss = QObject::tr("The name of the Attribute Matrix was empty. Please provide a name for this Attribute Matrix.");
+      filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+    }
+    return attributeMatrix;
+  }
+
+  if(attributeMatrixName.contains('/'))
+  {
+    if(filter)
+    {
+      filter->setErrorCondition(-10012);
+      ss = QObject::tr("The AttributeMatrix '%1' has forward slashes in its name").arg(attributeMatrixName);
+      filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+    }
+    return attributeMatrix;
+  }
+
+  if(attributeMatrixName.compare(SIMPL::Geometry::Geometry) == 0)
+  {
+    if(filter)
+    {
+      filter->setErrorCondition(-10013);
+      ss = QObject::tr("%1 is a protected name.  Please provide a different name for this Attribute Matrix.").arg(SIMPL::Geometry::Geometry);
+      filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+    }
+    return attributeMatrix;
+  }
+  attributeMatrix = getAttributeMatrix(attributeMatrixName);
+  if(nullptr == attributeMatrix.get())
+  {
+    attributeMatrix = createAndAddAttributeMatrix(tDims, attributeMatrixName, amType);
+    return attributeMatrix;
+  }
+  else if(filter) // If the filter object is NOT null (is valid) then set the error condition and send an error message
+  {
+    filter->setErrorCondition(-10014);
+    ss = QObject::tr("An Attribute Matrix already exists with the name %1.").arg(attributeMatrixName);
+    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+  }
+  return attributeMatrix;
 }

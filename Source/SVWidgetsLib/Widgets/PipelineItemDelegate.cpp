@@ -89,7 +89,7 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
   if (filter.get() != nullptr)
   {
     QString grpName = filter->getGroupName();
-    grpColor = QtSStyles::ColorForFilterGroup(grpName);
+    grpColor = QtSStyles::GetFilterBackgroundColor();
   }
 
   QColor widgetBackgroundColor;
@@ -99,16 +99,25 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
   QColor disabledBgColor = QColor(124, 124, 124);
 
   bool drawButtons = false;
+  if(option.state & QStyle::State_Selected)
+  {
+    bgColor = m_View->palette().color(QPalette::Highlight).lighter();
+  }
+
   if((option.state & QStyle::State_MouseOver) && !(QApplication::mouseButtons() & Qt::LeftButton) )
   {
-    QColor hoveredColor = grpColor;
-    hoveredColor.setRedF((hoveredColor.redF() * 1.10 > 1.0) ? 1.0 : hoveredColor.redF() * 1.10);
-    hoveredColor.setGreenF((hoveredColor.greenF() * 1.10 > 1.0) ? 1.0 : hoveredColor.greenF() * 1.10);
-    hoveredColor.setBlueF((hoveredColor.blueF() * 1.10 > 1.0) ? 1.0 : hoveredColor.blueF() * 1.10);
-    bgColor = hoveredColor;
+    if((option.state & QStyle::State_Selected) == false)
+    {
+      QColor hoveredColor = bgColor;
+      hoveredColor.setRedF((hoveredColor.redF() * 1.10 > 1.0) ? 1.0 : hoveredColor.redF() * 1.10);
+      hoveredColor.setGreenF((hoveredColor.greenF() * 1.10 > 1.0) ? 1.0 : hoveredColor.greenF() * 1.10);
+      hoveredColor.setBlueF((hoveredColor.blueF() * 1.10 > 1.0) ? 1.0 : hoveredColor.blueF() * 1.10);
+      bgColor = hoveredColor;
+    }
 
     drawButtons = true;
   }
+
   switch(wState)
   {
     case PipelineItem::WidgetState::Ready:
@@ -365,23 +374,6 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
     {
       painter->drawText(rect.x() + indexBoxWidth + textMargin + xOffset, rect.y() + fontMargin + fontHeight + yOffset, filter->getHumanLabel());
     }
-  }
-
-  // If the filter is selected, draw a border around it.
-  bool ok;
-  int borderSize = index.data(PipelineModel::Roles::BorderSizeRole).toInt(&ok);
-
-  if((option.state & QStyle::State_Selected) && borderSize > 0 && ok)
-  {
-    QColor selectedColor = QColor::fromHsv(bgColor.hue(), 180, 150);
-
-    QPen pen(QBrush(selectedColor), borderSize);
-    painter->setPen(pen);
-
-    // Draw inside option.rect to avoid painting artifacts
-    qreal x = option.rect.x() + (borderSize / 2);
-    qreal y = option.rect.y() + (borderSize / 2);
-    painter->drawRoundedRect(QRectF(x + xOffset, y + yOffset, option.rect.width() - borderSize  + 0.5 , option.rect.height() - borderSize + 0.5), 1, 1);
   }
 
   painter->restore();

@@ -47,6 +47,11 @@
 class SIMPLib_EXPORT ExtractComponentAsArray : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(ExtractComponentAsArray SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
+    PYB11_PROPERTY(int CompNumber READ getCompNumber WRITE setCompNumber)
+    PYB11_PROPERTY(QString NewArrayArrayName READ getNewArrayArrayName WRITE setNewArrayArrayName)
+
   public:
     SIMPL_SHARED_POINTERS(ExtractComponentAsArray)
     SIMPL_FILTER_NEW_MACRO(ExtractComponentAsArray)

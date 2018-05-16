@@ -253,7 +253,7 @@ public:
     dc->addAttributeMatrix(attrMat->getName(), attrMat);
 
     QString autoAddName = name + QString::fromLatin1("_Auto");
-    AttributeMatrix::Pointer autoAttrMat = dc->createNonPrereqAttributeMatrix<AbstractFilter>(nullptr, autoAddName, tupleDims, AttributeMatrix::Type::Cell);
+    AttributeMatrix::Pointer autoAttrMat = dc->createNonPrereqAttributeMatrix(nullptr, autoAddName, tupleDims, AttributeMatrix::Type::Cell);
     compDims.resize(0);
     compDims.push_back(1);
     FillAttributeMatrix(autoAttrMat, compDims);

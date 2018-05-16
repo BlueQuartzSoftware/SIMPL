@@ -310,8 +310,7 @@ int DataContainerArray::readDataContainersFromHDF5(bool preflight, hid_t dcaGid,
       }
       return -198745600;
     }
-    DataContainer::Pointer dc = DataContainer::New();
-    dc->setName(dcProxy.name);
+    DataContainer::Pointer dc = DataContainer::New(dcProxy.name);
     this->addDataContainer(dc);
 
     // Now open the DataContainer Group in the HDF5 file

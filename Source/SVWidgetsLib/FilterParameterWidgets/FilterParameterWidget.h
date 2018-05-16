@@ -129,7 +129,7 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
      * @brief showFileInFileSystem
      */
     virtual void showFileInFileSystem();
-    
+
     /**
      * @brief loadData
      */

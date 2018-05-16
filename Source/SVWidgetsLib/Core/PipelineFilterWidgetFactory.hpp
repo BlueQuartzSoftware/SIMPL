@@ -33,10 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #ifndef _pipelineFilterWidgetFACTORY_H_
 #define _pipelineFilterWidgetFACTORY_H_
-
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
@@ -71,13 +69,11 @@ class PipelineFilterWidgetFactory : public IFilterWidgetFactory
   protected:
     PipelineFilterWidgetFactory() = default;
 
-    
   public:
-    PipelineFilterWidgetFactory(const PipelineFilterWidgetFactory&) = delete; // Copy Constructor Not Implemented
-    PipelineFilterWidgetFactory(PipelineFilterWidgetFactory&&) = delete;      // Move Constructor
+    PipelineFilterWidgetFactory(const PipelineFilterWidgetFactory&) = delete;            // Copy Constructor Not Implemented
+    PipelineFilterWidgetFactory(PipelineFilterWidgetFactory&&) = delete;                 // Move Constructor
     PipelineFilterWidgetFactory& operator=(const PipelineFilterWidgetFactory&) = delete; // Copy Assignment Not Implemented
     PipelineFilterWidgetFactory& operator=(PipelineFilterWidgetFactory&&) = delete;      // Move Assignment Not Implemented
-    
 };
 
 #endif /* _pipelineFilterWidgetFACTORY_H_ */

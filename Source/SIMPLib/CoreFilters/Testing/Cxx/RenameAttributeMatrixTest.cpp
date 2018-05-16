@@ -93,8 +93,8 @@ public:
 
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
-    DataContainer::Pointer dc = DataContainer::New();
-    dc->setName("DataContainer");
+    DataContainer::Pointer dc = DataContainer::New("DataContainer");
+
     dca->addDataContainer(dc);
 
     filter->setDataContainerArray(dca);
@@ -123,8 +123,8 @@ public:
 
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
-    DataContainer::Pointer dc = DataContainer::New();
-    dc->setName("DataContainer");
+    DataContainer::Pointer dc = DataContainer::New("DataContainer");
+
     dca->addDataContainer(dc);
 
     QVector<size_t> dims = QVector<size_t>();
@@ -158,8 +158,8 @@ public:
 
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
-    DataContainer::Pointer dc = DataContainer::New();
-    dc->setName("DataContainer");
+    DataContainer::Pointer dc = DataContainer::New("DataContainer");
+
     dca->addDataContainer(dc);
 
     QVector<size_t> dims = QVector<size_t>();
@@ -195,8 +195,8 @@ public:
 
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
-    DataContainer::Pointer dc = DataContainer::New();
-    dc->setName("DataContainer");
+    DataContainer::Pointer dc = DataContainer::New("DataContainer");
+
     dca->addDataContainer(dc);
 
     QVector<size_t> dims = QVector<size_t>();
@@ -230,8 +230,8 @@ public:
 
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
-    DataContainer::Pointer dc = DataContainer::New();
-    dc->setName("DataContainer");
+    DataContainer::Pointer dc = DataContainer::New("DataContainer");
+
     dca->addDataContainer(dc);
 
     QVector<size_t> dims = QVector<size_t>();

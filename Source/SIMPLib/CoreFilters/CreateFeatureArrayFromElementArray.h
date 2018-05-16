@@ -47,6 +47,12 @@
 class SIMPLib_EXPORT CreateFeatureArrayFromElementArray : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(CreateFeatureArrayFromElementArray SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(DataArrayPath CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
+    PYB11_PROPERTY(DataArrayPath SelectedCellArrayPath READ getSelectedCellArrayPath WRITE setSelectedCellArrayPath)
+    PYB11_PROPERTY(QString CreatedArrayName READ getCreatedArrayName WRITE setCreatedArrayName)
+    PYB11_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
+
   public:
     SIMPL_SHARED_POINTERS(CreateFeatureArrayFromElementArray)
     SIMPL_FILTER_NEW_MACRO(CreateFeatureArrayFromElementArray)

@@ -66,8 +66,8 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget
     virtual ~FilterInputWidget();
 
     virtual void setupGui();
-    
-    void setFilterIndex(const QString &index);
+
+    void setFilterIndex(const QString& index);
 
     bool eventFilter(QObject* o, QEvent* e);
 
@@ -77,9 +77,8 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget
     QWidget* getVariablesTabContentsWidget();
 
   public slots :
-    void on_filterHelpBtn_clicked();
-
     void clearInputWidgets();
+    void showHelp();
     void displayFilterParameters(AbstractFilter::Pointer filter);
 
   signals:
@@ -118,20 +117,20 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget
     /**
      * @brief layoutWidgets
      */
-    void layoutWidgets(AbstractFilter *filter);
+    void layoutWidgets(AbstractFilter* filter);
 
     /**
      * @brief validateFileSystemFilterParameter
      * @param option
      */
-    void validateFileSystemFilterParameter(FilterParameter* parameter, AbstractFilter *filter);
+    void validateFileSystemFilterParameter(FilterParameter* parameter, AbstractFilter* filter);
 
     /**
      * @brief linkConditionalWidgets
      * @param filterParameters
      */
     void linkConditionalWidgets(QVector<FilterParameter::Pointer>& filterParameters);
-  
+
   public:
     FilterInputWidget(const FilterInputWidget&) = delete; // Copy Constructor Not Implemented
     void operator=(const FilterInputWidget&) = delete;    // Move assignment Not Implemented

@@ -491,7 +491,7 @@ namespace TemplateHelpers
           f->notifyErrorMessage(f->getHumanLabel(), ss, f->getErrorCondition());
           return retPtr;
         }
-        AttributeMatrix::Pointer cell_attr_matrix = volDataCntr->template getPrereqAttributeMatrix<FilterClass>(f, arrayPath.getAttributeMatrixName(), Errors::MissingAttributeMatrix);
+        AttributeMatrix::Pointer cell_attr_matrix = volDataCntr->getPrereqAttributeMatrix(f, arrayPath.getAttributeMatrixName(), Errors::MissingAttributeMatrix);
         if(f->getErrorCondition() < 0 || nullptr == cell_attr_matrix.get())
         {
           QString ss = QObject::tr("The Attribute Matrix '%1' does not exist").arg(arrayPath.getAttributeMatrixName());

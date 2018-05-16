@@ -54,7 +54,12 @@ class SIMPLH5DataReaderRequirements;
 class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(SIMPLH5DataReader)
 
+    PYB11_METHOD(bool openFile ARGS filePath)
+    PYB11_METHOD(bool closeFile)
+    PYB11_METHOD(DataContainerArrayProxy readDataContainerArrayStructure ARGS SIMPLH5DataReaderRequirements err)
+    
   public:
     SIMPL_SHARED_POINTERS(SIMPLH5DataReader)
     SIMPL_STATIC_NEW_MACRO(SIMPLH5DataReader)

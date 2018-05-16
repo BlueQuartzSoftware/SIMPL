@@ -47,6 +47,11 @@
 class SIMPLib_EXPORT LinkFeatureMapToElementArray : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(LinkFeatureMapToElementArray SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(QString CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
+    PYB11_PROPERTY(DataArrayPath SelectedCellArrayPath READ getSelectedCellArrayPath WRITE setSelectedCellArrayPath)
+    PYB11_PROPERTY(QString ActiveArrayName READ getActiveArrayName WRITE setActiveArrayName)
+
   public:
     SIMPL_SHARED_POINTERS(LinkFeatureMapToElementArray)
     SIMPL_FILTER_NEW_MACRO(LinkFeatureMapToElementArray)

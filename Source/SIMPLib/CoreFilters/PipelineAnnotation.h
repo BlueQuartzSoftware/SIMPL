@@ -44,6 +44,8 @@
 class SIMPLib_EXPORT PipelineAnnotation : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(PipelineAnnotation SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(QString Summary READ getSummary WRITE setSummary)
 
 public:
   SIMPL_SHARED_POINTERS(PipelineAnnotation)

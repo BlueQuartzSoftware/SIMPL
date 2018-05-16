@@ -580,7 +580,7 @@ void ReadASCIIData::execute()
         }
       }
 
-      if(getCancel() == true)
+      if(getCancel())
       {
         return;
       }

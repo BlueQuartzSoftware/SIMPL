@@ -76,16 +76,13 @@ public:
   {
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
-    DataContainer::Pointer dc1 = DataContainer::New();
-    dc1->setName("DataContainer1");
+    DataContainer::Pointer dc1 = DataContainer::New("DataContainer1");
     dca->addDataContainer(dc1);
 
-    DataContainer::Pointer dc2 = DataContainer::New();
-    dc2->setName("DataContainer2");
+    DataContainer::Pointer dc2 = DataContainer::New("DataContainer2");
     dca->addDataContainer(dc2);
 
-    DataContainer::Pointer dc3 = DataContainer::New();
-    dc3->setName("DataContainer3");
+    DataContainer::Pointer dc3 = DataContainer::New("DataContainer3");
     dca->addDataContainer(dc3);
 
     ImageGeom::Pointer imgGeom = ImageGeom::New();

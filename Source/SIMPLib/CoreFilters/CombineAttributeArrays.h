@@ -46,6 +46,10 @@
 class SIMPLib_EXPORT CombineAttributeArrays : public AbstractFilter
 {
   Q_OBJECT
+    PYB11_CREATE_BINDINGS(CombineAttributeArrays SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
+    PYB11_PROPERTY(QString StackedDataArrayName READ getStackedDataArrayName WRITE setStackedDataArrayName)
+    PYB11_PROPERTY(bool NormalizeData READ getNormalizeData WRITE setNormalizeData)
 
   public:
     SIMPL_SHARED_POINTERS(CombineAttributeArrays)

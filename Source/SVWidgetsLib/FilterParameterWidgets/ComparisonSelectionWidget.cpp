@@ -41,6 +41,7 @@
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
@@ -154,27 +155,8 @@ void ComparisonSelectionWidget::setupGui()
   matrixPropertyName = matrixPropertyName.replace("arrays", "matrix");
   m_SelectedAttributeMatrixPath->setPropertyName(matrixPropertyName);
 
-#if 0
-  // is the filter parameter tied to a boolean property of the Filter Instance, if it is then we need to make the check box visible
-  if(getFilterParameter()->isConditional() == true)
-  {
-    bool boolProp = getFilter()->property(getFilterParameter()->getConditionalProperty().toLatin1().constData() ).toBool();
-    conditionalCB->setChecked(boolProp);
-    conditionalCB->setText(getFilterParameter()->getConditionalLabel());
-    dataContainerList->setEnabled(boolProp);
-    attributeMatrixList->setEnabled(boolProp);
-    attributeArrayList->setEnabled(boolProp);
-  }
-  else
-  {
-    widgetLayout->removeWidget(conditionalCB);
-    conditionalCB->deleteLater();
-    widgetLayout->removeWidget(linkLeft);
-    linkLeft->deleteLater();
-    widgetLayout->removeWidget(linkRight);
-    linkRight->deleteLater();
-  }
-#endif
+  addComparison->setStyleSheet(QtSStyles::StyleSheetForButton(addComparison->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::AddImagePath));
+  removeComparison->setStyleSheet(QtSStyles::StyleSheetForButton(removeComparison->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::DeleteImagePath));
 }
 
 #if 0

@@ -122,7 +122,7 @@ if(SIMPL_Group_PLUGIN AND SIMPL_Group_BASE AND SIMPL_Group_FILTERS)
       BINARY_DIR    ${${PROJECT_NAME}_BINARY_DIR}
       COMPONENT     Tools
       INSTALL_DEST  "${install_dir}"
-      LINK_LIBRARIES SIMPLib
+      LINK_LIBRARIES SIMPLib Qt5::Core
   )
 endif()
 
@@ -146,9 +146,6 @@ AddSIMPLUnitTest(TESTNAME FilterParameterCallbackExample
                     ${SIMPLProj_BINARY_DIR}
                    )
 
-
-if (FALSE)
-
   COMPILE_TOOL(
       TARGET FilterInfoUtility
       SOURCES ${SIMPLTools_SOURCE_DIR}/FilterInfoUtility.cpp
@@ -158,9 +155,12 @@ if (FALSE)
       VERSION_PATCH ${SIMPL_VER_PATCH}
       BINARY_DIR    ${${PROJECT_NAME}_BINARY_DIR}
       COMPONENT     Tools
-      INSTALL_DEST  "}${install_dir}"
+      INSTALL_DEST  "${install_dir}"
       LINK_LIBRARIES SIMPLib
   )
+if (FALSE)
+
+
 
   COMPILE_TOOL(
       TARGET VSCodeIncludes

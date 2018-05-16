@@ -52,7 +52,7 @@ ColorUtilities::~ColorUtilities() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPL::Rgb ColorUtilities::convertHSVtoRgb(float h, float s, float v)
+SIMPL::Rgb ColorUtilities::ConvertHSVtoRgb(float h, float s, float v)
 {
   // hsv to rgb (from wikipedia hsv/hsl page)
   float c = v * s;
@@ -127,4 +127,100 @@ SIMPL::Rgb ColorUtilities::convertHSVtoRgb(float h, float s, float v)
   }
 
   return RgbColor::dRgb(r * 255, g * 255, b * 255, 0);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+SIMPL::Rgb ColorUtilities::Hsv2Rgb(float h, float s, float v)
+{
+  double hh, p, q, t, ff;
+  long i;
+  struct
+  {
+    double r; // a fraction between 0 and 1
+    double g; // a fraction between 0 and 1
+    double b; // a fraction between 0 and 1
+  } out;
+
+  struct
+  {
+    double h; // angle in degrees
+    double s; // a fraction between 0 and 1
+    double v; // a fraction between 0 and 1
+  } in;
+  in.h = h;
+  in.s = s;
+  in.v = v;
+
+  if(in.s <= 0.0)
+  { // < is bogus, just shuts up warnings
+    out.r = in.v;
+    out.g = in.v;
+    out.b = in.v;
+    return RgbColor::dRgb(out.r * 255, out.g * 255, out.b * 255, 255);
+  }
+  hh = in.h;
+  if(hh >= 360.0)
+    hh = 0.0;
+  hh /= 60.0;
+  i = (long)hh;
+  ff = hh - i;
+  p = in.v * (1.0 - in.s);
+  q = in.v * (1.0 - (in.s * ff));
+  t = in.v * (1.0 - (in.s * (1.0 - ff)));
+
+  switch(i)
+  {
+  case 0:
+    out.r = in.v;
+    out.g = t;
+    out.b = p;
+    break;
+  case 1:
+    out.r = q;
+    out.g = in.v;
+    out.b = p;
+    break;
+  case 2:
+    out.r = p;
+    out.g = in.v;
+    out.b = t;
+    break;
+
+  case 3:
+    out.r = p;
+    out.g = q;
+    out.b = in.v;
+    break;
+  case 4:
+    out.r = t;
+    out.g = p;
+    out.b = in.v;
+    break;
+  case 5:
+  default:
+    out.r = in.v;
+    out.g = p;
+    out.b = q;
+    break;
+  }
+  return RgbColor::dRgb(out.r * 255, out.g * 255, out.b * 255, 255);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QVector<SIMPL::Rgb> ColorUtilities::GenerateColors(int count, int saturation, int value)
+{
+  QVector<SIMPL::Rgb> colors(count);
+  float s = static_cast<float>(saturation) / 255.0;
+  float v = static_cast<float>(value) / 255.0;
+  float increment = 360.0 / count;
+  for(float i = 0; i < static_cast<float>(count); i = i + 1.0f)
+  {
+    SIMPL::Rgb c = ColorUtilities::Hsv2Rgb(i * increment, s, v);
+    colors[i] = c;
+  }
+  return colors;
 }

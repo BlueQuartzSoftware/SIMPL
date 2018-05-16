@@ -196,10 +196,6 @@
         <property name="text">
          <string/>
         </property>
-        <property name="icon">
-         <iconset resource="../../icons/images/Icons.qrc">
-          <normaloff>:/delete.png</normaloff>:/delete.png</iconset>
-        </property>
         <property name="iconSize">
          <size>
           <width>20</width>

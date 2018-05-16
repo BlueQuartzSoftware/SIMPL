@@ -1,0 +1,69 @@
+
+
+#ifndef SIMPLPyBind11Config_h
+#define SIMPLPyBind11Config_h
+
+#include <QtCore/QString>
+
+
+namespace SIMPL
+{
+  namespace PyBind11
+  {
+  #if 0
+
+      /**
+      * @brief Returns the path to the SIMPL Source directory
+      */
+      QString GetSIMPLProj_SourceDir()
+      {
+        return QString("@SIMPLProj_SOURCE_DIR_NORM@");
+      }
+
+      /**
+      * @brief Returns the path to the SIMPL PyBind11 Source directory
+      */
+      QString GetSIMPLPyBind11_SourceDir()
+      {
+        return QString("@SIMPLPyBind11_SOURCE_DIR_NORM@");
+      }
+
+      /**
+      * @brief Returns the path to the SIMPL PyBind11 Binary directory
+      */
+      QString GetSIMPLPyBind11_BinaryDir()
+      {
+        return QString("@SIMPLPyBind11_BINARY_DIR_NORM@");
+      }
+  #endif
+         
+      /**
+       * @brief Returns the path to where the Python C++ modules will be created.
+       * @return 
+       */
+      static const QString LibraryOutputDirectory("@SIMPLPyBind11_LIBRARY_OUTPUT_DIR@");
+  
+      /**
+       * @brief TemplateDir
+       * @return 
+       */
+      static const QString TemplateDir("@SIMPLPyBind11_SOURCE_DIR_NORM@/Templates");
+      
+      /**
+       * @brief PythonModuleSuffix
+       */
+      static const QString PythonModuleSuffix("@SIMPL_PYTHON_MODULE_SUFFIX@");
+      
+      /**
+       * @brief SIMPL_LibraryName
+       */
+      static const QString SIMPL_LibraryName("@SIMPL_PYTHON_MODULE_NAME@");
+
+  }
+  
+}
+
+
+#endif /* SIMPLPyBind11Config_h  */
+
+

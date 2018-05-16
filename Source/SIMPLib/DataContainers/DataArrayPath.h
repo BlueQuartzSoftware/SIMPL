@@ -57,7 +57,18 @@ using DataContainerArrayShPtr = std::shared_ptr<DataContainerArray>;
  */
 class SIMPLib_EXPORT DataArrayPath : public QObject
 {
-    Q_OBJECT
+  Q_OBJECT
+  
+  PYB11_CREATE_BINDINGS(DataArrayPath)
+  PYB11_CREATION(ARGS QString QString QString)
+  PYB11_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
+  PYB11_PROPERTY(QString AttributeMatrixName READ getAttributeMatrixName WRITE setAttributeMatrixName)
+  PYB11_PROPERTY(QString DataArrayName READ getDataArrayName WRITE setDataArrayName)
+
+  PYB11_METHOD(bool isEmpty)
+  PYB11_METHOD(bool isValid)
+  PYB11_METHOD(void update ARGS dcName amName daName)
+
 
   public:
     // tuple <oldPath, newPath>

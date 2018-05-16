@@ -151,8 +151,8 @@ void MoveData::dataCheck()
 
   if(getWhatToMove() == k_MoveAttributeMatrix)
   {
-    DataContainer::Pointer amDestDataContainer = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getDataContainerDestination());
-    DataContainer::Pointer amSrcDataContainer = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, amSrcPath.getDataContainerName());
+    DataContainer::Pointer amDestDataContainer = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerDestination());
+    DataContainer::Pointer amSrcDataContainer = getDataContainerArray()->getPrereqDataContainer(this, amSrcPath.getDataContainerName());
     AttributeMatrix::Pointer amSrcAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, amSrcPath, -301);
 
     if(getErrorCondition() < 0)

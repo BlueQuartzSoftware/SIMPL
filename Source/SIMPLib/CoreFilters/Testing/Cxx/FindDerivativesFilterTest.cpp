@@ -61,8 +61,7 @@
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 #define FDTEST_CREATE_DATA_CONTAINER(name, geom, dca)                                                                                                                                                  \
-  DataContainer::Pointer _##geom##Container = DataContainer::New();                                                                                                                                    \
-  _##geom##Container->setName(#name);                                                                                                                                                                  \
+  DataContainer::Pointer _##geom##Container = DataContainer::New(#name);                                                                                                                               \
   _##geom##Container->setGeometry(geom);                                                                                                                                                               \
   dca->addDataContainer(_##geom##Container);
 

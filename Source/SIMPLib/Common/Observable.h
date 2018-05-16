@@ -55,12 +55,20 @@
 class SIMPLib_EXPORT Observable : public QObject
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(Observable)
+    PYB11_METHOD(void notifyErrorMessage ARGS humanLabel ss code)
 
   public:
+    SIMPL_TYPE_MACRO(Observable)
+
     Observable();
+
+    Observable(const Observable& rhs);
+
     virtual ~Observable();
 
-    SIMPL_TYPE_MACRO(Observable)
+    void operator=(const Observable&);
+
     // ------------------------------
     // These are convenience methods that construct a @see PipelineMessage object and then 'emit' that object
     // ------------------------------
@@ -94,10 +102,6 @@ class SIMPLib_EXPORT Observable : public QObject
      * @param msg
      */
     void filterGeneratedMessage(const PipelineMessage& msg);
-
-  private:
-    Observable(const Observable&) = delete;     // Copy Constructor Not Implemented
-    void operator=(const Observable&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* OBSERVABLE_H_ */

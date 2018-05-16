@@ -64,6 +64,23 @@ using DataContainerShPtr = std::shared_ptr<DataContainer>;
 class SIMPLib_EXPORT DataContainerArray : public QObject
 {
     Q_OBJECT
+    // This line MUST be first when exposing a class and properties to Python
+    PYB11_CREATE_BINDINGS(DataContainerArray)
+
+    PYB11_METHOD(void addDataContainer ARGS data_container)
+    //PYB11_METHOD(DataContainer::Pointer getDataContainer ARGS name)
+    PYB11_METHOD(bool doesDataContainerExist ARGS name)
+    PYB11_METHOD(DataContainer::Pointer removeDataContainer ARGS name)
+    PYB11_METHOD(bool renameDataContainer ARGS oldName newName)
+    PYB11_METHOD(void clearDataContainers)
+    //PYB11_METHOD(XXXX getDataContainerNames)
+    PYB11_METHOD(int getNumDataContainers)
+    PYB11_METHOD(void duplicateDataContainer ARGS oldName, newName)
+    
+    PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix ARGS dataArrayPath)
+    PYB11_METHOD(bool doesAttributeMatrixExist ARGS dataArrayPath)
+    
+    PYB11_METHOD(bool doesAttributeArrayExist ARGS dataArrayPath)
 
   public:
     SIMPL_SHARED_POINTERS(DataContainerArray)
@@ -355,7 +372,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
 
       // Now just return what ever the DataContainer gives us. if the AttributeMatrix was not available then an
       // error message and code will have been set into the "filter" object if that object was non-null itself.
-      return dc->getPrereqAttributeMatrix<Filter>(filter, path.getAttributeMatrixName(), err);
+      return dc->getPrereqAttributeMatrix(filter, path.getAttributeMatrixName(), err);
     }
 
     /**

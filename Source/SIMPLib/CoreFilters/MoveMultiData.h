@@ -47,6 +47,13 @@
 class SIMPLib_EXPORT MoveMultiData : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(MoveMultiData SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(int WhatToMove READ getWhatToMove WRITE setWhatToMove)
+    PYB11_PROPERTY(QString DataContainerDestination READ getDataContainerDestination WRITE setDataContainerDestination)
+    PYB11_PROPERTY(QVector<DataArrayPath> AttributeMatrixSources READ getAttributeMatrixSources WRITE setAttributeMatrixSources)
+    PYB11_PROPERTY(DataArrayPath AttributeMatrixDestination READ getAttributeMatrixDestination WRITE setAttributeMatrixDestination)
+    PYB11_PROPERTY(QVector<DataArrayPath> DataArraySources READ getDataArraySources WRITE setDataArraySources)
+
   public:
     SIMPL_SHARED_POINTERS(MoveMultiData)
     SIMPL_FILTER_NEW_MACRO(MoveMultiData)

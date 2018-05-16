@@ -308,7 +308,7 @@ DataContainerArray::Pointer FilterPipeline::run()
 {
   m_Dca = execute();
 
-  pipelineFinished();
+  emit pipelineFinished();
 
   return m_Dca;
 }

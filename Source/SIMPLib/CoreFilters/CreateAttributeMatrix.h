@@ -48,6 +48,10 @@
 class SIMPLib_EXPORT CreateAttributeMatrix : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(CreateAttributeMatrix SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(DataArrayPath CreatedAttributeMatrix READ getCreatedAttributeMatrix WRITE setCreatedAttributeMatrix)
+    PYB11_PROPERTY(int AttributeMatrixType READ getAttributeMatrixType WRITE setAttributeMatrixType)
+    PYB11_PROPERTY(DynamicTableData TupleDimensions READ getTupleDimensions WRITE setTupleDimensions)
 
   public:
     SIMPL_SHARED_POINTERS(CreateAttributeMatrix)

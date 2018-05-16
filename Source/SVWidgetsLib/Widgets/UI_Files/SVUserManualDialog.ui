@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1143</width>
-    <height>35</height>
+    <width>717</width>
+    <height>34</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -178,7 +178,7 @@
         </property>
         <property name="icon">
          <iconset resource="../../icons/images/Icons.qrc">
-          <normaloff>:/reload.png</normaloff>:/reload.png</iconset>
+          <normaloff>:/refresh.png</normaloff>:/refresh.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -213,7 +213,7 @@
   <customwidget>
    <class>QtSHoverButton</class>
    <extends>QPushButton</extends>
-   <header location="global">QtSHoverButton.h</header>
+   <header>QtSHoverButton.h</header>
   </customwidget>
  </customwidgets>
  <resources>

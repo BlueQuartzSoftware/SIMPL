@@ -55,6 +55,7 @@ class DataContainerArrayProxy;
 class DataContainerProxy;
 class AttributeMatrix;
 class SIMPLH5DataReaderRequirements;
+class AbstractFilter;
 
 using AttributeMatrixShPtr = std::shared_ptr<AttributeMatrix>;
 
@@ -63,227 +64,203 @@ using AttributeMatrixShPtr = std::shared_ptr<AttributeMatrix>;
  */
 class SIMPLib_EXPORT DataContainer : public Observable
 {
-  public:
-    SIMPL_SHARED_POINTERS(DataContainer)
-    SIMPL_STATIC_NEW_MACRO(DataContainer)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainer, Observable)
 
-    virtual ~DataContainer();
+  // This line MUST be first when exposing a class and properties to Python
+  PYB11_CREATE_BINDINGS(DataContainer)
+  PYB11_STATIC_CREATION(New ARGS QString)
+  
+  PYB11_PROPERTY(QString Name READ getName WRITE setName)
+  PYB11_PROPERTY(IGeometry Geometry READ getGeometry WRITE setGeometry)
+  
+  PYB11_METHOD(QString getInfoString ARGS InfoStringFormat)
+  PYB11_METHOD(void addAttributeMatrix ARGS Name AttributeMatrix)
+  
+  PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix OVERLOAD const.QString.&,Name)
+  PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix OVERLOAD const.DataArrayPath.&,Path)
+  
+  PYB11_METHOD(AttributeMatrix removeAttributeMatrix ARGS Name)
+  PYB11_METHOD(bool renameAttributeMatrix ARGS OldName NewName OverWrite)
 
-    /**
-     * @brief The Type enum
-     */
-    enum class Type : unsigned int
+  PYB11_METHOD(bool doesAttributeMatrixExist ARGS Name)
+  PYB11_METHOD(void setGeometry ARGS Geometry)
+
+  
+public:
+  SIMPL_SHARED_POINTERS(DataContainer)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainer, Observable)
+
+  virtual ~DataContainer();
+
+  /**
+   * @brief The Type enum
+   */
+  enum class Type : unsigned int
+  {
+    Volume = 0,    //!<
+    Surface = 1,   //!<
+    EdgeData = 2,  //!<
+    Vertex = 3,    //!<
+    Unknown = 999, //!<
+  };
+
+  using Types = QVector<Type>;
+
+  /**
+   * @brief AttributeMatrixMap_t
+   */
+  typedef QMap<QString, AttributeMatrixShPtr> AttributeMatrixMap_t;
+
+  /**
+   * @brief Creates a new shared pointer instance of this class
+   * @param name The name to give to the DataContainer and must NOT be empty.
+   * @return Shared Pointer to a DataContainer instance.
+   */
+  static Pointer New(const QString& name)
+  {
+    if(name.isEmpty() == true)
     {
-      Volume = 0, //!<
-      Surface = 1, //!<
-      EdgeData = 2, //!<
-      Vertex = 3, //!<
-      Unknown = 999, //!<
-    };
-
-    using Types = QVector<Type>;
-
-    /**
-     * @brief AttributeMatrixMap_t
-     */
-    typedef QMap<QString, AttributeMatrixShPtr> AttributeMatrixMap_t;
-
-    /**
-     * @brief Creates a new shared pointer instance of this class
-     * @param name The name to give to the DataContainer and must NOT be empty.
-     * @return Shared Pointer to a DataContainer instance.
-     */
-    static Pointer New(const QString& name)
-    {
-      if(name.isEmpty() == true) { return NullPointer(); }
-      Pointer sharedPtr(new DataContainer(name));
-      return sharedPtr;
+      return NullPointer();
     }
+    Pointer sharedPtr(new DataContainer(name));
+    return sharedPtr;
+  }
 
-    /**
-    * @brief Creates a new data container
-    */
-    virtual Pointer createNewDataContainer(const QString& name);
+  /**
+  * @brief Creates a new data container
+  */
+  virtual Pointer createNewDataContainer(const QString& name);
 
-    /**
-     * @brief ReadDataContainerStructure
-     * @param dcArrayGroupId
-     * @param proxy
-     * @param h5InternalPath
-     */
-    static void ReadDataContainerStructure(hid_t dcArrayGroupId, DataContainerArrayProxy& proxy, SIMPLH5DataReaderRequirements* req, const QString &h5InternalPath);
+  /**
+   * @brief ReadDataContainerStructure
+   * @param dcArrayGroupId
+   * @param proxy
+   * @param h5InternalPath
+   */
+  static void ReadDataContainerStructure(hid_t dcArrayGroupId, DataContainerArrayProxy& proxy, SIMPLH5DataReaderRequirements* req, const QString& h5InternalPath);
 
-    /**
-    * @brief Sets the name of the data container
-    */
-    virtual void setName(const QString& name);
+  /**
+  * @brief Sets the name of the data container
+  */
+  virtual void setName(const QString& name);
 
-    /**
-    * @brief Gets the name of the data container
-    */
-    virtual QString getName();
+  /**
+  * @brief Gets the name of the data container
+  */
+  virtual QString getName();
 
-    /**
-     * @brief Sets the geometry of the data container
-     * @param geometry
-     */
-    virtual void setGeometry(IGeometry::Pointer geometry);
+  /**
+   * @brief Sets the geometry of the data container
+   * @param geometry
+   */
+  virtual void setGeometry(IGeometry::Pointer geometry);
 
-    /**
-     * @brief Returns the geometry of the data container
-     * @return
-     */
-    virtual IGeometry::Pointer getGeometry();
+  /**
+   * @brief Returns the geometry of the data container
+   * @return
+   */
+  virtual IGeometry::Pointer getGeometry();
 
-    /**
-     * @param format The format of the string to be returned.
-     */
-    virtual QString getInfoString(SIMPL::InfoStringFormat format);
+  /**
+   * @param format The format of the string to be returned.
+   */
+  virtual QString getInfoString(SIMPL::InfoStringFormat format);
 
-    /**
-    * @brief Adds/overwrites the data for a named array
-    * @param name The name that the array will be known by
-    * @param data The IDataArray::Pointer that will hold the data
-    */
-    virtual void addAttributeMatrix(const QString& name, AttributeMatrixShPtr matrix);
+  /**
+  * @brief Adds/overwrites the data for a named array
+  * @param name The name that the array will be known by
+  * @param data The IDataArray::Pointer that will hold the data
+  */
+  virtual void addAttributeMatrix(const QString& name, AttributeMatrixShPtr matrix);
 
-    /**
-     * @brief Returns the array for a given named array or the equivelant to a
-     * null pointer if the name does not exist.
-     * @param name The name of the data array
-     */
-    virtual AttributeMatrixShPtr getAttributeMatrix(const QString& name);
+  /**
+   * @brief Returns the array for a given named array or the equivelant to a
+   * null pointer if the name does not exist.
+   * @param name The name of the data array
+   */
+  virtual AttributeMatrixShPtr getAttributeMatrix(const QString& name);
 
-    /**
-    * @brief Returns the array for a given named array or the equivelant to a
-    * null pointer if the name does not exist.
-    * @param name The Name of the AttributeMatrix will be extracted from the DataArratPath object
-    */
-    virtual AttributeMatrixShPtr getAttributeMatrix(const DataArrayPath& path);
+  /**
+  * @brief Returns the array for a given named array or the equivelant to a
+  * null pointer if the name does not exist.
+  * @param name The Name of the AttributeMatrix will be extracted from the DataArratPath object
+  */
+  virtual AttributeMatrixShPtr getAttributeMatrix(const DataArrayPath& path);
 
-    /**
-     * @brief getAttributeMatrices
-     * @return
-     */
-    AttributeMatrixMap_t& getAttributeMatrices();
+  /**
+   * @brief getAttributeMatrices
+   * @return
+   */
+  AttributeMatrixMap_t& getAttributeMatrices();
 
-    /**
-     * @brief Returns bool of whether a named array exists
-     * @param name The name of the data array
-     */
-    virtual bool doesAttributeMatrixExist(const QString& name);
+  /**
+   * @brief Returns bool of whether a named array exists
+   * @param name The name of the data array
+   */
+  virtual bool doesAttributeMatrixExist(const QString& name);
 
-    /**
-    * @brief Removes the named data array from the Data Container and returns it to the calling
-    * method.
-    * @param name The name of the array
-    * @return
-    */
-    virtual AttributeMatrixShPtr removeAttributeMatrix(const QString& name);
+  /**
+  * @brief Removes the named data array from the Data Container and returns it to the calling
+  * method.
+  * @param name The name of the array
+  * @return
+  */
+  virtual AttributeMatrixShPtr removeAttributeMatrix(const QString& name);
 
-    /**
-    * @brief Renames a cell data array from the Data Container
-    * @param name The name of the array
-    */
-    virtual bool renameAttributeMatrix(const QString& oldname, const QString& newname, bool overwrite = false);
+  /**
+  * @brief Renames a cell data array from the Data Container
+  * @param name The name of the array
+  */
+  virtual bool renameAttributeMatrix(const QString& oldname, const QString& newname, bool overwrite = false);
 
-    /**
-     * @brief Removes all the Cell Arrays
-     */
-    virtual void clearAttributeMatrices();
+  /**
+   * @brief Removes all the Cell Arrays
+   */
+  virtual void clearAttributeMatrices();
 
-    /**
-    * @brief Returns a list that contains the names of all the arrays currently stored in the
-    * Cell (Formerly Cell) group
-    * @return
-    */
-    virtual QList<QString> getAttributeMatrixNames();
+  /**
+  * @brief Returns a list that contains the names of all the arrays currently stored in the
+  * Cell (Formerly Cell) group
+  * @return
+  */
+  virtual QList<QString> getAttributeMatrixNames();
 
-    /**
-    * @brief Returns the total number of arrays that are stored in the Cell group
-    * @return
-    */
-    virtual int getNumAttributeMatrices();
+  /**
+  * @brief Returns the total number of arrays that are stored in the Cell group
+  * @return
+  */
+  virtual int getNumAttributeMatrices();
 
-    /**
-     * @brief getAllDataArrayPaths
-     * @return
-     */
-    virtual QVector<DataArrayPath> getAllDataArrayPaths();
+  /**
+   * @brief getAllDataArrayPaths
+   * @return
+   */
+  virtual QVector<DataArrayPath> getAllDataArrayPaths();
 
-    /**
-     * @brief This method will check for the existance of a named AttributeMatrix. If that AttributeMatrix with the
-     * given name does exist, the attributeMatrix will be checked for validity and if it passes the attribute matrix
-     * will be returned. if any of the tests fail a Shared Pointer wrapping a nullptr value will be returned.
-     * @param filter The filter object to use for error messages. Can be nullptr.
-     * @param attributeMatrixName The name of the AttributeMatrix to look for. must NOT be nullptr.
-     * @param err The unique error value to generate derived error values from. This helps debugging.
-     * @return Shared Pointer to an AttributeMatrix object.
-     */
-    template<class Filter>
-    AttributeMatrixShPtr getPrereqAttributeMatrix(Filter* filter,
-                                                      QString attributeMatrixName,
-                                                      int err)
-    {
-      QString ss;
-      AttributeMatrixShPtr attributeMatrix(nullptr);
-      //Make sure the name is not empty for teh AttributeMatrix and the AttributeArray Name. This would be detected below
-      // in the call to get either one BUT the reason for the failure would not be evident so we make these explicit checks
-      // here and send back nice error messages to ther user/programmer.
-      if (attributeMatrixName.isEmpty() == true)
-      {
-        if(filter)
-        {
-          filter->setErrorCondition(err * 1000);
-          ss = QObject::tr("DataContainer:'%1' The name of the AttributeMatrix was empty. Please provide a name for this AttributeMatrix").arg(getName());
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-        }
-        return attributeMatrix;
-      }
-      // Now attempt to get the AttributeMatrix which could still come back nullptr because the name does not match.
-      attributeMatrix = getAttributeMatrix(attributeMatrixName);
-      if(nullptr == attributeMatrix.get())
-      {
-        if(filter)
-        {
-          filter->setErrorCondition(err * 1020);
-          ss = QObject::tr("DataContainer:'%1' An AttributeMatrix with name '%2' does not exist and is required for this filter to execute.").arg(getName()).arg(attributeMatrixName);
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-        }
-        return attributeMatrix;
-      }
-      if(false == attributeMatrix->validateAttributeArraySizes())
-      {
-        if(filter)
-        {
-          filter->setErrorCondition(err * 1030);
-          ss = QObject::tr("DataContainer:'%1' AttributeMatrix: '%2' Attribute Matrix has Attribute Arrays with mismatched number of objects.").arg(getName()).arg(attributeMatrixName);
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-        }
-        return attributeMatrix;
-      }
-      return attributeMatrix;
-    }
+  /**
+   * @brief This method will check for the existance of a named AttributeMatrix. If that AttributeMatrix with the
+   * given name does exist, the attributeMatrix will be checked for validity and if it passes the attribute matrix
+   * will be returned. if any of the tests fail a Shared Pointer wrapping a nullptr value will be returned.
+   * @param filter The filter object to use for error messages. Can be nullptr.
+   * @param attributeMatrixName The name of the AttributeMatrix to look for. must NOT be nullptr.
+   * @param err The unique error value to generate derived error values from. This helps debugging.
+   * @return Shared Pointer to an AttributeMatrix object.
+   */
+  AttributeMatrixShPtr getPrereqAttributeMatrix(AbstractFilter* filter, QString attributeMatrixName, int err);
 
-    /**
-     * @brief createNonPrereqAttributeMatrix This method will create a new AttributeMatrix with the given tuple dimensions
-     * and type. If the name is empty or an attribute matrix with the given name already exists the method will return
-     * a nullptr shared pointer. This is a convenience method that simply pulls the
-     * AttributeMatrix name from the DataArrayPath object.
-     * @param filter The object to report errors through
-     * @param path A DataArrayPath object that has the valid AttributeMatrix name
-     * @param tDims The Tuple Dimensions of the Attribute Matrix
-     * @param amType The Type of AttributeMatrix
-     * @return A Shared Pointer to the AttributeMatrix
-     */
-    template<class Filter>
-    AttributeMatrixShPtr createNonPrereqAttributeMatrix(Filter* filter,
-                                                            const DataArrayPath path,
-                                                            QVector<size_t> tDims,
-                                                            AttributeMatrix::Type amType)
-    {
-        return createNonPrereqAttributeMatrix(filter, path.getAttributeMatrixName(), tDims, amType);
+  /**
+   * @brief createNonPrereqAttributeMatrix This method will create a new AttributeMatrix with the given tuple dimensions
+   * and type. If the name is empty or an attribute matrix with the given name already exists the method will return
+   * a nullptr shared pointer. This is a convenience method that simply pulls the
+   * AttributeMatrix name from the DataArrayPath object.
+   * @param filter The object to report errors through
+   * @param path A DataArrayPath object that has the valid AttributeMatrix name
+   * @param tDims The Tuple Dimensions of the Attribute Matrix
+   * @param amType The Type of AttributeMatrix
+   * @return A Shared Pointer to the AttributeMatrix
+   */
+  AttributeMatrixShPtr createNonPrereqAttributeMatrix(AbstractFilter* filter, const DataArrayPath path, QVector<size_t> tDims, AttributeMatrix::Type amType)
+  {
+    return createNonPrereqAttributeMatrix(filter, path.getAttributeMatrixName(), tDims, amType);
     }
 
     /**
@@ -296,61 +273,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
      * @param amType The Type of AttributeMatrix
      * @return A Shared Pointer to the AttributeMatrix
      */
-    template<class Filter>
-    AttributeMatrixShPtr createNonPrereqAttributeMatrix(Filter* filter,
-                                                            const QString& attributeMatrixName,
-                                                            QVector<size_t> tDims,
-                                                            AttributeMatrix::Type amType)
-    {
-      AttributeMatrixShPtr attributeMatrix(nullptr);
-
-      QString ss;
-      if (attributeMatrixName.isEmpty() == true)
-      {
-        if(filter)
-        {
-          filter->setErrorCondition(-10011);
-          ss = QObject::tr("The name of the Attribute Matrix was empty. Please provide a name for this Attribute Matrix.");
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-        }
-        return attributeMatrix;
-      }
-
-      if (attributeMatrixName.contains('/'))
-      {
-        if (filter)
-        {
-          filter->setErrorCondition(-10012);
-          ss = QObject::tr("The AttributeMatrix '%1' has forward slashes in its name").arg(attributeMatrixName);
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-        }
-        return attributeMatrix;
-      }
-
-      if (attributeMatrixName.compare(SIMPL::Geometry::Geometry) == 0)
-      {
-        if(filter)
-        {
-          filter->setErrorCondition(-10013);
-          ss = QObject::tr("%1 is a protected name.  Please provide a different name for this Attribute Matrix.").arg(SIMPL::Geometry::Geometry);
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-        }
-        return attributeMatrix;
-      }
-      attributeMatrix = getAttributeMatrix(attributeMatrixName);
-      if(nullptr == attributeMatrix.get())
-      {
-        attributeMatrix = createAndAddAttributeMatrix(tDims, attributeMatrixName, amType);
-        return attributeMatrix;
-      }
-      else if(filter) // If the filter object is NOT null (is valid) then set the error condition and send an error message
-      {
-        filter->setErrorCondition(-10014);
-        ss = QObject::tr("An Attribute Matrix already exists with the name %1.").arg(attributeMatrixName);
-        filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-      }
-      return attributeMatrix;
-    }
+    AttributeMatrixShPtr createNonPrereqAttributeMatrix(AbstractFilter* filter, const QString& attributeMatrixName, QVector<size_t> tDims, AttributeMatrix::Type amType);
 
     /**
      * @brief Returns the geometry as the templated type

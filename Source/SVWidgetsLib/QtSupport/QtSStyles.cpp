@@ -50,6 +50,7 @@
 
 static QMap<QString, QImage> s_NameToImage;
 
+
 namespace  {
 const QString kNormalColor("#8f8f91");
 const QString kErrorColor("#BC0000");
@@ -58,9 +59,7 @@ const QString kErrorColor("#BC0000");
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSStyles::QtSStyles()
-{
-}
+QtSStyles::QtSStyles() = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -400,6 +399,13 @@ QColor QtSStyles::ColorForFilterGroup(const QString &grpName)
   return color;
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QColor QtSStyles::GetFilterBackgroundColor()
+{
+  return QColor(158, 158, 158);
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -458,4 +464,27 @@ QIcon QtSStyles::IconForGroup(const QString &grpName)
   s_NameToImage[grpName] = grpImage;
 
   return QIcon(QPixmap::fromImage(grpImage));
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString QtSStyles::StyleSheetForButton(const QString &objectName, const QString &cssName, const QString &imageName)
+{
+  QString css;
+  QFile cssFile(QString("%1").arg(cssName));
+  if(cssFile.open(QFile::ReadOnly))
+  {
+    css = cssFile.readAll();
+    cssFile.close();
+  }
+  else
+  {
+    qDebug() << "Could not load CSS file: " << cssName;
+  }
+
+  css = css.replace("@OBJECT_NAME@", objectName);
+  css = css.replace("@IMAGE_PATH@", imageName);
+  return css;
 }

@@ -48,6 +48,13 @@
 class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(ScaleVolume SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
+    PYB11_PROPERTY(QString SurfaceDataContainerName READ getSurfaceDataContainerName WRITE setSurfaceDataContainerName)
+    PYB11_PROPERTY(bool ApplyToVoxelVolume READ getApplyToVoxelVolume WRITE setApplyToVoxelVolume)
+    PYB11_PROPERTY(bool ApplyToSurfaceMesh READ getApplyToSurfaceMesh WRITE setApplyToSurfaceMesh)
+    PYB11_PROPERTY(FloatVec3_t ScaleFactor READ getScaleFactor WRITE setScaleFactor)
+
   public:
     SIMPL_SHARED_POINTERS(ScaleVolume)
     SIMPL_FILTER_NEW_MACRO(ScaleVolume)

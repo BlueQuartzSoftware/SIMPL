@@ -51,6 +51,9 @@
 class SIMPLib_EXPORT FindDerivatives : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(FindDerivatives SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
+  PYB11_PROPERTY(DataArrayPath DerivativesArrayPath READ getDerivativesArrayPath WRITE setDerivativesArrayPath)
 
   public:
     SIMPL_SHARED_POINTERS(FindDerivatives)
@@ -59,11 +62,11 @@ class SIMPLib_EXPORT FindDerivatives : public AbstractFilter
 
     ~FindDerivatives() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
-    Q_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
+  Q_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, DerivativesArrayPath)
-    Q_PROPERTY(DataArrayPath DerivativesArrayPath READ getDerivativesArrayPath WRITE setDerivativesArrayPath)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, DerivativesArrayPath)
+  Q_PROPERTY(DataArrayPath DerivativesArrayPath READ getDerivativesArrayPath WRITE setDerivativesArrayPath)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
@@ -133,48 +136,47 @@ class SIMPLib_EXPORT FindDerivatives : public AbstractFilter
     */
     void preflight() override;
 
-  signals:
-    /**
-     * @brief updateFilterParameters This is emitted when the filter requests all the latest Filter Parameters need to be
-     * pushed from a user facing control such as the FilterParameter Widget
-     * @param filter The filter to push the values into
-     */
-    void updateFilterParameters(AbstractFilter* filter);
+signals:
+  /**
+   * @brief updateFilterParameters This is emitted when the filter requests all the latest Filter Parameters need to be
+   * pushed from a user facing control such as the FilterParameter Widget
+   * @param filter The filter to push the values into
+   */
+  void updateFilterParameters(AbstractFilter* filter);
 
-    /**
-     * @brief parametersChanged This signal can be emitted when any of the filter parameters are changed internally.
-     */
-    void parametersChanged();
+  /**
+   * @brief parametersChanged This signal can be emitted when any of the filter parameters are changed internally.
+   */
+  void parametersChanged();
 
-    /**
-     * @brief preflightAboutToExecute Emitted just before the dataCheck() is called. This can change if needed.
-     */
-    void preflightAboutToExecute();
+  /**
+   * @brief preflightAboutToExecute Emitted just before the dataCheck() is called. This can change if needed.
+   */
+  void preflightAboutToExecute();
 
-    /**
-     * @brief preflightExecuted Emitted just after the dataCheck() is called. Typically. This can change if needed.
-     */
-    void preflightExecuted();
+  /**
+   * @brief preflightExecuted Emitted just after the dataCheck() is called. Typically. This can change if needed.
+   */
+  void preflightExecuted();
 
-  protected:
-    FindDerivatives();
+protected:
+  FindDerivatives();
 
-    /**
-     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-     */
-    void dataCheck();
+  /**
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
+  void dataCheck();
 
-    /**
-     * @brief Initializes all the private instance variables.
-     */
-    void initialize();
+  /**
+   * @brief Initializes all the private instance variables.
+   */
+  void initialize();
 
+private:
+  DEFINE_IDATAARRAY_WEAKPTR(InArray)
+  DEFINE_DATAARRAY_VARIABLE(double, DerivativesArray)
 
-  private:
-    DEFINE_IDATAARRAY_WEAKPTR(InArray)
-    DEFINE_DATAARRAY_VARIABLE(double, DerivativesArray)
-
-    bool m_Interpolate;
+  bool m_Interpolate;
 
   public:
     FindDerivatives(const FindDerivatives&) = delete; // Copy Constructor Not Implemented

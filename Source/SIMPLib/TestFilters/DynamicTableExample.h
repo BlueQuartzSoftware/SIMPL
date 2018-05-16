@@ -1,3 +1,4 @@
+
 /* ============================================================================
 * Copyright (c) 2009-2016 BlueQuartz Software, LLC
 *
@@ -50,6 +51,13 @@
 class SIMPLib_EXPORT DynamicTableExample : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(DynamicTableExample SUPERCLASS AbstractFilter)
+
+  PYB11_PROPERTY(DynamicTableData DynamicData1 READ getDynamicData1 WRITE setDynamicData1)
+  PYB11_PROPERTY(DynamicTableData DynamicData2 READ getDynamicData2 WRITE setDynamicData2)
+  PYB11_PROPERTY(DynamicTableData DynamicData3 READ getDynamicData3 WRITE setDynamicData3)
+  PYB11_PROPERTY(DynamicTableData DynamicData4 READ getDynamicData4 WRITE setDynamicData4)
+  PYB11_PROPERTY(DynamicTableData DynamicData5 READ getDynamicData5 WRITE setDynamicData5)
 public:
   SIMPL_SHARED_POINTERS(DynamicTableExample)
   SIMPL_FILTER_NEW_MACRO(DynamicTableExample)

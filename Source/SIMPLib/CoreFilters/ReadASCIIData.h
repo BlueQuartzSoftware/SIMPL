@@ -14,9 +14,11 @@
 /**
  * @brief The ReadASCIIData class. See [Filter documentation](@ref ReadASCIIData) for details.
  */
-class ReadASCIIData : public AbstractFilter
+class SIMPLib_EXPORT ReadASCIIData : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(ReadASCIIData SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(ASCIIWizardData WizardData READ getWizardData WRITE setWizardData)
 
   public:
     SIMPL_SHARED_POINTERS(ReadASCIIData)
@@ -25,19 +27,19 @@ class ReadASCIIData : public AbstractFilter
 
     ~ReadASCIIData() override;
 
-    SIMPL_FILTER_PARAMETER(ASCIIWizardData, WizardData)
-    Q_PROPERTY(ASCIIWizardData WizardData READ getWizardData WRITE setWizardData)
+  SIMPL_FILTER_PARAMETER(ASCIIWizardData, WizardData)
+  Q_PROPERTY(ASCIIWizardData WizardData READ getWizardData WRITE setWizardData)
 
-    enum ErrorCodes
-    {
-      EMPTY_FILE = -100,
-      EMPTY_ATTR_MATRIX = -101,
-      INCONSISTENT_TUPLES = -102,
-      INCONSISTENT_COLS = -103,
-      CONVERSION_FAILURE = -104,
-      DUPLICATE_NAMES = -105,
-      INVALID_ARRAY_TYPE = -106
-    };
+  enum ErrorCodes
+  {
+    EMPTY_FILE = -100,
+    EMPTY_ATTR_MATRIX = -101,
+    INCONSISTENT_TUPLES = -102,
+    INCONSISTENT_COLS = -103,
+    CONVERSION_FAILURE = -104,
+    DUPLICATE_NAMES = -105,
+    INVALID_ARRAY_TYPE = -106
+  };
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
@@ -94,17 +96,17 @@ class ReadASCIIData : public AbstractFilter
      */
     void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
-    /**
-    * @brief readFilterParametersFromJson Reads the filter parameters from a file
-    * @param reader Reader that is used to read the parameters from a file
-    */
-    virtual void readFilterParameters(QJsonObject &obj);
+  /**
+  * @brief readFilterParametersFromJson Reads the filter parameters from a file
+  * @param reader Reader that is used to read the parameters from a file
+  */
+  virtual void readFilterParameters(QJsonObject& obj);
 
-    /**
-    * @brief writeFilterParametersToJson Writes the filter parameters to a file
-    * @param root The root json object
-    */
-    virtual void writeFilterParameters(QJsonObject &obj);
+  /**
+  * @brief writeFilterParametersToJson Writes the filter parameters to a file
+  * @param root The root json object
+  */
+  virtual void writeFilterParameters(QJsonObject& obj);
 
    /**
     * @brief execute Reimplemented from @see AbstractFilter class

@@ -73,11 +73,32 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   Q_PROPERTY(QString CompiledLibraryName READ getCompiledLibraryName CONSTANT)
   Q_PROPERTY(int Cancel READ getCancel WRITE setCancel)
   Q_PROPERTY(bool Enabled READ getEnabled WRITE setEnabled)
+  
+  // This line MUST be first when exposing a class and properties to Python
+  PYB11_CREATE_BINDINGS(AbstractFilter)
+  PYB11_PROPERTY(QString NameOfClass READ getNameOfClass)  
+  PYB11_PROPERTY(QString GroupName READ getGroupName)
+  PYB11_PROPERTY(QString SubGroupName READ getSubGroupName)
+  PYB11_PROPERTY(QString HumanLabel READ getHumanLabel)
+  PYB11_PROPERTY(QString FilterVersion READ getFilterVersion)
+  PYB11_PROPERTY(QString CompiledLibraryName READ getCompiledLibraryName)
+  PYB11_PROPERTY(bool Cancel READ getCancel WRITE setCancel)
+  PYB11_PROPERTY(bool Enabled READ getEnabled WRITE setEnabled)
+  PYB11_PROPERTY(QString MessagePrefix READ getMessagePrefix WRITE setMessagePrefix)
+  PYB11_PROPERTY(int ErrorCondition READ getErrorCondition WRITE setErrorCondition)
+  PYB11_PROPERTY(int WarningCondition READ getWarningCondition WRITE setWarningCondition)
+  PYB11_PROPERTY(bool InPreflight READ getInPreflight WRITE setInPreflight)
+  PYB11_PROPERTY(int PipelineIndex READ getPipelineIndex WRITE setPipelineIndex)
 
+  PYB11_METHOD(void generateHtmlSummary)
+  PYB11_METHOD(void execute)
+  PYB11_METHOD(void preflight)
+  PYB11_METHOD(void setDataContainerArray)
+  
 public:
   SIMPL_SHARED_POINTERS(AbstractFilter)
-  SIMPL_STATIC_NEW_MACRO(AbstractFilter)
   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AbstractFilter, Observable)
+  SIMPL_STATIC_NEW_MACRO(AbstractFilter)
 
   virtual ~AbstractFilter();
 

@@ -47,6 +47,14 @@
 class SIMPLib_EXPORT CombineAttributeMatrices : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(CombineAttributeMatrices SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(DataArrayPath FirstAttributeMatrixPath READ getFirstAttributeMatrixPath WRITE setFirstAttributeMatrixPath)
+    PYB11_PROPERTY(DataArrayPath SecondAttributeMatrixPath READ getSecondAttributeMatrixPath WRITE setSecondAttributeMatrixPath)
+    PYB11_PROPERTY(DataArrayPath FirstIndexArrayPath READ getFirstIndexArrayPath WRITE setFirstIndexArrayPath)
+    PYB11_PROPERTY(DataArrayPath SecondIndexArrayPath READ getSecondIndexArrayPath WRITE setSecondIndexArrayPath)
+    PYB11_PROPERTY(QString CombinedAttributeMatrixName READ getCombinedAttributeMatrixName WRITE setCombinedAttributeMatrixName)
+    PYB11_PROPERTY(QString NewIndexArrayName READ getNewIndexArrayName WRITE setNewIndexArrayName)
+
   public:
     SIMPL_SHARED_POINTERS(CombineAttributeMatrices)
     SIMPL_FILTER_NEW_MACRO(CombineAttributeMatrices)
@@ -171,7 +179,6 @@ class SIMPLib_EXPORT CombineAttributeMatrices : public AbstractFilter
      * @brief Initializes all the private instance variables.
      */
     void initialize();
-
 
     /**
      * @brief updateFeatureInstancePointers Updates raw feature pointers

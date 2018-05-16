@@ -25,7 +25,7 @@ function(SIMPL_GenerateUnitTestFile)
   set(FilterTestIncludes "")
   set(TestMainFunctors "")
 
-  foreach(name  ${TEST_NAMES})
+  foreach(name  ${P_SOURCES})
     set( ${P_PLUGIN_NAME}_TEST_SRCS
       ${${P_PLUGIN_NAME}_TEST_SRCS}
       "${${P_PLUGIN_NAME}_SOURCE_DIR}/Test/${name}.cpp"

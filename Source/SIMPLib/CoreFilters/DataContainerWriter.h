@@ -47,6 +47,16 @@
 class SIMPLib_EXPORT DataContainerWriter : public AbstractFilter
 {
     Q_OBJECT
+    
+    // This line MUST be first when exposing a class and properties to Python
+    PYB11_CREATE_BINDINGS(DataContainerWriter SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
+    PYB11_PROPERTY(bool WriteXdmfFile READ getWriteXdmfFile WRITE setWriteXdmfFile)
+    PYB11_PROPERTY(bool WriteTimeSeries READ getWriteTimeSeries WRITE setWriteTimeSeries)
+    PYB11_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
+    PYB11_PROPERTY(bool WriteXdmfFile READ getWriteXdmfFile WRITE setWriteXdmfFile)
+    PYB11_PROPERTY(bool WriteTimeSeries READ getWriteTimeSeries WRITE setWriteTimeSeries)
+
   public:
     SIMPL_SHARED_POINTERS(DataContainerWriter)
     SIMPL_FILTER_NEW_MACRO(DataContainerWriter)

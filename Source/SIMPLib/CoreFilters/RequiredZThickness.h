@@ -49,6 +49,11 @@
 class SIMPLib_EXPORT RequiredZThickness : public AbstractDecisionFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(RequiredZThickness SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(QString DataContainerSelection READ getDataContainerSelection WRITE setDataContainerSelection)
+    PYB11_PROPERTY(int NumZVoxels READ getNumZVoxels WRITE setNumZVoxels)
+    PYB11_PROPERTY(bool PreflightCheck READ getPreflightCheck WRITE setPreflightCheck)
+
   public:
     SIMPL_SHARED_POINTERS(RequiredZThickness)
     SIMPL_STATIC_NEW_MACRO(RequiredZThickness)

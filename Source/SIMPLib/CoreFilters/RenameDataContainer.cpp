@@ -106,7 +106,7 @@ void RenameDataContainer::dataCheck()
     return;
   }
 
-  getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getSelectedDataContainerName());
+  getDataContainerArray()->getPrereqDataContainer(this, getSelectedDataContainerName());
   if(getErrorCondition() < 0)
   {
     return;

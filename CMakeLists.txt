@@ -9,7 +9,7 @@ if(NOT "${DREAM3D_SDK}" STREQUAL "")
 endif()
 
 # Request C++11 standard, using new CMake variables.
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_EXTENSIONS False)
 
@@ -331,6 +331,8 @@ endif()
 file(WRITE ${SIMPLProj_BINARY_DIR}/DREAM3DDocGroupList "")
 
 # ------- Enable the CTest testing. Use make test to run all tests ---------------
+# -------------------------------------------------------------------- 
+# If Testing is enabled, turn on the Unit Tests 
 if(SIMPL_BUILD_TESTING)
     #ENABLE_TESTING()
     include( CTest )
@@ -379,7 +381,7 @@ add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/H5Support ${PROJECT_BINARY_DIR}
 # -----------------------------------------------------------------------
 # Add in the support to host the documentation over a thin-http server
 # -----------------------------------------------------------------------
-add_subdirectory(${SIMPLProj_SOURCE_DIR}/3rdParty/QtWebApp )
+add_subdirectory(${SIMPLProj_SOURCE_DIR}/ThirdParty/QtWebApp )
 
 
 # -----------------------------------------------------------------------
@@ -393,6 +395,7 @@ endif()
 # -- Add in the SIMPL Sources into a library
 add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SIMPLib ${PROJECT_BINARY_DIR}/SIMPLib)
 
+# --------------------------------------------------------------------
 # add the Command line utilities
 # Figure out here if we are going to build the command line tools
 add_subdirectory(${SIMPLProj_SOURCE_DIR}/Tools ${PROJECT_BINARY_DIR}/Tools)
@@ -405,8 +408,19 @@ if(SIMPL_Group_WIDGETS)
   add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SVWidgetsLib ${PROJECT_BINARY_DIR}/SVWidgetsLib)
 endif()
 
+# --------------------------------------------------------------------
 # This should be the last line in this file:
 include(${PROJECT_RESOURCES_DIR}/CPack/PackageProject.cmake)
 
 
+# --------------------------------------------------------------------------
+# Find the Pybind11 installation
+option(SIMPL_WRAP_PYTHON "Generate and Compile Python wrapping codes" OFF)
+message(STATUS "SIMPL_WRAP_PYTHON: ${SIMPL_WRAP_PYTHON}")
+if(SIMPL_WRAP_PYTHON)
+  # --------------------------------------------------------------------
+  # add the Pybind11 Python Wrapping
+  add_subdirectory(${SIMPLProj_SOURCE_DIR}/Wrapping/Tools/Pybind11 ${PROJECT_BINARY_DIR}/Pybind11)
+
+endif()
 

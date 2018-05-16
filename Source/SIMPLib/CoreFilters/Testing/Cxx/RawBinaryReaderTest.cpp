@@ -253,8 +253,7 @@ public:
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
 
     // Create the data container
-    DataContainer::Pointer m = DataContainer::New();
-    m->setName(SIMPL::Defaults::DataContainerName);
+    DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
     m->addAttributeMatrix("AttributeMatrix", am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
     dca->addDataContainer(m);
@@ -359,8 +358,7 @@ public:
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
 
     // Create the data container
-    DataContainer::Pointer m = DataContainer::New();
-    m->setName(SIMPL::Defaults::DataContainerName);
+    DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
     m->addAttributeMatrix("AttributeMatrix", am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
     dca->addDataContainer(m);
@@ -460,8 +458,7 @@ public:
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
 
     // Create the data container
-    DataContainer::Pointer m = DataContainer::New();
-    m->setName(SIMPL::Defaults::DataContainerName);
+    DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
     m->addAttributeMatrix("AttributeMatrix", am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
     dca->addDataContainer(m);
@@ -571,8 +568,7 @@ public:
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
 
     // Create the data container
-    DataContainer::Pointer m = DataContainer::New();
-    m->setName(SIMPL::Defaults::DataContainerName);
+    DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
     m->addAttributeMatrix("AttributeMatrix", am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
     dca->addDataContainer(m);
@@ -608,8 +604,7 @@ public:
      */
 
     // Create another data container
-    DataContainer::Pointer m2 = DataContainer::New();
-    m2->setName(SIMPL::Defaults::DataContainerName);
+    DataContainer::Pointer m2 = DataContainer::New(SIMPL::Defaults::DataContainerName);
     m2->addAttributeMatrix("AttributeMatrix", am);
     DataContainerArray::Pointer dca2 = DataContainerArray::New();
     dca2->addDataContainer(m2);
@@ -711,8 +706,7 @@ public:
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
 
     // Create the data container
-    DataContainer::Pointer m = DataContainer::New();
-    m->setName(SIMPL::Defaults::DataContainerName);
+    DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
     m->addAttributeMatrix("AttributeMatrix", am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
     dca->addDataContainer(m);
@@ -822,8 +816,7 @@ public:
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
 
     // Create the data container
-    DataContainer::Pointer m = DataContainer::New();
-    m->setName(SIMPL::Defaults::DataContainerName);
+    DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
     m->addAttributeMatrix("AttributeMatrix", am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
     dca->addDataContainer(m);

@@ -200,7 +200,7 @@ void FindDerivatives::dataCheck()
   setErrorCondition(0);
   setWarningCondition(0);
   initialize();
-  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, m_SelectedArrayPath.getDataContainerName(), false);
+  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, m_SelectedArrayPath.getDataContainerName(), false);
   if(getErrorCondition() < 0 || nullptr == m.get())
   {
     return;
@@ -212,7 +212,7 @@ void FindDerivatives::dataCheck()
   }
 
   AttributeMatrix::Pointer inAttrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedArrayPath, -301);
-  AttributeMatrix::Pointer destAttrMat = m->getPrereqAttributeMatrix<AbstractFilter>(this, getDerivativesArrayPath().getAttributeMatrixName(), -301);
+  AttributeMatrix::Pointer destAttrMat = m->getPrereqAttributeMatrix(this, getDerivativesArrayPath().getAttributeMatrixName(), -301);
 
   if(getErrorCondition() < 0)
   {

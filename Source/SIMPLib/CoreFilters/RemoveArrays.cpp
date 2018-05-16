@@ -139,7 +139,7 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
   {
     DataContainerProxy dcProxy = containerIter.next();
     dcList.push_back(dcProxy.name);
-    DataContainer::Pointer dcItem = dca->getPrereqDataContainer<AbstractFilter>(this, dcProxy.name);
+    DataContainer::Pointer dcItem = dca->getPrereqDataContainer(this, dcProxy.name);
     if(getErrorCondition() < 0 || dcItem.get() == nullptr)
     {
       continue;

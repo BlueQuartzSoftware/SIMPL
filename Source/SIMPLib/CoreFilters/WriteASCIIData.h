@@ -47,6 +47,13 @@
 class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(WriteASCIIData SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
+    PYB11_PROPERTY(QString OutputPath READ getOutputPath WRITE setOutputPath)
+    PYB11_PROPERTY(int Delimiter READ getDelimiter WRITE setDelimiter)
+    PYB11_PROPERTY(QString FileExtension READ getFileExtension WRITE setFileExtension)
+    PYB11_PROPERTY(int MaxValPerLine READ getMaxValPerLine WRITE setMaxValPerLine)
+
   public:
     SIMPL_SHARED_POINTERS(WriteASCIIData)
     SIMPL_FILTER_NEW_MACRO(WriteASCIIData)

@@ -52,6 +52,13 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(ImportAsciDataArray)
+    PYB11_CREATE_BINDINGS(ImportAsciDataArray SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(DataArrayPath CreatedAttributeArrayPath READ getCreatedAttributeArrayPath WRITE setCreatedAttributeArrayPath)
+    PYB11_PROPERTY(SIMPL::NumericTypes::Type ScalarType READ getScalarType WRITE setScalarType)
+    PYB11_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
+    PYB11_PROPERTY(int SkipHeaderLines READ getSkipHeaderLines WRITE setSkipHeaderLines)
+    PYB11_PROPERTY(QString InputFile READ getInputFile WRITE setInputFile)
+    PYB11_PROPERTY(int Delimiter READ getDelimiter WRITE setDelimiter)
 
   public:
     SIMPL_SHARED_POINTERS(ImportAsciDataArray)

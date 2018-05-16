@@ -43,6 +43,11 @@
 class SIMPLib_EXPORT ImportHDF5Dataset : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(ImportHDF5Dataset SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(QString HDF5FilePath READ getHDF5FilePath WRITE setHDF5FilePath)
+    PYB11_PROPERTY(QStringList DatasetPaths READ getDatasetPaths WRITE setDatasetPaths)
+    PYB11_PROPERTY(QString ComponentDimensions READ getComponentDimensions WRITE setComponentDimensions)
+    PYB11_PROPERTY(DataArrayPath SelectedAttributeMatrix READ getSelectedAttributeMatrix WRITE setSelectedAttributeMatrix)
 
 public:
   SIMPL_SHARED_POINTERS(ImportHDF5Dataset)
@@ -51,19 +56,19 @@ public:
 
   ~ImportHDF5Dataset() override;
 
-  SIMPL_INSTANCE_PROPERTY(QString, HDF5FilePath)
+  SIMPL_FILTER_PARAMETER(QString, HDF5FilePath)
   Q_PROPERTY(QString HDF5FilePath READ getHDF5FilePath WRITE setHDF5FilePath)
 
-  SIMPL_INSTANCE_PROPERTY(QStringList, DatasetPaths)
+  SIMPL_FILTER_PARAMETER(QStringList, DatasetPaths)
   Q_PROPERTY(QStringList DatasetPaths READ getDatasetPaths WRITE setDatasetPaths)
 
   QString getHDF5Dimensions();
   Q_PROPERTY(QString HDF5Dimensions READ getHDF5Dimensions)
 
-  SIMPL_INSTANCE_PROPERTY(QString, ComponentDimensions)
+  SIMPL_FILTER_PARAMETER(QString, ComponentDimensions)
   Q_PROPERTY(QString ComponentDimensions READ getComponentDimensions WRITE setComponentDimensions)
 
-  SIMPL_INSTANCE_PROPERTY(DataArrayPath, SelectedAttributeMatrix)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedAttributeMatrix)
   Q_PROPERTY(DataArrayPath SelectedAttributeMatrix READ getSelectedAttributeMatrix WRITE setSelectedAttributeMatrix)
 
   /**
