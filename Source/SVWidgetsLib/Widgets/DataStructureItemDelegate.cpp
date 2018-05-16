@@ -265,42 +265,20 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
     }
   }
 
-  bool drawMarker = mouseOver;
+  bool pathHighlighted = false;
 
   // Check if the view is being filtered
   if(filterData)
   {
     bool matchesReqs = pathMatchesReqs(path);
-    QColor color = ::InvalidColor;
-    QPen pen;
-
-    int radius = 1;
-    int rounded = 4;
-    int r2 = radius / 2;
-    QRect rect = option.rect;
-    QRect borderRect(rect.x() + r2, rect.y() - r2, rect.width() - radius, rect.height() - radius);
+    pathHighlighted = matchesReqs && !isCreatedPath;
 
     // Check if the current path matches the requirements
-    if(matchesReqs)
+    if(!matchesReqs)
     {
-      if(false == isCreatedPath)
-      {
-        color = DataArrayPathSelectionWidget::GetActiveColor(path.getDataType());
-
-        QBrush brush(color);
-        painter->setBrush(brush);
-
-        // Make sure we draw the filtering marker later
-        drawMarker = true;
-      }
-
-      pen.setColor(color);
-      pen.setWidth(radius);
-      painter->setPen(pen);
+      // Set text color
+      op.palette.setColor(QPalette::Normal, QPalette::WindowText, ::InvalidColor);
     }
-
-    // Set text color
-    op.palette.setColor(QPalette::Normal, QPalette::WindowText, color);
   }
   else
   {
@@ -309,6 +287,10 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
       QColor color = DataArrayPathSelectionWidget::GetActiveColor(path.getDataType());
       op.palette.setColor(QPalette::Normal, QPalette::WindowText, color);
     }
+    //else
+    //{
+    //  pathHighlighted = mouseOver;
+    //}
   }
 
   // Draw the decoration role if available
@@ -319,22 +301,35 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
     textOffset = textOffset + iconSize;
   }
 
-  // Draw filtering dot
-  if(drawMarker)
-  {
-    QColor pathColor = DataArrayPathSelectionWidget::GetActiveColor(path.getDataType());
-    int markerSize = op.rect.height() / 2;
-    int markerOffset = (op.rect.height() - markerSize) / 3;
-    QRect markerRect(op.rect.x() + iconSize, op.rect.y() + markerOffset, markerSize, markerSize);
+  QFontMetrics fm(op.font);
+  int textWidth = fm.width(text);
 
-    painter->setPen(QColor(0, 0, 0));
-    painter->setBrush(pathColor);
-    painter->drawChord(markerRect, 0, 360 * 16);
-    textOffset += markerSize;
+  // Highlight the path
+  if(pathHighlighted)
+  {
+    // Rounding options
+    int radius = 1;
+    int rounded = 2;
+    int xPadding = 4;
+    
+    // Rect dimensions
+    int xPos = op.rect.x() + textOffset - xPadding;
+    int yPos = op.rect.y() - (radius / 2);
+    int width = textWidth + 2 * xPadding;
+    int height = op.rect.height() - radius;
+    QRect borderRect(xPos, yPos, width, height);
+
+    QColor bgColor = DataArrayPathSelectionWidget::GetActiveColor(path.getDataType());
+    op.palette.setColor(QPalette::ColorRole::WindowText, QColor(255, 255, 255));
+
+    painter->setBrush(bgColor);
+    painter->drawRoundedRect(borderRect, rounded, rounded);
+
+    // Set transparent brush
+    painter->setBrush(QColor(0, 0, 0, 0));
   }
 
-  // Draw Text - drawStaticText renders rich text
-  QFontMetrics fm(op.font);
+  // Draw Text
   QRect textRect(op.rect.x() + textOffset, op.rect.y() + fm.descent() / 2, op.rect.width(), op.rect.height());
   painter->setPen(op.palette.color(QPalette::Normal, QPalette::WindowText));
   painter->drawText(textRect, text);

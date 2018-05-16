@@ -1182,6 +1182,11 @@ void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
 {
   QToolButton::paintEvent(event);
 
+  if(false == (isEnabled() && (isChecked() || m_FilteringPassed)))
+  {
+    return;
+  }
+
   int rectWidth = height();
   int penWidth = 2;
   int radius = 6;
@@ -1206,18 +1211,18 @@ void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
   painter.setBrush(fillColor);
   painter.drawRoundRect(rect, radius, radius);
 
-  if(isEnabled() && (isChecked() || m_FilteringPassed))
-  {
-    int fillBorder = 8;
-    int size = rect.width() - fillBorder;
-    QRect filteringRect = rect;
-    filteringRect.setX(rect.x() + fillBorder / 2);
-    filteringRect.setY(rect.y() + fillBorder / 2 - 1);
-    filteringRect.setWidth(size);
-    filteringRect.setHeight(size);
-    painter.setBrush(QColor(255,255,255));
-    painter.drawChord(filteringRect, 0, 360 * 16);
-  }
+#if 0
+  // Draw "Drop" Circle
+  int fillBorder = 8;
+  int size = rect.width() - fillBorder;
+  QRect filteringRect = rect;
+  filteringRect.setX(rect.x() + fillBorder / 2);
+  filteringRect.setY(rect.y() + fillBorder / 2 - 1);
+  filteringRect.setWidth(size);
+  filteringRect.setHeight(size);
+  painter.setBrush(QColor(255,255,255));
+  painter.drawChord(filteringRect, 0, 360 * 16);
+#endif
 }
 
 // -----------------------------------------------------------------------------
