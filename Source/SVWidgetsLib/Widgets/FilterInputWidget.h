@@ -91,6 +91,7 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget
     void endViewPaths();
     void filterPath(DataArrayPath path);
     void endPathFiltering();
+    void applyPathToFilteringParameter(DataArrayPath path);
 
   private slots:
     void fadeInWidget(QWidget* widget);

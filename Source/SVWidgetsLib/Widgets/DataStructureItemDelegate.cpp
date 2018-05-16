@@ -33,8 +33,10 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <QtWidgets/QApplication>
 #include <QtCore/QFileInfo>
 
+#include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QLineEdit>
 
 #include <QtGui/QIntValidator>
@@ -239,8 +241,16 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
   DataArrayPath path = getDataArrayPath(index);
   int textOffset = 4;
 
+  // Get mouse position for mouseOver effects
+  QPoint mousePos = QCursor::pos();
+  if(dynamic_cast<QWidget*>(parent()))
+  {
+    mousePos = dynamic_cast<QWidget*>(parent())->mapFromGlobal(mousePos);
+  }
+
   bool filterData = (m_ReqType != DataArrayPath::DataType::None);
   bool isCreatedPath = std::find(m_CreatedPaths.begin(), m_CreatedPaths.end(), path) != m_CreatedPaths.end();
+  bool mouseOver = op.rect.contains(mousePos);
 
   // Check for a corresponding icon
   QIcon icon;
@@ -255,48 +265,19 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
     }
   }
 
+  bool pathHighlighted = false;
+
   // Check if the view is being filtered
   if(filterData)
   {
     bool matchesReqs = pathMatchesReqs(path);
-    QColor color = ::InvalidColor;
-    QPen pen;
-
-    int radius = 1;
-    int rounded = 4;
-    int r2 = radius / 2;
-    QRect rect = option.rect;
-    QRect borderRect(rect.x() + r2, rect.y() - r2, rect.width() - radius, rect.height() - radius);
+    pathHighlighted = matchesReqs && !isCreatedPath;
 
     // Check if the current path matches the requirements
-    if(matchesReqs)
+    if(!matchesReqs)
     {
-      color = DataArrayPathSelectionWidget::GetActiveColor(path.getDataType());
-
-      if(false == isCreatedPath)
-      {
-        // Set text color white
-        op.palette.setColor(QPalette::Normal, QPalette::WindowText, QColor(255, 255, 255));
-
-        QBrush brush(color);
-        painter->setBrush(brush);
-      }
-
-      pen.setColor(color);
-      pen.setWidth(radius);
-      painter->setPen(pen);
-
-      painter->drawRoundedRect(borderRect, rounded, rounded);
-
-      if(false == isCreatedPath)
-      {
-        painter->setPen(QColor(255, 255, 255));
-      }
-    }
-    else
-    {
-      // Set text color grey
-      op.palette.setColor(QPalette::Normal, QPalette::WindowText, color);
+      // Set text color
+      op.palette.setColor(QPalette::Normal, QPalette::WindowText, ::InvalidColor);
     }
   }
   else
@@ -306,6 +287,10 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
       QColor color = DataArrayPathSelectionWidget::GetActiveColor(path.getDataType());
       op.palette.setColor(QPalette::Normal, QPalette::WindowText, color);
     }
+    //else
+    //{
+    //  pathHighlighted = mouseOver;
+    //}
   }
 
   // Draw the decoration role if available
@@ -316,8 +301,35 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
     textOffset = textOffset + iconSize;
   }
 
-  // Draw Text - drawStaticText renders rich text
   QFontMetrics fm(op.font);
+  int textWidth = fm.width(text);
+
+  // Highlight the path
+  if(pathHighlighted)
+  {
+    // Rounding options
+    int radius = 1;
+    int rounded = 2;
+    int xPadding = 4;
+    
+    // Rect dimensions
+    int xPos = op.rect.x() + textOffset - xPadding;
+    int yPos = op.rect.y() - (radius / 2);
+    int width = textWidth + 2 * xPadding;
+    int height = op.rect.height() - radius;
+    QRect borderRect(xPos, yPos, width, height);
+
+    QColor bgColor = DataArrayPathSelectionWidget::GetActiveColor(path.getDataType());
+    op.palette.setColor(QPalette::ColorRole::WindowText, QColor(255, 255, 255));
+
+    painter->setBrush(bgColor);
+    painter->drawRoundedRect(borderRect, rounded, rounded);
+
+    // Set transparent brush
+    painter->setBrush(QColor(0, 0, 0, 0));
+  }
+
+  // Draw Text
   QRect textRect(op.rect.x() + textOffset, op.rect.y() + fm.descent() / 2, op.rect.width(), op.rect.height());
   painter->setPen(op.palette.color(QPalette::Normal, QPalette::WindowText));
   painter->drawText(textRect, text);

@@ -135,6 +135,8 @@ void DataArraySelectionWidget::setupGui()
 
   connect(this, SIGNAL(filterPathInput(DataArrayPath)), m_SelectedDataArrayPath, SLOT(checkDragPath(DataArrayPath)));
   connect(this, SIGNAL(endViewPathRequirements()), m_SelectedDataArrayPath, SLOT(clearPathFiltering()));
+  connect(this, SIGNAL(endDataStructureRequirements()), m_SelectedDataArrayPath, SLOT(endExternalFiltering()));
+  connect(this, SIGNAL(applyPathToFilteringParameter(DataArrayPath)), m_SelectedDataArrayPath, SLOT(setFilteredDataArrayPath(DataArrayPath)));
 
   connect(m_SelectedDataArrayPath, SIGNAL(viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType)), this, SIGNAL(viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType)));
   connect(m_SelectedDataArrayPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));

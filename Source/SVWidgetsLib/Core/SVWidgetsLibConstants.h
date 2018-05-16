@@ -79,9 +79,9 @@ namespace SIMPLView
       const QString AcceptColor("#009104");
       const QString RejectColor("#BC0000");
 
-      const QString DataContainerColor("#06a000");
-      const QString AttributeMatrixColor("#8c00ff");
-      const QString DataArrayColor("#0072ff");
+      const QString DataContainerColor("#056d00");
+      const QString AttributeMatrixColor("#6400b7");
+      const QString DataArrayColor("#004dad");
     }
   }
 
