@@ -56,6 +56,11 @@ RemoveFilterCommand::RemoveFilterCommand(AbstractFilter::Pointer filter, SVPipel
   setText(QObject::tr("\"%1 '%2'\"").arg(actionText).arg(filter->getHumanLabel()));
 
   m_Filters.push_back(filter);
+
+  PipelineModel* model = m_PipelineView->getPipelineModel();
+
+  QModelIndex index = model->indexOfFilter(filter.get());
+  m_FilterRows.push_back(index.row());
 }
 
 // -----------------------------------------------------------------------------
@@ -73,6 +78,14 @@ RemoveFilterCommand::RemoveFilterCommand(std::vector<AbstractFilter::Pointer> fi
   }
 
   setText(QObject::tr("\"%1 %2 Filters\"").arg(actionText).arg(filters.size()));
+
+  PipelineModel* model = m_PipelineView->getPipelineModel();
+
+  for (size_t i = 0; i < m_Filters.size(); i++)
+  {
+    QModelIndex index = model->indexOfFilter(m_Filters[i].get());
+    m_FilterRows.push_back(index.row());
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -85,19 +98,17 @@ RemoveFilterCommand::~RemoveFilterCommand() = default;
 // -----------------------------------------------------------------------------
 void RemoveFilterCommand::undo()
 {
-  for(size_t i = 0; i < m_RemovalIndexes.size(); i++)
+  for(size_t i = 0; i < m_FilterRows.size(); i++)
   {
-    int insertIndex = m_RemovalIndexes[i];
+    int insertIndex = m_FilterRows[i];
     AbstractFilter::Pointer filter = m_Filters[i];
 
     addFilter(filter, insertIndex);
   }
 
   PipelineModel* model = m_PipelineView->getPipelineModel();
-  QModelIndex firstAddedIndex = model->index(m_RemovalIndexes.front(), PipelineItem::Contents);
+  QModelIndex firstAddedIndex = model->index(m_FilterRows.front(), PipelineItem::Contents);
   m_PipelineView->scrollTo(firstAddedIndex, QAbstractItemView::PositionAtTop);
-
-  m_RemovalIndexes.clear();
 
   m_PipelineView->preflightPipeline();
 
@@ -106,11 +117,17 @@ void RemoveFilterCommand::undo()
   QString statusMessage;
   if (m_Filters.size() > 1)
   {
-    statusMessage = QObject::tr("Undo \"Removed %1 filters\"").arg(m_Filters.size());
+    QString indexesString = QObject::tr("%1").arg(m_FilterRows[0] + 1);
+    for (size_t i = 1; i < m_FilterRows.size(); i++)
+    {
+      indexesString.append(", ");
+      indexesString.append(QObject::tr("%1").arg(m_FilterRows[i] + 1));
+    }
+    statusMessage = QObject::tr("Undo \"Removed %1 filters at indexes %2\"").arg(m_Filters.size()).arg(indexesString);
   }
   else
   {
-    statusMessage = QObject::tr("Undo \"Removed '%1' filter\"").arg(m_Filters[0]->getHumanLabel());
+    statusMessage = QObject::tr("Undo \"Removed '%1' filter at index %2\"").arg(m_Filters[0]->getHumanLabel()).arg(m_FilterRows[0] + 1);
   }
 
   emit m_PipelineView->statusMessage(statusMessage);
@@ -139,11 +156,17 @@ void RemoveFilterCommand::redo()
   QString statusMessage;
   if (m_Filters.size() > 1)
   {
-    statusMessage = QObject::tr("Removed %1 filters").arg(m_Filters.size());
+    QString indexesString = QObject::tr("%1").arg(m_FilterRows[0] + 1);
+    for (size_t i = 1; i < m_FilterRows.size(); i++)
+    {
+      indexesString.append(", ");
+      indexesString.append(QObject::tr("%1").arg(m_FilterRows[i] + 1));
+    }
+    statusMessage = QObject::tr("Removed %1 filters at indexes %2").arg(m_Filters.size()).arg(indexesString);
   }
   else
   {
-    statusMessage = QObject::tr("Removed '%1' filter").arg(m_Filters[0]->getHumanLabel());
+    statusMessage = QObject::tr("Removed '%1' filter at index %2").arg(m_Filters[0]->getHumanLabel()).arg(m_FilterRows[0] + 1);
   }
 
   if (m_FirstRun == false)
@@ -204,7 +227,6 @@ void RemoveFilterCommand::removeFilter(AbstractFilter::Pointer filter)
   disconnectFilterSignalsSlots(filter);
 
   QModelIndex index = model->indexOfFilter(filter.get());
-  m_RemovalIndexes.push_back(index.row());
 
   QPersistentModelIndex persistentIndex = index;
 

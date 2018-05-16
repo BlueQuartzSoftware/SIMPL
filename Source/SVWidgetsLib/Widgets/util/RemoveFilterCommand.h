@@ -63,7 +63,7 @@ public:
 private:
   SVPipelineView*                         m_PipelineView = nullptr;
   std::vector<AbstractFilter::Pointer>    m_Filters;
-  std::vector<int>                        m_RemovalIndexes;
+  std::vector<int>                        m_FilterRows;
   bool                                    m_FirstRun = true;
   bool                                    m_UseAnimationOnFirstRun = true;
 

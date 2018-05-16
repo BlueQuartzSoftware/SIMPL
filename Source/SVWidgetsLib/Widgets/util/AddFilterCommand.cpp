@@ -65,11 +65,12 @@ AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineVie
   {
     insertIndex = model->rowCount();
   }
-  m_InsertIndex = insertIndex;
 
   setText(QObject::tr("\"%1 '%2'\"").arg(actionText).arg(filter->getHumanLabel()));
 
   m_Filters.push_back(filter);
+
+  m_FilterRows.push_back(insertIndex);
 }
 
 // -----------------------------------------------------------------------------
@@ -88,7 +89,6 @@ AddFilterCommand::AddFilterCommand(std::vector<AbstractFilter::Pointer> filters,
   {
     insertIndex = model->rowCount();
   }
-  m_InsertIndex = insertIndex;
 
   if (filters.size() == 1)
   {
@@ -97,6 +97,11 @@ AddFilterCommand::AddFilterCommand(std::vector<AbstractFilter::Pointer> filters,
   else
   {
     setText(QObject::tr("\"%1 %2 Filters\"").arg(actionText).arg(filters.size()));
+  }
+
+  for (size_t i = 0; i < m_Filters.size(); i++)
+  {
+    m_FilterRows.push_back(insertIndex + i);
   }
 }
 
@@ -127,11 +132,11 @@ void AddFilterCommand::undo()
   QString statusMessage;
   if (m_Filters.size() > 1)
   {
-    statusMessage = QObject::tr("Undo \"Added %1 filters\"").arg(m_Filters.size());
+    statusMessage = QObject::tr("Undo \"Added %1 filters starting at index %2\"").arg(m_Filters.size()).arg(m_FilterRows[0] + 1);
   }
   else
   {
-    statusMessage = QObject::tr("Undo \"Added '%1' filter\"").arg(m_Filters[0]->getHumanLabel());
+    statusMessage = QObject::tr("Undo \"Added '%1' filter at index %2\"").arg(m_Filters[0]->getHumanLabel()).arg(m_FilterRows[0] + 1);
   }
 
   m_PipelineView->preflightPipeline();
@@ -154,11 +159,9 @@ void AddFilterCommand::redo()
 
   PipelineModel* model = m_PipelineView->getPipelineModel();
 
-  int row = m_InsertIndex;
   for(size_t i = 0; i < m_Filters.size(); i++)
   {
-    addFilter(m_Filters[i], row);
-    row++;
+    addFilter(m_Filters[i], m_FilterRows[i]);
   }
 
   emit m_PipelineView->preflightPipeline();
@@ -167,11 +170,11 @@ void AddFilterCommand::redo()
   QString statusMessage;
   if (m_Filters.size() > 1)
   {
-    statusMessage = QObject::tr("Added %1 filters").arg(m_Filters.size());
+    statusMessage = QObject::tr("Added %1 filters starting at index %2").arg(m_Filters.size()).arg(m_FilterRows[0] + 1);
   }
   else
   {
-    statusMessage = QObject::tr("Added '%1' filter").arg(m_Filters[0]->getHumanLabel());
+    statusMessage = QObject::tr("Added '%1' filter at index %2").arg(m_Filters[0]->getHumanLabel()).arg(m_FilterRows[0] + 1);
   }
 
   if (m_FirstRun == false)

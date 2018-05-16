@@ -64,9 +64,9 @@ class SVWidgetsLib_EXPORT AddFilterCommand : public QUndoCommand
 
   private:
     std::vector<AbstractFilter::Pointer>                m_Filters;
-    size_t                                              m_InsertIndex = 0;
     QString                                             m_ActionText;
     SVPipelineView*                                     m_PipelineView = nullptr;
+    std::vector<int>                                    m_FilterRows;
     bool                                                m_FirstRun = true;
     bool                                                m_UseAnimationOnFirstRun;
 
