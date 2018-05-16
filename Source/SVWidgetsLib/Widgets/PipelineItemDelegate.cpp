@@ -106,7 +106,7 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
 
   if((option.state & QStyle::State_MouseOver) && !(QApplication::mouseButtons() & Qt::LeftButton) )
   {
-    if ((option.state & QStyle::State_Selected) == false)
+    if((option.state & QStyle::State_Selected) == false)
     {
       QColor hoveredColor = bgColor;
       hoveredColor.setRedF((hoveredColor.redF() * 1.10 > 1.0) ? 1.0 : hoveredColor.redF() * 1.10);
