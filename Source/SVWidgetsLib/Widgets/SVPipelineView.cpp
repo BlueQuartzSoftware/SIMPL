@@ -160,6 +160,7 @@ void SVPipelineView::setupGui()
 
   setContextMenuPolicy(Qt::CustomContextMenu);
   setFocusPolicy(Qt::StrongFocus);
+  setDropIndicatorShown(false);
 
   connectSignalsSlots();
 }
@@ -1079,7 +1080,7 @@ void SVPipelineView::dragMoveEvent(QDragMoveEvent* event)
     addDropIndicator(dropIndicatorText, dropIndicatorRow);
   }
 
-  event->accept();
+  QListView::dragMoveEvent(event);
 }
 
 // -----------------------------------------------------------------------------
