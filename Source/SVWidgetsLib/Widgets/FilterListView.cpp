@@ -467,7 +467,7 @@ void FilterListView::launchHelpForItem(const QString &humanLabel)
 // -----------------------------------------------------------------------------
 void FilterListView::performDrag()
 {  
-  QModelIndex index = currentIndex();
+  QModelIndex index = indexAt(m_StartPos);
   if(index.isValid())
   {
     FilterListModel* model = getFilterListModel();

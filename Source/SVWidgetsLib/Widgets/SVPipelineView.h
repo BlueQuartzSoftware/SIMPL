@@ -226,6 +226,11 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     void cancelPipeline();
 
     /**
+     * @brief Update the indices of all FilterInputWidgets
+     */
+    void updateFilterInputWidgetIndices();
+
+    /**
      * @brief Should be block this class from either emitting a preflight signal or otherwise running a preflight.
      * @param b
      */
