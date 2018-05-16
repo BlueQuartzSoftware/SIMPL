@@ -160,6 +160,7 @@ void SVPipelineView::setupGui()
 
   setContextMenuPolicy(Qt::CustomContextMenu);
   setFocusPolicy(Qt::StrongFocus);
+  setDropIndicatorShown(false);
 
   connectSignalsSlots();
 }
@@ -382,6 +383,7 @@ void SVPipelineView::preflightPipeline()
   }
 
   emit preflightFinished(pipeline, err);
+  updateFilterInputWidgetIndices();
 }
 
 // -----------------------------------------------------------------------------
@@ -469,6 +471,33 @@ void SVPipelineView::executePipeline()
 void SVPipelineView::processPipelineMessage(const PipelineMessage& msg)
 {
   emit pipelineHasMessage(msg);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineView::updateFilterInputWidgetIndices()
+{
+  PipelineModel* model = getPipelineModel();
+  int rowCount = model->rowCount();
+  int col = PipelineModel::ItemTypeRole;
+
+  for(int row = 0; row < rowCount; row++)
+  {
+    QModelIndex index = model->index(row, col);
+    if(false == index.isValid())
+    {
+      return;
+    }
+
+    // Update the FilterInputWidget based on the pipeline index
+    AbstractFilter::Pointer filter = model->filter(index);
+    FilterInputWidget* fip = model->filterInputWidget(index);
+    if(filter && fip)
+    {
+      fip->setFilterIndex(QString::number(filter->getPipelineIndex() + 1));
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -1051,7 +1080,7 @@ void SVPipelineView::dragMoveEvent(QDragMoveEvent* event)
     addDropIndicator(dropIndicatorText, dropIndicatorRow);
   }
 
-  event->accept();
+  QListView::dragMoveEvent(event);
 }
 
 // -----------------------------------------------------------------------------

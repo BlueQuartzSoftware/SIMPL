@@ -96,7 +96,7 @@ void FilterLibraryTreeWidget::mouseMoveEvent(QMouseEvent* event)
 // -----------------------------------------------------------------------------
 void FilterLibraryTreeWidget::performDrag()
 {
-  QTreeWidgetItem* item = currentItem();
+  QTreeWidgetItem* item = itemAt(startPos);
   if(item)
   {
     QString filterHumanLabel = item->text(0);

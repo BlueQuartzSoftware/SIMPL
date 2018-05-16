@@ -88,6 +88,12 @@ QVariant FilterListModel::data(const QModelIndex& index, int role) const
 
   if(role == Qt::DisplayRole)
   {
+    if (item->getItemType() == FilterListItem::ItemType::Group)
+    {
+      QString text = item->getName();
+      text.append(tr(" (%1)").arg(rowCount(index)));
+      return text;
+    }
     return item->getName();
   }
   else if(role == static_cast<int>(Roles::ItemTypeRole))
@@ -213,6 +219,11 @@ bool FilterListModel::insertRows(int position, int rows, const QModelIndex& pare
 // -----------------------------------------------------------------------------
 bool FilterListModel::removeRows(int position, int rows, const QModelIndex& parent)
 {
+  if(rows <= 0)
+  {
+    return false;
+  }
+
   FilterListItem* parentItem = getItem(parent);
   bool success = true;
 
