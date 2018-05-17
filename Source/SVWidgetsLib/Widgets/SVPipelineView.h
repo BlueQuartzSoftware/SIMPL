@@ -150,6 +150,66 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
      */
     bool isPipelineCurrentlyRunning();
 
+    /**
+     * @brief Returns the regular disable button pixmap in the current highlighted text color
+     * @return
+     */
+    QPixmap getDisableBtnPixmap(bool highlighted = false);
+
+    /**
+     * @brief Returns the high-dpi disable button pixmap in the current highlighted text color
+     * @return
+     */
+    QPixmap getHighDPIDisableBtnPixmap(bool highlighted = false);
+
+    /**
+     * @brief Returns the regular activated disable button pixmap in the current highlighted text color
+     * @return
+     */
+    QPixmap getDisableBtnActivatedPixmap(bool highlighted = false);
+
+    /**
+     * @brief Returns the high-dpi activated disable button pixmap in the current highlighted text color
+     * @return
+     */
+    QPixmap getHighDPIDisableBtnActivatedPixmap(bool highlighted = false);
+
+    /**
+     * @brief Returns the regular hovered disable button pixmap in the current highlighted text color
+     * @return
+     */
+    QPixmap getDisableBtnHoveredPixmap(bool highlighted = false);
+
+    /**
+     * @brief Returns the high-dpi hovered disable button pixmap in the current highlighted text color
+     * @return
+     */
+    QPixmap getHighDPIDisableBtnHoveredPixmap(bool highlighted = false);
+
+    /**
+     * @brief Returns the regular delete button pixmap in the current highlighted text color
+     * @return
+     */
+    QPixmap getDeleteBtnPixmap(bool highlighted = false);
+
+    /**
+     * @brief Returns the high-dpi delete button pixmap in the current highlighted text color
+     * @return
+     */
+    QPixmap getHighDPIDeleteBtnPixmap(bool highlighted = false);
+
+    /**
+     * @brief Returns the regular hovered delete button pixmap in the current highlighted text color
+     * @return
+     */
+    QPixmap getDeleteBtnHoveredPixmap(bool highlighted = false);
+
+    /**
+     * @brief Returns the high-dpi hovered delete button pixmap in the current highlighted text color
+     * @return
+     */
+    QPixmap getHighDPIDeleteBtnHoveredPixmap(bool highlighted = false);
+
   public slots:
     /**
      * @brief Adds a filter with the specified filterClassName to the current model
@@ -373,6 +433,41 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     QAction*                                          m_ActionPaste = nullptr;
     QAction*                                          m_ActionClearPipeline = new QAction("Clear Pipeline", this);
 
+    QPixmap m_DisableBtnPixmap;
+    QPixmap m_DisableHighlightedPixmap;
+    QColor m_DisableBtnColor = QColor(Qt::black);
+
+    QPixmap m_DisableBtnPixmap2x;
+    QPixmap m_DisableBtnHighlightedPixmap2x;
+    QColor m_DisableBtn2xColor = QColor(Qt::black);
+
+    QPixmap m_DisableBtnActivatedPixmap;
+    QPixmap m_DisableBtnActivatedPixmap2x;
+
+    QPixmap m_DisableBtnHoveredPixmap;
+    QPixmap m_DisableBtnHoveredHighlightedPixmap;
+    QColor m_DisableBtnHoveredColor = QColor(Qt::black);
+
+    QPixmap m_DisableBtnHoveredPixmap2x;
+    QPixmap m_DisableBtnHoveredHighlightedPixmap2x;
+    QColor m_DisableBtnHovered2xColor = QColor(Qt::black);
+
+    QPixmap m_DeleteBtnPixmap;
+    QPixmap m_DeleteBtnHighlightedPixmap;
+    QColor m_DeleteBtnColor = QColor(Qt::black);
+
+    QPixmap m_DeleteBtnPixmap2x;
+    QPixmap m_DeleteBtnHighlightedPixmap2x;
+    QColor m_DeleteBtn2xColor = QColor(Qt::black);
+
+    QPixmap m_DeleteBtnHoveredPixmap;
+    QPixmap m_DeleteBtnHoveredHighlightedPixmap;
+    QColor m_DeleteBtnHoveredColor = QColor(Qt::black);
+
+    QPixmap m_DeleteBtnHoveredPixmap2x;
+    QPixmap m_DeleteBtnHoveredHighlightedPixmap2x;
+    QColor m_DeleteBtnHovered2xColor = QColor(Qt::black);
+
     /**
      * @brief Gets the currently selected filters
      * @return
@@ -436,6 +531,13 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
      * @return
      */
     QPixmap getDraggingPixmap(QModelIndexList indexes);
+
+    /**
+     * @brief setPixmapColor
+     * @param pixmap
+     * @param pixmapColor
+     */
+    QPixmap setPixmapColor(QPixmap pixmap, QColor pixmapColor);
 
     SVPipelineView(const SVPipelineView&) = delete; // Copy Constructor Not Implemented
     void operator=(const SVPipelineView&) = delete;       // Move assignment Not Implemented

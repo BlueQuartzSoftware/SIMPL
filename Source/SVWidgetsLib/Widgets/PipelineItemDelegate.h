@@ -74,21 +74,6 @@ class SVWidgetsLib_EXPORT PipelineItemDelegate : public QStyledItemDelegate
     HoverItem m_CurrentlyHoveredItem = HoverItem::Unknown;
     const qreal m_BorderSize = 1;
 
-    QPixmap m_DisableBtnPixmap;
-    QPixmap m_DisableBtnPixmap2x;
-
-    QPixmap m_DisableBtnActivatedPixmap;
-    QPixmap m_DisableBtnActivatedPixmap2x;
-
-    QPixmap m_DisableBtnHoveredPixmap;
-    QPixmap m_DisableBtnHoveredPixmap2x;
-
-    QPixmap m_DeleteBtnPixmap;
-    QPixmap m_DeleteBtnPixmap2x;
-
-    QPixmap m_DeleteBtnHoveredPixmap;
-    QPixmap m_DeleteBtnHoveredPixmap2x;
-
     /**
      * @brief Gets the proper filter index string that refers to the specified index
      * @param index
@@ -102,11 +87,6 @@ class SVWidgetsLib_EXPORT PipelineItemDelegate : public QStyledItemDelegate
      * @return
      */
     const PipelineModel* getPipelineModel(const QModelIndex &index) const;
-
-    /**
-     * @brief createButtonPixmaps
-     */
-    void createButtonPixmaps();
 
     PipelineItemDelegate(const PipelineItemDelegate&) = delete; // Copy Constructor Not Implemented
     void operator=(const PipelineItemDelegate&) = delete;        // Operator '=' Not Implemented

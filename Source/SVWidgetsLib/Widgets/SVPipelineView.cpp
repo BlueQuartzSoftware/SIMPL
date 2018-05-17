@@ -1860,3 +1860,280 @@ PipelineModel* SVPipelineView::getPipelineModel()
 {
   return static_cast<PipelineModel*>(model());
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QPixmap SVPipelineView::getDisableBtnPixmap(bool highlighted)
+{
+  if (m_DisableBtnPixmap.isNull())
+  {
+    m_DisableBtnPixmap = QPixmap(":/ban.png");
+    m_DisableHighlightedPixmap = m_DisableBtnPixmap;
+  }
+
+  QColor highlightedTextColor = palette().color(QPalette::HighlightedText);
+  if (highlighted && m_DisableBtnColor != highlightedTextColor)
+  {
+    m_DisableBtnColor = highlightedTextColor;
+    m_DisableHighlightedPixmap = setPixmapColor(m_DisableHighlightedPixmap, m_DisableBtnColor);
+  }
+
+  if (highlighted)
+  {
+    return m_DisableHighlightedPixmap;
+  }
+  else
+  {
+    return m_DisableBtnPixmap;
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QPixmap SVPipelineView::getHighDPIDisableBtnPixmap(bool highlighted)
+{
+  if (m_DisableBtnPixmap2x.isNull())
+  {
+    m_DisableBtnPixmap2x = QPixmap(":/ban@2x.png");
+    m_DisableBtnHighlightedPixmap2x = m_DisableBtnPixmap2x;
+  }
+
+  QColor highlightedTextColor = palette().color(QPalette::HighlightedText);
+  if (highlighted && m_DisableBtn2xColor != highlightedTextColor)
+  {
+    m_DisableBtn2xColor = highlightedTextColor;
+    m_DisableBtnHighlightedPixmap2x = setPixmapColor(m_DisableBtnHighlightedPixmap2x, m_DisableBtn2xColor);
+  }
+
+  if (highlighted)
+  {
+    return m_DisableBtnHighlightedPixmap2x;
+  }
+  else
+  {
+    return m_DisableBtnPixmap2x;
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QPixmap SVPipelineView::getDisableBtnActivatedPixmap(bool highlighted)
+{
+  Q_UNUSED(highlighted)
+
+  if (m_DisableBtnActivatedPixmap.isNull())
+  {
+    m_DisableBtnActivatedPixmap = QPixmap(":/ban_red.png");
+  }
+
+  return m_DisableBtnActivatedPixmap;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QPixmap SVPipelineView::getHighDPIDisableBtnActivatedPixmap(bool highlighted)
+{
+  Q_UNUSED(highlighted)
+
+  if (m_DisableBtnActivatedPixmap2x.isNull())
+  {
+    m_DisableBtnActivatedPixmap2x = QPixmap(":/ban_red@2x.png");
+  }
+
+  return m_DisableBtnActivatedPixmap2x;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QPixmap SVPipelineView::getDisableBtnHoveredPixmap(bool highlighted)
+{
+  if (m_DisableBtnHoveredPixmap.isNull())
+  {
+    m_DisableBtnHoveredPixmap = QPixmap(":/ban_hover.png");
+    m_DisableBtnHoveredHighlightedPixmap = m_DisableBtnHoveredPixmap;
+  }
+
+  QColor highlightedTextColor = palette().color(QPalette::HighlightedText);
+  if (m_DisableBtnHoveredColor != highlightedTextColor.darker(115))
+  {
+    m_DisableBtnHoveredColor = highlightedTextColor.darker(115);
+    m_DisableBtnHoveredHighlightedPixmap = setPixmapColor(m_DisableBtnHoveredHighlightedPixmap, m_DisableBtnHoveredColor);
+  }
+
+  if (highlighted)
+  {
+    return m_DisableBtnHoveredHighlightedPixmap;
+  }
+  else
+  {
+    return m_DisableBtnHoveredPixmap;
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QPixmap SVPipelineView::getHighDPIDisableBtnHoveredPixmap(bool highlighted)
+{
+  if (m_DisableBtnHoveredPixmap2x.isNull())
+  {
+    m_DisableBtnHoveredPixmap2x = QPixmap(":/ban_hover@2x.png");
+    m_DisableBtnHoveredHighlightedPixmap2x = m_DisableBtnHoveredPixmap2x;
+  }
+
+  QColor highlightedTextColor = palette().color(QPalette::HighlightedText);
+  if (m_DisableBtnHovered2xColor != highlightedTextColor.darker(115))
+  {
+    m_DisableBtnHovered2xColor = highlightedTextColor.darker(115);
+    m_DisableBtnHoveredHighlightedPixmap2x = setPixmapColor(m_DisableBtnHoveredHighlightedPixmap2x, m_DisableBtnHovered2xColor);
+  }
+
+  if (highlighted)
+  {
+    return m_DisableBtnHoveredHighlightedPixmap2x;
+  }
+  else
+  {
+    return m_DisableBtnHoveredPixmap2x;
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QPixmap SVPipelineView::getDeleteBtnPixmap(bool highlighted)
+{
+  if (m_DeleteBtnPixmap.isNull())
+  {
+    m_DeleteBtnPixmap = QPixmap(":/trash.png");
+    m_DeleteBtnHighlightedPixmap = m_DeleteBtnPixmap;
+  }
+
+  QColor highlightedTextColor = palette().color(QPalette::HighlightedText);
+  if (m_DeleteBtnColor != highlightedTextColor)
+  {
+    m_DeleteBtnColor = highlightedTextColor;
+    m_DeleteBtnHighlightedPixmap = setPixmapColor(m_DeleteBtnHighlightedPixmap, m_DeleteBtnColor);
+  }
+
+  if (highlighted)
+  {
+    return m_DeleteBtnHighlightedPixmap;
+  }
+  else
+  {
+    return m_DeleteBtnPixmap;
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QPixmap SVPipelineView::getHighDPIDeleteBtnPixmap(bool highlighted)
+{
+  if (m_DeleteBtnPixmap2x.isNull())
+  {
+    m_DeleteBtnPixmap2x = QPixmap(":/trash@2x.png");
+    m_DeleteBtnHighlightedPixmap2x = m_DeleteBtnPixmap2x;
+  }
+
+  QColor highlightedTextColor = palette().color(QPalette::HighlightedText);
+  if (m_DeleteBtn2xColor != highlightedTextColor)
+  {
+    m_DeleteBtn2xColor = highlightedTextColor;
+    m_DeleteBtnHighlightedPixmap2x = setPixmapColor(m_DeleteBtnHighlightedPixmap2x, m_DeleteBtn2xColor);
+  }
+
+  if (highlighted)
+  {
+    return m_DeleteBtnHighlightedPixmap2x;
+  }
+  else
+  {
+    return m_DeleteBtnPixmap2x;
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QPixmap SVPipelineView::getDeleteBtnHoveredPixmap(bool highlighted)
+{
+  if (m_DeleteBtnHoveredPixmap.isNull())
+  {
+    m_DeleteBtnHoveredPixmap = QPixmap(":/trash_hover.png");
+    m_DeleteBtnHoveredHighlightedPixmap = m_DeleteBtnHoveredPixmap;
+  }
+
+  QColor highlightedTextColor = palette().color(QPalette::HighlightedText);
+  if (m_DeleteBtnHoveredColor != highlightedTextColor.darker(115))
+  {
+    m_DeleteBtnHoveredColor = highlightedTextColor.darker(115);
+    m_DeleteBtnHoveredHighlightedPixmap = setPixmapColor(m_DeleteBtnHoveredHighlightedPixmap, m_DeleteBtnHoveredColor);
+  }
+
+  if (highlighted)
+  {
+    return m_DeleteBtnHoveredHighlightedPixmap;
+  }
+  else
+  {
+    return m_DeleteBtnHoveredPixmap;
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QPixmap SVPipelineView::getHighDPIDeleteBtnHoveredPixmap(bool highlighted)
+{
+  if (m_DeleteBtnHoveredPixmap2x.isNull())
+  {
+    m_DeleteBtnHoveredPixmap2x = QPixmap(":/trash_hover@2x.png");
+    m_DeleteBtnHoveredHighlightedPixmap2x = m_DeleteBtnHoveredPixmap2x;
+  }
+
+  QColor highlightedTextColor = palette().color(QPalette::HighlightedText);
+  if (m_DeleteBtnHovered2xColor != highlightedTextColor.darker(115))
+  {
+    m_DeleteBtnHovered2xColor = highlightedTextColor.darker(115);
+    m_DeleteBtnHoveredHighlightedPixmap2x = setPixmapColor(m_DeleteBtnHoveredHighlightedPixmap2x, m_DeleteBtnHovered2xColor);
+  }
+
+  if (highlighted)
+  {
+    return m_DeleteBtnHoveredHighlightedPixmap2x;
+  }
+  else
+  {
+    return m_DeleteBtnHoveredPixmap2x;
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QPixmap SVPipelineView::setPixmapColor(QPixmap pixmap, QColor pixmapColor)
+{
+  QImage image = pixmap.toImage();
+  for (int y = 0; y < image.height(); y++)
+  {
+    for (int x = 0; x < image.width(); x++)
+    {
+      QColor color = pixmapColor;
+
+      int alpha = image.pixelColor(x, y).alpha();
+
+      color.setAlpha(alpha);
+
+      image.setPixelColor(x, y, color);
+    }
+  }
+
+  return QPixmap::fromImage(image);
+}

@@ -61,34 +61,13 @@ PipelineItemDelegate::PipelineItemDelegate(SVPipelineView* view)
   : QStyledItemDelegate(nullptr)
   , m_View(view)
 {
-  createButtonPixmaps();
+
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 PipelineItemDelegate::~PipelineItemDelegate() = default;
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineItemDelegate::createButtonPixmaps()
-{
-  m_DisableBtnPixmap = QPixmap(":/ban.png");
-  m_DisableBtnPixmap2x = QPixmap(":/ban@2x.png");
-
-  m_DisableBtnActivatedPixmap  = QPixmap(":/ban_red.png");
-  m_DisableBtnActivatedPixmap2x = QPixmap(":/ban_red@2x.png");
-
-  m_DisableBtnHoveredPixmap = QPixmap(":/ban_hover.png");
-  m_DisableBtnHoveredPixmap2x = QPixmap(":/ban_hover@2x.png");
-
-  m_DeleteBtnPixmap = QPixmap(":/trash.png");
-  m_DeleteBtnPixmap2x = QPixmap(":/trash@2x.png");
-
-  m_DeleteBtnHoveredPixmap = QPixmap(":/trash_hover.png");
-  m_DeleteBtnHoveredPixmap2x = QPixmap(":/trash_hover@2x.png");
-}
 
 // -----------------------------------------------------------------------------
 //
@@ -301,18 +280,18 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
     QPixmap deleteBtnPixmap;
     if(deleteBtnRect.contains(mousePos))
     {
-      deleteBtnPixmap = m_DeleteBtnHoveredPixmap;
+      deleteBtnPixmap = m_View->getDeleteBtnHoveredPixmap(option.state & QStyle::State_Selected);
       if (painter->device()->devicePixelRatio() == 2)
       {
-        deleteBtnPixmap = m_DeleteBtnHoveredPixmap2x;
+        deleteBtnPixmap = m_View->getHighDPIDeleteBtnHoveredPixmap(option.state & QStyle::State_Selected);
       }
     }
     else
     {
-      deleteBtnPixmap = m_DeleteBtnPixmap;
+      deleteBtnPixmap = m_View->getDeleteBtnPixmap(option.state & QStyle::State_Selected);
       if (painter->device()->devicePixelRatio() == 2)
       {
-        deleteBtnPixmap = m_DeleteBtnPixmap2x;
+        deleteBtnPixmap = m_View->getHighDPIDeleteBtnPixmap(option.state & QStyle::State_Selected);
       }
     }
 
@@ -329,26 +308,26 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
     PipelineItem::WidgetState wState = static_cast<PipelineItem::WidgetState>(model->data(index, PipelineModel::WidgetStateRole).toInt());
     if (wState == PipelineItem::WidgetState::Disabled)
     {
-      disableBtnPixmap = m_DisableBtnActivatedPixmap;
+      disableBtnPixmap = m_View->getDisableBtnActivatedPixmap(option.state & QStyle::State_Selected);
       if (painter->device()->devicePixelRatio() == 2)
       {
-         disableBtnPixmap = m_DisableBtnActivatedPixmap2x;
+         disableBtnPixmap = m_View->getHighDPIDisableBtnActivatedPixmap(option.state & QStyle::State_Selected);
       }
     }
     else if(disableBtnRect.contains(mousePos))
     {
-      disableBtnPixmap = m_DisableBtnHoveredPixmap;
+      disableBtnPixmap = m_View->getDisableBtnHoveredPixmap(option.state & QStyle::State_Selected);
       if (painter->device()->devicePixelRatio() == 2)
       {
-         disableBtnPixmap = m_DisableBtnHoveredPixmap2x;
+         disableBtnPixmap = m_View->getHighDPIDisableBtnHoveredPixmap(option.state & QStyle::State_Selected);
       }
     }
     else
     {
-      disableBtnPixmap = m_DisableBtnPixmap;
+      disableBtnPixmap = m_View->getDisableBtnPixmap(option.state & QStyle::State_Selected);
       if (painter->device()->devicePixelRatio() == 2)
       {
-         disableBtnPixmap = m_DisableBtnPixmap2x;
+         disableBtnPixmap = m_View->getHighDPIDisableBtnPixmap(option.state & QStyle::State_Selected);
       }
     }
 
