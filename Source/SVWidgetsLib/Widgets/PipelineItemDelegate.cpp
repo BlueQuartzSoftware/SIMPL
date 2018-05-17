@@ -61,13 +61,34 @@ PipelineItemDelegate::PipelineItemDelegate(SVPipelineView* view)
   : QStyledItemDelegate(nullptr)
   , m_View(view)
 {
-
+  createButtonPixmaps();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 PipelineItemDelegate::~PipelineItemDelegate() = default;
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineItemDelegate::createButtonPixmaps()
+{
+  m_DisableBtnPixmap = QPixmap(":/ban.png");
+  m_DisableBtnPixmap2x = QPixmap(":/ban@2x.png");
+
+  m_DisableBtnActivatedPixmap  = QPixmap(":/ban_red.png");
+  m_DisableBtnActivatedPixmap2x = QPixmap(":/ban_red@2x.png");
+
+  m_DisableBtnHoveredPixmap = QPixmap(":/ban_hover.png");
+  m_DisableBtnHoveredPixmap2x = QPixmap(":/ban_hover@2x.png");
+
+  m_DeleteBtnPixmap = QPixmap(":/trash.png");
+  m_DeleteBtnPixmap2x = QPixmap(":/trash@2x.png");
+
+  m_DeleteBtnHoveredPixmap = QPixmap(":/trash_hover.png");
+  m_DeleteBtnHoveredPixmap2x = QPixmap(":/trash_hover@2x.png");
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -96,12 +117,13 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
   QColor labelColor;
   QColor indexBackgroundColor;
   QColor bgColor = grpColor;
+  QColor selectedBgColor = m_View->palette().color(QPalette::Highlight);
   QColor disabledBgColor = QColor(124, 124, 124);
 
   bool drawButtons = false;
   if(option.state & QStyle::State_Selected)
   {
-    bgColor = m_View->palette().color(QPalette::Highlight).lighter();
+    bgColor = selectedBgColor;
   }
 
   if((option.state & QStyle::State_MouseOver) && !(QApplication::mouseButtons() & Qt::LeftButton) )
@@ -172,9 +194,14 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
         indexBackgroundColor = QColor(179, 2, 5);
         break;
       case PipelineItem::ErrorState::Warning:
-        indexBackgroundColor = QColor(215, 197, 1);
+        indexBackgroundColor = QColor(232, 189, 0);
         break;
     }
+  }
+
+  if(option.state & QStyle::State_Selected)
+  {
+    labelColor = m_View->palette().color(QPalette::HighlightedText);
   }
 
   QColor indexFontColor(242, 242, 242);
@@ -242,6 +269,11 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
   QRect coloredRect(2 * textMargin + indexFontWidth + xOffset, rect.y() + yOffset, rect.width() - (2 * textMargin + indexFontWidth), indexRect.height()); // +4? without it it does not paint to the edge
   painter->fillRect(coloredRect, widgetBackgroundColor);
 
+  // Draw the border that separates the Index area and the Title area
+  painter->setPen(QPen(QBrush(QColor(Qt::black)), m_BorderSize));
+//  painter->setPen(QPen(QBrush(QColor(48, 48, 48)), m_BorderSize));
+  painter->drawLine(2 * textMargin + indexFontWidth + xOffset, rect.y() + yOffset + 1, 2 * textMargin + indexFontWidth + xOffset, rect.y() + yOffset + indexRect.height() - 0.5);
+
   // Draw the Index number
   painter->setPen(QPen(indexFontColor));
   QString number = getFilterIndexString(index); // format the index number with a leading zero
@@ -269,18 +301,18 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
     QPixmap deleteBtnPixmap;
     if(deleteBtnRect.contains(mousePos))
     {
-      deleteBtnPixmap = QPixmap(":/trash_hover.png");
+      deleteBtnPixmap = m_DeleteBtnHoveredPixmap;
       if (painter->device()->devicePixelRatio() == 2)
       {
-        deleteBtnPixmap = QPixmap(":/trash_hover@2x.png");
+        deleteBtnPixmap = m_DeleteBtnHoveredPixmap2x;
       }
     }
     else
     {
-      deleteBtnPixmap = QPixmap(":/trash.png");
+      deleteBtnPixmap = m_DeleteBtnPixmap;
       if (painter->device()->devicePixelRatio() == 2)
       {
-        deleteBtnPixmap = QPixmap(":/trash@2x.png");
+        deleteBtnPixmap = m_DeleteBtnPixmap2x;
       }
     }
 
@@ -297,26 +329,26 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
     PipelineItem::WidgetState wState = static_cast<PipelineItem::WidgetState>(model->data(index, PipelineModel::WidgetStateRole).toInt());
     if (wState == PipelineItem::WidgetState::Disabled)
     {
-      disableBtnPixmap = QPixmap(":/ban_red.png");
+      disableBtnPixmap = m_DisableBtnActivatedPixmap;
       if (painter->device()->devicePixelRatio() == 2)
       {
-         disableBtnPixmap = QPixmap(":/ban_red@2x.png");
+         disableBtnPixmap = m_DisableBtnActivatedPixmap2x;
       }
     }
     else if(disableBtnRect.contains(mousePos))
     {
-      disableBtnPixmap = QPixmap(":/ban_hover.png");
+      disableBtnPixmap = m_DisableBtnHoveredPixmap;
       if (painter->device()->devicePixelRatio() == 2)
       {
-         disableBtnPixmap = QPixmap(":/ban_hover@2x.png");
+         disableBtnPixmap = m_DisableBtnHoveredPixmap2x;
       }
     }
     else
     {
-      disableBtnPixmap = QPixmap(":/ban.png");
+      disableBtnPixmap = m_DisableBtnPixmap;
       if (painter->device()->devicePixelRatio() == 2)
       {
-         disableBtnPixmap = QPixmap(":/ban@2x.png");
+         disableBtnPixmap = m_DisableBtnPixmap2x;
       }
     }
 
@@ -375,6 +407,15 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
       painter->drawText(rect.x() + indexBoxWidth + textMargin + xOffset, rect.y() + fontMargin + fontHeight + yOffset, filter->getHumanLabel());
     }
   }
+
+  QPen pen(QBrush(QColor(Qt::black)), m_BorderSize);
+//  QPen pen(QBrush(QColor(48, 48, 48)), m_BorderSize);
+  painter->setPen(pen);
+
+  // Draw inside option.rect to avoid painting artifacts
+  qreal x = option.rect.x() + (m_BorderSize / 2);
+  qreal y = option.rect.y() + (m_BorderSize / 2);
+  painter->drawRoundedRect(QRectF(x + xOffset, y + yOffset, option.rect.width() - m_BorderSize, option.rect.height() - m_BorderSize), 1, 1);
 
   painter->restore();
 }

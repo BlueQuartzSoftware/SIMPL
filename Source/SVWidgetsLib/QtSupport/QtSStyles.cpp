@@ -404,7 +404,7 @@ QColor QtSStyles::ColorForFilterGroup(const QString &grpName)
 // -----------------------------------------------------------------------------
 QColor QtSStyles::GetFilterBackgroundColor()
 {
-  return QColor(158, 158, 158);
+  return QColor(198, 198, 198);
 }
 
 // -----------------------------------------------------------------------------
