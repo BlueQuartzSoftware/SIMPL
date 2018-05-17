@@ -105,7 +105,7 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
     bgColor = selectedBgColor;
   }
 
-  if((option.state & QStyle::State_MouseOver) && !(QApplication::mouseButtons() & Qt::LeftButton) )
+  if((option.state & QStyle::State_MouseOver))
   {
     if((option.state & QStyle::State_Selected) == false)
     {
