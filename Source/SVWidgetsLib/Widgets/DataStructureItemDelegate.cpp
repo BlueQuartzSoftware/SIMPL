@@ -319,9 +319,12 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
     int height = op.rect.height() - radius;
     QRect borderRect(xPos, yPos, width, height);
 
+    QColor penColor = QColor(0, 0, 0, 0);
     QColor bgColor = DataArrayPathSelectionWidget::GetActiveColor(path.getDataType());
     op.palette.setColor(QPalette::ColorRole::WindowText, QColor(255, 255, 255));
 
+
+    painter->setPen(penColor);
     painter->setBrush(bgColor);
     painter->drawRoundedRect(borderRect, rounded, rounded);
 
