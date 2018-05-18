@@ -137,6 +137,8 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
      */
     FilterPipeline::Pointer getFilterPipeline();
 
+    QString getPipelineName();
+
     /**
      * @brief writePipeline
      * @param outputPath
@@ -211,6 +213,8 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     QPixmap getHighDPIDeleteBtnHoveredPixmap(bool highlighted = false);
 
   public slots:
+    void setPipelineName(QString name);
+
     /**
      * @brief Adds a filter with the specified filterClassName to the current model
      * @param filterClassName
@@ -349,7 +353,7 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     void statusMessage(const QString& message);
     void stdOutMessage(const QString& message);
 
-    void pipelineOutput(DataContainerArray::Pointer dca);
+    void pipelineOutput(FilterPipeline::Pointer pipeline, DataContainerArray::Pointer dca);
 
   protected:
     void setupGui();
@@ -417,6 +421,7 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
 
   private:
     QThread*                                          m_WorkerThread = nullptr;
+    QString                                           m_PipelineName;
     FilterPipeline::Pointer                           m_PipelineInFlight;
     QVector<DataContainerArray::Pointer>              m_PreflightDataContainerArrays;
     QList<QObject*>                                   m_PipelineMessageObservers;

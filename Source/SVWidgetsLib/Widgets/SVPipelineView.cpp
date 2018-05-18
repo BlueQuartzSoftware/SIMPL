@@ -455,8 +455,6 @@ void SVPipelineView::executePipeline()
 
   // When the PipelineBuilder ends then tell the QThread to stop its event loop
   connect(m_PipelineInFlight.get(), SIGNAL(pipelineFinished()), m_WorkerThread, SLOT(quit()));
-  connect(m_PipelineInFlight.get(), SIGNAL(pipelineOutput(DataContainerArray::Pointer)), 
-    this, SIGNAL(pipelineOutput(DataContainerArray::Pointer)), Qt::QueuedConnection);
 
   // When the QThread finishes, tell this object that it has finished.
   connect(m_WorkerThread, SIGNAL(finished()), this, SLOT(finishPipeline()));
@@ -532,7 +530,7 @@ void SVPipelineView::finishPipeline()
     // Emit the pipeline output if there were no errors during execution
     if(m_PipelineInFlight->getErrorCondition() == 0)
     {
-      emit pipelineOutput(m_PipelineInFlight->getDataContainerArray());
+      emit pipelineOutput(m_PipelineInFlight, m_PipelineInFlight->getDataContainerArray());
     }
   }
   stdOutMessage("");
@@ -558,10 +556,27 @@ void SVPipelineView::finishPipeline()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QString SVPipelineView::getPipelineName()
+{
+  return m_PipelineName;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineView::setPipelineName(QString name)
+{
+  m_PipelineName = name;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 FilterPipeline::Pointer SVPipelineView::getFilterPipeline()
 {
   // Create a Pipeline Object and fill it with the filters from this View
   FilterPipeline::Pointer pipeline = FilterPipeline::New();
+  pipeline->setName(m_PipelineName);
 
   PipelineModel* model = getPipelineModel();
 
@@ -609,6 +624,9 @@ int SVPipelineView::writePipeline(const QString &outputPath)
       return -1;
     }
   }
+
+  // Set pipeline name based on the output path
+  setPipelineName(fi.fileName());
 
   // Create a Pipeline Object and fill it with the filters from this View
   FilterPipeline::Pointer pipeline = getFilterPipeline();
@@ -1554,6 +1572,8 @@ int SVPipelineView::openPipeline(const QString& filePath, int insertIndex)
 
   // Populate the pipeline view
   addFilters(filters, insertIndex);
+
+  setPipelineName(pipeline->getName());
 
   emit pipelineFilePathUpdated(filePath);
   emit pipelineChanged();
