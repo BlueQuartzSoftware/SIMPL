@@ -58,6 +58,8 @@ void PipelineListWidget::setupGui()
 {
   startPipelineBtn->setStyleSheet(getStartPipelineIdleStyle());
   startPipelineBtn->setDisabled(true);
+
+  connect(pipelineView, &SVPipelineView::pipelineOutput, this, &PipelineListWidget::pipelineOutput);
 }
 
 // -----------------------------------------------------------------------------

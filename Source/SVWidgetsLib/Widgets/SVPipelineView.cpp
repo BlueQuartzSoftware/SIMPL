@@ -455,6 +455,8 @@ void SVPipelineView::executePipeline()
 
   // When the PipelineBuilder ends then tell the QThread to stop its event loop
   connect(m_PipelineInFlight.get(), SIGNAL(pipelineFinished()), m_WorkerThread, SLOT(quit()));
+  connect(m_PipelineInFlight.get(), SIGNAL(pipelineOutput(DataContainerArray::Pointer)), 
+    this, SIGNAL(pipelineOutput(DataContainerArray::Pointer)), Qt::QueuedConnection);
 
   // When the QThread finishes, tell this object that it has finished.
   connect(m_WorkerThread, SIGNAL(finished()), this, SLOT(finishPipeline()));
@@ -514,6 +516,11 @@ void SVPipelineView::cancelPipeline()
 // -----------------------------------------------------------------------------
 void SVPipelineView::finishPipeline()
 {
+  if(nullptr == m_PipelineInFlight)
+  {
+    return;
+  }
+
   if(m_PipelineInFlight->getCancel() == true)
   {
     stdOutMessage("<b>*************** PIPELINE CANCELED ***************</b>");
@@ -521,6 +528,12 @@ void SVPipelineView::finishPipeline()
   else
   {
     stdOutMessage("<b>*************** PIPELINE FINISHED ***************</b>");
+
+    // Emit the pipeline output if there were no errors during execution
+    if(m_PipelineInFlight->getErrorCondition() == 0)
+    {
+      emit pipelineOutput(m_PipelineInFlight->getDataContainerArray());
+    }
   }
   stdOutMessage("");
 

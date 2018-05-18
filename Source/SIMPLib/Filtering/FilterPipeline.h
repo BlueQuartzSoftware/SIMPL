@@ -225,6 +225,12 @@ signals:
   */
   void pipelineNameChanged(QString oldName, QString newName);
 
+  /**
+   * @brief Provides the DataContainerArray from an executed pipeline.
+   * @param dca
+   */
+  void pipelineOutput(DataContainerArray::Pointer dca);
+
 private:
   bool m_Cancel;
   FilterContainerType m_Pipeline;

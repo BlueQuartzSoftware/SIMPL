@@ -349,6 +349,8 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     void statusMessage(const QString& message);
     void stdOutMessage(const QString& message);
 
+    void pipelineOutput(DataContainerArray::Pointer dca);
+
   protected:
     void setupGui();
 

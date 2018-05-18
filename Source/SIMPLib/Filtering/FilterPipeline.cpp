@@ -51,7 +51,7 @@ FilterPipeline::FilterPipeline()
 , m_ErrorCondition(0)
 , m_Cancel(false)
 , m_PipelineName("")
-, m_Dca(nullptr)
+, m_Dca(DataContainerArray::New())
 {
 }
 
@@ -308,6 +308,7 @@ DataContainerArray::Pointer FilterPipeline::run()
 {
   m_Dca = execute();
 
+  emit pipelineOutput(m_Dca);
   emit pipelineFinished();
 
   return m_Dca;
@@ -655,6 +656,9 @@ DataContainerArray::Pointer FilterPipeline::execute()
     // Emit that the filter is completed for those objects that care, even the disabled ones.
     emit filt->filterCompleted(filt.get());
   }
+
+  // Emit the DataContainerArray only if no errors have occured
+  emit pipelineOutput(m_Dca);
 
   emit pipelineFinished();
 
