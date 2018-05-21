@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "SVPipelineView.h"
 
@@ -42,11 +42,11 @@
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QMimeData>
-#include <QtCore/QTemporaryFile>
-#include <QtCore/QUrl>
 #include <QtCore/QSharedPointer>
-#include <QtCore/QThread>
 #include <QtCore/QSignalMapper>
+#include <QtCore/QTemporaryFile>
+#include <QtCore/QThread>
+#include <QtCore/QUrl>
 
 #include <QtGui/QClipboard>
 #include <QtGui/QDrag>
@@ -59,16 +59,16 @@
 
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QProgressDialog>
 #include <QtWidgets/QScrollArea>
 #include <QtWidgets/QScrollBar>
 #include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QMenu>
 
+#include "SIMPLib/Common/DocRequestManager.h"
 #include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Common/DocRequestManager.h"
 #include "SIMPLib/CoreFilters/Breakpoint.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
@@ -78,22 +78,22 @@
 
 #include "SVWidgetsLib/QtSupport/QtSDroppableScrollArea.h"
 
-#include "SVWidgetsLib/Animations/PipelineItemSlideAnimation.h"
 #include "SVWidgetsLib/Animations/PipelineItemHeightAnimation.h"
+#include "SVWidgetsLib/Animations/PipelineItemSlideAnimation.h"
 #include "SVWidgetsLib/Core/FilterWidgetManager.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
+#include "SVWidgetsLib/QtSupport/QtSRecentFileList.h"
+#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/DataStructureWidget.h"
 #include "SVWidgetsLib/Widgets/FilterInputWidget.h"
-#include "SVWidgetsLib/Widgets/PipelineModel.h"
-#include "SVWidgetsLib/Widgets/PipelineItemDelegate.h"
 #include "SVWidgetsLib/Widgets/PipelineFilterMimeData.h"
+#include "SVWidgetsLib/Widgets/PipelineItemDelegate.h"
+#include "SVWidgetsLib/Widgets/PipelineModel.h"
+#include "SVWidgetsLib/Widgets/ProgressDialog.h"
 #include "SVWidgetsLib/Widgets/util/AddFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/MoveFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/RemoveFilterCommand.h"
-#include "SVWidgetsLib/Widgets/DataStructureWidget.h"
-#include "SVWidgetsLib/Widgets/ProgressDialog.h"
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
-#include "SVWidgetsLib/QtSupport/QtSRecentFileList.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -192,13 +192,13 @@ void SVPipelineView::addPipelineMessageObserver(QObject* pipelineMessageObserver
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::addFilterFromClassName(const QString &filterClassName, int insertIndex, bool useAnimationOnFirstRun)
+void SVPipelineView::addFilterFromClassName(const QString& filterClassName, int insertIndex, bool useAnimationOnFirstRun)
 {
   FilterManager* fm = FilterManager::Instance();
-  if (fm != nullptr)
+  if(fm != nullptr)
   {
     IFilterFactory::Pointer factory = fm->getFactoryFromClassName(filterClassName);
-    if (factory.get() != nullptr)
+    if(factory.get() != nullptr)
     {
       AbstractFilter::Pointer filter = factory->create();
       addFilter(filter, insertIndex, useAnimationOnFirstRun);
@@ -250,7 +250,12 @@ void SVPipelineView::listenFilterInProgress(AbstractFilter* filter)
   PipelineModel* model = getPipelineModel();
   QModelIndex index = model->indexOfFilter(filter);
 
-  model->setData(index, static_cast<int>(PipelineItem::WidgetState::Executing), PipelineModel::WidgetStateRole);
+  // Do not set state to Executing if the filter is disabled
+  PipelineItem::WidgetState wState = static_cast<PipelineItem::WidgetState>(model->data(index, PipelineModel::WidgetStateRole).toInt());
+  if(wState != PipelineItem::WidgetState::Disabled)
+  {
+    model->setData(index, static_cast<int>(PipelineItem::WidgetState::Executing), PipelineModel::WidgetStateRole);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -261,7 +266,12 @@ void SVPipelineView::listenFilterCompleted(AbstractFilter* filter)
   PipelineModel* model = getPipelineModel();
   QModelIndex index = model->indexOfFilter(filter);
 
-  model->setData(index, static_cast<int>(PipelineItem::WidgetState::Completed), PipelineModel::WidgetStateRole);
+  // Do not set state to Completed if the filter is disabled
+  PipelineItem::WidgetState wState = static_cast<PipelineItem::WidgetState>(model->data(index, PipelineModel::WidgetStateRole).toInt());
+  if(wState != PipelineItem::WidgetState::Disabled)
+  {
+    model->setData(index, static_cast<int>(PipelineItem::WidgetState::Completed), PipelineModel::WidgetStateRole);
+  }
   if(filter->getWarningCondition() < 0)
   {
     model->setData(index, static_cast<int>(PipelineItem::ErrorState::Warning), PipelineModel::ErrorStateRole);
@@ -303,7 +313,7 @@ void SVPipelineView::pasteFilters(int insertIndex, bool useAnimationOnFirstRun)
   FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
 
   std::vector<AbstractFilter::Pointer> filters;
-  for (int i = 0; i < container.size(); i++)
+  for(int i = 0; i < container.size(); i++)
   {
     filters.push_back(container[i]);
   }
@@ -347,13 +357,13 @@ void SVPipelineView::preflightPipeline()
     }
   }
 
-//  QSharedPointer<ProgressDialog> progressDialog(new ProgressDialog());
-//  progressDialog->setWindowTitle("Pipeline Preflighting");
-//  QString msg = QString("Please wait for %1 filters to preflight...").arg(pipeline->getFilterContainer().count());
-//  progressDialog->setLabelText(msg);
-//  progressDialog->show();
-//  progressDialog->raise();
-//  progressDialog->activateWindow();
+  //  QSharedPointer<ProgressDialog> progressDialog(new ProgressDialog());
+  //  progressDialog->setWindowTitle("Pipeline Preflighting");
+  //  QString msg = QString("Please wait for %1 filters to preflight...").arg(pipeline->getFilterContainer().count());
+  //  progressDialog->setLabelText(msg);
+  //  progressDialog->show();
+  //  progressDialog->raise();
+  //  progressDialog->activateWindow();
 
   // Preflight the pipeline
   int err = pipeline->preflightPipeline();
@@ -406,7 +416,7 @@ void SVPipelineView::executePipeline()
   emit clearIssuesTriggered();
 
   // Create a FilterPipeline Object
-//  m_PipelineInFlight = getCopyOfFilterPipeline();
+  //  m_PipelineInFlight = getCopyOfFilterPipeline();
   m_PipelineInFlight = getFilterPipeline();
 
   emit stdOutMessage("<b>Preflight Pipeline.....</b>");
@@ -433,11 +443,11 @@ void SVPipelineView::executePipeline()
 
   toReadyState();
 
-//  // Block FilterListToolboxWidget signals, so that we can't add filters to the view while running the pipeline
-//  getFilterListToolboxWidget()->blockSignals(true);
+  //  // Block FilterListToolboxWidget signals, so that we can't add filters to the view while running the pipeline
+  //  getFilterListToolboxWidget()->blockSignals(true);
 
-//  // Block FilterLibraryToolboxWidget signals, so that we can't add filters to the view while running the pipeline
-//  getFilterLibraryToolboxWidget()->blockSignals(true);
+  //  // Block FilterLibraryToolboxWidget signals, so that we can't add filters to the view while running the pipeline
+  //  getFilterLibraryToolboxWidget()->blockSignals(true);
 
   // Move the FilterPipeline object into the thread that we just created.
   m_PipelineInFlight->moveToThread(m_WorkerThread);
@@ -554,7 +564,7 @@ FilterPipeline::Pointer SVPipelineView::getFilterPipeline()
 
   qint32 count = model->rowCount();
   for(qint32 i = 0; i < count; ++i)
-  {    
+  {
     QModelIndex childIndex = model->index(i, PipelineItem::Contents);
 
     PipelineItem::WidgetState wState = static_cast<PipelineItem::WidgetState>(model->data(childIndex, PipelineModel::WidgetStateRole).toInt());
@@ -571,7 +581,7 @@ FilterPipeline::Pointer SVPipelineView::getFilterPipeline()
       pipeline->pushBack(filter);
     }
   }
-  for (int i = 0; i < m_PipelineMessageObservers.size(); i++)
+  for(int i = 0; i < m_PipelineMessageObservers.size(); i++)
   {
     pipeline->addMessageReceiver(m_PipelineMessageObservers[i]);
   }
@@ -581,7 +591,7 @@ FilterPipeline::Pointer SVPipelineView::getFilterPipeline()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int SVPipelineView::writePipeline(const QString &outputPath)
+int SVPipelineView::writePipeline(const QString& outputPath)
 {
   QFileInfo fi(outputPath);
   QString ext = fi.completeSuffix();
@@ -604,7 +614,7 @@ int SVPipelineView::writePipeline(const QString &outputPath)
   if(ext == "dream3d")
   {
     QList<IObserver*> observers;
-    for (int i = 0; i < m_PipelineMessageObservers.size(); i++)
+    for(int i = 0; i < m_PipelineMessageObservers.size(); i++)
     {
       observers.push_back(reinterpret_cast<IObserver*>(m_PipelineMessageObservers[i]));
     }
@@ -615,7 +625,7 @@ int SVPipelineView::writePipeline(const QString &outputPath)
   else if(ext == "json")
   {
     QList<IObserver*> observers;
-    for (int i = 0; i < m_PipelineMessageObservers.size(); i++)
+    for(int i = 0; i < m_PipelineMessageObservers.size(); i++)
     {
       observers.push_back(reinterpret_cast<IObserver*>(m_PipelineMessageObservers[i]));
     }
@@ -724,7 +734,7 @@ std::vector<AbstractFilter::Pointer> SVPipelineView::getSelectedFilters()
 //
 // -----------------------------------------------------------------------------
 void SVPipelineView::listenPasteTriggered()
-{  
+{
   pasteFilters();
 }
 
@@ -744,7 +754,7 @@ void SVPipelineView::listenDeleteKeyTriggered()
   PipelineModel* model = getPipelineModel();
 
   std::vector<AbstractFilter::Pointer> filters;
-  for (int i = 0; i < selectedIndexes.size(); i++)
+  for(int i = 0; i < selectedIndexes.size(); i++)
   {
     AbstractFilter::Pointer filter = model->filter(selectedIndexes[i]);
     filters.push_back(filter);
@@ -757,7 +767,7 @@ void SVPipelineView::listenDeleteKeyTriggered()
 //
 // -----------------------------------------------------------------------------
 void SVPipelineView::listenClearPipelineTriggered()
-{  
+{
   clearPipeline();
 }
 
@@ -768,7 +778,7 @@ int SVPipelineView::filterCount()
 {
   PipelineModel* model = getPipelineModel();
   int count = model->rowCount();
-  if (m_DropIndicatorIndex.isValid())
+  if(m_DropIndicatorIndex.isValid())
   {
     count--;
   }
@@ -784,7 +794,7 @@ void SVPipelineView::clearPipeline()
   PipelineModel* model = getPipelineModel();
 
   std::vector<AbstractFilter::Pointer> filters;
-  for (int i = 0; i < model->rowCount(); i++)
+  for(int i = 0; i < model->rowCount(); i++)
   {
     QModelIndex filterIndex = model->index(i, PipelineItem::Contents);
     filters.push_back(model->filter(filterIndex));
@@ -801,13 +811,13 @@ void SVPipelineView::clearPipeline()
 // -----------------------------------------------------------------------------
 QPixmap SVPipelineView::getDraggingPixmap(QModelIndexList indexes)
 {
-  if (indexes.size() <= 0)
+  if(indexes.size() <= 0)
   {
     return QPixmap();
   }
 
   PipelineItemDelegate* delegate = dynamic_cast<PipelineItemDelegate*>(itemDelegate());
-  if (delegate == nullptr)
+  if(delegate == nullptr)
   {
     return QPixmap();
   }
@@ -824,7 +834,7 @@ QPixmap SVPipelineView::getDraggingPixmap(QModelIndexList indexes)
   p.begin(&dragPixmap);
   p.setOpacity(0.70);
   int offset = 0;
-  for (int i = 0; i < indexes.size(); i++)
+  for(int i = 0; i < indexes.size(); i++)
   {
     QPixmap currentPixmap = delegate->createPixmap(indexes[i]);
     p.drawPixmap(0, offset, currentPixmap);
@@ -856,7 +866,7 @@ void SVPipelineView::mouseMoveEvent(QMouseEvent* event)
 void SVPipelineView::beginDrag(QMouseEvent* event)
 {
   QModelIndexList selectedIndexes = selectionModel()->selectedRows();
-  if (selectedIndexes.size() <= 0)
+  if(selectedIndexes.size() <= 0)
   {
     return;
   }
@@ -869,7 +879,7 @@ void SVPipelineView::beginDrag(QMouseEvent* event)
   std::vector<AbstractFilter::Pointer> filters;
   PipelineModel* model = getPipelineModel();
 
-  for (int i = 0; i < selectedIndexes.size(); i++)
+  for(int i = 0; i < selectedIndexes.size(); i++)
   {
     QModelIndex selectedIndex = selectedIndexes[i];
 
@@ -891,7 +901,7 @@ void SVPipelineView::beginDrag(QMouseEvent* event)
 
   QRect firstSelectionRect = visualRect(selectedIndexes[0]);
 
-  if (modifiers.testFlag(Qt::AltModifier) == false)
+  if(modifiers.testFlag(Qt::AltModifier) == false)
   {
     m_MoveCommand = new QUndoCommand();
 
@@ -901,7 +911,7 @@ void SVPipelineView::beginDrag(QMouseEvent* event)
     int dropIndicatorRow = currentIndex().row();
 
     QString dropIndicatorText;
-    if (selectedIndexes.size() == 1)
+    if(selectedIndexes.size() == 1)
     {
       AbstractFilter::Pointer filter = model->filter(selectedIndexes[0]);
       dropIndicatorText = filter->getHumanLabel();
@@ -922,7 +932,7 @@ void SVPipelineView::beginDrag(QMouseEvent* event)
   QPoint dragPos(event->pos().x() - firstSelectionRect.x(), event->pos().y() - firstSelectionRect.y());
   drag->setHotSpot(dragPos);
 
-  if (modifiers.testFlag(Qt::AltModifier))
+  if(modifiers.testFlag(Qt::AltModifier))
   {
     drag->exec(Qt::CopyAction);
   }
@@ -942,11 +952,11 @@ void SVPipelineView::dragMoveEvent(QDragMoveEvent* event)
   QString dropIndicatorText;
   const QMimeData* mimedata = event->mimeData();
   const PipelineFilterMimeData* filterData = dynamic_cast<const PipelineFilterMimeData*>(mimedata);
-  if (filterData != nullptr)
+  if(filterData != nullptr)
   {
     // This drag has filter data, so set the appropriate drop indicator text
     std::vector<PipelineFilterMimeData::FilterDragMetadata> dragData = filterData->getFilterDragData();
-    if (dragData.size() == 1)
+    if(dragData.size() == 1)
     {
       AbstractFilter::Pointer filter = dragData[0].first;
       dropIndicatorText = filter->getHumanLabel();
@@ -966,7 +976,7 @@ void SVPipelineView::dragMoveEvent(QDragMoveEvent* event)
     QFileInfo fi(filePath);
     dropIndicatorText = QObject::tr("Place '%1' Here").arg(fi.baseName());
   }
-  else if (mimedata->hasFormat(SIMPLView::DragAndDrop::BookmarkItem))
+  else if(mimedata->hasFormat(SIMPLView::DragAndDrop::BookmarkItem))
   {
     // This drag has Bookmark data, so set the appropriate drop indicator text
     QByteArray jsonArray = mimedata->data(SIMPLView::DragAndDrop::BookmarkItem);
@@ -983,7 +993,7 @@ void SVPipelineView::dragMoveEvent(QDragMoveEvent* event)
     QString filePath = iter.value().toString();
 
     QFileInfo fi(filePath);
-    if (fi.isDir() == true)
+    if(fi.isDir() == true)
     {
       event->ignore();
       return;
@@ -991,7 +1001,7 @@ void SVPipelineView::dragMoveEvent(QDragMoveEvent* event)
 
     dropIndicatorText = QObject::tr("Place '%1' Here").arg(fi.baseName());
   }
-  else if (mimedata->hasFormat(SIMPLView::DragAndDrop::FilterListItem))
+  else if(mimedata->hasFormat(SIMPLView::DragAndDrop::FilterListItem))
   {
     // This drag has Filter List data, so set the appropriate drop indicator text
     QByteArray jsonArray = mimedata->data(SIMPLView::DragAndDrop::FilterListItem);
@@ -1035,10 +1045,10 @@ void SVPipelineView::dragMoveEvent(QDragMoveEvent* event)
 
   PipelineItem::ItemType itemType = static_cast<PipelineItem::ItemType>(model->data(index, PipelineModel::ItemTypeRole).toInt());
 
-  if (index.isValid() == false)
+  if(index.isValid() == false)
   {
     int dropIndicatorRow;
-    if (mousePos.y() > lastIndexRect.y())
+    if(mousePos.y() > lastIndexRect.y())
     {
       // The drag is occurring in an empty space at the end of the view
       dropIndicatorRow = filterCount();
@@ -1049,23 +1059,23 @@ void SVPipelineView::dragMoveEvent(QDragMoveEvent* event)
       dropIndicatorRow = findPreviousRow(mousePos);
     }
 
-    if (m_DropIndicatorIndex.isValid() && dropIndicatorRow != m_DropIndicatorIndex.row())
+    if(m_DropIndicatorIndex.isValid() && dropIndicatorRow != m_DropIndicatorIndex.row())
     {
       removeDropIndicator();
       addDropIndicator(dropIndicatorText, dropIndicatorRow);
     }
-    else if (m_DropIndicatorIndex.isValid() == false)
+    else if(m_DropIndicatorIndex.isValid() == false)
     {
       addDropIndicator(dropIndicatorText, dropIndicatorRow);
     }
   }
-  else if (itemType == PipelineItem::ItemType::Filter)
+  else if(itemType == PipelineItem::ItemType::Filter)
   {
     // The drag is occurring on top of a filter item
     QRect indexRect = visualRect(index);
 
     int dropIndicatorRow;
-    if (mousePos.y() <= indexRect.y() + itemHeight / 2)
+    if(mousePos.y() <= indexRect.y() + itemHeight / 2)
     {
       // The drag is in the upper half of the item
       dropIndicatorRow = index.row();
@@ -1104,15 +1114,15 @@ void SVPipelineView::dragLeaveEvent(QDragLeaveEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int SVPipelineView::findNextRow(const QPoint &pos)
+int SVPipelineView::findNextRow(const QPoint& pos)
 {
-  if (filterCount() == 0)
+  if(filterCount() == 0)
   {
     return 0;
   }
 
   int stepHeight = sizeHintForRow(0);
-  if (spacing() < stepHeight)
+  if(spacing() < stepHeight)
   {
     stepHeight = spacing();
   }
@@ -1126,7 +1136,7 @@ int SVPipelineView::findNextRow(const QPoint &pos)
 
   QModelIndex index = indexAt(currentPos);
   int nextRow;
-  if (index.isValid())
+  if(index.isValid())
   {
     nextRow = index.row();
   }
@@ -1141,15 +1151,15 @@ int SVPipelineView::findNextRow(const QPoint &pos)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int SVPipelineView::findPreviousRow(const QPoint &pos)
+int SVPipelineView::findPreviousRow(const QPoint& pos)
 {
-  if (filterCount() == 0)
+  if(filterCount() == 0)
   {
     return 0;
   }
 
   int stepHeight = sizeHintForRow(0);
-  if (spacing() < stepHeight)
+  if(spacing() < stepHeight)
   {
     stepHeight = spacing();
   }
@@ -1162,7 +1172,7 @@ int SVPipelineView::findPreviousRow(const QPoint &pos)
   }
 
   QModelIndex index = indexAt(currentPos);
-  if (index.isValid())
+  if(index.isValid())
   {
     return index.row();
   }
@@ -1175,7 +1185,7 @@ int SVPipelineView::findPreviousRow(const QPoint &pos)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::addDropIndicator(const QString &text, int insertIndex)
+void SVPipelineView::addDropIndicator(const QString& text, int insertIndex)
 {
   PipelineModel* model = getPipelineModel();
 
@@ -1187,13 +1197,13 @@ void SVPipelineView::addDropIndicator(const QString &text, int insertIndex)
   QRect rect = visualRect(dropIndicatorIndex);
   model->setData(dropIndicatorIndex, rect.height(), PipelineModel::Roles::HeightRole);
 
-//  PipelineItemHeightAnimation* heightAnimation = new PipelineItemHeightAnimation(model, QPersistentModelIndex(dropIndicatorIndex), PipelineItemHeightAnimation::AnimationDirection::Open);
+  //  PipelineItemHeightAnimation* heightAnimation = new PipelineItemHeightAnimation(model, QPersistentModelIndex(dropIndicatorIndex), PipelineItemHeightAnimation::AnimationDirection::Open);
 
-//  QObject::connect(heightAnimation, &PipelineItemHeightAnimation::finished, [=]{
-//    model->setData(dropIndicatorIndex, rect.height(), PipelineModel::Roles::HeightRole);
-//  });
+  //  QObject::connect(heightAnimation, &PipelineItemHeightAnimation::finished, [=]{
+  //    model->setData(dropIndicatorIndex, rect.height(), PipelineModel::Roles::HeightRole);
+  //  });
 
-//  heightAnimation->start(QAbstractAnimation::DeleteWhenStopped);
+  //  heightAnimation->start(QAbstractAnimation::DeleteWhenStopped);
 
   m_DropIndicatorIndex = dropIndicatorIndex;
 }
@@ -1203,7 +1213,7 @@ void SVPipelineView::addDropIndicator(const QString &text, int insertIndex)
 // -----------------------------------------------------------------------------
 void SVPipelineView::removeDropIndicator()
 {
-  if (m_DropIndicatorIndex.isValid())
+  if(m_DropIndicatorIndex.isValid())
   {
     PipelineModel* model = getPipelineModel();
     model->removeRow(m_DropIndicatorIndex.row());
@@ -1222,20 +1232,20 @@ void SVPipelineView::dropEvent(QDropEvent* event)
 
   const QMimeData* mimedata = event->mimeData();
   const PipelineFilterMimeData* filterData = dynamic_cast<const PipelineFilterMimeData*>(mimedata);
-  if (filterData != nullptr)
+  if(filterData != nullptr)
   {
     // This is filter data from an SVPipelineView instance
     std::vector<PipelineFilterMimeData::FilterDragMetadata> dragData = filterData->getFilterDragData();
 
     std::vector<AbstractFilter::Pointer> filters;
-    for (size_t i = 0; i < dragData.size(); i++)
+    for(size_t i = 0; i < dragData.size(); i++)
     {
       filters.push_back(dragData[i].first);
     }
 
     Qt::KeyboardModifiers modifiers = QApplication::queryKeyboardModifiers();
-    if (event->source() == this && modifiers.testFlag(Qt::AltModifier) == false)
-    { 
+    if(event->source() == this && modifiers.testFlag(Qt::AltModifier) == false)
+    {
       // This is an internal move, so we need to create an Add command and add it as a child to the overall move command.
       AddFilterCommand* cmd = new AddFilterCommand(filters, this, dropRow, "Move", true, m_MoveCommand);
 
@@ -1273,7 +1283,7 @@ void SVPipelineView::dropEvent(QDropEvent* event)
 
     int err = openPipeline(filePath, dropRow);
 
-    if (err >= 0)
+    if(err >= 0)
     {
       event->accept();
     }
@@ -1282,7 +1292,7 @@ void SVPipelineView::dropEvent(QDropEvent* event)
       event->ignore();
     }
   }
-  else if (mimedata->hasFormat(SIMPLView::DragAndDrop::BookmarkItem))
+  else if(mimedata->hasFormat(SIMPLView::DragAndDrop::BookmarkItem))
   {
     QByteArray jsonArray = mimedata->data(SIMPLView::DragAndDrop::BookmarkItem);
     QJsonDocument doc = QJsonDocument::fromJson(jsonArray);
@@ -1299,7 +1309,7 @@ void SVPipelineView::dropEvent(QDropEvent* event)
 
     int err = openPipeline(filePath, dropRow);
 
-    if (err >= 0)
+    if(err >= 0)
     {
       event->accept();
     }
@@ -1308,7 +1318,7 @@ void SVPipelineView::dropEvent(QDropEvent* event)
       event->ignore();
     }
   }
-  else if (mimedata->hasFormat(SIMPLView::DragAndDrop::FilterListItem))
+  else if(mimedata->hasFormat(SIMPLView::DragAndDrop::FilterListItem))
   {
     QByteArray jsonArray = mimedata->data(SIMPLView::DragAndDrop::FilterListItem);
     QJsonDocument doc = QJsonDocument::fromJson(jsonArray);
@@ -1369,7 +1379,7 @@ void SVPipelineView::setFiltersEnabled(QModelIndexList indexes, bool enabled)
   {
     QModelIndex index = indexes[i];
     AbstractFilter::Pointer filter = model->filter(index);
-    if (enabled == true)
+    if(enabled == true)
     {
       filter->setEnabled(true);
       model->setData(index, static_cast<int>(PipelineItem::WidgetState::Ready), PipelineModel::WidgetStateRole);
@@ -1425,7 +1435,13 @@ void SVPipelineView::toReadyState()
   for(int i = 0; i < model->rowCount(); i++)
   {
     QModelIndex index = model->index(i, PipelineItem::Contents);
-    model->setData(index, static_cast<int>(PipelineItem::WidgetState::Ready), PipelineModel::WidgetStateRole);
+    
+    // Do not set state to Completed if the filter is disabled
+    PipelineItem::WidgetState wState = static_cast<PipelineItem::WidgetState>(model->data(index, PipelineModel::WidgetStateRole).toInt());
+    if(wState != PipelineItem::WidgetState::Disabled)
+    {
+      model->setData(index, static_cast<int>(PipelineItem::WidgetState::Ready), PipelineModel::WidgetStateRole);
+    }
   }
 }
 
@@ -1470,9 +1486,14 @@ void SVPipelineView::toStoppedState()
     AbstractFilter::Pointer filter = model->filter(index);
     inputWidget->toIdleState();
 
-    if (filter->getEnabled() == true)
+    if(filter->getEnabled() == true)
     {
-      model->setData(index, static_cast<int>(PipelineItem::WidgetState::Ready), PipelineModel::WidgetStateRole);
+      // Do not set state to Completed if the filter is disabled
+      PipelineItem::WidgetState wState = static_cast<PipelineItem::WidgetState>(model->data(index, PipelineModel::WidgetStateRole).toInt());
+      if(wState != PipelineItem::WidgetState::Disabled)
+      {
+        model->setData(index, static_cast<int>(PipelineItem::WidgetState::Ready), PipelineModel::WidgetStateRole);
+      }
     }
   }
 
@@ -1534,7 +1555,7 @@ int SVPipelineView::openPipeline(const QString& filePath, int insertIndex)
 
   QList<AbstractFilter::Pointer> pipelineFilters = pipeline->getFilterContainer();
   std::vector<AbstractFilter::Pointer> filters;
-  for (int i = 0; i < pipelineFilters.size(); i++)
+  for(int i = 0; i < pipelineFilters.size(); i++)
   {
     filters.push_back(pipelineFilters[i]);
   }
@@ -1583,8 +1604,8 @@ void SVPipelineView::mousePressEvent(QMouseEvent* event)
   if(event->button() == Qt::LeftButton)
   {
     m_DragStartPosition = event->pos();
-    
-    if (indexAt(event->pos()).isValid() == false)
+
+    if(indexAt(event->pos()).isValid() == false)
     {
       clearSelection();
 
@@ -1611,7 +1632,7 @@ void SVPipelineView::requestContextMenu(const QPoint& pos)
   {
     mapped = viewport()->mapToGlobal(pos);
   }
-  else if (itemType == PipelineItem::ItemType::Pipeline)
+  else if(itemType == PipelineItem::ItemType::Pipeline)
   {
     mapped = viewport()->mapToGlobal(pos);
   }
@@ -1624,7 +1645,7 @@ void SVPipelineView::requestContextMenu(const QPoint& pos)
   {
     requestFilterItemContextMenu(mapped, index);
   }
-  else if (itemType == PipelineItem::ItemType::Pipeline)
+  else if(itemType == PipelineItem::ItemType::Pipeline)
   {
     requestPipelineItemContextMenu(mapped);
   }
@@ -1637,7 +1658,7 @@ void SVPipelineView::requestContextMenu(const QPoint& pos)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::requestFilterItemContextMenu(const QPoint &pos, const QModelIndex &index)
+void SVPipelineView::requestFilterItemContextMenu(const QPoint& pos, const QModelIndex& index)
 {
   PipelineModel* model = getPipelineModel();
   QModelIndexList selectedIndexes = selectionModel()->selectedRows();
@@ -1652,13 +1673,9 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint &pos, const QMode
   QAction* actionPasteAbove = new QAction("Paste Above", this);
   QAction* actionPasteBelow = new QAction("Paste Below", this);
 
-  connect(actionPasteAbove, &QAction::triggered, this, [=] {
-    pasteFilters(index.row());
-  });
+  connect(actionPasteAbove, &QAction::triggered, this, [=] { pasteFilters(index.row()); });
 
-  connect(actionPasteBelow, &QAction::triggered, this, [=] {
-    pasteFilters(index.row() + 1);
-  });
+  connect(actionPasteBelow, &QAction::triggered, this, [=] { pasteFilters(index.row() + 1); });
 
   menu.addAction(actionPasteAbove);
   menu.addAction(actionPasteBelow);
@@ -1670,7 +1687,7 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint &pos, const QMode
   for(int i = 0; i < count && widgetEnabled; i++)
   {
     AbstractFilter::Pointer filter = model->filter(selectedIndexes[i]);
-    if (filter != nullptr)
+    if(filter != nullptr)
     {
       widgetEnabled = filter->getEnabled();
     }
@@ -1683,7 +1700,7 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint &pos, const QMode
     toggledIndices.push_back(index);
 
     AbstractFilter::Pointer filter = model->filter(index);
-    if (filter != nullptr)
+    if(filter != nullptr)
     {
       widgetEnabled = filter->getEnabled();
     }
@@ -1709,7 +1726,7 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint &pos, const QMode
   shortcutList.push_back(QKeySequence(Qt::Key_Backspace));
   shortcutList.push_back(QKeySequence(Qt::Key_Delete));
 
-  if (selectedIndexes.contains(index) == false || selectedIndexes.size() == 1)
+  if(selectedIndexes.contains(index) == false || selectedIndexes.size() == 1)
   {
     removeAction = new QAction("Delete Filter", &menu);
     connect(removeAction, &QAction::triggered, [=] {
@@ -1738,7 +1755,7 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint &pos, const QMode
     });
   }
   removeAction->setShortcuts(shortcutList);
-  if (getPipelineIsRunning() == true)
+  if(getPipelineIsRunning() == true)
   {
     removeAction->setDisabled(true);
   }
@@ -1754,7 +1771,7 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint &pos, const QMode
   QAction* actionLaunchHelp = new QAction("Filter Help", this);
   connect(actionLaunchHelp, &QAction::triggered, [=] {
     AbstractFilter::Pointer filter = model->filter(index);
-    if (filter != nullptr)
+    if(filter != nullptr)
     {
       // Launch the help for this filter
       QString className = filter->getNameOfClass();
@@ -1772,7 +1789,7 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint &pos, const QMode
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::requestPipelineItemContextMenu(const QPoint &pos)
+void SVPipelineView::requestPipelineItemContextMenu(const QPoint& pos)
 {
   QMenu menu;
 
@@ -1786,7 +1803,7 @@ void SVPipelineView::requestPipelineItemContextMenu(const QPoint &pos)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::requestSinglePipelineContextMenu(QMenu &menu)
+void SVPipelineView::requestSinglePipelineContextMenu(QMenu& menu)
 {
   menu.addSeparator();
 
@@ -1796,7 +1813,7 @@ void SVPipelineView::requestSinglePipelineContextMenu(QMenu &menu)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::requestDefaultContextMenu(const QPoint &pos)
+void SVPipelineView::requestDefaultContextMenu(const QPoint& pos)
 {
   QMenu menu;
   menu.addAction(m_ActionPaste);
@@ -1812,7 +1829,7 @@ void SVPipelineView::requestDefaultContextMenu(const QPoint &pos)
 void SVPipelineView::setModel(QAbstractItemModel* model)
 {
   QAbstractItemModel* oldModel = this->model();
-  if (oldModel != nullptr)
+  if(oldModel != nullptr)
   {
     delete oldModel;
   }
@@ -1821,22 +1838,16 @@ void SVPipelineView::setModel(QAbstractItemModel* model)
 
   PipelineModel* pipelineModel = dynamic_cast<PipelineModel*>(model);
 
-  if (pipelineModel != nullptr)
+  if(pipelineModel != nullptr)
   {
-    connect(pipelineModel, &PipelineModel::rowsInserted, this, [=] {
-      m_ActionClearPipeline->setEnabled(true);
-    });
+    connect(pipelineModel, &PipelineModel::rowsInserted, this, [=] { m_ActionClearPipeline->setEnabled(true); });
 
-    connect(pipelineModel, &PipelineModel::rowsRemoved, this, [=] {
-      m_ActionClearPipeline->setEnabled(model->rowCount() > 0);
-    });
+    connect(pipelineModel, &PipelineModel::rowsRemoved, this, [=] { m_ActionClearPipeline->setEnabled(model->rowCount() > 0); });
 
-    connect(pipelineModel, &PipelineModel::rowsMoved, this, [=] {
-      m_ActionClearPipeline->setEnabled(model->rowCount() > 0);
-    });
+    connect(pipelineModel, &PipelineModel::rowsMoved, this, [=] { m_ActionClearPipeline->setEnabled(model->rowCount() > 0); });
   }
 
-  connect(selectionModel(), &QItemSelectionModel::selectionChanged, [=] (const QItemSelection &selected, const QItemSelection &deselected) {
+  connect(selectionModel(), &QItemSelectionModel::selectionChanged, [=](const QItemSelection& selected, const QItemSelection& deselected) {
     m_ActionCut->setEnabled(selected.size() > 0);
     m_ActionCopy->setEnabled(selected.size() > 0);
   });
@@ -1852,7 +1863,6 @@ bool SVPipelineView::isPipelineCurrentlyRunning()
   return m_PipelineRunning;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -1866,20 +1876,20 @@ PipelineModel* SVPipelineView::getPipelineModel()
 // -----------------------------------------------------------------------------
 QPixmap SVPipelineView::getDisableBtnPixmap(bool highlighted)
 {
-  if (m_DisableBtnPixmap.isNull())
+  if(m_DisableBtnPixmap.isNull())
   {
     m_DisableBtnPixmap = QPixmap(":/ban.png");
     m_DisableHighlightedPixmap = m_DisableBtnPixmap;
   }
 
   QColor highlightedTextColor = palette().color(QPalette::HighlightedText);
-  if (highlighted && m_DisableBtnColor != highlightedTextColor)
+  if(highlighted && m_DisableBtnColor != highlightedTextColor)
   {
     m_DisableBtnColor = highlightedTextColor;
     m_DisableHighlightedPixmap = setPixmapColor(m_DisableHighlightedPixmap, m_DisableBtnColor);
   }
 
-  if (highlighted)
+  if(highlighted)
   {
     return m_DisableHighlightedPixmap;
   }
@@ -1894,20 +1904,20 @@ QPixmap SVPipelineView::getDisableBtnPixmap(bool highlighted)
 // -----------------------------------------------------------------------------
 QPixmap SVPipelineView::getHighDPIDisableBtnPixmap(bool highlighted)
 {
-  if (m_DisableBtnPixmap2x.isNull())
+  if(m_DisableBtnPixmap2x.isNull())
   {
     m_DisableBtnPixmap2x = QPixmap(":/ban@2x.png");
     m_DisableBtnHighlightedPixmap2x = m_DisableBtnPixmap2x;
   }
 
   QColor highlightedTextColor = palette().color(QPalette::HighlightedText);
-  if (highlighted && m_DisableBtn2xColor != highlightedTextColor)
+  if(highlighted && m_DisableBtn2xColor != highlightedTextColor)
   {
     m_DisableBtn2xColor = highlightedTextColor;
     m_DisableBtnHighlightedPixmap2x = setPixmapColor(m_DisableBtnHighlightedPixmap2x, m_DisableBtn2xColor);
   }
 
-  if (highlighted)
+  if(highlighted)
   {
     return m_DisableBtnHighlightedPixmap2x;
   }
@@ -1924,7 +1934,7 @@ QPixmap SVPipelineView::getDisableBtnActivatedPixmap(bool highlighted)
 {
   Q_UNUSED(highlighted)
 
-  if (m_DisableBtnActivatedPixmap.isNull())
+  if(m_DisableBtnActivatedPixmap.isNull())
   {
     m_DisableBtnActivatedPixmap = QPixmap(":/ban_red.png");
   }
@@ -1939,7 +1949,7 @@ QPixmap SVPipelineView::getHighDPIDisableBtnActivatedPixmap(bool highlighted)
 {
   Q_UNUSED(highlighted)
 
-  if (m_DisableBtnActivatedPixmap2x.isNull())
+  if(m_DisableBtnActivatedPixmap2x.isNull())
   {
     m_DisableBtnActivatedPixmap2x = QPixmap(":/ban_red@2x.png");
   }
@@ -1952,20 +1962,20 @@ QPixmap SVPipelineView::getHighDPIDisableBtnActivatedPixmap(bool highlighted)
 // -----------------------------------------------------------------------------
 QPixmap SVPipelineView::getDisableBtnHoveredPixmap(bool highlighted)
 {
-  if (m_DisableBtnHoveredPixmap.isNull())
+  if(m_DisableBtnHoveredPixmap.isNull())
   {
     m_DisableBtnHoveredPixmap = QPixmap(":/ban_hover.png");
     m_DisableBtnHoveredHighlightedPixmap = m_DisableBtnHoveredPixmap;
   }
 
   QColor highlightedTextColor = palette().color(QPalette::HighlightedText);
-  if (m_DisableBtnHoveredColor != highlightedTextColor.darker(115))
+  if(m_DisableBtnHoveredColor != highlightedTextColor.darker(115))
   {
     m_DisableBtnHoveredColor = highlightedTextColor.darker(115);
     m_DisableBtnHoveredHighlightedPixmap = setPixmapColor(m_DisableBtnHoveredHighlightedPixmap, m_DisableBtnHoveredColor);
   }
 
-  if (highlighted)
+  if(highlighted)
   {
     return m_DisableBtnHoveredHighlightedPixmap;
   }
@@ -1980,20 +1990,20 @@ QPixmap SVPipelineView::getDisableBtnHoveredPixmap(bool highlighted)
 // -----------------------------------------------------------------------------
 QPixmap SVPipelineView::getHighDPIDisableBtnHoveredPixmap(bool highlighted)
 {
-  if (m_DisableBtnHoveredPixmap2x.isNull())
+  if(m_DisableBtnHoveredPixmap2x.isNull())
   {
     m_DisableBtnHoveredPixmap2x = QPixmap(":/ban_hover@2x.png");
     m_DisableBtnHoveredHighlightedPixmap2x = m_DisableBtnHoveredPixmap2x;
   }
 
   QColor highlightedTextColor = palette().color(QPalette::HighlightedText);
-  if (m_DisableBtnHovered2xColor != highlightedTextColor.darker(115))
+  if(m_DisableBtnHovered2xColor != highlightedTextColor.darker(115))
   {
     m_DisableBtnHovered2xColor = highlightedTextColor.darker(115);
     m_DisableBtnHoveredHighlightedPixmap2x = setPixmapColor(m_DisableBtnHoveredHighlightedPixmap2x, m_DisableBtnHovered2xColor);
   }
 
-  if (highlighted)
+  if(highlighted)
   {
     return m_DisableBtnHoveredHighlightedPixmap2x;
   }
@@ -2008,20 +2018,20 @@ QPixmap SVPipelineView::getHighDPIDisableBtnHoveredPixmap(bool highlighted)
 // -----------------------------------------------------------------------------
 QPixmap SVPipelineView::getDeleteBtnPixmap(bool highlighted)
 {
-  if (m_DeleteBtnPixmap.isNull())
+  if(m_DeleteBtnPixmap.isNull())
   {
     m_DeleteBtnPixmap = QPixmap(":/trash.png");
     m_DeleteBtnHighlightedPixmap = m_DeleteBtnPixmap;
   }
 
   QColor highlightedTextColor = palette().color(QPalette::HighlightedText);
-  if (m_DeleteBtnColor != highlightedTextColor)
+  if(m_DeleteBtnColor != highlightedTextColor)
   {
     m_DeleteBtnColor = highlightedTextColor;
     m_DeleteBtnHighlightedPixmap = setPixmapColor(m_DeleteBtnHighlightedPixmap, m_DeleteBtnColor);
   }
 
-  if (highlighted)
+  if(highlighted)
   {
     return m_DeleteBtnHighlightedPixmap;
   }
@@ -2036,20 +2046,20 @@ QPixmap SVPipelineView::getDeleteBtnPixmap(bool highlighted)
 // -----------------------------------------------------------------------------
 QPixmap SVPipelineView::getHighDPIDeleteBtnPixmap(bool highlighted)
 {
-  if (m_DeleteBtnPixmap2x.isNull())
+  if(m_DeleteBtnPixmap2x.isNull())
   {
     m_DeleteBtnPixmap2x = QPixmap(":/trash@2x.png");
     m_DeleteBtnHighlightedPixmap2x = m_DeleteBtnPixmap2x;
   }
 
   QColor highlightedTextColor = palette().color(QPalette::HighlightedText);
-  if (m_DeleteBtn2xColor != highlightedTextColor)
+  if(m_DeleteBtn2xColor != highlightedTextColor)
   {
     m_DeleteBtn2xColor = highlightedTextColor;
     m_DeleteBtnHighlightedPixmap2x = setPixmapColor(m_DeleteBtnHighlightedPixmap2x, m_DeleteBtn2xColor);
   }
 
-  if (highlighted)
+  if(highlighted)
   {
     return m_DeleteBtnHighlightedPixmap2x;
   }
@@ -2064,20 +2074,20 @@ QPixmap SVPipelineView::getHighDPIDeleteBtnPixmap(bool highlighted)
 // -----------------------------------------------------------------------------
 QPixmap SVPipelineView::getDeleteBtnHoveredPixmap(bool highlighted)
 {
-  if (m_DeleteBtnHoveredPixmap.isNull())
+  if(m_DeleteBtnHoveredPixmap.isNull())
   {
     m_DeleteBtnHoveredPixmap = QPixmap(":/trash_hover.png");
     m_DeleteBtnHoveredHighlightedPixmap = m_DeleteBtnHoveredPixmap;
   }
 
   QColor highlightedTextColor = palette().color(QPalette::HighlightedText);
-  if (m_DeleteBtnHoveredColor != highlightedTextColor.darker(115))
+  if(m_DeleteBtnHoveredColor != highlightedTextColor.darker(115))
   {
     m_DeleteBtnHoveredColor = highlightedTextColor.darker(115);
     m_DeleteBtnHoveredHighlightedPixmap = setPixmapColor(m_DeleteBtnHoveredHighlightedPixmap, m_DeleteBtnHoveredColor);
   }
 
-  if (highlighted)
+  if(highlighted)
   {
     return m_DeleteBtnHoveredHighlightedPixmap;
   }
@@ -2092,20 +2102,20 @@ QPixmap SVPipelineView::getDeleteBtnHoveredPixmap(bool highlighted)
 // -----------------------------------------------------------------------------
 QPixmap SVPipelineView::getHighDPIDeleteBtnHoveredPixmap(bool highlighted)
 {
-  if (m_DeleteBtnHoveredPixmap2x.isNull())
+  if(m_DeleteBtnHoveredPixmap2x.isNull())
   {
     m_DeleteBtnHoveredPixmap2x = QPixmap(":/trash_hover@2x.png");
     m_DeleteBtnHoveredHighlightedPixmap2x = m_DeleteBtnHoveredPixmap2x;
   }
 
   QColor highlightedTextColor = palette().color(QPalette::HighlightedText);
-  if (m_DeleteBtnHovered2xColor != highlightedTextColor.darker(115))
+  if(m_DeleteBtnHovered2xColor != highlightedTextColor.darker(115))
   {
     m_DeleteBtnHovered2xColor = highlightedTextColor.darker(115);
     m_DeleteBtnHoveredHighlightedPixmap2x = setPixmapColor(m_DeleteBtnHoveredHighlightedPixmap2x, m_DeleteBtnHovered2xColor);
   }
 
-  if (highlighted)
+  if(highlighted)
   {
     return m_DeleteBtnHoveredHighlightedPixmap2x;
   }
@@ -2121,9 +2131,9 @@ QPixmap SVPipelineView::getHighDPIDeleteBtnHoveredPixmap(bool highlighted)
 QPixmap SVPipelineView::setPixmapColor(QPixmap pixmap, QColor pixmapColor)
 {
   QImage image = pixmap.toImage();
-  for (int y = 0; y < image.height(); y++)
+  for(int y = 0; y < image.height(); y++)
   {
-    for (int x = 0; x < image.width(); x++)
+    for(int x = 0; x < image.width(); x++)
     {
       QColor color = pixmapColor;
 
