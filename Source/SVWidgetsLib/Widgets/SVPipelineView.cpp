@@ -116,7 +116,8 @@ SVPipelineView::~SVPipelineView()
 {
   if(m_WorkerThread)
   {
-    delete m_WorkerThread;
+    m_WorkerThread->quit();
+    m_WorkerThread->deleteLater();
   }
 
   // Delete action if it exists
@@ -396,7 +397,10 @@ void SVPipelineView::executePipeline()
 {
   if(m_WorkerThread != nullptr)
   {
-    m_WorkerThread->wait(); // Wait until the thread is complete
+    if(false == m_WorkerThread->isFinished())
+    {
+      m_WorkerThread->wait(); // Wait until the thread is complete
+    }
     if(m_WorkerThread->isFinished() == true)
     {
       delete m_WorkerThread;
@@ -404,20 +408,31 @@ void SVPipelineView::executePipeline()
     }
   }
   m_WorkerThread = new QThread(); // Create a new Thread Resource
+  m_WorkerThread->setObjectName("Pipeline Thread");
 
   // Clear out the Issues Table
   emit clearIssuesTriggered();
 
   // Create a FilterPipeline Object
-  updateLocalTempPipeline();
-  m_PipelineInFlight = m_TempPipeline->deepCopy();
+  // This will be offloaded onto another thread, so the m_TempPipeline is not a viable option
+  if(nullptr == m_PipelineInFlight)
+  {
+    m_PipelineInFlight = FilterPipeline::New();
+
+    // Move the FilterPipeline object into the thread that we just created.
+    m_PipelineInFlight->moveToThread(m_WorkerThread);
+
+    // Allow the GUI to receive messages - We are only interested in the progress messages
+    m_PipelineInFlight->addMessageReceiver(this);
+  }
+  updatePipelineFromView(m_PipelineInFlight);
 
   emit stdOutMessage("<b>Preflight Pipeline.....</b>");
   // Give the pipeline one last chance to preflight and get all the latest values from the GUI
   int err = m_PipelineInFlight->preflightPipeline();
   if(err < 0)
   {
-    m_PipelineInFlight = FilterPipeline::NullPointer();
+    m_PipelineInFlight->clearDataContainerArray();
     emit displayIssuesTriggered();
     return;
   }
@@ -442,12 +457,6 @@ void SVPipelineView::executePipeline()
   //  // Block FilterLibraryToolboxWidget signals, so that we can't add filters to the view while running the pipeline
   //  getFilterLibraryToolboxWidget()->blockSignals(true);
 
-  // Move the FilterPipeline object into the thread that we just created.
-  m_PipelineInFlight->moveToThread(m_WorkerThread);
-
-  // Allow the GUI to receive messages - We are only interested in the progress messages
-  m_PipelineInFlight->addMessageReceiver(this);
-
   /* Connect the signal 'started()' from the QThread to the 'run' slot of the
    * PipelineBuilder object. Since the PipelineBuilder object has been moved to another
    * thread of execution and the actual QThread lives in *this* thread then the
@@ -457,10 +466,10 @@ void SVPipelineView::executePipeline()
   connect(m_WorkerThread, SIGNAL(started()), m_PipelineInFlight.get(), SLOT(run()));
 
   // When the PipelineBuilder ends then tell the QThread to stop its event loop
-  connect(m_PipelineInFlight.get(), SIGNAL(pipelineFinished()), m_WorkerThread, SLOT(quit()));
+  m_PipelineConnection = connect(m_PipelineInFlight.get(), &FilterPipeline::pipelineFinished, [=]() { finishPipeline(); });
 
   // When the QThread finishes, tell this object that it has finished.
-  connect(m_WorkerThread, SIGNAL(finished()), this, SLOT(finishPipeline()));
+  connect(m_WorkerThread, SIGNAL(finished()), this, SLOT(endPipelineThread()));
 
   toRunningState();
   m_WorkerThread->start();
@@ -511,7 +520,7 @@ void SVPipelineView::cancelPipeline()
   if(m_PipelineInFlight)
   {
     m_PipelineInFlight->cancelPipeline();
-    m_PipelineRunning = false;
+    setPipelineIsRunning(false);
   }
 }
 
@@ -520,7 +529,7 @@ void SVPipelineView::cancelPipeline()
 // -----------------------------------------------------------------------------
 void SVPipelineView::finishPipeline()
 {
-  if(nullptr == m_PipelineInFlight)
+  if(nullptr == m_PipelineInFlight || false == m_PipelineConnection)
   {
     return;
   }
@@ -532,12 +541,6 @@ void SVPipelineView::finishPipeline()
   else
   {
     stdOutMessage("<b>*************** PIPELINE FINISHED ***************</b>");
-
-    // Emit the pipeline output if there were no errors during execution
-    if(m_PipelineInFlight->getErrorCondition() == 0)
-    {
-      emit pipelineOutput(m_PipelineInFlight, m_PipelineInFlight->getDataContainerArray());
-    }
   }
   stdOutMessage("");
 
@@ -549,9 +552,26 @@ void SVPipelineView::finishPipeline()
     filters[i]->setDataContainerArray(m_PreflightDataContainerArrays[i]);
   }
 
-  m_PipelineInFlight = FilterPipeline::NullPointer(); // This _should_ remove all the filters and deallocate them
+  m_PipelineInFlight->moveToThread(QApplication::instance()->thread());
 
-  m_PipelineRunning = false;
+  disconnect(m_PipelineConnection);
+  m_WorkerThread->quit();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineView::endPipelineThread()
+{
+  if(!m_PipelineInFlight->getCancel())
+  {
+    // Emit the pipeline output if there were no errors during execution
+    if(m_PipelineInFlight->getErrorCondition() == 0)
+    {
+      emit pipelineOutput(m_PipelineInFlight, m_PipelineInFlight->getDataContainerArray());
+    }
+  }
+  m_PipelineInFlight->clearDataContainerArray(); // This _should_ deallocate the DataContainerArray when the visualization is finished with it
 
   toStoppedState();
 
@@ -581,9 +601,11 @@ void SVPipelineView::setPipelineName(QString name)
 // -----------------------------------------------------------------------------
 void SVPipelineView::updatePipelineFromView(FilterPipeline::Pointer pipeline)
 {
-  pipeline->clear();
   pipeline->setName(getPipelineName());
 
+  pipeline->blockSignals(true);
+  pipeline->clear();
+  
   PipelineModel* model = getPipelineModel();
 
   qint32 count = model->rowCount();
@@ -609,6 +631,11 @@ void SVPipelineView::updatePipelineFromView(FilterPipeline::Pointer pipeline)
   {
     pipeline->addMessageReceiver(m_PipelineMessageObservers[i]);
   }
+
+  pipeline->blockSignals(false);
+  
+  // Alert to edits
+  emit pipeline->pipelineWasEdited();
 }
 
 // -----------------------------------------------------------------------------
@@ -616,12 +643,7 @@ void SVPipelineView::updatePipelineFromView(FilterPipeline::Pointer pipeline)
 // -----------------------------------------------------------------------------
 void SVPipelineView::updateLocalTempPipeline()
 {
-  // Only emit one signal from the pipeline
-  m_TempPipeline->blockSignals(true);
   updatePipelineFromView(m_TempPipeline);
-  m_TempPipeline->blockSignals(false);
-
-  emit m_TempPipeline->pipelineWasEdited();
 }
 
 // -----------------------------------------------------------------------------
@@ -651,6 +673,8 @@ FilterPipeline::Pointer SVPipelineView::getSavedFilterPipeline()
 // -----------------------------------------------------------------------------
 int SVPipelineView::writePipeline(const QString& outputPath)
 {
+  bool newPath = (m_CurrentPath.compare(outputPath) != 0);
+
   QFileInfo fi(outputPath);
   QString ext = fi.completeSuffix();
 
@@ -707,12 +731,24 @@ int SVPipelineView::writePipeline(const QString& outputPath)
     emit statusMessage(tr("The pipeline has been saved successfully to '%1'.").arg(fi.fileName()));
   }
 
-  // Update temp pipeline
-  updateLocalTempPipeline();
-  m_SavedPipeline = m_TempPipeline->deepCopy();
+  // Store output path
+  m_CurrentPath = outputPath;
 
-  // Set pipeline name based on the output path
-  setPipelineName(fi.fileName());
+  // Update temp pipeline
+  if(newPath)
+  {
+    m_TempPipeline = FilterPipeline::New();
+    updateLocalTempPipeline();
+    m_SavedPipeline = m_TempPipeline->deepCopy();
+    m_PipelineInFlight = FilterPipeline::New();
+    // Set pipeline name based on the output path
+    setPipelineName(fi.fileName());
+  }
+  else
+  {
+    updateLocalTempPipeline();
+    updatePipelineFromView(m_SavedPipeline);
+  }
 
   return 0;
 }
@@ -869,6 +905,10 @@ void SVPipelineView::clearPipeline()
   addUndoCommand(removeCmd);
 
   emit clearDataStructureWidgetTriggered();
+
+  m_TempPipeline = FilterPipeline::New();
+  m_SavedPipeline = FilterPipeline::New();
+  m_PipelineInFlight = FilterPipeline::New();
 }
 
 // -----------------------------------------------------------------------------
@@ -1562,6 +1602,8 @@ void SVPipelineView::toStoppedState()
 // -----------------------------------------------------------------------------
 int SVPipelineView::openPipeline(const QString& filePath, int insertIndex)
 {
+  m_CurrentPath = filePath;
+
   QFileInfo fi(filePath);
   if(fi.exists() == false)
   {
@@ -1594,8 +1636,9 @@ int SVPipelineView::openPipeline(const QString& filePath, int insertIndex)
 
   // Read the pipeline from the file
   FilterPipeline::Pointer pipeline = readPipelineFromFile(filePath);
-  m_SavedPipeline = pipeline;
-  setPipelineName(pipeline->getName());
+  m_TempPipeline = pipeline;
+  m_SavedPipeline = pipeline->deepCopy();
+  m_PipelineInFlight = FilterPipeline::New();
 
   // Check that a valid extension was read...
   if(pipeline == FilterPipeline::NullPointer())
@@ -1916,7 +1959,7 @@ void SVPipelineView::setModel(QAbstractItemModel* model)
 // -----------------------------------------------------------------------------
 bool SVPipelineView::isPipelineCurrentlyRunning()
 {
-  return m_PipelineRunning;
+  return getPipelineIsRunning();
 }
 
 // -----------------------------------------------------------------------------

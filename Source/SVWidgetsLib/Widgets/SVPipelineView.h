@@ -427,6 +427,11 @@ private slots:
   void finishPipeline();
 
   /**
+   * @brief endPipelineThread
+   */
+  void endPipelineThread();
+
+  /**
    * @brief processPipelineMessage
    * @param msg
    */
@@ -434,11 +439,12 @@ private slots:
 
 private:
   QThread* m_WorkerThread = nullptr;
+  QMetaObject::Connection m_PipelineConnection;
   FilterPipeline::Pointer m_PipelineInFlight;
   QVector<DataContainerArray::Pointer> m_PreflightDataContainerArrays;
   QList<QObject*> m_PipelineMessageObservers;
 
-  bool m_PipelineRunning = false;
+  QString m_CurrentPath;
 
   QUndoCommand* m_MoveCommand = nullptr;
   QPoint m_DragStartPosition;

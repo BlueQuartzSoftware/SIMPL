@@ -714,3 +714,11 @@ DataContainerArray::Pointer FilterPipeline::getDataContainerArray()
 {
   return m_Dca;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterPipeline::clearDataContainerArray()
+{
+  m_Dca = DataContainerArray::NullPointer();
+}
