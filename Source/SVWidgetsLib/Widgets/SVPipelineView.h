@@ -1,53 +1,52 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #pragma once
 
-#include <vector>
 #include <stack>
+#include <vector>
 
 #include <QtCore/QSharedPointer>
 
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QTextEdit>
-#include <QtWidgets/QTableWidget>
-#include <QtWidgets/QStatusBar>
-#include <QtWidgets/QListView>
 #include <QtGui/QPainter>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QListView>
+#include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTableWidget>
+#include <QtWidgets/QTextEdit>
+#include <QtWidgets/QVBoxLayout>
 
 #include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
@@ -76,477 +75,492 @@ class QSignalMapper;
  */
 class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
 {
-    Q_OBJECT
-
-  public:
-    typedef std::pair<int, PipelineFilterObject*> IndexedFilterObject;
-
-    SIMPL_INSTANCE_PROPERTY(bool, PipelineIsRunning)
-
-    SIMPL_GET_PROPERTY(QAction*, ActionEnableFilter)
-    SIMPL_GET_PROPERTY(QAction*, ActionCut)
-    SIMPL_GET_PROPERTY(QAction*, ActionCopy)
-    SIMPL_GET_PROPERTY(QAction*, ActionPaste)
-    SIMPL_GET_PROPERTY(QAction*, ActionClearPipeline)
-
-    SVPipelineView(QWidget* parent = 0);
-    virtual ~SVPipelineView();
-
-    /**
-     * @brief addPipelineMessageObserver
-     * @param pipelineMessageObserver
-     */
-    void addPipelineMessageObserver(QObject* pipelineMessageObserver);
-
-    /**
-     * @brief filterCount
-     * @return
-     */
-    int filterCount();
-
-    /**
-     * @brief openPipeline
-     * @param filePath
-     * @return
-     */
-    int openPipeline(const QString& filePath, int insertIndex = -1);
-
-    /**
-     * @brief readPipelineFromFile
-     * @param filePath
-     * @return FilterPipeline::Pointer
-     */
-    FilterPipeline::Pointer readPipelineFromFile(const QString& filePath);
-
-    /**
-     * @brief setModel
-     * @param model
-     */
-    void setModel(QAbstractItemModel* model) override;
-
-    /**
-     * @brief getPipelineModel
-     * @return
-     */
-    PipelineModel* getPipelineModel();
-
-    /**
-     * @brief getFilterPipeline
-     * @param pipelineIndex
-     * @return
-     */
-    FilterPipeline::Pointer getFilterPipeline();
-
-    QString getPipelineName();
-
-    /**
-     * @brief writePipeline
-     * @param outputPath
-     * @return
-     */
-    int writePipeline(const QString &outputPath);
-
-    /**
-     * @brief isPipelineCurrentlyRunning
-     * @return
-     */
-    bool isPipelineCurrentlyRunning();
-
-    /**
-     * @brief Returns the regular disable button pixmap in the current highlighted text color
-     * @return
-     */
-    QPixmap getDisableBtnPixmap(bool highlighted = false);
-
-    /**
-     * @brief Returns the high-dpi disable button pixmap in the current highlighted text color
-     * @return
-     */
-    QPixmap getHighDPIDisableBtnPixmap(bool highlighted = false);
-
-    /**
-     * @brief Returns the regular activated disable button pixmap in the current highlighted text color
-     * @return
-     */
-    QPixmap getDisableBtnActivatedPixmap(bool highlighted = false);
-
-    /**
-     * @brief Returns the high-dpi activated disable button pixmap in the current highlighted text color
-     * @return
-     */
-    QPixmap getHighDPIDisableBtnActivatedPixmap(bool highlighted = false);
-
-    /**
-     * @brief Returns the regular hovered disable button pixmap in the current highlighted text color
-     * @return
-     */
-    QPixmap getDisableBtnHoveredPixmap(bool highlighted = false);
-
-    /**
-     * @brief Returns the high-dpi hovered disable button pixmap in the current highlighted text color
-     * @return
-     */
-    QPixmap getHighDPIDisableBtnHoveredPixmap(bool highlighted = false);
-
-    /**
-     * @brief Returns the regular delete button pixmap in the current highlighted text color
-     * @return
-     */
-    QPixmap getDeleteBtnPixmap(bool highlighted = false);
-
-    /**
-     * @brief Returns the high-dpi delete button pixmap in the current highlighted text color
-     * @return
-     */
-    QPixmap getHighDPIDeleteBtnPixmap(bool highlighted = false);
-
-    /**
-     * @brief Returns the regular hovered delete button pixmap in the current highlighted text color
-     * @return
-     */
-    QPixmap getDeleteBtnHoveredPixmap(bool highlighted = false);
-
-    /**
-     * @brief Returns the high-dpi hovered delete button pixmap in the current highlighted text color
-     * @return
-     */
-    QPixmap getHighDPIDeleteBtnHoveredPixmap(bool highlighted = false);
-
-  public slots:
-    void setPipelineName(QString name);
-
-    /**
-     * @brief Adds a filter with the specified filterClassName to the current model
-     * @param filterClassName
-     */
-    void addFilterFromClassName(const QString &filterClassName, int insertIndex = -1, bool useAnimationOnFirstRun = true);
-
-    /**
-     * @brief Adds a filter to the current model at insertIndex.  If insertIndex is < 0,
-     * the filter gets appended to the end of the model
-     * @param filter
-     */
-    void addFilter(AbstractFilter::Pointer filter, int insertIndex = -1, bool useAnimationOnFirstRun = true);
-
-    /**
-     * @brief Adds multiple filters to the current model.  If insertIndex is < 0,
-     * the filters get appended to the end of the model
-     * @param filters
-     */
-    void addFilters(std::vector<AbstractFilter::Pointer> filters, int insertIndex = -1, bool useAnimationOnFirstRun = true);
-
-    /**
-     * @brief Removes filter from the current model
-     * @param filter
-     */
-    void removeFilter(AbstractFilter::Pointer filter, bool useAnimationOnFirstRun = true);
-
-    /**
-     * @brief Removes multiple filters from the current model
-     * @param filters
-     */
-    void removeFilters(std::vector<AbstractFilter::Pointer> filters, bool useAnimationOnFirstRun = true);
-
-    /**
-     * @brief Cuts filter from the current model
-     * @param filter
-     */
-    void cutFilter(AbstractFilter::Pointer filter, bool useAnimationOnFirstRun = true);
-
-    /**
-     * @brief Cuts multiple filters from the current model
-     * @param filters
-     */
-    void cutFilters(std::vector<AbstractFilter::Pointer> filters, bool useAnimationOnFirstRun = true);
-
-    /**
-     * @brief Copies the currently selected filters from the current model into the system clipboard
-     */
-    void copySelectedFilters();
-
-    /**
-     * @brief Pastes multiple filters from the system clipboard to the current model
-     * @param insertIndex
-     */
-    void pasteFilters(int insertIndex = -1, bool useAnimationOnFirstRun = true);
-
-    /**
-     * @brief preflightPipeline
-     * @param pipelineIndex
-     */
-    void preflightPipeline();
-
-    /**
-     * @brief runPipeline
-     * @param pipelineIndex
-     * @param model
-     */
-    void executePipeline();
-
-    /**
-     * @brief cancelPipeline
-     * @param pipelineIndex
-     */
-    void cancelPipeline();
-
-    /**
-     * @brief Update the indices of all FilterInputWidgets
-     */
-    void updateFilterInputWidgetIndices();
-
-    /**
-     * @brief Should be block this class from either emitting a preflight signal or otherwise running a preflight.
-     * @param b
-     */
-    void blockPreflightSignals(bool b);
-
-    /**
-    * @brief clearPipeline
-    */
-    void clearPipeline();
-
-    /**
-     * @brief toReadyState
-     */
-    void toReadyState();
-
-    /**
-     * @brief toRunningState
-     */
-    void toRunningState();
-
-    /**
-     * @brief toStoppedState
-     */
-    void toStoppedState();
-
-  signals:
-    void displayIssuesTriggered();
-    void clearIssuesTriggered();
-    void clearDataStructureWidgetTriggered();
-
-    void writeSIMPLViewSettingsTriggered();
-
-    void addPlaceHolderFilter(QPoint p);
-    void removePlaceHolderFilter();
-
-    void preflightFinished(FilterPipeline::Pointer pipeline, int err);
-
-    void filterParametersChanged(AbstractFilter::Pointer filter);
-
-    void pipelineStarted();
-    void pipelineFinished();
-
-    void pipelineHasMessage(const PipelineMessage &msg);
-    void pipelineFilePathUpdated(const QString &name);
-    void pipelineChanged();
-    void filePathOpened(const QString &filePath);
-
-    void filterInputWidgetNeedsCleared();
-
-    void filterInputWidgetEdited();
-
-    void filterEnabledStateChanged();
-
-    void deleteKeyPressed();
-
-    void statusMessage(const QString& message);
-    void stdOutMessage(const QString& message);
-
-    void pipelineOutput(FilterPipeline::Pointer pipeline, DataContainerArray::Pointer dca);
-
-  protected:
-    void setupGui();
-
-    void connectSignalsSlots();
-
-    /**
-     * @brief beginDrag
-     * @param event
-     */
-    void beginDrag(QMouseEvent* event);
-
-    void mousePressEvent(QMouseEvent* event) override;
-    void mouseMoveEvent(QMouseEvent* event) override;
-    void dragMoveEvent(QDragMoveEvent* event) override;
-    void dragEnterEvent(QDragEnterEvent* event) override;
-    void dragLeaveEvent(QDragLeaveEvent* event) override;
-    void dropEvent(QDropEvent* event) override;
-    void keyPressEvent(QKeyEvent *event) override;
-
-    void setFiltersEnabled(QModelIndexList indexes, bool enabled);
-    void setSelectedFiltersEnabled(bool enabled);
-
-  protected slots:
-    void requestContextMenu(const QPoint& pos);
-
-    /**
-     * @brief updatePasteAvailability
-     */
-    void updatePasteAvailability();
-
-    /**
-     * @brief Slot that executes when the delete key gets pressed
-     */
-    void listenDeleteKeyTriggered();
-
-    void listenCutTriggered();
-    void listenCopyTriggered();
-    void listenPasteTriggered();
-    void listenClearPipelineTriggered();
-
-  private slots:
-    /**
-     * @brief listenFilterInProgress
-     * @param filter
-     */
-    void listenFilterInProgress(AbstractFilter *filter);
-
-    /**
-     * @brief listenFilterCompleted
-     */
-    void listenFilterCompleted(AbstractFilter *filter);
-
-    /**
-     * @brief finishPipeline
-     * @param pipelineIndex
-     */
-    void finishPipeline();
-
-    /**
-     * @brief processPipelineMessage
-     * @param msg
-     */
-    void processPipelineMessage(const PipelineMessage& msg);
-
-  private:
-    QThread*                                          m_WorkerThread = nullptr;
-    QString                                           m_PipelineName;
-    FilterPipeline::Pointer                           m_PipelineInFlight;
-    QVector<DataContainerArray::Pointer>              m_PreflightDataContainerArrays;
-    QList<QObject*>                                   m_PipelineMessageObservers;
-
-    bool                                              m_PipelineRunning = false;
-
-    QUndoCommand*                                     m_MoveCommand = nullptr;
-    QPoint                                            m_DragStartPosition;
-    QModelIndex                                       m_DropIndicatorIndex;
-    bool                                              m_BlockPreflight = false;
-    std::stack<bool>                                  m_BlockPreflightStack;
-
-    QAction*                                          m_ActionEnableFilter = nullptr;
-    QAction*                                          m_ActionCut = nullptr;
-    QAction*                                          m_ActionCopy = nullptr;
-    QAction*                                          m_ActionPaste = nullptr;
-    QAction*                                          m_ActionClearPipeline = new QAction("Clear Pipeline", this);
-
-    QPixmap m_DisableBtnPixmap;
-    QPixmap m_DisableHighlightedPixmap;
-    QColor m_DisableBtnColor = QColor(Qt::black);
-
-    QPixmap m_DisableBtnPixmap2x;
-    QPixmap m_DisableBtnHighlightedPixmap2x;
-    QColor m_DisableBtn2xColor = QColor(Qt::black);
-
-    QPixmap m_DisableBtnActivatedPixmap;
-    QPixmap m_DisableBtnActivatedPixmap2x;
-
-    QPixmap m_DisableBtnHoveredPixmap;
-    QPixmap m_DisableBtnHoveredHighlightedPixmap;
-    QColor m_DisableBtnHoveredColor = QColor(Qt::black);
-
-    QPixmap m_DisableBtnHoveredPixmap2x;
-    QPixmap m_DisableBtnHoveredHighlightedPixmap2x;
-    QColor m_DisableBtnHovered2xColor = QColor(Qt::black);
-
-    QPixmap m_DeleteBtnPixmap;
-    QPixmap m_DeleteBtnHighlightedPixmap;
-    QColor m_DeleteBtnColor = QColor(Qt::black);
-
-    QPixmap m_DeleteBtnPixmap2x;
-    QPixmap m_DeleteBtnHighlightedPixmap2x;
-    QColor m_DeleteBtn2xColor = QColor(Qt::black);
-
-    QPixmap m_DeleteBtnHoveredPixmap;
-    QPixmap m_DeleteBtnHoveredHighlightedPixmap;
-    QColor m_DeleteBtnHoveredColor = QColor(Qt::black);
-
-    QPixmap m_DeleteBtnHoveredPixmap2x;
-    QPixmap m_DeleteBtnHoveredHighlightedPixmap2x;
-    QColor m_DeleteBtnHovered2xColor = QColor(Qt::black);
-
-    /**
-     * @brief Gets the currently selected filters
-     * @return
-     */
-    std::vector<AbstractFilter::Pointer> getSelectedFilters();
-
-    /**
-     * @brief requestFilterContextMenu
-     * @param pos
-     * @param index
-     */
-    void requestFilterItemContextMenu(const QPoint &pos, const QModelIndex &index);
-
-    /**
-     * @brief requestPipelineContextMenu
-     * @param pos
-     */
-    void requestPipelineItemContextMenu(const QPoint &pos);
-
-    /**
-     * @brief requestSinglePipelineContextMenu
-     * @param menu
-     */
-    void requestSinglePipelineContextMenu(QMenu &menu);
-
-    /**
-     * @brief requestDefaultContextMenu
-     * @param pos
-     */
-    void requestDefaultContextMenu(const QPoint &pos);
-
-    /**
-     * @brief addDropIndicator
-     * @param text
-     * @param insertIndex
-     */
-    void addDropIndicator(const QString &text, int insertIndex);
-
-    /**
-     * @brief removeDropIndicator
-     */
-    void removeDropIndicator();
-
-    /**
-     * @brief findNextRow
-     * @param pos
-     * @return
-     */
-    int findNextRow(const QPoint &pos);
-
-    /**
-     * @brief findPreviousRow
-     * @param pos
-     * @return
-     */
-    int findPreviousRow(const QPoint &pos);
-
-    /**
-     * @brief getDraggingPixmap
-     * @param indexes
-     * @return
-     */
-    QPixmap getDraggingPixmap(QModelIndexList indexes);
-
-    /**
-     * @brief setPixmapColor
-     * @param pixmap
-     * @param pixmapColor
-     */
-    QPixmap setPixmapColor(QPixmap pixmap, QColor pixmapColor);
-
-    SVPipelineView(const SVPipelineView&) = delete; // Copy Constructor Not Implemented
-    void operator=(const SVPipelineView&) = delete;       // Move assignment Not Implemented
+  Q_OBJECT
+
+public:
+  typedef std::pair<int, PipelineFilterObject*> IndexedFilterObject;
+
+  SIMPL_INSTANCE_PROPERTY(bool, PipelineIsRunning)
+
+  SIMPL_GET_PROPERTY(QAction*, ActionEnableFilter)
+  SIMPL_GET_PROPERTY(QAction*, ActionCut)
+  SIMPL_GET_PROPERTY(QAction*, ActionCopy)
+  SIMPL_GET_PROPERTY(QAction*, ActionPaste)
+  SIMPL_GET_PROPERTY(QAction*, ActionClearPipeline)
+
+  SVPipelineView(QWidget* parent = 0);
+  virtual ~SVPipelineView();
+
+  /**
+   * @brief addPipelineMessageObserver
+   * @param pipelineMessageObserver
+   */
+  void addPipelineMessageObserver(QObject* pipelineMessageObserver);
+
+  /**
+   * @brief filterCount
+   * @return
+   */
+  int filterCount();
+
+  /**
+   * @brief openPipeline
+   * @param filePath
+   * @return
+   */
+  int openPipeline(const QString& filePath, int insertIndex = -1);
+
+  /**
+   * @brief readPipelineFromFile
+   * @param filePath
+   * @return FilterPipeline::Pointer
+   */
+  FilterPipeline::Pointer readPipelineFromFile(const QString& filePath);
+
+  /**
+   * @brief setModel
+   * @param model
+   */
+  void setModel(QAbstractItemModel* model) override;
+
+  /**
+   * @brief getPipelineModel
+   * @return
+   */
+  PipelineModel* getPipelineModel();
+
+  /**
+   * @brief Returns a new FilterPipeline with deep copies of the current filters.
+   * @return
+   */
+  FilterPipeline::Pointer getFilterPipelineCopy();
+
+  /**
+  * @brief Returns the saved FilterPipeline being operated on by the view.  
+  * This pipeline is updated on Save, Save As, and when opeining bookmarks.
+  * This pipeline does not keep track of changes made between those times.
+  * @return
+  */
+  FilterPipeline::Pointer getSavedFilterPipeline();
+
+  /**
+   * @brief Returns the pipeline name
+   * @return
+   */
+  QString getPipelineName();
+
+  /**
+   * @brief writePipeline
+   * @param outputPath
+   * @return
+   */
+  int writePipeline(const QString& outputPath);
+
+  /**
+   * @brief isPipelineCurrentlyRunning
+   * @return
+   */
+  bool isPipelineCurrentlyRunning();
+
+  /**
+   * @brief Returns the regular disable button pixmap in the current highlighted text color
+   * @return
+   */
+  QPixmap getDisableBtnPixmap(bool highlighted = false);
+
+  /**
+   * @brief Returns the high-dpi disable button pixmap in the current highlighted text color
+   * @return
+   */
+  QPixmap getHighDPIDisableBtnPixmap(bool highlighted = false);
+
+  /**
+   * @brief Returns the regular activated disable button pixmap in the current highlighted text color
+   * @return
+   */
+  QPixmap getDisableBtnActivatedPixmap(bool highlighted = false);
+
+  /**
+   * @brief Returns the high-dpi activated disable button pixmap in the current highlighted text color
+   * @return
+   */
+  QPixmap getHighDPIDisableBtnActivatedPixmap(bool highlighted = false);
+
+  /**
+   * @brief Returns the regular hovered disable button pixmap in the current highlighted text color
+   * @return
+   */
+  QPixmap getDisableBtnHoveredPixmap(bool highlighted = false);
+
+  /**
+   * @brief Returns the high-dpi hovered disable button pixmap in the current highlighted text color
+   * @return
+   */
+  QPixmap getHighDPIDisableBtnHoveredPixmap(bool highlighted = false);
+
+  /**
+   * @brief Returns the regular delete button pixmap in the current highlighted text color
+   * @return
+   */
+  QPixmap getDeleteBtnPixmap(bool highlighted = false);
+
+  /**
+   * @brief Returns the high-dpi delete button pixmap in the current highlighted text color
+   * @return
+   */
+  QPixmap getHighDPIDeleteBtnPixmap(bool highlighted = false);
+
+  /**
+   * @brief Returns the regular hovered delete button pixmap in the current highlighted text color
+   * @return
+   */
+  QPixmap getDeleteBtnHoveredPixmap(bool highlighted = false);
+
+  /**
+   * @brief Returns the high-dpi hovered delete button pixmap in the current highlighted text color
+   * @return
+   */
+  QPixmap getHighDPIDeleteBtnHoveredPixmap(bool highlighted = false);
+
+public slots:
+  void setPipelineName(QString name);
+
+  /**
+   * @brief Adds a filter with the specified filterClassName to the current model
+   * @param filterClassName
+   */
+  void addFilterFromClassName(const QString& filterClassName, int insertIndex = -1, bool useAnimationOnFirstRun = true);
+
+  /**
+   * @brief Adds a filter to the current model at insertIndex.  If insertIndex is < 0,
+   * the filter gets appended to the end of the model
+   * @param filter
+   */
+  void addFilter(AbstractFilter::Pointer filter, int insertIndex = -1, bool useAnimationOnFirstRun = true);
+
+  /**
+   * @brief Adds multiple filters to the current model.  If insertIndex is < 0,
+   * the filters get appended to the end of the model
+   * @param filters
+   */
+  void addFilters(std::vector<AbstractFilter::Pointer> filters, int insertIndex = -1, bool useAnimationOnFirstRun = true);
+
+  /**
+   * @brief Removes filter from the current model
+   * @param filter
+   */
+  void removeFilter(AbstractFilter::Pointer filter, bool useAnimationOnFirstRun = true);
+
+  /**
+   * @brief Removes multiple filters from the current model
+   * @param filters
+   */
+  void removeFilters(std::vector<AbstractFilter::Pointer> filters, bool useAnimationOnFirstRun = true);
+
+  /**
+   * @brief Cuts filter from the current model
+   * @param filter
+   */
+  void cutFilter(AbstractFilter::Pointer filter, bool useAnimationOnFirstRun = true);
+
+  /**
+   * @brief Cuts multiple filters from the current model
+   * @param filters
+   */
+  void cutFilters(std::vector<AbstractFilter::Pointer> filters, bool useAnimationOnFirstRun = true);
+
+  /**
+   * @brief Copies the currently selected filters from the current model into the system clipboard
+   */
+  void copySelectedFilters();
+
+  /**
+   * @brief Pastes multiple filters from the system clipboard to the current model
+   * @param insertIndex
+   */
+  void pasteFilters(int insertIndex = -1, bool useAnimationOnFirstRun = true);
+
+  /**
+   * @brief preflightPipeline
+   * @param pipelineIndex
+   */
+  void preflightPipeline();
+
+  /**
+   * @brief runPipeline
+   * @param pipelineIndex
+   * @param model
+   */
+  void executePipeline();
+
+  /**
+   * @brief cancelPipeline
+   * @param pipelineIndex
+   */
+  void cancelPipeline();
+
+  /**
+   * @brief Update the indices of all FilterInputWidgets
+   */
+  void updateFilterInputWidgetIndices();
+
+  /**
+   * @brief Should be block this class from either emitting a preflight signal or otherwise running a preflight.
+   * @param b
+   */
+  void blockPreflightSignals(bool b);
+
+  /**
+   * @brief clearPipeline
+   */
+  void clearPipeline();
+
+  /**
+   * @brief toReadyState
+   */
+  void toReadyState();
+
+  /**
+   * @brief toRunningState
+   */
+  void toRunningState();
+
+  /**
+   * @brief toStoppedState
+   */
+  void toStoppedState();
+
+signals:
+  void displayIssuesTriggered();
+  void clearIssuesTriggered();
+  void clearDataStructureWidgetTriggered();
+
+  void writeSIMPLViewSettingsTriggered();
+
+  void addPlaceHolderFilter(QPoint p);
+  void removePlaceHolderFilter();
+
+  void preflightFinished(FilterPipeline::Pointer pipeline, int err);
+
+  void filterParametersChanged(AbstractFilter::Pointer filter);
+
+  void pipelineStarted();
+  void pipelineFinished();
+
+  void pipelineHasMessage(const PipelineMessage& msg);
+  void pipelineFilePathUpdated(const QString& name);
+  void pipelineChanged();
+  void filePathOpened(const QString& filePath);
+
+  void filterInputWidgetNeedsCleared();
+
+  void filterInputWidgetEdited();
+
+  void filterEnabledStateChanged();
+
+  void deleteKeyPressed();
+
+  void statusMessage(const QString& message);
+  void stdOutMessage(const QString& message);
+
+  void pipelineOutput(FilterPipeline::Pointer pipeline, DataContainerArray::Pointer dca);
+
+protected:
+  void setupGui();
+
+  void connectSignalsSlots();
+
+  void updatePipelineFromView(FilterPipeline::Pointer pipeline);
+  void updateLocalTempPipeline();
+
+      /**
+       * @brief beginDrag
+       * @param event
+       */
+      void beginDrag(QMouseEvent* event);
+
+  void mousePressEvent(QMouseEvent* event) override;
+  void mouseMoveEvent(QMouseEvent* event) override;
+  void dragMoveEvent(QDragMoveEvent* event) override;
+  void dragEnterEvent(QDragEnterEvent* event) override;
+  void dragLeaveEvent(QDragLeaveEvent* event) override;
+  void dropEvent(QDropEvent* event) override;
+  void keyPressEvent(QKeyEvent* event) override;
+
+  void setFiltersEnabled(QModelIndexList indexes, bool enabled);
+  void setSelectedFiltersEnabled(bool enabled);
+
+protected slots:
+  void requestContextMenu(const QPoint& pos);
+
+  /**
+   * @brief updatePasteAvailability
+   */
+  void updatePasteAvailability();
+
+  /**
+   * @brief Slot that executes when the delete key gets pressed
+   */
+  void listenDeleteKeyTriggered();
+
+  void listenCutTriggered();
+  void listenCopyTriggered();
+  void listenPasteTriggered();
+  void listenClearPipelineTriggered();
+
+private slots:
+  /**
+   * @brief listenFilterInProgress
+   * @param filter
+   */
+  void listenFilterInProgress(AbstractFilter* filter);
+
+  /**
+   * @brief listenFilterCompleted
+   */
+  void listenFilterCompleted(AbstractFilter* filter);
+
+  /**
+   * @brief finishPipeline
+   * @param pipelineIndex
+   */
+  void finishPipeline();
+
+  /**
+   * @brief processPipelineMessage
+   * @param msg
+   */
+  void processPipelineMessage(const PipelineMessage& msg);
+
+private:
+  QThread* m_WorkerThread = nullptr;
+  FilterPipeline::Pointer m_PipelineInFlight;
+  QVector<DataContainerArray::Pointer> m_PreflightDataContainerArrays;
+  QList<QObject*> m_PipelineMessageObservers;
+
+  bool m_PipelineRunning = false;
+
+  QUndoCommand* m_MoveCommand = nullptr;
+  QPoint m_DragStartPosition;
+  QModelIndex m_DropIndicatorIndex;
+  bool m_BlockPreflight = false;
+  std::stack<bool> m_BlockPreflightStack;
+
+  QAction* m_ActionEnableFilter = nullptr;
+  QAction* m_ActionCut = nullptr;
+  QAction* m_ActionCopy = nullptr;
+  QAction* m_ActionPaste = nullptr;
+  QAction* m_ActionClearPipeline = new QAction("Clear Pipeline", this);
+
+  FilterPipeline::Pointer m_SavedPipeline = nullptr;
+  FilterPipeline::Pointer m_TempPipeline = nullptr;
+
+  QPixmap m_DisableBtnPixmap;
+  QPixmap m_DisableHighlightedPixmap;
+  QColor m_DisableBtnColor = QColor(Qt::black);
+
+  QPixmap m_DisableBtnPixmap2x;
+  QPixmap m_DisableBtnHighlightedPixmap2x;
+  QColor m_DisableBtn2xColor = QColor(Qt::black);
+
+  QPixmap m_DisableBtnActivatedPixmap;
+  QPixmap m_DisableBtnActivatedPixmap2x;
+
+  QPixmap m_DisableBtnHoveredPixmap;
+  QPixmap m_DisableBtnHoveredHighlightedPixmap;
+  QColor m_DisableBtnHoveredColor = QColor(Qt::black);
+
+  QPixmap m_DisableBtnHoveredPixmap2x;
+  QPixmap m_DisableBtnHoveredHighlightedPixmap2x;
+  QColor m_DisableBtnHovered2xColor = QColor(Qt::black);
+
+  QPixmap m_DeleteBtnPixmap;
+  QPixmap m_DeleteBtnHighlightedPixmap;
+  QColor m_DeleteBtnColor = QColor(Qt::black);
+
+  QPixmap m_DeleteBtnPixmap2x;
+  QPixmap m_DeleteBtnHighlightedPixmap2x;
+  QColor m_DeleteBtn2xColor = QColor(Qt::black);
+
+  QPixmap m_DeleteBtnHoveredPixmap;
+  QPixmap m_DeleteBtnHoveredHighlightedPixmap;
+  QColor m_DeleteBtnHoveredColor = QColor(Qt::black);
+
+  QPixmap m_DeleteBtnHoveredPixmap2x;
+  QPixmap m_DeleteBtnHoveredHighlightedPixmap2x;
+  QColor m_DeleteBtnHovered2xColor = QColor(Qt::black);
+
+  /**
+   * @brief Gets the currently selected filters
+   * @return
+   */
+  std::vector<AbstractFilter::Pointer> getSelectedFilters();
+
+  /**
+   * @brief requestFilterContextMenu
+   * @param pos
+   * @param index
+   */
+  void requestFilterItemContextMenu(const QPoint& pos, const QModelIndex& index);
+
+  /**
+   * @brief requestPipelineContextMenu
+   * @param pos
+   */
+  void requestPipelineItemContextMenu(const QPoint& pos);
+
+  /**
+   * @brief requestSinglePipelineContextMenu
+   * @param menu
+   */
+  void requestSinglePipelineContextMenu(QMenu& menu);
+
+  /**
+   * @brief requestDefaultContextMenu
+   * @param pos
+   */
+  void requestDefaultContextMenu(const QPoint& pos);
+
+  /**
+   * @brief addDropIndicator
+   * @param text
+   * @param insertIndex
+   */
+  void addDropIndicator(const QString& text, int insertIndex);
+
+  /**
+   * @brief removeDropIndicator
+   */
+  void removeDropIndicator();
+
+  /**
+   * @brief findNextRow
+   * @param pos
+   * @return
+   */
+  int findNextRow(const QPoint& pos);
+
+  /**
+   * @brief findPreviousRow
+   * @param pos
+   * @return
+   */
+  int findPreviousRow(const QPoint& pos);
+
+  /**
+   * @brief getDraggingPixmap
+   * @param indexes
+   * @return
+   */
+  QPixmap getDraggingPixmap(QModelIndexList indexes);
+
+  /**
+   * @brief setPixmapColor
+   * @param pixmap
+   * @param pixmapColor
+   */
+  QPixmap setPixmapColor(QPixmap pixmap, QColor pixmapColor);
+
+  SVPipelineView(const SVPipelineView&) = delete; // Copy Constructor Not Implemented
+  void operator=(const SVPipelineView&) = delete; // Move assignment Not Implemented
 };
-
