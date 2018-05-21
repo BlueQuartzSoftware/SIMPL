@@ -253,7 +253,12 @@ void SVPipelineView::listenFilterInProgress(AbstractFilter* filter)
   PipelineModel* model = getPipelineModel();
   QModelIndex index = model->indexOfFilter(filter);
 
-  model->setData(index, static_cast<int>(PipelineItem::WidgetState::Executing), PipelineModel::WidgetStateRole);
+  // Do not set state to Executing if the filter is disabled
+  PipelineItem::WidgetState wState = static_cast<PipelineItem::WidgetState>(model->data(index, PipelineModel::WidgetStateRole).toInt());
+  if(wState != PipelineItem::WidgetState::Disabled)
+  {
+    model->setData(index, static_cast<int>(PipelineItem::WidgetState::Executing), PipelineModel::WidgetStateRole);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -264,7 +269,12 @@ void SVPipelineView::listenFilterCompleted(AbstractFilter* filter)
   PipelineModel* model = getPipelineModel();
   QModelIndex index = model->indexOfFilter(filter);
 
-  model->setData(index, static_cast<int>(PipelineItem::WidgetState::Completed), PipelineModel::WidgetStateRole);
+  // Do not set state to Completed if the filter is disabled
+  PipelineItem::WidgetState wState = static_cast<PipelineItem::WidgetState>(model->data(index, PipelineModel::WidgetStateRole).toInt());
+  if(wState != PipelineItem::WidgetState::Disabled)
+  {
+    model->setData(index, static_cast<int>(PipelineItem::WidgetState::Completed), PipelineModel::WidgetStateRole);
+  }
   if(filter->getWarningCondition() < 0)
   {
     model->setData(index, static_cast<int>(PipelineItem::ErrorState::Warning), PipelineModel::ErrorStateRole);
@@ -453,6 +463,12 @@ void SVPipelineView::executePipeline()
 
   //  // Block FilterListToolboxWidget signals, so that we can't add filters to the view while running the pipeline
   //  getFilterListToolboxWidget()->blockSignals(true);
+
+  //  // Block FilterLibraryToolboxWidget signals, so that we can't add filters to the view while running the pipeline
+  //  getFilterLibraryToolboxWidget()->blockSignals(true);
+
+  // Move the FilterPipeline object into the thread that we just created.
+  m_PipelineInFlight->moveToThread(m_WorkerThread);
 
   //  // Block FilterLibraryToolboxWidget signals, so that we can't add filters to the view while running the pipeline
   //  getFilterLibraryToolboxWidget()->blockSignals(true);
@@ -1540,7 +1556,13 @@ void SVPipelineView::toReadyState()
   for(int i = 0; i < model->rowCount(); i++)
   {
     QModelIndex index = model->index(i, PipelineItem::Contents);
-    model->setData(index, static_cast<int>(PipelineItem::WidgetState::Ready), PipelineModel::WidgetStateRole);
+    
+    // Do not set state to Completed if the filter is disabled
+    PipelineItem::WidgetState wState = static_cast<PipelineItem::WidgetState>(model->data(index, PipelineModel::WidgetStateRole).toInt());
+    if(wState != PipelineItem::WidgetState::Disabled)
+    {
+      model->setData(index, static_cast<int>(PipelineItem::WidgetState::Ready), PipelineModel::WidgetStateRole);
+    }
   }
 }
 
@@ -1587,7 +1609,12 @@ void SVPipelineView::toStoppedState()
 
     if(filter->getEnabled() == true)
     {
-      model->setData(index, static_cast<int>(PipelineItem::WidgetState::Ready), PipelineModel::WidgetStateRole);
+      // Do not set state to Completed if the filter is disabled
+      PipelineItem::WidgetState wState = static_cast<PipelineItem::WidgetState>(model->data(index, PipelineModel::WidgetStateRole).toInt());
+      if(wState != PipelineItem::WidgetState::Disabled)
+      {
+        model->setData(index, static_cast<int>(PipelineItem::WidgetState::Ready), PipelineModel::WidgetStateRole);
+      }
     }
   }
 
