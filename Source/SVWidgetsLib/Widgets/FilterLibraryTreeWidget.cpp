@@ -46,7 +46,7 @@
 #include "SIMPLib/Filtering/FilterManager.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h"
 
 // -----------------------------------------------------------------------------
@@ -56,6 +56,7 @@ FilterLibraryTreeWidget::FilterLibraryTreeWidget(QWidget* parent)
 : QTreeWidget(parent)
 {
   setAcceptDrops(false);
+  setAttribute(Qt::WA_MacShowFocusRect, false);
 }
 
 // -----------------------------------------------------------------------------
@@ -124,7 +125,7 @@ void FilterLibraryTreeWidget::performDrag()
         }
       }
 
-      QColor grpColor = QtSStyles::ColorForFilterGroup(grpName);
+      QColor grpColor = SVStyle::Instance()->ColorForFilterGroup(grpName);
       const QPixmap dragIcon = DataArrayPathSelectionWidget::CreateDragIcon(filterHumanLabel, grpColor);
 
       QDrag* drag = new QDrag(this);

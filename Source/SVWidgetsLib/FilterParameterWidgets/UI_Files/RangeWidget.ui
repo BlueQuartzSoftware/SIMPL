@@ -31,7 +31,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="minValue">
+    <widget class="SVLineEdit" name="minValue">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -54,7 +54,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="maxValue">
+    <widget class="SVLineEdit" name="maxValue">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -84,6 +84,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SVLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">SVControlWidgets.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../icons/images/Icons.qrc"/>
  </resources>

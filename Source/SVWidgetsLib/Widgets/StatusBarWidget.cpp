@@ -41,7 +41,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
 // -----------------------------------------------------------------------------
@@ -133,7 +133,7 @@ void StatusBarWidget::updateStyle()
 // -----------------------------------------------------------------------------
 QString StatusBarWidget::generateStyleSheet(bool error)
 {
-  QFont font = QtSStyles::GetBrandingLabelFont();
+  QFont font = SVStyle::Instance()->GetBrandingLabelFont();
   QString fontString;
   QTextStream fontStringStream(&fontString);
 

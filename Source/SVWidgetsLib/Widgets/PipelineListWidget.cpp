@@ -30,7 +30,7 @@
 #include "PipelineListWidget.h"
 
 #include "SVWidgetsLib/Widgets/PipelineModel.h"
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -133,7 +133,7 @@ void PipelineListWidget::setProgressValue(float percent)
 // -----------------------------------------------------------------------------
 QString PipelineListWidget::getStartPipelineIdleStyle()
 {
-  QFont font = QtSStyles::GetHumanLabelFont();
+  QFont font = SVStyle::Instance()->GetHumanLabelFont();
   QString fontString;
   QTextStream in(&fontString);
   in << "font: " << font.weight() << " " <<
@@ -171,7 +171,7 @@ QString PipelineListWidget::getStartPipelineIdleStyle()
 // -----------------------------------------------------------------------------
 QString PipelineListWidget::getStartPipelineInProgressStyle(float percent)
 {
-  QFont font = QtSStyles::GetHumanLabelFont();
+  QFont font = SVStyle::Instance()->GetHumanLabelFont();
   QString fontString;
   QTextStream in(&fontString);
   in << "font: " << font.weight() << " " <<

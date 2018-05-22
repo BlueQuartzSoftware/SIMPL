@@ -6,7 +6,7 @@
 #include <QtGui/QMouseEvent>
 #include <QtWidgets/QStyleOption>
 
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
 // -----------------------------------------------------------------------------
@@ -15,7 +15,7 @@
 StatusBarButton::StatusBarButton(QWidget* parent)
 : QToolButton (parent)
 {
-  //  QFont font = QtSStyles::GetHumanLabelFont();
+  //  QFont font = SVStyle::Instance()->GetHumanLabelFont();
 
   //  QFontMetrics fontMetrics(font);
   //  int fontHeight = fontMetrics.height();
@@ -72,7 +72,7 @@ void StatusBarButton::paintEvent(QPaintEvent* event)
   opt.init(this);
   QPainter painter(this);
   painter.setRenderHint(QPainter::Antialiasing);
-  QFont font = QtSStyles::GetHumanLabelFont();
+  QFont font = SVStyle::Instance()->GetHumanLabelFont();
 
 #if defined(Q_OS_MAC)
   font.setPointSize(font.pointSize() - 4);

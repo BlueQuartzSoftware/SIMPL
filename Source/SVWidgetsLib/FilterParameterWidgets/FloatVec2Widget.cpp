@@ -39,7 +39,7 @@
 
 #include "SIMPLib/FilterParameters/FloatVec2FilterParameter.h"
 
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
@@ -122,7 +122,7 @@ void FloatVec2Widget::widgetChanged(const QString& text)
     if(le->text().isEmpty())
     {
       QString objName = le->objectName();
-      QtSStyles::LineEditErrorStyle(le);
+      SVStyle::Instance()->LineEditErrorStyle(le);
       errorLabel->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
       errorLabel->setText("No value entered. Filter will use default value of " + getFilterParameter()->getDefaultValue().toString());
       errorLabel->show();
@@ -149,7 +149,7 @@ void FloatVec2Widget::filterNeedsInputParameters(AbstractFilter* filter)
     errorLabel->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
     errorLabel->setText("X Value entered is beyond the representable range for a double.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());
     errorLabel->show();
-    QtSStyles::LineEditErrorStyle(xData);
+    SVStyle::Instance()->LineEditErrorStyle(xData);
     data.x = defValue.x;
   }
 
@@ -159,7 +159,7 @@ void FloatVec2Widget::filterNeedsInputParameters(AbstractFilter* filter)
     errorLabel->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
     errorLabel->setText("Y Value entered is beyond the representable range for a double.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());
     errorLabel->show();
-    QtSStyles::LineEditErrorStyle(xData);
+    SVStyle::Instance()->LineEditErrorStyle(xData);
     data.y = defValue.y;
   }
 

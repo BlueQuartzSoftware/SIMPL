@@ -40,6 +40,9 @@ set(SVWidgetsLib_Widgets_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarIssuesButton.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PopUpWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/ProgressDialog.h
+  
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVControlWidgets.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVStyle.h
 )
 
 set(SVWidgetsLib_Widgets_HDRS
@@ -90,6 +93,9 @@ set(SVWidgetsLib_Widgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarIssuesButton.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PopUpWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/ProgressDialog.cpp
+  
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVControlWidgets.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVStyle.cpp
   )
 
 set(SVWidgetsLib_Widgets_UIS

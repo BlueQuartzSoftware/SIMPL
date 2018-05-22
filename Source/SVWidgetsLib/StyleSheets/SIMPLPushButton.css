@@ -1,11 +1,11 @@
 QPushButton#@OBJECT_NAME@ {
-  background-image: url(@IMAGE_PATH@);
+  /* background-image: url(@IMAGE_PATH@); */
   background-repeat: no-repeat;
   background-position: center center;
 }
 
 QPushButton#@OBJECT_NAME@:hover {
-  background-image: url(@IMAGE_PATH@);
+  /* background-image: url(@IMAGE_PATH@); */
   border: 1px solid;
   border-color: rgb(190, 190, 190);
   border-radius: 5px;
@@ -16,7 +16,7 @@ QPushButton#@OBJECT_NAME@:hover {
 
 QPushButton#@OBJECT_NAME@:pressed
 {
-  background-image: url(@IMAGE_PATH@);
+  /* background-image: url(@IMAGE_PATH@); */
   border: 1px solid;
   border-color: rgb(170, 170, 170);
   border-radius: 5px;
@@ -25,7 +25,7 @@ QPushButton#@OBJECT_NAME@:pressed
   background-position: center center;
 }
 QPushButton#@OBJECT_NAME@:disabled {
-  background-image: url(@IMAGE_PATH@);
+  /* background-image: url(@IMAGE_PATH@); */
   background-repeat: no-repeat;
   background-position: center center;
 }

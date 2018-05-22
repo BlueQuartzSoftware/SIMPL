@@ -93,7 +93,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QPushButton" name="addComparison">
+      <widget class="SVIconPushButton" name="addComparison">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -140,7 +140,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="removeComparison">
+      <widget class="SVIconPushButton" name="removeComparison">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -265,6 +265,11 @@ font-weight: bold;
    <class>DataArrayPathSelectionWidget</class>
    <extends>QToolButton</extends>
    <header>DataArrayPathSelectionWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SVIconPushButton</class>
+   <extends>QPushButton</extends>
+   <header location="global">SVControlWidgets.h</header>
   </customwidget>
  </customwidgets>
  <resources>

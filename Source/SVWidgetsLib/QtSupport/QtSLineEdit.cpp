@@ -162,6 +162,7 @@ bool SearchLineEditPrivate::eventFilter(QObject* obj, QEvent* event)
       execMenuAtWidget(m_ButtonMenus[buttonIndex], m_IconButtons[buttonIndex]);
       return true;
     }
+    break;
   default:
     break;
   }
@@ -175,6 +176,7 @@ QtSLineEdit::QtSLineEdit(QWidget* parent)
 : QLineEdit(parent)
 , d(new SearchLineEditPrivate(this))
 {
+  setAttribute(Qt::WA_MacShowFocusRect, false);
   ensurePolished();
   updateMargins();
 

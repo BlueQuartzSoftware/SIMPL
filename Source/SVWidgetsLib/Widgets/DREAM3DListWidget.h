@@ -49,7 +49,7 @@ class SVWidgetsLib_EXPORT DREAM3DListWidget: public QListWidget
     Q_OBJECT
 
   public:
-    DREAM3DListWidget(QWidget* parent = 0);
+    DREAM3DListWidget(QWidget* parent = nullptr);
     virtual ~DREAM3DListWidget();
 
   protected:

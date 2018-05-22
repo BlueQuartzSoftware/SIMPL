@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>566</width>
-    <height>53</height>
+    <height>25</height>
    </rect>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
@@ -31,12 +31,11 @@
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="xData"/>
+    <widget class="SVLineEdit" name="xData"/>
    </item>
    <item>
-    <widget class="QLineEdit" name="yData"/>
+    <widget class="SVLineEdit" name="yData"/>
    </item>
-   
    <item>
     <widget class="QLabel" name="errorLabel">
      <property name="text">
@@ -59,6 +58,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SVLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">SVControlWidgets.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>xData</tabstop>
   <tabstop>yData</tabstop>

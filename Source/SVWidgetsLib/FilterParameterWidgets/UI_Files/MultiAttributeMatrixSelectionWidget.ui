@@ -54,7 +54,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QPushButton" name="upBtn">
+      <widget class="SVIconPushButton" name="upBtn">
        <property name="minimumSize">
         <size>
          <width>24</width>
@@ -89,7 +89,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="downBtn">
+      <widget class="SVIconPushButton" name="downBtn">
        <property name="minimumSize">
         <size>
          <width>24</width>
@@ -124,7 +124,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="removeBtn">
+      <widget class="SVIconPushButton" name="removeBtn">
        <property name="minimumSize">
         <size>
          <width>24</width>
@@ -192,7 +192,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="selectBtn">
+      <widget class="SVIconPushButton" name="selectBtn">
        <property name="minimumSize">
         <size>
          <width>24</width>
@@ -227,7 +227,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="deselectBtn">
+      <widget class="SVIconPushButton" name="deselectBtn">
        <property name="minimumSize">
         <size>
          <width>24</width>
@@ -370,6 +370,11 @@
    <class>DataArrayPathSelectionWidget</class>
    <extends>QToolButton</extends>
    <header>DataArrayPathSelectionWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SVIconPushButton</class>
+   <extends>QPushButton</extends>
+   <header location="global">SVControlWidgets.h</header>
   </customwidget>
  </customwidgets>
  <resources>

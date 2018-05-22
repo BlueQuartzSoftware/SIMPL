@@ -44,7 +44,7 @@
 #include <QtGui/QPalette>
 #include <QtGui/QStaticText>
 
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h"
 #include "SVWidgetsLib/Widgets/DataStructureItem.h"
 #include "SVWidgetsLib/Widgets/DataStructureItemDelegate.h"
@@ -254,7 +254,7 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
 
   // Check for a corresponding icon
   QIcon icon;
-  int iconSize = op.rect.height();
+  int iconSize = option.rect.height();
   var = index.model()->itemData(index)[Qt::DecorationRole];
   if(var.isValid() && var.canConvert<QIcon>())
   {
@@ -296,7 +296,7 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
   // Draw the decoration role if available
   if(iconSize > 0)
   {
-    QRect iconRect(op.rect.x(), op.rect.y(), iconSize, iconSize);
+    QRect iconRect(op.rect.x(), op.rect.y(), option.rect.height(), option.rect.height());
     icon.paint(painter, iconRect);
     textOffset = textOffset + iconSize;
   }

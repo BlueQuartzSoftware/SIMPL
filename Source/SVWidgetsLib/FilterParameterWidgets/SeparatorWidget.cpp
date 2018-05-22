@@ -39,7 +39,7 @@
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "FilterParameterWidgetsDialogs.h"
 
@@ -71,11 +71,11 @@ QString SeparatorWidget::getLabelStyleSheet()
 
   ss << "QLabel#label {";
 #if defined(Q_OS_WIN)
-  ss << "font: 9pt \"" << QtSStyles::GetUIFont() << "\";";
+  ss << "font: 9pt \"" << SVStyle::Instance()->GetUIFont() << "\";";
 #elif defined(Q_OS_MAC)
-  ss << "font: 100 12pt \"" << QtSStyles::GetUIFont() << "\";";
+  ss << "font: 100 12pt \"" << SVStyle::Instance()->GetUIFont() << "\";";
 #else
-  ss << "font: 100 10pt \"" << QtSStyles::GetUIFont() << "\";";
+  ss << "font: 100 10pt \"" << SVStyle::Instance()->GetUIFont() << "\";";
 #endif
   ss << "  font-weight: bold;  }";
   return styleSheet;

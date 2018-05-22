@@ -50,7 +50,7 @@
 #include "SIMPLib/FilterParameters/MultiAttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"

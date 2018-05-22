@@ -50,7 +50,7 @@
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/QtSupport/QtSFileUtils.h"
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 namespace detail
 {
@@ -183,11 +183,11 @@ void FilterParameterWidget::changeStyleSheet(Style style)
   ss << "QFrame {";
 #if 0
 #if defined(Q_OS_WIN)
-  ss << "font: italic 9 pt \"" << QtSStyles::GetUIFont() << "\";";
+  ss << "font: italic 9 pt \"" << SVStyle::GetUIFont() << "\";";
 #elif defined(Q_OS_MAC)
-  ss << "font: italic 12 pt \"" << QtSStyles::GetUIFont() << "\";";
+  ss << "font: italic 12 pt \"" << SVStyle::GetUIFont() << "\";";
 #else
-  ss << "font: italic 10 pt \"" << QtSStyles::GetUIFont() << "\";";
+  ss << "font: italic 10 pt \"" << SVStyle::GetUIFont() << "\";";
 #endif
 #endif
 
@@ -436,11 +436,11 @@ bool FilterParameterWidget::verifyPathExists(QString filePath, QLineEdit* lineEd
   QFileInfo fileinfo(filePath);
   if(false == fileinfo.exists())
   {
-    QtSStyles::LineEditErrorStyle(lineEdit);
+    SVStyle::Instance()->LineEditErrorStyle(lineEdit);
   }
   else
   {
-    QtSStyles::LineEditClearStyle(lineEdit);
+    SVStyle::Instance()->LineEditClearStyle(lineEdit);
   }
   return fileinfo.exists();
 }

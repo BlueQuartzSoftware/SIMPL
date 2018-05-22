@@ -42,7 +42,7 @@
 #include <QtWidgets/QApplication>
 
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 
 
@@ -73,7 +73,7 @@ const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(QString text, QColor 
   font.setBold(true);
   font.setWeight(QFont::Bold);
   font.setStyleStrategy(QFont::PreferAntialias);
-  font.setFamily(QtSStyles::GetUIFont());
+  font.setFamily(SVStyle::Instance()->GetUIFont());
 
   QTextDocument* doc = new QTextDocument();
   doc->setDefaultFont(font);
@@ -340,7 +340,7 @@ DataArrayPathSelectionWidget::DataArrayPathSelectionWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::setupGui()
 {
-  setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
+  setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(false));
   setContextMenuPolicy(Qt::CustomContextMenu);
   setAcceptDrops(true);
   setCheckable(true);
@@ -1102,7 +1102,7 @@ void DataArrayPathSelectionWidget::changeStyleSheet(Style styleType)
   font.setItalic(true);
   font.setWeight(QFont::Bold);
   font.setStyleStrategy(QFont::PreferAntialias);
-  font.setFamily(QtSStyles::GetUIFont());
+  font.setFamily(SVStyle::Instance()->GetUIFont());
 
   QString fontString;
   QTextStream in(&fontString);
@@ -1160,18 +1160,6 @@ void DataArrayPathSelectionWidget::changeStyleSheet(Style styleType)
               background-color: #FFFCEA;\
               color: #000000;\
               }";
-  //  ss << "QToolButton:hover {\n";
-  //  if(exists)
-  //  {
-  //    ss << " border: 2px solid  " << ::kNormalColor << ";\n";
-  //  }
-  //  else
-  //  {
-  //    ss << " border: 2px solid " << ::kErrorColor << ";\n";
-  //  }
-  //  ss << " border-radius: 4px;\n";
-  //  ss << "}\n";
-
   setStyleSheet(styleSheet);
 }
 
@@ -1188,9 +1176,9 @@ void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
   }
 
   int rectWidth = height();
-  int penWidth = 2;
-  int radius = 6;
-  QRect rect(width() - rectWidth - penWidth / 2, penWidth / 2, rectWidth, height() - penWidth);
+  int penWidth = 1;
+  int radius = 10;
+  QRect rect(width() - rectWidth, 0, rectWidth, rectWidth);
   QColor penColor(getColor(Style::Active));
   QColor fillColor(getColor(Style::Active));
   if(m_Style == Style::NotFound)
@@ -1203,26 +1191,24 @@ void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
   }
   
   QPen pen;
+  penColor.setAlpha(50);
   pen.setColor(penColor);
   pen.setWidth(penWidth);
-
   QPainter painter{ this };
+  
+  #if 1
+  QPainterPath ppath;
+  ppath.addRoundRect(rect, radius, radius);
+  painter.setPen(pen);
+  painter.setBrush(fillColor);
+  painter.fillPath(ppath, fillColor);
+  #else
+  
   painter.setPen(pen);
   painter.setBrush(fillColor);
   painter.drawRoundRect(rect, radius, radius);
-
-#if 0
-  // Draw "Drop" Circle
-  int fillBorder = 8;
-  int size = rect.width() - fillBorder;
-  QRect filteringRect = rect;
-  filteringRect.setX(rect.x() + fillBorder / 2);
-  filteringRect.setY(rect.y() + fillBorder / 2 - 1);
-  filteringRect.setWidth(size);
-  filteringRect.setHeight(size);
-  painter.setBrush(QColor(255,255,255));
-  painter.drawChord(filteringRect, 0, 360 * 16);
 #endif
+
 }
 
 // -----------------------------------------------------------------------------

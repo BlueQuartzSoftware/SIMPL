@@ -46,7 +46,7 @@
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetUtils.hpp"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
@@ -115,7 +115,7 @@ void LinkedDataContainerSelectionWidget::setupGui()
   }
   label->setText(getFilterParameter()->getHumanLabel());
 
-  m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
+  m_SelectedDataContainerPath->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(false));
 
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)),
@@ -322,12 +322,12 @@ void LinkedDataContainerSelectionWidget::afterPreflight()
     if (nullptr != dc.get()) {
       QString html = dc->getInfoString(SIMPL::HtmlFormat);
       m_SelectedDataContainerPath->setToolTip(html);
-      m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
+      m_SelectedDataContainerPath->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(true));
     }
   }
   else
   {
-    m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
+    m_SelectedDataContainerPath->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(false));
   }
 }
 

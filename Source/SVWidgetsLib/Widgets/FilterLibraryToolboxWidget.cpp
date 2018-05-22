@@ -43,7 +43,7 @@
 
 #include "FilterListToolboxWidget.h"
 
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 
 
@@ -119,7 +119,7 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
     }
     QIcon icon(iconName);
 #else
-    QIcon icon = QtSStyles::IconForGroup(groupName);
+    QIcon icon = SVStyle::Instance()->IconForGroup(groupName);
 #endif
     QTreeWidgetItem* filterGroup = new QTreeWidgetItem(library);
     filterGroup->setText(0, groupName);

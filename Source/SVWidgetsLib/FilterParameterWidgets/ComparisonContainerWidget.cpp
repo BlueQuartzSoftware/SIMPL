@@ -41,7 +41,7 @@
 
 #include "SVWidgetsLib/FilterParameterWidgets/ComparisonSetWidget.h"
 #include "SVWidgetsLib/FilterParameterWidgets/ComparisonValueWidget.h"
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 // Border stylesheet requires QFrame
 ComparisonContainerWidget* ComparisonContainerWidget::SelectedItem = nullptr;
@@ -82,7 +82,7 @@ void ComparisonContainerWidget::setupGui()
   connect(unionComboBox, SIGNAL(currentIndexChanged(int)),
     this, SLOT(unionOperatorChanged(int)));
     
-    removeBtn->setStyleSheet(QtSStyles::StyleSheetForButton(removeBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::DeleteImagePath));
+    removeBtn->setStyleSheet(SVStyle::Instance()->StyleSheetForButton(removeBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::DeleteImagePath));
  
 }
 

@@ -37,7 +37,7 @@
 
 #include <QtCore/QMetaProperty>
 
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
@@ -124,18 +124,18 @@ void FloatWidget::filterNeedsInputParameters(AbstractFilter* filter)
       errorLabel->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
       errorLabel->setText("Value entered is beyond the representable range for a float.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());
       errorLabel->show();
-      QtSStyles::LineEditErrorStyle(value);
+      SVStyle::Instance()->LineEditErrorStyle(value);
       i = defValue;
     }
     else
     {
       errorLabel->hide();
-      QtSStyles::LineEditClearStyle(value);
+      SVStyle::Instance()->LineEditClearStyle(value);
     }
   }
   else
   {
-    QtSStyles::LineEditErrorStyle(value);
+    SVStyle::Instance()->LineEditErrorStyle(value);
     errorLabel->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
     errorLabel->setText("No value entered. Filter will use default value of " + getFilterParameter()->getDefaultValue().toString());
     errorLabel->show();

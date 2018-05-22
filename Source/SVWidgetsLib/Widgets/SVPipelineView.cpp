@@ -92,7 +92,7 @@
 #include "SVWidgetsLib/Widgets/util/RemoveFilterCommand.h"
 #include "SVWidgetsLib/Widgets/DataStructureWidget.h"
 #include "SVWidgetsLib/Widgets/ProgressDialog.h"
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/QtSupport/QtSRecentFileList.h"
 
 // -----------------------------------------------------------------------------

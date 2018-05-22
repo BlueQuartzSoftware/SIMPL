@@ -51,7 +51,7 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/Widgets/DataContainerArrayWidget.h"
 
 #include "FilterParameterWidgetUtils.hpp"
@@ -113,7 +113,7 @@ void DataArraySelectionWidget::setupGui()
   }
 
   m_SelectedDataArrayPath->setDataArrayRequirements(m_FilterParameter->getRequirements());
-  m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
+  m_SelectedDataArrayPath->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(false));
   m_SelectedDataArrayPath->setFilter(getFilter());
 
   // Generate the text for the QLabel

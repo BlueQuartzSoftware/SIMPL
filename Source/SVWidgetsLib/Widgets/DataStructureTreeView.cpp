@@ -61,7 +61,7 @@ DataStructureTreeView::DataStructureTreeView(QWidget* parent)
 {
   setAcceptDrops(true);
   setMouseTracking(true);
-
+  setAttribute(Qt::WA_MacShowFocusRect, false);
   m_Delegate = new DataStructureItemDelegate(this);
   setItemDelegate(m_Delegate);
 }

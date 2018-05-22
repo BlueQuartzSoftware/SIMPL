@@ -49,7 +49,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="angle"/>
+    <widget class="SVLineEdit" name="angle"/>
    </item>
    <item>
     <widget class="QLabel" name="axisLabel">
@@ -67,16 +67,23 @@
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="h"/>
+    <widget class="SVLineEdit" name="h"/>
    </item>
    <item>
-    <widget class="QLineEdit" name="k"/>
+    <widget class="SVLineEdit" name="k"/>
    </item>
    <item>
-    <widget class="QLineEdit" name="l"/>
+    <widget class="SVLineEdit" name="l"/>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SVLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">SVControlWidgets.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

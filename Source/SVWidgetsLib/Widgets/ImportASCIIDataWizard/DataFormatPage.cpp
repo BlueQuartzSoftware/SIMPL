@@ -43,7 +43,7 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Utilities/StringOperations.h"
 
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
 #include "ASCIIDataModel.h"
@@ -119,8 +119,8 @@ void DataFormatPage::setupGui()
   tupleDimsTable->addTupleDimensions(QVector<size_t>(1, numOfDataLines));
   tupleDimsTable->blockSignals(false);
 
-  selectedDCBtn->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
-  selectedAMBtn->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
+  selectedDCBtn->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(false));
+  selectedAMBtn->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(false));
 
   m_AMMenuMapper = new QSignalMapper(this);
   connect(m_AMMenuMapper, SIGNAL(mapped(QString)),
@@ -260,13 +260,13 @@ void DataFormatPage::amItemSelected(QString path)
   if(nullptr == am.get())
   {
     amSelectionError->setText("An error occured retrieving the Attribute Matrix at " + path);
-    selectedAMBtn->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
+    selectedAMBtn->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(false));
   }
   else
   {
     //amSelectionError->hide();
     amSelectionError->setText("The tuple dimensions of the selected Attribute Matrix will be used for the Attribute Arrays.");
-    selectedAMBtn->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
+    selectedAMBtn->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(true));
   }
 
   ImportASCIIDataWizard* importWizard = dynamic_cast<ImportASCIIDataWizard*>(wizard());
@@ -286,12 +286,12 @@ void DataFormatPage::amItemSelected(QString path)
         QString ss = "The header name \"" + headerName + "\" matches an array name that already exists in the selected attribute matrix.";
         amSelectionError->setText(ss);
         amSelectionError->show();
-        selectedAMBtn->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
+        selectedAMBtn->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(false));
       }
       else
       {
         amSelectionError->hide();
-        selectedAMBtn->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
+        selectedAMBtn->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(true));
       }
     }
   }
@@ -321,13 +321,13 @@ void DataFormatPage::dcItemSelected(QString path)
     QString ss = "An AttributeMatrix at the path '" + dap.serialize("/") + "' already exists. Choose a different attribute matrix name.";
     amCreationError->setText(ss);
     amCreationError->show();
-    QtSStyles::LineEditErrorStyle(amName);
+    SVStyle::Instance()->LineEditErrorStyle(amName);
     return;
   }
 
   amCreationError->hide();
-  selectedDCBtn->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
-  QtSStyles::LineEditClearStyle(amName);
+  selectedDCBtn->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(true));
+  SVStyle::Instance()->LineEditClearStyle(amName);
   checkTupleDimensions(getTupleTable()->getData());
 }
 

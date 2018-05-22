@@ -73,7 +73,9 @@ BookmarksTreeView::BookmarksTreeView(QWidget* parent)
 
   BookmarksItemDelegate* dlg = new BookmarksItemDelegate(this);
   setItemDelegate(dlg);
-
+  
+  setAttribute(Qt::WA_MacShowFocusRect, false);
+  
 #if defined(Q_OS_WIN)
   m_ActionShowBookmarkInFileSystem->setText("Show in Windows Explorer");
 #elif defined(Q_OS_MAC)
@@ -81,7 +83,7 @@ BookmarksTreeView::BookmarksTreeView(QWidget* parent)
 #else
   m_ActionShowBookmarkInFileSystem->setText("Show in File System");
 #endif
-
+  
   m_ActionAddBookmark->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_B));
   m_ActionAddBookmarkFolder->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F));
 
