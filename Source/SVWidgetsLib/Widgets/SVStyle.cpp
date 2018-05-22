@@ -94,26 +94,14 @@ bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
   bool success = true;
   
   QFileInfo jsonFileInfo(jsonFilePath);
-  QString cssFileName = QString("%1/%2.css").arg(jsonFileInfo.absolutePath(), 1).arg(jsonFileInfo.baseName(), 2);
   
   
-  //QString cssFileName(":/StyleSheets/" + name + ".css");
-  QFile cssFile(cssFileName);
-  if(!cssFile.open(QFile::ReadOnly))
-  {
-    qDebug() << "Could not open CSS File " << cssFileName;
-    return false; 
-  }
-  
-//  QString jsonFilePath(":/StyleSheets/" + name + ".json");
   QFile jsonFile(jsonFilePath);
   if(!jsonFile.open(QFile::ReadOnly))
   {
     qDebug() << "Could not open JSON File " << jsonFilePath;
     return false; 
   }
-  
-  QString cssContent = QString::fromLatin1(cssFile.readAll());
   
   QByteArray jsonContent = jsonFile.readAll();
   QJsonParseError parseError;
@@ -126,13 +114,41 @@ bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
   }
   QJsonObject rootObj = jsonDoc.object();
   
-  QStringList keys = rootObj.keys();
+  
+  // Create the CSS File Path and try to read the CSS template file
+  QString cssFileName = rootObj["CSS_File_Name"].toString();
+  cssFileName = QString("%1/%2").arg(jsonFileInfo.absolutePath(), 1).arg(cssFileName, 2);
+  
+  QFile cssFile(cssFileName);
+  if(!cssFile.open(QFile::ReadOnly))
+  {
+    qDebug() << "Could not open CSS File " << cssFileName;
+    return false; 
+  }
+  QString cssContent = QString::fromLatin1(cssFile.readAll());
+  
+  // Read the variable mapping from the JSON file
+  QJsonObject varMapping = rootObj["Named_Variables"].toObject();
+  
+  
+  // Get the CSS Replacements that need to be made
+  QJsonObject cssRepl = rootObj["CSS_Replacements"].toObject();
+  QStringList keys = cssRepl.keys();
   QStringList::const_iterator constIterator;
   for (constIterator = keys.constBegin(); constIterator != keys.constEnd(); ++constIterator)
   {
     const QString key = *constIterator;
-    QString value = rootObj[key].toString();
+    QString value = cssRepl[key].toString();
+    // First see if it is a varible and if it is, then get the real value from
+    // the Named_Variables section
+    if(varMapping.contains(value))
+    {
+      value = varMapping[value].toString();
+    }
+    // Do the replacement
     cssContent = cssContent.replace(key, value);
+   
+    
     if(value.startsWith("#"))
     {
       this->setProperty( key.toLocal8Bit().constData(), QColor(value));
@@ -156,14 +172,44 @@ bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
         }
       }
     }
-    
-    // QFile tmp("/tmp/style.css");
-    // tmp.open(QFile::WriteOnly);
-    // QTextStream out(&tmp);
-    // out << cssContent;
-    // tmp.close();
-    
+  }
   
+  keys.clear();
+  keys << "FilterBackgroundColor"  << "FilterSelectionColor" << "FilterFontColor";
+  for (constIterator = keys.constBegin(); constIterator != keys.constEnd(); ++constIterator)
+  {
+    const QString key = *constIterator;
+    QString value = rootObj[key].toString();
+    // First see if it is a varible and if it is, then get the real value from
+    // the Named_Variables section
+    if(varMapping.contains(value))
+    {
+      value = varMapping[value].toString();
+    }
+    
+    if(value.startsWith("#"))
+    {
+      this->setProperty( key.toLocal8Bit().constData(), QColor(value));
+    }
+    else
+    {
+      bool ok = false;
+      value = value.replace("rgb(", "");
+      value = value.replace(")", "");
+      value = value.replace(" ", "");
+      QStringList tokens = value.split(",");
+      if(tokens.size() == 3)
+      {
+        int r = tokens[0].toInt(&ok);
+        int g = tokens[1].toInt(&ok);
+        int b = tokens[2].toInt(&ok);
+        bool didSet = this->setProperty( key.toLocal8Bit().constData(), QColor(r, g, b));
+        if(!didSet)
+        {
+          qDebug() << "Property: " << key << " was not set correctly";
+        }
+      }
+    }
   }
   
 
