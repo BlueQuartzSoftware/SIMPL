@@ -545,7 +545,7 @@ void SVPipelineView::cancelPipeline()
 // -----------------------------------------------------------------------------
 void SVPipelineView::finishPipeline()
 {
-  if(nullptr == m_PipelineInFlight || false == m_PipelineConnection)
+  if((nullptr == m_PipelineInFlight) || (!m_PipelineConnection))
   {
     return;
   }
