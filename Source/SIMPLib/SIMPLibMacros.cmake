@@ -2,7 +2,7 @@
 # Add Unit Test for Plugins and Filters
 # 
 function(SIMPL_GenerateUnitTestFile)
-  set(options)
+  set(options USE_QTGUI)
   set(oneValueArgs PLUGIN_NAME TEST_DATA_DIR)
   set(multiValueArgs SOURCES LINK_LIBRARIES INCLUDE_DIRS EXTRA_SOURCES)
   cmake_parse_arguments(P "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
@@ -44,6 +44,13 @@ function(SIMPL_GenerateUnitTestFile)
 
   if(NOT "${TestMainFunctors}" STREQUAL "")
     STRING(REPLACE "|" ";" TestMainFunctors ${TestMainFunctors}   )
+  endif()
+
+  set(QT_APPLICATION_CLASS_HEADER "#include <QtCore/QCoreApplication>")
+  set(QT_APPLICATION_CLASS "QCoreApplication")
+  if(P_USE_QTGUI)
+    set(QT_APPLICATION_CLASS_HEADER "#include <QtGui/QGuiApplication>")
+    set(QT_APPLICATION_CLASS "QGuiApplication")
   endif()
 
   configure_file(${SIMPLProj_SOURCE_DIR}/Source/SIMPLib/Testing/TestMain.cpp.in
