@@ -339,7 +339,7 @@ DataArrayPathSelectionWidget::DataArrayPathSelectionWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::setupGui()
 {
-  setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(false));
+  //setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(false));
   setContextMenuPolicy(Qt::CustomContextMenu);
   setAcceptDrops(true);
   setCheckable(true);
@@ -1116,13 +1116,15 @@ void DataArrayPathSelectionWidget::changeStyleSheet(Style styleType)
   in << "font-weight: Medium;";
 #endif
 
-  in << "font: " << font.weight() << " " << font.pointSize() << "pt \"" << font.family() << "\";";
+  in << "font-weight: " << font.weight() << ";\n";
+  in << "font-size: " << font.pointSize() << "pt;\n";
+  in << "font-family: \"" << font.family() << "\";\n";
 
   ss << "QToolButton {\n";
   ss << " border: 1px solid " << getColor(styleType) << ";\n";
   ss << " border-radius: 4px;\n";
   ss << " background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #DDDDDD, stop: 1 #FFFFFF);\n";
-  ss << fontString << "\n";
+  ss << fontString;
   ss << " padding-left: 16px;\n";
   ss << " padding-right: 12px;\n";
   ss << " padding-top: 2px;\n";
@@ -1159,7 +1161,7 @@ void DataArrayPathSelectionWidget::changeStyleSheet(Style styleType)
               background-color: #FFFCEA;\
               color: #000000;\
               }";
-  setStyleSheet(styleSheet);
+  //setStyleSheet(styleSheet);
 }
 
 // -----------------------------------------------------------------------------
@@ -1228,6 +1230,19 @@ QRect DataArrayPathSelectionWidget::getStyledContentsRect() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QRect DataArrayPathSelectionWidget::getStyledBorderRect() const
+{
+  ensurePolished();
+
+  QStyleOptionButton option;
+  option.initFrom(this);
+
+  return style()->subElementRect(QStyle::SE_PushButtonLayoutItem, &option, this);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
 {
   QToolButton::paintEvent(event);
@@ -1244,10 +1259,10 @@ void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
   
   // Use yMargin because no method designed to return margins or content rect after the stylesheet has been applied 
   // returns the correct value.
-  int rectWidth = contentsRect().height() - yMargin;
+  int rectWidth = getStyledBorderRect().height() + 1;
   int penWidth = 1;
-  int radius = 2;
-  QRect rect(width() - rectWidth - (xMargin / 2 - yMargin), yMargin / 2, rectWidth, rectWidth);
+  int radius = 4;
+  QRect rect(width() - rectWidth, yMargin / 2, rectWidth, rectWidth - yMargin);
   QColor penColor(getColor(Style::Active));
   QColor fillColor(getColor(Style::Active));
   if(m_Style == Style::NotFound)
@@ -1282,25 +1297,31 @@ void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QSize DataArrayPathSelectionWidget::updatedSizeHint(QSize sizeHint) const
+{
+  int xMargin = getXMargin();
+
+  // Check Width
+  QFontMetrics fm(font());
+  int textPadding = xMargin;
+  int textWidth = fm.width(text()) + textPadding;
+  int minWidth = textWidth + xMargin + (2 * sizeHint.height());
+  if(sizeHint.width() < minWidth)
+  {
+    sizeHint.setWidth(minWidth);
+  }
+
+  return sizeHint;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 QSize DataArrayPathSelectionWidget::minimumSizeHint() const
 {
   ensurePolished();
-  QSize minHint = QToolButton::minimumSizeHint();
+  QSize minHint = updatedSizeHint(QToolButton::minimumSizeHint());
 
-  int xMargin = getXMargin();
-  int width = minHint.width();
-  int height = minHint.height();
-  QRect contentsRect = getStyledContentsRect();
-  int deltaWidth = width - contentsRect.width();
-
-  QFontMetrics fm(font());
-  int textWidth = fm.width(text());
-  if(width < textWidth + xMargin + (2 * height) + deltaWidth)
-  {
-    width = textWidth + xMargin + (2 * height) + deltaWidth;
-  }
-
-  minHint.setWidth(width);
   return minHint;
 }
 
@@ -1310,22 +1331,8 @@ QSize DataArrayPathSelectionWidget::minimumSizeHint() const
 QSize DataArrayPathSelectionWidget::sizeHint() const
 {
   ensurePolished();
-  QSize hint = QToolButton::sizeHint();
+  QSize hint = updatedSizeHint(QToolButton::sizeHint());
 
-  int width = hint.width();
-  int height = hint.height();
-  int xMargin = getXMargin();
-  QRect contentsRect = getStyledContentsRect();
-  int deltaWidth = width - contentsRect.width();
-
-  QFontMetrics fm(font());
-  int textWidth = fm.width(text());
-  if(width < textWidth + xMargin + (2 * height) + deltaWidth)
-  {
-    width = textWidth + xMargin + (2 * height) + deltaWidth;
-  }
-
-  hint.setWidth(width);
   return hint;
 }
 

@@ -174,7 +174,7 @@ public:
   QSize minimumSizeHint() const override;
 
   /**
-   * @brief Override the sizeHint for extending the widget enough to paint the active color
+   * @brief Override the minimumSizeHint for extending the widget enough to paint the active color
    */
   QSize sizeHint() const override;
 
@@ -263,10 +263,21 @@ protected:
   int getYMargin() const;
 
   /**
-  * @brief returns the contents rect after styling.
-  * @return
-  */
+   * @brief Returns the contents rect after styling.
+   * @return
+   */
   QRect getStyledContentsRect() const;
+
+  /**
+   * @brief Returns the contents rect after styling.
+   * @return
+   */
+  QRect getStyledBorderRect() const;
+
+  /**
+   * @brief Returns the updated size hint based on the superclass's size hint
+   */
+  QSize updatedSizeHint(QSize sizeHint) const;
 
   /**
   * @brief Handles the mouse-enter event and emits the appropriate viewPaths signal
