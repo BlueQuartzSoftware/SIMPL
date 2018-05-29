@@ -40,7 +40,7 @@
 #include <QtGui/QIntValidator>
 #include <QtGui/QPainter>
 
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/Widgets/BookmarksItem.h"
 #include "SVWidgetsLib/Widgets/BookmarksItemDelegate.h"
 #include "SVWidgetsLib/Widgets/BookmarksModel.h"
@@ -110,14 +110,18 @@ void BookmarksItemDelegate::updateEditorGeometry(QWidget* editor, const QStyleOp
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QSize BookmarksItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+  QSize size = QStyledItemDelegate::sizeHint(option, index);
+  return QSize(size.width(), 20);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void BookmarksItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-  QtSStyles* styles = QtSStyles::Instance();
-
-  if (!styles->hasStyle())
-  {
-    return QStyledItemDelegate::paint(painter, option, index);
-  }
+  SVStyle* styles = SVStyle::Instance();
 
   BookmarksModel* model = BookmarksModel::Instance();
 
@@ -127,43 +131,87 @@ void BookmarksItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem&
   QColor bgColor;
   if (option.state & QStyle::State_Selected)
   {
-    bgColor = styles->getSelectedTreeViewItemBackgroundColor();
+    bgColor = styles->getQTreeViewItemSelectedActive_background_color();
   }
   else if (option.state & QStyle::State_MouseOver)
   {
-    bgColor = styles->getHoveredTreeViewItemBackgroundColor();
+    bgColor = styles->getQTreeViewItemHover_background_color();
   }
   else
   {
     if (model->data(index, BookmarksModel::Roles::ErrorsRole).toBool())
     {
-      bgColor = styles->getTreeViewItemErrorBackgroundColor();
+      bgColor = styles->getQTreeViewItem_error_background_color();
     }
     else
     {
-      bgColor = styles->getTreeViewItemBackgroundColor();
+      bgColor = styles->getQTreeViewItem_background_color();
+    }
+  }
+
+  if (!bgColor.isValid())
+  {
+    if (option.state & QStyle::State_Selected)
+    {
+      bgColor = option.palette.color(QPalette::Highlight);
+    }
+    else if (option.features & QStyleOptionViewItem::Alternate)
+    {
+      bgColor = option.palette.color(QPalette::AlternateBase);
+    }
+    else
+    {
+      if (model->data(index, BookmarksModel::Roles::ErrorsRole).toBool())
+      {
+        bgColor = styles->getQTreeViewItem_error_background_color();
+      }
+      else
+      {
+        bgColor = option.palette.color(QPalette::Base);
+      }
     }
   }
 
   painter->fillRect(option.rect, bgColor);
 
-  QFont font = styles->getTreeViewFont();
+  QColor fontColor;
+  int fontSize = styles->getQTreeViewItem_font_size();
+  QFont font = painter->font();
+  font.setPixelSize(fontSize);
   painter->setFont(font);
 
-  QColor fontColor;
   if (option.state & QStyle::State_MouseOver)
   {
-    fontColor = styles->getHoveredTreeViewItemFontColor();
+    fontColor = styles->getQTreeViewItemHover_color();
   }
   else
   {
     if (model->data(index, BookmarksModel::Roles::ErrorsRole).toBool() && !(option.state & QStyle::State_Selected))
     {
-      fontColor = styles->getTreeViewItemErrorFontColor();
+      fontColor = styles->getQTreeViewItem_error_color();
     }
     else
     {
-      fontColor = styles->getTreeViewItemFontColor();
+      fontColor = styles->getQTreeViewItem_color();
+    }
+  }
+
+  if (!fontColor.isValid())
+  {
+    if (option.state & QStyle::State_Selected)
+    {
+      fontColor = option.palette.color(QPalette::HighlightedText);
+    }
+    else
+    {
+      if (model->data(index, BookmarksModel::Roles::ErrorsRole).toBool() && !(option.state & QStyle::State_Selected))
+      {
+        fontColor = styles->getQTreeViewItem_error_color();
+      }
+      else
+      {
+        fontColor = option.palette.color(QPalette::WindowText);
+      }
     }
   }
 

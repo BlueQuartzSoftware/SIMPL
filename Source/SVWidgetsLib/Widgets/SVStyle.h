@@ -82,6 +82,12 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
      * @return
      */
     static SVStyle* Instance();
+
+    /**
+     * @brief Creates a new singleton instance of this class, deleting the old one if it exists
+     * @return
+     */
+    static SVStyle* NewInstance();
     
     
     SIMPL_INSTANCE_PROPERTY(QColor, CentralWidget_background_color)    
@@ -267,9 +273,18 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     
     SIMPL_INSTANCE_PROPERTY(QColor, QTreeViewItem_background_color)    
     Q_PROPERTY(QColor QTreeViewItem_background_color READ getQTreeViewItem_background_color WRITE setQTreeViewItem_background_color)    
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QTreeViewItem_error_background_color)
+    Q_PROPERTY(QColor QTreeViewItem_error_background_color READ getQTreeViewItem_error_background_color WRITE setQTreeViewItem_error_background_color)
     
     SIMPL_INSTANCE_PROPERTY(QColor, QTreeViewItem_color)
     Q_PROPERTY(QColor QTreeViewItem_color READ getQTreeViewItem_color WRITE setQTreeViewItem_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QTreeViewItem_error_color)
+    Q_PROPERTY(QColor QTreeViewItem_error_color READ getQTreeViewItem_error_color WRITE setQTreeViewItem_error_color)
+
+    SIMPL_INSTANCE_PROPERTY(int, QTreeViewItem_font_size)
+    Q_PROPERTY(int QTreeViewItem_font_size READ getQTreeViewItem_font_size WRITE setQTreeViewItem_font_size)
 
     SIMPL_INSTANCE_PROPERTY(QColor, QTreeViewItemHover_background_color)    
     Q_PROPERTY(QColor QTreeViewItemHover_background_color READ getQTreeViewItemHover_background_color WRITE setQTreeViewItemHover_background_color)    
@@ -302,7 +317,7 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     
     SIMPL_INSTANCE_PROPERTY(QColor, QTreeViewBranchSelectedActive_background_color)    
     Q_PROPERTY(QColor QTreeViewBranchSelectedActive_background_color READ getQTreeViewBranchSelectedActive_background_color WRITE setQTreeViewBranchSelectedActive_background_color)    
-    
+
     
     SIMPL_INSTANCE_PROPERTY(QColor, QTreeViewBranchSelectedNotActive_background_color)    
     Q_PROPERTY(QColor QTreeViewBranchSelectedNotActive_background_color READ getQTreeViewBranchSelectedNotActive_background_color WRITE setQTreeViewBranchSelectedNotActive_background_color)    
@@ -423,5 +438,17 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     
   private:
     static SVStyle* self;
+
+    /**
+     * @brief loadStringProperty
+     * @return
+     */
+    QString loadStringProperty(const QString &key, QJsonObject cssRepl, QJsonObject varMapping);
+
+    /**
+     * @brief loadIntegerProperty
+     * @return
+     */
+    int loadIntegerProperty(const QString &key, QJsonObject cssRepl, QJsonObject varMapping);
 };
 

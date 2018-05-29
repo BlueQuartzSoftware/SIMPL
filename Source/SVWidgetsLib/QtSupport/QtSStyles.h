@@ -92,54 +92,6 @@ class SVWidgetsLib_EXPORT QtSStyles : public QObject
     static QFont GetTitleFont();
 
     /**
-     * @brief getTreeViewFont
-     * @return
-     */
-    QFont getTreeViewFont();
-
-    /**
-     * @brief getTreeViewItemFontColor
-     * @return
-     */
-    QColor getTreeViewItemFontColor();
-
-    /**
-     * @brief getTreeViewItemErrorFontColor
-     * @return
-     */
-    QColor getTreeViewItemErrorFontColor();
-
-    /**
-     * @brief getHoveredTreeViewItemFontColor
-     * @return
-     */
-    QColor getHoveredTreeViewItemFontColor();
-
-    /**
-     * @brief getTreeViewItemBackgroundColor
-     * @return
-     */
-    QColor getTreeViewItemBackgroundColor();
-
-    /**
-     * @brief getTreeViewItemErrorBackgroundColor
-     * @return
-     */
-    QColor getTreeViewItemErrorBackgroundColor();
-
-    /**
-     * @brief getSelectedTreeViewItemBackgroundColor
-     * @return
-     */
-    QColor getSelectedTreeViewItemBackgroundColor();
-
-    /**
-     * @brief getHoveredTreeViewItemBackgroundColor
-     * @return
-     */
-    QColor getHoveredTreeViewItemBackgroundColor();
-
-    /**
      * @brief GetFilterBackgroundColor
      * @return
      */
@@ -205,56 +157,11 @@ class SVWidgetsLib_EXPORT QtSStyles : public QObject
      */
     static QString StyleSheetForButton(const QString &objectName, const QString &cssName, const QString &imageName);
 
-    /**
-     * @brief hasStyle
-     * @return
-     */
-    bool hasStyle();
-
-    /**
-     * @brief setStyleFilePath
-     * @param styleFilePath
-     */
-    void setStyleFilePath(const QString &styleFilePath);
-
   protected:
     QtSStyles();
 
-    /**
-     * @brief updateStyle
-     */
-    void updateStyle();
-
   private:
     static QtSStyles* m_Self;
-
-    QString m_StyleFilePath;
-    QFont m_TreeViewFont;
-    QColor m_TreeViewItemFontColor;
-    QColor m_TreeViewItemErrorFontColor;
-    QColor m_HoveredTreeViewItemFontColor;
-    QColor m_TreeViewItemBackgroundColor;
-    QColor m_TreeViewItemErrorBackgroundColor;
-    QColor m_SelectedTreeViewItemBackgroundColor;
-    QColor m_HoveredTreeViewItemBackgroundColor;
-
-    bool m_HasStyle = false;
-
-    /**
-     * @brief fromRGBString
-     * @param rgbString
-     * @return
-     */
-    QColor fromRGBString(const QString &rgbString, bool &success);
-
-    void updateTreeViewFont(QJsonObject cssRepl, QJsonObject varMapping);
-    void updateTreeViewItemFontColor(QJsonObject cssRepl, QJsonObject varMapping);
-    void updateHoveredTreeViewItemFontColor(QJsonObject cssRepl, QJsonObject varMapping);
-    void updateTreeViewItemBackgroundColor(QJsonObject cssRepl, QJsonObject varMapping);
-    void updateSelectedTreeViewItemBackgroundColor(QJsonObject cssRepl, QJsonObject varMapping);
-    void updateHoveredTreeViewItemBackgroundColor(QJsonObject cssRepl, QJsonObject varMapping);
-    void updateTreeViewItemErrorFontColor(QJsonObject cssRepl, QJsonObject varMapping);
-    void updateTreeViewItemErrorBackgroundColor(QJsonObject cssRepl, QJsonObject varMapping);
 };
 
 #endif /* _SIMPLViewStyles_H_ */
