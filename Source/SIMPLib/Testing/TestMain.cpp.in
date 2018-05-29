@@ -10,7 +10,10 @@ generated file. Edit the original file
 #endif
 
 
-#include <QtCore/QCoreApplication>
+//#include <QtCore/QCoreApplication>
+@QT_APPLICATION_CLASS_HEADER@
+
+
 
 #include "SIMPLib/SIMPLib.h"
 
@@ -33,11 +36,11 @@ int main(int argc, char** argv)
 {
   int err = EXIT_SUCCESS;
 
-  // Instantiate the QCoreApplication that we need to get the current path and load plugins.
-  QCoreApplication app(argc, argv);
-  QCoreApplication::setOrganizationName("Your Company");
-  QCoreApplication::setOrganizationDomain("Your Domain");
-  QCoreApplication::setApplicationName("@PluginName@");
+  // Instantiate the @QT_APPLICATION_CLASS@ that we need to get the current path and load plugins.
+  @QT_APPLICATION_CLASS@ app(argc, argv);
+  @QT_APPLICATION_CLASS@::setOrganizationName("Your Company");
+  @QT_APPLICATION_CLASS@::setOrganizationDomain("Your Domain");
+  @QT_APPLICATION_CLASS@::setApplicationName("@PluginName@");
 
 #ifdef SIMPL_Group_FILTERS
   // Register all the filters including trying to load those from Plugins

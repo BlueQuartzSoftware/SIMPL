@@ -32,7 +32,7 @@
    <item row="6" column="0">
     <layout class="QGridLayout" name="gridLayout_20">
      <item row="1" column="3">
-      <widget class="QSpinBox" name="endIndex">
+      <widget class="SVSpinBox" name="endIndex">
        <property name="minimumSize">
         <size>
          <width>75</width>
@@ -67,7 +67,7 @@ font-size: 11px;
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QSpinBox" name="startIndex">
+      <widget class="SVSpinBox" name="startIndex">
        <property name="minimumSize">
         <size>
          <width>75</width>
@@ -193,7 +193,7 @@ font-size: 11px;
       </widget>
      </item>
      <item row="3" column="5">
-      <widget class="QSpinBox" name="totalDigits">
+      <widget class="SVSpinBox" name="totalDigits">
        <property name="toolTip">
         <string>The number of digits to allow for the slice index.</string>
        </property>
@@ -219,7 +219,7 @@ font-size: 11px;
       </widget>
      </item>
      <item row="1" column="5">
-      <widget class="QSpinBox" name="increment">
+      <widget class="SVSpinBox" name="increment">
        <property name="minimumSize">
         <size>
          <width>75</width>
@@ -503,6 +503,11 @@ font-size: 11px;
    <class>QtSLineEdit</class>
    <extends>QLineEdit</extends>
    <header location="global">QtSLineEdit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SVSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header location="global">SVControlWidgets.h</header>
   </customwidget>
   <customwidget>
    <class>SVLineEdit</class>

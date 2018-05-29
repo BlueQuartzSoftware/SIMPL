@@ -1,6 +1,8 @@
 #pragma once
 
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpinBox>
+#include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QToolButton>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QTreeView>
@@ -50,6 +52,33 @@ class SVWidgetsLib_EXPORT SVToolButton : public QToolButton
   
 };
 
+/**
+ * @brief The SVSpinBox class Our stylable QSpinBox class that has its
+ * own set of CSS rules.
+ */
+class SVWidgetsLib_EXPORT SVSpinBox : public QSpinBox
+{
+  Q_OBJECT
+
+  public:
+  SVSpinBox(QWidget* parent = nullptr);
+  virtual ~SVSpinBox();
+
+};
+
+/**
+ * @brief The SVDoubleSpinBox class Our stylable QDoubleSpinBox class that has its
+ * own set of CSS rules.
+ */
+class SVWidgetsLib_EXPORT SVDoubleSpinBox : public QDoubleSpinBox
+{
+  Q_OBJECT
+
+  public:
+  SVDoubleSpinBox(QWidget* parent = nullptr);
+  virtual ~SVDoubleSpinBox();
+
+};
 
 
 /**

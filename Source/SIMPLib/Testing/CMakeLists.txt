@@ -31,6 +31,8 @@ configure_file(${SIMPLProj_SOURCE_DIR}/Resources/UnitTestSupport.hpp
 STRING(REPLACE "|" ";" TestMainFunctors "${SIMPLib_UnitTest_MainFunctors}")
 set(FilterTestIncludes  "${SIMPLib_UnitTest_Includes}")
 
+set(QT_APPLICATION_CLASS_HEADER "#include <QtCore/QCoreApplication>")
+set(QT_APPLICATION_CLASS "QCoreApplication")
 
 configure_file(${SIMPLTest_SOURCE_DIR}/TestMain.cpp.in
           ${SIMPLTest_BINARY_DIR}/SIMPLUnitTest.cpp @ONLY)
