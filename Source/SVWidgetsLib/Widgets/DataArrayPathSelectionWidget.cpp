@@ -1116,7 +1116,7 @@ void DataArrayPathSelectionWidget::changeStyleSheet(Style styleType)
   in << "color; #000000;\n";
   in << "font-weight: Medium;";
 #endif
-
+#if 0
   in << "font: " << font.weight() << " " << font.pointSize() << "pt \"" << font.family() << "\";";
 
   ss << "QToolButton {\n";
@@ -1138,6 +1138,7 @@ void DataArrayPathSelectionWidget::changeStyleSheet(Style styleType)
   ss << "QToolButton::menu-indicator:pressed, QToolButton::menu-indicator:open {\n";
   ss << " position: relative;\n";
   ss << "}\n";
+#endif
 
   QColor checkedColor = getColor(styleType);
   int hue = checkedColor.hsvHue();
@@ -1147,7 +1148,7 @@ void DataArrayPathSelectionWidget::changeStyleSheet(Style styleType)
   ss << "QToolButton:checked {\n";
   ss << " background-color: " << checkedColor.name() << ";\n";
   ss << "}\n";
-
+#if 0
   ss << "QToolButton:flat {\n";
   ss << " border: none;\n";
   ss << "}\n";
@@ -1160,7 +1161,9 @@ void DataArrayPathSelectionWidget::changeStyleSheet(Style styleType)
               background-color: #FFFCEA;\
               color: #000000;\
               }";
-  setStyleSheet(styleSheet);
+#endif
+              
+ setStyleSheet(styleSheet);
 }
 
 // -----------------------------------------------------------------------------

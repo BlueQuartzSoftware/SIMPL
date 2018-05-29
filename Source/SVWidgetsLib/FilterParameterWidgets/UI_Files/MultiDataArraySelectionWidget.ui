@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>624</width>
-    <height>172</height>
+    <width>583</width>
+    <height>247</height>
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout" columnstretch="1,0,1,0">
@@ -98,7 +98,7 @@
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QListWidget" name="availableArraysListWidget">
+    <widget class="SVListWidget" name="availableArraysListWidget">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>1</horstretch>
@@ -244,7 +244,7 @@
     </layout>
    </item>
    <item row="2" column="2">
-    <widget class="QListWidget" name="selectedArraysListWidget">
+    <widget class="SVListWidget" name="selectedArraysListWidget">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>1</horstretch>
@@ -419,6 +419,11 @@
   <customwidget>
    <class>SVIconPushButton</class>
    <extends>QPushButton</extends>
+   <header location="global">SVControlWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SVListWidget</class>
+   <extends>QListWidget</extends>
    <header location="global">SVControlWidgets.h</header>
   </customwidget>
  </customwidgets>

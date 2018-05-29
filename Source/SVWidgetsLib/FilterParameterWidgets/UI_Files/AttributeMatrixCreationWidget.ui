@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>629</width>
+    <width>609</width>
     <height>30</height>
    </rect>
   </property>
@@ -63,15 +63,15 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>DataArrayPathSelectionWidget</class>
+   <extends>QToolButton</extends>
+   <header>DataArrayPathSelectionWidget.h</header>
+  </customwidget>
+  <customwidget>
    <class>QtSStringEdit</class>
    <extends>QWidget</extends>
    <header>QtSStringEdit.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>DataArrayPathSelectionWidget</class>
-   <extends>QToolButton</extends>
-   <header>DataArrayPathSelectionWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
