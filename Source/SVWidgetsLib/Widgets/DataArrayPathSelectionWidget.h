@@ -174,6 +174,11 @@ public:
   QSize minimumSizeHint() const override;
 
   /**
+   * @brief Override the sizeHint for extending the widget enough to paint the active color
+   */
+  QSize sizeHint() const override;
+
+  /**
   * @brief Returns the property name set for this widget
   * @return
   */
@@ -244,6 +249,24 @@ protected:
   * @param styleType
   */
   void changeStyleSheet(Style styleType);
+
+  /**
+   * @brief Returns the X margin
+   * @return
+   */
+  int getXMargin() const;
+
+  /**
+   * @brief Returns the Y margin
+   * @return
+   */
+  int getYMargin() const;
+
+  /**
+  * @brief returns the contents rect after styling.
+  * @return
+  */
+  QRect getStyledContentsRect() const;
 
   /**
   * @brief Handles the mouse-enter event and emits the appropriate viewPaths signal

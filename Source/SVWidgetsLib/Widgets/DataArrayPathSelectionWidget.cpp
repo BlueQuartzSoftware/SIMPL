@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "DataArrayPathSelectionWidget.h"
 
@@ -41,10 +41,9 @@
 #include <QtGui/QTextDocument>
 #include <QtWidgets/QApplication>
 
+#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
-#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
-
 
 // -----------------------------------------------------------------------------
 //
@@ -330,7 +329,7 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
 //
 // -----------------------------------------------------------------------------
 DataArrayPathSelectionWidget::DataArrayPathSelectionWidget(QWidget* parent)
-  : QToolButton(parent)
+: QToolButton(parent)
 {
   setupGui();
 }
@@ -898,7 +897,7 @@ void DataArrayPathSelectionWidget::dropEvent(QDropEvent* event)
   QString dataStr = QString::fromUtf8(data);
 
   setDataArrayPath(DataArrayPath::Deserialize(dataStr, "|"));
-  
+
   setChecked(false);
 
   event->accept();
@@ -941,7 +940,7 @@ void DataArrayPathSelectionWidget::performDrag()
   DataArrayPath path = getDataArrayPath();
   emit filterPath(path);
 
-  // MimeData stores the current path AND marks itself as a SelectionWidget drag 
+  // MimeData stores the current path AND marks itself as a SelectionWidget drag
   // for connecting to the DataStructureWidget.
   QMimeData* mimeData = new QMimeData;
   mimeData->setData(SIMPLView::DragAndDrop::DataArrayPath, path.serialize().toUtf8());
@@ -1000,14 +999,14 @@ void DataArrayPathSelectionWidget::afterPreflight()
     }
     break;
   case DataArrayPath::DataType::DataArray:
+  {
+    AttributeMatrix::Pointer am = dca->getAttributeMatrix(getDataArrayPath());
+    if(am && am->getAttributeArray(getDataArrayPath().getDataArrayName()))
     {
-      AttributeMatrix::Pointer am = dca->getAttributeMatrix(getDataArrayPath());
-      if(am && am->getAttributeArray(getDataArrayPath().getDataArrayName()))
-      {
-        found = true;
-      }
+      found = true;
     }
-    break;
+  }
+  break;
   case DataArrayPath::DataType::None:
     break;
   }
@@ -1030,7 +1029,7 @@ void DataArrayPathSelectionWidget::setPathFiltering(bool active)
 {
   setChecked(active);
   m_FilteringPassed = false;
-  
+
   if(false == active && false == underMouse())
   {
     if(checkCurrentPath())
@@ -1166,6 +1165,69 @@ void DataArrayPathSelectionWidget::changeStyleSheet(Style styleType)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+int DataArrayPathSelectionWidget::getXMargin() const
+{
+  ensurePolished();
+
+  // This roundabout calculation is to solve the problem where methods designed to return the margins or content rect
+  // after the stylesheet has been applied are not returning the correct result.
+  int xMargin;
+  {
+    QStyleOptionButton option;
+    option.initFrom(this);
+
+    QRect contentsRect1 = style()->subElementRect(QStyle::SE_PushButtonLayoutItem, &option, this);
+    QRect contentsRect2 = style()->subElementRect(QStyle::SE_PushButtonContents, &option, this);
+
+    int width1 = contentsRect1.width();
+    int width2 = contentsRect2.width();
+    xMargin = (width1 - width2) / 2;
+  }
+
+  return xMargin;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int DataArrayPathSelectionWidget::getYMargin() const
+{
+  ensurePolished();
+
+  // This roundabout calculation is to solve the problem where methods designed to return the margins or content rect
+  // after the stylesheet has been applied are not returning the correct result.
+  int yMargin;
+  {
+    QStyleOptionButton option;
+    option.initFrom(this);
+
+    QRect contentsRect1 = style()->subElementRect(QStyle::SE_PushButtonLayoutItem, &option, this);
+    QRect contentsRect2 = style()->subElementRect(QStyle::SE_PushButtonContents, &option, this);
+
+    int height1 = contentsRect1.height();
+    int height2 = contentsRect2.height();
+    yMargin = (height1 - height2) / 2;
+  }
+
+  return yMargin;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QRect DataArrayPathSelectionWidget::getStyledContentsRect() const
+{
+  ensurePolished();
+
+  QStyleOptionButton option;
+  option.initFrom(this);
+
+  return style()->subElementRect(QStyle::SE_PushButtonContents, &option, this);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
 {
   QToolButton::paintEvent(event);
@@ -1175,10 +1237,17 @@ void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
     return;
   }
 
-  int rectWidth = height();
+  ensurePolished();
+
+  int xMargin = getXMargin();
+  int yMargin = getYMargin();
+  
+  // Use yMargin because no method designed to return margins or content rect after the stylesheet has been applied 
+  // returns the correct value.
+  int rectWidth = contentsRect().height() - yMargin;
   int penWidth = 1;
-  int radius = 10;
-  QRect rect(width() - rectWidth, 0, rectWidth, rectWidth);
+  int radius = 2;
+  QRect rect(width() - rectWidth - (xMargin / 2 - yMargin), yMargin / 2, rectWidth, rectWidth);
   QColor penColor(getColor(Style::Active));
   QColor fillColor(getColor(Style::Active));
   if(m_Style == Style::NotFound)
@@ -1189,26 +1258,25 @@ void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
   {
     fillColor = QColor("#DDDDDD");
   }
-  
+
   QPen pen;
   penColor.setAlpha(50);
   pen.setColor(penColor);
   pen.setWidth(penWidth);
-  QPainter painter{ this };
-  
-  #if 1
+  QPainter painter{this};
+
+#if 0
   QPainterPath ppath;
-  ppath.addRoundRect(rect, radius, radius);
+  ppath.addRoundedRect(rect, radius, radius);
   painter.setPen(pen);
   painter.setBrush(fillColor);
   painter.fillPath(ppath, fillColor);
-  #else
-  
+#else
   painter.setPen(pen);
   painter.setBrush(fillColor);
-  painter.drawRoundRect(rect, radius, radius);
+  painter.drawRoundedRect(rect, radius, radius);
+  painter.drawRect(rect.x(), rect.y(), radius, rect.height());
 #endif
-
 }
 
 // -----------------------------------------------------------------------------
@@ -1216,9 +1284,49 @@ void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
 // -----------------------------------------------------------------------------
 QSize DataArrayPathSelectionWidget::minimumSizeHint() const
 {
+  ensurePolished();
   QSize minHint = QToolButton::minimumSizeHint();
-  minHint.setWidth(minHint.width() + 2 * minHint.height());
+
+  int xMargin = getXMargin();
+  int width = minHint.width();
+  int height = minHint.height();
+  QRect contentsRect = getStyledContentsRect();
+  int deltaWidth = width - contentsRect.width();
+
+  QFontMetrics fm(font());
+  int textWidth = fm.width(text());
+  if(width < textWidth + xMargin + (2 * height) + deltaWidth)
+  {
+    width = textWidth + xMargin + (2 * height) + deltaWidth;
+  }
+
+  minHint.setWidth(width);
   return minHint;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QSize DataArrayPathSelectionWidget::sizeHint() const
+{
+  ensurePolished();
+  QSize hint = QToolButton::sizeHint();
+
+  int width = hint.width();
+  int height = hint.height();
+  int xMargin = getXMargin();
+  QRect contentsRect = getStyledContentsRect();
+  int deltaWidth = width - contentsRect.width();
+
+  QFontMetrics fm(font());
+  int textWidth = fm.width(text());
+  if(width < textWidth + xMargin + (2 * height) + deltaWidth)
+  {
+    width = textWidth + xMargin + (2 * height) + deltaWidth;
+  }
+
+  hint.setWidth(width);
+  return hint;
 }
 
 // -----------------------------------------------------------------------------
@@ -1298,7 +1406,7 @@ QMenu* DataArrayPathSelectionWidget::createSelectionMenu()
     {
       QAction* action = menu->addAction(dc->getName());
       action->setEnabled(checkPathReqs(path));
-      connect(action, &QAction::triggered, this, [=] {setDataArrayPath(path); } );
+      connect(action, &QAction::triggered, this, [=] { setDataArrayPath(path); });
     }
     else
     {
@@ -1320,8 +1428,8 @@ QMenu* DataArrayPathSelectionWidget::createSelectionMenu()
         {
           QAction* action = dcMenu->addAction(am->getName());
           action->setEnabled(checkPathReqs(path));
-          connect(action, &QAction::triggered, this, [=] {setDataArrayPath(path); });
-          
+          connect(action, &QAction::triggered, this, [=] { setDataArrayPath(path); });
+
           if(checkPathReqs(path))
           {
             dcMenuEnabled = true;
@@ -1345,7 +1453,7 @@ QMenu* DataArrayPathSelectionWidget::createSelectionMenu()
 
             QAction* action = amMenu->addAction(daName);
             action->setEnabled(checkPathReqs(path));
-            connect(action, &QAction::triggered, this, [=] {setDataArrayPath(path); });
+            connect(action, &QAction::triggered, this, [=] { setDataArrayPath(path); });
 
             if(checkPathReqs(path))
             {
