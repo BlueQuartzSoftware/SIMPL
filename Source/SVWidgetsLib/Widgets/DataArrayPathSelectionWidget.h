@@ -60,6 +60,16 @@ class DataArrayPathSelectionWidget : public QToolButton
   Q_OBJECT
 
 public:
+  enum class State
+  {
+    Normal,
+    Active,
+    NotFound,
+    DragEnabled,
+    DragDisabled
+  };
+  Q_ENUM(State)
+
   static const QPixmap CreateDragIcon(DataArrayPath path);
   static const QPixmap CreateDragIcon(QString text, DataArrayPath::DataType dataType);
   static const QPixmap CreateDragIcon(QString text, QColor backgroundColor);
@@ -70,6 +80,9 @@ public:
 
   DataArrayPathSelectionWidget(QWidget* parent = nullptr);
   virtual ~DataArrayPathSelectionWidget() = default;
+
+  Q_PROPERTY(DataArrayPath::DataType PathType READ getDataType)
+  Q_PROPERTY(State State READ getState)
 
   /**
   * @brief Returns the type of DataArrayPath this widget can handle
@@ -233,22 +246,22 @@ signals:
   void pathChanged();
 
 protected:
-  enum class Style
-  {
-    Normal,
-    Active,
-    NotFound,
-    DragEnabled,
-    DragDisabled
-  };
-
+  /**
+   * @brief Performs initial setup for the GUI
+   */
   void setupGui();
+
+  /**
+   * @brief Returns the current State
+   * @return
+   */
+  State getState();
 
   /**
   * @brief Change the stylesheet based on the widget state
   * @param styleType
   */
-  void changeStyleSheet(Style styleType);
+  void setState(State styleType);
 
   /**
    * @brief Returns the X margin
@@ -366,7 +379,7 @@ protected:
   * @brief Returns the color code for the given Style
   * @param style
   */
-  const QString getColor(Style style);
+  const QString getColor(State style);
 
   /**
   * @brief Override the paint event to mark the DataType required
@@ -403,7 +416,7 @@ private slots:
 
 private:
   DataArrayPath::DataType m_DataType = DataArrayPath::DataType::None;
-  Style m_Style = Style::Normal;
+  State m_State = State::Normal;
   AbstractFilter* m_Filter = nullptr;
   DataContainerSelectionFilterParameter::RequirementType m_DataContainerReqs;
   AttributeMatrixSelectionFilterParameter::RequirementType m_AttrMatrixReqs;
@@ -415,3 +428,5 @@ private:
 
   void performDrag();
 };
+
+Q_DECLARE_METATYPE(DataArrayPathSelectionWidget::State)

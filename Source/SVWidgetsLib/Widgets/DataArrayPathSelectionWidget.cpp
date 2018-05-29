@@ -339,12 +339,84 @@ DataArrayPathSelectionWidget::DataArrayPathSelectionWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::setupGui()
 {
-  //setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(false));
+  // setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(false));
   setContextMenuPolicy(Qt::CustomContextMenu);
   setAcceptDrops(true);
   setCheckable(true);
 
   connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenu(const QPoint&)));
+
+  #if 0
+  // Set StyleSheet
+  QString styleSheet;
+  QTextStream ss(&styleSheet);
+
+  ss << "DataArrayPathSelectionWidget\n";
+  ss << "{\n";
+  ss << " font-weight: normal;\n";
+  ss << " border: 1px solid;\n";
+  ss << " font-size: 12px;\n";
+  ss << " border-radius : 4px;\n";
+  ss << " background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #DDDDDD, stop: 1 #FFFFFF);\n";
+  ss << " padding-left: 12px;\n";
+  ss << " padding-right: 16px;\n";
+  ss << " padding-top: 2px;\n";
+  ss << " padding-bottom: 2px;\n";
+  ss << "}\n";
+  /*
+   * State: { Normal, Active, NotFound, DragEnabled, DragDisabled }
+   * PathType: { DataContainer, AttributeMatrix, DataArray, None }
+   */
+  ss << "DataArrayPathSelectionWidget[State=\"0\"]\n";
+  ss << "{ \n";
+  ss << " border-color: #7c7c7c;\n";
+  ss << "}\n";
+
+  ss << "DataArrayPathSelectionWidget[State=\"1\"][PathType=\"0\"]\n";
+  ss << "{ \n";
+  ss << " border-color: #009933;\n";
+  ss << "}\n";
+  ss << "DataArrayPathSelectionWidget[State=\"1\"][PathType=\"1\"]\n";
+  ss << "{ \n";
+  ss << " border-color: #6d00b6;\n";
+  ss << "}\n";
+  ss << "DataArrayPathSelectionWidget[State=\"1\"][PathType=\"2\"]\n";
+  ss << "{ \n";
+  ss << " border-color: #005994;\n";
+  ss << "}\n";
+
+  ss << "DataArrayPathSelectionWidget[State=\"2\"]\n";
+  ss << "{ \n";
+  ss << " border - color : #990000;\n";
+  ss << "}\n";
+  ss << "DataArrayPathSelectionWidget[State=\"3\"]\n";
+  ss << "{ \n";
+  ss << " border-color: #009933;\n";
+  ss << "}\n";
+  ss << "DataArrayPathSelectionWidget[State=\"4\"]\n";
+  ss << "{ \n";
+  ss << " border-color: #d1d1d1;\n";
+  ss << "}\n";
+
+  ss << "DataArrayPathSelectionWidget:checked\n";
+  ss << "{ \n";
+  ss << " background-color: #ff9c8f;\n";
+  ss << "}\n";
+  ss << "DataArrayPathSelectionWidget:checked[PathType=\"0\"]\n";
+  ss << "{ \n";
+  ss << " background-color: #9dffa2;\n";
+  ss << "}\n";
+  ss << "DataArrayPathSelectionWidget:checked[PathType=\"1\"]\n";
+  ss << "{ \n";
+  ss << " background-color: #d89dff;\n";
+  ss << "}\n";
+  ss << "DataArrayPathSelectionWidget:checked[PathType=\"2\"]\n";
+  ss << "{ \n";
+  ss << " background-color: #9dafff;\n";
+  ss << "}\n";
+
+  setStyleSheet(styleSheet);
+#endif
 }
 
 // -----------------------------------------------------------------------------
@@ -819,7 +891,7 @@ void DataArrayPathSelectionWidget::enterEvent(QEvent* event)
     break;
   }
 
-  changeStyleSheet(Style::Active);
+  setState(State::Active);
 }
 
 // -----------------------------------------------------------------------------
@@ -837,11 +909,11 @@ void DataArrayPathSelectionWidget::leaveEvent(QEvent* event)
   emit endViewPaths();
   if(checkCurrentPath())
   {
-    changeStyleSheet(Style::Normal);
+    setState(State::Normal);
   }
   else
   {
-    changeStyleSheet(Style::NotFound);
+    setState(State::NotFound);
   }
 }
 
@@ -867,7 +939,7 @@ void DataArrayPathSelectionWidget::dragEnterEvent(QDragEnterEvent* event)
 
   if(checkPathReqs(path))
   {
-    changeStyleSheet(Style::DragEnabled);
+    setState(State::DragEnabled);
     event->accept();
   }
 }
@@ -1014,11 +1086,11 @@ void DataArrayPathSelectionWidget::afterPreflight()
   // Update StyleSheet
   if(found)
   {
-    changeStyleSheet(Style::Normal);
+    setState(State::Normal);
   }
   else
   {
-    changeStyleSheet(Style::NotFound);
+    setState(State::NotFound);
   }
 }
 
@@ -1034,11 +1106,11 @@ void DataArrayPathSelectionWidget::setPathFiltering(bool active)
   {
     if(checkCurrentPath())
     {
-      changeStyleSheet(Style::Normal);
+      setState(State::Normal);
     }
     else
     {
-      changeStyleSheet(Style::NotFound);
+      setState(State::NotFound);
     }
   }
 
@@ -1056,7 +1128,7 @@ void DataArrayPathSelectionWidget::resetStyle()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataArrayPathSelectionWidget::getColor(Style style)
+const QString DataArrayPathSelectionWidget::getColor(State style)
 {
   QSharedPointer<QtSSettings> prefs = QSharedPointer<QtSSettings>(new QtSSettings());
   prefs->beginGroup("DataArrayPath Styles");
@@ -1065,19 +1137,19 @@ const QString DataArrayPathSelectionWidget::getColor(Style style)
 
   switch(style)
   {
-  case Style::Normal:
+  case State::Normal:
     color = prefs->value("Normal", SIMPLView::DataArrayPath::DefaultColors::NormalColor).toString();
     break;
-  case Style::Active:
+  case State::Active:
     color = GetActiveColor(m_DataType);
     break;
-  case Style::NotFound:
-    color = prefs->value("NotFount", SIMPLView::DataArrayPath::DefaultColors::ErrorColor).toString();
+  case State::NotFound:
+    color = prefs->value("NotFound", SIMPLView::DataArrayPath::DefaultColors::ErrorColor).toString();
     break;
-  case Style::DragEnabled:
+  case State::DragEnabled:
     color = prefs->value("DragEnabled", SIMPLView::DataArrayPath::DefaultColors::AcceptColor).toString();
     break;
-  case Style::DragDisabled:
+  case State::DragDisabled:
     color = prefs->value("DragDisabled", SIMPLView::DataArrayPath::DefaultColors::RejectColor).toString();
     break;
   }
@@ -1089,10 +1161,18 @@ const QString DataArrayPathSelectionWidget::getColor(Style style)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayPathSelectionWidget::changeStyleSheet(Style styleType)
+DataArrayPathSelectionWidget::State DataArrayPathSelectionWidget::getState()
 {
-  m_Style = styleType;
+  return m_State;
+}
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::setState(State styleType)
+{
+  m_State = styleType;
+  
   QString styleSheet;
   QTextStream ss(&styleSheet);
 
@@ -1161,7 +1241,7 @@ void DataArrayPathSelectionWidget::changeStyleSheet(Style styleType)
               background-color: #FFFCEA;\
               color: #000000;\
               }";
-  //setStyleSheet(styleSheet);
+  setStyleSheet(styleSheet);
 }
 
 // -----------------------------------------------------------------------------
@@ -1256,18 +1336,18 @@ void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
 
   int xMargin = getXMargin();
   int yMargin = getYMargin();
-  
-  // Use yMargin because no method designed to return margins or content rect after the stylesheet has been applied 
+
+  // Use yMargin because no method designed to return margins or content rect after the stylesheet has been applied
   // returns the correct value.
   int rectWidth = getStyledBorderRect().height() + 1;
   int penWidth = 1;
   int radius = 4;
   QRect rect(width() - rectWidth, yMargin / 2, rectWidth, rectWidth - yMargin);
-  QColor penColor(getColor(Style::Active));
-  QColor fillColor(getColor(Style::Active));
-  if(m_Style == Style::NotFound)
+  QColor penColor(getColor(State::Active));
+  QColor fillColor(getColor(State::Active));
+  if(m_State == State::NotFound)
   {
-    penColor = getColor(Style::NotFound);
+    penColor = getColor(State::NotFound);
   }
   if(false == isEnabled())
   {
