@@ -268,6 +268,9 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     SIMPL_INSTANCE_PROPERTY(QColor, QTreeViewItem_background_color)    
     Q_PROPERTY(QColor QTreeViewItem_background_color READ getQTreeViewItem_background_color WRITE setQTreeViewItem_background_color)    
     
+    SIMPL_INSTANCE_PROPERTY(QColor, QTreeViewItem_color)
+    Q_PROPERTY(QColor QTreeViewItem_color READ getQTreeViewItem_color WRITE setQTreeViewItem_color)
+
     SIMPL_INSTANCE_PROPERTY(QColor, QTreeViewItemHover_background_color)    
     Q_PROPERTY(QColor QTreeViewItemHover_background_color READ getQTreeViewItemHover_background_color WRITE setQTreeViewItemHover_background_color)    
     

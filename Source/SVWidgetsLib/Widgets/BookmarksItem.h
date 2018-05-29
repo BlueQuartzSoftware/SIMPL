@@ -66,7 +66,10 @@ class SVWidgetsLib_EXPORT BookmarksItem
     SIMPL_BOOL_PROPERTY(Expanded)
     SIMPL_INSTANCE_PROPERTY(QString, Name)
     SIMPL_INSTANCE_PROPERTY(QString, Path)
+
     SIMPL_INSTANCE_PROPERTY(bool, HasErrors)
+    Q_PROPERTY(bool HasErrors READ getHasErrors WRITE setHasErrors)
+
     SIMPL_INSTANCE_PROPERTY(QString, ItemTooltip)
     SIMPL_INSTANCE_PROPERTY(QIcon, Icon)
     SIMPL_INSTANCE_PROPERTY(ItemType, ItemType)
