@@ -34,7 +34,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QSpinBox" name="spinBox"/>
+    <widget class="SVSpinBox" name="spinBox"/>
    </item>
    <item>
     <spacer name="horizontalSpacer">
@@ -51,8 +51,13 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../../icons/images/Icons.qrc"/>
- </resources>
+ <customwidgets>
+  <customwidget>
+   <class>SVSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header location="global">SVControlWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
  <connections/>
 </ui>

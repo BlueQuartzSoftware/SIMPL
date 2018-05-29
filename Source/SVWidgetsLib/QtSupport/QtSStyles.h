@@ -53,9 +53,18 @@ class SVWidgetsLib_EXPORT QtSStyles : public QObject
 {
     Q_OBJECT
   public:
-    QtSStyles();
     ~QtSStyles() override;
 
+    /**
+     * @brief Instance
+     * @return
+     */
+    static QtSStyles* Instance();
+
+    /**
+     * @brief GetUIFont
+     * @return
+     */
     static QString GetUIFont();
 
     /**
@@ -147,7 +156,12 @@ class SVWidgetsLib_EXPORT QtSStyles : public QObject
      * @return
      */
     static QString StyleSheetForButton(const QString &objectName, const QString &cssName, const QString &imageName);
-    
+
+  protected:
+    QtSStyles();
+
+  private:
+    static QtSStyles* m_Self;
 };
 
 #endif /* _SIMPLViewStyles_H_ */

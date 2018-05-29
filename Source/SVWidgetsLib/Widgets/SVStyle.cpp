@@ -65,6 +65,10 @@ SVStyle::SVStyle()
 {
   Q_ASSERT_X(!self, "SVStyle", "There should be only one SVStyle object");
   SVStyle::self = this;
+
+  m_QTreeViewItem_font_size = 13;
+  m_QTreeViewItem_error_color = QColor(Qt::white);
+  m_QTreeViewItem_error_background_color = QColor(235, 110, 110);
 }
 
 // -----------------------------------------------------------------------------
@@ -84,6 +88,19 @@ SVStyle* SVStyle::Instance()
     self = new SVStyle();
   }
   return self;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+SVStyle* SVStyle::NewInstance()
+{
+  if(self != nullptr)
+  {
+    delete self;
+    self = nullptr;
+  }
+  return Instance();
 }
 
 // -----------------------------------------------------------------------------
@@ -138,40 +155,48 @@ bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
   for (constIterator = keys.constBegin(); constIterator != keys.constEnd(); ++constIterator)
   {
     const QString key = *constIterator;
-    QString value = cssRepl[key].toString();
-    // First see if it is a varible and if it is, then get the real value from
-    // the Named_Variables section
-    if(varMapping.contains(value))
+
+    QString value = loadStringProperty(key, cssRepl, varMapping);
+    if (!value.isNull())
     {
-      value = varMapping[value].toString();
-    }
-    // Do the replacement
-    cssContent = cssContent.replace(key, value);
-   
-    
-    if(value.startsWith("#"))
-    {
-      this->setProperty( key.toLocal8Bit().constData(), QColor(value));
-    }
-    else
-    {
-      bool ok = false;
-      value = value.replace("rgb(", "");
-      value = value.replace(")", "");
-      value = value.replace(" ", "");
-      QStringList tokens = value.split(",");
-      if(tokens.size() == 3)
+      if(value.startsWith("#"))
       {
-        int r = tokens[0].toInt(&ok);
-        int g = tokens[1].toInt(&ok);
-        int b = tokens[2].toInt(&ok);
-        bool didSet = this->setProperty( key.toLocal8Bit().constData(), QColor(r, g, b));
-        if(!didSet)
+        this->setProperty( key.toLocal8Bit().constData(), QColor(value));
+      }
+      else
+      {
+        bool ok = false;
+        QString tokenString = value;
+        tokenString = tokenString.replace("rgb(", "");
+        tokenString = tokenString.replace(")", "");
+        tokenString = tokenString.replace(" ", "");
+        QStringList tokens = tokenString.split(",");
+        if(tokens.size() == 3)
         {
-          qDebug() << "Property: " << key << " was not set correctly";
+          int r = tokens[0].toInt(&ok);
+          int g = tokens[1].toInt(&ok);
+          int b = tokens[2].toInt(&ok);
+          bool didSet = this->setProperty(key.toLocal8Bit().constData(), QColor(r, g, b));
+          if(!didSet)
+          {
+            qDebug() << "Property: " << key << " was not set correctly";
+          }
         }
       }
     }
+    else
+    {
+      int intValue = loadIntegerProperty(key, cssRepl, varMapping);
+      bool didSet = this->setProperty(key.toLocal8Bit().constData(), intValue);
+      if(!didSet)
+      {
+        qDebug() << "Property: " << key << " was not set correctly";
+      }
+      value = QString::number(intValue);
+    }
+
+    // Do the replacement
+    cssContent = cssContent.replace(key, value);
   }
   
   keys.clear();
@@ -216,6 +241,49 @@ bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
   qApp->setStyleSheet(cssContent);
   
   return success;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString SVStyle::loadStringProperty(const QString &key, QJsonObject cssRepl, QJsonObject varMapping)
+{
+  QString value = cssRepl[key].toString();
+  if (!value.isNull())
+  {
+    // See if it is a variable and if it is, then get the real value from
+    // the Named_Variables section
+    if (varMapping.contains(value))
+    {
+      value = varMapping[value].toString();
+      return value;
+    }
+
+    return value;
+  }
+
+  return QString();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int SVStyle::loadIntegerProperty(const QString &key, QJsonObject cssRepl, QJsonObject varMapping)
+{
+  QString value = cssRepl[key].toString();
+  if (!value.isNull())
+  {
+    // See if it is a variable and if it is, then get the real value from
+    // the Named_Variables section
+    if (varMapping.contains(value))
+    {
+      int intValue = varMapping[value].toInt();
+      return intValue;
+    }
+  }
+
+  int intValue = cssRepl[key].toInt();
+  return intValue;
 }
 
 // -----------------------------------------------------------------------------

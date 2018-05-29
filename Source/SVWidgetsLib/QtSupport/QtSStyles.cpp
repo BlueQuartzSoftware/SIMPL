@@ -41,6 +41,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 #include <QtCore/QJsonValue>
+#include <QtCore/QFileInfo>
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLineEdit>
@@ -50,11 +51,12 @@
 
 static QMap<QString, QImage> s_NameToImage;
 
-
 namespace  {
 const QString kNormalColor("#8f8f91");
 const QString kErrorColor("#BC0000");
 }
+
+QtSStyles* QtSStyles::m_Self = nullptr;
 
 // -----------------------------------------------------------------------------
 //
@@ -65,6 +67,18 @@ QtSStyles::QtSStyles() = default;
 //
 // -----------------------------------------------------------------------------
 QtSStyles::~QtSStyles() = default;
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QtSStyles* QtSStyles::Instance()
+{
+  if (!m_Self)
+  {
+    m_Self = new QtSStyles();
+  }
+  return m_Self;
+}
 
 // -----------------------------------------------------------------------------
 //
