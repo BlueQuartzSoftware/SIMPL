@@ -8,6 +8,7 @@
 #include <QtWidgets/QTreeView>
 #include <QtWidgets/QListView>
 #include <QtWidgets/QListWidget>
+#include <QtWidgets/QTreeWidget>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
@@ -83,7 +84,7 @@ class SVWidgetsLib_EXPORT SVDoubleSpinBox : public QDoubleSpinBox
 
 
 /**
- * @brief The SVToolButton class
+ * @brief The SVTreeView class
  */
 class SVWidgetsLib_EXPORT SVLineEdit : public QLineEdit
 {
@@ -98,7 +99,7 @@ class SVWidgetsLib_EXPORT SVLineEdit : public QLineEdit
 
 
 /**
- * @brief The SVToolButton class
+ * @brief The SVTreeView class
  */
 class SVWidgetsLib_EXPORT SVTreeView : public QTreeView
 {
@@ -114,7 +115,7 @@ class SVWidgetsLib_EXPORT SVTreeView : public QTreeView
 
 
 /**
- * @brief The SVToolButton class
+ * @brief The SVListView class
  */
 class SVWidgetsLib_EXPORT SVListView : public QListView
 {
@@ -128,7 +129,7 @@ class SVWidgetsLib_EXPORT SVListView : public QListView
 
 
 /**
- * @brief The SVToolButton class
+ * @brief The SVListWidget class
  */
 class SVWidgetsLib_EXPORT SVListWidget : public QListWidget
 {
@@ -138,5 +139,18 @@ class SVWidgetsLib_EXPORT SVListWidget : public QListWidget
   SVListWidget(QWidget* parent = nullptr);
   virtual ~SVListWidget();
   
+};
+
+/**
+ * @brief The SVTreeWidget class
+ */
+class SVWidgetsLib_EXPORT SVTreeWidget : public QTreeWidget
+{
+  Q_OBJECT
+
+  public:
+  SVTreeWidget(QWidget* parent = nullptr);
+  virtual ~SVTreeWidget();
+
 };
 

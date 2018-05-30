@@ -82,13 +82,6 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
      * @return
      */
     static SVStyle* Instance();
-
-    /**
-     * @brief Creates a new singleton instance of this class, deleting the old one if it exists
-     * @return
-     */
-    static SVStyle* NewInstance();
-    
     
     SIMPL_INSTANCE_PROPERTY(QColor, CentralWidget_background_color)    
     Q_PROPERTY(QColor CentralWidget_background_color READ getCentralWidget_background_color WRITE setCentralWidget_background_color)    
@@ -184,9 +177,24 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     SIMPL_INSTANCE_PROPERTY(QColor, QPushButtonHover_background_color)    
     Q_PROPERTY(QColor QPushButtonHover_background_color READ getQPushButtonHover_background_color WRITE setQPushButtonHover_background_color)    
     
-    SIMPL_INSTANCE_PROPERTY(QColor, QPushButtonPressed_background_color)    
+    SIMPL_INSTANCE_PROPERTY(QColor, QPushButtonPressed_background_color)
     Q_PROPERTY(QColor QPushButtonPressed_background_color READ getQPushButtonPressed_background_color WRITE setQPushButtonPressed_background_color)    
     
+    SIMPL_INSTANCE_PROPERTY(QColor, QPushButtonDefault_background_color)
+    Q_PROPERTY(QColor QPushButtonDefault_background_color READ getQPushButtonDefault_background_color WRITE setQPushButtonDefault_background_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QPushButtonDefaultPressed_background_color)
+    Q_PROPERTY(QColor QPushButtonDefaultPressed_background_color READ getQPushButtonDefaultPressed_background_color WRITE setQPushButtonDefaultPressed_background_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QPushButtonDefaultHover_background_color)
+    Q_PROPERTY(QColor QPushButtonDefaultHover_background_color READ getQPushButtonDefaultHover_background_color WRITE setQPushButtonDefaultHover_background_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QPushButtonDefault_border_color)
+    Q_PROPERTY(QColor QPushButtonDefault_border_color READ getQPushButtonDefault_border_color WRITE setQPushButtonDefault_border_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QPushButtonDefault_text_color)
+    Q_PROPERTY(QColor QPushButtonDefault_text_color READ getQPushButtonDefault_text_color WRITE setQPushButtonDefault_text_color)
+
     
     SIMPL_INSTANCE_PROPERTY(QColor, QToolButton_background_color)    
     Q_PROPERTY(QColor QToolButton_background_color READ getQToolButton_background_color WRITE setQToolButton_background_color)    

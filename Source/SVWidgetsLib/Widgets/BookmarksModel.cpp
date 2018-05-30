@@ -40,6 +40,7 @@
 
 #include "SVWidgetsLib/Widgets/BookmarksModel.h"
 #include "SVWidgetsLib/Widgets/BookmarksTreeView.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
 #define PREBUILT_PIPELINES_DIR "PrebuiltPipelines"
@@ -141,9 +142,11 @@ QVariant BookmarksModel::data(const QModelIndex& index, int role) const
     return QVariant();
   }
 
+  SVStyle* styles = SVStyle::Instance();
+
   BookmarksItem* item = getItem(index);
 
-  if(role == static_cast<int>(Roles::NameRole))
+  if(role == Qt::DisplayRole)
   {
     return item->getName();
   }
@@ -164,28 +167,17 @@ QVariant BookmarksModel::data(const QModelIndex& index, int role) const
   {
     return static_cast<int>(item->getItemType());
   }
-//  else if(role == Qt::BackgroundRole)
-//  {
-//    if(item->getHasErrors() == true)
-//    {
-//      return QColor(235, 110, 110);
-//    }
-//    else
-//    {
-//      return QVariant();
-//    }
-//  }
-//  else if(role == Qt::ForegroundRole)
-//  {
-//    if(item->getHasErrors() == true)
-//    {
-//      return QColor(240, 240, 240);
-//    }
-//    else
-//    {
-//      return QColor(Qt::black);
-//    }
-//  }
+  else if(role == Qt::ForegroundRole)
+  {
+    if(item->getHasErrors() == true)
+    {
+      return styles->getQTreeViewItem_error_color();
+    }
+    else
+    {
+      return styles->getQTreeViewItem_color();
+    }
+  }
   else if(role == Qt::ToolTipRole)
   {
     QString path = item->getPath();
@@ -205,10 +197,10 @@ QVariant BookmarksModel::data(const QModelIndex& index, int role) const
       return QVariant();
     }
   }
-//  else if(role == Qt::DecorationRole)
-//  {
-//    return item->getIcon();
-//  }
+  else if(role == Qt::DecorationRole)
+  {
+    return item->getIcon();
+  }
 
   return QVariant();
 }

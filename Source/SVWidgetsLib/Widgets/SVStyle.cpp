@@ -93,19 +93,6 @@ SVStyle* SVStyle::Instance()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SVStyle* SVStyle::NewInstance()
-{
-  if(self != nullptr)
-  {
-    delete self;
-    self = nullptr;
-  }
-  return Instance();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
 {
   bool success = true;
@@ -159,11 +146,10 @@ bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
     QString value = loadStringProperty(key, cssRepl, varMapping);
     if (!value.isNull())
     {
-      if(value.startsWith("#"))
-      {
-        this->setProperty( key.toLocal8Bit().constData(), QColor(value));
-      }
-      else
+      // Do the replacement
+      cssContent = cssContent.replace(key, value);
+
+      if(value.startsWith("rgb"))
       {
         bool ok = false;
         QString tokenString = value;
@@ -183,20 +169,11 @@ bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
           }
         }
       }
-    }
-    else
-    {
-      int intValue = loadIntegerProperty(key, cssRepl, varMapping);
-      bool didSet = this->setProperty(key.toLocal8Bit().constData(), intValue);
-      if(!didSet)
+      else
       {
-        qDebug() << "Property: " << key << " was not set correctly";
+        this->setProperty( key.toLocal8Bit().constData(), QColor(value));
       }
-      value = QString::number(intValue);
     }
-
-    // Do the replacement
-    cssContent = cssContent.replace(key, value);
   }
   
   //
@@ -278,10 +255,11 @@ QString SVStyle::loadStringProperty(const QString &key, QJsonObject cssRepl, QJs
   {
     // See if it is a variable and if it is, then get the real value from
     // the Named_Variables section
-    if (varMapping.contains(value))
+    for (QJsonObject::iterator iter = varMapping.begin(); iter != varMapping.end(); iter++)
     {
-      value = varMapping[value].toString();
-      return value;
+      QString mapKey = iter.key();
+      QString mapValue = iter.value().toString();
+      value.replace(mapKey, mapValue);
     }
 
     return value;
