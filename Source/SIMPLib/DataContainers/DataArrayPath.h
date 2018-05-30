@@ -69,7 +69,6 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
   PYB11_METHOD(bool isValid)
   PYB11_METHOD(void update ARGS dcName amName daName)
 
-
   public:
     // tuple <oldPath, newPath>
     using RenameType = std::tuple<DataArrayPath, DataArrayPath>;
@@ -82,6 +81,7 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
       DataArray,
       None
     };
+    Q_ENUM(DataType)
 
     DataArrayPath();
 
@@ -301,6 +301,7 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
 
 
 Q_DECLARE_METATYPE(DataArrayPath)
+Q_DECLARE_METATYPE(DataArrayPath::DataType)
 
 
 

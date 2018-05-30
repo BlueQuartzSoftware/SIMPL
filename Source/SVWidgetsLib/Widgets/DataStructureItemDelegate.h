@@ -86,6 +86,12 @@ public:
   void clearRequirements();
 
   /**
+   * @brief Returns true if the view is being filtered.  Returns false otherwise.
+   * @return
+   */
+  bool isFiltered();
+
+  /**
    * @brief Returns true if the given path matches the current requirements. Returns false otherwise.
    * @param path
    * @return

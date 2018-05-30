@@ -60,16 +60,30 @@ class DataArrayPathSelectionWidget : public QToolButton
   Q_OBJECT
 
 public:
+  enum class State
+  {
+    Normal,
+    Active,
+    NotFound,
+    DragEnabled,
+    DragDisabled
+  };
+  Q_ENUM(State)
+
   static const QPixmap CreateDragIcon(DataArrayPath path);
   static const QPixmap CreateDragIcon(QString text, DataArrayPath::DataType dataType);
   static const QPixmap CreateDragIcon(QString text, QColor backgroundColor);
-  static const QString GetActiveColor(DataArrayPath::DataType type);
+  static const QColor GetActiveColor(DataArrayPath::DataType type);
+  static const QColor GetCheckedColor(DataArrayPath::DataType type);
   static bool CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, DataContainerSelectionFilterParameter::RequirementType reqs);
   static bool CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, AttributeMatrixSelectionFilterParameter::RequirementType reqs);
   static bool CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, DataArraySelectionFilterParameter::RequirementType reqs);
 
   DataArrayPathSelectionWidget(QWidget* parent = nullptr);
   virtual ~DataArrayPathSelectionWidget() = default;
+
+  Q_PROPERTY(DataArrayPath::DataType PathType READ getDataType)
+  Q_PROPERTY(State State READ getState)
 
   /**
   * @brief Returns the type of DataArrayPath this widget can handle
@@ -174,6 +188,11 @@ public:
   QSize minimumSizeHint() const override;
 
   /**
+   * @brief Override the minimumSizeHint for extending the widget enough to paint the active color
+   */
+  QSize sizeHint() const override;
+
+  /**
   * @brief Returns the property name set for this widget
   * @return
   */
@@ -228,22 +247,51 @@ signals:
   void pathChanged();
 
 protected:
-  enum class Style
-  {
-    Normal,
-    Active,
-    NotFound,
-    DragEnabled,
-    DragDisabled
-  };
-
+  /**
+   * @brief Performs initial setup for the GUI
+   */
   void setupGui();
+
+  /**
+   * @brief Returns the current State
+   * @return
+   */
+  State getState();
 
   /**
   * @brief Change the stylesheet based on the widget state
   * @param styleType
   */
-  void changeStyleSheet(Style styleType);
+  void setState(State styleType);
+
+  /**
+   * @brief Returns the X margin
+   * @return
+   */
+  int getXMargin() const;
+
+  /**
+   * @brief Returns the Y margin
+   * @return
+   */
+  int getYMargin() const;
+
+  /**
+   * @brief Returns the contents rect after styling.
+   * @return
+   */
+  QRect getStyledContentsRect() const;
+
+  /**
+   * @brief Returns the contents rect after styling.
+   * @return
+   */
+  QRect getStyledBorderRect() const;
+
+  /**
+   * @brief Returns the updated size hint based on the superclass's size hint
+   */
+  QSize updatedSizeHint(QSize sizeHint) const;
 
   /**
   * @brief Handles the mouse-enter event and emits the appropriate viewPaths signal
@@ -329,10 +377,10 @@ protected:
   void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
 
   /**
-  * @brief Returns the color code for the given Style
-  * @param style
+  * @brief Returns the color code for the given State
+  * @param state
   */
-  const QString getColor(Style style);
+  const QColor getBorderColor(State state);
 
   /**
   * @brief Override the paint event to mark the DataType required
@@ -369,7 +417,7 @@ private slots:
 
 private:
   DataArrayPath::DataType m_DataType = DataArrayPath::DataType::None;
-  Style m_Style = Style::Normal;
+  State m_State = State::Normal;
   AbstractFilter* m_Filter = nullptr;
   DataContainerSelectionFilterParameter::RequirementType m_DataContainerReqs;
   AttributeMatrixSelectionFilterParameter::RequirementType m_AttrMatrixReqs;
@@ -381,3 +429,5 @@ private:
 
   void performDrag();
 };
+
+Q_DECLARE_METATYPE(DataArrayPathSelectionWidget::State)

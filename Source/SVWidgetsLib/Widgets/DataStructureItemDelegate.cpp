@@ -177,6 +177,14 @@ void DataStructureItemDelegate::clearRequirements()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+bool DataStructureItemDelegate::isFiltered()
+{
+  return m_ReqType != DataArrayPath::DataType::None;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 QWidget* DataStructureItemDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
   QLineEdit* editor = new QLineEdit(parent);
