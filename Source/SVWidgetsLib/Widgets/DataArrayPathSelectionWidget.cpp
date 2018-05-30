@@ -1241,6 +1241,7 @@ void DataArrayPathSelectionWidget::setState(State styleType)
               background-color: #FFFCEA;\
               color: #000000;\
               }";
+              
   setStyleSheet(styleSheet);
 }
 

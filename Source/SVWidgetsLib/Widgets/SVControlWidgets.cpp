@@ -93,3 +93,15 @@ QListView(parent)
 }
 
 SVListView::~SVListView() = default;
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+SVListWidget::SVListWidget(QWidget* parent) :
+QListWidget(parent)
+{
+  setAttribute(Qt::WA_MacShowFocusRect, false);
+}
+
+SVListWidget::~SVListWidget() = default;

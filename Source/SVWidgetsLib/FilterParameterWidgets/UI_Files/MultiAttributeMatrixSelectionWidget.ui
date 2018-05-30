@@ -30,7 +30,7 @@
     <number>2</number>
    </property>
    <item row="3" column="3" rowspan="2">
-    <widget class="QListWidget" name="attributeMatricesSelectWidget">
+    <widget class="SVListWidget" name="attributeMatricesSelectWidget">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -335,7 +335,7 @@
     </layout>
    </item>
    <item row="3" column="5" rowspan="2" colspan="4">
-    <widget class="QListWidget" name="attributeMatricesOrderWidget">
+    <widget class="SVListWidget" name="attributeMatricesOrderWidget">
      <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
      </property>
@@ -374,6 +374,11 @@
   <customwidget>
    <class>SVIconPushButton</class>
    <extends>QPushButton</extends>
+   <header location="global">SVControlWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SVListWidget</class>
+   <extends>QListWidget</extends>
    <header location="global">SVControlWidgets.h</header>
   </customwidget>
  </customwidgets>

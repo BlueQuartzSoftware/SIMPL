@@ -7,6 +7,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QTreeView>
 #include <QtWidgets/QListView>
+#include <QtWidgets/QListWidget>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
@@ -124,3 +125,18 @@ class SVWidgetsLib_EXPORT SVListView : public QListView
   virtual ~SVListView();
   
 };
+
+
+/**
+ * @brief The SVToolButton class
+ */
+class SVWidgetsLib_EXPORT SVListWidget : public QListWidget
+{
+  Q_OBJECT
+  
+  public:
+  SVListWidget(QWidget* parent = nullptr);
+  virtual ~SVListWidget();
+  
+};
+

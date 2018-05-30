@@ -199,6 +199,8 @@ bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
     cssContent = cssContent.replace(key, value);
   }
   
+  //
+  //
   keys.clear();
   keys << "FilterBackgroundColor"  << "FilterSelectionColor" << "FilterFontColor";
   for (constIterator = keys.constBegin(); constIterator != keys.constEnd(); ++constIterator)
@@ -237,7 +239,30 @@ bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
     }
   }
   
+  keys.clear();
 
+  // Get the CSS Font replacements that need to be made
+  QJsonObject fontRepl = rootObj["Font_Replacements"].toObject();
+  keys = fontRepl.keys();
+  #if defined(Q_OS_MAC)
+  QString os("macOS");
+#elif defined(Q_OS_WIN)
+  QString os("Windows");
+#else
+  QString os("Linux");
+#endif
+  
+  QJsonObject osFontRepl = fontRepl[os].toObject();
+  keys = osFontRepl.keys();
+  for (constIterator = keys.constBegin(); constIterator != keys.constEnd(); ++constIterator)
+  {
+    const QString key = *constIterator;
+    QString value = osFontRepl[key].toString();
+    cssContent = cssContent.replace(key, value);
+  }
+  
+  
+  // FINALLY, Set the style sheet into the app object
   qApp->setStyleSheet(cssContent);
   
   return success;
