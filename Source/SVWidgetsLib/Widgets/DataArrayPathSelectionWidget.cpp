@@ -113,30 +113,52 @@ const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(QString text, QColor 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType type)
+const QColor DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType type)
 {
-  QSharedPointer<QtSSettings> prefs = QSharedPointer<QtSSettings>(new QtSSettings());
-  prefs->beginGroup("DataArrayPath Colors");
-
-  QString color = "#000000";
+  QColor color;
+  SVStyle* style = SVStyle::Instance();
 
   switch(type)
   {
   case DataArrayPath::DataType::DataContainer:
-    color = prefs->value("DataContainer", SIMPLView::DataArrayPath::DefaultColors::DataContainerColor).toString();
+    color = style->getDataArrayPath_DataContainer_color();
     break;
   case DataArrayPath::DataType::AttributeMatrix:
-    color = prefs->value("AttributeMatrix", SIMPLView::DataArrayPath::DefaultColors::AttributeMatrixColor).toString();
+    color = style->getDataArrayPath_AttributeMatrix_color();
     break;
   case DataArrayPath::DataType::DataArray:
-    color = prefs->value("DataArray", SIMPLView::DataArrayPath::DefaultColors::DataArrayColor).toString();
+    color = style->getDataArrayPath_DataArray_color();
     break;
   case DataArrayPath::DataType::None:
-    color = prefs->value("None", QString("#000000")).toString();
     break;
   }
 
-  prefs->endGroup();
+  return color;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QColor DataArrayPathSelectionWidget::GetCheckedColor(DataArrayPath::DataType type)
+{
+  QColor color;
+  SVStyle* style = SVStyle::Instance();
+
+  switch(type)
+  {
+  case DataArrayPath::DataType::DataContainer:
+    color = style->getDataArrayPath_DataContainer_background_color();
+    break;
+  case DataArrayPath::DataType::AttributeMatrix:
+    color = style->getDataArrayPath_AttributeMatrix_background_color();
+    break;
+  case DataArrayPath::DataType::DataArray:
+    color = style->getDataArrayPath_DataArray_background_color();
+    break;
+  case DataArrayPath::DataType::None:
+    break;
+  }
+
   return color;
 }
 
@@ -339,84 +361,11 @@ DataArrayPathSelectionWidget::DataArrayPathSelectionWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::setupGui()
 {
-  // setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(false));
   setContextMenuPolicy(Qt::CustomContextMenu);
   setAcceptDrops(true);
   setCheckable(true);
 
   connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenu(const QPoint&)));
-
-  #if 0
-  // Set StyleSheet
-  QString styleSheet;
-  QTextStream ss(&styleSheet);
-
-  ss << "DataArrayPathSelectionWidget\n";
-  ss << "{\n";
-  ss << " font-weight: normal;\n";
-  ss << " border: 1px solid;\n";
-  ss << " font-size: 12px;\n";
-  ss << " border-radius : 4px;\n";
-  ss << " background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #DDDDDD, stop: 1 #FFFFFF);\n";
-  ss << " padding-left: 12px;\n";
-  ss << " padding-right: 16px;\n";
-  ss << " padding-top: 2px;\n";
-  ss << " padding-bottom: 2px;\n";
-  ss << "}\n";
-  /*
-   * State: { Normal, Active, NotFound, DragEnabled, DragDisabled }
-   * PathType: { DataContainer, AttributeMatrix, DataArray, None }
-   */
-  ss << "DataArrayPathSelectionWidget[State=\"0\"]\n";
-  ss << "{ \n";
-  ss << " border-color: #7c7c7c;\n";
-  ss << "}\n";
-
-  ss << "DataArrayPathSelectionWidget[State=\"1\"][PathType=\"0\"]\n";
-  ss << "{ \n";
-  ss << " border-color: #009933;\n";
-  ss << "}\n";
-  ss << "DataArrayPathSelectionWidget[State=\"1\"][PathType=\"1\"]\n";
-  ss << "{ \n";
-  ss << " border-color: #6d00b6;\n";
-  ss << "}\n";
-  ss << "DataArrayPathSelectionWidget[State=\"1\"][PathType=\"2\"]\n";
-  ss << "{ \n";
-  ss << " border-color: #005994;\n";
-  ss << "}\n";
-
-  ss << "DataArrayPathSelectionWidget[State=\"2\"]\n";
-  ss << "{ \n";
-  ss << " border - color : #990000;\n";
-  ss << "}\n";
-  ss << "DataArrayPathSelectionWidget[State=\"3\"]\n";
-  ss << "{ \n";
-  ss << " border-color: #009933;\n";
-  ss << "}\n";
-  ss << "DataArrayPathSelectionWidget[State=\"4\"]\n";
-  ss << "{ \n";
-  ss << " border-color: #d1d1d1;\n";
-  ss << "}\n";
-
-  ss << "DataArrayPathSelectionWidget:checked\n";
-  ss << "{ \n";
-  ss << " background-color: #ff9c8f;\n";
-  ss << "}\n";
-  ss << "DataArrayPathSelectionWidget:checked[PathType=\"0\"]\n";
-  ss << "{ \n";
-  ss << " background-color: #9dffa2;\n";
-  ss << "}\n";
-  ss << "DataArrayPathSelectionWidget:checked[PathType=\"1\"]\n";
-  ss << "{ \n";
-  ss << " background-color: #d89dff;\n";
-  ss << "}\n";
-  ss << "DataArrayPathSelectionWidget:checked[PathType=\"2\"]\n";
-  ss << "{ \n";
-  ss << " background-color: #9dafff;\n";
-  ss << "}\n";
-
-  setStyleSheet(styleSheet);
-#endif
 }
 
 // -----------------------------------------------------------------------------
@@ -849,6 +798,10 @@ void DataArrayPathSelectionWidget::checkDragPath(DataArrayPath inputPath)
   m_FilteringPassed = checkPathReqs(inputPath);
   setEnabled(m_FilteringPassed);
   repaint();
+
+  // Force update the styling
+  style()->unpolish(this);
+  style()->polish(this);
 }
 
 // -----------------------------------------------------------------------------
@@ -858,6 +811,10 @@ void DataArrayPathSelectionWidget::clearPathFiltering()
 {
   setEnabled(true);
   setPathFiltering(false);
+
+  // Force update the styling
+  style()->unpolish(this);
+  style()->polish(this);
 }
 
 // -----------------------------------------------------------------------------
@@ -867,6 +824,10 @@ void DataArrayPathSelectionWidget::endExternalFiltering()
 {
   setEnabled(true);
   setPathFiltering(isChecked());
+
+  // Force update the styling
+  style()->unpolish(this);
+  style()->polish(this);
 }
 
 // -----------------------------------------------------------------------------
@@ -1128,33 +1089,30 @@ void DataArrayPathSelectionWidget::resetStyle()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataArrayPathSelectionWidget::getColor(State style)
+const QColor DataArrayPathSelectionWidget::getBorderColor(State state)
 {
-  QSharedPointer<QtSSettings> prefs = QSharedPointer<QtSSettings>(new QtSSettings());
-  prefs->beginGroup("DataArrayPath Styles");
+  SVStyle* style = SVStyle::Instance();
+  QColor color = "#000000";
 
-  QString color = "#000000";
-
-  switch(style)
+  switch(state)
   {
   case State::Normal:
-    color = prefs->value("Normal", SIMPLView::DataArrayPath::DefaultColors::NormalColor).toString();
+    color = style->getDataArrayPath_border_normal();
     break;
   case State::Active:
     color = GetActiveColor(m_DataType);
     break;
   case State::NotFound:
-    color = prefs->value("NotFound", SIMPLView::DataArrayPath::DefaultColors::ErrorColor).toString();
+    color = style->getDataArrayPath_border_not_found();
     break;
   case State::DragEnabled:
-    color = prefs->value("DragEnabled", SIMPLView::DataArrayPath::DefaultColors::AcceptColor).toString();
+    color = style->getDataArrayPath_border_drag_enabled();
     break;
   case State::DragDisabled:
-    color = prefs->value("DragDisabled", SIMPLView::DataArrayPath::DefaultColors::RejectColor).toString();
+    color = style->getDataArrayPath_border_drag_disabled();
     break;
   }
 
-  prefs->endGroup();
   return color;
 }
 
@@ -1172,77 +1130,10 @@ DataArrayPathSelectionWidget::State DataArrayPathSelectionWidget::getState()
 void DataArrayPathSelectionWidget::setState(State styleType)
 {
   m_State = styleType;
-  
-  QString styleSheet;
-  QTextStream ss(&styleSheet);
 
-  QFont font;
-  font.setBold(true);
-  font.setItalic(true);
-  font.setWeight(QFont::Bold);
-  font.setStyleStrategy(QFont::PreferAntialias);
-  font.setFamily(SVStyle::Instance()->GetUIFont());
-
-  QString fontString;
-  QTextStream in(&fontString);
-
-#if defined(Q_OS_MAC)
-  font.setPointSize(12);
-#elif defined(Q_OS_WIN)
-  font.setPointSize(10);
-#else
-  font.setPointSize(11);
-  in << "color; #000000;\n";
-  in << "font-weight: Medium;";
-#endif
-
-  in << "font-weight: " << font.weight() << ";\n";
-  in << "font-size: " << font.pointSize() << "pt;\n";
-  in << "font-family: \"" << font.family() << "\";\n";
-
-  ss << "QToolButton {\n";
-  ss << " border: 1px solid " << getColor(styleType) << ";\n";
-  ss << " border-radius: 4px;\n";
-  ss << " background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #DDDDDD, stop: 1 #FFFFFF);\n";
-  ss << fontString;
-  ss << " padding-left: 16px;\n";
-  ss << " padding-right: 12px;\n";
-  ss << " padding-top: 2px;\n";
-  ss << " padding-bottom: 2px;\n";
-  ss << "}\n";
-
-  ss << "QToolButton::menu-indicator {\n";
-  ss << " subcontrol-origin: content;\n";
-  ss << " subcontrol-position:  right; /* */\n";
-  ss << "}\n";
-
-  ss << "QToolButton::menu-indicator:pressed, QToolButton::menu-indicator:open {\n";
-  ss << " position: relative;\n";
-  ss << "}\n";
-
-  QColor checkedColor = getColor(styleType);
-  int hue = checkedColor.hsvHue();
-  int saturation = 50;
-  int value = 255;
-  checkedColor.setHsv(hue, saturation, value);
-  ss << "QToolButton:checked {\n";
-  ss << " background-color: " << checkedColor.name() << ";\n";
-  ss << "}\n";
-
-  ss << "QToolButton:flat {\n";
-  ss << " border: none;\n";
-  ss << "}\n";
-
-  ss << " QToolTip {\
-              border: 2px solid #434343;\
-              padding: 2px;\
-              border-radius: 3px;\
-              opacity: 255;\
-              background-color: #FFFCEA;\
-              color: #000000;\
-              }";
-              
-  setStyleSheet(styleSheet);
+  // Force update the styling
+  style()->unpolish(this);
+  style()->polish(this);
 }
 
 // -----------------------------------------------------------------------------
@@ -1344,11 +1235,11 @@ void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
   int penWidth = 1;
   int radius = 4;
   QRect rect(width() - rectWidth, yMargin / 2, rectWidth, rectWidth - yMargin);
-  QColor penColor(getColor(State::Active));
-  QColor fillColor(getColor(State::Active));
-  if(m_State == State::NotFound)
+  QColor penColor(getBorderColor(State::Active));
+  QColor fillColor(getBorderColor(State::Active));
+  if(getState() == State::NotFound)
   {
-    penColor = getColor(State::NotFound);
+    penColor = getBorderColor(State::NotFound);
   }
   if(false == isEnabled())
   {

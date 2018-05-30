@@ -73,7 +73,8 @@ public:
   static const QPixmap CreateDragIcon(DataArrayPath path);
   static const QPixmap CreateDragIcon(QString text, DataArrayPath::DataType dataType);
   static const QPixmap CreateDragIcon(QString text, QColor backgroundColor);
-  static const QString GetActiveColor(DataArrayPath::DataType type);
+  static const QColor GetActiveColor(DataArrayPath::DataType type);
+  static const QColor GetCheckedColor(DataArrayPath::DataType type);
   static bool CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, DataContainerSelectionFilterParameter::RequirementType reqs);
   static bool CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, AttributeMatrixSelectionFilterParameter::RequirementType reqs);
   static bool CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, DataArraySelectionFilterParameter::RequirementType reqs);
@@ -376,10 +377,10 @@ protected:
   void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
 
   /**
-  * @brief Returns the color code for the given Style
-  * @param style
+  * @brief Returns the color code for the given State
+  * @param state
   */
-  const QString getColor(State style);
+  const QColor getBorderColor(State state);
 
   /**
   * @brief Override the paint event to mark the DataType required
