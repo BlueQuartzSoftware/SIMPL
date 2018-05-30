@@ -124,7 +124,16 @@ public:
 
   virtual FilterContainerType& getFilterContainer();
 
+  /**
+   * @brief Returns the DataContainerArray stored by the FilterPipeline
+   * @return
+   */
   virtual DataContainerArray::Pointer getDataContainerArray();
+
+  /**
+   * @brief Sets the stored DataContainerArray::Pointer to nullptr so that memory can be cleared.
+   */
+  void clearDataContainerArray();
 
   /**
    * @brief
@@ -144,6 +153,10 @@ public:
   void connectFilterNotifications(QObject* filter);
   void disconnectFilterNotifications(QObject* filter);
 
+  /**
+   * @brief Returns the FilterPipeline's name
+   * @return
+   */
   QString getName();
 
   /**
@@ -182,6 +195,10 @@ public slots:
    */
   virtual void cancelPipeline();
 
+  /**
+   * @brief Sets the FilterPipeline's name
+   * @param name
+   */
   void setName(QString name);
 
 protected:
@@ -224,6 +241,12 @@ signals:
   * @param newName The FilterPipeline's current name
   */
   void pipelineNameChanged(QString oldName, QString newName);
+
+  /**
+   * @brief Provides the DataContainerArray from an executed pipeline.
+   * @param dca
+   */
+  void pipelineOutput(DataContainerArray::Pointer dca);
 
 private:
   bool m_Cancel;
