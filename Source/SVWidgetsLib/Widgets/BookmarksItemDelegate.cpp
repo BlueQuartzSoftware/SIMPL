@@ -45,11 +45,6 @@
 #include "SVWidgetsLib/Widgets/BookmarksItemDelegate.h"
 #include "SVWidgetsLib/Widgets/BookmarksModel.h"
 
-namespace
-{
-  const int k_ButtonSize = 16;
-}
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
