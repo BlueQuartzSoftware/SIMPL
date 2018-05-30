@@ -105,3 +105,14 @@ QListWidget(parent)
 }
 
 SVListWidget::~SVListWidget() = default;
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+SVTreeWidget::SVTreeWidget(QWidget* parent) :
+QTreeWidget(parent)
+{
+  setAttribute(Qt::WA_MacShowFocusRect, false);
+}
+
+SVTreeWidget::~SVTreeWidget() = default;
