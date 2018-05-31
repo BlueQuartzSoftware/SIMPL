@@ -668,7 +668,11 @@ QIcon SVStyle::IconForGroup(const QString &grpName)
           pixel.setRedF((pixel.redF() * 1.50 > 1.0) ? 1.0 : pixel.redF() * 1.50);
           pixel.setGreenF((pixel.greenF() * 1.50 > 1.0) ? 1.0 : pixel.greenF() * 1.50);
           pixel.setBlueF((pixel.blueF() * 1.50 > 1.0) ? 1.0 : pixel.blueF() * 1.50);
-          grpImage.setPixelColor(w, h, pixel);
+
+          if (pixel.isValid())
+          {
+            grpImage.setPixelColor(w, h, pixel);
+          }
         }
 
         if(pixel.red() == 150 && pixel.green() == 150 && pixel.blue() == 150 && pixel.alpha() != 0)
@@ -677,7 +681,10 @@ QIcon SVStyle::IconForGroup(const QString &grpName)
           //          pixel.setRedF(pixel.redF() * 1.50);
           //          pixel.setGreenF(pixel.greenF() * 1.50);
           //          pixel.setBlueF(pixel.blueF() * 1.50);
-          grpImage.setPixelColor(w, h, pixel);
+          if (pixel.isValid())
+          {
+            grpImage.setPixelColor(w, h, pixel);
+          }
         }
 
         if(pixel.red() == 53 && pixel.green() == 53 && pixel.blue() == 53 && pixel.alpha() != 0)
@@ -686,7 +693,11 @@ QIcon SVStyle::IconForGroup(const QString &grpName)
           pixel.setRedF(pixel.redF() * .50);
           pixel.setGreenF(pixel.greenF() * .50);
           pixel.setBlueF(pixel.blueF() * .50);
-          grpImage.setPixelColor(w, h, pixel);
+
+          if (pixel.isValid())
+          {
+            grpImage.setPixelColor(w, h, pixel);
+          }
         }
       }
     }

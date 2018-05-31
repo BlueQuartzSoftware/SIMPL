@@ -110,10 +110,25 @@ void DataStructureItemDelegate::createNewPathIcons()
       daPixel.setAlphaF(alpha);
       invalidPixel.setAlphaF(alpha);
 
-      dcImage.setPixelColor(x, y, dcPixel);
-      amImage.setPixelColor(x, y, amPixel);
-      daImage.setPixelColor(x, y, daPixel);
-      invalidImage.setPixelColor(x, y, invalidPixel);
+      if (dcPixel.isValid())
+      {
+        dcImage.setPixelColor(x, y, dcPixel);
+      }
+
+      if (amPixel.isValid())
+      {
+        amImage.setPixelColor(x, y, amPixel);
+      }
+
+      if (daPixel.isValid())
+      {
+        daImage.setPixelColor(x, y, daPixel);
+      }
+
+      if (invalidPixel.isValid())
+      {
+        invalidImage.setPixelColor(x, y, invalidPixel);
+      }
     }
   }
 
