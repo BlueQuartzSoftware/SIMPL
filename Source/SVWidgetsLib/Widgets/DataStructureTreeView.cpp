@@ -190,6 +190,8 @@ void DataStructureTreeView::mousePressEvent(QMouseEvent* event)
 // -----------------------------------------------------------------------------
 void DataStructureTreeView::mouseMoveEvent(QMouseEvent* event)
 {
+  QTreeView::mouseMoveEvent(event);
+
   if(event->buttons() & Qt::LeftButton)
   {
     QModelIndex index = indexAt(m_StartPos);
@@ -211,6 +213,8 @@ void DataStructureTreeView::mouseMoveEvent(QMouseEvent* event)
 // -----------------------------------------------------------------------------
 void DataStructureTreeView::leaveEvent(QEvent* event)
 {
+  QTreeView::leaveEvent(event);
+
   if(m_Dragging)
   {
     return;
