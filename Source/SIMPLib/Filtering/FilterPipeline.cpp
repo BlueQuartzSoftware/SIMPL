@@ -667,6 +667,12 @@ DataContainerArray::Pointer FilterPipeline::execute()
   PipelineMessage completeMessage("", "Pipeline Complete", 0, PipelineMessage::MessageType::StatusMessage, -1);
   emit pipelineGeneratedMessage(completeMessage);
 
+  // Connect this object to anything that wants to know about PipelineMessages
+  for(int i = 0; i < m_MessageReceivers.size(); i++)
+  {
+    disconnect(this, SIGNAL(pipelineGeneratedMessage(const PipelineMessage&)), m_MessageReceivers.at(i), SLOT(processPipelineMessage(const PipelineMessage&)));
+  }
+
   return m_Dca;
 }
 

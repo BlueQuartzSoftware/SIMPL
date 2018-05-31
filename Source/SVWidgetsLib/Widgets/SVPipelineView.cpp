@@ -429,14 +429,10 @@ void SVPipelineView::executePipeline()
 
   // Create a FilterPipeline Object
   // This will be offloaded onto another thread, so the m_TempPipeline is not a viable option
-  if(nullptr == m_PipelineInFlight)
+  bool newPipelineInFlight = (nullptr == m_PipelineInFlight);
+  if(newPipelineInFlight)
   {
     m_PipelineInFlight = FilterPipeline::New();
-
-    // Move the FilterPipeline object into the thread that we just created.
-    m_PipelineInFlight->moveToThread(m_WorkerThread);
-
-    // Allow the GUI to receive messages - We are only interested in the progress messages
     m_PipelineInFlight->addMessageReceiver(this);
   }
   updatePipelineFromView(m_PipelineInFlight);
@@ -473,8 +469,6 @@ void SVPipelineView::executePipeline()
 
   // Move the FilterPipeline object into the thread that we just created.
   m_PipelineInFlight->moveToThread(m_WorkerThread);
-
-  m_PipelineInFlight->addMessageReceiver(this);
 
   //  // Block FilterLibraryToolboxWidget signals, so that we can't add filters to the view while running the pipeline
   //  getFilterLibraryToolboxWidget()->blockSignals(true);
@@ -585,6 +579,11 @@ void SVPipelineView::finishPipeline()
 // -----------------------------------------------------------------------------
 void SVPipelineView::endPipelineThread()
 {
+  if(nullptr == m_PipelineInFlight)
+  {
+    return;
+  }
+
   if(!m_PipelineInFlight->getCancel())
   {
     // Emit the pipeline output if there were no errors during execution
@@ -762,7 +761,7 @@ int SVPipelineView::writePipeline(const QString& outputPath)
     m_TempPipeline = FilterPipeline::New();
     updateLocalTempPipeline();
     m_SavedPipeline = m_TempPipeline->deepCopy();
-    m_PipelineInFlight = FilterPipeline::New();
+    m_PipelineInFlight = nullptr;
     // Set pipeline name based on the output path
     setPipelineName(fi.fileName());
   }
@@ -930,7 +929,7 @@ void SVPipelineView::clearPipeline()
 
   m_TempPipeline = FilterPipeline::New();
   m_SavedPipeline = FilterPipeline::New();
-  m_PipelineInFlight = FilterPipeline::New();
+  m_PipelineInFlight = nullptr;
 }
 
 // -----------------------------------------------------------------------------
@@ -1671,7 +1670,7 @@ int SVPipelineView::openPipeline(const QString& filePath, int insertIndex)
   FilterPipeline::Pointer pipeline = readPipelineFromFile(filePath);
   m_TempPipeline = pipeline;
   m_SavedPipeline = pipeline->deepCopy();
-  m_PipelineInFlight = FilterPipeline::New();
+  m_PipelineInFlight = nullptr;
 
   // Check that a valid extension was read...
   if(pipeline == FilterPipeline::NullPointer())
