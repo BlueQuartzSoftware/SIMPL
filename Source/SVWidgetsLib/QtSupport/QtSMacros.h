@@ -111,21 +111,6 @@
   prefixname->setText(m_OutputFilePrefix->text() + ns::name.c_str());
 
 
-
-#define CHECK_QLINEEDIT_FILE_EXISTS(name) \
-  { \
-    QString absPath = QDir::toNativeSeparators(name->text());\
-    QFileInfo fi ( absPath );\
-    QString iconFile;\
-    if ( fi.exists() && fi.isFile() )  {\
-      iconFile = QString(":/") + QString("Check") + QString("-16x16.png");\
-    } else {\
-      iconFile = QString(":/") + QString("Delete") + QString("-16x16.png");\
-    }\
-    name##Icon->setPixmap(QPixmap(iconFile));\
-  }
-
-
 #define CHECK_QLABEL_OUTPUT_FILE_EXISTS(ns, prefix, name) \
   { \
     QString absPath = prefix##OutputDir->text() + QDir::separator() + m_OutputFilePrefix->text() + ns::name.c_str();\
@@ -186,9 +171,9 @@
     QFileInfo fi ( absPath );\
     QString iconFile;\
     if ( fi.exists() )  {\
-      iconFile = QString(":/") + QString("Check") + QString("-16x16.png");\
+      iconFile = QString(":/SIMPL/icons/images/") + QString("Check") + QString("-16x16.png");\
     } else {\
-      iconFile = QString(":/") + QString("Delete") + QString("-16x16.png");\
+      iconFile = QString(":/SIMPL/icons/images/") + QString("Delete") + QString("-16x16.png");\
     }\
     CHECK_QLABEL_OUTPUT_FILE_EXISTS_BODY1(ns, prefix##name, name)\
   }

@@ -360,7 +360,7 @@ void DataContainerReaderWidget::setupMenuField()
 
   QMenu* lineEditMenu = new QMenu(m_LineEdit);
   m_LineEdit->setButtonMenu(QtSLineEdit::Left, lineEditMenu);
-  QLatin1String iconPath = QLatin1String(":/caret-bottom.png");
+  QLatin1String iconPath = QLatin1String(":/SIMPL/icons/images/caret-bottom.png");
 
   m_LineEdit->setButtonVisible(QtSLineEdit::Left, true);
 

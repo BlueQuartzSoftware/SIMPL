@@ -95,12 +95,12 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
 #if 1
   QTreeWidgetItem* library = new QTreeWidgetItem(filterLibrary);
   library->setText(0, SIMPL::Settings::Library);
-  library->setIcon(0, QIcon(":/BlankGroup_Icon.png"));
+  library->setIcon(0, QIcon(":/SIMPL/icons/images/BlankGroup_Icon.png"));
   library->setData(0, Qt::UserRole, QVariant(LIBRARY_NODE_TYPE));
 #else
   QTreeWidgetItem* library = bookmarksTreeView->invisibleRootItem();
   library->setText(0, SIMPL::Settings::Library);
-  library->setIcon(0, QIcon(":/cubes.png"));
+  library->setIcon(0, QIcon(":/SIMPL/icons/images/cubes.png"));
 #endif
   for(QList<QString>::iterator iter = grpNameSorted.begin(); iter != grpNameSorted.end(); ++iter)
   {
@@ -115,7 +115,7 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
     QFileInfo iconInfo(iconName);
     if(iconInfo.exists() == false)
     {
-      iconName = ":/Groups/Plugin_Icon.png"; // Switch to our generic icon for Plugins that do not provide their own
+      iconName = ":/SIMPL/icons/images/Groups/Plugin_Icon.png"; // Switch to our generic icon for Plugins that do not provide their own
     }
     QIcon icon(iconName);
 #else
@@ -131,7 +131,7 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
       QTreeWidgetItem* filterSubGroup = new QTreeWidgetItem(filterGroup);
       QString subGroupName = *iter2;
       filterSubGroup->setText(0, subGroupName);
-      filterSubGroup->setIcon(0, QIcon(":/BlankGroup_Icon.png"));
+      filterSubGroup->setIcon(0, QIcon(":/SIMPL/icons/images/BlankGroup_Icon.png"));
       filterSubGroup->setData(0, Qt::UserRole, QVariant(SUBGROUP_NODE_TYPE));
 
       // Now find all the filters that are in this Group/SubGroup
@@ -148,7 +148,7 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
 #if 0
         if(groupName.compare(SIMPL::FilterGroups::Unsupported) == 0)
         {
-          filterTreeItem->setIcon(0, QIcon(":/Groups/Unsupported_Icon.png"));
+          filterTreeItem->setIcon(0, QIcon(":/SIMPL/icons/images/Groups/Unsupported_Icon.png"));
         }
         else
         {
@@ -160,7 +160,7 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
           QFileInfo iconInfo(iconName);
           if(iconInfo.exists() == false)
           {
-            iconName = ":/Groups/Plugin_Icon.png"; // Switch to our generic icon for Plugins that do not provide their own
+            iconName = ":/SIMPL/icons/images/Groups/Plugin_Icon.png"; // Switch to our generic icon for Plugins that do not provide their own
           }
 
           QIcon icon(iconName);

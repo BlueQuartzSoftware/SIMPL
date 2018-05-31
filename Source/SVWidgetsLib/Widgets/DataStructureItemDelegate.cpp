@@ -239,6 +239,40 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
   painter->setBrush(QBrush());
   painter->setFont(op.font);
 
+  SVStyle* styles = SVStyle::Instance();
+
+  QColor bgColor;
+  if (option.state & QStyle::State_Selected)
+  {
+    bgColor = styles->getQTreeViewItemSelectedActive_background_color();
+  }
+  else if (option.state & QStyle::State_MouseOver)
+  {
+    bgColor = styles->getQTreeViewItemHover_background_color();
+  }
+  else
+  {
+    bgColor = styles->getQTreeViewItem_background_color();
+  }
+
+  if (!bgColor.isValid())
+  {
+    if (option.state & QStyle::State_Selected)
+    {
+      bgColor = option.palette.color(QPalette::Highlight);
+    }
+    else if (option.features & QStyleOptionViewItem::Alternate)
+    {
+      bgColor = option.palette.color(QPalette::AlternateBase);
+    }
+    else
+    {
+      bgColor = option.palette.color(QPalette::Base);
+    }
+  }
+
+  painter->fillRect(option.rect, bgColor);
+
   // Get DataArrayPath
   QVariant var = index.model()->itemData(index)[Qt::DisplayRole];
   if(false == var.isValid())
@@ -258,7 +292,6 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
 
   bool filterData = (m_ReqType != DataArrayPath::DataType::None);
   bool isCreatedPath = std::find(m_CreatedPaths.begin(), m_CreatedPaths.end(), path) != m_CreatedPaths.end();
-  bool mouseOver = op.rect.contains(mousePos);
 
   // Check for a corresponding icon
   QIcon icon;

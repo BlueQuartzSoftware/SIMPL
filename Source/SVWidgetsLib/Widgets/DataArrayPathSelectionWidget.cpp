@@ -1226,7 +1226,6 @@ void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
 
   ensurePolished();
 
-  int xMargin = getXMargin();
   int yMargin = getYMargin();
 
   // Use yMargin because no method designed to return margins or content rect after the stylesheet has been applied
@@ -1243,7 +1242,7 @@ void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
   }
   if(false == isEnabled())
   {
-    fillColor = QColor("#DDDDDD");
+    fillColor = QColor(221, 221, 221);
   }
 
   QPen pen;

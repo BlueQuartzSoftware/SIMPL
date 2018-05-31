@@ -45,7 +45,7 @@
      </property>
      <property name="icon">
       <iconset resource="../../icons/images/Icons.qrc">
-       <normaloff>:/media_play_white.png</normaloff>:/media_play_white.png</iconset>
+       <normaloff>:/SIMPL/icons/images/media_play_white.png</normaloff>:/media_play_white.png</iconset>
      </property>
      <property name="iconSize">
       <size>

@@ -127,10 +127,10 @@ QPushButton#disableBtn:checked
         </property>
         <property name="icon">
          <iconset resource="../../icons/images/Icons.qrc">
-          <normaloff>:/ban.png</normaloff>
-          <normalon>:/ban_red.png</normalon>
-          <activeon>:/ban_red.png</activeon>
-          <selectedon>:/ban_red.png</selectedon>:/ban.png</iconset>
+          <normaloff>:/SIMPL/icons/images/ban.png</normaloff>
+          <normalon>:/SIMPL/icons/images/ban_red.png</normalon>
+          <activeon>:/SIMPL/icons/images/ban_red.png</activeon>
+          <selectedon>:/SIMPL/icons/images/ban_red.png</selectedon>:/ban.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -183,7 +183,7 @@ QPushButton#deleteBtn:checked
         </property>
         <property name="icon">
          <iconset resource="../../icons/images/Icons.qrc">
-          <normaloff>:/trash.png</normaloff>:/trash.png</iconset>
+          <normaloff>:/SIMPL/icons/images/trash.png</normaloff>:/trash.png</iconset>
         </property>
         <property name="iconSize">
          <size>

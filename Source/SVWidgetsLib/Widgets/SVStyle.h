@@ -55,15 +55,15 @@ namespace Styles
 {
 
 const QString PushButtonStyleSheet(":/SIMPLPushButton.css");
-const QString AddImagePath(":/add.png");
-const QString DeleteImagePath(":/delete.png");
-const QString LoadImagePath(":/data-transfer-upload.png");
-const QString SaveImagePath(":/data-transfer-download.png");
-const QString ReloadImagePath(":/reload.png");
-const QString RefreshImagePath(":/refresh.png");
-const QString CogImagePath(":/cog.png");
-const QString HDFImagePath(":/data-transfer-hdf.png");
-const QString InformationImagePath(":/information.png");
+const QString AddImagePath(":/SIMPL/icons/images/add.png");
+const QString DeleteImagePath(":/SIMPL/icons/images/delete.png");
+const QString LoadImagePath(":/SIMPL/icons/images/data-transfer-upload.png");
+const QString SaveImagePath(":/SIMPL/icons/images/data-transfer-download.png");
+const QString ReloadImagePath(":/SIMPL/icons/images/reload.png");
+const QString RefreshImagePath(":/SIMPL/icons/images/refresh.png");
+const QString CogImagePath(":/SIMPL/icons/images/cog.png");
+const QString HDFImagePath(":/SIMPL/icons/images/data-transfer-hdf.png");
+const QString InformationImagePath(":/SIMPL/icons/images/information.png");
 
 } // namespace Styles
 } // namespace SVWidgets
@@ -207,6 +207,8 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     SIMPL_INSTANCE_PROPERTY(QColor, QToolButtonChecked_background_color)    
     Q_PROPERTY(QColor QToolButtonChecked_background_color READ getQToolButtonChecked_background_color WRITE setQToolButtonChecked_background_color)    
     
+    SIMPL_INSTANCE_PROPERTY(QColor, QToolButtonDisabled_background_color)    
+    Q_PROPERTY(QColor QToolButtonDisabled_background_color READ getQToolButtonDisabled_background_color WRITE setQToolButtonDisabled_background_color)    
     
     SIMPL_INSTANCE_PROPERTY(QColor, QStatusBar_border_color)    
     Q_PROPERTY(QColor QStatusBar_border_color READ getQStatusBar_border_color WRITE setQStatusBar_border_color)    

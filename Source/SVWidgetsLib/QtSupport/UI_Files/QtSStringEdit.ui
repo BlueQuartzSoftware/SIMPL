@@ -82,7 +82,7 @@
      </property>
      <property name="icon">
       <iconset resource="../../icons/images/Icons.qrc">
-       <normaloff>:/check.png</normaloff>:/check.png</iconset>
+       <normaloff>:/SIMPL/icons/images/check.png</normaloff>:/check.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -132,7 +132,7 @@
      </property>
      <property name="icon">
       <iconset resource="../../icons/images/Icons.qrc">
-       <normaloff>:/delete.png</normaloff>:/delete.png</iconset>
+       <normaloff>:/SIMPL/icons/images/delete.png</normaloff>:/delete.png</iconset>
      </property>
      <property name="iconSize">
       <size>

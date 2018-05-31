@@ -1,0 +1,142 @@
+/* STYLESHEET=DEFAULT */
+
+/* ----------------------------------------------------------------------------
+* QGroupBox Section
+* ----------------------------------------------------------------------------*/
+QGroupBox::title
+{
+    /* height: 185px; */
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 0px;
+}
+
+QGroupBox
+{
+    font-family: "Lato-Bold";
+    font-weight: bold;
+    font-size: 16px;
+}
+
+DataArrayPathSelectionWidget 
+{
+    /* font-family: "Lato";
+    font-weight: normal; */
+    font-size: Font_Size_Small;
+    border: 1px solid QLineEdit_border_color;
+    border-radius: 5px;
+    background-color: QToolButton_background_color;
+    color: QToolButton_color;
+    padding-left: 0px;
+    padding-right: 4px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+DataArrayPathSelectionWidget:disabled
+{
+  background-color: QToolButtonDisabled_background_color;
+}
+/*
+ * State: { Normal, Active, NotFound, DragEnabled, DragDisabled }
+ * PathType: { DataContainer, AttributeMatrix, DataArray, None }
+ */
+DataArrayPathSelectionWidget[State="0"]
+{ 
+  border-color: DataArrayPath_border_normal;
+}
+DataArrayPathSelectionWidget[State="1"][PathType="0"]
+{ 
+  border-color: DataArrayPath_DataContainer_color;
+}
+DataArrayPathSelectionWidget[State="1"][PathType="1"]
+{ 
+  border-color: DataArrayPath_AttributeMatrix_color;
+}
+DataArrayPathSelectionWidget[State="1"][PathType="2"]
+{ 
+  border-color: DataArrayPath_DataArray_color;
+}
+DataArrayPathSelectionWidget[State="2"]
+{ 
+  border-color : DataArrayPath_border_not_found;
+}
+DataArrayPathSelectionWidget[State="3"]
+{ 
+  border-color: DataArrayPath_border_drag_enabled;
+}
+DataArrayPathSelectionWidget[State="4"]
+{ 
+  border-color: DataArrayPath_border_drag_disabled;
+}
+
+DataArrayPathSelectionWidget:checked[PathType="0"]
+{ 
+  background-color: DataArrayPath_DataContainer_background_color;
+}
+DataArrayPathSelectionWidget:checked[PathType="1"]
+{ 
+  background-color: DataArrayPath_AttributeMatrix_background_color;
+}
+DataArrayPathSelectionWidget:checked[PathType="2"]
+{ 
+  background-color: DataArrayPath_DataArray_background_color;
+}
+
+DataArrayPathSelectionWidget::menu-indicator {
+ subcontrol-origin: content;
+ subcontrol-position:  right; /* */
+}
+DataArrayPathSelectionWidget::menu-indicator:pressed, DataArrayPathSelectionWidget::menu-indicator:open {
+ position: relative;
+}
+DataArrayPathSelectionWidget:flat {
+ border: none;
+}
+
+/* ----------------------------------------------------------------------------
+* SVPushButton Section
+* ----------------------------------------------------------------------------*/
+SVIconPushButton 
+{
+    background-repeat: no-repeat;
+    background-position: center center;
+    padding-left: 0px;
+    padding-top: 0px;
+}
+
+SVIconPushButton:hover 
+{
+    border: 1px solid;
+    border-radius: 5px;
+    border-color: rgb(190, 190, 190);
+    background-color: rgb(190, 190, 190);
+}
+
+SVIconPushButton:pressed
+{
+    border: 1px solid;
+    border-radius: 5px;
+    border-color: rgb(170, 170, 170);
+    background-color: rgb(170, 170, 170);
+    padding-left: 2px;
+    padding-top: 2px;
+}
+
+SVIconPushButton:disabled
+{
+    border: 1px solid;
+    border-radius: 5px;
+    border-color: rgb(130, 130, 130);
+    background-color: rgb(130, 130, 130);
+    padding-left: 0px;
+    padding-top: 0px; 
+}
+
+
+FilterParameterWidget
+{
+    margin: 2px;
+    background-position: top left;
+    background-origin: content;
+    background-clip: margin;
+}
