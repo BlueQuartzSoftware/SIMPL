@@ -474,6 +474,8 @@ void SVPipelineView::executePipeline()
   // Move the FilterPipeline object into the thread that we just created.
   m_PipelineInFlight->moveToThread(m_WorkerThread);
 
+  m_PipelineInFlight->addMessageReceiver(this);
+
   //  // Block FilterLibraryToolboxWidget signals, so that we can't add filters to the view while running the pipeline
   //  getFilterLibraryToolboxWidget()->blockSignals(true);
 
