@@ -71,18 +71,6 @@ namespace SIMPLView
   namespace DataArrayPath
   {
     const QString BaseNewPathIcon(":Asterisk.png");
-    
-    namespace DefaultColors
-    {
-      const QString NormalColor("#8f8f91");
-      const QString ErrorColor("#BC0000");
-      const QString AcceptColor("#009104");
-      const QString RejectColor("#BC0000");
-
-      const QString DataContainerColor("#056d00");
-      const QString AttributeMatrixColor("#6400b7");
-      const QString DataArrayColor("#004dad");
-    }
   }
 
 }

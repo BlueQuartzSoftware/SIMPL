@@ -162,6 +162,12 @@ DataArrayPath DataStructureTreeView::getDataArrayPath(QModelIndex index)
 // -----------------------------------------------------------------------------
 void DataStructureTreeView::emitFilterPath(QModelIndex& index)
 {
+  // Do not filter the FilterInputWidget while the view is being filtered
+  if(m_Delegate->isFiltered())
+  {
+    return;
+  }
+
   if(false == index.isValid())
   {
     emit endPathFiltering();
@@ -191,6 +197,12 @@ void DataStructureTreeView::mousePressEvent(QMouseEvent* event)
 void DataStructureTreeView::mouseMoveEvent(QMouseEvent* event)
 {
   QTreeView::mouseMoveEvent(event);
+
+  // Do not drag or filter the FilterInputWidget while the view is being filtered
+  if(m_Delegate->isFiltered())
+  {
+    return;
+  }
 
   if(event->buttons() & Qt::LeftButton)
   {

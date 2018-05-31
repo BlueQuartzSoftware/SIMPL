@@ -313,6 +313,7 @@ void FilterInputWidget::layoutWidgets(AbstractFilter* filter)
     connect(this, SIGNAL(filterPath(DataArrayPath)), filterParameterWidget, SIGNAL(filterPathInput(DataArrayPath)));
     connect(this, SIGNAL(endPathFiltering()), filterParameterWidget, SIGNAL(endDataStructureRequirements()));
     connect(this, SIGNAL(applyPathToFilteringParameter(DataArrayPath)), filterParameterWidget, SIGNAL(applyPathToFilteringParameter(DataArrayPath)));
+    connect(this, SIGNAL(endPathFiltering()), filterParameterWidget, SIGNAL(endViewPathRequirements()));
     // Alert to DataArrayPaths from other FilterParameters
     connect(filterParameterWidget, SIGNAL(filterPath(DataArrayPath)), this, SLOT(emitFilterPath(DataArrayPath)));
     connect(filterParameterWidget, SIGNAL(endViewPaths()), this, SIGNAL(endPathFiltering()));
