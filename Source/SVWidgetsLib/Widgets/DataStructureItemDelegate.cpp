@@ -292,7 +292,6 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
 
   bool filterData = (m_ReqType != DataArrayPath::DataType::None);
   bool isCreatedPath = std::find(m_CreatedPaths.begin(), m_CreatedPaths.end(), path) != m_CreatedPaths.end();
-  bool mouseOver = op.rect.contains(mousePos);
 
   // Check for a corresponding icon
   QIcon icon;
