@@ -1,5 +1,4 @@
-#ifndef _testFileLocation_h_
-#define _testFileLocation_h_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -193,5 +192,3 @@ namespace UnitTest
    const QString TestFile2("@TEST_TEMP_DIR@/TestFile2.txt");
   }
 }
-
-#endif
