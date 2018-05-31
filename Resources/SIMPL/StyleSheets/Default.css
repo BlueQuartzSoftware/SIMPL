@@ -1,0 +1,68 @@
+/* STYLESHEET=DEFAULT */
+
+/* ----------------------------------------------------------------------------
+* QGroupBox Section
+* ----------------------------------------------------------------------------*/
+QGroupBox::title
+{
+    /* height: 185px; */
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 0px;
+}
+
+QGroupBox
+{
+    font-family: "Lato-Bold";
+    font-weight: bold;
+    font-size: 16px;
+}
+
+
+/* ----------------------------------------------------------------------------
+* SVPushButton Section
+* ----------------------------------------------------------------------------*/
+SVIconPushButton 
+{
+    background-repeat: no-repeat;
+    background-position: center center;
+    padding-left: 0px;
+    padding-top: 0px;
+}
+
+SVIconPushButton:hover 
+{
+    border: 1px solid;
+    border-radius: 5px;
+    border-color: rgb(190, 190, 190);
+    background-color: rgb(190, 190, 190);
+}
+
+SVIconPushButton:pressed
+{
+    border: 1px solid;
+    border-radius: 5px;
+    border-color: rgb(170, 170, 170);
+    background-color: rgb(170, 170, 170);
+    padding-left: 2px;
+    padding-top: 2px;
+}
+
+SVIconPushButton:disabled
+{
+    border: 1px solid;
+    border-radius: 5px;
+    border-color: rgb(130, 130, 130);
+    background-color: rgb(130, 130, 130);
+    padding-left: 0px;
+    padding-top: 0px; 
+}
+
+
+FilterParameterWidget
+{
+    margin: 2px;
+    background-position: top left;
+    background-origin: content;
+    background-clip: margin;
+}

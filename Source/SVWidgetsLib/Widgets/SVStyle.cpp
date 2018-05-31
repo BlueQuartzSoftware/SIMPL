@@ -95,6 +95,7 @@ SVStyle* SVStyle::Instance()
 // -----------------------------------------------------------------------------
 bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
 {
+  qDebug() << "SVStyle::loadStyleSheet() " << jsonFilePath;
   bool success = true;
   
   QFileInfo jsonFileInfo(jsonFilePath);
@@ -650,7 +651,7 @@ QIcon SVStyle::IconForGroup(const QString &grpName)
     return QIcon(QPixmap::fromImage(s_NameToImage[grpName]));
   }
 
-  QIcon grpIcon(":/BlankGroup_Icon.png");
+  QIcon grpIcon(":/SIMPL/icons/images/BlankGroup_Icon.png");
   if(!grpIcon.isNull())
   {
     grpImage = grpIcon.pixmap(QSize(48, 48)).toImage();

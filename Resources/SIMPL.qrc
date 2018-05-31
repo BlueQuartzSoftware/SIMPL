@@ -1,6 +1,136 @@
  <!DOCTYPE RCC>
  <RCC version="1.0">
  <qresource>
-    <file>DREAM3D/DREAM3DLicense.txt</file>
+
+    <!-- License Text Resources -->
+    <file>SIMPL/SIMPLLicense.txt</file>
+
+    <!-- Font Resources -->
+    <file>SIMPL/fonts/FiraSans-Regular.ttf</file>
+
+    <!-- StyleSheet Resources -->
+    <file>SIMPL/StyleSheets/Default.css</file>
+    <file>SIMPL/StyleSheets/Default.json</file>
+
+    <!-- Icon Resources -->
+    <file>SIMPL/icons/images/add.png</file>
+    <file>SIMPL/icons/images/add@2x.png</file>
+    <file>SIMPL/icons/images/arrow_down_green.png</file>
+    <file>SIMPL/icons/images/arrow_down_green@2x.png</file>
+    <file>SIMPL/icons/images/arrow_left_green.png</file>
+    <file>SIMPL/icons/images/arrow_left_green@2x.png</file>
+    <file>SIMPL/icons/images/arrow_right_black.png</file>
+    <file>SIMPL/icons/images/arrow_right_black@2x.png</file>
+    <file>SIMPL/icons/images/arrow_right_green.png</file>
+    <file>SIMPL/icons/images/arrow_right_green@2x.png</file>
+    <file>SIMPL/icons/images/arrow_up_green.png</file>
+    <file>SIMPL/icons/images/arrow_up_green@2x.png</file>
+    <file>SIMPL/icons/images/Asterisk.png</file>
+    <file>SIMPL/icons/images/Asterisk@2x.png</file>
+    <file>SIMPL/icons/images/ban.png</file>
+    <file>SIMPL/icons/images/ban@2x.png</file>
+    <file>SIMPL/icons/images/ban_hover.png</file>
+    <file>SIMPL/icons/images/ban_hover@2x.png</file>
+    <file>SIMPL/icons/images/ban_red.png</file>
+    <file>SIMPL/icons/images/ban_red@2x.png</file>
+    <file>SIMPL/icons/images/BlankGroup_Icon.png</file>
+    <file>SIMPL/icons/images/BlankGroup_Icon@2x.png</file>
+    <file>SIMPL/icons/images/bookmark.png</file>
+    <file>SIMPL/icons/images/bookmark@2x.png</file>
+    <file>SIMPL/icons/images/bullet_ball_blue.png</file>
+    <file>SIMPL/icons/images/bullet_ball_blue@2x.png</file>
+    <file>SIMPL/icons/images/bullet_ball_green.png</file>
+    <file>SIMPL/icons/images/bullet_ball_green@2x.png</file>
+    <file>SIMPL/icons/images/bullet_ball_red.png</file>
+    <file>SIMPL/icons/images/bullet_ball_red@2x.png</file>
+    <file>SIMPL/icons/images/bullet_ball_yellow.png</file>
+    <file>SIMPL/icons/images/bullet_ball_yellow@2x.png</file>
+    <file>SIMPL/icons/images/caret-bottom.png</file>
+    <file>SIMPL/icons/images/caret-bottom@2x.png</file>
+    <file>SIMPL/icons/images/check.png</file>
+    <file>SIMPL/icons/images/check@2x.png</file>
+    <file>SIMPL/icons/images/check_plain.png</file>
+    <file>SIMPL/icons/images/check_plain@2x.png</file>
+    <file>SIMPL/icons/images/circle-x.png</file>
+    <file>SIMPL/icons/images/circle-x@2x.png</file>
+    <file>SIMPL/icons/images/cloud_download.png</file>
+    <file>SIMPL/icons/images/cloud_download@2x.png</file>
+    <file>SIMPL/icons/images/cog.png</file>
+    <file>SIMPL/icons/images/cog@2x.png</file>
+    <file>SIMPL/icons/images/data-transfer-download.png</file>
+    <file>SIMPL/icons/images/data-transfer-download@2x.png</file>
+    <file>SIMPL/icons/images/data-transfer-hdf.png</file>
+    <file>SIMPL/icons/images/data-transfer-hdf@2x.png</file>
+    <file>SIMPL/icons/images/data-transfer-upload.png</file>
+    <file>SIMPL/icons/images/data-transfer-upload@2x.png</file>
+    <file>SIMPL/icons/images/delete.png</file>
+    <file>SIMPL/icons/images/delete@2x.png</file>
+    <file>SIMPL/icons/images/delete_gray.png</file>
+    <file>SIMPL/icons/images/delete_gray@2x.png</file>
+    <file>SIMPL/icons/images/delete_plain.png</file>
+    <file>SIMPL/icons/images/delete_plain@2x.png</file>
+    <file>SIMPL/icons/images/EdgeGeometry.png</file>
+    <file>SIMPL/icons/images/EdgeGeometry@2x.png</file>
+    <file>SIMPL/icons/images/fit_to_window.png</file>
+    <file>SIMPL/icons/images/fit_to_window@2x.png</file>
+    <file>SIMPL/icons/images/folder_blue.png</file>
+    <file>SIMPL/icons/images/folder_blue@2x.png</file>
+    <file>SIMPL/icons/images/graph.png</file>
+    <file>SIMPL/icons/images/graph@2x.png</file>
+    <file>SIMPL/icons/images/ImageGeometry.png</file>
+    <file>SIMPL/icons/images/ImageGeometry@2x.png</file>
+    <file>SIMPL/icons/images/information.png</file>
+    <file>SIMPL/icons/images/information@2x.png</file>
+    <file>SIMPL/icons/images/list.png</file>
+    <file>SIMPL/icons/images/list@2x.png</file>
+    <file>SIMPL/icons/images/loop_square.png</file>
+    <file>SIMPL/icons/images/loop_square@2x.png</file>
+    <file>SIMPL/icons/images/media_play_flat.png</file>
+    <file>SIMPL/icons/images/media_play_flat@2x.png</file>
+    <file>SIMPL/icons/images/media_play_green.png</file>
+    <file>SIMPL/icons/images/media_play_green@2x.png</file>
+    <file>SIMPL/icons/images/media_play_white.png</file>
+    <file>SIMPL/icons/images/media_play_white@2x.png</file>
+    <file>SIMPL/icons/images/media_stop.png</file>
+    <file>SIMPL/icons/images/media_stop@2x.png</file>
+    <file>SIMPL/icons/images/media_stop_flat.png</file>
+    <file>SIMPL/icons/images/media_stop_flat@2x.png</file>
+    <file>SIMPL/icons/images/media_stop_white.png</file>
+    <file>SIMPL/icons/images/media_stop_white@2x.png</file>
+    <file>SIMPL/icons/images/navigate_close.png</file>
+    <file>SIMPL/icons/images/navigate_close@2x.png</file>
+    <file>SIMPL/icons/images/navigate_left.png</file>
+    <file>SIMPL/icons/images/navigate_left@2x.png</file>
+    <file>SIMPL/icons/images/navigate_right.png</file>
+    <file>SIMPL/icons/images/navigate_right@2x.png</file>
+    <file>SIMPL/icons/images/QuadGeometry.png</file>
+    <file>SIMPL/icons/images/QuadGeometry@2x.png</file>
+    <file>SIMPL/icons/images/refresh.png</file>
+    <file>SIMPL/icons/images/refresh@2x.png</file>
+    <file>SIMPL/icons/images/reload.png</file>
+    <file>SIMPL/icons/images/reload@2x.png</file>
+    <file>SIMPL/icons/images/search_menu.png</file>
+    <file>SIMPL/icons/images/search_menu@2x.png</file>
+    <file>SIMPL/icons/images/Star.png</file>
+    <file>SIMPL/icons/images/Star@2x.png</file>
+    <file>SIMPL/icons/images/toggle_off.png</file>
+    <file>SIMPL/icons/images/toggle_off@2x.png</file>
+    <file>SIMPL/icons/images/toggle_on.png</file>
+    <file>SIMPL/icons/images/toggle_on@2x.png</file>
+    <file>SIMPL/icons/images/trash.png</file>
+    <file>SIMPL/icons/images/trash@2x.png</file>
+    <file>SIMPL/icons/images/trash_hover.png</file>
+    <file>SIMPL/icons/images/trash_hover@2x.png</file>
+    <file>SIMPL/icons/images/TriangleGeometry.png</file>
+    <file>SIMPL/icons/images/TriangleGeometry@2x.png</file>
+    <file>SIMPL/icons/images/VertexGeometry.png</file>
+    <file>SIMPL/icons/images/VertexGeometry@2x.png</file>
+    <file>SIMPL/icons/images/warning.png</file>
+    <file>SIMPL/icons/images/warning@2x.png</file>
+    <file>SIMPL/icons/images/zoom_in.png</file>
+    <file>SIMPL/icons/images/zoom_in@2x.png</file>
+    <file>SIMPL/icons/images/zoom_out.png</file>
+    <file>SIMPL/icons/images/zoom_out@2x.png</file>
+
  </qresource>
  </RCC>

@@ -90,7 +90,7 @@ void PipelineListWidget::on_startPipelineBtn_clicked()
   {
     pipelineView->executePipeline();
     startPipelineBtn->setText("Cancel Pipeline");
-    startPipelineBtn->setIcon(QIcon(":/media_stop_white.png"));
+    startPipelineBtn->setIcon(QIcon(":/SIMPL/icons/images/media_stop_white.png"));
     update();
   }
 }
@@ -116,7 +116,7 @@ void PipelineListWidget::preflightFinished(FilterPipeline::Pointer pipeline, int
 void PipelineListWidget::pipelineFinished()
 {
   startPipelineBtn->setText("Start Pipeline");
-  startPipelineBtn->setIcon(QIcon(":/media_play_white.png"));
+  startPipelineBtn->setIcon(QIcon(":/SIMPL/icons/images/media_play_white.png"));
   startPipelineBtn->setStyleSheet(getStartPipelineIdleStyle());
 }
 

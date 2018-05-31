@@ -104,7 +104,7 @@ void FilterListToolboxWidget::setupSearchField()
   QPixmap pixmap(24, 24);
   pixmap.fill(Qt::transparent);
   QPainter painter(&pixmap);
-  const QPixmap mag = QPixmap(QLatin1String(":/search_menu.png"));
+  const QPixmap mag = QPixmap(QLatin1String(":/SIMPL/icons/images/search_menu.png"));
   painter.drawPixmap(0, (pixmap.height() - mag.height()) / 2, mag);
   filterSearch->setButtonPixmap(QtSLineEdit::Left, pixmap);
   connect(filterSearch, SIGNAL(textChanged(QString)), this, SLOT(searchFilters(QString)));

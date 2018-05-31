@@ -87,12 +87,8 @@ set(${PROJECT_NAME}_Generated_SRCS
 cmp_IDE_GENERATED_PROPERTIES("Generated" "${${PROJECT_NAME}_Generated_HDRS}" "${${PROJECT_NAME}_Generated_SRCS}")
 
 
-# -- Run MOC and UIC on the necessary files
-QT5_ADD_RESOURCES( SVWidgetsLib_Generated_RC_SRCS 
-              "${SVWidgetsLib_SOURCE_DIR}/icons/images/Icons.qrc" 
-              "${SVWidgetsLib_SOURCE_DIR}/fonts/fonts.qrc"
-              "${SVWidgetsLib_SOURCE_DIR}/StyleSheets/StyleSheets.qrc"
-)
+# -- Add the resources into the resource system
+QT5_ADD_RESOURCES( SVWidgetsLib_Generated_RC_SRCS "${SIMPLProj_SOURCE_DIR}/Resources/SIMPL.qrc")
 
 foreach(h ${SVWidgetsLib_Generated_RC_SRCS})
   set_property(SOURCE ${h} PROPERTY SKIP_AUTOMOC ON)
