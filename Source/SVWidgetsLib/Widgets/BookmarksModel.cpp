@@ -468,11 +468,11 @@ void BookmarksModel::addFileToTree(QString& path, QModelIndex& specifiedParent)
   if(fi.isFile())
   {
     setData(index, path, static_cast<int>(Roles::PathRole));
-    setData(index, QIcon(":/bookmark.png"), Qt::DecorationRole);
+    setData(index, QIcon(":/SIMPL/icons/images/bookmark.png"), Qt::DecorationRole);
   }
   else
   {
-    setData(index, QIcon(":/folder_blue.png"), Qt::DecorationRole);
+    setData(index, QIcon(":/SIMPL/icons/images/folder_blue.png"), Qt::DecorationRole);
 
     QStringList filters;
     filters << "*.dream3d"
@@ -586,7 +586,7 @@ void BookmarksModel::unwrapModel(QString objectName, QJsonObject object, QModelI
   QFileInfo fi(path);
   if(path.isEmpty() == false)
   {
-    setData(index, QIcon(":/bookmark.png"), Qt::DecorationRole);
+    setData(index, QIcon(":/SIMPL/icons/images/bookmark.png"), Qt::DecorationRole);
     if(fi.exists() == false)
     {
       // Set the itemHasError variable
@@ -595,7 +595,7 @@ void BookmarksModel::unwrapModel(QString objectName, QJsonObject object, QModelI
   }
   else
   {
-    setData(index, QIcon(":/folder_blue.png"), Qt::DecorationRole);
+    setData(index, QIcon(":/SIMPL/icons/images/folder_blue.png"), Qt::DecorationRole);
   }
 
   path = QDir::toNativeSeparators(path);
@@ -799,7 +799,7 @@ void BookmarksModel::readPrebuiltPipelines()
   QString pPath = pipelinesDir.absolutePath();
 
   FilterLibraryTreeWidget::ItemType itemType = FilterLibraryTreeWidget::Leaf_Item_Type;
-  QString iconFileName(":/bookmark.png");
+  QString iconFileName(":/SIMPL/icons/images/bookmark.png");
   bool allowEditing = false;
   QStringList fileExtension;
   fileExtension.append("*.json");
@@ -809,7 +809,7 @@ void BookmarksModel::readPrebuiltPipelines()
   QJsonObject prefsObject = getBookmarksPrefsObject();
   QJsonObject prebuiltsObject = prefsObject["Prebuilt Pipelines"].toObject();
   bool expanded = prebuiltsObject["Expanded"].toBool();
-  QModelIndex index = addTreeItem(QModelIndex(), dirName, QIcon(":/folder_blue.png"), pPath, 0, BookmarksItem::ItemType::Folder, expanded);
+  QModelIndex index = addTreeItem(QModelIndex(), dirName, QIcon(":/SIMPL/icons/images/folder_blue.png"), pPath, 0, BookmarksItem::ItemType::Folder, expanded);
 
   addPipelinesRecursively(pipelinesDir, index, prebuiltsObject, iconFileName, allowEditing, fileExtension, itemType);
 }
@@ -888,7 +888,7 @@ void BookmarksModel::addPipelinesRecursively(QDir currentDir, QModelIndex parent
       QString baseName = fi.baseName();
       QJsonObject folderPrefsObj = prebuiltsObj[baseName].toObject();
       bool expanded = folderPrefsObj["Expanded"].toBool();
-      nextIndex = addTreeItem(parent, baseName, QIcon(":/folder_blue.png"), fi.absoluteFilePath(), row, BookmarksItem::ItemType::Folder, expanded);
+      nextIndex = addTreeItem(parent, baseName, QIcon(":/SIMPL/icons/images/folder_blue.png"), fi.absoluteFilePath(), row, BookmarksItem::ItemType::Folder, expanded);
 
       addPipelinesRecursively(QDir(fi.absoluteFilePath()), nextIndex, folderPrefsObj, iconFileName, allowEditing, filters, itemType); // Recursive call
     }

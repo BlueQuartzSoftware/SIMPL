@@ -75,7 +75,7 @@
        </property>
        <property name="icon">
         <iconset resource="../../icons/images/Icons.qrc">
-         <normaloff>:/arrow_up_green.png</normaloff>:/arrow_up_green.png</iconset>
+         <normaloff>:/SIMPL/icons/images/arrow_up_green.png</normaloff>:/arrow_up_green.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -110,7 +110,7 @@
        </property>
        <property name="icon">
         <iconset resource="../../icons/images/Icons.qrc">
-         <normaloff>:/arrow_down_green.png</normaloff>:/arrow_down_green.png</iconset>
+         <normaloff>:/SIMPL/icons/images/arrow_down_green.png</normaloff>:/arrow_down_green.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -145,7 +145,7 @@
        </property>
        <property name="icon">
         <iconset resource="../../icons/images/Icons.qrc">
-         <normaloff>:/delete.png</normaloff>:/delete.png</iconset>
+         <normaloff>:/SIMPL/icons/images/delete.png</normaloff>:/delete.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -213,7 +213,7 @@
        </property>
        <property name="icon">
         <iconset resource="../../icons/images/Icons.qrc">
-         <normaloff>:/arrow_right_green.png</normaloff>:/arrow_right_green.png</iconset>
+         <normaloff>:/SIMPL/icons/images/arrow_right_green.png</normaloff>:/arrow_right_green.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -248,7 +248,7 @@
        </property>
        <property name="icon">
         <iconset resource="../../icons/images/Icons.qrc">
-         <normaloff>:/arrow_left_green.png</normaloff>:/arrow_left_green.png</iconset>
+         <normaloff>:/SIMPL/icons/images/arrow_left_green.png</normaloff>:/arrow_left_green.png</iconset>
        </property>
        <property name="iconSize">
         <size>

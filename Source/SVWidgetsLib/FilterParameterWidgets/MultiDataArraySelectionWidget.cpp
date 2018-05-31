@@ -151,7 +151,7 @@ void MultiDataArraySelectionWidget::setupGui()
   for (int i=0; i<selectedPaths.size(); i++)
   {
     DataArrayPath selectedPath = selectedPaths[i];
-    QListWidgetItem* item = new QListWidgetItem(QIcon(":/bullet_ball_green.png"), selectedPath.getDataArrayName());
+    QListWidgetItem* item = new QListWidgetItem(QIcon(":/SIMPL/icons/images/bullet_ball_green.png"), selectedPath.getDataArrayName());
     selectedArraysListWidget->addItem(item);
   }
   selectBtn->setDisabled(true);
@@ -506,12 +506,12 @@ void MultiDataArraySelectionWidget::beforePreflight()
         {
           //item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
           // item->setBackgroundColor(QColor(235, 110, 110));
-          item->setIcon(QIcon(":/bullet_ball_red.png"));
+          item->setIcon(QIcon(":/SIMPL/icons/images/bullet_ball_red.png"));
         }
         else
         {
           // item->setBackgroundColor(QColor(255, 255, 255));
-          item->setIcon(QIcon(":/bullet_ball_green.png"));
+          item->setIcon(QIcon(":/SIMPL/icons/images/bullet_ball_green.png"));
         }
       }
 
@@ -519,7 +519,7 @@ void MultiDataArraySelectionWidget::beforePreflight()
       {
         if(selectListNames.contains(arrayNames[i]) == false && orderListNames.contains(arrayNames[i]) == false)
         {
-          QListWidgetItem* item = new QListWidgetItem(QIcon(":/bullet_ball_green.png"), arrayNames[i]);
+          QListWidgetItem* item = new QListWidgetItem(QIcon(":/SIMPL/icons/images/bullet_ball_green.png"), arrayNames[i]);
           availableArraysListWidget->addItem(item);
         }
       }

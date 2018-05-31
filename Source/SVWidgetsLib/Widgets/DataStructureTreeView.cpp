@@ -196,6 +196,8 @@ void DataStructureTreeView::mousePressEvent(QMouseEvent* event)
 // -----------------------------------------------------------------------------
 void DataStructureTreeView::mouseMoveEvent(QMouseEvent* event)
 {
+  QTreeView::mouseMoveEvent(event);
+
   // Do not drag or filter the FilterInputWidget while the view is being filtered
   if(m_Delegate->isFiltered())
   {
@@ -223,6 +225,8 @@ void DataStructureTreeView::mouseMoveEvent(QMouseEvent* event)
 // -----------------------------------------------------------------------------
 void DataStructureTreeView::leaveEvent(QEvent* event)
 {
+  QTreeView::leaveEvent(event);
+
   if(m_Dragging)
   {
     return;

@@ -176,11 +176,11 @@ bool FilterInputWidget::eventFilter(QObject* o, QEvent* e)
 // -----------------------------------------------------------------------------
 void FilterInputWidget::setupGui()
 {
-  QFont humanLabelFont = SVStyle::Instance()->GetHumanLabelFont();
-  QFont brandingFont = SVStyle::Instance()->GetBrandingLabelFont();
+//  QFont humanLabelFont = SVStyle::Instance()->GetHumanLabelFont();
+//  QFont brandingFont = SVStyle::Instance()->GetBrandingLabelFont();
 
-  m_Ui->filterHumanLabel->setFont(humanLabelFont);
-  m_Ui->filterIndex->setFont(humanLabelFont);
+//  m_Ui->filterHumanLabel->setFont(humanLabelFont);
+//  m_Ui->filterIndex->setFont(humanLabelFont);
 
   QString releaseType = QString::fromLatin1(SIMPLViewProj_RELEASE_TYPE);
   if(releaseType.compare("Official") == 0)
@@ -189,7 +189,7 @@ void FilterInputWidget::setupGui()
   }
   else
   {
-    m_Ui->brandingLabel->setFont(brandingFont);
+    //m_Ui->brandingLabel->setFont(brandingFont);
     m_Ui->brandingLabel->installEventFilter(this);
   }
   
