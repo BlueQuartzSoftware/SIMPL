@@ -31,7 +31,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="xData">
+    <widget class="SVLineEdit" name="xData">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -47,7 +47,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="yData">
+    <widget class="SVLineEdit" name="yData">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -63,7 +63,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="zData">
+    <widget class="SVLineEdit" name="zData">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -93,6 +93,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SVLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">SVControlWidgets.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>xData</tabstop>
   <tabstop>yData</tabstop>

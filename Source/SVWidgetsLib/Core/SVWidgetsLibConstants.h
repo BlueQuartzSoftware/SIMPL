@@ -61,28 +61,16 @@ namespace SIMPLView
 
   namespace GeometryIcons
   {
-    const QString Image(":ImageGeometry.png");
-    const QString Vertex(":VertexGeometry.png");
-    const QString Edge(":EdgeGeometry.png");
-    const QString Triangle(":TriangleGeometry.png");
-    const QString Quad(":QuadGeometry.png");
+    const QString Image(":SIMPL/icons/images/ImageGeometry.png");
+    const QString Vertex(":SIMPL/icons/images/VertexGeometry.png");
+    const QString Edge(":SIMPL/icons/images/EdgeGeometry.png");
+    const QString Triangle(":SIMPL/icons/images/TriangleGeometry.png");
+    const QString Quad(":SIMPL/icons/images/QuadGeometry.png");
   }
 
   namespace DataArrayPath
   {
-    const QString BaseNewPathIcon(":Asterisk.png");
-    
-    namespace DefaultColors
-    {
-      const QString NormalColor("#8f8f91");
-      const QString ErrorColor("#BC0000");
-      const QString AcceptColor("#009104");
-      const QString RejectColor("#BC0000");
-
-      const QString DataContainerColor("#056d00");
-      const QString AttributeMatrixColor("#6400b7");
-      const QString DataArrayColor("#004dad");
-    }
+    const QString BaseNewPathIcon(":SIMPL/icons/images/Asterisk.png");
   }
 
 }

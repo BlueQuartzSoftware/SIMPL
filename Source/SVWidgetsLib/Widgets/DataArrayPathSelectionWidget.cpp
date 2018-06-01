@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "DataArrayPathSelectionWidget.h"
 
@@ -41,10 +41,9 @@
 #include <QtGui/QTextDocument>
 #include <QtWidgets/QApplication>
 
-#include "SVWidgetsLib/QtSupport/QtSSettings.h"
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
-
+#include "SVWidgetsLib/QtSupport/QtSSettings.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -73,7 +72,7 @@ const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(QString text, QColor 
   font.setBold(true);
   font.setWeight(QFont::Bold);
   font.setStyleStrategy(QFont::PreferAntialias);
-  font.setFamily(QtSStyles::GetUIFont());
+  font.setFamily(SVStyle::Instance()->GetUIFont());
 
   QTextDocument* doc = new QTextDocument();
   doc->setDefaultFont(font);
@@ -114,30 +113,52 @@ const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(QString text, QColor 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType type)
+const QColor DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType type)
 {
-  QSharedPointer<QtSSettings> prefs = QSharedPointer<QtSSettings>(new QtSSettings());
-  prefs->beginGroup("DataArrayPath Colors");
-
-  QString color = "#000000";
+  QColor color;
+  SVStyle* style = SVStyle::Instance();
 
   switch(type)
   {
   case DataArrayPath::DataType::DataContainer:
-    color = prefs->value("DataContainer", SIMPLView::DataArrayPath::DefaultColors::DataContainerColor).toString();
+    color = style->getDataArrayPath_DataContainer_color();
     break;
   case DataArrayPath::DataType::AttributeMatrix:
-    color = prefs->value("AttributeMatrix", SIMPLView::DataArrayPath::DefaultColors::AttributeMatrixColor).toString();
+    color = style->getDataArrayPath_AttributeMatrix_color();
     break;
   case DataArrayPath::DataType::DataArray:
-    color = prefs->value("DataArray", SIMPLView::DataArrayPath::DefaultColors::DataArrayColor).toString();
+    color = style->getDataArrayPath_DataArray_color();
     break;
   case DataArrayPath::DataType::None:
-    color = prefs->value("None", QString("#000000")).toString();
     break;
   }
 
-  prefs->endGroup();
+  return color;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QColor DataArrayPathSelectionWidget::GetCheckedColor(DataArrayPath::DataType type)
+{
+  QColor color;
+  SVStyle* style = SVStyle::Instance();
+
+  switch(type)
+  {
+  case DataArrayPath::DataType::DataContainer:
+    color = style->getDataArrayPath_DataContainer_background_color();
+    break;
+  case DataArrayPath::DataType::AttributeMatrix:
+    color = style->getDataArrayPath_AttributeMatrix_background_color();
+    break;
+  case DataArrayPath::DataType::DataArray:
+    color = style->getDataArrayPath_DataArray_background_color();
+    break;
+  case DataArrayPath::DataType::None:
+    break;
+  }
+
   return color;
 }
 
@@ -330,7 +351,7 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
 //
 // -----------------------------------------------------------------------------
 DataArrayPathSelectionWidget::DataArrayPathSelectionWidget(QWidget* parent)
-  : QToolButton(parent)
+: QToolButton(parent)
 {
   setupGui();
 }
@@ -340,7 +361,6 @@ DataArrayPathSelectionWidget::DataArrayPathSelectionWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::setupGui()
 {
-  setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
   setContextMenuPolicy(Qt::CustomContextMenu);
   setAcceptDrops(true);
   setCheckable(true);
@@ -778,6 +798,10 @@ void DataArrayPathSelectionWidget::checkDragPath(DataArrayPath inputPath)
   m_FilteringPassed = checkPathReqs(inputPath);
   setEnabled(m_FilteringPassed);
   repaint();
+
+  // Force update the styling
+  style()->unpolish(this);
+  style()->polish(this);
 }
 
 // -----------------------------------------------------------------------------
@@ -787,6 +811,10 @@ void DataArrayPathSelectionWidget::clearPathFiltering()
 {
   setEnabled(true);
   setPathFiltering(false);
+
+  // Force update the styling
+  style()->unpolish(this);
+  style()->polish(this);
 }
 
 // -----------------------------------------------------------------------------
@@ -796,6 +824,10 @@ void DataArrayPathSelectionWidget::endExternalFiltering()
 {
   setEnabled(true);
   setPathFiltering(isChecked());
+
+  // Force update the styling
+  style()->unpolish(this);
+  style()->polish(this);
 }
 
 // -----------------------------------------------------------------------------
@@ -820,7 +852,7 @@ void DataArrayPathSelectionWidget::enterEvent(QEvent* event)
     break;
   }
 
-  changeStyleSheet(Style::Active);
+  setState(State::Active);
 }
 
 // -----------------------------------------------------------------------------
@@ -838,11 +870,11 @@ void DataArrayPathSelectionWidget::leaveEvent(QEvent* event)
   emit endViewPaths();
   if(checkCurrentPath())
   {
-    changeStyleSheet(Style::Normal);
+    setState(State::Normal);
   }
   else
   {
-    changeStyleSheet(Style::NotFound);
+    setState(State::NotFound);
   }
 }
 
@@ -868,7 +900,7 @@ void DataArrayPathSelectionWidget::dragEnterEvent(QDragEnterEvent* event)
 
   if(checkPathReqs(path))
   {
-    changeStyleSheet(Style::DragEnabled);
+    setState(State::DragEnabled);
     event->accept();
   }
 }
@@ -898,7 +930,7 @@ void DataArrayPathSelectionWidget::dropEvent(QDropEvent* event)
   QString dataStr = QString::fromUtf8(data);
 
   setDataArrayPath(DataArrayPath::Deserialize(dataStr, "|"));
-  
+
   setChecked(false);
 
   event->accept();
@@ -941,7 +973,7 @@ void DataArrayPathSelectionWidget::performDrag()
   DataArrayPath path = getDataArrayPath();
   emit filterPath(path);
 
-  // MimeData stores the current path AND marks itself as a SelectionWidget drag 
+  // MimeData stores the current path AND marks itself as a SelectionWidget drag
   // for connecting to the DataStructureWidget.
   QMimeData* mimeData = new QMimeData;
   mimeData->setData(SIMPLView::DragAndDrop::DataArrayPath, path.serialize().toUtf8());
@@ -1000,14 +1032,14 @@ void DataArrayPathSelectionWidget::afterPreflight()
     }
     break;
   case DataArrayPath::DataType::DataArray:
+  {
+    AttributeMatrix::Pointer am = dca->getAttributeMatrix(getDataArrayPath());
+    if(am && am->getAttributeArray(getDataArrayPath().getDataArrayName()))
     {
-      AttributeMatrix::Pointer am = dca->getAttributeMatrix(getDataArrayPath());
-      if(am && am->getAttributeArray(getDataArrayPath().getDataArrayName()))
-      {
-        found = true;
-      }
+      found = true;
     }
-    break;
+  }
+  break;
   case DataArrayPath::DataType::None:
     break;
   }
@@ -1015,11 +1047,11 @@ void DataArrayPathSelectionWidget::afterPreflight()
   // Update StyleSheet
   if(found)
   {
-    changeStyleSheet(Style::Normal);
+    setState(State::Normal);
   }
   else
   {
-    changeStyleSheet(Style::NotFound);
+    setState(State::NotFound);
   }
 }
 
@@ -1030,16 +1062,16 @@ void DataArrayPathSelectionWidget::setPathFiltering(bool active)
 {
   setChecked(active);
   m_FilteringPassed = false;
-  
+
   if(false == active && false == underMouse())
   {
     if(checkCurrentPath())
     {
-      changeStyleSheet(Style::Normal);
+      setState(State::Normal);
     }
     else
     {
-      changeStyleSheet(Style::NotFound);
+      setState(State::NotFound);
     }
   }
 
@@ -1057,122 +1089,127 @@ void DataArrayPathSelectionWidget::resetStyle()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataArrayPathSelectionWidget::getColor(Style style)
+const QColor DataArrayPathSelectionWidget::getBorderColor(State state)
 {
-  QSharedPointer<QtSSettings> prefs = QSharedPointer<QtSSettings>(new QtSSettings());
-  prefs->beginGroup("DataArrayPath Styles");
+  SVStyle* style = SVStyle::Instance();
+  QColor color = "#000000";
 
-  QString color = "#000000";
-
-  switch(style)
+  switch(state)
   {
-  case Style::Normal:
-    color = prefs->value("Normal", SIMPLView::DataArrayPath::DefaultColors::NormalColor).toString();
+  case State::Normal:
+    color = style->getDataArrayPath_border_normal();
     break;
-  case Style::Active:
+  case State::Active:
     color = GetActiveColor(m_DataType);
     break;
-  case Style::NotFound:
-    color = prefs->value("NotFount", SIMPLView::DataArrayPath::DefaultColors::ErrorColor).toString();
+  case State::NotFound:
+    color = style->getDataArrayPath_border_not_found();
     break;
-  case Style::DragEnabled:
-    color = prefs->value("DragEnabled", SIMPLView::DataArrayPath::DefaultColors::AcceptColor).toString();
+  case State::DragEnabled:
+    color = style->getDataArrayPath_border_drag_enabled();
     break;
-  case Style::DragDisabled:
-    color = prefs->value("DragDisabled", SIMPLView::DataArrayPath::DefaultColors::RejectColor).toString();
+  case State::DragDisabled:
+    color = style->getDataArrayPath_border_drag_disabled();
     break;
   }
 
-  prefs->endGroup();
   return color;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayPathSelectionWidget::changeStyleSheet(Style styleType)
+DataArrayPathSelectionWidget::State DataArrayPathSelectionWidget::getState()
 {
-  m_Style = styleType;
+  return m_State;
+}
 
-  QString styleSheet;
-  QTextStream ss(&styleSheet);
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::setState(State styleType)
+{
+  m_State = styleType;
 
-  QFont font;
-  font.setBold(true);
-  font.setItalic(true);
-  font.setWeight(QFont::Bold);
-  font.setStyleStrategy(QFont::PreferAntialias);
-  font.setFamily(QtSStyles::GetUIFont());
+  // Force update the styling
+  style()->unpolish(this);
+  style()->polish(this);
+}
 
-  QString fontString;
-  QTextStream in(&fontString);
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int DataArrayPathSelectionWidget::getXMargin() const
+{
+  ensurePolished();
 
-#if defined(Q_OS_MAC)
-  font.setPointSize(12);
-#elif defined(Q_OS_WIN)
-  font.setPointSize(10);
-#else
-  font.setPointSize(11);
-  in << "color; #000000;\n";
-  in << "font-weight: Medium;";
-#endif
+  // This roundabout calculation is to solve the problem where methods designed to return the margins or content rect
+  // after the stylesheet has been applied are not returning the correct result.
+  int xMargin;
+  {
+    QStyleOptionButton option;
+    option.initFrom(this);
 
-  in << "font: " << font.weight() << " " << font.pointSize() << "pt \"" << font.family() << "\";";
+    QRect contentsRect1 = style()->subElementRect(QStyle::SE_PushButtonLayoutItem, &option, this);
+    QRect contentsRect2 = style()->subElementRect(QStyle::SE_PushButtonContents, &option, this);
 
-  ss << "QToolButton {\n";
-  ss << " border: 1px solid " << getColor(styleType) << ";\n";
-  ss << " border-radius: 4px;\n";
-  ss << " background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #DDDDDD, stop: 1 #FFFFFF);\n";
-  ss << fontString << "\n";
-  ss << " padding-left: 16px;\n";
-  ss << " padding-right: 12px;\n";
-  ss << " padding-top: 2px;\n";
-  ss << " padding-bottom: 2px;\n";
-  ss << "}\n";
+    int width1 = contentsRect1.width();
+    int width2 = contentsRect2.width();
+    xMargin = (width1 - width2) / 2;
+  }
 
-  ss << "QToolButton::menu-indicator {\n";
-  ss << " subcontrol-origin: content;\n";
-  ss << " subcontrol-position:  right; /* */\n";
-  ss << "}\n";
+  return xMargin;
+}
 
-  ss << "QToolButton::menu-indicator:pressed, QToolButton::menu-indicator:open {\n";
-  ss << " position: relative;\n";
-  ss << "}\n";
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int DataArrayPathSelectionWidget::getYMargin() const
+{
+  ensurePolished();
 
-  QColor checkedColor = getColor(styleType);
-  int hue = checkedColor.hsvHue();
-  int saturation = 50;
-  int value = 255;
-  checkedColor.setHsv(hue, saturation, value);
-  ss << "QToolButton:checked {\n";
-  ss << " background-color: " << checkedColor.name() << ";\n";
-  ss << "}\n";
+  // This roundabout calculation is to solve the problem where methods designed to return the margins or content rect
+  // after the stylesheet has been applied are not returning the correct result.
+  int yMargin;
+  {
+    QStyleOptionButton option;
+    option.initFrom(this);
 
-  ss << "QToolButton:flat {\n";
-  ss << " border: none;\n";
-  ss << "}\n";
+    QRect contentsRect1 = style()->subElementRect(QStyle::SE_PushButtonLayoutItem, &option, this);
+    QRect contentsRect2 = style()->subElementRect(QStyle::SE_PushButtonContents, &option, this);
 
-  ss << " QToolTip {\
-              border: 2px solid #434343;\
-              padding: 2px;\
-              border-radius: 3px;\
-              opacity: 255;\
-              background-color: #FFFCEA;\
-              color: #000000;\
-              }";
-  //  ss << "QToolButton:hover {\n";
-  //  if(exists)
-  //  {
-  //    ss << " border: 2px solid  " << ::kNormalColor << ";\n";
-  //  }
-  //  else
-  //  {
-  //    ss << " border: 2px solid " << ::kErrorColor << ";\n";
-  //  }
-  //  ss << " border-radius: 4px;\n";
-  //  ss << "}\n";
+    int height1 = contentsRect1.height();
+    int height2 = contentsRect2.height();
+    yMargin = (height1 - height2) / 2;
+  }
 
-  setStyleSheet(styleSheet);
+  return yMargin;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QRect DataArrayPathSelectionWidget::getStyledContentsRect() const
+{
+  ensurePolished();
+
+  QStyleOptionButton option;
+  option.initFrom(this);
+
+  return style()->subElementRect(QStyle::SE_PushButtonContents, &option, this);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QRect DataArrayPathSelectionWidget::getStyledBorderRect() const
+{
+  ensurePolished();
+
+  QStyleOptionButton option;
+  option.initFrom(this);
+
+  return style()->subElementRect(QStyle::SE_PushButtonLayoutItem, &option, this);
 }
 
 // -----------------------------------------------------------------------------
@@ -1187,42 +1224,65 @@ void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
     return;
   }
 
-  int rectWidth = height();
-  int penWidth = 2;
-  int radius = 6;
-  QRect rect(width() - rectWidth - penWidth / 2, penWidth / 2, rectWidth, height() - penWidth);
-  QColor penColor(getColor(Style::Active));
-  QColor fillColor(getColor(Style::Active));
-  if(m_Style == Style::NotFound)
+  ensurePolished();
+
+  int yMargin = getYMargin();
+
+  // Use yMargin because no method designed to return margins or content rect after the stylesheet has been applied
+  // returns the correct value.
+  int rectWidth = getStyledBorderRect().height() + 1;
+  int penWidth = 1;
+  int radius = 4;
+  QRect rect(width() - rectWidth, yMargin / 2, rectWidth, rectWidth - yMargin);
+  QColor penColor(getBorderColor(State::Active));
+  QColor fillColor(getBorderColor(State::Active));
+  if(getState() == State::NotFound)
   {
-    penColor = getColor(Style::NotFound);
+    penColor = getBorderColor(State::NotFound);
   }
   if(false == isEnabled())
   {
-    fillColor = QColor("#DDDDDD");
+    fillColor = QColor(221, 221, 221);
   }
-  
+
   QPen pen;
+  penColor.setAlpha(50);
   pen.setColor(penColor);
   pen.setWidth(penWidth);
-
-  QPainter painter{ this };
-  painter.setPen(pen);
-  painter.setBrush(fillColor);
-  painter.drawRoundRect(rect, radius, radius);
+  QPainter painter{this};
 
 #if 0
-  // Draw "Drop" Circle
-  int fillBorder = 8;
-  int size = rect.width() - fillBorder;
-  QRect filteringRect = rect;
-  filteringRect.setX(rect.x() + fillBorder / 2);
-  filteringRect.setY(rect.y() + fillBorder / 2 - 1);
-  filteringRect.setWidth(size);
-  filteringRect.setHeight(size);
-  painter.setBrush(QColor(255,255,255));
-  painter.drawChord(filteringRect, 0, 360 * 16);
+  QPainterPath ppath;
+  ppath.addRoundedRect(rect, radius, radius);
+  painter.setPen(pen);
+  painter.setBrush(fillColor);
+  painter.fillPath(ppath, fillColor);
+#else
+  painter.setPen(pen);
+  painter.setBrush(fillColor);
+  painter.drawRoundedRect(rect, radius, radius);
+  painter.drawRect(rect.x(), rect.y(), radius, rect.height());
 #endif
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QSize DataArrayPathSelectionWidget::updatedSizeHint(QSize sizeHint) const
+{
+  int xMargin = getXMargin();
+
+  // Check Width
+  QFontMetrics fm(font());
+  int textPadding = xMargin;
+  int textWidth = fm.width(text()) + textPadding;
+  int minWidth = textWidth + xMargin + (2 * sizeHint.height());
+  if(sizeHint.width() < minWidth)
+  {
+    sizeHint.setWidth(minWidth);
+  }
+
+  return sizeHint;
 }
 
 // -----------------------------------------------------------------------------
@@ -1230,9 +1290,21 @@ void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
 // -----------------------------------------------------------------------------
 QSize DataArrayPathSelectionWidget::minimumSizeHint() const
 {
-  QSize minHint = QToolButton::minimumSizeHint();
-  minHint.setWidth(minHint.width() + 2 * minHint.height());
+  ensurePolished();
+  QSize minHint = updatedSizeHint(QToolButton::minimumSizeHint());
+
   return minHint;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QSize DataArrayPathSelectionWidget::sizeHint() const
+{
+  ensurePolished();
+  QSize hint = updatedSizeHint(QToolButton::sizeHint());
+
+  return hint;
 }
 
 // -----------------------------------------------------------------------------
@@ -1312,7 +1384,7 @@ QMenu* DataArrayPathSelectionWidget::createSelectionMenu()
     {
       QAction* action = menu->addAction(dc->getName());
       action->setEnabled(checkPathReqs(path));
-      connect(action, &QAction::triggered, this, [=] {setDataArrayPath(path); } );
+      connect(action, &QAction::triggered, this, [=] { setDataArrayPath(path); });
     }
     else
     {
@@ -1334,8 +1406,8 @@ QMenu* DataArrayPathSelectionWidget::createSelectionMenu()
         {
           QAction* action = dcMenu->addAction(am->getName());
           action->setEnabled(checkPathReqs(path));
-          connect(action, &QAction::triggered, this, [=] {setDataArrayPath(path); });
-          
+          connect(action, &QAction::triggered, this, [=] { setDataArrayPath(path); });
+
           if(checkPathReqs(path))
           {
             dcMenuEnabled = true;
@@ -1359,7 +1431,7 @@ QMenu* DataArrayPathSelectionWidget::createSelectionMenu()
 
             QAction* action = amMenu->addAction(daName);
             action->setEnabled(checkPathReqs(path));
-            connect(action, &QAction::triggered, this, [=] {setDataArrayPath(path); });
+            connect(action, &QAction::triggered, this, [=] { setDataArrayPath(path); });
 
             if(checkPathReqs(path))
             {

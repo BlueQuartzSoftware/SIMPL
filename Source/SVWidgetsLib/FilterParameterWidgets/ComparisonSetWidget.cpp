@@ -4,7 +4,7 @@
 #include <QtWidgets/QAction>
 
 #include "SVWidgetsLib/FilterParameterWidgets/ComparisonContainerWidget.h"
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Filtering/ComparisonValue.h"
@@ -44,7 +44,7 @@ void ComparisonSetWidget::setupGui()
   connect(invertConditionalCheckBox, SIGNAL(stateChanged(int)),
     this, SLOT(setInverse(int)));
 
-  addItemBtn->setStyleSheet(QtSStyles::StyleSheetForButton(addItemBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::AddImagePath));
+  addItemBtn->setStyleSheet(SVStyle::Instance()->StyleSheetForButton(addItemBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::AddImagePath));
 }
 
 // -----------------------------------------------------------------------------

@@ -44,7 +44,7 @@ class SVWidgetsLib_EXPORT QtSHoverButton : public QPushButton
 {
     Q_OBJECT
   public:
-    explicit QtSHoverButton(QWidget* parent = 0);
+    explicit QtSHoverButton(QWidget* parent = nullptr);
 
     virtual ~QtSHoverButton();
 

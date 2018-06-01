@@ -43,7 +43,7 @@
 #include "SVWidgetsLib/Widgets/PipelineItemDelegate.h"
 #include "SVWidgetsLib/Widgets/PipelineModel.h"
 #include "SVWidgetsLib/Widgets/SVPipelineView.h"
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 namespace {
   const int k_ButtonSize = 24;
@@ -89,14 +89,18 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
   if (filter.get() != nullptr)
   {
     QString grpName = filter->getGroupName();
-    grpColor = QtSStyles::GetFilterBackgroundColor();
+    grpColor = SVStyle::Instance()->GetFilterBackgroundColor();
   }
 
   QColor widgetBackgroundColor;
-  QColor labelColor;
+  QColor labelColor = SVStyle::Instance()->GetFilterFontColor();
   QColor indexBackgroundColor;
   QColor bgColor = grpColor;
+  #if 1
+    QColor selectedBgColor = SVStyle::Instance()->GetFilterSelectionColor();
+  #else
   QColor selectedBgColor = m_View->palette().color(QPalette::Highlight);
+  #endif
   QColor disabledBgColor = QColor(124, 124, 124);
 
   bool drawButtons = false;
@@ -123,23 +127,23 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
   {
     case PipelineItem::WidgetState::Ready:
       widgetBackgroundColor = bgColor;
-      labelColor = QColor(190, 190, 190);
+      //labelColor = QColor(240, 240, 240);
       indexBackgroundColor = QColor(48, 48, 48);
       break;
     case PipelineItem::WidgetState::Executing:
       widgetBackgroundColor = QColor(130, 130, 130);
-      labelColor = QColor(190, 190, 190);
+      //labelColor = QColor(20, 20, 20);
       indexBackgroundColor = QColor(6, 140, 190);
       break;
     case PipelineItem::WidgetState::Completed:
       widgetBackgroundColor = bgColor.name();
-      labelColor = QColor(190, 190, 190);
+      //labelColor = QColor(240, 240, 240);
       indexBackgroundColor = QColor(6, 118, 6);
       break;
     case PipelineItem::WidgetState::Disabled:
       bgColor = disabledBgColor;
       widgetBackgroundColor = disabledBgColor.name();
-      labelColor = QColor(190, 190, 190);
+      //labelColor = QColor(240, 240, 240);
       indexBackgroundColor = QColor(96, 96, 96);
       break;
   }
@@ -152,11 +156,11 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
     {
       case PipelineItem::PipelineState::Running:
         widgetBackgroundColor = selectedColor.name();
-        labelColor = QColor(190, 190, 190);
+        labelColor = QColor(20, 20, 20);
         break;
       case PipelineItem::PipelineState::Stopped:
         widgetBackgroundColor = bgColor.name();
-        labelColor = QColor(0, 0, 0);
+        //labelColor = QColor(240, 240, 240);
         break;
       case PipelineItem::PipelineState::Paused:
         widgetBackgroundColor = QColor(160, 160, 160);
@@ -200,7 +204,7 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
     drawButtons = false;
   }
 
-  QFont font = QtSStyles::GetHumanLabelFont();
+  QFont font = SVStyle::Instance()->GetHumanLabelFont();
 
 #if defined(Q_OS_MAC)
   font.setPointSize(font.pointSize() - 4);

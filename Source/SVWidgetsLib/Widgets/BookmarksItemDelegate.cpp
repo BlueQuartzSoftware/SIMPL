@@ -40,11 +40,10 @@
 #include <QtGui/QIntValidator>
 #include <QtGui/QPainter>
 
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/Widgets/BookmarksItem.h"
 #include "SVWidgetsLib/Widgets/BookmarksItemDelegate.h"
 #include "SVWidgetsLib/Widgets/BookmarksModel.h"
-
-
 
 // -----------------------------------------------------------------------------
 //
@@ -73,7 +72,7 @@ QWidget* BookmarksItemDelegate::createEditor(QWidget* parent, const QStyleOption
 // -----------------------------------------------------------------------------
 void BookmarksItemDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
 {
-  QString value = index.model()->data(index, Qt::DisplayRole).toString();
+  QString value = index.model()->data(index, BookmarksModel::Roles::NameRole).toString();
   QLineEdit* line = static_cast<QLineEdit*>(editor);
   line->setText(value);
 }
@@ -91,7 +90,7 @@ void BookmarksItemDelegate::setModelData(QWidget* editor, QAbstractItemModel* mo
   if(value.isEmpty() == false)
   {
     QModelIndex bIndex = bModel->index(index.row(), BookmarksItem::Contents, index.parent());
-    bModel->setData(bIndex, value, Qt::DisplayRole);
+    bModel->setData(bIndex, value, BookmarksModel::Roles::NameRole);
   }
 }
 
@@ -106,9 +105,17 @@ void BookmarksItemDelegate::updateEditorGeometry(QWidget* editor, const QStyleOp
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QSize BookmarksItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+  QSize size = QStyledItemDelegate::sizeHint(option, index);
+  return QSize(size.width(), 20);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void BookmarksItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
   // Place any painting code here
-
   QStyledItemDelegate::paint(painter, option, index);
 }

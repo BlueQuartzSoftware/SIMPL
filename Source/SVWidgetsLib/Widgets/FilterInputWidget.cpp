@@ -56,7 +56,7 @@
 #include "SIMPLib/FilterParameters/LinkedDataContainerSelectionFilterParameter.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "SVWidgetsLib/FilterParameterWidgets/ChoiceWidget.h"
 #include "SVWidgetsLib/FilterParameterWidgets/LinkedBooleanWidget.h"
@@ -176,11 +176,11 @@ bool FilterInputWidget::eventFilter(QObject* o, QEvent* e)
 // -----------------------------------------------------------------------------
 void FilterInputWidget::setupGui()
 {
-  QFont humanLabelFont = QtSStyles::GetHumanLabelFont();
-  QFont brandingFont = QtSStyles::GetBrandingLabelFont();
+//  QFont humanLabelFont = SVStyle::Instance()->GetHumanLabelFont();
+//  QFont brandingFont = SVStyle::Instance()->GetBrandingLabelFont();
 
-  m_Ui->filterHumanLabel->setFont(humanLabelFont);
-  m_Ui->filterIndex->setFont(humanLabelFont);
+//  m_Ui->filterHumanLabel->setFont(humanLabelFont);
+//  m_Ui->filterIndex->setFont(humanLabelFont);
 
   QString releaseType = QString::fromLatin1(SIMPLViewProj_RELEASE_TYPE);
   if(releaseType.compare("Official") == 0)
@@ -189,11 +189,11 @@ void FilterInputWidget::setupGui()
   }
   else
   {
-    m_Ui->brandingLabel->setFont(brandingFont);
+    //m_Ui->brandingLabel->setFont(brandingFont);
     m_Ui->brandingLabel->installEventFilter(this);
   }
   
-  m_Ui->informationBtn->setStyleSheet(QtSStyles::StyleSheetForButton(m_Ui->informationBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::InformationImagePath));  
+  m_Ui->informationBtn->setStyleSheet(SVStyle::Instance()->StyleSheetForButton(m_Ui->informationBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::InformationImagePath));  
   connect(m_Ui->informationBtn, SIGNAL(clicked()),
            this, SLOT(showHelp()));
 }
@@ -240,6 +240,7 @@ void FilterInputWidget::layoutWidgets(AbstractFilter* filter)
   // If the filter is valid then instantiate all the FilterParameterWidgets
   // Create the Widget that will be placed into the Variables Scroll Area
   m_VariablesWidget = new QWidget(this);
+  m_VariablesWidget->setObjectName("fiwVariablesWidget");
   m_VariablesWidget->setGeometry(QRect(0, 0, 250, 267));
 
   m_VariablesVerticalLayout = new QVBoxLayout(m_VariablesWidget);
@@ -248,35 +249,39 @@ void FilterInputWidget::layoutWidgets(AbstractFilter* filter)
 
   QString groupBoxStyle;
   QTextStream ss(&groupBoxStyle);
-  ss << "QGroupBox {";
-  ss << "    font-weight: bold;";
-  ss << "}";
-  ss << "QGroupBox::title {";
-  ss << "    subcontrol-origin: margin;";
-  ss << "    subcontrol-position: top left;";
-  ss << "    padding: 0 5px;";
-  ss << "    font-weight: bold;";
-  ss << "}";
+//  ss << "QGroupBox {";
+//  ss << "    font-weight: bold;";
+//  ss << "}";
+//  ss << "QGroupBox::title {";
+//  ss << "    subcontrol-origin: margin;";
+//  ss << "    subcontrol-position: top left;";
+//  ss << "    padding: 0 5px;";
+//  ss << "    font-weight: bold;";
+//  ss << "}";
 
   QGroupBox* parametersGroupBox = new QGroupBox("Parameters", this);
   QVBoxLayout* pLayout = new QVBoxLayout(parametersGroupBox);
-  pLayout->setContentsMargins(5, 5, 5, 5);
-  parametersGroupBox->setStyleSheet(groupBoxStyle);
+  pLayout->setContentsMargins(0, 0, 0, 0);
+  pLayout->setSpacing(0);
+  //parametersGroupBox->setStyleSheet(groupBoxStyle);
 
   QGroupBox* requiredGroupBox = new QGroupBox("Required Objects", this);
   QVBoxLayout* rLayout = new QVBoxLayout(requiredGroupBox);
-  rLayout->setContentsMargins(5, 5, 5, 5);
-  requiredGroupBox->setStyleSheet(groupBoxStyle);
+  rLayout->setContentsMargins(0, 0, 0, 0);
+  rLayout->setSpacing(0);
+  //requiredGroupBox->setStyleSheet(groupBoxStyle);
 
   QGroupBox* createdGroupBox = new QGroupBox("Created Objects", this);
   QVBoxLayout* cLayout = new QVBoxLayout(createdGroupBox);
-  cLayout->setContentsMargins(5, 5, 5, 5);
-  createdGroupBox->setStyleSheet(groupBoxStyle);
+  cLayout->setContentsMargins(0, 0, 0, 0);
+  cLayout->setSpacing(0);
+  //createdGroupBox->setStyleSheet(groupBoxStyle);
 
   QGroupBox* noCategoryGroupBox = new QGroupBox("Uncategorized", this);
   QVBoxLayout* nLayout = new QVBoxLayout(noCategoryGroupBox);
-  nLayout->setContentsMargins(5, 5, 5, 5);
-  noCategoryGroupBox->setStyleSheet(groupBoxStyle);
+  nLayout->setContentsMargins(0, 0, 0, 0);
+  nLayout->setSpacing(0);
+  //noCategoryGroupBox->setStyleSheet(groupBoxStyle);
 
   // Get the FilterWidgetManagere instance so we can instantiate new FilterParameterWidgets
   FilterWidgetManager* fwm = FilterWidgetManager::Instance();
@@ -308,6 +313,7 @@ void FilterInputWidget::layoutWidgets(AbstractFilter* filter)
     connect(this, SIGNAL(filterPath(DataArrayPath)), filterParameterWidget, SIGNAL(filterPathInput(DataArrayPath)));
     connect(this, SIGNAL(endPathFiltering()), filterParameterWidget, SIGNAL(endDataStructureRequirements()));
     connect(this, SIGNAL(applyPathToFilteringParameter(DataArrayPath)), filterParameterWidget, SIGNAL(applyPathToFilteringParameter(DataArrayPath)));
+    connect(this, SIGNAL(endPathFiltering()), filterParameterWidget, SIGNAL(endViewPathRequirements()));
     // Alert to DataArrayPaths from other FilterParameters
     connect(filterParameterWidget, SIGNAL(filterPath(DataArrayPath)), this, SLOT(emitFilterPath(DataArrayPath)));
     connect(filterParameterWidget, SIGNAL(endViewPaths()), this, SIGNAL(endPathFiltering()));

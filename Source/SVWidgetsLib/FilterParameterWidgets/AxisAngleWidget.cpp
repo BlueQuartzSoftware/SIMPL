@@ -40,7 +40,7 @@
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "FilterParameterWidgetsDialogs.h"
 

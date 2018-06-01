@@ -46,7 +46,7 @@
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
@@ -133,7 +133,7 @@ void DataContainerSelectionWidget::setupGui()
   }
   label->setText(getFilterParameter()->getHumanLabel());
 
-  m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
+  m_SelectedDataContainerPath->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(false));
 
   QString dcName = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QString>();
   m_SelectedDataContainerPath->setText(dcName);

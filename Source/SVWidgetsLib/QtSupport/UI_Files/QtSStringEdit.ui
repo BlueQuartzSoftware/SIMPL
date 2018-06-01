@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>361</width>
-    <height>36</height>
+    <width>358</width>
+    <height>30</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -43,11 +43,11 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string/>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>24</height>
+      </size>
      </property>
     </widget>
    </item>
@@ -82,7 +82,7 @@
      </property>
      <property name="icon">
       <iconset resource="../../icons/images/Icons.qrc">
-       <normaloff>:/check.png</normaloff>:/check.png</iconset>
+       <normaloff>:/SIMPL/icons/images/check.png</normaloff>:/check.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -132,7 +132,7 @@
      </property>
      <property name="icon">
       <iconset resource="../../icons/images/Icons.qrc">
-       <normaloff>:/delete.png</normaloff>:/delete.png</iconset>
+       <normaloff>:/SIMPL/icons/images/delete.png</normaloff>:/delete.png</iconset>
      </property>
      <property name="iconSize">
       <size>

@@ -58,7 +58,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="showLocationBtn">
+      <widget class="SVIconPushButton" name="showLocationBtn">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -85,7 +85,7 @@
        </property>
        <property name="icon">
         <iconset resource="../../icons/images/Icons.qrc">
-         <normaloff>:/arrow_right_black.png</normaloff>:/arrow_right_black.png</iconset>
+         <normaloff>:/SIMPL/icons/images/arrow_right_black.png</normaloff>:/arrow_right_black.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -118,7 +118,7 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QTreeView" name="hdfTreeView">
+     <widget class="SVTreeView" name="hdfTreeView">
       <property name="minimumSize">
        <size>
         <width>0</width>
@@ -243,6 +243,11 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>SVIconPushButton</class>
+   <extends>QPushButton</extends>
+   <header location="global">SVControlWidgets.h</header>
+  </customwidget>
+  <customwidget>
    <class>QtSSplitter</class>
    <extends>QSplitter</extends>
    <header location="global">SVWidgetsLib/QtSupport/QtSSplitter.h</header>
@@ -252,6 +257,11 @@
    <class>QtSFSDropLabel</class>
    <extends>QLabel</extends>
    <header location="global">QtSFSDropLabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SVTreeView</class>
+   <extends>QTreeView</extends>
+   <header location="global">SVControlWidgets.h</header>
   </customwidget>
  </customwidgets>
  <resources>

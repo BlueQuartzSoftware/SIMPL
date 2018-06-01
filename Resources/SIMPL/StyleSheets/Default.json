@@ -1,0 +1,71 @@
+{
+  "Theme_Name": "Default",
+  "CSS_File_Name": "Default.css",
+
+  "_comment1": "The next set of colors MUST be in HEX notation as they are being converted to a QColor",
+  "FilterBackgroundColor" : "#5b337a",
+  "FilterSelectionColor" : "#A788Be",
+  "FilterFontColor" : "#DDDDDD",
+
+  "Named_Variables":
+  {
+    "white" : "rgb(255,255,255)",
+    "black" : "rgb(0,0,0)",
+    "light_gray": "rgb(239,239,239)",
+    "light_yellow": "rgb(255,252,225)",
+    "light_yellow_disabled": "rgb(141,141,140)"
+  },
+
+  "Font_Replacements":
+  {
+    "macOS":
+    {
+      "Font_Size_Very_Small": "10pt",
+      "Font_Size_Small": "12pt",
+      "Font_Size_Medium": "13pt",
+      "Font_Size_Large": "14pt",
+      "Font_Size_Very_Large": "16pt"
+    },
+    "Windows":
+    {
+      "Font_Size_Very_Small": "8pt",
+      "Font_Size_Small": "9pt",
+      "Font_Size_Medium": "10pt",
+      "Font_Size_Large": "11pt",
+      "Font_Size_Very_Large": "14pt"
+    },
+    "Linux":
+    {
+      "Font_Size_Very_Small": "9pt",
+      "Font_Size_Small": "10pt",
+      "Font_Size_Medium": "11pt",
+      "Font_Size_Large": "12pt",
+      "Font_Size_Very_Large": "14pt"
+    }
+  },
+  
+  "CSS_Replacements": {
+    "_comment2" : "These colors can be in any standard CSS notation.",
+
+    "QToolButton_background_color": "qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #DDDDDD, stop: 1 #FFFFFF)",
+    "QToolButton_color": "black",
+    "QToolButton_border_color": "rgb(143,143,145)",
+    "QToolButtonChecked_background_color": "rgb(200,236,255)",
+    "QToolButtonDisabled_background_color": "rgb(150,150,150)",
+
+    "DataArrayPath_DataContainer_color": "#056d00",
+    "DataArrayPath_AttributeMatrix_color": "#6400b7",
+    "DataArrayPath_DataArray_color": "#004dad",
+
+    "DataArrayPath_DataContainer_background_color": "#a0ff9b",
+    "DataArrayPath_AttributeMatrix_background_color": "#d9adff",
+    "DataArrayPath_DataArray_background_color": "#afd3ff",
+
+    "DataArrayPath_border_normal": "#8f8f91",
+    "DataArrayPath_border_not_found": "#BC0000",
+    "DataArrayPath_border_drag_enabled": "#009104",
+    "DataArrayPath_border_drag_disabled": "#BC0000"
+
+  }
+
+}

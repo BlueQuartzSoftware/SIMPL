@@ -40,8 +40,8 @@
 #include <QtWidgets/QMenu>
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
@@ -155,8 +155,8 @@ void ComparisonSelectionWidget::setupGui()
   matrixPropertyName = matrixPropertyName.replace("arrays", "matrix");
   m_SelectedAttributeMatrixPath->setPropertyName(matrixPropertyName);
 
-  addComparison->setStyleSheet(QtSStyles::StyleSheetForButton(addComparison->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::AddImagePath));
-  removeComparison->setStyleSheet(QtSStyles::StyleSheetForButton(removeComparison->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::DeleteImagePath));
+  addComparison->setStyleSheet(SVStyle::Instance()->StyleSheetForButton(addComparison->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::AddImagePath));
+  removeComparison->setStyleSheet(SVStyle::Instance()->StyleSheetForButton(removeComparison->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::DeleteImagePath));
 }
 
 #if 0

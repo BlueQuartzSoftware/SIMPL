@@ -51,6 +51,7 @@
 DREAM3DListWidget::DREAM3DListWidget(QWidget* parent)
 : QListWidget(parent)
 {
+  setAttribute(Qt::WA_MacShowFocusRect, false);
 }
 
 // -----------------------------------------------------------------------------

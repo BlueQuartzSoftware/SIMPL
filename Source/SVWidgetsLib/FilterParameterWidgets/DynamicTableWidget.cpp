@@ -48,7 +48,7 @@
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/FilterParameterWidgets/DynamicTableItemDelegate.h"
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 
 const QString addRowTT = "Adds a row to the table.";
@@ -146,10 +146,10 @@ void DynamicTableWidget::setupGui()
 void DynamicTableWidget::updateButtonStyles()
 {
   // Set Style
-  addRowBtn->setStyleSheet(QtSStyles::StyleSheetForButton(addRowBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::AddImagePath));
-  addColBtn->setStyleSheet(QtSStyles::StyleSheetForButton(addColBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::AddImagePath));
-  deleteColBtn->setStyleSheet(QtSStyles::StyleSheetForButton(deleteColBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::DeleteImagePath));
-  deleteRowBtn->setStyleSheet(QtSStyles::StyleSheetForButton(deleteRowBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::DeleteImagePath));
+  addRowBtn->setStyleSheet(SVStyle::Instance()->StyleSheetForButton(addRowBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::AddImagePath));
+  addColBtn->setStyleSheet(SVStyle::Instance()->StyleSheetForButton(addColBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::AddImagePath));
+  deleteColBtn->setStyleSheet(SVStyle::Instance()->StyleSheetForButton(deleteColBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::DeleteImagePath));
+  deleteRowBtn->setStyleSheet(SVStyle::Instance()->StyleSheetForButton(deleteRowBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::DeleteImagePath));
 }
 // -----------------------------------------------------------------------------
 //

@@ -30,7 +30,7 @@
 #include "PipelineListWidget.h"
 
 #include "SVWidgetsLib/Widgets/PipelineModel.h"
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -90,7 +90,7 @@ void PipelineListWidget::on_startPipelineBtn_clicked()
   {
     pipelineView->executePipeline();
     startPipelineBtn->setText("Cancel Pipeline");
-    startPipelineBtn->setIcon(QIcon(":/media_stop_white.png"));
+    startPipelineBtn->setIcon(QIcon(":/SIMPL/icons/images/media_stop_white.png"));
     update();
   }
 }
@@ -116,7 +116,7 @@ void PipelineListWidget::preflightFinished(FilterPipeline::Pointer pipeline, int
 void PipelineListWidget::pipelineFinished()
 {
   startPipelineBtn->setText("Start Pipeline");
-  startPipelineBtn->setIcon(QIcon(":/media_play_white.png"));
+  startPipelineBtn->setIcon(QIcon(":/SIMPL/icons/images/media_play_white.png"));
   startPipelineBtn->setStyleSheet(getStartPipelineIdleStyle());
 }
 
@@ -133,7 +133,7 @@ void PipelineListWidget::setProgressValue(float percent)
 // -----------------------------------------------------------------------------
 QString PipelineListWidget::getStartPipelineIdleStyle()
 {
-  QFont font = QtSStyles::GetHumanLabelFont();
+  QFont font = SVStyle::Instance()->GetHumanLabelFont();
   QString fontString;
   QTextStream in(&fontString);
   in << "font: " << font.weight() << " " <<
@@ -171,7 +171,7 @@ QString PipelineListWidget::getStartPipelineIdleStyle()
 // -----------------------------------------------------------------------------
 QString PipelineListWidget::getStartPipelineInProgressStyle(float percent)
 {
-  QFont font = QtSStyles::GetHumanLabelFont();
+  QFont font = SVStyle::Instance()->GetHumanLabelFont();
   QString fontString;
   QTextStream in(&fontString);
   in << "font: " << font.weight() << " " <<

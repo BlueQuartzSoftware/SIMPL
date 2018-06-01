@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+* Copyright (c) 2018 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -33,15 +33,15 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "QtSStyles.h"
+#include "SVStyle.h"
 
 #include <QtCore/QDebug>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QFile>
+#include <QtCore/QFileInfo>
 #include <QtCore/QTextStream>
 #include <QtCore/QJsonValue>
-#include <QtCore/QFileInfo>
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLineEdit>
@@ -51,39 +51,249 @@
 
 static QMap<QString, QImage> s_NameToImage;
 
+SVStyle* SVStyle::self = nullptr;
+
 namespace  {
 const QString kNormalColor("#8f8f91");
 const QString kErrorColor("#BC0000");
 }
 
-QtSStyles* QtSStyles::m_Self = nullptr;
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSStyles::QtSStyles() = default;
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QtSStyles::~QtSStyles() = default;
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QtSStyles* QtSStyles::Instance()
+SVStyle::SVStyle()
 {
-  if (!m_Self)
-  {
-    m_Self = new QtSStyles();
-  }
-  return m_Self;
+  Q_ASSERT_X(!self, "SVStyle", "There should be only one SVStyle object");
+  SVStyle::self = this;
+
+  m_QTreeViewItem_font_size = 13;
+  m_QTreeViewItem_error_color = QColor(Qt::white);
+  m_QTreeViewItem_error_background_color = QColor(235, 110, 110);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString QtSStyles::GetUIFont()
+SVStyle::~SVStyle() = default;
+
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+SVStyle* SVStyle::Instance()
+{
+  if(self == nullptr)
+  {
+    self = new SVStyle();
+  }
+  return self;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
+{
+  qDebug() << "SVStyle::loadStyleSheet() " << jsonFilePath;
+  bool success = true;
+  
+  QFileInfo jsonFileInfo(jsonFilePath);
+  
+  
+  QFile jsonFile(jsonFilePath);
+  if(!jsonFile.open(QFile::ReadOnly))
+  {
+    qDebug() << "Could not open JSON File " << jsonFilePath;
+    return false; 
+  }
+  
+  QByteArray jsonContent = jsonFile.readAll();
+  QJsonParseError parseError;
+  QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonContent, &parseError);
+  if(parseError.error != QJsonParseError::NoError)
+  {
+    qDebug() << "JSON Parsing Error:";
+    qDebug() << parseError.errorString();
+    return false;
+  }
+  QJsonObject rootObj = jsonDoc.object();
+  
+  
+  // Create the CSS File Path and try to read the CSS template file
+  QString cssFileName = rootObj["CSS_File_Name"].toString();
+  cssFileName = QString("%1/%2").arg(jsonFileInfo.absolutePath(), 1).arg(cssFileName, 2);
+  
+  QFile cssFile(cssFileName);
+  if(!cssFile.open(QFile::ReadOnly))
+  {
+    qDebug() << "Could not open CSS File " << cssFileName;
+    return false; 
+  }
+  QString cssContent = QString::fromLatin1(cssFile.readAll());
+  
+  // Read the variable mapping from the JSON file
+  QJsonObject varMapping = rootObj["Named_Variables"].toObject();
+  
+  
+  // Get the CSS Replacements that need to be made
+  QJsonObject cssRepl = rootObj["CSS_Replacements"].toObject();
+  QStringList keys = cssRepl.keys();
+  QStringList::const_iterator constIterator;
+  for (constIterator = keys.constBegin(); constIterator != keys.constEnd(); ++constIterator)
+  {
+    const QString key = *constIterator;
+
+    QString value = loadStringProperty(key, cssRepl, varMapping);
+    if (!value.isNull())
+    {
+      // Do the replacement
+      cssContent = cssContent.replace(key, value);
+
+      if(value.startsWith("rgb"))
+      {
+        bool ok = false;
+        QString tokenString = value;
+        tokenString = tokenString.replace("rgb(", "");
+        tokenString = tokenString.replace(")", "");
+        tokenString = tokenString.replace(" ", "");
+        QStringList tokens = tokenString.split(",");
+        if(tokens.size() == 3)
+        {
+          int r = tokens[0].toInt(&ok);
+          int g = tokens[1].toInt(&ok);
+          int b = tokens[2].toInt(&ok);
+          bool didSet = this->setProperty(key.toLocal8Bit().constData(), QColor(r, g, b));
+          if(!didSet)
+          {
+            qDebug() << "Property: " << key << " was not set correctly";
+          }
+        }
+      }
+      else
+      {
+        this->setProperty( key.toLocal8Bit().constData(), QColor(value));
+      }
+    }
+  }
+  
+  //
+  //
+  keys.clear();
+  keys << "FilterBackgroundColor"  << "FilterSelectionColor" << "FilterFontColor";
+  for (constIterator = keys.constBegin(); constIterator != keys.constEnd(); ++constIterator)
+  {
+    const QString key = *constIterator;
+    QString value = rootObj[key].toString();
+    // First see if it is a varible and if it is, then get the real value from
+    // the Named_Variables section
+    if(varMapping.contains(value))
+    {
+      value = varMapping[value].toString();
+    }
+    
+    if(value.startsWith("#"))
+    {
+      this->setProperty( key.toLocal8Bit().constData(), QColor(value));
+    }
+    else
+    {
+      bool ok = false;
+      value = value.replace("rgb(", "");
+      value = value.replace(")", "");
+      value = value.replace(" ", "");
+      QStringList tokens = value.split(",");
+      if(tokens.size() == 3)
+      {
+        int r = tokens[0].toInt(&ok);
+        int g = tokens[1].toInt(&ok);
+        int b = tokens[2].toInt(&ok);
+        bool didSet = this->setProperty( key.toLocal8Bit().constData(), QColor(r, g, b));
+        if(!didSet)
+        {
+          qDebug() << "Property: " << key << " was not set correctly";
+        }
+      }
+    }
+  }
+  
+  keys.clear();
+
+  // Get the CSS Font replacements that need to be made
+  QJsonObject fontRepl = rootObj["Font_Replacements"].toObject();
+  keys = fontRepl.keys();
+  #if defined(Q_OS_MAC)
+  QString os("macOS");
+#elif defined(Q_OS_WIN)
+  QString os("Windows");
+#else
+  QString os("Linux");
+#endif
+  
+  QJsonObject osFontRepl = fontRepl[os].toObject();
+  keys = osFontRepl.keys();
+  for (constIterator = keys.constBegin(); constIterator != keys.constEnd(); ++constIterator)
+  {
+    const QString key = *constIterator;
+    QString value = osFontRepl[key].toString();
+    cssContent = cssContent.replace(key, value);
+  }
+  
+  
+  // FINALLY, Set the style sheet into the app object
+  qApp->setStyleSheet(cssContent);
+  
+  return success;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString SVStyle::loadStringProperty(const QString &key, QJsonObject cssRepl, QJsonObject varMapping)
+{
+  QString value = cssRepl[key].toString();
+  if (!value.isNull())
+  {
+    // See if it is a variable and if it is, then get the real value from
+    // the Named_Variables section
+    for (QJsonObject::iterator iter = varMapping.begin(); iter != varMapping.end(); iter++)
+    {
+      QString mapKey = iter.key();
+      QString mapValue = iter.value().toString();
+      value.replace(mapKey, mapValue);
+    }
+
+    return value;
+  }
+
+  return QString();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int SVStyle::loadIntegerProperty(const QString &key, QJsonObject cssRepl, QJsonObject varMapping)
+{
+  QString value = cssRepl[key].toString();
+  if (!value.isNull())
+  {
+    // See if it is a variable and if it is, then get the real value from
+    // the Named_Variables section
+    if (varMapping.contains(value))
+    {
+      int intValue = varMapping[value].toInt();
+      return intValue;
+    }
+  }
+
+  int intValue = cssRepl[key].toInt();
+  return intValue;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString SVStyle::GetUIFont()
 {
 #if defined(Q_OS_MAC)
   QString fontString("FiraSans");
@@ -108,7 +318,7 @@ QString QtSStyles::GetUIFont()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QFont QtSStyles::GetHumanLabelFont()
+QFont SVStyle::GetHumanLabelFont()
 {
   QFont humanLabelFont(GetUIFont());
   humanLabelFont.setBold(true);
@@ -130,7 +340,7 @@ QFont QtSStyles::GetHumanLabelFont()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QFont QtSStyles::GetBrandingLabelFont()
+QFont SVStyle::GetBrandingLabelFont()
 {
   QFont brandingFont(GetUIFont());
   brandingFont.setBold(true);
@@ -152,7 +362,7 @@ QFont QtSStyles::GetBrandingLabelFont()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QFont QtSStyles::GetCategoryFont()
+QFont SVStyle::GetCategoryFont()
 {
   QFont categoryFont(GetUIFont());
   categoryFont.setBold(true);
@@ -174,7 +384,7 @@ QFont QtSStyles::GetCategoryFont()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QFont QtSStyles::GetTitleFont()
+QFont SVStyle::GetTitleFont()
 {
   QFont categoryFont(GetUIFont());
   categoryFont.setBold(true);
@@ -196,7 +406,7 @@ QFont QtSStyles::GetTitleFont()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSStyles::LineEditErrorStyle(QLineEdit* lineEdit)
+void SVStyle::LineEditErrorStyle(QLineEdit* lineEdit)
 {
   QString str;
   QTextStream ss(&str);
@@ -210,7 +420,7 @@ void QtSStyles::LineEditErrorStyle(QLineEdit* lineEdit)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSStyles::LineEditClearStyle(QLineEdit* lineEdit)
+void SVStyle::LineEditClearStyle(QLineEdit* lineEdit)
 {
   lineEdit->setStyleSheet("");
 }
@@ -218,7 +428,7 @@ void QtSStyles::LineEditClearStyle(QLineEdit* lineEdit)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSStyles::LineEditRedErrorStyle(QLineEdit* lineEdit)
+void SVStyle::LineEditRedErrorStyle(QLineEdit* lineEdit)
 {
   QString str;
   QTextStream ss(&str);
@@ -232,9 +442,10 @@ void QtSStyles::LineEditRedErrorStyle(QLineEdit* lineEdit)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString QtSStyles::QToolSelectionButtonStyle(bool exists)
+QString SVStyle::QToolSelectionButtonStyle(bool exists)
 {
   QString str;
+  #if 0
   QTextStream ss(&str);
 
   QFont font;
@@ -302,27 +513,16 @@ QString QtSStyles::QToolSelectionButtonStyle(bool exists)
               background-color: #FFFCEA;\
               color: #000000;\
               }";
-//  ss << "QToolButton:hover {\n";
-//  if(exists)
-//  {
-//    ss << " border: 2px solid  " << ::kNormalColor << ";\n";
-//  }
-//  else
-//  {
-//    ss << " border: 2px solid " << ::kErrorColor << ";\n";
-//  }
-//  ss << " border-radius: 4px;\n";
-//  ss << "}\n";
-
+#endif
   return str;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QColor QtSStyles::ColorForFilterGroup(const QString &grpName)
+QColor SVStyle::ColorForFilterGroup(const QString &grpName)
 {
-  QColor color("#6660ff");
+  QColor color(102, 96, 255);
 
   QString jsonString;
   QFile jsonFile;
@@ -416,76 +616,31 @@ QColor QtSStyles::ColorForFilterGroup(const QString &grpName)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QColor QtSStyles::GetFilterBackgroundColor()
+QColor SVStyle::GetFilterBackgroundColor()
 {
-  //return QColor("#3b5d8a");
-  //return QColor(198, 198, 198);
-  QString styleSheet = qApp->styleSheet();
-  
-  QStringList lines = styleSheet.split('\n');
-  for(int i = 0; i < lines.size(); i++)
-  {
-     QString line = lines[i];
-     if(line.contains(".color-primary-1"))
-     {
-       line = line.split("#").at(1);
-       line = line.split(" ").at(0);
-       line = QString("#%1").arg(line, 1);
-        return QColor(line);
-     }
-  }
-  return QColor("#27596F");
-
+  return self->getFilterBackgroundColor();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QColor QtSStyles::GetFilterSelectionColor()
+QColor SVStyle::GetFilterSelectionColor()
 {
-  QString styleSheet = qApp->styleSheet();
-  
-  QStringList lines = styleSheet.split('\n');
-  for(int i = 0; i < lines.size(); i++)
-  {
-     QString line = lines[i];
-     if(line.contains(".color-primary-2"))
-     {
-       line = line.split("#").at(1);
-       line = line.split(" ").at(0);
-       line = QString("#%1").arg(line, 1);
-        return QColor(line);
-     }
-  }
-  return QColor("#4F87A0");
+  return self->getFilterSelectionColor();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QColor QtSStyles::GetFilterFontColor()
+QColor SVStyle::GetFilterFontColor()
 {
-  QString styleSheet = qApp->styleSheet();
-  
-  QStringList lines = styleSheet.split('\n');
-  for(int i = 0; i < lines.size(); i++)
-  {
-     QString line = lines[i];
-     if(line.contains(".color-complement-1"))
-     {
-       line = line.split("#").at(1);
-       line = line.split(" ").at(0);
-       line = QString("#%1").arg(line, 1);
-        return QColor(line);
-     }
-  }
-  return QColor("#FFFFFF");
+  return self->getFilterFontColor();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QIcon QtSStyles::IconForGroup(const QString &grpName)
+QIcon SVStyle::IconForGroup(const QString &grpName)
 {
   
   QColor color = ColorForFilterGroup(grpName);
@@ -513,7 +668,11 @@ QIcon QtSStyles::IconForGroup(const QString &grpName)
           pixel.setRedF((pixel.redF() * 1.50 > 1.0) ? 1.0 : pixel.redF() * 1.50);
           pixel.setGreenF((pixel.greenF() * 1.50 > 1.0) ? 1.0 : pixel.greenF() * 1.50);
           pixel.setBlueF((pixel.blueF() * 1.50 > 1.0) ? 1.0 : pixel.blueF() * 1.50);
-          grpImage.setPixelColor(w, h, pixel);
+
+          if (pixel.isValid())
+          {
+            grpImage.setPixelColor(w, h, pixel);
+          }
         }
 
         if(pixel.red() == 150 && pixel.green() == 150 && pixel.blue() == 150 && pixel.alpha() != 0)
@@ -522,7 +681,10 @@ QIcon QtSStyles::IconForGroup(const QString &grpName)
           //          pixel.setRedF(pixel.redF() * 1.50);
           //          pixel.setGreenF(pixel.greenF() * 1.50);
           //          pixel.setBlueF(pixel.blueF() * 1.50);
-          grpImage.setPixelColor(w, h, pixel);
+          if (pixel.isValid())
+          {
+            grpImage.setPixelColor(w, h, pixel);
+          }
         }
 
         if(pixel.red() == 53 && pixel.green() == 53 && pixel.blue() == 53 && pixel.alpha() != 0)
@@ -531,7 +693,11 @@ QIcon QtSStyles::IconForGroup(const QString &grpName)
           pixel.setRedF(pixel.redF() * .50);
           pixel.setGreenF(pixel.greenF() * .50);
           pixel.setBlueF(pixel.blueF() * .50);
-          grpImage.setPixelColor(w, h, pixel);
+
+          if (pixel.isValid())
+          {
+            grpImage.setPixelColor(w, h, pixel);
+          }
         }
       }
     }
@@ -545,7 +711,7 @@ QIcon QtSStyles::IconForGroup(const QString &grpName)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString QtSStyles::StyleSheetForButton(const QString &objectName, const QString &cssName, const QString &imageName)
+QString SVStyle::StyleSheetForButton(const QString &objectName, const QString &cssName, const QString &imageName)
 {
   QString css;
   #if 0

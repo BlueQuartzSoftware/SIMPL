@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>624</width>
-    <height>337</height>
+    <width>583</width>
+    <height>247</height>
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout" columnstretch="1,0,1,0">
@@ -98,7 +98,7 @@
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QListWidget" name="availableArraysListWidget">
+    <widget class="SVListWidget" name="availableArraysListWidget">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>1</horstretch>
@@ -156,7 +156,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="selectBtn">
+      <widget class="SVIconPushButton" name="selectBtn">
        <property name="minimumSize">
         <size>
          <width>24</width>
@@ -177,7 +177,7 @@
        </property>
        <property name="icon">
         <iconset resource="../../icons/images/Icons.qrc">
-         <normaloff>:/arrow_right_green.png</normaloff>:/arrow_right_green.png</iconset>
+         <normaloff>:/SIMPL/icons/images/arrow_right_green.png</normaloff>:/arrow_right_green.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -191,7 +191,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="deselectBtn">
+      <widget class="SVIconPushButton" name="deselectBtn">
        <property name="minimumSize">
         <size>
          <width>24</width>
@@ -212,7 +212,7 @@
        </property>
        <property name="icon">
         <iconset resource="../../icons/images/Icons.qrc">
-         <normaloff>:/arrow_left_green.png</normaloff>:/arrow_left_green.png</iconset>
+         <normaloff>:/SIMPL/icons/images/arrow_left_green.png</normaloff>:/arrow_left_green.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -244,7 +244,7 @@
     </layout>
    </item>
    <item row="2" column="2">
-    <widget class="QListWidget" name="selectedArraysListWidget">
+    <widget class="SVListWidget" name="selectedArraysListWidget">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>1</horstretch>
@@ -289,7 +289,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QPushButton" name="upBtn">
+      <widget class="SVIconPushButton" name="upBtn">
        <property name="minimumSize">
         <size>
          <width>24</width>
@@ -310,7 +310,7 @@
        </property>
        <property name="icon">
         <iconset resource="../../icons/images/Icons.qrc">
-         <normaloff>:/arrow_up_green.png</normaloff>:/arrow_up_green.png</iconset>
+         <normaloff>:/SIMPL/icons/images/arrow_up_green.png</normaloff>:/arrow_up_green.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -324,7 +324,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="downBtn">
+      <widget class="SVIconPushButton" name="downBtn">
        <property name="minimumSize">
         <size>
          <width>24</width>
@@ -345,7 +345,7 @@
        </property>
        <property name="icon">
         <iconset resource="../../icons/images/Icons.qrc">
-         <normaloff>:/arrow_down_green.png</normaloff>:/arrow_down_green.png</iconset>
+         <normaloff>:/SIMPL/icons/images/arrow_down_green.png</normaloff>:/arrow_down_green.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -359,7 +359,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="removeBtn">
+      <widget class="SVIconPushButton" name="removeBtn">
        <property name="minimumSize">
         <size>
          <width>24</width>
@@ -380,7 +380,7 @@
        </property>
        <property name="icon">
         <iconset resource="../../icons/images/Icons.qrc">
-         <normaloff>:/delete.png</normaloff>:/delete.png</iconset>
+         <normaloff>:/SIMPL/icons/images/delete.png</normaloff>:/delete.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -415,6 +415,16 @@
    <class>DataArrayPathSelectionWidget</class>
    <extends>QToolButton</extends>
    <header>DataArrayPathSelectionWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SVIconPushButton</class>
+   <extends>QPushButton</extends>
+   <header location="global">SVControlWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SVListWidget</class>
+   <extends>QListWidget</extends>
+   <header location="global">SVControlWidgets.h</header>
   </customwidget>
  </customwidgets>
  <resources>

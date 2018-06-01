@@ -200,7 +200,7 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
 {\
   if(sender() == cell && cell->text().isEmpty())\
   {\
-    QtSStyles::LineEditErrorStyle(cell);\
+    SVStyle::Instance()->LineEditErrorStyle(cell);\
     errorLabel->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));\
     errorLabel->setText("No value entered. Filter will use default value of " + getFilterParameter()->getDefaultValue().toString());\
     errorLabel->show();\
@@ -218,7 +218,7 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
     errorLabel->setText("c40 Value entered is beyond the representable range for a double.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());\
     errorLabel->show();\
     }\
-    QtSStyles::LineEditErrorStyle(cell);\
+    SVStyle::Instance()->LineEditErrorStyle(cell);\
     data.cell = defValue.cell;\
   }\
 

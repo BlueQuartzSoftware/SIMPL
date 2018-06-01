@@ -31,13 +31,13 @@
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="xData"/>
+    <widget class="SVLineEdit" name="xData"/>
    </item>
    <item>
-    <widget class="QLineEdit" name="yData"/>
+    <widget class="SVLineEdit" name="yData"/>
    </item>
    <item>
-    <widget class="QLineEdit" name="zData"/>
+    <widget class="SVLineEdit" name="zData"/>
    </item>
    <item>
     <widget class="QLabel" name="errorLabel">
@@ -61,6 +61,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SVLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">SVControlWidgets.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>xData</tabstop>
   <tabstop>yData</tabstop>

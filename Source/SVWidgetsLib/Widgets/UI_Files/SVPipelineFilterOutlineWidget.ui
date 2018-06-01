@@ -140,7 +140,7 @@
         </property>
         <property name="icon">
          <iconset resource="../../icons/images/Icons.qrc">
-          <normaloff>:/trash.png</normaloff>:/trash.png</iconset>
+          <normaloff>:/SIMPL/icons/images/trash.png</normaloff>:/trash.png</iconset>
         </property>
         <property name="iconSize">
          <size>

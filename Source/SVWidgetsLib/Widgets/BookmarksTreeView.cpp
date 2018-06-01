@@ -73,7 +73,9 @@ BookmarksTreeView::BookmarksTreeView(QWidget* parent)
 
   BookmarksItemDelegate* dlg = new BookmarksItemDelegate(this);
   setItemDelegate(dlg);
-
+  
+  setAttribute(Qt::WA_MacShowFocusRect, false);
+  
 #if defined(Q_OS_WIN)
   m_ActionShowBookmarkInFileSystem->setText("Show in Windows Explorer");
 #elif defined(Q_OS_MAC)
@@ -81,7 +83,7 @@ BookmarksTreeView::BookmarksTreeView(QWidget* parent)
 #else
   m_ActionShowBookmarkInFileSystem->setText("Show in File System");
 #endif
-
+  
   m_ActionAddBookmark->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_B));
   m_ActionAddBookmarkFolder->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F));
 
@@ -109,7 +111,7 @@ void BookmarksTreeView::addBookmark(const QString& filePath, const QModelIndex& 
   BookmarksModel* model = BookmarksModel::Instance();
   QFileInfo fi(filePath);
   QString fileTitle = fi.baseName();
-  QModelIndex index = model->addTreeItem(parent, fileTitle, QIcon(":/bookmark.png"), filePath, model->rowCount(parent), BookmarksItem::ItemType::Bookmark, false);
+  QModelIndex index = model->addTreeItem(parent, fileTitle, QIcon(":/SIMPL/icons/images/bookmark.png"), filePath, model->rowCount(parent), BookmarksItem::ItemType::Bookmark, false);
   if(index.isValid())
   {
     emit updateStatusBar("The pipeline '" + fileTitle + "' has been added successfully.");
@@ -173,7 +175,7 @@ void BookmarksTreeView::listenAddBookmarkFolderTriggered()
 
   BookmarksModel* model = BookmarksModel::Instance();
 
-  QModelIndex index = model->addTreeItem(parent, name, QIcon(":/folder_blue.png"), "", model->rowCount(parent), BookmarksItem::ItemType::Folder, false);
+  QModelIndex index = model->addTreeItem(parent, name, QIcon(":/SIMPL/icons/images/folder_blue.png"), "", model->rowCount(parent), BookmarksItem::ItemType::Folder, false);
   edit(index);
 }
 
@@ -245,13 +247,13 @@ void BookmarksTreeView::listenRemoveBookmarkTriggered()
   }
   else if(model->flags(singleIndex).testFlag(Qt::ItemIsDropEnabled) == false)
   {
-    QString name = model->data(singleIndex, Qt::DisplayRole).toString();
+    QString name = model->data(singleIndex, BookmarksModel::Roles::NameRole).toString();
     msgBox.setWindowTitle("Remove Bookmark");
     msgBox.setText("Are you sure that you want to remove the bookmark \"" + name + "\"? The original file will not be removed.");
   }
   else
   {
-    QString name = model->data(singleIndex, Qt::DisplayRole).toString();
+    QString name = model->data(singleIndex, BookmarksModel::Roles::NameRole).toString();
     msgBox.setWindowTitle("Remove Folder");
     msgBox.setText("Are you sure that you want to remove the folder \"" + name + "\"? The folder's contents will also be removed.");
   }
@@ -264,7 +266,7 @@ void BookmarksTreeView::listenRemoveBookmarkTriggered()
     for(int i = 0; i < persistentList.size(); i++)
     {
       QModelIndex index = model->index(persistentList[i].row(), BookmarksItem::Contents, persistentList[i].parent());
-      QString name = model->data(index, Qt::DisplayRole).toString();
+      QString name = model->data(index, BookmarksModel::Roles::NameRole).toString();
 
       // Remove bookmark from the SIMPLView interface
       model->removeRow(persistentList[i].row(), persistentList[i].parent());
@@ -456,6 +458,8 @@ void BookmarksTreeView::mouseMoveEvent(QMouseEvent* event)
       performDrag();
     }
   }
+
+  QTreeView::mouseMoveEvent(event);
 }
 
 // -----------------------------------------------------------------------------
@@ -581,12 +585,12 @@ QModelIndexList BookmarksTreeView::filterOutDescendants(QModelIndexList indexLis
   for(int i = indexList.size() - 1; i >= 0; i--)
   {
     QPersistentModelIndex index = indexList[i];
-    QString name = model->data(index, Qt::DisplayRole).toString();
+    QString name = model->data(index, BookmarksModel::Roles::NameRole).toString();
     // Walk up the tree from the index...if an ancestor is selected, remove the index
     while(index.isValid() == true)
     {
       QPersistentModelIndex parent = index.parent();
-      QString parentName = model->data(parent, Qt::DisplayRole).toString();
+      QString parentName = model->data(parent, BookmarksModel::Roles::NameRole).toString();
       if(indexList.contains(index.parent()) == true)
       {
         indexList.removeAt(i);
@@ -624,7 +628,7 @@ void BookmarksTreeView::performDrag()
   for(int i = 0; i < m_IndexesBeingDragged.size(); i++)
   {
     QModelIndex draggedIndex = m_IndexesBeingDragged[i];
-    QString name = model->data(draggedIndex, Qt::DisplayRole).toString();
+    QString name = model->data(draggedIndex, BookmarksModel::Roles::NameRole).toString();
     QString path = model->data(draggedIndex, static_cast<int>(BookmarksModel::Roles::PathRole)).toString();
     if(path.isEmpty() == false)
     {
@@ -644,7 +648,7 @@ void BookmarksTreeView::performDrag()
     BookmarksItem::ItemType type = static_cast<BookmarksItem::ItemType>(model->data(m_IndexesBeingDragged[0], static_cast<int>(BookmarksModel::Roles::ItemTypeRole)).toInt());
     if (type == BookmarksItem::ItemType::Bookmark)
     {
-      dragText = model->data(m_IndexesBeingDragged[0], Qt::DisplayRole).toString();
+      dragText = model->data(m_IndexesBeingDragged[0], BookmarksModel::Roles::NameRole).toString();
     }
   }
   else
@@ -719,7 +723,7 @@ void BookmarksTreeView::dragMoveEvent(QDragMoveEvent* event)
       blockSignals(true);
       model->insertRow(topLevelPHPos, rootIndex());
       m_TopLevelItemPlaceholder = model->index(topLevelPHPos, 0, rootIndex());
-      model->setData(m_TopLevelItemPlaceholder, BookmarksItem::TopLevelString(), Qt::DisplayRole);
+      model->setData(m_TopLevelItemPlaceholder, BookmarksItem::TopLevelString(), BookmarksModel::Roles::NameRole);
       setCurrentIndex(m_TopLevelItemPlaceholder);
       blockSignals(false);
     }
@@ -802,8 +806,8 @@ void BookmarksTreeView::dropEvent(QDropEvent* event)
           {
             if(testIndex == m_IndexesBeingDragged[i])
             {
-              QString newParentName = model->data(newParent, Qt::DisplayRole).toString();
-              QString draggedIndexName = model->data(m_IndexesBeingDragged[i], Qt::DisplayRole).toString();
+              QString newParentName = model->data(newParent, BookmarksModel::Roles::NameRole).toString();
+              QString draggedIndexName = model->data(m_IndexesBeingDragged[i], BookmarksModel::Roles::NameRole).toString();
               QMessageBox::critical(this, "Bookmarks Error", "Cannot move bookmarks.\nThe destination folder \"" + newParentName +
                                                                  "\" is a subfolder of the source folder \"" + draggedIndexName + "\".",
                                     QMessageBox::Ok, QMessageBox::Ok);

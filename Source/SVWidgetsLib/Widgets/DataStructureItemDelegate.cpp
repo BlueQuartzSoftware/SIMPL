@@ -44,7 +44,7 @@
 #include <QtGui/QPalette>
 #include <QtGui/QStaticText>
 
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h"
 #include "SVWidgetsLib/Widgets/DataStructureItem.h"
 #include "SVWidgetsLib/Widgets/DataStructureItemDelegate.h"
@@ -110,10 +110,25 @@ void DataStructureItemDelegate::createNewPathIcons()
       daPixel.setAlphaF(alpha);
       invalidPixel.setAlphaF(alpha);
 
-      dcImage.setPixelColor(x, y, dcPixel);
-      amImage.setPixelColor(x, y, amPixel);
-      daImage.setPixelColor(x, y, daPixel);
-      invalidImage.setPixelColor(x, y, invalidPixel);
+      if (dcPixel.isValid())
+      {
+        dcImage.setPixelColor(x, y, dcPixel);
+      }
+
+      if (amPixel.isValid())
+      {
+        amImage.setPixelColor(x, y, amPixel);
+      }
+
+      if (daPixel.isValid())
+      {
+        daImage.setPixelColor(x, y, daPixel);
+      }
+
+      if (invalidPixel.isValid())
+      {
+        invalidImage.setPixelColor(x, y, invalidPixel);
+      }
     }
   }
 
@@ -177,6 +192,14 @@ void DataStructureItemDelegate::clearRequirements()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+bool DataStructureItemDelegate::isFiltered()
+{
+  return m_ReqType != DataArrayPath::DataType::None;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 QWidget* DataStructureItemDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
   QLineEdit* editor = new QLineEdit(parent);
@@ -231,6 +254,40 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
   painter->setBrush(QBrush());
   painter->setFont(op.font);
 
+  SVStyle* styles = SVStyle::Instance();
+
+  QColor bgColor;
+  if (option.state & QStyle::State_Selected)
+  {
+    bgColor = styles->getQTreeViewItemSelectedActive_background_color();
+  }
+  else if (option.state & QStyle::State_MouseOver)
+  {
+    bgColor = styles->getQTreeViewItemHover_background_color();
+  }
+  else
+  {
+    bgColor = styles->getQTreeViewItem_background_color();
+  }
+
+  if (!bgColor.isValid())
+  {
+    if (option.state & QStyle::State_Selected)
+    {
+      bgColor = option.palette.color(QPalette::Highlight);
+    }
+    else if (option.features & QStyleOptionViewItem::Alternate)
+    {
+      bgColor = option.palette.color(QPalette::AlternateBase);
+    }
+    else
+    {
+      bgColor = option.palette.color(QPalette::Base);
+    }
+  }
+
+  painter->fillRect(option.rect, bgColor);
+
   // Get DataArrayPath
   QVariant var = index.model()->itemData(index)[Qt::DisplayRole];
   if(false == var.isValid())
@@ -250,11 +307,10 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
 
   bool filterData = (m_ReqType != DataArrayPath::DataType::None);
   bool isCreatedPath = std::find(m_CreatedPaths.begin(), m_CreatedPaths.end(), path) != m_CreatedPaths.end();
-  bool mouseOver = op.rect.contains(mousePos);
 
   // Check for a corresponding icon
   QIcon icon;
-  int iconSize = op.rect.height();
+  int iconSize = option.rect.height();
   var = index.model()->itemData(index)[Qt::DecorationRole];
   if(var.isValid() && var.canConvert<QIcon>())
   {
@@ -296,7 +352,7 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
   // Draw the decoration role if available
   if(iconSize > 0)
   {
-    QRect iconRect(op.rect.x(), op.rect.y(), iconSize, iconSize);
+    QRect iconRect(op.rect.x(), op.rect.y(), option.rect.height(), option.rect.height());
     icon.paint(painter, iconRect);
     textOffset = textOffset + iconSize;
   }

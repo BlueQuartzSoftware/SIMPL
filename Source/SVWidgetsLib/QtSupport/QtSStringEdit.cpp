@@ -50,6 +50,7 @@ void QtSStringEdit::setupGui()
 {
   applyChangesBtn->setVisible(false);
   cancelChangesBtn->setVisible(false);
+  value->setAttribute(Qt::WA_MacShowFocusRect, false);
 
   connect(value, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
 }

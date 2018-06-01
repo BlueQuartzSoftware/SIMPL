@@ -90,7 +90,7 @@
         </property>
         <property name="icon">
          <iconset resource="../../icons/images/Icons.qrc">
-          <normaloff>:/navigate_left.png</normaloff>:/navigate_left.png</iconset>
+          <normaloff>:/SIMPL/icons/images/navigate_left.png</normaloff>:/navigate_left.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -134,7 +134,7 @@
         </property>
         <property name="icon">
          <iconset resource="../../icons/images/Icons.qrc">
-          <normaloff>:/navigate_right.png</normaloff>:/navigate_right.png</iconset>
+          <normaloff>:/SIMPL/icons/images/navigate_right.png</normaloff>:/navigate_right.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -178,7 +178,7 @@
         </property>
         <property name="icon">
          <iconset resource="../../icons/images/Icons.qrc">
-          <normaloff>:/refresh.png</normaloff>:/refresh.png</iconset>
+          <normaloff>:/SIMPL/icons/images/refresh.png</normaloff>:/refresh.png</iconset>
         </property>
         <property name="iconSize">
          <size>

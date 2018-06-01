@@ -6,7 +6,7 @@
 #include <QtGui/QMouseEvent>
 #include <QtWidgets/QStyleOption>
 
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -29,7 +29,7 @@ void StatusBarIssuesButton::updateMinimumWidth()
 {
   if(m_ErrorBadgeCount + m_WarningBadgeCount > 0)
   {
-    QFont font = QtSStyles::GetHumanLabelFont();
+    QFont font = SVStyle::Instance()->GetHumanLabelFont();
 
 #if defined(Q_OS_MAC)
     font.setPointSize(font.pointSize() - 4);
@@ -84,7 +84,7 @@ void StatusBarIssuesButton::paintEvent(QPaintEvent* event)
   opt.init(this);
   QPainter painter(this);
   painter.setRenderHint(QPainter::Antialiasing);
-  QFont font = QtSStyles::GetHumanLabelFont();
+  QFont font = SVStyle::Instance()->GetHumanLabelFont();
 
 #if defined(Q_OS_MAC)
   font.setPointSize(font.pointSize() - 4);

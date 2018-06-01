@@ -69,9 +69,10 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
       UNRECOGNIZED_EXT = -1
     };
 
-    enum class Roles : unsigned int
+    enum Roles
     {
-      PathRole = Qt::UserRole + 1,
+      NameRole = Qt::UserRole + 1,
+      PathRole,
       ExpandedRole,
       ErrorsRole,
       ItemTypeRole

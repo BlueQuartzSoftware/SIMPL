@@ -48,7 +48,7 @@
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
 
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/Widgets/FilterListModel.h"
 #include "SVWidgetsLib/Widgets/FilterListItem.h"
 #include "SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h"
@@ -62,7 +62,8 @@ FilterListView::FilterListView(QWidget* parent)
   setContextMenuPolicy(Qt::CustomContextMenu);
 
   setRootIsDecorated(false);
-
+  setAttribute(Qt::WA_MacShowFocusRect, false);
+  
   FilterListModel* model = new FilterListModel(this);
   setModel(model);
 
@@ -120,7 +121,7 @@ void FilterListView::addFilter(AbstractFilter::Pointer filter, const QModelIndex
   QString iconName(":/Groups/");
   iconName.append(filter->getGroupName());
 
-  QIcon icon = QtSStyles::IconForGroup(filter->getGroupName());
+  QIcon icon = SVStyle::Instance()->IconForGroup(filter->getGroupName());
 
   // Create the QListWidgetItem and add it to the filterListView
   FilterListModel* model = getFilterListModel();
@@ -498,7 +499,7 @@ void FilterListView::performDrag()
         }
       }
 
-      QColor grpColor = QtSStyles::ColorForFilterGroup(grpName);
+      QColor grpColor = SVStyle::Instance()->ColorForFilterGroup(grpName);
       const QPixmap dragIcon = DataArrayPathSelectionWidget::CreateDragIcon(filterHumanLabel, grpColor);
 
       QDrag* drag = new QDrag(this);

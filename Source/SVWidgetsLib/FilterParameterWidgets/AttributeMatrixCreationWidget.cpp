@@ -46,7 +46,7 @@
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"

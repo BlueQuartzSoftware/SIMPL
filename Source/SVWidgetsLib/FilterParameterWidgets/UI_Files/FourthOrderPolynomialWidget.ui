@@ -27,7 +27,7 @@
     <number>2</number>
    </property>
    <item row="1" column="4">
-    <widget class="QLineEdit" name="c04">
+    <widget class="SVLineEdit" name="c04">
      <property name="minimumSize">
       <size>
        <width>50</width>
@@ -50,7 +50,7 @@
     </widget>
    </item>
    <item row="1" column="8">
-    <widget class="QLineEdit" name="c13">
+    <widget class="SVLineEdit" name="c13">
      <property name="minimumSize">
       <size>
        <width>50</width>
@@ -73,7 +73,7 @@
     </widget>
    </item>
    <item row="1" column="2">
-    <widget class="QLineEdit" name="c40">
+    <widget class="SVLineEdit" name="c40">
      <property name="minimumSize">
       <size>
        <width>50</width>
@@ -96,7 +96,7 @@
     </widget>
    </item>
    <item row="1" column="10">
-    <widget class="QLineEdit" name="c22">
+    <widget class="SVLineEdit" name="c22">
      <property name="minimumSize">
       <size>
        <width>50</width>
@@ -112,7 +112,7 @@
     </widget>
    </item>
    <item row="1" column="6">
-    <widget class="QLineEdit" name="c31">
+    <widget class="SVLineEdit" name="c31">
      <property name="minimumSize">
       <size>
        <width>50</width>
@@ -156,7 +156,7 @@
     </widget>
    </item>
    <item row="3" column="2">
-    <widget class="QLineEdit" name="c02">
+    <widget class="SVLineEdit" name="c02">
      <property name="minimumSize">
       <size>
        <width>50</width>
@@ -179,7 +179,7 @@
     </widget>
    </item>
    <item row="3" column="4">
-    <widget class="QLineEdit" name="c11">
+    <widget class="SVLineEdit" name="c11">
      <property name="minimumSize">
       <size>
        <width>50</width>
@@ -205,7 +205,7 @@
     </widget>
    </item>
    <item row="3" column="6">
-    <widget class="QLineEdit" name="c10">
+    <widget class="SVLineEdit" name="c10">
      <property name="minimumSize">
       <size>
        <width>50</width>
@@ -228,7 +228,7 @@
     </widget>
    </item>
    <item row="3" column="8">
-    <widget class="QLineEdit" name="c01">
+    <widget class="SVLineEdit" name="c01">
      <property name="minimumSize">
       <size>
        <width>50</width>
@@ -251,7 +251,7 @@
     </widget>
    </item>
    <item row="3" column="10">
-    <widget class="QLineEdit" name="c00">
+    <widget class="SVLineEdit" name="c00">
      <property name="minimumSize">
       <size>
        <width>50</width>
@@ -274,7 +274,7 @@
     </widget>
    </item>
    <item row="2" column="10">
-    <widget class="QLineEdit" name="c20">
+    <widget class="SVLineEdit" name="c20">
      <property name="minimumSize">
       <size>
        <width>50</width>
@@ -297,7 +297,7 @@
     </widget>
    </item>
    <item row="2" column="8">
-    <widget class="QLineEdit" name="c12">
+    <widget class="SVLineEdit" name="c12">
      <property name="minimumSize">
       <size>
        <width>50</width>
@@ -320,7 +320,7 @@
     </widget>
    </item>
    <item row="2" column="6">
-    <widget class="QLineEdit" name="c21">
+    <widget class="SVLineEdit" name="c21">
      <property name="minimumSize">
       <size>
        <width>50</width>
@@ -343,7 +343,7 @@
     </widget>
    </item>
    <item row="2" column="4">
-    <widget class="QLineEdit" name="c03">
+    <widget class="SVLineEdit" name="c03">
      <property name="minimumSize">
       <size>
        <width>50</width>
@@ -366,7 +366,7 @@
     </widget>
    </item>
    <item row="2" column="2">
-    <widget class="QLineEdit" name="c30">
+    <widget class="SVLineEdit" name="c30">
      <property name="minimumSize">
       <size>
        <width>50</width>
@@ -432,6 +432,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SVLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">SVControlWidgets.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

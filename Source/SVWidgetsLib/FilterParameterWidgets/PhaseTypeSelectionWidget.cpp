@@ -48,7 +48,7 @@
 #include "SIMPLib/FilterParameters/PhaseTypeSelectionFilterParameter.h"
 #include "SIMPLib/Filtering/QMetaObjectUtilities.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "FilterParameterWidgetsDialogs.h"
 
@@ -95,7 +95,7 @@ void PhaseTypeSelectionWidget::setupGui()
   label->setText(m_FilterParameter->getHumanLabel());
 
   // Get the default path from the Filter instance to cache
-  m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
+  m_SelectedAttributeMatrixPath->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(true));
 
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(attributeMatrixSelected(QString)));
@@ -386,12 +386,12 @@ void PhaseTypeSelectionWidget::afterPreflight()
     if (nullptr != am.get()) {
       QString html = am->getInfoString(SIMPL::HtmlFormat);
       m_SelectedAttributeMatrixPath->setToolTip(html);
-      m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
+      m_SelectedAttributeMatrixPath->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(true));
     }
   }
   else
   {
-    m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
+    m_SelectedAttributeMatrixPath->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(false));
   }
 
   updatePhaseComboBoxes();

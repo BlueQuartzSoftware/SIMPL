@@ -39,7 +39,7 @@
 #include <QtCore/QSignalMapper>
 
 #include "SIMPLib/FilterParameters/SecondOrderPolynomialFilterParameter.h"
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 

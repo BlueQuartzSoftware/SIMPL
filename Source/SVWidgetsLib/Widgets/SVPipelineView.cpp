@@ -94,6 +94,10 @@
 #include "SVWidgetsLib/Widgets/util/AddFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/MoveFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/RemoveFilterCommand.h"
+#include "SVWidgetsLib/Widgets/DataStructureWidget.h"
+#include "SVWidgetsLib/Widgets/ProgressDialog.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
+#include "SVWidgetsLib/QtSupport/QtSRecentFileList.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -1878,7 +1882,7 @@ QPixmap SVPipelineView::getDisableBtnPixmap(bool highlighted)
 {
   if(m_DisableBtnPixmap.isNull())
   {
-    m_DisableBtnPixmap = QPixmap(":/ban.png");
+    m_DisableBtnPixmap = QPixmap(":/SIMPL/icons/images/ban.png");
     m_DisableHighlightedPixmap = m_DisableBtnPixmap;
   }
 
@@ -1906,7 +1910,7 @@ QPixmap SVPipelineView::getHighDPIDisableBtnPixmap(bool highlighted)
 {
   if(m_DisableBtnPixmap2x.isNull())
   {
-    m_DisableBtnPixmap2x = QPixmap(":/ban@2x.png");
+    m_DisableBtnPixmap2x = QPixmap(":/SIMPL/icons/images/ban@2x.png");
     m_DisableBtnHighlightedPixmap2x = m_DisableBtnPixmap2x;
   }
 
@@ -1936,7 +1940,7 @@ QPixmap SVPipelineView::getDisableBtnActivatedPixmap(bool highlighted)
 
   if(m_DisableBtnActivatedPixmap.isNull())
   {
-    m_DisableBtnActivatedPixmap = QPixmap(":/ban_red.png");
+    m_DisableBtnActivatedPixmap = QPixmap(":/SIMPL/icons/images/ban_red.png");
   }
 
   return m_DisableBtnActivatedPixmap;
@@ -1951,7 +1955,7 @@ QPixmap SVPipelineView::getHighDPIDisableBtnActivatedPixmap(bool highlighted)
 
   if(m_DisableBtnActivatedPixmap2x.isNull())
   {
-    m_DisableBtnActivatedPixmap2x = QPixmap(":/ban_red@2x.png");
+    m_DisableBtnActivatedPixmap2x = QPixmap(":/SIMPL/icons/images/ban_red@2x.png");
   }
 
   return m_DisableBtnActivatedPixmap2x;
@@ -1964,7 +1968,7 @@ QPixmap SVPipelineView::getDisableBtnHoveredPixmap(bool highlighted)
 {
   if(m_DisableBtnHoveredPixmap.isNull())
   {
-    m_DisableBtnHoveredPixmap = QPixmap(":/ban_hover.png");
+    m_DisableBtnHoveredPixmap = QPixmap(":/SIMPL/icons/images/ban_hover.png");
     m_DisableBtnHoveredHighlightedPixmap = m_DisableBtnHoveredPixmap;
   }
 
@@ -1992,7 +1996,7 @@ QPixmap SVPipelineView::getHighDPIDisableBtnHoveredPixmap(bool highlighted)
 {
   if(m_DisableBtnHoveredPixmap2x.isNull())
   {
-    m_DisableBtnHoveredPixmap2x = QPixmap(":/ban_hover@2x.png");
+    m_DisableBtnHoveredPixmap2x = QPixmap(":/SIMPL/icons/images/ban_hover@2x.png");
     m_DisableBtnHoveredHighlightedPixmap2x = m_DisableBtnHoveredPixmap2x;
   }
 
@@ -2020,7 +2024,7 @@ QPixmap SVPipelineView::getDeleteBtnPixmap(bool highlighted)
 {
   if(m_DeleteBtnPixmap.isNull())
   {
-    m_DeleteBtnPixmap = QPixmap(":/trash.png");
+    m_DeleteBtnPixmap = QPixmap(":/SIMPL/icons/images/trash.png");
     m_DeleteBtnHighlightedPixmap = m_DeleteBtnPixmap;
   }
 
@@ -2048,7 +2052,7 @@ QPixmap SVPipelineView::getHighDPIDeleteBtnPixmap(bool highlighted)
 {
   if(m_DeleteBtnPixmap2x.isNull())
   {
-    m_DeleteBtnPixmap2x = QPixmap(":/trash@2x.png");
+    m_DeleteBtnPixmap2x = QPixmap(":/SIMPL/icons/images/trash@2x.png");
     m_DeleteBtnHighlightedPixmap2x = m_DeleteBtnPixmap2x;
   }
 
@@ -2076,7 +2080,7 @@ QPixmap SVPipelineView::getDeleteBtnHoveredPixmap(bool highlighted)
 {
   if(m_DeleteBtnHoveredPixmap.isNull())
   {
-    m_DeleteBtnHoveredPixmap = QPixmap(":/trash_hover.png");
+    m_DeleteBtnHoveredPixmap = QPixmap(":/SIMPL/icons/images/trash_hover.png");
     m_DeleteBtnHoveredHighlightedPixmap = m_DeleteBtnHoveredPixmap;
   }
 
@@ -2104,7 +2108,7 @@ QPixmap SVPipelineView::getHighDPIDeleteBtnHoveredPixmap(bool highlighted)
 {
   if(m_DeleteBtnHoveredPixmap2x.isNull())
   {
-    m_DeleteBtnHoveredPixmap2x = QPixmap(":/trash_hover@2x.png");
+    m_DeleteBtnHoveredPixmap2x = QPixmap(":/SIMPL/icons/images/trash_hover@2x.png");
     m_DeleteBtnHoveredHighlightedPixmap2x = m_DeleteBtnHoveredPixmap2x;
   }
 
@@ -2141,7 +2145,10 @@ QPixmap SVPipelineView::setPixmapColor(QPixmap pixmap, QColor pixmapColor)
 
       color.setAlpha(alpha);
 
-      image.setPixelColor(x, y, color);
+      if (color.isValid())
+      {
+        image.setPixelColor(x, y, color);
+      }
     }
   }
 

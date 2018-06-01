@@ -43,7 +43,7 @@
 #include <QtGui/QDragEnterEvent>
 #include <QtWidgets/QWidget>
 
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -63,11 +63,11 @@ void QtSFSDropLineEdit::changeStyleSheet(int style)
 
   ss << "QLabel {";
 #if defined(Q_OS_WIN)
-  ss << "font: italic 9 pt \"" << QtSStyles::GetUIFont() << "\";";
+  ss << "font: italic 9 pt \"" << SVStyle::Instance()->GetUIFont() << "\";";
 #elif defined(Q_OS_MAC)
-  ss << "font: italic 12 pt \"" << QtSStyles::GetUIFont() << "\";";
+  ss << "font: italic 12 pt \"" << SVStyle::Instance()->GetUIFont() << "\";";
 #else
-  ss << "font: italic 10 pt \"" << QtSStyles::GetUIFont() << "\";";
+  ss << "font: italic 10 pt \"" << SVStyle::Instance()->GetUIFont() << "\";";
 #endif
 
   if(style == FS_STANDARD_STYLE)

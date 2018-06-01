@@ -190,11 +190,11 @@ QIcon ImportHDF5TreeModelItem::icon()
 
   if(isGroup() == true)
   {
-    iconName = ":/folder_blue.png";
+    iconName = ":/SIMPL/icons/images/folder_blue.png";
   }
   else
   {
-    iconName = ":/cube_molecule.png";
+    iconName = ":/SIMPL/icons/images/cube_molecule.png";
   }
 
   return QIcon(iconName);

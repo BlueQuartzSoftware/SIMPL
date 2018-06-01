@@ -33,8 +33,8 @@
    <item>
     <widget class="DataArrayPathSelectionWidget" name="m_SelectedAttributeMatrixPath">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>1</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
@@ -58,8 +58,8 @@
    <item>
     <widget class="QtSStringEdit" name="stringEdit" native="true">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-       <horstretch>3</horstretch>
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>1</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
@@ -69,15 +69,15 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>DataArrayPathSelectionWidget</class>
+   <extends>QToolButton</extends>
+   <header>DataArrayPathSelectionWidget.h</header>
+  </customwidget>
+  <customwidget>
    <class>QtSStringEdit</class>
    <extends>QWidget</extends>
    <header>QtSStringEdit.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>DataArrayPathSelectionWidget</class>
-   <extends>QToolButton</extends>
-   <header>DataArrayPathSelectionWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
