@@ -82,7 +82,7 @@ void BookmarksItemDelegate::setEditorData(QWidget* editor, const QModelIndex& in
 // -----------------------------------------------------------------------------
 void BookmarksItemDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const
 {
-  BookmarksModel* bModel = qobject_cast<BookmarksModel*>(model);
+  BookmarksModel* bModel = BookmarksModel::Instance();
 
   QLineEdit* line = static_cast<QLineEdit*>(editor);
   QString value = line->text();
