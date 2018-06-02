@@ -72,7 +72,7 @@ QWidget* BookmarksItemDelegate::createEditor(QWidget* parent, const QStyleOption
 // -----------------------------------------------------------------------------
 void BookmarksItemDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
 {
-  QString value = index.model()->data(index, BookmarksModel::Roles::NameRole).toString();
+  QString value = index.model()->data(index, Qt::DisplayRole).toString();
   QLineEdit* line = static_cast<QLineEdit*>(editor);
   line->setText(value);
 }
@@ -82,7 +82,7 @@ void BookmarksItemDelegate::setEditorData(QWidget* editor, const QModelIndex& in
 // -----------------------------------------------------------------------------
 void BookmarksItemDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const
 {
-  BookmarksModel* bModel = qobject_cast<BookmarksModel*>(model);
+  BookmarksModel* bModel = BookmarksModel::Instance();
 
   QLineEdit* line = static_cast<QLineEdit*>(editor);
   QString value = line->text();
@@ -90,7 +90,7 @@ void BookmarksItemDelegate::setModelData(QWidget* editor, QAbstractItemModel* mo
   if(value.isEmpty() == false)
   {
     QModelIndex bIndex = bModel->index(index.row(), BookmarksItem::Contents, index.parent());
-    bModel->setData(bIndex, value, BookmarksModel::Roles::NameRole);
+    bModel->setData(bIndex, value, Qt::DisplayRole);
   }
 }
 
