@@ -71,7 +71,8 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
 
     enum Roles
     {
-      PathRole = Qt::UserRole + 1,
+      NameRole = Qt::UserRole + 1,
+      PathRole,
       ExpandedRole,
       ErrorsRole,
       ItemTypeRole

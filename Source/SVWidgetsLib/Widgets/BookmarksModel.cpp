@@ -378,7 +378,7 @@ bool BookmarksModel::setData(const QModelIndex& index, const QVariant& value, in
 {
   BookmarksItem* item = getItem(index);
 
-  if(role == Qt::DisplayRole)
+  if(role == static_cast<int>(Roles::NameRole))
   {
     item->setName(value.toString());
   }
@@ -457,12 +457,12 @@ void BookmarksModel::addFileToTree(QString& path, QModelIndex& specifiedParent)
   if(fi.isFile())
   {
     QString name = fi.baseName();
-    setData(index, name, Qt::DisplayRole);
+    setData(index, name, BookmarksModel::Roles::NameRole);
   }
   else
   {
     QDir dir(path);
-    setData(index, dir.dirName(), Qt::DisplayRole);
+    setData(index, dir.dirName(), BookmarksModel::Roles::NameRole);
   }
 
   if(fi.isFile())
@@ -600,7 +600,7 @@ void BookmarksModel::unwrapModel(QString objectName, QJsonObject object, QModelI
 
   path = QDir::toNativeSeparators(path);
 
-  setData(index, objectName, Qt::DisplayRole);
+  setData(index, objectName, BookmarksModel::Roles::NameRole);
   setData(index, path, static_cast<int>(Roles::PathRole));
   setData(index, expanded, static_cast<int>(Roles::ExpandedRole));
   setData(index, type, static_cast<int>(Roles::ItemTypeRole));
@@ -941,7 +941,7 @@ QModelIndex BookmarksModel::addTreeItem(QModelIndex parent, QString& favoriteTit
   // Add a new Item to the Tree
   insertRow(insertIndex, parent);
   QModelIndex index = this->index(insertIndex, BookmarksItem::Contents, parent);
-  setData(index, favoriteTitle, Qt::DisplayRole);
+  setData(index, favoriteTitle, BookmarksModel::Roles::NameRole);
   setData(index, favoritePath, static_cast<int>(Roles::PathRole));
   setData(index, icon, Qt::DecorationRole);
   setData(index, static_cast<int>(type), static_cast<int>(Roles::ItemTypeRole));

@@ -212,7 +212,7 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
 
     SIMPL_INSTANCE_PROPERTY(QColor, QToolButtonDisabled_color)
     Q_PROPERTY(QColor QToolButtonDisabled_color READ getQToolButtonDisabled_color WRITE setQToolButtonDisabled_color)
-          
+
     SIMPL_INSTANCE_PROPERTY(QColor, QStatusBar_border_color)    
     Q_PROPERTY(QColor QStatusBar_border_color READ getQStatusBar_border_color WRITE setQStatusBar_border_color)    
     
