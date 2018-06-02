@@ -411,8 +411,8 @@ void SVStyle::LineEditErrorStyle(QLineEdit* lineEdit)
   QString str;
   QTextStream ss(&str);
   ss << "QLineEdit#" << lineEdit->objectName() << "{";
-  //  ss << "border: 1px solid rgb(180, 0, 0);";
-  ss << "background-color: rgb(255, 246, 179);"; // Yellow background
+    ss << "border: 1px solid rgb(180, 0, 0);";
+//  ss << "background-color: rgb(255, 246, 179);"; // Yellow background
   ss << "}";
   lineEdit->setStyleSheet(str);
 }
