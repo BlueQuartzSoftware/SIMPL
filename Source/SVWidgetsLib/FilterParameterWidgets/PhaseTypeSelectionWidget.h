@@ -102,17 +102,15 @@ class SVWidgetsLib_EXPORT PhaseTypeSelectionWidget : public FilterParameterWidge
     void phaseTypeComboBoxChanged(int index);
 
     void attributeMatrixSelected(QString path);
+    void attributeMatrixUpdated();
 
   protected:
     void updatePhaseComboBoxes();
 
-    /**
-     * @brief createSelectionMenu
-     */
-    void createSelectionMenu();
-
     void resetPhaseComboBoxes();
 
+  protected slots:
+    void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
   signals:
     void errorSettingFilterParameter(const QString& msg);
@@ -120,8 +118,6 @@ class SVWidgetsLib_EXPORT PhaseTypeSelectionWidget : public FilterParameterWidge
 
   private:
     bool              m_DidCausePreflight;
-
-    QPointer<QSignalMapper> m_MenuMapper;
 
     PhaseTypeSelectionFilterParameter* m_FilterParameter;
 
