@@ -275,6 +275,9 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     SIMPL_INSTANCE_PROPERTY(QColor, QSpinBoxArrow_background_color)
     Q_PROPERTY(QColor QSpinBoxArrow_background_color READ getQSpinBoxArrow_background_color WRITE setQSpinBoxArrow_background_color)
 
+    SIMPL_INSTANCE_PROPERTY(QColor, QSpinBoxArrow_hover_background_color)
+    Q_PROPERTY(QColor QSpinBoxArrow_hover_background_color READ getQSpinBoxArrow_hover_background_color WRITE setQSpinBoxArrow_hover_background_color)
+
     
     SIMPL_INSTANCE_PROPERTY(QColor, QToolBar_background_color)    
     Q_PROPERTY(QColor QToolBar_background_color READ getQToolBar_background_color WRITE setQToolBar_background_color)    
