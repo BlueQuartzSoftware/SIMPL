@@ -229,7 +229,16 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     Q_PROPERTY(QColor QHeaderView_border_color READ getQHeaderView_border_color WRITE setQHeaderView_border_color)    
     
     SIMPL_INSTANCE_PROPERTY(QColor, QHeaderView_color)    
-    Q_PROPERTY(QColor QHeaderView_color READ getQHeaderView_color WRITE setQHeaderView_color)    
+    Q_PROPERTY(QColor QHeaderView_color READ getQHeaderView_color WRITE setQHeaderView_color)   
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QHeaderViewDisabled_background_color)
+    Q_PROPERTY(QColor QHeaderViewDisabled_background_color READ getQHeaderViewDisabled_background_color WRITE setQHeaderViewDisabled_background_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QHeaderViewDisabled_border_color)
+    Q_PROPERTY(QColor QHeaderViewDisabled_border_color READ getQHeaderViewDisabled_border_color WRITE setQHeaderViewDisabled_border_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QHeaderViewDisabled_color)
+    Q_PROPERTY(QColor QHeaderViewDisabled_color READ getQHeaderViewDisabled_color WRITE setQHeaderViewDisabled_color)
     
     
     SIMPL_INSTANCE_PROPERTY(QColor, QTabWidgetPane_border_color)    
