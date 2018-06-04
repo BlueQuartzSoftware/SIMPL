@@ -81,7 +81,9 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
      * @return
      */
     static SVStyle* Instance();
-    
+
+    SIMPL_GET_PROPERTY(QString, CurrentThemeName)
+
     SIMPL_INSTANCE_PROPERTY(QColor, CentralWidget_background_color)    
     Q_PROPERTY(QColor CentralWidget_background_color READ getCentralWidget_background_color WRITE setCentralWidget_background_color)    
     
@@ -489,6 +491,8 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     
   private:
     static SVStyle* self;
+
+    QString m_CurrentThemeName;
 
     /**
      * @brief loadStringProperty

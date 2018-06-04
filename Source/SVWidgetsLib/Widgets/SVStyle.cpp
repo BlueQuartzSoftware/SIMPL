@@ -242,6 +242,8 @@ bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
   
   // FINALLY, Set the style sheet into the app object
   qApp->setStyleSheet(cssContent);
+
+  m_CurrentThemeName = jsonFileInfo.baseName();
   
   return success;
 }
