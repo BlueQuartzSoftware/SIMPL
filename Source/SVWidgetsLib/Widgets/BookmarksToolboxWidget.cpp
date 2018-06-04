@@ -206,8 +206,8 @@ void BookmarksToolboxWidget::on_bookmarksTreeView_doubleClicked(const QModelInde
   {
     bookmarksTreeView->blockSignals(true);
     QtSBookmarkMissingDialog* dialog = new QtSBookmarkMissingDialog(this, Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint | Qt::WindowTitleHint);
-    connect(dialog, SIGNAL(locateBtnPressed()), bookmarksTreeView, SLOT(on_actionLocateFile_triggered()));
-    QString name = model->data(index, BookmarksModel::Roles::NameRole).toString();
+    connect(dialog, SIGNAL(locateBtnPressed()), bookmarksTreeView, SLOT(listenLocateBookmarkTriggered()));
+    QString name = model->data(index, Qt::DisplayRole).toString();
     dialog->setBookmarkName(name);
     dialog->exec();
     delete dialog;

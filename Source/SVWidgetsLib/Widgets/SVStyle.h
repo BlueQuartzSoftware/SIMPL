@@ -207,9 +207,12 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     SIMPL_INSTANCE_PROPERTY(QColor, QToolButtonChecked_background_color)    
     Q_PROPERTY(QColor QToolButtonChecked_background_color READ getQToolButtonChecked_background_color WRITE setQToolButtonChecked_background_color)    
     
-    SIMPL_INSTANCE_PROPERTY(QColor, QToolButtonDisabled_background_color)    
-    Q_PROPERTY(QColor QToolButtonDisabled_background_color READ getQToolButtonDisabled_background_color WRITE setQToolButtonDisabled_background_color)    
-    
+    SIMPL_INSTANCE_PROPERTY(QColor, QToolButtonDisabled_background_color)
+    Q_PROPERTY(QColor QToolButtonDisabled_background_color READ getQToolButtonDisabled_background_color WRITE setQToolButtonDisabled_background_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QToolButtonDisabled_color)
+    Q_PROPERTY(QColor QToolButtonDisabled_color READ getQToolButtonDisabled_color WRITE setQToolButtonDisabled_color)
+
     SIMPL_INSTANCE_PROPERTY(QColor, QStatusBar_border_color)    
     Q_PROPERTY(QColor QStatusBar_border_color READ getQStatusBar_border_color WRITE setQStatusBar_border_color)    
     
@@ -277,7 +280,11 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     Q_PROPERTY(QColor QToolBar_background_color READ getQToolBar_background_color WRITE setQToolBar_background_color)    
     
     SIMPL_INSTANCE_PROPERTY(QColor, QToolBar_border_color)    
-    Q_PROPERTY(QColor QToolBar_border_color READ getQToolBar_border_color WRITE setQToolBar_border_color)    
+    Q_PROPERTY(QColor QToolBar_border_color READ getQToolBar_border_color WRITE setQToolBar_border_color)
+
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QSpinBoxArrow_background_color)
+    Q_PROPERTY(QColor QSpinBoxArrow_background_color READ getQSpinBoxArrow_background_color WRITE setQSpinBoxArrow_background_color)
     
     
     SIMPL_INSTANCE_PROPERTY(QColor, QTreeView_background_color)    
