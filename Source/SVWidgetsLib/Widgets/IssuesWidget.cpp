@@ -81,7 +81,7 @@ void IssuesWidget::setupGui()
   ui->errorTableWidget->horizontalHeader()->setSectionResizeMode(FilterIndex, QHeaderView::ResizeToContents);
   ui->errorTableWidget->horizontalHeader()->setSectionResizeMode(FilterName, QHeaderView::ResizeToContents);
   ui->errorTableWidget->horizontalHeader()->setDefaultSectionSize(400);
-  //  ui->errorTableWidget->horizontalHeader()->setSectionResizeMode(Description, QHeaderView::Stretch);
+  ui->errorTableWidget->horizontalHeader()->setSectionResizeMode(Description, QHeaderView::Stretch);
   ui->errorTableWidget->horizontalHeader()->setSectionResizeMode(ErrorCode, QHeaderView::ResizeToContents);
   ui->errorTableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
   ui->errorTableWidget->setVisible(true);
