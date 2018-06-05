@@ -220,7 +220,10 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     
     
     SIMPL_INSTANCE_PROPERTY(QColor, QTableWidget_color)    
-    Q_PROPERTY(QColor QTableWidget_color READ getQTableWidget_color WRITE setQTableWidget_color)    
+    Q_PROPERTY(QColor QTableWidget_color READ getQTableWidget_color WRITE setQTableWidget_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QTableWidget_selected_background_color)
+    Q_PROPERTY(QColor QTableWidget_selected_background_color READ getQTableWidget_selected_background_color WRITE setQTableWidget_selected_background_color)
     
     SIMPL_INSTANCE_PROPERTY(QColor, QHeaderView_background_color)    
     Q_PROPERTY(QColor QHeaderView_background_color READ getQHeaderView_background_color WRITE setQHeaderView_background_color)    
