@@ -200,6 +200,7 @@ namespace SIMPL
     const QString TriangleDataContainerName("TriangleDataContainer");
     const QString QuadDataContainerName("QuadDataContainer");
     const QString TetrahedralDataContainerName("TetrahedralDataContainer");
+    const QString HexahedralDataContainerName("HexahedralDataContainer");
 
     const QString VertexDataContainerName("VertexDataContainer");
     const QString VertexAttributeMatrixName("VertexData");
@@ -600,6 +601,12 @@ namespace SIMPL
     const QString TetCentroids("TetrahedralCentroids");
     const QString TetVolumes("TetrahedralVolumes");
 
+    const QString HexasName("Hexahedra");
+    const QString HexNeighbors("HexahedralNeighbors");
+    const QString HexasContainingVert("HexahedraContainingVerts");
+    const QString HexCentroids("HexahedralCentroids");
+    const QString HexVolumes("HexahedralVolumes");
+
     const QString VoxelSizes("VoxelSizes");
     const QString VertexSizes("VertexSizes");
 
@@ -836,6 +843,7 @@ namespace SIMPL
     const QString TriangleGeometry("TriangleGeometry");
     const QString QuadGeometry("QuadrilateralGeometry");
     const QString TetrahedralGeometry("TetrahedralGeometry");
+    const QString HexahedralGeometry("HexahedralGeometry");
 
     const QString xBoundsList("xBounds");
     const QString yBoundsList("yBounds");
@@ -845,6 +853,7 @@ namespace SIMPL
     const QString SharedTriList("SharedTriList");
     const QString SharedQuadList("SharedQuadList");
     const QString SharedTetList("SharedTetList");
+    const QString SharedHexList("SharedHexList");
     const QString UnsharedEdgeList("UnsharedEdgeList");
     const QString UnsharedFaceList("UnsharedFaceList");
   }

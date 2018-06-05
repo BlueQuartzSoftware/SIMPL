@@ -45,6 +45,8 @@
  *   - re-implemented vtkQuad::Derivatives to QuadDeriv::operator()
  * * vtkTetra.cxx
  *   - re-implemented vtkTetra::Derivatives to TetDeriv::operator()
+ * * vtkHexahedron.cxx
+ *   - re-implemented vtkHexahedron::Derivatives to HexDeriv::operator()
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "DerivativeHelpers.h"
@@ -56,6 +58,7 @@
 #include "QuadGeom.h"
 #include "TetrahedralGeom.h"
 #include "TriangleGeom.h"
+#include "HexahedralGeom.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -381,6 +384,70 @@ void DerivativeHelpers::TetDeriv::operator()(TetrahedralGeom* tets, int64_t tetI
     sum[0] += shapeFunctions[i] * values[i];
     sum[1] += shapeFunctions[4 + i] * values[i];
     sum[2] += shapeFunctions[8 + i] * values[i];
+  }
+
+  derivs[0] = sum[0] * jMatI(0, 0) + sum[1] * jMatI(0, 1) + sum[2] * jMatI(0, 2);
+  derivs[1] = sum[0] * jMatI(1, 0) + sum[1] * jMatI(1, 1) + sum[2] * jMatI(1, 2);
+  derivs[2] = sum[0] * jMatI(2, 0) + sum[1] * jMatI(2, 1) + sum[2] * jMatI(2, 2);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DerivativeHelpers::HexDeriv::operator()(HexahedralGeom* hexas, int64_t hexId, double values[8], double derivs[3])
+{
+  double shapeFunctions[24] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+  int64_t verts[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+  double sum[3] = {0.0, 0.0, 0.0};
+  double pCoords[3] = {0.0, 0.0, 0.0};
+
+  hexas->getParametricCenter(pCoords);
+  hexas->getShapeFunctions(pCoords, shapeFunctions);
+
+  // Compute 3x3 Jacobian from vertex coordinates and tet shape functions,
+  // then find the inverse Jacobian using Eigen
+  double jPtr[9] = {
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+  };
+
+  hexas->getVertsAtHex(hexId, verts);
+
+  for(size_t i = 0; i < 8; i++)
+  {
+    float tmpCoords_f[3] = {0.0, 0.0, 0.0};
+    double tmpCoords[3] = {0.0, 0.0, 0.0};
+    hexas->getCoords(verts[i], tmpCoords_f);
+    std::copy(tmpCoords_f, tmpCoords_f + 3, tmpCoords);
+    for(size_t j = 0; j < 3; j++)
+    {
+      jPtr[j] += tmpCoords[j] * shapeFunctions[i];
+      jPtr[j + 3] += tmpCoords[j] * shapeFunctions[8 + i];
+      jPtr[j + 6] += tmpCoords[j] * shapeFunctions[16 + i];
+    }
+  }
+
+  Eigen::Map<HexJacobian> jMat(jPtr);
+  HexJacobian jMatI;
+  bool invertible = false;
+
+  jMat.computeInverseWithCheck(jMatI, invertible);
+
+  // Jacobian is non-constant for a tet, so must check if inverse exists
+  // If the Jacobian is not invertible, set derivatives to 0
+  if(!invertible)
+  {
+    for(size_t i = 0; i < 3; i++)
+    {
+      derivs[i] = 0.0;
+    }
+  }
+
+  for(size_t i = 0; i < 8; i++)
+  {
+    sum[0] += shapeFunctions[i] * values[i];
+    sum[1] += shapeFunctions[8 + i] * values[i];
+    sum[2] += shapeFunctions[16 + i] * values[i];
   }
 
   derivs[0] = sum[0] * jMatI(0, 0) + sum[1] * jMatI(0, 1) + sum[2] * jMatI(0, 2);

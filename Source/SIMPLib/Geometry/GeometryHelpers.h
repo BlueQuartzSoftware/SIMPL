@@ -358,6 +358,11 @@ public:
       numSharedVerts = 3;
       break;
     }
+    case IGeometry::Type::Hexahedral: // hexahedra
+    {
+      numSharedVerts = 4;
+      break;
+    }
     default:
       numSharedVerts = 0;
       break;
@@ -556,6 +561,61 @@ public:
   }
 
   /**
+  * @brief FindHexEdges
+  * @param hexList
+  * @param edgeList
+  */
+  template <typename T> static void FindHexEdges(typename DataArray<T>::Pointer hexList, typename DataArray<T>::Pointer edgeList)
+  {
+    size_t numElems = hexList->getNumberOfTuples();
+
+    std::pair<T, T> edge;
+    std::set<std::pair<T, T>> edgeSet;
+
+    for(size_t i = 0; i < numElems; i++)
+    {
+      T* verts = hexList->getTuplePointer(i);
+
+      std::vector<T> edge0 = {verts[0], verts[1]};
+      std::vector<T> edge1 = {verts[1], verts[2]};
+      std::vector<T> edge2 = {verts[2], verts[3]};
+      std::vector<T> edge3 = {verts[3], verts[0]};
+
+      std::vector<T> edge4 = {verts[0], verts[4]};
+      std::vector<T> edge5 = {verts[1], verts[5]};
+      std::vector<T> edge6 = {verts[2], verts[6]};
+      std::vector<T> edge7 = {verts[3], verts[7]};
+
+      std::vector<T> edge8 =  {verts[4], verts[5]};
+      std::vector<T> edge9 =  {verts[5], verts[6]};
+      std::vector<T> edge10 = {verts[6], verts[7]};
+      std::vector<T> edge11 = {verts[7], verts[4]};
+
+      std::list<std::vector<T>> edgeList = {edge0, edge1, edge2, edge3, edge4, edge5,
+                                            edge6, edge7, edge8, edge9, edge10, edge11};
+
+      for(auto&& uEdge : edgeList)
+      {
+        std::sort(uEdge.begin(), uEdge.end());
+        edge = std::make_pair(uEdge[0], uEdge[1]);
+        edgeSet.insert(edge);
+      }
+    }
+
+    typename std::set<std::pair<T, T>>::iterator setIter;
+    edgeList->resize(edgeSet.size());
+    T* uEdges = edgeList->getPointer(0);
+    T index = 0;
+
+    for(setIter = edgeSet.begin(); setIter != edgeSet.end(); ++setIter)
+    {
+      uEdges[2 * index] = (*setIter).first;
+      uEdges[2 * index + 1] = (*setIter).second;
+      ++index;
+    }
+  }
+
+  /**
    * @brief FindTetFaces
    * @param tetList
    * @param edgeList
@@ -595,6 +655,54 @@ public:
       uFaces[3 * index] = std::get<0>(*setIter);
       uFaces[3 * index + 1] = std::get<1>(*setIter);
       uFaces[3 * index + 2] = std::get<2>(*setIter);
+      ++index;
+    }
+  }
+
+  /**
+  * @brief FindHexFaces
+  * @param hexList
+  * @param edgeList
+  */
+  template <typename T> static void FindHexFaces(typename DataArray<T>::Pointer hexList, typename DataArray<T>::Pointer faceList)
+  {
+    size_t numElems = hexList->getNumberOfTuples();
+
+    std::tuple<T, T, T, T> face;
+    std::set<std::tuple<T, T, T, T>> faceSet;
+
+    for(size_t i = 0; i < numElems; i++)
+    {
+      T* verts = hexList->getTuplePointer(i);
+
+      std::vector<T> quad0 = {verts[0], verts[1], verts[5], verts[4]};
+      std::vector<T> quad1 = {verts[1], verts[2], verts[6], verts[5]};
+      std::vector<T> quad2 = {verts[2], verts[3], verts[7], verts[6]};
+      std::vector<T> quad3 = {verts[3], verts[0], verts[4], verts[7]};
+      std::vector<T> quad4 = {verts[0], verts[1], verts[2], verts[3]};
+      std::vector<T> quad5 = {verts[4], verts[5], verts[6], verts[7]};
+
+      std::list<std::vector<T>> quadList = {quad0, quad1, quad2, quad3, quad4, quad5};
+
+      for(auto&& quad : quadList)
+      {
+        std::sort(quad.begin(), quad.end());
+        face = std::make_tuple(quad[0], quad[1], quad[2], quad[3]);
+        faceSet.insert(face);
+      }
+    }
+
+    typename std::set<std::tuple<T, T, T, T>>::iterator setIter;
+    faceList->resize(faceSet.size());
+    T* uFaces = faceList->getPointer(0);
+    T index = 0;
+
+    for(setIter = faceSet.begin(); setIter != faceSet.end(); ++setIter)
+    {
+      uFaces[4 * index] = std::get<0>(*setIter);
+      uFaces[4 * index + 1] = std::get<1>(*setIter);
+      uFaces[4 * index + 2] = std::get<2>(*setIter);
+      uFaces[4 * index + 3] = std::get<3>(*setIter);
       ++index;
     }
   }
@@ -736,6 +844,74 @@ public:
   }
 
   /**
+  * @brief FindUnsharedHexEdges
+  * @param hexList
+  * @param edgeList
+  */
+  template <typename T> static void FindUnsharedHexEdges(typename DataArray<T>::Pointer hexList, typename DataArray<T>::Pointer edgeList)
+  {
+    size_t numElems = hexList->getNumberOfTuples();
+
+    std::pair<T, T> edge;
+    std::map<std::pair<T, T>, T> edgeMap;
+
+    for(size_t i = 0; i < numElems; i++)
+    {
+      T* verts = hexList->getTuplePointer(i);
+
+      std::vector<T> edge0 = {verts[0], verts[1]};
+      std::vector<T> edge1 = {verts[1], verts[2]};
+      std::vector<T> edge2 = {verts[2], verts[3]};
+      std::vector<T> edge3 = {verts[3], verts[0]};
+
+      std::vector<T> edge4 = {verts[0], verts[4]};
+      std::vector<T> edge5 = {verts[1], verts[5]};
+      std::vector<T> edge6 = {verts[2], verts[6]};
+      std::vector<T> edge7 = {verts[3], verts[7]};
+
+      std::vector<T> edge8 = {verts[4], verts[5]};
+      std::vector<T> edge9 = {verts[5], verts[6]};
+      std::vector<T> edge10 = {verts[6], verts[7]};
+      std::vector<T> edge11 = {verts[7], verts[4]};
+
+      std::list<std::vector<T>> edgeList = {edge0, edge1, edge2, edge3, edge4, edge5,
+                                            edge6, edge7, edge8, edge9, edge10, edge11};
+
+      for(auto&& uEdge : edgeList)
+      {
+        std::sort(uEdge.begin(), uEdge.end());
+        edge = std::make_pair(uEdge[0], uEdge[1]);
+        edgeMap[edge]++;
+      }
+    }
+
+    typename std::map<std::pair<T, T>, T>::iterator mapIter = edgeMap.begin();
+
+    while(mapIter != edgeMap.end())
+    {
+      if((*mapIter).second > 1)
+      {
+        edgeMap.erase(mapIter++);
+      }
+      else
+      {
+        ++mapIter;
+      }
+    }
+
+    edgeList->resize(edgeMap.size());
+    T* bEdges = edgeList->getPointer(0);
+    T index = 0;
+
+    for(mapIter = edgeMap.begin(); mapIter != edgeMap.end(); ++mapIter)
+    {
+      bEdges[2 * index] = (*mapIter).first.first;
+      bEdges[2 * index + 1] = (*mapIter).first.second;
+      ++index;
+    }
+  }
+
+  /**
    * @brief FindUnsharedTetFaces
    * @param tetList
    * @param edgeList
@@ -788,6 +964,67 @@ public:
       uFaces[3 * index] = std::get<0>((*mapIter).first);
       uFaces[3 * index + 1] = std::get<1>((*mapIter).first);
       uFaces[3 * index + 2] = std::get<2>((*mapIter).first);
+      ++index;
+    }
+  }
+
+  /**
+  * @brief FindUnsharedHexFaces
+  * @param hexList
+  * @param edgeList
+  */
+  template <typename T> static void FindUnsharedHexFaces(typename DataArray<T>::Pointer hexList, typename DataArray<T>::Pointer faceList)
+  {
+    size_t numElems = hexList->getNumberOfTuples();
+
+    std::tuple<T, T, T, T> face;
+    std::map<std::tuple<T, T, T, T>, T> faceMap;
+
+    for(size_t i = 0; i < numElems; i++)
+    {
+      T* verts = hexList->getTuplePointer(i);
+
+      std::vector<T> quad0 = {verts[0], verts[1], verts[5], verts[4]};
+      std::vector<T> quad1 = {verts[1], verts[2], verts[6], verts[5]};
+      std::vector<T> quad2 = {verts[2], verts[3], verts[7], verts[6]};
+      std::vector<T> quad3 = {verts[3], verts[0], verts[4], verts[7]};
+      std::vector<T> quad4 = {verts[0], verts[1], verts[2], verts[3]};
+      std::vector<T> quad5 = {verts[4], verts[5], verts[6], verts[7]};
+
+      std::list<std::vector<T>> quadList = {quad0, quad1, quad2, quad3, quad4, quad5};
+
+      for(auto&& quad : quadList)
+      {
+        std::sort(quad.begin(), quad.end());
+        face = std::make_tuple(quad[0], quad[1], quad[2], quad[3]);
+        faceMap[face]++;
+      }
+    }
+
+    typename std::map<std::tuple<T, T, T, T>, T>::iterator mapIter = faceMap.begin();
+
+    while(mapIter != faceMap.end())
+    {
+      if((*mapIter).second > 1)
+      {
+        faceMap.erase(mapIter++);
+      }
+      else
+      {
+        ++mapIter;
+      }
+    }
+
+    faceList->resize(faceMap.size());
+    T* uFaces = faceList->getPointer(0);
+    T index = 0;
+
+    for(mapIter = faceMap.begin(); mapIter != faceMap.end(); ++mapIter)
+    {
+      uFaces[4 * index] = std::get<0>((*mapIter).first);
+      uFaces[4 * index + 1] = std::get<1>((*mapIter).first);
+      uFaces[4 * index + 2] = std::get<2>((*mapIter).first);
+      uFaces[4 * index + 3] = std::get<3>((*mapIter).first);
       ++index;
     }
   }
@@ -955,6 +1192,158 @@ public:
 
       volumePtr[i] = (MatrixMath::Determinant3x3(vertMatrix) / 6.0f);
     }
+  }
+
+  /**
+  * @brief FindHexVolumes
+  * @param hexList
+  * @param vertices
+  * @param volumes
+  */
+  template <typename T> static void FindHexVolumes(typename DataArray<T>::Pointer hexList, FloatArrayType::Pointer vertices, FloatArrayType::Pointer volumes)
+  {
+    size_t numHexas = hexList->getNumberOfTuples();
+    float* vertex = vertices->getPointer(0);
+    float* volumePtr = volumes->getPointer(0);
+
+    for(size_t i = 0; i < numHexas; i++)
+    {
+      // Subdivide each hexahedron into 5 tetrahedra & sum their volumes
+      std::vector<std::vector<int64_t>> subTets(5, std::vector<int64_t>(4, 0));
+      T* hex = hexList->getTuplePointer(i);
+
+      // First tetrahedron from hexahedron vertices (0, 1, 3, 4);
+      subTets[0][0] = hex[0];
+      subTets[0][1] = hex[1];
+      subTets[0][2] = hex[3];
+      subTets[0][3] = hex[4];
+
+      // Second tetrahedron from hexahedron vertices (1, 4, 5, 6);
+      subTets[1][0] = hex[1];
+      subTets[1][1] = hex[4];
+      subTets[1][2] = hex[5];
+      subTets[1][3] = hex[6];
+
+      // Third tetrahedron from hexahedron vertices (1, 4, 6, 3);
+      subTets[2][0] = hex[1];
+      subTets[2][1] = hex[3];
+      subTets[2][2] = hex[6];
+      subTets[2][3] = hex[3];
+
+      // Fourth tetrahedron from hexahedron vertices (1, 3, 6, 2);
+      subTets[3][0] = hex[1];
+      subTets[3][1] = hex[3];
+      subTets[3][2] = hex[6];
+      subTets[3][3] = hex[2];
+
+      // Fifth tetrahedron from hexahedron vertices (3, 6, 7, 4);
+      subTets[4][0] = hex[3];
+      subTets[4][1] = hex[6];
+      subTets[4][2] = hex[7];
+      subTets[4][3] = hex[4];
+
+      float volume = 0.0f;
+
+      for(auto&& tet : subTets)
+      {
+        float vert0[3] = {vertex[3 * tet[0] + 0], vertex[3 * tet[0] + 1], vertex[3 * tet[0] + 2]};
+        float vert1[3] = {vertex[3 * tet[1] + 0], vertex[3 * tet[1] + 1], vertex[3 * tet[1] + 2]};
+        float vert2[3] = {vertex[3 * tet[2] + 0], vertex[3 * tet[2] + 1], vertex[3 * tet[2] + 2]};
+        float vert3[3] = {vertex[3 * tet[3] + 0], vertex[3 * tet[3] + 1], vertex[3 * tet[3] + 2]};
+
+        float vertMatrix[3][3] = {{vert1[0] - vert0[0], vert2[0] - vert0[0], vert3[0] - vert0[0]},
+                                  {vert1[1] - vert0[1], vert2[1] - vert0[1], vert3[1] - vert0[1]},
+                                   {vert1[2] - vert0[2], vert2[2] - vert0[2], vert3[2] - vert0[2]}};
+
+        volume += (MatrixMath::Determinant3x3(vertMatrix) / 6.0f);
+      }
+
+      volumePtr[i] = volume;
+    }
+  }
+
+  /**
+  * @brief FindTetJacobians
+  * @param tetList
+  * @param vertices
+  * @param jacobians
+  */
+  template <typename T> static void FindTetJacobians(typename DataArray<T>::Pointer tetList, FloatArrayType::Pointer vertices, FloatArrayType::Pointer jacobians)
+  {
+	  size_t numTets = tetList->getNumberOfTuples();
+	  float* vertex = vertices->getPointer(0);
+	  float* jacobianPtr = jacobians->getPointer(0);
+
+	  for (size_t i = 0; i < numTets; i++)
+	  {
+		  T* tet = tetList->getTuplePointer(i);
+		  //get vert positions
+		  float vert0[3] = { vertex[3 * tet[0] + 0], vertex[3 * tet[0] + 1], vertex[3 * tet[0] + 2] };
+		  float vert1[3] = { vertex[3 * tet[1] + 0], vertex[3 * tet[1] + 1], vertex[3 * tet[1] + 2] };
+		  float vert2[3] = { vertex[3 * tet[2] + 0], vertex[3 * tet[2] + 1], vertex[3 * tet[2] + 2] };
+		  float vert3[3] = { vertex[3 * tet[3] + 0], vertex[3 * tet[3] + 1], vertex[3 * tet[3] + 2] };
+		  //build jacobian matrix
+		  float vertMatrix[3][3] = { { vert1[0] - vert0[0], vert2[0] - vert0[0], vert3[0] - vert0[0] },
+		  { vert1[1] - vert0[1], vert2[1] - vert0[1], vert3[1] - vert0[1] },
+		  { vert1[2] - vert0[2], vert2[2] - vert0[2], vert3[2] - vert0[2] } };
+		  //find jacobian, which is determinant of the jacobian matrix
+		  jacobianPtr[i] = MatrixMath::Determinant3x3(vertMatrix);
+	  }
+  }
+
+  /**
+  * @brief FindTetMinDihedralAngles
+  * @param tetList
+  * @param vertices
+  * @param minAngles
+  */
+  template <typename T> static void FindTetMinDihedralAngles(typename DataArray<T>::Pointer tetList, FloatArrayType::Pointer vertices, FloatArrayType::Pointer minAngles)
+  {
+	  size_t numTets = tetList->getNumberOfTuples();
+	  float* vertex = vertices->getPointer(0);
+	  float* minAnglesPtr = minAngles->getPointer(0);
+
+	  for (size_t i = 0; i < numTets; i++)
+	  {
+		  T* tet = tetList->getTuplePointer(i);
+		  //get vert positions
+		  float vert0[3] = { vertex[3 * tet[0] + 0], vertex[3 * tet[0] + 1], vertex[3 * tet[0] + 2] };
+		  float vert1[3] = { vertex[3 * tet[1] + 0], vertex[3 * tet[1] + 1], vertex[3 * tet[1] + 2] };
+		  float vert2[3] = { vertex[3 * tet[2] + 0], vertex[3 * tet[2] + 1], vertex[3 * tet[2] + 2] };
+		  float vert3[3] = { vertex[3 * tet[3] + 0], vertex[3 * tet[3] + 1], vertex[3 * tet[3] + 2] };
+		  //find 5 edges needed to find 4 face normals
+		  float v10[3] = { (vert1[0] - vert0[0]), (vert1[1] - vert0[1]), (vert1[2] - vert0[2]) };
+		  float v20[3] = { (vert2[0] - vert0[0]), (vert2[1] - vert0[1]), (vert2[2] - vert0[2]) };
+		  float v30[3] = { (vert3[0] - vert0[0]), (vert3[1] - vert0[1]), (vert3[2] - vert0[2]) };
+		  float v21[3] = { (vert2[0] - vert1[0]), (vert2[1] - vert1[1]), (vert2[2] - vert1[2]) };
+		  float v31[3] = { (vert3[0] - vert1[0]), (vert3[1] - vert1[1]), (vert3[2] - vert1[2]) };
+		  //find 4 face-to-face normals
+		  float norm1[3] = { (v10[1] * v20[2] - v10[2] * v20[1]), (v10[2] * v20[0] - v10[0] * v20[2]), (v10[0] * v20[1] - v10[1] * v20[0]) };
+		  float norm2[3] = { (v30[1] * v10[2] - v30[2] * v10[1]), (v30[2] * v10[0] - v30[0] * v10[2]), (v30[0] * v10[1] - v30[1] * v10[0]) };
+		  float norm3[3] = { (v20[1] * v30[2] - v20[2] * v30[1]), (v20[2] * v30[0] - v20[0] * v30[2]), (v20[0] * v30[1] - v20[1] * v30[0]) };
+		  float norm4[3] = { (v31[1] * v21[2] - v31[2] * v21[1]), (v31[2] * v21[0] - v31[0] * v21[2]), (v31[0] * v21[1] - v31[1] * v21[0]) };
+		  //find the magnitudes of each normal
+		  float norm1mag = sqrtf(norm1[0] * norm1[0] + norm1[1] * norm1[1] + norm1[2] * norm1[2]);
+		  float norm2mag = sqrtf(norm2[0] * norm2[0] + norm2[1] * norm2[1] + norm2[2] * norm2[2]);
+		  float norm3mag = sqrtf(norm3[0] * norm3[0] + norm3[1] * norm3[1] + norm3[2] * norm3[2]);
+		  float norm4mag = sqrtf(norm4[0] * norm4[0] + norm4[1] * norm4[1] + norm4[2] * norm4[2]);
+		  //find angles between faces
+		  float ang1 = (norm1[0] * norm2[0] + norm1[1] * norm2[1] + norm1[2] * norm2[2]) / (norm1mag * norm2mag);
+		  float ang2 = (norm1[0] * norm3[0] + norm1[1] * norm3[1] + norm1[2] * norm3[2]) / (norm1mag * norm3mag);
+		  float ang3 = (norm1[0] * norm4[0] + norm1[1] * norm4[1] + norm1[2] * norm4[2]) / (norm1mag * norm4mag);
+		  float ang4 = (norm2[0] * norm3[0] + norm2[1] * norm3[1] + norm2[2] * norm3[2]) / (norm2mag * norm3mag);
+		  float ang5 = (norm2[0] * norm4[0] + norm2[1] * norm4[1] + norm2[2] * norm4[2]) / (norm2mag * norm4mag);
+		  float ang6 = (norm3[0] * norm4[0] + norm3[1] * norm4[1] + norm3[2] * norm4[2]) / (norm3mag * norm4mag);
+		  //find the maximum ang value, which will be the minimum angle after the acos
+		  float minAng = ang1;
+		  if (ang2 > minAng) { minAng = ang2; }
+		  if (ang3 > minAng) { minAng = ang3; }
+		  if (ang4 > minAng) { minAng = ang4; }
+		  if (ang5 > minAng) { minAng = ang5; }
+		  if (ang6 > minAng) { minAng = ang6; }
+
+		  minAnglesPtr[i] = SIMPLib::Constants::k_180OverPi * acosf(minAng);
+	  }
   }
 };
 
