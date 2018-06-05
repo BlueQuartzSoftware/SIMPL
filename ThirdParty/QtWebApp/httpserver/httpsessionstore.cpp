@@ -27,7 +27,7 @@ HttpSessionStore::HttpSessionStore(QSettings* settings, QObject* parent)
     cookieName = settings->value("cookieName", "sessionid").toByteArray();
     expirationTime = settings->value("expirationTime", 3600000).toInt();
   }
-  qDebug() << "HttpSessionStore: Sessions expire after " << expirationTime << " milliseconds";
+//  qDebug() << "HttpSessionStore: Sessions expire after " << expirationTime << " milliseconds";
 }
 
 // -----------------------------------------------------------------------------

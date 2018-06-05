@@ -95,7 +95,7 @@ SVStyle* SVStyle::Instance()
 // -----------------------------------------------------------------------------
 bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
 {
-  qDebug() << "SVStyle::loadStyleSheet() " << jsonFilePath;
+//  qDebug() << "SVStyle::loadStyleSheet() " << jsonFilePath;
   bool success = true;
   
   QFileInfo jsonFileInfo(jsonFilePath);
