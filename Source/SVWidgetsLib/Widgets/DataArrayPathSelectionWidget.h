@@ -238,6 +238,18 @@ public slots:
    */
   void setFilteredDataArrayPath(DataArrayPath path);
 
+  /**
+   * @brief Disables filtering the DataStructure while another DataArrayPathSelectionWidget is locked.
+   * @param selection
+   */
+  void selectionWidgetLocked(QToolButton* selection);
+
+  /**
+    * @brief Enables filtering the DataStructure due to the current locking DataArrayPathSelectionWidget is unchecked
+    * @param selection
+    */
+  void selectionWidgetUnlocked(QToolButton* selection);
+
 signals:
   void filterPath(DataArrayPath path);
   void viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs);
@@ -245,6 +257,8 @@ signals:
   void viewPathsMatchingReqs(DataArraySelectionFilterParameter::RequirementType daReqs);
   void endViewPaths();
   void pathChanged();
+  void dataArrayPathSelectionLocked(QToolButton* selection);
+  void dataArrayPathSelectionUnlocked(QToolButton* selection);
 
 protected:
   /**
@@ -263,6 +277,11 @@ protected:
   * @param styleType
   */
   void setState(State styleType);
+
+  /**
+   * @brief emits the appropriate requirements and sets the state to active
+   */
+  void emitRequirements();
 
   /**
    * @brief Returns the X margin
@@ -408,6 +427,12 @@ protected slots:
   */
   void showContextMenu(const QPoint& pos);
 
+  /**
+  * @brief Emits the appropriate signal when the check state is changed
+  * @param checked
+  */
+  void updateCheckState(bool checked);
+
 private slots:
   /**
   * @brief mousePressEvent
@@ -426,6 +451,7 @@ private:
   QString m_PropName;
   QMenu* m_SelectionMenu = nullptr;
   bool m_FilteringPassed = false;
+  DataArrayPathSelectionWidget* m_LockedSelection = nullptr;
 
   void performDrag();
 };

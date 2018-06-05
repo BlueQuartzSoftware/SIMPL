@@ -170,7 +170,7 @@ void DataStructureTreeView::emitFilterPath(QModelIndex& index)
 
   if(false == index.isValid())
   {
-    emit endPathFiltering();
+    emit endDataStructureFiltering();
     return;
   }
 
@@ -236,7 +236,7 @@ void DataStructureTreeView::leaveEvent(QEvent* event)
     return;
   }
 
-  emit endPathFiltering();
+  emit endDataStructureFiltering();
 }
 
 // -----------------------------------------------------------------------------
@@ -278,7 +278,7 @@ void DataStructureTreeView::performDrag()
 // -----------------------------------------------------------------------------
 void DataStructureTreeView::dragComplete()
 {
-  emit endPathFiltering();
+  emit endDataStructureFiltering();
   m_Dragging = false;
 }
 

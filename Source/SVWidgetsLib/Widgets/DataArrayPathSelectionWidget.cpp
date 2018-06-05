@@ -366,6 +366,7 @@ void DataArrayPathSelectionWidget::setupGui()
   setCheckable(true);
 
   connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenu(const QPoint&)));
+  connect(this, &QAbstractButton::toggled, this, &DataArrayPathSelectionWidget::updateCheckState);
 }
 
 // -----------------------------------------------------------------------------
@@ -828,12 +829,41 @@ void DataArrayPathSelectionWidget::endExternalFiltering()
   // Force update the styling
   style()->unpolish(this);
   style()->polish(this);
+  repaint();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayPathSelectionWidget::enterEvent(QEvent* event)
+void DataArrayPathSelectionWidget::selectionWidgetLocked(QToolButton* selection)
+{
+  DataArrayPathSelectionWidget* pathSelection = dynamic_cast<DataArrayPathSelectionWidget*>(selection);
+  m_LockedSelection = pathSelection;
+
+  // Set lock and check state based on the given selection.
+  if(this != selection)
+  {
+    setChecked(false);
+    setPathFiltering(false);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::selectionWidgetUnlocked(QToolButton* selection)
+{
+  DataArrayPathSelectionWidget* pathSelection = dynamic_cast<DataArrayPathSelectionWidget*>(selection);
+  if(pathSelection == m_LockedSelection)
+  {
+    m_LockedSelection = nullptr;
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::emitRequirements()
 {
   m_FilteringPassed = true;
 
@@ -858,10 +888,23 @@ void DataArrayPathSelectionWidget::enterEvent(QEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::enterEvent(QEvent* event)
+{
+  if(m_LockedSelection)
+  {
+    return;
+  }
+
+  emitRequirements();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::leaveEvent(QEvent* event)
 {
   // Do not end filtering if the button state is checked
-  if(isChecked())
+  if(m_LockedSelection)
   {
     return;
   }
@@ -1058,9 +1101,36 @@ void DataArrayPathSelectionWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void DataArrayPathSelectionWidget::updateCheckState(bool checked)
+{
+  if(checked)
+  {
+    emit dataArrayPathSelectionLocked(this);
+    emitRequirements();
+  }
+  else
+  {
+    emit dataArrayPathSelectionUnlocked(this);
+    m_FilteringPassed = false;
+
+    if(checkCurrentPath())
+    {
+      setState(State::Normal);
+    }
+    else
+    {
+      setState(State::NotFound);
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::setPathFiltering(bool active)
 {
   setChecked(active);
+  updateCheckState(active);
   m_FilteringPassed = false;
 
   if(false == active && false == underMouse())

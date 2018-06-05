@@ -143,6 +143,11 @@ void DataArraySelectionWidget::setupGui()
   connect(m_SelectedDataArrayPath, SIGNAL(pathChanged()), this, SIGNAL(parametersChanged()));
   connect(m_SelectedDataArrayPath, SIGNAL(filterPath(DataArrayPath)), this, SIGNAL(filterPath(DataArrayPath)));
 
+  connect(m_SelectedDataArrayPath, SIGNAL(dataArrayPathSelectionLocked(QToolButton*)), this, SIGNAL(dataArrayPathSelectionLocked(QToolButton*)));
+  connect(this, SIGNAL(lockDataArrayPathSelection(QToolButton*)), m_SelectedDataArrayPath, SLOT(selectionWidgetLocked(QToolButton*)));
+  connect(m_SelectedDataArrayPath, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)), this, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)));
+  connect(this, SIGNAL(unlockDataArrayPathSelection(QToolButton*)), m_SelectedDataArrayPath, SLOT(selectionWidgetUnlocked(QToolButton*)));
+
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedDataArrayPath->setText(defaultPath.serialize(Detail::Delimiter));
   m_SelectedDataArrayPath->setPropertyName(getFilterParameter()->getHumanLabel());
