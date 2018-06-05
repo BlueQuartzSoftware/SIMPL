@@ -198,15 +198,14 @@ void DataStructureTreeView::mouseMoveEvent(QMouseEvent* event)
 {
   QTreeView::mouseMoveEvent(event);
 
-  // Do not drag or filter the FilterInputWidget while the view is being filtered
-  if(m_Delegate->isFiltered())
-  {
-    return;
-  }
-
   if(event->buttons() & Qt::LeftButton)
   {
     QModelIndex index = indexAt(m_StartPos);
+    if(m_Delegate->isFiltered() && !m_Delegate->indexMatchesReqs(index))
+    {
+      return;
+    }
+
     int distance = (event->pos() - m_StartPos).manhattanLength();
     if(distance >= QApplication::startDragDistance() && index.isValid())
     {
@@ -216,6 +215,11 @@ void DataStructureTreeView::mouseMoveEvent(QMouseEvent* event)
   else
   {
     QModelIndex index = indexAt(event->pos());
+    if(m_Delegate->isFiltered() && !m_Delegate->indexMatchesReqs(index))
+    {
+      return;
+    }
+
     emitFilterPath(index);
   }
 }

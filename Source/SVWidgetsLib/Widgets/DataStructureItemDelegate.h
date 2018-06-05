@@ -98,6 +98,13 @@ public:
    */
   bool pathMatchesReqs(DataArrayPath path) const;
 
+  /**
+   * @brief Returns true if the given index matches the current requirements. Returns false otherwise.
+   * @param index
+   * @return
+   */
+  bool indexMatchesReqs(QModelIndex index) const;
+
 protected:
   QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const Q_DECL_OVERRIDE;
   void setEditorData(QWidget* editor, const QModelIndex& index) const Q_DECL_OVERRIDE;

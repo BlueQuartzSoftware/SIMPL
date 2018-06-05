@@ -429,6 +429,11 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
 // -----------------------------------------------------------------------------
 DataArrayPath DataStructureItemDelegate::getDataArrayPath(const QModelIndex& index) const
 {
+  if(!index.isValid())
+  {
+    return DataArrayPath();
+  }
+
   // Store path as a std::list<QString> based on the index and its parents
   std::list<QString> itemName;
   QModelIndex recursiveIndex = index;
@@ -481,4 +486,13 @@ bool DataStructureItemDelegate::pathMatchesReqs(DataArrayPath path) const
   default:
     return false;
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool DataStructureItemDelegate::indexMatchesReqs(QModelIndex index) const
+{
+  DataArrayPath path = getDataArrayPath(index);
+  return pathMatchesReqs(path);
 }
