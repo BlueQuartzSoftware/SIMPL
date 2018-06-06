@@ -105,20 +105,21 @@ QStringList SVStyle::getThemeNames()
 // -----------------------------------------------------------------------------
 bool SVStyle::loadStyleSheetByName(const QString &themeName)
 {
-  QString jsonFilePath = m_Themes[themeName];
-  if (jsonFilePath.isEmpty())
+  if (m_Themes.contains(themeName) == false)
   {
     qDebug() << tr("Could not load specified theme '%1'.  Theme does not exist.").arg(themeName);
     return false;
   }
 
-  return loadStyleSheet(jsonFilePath);
+  QString jsonFilePath = m_Themes[themeName];
+
+  return loadStyleSheet(themeName, jsonFilePath);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
+bool SVStyle::loadStyleSheet(const QString &themeName, const QString &jsonFilePath)
 {
 //  qDebug() << "SVStyle::loadStyleSheet() " << jsonFilePath;
   bool success = true;
@@ -268,7 +269,7 @@ bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
   // FINALLY, Set the style sheet into the app object
   qApp->setStyleSheet(cssContent);
 
-  m_CurrentThemeName = jsonFileInfo.baseName();
+  m_CurrentThemeName = themeName;
   
   return success;
 }
