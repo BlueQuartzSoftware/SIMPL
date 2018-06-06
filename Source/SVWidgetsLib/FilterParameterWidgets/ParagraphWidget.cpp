@@ -80,8 +80,6 @@ void ParagraphWidget::setupGui()
 
   // Catch when the filter wants its values updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
-
-  connect(textEdit, SIGNAL(textChanged()), this, SIGNAL(parametersChanged()));
 }
 
 // -----------------------------------------------------------------------------
