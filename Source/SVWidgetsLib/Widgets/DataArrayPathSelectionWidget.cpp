@@ -1279,7 +1279,14 @@ QRect DataArrayPathSelectionWidget::getStyledBorderRect() const
   QStyleOptionButton option;
   option.initFrom(this);
 
-  return style()->subElementRect(QStyle::SE_PushButtonLayoutItem, &option, this);
+  QRect styledRect = style()->subElementRect(QStyle::SE_PushButtonLayoutItem, &option, this);
+  if(styledRect.isValid())
+  {
+    return styledRect;
+  }
+
+  // return the standard rect if the styled rect is not valid
+  return rect();
 }
 
 // -----------------------------------------------------------------------------
@@ -1297,6 +1304,10 @@ void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
   ensurePolished();
 
   int yMargin = getYMargin();
+  if(yMargin < 0)
+  {
+    yMargin = 0;
+  }
 
   // Use yMargin because no method designed to return margins or content rect after the stylesheet has been applied
   // returns the correct value.
