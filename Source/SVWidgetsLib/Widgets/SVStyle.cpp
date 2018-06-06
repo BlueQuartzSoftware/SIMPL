@@ -113,13 +113,13 @@ bool SVStyle::loadStyleSheetByName(const QString &themeName)
 
   QString jsonFilePath = m_Themes[themeName];
 
-  return loadStyleSheet(themeName, jsonFilePath);
+  return loadStyleSheet(jsonFilePath);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool SVStyle::loadStyleSheet(const QString &themeName, const QString &jsonFilePath)
+bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
 {
 //  qDebug() << "SVStyle::loadStyleSheet() " << jsonFilePath;
   bool success = true;
@@ -145,7 +145,8 @@ bool SVStyle::loadStyleSheet(const QString &themeName, const QString &jsonFilePa
   }
   QJsonObject rootObj = jsonDoc.object();
   
-  
+  QString themeName = rootObj["Theme_Name"].toString();
+  m_CurrentThemeName = themeName;
   // Create the CSS File Path and try to read the CSS template file
   QString cssFileName = rootObj["CSS_File_Name"].toString();
   cssFileName = QString("%1/%2").arg(jsonFileInfo.absolutePath(), 1).arg(cssFileName, 2);
@@ -267,10 +268,7 @@ bool SVStyle::loadStyleSheet(const QString &themeName, const QString &jsonFilePa
   
   
   // FINALLY, Set the style sheet into the app object
-  qApp->setStyleSheet(cssContent);
-
-  m_CurrentThemeName = themeName;
-  
+  qApp->setStyleSheet(cssContent);  
   return success;
 }
 
