@@ -65,18 +65,12 @@ SVStyle::SVStyle()
 {
   Q_ASSERT_X(!self, "SVStyle", "There should be only one SVStyle object");
   SVStyle::self = this;
-
-  m_QTreeViewItem_font_size = 13;
-  m_QTreeViewItem_error_color = QColor(Qt::white);
-  m_QTreeViewItem_error_background_color = QColor(235, 110, 110);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 SVStyle::~SVStyle() = default;
-
-
 
 // -----------------------------------------------------------------------------
 //
@@ -88,6 +82,37 @@ SVStyle* SVStyle::Instance()
     self = new SVStyle();
   }
   return self;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVStyle::insertTheme(const QString &themeName, const QString &themeFilePath)
+{
+  m_Themes.insert(themeName, themeFilePath);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QStringList SVStyle::getThemeNames()
+{
+  return m_Themes.keys();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool SVStyle::loadStyleSheetByName(const QString &themeName)
+{
+  QString jsonFilePath = m_Themes[themeName];
+  if (jsonFilePath.isEmpty())
+  {
+    qDebug() << tr("Could not load specified theme '%1'.  Theme does not exist.").arg(themeName);
+    return false;
+  }
+
+  return loadStyleSheet(jsonFilePath);
 }
 
 // -----------------------------------------------------------------------------
