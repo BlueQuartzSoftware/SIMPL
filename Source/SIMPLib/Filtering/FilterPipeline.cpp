@@ -543,6 +543,35 @@ int FilterPipeline::preflightPipeline()
       (*filter)->setDataContainerArray(dca->deepCopy(false));
       std::list<DataArrayPath> currentCreatedPaths = (*filter)->getCreatedPaths();
 
+      // Check if an existing renamed path was created by this filter
+      for(DataArrayPath createdPath : currentCreatedPaths)
+      {
+        // Filter Parameter changes
+        for(DataArrayPath::RenameType rename : renamedPaths)
+        {
+          DataArrayPath originalPath;
+          DataArrayPath renamePath;
+          std::tie(originalPath, renamePath) = rename;
+          if(originalPath == createdPath)
+          {
+            renamedPaths.remove(rename);
+            break;
+          }
+        }
+        // Rename Filters
+        for(DataArrayPath::RenameType rename : filterRenamedPaths)
+        {
+          DataArrayPath originalPath;
+          DataArrayPath renamePath;
+          std::tie(originalPath, renamePath) = rename;
+          if(originalPath == createdPath)
+          {
+            filterRenamedPaths.remove(rename);
+            break;
+          }
+        }
+      }
+
       DataArrayPath::RenameContainer newRenamedPaths = DataArrayPath::CheckForRenamedPaths(oldDca, dca, oldCreatedPaths, currentCreatedPaths);
       for(DataArrayPath::RenameType renameType : newRenamedPaths)
       {
