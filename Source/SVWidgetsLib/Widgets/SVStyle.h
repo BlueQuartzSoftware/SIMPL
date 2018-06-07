@@ -82,7 +82,7 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
      */
     static SVStyle* Instance();
 
-    SIMPL_GET_PROPERTY(QString, CurrentThemeName)
+    SIMPL_GET_PROPERTY(QString, CurrentThemeFilePath)
 
     SIMPL_INSTANCE_PROPERTY(QColor, CentralWidget_background_color)    
     Q_PROPERTY(QColor CentralWidget_background_color READ getCentralWidget_background_color WRITE setCentralWidget_background_color)    
@@ -400,13 +400,6 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     
     SIMPL_INSTANCE_PROPERTY(QColor, SIMPLViewPipelineDockWidgetTitle_inactive_text_color)
     Q_PROPERTY(QColor SIMPLViewPipelineDockWidgetTitle_inactive_text_color READ getSIMPLViewPipelineDockWidgetTitle_inactive_text_color WRITE setSIMPLViewPipelineDockWidgetTitle_inactive_text_color)
-    
-    /**
-     * @brief loadStyleSheetByName
-     * @param themeName
-     * @return
-     */
-    bool loadStyleSheetByName(const QString &themeName);
         
     /**
      * @brief loadStyleSheet
@@ -414,19 +407,6 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
      * @return
      */
     bool loadStyleSheet(const QString &jsonFilePath);
-
-    /**
-     * @brief insertTheme
-     * @param themeName
-     * @param themeFilePath
-     */
-    void insertTheme(const QString &themeName, const QString &themeFilePath);
-
-    /**
-     * @brief getThemeNames
-     * @return
-     */
-    QStringList getThemeNames();
     
     /**
      * @brief
@@ -535,9 +515,7 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
   private:
     static SVStyle* self;
 
-    QMap<QString, QString> m_Themes;
-
-    QString m_CurrentThemeName = "Default";
+    QString m_CurrentThemeFilePath = ":/SIMPL/StyleSheets/Default.json";
 
     /**
      * @brief loadStringProperty

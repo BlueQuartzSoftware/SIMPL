@@ -87,38 +87,6 @@ SVStyle* SVStyle::Instance()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVStyle::insertTheme(const QString &themeName, const QString &themeFilePath)
-{
-  m_Themes.insert(themeName, themeFilePath);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QStringList SVStyle::getThemeNames()
-{
-  return m_Themes.keys();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool SVStyle::loadStyleSheetByName(const QString &themeName)
-{
-  if (m_Themes.contains(themeName) == false)
-  {
-    qDebug() << tr("Could not load specified theme '%1'.  Theme does not exist.").arg(themeName);
-    return false;
-  }
-
-  QString jsonFilePath = m_Themes[themeName];
-
-  return loadStyleSheet(jsonFilePath);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
 {
 //  qDebug() << "SVStyle::loadStyleSheet() " << jsonFilePath;
@@ -145,8 +113,6 @@ bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
   }
   QJsonObject rootObj = jsonDoc.object();
   
-  QString themeName = rootObj["Theme_Name"].toString();
-  m_CurrentThemeName = themeName;
   // Create the CSS File Path and try to read the CSS template file
   QString cssFileName = rootObj["CSS_File_Name"].toString();
   cssFileName = QString("%1/%2").arg(jsonFileInfo.absolutePath(), 1).arg(cssFileName, 2);
@@ -266,6 +232,7 @@ bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
     cssContent = cssContent.replace(key, value);
   }
   
+  m_CurrentThemeFilePath = jsonFilePath;
   
   // FINALLY, Set the style sheet into the app object
   qApp->setStyleSheet(cssContent);  
