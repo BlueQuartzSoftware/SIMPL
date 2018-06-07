@@ -518,9 +518,10 @@ void FilterInputWidget::linkConditionalWidgets(QVector<FilterParameter::Pointer>
       while(iter.hasNext())
       {
         QString propName = iter.next();
-        QWidget* w = m_PropertyToWidget[propName];
-        if(w)
+        QWidget* w = nullptr;
+        if(m_PropertyToWidget.contains(propName))
         {
+          w = m_PropertyToWidget[propName];
           connect(checkboxSource, SIGNAL(conditionalPropertyChanged(int)), w, SLOT(setLinkedConditionalState(int)));
           LinkedBooleanWidget* lbw = qobject_cast<LinkedBooleanWidget*>(checkboxSource);
           if(lbw && lbw->getLinkedState() != Qt::Checked)
