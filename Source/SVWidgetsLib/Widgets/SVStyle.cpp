@@ -65,18 +65,12 @@ SVStyle::SVStyle()
 {
   Q_ASSERT_X(!self, "SVStyle", "There should be only one SVStyle object");
   SVStyle::self = this;
-
-  m_QTreeViewItem_font_size = 13;
-  m_QTreeViewItem_error_color = QColor(Qt::white);
-  m_QTreeViewItem_error_background_color = QColor(235, 110, 110);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 SVStyle::~SVStyle() = default;
-
-
 
 // -----------------------------------------------------------------------------
 //
@@ -93,9 +87,40 @@ SVStyle* SVStyle::Instance()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void SVStyle::insertTheme(const QString &themeName, const QString &themeFilePath)
+{
+  m_Themes.insert(themeName, themeFilePath);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QStringList SVStyle::getThemeNames()
+{
+  return m_Themes.keys();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool SVStyle::loadStyleSheetByName(const QString &themeName)
+{
+  QString jsonFilePath = m_Themes[themeName];
+  if (jsonFilePath.isEmpty())
+  {
+    qDebug() << tr("Could not load specified theme '%1'.  Theme does not exist.").arg(themeName);
+    return false;
+  }
+
+  return loadStyleSheet(jsonFilePath);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
 {
-  qDebug() << "SVStyle::loadStyleSheet() " << jsonFilePath;
+//  qDebug() << "SVStyle::loadStyleSheet() " << jsonFilePath;
   bool success = true;
   
   QFileInfo jsonFileInfo(jsonFilePath);
@@ -242,6 +267,8 @@ bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
   
   // FINALLY, Set the style sheet into the app object
   qApp->setStyleSheet(cssContent);
+
+  m_CurrentThemeName = jsonFileInfo.baseName();
   
   return success;
 }
@@ -411,8 +438,8 @@ void SVStyle::LineEditErrorStyle(QLineEdit* lineEdit)
   QString str;
   QTextStream ss(&str);
   ss << "QLineEdit#" << lineEdit->objectName() << "{";
-  //  ss << "border: 1px solid rgb(180, 0, 0);";
-  ss << "background-color: rgb(255, 246, 179);"; // Yellow background
+  ss << "border: 1px solid rgb(180, 0, 0);";
+//  ss << "background-color: rgb(255, 246, 179);"; // Yellow background
   ss << "}";
   lineEdit->setStyleSheet(str);
 }
@@ -668,7 +695,11 @@ QIcon SVStyle::IconForGroup(const QString &grpName)
           pixel.setRedF((pixel.redF() * 1.50 > 1.0) ? 1.0 : pixel.redF() * 1.50);
           pixel.setGreenF((pixel.greenF() * 1.50 > 1.0) ? 1.0 : pixel.greenF() * 1.50);
           pixel.setBlueF((pixel.blueF() * 1.50 > 1.0) ? 1.0 : pixel.blueF() * 1.50);
-          grpImage.setPixelColor(w, h, pixel);
+
+          if (pixel.isValid())
+          {
+            grpImage.setPixelColor(w, h, pixel);
+          }
         }
 
         if(pixel.red() == 150 && pixel.green() == 150 && pixel.blue() == 150 && pixel.alpha() != 0)
@@ -677,7 +708,10 @@ QIcon SVStyle::IconForGroup(const QString &grpName)
           //          pixel.setRedF(pixel.redF() * 1.50);
           //          pixel.setGreenF(pixel.greenF() * 1.50);
           //          pixel.setBlueF(pixel.blueF() * 1.50);
-          grpImage.setPixelColor(w, h, pixel);
+          if (pixel.isValid())
+          {
+            grpImage.setPixelColor(w, h, pixel);
+          }
         }
 
         if(pixel.red() == 53 && pixel.green() == 53 && pixel.blue() == 53 && pixel.alpha() != 0)
@@ -686,7 +720,11 @@ QIcon SVStyle::IconForGroup(const QString &grpName)
           pixel.setRedF(pixel.redF() * .50);
           pixel.setGreenF(pixel.greenF() * .50);
           pixel.setBlueF(pixel.blueF() * .50);
-          grpImage.setPixelColor(w, h, pixel);
+
+          if (pixel.isValid())
+          {
+            grpImage.setPixelColor(w, h, pixel);
+          }
         }
       }
     }

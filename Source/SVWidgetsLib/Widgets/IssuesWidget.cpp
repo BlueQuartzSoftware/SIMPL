@@ -56,6 +56,12 @@
 
 #include "ui_IssuesWidget.h"
 
+namespace
+{
+  const int FilterIndexDefaultColumnWidth = 50;
+  const int FilterNameDefaultColumnWidth = 150;
+  const int ErrorCodeDefaultColumnWidth = 50;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -78,13 +84,16 @@ IssuesWidget::~IssuesWidget() = default;
 // -----------------------------------------------------------------------------
 void IssuesWidget::setupGui()
 {
-  ui->errorTableWidget->horizontalHeader()->setSectionResizeMode(FilterIndex, QHeaderView::ResizeToContents);
-  ui->errorTableWidget->horizontalHeader()->setSectionResizeMode(FilterName, QHeaderView::ResizeToContents);
-  ui->errorTableWidget->horizontalHeader()->setDefaultSectionSize(400);
-  //  ui->errorTableWidget->horizontalHeader()->setSectionResizeMode(Description, QHeaderView::Stretch);
-  ui->errorTableWidget->horizontalHeader()->setSectionResizeMode(ErrorCode, QHeaderView::ResizeToContents);
+  ui->errorTableWidget->horizontalHeader()->setSectionResizeMode(FilterIndex, QHeaderView::Fixed);
+  ui->errorTableWidget->horizontalHeader()->setSectionResizeMode(FilterName, QHeaderView::Fixed);
+  ui->errorTableWidget->horizontalHeader()->setSectionResizeMode(ErrorCode, QHeaderView::Fixed);
+  ui->errorTableWidget->horizontalHeader()->setSectionResizeMode(Description, QHeaderView::Stretch);
   ui->errorTableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-  ui->errorTableWidget->setVisible(true);
+
+
+  ui->errorTableWidget->horizontalHeader()->resizeSection(FilterIndex, FilterIndexDefaultColumnWidth);
+  ui->errorTableWidget->horizontalHeader()->resizeSection(FilterName, FilterNameDefaultColumnWidth);
+  ui->errorTableWidget->horizontalHeader()->resizeSection(ErrorCode, ErrorCodeDefaultColumnWidth);
 }
 
 // -----------------------------------------------------------------------------
@@ -219,6 +228,22 @@ void IssuesWidget::displayCachedMessages()
 
       row++;
     }
+  }
+
+  if (ui->errorTableWidget->rowCount() > 0)
+  {
+    ui->errorTableWidget->horizontalHeader()->setSectionResizeMode(FilterIndex, QHeaderView::ResizeToContents);
+    ui->errorTableWidget->horizontalHeader()->setSectionResizeMode(FilterName, QHeaderView::ResizeToContents);
+    ui->errorTableWidget->horizontalHeader()->setSectionResizeMode(ErrorCode, QHeaderView::ResizeToContents);
+  }
+  else
+  {
+    ui->errorTableWidget->horizontalHeader()->setSectionResizeMode(FilterIndex, QHeaderView::Fixed);
+    ui->errorTableWidget->horizontalHeader()->setSectionResizeMode(FilterName, QHeaderView::Fixed);
+    ui->errorTableWidget->horizontalHeader()->setSectionResizeMode(ErrorCode, QHeaderView::Fixed);
+    ui->errorTableWidget->horizontalHeader()->resizeSection(FilterIndex, FilterIndexDefaultColumnWidth);
+    ui->errorTableWidget->horizontalHeader()->resizeSection(FilterName, FilterNameDefaultColumnWidth);
+    ui->errorTableWidget->horizontalHeader()->resizeSection(ErrorCode, ErrorCodeDefaultColumnWidth);
   }
 }
 

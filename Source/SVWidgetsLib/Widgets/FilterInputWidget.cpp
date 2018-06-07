@@ -311,12 +311,18 @@ void FilterInputWidget::layoutWidgets(AbstractFilter* filter)
     connect(filterParameterWidget, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
     // Alert to DataArrayPaths from the DataStructureWidget
     connect(this, SIGNAL(filterPath(DataArrayPath)), filterParameterWidget, SIGNAL(filterPathInput(DataArrayPath)));
-    connect(this, SIGNAL(endPathFiltering()), filterParameterWidget, SIGNAL(endDataStructureRequirements()));
+    connect(this, SIGNAL(endDataStructureFiltering()), filterParameterWidget, SIGNAL(endDataStructureRequirements()));
     connect(this, SIGNAL(applyPathToFilteringParameter(DataArrayPath)), filterParameterWidget, SIGNAL(applyPathToFilteringParameter(DataArrayPath)));
     connect(this, SIGNAL(endPathFiltering()), filterParameterWidget, SIGNAL(endViewPathRequirements()));
     // Alert to DataArrayPaths from other FilterParameters
     connect(filterParameterWidget, SIGNAL(filterPath(DataArrayPath)), this, SLOT(emitFilterPath(DataArrayPath)));
     connect(filterParameterWidget, SIGNAL(endViewPaths()), this, SIGNAL(endPathFiltering()));
+
+    // Return any lock/unlock signals from FilterParameterWidgets to all stored FilterParameterWidgets
+    connect(filterParameterWidget, SIGNAL(dataArrayPathSelectionLocked(QToolButton*)), this, SIGNAL(dataArrayPathSelectionLocked(QToolButton*)));
+    connect(this, SIGNAL(dataArrayPathSelectionLocked(QToolButton*)), filterParameterWidget, SIGNAL(lockDataArrayPathSelection(QToolButton*)));
+    connect(filterParameterWidget, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)), this, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)));
+    connect(this, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)), filterParameterWidget, SIGNAL(unlockDataArrayPathSelection(QToolButton*)));
 
 
     if(nullptr == filterParameterWidget)
@@ -734,15 +740,15 @@ void FilterInputWidget::getEmittedPathReqs(DataContainerSelectionFilterParameter
 {
   emit viewPathsMatchingReqs(dcReqs);
 
-  QObject* obj = this->sender();
-  for(QWidget* widget : m_PropertyToWidget)
-  {
-    FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
-    if(fpWidget && fpWidget != obj)
-    {
-      emit fpWidget->endViewPathRequirements();
-    }
-  }
+  //QObject* obj = this->sender();
+  //for(QWidget* widget : m_PropertyToWidget)
+  //{
+  //  FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
+  //  if(fpWidget && fpWidget != obj)
+  //  {
+  //    emit fpWidget->endViewPathRequirements();
+  //  }
+  //}
 }
 
 // -----------------------------------------------------------------------------
@@ -752,15 +758,15 @@ void FilterInputWidget::getEmittedPathReqs(AttributeMatrixSelectionFilterParamet
 {
   emit viewPathsMatchingReqs(amReqs);
 
-  QObject* obj = this->sender();
-  for(QWidget* widget : m_PropertyToWidget)
-  {
-    FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
-    if(fpWidget && fpWidget != obj)
-    {
-      emit fpWidget->endViewPathRequirements();
-    }
-  }
+  //QObject* obj = this->sender();
+  //for(QWidget* widget : m_PropertyToWidget)
+  //{
+  //  FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
+  //  if(fpWidget && fpWidget != obj)
+  //  {
+  //    emit fpWidget->endViewPathRequirements();
+  //  }
+  //}
 }
 
 // -----------------------------------------------------------------------------
@@ -770,15 +776,15 @@ void FilterInputWidget::getEmittedPathReqs(DataArraySelectionFilterParameter::Re
 {
   emit viewPathsMatchingReqs(daReqs);
 
-  QObject* obj = this->sender();
-  for(QWidget* widget : m_PropertyToWidget)
-  {
-    FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
-    if(fpWidget && fpWidget != obj)
-    {
-      emit fpWidget->endViewPathRequirements();
-    }
-  }
+  //QObject* obj = this->sender();
+  //for(QWidget* widget : m_PropertyToWidget)
+  //{
+  //  FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
+  //  if(fpWidget && fpWidget != obj)
+  //  {
+  //    emit fpWidget->endViewPathRequirements();
+  //  }
+  //}
 }
 
 // -----------------------------------------------------------------------------

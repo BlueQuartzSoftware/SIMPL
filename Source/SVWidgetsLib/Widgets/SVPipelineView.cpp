@@ -2272,7 +2272,10 @@ QPixmap SVPipelineView::setPixmapColor(QPixmap pixmap, QColor pixmapColor)
 
       color.setAlpha(alpha);
 
-      image.setPixelColor(x, y, color);
+      if (color.isValid())
+      {
+        image.setPixelColor(x, y, color);
+      }
     }
   }
 

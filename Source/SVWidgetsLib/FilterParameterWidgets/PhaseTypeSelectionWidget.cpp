@@ -94,11 +94,12 @@ void PhaseTypeSelectionWidget::setupGui()
 
   label->setText(m_FilterParameter->getHumanLabel());
 
-  // Get the default path from the Filter instance to cache
-  m_SelectedAttributeMatrixPath->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(true));
+  // Set empty AttributeMatrix requirement type
+  m_SelectedAttributeMatrixPath->setAttrMatrixRequirements(AttributeMatrixSelectionFilterParameter::RequirementType());
+  m_SelectedAttributeMatrixPath->setFilter(getFilter());
 
-  m_MenuMapper = new QSignalMapper(this);
-  connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(attributeMatrixSelected(QString)));
+  //m_MenuMapper = new QSignalMapper(this);
+  //connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(attributeMatrixSelected(QString)));
 
   // Catch when the filter is about to execute the preflight
   connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
@@ -109,9 +110,30 @@ void PhaseTypeSelectionWidget::setupGui()
   // Catch when the filter wants its values updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
+  // If the DataArrayPath is updated in the filter, update the widget
+  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
+    this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
+
+  connect(this, SIGNAL(filterPathInput(DataArrayPath)), m_SelectedAttributeMatrixPath, SLOT(checkDragPath(DataArrayPath)));
+  connect(this, SIGNAL(endViewPathRequirements()), m_SelectedAttributeMatrixPath, SLOT(clearPathFiltering()));
+  connect(this, SIGNAL(endDataStructureRequirements()), m_SelectedAttributeMatrixPath, SLOT(endExternalFiltering()));
+  connect(this, SIGNAL(applyPathToFilteringParameter(DataArrayPath)), m_SelectedAttributeMatrixPath, SLOT(setFilteredDataArrayPath(DataArrayPath)));
+
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)),
+    this, SIGNAL(viewPathsMatchingReqs(AttributeMatrixSelectionFilterParameter::RequirementType)));
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(endViewPaths()), this, SIGNAL(endViewPaths()));
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(pathChanged()), this, SLOT(attributeMatrixUpdated()));
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(filterPath(DataArrayPath)), this, SIGNAL(filterPath(DataArrayPath)));
+
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(dataArrayPathSelectionLocked(QToolButton*)), this, SIGNAL(dataArrayPathSelectionLocked(QToolButton*)));
+  connect(this, SIGNAL(lockDataArrayPathSelection(QToolButton*)), m_SelectedAttributeMatrixPath, SLOT(selectionWidgetLocked(QToolButton*)));
+  connect(m_SelectedAttributeMatrixPath, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)), this, SIGNAL(dataArrayPathSelectionUnlocked(QToolButton*)));
+  connect(this, SIGNAL(unlockDataArrayPathSelection(QToolButton*)), m_SelectedAttributeMatrixPath, SLOT(selectionWidgetUnlocked(QToolButton*)));
+
   QString pathProp = m_FilterParameter->getAttributeMatrixPathProperty();
-  DataArrayPath defaultPath = getFilter()->property(pathProp.toLatin1().constData()).value<DataArrayPath>();
+  DataArrayPath defaultPath = getFilter()->property(qPrintable(pathProp)).value<DataArrayPath>();
   m_SelectedAttributeMatrixPath->setText(defaultPath.serialize(Detail::Delimiter));
+  m_SelectedAttributeMatrixPath->setPropertyName(getFilterParameter()->getHumanLabel());
 
   updatePhaseComboBoxes();
 }
@@ -140,86 +162,13 @@ QString PhaseTypeSelectionWidget::checkStringValues(QString curDcName, QString f
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PhaseTypeSelectionWidget::createSelectionMenu()
+void PhaseTypeSelectionWidget::attributeMatrixSelected(QString path)
 {
-  // Now get the DataContainerArray from the Filter instance
-  // We are going to use this to get all the current DataContainers
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get())
-  {
-    return;
-  }
+  setSelectedPath(path);
 
-  // Get the menu and clear it out
-  QMenu* menu = m_SelectedAttributeMatrixPath->menu();
-  if(!menu)
-  {
-    menu = new QMenu();
-    m_SelectedAttributeMatrixPath->setMenu(menu);
-    menu->installEventFilter(this);
-  }
-  if(menu)
-  {
-    menu->clear();
-  }
-
-  // Get the DataContainerArray object
-  // Loop over the data containers until we find the proper data container
-  QList<DataContainer::Pointer> containers = dca->getDataContainers();
-  QVector<AttributeMatrix::Type> amTypes = m_FilterParameter->getDefaultAttributeMatrixTypes();
-  IGeometry::Types geomTypes = m_FilterParameter->getDefaultGeometryTypes();
-
-  QListIterator<DataContainer::Pointer> containerIter(containers);
-  while(containerIter.hasNext())
-  {
-    DataContainer::Pointer dc = containerIter.next();
-
-    IGeometry::Pointer geom = IGeometry::NullPointer();
-    IGeometry::Type geomType = IGeometry::Type::Unknown;
-    if(nullptr != dc.get())
-    {
-      geom = dc->getGeometry();
-    }
-    if(nullptr != geom.get())
-    {
-      geomType = geom->getGeometryType();
-    }
-
-    QMenu* dcMenu = new QMenu(dc->getName());
-    dcMenu->setDisabled(false);
-    menu->addMenu(dcMenu);
-    if(!geomTypes.isEmpty() && !geomTypes.contains(geomType) && !geomTypes.contains(IGeometry::Type::Any))
-    {
-      dcMenu->setDisabled(true);
-    }
-
-    // We found the proper Data Container, now populate the AttributeMatrix List
-    DataContainer::AttributeMatrixMap_t attrMats = dc->getAttributeMatrices();
-    QMapIterator<QString, AttributeMatrix::Pointer> attrMatsIter(attrMats);
-    while(attrMatsIter.hasNext())
-    {
-      attrMatsIter.next();
-      QString amName = attrMatsIter.key();
-      AttributeMatrix::Pointer am = attrMatsIter.value();
-
-      QAction* action = new QAction(amName, dcMenu);
-      DataArrayPath daPath(dc->getName(), amName, "");
-      QString path = daPath.serialize(Detail::Delimiter);
-      action->setData(path);
-
-      connect(action, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
-      m_MenuMapper->setMapping(action, path);
-      dcMenu->addAction(action);
-
-      bool amIsNotNull = (nullptr != am.get()) ? true : false;
-      bool amValidType = (amTypes.isEmpty() == false && amTypes.contains(am->getType()) == false) ? true : false;
-
-      if(amIsNotNull && amValidType)
-      {
-        action->setDisabled(true);
-      }
-    }
-  }
+  m_DidCausePreflight = true;
+  emit parametersChanged();
+  m_DidCausePreflight = false;
 }
 
 // -----------------------------------------------------------------------------
@@ -239,10 +188,24 @@ bool PhaseTypeSelectionWidget::eventFilter(QObject* obj, QEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PhaseTypeSelectionWidget::attributeMatrixSelected(QString path)
+void PhaseTypeSelectionWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
 {
-  setSelectedPath(path);
+  if(propertyName.compare(PROPERTY_NAME_AS_CHAR) == 0)
+  {
+    QVariant var = getFilter()->property(PROPERTY_NAME_AS_CHAR);
+    DataArrayPath updatedPath = var.value<DataArrayPath>();
 
+    blockSignals(true);
+    setSelectedPath(updatedPath);
+    blockSignals(false);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PhaseTypeSelectionWidget::attributeMatrixUpdated()
+{
   m_DidCausePreflight = true;
   emit parametersChanged();
   m_DidCausePreflight = false;
@@ -369,7 +332,7 @@ void PhaseTypeSelectionWidget::beforePreflight()
     return;
   }
 
-  createSelectionMenu();
+  m_SelectedAttributeMatrixPath->beforePreflight();
 }
 
 // -----------------------------------------------------------------------------
@@ -380,21 +343,9 @@ void PhaseTypeSelectionWidget::afterPreflight()
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if (NULL == dca.get()) { return; }
 
-  if (dca->doesAttributeMatrixExist(DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter)))
-  {
-    AttributeMatrix::Pointer am = dca->getAttributeMatrix(DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter));
-    if (nullptr != am.get()) {
-      QString html = am->getInfoString(SIMPL::HtmlFormat);
-      m_SelectedAttributeMatrixPath->setToolTip(html);
-      m_SelectedAttributeMatrixPath->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(true));
-    }
-  }
-  else
-  {
-    m_SelectedAttributeMatrixPath->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(false));
-  }
-
   updatePhaseComboBoxes();
+
+  m_SelectedAttributeMatrixPath->afterPreflight();
 }
 
 // -----------------------------------------------------------------------------
@@ -424,7 +375,7 @@ void PhaseTypeSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
     getFilter()->notifyMissingProperty(getFilterParameter());
   }
 
-  DataArrayPath path = DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter);
+  DataArrayPath path = m_SelectedAttributeMatrixPath->getDataArrayPath();
 
   var.setValue(path);
   ok = false;

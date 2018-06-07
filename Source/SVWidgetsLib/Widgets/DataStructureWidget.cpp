@@ -68,7 +68,7 @@ DataStructureWidget::~DataStructureWidget() = default;
 void DataStructureWidget::setupGui()
 {
   connect(m_Ui->dataBrowserTreeView, SIGNAL(filterPath(DataArrayPath)), this, SIGNAL(filterPath(DataArrayPath)));
-  connect(m_Ui->dataBrowserTreeView, SIGNAL(endPathFiltering()), this, SIGNAL(endPathFiltering()));
+  connect(m_Ui->dataBrowserTreeView, SIGNAL(endDataStructureFiltering()), this, SIGNAL(endDataStructureFiltering()));
   connect(m_Ui->dataBrowserTreeView, SIGNAL(applyPathToFilteringParameter(DataArrayPath)), this, SIGNAL(applyPathToFilteringParameter(DataArrayPath)));
 
   QStandardItemModel* model = new QStandardItemModel();

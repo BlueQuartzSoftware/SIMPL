@@ -81,7 +81,9 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
      * @return
      */
     static SVStyle* Instance();
-    
+
+    SIMPL_GET_PROPERTY(QString, CurrentThemeName)
+
     SIMPL_INSTANCE_PROPERTY(QColor, CentralWidget_background_color)    
     Q_PROPERTY(QColor CentralWidget_background_color READ getCentralWidget_background_color WRITE setCentralWidget_background_color)    
     
@@ -212,14 +214,16 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
 
     SIMPL_INSTANCE_PROPERTY(QColor, QToolButtonDisabled_color)
     Q_PROPERTY(QColor QToolButtonDisabled_color READ getQToolButtonDisabled_color WRITE setQToolButtonDisabled_color)
-      
-    
+
     SIMPL_INSTANCE_PROPERTY(QColor, QStatusBar_border_color)    
     Q_PROPERTY(QColor QStatusBar_border_color READ getQStatusBar_border_color WRITE setQStatusBar_border_color)    
     
     
     SIMPL_INSTANCE_PROPERTY(QColor, QTableWidget_color)    
-    Q_PROPERTY(QColor QTableWidget_color READ getQTableWidget_color WRITE setQTableWidget_color)    
+    Q_PROPERTY(QColor QTableWidget_color READ getQTableWidget_color WRITE setQTableWidget_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QTableWidget_selected_background_color)
+    Q_PROPERTY(QColor QTableWidget_selected_background_color READ getQTableWidget_selected_background_color WRITE setQTableWidget_selected_background_color)
     
     SIMPL_INSTANCE_PROPERTY(QColor, QHeaderView_background_color)    
     Q_PROPERTY(QColor QHeaderView_background_color READ getQHeaderView_background_color WRITE setQHeaderView_background_color)    
@@ -228,7 +232,16 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     Q_PROPERTY(QColor QHeaderView_border_color READ getQHeaderView_border_color WRITE setQHeaderView_border_color)    
     
     SIMPL_INSTANCE_PROPERTY(QColor, QHeaderView_color)    
-    Q_PROPERTY(QColor QHeaderView_color READ getQHeaderView_color WRITE setQHeaderView_color)    
+    Q_PROPERTY(QColor QHeaderView_color READ getQHeaderView_color WRITE setQHeaderView_color)   
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QHeaderViewDisabled_background_color)
+    Q_PROPERTY(QColor QHeaderViewDisabled_background_color READ getQHeaderViewDisabled_background_color WRITE setQHeaderViewDisabled_background_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QHeaderViewDisabled_border_color)
+    Q_PROPERTY(QColor QHeaderViewDisabled_border_color READ getQHeaderViewDisabled_border_color WRITE setQHeaderViewDisabled_border_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QHeaderViewDisabled_color)
+    Q_PROPERTY(QColor QHeaderViewDisabled_color READ getQHeaderViewDisabled_color WRITE setQHeaderViewDisabled_color)
     
     
     SIMPL_INSTANCE_PROPERTY(QColor, QTabWidgetPane_border_color)    
@@ -273,12 +286,18 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     Q_PROPERTY(QColor QLineEditDisabled_background_color READ getQLineEditDisabled_background_color WRITE setQLineEditDisabled_background_color)    
     
     
+    SIMPL_INSTANCE_PROPERTY(QColor, QSpinBoxArrow_background_color)
+    Q_PROPERTY(QColor QSpinBoxArrow_background_color READ getQSpinBoxArrow_background_color WRITE setQSpinBoxArrow_background_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QSpinBoxArrow_hover_background_color)
+    Q_PROPERTY(QColor QSpinBoxArrow_hover_background_color READ getQSpinBoxArrow_hover_background_color WRITE setQSpinBoxArrow_hover_background_color)
+
     
     SIMPL_INSTANCE_PROPERTY(QColor, QToolBar_background_color)    
     Q_PROPERTY(QColor QToolBar_background_color READ getQToolBar_background_color WRITE setQToolBar_background_color)    
     
     SIMPL_INSTANCE_PROPERTY(QColor, QToolBar_border_color)    
-    Q_PROPERTY(QColor QToolBar_border_color READ getQToolBar_border_color WRITE setQToolBar_border_color)    
+    Q_PROPERTY(QColor QToolBar_border_color READ getQToolBar_border_color WRITE setQToolBar_border_color)
     
     
     SIMPL_INSTANCE_PROPERTY(QColor, QTreeView_background_color)    
@@ -376,8 +395,38 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     SIMPL_INSTANCE_PROPERTY(QColor, DataArrayPath_border_drag_disabled)
     Q_PROPERTY(QColor DataArrayPath_border_drag_disabled READ getDataArrayPath_border_drag_disabled WRITE setDataArrayPath_border_drag_disabled)
     
+    SIMPL_INSTANCE_PROPERTY(QColor, SIMPLViewPipelineDockWidgetTitle_inactive_background_color)
+    Q_PROPERTY(QColor SIMPLViewPipelineDockWidgetTitle_inactive_background_color READ getSIMPLViewPipelineDockWidgetTitle_inactive_background_color WRITE setSIMPLViewPipelineDockWidgetTitle_inactive_background_color)
     
-    bool loadStyleSheet(const QString &name);
+    SIMPL_INSTANCE_PROPERTY(QColor, SIMPLViewPipelineDockWidgetTitle_inactive_text_color)
+    Q_PROPERTY(QColor SIMPLViewPipelineDockWidgetTitle_inactive_text_color READ getSIMPLViewPipelineDockWidgetTitle_inactive_text_color WRITE setSIMPLViewPipelineDockWidgetTitle_inactive_text_color)
+    
+    /**
+     * @brief loadStyleSheetByName
+     * @param themeName
+     * @return
+     */
+    bool loadStyleSheetByName(const QString &themeName);
+        
+    /**
+     * @brief loadStyleSheet
+     * @param jsonFilePath
+     * @return
+     */
+    bool loadStyleSheet(const QString &jsonFilePath);
+
+    /**
+     * @brief insertTheme
+     * @param themeName
+     * @param themeFilePath
+     */
+    void insertTheme(const QString &themeName, const QString &themeFilePath);
+
+    /**
+     * @brief getThemeNames
+     * @return
+     */
+    QStringList getThemeNames();
     
     /**
      * @brief
@@ -477,9 +526,18 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     
   protected:
     SVStyle();
+
+    /**
+     * @brief initialize
+     */
+    void initialize();
     
   private:
     static SVStyle* self;
+
+    QMap<QString, QString> m_Themes;
+
+    QString m_CurrentThemeName;
 
     /**
      * @brief loadStringProperty

@@ -116,6 +116,10 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
     void endViewPathRequirements();
     void endDataStructureRequirements();
     void applyPathToFilteringParameter(DataArrayPath path);
+    void dataArrayPathSelectionLocked(QToolButton* selection);
+    void dataArrayPathSelectionUnlocked(QToolButton* button);
+    void lockDataArrayPathSelection(QToolButton* selection);
+    void unlockDataArrayPathSelection(QToolButton* button);
 
   public slots:
 
