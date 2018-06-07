@@ -413,7 +413,7 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
      * @param jsonFilePath
      * @return
      */
-    bool loadStyleSheet(const QString &jsonFilePath);
+    bool loadStyleSheet(const QString &themeName, const QString &jsonFilePath);
 
     /**
      * @brief insertTheme
@@ -537,7 +537,7 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
 
     QMap<QString, QString> m_Themes;
 
-    QString m_CurrentThemeName;
+    QString m_CurrentThemeName = "Default";
 
     /**
      * @brief loadStringProperty

@@ -23,7 +23,7 @@ cmake_minimum_required(VERSION 3.8.0)
 #------------------------------------------------------------------------------
 # Create the Top level Project
 #
-project(SIMPLProj VERSION 1.0.0.0)
+project(SIMPLProj VERSION 1.1.0.0)
 
 
 # ---------- Setup output Directories -------------------------
@@ -80,7 +80,7 @@ endif()
 # Development: This is currently in development and probably has bugs.
 get_property(SIMPLProj_RELEASE_TYPE GLOBAL PROPERTY PACKAGE_RELEASE_TYPE)
 if("${SIMPLProj_RELEASE_TYPE}" STREQUAL "")
-  set(SIMPLProj_RELEASE_TYPE "Development")
+  set(SIMPLProj_RELEASE_TYPE "Beta")
   set_property(GLOBAL PROPERTY PACKAGE_RELEASE_TYPE "${SIMPLProj_RELEASE_TYPE}")
 endif()
 
