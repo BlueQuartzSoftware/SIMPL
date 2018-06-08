@@ -343,10 +343,25 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
       QColor color = DataArrayPathSelectionWidget::GetActiveColor(path.getDataType());
       op.palette.setColor(QPalette::Normal, QPalette::WindowText, color);
     }
-    //else
-    //{
-    //  pathHighlighted = mouseOver;
-    //}
+    else if (option.state & QStyle::State_Selected)
+    {
+      QColor color;
+      if (option.state & QStyle::State_Active)
+      {
+        color = styles->getQTreeViewItemSelectedActive_color();
+      }
+      else
+      {
+        color = styles->getQTreeViewItemSelectedNotActive_color();
+      }
+
+      op.palette.setColor(QPalette::Normal, QPalette::WindowText, color);
+    }
+    else
+    {
+      QColor color = styles->getQTreeViewItem_color();
+      op.palette.setColor(QPalette::Normal, QPalette::WindowText, color);
+    }
   }
 
   // Draw the decoration role if available

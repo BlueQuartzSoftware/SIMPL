@@ -200,6 +200,11 @@ void DataContainerArrayProxyWidget::selectAllDataArraysClicked(bool checked)
 // -----------------------------------------------------------------------------
 void DataContainerArrayProxyWidget::itemChanged(QListWidgetItem* item)
 {
+  if(nullptr == item)
+  {
+    return;
+  }
+
   m_DidCausePreflight = true;
 
   item->listWidget()->blockSignals(true);
@@ -215,6 +220,11 @@ void DataContainerArrayProxyWidget::itemChanged(QListWidgetItem* item)
 // -----------------------------------------------------------------------------
 void DataContainerArrayProxyWidget::itemSelected(QListWidgetItem* item)
 {
+  if(nullptr == item)
+  {
+    return;
+  }
+
   QString name = item->text();
 
   if(item->listWidget() == dataContainerList)
@@ -655,6 +665,7 @@ void DataContainerArrayProxyWidget::applyDataContainerProxy()
 
   if(false == m_DcName.isEmpty())
   {
+    listWidget->blockSignals(true);
     DataContainerProxy proxy = getDataContainerProxy();
     for(auto iter = proxy.attributeMatricies.begin();
       iter != proxy.attributeMatricies.end(); iter++)
@@ -665,6 +676,9 @@ void DataContainerArrayProxyWidget::applyDataContainerProxy()
       
       toggleStrikeOutFont(item, static_cast<Qt::CheckState>(proxy.flag));
     }
+
+    listWidget->blockSignals(false);
+    listWidget->update();
   }
 
   applyAttributeMatrixProxy();
@@ -680,6 +694,7 @@ void DataContainerArrayProxyWidget::applyAttributeMatrixProxy()
 
   if(false == m_AmName.isEmpty())
   {
+    listWidget->blockSignals(true);
     AttributeMatrixProxy proxy = getAttributeMatrixProxy();
     for(auto iter = proxy.dataArrays.begin();
       iter != proxy.dataArrays.end(); iter++)
@@ -691,6 +706,9 @@ void DataContainerArrayProxyWidget::applyAttributeMatrixProxy()
       Qt::CheckState checkState = static_cast<Qt::CheckState>(proxy.flag);
       toggleStrikeOutFont(item, checkState);
     }
+
+    listWidget->blockSignals(false);
+    listWidget->update();
   }
 }
 
