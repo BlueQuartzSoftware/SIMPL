@@ -617,6 +617,9 @@ DataContainerArray::Pointer FilterPipeline::execute()
 {
   int err = 0;
 
+  // Clear pipeline cancel state
+  setCancel(false);
+
   connectSignalsSlots();
 
   m_Dca = DataContainerArray::New();
@@ -679,6 +682,8 @@ DataContainerArray::Pointer FilterPipeline::execute()
 
     if(this->getCancel() == true)
     {
+      // Clear cancel filter state
+      filt->setCancel(false);
       break;
     }
 
