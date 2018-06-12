@@ -1,0 +1,103 @@
+// This JSON file is used to substitute values into Example.css, so that we can reuse colors and other values in the CSS file.
+
+// The Named_Variables JSON object stores common colors and other variables that fit the style's palette.
+// These common values are used to replace values in the CSS_Replacements JSON object.
+
+// The Font_Replacements JSON object stores font values for the various operating systems, because fonts are not always rendered the same.
+
+/* There are a few key-value pairs that must be defined in this JSON file in order for the application to be styled properly.  They are:
+
+    // The theme name and file name of the corresponding CSS file
+
+    Theme_Name
+    CSS_File_Name
+
+    // Background color, selection color, and font color for the filters in the pipeline view
+
+    FilterBackgroundColor
+    FilterSelectionColor
+    FilterFontColor
+
+    // Text color and error text color for bookmarks items.  The error text color is used
+    // when a listed bookmark no longer exists on the file system.
+
+    QTreeViewItem_color
+    QTreeViewItem_error_color
+*/
+
+{
+  "Theme_Name": "Example",
+  "CSS_File_Name": "Example.css",
+
+  // The next set of colors MUST be in HEX notation as they are being converted to a QColor
+  "FilterBackgroundColor" : "#FFFFFF",
+  "FilterSelectionColor" : "#FFFFFF",
+  "FilterFontColor" : "#FFFFFF",
+
+  "Named_Variables":
+  {
+    "rgb-primary-0" : "",
+    "rgb-primary-1" : "",
+    "rgb-primary-2" : "",
+    "rgb-primary-3" : "",
+    "rgb-primary-4" : "",
+    
+    "rgb-complement-0" : "",
+    "rgb-complement-1" : "",
+    "rgb-complement-2" : "",
+    "rgb-complement-3" : "",
+    "rgb-complement-4" : "",
+    
+    "white" : "rgb(255,255,255)",
+    "black" : "rgb(0,0,0)",
+    "light_gray": "rgb(239,239,239)",
+    "light_yellow": "rgb(245,245,255)"
+  },
+
+  "Font_Replacements":
+  {
+    "macOS":
+    {
+      "Font_Size_Very_Small": "10pt",
+      "Font_Size_Small": "12pt",
+      "Font_Size_Medium": "13pt",
+      "Font_Size_Large": "14pt",
+      "Font_Size_Very_Large": "16pt"
+    },
+    "Windows":
+    {
+      "Font_Size_Very_Small": "8pt",
+      "Font_Size_Small": "9pt",
+      "Font_Size_Medium": "10pt",
+      "Font_Size_Large": "11pt",
+      "Font_Size_Very_Large": "14pt"
+    },
+    "Linux":
+    {
+      "Font_Size_Very_Small": "9pt",
+      "Font_Size_Small": "10pt",
+      "Font_Size_Medium": "11pt",
+      "Font_Size_Large": "12pt",
+      "Font_Size_Very_Large": "14pt"
+    }
+  },
+
+  "CSS_Replacements": {
+    // These colors can be in any standard CSS notation
+    "QTreeViewItem_color": "black",
+    "QTreeViewItem_error_color": "#FF0000",
+
+    "DataArrayPath_DataContainer_color": "#056d00",
+    "DataArrayPath_AttributeMatrix_color": "#6400b7",
+    "DataArrayPath_DataArray_color": "#004dad",
+
+    "DataArrayPath_DataContainer_background_color": "#a0ff9b",
+    "DataArrayPath_AttributeMatrix_background_color": "#d9adff",
+    "DataArrayPath_DataArray_background_color": "#afd3ff",
+
+    "DataArrayPath_border_normal": "#8f8f91",
+    "DataArrayPath_border_not_found": "#BC0000",
+    "DataArrayPath_border_drag_enabled": "#009104",
+    "DataArrayPath_border_drag_disabled": "#BC0000"
+  }
+}

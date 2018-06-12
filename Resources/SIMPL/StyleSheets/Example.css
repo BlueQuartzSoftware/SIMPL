@@ -1,0 +1,527 @@
+/* To try generating matching color palettes for your style sheet, visit http://paletton.com */
+
+/* Widgets are listed in alphabetical order with the exception of a few
+   styles applied to multiple widgets at the top */
+
+/* Please use the corresponding JSON file called "Example.json" to store colors and other values into variables that can be used over and over in this CSS file */
+
+QWidget#centralwidget
+{
+    /* Style the central widget of your application */
+}
+
+QFrame#fiwFrame
+{
+    /* Style the Filter Input Widget frame */
+}
+
+
+QScrollArea
+{
+    /* Style all QScrollAreas */
+}
+
+QWidget#variablesTabContents
+{
+    /* Style the variables section of the Filter Input Widget  */
+}
+
+FilterParameterWidget
+{
+    /* Style all FilterParameterWidgets */
+}
+
+/* ----------------------------------------------------------------------------
+* QGroupBox Section
+* ----------------------------------------------------------------------------*/
+QGroupBox::title
+{
+    /* Style all QGroupBox titles */
+}
+
+QGroupBox
+{
+    /* Style all QGroupBoxes */
+}
+
+/* ----------------------------------------------------------------------------
+* QDockWidget Section
+* ----------------------------------------------------------------------------*/
+/* For the QDockWidget border style, see QMainWindow::separator */
+QDockWidget {
+    /* Style all QDockWidgets */
+}
+QDockWidget::title {
+    /* Style all QDockWidget titles */
+}
+QDockWidget::close-button {
+    /* Style all QDockWidget close buttons */
+}
+QDockWidget::float-button {
+    /* Style all QDockWidget float buttons */
+}
+
+
+/* ----------------------------------------------------------------------------
+* QListView Section
+* ----------------------------------------------------------------------------*/
+QListView {
+    /* Style all QListViews */
+}
+QListView::item {
+   /* Style all QListView items */
+}
+QListView::item:hover {
+    /* Style all hovered QListView items */
+}
+QListView::item:selected {
+    /* Style all selected QListView items */
+}
+
+
+QMainWindow::separator {
+    /* Style the border that is drawn around the QDockWidgets */
+}
+
+SVListView
+{
+    /* Style all SVListViews */
+}
+
+SVListWidget
+{
+    /* Style all SVListWidgets */
+}
+QListWidget
+{
+    /* Style all QListWidgets */
+}
+
+
+/* ----------------------------------------------------------------------------
+* QMenuBar Section
+* ----------------------------------------------------------------------------*/
+
+/* QMenuBar is the top level menu while QMenu is used for 'sub menus' */
+QMenuBar {
+    /* Style all QMenuBars */
+}
+QMenuBar::item {
+    /* Style all QMenuBar items */
+}
+QMenuBar::item:pressed {
+    /* Style all pressed QMenuBar items */
+}
+QMenuBar::item:selected {
+   /* Style all selected QMenuBar items */
+}
+QMenu {
+    /* Style all QMenus */
+}
+QMenu::item:selected { /* when user selects item using mouse or keyboard */
+    /* Style all selected QMenus */
+}
+QMenu::item:disabled
+{
+    /* Style all disabled QMenus */
+} 
+
+
+QMessageBox > QPushButton
+{
+    /* Style all QPushButtons that are inside of QMessageBox instances */
+}
+
+
+/* ----------------------------------------------------------------------------
+* QPushButton Section
+* ----------------------------------------------------------------------------*/
+/* We provide a min-width and min-height for push buttons
+   so that they look elegant regardless of the width of the text. */
+.QPushButton 
+{
+    /* Style all QPushButtons, but not any subclasses. */
+}
+.QPushButton:hover 
+{
+   /* Style all hovered QPushButtons, but not any subclasses. */
+}
+/* Increase the padding, so the text is shifted when the button is  pressed. */
+.QPushButton:pressed 
+{
+    /* Style all pressed QPushButtons, but not any subclasses. */
+}
+
+QPushButton:default
+{
+    /* Style all default QPushButtons */
+}
+
+QPushButton:default:hover
+{
+    /* Style all hovered default QPushButtons */
+}
+
+QPushButton:default:pressed
+{
+    /* Style all pressed default QPushButtons */
+}
+
+SVIconPushButton 
+{
+    /* Style all SVIconPushButtons */
+}
+SVIconPushButton:hover 
+{
+   /* Style all hovered SVIconPushButtons */
+}
+/* Increase the padding, so the text is shifted when the button is  pressed. */
+SVIconPushButton:pressed 
+{
+    /* Style all pressed SVIconPushButtons */
+}
+
+/* Button styles specific to the startPipelineBtn */
+QPushButton#startPipelineBtn:enabled 
+{
+     /* Style the pipeline Start button when it has an enabled state */
+}
+QPushButton#startPipelineBtn:disabled 
+{
+    /* Style the pipeline Start button when it has a disabled state */
+}
+
+/* ----------------------------------------------------------------------------
+* QToolButton Section
+* ----------------------------------------------------------------------------*/
+.QToolButton { /* all types of tool button */
+    /* Style all QToolButtons, but not any subclasses */
+}
+.QToolButton:checked {
+    /* Style all checked QToolButtons, but not any subclasses */
+}
+
+
+DataArrayPathSelectionWidget 
+{
+    /* Style all DataArrayPathSelectionWidgets */
+}
+DataArrayPathSelectionWidget:disabled
+{
+    /* Style all disabled DataArrayPathSelectionWidgets */
+}
+/*
+ * Style all DataArrayPathSelectionWidgets in their various states
+ * State: { Normal, Active, NotFound, DragEnabled, DragDisabled }
+ * PathType: { DataContainer, AttributeMatrix, DataArray, None }
+ */
+DataArrayPathSelectionWidget[State="0"]
+{ 
+
+}
+DataArrayPathSelectionWidget[State="1"][PathType="0"]
+{ 
+
+}
+DataArrayPathSelectionWidget[State="1"][PathType="1"]
+{ 
+
+}
+DataArrayPathSelectionWidget[State="1"][PathType="2"]
+{ 
+
+}
+DataArrayPathSelectionWidget[State="2"]
+{ 
+
+}
+DataArrayPathSelectionWidget[State="3"]
+{ 
+
+}
+DataArrayPathSelectionWidget[State="4"]
+{ 
+
+}
+
+DataArrayPathSelectionWidget:checked[PathType="0"]
+{ 
+
+}
+DataArrayPathSelectionWidget:checked[PathType="1"]
+{ 
+
+}
+DataArrayPathSelectionWidget:checked[PathType="2"]
+{ 
+
+}
+
+DataArrayPathSelectionWidget::menu-indicator {
+    /* Style all DataArrayPathSelectionWidgets' menu indicators */
+}
+DataArrayPathSelectionWidget::menu-indicator:pressed, DataArrayPathSelectionWidget::menu-indicator:open {
+    /* Style all DataArrayPathSelectionWidgets' pressed open menu indicators */
+}
+DataArrayPathSelectionWidget:flat {
+    /* Style all DataArrayPathSelectionWidgets' flat menu indicators */
+}
+
+
+
+/* ----------------------------------------------------------------------------
+* QStatusBar Section
+* ----------------------------------------------------------------------------*/
+QStatusBar {
+    /* Style all QStatusBars */
+}
+
+
+
+/* ----------------------------------------------------------------------------
+* QTable Section
+* ----------------------------------------------------------------------------*/
+
+/* See QHeaderView on how to style the QTableWidget header */
+QTableWidget {
+    /* Style all QTableWidgets */
+}
+
+QTableWidget::item:selected {
+    /* Style all selected items in QTableWidget */
+}
+
+/* header in the pipeline issues QTableWidget */
+QHeaderView::section {
+    /* Style the header of QTableWidget */
+}
+/* table header disabled colors */
+QHeaderView::section:disabled {
+    /* Style the disabled header of QTableWidget */
+}
+
+/* ----------------------------------------------------------------------------
+* QTabView Section
+* ----------------------------------------------------------------------------*/
+QTabWidget::pane {
+
+}
+
+QTabWidget::tab-bar:top {
+
+}
+
+QTabWidget::tab-bar:bottom {
+
+}
+
+QTabWidget::tab-bar:left {
+
+}
+
+QTabWidget::tab-bar:right {
+
+}
+
+QTabBar::tab {
+
+}
+
+QTabBar::tab:selected {
+
+}
+
+QTabBar::tab:!selected {
+
+}
+
+QTabBar::tab:!selected:hover {
+
+}
+
+QTabBar::tab:top:!selected {
+
+}
+
+QTabBar::tab:bottom:!selected {
+
+}
+
+QTabBar::tab:top, QTabBar::tab:bottom {
+
+}
+
+QTabBar::tab:top:selected {
+
+}
+
+QTabBar::tab:bottom:selected {
+
+}
+
+QTabBar::tab:top:last, QTabBar::tab:bottom:last,
+QTabBar::tab:top:only-one, QTabBar::tab:bottom:only-one {
+
+}
+
+QTabBar::tab:left:!selected {
+
+}
+
+QTabBar::tab:right:!selected {
+
+}
+
+QTabBar::tab:left, QTabBar::tab:right {
+
+}
+
+QTabBar::tab:left:selected {
+
+}
+
+QTabBar::tab:right:selected {
+
+}
+
+QTabBar::tab:left:last, QTabBar::tab:right:last,
+QTabBar::tab:left:only-one, QTabBar::tab:right:only-one {
+
+}
+
+/* ----------------------------------------------------------------------------
+* QTextEdit Section
+* ----------------------------------------------------------------------------*/
+QTextEdit {
+   /* Style all QTextEdits */
+}
+
+/* ----------------------------------------------------------------------------
+* QLabel Section
+* ----------------------------------------------------------------------------*/
+QLabel
+{
+    /* Style all QLabels */
+}
+
+QLabel#filterHumanLabel
+{
+    /* Style the Filter Human Label labels */
+}
+
+QLabel#filterIndex
+{
+    /* Style the Filter Index labels */
+}
+
+/* ----------------------------------------------------------------------------
+* QLineEdit Section
+* ----------------------------------------------------------------------------*/
+QLineEdit
+{
+    /* Style all QLineEdits */
+}
+
+QLineEdit:disabled
+{
+    /* Style all disabled QLineEdits */
+}
+
+SVLineEdit
+{
+    /* Style all SVLineEdits */
+}
+
+SVLineEdit:disabled
+{
+    /* Style all disabled SVLineEdits */
+}
+
+/* ----------------------------------------------------------------------------
+* QSpinBox Section
+* ----------------------------------------------------------------------------*/
+QSpinBox, QDoubleSpinBox
+{
+    /* Style all QSpinBoxes and QDoubleSpinBoxes */
+}
+
+QSpinBox::up-button, QDoubleSpinBox::up-button
+{
+    /* Style all up buttons for QSpinBoxes and QDoubleSpinBoxes */
+}
+QSpinBox::down-button, QDoubleSpinBox::down-button
+{
+    /* Style all down buttons for QSpinBoxes and QDoubleSpinBoxes */
+}
+QSpinBox::up-button:hover, QDoubleSpinBox::up-button:hover
+{
+    /* Style all hovered up buttons for QSpinBoxes and QDoubleSpinBoxes */
+}
+QSpinBox::down-button:hover, QDoubleSpinBox::down-button:hover
+{
+    /* Style all hovered down buttons for QSpinBoxes and QDoubleSpinBoxes */
+}
+
+QSpinBox:disabled, QDoubleSpinBox:disabled
+{
+    /* Style all disabled QSpinBoxes and QDoubleSpinBoxes */
+}
+QSpinBox::up-button:disabled, QDoubleSpinBox::up-button:disabled
+{
+    /* Style all disabled up buttons for QSpinBoxes and QDoubleSpinBoxes */
+}
+QSpinBox::down-button:disabled, QDoubleSpinBox::down-button:disabled
+{
+    /* Style all disabled down buttons for QSpinBoxes and QDoubleSpinBoxes */
+}
+
+
+/* ----------------------------------------------------------------------------
+* QToolBar Section
+* ----------------------------------------------------------------------------*/
+QToolBar {
+    /* Style all QToolBars */
+}
+
+
+/* ----------------------------------------------------------------------------
+* QTreeView Section
+* ----------------------------------------------------------------------------*/
+QTreeView {
+    /* Style all QTreeViews */
+}
+QTreeView::item {
+    /* Style all QTreeView items */
+}
+QTreeView::item:hover {
+    /* Style all hovered QTreeView items */
+}
+QTreeView::item:selected:active{
+   /* Style all active selected QTreeView items */
+}
+QTreeView::item:selected:!active {
+   /* Style all inactive selected QTreeView items */
+}
+QTreeView::branch{
+    /* Style all QTreeView branches */
+}
+QTreeView::branch:has-children:!has-siblings:closed,
+QTreeView::branch:closed:has-children:has-siblings {
+    /* Style all QTreeView branches that have children and are closed */
+}
+QTreeView::branch:open:has-children:!has-siblings,
+QTreeView::branch:open:has-children:has-siblings  {
+    /* Style all QTreeView branches that have children and are open */
+}
+QTreeView::branch:hover {
+   /* Style all hovered QTreeView branches */
+}
+QTreeView::branch:selected:active{
+    /* Style all active selected QTreeView branches */
+}
+QTreeView::branch:selected:!active {
+    /* Style all inactive selected QTreeView branches */
+}
+
+
+
