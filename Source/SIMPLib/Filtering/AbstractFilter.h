@@ -103,6 +103,13 @@ public:
   virtual ~AbstractFilter();
 
   /**
+   * @brief deepCopy
+   * @param filter
+   * @return
+   */
+   static AbstractFilter::Pointer DeepCopy(AbstractFilter::Pointer filter);
+
+  /**
    * @brief CreateFilterFromClassName
    * @param className
    * @return

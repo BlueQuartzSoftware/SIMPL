@@ -40,6 +40,7 @@
 #include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/IFilterFactory.hpp"
+#include "SIMPLib/Filtering/FilterPipeline.h"
 #include "SIMPLib/Plugin/PluginManager.h"
 
 // -----------------------------------------------------------------------------
@@ -423,6 +424,24 @@ void AbstractFilter::postWriteFilterParameters(QJsonObject& obj, QJsonObject& ro
 {
   Q_UNUSED(obj);
   Q_UNUSED(rootObject);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AbstractFilter::Pointer AbstractFilter::DeepCopy(AbstractFilter::Pointer filter)
+{
+  FilterPipeline::Pointer pipeline = FilterPipeline::New();
+  pipeline->pushBack(filter);
+
+  FilterPipeline::Pointer pipelineCopy = pipeline->deepCopy();
+  if (pipelineCopy.get() != nullptr && pipelineCopy->size() == 1)
+  {
+    AbstractFilter::Pointer filterCopy = pipelineCopy->getFilterContainer()[0];
+    return filterCopy;
+  }
+
+  return AbstractFilter::NullPointer();
 }
 
 // -----------------------------------------------------------------------------

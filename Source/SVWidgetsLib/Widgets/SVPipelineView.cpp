@@ -882,12 +882,18 @@ void SVPipelineView::beginDrag(QMouseEvent* event)
   std::vector<PipelineFilterMimeData::FilterDragMetadata> filtersDragData;
   std::vector<AbstractFilter::Pointer> filters;
   PipelineModel* model = getPipelineModel();
+  Qt::KeyboardModifiers modifiers = QApplication::queryKeyboardModifiers();
 
   for(int i = 0; i < selectedIndexes.size(); i++)
   {
     QModelIndex selectedIndex = selectedIndexes[i];
 
     AbstractFilter::Pointer filter = model->filter(selectedIndex);
+
+    if(modifiers.testFlag(Qt::AltModifier) == true)
+    {
+      filter = AbstractFilter::DeepCopy(filter);
+    }
 
     PipelineFilterMimeData::FilterDragMetadata filterDragData;
     filterDragData.first = filter;
@@ -900,8 +906,6 @@ void SVPipelineView::beginDrag(QMouseEvent* event)
   PipelineFilterMimeData* mimeData = new PipelineFilterMimeData();
   mimeData->setFilterDragData(filtersDragData);
   mimeData->setData(SIMPLView::DragAndDrop::FilterPipelineItem, QByteArray());
-
-  Qt::KeyboardModifiers modifiers = QApplication::queryKeyboardModifiers();
 
   QRect firstSelectionRect = visualRect(selectedIndexes[0]);
 
