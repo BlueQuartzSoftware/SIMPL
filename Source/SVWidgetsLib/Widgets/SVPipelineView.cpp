@@ -892,7 +892,7 @@ void SVPipelineView::beginDrag(QMouseEvent* event)
 
     if(modifiers.testFlag(Qt::AltModifier) == true)
     {
-      filter = AbstractFilter::DeepCopy(filter);
+      filter = filter->newFilterInstance(true);
     }
 
     PipelineFilterMimeData::FilterDragMetadata filterDragData;

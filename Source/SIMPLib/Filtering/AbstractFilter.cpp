@@ -429,24 +429,6 @@ void AbstractFilter::postWriteFilterParameters(QJsonObject& obj, QJsonObject& ro
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer AbstractFilter::DeepCopy(AbstractFilter::Pointer filter)
-{
-  FilterPipeline::Pointer pipeline = FilterPipeline::New();
-  pipeline->pushBack(filter);
-
-  FilterPipeline::Pointer pipelineCopy = pipeline->deepCopy();
-  if (pipelineCopy.get() != nullptr && pipelineCopy->size() == 1)
-  {
-    AbstractFilter::Pointer filterCopy = pipelineCopy->getFilterContainer()[0];
-    return filterCopy;
-  }
-
-  return AbstractFilter::NullPointer();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 QJsonObject AbstractFilter::toJson()
 {
   QJsonObject json;
