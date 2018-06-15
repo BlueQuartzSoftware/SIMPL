@@ -48,10 +48,10 @@ protected:
   InPlaceDream3DDataToImageFilter();
   virtual ~InPlaceDream3DDataToImageFilter();
 
-  virtual void VerifyPreconditions() ITK_OVERRIDE;
+  virtual void VerifyPreconditions() override;
 
-  virtual void GenerateOutputInformation() ITK_OVERRIDE;
-  virtual void GenerateData() ITK_OVERRIDE;
+  virtual void GenerateOutputInformation() override;
+  virtual void GenerateData() override;
   DataContainer::Pointer m_DataContainer;
 
 private:

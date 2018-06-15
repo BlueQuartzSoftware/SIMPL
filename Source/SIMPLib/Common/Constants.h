@@ -847,6 +847,18 @@ namespace SIMPL
     const QString SharedTetList("SharedTetList");
     const QString UnsharedEdgeList("UnsharedEdgeList");
     const QString UnsharedFaceList("UnsharedFaceList");
+
+    const QString TransformContainerGroup("TransformContainerGroup");
+    const QString TransformContainer("TransformContainer");
+    const QString CompositeTransformContainer("CompositeTransformContainer");
+    const QString TransformContainerTypeName("TransformContainerTypeName");
+    const QString UnknownTransformContainer("UnknownTransformContainer");
+    const QString TransformContainerParameters("TransformParameters");
+    const QString TransformContainerFixedParameters("TransformFixedParameters");
+    const QString TransformContainerTypeAsString("TransformType");
+    const QString TransformContainerMovingName("TransformMovingName");
+    const QString TransformContainerReferenceName("TransformReferenceName");
+
   }
 
 //  namespace GeometryType

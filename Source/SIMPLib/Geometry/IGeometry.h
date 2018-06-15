@@ -36,16 +36,17 @@
 #ifndef _igeometry_h_
 #define _igeometry_h_
 
-#include <QtCore/QString>
-#include <QtCore/QMap>
 #include <QMutex>
+#include <QtCore/QMap>
+#include <QtCore/QString>
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/Observable.h"
-#include "SIMPLib/DataArrays/DynamicListArray.hpp"
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/DataArrays/DynamicListArray.hpp"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/Geometry/ITransformContainer.h"
+#include "SIMPLib/SIMPLib.h"
 
 class QTextStream;
 
@@ -87,362 +88,361 @@ class SIMPLib_EXPORT IGeometry : public Observable
   PYB11_METHOD(AttributeMatrix getAttributeMatrix ARGS Name)
   PYB11_METHOD(AttributeMatrix removeAttributeMatrix ARGS Name)
 
-  public:
-    SIMPL_SHARED_POINTERS(IGeometry)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometry, Observable)
+public:
+  SIMPL_SHARED_POINTERS(IGeometry)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometry, Observable)
 
-    IGeometry();
-    virtual ~IGeometry();
+  IGeometry();
+  virtual ~IGeometry();
 
-    using EnumType = unsigned int;
+  using EnumType = unsigned int;
 
-    /**
-     * @brief The VtkCellType enum
-     */
-    enum class VtkCellType : EnumType
-    {
-       Image = 11,
-       RectGrid = 11,
-       Vertex = 1,
-       Edge = 3,
-       Triangle = 5,
-       Quad = 9,
-       Tetrahedral = 10,
-       Unknown = 999,
-       Any = 4294967295U
-    };
+  /**
+   * @brief The VtkCellType enum
+   */
+  enum class VtkCellType : EnumType
+  {
+    Image = 11,
+    RectGrid = 11,
+    Vertex = 1,
+    Edge = 3,
+    Triangle = 5,
+    Quad = 9,
+    Tetrahedral = 10,
+    Unknown = 999,
+    Any = 4294967295U
+  };
 
-    /**
-     * @ brief The Type enum
-     */
-    enum class Type : EnumType
-    {
-      Image,
-      RectGrid,
-      Vertex,
-      Edge,
-      Triangle,
-      Quad,
-      Tetrahedral,
-      Unknown = 999,
-      Any = 4294967295U
-    };
+  /**
+   * @ brief The Type enum
+   */
+  enum class Type : EnumType
+  {
+    Image,
+    RectGrid,
+    Vertex,
+    Edge,
+    Triangle,
+    Quad,
+    Tetrahedral,
+    Unknown = 999,
+    Any = 4294967295U
+  };
 
-    using VtkCellTypes = QVector <VtkCellType>;
-    using Types = QVector<Type>;
+  using VtkCellTypes = QVector<VtkCellType>;
+  using Types = QVector<Type>;
 
-    /**
-     * @brief AttributeMatrixMap_t
-     */
-    typedef QMap<QString, AttributeMatrix::Pointer> AttributeMatrixMap_t;
+  /**
+   * @brief AttributeMatrixMap_t
+   */
+  typedef QMap<QString, AttributeMatrix::Pointer> AttributeMatrixMap_t;
 
+  SIMPL_INSTANCE_PROPERTY(float, TimeValue)
+  SIMPL_INSTANCE_PROPERTY(bool, EnableTimeSeries)
+  SIMPL_INSTANCE_PROPERTY(ITransformContainer::Pointer, TransformContainer)
 
-    SIMPL_INSTANCE_PROPERTY(float, TimeValue)
-    SIMPL_INSTANCE_PROPERTY(bool, EnableTimeSeries)
+  // -----------------------------------------------------------------------------
+  // Connectivity
+  // -----------------------------------------------------------------------------
 
-// -----------------------------------------------------------------------------
-// Connectivity
-// -----------------------------------------------------------------------------
+  /**
+   * @brief findElementsContainingVert
+   * @return
+   */
+  virtual int findElementsContainingVert() = 0;
 
-    /**
-     * @brief findElementsContainingVert
-     * @return
-     */
-    virtual int findElementsContainingVert() = 0;
+  /**
+   * @brief getElementsContainingVert
+   * @return
+   */
+  virtual ElementDynamicList::Pointer getElementsContainingVert() = 0;
 
-    /**
-     * @brief getElementsContainingVert
-     * @return
-     */
-    virtual ElementDynamicList::Pointer getElementsContainingVert() = 0;
+  /**
+   * @brief deleteElementsContainingVert
+   */
+  virtual void deleteElementsContainingVert() = 0;
 
-    /**
-     * @brief deleteElementsContainingVert
-     */
-    virtual void deleteElementsContainingVert() = 0;
+  /**
+   * @brief findElementNeighbors
+   * @return
+   */
+  virtual int findElementNeighbors() = 0;
 
-    /**
-     * @brief findElementNeighbors
-     * @return
-     */
-    virtual int findElementNeighbors() = 0;
+  /**
+   * @brief getElementNeighbors
+   * @return
+   */
+  virtual ElementDynamicList::Pointer getElementNeighbors() = 0;
 
-    /**
-     * @brief getElementNeighbors
-     * @return
-     */
-    virtual ElementDynamicList::Pointer getElementNeighbors() = 0;
+  /**
+   * @brief deleteElementNeighbors
+   */
+  virtual void deleteElementNeighbors() = 0;
 
-    /**
-     * @brief deleteElementNeighbors
-     */
-    virtual void deleteElementNeighbors() = 0;
+  // -----------------------------------------------------------------------------
+  // Topology
+  // -----------------------------------------------------------------------------
 
-// -----------------------------------------------------------------------------
-// Topology
-// -----------------------------------------------------------------------------
+  /**
+   * @brief getNumberOfElements
+   * @return
+   */
+  virtual size_t getNumberOfElements() = 0;
 
-    /**
-     * @brief getNumberOfElements
-     * @return
-     */
-    virtual size_t getNumberOfElements() = 0;
+  /**
+   * @brief findElementSizes
+   * @return
+   */
+  virtual int findElementSizes() = 0;
 
-    /**
-     * @brief findElementSizes
-     * @return
-     */
-    virtual int findElementSizes() = 0;
+  /**
+   * @brief getElementSizes
+   * @return
+   */
+  virtual FloatArrayType::Pointer getElementSizes() = 0;
 
-    /**
-     * @brief getElementSizes
-     * @return
-     */
-    virtual FloatArrayType::Pointer getElementSizes() = 0;
+  /**
+   * @brief deleteElementSizes
+   */
+  virtual void deleteElementSizes() = 0;
 
-    /**
-     * @brief deleteElementSizes
-     */
-    virtual void deleteElementSizes() = 0;
+  /**
+   * @brief findElementCentroids
+   * @return
+   */
+  virtual int findElementCentroids() = 0;
 
-    /**
-     * @brief findElementCentroids
-     * @return
-     */
-    virtual int findElementCentroids() = 0;
+  /**
+   * @brief getElementCentroids
+   * @return
+   */
+  virtual FloatArrayType::Pointer getElementCentroids() = 0;
 
-    /**
-     * @brief getElementCentroids
-     * @return
-     */
-    virtual FloatArrayType::Pointer getElementCentroids() = 0;
+  /**
+   * @brief deleteElementCentroids
+   */
+  virtual void deleteElementCentroids() = 0;
 
-    /**
-     * @brief deleteElementCentroids
-     */
-    virtual void deleteElementCentroids() = 0;
+  /**
+   * @brief getParametricCenter
+   * @param pCoords
+   */
+  virtual void getParametricCenter(double pCoords[3]) = 0;
 
-    /**
-     * @brief getParametricCenter
-     * @param pCoords
-     */
-    virtual void getParametricCenter(double pCoords[3]) = 0;
+  /**
+   * @brief getShapeFunctions
+   * @param pCoords
+   * @param derivs
+   */
+  virtual void getShapeFunctions(double pCoords[3], double* shape) = 0;
 
-    /**
-     * @brief getShapeFunctions
-     * @param pCoords
-     * @param derivs
-     */
-    virtual void getShapeFunctions(double pCoords[3], double* shape) = 0;
+  /**
+   * @brief findDerivatives
+   * @param field
+   * @param derivatives
+   */
+  virtual void findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable) = 0;
 
-    /**
-     * @brief findDerivatives
-     * @param field
-     * @param derivatives
-     */
-    virtual void findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable) = 0;
+  // -----------------------------------------------------------------------------
+  // Generic
+  // -----------------------------------------------------------------------------
 
-// -----------------------------------------------------------------------------
-// Generic
-// -----------------------------------------------------------------------------
+  /**
+   * @brief setName
+   * @param name
+   */
+  virtual void setName(const QString& name) final;
 
-    /**
-     * @brief setName
-     * @param name
-     */
-    virtual void setName(const QString& name) final;
+  /**
+   * @brief getName
+   * @return
+   */
+  virtual QString getName() final;
 
-    /**
-     * @brief getName
-     * @return
-     */
-    virtual QString getName() final;
+  /**
+   * @brief getGeometryType
+   * @return
+   */
+  virtual Type getGeometryType() final;
 
-    /**
-     * @brief getGeometryType
-     * @return
-     */
-    virtual Type getGeometryType() final;
+  /**
+   * @brief getGeometryTypeAsString
+   * @return
+   */
+  virtual QString getGeometryTypeAsString() final;
 
-    /**
-     * @brief getGeometryTypeAsString
-     * @return
-     */
-    virtual QString getGeometryTypeAsString() final;
+  /**
+   * @brief getInfoString
+   * @return Returns a formatted string that contains general infomation about
+   * the instance of the object.
+   */
+  virtual QString getInfoString(SIMPL::InfoStringFormat) = 0;
 
-    /**
-     * @brief getInfoString
-     * @return Returns a formatted string that contains general infomation about
-     * the instance of the object.
-     */
-    virtual QString getInfoString(SIMPL::InfoStringFormat) = 0;
+  /**
+   * @brief setMessagePrefix
+   * @param prefix
+   */
+  virtual void setMessagePrefix(const QString& prefix) final;
 
-    /**
-     * @brief setMessagePrefix
-     * @param prefix
-     */
-    virtual void setMessagePrefix(const QString& prefix) final;
+  /**
+   * @brief getMessagePrefix
+   * @return
+   */
+  virtual QString getMessagePrefix() final;
 
-    /**
-     * @brief getMessagePrefix
-     * @return
-     */
-    virtual QString getMessagePrefix() final;
+  /**
+   * @brief setMessageTitle
+   * @param title
+   */
+  virtual void setMessageTitle(const QString& title) final;
 
-    /**
-     * @brief setMessageTitle
-     * @param title
-     */
-    virtual void setMessageTitle(const QString& title) final;
+  /**
+   * @brief getMessageTitle
+   * @return
+   */
+  virtual QString getMessageTitle() final;
 
-    /**
-     * @brief getMessageTitle
-     * @return
-     */
-    virtual QString getMessageTitle() final;
+  /**
+   * @brief setMessageLabel
+   * @param label
+   */
+  virtual void setMessageLabel(const QString& label) final;
 
-    /**
-     * @brief setMessageLabel
-     * @param label
-     */
-    virtual void setMessageLabel(const QString& label) final;
+  /**
+   * @brief getMessageLabel
+   * @return
+   */
+  virtual QString getMessageLabel() final;
 
-    /**
-     * @brief getMessageLabel
-     * @return
-     */
-    virtual QString getMessageLabel() final;
+  /**
+   * @brief getXdmfGridType
+   * @return
+   */
+  virtual unsigned int getXdmfGridType() final;
 
-    /**
-     * @brief getXdmfGridType
-     * @return
-     */
-    virtual unsigned int getXdmfGridType() final;
+  /**
+   * @brief getUnitDimensionality
+   * @return
+   */
+  virtual unsigned int getUnitDimensionality() final;
 
-    /**
-     * @brief getUnitDimensionality
-     * @return
-     */
-    virtual unsigned int getUnitDimensionality() final;
+  /**
+   * @brief setSpatialDimensionality
+   * @param spatialDims
+   */
+  virtual void setSpatialDimensionality(unsigned int spatialDims) final;
 
-    /**
-     * @brief setSpatialDimensionality
-     * @param spatialDims
-     */
-    virtual void setSpatialDimensionality(unsigned int spatialDims) final;
+  /**
+   * @brief getSpatialDimensionality
+   * @return
+   */
+  virtual unsigned int getSpatialDimensionality() final;
 
-    /**
-     * @brief getSpatialDimensionality
-     * @return
-     */
-    virtual unsigned int getSpatialDimensionality() final;
+  /**
+   * @brief writeGeometryToHDF5
+   * @param parentId
+   * @param writeXdmf
+   * @return
+   */
+  virtual int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) = 0;
 
-    /**
-     * @brief writeGeometryToHDF5
-     * @param parentId
-     * @param writeXdmf
-     * @return
-     */
-    virtual int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) = 0;
+  /**
+   * @brief writeXdmf
+   * @param out
+   * @param dcName
+   * @param hdfFileName
+   * @return
+   */
+  virtual int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) = 0;
 
-    /**
-     * @brief writeXdmf
-     * @param out
-     * @param dcName
-     * @param hdfFileName
-     * @return
-     */
-    virtual int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) = 0;
+  /**
+   * @brief readGeometryFromHDF5
+   * @param parentId
+   * @param preflight
+   * @return
+   */
+  virtual int readGeometryFromHDF5(hid_t parentId, bool preflight) = 0;
 
-    /**
-     * @brief readGeometryFromHDF5
-     * @param parentId
-     * @param preflight
-     * @return
-     */
-    virtual int readGeometryFromHDF5(hid_t parentId, bool preflight) = 0;
+  /**
+   * @brief deepCopy
+   * @return
+   */
+  virtual Pointer deepCopy(bool forceNoAllocate = false) = 0;
 
-    /**
-     * @brief deepCopy
-     * @return
-     */
-    virtual Pointer deepCopy(bool forceNoAllocate = false) = 0;
+  /**
+   * @brief initializeWithZeros
+   */
+  virtual void initializeWithZeros() = 0;
 
-    /**
-     * @brief initializeWithZeros
-     */
-    virtual void initializeWithZeros() = 0;
+  /**
+   * @brief addAttributeMatrix
+   */
+  virtual void addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data) = 0;
 
-    /**
-     * @brief addAttributeMatrix
-     */
-    virtual void addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data) = 0;
+  /**
+   * @brief getAttributeMatrix
+   * @param name
+   * @return
+   */
+  virtual AttributeMatrix::Pointer getAttributeMatrix(const QString& name) final;
 
-    /**
-     * @brief getAttributeMatrix
-     * @param name
-     * @return
-     */
-    virtual AttributeMatrix::Pointer getAttributeMatrix(const QString& name) final;
+  /**
+   * @brief removeAttributeMatrix
+   * @param name
+   * @return
+   */
+  virtual AttributeMatrix::Pointer removeAttributeMatrix(const QString& name) final;
 
-    /**
-     * @brief removeAttributeMatrix
-     * @param name
-     * @return
-     */
-    virtual AttributeMatrix::Pointer removeAttributeMatrix(const QString& name) final;
+protected:
+  QString m_Name;
+  QString m_GeometryTypeName;
+  QString m_MessagePrefix;
+  QString m_MessageTitle;
+  QString m_MessageLabel;
+  Type m_GeometryType = Type::Unknown;
+  unsigned int m_XdmfGridType = SIMPL::XdmfGridType::UnknownGrid;
+  unsigned int m_UnitDimensionality = 0;
+  unsigned int m_SpatialDimensionality = 0;
 
-  protected:
-    QString m_Name;
-    QString m_GeometryTypeName;
-    QString m_MessagePrefix;
-    QString m_MessageTitle;
-    QString m_MessageLabel;
-    Type m_GeometryType = Type::Unknown;
-    unsigned int m_XdmfGridType = SIMPL::XdmfGridType::UnknownGrid;
-    unsigned int m_UnitDimensionality = 0;
-    unsigned int m_SpatialDimensionality = 0;
+  AttributeMatrixMap_t m_AttributeMatrices;
 
-    AttributeMatrixMap_t m_AttributeMatrices;
+  QMutex m_Mutex;
+  int64_t m_ProgressCounter;
 
-    QMutex m_Mutex;
-    int64_t m_ProgressCounter;
+  /**
+   * @brief sendThreadSafeProgressMessage
+   * @param counter
+   * @param max
+   */
+  virtual void sendThreadSafeProgressMessage(int64_t counter, int64_t max) final;
 
-    /**
-     * @brief sendThreadSafeProgressMessage
-     * @param counter
-     * @param max
-     */
-    virtual void sendThreadSafeProgressMessage(int64_t counter, int64_t max) final;
+  /**
+   * @brief setElementsContaingVert
+   * @param elementsContaingVert
+   */
+  virtual void setElementsContainingVert(ElementDynamicList::Pointer elementsContainingVert) = 0;
 
-    /**
-     * @brief setElementsContaingVert
-     * @param elementsContaingVert
-     */
-    virtual void setElementsContainingVert(ElementDynamicList::Pointer elementsContainingVert) = 0;
+  /**
+   * @brief setElementNeighbors
+   * @param elementNeighbors
+   */
+  virtual void setElementNeighbors(ElementDynamicList::Pointer elementsNeighbors) = 0;
 
-    /**
-     * @brief setElementNeighbors
-     * @param elementNeighbors
-     */
-    virtual void setElementNeighbors(ElementDynamicList::Pointer elementsNeighbors) = 0;
+  /**
+   * @brief setElementCentroids
+   * @param elementCentroids
+   */
+  virtual void setElementCentroids(FloatArrayType::Pointer elementCentroids) = 0;
 
-    /**
-     * @brief setElementCentroids
-     * @param elementCentroids
-     */
-    virtual void setElementCentroids(FloatArrayType::Pointer elementCentroids) = 0;
+  /**
+   * @brief setElementSizes
+   * @param elementSizes
+   */
+  virtual void setElementSizes(FloatArrayType::Pointer elementSizes) = 0;
 
-    /**
-     * @brief setElementSizes
-     * @param elementSizes
-     */
-    virtual void setElementSizes(FloatArrayType::Pointer elementSizes) = 0;
-
-  private:
-    IGeometry(const IGeometry&) = delete;      // Copy Constructor Not Implemented
-    void operator=(const IGeometry&) = delete; // Move assignment Not Implemented
+private:
+  IGeometry(const IGeometry&) = delete;      // Copy Constructor Not Implemented
+  void operator=(const IGeometry&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _IGeometry_H_ */
-

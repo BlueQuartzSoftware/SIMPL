@@ -22,7 +22,7 @@ private:
   AbstractFilter* m_Filter;
   Dream3DFilterInterruption()
   {
-    m_Filter = ITK_NULLPTR;
+    m_Filter = nullptr;
   }
 
 public:
