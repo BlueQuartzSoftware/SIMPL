@@ -449,7 +449,7 @@
       if(imageGeometry.get() != nullptr)                                                                                                                                                               \
       {                                                                                                                                                                                                \
         QVector<size_t> tDims(3, 0);                                                                                                                                                                   \
-        imageGeometry->getDimensions(tDims[0], tDims[1], tDims[2]);                                                                                                                                    \
+        std::tie(tDims[0], tDims[1], tDims[2]) = imageGeometry->getDimensions();                                                                                                                       \
         if(getErrorCondition() >= 0)                                                                                                                                                                   \
         {                                                                                                                                                                                              \
           QString str_type = ptr->getTypeAsString();                                                                                                                                                   \

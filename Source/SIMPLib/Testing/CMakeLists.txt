@@ -37,8 +37,6 @@ set(QT_APPLICATION_CLASS "QCoreApplication")
 configure_file(${SIMPLTest_SOURCE_DIR}/TestMain.cpp.in
           ${SIMPLTest_BINARY_DIR}/SIMPLUnitTest.cpp @ONLY)
 
-
-
 # Set the source files properties on each source file.
 foreach(f ${${SIMPL_UNIT_TEST}_TEST_SRCS})
   set_source_files_properties( ${f} PROPERTIES HEADER_FILE_ONLY TRUE)
@@ -47,7 +45,7 @@ endforeach()
 AddSIMPLUnitTest(TESTNAME SIMPLUnitTest
   SOURCES ${SIMPLTest_BINARY_DIR}/SIMPLUnitTest.cpp ${${SIMPL_UNIT_TEST}_TEST_SRCS}
   FOLDER "SIMPLibProj/Test"
-  LINK_LIBRARIES Qt5::Core H5Support SIMPLib
+  LINK_LIBRARIES Qt5::Core H5Support SIMPLib ${ITK_LIBRARIES}
   INCLUDE_DIRS 
 			${${PLUGIN_NAME}Test_SOURCE_DIR}
 			${${PLUGIN_NAME}Test_BINARY_DIR}
