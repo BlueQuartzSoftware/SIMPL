@@ -3,7 +3,7 @@
 
 
 
-#include "FilterCallback/FilterParameter.h"
+#include "FilterParameter.h"
 
 // -----------------------------------------------------------------------------
 //

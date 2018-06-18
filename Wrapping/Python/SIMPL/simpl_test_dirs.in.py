@@ -3,7 +3,7 @@
 """ module to get build specific directories  """
 
 def GetBuildDirectory():
-  return "${SIMPLProj_BINARY_DIR}"
+  return "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
 
 def GetTestDirectory():
   return "${SIMPLProj_BINARY_DIR}/Testing"

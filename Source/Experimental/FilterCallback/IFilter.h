@@ -10,7 +10,7 @@
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 
 
-#include "FilterCallback/FilterParameter.h"
+#include "FilterParameter.h"
 
 // -----------------------------------------------------------------------------
 //

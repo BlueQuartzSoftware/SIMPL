@@ -9,8 +9,8 @@ sure that it is installed properly.")
 
 # These are the SIMPL python modules
 from simpl_py import *
-import simpl_dirs as sd
-import simpl_common as sc
+import simpl.simpl_common as sc
+import simpl.simpl_test_dirs as sd
 
 
 def DataArrayTest():
@@ -36,7 +36,7 @@ def DataArrayTest():
         array = sc.CreateDataArray(arrayTypes[index].__name__, shape, cDims, item)
         cellAm.addAttributeArray(array.Name, array)
 
-    err = sc.WriteDREAM3DFile(sd.GetTestTempDirectory() + "/DataArrayTest.dream3d", dca)
+    err = sc.WriteDREAM3DFile(sd.GetTestTempDirectory() + "/DataArrayTest.dream3d", dca, True)
     assert err == 0
 
 

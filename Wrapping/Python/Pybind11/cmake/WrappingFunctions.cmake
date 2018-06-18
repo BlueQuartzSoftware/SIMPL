@@ -6,7 +6,7 @@ function(CreatePybind11Module)
   set(multiValueArgs )
   cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
   if(ARGS_VERBOSE)
-  message(STATUS "[${pybind_module_name}] ## End CreatePybind11Module ")
+    message(STATUS "[${pybind_module_name}] ## End CreatePybind11Module ")
   endif()
   # --------------------------------------------------------------------------
   # Find the Pybind11 installation

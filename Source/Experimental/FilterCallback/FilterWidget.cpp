@@ -1,7 +1,7 @@
 
-#include <FilterCallback/FilterWidget.h>
+#include "FilterWidget.h"
 
-#include <FilterCallback/FilterParameter.h>
+#include "FilterParameter.h"
 
 // -----------------------------------------------------------------------------
 //

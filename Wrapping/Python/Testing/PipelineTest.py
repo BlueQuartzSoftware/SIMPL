@@ -1,8 +1,8 @@
 import time
 
 from simpl_py import *
-import simpl_dirs as sd
-import simpl_common as sc
+import simpl.simpl_common as sc
+import simpl.simpl_test_dirs as sd
 
 def PipelineTest():
   inputPath = sd.GetTestTempDirectory() + "/SmallIN100.dream3d"
