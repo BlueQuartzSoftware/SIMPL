@@ -38,12 +38,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AppVersion::AppVersion()
-: m_MajorNum(-1)
-, m_MinorNum(-1)
-, m_PatchNum(-1)
-{
-}
+AppVersion::AppVersion() = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -73,12 +68,8 @@ AppVersion::AppVersion(const AppVersion& rhs)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AppVersion::operator=(const AppVersion& rhs)
-{
-  m_MajorNum = rhs.m_MajorNum;
-  m_MinorNum = rhs.m_MinorNum;
-  m_PatchNum = rhs.m_PatchNum;
-}
+AppVersion& AppVersion::operator=(const AppVersion& rhs) = default;
+
 
 // -----------------------------------------------------------------------------
 //
@@ -97,32 +88,21 @@ bool AppVersion::operator>(const AppVersion& rhs)
   {
     return true;
   }
-  else if(m_MajorNum == rhs.m_MajorNum)
+  
+  if(m_MajorNum == rhs.m_MajorNum)
   {
     if(m_MinorNum > rhs.m_MinorNum)
     {
       return true;
     }
-    else if(m_MinorNum == rhs.m_MinorNum)
+    
+    if(m_MinorNum == rhs.m_MinorNum)
     {
-      if(m_PatchNum > rhs.m_PatchNum)
-      {
-        return true;
-      }
-      else
-      {
-        return false;
-      }
+      return m_PatchNum > rhs.m_PatchNum;
     }
-    else
-    {
-      return false;
-    }
-  }
-  else
-  {
     return false;
   }
+  return false;
 }
 
 // -----------------------------------------------------------------------------
@@ -134,32 +114,21 @@ bool AppVersion::operator<(const AppVersion& rhs)
   {
     return true;
   }
-  else if(m_MajorNum == rhs.m_MajorNum)
+  
+  if(m_MajorNum == rhs.m_MajorNum)
   {
     if(m_MinorNum < rhs.m_MinorNum)
     {
       return true;
     }
-    else if(m_MinorNum == rhs.m_MinorNum)
+    
+    if(m_MinorNum == rhs.m_MinorNum)
     {
-      if(m_PatchNum < rhs.m_PatchNum)
-      {
-        return true;
-      }
-      else
-      {
-        return false;
-      }
+      return m_PatchNum < rhs.m_PatchNum;
     }
-    else
-    {
-      return false;
-    }
-  }
-  else
-  {
     return false;
   }
+  return false;
 }
 
 // -----------------------------------------------------------------------------
