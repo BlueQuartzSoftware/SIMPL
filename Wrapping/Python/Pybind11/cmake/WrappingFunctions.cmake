@@ -57,7 +57,8 @@ function(CreatePybind11Module)
 
   set(pybind_module_file_name "${ARGS_BINARY_DIR}/Wrapping/PythonCore/${pybind_module_name}_pybind11_module.cxx")
   pybind11_add_module(${pybind_module_name}
-      ${pybind_module_file_name}
+      ${pybind_module_file_name} 
+      ${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/SIMPLModuleCodeTemplate.cpp
       )
 
   if(NOT EXISTS "${pybind_module_file_name}")
@@ -65,9 +66,15 @@ function(CreatePybind11Module)
   endif()
 
   set_source_files_properties("${pybind_module_file_name}"
-                                PROPERTIES  
-                                    #GENERATED TRUE
-                                    SKIP_AUTOMOC ON)
+                              PROPERTIES  
+                                  GENERATED TRUE
+                                  SKIP_AUTOMOC ON
+  )
+  set_source_files_properties("${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/SIMPLModuleCodeTemplate.cpp"
+                              PROPERTIES  
+                                HEADER_FILE_ONLY ON
+                                SKIP_AUTOMOC ON
+  )
   set_target_properties(${pybind_module_name} PROPERTIES LINKER_LANGUAGE CXX)
   target_include_directories(${pybind_module_name} PUBLIC
     #$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
@@ -85,7 +92,7 @@ function(CreatePybind11Module)
                                             OUTPUT_NAME ${pybind_module_output_name}
                                             LIBRARY_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/python/site-packages/dream3d
                                             )
-  if(TARGET ${pybind_module_name}CreatePythonBindings)                                            
+  if(TARGET ${pybind_module_name} AND TARGET ${pybind_module_name}CreatePythonBindings)                                            
     add_dependencies(${pybind_module_name} ${pybind_module_name}CreatePythonBindings)
   endif()
 
