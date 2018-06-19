@@ -292,6 +292,34 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     SIMPL_INSTANCE_PROPERTY(QColor, QSpinBoxArrow_hover_background_color)
     Q_PROPERTY(QColor QSpinBoxArrow_hover_background_color READ getQSpinBoxArrow_hover_background_color WRITE setQSpinBoxArrow_hover_background_color)
 
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QComboBox_border_color)
+    Q_PROPERTY(QColor QComboBox_border_color READ getQComboBox_border_color WRITE setQComboBox_border_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QComboBox_background_color)
+    Q_PROPERTY(QColor QComboBox_background_color READ getQComboBox_background_color WRITE setQComboBox_background_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QComboBoxArrow_background_color)
+    Q_PROPERTY(QColor QComboBoxArrow_background_color READ getQComboBoxArrow_background_color WRITE setQComboBoxArrow_background_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QComboBoxArrow_hover_background_color)
+    Q_PROPERTY(QColor QComboBoxArrow_hover_background_color READ getQComboBoxArrow_hover_background_color WRITE setQComboBoxArrow_hover_background_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QComboBoxItem_border_color)
+    Q_PROPERTY(QColor QComboBoxItem_border_color READ getQComboBoxItem_border_color WRITE setQComboBoxItem_border_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QComboBoxItem_selection_color)
+    Q_PROPERTY(QColor QComboBoxItem_selection_color READ getQComboBoxItem_selection_color WRITE setQComboBoxItem_selection_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QComboBoxItem_background_color)
+    Q_PROPERTY(QColor QComboBoxItem_background_color READ getQComboBoxItem_background_color WRITE setQComboBoxItem_background_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QComboBoxDisabled_background_color)
+    Q_PROPERTY(QColor QComboBoxDisabled_background_color READ getQComboBoxDisabled_background_color WRITE setQComboBoxDisabled_background_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QComboBoxDisabled_color)
+    Q_PROPERTY(QColor QComboBoxDisabled_color READ getQComboBoxDisabled_color WRITE setQComboBoxDisabled_color)
+
     
     SIMPL_INSTANCE_PROPERTY(QColor, QToolBar_background_color)    
     Q_PROPERTY(QColor QToolBar_background_color READ getQToolBar_background_color WRITE setQToolBar_background_color)    
