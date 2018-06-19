@@ -24,7 +24,7 @@ PYBIND11_MAKE_OPAQUE(std::vector<double>);
 * the same thing. Apple (clang) and Windows (MSVC) do not seem to have a problem
 * with the line.
 */
-#if defined(__APPLE__)
+#if defined(__APPLE__) 
 PYBIND11_MAKE_OPAQUE(std::vector<size_t>);
 #endif
 
@@ -174,10 +174,10 @@ PYB11_DEFINE_DATAARRAY_INIT(double, DoubleArrayType);
  * what classes are available within the module.
  *
  */
-PYBIND11_MODULE(@LIB_NAME@, m)
+PYBIND11_MODULE(@LIB_NAME@, mod)
 {
-  py::module mod = m.def_submodule("@LIB_NAME@", "  Python wrapping for @FULL_LIB_NAME@");
-
+  mod.doc() = "Python wrapping for @FULL_LIB_NAME@";
+  
   /* STL Binding code */
   py::bind_vector<std::vector<int8_t>>(mod, "VectorInt8");
   py::bind_vector<std::vector<uint8_t>>(mod, "VectorUInt8");
@@ -193,9 +193,12 @@ PYBIND11_MODULE(@LIB_NAME@, m)
 
   py::bind_vector<std::vector<float>>(mod, "VectorFloat");
   py::bind_vector<std::vector<double>>(mod, "VectorDouble");
-#if defined(__APPLE__)
-  py::bind_vector<std::vector<size_t>>(mod, "VectorSizeT");
-#endif
+
+if (py::detail::get_type_info(typeid(std::vector<size_t>)))
+    mod.attr("VectorSizeT") = mod.attr("VectorUInt64");
+else
+    py::bind_vector<std::vector<size_t>>(mod, "VectorSizeT");
+
   /* Init codes for classes in the Module */
   @MODULE_INIT_CODE@
 

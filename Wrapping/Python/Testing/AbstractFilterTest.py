@@ -1,6 +1,6 @@
 import time
 
-from simpl_py import *
+import dream3d.simpl_py as sp
 
 # This is a test
 
@@ -8,7 +8,7 @@ def BasicTest () :
   """
   This will test the basic AbstractFilter methods
   """
-  filter = simpl_py.AbstractFilter.New()
+  filter = sp.AbstractFilter.New()
 
   groupName = filter.GroupName
   assert groupName == "YOUR CLASS SHOULD IMPLEMENT THIS"

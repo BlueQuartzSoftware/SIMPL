@@ -1,12 +1,12 @@
 
-from simpl_py import *
-import simpl.simpl_common as sc
-import simpl.simpl_test_dirs as sd
+import dream3d.simpl_py as sp
+import dream3d.utils.simpl_common as sc
+import dream3d.utils.simpl_test_dirs as sd
 
 def AttributeMatrixTest() :
   # Create an AttributeMatrix
-  amType = simpl_py.AttributeMatrix.Type.Cell
-  tupleDims = simpl_py.VectorSizeT([5,4,3])
+  amType = sp.AttributeMatrix.Type.Cell
+  tupleDims = sp.VectorSizeT([5,4,3])
   amName = "CellAttributeMatrix"
   am = sc.CreateAttributeMatrix(tupleDims, amName, amType)
 

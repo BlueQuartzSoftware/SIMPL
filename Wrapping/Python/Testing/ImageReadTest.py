@@ -12,9 +12,10 @@ except ImportError:
 sure that it is installed properly.")
 
 # These are the simpl_py python modules
-from simpl_py import *
-import simpl.simpl_common as sc
-import simpl.simpl_test_dirs as sd
+import dream3d
+import dream3d.simpl_py as simpl
+import dream3d.utils.simpl_common as sc
+import dream3d.utils.simpl_test_dirs as sd
 
 
 def ImageReadTest():
@@ -44,18 +45,18 @@ def ImageReadTest():
     dca.addDataContainer(dc)
 
     # Create an AttributeMatrix and add it to the DataContainer
-    amShape = simpl_py.VectorSizeT([shape[1], shape[0], 1])
-    cellAm = sc.CreateAttributeMatrix(amShape, "CellAttributeMatrix", simpl_py.AttributeMatrix.Type.Cell)
+    amShape = simpl.VectorSizeT([shape[1], shape[0], 1])
+    cellAm = sc.CreateAttributeMatrix(amShape, "CellAttributeMatrix", simpl.AttributeMatrix.Type.Cell)
     dc.addAttributeMatrix(cellAm.Name, cellAm)
 
     # Create an AttributeArray from the image data and add it to the AttributeMatrix
-    cDims = simpl_py.VectorSizeT([1])
+    cDims = simpl.VectorSizeT([1])
     name = "slice_11.tiff"
-    array = simpl_py.UInt8ArrayType(z_flat, cDims, name, False)
+    array = simpl.UInt8ArrayType(z_flat, cDims, name, False)
     cellAm.addAttributeArray(array.Name, array)
 
     # Create a Geometry Object and store it in the DataContainer
-    imageGeom = simpl_py.ImageGeom.CreateGeometry("ImageGeometry")
+    imageGeom = simpl.ImageGeom.CreateGeometry("ImageGeometry")
     imageGeom.setDimensions(shape[1], shape[0], 1)
     imageGeom.setResolution(1.0, 1.0, 1.0)
     imageGeom.setOrigin(20, 45, 70)

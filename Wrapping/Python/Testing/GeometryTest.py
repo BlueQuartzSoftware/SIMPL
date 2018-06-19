@@ -12,13 +12,13 @@ except ImportError:
 sure that it is installed properly.")
 
 # These are the simpl_py python modules
-from simpl_py import *
-import simpl.simpl_common as sc
-import simpl.simpl_test_dirs as sd
+import dream3d.simpl_py as sp
+import dream3d.utils.simpl_common as sc
+import dream3d.utils.simpl_test_dirs as sd
 
 
 def GeometryTest():
-  imageGeom = simpl_py.ImageGeom.CreateGeometry("ImageGeometry")
+  imageGeom = sp.ImageGeom.CreateGeometry("ImageGeometry")
   assert imageGeom.Name == "ImageGeometry"
 
   imageGeom.setDimensions(100, 1001, 200)
@@ -39,7 +39,7 @@ def GeometryTest():
   assert origin[1] == 45
   assert origin[2] == 70
   
-  infoString = imageGeom.getInfoString(simpl_py.HtmlFormat)
+  infoString = imageGeom.getInfoString(sp.HtmlFormat)
 
   boundingBox = imageGeom.getBoundingBox()
   assert boundingBox[0] == 20

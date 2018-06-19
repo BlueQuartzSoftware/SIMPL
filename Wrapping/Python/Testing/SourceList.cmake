@@ -1,4 +1,3 @@
-get_filename_component(PACKAGE_PREFIX_DIR "${CMAKE_CURRENT_LIST_DIR}/" ABSOLUTE)
 
 set(PYSIMPL_Testing_Scripts
   ${CMAKE_CURRENT_LIST_DIR}/AbstractFilterTest.py

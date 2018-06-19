@@ -1,6 +1,5 @@
 
-#import _simpl as simpl_py
-from @SIMPL_PYTHON_MODULE_NAME@@SIMPL_PYTHON_MODULE_SUFFIX@ import *
+from .. import simpl_py
 
 try:
     import numpy as np
@@ -79,6 +78,7 @@ def CreateDataArray(name, shape, cDims, type):
     if not z.flags.contiguous:
         z = np.ascontiguousarray(z)
 
+    
     shape = z.shape
     assert z.flags.contiguous, 'Only contiguous arrays are supported.'
     assert not np.issubdtype(z.dtype, np.complex128), \
@@ -88,6 +88,7 @@ def CreateDataArray(name, shape, cDims, type):
 
     # Get the Pointer to the numpy array
     z_flat = np.ravel(z)
+    z.fill(20)
     # Declare the number of components for the array
     if type == np.int8:
         array = simpl_py.Int8ArrayType(z_flat, cDims, name, False)
@@ -108,5 +109,6 @@ def CreateDataArray(name, shape, cDims, type):
     elif type == np.float32:
         array = simpl_py.FloatArrayType(z_flat, cDims, name, False)
     elif type == np.double:
-        array = simpl_py.DoubleArrayType(z_flat, cDims, name, False)        
+        array = simpl_py.DoubleArrayType(z_flat, cDims, name, False)     
+  
     return array

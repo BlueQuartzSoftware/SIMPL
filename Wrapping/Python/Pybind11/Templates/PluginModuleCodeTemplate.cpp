@@ -105,10 +105,10 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>;
   * what classes are available within the module.
   *
   */
-PYBIND11_MODULE(@LIB_NAME@, m)
+PYBIND11_MODULE(@LIB_NAME@, mod)
 {
-  py::module mod = m.def_submodule("@LIB_NAME@", "    Python wrapping for @LIB_NAME@");
-
+  mod.doc() = "Python wrapping for @LIB_NAME@";
+  
   /* Init codes for classes in the Module */
   @MODULE_INIT_CODE@
 }

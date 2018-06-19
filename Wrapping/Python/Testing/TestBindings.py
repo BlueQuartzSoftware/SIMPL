@@ -1,14 +1,15 @@
-#!/usr/bin/env /Library/Frameworks/Python.framework/Versions/3.6/bin/python3
 
 import time
 
-from simpl_py import *
-import simpl.simpl_common as sc
-import simpl.simpl_test_dirs as sd
+
+# These are the simpl_py python modules
+import dream3d.simpl_py as sp
+import dream3d.utils.simpl_common as sc
+import dream3d.utils.simpl_test_dirs as sd
 
 def PipelineTest():
   inputPath = sd.GetTestTempDirectory() + "/SmallIN100.dream3d"
-  reader = simpl_py.DataContainerReader.New()
+  reader = sp.DataContainerReader.New()
   reader.InputFile = (inputPath)
   reader.OverwriteExistingDataContainers = (True)
   # This must be called to generate a default DataContainerArrayProxy object from the file structure
@@ -23,7 +24,7 @@ def PipelineTest():
   print("compiledLibraryName: %s " % reader.CompiledLibraryName)
 
 
-  writer = simpl_py.DataContainerWriter.New()
+  writer = sp.DataContainerWriter.New()
   writer.OutputFile = (sd.GetTestTempDirectory() + "/TestBindings.dream3d")
   print("humanLabel: %s " % writer.HumanLabel)
   print("groupName: %s " % writer.GroupName)
@@ -32,7 +33,7 @@ def PipelineTest():
   print("compiledLibraryName: %s " % writer.CompiledLibraryName)
 
 
-  pipeline = simpl_py.FilterPipeline.New()
+  pipeline = sp.FilterPipeline.New()
   pipeline.Name = ("New Pipeline")
   print("Pipeline Name: %s " % pipeline.Name)
 
@@ -52,10 +53,10 @@ def PipelineTest():
   filterCount = pipeline.size()
   print("Filter Count: %d" % filterCount)
 
-  pipeline = simpl_py.FilterPipeline.New()
+  pipeline = sp.FilterPipeline.New()
   print("Pipeline to Null")
-  reader = simpl_py.AbstractFilter.New()
-  writer = simpl_py.AbstractFilter.New()
+  reader = sp.AbstractFilter.New()
+  writer = sp.AbstractFilter.New()
   print("Filter to null")
 
   time.sleep(2)

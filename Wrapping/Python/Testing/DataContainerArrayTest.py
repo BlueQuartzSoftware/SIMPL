@@ -1,7 +1,7 @@
 
-from simpl_py import *
-import simpl.simpl_common as sc
-import simpl.simpl_test_dirs as sd
+import dream3d.simpl_py as sp
+import dream3d.utils.simpl_common as sc
+import dream3d.utils.simpl_test_dirs as sd
 
 
 
@@ -15,13 +15,13 @@ def AttributeMatrixAccessTest():
   dc = sc.CreateDataContainer("AM Test")
   dca.addDataContainer(dc)
   
-  amType = simpl_py.AttributeMatrix.Type.Cell
-  tupleDims = simpl_py.VectorSizeT([5,4,3])
-  am = simpl_py.AttributeMatrix.Create(tupleDims, "CellAttributeMatrix", amType)
+  amType = sp.AttributeMatrix.Type.Cell
+  tupleDims = sp.VectorSizeT([5,4,3])
+  am = sp.AttributeMatrix.Create(tupleDims, "CellAttributeMatrix", amType)
   dc.addAttributeMatrix(am.Name, am)
 
   # See if we can get the AttributeMatrix based on a DataArrayPath object
-  dap = simpl_py.DataArrayPath("AM Test", "CellAttributeMatrix", "")
+  dap = sp.DataArrayPath("AM Test", "CellAttributeMatrix", "")
   am0 = dca.getAttributeMatrix(dap)
   assert am0 == am
   assert True == dca.doesAttributeMatrixExist(dap)
