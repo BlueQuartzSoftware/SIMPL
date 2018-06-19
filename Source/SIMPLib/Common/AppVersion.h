@@ -32,11 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-
-
-#ifndef _appversion_h_
-#define _appversion_h_
+#pragma once
 
 #include "SIMPLib/SIMPLib.h"
 
@@ -47,7 +43,10 @@ class SIMPLib_EXPORT AppVersion
     AppVersion(int majorNum, int minorNum, int patchNum);
 
     AppVersion(const AppVersion&);
-    void operator=(const AppVersion&);
+    AppVersion(const AppVersion&&) = delete;
+    AppVersion& operator=(const AppVersion&);
+    AppVersion& operator=(AppVersion&&) = delete;
+    
     bool operator==(const AppVersion&);
     bool operator>(const AppVersion&);
     bool operator<(const AppVersion&);
@@ -63,10 +62,7 @@ class SIMPLib_EXPORT AppVersion
     void setPatchNum(int patch);
 
   private:
-    int m_MajorNum;
-    int m_MinorNum;
-    int m_PatchNum;
+    int m_MajorNum = -1;
+    int m_MinorNum = -1;
+    int m_PatchNum = -1;
 };
-
-#endif /* _AppVersion_H_ */
-

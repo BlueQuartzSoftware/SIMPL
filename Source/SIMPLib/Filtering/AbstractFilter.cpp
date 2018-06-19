@@ -40,6 +40,7 @@
 #include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/IFilterFactory.hpp"
+#include "SIMPLib/Filtering/FilterPipeline.h"
 #include "SIMPLib/Plugin/PluginManager.h"
 
 // -----------------------------------------------------------------------------

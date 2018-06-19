@@ -396,9 +396,16 @@ endif()
 add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SIMPLib ${PROJECT_BINARY_DIR}/SIMPLib)
 
 # --------------------------------------------------------------------
-# add the Command line utilities
+# add the Command line PipelineRunner
 # Figure out here if we are going to build the command line tools
-add_subdirectory(${SIMPLProj_SOURCE_DIR}/Tools ${PROJECT_BINARY_DIR}/Tools)
+add_subdirectory(${SIMPLProj_SOURCE_DIR}/Source/PipelineRunner ${PROJECT_BINARY_DIR}/PipelineRunner)
+
+# --------------------------------------------------------------------
+# add the Command line PipelineRunner
+option(SIMPL_BUILD_EXPERIMENTAL "Build experimental codes." OFF)
+if(SIMPL_BUILD_EXPERIMENTAL)
+  include(${SIMPLProj_SOURCE_DIR}/Source/Experimental/SourceList.cmake)
+endif()
 
 # --------------------------------------------------------------------
 # Build the SVWidgetsLib Library which holds all the GUI Specific Widgets such
@@ -420,7 +427,7 @@ message(STATUS "SIMPL_WRAP_PYTHON: ${SIMPL_WRAP_PYTHON}")
 if(SIMPL_WRAP_PYTHON)
   # --------------------------------------------------------------------
   # add the Pybind11 Python Wrapping
-  add_subdirectory(${SIMPLProj_SOURCE_DIR}/Wrapping/Tools/Pybind11 ${PROJECT_BINARY_DIR}/Pybind11)
+  add_subdirectory(${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11 ${PROJECT_BINARY_DIR}/Pybind11)
 
 endif()
 
