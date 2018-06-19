@@ -130,22 +130,31 @@ template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>
   {                                                                                                                                                                                                    \
     using DataArrayType = DataArray<T>;                                                                                                                                                                \
     PySharedPtrClass<DataArrayType> instance(m, #NAME, parent, py::buffer_protocol());                                                                                                                 \
-    instance.def(py::init([](size_t numElements, QString name, bool allocate) { return DataArrayType::CreateArray(numElements, name, allocate); }))                                                    \
-        .def(py::init([](T* ptr, size_t numElements, std::vector<size_t> cDims, QString name, bool ownsData) {                                                                                         \
+    instance\
+        .def(py::init([](size_t numElements, QString name, bool allocate)\
+                            { \
+                              return DataArrayType::CreateArray(numElements, name, allocate); \
+                            }))                                                    \
+        .def(py::init([](T* ptr, size_t numElements, std::vector<size_t> cDims, QString name, bool ownsData) \
+        {                                              \
           return DataArrayType::WrapPointer(ptr, numElements, QVector<size_t>::fromStdVector(cDims), name, ownsData);                                                                                  \
         }))                                                                                                                                                                                            \
-        .def(py::init([](py::array_t<T, py::array::c_style> b, std::vector<size_t> cDims, QString name, bool ownsData) {                                                                               \
-          ssize_t numElements = 1;                                                                                                                                                                     \
-          ssize_t nDims = b.ndim();                                                                                                                                                                    \
-          for(ssize_t e = 0; e < nDims; e++)                                                                                                                                                           \
-          {                                                                                                                                                                                            \
-            numElements *= b.shape(e);                                                                                                                                                                 \
-          }                                                                                                                                                                                            \
+        .def(py::init([](py::array_t<T, py::array::c_style> b, std::vector<size_t> cDims, QString name, bool ownsData) \
+        {                                                                               \
+          ssize_t numElements = 1;                                                                                                   \
+          ssize_t nDims = b.ndim();                                                                                             \
+          for(ssize_t e = 0; e < nDims; e++)                                                                                   \
+          {                                               \
+            numElements *= b.shape(e);                                   \
+          }\
           return DataArrayType::WrapPointer(reinterpret_cast<T*>(b.mutable_data(0)), static_cast<size_t>(numElements), QVector<size_t>::fromStdVector(cDims), name, ownsData);                         \
-        })) /* Class instance method setValue */                                                                                                                                                       \
-        .def("setValue", &DataArrayType::setValue, py::arg("index"), py::arg("value"))                                                                                                                 \
-        .def("getValue", &DataArrayType::getValue, py::arg("index"))                                                                                                                                   \
-        .def_property("Name", &DataArrayType::getName, &DataArrayType::setName);                                                                                                                       \
+        })) \
+        /* Class instance method setValue */                                                                                                                                                       \
+        .def("setValue", &DataArrayType::setValue, py::arg("index"), py::arg("value"))        \
+        .def("getValue", &DataArrayType::getValue, py::arg("index"))                \
+        .def_property("Name", &DataArrayType::getName, &DataArrayType::setName)\
+        .def("Cleanup", []() {  return DataArrayType::NullPointer(); } )\
+        ;       \
     ;                                                                                                                                                                                                  \
     return instance;                                                                                                                                                                                   \
   }

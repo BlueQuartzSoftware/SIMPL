@@ -77,8 +77,8 @@ def CreateDataArray(name, shape, cDims, type):
     z = np.asarray(num_array)
     if not z.flags.contiguous:
         z = np.ascontiguousarray(z)
+    z.fill(0)
 
-    
     shape = z.shape
     assert z.flags.contiguous, 'Only contiguous arrays are supported.'
     assert not np.issubdtype(z.dtype, np.complex128), \
@@ -88,7 +88,9 @@ def CreateDataArray(name, shape, cDims, type):
 
     # Get the Pointer to the numpy array
     z_flat = np.ravel(z)
-    z.fill(20)
+    
+    #np.info(z)
+    
     # Declare the number of components for the array
     if type == np.int8:
         array = simpl_py.Int8ArrayType(z_flat, cDims, name, False)
@@ -110,5 +112,6 @@ def CreateDataArray(name, shape, cDims, type):
         array = simpl_py.FloatArrayType(z_flat, cDims, name, False)
     elif type == np.double:
         array = simpl_py.DoubleArrayType(z_flat, cDims, name, False)     
-  
-    return array
+    
+    # we need to return the 'z' numpy array so it does not go out of scope.
+    return (z, array)
