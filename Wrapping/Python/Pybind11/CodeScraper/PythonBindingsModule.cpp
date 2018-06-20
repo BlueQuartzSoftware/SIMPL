@@ -292,9 +292,15 @@ void PythonBindingsModule::generatePythonTestFile(const QString& outputPath, con
   out << "\"\"\"\n"
       << "This is a basic unit test file to ensure that the filters can be instantiated\n"
       << "\"\"\"\n";
-  
-  out << "from "<< SIMPL::PyBind11::SIMPL_LibraryName << SIMPL::PyBind11::PythonModuleSuffix << " import *\n";
-  out << "from " << m_LibName << " import *\n";
+  QString shortLibName = m_LibName;
+  shortLibName.replace("_py", "");
+  out << "import dream3d." << m_LibName << " as " << shortLibName << "\n";
+  out << "import dream3d.utils.simpl_common as sc\n"; 
+  out << "import dream3d.utils.simpl_test_dirs as sd\n";
+
+
+ // out << "from "<< SIMPL::PyBind11::SIMPL_LibraryName << SIMPL::PyBind11::PythonModuleSuffix << " import *\n";
+ // out << "from " << m_LibName << " import *\n";
   out << "\n\n";
   
   out << "def " << m_LibName << "UnitTest () :\n"
@@ -314,6 +320,7 @@ void PythonBindingsModule::generatePythonTestFile(const QString& outputPath, con
       << "Main Entry point for the python script\n"
       << "\"\"\"\n";
   out << "if __name__ == \"__main__\":\n"
+      << "  print(\"" << m_LibName << " UnitTest Starting\")\n"
       << "  " << m_LibName << "UnitTest()\n"
       << "  print(\"" << m_LibName << " UnitTest Complete\")\n";
   
@@ -336,7 +343,9 @@ void PythonBindingsModule::dumpRecursivePythonCode(int level, const QObject* obj
     }
     
     QString initCode = m_PythonCodes[object->objectName()];
-    
+    QString shortLibName = m_LibName;
+    shortLibName.replace("_py", "");
+
     const char* pycode = R"PY(
   # @FILTER_NAME@
   # @INIT_CODE@
@@ -344,7 +353,7 @@ void PythonBindingsModule::dumpRecursivePythonCode(int level, const QObject* obj
   filter = @LIB_NAME@.@FILTER_NAME@.New()
   filter.preflight()
   # print("  Preflight Error Code:%s" % filter.ErrorCondition)
-  filterName = filter.NameOfClass;
+  filterName = filter.NameOfClass
   if filterName != "@FILTER_NAME@" :
     print("  Error: Filter class name is not correct. %s != @FILTER_NAME@" % filterName)
 
@@ -355,7 +364,7 @@ void PythonBindingsModule::dumpRecursivePythonCode(int level, const QObject* obj
     if(object->objectName().compare("AbstractFilter") != 0) 
     {
       QString code(pycode);
-      code.replace("@LIB_NAME@", m_LibName);
+      code.replace("@LIB_NAME@", shortLibName);
       code.replace("@FILTER_NAME@", object->objectName());
       code.replace("@INIT_CODE@", initCode);
       out << code;
