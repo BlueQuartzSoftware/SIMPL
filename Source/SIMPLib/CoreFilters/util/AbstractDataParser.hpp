@@ -45,13 +45,20 @@ public:
   SIMPL_SHARED_POINTERS(AbstractDataParser)
   SIMPL_TYPE_MACRO(AbstractDataParser)
 
-  virtual ~AbstractDataParser()
-  {
-  }
+  virtual ~AbstractDataParser() = default;
 
   SIMPL_INSTANCE_STRING_PROPERTY(ColumnName)
   SIMPL_INSTANCE_PROPERTY(int, ColumnIndex)
-  SIMPL_VIRTUAL_INSTANCE_PROPERTY(IDataArray::Pointer, DataArray)
+  
+  virtual void setDataArray(IDataArray::Pointer value)
+  {
+    m_DataArray = value;
+  }
+  
+  IDataArray::Pointer getDataArray()
+  {
+    return m_DataArray;
+  }
 
   virtual IDataArray::Pointer initializeNewDataArray(size_t numTuples, const QString& name, bool allocate)
   {
@@ -61,11 +68,14 @@ public:
   virtual ParserFunctor::ErrorObject parse(const QString& token, size_t index) = 0;
 
 protected:
-  AbstractDataParser()
+  AbstractDataParser() :
+  m_ColumnIndex(0)
   {
   }
 
 private:
+  IDataArray::Pointer m_DataArray;
+  
   AbstractDataParser(const AbstractDataParser&); // Copy Constructor Not Implemented
   void operator=(const AbstractDataParser&);     // Move assignment Not Implemented
 };
@@ -87,9 +97,7 @@ public:
     return sharedPtr;
   }
 
-  virtual ~Parser()
-  {
-  }
+  ~Parser() = default;
 
   static IDataArray::Pointer InitializeNewDataArray(size_t numTuples, const QString& name, bool allocate)
   {
@@ -101,7 +109,7 @@ public:
     return array;
   }
 
-  void setDataArray(IDataArray::Pointer value)
+  void setDataArray(IDataArray::Pointer value) override
   {
     AbstractDataParser::setDataArray(value);
     m_Ptr = std::dynamic_pointer_cast<ArrayType>(value);
@@ -127,8 +135,12 @@ protected:
 private:
   typename ArrayType::Pointer m_Ptr;
 
-  Parser(const Parser&);         // Copy Constructor Not Implemented
-  void operator=(const Parser&); // Move assignment Not Implemented
+  public:
+  Parser(const Parser&) = delete; // Copy Constructor Not Implemented
+  Parser(Parser&&) = delete;      // Move Constructor Not Implemented
+  Parser& operator=(const Parser&) = delete; // Copy Assignment Not Implemented
+  Parser& operator=(Parser&&) = delete;      // Move Assignment
+  
 };
 
 typedef Parser<Int8ArrayType, Int8Functor> Int8ParserType;

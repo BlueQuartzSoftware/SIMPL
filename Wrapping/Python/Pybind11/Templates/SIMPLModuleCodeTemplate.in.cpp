@@ -117,7 +117,7 @@ public:
 template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>;
 #endif
 
-@HEADER_PATH @
+@HEADER_PATH@
 
 /******************************************************************************
  *
@@ -175,7 +175,7 @@ PYB11_DEFINE_DATAARRAY_INIT(double, DoubleArrayType);
  * what classes are available within the module.
  *
  */
-PYBIND11_MODULE(@LIB_NAME @, mod)
+PYBIND11_MODULE(@LIB_NAME@, mod)
 {
   mod.doc() = "Python wrapping for @FULL_LIB_NAME@";
 
@@ -201,23 +201,23 @@ PYBIND11_MODULE(@LIB_NAME @, mod)
     py::bind_vector<std::vector<size_t>>(mod, "VectorSizeT");
 
   /* Init codes for classes in the Module */
-  @MODULE_INIT_CODE @
+  @MODULE_INIT_CODE@
 
-      /* Init codes for the DataArray<T> classes */
-      PySharedPtrClass<Int8ArrayType> @LIB_NAME @_Int8ArrayType = declareInt8ArrayType(mod, @LIB_NAME @_IDataArray);
-  PySharedPtrClass<UInt8ArrayType> @LIB_NAME @_UInt8ArrayType = declareUInt8ArrayType(mod, @LIB_NAME @_IDataArray);
+  /* Init codes for the DataArray<T> classes */
+  PySharedPtrClass<Int8ArrayType> @LIB_NAME@_Int8ArrayType = declareInt8ArrayType(mod, @LIB_NAME@_IDataArray);
+  PySharedPtrClass<UInt8ArrayType> @LIB_NAME@_UInt8ArrayType = declareUInt8ArrayType(mod, @LIB_NAME@_IDataArray);
 
-  PySharedPtrClass<Int16ArrayType> @LIB_NAME @_Int16ArrayType = declareInt16ArrayType(mod, @LIB_NAME @_IDataArray);
-  PySharedPtrClass<UInt16ArrayType> @LIB_NAME @_UInt16ArrayType = declareUInt16ArrayType(mod, @LIB_NAME @_IDataArray);
+  PySharedPtrClass<Int16ArrayType> @LIB_NAME@_Int16ArrayType = declareInt16ArrayType(mod, @LIB_NAME@_IDataArray);
+  PySharedPtrClass<UInt16ArrayType> @LIB_NAME@_UInt16ArrayType = declareUInt16ArrayType(mod, @LIB_NAME@_IDataArray);
 
-  PySharedPtrClass<Int32ArrayType> @LIB_NAME @_Int32ArrayType = declareInt32ArrayType(mod, @LIB_NAME @_IDataArray);
-  PySharedPtrClass<UInt32ArrayType> @LIB_NAME @_UInt32ArrayType = declareUInt32ArrayType(mod, @LIB_NAME @_IDataArray);
+  PySharedPtrClass<Int32ArrayType> @LIB_NAME@_Int32ArrayType = declareInt32ArrayType(mod, @LIB_NAME@_IDataArray);
+  PySharedPtrClass<UInt32ArrayType> @LIB_NAME@_UInt32ArrayType = declareUInt32ArrayType(mod, @LIB_NAME@_IDataArray);
 
-  PySharedPtrClass<Int64ArrayType> @LIB_NAME @_Int64ArrayType = declareInt64ArrayType(mod, @LIB_NAME @_IDataArray);
-  PySharedPtrClass<UInt64ArrayType> @LIB_NAME @_UInt64ArrayType = declareUInt64ArrayType(mod, @LIB_NAME @_IDataArray);
+  PySharedPtrClass<Int64ArrayType> @LIB_NAME@_Int64ArrayType = declareInt64ArrayType(mod, @LIB_NAME@_IDataArray);
+  PySharedPtrClass<UInt64ArrayType> @LIB_NAME@_UInt64ArrayType = declareUInt64ArrayType(mod, @LIB_NAME@_IDataArray);
 
-  PySharedPtrClass<FloatArrayType> @LIB_NAME @_FloatArrayType = declareFloatArrayType(mod, @LIB_NAME @_IDataArray);
-  PySharedPtrClass<DoubleArrayType> @LIB_NAME @_DoubleArrayType = declareDoubleArrayType(mod, @LIB_NAME @_IDataArray);
+  PySharedPtrClass<FloatArrayType> @LIB_NAME@_FloatArrayType = declareFloatArrayType(mod, @LIB_NAME@_IDataArray);
+  PySharedPtrClass<DoubleArrayType> @LIB_NAME@_DoubleArrayType = declareDoubleArrayType(mod, @LIB_NAME@_IDataArray);
 
   py::enum_<SIMPL::InfoStringFormat>(mod, "InfoStringFormat").value("HtmlFormat", SIMPL::InfoStringFormat::HtmlFormat).value("UnknownFormat", SIMPL::InfoStringFormat::UnknownFormat).export_values();
 }

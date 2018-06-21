@@ -96,17 +96,17 @@ public:
 template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>;
 #endif
 
-@HEADER_PATH @
+@HEADER_PATH@
 
     /**
      * @brief PYBIND11_MODULE This section declares our python module, its name and
      * what classes are available within the module.
      *
      */
-    PYBIND11_MODULE(@LIB_NAME @, mod)
+    PYBIND11_MODULE(@LIB_NAME@, mod)
 {
   mod.doc() = "Python wrapping for @LIB_NAME@";
 
   /* Init codes for classes in the Module */
-  @MODULE_INIT_CODE @
+  @MODULE_INIT_CODE@
 }

@@ -15,6 +15,6 @@ template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>
  * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly
  * initialized.
  */
-PySharedPtrClass<@CLASS_NAME @> declare @CLASS_NAME @(py::module& m)
+PySharedPtrClass<@CLASS_NAME@> declare@CLASS_NAME@(py::module& m)
 {
-  PySharedPtrClass<@CLASS_NAME @> instance(m, "@CLASS_NAME@");
+  PySharedPtrClass<@CLASS_NAME@> instance(m, "@CLASS_NAME@");
