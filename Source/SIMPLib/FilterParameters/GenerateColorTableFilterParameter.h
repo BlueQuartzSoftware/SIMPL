@@ -68,9 +68,9 @@ class SIMPLib_EXPORT GenerateColorTableFilterParameter : public FilterParameter
                        const QString& defaultValue, Category category, GenerateColorTable* filter,
                        int groupIndex = -1);
 
-    virtual ~GenerateColorTableFilterParameter();
+    ~GenerateColorTableFilterParameter() override;
 
-    SIMPL_INSTANCE_PROPERTY(GenerateColorTable*, Filter)
+    SIMPL_POINTER_PROPERTY(GenerateColorTable, Filter)
 
     /**
      * @brief getWidgetType Returns the type of widget that displays and controls

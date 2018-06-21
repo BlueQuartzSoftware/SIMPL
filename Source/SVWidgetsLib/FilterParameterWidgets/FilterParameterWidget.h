@@ -33,10 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _filterparameterwidget_h_
-#define _filterparameterwidget_h_
-
-
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -90,8 +87,8 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
       FS_WARNING_STYLE = 3
     };
 
-    SIMPL_VIRTUAL_INSTANCE_PROPERTY(AbstractFilter*, Filter)
-    SIMPL_VIRTUAL_INSTANCE_PROPERTY(FilterParameter*, FilterParameter)
+    SIMPL_POINTER_PROPERTY(AbstractFilter, Filter)
+    SIMPL_POINTER_PROPERTY(FilterParameter, FilterParameter)
     SIMPL_VIRTUAL_INSTANCE_PROPERTY(bool, WidgetIsExpanding)
 
 
@@ -226,8 +223,4 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
     data.cell = defValue.cell;\
   }\
 
-
-
-
-#endif /* _FilterParameterWidget_H_ */
 

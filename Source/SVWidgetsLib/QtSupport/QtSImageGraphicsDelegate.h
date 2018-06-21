@@ -71,9 +71,9 @@ class SVWidgetsLib_EXPORT QtSImageGraphicsDelegate : public QObject
     virtual ~QtSImageGraphicsDelegate();
 
 
-    SIMPL_INSTANCE_PROPERTY(QMainWindow*, MainWindow)
-    SIMPL_INSTANCE_PROPERTY(QGraphicsView*, GraphicsView)
-    SIMPL_INSTANCE_PROPERTY(QGraphicsScene*, GraphicsScene)
+    SIMPL_POINTER_PROPERTY(QMainWindow, MainWindow)
+    SIMPL_POINTER_PROPERTY(QGraphicsView, GraphicsView)
+    SIMPL_POINTER_PROPERTY(QGraphicsScene, GraphicsScene)
 
 
     SIMPL_INSTANCE_PROPERTY(QImage, CachedImage)
