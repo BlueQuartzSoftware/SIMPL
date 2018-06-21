@@ -1,7 +1,5 @@
 
-
-#ifndef SIMPLPyBind11Config_h
-#define SIMPLPyBind11Config_h
+#pragma once
 
 #include <QtCore/QString>
 
@@ -62,8 +60,3 @@ namespace SIMPL
   }
   
 }
-
-
-#endif /* SIMPLPyBind11Config_h  */
-
-

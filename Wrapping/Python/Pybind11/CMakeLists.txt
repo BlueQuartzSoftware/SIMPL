@@ -67,7 +67,7 @@ CreatePybind11Module(MODULE_NAME ${SIMPL_PYTHON_MODULE_NAME}
                     PATH_TO_STRIP "SIMPL/Source/"
                     OUTPUT_PATH "${SIMPLProj_BINARY_DIR}/Wrapping/PythonCore"
                     BINARY_DIR "${SIMPLProj_BINARY_DIR}"
-                    MODULE_TEMPLATE_FILE "${SIMPLPyBind11_SOURCE_DIR}/Templates/SIMPLModuleCodeTemplate.cpp"
+                    MODULE_TEMPLATE_FILE "${SIMPLPyBind11_SOURCE_DIR}/Templates/SIMPLModuleCodeTemplate.in.cpp"
                     MODULE_LINK_LIBRARIES SIMPLib
                     SIMPLIB
 )

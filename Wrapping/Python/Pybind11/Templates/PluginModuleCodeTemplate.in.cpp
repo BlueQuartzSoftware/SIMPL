@@ -1,7 +1,7 @@
 /* This file is auto-genereated from a template file. If you want changes
-* then edit the template file.
-*
-*/
+ * then edit the template file.
+ *
+ */
 
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
@@ -24,19 +24,19 @@ template <> struct type_caster<QString>
 {
 public:
   /**
-* This macro establishes the name 'QString' in
-* function signatures and declares a local variable
-* 'value' of type QString
-*/
+   * This macro establishes the name 'QString' in
+   * function signatures and declares a local variable
+   * 'value' of type QString
+   */
   PYBIND11_TYPE_CASTER(QString, _("QString"));
 
   /**
-*  @brief Conversion part 1 (Python->C++): convert a PyObject into a QString
-* instance or return false upon failure. The second argument
-* indicates whether implicit conversions should be applied.
-* @param src
-* @return boolean
-*/
+   *  @brief Conversion part 1 (Python->C++): convert a PyObject into a QString
+   * instance or return false upon failure. The second argument
+   * indicates whether implicit conversions should be applied.
+   * @param src
+   * @return boolean
+   */
   bool load(handle src, bool)
   {
     if(!src)
@@ -88,27 +88,25 @@ public:
 #endif
   }
 };
-}
-}
+} // namespace detail
+} // namespace pybind11
 
 #ifndef PySharedPtrClass_TEMPLATE
 #define PySharedPtrClass_TEMPLATE
-template <typename T> 
-using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>;
+template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>;
 #endif
 
+@HEADER_PATH @
 
-@HEADER_PATH@
-
-/**
-  * @brief PYBIND11_MODULE This section declares our python module, its name and
-  * what classes are available within the module.
-  *
-  */
-PYBIND11_MODULE(@LIB_NAME@, mod)
+    /**
+     * @brief PYBIND11_MODULE This section declares our python module, its name and
+     * what classes are available within the module.
+     *
+     */
+    PYBIND11_MODULE(@LIB_NAME @, mod)
 {
   mod.doc() = "Python wrapping for @LIB_NAME@";
-  
+
   /* Init codes for classes in the Module */
-  @MODULE_INIT_CODE@
+  @MODULE_INIT_CODE @
 }

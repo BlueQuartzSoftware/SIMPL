@@ -285,7 +285,7 @@ QString PythonBindingClass::generateTopMatterCode()
   subPath = subPath.remove(0, 1);                            // Remove the front / character
 
   // Create the Top part of the file from a template file
-  QFile source(SIMPL::PyBind11::TemplateDir + "/Pybind11TopMatter.txt");
+  QFile source(SIMPL::PyBind11::TemplateDir + "/Pybind11TopMatter.in.h");
   source.open(QFile::ReadOnly);
   QString headerTemplate = source.readAll();
   source.close();
@@ -316,7 +316,7 @@ QString PythonBindingClass::generateSharedPointerInitCode()
 
   if(getHasSuperClass() && !getSuperClass().isEmpty())
   {
-    source.setFileName(SIMPL::PyBind11::TemplateDir + "/DerivedSharedPointerClassInit.txt");
+    source.setFileName(SIMPL::PyBind11::TemplateDir + "/DerivedSharedPointerClassInit.in.h");
     source.open(QFile::ReadOnly);
     headerTemplate = source.readAll();
     source.close();
@@ -347,7 +347,7 @@ QString PythonBindingClass::generateSharedPointerInitCode()
   }
   else
   {
-    source.setFileName(SIMPL::PyBind11::TemplateDir + "/SharedPointerClassInit.txt");
+    source.setFileName(SIMPL::PyBind11::TemplateDir + "/SharedPointerClassInit.in.h");
     source.open(QFile::ReadOnly);
     headerTemplate = source.readAll();
     source.close();
@@ -437,7 +437,7 @@ QString PythonBindingClass::generateConstructorsCodes()
   QTextStream constructors(&code);
 
   QFile source;
-  source.setFileName(SIMPL::PyBind11::TemplateDir + "/SimpleClassInit.txt");
+  source.setFileName(SIMPL::PyBind11::TemplateDir + "/SimpleClassInit.in.h");
   source.open(QFile::ReadOnly);
   QString headerTemplate = source.readAll();
   source.close();

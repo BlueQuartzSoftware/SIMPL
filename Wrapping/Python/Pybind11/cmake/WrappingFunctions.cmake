@@ -58,7 +58,12 @@ function(CreatePybind11Module)
   set(pybind_module_file_name "${ARGS_BINARY_DIR}/Wrapping/PythonCore/${pybind_module_name}_pybind11_module.cxx")
   pybind11_add_module(${pybind_module_name}
       ${pybind_module_file_name} 
-      ${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/SIMPLModuleCodeTemplate.cpp
+      "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/DerivedSharedPointerClassInit.in.h"
+      "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/PluginModuleCodeTemplate.in.cpp"
+      "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/Pybind11TopMatter.in.h"
+      "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/SIMPLModuleCodeTemplate.in.cpp"
+      "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/SharedPointerClassInit.in.h"
+      "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/SimpleClassInit.in.h"
       )
 
   if(NOT EXISTS "${pybind_module_file_name}")
@@ -70,7 +75,12 @@ function(CreatePybind11Module)
                                   GENERATED TRUE
                                   SKIP_AUTOMOC ON
   )
-  set_source_files_properties("${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/SIMPLModuleCodeTemplate.cpp"
+  set_source_files_properties("${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/DerivedSharedPointerClassInit.in.h"
+                              "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/PluginModuleCodeTemplate.in.cpp"
+                              "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/Pybind11TopMatter.in.h"
+                              "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/SIMPLModuleCodeTemplate.in.cpp"
+                              "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/SharedPointerClassInit.in.h"
+                              "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/SimpleClassInit.in.h"
                               PROPERTIES  
                                 HEADER_FILE_ONLY ON
                                 SKIP_AUTOMOC ON
