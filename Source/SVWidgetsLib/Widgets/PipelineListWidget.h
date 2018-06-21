@@ -41,7 +41,7 @@ class SVWidgetsLib_EXPORT PipelineListWidget : public QFrame, private Ui::Pipeli
     Q_OBJECT
 
   public:
-    PipelineListWidget(QWidget* parent = 0);
+    PipelineListWidget(QWidget* parent = nullptr);
     virtual ~PipelineListWidget();
 
     /**

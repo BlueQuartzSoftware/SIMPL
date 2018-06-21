@@ -56,7 +56,7 @@ class SVWidgetsLib_EXPORT AboutPlugins : public QDialog, private Ui::AboutPlugin
     Q_OBJECT
 
   public:
-    AboutPlugins(QWidget* parent = 0);
+    AboutPlugins(QWidget* parent = nullptr);
     virtual ~AboutPlugins();
 
     void setupGui();

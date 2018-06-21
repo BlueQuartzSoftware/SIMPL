@@ -89,7 +89,7 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     SIMPL_GET_PROPERTY(QAction*, ActionPaste)
     SIMPL_GET_PROPERTY(QAction*, ActionClearPipeline)
 
-    SVPipelineView(QWidget* parent = 0);
+    SVPipelineView(QWidget* parent = nullptr);
     virtual ~SVPipelineView();
 
     /**

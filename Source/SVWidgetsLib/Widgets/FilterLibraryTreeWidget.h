@@ -50,7 +50,7 @@ class SVWidgetsLib_EXPORT FilterLibraryTreeWidget: public QTreeWidget
     Q_OBJECT
 
   public:
-    FilterLibraryTreeWidget(QWidget* parent = 0);
+    FilterLibraryTreeWidget(QWidget* parent = nullptr);
     virtual ~FilterLibraryTreeWidget();
 
     enum ItemType

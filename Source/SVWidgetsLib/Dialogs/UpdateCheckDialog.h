@@ -64,7 +64,7 @@ class SVWidgetsLib_EXPORT UpdateCheckDialog : public QDialog, private Ui::Update
     Q_OBJECT
 
   public:
-    UpdateCheckDialog(UpdateCheck::SIMPLVersionData_t versionData, QWidget* parent = 0);
+    UpdateCheckDialog(UpdateCheck::SIMPLVersionData_t versionData, QWidget* parent = nullptr);
     virtual ~UpdateCheckDialog();
 
     enum UpdateType

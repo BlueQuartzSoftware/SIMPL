@@ -49,7 +49,7 @@ class SVWidgetsLib_EXPORT StatusBarWidget : public QFrame, private Ui::StatusBar
     Q_OBJECT
 
   public:
-    StatusBarWidget(QWidget* parent = 0);
+    StatusBarWidget(QWidget* parent = nullptr);
     virtual ~StatusBarWidget();
 
 
