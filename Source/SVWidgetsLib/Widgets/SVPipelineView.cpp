@@ -1260,7 +1260,10 @@ void SVPipelineView::dropEvent(QDropEvent* event)
       // Set the text of the drag command
       QString text = cmd->text();
 
-      m_MoveCommand->setText(text);
+      if(m_MoveCommand)
+      {
+        m_MoveCommand->setText(text);
+      }
 
       // The overall drag command already has a child command that removed the filters initially, and
       // has already been placed on the undo stack and executed.  This new child command needs to be executed
