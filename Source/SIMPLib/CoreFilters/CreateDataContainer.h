@@ -48,7 +48,7 @@ class SIMPLib_EXPORT CreateDataContainer : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(CreateDataContainer SUPERCLASS AbstractFilter)
-    PYB11_PROPERTY(QString CreatedDataContainer READ getCreatedDataContainer WRITE setCreatedDataContainer)
+    PYB11_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
   public:
     SIMPL_SHARED_POINTERS(CreateDataContainer)
@@ -57,8 +57,8 @@ class SIMPLib_EXPORT CreateDataContainer : public AbstractFilter
 
     ~CreateDataContainer() override;
 
-    SIMPL_FILTER_PARAMETER(QString, CreatedDataContainer)
-    Q_PROPERTY(QString CreatedDataContainer READ getCreatedDataContainer WRITE setCreatedDataContainer)
+    SIMPL_FILTER_PARAMETER(QString, DataContainerName)
+    Q_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
