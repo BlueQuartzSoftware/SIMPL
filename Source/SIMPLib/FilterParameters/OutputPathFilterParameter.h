@@ -68,8 +68,8 @@ public:
     SIMPL_STATIC_NEW_MACRO(OutputPathFilterParameter)
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(OutputPathFilterParameter, FilterParameter)
 
-    typedef std::function<void(QString)> SetterCallbackType;
-    typedef std::function<QString(void)> GetterCallbackType;
+    using SetterCallbackType = std::function<void(QString)>;
+    using GetterCallbackType = std::function<QString(void)>;
 
     /**
      * @brief New This function instantiates an instance of the OutputPathFilterParameter. Although this function is available to be used,

@@ -52,8 +52,8 @@ class SIMPLib_EXPORT LinkedChoicesFilterParameter : public ChoiceFilterParameter
     SIMPL_STATIC_NEW_MACRO(LinkedChoicesFilterParameter)
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(LinkedChoicesFilterParameter, FilterParameter)
 
-    typedef std::function<void(int)> SetterCallbackType;
-    typedef std::function<int(void)> GetterCallbackType;
+    using SetterCallbackType = std::function<void(int)>;
+    using GetterCallbackType = std::function<int(void)>;
 
     /**
      * @brief New This function instantiates an instance of the LinkedChoicesFilterParameter. Although this function is available to be used,

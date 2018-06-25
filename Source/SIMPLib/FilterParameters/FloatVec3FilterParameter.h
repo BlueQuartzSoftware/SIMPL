@@ -113,8 +113,8 @@ public:
     SIMPL_STATIC_NEW_MACRO(FloatVec3FilterParameter)
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FloatVec3FilterParameter, FilterParameter)
 
-    typedef std::function<void(FloatVec3_t)> SetterCallbackType;
-    typedef std::function<FloatVec3_t(void)> GetterCallbackType;
+    using SetterCallbackType = std::function<void(FloatVec3_t)>;
+    using GetterCallbackType = std::function<FloatVec3_t(void)>;
 
     /**
      * @brief New This function instantiates an instance of the FloatVec3FilterParameter. Although this function is available to be used,

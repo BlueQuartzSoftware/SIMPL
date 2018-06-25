@@ -68,8 +68,8 @@ class SIMPLib_EXPORT DynamicChoiceFilterParameter : public FilterParameter
     SIMPL_STATIC_NEW_MACRO(DynamicChoiceFilterParameter)
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DynamicChoiceFilterParameter, FilterParameter)
 
-    typedef std::function<void(QString)> SetterCallbackType;
-    typedef std::function<QString(void)> GetterCallbackType;
+    using SetterCallbackType = std::function<void(QString)>;
+    using GetterCallbackType = std::function<QString(void)>;
 
     /**
      * @brief New This function instantiates an instance of the DynamicChoiceFilterParameter. Although this function is available to be used,

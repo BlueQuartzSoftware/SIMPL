@@ -68,8 +68,8 @@ class SIMPLib_EXPORT LinkedBooleanFilterParameter : public FilterParameter
     SIMPL_STATIC_NEW_MACRO(LinkedBooleanFilterParameter)
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(LinkedBooleanFilterParameter, FilterParameter)
 
-    typedef std::function<void(bool)> SetterCallbackType;
-    typedef std::function<bool(void)> GetterCallbackType;
+    using SetterCallbackType = std::function<void(bool)>;
+    using GetterCallbackType = std::function<bool(void)>;
 
     /**
      * @brief New This function instantiates an instance of the LinkedBooleanFilterParameter. Although this function is available to be used,

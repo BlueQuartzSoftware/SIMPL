@@ -70,8 +70,8 @@ class SIMPLib_EXPORT AxisAngleFilterParameter : public FilterParameter
     SIMPL_STATIC_NEW_MACRO(AxisAngleFilterParameter)
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AxisAngleFilterParameter, FilterParameter)
 
-    typedef std::function<void(AxisAngleInput_t)> SetterCallbackType;
-    typedef std::function<AxisAngleInput_t(void)> GetterCallbackType;
+    using SetterCallbackType = std::function<void(AxisAngleInput_t)>;
+    using GetterCallbackType = std::function<AxisAngleInput_t(void)>;
 
     /**
      * @brief New This function instantiates an instance of the AxisAngleFilterParameter. Although this function is available to be used,

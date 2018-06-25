@@ -70,8 +70,8 @@ class SIMPLib_EXPORT DynamicTableFilterParameter : public FilterParameter
     SIMPL_STATIC_NEW_MACRO(DynamicTableFilterParameter)
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DynamicTableFilterParameter, FilterParameter)
 
-    typedef std::function<void(DynamicTableData)> SetterCallbackType;
-    typedef std::function<DynamicTableData(void)> GetterCallbackType;
+    using SetterCallbackType = std::function<void(DynamicTableData)>;
+    using GetterCallbackType = std::function<DynamicTableData(void)>;
 
     /**
      * @brief New This function instantiates an instance of the DynamicTableFilterParameter. Although this function is available to be used,

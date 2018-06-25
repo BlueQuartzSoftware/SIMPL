@@ -101,8 +101,8 @@ public:
     SIMPL_STATIC_NEW_MACRO(SecondOrderPolynomialFilterParameter)
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(SecondOrderPolynomialFilterParameter, FilterParameter)
 
-    typedef std::function<void(Float2ndOrderPoly_t)> SetterCallbackType;
-    typedef std::function<Float2ndOrderPoly_t(void)> GetterCallbackType;
+    using SetterCallbackType = std::function<void(Float2ndOrderPoly_t)>;
+    using GetterCallbackType = std::function<Float2ndOrderPoly_t(void)>;
 
     /**
      * @brief New This function instantiates an instance of the SecondOrderPolynomialFilterParameter. Although this function is available to be used,

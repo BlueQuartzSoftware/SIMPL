@@ -72,8 +72,8 @@ class SIMPLib_EXPORT DataArrayCreationFilterParameter : public FilterParameter
     SIMPL_STATIC_NEW_MACRO(DataArrayCreationFilterParameter)
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataArrayCreationFilterParameter, FilterParameter)
 
-    typedef std::function<void(DataArrayPath)> SetterCallbackType;
-    typedef std::function<DataArrayPath(void)> GetterCallbackType;
+    using SetterCallbackType = std::function<void(DataArrayPath)>;
+    using GetterCallbackType = std::function<DataArrayPath(void)>;
 
     typedef struct
     {

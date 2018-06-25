@@ -151,8 +151,8 @@ public:
     SIMPL_STATIC_NEW_MACRO(FourthOrderPolynomialFilterParameter)
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FourthOrderPolynomialFilterParameter, FilterParameter)
 
-    typedef std::function<void(Float4thOrderPoly_t)> SetterCallbackType;
-    typedef std::function<Float4thOrderPoly_t(void)> GetterCallbackType;
+    using SetterCallbackType = std::function<void(Float4thOrderPoly_t)>;
+    using GetterCallbackType = std::function<Float4thOrderPoly_t(void)>;
 
     /**
      * @brief New This function instantiates an instance of the FourthOrderPolynomialFilterParameter. Although this function is available to be used,

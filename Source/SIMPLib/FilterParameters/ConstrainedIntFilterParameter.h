@@ -68,8 +68,8 @@ class SIMPLib_EXPORT ConstrainedIntFilterParameter : public FilterParameter
     SIMPL_STATIC_NEW_MACRO(ConstrainedIntFilterParameter)
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ConstrainedIntFilterParameter, FilterParameter)
 
-    typedef std::function<void(int)> SetterCallbackType;
-    typedef std::function<int(void)> GetterCallbackType;
+    using SetterCallbackType = std::function<void(int)>;
+    using GetterCallbackType = std::function<int(void)>;
 
     /**
      * @brief New This function instantiates an instance of the ConstrainedIntFilterParameter. Although this function is available to be used,

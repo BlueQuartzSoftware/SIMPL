@@ -69,8 +69,8 @@ class SIMPLib_EXPORT FloatFilterParameter : public FilterParameter
     SIMPL_STATIC_NEW_MACRO(FloatFilterParameter)
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FloatFilterParameter, FilterParameter)
 
-    typedef std::function<void(float)> SetterCallbackType;
-    typedef std::function<float(void)> GetterCallbackType;
+    using SetterCallbackType = std::function<void(float)>;
+    using GetterCallbackType = std::function<float(void)>;
 
     /**
      * @brief New This function instantiates an instance of the FloatFilterParameter. Although this function is available to be used,
