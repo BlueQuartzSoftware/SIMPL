@@ -1,5 +1,8 @@
 
-from .. import simpl_py
+import dream3d
+import dream3d.dream3d_py
+import dream3d.dream3d_py as d3d
+import dream3d.dream3d_py.simpl_py as simpl
 
 try:
     import numpy as np
@@ -12,7 +15,7 @@ def CreateDataContainerArray():
     """
     Creates a Top level Data Container Array object. Everything will get packed in this
     """
-    dca = simpl_py.DataContainerArray.New()
+    dca = simpl.DataContainerArray.New()
     return dca
 
 def CreateDataContainer(name):
@@ -22,7 +25,7 @@ def CreateDataContainer(name):
     Keyword arguments:
     name -- The name of the DataContainer    
     """
-    dc = simpl_py.DataContainer.New(name)
+    dc = simpl.DataContainer.New(name)
     return dc
 
 
@@ -35,7 +38,7 @@ def CreateAttributeMatrix(dims, name, type):
     name -- The name of the AttributeMatrix
     type -- the type of the AttributeMatrix
     """
-    am = simpl_py.AttributeMatrix.Create(dims, name, type)
+    am = simpl.AttributeMatrix.Create(dims, name, type)
     return am
 
 
@@ -50,7 +53,7 @@ def WriteDREAM3DFile(path, dca, verbose=False):
     # Lets write out the whole Heirarchy to a .dream3d file
     if verbose:
         print("Creating DREAM3D Writer filter....")
-    writer = simpl_py.DataContainerWriter.New()
+    writer = simpl.DataContainerWriter.New()
     writer.OutputFile = (path)
     if verbose:
         print("Writing to file:", path)
@@ -93,25 +96,25 @@ def CreateDataArray(name, shape, cDims, type):
     
     # Declare the number of components for the array
     if type == np.int8:
-        array = simpl_py.Int8ArrayType(z_flat, cDims, name, False)
+        array = simpl.Int8ArrayType(z_flat, cDims, name, False)
     elif type == np.uint8:
-        array = simpl_py.UInt8ArrayType(z_flat, cDims, name, False)
+        array = simpl.UInt8ArrayType(z_flat, cDims, name, False)
     elif type == np.int16:
-        array = simpl_py.Int16ArrayType(z_flat, cDims, name, False)
+        array = simpl.Int16ArrayType(z_flat, cDims, name, False)
     elif type == np.uint16:
-        array = simpl_py.UInt16ArrayType(z_flat, cDims, name, False)
+        array = simpl.UInt16ArrayType(z_flat, cDims, name, False)
     elif type == np.int32:
-        array = simpl_py.Int32ArrayType(z_flat, cDims, name, False)
+        array = simpl.Int32ArrayType(z_flat, cDims, name, False)
     elif type == np.uint32:
-        array = simpl_py.UInt32ArrayType(z_flat, cDims, name, False)
+        array = simpl.UInt32ArrayType(z_flat, cDims, name, False)
     elif type == np.int64:
-        array = simpl_py.Int64ArrayType(z_flat, cDims, name, False)
+        array = simpl.Int64ArrayType(z_flat, cDims, name, False)
     elif type == np.uint64:
-        array = simpl_py.UInt64ArrayType(z_flat, cDims, name, False)
+        array = simpl.UInt64ArrayType(z_flat, cDims, name, False)
     elif type == np.float32:
-        array = simpl_py.FloatArrayType(z_flat, cDims, name, False)
+        array = simpl.FloatArrayType(z_flat, cDims, name, False)
     elif type == np.double:
-        array = simpl_py.DoubleArrayType(z_flat, cDims, name, False)     
+        array = simpl.DoubleArrayType(z_flat, cDims, name, False)     
     
     # we need to return the 'z' numpy array so it does not go out of scope.
     return (z, array)

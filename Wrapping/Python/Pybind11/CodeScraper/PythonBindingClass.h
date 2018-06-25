@@ -91,6 +91,8 @@ protected:
 
   QByteArray md5FileContents(const QString &filename);
 
+  QString generatePythonTestCode();
+
 private:
   PythonBindingsModule* m_Module = nullptr;
   QString m_IsSIMPLib;

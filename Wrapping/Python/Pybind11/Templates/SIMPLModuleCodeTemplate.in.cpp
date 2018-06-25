@@ -1,11 +1,12 @@
-/* This file is auto-genereated from a template file. If you want changes
- * then edit the template file.
- *
- */
+
+/* =============================================================================
+ * BEGIN Template file SIMPLModuleCodeTemplate.in.cpp
+ * ========================================================================== */
 
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl_bind.h>
+#include <pybind11/stl.h>
 
 PYBIND11_MAKE_OPAQUE(std::vector<int8_t>);
 PYBIND11_MAKE_OPAQUE(std::vector<uint8_t>);
@@ -117,14 +118,22 @@ public:
 template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>;
 #endif
 
+
+/******************************************************************************
+ * This is a list of all the SIMPL headers that are needed/wrapped by Pybind11
+ ******************************************************************************/
 @HEADER_PATH@
 
 /******************************************************************************
  *
  ******************************************************************************/
-
 #include "SIMPLib/DataArrays/DataArray.hpp"
 
+/**
+ * @brief Initializes a template specialization of DataArray<T>
+ * @param T The Type
+ * @param NAME The name of the Variable
+ */
 #define PYB11_DEFINE_DATAARRAY_INIT(T, NAME)                                                                                                                                                           \
   PySharedPtrClass<DataArray<T>> declare##NAME(py::module& m, PySharedPtrClass<IDataArray>& parent)                                                                                                    \
   {                                                                                                                                                                                                    \
@@ -151,7 +160,7 @@ template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>
     return instance;                                                                                                                                                                                   \
   }
 
-    PYB11_DEFINE_DATAARRAY_INIT(int8_t, Int8ArrayType);
+PYB11_DEFINE_DATAARRAY_INIT(int8_t, Int8ArrayType);
 PYB11_DEFINE_DATAARRAY_INIT(uint8_t, UInt8ArrayType);
 
 PYB11_DEFINE_DATAARRAY_INIT(int16_t, Int16ArrayType);
@@ -166,18 +175,37 @@ PYB11_DEFINE_DATAARRAY_INIT(uint64_t, UInt64ArrayType);
 PYB11_DEFINE_DATAARRAY_INIT(float, FloatArrayType);
 PYB11_DEFINE_DATAARRAY_INIT(double, DoubleArrayType);
 
-/******************************************************************************
- *
- ******************************************************************************/
+
+
+//------------------------------------------------------------------------------
+// This header file is auto-generated and contains include directives for each
+// cxx file that contains a specific plugins init code.
+//------------------------------------------------------------------------------
+#include "DREAM3D_SubmoduleHeaders.h"
+
 
 /**
  * @brief PYBIND11_MODULE This section declares our python module, its name and
  * what classes are available within the module.
  *
  */
-PYBIND11_MODULE(@LIB_NAME@, mod)
+PYBIND11_MODULE(dream3d_py, m)
 {
-  mod.doc() = "Python wrapping for @FULL_LIB_NAME@";
+  m.doc() = "Python wrapping for dream3d";
+
+  /* Define a python submodule for SIMPL */
+  py::module mod = m.def_submodule("simpl_py", "  Python wrapping for  SIMPL");
+
+  //
+  //
+  //
+  py::class_<FloatVec3_t>(mod, "FloatVec3")
+      .def(py::init<const float &, const float &, const float &>())
+  ;
+  py::class_<IntVec3_t>(mod, "IntVec3")
+      .def(py::init<const int &, const int &, const int &>())
+  ;
+
 
   /* STL Binding code */
   py::bind_vector<std::vector<int8_t>>(mod, "VectorInt8");
@@ -196,9 +224,29 @@ PYBIND11_MODULE(@LIB_NAME@, mod)
   py::bind_vector<std::vector<double>>(mod, "VectorDouble");
 
   if(py::detail::get_type_info(typeid(std::vector<size_t>)))
+  {
     mod.attr("VectorSizeT") = mod.attr("VectorUInt64");
-  else
+  } 
+  else 
+  {
     py::bind_vector<std::vector<size_t>>(mod, "VectorSizeT");
+  }
+
+  /* Enumeration code for AttributeMatrix::Type ******************/
+  py::enum_<SIMPL::ScalarTypes::Type>(mod, "ScalarTypes")
+    .value("Int8", SIMPL::ScalarTypes::Type::Int8)
+    .value("UInt8", SIMPL::ScalarTypes::Type::UInt8)
+    .value("Int16", SIMPL::ScalarTypes::Type::Int16)
+    .value("UInt16", SIMPL::ScalarTypes::Type::UInt16)
+    .value("Int32", SIMPL::ScalarTypes::Type::Int32)
+    .value("UInt32", SIMPL::ScalarTypes::Type::UInt32)
+    .value("Int64", SIMPL::ScalarTypes::Type::Int64)
+    .value("UInt64", SIMPL::ScalarTypes::Type::UInt64)
+    .value("Float", SIMPL::ScalarTypes::Type::Float)
+    .value("Double", SIMPL::ScalarTypes::Type::Double)
+    .value("Bool", SIMPL::ScalarTypes::Type::Bool)
+
+    .export_values();
 
   /* Init codes for classes in the Module */
   @MODULE_INIT_CODE@
@@ -220,4 +268,18 @@ PYBIND11_MODULE(@LIB_NAME@, mod)
   PySharedPtrClass<DoubleArrayType> @LIB_NAME@_DoubleArrayType = declareDoubleArrayType(mod, @LIB_NAME@_IDataArray);
 
   py::enum_<SIMPL::InfoStringFormat>(mod, "InfoStringFormat").value("HtmlFormat", SIMPL::InfoStringFormat::HtmlFormat).value("UnknownFormat", SIMPL::InfoStringFormat::UnknownFormat).export_values();
+
+  
+  //--------------------------------------------------------------------------
+  // This header file is auto-generated and contains some C++ code to create
+  // a submole for each dream3d plugin
+  //--------------------------------------------------------------------------
+  #include "DREAM3D_SubmoduleInit.hpp"
+ 
 }
+
+
+
+/* =============================================================================
+ * END Template file SIMPLModuleCodeTemplate.in.cpp
+ * ========================================================================== */

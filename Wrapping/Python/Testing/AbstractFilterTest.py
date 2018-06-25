@@ -1,14 +1,18 @@
+""" This is a basic test for AbstractFilter """
+
 import time
 
-import dream3d.simpl_py as sp
+import dream3d
+import dream3d.dream3d_py
+import dream3d.dream3d_py as d3d
+import dream3d.dream3d_py.simpl_py as simpl
 
-# This is a test
 
 def BasicTest () :
   """
   This will test the basic AbstractFilter methods
   """
-  filter = sp.AbstractFilter.New()
+  filter = simpl.AbstractFilter.New()
 
   groupName = filter.GroupName
   assert groupName == "YOUR CLASS SHOULD IMPLEMENT THIS"

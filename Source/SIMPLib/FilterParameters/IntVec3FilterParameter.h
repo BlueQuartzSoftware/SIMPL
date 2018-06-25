@@ -42,7 +42,12 @@
 
 typedef struct {
   int x; int y; int z;
-
+  void IntVec3(const int& x_, const int& y_, const int& z_)
+  {
+    x = x_;
+    y = y_;
+    z = z_;
+  }
   void writeJson(QJsonObject &json)
   {
     json["x"] = x;

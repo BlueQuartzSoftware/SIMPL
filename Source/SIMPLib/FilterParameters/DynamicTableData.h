@@ -52,14 +52,25 @@
 class SIMPLib_EXPORT DynamicTableData : public QObject
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(DynamicTableData)
+    PYB11_STATIC_CREATION(Create ARGS std::vector<std::vector<double>> std::list<std::string> std::list<std::string>)
+    PYB11_PROPERTY(QStringList ColHeaders READ getColHeaders WRITE setColHeaders)
+    PYB11_PROPERTY(QStringList RowHeaders READ getRowHeaders WRITE setRowHeaders)
+    PYB11_PROPERTY(std::vector<std::vector<double>> TableData READ getTableData WRITE setTableData)
 
   public:
     DynamicTableData();
     DynamicTableData(int nRows, int nCols);
-    DynamicTableData(int nRows, int nCols, QStringList rHeaders, QStringList cHeaders);
-    DynamicTableData(std::vector<std::vector<double> > data, QStringList rHeaders = QStringList(), QStringList cHeaders = QStringList());
+    DynamicTableData(int nRows, int nCols,  const QStringList &rHeaders, const QStringList &cHeaders);
+    DynamicTableData(const std::vector<std::vector<double> > &data, 
+                      const QStringList &rHeaders = QStringList(), 
+                      const QStringList &cHeaders = QStringList());
 
-    virtual ~DynamicTableData();
+    ~DynamicTableData() override;
+
+    static DynamicTableData Create(const std::vector<std::vector<double>>& dims, 
+                                  const std::list<std::string>& rHeaders, 
+                                  const std::list<std::string>& cHeaders);
 
     SIMPL_INSTANCE_PROPERTY(QStringList, ColHeaders)
     SIMPL_INSTANCE_PROPERTY(QStringList, RowHeaders)
@@ -122,8 +133,8 @@ class SIMPLib_EXPORT DynamicTableData : public QObject
     /**
     * @brief Table data getter and setter
     */
-    std::vector<std::vector<double> > getTableData();
-    void setTableData(const std::vector<std::vector<double> > data);
+    std::vector<std::vector<double>> getTableData();
+    void setTableData(const std::vector<std::vector<double>>& data);
 
     /**
     * @brief Calculates and returns the number of rows
@@ -141,7 +152,7 @@ class SIMPLib_EXPORT DynamicTableData : public QObject
     bool isEmpty();
 
     DynamicTableData(const DynamicTableData& rhs);
-    void operator=(const DynamicTableData& rhs);
+    DynamicTableData& operator=(const DynamicTableData& rhs);
     bool operator==(const DynamicTableData& rhs) const;
     bool operator!=(const DynamicTableData& rhs) const;
 

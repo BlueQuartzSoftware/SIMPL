@@ -1,5 +1,7 @@
 
-
+/* =============================================================================
+ * BEGIN Template file SharedPointerClassInit.in.h
+ * ========================================================================== */
 /**
  * @brief This defines a C++11 alias so loading the file by itself into an IDE
  * will allow the proper code completion for a wrapped std::shared_ptr<> class.
@@ -18,3 +20,7 @@ template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>
 PySharedPtrClass<@CLASS_NAME@> declare@CLASS_NAME@(py::module& m)
 {
   PySharedPtrClass<@CLASS_NAME@> instance(m, "@CLASS_NAME@");
+
+/* =============================================================================
+ * END Template file SharedPointerClassInit.in.h
+ * ========================================================================== */

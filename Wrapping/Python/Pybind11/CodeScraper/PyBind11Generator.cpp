@@ -1,5 +1,7 @@
 #include "PyBind11Generator.h"
 
+#include <iostream>
+
 #include <QtCore/QTextStream>
 
 #include "PythonBindingClass.h"
@@ -30,10 +32,16 @@ void PyBind11Generator::execute()
 {
   recursiveSearch(m_TopLevelDir);
 
-  // QFileInfo fi(m_TopLevelDir);
+  // If these extensions are changed be sure the WrappingFunctions.cmake file is updated
+  QString ext(".h");
+  if(m_IsSIMPLib.compare("TRUE") == 0)
+  {
+    ext = ".cxx";
+  }
+
   QString genHeaderPath;
   QTextStream ss(&genHeaderPath);
-  ss << m_GenDir << "/" << m_LibName << "_pybind11_module.cxx";
+  ss << m_GenDir << "/" << m_LibName << "_pybind11_module" << ext;
 
   m_ModuleCode.generateModuleFile(genHeaderPath, m_IsSIMPLib);
   

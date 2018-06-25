@@ -48,12 +48,18 @@
 
 typedef struct {
   float x; float y; float z;
+  void FloatVec3(const float& xx, const float& yy, const float& zz)
+  {
+    x = xx;
+    y = yy;
+    z = zz;
+  }
 
   void writeJson(QJsonObject &json)
   {
-    json["x"] = x;
-    json["y"] = y;
-    json["z"] = z;
+    json["x"] = static_cast<double>(x);
+    json["y"] = static_cast<double>(y);
+    json["z"] = static_cast<double>(z);
   }
 
   bool readJson(QJsonObject &json)

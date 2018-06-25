@@ -1,8 +1,12 @@
 
-import dream3d.simpl_py as sp
+""" This is a test for DataContainerArray """
+
+import dream3d
+import dream3d.dream3d_py
+import dream3d.dream3d_py as d3d
+import dream3d.dream3d_py.simpl_py as simpl
 import dream3d.utils.simpl_common as sc
 import dream3d.utils.simpl_test_dirs as sd
-
 
 
 def AttributeMatrixAccessTest():
@@ -15,13 +19,13 @@ def AttributeMatrixAccessTest():
   dc = sc.CreateDataContainer("AM Test")
   dca.addDataContainer(dc)
   
-  amType = sp.AttributeMatrix.Type.Cell
-  tupleDims = sp.VectorSizeT([5,4,3])
-  am = sp.AttributeMatrix.Create(tupleDims, "CellAttributeMatrix", amType)
+  amType = simpl.AttributeMatrix.Type.Cell
+  tupleDims = simpl.VectorSizeT([5,4,3])
+  am = simpl.AttributeMatrix.Create(tupleDims, "CellAttributeMatrix", amType)
   dc.addAttributeMatrix(am.Name, am)
 
   # See if we can get the AttributeMatrix based on a DataArrayPath object
-  dap = sp.DataArrayPath("AM Test", "CellAttributeMatrix", "")
+  dap = simpl.DataArrayPath("AM Test", "CellAttributeMatrix", "")
   am0 = dca.getAttributeMatrix(dap)
   assert am0 == am
   assert True == dca.doesAttributeMatrixExist(dap)

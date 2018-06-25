@@ -2,69 +2,80 @@ import time
 
 
 # These are the simpl_py python modules
-import dream3d.simpl_py as sp
+
+import dream3d
+import dream3d.dream3d_py
+import dream3d.dream3d_py as d3d
+import dream3d.dream3d_py.simpl_py as simpl
 import dream3d.utils.simpl_common as sc
 import dream3d.utils.simpl_test_dirs as sd
 
-def PipelineTest():
-  inputPath = sd.GetTestTempDirectory() + "/SmallIN100.dream3d"
-  reader = sp.DataContainerReader.New()
-  reader.InputFile = (inputPath)
-  reader.OverwriteExistingDataContainers = (True)
-  print("Reading data structure from input file.....")
-  # This must be called to generate a default DataContainerArrayProxy object from the file structure
-  dataContainerProxy = reader.readDataContainerArrayStructure(inputPath)
-  # Now set that proxy into the filter.
-  reader.InputFileDataContainerArrayProxy = (dataContainerProxy)
+def Pipeline1():
 
-  print("humanLabel: %s " % reader.HumanLabel)
-  print("groupName: %s " % reader.GroupName)
-  print("subGroupName: %s " % reader.SubGroupName)
-  print("filterVersion: %s " % reader.FilterVersion)
-  print("compiledLibraryName: %s " % reader.CompiledLibraryName)
+  pipeline = simpl.FilterPipeline.New()
+  pipeline.Name = ("Image Data Container Test Pipeline")
 
-  print("Creating DREAM3D Writer filter....")
-  writer = sp.DataContainerWriter.New()
+  createDataContainer = simpl.CreateDataContainer.New()
+  createDataContainer.DataContainerName = "ImageDataContainer"
+  pipeline.pushBack(createDataContainer)
+
+  createImageGeom = simpl.CreateImageGeometry.New()
+  createImageGeom.SelectedDataContainer = createDataContainer.DataContainerName
+  createImageGeom.Dimensions = simpl.IntVec3(101, 101, 1)
+  createImageGeom.Resolution = simpl.FloatVec3(1.0, 1.0, 1.0)
+  createImageGeom.Origin = simpl.FloatVec3(0.0, 0.0, 0.0)
+  pipeline.pushBack(createImageGeom)
+
+  createAttributeMatrix = simpl.CreateAttributeMatrix.New()
+  createAttributeMatrix.CreatedAttributeMatrix = simpl.DataArrayPath("ImageDataContainer", "CellAttributeMatrix", "")
+  createAttributeMatrix.AttributeMatrixType = simpl.AttributeMatrix.Type.Cell
+  # This next part of the code is really ugly and verbose and there is probably
+  # a better way to do it, but this was all I could get working. Somebody please
+  # change it.
+  rHdrs = []
+  rHdrs.append("Row[0]")
+  cHdrs = []
+  cHdrs.append("Col[6]")
+  cHdrs.append("Col[6]")
+  cHdrs.append("Col[6]")
+  rowDim = simpl.VectorDouble([101,101,1])
+  rDims = []
+  rDims.append(rowDim)
+  ddt = simpl.DynamicTableData.Create(rDims, rHdrs, cHdrs)
+  createAttributeMatrix.TupleDimensions = ddt
+  # END really ugly section
+  pipeline.pushBack(createAttributeMatrix)
+
+  createDataArray = simpl.CreateDataArray.New()
+  createDataArray.ScalarType = simpl.ScalarTypes.UInt8
+  createDataArray.NumberOfComponents = 1
+  createDataArray.NewArray = simpl.DataArrayPath("ImageDataContainer", "CellAttributeMatrix", "ScalarValues")
+  createDataArray.InitializationType = 0
+  createDataArray.InitializationValue = "128"
+  pipeline.pushBack(createDataArray)
+
+  writer = simpl.DataContainerWriter.New()
   writer.OutputFile = (sd.GetTestTempDirectory() + "/PipelineTest.dream3d")
-  print("humanLabel: %s " % writer.HumanLabel)
-  print("groupName: %s " % writer.GroupName)
-  print("subGroupName: %s " % writer.SubGroupName)
-  print("filterVersion: %s " % writer.FilterVersion)
-  print("compiledLibraryName: %s " % writer.CompiledLibraryName)
+  print(" humanLabel: %s " % writer.HumanLabel)
+  print(" groupName: %s " % writer.GroupName)
+  print(" subGroupName: %s " % writer.SubGroupName)
+  print(" filterVersion: %s " % writer.FilterVersion)
+  print(" compiledLibraryName: %s " % writer.CompiledLibraryName)
 
-
-  pipeline = sp.FilterPipeline.New()
-  pipeline.Name = ("New Pipeline")
-  print("Pipeline Name: %s " % pipeline.Name)
-
-  pipeline.pushBack(reader)
   pipeline.pushBack(writer)
-  filterCount = pipeline.size()
-  print("Filter Count: %d" % filterCount)
+  print("%s" % sd.GetTestTempDirectory() + "/PipelineTest.dream3d")
 
   err = pipeline.preflightPipeline()
   print("Preflight ErrorCondition: %d" % err)
-
   dataContainer = pipeline.run()
   err = pipeline.ErrorCondition
   print("Execute ErrorCondition: %d" % err)
-
-  pipeline.popFront()
-  filterCount = pipeline.size()
-  print("Filter Count: %d" % filterCount)
-
-  pipeline = sp.FilterPipeline.New()
-  print("Pipeline to Null")
-  reader = sp.AbstractFilter.New()
-  writer = sp.AbstractFilter.New()
-  print("Filter to null")
-
-  time.sleep(2)
 
 
 """
 Main entry point for python script
 """
 if __name__ == "__main__":
-  PipelineTest()
-  print("Test Complete")
+  print("=> PipelineTest Start")
+  Pipeline1()
+  print("=> PipelineTest Complete")

@@ -43,12 +43,13 @@ int main(int argc, char* argv[])
 
   if(argc != 7)
   {
-    std::cout << "GeneratePythonBindings needs 5 arguments:" << std::endl;
+    std::cout << "GeneratePythonBindings needs 6 arguments:" << std::endl;
     std::cout << "   [1] Path to the source directory to recursively search" << std::endl;
     std::cout << "   [2] Characters to strip from the path. '-' means do not strip anything" << std::endl;
     std::cout << "   [3] Name of the Library/Plugin" << std::endl;
     std::cout << "   [4] Top Level Directory where to write the generated files" << std::endl;
     std::cout << "   [5] Path to the module template file" << std::endl;
+    std::cout << "   [6] Is this SIMPLib being compiled" << std::endl;
     std::cout << "Arguments were:" << std::endl;
     for(int i = 0; i < argc; i++)
     {

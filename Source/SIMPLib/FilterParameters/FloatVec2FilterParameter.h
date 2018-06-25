@@ -40,13 +40,17 @@
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
-typedef struct {
+using FloatVec2_t = struct {
   float x; float y; float z;
-
+  void FloatVec2(const float& xx, const float& yy)
+  {
+    x = xx;
+    y = yy;
+  }
   void writeJson(QJsonObject &json)
   {
-    json["x"] = x;
-    json["y"] = y;
+    json["x"] = static_cast<double>(x);
+    json["y"] = static_cast<double>(y);
   }
 
   bool readJson(QJsonObject &json)
@@ -59,7 +63,7 @@ typedef struct {
     }
     return false;
   }
-} FloatVec2_t;
+};
 
 Q_DECLARE_METATYPE(FloatVec2_t)
 

@@ -1,4 +1,7 @@
 
+/* =============================================================================
+ * BEGIN Template file SimpleClassInit.in.h
+ * ========================================================================== */
 
 /**
  * @brief This defines a C++11 alias so loading the file by itself into an IDE
@@ -21,3 +24,6 @@ PySharedPtrClass<@CLASS_NAME@> declare@CLASS_NAME@(py::module& m)
 
   /* Begin the python properties and methods definitions section */
   instance
+/* =============================================================================
+ * END Template file SimpleClassInit.in.h
+ * ========================================================================== */

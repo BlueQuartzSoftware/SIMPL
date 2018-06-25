@@ -291,12 +291,18 @@ void PythonBindingsModule::generatePythonTestFile(const QString& outputPath, con
   QTextStream out(&code);
   out << "\"\"\"\n"
       << "This is a basic unit test file to ensure that the filters can be instantiated\n"
+      << "This file is auto generated as part of the 'CodeScraper' program that is executed\n"
+      << " during the compilation phase.\n"
       << "\"\"\"\n";
   QString shortLibName = m_LibName;
   shortLibName.replace("_py", "");
-  out << "import dream3d." << m_LibName << " as " << shortLibName << "\n";
-  out << "import dream3d.utils.simpl_common as sc\n"; 
-  out << "import dream3d.utils.simpl_test_dirs as sd\n";
+  out << "import dream3d\n"
+    << "import dream3d.dream3d_py as d3d\n"
+    << "import dream3d.dream3d_py.simpl_py as simpl\n"
+    << "import dream3d.utils.simpl_common as sc\n"
+    << "import dream3d.utils.simpl_test_dirs as sd\n"
+    << "import dream3d.dream3d_py." << m_LibName << " as " << shortLibName << "\n"
+ ;
 
 
  // out << "from "<< SIMPL::PyBind11::SIMPL_LibraryName << SIMPL::PyBind11::PythonModuleSuffix << " import *\n";
@@ -335,7 +341,11 @@ void PythonBindingsModule::generatePythonTestFile(const QString& outputPath, con
 void PythonBindingsModule::dumpRecursivePythonCode(int level, const QObject* object, QTextStream& out)
 {
   if(object)
-  {
+  { 
+    // These are a list of Abstract or Top level classes that do not need to be tested
+    // so let's avoid those.
+    QStringList avoidThese = {"AbstractFilter", "FileReader", "FileWriter" };
+
     QByteArray buf;
     buf.fill(' ', level / 2 * 8);
     if(level % 2) {
@@ -360,8 +370,7 @@ void PythonBindingsModule::dumpRecursivePythonCode(int level, const QObject* obj
 )PY";
     
       
-    
-    if(object->objectName().compare("AbstractFilter") != 0) 
+    if(!avoidThese.contains(object->objectName()))
     {
       QString code(pycode);
       code.replace("@LIB_NAME@", shortLibName);
