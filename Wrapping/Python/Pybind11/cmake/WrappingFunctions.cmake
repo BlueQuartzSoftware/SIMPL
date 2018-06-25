@@ -143,7 +143,15 @@ function(CreatePybind11Module)
     )
   target_link_libraries(${SIMPL_PY_MODULE_NAME} 
                           LINK_PUBLIC ${ARGS_MODULE_LINK_LIBRARIES}
-                          )
+  )
+
+  if(SIMPL_USE_ITK)
+    ## YOU MUST INCLUDE THIS FILE TO USE ITK !!!
+    ## Then do not forget to add "${ITK_LIBRARIES}" to the target_link_libraries below
+    include( ${CMP_SOURCE_DIR}/ITKSupport/IncludeITK.cmake)
+    target_include_directories(${SIMPL_PY_MODULE_NAME} PUBLIC $<BUILD_INTERFACE:${ITK_INCLUDE_DIRS}>)
+    target_link_libraries(${SIMPL_PY_MODULE_NAME} LINK_PRIVATE ${ITK_LIBRARIES})
+  endif()
 
   if(TARGET ${SIMPL_PY_MODULE_NAME} AND TARGET ${pybind_module_name}CreatePythonBindings)
     add_dependencies(${SIMPL_PY_MODULE_NAME} ${pybind_module_name}CreatePythonBindings)
