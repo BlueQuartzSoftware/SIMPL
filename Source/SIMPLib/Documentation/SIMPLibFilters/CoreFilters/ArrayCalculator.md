@@ -79,22 +79,22 @@ If there is a third available array named *Baz* that has three components, it ca
 
 #### Using Multi-Component Arrays ####
 
-There are two ways to enter multi-component arrays into the infix expression.  Arrays may be entered without an index for a component. In this case, operations are performed both tuple-by-tuple *and* component-by-component, and the output array will have the same number of components as the input arrays. For example, consider two arrays *Foo_3* and *Bar_3* that are each 3-component arrays with two tuples whose values are as follows:
+There are two ways to enter multi-component arrays into the infix expression.  Arrays may be entered without an index for a component. In this case, operations are performed both tuple-by-tuple *and* component-by-component, and the output array will have the same number of components as the input arrays. For example, consider two arrays *Foo* and *Bar* that are each 3-component arrays with two tuples whose values are as follows:
 
-	Foo_3: [{1, 2, 3}, {4, 5, 6}]
-	Bar_3: [{-1, -2, -3}, {-4, -5, -6}]
+	Foo: [{1, 2, 3}, {4, 5, 6}]
+	Bar: [{-1, -2, -3}, {-4, -5, -6}]
 
-If the infix expression `Foo_3 + Bar_3` then the output values are as follows:
+If the infix expression `Foo + Bar` then the output values are as follows:
 
 	[{0, 0, 0}, {0, 0, 0}]
 
-Alternatively, multi-component arrays may be entered specifying a particular *index*. In this case, operations are performed tuple-by-tuple, but only for the specific component specified in each array, so the output array will always be a scalar value. Indices are specified using `[]` notation after the array name. Additionally, indices are *zero based*.  For example, `Foo_3[1]` is valid syntax, but `Foo_3[3]` is not valid. Additionally, indices must be positive integers only.  If any array in the infix expression uses index notation, then all arrays must specify an index.  
+Alternatively, multi-component arrays may be entered specifying a particular *index*. In this case, operations are performed tuple-by-tuple, but only for the specific component specified in each array, so the output array will always be a scalar value. Indices are specified using `[]` notation after the array name. Additionally, indices are *zero based*.  For example, `Foo[1]` is valid syntax, but `Foo[3]` is not valid. Additionally, indices must be positive integers only.  If any array in the infix expression uses index notation, then all arrays must specify an index.  
 
-Consider the infix expression `Foo_3[0] + Foo_3[1] + Foo_3[2]`. This expression will add all the components of *Foo_3* for each tuple. The result of this expression is the following:
+Consider the infix expression `Foo[0] + Foo[1] + Foo[2]`. This expression will add all the components of *Foo* for each tuple. The result of this expression is the following:
 
 	[6, 15]
 
-The infix expression `Foo_3[0] * Bar_3[2]` multiplies the first component of *Foo_3* with the third component of *Bar_3* for each tuple.  The result if this expression is as follows:
+The infix expression `Foo[0] * Bar[2]` multiplies the first component of *Foo* with the third component of *Bar* for each tuple.  The result if this expression is as follows:
 
 	[-3, -24]
 
