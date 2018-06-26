@@ -340,8 +340,6 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
 
     void filterInputWidgetNeedsCleared();
 
-    void filterInputWidgetEdited();
-
     void filterEnabledStateChanged();
 
     void deleteKeyPressed();
