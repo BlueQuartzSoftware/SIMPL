@@ -57,6 +57,7 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
     PYB11_PROPERTY(QString InfixEquation READ getInfixEquation WRITE setInfixEquation)
     PYB11_PROPERTY(DataArrayPath CalculatedArray READ getCalculatedArray WRITE setCalculatedArray)
     PYB11_PROPERTY(AngleUnits Units READ getUnits WRITE setUnits)
+    PYB11_PROPERTY(SIMPL::ScalarTypes::Type ScalarType READ getScalarType WRITE setScalarType)
 
   public:
     enum AngleUnits
@@ -82,6 +83,9 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
 
     SIMPL_FILTER_PARAMETER(AngleUnits, Units)
     Q_PROPERTY(AngleUnits Units READ getUnits WRITE setUnits)
+
+    SIMPL_FILTER_PARAMETER(SIMPL::ScalarTypes::Type, ScalarType)
+    Q_PROPERTY(SIMPL::ScalarTypes::Type ScalarType READ getScalarType WRITE setScalarType)
 
     ~ArrayCalculator() override;
 
@@ -196,6 +200,14 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
      * @brief Initializes all the private instance variables.
      */
     void initialize();
+
+    /**
+     * @brief Converts the given data array to one of the specified scalar type
+     * @param inputArray
+     * @param scalarType
+     * @return
+     */
+    IDataArray::Pointer convertArrayType(IDataArray::Pointer inputArray, SIMPL::ScalarTypes::Type scalarType);
 
 
   private:
