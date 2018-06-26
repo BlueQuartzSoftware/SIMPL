@@ -168,6 +168,9 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     
     SIMPL_INSTANCE_PROPERTY(QColor, QMenuItemSelected_color)    
     Q_PROPERTY(QColor QMenuItemSelected_color READ getQMenuItemSelected_color WRITE setQMenuItemSelected_color)    
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QMenuItemDisabled_background_color)
+    Q_PROPERTY(QColor QMenuItemDisabled_background_color READ getQMenuItemDisabled_background_color WRITE setQMenuItemDisabled_background_color)
     
     SIMPL_INSTANCE_PROPERTY(QColor, QPushButton_background_color)    
     Q_PROPERTY(QColor QPushButton_background_color READ getQPushButton_background_color WRITE setQPushButton_background_color)    
