@@ -504,7 +504,7 @@ template<typename T> IDataArray::Pointer convertArray(DoubleArrayType::Pointer i
 
   double* rawInputarray = inputArray->getPointer(0);
 
-  DataArray<T>::Pointer convertedArrayPtr = DataArray<T>::CreateArray(inputArray->getNumberOfTuples(), inputArray->getComponentDimensions(), inputArray->getName());
+  typename DataArray<T>::Pointer convertedArrayPtr = DataArray<T>::CreateArray(inputArray->getNumberOfTuples(), inputArray->getComponentDimensions(), inputArray->getName());
   T* rawOutputArray = convertedArrayPtr->getPointer(0);
 
   int count = inputArray->getSize();
