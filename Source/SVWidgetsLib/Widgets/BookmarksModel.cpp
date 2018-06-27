@@ -458,20 +458,15 @@ void BookmarksModel::addFileToTree(QString& path, QModelIndex& specifiedParent)
   {
     QString name = fi.baseName();
     setData(index, name, Qt::DisplayRole);
+    setData(index, path, Roles::PathRole);
+    setData(index, static_cast<int>(BookmarksItem::ItemType::Bookmark), Roles::ItemTypeRole);
+    setData(index, QIcon(":/SIMPL/icons/images/bookmark.png"), Qt::DecorationRole);
   }
   else
   {
     QDir dir(path);
     setData(index, dir.dirName(), Qt::DisplayRole);
-  }
-
-  if(fi.isFile())
-  {
-    setData(index, path, static_cast<int>(Roles::PathRole));
-    setData(index, QIcon(":/SIMPL/icons/images/bookmark.png"), Qt::DecorationRole);
-  }
-  else
-  {
+    setData(index, static_cast<int>(BookmarksItem::ItemType::Folder), Roles::ItemTypeRole);
     setData(index, QIcon(":/SIMPL/icons/images/folder_blue.png"), Qt::DecorationRole);
 
     QStringList filters;
