@@ -57,7 +57,7 @@ class SVWidgetsLib_EXPORT FilterListView : public QTreeView
     * @brief FilterListView
     * @param parent
     */
-    FilterListView(QWidget* parent = 0);
+    FilterListView(QWidget* parent = nullptr);
 
     /**
     * @brief ~FilterListView()

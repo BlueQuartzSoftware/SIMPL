@@ -70,8 +70,8 @@ class SIMPLib_EXPORT DataContainerSelectionFilterParameter : public FilterParame
     SIMPL_STATIC_NEW_MACRO(DataContainerSelectionFilterParameter)
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainerSelectionFilterParameter, FilterParameter)
 
-    typedef std::function<void(QString)> SetterCallbackType;
-    typedef std::function<QString(void)> GetterCallbackType;
+    using SetterCallbackType = std::function<void(QString)>;
+    using GetterCallbackType = std::function<QString(void)>;
 
     typedef struct
     {

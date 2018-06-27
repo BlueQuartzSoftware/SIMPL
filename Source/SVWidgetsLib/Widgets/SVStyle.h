@@ -98,6 +98,9 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     
     SIMPL_INSTANCE_PROPERTY(QColor, FilterParameterWidget_background_color)    
     Q_PROPERTY(QColor FilterParameterWidget_background_color READ getFilterParameterWidget_background_color WRITE setFilterParameterWidget_background_color)    
+
+    SIMPL_INSTANCE_PROPERTY(QColor, FilterParameterWidget_border_color)
+    Q_PROPERTY(QColor FilterParameterWidget_border_color READ getFilterParameterWidget_border_color WRITE setFilterParameterWidget_border_color)
     
     SIMPL_INSTANCE_PROPERTY(QColor, QGroupBoxTitle_background_color)    
     Q_PROPERTY(QColor QGroupBoxTitle_background_color READ getQGroupBoxTitle_background_color WRITE setQGroupBoxTitle_background_color)    
@@ -168,6 +171,9 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     
     SIMPL_INSTANCE_PROPERTY(QColor, QMenuItemSelected_color)    
     Q_PROPERTY(QColor QMenuItemSelected_color READ getQMenuItemSelected_color WRITE setQMenuItemSelected_color)    
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QMenuItemDisabled_background_color)
+    Q_PROPERTY(QColor QMenuItemDisabled_background_color READ getQMenuItemDisabled_background_color WRITE setQMenuItemDisabled_background_color)
     
     SIMPL_INSTANCE_PROPERTY(QColor, QPushButton_background_color)    
     Q_PROPERTY(QColor QPushButton_background_color READ getQPushButton_background_color WRITE setQPushButton_background_color)    
@@ -195,6 +201,13 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
 
     SIMPL_INSTANCE_PROPERTY(QColor, QPushButtonDefault_text_color)
     Q_PROPERTY(QColor QPushButtonDefault_text_color READ getQPushButtonDefault_text_color WRITE setQPushButtonDefault_text_color)
+
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QSplitter_handle_start_color)
+    Q_PROPERTY(QColor QSplitter_handle_start_color READ getQSplitter_handle_start_color WRITE setQSplitter_handle_start_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QSplitter_handle_end_color)
+    Q_PROPERTY(QColor QSplitter_handle_end_color READ getQSplitter_handle_end_color WRITE setQSplitter_handle_end_color)
 
     
     SIMPL_INSTANCE_PROPERTY(QColor, QToolButton_background_color)    
@@ -547,6 +560,13 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     static SVStyle* self;
 
     QString m_CurrentThemeFilePath = ":/SIMPL/StyleSheets/Default.json";
+
+    QStringList m_ColorProperties;
+
+    /**
+     * @brief invalidateColorProperties
+     */
+    void invalidateColorProperties();
 
     /**
      * @brief loadStringProperty

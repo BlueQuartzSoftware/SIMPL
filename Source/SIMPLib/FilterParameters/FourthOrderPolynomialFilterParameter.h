@@ -42,26 +42,55 @@
 
 typedef struct
 {
-  float c40; float c04; float c31; float c13; float c22; float c30; float c03; float c21; float c12; float c20;
-  float c02; float c11; float c10; float c01; float c00;
-
+  float c40; float c04; 
+  float c31; float c13; 
+  float c22; 
+  float c30; float c03; 
+  float c21; float c12; float c20; float c02; 
+  float c11; float c10; float c01; float c00;
+  
+  void Float4thOrderPoly(const float& C40, const float& C04, 
+    const float& C31, const float& C13,
+    const float& C22,
+    const float& C30, const float& C03,
+    const float& C21, const float& C12, const float& C20, const float& C02,
+    const float& C11, const float& C10, const float& C01, const float& C00
+  )
+  {
+  c40 = C40;
+  c04 = C04;
+  c31 = C31;
+  c13 = C13;
+  c22 = C22;
+  c30 = C30;
+  c03 = C03;
+  c21 = C21;
+  c12 = C12;
+  c20 = C20;
+  c02 = C02;
+  c11 = C11;
+  c10 = C10;
+  c01 = C01;
+  c00 = C00;
+  }
+  
   void writeJson(QJsonObject &json)
   {
-    json["c40"] = c40;
-    json["c04"] = c04;
-    json["c31"] = c31;
-    json["c13"] = c13;
-    json["c22"] = c22;
-    json["c30"] = c30;
-    json["c03"] = c03;
-    json["c21"] = c21;
-    json["c12"] = c12;
-    json["c20"] = c20;
-    json["c02"] = c02;
-    json["c11"] = c11;
-    json["c10"] = c10;
-    json["c01"] = c01;
-    json["c00"] = c00;
+    json["c40"] = static_cast<double>(c40);
+    json["c04"] = static_cast<double>(c04);
+    json["c31"] = static_cast<double>(c31);
+    json["c13"] = static_cast<double>(c13);
+    json["c22"] = static_cast<double>(c22);
+    json["c30"] = static_cast<double>(c30);
+    json["c03"] = static_cast<double>(c03);
+    json["c21"] = static_cast<double>(c21);
+    json["c12"] = static_cast<double>(c12);
+    json["c20"] = static_cast<double>(c20);
+    json["c02"] = static_cast<double>(c02);
+    json["c11"] = static_cast<double>(c11);
+    json["c10"] = static_cast<double>(c10);
+    json["c01"] = static_cast<double>(c01);
+    json["c00"] = static_cast<double>(c00);
   }
 
   bool readJson(QJsonObject &json)
@@ -122,8 +151,8 @@ public:
     SIMPL_STATIC_NEW_MACRO(FourthOrderPolynomialFilterParameter)
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FourthOrderPolynomialFilterParameter, FilterParameter)
 
-    typedef std::function<void(Float4thOrderPoly_t)> SetterCallbackType;
-    typedef std::function<Float4thOrderPoly_t(void)> GetterCallbackType;
+    using SetterCallbackType = std::function<void(Float4thOrderPoly_t)>;
+    using GetterCallbackType = std::function<Float4thOrderPoly_t(void)>;
 
     /**
      * @brief New This function instantiates an instance of the FourthOrderPolynomialFilterParameter. Although this function is available to be used,

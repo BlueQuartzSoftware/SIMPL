@@ -73,8 +73,8 @@ class SIMPLib_EXPORT AttributeMatrixCreationFilterParameter : public FilterParam
     SIMPL_TYPE_MACRO(AttributeMatrixCreationFilterParameter)
 
     // Typedefs for this class's callback functions
-    typedef std::function<void(DataArrayPath)> SetterCallbackType;
-    typedef std::function<DataArrayPath(void)> GetterCallbackType;
+    using SetterCallbackType = std::function<void(DataArrayPath)>;
+    using GetterCallbackType = std::function<DataArrayPath(void)>;
 
     typedef struct
     {

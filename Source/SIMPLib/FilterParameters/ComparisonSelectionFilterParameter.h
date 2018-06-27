@@ -71,8 +71,8 @@ class SIMPLib_EXPORT ComparisonSelectionFilterParameter : public FilterParameter
     SIMPL_STATIC_NEW_MACRO(ComparisonSelectionFilterParameter)
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ComparisonSelectionFilterParameter, FilterParameter)
 
-    typedef std::function<void(ComparisonInputs)> SetterCallbackType;
-    typedef std::function<ComparisonInputs(void)> GetterCallbackType;
+    using SetterCallbackType = std::function<void(ComparisonInputs)>;
+    using GetterCallbackType = std::function<ComparisonInputs(void)>;
 
     /**
      * @brief New This function instantiates an instance of the ComparisonSelectionFilterParameter. Although this function is available to be used,

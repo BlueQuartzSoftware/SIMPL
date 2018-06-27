@@ -48,10 +48,10 @@ class FilterInputWidget;
 class SVWidgetsLib_EXPORT PipelineItem
 {
   public:
-    PipelineItem(const QVector<QVariant>& data, PipelineItem* parent = 0);
+    PipelineItem(const QVector<QVariant>& data, PipelineItem* parent = nullptr);
     virtual ~PipelineItem();
 
-    SIMPL_INSTANCE_PROPERTY(FilterInputWidget*, FilterInputWidget)
+    SIMPL_POINTER_PROPERTY(FilterInputWidget, FilterInputWidget)
     SIMPL_INSTANCE_PROPERTY(bool, FilterEnabled)
     SIMPL_BOOL_PROPERTY(ActivePipeline)
     SIMPL_BOOL_PROPERTY(PipelineSaved)

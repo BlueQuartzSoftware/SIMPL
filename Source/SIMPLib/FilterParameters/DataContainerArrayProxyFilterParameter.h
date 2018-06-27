@@ -70,8 +70,8 @@ class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParam
     SIMPL_STATIC_NEW_MACRO(DataContainerArrayProxyFilterParameter)
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainerArrayProxyFilterParameter, FilterParameter)
 
-    typedef std::function<void(DataContainerArrayProxy)> SetterCallbackType;
-    typedef std::function<DataContainerArrayProxy(void)> GetterCallbackType;
+    using SetterCallbackType = std::function<void(DataContainerArrayProxy)>;
+    using GetterCallbackType = std::function<DataContainerArrayProxy(void)>;
 
     /**
      * @brief New This function instantiates an instance of the DataContainerArrayProxyFilterParameter. Although this function is available to be used,

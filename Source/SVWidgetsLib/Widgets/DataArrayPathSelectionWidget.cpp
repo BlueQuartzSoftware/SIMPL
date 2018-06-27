@@ -744,6 +744,11 @@ bool DataArrayPathSelectionWidget::checkCurrentPath()
 // -----------------------------------------------------------------------------
 bool DataArrayPathSelectionWidget::checkPathReqs(DataArrayPath path)
 {
+  if(nullptr == m_Filter)
+  {
+    return false;
+  }
+
   // Do not allow DataArrayPaths created by the current filter to be used as inputs for that same filter.
   std::list<DataArrayPath> createdPaths = m_Filter->getCreatedPaths();
   if(std::find(createdPaths.begin(), createdPaths.end(), path) != createdPaths.end())
@@ -1053,6 +1058,11 @@ void DataArrayPathSelectionWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::afterPreflight()
 {
+  if(nullptr == m_Filter)
+  {
+    return;
+  }
+
   if(nullptr != m_Filter && m_Filter->getDataContainerArray())
   {
     return;
@@ -1409,6 +1419,11 @@ void DataArrayPathSelectionWidget::setPropertyName(QString propName)
 // -----------------------------------------------------------------------------
 bool DataArrayPathSelectionWidget::isCreatedPath(DataArrayPath path)
 {
+  if(nullptr == m_Filter)
+  {
+    return true;
+  }
+
   std::list<DataArrayPath> createdPaths = m_Filter->getCreatedPaths();
   return std::find(createdPaths.begin(), createdPaths.end(), path) != createdPaths.end();
 }

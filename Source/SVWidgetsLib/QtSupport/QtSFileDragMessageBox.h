@@ -56,7 +56,7 @@ class SVWidgetsLib_EXPORT QtSFileDragMessageBox : public QDialog, private Ui::Qt
     Q_OBJECT
 
   public:
-    QtSFileDragMessageBox(QWidget* parent = 0);
+    QtSFileDragMessageBox(QWidget* parent = nullptr);
 
     bool didPressOkBtn();
 

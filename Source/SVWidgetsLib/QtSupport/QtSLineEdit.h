@@ -51,7 +51,7 @@ class SVWidgetsLib_EXPORT IconButton : public QAbstractButton
     Q_PROPERTY(bool autoHide READ hasAutoHide WRITE setAutoHide)
     Q_PROPERTY(QPixmap pixmap READ pixmap WRITE setPixmap)
   public:
-    explicit IconButton(QWidget* parent = 0);
+    explicit IconButton(QWidget* parent = nullptr);
     void paintEvent(QPaintEvent* event);
     void setPixmap(const QPixmap& pixmap) { m_pixmap = pixmap; update(); }
     QPixmap pixmap() const { return m_pixmap; }
@@ -86,7 +86,7 @@ class SVWidgetsLib_EXPORT QtSLineEdit : public QLineEdit
   public:
     enum Side {Left = 0, Right = 1};
 
-    explicit QtSLineEdit(QWidget* parent = 0);
+    explicit QtSLineEdit(QWidget* parent = nullptr);
     ~QtSLineEdit();
 
     QPixmap buttonPixmap(Side side) const;

@@ -36,8 +36,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineItemBorderSizeAnimation::PipelineItemBorderSizeAnimation(PipelineModel* model, QPersistentModelIndex index, QObject* parent)
-  : QVariantAnimation(parent),
+PipelineItemBorderSizeAnimation::PipelineItemBorderSizeAnimation(PipelineModel* model, QPersistentModelIndex index)
+  : QVariantAnimation(model),
     m_Index(index),
     m_PipelineModel(model)
 {

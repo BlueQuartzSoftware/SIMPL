@@ -30,6 +30,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ScopedFileMonitor.hpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ShapeType.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/TemplateHelpers.hpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLSpan.hpp
 )
 
 

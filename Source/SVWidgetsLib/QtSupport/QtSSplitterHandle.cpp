@@ -38,17 +38,26 @@
 
 #include <QtCore/QObject>
 
+#include "SVWidgetsLib/Widgets/SVStyle.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void QtSSplitterHandle::paintEvent(QPaintEvent* evt)
 {
+  SVStyle* styles = SVStyle::Instance();
+
   QPainter painter(this);
 
   QColor topColor(145, 145, 145);
   QColor bottomColor(142, 142, 142);
-  QColor gradientStart(252, 252, 252);
-  QColor gradientStop(223, 223, 223);
+  QColor gradientStart = styles->getQSplitter_handle_start_color();
+  QColor gradientStop = styles->getQSplitter_handle_end_color();
+
+  if (gradientStart.isValid() == false || gradientStop.isValid() == false)
+  {
+    return QSplitterHandle::paintEvent(evt);
+  }
 
   if(orientation() == Qt::Vertical)
   {
@@ -60,7 +69,8 @@ void QtSSplitterHandle::paintEvent(QPaintEvent* evt)
     QLinearGradient linearGrad(QPointF(0, 0), QPointF(0, height() - 3));
     linearGrad.setColorAt(0, gradientStart);
     linearGrad.setColorAt(1, gradientStop);
-    painter.fillRect(QRect(QPoint(0, 1), size() - QSize(0, 2)), QBrush(linearGrad));
+    QRect splitterRect = QRect(QPoint(0, 1), size() - QSize(0, 2));
+    painter.fillRect(splitterRect, QBrush(linearGrad));
   }
   else
   {
@@ -74,7 +84,8 @@ void QtSSplitterHandle::paintEvent(QPaintEvent* evt)
     QLinearGradient linearGrad(QPointF(0, 0), QPointF(width() - 3, 0));
     linearGrad.setColorAt(0, gradientStart);
     linearGrad.setColorAt(1, gradientStop);
-    painter.fillRect(QRect(QPoint(1, 0), size() - QSize(2, 0)), QBrush(linearGrad));
+    QRect splitterRect = QRect(QPoint(1, 0), size() - QSize(2, 0));
+    painter.fillRect(splitterRect, QBrush(linearGrad));
   }
 }
 
@@ -84,9 +95,5 @@ void QtSSplitterHandle::paintEvent(QPaintEvent* evt)
 QSize QtSSplitterHandle::sizeHint() const
 {
   QSize parent = QSplitterHandle::sizeHint();
-  // if (orientation() == Qt::Vertical) {
-  return parent + QSize(3, 3);
-  //        } else {
-  //            return QSize(1, parent.height());
-  //        }
+  return parent;
 }

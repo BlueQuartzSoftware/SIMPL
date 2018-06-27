@@ -68,8 +68,8 @@ public:
     SIMPL_STATIC_NEW_MACRO(BooleanFilterParameter)
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(BooleanFilterParameter, FilterParameter)
 
-    typedef std::function<void(bool)> SetterCallbackType;
-    typedef std::function<bool(void)> GetterCallbackType;
+    using SetterCallbackType = std::function<void(bool)>;
+    using GetterCallbackType = std::function<bool(void)>;
 
     /**
      * @brief New This function instantiates an instance of the BooleanFilterParameter. Although this function is available to be used,

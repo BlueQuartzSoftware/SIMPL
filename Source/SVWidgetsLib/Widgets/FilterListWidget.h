@@ -50,7 +50,7 @@ class SVWidgetsLib_EXPORT FilterListWidget: public QListWidget
     Q_OBJECT
 
   public:
-    FilterListWidget(QWidget* parent = 0);
+    FilterListWidget(QWidget* parent = nullptr);
     virtual ~FilterListWidget();
 
   protected:

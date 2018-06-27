@@ -68,8 +68,8 @@ class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParamet
     SIMPL_STATIC_NEW_MACRO(PreflightUpdatedValueFilterParameter)
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PreflightUpdatedValueFilterParameter, FilterParameter)
 
-    typedef std::function<void(QString)> SetterCallbackType;
-    typedef std::function<QString(void)> GetterCallbackType;
+    using SetterCallbackType = std::function<void(QString)>;
+    using GetterCallbackType = std::function<QString(void)>;
 
     /**
      * @brief New This function instantiates an instance of the PreflightUpdatedValueFilterParameter. Although this function is available to be used,

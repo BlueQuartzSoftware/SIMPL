@@ -50,7 +50,7 @@ class SVWidgetsLib_EXPORT QtSSplitter : public QSplitter
     Q_OBJECT
 
   public:
-    QtSSplitter(QWidget* parent = 0);
+    QtSSplitter(QWidget* parent = nullptr);
     virtual ~QtSSplitter();
 
     QSplitterHandle* createHandle();

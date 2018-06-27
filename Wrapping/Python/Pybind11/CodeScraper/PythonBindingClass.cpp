@@ -79,31 +79,40 @@ void PythonBindingClass::writeBindingFile(const QString& outputFilePath)
     QString output;
     QTextStream out(&output);
     bool hasInstanceVar = false;
-//    out << "#if 0\n";
-//    out << "Properties.size(): " << m_Properties.size() << "\n";
-//    out << "Methods.size(): " << m_Methods.size() << "\n";
-//    out << "StaticNewMethods.size(): " << m_StaticNewMethods.size() << "\n";
-//    out << "Constructors.size(): " << m_Constructors.size() << "\n";
-//    out << "Enumerations.size(): " << m_Enumerations.size() << "\n";
-//    out << "#endif\n";
+  //  out << "#if 0\n";
+  //  out << "Properties.size(): " << m_Properties.size() << "\n";
+  //  out << "Methods.size(): " << m_Methods.size() << "\n";
+  //  out << "StaticNewMethods.size(): " << m_StaticNewMethods.size() << "\n";
+  //  out << "Constructors.size(): " << m_Constructors.size() << "\n";
+  //  out << "Enumerations.size(): " << m_Enumerations.size() << "\n";
+  //  out << "#endif\n";
     
     out << generateTopMatterCode();
-    out << generateSharedPointerInitCode();
     
-    if(getHasStaticNewMacro() || !m_StaticNewMethods.isEmpty())
+    //out << "/* BEFORE generateSharedPointerInitCode CODE */" << "\n";
+    out << generateSharedPointerInitCode();
+    //out << "/* AFTER generateSharedPointerInitCode CODE */" << "\n";
+    
+    //out << "/* BEFORE generateConstructorsCodes CODE */" << "\n";
+    out << generateConstructorsCodes();
+    //out << "/* AFTER generateConstructorsCodes CODE */" << "\n";
+
+    if(getHasStaticNewMacro() || (!m_StaticNewMethods.isEmpty() && getIsSharedPointer()) )
     {
       out << "  /* Instantiate the class instance variable*/\n";
       out << "  instance\n";
       hasInstanceVar = true;
     }
+    //out << "/* BEFORE generateStaticNewCode CODE */" << "\n";
     out << generateStaticNewCode();
+    //out << "/* AFTER generateStaticNewCode CODE */" << "\n";
     
     if(!getIsSharedPointer())
     {
       hasInstanceVar = true;
     }
-    out << generateConstructorsCodes();
 
+    
     if(!m_Properties.isEmpty() && !hasInstanceVar)
     {
       out << "  /* Instantiate the class instance variable*/\n";
@@ -285,7 +294,7 @@ QString PythonBindingClass::generateTopMatterCode()
   subPath = subPath.remove(0, 1);                            // Remove the front / character
 
   // Create the Top part of the file from a template file
-  QFile source(SIMPL::PyBind11::TemplateDir + "/Pybind11TopMatter.txt");
+  QFile source(SIMPL::PyBind11::TemplateDir + "/Pybind11TopMatter.in.h");
   source.open(QFile::ReadOnly);
   QString headerTemplate = source.readAll();
   source.close();
@@ -316,7 +325,7 @@ QString PythonBindingClass::generateSharedPointerInitCode()
 
   if(getHasSuperClass() && !getSuperClass().isEmpty())
   {
-    source.setFileName(SIMPL::PyBind11::TemplateDir + "/DerivedSharedPointerClassInit.txt");
+    source.setFileName(SIMPL::PyBind11::TemplateDir + "/DerivedSharedPointerClassInit.in.h");
     source.open(QFile::ReadOnly);
     headerTemplate = source.readAll();
     source.close();
@@ -340,14 +349,14 @@ QString PythonBindingClass::generateSharedPointerInitCode()
       out << "  using Py@CLASS_NAME@Type = py::class_<@CLASS_NAME@, AbstractFilter, std::shared_ptr<@CLASS_NAME@>>;\n";
       out << "\n";
       out << "  /* Import the SIMPL pybind11 module so that we can inherit from AbstractFilter */\n";
-      out << "  py::module::import(\""<< SIMPL::PyBind11::SIMPL_LibraryName << SIMPL::PyBind11::PythonModuleSuffix << "\");\n"
+      out << "  //py::module::import(\""<< SIMPL::PyBind11::SIMPL_LibraryName << SIMPL::PyBind11::PythonModuleSuffix << "\");\n"
           << "  Py@CLASS_NAME@Type instance(m, \"@CLASS_NAME@\");\n"
           << "\n";
     }
   }
   else
   {
-    source.setFileName(SIMPL::PyBind11::TemplateDir + "/SharedPointerClassInit.txt");
+    source.setFileName(SIMPL::PyBind11::TemplateDir + "/SharedPointerClassInit.in.h");
     source.open(QFile::ReadOnly);
     headerTemplate = source.readAll();
     source.close();
@@ -437,7 +446,7 @@ QString PythonBindingClass::generateConstructorsCodes()
   QTextStream constructors(&code);
 
   QFile source;
-  source.setFileName(SIMPL::PyBind11::TemplateDir + "/SimpleClassInit.txt");
+  source.setFileName(SIMPL::PyBind11::TemplateDir + "/SimpleClassInit.in.h");
   source.open(QFile::ReadOnly);
   QString headerTemplate = source.readAll();
   source.close();
@@ -501,8 +510,38 @@ QString PythonBindingClass::generatePropertiesCode()
     QString pyType = tokens[0];
     QString varName = tokens[1];
 
-    // .def_property("name", &Pet::getName, &Pet::setName)  // READ/WRITE
-    // def_property_readonly("name", &Pet::getName) // READ ONLY
+    if(tokens.size() == 6)
+    {
+      out << TAB << "/* Property accessors for " << varName << " */" << NEWLINE_SIMPL;
+      out << TAB << ".def_property(\"" << varName << "\", &" << getClassName() << "::get" << varName << ", &" << getClassName() << "::set" << varName << ")" << NEWLINE_SIMPL;
+    }
+    else if(tokens.size() == 4 && tokens[2] == ::kRead)
+    {
+      out << TAB << "/* Read Only Property for " << varName << " */" << NEWLINE_SIMPL;
+      out << TAB << ".def_property_readonly(\"" << varName << "\", &" << getClassName() << "::get" << varName << ")" << NEWLINE_SIMPL;
+    }
+    else if(tokens.size() == 4 && tokens[2] == ::kWrite)
+    {
+      out << TAB << "/* Write Only Property for " << varName << " */" << NEWLINE_SIMPL;
+      out << TAB << ".def(\"set" << varName << "\", &" << getClassName() << "::set" << varName << ", py::arg(\"" << varName << "\"))" << NEWLINE_SIMPL;
+    }
+  }
+  return code;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString PythonBindingClass::generatePythonTestCode()
+{
+  QString code;
+  QTextStream out(&code);
+  for(auto line : m_Properties)
+  {
+    QStringList tokens = line.split("(");
+    tokens = tokens[1].replace(")", "").trimmed().split(" ");
+    QString pyType = tokens[0];
+    QString varName = tokens[1];
 
     if(tokens.size() == 6)
     {
@@ -522,6 +561,7 @@ QString PythonBindingClass::generatePropertiesCode()
   }
   return code;
 }
+
 
 // -----------------------------------------------------------------------------
 //

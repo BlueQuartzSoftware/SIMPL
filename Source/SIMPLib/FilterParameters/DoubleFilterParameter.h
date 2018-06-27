@@ -69,8 +69,8 @@ class SIMPLib_EXPORT DoubleFilterParameter : public FilterParameter
     SIMPL_STATIC_NEW_MACRO(DoubleFilterParameter)
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DoubleFilterParameter, FilterParameter)
 
-    typedef std::function<void(double)> SetterCallbackType;
-    typedef std::function<double(void)> GetterCallbackType;
+    using SetterCallbackType = std::function<void(double)>;
+    using GetterCallbackType = std::function<double(void)>;
 
     /**
      * @brief New This function instantiates an instance of the DoubleFilterParameter. Although this function is available to be used,

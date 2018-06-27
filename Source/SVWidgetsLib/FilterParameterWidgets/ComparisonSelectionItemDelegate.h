@@ -34,9 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
+#pragma once
 
-#ifndef _comparisonselectionitemdelegate_h_
-#define _comparisonselectionitemdelegate_h_
 #include <iostream>
 
 
@@ -90,6 +89,5 @@ class SVWidgetsLib_EXPORT ComparisonSelectionItemDelegate : public QStyledItemDe
     void operator=(const ComparisonSelectionItemDelegate&) = delete;                  // Move assignment Not Implemented
 };
 
-#endif /*  */
 
 

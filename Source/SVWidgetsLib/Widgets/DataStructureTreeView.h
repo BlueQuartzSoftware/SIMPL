@@ -64,7 +64,7 @@ public:
    * @brief DataStructureTreeView
    * @param parent
    */
-  DataStructureTreeView(QWidget* parent = 0);
+  DataStructureTreeView(QWidget* parent = nullptr);
 
   /**
    * @brief ~DataStructureTreeView()

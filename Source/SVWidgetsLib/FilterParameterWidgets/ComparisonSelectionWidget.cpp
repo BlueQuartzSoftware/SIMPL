@@ -46,6 +46,8 @@
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
 
+#include "ComparisonSelectionItemDelegate.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -282,7 +284,8 @@ void ComparisonSelectionWidget::widgetChanged(const QString& text)
 // -----------------------------------------------------------------------------
 void ComparisonSelectionWidget::on_addComparison_clicked()
 {
-  if(!m_ComparisonSelectionTableModel->insertRow(m_ComparisonSelectionTableModel->rowCount()))
+  int rowCount = m_ComparisonSelectionTableModel->rowCount();
+  if(!m_ComparisonSelectionTableModel->insertRow(rowCount))
   {
     return;
   }
@@ -384,6 +387,22 @@ void ComparisonSelectionWidget::afterPreflight()
 {
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if (NULL == dca.get()) { return; }
+
+  // Update the selectable feature arrays
+  DataArrayPath amPath = m_SelectedAttributeMatrixPath->getDataArrayPath();
+  QStringList possibleArrays = generateAttributeArrayList(amPath.getDataContainerName(), amPath.getAttributeMatrixName());
+  m_ComparisonSelectionTableModel->setPossibleFeatures(possibleArrays);
+
+  ComparisonSelectionItemDelegate* aid = dynamic_cast<ComparisonSelectionItemDelegate*>(comparisonSelectionTableView->itemDelegate());
+  if(aid)
+  {
+    aid->setFeatureList(possibleArrays);
+  }
+  else
+  {
+    QAbstractItemDelegate* delegate = m_ComparisonSelectionTableModel->getItemDelegate();
+    comparisonSelectionTableView->setItemDelegate(delegate);
+  }
 
   m_SelectedAttributeMatrixPath->afterPreflight();
 }

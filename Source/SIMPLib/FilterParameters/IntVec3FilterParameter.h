@@ -42,7 +42,12 @@
 
 typedef struct {
   int x; int y; int z;
-
+  void IntVec3(const int& x_, const int& y_, const int& z_)
+  {
+    x = x_;
+    y = y_;
+    z = z_;
+  }
   void writeJson(QJsonObject &json)
   {
     json["x"] = x;
@@ -93,8 +98,8 @@ public:
     SIMPL_STATIC_NEW_MACRO(IntVec3FilterParameter)
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IntVec3FilterParameter, FilterParameter)
 
-    typedef std::function<void(IntVec3_t)> SetterCallbackType;
-    typedef std::function<IntVec3_t(void)> GetterCallbackType;
+    using SetterCallbackType = std::function<void(IntVec3_t)>;
+    using GetterCallbackType = std::function<IntVec3_t(void)>;
 
     /**
      * @brief New This function instantiates an instance of the IntVec3FilterParameter. Although this function is available to be used,

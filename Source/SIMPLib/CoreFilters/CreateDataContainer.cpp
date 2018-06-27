@@ -44,7 +44,7 @@
 //
 // -----------------------------------------------------------------------------
 CreateDataContainer::CreateDataContainer()
-: m_CreatedDataContainer("DataContainer")
+: m_DataContainerName("DataContainer")
 {
 }
 
@@ -59,7 +59,7 @@ CreateDataContainer::~CreateDataContainer() = default;
 void CreateDataContainer::setupFilterParameters()
 {
   FilterParameterVector parameters;
-  parameters.push_back(SIMPL_NEW_DC_CREATION_FP("Created Data Container", CreatedDataContainer, FilterParameter::CreatedArray, CreateDataContainer));
+  parameters.push_back(SIMPL_NEW_DC_CREATION_FP("Data Container Name", DataContainerName, FilterParameter::CreatedArray, CreateDataContainer));
   setFilterParameters(parameters);
 }
 
@@ -69,7 +69,7 @@ void CreateDataContainer::setupFilterParameters()
 void CreateDataContainer::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setCreatedDataContainer(reader->readString("CreatedDataContainer", getCreatedDataContainer()));
+  setDataContainerName(reader->readString("DataContainerName", getDataContainerName()));
   reader->closeFilterGroup();
 }
 
@@ -88,7 +88,7 @@ void CreateDataContainer::dataCheck()
   setErrorCondition(0);
   setWarningCondition(0);
 
-  getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getCreatedDataContainer());
+  getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName());
 }
 
 // -----------------------------------------------------------------------------

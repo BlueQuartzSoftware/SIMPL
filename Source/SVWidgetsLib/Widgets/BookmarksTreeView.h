@@ -81,7 +81,7 @@ class SVWidgetsLib_EXPORT BookmarksTreeView : public QTreeView
     * @brief BookmarksTreeView
     * @param parent
     */
-    BookmarksTreeView(QWidget* parent = 0);
+    BookmarksTreeView(QWidget* parent = nullptr);
 
     /**
     * @brief ~BookmarksTreeView()

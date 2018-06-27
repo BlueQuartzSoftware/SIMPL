@@ -36,8 +36,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineItemSlideAnimation::PipelineItemSlideAnimation(PipelineModel* model, QPersistentModelIndex index, int numberOfPixels, AnimationDirection direction, QObject* parent)
-  : QVariantAnimation(parent),
+PipelineItemSlideAnimation::PipelineItemSlideAnimation(PipelineModel* model, QPersistentModelIndex index, int numberOfPixels, AnimationDirection direction)
+  : QVariantAnimation(model),
     m_Index(index),
     m_PipelineModel(model),
     m_Direction(direction),
@@ -70,7 +70,7 @@ PipelineItemSlideAnimation::PipelineItemSlideAnimation(PipelineModel* model, QPe
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineItemSlideAnimation::listenValueChanged(const QVariant & value)
+void PipelineItemSlideAnimation::listenValueChanged(const QVariant& value)
 {
   if(m_PipelineModel)
   {

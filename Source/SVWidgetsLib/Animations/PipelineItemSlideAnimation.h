@@ -51,7 +51,8 @@ class SVWidgetsLib_EXPORT PipelineItemSlideAnimation : public QVariantAnimation
       ExitRight
     };
 
-    PipelineItemSlideAnimation(PipelineModel* model, QPersistentModelIndex index, int numberOfPixels, AnimationDirection direction, QObject* parent = nullptr);
+    PipelineItemSlideAnimation(PipelineModel* model, QPersistentModelIndex index, int numberOfPixels, AnimationDirection direction);
+    virtual ~PipelineItemSlideAnimation() = default;
 
   private slots:
     void listenValueChanged(const QVariant & value);

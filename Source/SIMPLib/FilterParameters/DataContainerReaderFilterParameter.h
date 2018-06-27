@@ -68,13 +68,13 @@ class SIMPLib_EXPORT DataContainerReaderFilterParameter : public FilterParameter
                        const QString& defaultValue, Category category, DataContainerReader* filter,
                        int groupIndex = -1);
 
-    virtual ~DataContainerReaderFilterParameter();
+    ~DataContainerReaderFilterParameter() override;
 
     SIMPL_INSTANCE_PROPERTY(Qt::CheckState, DefaultFlagValue)
     SIMPL_INSTANCE_PROPERTY(QString, InputFileProperty)
     SIMPL_INSTANCE_PROPERTY(QString, FileExtension)
     SIMPL_INSTANCE_PROPERTY(QString, FileType)
-    SIMPL_INSTANCE_PROPERTY(DataContainerReader*, Filter)
+    SIMPL_POINTER_PROPERTY(DataContainerReader, Filter)
 
     /**
      * @brief getWidgetType Returns the type of widget that displays and controls
