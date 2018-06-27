@@ -948,6 +948,8 @@ void SVPipelineView::beginDrag(QMouseEvent* event)
   {
     drag->exec(Qt::MoveAction);
   }
+
+  removeDropIndicator();
 }
 
 // -----------------------------------------------------------------------------
