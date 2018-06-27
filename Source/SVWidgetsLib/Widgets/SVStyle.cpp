@@ -36,6 +36,7 @@
 #include "SVStyle.h"
 
 #include <QtCore/QDebug>
+#include <QtCore/QMetaProperty>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QFile>
@@ -65,6 +66,16 @@ SVStyle::SVStyle()
 {
   Q_ASSERT_X(!self, "SVStyle", "There should be only one SVStyle object");
   SVStyle::self = this;
+
+  const QMetaObject* metaObj = metaObject();
+  for (int i = metaObj->propertyOffset(); i < metaObj->propertyCount(); ++i)
+  {
+    QMetaProperty property = metaObj->property(i);
+    if (property.type() == QVariant::Color)
+    {
+      m_ColorProperties.push_back(property.name());
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -87,13 +98,26 @@ SVStyle* SVStyle::Instance()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void SVStyle::invalidateColorProperties()
+{
+  for (int i = 0; i < m_ColorProperties.size(); i++)
+  {
+    QString colorPropertyName = m_ColorProperties[i];
+    setProperty(colorPropertyName.toStdString().c_str(), QColor());
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
 {
 //  qDebug() << "SVStyle::loadStyleSheet() " << jsonFilePath;
+  invalidateColorProperties();
+
   bool success = true;
   
   QFileInfo jsonFileInfo(jsonFilePath);
-  
   
   QFile jsonFile(jsonFilePath);
   if(!jsonFile.open(QFile::ReadOnly))
@@ -127,7 +151,6 @@ bool SVStyle::loadStyleSheet(const QString &jsonFilePath)
   
   // Read the variable mapping from the JSON file
   QJsonObject varMapping = rootObj["Named_Variables"].toObject();
-  
   
   // Get the CSS Replacements that need to be made
   QJsonObject cssRepl = rootObj["CSS_Replacements"].toObject();

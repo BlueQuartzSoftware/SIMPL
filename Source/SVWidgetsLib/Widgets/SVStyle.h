@@ -551,6 +551,13 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
 
     QString m_CurrentThemeFilePath = ":/SIMPL/StyleSheets/Default.json";
 
+    QStringList m_ColorProperties;
+
+    /**
+     * @brief invalidateColorProperties
+     */
+    void invalidateColorProperties();
+
     /**
      * @brief loadStringProperty
      * @return
