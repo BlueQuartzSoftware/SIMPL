@@ -63,12 +63,6 @@ public:
   ImportHDF5DatasetWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
   /**
-   * @brief openHDF5File
-   * @param hdf5File
-   */
-  void openHDF5File(QString& hdf5File);
-
-  /**
    * @brief getCurrentFile
    * @return
    */
@@ -158,6 +152,8 @@ private:
   herr_t updateAttributeTable(const QString& datasetPath);
   herr_t updateGeneralTable(const QString& path);
   void addRow(QTableWidget* table, int row, const QString& key, const QString& value);
+
+  void initializeHDF5Paths();
 
   ~ImportHDF5DatasetWidget();
   ImportHDF5DatasetWidget(const ImportHDF5DatasetWidget&) = delete; // Copy Constructor Not Implemented

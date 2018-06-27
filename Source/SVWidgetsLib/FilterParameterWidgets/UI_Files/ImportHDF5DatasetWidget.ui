@@ -84,8 +84,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../icons/images/Icons.qrc">
-         <normaloff>:/SIMPL/icons/images/arrow_right_black.png</normaloff>:/arrow_right_black.png</iconset>
+        <iconset>
+         <normaloff>:/SIMPL/icons/images/arrow_right_black.png</normaloff>:/SIMPL/icons/images/arrow_right_black.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -115,6 +115,9 @@
    </item>
    <item>
     <widget class="QtSSplitter" name="splitter">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -159,7 +162,7 @@
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QTabWidget" name="tabWidget">
+     <widget class="QTabWidget" name="importHDF5DatasetTabWidget">
       <property name="currentIndex">
        <number>0</number>
       </property>
