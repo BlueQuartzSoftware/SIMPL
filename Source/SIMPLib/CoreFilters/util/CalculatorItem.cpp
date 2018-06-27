@@ -35,6 +35,8 @@
 
 #include "CalculatorItem.h"
 
+#include "SIMPLib/CoreFilters/util/ICalculatorArray.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -61,4 +63,40 @@ QString CalculatorItem::getInfixToken()
 void CalculatorItem::setInfixToken(const QString& token)
 {
   m_InfixToken = token;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool CalculatorItem::isICalculatorArray()
+{
+  return (nullptr != dynamic_cast<ICalculatorArray*>(this));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool CalculatorItem::isArray()
+{
+  ICalculatorArray* calculatorArray = dynamic_cast<ICalculatorArray*>(this);
+  if (calculatorArray)
+  {
+    return (calculatorArray->getType() == ICalculatorArray::ValueType::Array);
+  }
+
+  return false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool CalculatorItem::isNumber()
+{
+  ICalculatorArray* calculatorArray = dynamic_cast<ICalculatorArray*>(this);
+  if (calculatorArray)
+  {
+    return (calculatorArray->getType() == ICalculatorArray::ValueType::Number);
+  }
+
+  return false;
 }

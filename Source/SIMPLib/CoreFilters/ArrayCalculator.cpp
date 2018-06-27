@@ -268,49 +268,44 @@ void ArrayCalculator::dataCheck()
   AttributeMatrix::Pointer calculatedAM = getDataContainerArray()->getAttributeMatrix(calculatedAMPath);
   AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getAttributeMatrix(m_SelectedAttributeMatrix);
 
-  bool hasArrays = false;
-  bool resultIsNumber = true;
   QVector<size_t> cDims;
+  ICalculatorArray::ValueType resultType = ICalculatorArray::ValueType::Unknown;
 
   for(int32_t i = 0; i < parsedInfix.size(); i++)
   {
     CalculatorItem::Pointer item1 = parsedInfix[i];
-    if(nullptr != std::dynamic_pointer_cast<ICalculatorArray>(item1))
+    if(item1->isICalculatorArray())
     {
-      hasArrays = true;
       ICalculatorArray::Pointer array1 = std::dynamic_pointer_cast<ICalculatorArray>(item1);
-      if(array1->getArray()->getNumberOfTuples() != 1)
+      if (item1->isArray())
       {
-        resultIsNumber = false;
-      }
-      cDims = array1->getArray()->getComponentDimensions();
-      for(int32_t j = i; j < parsedInfix.size(); j++)
-      {
-        CalculatorItem::Pointer item2 = parsedInfix[j];
-        if(nullptr != std::dynamic_pointer_cast<ICalculatorArray>(item2))
+        if (cDims.isEmpty() == false && resultType == ICalculatorArray::ValueType::Array && cDims != array1->getArray()->getComponentDimensions())
         {
-          ICalculatorArray::Pointer array2 = std::dynamic_pointer_cast<ICalculatorArray>(item2);
-          if(array1->getType() != ICalculatorArray::Number && array2->getType() != ICalculatorArray::Number &&
-             array1->getArray()->getComponentDimensions() != array2->getArray()->getComponentDimensions())
-          {
-            QString ss = QObject::tr("Attribute Array symbols in the infix expression have mismatching component dimensions");
-            setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INCONSISTENT_COMP_DIMS));
-            notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-            return;
-          }
+          QString ss = QObject::tr("Attribute Array symbols in the infix expression have mismatching component dimensions");
+          setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INCONSISTENT_COMP_DIMS));
+          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+          return;
         }
+
+        resultType = ICalculatorArray::ValueType::Array;
+        cDims = array1->getArray()->getComponentDimensions();
+      }
+      else if (resultType == ICalculatorArray::ValueType::Unknown)
+      {
+        resultType = ICalculatorArray::ValueType::Number;
+        cDims = array1->getArray()->getComponentDimensions();
       }
     }
   }
 
-  if(hasArrays == false)
+  if(resultType == ICalculatorArray::ValueType::Unknown)
   {
     QString ss = QObject::tr("The expression does not have any arguments that simplify down to a number.");
     setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::NO_NUMERIC_ARGUMENTS));
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
-  else if(resultIsNumber == true)
+  else if(resultType == ICalculatorArray::ValueType::Number)
   {
     QString ss = QObject::tr("The result of the chosen expression will be a numeric value or contain one tuple."
                              " This numeric value will be stored in an array with the number of tuples equal to 1");
@@ -822,13 +817,25 @@ void ArrayCalculator::parseNumericValue(QString token, QVector<CalculatorItem::P
 bool ArrayCalculator::parseIndexOperator(QString token, QVector<CalculatorItem::Pointer>& parsedInfix)
 {
   int idx = parsedInfix.size() - 1;
-  if(idx < 0 || (idx >= 0 && std::dynamic_pointer_cast<ICalculatorArray>(parsedInfix[idx]) == ICalculatorArray::NullPointer()) ||
-     (idx >= 0 && std::dynamic_pointer_cast<ICalculatorArray>(parsedInfix[idx]) != ICalculatorArray::NullPointer() &&
-      std::dynamic_pointer_cast<ICalculatorArray>(parsedInfix[idx])->getType() == ICalculatorArray::Number))
+
+  QString errorMsg = QObject::tr("Index operator '%1' is not paired with a valid array name.").arg(token);
+  int errCode = static_cast<int>(CalculatorItem::ErrorCode::ORPHANED_COMPONENT);
+  if(idx < 0)
   {
-    QString ss = QObject::tr("Index operator '%1' is not paired with a valid array name.").arg(token);
-    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::ORPHANED_COMPONENT));
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(errCode);
+    notifyErrorMessage(getHumanLabel(), errorMsg, getErrorCondition());
+    return false;
+  }
+  else if (parsedInfix[idx]->isICalculatorArray() == false)
+  {
+    setErrorCondition(errCode);
+    notifyErrorMessage(getHumanLabel(), errorMsg, getErrorCondition());
+    return false;
+  }
+  else if (parsedInfix[idx]->isNumber())
+  {
+    setErrorCondition(errCode);
+    notifyErrorMessage(getHumanLabel(), errorMsg, getErrorCondition());
     return false;
   }
 

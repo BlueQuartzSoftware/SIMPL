@@ -49,6 +49,7 @@
 NegativeOperator::NegativeOperator()
 : CalculatorOperator()
 {
+  setOperatorType(Unary);
   setPrecedence(D_Precedence);
 }
 

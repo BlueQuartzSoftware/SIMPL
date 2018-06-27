@@ -94,6 +94,12 @@ class SIMPLib_EXPORT CalculatorItem
 
     virtual CalculatorItem::ErrorCode checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex, QString& msg) = 0;
 
+    bool isICalculatorArray();
+
+    bool isArray();
+
+    bool isNumber();
+
   protected:
     CalculatorItem();
 
