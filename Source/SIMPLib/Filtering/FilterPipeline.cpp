@@ -453,6 +453,10 @@ void FilterPipeline::updatePrevNextFilters()
       // prevFilt = *prev;
       (*iter)->setPreviousFilter(*prev);
     }
+    else
+    {
+      (*iter)->setPreviousFilter(AbstractFilter::NullPointer());
+    }
 
     if(iter != m_Pipeline.end())
     {
@@ -463,6 +467,10 @@ void FilterPipeline::updatePrevNextFilters()
       {
         (*iter)->setNextFilter(*next);
       }
+    }
+    else
+    {
+      (*iter)->setNextFilter(AbstractFilter::NullPointer());
     }
   }
   int index = 0;
