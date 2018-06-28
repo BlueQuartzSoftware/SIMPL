@@ -83,11 +83,6 @@ class SVWidgetsLib_EXPORT ScalarTypeWidget : public FilterParameterWidget, priva
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
 
-
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
-
   private:
     ScalarTypeFilterParameter* m_FilterParameter;
 

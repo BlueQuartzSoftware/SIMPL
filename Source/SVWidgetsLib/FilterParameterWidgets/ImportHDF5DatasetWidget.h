@@ -123,10 +123,6 @@ protected:
    */
   bool initWithFile(QString hdf5File);
 
-signals:
-  void errorSettingFilterParameter(const QString& msg);
-  void parametersChanged();
-
 private slots:
   /**
    * @brief Slot to catch events when the DataRecord TreeView selection is changed

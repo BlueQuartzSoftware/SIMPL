@@ -80,8 +80,6 @@ public slots:
   void filterNeedsInputParameters(AbstractFilter* filter);
 
 signals:
-  void errorSettingFilterParameter(const QString& msg);
-  void parametersChanged();
 
 private:
   bool m_DidCausePreflight;

@@ -127,10 +127,6 @@ class SVWidgetsLib_EXPORT MultiAttributeMatrixSelectionWidget : public FilterPar
 
     void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
-
   private:
     bool m_DidCausePreflight;
 

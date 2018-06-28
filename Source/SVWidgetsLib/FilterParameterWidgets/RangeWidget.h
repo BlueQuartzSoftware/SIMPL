@@ -88,10 +88,6 @@ class SVWidgetsLib_EXPORT RangeWidget : public FilterParameterWidget, private Ui
     void on_minValue_textChanged(const QString& text);
     void on_maxValue_textChanged(const QString& text);
 
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
-
   private:
     RangeFilterParameter* m_FilterParameter;
 

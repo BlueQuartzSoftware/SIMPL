@@ -84,11 +84,6 @@ class SVWidgetsLib_EXPORT PreflightUpdatedValueWidget : public FilterParameterWi
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
 
-
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
-
   private:
 
     PreflightUpdatedValueFilterParameter* m_FilterParameter;

@@ -88,10 +88,6 @@ public slots:
   void afterPreflight();
   void filterNeedsInputParameters(AbstractFilter* filter);
 
-signals:
-  void errorSettingFilterParameter(const QString& msg);
-  void parametersChanged();
-
 protected slots:
 
   // Slots to catch signals emitted by the various ui widgets

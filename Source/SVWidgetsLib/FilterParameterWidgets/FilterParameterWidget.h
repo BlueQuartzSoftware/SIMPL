@@ -117,6 +117,8 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
     void dataArrayPathSelectionUnlocked(QToolButton* button);
     void lockDataArrayPathSelection(QToolButton* selection);
     void unlockDataArrayPathSelection(QToolButton* button);
+    void errorSettingFilterParameter(const QString& msg);
+    void parametersChanged(bool preflight = true);
 
   public slots:
 

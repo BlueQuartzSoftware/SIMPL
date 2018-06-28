@@ -93,8 +93,6 @@ class SVWidgetsLib_EXPORT LinkedBooleanWidget : public FilterParameterWidget, pr
 
 
   signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
     void conditionalPropertyChanged(int state);
 
   private:

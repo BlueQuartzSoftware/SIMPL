@@ -120,10 +120,6 @@ class SVWidgetsLib_EXPORT DataContainerReaderWidget : public FilterParameterWidg
     void on_selectBtn_clicked();
     void on_dcaProxyView_updatePreviewWidget(const QModelIndex& index);
 
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
-
   protected:
     void updateProxyFromModel();
 

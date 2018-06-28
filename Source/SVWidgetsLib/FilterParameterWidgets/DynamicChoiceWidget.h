@@ -90,10 +90,6 @@ class SVWidgetsLib_EXPORT DynamicChoiceWidget : public FilterParameterWidget, pr
 
     void updateComboBox();
 
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
-
   private:
 
     DynamicChoiceFilterParameter*  m_FilterParameter;

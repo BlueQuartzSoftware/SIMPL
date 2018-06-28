@@ -104,18 +104,6 @@ class ComparisonSelectionAdvancedWidget : public FilterParameterWidget, private 
     */
     void attributeMatrixSelected(QString path);
 
-  signals:
-    /**
-    * @brief errorSettingFilterParameter
-    * @param msg
-    */
-    void errorSettingFilterParameter(const QString& msg);
-
-    /**
-    * @brief parametersChanged
-    */
-    void parametersChanged();
-
   protected:
     /**
     * @brief setComparisons

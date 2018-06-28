@@ -87,11 +87,6 @@ class SVWidgetsLib_EXPORT IntVec3Widget : public FilterParameterWidget, private 
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
 
-
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
-
   private:
     IntVec3FilterParameter* m_FilterParameter;
 

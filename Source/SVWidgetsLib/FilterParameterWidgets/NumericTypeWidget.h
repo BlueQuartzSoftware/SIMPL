@@ -83,11 +83,6 @@ class SVWidgetsLib_EXPORT NumericTypeWidget : public FilterParameterWidget, priv
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
 
-
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
-
   private:
     NumericTypeFilterParameter* m_FilterParameter;
 
