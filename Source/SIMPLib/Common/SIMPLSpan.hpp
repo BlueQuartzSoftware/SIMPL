@@ -14,6 +14,7 @@
 #include <cstddef>   // for ptrdiff_t, size_t, nullptr_t
 #include <type_traits> // for enable_if_t, declval, is_convertible, inte...
 
+#include "gsl_assert" // THIS IS OUR LOCAL COPY of gsl_assert.
 
 namespace SIMPL {
 
@@ -45,12 +46,11 @@ class span
     
     // [span.elem], span element access
     constexpr reference operator[](index_type idx) const
-    {
-      if (idx >= 0 && idx < m_Size) 
-      {
-        return data()[idx];
-      }
-      throw std::out_of_range( "Index out of range for array for guarded raw pointer access" );
+    { 
+#if defined(__APPLE__ ) || defined (__WIN32)
+      Expects(idx >= 0 && idx < m_Size);
+#endif
+      return data()[idx];
     }
     
     
