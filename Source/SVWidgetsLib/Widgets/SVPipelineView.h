@@ -492,6 +492,12 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
     void requestSinglePipelineContextMenu(QMenu &menu);
 
     /**
+     * @brief requestErrorHandlingContextMenu
+     * @param menu
+     */
+    void requestErrorHandlingContextMenu(QMenu& menu);
+
+    /**
      * @brief requestDefaultContextMenu
      * @param pos
      */

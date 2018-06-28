@@ -44,6 +44,39 @@
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+SIMPLView::DockWidgetSettings::HideDockSetting StandardOutputWidget::GetHideDockSetting()
+{
+  QSharedPointer<QtSSettings> prefs = QSharedPointer<QtSSettings>(new QtSSettings());
+  prefs->beginGroup(SIMPLView::DockWidgetSettings::GroupName);
+  prefs->beginGroup(SIMPLView::DockWidgetSettings::StandardOutputGroupName);
+
+  int showError = static_cast<int>(SIMPLView::DockWidgetSettings::HideDockSetting::Ignore);
+  int hideDockSetting = prefs->value(SIMPLView::DockWidgetSettings::KeyName, QVariant(showError)).toInt();
+  SIMPLView::DockWidgetSettings::HideDockSetting value = static_cast<SIMPLView::DockWidgetSettings::HideDockSetting>(hideDockSetting);
+
+  prefs->endGroup();
+  prefs->endGroup();
+
+  return value;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void StandardOutputWidget::SetHideDockSetting(SIMPLView::DockWidgetSettings::HideDockSetting setting)
+{
+  QSharedPointer<QtSSettings> prefs = QSharedPointer<QtSSettings>(new QtSSettings());
+  prefs->beginGroup(SIMPLView::DockWidgetSettings::GroupName);
+  prefs->beginGroup(SIMPLView::DockWidgetSettings::StandardOutputGroupName);
+
+  prefs->setValue(SIMPLView::DockWidgetSettings::KeyName, static_cast<int>(setting));
+
+  prefs->endGroup();
+  prefs->endGroup();
+}
 
 // -----------------------------------------------------------------------------
 //

@@ -41,6 +41,8 @@
 
 #include "SIMPLib/Common/IObserver.h"
 
+#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
+
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 #include "ui_StandardOutputWidget.h"
@@ -52,6 +54,9 @@ class SVWidgetsLib_EXPORT StandardOutputWidget : public QWidget, public IObserve
     Q_OBJECT
 
   public:
+    static SIMPLView::DockWidgetSettings::HideDockSetting GetHideDockSetting();
+    static void SetHideDockSetting(SIMPLView::DockWidgetSettings::HideDockSetting setting);
+
     StandardOutputWidget(QWidget* parent = nullptr);
     virtual ~StandardOutputWidget();
 

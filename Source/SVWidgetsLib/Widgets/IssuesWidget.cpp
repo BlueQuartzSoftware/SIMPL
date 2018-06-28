@@ -66,6 +66,40 @@ namespace
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+SIMPLView::DockWidgetSettings::HideDockSetting IssuesWidget::GetHideDockSetting()
+{
+  QSharedPointer<QtSSettings> prefs = QSharedPointer<QtSSettings>(new QtSSettings());
+  prefs->beginGroup(SIMPLView::DockWidgetSettings::GroupName);
+  prefs->beginGroup(SIMPLView::DockWidgetSettings::IssuesDockGroupName);
+
+  int showError = static_cast<int>(SIMPLView::DockWidgetSettings::HideDockSetting::Ignore);
+  int hideDockSetting = prefs->value(SIMPLView::DockWidgetSettings::KeyName, QVariant(showError)).toInt();
+  SIMPLView::DockWidgetSettings::HideDockSetting value = static_cast<SIMPLView::DockWidgetSettings::HideDockSetting>(hideDockSetting);
+
+  prefs->endGroup();
+  prefs->endGroup();
+
+  return value;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void IssuesWidget::SetHideDockSetting(SIMPLView::DockWidgetSettings::HideDockSetting setting)
+{
+  QSharedPointer<QtSSettings> prefs = QSharedPointer<QtSSettings>(new QtSSettings());
+  prefs->beginGroup(SIMPLView::DockWidgetSettings::GroupName);
+  prefs->beginGroup(SIMPLView::DockWidgetSettings::IssuesDockGroupName);
+
+  prefs->setValue(SIMPLView::DockWidgetSettings::KeyName, static_cast<int>(setting));
+
+  prefs->endGroup();
+  prefs->endGroup();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 IssuesWidget::IssuesWidget(QWidget* parent)
 : QWidget(parent)
 , ui(new Ui::IssuesWidget)
