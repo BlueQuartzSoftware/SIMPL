@@ -357,6 +357,8 @@ void FileListInfoWidget::inputDir_textChanged(const QString& text)
     m_ShowFileAction->setEnabled(false);
     m_Ui->fileListView->clear();
   }
+
+  emit parametersChanged();
 }
 
 // -----------------------------------------------------------------------------
