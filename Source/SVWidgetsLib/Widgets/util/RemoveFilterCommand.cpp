@@ -254,8 +254,11 @@ void RemoveFilterCommand::connectFilterSignalsSlots(AbstractFilter::Pointer filt
 
   FilterInputWidget* fiw = model->filterInputWidget(index);
 
-  QObject::connect(fiw, &FilterInputWidget::filterParametersChanged, [=] {
-    m_PipelineView->preflightPipeline();
+  QObject::connect(fiw, &FilterInputWidget::filterParametersChanged, [=] (bool preflight) {
+    if (preflight)
+    {
+      m_PipelineView->preflightPipeline();
+    }
     emit m_PipelineView->filterParametersChanged(filter);
   });
 }
