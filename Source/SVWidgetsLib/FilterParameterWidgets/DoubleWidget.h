@@ -84,11 +84,6 @@ class SVWidgetsLib_EXPORT DoubleWidget : public FilterParameterWidget, private U
     void beforePreflight(); // Called just before the "dataCheck()" is called
     void afterPreflight(); // Called just after the dataCheck() is called.
 
-
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
-
   private:
     DoubleFilterParameter* m_FilterParameter;
 

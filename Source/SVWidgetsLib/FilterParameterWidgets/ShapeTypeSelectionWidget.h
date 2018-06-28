@@ -94,10 +94,6 @@ class SVWidgetsLib_EXPORT ShapeTypeSelectionWidget : public FilterParameterWidge
   protected:
     void updateComboBoxes();
 
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
-
   private:
 
     bool              m_DidCausePreflight;

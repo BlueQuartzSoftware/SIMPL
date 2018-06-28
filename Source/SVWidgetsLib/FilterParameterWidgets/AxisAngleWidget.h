@@ -84,11 +84,6 @@ class SVWidgetsLib_EXPORT AxisAngleWidget : public FilterParameterWidget, privat
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
 
-
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
-
   private:
     AxisAngleFilterParameter*  m_FilterParameter;
 

@@ -88,7 +88,7 @@ public:
   SIMPL_GET_PROPERTY(QAction*, ActionPaste)
   SIMPL_GET_PROPERTY(QAction*, ActionClearPipeline)
 
-  SVPipelineView(QWidget* parent = 0);
+  SVPipelineView(QWidget* parent = nullptr);
   virtual ~SVPipelineView();
 
   /**
@@ -223,6 +223,10 @@ public:
   QPixmap getHighDPIDeleteBtnHoveredPixmap(bool highlighted = false);
 
 public slots:
+  /**
+   * @brief setPipelineName
+   * @param name
+   */
   void setPipelineName(QString name);
 
   /**
@@ -373,11 +377,11 @@ protected:
   void updatePipelineFromView(FilterPipeline::Pointer pipeline);
   void updateLocalTempPipeline();
 
-      /**
-       * @brief beginDrag
-       * @param event
-       */
-      void beginDrag(QMouseEvent* event);
+  /**
+    * @brief beginDrag
+    * @param event
+    */
+  void beginDrag(QMouseEvent* event);
 
   void mousePressEvent(QMouseEvent* event) override;
   void mouseMoveEvent(QMouseEvent* event) override;
@@ -520,6 +524,12 @@ private:
    * @param menu
    */
   void requestSinglePipelineContextMenu(QMenu& menu);
+
+  /**
+   * @brief requestErrorHandlingContextMenu
+   * @param menu
+   */
+  void requestErrorHandlingContextMenu(QMenu& menu);
 
   /**
    * @brief requestDefaultContextMenu

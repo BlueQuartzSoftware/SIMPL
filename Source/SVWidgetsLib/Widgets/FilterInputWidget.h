@@ -82,7 +82,7 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget
     void displayFilterParameters(AbstractFilter::Pointer filter);
 
   signals:
-    void filterParametersChanged();
+    void filterParametersChanged(bool preflight = true);
     void errorSettingFilterParameter(const QString &text);
 
     void viewPathsMatchingReqs(DataContainerSelectionFilterParameter::RequirementType dcReqs);

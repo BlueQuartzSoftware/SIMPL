@@ -43,6 +43,8 @@
 #include "SIMPLib/Common/IObserver.h"
 #include "SIMPLib/Common/PipelineMessage.h"
 
+#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
+
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 class FilterListToolboxWidget;
@@ -62,6 +64,9 @@ class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver
 
     Q_OBJECT
   public:
+    static SIMPLView::DockWidgetSettings::HideDockSetting GetHideDockSetting();
+    static void SetHideDockSetting(SIMPLView::DockWidgetSettings::HideDockSetting setting);
+
     IssuesWidget(QWidget* parent = nullptr);
     virtual ~IssuesWidget();
 

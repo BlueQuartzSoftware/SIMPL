@@ -110,8 +110,6 @@ class SVWidgetsLib_EXPORT LinkedDataContainerSelectionWidget : public FilterPara
     void dataContainerSelected(QString path);
 
   signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
     void conditionalPropertyChanged(int);
 
   protected:

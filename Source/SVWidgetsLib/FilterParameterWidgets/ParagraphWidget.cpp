@@ -80,6 +80,10 @@ void ParagraphWidget::setupGui()
 
   // Catch when the filter wants its values updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+
+  connect(textEdit, &QTextEdit::textChanged, [=] {
+    emit parametersChanged(m_FilterParameter->getAllowPreflight());
+  });
 }
 
 // -----------------------------------------------------------------------------

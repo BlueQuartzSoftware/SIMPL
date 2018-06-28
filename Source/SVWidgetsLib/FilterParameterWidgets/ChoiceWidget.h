@@ -90,8 +90,6 @@ class SVWidgetsLib_EXPORT ChoiceWidget : public FilterParameterWidget, private U
 
 
   signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
     void conditionalPropertyChanged(int);
 
   private:

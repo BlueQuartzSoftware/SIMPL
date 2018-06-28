@@ -84,10 +84,6 @@ class SVWidgetsLib_EXPORT ThirdOrderPolynomialWidget : public FilterParameterWid
     void beforePreflight(); // Called just before the "dataCheck()" is called
     void afterPreflight(); // Called just after the dataCheck() is called.
 
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
-
   private:
     ThirdOrderPolynomialFilterParameter* m_FilterParameter;
 

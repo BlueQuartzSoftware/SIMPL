@@ -365,7 +365,7 @@ void FilterInputWidget::layoutWidgets(AbstractFilter* filter)
     }
 
     // Connect up some signals and slots
-    connect(filterParameterWidget, SIGNAL(parametersChanged()), this, SIGNAL(filterParametersChanged()));
+    connect(filterParameterWidget, SIGNAL(parametersChanged(bool)), this, SIGNAL(filterParametersChanged(bool)));
 
     connect(filterParameterWidget, SIGNAL(errorSettingFilterParameter(const QString&)), this, SIGNAL(errorSettingFilterParameter(const QString&)));
   }

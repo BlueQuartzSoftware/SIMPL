@@ -89,11 +89,6 @@ class SVWidgetsLib_EXPORT SeparatorWidget : public FilterParameterWidget, privat
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
 
-
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
-
   private:
 
     SeparatorFilterParameter* m_FilterParameter;

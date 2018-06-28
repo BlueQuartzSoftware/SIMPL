@@ -73,6 +73,19 @@ namespace SIMPLView
     const QString BaseNewPathIcon(":SIMPL/icons/images/Asterisk.png");
   }
 
+  namespace DockWidgetSettings
+  {
+    const QString GroupName("DockWidgetSettings");
+    const QString IssuesDockGroupName("Issues Dock Widget");
+    const QString StandardOutputGroupName("Standard Output Dock Widget");
+    const QString KeyName("Show / Hide On Error");
+    enum class HideDockSetting : int
+    {
+      Ignore = 0,
+      OnError = 1,
+      OnStatusAndError = 2
+    };
+  }
 }
 
 #endif /* _SVWidgetsLibConstants_H_ */

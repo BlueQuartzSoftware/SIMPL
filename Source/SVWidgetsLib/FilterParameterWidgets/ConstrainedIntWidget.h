@@ -84,11 +84,6 @@ class SVWidgetsLib_EXPORT ConstrainedIntWidget : public FilterParameterWidget, p
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
 
-
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
-
   private:
     ConstrainedIntFilterParameter* m_FilterParameter;
 

@@ -112,10 +112,6 @@ class SVWidgetsLib_EXPORT DataArrayCreationWidget : public FilterParameterWidget
   protected slots:
     void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
-
   private:
 
     bool m_DidCausePreflight;

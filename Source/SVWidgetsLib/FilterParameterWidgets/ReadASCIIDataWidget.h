@@ -88,10 +88,6 @@ class SVWidgetsLib_EXPORT ReadASCIIDataWidget : public FilterParameterWidget, pr
 
     void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
-
   private:
     ReadASCIIDataFilterParameter*                   m_FilterParameter;
     ReadASCIIData*                                    m_Filter;

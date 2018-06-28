@@ -97,11 +97,6 @@ class SVWidgetsLib_EXPORT DataContainerArrayProxyWidget : public FilterParameter
     void itemChanged(QListWidgetItem* item);
     void itemSelected(QListWidgetItem* item);
 
-
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
-
   protected:
     QString getDataContainerName();
     QString getAttrMatrixName();

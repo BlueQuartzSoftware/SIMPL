@@ -113,13 +113,6 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
      */
     void setupMenuField();
 
-  protected slots:
-
-
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
-
   private:
     QAction* m_ShowFileAction = nullptr;
     QString  m_CurrentlyValidPath = "";

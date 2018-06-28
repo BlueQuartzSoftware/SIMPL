@@ -103,10 +103,6 @@ class SVWidgetsLib_EXPORT GenerateColorTableWidget : public FilterParameterWidge
 
     void presetSelected(const QJsonObject& preset, const QPixmap &pixmap);
 
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
-
   private:
     GenerateColorTable*                       m_Filter;
     GenerateColorTableFilterParameter*        m_FilterParameter;

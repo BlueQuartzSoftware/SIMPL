@@ -49,7 +49,8 @@ class SIMPLib_EXPORT ICalculatorArray : public CalculatorItem
     enum ValueType
     {
       Number,
-      Array
+      Array,
+      Unknown
     };
 
     SIMPL_SHARED_POINTERS(ICalculatorArray)

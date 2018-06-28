@@ -83,11 +83,6 @@ class SVWidgetsLib_EXPORT UnknownWidget : public FilterParameterWidget, private 
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
 
-
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
-
   private:
 
     UnknownFilterParameter* m_FilterParameter;

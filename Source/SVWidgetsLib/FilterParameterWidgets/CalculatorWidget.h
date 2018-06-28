@@ -111,10 +111,6 @@ class SVWidgetsLib_EXPORT CalculatorWidget : public FilterParameterWidget, priva
 
     void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
-
   private:
     bool                              m_DidCausePreflight;
 

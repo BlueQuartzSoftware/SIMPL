@@ -95,7 +95,9 @@
 #include "SVWidgetsLib/Widgets/util/MoveFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/RemoveFilterCommand.h"
 #include "SVWidgetsLib/Widgets/DataStructureWidget.h"
+#include "SVWidgetsLib/Widgets/IssuesWidget.h"
 #include "SVWidgetsLib/Widgets/ProgressDialog.h"
+#include "SVWidgetsLib/Widgets/StandardOutputWidget.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/QtSupport/QtSRecentFileList.h"
 
@@ -976,7 +978,7 @@ QPixmap SVPipelineView::getDraggingPixmap(QModelIndexList indexes)
 // -----------------------------------------------------------------------------
 void SVPipelineView::mouseMoveEvent(QMouseEvent* event)
 {
-  if((event->buttons() & Qt::LeftButton) && (event->pos() - m_DragStartPosition).manhattanLength() >= 2 && dragEnabled() == true)
+  if((event->buttons() & Qt::LeftButton) && (event->pos() - m_DragStartPosition).manhattanLength() >= QApplication::startDragDistance() + 1 && dragEnabled() == true)
   {
     beginDrag(event);
   }
@@ -1821,6 +1823,7 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint& pos, const QMode
   menu.addAction(actionPasteBelow);
   menu.addSeparator();
 
+
   int count = selectedIndexes.size();
   bool widgetEnabled = true;
 
@@ -1908,6 +1911,10 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint& pos, const QMode
 
   menu.addSeparator();
 
+  // Error Handling Menu
+  requestErrorHandlingContextMenu(menu);
+  menu.addSeparator();
+
   QAction* actionLaunchHelp = new QAction("Filter Help", this);
   connect(actionLaunchHelp, &QAction::triggered, [=] {
     AbstractFilter::Pointer filter = model->filter(index);
@@ -1937,6 +1944,8 @@ void SVPipelineView::requestPipelineItemContextMenu(const QPoint& pos)
 
   requestSinglePipelineContextMenu(menu);
 
+  requestErrorHandlingContextMenu(menu);
+
   menu.exec(pos);
 }
 
@@ -1948,6 +1957,86 @@ void SVPipelineView::requestSinglePipelineContextMenu(QMenu& menu)
   menu.addSeparator();
 
   menu.addAction(m_ActionClearPipeline);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineView::requestErrorHandlingContextMenu(QMenu& menu)
+{
+  menu.addSeparator();
+
+  QMenu* errorMenu = menu.addMenu("Error Handling");
+
+  QMenu* combinedMenu = errorMenu->addMenu("All");
+  QAction* showCombinedErrorAction = combinedMenu->addAction("Show on Error");
+  QAction* ignoreCombinedErrorAction = combinedMenu->addAction("Ignore on Error");
+
+  QMenu* errorTableMenu = errorMenu->addMenu("Issues Table");
+  QAction* showTableErrorAction = errorTableMenu->addAction("Show on Error");
+  QAction* ignoreTableErrorAction = errorTableMenu->addAction("Ignore on Error");
+
+  QMenu* stdOutMenu = errorMenu->addMenu("Standard Output");
+  QAction* showStdOutErrorAction = stdOutMenu->addAction("Show on Error");
+  QAction* ignoreStdOutErrorAction = stdOutMenu->addAction("Ignore on Error");
+
+  menu.addSeparator();
+
+  showTableErrorAction->setCheckable(true);
+  ignoreTableErrorAction->setCheckable(true);
+  showStdOutErrorAction->setCheckable(true);
+  ignoreStdOutErrorAction->setCheckable(true);
+  showCombinedErrorAction->setCheckable(true);
+  ignoreCombinedErrorAction->setCheckable(true);
+
+  // Set Checked based on user preferences
+  SIMPLView::DockWidgetSettings::HideDockSetting issuesTableSetting = IssuesWidget::GetHideDockSetting();
+  SIMPLView::DockWidgetSettings::HideDockSetting stdOutSetting = StandardOutputWidget::GetHideDockSetting();
+
+  bool showTableError = (issuesTableSetting != SIMPLView::DockWidgetSettings::HideDockSetting::Ignore);
+  bool showStdOutput = (stdOutSetting != SIMPLView::DockWidgetSettings::HideDockSetting::Ignore);
+  bool showCombinedError = showTableError && showStdOutput;
+  bool ignoreCombinedError = !showTableError && !showStdOutput;
+
+  showTableErrorAction->setChecked(showTableError);
+  ignoreTableErrorAction->setChecked(!showTableError);
+  showStdOutErrorAction->setChecked(showStdOutput);
+  ignoreStdOutErrorAction->setChecked(!showStdOutput);
+  showCombinedErrorAction->setChecked(showCombinedError);
+  ignoreCombinedErrorAction->setChecked(ignoreCombinedError);
+
+  // Connect actions
+  // Issues Widget
+  connect(showTableErrorAction, &QAction::triggered, [=]() {
+    IssuesWidget::SetHideDockSetting(SIMPLView::DockWidgetSettings::HideDockSetting::OnError);
+    preflightPipeline();
+  });
+  connect(ignoreTableErrorAction, &QAction::triggered, [=]() {
+    IssuesWidget::SetHideDockSetting(SIMPLView::DockWidgetSettings::HideDockSetting::Ignore);
+    preflightPipeline();
+  });
+
+  // Standard Output
+  connect(showStdOutErrorAction, &QAction::triggered, [=]() {
+    StandardOutputWidget::SetHideDockSetting(SIMPLView::DockWidgetSettings::HideDockSetting::OnError);
+    preflightPipeline();
+  });
+  connect(ignoreStdOutErrorAction, &QAction::triggered, [=]() {
+    StandardOutputWidget::SetHideDockSetting(SIMPLView::DockWidgetSettings::HideDockSetting::Ignore);
+    preflightPipeline();
+  });
+
+  // Combined
+  connect(showCombinedErrorAction, &QAction::triggered, [=]() {
+    IssuesWidget::SetHideDockSetting(SIMPLView::DockWidgetSettings::HideDockSetting::OnError);
+    StandardOutputWidget::SetHideDockSetting(SIMPLView::DockWidgetSettings::HideDockSetting::OnError);
+    preflightPipeline();
+  });
+  connect(ignoreCombinedErrorAction, &QAction::triggered, [=]() {
+    IssuesWidget::SetHideDockSetting(SIMPLView::DockWidgetSettings::HideDockSetting::Ignore);
+    StandardOutputWidget::SetHideDockSetting(SIMPLView::DockWidgetSettings::HideDockSetting::Ignore);
+    preflightPipeline();
+  });
 }
 
 // -----------------------------------------------------------------------------
