@@ -36,11 +36,17 @@
 #ifndef _floatvec2filterparameter_h_
 #define _floatvec2filterparameter_h_
 
-#include <QtCore/QJsonObject>
+#include <cmath>
 
+#include <QtCore/QString>
+#include <QtCore/QJsonObject>
+#include <QtCore/QMetaType>
+
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
-using FloatVec2_t = struct {
+typedef struct {
   float x; float y; float z;
   void FloatVec2(const float& xx, const float& yy)
   {
@@ -63,7 +69,7 @@ using FloatVec2_t = struct {
     }
     return false;
   }
-};
+} FloatVec2_t;
 
 Q_DECLARE_METATYPE(FloatVec2_t)
 

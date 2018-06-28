@@ -42,9 +42,9 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QMetaType>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
-#include "SIMPLib/SIMPLib.h"
 
 typedef struct {
   float x; float y; float z;
