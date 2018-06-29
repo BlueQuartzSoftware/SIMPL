@@ -85,7 +85,15 @@ IComparisonWidget* IComparisonWidget::CreateWidget(AbstractComparison::Pointer c
 void IComparisonWidget::setAttributeMatrix(AttributeMatrix::Pointer am)
 {
   m_attributeMatrix = am;
-  m_arrayNames = am->getAttributeArrayNames();
+
+  if (am != nullptr)
+  {
+    m_arrayNames = am->getAttributeArrayNames();
+  }
+  else
+  {
+    m_arrayNames.clear();
+  }
 }
 
 // -----------------------------------------------------------------------------
