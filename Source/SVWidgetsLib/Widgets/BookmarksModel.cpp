@@ -178,24 +178,25 @@ QVariant BookmarksModel::data(const QModelIndex& index, int role) const
       return styles->getQTreeViewItem_color();
     }
   }
-  else if(role == Qt::ToolTipRole)
+  else if(role == Qt::ToolTipRole && item->getItemType() == BookmarksItem::ItemType::Bookmark)
   {
     QString path = item->getPath();
     QFileInfo info(path);
-    if(info.isDir() == false && info.exists() == false)
+    if(path.isEmpty() == false)
     {
-      QString tooltip = tr("'%1' was not found on the file system.\nYou can either locate the file or delete the entry from the table.").arg(item->getPath());
-      return tooltip;
+      if(info.exists() == false)
+      {
+        QString tooltip = tr("'%1' was not found on the file system.\nYou can either locate the file or delete the entry from the table.").arg(item->getPath());
+        return tooltip;
+      }
+      else if(info.suffix().compare("json") == 0)
+      {
+        QString html = JsonFilterParametersReader::HtmlSummaryFromFile(path, nullptr);
+        return html;
+      }
     }
-    else if(info.suffix().compare("json") == 0)
-    {
-      QString html = JsonFilterParametersReader::HtmlSummaryFromFile(path, nullptr);
-      return html;
-    }
-    else
-    {
-      return QVariant();
-    }
+
+    return QVariant();
   }
   else if(role == Qt::DecorationRole)
   {

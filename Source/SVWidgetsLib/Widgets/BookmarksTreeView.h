@@ -140,6 +140,8 @@ class SVWidgetsLib_EXPORT BookmarksTreeView : public QTreeView
     void currentIndexChanged(const QModelIndex& current, const QModelIndex& previous);
     void folderChangedState(const QModelIndex& index, bool expand);
 
+    void raiseBookmarksWidget();
+
     void newSIMPLViewInstanceTriggered(const QString &filePath = "", bool execute = false);
 
     void fireWriteSettings();
