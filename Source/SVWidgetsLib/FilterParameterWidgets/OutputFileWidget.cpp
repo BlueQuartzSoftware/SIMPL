@@ -49,24 +49,7 @@ OutputFileWidget::OutputFileWidget(FilterParameter* parameter, AbstractFilter* f
   m_FilterParameter = dynamic_cast<OutputFileFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "OutputFileWidget can ONLY be used with a OutputFileFilterParameter object");
 
-  setOpenDialogLastFilePath(QDir::homePath());
-
   setupGui();
-  if(filter)
-  {
-    QString currentPath = filter->property(PROPERTY_NAME_AS_CHAR).toString();
-    if(currentPath.isEmpty() == false)
-    {
-      currentPath = QDir::toNativeSeparators(currentPath);
-      // Store the last used directory into the private instance variable
-      QFileInfo fi(currentPath);
-      setOpenDialogLastFilePath(fi.filePath());
-    }
-    else
-    {
-      setOpenDialogLastFilePath(QDir::homePath());
-    }
-  }
 }
 
 // -----------------------------------------------------------------------------

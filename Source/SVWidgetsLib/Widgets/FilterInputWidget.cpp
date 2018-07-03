@@ -55,6 +55,7 @@
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedDataContainerSelectionFilterParameter.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
+#include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
 
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 
@@ -121,6 +122,9 @@ QFileInfo getFilterParameterPath(AbstractFilter* filter, FilterParameter* parame
   QFileInfo fi;
   if(currentPath.isEmpty() == false)
   {
+    SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+    currentPath = validator->convertToAbsolutePath(currentPath);
+
     fi.setFile(currentPath);
   }
 
