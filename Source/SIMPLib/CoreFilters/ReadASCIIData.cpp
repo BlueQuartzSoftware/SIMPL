@@ -18,12 +18,15 @@
 
 #include "SIMPLib/CoreFilters/util/AbstractDataParser.hpp"
 
+namespace {
+   const QString k_Skip("Skip");
+}
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ReadASCIIData::ReadASCIIData()
-{
-}
+ReadASCIIData::ReadASCIIData() = default;
+
 
 // -----------------------------------------------------------------------------
 //
@@ -55,9 +58,9 @@ void ReadASCIIData::readFilterParameters(AbstractFilterParametersReader* reader,
 
   QString delimitersStr = reader->readString(prefix + "Delimiters", "");
   QList<char> delimiters;
-  for(int i = 0; i < delimitersStr.size(); i++)
+  for(auto && i : delimitersStr)
   {
-    delimiters.push_back(delimitersStr[i].toLatin1());
+    delimiters.push_back(i.toLatin1());
   }
 
   data.delimiters = delimiters;
@@ -72,9 +75,9 @@ void ReadASCIIData::readFilterParameters(AbstractFilterParametersReader* reader,
   QVector<uint64_t> tmpVec;
   QVector<size_t> tDims;
   tmpVec = reader->readArray(prefix + "TupleDims", QVector<uint64_t>());
-  for(int i = 0; i < tmpVec.size(); i++)
+  for(uint64_t i : tmpVec)
   {
-    tDims.push_back(static_cast<size_t>(tmpVec[i]));
+    tDims.push_back(static_cast<size_t>(i));
   }
   data.tupleDims = tDims;
 
@@ -110,7 +113,7 @@ void ReadASCIIData::readFilterParameters(QJsonObject& obj)
   {
     QJsonArray jsonArray = obj[prefix + "DataHeaders"].toArray();
     QStringList dataHeaders;
-    for(int i = 0; i < jsonArray.size(); i++)
+    for(int i = 0, total = jsonArray.size(); i < total; ++i)
     {
       dataHeaders.push_back(jsonArray[i].toString());
     }
@@ -120,9 +123,9 @@ void ReadASCIIData::readFilterParameters(QJsonObject& obj)
   {
     QJsonArray jsonArray = obj[prefix + "DataTypes"].toArray();
     QStringList dataTypes;
-    for(int i = 0; i < jsonArray.size(); i++)
+    for(auto i : jsonArray)
     {
-      dataTypes.push_back(jsonArray[i].toString());
+      dataTypes.push_back(i.toString());
     }
     m_WizardData.dataTypes = dataTypes;
   }
@@ -130,7 +133,7 @@ void ReadASCIIData::readFilterParameters(QJsonObject& obj)
   {
     QString delimitersStr = obj[prefix + "Delimiters"].toString();
     QList<char> delimiters;
-    for(int i = 0; i < delimitersStr.size(); i++)
+    for(int i = 0, total = delimitersStr.size(); i < total; ++i)
     {
       delimiters.push_back(delimitersStr[i].toLatin1());
     }
@@ -140,7 +143,7 @@ void ReadASCIIData::readFilterParameters(QJsonObject& obj)
   {
     QJsonArray jsonArray = obj[prefix + "TupleDims"].toArray();
     QVector<size_t> tupleDims;
-    for(int i = 0; i < jsonArray.size(); i++)
+    for(int i = 0, total = jsonArray.size(); i < total; ++i)
     {
       tupleDims.push_back(static_cast<size_t>(jsonArray[i].toInt()));
     }
@@ -195,9 +198,9 @@ void ReadASCIIData::writeFilterParameters(QJsonObject& obj)
 
   {
     QString delimitersStr = "";
-    for(int i = 0; i < m_WizardData.delimiters.size(); i++)
+    for(char delimiter : m_WizardData.delimiters)
     {
-      delimitersStr.append(m_WizardData.delimiters[i]);
+      delimitersStr.append(delimiter);
     }
 
     obj[prefix + "Delimiters"] = delimitersStr;
@@ -205,9 +208,9 @@ void ReadASCIIData::writeFilterParameters(QJsonObject& obj)
 
   {
     QJsonArray jsonArray;
-    for(int i = 0; i < m_WizardData.tupleDims.size(); i++)
+    for(unsigned long tupleDim : m_WizardData.tupleDims)
     {
-      jsonArray.push_back(static_cast<int>(m_WizardData.tupleDims[i]));
+      jsonArray.push_back(static_cast<int>(tupleDim));
     }
     obj[prefix + "TupleDims"] = jsonArray;
   }
@@ -241,7 +244,7 @@ void ReadASCIIData::dataCheck()
   m_ASCIIArrayMap.clear();
 
   ASCIIWizardData wizardData = getWizardData();
-  if(wizardData.isEmpty() == true)
+  if(wizardData.isEmpty())
   {
     QString ss = "A file has not been chosen to import. Please pick a file to import.";
     setErrorCondition(EMPTY_FILE);
@@ -258,20 +261,20 @@ void ReadASCIIData::dataCheck()
   QVector<size_t> cDims(1, 1);
 
   QFileInfo fi(inputFilePath);
-  if(inputFilePath.isEmpty() == true)
+  if(inputFilePath.isEmpty())
   {
     QString ss = QObject::tr("The input file must be set");
     setErrorCondition(-387);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
-  else if(fi.exists() == false)
+  else if(!fi.exists())
   {
     QString ss = QObject::tr("The input file does not exist");
     setErrorCondition(-388);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
-  if(automaticAM == false)
+  if(!automaticAM)
   {
     AttributeMatrix::Pointer am = getDataContainerArray()->getAttributeMatrix(selectedPath);
     if(nullptr == am.get())
@@ -333,6 +336,10 @@ void ReadASCIIData::dataCheck()
   for(int i = 0; i < dataTypes.size(); i++)
   {
     QString dataType = dataTypes[i];
+    if(dataType == ::k_Skip) 
+    {
+      continue;
+    }
     QString name = headers[i];
 
     DataArrayPath arrayPath = selectedPath;
@@ -439,9 +446,6 @@ void ReadASCIIData::execute()
   bool consecutiveDelimiters = wizardData.consecutiveDelimiters;
   int numLines = wizardData.numberOfLines;
   int beginIndex = wizardData.beginIndex;
-
-  QFileInfo fi(inputFilePath);
-  QString fileName = fi.fileName();
 
   QList<AbstractDataParser::Pointer> dataParsers;
   for(int i = 0; i < headers.size(); i++)
@@ -554,12 +558,10 @@ void ReadASCIIData::execute()
       {
         AbstractDataParser::Pointer parser = dataParsers[i];
         int index = parser->getColumnIndex();
-        QString name = parser->getColumnName();
 
         ParserFunctor::ErrorObject obj = parser->parse(tokens[index], insertIndex);
         if(!obj.ok)
         {
-          QString dataType = parser->getDataArray()->getTypeAsString();
           QString errorMessage = obj.errorMessage;
           QString ss = errorMessage + "(line " + QString::number(lineNum) + ", column " + QString::number(index) + ").";
           setErrorCondition(CONVERSION_FAILURE);
@@ -568,15 +570,15 @@ void ReadASCIIData::execute()
         }
       }
 
-      if(((float)lineNum / numTuples) * 100.0f > threshold)
+      if((static_cast<float>(lineNum) / numTuples) * 100.0f > threshold)
       {
         // Print the status of the import
-        QString ss = QObject::tr("Importing ASCII Data || %1% Complete").arg(((float)lineNum / numTuples) * 100.0f, 0, 'f', 0);
+        QString ss = QObject::tr("Importing ASCII Data || %1% Complete").arg((static_cast<float>(lineNum) / numTuples) * 100.0f, 0, 'f', 0);
         notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
         threshold = threshold + 5.0f;
-        if(threshold < ((float)lineNum / numTuples) * 100.0f)
+        if(threshold < (static_cast<float>(lineNum) / numTuples) * 100.0f)
         {
-          threshold = ((float)lineNum / numTuples) * 100.0f;
+          threshold = (static_cast<float>(lineNum) / numTuples) * 100.0f;
         }
       }
 
@@ -599,9 +601,8 @@ void ReadASCIIData::execute()
 AbstractFilter::Pointer ReadASCIIData::newFilterInstance(bool copyFilterParameters) const
 {
   ReadASCIIData::Pointer filter = ReadASCIIData::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
-    // copyFilterParameterInstanceVariables(filter.get());
     filter->setWizardData(getWizardData());
   }
   return filter;

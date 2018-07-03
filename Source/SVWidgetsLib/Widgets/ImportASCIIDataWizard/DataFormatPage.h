@@ -64,7 +64,7 @@ class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
     */
     DataFormatPage(QSharedPointer<ASCIIDataModel> model, const QString& inputFilePath, int numLines, DataContainerArray::Pointer dca, QWidget* parent = nullptr);
 
-    virtual ~DataFormatPage();
+    ~DataFormatPage() override;
 
     /**
      * @brief Initializes some of the GUI elements with selections or other GUI related items
@@ -74,7 +74,7 @@ class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
     /**
     * @brief Refreshes the model
     */
-    virtual void refreshModel();
+    void refreshModel() override;
 
     /**
     * @brief Launches the "Edit Headers" dialog
@@ -95,18 +95,18 @@ class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
     /**
     * @brief Controls which page to navigate to after the user clicks "Next" button
     */
-    virtual int nextId() const;
+    int nextId() const override;
 
     /**
     * @brief Resets the page when the user hits the "Back" button
     */
-    virtual void cleanupPage();
+    void cleanupPage() override;
 
     /**
      * @brief isComplete
      * @return
      */
-    bool isComplete() const;
+    bool isComplete() const override;
 
     /**
      * @brief getTupleTable
@@ -192,7 +192,7 @@ class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
      * @param event
      * @return
      */
-    bool eventFilter(QObject* obj, QEvent* event);
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
     /**
     * @brief Handle DataArrayPath changes if necessary
@@ -239,7 +239,7 @@ class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
      * @brief showEvent
      * @param event
      */
-    void showEvent(QShowEvent* event);
+    void showEvent(QShowEvent* event) override;
 
     /**
      * @brief adjustedMenuPosition
@@ -294,7 +294,8 @@ class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
 
     bool validateHeaders(QVector<QString> headers);
     bool validateTupleDimensions(QVector<size_t> tupleDims);
-
+  
+  public:
     DataFormatPage(const DataFormatPage&) = delete; // Copy Constructor Not Implemented
     void operator=(const DataFormatPage&) = delete; // Move assignment Not Implemented
 };
