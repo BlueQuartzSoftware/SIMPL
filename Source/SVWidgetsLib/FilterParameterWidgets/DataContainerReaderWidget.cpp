@@ -336,6 +336,9 @@ void DataContainerReaderWidget::setupGui()
 
   setupMenuField();
 
+  absPathLabel->hide();
+  absPathNameLabel->hide();
+
   // Update the widget when the data directory changes
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
   connect(validator, &SIMPLDataPathValidator::dataDirectoryChanged, [=] {
@@ -371,7 +374,7 @@ void DataContainerReaderWidget::setupGui()
 void DataContainerReaderWidget::setupMenuField()
 {
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
-  QString path = validator->sanityCheckRelativePath(m_LineEdit->text());
+  QString path = validator->convertToAbsolutePath(m_LineEdit->text());
 
   QFileInfo fi(path);
 
@@ -622,7 +625,7 @@ void DataContainerReaderWidget::filterNeedsInputParameters(AbstractFilter* filte
   // qDebug() << "DataContainerReaderWidget::filterNeedsInputParameters()";
 
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
-  QString path = validator->sanityCheckRelativePath(m_LineEdit->text());
+  QString path = validator->convertToAbsolutePath(m_LineEdit->text());
 
   m_Filter->setInputFile(path);
   updateProxyFromModel(); // Will update m_DcaProxy with the latest selections from the Model
@@ -681,9 +684,20 @@ bool DataContainerReaderWidget::verifyPathExists(QString m_LineEdit, QLineEdit* 
 void DataContainerReaderWidget::on_m_LineEdit_editingFinished()
 {
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
-  QString path = validator->sanityCheckRelativePath(m_LineEdit->text());
+  QString path = validator->convertToAbsolutePath(m_LineEdit->text());
 
-  m_LineEdit->setToolTip("Absolute File Path: " + path);
+  QFileInfo fi(m_LineEdit->text());
+  if (fi.isRelative())
+  {
+    absPathLabel->setText(path);
+    absPathLabel->show();
+    absPathNameLabel->show();
+  }
+  else
+  {
+    absPathLabel->hide();
+    absPathNameLabel->hide();
+  }
 
   m_LineEdit->setStyleSheet(QString(""));
   m_CurrentText = m_LineEdit->text();
@@ -782,7 +796,7 @@ bool DataContainerReaderWidget::hasValidFilePath(const QString &filePath)
 void DataContainerReaderWidget::on_m_LineEdit_textChanged(const QString& text)
 {
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
-  QString path = validator->sanityCheckRelativePath(text);
+  QString path = validator->convertToAbsolutePath(text);
 
   if (hasValidFilePath(path) == true)
   {
@@ -810,7 +824,7 @@ void DataContainerReaderWidget::on_m_LineEdit_textChanged(const QString& text)
 void DataContainerReaderWidget::on_m_LineEdit_fileDropped(const QString& text)
 {
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
-  QString path = validator->sanityCheckRelativePath(text);
+  QString path = validator->convertToAbsolutePath(text);
 
   DataContainerArrayProxy proxy;
 

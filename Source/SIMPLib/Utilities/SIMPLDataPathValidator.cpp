@@ -43,25 +43,8 @@ SIMPLDataPathValidator* SIMPLDataPathValidator::m_Self = nullptr;
 SIMPLDataPathValidator::SIMPLDataPathValidator() :
   QObject()
 {
-  // Data directory path for non-Mac operating systems
-  QString simplDataDirectory = QCoreApplication::applicationDirPath() + QDir::separator() + "Data";
-
-#if defined(Q_OS_MAC)
-#if defined(SIMPL_CHOOSABLE_DATA_DIRECTORY)
   // Default data directory for Macs with choosable data directory turned on (generally for Release builds)
-  simplDataDirectory = tr("%1%2%3Data").arg(QDir::homePath()).arg(QDir::separator()).arg(QCoreApplication::applicationName());
-#else
-  // Default data directory for Macs with choosable data directory turned off (generally for Debug and developer builds)
-  simplDataDirectory = QCoreApplication::applicationDirPath();
-  QDir dir (simplDataDirectory);
-  dir.cdUp();
-  dir.cdUp();
-  dir.cdUp();
-  simplDataDirectory = dir.absolutePath() + QDir::separator() + "Data";
-#endif
-#endif
-
-  m_SIMPLDataDirectory = QDir::toNativeSeparators(simplDataDirectory);
+  m_SIMPLDataDirectory = QDir::homePath() + QDir::separator() + tr("%1Data").arg(QCoreApplication::applicationName());
 }
 
 // -----------------------------------------------------------------------------
@@ -88,21 +71,39 @@ SIMPLDataPathValidator* SIMPLDataPathValidator::Instance()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString SIMPLDataPathValidator::sanityCheckRelativePath(const QString &path)
+QString SIMPLDataPathValidator::convertToAbsolutePath(const QString &path)
 {
-  QString suggestedPath = path;
-  QFileInfo fi(suggestedPath);
-
+  QString absolutePath = path;
+  QFileInfo fi(absolutePath);
   if (fi.isRelative())
   {
+    QDir dir = QDir(qApp->applicationDirPath());
+
+#if defined(SIMPL_RELATIVE_PATH_CHECK)
     if (path.startsWith(QDir::separator()) == false && m_SIMPLDataDirectory.endsWith(QDir::separator()) == false)
     {
-      suggestedPath.prepend(QDir::separator());
+      absolutePath.prepend(QDir::separator());
     }
-    suggestedPath.prepend(m_SIMPLDataDirectory);
+    absolutePath.prepend(m_SIMPLDataDirectory);
+#elif defined (Q_OS_MAC)
+    if(dir.dirName() == "MacOS")
+    {
+      dir.cdUp();
+      dir.cdUp();
+      dir.cdUp();
+    }
+#endif
+
+    QString parentPath = dir.absolutePath();
+
+    if (absolutePath.startsWith(QDir::separator()) == false && parentPath.endsWith(QDir::separator()) == false)
+    {
+      absolutePath.prepend(QDir::separator());
+    }
+    absolutePath.prepend(parentPath);
   }
 
-  return suggestedPath;
+  return absolutePath;
 }
 
 // -----------------------------------------------------------------------------

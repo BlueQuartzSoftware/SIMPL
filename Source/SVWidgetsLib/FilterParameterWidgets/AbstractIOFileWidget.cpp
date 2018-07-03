@@ -103,6 +103,9 @@ void AbstractIOFileWidget::setupGui()
 
   setupMenuField();
 
+  absPathLabel->hide();
+  absPathNameLabel->hide();
+
   // Update the widget when the data directory changes
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
   connect(validator, &SIMPLDataPathValidator::dataDirectoryChanged, [=] {
@@ -209,9 +212,20 @@ bool AbstractIOFileWidget::verifyPathExists(QString filePath, QLineEdit* lineEdi
 void AbstractIOFileWidget::on_m_LineEdit_editingFinished()
 {
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
-  QString path = validator->sanityCheckRelativePath(m_LineEdit->text());
+  QString path = validator->convertToAbsolutePath(m_LineEdit->text());
 
-  m_LineEdit->setToolTip("Absolute File Path: " + path);
+  QFileInfo fi(m_LineEdit->text());
+  if (fi.isRelative())
+  {
+    absPathLabel->setText(path);
+    absPathLabel->show();
+    absPathNameLabel->show();
+  }
+  else
+  {
+    absPathLabel->hide();
+    absPathNameLabel->hide();
+  }
 
   m_LineEdit->setStyleSheet(QString(""));
   m_CurrentText = m_LineEdit->text();
@@ -232,7 +246,7 @@ void AbstractIOFileWidget::on_m_LineEdit_returnPressed()
 void AbstractIOFileWidget::on_m_LineEdit_textChanged(const QString& text)
 {
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
-  QString inputPath = validator->sanityCheckRelativePath(text);
+  QString inputPath = validator->convertToAbsolutePath(text);
 
   if (hasValidFilePath(inputPath) == true)
   {
@@ -261,7 +275,7 @@ void AbstractIOFileWidget::on_m_LineEdit_textChanged(const QString& text)
 void AbstractIOFileWidget::on_m_LineEdit_fileDropped(const QString& text)
 {
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
-  QString inputPath = validator->sanityCheckRelativePath(text);
+  QString inputPath = validator->convertToAbsolutePath(text);
 
   setOpenDialogLastFilePath(text);
   // Set/Remove the red outline if the file does exist
@@ -278,7 +292,7 @@ void AbstractIOFileWidget::filterNeedsInputParameters(AbstractFilter* filter)
   QString text = m_LineEdit->text();
 
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
-  text = validator->sanityCheckRelativePath(text);
+  text = validator->convertToAbsolutePath(text);
 
   bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, text);
   if(false == ok)

@@ -50,9 +50,18 @@ class SIMPLib_EXPORT SIMPLDataPathValidator : public QObject
 
     SIMPL_GET_PROPERTY(QString, SIMPLDataDirectory)
 
+    /**
+     * @brief setSIMPLDataDirectory
+     * @param path
+     */
     void setSIMPLDataDirectory(const QString &path);
 
-    QString sanityCheckRelativePath(const QString &relativePath);
+    /**
+     * @brief sanityCheckRelativePath
+     * @param relativePath
+     * @return
+     */
+    QString convertToAbsolutePath(const QString &relativePath);
 
   protected:
     SIMPLDataPathValidator();

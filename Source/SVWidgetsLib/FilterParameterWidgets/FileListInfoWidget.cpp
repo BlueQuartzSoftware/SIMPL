@@ -109,6 +109,9 @@ void FileListInfoWidget::setupGui()
 
   setupMenuField();
 
+  m_Ui->absPathLabel->hide();
+  m_Ui->absPathNameLabel->hide();
+
   m_WidgetList << m_Ui->inputDir << m_Ui->inputDirBtn;
   m_WidgetList << m_Ui->fileExt << m_Ui->errorMessage << m_Ui->totalDigits << m_Ui->fileSuffix;
   m_WidgetList << m_Ui->filePrefix << m_Ui->totalSlices << m_Ui->startIndex << m_Ui->endIndex;
@@ -215,7 +218,7 @@ void FileListInfoWidget::keyPressEvent(QKeyEvent* event)
 void FileListInfoWidget::setupMenuField()
 {
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
-  QString inputPath = validator->sanityCheckRelativePath(m_Ui->inputDir->text());
+  QString inputPath = validator->convertToAbsolutePath(m_Ui->inputDir->text());
 
   QFileInfo fi(inputPath);
 
@@ -324,7 +327,7 @@ void FileListInfoWidget::validateInputFile()
 void FileListInfoWidget::checkIOFiles()
 {
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
-  QString inputPath = validator->sanityCheckRelativePath(m_Ui->inputDir->text());
+  QString inputPath = validator->convertToAbsolutePath(m_Ui->inputDir->text());
 
   if(true == this->verifyPathExists(inputPath, m_Ui->inputDir))
   {
@@ -357,7 +360,22 @@ void FileListInfoWidget::inputDir_textChanged(const QString& text)
   Q_UNUSED(text)
 
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
-  QString inputPath = validator->sanityCheckRelativePath(text);
+  QString inputPath = validator->convertToAbsolutePath(text);
+
+  QFileInfo fi(text);
+  if (fi.isRelative())
+  {
+    m_Ui->absPathLabel->setText(inputPath);
+    m_Ui->absPathLabel->show();
+    m_Ui->absPathNameLabel->show();
+  }
+  else
+  {
+    m_Ui->absPathLabel->hide();
+    m_Ui->absPathNameLabel->hide();
+  }
+
+  m_Ui->inputDir->setToolTip("Absolute File Path: " + inputPath);
 
   if(verifyPathExists(inputPath, m_Ui->inputDir))
   {
@@ -427,7 +445,7 @@ void FileListInfoWidget::generateExampleInputFile()
   bool hasMissingFiles = false;
 
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
-  QString inputPath = validator->sanityCheckRelativePath(m_Ui->inputDir->text());
+  QString inputPath = validator->convertToAbsolutePath(m_Ui->inputDir->text());
 
   // Now generate all the file names the user is asking for and populate the table
   QVector<QString> fileList = FilePathGenerator::GenerateFileList(start, end, increment, hasMissingFiles, m_Ui->orderAscending->isChecked(), inputPath, m_Ui->filePrefix->text(),
@@ -474,7 +492,7 @@ void FileListInfoWidget::findMaxSliceAndPrefix()
   }
 
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
-  QString inputPath = validator->sanityCheckRelativePath(m_Ui->inputDir->text());
+  QString inputPath = validator->convertToAbsolutePath(m_Ui->inputDir->text());
 
   QDir dir(inputPath);
 
@@ -586,7 +604,7 @@ void FileListInfoWidget::filterNeedsInputParameters(AbstractFilter* filter)
   bool ok = false;
 
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
-  QString inputPath = validator->sanityCheckRelativePath(m_Ui->inputDir->text());
+  QString inputPath = validator->convertToAbsolutePath(m_Ui->inputDir->text());
 
   FileListInfo_t data;
   data.IncrementIndex = m_Ui->increment->value();

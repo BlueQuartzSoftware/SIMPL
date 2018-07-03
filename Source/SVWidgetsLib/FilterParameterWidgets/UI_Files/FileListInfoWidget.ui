@@ -291,6 +291,13 @@ font-size: 12px;
        </property>
       </widget>
      </item>
+     <item row="3" column="1">
+      <widget class="QLabel" name="totalSlices">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </widget>
+     </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_29">
        <property name="toolTip">
@@ -320,7 +327,7 @@ font-size: 11px;
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
+     <item row="3" column="0">
       <widget class="QLabel" name="label_47">
        <property name="styleSheet">
         <string notr="true">QLabel {
@@ -336,10 +343,43 @@ font-size: 11px;
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
-      <widget class="QLabel" name="totalSlices">
+     <item row="2" column="0">
+      <widget class="QLabel" name="absPathNameLabel">
+       <property name="font">
+        <font>
+         <pointsize>-1</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>The directory that contains the .ang or .ctf files</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+font-weight: bold;
+font-size: 11px;
+}</string>
+       </property>
        <property name="text">
-        <string>0</string>
+        <string>Absolute Path:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="absPathLabel">
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <italic>true</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </item>

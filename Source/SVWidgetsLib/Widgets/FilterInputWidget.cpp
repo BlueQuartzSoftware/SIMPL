@@ -123,7 +123,7 @@ QFileInfo getFilterParameterPath(AbstractFilter* filter, FilterParameter* parame
   if(currentPath.isEmpty() == false)
   {
     SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
-    currentPath = validator->sanityCheckRelativePath(currentPath);
+    currentPath = validator->convertToAbsolutePath(currentPath);
 
     fi.setFile(currentPath);
   }

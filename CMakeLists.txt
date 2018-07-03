@@ -182,7 +182,7 @@ if(MSVC)
 endif()
 
 # Check relative paths
-OPTION (SIMPL_CHOOSABLE_DATA_DIRECTORY "Allow the data directory path choice" ON)
+OPTION (SIMPL_RELATIVE_PATH_CHECK "Check relative paths" ON)
 
 #-------------------------------------------------------------------------------
 # SIMPL_ENABLE_GROUP
