@@ -35,6 +35,8 @@
 
 #include "InputFileFilterParameter.h"
 
+#include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -87,7 +89,8 @@ void InputFileFilterParameter::readJson(const QJsonObject& json)
   QJsonValue jsonValue = json[getPropertyName()];
   if(!jsonValue.isUndefined() && m_SetterCallback)
   {
-    m_SetterCallback(jsonValue.toString(""));
+    QString filePath = jsonValue.toString("");
+    m_SetterCallback(filePath);
   }
 }
 

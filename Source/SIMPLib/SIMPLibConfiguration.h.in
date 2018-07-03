@@ -24,6 +24,9 @@
 /* define to 1 if we are supporting ITK Filters */
 #cmakedefine SIMPL_USE_ITK
 
+/* define to 1 if we are checking relative paths */
+#cmakedefine SIMPL_CHOOSABLE_DATA_DIRECTORY @SIMPL_CHOOSABLE_DATA_DIRECTORY@
+
 /* ****************************************************************************
 * These define features that SIMPL will have when compiled.
 **************************************************************************** */
