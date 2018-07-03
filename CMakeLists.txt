@@ -182,7 +182,7 @@ if(MSVC)
 endif()
 
 # Check relative paths
-OPTION (SIMPL_RELATIVE_PATH_CHECK "Check relative paths" ON)
+OPTION (SIMPL_RELATIVE_PATH_CHECK "Check relative paths" OFF)
 
 #-------------------------------------------------------------------------------
 # SIMPL_ENABLE_GROUP
