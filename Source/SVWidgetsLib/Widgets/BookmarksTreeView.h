@@ -134,13 +134,13 @@ class SVWidgetsLib_EXPORT BookmarksTreeView : public QTreeView
     void listenExecuteBookmarkTriggered();
     void listenClearBookmarksTriggered();
     void listenOpenBookmarkTriggered();
-    void listenLocateBookmarkTriggered();
 
   signals:
     void currentIndexChanged(const QModelIndex& current, const QModelIndex& previous);
     void folderChangedState(const QModelIndex& index, bool expand);
 
     void raiseBookmarksWidget();
+    void locateBookmarkTriggered();
 
     void newSIMPLViewInstanceTriggered(const QString &filePath = "", bool execute = false);
 

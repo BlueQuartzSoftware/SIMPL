@@ -57,8 +57,7 @@ QtSBookmarkMissingDialog::~QtSBookmarkMissingDialog() = default;
 // -----------------------------------------------------------------------------
 void QtSBookmarkMissingDialog::on_locateBtn_clicked()
 {
-  emit locateBtnPressed();
-  close();
+  accept();
 }
 
 // -----------------------------------------------------------------------------
@@ -66,7 +65,7 @@ void QtSBookmarkMissingDialog::on_locateBtn_clicked()
 // -----------------------------------------------------------------------------
 void QtSBookmarkMissingDialog::on_cancelBtn_clicked()
 {
-  close();
+  reject();
 }
 
 // -----------------------------------------------------------------------------

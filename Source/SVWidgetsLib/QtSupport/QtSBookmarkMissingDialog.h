@@ -58,9 +58,6 @@ class SVWidgetsLib_EXPORT QtSBookmarkMissingDialog : public QDialog, private Ui:
     void on_locateBtn_clicked();
     void on_cancelBtn_clicked();
 
-  signals:
-    void locateBtnPressed();
-
   private:
     QString m_OpenDialogLastFilePath;
 
