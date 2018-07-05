@@ -152,6 +152,8 @@ class SVWidgetsLib_EXPORT BookmarksToolboxWidget : public QWidget, private Ui::B
     */
     void bookmarkActivated(const QString& filePath, bool execute = false);
 
+    void raiseBookmarksDockWidget();
+
     void updateStatusBar(const QString& msg);
 
   private:

@@ -70,6 +70,17 @@ QLineEdit(parent)
 
 SVLineEdit::~SVLineEdit() = default;
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+SVSmallLabel::SVSmallLabel(QWidget* parent) :
+QLabel(parent)
+{
+  setAttribute(Qt::WA_MacShowFocusRect, false);
+}
+
+SVSmallLabel::~SVSmallLabel() = default;
+
 
 // -----------------------------------------------------------------------------
 //

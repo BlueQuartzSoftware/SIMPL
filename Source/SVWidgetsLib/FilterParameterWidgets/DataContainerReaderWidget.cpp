@@ -52,6 +52,7 @@
 #include <QtWidgets/QMenu>
 
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
+#include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
@@ -335,6 +336,20 @@ void DataContainerReaderWidget::setupGui()
 
   setupMenuField();
 
+  absPathLabel->hide();
+
+  // Update the widget when the data directory changes
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  connect(validator, &SIMPLDataPathValidator::dataDirectoryChanged, [=] {
+    blockSignals(true);
+    on_m_LineEdit_textChanged(m_LineEdit->text());
+    on_m_LineEdit_fileDropped(m_LineEdit->text());
+    on_m_LineEdit_returnPressed();
+    blockSignals(false);
+
+    emit parametersChanged();
+  });
+
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
@@ -346,6 +361,7 @@ void DataContainerReaderWidget::setupGui()
 
     m_LineEdit->setText(path);
     on_m_LineEdit_fileDropped(path);
+    on_m_LineEdit_returnPressed();
   }
 
 
@@ -356,7 +372,10 @@ void DataContainerReaderWidget::setupGui()
 // -----------------------------------------------------------------------------
 void DataContainerReaderWidget::setupMenuField()
 {
-  QFileInfo fi(m_LineEdit->text());
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  QString path = validator->convertToAbsolutePath(m_LineEdit->text());
+
+  QFileInfo fi(path);
 
   QMenu* lineEditMenu = new QMenu(m_LineEdit);
   m_LineEdit->setButtonMenu(QtSLineEdit::Left, lineEditMenu);
@@ -603,7 +622,11 @@ void DataContainerReaderWidget::beforePreflight()
 void DataContainerReaderWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   // qDebug() << "DataContainerReaderWidget::filterNeedsInputParameters()";
-  m_Filter->setInputFile(m_LineEdit->text());
+
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  QString path = validator->convertToAbsolutePath(m_LineEdit->text());
+
+  m_Filter->setInputFile(path);
   updateProxyFromModel(); // Will update m_DcaProxy with the latest selections from the Model
   m_Filter->setInputFileDataContainerArrayProxy(m_DcaProxy);
 }
@@ -659,9 +682,24 @@ bool DataContainerReaderWidget::verifyPathExists(QString m_LineEdit, QLineEdit* 
 // -----------------------------------------------------------------------------
 void DataContainerReaderWidget::on_m_LineEdit_editingFinished()
 {
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  QString path = validator->convertToAbsolutePath(m_LineEdit->text());
+
+  QFileInfo fi(m_LineEdit->text());
+  if (fi.isRelative())
+  {
+    absPathLabel->setText(path);
+    absPathLabel->show();
+  }
+  else
+  {
+    absPathLabel->hide();
+  }
+
   m_LineEdit->setStyleSheet(QString(""));
   m_CurrentText = m_LineEdit->text();
-  on_m_LineEdit_fileDropped(m_CurrentText);
+
+  on_m_LineEdit_fileDropped(m_LineEdit->text());
   emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }
 
@@ -754,7 +792,10 @@ bool DataContainerReaderWidget::hasValidFilePath(const QString &filePath)
 // -----------------------------------------------------------------------------
 void DataContainerReaderWidget::on_m_LineEdit_textChanged(const QString& text)
 {
-  if (hasValidFilePath(text) == true)
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  QString path = validator->convertToAbsolutePath(text);
+
+  if (hasValidFilePath(path) == true)
   {
     m_ShowFileAction->setEnabled(true);
   }
@@ -779,16 +820,19 @@ void DataContainerReaderWidget::on_m_LineEdit_textChanged(const QString& text)
 // -----------------------------------------------------------------------------
 void DataContainerReaderWidget::on_m_LineEdit_fileDropped(const QString& text)
 {
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  QString path = validator->convertToAbsolutePath(text);
+
   DataContainerArrayProxy proxy;
 
-  setOpenDialogLastFilePath(text);
+  setOpenDialogLastFilePath(path);
   // Set/Remove the red outline if the file does exist
 
-  if(verifyPathExists(text, m_LineEdit) == true)
+  if(verifyPathExists(path, m_LineEdit) == true)
   {
     if(getFilter() != nullptr)
     {
-      if(m_Filter->getLastFileRead().compare(text) != 0)
+      if(m_Filter->getLastFileRead().compare(path) != 0)
       {
         QStandardItemModel* model = qobject_cast<QStandardItemModel*>(dcaProxyView->model());
         if(nullptr != model)
@@ -796,17 +840,17 @@ void DataContainerReaderWidget::on_m_LineEdit_fileDropped(const QString& text)
           model->clear();
         }
 
-        if(m_Filter->getInputFileDataContainerArrayProxy().dataContainers.size() > 0 && (text == m_Filter->getLastFileRead() || m_Filter->getLastFileRead().isEmpty()))
+        if(m_Filter->getInputFileDataContainerArrayProxy().dataContainers.size() > 0 && (path == m_Filter->getLastFileRead() || m_Filter->getLastFileRead().isEmpty()))
         {
           proxy = m_Filter->getInputFileDataContainerArrayProxy();
         }
         else
         {
-          proxy = m_Filter->readDataContainerArrayStructure(text);
+          proxy = m_Filter->readDataContainerArrayStructure(path);
           m_Filter->setLastRead(QDateTime::currentDateTime());
         }
 
-        m_Filter->setLastFileRead(text); // Update the cached file path in the filter
+        m_Filter->setLastFileRead(path); // Update the cached file path in the filter
       }
       else
       {

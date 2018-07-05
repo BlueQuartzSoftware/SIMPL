@@ -104,6 +104,8 @@ void BookmarksToolboxWidget::setupGui()
 
   connect(bookmarksTreeView, &BookmarksTreeView::fireWriteSettings, this, &BookmarksToolboxWidget::fireWriteSettings);
 
+  connect(bookmarksTreeView, &BookmarksTreeView::raiseBookmarksWidget, this, &BookmarksToolboxWidget::raiseBookmarksDockWidget);
+
   //bookmarksTreeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 

@@ -20,6 +20,7 @@ set(SIMPLib_Utilities_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ColorUtilities.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilePathGenerator.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatSummation.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLDataPathValidator.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLH5DataReaderRequirements.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLibEndian.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/StringOperations.h
@@ -30,7 +31,8 @@ set(SIMPLib_Utilities_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ColorTable.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ColorUtilities.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilePathGenerator.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatSummation.cpp 
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatSummation.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLDataPathValidator.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLH5DataReader.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLH5DataReaderRequirements.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/StringOperations.cpp

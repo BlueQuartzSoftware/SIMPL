@@ -164,18 +164,23 @@ void BookmarksTreeView::listenAddBookmarkTriggered()
 // -----------------------------------------------------------------------------
 void BookmarksTreeView::listenAddBookmarkFolderTriggered()
 {
+  BookmarksModel* model = BookmarksModel::Instance();
+
   QModelIndex parent = currentIndex();
 
-  if(parent.isValid() == false)
+  if(parent.isValid() == false || static_cast<BookmarksItem::ItemType>(model->data(parent, BookmarksModel::Roles::ItemTypeRole).toInt()) == BookmarksItem::ItemType::Bookmark)
   {
     parent = QModelIndex();
   }
 
+  emit raiseBookmarksWidget();
+
   QString name = "New Folder";
 
-  BookmarksModel* model = BookmarksModel::Instance();
-
   QModelIndex index = model->addTreeItem(parent, name, QIcon(":/SIMPL/icons/images/folder_blue.png"), "", model->rowCount(parent), BookmarksItem::ItemType::Folder, false);
+  expandIndex(parent);
+  setCurrentIndex(index);
+  scrollTo(index);
   edit(index);
 }
 

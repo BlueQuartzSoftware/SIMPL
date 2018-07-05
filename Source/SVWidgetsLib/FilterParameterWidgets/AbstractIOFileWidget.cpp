@@ -44,9 +44,8 @@
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMenu>
 
-
-
 #include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
+#include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
@@ -104,15 +103,29 @@ void AbstractIOFileWidget::setupGui()
 
   setupMenuField();
 
+  absPathLabel->hide();
+  // absPathNameLabel->hide();
+
+  // Update the widget when the data directory changes
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  connect(validator, &SIMPLDataPathValidator::dataDirectoryChanged, [=] {
+    blockSignals(true);
+    on_m_LineEdit_textChanged(m_LineEdit->text());
+    on_m_LineEdit_fileDropped(m_LineEdit->text());
+    on_m_LineEdit_returnPressed();
+    blockSignals(false);
+
+    emit parametersChanged();
+  });
+
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
     QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
     m_LineEdit->setText(currentPath);
-    if(verifyPathExists(currentPath, m_LineEdit))
-    {
-    }
+    on_m_LineEdit_fileDropped(currentPath);
+    on_m_LineEdit_returnPressed();
   }
 
   m_CurrentText = m_LineEdit->text();
@@ -198,6 +211,20 @@ bool AbstractIOFileWidget::verifyPathExists(QString filePath, QLineEdit* lineEdi
 // -----------------------------------------------------------------------------
 void AbstractIOFileWidget::on_m_LineEdit_editingFinished()
 {
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  QString path = validator->convertToAbsolutePath(m_LineEdit->text());
+
+  QFileInfo fi(m_LineEdit->text());
+  if (fi.isRelative())
+  {
+    absPathLabel->setText(path);
+    absPathLabel->show();
+  }
+  else
+  {
+    absPathLabel->hide();
+  }
+
   m_LineEdit->setStyleSheet(QString(""));
   m_CurrentText = m_LineEdit->text();
   emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
@@ -216,7 +243,16 @@ void AbstractIOFileWidget::on_m_LineEdit_returnPressed()
 // -----------------------------------------------------------------------------
 void AbstractIOFileWidget::on_m_LineEdit_textChanged(const QString& text)
 {
-  if (hasValidFilePath(text) == true)
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  QString inputPath = validator->convertToAbsolutePath(text);
+ 
+  QFileInfo fi(text);
+  if (fi.isRelative())
+  {
+    absPathLabel->setText(inputPath);
+  }
+
+  if (hasValidFilePath(inputPath) == true)
   {
     m_ShowFileAction->setEnabled(true);
   }
@@ -242,9 +278,12 @@ void AbstractIOFileWidget::on_m_LineEdit_textChanged(const QString& text)
 // -----------------------------------------------------------------------------
 void AbstractIOFileWidget::on_m_LineEdit_fileDropped(const QString& text)
 {
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  QString inputPath = validator->convertToAbsolutePath(text);
+
   setOpenDialogLastFilePath(text);
   // Set/Remove the red outline if the file does exist
-  verifyPathExists(text, m_LineEdit);
+  verifyPathExists(inputPath, m_LineEdit);
 
   emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }
@@ -255,6 +294,10 @@ void AbstractIOFileWidget::on_m_LineEdit_fileDropped(const QString& text)
 void AbstractIOFileWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   QString text = m_LineEdit->text();
+
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  text = validator->convertToAbsolutePath(text);
+
   bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, text);
   if(false == ok)
   {

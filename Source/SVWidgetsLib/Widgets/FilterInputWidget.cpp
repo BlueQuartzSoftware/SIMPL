@@ -55,6 +55,7 @@
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedDataContainerSelectionFilterParameter.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
+#include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
 
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 
@@ -121,6 +122,9 @@ QFileInfo getFilterParameterPath(AbstractFilter* filter, FilterParameter* parame
   QFileInfo fi;
   if(currentPath.isEmpty() == false)
   {
+    SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+    currentPath = validator->convertToAbsolutePath(currentPath);
+
     fi.setFile(currentPath);
   }
 
@@ -295,12 +299,12 @@ void FilterInputWidget::layoutWidgets(AbstractFilter* filter)
   {
     FilterParameter* parameter = (*iter).get();
 
-    // Check to make sure that this is in fact a file system filter parameter
-    if(nullptr != dynamic_cast<InputFileFilterParameter*>(parameter) || nullptr != dynamic_cast<InputPathFilterParameter*>(parameter) ||
-       nullptr != dynamic_cast<DataContainerReaderFilterParameter*>(parameter))
-    {
-      validateFileSystemFilterParameter(parameter, filter);
-    }
+//    // Check to make sure that this is in fact a file system filter parameter
+//    if(nullptr != dynamic_cast<InputFileFilterParameter*>(parameter) || nullptr != dynamic_cast<InputPathFilterParameter*>(parameter) ||
+//       nullptr != dynamic_cast<DataContainerReaderFilterParameter*>(parameter))
+//    {
+//      validateFileSystemFilterParameter(parameter, filter);
+//    }
 
     QWidget* filterParameterWidget = fwm->createWidget(parameter, filter, this);
     m_PropertyToWidget.insert(parameter->getPropertyName(), filterParameterWidget); // Update our Map of Filter Parameter Properties to the Widget

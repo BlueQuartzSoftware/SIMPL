@@ -47,6 +47,7 @@
 #include "SIMPLib/FilterParameters/FileListInfoFilterParameter.h"
 #include "SIMPLib/Utilities/FilePathGenerator.h"
 #include "SIMPLib/Utilities/StringOperations.h"
+#include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
@@ -108,6 +109,8 @@ void FileListInfoWidget::setupGui()
 
   setupMenuField();
 
+  m_Ui->absPathLabel->hide();
+
   m_WidgetList << m_Ui->inputDir << m_Ui->inputDirBtn;
   m_WidgetList << m_Ui->fileExt << m_Ui->errorMessage << m_Ui->totalDigits << m_Ui->fileSuffix;
   m_WidgetList << m_Ui->filePrefix << m_Ui->totalSlices << m_Ui->startIndex << m_Ui->endIndex;
@@ -118,7 +121,17 @@ void FileListInfoWidget::setupGui()
   m_OrderingGroup->addButton(m_Ui->orderAscending);
   m_OrderingGroup->addButton(m_Ui->orderDescending);
 
-  validateInputFile();
+  // Update the widget when the data directory changes
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  connect(validator, &SIMPLDataPathValidator::dataDirectoryChanged, [=] {
+    blockSignals(true);
+    inputDir_textChanged(m_Ui->inputDir->text());
+    blockSignals(false);
+
+    emit parametersChanged();
+  });
+
+//  validateInputFile();
   getGuiParametersFromFilter();
 }
 
@@ -203,7 +216,10 @@ void FileListInfoWidget::keyPressEvent(QKeyEvent* event)
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::setupMenuField()
 {
-  QFileInfo fi(m_Ui->inputDir->text());
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  QString inputPath = validator->convertToAbsolutePath(m_Ui->inputDir->text());
+
+  QFileInfo fi(inputPath);
 
   QMenu* lineEditMenu = new QMenu(m_Ui->inputDir);
   m_Ui->inputDir->setButtonMenu(QtSLineEdit::Left, lineEditMenu);
@@ -232,7 +248,7 @@ void FileListInfoWidget::setupMenuField()
     connect(m_ShowFileAction, SIGNAL(triggered()), this, SLOT(showFileInFileSystem()));
   }
 
-  if(m_Ui->inputDir->text().isEmpty() == false && fi.exists())
+  if(inputPath.isEmpty() == false && fi.exists())
   {
     m_ShowFileAction->setEnabled(true);
   }
@@ -309,7 +325,10 @@ void FileListInfoWidget::validateInputFile()
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::checkIOFiles()
 {
-  if(true == this->verifyPathExists(m_Ui->inputDir->text(), m_Ui->inputDir))
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  QString inputPath = validator->convertToAbsolutePath(m_Ui->inputDir->text());
+
+  if(true == this->verifyPathExists(inputPath, m_Ui->inputDir))
   {
     findMaxSliceAndPrefix();
   }
@@ -339,11 +358,27 @@ void FileListInfoWidget::inputDir_textChanged(const QString& text)
 {
   Q_UNUSED(text)
 
-  if(verifyPathExists(m_Ui->inputDir->text(), m_Ui->inputDir))
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  QString inputPath = validator->convertToAbsolutePath(text);
+
+  QFileInfo fi(text);
+  if (fi.isRelative())
+  {
+    m_Ui->absPathLabel->setText(inputPath);
+    m_Ui->absPathLabel->show();
+  }
+  else
+  {
+    m_Ui->absPathLabel->hide();
+  }
+
+  m_Ui->inputDir->setToolTip("Absolute File Path: " + inputPath);
+
+  if(verifyPathExists(inputPath, m_Ui->inputDir))
   {
     m_ShowFileAction->setEnabled(true);
     findMaxSliceAndPrefix();
-    QDir dir(m_Ui->inputDir->text());
+    QDir dir(inputPath);
     QString dirname = dir.dirName();
     dir.cdUp();
 
@@ -406,8 +441,11 @@ void FileListInfoWidget::generateExampleInputFile()
   int increment = m_Ui->increment->value();
   bool hasMissingFiles = false;
 
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  QString inputPath = validator->convertToAbsolutePath(m_Ui->inputDir->text());
+
   // Now generate all the file names the user is asking for and populate the table
-  QVector<QString> fileList = FilePathGenerator::GenerateFileList(start, end, increment, hasMissingFiles, m_Ui->orderAscending->isChecked(), m_Ui->inputDir->text(), m_Ui->filePrefix->text(),
+  QVector<QString> fileList = FilePathGenerator::GenerateFileList(start, end, increment, hasMissingFiles, m_Ui->orderAscending->isChecked(), inputPath, m_Ui->filePrefix->text(),
                                                                   m_Ui->fileSuffix->text(), m_Ui->fileExt->text(), m_Ui->totalDigits->value());
   m_Ui->fileListView->clear();
   QIcon greenDot = QIcon(QString(":/SIMPL/icons/images/bullet_ball_green.png"));
@@ -449,7 +487,11 @@ void FileListInfoWidget::findMaxSliceAndPrefix()
   {
     return;
   }
-  QDir dir(m_Ui->inputDir->text());
+
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  QString inputPath = validator->convertToAbsolutePath(m_Ui->inputDir->text());
+
+  QDir dir(inputPath);
 
   // Final check to make sure we have a valid file extension
   if(m_Ui->fileExt->text().isEmpty() == true)
@@ -558,13 +600,16 @@ void FileListInfoWidget::filterNeedsInputParameters(AbstractFilter* filter)
   }
   bool ok = false;
 
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  QString inputPath = validator->convertToAbsolutePath(m_Ui->inputDir->text());
+
   FileListInfo_t data;
   data.IncrementIndex = m_Ui->increment->value();
   data.EndIndex = m_Ui->endIndex->value();
   data.FileExtension = m_Ui->fileExt->text();
   data.FilePrefix = m_Ui->filePrefix->text();
   data.FileSuffix = m_Ui->fileSuffix->text();
-  data.InputPath = m_Ui->inputDir->text();
+  data.InputPath = inputPath;
   data.Ordering = getOrdering();
   data.PaddingDigits = m_Ui->totalDigits->value();
   data.StartIndex = m_Ui->startIndex->value();
