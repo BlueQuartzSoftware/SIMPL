@@ -104,7 +104,7 @@ void AbstractIOFileWidget::setupGui()
   setupMenuField();
 
   absPathLabel->hide();
-  absPathNameLabel->hide();
+  // absPathNameLabel->hide();
 
   // Update the widget when the data directory changes
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
@@ -219,12 +219,10 @@ void AbstractIOFileWidget::on_m_LineEdit_editingFinished()
   {
     absPathLabel->setText(path);
     absPathLabel->show();
-    absPathNameLabel->show();
   }
   else
   {
     absPathLabel->hide();
-    absPathNameLabel->hide();
   }
 
   m_LineEdit->setStyleSheet(QString(""));
@@ -247,6 +245,12 @@ void AbstractIOFileWidget::on_m_LineEdit_textChanged(const QString& text)
 {
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
   QString inputPath = validator->convertToAbsolutePath(text);
+ 
+  QFileInfo fi(text);
+  if (fi.isRelative())
+  {
+    absPathLabel->setText(inputPath);
+  }
 
   if (hasValidFilePath(inputPath) == true)
   {

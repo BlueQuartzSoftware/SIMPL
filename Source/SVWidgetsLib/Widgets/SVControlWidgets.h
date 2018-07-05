@@ -9,6 +9,8 @@
 #include <QtWidgets/QListView>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QTreeWidget>
+#include <QtWidgets/QLabel>
+
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
@@ -84,7 +86,7 @@ class SVWidgetsLib_EXPORT SVDoubleSpinBox : public QDoubleSpinBox
 
 
 /**
- * @brief The SVTreeView class
+ * @brief The SVLineEdit class
  */
 class SVWidgetsLib_EXPORT SVLineEdit : public QLineEdit
 {
@@ -95,6 +97,20 @@ class SVWidgetsLib_EXPORT SVLineEdit : public QLineEdit
   virtual ~SVLineEdit();
   
 };
+
+/**
+ * @brief The SVLineEdit class
+ */
+class SVWidgetsLib_EXPORT SVSmallLabel : public QLabel
+{
+  Q_OBJECT
+  
+  public:
+  SVSmallLabel(QWidget* parent = nullptr);
+  virtual ~SVSmallLabel();
+  
+};
+
 
 
 

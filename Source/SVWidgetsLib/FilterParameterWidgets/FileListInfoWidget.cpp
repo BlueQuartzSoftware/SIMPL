@@ -110,7 +110,6 @@ void FileListInfoWidget::setupGui()
   setupMenuField();
 
   m_Ui->absPathLabel->hide();
-  m_Ui->absPathNameLabel->hide();
 
   m_WidgetList << m_Ui->inputDir << m_Ui->inputDirBtn;
   m_WidgetList << m_Ui->fileExt << m_Ui->errorMessage << m_Ui->totalDigits << m_Ui->fileSuffix;
@@ -367,12 +366,10 @@ void FileListInfoWidget::inputDir_textChanged(const QString& text)
   {
     m_Ui->absPathLabel->setText(inputPath);
     m_Ui->absPathLabel->show();
-    m_Ui->absPathNameLabel->show();
   }
   else
   {
     m_Ui->absPathLabel->hide();
-    m_Ui->absPathNameLabel->hide();
   }
 
   m_Ui->inputDir->setToolTip("Absolute File Path: " + inputPath);

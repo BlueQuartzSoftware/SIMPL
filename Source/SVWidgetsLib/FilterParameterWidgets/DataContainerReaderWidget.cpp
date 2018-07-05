@@ -337,7 +337,6 @@ void DataContainerReaderWidget::setupGui()
   setupMenuField();
 
   absPathLabel->hide();
-  absPathNameLabel->hide();
 
   // Update the widget when the data directory changes
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
@@ -691,12 +690,10 @@ void DataContainerReaderWidget::on_m_LineEdit_editingFinished()
   {
     absPathLabel->setText(path);
     absPathLabel->show();
-    absPathNameLabel->show();
   }
   else
   {
     absPathLabel->hide();
-    absPathNameLabel->hide();
   }
 
   m_LineEdit->setStyleSheet(QString(""));

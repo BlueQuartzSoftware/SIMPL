@@ -141,6 +141,13 @@ SVIconPushButton:disabled
     padding-top: 0px; 
 }
 
+SVSmallLabel
+{
+    font-family: "Lato";
+    font-weight: bold;
+    font-size: Font_Size_Small;
+}
+
 
 FilterParameterWidget
 {
