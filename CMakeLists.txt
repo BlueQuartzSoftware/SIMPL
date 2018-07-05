@@ -80,7 +80,7 @@ endif()
 # Development: This is currently in development and probably has bugs.
 get_property(SIMPLProj_RELEASE_TYPE GLOBAL PROPERTY PACKAGE_RELEASE_TYPE)
 if("${SIMPLProj_RELEASE_TYPE}" STREQUAL "")
-  set(SIMPLProj_RELEASE_TYPE "Development")
+  set(SIMPLProj_RELEASE_TYPE "Official")
   set_property(GLOBAL PROPERTY PACKAGE_RELEASE_TYPE "${SIMPLProj_RELEASE_TYPE}")
 endif()
 
