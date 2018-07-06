@@ -33,8 +33,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _databrowseritemdelegate_h_
-#define _databrowseritemdelegate_h_
+#pragma once
 
 #include <QtCore/QModelIndex>
 
@@ -140,4 +139,3 @@ private:
   QIcon m_CreatedInvalidIcon;
 };
 
-#endif // _DataStructureItemDelegate_H

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _negativeoperator_h_
-#define _negativeoperator_h_
+#pragma once
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
@@ -67,4 +66,3 @@ class SIMPLib_EXPORT NegativeOperator : public CalculatorOperator
     void operator=(const NegativeOperator&) = delete;   // Move assignment Not Implemented
 };
 
-#endif /* _NegativeOperator_H_ */

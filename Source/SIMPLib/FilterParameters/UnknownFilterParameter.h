@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _unknownfilterparameter_h_
-#define _unknownfilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -86,4 +85,3 @@ public:
     void operator=(const UnknownFilterParameter&) = delete;         // Move assignment Not Implemented
 };
 
-#endif /* _UnknownFilterParameter_H_ */

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _dataarrayproxy_h_
-#define _dataarrayproxy_h_
+#pragma once
 
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
@@ -167,4 +166,3 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(DataArrayProxy::PrimitiveTypeFlags)
 
 Q_DECLARE_METATYPE(DataArrayProxy)
 
-#endif /* _DataArrayProxy_H_ */

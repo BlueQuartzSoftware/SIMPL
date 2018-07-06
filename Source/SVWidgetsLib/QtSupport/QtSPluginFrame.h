@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _simplpluginframe_h_
-#define _simplpluginframe_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QString>
@@ -196,5 +195,4 @@ class SVWidgetsLib_EXPORT QtSPluginFrame : public QFrame
     void operator=(const QtSPluginFrame&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _AIM_PLUGIN_FRAME_H_ */
 

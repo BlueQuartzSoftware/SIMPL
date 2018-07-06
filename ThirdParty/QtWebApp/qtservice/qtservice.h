@@ -42,8 +42,7 @@
   @author Tolltech
 */
 
-#ifndef QTSERVICE_H
-#define QTSERVICE_H
+#pragma once
 
 #include <QCoreApplication>
 #include <QtGlobal>
@@ -194,4 +193,3 @@ private:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(QtServiceBase::ServiceFlags)
 
-#endif // QTSERVICE_H

@@ -3,8 +3,7 @@
   @author Stefan Frings
 */
 
-#ifndef TEMPLATE_H
-#define TEMPLATE_H
+#pragma once
 
 #include "templateglobal.h"
 #include <QFile>
@@ -164,4 +163,3 @@ private:
   bool warnings;
 };
 
-#endif // TEMPLATE_H

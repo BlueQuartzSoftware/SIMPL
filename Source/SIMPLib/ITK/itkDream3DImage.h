@@ -15,8 +15,7 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef itkDream3DImage_h
-#define itkDream3DImage_h
+#pragma once
 
 #include "itkDefaultPixelAccessor.h"
 #include "itkDefaultPixelAccessorFunctor.h"
@@ -282,4 +281,3 @@ private:
 #include "itkDream3DImage.hxx"
 #endif
 
-#endif

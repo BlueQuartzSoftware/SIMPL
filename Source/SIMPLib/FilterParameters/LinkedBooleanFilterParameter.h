@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _linkedbooleanfilterparameter_h_
-#define _linkedbooleanfilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -143,4 +142,3 @@ class SIMPLib_EXPORT LinkedBooleanFilterParameter : public FilterParameter
     void operator=(const LinkedBooleanFilterParameter&) = delete;               // Move assignment Not Implemented
 };
 
-#endif /* _LinkedBooleanFilterParameter_H_ */

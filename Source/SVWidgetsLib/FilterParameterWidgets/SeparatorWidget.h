@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _separatorwidget_h_
-#define _separatorwidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -97,6 +96,5 @@ class SVWidgetsLib_EXPORT SeparatorWidget : public FilterParameterWidget, privat
     void operator=(const SeparatorWidget&) = delete;  // Move assignment Not Implemented
 };
 
-#endif /* _SeparatorWidget_H_ */
 
 

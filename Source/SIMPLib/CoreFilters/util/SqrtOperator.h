@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _sqrtoperator_h_
-#define _sqrtoperator_h_
+#pragma once
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
@@ -67,4 +66,3 @@ class SIMPLib_EXPORT SqrtOperator : public UnaryOperator
     void operator=(const SqrtOperator&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _SqrtOperator_H_ */

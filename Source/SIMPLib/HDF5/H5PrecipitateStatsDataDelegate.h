@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _h5precipitatestatsdatadelegate_h_
-#define _h5precipitatestatsdatadelegate_h_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -129,5 +128,4 @@ class SIMPLib_EXPORT H5PrecipitateStatsDataDelegate : public H5StatsDataDelegate
     void operator=(const H5PrecipitateStatsDataDelegate&) = delete;                 // Move assignment Not Implemented
 };
 
-#endif /* _H5PrecipitateStatsData_DELEGATE_H_ */
 

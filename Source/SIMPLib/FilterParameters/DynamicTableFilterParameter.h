@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _dynamictablefilterparameter_h_
-#define _dynamictablefilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -150,4 +149,3 @@ class SIMPLib_EXPORT DynamicTableFilterParameter : public FilterParameter
     void operator=(const DynamicTableFilterParameter&) = delete;              // Move assignment Not Implemented
 };
 
-#endif /* _DynamicTableFilterParameter_H_ */

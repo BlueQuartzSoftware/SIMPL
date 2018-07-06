@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _intvec3widget_h_
-#define _intvec3widget_h_
+#pragma once
 
 
 
@@ -94,6 +93,5 @@ class SVWidgetsLib_EXPORT IntVec3Widget : public FilterParameterWidget, private 
     void operator=(const IntVec3Widget&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _IntVec3Widget_H_ */
 
 

@@ -29,8 +29,7 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _geometryhelpers_h_
-#define _geometryhelpers_h_
+#pragma once
 
 #include <math.h>
 
@@ -1096,4 +1095,3 @@ public:
 };
 }
 
-#endif /* _geometryhelpers_h_ */

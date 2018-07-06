@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _tanoperator_h_
-#define _tanoperator_h_
+#pragma once
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
@@ -67,4 +66,3 @@ class SIMPLib_EXPORT TanOperator : public UnaryOperator
     void operator=(const TanOperator&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _TanOperator_H_ */

@@ -35,8 +35,7 @@
 
 
 
-#ifndef _updatecheck_h_
-#define _updatecheck_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QUrl>
@@ -91,5 +90,4 @@ class SVWidgetsLib_EXPORT UpdateCheck : public QObject
     void operator=(const UpdateCheck&); // Move assignment Not Implemented
 };
 
-#endif /* _UPDATECHECK_H_ */
 

@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _tupleselectionpage_h_
-#define _tupleselectionpage_h_
+#pragma once
 
 #include <QtWidgets/QWizardPage>
 
@@ -80,4 +79,3 @@ class TupleSelectionPage : public AbstractWizardPage, private Ui::TupleSelection
     void operator=(const TupleSelectionPage&) = delete;     // Move assignment Not Implemented
 };
 
-#endif /* TupleSelectionPage_H_ */

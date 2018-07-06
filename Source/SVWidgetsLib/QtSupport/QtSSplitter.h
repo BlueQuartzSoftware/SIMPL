@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _simplviewsplitter_h_
-#define _simplviewsplitter_h_
+#pragma once
 
 #include <QtWidgets/QSplitter>
 
@@ -60,4 +59,3 @@ class SVWidgetsLib_EXPORT QtSSplitter : public QSplitter
     void operator=(const QtSSplitter&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _SIMPLViewSplitter_H */

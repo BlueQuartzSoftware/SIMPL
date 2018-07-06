@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _abstractdecisionfilter_h_
-#define _abstractdecisionfilter_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -157,4 +156,3 @@ public:
   AbstractDecisionFilter& operator=(AbstractDecisionFilter&&) = delete;      // Move Assignment Not Implemented
 };
 
-#endif /* _ABSTRACTDECISIONFILTER_H_ */

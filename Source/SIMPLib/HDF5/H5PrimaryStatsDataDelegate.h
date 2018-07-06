@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _h5primarystatsdatadelegate_h_
-#define _h5primarystatsdatadelegate_h_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -117,5 +116,4 @@ class SIMPLib_EXPORT H5PrimaryStatsDataDelegate : public H5StatsDataDelegate
     void operator=(const H5PrimaryStatsDataDelegate&) = delete;             // Move assignment Not Implemented
 };
 
-#endif /* _H5PrimaryStatsData_DELEGATE_H_ */
 

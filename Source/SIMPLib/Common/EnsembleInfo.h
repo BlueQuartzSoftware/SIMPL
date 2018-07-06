@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ensembleinfo_h_
-#define _ensembleinfo_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 #include <QtCore/QMetaType>
@@ -120,4 +119,3 @@ private:
 
 Q_DECLARE_METATYPE(EnsembleInfo)
 
-#endif /* _EnsembleInfo_H_ */

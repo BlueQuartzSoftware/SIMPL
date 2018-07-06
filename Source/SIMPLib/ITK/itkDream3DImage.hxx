@@ -25,8 +25,7 @@
 *  please refer to the NOTICE file at the top of the ITK source tree.
 *
 *=========================================================================*/
-#ifndef itkDream3DImage_hxx
-#define itkDream3DImage_hxx
+#pragma once
 
 #include "itkDream3DImage.h"
 #include "itkProcessObject.h"
@@ -147,4 +146,3 @@ namespace itk
 
 } // end namespace itk
 
-#endif

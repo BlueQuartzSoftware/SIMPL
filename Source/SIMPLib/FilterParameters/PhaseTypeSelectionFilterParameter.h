@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _phasetypeselectionfilterparameter_h_
-#define _phasetypeselectionfilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -149,4 +148,3 @@ private:
   void operator=(const PhaseTypeSelectionFilterParameter&);                             // Move assignment Not Implemented
 };
 
-#endif /* _PhaseTypeSelectionFilterParameter_H_ */

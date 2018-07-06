@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _linkedbooleanwidget_h_
-#define _linkedbooleanwidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -102,6 +101,5 @@ class SVWidgetsLib_EXPORT LinkedBooleanWidget : public FilterParameterWidget, pr
     void operator=(const LinkedBooleanWidget&) = delete;      // Move assignment Not Implemented
 };
 
-#endif /* _LinkedBooleanWidget_H_ */
 
 

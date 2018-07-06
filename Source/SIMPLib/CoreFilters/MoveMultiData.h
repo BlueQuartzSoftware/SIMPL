@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _movemultidata_h_
-#define _movemultidata_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -184,4 +183,3 @@ class SIMPLib_EXPORT MoveMultiData : public AbstractFilter
     MoveMultiData& operator=(MoveMultiData&&) = delete;      // Move Assignment
 };
 
-#endif /* _MoveMultiData_H_ */

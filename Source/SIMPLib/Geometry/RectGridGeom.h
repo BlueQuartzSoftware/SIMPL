@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _rectgridgeom_h_
-#define _rectgridgeom_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Geometry/IGeometryGrid.h"
@@ -288,5 +287,4 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
 };
 
 
-#endif /* _RectGridGeom_H_ */
 

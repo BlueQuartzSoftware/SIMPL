@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _shapetype_h_
-#define _shapetype_h_
+#pragma once
 
 #include <QtCore/QMap>
 #include <QtCore/QString>
@@ -120,4 +119,3 @@ private:
 Q_DECLARE_METATYPE(ShapeType::Type)
 Q_DECLARE_METATYPE(ShapeType::Types)
 
-#endif /* SHAPETYPE_H_ */

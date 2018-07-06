@@ -44,8 +44,7 @@
 // destroyed. While there is no explicit synchronization between multiple
 // instances of ColorPresets, there should not be any need to
 // have multiple instances alive at the same time.
-#ifndef vtkSMTransferFunctionPresets_h
-#define vtkSMTransferFunctionPresets_h
+#pragma once
 
 #include <QtCore/QString>
 #include <QtCore/QJsonArray>
@@ -119,4 +118,3 @@ private:
   void operator=(const ColorPresets&) = delete; // Move assignment Not Implemented
 };
 
-#endif

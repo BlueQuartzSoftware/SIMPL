@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _plugindetails_h_
-#define _plugindetails_h_
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -70,4 +69,3 @@ class PluginDetails : public QDialog, private Ui::PluginDetails
     void operator=(const PluginDetails&) = delete; // Move assignment Not Implemented
 };
 
-#endif // PLUGINDETAILS_H

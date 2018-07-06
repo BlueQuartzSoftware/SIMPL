@@ -32,8 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _simplibsetgetmacros_h_
-#define _simplibsetgetmacros_h_
+#pragma once
 
 
 #include <cstring>
@@ -686,4 +685,3 @@ template <typename T> T lexical_cast(const QString& s)
 
 
 
-#endif /* SIMPL_SETGETMACROS_H_ */

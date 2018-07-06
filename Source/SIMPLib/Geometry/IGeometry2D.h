@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _igeometry2d_h_
-#define _igeometry2d_h_
+#pragma once
 
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -208,5 +207,4 @@ class SIMPLib_EXPORT IGeometry2D : public IGeometry
     void operator=(const IGeometry2D&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _IGeometry2D_H_ */
 

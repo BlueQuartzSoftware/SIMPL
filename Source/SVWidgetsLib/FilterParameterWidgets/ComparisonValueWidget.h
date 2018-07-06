@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _comparisonValueWidget_h_
-#define _comparisonValueWidget_h_
+#pragma once
 
 #include <QtWidgets/QWidget>
 
@@ -123,4 +122,3 @@ private:
   ComparisonValue::Pointer m_comparisonValue;
 };
 
-#endif

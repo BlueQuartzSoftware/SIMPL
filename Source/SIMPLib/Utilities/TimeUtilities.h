@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _timeutilities_h_
-#define _timeutilities_h_
+#pragma once
 
 #include <QtCore/QString>
 #include <QtCore/QTextStream>
@@ -53,6 +52,5 @@ namespace DREAM3D
   }
 
 }
-#endif /* _TimeUtilities_H_ */
 
 

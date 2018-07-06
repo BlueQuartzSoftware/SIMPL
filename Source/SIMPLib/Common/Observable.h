@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _observable_h_
-#define _observable_h_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -104,5 +103,4 @@ class SIMPLib_EXPORT Observable : public QObject
     void filterGeneratedMessage(const PipelineMessage& msg);
 };
 
-#endif /* OBSERVABLE_H_ */
 

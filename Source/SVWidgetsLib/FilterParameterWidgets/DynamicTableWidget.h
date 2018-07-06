@@ -32,8 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _dynamictablewidget_h_
-#define _dynamictablewidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -118,4 +117,3 @@ class SVWidgetsLib_EXPORT DynamicTableWidget : public FilterParameterWidget, pri
     void operator=(const DynamicTableWidget&) = delete;     // Move assignment Not Implemented
 };
 
-#endif /* _DynamicTableWidget_H_ */

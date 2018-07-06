@@ -32,8 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _statsdataarray_h_
-#define _statsdataarray_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -380,5 +379,4 @@ class SIMPLib_EXPORT StatsDataArray : public IDataArray
     void operator=(const StatsDataArray&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _STATSDATAARRAY_H_ */
 

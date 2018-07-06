@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _rootoperator_h_
-#define _rootoperator_h_
+#pragma once
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
@@ -67,4 +66,3 @@ class SIMPLib_EXPORT RootOperator : public UnaryOperator
     void operator=(const RootOperator&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _RootOperator_H_ */

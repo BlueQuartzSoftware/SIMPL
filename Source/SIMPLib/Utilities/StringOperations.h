@@ -29,8 +29,7 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _StringOperations_h_
-#define _StringOperations_h_
+#pragma once
 
 #include <QtCore/QStringList>
 
@@ -81,4 +80,3 @@ class SIMPLib_EXPORT StringOperations
 };
 
 
-#endif /* _StringOperations_H_ */

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _dynamicListArray_H_
-#define _dynamicListArray_H_
+#pragma once
 
 #include <vector>
 
@@ -337,4 +336,3 @@ typedef DynamicListArray<int32_t, int32_t> Int32Int32DynamicListArray;
 typedef DynamicListArray<uint16_t, int64_t> UInt16Int64DynamicListArray;
 typedef DynamicListArray<int64_t, int64_t> Int64Int64DynamicListArray;
 
-#endif /* _dynamicListArray_H_ */

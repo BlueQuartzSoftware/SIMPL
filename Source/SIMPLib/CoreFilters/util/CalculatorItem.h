@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _calculatoritem_h_
-#define _calculatoritem_h_
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -112,4 +111,3 @@ class SIMPLib_EXPORT CalculatorItem
     void operator=(const CalculatorItem&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _CalculatorItem_H_ */

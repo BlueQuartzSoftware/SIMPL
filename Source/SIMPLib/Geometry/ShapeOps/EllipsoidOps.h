@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _ellipsoidops_h_
-#define _ellipsoidops_h_
+#pragma once
 
 #include "ShapeOps.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -62,5 +61,4 @@ class SIMPLib_EXPORT EllipsoidOps : public ShapeOps
     void operator=(const EllipsoidOps&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* ELLIPSOIDOPS_H_ */
 

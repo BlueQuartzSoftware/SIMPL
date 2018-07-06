@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _StandardOutputWidget_h_
-#define _StandardOutputWidget_h_
+#pragma once
 
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QWidget>
@@ -87,4 +86,3 @@ class SVWidgetsLib_EXPORT StandardOutputWidget : public QWidget, public IObserve
     void operator=(const StandardOutputWidget&) = delete;       // Move assignment Not Implemented
 };
 
-#endif // _StandardOutputWidget_h_

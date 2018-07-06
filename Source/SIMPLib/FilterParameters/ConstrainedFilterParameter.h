@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _constrainedfilterparameter_h_
-#define _constrainedfilterparameter_h_
+#pragma once
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
@@ -66,4 +65,3 @@ class SIMPLib_EXPORT ConstrainedFilterParameter : public FilterParameter
     void operator=(const ConstrainedFilterParameter&) = delete;             // Move assignment Not Implemented
 };
 
-#endif /* _ConstrainedFilterParameter_H_ */

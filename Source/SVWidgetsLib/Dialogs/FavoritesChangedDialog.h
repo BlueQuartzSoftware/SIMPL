@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _favoriteschangeddialog_h_
-#define _favoriteschangeddialog_h_
+#pragma once
 
 #include <QtWidgets/QDialog>
 
@@ -80,5 +79,4 @@ class SVWidgetsLib_EXPORT FavoritesChangedDialog : public QDialog, private Ui::F
     void operator=(const FavoritesChangedDialog&) = delete;         // Move assignment Not Implemented
 };
 
-#endif /* FavoritesChangedDialog_H_ */
 

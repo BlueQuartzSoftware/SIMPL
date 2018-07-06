@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _createimagegeometry_h_
-#define _createimagegeometry_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
@@ -191,4 +190,3 @@ class SIMPLib_EXPORT CreateImageGeometry : public AbstractFilter
     CreateImageGeometry& operator=(CreateImageGeometry&&) = delete;      // Move Assignment
 };
 
-#endif /* _CreateImageGeometry_H_ */

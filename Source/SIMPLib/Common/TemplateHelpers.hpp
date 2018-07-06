@@ -32,8 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _TemplateHelpers_H_
-#define _TemplateHelpers_H_
+#pragma once
 
 //-- C++11 Includes
 #include <memory>
@@ -575,4 +574,3 @@ namespace TemplateHelpers
 
 }
 
-#endif /* _TemplateHelpers_H_ */

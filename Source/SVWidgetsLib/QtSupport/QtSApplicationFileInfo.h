@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _applicationfileinfo_h_
-#define _applicationfileinfo_h_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -56,4 +55,3 @@ class SVWidgetsLib_EXPORT QtSApplicationFileInfo
     void operator=(const QtSApplicationFileInfo&);            // Move assignment Not Implemented
 };
 
-#endif /* _ApplicationFileInfo_H */

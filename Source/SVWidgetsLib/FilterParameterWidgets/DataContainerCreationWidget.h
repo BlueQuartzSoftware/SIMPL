@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _datacontainercreationwidget_h_
-#define _datacontainercreationwidget_h_
+#pragma once
 
 
 
@@ -96,6 +95,5 @@ class SVWidgetsLib_EXPORT DataContainerCreationWidget : public FilterParameterWi
     void operator=(const DataContainerCreationWidget&) = delete;              // Move assignment Not Implemented
 };
 
-#endif /* _DataContainerCreationWidget_H_ */
 
 

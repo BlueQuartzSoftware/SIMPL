@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _filterfactory_H_
-#define _filterfactory_H_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -119,4 +118,3 @@ private:
   FilterFactory(const FilterFactory&);  // Copy Constructor Not Implemented
   void operator=(const FilterFactory&); // Move assignment Not Implemented
 };
-#endif /* FilterFACTORY_H_ */

@@ -74,8 +74,7 @@
 // To remove the support of uint8, copy before including this header file:
 //   #define DREAM3D_USE_uint8_t 0
 
-#ifndef _dream3DTemplateAliasMacro_h
-#define _dream3DTemplateAliasMacro_h
+#pragma once
 
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include <QString>
@@ -471,4 +470,3 @@
     }                                                                                                                                                                                                  \
   }
 
-#endif // _Dream3DTemplateAliasMacro_h

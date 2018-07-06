@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _sinoperator_h_
-#define _sinoperator_h_
+#pragma once
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
@@ -67,4 +66,3 @@ class SIMPLib_EXPORT SinOperator : public UnaryOperator
     void operator=(const SinOperator&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _SinOperator_H_ */

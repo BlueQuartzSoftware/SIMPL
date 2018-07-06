@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _intfilterparameter_h_
-#define _intfilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -139,4 +138,3 @@ class SIMPLib_EXPORT IntFilterParameter : public FilterParameter
     void operator=(const IntFilterParameter&) = delete;     // Move assignment Not Implemented
 };
 
-#endif /* _IntFilterParameter_H_ */

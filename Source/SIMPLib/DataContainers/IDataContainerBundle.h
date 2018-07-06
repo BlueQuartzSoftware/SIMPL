@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _idatacontainerbundle_h_
-#define _idatacontainerbundle_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QVector>
@@ -83,4 +82,3 @@ class SIMPLib_EXPORT IDataContainerBundle : public QObject
     void operator=(const IDataContainerBundle&) = delete;       // Move assignment Not Implemented
 };
 
-#endif /* _IDataContainerBundle_H_ */

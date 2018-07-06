@@ -29,8 +29,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _TESTCLASSNAME_h_
-#define _TESTCLASSNAME_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -151,4 +150,3 @@ private:
   void operator=(const TESTCLASSNAME&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _TESTCLASSNAME_H_ */

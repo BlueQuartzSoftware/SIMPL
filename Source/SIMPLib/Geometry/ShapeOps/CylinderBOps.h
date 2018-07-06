@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _cylinderbops_h_
-#define _cylinderbops_h_
+#pragma once
 
 
 #include "ShapeOps.h"
@@ -65,5 +64,4 @@ class SIMPLib_EXPORT CylinderBOps : public ShapeOps
     void operator=(const CylinderBOps&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* CYLINDERBOPS_H_ */
 

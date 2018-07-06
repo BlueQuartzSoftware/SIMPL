@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _matrixstatsdata_h_
-#define _matrixstatsdata_h_
+#pragma once
 
 #include <hdf5.h>
 
@@ -159,5 +158,4 @@ class SIMPLib_EXPORT MatrixStatsData : public StatsData
     void operator=(const MatrixStatsData&) = delete;  // Move assignment Not Implemented
 };
 
-#endif /* _MatrixStatsDataTUPLE_H_ */
 

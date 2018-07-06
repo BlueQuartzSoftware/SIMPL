@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _datacontainerwriter_h_
-#define _datacontainerwriter_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -226,4 +225,3 @@ class SIMPLib_EXPORT DataContainerWriter : public AbstractFilter
     DataContainerWriter& operator=(DataContainerWriter&&) = delete;      // Move Assignment
 };
 
-#endif /* _DataContainerWriter_H_ */

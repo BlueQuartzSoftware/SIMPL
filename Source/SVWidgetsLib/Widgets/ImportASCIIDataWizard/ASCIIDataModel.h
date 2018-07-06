@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _asciidatamodel_h_
-#define _asciidatamodel_h_
+#pragma once
 
 #include <QtCore/QAbstractTableModel>
 
@@ -104,4 +103,3 @@ private:
   void operator=(const ASCIIDataModel&);    // Move assignment Not Implemented
 };
 
-#endif // ASCIIDataModel_H

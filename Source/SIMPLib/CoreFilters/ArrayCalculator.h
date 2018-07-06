@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _arraycalculator_h_
-#define _arraycalculator_h_
+#pragma once
 
 #include <QtCore/QStack>
 #include <QtCore/QQueue>
@@ -274,4 +273,3 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
     ArrayCalculator& operator=(ArrayCalculator&&) = delete;      // Move Assignment
 };
 
-#endif /* _ArrayCalculator_H_ */

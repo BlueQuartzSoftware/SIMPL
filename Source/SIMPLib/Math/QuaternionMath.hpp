@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _QuaternionMath_H_
-#define _QuaternionMath_H_
+#pragma once
 
 #include <stdlib.h>
 
@@ -484,6 +483,5 @@ typedef QuaternionMath<float>::Quaternion QuatF;
 typedef QuaternionMath<double>::Quaternion QuatD;
 
 
-#endif /* _QuaternionMath_H_ */
 
 

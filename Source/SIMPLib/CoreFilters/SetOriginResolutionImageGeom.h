@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _setoriginresolutionimagegeom_h_
-#define _setoriginresolutionimagegeom_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
@@ -190,4 +189,3 @@ class SIMPLib_EXPORT SetOriginResolutionImageGeom : public AbstractFilter
     SetOriginResolutionImageGeom& operator=(SetOriginResolutionImageGeom&&) = delete;      // Move Assignment
 };
 
-#endif /* _SetOriginResolutionImageGeom_H_ */

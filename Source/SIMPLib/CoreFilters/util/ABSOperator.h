@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _absoperator_h_
-#define _absoperator_h_
+#pragma once
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
@@ -67,4 +66,3 @@ class SIMPLib_EXPORT ABSOperator : public UnaryOperator
     void operator=(const ABSOperator&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _ABSOperator_H_ */

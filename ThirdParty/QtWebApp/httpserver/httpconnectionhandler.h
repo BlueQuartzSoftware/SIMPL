@@ -3,8 +3,7 @@
   @author Stefan Frings
 */
 
-#ifndef HTTPCONNECTIONHANDLER_H
-#define HTTPCONNECTIONHANDLER_H
+#pragma once
 
 #ifndef QT_NO_OPENSSL
 #include <QSslConfiguration>
@@ -117,4 +116,3 @@ private slots:
   void disconnected();
 };
 
-#endif // HTTPCONNECTIONHANDLER_H

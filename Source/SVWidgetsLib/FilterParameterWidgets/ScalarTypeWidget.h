@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ScalarTypeWidget_h_
-#define _ScalarTypeWidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -90,6 +89,5 @@ class SVWidgetsLib_EXPORT ScalarTypeWidget : public FilterParameterWidget, priva
     void operator=(const ScalarTypeWidget&) = delete;   // Move assignment Not Implemented
 };
 
-#endif /* _ScalarTypeWidget_H_ */
 
 

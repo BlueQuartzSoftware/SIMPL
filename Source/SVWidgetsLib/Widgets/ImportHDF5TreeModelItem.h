@@ -30,8 +30,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _importhdf5treemodelitem_h_
-#define _importhdf5treemodelitem_h_
+#pragma once
 
 #include <QtCore/QList>
 #include <QtCore/QVariant>
@@ -92,4 +91,3 @@ private:
   Qt::CheckState m_CheckState = Qt::Unchecked;
 };
 
-#endif /* _importhdf5treemodelitem_h_ */

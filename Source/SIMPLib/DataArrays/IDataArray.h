@@ -8,8 +8,7 @@
 //                           FA8650-04-C-5229
 //
 ///////////////////////////////////////////////////////////////////////////////
-#ifndef _idataarray_h_
-#define _idataarray_h_
+#pragma once
 
 
 //-- C++
@@ -314,7 +313,6 @@ class CheckDataArrayType
 
 
 
-#endif //_IDATAARRAY_HPP_
 
 
 

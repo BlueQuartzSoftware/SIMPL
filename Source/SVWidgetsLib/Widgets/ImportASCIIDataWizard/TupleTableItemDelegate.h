@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _tupletableitemdelegate_h_
-#define _tupletableitemdelegate_h_
+#pragma once
 
 #include <QtCore/QModelIndex>
 
@@ -62,4 +61,3 @@ class TupleTableItemDelegate : public QStyledItemDelegate
     void operator=(const TupleTableItemDelegate&) = delete;         // Move assignment Not Implemented
 };
 
-#endif // _TupleTableItemDelegate_H

@@ -29,8 +29,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _pipelinetreeitem_h_
-#define _pipelinetreeitem_h_
+#pragma once
 
 #include <QtCore/QList>
 #include <QtCore/QVariant>
@@ -156,4 +155,3 @@ class SVWidgetsLib_EXPORT PipelineItem
     void operator=(const PipelineItem&);  // Operator '=' Not Implemented
 };
 
-#endif // _pipelinetreeitem_h_

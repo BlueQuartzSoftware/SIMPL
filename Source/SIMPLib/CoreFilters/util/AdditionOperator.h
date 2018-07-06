@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _additionoperator_h_
-#define _additionoperator_h_
+#pragma once
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
@@ -67,4 +66,3 @@ class SIMPLib_EXPORT AdditionOperator : public BinaryOperator
     void operator=(const AdditionOperator&) = delete;   // Move assignment Not Implemented
 };
 
-#endif /* _AdditionOperator_H_ */

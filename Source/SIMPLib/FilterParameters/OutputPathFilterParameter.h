@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _outputpathfilterparameter_h_
-#define _outputpathfilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -146,4 +145,3 @@ private:
   void operator=(const OutputPathFilterParameter&) = delete;            // Move assignment Not Implemented
 };
 
-#endif /* _OutputPathFilterParameter_H_ */

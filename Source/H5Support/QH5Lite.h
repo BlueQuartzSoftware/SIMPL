@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _qh5lite_h_
-#define _qh5lite_h_
+#pragma once
 
 
 //--C++ Headers
@@ -985,4 +984,3 @@ namespace H5Support_NAMESPACE
 }
 #endif
 
-#endif

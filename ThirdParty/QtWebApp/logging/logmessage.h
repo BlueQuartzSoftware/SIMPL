@@ -3,8 +3,7 @@
   @author Stefan Frings
 */
 
-#ifndef LOGMESSAGE_H
-#define LOGMESSAGE_H
+#pragma once
 
 #include "logglobal.h"
 #include <QHash>
@@ -87,4 +86,3 @@ private:
   int line;
 };
 
-#endif // LOGMESSAGE_H

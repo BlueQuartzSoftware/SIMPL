@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _comparisonValue_h_
-#define _comparisonValue_h_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -130,4 +129,3 @@ protected:
   ComparisonValue();
 };
 
-#endif

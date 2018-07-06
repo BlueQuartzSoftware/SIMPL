@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _IFilterFactory_H_
-#define _IFilterFactory_H_
+#pragma once
 
 #include <QtCore/QUuid>
 
@@ -145,4 +144,3 @@ private:
   void operator=(const IFilterFactory&); // Move assignment Not Implemented
 };
 
-#endif /* _IFilterFactory_H_ */

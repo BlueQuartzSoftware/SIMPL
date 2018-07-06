@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _scalarTypeFilterParameter_h_
-#define _scalarTypeFilterParameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -139,4 +138,3 @@ private:
   void operator=(const ScalarTypeFilterParameter&);                     // Move assignment Not Implemented
 };
 
-#endif /* _ScalarTypeFilterParameter_H_ */

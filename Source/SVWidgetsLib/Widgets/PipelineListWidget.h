@@ -27,8 +27,7 @@
 * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _pipelinelistwidget_h_
-#define _pipelinelistwidget_h_
+#pragma once
 
 #include <QtWidgets/QFrame>
 
@@ -101,4 +100,3 @@ class SVWidgetsLib_EXPORT PipelineListWidget : public QFrame, private Ui::Pipeli
     void operator=(const PipelineListWidget&) = delete;  // Operator '=' Not Implemented
 };
 
-#endif /* _pipelinelistwidget_h_ */

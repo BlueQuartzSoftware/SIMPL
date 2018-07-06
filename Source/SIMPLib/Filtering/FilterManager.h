@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _filtermanager_h_
-#define _filtermanager_h_
+#pragma once
 
 #include <QtCore/QMap>
 #include <QtCore/QMapIterator>
@@ -163,4 +162,3 @@ private:
   void operator=(const FilterManager&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _FilterManager_H_ */

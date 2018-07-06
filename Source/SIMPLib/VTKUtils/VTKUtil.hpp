@@ -1,5 +1,4 @@
-#ifndef _VTKUtil_H_
-#define _VTKUtil_H_
+#pragma once
 
 #include <typeinfo>
 
@@ -88,4 +87,3 @@ class SIMPLib_EXPORT VTKUtil
 };
 
 
-#endif /* _VTKUtil_H_ */

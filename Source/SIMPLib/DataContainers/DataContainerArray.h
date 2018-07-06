@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _datacontainerarray_h_
-#define _datacontainerarray_h_
+#pragma once
 
 #include <stddef.h>       // for nullptr
 
@@ -747,5 +746,4 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
     void operator=(const DataContainerArray&) = delete;     // Move assignment Not Implemented
 };
 
-#endif /* DATACONTAINERARRAY_H_ */
 

@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _simplibdllexport_h_
-#define _simplibdllexport_h_
+#pragma once
 
 
 #if defined (_MSC_VER)
@@ -100,5 +99,4 @@ building the MXADatModel DLL on windows.
 #endif
 #endif
 
-#endif /* _SIMPLib_DLL_EXPORT_H_ */
 

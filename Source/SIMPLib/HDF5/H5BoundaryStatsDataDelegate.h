@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _h5boundarystatsdatadelegate_h_
-#define _h5boundarystatsdatadelegate_h_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -85,5 +84,4 @@ class SIMPLib_EXPORT H5BoundaryStatsDataDelegate : public H5StatsDataDelegate
     void operator=(const H5BoundaryStatsDataDelegate&) = delete;              // Move assignment Not Implemented
 };
 
-#endif /* _H5STATSDATA_DELEGATE_H_ */
 

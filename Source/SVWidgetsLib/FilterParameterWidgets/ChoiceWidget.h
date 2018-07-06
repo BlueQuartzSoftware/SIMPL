@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _choicewidget_h_
-#define _choicewidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -99,6 +98,5 @@ class SVWidgetsLib_EXPORT ChoiceWidget : public FilterParameterWidget, private U
     void operator=(const ChoiceWidget&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _ChoiceWidget_H_ */
 
 

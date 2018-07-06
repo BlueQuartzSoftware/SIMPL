@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _conditionalsetvalue_h_
-#define _conditionalsetvalue_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -181,4 +180,3 @@ class SIMPLib_EXPORT ConditionalSetValue : public AbstractFilter
     ConditionalSetValue& operator=(ConditionalSetValue&&) = delete;      // Move Assignment
 };
 
-#endif /* _ConditionalSetValue_H_ */

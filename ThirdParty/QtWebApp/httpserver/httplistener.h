@@ -3,8 +3,7 @@
   @author Stefan Frings
 */
 
-#ifndef HTTPLISTENER_H
-#define HTTPLISTENER_H
+#pragma once
 
 #include "httpconnectionhandler.h"
 #include "httpconnectionhandlerpool.h"
@@ -94,4 +93,3 @@ signals:
   void handleConnection(tSocketDescriptor socketDescriptor);
 };
 
-#endif // HTTPLISTENER_H

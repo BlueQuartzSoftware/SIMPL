@@ -32,8 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _linecounterobject_h_
-#define _linecounterobject_h_
+#pragma once
 
 #include <stdio.h>
 
@@ -97,4 +96,3 @@ private:
   void operator=(const LineCounterObject&);             // Move assignment Not Implemented
 };
 
-#endif /* _linecounterobject_h_ */

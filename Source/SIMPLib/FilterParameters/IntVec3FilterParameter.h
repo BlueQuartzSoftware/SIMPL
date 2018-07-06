@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _intvec3filterparameter_h_
-#define _intvec3filterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -168,4 +167,3 @@ private:
   void operator=(const IntVec3FilterParameter&) = delete;         // Move assignment Not Implemented
 };
 
-#endif /* _IntVec3FilterParameter_H_ */

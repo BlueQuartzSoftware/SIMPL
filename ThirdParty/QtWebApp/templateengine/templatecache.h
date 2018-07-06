@@ -1,5 +1,4 @@
-#ifndef TEMPLATECACHE_H
-#define TEMPLATECACHE_H
+#pragma once
 
 #include "templateglobal.h"
 #include "templateloader.h"
@@ -76,4 +75,3 @@ private:
   QMutex mutex;
 };
 
-#endif // TEMPLATECACHE_H

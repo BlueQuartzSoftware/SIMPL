@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _uNITTESTSUPPORT_HPP_
-#define _uNITTESTSUPPORT_HPP_
+#pragma once
 
 //-- C Includes
 #include <assert.h>
@@ -569,4 +568,3 @@ template <typename T, typename K> void require_greater_than(T l, const QString& 
   }
 }
 
-#endif /* _uNITTESTSUPPORT_HPP_ */

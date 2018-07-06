@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _shapeops_h_
-#define _shapeops_h_
+#pragma once
 
 #include <vector>
 
@@ -95,5 +94,4 @@ class SIMPLib_EXPORT ShapeOps
     void operator=(const ShapeOps&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* SHAPEOPS_H_ */
 

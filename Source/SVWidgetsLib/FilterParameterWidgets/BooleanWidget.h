@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _booleanwidget_h_
-#define _booleanwidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -93,6 +92,5 @@ class SVWidgetsLib_EXPORT BooleanWidget : public FilterParameterWidget, private 
     void operator=(const BooleanWidget&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _BooleanWidget_H_ */
 
 

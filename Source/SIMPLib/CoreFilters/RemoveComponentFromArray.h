@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _removecomponentfromarray_h_
-#define _removecomponentfromarray_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -189,4 +188,3 @@ class SIMPLib_EXPORT RemoveComponentFromArray : public AbstractFilter
     RemoveComponentFromArray& operator=(RemoveComponentFromArray&&) = delete;      // Move Assignment
 };
 
-#endif /* RemoveComponentFromArray_H_ */

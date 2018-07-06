@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _multithresholdobjects_h_
-#define _multithresholdobjects_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -176,4 +175,3 @@ class SIMPLib_EXPORT MultiThresholdObjects : public AbstractFilter
     MultiThresholdObjects& operator=(MultiThresholdObjects&&) = delete;      // Move Assignment
 };
 
-#endif /* _MultiThresholdObjects_H_ */

@@ -32,8 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _multidataarrayselectionwidget_h_
-#define _multidataarrayselectionwidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -147,6 +146,5 @@ class SVWidgetsLib_EXPORT MultiDataArraySelectionWidget : public FilterParameter
     void operator=(const MultiDataArraySelectionWidget&) = delete;                // Move assignment Not Implemented
 };
 
-#endif /* _MultiDataArraySelectionWidget_H_ */
 
 

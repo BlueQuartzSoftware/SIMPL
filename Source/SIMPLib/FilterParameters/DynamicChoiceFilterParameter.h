@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _dynamicchoicefilterparameter_h_
-#define _dynamicchoicefilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -145,4 +144,3 @@ class SIMPLib_EXPORT DynamicChoiceFilterParameter : public FilterParameter
     void operator=(const DynamicChoiceFilterParameter&) = delete;               // Move assignment Not Implemented
 };
 
-#endif /* _DynamicChoiceFilterParameter_H_ */

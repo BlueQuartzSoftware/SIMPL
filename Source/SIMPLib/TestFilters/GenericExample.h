@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _genericexample_h_
-#define _genericexample_h_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -319,4 +318,3 @@ public:
   GenericExample& operator=(GenericExample&&) = delete;      // Move Assignment
 };
 
-#endif /* _GenericExample_H_ */

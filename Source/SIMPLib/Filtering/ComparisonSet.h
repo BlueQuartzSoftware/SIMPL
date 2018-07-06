@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ComparisonSet_h_
-#define _ComparisonSet_h_
+#pragma once
 
 #include "AbstractComparison.h"
 
@@ -123,4 +122,3 @@ protected:
   ComparisonSet();
 };
 
-#endif

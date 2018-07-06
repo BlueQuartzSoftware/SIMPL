@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _bookmarkstreeview_h_
-#define _bookmarkstreeview_h_
+#pragma once
 
 #include <QtWidgets/QApplication>
 
@@ -183,4 +182,3 @@ class SVWidgetsLib_EXPORT BookmarksTreeView : public QTreeView
     void expandChildren(const QModelIndex& parent, BookmarksModel* model);
 };
 
-#endif /* _BookmarksTreeView_H_ */

@@ -33,8 +33,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _removefiltercommand_h_
-#define _removefiltercommand_h_
+#pragma once
 
 #include <QtCore/QModelIndex>
 #include <QtCore/QUuid>
@@ -96,4 +95,3 @@ private:
   void operator=(const RemoveFilterCommand&) = delete;      // Move assignment Not Implemented
 };
 
-#endif /* _removefiltercommand_h_ */

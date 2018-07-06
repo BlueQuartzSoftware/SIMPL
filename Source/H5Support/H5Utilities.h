@@ -8,8 +8,7 @@
 //                           FA8650-04-C-5229
 //
 
-#ifndef _h5utilities_h_
-#define _h5utilities_h_
+#pragma once
 
 
 // C++ Includes
@@ -232,6 +231,5 @@ namespace H5Support_NAMESPACE
 }
 #endif
 
-#endif /* _HDF5_UTILITIES_H_ */
 
 

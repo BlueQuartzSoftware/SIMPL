@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _calculatorseparator_h_
-#define _calculatorseparator_h_
+#pragma once
 
 #include "SIMPLib/SIMPLib.h"
 
@@ -55,4 +54,3 @@ class SIMPLib_EXPORT CalculatorSeparator : public CalculatorItem
     void operator=(const CalculatorSeparator&) = delete;      // Move assignment Not Implemented
 };
 
-#endif /* _CalculatorSeparator_H_ */

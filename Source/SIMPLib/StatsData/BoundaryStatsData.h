@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _boundarystatsdata_h_
-#define _boundarystatsdata_h_
+#pragma once
 
 #include <hdf5.h>
 
@@ -174,5 +173,4 @@ class SIMPLib_EXPORT BoundaryStatsData : public StatsData
     void operator=(const BoundaryStatsData&) = delete;    // Move assignment Not Implemented
 };
 
-#endif /* _BoundaryStatsDataTUPLE_H_ */
 

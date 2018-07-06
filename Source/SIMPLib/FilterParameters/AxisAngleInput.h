@@ -1,5 +1,4 @@
-#ifndef _axisangleinput_h_
-#define _axisangleinput_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -41,4 +40,3 @@ Q_DECLARE_METATYPE(AxisAngleInput_t)
 
 
 
-#endif /* _AxisAngleInput_H_ */

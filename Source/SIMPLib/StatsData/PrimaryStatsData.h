@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _primarystatsdata_h_
-#define _primarystatsdata_h_
+#pragma once
 
 #include <hdf5.h>
 
@@ -206,5 +205,4 @@ class SIMPLib_EXPORT PrimaryStatsData : public StatsData
     void operator=(const PrimaryStatsData&) = delete;   // Move assignment Not Implemented
 };
 
-#endif /* _PrimaryStatsDataTUPLE_H_ */
 

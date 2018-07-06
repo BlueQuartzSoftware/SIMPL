@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _vertexgeom_h_
-#define _vertexgeom_h_
+#pragma once
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -310,5 +309,4 @@ class SIMPLib_EXPORT VertexGeom : public IGeometry
 };
 
 
-#endif /* _VertexGeom_H_ */
 

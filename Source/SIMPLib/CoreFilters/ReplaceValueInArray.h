@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _replacevalueinarray_h_
-#define _replacevalueinarray_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -180,4 +179,3 @@ class SIMPLib_EXPORT ReplaceValueInArray : public AbstractFilter
     ReplaceValueInArray& operator=(ReplaceValueInArray&&) = delete;      // Move Assignment
 };
 
-#endif /* _ReplaceValueInArray_H_ */

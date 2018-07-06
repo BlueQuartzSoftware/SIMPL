@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _geometrymath_h_
-#define _geometrymath_h_
+#pragma once
 
 
 #include "SIMPLib/SIMPLib.h"
@@ -361,5 +360,4 @@ class SIMPLib_EXPORT GeometryMath
     void operator=(const GeometryMath&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _GeometryMath_H_ */
 

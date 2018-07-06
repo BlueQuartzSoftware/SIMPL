@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _dataarray_h_
-#define _dataarray_h_
+#pragma once
 
 // STL Includes
 #include <vector>
@@ -1557,4 +1556,3 @@ typedef DataArray<double>  DoubleArrayType;
 
 typedef DataArray<size_t>  SizeTArrayType;
 
-#endif //_DataArray_h_

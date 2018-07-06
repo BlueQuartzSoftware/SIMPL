@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _pipelineFilterWidgetFACTORY_H_
-#define _pipelineFilterWidgetFACTORY_H_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
@@ -76,4 +75,3 @@ class PipelineFilterWidgetFactory : public IFilterWidgetFactory
     PipelineFilterWidgetFactory& operator=(PipelineFilterWidgetFactory&&) = delete;      // Move Assignment Not Implemented
 };
 
-#endif /* _pipelineFilterWidgetFACTORY_H_ */

@@ -3,8 +3,7 @@
   @author Stefan Frings
 */
 
-#ifndef HTTPREQUESTHANDLER_H
-#define HTTPREQUESTHANDLER_H
+#pragma once
 
 #include "httpglobal.h"
 #include "httprequest.h"
@@ -67,4 +66,3 @@ private:
   int m_Port;
 };
 
-#endif // HTTPREQUESTHANDLER_H

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _generatecolortablewidget_h_
-#define _generatecolortablewidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -113,6 +112,5 @@ class SVWidgetsLib_EXPORT GenerateColorTableWidget : public FilterParameterWidge
     void operator=(const GenerateColorTableWidget&) = delete;           // Move assignment Not Implemented
 };
 
-#endif /* _generatecolortablewidget_h_ */
 
 

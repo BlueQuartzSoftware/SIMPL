@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _rawbinaryreader_h_
-#define _rawbinaryreader_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -192,4 +191,3 @@ class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
     RawBinaryReader& operator=(RawBinaryReader&&) = delete;      // Move Assignment
 };
 
-#endif /* _RawBinaryReader_H_ */

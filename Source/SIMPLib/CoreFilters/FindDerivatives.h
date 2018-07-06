@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _findderivatives_h_
-#define _findderivatives_h_
+#pragma once
 
 #include <QtCore/QFile>
 #include <QtCore/QString>
@@ -185,4 +184,3 @@ private:
     FindDerivatives& operator=(FindDerivatives&&) = delete;      // Move Assignment
 };
 
-#endif /* _FindDerivatives_H_ */

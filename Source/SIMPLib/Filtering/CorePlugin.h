@@ -30,8 +30,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _simplib_core_H_
-#define _simplib_core_H_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QSettings>
@@ -184,5 +183,4 @@ class CorePlugin : public QObject, public ISIMPLibPlugin
     void operator=(const CorePlugin&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _simplib_core_H_ */
 

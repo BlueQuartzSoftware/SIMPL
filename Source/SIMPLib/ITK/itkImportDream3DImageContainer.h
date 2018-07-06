@@ -15,8 +15,7 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef itkImportDream3DImageContainer_h
-#define itkImportDream3DImageContainer_h
+#pragma once
 
 #include "itkImportImageContainer.h"
 
@@ -91,4 +90,3 @@ private:
 #include "itkImportDream3DImageContainer.hxx"
 #endif
 
-#endif

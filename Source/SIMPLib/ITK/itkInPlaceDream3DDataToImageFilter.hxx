@@ -1,5 +1,4 @@
-#ifndef _itkInPlaceDream3DDataToImageFilter_hxx
-#define _itkInPlaceDream3DDataToImageFilter_hxx
+#pragma once
 
 #include "itkInPlaceDream3DDataToImageFilter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
@@ -146,4 +145,3 @@ InPlaceDream3DDataToImageFilter< PixelType, VDimension >
  }
 
 }// end of itk namespace
-#endif

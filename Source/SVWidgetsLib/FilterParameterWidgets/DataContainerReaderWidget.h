@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _datacontainerreaderwidget_h_
-#define _datacontainerreaderwidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -163,4 +162,3 @@ class SVWidgetsLib_EXPORT DataContainerReaderWidget : public FilterParameterWidg
     void operator=(const DataContainerReaderWidget&) = delete;            // Move assignment Not Implemented
 };
 
-#endif /* _DataContainerReaderWidget_H_ */

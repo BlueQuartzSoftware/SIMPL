@@ -32,8 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _bookmarkstoolboxwidget_h_
-#define _bookmarkstoolboxwidget_h_
+#pragma once
 
 #include <QtCore/QFileInfo>
 #include <QtCore/QSettings>
@@ -177,4 +176,3 @@ class SVWidgetsLib_EXPORT BookmarksToolboxWidget : public QWidget, private Ui::B
     void operator=(const BookmarksToolboxWidget&) = delete;         // Move assignment Not Implemented
 };
 
-#endif

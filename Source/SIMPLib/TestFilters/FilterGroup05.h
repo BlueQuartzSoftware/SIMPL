@@ -29,8 +29,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _filterGroup05_h_
-#define _filterGroup05_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -152,4 +151,3 @@ private:
   FilterGroup05& operator=(FilterGroup05&&) = delete;      // Move Assignment
 };
 
-#endif /* _FilterGroup05_H_ */

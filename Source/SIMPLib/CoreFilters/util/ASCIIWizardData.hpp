@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _asciiwizarddata_h_
-#define _asciiwizarddata_h_
+#pragma once
 
 #include <QtCore/QDebug>
 #include <QtCore/QList>
@@ -126,4 +125,3 @@ public:
 
 Q_DECLARE_METATYPE(ASCIIWizardData)
 
-#endif /* ASCIIWizardData_H_ */

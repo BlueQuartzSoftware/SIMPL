@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _multiattributematrixselectionfilterparameter_h_
-#define _multiattributematrixselectionfilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -193,4 +192,3 @@ class SIMPLib_EXPORT MultiAttributeMatrixSelectionFilterParameter : public Filte
     void operator=(const MultiAttributeMatrixSelectionFilterParameter&) = delete;                               // Move assignment Not Implemented
 };
 
-#endif /* _MultiAttributeMatrixSelectionFilterParameter_H_ */

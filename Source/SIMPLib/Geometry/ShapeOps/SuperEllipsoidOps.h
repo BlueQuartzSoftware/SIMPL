@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _superellipsoidops_h_
-#define _superellipsoidops_h_
+#pragma once
 
 #include "ShapeOps.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -66,5 +65,4 @@ class SIMPLib_EXPORT SuperEllipsoidOps : public ShapeOps
     void operator=(const SuperEllipsoidOps&) = delete;    // Move assignment Not Implemented
 };
 
-#endif /* SUPERELLIPSOIDOPS_H_ */
 

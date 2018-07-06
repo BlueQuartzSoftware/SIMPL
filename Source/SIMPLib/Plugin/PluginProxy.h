@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _pluginproxy_h_
-#define _pluginproxy_h_
+#pragma once
 
 
 #include <QtCore/QString>
@@ -73,4 +72,3 @@ class SIMPLib_EXPORT PluginProxy
     void operator=(const PluginProxy&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _PluginProxy_H_ */

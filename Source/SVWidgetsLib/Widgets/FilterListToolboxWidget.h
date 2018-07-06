@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _filterlisttoolboxwidget_h_
-#define _filterlisttoolboxwidget_h_
+#pragma once
 
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QMenu>
@@ -146,5 +145,4 @@ class SVWidgetsLib_EXPORT FilterListToolboxWidget : public QWidget, private Ui::
 };
 
 
-#endif /* _FilterListToolboxWidget_H_ */
 

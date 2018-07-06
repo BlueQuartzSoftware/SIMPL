@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _statusBarWidget_h_
-#define _statusBarWidget_h_
+#pragma once
 
 #include <QtWidgets/QFrame>
 
@@ -170,4 +169,3 @@ class SVWidgetsLib_EXPORT StatusBarWidget : public QFrame, private Ui::StatusBar
     void operator=(const StatusBarWidget&) = delete;  // Move assignment Not Implemented
 };
 
-#endif /* _statusBarWidget_H_ */

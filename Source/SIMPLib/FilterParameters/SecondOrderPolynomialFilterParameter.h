@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _secondorderpolynomialfilterparameter_h_
-#define _secondorderpolynomialfilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -172,4 +171,3 @@ private:
   void operator=(const SecondOrderPolynomialFilterParameter&) = delete;                       // Move assignment Not Implemented
 };
 
-#endif /* _SecondOrderPolynomialFilterParameter_H_ */

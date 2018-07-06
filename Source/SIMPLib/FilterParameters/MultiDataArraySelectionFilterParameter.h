@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _multidataarrayselectionfilterparameter_h_
-#define _multidataarrayselectionfilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -193,4 +192,3 @@ class SIMPLib_EXPORT MultiDataArraySelectionFilterParameter : public FilterParam
     void operator=(const MultiDataArraySelectionFilterParameter&) = delete;                         // Move assignment Not Implemented
 };
 
-#endif /* _MultiDataArraySelectionFilterParameter_H_ */

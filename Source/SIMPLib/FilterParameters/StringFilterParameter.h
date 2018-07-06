@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _stringfilterparameter_h_
-#define _stringfilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -140,4 +139,3 @@ class SIMPLib_EXPORT StringFilterParameter : public FilterParameter
 };
 
 
-#endif /* _StringFilterParameter_H_ */

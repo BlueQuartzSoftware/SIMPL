@@ -3,8 +3,7 @@
   @author Stefan Frings
 */
 
-#ifndef LOGGLOBAL_H
-#define LOGGLOBAL_H
+#pragma once
 
 #include <QtGlobal>
 
@@ -20,4 +19,3 @@
 #define DECLSPEC
 #endif
 
-#endif // LOGGLOBAL_H

@@ -25,8 +25,7 @@
 *  please refer to the NOTICE file at the top of the ITK source tree.
 *
 *=========================================================================*/
-#ifndef itkImportDream3DImageContainer_hxx
-#define itkImportDream3DImageContainer_hxx
+#pragma once
 
 #include "itkImportDream3DImageContainer.h"
 
@@ -103,4 +102,3 @@ namespace itk
   }
 } // end namespace itk
 
-#endif

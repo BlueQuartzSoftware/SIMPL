@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _imagegeom_h_
-#define _imagegeom_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Geometry/IGeometryGrid.h"
@@ -396,5 +395,4 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
 };
 
 
-#endif /* _ImageGeom_H_ */
 

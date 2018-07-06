@@ -32,8 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _statsdata_h_
-#define _statsdata_h_
+#pragma once
 
 #include <hdf5.h>
 
@@ -278,5 +277,4 @@ class SIMPLib_EXPORT StatsData
     void operator=(const StatsData&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _STATSDATA_H_ */
 

@@ -3,8 +3,7 @@
   @author Stefan Frings
 */
 
-#ifndef HTTPSESSIONSTORE_H
-#define HTTPSESSIONSTORE_H
+#pragma once
 
 #include "httpglobal.h"
 #include "httprequest.h"
@@ -120,4 +119,3 @@ private:
   static HttpSessionStore* self;
 };
 
-#endif // HTTPSESSIONSTORE_H

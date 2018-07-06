@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _floatfilterparameter_h_
-#define _floatfilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -140,4 +139,3 @@ class SIMPLib_EXPORT FloatFilterParameter : public FilterParameter
     void operator=(const FloatFilterParameter&) = delete;       // Move assignment Not Implemented
 };
 
-#endif /* _FloatFilterParameter_H_ */

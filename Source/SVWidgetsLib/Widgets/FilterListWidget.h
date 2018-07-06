@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _filterlistwidget_h_
-#define _filterlistwidget_h_
+#pragma once
 
 #include <QtCore/QPoint>
 #include <QtWidgets/QListWidget>
@@ -68,5 +67,4 @@ class SVWidgetsLib_EXPORT FilterListWidget: public QListWidget
     const QPixmap CreateDragIcon(QString text);
 };
 
-#endif /* _FilterListWidget_H_ */
 

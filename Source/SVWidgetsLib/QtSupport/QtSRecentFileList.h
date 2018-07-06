@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _qrecentfilelist_h_
-#define _qrecentfilelist_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QStringList>
@@ -162,5 +161,4 @@ class SVWidgetsLib_EXPORT QtSRecentFileList: public QObject
 
 };
 
-#endif /* QRECENTFILELIST_H_ */
 

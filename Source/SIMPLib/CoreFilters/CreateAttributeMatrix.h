@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _createattributematrix_h_
-#define _createattributematrix_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
@@ -177,4 +176,3 @@ class SIMPLib_EXPORT CreateAttributeMatrix : public AbstractFilter
     CreateAttributeMatrix& operator=(CreateAttributeMatrix&&) = delete;      // Move Assignment
 };
 
-#endif /* _CreateAttributeMatrix_H_ */

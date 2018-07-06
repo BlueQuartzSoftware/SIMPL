@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _comparisonSetWidget_h_
-#define _comparisonSetWidget_h_
+#pragma once
 
 #include <QtWidgets/QWidget>
 #include <QtGui/QDragEnterEvent>
@@ -216,4 +215,3 @@ private:
   ComparisonSet::Pointer m_comparisonSet;
 };
 
-#endif

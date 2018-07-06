@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _doublefilterparameter_h_
-#define _doublefilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -160,4 +159,3 @@ class SIMPLib_EXPORT DoubleFilterParameter : public FilterParameter
     void operator=(const DoubleFilterParameter&) = delete;        // Move assignment Not Implemented
 };
 
-#endif /* _DoubleFilterParameter_H_ */

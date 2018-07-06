@@ -33,8 +33,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _cropvertexgeometry_h_
-#define _cropvertexgeometry_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -197,4 +196,3 @@ public:
   CropVertexGeometry& operator=(CropVertexGeometry&&) = delete;      // Move Assignment Not Implemented
 };
 
-#endif /* _CropVertexGeometry_H_ */

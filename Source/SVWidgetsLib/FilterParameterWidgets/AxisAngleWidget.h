@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _axisanglewidget_h_
-#define _axisanglewidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -91,6 +90,5 @@ class SVWidgetsLib_EXPORT AxisAngleWidget : public FilterParameterWidget, privat
     void operator=(const AxisAngleWidget&) = delete;  // Move assignment Not Implemented
 };
 
-#endif /* _AxisAngleWidget_H_ */
 
 

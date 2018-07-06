@@ -31,8 +31,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ParagraphWidget_h_
-#define _ParagraphWidget_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -90,4 +89,3 @@ private:
   void operator=(const ParagraphWidget&);           // Move assignment Not Implemented
 };
 
-#endif /* _ParagraphWidget_H_ */

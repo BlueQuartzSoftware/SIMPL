@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _intwidget_h_
-#define _intwidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -91,6 +90,5 @@ class SVWidgetsLib_EXPORT IntWidget : public FilterParameterWidget, private Ui::
     void operator=(const IntWidget&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _IntWidget_H_ */
 
 

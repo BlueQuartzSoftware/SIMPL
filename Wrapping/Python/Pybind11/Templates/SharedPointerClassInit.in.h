@@ -6,10 +6,8 @@
  * @brief This defines a C++11 alias so loading the file by itself into an IDE
  * will allow the proper code completion for a wrapped std::shared_ptr<> class.
  */
-#ifndef PySharedPtrClass_TEMPLATE
-#define PySharedPtrClass_TEMPLATE
+#pragma once
 template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>;
-#endif
 
 /**
  * @brief

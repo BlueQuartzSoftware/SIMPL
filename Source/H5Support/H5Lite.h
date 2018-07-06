@@ -8,8 +8,7 @@
 //                           FA8650-04-C-5229
 //
 
-#ifndef _h5lite_h_
-#define _h5lite_h_
+#pragma once
 
 
 //--C++ Headers
@@ -1676,4 +1675,3 @@ namespace H5Support_NAMESPACE
 }
 #endif
 
-#endif

@@ -33,8 +33,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _filelistinfofilterparameter_h_
-#define _filelistinfofilterparameter_h_
+#pragma once
 
 #include <QtCore/QString>
 #include <QtCore/QJsonObject>
@@ -184,4 +183,3 @@ private:
   void operator=(const FileListInfoFilterParameter&) = delete;              // Move assignment Not Implemented
 };
 
-#endif /* _FileListInfoFilterParameter_H_ */

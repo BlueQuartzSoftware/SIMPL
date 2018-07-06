@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _renameattributematrix_h_
-#define _renameattributematrix_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -178,4 +177,3 @@ class SIMPLib_EXPORT RenameAttributeMatrix : public AbstractFilter
     RenameAttributeMatrix& operator=(RenameAttributeMatrix&&) = delete;      // Move Assignment
 };
 
-#endif /* _RenameAttributeMatrix_H_ */

@@ -32,8 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _isimplibplugin_h_
-#define _isimplibplugin_h_
+#pragma once
 
 
 #include <QtCore/QSettings>
@@ -265,5 +264,4 @@ class SIMPLib_EXPORT ISIMPLibPlugin
 Q_DECLARE_INTERFACE(ISIMPLibPlugin,
                     "net.BlueQuartz.ISIMPLibPlugin/1.0")
 
-#endif /* ISIMPLibPlugin_H_ */
 

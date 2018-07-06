@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _filterpipeline_h_
-#define _filterpipeline_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 #include <QtCore/QList>
@@ -241,4 +240,3 @@ private:
   void operator=(const FilterPipeline&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* FILTERPIPELINE_H_ */

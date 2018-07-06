@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _bookmarkmissingdialog_h_
-#define _bookmarkmissingdialog_h_
+#pragma once
 
 #include <QtWidgets/QDialog>
 
@@ -65,5 +64,4 @@ class SVWidgetsLib_EXPORT QtSBookmarkMissingDialog : public QDialog, private Ui:
     void operator=(const QtSBookmarkMissingDialog&) = delete;           // Move assignment Not Implemented
 };
 
-#endif /* BookmarkMissingDialog_H_ */
 

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _commaseparator_h_
-#define _commaseparator_h_
+#pragma once
 
 #include "SIMPLib/SIMPLib.h"
 
@@ -62,4 +61,3 @@ class SIMPLib_EXPORT CommaSeparator : public CalculatorSeparator
     void operator=(const CommaSeparator&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _CommaSeparator_H_ */

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _UpdateCheckDialog_h_
-#define _UpdateCheckDialog_h_
+#pragma once
 
 #include <QtCore/QString>
 #include <QtCore/QDateTime>
@@ -153,5 +152,4 @@ class SVWidgetsLib_EXPORT UpdateCheckDialog : public QDialog, private Ui::Update
 
 
 
-#endif /* _UpdateCheckDialog_H_ */
 

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _atanoperator_h_
-#define _atanoperator_h_
+#pragma once
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
@@ -67,4 +66,3 @@ class SIMPLib_EXPORT ATanOperator : public UnaryOperator
     void operator=(const ATanOperator&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _ATanOperator_H_ */

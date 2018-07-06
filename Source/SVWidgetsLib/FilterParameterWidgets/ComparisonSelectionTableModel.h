@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _comparisonselectiontablemodel_h_
-#define _comparisonselectiontablemodel_h_
+#pragma once
 
 #include <QtCore/QAbstractTableModel>
 #include <QtCore/QVector>
@@ -182,5 +181,4 @@ class SVWidgetsLib_EXPORT ComparisonSelectionTableModel : public QAbstractTableM
     void operator=(const ComparisonSelectionTableModel&) = delete;                // Move assignment Not Implemented
 };
 
-#endif /* QUALITYMETRICTABLEMODEL_H_ */
 

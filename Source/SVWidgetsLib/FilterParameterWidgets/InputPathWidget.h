@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _inputpathwidget_h_
-#define _inputpathwidget_h_
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -82,6 +81,5 @@ class SVWidgetsLib_EXPORT InputPathWidget : public AbstractIOFileWidget
     void operator=(const InputPathWidget&) = delete;  // Move assignment Not Implemented
 };
 
-#endif /* _InputPathWidget_H_ */
 
 

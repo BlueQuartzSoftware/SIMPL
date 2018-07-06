@@ -32,8 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _abstractfilterparametersreader_h_
-#define _abstractfilterparametersreader_h_
+#pragma once
 
 #include <set>
 
@@ -140,5 +139,4 @@ class SIMPLib_EXPORT AbstractFilterParametersReader
     void operator=(const AbstractFilterParametersReader&) = delete;                 // Move assignment Not Implemented
 };
 
-#endif /* _AbstractFilterParametersReader_H_ */
 

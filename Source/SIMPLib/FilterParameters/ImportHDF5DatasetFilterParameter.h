@@ -30,8 +30,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _importhdf5datasetfilterparameter_h_
-#define _importhdf5datasetfilterparameter_h_
+#pragma once
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
@@ -108,4 +107,3 @@ private:
   void operator=(const ImportHDF5DatasetFilterParameter&);                            // Move assignment Not Implemented
 };
 
-#endif /* _importhdf5datasetfilterparameter_h_ */

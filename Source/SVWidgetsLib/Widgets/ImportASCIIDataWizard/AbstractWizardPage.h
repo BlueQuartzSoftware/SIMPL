@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _abstractwizardpage_h_
-#define _abstractwizardpage_h_
+#pragma once
 
 #include <QtWidgets/QWizardPage>
 
@@ -66,4 +65,3 @@ class AbstractWizardPage : public QWizardPage
     void operator=(const AbstractWizardPage&) = delete;     // Move assignment Not Implemented
 };
 
-#endif /* AbstractWizardPage_H_ */

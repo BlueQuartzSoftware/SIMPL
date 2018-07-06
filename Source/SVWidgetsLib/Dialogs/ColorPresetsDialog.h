@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _colorpresetsdialog_h
-#define _colorpresetsdialog_h
+#pragma once
 
 #include <QtCore/QModelIndex>
 #include <QtCore/QScopedPointer>
@@ -101,4 +100,3 @@ private:
   void operator=(const ColorPresetsDialog&) = delete;     // Move assignment Not Implemented
 };
 
-#endif /* _colorpresetsdialog_h */

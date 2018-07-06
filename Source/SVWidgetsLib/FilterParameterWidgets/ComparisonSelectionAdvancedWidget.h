@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _comparisonSelectionAdvancedWidget_h_
-#define _comparisonSelectionAdvancedWidget_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -184,4 +183,3 @@ class ComparisonSelectionAdvancedWidget : public FilterParameterWidget, private 
     ComparisonSelectionAdvancedFilterParameter* m_FilterParameter;
 };
 
-#endif

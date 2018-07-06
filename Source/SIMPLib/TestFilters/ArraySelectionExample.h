@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _arrayselectionexample_h_
-#define _arrayselectionexample_h_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -150,4 +149,3 @@ public:
   ArraySelectionExample& operator=(ArraySelectionExample&&) = delete;      // Move Assignment Not Implemented
 };
 
-#endif /* _ArraySelectionExample_H_ */

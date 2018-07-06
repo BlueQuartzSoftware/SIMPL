@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _createdarrayhelpindexentry_h_
-#define _createdarrayhelpindexentry_h_
+#pragma once
 
 #include <QtCore/QString>
 #include <vector>
@@ -75,5 +74,4 @@ class SIMPLib_EXPORT CreatedArrayHelpIndexEntry
 };
 
 
-#endif /* _CreatedArrayHelpIndexEntry_H_ */
 

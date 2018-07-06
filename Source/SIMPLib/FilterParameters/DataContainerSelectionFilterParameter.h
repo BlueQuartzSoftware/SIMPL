@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _datacontainerselectionfilterparameter_h_
-#define _datacontainerselectionfilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -165,4 +164,3 @@ class SIMPLib_EXPORT DataContainerSelectionFilterParameter : public FilterParame
     void operator=(const DataContainerSelectionFilterParameter&) = delete;                        // Move assignment Not Implemented
 };
 
-#endif /* _DataContainerSelectionFilterParameter_H_ */

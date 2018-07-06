@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _igeometry_h_
-#define _igeometry_h_
+#pragma once
 
 #include <QtCore/QString>
 #include <QtCore/QMap>
@@ -444,5 +443,4 @@ class SIMPLib_EXPORT IGeometry : public Observable
     void operator=(const IGeometry&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _IGeometry_H_ */
 

@@ -3,8 +3,7 @@
   @author Stefan Frings
 */
 
-#ifndef LOGGER_H
-#define LOGGER_H
+#pragma once
 
 #include "logglobal.h"
 #include "logmessage.h"
@@ -177,4 +176,3 @@ private:
   QThreadStorage<QList<LogMessage*>*> buffers;
 };
 
-#endif // LOGGER_H

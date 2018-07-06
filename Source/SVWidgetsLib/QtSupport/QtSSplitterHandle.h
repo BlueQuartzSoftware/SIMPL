@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _simplviewsplitterhandle_h_
-#define _simplviewsplitterhandle_h_
+#pragma once
 
 #include <QtWidgets/QSplitterHandle>
 
@@ -54,4 +53,3 @@ class SVWidgetsLib_EXPORT QtSSplitterHandle : public QSplitterHandle
     QSize sizeHint() const;
 };
 
-#endif /* _SIMPLViewSplitterHandle_H */

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _shapetypeselectionfilterparameter_h_
-#define _shapetypeselectionfilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -142,4 +141,3 @@ private:
   void operator=(const ShapeTypeSelectionFilterParameter&);                             // Move assignment Not Implemented
 };
 
-#endif /* _ShapeTypeSelectionFilterParameter_H_ */

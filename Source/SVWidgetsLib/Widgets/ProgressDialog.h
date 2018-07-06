@@ -29,8 +29,7 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _progress_dialog_H_
-#define _progress_dialog_H_
+#pragma once
 
 
 #include "SIMPLib/Common/PipelineMessage.h"
@@ -67,4 +66,3 @@ class SVWidgetsLib_EXPORT ProgressDialog : public QDialog
     QSharedPointer<Ui::ProgressDialog>  m_Ui;
 };
 
-#endif /* _progress_dialog_H_ */

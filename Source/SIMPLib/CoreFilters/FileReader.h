@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _filereader_h_
-#define _filereader_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -117,4 +116,3 @@ class SIMPLib_EXPORT FileReader : public AbstractFilter
     FileReader& operator=(FileReader&&) = delete;      // Move Assignment
 };
 
-#endif /* FileReader_H_ */

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _NumericTypeWidget_h_
-#define _NumericTypeWidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -90,6 +89,5 @@ class SVWidgetsLib_EXPORT NumericTypeWidget : public FilterParameterWidget, priv
     void operator=(const NumericTypeWidget&) = delete;    // Move assignment Not Implemented
 };
 
-#endif /* _NumericTypeWidget_H_ */
 
 

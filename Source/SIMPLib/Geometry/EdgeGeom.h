@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _edgegeom_h_
-#define _edgegeom_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Geometry/IGeometry.h"
@@ -379,5 +378,4 @@ class SIMPLib_EXPORT EdgeGeom : public IGeometry
 };
 
 
-#endif /* _EdgeGeom_H_ */
 

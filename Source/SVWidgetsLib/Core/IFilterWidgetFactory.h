@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _ifilterwidgetfactory_h_
-#define _ifilterwidgetfactory_h_
+#pragma once
 
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -80,5 +79,4 @@ class SVWidgetsLib_EXPORT IFilterWidgetFactory
     void operator=(const IFilterWidgetFactory&) = delete;       // Move assignment Not Implemented
 };
 
-#endif /* IFILTERWIDGETFACTOR_H_ */
 

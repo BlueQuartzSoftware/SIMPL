@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _abstractiofilewidget_h_
-#define _abstractiofilewidget_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -122,6 +121,5 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
     void operator=(const AbstractIOFileWidget&) = delete;       // Move assignment Not Implemented
 };
 
-#endif /* _abstractiofilewidget_h_ */
 
 

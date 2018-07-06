@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _h5filterparametersreader_h_
-#define _h5filterparametersreader_h_
+#pragma once
 
 #include "hdf5.h"
 
@@ -166,5 +165,4 @@ class SIMPLib_EXPORT H5FilterParametersReader : public AbstractFilterParametersR
      H5FilterParametersReader& operator=(H5FilterParametersReader&&) = delete;      // Move Assignment
 };
 
-#endif /* _H5FilterParametersREADER_H_ */
 

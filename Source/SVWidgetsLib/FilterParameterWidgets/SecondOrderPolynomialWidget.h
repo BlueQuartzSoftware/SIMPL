@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _secondorderpolynomialwidget_h_
-#define _secondorderpolynomialwidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -91,6 +90,5 @@ class SVWidgetsLib_EXPORT SecondOrderPolynomialWidget : public FilterParameterWi
     void operator=(const SecondOrderPolynomialWidget&) = delete;              // Move assignment Not Implemented
 };
 
-#endif /* _SecondOrderPolynomialWidget_H_ */
 
 

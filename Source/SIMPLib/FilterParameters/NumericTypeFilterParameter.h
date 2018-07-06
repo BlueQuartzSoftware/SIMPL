@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _numericTypeFilterParameter_h_
-#define _numericTypeFilterParameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -139,4 +138,3 @@ private:
   void operator=(const NumericTypeFilterParameter&);                      // Move assignment Not Implemented
 };
 
-#endif /* _NumericTypeFilterParameter_H_ */

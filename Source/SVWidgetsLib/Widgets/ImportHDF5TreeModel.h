@@ -30,8 +30,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _importhdf5treemodel_h_
-#define _importhdf5treemodel_h_
+#pragma once
 
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QModelIndex>
@@ -164,4 +163,3 @@ private:
   void setupModelData();
 };
 
-#endif /* _importhdf5treemodel_h_ */

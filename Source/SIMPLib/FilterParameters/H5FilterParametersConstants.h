@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _h5filterparametersconstants_h_
-#define _h5filterparametersconstants_h_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -53,5 +52,4 @@ namespace H5FilterParameter
   const QString LConstant = "_L";
 }
 
-#endif /* _H5FilterParametersConstants_H_ */
 

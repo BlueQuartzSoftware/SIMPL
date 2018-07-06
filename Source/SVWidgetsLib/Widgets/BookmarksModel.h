@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _bookmarksmodel_h_
-#define _bookmarksmodel_h_
+#pragma once
 
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QModelIndex>
@@ -210,4 +209,3 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
     void operator=(const BookmarksModel&);    // Move assignment Not Implemented
 };
 
-#endif // BookmarksModel_H

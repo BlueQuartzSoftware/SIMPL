@@ -33,8 +33,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _copyobject_h_
-#define _copyobject_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -181,4 +180,3 @@ private:
   CopyObject& operator=(CopyObject&&) = delete;      // Move Assignment
 };
 
-#endif /* _CopyObject_H_ */

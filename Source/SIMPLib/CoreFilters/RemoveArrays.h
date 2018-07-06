@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _removearrays_h_
-#define _removearrays_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
@@ -182,4 +181,3 @@ class SIMPLib_EXPORT RemoveArrays : public AbstractFilter
     RemoveArrays& operator=(RemoveArrays&&) = delete;      // Move Assignment
 };
 
-#endif /* _RemoveArrays_H_ */

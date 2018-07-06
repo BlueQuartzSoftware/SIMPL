@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _outputpathwidget_h_
-#define _outputpathwidget_h_
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -78,6 +77,5 @@ class SVWidgetsLib_EXPORT OutputPathWidget : public AbstractIOFileWidget
     void operator=(const OutputPathWidget&) = delete;   // Move assignment Not Implemented
 };
 
-#endif /* _OutputPathWidget_H_ */
 
 

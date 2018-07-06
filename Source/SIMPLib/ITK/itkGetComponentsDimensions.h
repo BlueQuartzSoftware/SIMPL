@@ -1,5 +1,4 @@
-#ifndef _ITKGetComponentsDimensions_h
-#define _ITKGetComponentsDimensions_h
+#pragma once
 
 #include <QVector>
 #include <itkRGBAPixel.h>
@@ -52,4 +51,3 @@ template <class PixelType> QVector<size_t> GetComponentsDimensions()
 
 } // namespace ITKDream3DHelper
 
-#endif

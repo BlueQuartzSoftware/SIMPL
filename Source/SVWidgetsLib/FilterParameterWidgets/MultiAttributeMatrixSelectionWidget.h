@@ -32,8 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _multiattributematrixselectionwidget_h_
-#define _multiattributematrixselectionwidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -144,6 +143,5 @@ class SVWidgetsLib_EXPORT MultiAttributeMatrixSelectionWidget : public FilterPar
     void operator=(const MultiAttributeMatrixSelectionWidget&) = delete;                      // Move assignment Not Implemented
 };
 
-#endif /* _MultiAttributeMatrixSelectionWidget_H_ */
 
 

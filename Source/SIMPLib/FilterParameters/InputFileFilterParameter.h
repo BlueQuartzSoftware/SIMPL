@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _inputfilefilterparameter_h_
-#define _inputfilefilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -144,4 +143,3 @@ private:
   void operator=(const InputFileFilterParameter&) = delete;           // Move assignment Not Implemented
 };
 
-#endif /* _InputFileFilterParameter_H_ */

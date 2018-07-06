@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _asciidataitem_h_
-#define _asciidataitem_h_
+#pragma once
 
 #include <QtCore/QVariant>
 #include <QtCore/QVector>
@@ -69,4 +68,3 @@ private:
   void operator=(const ASCIIDataItem&);   // Move assignment Not Implemented
 };
 
-#endif // ASCIIDataItem_H

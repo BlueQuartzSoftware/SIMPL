@@ -1,5 +1,4 @@
-#ifndef _ITKDream3DFilterInterruption_h
-#define _ITKDream3DFilterInterruption_h
+#pragma once
 
 #include <itkCommand.h>
 #include <itkProcessObject.h>
@@ -50,4 +49,3 @@ public:
 
 } // namespace itk
 
-#endif

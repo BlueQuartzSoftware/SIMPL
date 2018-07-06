@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _phasetype_h_
-#define _phasetype_h_
+#pragma once
 
 #include <QtCore/QMap>
 #include <QtCore/QString>
@@ -165,4 +164,3 @@ private:
 Q_DECLARE_METATYPE(PhaseType::Type)
 Q_DECLARE_METATYPE(PhaseType::Types)
 
-#endif //_PhaseType_h_

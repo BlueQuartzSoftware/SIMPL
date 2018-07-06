@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _combineattributematrices_h_
-#define _combineattributematrices_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -197,4 +196,3 @@ class SIMPLib_EXPORT CombineAttributeMatrices : public AbstractFilter
     CombineAttributeMatrices& operator=(CombineAttributeMatrices&&) = delete;      // Move Assignment
 };
 
-#endif /* _CombineAttributeMatrices_H_ */

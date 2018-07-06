@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _writeasciidata_h_
-#define _writeasciidata_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -209,4 +208,3 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
     WriteASCIIData& operator=(WriteASCIIData&&) = delete;      // Move Assignment
 };
 
-#endif /* _writeasciidata_h_ */

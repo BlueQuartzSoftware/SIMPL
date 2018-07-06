@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _cubeoctohedronops_h_
-#define _cubeoctohedronops_h_
+#pragma once
 
 #include "ShapeOps.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -69,5 +68,4 @@ class SIMPLib_EXPORT CubeOctohedronOps : public ShapeOps
 };
 
 
-#endif /* CUBOCTOHEDRONOPS_H_ */
 

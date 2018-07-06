@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _generatecolortablefilterparameter_h_
-#define _generatecolortablefilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -103,4 +102,3 @@ class SIMPLib_EXPORT GenerateColorTableFilterParameter : public FilterParameter
     void operator=(const GenerateColorTableFilterParameter&) = delete;                    // Move assignment Not Implemented
 };
 
-#endif /* _generatecolortablefilterparameter_h_ */

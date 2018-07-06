@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _simplviewgraphicsview_h_
-#define _simplviewgraphicsview_h_
+#pragma once
 
 #include <iostream>
 
@@ -180,4 +179,3 @@ class SVWidgetsLib_EXPORT QtSGraphicsView : public QGraphicsView
     void operator=(const QtSGraphicsView&) = delete;  // Move assignment Not Implemented
 };
 
-#endif /* _EMMPM_GRAPHICS_VIEW_H_ */

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _svusermanualdialog_h_
-#define _svusermanualdialog_h_
+#pragma once
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
@@ -113,4 +112,3 @@ public:
   void operator=(const SVUserManualDialog&) = delete;     // Move assignment Not Implemented
 };
 
-#endif /* _svusermanualdialog_h_ */

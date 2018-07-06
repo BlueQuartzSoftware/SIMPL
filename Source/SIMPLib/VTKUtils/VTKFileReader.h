@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _vtkfilereader_h_
-#define _vtkfilereader_h_
+#pragma once
 
 #include <fstream>
 
@@ -220,5 +219,4 @@ class SIMPLib_EXPORT VTKFileReader : public FileReader
     void operator=(const VTKFileReader&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* VTKFILEREADER_H_ */
 

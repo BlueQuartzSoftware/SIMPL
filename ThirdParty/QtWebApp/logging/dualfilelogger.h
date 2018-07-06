@@ -3,8 +3,7 @@
   @author Stefan Frings
 */
 
-#ifndef DUALFILELOGGER_H
-#define DUALFILELOGGER_H
+#pragma once
 
 #include "filelogger.h"
 #include "logger.h"
@@ -65,4 +64,3 @@ private:
   FileLogger* secondLogger;
 };
 
-#endif // DUALFILELOGGER_H

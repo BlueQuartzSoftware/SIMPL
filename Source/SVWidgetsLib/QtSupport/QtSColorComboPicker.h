@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _colorcombopicker_h_
-#define _colorcombopicker_h_
+#pragma once
 
 #include <QtWidgets/QComboBox>
 
@@ -60,5 +59,4 @@ class SVWidgetsLib_EXPORT QtSColorComboPicker : public QComboBox
     void populateList();
 };
 
-#endif
 

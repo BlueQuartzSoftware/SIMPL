@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _qmetaobjectutilities_h_
-#define _qmetaobjectutilities_h_
+#pragma once
 
 #include <QtCore/QMetaType>
 #include <QtCore/QVector>
@@ -56,4 +55,3 @@ private:
   void operator=(const QMetaObjectUtilities&);                // Move assignment Not Implemented
 };
 
-#endif /* _QMetaObjectUtilities_H_ */

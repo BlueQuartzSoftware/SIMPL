@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _flooroperator_h_
-#define _flooroperator_h_
+#pragma once
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
@@ -67,4 +66,3 @@ class SIMPLib_EXPORT FloorOperator : public UnaryOperator
     void operator=(const FloorOperator&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _FloorOperator_H_ */

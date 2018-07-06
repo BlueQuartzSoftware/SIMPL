@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _icalculatorarray_h_
-#define _icalculatorarray_h_
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -72,4 +71,3 @@ class SIMPLib_EXPORT ICalculatorArray : public CalculatorItem
     void operator=(const ICalculatorArray&) = delete;   // Move assignment Not Implemented
 };
 
-#endif /* _ICalculatorArray_H_ */

@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _DREAM3DListWidget_H_
-#define _DREAM3DListWidget_H_
+#pragma once
 
 #include <QtWidgets/QListWidget>
 
@@ -67,5 +66,4 @@ class SVWidgetsLib_EXPORT DREAM3DListWidget: public QListWidget
     QPoint startPos;
 };
 
-#endif /* _DREAM3DListWidget_H_ */
 

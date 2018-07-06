@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _filedragmessagebox_h_
-#define _filedragmessagebox_h_
+#pragma once
 
 #include <QtWidgets/QDialog>
 
@@ -70,4 +69,3 @@ class SVWidgetsLib_EXPORT QtSFileDragMessageBox : public QDialog, private Ui::Qt
     bool okBtnPressed;
 };
 
-#endif /* _FileDragMessageBox_H */

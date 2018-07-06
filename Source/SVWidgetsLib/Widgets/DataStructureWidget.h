@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _dataBrowserWidget_h_
-#define _dataBrowserWidget_h_
+#pragma once
 
 #include <QtCore/QUuid>
 #include <QtGui/QBrush>
@@ -166,4 +165,3 @@ private:
   void operator=(const DataStructureWidget&);               // Move assignment Not Implemented
 };
 
-#endif /* _dataBrowserWidget_h_   */

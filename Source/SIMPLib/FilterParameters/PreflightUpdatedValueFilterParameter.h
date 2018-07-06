@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _preflightupdatedvaluefilterparameter_h_
-#define _preflightupdatedvaluefilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -125,4 +124,3 @@ class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParamet
     void operator=(const PreflightUpdatedValueFilterParameter&) = delete;                       // Move assignment Not Implemented
 };
 
-#endif /* _PreflightUpdatedValueFilterParameter_H_ */

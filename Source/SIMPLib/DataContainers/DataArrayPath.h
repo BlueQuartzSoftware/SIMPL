@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _dataarraypath_h_
-#define _dataarraypath_h_
+#pragma once
 
 #include <QtCore/QMetaType>                   // for Q_DECLARE_METATYPE
 #include <QtCore/QObject>                 // for Q_OBJECT
@@ -305,4 +304,3 @@ Q_DECLARE_METATYPE(DataArrayPath::DataType)
 
 
 
-#endif /* _DataArrayPath_H_ */
