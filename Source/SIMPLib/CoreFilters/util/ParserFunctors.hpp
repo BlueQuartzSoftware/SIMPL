@@ -28,8 +28,7 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ParserFunctors_hpp_
-#define _ParserFunctors_hpp_
+#pragma once
 
 #include <QtCore/QByteArray>
 #include <QtCore/QString>
@@ -455,4 +454,3 @@ public:
   }
 };
 
-#endif /* PARSERFUNCTORS_HPP_ */

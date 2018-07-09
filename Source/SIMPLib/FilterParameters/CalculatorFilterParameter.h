@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _CalculatorFilterParameter_H_
-#define _CalculatorFilterParameter_H_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -145,4 +144,3 @@ private:
   void operator=(const CalculatorFilterParameter&) = delete;            // Move assignment Not Implemented
 };
 
-#endif /* _CalculatorFilterParameter_H_ */

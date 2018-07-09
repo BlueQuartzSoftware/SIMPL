@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _choicefilterparameter_h_
-#define _choicefilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -145,4 +144,3 @@ class SIMPLib_EXPORT ChoiceFilterParameter : public FilterParameter
     void operator=(const ChoiceFilterParameter&) = delete;        // Move assignment Not Implemented
 };
 
-#endif /* _ChoiceFilterParameter_H_ */

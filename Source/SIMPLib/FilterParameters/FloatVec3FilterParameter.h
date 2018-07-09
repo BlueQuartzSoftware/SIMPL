@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _floatvec3filterparameter_h_
-#define _floatvec3filterparameter_h_
+#pragma once
 
 #include <cmath>
 
@@ -183,4 +182,3 @@ private:
   void operator=(const FloatVec3FilterParameter&) = delete;           // Move assignment Not Implemented
 };
 
-#endif /* _FloatVec3FilterParameter_H_ */

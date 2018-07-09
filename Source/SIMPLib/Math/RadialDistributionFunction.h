@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _radialdistributionfunction_h_
-#define _radialdistributionfunction_h_
+#pragma once
 
 #include <vector>
 
@@ -125,4 +124,3 @@ class SIMPLib_EXPORT RadialDistributionFunction
 };
 
 
-#endif /* _RadialDistributionFunction_H_ */

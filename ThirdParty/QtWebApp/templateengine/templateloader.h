@@ -3,8 +3,7 @@
   @author Stefan Frings
 */
 
-#ifndef TEMPLATELOADER_H
-#define TEMPLATELOADER_H
+#pragma once
 
 #include "template.h"
 #include "templateglobal.h"
@@ -79,4 +78,3 @@ protected:
   QTextCodec* textCodec;
 };
 
-#endif // TEMPLATELOADER_H

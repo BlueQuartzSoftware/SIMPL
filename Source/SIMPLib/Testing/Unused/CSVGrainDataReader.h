@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _csvgraindatareader_h_
-#define _csvgraindatareader_h_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -199,4 +198,3 @@ private:
   void operator=(const CSVGrainDataReader&);              // Move assignment Not Implemented
 };
 
-#endif /* CSVGRAINDATAREADER_H_ */

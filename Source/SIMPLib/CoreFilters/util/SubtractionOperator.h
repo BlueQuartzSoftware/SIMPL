@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _subtractionoperator_h_
-#define _subtractionoperator_h_
+#pragma once
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
@@ -65,4 +64,3 @@ class SIMPLib_EXPORT SubtractionOperator : public BinaryOperator
     void operator=(const SubtractionOperator&) = delete;      // Move assignment Not Implemented
 };
 
-#endif /* _SubtractionOperator_H_ */

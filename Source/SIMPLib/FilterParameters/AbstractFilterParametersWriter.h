@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _abstractfilterparameterswriter_h_
-#define _abstractfilterparameterswriter_h_
+#pragma once
 
 #include <set>
 
@@ -150,5 +149,4 @@ class SIMPLib_EXPORT AbstractFilterParametersWriter
     void operator=(const AbstractFilterParametersWriter&) = delete;                 // Move assignment Not Implemented
 };
 
-#endif /* _AbstractFilterParametersWriter_H_ */
 

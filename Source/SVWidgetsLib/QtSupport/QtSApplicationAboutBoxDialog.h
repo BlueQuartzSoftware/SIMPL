@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _applicationaboutboxdialog_h_
-#define _applicationaboutboxdialog_h_
+#pragma once
 
 #include <QtWidgets/QDialog>
 
@@ -99,5 +98,4 @@ class SVWidgetsLib_EXPORT QtSApplicationAboutBoxDialog: public QDialog, private 
     void operator=(const QtSApplicationAboutBoxDialog&) = delete;               // Move assignment Not Implemented
 };
 
-#endif /* R3DApplicationAboutBoxDialog_H_ */
 

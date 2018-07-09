@@ -36,9 +36,13 @@ set(_PublicFilters
   CreateFeatureArrayFromElementArray
   CreateImageGeometry
   CreateStringArray
+  CopyObject
+  CreateGeometry
+  CropVertexGeometry
   DataContainerReader
   DataContainerWriter
   ExecuteProcess
+  ExtractAttributeArraysFromGeometry
   ExtractComponentAsArray
   FeatureCountDecision
   FeatureDataCSVWriter
@@ -65,6 +69,7 @@ set(_PublicFilters
   RequiredZThickness
   ScaleVolume
   SetOriginResolutionImageGeom
+  SplitAttributeArray
   WriteASCIIData
   WriteTriangleGeometry
 )

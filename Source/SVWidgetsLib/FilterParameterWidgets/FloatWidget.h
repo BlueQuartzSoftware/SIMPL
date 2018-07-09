@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _floatwidget_h_
-#define _floatwidget_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -91,6 +90,5 @@ class SVWidgetsLib_EXPORT FloatWidget : public FilterParameterWidget, private Ui
     void operator=(const FloatWidget&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _FloatWidget_H_ */
 
 

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _datacontainercreationfilterparameter_h_
-#define _datacontainercreationfilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -138,4 +137,3 @@ private:
   void operator=(const DataContainerCreationFilterParameter&) = delete;                       // Move assignment Not Implemented
 };
 
-#endif /* _DataContainerCreationFilterParameter_H_ */

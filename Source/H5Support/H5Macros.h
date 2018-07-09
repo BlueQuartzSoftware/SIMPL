@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _h5macros_h_
-#define _h5macros_h_
+#pragma once
 
 
 //-- HDF Headers
@@ -92,5 +91,4 @@
 
 
 
-#endif /* _H5Functions_H_ */
 

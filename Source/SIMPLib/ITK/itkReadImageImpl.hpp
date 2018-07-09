@@ -33,8 +33,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ItkItkReadImageImpl_H_
-#define _ItkItkReadImageImpl_H_
+#pragma once
 
 // image reading
 #include "itkImageFileReader.h"
@@ -170,4 +169,3 @@ private:
   void operator=(const ItkReadImagePrivate&);      // Move assignment Not Implemented
 };
 
-#endif /* _ItkReadImageImpl_H_ */

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _booleanfilterparameter_h_
-#define _booleanfilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -138,4 +137,3 @@ private:
   void operator=(const BooleanFilterParameter&) = delete;         // Move assignment Not Implemented
 };
 
-#endif /* _BooleanFilterParameter_H_ */

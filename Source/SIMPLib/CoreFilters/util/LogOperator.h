@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _logoperator_h_
-#define _logoperator_h_
+#pragma once
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
@@ -69,4 +68,3 @@ class SIMPLib_EXPORT LogOperator : public UnaryOperator
     void operator=(const LogOperator&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _LogOperator_H_ */

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _simplviewsettings_h_
-#define _simplviewsettings_h_
+#pragma once
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QString>
@@ -115,4 +114,3 @@ class SVWidgetsLib_EXPORT QtSSettings : public QObject
     void operator=(const QtSSettings&); // Move assignment Not Implemented
 };
 
-#endif /* _SIMPLViewSettings_H */

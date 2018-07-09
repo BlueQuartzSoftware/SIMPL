@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _leftparenthesisitem_h_
-#define _leftparenthesisitem_h_
+#pragma once
 
 #include "SIMPLib/SIMPLib.h"
 
@@ -62,4 +61,3 @@ class SIMPLib_EXPORT LeftParenthesisItem : public CalculatorItem
     void operator=(const LeftParenthesisItem&) = delete;      // Move assignment Not Implemented
 };
 
-#endif /* _LeftParenthesisItem_H_ */

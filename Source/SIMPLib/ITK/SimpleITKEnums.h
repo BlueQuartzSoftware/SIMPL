@@ -1,5 +1,4 @@
-#ifndef SimpleITKEnums_h
-#define SimpleITKEnums_h
+#pragma once
 
 // Copied from sitkKernel.h (SimpleITK)
 namespace itk
@@ -27,4 +26,3 @@ enum SeedEnum
 
 // end of Copied from sitkKernel.h (SimpleITK)
 
-#endif

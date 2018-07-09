@@ -263,15 +263,15 @@ DataContainerArray::Pointer DataContainerReader::readData(DataContainerArrayProx
     notifyErrorMessage(getHumanLabel(), msg, getErrorCondition());
   });
 
-  if (simplReader->openFile(getInputFile()) == false)
+  if (!simplReader->openFile(getInputFile()))
   {
-    return DataContainerArray::NullPointer();
+    return DataContainerArray::New();
   }
 
   DataContainerArray::Pointer dca = simplReader->readSIMPLDataUsingProxy(proxy, getInPreflight());
   if (dca == DataContainerArray::NullPointer())
   {
-    return DataContainerArray::NullPointer();
+    return DataContainerArray::New();
   }
 
   hid_t fileId = QH5Utilities::openFile(getInputFile(), true); // Open the file Read Only
@@ -292,7 +292,7 @@ DataContainerArray::Pointer DataContainerReader::readData(DataContainerArrayProx
       setErrorCondition(err);
       QString ss = QObject::tr("Error trying to read the existing pipeline from the file '%1'").arg(getInputFile());
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-      return DataContainerArray::NullPointer();
+      return DataContainerArray::New();
     }
   }
 

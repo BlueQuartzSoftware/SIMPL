@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _iComparisonWidget_h_
-#define _iComparisonWidget_h_
+#pragma once
 
 #include <QtWidgets/QWidget>
 
@@ -112,4 +111,3 @@ private:
   AttributeMatrix::Pointer m_attributeMatrix;
 };
 
-#endif

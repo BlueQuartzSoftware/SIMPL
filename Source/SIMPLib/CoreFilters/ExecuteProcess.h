@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _executeprocess_h_
-#define _executeprocess_h_
+#pragma once
 
 #include <QtCore/QProcess>
 #include <QtCore/QWaitCondition>
@@ -193,4 +192,3 @@ class SIMPLib_EXPORT ExecuteProcess : public AbstractFilter
     ExecuteProcess& operator=(ExecuteProcess&&) = delete;      // Move Assignment
 };
 
-#endif /* _ExecuteProcess_H_ */

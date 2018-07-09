@@ -1,5 +1,4 @@
-#ifndef _ITKInPlaceImageToDream3DDataFilter_hxx
-#define _ITKInPlaceImageToDream3DDataFilter_hxx
+#pragma once
 
 #include "itkInPlaceImageToDream3DDataFilter.h"
 #include "itkGetComponentsDimensions.h"
@@ -235,4 +234,3 @@ InPlaceImageToDream3DDataFilter<PixelType, VDimension>
 
 } // end of itk namespace
 
-#endif

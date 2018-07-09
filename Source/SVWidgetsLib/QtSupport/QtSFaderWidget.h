@@ -21,8 +21,7 @@
 **
 ****************************************************************************/
 
-#ifndef _faderwidget_h_
-#define _faderwidget_h_
+#pragma once
 
 #include <QtWidgets/QWidget>
 
@@ -68,4 +67,3 @@ class SVWidgetsLib_EXPORT QtSFaderWidget : public QWidget
     bool fadeIn;
 };
 
-#endif

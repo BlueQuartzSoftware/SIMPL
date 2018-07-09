@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _h5ScopedFileSentinel_h_
-#define _h5ScopedFileSentinel_h_
+#pragma once
 
 
 #include "H5Support/H5Utilities.h"
@@ -119,5 +118,4 @@ private:
 
 
 
-#endif /* _h5ScopedFileSentinel_h_ */
 

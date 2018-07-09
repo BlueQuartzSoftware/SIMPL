@@ -33,8 +33,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _dataBrowserTreeView_h_
-#define _dataBrowserTreeView_h_
+#pragma once
 
 #include <QtWidgets/QApplication>
 
@@ -181,4 +180,3 @@ private:
   void performDrag();
 };
 
-#endif /* _dataBrowserTreeView_H_ */

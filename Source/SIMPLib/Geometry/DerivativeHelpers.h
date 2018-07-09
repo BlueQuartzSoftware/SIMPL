@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _derivativehelpers_h_
-#define _derivativehelpers_h_
+#pragma once
 
 #include <math.h>
 
@@ -118,4 +117,3 @@ namespace DerivativeHelpers
 
 }
 
-#endif /* _DerivativeHelpers_H_ */

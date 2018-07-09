@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _multiplicationoperator_h_
-#define _multiplicationoperator_h_
+#pragma once
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
@@ -65,4 +64,3 @@ class SIMPLib_EXPORT MultiplicationOperator : public BinaryOperator
     void operator=(const MultiplicationOperator&) = delete;         // Move assignment Not Implemented
 };
 
-#endif /* _MultiplicationOperator_H_ */

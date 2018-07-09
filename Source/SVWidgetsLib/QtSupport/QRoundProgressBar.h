@@ -16,8 +16,7 @@
  *
  */
 
-#ifndef QROUNDPROGRESSBAR_H
-#define QROUNDPROGRESSBAR_H
+#pragma once
 
 #include <QtWidgets/QWidget>
 
@@ -251,4 +250,3 @@ protected:
     int m_updateFlags;
 };
 
-#endif // QROUNDPROGRESSBAR_H

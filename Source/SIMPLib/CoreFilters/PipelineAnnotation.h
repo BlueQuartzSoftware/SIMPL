@@ -31,8 +31,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _pipelineAnnotation_h_
-#define _pipelineAnnotation_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -160,4 +159,3 @@ public:
   PipelineAnnotation& operator=(PipelineAnnotation&&) = delete;      // Move Assignment Not Implemented
 };
 
-#endif /* _pipelineAnnotation_h_ */

@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _renamedatacontainer_h_
-#define _renamedatacontainer_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -178,4 +177,3 @@ class SIMPLib_EXPORT RenameDataContainer : public AbstractFilter
     RenameDataContainer& operator=(RenameDataContainer&&) = delete;      // Move Assignment
 };
 
-#endif /* _RenameDataContainer_H_ */

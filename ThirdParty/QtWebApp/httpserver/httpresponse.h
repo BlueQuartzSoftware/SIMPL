@@ -3,8 +3,7 @@
   @author Stefan Frings
 */
 
-#ifndef HTTPRESPONSE_H
-#define HTTPRESPONSE_H
+#pragma once
 
 #include "httpcookie.h"
 #include "httpglobal.h"
@@ -154,4 +153,3 @@ private:
   void writeHeaders();
 };
 
-#endif // HTTPRESPONSE_H

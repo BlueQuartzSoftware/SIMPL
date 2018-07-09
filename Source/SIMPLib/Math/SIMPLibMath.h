@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _simplibmath_h_
-#define _simplibmath_h_
+#pragma once
 /** @file SIMPLibMath.h
  * @brief This file performs the necessary including of <math.h> with certain
  * define constants (like M_PI) defined on all platforms.
@@ -259,5 +258,4 @@ class SIMPLibMath
     void operator=(const SIMPLibMath&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _EMMATH_H_ */
 

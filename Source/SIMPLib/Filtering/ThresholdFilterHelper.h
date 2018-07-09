@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _thresholdfilterhelper_h_
-#define _thresholdfilterhelper_h_
+#pragma once
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
@@ -129,4 +128,3 @@ private:
   void operator=(const ThresholdFilterHelper&);                 // Move assignment Not Implemented
 };
 
-#endif /* _ThresholdFilterHelperHelper_H_ */

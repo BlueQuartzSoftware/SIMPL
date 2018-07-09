@@ -1,5 +1,4 @@
-#ifndef _statusbarbutton_H_
-#define _statusbarbutton_H_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtWidgets/QToolButton>
@@ -55,4 +54,3 @@ class SVWidgetsLib_EXPORT StatusBarButton : public QToolButton
     void operator=(const StatusBarButton&) = delete;  // Move assignment Not Implemented
 };
 
-#endif /* _statusbarbutton_H_ */

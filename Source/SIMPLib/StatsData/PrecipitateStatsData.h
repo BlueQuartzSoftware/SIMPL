@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _precipitatestatsdata_h_
-#define _precipitatestatsdata_h_
+#pragma once
 
 #include <hdf5.h>
 
@@ -209,5 +208,4 @@ class SIMPLib_EXPORT PrecipitateStatsData : public StatsData
     void operator=(const PrecipitateStatsData&) = delete;       // Move assignment Not Implemented
 };
 
-#endif /* _PrecipitateStatsDataTUPLE_H_ */
 

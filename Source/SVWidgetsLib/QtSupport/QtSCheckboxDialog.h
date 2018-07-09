@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _qcheckboxdialog_h_
-#define _qcheckboxdialog_h_
+#pragma once
 
 #include <QtCore/QMap>
 #include <QtCore/QString>
@@ -71,5 +70,4 @@ class SVWidgetsLib_EXPORT QtSCheckboxDialog : public QDialog
     void operator=(const QtSCheckboxDialog&) = delete;    // Move assignment Not Implemented
 };
 
-#endif /* QCHECKBOXDIALOG_H_ */
 

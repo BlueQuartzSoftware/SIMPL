@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _createdataarray_h_
-#define _createdataarray_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/RangeFilterParameter.h"
@@ -218,4 +217,3 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
 };
 
 
-#endif /* _CreateDataArray_H_ */

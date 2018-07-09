@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _requiredzthickness_h_
-#define _requiredzthickness_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -144,4 +143,3 @@ class SIMPLib_EXPORT RequiredZThickness : public AbstractDecisionFilter
     void operator=(const RequiredZThickness&) = delete;     // Move assignment Not Implemented
 };
 
-#endif /* _RequiredZThickness_H_ */

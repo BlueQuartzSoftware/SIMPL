@@ -30,8 +30,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _importhdf5datasetwidget_h_
-#define _importhdf5datasetwidget_h_
+#pragma once
 
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QWidget>
@@ -156,4 +155,3 @@ private:
   void operator=(const ImportHDF5DatasetWidget&);                   // Copy Assignment Not Implemented
 };
 
-#endif /* _importhdf5datasetwidget_h_ */

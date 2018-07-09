@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _datacontainerreaderfilterparameter_h_
-#define _datacontainerreaderfilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -107,4 +106,3 @@ class SIMPLib_EXPORT DataContainerReaderFilterParameter : public FilterParameter
     void operator=(const DataContainerReaderFilterParameter&) = delete;                     // Move assignment Not Implemented
 };
 
-#endif /* _DataContainerReaderFilterParameter_H_ */

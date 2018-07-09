@@ -32,8 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _bookmarkstoolboxwidget_h_
-#define _bookmarkstoolboxwidget_h_
+#pragma once
 
 #include <QtCore/QFileInfo>
 #include <QtCore/QSettings>
@@ -127,6 +126,8 @@ class SVWidgetsLib_EXPORT BookmarksToolboxWidget : public QWidget, private Ui::B
     void on_bookmarksTreeView_clicked(const QModelIndex& index);
     void on_bookmarksTreeView_doubleClicked(const QModelIndex& index);
 
+    void listenLocateBookmarkTriggered();
+
   signals:
 
     void fireWriteSettings();
@@ -165,8 +166,13 @@ class SVWidgetsLib_EXPORT BookmarksToolboxWidget : public QWidget, private Ui::B
     */
     QList<QString> deserializeTreePath(QString treePath);
 
+    /**
+     * @brief locateBookmark
+     * @return
+     */
+    bool locateBookmark();
+
     BookmarksToolboxWidget(const BookmarksToolboxWidget&) = delete; // Copy Constructor Not Implemented
     void operator=(const BookmarksToolboxWidget&) = delete;         // Move assignment Not Implemented
 };
 
-#endif

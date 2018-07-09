@@ -526,8 +526,6 @@ QTreeView::branch:selected:!active {
 
 SVSmallLabel
 {
-  /*   font-family: "Lato-Bold"; */
-    font-weight: bold;
     font-size: 11pt;
 }
 

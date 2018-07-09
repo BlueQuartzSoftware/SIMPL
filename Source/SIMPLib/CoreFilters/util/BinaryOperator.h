@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _binaryoperator_h_
-#define _binaryoperator_h_
+#pragma once
 
 #include "CalculatorOperator.h"
 
@@ -103,4 +102,3 @@ class SIMPLib_EXPORT BinaryOperator : public CalculatorOperator
     return;                                                                                                                                                                                            \
   }
 
-#endif /* _BinaryOperator_H_ */

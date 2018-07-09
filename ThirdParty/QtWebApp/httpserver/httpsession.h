@@ -3,8 +3,7 @@
   @author Stefan Frings
 */
 
-#ifndef HTTPSESSION_H
-#define HTTPSESSION_H
+#pragma once
 
 #include "httpglobal.h"
 #include <QByteArray>
@@ -112,4 +111,3 @@ private:
   HttpSessionData* dataPtr;
 };
 
-#endif // HTTPSESSION_H

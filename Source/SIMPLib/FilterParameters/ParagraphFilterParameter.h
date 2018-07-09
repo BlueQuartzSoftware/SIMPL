@@ -31,8 +31,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _paragraphfilterparameter_h_
-#define _paragraphfilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -135,4 +134,3 @@ private:
   void operator=(const ParagraphFilterParameter&);                    // Move assignment Not Implemented
 };
 
-#endif /* _paragraphfilterparameter_h_ */

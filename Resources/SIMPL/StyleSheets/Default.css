@@ -18,6 +18,16 @@ QGroupBox
     font-size: 16px;
 }
 
+
+/* ----------------------------------------------------------------------------
+* Section
+* ----------------------------------------------------------------------------*/
+SVSmallLabel
+{
+    font-style:italic;
+    font-size: Font_Size_Small;
+}
+
 DataArrayPathSelectionWidget 
 {
     /* font-family: "Lato";
@@ -32,10 +42,12 @@ DataArrayPathSelectionWidget
     padding-top: 2px;
     padding-bottom: 2px;
 }
+
 DataArrayPathSelectionWidget:disabled
 {
   background-color: QToolButtonDisabled_background_color;
 }
+
 /*
  * State: { Normal, Active, NotFound, DragEnabled, DragDisabled }
  * PathType: { DataContainer, AttributeMatrix, DataArray, None }
@@ -140,14 +152,6 @@ SVIconPushButton:disabled
     padding-left: 0px;
     padding-top: 0px; 
 }
-
-SVSmallLabel
-{
-    font-family: "Lato";
-    font-weight: bold;
-    font-size: Font_Size_Small;
-}
-
 
 FilterParameterWidget
 {

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _bookmarksitem_h_
-#define _bookmarksitem_h_
+#pragma once
 
 #include <QtCore/QList>
 #include <QtCore/QVariant>
@@ -99,4 +98,3 @@ class SVWidgetsLib_EXPORT BookmarksItem
     void operator=(const BookmarksItem&);   // Move assignment Not Implemented
 };
 
-#endif // BookmarksItem_H

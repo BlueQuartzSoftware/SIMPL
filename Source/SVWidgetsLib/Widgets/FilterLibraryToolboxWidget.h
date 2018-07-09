@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _filterlibrarytoolboxwidget_h_
-#define _filterlibrarytoolboxwidget_h_
+#pragma once
 
 
 #include <QtWidgets/QDockWidget>
@@ -132,4 +131,3 @@ class SVWidgetsLib_EXPORT FilterLibraryToolboxWidget : public QWidget, private U
     void operator=(const FilterLibraryToolboxWidget&) = delete;             // Move assignment Not Implemented
 };
 
-#endif

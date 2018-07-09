@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _attributematrixcreationfilterparameter_h_
-#define _attributematrixcreationfilterparameter_h_
+#pragma once
 
 #include <QtCore/QVector>
 #include <QtCore/QJsonObject>
@@ -159,4 +158,3 @@ class SIMPLib_EXPORT AttributeMatrixCreationFilterParameter : public FilterParam
     void operator=(const AttributeMatrixCreationFilterParameter&) = delete;                         // Move assignment Not Implemented
 };
 
-#endif /* _AttributeMatrixCreationFilterParameter_H_ */

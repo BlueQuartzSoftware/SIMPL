@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _renameattributearray_h_
-#define _renameattributearray_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -178,4 +177,3 @@ class SIMPLib_EXPORT RenameAttributeArray : public AbstractFilter
     RenameAttributeArray& operator=(RenameAttributeArray&&) = delete;      // Move Assignment
 };
 
-#endif /* _RenameAttributeArray_H_ */

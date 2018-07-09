@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _datacontainerarrayproxy_h_
-#define _datacontainerarrayproxy_h_
+#pragma once
 
 
 
@@ -209,5 +208,4 @@ class SIMPLib_EXPORT DataContainerArrayProxy
 
 Q_DECLARE_METATYPE(DataContainerArrayProxy)
 
-#endif /* _DataContainerArrayProxy_H_ */
 

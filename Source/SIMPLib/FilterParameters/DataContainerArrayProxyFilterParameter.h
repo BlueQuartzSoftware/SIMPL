@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _datacontainerarrayproxyfilterparameter_h_
-#define _datacontainerarrayproxyfilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -151,4 +150,3 @@ class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParam
     void operator=(const DataContainerArrayProxyFilterParameter&) = delete;                         // Move assignment Not Implemented
 };
 
-#endif /* _DataContainerArrayProxyFilterParameter_H_ */

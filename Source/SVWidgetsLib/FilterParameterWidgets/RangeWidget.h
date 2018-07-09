@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _rangewidget_h_
-#define _rangewidget_h_
+#pragma once
 
 
 
@@ -95,6 +94,5 @@ class SVWidgetsLib_EXPORT RangeWidget : public FilterParameterWidget, private Ui
     void operator=(const RangeWidget&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _RangeWidget_H_ */
 
 

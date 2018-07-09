@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _QtSStringEdit_h_
-#define _QtSStringEdit_h_
+#pragma once
 
 #include <QtWidgets/QWidget>
 #include <QtGui/QKeyEvent>
@@ -84,4 +83,3 @@ private:
   QString m_storedValue;
 };
 
-#endif

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _qfilecompleter_h_
-#define _qfilecompleter_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtWidgets/QCompleter>
@@ -49,5 +48,4 @@ class SVWidgetsLib_EXPORT QtSFileCompleter : public QCompleter
     virtual QString pathFromIndex(const QModelIndex& idx) const;
 };
 
-#endif /* R3DFILECOMPLETER_H_ */
 

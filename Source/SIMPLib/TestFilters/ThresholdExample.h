@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _thresholdexample_h_
-#define _thresholdexample_h_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -150,4 +149,3 @@ public:
   ThresholdExample& operator=(ThresholdExample&&) = delete;      // Move Assignment Not Implemented
 };
 
-#endif /* _ThresholdExample_H_ */

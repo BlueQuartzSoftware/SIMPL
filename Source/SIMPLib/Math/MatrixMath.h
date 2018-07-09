@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _matrixmath_h_
-#define _matrixmath_h_
+#pragma once
 
 
 #include "SIMPLib/SIMPLib.h"
@@ -317,5 +316,4 @@ class SIMPLib_EXPORT MatrixMath
     void operator=(const MatrixMath&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _MatrixMath_H_ */
 

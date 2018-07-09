@@ -3,8 +3,7 @@
   @author Stefan Frings
 */
 
-#ifndef HTTPREQUEST_H
-#define HTTPREQUEST_H
+#pragma once
 
 #include "httpglobal.h"
 #include <QByteArray>
@@ -237,4 +236,3 @@ private:
   QByteArray lineBuffer;
 };
 
-#endif // HTTPREQUEST_H

@@ -1,5 +1,4 @@
-#ifndef _filterparameter_H_
-#define _filterparameter_H_
+#pragma once
 
 
 
@@ -270,4 +269,3 @@ class DataArrayPathParameter : public IFilterParameter
     GetterCallbackType m_GetterCallback;
 };
 
-#endif /* _filterparameter_H_ */

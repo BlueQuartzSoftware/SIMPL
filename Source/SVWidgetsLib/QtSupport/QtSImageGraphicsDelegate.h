@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ImageGraphicsDelegate_h_
-#define _ImageGraphicsDelegate_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
@@ -168,5 +167,4 @@ class SVWidgetsLib_EXPORT QtSImageGraphicsDelegate : public QObject
     void operator=(const QtSImageGraphicsDelegate&); //Copy Assignment Not Implemented
 };
 
-#endif /* _ImageGraphicsDelegate_H_ */
 

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _comparisoninputs_h_
-#define _comparisoninputs_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 #include <QtCore/QMetaType>
@@ -114,4 +113,3 @@ private:
 Q_DECLARE_METATYPE(ComparisonInput_t)
 Q_DECLARE_METATYPE(ComparisonInputs)
 
-#endif /* _ComparisonInputs_H_ */

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _abstractfilter_h_
-#define _abstractfilter_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QString>
@@ -435,4 +434,3 @@ private:
   void operator=(const AbstractFilter&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _AbstractFilter_H_  */

@@ -29,8 +29,7 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _qtSFileUtils_H_
-#define _qtSFileUtils_H_
+#pragma once
 
 #include <QtCore/QString>
 #include <QtWidgets/QWidget>
@@ -85,4 +84,3 @@ class SVWidgetsLib_EXPORT QtSFileUtils
 
 };
 
-#endif /* _qtSFileUtils_H_ */

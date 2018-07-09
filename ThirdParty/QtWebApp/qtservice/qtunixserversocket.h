@@ -38,8 +38,7 @@
 **
 ****************************************************************************/
 
-#ifndef QTUNIXSERVERSOCKET_H
-#define QTUNIXSERVERSOCKET_H
+#pragma once
 
 #include <QTcpServer>
 
@@ -57,4 +56,3 @@ private:
   QString path_;
 };
 
-#endif

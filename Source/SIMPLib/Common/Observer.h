@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _observer_h_
-#define _observer_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -73,5 +72,4 @@ class SIMPLib_EXPORT Observer : public QObject, public IObserver
     void operator=(const Observer&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* OBSERVER_H_ */
 

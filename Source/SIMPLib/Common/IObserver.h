@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _iobserver_h_
-#define _iobserver_h_
+#pragma once
 
 
 #include "SIMPLib/SIMPLib.h"
@@ -55,4 +54,3 @@ class SIMPLib_EXPORT IObserver
     void operator=(const IObserver&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _IObserver_H_ */

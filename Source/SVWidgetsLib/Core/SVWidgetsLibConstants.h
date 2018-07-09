@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _SVWidgetsLibconstants_h_
-#define _SVWidgetsLibconstants_h_
+#pragma once
 
 #include <QtGui/QColor>
 
@@ -88,4 +87,3 @@ namespace SIMPLView
   }
 }
 
-#endif /* _SVWidgetsLibConstants_H_ */

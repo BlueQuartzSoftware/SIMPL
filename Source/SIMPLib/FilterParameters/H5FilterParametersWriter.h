@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _h5filterparameterswriter_h_
-#define _h5filterparameterswriter_h_
+#pragma once
 
 #include "hdf5.h"
 
@@ -146,5 +145,4 @@ class SIMPLib_EXPORT H5FilterParametersWriter : public AbstractFilterParametersW
     H5FilterParametersWriter& operator=(H5FilterParametersWriter&&) = delete;      // Move Assignment
 };
 
-#endif /* _H5FilterParametersWRITER_H_ */
 

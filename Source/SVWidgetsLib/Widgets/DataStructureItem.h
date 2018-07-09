@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _databrowseritem_h_
-#define _databrowseritem_h_
+#pragma once
 
 #include <QtCore/QList>
 #include <QtCore/QVariant>
@@ -133,4 +132,3 @@ class SVWidgetsLib_EXPORT DataStructureItem
     void operator=(const DataStructureItem&);       // Move assignment Not Implemented
 };
 
-#endif // DataStructureItem_H

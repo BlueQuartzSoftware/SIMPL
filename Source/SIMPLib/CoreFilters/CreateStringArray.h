@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _CreateStringArray_h_
-#define _CreateStringArray_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -179,4 +178,3 @@ class SIMPLib_EXPORT CreateStringArray : public AbstractFilter
     CreateStringArray& operator=(CreateStringArray&&) = delete;      // Move Assignment
 };
 
-#endif /* _CreateStringArray_H_ */

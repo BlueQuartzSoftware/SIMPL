@@ -3,8 +3,7 @@
   @author Stefan Frings
 */
 
-#ifndef STATICFILECONTROLLER_H
-#define STATICFILECONTROLLER_H
+#pragma once
 
 #include "httpglobal.h"
 #include "httprequest.h"
@@ -84,4 +83,3 @@ private:
   void setContentType(QString file, HttpResponse& response) const;
 };
 
-#endif // STATICFILECONTROLLER_H

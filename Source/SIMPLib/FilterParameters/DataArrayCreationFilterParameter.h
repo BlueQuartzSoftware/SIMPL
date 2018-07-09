@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _dataarraycreationfilterparameter_h_
-#define _dataarraycreationfilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -183,4 +182,3 @@ class SIMPLib_EXPORT DataArrayCreationFilterParameter : public FilterParameter
 
 
 
-#endif /* _DataArrayCreationFilterParameter_H_ */

@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _NEIGHBORLIST_H_
-#define _NEIGHBORLIST_H_
+#pragma once
 
 #include <vector>
 
@@ -1058,5 +1057,4 @@ class NeighborList : public IDataArray
 typedef NeighborList<int32_t> Int32NeighborListType;
 typedef NeighborList<float> FloatNeighborListType;
 
-#endif /* NEIGHBORLIST_H_ */
 

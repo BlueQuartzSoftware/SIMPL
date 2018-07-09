@@ -32,8 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _simplibsetgetmacros_h_
-#define _simplibsetgetmacros_h_
+#pragma once
 
 
 #include <cstring>
@@ -98,8 +97,7 @@
     return Pointer(static_cast<thisClass*>(nullptr));\
   }
 
-#ifndef _simplibsetgetmacros_h_
-#define _simplibsetgetmacros_h_
+#ifndef QT_SHARED_POINTERS
  /* @brief Creates some basic typedefs that can be used throughout the code to
  * reference the class.
  */
@@ -686,4 +684,3 @@ template <typename T> T lexical_cast(const QString& s)
 
 
 
-#endif /* SIMPL_SETGETMACROS_H_ */

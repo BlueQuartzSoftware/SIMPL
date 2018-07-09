@@ -1,6 +1,5 @@
 
-#ifndef _filterwidget_H_
-#define _filterwidget_H_
+#pragma once
 
 
 
@@ -33,5 +32,4 @@ private:
 };
 
 
-#endif /* _filterwidget_H_ */
 

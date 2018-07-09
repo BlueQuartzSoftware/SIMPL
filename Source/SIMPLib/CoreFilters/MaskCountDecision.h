@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _maskcountdecision_h_
-#define _maskcountdecision_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -143,4 +142,3 @@ class SIMPLib_EXPORT MaskCountDecision : public AbstractDecisionFilter
     void operator=(const MaskCountDecision&) = delete;    // Move assignment Not Implemented
 };
 
-#endif /* _MaskCountDecision_H_ */

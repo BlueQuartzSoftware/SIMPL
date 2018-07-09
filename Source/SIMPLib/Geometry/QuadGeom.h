@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _quadgeom_h_
-#define _quadgeom_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Geometry/IGeometry2D.h"
@@ -484,5 +483,4 @@ class SIMPLib_EXPORT QuadGeom : public IGeometry2D
 };
 
 
-#endif /* _QuadGeom_H_ */
 

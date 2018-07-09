@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _importasciidatawizard_h_
-#define _importasciidatawizard_h_
+#pragma once
 
 #include <QtWidgets/QWizard>
 
@@ -163,4 +162,3 @@ class ImportASCIIDataWizard : public QWizard
     void operator=(const ImportASCIIDataWizard&) = delete;        // Move assignment Not Implemented
 };
 
-#endif /* ImportASCIIDataWizard_H_ */

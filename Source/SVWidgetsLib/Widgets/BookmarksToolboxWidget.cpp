@@ -106,6 +106,8 @@ void BookmarksToolboxWidget::setupGui()
 
   connect(bookmarksTreeView, &BookmarksTreeView::raiseBookmarksWidget, this, &BookmarksToolboxWidget::raiseBookmarksDockWidget);
 
+  connect(bookmarksTreeView, &BookmarksTreeView::locateBookmarkTriggered, this, &BookmarksToolboxWidget::listenLocateBookmarkTriggered);
+
   //bookmarksTreeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
@@ -207,12 +209,21 @@ void BookmarksToolboxWidget::on_bookmarksTreeView_doubleClicked(const QModelInde
     {
       bookmarksTreeView->blockSignals(true);
       QtSBookmarkMissingDialog* dialog = new QtSBookmarkMissingDialog(this, Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint | Qt::WindowTitleHint);
-      connect(dialog, SIGNAL(locateBtnPressed()), bookmarksTreeView, SLOT(listenLocateBookmarkTriggered()));
       QString name = model->data(index, Qt::DisplayRole).toString();
       dialog->setBookmarkName(name);
-      dialog->exec();
+      int ret = dialog->exec();
       delete dialog;
       bookmarksTreeView->blockSignals(false);
+
+      if (ret == QDialog::Accepted)
+      {
+        bool result = locateBookmark();
+        if (result)
+        {
+          QString filePath = model->data(index, BookmarksModel::Roles::PathRole).toString();
+          emit bookmarkActivated(filePath);
+        }
+      }
     }
     else
     {
@@ -226,6 +237,62 @@ void BookmarksToolboxWidget::on_bookmarksTreeView_doubleClicked(const QModelInde
       emit bookmarkActivated(path);
     }
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void BookmarksToolboxWidget::listenLocateBookmarkTriggered()
+{
+  locateBookmark();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool BookmarksToolboxWidget::locateBookmark()
+{
+  BookmarksModel* model = BookmarksModel::Instance();
+
+  QModelIndex current = bookmarksTreeView->currentIndex();
+
+  QModelIndex index = model->index(current.row(), BookmarksItem::Contents, current.parent());
+
+  QString path = model->data(index, static_cast<int>(BookmarksModel::Roles::PathRole)).toString();
+  QFileInfo fi(path);
+  QString restrictions;
+  if(fi.completeSuffix() == "json")
+  {
+    restrictions = "Json File (*.json)";
+  }
+  else if(fi.completeSuffix() == "dream3d")
+  {
+    restrictions = "Dream3d File(*.dream3d)";
+  }
+  else if(fi.completeSuffix() == "txt")
+  {
+    restrictions = "Text File (*.txt)";
+  }
+  else
+  {
+    restrictions = "Ini File (*.ini)";
+  }
+
+  QString filePath = QFileDialog::getOpenFileName(this, tr("Locate Pipeline File"), path, tr(restrictions.toStdString().c_str()));
+  if(true == filePath.isEmpty())
+  {
+    return false;
+  }
+
+  filePath = QDir::toNativeSeparators(filePath);
+
+  // Set the new path into the item
+  model->setData(index, filePath, static_cast<int>(BookmarksModel::Roles::PathRole));
+
+  // Change item back to default look and functionality
+  model->setData(index, false, static_cast<int>(BookmarksModel::Roles::ErrorsRole));
+
+  return true;
 }
 
 // -----------------------------------------------------------------------------

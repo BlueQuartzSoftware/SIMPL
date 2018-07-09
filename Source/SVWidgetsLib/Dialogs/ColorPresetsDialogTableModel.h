@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _colorpresetsdialogtablemodel_h
-#define _colorpresetsdialogtablemodel_h
+#pragma once
 
 #include <QtCore/QModelIndex>
 #include <QtCore/QScopedPointer>
@@ -80,4 +79,3 @@ private:
   void operator=(const ColorPresetsDialogTableModel&) = delete;               // Move assignment Not Implemented
 };
 
-#endif /* _colorpresetsdialogtablemodel_h */

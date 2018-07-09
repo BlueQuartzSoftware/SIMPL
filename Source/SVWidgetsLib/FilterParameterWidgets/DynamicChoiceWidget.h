@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _dynamicchoicewidget_h_
-#define _dynamicchoicewidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -99,6 +98,5 @@ class SVWidgetsLib_EXPORT DynamicChoiceWidget : public FilterParameterWidget, pr
     void operator=(const DynamicChoiceWidget&) = delete;      // Move assignment Not Implemented
 };
 
-#endif /* _DynamicChoiceWidget_H_ */
 
 

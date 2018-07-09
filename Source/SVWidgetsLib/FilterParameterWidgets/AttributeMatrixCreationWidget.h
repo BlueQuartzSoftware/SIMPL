@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _attributematrixcreationwidget_h_
-#define _attributematrixcreationwidget_h_
+#pragma once
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QObject>
@@ -141,6 +140,5 @@ private:
   void operator=(const AttributeMatrixCreationWidget&) = delete;                // Move assignment Not Implemented
 };
 
-#endif /* _AttributeMatrixCreationWidget_H_ */
 
 

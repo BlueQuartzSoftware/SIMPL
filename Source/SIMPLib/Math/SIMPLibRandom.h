@@ -38,8 +38,7 @@
  * instance of this class.
  */
 
-#ifndef _simplibrandom_h_
-#define _simplibrandom_h_
+#pragma once
 
 #include <QtCore/QDateTime>
 
@@ -212,4 +211,3 @@ private:
     rg.init_genrand(seedPtr[AIMRNG_OFFSET]);                                                                                                                                                           \
   }
 
-#endif /* SIMPLibRANDOM_H_ */

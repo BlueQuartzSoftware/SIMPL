@@ -3,8 +3,7 @@
   @author Stefan Frings
 */
 
-#ifndef HTTPGLOBAL_H
-#define HTTPGLOBAL_H
+#pragma once
 
 #include <QtGlobal>
 
@@ -66,4 +65,3 @@ building the DLL on windows.
 /** Get the library version number */
 DECLSPEC const char* getQtWebAppLibVersion();
 
-#endif // HTTPGLOBAL_H

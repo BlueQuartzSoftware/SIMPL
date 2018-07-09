@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _databrowsermodel_h_
-#define _databrowsermodel_h_
+#pragma once
 
 
 #include <QtCore/QModelIndex>
@@ -147,4 +146,3 @@ the setData() and setHeaderData() functions, respectively.
     void operator=(const DataStructureModel&);        // Move assignment Not Implemented
 };
 
-#endif // DataStructureModel_H

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _filterinputwidget_h_
-#define _filterinputwidget_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -139,4 +138,3 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget
     void operator=(const FilterInputWidget&) = delete;    // Move assignment Not Implemented
 };
 
-#endif /* end FilterInputWidget */

@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _createfeaturearrayfromelementarray_h_
-#define _createfeaturearrayfromelementarray_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -184,4 +183,3 @@ class SIMPLib_EXPORT CreateFeatureArrayFromElementArray : public AbstractFilter
     CreateFeatureArrayFromElementArray& operator=(CreateFeatureArrayFromElementArray&&) = delete;      // Move Assignment
 };
 
-#endif /* CreateFeatureArrayFromElementArray_H_ */

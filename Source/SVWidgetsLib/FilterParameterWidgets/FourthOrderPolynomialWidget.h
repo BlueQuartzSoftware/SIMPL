@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _fourthorderpolynomialwidget_h_
-#define _fourthorderpolynomialwidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -91,6 +90,5 @@ class SVWidgetsLib_EXPORT FourthOrderPolynomialWidget : public FilterParameterWi
     void operator=(const FourthOrderPolynomialWidget&) = delete;              // Move assignment Not Implemented
 };
 
-#endif /* _FourthOrderPolynomialWidget_H_ */
 
 

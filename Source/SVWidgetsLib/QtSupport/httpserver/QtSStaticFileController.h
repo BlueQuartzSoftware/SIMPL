@@ -3,8 +3,7 @@
   @author Stefan Frings
 */
 
-#ifndef _qtsstaticfilecontroller_H_
-#define _qtsstaticfilecontroller_H_
+#pragma once
 
 #include "QtWebApp/httpserver/httpglobal.h"
 #include "QtWebApp/httpserver/httprequest.h"
@@ -88,4 +87,3 @@ private:
   bool verbose = false;
 };
 
-#endif /* _qtsstaticfilecontroller_H_ */

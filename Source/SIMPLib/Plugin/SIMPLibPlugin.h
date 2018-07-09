@@ -32,8 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _simplibplugin_h_
-#define _simplibplugin_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QString>
@@ -119,4 +118,3 @@ class SIMPLib_EXPORT SIMPLibPlugin : public QObject
     void operator=(const SIMPLibPlugin&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _SIMPLibPlugin_H_ */

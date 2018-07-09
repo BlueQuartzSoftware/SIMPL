@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _distributiontypewidget_h_
-#define _distributiontypewidget_h_
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -70,5 +69,4 @@ class SVWidgetsLib_EXPORT QtSDistributionTypeWidget : public QWidget, private Ui
 };
 
 
-#endif /* _DistributionTypeWidget_H_ */
 

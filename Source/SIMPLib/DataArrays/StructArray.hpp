@@ -39,8 +39,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _structArray_H_
-#define _structArray_H_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -910,5 +909,4 @@ class StructArray : public IDataArray
 };
 
 
-#endif /* _StructArray_H_ */
 

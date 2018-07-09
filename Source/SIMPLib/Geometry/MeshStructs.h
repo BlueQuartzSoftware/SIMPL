@@ -29,8 +29,7 @@
 * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _meshstructs_h_
-#define _meshstructs_h_
+#pragma once
 
 //Qt Includes
 #include <QtCore/QString>
@@ -130,5 +129,4 @@ namespace SurfaceMesh
   }
 }
 
-#endif /* MESHSTRUCTS_H_ */
 

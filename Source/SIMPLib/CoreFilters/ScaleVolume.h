@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _scalevolume_h_
-#define _scalevolume_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
@@ -190,4 +189,3 @@ class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
     ScaleVolume& operator=(ScaleVolume&&) = delete;      // Move Assignment
 };
 
-#endif /* _ScaleVolume_H_ */

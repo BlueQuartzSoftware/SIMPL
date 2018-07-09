@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _hoverbutton_h_
-#define _hoverbutton_h_
+#pragma once
 
 #include <QtWidgets/QPushButton>
 
@@ -56,4 +55,3 @@ class SVWidgetsLib_EXPORT QtSHoverButton : public QPushButton
     void operator=(const QtSHoverButton&) = delete; // Move assignment Not Implemented
 };
 
-#endif // HoverButton_H

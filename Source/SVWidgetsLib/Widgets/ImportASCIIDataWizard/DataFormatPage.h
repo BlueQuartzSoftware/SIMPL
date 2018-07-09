@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _dataformatpage_h_
-#define _dataformatpage_h_
+#pragma once
 
 #include <QtWidgets/QWizardPage>
 #include <QtWidgets/QButtonGroup>
@@ -300,4 +299,3 @@ class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
     void operator=(const DataFormatPage&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* DataFormatPage_H_ */

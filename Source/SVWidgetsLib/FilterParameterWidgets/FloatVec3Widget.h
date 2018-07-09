@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _floatvec3widget_h_
-#define _floatvec3widget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -91,6 +90,5 @@ class SVWidgetsLib_EXPORT FloatVec3Widget : public FilterParameterWidget, privat
     void operator=(const FloatVec3Widget&) = delete;  // Move assignment Not Implemented
 };
 
-#endif /* _FloatVec3Widget_H_ */
 
 

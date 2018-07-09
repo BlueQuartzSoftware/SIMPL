@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _importasciidatawidget_h_
-#define _importasciidatawidget_h_
+#pragma once
 
 #include <QtCore/QThread>
 
@@ -104,4 +103,3 @@ class SVWidgetsLib_EXPORT ReadASCIIDataWidget : public FilterParameterWidget, pr
     void operator=(const ReadASCIIDataWidget&) = delete;      // Move assignment Not Implemented
 };
 
-#endif /* ImportASCIIDataWidget_H_ */

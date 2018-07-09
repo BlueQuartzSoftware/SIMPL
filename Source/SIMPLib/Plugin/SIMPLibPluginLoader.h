@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _simplibpluginloader_h_
-#define _simplibpluginloader_h_
+#pragma once
 
 
 
@@ -71,5 +70,4 @@ class SIMPLib_EXPORT SIMPLibPluginLoader
     void operator=(const SIMPLibPluginLoader&) = delete;      // Move assignment Not Implemented
 };
 
-#endif /* _DREAM3D_PluginLoader_H_ */
 

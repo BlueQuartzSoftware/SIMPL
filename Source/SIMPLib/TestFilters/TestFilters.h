@@ -2,8 +2,7 @@
  * Your License or Copyright Information can go here
  */
 
-#ifndef _testfilters_h_
-#define _testfilters_h_
+#pragma once
 
 #include <QString>
 
@@ -197,4 +196,3 @@ private:
   void operator=(const Filt1&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _Filt0_H_ */

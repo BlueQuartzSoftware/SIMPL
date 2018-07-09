@@ -35,8 +35,7 @@
 
 
 
-#ifndef _updatecheckdata_h_
-#define _updatecheckdata_h_
+#pragma once
 
 #include <QtWidgets/QWidget>
 
@@ -88,5 +87,4 @@ class SVWidgetsLib_EXPORT UpdateCheckData : public QObject
 Q_DECLARE_METATYPE(UpdateCheckData);
 #endif
 
-#endif /* _UPDATECHECKDATA_H_ */
 

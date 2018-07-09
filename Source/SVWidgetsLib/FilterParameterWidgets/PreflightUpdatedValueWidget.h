@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _preflightupdatedvaluewidget_h_
-#define _preflightupdatedvaluewidget_h_
+#pragma once
 
 
 
@@ -92,6 +91,5 @@ class SVWidgetsLib_EXPORT PreflightUpdatedValueWidget : public FilterParameterWi
     void operator=(const PreflightUpdatedValueWidget&) = delete;              // Move assignment Not Implemented
 };
 
-#endif /* _PreflightUpdatedValueWidget_H_ */
 
 

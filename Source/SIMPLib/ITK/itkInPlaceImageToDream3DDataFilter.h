@@ -1,5 +1,4 @@
-#ifndef _ITKInPlaceImageToDream3DDataFilter_h
-#define _ITKInPlaceImageToDream3DDataFilter_h
+#pragma once
 
 #include "itkDream3DImage.h"
 #include "itkGetComponentsDimensions.h"
@@ -77,4 +76,3 @@ private:
 #include "itkInPlaceImageToDream3DDataFilter.hxx"
 #endif
 
-#endif

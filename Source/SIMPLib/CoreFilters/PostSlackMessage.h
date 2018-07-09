@@ -30,8 +30,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _postslackmessage_h_
-#define _postslackmessage_h_
+#pragma once
 
 #include <QtCore/QWaitCondition>
 
@@ -181,4 +180,3 @@ private:
     PostSlackMessage& operator=(PostSlackMessage&&) = delete;      // Move Assignment
 };
 
-#endif /* _PostSlackMessage_H_ */

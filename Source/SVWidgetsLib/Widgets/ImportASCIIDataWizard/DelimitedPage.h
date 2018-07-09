@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _delimitedpage_h_
-#define _delimitedpage_h_
+#pragma once
 
 #include <QtWidgets/QWizardPage>
 
@@ -90,4 +89,3 @@ class DelimitedPage : public AbstractWizardPage, private Ui::DelimitedPage
     void operator=(const DelimitedPage&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* DelimitedPage_H_ */

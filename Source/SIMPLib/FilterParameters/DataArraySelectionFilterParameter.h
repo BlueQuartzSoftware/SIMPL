@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _dataarrayselectionfilterparameter_h_
-#define _dataarrayselectionfilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -211,4 +210,3 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
 };
 
 
-#endif /* _DataArraySelectionFilterParameter_H_ */

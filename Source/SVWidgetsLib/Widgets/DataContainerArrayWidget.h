@@ -1,5 +1,4 @@
-#ifndef _datacontainerarraywidget_h_
-#define _datacontainerarraywidget_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -66,4 +65,3 @@ class SVWidgetsLib_EXPORT DataContainerArrayWidget : public QWidget, private Ui:
     void operator=(const DataContainerArrayWidget&) = delete;           // Move assignment Not Implemented
 };
 
-#endif /* _DataContainerArrayWidget_H_ */

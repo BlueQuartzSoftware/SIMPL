@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _bookmarksitemdelegate_h_
-#define _bookmarksitemdelegate_h_
+#pragma once
 
 #include <QtCore/QModelIndex>
 
@@ -63,4 +62,3 @@ class BookmarksItemDelegate : public QStyledItemDelegate
     void operator=(const BookmarksItemDelegate&) = delete;        // Move assignment Not Implemented
 };
 
-#endif // _BookmarksItemDelegate_H

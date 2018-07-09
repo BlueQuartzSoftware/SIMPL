@@ -30,8 +30,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _simplh5datareader_h_
-#define _simplh5datareader_h_
+#pragma once
 
 #include <QtCore/QStringList>
 
@@ -130,4 +129,3 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
 };
 
 
-#endif /* _simplh5datareader_h_ */

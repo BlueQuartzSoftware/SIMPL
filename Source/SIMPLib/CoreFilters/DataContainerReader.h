@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _datacontainerreader_h_
-#define _datacontainerreader_h_
+#pragma once
 
 #include <QtCore/QDateTime>
 
@@ -263,4 +262,3 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
     DataContainerReader& operator=(DataContainerReader&&) = delete;      // Move Assignment
 };
 
-#endif /* _DataContainerReader_H_ */

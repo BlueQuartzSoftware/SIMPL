@@ -33,8 +33,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _filepathgenerator_h_
-#define _filepathgenerator_h_
+#pragma once
 
 #include <QtCore/QString>
 #include <QtCore/QVector>
@@ -80,4 +79,3 @@ private:
   void operator=(const FilePathGenerator&) = delete;    // Move assignment Not Implemented
 };
 
-#endif /* _FilePathGenerator_H_ */

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _expoperator_h_
-#define _expoperator_h_
+#pragma once
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
@@ -67,4 +66,3 @@ class SIMPLib_EXPORT ExpOperator : public UnaryOperator
     void operator=(const ExpOperator&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _ExpOperator_H_ */

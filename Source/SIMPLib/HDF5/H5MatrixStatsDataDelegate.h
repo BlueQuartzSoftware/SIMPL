@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _h5matrixstatsdatadelegate_h_
-#define _h5matrixstatsdatadelegate_h_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -78,5 +77,4 @@ class SIMPLib_EXPORT H5MatrixStatsDataDelegate : public H5StatsDataDelegate
     void operator=(const H5MatrixStatsDataDelegate&) = delete;            // Move assignment Not Implemented
 };
 
-#endif /* _H5MatrixStatsData_DELEGATE_H_ */
 

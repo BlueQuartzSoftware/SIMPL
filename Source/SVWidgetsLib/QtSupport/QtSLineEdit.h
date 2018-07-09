@@ -29,8 +29,7 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _searchlineedit_h_
-#define _searchlineedit_h_
+#pragma once
 
 #include <QtWidgets/QAbstractButton>
 #include <QtWidgets/QLineEdit>
@@ -144,4 +143,3 @@ class SVWidgetsLib_EXPORT QtSLineEdit : public QLineEdit
 };
 
 
-#endif // _SearchLineEdit_H_

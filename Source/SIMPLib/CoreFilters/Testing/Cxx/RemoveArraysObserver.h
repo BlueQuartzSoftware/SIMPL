@@ -1,5 +1,4 @@
-#ifndef _removearraysobserver_h_
-#define _removearraysobserver_h_
+#pragma once
 
 #include <QtCore/QList>
 #include <QtCore/QObject>
@@ -39,4 +38,3 @@ private:
   void operator=(const RemoveArraysObserver&);                // Move assignment Not Implemented
 };
 
-#endif /* _RemoveArraysObserver_H_ */

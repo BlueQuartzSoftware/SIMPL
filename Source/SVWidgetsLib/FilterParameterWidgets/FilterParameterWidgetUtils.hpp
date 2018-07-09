@@ -1,5 +1,4 @@
-#ifndef _FilterParameterWidgetUtils_H_
-#define _FilterParameterWidgetUtils_H_
+#pragma once
 
 #include <assert.h>
 
@@ -325,4 +324,3 @@ class FilterParameterWidgetUtils
 
 };
 
-#endif /* _FilterParameterWidgetUtils_H_ */

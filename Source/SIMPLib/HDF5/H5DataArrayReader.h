@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _h5dataarrayreader_h_
-#define _h5dataarrayreader_h_
+#pragma once
 
 #include <hdf5.h>
 
@@ -104,5 +103,4 @@ class SIMPLib_EXPORT H5DataArrayReader
     void operator=(const H5DataArrayReader&) = delete;    // Move assignment Not Implemented
 };
 
-#endif /* H5DATAARRAYREADER_HPP_ */
 

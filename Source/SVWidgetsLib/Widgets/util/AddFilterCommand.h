@@ -33,8 +33,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _addfilterscommand_h_
-#define _addfilterscommand_h_
+#pragma once
 
 #include <QtCore/QModelIndex>
 
@@ -100,4 +99,3 @@ private:
   void operator=(const AddFilterCommand&) = delete;   // Move assignment Not Implemented
 };
 
-#endif /* _addfilterscommand_h_ */

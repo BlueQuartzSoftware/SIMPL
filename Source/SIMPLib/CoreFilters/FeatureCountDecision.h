@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _featurecountdecision_h_
-#define _featurecountdecision_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -143,4 +142,3 @@ class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
     void operator=(const FeatureCountDecision&) = delete;       // Move assignment Not Implemented
 };
 
-#endif /* _FeatureCountDecision_H_ */

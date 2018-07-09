@@ -1,3 +1,8 @@
+/**
+ * 
+ */
+
+#pragma once
 
 #include "itkDream3DImage.h"
 

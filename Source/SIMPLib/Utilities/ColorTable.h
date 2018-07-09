@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _colortable_h_
-#define _colortable_h_
+#pragma once
 
 #include <iostream>
 
@@ -135,5 +134,4 @@ class SIMPLib_EXPORT SIMPLColorTable
     SIMPLColorTable(const SIMPLColorTable&) = delete; // Copy Constructor Not Implemented
     void operator=(const SIMPLColorTable&) = delete;  // Move assignment Not Implemented
 };
-#endif /* _ColorTable_H_ */
 

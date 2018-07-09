@@ -32,8 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _tupletablewidget_h_
-#define _tupletablewidget_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -97,4 +96,3 @@ class TupleTableWidget : public QWidget, private Ui::TupleTableWidget
     void operator=(const TupleTableWidget&) = delete;   // Move assignment Not Implemented
 };
 
-#endif /* _TupleTableWidget_H_ */

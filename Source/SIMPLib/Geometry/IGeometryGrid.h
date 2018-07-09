@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _igeometrygrid_h_
-#define _igeometrygrid_h_
+#pragma once
 
 #include <tuple>
 
@@ -94,5 +93,4 @@ class SIMPLib_EXPORT IGeometryGrid : public IGeometry
     void operator=(const IGeometryGrid&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _igeometrygrid_h_ */
 

@@ -31,8 +31,7 @@
  *                           FA8650-07-D-5800
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _qtsdisclosablegroupbox_H_
-#define _qtsdisclosablegroupbox_H_
+#pragma once
 
 #include <QtWidgets/QGroupBox>
 
@@ -88,4 +87,3 @@ private:
   void operator=(const QtSDisclosableGroupBox&) = delete;         // Move assignment Not Implemented
 };
 
-#endif /* _qtsdisclosablegroupbox_H_ */

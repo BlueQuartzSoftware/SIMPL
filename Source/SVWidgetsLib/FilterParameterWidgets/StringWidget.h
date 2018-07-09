@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _stringwidget_h_
-#define _stringwidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -91,6 +90,5 @@ class SVWidgetsLib_EXPORT StringWidget : public FilterParameterWidget, private U
     void operator=(const StringWidget&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _StringWidget_H_ */
 
 

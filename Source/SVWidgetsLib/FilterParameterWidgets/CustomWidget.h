@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _customwidget_h_
-#define _customwidget_h_
+#pragma once
 
 
 
@@ -83,6 +82,5 @@ class FilterWidgetsLib_EXPORT CustomWidget : public QWidget, private Ui::CustomW
     void operator=(const CustomWidget&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _CustomWidget_H_ */
 
 

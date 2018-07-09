@@ -29,8 +29,7 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _docrequestmanager_h_
-#define _docrequestmanager_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QString>
@@ -77,4 +76,3 @@ class SIMPLib_EXPORT DocRequestManager : public QObject
      void operator=(const DocRequestManager&) = delete;    // Move assignment Not Implemented
 };
 
-#endif /* _DocRequestManger_H_ */

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _separatorfilterparameter_h_
-#define _separatorfilterparameter_h_
+#pragma once
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
@@ -80,4 +79,3 @@ class SIMPLib_EXPORT SeparatorFilterParameter : public FilterParameter
     void operator=(const SeparatorFilterParameter&) = delete;           // Move assignment Not Implemented
 };
 
-#endif /* _SeparatorFilterParameter_H_ */

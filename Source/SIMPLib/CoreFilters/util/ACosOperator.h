@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _acosoperator_h_
-#define _acosoperator_h_
+#pragma once
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
@@ -67,4 +66,3 @@ class SIMPLib_EXPORT ACosOperator : public UnaryOperator
     void operator=(const ACosOperator&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _ACosOperator_H_ */

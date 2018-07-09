@@ -33,8 +33,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _dynamictableexample_h_
-#define _dynamictableexample_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
@@ -153,4 +152,3 @@ public:
   DynamicTableExample& operator=(DynamicTableExample&&) = delete;      // Move Assignment Not Implemented
 };
 
-#endif /* _DynamicTableExample_H_ */

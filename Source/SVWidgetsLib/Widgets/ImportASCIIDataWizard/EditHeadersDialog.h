@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _editheadersdialog_h_
-#define _editheadersdialog_h_
+#pragma once
 
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDialogButtonBox>
@@ -73,4 +72,3 @@ private:
   void operator=(const EditHeadersDialog&) = delete;    // Move assignment Not Implemented
 };
 
-#endif /* EditHeadersDialog_H_ */

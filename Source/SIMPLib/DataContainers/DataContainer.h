@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _datacontainer_h_
-#define _datacontainer_h_
+#pragma once
 
 #include <stddef.h>
 
@@ -389,5 +388,4 @@ public:
     void operator=(const DataContainer&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _DataContainer_H_ */
 

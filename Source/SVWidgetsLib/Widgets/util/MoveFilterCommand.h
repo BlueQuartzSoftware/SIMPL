@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _movefiltercommand_h_
-#define _movefiltercommand_h_
+#pragma once
 
 #include <QtCore/QVariant>
 
@@ -107,4 +106,3 @@ private:
   void operator=(const MoveFilterCommand&);             // Move assignment Not Implemented
 };
 
-#endif /* _movefiltercommand_h_ */

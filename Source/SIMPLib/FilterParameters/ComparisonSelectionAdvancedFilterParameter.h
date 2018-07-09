@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _comparisonselectionadvancedfilterparameter_h_
-#define _comparisonselectionadvancedfilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -158,4 +157,3 @@ class SIMPLib_EXPORT ComparisonSelectionAdvancedFilterParameter : public FilterP
     void operator=(const ComparisonSelectionAdvancedFilterParameter&) = delete;                             // Move assignment Not Implemented
 };
 
-#endif /* _ComparisonSelectionAdvancedFilterParameter_H_ */

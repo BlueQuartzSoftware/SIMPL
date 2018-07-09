@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _pipelinemessage_h_
-#define _pipelinemessage_h_
+#pragma once
 
 #include <QtCore/QString>
 #include <QtCore/QMetaType>
@@ -142,5 +141,4 @@ class SIMPLib_EXPORT PipelineMessage
 
 Q_DECLARE_METATYPE(PipelineMessage)
 
-#endif /* _PipelineMessage_H */
 

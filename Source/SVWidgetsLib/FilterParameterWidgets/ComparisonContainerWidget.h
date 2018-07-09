@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _comparisonContainerWidget_h_
-#define _comparisonContainerWidget_h_
+#pragma once
 
 #include <QtWidgets/QFrame>
 #include <QtGui/QMouseEvent>
@@ -176,4 +175,3 @@ private:
   QPoint m_startDragPoint;
 };
 
-#endif

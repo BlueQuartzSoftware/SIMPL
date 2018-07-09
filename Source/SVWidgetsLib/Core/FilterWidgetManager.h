@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _filterwidgetmanager_h_
-#define _filterwidgetmanager_h_
+#pragma once
 
 
 #include <QtCore/QString>
@@ -117,5 +116,4 @@ class SVWidgetsLib_EXPORT FilterWidgetManager
     void operator=(const FilterWidgetManager&) = delete;      // Move assignment Not Implemented
 };
 
-#endif /* PipelineFilterWidgetMANAGER_H_ */
 

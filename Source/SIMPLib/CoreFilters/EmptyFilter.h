@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _emptyfilter_h_
-#define _emptyfilter_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -176,4 +175,3 @@ class SIMPLib_EXPORT EmptyFilter : public AbstractFilter
     EmptyFilter& operator=(EmptyFilter&&) = delete;      // Move Assignment
 };
 
-#endif /* _EmptyFilter_H_ */

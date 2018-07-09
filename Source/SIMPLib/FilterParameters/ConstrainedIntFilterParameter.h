@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _constrainedintfilterparameter_h_
-#define _constrainedintfilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -139,4 +138,3 @@ class SIMPLib_EXPORT ConstrainedIntFilterParameter : public FilterParameter
     void operator=(const ConstrainedIntFilterParameter&) = delete;                // Move assignment Not Implemented
 };
 
-#endif /* _constrainedintfilterparameter_h_ */

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _linkeddatacontainerselectionfilterparameter_h_
-#define _linkeddatacontainerselectionfilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -148,4 +147,3 @@ class SIMPLib_EXPORT LinkedDataContainerSelectionFilterParameter : public Filter
     void operator=(const LinkedDataContainerSelectionFilterParameter&) = delete;                              // Move assignment Not Implemented
 };
 
-#endif /* _linkeddatacontainerselectionfilterparameter_h_ */

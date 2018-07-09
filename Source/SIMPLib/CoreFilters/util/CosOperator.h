@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _cosoperator_h_
-#define _cosoperator_h_
+#pragma once
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
@@ -67,4 +66,3 @@ class SIMPLib_EXPORT CosOperator : public UnaryOperator
     void operator=(const CosOperator&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _CosOperator_H_ */

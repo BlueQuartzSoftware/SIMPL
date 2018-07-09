@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _StrignDataArray_H_
-#define _StrignDataArray_H_
+#pragma once
 
 #include <string>
 #include <vector>
@@ -656,5 +655,4 @@ class StringDataArray : public IDataArray
 
 };
 
-#endif /* _StrignDataArray_H_ */
 

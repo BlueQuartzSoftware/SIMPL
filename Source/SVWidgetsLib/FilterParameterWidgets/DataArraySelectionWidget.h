@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _dataarrayselectionwidget_h_
-#define _dataarrayselectionwidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -126,6 +125,5 @@ class SVWidgetsLib_EXPORT DataArraySelectionWidget : public FilterParameterWidge
     void operator=(const DataArraySelectionWidget&) = delete;           // Move assignment Not Implemented
 };
 
-#endif /* _DataArraySelectionWidget_H_ */
 
 

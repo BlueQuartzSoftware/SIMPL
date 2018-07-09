@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _tetrahedralgeom_h_
-#define _tetrahedralgeom_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Geometry/IGeometry3D.h"
@@ -583,5 +582,4 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
 };
 
 
-#endif /* _TriangleGeom_H_ */
 

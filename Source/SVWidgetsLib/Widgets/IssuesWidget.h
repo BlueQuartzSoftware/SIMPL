@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _issuesWidget_h_
-#define _issuesWidget_h_
+#pragma once
 
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QMainWindow>
@@ -104,4 +103,3 @@ class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver
     void operator=(const IssuesWidget&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _issuesWidget_h_ */

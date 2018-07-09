@@ -33,8 +33,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _itktemplateutilities_h_
-#define _itktemplateutilities_h_
+#pragma once
 
 #if 0
 
@@ -183,4 +182,3 @@ class TemplateUtilities
 
 #endif
 
-#endif /* _TemplateUtilities_H_ */

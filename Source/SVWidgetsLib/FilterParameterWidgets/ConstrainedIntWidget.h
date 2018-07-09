@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _constrainedintwidget_h_
-#define _constrainedintwidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -91,6 +90,5 @@ class SVWidgetsLib_EXPORT ConstrainedIntWidget : public FilterParameterWidget, p
     void operator=(const ConstrainedIntWidget&) = delete;       // Move assignment Not Implemented
 };
 
-#endif /* _constrainedintwidget_h_ */
 
 

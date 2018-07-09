@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _linkeddatacontainerselectionwidget_h_
-#define _linkeddatacontainerselectionwidget_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -129,6 +128,5 @@ class SVWidgetsLib_EXPORT LinkedDataContainerSelectionWidget : public FilterPara
     void operator=(const LinkedDataContainerSelectionWidget&) = delete;                     // Move assignment Not Implemented
 };
 
-#endif /* _linkeddatacontainerselectionwidget_h_ */
 
 

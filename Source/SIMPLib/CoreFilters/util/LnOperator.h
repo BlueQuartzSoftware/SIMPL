@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _lnoperator_h_
-#define _lnoperator_h_
+#pragma once
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
@@ -67,4 +66,3 @@ class SIMPLib_EXPORT LnOperator : public UnaryOperator
     void operator=(const LnOperator&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _LnOperator_H_ */

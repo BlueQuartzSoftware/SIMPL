@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _datacontainerarrayproxywidget_h_
-#define _datacontainerarrayproxywidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -145,6 +144,5 @@ class SVWidgetsLib_EXPORT DataContainerArrayProxyWidget : public FilterParameter
     void operator=(const DataContainerArrayProxyWidget&) = delete;                // Move assignment Not Implemented
 };
 
-#endif /* _DataContainerArrayProxyWidget_H_ */
 
 

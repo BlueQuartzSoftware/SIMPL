@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _vtkwritermacros_h_
-#define _vtkwritermacros_h_
+#pragma once
 
 #include <QtCore/QtEndian>
 
@@ -230,5 +229,4 @@
 
 
 
-#endif /* VTKWRITER_H_ */
 

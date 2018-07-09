@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _colorutilities_h_
-#define _colorutilities_h_
+#pragma once
 
 #include <QtCore/QVector>
 
@@ -79,5 +78,4 @@ class SIMPLib_EXPORT ColorUtilities
 };
 
 
-#endif /* _ColorUtilities_H_ */
 

@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _writetrianglegeometry_h_
-#define _writetrianglegeometry_h_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -186,4 +185,3 @@ class SIMPLib_EXPORT WriteTriangleGeometry : public AbstractFilter
     WriteTriangleGeometry& operator=(WriteTriangleGeometry&&) = delete;      // Move Assignment
 };
 
-#endif /* _WriteTriangleGeometry_H_ */

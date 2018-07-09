@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _calculatoroperator_h_
-#define _calculatoroperator_h_
+#pragma once
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QVector>
@@ -137,4 +136,3 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
     return;                                                                                                                                                                                            \
   }
 
-#endif /* _CalculatorOperator_H_ */

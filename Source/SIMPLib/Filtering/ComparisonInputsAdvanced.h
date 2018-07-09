@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _comparisoninputsadvanced_h_
-#define _comparisoninputsadvanced_h_
+#pragma once
 
 #include <memory>
 
@@ -202,4 +201,3 @@ private:
 
 Q_DECLARE_METATYPE(ComparisonInputsAdvanced)
 
-#endif /* _ComparisonInputsAdvanced_H_ */

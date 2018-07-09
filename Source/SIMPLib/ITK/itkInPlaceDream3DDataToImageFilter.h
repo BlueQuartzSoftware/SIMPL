@@ -1,5 +1,4 @@
-#ifndef _itkInPlaceDream3DDataToImageFilter_h
-#define _itkInPlaceDream3DDataToImageFilter_h
+#pragma once
 
 #include "itkDream3DImage.h"
 #include <itkImportImageFilter.h>
@@ -70,4 +69,3 @@ private:
 #include "itkInPlaceDream3DDataToImageFilter.hxx"
 #endif
 
-#endif

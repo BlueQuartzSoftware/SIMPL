@@ -32,8 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _unknownwidget_h_
-#define _unknownwidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -91,6 +90,5 @@ class SVWidgetsLib_EXPORT UnknownWidget : public FilterParameterWidget, private 
     void operator=(const UnknownWidget&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _UnknownWidget_H_ */
 
 

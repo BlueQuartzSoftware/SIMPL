@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _thirdorderpolynomialfilterparameter_h_
-#define _thirdorderpolynomialfilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -181,4 +180,3 @@ private:
   void operator=(const ThirdOrderPolynomialFilterParameter&) = delete;                      // Move assignment Not Implemented
 };
 
-#endif /* _ThirdOrderPolynomialFilterParameter_H_ */

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _divisionoperator_h_
-#define _divisionoperator_h_
+#pragma once
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
@@ -65,4 +64,3 @@ class SIMPLib_EXPORT DivisionOperator : public BinaryOperator
     void operator=(const DivisionOperator&) = delete;   // Move assignment Not Implemented
 };
 
-#endif /* _DivisionOperator_H_ */

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _jsonfilterparameterswriter_h_
-#define _jsonfilterparameterswriter_h_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -141,5 +140,4 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
     JsonFilterParametersWriter& operator=(JsonFilterParametersWriter&&) = delete;      // Move Assignment
 };
 
-#endif /* JsonFilterParametersWriter_H_ */
 

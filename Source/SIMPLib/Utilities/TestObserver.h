@@ -29,8 +29,7 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _testobserver_h_
-#define _testobserver_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QVector>
@@ -59,4 +58,3 @@ class SIMPLib_EXPORT TestObserver : public QObject, public IObserver
 };
 
 
-#endif /* _TestObserver_H_ */

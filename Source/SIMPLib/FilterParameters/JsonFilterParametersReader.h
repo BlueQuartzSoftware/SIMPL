@@ -32,8 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _jsonfilterparametersreader_h_
-#define _jsonfilterparametersreader_h_
+#pragma once
 
 
 
@@ -174,5 +173,4 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
      JsonFilterParametersReader& operator=(JsonFilterParametersReader&&) = delete;      // Move Assignment
 };
 
-#endif /* _QFilterParametersReader_H_ */
 

@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _qfsdroplabel_h_
-#define _qfsdroplabel_h_
+#pragma once
 
 #include <QtWidgets/QLabel>
 
@@ -78,4 +77,3 @@ class SVWidgetsLib_EXPORT QtSFSDropLabel : public QLabel
 };
 
 
-#endif

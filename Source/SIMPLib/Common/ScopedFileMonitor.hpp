@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ScopedFilePointer_H_
-#define _ScopedFilePointer_H_
+#pragma once
 
 #include <stdio.h>
 
@@ -53,5 +52,4 @@ class ScopedFileMonitor
     void operator=(const ScopedFileMonitor&);    // Move assignment Not Implemented
 };
 
-#endif /* _ScopedFilePointer_H_ */
 

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _datacontainerselectionwidget_h_
-#define _datacontainerselectionwidget_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -128,6 +127,5 @@ class SVWidgetsLib_EXPORT DataContainerSelectionWidget : public FilterParameterW
     void operator=(const DataContainerSelectionWidget&) = delete;               // Move assignment Not Implemented
 };
 
-#endif /* _DataContainerSelectionWidget_H_ */
 
 

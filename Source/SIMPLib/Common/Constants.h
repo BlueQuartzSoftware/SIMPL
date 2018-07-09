@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _constants_h_
-#define _constants_h_
+#pragma once
 
 #if defined (_MSC_VER)
 #define WIN32_LEAN_AND_MEAN   // Exclude rarely-used stuff from Windows headers
@@ -1023,5 +1022,4 @@ namespace IO
 }
 #endif
 
-#endif /* _SIMPLib_CONSTANTS_H_ */
 

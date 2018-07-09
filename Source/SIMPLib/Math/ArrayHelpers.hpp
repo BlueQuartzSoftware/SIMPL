@@ -1,5 +1,4 @@
-#ifndef _ArrayHelpers_H_
-#define _ArrayHelpers_H_
+#pragma once
 
 #include <stdio.h>
 #include <iostream>
@@ -173,4 +172,3 @@ class ArrayHelpers
     void operator=(const ArrayHelpers&); // Move assignment Not Implemented
 };
 
-#endif /* _ArrayHelpers_H_ */

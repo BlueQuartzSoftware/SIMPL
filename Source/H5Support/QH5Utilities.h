@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _qh5utilities_h_
-#define _qh5utilities_h_
+#pragma once
 
 
 #include "H5Support/H5Support.h"
@@ -240,5 +239,4 @@ class QH5Utilities
     void operator=(const QH5Utilities&); //Copy Assignment Not Implemented
 };
 
-#endif /* _QH5Utilities_H_ */
 

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _qdroppablescrollarea_h_
-#define _qdroppablescrollarea_h_
+#pragma once
 
 #include <QtWidgets/QScrollArea>
 
@@ -62,5 +61,4 @@ class SVWidgetsLib_EXPORT QtSDroppableScrollArea : public QScrollArea
 
 };
 
-#endif /* _QDROPPABLEWIDGET_H_ */
 

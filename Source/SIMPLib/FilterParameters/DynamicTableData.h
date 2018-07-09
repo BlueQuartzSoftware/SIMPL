@@ -32,8 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _dynamictabledata_h_
-#define _dynamictabledata_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -182,4 +181,3 @@ class SIMPLib_EXPORT DynamicTableData : public QObject
 
 Q_DECLARE_METATYPE(DynamicTableData)
 
-#endif /* _DynamicTableWidget_H_ */

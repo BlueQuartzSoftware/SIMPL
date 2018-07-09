@@ -3,8 +3,7 @@
   @author Stefan Frings
 */
 
-#ifndef FILELOGGER_H
-#define FILELOGGER_H
+#pragma once
 
 #include "logger.h"
 #include "logglobal.h"
@@ -117,4 +116,3 @@ private:
   void refreshSettings();
 };
 
-#endif // FILELOGGER_H

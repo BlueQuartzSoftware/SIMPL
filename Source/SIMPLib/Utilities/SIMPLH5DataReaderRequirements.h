@@ -30,8 +30,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _simplh5datareaderrequirements_h_
-#define _simplh5datareaderrequirements_h_
+#pragma once
 
 #include "SIMPLib/SIMPLib.h"
 
@@ -65,4 +64,3 @@ class SIMPLib_EXPORT SIMPLH5DataReaderRequirements
 };
 
 
-#endif /* _simplh5datareaderrequirements_h_ */

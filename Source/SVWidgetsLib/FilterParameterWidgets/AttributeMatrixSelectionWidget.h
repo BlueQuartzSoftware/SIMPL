@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _attributematrixselectionwidget_h_
-#define _attributematrixselectionwidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -119,6 +118,5 @@ class SVWidgetsLib_EXPORT AttributeMatrixSelectionWidget : public FilterParamete
     void operator=(const AttributeMatrixSelectionWidget&) = delete;                 // Move assignment Not Implemented
 };
 
-#endif /* _AttributeMatrixSelectionWidget_H_ */
 
 

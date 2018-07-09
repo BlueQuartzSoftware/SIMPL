@@ -1,5 +1,4 @@
-#ifndef HTTPCONNECTIONHANDLERPOOL_H
-#define HTTPCONNECTIONHANDLERPOOL_H
+#pragma once
 
 #include "httpconnectionhandler.h"
 #include "httpglobal.h"
@@ -95,4 +94,3 @@ private:
 
 };
 
-#endif // HTTPCONNECTIONHANDLERPOOL_H

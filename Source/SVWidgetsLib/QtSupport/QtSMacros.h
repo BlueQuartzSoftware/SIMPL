@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _simplqtmacros_h_
-#define _simplqtmacros_h_
+#pragma once
 
 
 #define READ_CHECKBOX_SETTING(prefs, prefix, tag, emptyValue)\
@@ -180,5 +179,4 @@
 
 
 
-#endif /* AIM_QTMACROS_H_ */
 

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _idataarrayfilter_h_
-#define _idataarrayfilter_h_
+#pragma once
 
 #include "SIMPLib/SIMPLib.h"
 
@@ -56,4 +55,3 @@ private:
   void operator=(const IDataArrayFilter&);            // Move assignment Not Implemented
 };
 
-#endif /* _IDataArrayFilter_H_ */

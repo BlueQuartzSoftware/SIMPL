@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _axisanglefilterparameter_h_
-#define _axisanglefilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -141,4 +140,3 @@ class SIMPLib_EXPORT AxisAngleFilterParameter : public FilterParameter
     void operator=(const AxisAngleFilterParameter&) = delete;           // Move assignment Not Implemented
 };
 
-#endif /* _AxisAngleFilterParameter_H_ */

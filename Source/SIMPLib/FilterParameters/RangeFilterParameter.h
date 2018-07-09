@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _rangefilterparameter_h_
-#define _rangefilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 #include <QtCore/QPair>
@@ -144,4 +143,3 @@ private:
   void operator=(const RangeFilterParameter&) = delete;       // Move assignment Not Implemented
 };
 
-#endif /* _RangeFilterParameter_H_ */

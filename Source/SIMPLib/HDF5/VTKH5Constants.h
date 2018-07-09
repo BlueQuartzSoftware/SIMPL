@@ -6,8 +6,7 @@
 //
 
 
-#ifndef _vtkh5constants_h_
-#define _vtkh5constants_h_
+#pragma once
 
 
 #define H5_VTK_OBJECT_INDEX_PATH "/VTK_OBJECT_INDEX"
@@ -161,6 +160,5 @@
 #define VTK_CELLTYPE_HIGHER_ORDER_PYRAMID      66
 #define VTK_CELLTYPE_HIGHER_ORDER_HEXAHEDRON   67
 
-#endif /* VTKH5CONSTANTS_H_ */
 
 

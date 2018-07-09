@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _datacontainerproxy_h_
-#define _datacontainerproxy_h_
+#pragma once
 
 
 #include <QtCore/QMetaType>
@@ -166,5 +165,4 @@ Q_DECLARE_METATYPE(DataContainerProxy)
 
 
 
-#endif /* _DataContainerProxy_H_ */
 

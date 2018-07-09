@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _filterparameterwidgetsdialogs_h_
-#define _filterparameterwidgetsdialogs_h_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -67,5 +66,4 @@ class SVWidgetsLib_EXPORT FilterParameterWidgetsDialogs
 
 };
 
-#endif
 

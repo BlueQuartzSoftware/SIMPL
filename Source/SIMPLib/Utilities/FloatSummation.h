@@ -29,8 +29,7 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _floatSummation_h_
-#define _floatSummation_h_
+#pragma once
 
 #include <vector>
 #include <initializer_list>
@@ -78,4 +77,3 @@ private:
   void operator=(const FloatSummation&) = delete; // Move assignment Not Implemented
 };
 
-#endif

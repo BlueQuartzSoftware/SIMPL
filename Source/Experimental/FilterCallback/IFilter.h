@@ -1,6 +1,5 @@
 
-#ifndef _ifilter_H_
-#define _ifilter_H_
+#pragma once
 
 
 
@@ -87,5 +86,4 @@ class IFilter
 };
 
 
-#endif /* _ifilter_H_ */
 

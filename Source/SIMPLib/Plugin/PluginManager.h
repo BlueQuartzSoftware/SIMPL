@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _pluginmanager_h_
-#define _pluginmanager_h_
+#pragma once
 
 
 #include <QtCore/QString>
@@ -112,5 +111,4 @@ class SIMPLib_EXPORT PluginManager
     void operator=(const PluginManager&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _PluginManager_H_ */
 

@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _transformationstatsdata_h_
-#define _transformationstatsdata_h_
+#pragma once
 
 #include <hdf5.h>
 
@@ -206,5 +205,4 @@ class SIMPLib_EXPORT TransformationStatsData : public StatsData
     void operator=(const TransformationStatsData&) = delete;          // Move assignment Not Implemented
 };
 
-#endif /* _TransformationStatsDataTUPLE_H_ */
 

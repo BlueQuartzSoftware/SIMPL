@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _doublewidget_h_
-#define _doublewidget_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -91,6 +90,5 @@ class SVWidgetsLib_EXPORT DoubleWidget : public FilterParameterWidget, private U
     void operator=(const DoubleWidget&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _DoubleWidget_H_ */
 
 

@@ -2,8 +2,7 @@
  * Your License or Copyright can go here
  */
 
-#ifndef _readasciidata_h_
-#define _readasciidata_h_
+#pragma once
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -171,4 +170,3 @@ class SIMPLib_EXPORT ReadASCIIData : public AbstractFilter
     ReadASCIIData& operator=(ReadASCIIData&&) = delete;      // Move Assignment
 };
 
-#endif /* _readasciidata_h_ */

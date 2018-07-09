@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _CalculatorWidget_H_
-#define _CalculatorWidget_H_
+#pragma once
 
 
 
@@ -129,6 +128,5 @@ class SVWidgetsLib_EXPORT CalculatorWidget : public FilterParameterWidget, priva
     void operator=(const CalculatorWidget&) = delete;   // Move assignment Not Implemented
 };
 
-#endif /* _CalculatorWidget_H_ */
 
 

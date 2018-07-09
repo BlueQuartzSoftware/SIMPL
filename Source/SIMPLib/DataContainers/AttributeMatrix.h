@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _attributematrix_h_
-#define _attributematrix_h_
+#pragma once
 
 #if defined (_MSC_VER)
 #define WIN32_LEAN_AND_MEAN   // Exclude rarely-used stuff from Windows headers
@@ -685,4 +684,3 @@ public:
 
 Q_DECLARE_METATYPE(AttributeMatrix::Type)
 Q_DECLARE_METATYPE(AttributeMatrix::Category)
-#endif

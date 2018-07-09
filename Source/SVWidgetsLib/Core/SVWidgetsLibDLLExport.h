@@ -37,8 +37,7 @@
 
 
 
-#ifndef _svwidgetsLibdllexport_h_
-#define _svwidgetsLibdllexport_h_
+#pragma once
 
 
 #if defined (_MSC_VER)
@@ -83,5 +82,4 @@ building the MXADatModel DLL on windows.
 #endif
 
 
-#endif /* _svwidgetsLibdllexport_h_ */
 

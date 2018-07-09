@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _H5DataArrayWriter_H_
-#define _H5DataArrayWriter_H_
+#pragma once
 
 #include <hdf5.h>
 
@@ -270,5 +269,4 @@ class H5GBCDArrayWriter
 };
 
 
-#endif /* _H5DataArrayWriter_H_ */
 

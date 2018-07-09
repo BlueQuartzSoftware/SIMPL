@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _aboutplugins_h_
-#define _aboutplugins_h_
+#pragma once
 
 #include <QtWidgets/QCheckBox>
 
@@ -99,4 +98,3 @@ class SVWidgetsLib_EXPORT AboutPlugins : public QDialog, private Ui::AboutPlugin
     void operator=(const AboutPlugins&) = delete; // Move assignment Not Implemented
 };
 
-#endif // ABOUTPLUGINS_H

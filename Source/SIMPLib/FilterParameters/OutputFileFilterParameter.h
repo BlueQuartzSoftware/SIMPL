@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _outputfilefilterparameter_h_
-#define _outputfilefilterparameter_h_
+#pragma once
 
 #include <QtCore/QJsonObject>
 
@@ -147,4 +146,3 @@ class SIMPLib_EXPORT OutputFileFilterParameter : public FilterParameter
     void operator=(const OutputFileFilterParameter&) = delete;            // Move assignment Not Implemented
 };
 
-#endif /* _OutputFileFilterParameter_H_ */

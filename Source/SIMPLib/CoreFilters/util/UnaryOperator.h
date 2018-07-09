@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _unaryoperator_h_
-#define _unaryoperator_h_
+#pragma once
 
 #include "CalculatorOperator.h"
 
@@ -159,4 +158,3 @@ class SIMPLib_EXPORT UnaryOperator : public CalculatorOperator
     return;                                                                                                                                                                                            \
   }
 
-#endif /* _UnaryOperator_H_ */

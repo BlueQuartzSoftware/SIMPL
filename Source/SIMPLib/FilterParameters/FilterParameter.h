@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _filterparameter_h_
-#define _filterparameter_h_
+#pragma once
 
 #include <functional>
 
@@ -193,5 +192,4 @@ std::bind(&CLASS::get##PROP, PTR)
 #define _FP_GET_OVERRIDE(A, B, C, D, E, F, G, H, I, NAME, ...) NAME
 #define _FP_GET_PREFLIGHTUPDATEDVALUE_OVERRIDE(A, B, C, D, E, NAME, ...) NAME
 
-#endif /* _FilterParameter_H_ */
 

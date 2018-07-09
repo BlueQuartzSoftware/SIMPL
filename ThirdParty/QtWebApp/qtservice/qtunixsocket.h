@@ -38,8 +38,7 @@
 **
 ****************************************************************************/
 
-#ifndef QTUNIXSOCKET_H
-#define QTUNIXSOCKET_H
+#pragma once
 
 #include <QTcpSocket>
 
@@ -52,4 +51,3 @@ public:
   bool connectTo(const QString& path);
 };
 
-#endif

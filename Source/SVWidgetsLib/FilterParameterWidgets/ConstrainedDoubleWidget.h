@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _constraineddoublewidget_h_
-#define _constraineddoublewidget_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -91,6 +90,5 @@ class SVWidgetsLib_EXPORT ConstrainedDoubleWidget : public FilterParameterWidget
     void operator=(const ConstrainedDoubleWidget&) = delete;          // Move assignment Not Implemented
 };
 
-#endif /* _constraineddoublewidget_h_ */
 
 

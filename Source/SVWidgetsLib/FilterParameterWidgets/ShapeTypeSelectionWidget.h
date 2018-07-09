@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _shapetypeselectionwidget_h_
-#define _shapetypeselectionwidget_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -107,6 +106,5 @@ class SVWidgetsLib_EXPORT ShapeTypeSelectionWidget : public FilterParameterWidge
     void operator=(const ShapeTypeSelectionWidget&) = delete;           // Move assignment Not Implemented
 };
 
-#endif /* _ShapeTypeSelectionWidget_H_ */
 
 

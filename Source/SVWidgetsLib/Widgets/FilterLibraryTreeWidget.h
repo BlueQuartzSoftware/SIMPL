@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _filterlibrarytreewidget_h_
-#define _filterlibrarytreewidget_h_
+#pragma once
 
 #include <QtCore/QPoint>
 #include <QtWidgets/QTreeWidget>
@@ -73,5 +72,4 @@ class SVWidgetsLib_EXPORT FilterLibraryTreeWidget: public QTreeWidget
     QPoint startPos;
 };
 
-#endif /* _FilterLibraryTreeWidget_H_ */
 

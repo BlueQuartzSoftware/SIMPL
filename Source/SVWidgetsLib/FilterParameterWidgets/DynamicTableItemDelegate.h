@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _dynamictableitemdelegate_h_
-#define _dynamictableitemdelegate_h_
+#pragma once
 
 #include <QtCore/QModelIndex>
 
@@ -62,4 +61,3 @@ class DynamicTableItemDelegate : public QStyledItemDelegate
     void operator=(const DynamicTableItemDelegate&) = delete;           // Move assignment Not Implemented
 };
 
-#endif // _DynamicTableItemDelegate_H

@@ -32,8 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _simplviewhelpurlgenerator_h_
-#define _simplviewhelpurlgenerator_h_
+#pragma once
 
 #include <QtCore/QUrl>
 #include <QtCore/QString>
@@ -75,5 +74,4 @@ class SVWidgetsLib_EXPORT QtSHelpUrlGenerator
     void operator=(const QtSHelpUrlGenerator&) = delete;      // Move assignment Not Implemented
 };
 
-#endif /* _SIMPLViewHelpUrlGenerator_H */
 

@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ceiloperator_h_
-#define _ceiloperator_h_
+#pragma once
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
@@ -67,4 +66,3 @@ class SIMPLib_EXPORT CeilOperator : public UnaryOperator
     void operator=(const CeilOperator&) = delete; // Move assignment Not Implemented
 };
 
-#endif /* _CeilOperator_H_ */

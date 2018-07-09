@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _comparisonselectionwidget_h_
-#define _comparisonselectionwidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -230,5 +229,4 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
 
 
 
-#endif /* _ComparisonSelectionWidget_H_ */
 

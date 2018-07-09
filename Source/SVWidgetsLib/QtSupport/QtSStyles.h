@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _simplviewstyles_h_
-#define _simplviewstyles_h_
+#pragma once
 
 #include <QtCore/QSet>
 #include <QtCore/QString>
@@ -164,4 +163,3 @@ class SVWidgetsLib_EXPORT QtSStyles : public QObject
     static QtSStyles* m_Self;
 };
 
-#endif /* _SIMPLViewStyles_H_ */

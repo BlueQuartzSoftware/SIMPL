@@ -3,8 +3,7 @@
   @author Stefan Frings
 */
 
-#ifndef HTTPCOOKIE_H
-#define HTTPCOOKIE_H
+#pragma once
 
 #include "httpglobal.h"
 #include <QByteArray>
@@ -114,4 +113,3 @@ private:
   int version;
 };
 
-#endif // HTTPCOOKIE_H

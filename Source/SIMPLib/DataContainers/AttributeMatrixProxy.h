@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _attributematrixproxy_h_
-#define _attributematrixproxy_h_
+#pragma once
 
 #include <QtCore/QMetaType>
 #include <QtCore/QString>
@@ -165,5 +164,4 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(AttributeMatrixProxy::AMTypeFlags)
 
 Q_DECLARE_METATYPE(AttributeMatrixProxy)
 
-#endif /* _AttributeMatrixProxy_H_ */
 

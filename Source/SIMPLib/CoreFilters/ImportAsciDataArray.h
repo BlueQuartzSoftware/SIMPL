@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _importascidataarray_h_
-#define _importascidataarray_h_
+#pragma once
 
 #include <QtCore/QScopedPointer>
 
@@ -222,4 +221,3 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
     ImportAsciDataArray& operator=(ImportAsciDataArray&&) = delete;      // Move Assignment
 };
 
-#endif /* _importascidataarray_h_ */

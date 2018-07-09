@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _qfsdroplineedit_h_
-#define _qfsdroplineedit_h_
+#pragma once
 
 #include <QtWidgets/QLineEdit>
 
@@ -78,4 +77,3 @@ class SVWidgetsLib_EXPORT QtSFSDropLineEdit : public QLineEdit
 };
 
 
-#endif

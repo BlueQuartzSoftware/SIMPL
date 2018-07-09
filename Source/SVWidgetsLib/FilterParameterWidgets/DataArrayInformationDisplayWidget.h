@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _dataarrayinformationdisplaywidget_h_
-#define _dataarrayinformationdisplaywidget_h_
+#pragma once
 
 
 #include <QtCore/QObject>
@@ -93,6 +92,5 @@ class SVWidgetsLib_EXPORT DataArrayInformationDisplayWidget : public FilterParam
     void operator=(const DataArrayInformationDisplayWidget&) = delete;                    // Move assignment Not Implemented
 };
 
-#endif /* _DataArrayCreationWidget_H_ */
 
 

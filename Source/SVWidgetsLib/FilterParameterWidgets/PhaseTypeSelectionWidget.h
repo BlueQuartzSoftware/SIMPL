@@ -33,8 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _phasetypeselectionwidget_h_
-#define _phasetypeselectionwidget_h_
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -125,6 +124,5 @@ class SVWidgetsLib_EXPORT PhaseTypeSelectionWidget : public FilterParameterWidge
     void operator=(const PhaseTypeSelectionWidget&) = delete;           // Move assignment Not Implemented
 };
 
-#endif /* _PhaseTypeSelectionWidget_H_ */
 
 
