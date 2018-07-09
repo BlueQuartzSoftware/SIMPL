@@ -97,8 +97,7 @@
     return Pointer(static_cast<thisClass*>(nullptr));\
   }
 
-#ifndef _simplibsetgetmacros_h_
-#define _simplibsetgetmacros_h_
+#ifndef QT_SHARED_POINTERS
  /* @brief Creates some basic typedefs that can be used throughout the code to
  * reference the class.
  */
