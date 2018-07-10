@@ -43,6 +43,7 @@
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Geometry/EdgeGeom.h"
+#include "SIMPLib/Geometry/HexahedralGeom.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/QuadGeom.h"
 #include "SIMPLib/Geometry/RectGridGeom.h"
@@ -618,6 +619,26 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
         break;
       }
       break;
+    case IGeometry::Type::Hexahedral:
+      switch(amType)
+      {
+        // FIXME: There are more AttributeMatrix Types that should be implemented
+        case AttributeMatrix::Type::Vertex:
+          xdmfCenter = SIMPL::XdmfCenterType::Node;
+          break;
+        case AttributeMatrix::Type::Edge:
+          xdmfCenter = SIMPL::XdmfCenterType::Cell;
+          break;
+        case AttributeMatrix::Type::Face:
+          xdmfCenter = SIMPL::XdmfCenterType::Cell;
+          break;
+        case AttributeMatrix::Type::Cell:
+          xdmfCenter = SIMPL::XdmfCenterType::Cell;
+          break;
+        default:
+          break;
+      }
+      break;
     case IGeometry::Type::Image:
       switch(amType)
       {
@@ -760,6 +781,13 @@ int DataContainer::readMeshDataFromHDF5(hid_t dcGid, bool preflight)
       err = tets->readGeometryFromHDF5(geometryId, preflight);
       err = GeometryHelpers::GeomIO::ReadMetaDataFromHDF5(dcGid, tets);
       setGeometry(tets);
+    }
+    else if(geometryTypeName.compare(SIMPL::Geometry::HexahedralGeometry) == 0)
+    {
+      HexahedralGeom::Pointer hexas = HexahedralGeom::New();
+      err = hexas->readGeometryFromHDF5(geometryId, preflight);
+      err = GeometryHelpers::GeomIO::ReadMetaDataFromHDF5(dcGid, hexas);
+      setGeometry(hexas);
     }
     else if(geometryTypeName.compare(SIMPL::Geometry::UnknownGeometry) == 0)
     {
