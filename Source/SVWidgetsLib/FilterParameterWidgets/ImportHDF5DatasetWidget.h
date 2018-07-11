@@ -122,6 +122,9 @@ protected:
    */
   bool initWithFile(QString hdf5File);
 
+protected slots:
+  void on_cDimsLE_valueChanged(QString text);
+
 private slots:
   /**
    * @brief Slot to catch events when the DataRecord TreeView selection is changed
@@ -135,8 +138,12 @@ private:
   QString m_CurrentOpenFile;                // Stores the currently open HDF5 File
   std::string m_CurrentHDFDataPath;         // Stores the currently viewed HDF data path
   hid_t m_FileId;
+  QMap<QString, QString > m_ComponentDimsMap;
+  QStringList m_CurrentPathsWithErrors;
 
-  ImportHDF5DatasetFilterParameter* m_FilterParameter;
+  ImportHDF5Dataset* m_Filter = nullptr;
+
+  ImportHDF5DatasetFilterParameter* m_FilterParameter = nullptr;
 
   /**
    * @brief Updates the QGraphicsView based on the current Data Dimension and Data record values

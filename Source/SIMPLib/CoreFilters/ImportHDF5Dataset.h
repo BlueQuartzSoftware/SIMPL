@@ -32,6 +32,8 @@
 
 #pragma once
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
@@ -55,20 +57,37 @@ public:
 
   ~ImportHDF5Dataset() override;
 
+  struct DatasetImportInfo
+  {
+      QString dataSetPath;
+      QString componentDimensions;
+
+      void readJson(QJsonObject json)
+      {
+        dataSetPath = json["Dataset Path"].toString();
+        componentDimensions = json["Component Dimensions"].toString();
+      }
+
+      void writeJson(QJsonObject &json)
+      {
+        json["Dataset Path"] = dataSetPath;
+        json["Component Dimensions"] = componentDimensions;
+      }
+  };
+
   SIMPL_FILTER_PARAMETER(QString, HDF5FilePath)
   Q_PROPERTY(QString HDF5FilePath READ getHDF5FilePath WRITE setHDF5FilePath)
 
-  SIMPL_FILTER_PARAMETER(QStringList, DatasetPaths)
-  Q_PROPERTY(QStringList DatasetPaths READ getDatasetPaths WRITE setDatasetPaths)
+  SIMPL_FILTER_PARAMETER(QList<DatasetImportInfo>, DatasetImportInfoList)
+  Q_PROPERTY(QList<DatasetImportInfo> DatasetImportInfoList READ getDatasetImportInfoList WRITE setDatasetImportInfoList)
 
   QString getHDF5Dimensions();
   Q_PROPERTY(QString HDF5Dimensions READ getHDF5Dimensions)
 
-  SIMPL_FILTER_PARAMETER(QString, ComponentDimensions)
-  Q_PROPERTY(QString ComponentDimensions READ getComponentDimensions WRITE setComponentDimensions)
-
   SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedAttributeMatrix)
   Q_PROPERTY(DataArrayPath SelectedAttributeMatrix READ getSelectedAttributeMatrix WRITE setSelectedAttributeMatrix)
+
+  SIMPL_FILTER_PARAMETER(QStringList, DatasetPathsWithErrors)
 
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
@@ -175,7 +194,7 @@ private:
    * @brief createComponentDimensions
    * @return
    */
-  QVector<size_t> createComponentDimensions();
+  QVector<size_t> createComponentDimensions(const QString &cDimsStr);
 
 public:
   ImportHDF5Dataset(const ImportHDF5Dataset&) = delete; // Copy Constructor Not Implemented

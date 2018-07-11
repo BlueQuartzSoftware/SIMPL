@@ -51,6 +51,11 @@ public:
   ImportHDF5TreeModel(hid_t fileId, QObject* parent = 0);
   ~ImportHDF5TreeModel();
 
+  enum Roles
+  {
+    HasErrorsRole = Qt::UserRole + 1
+  };
+
   /**
    * @brief data
    * @param index
@@ -142,7 +147,7 @@ public:
   QStringList getSelectedHDF5Paths();
 
 signals:
-  void modelChanged();
+  void selectedHDF5PathsChanged();
 
 private:
   ImportHDF5TreeModelItem* m_RootItem;
