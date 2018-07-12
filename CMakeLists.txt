@@ -421,6 +421,11 @@ include(${PROJECT_RESOURCES_DIR}/CPack/PackageProject.cmake)
 # Include any Support related CMake codes
 include(${SIMPLProj_SOURCE_DIR}/Support/Support.cmake)
 
+# --------------------------------------------------------------------
+# Include any REST related CMake codes
+if(SIMPL_Group_REST)
+  include(${SIMPLProj_SOURCE_DIR}/Source/REST/SourceList.cmake)
+endif()
 
 # --------------------------------------------------------------------------
 # Find the Pybind11 installation
