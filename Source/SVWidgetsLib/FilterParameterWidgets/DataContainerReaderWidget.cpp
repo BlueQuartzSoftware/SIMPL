@@ -360,13 +360,9 @@ void DataContainerReaderWidget::setupGui()
     QString path = m_Filter->getInputFile();
 
     m_LineEdit->setText(path);
-    m_LineEdit->update();
-
-    //on_m_LineEdit_fileDropped(path);
-    //on_m_LineEdit_editingFinished();
+    
     checkFilePath(path);
     updateStylingForPath(path);
-    updateDCAProxy(path);
 
     emit parametersChanged();
   }
@@ -449,6 +445,11 @@ void DataContainerReaderWidget::updateModelFromProxy(DataContainerArrayProxy& pr
     return;
   }
   QStandardItem* rootItem = model->invisibleRootItem();
+
+  if(proxy.dataContainers.size() == 0)
+  {
+    return;
+  }
 
   // Loop over the data containers until we find the proper data container
   QList<DataContainerProxy> containers = proxy.dataContainers.values();
@@ -669,9 +670,9 @@ void DataContainerReaderWidget::showFileInFileSystem()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataContainerReaderWidget::verifyPathExists(QString m_LineEdit, QLineEdit* lineEdit)
+bool DataContainerReaderWidget::verifyPathExists(QString path, QLineEdit* lineEdit)
 {
-  QFileInfo fileinfo(m_LineEdit);
+  QFileInfo fileinfo(path);
   if(false == fileinfo.exists())
   {
     lineEdit->setStyleSheet("QLineEdit { border: 1px solid red; }");
@@ -903,18 +904,18 @@ void DataContainerReaderWidget::on_selectBtn_clicked()
   QString ext = "*.dream3d"; // getFilterParameter()->getFileExtension();
   QString s = Ftype + QString(" Files (") + ext + QString(");;All Files(*.*)");
   QString defaultName = m_OpenDialogLastFilePath;
-  QString file = QFileDialog::getOpenFileName(this, tr("Select Input File"), defaultName, s);
+  QString filePath = QFileDialog::getOpenFileName(this, tr("Select Input File"), defaultName, s);
 
-  if(true == file.isEmpty())
+  if(true == filePath.isEmpty())
   {
     return;
   }
-  file = QDir::toNativeSeparators(file);
+  filePath = QDir::toNativeSeparators(filePath);
   // Store the last used directory into the private instance variable
-  QFileInfo fi(file);
+  QFileInfo fi(filePath);
   m_OpenDialogLastFilePath = fi.filePath();
-  m_LineEdit->setText(file);
-  on_m_LineEdit_fileDropped(file);
+  m_LineEdit->setText(filePath);
+  updateDCAProxy(filePath);
 }
 
 // -----------------------------------------------------------------------------
