@@ -446,11 +446,6 @@ void DataContainerReaderWidget::updateModelFromProxy(DataContainerArrayProxy& pr
   }
   QStandardItem* rootItem = model->invisibleRootItem();
 
-  if(proxy.dataContainers.size() == 0)
-  {
-    return;
-  }
-
   // Loop over the data containers until we find the proper data container
   QList<DataContainerProxy> containers = proxy.dataContainers.values();
   QListIterator<DataContainerProxy> containerIter(containers);
