@@ -1536,6 +1536,7 @@ int SVPipelineView::openPipeline(const QString& filePath, int insertIndex)
 
   if(ext == "dream3d")
   {
+#if 0
     QtSFileDragMessageBox* msgBox = new QtSFileDragMessageBox(this);
     msgBox->exec();
     msgBox->deleteLater();
@@ -1547,6 +1548,7 @@ int SVPipelineView::openPipeline(const QString& filePath, int insertIndex)
     else if(msgBox->didPressOkBtn() == true)
     {
       if(msgBox->isExtractPipelineBtnChecked() == false)
+#endif
       {
         DataContainerReader::Pointer reader = DataContainerReader::New();
         reader->setInputFile(filePath);
@@ -1554,7 +1556,7 @@ int SVPipelineView::openPipeline(const QString& filePath, int insertIndex)
         addFilter(reader, insertIndex);
         return 1;
       }
-    }
+    //}
   }
 
   // Read the pipeline from the file
