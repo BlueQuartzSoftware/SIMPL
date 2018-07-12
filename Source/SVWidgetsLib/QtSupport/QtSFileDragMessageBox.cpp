@@ -64,6 +64,7 @@ void QtSFileDragMessageBox::on_okBtn_clicked()
 void QtSFileDragMessageBox::on_cancelBtn_clicked()
 {
   // Close the dialog box
+  m_Cancelled = true;
   close();
 }
 
@@ -81,4 +82,12 @@ bool QtSFileDragMessageBox::isExtractPipelineBtnChecked()
 bool QtSFileDragMessageBox::didPressOkBtn()
 {
   return okBtnPressed;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool QtSFileDragMessageBox::cancelled()
+{
+  return m_Cancelled;
 }
