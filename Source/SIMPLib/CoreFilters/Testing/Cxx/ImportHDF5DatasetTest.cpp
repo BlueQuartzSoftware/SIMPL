@@ -14,6 +14,7 @@
 #include "H5Support/QH5Utilities.h"
 
 #include "SIMPLib/Common/Observer.h"
+#include "SIMPLib/CoreFilters/ImportHDF5Dataset.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
@@ -258,22 +259,14 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  AbstractFilter::Pointer createFilter()
+  ImportHDF5Dataset::Pointer createFilter()
   {
-    FilterManager* fm = FilterManager::Instance();
-
-    IFilterFactory::Pointer ff = fm->getFactoryFromClassName(QString("ImportHDF5Dataset"));
-
-    AbstractFilter::Pointer filter = ff->create();
+    ImportHDF5Dataset::Pointer filter = ImportHDF5Dataset::New();
 
     // Set a dummy data container array for error testing purposes
     DataContainerArray::Pointer dca = createDataContainerArray(QVector<size_t>(1, 1));
     filter->setDataContainerArray(dca);
-
-    QVariant var;
-    var.setValue(DataArrayPath("DataContainer", "AttributeMatrix", ""));
-    bool propSet = filter->setProperty("SelectedAttributeMatrix", var);
-    DREAM3D_REQUIRE_EQUAL(propSet, true);
+    filter->setSelectedAttributeMatrix(DataArrayPath("DataContainer", "AttributeMatrix", ""));
 
     // Check empty file path error
     filter->execute();
@@ -281,27 +274,21 @@ public:
     filter->setErrorCondition(0);
 
     // Check incorrect extension error
-    var.setValue(QString("foo.txt"));
-    propSet = filter->setProperty("HDF5FilePath", var);
-    DREAM3D_REQUIRE_EQUAL(propSet, true);
+    filter->setHDF5FilePath("foo.txt");
 
     filter->execute();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20002);
     filter->setErrorCondition(0);
 
     // Check non-existent file error
-    var.setValue(QString("foo.h5"));
-    propSet = filter->setProperty("HDF5FilePath", var);
-    DREAM3D_REQUIRE_EQUAL(propSet, true);
+    filter->setHDF5FilePath("foo.h5");
 
     filter->execute();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20003);
     filter->setErrorCondition(0);
 
     // Put in the correct file path
-    var.setValue(m_FilePath);
-    propSet = filter->setProperty("HDF5FilePath", var);
-    DREAM3D_REQUIRE_EQUAL(propSet, true);
+    filter->setHDF5FilePath(m_FilePath);
 
     // Check empty dataset path error
     filter->execute();
@@ -309,24 +296,23 @@ public:
     filter->setErrorCondition(0);
 
     // Check incorrect dataset path error
-    QStringList paths;
-    paths.push_back("/Foo");
-    var.setValue(paths);
-    propSet = filter->setProperty("DatasetPaths", var);
-    DREAM3D_REQUIRE_EQUAL(propSet, true);
+    QList<ImportHDF5Dataset::DatasetImportInfo> importInfoList;
+    ImportHDF5Dataset::DatasetImportInfo importInfo;
+    importInfo.dataSetPath = "/Foo";
+    importInfoList.push_back(importInfo);
+    filter->setDatasetImportInfoList(importInfoList);
 
     filter->execute();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20005);
     filter->setErrorCondition(0);
 
     // Fill in Dataset Path with a valid path so that we can continue our error checks
-    paths.clear();
+    importInfoList.clear();
     int8_t dummyVal = 0x0;
     QString typeStr = QH5Lite::HDFTypeForPrimitiveAsStr(dummyVal);
-    paths.push_back("Pointer/Pointer1DArrayDataset<" + typeStr + ">");
-    var.setValue(paths);
-    propSet = filter->setProperty("DatasetPaths", var);
-    DREAM3D_REQUIRE_EQUAL(propSet, true);
+    importInfo.dataSetPath = "Pointer/Pointer1DArrayDataset<" + typeStr + ">";
+    importInfoList.push_back(importInfo);
+    filter->setDatasetImportInfoList(importInfoList);
 
     // Check empty component dimensions
     filter->execute();
@@ -334,9 +320,10 @@ public:
     filter->setErrorCondition(0);
 
     // Check incorrect component dimensions
-    var.setValue(QString("(abcdg 635w"));
-    propSet = filter->setProperty("ComponentDimensions", var);
-    DREAM3D_REQUIRE_EQUAL(propSet, true);
+    importInfoList.clear();
+    importInfo.componentDimensions = "(abcdg 635w";
+    importInfoList.push_back(importInfo);
+    filter->setDatasetImportInfoList(importInfoList);
 
     filter->execute();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20007);
@@ -384,10 +371,11 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void DatasetTest(AbstractFilter::Pointer filter, QString dsetPath, QVector<size_t> tDims, QVector<size_t> cDims, int errCode)
+  template <typename T> void DatasetTest(ImportHDF5Dataset::Pointer filter, QString dsetPath, QVector<size_t> tDims, QVector<size_t> cDims, int errCode)
   {
     T value = 0x0;
     QString typeStr = QH5Lite::HDFTypeForPrimitiveAsStr(value);
+    dsetPath = dsetPath.replace("@TYPE_STRING@", typeStr);
 
     DataContainerArray::Pointer dca = createDataContainerArray(tDims);
     filter->setDataContainerArray(dca);
@@ -402,24 +390,20 @@ public:
       }
     }
 
-    QVariant var;
-    var.setValue(cDimsStr);
-    bool propSet = filter->setProperty("ComponentDimensions", var);
-    DREAM3D_REQUIRE_EQUAL(propSet, true);
+    QList<ImportHDF5Dataset::DatasetImportInfo> importInfoList;
+    ImportHDF5Dataset::DatasetImportInfo importInfo;
+    importInfo.dataSetPath = dsetPath;
+    importInfo.componentDimensions = cDimsStr;
+    importInfoList.push_back(importInfo);
 
-    QStringList paths;
-    dsetPath = dsetPath.replace("@TYPE_STRING@", typeStr);
-    paths.push_back(dsetPath);
-    var.setValue(paths);
-    propSet = filter->setProperty("DatasetPaths", var);
-    DREAM3D_REQUIRE_EQUAL(propSet, true);
+    filter->setDatasetImportInfoList(importInfoList);
 
     // Execute Dataset Test
     QString tDimsStr = createVectorString(tDims);
     cDimsStr.prepend('(');
     cDimsStr.append(')');
 
-    // std::cout << QObject::tr("Starting %1 Test: %2, tDims = %3, cDims = %4").arg(typeStr).arg(dsetPath).arg(tDimsStr).arg(cDimsStr).toStdString() << std::endl;
+    std::cout << QObject::tr("Starting %1 Test: %2, tDims = %3, cDims = %4").arg(typeStr).arg(dsetPath).arg(tDimsStr).arg(cDimsStr).toStdString() << std::endl;
 
     filter->execute();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), errCode);
@@ -539,7 +523,7 @@ public:
         }
 
         DataContainerArray::Pointer dca = createDataContainerArray(tDims);
-        AbstractFilter::Pointer filter = createFilter();
+        ImportHDF5Dataset::Pointer filter = createFilter();
         filter->setDataContainerArray(dca);
 
         // Run 1D Array Tests

@@ -202,4 +202,5 @@ public:
   ImportHDF5Dataset& operator=(const ImportHDF5Dataset&) = delete; // Copy Assignment Not Implemented
   ImportHDF5Dataset& operator=(ImportHDF5Dataset&&) = delete;      // Move Assignment Not Implemented
 };
+Q_DECLARE_METATYPE(ImportHDF5Dataset::DatasetImportInfo)
 
