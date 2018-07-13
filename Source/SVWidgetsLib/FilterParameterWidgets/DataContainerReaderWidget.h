@@ -122,6 +122,10 @@ class SVWidgetsLib_EXPORT DataContainerReaderWidget : public FilterParameterWidg
   protected:
     void updateProxyFromModel();
 
+    void checkFilePath(const QString& text);
+    void updateDCAProxy(const QString& text);
+    void updateStylingForPath(const QString& text);
+
     void updateModelFromProxy(DataContainerArrayProxy& proxy);
     void updateProxyFromProxy(DataContainerArrayProxy& current, DataContainerArrayProxy& incoming);
 

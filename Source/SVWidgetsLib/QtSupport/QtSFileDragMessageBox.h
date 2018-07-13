@@ -58,6 +58,7 @@ class SVWidgetsLib_EXPORT QtSFileDragMessageBox : public QDialog, private Ui::Qt
     QtSFileDragMessageBox(QWidget* parent = nullptr);
 
     bool didPressOkBtn();
+    bool cancelled();
 
     bool isExtractPipelineBtnChecked();
 
@@ -66,6 +67,7 @@ class SVWidgetsLib_EXPORT QtSFileDragMessageBox : public QDialog, private Ui::Qt
     void on_cancelBtn_clicked();
 
   private:
-    bool okBtnPressed;
+    bool okBtnPressed = false;
+    bool m_Cancelled = false;
 };
 

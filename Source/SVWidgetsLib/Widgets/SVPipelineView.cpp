@@ -1527,7 +1527,7 @@ int SVPipelineView::openPipeline(const QString& filePath, int insertIndex)
   if(fi.exists() == false)
   {
     QMessageBox::warning(nullptr, QString::fromLatin1("Pipeline Read Error"), QString::fromLatin1("There was an error opening the specified pipeline file. The pipeline file does not exist."));
-    return -1;
+    return false;
   }
 
   QString ext = fi.suffix();
@@ -1536,21 +1536,27 @@ int SVPipelineView::openPipeline(const QString& filePath, int insertIndex)
 
   if(ext == "dream3d")
   {
+#if 0
     QtSFileDragMessageBox* msgBox = new QtSFileDragMessageBox(this);
     msgBox->exec();
     msgBox->deleteLater();
 
-    if(msgBox->didPressOkBtn() == true)
+    if(msgBox->cancelled())
+    {
+      return 0;
+    }
+    else if(msgBox->didPressOkBtn() == true)
     {
       if(msgBox->isExtractPipelineBtnChecked() == false)
+#endif
       {
         DataContainerReader::Pointer reader = DataContainerReader::New();
         reader->setInputFile(filePath);
 
         addFilter(reader, insertIndex);
-        return true;
+        return 1;
       }
-    }
+    //}
   }
 
   // Read the pipeline from the file
