@@ -40,6 +40,13 @@ class SVWidgetsLib_EXPORT PipelineListWidget : public QFrame, private Ui::Pipeli
     Q_OBJECT
 
   public:
+    enum class PipelineViewState : int
+    {
+      Idle = 0,
+      Running,
+      Cancelling
+    };
+
     PipelineListWidget(QWidget* parent = nullptr);
     virtual ~PipelineListWidget();
 
@@ -78,10 +85,24 @@ class SVWidgetsLib_EXPORT PipelineListWidget : public QFrame, private Ui::Pipeli
      */
     void setupGui();
 
+    /**
+     * @brief Returns the PipelineState
+     * @return
+     */
+    PipelineViewState getPipelineViewState();
+
+    /**
+     * @brief Sets the PipelineState and updates the UI to match
+     * @param state
+     */
+    void setPipelineViewState(PipelineViewState state);
+
   signals:
     void pipelineCanceled(const QModelIndex &pipelineIndex);
 
   private:
+
+    PipelineViewState m_PipelineState = PipelineViewState::Idle;
 
     /**
      * @brief getStartPipelineIdleStyle
