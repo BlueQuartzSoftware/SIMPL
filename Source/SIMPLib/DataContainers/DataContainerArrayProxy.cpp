@@ -199,7 +199,7 @@ QStringList DataContainerArrayProxy::flattenHeirarchy(Qt::CheckState dcFlag, Qt:
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerArrayProxy::print(const QString header)
+void DataContainerArrayProxy::print(const QString& header)
 {
   QString str;
   QTextStream out(&str);

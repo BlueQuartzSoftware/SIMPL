@@ -119,7 +119,7 @@ class SIMPLib_EXPORT DataContainerArrayProxy
      * @brief Print the Heirarchy and attributes of the Proxy
      * @param out
      */
-    void print(const QString header = QString(""));
+    void print(const QString &header = QString(""));
 
     /**
      * @brief Sets the flags of the proxy items that match the geometry, attribute matrix type, primitive type, and number of components flags that are input as parameters.
