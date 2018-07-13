@@ -3,38 +3,38 @@ set(TEST_TESTFILES_DIR ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Testing/Cxx/TestFile
 
 set(TEST_${SUBDIR_NAME}_NAMES
   ArrayCalculatorTest
-  # CombineAttributeArraysTest
-  # CombineAttributeMatricesTest
-  # ConditionalSetValueTest
-  # ConvertDataTest
-  # CreateAttributeMatrixTest
-  # CreateDataArrayTest
-  # CreateDataContainerTest
-  # CreateFeatureArrayFromElementArrayTest
-  # CreateImageGeometryTest
-  # DataContainerTest
-  # ErrorMessageTest
-  # ExecuteProcessTest
-  # ExtractComponentAsArrayTest
-  # FindDerivativesFilterTest
-  # GenerateColorTableTest
-  # ImportAsciDataArrayTest
-  # ImportHDF5DatasetTest
-  # MultiThresholdObjectsTest
-  # MultiThresholdObjects2Test
-  # RawBinaryReaderTest
-  # ReadASCIIDataTest
-  # RecursivePipelineTest
-  # RemoveArraysTest
-  # RemoveComponentFromArrayTest
-  # RenameAttributeArrayTest
-  # RenameAttributeMatrixTest
-  # RenameDataContainerTest
-  # ReplaceValueTest
-  # RequiredZThicknessTest
-  # ScaleVolumeTest
-  # SetOriginResolutionImageGeomTest
-  # WriteASCIIDataTest
+  CombineAttributeArraysTest
+  CombineAttributeMatricesTest
+  ConditionalSetValueTest
+  ConvertDataTest
+  CreateAttributeMatrixTest
+  CreateDataArrayTest
+  CreateDataContainerTest
+  CreateFeatureArrayFromElementArrayTest
+  CreateImageGeometryTest
+  DataContainerTest
+  ErrorMessageTest
+  ExecuteProcessTest
+  ExtractComponentAsArrayTest
+  FindDerivativesFilterTest
+  GenerateColorTableTest
+  ImportAsciDataArrayTest
+  ImportHDF5DatasetTest
+  MultiThresholdObjectsTest
+  MultiThresholdObjects2Test
+  RawBinaryReaderTest
+  ReadASCIIDataTest
+  RecursivePipelineTest
+  RemoveArraysTest
+  RemoveComponentFromArrayTest
+  RenameAttributeArrayTest
+  RenameAttributeMatrixTest
+  RenameDataContainerTest
+  ReplaceValueTest
+  RequiredZThicknessTest
+  ScaleVolumeTest
+  SetOriginResolutionImageGeomTest
+  WriteASCIIDataTest
 )
 
 SIMPL_ADD_UNIT_TEST("${TEST_${SUBDIR_NAME}_NAMES}" "${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Testing/Cxx")
