@@ -78,9 +78,16 @@ class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
   Q_OBJECT
 
 public:
-  typedef std::pair<int, PipelineFilterObject*> IndexedFilterObject;
+  enum class PipelineViewState : int
+  {
+    Idle = 0,
+    Running,
+    Cancelling
+  };
 
-  SIMPL_INSTANCE_PROPERTY(bool, PipelineIsRunning)
+  using IndexedFilterObject = std::pair<int, PipelineFilterObject*>;
+
+  SIMPL_INSTANCE_PROPERTY(PipelineViewState, PipelineState)
 
   SIMPL_GET_PROPERTY(QAction*, ActionEnableFilter)
   SIMPL_GET_PROPERTY(QAction*, ActionCut)
@@ -415,8 +422,6 @@ private:
   FilterPipeline::Pointer m_PipelineInFlight;
   QVector<DataContainerArray::Pointer> m_PreflightDataContainerArrays;
   QList<QObject*> m_PipelineMessageObservers;
-
-  bool m_PipelineRunning = false;
 
   QUndoCommand* m_MoveCommand = nullptr;
   QPoint m_DragStartPosition;
