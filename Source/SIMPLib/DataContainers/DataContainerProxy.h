@@ -58,15 +58,16 @@ class SIMPLib_EXPORT DataContainerProxy
     // able to do a bit-wise NOT operation so that we can turn off certain flags.
     // This enumeration allows us to flip integer bits to turn on/off various types.
     enum DCGeometryTypeFlag : unsigned int {
-      None_DCGeomType = 0x0,
-      Image_DCGeomType = 0x1,
-      RectGrid_DCGeomType = 0x2,
-      Vertex_DCGeomType = 0x4,
-      Edge_DCGeomType = 0x8,
-      Triangle_DCGeomType = 0x10,
-      Quad_DCGeomType = 0x20,
-      Tetrahedral_DCGeomType = 0x40,
-      Unknown_DCGeomType = 0x80,
+      None_DCGeomType = 0x00,
+      Image_DCGeomType = 0x10,
+      RectGrid_DCGeomType = 0x20,
+      Vertex_DCGeomType = 0x40,
+      Edge_DCGeomType = 0x80,
+      Triangle_DCGeomType = 0x1000,
+      Quad_DCGeomType = 0x2000,
+      Tetrahedral_DCGeomType = 0x4000,
+      Hexahedral_DCGeomType = 0x8000,
+      Unknown_DCGeomType = 0x100000,
       Any_DCGeomType = 0xFF
     };
     Q_DECLARE_FLAGS(DCGeometryTypeFlags, DCGeometryTypeFlag)
@@ -82,12 +83,18 @@ class SIMPLib_EXPORT DataContainerProxy
      * @param read_dc
      * @param dc_type
      */
-    DataContainerProxy(QString dc_name, uint8_t read_dc = Qt::Checked, IGeometry::Type dc_type = IGeometry::Type::Unknown);
+    DataContainerProxy(const QString &dc_name, const uint8_t &read_dc = Qt::Checked, IGeometry::Type dc_type = IGeometry::Type::Unknown);
 
     /**
     * @brief Copy Constructor
     */
     DataContainerProxy(const DataContainerProxy& amp);
+    
+    ~DataContainerProxy() = default;
+
+    DataContainerProxy(DataContainerProxy&&) = default;      // Move Constructor
+    DataContainerProxy& operator=(DataContainerProxy&&) = delete;      // Move Assignment
+    
 
     /**
      * @brief Returns the appropriate flag for the geometry type
@@ -99,7 +106,7 @@ class SIMPLib_EXPORT DataContainerProxy
     /**
     * @brief operator = method
     */
-    void operator=(const DataContainerProxy& amp);
+    DataContainerProxy& operator=(const DataContainerProxy& amp);
 
     /**
     * @brief operator == method
@@ -128,7 +135,7 @@ class SIMPLib_EXPORT DataContainerProxy
      * @param compDimsVector
      */
     void setFlags(uint8_t flag, AttributeMatrixProxy::AMTypeFlags amTypes = AttributeMatrixProxy::Any_AMType,
-                  DataArrayProxy::PrimitiveTypeFlags primitiveTypes = DataArrayProxy::Any_PType, DataArrayProxy::CompDimsVector compDimsVector = DataArrayProxy::CompDimsVector());
+                  DataArrayProxy::PrimitiveTypeFlags primitiveTypes = DataArrayProxy::Any_PType, const DataArrayProxy::CompDimsVector &compDimsVector = DataArrayProxy::CompDimsVector());
 
     /**
      * @brief Updates the proxy to match a renamed DataArrayPath

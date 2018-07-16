@@ -187,6 +187,8 @@ void RemoveFilterCommand::redo()
 // -----------------------------------------------------------------------------
 void RemoveFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertionIndex)
 {
+  filter->setRemoving(false);
+
   PipelineModel* model = m_PipelineView->getPipelineModel();
 
   model->insertRow(insertionIndex);
@@ -216,6 +218,14 @@ void RemoveFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertio
 // -----------------------------------------------------------------------------
 void RemoveFilterCommand::removeFilter(AbstractFilter::Pointer filter)
 {
+  // Check if the given filter is already being removed before removing it again
+  // Multiple calls to remove the same object causes crashes.
+  if(filter->getRemoving())
+  {
+    return;
+  }
+  filter->setRemoving(true);
+
   PipelineModel* model = m_PipelineView->getPipelineModel();
 
   disconnectFilterSignalsSlots(filter);

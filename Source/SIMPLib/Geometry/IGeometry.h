@@ -56,6 +56,7 @@ typedef Int64ArrayType SharedEdgeList;
 typedef Int64ArrayType SharedTriList;
 typedef Int64ArrayType SharedQuadList;
 typedef Int64ArrayType SharedTetList;
+typedef Int64ArrayType SharedHexList;
 typedef Int64ArrayType SharedFaceList;
 typedef UInt16Int64DynamicListArray ElementDynamicList;
 
@@ -107,6 +108,7 @@ class SIMPLib_EXPORT IGeometry : public Observable
        Triangle = 5,
        Quad = 9,
        Tetrahedral = 10,
+       Hexahedral = 12,
        Unknown = 999,
        Any = 4294967295U
     };
@@ -123,6 +125,7 @@ class SIMPLib_EXPORT IGeometry : public Observable
       Triangle,
       Quad,
       Tetrahedral,
+      Hexahedral,
       Unknown = 999,
       Any = 4294967295U
     };

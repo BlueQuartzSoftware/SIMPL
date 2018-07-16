@@ -47,7 +47,7 @@ DataContainerProxy::DataContainerProxy() :
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerProxy::DataContainerProxy(QString dc_name, uint8_t read_dc, IGeometry::Type dc_type) :
+DataContainerProxy::DataContainerProxy(const QString& dc_name, const uint8_t& read_dc, IGeometry::Type dc_type) :
   flag(read_dc),
   name(dc_name),
   dcType(static_cast<unsigned int>(dc_type))
@@ -67,12 +67,13 @@ DataContainerProxy::DataContainerProxy(const DataContainerProxy& amp)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerProxy::operator=(const DataContainerProxy& amp)
+DataContainerProxy& DataContainerProxy::operator=(const DataContainerProxy& amp)
 {
   flag = amp.flag;
   name = amp.name;
   dcType = amp.dcType;
   attributeMatricies = amp.attributeMatricies;
+  return *this;
 }
 
 // -----------------------------------------------------------------------------
@@ -80,12 +81,7 @@ void DataContainerProxy::operator=(const DataContainerProxy& amp)
 // -----------------------------------------------------------------------------
 bool DataContainerProxy::operator==(const DataContainerProxy& amp) const
 {
-  if (flag == amp.flag && name == amp.name && dcType == amp.dcType && attributeMatricies == amp.attributeMatricies)
-  {
-    return true;
-  }
-
-  return false;
+  return flag == amp.flag && name == amp.name && dcType == amp.dcType && attributeMatricies == amp.attributeMatricies;
 }
 
 // -----------------------------------------------------------------------------
@@ -216,6 +212,10 @@ DataContainerProxy::DCGeometryTypeFlag DataContainerProxy::GeometryTypeToFlag(IG
     {
       return Vertex_DCGeomType;
     }
+    case IGeometry::Type::Hexahedral:
+    {
+      return Hexahedral_DCGeomType;
+    }
     case IGeometry::Type::Unknown:
     {
       return Unknown_DCGeomType;
@@ -228,7 +228,7 @@ DataContainerProxy::DCGeometryTypeFlag DataContainerProxy::GeometryTypeToFlag(IG
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerProxy::setFlags(uint8_t flag, AttributeMatrixProxy::AMTypeFlags amTypes, DataArrayProxy::PrimitiveTypeFlags primitiveTypes, DataArrayProxy::CompDimsVector compDimsVector)
+void DataContainerProxy::setFlags(uint8_t flag, AttributeMatrixProxy::AMTypeFlags amTypes, DataArrayProxy::PrimitiveTypeFlags primitiveTypes, const DataArrayProxy::CompDimsVector& compDimsVector)
 {
   this->flag = flag;
 

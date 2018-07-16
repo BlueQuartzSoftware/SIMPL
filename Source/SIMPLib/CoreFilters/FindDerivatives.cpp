@@ -41,6 +41,7 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/EdgeGeom.h"
 #include "SIMPLib/Geometry/GeometryHelpers.h"
+#include "SIMPLib/Geometry/HexahedralGeom.h"
 #include "SIMPLib/Geometry/QuadGeom.h"
 #include "SIMPLib/Geometry/TetrahedralGeom.h"
 #include "SIMPLib/Geometry/TriangleGeom.h"
@@ -177,6 +178,14 @@ template <typename DataType> void interpolateCellValues(IDataArray::Pointer inDa
     GeometryHelpers::Generic::AverageCellArrayValues<int64_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
+  case IGeometry::Type::Hexahedral:
+  {
+    HexahedralGeom::Pointer hexas = m->getGeometryAs<HexahedralGeom>();
+    SharedVertexList::Pointer verts = hexas->getVertices();
+    outDataPtr->resize(hexas->getNumberOfVertices());
+    GeometryHelpers::Generic::AverageCellArrayValues<int64_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
+    break;
+  }
   default:
   {
     break;
@@ -279,7 +288,7 @@ void FindDerivatives::dataCheck()
         notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       }
     }
-    else if(geomName == SIMPL::Geometry::TetrahedralGeometry)
+    else if(geomName == SIMPL::Geometry::TetrahedralGeometry || geomName == SIMPL::Geometry::HexahedralGeometry)
     {
       if(destAttrMatType != AttributeMatrix::Type::Cell)
       {
