@@ -32,6 +32,8 @@
 
 #include "ImportHDF5DatasetWidget.h"
 
+#include <cmath>
+
 #include <QtCore/QDateTime>
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
@@ -448,12 +450,7 @@ void ImportHDF5DatasetWidget::hdfTreeView_currentChanged(const QModelIndex& curr
 
   updateGeneralTable(path);
   updateAttributeTable(path);
-
-  if (m_ComponentDimsMap.contains(path))
-  {
-    QString cDimsStr = m_ComponentDimsMap[path];
-    cDimsLE->setText(cDimsStr);
-  }
+  updateComponentDimensions(path);
 }
 
 // -----------------------------------------------------------------------------
@@ -712,6 +709,139 @@ herr_t ImportHDF5DatasetWidget::updateAttributeTable(const QString& path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+herr_t ImportHDF5DatasetWidget::updateComponentDimensions(const QString& path)
+{
+  herr_t err = 0;
+
+  if (m_ComponentDimsMap.contains(path))
+  {
+    QString cDimsStr = m_ComponentDimsMap[path];
+    cDimsLE->setText(cDimsStr);
+  }
+  else
+  {
+    QString objName = QH5Utilities::extractObjectName(path);
+
+    if(m_FileId < 0)
+    {
+      std::cout << "Error: FileId is Invalid: " << m_FileId << std::endl;
+      return m_FileId;
+    }
+
+    // Test for Dataset Existance
+    H5O_info_t statbuf;
+    err = H5Oget_info_by_name(m_FileId, path.toStdString().c_str(), &statbuf, H5P_DEFAULT);
+    if(err < 0)
+    {
+      std::cout << "Data Set Does NOT exist at Path given: FileId: " << m_FileId << std::endl;
+      return err;
+    }
+
+    QString parentPath = "";
+    if(path == "/")
+    {
+      parentPath = path;
+    }
+    else
+    {
+      parentPath = QH5Utilities::getParentPath(path);
+    }
+
+    hid_t parentLoc = QH5Utilities::openHDF5Object(m_FileId, parentPath);
+
+    QVector<hsize_t> fileDims;
+    H5T_class_t type_class;
+    size_t type_size;
+    QH5Lite::getDatasetInfo(parentLoc, objName, fileDims, type_class, type_size);
+
+    DataArrayPath amPath = m_Filter->getSelectedAttributeMatrix();
+    AttributeMatrix::Pointer am = m_Filter->getDataContainerArray()->getAttributeMatrix(amPath);
+    if (am != nullptr)
+    {
+      QVector<size_t> amTupleDims = am->getTupleDimensions();
+
+//      // Calculate the prime factors of the attribute matrix tuple dimensions
+//      QVector<int> amTupleDimsPFs;
+//      for (int i = 0; i < amTupleDims.size(); i++)
+//      {
+//        calculatePrimeFactors(amTupleDims[i], amTupleDimsPFs);
+//      }
+
+//      // Calculate the prime factors of the file dimensions
+//      QVector<int> fileDimsPFs;
+//      for (int i = 0; i < fileDims.size(); i++)
+//      {
+//        calculatePrimeFactors(fileDims[i], fileDimsPFs);
+//      }
+
+      // If an attribute matrix tuple dimensions prime factor exists in the file dimensions prime factor list, remove it.
+      for (int i = 0; i < amTupleDims.size(); i++)
+      {
+        int amTupleDim = amTupleDims[i];
+        if (fileDims.contains(amTupleDim))
+        {
+          fileDims.removeOne(amTupleDim);
+        }
+        else
+        {
+          QH5Utilities::closeHDF5Object(parentLoc);
+          return -1;
+        }
+      }
+
+      if (fileDims.size() > 0)
+      {
+        QString cDimsStr = QString::number(fileDims[0]);
+        for (int i = 1; i < fileDims.size(); i++)
+        {
+          cDimsStr.append(", ");
+          cDimsStr.append(QString::number(fileDims[i]));
+        }
+
+        cDimsLE->setText(cDimsStr);
+        m_ComponentDimsMap.insert(path, cDimsStr);
+      }
+    }
+
+    QH5Utilities::closeHDF5Object(parentLoc);
+  }
+
+  return err;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ImportHDF5DatasetWidget::calculatePrimeFactors(int n, QVector<int> &primeFactors)
+{
+  // Find and store all the 2s that n is divisible by
+  while (n % 2 == 0)
+  {
+    primeFactors.push_back(2);
+    n = n / 2;
+  }
+
+  // At this point, n must be odd.  So we can skip one element (Note: i = i + 2)
+  for (int i = 3; i <= std::sqrt(n); i = i + 2)
+  {
+    // Store i if n is divisible by i
+    while (n % i == 0)
+    {
+      primeFactors.push_back(i);
+      n = n / i;
+    }
+  }
+
+  // Handle the edge case when the remaining n value is a prime number greater than 2
+  if (n > 2)
+  {
+    primeFactors.push_back(n);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void ImportHDF5DatasetWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   Q_UNUSED(filter)
@@ -748,6 +878,8 @@ void ImportHDF5DatasetWidget::beforePreflight()
       treeModel->setData(index, false, ImportHDF5TreeModel::Roles::HasErrorsRole);
     }
   }
+
+  updateComponentDimensions(QString::fromStdString(m_CurrentHDFDataPath));
 }
 
 // -----------------------------------------------------------------------------

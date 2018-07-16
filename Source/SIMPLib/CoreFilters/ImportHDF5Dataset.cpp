@@ -222,55 +222,91 @@ void ImportHDF5Dataset::dataCheck()
       return;
     }
 
+    QLocale locale(QLocale::English);
+
     // Calculate the product of the dataset dimensions and the product of the component dimensions.
     // Since we're already looping over both of these sets of dimensions, let's also create our error message
     // in case the equation does not work and we have to bail.
     QString ss = "";
     QTextStream stream(&ss);
 
+    stream << "-------------------------------------------\n";
     stream << tr("HDF5 File Path: %1\n").arg(m_HDF5FilePath);
     stream << tr("HDF5 Dataset Path: %1\n").arg(datasetPath);
 
-    size_t cDimsProduct = 1;
-    stream << tr("Component Dimensions: (");
-    for(int i = 0; i < cDims.size(); i++)
-    {
-      stream << cDims[i];
-      cDimsProduct = cDimsProduct * cDims[i];
-      if(i != cDims.size() - 1)
-      {
-        stream << ", ";
-      }
-    }
-    stream << ")\n";
-
-    size_t dsetDimsProduct = 1;
-    stream << tr("HDF5 Dataset Dimensions: (");
+    int hdf5TotalElements = 1;
+    stream << tr("    No. of Dimension(s): ") << locale.toString(dims.size()) << "\n";
+    stream << tr("    Dimension Size(s): ");
     for(int i = 0; i < dims.size(); i++)
     {
-      stream << dims[i];
-      dsetDimsProduct = dsetDimsProduct * dims[i];
+      stream << locale.toString(dims[i]);
+      hdf5TotalElements = hdf5TotalElements * dims[i];
       if(i != dims.size() - 1)
       {
-        stream << ", ";
+        stream << " x ";
       }
     }
-    stream << ")\n";
+    stream << "\n";
+    stream << tr("    Total HDF5 Dataset Element Count: %1\n").arg(locale.toString(hdf5TotalElements));
+    stream << "-------------------------------------------\n";
+    stream << "Current Data Structure Information: \n";
 
-    stream << tr("Attribute Matrix Path: %1/%2\n").arg(m_SelectedAttributeMatrix.getDataContainerName()).arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
-    stream << tr("Attribute Matrix Tuple Count: %1\n\n").arg(am->getNumberOfTuples());
+    stream << tr("Attribute Matrix Path: %1\n").arg(m_SelectedAttributeMatrix.serialize("/"));
 
-    if(dsetDimsProduct % cDimsProduct != 0 || dsetDimsProduct / cDimsProduct != am->getNumberOfTuples())
+    size_t userEnteredTotalElements = 1;
+    QVector<size_t> amTupleDims = am->getTupleDimensions();
+    stream << tr("No. of Attribute Matrix Dimension(s): ") << locale.toString(amTupleDims.size()) << "\n";
+    stream << "Attribute Matrix Dimension(s): ";
+    for (int i = 0; i < amTupleDims.size(); i++)
     {
-      stream << tr("This dataset with path '%1' cannot be read because this equation is not satisfied:\n"
-                   "(Product of dataset dimensions) / (Product of component dimensions) = (Attribute Matrix Tuple Count)\n"
-                   "%2 / %3 = %4\n%5 = %6")
-                    .arg(datasetPath)
-                    .arg(QString::number(dsetDimsProduct))
-                    .arg(QString::number(cDimsProduct))
-                    .arg(QString::number(am->getNumberOfTuples()))
-                    .arg(QString::number(static_cast<double>(dsetDimsProduct) / static_cast<double>(cDimsProduct), 'f', 1))
-                    .arg(QString::number(am->getNumberOfTuples()));
+      userEnteredTotalElements = userEnteredTotalElements * amTupleDims[i];
+      int d = amTupleDims[i];
+      stream << locale.toString(d);
+      if(i != amTupleDims.size() - 1)
+      {
+        stream << " x ";
+      }
+    }
+    stream << "\n";
+
+    int numOfAMTuples = am->getNumberOfTuples();
+    stream << tr("Total Attribute Matrix Tuple Count: %1\n").arg(locale.toString(numOfAMTuples));
+
+    stream << tr("No. of Component Dimension(s): ") << locale.toString(cDims.size()) << "\n";
+    stream << "Component Dimension(s): ";
+
+    int totalComponents = 1;
+    for (int i = 0; i < cDims.size(); i++)
+    {
+      userEnteredTotalElements = userEnteredTotalElements * cDims[i];
+      totalComponents = totalComponents * cDims[i];
+      int d = cDims[i];
+      stream << locale.toString(d);
+      if(i != cDims.size() - 1)
+      {
+        stream << " x ";
+      }
+    }
+
+    stream << "\n";
+    stream << tr("Total Component Count: %1\n").arg(locale.toString(totalComponents));
+
+    stream << "\n";
+
+    if(hdf5TotalElements != userEnteredTotalElements)
+    {
+      stream << tr("The dataset with path '%1' cannot be read into attribute matrix '%2' because %3 "
+                   "attribute matrix tuples and %4 components per tuple equals %5 total elements, and"
+                   " that does not match the total HDF5 dataset element count of %6.\n"
+                   "%7 =/= %8")
+                .arg(datasetPath)
+                .arg(m_SelectedAttributeMatrix.getAttributeMatrixName())
+                .arg(locale.toString(numOfAMTuples))
+                .arg(locale.toString(totalComponents))
+                .arg(locale.toString(numOfAMTuples * totalComponents))
+                .arg(locale.toString(hdf5TotalElements))
+                .arg(locale.toString(numOfAMTuples * totalComponents))
+                .arg(locale.toString(hdf5TotalElements));
 
       setErrorCondition(-20008);
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
