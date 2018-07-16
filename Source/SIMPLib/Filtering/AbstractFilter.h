@@ -72,6 +72,7 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   Q_PROPERTY(QString CompiledLibraryName READ getCompiledLibraryName CONSTANT)
   Q_PROPERTY(int Cancel READ getCancel WRITE setCancel)
   Q_PROPERTY(bool Enabled READ getEnabled WRITE setEnabled)
+  Q_PROPERTY(bool Removing READ getRemoving WRITE setRemoving)
   
   // This line MUST be first when exposing a class and properties to Python
   PYB11_CREATE_BINDINGS(AbstractFilter)
@@ -247,6 +248,8 @@ public:
   SIMPL_INSTANCE_PROPERTY(bool, InPreflight)
 
   SIMPL_INSTANCE_PROPERTY(bool, Enabled)
+
+  SIMPL_INSTANCE_PROPERTY(bool, Removing)
 
   // ------------------------------
   // These functions allow interogating the position the filter is in the pipeline and the previous and next filters

@@ -452,6 +452,11 @@ bool PipelineModel::insertRows(int position, int rows, const QModelIndex& parent
 // -----------------------------------------------------------------------------
 bool PipelineModel::removeRows(int position, int rows, const QModelIndex& parent)
 {
+  if(position < 0)
+  {
+    return false;
+  }
+
   PipelineItem* parentItem = getItem(parent);
   bool success = true;
 

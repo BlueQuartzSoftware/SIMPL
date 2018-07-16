@@ -52,6 +52,7 @@ AbstractFilter::AbstractFilter()
 , m_WarningCondition(0)
 , m_InPreflight(false)
 , m_Enabled(true)
+, m_Removing(false)
 , m_PipelineIndex(0)
 , m_Cancel(false)
 
