@@ -196,6 +196,9 @@ void AddFilterCommand::redo()
 // -----------------------------------------------------------------------------
 void AddFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertionIndex)
 {
+  // Reset the filter's Removing property
+  filter->setRemoving(false);
+
   PipelineModel* model = m_PipelineView->getPipelineModel();
 
   model->insertRow(insertionIndex);
@@ -238,6 +241,12 @@ void AddFilterCommand::removeFilter(const QPersistentModelIndex& index)
 {
   PipelineModel* model = m_PipelineView->getPipelineModel();
   AbstractFilter::Pointer filter = model->filter(index);
+
+  // Do not remove a filter that is already being removed
+  if(filter->getRemoving())
+  {
+    return;
+  }
 
   disconnectFilterSignalsSlots(filter);
 
