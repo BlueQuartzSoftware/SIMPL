@@ -248,12 +248,6 @@ public:
     DREAM3D_REQUIRE(writePointer4DArrayDataset<uint64_t>(ptrId) >= 0);
     DREAM3D_REQUIRE(writePointer4DArrayDataset<float32>(ptrId) >= 0);
     DREAM3D_REQUIRE(writePointer4DArrayDataset<float64>(ptrId) >= 0);
-
-    herr_t err = QH5Utilities::closeHDF5Object(ptrId);
-    DREAM3D_REQUIRED(err, >=, 0);
-
-    err = QH5Utilities::closeFile(file_id);
-    DREAM3D_REQUIRED(err, >=, 0);
   }
 
   // -----------------------------------------------------------------------------
@@ -371,39 +365,54 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void DatasetTest(ImportHDF5Dataset::Pointer filter, QString dsetPath, QVector<size_t> tDims, QVector<size_t> cDims, int errCode)
+  template <typename T> void DatasetTest(ImportHDF5Dataset::Pointer filter, QList<ImportHDF5Dataset::DatasetImportInfo> importInfoList, QVector<size_t> amDims, int errCode)
   {
-    T value = 0x0;
-    QString typeStr = QH5Lite::HDFTypeForPrimitiveAsStr(value);
-    dsetPath = dsetPath.replace("@TYPE_STRING@", typeStr);
-
-    DataContainerArray::Pointer dca = createDataContainerArray(tDims);
-    filter->setDataContainerArray(dca);
-
-    QString cDimsStr = "";
-    for(int i = 0; i < cDims.size(); i++)
+    if (importInfoList.empty())
     {
-      cDimsStr.append(QString::number(cDims[i]));
-      if(i < cDims.size() - 1)
-      {
-        cDimsStr.append(',');
-      }
+      return;
     }
 
-    QList<ImportHDF5Dataset::DatasetImportInfo> importInfoList;
-    ImportHDF5Dataset::DatasetImportInfo importInfo;
-    importInfo.dataSetPath = dsetPath;
-    importInfo.componentDimensions = cDimsStr;
-    importInfoList.push_back(importInfo);
+    T value = 0x0;
+    QString typeStr = QH5Lite::HDFTypeForPrimitiveAsStr(value);
 
-    filter->setDatasetImportInfoList(importInfoList);
+    DataContainerArray::Pointer dca = createDataContainerArray(amDims);
+    filter->setDataContainerArray(dca);
+
+    QList<ImportHDF5Dataset::DatasetImportInfo> dsetInfoList = importInfoList;
+    for (ImportHDF5Dataset::DatasetImportInfo &info : dsetInfoList)
+    {
+      info.dataSetPath = info.dataSetPath.replace("@TYPE_STRING@", typeStr);
+    }
+
+    filter->setDatasetImportInfoList(dsetInfoList);
 
     // Execute Dataset Test
-    QString tDimsStr = createVectorString(tDims);
-    cDimsStr.prepend('(');
-    cDimsStr.append(')');
+    QString tDimsStr = createVectorString(amDims);
 
-    std::cout << QObject::tr("Starting %1 Test: %2, tDims = %3, cDims = %4").arg(typeStr).arg(dsetPath).arg(tDimsStr).arg(cDimsStr).toStdString() << std::endl;
+    if (dsetInfoList.size() > 1)
+    {
+      QString statusMessage = "Starting %1 Multiple Dataset Test: ";
+      QString dsetPathsStr = "";
+      QString cDimsVectorStr = "";
+      for (int i = 0; i < dsetInfoList.size(); i++)
+      {
+        ImportHDF5Dataset::DatasetImportInfo info = dsetInfoList[i];
+        dsetPathsStr.append(info.dataSetPath + "\n");
+        QString cDimsStr = info.componentDimensions;
+        cDimsVectorStr.append(cDimsStr + "\n");
+      }
+
+      statusMessage.append("Dataset Paths = \n" + dsetPathsStr);
+      statusMessage.append("tDims = " + tDimsStr + "\n");
+      statusMessage.append("cDims = \n" + cDimsVectorStr);
+
+      std::cout << statusMessage.toStdString() << std::endl;
+    }
+    else
+    {
+      ImportHDF5Dataset::DatasetImportInfo info = dsetInfoList[0];
+      std::cout << QObject::tr("Starting %1 Dataset Test: Dataset Path = %2, tDims = %3, cDims = %4").arg(typeStr).arg(info.dataSetPath).arg(tDimsStr).arg(info.componentDimensions).toStdString() << std::endl;
+    }
 
     filter->execute();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), errCode);
@@ -411,30 +420,42 @@ public:
     // If we got through without errors, validate the results
     if(errCode == 0)
     {
-      // Calculate the total number of tuples
-      size_t tDimsProduct = 1;
-      for(int i = 0; i < tDims.size(); i++)
+      for (int i = 0; i < dsetInfoList.size(); i++)
       {
-        tDimsProduct = tDimsProduct * tDims[i];
-      }
+        // Calculate the total number of tuples
+        size_t tDimsProduct = 1;
+        for(int i = 0; i < amDims.size(); i++)
+        {
+          tDimsProduct = tDimsProduct * amDims[i];
+        }
 
-      // Calculate the total number of components
-      size_t cDimsProduct = 1;
-      for(int i = 0; i < cDims.size(); i++)
-      {
-        cDimsProduct = cDimsProduct * cDims[i];
-      }
+        QString cDimsStr = dsetInfoList[i].componentDimensions;
+        QStringList tokens = cDimsStr.split(", ");
+        QVector<size_t> cDims;
+        for (int i = 0; i < tokens.size(); i++)
+        {
+          cDims.push_back(tokens[i].toInt());
+        }
 
-      QString dsetName = dsetPath.remove("/Pointer/");
-      typename DataArray<T>::Pointer da = dca->getPrereqIDataArrayFromPath<DataArray<T>, AbstractFilter>(filter.get(), DataArrayPath("DataContainer", "AttributeMatrix", dsetName));
-      size_t totalArrayValues = da->getNumberOfTuples() * da->getNumberOfComponents();
-      DREAM3D_REQUIRE_EQUAL(totalArrayValues, tDimsProduct * cDimsProduct);
+        // Calculate the total number of components
+        size_t cDimsProduct = 1;
+        for(int i = 0; i < cDims.size(); i++)
+        {
+          cDimsProduct = cDimsProduct * cDims[i];
+        }
 
-      T* daPtr = da->getPointer(0);
-      for(size_t i = 0; i < tDimsProduct * cDimsProduct; ++i)
-      {
-        T value = daPtr[i];
-        DREAM3D_REQUIRE_EQUAL(value, static_cast<T>(i * 5));
+        QString dsetPath = dsetInfoList[i].dataSetPath;
+        QString dsetName = dsetPath.remove("/Pointer/");
+        typename DataArray<T>::Pointer da = dca->getPrereqIDataArrayFromPath<DataArray<T>, AbstractFilter>(filter.get(), DataArrayPath("DataContainer", "AttributeMatrix", dsetName));
+        size_t totalArrayValues = da->getNumberOfTuples() * da->getNumberOfComponents();
+        DREAM3D_REQUIRE_EQUAL(totalArrayValues, tDimsProduct * cDimsProduct);
+
+        T* daPtr = da->getPointer(0);
+        for(size_t i = 0; i < tDimsProduct * cDimsProduct; ++i)
+        {
+          T value = daPtr[i];
+          DREAM3D_REQUIRE_EQUAL(value, static_cast<T>(i * 5));
+        }
       }
     }
 
@@ -450,6 +471,25 @@ public:
     bool success = QFile::remove(m_FilePath);
     DREAM3D_REQUIRE_EQUAL(success, true);
 #endif
+  }
+
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
+  template <typename T>
+  QString joinVector(QVector<T> vector, const QString &separator)
+  {
+    QString cDimsStr = "";
+    for(int i = 0; i < vector.size(); i++)
+    {
+      cDimsStr.append(QString::number(vector[i]));
+      if(i < vector.size() - 1)
+      {
+        cDimsStr.append(QObject::tr(" %1 ").arg(separator));
+      }
+    }
+
+    return cDimsStr;
   }
 
   // -----------------------------------------------------------------------------
@@ -503,10 +543,10 @@ public:
         QVector<size_t> tDims = tDimsVector[i];
         QVector<size_t> cDims = cDimsVector[j];
 
-        size_t tDimsProd = 1;
+        size_t amTupleCount = 1;
         for(int t = 0; t < tDims.size(); t++)
         {
-          tDimsProd *= tDims[t];
+          amTupleCount *= tDims[t];
         }
 
         size_t cDimsProd = 1;
@@ -517,66 +557,76 @@ public:
 
         // Figure out our error code based on the dimensions coming in
         int errCode = 0;
-        if(tDimsProd != TUPLEDIMPROD || cDimsProd != COMPDIMPROD)
+        if (TUPLEDIMPROD * COMPDIMPROD != amTupleCount * cDimsProd)
         {
           errCode = -20008;
         }
 
-        DataContainerArray::Pointer dca = createDataContainerArray(tDims);
         ImportHDF5Dataset::Pointer filter = createFilter();
-        filter->setDataContainerArray(dca);
+
+        QList<ImportHDF5Dataset::DatasetImportInfo> importInfoList;
+        ImportHDF5Dataset::DatasetImportInfo info;
+        info.componentDimensions = joinVector(cDims, ", ");
 
         // Run 1D Array Tests
         QString dsetPath = "/Pointer/Pointer1DArrayDataset<@TYPE_STRING@>";
-        DatasetTest<int8_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<uint8_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<int16_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<uint16_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<int32_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<uint32_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<int64_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<uint64_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<float32>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<float64>(filter, dsetPath, tDims, cDims, errCode);
+        info.dataSetPath = dsetPath;
+        importInfoList.push_back(info);
+        DatasetTest<int8_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<uint8_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<int16_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<uint16_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<int32_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<uint32_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<int64_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<uint64_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<float32>(filter, importInfoList, tDims, errCode);
+        DatasetTest<float64>(filter, importInfoList, tDims, errCode);
 
         // Run 2D Array Tests
         dsetPath = "/Pointer/Pointer2DArrayDataset<@TYPE_STRING@>";
-        DatasetTest<int8_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<uint8_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<int16_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<uint16_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<int32_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<uint32_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<int64_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<uint64_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<float32>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<float64>(filter, dsetPath, tDims, cDims, errCode);
+        info.dataSetPath = dsetPath;
+        importInfoList.push_back(info);
+        DatasetTest<int8_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<uint8_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<int16_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<uint16_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<int32_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<uint32_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<int64_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<uint64_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<float32>(filter, importInfoList, tDims, errCode);
+        DatasetTest<float64>(filter, importInfoList, tDims, errCode);
 
         // Run 3D Array Tests
         dsetPath = "/Pointer/Pointer3DArrayDataset<@TYPE_STRING@>";
-        DatasetTest<int8_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<uint8_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<int16_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<uint16_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<int32_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<uint32_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<int64_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<uint64_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<float32>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<float64>(filter, dsetPath, tDims, cDims, errCode);
+        info.dataSetPath = dsetPath;
+        importInfoList.push_back(info);
+        DatasetTest<int8_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<uint8_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<int16_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<uint16_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<int32_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<uint32_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<int64_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<uint64_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<float32>(filter, importInfoList, tDims, errCode);
+        DatasetTest<float64>(filter, importInfoList, tDims, errCode);
 
         // Run 4D Array Tests
         dsetPath = "/Pointer/Pointer4DArrayDataset<@TYPE_STRING@>";
-        DatasetTest<int8_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<uint8_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<int16_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<uint16_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<int32_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<uint32_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<int64_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<uint64_t>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<float32>(filter, dsetPath, tDims, cDims, errCode);
-        DatasetTest<float64>(filter, dsetPath, tDims, cDims, errCode);
+        info.dataSetPath = dsetPath;
+        importInfoList.push_back(info);
+        DatasetTest<int8_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<uint8_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<int16_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<uint16_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<int32_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<uint32_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<int64_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<uint64_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<float32>(filter, importInfoList, tDims, errCode);
+        DatasetTest<float64>(filter, importInfoList, tDims, errCode);
       }
     }
 
