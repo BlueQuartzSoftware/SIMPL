@@ -568,9 +568,14 @@ public:
         ImportHDF5Dataset::DatasetImportInfo info;
         info.componentDimensions = joinVector(cDims, ", ");
 
+        QStringList dsetPaths;
+        dsetPaths.push_back("/Pointer/Pointer1DArrayDataset<@TYPE_STRING@>");
+        dsetPaths.push_back("/Pointer/Pointer2DArrayDataset<@TYPE_STRING@>");
+        dsetPaths.push_back("/Pointer/Pointer3DArrayDataset<@TYPE_STRING@>");
+        dsetPaths.push_back("/Pointer/Pointer4DArrayDataset<@TYPE_STRING@>");
+
         // Run 1D Array Tests
-        QString dsetPath = "/Pointer/Pointer1DArrayDataset<@TYPE_STRING@>";
-        info.dataSetPath = dsetPath;
+        info.dataSetPath = dsetPaths[0];
         importInfoList.push_back(info);
         DatasetTest<int8_t>(filter, importInfoList, tDims, errCode);
         DatasetTest<uint8_t>(filter, importInfoList, tDims, errCode);
@@ -582,10 +587,11 @@ public:
         DatasetTest<uint64_t>(filter, importInfoList, tDims, errCode);
         DatasetTest<float32>(filter, importInfoList, tDims, errCode);
         DatasetTest<float64>(filter, importInfoList, tDims, errCode);
+
+        importInfoList.clear();
 
         // Run 2D Array Tests
-        dsetPath = "/Pointer/Pointer2DArrayDataset<@TYPE_STRING@>";
-        info.dataSetPath = dsetPath;
+        info.dataSetPath = dsetPaths[1];
         importInfoList.push_back(info);
         DatasetTest<int8_t>(filter, importInfoList, tDims, errCode);
         DatasetTest<uint8_t>(filter, importInfoList, tDims, errCode);
@@ -597,10 +603,11 @@ public:
         DatasetTest<uint64_t>(filter, importInfoList, tDims, errCode);
         DatasetTest<float32>(filter, importInfoList, tDims, errCode);
         DatasetTest<float64>(filter, importInfoList, tDims, errCode);
+
+        importInfoList.clear();
 
         // Run 3D Array Tests
-        dsetPath = "/Pointer/Pointer3DArrayDataset<@TYPE_STRING@>";
-        info.dataSetPath = dsetPath;
+        info.dataSetPath = dsetPaths[2];
         importInfoList.push_back(info);
         DatasetTest<int8_t>(filter, importInfoList, tDims, errCode);
         DatasetTest<uint8_t>(filter, importInfoList, tDims, errCode);
@@ -613,10 +620,91 @@ public:
         DatasetTest<float32>(filter, importInfoList, tDims, errCode);
         DatasetTest<float64>(filter, importInfoList, tDims, errCode);
 
+        importInfoList.clear();
+
         // Run 4D Array Tests
-        dsetPath = "/Pointer/Pointer4DArrayDataset<@TYPE_STRING@>";
-        info.dataSetPath = dsetPath;
+        info.dataSetPath = dsetPaths[3];
         importInfoList.push_back(info);
+        DatasetTest<int8_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<uint8_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<int16_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<uint16_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<int32_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<uint32_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<int64_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<uint64_t>(filter, importInfoList, tDims, errCode);
+        DatasetTest<float32>(filter, importInfoList, tDims, errCode);
+        DatasetTest<float64>(filter, importInfoList, tDims, errCode);
+
+        importInfoList.clear();
+
+        // Test every possible set of 2 datasets
+        for (int a = 0; a < dsetPaths.size(); a++)
+        {
+          for (int b = a + 1; b < dsetPaths.size(); b++)
+          {
+            info.dataSetPath = dsetPaths[a];
+            importInfoList.push_back(info);
+            info.dataSetPath = dsetPaths[b];
+            importInfoList.push_back(info);
+
+            DatasetTest<int8_t>(filter, importInfoList, tDims, errCode);
+            DatasetTest<uint8_t>(filter, importInfoList, tDims, errCode);
+            DatasetTest<int16_t>(filter, importInfoList, tDims, errCode);
+            DatasetTest<uint16_t>(filter, importInfoList, tDims, errCode);
+            DatasetTest<int32_t>(filter, importInfoList, tDims, errCode);
+            DatasetTest<uint32_t>(filter, importInfoList, tDims, errCode);
+            DatasetTest<int64_t>(filter, importInfoList, tDims, errCode);
+            DatasetTest<uint64_t>(filter, importInfoList, tDims, errCode);
+            DatasetTest<float32>(filter, importInfoList, tDims, errCode);
+            DatasetTest<float64>(filter, importInfoList, tDims, errCode);
+
+            importInfoList.clear();
+          }
+        }
+
+        // Test every possible set of 3 datasets
+        for (int a = 0; a < dsetPaths.size(); a++)
+        {
+          for (int b = a + 1; b < dsetPaths.size(); b++)
+          {
+            for (int c = b + 1; c < dsetPaths.size(); c++)
+            {
+              info.dataSetPath = dsetPaths[a];
+              importInfoList.push_back(info);
+              info.dataSetPath = dsetPaths[b];
+              importInfoList.push_back(info);
+              info.dataSetPath = dsetPaths[c];
+              importInfoList.push_back(info);
+
+              DatasetTest<int8_t>(filter, importInfoList, tDims, errCode);
+              DatasetTest<uint8_t>(filter, importInfoList, tDims, errCode);
+              DatasetTest<int16_t>(filter, importInfoList, tDims, errCode);
+              DatasetTest<uint16_t>(filter, importInfoList, tDims, errCode);
+              DatasetTest<int32_t>(filter, importInfoList, tDims, errCode);
+              DatasetTest<uint32_t>(filter, importInfoList, tDims, errCode);
+              DatasetTest<int64_t>(filter, importInfoList, tDims, errCode);
+              DatasetTest<uint64_t>(filter, importInfoList, tDims, errCode);
+              DatasetTest<float32>(filter, importInfoList, tDims, errCode);
+              DatasetTest<float64>(filter, importInfoList, tDims, errCode);
+
+              importInfoList.clear();
+            }
+          }
+        }
+
+        importInfoList.clear();
+
+        // Test the set of 4 datasets
+        info.dataSetPath = dsetPaths[0];
+        importInfoList.push_back(info);
+        info.dataSetPath = dsetPaths[1];
+        importInfoList.push_back(info);
+        info.dataSetPath = dsetPaths[2];
+        importInfoList.push_back(info);
+        info.dataSetPath = dsetPaths[3];
+        importInfoList.push_back(info);
+
         DatasetTest<int8_t>(filter, importInfoList, tDims, errCode);
         DatasetTest<uint8_t>(filter, importInfoList, tDims, errCode);
         DatasetTest<int16_t>(filter, importInfoList, tDims, errCode);
