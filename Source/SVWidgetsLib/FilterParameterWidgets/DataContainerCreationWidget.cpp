@@ -41,6 +41,7 @@
 #include <QtCore/QPropertyAnimation>
 #include <QtCore/QSequentialAnimationGroup>
 
+#include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
 
 // -----------------------------------------------------------------------------
