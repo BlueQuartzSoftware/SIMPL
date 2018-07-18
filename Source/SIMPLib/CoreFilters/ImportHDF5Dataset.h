@@ -46,8 +46,8 @@ class SIMPLib_EXPORT ImportHDF5Dataset : public AbstractFilter
   Q_OBJECT
   PYB11_CREATE_BINDINGS(ImportHDF5Dataset SUPERCLASS AbstractFilter)
   PYB11_PROPERTY(QString HDF5FilePath READ getHDF5FilePath WRITE setHDF5FilePath)
-  PYB11_PROPERTY(QStringList DatasetPaths READ getDatasetPaths WRITE setDatasetPaths)
-  PYB11_PROPERTY(QString ComponentDimensions READ getComponentDimensions WRITE setComponentDimensions)
+  PYB11_PROPERTY(QString HDF5Dimensions READ getHDF5Dimensions)
+  PYB11_PROPERTY(QList<DatasetImportInfo> DatasetImportInfoList READ getDatasetImportInfoList WRITE setDatasetImportInfoList)
   PYB11_PROPERTY(DataArrayPath SelectedAttributeMatrix READ getSelectedAttributeMatrix WRITE setSelectedAttributeMatrix)
 
 public:
@@ -77,9 +77,6 @@ public:
 
   SIMPL_FILTER_PARAMETER(QString, HDF5FilePath)
   Q_PROPERTY(QString HDF5FilePath READ getHDF5FilePath WRITE setHDF5FilePath)
-
-  SIMPL_FILTER_PARAMETER(QList<DatasetImportInfo>, DatasetImportInfoList)
-  Q_PROPERTY(QList<DatasetImportInfo> DatasetImportInfoList READ getDatasetImportInfoList WRITE setDatasetImportInfoList)
 
   QString getHDF5Dimensions();
   Q_PROPERTY(QString HDF5Dimensions READ getHDF5Dimensions)
