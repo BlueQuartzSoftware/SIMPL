@@ -96,13 +96,12 @@ void ImportHDF5Dataset::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  ImportHDF5DatasetFilterParameter::Pointer parameter =
-      ImportHDF5DatasetFilterParameter::New(QString("Select HDF5 File"), // Human Label
-                                            QString("ImportHDF5File"),   // Property Name
-                                            QString(""),                 // File Path Default Value
-                                            QString(""),                 // Dataset Default value
-                                            FilterParameter::Parameter,  // Category
-                                            this, -1);
+  ImportHDF5DatasetFilterParameter::Pointer parameter = ImportHDF5DatasetFilterParameter::New(QString("Select HDF5 File"), // Human Label
+                                                                                              QString("ImportHDF5File"),   // Property Name
+                                                                                              QString(""),                 // File Path Default Value
+                                                                                              QString(""),                 // Dataset Default value
+                                                                                              FilterParameter::Parameter,  // Category
+                                                                                              this, -1);
   parameters.push_back(parameter);
 
   {
@@ -171,7 +170,7 @@ void ImportHDF5Dataset::dataCheck()
   H5ScopedFileSentinel sentinel(&fileId, true);
 
   QMap<QString, hid_t> openedParentPathsMap;
-  for (int i = 0; i < m_DatasetImportInfoList.size(); i++)
+  for(int i = 0; i < m_DatasetImportInfoList.size(); i++)
   {
     QString datasetPath = m_DatasetImportInfoList[i].dataSetPath;
 
@@ -183,7 +182,7 @@ void ImportHDF5Dataset::dataCheck()
     }
     else
     {
-      if (openedParentPathsMap.contains(parentPath) == false)
+      if(openedParentPathsMap.contains(parentPath) == false)
       {
         parentId = QH5Utilities::openHDF5Object(fileId, parentPath);
         sentinel.addGroupId(&parentId);
@@ -214,7 +213,8 @@ void ImportHDF5Dataset::dataCheck()
     QString cDimsStr = m_DatasetImportInfoList[i].componentDimensions;
     if(cDimsStr.isEmpty())
     {
-      QString ss = tr("The component dimensions are empty for dataset with path '%1'.  Please enter the component dimensions, using comma-separated values (ex: 4x2 would be '4, 2').").arg(datasetPath);
+      QString ss =
+          tr("The component dimensions are empty for dataset with path '%1'.  Please enter the component dimensions, using comma-separated values (ex: 4x2 would be '4, 2').").arg(datasetPath);
       setErrorCondition(-20006);
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       m_DatasetPathsWithErrors.push_back(datasetPath);
@@ -266,7 +266,7 @@ void ImportHDF5Dataset::dataCheck()
     QVector<size_t> amTupleDims = am->getTupleDimensions();
     stream << tr("No. of Attribute Matrix Dimension(s): ") << locale.toString(amTupleDims.size()) << "\n";
     stream << "Attribute Matrix Dimension(s): ";
-    for (int i = 0; i < amTupleDims.size(); i++)
+    for(int i = 0; i < amTupleDims.size(); i++)
     {
       userEnteredTotalElements = userEnteredTotalElements * amTupleDims[i];
       int d = amTupleDims[i];
@@ -285,7 +285,7 @@ void ImportHDF5Dataset::dataCheck()
     stream << "Component Dimension(s): ";
 
     int totalComponents = 1;
-    for (int i = 0; i < cDims.size(); i++)
+    for(int i = 0; i < cDims.size(); i++)
     {
       userEnteredTotalElements = userEnteredTotalElements * cDims[i];
       totalComponents = totalComponents * cDims[i];
@@ -308,14 +308,14 @@ void ImportHDF5Dataset::dataCheck()
                    "attribute matrix tuples and %4 components per tuple equals %5 total elements, and"
                    " that does not match the total HDF5 dataset element count of %6.\n"
                    "%7 =/= %8")
-                .arg(datasetPath)
-                .arg(m_SelectedAttributeMatrix.getAttributeMatrixName())
-                .arg(locale.toString(numOfAMTuples))
-                .arg(locale.toString(totalComponents))
-                .arg(locale.toString(numOfAMTuples * totalComponents))
-                .arg(locale.toString(hdf5TotalElements))
-                .arg(locale.toString(numOfAMTuples * totalComponents))
-                .arg(locale.toString(hdf5TotalElements));
+                    .arg(datasetPath)
+                    .arg(m_SelectedAttributeMatrix.getAttributeMatrixName())
+                    .arg(locale.toString(numOfAMTuples))
+                    .arg(locale.toString(totalComponents))
+                    .arg(locale.toString(numOfAMTuples * totalComponents))
+                    .arg(locale.toString(hdf5TotalElements))
+                    .arg(locale.toString(numOfAMTuples * totalComponents))
+                    .arg(locale.toString(hdf5TotalElements));
 
       setErrorCondition(-20008);
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
@@ -362,7 +362,7 @@ void ImportHDF5Dataset::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<size_t> ImportHDF5Dataset::createComponentDimensions(const QString &cDimsStr)
+QVector<size_t> ImportHDF5Dataset::createComponentDimensions(const QString& cDimsStr)
 {
   QVector<size_t> cDims;
   QStringList dimsStrVec = cDimsStr.split(',', QString::SkipEmptyParts);

@@ -43,8 +43,8 @@ public:
   SIMPL_STATIC_NEW_MACRO(ImportHDF5DatasetFilterParameter)
   SIMPL_TYPE_MACRO(ImportHDF5DatasetFilterParameter)
 
-  static Pointer New(const QString& humanLabel, const QString& propertyName, const QVariant& filePathDefaultValue,
-                     const QVariant& datasetDefaultValue, Category category, ImportHDF5Dataset* filter, int groupIndex = -1);
+  static Pointer New(const QString& humanLabel, const QString& propertyName, const QVariant& filePathDefaultValue, const QVariant& datasetDefaultValue, Category category, ImportHDF5Dataset* filter,
+                     int groupIndex = -1);
 
   virtual ~ImportHDF5DatasetFilterParameter();
 
@@ -72,4 +72,3 @@ private:
   ImportHDF5DatasetFilterParameter(const ImportHDF5DatasetFilterParameter&) = delete; // Copy Constructor Not Implemented
   void operator=(const ImportHDF5DatasetFilterParameter&);                            // Move assignment Not Implemented
 };
-

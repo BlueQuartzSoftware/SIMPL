@@ -138,7 +138,7 @@ private:
   QString m_CurrentOpenFile;                // Stores the currently open HDF5 File
   std::string m_CurrentHDFDataPath;         // Stores the currently viewed HDF data path
   hid_t m_FileId;
-  QMap<QString, QString > m_ComponentDimsMap;
+  QMap<QString, QString> m_ComponentDimsMap;
   QStringList m_CurrentPathsWithErrors;
 
   ImportHDF5Dataset* m_Filter = nullptr;
@@ -165,10 +165,9 @@ private:
    * @param primeFactors The vector to store the prime factors into.
    * @return
    */
-  void calculatePrimeFactors(int n, QVector<int> &primeFactors);
+  void calculatePrimeFactors(int n, QVector<int>& primeFactors);
 
   ~ImportHDF5DatasetWidget();
   ImportHDF5DatasetWidget(const ImportHDF5DatasetWidget&) = delete; // Copy Constructor Not Implemented
   void operator=(const ImportHDF5DatasetWidget&);                   // Copy Assignment Not Implemented
 };
-

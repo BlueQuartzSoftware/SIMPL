@@ -45,10 +45,10 @@ class SIMPLib_EXPORT ImportHDF5Dataset : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(ImportHDF5Dataset SUPERCLASS AbstractFilter)
-    PYB11_PROPERTY(QString HDF5FilePath READ getHDF5FilePath WRITE setHDF5FilePath)
-    PYB11_PROPERTY(QStringList DatasetPaths READ getDatasetPaths WRITE setDatasetPaths)
-    PYB11_PROPERTY(QString ComponentDimensions READ getComponentDimensions WRITE setComponentDimensions)
-    PYB11_PROPERTY(DataArrayPath SelectedAttributeMatrix READ getSelectedAttributeMatrix WRITE setSelectedAttributeMatrix)
+  PYB11_PROPERTY(QString HDF5FilePath READ getHDF5FilePath WRITE setHDF5FilePath)
+  PYB11_PROPERTY(QStringList DatasetPaths READ getDatasetPaths WRITE setDatasetPaths)
+  PYB11_PROPERTY(QString ComponentDimensions READ getComponentDimensions WRITE setComponentDimensions)
+  PYB11_PROPERTY(DataArrayPath SelectedAttributeMatrix READ getSelectedAttributeMatrix WRITE setSelectedAttributeMatrix)
 
 public:
   SIMPL_SHARED_POINTERS(ImportHDF5Dataset)
@@ -59,20 +59,20 @@ public:
 
   struct DatasetImportInfo
   {
-      QString dataSetPath;
-      QString componentDimensions;
+    QString dataSetPath;
+    QString componentDimensions;
 
-      void readJson(QJsonObject json)
-      {
-        dataSetPath = json["Dataset Path"].toString();
-        componentDimensions = json["Component Dimensions"].toString();
-      }
+    void readJson(QJsonObject json)
+    {
+      dataSetPath = json["Dataset Path"].toString();
+      componentDimensions = json["Component Dimensions"].toString();
+    }
 
-      void writeJson(QJsonObject &json)
-      {
-        json["Dataset Path"] = dataSetPath;
-        json["Component Dimensions"] = componentDimensions;
-      }
+    void writeJson(QJsonObject& json)
+    {
+      json["Dataset Path"] = dataSetPath;
+      json["Component Dimensions"] = componentDimensions;
+    }
   };
 
   SIMPL_FILTER_PARAMETER(QString, HDF5FilePath)
@@ -194,13 +194,12 @@ private:
    * @brief createComponentDimensions
    * @return
    */
-  QVector<size_t> createComponentDimensions(const QString &cDimsStr);
+  QVector<size_t> createComponentDimensions(const QString& cDimsStr);
 
 public:
-  ImportHDF5Dataset(const ImportHDF5Dataset&) = delete; // Copy Constructor Not Implemented
-  ImportHDF5Dataset(ImportHDF5Dataset&&) = delete;      // Move Constructor
+  ImportHDF5Dataset(const ImportHDF5Dataset&) = delete;            // Copy Constructor Not Implemented
+  ImportHDF5Dataset(ImportHDF5Dataset&&) = delete;                 // Move Constructor
   ImportHDF5Dataset& operator=(const ImportHDF5Dataset&) = delete; // Copy Assignment Not Implemented
   ImportHDF5Dataset& operator=(ImportHDF5Dataset&&) = delete;      // Move Assignment Not Implemented
 };
 Q_DECLARE_METATYPE(ImportHDF5Dataset::DatasetImportInfo)
-
