@@ -1,4 +1,4 @@
-/* ============================================================================
+﻿/* ============================================================================
  * Copyright (c) 2017 BlueQuartz Software, LLC
  * All rights reserved.
  *
@@ -31,6 +31,8 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "ImportHDF5DatasetWidget.h"
+
+#include <cmath>
 
 #include <QtCore/QDateTime>
 #include <QtCore/QDir>
@@ -80,15 +82,15 @@ ImportHDF5DatasetWidget::ImportHDF5DatasetWidget(FilterParameter* parameter, Abs
   m_FilterParameter = dynamic_cast<ImportHDF5DatasetFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "ImportHDF5DatasetWidget can ONLY be used with an ImportHDF5DatasetFilterParameter object");
 
-  //  m_Filter = dynamic_cast<ImportHDF5Dataset*>(filter);
-  //  Q_ASSERT_X(m_Filter != nullptr, "NULL Pointer", "ImportHDF5DatasetWidget can ONLY be used with an ImportHDF5Dataset filter");
+  m_Filter = dynamic_cast<ImportHDF5Dataset*>(filter);
+  Q_ASSERT_X(m_Filter != nullptr, "NULL Pointer", "ImportHDF5DatasetWidget can ONLY be used with an ImportHDF5Dataset filter");
 
   setupUi(this);
   setupGui();
 
-  if(filter)
+  if(m_Filter)
   {
-    QString currentPath = filter->property(PROPERTY_NAME_AS_CHAR).toString();
+    QString currentPath = m_Filter->property(PROPERTY_NAME_AS_CHAR).toString();
     if(currentPath.isEmpty() == false)
     {
       currentPath = QDir::toNativeSeparators(currentPath);
@@ -148,14 +150,16 @@ void ImportHDF5DatasetWidget::setupGui()
   AbstractFilter* filter = getFilter();
   if(filter != nullptr)
   {
-    ImportHDF5DatasetFilterParameter::FilePathGetterCallbackType filePathCallback = m_FilterParameter->getFilePathGetterCallback();
-    QString hdf5FilePath = filePathCallback();
+    QString hdf5FilePath = m_Filter->getHDF5FilePath();
 
     if(hdf5FilePath.isEmpty() == false)
     {
       value->setText(hdf5FilePath);
 
       initWithFile(hdf5FilePath);
+
+      QString currentPath = QString::fromStdString(m_CurrentHDFDataPath);
+      cDimsLE->setText(m_ComponentDimsMap[currentPath], true);
     }
   }
 
@@ -170,16 +174,21 @@ void ImportHDF5DatasetWidget::setupGui()
 // -----------------------------------------------------------------------------
 void ImportHDF5DatasetWidget::initializeHDF5Paths()
 {
-  ImportHDF5DatasetFilterParameter::DatasetGetterCallbackType dSetCallback = m_FilterParameter->getDataSetGetterCallback();
-  QStringList hdf5Paths = dSetCallback();
+  QList<ImportHDF5Dataset::DatasetImportInfo> importInfoList = m_Filter->getDatasetImportInfoList();
+  for(int i = 0; i < importInfoList.size(); i++)
+  {
+    QString hdf5Path = importInfoList[i].dataSetPath;
+    QString cDimsStr = importInfoList[i].componentDimensions;
+    m_ComponentDimsMap.insert(hdf5Path, cDimsStr);
+  }
 
   // Automatically expand HDF groups in the viewer
   ImportHDF5TreeModel* treeModel = dynamic_cast<ImportHDF5TreeModel*>(hdfTreeView->model());
   if(treeModel != nullptr)
   {
-    for(int i = 0; i < hdf5Paths.size(); i++)
+    for(int i = 0; i < importInfoList.size(); i++)
     {
-      QString hdf5Path = hdf5Paths[i];
+      QString hdf5Path = importInfoList[i].dataSetPath;
       QStringList hdf5PathTokens = hdf5Path.split("/", QString::SkipEmptyParts);
       QModelIndex parentIdx = treeModel->index(0, 0);
       hdfTreeView->expand(parentIdx);
@@ -241,7 +250,7 @@ void ImportHDF5DatasetWidget::on_value_fileDropped(const QString& text)
   // Set/Remove the red outline if the file does exist
   if(verifyPathExists(text, value) == true)
   {
-    if (initWithFile(text))
+    if(initWithFile(text))
     {
       emit parametersChanged();
     }
@@ -263,12 +272,11 @@ void ImportHDF5DatasetWidget::on_selectBtn_clicked()
 
   file = QDir::toNativeSeparators(file);
 
-  if (initWithFile(file))
+  if(initWithFile(file))
   {
+    value->setText(file);
     emit parametersChanged();
   }
-
-  value->setText(file);
 
   // Store the last used directory into the private instance variable
   QFileInfo fi(file);
@@ -323,7 +331,7 @@ void ImportHDF5DatasetWidget::dropEvent(QDropEvent* e)
   {
     QDir parent(file);
     m_OpenDialogLastDirectory = parent.dirName();
-    if (initWithFile(file) == true)
+    if(initWithFile(file) == true)
     {
       emit parametersChanged();
     }
@@ -354,10 +362,12 @@ bool ImportHDF5DatasetWidget::initWithFile(QString hdf5File)
     delete oldModel;
   }
 
-  if (m_FileId >= 0)
+  m_ComponentDimsMap.clear();
+
+  if(m_FileId >= 0)
   {
     herr_t err = H5Utilities::closeFile(m_FileId);
-    if (err < 0)
+    if(err < 0)
     {
       std::cout << "Error closing HDF5 file: " << m_CurrentOpenFile.toStdString() << std::endl;
       return false;
@@ -378,11 +388,17 @@ bool ImportHDF5DatasetWidget::initWithFile(QString hdf5File)
 
   // Get the ImportHDF5TreeModel and set the Root Node
   ImportHDF5TreeModel* treeModel = new ImportHDF5TreeModel(m_FileId, hdfTreeView);
-  connect(treeModel, SIGNAL(modelChanged()), this, SIGNAL(parametersChanged()));
+  connect(treeModel, SIGNAL(selectedHDF5PathsChanged()), this, SIGNAL(parametersChanged()));
   hdfTreeView->setModel(treeModel);
 #if defined(Q_OS_MAC)
   hdfTreeView->setAttribute(Qt::WA_MacShowFocusRect, false);
 #endif
+
+  QModelIndex rootIndex = treeModel->index(0, 0);
+  if(rootIndex.isValid())
+  {
+    hdfTreeView->setExpanded(rootIndex, true);
+  }
 
   // Connect the Tree View selection Model to a method in this class
   connect(hdfTreeView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), this, SLOT(hdfTreeView_currentChanged(QModelIndex, QModelIndex)));
@@ -406,8 +422,20 @@ void ImportHDF5DatasetWidget::_updateViewFromHDFPath(std::string dataPath)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void ImportHDF5DatasetWidget::on_cDimsLE_valueChanged(QString text)
+{
+  m_ComponentDimsMap.insert(QString::fromStdString(m_CurrentHDFDataPath), text);
+
+  emit parametersChanged();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void ImportHDF5DatasetWidget::hdfTreeView_currentChanged(const QModelIndex& current, const QModelIndex& previous)
 {
+  cDimsLE->setText(QString());
+
   // Check to make sure we have a data file opened
   if(m_FileId < 0)
   {
@@ -418,8 +446,11 @@ void ImportHDF5DatasetWidget::hdfTreeView_currentChanged(const QModelIndex& curr
   ImportHDF5TreeModel* model = static_cast<ImportHDF5TreeModel*>(hdfTreeView->model());
   QString path = model->indexToHDF5Path(current);
 
+  m_CurrentHDFDataPath = path.toStdString();
+
   updateGeneralTable(path);
   updateAttributeTable(path);
+  updateComponentDimensions(path);
 }
 
 // -----------------------------------------------------------------------------
@@ -678,18 +709,158 @@ herr_t ImportHDF5DatasetWidget::updateAttributeTable(const QString& path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+herr_t ImportHDF5DatasetWidget::updateComponentDimensions(const QString& path)
+{
+  herr_t err = 0;
+
+  if(m_ComponentDimsMap.contains(path))
+  {
+    QString cDimsStr = m_ComponentDimsMap[path];
+    cDimsLE->setText(cDimsStr);
+  }
+  else
+  {
+    QString objName = QH5Utilities::extractObjectName(path);
+
+    if(m_FileId < 0)
+    {
+      std::cout << "Error: FileId is Invalid: " << m_FileId << std::endl;
+      return m_FileId;
+    }
+
+    // Test for Dataset Existance
+    H5O_info_t statbuf;
+    err = H5Oget_info_by_name(m_FileId, path.toStdString().c_str(), &statbuf, H5P_DEFAULT);
+    if(err < 0)
+    {
+      std::cout << "Data Set Does NOT exist at Path given: FileId: " << m_FileId << std::endl;
+      return err;
+    }
+
+    QString parentPath = "";
+    if(path == "/")
+    {
+      parentPath = path;
+    }
+    else
+    {
+      parentPath = QH5Utilities::getParentPath(path);
+    }
+
+    hid_t parentLoc = QH5Utilities::openHDF5Object(m_FileId, parentPath);
+
+    QVector<hsize_t> fileDims;
+    H5T_class_t type_class;
+    size_t type_size;
+    QH5Lite::getDatasetInfo(parentLoc, objName, fileDims, type_class, type_size);
+
+    DataArrayPath amPath = m_Filter->getSelectedAttributeMatrix();
+    AttributeMatrix::Pointer am = m_Filter->getDataContainerArray()->getAttributeMatrix(amPath);
+    if(am != nullptr)
+    {
+      QVector<size_t> amTupleDims = am->getTupleDimensions();
+
+      //      // Calculate the prime factors of the attribute matrix tuple dimensions
+      //      QVector<int> amTupleDimsPFs;
+      //      for (int i = 0; i < amTupleDims.size(); i++)
+      //      {
+      //        calculatePrimeFactors(amTupleDims[i], amTupleDimsPFs);
+      //      }
+
+      //      // Calculate the prime factors of the file dimensions
+      //      QVector<int> fileDimsPFs;
+      //      for (int i = 0; i < fileDims.size(); i++)
+      //      {
+      //        calculatePrimeFactors(fileDims[i], fileDimsPFs);
+      //      }
+
+      // If an attribute matrix tuple dimensions prime factor exists in the file dimensions prime factor list, remove it.
+      for(int i = 0; i < amTupleDims.size(); i++)
+      {
+        int amTupleDim = amTupleDims[i];
+        if(fileDims.contains(amTupleDim))
+        {
+          fileDims.removeOne(amTupleDim);
+        }
+        else
+        {
+          QH5Utilities::closeHDF5Object(parentLoc);
+          return -1;
+        }
+      }
+
+      if(fileDims.size() > 0)
+      {
+        QString cDimsStr = QString::number(fileDims[0]);
+        for(int i = 1; i < fileDims.size(); i++)
+        {
+          cDimsStr.append(", ");
+          cDimsStr.append(QString::number(fileDims[i]));
+        }
+
+        cDimsLE->setText(cDimsStr);
+        m_ComponentDimsMap.insert(path, cDimsStr);
+      }
+    }
+
+    QH5Utilities::closeHDF5Object(parentLoc);
+  }
+
+  return err;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ImportHDF5DatasetWidget::calculatePrimeFactors(int n, QVector<int>& primeFactors)
+{
+  // Find and store all the 2s that n is divisible by
+  while(n % 2 == 0)
+  {
+    primeFactors.push_back(2);
+    n = n / 2;
+  }
+
+  // At this point, n must be odd.  So we can skip one element (Note: i = i + 2)
+  for(int i = 3; i <= std::sqrt(n); i = i + 2)
+  {
+    // Store i if n is divisible by i
+    while(n % i == 0)
+    {
+      primeFactors.push_back(i);
+      n = n / i;
+    }
+  }
+
+  // Handle the edge case when the remaining n value is a prime number greater than 2
+  if(n > 2)
+  {
+    primeFactors.push_back(n);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void ImportHDF5DatasetWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   Q_UNUSED(filter)
 
-  ImportHDF5DatasetFilterParameter::FilePathSetterCallbackType callback = m_FilterParameter->getFilePathSetterCallback();
-  callback(value->text());
+  m_Filter->setHDF5FilePath(value->text());
 
   ImportHDF5TreeModel* treeModel = dynamic_cast<ImportHDF5TreeModel*>(hdfTreeView->model());
   if(treeModel != nullptr)
   {
-    ImportHDF5DatasetFilterParameter::DatasetSetterCallbackType callback = m_FilterParameter->getDataSetSetterCallback();
-    callback(treeModel->getSelectedHDF5Paths());
+    QStringList dsetPaths = treeModel->getSelectedHDF5Paths();
+    QList<ImportHDF5Dataset::DatasetImportInfo> importInfoList;
+    for(int i = 0; i < dsetPaths.size(); i++)
+    {
+      ImportHDF5Dataset::DatasetImportInfo importInfo;
+      importInfo.dataSetPath = dsetPaths[i];
+      importInfo.componentDimensions = m_ComponentDimsMap[dsetPaths[i]];
+      importInfoList.push_back(importInfo);
+    }
+    m_Filter->setDatasetImportInfoList(importInfoList);
   }
 }
 
@@ -698,6 +869,17 @@ void ImportHDF5DatasetWidget::filterNeedsInputParameters(AbstractFilter* filter)
 // -----------------------------------------------------------------------------
 void ImportHDF5DatasetWidget::beforePreflight()
 {
+  ImportHDF5TreeModel* treeModel = dynamic_cast<ImportHDF5TreeModel*>(hdfTreeView->model());
+  if(treeModel != nullptr)
+  {
+    for(int i = 0; i < m_CurrentPathsWithErrors.size(); i++)
+    {
+      QModelIndex index = treeModel->hdf5PathToIndex(m_CurrentPathsWithErrors[i]);
+      treeModel->setData(index, false, ImportHDF5TreeModel::Roles::HasErrorsRole);
+    }
+  }
+
+  updateComponentDimensions(QString::fromStdString(m_CurrentHDFDataPath));
 }
 
 // -----------------------------------------------------------------------------
@@ -705,4 +887,14 @@ void ImportHDF5DatasetWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void ImportHDF5DatasetWidget::afterPreflight()
 {
+  m_CurrentPathsWithErrors = m_Filter->getDatasetPathsWithErrors();
+  ImportHDF5TreeModel* treeModel = dynamic_cast<ImportHDF5TreeModel*>(hdfTreeView->model());
+  if(treeModel != nullptr)
+  {
+    for(int i = 0; i < m_CurrentPathsWithErrors.size(); i++)
+    {
+      QModelIndex index = treeModel->hdf5PathToIndex(m_CurrentPathsWithErrors[i]);
+      treeModel->setData(index, true, ImportHDF5TreeModel::Roles::HasErrorsRole);
+    }
+  }
 }

@@ -96,17 +96,13 @@ void ImportHDF5Dataset::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  ImportHDF5DatasetFilterParameter::Pointer parameter =
-      ImportHDF5DatasetFilterParameter::New(QString("Select HDF5 File"), // Human Label
-                                            QString("ImportHDF5File"),   // Property Name
-                                            QString(""),                 // File Path Default Value
-                                            QString(""),                 // Dataset Default value
-                                            FilterParameter::Parameter,  // Category
-                                            SIMPL_BIND_SETTER(ImportHDF5Dataset, this, HDF5FilePath), SIMPL_BIND_GETTER(ImportHDF5Dataset, this, HDF5FilePath),
-                                            SIMPL_BIND_SETTER(ImportHDF5Dataset, this, DatasetPaths), SIMPL_BIND_GETTER(ImportHDF5Dataset, this, DatasetPaths), -1);
+  ImportHDF5DatasetFilterParameter::Pointer parameter = ImportHDF5DatasetFilterParameter::New(QString("Select HDF5 File"), // Human Label
+                                                                                              QString("ImportHDF5File"),   // Property Name
+                                                                                              QString(""),                 // File Path Default Value
+                                                                                              QString(""),                 // Dataset Default value
+                                                                                              FilterParameter::Parameter,  // Category
+                                                                                              this, -1);
   parameters.push_back(parameter);
-
-  parameters.push_back(SIMPL_NEW_STRING_FP("Component Dimensions", ComponentDimensions, FilterParameter::Parameter, ImportHDF5Dataset));
 
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
@@ -122,6 +118,7 @@ void ImportHDF5Dataset::setupFilterParameters()
 void ImportHDF5Dataset::dataCheck()
 {
   setErrorCondition(0);
+  m_DatasetPathsWithErrors.clear();
 
   if(m_HDF5FilePath.isEmpty())
   {
@@ -149,22 +146,13 @@ void ImportHDF5Dataset::dataCheck()
     return;
   }
 
-  if(m_DatasetPaths.isEmpty())
+  if(m_DatasetImportInfoList.isEmpty())
   {
     QString ss = tr("No dataset has been checked.  Please check a dataset.");
     setErrorCondition(-20004);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
-  else if(m_DatasetPaths.size() > 1)
-  {
-    QString ss = tr("Only one dataset can be checked at a time.  Please check one dataset.");
-    setErrorCondition(-20004);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return;
-  }
-
-  QString datasetPath = m_DatasetPaths[0];
 
   int err = 0;
   AttributeMatrix::Pointer am = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedAttributeMatrix, err);
@@ -181,106 +169,163 @@ void ImportHDF5Dataset::dataCheck()
   }
   H5ScopedFileSentinel sentinel(&fileId, true);
 
-  QString parentPath = QH5Utilities::getParentPath(datasetPath);
-  hid_t parentId;
-  if(parentPath.isEmpty())
+  QMap<QString, hid_t> openedParentPathsMap;
+  for(int i = 0; i < m_DatasetImportInfoList.size(); i++)
   {
-    parentId = fileId;
-  }
-  else
-  {
-    parentId = QH5Utilities::openHDF5Object(fileId, parentPath);
-    sentinel.addGroupId(&parentId);
-  }
+    QString datasetPath = m_DatasetImportInfoList[i].dataSetPath;
 
-  // Read dataset into DREAM.3D structure
-  QString objectName = QH5Utilities::getObjectNameFromPath(datasetPath);
-
-  QVector<hsize_t> dims;
-  H5T_class_t type_class;
-  size_t type_size;
-  err = QH5Lite::getDatasetInfo(parentId, objectName, dims, type_class, type_size);
-  if(err < 0)
-  {
-    QString ss = tr("Error reading type info from dataset with path '%1'").arg(datasetPath);
-    setErrorCondition(-20005);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return;
-  }
-
-  if(m_ComponentDimensions.isEmpty())
-  {
-    QString ss = tr("The component dimensions are empty.  Please enter the component dimensions, using comma-separated values (ex: 4x2 would be '4, 2').");
-    setErrorCondition(-20006);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return;
-  }
-
-  QVector<size_t> cDims = createComponentDimensions();
-  if(cDims.isEmpty())
-  {
-    QString ss = tr("Component Dimensions are not in the right format. Use comma-separated values (ex: 4x2 would be '4, 2').");
-    setErrorCondition(-20007);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return;
-  }
-
-  // Calculate the product of the dataset dimensions and the product of the component dimensions.
-  // Since we're already looping over both of these sets of dimensions, let's also create our error message
-  // in case the equation does not work and we have to bail.
-  QString ss = "";
-  QTextStream stream(&ss);
-
-  stream << tr("HDF5 File Path: %1\n").arg(m_HDF5FilePath);
-  stream << tr("HDF5 Dataset Path: %1\n").arg(datasetPath);
-
-  size_t cDimsProduct = 1;
-  stream << tr("Component Dimensions: (");
-  for(int i = 0; i < cDims.size(); i++)
-  {
-    stream << cDims[i];
-    cDimsProduct = cDimsProduct * cDims[i];
-    if(i != cDims.size() - 1)
+    QString parentPath = QH5Utilities::getParentPath(datasetPath);
+    hid_t parentId;
+    if(parentPath.isEmpty())
     {
-      stream << ", ";
+      parentId = fileId;
     }
-  }
-  stream << ")\n";
-
-  size_t dsetDimsProduct = 1;
-  stream << tr("HDF5 Dataset Dimensions: (");
-  for(int i = 0; i < dims.size(); i++)
-  {
-    stream << dims[i];
-    dsetDimsProduct = dsetDimsProduct * dims[i];
-    if(i != dims.size() - 1)
+    else
     {
-      stream << ", ";
+      if(openedParentPathsMap.contains(parentPath) == false)
+      {
+        parentId = QH5Utilities::openHDF5Object(fileId, parentPath);
+        sentinel.addGroupId(&parentId);
+        openedParentPathsMap.insert(parentPath, parentId);
+      }
+      else
+      {
+        parentId = openedParentPathsMap[parentPath];
+      }
     }
+
+    // Read dataset into DREAM.3D structure
+    QString objectName = QH5Utilities::getObjectNameFromPath(datasetPath);
+
+    QVector<hsize_t> dims;
+    H5T_class_t type_class;
+    size_t type_size;
+    err = QH5Lite::getDatasetInfo(parentId, objectName, dims, type_class, type_size);
+    if(err < 0)
+    {
+      QString ss = tr("Error reading type info from dataset with path '%1'").arg(datasetPath);
+      setErrorCondition(-20005);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      m_DatasetPathsWithErrors.push_back(datasetPath);
+      return;
+    }
+
+    QString cDimsStr = m_DatasetImportInfoList[i].componentDimensions;
+    if(cDimsStr.isEmpty())
+    {
+      QString ss =
+          tr("The component dimensions are empty for dataset with path '%1'.  Please enter the component dimensions, using comma-separated values (ex: 4x2 would be '4, 2').").arg(datasetPath);
+      setErrorCondition(-20006);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      m_DatasetPathsWithErrors.push_back(datasetPath);
+      return;
+    }
+
+    QVector<size_t> cDims = createComponentDimensions(cDimsStr);
+    if(cDims.isEmpty())
+    {
+      QString ss = tr("Component Dimensions are not in the right format for dataset with path '%1'. Use comma-separated values (ex: 4x2 would be '4, 2').").arg(datasetPath);
+      setErrorCondition(-20007);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      m_DatasetPathsWithErrors.push_back(datasetPath);
+      return;
+    }
+
+    QLocale locale(QLocale::English);
+
+    // Calculate the product of the dataset dimensions and the product of the component dimensions.
+    // Since we're already looping over both of these sets of dimensions, let's also create our error message
+    // in case the equation does not work and we have to bail.
+    QString ss = "";
+    QTextStream stream(&ss);
+
+    stream << "-------------------------------------------\n";
+    stream << tr("HDF5 File Path: %1\n").arg(m_HDF5FilePath);
+    stream << tr("HDF5 Dataset Path: %1\n").arg(datasetPath);
+
+    int hdf5TotalElements = 1;
+    stream << tr("    No. of Dimension(s): ") << locale.toString(dims.size()) << "\n";
+    stream << tr("    Dimension Size(s): ");
+    for(int i = 0; i < dims.size(); i++)
+    {
+      stream << locale.toString(dims[i]);
+      hdf5TotalElements = hdf5TotalElements * dims[i];
+      if(i != dims.size() - 1)
+      {
+        stream << " x ";
+      }
+    }
+    stream << "\n";
+    stream << tr("    Total HDF5 Dataset Element Count: %1\n").arg(locale.toString(hdf5TotalElements));
+    stream << "-------------------------------------------\n";
+    stream << "Current Data Structure Information: \n";
+
+    stream << tr("Attribute Matrix Path: %1\n").arg(m_SelectedAttributeMatrix.serialize("/"));
+
+    size_t userEnteredTotalElements = 1;
+    QVector<size_t> amTupleDims = am->getTupleDimensions();
+    stream << tr("No. of Attribute Matrix Dimension(s): ") << locale.toString(amTupleDims.size()) << "\n";
+    stream << "Attribute Matrix Dimension(s): ";
+    for(int i = 0; i < amTupleDims.size(); i++)
+    {
+      userEnteredTotalElements = userEnteredTotalElements * amTupleDims[i];
+      int d = amTupleDims[i];
+      stream << locale.toString(d);
+      if(i != amTupleDims.size() - 1)
+      {
+        stream << " x ";
+      }
+    }
+    stream << "\n";
+
+    int numOfAMTuples = am->getNumberOfTuples();
+    stream << tr("Total Attribute Matrix Tuple Count: %1\n").arg(locale.toString(numOfAMTuples));
+
+    stream << tr("No. of Component Dimension(s): ") << locale.toString(cDims.size()) << "\n";
+    stream << "Component Dimension(s): ";
+
+    int totalComponents = 1;
+    for(int i = 0; i < cDims.size(); i++)
+    {
+      userEnteredTotalElements = userEnteredTotalElements * cDims[i];
+      totalComponents = totalComponents * cDims[i];
+      int d = cDims[i];
+      stream << locale.toString(d);
+      if(i != cDims.size() - 1)
+      {
+        stream << " x ";
+      }
+    }
+
+    stream << "\n";
+    stream << tr("Total Component Count: %1\n").arg(locale.toString(totalComponents));
+
+    stream << "\n";
+
+    if(hdf5TotalElements != userEnteredTotalElements)
+    {
+      stream << tr("The dataset with path '%1' cannot be read into attribute matrix '%2' because %3 "
+                   "attribute matrix tuples and %4 components per tuple equals %5 total elements, and"
+                   " that does not match the total HDF5 dataset element count of %6.\n"
+                   "%7 =/= %8")
+                    .arg(datasetPath)
+                    .arg(m_SelectedAttributeMatrix.getAttributeMatrixName())
+                    .arg(locale.toString(numOfAMTuples))
+                    .arg(locale.toString(totalComponents))
+                    .arg(locale.toString(numOfAMTuples * totalComponents))
+                    .arg(locale.toString(hdf5TotalElements))
+                    .arg(locale.toString(numOfAMTuples * totalComponents))
+                    .arg(locale.toString(hdf5TotalElements));
+
+      setErrorCondition(-20008);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      m_DatasetPathsWithErrors.push_back(datasetPath);
+      return;
+    }
+
+    IDataArray::Pointer dPtr = readIDataArray(parentId, objectName, am->getNumberOfTuples(), cDims, getInPreflight());
+    am->addAttributeArray(dPtr->getName(), dPtr);
   }
-  stream << ")\n";
-
-  stream << tr("Attribute Matrix Path: %1/%2\n").arg(m_SelectedAttributeMatrix.getDataContainerName()).arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
-  stream << tr("Attribute Matrix Tuple Count: %1\n\n").arg(am->getNumberOfTuples());
-
-  if(dsetDimsProduct % cDimsProduct != 0 || dsetDimsProduct / cDimsProduct != am->getNumberOfTuples())
-  {
-    stream << tr("This dataset cannot be read because this equation is not satisfied:\n"
-                 "(Product of dataset dimensions) / (Product of component dimensions) = (Attribute Matrix Tuple Count)\n"
-                 "%1 / %2 = %3\n%4 = %5")
-                  .arg(QString::number(dsetDimsProduct))
-                  .arg(QString::number(cDimsProduct))
-                  .arg(QString::number(am->getNumberOfTuples()))
-                  .arg(QString::number(dsetDimsProduct / cDimsProduct))
-                  .arg(QString::number(am->getNumberOfTuples()));
-
-    setErrorCondition(-20008);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return;
-  }
-
-  IDataArray::Pointer dPtr = readIDataArray(parentId, objectName, am->getNumberOfTuples(), cDims, getInPreflight());
-  am->addAttributeArray(dPtr->getName(), dPtr);
 
   // The sentinel will close the HDF5 File and any groups that were open.
 }
@@ -317,10 +362,10 @@ void ImportHDF5Dataset::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<size_t> ImportHDF5Dataset::createComponentDimensions()
+QVector<size_t> ImportHDF5Dataset::createComponentDimensions(const QString& cDimsStr)
 {
   QVector<size_t> cDims;
-  QStringList dimsStrVec = m_ComponentDimensions.split(',', QString::SkipEmptyParts);
+  QStringList dimsStrVec = cDimsStr.split(',', QString::SkipEmptyParts);
   for(int i = 0; i < dimsStrVec.size(); i++)
   {
     QString dimsStr = dimsStrVec[i];
@@ -532,8 +577,7 @@ AbstractFilter::Pointer ImportHDF5Dataset::newFilterInstance(bool copyFilterPara
   {
     filter->setFilterParameters(getFilterParameters());
     filter->setHDF5FilePath(getHDF5FilePath());
-    filter->setDatasetPaths(getDatasetPaths());
-    filter->setComponentDimensions(getComponentDimensions());
+    filter->setDatasetImportInfoList(getDatasetImportInfoList());
     filter->setSelectedAttributeMatrix(getSelectedAttributeMatrix());
   }
   return filter;
