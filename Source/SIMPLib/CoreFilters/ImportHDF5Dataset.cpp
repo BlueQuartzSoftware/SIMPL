@@ -170,6 +170,7 @@ void ImportHDF5Dataset::dataCheck()
   }
   H5ScopedFileSentinel sentinel(&fileId, true);
 
+  QMap<QString, hid_t> openedParentPathsMap;
   for (int i = 0; i < m_DatasetImportInfoList.size(); i++)
   {
     QString datasetPath = m_DatasetImportInfoList[i].dataSetPath;
@@ -182,8 +183,16 @@ void ImportHDF5Dataset::dataCheck()
     }
     else
     {
-      parentId = QH5Utilities::openHDF5Object(fileId, parentPath);
-      sentinel.addGroupId(&parentId);
+      if (openedParentPathsMap.contains(parentPath) == false)
+      {
+        parentId = QH5Utilities::openHDF5Object(fileId, parentPath);
+        sentinel.addGroupId(&parentId);
+        openedParentPathsMap.insert(parentPath, parentId);
+      }
+      else
+      {
+        parentId = openedParentPathsMap[parentPath];
+      }
     }
 
     // Read dataset into DREAM.3D structure
