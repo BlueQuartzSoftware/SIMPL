@@ -367,7 +367,7 @@ public:
   // -----------------------------------------------------------------------------
   template <typename T> void DatasetTest(ImportHDF5Dataset::Pointer filter, QList<ImportHDF5Dataset::DatasetImportInfo> importInfoList, QVector<size_t> amDims, int errCode)
   {
-    if (importInfoList.empty())
+    if(importInfoList.empty())
     {
       return;
     }
@@ -379,7 +379,7 @@ public:
     filter->setDataContainerArray(dca);
 
     QList<ImportHDF5Dataset::DatasetImportInfo> dsetInfoList = importInfoList;
-    for (ImportHDF5Dataset::DatasetImportInfo &info : dsetInfoList)
+    for(ImportHDF5Dataset::DatasetImportInfo& info : dsetInfoList)
     {
       info.dataSetPath = info.dataSetPath.replace("@TYPE_STRING@", typeStr);
     }
@@ -389,12 +389,12 @@ public:
     // Execute Dataset Test
     QString tDimsStr = createVectorString(amDims);
 
-    if (dsetInfoList.size() > 1)
+    if(dsetInfoList.size() > 1)
     {
       QString statusMessage = "Starting %1 Multiple Dataset Test: ";
       QString dsetPathsStr = "";
       QString cDimsVectorStr = "";
-      for (int i = 0; i < dsetInfoList.size(); i++)
+      for(int i = 0; i < dsetInfoList.size(); i++)
       {
         ImportHDF5Dataset::DatasetImportInfo info = dsetInfoList[i];
         dsetPathsStr.append(info.dataSetPath + "\n");
@@ -411,7 +411,8 @@ public:
     else
     {
       ImportHDF5Dataset::DatasetImportInfo info = dsetInfoList[0];
-      std::cout << QObject::tr("Starting %1 Dataset Test: Dataset Path = %2, tDims = %3, cDims = %4").arg(typeStr).arg(info.dataSetPath).arg(tDimsStr).arg(info.componentDimensions).toStdString() << std::endl;
+      std::cout << QObject::tr("Starting %1 Dataset Test: Dataset Path = %2, tDims = %3, cDims = %4").arg(typeStr).arg(info.dataSetPath).arg(tDimsStr).arg(info.componentDimensions).toStdString()
+                << std::endl;
     }
 
     filter->execute();
@@ -420,7 +421,7 @@ public:
     // If we got through without errors, validate the results
     if(errCode == 0)
     {
-      for (int i = 0; i < dsetInfoList.size(); i++)
+      for(int i = 0; i < dsetInfoList.size(); i++)
       {
         // Calculate the total number of tuples
         size_t tDimsProduct = 1;
@@ -432,7 +433,7 @@ public:
         QString cDimsStr = dsetInfoList[i].componentDimensions;
         QStringList tokens = cDimsStr.split(", ");
         QVector<size_t> cDims;
-        for (int i = 0; i < tokens.size(); i++)
+        for(int i = 0; i < tokens.size(); i++)
         {
           cDims.push_back(tokens[i].toInt());
         }
@@ -476,8 +477,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T>
-  QString joinVector(QVector<T> vector, const QString &separator)
+  template <typename T> QString joinVector(QVector<T> vector, const QString& separator)
   {
     QString cDimsStr = "";
     for(int i = 0; i < vector.size(); i++)
@@ -557,7 +557,7 @@ public:
 
         // Figure out our error code based on the dimensions coming in
         int errCode = 0;
-        if (TUPLEDIMPROD * COMPDIMPROD != amTupleCount * cDimsProd)
+        if(TUPLEDIMPROD * COMPDIMPROD != amTupleCount * cDimsProd)
         {
           errCode = -20008;
         }
@@ -639,9 +639,9 @@ public:
         importInfoList.clear();
 
         // Test every possible set of 2 datasets
-        for (int a = 0; a < dsetPaths.size(); a++)
+        for(int a = 0; a < dsetPaths.size(); a++)
         {
-          for (int b = a + 1; b < dsetPaths.size(); b++)
+          for(int b = a + 1; b < dsetPaths.size(); b++)
           {
             info.dataSetPath = dsetPaths[a];
             importInfoList.push_back(info);
@@ -664,11 +664,11 @@ public:
         }
 
         // Test every possible set of 3 datasets
-        for (int a = 0; a < dsetPaths.size(); a++)
+        for(int a = 0; a < dsetPaths.size(); a++)
         {
-          for (int b = a + 1; b < dsetPaths.size(); b++)
+          for(int b = a + 1; b < dsetPaths.size(); b++)
           {
-            for (int c = b + 1; c < dsetPaths.size(); c++)
+            for(int c = b + 1; c < dsetPaths.size(); c++)
             {
               info.dataSetPath = dsetPaths[a];
               importInfoList.push_back(info);

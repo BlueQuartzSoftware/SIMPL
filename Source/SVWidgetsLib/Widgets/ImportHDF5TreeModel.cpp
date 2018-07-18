@@ -89,10 +89,10 @@ QVariant ImportHDF5TreeModel::data(const QModelIndex& index, int role) const
   {
     return item->getCheckState();
   }
-  else if (role == Qt::ForegroundRole)
+  else if(role == Qt::ForegroundRole)
   {
     bool itemHasErrors = item->getHasErrors();
-    if (itemHasErrors)
+    if(itemHasErrors)
     {
       return QColor(Qt::red);
     }
@@ -131,7 +131,7 @@ bool ImportHDF5TreeModel::setData(const QModelIndex& index, const QVariant& valu
 
     emit selectedHDF5PathsChanged();
   }
-  else if (role == Roles::HasErrorsRole)
+  else if(role == Roles::HasErrorsRole)
   {
     item->setHasErrors(value.toBool());
   }
