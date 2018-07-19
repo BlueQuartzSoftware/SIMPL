@@ -37,14 +37,14 @@ namespace GeometryHelpers
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Translation::Translation()
-{}
+Translation::Translation() = default;
+
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Translation::~Translation()
-{}
+Translation::~Translation() = default;
+
 
 // -----------------------------------------------------------------------------
 //
@@ -109,6 +109,7 @@ QString Translation::TypeToString(IGeometry::Type t)
 
   switch(t)
   {
+  
   case IGeometry::Type::Image:
     geomType = SIMPL::Geometry::ImageGeometry;
     break;
@@ -127,8 +128,14 @@ QString Translation::TypeToString(IGeometry::Type t)
   case IGeometry::Type::Tetrahedral:
     geomType = SIMPL::Geometry::TetrahedralGeometry;
     break;
+  case IGeometry::Type::Hexahedral:
+    geomType = SIMPL::Geometry::HexahedralGeometry;
+    break;
   case IGeometry::Type::Unknown:
     geomType = SIMPL::Geometry::UnknownGeometry;
+    break;
+  case IGeometry::Type::RectGrid:
+    geomType = SIMPL::Geometry::RectGridGeometry;
     break;
   case IGeometry::Type::Any:
     geomType = SIMPL::Geometry::AnyGeometry;
