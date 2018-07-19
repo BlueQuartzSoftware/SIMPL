@@ -129,7 +129,7 @@ void DataContainerReader::preWriteFilterParameters(QJsonObject &obj, QJsonObject
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerReader::writeFilterParameters(QJsonObject& obj)
+void DataContainerReader::writeFilterParameters(QJsonObject& obj) const
 {
   //writeExistingPipelineToFile(obj);
   AbstractFilter::writeFilterParameters(obj);

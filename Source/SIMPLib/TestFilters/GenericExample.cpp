@@ -352,7 +352,7 @@ void GenericExample::readFilterParameters(QJsonObject& obj)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GenericExample::writeFilterParameters(QJsonObject& obj)
+void GenericExample::writeFilterParameters(QJsonObject& obj) const
 {
   AbstractFilter::writeFilterParameters(obj);
   obj["InputFile"] = getInputFile();

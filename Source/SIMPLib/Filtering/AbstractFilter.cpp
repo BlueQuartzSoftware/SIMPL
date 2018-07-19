@@ -408,7 +408,7 @@ void AbstractFilter::preWriteFilterParameters(QJsonObject& obj, QJsonObject& roo
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::writeFilterParameters(QJsonObject& obj)
+void AbstractFilter::writeFilterParameters(QJsonObject& obj) const
 {
   QVector<FilterParameter::Pointer> filterParameters = getFilterParameters();
   for(auto const fp : filterParameters)
@@ -436,6 +436,10 @@ QJsonObject AbstractFilter::toJson()
 
   json[SIMPL::Settings::FilterName] = getNameOfClass();
   json[SIMPL::Settings::HumanLabel] = getHumanLabel();
+  json[SIMPL::Settings::GroupName] = getGroupName();
+  json[SIMPL::Settings::SubGroupName] = getSubGroupName();
+  json[SIMPL::Settings::BrandingString] = getBrandingString();
+  json[SIMPL::Settings::CompiledLibraryName] = getCompiledLibraryName();
   json[SIMPL::Settings::FilterEnabled] = getEnabled();
   json[SIMPL::Settings::FilterUuid] = getUuid().toString();
 

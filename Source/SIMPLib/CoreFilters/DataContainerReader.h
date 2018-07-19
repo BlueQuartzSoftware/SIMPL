@@ -151,7 +151,7 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
     /**
      * @brief writeFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void writeFilterParameters(QJsonObject& obj) override;
+    virtual void writeFilterParameters(QJsonObject& obj) const override;
 
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
