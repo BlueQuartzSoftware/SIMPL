@@ -519,6 +519,10 @@ namespace SIMPL
     const QString FilterVersion("FilterVersion");
     const QString HumanLabel("Filter_Human_Label");
     const QString FilterEnabled("Filter_Enabled");
+    const QString GroupName("GroupName");
+    const QString SubGroupName("SubGroupName");
+    const QString BrandingString("BrandingString");
+    const QString CompiledLibraryName("CompiledLibraryName");
     const QString Version("Version");
     const QString PipelineBuilderGeomertry("PipelineBuilderGeometry");
   }
