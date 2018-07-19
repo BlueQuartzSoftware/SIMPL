@@ -504,6 +504,9 @@ QString DataArrayPathSelectionWidget::createGeomReqString(QVector<IGeometry::Typ
       case IGeometry::Type::Vertex:
         reqStr += "<td>Vertex</td>";
         break;
+      case IGeometry::Type::Hexahedral:
+        reqStr += "<td>Hexahedral</td>";
+        break;
       }
     }
   }

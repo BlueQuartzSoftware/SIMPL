@@ -40,15 +40,8 @@ class SVWidgetsLib_EXPORT PipelineListWidget : public QFrame, private Ui::Pipeli
     Q_OBJECT
 
   public:
-    enum class PipelineViewState : int
-    {
-      Idle = 0,
-      Running,
-      Cancelling
-    };
-
     PipelineListWidget(QWidget* parent = nullptr);
-    virtual ~PipelineListWidget();
+    ~PipelineListWidget() override;
 
     /**
      * @brief getPipelineView
@@ -85,25 +78,11 @@ class SVWidgetsLib_EXPORT PipelineListWidget : public QFrame, private Ui::Pipeli
      */
     void setupGui();
 
-    /**
-     * @brief Returns the PipelineState
-     * @return
-     */
-    PipelineViewState getPipelineViewState();
-
-    /**
-     * @brief Sets the PipelineState and updates the UI to match
-     * @param state
-     */
-    void setPipelineViewState(PipelineViewState state);
-
   signals:
     void pipelineCanceled(const QModelIndex &pipelineIndex);
     void pipelineOutput(FilterPipeline::Pointer pipeline, DataContainerArray::Pointer dca);
 
   private:
-
-    PipelineViewState m_PipelineState = PipelineViewState::Idle;
 
     /**
      * @brief getStartPipelineIdleStyle
@@ -118,6 +97,13 @@ class SVWidgetsLib_EXPORT PipelineListWidget : public QFrame, private Ui::Pipeli
      */
     QString getStartPipelineInProgressStyle(float percent);
 
+    /**
+     * @brief Sets the PipelineState and updates the UI to match
+     * @param state
+     */
+    void setPipelineState(SVPipelineView::PipelineViewState state);
+
+  public:
     PipelineListWidget(const PipelineListWidget&) = delete; // Copy Constructor Not Implemented
     void operator=(const PipelineListWidget&) = delete;  // Operator '=' Not Implemented
 };

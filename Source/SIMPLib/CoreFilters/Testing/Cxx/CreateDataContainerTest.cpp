@@ -108,7 +108,7 @@ public:
     QVariant value;
 
     value.setValue(dataContainer);
-    filter->setProperty("CreatedDataContainer", value);
+    filter->setProperty("DataContainerName", value);
   }
 
   // -----------------------------------------------------------------------------

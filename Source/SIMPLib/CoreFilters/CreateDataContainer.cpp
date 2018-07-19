@@ -123,14 +123,6 @@ void CreateDataContainer::execute()
     return;
   }
 
-  if(getErrorCondition() < 0)
-  {
-    QString ss = QObject::tr("Some error message");
-    setErrorCondition(-99999999);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return;
-  }
-
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
 

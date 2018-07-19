@@ -107,10 +107,9 @@
 SVPipelineView::SVPipelineView(QWidget* parent)
 : QListView(parent)
 , PipelineView()
-, m_PipelineIsRunning(false)
-, m_BlockPreflight(false)
 , m_SavedPipeline(FilterPipeline::New())
 , m_TempPipeline(FilterPipeline::New())
+, m_PipelineState(PipelineViewState::Idle)
 {
   setupGui();
 }
@@ -127,10 +126,7 @@ SVPipelineView::~SVPipelineView()
   }
 
   // Delete action if it exists
-  if(m_ActionEnableFilter)
-  {
-    delete m_ActionEnableFilter;
-  }
+  delete m_ActionEnableFilter;
 }
 
 // -----------------------------------------------------------------------------
@@ -139,10 +135,7 @@ SVPipelineView::~SVPipelineView()
 void SVPipelineView::setupGui()
 {
   // Delete action if it exists
-  if(m_ActionEnableFilter)
-  {
-    delete m_ActionEnableFilter;
-  }
+  delete m_ActionEnableFilter;
 
   m_ActionEnableFilter = new QAction("Enable", this);
   m_ActionEnableFilter->setCheckable(true);
@@ -535,11 +528,11 @@ void SVPipelineView::updateFilterInputWidgetIndices()
 // -----------------------------------------------------------------------------
 void SVPipelineView::cancelPipeline()
 {
-  if(m_PipelineInFlight)
+  if(nullptr != m_PipelineInFlight)
   {
     m_PipelineInFlight->cancelPipeline();
-    setPipelineIsRunning(false);
   }
+  setPipelineState(SVPipelineView::PipelineViewState::Cancelling);
 }
 
 // -----------------------------------------------------------------------------
@@ -552,7 +545,7 @@ void SVPipelineView::finishPipeline()
     return;
   }
 
-  if(m_PipelineInFlight->getCancel() == true)
+  if(m_PipelineInFlight->getCancel())
   {
     stdOutMessage("<b>*************** PIPELINE CANCELED ***************</b>");
   }
@@ -1549,8 +1542,7 @@ void SVPipelineView::keyPressEvent(QKeyEvent* event)
 {
   if(event->key() == Qt::Key_Backspace || event->key() == Qt::Key_Delete)
   {
-    bool isRunning = getPipelineIsRunning();
-    if(isRunning == false)
+    if(getPipelineState() == PipelineViewState::Running)
     {
       emit deleteKeyPressed();
     }
@@ -1587,7 +1579,7 @@ void SVPipelineView::toReadyState()
 // -----------------------------------------------------------------------------
 void SVPipelineView::toRunningState()
 {
-  setPipelineIsRunning(true);
+  setPipelineState(PipelineViewState::Running);
   setAcceptDrops(false);
   setDragEnabled(false);
 
@@ -1610,7 +1602,7 @@ void SVPipelineView::toRunningState()
 // -----------------------------------------------------------------------------
 void SVPipelineView::toStoppedState()
 {
-  setPipelineIsRunning(false);
+  setPipelineState(PipelineViewState::Idle);
   setAcceptDrops(true);
   setDragEnabled(true);
 
@@ -1865,7 +1857,7 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint& pos, const QMode
 
   m_ActionEnableFilter->setChecked(widgetEnabled);
   m_ActionEnableFilter->setEnabled(true);
-  m_ActionEnableFilter->setDisabled(getPipelineIsRunning());
+  m_ActionEnableFilter->setDisabled(getPipelineState() == PipelineViewState::Running);
   menu.addAction(m_ActionEnableFilter);
 
   menu.addSeparator();
@@ -1904,7 +1896,7 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint& pos, const QMode
     });
   }
   removeAction->setShortcuts(shortcutList);
-  if(getPipelineIsRunning() == true)
+  if(getPipelineState() == PipelineViewState::Running)
   {
     removeAction->setDisabled(true);
   }
@@ -2095,7 +2087,7 @@ void SVPipelineView::setModel(QAbstractItemModel* model)
 // -----------------------------------------------------------------------------
 bool SVPipelineView::isPipelineCurrentlyRunning()
 {
-  return getPipelineIsRunning();
+  return (getPipelineState() == PipelineViewState::Running);
 }
 
 // -----------------------------------------------------------------------------

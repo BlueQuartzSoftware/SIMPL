@@ -122,6 +122,9 @@ protected:
    */
   bool initWithFile(QString hdf5File);
 
+protected slots:
+  void on_cDimsLE_valueChanged(QString text);
+
 private slots:
   /**
    * @brief Slot to catch events when the DataRecord TreeView selection is changed
@@ -135,8 +138,12 @@ private:
   QString m_CurrentOpenFile;                // Stores the currently open HDF5 File
   std::string m_CurrentHDFDataPath;         // Stores the currently viewed HDF data path
   hid_t m_FileId;
+  QMap<QString, QString> m_ComponentDimsMap;
+  QStringList m_CurrentPathsWithErrors;
 
-  ImportHDF5DatasetFilterParameter* m_FilterParameter;
+  ImportHDF5Dataset* m_Filter = nullptr;
+
+  ImportHDF5DatasetFilterParameter* m_FilterParameter = nullptr;
 
   /**
    * @brief Updates the QGraphicsView based on the current Data Dimension and Data record values
@@ -146,12 +153,21 @@ private:
 
   herr_t updateAttributeTable(const QString& datasetPath);
   herr_t updateGeneralTable(const QString& path);
+  herr_t updateComponentDimensions(const QString& datasetPath);
   void addRow(QTableWidget* table, int row, const QString& key, const QString& value);
 
   void initializeHDF5Paths();
+
+  /**
+   * @brief Breaks the specified number, n, down into its prime factors.  These are numbers that are
+   * only divisible by 1 and themselves.
+   * @param n The number to calculate the prime factors of.
+   * @param primeFactors The vector to store the prime factors into.
+   * @return
+   */
+  void calculatePrimeFactors(int n, QVector<int>& primeFactors);
 
   ~ImportHDF5DatasetWidget();
   ImportHDF5DatasetWidget(const ImportHDF5DatasetWidget&) = delete; // Copy Constructor Not Implemented
   void operator=(const ImportHDF5DatasetWidget&);                   // Copy Assignment Not Implemented
 };
-

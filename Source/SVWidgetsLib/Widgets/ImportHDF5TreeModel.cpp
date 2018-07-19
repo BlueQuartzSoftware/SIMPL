@@ -89,6 +89,16 @@ QVariant ImportHDF5TreeModel::data(const QModelIndex& index, int role) const
   {
     return item->getCheckState();
   }
+  else if(role == Qt::ForegroundRole)
+  {
+    bool itemHasErrors = item->getHasErrors();
+    if(itemHasErrors)
+    {
+      return QColor(Qt::red);
+    }
+
+    return QVariant();
+  }
 
   return QVariant();
 }
@@ -108,18 +118,6 @@ bool ImportHDF5TreeModel::setData(const QModelIndex& index, const QVariant& valu
   if(role == Qt::CheckStateRole && item->isGroup() == false)
   {
     Qt::CheckState checkState = static_cast<Qt::CheckState>(value.toInt());
-    if(checkState == Qt::Checked)
-    {
-      while(m_SelectedHDF5Paths.size() > 0)
-      {
-        QString selectedHDF5Path = m_SelectedHDF5Paths.front();
-        QModelIndex checkedIndex = hdf5PathToIndex(selectedHDF5Path);
-        setData(checkedIndex, Qt::Unchecked, Qt::CheckStateRole);
-        m_SelectedHDF5Paths.removeAll(selectedHDF5Path);
-        emit dataChanged(checkedIndex, checkedIndex);
-      }
-    }
-
     item->setCheckState(checkState);
     QString hdf5Path = item->generateHDFPath();
     if(checkState == Qt::Checked)
@@ -130,10 +128,15 @@ bool ImportHDF5TreeModel::setData(const QModelIndex& index, const QVariant& valu
     {
       m_SelectedHDF5Paths.removeAll(hdf5Path);
     }
+
+    emit selectedHDF5PathsChanged();
+  }
+  else if(role == Roles::HasErrorsRole)
+  {
+    item->setHasErrors(value.toBool());
   }
 
   emit dataChanged(index, index);
-  emit modelChanged();
 
   return true;
 }
@@ -294,14 +297,16 @@ QModelIndex ImportHDF5TreeModel::hdf5PathToIndex(const QString& hdf5Path)
   if(hdf5PathTokens.size() > 0)
   {
     QModelIndex rootIndex = index(0, 0);
-    QModelIndex currentIndex = index(0, 0, rootIndex);
+    QModelIndex startIndex = index(0, 0, rootIndex);
+    QModelIndex foundIndex;
     for(int i = 0; i < hdf5PathTokens.size(); i++)
     {
       QString hdf5PathToken = hdf5PathTokens[i];
-      QModelIndexList indexList = match(currentIndex, Qt::DisplayRole, hdf5PathToken);
+      QModelIndexList indexList = match(startIndex, Qt::DisplayRole, hdf5PathToken);
       if(indexList.size() == 1)
       {
-        currentIndex = indexList[0];
+        foundIndex = indexList[0];
+        startIndex = index(0, 0, foundIndex);
       }
       else
       {
@@ -309,7 +314,7 @@ QModelIndex ImportHDF5TreeModel::hdf5PathToIndex(const QString& hdf5Path)
       }
     }
 
-    return currentIndex;
+    return foundIndex;
   }
 
   return QModelIndex();
