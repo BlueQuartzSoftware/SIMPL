@@ -31,18 +31,26 @@
 
 namespace itk
 {
-template <typename TElementIdentifier, typename TElement> ImportDream3DImageContainer<TElementIdentifier, TElement>::ImportDream3DImageContainer()
+
+template <typename TElementIdentifier, typename TElement>
+ImportDream3DImageContainer<TElementIdentifier, TElement>
+::ImportDream3DImageContainer()
 {
 }
 
-template <typename TElementIdentifier, typename TElement> ImportDream3DImageContainer<TElementIdentifier, TElement>::~ImportDream3DImageContainer()
+
+template <typename TElementIdentifier, typename TElement>
+ImportDream3DImageContainer<TElementIdentifier, TElement>
+::~ImportDream3DImageContainer()
 {
   DeallocateManagedMemory();
 }
 
+
 template <typename TElementIdentifier, typename TElement>
-typename ImportDream3DImageContainer<TElementIdentifier, TElement>::Element* ImportDream3DImageContainer<TElementIdentifier, TElement>::AllocateElements(ElementIdentifier size,
-                                                                                                                                                         bool UseDefaultConstructor) const
+typename ImportDream3DImageContainer<TElementIdentifier, TElement>::Element*
+ImportDream3DImageContainer<TElementIdentifier, TElement>
+::AllocateElements(ElementIdentifier size, bool UseDefaultConstructor) const
 {
   // Encapsulate all image memory allocation here to throw an
   // exception when memory allocation fails even when the compiler
@@ -69,7 +77,11 @@ typename ImportDream3DImageContainer<TElementIdentifier, TElement>::Element* Imp
   return data;
 }
 
-template <typename TElementIdentifier, typename TElement> void ImportDream3DImageContainer<TElementIdentifier, TElement>::DeallocateManagedMemory()
+
+template <typename TElementIdentifier, typename TElement>
+void
+ImportDream3DImageContainer<TElementIdentifier, TElement>
+::DeallocateManagedMemory()
 {
   // Encapsulate all image memory deallocation here
   if(this->GetContainerManageMemory())
@@ -82,7 +94,11 @@ template <typename TElementIdentifier, typename TElement> void ImportDream3DImag
   Superclass::DeallocateManagedMemory();
 }
 
-template <typename TElementIdentifier, typename TElement> void ImportDream3DImageContainer<TElementIdentifier, TElement>::PrintSelf(std::ostream& os, Indent indent) const
+
+template <typename TElementIdentifier, typename TElement>
+void
+ImportDream3DImageContainer<TElementIdentifier, TElement>
+::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }

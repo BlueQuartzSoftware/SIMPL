@@ -14,10 +14,12 @@ InPlaceDream3DDataToImageFilter<PixelType, VDimension>::InPlaceDream3DDataToImag
   m_PixelContainerWillOwnTheBuffer = false;
 }
 
+
 template< typename PixelType, unsigned int VDimension >
 InPlaceDream3DDataToImageFilter<PixelType, VDimension>::~InPlaceDream3DDataToImageFilter()
 {
 }
+
 
 template< typename PixelType, unsigned int VDimension>
 void
@@ -30,6 +32,7 @@ InPlaceDream3DDataToImageFilter< PixelType, VDimension >
     this->Modified();
   }
 }
+
 
 template< typename PixelType, unsigned int VDimension>
 void
@@ -60,6 +63,7 @@ InPlaceDream3DDataToImageFilter< PixelType, VDimension >
   }
   Superclass::VerifyPreconditions();
 }
+
 
 template< typename PixelType, unsigned int VDimension>
 void
@@ -107,6 +111,7 @@ InPlaceDream3DDataToImageFilter< PixelType, VDimension >
   outputPtr->SetDirection( direction );
   outputPtr->SetLargestPossibleRegion( size );
 }
+
 
 template< typename PixelType, unsigned int VDimension>
 void

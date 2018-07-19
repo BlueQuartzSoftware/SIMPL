@@ -38,7 +38,9 @@
 namespace itk
 {
 
-template <typename ITKTransformType> Dream3DTransformContainerToTransform<ITKTransformType>::Dream3DTransformContainerToTransform()
+template <typename ITKTransformType>
+Dream3DTransformContainerToTransform<ITKTransformType>
+::Dream3DTransformContainerToTransform()
 {
   // Create the output. We use static_cast<> here because we know the default
   // output must be of type DecoratorType
@@ -48,9 +50,15 @@ template <typename ITKTransformType> Dream3DTransformContainerToTransform<ITKTra
   m_TransformContainer = ::TransformContainer::NullPointer();
 }
 
-template <typename ITKTransformType> Dream3DTransformContainerToTransform<ITKTransformType>::~Dream3DTransformContainerToTransform() = default;
 
-template <typename ITKTransformType> void Dream3DTransformContainerToTransform<ITKTransformType>::SetInput(::TransformContainer::Pointer& transformContainer)
+template <typename ITKTransformType>
+Dream3DTransformContainerToTransform<ITKTransformType>
+::~Dream3DTransformContainerToTransform() = default;
+
+template <typename ITKTransformType>
+void
+Dream3DTransformContainerToTransform<ITKTransformType>
+::SetInput(::TransformContainer::Pointer& transformContainer)
 {
   if(transformContainer != m_TransformContainer)
   {
@@ -59,7 +67,11 @@ template <typename ITKTransformType> void Dream3DTransformContainerToTransform<I
   }
 }
 
-template <typename ITKTransformType> ProcessObject::DataObjectPointer Dream3DTransformContainerToTransform<ITKTransformType>::MakeOutput(ProcessObject::DataObjectPointerArraySizeType)
+
+template <typename ITKTransformType>
+ProcessObject::DataObjectPointer
+Dream3DTransformContainerToTransform<ITKTransformType>
+::MakeOutput(ProcessObject::DataObjectPointerArraySizeType)
 {
   typename DecoratorType::Pointer output = DecoratorType::New();
   typename ITKTransformType::Pointer transform = ITKTransformType::New();
@@ -67,7 +79,11 @@ template <typename ITKTransformType> ProcessObject::DataObjectPointer Dream3DTra
   return output.GetPointer();
 }
 
-template <typename ITKTransformType> void Dream3DTransformContainerToTransform<ITKTransformType>::VerifyPreconditions()
+
+template <typename ITKTransformType>
+void
+Dream3DTransformContainerToTransform<ITKTransformType>
+::VerifyPreconditions()
 {
   if(!m_TransformContainer)
   {
@@ -93,7 +109,11 @@ template <typename ITKTransformType> void Dream3DTransformContainerToTransform<I
   Superclass::VerifyPreconditions();
 }
 
-template <typename ITKTransformType> void Dream3DTransformContainerToTransform<ITKTransformType>::GenerateData()
+
+template <typename ITKTransformType>
+void
+Dream3DTransformContainerToTransform<ITKTransformType>
+::GenerateData()
 {
   DecoratorType* outputPtr = this->GetOutput();
   typename ITKTransformType::Pointer transform = outputPtr->Get();
@@ -116,7 +136,10 @@ template <typename ITKTransformType> void Dream3DTransformContainerToTransform<I
   transform->SetFixedParameters(itkFixedParameters);
 }
 
-template <typename ITKTransformType> typename Dream3DTransformContainerToTransform<ITKTransformType>::DecoratorType* Dream3DTransformContainerToTransform<ITKTransformType>::GetOutput()
+template <typename ITKTransformType>
+typename Dream3DTransformContainerToTransform<ITKTransformType>::DecoratorType*
+Dream3DTransformContainerToTransform<ITKTransformType>
+::GetOutput()
 {
   return itkDynamicCastInDebugMode<DecoratorType*>(this->GetPrimaryOutput());
 }

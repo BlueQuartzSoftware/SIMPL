@@ -40,7 +40,9 @@
 namespace itk
 {
 
-template <typename TParametersValueType, unsigned int CompositeNDimensions> TransformToDream3DITransformContainer<TParametersValueType, CompositeNDimensions>::TransformToDream3DITransformContainer()
+template <typename TParametersValueType, unsigned int CompositeNDimensions>
+TransformToDream3DITransformContainer<TParametersValueType, CompositeNDimensions>
+::TransformToDream3DITransformContainer()
 {
   // Create the output. We use static_cast<> here because we know the default
   // output must be of type DecoratorType
@@ -50,11 +52,16 @@ template <typename TParametersValueType, unsigned int CompositeNDimensions> Tran
   m_Transform = nullptr;
 }
 
-template <typename TParametersValueType, unsigned int CompositeNDimensions>
-TransformToDream3DITransformContainer<TParametersValueType, CompositeNDimensions>::~TransformToDream3DITransformContainer() = default;
 
 template <typename TParametersValueType, unsigned int CompositeNDimensions>
-void TransformToDream3DITransformContainer<TParametersValueType, CompositeNDimensions>::SetInput(const typename ITKTransformType::Pointer& transform)
+TransformToDream3DITransformContainer<TParametersValueType, CompositeNDimensions>
+::~TransformToDream3DITransformContainer() = default;
+
+
+template <typename TParametersValueType, unsigned int CompositeNDimensions>
+void
+TransformToDream3DITransformContainer<TParametersValueType, CompositeNDimensions>
+::SetInput(const typename ITKTransformType::Pointer& transform)
 {
   if(!(transform == m_Transform))
   {
@@ -63,14 +70,21 @@ void TransformToDream3DITransformContainer<TParametersValueType, CompositeNDimen
   }
 }
 
+
 template <typename TParametersValueType, unsigned int CompositeNDimensions>
-ProcessObject::DataObjectPointer TransformToDream3DITransformContainer<TParametersValueType, CompositeNDimensions>::MakeOutput(ProcessObject::DataObjectPointerArraySizeType)
+ProcessObject::DataObjectPointer
+TransformToDream3DITransformContainer<TParametersValueType, CompositeNDimensions>
+::MakeOutput(ProcessObject::DataObjectPointerArraySizeType)
 {
   typename DecoratorType::Pointer output = DecoratorType::New();
   return output.GetPointer();
 }
 
-template <typename TParametersValueType, unsigned int CompositeNDimensions> void TransformToDream3DITransformContainer<TParametersValueType, CompositeNDimensions>::VerifyPreconditions()
+
+template <typename TParametersValueType, unsigned int CompositeNDimensions>
+void
+TransformToDream3DITransformContainer<TParametersValueType, CompositeNDimensions>
+::VerifyPreconditions()
 {
   if(!m_Transform)
   {
@@ -79,11 +93,12 @@ template <typename TParametersValueType, unsigned int CompositeNDimensions> void
   Superclass::VerifyPreconditions();
 }
 
-template <typename TParametersValueType, unsigned int CompositeNDimensions>
-void TransformToDream3DITransformContainer<TParametersValueType, CompositeNDimensions>::GenerateData(::ITransformContainer::Pointer& iTransformContainer,
-                                                                                                     const typename ITKTransformType::Pointer& transform)
-{
 
+template <typename TParametersValueType, unsigned int CompositeNDimensions>
+void
+TransformToDream3DITransformContainer<TParametersValueType, CompositeNDimensions>
+::GenerateData(::ITransformContainer::Pointer& iTransformContainer, const typename ITKTransformType::Pointer& transform)
+{
   using CompositeType = itk::CompositeTransform<TParametersValueType, CompositeNDimensions>;
   typename CompositeType::Pointer itkCompositeTransform = dynamic_cast<CompositeType*>(transform.GetPointer());
   if(itkCompositeTransform)
@@ -122,7 +137,10 @@ void TransformToDream3DITransformContainer<TParametersValueType, CompositeNDimen
   }
 }
 
-template <typename TParametersValueType, unsigned int CompositeNDimensions> void TransformToDream3DITransformContainer<TParametersValueType, CompositeNDimensions>::GenerateData()
+
+template <typename TParametersValueType, unsigned int CompositeNDimensions>
+void
+TransformToDream3DITransformContainer<TParametersValueType, CompositeNDimensions>::GenerateData()
 {
   DecoratorType* outputPtr = this->GetOutput();
   typename ::ITransformContainer::Pointer iTransformContainer;
@@ -130,9 +148,11 @@ template <typename TParametersValueType, unsigned int CompositeNDimensions> void
   outputPtr->Set(iTransformContainer);
 }
 
+
 template <typename TParametersValueType, unsigned int CompositeNDimensions>
 typename TransformToDream3DITransformContainer<TParametersValueType, CompositeNDimensions>::DecoratorType*
-TransformToDream3DITransformContainer<TParametersValueType, CompositeNDimensions>::GetOutput()
+TransformToDream3DITransformContainer<TParametersValueType, CompositeNDimensions>
+::GetOutput()
 {
   return itkDynamicCastInDebugMode<DecoratorType*>(this->GetPrimaryOutput());
 }

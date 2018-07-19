@@ -34,12 +34,18 @@
 namespace itk
 {
 
-template <typename TPixel, unsigned int VImageDimension> Dream3DImage<TPixel, VImageDimension>::Dream3DImage()
+template <typename TPixel, unsigned int VImageDimension>
+Dream3DImage<TPixel, VImageDimension>
+::Dream3DImage()
 {
   m_TemplatedBuffer = PixelContainerType::New();
 }
 
-template <typename TPixel, unsigned int VImageDimension> void Dream3DImage<TPixel, VImageDimension>::Allocate(bool initializePixels)
+
+template <typename TPixel, unsigned int VImageDimension>
+void
+Dream3DImage<TPixel, VImageDimension>
+::Allocate(bool initializePixels)
 {
   SizeValueType num;
 
@@ -49,7 +55,11 @@ template <typename TPixel, unsigned int VImageDimension> void Dream3DImage<TPixe
   m_TemplatedBuffer->Reserve(num, initializePixels);
 }
 
-template <typename TPixel, unsigned int VImageDimension> void Dream3DImage<TPixel, VImageDimension>::Initialize()
+
+template <typename TPixel, unsigned int VImageDimension>
+void
+Dream3DImage<TPixel, VImageDimension>
+::Initialize()
 {
   //
   // We don't modify ourselves because the "ReleaseData" methods depend upon
@@ -66,14 +76,22 @@ template <typename TPixel, unsigned int VImageDimension> void Dream3DImage<TPixe
   m_TemplatedBuffer = PixelContainerType::New();
 }
 
-template <typename TPixel, unsigned int VImageDimension> void Dream3DImage<TPixel, VImageDimension>::FillBuffer(const TPixel& value)
+
+template <typename TPixel, unsigned int VImageDimension>
+void
+Dream3DImage<TPixel, VImageDimension>
+::FillBuffer(const TPixel& value)
 {
   const SizeValueType numberOfPixels = this->GetBufferedRegion().GetNumberOfPixels();
 
   std::fill_n(&(*m_TemplatedBuffer)[0], numberOfPixels, value);
 }
 
-template <typename TPixel, unsigned int VImageDimension> void Dream3DImage<TPixel, VImageDimension>::SetPixelContainer(PixelContainerType* container)
+
+template <typename TPixel, unsigned int VImageDimension>
+void
+Dream3DImage<TPixel, VImageDimension>
+::SetPixelContainer(PixelContainerType* container)
 {
   if(m_TemplatedBuffer != container)
   {
@@ -82,7 +100,11 @@ template <typename TPixel, unsigned int VImageDimension> void Dream3DImage<TPixe
   }
 }
 
-template <typename TPixel, unsigned int VImageDimension> void Dream3DImage<TPixel, VImageDimension>::Graft(const DataObject* data)
+
+template <typename TPixel, unsigned int VImageDimension>
+void
+Dream3DImage<TPixel, VImageDimension>
+::Graft(const DataObject* data)
 {
   // call the superclass' implementation
   Superclass::Superclass::Graft(data);
@@ -105,7 +127,11 @@ template <typename TPixel, unsigned int VImageDimension> void Dream3DImage<TPixe
   }
 }
 
-template <typename TPixel, unsigned int VImageDimension> void Dream3DImage<TPixel, VImageDimension>::PrintSelf(std::ostream& os, Indent indent) const
+
+template <typename TPixel, unsigned int VImageDimension>
+void
+Dream3DImage<TPixel, VImageDimension>
+::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 
