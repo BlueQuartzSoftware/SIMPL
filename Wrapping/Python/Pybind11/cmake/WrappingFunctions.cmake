@@ -35,7 +35,8 @@ function(CreatePybind11Module)
   get_property(SIMPL_PYTHON_MODULE_SUFFIX GLOBAL PROPERTY SIMPL_PYTHON_MODULE_SUFFIX)
 
   # Give our module a name. Python standards dictate ALL lowercase for the module name
-  set(pybind_module_name "${ARGS_MODULE_NAME}${SIMPL_PYTHON_MODULE_SUFFIX}") 
+  set(pybind_module_name "${ARGS_MODULE_NAME}${SIMPL_PYTHON_MODULE_SUFFIX}")
+  set(pybind_module_name_CamelCase "${ARGS_MODULE_NAME}")
   string(TOLOWER ${pybind_module_name} pybind_module_name)
 
   set(SIMPL_PY_MODULE_NAME "dream3d_py")
@@ -46,7 +47,7 @@ function(CreatePybind11Module)
   add_custom_target(${pybind_module_name}CreatePythonBindings ALL
       COMMAND GeneratePythonBindings "${ARGS_SOURCE_DIR}"
       "${ARGS_PATH_TO_STRIP}"
-      "${pybind_module_name}"
+      "${pybind_module_name_CamelCase}"
       "${SIMPLProj_BINARY_DIR}/Wrapping/PythonCore" 
       "${ARGS_MODULE_TEMPLATE_FILE}"
       "${ARGS_SIMPLIB}"

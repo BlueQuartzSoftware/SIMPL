@@ -18,9 +18,11 @@ public:
   ~PythonBindingsModule();
 
   SIMPL_INSTANCE_PROPERTY(QString, LibName)
+  SIMPL_INSTANCE_PROPERTY(QString, LibNameUpper)
   SIMPL_INSTANCE_PROPERTY(QString, TemplatePath)
 
   using MapperType = QMap<QString, QString>;
+  using MapperType2 = QMap<QString, QVector<QString>>;
 
   SIMPL_INSTANCE_PROPERTY(MapperType, Headers)
   void addHeader(const QString& className, const QString& header);
@@ -33,7 +35,11 @@ public:
   SIMPL_INSTANCE_PROPERTY(MapperType, PythonCodes)
   void addPythonCodes(const QString& className, const QString& pyCode);
   void clearPythonCodes();
-  
+
+  SIMPL_INSTANCE_PROPERTY(MapperType2, PythonicCodes)
+  void addPythonicCodes(const QString& className, const QVector<QString>& pyCode);
+  void clearPythonicCodes();
+    
   /**
    * @brief addDependency
    * @param superClassName
@@ -62,6 +68,14 @@ public:
    * @param isSIMPLib
    */
   void generatePythonTestFile(const QString& outputPath, const QString& isSIMPLib);
+  
+  
+  /**
+   * @brief generatePythonicInterface
+   * @param outputPath
+   * @param isSIMPLib
+   */
+  void generatePythonicInterface(const QString& outputPath, const QString& isSIMPLib);
   
   
 protected:

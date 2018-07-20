@@ -48,6 +48,7 @@ target_sources(GeneratePythonBindings PRIVATE
   ${SIMPLPyBind11_SOURCE_DIR}/CodeScraper/PythonBindingsModule.cpp
   ${SIMPLPyBind11_SOURCE_DIR}/CodeScraper/PyBind11Generator.h
   ${SIMPLPyBind11_SOURCE_DIR}/CodeScraper/PyBind11Generator.cpp
+  ${SIMPLPyBind11_SOURCE_DIR}/CodeScraper/PythonUtils.h
 )
 target_include_directories(GeneratePythonBindings 
                           PRIVATE

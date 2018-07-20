@@ -46,6 +46,7 @@ private:
   QDir m_SourceDir;
   QString m_CharsToStrip;
   QString m_LibName;
+  QString m_LibNameUpper;
   QString m_GenDir;
   QString m_ModuleTemplatePath;
   PythonBindingsModule m_ModuleCode;

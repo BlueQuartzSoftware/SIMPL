@@ -59,10 +59,10 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  // std::cout << "Source Directory: " << argv[1] << std::endl;
-  // std::cout << "Characters to strip: " << argv[2] << std::endl;
-  // std::cout << "Name of the Library: " << argv[3] << std::endl;
-  // std::cout << "Generated Dir: " << argv[4] << std::endl;
+//   std::cout << "Source Directory: " << argv[1] << std::endl;
+//   std::cout << "Characters to strip: " << argv[2] << std::endl;
+//   std::cout << "Name of the Library: " << argv[3] << std::endl;
+//   std::cout << "Generated Dir: " << argv[4] << std::endl;
 
   QString charsToStrip = QString::fromLatin1(argv[2]);
   if(charsToStrip == "-")

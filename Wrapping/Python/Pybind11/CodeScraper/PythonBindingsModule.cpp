@@ -5,9 +5,12 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QTemporaryFile>
 #include <QtCore/QCryptographicHash>
+#include <QtCore/QListIterator>
 
 #include "CodeScraper/CodeScraperConstants.h"
 #include "CodeScraper/SIMPLPyBind11Config.h"
+#include "CodeScraper/PythonUtils.h"
+
 
 // -----------------------------------------------------------------------------
 //
@@ -69,6 +72,22 @@ void PythonBindingsModule::addPythonCodes(const QString& className, const QStrin
 void PythonBindingsModule::clearPythonCodes()
 {
   m_PythonCodes.clear();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PythonBindingsModule::addPythonicCodes(const QString& className, const QVector<QString>& pyCode)
+{
+  m_PythonicCodes[className] = pyCode;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PythonBindingsModule::clearPythonicCodes()
+{
+  m_PythonicCodes.clear();
 }
 
 // -----------------------------------------------------------------------------
@@ -292,7 +311,8 @@ void PythonBindingsModule::generatePythonTestFile(const QString& outputPath, con
   out << "\"\"\"\n"
       << "This is a basic unit test file to ensure that the filters can be instantiated\n"
       << "This file is auto generated as part of the 'CodeScraper' program that is executed\n"
-      << " during the compilation phase.\n"
+      << "during the compilation phase.\n"
+      << "m_LibName=" << m_LibName << "\n"
       << "\"\"\"\n";
   QString shortLibName = m_LibName;
   shortLibName.replace("_py", "");
@@ -334,6 +354,61 @@ void PythonBindingsModule::generatePythonTestFile(const QString& outputPath, con
   
 }
 
+// -----------------------------------------------------------------------------
+// https://discourse.itk.org/t/pythonic-interface-to-itk-filters/1106
+// -----------------------------------------------------------------------------
+void PythonBindingsModule::generatePythonicInterface(const QString& outputPath, const QString& isSIMPLib)
+{
+  QFileInfo fi(outputPath);
+  //QString libOutputPath = QString("%1/%2").arg(SIMPL::PyBind11::LibraryOutputDirectory).arg(fi.fileName());
+  
+  QString code;
+  QTextStream out(&code);
+  
+  out << "\"\"\"\n Pythonic Interface to SIMPL Plugin " << getLibNameUpper() << "\n";
+  out << "\"\"\"" << "\n";
+  out << "\n\n";
+  QString shortLibName = m_LibName;
+  shortLibName.replace("_py", "");
+  out << "import dream3d\n"
+    << "import dream3d.dream3d_py as d3d\n"
+    // << "import dream3d.dream3d_py.simpl_py as simpl\n"
+    // << "import dream3d.utils.simpl_common as sc\n"
+    // << "import dream3d.utils.simpl_test_dirs as sd\n"
+    << "import dream3d.dream3d_py." << m_LibName << " as " << shortLibName << "\n"
+    << "\n\n\n"
+    ;
+    
+    
+  QList<QString> classes = m_Headers.keys();
+  QListIterator<QString> iter(classes);
+  while(iter.hasNext())
+  {
+    QString aClass = iter.next();
+    QVector<QString> pythonicCodes = m_PythonicCodes[aClass];
+    QString initCodes;
+    QString bodyCodes;
+    if(pythonicCodes.size() >= 1) { initCodes = pythonicCodes[0];}
+    if(pythonicCodes.size() >= 2) { bodyCodes = pythonicCodes[1];}
+    bodyCodes = bodyCodes.replace("@shortLibName@", shortLibName);
+    if(aClass.compare("AbstractFilter") == 0 && isSIMPLib.compare("FALSE") == 0)
+    {
+      continue;
+    }
+    out << "def " << SIMPL::Python::fromCamelCase(aClass) << initCodes << ":\n"
+        << "    \"\"\"" << "\n"
+        << "    Instantiates " << aClass << "\n"
+        << "    \"\"\"" << "\n"
+        << bodyCodes << "\n"
+       
+        << "\n\n"    
+       ;
+    
+  }
+  writeOutput(true, code, outputPath);
+  
+  
+}
 
 // -----------------------------------------------------------------------------
 //

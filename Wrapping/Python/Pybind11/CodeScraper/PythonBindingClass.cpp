@@ -5,9 +5,12 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QTemporaryFile>
 #include <QtCore/QCryptographicHash>
+#include <QtCore/QRegularExpression>
+
 
 #include "CodeScraper/CodeScraperConstants.h"
 #include "CodeScraper/SIMPLPyBind11Config.h"
+#include "CodeScraper/PythonUtils.h"
 #include "PythonBindingsModule.h"
 
 PythonBindingClass::PythonBindingClass(PythonBindingsModule* moduleCode, const QString& isSIMPLib)
@@ -69,6 +72,7 @@ void PythonBindingClass::clearEnumerations()
 }
 #if 0
 #endif
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -136,7 +140,10 @@ void PythonBindingClass::writeBindingFile(const QString& outputFilePath)
     }
     out << generateEnumerationCode();
     out << generateFooterCode();
-
+    
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
     writeOutput(getNeedsWrapping(), output, outputFilePath);
 
     QString initCode;
@@ -503,8 +510,20 @@ QString PythonBindingClass::generatePropertiesCode()
 {
   QString code;
   QTextStream out(&code);
-  for(auto line : m_Properties)
+  
+  QString methodArgs;
+  QTextStream pcodes(&methodArgs);
+  pcodes << "(data_container_array, ";
+  
+  QString bodyCodes;
+  QTextStream bcodes(&bodyCodes);
+  QString camelClassName = SIMPL::Python::fromCamelCase(getClassName());
+  bcodes << "    " << camelClassName << " = @shortLibName@." << getClassName() << ".New()\n";
+  bcodes << "    " << camelClassName << ".setDataContainerArray(data_container_array)" << NEWLINE_SIMPL;
+
+  for(int i = 0; i < m_Properties.size(); i++)
   {
+    QString line = m_Properties.at(i);
     QStringList tokens = line.split("(");
     tokens = tokens[1].replace(")", "").trimmed().split(" ");
     QString pyType = tokens[0];
@@ -514,6 +533,13 @@ QString PythonBindingClass::generatePropertiesCode()
     {
       out << TAB << "/* Property accessors for " << varName << " */" << NEWLINE_SIMPL;
       out << TAB << ".def_property(\"" << varName << "\", &" << getClassName() << "::get" << varName << ", &" << getClassName() << "::set" << varName << ")" << NEWLINE_SIMPL;
+      
+      pcodes << SIMPL::Python::fromCamelCase(varName);
+      if(i < m_Properties.size() - 1)
+      {
+        pcodes << ", ";
+      }
+      bcodes << "    " << camelClassName << "." << varName << " = " << SIMPL::Python::fromCamelCase(varName) << NEWLINE_SIMPL;
     }
     else if(tokens.size() == 4 && tokens[2] == ::kRead)
     {
@@ -526,6 +552,23 @@ QString PythonBindingClass::generatePropertiesCode()
       out << TAB << ".def(\"set" << varName << "\", &" << getClassName() << "::set" << varName << ", py::arg(\"" << varName << "\"))" << NEWLINE_SIMPL;
     }
   }
+  pcodes << ")";
+  
+  bcodes 
+    //     << "    " << camelClassName << ".preflight()" << NEWLINE_SIMPL
+    //     << "    preflightError = " << camelClassName << ".ErrorCondition" << NEWLINE_SIMPL
+    //     << "    if preflightError >= 0 :" << NEWLINE_SIMPL
+         << "    "  << camelClassName << ".execute()" << NEWLINE_SIMPL
+         << "    executeError = " << camelClassName << ".ErrorCondition" << NEWLINE_SIMPL
+         << "    return executeError" << NEWLINE_SIMPL
+         ;
+         
+         
+  QVector<QString> pythonicCodes;
+  pythonicCodes.push_back(methodArgs);
+  pythonicCodes.push_back(bodyCodes);
+  
+  m_Module->addPythonicCodes(getClassName(), pythonicCodes);
   return code;
 }
 
