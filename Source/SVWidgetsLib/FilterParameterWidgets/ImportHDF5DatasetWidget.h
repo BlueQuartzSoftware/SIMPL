@@ -122,6 +122,13 @@ protected:
    */
   bool initWithFile(QString hdf5File);
 
+  /**
+  * @brief Returns the best guess at component dimensions for the given path.  This requires a valid AttributeMatrix, ImageGeometry, and HDF5 path
+  * @param path
+  * @return
+  */
+  std::tuple<herr_t, QString> bestGuessCDims(const QString& path);
+
 protected slots:
   void on_cDimsLE_valueChanged(QString text);
 
