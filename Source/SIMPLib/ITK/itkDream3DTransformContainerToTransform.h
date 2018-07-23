@@ -54,7 +54,7 @@ public:
   itkNewMacro(Self);
   itkTypeMacro(Dream3DTransformToTransform, ProcessObject);
 
-  virtual void SetInput(::TransformContainer::Pointer& transformContainer);
+  virtual void SetInput(::TransformContainer::Pointer transformContainer);
   DecoratorType* GetOutput();
 
 protected:

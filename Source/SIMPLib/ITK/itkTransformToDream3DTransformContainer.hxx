@@ -47,7 +47,6 @@ TransformToDream3DTransformContainer<ITKTransformType>
   typename DecoratorType::Pointer output = static_cast<DecoratorType*>(this->MakeOutput(0).GetPointer());
   this->ProcessObject::SetNumberOfRequiredOutputs(1);
   this->ProcessObject::SetNthOutput(0, output.GetPointer());
-  m_Transform = nullptr;
 }
 
 
@@ -59,9 +58,9 @@ TransformToDream3DTransformContainer<ITKTransformType>
 template <typename ITKTransformType>
 void
 TransformToDream3DTransformContainer<ITKTransformType>
-::SetInput(const typename ITKTransformType::Pointer& transform)
+::SetInput(const ITKTransformType * transform)
 {
-  if(!(transform == m_Transform))
+  if(!(transform == m_Transform.GetPointer()))
   {
     m_Transform = transform;
     this->Modified();

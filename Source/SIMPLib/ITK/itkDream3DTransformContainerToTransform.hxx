@@ -58,7 +58,7 @@ Dream3DTransformContainerToTransform<ITKTransformType>
 template <typename ITKTransformType>
 void
 Dream3DTransformContainerToTransform<ITKTransformType>
-::SetInput(::TransformContainer::Pointer& transformContainer)
+::SetInput(::TransformContainer::Pointer transformContainer)
 {
   if(transformContainer != m_TransformContainer)
   {

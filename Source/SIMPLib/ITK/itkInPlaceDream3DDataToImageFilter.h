@@ -9,7 +9,9 @@
 
 namespace itk
 {
-template <typename PixelType, unsigned int VDimension> class InPlaceDream3DDataToImageFilter : public ImageSource<itk::Dream3DImage<PixelType, VDimension>>
+
+template <typename PixelType, unsigned int VDimension>
+class InPlaceDream3DDataToImageFilter : public ImageSource<itk::Dream3DImage<PixelType, VDimension>>
 {
 public:
   /** Standard class typedefs. */

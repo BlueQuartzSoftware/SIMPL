@@ -42,7 +42,8 @@
 
 namespace itk
 {
-template <typename TParametersValueType = double, unsigned int CompositeNDimensions = 3> class Dream3DITransformContainerToTransform : public ProcessObject
+template <typename TParametersValueType = double, unsigned int CompositeNDimensions = 3>
+class Dream3DITransformContainerToTransform : public ProcessObject
 {
 public:
   /** Standard class typedefs. */
@@ -58,7 +59,7 @@ public:
   itkNewMacro(Self);
   itkTypeMacro(Dream3DITransformContainerToTransform, ProcessObject);
 
-  virtual void SetInput(const ITransformContainer::Pointer& transformContainer);
+  virtual void SetInput(const ITransformContainer::Pointer & transformContainer);
   DecoratorType* GetOutput();
 
 protected:

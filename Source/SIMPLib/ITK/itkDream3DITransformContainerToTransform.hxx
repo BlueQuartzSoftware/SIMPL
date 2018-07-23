@@ -64,7 +64,7 @@ Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions
 template <typename TParametersValueType, unsigned int CompositeNDimensions>
 void
 Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions>
-::SetInput(const ITransformContainer::Pointer& transformContainer)
+::SetInput(const ITransformContainer::Pointer & transformContainer)
 {
   if(transformContainer != m_ITransformContainer)
   {

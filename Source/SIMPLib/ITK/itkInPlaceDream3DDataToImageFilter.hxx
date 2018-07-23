@@ -24,7 +24,7 @@ InPlaceDream3DDataToImageFilter<PixelType, VDimension>::~InPlaceDream3DDataToIma
 template< typename PixelType, unsigned int VDimension>
 void
 InPlaceDream3DDataToImageFilter< PixelType, VDimension >
-::SetInput(DataContainer::Pointer &dc)
+::SetInput(DataContainer::Pointer& dc)
 {
   if (!(dc == m_DataContainer))
   {

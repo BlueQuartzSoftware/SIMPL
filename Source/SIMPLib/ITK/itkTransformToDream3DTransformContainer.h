@@ -54,7 +54,7 @@ public:
   itkNewMacro(Self);
   itkTypeMacro(TransformToDream3DTransformContainer, ProcessObject);
 
-  virtual void SetInput(const typename ITKTransformType::Pointer& transform);
+  virtual void SetInput(const ITKTransformType * transform);
   DecoratorType* GetOutput();
 
 protected:
@@ -65,7 +65,7 @@ protected:
 
   virtual void GenerateData() override;
   ProcessObject::DataObjectPointer MakeOutput(ProcessObject::DataObjectPointerArraySizeType);
-  typename ITKTransformType::Pointer m_Transform;
+  typename ITKTransformType::ConstPointer m_Transform;
 
 private:
   TransformToDream3DTransformContainer(const TransformToDream3DTransformContainer&) = delete; // Copy Constructor Not Implemented

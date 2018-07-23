@@ -61,9 +61,9 @@ TransformToDream3DITransformContainer<TParametersValueType, CompositeNDimensions
 template <typename TParametersValueType, unsigned int CompositeNDimensions>
 void
 TransformToDream3DITransformContainer<TParametersValueType, CompositeNDimensions>
-::SetInput(const typename ITKTransformType::Pointer& transform)
+::SetInput(const ITKTransformType * transform)
 {
-  if(!(transform == m_Transform))
+  if(!(transform == m_Transform.GetPointer()))
   {
     m_Transform = transform;
     this->Modified();
@@ -97,10 +97,10 @@ TransformToDream3DITransformContainer<TParametersValueType, CompositeNDimensions
 template <typename TParametersValueType, unsigned int CompositeNDimensions>
 void
 TransformToDream3DITransformContainer<TParametersValueType, CompositeNDimensions>
-::GenerateData(::ITransformContainer::Pointer& iTransformContainer, const typename ITKTransformType::Pointer& transform)
+::GenerateData(::ITransformContainer::Pointer& iTransformContainer, const ITKTransformType * transform)
 {
   using CompositeType = itk::CompositeTransform<TParametersValueType, CompositeNDimensions>;
-  typename CompositeType::Pointer itkCompositeTransform = dynamic_cast<CompositeType*>(transform.GetPointer());
+  typename CompositeType::ConstPointer itkCompositeTransform = dynamic_cast<const CompositeType*>(transform);
   if(itkCompositeTransform)
   {
     typename ::CompositeTransformContainer::Pointer cTransform = ::CompositeTransformContainer::New();
