@@ -168,7 +168,7 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QTabWidget" name="importHDF5DatasetTabWidget">
+        <widget class="SVTabWidget" name="importHDF5DatasetTabWidget">
          <property name="currentIndex">
           <number>0</number>
          </property>
@@ -297,6 +297,12 @@
    <class>QtSStringEdit</class>
    <extends>QWidget</extends>
    <header>QtSStringEdit.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SVTabWidget</class>
+   <extends>QTabWidget</extends>
+   <header location="global">SVControlWidgets.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
