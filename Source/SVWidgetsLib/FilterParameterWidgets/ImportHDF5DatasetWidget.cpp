@@ -720,98 +720,14 @@ herr_t ImportHDF5DatasetWidget::updateComponentDimensions(const QString& path)
   }
   else
   {
-    QString objName = QH5Utilities::extractObjectName(path);
+    std::tuple<herr_t, QString> bestGuess = bestGuessCDims(path);
+    QString cDimsStr;
+    std::tie(err, cDimsStr) = bestGuess;
 
-    if(m_FileId < 0)
+    if(!cDimsStr.isEmpty() && !err)
     {
-      std::cout << "Error: FileId is Invalid: " << m_FileId << std::endl;
-      return m_FileId;
+      cDimsLE->setText(cDimsStr);
     }
-
-    // Test for Dataset Existance
-    H5O_info_t statbuf;
-    err = H5Oget_info_by_name(m_FileId, path.toStdString().c_str(), &statbuf, H5P_DEFAULT);
-    if(err < 0)
-    {
-      std::cout << "Data Set Does NOT exist at Path given: FileId: " << m_FileId << std::endl;
-      return err;
-    }
-
-    QString parentPath = "";
-    if(path == "/")
-    {
-      parentPath = path;
-    }
-    else
-    {
-      parentPath = QH5Utilities::getParentPath(path);
-    }
-
-    hid_t parentLoc = QH5Utilities::openHDF5Object(m_FileId, parentPath);
-
-    QVector<hsize_t> fileDims;
-    H5T_class_t type_class;
-    size_t type_size;
-    QH5Lite::getDatasetInfo(parentLoc, objName, fileDims, type_class, type_size);
-
-    DataArrayPath amPath = m_Filter->getSelectedAttributeMatrix();
-    AttributeMatrix::Pointer am = m_Filter->getDataContainerArray()->getAttributeMatrix(amPath);
-    if(am != nullptr)
-    {
-      QVector<size_t> amTupleDims = am->getTupleDimensions();
-      int fileDimsSize = fileDims.size();
-
-      //      // Calculate the prime factors of the attribute matrix tuple dimensions
-      //      QVector<int> amTupleDimsPFs;
-      //      for (int i = 0; i < amTupleDims.size(); i++)
-      //      {
-      //        calculatePrimeFactors(amTupleDims[i], amTupleDimsPFs);
-      //      }
-
-      //      // Calculate the prime factors of the file dimensions
-      //      QVector<int> fileDimsPFs;
-      //      for (int i = 0; i < fileDims.size(); i++)
-      //      {
-      //        calculatePrimeFactors(fileDims[i], fileDimsPFs);
-      //      }
-
-      // If an attribute matrix tuple dimensions prime factor exists in the file dimensions prime factor list, remove it.
-      for(int i = 0; i < amTupleDims.size(); i++)
-      {
-        int amTupleDim = amTupleDims[i];
-        if(fileDims.contains(amTupleDim))
-        {
-          fileDims.removeOne(amTupleDim);
-        }
-        else
-        {
-          QH5Utilities::closeHDF5Object(parentLoc);
-          return -1;
-        }
-      }
-
-      if(fileDims.size() > 0)
-      {
-        QString cDimsStr = QString::number(fileDims[0]);
-        for(int i = 1; i < fileDims.size(); i++)
-        {
-          cDimsStr.append(", ");
-          cDimsStr.append(QString::number(fileDims[i]));
-        }
-
-        cDimsLE->setText(cDimsStr);
-        m_ComponentDimsMap.insert(path, cDimsStr);
-      }
-      else if(fileDimsSize == amTupleDims.size() && amTupleDims.size() != 0)
-      {
-        // If no dimensions remain, and the starting dimension sizes were the same, set component dimension to 1
-        QString cDimsStr = QString::number(1);
-        m_ComponentDimsMap.insert(path, cDimsStr);
-        cDimsLE->setText(cDimsStr);
-      }
-    }
-
-    QH5Utilities::closeHDF5Object(parentLoc);
   }
 
   return err;
