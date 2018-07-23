@@ -8,6 +8,24 @@ import dream3d.dream3d_py.simpl_py as simpl
 import dream3d.utils.simpl_common as sc
 import dream3d.utils.simpl_test_dirs as sd
 
+def create_data_container(data_container_array, data_container_name):
+  """
+  Instantiates CreateDataContainer
+  """
+  create_data_container = simpl.CreateDataContainer.New()
+  create_data_container.setDataContainerArray(data_container_array)
+  create_data_container.DataContainerName = data_container_name
+  create_data_container.execute()
+  executeError = create_data_container.ErrorCondition
+  return (executeError)
+
+
+def MiscTest():
+  print("Starting MiscTest")
+  dca = sc.CreateDataContainerArray()
+  (executeError) = create_data_container(dca, "My New DataContainer")
+  print("executeError %s" % executeError)
+
 
 def AttributeMatrixAccessTest():
   """
@@ -81,6 +99,7 @@ def DataContainerTest():
 Main entry point for python script
 """
 if __name__ == "__main__":
+  MiscTest()
   DataContainerTest()
   AttributeMatrixAccessTest()
   print("DataContainerArrayTest Test Complete")

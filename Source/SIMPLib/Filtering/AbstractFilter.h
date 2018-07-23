@@ -186,7 +186,7 @@ public:
   * @brief writeFilterParametersToJson Writes the filter parameters to a file
   * @param obj The json object to add the filter parameters into
   */
-  virtual void writeFilterParameters(QJsonObject& obj);
+  virtual void writeFilterParameters(QJsonObject& obj) const;
 
   /**
    * @brief This method is called just after the writeFilterParameters() completes

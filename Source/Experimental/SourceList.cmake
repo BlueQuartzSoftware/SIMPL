@@ -92,16 +92,3 @@ AddSIMPLUnitTest(TESTNAME FilterParameterCallbackExample
                     ${SIMPLProj_SOURCE_DIR}/Source
                     ${SIMPLProj_BINARY_DIR}
 )
-
-COMPILE_TOOL(
-    TARGET FilterInfoUtility
-    SOURCES ${SIMPLExperimental_SOURCE_DIR}/FilterInfoUtility.cpp
-    DEBUG_EXTENSION ${EXE_DEBUG_EXTENSION}
-    VERSION_MAJOR ${SIMPL_VER_MAJOR}
-    VERSION_MINOR ${SIMPL_VER_MINOR}
-    VERSION_PATCH ${SIMPL_VER_PATCH}
-    BINARY_DIR    ${${PROJECT_NAME}_BINARY_DIR}
-    COMPONENT     Tools
-    INSTALL_DEST  "${install_dir}"
-    LINK_LIBRARIES SIMPLib
-)

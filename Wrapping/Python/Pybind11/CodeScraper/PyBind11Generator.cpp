@@ -7,19 +7,25 @@
 #include "PythonBindingClass.h"
 
 #include "CodeScraper/CodeScraperConstants.h"
+#include "CodeScraper/SIMPLPyBind11Config.h"
+#include "CodeScraper/PythonUtils.h"
+
 
 //-----------------------------------------------------------------------------
 PyBind11Generator::PyBind11Generator(const QDir& topLevelDir, const QString& charsToStrip, const QString& libName, const QString& genDir, const QString& moduleTemplatePath, const QString& isSIMPLib)
 : m_TopLevelDir(topLevelDir)
 , m_CharsToStrip(charsToStrip)
-, m_LibName(libName)
+, m_LibNameUpper(libName)
 , m_GenDir(genDir)
 , m_ModuleTemplatePath(moduleTemplatePath)
 , m_IsSIMPLib(isSIMPLib)
 {
+
+  m_LibName = m_LibNameUpper.toLower() + "_py";
   m_SourceDir = m_TopLevelDir;
   m_SourceDir.cdUp();
 
+  m_ModuleCode.setLibNameUpper(m_LibNameUpper);
   m_ModuleCode.setLibName(m_LibName);
   m_ModuleCode.setTemplatePath(moduleTemplatePath);
 }
@@ -48,6 +54,13 @@ void PyBind11Generator::execute()
   genHeaderPath = QString("");
   ss << m_GenDir << "/" << m_LibName << "_UnitTest.py";
   m_ModuleCode.generatePythonTestFile(genHeaderPath, m_IsSIMPLib);
+  
+  genHeaderPath = QString("");
+  QString libName = m_LibNameUpper;
+  //libName = libName.replace("_py", "");
+  ss << SIMPL::PyBind11::LibraryOutputDirectory << "/dream3d/" << SIMPL::Python::fromCamelCase(libName) << ".py";
+  
+  m_ModuleCode.generatePythonicInterface(genHeaderPath, m_IsSIMPLib);
 }
 
 //-----------------------------------------------------------------------------

@@ -52,9 +52,6 @@ class SIMPLib_EXPORT DataContainerWriter : public AbstractFilter
     PYB11_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
     PYB11_PROPERTY(bool WriteXdmfFile READ getWriteXdmfFile WRITE setWriteXdmfFile)
     PYB11_PROPERTY(bool WriteTimeSeries READ getWriteTimeSeries WRITE setWriteTimeSeries)
-    PYB11_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
-    PYB11_PROPERTY(bool WriteXdmfFile READ getWriteXdmfFile WRITE setWriteXdmfFile)
-    PYB11_PROPERTY(bool WriteTimeSeries READ getWriteTimeSeries WRITE setWriteTimeSeries)
 
   public:
     SIMPL_SHARED_POINTERS(DataContainerWriter)

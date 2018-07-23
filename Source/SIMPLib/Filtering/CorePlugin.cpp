@@ -35,13 +35,11 @@
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 
-#include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Filtering/CoreConstants.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
-#include "SIMPLib/Filtering/CoreConstants.h"
-#include "SIMPLib/Common/Constants.h"
-
-
+#include "SIMPLib/SIMPLibVersion.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -87,7 +85,6 @@ QString CorePlugin::getPluginBaseName()
 {
   return CoreConstants::CoreBaseName;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -249,7 +246,6 @@ void CorePlugin::readSettings(QSettings& prefs)
 // -----------------------------------------------------------------------------
 void CorePlugin::registerFilterWidgets(FilterWidgetManager* fm)
 {
-
 }
 
 #include "CoreFilters/RegisterKnownFilters.cpp"

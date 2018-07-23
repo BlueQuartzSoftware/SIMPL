@@ -157,7 +157,7 @@ void ReadASCIIData::readFilterParameters(QJsonObject& obj)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ReadASCIIData::writeFilterParameters(QJsonObject& obj)
+void ReadASCIIData::writeFilterParameters(QJsonObject& obj) const
 {
   AbstractFilter::writeFilterParameters(obj);
 

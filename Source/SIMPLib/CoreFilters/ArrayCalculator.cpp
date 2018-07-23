@@ -200,7 +200,7 @@ void ArrayCalculator::readFilterParameters(QJsonObject& obj)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ArrayCalculator::writeFilterParameters(QJsonObject& obj)
+void ArrayCalculator::writeFilterParameters(QJsonObject& obj) const
 {
   AbstractFilter::writeFilterParameters(obj);
   obj["Units"] = static_cast<int>(getUnits());
