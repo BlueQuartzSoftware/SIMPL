@@ -324,8 +324,18 @@ void ImportHDF5Dataset::dataCheck()
     }
 
     IDataArray::Pointer dPtr = readIDataArray(parentId, objectName, am->getNumberOfTuples(), cDims, getInPreflight());
-    am->addAttributeArray(dPtr->getName(), dPtr);
-  }
+    if(nullptr != dPtr)
+    {
+      am->addAttributeArray(dPtr->getName(), dPtr);
+    }
+    else
+    {
+      setErrorCondition(-20009);
+      ss.clear();
+      stream << tr("The selected datatset is not a supported type for importing. Please select a different data set");
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    }
+  } // End Switch statement
 
   // The sentinel will close the HDF5 File and any groups that were open.
 }
@@ -549,8 +559,7 @@ IDataArray::Pointer ImportHDF5Dataset::readIDataArray(hid_t gid, const QString& 
     }
     break;
   default:
-    qDebug() << "Error: readUserMetaData() Unknown attribute type: " << attr_type;
-    QH5Utilities::printHDFClassType(attr_type);
+    qDebug() << "Error: readUserMetaData() Unknown attribute type: " << attr_type << "(" << QString::fromStdString(H5Utilities::HDFClassTypeAsStr(attr_type)) << ")";
   }
 
   err = H5Tclose(typeId);

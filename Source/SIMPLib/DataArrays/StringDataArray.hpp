@@ -47,7 +47,6 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
-#include "SIMPLib/DataArrays/DataArray.hpp"
 
 /**
  * @class StringDataArray StringDataArray.h DREAM3DLib/Common/StringDataArray.h
@@ -70,17 +69,7 @@ class StringDataArray : public IDataArray
      * @param allocate
      * @return
      */
-    static Pointer CreateArray(size_t numTuples, const QString& name, bool allocate = true)
-    {
-      if (name.isEmpty() == true)
-      {
-        return NullPointer();
-      }
-      StringDataArray* d = new StringDataArray(numTuples, name, allocate);
-      d->setName(name);
-      Pointer ptr(d);
-      return ptr;
-    }
+    static Pointer CreateArray(size_t numTuples, const QString& name, bool allocate = true);
 
     /**
      * @brief CreateArray
@@ -90,18 +79,7 @@ class StringDataArray : public IDataArray
      * @param allocate
      * @return
      */
-    static Pointer CreateArray(size_t numTuples, QVector<size_t> compDims, const QString& name, bool allocate = true)
-    {
-      if (name.isEmpty() == true)
-      {
-        return NullPointer();
-      }
-      StringDataArray* d = new StringDataArray(numTuples, name, allocate);
-      d->setName(name);
-      Pointer ptr(d);
-      return ptr;
-    }
-
+    static Pointer CreateArray(size_t numTuples, QVector<size_t> compDims, const QString& name, bool allocate = true);
     /**
      * @brief createNewArray
      * @param numElements
@@ -109,101 +87,84 @@ class StringDataArray : public IDataArray
      * @param name
      * @return
      */
-    virtual IDataArray::Pointer createNewArray(size_t numElements, int rank, size_t* dims, const QString& name, bool allocate = true)
-    {
-      IDataArray::Pointer p = StringDataArray::CreateArray(numElements, name, allocate);
-      return p;
-    }
+    virtual IDataArray::Pointer createNewArray(size_t numElements, int rank, size_t* dims, const QString& name, bool allocate = true);
 
-    virtual IDataArray::Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true)
-    {
-      IDataArray::Pointer p = StringDataArray::CreateArray(numElements, name, allocate);
-      return p;
-    }
+    /**
+     * @brief createNewArray
+     * @param numElements
+     * @param dims
+     * @param name
+     * @param allocate
+     * @return
+     */
+    virtual IDataArray::Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true);
 
-    virtual IDataArray::Pointer createNewArray(size_t numElements, QVector<size_t> dims, const QString& name, bool allocate = true)
-    {
-      IDataArray::Pointer p = StringDataArray::CreateArray(numElements, name, allocate);
-      return p;
-    }
+    /**
+     * @brief createNewArray
+     * @param numElements
+     * @param dims
+     * @param name
+     * @param allocate
+     * @return
+     */
+    virtual IDataArray::Pointer createNewArray(size_t numElements, QVector<size_t> dims, const QString& name, bool allocate = true);
 
-    virtual ~StringDataArray() {}
+    /**
+     * @brief ~StringDataArray
+     */
+    virtual ~StringDataArray();
 
     /**
      * @brief isAllocated
      * @return
      */
-    virtual bool isAllocated() { return true; }
+    virtual bool isAllocated();
 
     /**
      * @brief Gives this array a human readable name
      * @param name The name of this array
      */
-    virtual void setInitValue(const std::string& initValue)
-    {
-      m_InitValue = QString::fromStdString(initValue);
-    }
+    virtual void setInitValue(const std::string& initValue);
 
     /**
      * @brief Gives this array a human readable name
      * @param name The name of this array
      */
-    virtual void setInitValue(const QString& initValue)
-    {
-      m_InitValue = initValue;
-    }
+    virtual void setInitValue(const QString& initValue);
 
     /**
      * @brief GetTypeName Returns a string representation of the type of data that is stored by this class. This
      * can be a primitive like char, float, int or the name of a class.
      * @return
      */
-    void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision)
-    {
-      xdmfTypeName = getNameOfClass();
-      precision = 0;
-    }
-
+    void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision);
     /**
      * @brief getTypeAsString
      * @return
      */
-    virtual QString getTypeAsString() { return "StringDataArray";}
+    virtual QString getTypeAsString();
 
     /**
      * @brief Gives this array a human readable name
      * @param name The name of this array
      */
-    void setName(const QString& name)
-    {
-      m_Name = name;
-    }
+    void setName(const QString& name);
 
     /**
      * @brief Returns the human readable name of this array
      * @return
      */
-    QString getName()
-    {
-      return m_Name;
-    }
+    QString getName();
 
     /**
      * @brief
      */
-    virtual void takeOwnership()
-    {
-      this->_ownsData = true;
-    }
+    virtual void takeOwnership();
 
     /**
      * @brief
      */
-    virtual void releaseOwnership()
-    {
-      this->_ownsData = false;
-    }
-
+    virtual void releaseOwnership();
     /**
     * @brief Returns a void pointer pointing to the index of the array. nullptr
     * pointers are entirely possible. No checks are performed to make sure
@@ -211,65 +172,33 @@ class StringDataArray : public IDataArray
     * @param i The index to have the returned pointer pointing to.
     * @return Void Pointer. Possibly nullptr.
     */
-    virtual void* getVoidPointer ( size_t i)
-    {
-      return static_cast<void*>( &(m_Array[i]));
-    }
-
-    /**
-     * @brief getStringArray
-     * @return
-     */
-    //    virtual QVector<QString>& getStringArray()
-    //    {
-    //      return m_Array;
-    //    }
+    virtual void* getVoidPointer(size_t i);
 
     /**
     * @brief Returns the number of Tuples in the array.
     */
-    virtual size_t getNumberOfTuples ()
-    {
-      return m_Array.size();
-    }
-
+    virtual size_t getNumberOfTuples();
 
     /**
      * @brief Return the number of elements in the array
      * @return
      */
-    virtual size_t getSize()
-    {
-      return m_Array.size();
-    }
+    virtual size_t getSize();
 
-    virtual int getNumberOfComponents()
-    {
-      return 1;
-    }
+    virtual int getNumberOfComponents();
 
-    QVector<size_t> getComponentDimensions()
-    {
-      QVector<size_t> dims(1, 1);
-      return dims;
-    }
+    QVector<size_t> getComponentDimensions();
 
     // Description:
     // Set/Get the dimension (n) of the rank. Must be >= 1. Make sure that
     // this is set before allocation.
-    void SetRank(int rnk)
-    {
-
-    }
+    void SetRank(int rnk);
 
     /**
      * @brief getRank
      * @return
      */
-    int getRank()
-    {
-      return 1;
-    }
+    int getRank();
 
     /**
      * @brief Returns the number of bytes that make up the data type.
@@ -278,10 +207,7 @@ class StringDataArray : public IDataArray
      * 4 = 32 bit integer/Float
      * 8 = 64 bit integer/Double
      */
-    virtual size_t getTypeSize()
-    {
-      return sizeof(QString);
-    }
+    virtual size_t getTypeSize();
 
     /**
      * @brief Removes Tuples from the Array. If the size of the vector is Zero nothing is done. If the size of the
@@ -291,49 +217,7 @@ class StringDataArray : public IDataArray
      * @param idxs The indices to remove
      * @return error code.
      */
-    virtual int eraseTuples(QVector<size_t>& idxs)
-    {
-
-      int err = 0;
-
-      // If nothing is to be erased just return
-      if(idxs.size() == 0)
-      {
-        return 0;
-      }
-      size_t idxs_size = static_cast<size_t>(idxs.size());
-      if (idxs_size >= getNumberOfTuples() )
-      {
-        resize(0);
-        return 0;
-      }
-
-      // Sanity Check the Indices in the vector to make sure we are not trying to remove any indices that are
-      // off the end of the array and return an error code.
-      for(QVector<size_t>::size_type i = 0; i < idxs.size(); ++i)
-      {
-        if (idxs[i] >= static_cast<size_t>(m_Array.size())) { return -100; }
-      }
-
-
-      // Create a new Array to copy into
-      std::vector<QString> newArray;
-      std::vector<size_t>::size_type start = 0;
-      for(QVector<QString>::size_type i = 0; i < m_Array.size(); ++i)
-      {
-        bool keep = true;
-        for(QVector<size_t>::size_type j = start; j < idxs.size(); ++j)
-        {
-          if (static_cast<size_t>(i) == idxs[j]) { keep = false; break;}
-        }
-        if (keep)
-        {
-          newArray.push_back(m_Array[i]);
-        }
-      }
-      m_Array = newArray;
-      return err;
-    }
+    virtual int eraseTuples(QVector<size_t>& idxs);
 
     /**
      * @brief Copies a Tuple from one position to another.
@@ -341,14 +225,7 @@ class StringDataArray : public IDataArray
      * @param newPos The destination index to place the copied data
      * @return
      */
-    virtual int copyTuple(size_t currentPos, size_t newPos)
-    {
-      if(currentPos >= m_Array.size()) { return -1; }
-      if(newPos >= m_Array.size()) { return -1; }
-     // QString s = m_Array[currentPos];
-      m_Array[newPos] = m_Array[currentPos];
-      return 0;
-    }
+    virtual int copyTuple(size_t currentPos, size_t newPos);
 
     // This line must be here, because we are overloading the copyData pure virtual function in IDataArray.
     // This is required so that other classes can call this version of copyData from the subclasses.
@@ -373,118 +250,57 @@ class StringDataArray : public IDataArray
      * @param sourceArray
      * @return
      */
-    bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples)
-    {
-      if(destTupleOffset >= m_Array.size()) { return false; }
-      if(!sourceArray->isAllocated()) { return false; }
-
-      Self* source = dynamic_cast<Self*>(sourceArray.get());
-
-      if(srcTupleOffset + totalSrcTuples > sourceArray->getNumberOfTuples())
-      {
-        return false;
-      }
-      if(totalSrcTuples + destTupleOffset > m_Array.size())
-      {
-        return false;
-      }
-
-      for(size_t i = srcTupleOffset; i < srcTupleOffset + totalSrcTuples; i++)
-      {
-        m_Array[destTupleOffset + i] = source->getValue(i);
-      }
-      return true;
-    }
-
+    bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples);
 
     /**
      * @brief Does Nothing
      * @param pos The index of the Tuple
      * @param value pointer to value
      */
-    virtual void initializeTuple(size_t pos, void* value)
-    {
-      m_Array[pos] = *(reinterpret_cast<QString*>(value));
-    }
+    virtual void initializeTuple(size_t pos, void* value);
 
     /**
      * @brief Sets all the values to empty string.
      */
-    virtual void initializeWithZeros()
-    {
-      m_Array.assign(m_Array.size(), QString(""));
-    }
+    virtual void initializeWithZeros();
 
     /**
      * @brief initializeWithValue
      * @param value
      */
-    virtual void initializeWithValue(QString value)
-    {
-      m_Array.assign(m_Array.size(), value);
-    }
+    virtual void initializeWithValue(QString value);
 
     /**
      * @brief initializeWithValue
      * @param value
      */
-    virtual void initializeWithValue(const std::string& value)
-    {
-      m_Array.assign(m_Array.size(), QString::fromStdString(value));
-    }
+    virtual void initializeWithValue(const std::string& value);
 
     /**
      * @brief deepCopy
      * @param forceNoAllocate
      * @return
      */
-    virtual IDataArray::Pointer deepCopy(bool forceNoAllocate = false)
-    {
-      StringDataArray::Pointer daCopy = StringDataArray::CreateArray(getNumberOfTuples(), getName());
-      if(forceNoAllocate == false)
-      {
-        for(std::vector<QString>::size_type i = 0; i < m_Array.size(); ++i)
-        {
-          daCopy->setValue(i, m_Array[i]);
-        }
-      }
-      return daCopy;
-    }
-
+    virtual IDataArray::Pointer deepCopy(bool forceNoAllocate = false);
 
     /**
      * @brief Reseizes the internal array
      * @param size The new size of the internal array
      * @return 1 on success, 0 on failure
      */
-    virtual int32_t resizeTotalElements(size_t size)
-    {
-      m_Array.resize(size);
-      return 1;
-    }
+    virtual int32_t resizeTotalElements(size_t size);
 
     /**
      * @brief Reseizes the internal array
      * @param size The new size of the internal array
      * @return 1 on success, 0 on failure
      */
-    virtual int32_t resize(size_t numTuples)
-    {
-      m_Array.resize(numTuples);
-      return 1;
-    }
+    virtual int32_t resize(size_t numTuples);
 
     /**
      * @brief Initializes this class to zero bytes freeing any data that it currently owns
      */
-    virtual void initialize()
-    {
-      if (m_Array.size() > 0)
-      {
-        m_Array.clear();
-        this->_ownsData = true;
-      }
-    }
+    virtual void initialize();
 
     /**
      * @brief printTuple
@@ -492,10 +308,7 @@ class StringDataArray : public IDataArray
      * @param i
      * @param delimiter
      */
-    virtual void printTuple(QTextStream& out, size_t i, char delimiter = ',')
-    {
-      out << m_Array[i];
-    }
+    virtual void printTuple(QTextStream& out, size_t i, char delimiter = ',');
 
     /**
      * @brief printComponent
@@ -503,29 +316,20 @@ class StringDataArray : public IDataArray
      * @param i
      * @param j
      */
-    virtual void printComponent(QTextStream& out, size_t i, int j)
-    {
-      out << m_Array[i];
-    }
+    virtual void printComponent(QTextStream& out, size_t i, int j);
 
     /**
      * @brief getFullNameOfClass
      * @return
      */
-    QString getFullNameOfClass()
-    {
-      return "StringDataArray";
-    }
+    QString getFullNameOfClass();
 
     /**
      *
      * @param parentId
      * @return
      */
-    virtual int writeH5Data(hid_t parentId, QVector<size_t> tDims)
-    {
-      return H5DataArrayWriter::writeStringDataArray<StringDataArray>(parentId, this);
-    }
+    virtual int writeH5Data(hid_t parentId, QVector<size_t> tDims);
 
     /**
      * @brief writeXdmfAttribute
@@ -535,98 +339,35 @@ class StringDataArray : public IDataArray
      * @param groupPath
      * @return
      */
-    virtual int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName,
-                                   const QString& groupPath, const QString& labelb)
-    {
-      out << "<!-- Xdmf is not supported for " << getNameOfClass() << " with type " << getTypeAsString() << " --> ";
-      return -1;
-    }
+    virtual int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& labelb);
 
     /**
      * @brief getInfoString
      * @return Returns a formatted string that contains general infomation about
      * the instance of the object.
      */
-    virtual QString getInfoString(SIMPL::InfoStringFormat format)
-    {
-      QString info;
-      QTextStream ss (&info);
-      if(format == SIMPL::HtmlFormat)
-      {
-        ss << "<html><head></head>\n";
-        ss << "<body>\n";
-        ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
-        ss << "<tbody>\n";
-        ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Attribute Array Info</th></tr>";
-        ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Name:</th><td>" << getName() << "</td></tr>";
-        ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type:</th><td>" << getTypeAsString() << "</td></tr>";
-        QLocale usa(QLocale::English, QLocale::UnitedStates);
-        QString numStr = usa.toString(static_cast<qlonglong>(getNumberOfTuples()));
-        ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Tuples:</th><td>" << numStr << "</td></tr>";
-        ss << "</tbody></table>\n";
-        ss << "<br/>";
-        ss << "</body></html>";
-      }
-      else
-      {
-
-      }
-      return info;
-    }
-
+    virtual QString getInfoString(SIMPL::InfoStringFormat format);
 
     /**
      * @brief readH5Data
      * @param parentId
      * @return
      */
-    virtual int readH5Data(hid_t parentId)
-    {
-      int err = 0;
-      this->resize(0);
-      std::vector<std::string> strings;
-      err = H5Lite::readVectorOfStringDataset(parentId, getName().toStdString(), strings);
-
-      m_Array.resize(strings.size());
-      for(std::vector<QString>::size_type i = 0; i < strings.size(); i++)
-      {
-        m_Array[i] = QString::fromStdString(strings[i]);
-      }
-#if 0
-      IDataArray::Pointer p = H5DataArrayReader::ReadStringDataArray(parentId, getName());
-      if (p.get() == nullptr)
-      {
-        return -1;
-      }
-      StringDataArray::Pointer srcPtr = std::dynamic_pointer_cast<StringDataArray>(p);
-      size_t count = srcPtr->getNumberOfTuples();
-      for (size_t i = 0; i < count; ++i)
-      {
-        m_Array.push_back( srcPtr->getValue(i) );
-      }
-#endif
-      return err;
-    }
+    virtual int readH5Data(hid_t parentId);
 
     /**
      * @brief setValue
      * @param i
      * @param value
      */
-    void setValue(size_t i, const QString& value)
-    {
-      m_Array[i] = value;
-    }
+    void setValue(size_t i, const QString& value);
 
     /**
      * @brief getValue
      * @param i
      * @return
      */
-    QString getValue(size_t i)
-    {
-      return m_Array.at(i);
-    }
+    QString getValue(size_t i);
 
   protected:
     /**
@@ -634,15 +375,7 @@ class StringDataArray : public IDataArray
     * @param numElements The number of elements in the internal array.
     * @param takeOwnership Will the class clean up the memory. Default=true
     */
-    StringDataArray(size_t numTuples, const QString name, bool allocate = true) :
-      m_Name(name),
-      _ownsData(true)
-    {
-      //if (allocate == true)
-      {
-        m_Array.resize(numTuples);
-      }
-    }
+    StringDataArray(size_t numTuples, const QString name, bool allocate = true);
 
   private:
     QString m_Name;
@@ -650,9 +383,9 @@ class StringDataArray : public IDataArray
     std::vector<QString> m_Array;
     bool _ownsData;
 
-    StringDataArray(const StringDataArray&); //Not Implemented
-    void operator=(const StringDataArray&); //Not Implemented
-
+  public:
+    StringDataArray(const StringDataArray&) = delete; // Not Implemented
+    void operator=(const StringDataArray&) = delete;  // Not Implemented
 };
 
 

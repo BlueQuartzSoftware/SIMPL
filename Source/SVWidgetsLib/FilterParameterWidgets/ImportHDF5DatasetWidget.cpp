@@ -496,19 +496,19 @@ herr_t ImportHDF5DatasetWidget::updateGeneralTable(const QString& path)
   {
   case H5O_TYPE_GROUP:
     isGroup = true;
-    objName = "HDF5 Group";
+    objType = "HDF5 Group";
     break;
   case H5O_TYPE_DATASET:
-    objName = "HDF5 Dataset";
     isGroup = false;
+    objType = "HDF5 Dataset";
     break;
   case H5O_TYPE_NAMED_DATATYPE:
     isGroup = false;
-    objName = "Named DataType";
+    objType = "Named DataType";
     break;
   default:
     isGroup = false;
-    objName = "UNKNOWN";
+    objType = "UNKNOWN";
   }
   // Update the attributes table
   int row = 0;
@@ -527,10 +527,10 @@ herr_t ImportHDF5DatasetWidget::updateGeneralTable(const QString& path)
   if(isGroup == false)
   {
     generalTable->setRowCount(7);
-    H5T_class_t attr_type;
-    size_t attr_size;
+    H5T_class_t classType;
+    size_t classSize;
     std::vector<hsize_t> dims;
-    err = H5Lite::getDatasetInfo(m_FileId, datasetPath, dims, attr_type, attr_size);
+    err = H5Lite::getDatasetInfo(m_FileId, datasetPath, dims, classType, classSize);
     if(err < 0)
     {
       std::cout << "Could not get dataset info for " << datasetPath << std::endl;
@@ -555,15 +555,7 @@ herr_t ImportHDF5DatasetWidget::updateGeneralTable(const QString& path)
     addRow(generalTable, row, "Dimensions Size(s)", key);
     row++;
     hid_t typeId = H5Lite::getDatasetType(m_FileId, datasetPath);
-    QString theType;
-    if(attr_type == H5T_STRING)
-    {
-      theType = "H5T_STRING";
-    }
-    else
-    {
-      theType = QString::fromStdString(H5Lite::StringForHDFType(typeId));
-    }
+    QString theType = QString::fromStdString(H5Lite::StringForHDFClassType(classType));
     err = H5Tclose(typeId);
     addRow(generalTable, row, "Data Type", theType);
     row++;
@@ -667,28 +659,69 @@ herr_t ImportHDF5DatasetWidget::updateAttributeTable(const QString& path)
         hid_t parentLoc = QH5Utilities::openHDF5Object(m_FileId, parentPath);
 
         QVector<hsize_t> dims;
-        H5T_class_t type_class;
-        size_t type_size;
-        hid_t attr_type;
-        QH5Lite::getAttributeInfo(parentLoc, objName, key, dims, type_class, type_size, attr_type);
+        H5T_class_t classType;
+        size_t typeSize;
+        hid_t attributeId;
+        QH5Lite::getAttributeInfo(parentLoc, objName, key, dims, classType, typeSize, attributeId);
 
         QString strData = "";
         herr_t err = 0;
-        if(type_class == H5T_FLOAT)
+
+        if(classType == H5T_NO_CLASS)
         {
-          float data = 0.0f;
-          err = QH5Lite::readScalarAttribute(parentLoc, objName, key, data);
-          strData = QString::number(data);
+          strData = QString("H5T_NO_CLASS: Not Parsed");
         }
-        else if(type_class == H5T_INTEGER)
+        if(classType == H5T_INTEGER)
         {
           int data = 0;
           err = QH5Lite::readScalarAttribute(parentLoc, objName, key, data);
           strData = QString::number(data);
         }
-        else if(type_class == H5T_STRING)
+        if(classType == H5T_FLOAT)
+        {
+          float data = 0.0f;
+          err = QH5Lite::readScalarAttribute(parentLoc, objName, key, data);
+          strData = QString::number(data);
+        }
+        if(classType == H5T_TIME)
+        {
+          strData = QString("H5T_TIME: Not Parsed");
+        }
+        if(classType == H5T_STRING)
         {
           err = QH5Lite::readStringAttribute(parentLoc, objName, key, strData);
+          if(err < 0)
+          {
+            strData = QString("H5T_STRING: Not Parsed");
+          }
+        }
+        if(classType == H5T_BITFIELD)
+        {
+          strData = QString("H5T_BITFIELD: Not Parsed");
+        }
+        if(classType == H5T_OPAQUE)
+        {
+          strData = QString("H5T_OPAQUE: Not Parsed");
+        }
+        if(classType == H5T_COMPOUND)
+        {
+          strData = QString("H5T_COMPOUND: Not Parsed");
+        }
+        if(classType == H5T_REFERENCE)
+        {
+          strData = QString("H5T_REFERENCE: Not Parsed");
+        }
+        if(classType == H5T_ENUM)
+        {
+          strData = QString("H5T_ENUM: Not Parsed");
+        }
+        if(classType == H5T_VLEN)
+        {
+          strData = QString("H5T_VLEN: Not Parsed");
+        }
+        if(classType == H5T_ARRAY)
+        {
+          strData = QString("H5T_ARRAY: Not Parsed");
         }
 
         QH5Utilities::closeHDF5Object(parentLoc);

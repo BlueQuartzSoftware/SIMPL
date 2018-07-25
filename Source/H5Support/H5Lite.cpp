@@ -204,6 +204,185 @@ herr_t H5Lite::closeId(hid_t obj_id, int32_t obj_type)
 }
 
 // -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+std::string H5Lite::StringForHDFClassType(H5T_class_t classType)
+{
+  if(classType == H5T_NO_CLASS)
+  {
+    return "H5T_NO_CLASS";
+  }
+  if(classType == H5T_INTEGER)
+  {
+    return "H5T_INTEGER";
+  }
+  if(classType == H5T_FLOAT)
+  {
+    return "H5T_FLOAT";
+  }
+  if(classType == H5T_TIME)
+  {
+    return "H5T_TIME";
+  }
+  if(classType == H5T_STRING)
+  {
+    return "H5T_STRING";
+  }
+  if(classType == H5T_BITFIELD)
+  {
+    return "H5T_BITFIELD";
+  }
+  if(classType == H5T_OPAQUE)
+  {
+    return "H5T_OPAQUE";
+  }
+  if(classType == H5T_COMPOUND)
+  {
+    return "H5T_COMPOUND";
+  }
+  if(classType == H5T_REFERENCE)
+  {
+    return "H5T_REFERENCE";
+  }
+  if(classType == H5T_ENUM)
+  {
+    return "H5T_ENUM";
+  }
+  if(classType == H5T_VLEN)
+  {
+    return "H5T_VLEN";
+  }
+  if(classType == H5T_ARRAY)
+  {
+    return "H5T_ARRAY";
+  }
+
+  return "UNKNOWN";
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+hid_t H5Lite::HDFTypeFromString(const std::string& value)
+{
+  H5SUPPORT_MUTEX_LOCK()
+
+  if(value.compare("H5T_STRING") == 0)
+  {
+    return H5T_STRING;
+  }
+
+  if(value.compare("H5T_NATIVE_INT8") == 0)
+  {
+    return H5T_NATIVE_INT8;
+  }
+  if(value.compare("H5T_NATIVE_UINT8") == 0)
+  {
+    return H5T_NATIVE_UINT8;
+  }
+
+  if(value.compare("H5T_NATIVE_INT16") == 0)
+  {
+    return H5T_NATIVE_INT16;
+  }
+  if(value.compare("H5T_NATIVE_UINT16") == 0)
+  {
+    return H5T_NATIVE_UINT16;
+  }
+
+  if(value.compare("H5T_NATIVE_INT32") == 0)
+  {
+    return H5T_NATIVE_INT32;
+  }
+  if(value.compare("H5T_NATIVE_UINT32") == 0)
+  {
+    return H5T_NATIVE_UINT32;
+  }
+
+  if(value.compare("H5T_NATIVE_INT64") == 0)
+  {
+    return H5T_NATIVE_INT64;
+  }
+  if(value.compare("H5T_NATIVE_UINT64") == 0)
+  {
+    return H5T_NATIVE_UINT64;
+  }
+
+  if(value.compare("H5T_NATIVE_FLOAT") == 0)
+  {
+    return H5T_NATIVE_FLOAT;
+  }
+  if(value.compare("H5T_NATIVE_DOUBLE") == 0)
+  {
+    return H5T_NATIVE_DOUBLE;
+  }
+
+  std::cout << "Error: HDFTypeFromString - Unknown Type: " << value << std::endl;
+  return -1;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+std::string H5Lite::StringForHDFType(hid_t dataTypeIdentifier)
+{
+  H5SUPPORT_MUTEX_LOCK()
+
+  if(dataTypeIdentifier == H5T_STRING)
+  {
+    return "H5T_STRING";
+  }
+
+  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_INT8))
+  {
+    return "H5T_NATIVE_INT8";
+  }
+  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_UINT8))
+  {
+    return "H5T_NATIVE_UINT8";
+  }
+
+  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_INT16))
+  {
+    return "H5T_NATIVE_INT16";
+  }
+  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_UINT16))
+  {
+    return "H5T_NATIVE_UINT16";
+  }
+
+  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_INT32))
+  {
+    return "H5T_NATIVE_INT32";
+  }
+  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_UINT32))
+  {
+    return "H5T_NATIVE_UINT32";
+  }
+
+  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_INT64))
+  {
+    return "H5T_NATIVE_INT64";
+  }
+  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_UINT64))
+  {
+    return "H5T_NATIVE_UINT64";
+  }
+
+  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_FLOAT))
+  {
+    return "H5T_NATIVE_FLOAT";
+  }
+  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_DOUBLE))
+  {
+    return "H5T_NATIVE_DOUBLE";
+  }
+
+  std::cout << "Error: HDFTypeForPrimitiveAsStr - Unknown Type: " << dataTypeIdentifier << std::endl;
+  return "Unknown";
+}
+
+// -----------------------------------------------------------------------------
 //  Finds an Attribute given an object to look in
 // -----------------------------------------------------------------------------
 herr_t H5Lite::findAttribute(hid_t loc_id, const std::string& attrName)
@@ -816,6 +995,16 @@ herr_t H5Lite::readStringAttribute(hid_t loc_id, const std::string& objName, con
   if(obj_id >= 0)
   {
     attr_id = H5Aopen_by_name(loc_id, objName.c_str(), attrName.c_str(), H5P_DEFAULT, H5P_DEFAULT);
+    hid_t attrTypeId = H5Aget_type(attr_id);
+    htri_t isVariableString = H5Tis_variable_str(attrTypeId); // Test if the string is variable length
+    H5Tclose(attrTypeId);
+    if(isVariableString == 1)
+    {
+      data.clear();
+      retErr = -1;
+      CloseH5A(attr_id, err, retErr);
+      return retErr;
+    }
     if(attr_id >= 0)
     {
       size = H5Aget_storage_size(attr_id);

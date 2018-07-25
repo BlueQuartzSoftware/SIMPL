@@ -84,7 +84,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="../../../../Resources/SIMPL.qrc">
          <normaloff>:/SIMPL/icons/images/arrow_right_black.png</normaloff>:/SIMPL/icons/images/arrow_right_black.png</iconset>
        </property>
        <property name="iconSize">
@@ -340,7 +340,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../icons/images/Icons.qrc"/>
+  <include location="../../../../Resources/SIMPL.qrc"/>
  </resources>
  <connections/>
 </ui>
