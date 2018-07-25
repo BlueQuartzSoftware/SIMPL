@@ -405,7 +405,8 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
 
   // Draw Text
   QRect textRect(op.rect.x() + textOffset, op.rect.y() + fm.descent() / 2, op.rect.width(), op.rect.height());
-  painter->setPen(op.palette.color(QPalette::Normal, QPalette::WindowText));
+ // painter->setPen(op.palette.color(QPalette::Normal, QPalette::WindowText));
+  painter->setPen(styles->getQTreeViewItem_color());
   painter->drawText(textRect, text);
 
   // Draw icon for created paths
