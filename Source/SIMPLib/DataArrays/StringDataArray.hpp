@@ -55,7 +55,7 @@
  * @date Nov 13, 2012
  * @version 1.0
  */
-class StringDataArray : public IDataArray
+class  SIMPLib_EXPORT StringDataArray : public IDataArray
 {
   public:
     SIMPL_SHARED_POINTERS(StringDataArray )

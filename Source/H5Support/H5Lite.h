@@ -92,7 +92,7 @@ namespace H5Support_NAMESPACE
        * @param classType
        * @return
        */
-      static std::string StringForHDFClassType(H5T_class_t classType);
+      static H5Support_EXPORT std::string StringForHDFClassType(H5T_class_t classType);
 
       /**
        * @brief Given one of the HDF Types as a string, this will return the HDF Type
@@ -100,14 +100,14 @@ namespace H5Support_NAMESPACE
        * @param value The HDF_Type as a string
        * @return the hid_t value for the given type. -1 if the string does not match a type.
        */
-      static hid_t HDFTypeFromString(const std::string& value);
+      static H5Support_EXPORT hid_t HDFTypeFromString(const std::string& value);
 
       /**
        * @brief Returns a string version of the HDF Type
        * @param type The HDF5 Type to query
        * @return
        */
-      static std::string StringForHDFType(hid_t dataTypeIdentifier);
+      static H5Support_EXPORT std::string StringForHDFType(hid_t dataTypeIdentifier);
 
       /**
       * @brief Returns the HDF Type for a given primitive value.
