@@ -29,7 +29,6 @@
   "Theme_Name": "Example",
   "CSS_File_Name": "Example.css",
 
-  // The next set of colors MUST be in HEX notation as they are being converted to a QColor
   "FilterBackgroundColor" : "#FFFFFF",
   "FilterSelectionColor" : "#FFFFFF",
   "FilterFontColor" : "#FFFFFF",
@@ -83,7 +82,9 @@
   },
 
   "CSS_Replacements": {
-    // These colors can be in any standard CSS notation
+    
+    "QLabel_color" : "black",
+
     "QTreeViewItem_color": "black",
     "QTreeViewItem_error_color": "#FF0000",
 

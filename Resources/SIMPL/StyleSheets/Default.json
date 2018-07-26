@@ -47,6 +47,8 @@
   "CSS_Replacements": {
     "_comment2" : "These colors can be in any standard CSS notation.",
 
+    "QLabel_color" : "black",
+    
     "QToolButton_background_color": "qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #DDDDDD, stop: 1 #FFFFFF)",
     "QToolButton_color": "black",
     "QToolButton_border_color": "rgb(143,143,145)",
