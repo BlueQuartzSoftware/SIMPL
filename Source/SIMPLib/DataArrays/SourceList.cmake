@@ -8,7 +8,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IDataArrayFilter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/NeighborList.hpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/StatsDataArray.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/StringDataArray.hpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/StringDataArray.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/StructArray.hpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DynamicListArray.hpp
 )
