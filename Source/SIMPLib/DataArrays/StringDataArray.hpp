@@ -376,16 +376,22 @@ class  SIMPLib_EXPORT StringDataArray : public IDataArray
     * @param takeOwnership Will the class clean up the memory. Default=true
     */
     StringDataArray(size_t numTuples, const QString name, bool allocate = true);
+    
+    StringDataArray();
 
   private:
     QString m_Name;
     QString m_InitValue;
     std::vector<QString> m_Array;
     bool _ownsData;
-
+    
   public:
-    StringDataArray(const StringDataArray&) = delete; // Not Implemented
-    void operator=(const StringDataArray&) = delete;  // Not Implemented
+    StringDataArray(const StringDataArray&) = delete; // Copy Constructor Not Implemented
+    StringDataArray(StringDataArray&&) = delete;      // Move Constructor Not Implemented
+    StringDataArray& operator=(const StringDataArray&) = delete; // Copy Assignment Not Implemented
+    StringDataArray& operator=(StringDataArray&&) = delete;      // Move Assignment Not Implemented
+    
+    
 };
 
 
