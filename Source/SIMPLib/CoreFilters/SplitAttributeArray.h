@@ -170,7 +170,7 @@ private:
 
 public:
   SplitAttributeArray(const SplitAttributeArray&) = delete;            // Copy Constructor Not Implemented
-  SplitAttributeArray(SplitAttributeArray&&) = delete;                 // Move Constructor
+  SplitAttributeArray(SplitAttributeArray&&) = delete;                 // Move Constructor Not Implemented
   SplitAttributeArray& operator=(const SplitAttributeArray&) = delete; // Copy Assignment Not Implemented
   SplitAttributeArray& operator=(SplitAttributeArray&&) = delete;      // Move Assignment Not Implemented
 };

@@ -179,7 +179,7 @@ class SIMPLib_EXPORT LinkFeatureMapToElementArray : public AbstractFilter
 
   public:
     LinkFeatureMapToElementArray(const LinkFeatureMapToElementArray&) = delete; // Copy Constructor Not Implemented
-    LinkFeatureMapToElementArray(LinkFeatureMapToElementArray&&) = delete;      // Move Constructor
+    LinkFeatureMapToElementArray(LinkFeatureMapToElementArray&&) = delete;      // Move Constructor Not Implemented
     LinkFeatureMapToElementArray& operator=(const LinkFeatureMapToElementArray&) = delete; // Copy Assignment Not Implemented
     LinkFeatureMapToElementArray& operator=(LinkFeatureMapToElementArray&&) = delete;      // Move Assignment
 };

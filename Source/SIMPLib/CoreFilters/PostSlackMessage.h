@@ -175,7 +175,7 @@ private:
 
   public:
     PostSlackMessage(const PostSlackMessage&) = delete; // Copy Constructor Not Implemented
-    PostSlackMessage(PostSlackMessage&&) = delete;      // Move Constructor
+    PostSlackMessage(PostSlackMessage&&) = delete;      // Move Constructor Not Implemented
     PostSlackMessage& operator=(const PostSlackMessage&) = delete; // Copy Assignment Not Implemented
     PostSlackMessage& operator=(PostSlackMessage&&) = delete;      // Move Assignment
 };

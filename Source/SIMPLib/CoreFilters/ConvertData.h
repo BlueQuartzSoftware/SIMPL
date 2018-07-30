@@ -170,7 +170,7 @@ class SIMPLib_EXPORT ConvertData : public AbstractFilter
 
   public:
     ConvertData(const ConvertData&) = delete;    // Copy Constructor Not Implemented
-    ConvertData(ConvertData&&) = delete;         // Move Constructor
+    ConvertData(ConvertData&&) = delete;         // Move Constructor Not Implemented
     ConvertData& operator=(const ConvertData&) = delete; // Copy Assignment Not Implemented
     ConvertData& operator=(ConvertData&&) = delete;      // Move Assignment
 };

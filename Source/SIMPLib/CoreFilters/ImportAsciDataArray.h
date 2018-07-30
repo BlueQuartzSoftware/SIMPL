@@ -216,7 +216,7 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
 
   public:
     ImportAsciDataArray(const ImportAsciDataArray&) = delete; // Copy Constructor Not Implemented
-    ImportAsciDataArray(ImportAsciDataArray&&) = delete;      // Move Constructor
+    ImportAsciDataArray(ImportAsciDataArray&&) = delete;      // Move Constructor Not Implemented
     ImportAsciDataArray& operator=(const ImportAsciDataArray&) = delete; // Copy Assignment Not Implemented
     ImportAsciDataArray& operator=(ImportAsciDataArray&&) = delete;      // Move Assignment
 };
