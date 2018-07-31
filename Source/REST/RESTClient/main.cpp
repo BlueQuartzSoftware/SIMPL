@@ -21,31 +21,169 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 *******************************************************************************/
 
-#include <QCoreApplication>
-#include <QLoggingCategory>
+
+#include <iostream>
 
 #include <QtCore/QFile>
+#include <QtCore/QCoreApplication>
+#include <QtCore/QLoggingCategory>
 
-#include "SIMPLRestClient_UI.h"
+#include <QtNetwork/QNetworkInterface>
+#include <QtNetwork/QHostAddress>
+
+
+//#include "SIMPLRestClient_UI.h"
+
+#include "Core/SIMPLRestClient.h"
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void TestLoadedPlugins(QUrl url)
+{
+
+  url.setPath("/api/v1/LoadedPlugins");
+  qDebug() << url;
+  
+  QByteArray data; // No actual Application data is required.
+  
+  QNetworkRequest netRequest;
+  netRequest.setUrl(url);
+  netRequest.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+  
+  QEventLoop waitLoop;
+  QNetworkAccessManager* connection = new QNetworkAccessManager();
+  QNetworkReply* reply = connection->post(netRequest, data);
+  QObject::connect(reply, SIGNAL(finished()), &waitLoop, SLOT(quit()));
+  waitLoop.exec();
+
+  int errorCode = reply->error();
+  qDebug() << "ErrorCode: " << errorCode;
+  
+  if(errorCode != 0)
+  {
+   qDebug() << "An error occurred requesting the loaded plugins: " << errorCode;
+  }
+  
+  std::string replyContent = reply->readAll().toStdString();
+  
+  std::cout << replyContent << std::endl;
+  delete reply;
+  delete connection;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void TestFilterCount(QUrl url)
+{
+  url.setPath("/api/v1/NumFilters");
+  qDebug() << url;
+  
+  QByteArray data; // No actual Application data is required.
+  
+  QNetworkRequest netRequest;
+  netRequest.setUrl(url);
+  netRequest.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+  
+  QEventLoop waitLoop;
+  QNetworkAccessManager* connection = new QNetworkAccessManager();
+  QNetworkReply* reply = connection->post(netRequest, data);
+  QObject::connect(reply, SIGNAL(finished()), &waitLoop, SLOT(quit()));
+  waitLoop.exec();
+  
+  int errorCode = reply->error();
+  qDebug() << "ErrorCode: " << errorCode;
+  
+  if(errorCode != 0)
+  {
+    qDebug() << "An error occurred requesting the loaded plugins: " << errorCode;
+  }
+  
+  std::string replyContent = reply->readAll().toStdString();
+  
+  std::cout << replyContent << std::endl;
+  delete reply;
+  delete connection;
+  
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void TestAvailableFilters(QUrl url)
+{
+  url.setPath("/api/v1/AvailableFilters");
+  qDebug() << url;
+  
+  QByteArray data; // No actual Application data is required.
+  
+  QNetworkRequest netRequest;
+  netRequest.setUrl(url);
+  netRequest.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+  
+  QEventLoop waitLoop;
+  QNetworkAccessManager* connection = new QNetworkAccessManager();
+  QNetworkReply* reply = connection->post(netRequest, data);
+  QObject::connect(reply, SIGNAL(finished()), &waitLoop, SLOT(quit()));
+  waitLoop.exec();
+  
+  int errorCode = reply->error();
+  qDebug() << "ErrorCode: " << errorCode;
+  
+  if(errorCode != 0)
+  {
+    qDebug() << "An error occurred requesting the loaded plugins: " << errorCode;
+  }
+  
+  std::string replyContent = reply->readAll().toStdString();
+  
+  std::cout << replyContent << std::endl;
+  delete reply;
+  delete connection;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 int main(int argc, char* argv[])
 {
-  QApplication app(argc, argv);
+  QCoreApplication app(argc, argv);
   app.setApplicationVersion("1.0.0");
   app.setOrganizationName("BlueQuartz Software");
   app.setApplicationName("REST API Communication");
 
-#if defined(Q_OS_MAC)
-  QGuiApplication::setQuitOnLastWindowClosed(false);
-#endif
+//#if defined(Q_OS_MAC)
+//  QGuiApplication::setQuitOnLastWindowClosed(false);
+//#endif
 
+#if 0
   QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
   SIMPLRestClient_UI* ui = new SIMPLRestClient_UI(nullptr);
   ui->show();
 
   return app.exec();
+  
+#endif
+  
+  
+  SIMPLRestClient client(nullptr);
+  QUrl url;
+  for (auto address : QNetworkInterface::allAddresses()) 
+  {
+    if (address.protocol() == QAbstractSocket::IPv4Protocol && address != QHostAddress(QHostAddress::LocalHost))
+    {
+      url.setHost(address.toString());
+      break;
+    }
+    
+  }
+  url.setScheme("http");
+  url.setPort(8080);
+  
+  TestLoadedPlugins(url);
+  TestFilterCount(url);
+  TestAvailableFilters(url);
 }

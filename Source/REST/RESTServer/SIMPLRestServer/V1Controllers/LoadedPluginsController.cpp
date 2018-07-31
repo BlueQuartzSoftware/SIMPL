@@ -40,6 +40,7 @@
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Plugin/PluginManager.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
+#include "SIMPLib/Plugin/SIMPLPluginConstants.h"
 
 
 // -----------------------------------------------------------------------------
@@ -65,8 +66,8 @@ void LoadedPluginsController::service(HttpRequest& request, HttpResponse& respon
   if(content_type.compare("application/json") != 0)
   {
     // Form Error response
-    rootObj["ErrorMessage"] = EndPoint() + ": Content Type is not application/json";
-    rootObj["ErrorCode"] = -20;
+    rootObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Content Type is not application/json";
+    rootObj[SIMPL::JSON::ErrorCode] = -20;
     QJsonDocument jdoc(rootObj);
     response.write(jdoc.toJson(), true);
     return;
@@ -76,14 +77,8 @@ void LoadedPluginsController::service(HttpRequest& request, HttpResponse& respon
   //   response.setCookie(HttpCookie("secondCookie","world",600));
 
   PluginManager* pm = PluginManager::Instance();
-
-  QJsonArray pluginNames;
-  QVector<ISIMPLibPlugin*> plugins = pm->getPluginsVector();
-  foreach(ISIMPLibPlugin* plugin, plugins)
-  {
-    pluginNames.append(plugin->getPluginBaseName());
-  }
-  rootObj["PluginBaseNames"] = pluginNames;
+  
+  rootObj[SIMPL::JSON::Plugins] = pm->toJsonArray();
 
   QJsonDocument jdoc(rootObj);
 

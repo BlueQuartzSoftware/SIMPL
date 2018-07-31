@@ -35,6 +35,7 @@
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/PluginManager.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
+#include "SIMPLib/Plugin/SIMPLPluginConstants.h"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QVariant>
@@ -81,8 +82,8 @@ void PluginInfoController::service(HttpRequest& request, HttpResponse& response)
   {
     // Form Error response
     QJsonObject rootObj;
-    rootObj["ErrorMessage"] = EndPoint() + ": Content Type is not application/json";
-    rootObj["ErrorCode"] = -20;
+    rootObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Content Type is not application/json";
+    rootObj[SIMPL::JSON::ErrorCode] = -20;
     QJsonDocument jdoc(rootObj);
     response.write(jdoc.toJson(), true);
     return;
@@ -103,8 +104,8 @@ void PluginInfoController::service(HttpRequest& request, HttpResponse& response)
     }
     else
     {
-      responseJsonRootObj["ErrorCode"] = -40;
-      responseJsonRootObj["ErrorMessage"] = "Key 'PluginBaseName' does not exist in the JSON payload.";
+      responseJsonRootObj[SIMPL::JSON::ErrorMessage] = "Key 'PluginBaseName' does not exist in the JSON payload.";
+      responseJsonRootObj[SIMPL::JSON::ErrorCode] = -40;
     }
   }
   qDebug() << "PluginBaseName: " << pluginName;
@@ -118,8 +119,8 @@ void PluginInfoController::service(HttpRequest& request, HttpResponse& response)
 
     if(nullptr == plugin)
     {
-      responseJsonRootObj["ErrorCode"] = -30;
-      responseJsonRootObj["ErrorMessage"] = "Plugin with name " + pluginName + " was not loaded or does not exist";
+      responseJsonRootObj[SIMPL::JSON::ErrorCode] = -30;
+      responseJsonRootObj[SIMPL::JSON::ErrorMessage] = "Plugin with name " + pluginName + " was not loaded or does not exist";
     }
     else
     {

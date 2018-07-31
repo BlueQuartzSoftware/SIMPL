@@ -41,6 +41,7 @@
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Plugin/PluginManager.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
+#include "SIMPLib/Plugin/SIMPLPluginConstants.h"
 
 
 // -----------------------------------------------------------------------------
@@ -66,8 +67,8 @@ void NamesOfFiltersController::service(HttpRequest& request, HttpResponse& respo
   if(content_type.compare("application/json") != 0)
   {
     // Form Error response
-    rootObj["ErrorMessage"] = EndPoint() + ": Content Type is not application/json";
-    rootObj["ErrorCode"] = -20;
+    rootObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Content Type is not application/json";
+    rootObj[SIMPL::JSON::ErrorCode] = -20;
     QJsonDocument jdoc(rootObj);
 
     response.write(jdoc.toJson(), true);
@@ -78,20 +79,20 @@ void NamesOfFiltersController::service(HttpRequest& request, HttpResponse& respo
 
   FilterManager::Collection factories = fm->getFactories();
 
-  QJsonArray filters;
+//  QJsonArray filters;
 
-  QMap<QString, IFilterFactory::Pointer>::const_iterator i = factories.constBegin();
-  while(i != factories.constEnd())
-  {
-    QJsonObject obj;
-    obj["ClassName"] = i.key();
-    obj["HumanLabel"] = i.value()->getFilterHumanLabel();
-    filters.append(obj);
-    ++i;
-  }
+//  QMap<QString, IFilterFactory::Pointer>::const_iterator i = factories.constBegin();
+//  while(i != factories.constEnd())
+//  {
+//    QJsonObject obj;
+//    obj["ClassName"] = i.key();
+//    obj["HumanLabel"] = i.value()->getFilterHumanLabel();
+//    filters.append(obj);
+//    ++i;
+//  }
 
-  rootObj["ErrorCode"] = 0;
-  rootObj["Filters"] = filters;
+  rootObj[SIMPL::JSON::ErrorCode] = 0;
+  rootObj[SIMPL::JSON::Filters] = fm->toJsonArray();
   QJsonDocument jdoc(rootObj);
 
   response.write(jdoc.toJson(), true);
@@ -102,5 +103,5 @@ void NamesOfFiltersController::service(HttpRequest& request, HttpResponse& respo
 // -----------------------------------------------------------------------------
 QString NamesOfFiltersController::EndPoint()
 {
-  return QString("NamesOfFilters");
+  return QString("AvailableFilters");
 }

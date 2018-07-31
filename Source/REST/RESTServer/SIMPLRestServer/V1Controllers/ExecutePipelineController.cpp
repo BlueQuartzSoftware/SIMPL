@@ -49,6 +49,7 @@
 #include "SIMPLib/FilterParameters/OutputPathFilterParameter.h"
 #include "SIMPLib/Plugin/PluginManager.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
+#include "SIMPLib/Plugin/SIMPLPluginConstants.h"
 
 #include "QtWebApp/httpserver/httplistener.h"
 #include "QtWebApp/httpserver/httpsessionstore.h"
@@ -75,14 +76,14 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
   QString content_type = request.getHeader(QByteArray("content-type"));
 
   QJsonObject rootObj;
-  rootObj["SessionID"] = QString(session.getId());
+  rootObj[SIMPL::JSON::SessionID] = QString(session.getId());
   response.setHeader("Content-Type", "application/json");
 
   if(content_type.compare("application/json") != 0)
   {
     // Form Error response
-    rootObj["ErrorMessage"] = EndPoint() + ": Content Type is not application/json";
-    rootObj["ErrorCode"] = -20;
+    rootObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Content Type is not application/json";
+    rootObj[SIMPL::JSON::ErrorCode] = -20;
     QJsonDocument jdoc(rootObj);
 
     response.write(jdoc.toJson(), true);
@@ -93,7 +94,7 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
   QJsonDocument requestDoc = QJsonDocument::fromJson(requestBody.toUtf8());
   QJsonObject requestObj = requestDoc.object();
 
-  QJsonObject pipelineObj = requestObj["Pipeline"].toObject();
+  QJsonObject pipelineObj = requestObj[SIMPL::JSON::Pipeline].toObject();
   FilterPipeline::Pointer pipeline = FilterPipeline::FromJson(pipelineObj);
   qDebug() << "Number of Filters in Pipeline: " << pipeline->size();
 
@@ -148,9 +149,9 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
 
   // Log Files
   PipelineListener listener(nullptr);
-  bool createErrorLog = requestObj["ErrorLog"].toBool(false);
-  bool createWarningLog = requestObj["WarningLog"].toBool(false);
-  bool createStatusLog = requestObj["StatusLog"].toBool(false);
+  bool createErrorLog = requestObj[SIMPL::JSON::ErrorLog].toBool(false);
+  bool createWarningLog = requestObj[SIMPL::JSON::WarningLog].toBool(false);
+  bool createStatusLog = requestObj[SIMPL::JSON::StatusLog].toBool(false);
 
   QDir docRootDir(docRoot);
   docRootDir.mkpath(newFilePath);
@@ -183,7 +184,7 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
   }
 
   // Append to the json response payload all the output links
-  rootObj["OutputLinks"] = outputLinks;
+  rootObj[SIMPL::JSON::OutputLinks] = outputLinks;
 
   // Execute the pipeline
   Observer obs; // Create an Observer to report errors/progress from the executing pipeline
@@ -208,14 +209,14 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
     for(size_t i = 0; i < numErrors; i++)
     {
       QJsonObject error;
-      error["Code"] = errorMessages[i].generateErrorString();
-      error["Message"] = errorMessages[i].getText();
-      error["FilterHumanLabel"] = errorMessages[i].getFilterHumanLabel();
-      error["FilterIndex"] = errorMessages[i].getPipelineIndex();
+      error[SIMPL::JSON::Code] = errorMessages[i].generateErrorString();
+      error[SIMPL::JSON::Message] = errorMessages[i].getText();
+      error[SIMPL::JSON::FilterHumanLabel] = errorMessages[i].getFilterHumanLabel();
+      error[SIMPL::JSON::FilterIndex] = errorMessages[i].getPipelineIndex();
 
       errors.push_back(error);
     }
-    rootObj["Errors"] = errors;
+    rootObj[SIMPL::JSON::Errors] = errors;
   }
 
   std::vector<PipelineMessage> warningMessages = listener.getWarningMessages();
@@ -224,10 +225,10 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
   for(size_t i = 0; i < numWarnings; i++)
   {
     QJsonObject warning;
-    warning["Code"] = warningMessages[i].generateWarningString();
-    warning["Message"] = warningMessages[i].getText();
-    warning["FilterHumanLabel"] = warningMessages[i].getFilterHumanLabel();
-    warning["FilterIndex"] = warningMessages[i].getPipelineIndex();
+    warning[SIMPL::JSON::Code] = warningMessages[i].generateWarningString();
+    warning[SIMPL::JSON::Message] = warningMessages[i].getText();
+    warning[SIMPL::JSON::FilterHumanLabel] = warningMessages[i].getFilterHumanLabel();
+    warning[SIMPL::JSON::FilterIndex] = warningMessages[i].getPipelineIndex();
 
     warnings.push_back(warning);
   }
@@ -238,12 +239,12 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
   for(size_t i = 0; i < numStatusMsgs; i++)
   {
     QJsonObject msg;
-    msg["Message"] = statusMessages[i].generateStatusString();
+    msg[SIMPL::JSON::Message] = statusMessages[i].generateStatusString();
     statusMsgs.push_back(msg);
   }
   // rootObj["StatusMessages"] = statusMsgs;
-  rootObj["Warnings"] = warnings;
-  rootObj["Completed"] = completed;
+  rootObj[SIMPL::JSON::Warnings] = warnings;
+  rootObj[SIMPL::JSON::Completed] = completed;
 
   // **************************************************************************
   // This section archives the working directory for this session
@@ -268,7 +269,7 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
   // **************************************************************************
 
   // Append to the json response payload all the output links
-  rootObj["OutputLinks"] = outputLinks;
+  rootObj[SIMPL::JSON::OutputLinks] = outputLinks;
 
   QJsonDocument jdoc(rootObj);
   response.write(jdoc.toJson(), true);

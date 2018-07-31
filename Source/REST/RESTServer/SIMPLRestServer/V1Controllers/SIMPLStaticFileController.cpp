@@ -1,8 +1,11 @@
 
 #include "SIMPLStaticFileController.h"
-#include <QDateTime>
-#include <QDir>
-#include <QFileInfo>
+#include <QtCore/QDateTime>
+#include <QtCore/QDir>
+#include <QtCore/QFileInfo>
+
+#include "SIMPLib/Plugin/SIMPLPluginConstants.h"
+
 
 #include "SIMPLRestServer/SIMPLDirectoryListing.h"
 

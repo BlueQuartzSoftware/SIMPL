@@ -31,15 +31,17 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "ListFilterParametersController.h"
 
-#include "SIMPLib/Filtering/FilterManager.h"
-#include "SIMPLib/Plugin/PluginManager.h"
-#include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
-
 #include <QtCore/QDateTime>
 #include <QtCore/QVariant>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
+
+
+#include "SIMPLib/Filtering/FilterManager.h"
+#include "SIMPLib/Plugin/PluginManager.h"
+#include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
+#include "SIMPLib/Plugin/SIMPLPluginConstants.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -67,17 +69,17 @@ void ListFilterParametersController::createFilterParametersJson(const QString& f
   {
     FilterParameter::Pointer parameter = parameters[i];
     QJsonObject filterObj;
-    filterObj["FilterParameterName"] = parameter->getNameOfClass();
-    filterObj["FilterParameterWidget"] = parameter->getWidgetType();
-    filterObj["FilterParameterCategory"] = parameter->getCategory();
-    filterObj["FilterParameterGroupIndex"] = parameter->getGroupIndex();
-    filterObj["FilterParameterHumanLabel"] = parameter->getHumanLabel();
-    filterObj["FilterParameterPropertyName"] = parameter->getPropertyName();
-    filterObj["FilterParameterReadOnly"] = parameter->getReadOnly();
+    filterObj[SIMPL::JSON::FilterParameterName] = parameter->getNameOfClass();
+    filterObj[SIMPL::JSON::FilterParameterWidget] = parameter->getWidgetType();
+    filterObj[SIMPL::JSON::FilterParameterCategory] = parameter->getCategory();
+    filterObj[SIMPL::JSON::FilterParameterGroupIndex] = parameter->getGroupIndex();
+    filterObj[SIMPL::JSON::FilterParameterHumanLabel] = parameter->getHumanLabel();
+    filterObj[SIMPL::JSON::FilterParameterPropertyName] = parameter->getPropertyName();
+    filterObj[SIMPL::JSON::FilterParameterReadOnly] = parameter->getReadOnly();
     jsonParameters.append(filterObj);
   }
-  rootObject["FilterParameters"] = jsonParameters;
-  rootObject["ClassName"] = filterName;
+  rootObject[SIMPL::JSON::FilterParameters] = jsonParameters;
+  rootObject[SIMPL::JSON::ClassName] = filterName;
 }
 
 // -----------------------------------------------------------------------------
@@ -95,8 +97,8 @@ void ListFilterParametersController::service(HttpRequest& request, HttpResponse&
   if(content_type.compare("application/json") != 0)
   {
     // Form Error response
-    responseJsonRootObj["ErrorMessage"] = EndPoint() + ": Content Type is not application/json";
-    responseJsonRootObj["ErrorCode"] = -20;
+    responseJsonRootObj[SIMPL::JSON::ErrorMessage]  = EndPoint() + ": Content Type is not application/json";
+    responseJsonRootObj[SIMPL::JSON::ErrorCode] = -20;
     QJsonDocument jdoc(responseJsonRootObj);
 
     response.write(jdoc.toJson(), true);
@@ -110,19 +112,18 @@ void ListFilterParametersController::service(HttpRequest& request, HttpResponse&
     QByteArray jsonBytes = request.getBody();
     QJsonDocument requestJsonDoc = QJsonDocument::fromJson(jsonBytes, &jsonParseError);
     QJsonObject rootObject = requestJsonDoc.object();
-    QJsonValue nameValue = rootObject["ClassName"];
+    QJsonValue nameValue = rootObject[SIMPL::JSON::ClassName];
     if(nameValue.isString())
     {
       filterName = nameValue.toString();
     }
   }
-  //   response.setCookie(HttpCookie("firstCookie","hello",600,QByteArray(),QByteArray(),QByteArray(),false,true));
-  //   response.setCookie(HttpCookie("secondCookie","world",600));
+ 
 
   if(filterName.isEmpty())
   {
-    responseJsonRootObj["ErrorCode"] = -30;
-    responseJsonRootObj["ErrorMessage"] = "Filter with name " + filterName + " was not loaded or does not exist";
+    responseJsonRootObj[SIMPL::JSON::ErrorCode] = -30;
+    responseJsonRootObj[SIMPL::JSON::ErrorMessage] = "Filter with name " + filterName + " was not loaded or does not exist";
   }
   else
   {

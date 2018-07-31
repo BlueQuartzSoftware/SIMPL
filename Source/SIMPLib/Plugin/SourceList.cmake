@@ -53,6 +53,7 @@ set(SIMPLib_Plugin_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLibPluginLoader.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PluginManager.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PluginProxy.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLPluginConstants.h
 
 )
 set(SIMPLib_Plugin_SRCS

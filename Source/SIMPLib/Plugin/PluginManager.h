@@ -65,7 +65,7 @@ class SIMPLib_EXPORT PluginManager
     /**
      * @brief PluginManager::printPluginNames
      */
-    void printPluginNames();
+    void printPluginNames() const;
 
     /**
      * @brief Adds a Plugin to the list
@@ -77,19 +77,19 @@ class SIMPLib_EXPORT PluginManager
      * @brief getPluginNames Returns all plugin names as a QSet
      * @return
      */
-    QList<QString> getPluginNames();
+    QList<QString> getPluginNames() const;
 
     /**
     * @brief getPluginName Returns the plugin name for the given filter name
     * @return
     */
-    QString getPluginName(QString filtName);
+    QString getPluginName(QString filtName) const;
 
     /**
      * @brief getPluginList Returns the plugins list
      * @return
      */
-    QVector<ISIMPLibPlugin*> getPluginsVector();
+    QVector<ISIMPLibPlugin*> getPluginsVector() const;
 
     /**
      * @brief findPlugin
@@ -97,6 +97,13 @@ class SIMPLib_EXPORT PluginManager
      * @return
      */
     ISIMPLibPlugin* findPlugin(QString pluginName);
+    
+    /**
+     * @brief This method will generate a QJsonObject that will have a tree of
+     * Json objects that represent the information for each of the loaded plugins
+     * @return 
+     */
+    QJsonArray toJsonArray() const;
 
 
   protected:
@@ -104,8 +111,8 @@ class SIMPLib_EXPORT PluginManager
 
   private:
 
-    QVector<ISIMPLibPlugin*> plugins;
-    static PluginManager* self;
+    QVector<ISIMPLibPlugin*> m_Plugins;
+    static PluginManager* m_Self;
 
   public:
     PluginManager(const PluginManager&) = delete;  // Copy Constructor Not Implemented

@@ -35,6 +35,7 @@
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Plugin/PluginManager.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
+#include "SIMPLib/Plugin/SIMPLPluginConstants.h"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QVariant>
@@ -65,8 +66,8 @@ void ApiNotFoundController::service(HttpRequest& request, HttpResponse& response
   if(content_type.compare("application/json") != 0)
   {
     // Form Error response
-    rootObj["ErrorMessage"] = EndPoint() + ": Content Type is not application/json";
-    rootObj["ErrorCode"] = -20;
+    rootObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Content Type is not application/json";
+    rootObj[SIMPL::JSON::ErrorCode] = -20;
 
     QJsonDocument jdoc(rootObj);
 
@@ -79,7 +80,8 @@ void ApiNotFoundController::service(HttpRequest& request, HttpResponse& response
 
   QByteArray path = request.getPath();
 
-  rootObj["ERROR"] = "THIS API IS NOT IMPLEMENTED." + QString(path);
+  rootObj[SIMPL::JSON::ErrorCode] = -10;
+  rootObj[SIMPL::JSON::ErrorMessage] = "THIS API IS NOT IMPLEMENTED." + QString(path);
   QJsonDocument jdoc(rootObj);
 
   response.write(jdoc.toJson(), true);
