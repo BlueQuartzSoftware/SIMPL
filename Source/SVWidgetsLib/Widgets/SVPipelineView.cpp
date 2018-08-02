@@ -602,8 +602,20 @@ int SVPipelineView::writePipeline(const QString& outputPath)
   }
 
   // Create a Pipeline Object and fill it with the filters from this View
-  FilterPipeline::Pointer pipeline = getFilterPipeline();
+  FilterPipeline::Pointer pipeline = FilterPipeline::New();
+  PipelineModel* model = getPipelineModel();
 
+  qint32 count = model->rowCount();
+  for(qint32 i = 0; i < count; ++i)
+  {
+    QModelIndex childIndex = model->index(i, PipelineItem::Contents);
+    if(childIndex.isValid())
+    { 
+      AbstractFilter::Pointer filter = model->filter(childIndex);      
+      pipeline->pushBack(filter);
+    }
+  }
+  
   int err = 0;
   if(ext == "dream3d")
   {
