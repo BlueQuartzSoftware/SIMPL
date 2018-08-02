@@ -51,7 +51,7 @@ public:
   SIMPL_SHARED_POINTERS(AbstractComparison)
   SIMPL_TYPE_MACRO(AbstractComparison)
 
-  ~AbstractComparison();
+  virtual ~AbstractComparison();
 
   /**
   * @brief Create comparison from JSon
