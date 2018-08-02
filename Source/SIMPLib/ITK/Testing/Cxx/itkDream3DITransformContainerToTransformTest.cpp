@@ -72,7 +72,7 @@ public:
       DREAM3D_TEST_THROW_EXCEPTION("An exception was expected and this line should not be executed.");
     } catch(itk::ExceptionObject& ex)
     {
-      std::cout << "Caught exception as expected." << std::endl;
+      std::cout << "Caught exception as expected." << ex.GetDescription() << std::endl;
     }
     // If we manually register the transform to the transform factory,
     // the test should now pass.
