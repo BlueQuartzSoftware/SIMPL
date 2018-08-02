@@ -60,12 +60,10 @@ public:
   virtual ~CreateDataArrayTest()
   {
   }
+  static const int k_NoError = 0;
+  static const int k_Int8Error = -4050;
 
-  enum ErrorCodes
-  {
-    NO_ERROR = 0,
-    INT8_ERROR = -4050
-  };
+
 
   // -----------------------------------------------------------------------------
   //
@@ -218,13 +216,13 @@ public:
 
     filter->preflight();
     err = filter->getErrorCondition();
-    DREAM3D_REQUIRE_EQUAL(err, NO_ERROR);
+    DREAM3D_REQUIRE_EQUAL(err, k_NoError);
 
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
     filter->execute();
     err = filter->getErrorCondition();
-    DREAM3D_REQUIRE_EQUAL(err, NO_ERROR);
+    DREAM3D_REQUIRE_EQUAL(err, k_NoError);
 
     {
       IDataArray::Pointer testArrayPtr = dca->getDataContainer(SIMPL::Defaults::DataContainerName)->getAttributeMatrix(path.getAttributeMatrixName())->getAttributeArray(path.getDataArrayName());
@@ -246,14 +244,14 @@ public:
 
     filter->preflight();
     err = filter->getErrorCondition();
-    DREAM3D_REQUIRE_EQUAL(err, NO_ERROR);
+    DREAM3D_REQUIRE_EQUAL(err, k_NoError);
 
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
 
     filter->execute();
     err = filter->getErrorCondition();
-    DREAM3D_REQUIRE_EQUAL(err, NO_ERROR);
+    DREAM3D_REQUIRE_EQUAL(err, k_NoError);
 
     {
       IDataArray::Pointer testArrayPtr = dca->getDataContainer(SIMPL::Defaults::DataContainerName)->getAttributeMatrix(path.getAttributeMatrixName())->getAttributeArray(path.getDataArrayName());
@@ -313,7 +311,7 @@ public:
 
             filter->execute();
         err = filter->getErrorCondition();
-        DREAM3D_REQUIRE_EQUAL(err, NO_ERROR);
+        DREAM3D_REQUIRE_EQUAL(err, k_NoError);
 
         IDataArray::Pointer boolArray = m->getAttributeMatrix(path.getAttributeMatrixName())->getAttributeArray(path.getDataArrayName());
         DataArray<bool>::Pointer inputArrayBool = std::dynamic_pointer_cast<DataArray<bool>>(boolArray);
@@ -335,7 +333,7 @@ public:
 
             filter->execute();
         err = filter->getErrorCondition();
-        DREAM3D_REQUIRE_EQUAL(err, INT8_ERROR);
+        DREAM3D_REQUIRE_EQUAL(err, k_Int8Error);
 
 #endif
     }
