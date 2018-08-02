@@ -27,7 +27,7 @@
     <number>0</number>
    </property>
    <property name="verticalSpacing">
-    <number>1</number>
+    <number>0</number>
    </property>
    <item row="1" column="0">
     <widget class="QPushButton" name="startPipelineBtn">
@@ -44,8 +44,8 @@
       <string>Start Pipeline</string>
      </property>
      <property name="icon">
-      <iconset resource="../../icons/images/Icons.qrc">
-       <normaloff>:/SIMPL/icons/images/media_play_white.png</normaloff>:/media_play_white.png</iconset>
+      <iconset resource="../../../../Resources/SIMPL.qrc">
+       <normaloff>:/SIMPL/icons/images/media_play_white.png</normaloff>:/SIMPL/icons/images/media_play_white.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -111,7 +111,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../icons/images/Icons.qrc"/>
+  <include location="../../../../Resources/SIMPL.qrc"/>
  </resources>
  <connections/>
 </ui>

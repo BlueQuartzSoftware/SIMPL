@@ -45,7 +45,7 @@
 #include "SIMPLib/Common/PhaseType.h"
 
 #include "SIMPLib/DataArrays/DataArray.hpp"
-#include "SIMPLib/DataArrays/StringDataArray.hpp"
+#include "SIMPLib/DataArrays/StringDataArray.h"
 
 /**
  * @class EnsembleInfo EnsembleInfo.h DREAM3DLib/Common/EnsembleInfo.h

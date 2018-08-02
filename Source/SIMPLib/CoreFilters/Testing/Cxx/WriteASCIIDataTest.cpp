@@ -46,7 +46,7 @@
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataArrays/NeighborList.hpp"
 #include "SIMPLib/DataArrays/StatsDataArray.h"
-#include "SIMPLib/DataArrays/StringDataArray.hpp"
+#include "SIMPLib/DataArrays/StringDataArray.h"
 #include "SIMPLib/DataArrays/StructArray.hpp"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/Geometry/MeshStructs.h"

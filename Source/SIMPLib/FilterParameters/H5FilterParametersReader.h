@@ -160,7 +160,7 @@ class SIMPLib_EXPORT H5FilterParametersReader : public AbstractFilterParametersR
 
    public:
      H5FilterParametersReader(const H5FilterParametersReader&) = delete;            // Copy Constructor Not Implemented
-     H5FilterParametersReader(H5FilterParametersReader&&) = delete;                 // Move Constructor
+     H5FilterParametersReader(H5FilterParametersReader&&) = delete;                 // Move Constructor Not Implemented
      H5FilterParametersReader& operator=(const H5FilterParametersReader&) = delete; // Copy Assignment Not Implemented
      H5FilterParametersReader& operator=(H5FilterParametersReader&&) = delete;      // Move Assignment
 };

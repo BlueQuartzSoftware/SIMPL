@@ -10,7 +10,6 @@
 
 #pragma once
 
-
 //--C++ Headers
 #include <typeinfo>
 
@@ -89,66 +88,26 @@ namespace H5Support_NAMESPACE
       static H5Support_EXPORT herr_t closeId( hid_t obj_id, int32_t obj_type );
 
       /**
+       * @brief StringForHDFClassType
+       * @param classType
+       * @return
+       */
+      static H5Support_EXPORT std::string StringForHDFClassType(H5T_class_t classType);
+
+      /**
        * @brief Given one of the HDF Types as a string, this will return the HDF Type
        * as an hid_t value.
        * @param value The HDF_Type as a string
        * @return the hid_t value for the given type. -1 if the string does not match a type.
        */
-      static hid_t HDFTypeFromString(const std::string& value)
-      {
-        H5SUPPORT_MUTEX_LOCK()
-
-        if (value.compare("H5T_STRING") == 0) { return H5T_STRING; }
-
-        if (value.compare("H5T_NATIVE_INT8") == 0) { return H5T_NATIVE_INT8; }
-        if (value.compare("H5T_NATIVE_UINT8") == 0) { return H5T_NATIVE_UINT8; }
-
-        if (value.compare("H5T_NATIVE_INT16") == 0) { return H5T_NATIVE_INT16; }
-        if (value.compare("H5T_NATIVE_UINT16") == 0) { return H5T_NATIVE_UINT16; }
-
-        if (value.compare("H5T_NATIVE_INT32") == 0) { return H5T_NATIVE_INT32; }
-        if (value.compare("H5T_NATIVE_UINT32") == 0) { return H5T_NATIVE_UINT32; }
-
-        if (value.compare("H5T_NATIVE_INT64") == 0) { return H5T_NATIVE_INT64; }
-        if (value.compare("H5T_NATIVE_UINT64") == 0) { return H5T_NATIVE_UINT64; }
-
-        if (value.compare("H5T_NATIVE_FLOAT") == 0) { return H5T_NATIVE_FLOAT; }
-        if (value.compare("H5T_NATIVE_DOUBLE") == 0) { return H5T_NATIVE_DOUBLE; }
-
-        std::cout  << "Error: HDFTypeFromString - Unknown Type: " << value << std::endl;
-        return -1;
-      }
-
+      static H5Support_EXPORT hid_t HDFTypeFromString(const std::string& value);
 
       /**
        * @brief Returns a string version of the HDF Type
        * @param type The HDF5 Type to query
        * @return
        */
-      static std::string StringForHDFType(hid_t type)
-      {
-        H5SUPPORT_MUTEX_LOCK()
-
-        if ( type == H5T_STRING) { return "H5T_STRING"; }
-
-        if (H5Tequal(type , H5T_NATIVE_INT8) ) { return "H5T_NATIVE_INT8"; }
-        if (H5Tequal(type , H5T_NATIVE_UINT8) ) { return "H5T_NATIVE_UINT8"; }
-
-        if (H5Tequal(type , H5T_NATIVE_INT16) ) { return "H5T_NATIVE_INT16"; }
-        if (H5Tequal(type , H5T_NATIVE_UINT16) ) { return "H5T_NATIVE_UINT16"; }
-
-        if (H5Tequal(type , H5T_NATIVE_INT32) ) { return "H5T_NATIVE_INT32"; }
-        if (H5Tequal(type , H5T_NATIVE_UINT32) ) { return "H5T_NATIVE_UINT32"; }
-
-        if (H5Tequal(type , H5T_NATIVE_INT64) ) { return "H5T_NATIVE_INT64"; }
-        if (H5Tequal(type , H5T_NATIVE_UINT64) ) { return "H5T_NATIVE_UINT64"; }
-
-        if (H5Tequal(type , H5T_NATIVE_FLOAT) ) { return "H5T_NATIVE_FLOAT"; }
-        if (H5Tequal(type , H5T_NATIVE_DOUBLE) ) { return "H5T_NATIVE_DOUBLE"; }
-
-        std::cout  << "Error: HDFTypeForPrimitiveAsStr - Unknown Type: " << std::endl;
-        return "Unknown";
-      }
+      static H5Support_EXPORT std::string StringForHDFType(hid_t dataTypeIdentifier);
 
       /**
       * @brief Returns the HDF Type for a given primitive value.
@@ -444,6 +403,15 @@ namespace H5Support_NAMESPACE
         return retErr;
       }
 
+      /**
+       * @brief replacePointerDataset
+       * @param loc_id
+       * @param dsetName
+       * @param rank
+       * @param dims
+       * @param data
+       * @return
+       */
       template <typename T>
       static herr_t replacePointerDataset (hid_t loc_id,
                                            const std::string& dsetName,

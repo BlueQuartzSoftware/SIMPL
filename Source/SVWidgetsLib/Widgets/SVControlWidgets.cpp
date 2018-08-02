@@ -127,3 +127,14 @@ QTreeWidget(parent)
 }
 
 SVTreeWidget::~SVTreeWidget() = default;
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+SVTabWidget::SVTabWidget(QWidget* parent) :
+  QTabWidget(parent)
+{
+  setAttribute(Qt::WA_MacShowFocusRect, false);
+}
+
+SVTabWidget::~SVTabWidget() = default;

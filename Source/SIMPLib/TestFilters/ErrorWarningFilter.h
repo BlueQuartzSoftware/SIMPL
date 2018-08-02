@@ -169,7 +169,7 @@ protected:
 private:
 public:
   ErrorWarningFilter(const ErrorWarningFilter&) = delete; // Copy Constructor Not Implemented
-  ErrorWarningFilter(ErrorWarningFilter&&) = delete;      // Move Constructor
+  ErrorWarningFilter(ErrorWarningFilter&&) = delete;      // Move Constructor Not Implemented
   ErrorWarningFilter& operator=(const ErrorWarningFilter&) = delete; // Copy Assignment Not Implemented
   ErrorWarningFilter& operator=(ErrorWarningFilter&&) = delete;      // Move Assignment Not Implemented
 };

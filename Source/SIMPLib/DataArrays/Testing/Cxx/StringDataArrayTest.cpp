@@ -39,7 +39,7 @@
 #include <string>
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/DataArrays/StringDataArray.hpp"
+#include "SIMPLib/DataArrays/StringDataArray.h"
 #include "SIMPLib/Geometry/MeshStructs.h"
 #include "SIMPLib/SIMPLib.h"
 

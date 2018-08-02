@@ -87,6 +87,9 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     SIMPL_INSTANCE_PROPERTY(QColor, CentralWidget_background_color)    
     Q_PROPERTY(QColor CentralWidget_background_color READ getCentralWidget_background_color WRITE setCentralWidget_background_color)    
     
+    SIMPL_INSTANCE_PROPERTY(QColor, QLabel_color)    
+    Q_PROPERTY(QColor QLabel_color READ getQLabel_color WRITE setQLabel_color)    
+
     SIMPL_INSTANCE_PROPERTY(QColor, FilterInputWidget_background_color)    
     Q_PROPERTY(QColor FilterInputWidget_background_color READ getFilterInputWidget_background_color WRITE setFilterInputWidget_background_color)    
     

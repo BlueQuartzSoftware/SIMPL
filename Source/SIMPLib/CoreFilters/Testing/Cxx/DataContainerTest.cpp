@@ -53,7 +53,7 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
 #include "SIMPLib/CoreFilters/DataContainerWriter.h"
-#include "SIMPLib/DataArrays/StringDataArray.hpp"
+#include "SIMPLib/DataArrays/StringDataArray.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersWriter.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"

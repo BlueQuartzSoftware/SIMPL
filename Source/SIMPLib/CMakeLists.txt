@@ -135,7 +135,7 @@ if(SIMPL_Group_FILTERS)
   set(CORE_FILTER_LIST ${CORE_FILTER_LIST} ${_PublicFilters} )
   #-----------------------------------------------------
   # conditionally compile our example codes- These should be turned off for a release
-  if(NOT "${SIMPLProj_RELEASE_TYPE}" STREQUAL "Offical")
+  if(NOT "${SIMPLProj_RELEASE_TYPE}" STREQUAL "Official")
       # Add the generated moc file to the project sources
       set(Project_SRCS ${Project_SRCS} ${PluginAutoMocSourceFile} )
       include(${SIMPLib_SOURCE_DIR}/TestFilters/SourceList.cmake)

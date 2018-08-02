@@ -198,7 +198,7 @@ private:
 
 public:
   ImportHDF5Dataset(const ImportHDF5Dataset&) = delete;            // Copy Constructor Not Implemented
-  ImportHDF5Dataset(ImportHDF5Dataset&&) = delete;                 // Move Constructor
+  ImportHDF5Dataset(ImportHDF5Dataset&&) = delete;                 // Move Constructor Not Implemented
   ImportHDF5Dataset& operator=(const ImportHDF5Dataset&) = delete; // Copy Assignment Not Implemented
   ImportHDF5Dataset& operator=(ImportHDF5Dataset&&) = delete;      // Move Assignment Not Implemented
 };
