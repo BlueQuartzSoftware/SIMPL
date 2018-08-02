@@ -37,19 +37,19 @@
 
 #include <QtCore/QFileInfo>
 
-#include "H5Support/QH5Utilities.h"
 #include "H5Support/H5ScopedSentinel.h"
+#include "H5Support/QH5Utilities.h"
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/DataContainers/DataContainerBundle.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/DataContainers/DataContainerBundle.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerReaderFilterParameter.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
 #include "SIMPLib/Filtering/FilterManager.h"
-#include "SIMPLib/Utilities/SIMPLH5DataReader.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/Utilities/SIMPLH5DataReader.h"
 #include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
 
 // -----------------------------------------------------------------------------
@@ -63,7 +63,6 @@ DataContainerReader::DataContainerReader()
 , m_InputFileDataContainerArrayProxy()
 {
   m_PipelineFromFile = FilterPipeline::New();
-
 }
 
 // -----------------------------------------------------------------------------
@@ -71,7 +70,6 @@ DataContainerReader::DataContainerReader()
 // -----------------------------------------------------------------------------
 DataContainerReader::~DataContainerReader()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -121,9 +119,8 @@ void DataContainerReader::readFilterParameters(QJsonObject& obj)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerReader::preWriteFilterParameters(QJsonObject &obj, QJsonObject &rootObject)
+void DataContainerReader::preWriteFilterParameters(QJsonObject& obj, QJsonObject& rootObject)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -131,7 +128,7 @@ void DataContainerReader::preWriteFilterParameters(QJsonObject &obj, QJsonObject
 // -----------------------------------------------------------------------------
 void DataContainerReader::writeFilterParameters(QJsonObject& obj) const
 {
-  //writeExistingPipelineToFile(obj);
+  // writeExistingPipelineToFile(obj);
   AbstractFilter::writeFilterParameters(obj);
 }
 
@@ -151,7 +148,7 @@ void DataContainerReader::dataCheck()
   QFileInfo fi(getInputFile());
   if(getInputFile() == getLastFileRead() && getLastRead() < fi.lastModified())
   {
-    if (syncProxies() == false)
+    if(syncProxies() == false)
     {
       return;
     }
@@ -176,15 +173,18 @@ void DataContainerReader::dataCheck()
     // something has gone wrong and errors were logged already so just return
     return;
   }
-  
 
-  
   DataContainerArray::Pointer dca = getDataContainerArray();
 
   // Read either the structure or all the data depending on the preflight status
   DataContainerArray::Pointer tempDCA = readData(m_InputFileDataContainerArrayProxy);
+  if(!tempDCA.get())
+  {
+    return;
+  }
 
   QList<DataContainer::Pointer>& tempContainers = tempDCA->getDataContainers();
+
   QListIterator<DataContainer::Pointer> iter(tempContainers);
   while(iter.hasNext())
   {
@@ -258,7 +258,7 @@ DataContainerArray::Pointer DataContainerReader::readData(DataContainerArrayProx
   setWarningCondition(0);
 
   SIMPLH5DataReader::Pointer simplReader = SIMPLH5DataReader::New();
-  connect(simplReader.get(), &SIMPLH5DataReader::errorGenerated, [=] (const QString &title, const QString &msg, const int &code) {
+  connect(simplReader.get(), &SIMPLH5DataReader::errorGenerated, [=](const QString& title, const QString& msg, const int& code) {
     setErrorCondition(code);
     notifyErrorMessage(getHumanLabel(), msg, getErrorCondition());
   });
@@ -269,7 +269,7 @@ DataContainerArray::Pointer DataContainerReader::readData(DataContainerArrayProx
   }
 
   DataContainerArray::Pointer dca = simplReader->readSIMPLDataUsingProxy(proxy, getInPreflight());
-  if (dca == DataContainerArray::NullPointer())
+  if(dca == DataContainerArray::NullPointer())
   {
     return DataContainerArray::New();
   }
@@ -305,7 +305,7 @@ DataContainerArray::Pointer DataContainerReader::readData(DataContainerArrayProx
 DataContainerArrayProxy DataContainerReader::readDataContainerArrayStructure(const QString& path)
 {
   SIMPLH5DataReader::Pointer h5Reader = SIMPLH5DataReader::New();
-  if (h5Reader->openFile(path) == false)
+  if(h5Reader->openFile(path) == false)
   {
     return DataContainerArrayProxy();
   }
@@ -313,7 +313,7 @@ DataContainerArrayProxy DataContainerReader::readDataContainerArrayStructure(con
   int err = 0;
   SIMPLH5DataReaderRequirements req(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
   DataContainerArrayProxy proxy = h5Reader->readDataContainerArrayStructure(&req, err);
-  if (err < 0)
+  if(err < 0)
   {
     return DataContainerArrayProxy();
   }
@@ -421,12 +421,12 @@ bool DataContainerReader::syncProxies()
   SIMPLH5DataReaderRequirements req(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
 
   SIMPLH5DataReader::Pointer simplReader = SIMPLH5DataReader::New();
-  connect(simplReader.get(), &SIMPLH5DataReader::errorGenerated, [=] (const QString &title, const QString &msg, const int &code) {
+  connect(simplReader.get(), &SIMPLH5DataReader::errorGenerated, [=](const QString& title, const QString& msg, const int& code) {
     setErrorCondition(code);
     notifyErrorMessage(getHumanLabel(), msg, getErrorCondition());
   });
 
-  if (simplReader->openFile(getInputFile()) == false)
+  if(simplReader->openFile(getInputFile()) == false)
   {
     return false;
   }
@@ -436,7 +436,7 @@ bool DataContainerReader::syncProxies()
   {
     int err = 0;
     DataContainerArrayProxy fileProxy = simplReader->readDataContainerArrayStructure(&req, err);
-    if (err < 0)
+    if(err < 0)
     {
       return false;
     }
@@ -451,7 +451,7 @@ bool DataContainerReader::syncProxies()
   {
     int err = 0;
     DataContainerArrayProxy fileProxy = simplReader->readDataContainerArrayStructure(&req, err);
-    if (err < 0)
+    if(err < 0)
     {
       return false;
     }

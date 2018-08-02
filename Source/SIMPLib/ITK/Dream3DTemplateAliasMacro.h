@@ -431,33 +431,33 @@
 // corresponding to an ITK ImageIO component type, and call
 // `Dream3DArraySwitchOutputComponentMacro()`
 //
-#define Dream3DArrayOutputComponentFromDataMacro(call, input2_path, input1_path, errorCondition)                   \
-  {                   \
-    IDataArray::Pointer ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, input2_path);             \
-    if(ptr.get() != nullptr)                      \
-    {                 \
-      ImageGeom::Pointer imageGeometry = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, input2_path.getDataContainerName()); \
-      if(imageGeometry.get() != nullptr)          \
-      {               \
-        QVector<size_t> tDims(3, 0);              \
-        imageGeometry->getDimensions(tDims[0], tDims[1], tDims[2]);           \
-        if(getErrorCondition() >= 0)              \
-        {             \
-          QString str_type = ptr->getTypeAsString();                          \
-          itk::ImageIOBase::IOComponentType type = itk::ImageIOBase::GetComponentTypeFromString(str_type.toStdString());                       \
-          Dream3DArraySwitchOutputComponentMacro(call, type, input1_path, errorCondition)                          \
-        }             \
-      }               \
-      else            \
-      {               \
-        setErrorCondition(errorCondition);        \
-        notifyErrorMessage(getHumanLabel(), "Geometry not found", getErrorCondition());  \
-      }               \
-    }                 \
-    else              \
-    {                 \
-      setErrorCondition(errorCondition);          \
-      notifyErrorMessage(getHumanLabel(), "Array not found", getErrorCondition());     \
-    }                 \
+#define Dream3DArrayOutputComponentFromDataMacro(call, input2_path, input1_path, errorCondition)                                                                                                       \
+  {                                                                                                                                                                                                    \
+    IDataArray::Pointer ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, input2_path);                                                                     \
+    if(ptr.get() != nullptr)                                                                                                                                                                           \
+    {                                                                                                                                                                                                  \
+      ImageGeom::Pointer imageGeometry = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, input2_path.getDataContainerName());                             \
+      if(imageGeometry.get() != nullptr)                                                                                                                                                               \
+      {                                                                                                                                                                                                \
+        QVector<size_t> tDims(3, 0);                                                                                                                                                                   \
+        std::tie(tDims[0], tDims[1], tDims[2]) = imageGeometry->getDimensions();                                                                                                                       \
+        if(getErrorCondition() >= 0)                                                                                                                                                                   \
+        {                                                                                                                                                                                              \
+          QString str_type = ptr->getTypeAsString();                                                                                                                                                   \
+          itk::ImageIOBase::IOComponentType type = itk::ImageIOBase::GetComponentTypeFromString(str_type.toStdString());                                                                               \
+          Dream3DArraySwitchOutputComponentMacro(call, type, input1_path, errorCondition)                                                                                                              \
+        }                                                                                                                                                                                              \
+      }                                                                                                                                                                                                \
+      else                                                                                                                                                                                             \
+      {                                                                                                                                                                                                \
+        setErrorCondition(errorCondition);                                                                                                                                                             \
+        notifyErrorMessage(getHumanLabel(), "Geometry not found", getErrorCondition());                                                                                                                \
+      }                                                                                                                                                                                                \
+    }                                                                                                                                                                                                  \
+    else                                                                                                                                                                                               \
+    {                                                                                                                                                                                                  \
+      setErrorCondition(errorCondition);                                                                                                                                                               \
+      notifyErrorMessage(getHumanLabel(), "Array not found", getErrorCondition());                                                                                                                     \
+    }                                                                                                                                                                                                  \
   }
 
