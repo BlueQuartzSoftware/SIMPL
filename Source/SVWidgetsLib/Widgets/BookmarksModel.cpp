@@ -73,6 +73,7 @@ BookmarksModel* BookmarksModel::Instance()
   {
     self = new BookmarksModel();
     self->loadModel();
+    self->writeBookmarksToPrefsFile();  // Write out any "sanity check" changes that were made while loading the model
   }
 
   return self;
@@ -577,10 +578,21 @@ void BookmarksModel::unwrapModel(QString objectName, QJsonObject object, QModelI
 
   QString path = object["Path"].toString();
   bool expanded = object["Expanded"].toBool();
-  int type = object["Item Type"].toInt();
+  BookmarksItem::ItemType itemType = static_cast<BookmarksItem::ItemType>(object["Item Type"].toInt());
 
   QFileInfo fi(path);
-  if(path.isEmpty() == false)
+
+  // Sanity check to make sure that all bookmark items that are read in have the proper type
+  if (fi.isFile() && fi.completeSuffix() == "json" && itemType == BookmarksItem::ItemType::Folder)
+  {
+    itemType = BookmarksItem::ItemType::Bookmark;
+  }
+  else if (path.isEmpty() && itemType == BookmarksItem::ItemType::Bookmark)
+  {
+    itemType = BookmarksItem::ItemType::Folder;
+  }
+
+  if(itemType == BookmarksItem::ItemType::Bookmark)
   {
     setData(index, QIcon(":/SIMPL/icons/images/bookmark.png"), Qt::DecorationRole);
     if(fi.exists() == false)
@@ -599,7 +611,7 @@ void BookmarksModel::unwrapModel(QString objectName, QJsonObject object, QModelI
   setData(index, objectName, Qt::DisplayRole);
   setData(index, path, static_cast<int>(Roles::PathRole));
   setData(index, expanded, static_cast<int>(Roles::ExpandedRole));
-  setData(index, type, static_cast<int>(Roles::ItemTypeRole));
+  setData(index, static_cast<int>(itemType), static_cast<int>(Roles::ItemTypeRole));
 
   QStringList keys = object.keys();
   keys.sort(Qt::CaseInsensitive);
