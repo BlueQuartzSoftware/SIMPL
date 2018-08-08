@@ -144,7 +144,7 @@ protected:
 private:
 public:
   ArraySelectionExample(const ArraySelectionExample&) = delete; // Copy Constructor Not Implemented
-  ArraySelectionExample(ArraySelectionExample&&) = delete;      // Move Constructor
+  ArraySelectionExample(ArraySelectionExample&&) = delete;      // Move Constructor Not Implemented
   ArraySelectionExample& operator=(const ArraySelectionExample&) = delete; // Copy Assignment Not Implemented
   ArraySelectionExample& operator=(ArraySelectionExample&&) = delete;      // Move Assignment Not Implemented
 };

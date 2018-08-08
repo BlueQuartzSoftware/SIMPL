@@ -46,7 +46,7 @@
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataArrays/NeighborList.hpp"
-#include "SIMPLib/DataArrays/StringDataArray.hpp"
+#include "SIMPLib/DataArrays/StringDataArray.h"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/Math/SIMPLibMath.h"
 #include "SIMPLib/SIMPLib.h"

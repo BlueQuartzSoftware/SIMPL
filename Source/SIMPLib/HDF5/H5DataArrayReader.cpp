@@ -42,7 +42,7 @@
 
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataArrays/NeighborList.hpp"
-#include "SIMPLib/DataArrays/StringDataArray.hpp"
+#include "SIMPLib/DataArrays/StringDataArray.h"
 
 #define MIKESTEMP 1
 
@@ -386,8 +386,7 @@ IDataArray::Pointer H5DataArrayReader::ReadIDataArray(hid_t gid, const QString& 
       }
       break;
     default:
-      qDebug() << "Error: readUserMetaData() Unknown attribute type: " << attr_type;
-      QH5Utilities::printHDFClassType(attr_type);
+      qDebug() << "Error: readUserMetaData() Unknown attribute type: " << attr_type << "(" << QString::fromStdString(H5Utilities::HDFClassTypeAsStr(attr_type)) << ")";
     }
 
     err = H5Tclose(typeId);
@@ -542,8 +541,7 @@ IDataArray::Pointer H5DataArrayReader::ReadNeighborListData(hid_t gid, const QSt
       }
       break;
     default:
-      qDebug() << "Error: readUserMetaData() Unknown attribute type: " << attr_type;
-      QH5Utilities::printHDFClassType(attr_type);
+      qDebug() << "Error: readUserMetaData() Unknown attribute type: " << attr_type << "(" << QString::fromStdString(H5Utilities::HDFClassTypeAsStr(attr_type)) << ")";
     }
 
     err = H5Tclose(typeId);

@@ -184,7 +184,7 @@ class SIMPLib_EXPORT SetOriginResolutionImageGeom : public AbstractFilter
 
   public:
     SetOriginResolutionImageGeom(const SetOriginResolutionImageGeom&) = delete; // Copy Constructor Not Implemented
-    SetOriginResolutionImageGeom(SetOriginResolutionImageGeom&&) = delete;      // Move Constructor
+    SetOriginResolutionImageGeom(SetOriginResolutionImageGeom&&) = delete;      // Move Constructor Not Implemented
     SetOriginResolutionImageGeom& operator=(const SetOriginResolutionImageGeom&) = delete; // Copy Assignment Not Implemented
     SetOriginResolutionImageGeom& operator=(SetOriginResolutionImageGeom&&) = delete;      // Move Assignment
 };

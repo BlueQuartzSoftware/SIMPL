@@ -188,7 +188,7 @@ class  SIMPLib_EXPORT FeatureDataCSVWriter : public AbstractFilter
 
   public:
     FeatureDataCSVWriter(const FeatureDataCSVWriter&) = delete; // Copy Constructor Not Implemented
-    FeatureDataCSVWriter(FeatureDataCSVWriter&&) = delete;      // Move Constructor
+    FeatureDataCSVWriter(FeatureDataCSVWriter&&) = delete;      // Move Constructor Not Implemented
     FeatureDataCSVWriter& operator=(const FeatureDataCSVWriter&) = delete; // Copy Assignment Not Implemented
     FeatureDataCSVWriter& operator=(FeatureDataCSVWriter&&) = delete;      // Move Assignment
 };

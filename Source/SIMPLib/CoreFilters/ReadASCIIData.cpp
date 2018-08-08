@@ -7,7 +7,7 @@
 #include <QtCore/QFileInfo>
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/DataArrays/StringDataArray.hpp"
+#include "SIMPLib/DataArrays/StringDataArray.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/Utilities/StringOperations.h"

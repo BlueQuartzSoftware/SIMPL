@@ -186,7 +186,7 @@ class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
 
   public:
     RawBinaryReader(const RawBinaryReader&) = delete; // Copy Constructor Not Implemented
-    RawBinaryReader(RawBinaryReader&&) = delete;      // Move Constructor
+    RawBinaryReader(RawBinaryReader&&) = delete;      // Move Constructor Not Implemented
     RawBinaryReader& operator=(const RawBinaryReader&) = delete; // Copy Assignment Not Implemented
     RawBinaryReader& operator=(RawBinaryReader&&) = delete;      // Move Assignment
 };

@@ -165,7 +165,7 @@ class SIMPLib_EXPORT ReadASCIIData : public AbstractFilter
 
   public:
     ReadASCIIData(const ReadASCIIData&) = delete;  // Copy Constructor Not Implemented
-    ReadASCIIData(ReadASCIIData&&) = delete;       // Move Constructor
+    ReadASCIIData(ReadASCIIData&&) = delete;       // Move Constructor Not Implemented
     ReadASCIIData& operator=(const ReadASCIIData&) = delete; // Copy Assignment Not Implemented
     ReadASCIIData& operator=(ReadASCIIData&&) = delete;      // Move Assignment
 };
