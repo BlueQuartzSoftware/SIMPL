@@ -47,6 +47,7 @@
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
+#include "SVWidgetsLib/Widgets/DataStructureWidget.h"
 
 #include "SVWidgetsLib/ui_FilterInputWidget.h"
 
@@ -74,6 +75,8 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget
     void toIdleState();
 
     QWidget* getVariablesTabContentsWidget();
+
+    DataStructureWidget* getDataStructureWidget();
 
   public slots :
     void clearInputWidgets();

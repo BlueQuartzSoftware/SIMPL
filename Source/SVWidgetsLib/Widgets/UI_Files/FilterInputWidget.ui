@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>[*]Filter Input Parameters</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -26,8 +26,17 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <item>
+   <property name="spacing">
+    <number>4</number>
+   </property>
+   <item row="0" column="0">
     <widget class="QFrame" name="contents">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <horstretch>3</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="styleSheet">
       <string notr="true"/>
      </property>
@@ -198,8 +207,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>760</width>
-           <height>343</height>
+           <width>672</width>
+           <height>352</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="scrollAreaVertSpacer">
@@ -248,6 +257,60 @@
      </layout>
     </widget>
    </item>
+   <item row="0" column="1">
+    <widget class="QWidget" name="dataStructureContainer" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Data Structure</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="DataStructureWidget" name="dataStructureWidget" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -255,6 +318,12 @@
    <class>SVIconPushButton</class>
    <extends>QPushButton</extends>
    <header location="global">SVControlWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DataStructureWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">DataStructureWidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

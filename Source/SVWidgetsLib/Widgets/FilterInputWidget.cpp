@@ -149,6 +149,7 @@ FilterInputWidget::FilterInputWidget(AbstractFilter::Pointer filter, QWidget* pa
   }
 
   layoutWidgets(filter.get());
+  getDataStructureWidget()->filterActivated(filter);
 }
 
 // -----------------------------------------------------------------------------
@@ -703,6 +704,8 @@ void FilterInputWidget::displayFilterParameters(AbstractFilter::Pointer filter)
 #endif
 
   m_Ui->labelFrame->setStyleSheet(style);
+
+  getDataStructureWidget()->filterActivated(filter);
 }
 
 // -----------------------------------------------------------------------------
@@ -814,4 +817,12 @@ void FilterInputWidget::emitFilterPath(DataArrayPath path)
 QWidget* FilterInputWidget::getVariablesTabContentsWidget()
 {
   return m_Ui->variablesTabContents;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataStructureWidget* FilterInputWidget::getDataStructureWidget()
+{
+  return m_Ui->dataStructureWidget;
 }
