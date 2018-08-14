@@ -127,13 +127,16 @@
       <enum>Qt::CopyAction</enum>
      </property>
      <property name="alternatingRowColors">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="selectionMode">
       <enum>QAbstractItemView::ExtendedSelection</enum>
      </property>
      <property name="viewMode">
       <enum>QListView::ListMode</enum>
+     </property>
+     <property name="uniformItemSizes">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -176,8 +179,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../icons/images/Icons.qrc">
-         <normaloff>:/SIMPL/icons/images/arrow_right_green.png</normaloff>:/arrow_right_green.png</iconset>
+        <iconset resource="../../../../Resources/SIMPL.qrc">
+         <normaloff>:/SIMPL/icons/images/arrow_right_green.png</normaloff>:/SIMPL/icons/images/arrow_right_green.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -211,8 +214,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../icons/images/Icons.qrc">
-         <normaloff>:/SIMPL/icons/images/arrow_left_green.png</normaloff>:/arrow_left_green.png</iconset>
+        <iconset resource="../../../../Resources/SIMPL.qrc">
+         <normaloff>:/SIMPL/icons/images/arrow_left_green.png</normaloff>:/SIMPL/icons/images/arrow_left_green.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -270,13 +273,16 @@
       <enum>Qt::CopyAction</enum>
      </property>
      <property name="alternatingRowColors">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="selectionMode">
       <enum>QAbstractItemView::ExtendedSelection</enum>
      </property>
      <property name="viewMode">
       <enum>QListView::ListMode</enum>
+     </property>
+     <property name="uniformItemSizes">
+      <bool>true</bool>
      </property>
      <property name="sortingEnabled">
       <bool>false</bool>
@@ -309,8 +315,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../icons/images/Icons.qrc">
-         <normaloff>:/SIMPL/icons/images/arrow_up_green.png</normaloff>:/arrow_up_green.png</iconset>
+        <iconset resource="../../../../Resources/SIMPL.qrc">
+         <normaloff>:/SIMPL/icons/images/arrow_up_green.png</normaloff>:/SIMPL/icons/images/arrow_up_green.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -344,8 +350,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../icons/images/Icons.qrc">
-         <normaloff>:/SIMPL/icons/images/arrow_down_green.png</normaloff>:/arrow_down_green.png</iconset>
+        <iconset resource="../../../../Resources/SIMPL.qrc">
+         <normaloff>:/SIMPL/icons/images/arrow_down_green.png</normaloff>:/SIMPL/icons/images/arrow_down_green.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -379,8 +385,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../icons/images/Icons.qrc">
-         <normaloff>:/SIMPL/icons/images/delete.png</normaloff>:/delete.png</iconset>
+        <iconset resource="../../../../Resources/SIMPL.qrc">
+         <normaloff>:/SIMPL/icons/images/delete.png</normaloff>:/SIMPL/icons/images/delete.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -428,7 +434,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../icons/images/Icons.qrc"/>
+  <include location="../../../../Resources/SIMPL.qrc"/>
  </resources>
  <connections/>
 </ui>
