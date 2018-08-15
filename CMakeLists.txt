@@ -237,18 +237,7 @@ include(${CMP_SOURCE_DIR}/ExtLib/HDF5Support.cmake)
 set(SIMPL_USE_PARALLEL_ALGORITHMS "")
 option(SIMPL_USE_MULTITHREADED_ALGOS "Use MultiThreaded Algorithms" OFF)
 if(SIMPL_USE_MULTITHREADED_ALGOS)
-  find_package(TBB)
-  if(TBB_FOUND)
-      CMP_COPY_DEPENDENT_LIBRARIES("tbb;tbb_malloc")
-      # Append the locations of the TBB libraries to our Library Search Paths
-      # TBB_LIB_SEARCH_PATH Comes from the FindTBB.cmake file and should work across all platforms
-      file(APPEND ${CMP_PLUGIN_SEARCHDIR_FILE} "${TBB_LIB_SEARCH_PATH};")
-
-      # Create an install rule to copy the dependent shared library over to the installed location
-      CMP_LIBRARIES_INSTALL_RULES("tbb;tbb_malloc" ".")
-  else()
-      message(FATAL_ERROR "The Intel Threading Building Blocks library is needed to enable the multithreaded algorithms. Please make sure it is installed properly")
-  endif()
+  include(${CMP_SOURCE_DIR}/ExtLib/TBBSupport.cmake)
   set(SIMPL_USE_PARALLEL_ALGORITHMS "1")
 endif()
 
