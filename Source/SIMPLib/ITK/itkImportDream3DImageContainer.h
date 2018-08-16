@@ -69,20 +69,20 @@ protected:
   /** PrintSelf routine. Normally this is a protected internal method. It is
    * made public here so that Image can call this method.  Users should not
    * call this method but should call Print() instead. */
-  virtual void PrintSelf(std::ostream& os, Indent indent) const ITK_OVERRIDE;
+  virtual void PrintSelf(std::ostream& os, Indent indent) const override;
 
   /**
    * Allocates elements of the array.  If UseDefaultConstructor is true, then
    * the default constructor is used to initialize each element.  POD date types
    * initialize to zero.
    */
-  virtual Element* AllocateElements(ElementIdentifier size, bool UseDefaultConstructor = false) const ITK_OVERRIDE;
+  virtual Element* AllocateElements(ElementIdentifier size, bool UseDefaultConstructor = false) const override;
 
-  virtual void DeallocateManagedMemory() ITK_OVERRIDE;
+  virtual void DeallocateManagedMemory() override;
 
 private:
-  ImportDream3DImageContainer(const Self&) ITK_DELETE_FUNCTION;
-  void operator=(const Self&) ITK_DELETE_FUNCTION;
+  ImportDream3DImageContainer(const Self&) = delete;
+  void operator=(const Self&) = delete;
 };
 } // end namespace itk
 

@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+* Copyright (c) 2009-2018 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -27,70 +27,53 @@
 * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
 * The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
+*    United States Air Force Prime Contract FA8650-15-D-5231
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/DataContainers/DataArrayPath.h"
-#include "SIMPLib/SIMPLib.h"
+#include "itkProcessObject.h"
+#include "itkSimpleDataObjectDecorator.h"
 
-#include <QtCore/QJsonObject>
+#include "SIMPLib/Geometry/TransformContainer.h"
 
-/**
-* @brief The AbstractComparison class is used by ComparisonInputsAdvanced as a
-* base for both ComparisonSet and ComparisonValue.
-*/
-class SIMPLib_EXPORT AbstractComparison
+namespace itk
+{
+template <typename ITKTransformType> class TransformToDream3DTransformContainer : public ProcessObject
 {
 public:
-  SIMPL_SHARED_POINTERS(AbstractComparison)
-  SIMPL_TYPE_MACRO(AbstractComparison)
+  /** Standard class typedefs. */
+  using Self = TransformToDream3DTransformContainer;
+  using Pointer = SmartPointer<Self>;
+  using Superclass = ProcessObject;
 
-  virtual ~AbstractComparison();
+  using DecoratorType = typename itk::SimpleDataObjectDecorator<::TransformContainer::Pointer>;
 
-  /**
-  * @brief Create comparison from JSon
-  * @param json
-  */
-  static Pointer FromJson(QJsonObject& json);
+  /** Method for creation through the object factory. */
+  itkNewMacro(Self);
+  itkTypeMacro(TransformToDream3DTransformContainer, ProcessObject);
 
-  /**
-  * @brief Returns the union operator for the comparison
-  * @return
-  */
-  int getUnionOperator();
-
-  /**
-  * @brief Sets the union operator for the comparison
-  * @param unionOperator
-  */
-  void setUnionOperator(int unionOperator);
-
-  /**
-  * @brief Write comparison to JSon
-  * @param json
-  */
-  virtual void writeJson(QJsonObject& json) = 0;
-  /**
-  * @brief Read comparison from JSon
-  * @param json
-  */
-  virtual bool readJson(QJsonObject& json) = 0;
-
-  /**
-  * @brief Updates the comparison's DataArray options based on the renamed path
-  * @param renamePath
-  */
-  virtual bool renameDataArrayPath(DataArrayPath::RenameType renamePath) = 0;
+  virtual void SetInput(const ITKTransformType * transform);
+  DecoratorType* GetOutput();
 
 protected:
-  int m_unionOperator;
+  TransformToDream3DTransformContainer();
+  virtual ~TransformToDream3DTransformContainer();
 
-  AbstractComparison();
+  virtual void VerifyPreconditions() override;
+
+  virtual void GenerateData() override;
+  ProcessObject::DataObjectPointer MakeOutput(ProcessObject::DataObjectPointerArraySizeType);
+  typename ITKTransformType::ConstPointer m_Transform;
+
+private:
+  TransformToDream3DTransformContainer(const TransformToDream3DTransformContainer&) = delete; // Copy Constructor Not Implemented
+  void operator=(const TransformToDream3DTransformContainer&) = delete;                       // Move assignment Not Implemented
+  using Superclass::SetInput;
 };
+} // end of itk namespace
 
+#ifndef ITK_MANUAL_INSTANTIATION
+#include "itkTransformToDream3DTransformContainer.hxx"
+#endif

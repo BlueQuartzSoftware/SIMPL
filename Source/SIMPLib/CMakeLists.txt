@@ -87,7 +87,7 @@ endMacro()
 
 #------------------------------------------------------------------------------
 # Set up the directories that are used for each Group
-set(SIMPL_Group_BASE_MODULES Common DataArrays DataContainers Geometry HDF5 Math StatsData Utilities)
+set(SIMPL_Group_BASE_MODULES Common DataArrays DataContainers Geometry HDF5 Math StatsData Utilities ITK)
 set(SIMPL_Group_FILTERS_MODULES Filtering FilterParameters VTKUtils)
 set(SIMPL_Group_PLUGIN_MODULES Plugin)
 
@@ -162,10 +162,9 @@ cmpReplaceFileIfDifferent(OLD_FILE_PATH  ${SIMPLib_BINARY_DIR}/CoreFilters/Regis
                           NEW_FILE_PATH  ${RegisterKnownFiltersFile} )
 
 
-
 set(${PROJECT_NAME}_LINK_LIBS Qt5::Core Qt5::Network H5Support)
 if( "${SIMPL_USE_MULTITHREADED_ALGOS}" STREQUAL "ON")
-  list(APPEND ${PROJECT_NAME}_LINK_LIBS ${TBB_LIBRARIES})
+  list(APPEND ${PROJECT_NAME}_LINK_LIBS TBB::tbb TBB::tbbmalloc)
 endif()
 
 #-- Add a library for the SIMPLib Code

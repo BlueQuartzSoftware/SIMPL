@@ -35,16 +35,17 @@
 
 #pragma once
 
-#include <QtCore/QString>
-#include <QtCore/QMap>
 #include <QMutex>
+#include <QtCore/QMap>
+#include <QtCore/QString>
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/Observable.h"
-#include "SIMPLib/DataArrays/DynamicListArray.hpp"
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/DataArrays/DynamicListArray.hpp"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/Geometry/ITransformContainer.h"
+#include "SIMPLib/SIMPLib.h"
 
 class QTextStream;
 
@@ -141,6 +142,7 @@ class SIMPLib_EXPORT IGeometry : public Observable
 
     SIMPL_INSTANCE_PROPERTY(float, TimeValue)
     SIMPL_INSTANCE_PROPERTY(bool, EnableTimeSeries)
+    SIMPL_INSTANCE_PROPERTY(ITransformContainer::Pointer, TransformContainer)
 
 // -----------------------------------------------------------------------------
 // Connectivity
@@ -445,5 +447,3 @@ class SIMPLib_EXPORT IGeometry : public Observable
     IGeometry(const IGeometry&) = delete;      // Copy Constructor Not Implemented
     void operator=(const IGeometry&) = delete; // Move assignment Not Implemented
 };
-
-

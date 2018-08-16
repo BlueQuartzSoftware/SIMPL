@@ -157,7 +157,7 @@ void MultiAttributeMatrixSelectionWidget::setupGui()
   for (int i=0; i<selectedPaths.size(); i++)
   {
     DataArrayPath selectedPath = selectedPaths[i];
-    attributeMatricesOrderWidget->addItem(selectedPath.getDataArrayName());
+    attributeMatricesOrderWidget->addItem(selectedPath.getAttributeMatrixName());
   }
 
   selectBtn->setDisabled(true);

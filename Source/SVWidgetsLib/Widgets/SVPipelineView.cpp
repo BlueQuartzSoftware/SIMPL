@@ -707,7 +707,7 @@ int SVPipelineView::writePipeline(const QString& outputPath)
 
   // Create a Pipeline Object and fill it with the filters from this View
   FilterPipeline::Pointer pipeline = getFilterPipelineCopy();
-
+  
   int err = 0;
   if(ext == "dream3d")
   {

@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+* Copyright (c) 2009-2018 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -27,70 +27,35 @@
 * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
 * The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
+*    United States Air Force Prime Contract FA8650-15-D-5231
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #pragma once
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/Geometry/ITransformContainer.h"
 #include "SIMPLib/SIMPLib.h"
 
-#include <QtCore/QJsonObject>
+#include "H5Support/H5Lite.h"
 
-/**
-* @brief The AbstractComparison class is used by ComparisonInputsAdvanced as a
-* base for both ComparisonSet and ComparisonValue.
-*/
-class SIMPLib_EXPORT AbstractComparison
+class SIMPLib_EXPORT TransformContainer : public ITransformContainer
 {
 public:
-  SIMPL_SHARED_POINTERS(AbstractComparison)
-  SIMPL_TYPE_MACRO(AbstractComparison)
+  typedef double ParametersValueType;
+  typedef std::vector<ParametersValueType> TransformParametersType;
+  typedef std::vector<ParametersValueType> TransformFixedParametersType;
+  SIMPL_SHARED_POINTERS(TransformContainer)
+  SIMPL_STATIC_NEW_MACRO(TransformContainer)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(TransformContainer, ITransformContainer)
+  TransformContainer();
+  virtual ~TransformContainer();
+  TransformContainer& operator=(const TransformContainer&);
+  int writeTransformContainerToHDF5(hid_t parentId, const std::string& transformContainerName) override;
+  int readTransformContainerFromHDF5(hid_t parentId, bool metaDataOnly, const std::string& transformContainerName) override;
 
-  virtual ~AbstractComparison();
-
-  /**
-  * @brief Create comparison from JSon
-  * @param json
-  */
-  static Pointer FromJson(QJsonObject& json);
-
-  /**
-  * @brief Returns the union operator for the comparison
-  * @return
-  */
-  int getUnionOperator();
-
-  /**
-  * @brief Sets the union operator for the comparison
-  * @param unionOperator
-  */
-  void setUnionOperator(int unionOperator);
-
-  /**
-  * @brief Write comparison to JSon
-  * @param json
-  */
-  virtual void writeJson(QJsonObject& json) = 0;
-  /**
-  * @brief Read comparison from JSon
-  * @param json
-  */
-  virtual bool readJson(QJsonObject& json) = 0;
-
-  /**
-  * @brief Updates the comparison's DataArray options based on the renamed path
-  * @param renamePath
-  */
-  virtual bool renameDataArrayPath(DataArrayPath::RenameType renamePath) = 0;
-
-protected:
-  int m_unionOperator;
-
-  AbstractComparison();
+  SIMPL_INSTANCE_PROPERTY(TransformParametersType, Parameters)
+  SIMPL_INSTANCE_PROPERTY(TransformFixedParametersType, FixedParameters)
+  SIMPL_INSTANCE_PROPERTY(std::string, TransformTypeAsString)
+  SIMPL_INSTANCE_PROPERTY(std::string, MovingName)
+  SIMPL_INSTANCE_PROPERTY(std::string, ReferenceName)
 };
-

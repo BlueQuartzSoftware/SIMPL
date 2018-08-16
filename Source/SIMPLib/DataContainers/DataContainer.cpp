@@ -44,6 +44,7 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Geometry/EdgeGeom.h"
 #include "SIMPLib/Geometry/HexahedralGeom.h"
+#include "SIMPLib/Geometry/IGeometry.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/QuadGeom.h"
 #include "SIMPLib/Geometry/RectGridGeom.h"
@@ -52,9 +53,8 @@
 #include "SIMPLib/Geometry/VertexGeom.h"
 #include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
 
-#include "H5Support/QH5Utilities.h"
 #include "H5Support/H5ScopedSentinel.h"
-
+#include "H5Support/QH5Utilities.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -90,7 +90,7 @@ DataContainer::Pointer DataContainer::createNewDataContainer(const QString& name
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContainerArrayProxy& proxy, SIMPLH5DataReaderRequirements *req, const QString &h5InternalPath)
+void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContainerArrayProxy& proxy, SIMPLH5DataReaderRequirements* req, const QString& h5InternalPath)
 {
   QList<QString> dataContainers;
   QH5Utilities::getGroupObjects(dcArrayGroupId, H5Utilities::H5Support_GROUP, dataContainers);
@@ -113,15 +113,14 @@ void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContain
 
     int32_t geometryType;
     herr_t err = QH5Lite::readScalarAttribute(containerGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryType, geometryType);
-    if (err >= 0)
+    if(err >= 0)
     {
       dcProxy.dcType = static_cast<unsigned int>(geometryType);
-      if (req != nullptr)
+      if(req != nullptr)
       {
         IGeometry::Types geomTypes = req->getDCGeometryTypes();
         if(geomTypes.empty() || geomTypes.contains(static_cast<IGeometry::Type>(geometryType)))
         {
-
         }
 
         dcProxy.flag = Qt::Checked;
@@ -381,7 +380,7 @@ int DataContainer::readAttributeMatricesFromHDF5(bool preflight, hid_t dcGid, co
     err = QH5Lite::readScalarAttribute(dcGid, amName, SIMPL::StringConstants::AttributeMatrixType, amTypeTmp);
     if(err < 0)
     {
-        return -1;
+      return -1;
     }
 
     err = QH5Lite::readVectorAttribute(dcGid, amName, SIMPL::HDF5::TupleDimensions, tDims);
@@ -398,7 +397,7 @@ int DataContainer::readAttributeMatricesFromHDF5(bool preflight, hid_t dcGid, co
 
     if(getAttributeMatrix(amName) == nullptr)
     {
-        amType = static_cast<AttributeMatrix::Type>(amTypeTmp);
+      amType = static_cast<AttributeMatrix::Type>(amTypeTmp);
       AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, amName, amType);
       addAttributeMatrix(amName, am);
     }
@@ -462,7 +461,7 @@ int DataContainer::writeMeshToHDF5(hid_t dcGid, bool writeXdmf)
 
   if(nullptr == m_Geometry.get())
   {
-    err = QH5Lite::writeScalarAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryType,  static_cast<AttributeMatrix::EnumType>(IGeometry::Type::Unknown));
+    err = QH5Lite::writeScalarAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryType, static_cast<AttributeMatrix::EnumType>(IGeometry::Type::Unknown));
     if(err < 0)
     {
       return err;
@@ -496,6 +495,11 @@ int DataContainer::writeMeshToHDF5(hid_t dcGid, bool writeXdmf)
       return err;
     }
     err = QH5Lite::writeScalarAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::SpatialDimensionality, m_Geometry->getSpatialDimensionality());
+    if(err < 0)
+    {
+      return err;
+    }
+    err = m_Geometry->IGeometry::writeGeometryToHDF5(geometryId, writeXdmf);
     if(err < 0)
     {
       return err;
@@ -796,6 +800,11 @@ int DataContainer::readMeshDataFromHDF5(hid_t dcGid, bool preflight)
     else
     {
       setGeometry(geomPtr);
+    }
+    // If no error in previous steps.
+    if(err >= 0)
+    {
+      err = m_Geometry->IGeometry::readGeometryFromHDF5(geometryId, preflight);
     }
   }
 

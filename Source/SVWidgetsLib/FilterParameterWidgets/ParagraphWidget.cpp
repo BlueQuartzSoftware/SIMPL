@@ -81,8 +81,14 @@ void ParagraphWidget::setupGui()
   // Catch when the filter wants its values updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  connect(textEdit, &QTextEdit::textChanged, [=] {
-    emit parametersChanged(m_FilterParameter->getAllowPreflight());
+  connect(textEdit, &QTextEdit::textChanged, [=]() {
+    AbstractFilter* filter = this->getFilter();
+    bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, textEdit->toHtml());
+    if(!ok)
+    {
+      qDebug() << "ParagraphWidget: Could not set value of filter parameter '" << getFilterParameter()->getHumanLabel() << "' of filter '" << filter->getHumanLabel()
+               << "' to the current contents of the QTextEdit widget";
+    }
   });
 }
 

@@ -157,11 +157,11 @@ public:
 
   /** Allocate the image memory. The size of the image must
    * already be set, e.g. by calling SetRegions(). */
-  virtual void Allocate(bool initializePixels = false) ITK_OVERRIDE;
+  virtual void Allocate(bool initializePixels = false) override;
 
   /** Restore the data object to its initial state. This means releasing
    * memory. */
-  virtual void Initialize() ITK_OVERRIDE;
+  virtual void Initialize() override;
 
   /** Fill the image buffer with a value.  Be sure to call Allocate()
    * first. */
@@ -200,13 +200,13 @@ public:
 
   /** Return a pointer to the beginning of the buffer.  This is used by
    * the image iterator class. */
-  virtual TPixel* GetBufferPointer() ITK_OVERRIDE
+  virtual TPixel* GetBufferPointer() override
   {
-    return m_TemplatedBuffer ? m_TemplatedBuffer->GetBufferPointer() : ITK_NULLPTR;
+    return m_TemplatedBuffer ? m_TemplatedBuffer->GetBufferPointer() : nullptr;
   }
-  virtual const TPixel* GetBufferPointer() const ITK_OVERRIDE
+  virtual const TPixel* GetBufferPointer() const override
   {
-    return m_TemplatedBuffer ? m_TemplatedBuffer->GetBufferPointer() : ITK_NULLPTR;
+    return m_TemplatedBuffer ? m_TemplatedBuffer->GetBufferPointer() : nullptr;
   }
 
   /** Return a pointer to the container. */
@@ -234,7 +234,7 @@ public:
    * simply calls CopyInformation() and copies the region ivars.
    * The implementation here refers to the superclass' implementation
    * and then copies over the pixel container. */
-  virtual void Graft(const DataObject* data) ITK_OVERRIDE;
+  virtual void Graft(const DataObject* data) override;
 
   /** Return the Pixel Accessor object */
   AccessorType GetPixelAccessor(void)
@@ -262,15 +262,15 @@ public:
 
 protected:
   Dream3DImage();
-  void PrintSelf(std::ostream& os, Indent indent) const ITK_OVERRIDE;
+  void PrintSelf(std::ostream& os, Indent indent) const override;
 
   virtual ~Dream3DImage()
   {
   }
 
 private:
-  Dream3DImage(const Self&) ITK_DELETE_FUNCTION;
-  void operator=(const Self&) ITK_DELETE_FUNCTION;
+  Dream3DImage(const Self&) = delete;
+  void operator=(const Self&) = delete;
 
   /** Memory for the current buffer. */
   PixelContainerPointer m_TemplatedBuffer;

@@ -31,74 +31,76 @@
 
 namespace itk
 {
-  template< typename TElementIdentifier, typename TElement >
-  ImportDream3DImageContainer< TElementIdentifier, TElement >
-    ::ImportDream3DImageContainer()
-  {
-  }
 
-  template< typename TElementIdentifier, typename TElement >
-  ImportDream3DImageContainer< TElementIdentifier, TElement >
-    ::~ImportDream3DImageContainer()
-  {
-    DeallocateManagedMemory();
-  }
+template <typename TElementIdentifier, typename TElement>
+ImportDream3DImageContainer<TElementIdentifier, TElement>
+::ImportDream3DImageContainer()
+{
+}
 
-  template< typename TElementIdentifier, typename TElement >
-  typename ImportDream3DImageContainer< TElementIdentifier, TElement >::Element *
-  ImportDream3DImageContainer< TElementIdentifier, TElement >
-    ::AllocateElements( ElementIdentifier size, bool UseDefaultConstructor ) const
-  {
+
+template <typename TElementIdentifier, typename TElement>
+ImportDream3DImageContainer<TElementIdentifier, TElement>
+::~ImportDream3DImageContainer()
+{
+  DeallocateManagedMemory();
+}
+
+
+template <typename TElementIdentifier, typename TElement>
+typename ImportDream3DImageContainer<TElementIdentifier, TElement>::Element*
+ImportDream3DImageContainer<TElementIdentifier, TElement>
+::AllocateElements(ElementIdentifier size, bool UseDefaultConstructor) const
+{
   // Encapsulate all image memory allocation here to throw an
   // exception when memory allocation fails even when the compiler
   // does not do this by default.
-  Element *data;
+  Element* data;
 
   try
+  {
+    data = (Element*)(malloc(sizeof(TElement) * size));
+    if(UseDefaultConstructor)
     {
-    data = (Element*)(malloc( sizeof( TElement ) * size ));
-    if ( UseDefaultConstructor )
-      {
-        new (data)Element();//POD types initialized to 0, others use default constructor.
-      }
+      new(data) Element(); // POD types initialized to 0, others use default constructor.
     }
-  catch ( ... )
-    {
-    data = ITK_NULLPTR;
-    }
-  if ( !data )
-    {
+  } catch(...)
+  {
+    data = nullptr;
+  }
+  if(!data)
+  {
     // We cannot construct an error string here because we may be out
     // of memory.  Do not use the exception macro.
-    throw MemoryAllocationError(__FILE__, __LINE__,
-                                "Failed to allocate memory for image.",
-                                ITK_LOCATION);
-    }
+    throw MemoryAllocationError(__FILE__, __LINE__, "Failed to allocate memory for image.", ITK_LOCATION);
+  }
   return data;
-  }
+}
 
-  template< typename TElementIdentifier, typename TElement >
-  void
-  ImportDream3DImageContainer< TElementIdentifier, TElement >
-    ::DeallocateManagedMemory()
-  {
-    // Encapsulate all image memory deallocation here
-    if( this->GetContainerManageMemory() )
-    {
-      Element *data = this->GetBufferPointer();
-      data->~Element();
-      free( data );
-      this->SetImportPointer( ITK_NULLPTR );
-    }
-    Superclass::DeallocateManagedMemory();
-  }
 
-  template< typename TElementIdentifier, typename TElement >
-  void
-  ImportDream3DImageContainer< TElementIdentifier, TElement >
-    ::PrintSelf( std::ostream & os, Indent indent ) const
+template <typename TElementIdentifier, typename TElement>
+void
+ImportDream3DImageContainer<TElementIdentifier, TElement>
+::DeallocateManagedMemory()
+{
+  // Encapsulate all image memory deallocation here
+  if(this->GetContainerManageMemory())
   {
-    Superclass::PrintSelf( os, indent );
+    Element* data = this->GetBufferPointer();
+    data->~Element();
+    free(data);
+    this->SetImportPointer(nullptr);
   }
+  Superclass::DeallocateManagedMemory();
+}
+
+
+template <typename TElementIdentifier, typename TElement>
+void
+ImportDream3DImageContainer<TElementIdentifier, TElement>
+::PrintSelf(std::ostream& os, Indent indent) const
+{
+  Superclass::PrintSelf(os, indent);
+}
 } // end namespace itk
 
