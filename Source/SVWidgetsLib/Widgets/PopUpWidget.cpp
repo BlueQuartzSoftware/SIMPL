@@ -128,6 +128,14 @@ void PopUpWidget::paintEvent(QPaintEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QWidget* PopUpWidget::getWidget() const
+{
+  return m_Widget;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void PopUpWidget::setWidget(QWidget* widget)
 {
   if(widget == nullptr)
@@ -146,6 +154,8 @@ void PopUpWidget::setWidget(QWidget* widget)
 //      w->setParent(nullptr);
 //    }
 //  }
+
+  m_Widget = widget;
 
   // Set the widget into the frame
   scrollArea->setWidget(widget);

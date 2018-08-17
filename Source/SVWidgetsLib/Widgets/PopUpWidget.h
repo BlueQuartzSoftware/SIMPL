@@ -71,6 +71,12 @@ class SVWidgetsLib_EXPORT PopUpWidget : public QWidget, private Ui::PopUpWidget
     void setupGui();
 
     /**
+     * @brief getWidget
+     * @return
+     */
+    QWidget* getWidget() const;
+
+    /**
      * @brief setWidget
      * @param widget
      */
@@ -87,6 +93,7 @@ class SVWidgetsLib_EXPORT PopUpWidget : public QWidget, private Ui::PopUpWidget
 
   private:
     ArrowOrientation                    m_ArrowOrientation;
+    QWidget*                            m_Widget = nullptr;
 
     PopUpWidget(const PopUpWidget&); // Copy Constructor Not Implemented
     void operator=(const PopUpWidget&); // Move assignment Not Implemented
