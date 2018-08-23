@@ -51,6 +51,7 @@ function(CreatePybind11Module)
       "${SIMPLProj_BINARY_DIR}/Wrapping/PythonCore" 
       "${ARGS_MODULE_TEMPLATE_FILE}"
       "${ARGS_SIMPLIB}"
+      "${CMAKE_CFG_INTDIR}"
       DEPENDS GeneratePythonBindings ${COPY_LIBRARY_TARGETS}
       COMMENT "GeneratePythonBindings: Creating Python Bindings for ${ARGS_MODULE_NAME} using pybind11"
     )
@@ -117,7 +118,11 @@ function(CreatePybind11Module)
       PREFIX "${PYTHON_MODULE_PREFIX}"
       SUFFIX "${PYTHON_MODULE_EXTENSION}"
       OUTPUT_NAME ${SIMPL_PY_MODULE_NAME}
-      LIBRARY_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/python/site-packages/dream3d
+      LIBRARY_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/python/site-packages/dream3d
+      LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/python/site-packages/dream3d
+      LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/python/site-packages/dream3d
+      LIBRARY_OUTPUT_DIRECTORY_RELWDEBUG ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/python/site-packages/dream3d
+      LIBRARY_OUTPUT_DIRECTORY_RELMINSIZE ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/python/site-packages/dream3d
     )
     set_target_properties(${SIMPL_PY_MODULE_NAME} PROPERTIES LINKER_LANGUAGE CXX)
     target_compile_features(${SIMPL_PY_MODULE_NAME} PRIVATE cxx_local_type_template_args)

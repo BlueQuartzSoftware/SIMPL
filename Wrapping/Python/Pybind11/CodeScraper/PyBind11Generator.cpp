@@ -10,15 +10,17 @@
 #include "CodeScraper/SIMPLPyBind11Config.h"
 #include "CodeScraper/PythonUtils.h"
 
-
+#define PYB11_TRUE 0
 //-----------------------------------------------------------------------------
-PyBind11Generator::PyBind11Generator(const QDir& topLevelDir, const QString& charsToStrip, const QString& libName, const QString& genDir, const QString& moduleTemplatePath, const QString& isSIMPLib)
+PyBind11Generator::PyBind11Generator(const QDir& topLevelDir, const QString& charsToStrip, const QString& libName, 
+const QString& genDir, const QString& moduleTemplatePath, const QString& isSIMPLib, const QString& cfgIntDir)
 : m_TopLevelDir(topLevelDir)
 , m_CharsToStrip(charsToStrip)
 , m_LibNameUpper(libName)
 , m_GenDir(genDir)
 , m_ModuleTemplatePath(moduleTemplatePath)
 , m_IsSIMPLib(isSIMPLib)
+, m_CfgIntDir(cfgIntDir)
 {
 
   m_LibName = m_LibNameUpper.toLower() + "_py";
@@ -40,9 +42,10 @@ void PyBind11Generator::execute()
 
   // If these extensions are changed be sure the WrappingFunctions.cmake file is updated
   QString ext(".h");
-  if(m_IsSIMPLib.compare("TRUE") == 0)
+  if(m_IsSIMPLib.compare("TRUE") == PYB11_TRUE)
   {
     ext = ".cxx";
+    copyPyInitFiles();
   }
 
   QString genHeaderPath;
@@ -52,15 +55,94 @@ void PyBind11Generator::execute()
   m_ModuleCode.generateModuleFile(genHeaderPath, m_IsSIMPLib);
   
   genHeaderPath = QString("");
-  ss << m_GenDir << "/" << m_LibName << "_UnitTest.py";
+  ss << SIMPL::PyBind11::RuntimeOutputDir << "/" << m_CfgIntDir << "/python/site-packages/" << m_LibName << "_UnitTest.py";
+  genHeaderPath = genHeaderPath.replace("/./", "/");
   m_ModuleCode.generatePythonTestFile(genHeaderPath, m_IsSIMPLib);
   
   genHeaderPath = QString("");
   QString libName = m_LibNameUpper;
-  //libName = libName.replace("_py", "");
-  ss << SIMPL::PyBind11::LibraryOutputDirectory << "/dream3d/" << SIMPL::Python::fromCamelCase(libName) << ".py";
-  
+  ss << SIMPL::PyBind11::RuntimeOutputDir << "/" << m_CfgIntDir << "/python/site-packages/dream3d/" << SIMPL::Python::fromCamelCase(libName) << ".py";
+  genHeaderPath = genHeaderPath.replace("/./", "/");
   m_ModuleCode.generatePythonicInterface(genHeaderPath, m_IsSIMPLib);
+}
+
+//-----------------------------------------------------------------------------
+void PyBind11Generator::copyPyInitFiles()
+{
+  QString libName = m_LibName;
+  libName = libName.replace("_py", "");
+
+  QString inputPath;
+  QTextStream ip(&inputPath);
+  ip << SIMPL::PyBind11::PythonWrappingDir << "/" << "SIMPL";
+  QDir currentDir(inputPath);
+
+
+  QString outputPath;
+  QTextStream op(&outputPath);
+  op << SIMPL::PyBind11::RuntimeOutputDir << "/" << m_CfgIntDir << "/python/site-packages/" << libName;
+  QDir dir;
+  dir.mkpath(outputPath);
+
+
+  QStringList filters;
+  filters.append("*.py");
+  QFileInfoList dirList = currentDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
+
+  QFileInfoList itemList = currentDir.entryInfoList(filters);
+  foreach(QFileInfo itemInfo, itemList)
+  {
+    QString pyFilePath = itemInfo.absoluteFilePath();
+    QFile pyFile(pyFilePath);
+    pyFile.copy(outputPath + "/" + itemInfo.fileName());
+    // qDebug() << "Copy File: " << itemInfo.absoluteFilePath() << "\n   " 
+    //  << "DEST: " << outputPath + "/" + itemInfo.fileName();
+  }
+
+  ip << "/utils";
+  currentDir = QDir(inputPath);
+  
+  op << "/utils";
+  dir.mkpath(outputPath);
+
+  dirList = currentDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
+
+  itemList = currentDir.entryInfoList(filters);
+  foreach(QFileInfo itemInfo, itemList)
+  {
+    QString pyFilePath = itemInfo.absoluteFilePath();
+
+    // qDebug() << "Copy File: " << itemInfo.absoluteFilePath() << "\n   " 
+    //  << "DEST: " << outputPath + "/" + itemInfo.fileName();
+    if( pyFilePath.contains(".in.") )
+    {
+      qDebug() << "CONFIGURE FILE: " << pyFilePath;
+      QFile source(pyFilePath);
+      source.open(QFile::ReadOnly);
+      QString contents = source.readAll();
+      source.close();
+
+      QString outName = outputPath + "/" + itemInfo.fileName();
+      outName = outName.replace(".in.", ".");
+      qDebug() << "  outName:" << outName;
+      contents = contents.replace("${CMAKE_LIBRARY_OUTPUT_DIRECTORY}", SIMPL::PyBind11::BuildDirectory);
+      contents.replace("${SIMPLProj_BINARY_DIR}", SIMPL::PyBind11::SIMPLProjBinaryDir);
+      contents.replace("${DREAM3D_DATA_DIR}", SIMPL::PyBind11::DataDirectory);
+      QFile hOut(outName);
+
+      hOut.open(QFile::WriteOnly);
+      QTextStream stream(&hOut);
+      stream << contents;
+      hOut.close();
+
+    }
+    else
+    {
+      QFile pyFile(pyFilePath);
+      pyFile.copy(outputPath + "/" + itemInfo.fileName());
+    }
+  }
+
 }
 
 //-----------------------------------------------------------------------------
