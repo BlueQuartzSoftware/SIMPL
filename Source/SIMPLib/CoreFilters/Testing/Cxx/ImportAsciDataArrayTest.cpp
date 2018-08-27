@@ -19,13 +19,9 @@ class ImportAsciDataArrayTest
 {
 
 public:
-  ImportAsciDataArrayTest()
-  {
-  }
+  ImportAsciDataArrayTest() = default;
 
-  virtual ~ImportAsciDataArrayTest()
-  {
-  }
+  virtual ~ImportAsciDataArrayTest() = default;
 
   std::string getOutputFile()
   {

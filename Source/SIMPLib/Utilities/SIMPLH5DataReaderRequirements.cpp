@@ -68,7 +68,4 @@ SIMPLH5DataReaderRequirements::SIMPLH5DataReaderRequirements(const QString &prim
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPLH5DataReaderRequirements::~SIMPLH5DataReaderRequirements()
-{
-
-}
+SIMPLH5DataReaderRequirements::~SIMPLH5DataReaderRequirements() = default;

@@ -79,8 +79,8 @@ namespace DerivativeHelpers
   class EdgeDeriv
   {
     public:
-      EdgeDeriv() {}
-      virtual ~EdgeDeriv() {}
+      EdgeDeriv() = default;
+      virtual ~EdgeDeriv() = default;
 
       void operator()(EdgeGeom* edges, int64_t edgeId, double values[2], double derivs[3]);
   };
@@ -91,8 +91,8 @@ namespace DerivativeHelpers
   class TriangleDeriv
   {
     public:
-      TriangleDeriv() {}
-      virtual ~TriangleDeriv() {}
+      TriangleDeriv() = default;
+      virtual ~TriangleDeriv() = default;
 
       void operator()(TriangleGeom* triangles, int64_t triId, double values[3], double derivs[3]);
   };
@@ -103,8 +103,8 @@ namespace DerivativeHelpers
   class QuadDeriv
   {
     public:
-      QuadDeriv() {}
-      virtual ~QuadDeriv() {}
+      QuadDeriv() = default;
+      virtual ~QuadDeriv() = default;
 
       void operator()(QuadGeom* quads, int64_t quadId, double values[4], double derivs[3]);
   };
@@ -115,8 +115,8 @@ namespace DerivativeHelpers
   class TetDeriv
   {
     public:
-      TetDeriv() {}
-      virtual ~TetDeriv() {}
+      TetDeriv() = default;
+      virtual ~TetDeriv() = default;
 
       void operator()(TetrahedralGeom* tets, int64_t tetId, double values[4], double derivs[3]);
   };
@@ -127,10 +127,10 @@ namespace DerivativeHelpers
   class HexDeriv
   {
     public:
-    HexDeriv() {}
-    virtual ~HexDeriv() {}
+      HexDeriv() = default;
+      virtual ~HexDeriv() = default;
 
-    void operator()(HexahedralGeom* hexas, int64_t hexId, double values[8], double derivs[3]);
+      void operator()(HexahedralGeom* hexas, int64_t hexId, double values[8], double derivs[3]);
   };
 
 }

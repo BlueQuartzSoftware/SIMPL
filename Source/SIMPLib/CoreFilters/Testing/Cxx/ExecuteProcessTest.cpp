@@ -60,14 +60,10 @@ class ExecuteProcessObserver : public QObject, public IObserver
   Q_OBJECT
 
 public:
-  ExecuteProcessObserver()
-  {
-  }
+  ExecuteProcessObserver() = default;
   SIMPL_TYPE_MACRO_SUPER(ExecuteProcessObserver, IObserver)
 
-  ~ExecuteProcessObserver() override
-  {
-  }
+  ~ExecuteProcessObserver() override = default;
 
   QString getStdOutput()
   {
@@ -105,12 +101,8 @@ class ExecuteProcessTest
 {
 
 public:
-  ExecuteProcessTest()
-  {
-  }
-  virtual ~ExecuteProcessTest()
-  {
-  }
+  ExecuteProcessTest() = default;
+  virtual ~ExecuteProcessTest() = default;
 
   // -----------------------------------------------------------------------------
   //

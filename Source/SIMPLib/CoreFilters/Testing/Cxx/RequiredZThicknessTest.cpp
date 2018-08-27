@@ -56,12 +56,8 @@
 class RequiredZThicknessTest
 {
 public:
-  RequiredZThicknessTest()
-  {
-  }
-  virtual ~RequiredZThicknessTest()
-  {
-  }
+  RequiredZThicknessTest() = default;
+  virtual ~RequiredZThicknessTest() = default;
 
   // -----------------------------------------------------------------------------
   //

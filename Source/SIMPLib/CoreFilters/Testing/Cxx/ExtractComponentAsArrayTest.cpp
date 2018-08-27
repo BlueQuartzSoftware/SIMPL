@@ -54,12 +54,8 @@
 class ExtractComponentAsArrayTest
 {
 public:
-  ExtractComponentAsArrayTest()
-  {
-  }
-  virtual ~ExtractComponentAsArrayTest()
-  {
-  }
+  ExtractComponentAsArrayTest() = default;
+  virtual ~ExtractComponentAsArrayTest() = default;
 
   // -----------------------------------------------------------------------------
   //

@@ -52,10 +52,7 @@ IComparisonWidget::IComparisonWidget(QWidget* parent) : QWidget(parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IComparisonWidget::~IComparisonWidget()
-{
-
-}
+IComparisonWidget::~IComparisonWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

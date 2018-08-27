@@ -54,12 +54,8 @@
 class RenameDataContainerTest
 {
 public:
-  RenameDataContainerTest()
-  {
-  }
-  virtual ~RenameDataContainerTest()
-  {
-  }
+  RenameDataContainerTest() = default;
+  virtual ~RenameDataContainerTest() = default;
 
   // -----------------------------------------------------------------------------
   //

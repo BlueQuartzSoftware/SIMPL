@@ -143,7 +143,7 @@ class SIMPLib_EXPORT ISIMPLibPlugin
   public:
     SIMPL_SHARED_POINTERS(ISIMPLibPlugin)
 
-    virtual ~ISIMPLibPlugin() {}
+    virtual ~ISIMPLibPlugin() = default;
 
     /**
      * @brief Returns the name of the plugin that appears on the file system. 

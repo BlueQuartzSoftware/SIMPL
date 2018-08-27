@@ -68,9 +68,7 @@ DataContainerReader::DataContainerReader()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerReader::~DataContainerReader()
-{
-}
+DataContainerReader::~DataContainerReader() = default;
 
 // -----------------------------------------------------------------------------
 //

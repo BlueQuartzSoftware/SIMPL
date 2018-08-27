@@ -52,12 +52,8 @@
 class QuaternionMathTest
 {
 public:
-  QuaternionMathTest()
-  {
-  }
-  virtual ~QuaternionMathTest()
-  {
-  }
+  QuaternionMathTest() = default;
+  virtual ~QuaternionMathTest() = default;
 
   // -----------------------------------------------------------------------------
   //

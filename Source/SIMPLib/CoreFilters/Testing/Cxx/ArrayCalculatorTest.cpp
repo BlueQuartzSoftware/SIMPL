@@ -63,9 +63,7 @@ public:
   : Observer()
   {
   }
-  ~DummyObserver() override
-  {
-  }
+  ~DummyObserver() override = default;
   SIMPL_TYPE_MACRO(DummyObserver)
 
   void processPipelineMessage(const PipelineMessage& pm) override
@@ -81,12 +79,8 @@ private:
 class ArrayCalculatorTest
 {
 public:
-  ArrayCalculatorTest()
-  {
-  }
-  virtual ~ArrayCalculatorTest()
-  {
-  }
+  ArrayCalculatorTest() = default;
+  virtual ~ArrayCalculatorTest() = default;
   SIMPL_TYPE_MACRO(ArrayCalculatorTest)
 
   // -----------------------------------------------------------------------------

@@ -66,12 +66,8 @@
 class CombineAttributeArraysTest
 {
 public:
-  CombineAttributeArraysTest()
-  {
-  }
-  virtual ~CombineAttributeArraysTest()
-  {
-  }
+  CombineAttributeArraysTest() = default;
+  virtual ~CombineAttributeArraysTest() = default;
   SIMPL_TYPE_MACRO(CombineAttributeArraysTest)
 
   // -----------------------------------------------------------------------------

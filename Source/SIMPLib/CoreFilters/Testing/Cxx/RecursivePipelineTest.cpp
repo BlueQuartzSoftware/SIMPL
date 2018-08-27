@@ -49,12 +49,8 @@
 class RecursivePipelineTest
 {
 public:
-  RecursivePipelineTest()
-  {
-  }
-  virtual ~RecursivePipelineTest()
-  {
-  }
+  RecursivePipelineTest() = default;
+  virtual ~RecursivePipelineTest() = default;
 
   // -----------------------------------------------------------------------------
   //

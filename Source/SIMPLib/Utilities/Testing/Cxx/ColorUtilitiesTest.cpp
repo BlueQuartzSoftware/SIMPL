@@ -26,9 +26,7 @@
 class ColorUtilitiesTest
 {
 public:
-  ColorUtilitiesTest()
-  {
-  }
+  ColorUtilitiesTest() = default;
   ~ColorUtilitiesTest() = default;
 
   // -----------------------------------------------------------------------------

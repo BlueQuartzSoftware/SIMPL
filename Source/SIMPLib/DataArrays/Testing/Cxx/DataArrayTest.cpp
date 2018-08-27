@@ -78,12 +78,8 @@
 class DataArrayTest
 {
 public:
-  DataArrayTest()
-  {
-  }
-  virtual ~DataArrayTest()
-  {
-  }
+  DataArrayTest() = default;
+  virtual ~DataArrayTest() = default;
 
   // -----------------------------------------------------------------------------
   //

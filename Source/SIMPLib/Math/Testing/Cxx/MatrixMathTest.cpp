@@ -13,13 +13,9 @@ class MatrixMathTest
 {
 
 public:
-  MatrixMathTest()
-  {
-  }
+  MatrixMathTest() = default;
 
-  virtual ~MatrixMathTest()
-  {
-  }
+  virtual ~MatrixMathTest() = default;
 
   // -----------------------------------------------------------------------------
   //

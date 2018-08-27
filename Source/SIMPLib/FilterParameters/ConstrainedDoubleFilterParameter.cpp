@@ -45,8 +45,7 @@ FilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ConstrainedDoubleFilterParameter::~ConstrainedDoubleFilterParameter()
-{}
+ConstrainedDoubleFilterParameter::~ConstrainedDoubleFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

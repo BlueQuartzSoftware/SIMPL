@@ -51,12 +51,8 @@
 class DataContainerBundleTest
 {
 public:
-  DataContainerBundleTest()
-  {
-  }
-  virtual ~DataContainerBundleTest()
-  {
-  }
+  DataContainerBundleTest() = default;
+  virtual ~DataContainerBundleTest() = default;
 
   // -----------------------------------------------------------------------------
   //

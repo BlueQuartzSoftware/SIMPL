@@ -56,12 +56,8 @@
 class CreateDataContainerTest
 {
 public:
-  CreateDataContainerTest()
-  {
-  }
-  virtual ~CreateDataContainerTest()
-  {
-  }
+  CreateDataContainerTest() = default;
+  virtual ~CreateDataContainerTest() = default;
 
   // -----------------------------------------------------------------------------
   //

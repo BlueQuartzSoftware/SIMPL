@@ -34,9 +34,7 @@ public:
   , m_Derivatives(derivs)
   {
   }
-  virtual ~FindHexDerivativesImpl()
-  {
-  }
+  virtual ~FindHexDerivativesImpl() = default;
 
   void compute(int64_t start, int64_t end) const
   {

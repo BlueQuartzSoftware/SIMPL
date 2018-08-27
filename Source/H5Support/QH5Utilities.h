@@ -232,7 +232,7 @@ class QH5Utilities
 
 
   protected:
-    QH5Utilities() {} //This is just a bunch of Static methods
+    QH5Utilities() = default; // This is just a bunch of Static methods
 
   private:
     QH5Utilities(const QH5Utilities&);   //Copy Constructor Not Implemented

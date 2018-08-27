@@ -220,7 +220,7 @@ namespace H5Support_NAMESPACE
 
 
     protected:
-      H5Utilities() {} //This is just a bunch of Static methods
+      H5Utilities() = default; // This is just a bunch of Static methods
 
     private:
       H5Utilities(const H5Utilities&);   //Copy Constructor Not Implemented

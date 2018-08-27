@@ -67,14 +67,7 @@ DataContainerProxy::DataContainerProxy(const DataContainerProxy& amp)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerProxy& DataContainerProxy::operator=(const DataContainerProxy& amp)
-{
-  flag = amp.flag;
-  name = amp.name;
-  dcType = amp.dcType;
-  attributeMatricies = amp.attributeMatricies;
-  return *this;
-}
+DataContainerProxy& DataContainerProxy::operator=(const DataContainerProxy& amp) = default;
 
 // -----------------------------------------------------------------------------
 //

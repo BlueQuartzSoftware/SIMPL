@@ -53,7 +53,7 @@ class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
       return Pointer(new CalculatorArray(dataArray, type, allocate));
     }
 
-    ~CalculatorArray() override {}
+    ~CalculatorArray() override = default;
 
     IDataArray::Pointer getArray() override { return m_Array; }
 
@@ -115,7 +115,7 @@ class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
     }
 
   protected:
-    CalculatorArray() {}
+    CalculatorArray() = default;
 
     CalculatorArray(typename DataArray<T>::Pointer dataArray, ValueType type, bool allocate) :
       ICalculatorArray(),
