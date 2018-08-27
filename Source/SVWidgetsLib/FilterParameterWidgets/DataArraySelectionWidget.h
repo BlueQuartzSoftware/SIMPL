@@ -78,12 +78,12 @@ class SVWidgetsLib_EXPORT DataArraySelectionWidget : public FilterParameterWidge
 
     DataArraySelectionWidget(QWidget* parent = nullptr);
 
-    virtual ~DataArraySelectionWidget();
+    ~DataArraySelectionWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
     /**
      * @brief checkStringValues
@@ -100,7 +100,7 @@ class SVWidgetsLib_EXPORT DataArraySelectionWidget : public FilterParameterWidge
      */
     void initializeWidget(FilterParameter* parameter, AbstractFilter* filter);
 
-    bool eventFilter(QObject* obj, QEvent* event);
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
   public slots:
     void beforePreflight();

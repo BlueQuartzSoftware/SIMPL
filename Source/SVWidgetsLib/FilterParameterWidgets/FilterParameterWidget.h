@@ -75,7 +75,7 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
     FilterParameterWidget(QWidget* parent = nullptr);
     FilterParameterWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~FilterParameterWidget();
+    ~FilterParameterWidget() override;
 
     using EnumType = unsigned int;
 

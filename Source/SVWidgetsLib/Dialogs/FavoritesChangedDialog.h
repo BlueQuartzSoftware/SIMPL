@@ -52,7 +52,7 @@ class SVWidgetsLib_EXPORT FavoritesChangedDialog : public QDialog, private Ui::F
   public:
 
     FavoritesChangedDialog(QWidget* parent = nullptr);
-    virtual ~FavoritesChangedDialog();
+    ~FavoritesChangedDialog() override;
 
   protected slots:
 

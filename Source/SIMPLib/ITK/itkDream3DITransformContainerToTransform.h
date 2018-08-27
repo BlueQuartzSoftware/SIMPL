@@ -64,11 +64,11 @@ public:
 
 protected:
   Dream3DITransformContainerToTransform();
-  virtual ~Dream3DITransformContainerToTransform();
+  ~Dream3DITransformContainerToTransform() override;
 
-  virtual void VerifyPreconditions() override;
+  void VerifyPreconditions() override;
 
-  virtual void GenerateData() override;
+  void GenerateData() override;
   ProcessObject::DataObjectPointer MakeOutput(ProcessObject::DataObjectPointerArraySizeType) override;
   ITransformContainer::Pointer m_ITransformContainer;
 

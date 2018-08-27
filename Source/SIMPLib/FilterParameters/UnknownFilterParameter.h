@@ -64,7 +64,7 @@ public:
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const QString& defaultValue, Category category, int groupIndex = -1);
 
-    virtual ~UnknownFilterParameter();
+    ~UnknownFilterParameter() override;
 
   /**
    * @brief getWidgetType Returns the type of widget that displays and controls

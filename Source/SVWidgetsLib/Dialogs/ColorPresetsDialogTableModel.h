@@ -51,19 +51,19 @@ class SVWidgetsLib_EXPORT ColorPresetsDialogTableModel : public QAbstractTableMo
 public:
   ColorPresetsDialogTableModel(QObject* parentObject);
 
-  virtual ~ColorPresetsDialogTableModel();
+  ~ColorPresetsDialogTableModel() override;
 
   QModelIndex indexFromName(const char* presetName) const;
 
-  virtual int rowCount(const QModelIndex& idx) const;
+  int rowCount(const QModelIndex& idx) const override;
 
-  virtual int columnCount(const QModelIndex &parent) const;
+  int columnCount(const QModelIndex &parent) const override;
 
-  virtual QVariant data(const QModelIndex &idx, int role) const;
+  QVariant data(const QModelIndex &idx, int role) const override;
 
-  virtual Qt::ItemFlags flags(const QModelIndex &idx) const;
+  Qt::ItemFlags flags(const QModelIndex &idx) const override;
 
-  virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+  QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 
   const QPixmap& pixmap(int row) const;
 

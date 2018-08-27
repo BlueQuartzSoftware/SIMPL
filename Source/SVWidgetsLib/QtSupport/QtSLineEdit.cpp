@@ -104,7 +104,7 @@ class SearchLineEditPrivate : public QObject
 public:
   explicit SearchLineEditPrivate(QtSLineEdit* parent);
 
-  virtual bool eventFilter(QObject* obj, QEvent* event);
+  bool eventFilter(QObject* obj, QEvent* event) override;
 
   QtSLineEdit* m_LineEdit;
   QPixmap m_PixMaps[2];

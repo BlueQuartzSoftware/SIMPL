@@ -66,7 +66,7 @@ class SIMPLib_EXPORT H5FilterParametersWriter : public AbstractFilterParametersW
      * @param obs Any observer that we can pass error/warning messages back to in case something goes wrong.
      * @return
      */
-    int writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, QList<IObserver*> obs = QList<IObserver*>());
+    int writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, QList<IObserver*> obs = QList<IObserver*>()) override;
 
     SIMPL_INSTANCE_PROPERTY(hid_t, PipelineGroupId)
 
@@ -75,63 +75,63 @@ class SIMPLib_EXPORT H5FilterParametersWriter : public AbstractFilterParametersW
     SIMPL_INSTANCE_PROPERTY(hid_t, GroupId)
     hid_t getCurrentGroupId() const;
 
-    virtual int openFilterGroup(AbstractFilter* filter, int index) override;
-    virtual int closeFilterGroup() override;
+    int openFilterGroup(AbstractFilter* filter, int index) override;
+    int closeFilterGroup() override;
 
-    virtual int writeValue(const QString name, const QString value) override;
-    virtual int writeValue(const QString name, const QVector<QString> value) override;
-    virtual int writeValue(const QString name, const QStringList value) override;
+    int writeValue(const QString name, const QString value) override;
+    int writeValue(const QString name, const QVector<QString> value) override;
+    int writeValue(const QString name, const QStringList value) override;
 
-    virtual int writeValue(const QString name, int8_t value) override;
-    virtual int writeValue(const QString name, int16_t value) override;
-    virtual int writeValue(const QString name, int32_t value) override;
-    virtual int writeValue(const QString name, int64_t value) override;
-    virtual int writeValue(const QString name, uint8_t value) override;
-    virtual int writeValue(const QString name, uint16_t value) override;
-    virtual int writeValue(const QString name, uint32_t value) override;
-    virtual int writeValue(const QString name, uint64_t value) override;
-    virtual int writeValue(const QString name, float value) override;
-    virtual int writeValue(const QString name, double value) override;
+    int writeValue(const QString name, int8_t value) override;
+    int writeValue(const QString name, int16_t value) override;
+    int writeValue(const QString name, int32_t value) override;
+    int writeValue(const QString name, int64_t value) override;
+    int writeValue(const QString name, uint8_t value) override;
+    int writeValue(const QString name, uint16_t value) override;
+    int writeValue(const QString name, uint32_t value) override;
+    int writeValue(const QString name, uint64_t value) override;
+    int writeValue(const QString name, float value) override;
+    int writeValue(const QString name, double value) override;
 
-    virtual int writeValue(const QString name, QVector<int8_t> value) override;
-    virtual int writeValue(const QString name, QVector<int16_t> value) override;
-    virtual int writeValue(const QString name, QVector<int32_t> value) override;
-    virtual int writeValue(const QString name, QVector<int64_t> value) override;
-    virtual int writeValue(const QString name, QVector<uint8_t> value) override;
-    virtual int writeValue(const QString name, QVector<uint16_t> value) override;
-    virtual int writeValue(const QString name, QVector<uint32_t> value) override;
-    virtual int writeValue(const QString name, QVector<uint64_t> value) override;
-    virtual int writeValue(const QString name, QVector<float> value) override;
-    virtual int writeValue(const QString name, QVector<double> value) override;
+    int writeValue(const QString name, QVector<int8_t> value) override;
+    int writeValue(const QString name, QVector<int16_t> value) override;
+    int writeValue(const QString name, QVector<int32_t> value) override;
+    int writeValue(const QString name, QVector<int64_t> value) override;
+    int writeValue(const QString name, QVector<uint8_t> value) override;
+    int writeValue(const QString name, QVector<uint16_t> value) override;
+    int writeValue(const QString name, QVector<uint32_t> value) override;
+    int writeValue(const QString name, QVector<uint64_t> value) override;
+    int writeValue(const QString name, QVector<float> value) override;
+    int writeValue(const QString name, QVector<double> value) override;
 
-    virtual int writeValue(const QString name, IntVec3_t v) override;
-    virtual int writeValue(const QString name, FloatVec3_t v) override;
+    int writeValue(const QString name, IntVec3_t v) override;
+    int writeValue(const QString name, FloatVec3_t v) override;
 
-    virtual int writeValue(const QString name, Float2ndOrderPoly_t v) override;
-    virtual int writeValue(const QString name, Float3rdOrderPoly_t v) override;
-    virtual int writeValue(const QString name, Float4thOrderPoly_t v) override;
-    virtual int writeValue(const QString name, FileListInfo_t v) override;
+    int writeValue(const QString name, Float2ndOrderPoly_t v) override;
+    int writeValue(const QString name, Float3rdOrderPoly_t v) override;
+    int writeValue(const QString name, Float4thOrderPoly_t v) override;
+    int writeValue(const QString name, FileListInfo_t v) override;
 
-    virtual int writeValue(const QString name, ComparisonInput_t v) override;
-    virtual int writeValue(const QString name, ComparisonInputs v) override;
+    int writeValue(const QString name, ComparisonInput_t v) override;
+    int writeValue(const QString name, ComparisonInputs v) override;
 
-    virtual int writeValue(const QString name, AxisAngleInput_t v) override;
-    virtual int writeValue(const QString name, QVector<AxisAngleInput_t> v) override;
+    int writeValue(const QString name, AxisAngleInput_t v) override;
+    int writeValue(const QString name, QVector<AxisAngleInput_t> v) override;
 
-    virtual int writeArraySelections(const QString name, QSet<QString> v) override;
-    virtual int writeValue(const QString name, const DataContainerArrayProxy& v) override;
-    virtual int writeValue(const QString name, const DataArrayPath& v) override;
-    virtual int writeValue(const QString name, const QVector<DataArrayPath>& v) override;
+    int writeArraySelections(const QString name, QSet<QString> v) override;
+    int writeValue(const QString name, const DataContainerArrayProxy& v) override;
+    int writeValue(const QString name, const DataArrayPath& v) override;
+    int writeValue(const QString name, const QVector<DataArrayPath>& v) override;
 
-    virtual int writeValue(const QString name, const DynamicTableData& v) override;
+    int writeValue(const QString name, const DynamicTableData& v) override;
 
-    virtual int writeValue(const QString name, const QPair<double, double>& v) override;
+    int writeValue(const QString name, const QPair<double, double>& v) override;
 
   protected:
     H5FilterParametersWriter();
 
 
-    virtual int writeValue(const QString name, AxisAngleInput_t v, int notUsed);
+    int writeValue(const QString name, AxisAngleInput_t v, int notUsed) override;
 
 
 

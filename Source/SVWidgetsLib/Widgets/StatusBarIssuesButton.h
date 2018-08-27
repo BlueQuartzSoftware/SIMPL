@@ -11,7 +11,7 @@ class SVWidgetsLib_EXPORT StatusBarIssuesButton : public StatusBarButton
   public:
     StatusBarIssuesButton(QWidget* parent = nullptr);
     
-    virtual ~StatusBarIssuesButton();
+    ~StatusBarIssuesButton() override;
     
     /**
    * @brief paintEvent

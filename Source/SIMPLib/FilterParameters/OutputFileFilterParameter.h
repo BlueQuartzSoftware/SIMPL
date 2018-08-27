@@ -95,7 +95,7 @@ class SIMPLib_EXPORT OutputFileFilterParameter : public FilterParameter
                        const QString& fileType = QString(""),
                        int groupIndex = -1);
 
-    virtual ~OutputFileFilterParameter();
+    ~OutputFileFilterParameter() override;
 
     SIMPL_INSTANCE_STRING_PROPERTY(FileExtension)
     SIMPL_INSTANCE_STRING_PROPERTY(FileType)

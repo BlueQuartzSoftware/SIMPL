@@ -54,9 +54,9 @@ class SIMPLib_EXPORT AdditionOperator : public BinaryOperator
       return Pointer(new AdditionOperator());
     }
 
-    virtual ~AdditionOperator();
+    ~AdditionOperator() override;
 
-    virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
+    void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack) override;
 
   protected:
     AdditionOperator();

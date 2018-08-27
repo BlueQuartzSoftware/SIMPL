@@ -60,7 +60,7 @@ class SVWidgetsLib_EXPORT QtSApplicationAboutBoxDialog: public QDialog, private 
 
   public:
     QtSApplicationAboutBoxDialog(QStringList files, QWidget* parent = nullptr);
-    virtual ~QtSApplicationAboutBoxDialog();
+    ~QtSApplicationAboutBoxDialog() override;
 
     /**
      * @brief Sets information about the application

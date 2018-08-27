@@ -95,7 +95,7 @@ public:
     const QString& fileType = QString(""),
     int groupIndex = -1);
 
-    virtual ~OutputPathFilterParameter();
+    ~OutputPathFilterParameter() override;
 
     SIMPL_INSTANCE_STRING_PROPERTY(FileExtension)
       SIMPL_INSTANCE_STRING_PROPERTY(FileType)

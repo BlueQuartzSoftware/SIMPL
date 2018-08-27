@@ -100,7 +100,7 @@ public:
   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AbstractFilter, Observable)
   SIMPL_STATIC_NEW_MACRO(AbstractFilter)
 
-  virtual ~AbstractFilter();
+  ~AbstractFilter() override;
 
   /**
    * @brief CreateFilterFromClassName

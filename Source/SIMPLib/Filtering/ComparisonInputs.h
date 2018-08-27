@@ -92,7 +92,7 @@ public:
   ComparisonInputs(const ComparisonInputs& rhs);
   // explicit ComparisonInputs(ComparisonInputs& rhs);
 
-  virtual ~ComparisonInputs();
+  ~ComparisonInputs() override;
 
   int size();
 

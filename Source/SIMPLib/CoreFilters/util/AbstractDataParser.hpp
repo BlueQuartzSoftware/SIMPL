@@ -96,7 +96,7 @@ public:
     return sharedPtr;
   }
 
-  ~Parser() = default;
+  ~Parser() override = default;
 
   static IDataArray::Pointer InitializeNewDataArray(size_t numTuples, const QString& name, bool allocate)
   {
@@ -114,7 +114,7 @@ public:
     m_Ptr = std::dynamic_pointer_cast<ArrayType>(value);
   }
 
-  virtual ParserFunctor::ErrorObject parse(const QString& token, size_t index)
+  ParserFunctor::ErrorObject parse(const QString& token, size_t index) override
   {
     ParserFunctor::ErrorObject obj;
     obj.ok = true;

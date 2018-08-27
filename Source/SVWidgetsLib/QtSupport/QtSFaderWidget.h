@@ -37,7 +37,7 @@ class SVWidgetsLib_EXPORT QtSFaderWidget : public QWidget
   public:
 
     QtSFaderWidget(QWidget* parent);
-    virtual ~QtSFaderWidget();
+    ~QtSFaderWidget() override;
 
     QColor fadeColor() const { return startColor; }
     void setFadeColor(const QColor& newColor) { startColor = newColor; }
@@ -57,7 +57,7 @@ class SVWidgetsLib_EXPORT QtSFaderWidget : public QWidget
     void animationComplete();
 
   protected:
-    void paintEvent(QPaintEvent* event);
+    void paintEvent(QPaintEvent* event) override;
 
   private:
     QTimer* timer;

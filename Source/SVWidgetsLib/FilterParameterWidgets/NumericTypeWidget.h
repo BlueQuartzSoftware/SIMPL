@@ -69,12 +69,12 @@ class SVWidgetsLib_EXPORT NumericTypeWidget : public FilterParameterWidget, priv
     */
     NumericTypeWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~NumericTypeWidget();
+    ~NumericTypeWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
   public slots:
     void widgetChanged(int index);

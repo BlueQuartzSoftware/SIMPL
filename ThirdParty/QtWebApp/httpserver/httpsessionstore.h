@@ -37,7 +37,7 @@ public:
   /** Constructor. */
 
   /** Destructor */
-  virtual ~HttpSessionStore();
+  ~HttpSessionStore() override;
 
   /**
    * @brief Instance

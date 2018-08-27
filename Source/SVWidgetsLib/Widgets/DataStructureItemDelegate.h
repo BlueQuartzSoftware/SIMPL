@@ -52,7 +52,7 @@ class DataStructureItemDelegate : public QStyledItemDelegate
 public:
   explicit DataStructureItemDelegate(QObject* parent = 0);
 
-  virtual ~DataStructureItemDelegate();
+  ~DataStructureItemDelegate() override;
 
   /**
    * @brief Sets the active filter for determining which paths are newly created

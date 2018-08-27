@@ -89,7 +89,7 @@ class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParamet
                        Category category, GetterCallbackType getterCallback,
                        int groupIndex = -1);
 
-    virtual ~PreflightUpdatedValueFilterParameter();
+    ~PreflightUpdatedValueFilterParameter() override;
 
     /**
      * @brief getWidgetType Returns the type of widget that displays and controls

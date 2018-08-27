@@ -65,12 +65,12 @@ class SVWidgetsLib_EXPORT ReadASCIIDataWidget : public FilterParameterWidget, pr
     */
     ReadASCIIDataWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~ReadASCIIDataWidget();
+    ~ReadASCIIDataWidget() override;
 
     /**
      * @brief Initializes some of the GUI elements with selections or other GUI related items
      */
-    virtual void setupGui();
+    void setupGui() override;
 
   public slots:
     void beforePreflight();

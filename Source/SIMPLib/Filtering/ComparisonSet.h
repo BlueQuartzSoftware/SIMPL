@@ -50,18 +50,18 @@ public:
   SIMPL_STATIC_NEW_MACRO(ComparisonSet)
    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ComparisonSet, AbstractComparison)
 
-  ~ComparisonSet();
+  ~ComparisonSet() override;
 
   /**
   * @brief Write ComparisonSet to JSon
   * @param json
   */
-  void writeJson(QJsonObject& json);
+  void writeJson(QJsonObject& json) override;
   /**
   * @brief Read ComparisonSet from JSon
   * @param json
   */
-  bool readJson(QJsonObject& json);
+  bool readJson(QJsonObject& json) override;
 
   /**
   * @brief Returns whether or not the results from the comparison have their values flipped

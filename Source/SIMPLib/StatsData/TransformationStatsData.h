@@ -86,7 +86,7 @@ class SIMPLib_EXPORT TransformationStatsData : public StatsData
     SIMPL_STATIC_NEW_MACRO(TransformationStatsData)
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(TransformationStatsData, StatsData)
 
-    virtual ~TransformationStatsData();
+    ~TransformationStatsData() override;
 
     /**
      * @brief GetTypeName Returns a string representation of the type of data that is stored by this class. This
@@ -99,8 +99,8 @@ class SIMPLib_EXPORT TransformationStatsData : public StatsData
       precision = 0;
     }
 
-    virtual QString getStatsType();
-    virtual PhaseType::Type getPhaseType();
+    QString getStatsType() override;
+    PhaseType::Type getPhaseType() override;
 
     SIMPL_INSTANCE_PROPERTY(float, BoundaryArea)
     SIMPL_INSTANCE_PROPERTY(float, ParentPhase)
@@ -164,38 +164,38 @@ class SIMPLib_EXPORT TransformationStatsData : public StatsData
      * @brief deepCopy
      * @return
      */
-    virtual StatsData::Pointer deepCopy();
+    StatsData::Pointer deepCopy() override;
 
     /**
      * @brief initialize
      */
-    virtual void initialize();
+    void initialize() override;
 
     /**
      * @brief writeHDF5Data
      * @param groupId
      * @return
      */
-    virtual int writeHDF5Data(hid_t groupId);
+    int writeHDF5Data(hid_t groupId) override;
 
     /**
      * @brief readHDF5Data
      * @param groupId
      * @return
      */
-    virtual int readHDF5Data(hid_t groupId);
+    int readHDF5Data(hid_t groupId) override;
 
     /**
      * @brief writeJson
      * @param json
      */
-    virtual void writeJson(QJsonObject& json) override;
+    void writeJson(QJsonObject& json) override;
 
     /**
      * @brief readJson
      * @param json
      */
-    virtual void readJson(const QJsonObject& json) override;
+    void readJson(const QJsonObject& json) override;
 
   protected:
     TransformationStatsData();

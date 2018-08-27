@@ -49,7 +49,7 @@ class SIMPLib_EXPORT TriangleGeom : public IGeometry2D
     SIMPL_STATIC_NEW_MACRO(TriangleGeom)
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(TriangleGeom, Observable)
 
-    virtual ~TriangleGeom();
+    ~TriangleGeom() override;
 
     /**
      * @brief CreateGeometry
@@ -163,108 +163,108 @@ class SIMPLib_EXPORT TriangleGeom : public IGeometry2D
     /**
      * @brief initializeWithZeros
      */
-    virtual void initializeWithZeros();
+    void initializeWithZeros() override;
 
     /**
      * @brief getNumberOfElements
      * @return
      */
-    virtual size_t getNumberOfElements();
+    size_t getNumberOfElements() override;
 
     /**
      * @brief findElementSizes
      * @return
      */
-    virtual int findElementSizes();
+    int findElementSizes() override;
 
     /**
      * @brief getElementSizes
      * @return
      */
-    virtual FloatArrayType::Pointer getElementSizes();
+    FloatArrayType::Pointer getElementSizes() override;
 
     /**
      * @brief deleteElementSizes
      */
-    virtual void deleteElementSizes();
+    void deleteElementSizes() override;
 
     /**
      * @brief findElementsContainingVert
      * @return
      */
-    virtual int findElementsContainingVert();
+    int findElementsContainingVert() override;
 
     /**
      * @brief getElementsContainingVert
      * @return
      */
-    virtual ElementDynamicList::Pointer getElementsContainingVert();
+    ElementDynamicList::Pointer getElementsContainingVert() override;
 
     /**
      * @brief deleteElementsContainingVert
      */
-    virtual void deleteElementsContainingVert();
+    void deleteElementsContainingVert() override;
 
     /**
      * @brief findElementNeighbors
      * @return
      */
-    virtual int findElementNeighbors();
+    int findElementNeighbors() override;
 
     /**
      * @brief getElementNeighbors
      * @return
      */
-    virtual ElementDynamicList::Pointer getElementNeighbors();
+    ElementDynamicList::Pointer getElementNeighbors() override;
 
     /**
      * @brief deleteElementNeighbors
      */
-    virtual void deleteElementNeighbors();
+    void deleteElementNeighbors() override;
 
     /**
      * @brief findElementCentroids
      * @return
      */
-    virtual int findElementCentroids();
+    int findElementCentroids() override;
 
     /**
      * @brief getElementCentroids
      * @return
      */
-    virtual FloatArrayType::Pointer getElementCentroids();
+    FloatArrayType::Pointer getElementCentroids() override;
 
     /**
      * @brief deleteElementCentroids
      */
-    virtual void deleteElementCentroids();
+    void deleteElementCentroids() override;
 
     /**
      * @brief getParametricCenter
      * @param pCoords
      */
-    virtual void getParametricCenter(double pCoords[3]);
+    void getParametricCenter(double pCoords[3]) override;
 
     /**
      * @brief getShapeFunctions
      * @param pCoords
      * @param shape
      */
-    virtual void getShapeFunctions(double pCoords[3], double* shape);
+    void getShapeFunctions(double pCoords[3], double* shape) override;
 
     /**
      * @brief findDerivatives
      * @param field
      * @param derivatives
      */
-    virtual void findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable = nullptr);
+    void findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable = nullptr) override;
 
     /**
      * @brief getInfoString
      * @return Returns a formatted string that contains general infomation about
      * the instance of the object.
      */
-    virtual QString getInfoString(SIMPL::InfoStringFormat format);
+    QString getInfoString(SIMPL::InfoStringFormat format) override;
 
     /**
      * @brief writeGeometryToHDF5
@@ -272,7 +272,7 @@ class SIMPLib_EXPORT TriangleGeom : public IGeometry2D
      * @param writeXdmf
      * @return
      */
-    virtual int writeGeometryToHDF5(hid_t parentId, bool writeXdmf);
+    int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) override;
 
     /**
      * @brief writeXdmf
@@ -281,7 +281,7 @@ class SIMPLib_EXPORT TriangleGeom : public IGeometry2D
      * @param hdfFileName
      * @return
      */
-    virtual int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName);
+    int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) override;
 
     /**
      * @brief readGeometryFromHDF5
@@ -289,18 +289,18 @@ class SIMPLib_EXPORT TriangleGeom : public IGeometry2D
      * @param preflight
      * @return
      */
-    virtual int readGeometryFromHDF5(hid_t parentId, bool preflight);
+    int readGeometryFromHDF5(hid_t parentId, bool preflight) override;
 
     /**
      * @brief deepCopy
      * @return
      */
-    virtual IGeometry::Pointer deepCopy(bool forceNoAllocate = false) override;
+    IGeometry::Pointer deepCopy(bool forceNoAllocate = false) override;
 
     /**
      * @brief addAttributeMatrix
      */
-    virtual void addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data);
+    void addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data) override;
 
 // -----------------------------------------------------------------------------
 // Inherited from IGeometry2D
@@ -310,72 +310,72 @@ class SIMPLib_EXPORT TriangleGeom : public IGeometry2D
      * @brief resizeVertexList
      * @param newNumVertices
      */
-    virtual void resizeVertexList(int64_t newNumVertices);
+    void resizeVertexList(int64_t newNumVertices) override;
 
     /**
      * @brief setVertices
      * @param vertices
      */
-    virtual void setVertices(SharedVertexList::Pointer vertices);
+    void setVertices(SharedVertexList::Pointer vertices) override;
 
     /**
      * @brief getVertices
      * @return
      */
-    virtual SharedVertexList::Pointer getVertices();
+    SharedVertexList::Pointer getVertices() override;
 
     /**
      * @brief setCoords
      * @param vertId
      * @param coords
      */
-    virtual void setCoords(int64_t vertId, float coords[3]);
+    void setCoords(int64_t vertId, float coords[3]) override;
 
     /**
      * @brief getCoords
      * @param vertId
      * @param coords
      */
-    virtual void getCoords(int64_t vertId, float coords[3]);
+    void getCoords(int64_t vertId, float coords[3]) override;
 
     /**
      * @brief getVertexPointer
      * @param i
      * @return
      */
-    virtual float* getVertexPointer(int64_t i);
+    float* getVertexPointer(int64_t i) override;
 
     /**
      * @brief getNumberOfVertices
      * @return
      */
-    virtual int64_t getNumberOfVertices();
+    int64_t getNumberOfVertices() override;
 
     /**
      * @brief resizeEdgeList
      * @param newNumEdges
      */
-    virtual void resizeEdgeList(int64_t newNumEdges);
+    void resizeEdgeList(int64_t newNumEdges) override;
 
     /**
      * @brief getEdges
      * @return
      */
-    virtual SharedEdgeList::Pointer getEdges();
+    SharedEdgeList::Pointer getEdges() override;
 
     /**
      * @brief setVerts
      * @param edgeId
      * @param verts
      */
-    virtual void setVertsAtEdge(int64_t edgeId, int64_t verts[2]);
+    void setVertsAtEdge(int64_t edgeId, int64_t verts[2]) override;
 
     /**
      * @brief getVerts
      * @param edgeId
      * @param verts
      */
-    virtual void getVertsAtEdge(int64_t edgeId, int64_t verts[2]);
+    void getVertsAtEdge(int64_t edgeId, int64_t verts[2]) override;
 
     /**
      * @brief getVertCoordsAtEdge
@@ -383,47 +383,47 @@ class SIMPLib_EXPORT TriangleGeom : public IGeometry2D
      * @param vert1
      * @param vert2
      */
-    virtual void getVertCoordsAtEdge(int64_t edgeId, float vert1[3], float vert2[3]);
+    void getVertCoordsAtEdge(int64_t edgeId, float vert1[3], float vert2[3]) override;
 
     /**
      * @brief getEdgePointer
      * @param i
      * @return
      */
-    virtual int64_t* getEdgePointer(int64_t i);
+    int64_t* getEdgePointer(int64_t i) override;
 
     /**
      * @brief getNumberOfEdges
      * @return
      */
-    virtual int64_t getNumberOfEdges();
+    int64_t getNumberOfEdges() override;
 
     /**
      * @brief findElementEdges
      * @return
      */
-    virtual int findEdges();
+    int findEdges() override;
 
     /**
      * @brief deleteElementEdges
      */
-    virtual void deleteEdges();
+    void deleteEdges() override;
 
     /**
      * @brief findUnsharedEdges
      */
-    virtual int findUnsharedEdges();
+    int findUnsharedEdges() override;
 
     /**
      * @brief getUnsharedEdges
      * @return
      */
-    virtual SharedEdgeList::Pointer getUnsharedEdges();
+    SharedEdgeList::Pointer getUnsharedEdges() override;
 
     /**
      * @brief deleteUnsharedEdges
      */
-    virtual void deleteUnsharedEdges();
+    void deleteUnsharedEdges() override;
 
   protected:
 
@@ -433,37 +433,37 @@ class SIMPLib_EXPORT TriangleGeom : public IGeometry2D
      * @brief setElementsContainingVert
      * @param elementsContainingVert
      */
-    virtual void setElementsContainingVert(ElementDynamicList::Pointer elementsContainingVert);
+    void setElementsContainingVert(ElementDynamicList::Pointer elementsContainingVert) override;
 
     /**
      * @brief setElementNeighbors
      * @param elementNeighbors
      */
-    virtual void setElementNeighbors(ElementDynamicList::Pointer elementNeighbors);
+    void setElementNeighbors(ElementDynamicList::Pointer elementNeighbors) override;
 
     /**
      * @brief setElementCentroids
      * @param elementCentroids
      */
-    virtual void setElementCentroids(FloatArrayType::Pointer elementCentroids);
+    void setElementCentroids(FloatArrayType::Pointer elementCentroids) override;
 
     /**
      * @brief setElementSizes
      * @param elementSizes
      */
-    virtual void setElementSizes(FloatArrayType::Pointer elementSizes);
+    void setElementSizes(FloatArrayType::Pointer elementSizes) override;
 
     /**
      * @brief setEdges
      * @param edges
      */
-    virtual void setEdges(SharedEdgeList::Pointer edges);
+    void setEdges(SharedEdgeList::Pointer edges) override;
 
     /**
      * @brief setUnsharedEdges
      * @param bEdgeList
      */
-    virtual void setUnsharedEdges(SharedEdgeList::Pointer bEdgeList);
+    void setUnsharedEdges(SharedEdgeList::Pointer bEdgeList) override;
 
   private:
     SharedVertexList::Pointer m_VertexList;

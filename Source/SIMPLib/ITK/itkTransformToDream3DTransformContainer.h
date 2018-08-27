@@ -59,12 +59,12 @@ public:
 
 protected:
   TransformToDream3DTransformContainer();
-  virtual ~TransformToDream3DTransformContainer();
+  ~TransformToDream3DTransformContainer() override;
 
-  virtual void VerifyPreconditions() override;
+  void VerifyPreconditions() override;
 
-  virtual void GenerateData() override;
-  ProcessObject::DataObjectPointer MakeOutput(ProcessObject::DataObjectPointerArraySizeType);
+  void GenerateData() override;
+  ProcessObject::DataObjectPointer MakeOutput(ProcessObject::DataObjectPointerArraySizeType) override;
   typename ITKTransformType::ConstPointer m_Transform;
 
 private:

@@ -85,7 +85,7 @@ public:
    * @param name
    * @return
    */
-  virtual IDataArray::Pointer createNewArray(size_t numElements, int rank, size_t* dims, const QString& name, bool allocate = true);
+  IDataArray::Pointer createNewArray(size_t numElements, int rank, size_t* dims, const QString& name, bool allocate = true) override;
 
   /**
    * @brief createNewArray
@@ -95,7 +95,7 @@ public:
    * @param allocate
    * @return
    */
-  virtual IDataArray::Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true);
+  IDataArray::Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) override;
 
   /**
    * @brief createNewArray
@@ -105,18 +105,18 @@ public:
    * @param allocate
    * @return
    */
-  virtual IDataArray::Pointer createNewArray(size_t numElements, QVector<size_t> dims, const QString& name, bool allocate = true);
+  IDataArray::Pointer createNewArray(size_t numElements, QVector<size_t> dims, const QString& name, bool allocate = true) override;
 
   /**
    * @brief ~StringDataArray
    */
-  virtual ~StringDataArray();
+  ~StringDataArray() override;
 
   /**
    * @brief isAllocated
    * @return
    */
-  virtual bool isAllocated();
+  bool isAllocated() override;
 
   /**
    * @brief Gives this array a human readable name
@@ -135,34 +135,34 @@ public:
    * can be a primitive like char, float, int or the name of a class.
    * @return
    */
-  void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision);
+  void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) override;
   /**
    * @brief getTypeAsString
    * @return
    */
-  virtual QString getTypeAsString();
+  QString getTypeAsString() override;
 
   /**
    * @brief Gives this array a human readable name
    * @param name The name of this array
    */
-  void setName(const QString& name);
+  void setName(const QString& name) override;
 
   /**
    * @brief Returns the human readable name of this array
    * @return
    */
-  QString getName();
+  QString getName() override;
 
   /**
    * @brief
    */
-  virtual void takeOwnership();
+  void takeOwnership() override;
 
   /**
    * @brief
    */
-  virtual void releaseOwnership();
+  void releaseOwnership() override;
   /**
    * @brief Returns a void pointer pointing to the index of the array. nullptr
    * pointers are entirely possible. No checks are performed to make sure
@@ -170,22 +170,22 @@ public:
    * @param i The index to have the returned pointer pointing to.
    * @return Void Pointer. Possibly nullptr.
    */
-  virtual void* getVoidPointer(size_t i);
+  void* getVoidPointer(size_t i) override;
 
   /**
    * @brief Returns the number of Tuples in the array.
    */
-  virtual size_t getNumberOfTuples();
+  size_t getNumberOfTuples() override;
 
   /**
    * @brief Return the number of elements in the array
    * @return
    */
-  virtual size_t getSize();
+  size_t getSize() override;
 
-  virtual int getNumberOfComponents();
+  int getNumberOfComponents() override;
 
-  QVector<size_t> getComponentDimensions();
+  QVector<size_t> getComponentDimensions() override;
 
   // Description:
   // Set/Get the dimension (n) of the rank. Must be >= 1. Make sure that
@@ -205,7 +205,7 @@ public:
    * 4 = 32 bit integer/Float
    * 8 = 64 bit integer/Double
    */
-  virtual size_t getTypeSize();
+  size_t getTypeSize() override;
 
   /**
    * @brief Removes Tuples from the Array. If the size of the vector is Zero nothing is done. If the size of the
@@ -215,7 +215,7 @@ public:
    * @param idxs The indices to remove
    * @return error code.
    */
-  virtual int eraseTuples(QVector<size_t>& idxs);
+  int eraseTuples(QVector<size_t>& idxs) override;
 
   /**
    * @brief Copies a Tuple from one position to another.
@@ -223,7 +223,7 @@ public:
    * @param newPos The destination index to place the copied data
    * @return
    */
-  virtual int copyTuple(size_t currentPos, size_t newPos);
+  int copyTuple(size_t currentPos, size_t newPos) override;
 
   // This line must be here, because we are overloading the copyData pure virtual function in IDataArray.
   // This is required so that other classes can call this version of copyData from the subclasses.
@@ -248,19 +248,19 @@ public:
    * @param sourceArray
    * @return
    */
-  bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples);
+  bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) override;
 
   /**
    * @brief Does Nothing
    * @param pos The index of the Tuple
    * @param value pointer to value
    */
-  virtual void initializeTuple(size_t pos, void* value);
+  void initializeTuple(size_t pos, void* value) override;
 
   /**
    * @brief Sets all the values to empty string.
    */
-  virtual void initializeWithZeros();
+  void initializeWithZeros() override;
 
   /**
    * @brief initializeWithValue
@@ -279,21 +279,21 @@ public:
    * @param forceNoAllocate
    * @return
    */
-  virtual IDataArray::Pointer deepCopy(bool forceNoAllocate = false);
+  IDataArray::Pointer deepCopy(bool forceNoAllocate = false) override;
 
   /**
    * @brief Reseizes the internal array
    * @param size The new size of the internal array
    * @return 1 on success, 0 on failure
    */
-  virtual int32_t resizeTotalElements(size_t size);
+  int32_t resizeTotalElements(size_t size) override;
 
   /**
    * @brief Reseizes the internal array
    * @param size The new size of the internal array
    * @return 1 on success, 0 on failure
    */
-  virtual int32_t resize(size_t numTuples);
+  int32_t resize(size_t numTuples) override;
 
   /**
    * @brief Initializes this class to zero bytes freeing any data that it currently owns
@@ -306,7 +306,7 @@ public:
    * @param i
    * @param delimiter
    */
-  virtual void printTuple(QTextStream& out, size_t i, char delimiter = ',');
+  void printTuple(QTextStream& out, size_t i, char delimiter = ',') override;
 
   /**
    * @brief printComponent
@@ -314,7 +314,7 @@ public:
    * @param i
    * @param j
    */
-  virtual void printComponent(QTextStream& out, size_t i, int j);
+  void printComponent(QTextStream& out, size_t i, int j) override;
 
   /**
    * @brief getFullNameOfClass
@@ -327,7 +327,7 @@ public:
    * @param parentId
    * @return
    */
-  virtual int writeH5Data(hid_t parentId, QVector<size_t> tDims);
+  int writeH5Data(hid_t parentId, QVector<size_t> tDims) override;
 
   /**
    * @brief writeXdmfAttribute
@@ -337,21 +337,21 @@ public:
    * @param groupPath
    * @return
    */
-  virtual int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& labelb);
+  int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& labelb) override;
 
   /**
    * @brief getInfoString
    * @return Returns a formatted string that contains general infomation about
    * the instance of the object.
    */
-  virtual QString getInfoString(SIMPL::InfoStringFormat format);
+  QString getInfoString(SIMPL::InfoStringFormat format) override;
 
   /**
    * @brief readH5Data
    * @param parentId
    * @return
    */
-  virtual int readH5Data(hid_t parentId);
+  int readH5Data(hid_t parentId) override;
 
   /**
    * @brief setValue

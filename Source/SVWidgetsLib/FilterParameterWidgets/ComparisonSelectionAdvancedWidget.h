@@ -65,12 +65,12 @@ class ComparisonSelectionAdvancedWidget : public FilterParameterWidget, private 
 
   public:
     ComparisonSelectionAdvancedWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
-    virtual ~ComparisonSelectionAdvancedWidget();
+    ~ComparisonSelectionAdvancedWidget() override;
 
     /**
     * @brief setupGui Initializes some of the GUI elements with selections or other GUI related items
     */
-    virtual void setupGui();
+    void setupGui() override;
 
     /**
     * @brief eventFilter
@@ -78,7 +78,7 @@ class ComparisonSelectionAdvancedWidget : public FilterParameterWidget, private 
     * @param event
     * @return
     */
-    bool eventFilter(QObject* obj, QEvent* event);
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
   public slots:
     /**

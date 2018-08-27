@@ -44,7 +44,7 @@ class SIMPLib_EXPORT CalculatorSeparator : public CalculatorItem
   public:
     SIMPL_SHARED_POINTERS(CalculatorSeparator)
 
-    virtual ~CalculatorSeparator();
+    ~CalculatorSeparator() override;
 
   protected:
     CalculatorSeparator();

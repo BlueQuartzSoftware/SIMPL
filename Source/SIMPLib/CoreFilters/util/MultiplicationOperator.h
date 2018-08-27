@@ -52,9 +52,9 @@ class SIMPLib_EXPORT MultiplicationOperator : public BinaryOperator
       return Pointer(new MultiplicationOperator());
     }
 
-    virtual ~MultiplicationOperator();
+    ~MultiplicationOperator() override;
 
-    virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
+    void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack) override;
 
   protected:
     MultiplicationOperator();

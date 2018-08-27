@@ -62,7 +62,7 @@ class SIMPLib_EXPORT H5BoundaryStatsDataDelegate : public H5StatsDataDelegate
     SIMPL_SHARED_POINTERS(H5BoundaryStatsDataDelegate)
     SIMPL_STATIC_NEW_MACRO(H5BoundaryStatsDataDelegate)
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(H5BoundaryStatsDataDelegate, H5StatsDataDelegate)
-    virtual ~H5BoundaryStatsDataDelegate();
+    ~H5BoundaryStatsDataDelegate() override;
 
     int writeBoundaryStatsData(BoundaryStatsData* data, hid_t groupId);
     int readBoundaryStatsData(BoundaryStatsData* data, hid_t groupId);

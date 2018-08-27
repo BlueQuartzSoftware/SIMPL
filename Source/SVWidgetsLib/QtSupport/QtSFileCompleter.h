@@ -45,7 +45,7 @@ class SVWidgetsLib_EXPORT QtSFileCompleter : public QCompleter
     Q_OBJECT
   public:
     QtSFileCompleter(QObject* o, bool dirs);
-    virtual QString pathFromIndex(const QModelIndex& idx) const;
+    QString pathFromIndex(const QModelIndex& idx) const override;
 };
 
 

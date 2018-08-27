@@ -50,7 +50,7 @@ class SIMPLib_EXPORT DataContainerBundle : public IDataContainerBundle
     SIMPL_SHARED_POINTERS (DataContainerBundle)
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainerBundle, IDataContainerBundle)
 
-    virtual ~DataContainerBundle();
+    ~DataContainerBundle() override;
 
     /**
      * @brief Creates a new DataContainerBundle
@@ -92,7 +92,7 @@ class SIMPLib_EXPORT DataContainerBundle : public IDataContainerBundle
      * @param containers
      */
     void setDataContainers(QVector<DataContainer::Pointer>& containers);
-    QVector<QString> getDataContainerNames();
+    QVector<QString> getDataContainerNames() override;
 
 
     /**

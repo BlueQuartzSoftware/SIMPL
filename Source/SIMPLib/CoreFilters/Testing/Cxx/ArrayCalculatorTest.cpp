@@ -63,12 +63,12 @@ public:
   : Observer()
   {
   }
-  virtual ~DummyObserver()
+  ~DummyObserver() override
   {
   }
   SIMPL_TYPE_MACRO(DummyObserver)
 
-  void processPipelineMessage(const PipelineMessage& pm)
+  void processPipelineMessage(const PipelineMessage& pm) override
   {
     // Don't do anything...this class only exists to stifle the messages being dumped to the console
   }

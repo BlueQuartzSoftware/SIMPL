@@ -44,5 +44,5 @@ public:
   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ITransformContainer, Observable)
   virtual int writeTransformContainerToHDF5(hid_t parentId, const std::string& transformContainerName) = 0;
   virtual int readTransformContainerFromHDF5(hid_t parentId, bool metaDataOnly, const std::string& transformContainerName) = 0;
-  virtual ~ITransformContainer() = default;
+  ~ITransformContainer() override = default;
 };

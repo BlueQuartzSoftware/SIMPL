@@ -49,7 +49,7 @@ class SVWidgetsLib_EXPORT ImportHDF5TreeModel : public QAbstractItemModel
 
 public:
   ImportHDF5TreeModel(hid_t fileId, QObject* parent = 0);
-  ~ImportHDF5TreeModel();
+  ~ImportHDF5TreeModel() override;
 
   enum Roles
   {
@@ -62,7 +62,7 @@ public:
    * @param role
    * @return
    */
-  QVariant data(const QModelIndex& index, int role) const;
+  QVariant data(const QModelIndex& index, int role) const override;
 
   /**
    * @brief QAbstractItemModel::setData
@@ -71,14 +71,14 @@ public:
    * @param role
    * @return
    */
-  bool setData(const QModelIndex& index, const QVariant& value, int role);
+  bool setData(const QModelIndex& index, const QVariant& value, int role) override;
 
   /**
    * @brief flags
    * @param index
    * @return
    */
-  Qt::ItemFlags flags(const QModelIndex& index) const;
+  Qt::ItemFlags flags(const QModelIndex& index) const override;
 
   /**
    * @brief headerData
@@ -87,7 +87,7 @@ public:
    * @param role
    * @return
    */
-  QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+  QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
   /**
    * @brief index
@@ -96,28 +96,28 @@ public:
    * @param parent
    * @return
    */
-  QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const;
+  QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
 
   /**
    * @brief parent
    * @param index
    * @return
    */
-  QModelIndex parent(const QModelIndex& index) const;
+  QModelIndex parent(const QModelIndex& index) const override;
 
   /**
    * @brief rowCount
    * @param parent
    * @return
    */
-  int rowCount(const QModelIndex& parent = QModelIndex()) const;
+  int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 
   /**
    * @brief columnCount
    * @param parent
    * @return
    */
-  int columnCount(const QModelIndex& parent = QModelIndex()) const;
+  int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 
   /**
    * @brief indexToHDF5Path
@@ -138,7 +138,7 @@ public:
    * @param parent
    * @return
    */
-  bool hasChildren(const QModelIndex& parent) const;
+  bool hasChildren(const QModelIndex& parent) const override;
 
   /**
    * @brief getSelectedHDF5Paths

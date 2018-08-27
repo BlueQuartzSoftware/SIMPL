@@ -54,9 +54,9 @@ class SIMPLib_EXPORT CosOperator : public UnaryOperator
       return Pointer(new CosOperator());
     }
 
-    virtual ~CosOperator();
+    ~CosOperator() override;
 
-    virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
+    void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack) override;
 
   protected:
     CosOperator();

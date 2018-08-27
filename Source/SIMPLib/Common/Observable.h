@@ -64,7 +64,7 @@ class SIMPLib_EXPORT Observable : public QObject
 
     Observable(const Observable& rhs);
 
-    virtual ~Observable();
+    ~Observable() override;
 
     void operator=(const Observable&);
 

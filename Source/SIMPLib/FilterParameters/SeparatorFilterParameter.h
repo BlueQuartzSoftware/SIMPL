@@ -58,7 +58,7 @@ class SIMPLib_EXPORT SeparatorFilterParameter : public FilterParameter
      */
     static Pointer New(const QString& humanLabel, FilterParameter::Category category);
 
-    virtual ~SeparatorFilterParameter();
+    ~SeparatorFilterParameter() override;
 
     /**
      * @brief getWidgetType Returns the type of widget that displays and controls

@@ -46,7 +46,7 @@ public:
   static Pointer New(const QString& humanLabel, const QString& propertyName, const QVariant& filePathDefaultValue, const QVariant& datasetDefaultValue, Category category, ImportHDF5Dataset* filter,
                      int groupIndex = -1);
 
-  virtual ~ImportHDF5DatasetFilterParameter();
+  ~ImportHDF5DatasetFilterParameter() override;
 
   SIMPL_VIRTUAL_INSTANCE_PROPERTY(QVariant, DataSetDefaultValue)
   SIMPL_POINTER_PROPERTY(ImportHDF5Dataset, Filter)
@@ -57,13 +57,13 @@ public:
    * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
    * @param json The QJsonObject that the filter parameter reads from.
    */
-  void readJson(const QJsonObject& json);
+  void readJson(const QJsonObject& json) override;
 
   /**
    * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
    * @param json The QJsonObject that the filter parameter writes to.
    */
-  void writeJson(QJsonObject& json);
+  void writeJson(QJsonObject& json) override;
 
 protected:
   ImportHDF5DatasetFilterParameter();

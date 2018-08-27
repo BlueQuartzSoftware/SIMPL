@@ -63,7 +63,7 @@ class SVWidgetsLib_EXPORT ColorPresetsDialog : public QDialog
 
 public:
   ColorPresetsDialog(QWidget* parent=0);
-  virtual ~ColorPresetsDialog();
+  ~ColorPresetsDialog() override;
 
   /**
    * @brief setCurrentPreset

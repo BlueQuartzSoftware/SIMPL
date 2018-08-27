@@ -51,7 +51,7 @@ class SIMPLib_EXPORT IDataContainerBundle : public QObject
     //SIMPL_STATIC_NEW_MACRO (IDataContainerBundle)
     SIMPL_TYPE_MACRO(IDataContainerBundle)
 
-    virtual ~IDataContainerBundle();
+    ~IDataContainerBundle() override;
 
     virtual void setName(const QString& getDataContainer) = 0;
     virtual QString getName() const = 0;

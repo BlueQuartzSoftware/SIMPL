@@ -54,9 +54,9 @@ class SIMPLib_EXPORT SqrtOperator : public UnaryOperator
       return Pointer(new SqrtOperator());
     }
 
-    virtual ~SqrtOperator();
+    ~SqrtOperator() override;
 
-    virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
+    void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack) override;
 
   protected:
     SqrtOperator();

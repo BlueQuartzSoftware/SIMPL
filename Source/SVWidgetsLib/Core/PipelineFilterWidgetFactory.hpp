@@ -55,7 +55,7 @@ class PipelineFilterWidgetFactory : public IFilterWidgetFactory
      * a parent Widget OR take responsibility for deleting this object.
      * @return
      */
-    QWidget* createWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr)
+    QWidget* createWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr) override
     {
       auto* w = new Widget(parameter, filter, parent);
       QString str = QString("%1_FilterParameter").arg(parameter->getPropertyName());

@@ -95,7 +95,7 @@ class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParam
                        GetterCallbackType getterCallback, DataContainerArrayProxy proxy,
                        Qt::CheckState defState, int groupIndex = -1);
 
-    virtual ~DataContainerArrayProxyFilterParameter();
+    ~DataContainerArrayProxyFilterParameter() override;
 
     SIMPL_INSTANCE_PROPERTY(DataContainerArrayProxy, DataContainerArrayProxy)
     SIMPL_INSTANCE_PROPERTY(Qt::CheckState, DefaultFlagValue)

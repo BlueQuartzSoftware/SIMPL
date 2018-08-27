@@ -135,7 +135,7 @@ public:
     const FloatVec3_t& defaultValue, Category category, SetterCallbackType setterCallback,
     GetterCallbackType getterCallback, int groupIndex = -1);
 
-    virtual ~FloatVec3FilterParameter();
+    ~FloatVec3FilterParameter() override;
 
   /**
    * @brief getWidgetType Returns the type of widget that displays and controls

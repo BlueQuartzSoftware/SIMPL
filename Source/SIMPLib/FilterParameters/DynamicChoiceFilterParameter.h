@@ -92,7 +92,7 @@ class SIMPLib_EXPORT DynamicChoiceFilterParameter : public FilterParameter
                        SetterCallbackType setterCallback, GetterCallbackType getterCallback,
                        const QString& listProperty, int groupIndex = -1);
 
-    virtual ~DynamicChoiceFilterParameter();
+    ~DynamicChoiceFilterParameter() override;
 
 
     SIMPL_INSTANCE_STRING_PROPERTY(ListProperty)

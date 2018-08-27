@@ -58,7 +58,7 @@ class SIMPLib_EXPORT RequiredZThickness : public AbstractDecisionFilter
     SIMPL_STATIC_NEW_MACRO(RequiredZThickness)
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RequiredZThickness, AbstractDecisionFilter)
 
-    virtual ~RequiredZThickness();
+    ~RequiredZThickness() override;
 
     SIMPL_FILTER_PARAMETER(QString, DataContainerSelection)
     Q_PROPERTY(QString DataContainerSelection READ getDataContainerSelection WRITE setDataContainerSelection)

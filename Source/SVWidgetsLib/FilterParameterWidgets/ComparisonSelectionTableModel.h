@@ -67,14 +67,14 @@ class SVWidgetsLib_EXPORT ComparisonSelectionTableModel : public QAbstractTableM
 
     ComparisonSelectionTableModel(bool showOperators, QObject* parent = 0);
 
-    virtual ~ComparisonSelectionTableModel();
+    ~ComparisonSelectionTableModel() override;
 
     /**
      *
      * @param index
      * @return
      */
-    virtual Qt::ItemFlags flags(const QModelIndex& index) const ;
+    Qt::ItemFlags flags(const QModelIndex& index) const override ;
 
     /**
      *
@@ -82,7 +82,7 @@ class SVWidgetsLib_EXPORT ComparisonSelectionTableModel : public QAbstractTableM
      * @param role
      * @return
      */
-    virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const ;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override ;
 
     /**
      *
@@ -91,21 +91,21 @@ class SVWidgetsLib_EXPORT ComparisonSelectionTableModel : public QAbstractTableM
      * @param role
      * @return
      */
-    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const ;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override ;
 
     /**
      *
      * @param parent
      * @return
      */
-    virtual int rowCount(const QModelIndex& parent = QModelIndex()) const ;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override ;
 
     /**
      *
      * @param parent
      * @return
      */
-    virtual int columnCount(const QModelIndex& parent = QModelIndex()) const ;
+    int columnCount(const QModelIndex& parent = QModelIndex()) const override ;
 
     /**
      *
@@ -114,7 +114,7 @@ class SVWidgetsLib_EXPORT ComparisonSelectionTableModel : public QAbstractTableM
      * @param role
      * @return
      */
-    virtual bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) ;
+    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override ;
 
     /**
      *
@@ -124,7 +124,7 @@ class SVWidgetsLib_EXPORT ComparisonSelectionTableModel : public QAbstractTableM
      * @param role
      * @return
      */
-    virtual bool setHeaderData(int col, Qt::Orientation orientation, const QVariant& data, int role = Qt::EditRole) ;
+    bool setHeaderData(int col, Qt::Orientation orientation, const QVariant& data, int role = Qt::EditRole) override ;
 
     /**
      *
@@ -133,7 +133,7 @@ class SVWidgetsLib_EXPORT ComparisonSelectionTableModel : public QAbstractTableM
      * @param parent
      * @return
      */
-    virtual bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex()) ;
+    bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex()) override ;
 
     /**
      *
@@ -142,7 +142,7 @@ class SVWidgetsLib_EXPORT ComparisonSelectionTableModel : public QAbstractTableM
      * @param parent
      * @return
      */
-    virtual bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) ;
+    bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override ;
 
     /**
      *

@@ -49,13 +49,13 @@ class SVWidgetsLib_EXPORT DREAM3DListWidget: public QListWidget
 
   public:
     DREAM3DListWidget(QWidget* parent = nullptr);
-    virtual ~DREAM3DListWidget();
+    ~DREAM3DListWidget() override;
 
   protected:
-    void dragEnterEvent(QDragEnterEvent* event);
-    void mousePressEvent(QMouseEvent* event);
-    void mouseMoveEvent(QMouseEvent* event);
-    void dropEvent(QDropEvent* event);
+    void dragEnterEvent(QDragEnterEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void dropEvent(QDropEvent* event) override;
 
   signals:
     void dropOccurred();

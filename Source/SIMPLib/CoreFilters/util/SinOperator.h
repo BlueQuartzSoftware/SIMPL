@@ -54,9 +54,9 @@ class SIMPLib_EXPORT SinOperator : public UnaryOperator
       return Pointer(new SinOperator());
     }
 
-    virtual ~SinOperator();
+    ~SinOperator() override;
 
-    virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
+    void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack) override;
 
   protected:
     SinOperator();

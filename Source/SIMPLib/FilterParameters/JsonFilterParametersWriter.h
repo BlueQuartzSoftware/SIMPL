@@ -77,7 +77,7 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
     * @param obs Any observer that we can pass error/warning messages back to in case something goes wrong.
     * @return
     */
-    int writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, QList<IObserver*> obs = QList<IObserver*>());
+    int writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, QList<IObserver*> obs = QList<IObserver*>()) override;
 
     /**
     * @brief WritePipelineToString This function will write a pipeline to a QString.
@@ -94,13 +94,13 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
      * @param index
      * @return
      */
-    virtual int openFilterGroup(AbstractFilter* unused, int index);
+    int openFilterGroup(AbstractFilter* unused, int index) override;
 
     /**
      * @brief closeFilterGroup
      * @return
      */
-    virtual int closeFilterGroup();
+    int closeFilterGroup() override;
 
 
     /**

@@ -54,9 +54,9 @@ class SIMPLib_EXPORT ACosOperator : public UnaryOperator
       return Pointer(new ACosOperator());
     }
 
-    virtual ~ACosOperator();
+    ~ACosOperator() override;
 
-    virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
+    void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack) override;
 
   protected:
     ACosOperator();

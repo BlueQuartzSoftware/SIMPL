@@ -64,7 +64,7 @@ public:
 class Int8Functor : public ParserFunctor
 {
 public:
-  virtual ~Int8Functor()
+  ~Int8Functor() override
   {
   }
 
@@ -106,7 +106,7 @@ public:
 class UInt8Functor : public ParserFunctor
 {
 public:
-  virtual ~UInt8Functor()
+  ~UInt8Functor() override
   {
   }
 
@@ -150,7 +150,7 @@ public:
 class Int16Functor : public ParserFunctor
 {
 public:
-  virtual ~Int16Functor()
+  ~Int16Functor() override
   {
   }
 
@@ -192,7 +192,7 @@ public:
 class UInt16Functor : public ParserFunctor
 {
 public:
-  virtual ~UInt16Functor()
+  ~UInt16Functor() override
   {
   }
 
@@ -242,7 +242,7 @@ public:
 class Int32Functor : public ParserFunctor
 {
 public:
-  virtual ~Int32Functor()
+  ~Int32Functor() override
   {
   }
 
@@ -284,7 +284,7 @@ public:
 class UInt32Functor : public ParserFunctor
 {
 public:
-  virtual ~UInt32Functor()
+  ~UInt32Functor() override
   {
   }
 
@@ -334,7 +334,7 @@ public:
 class Int64Functor : public ParserFunctor
 {
 public:
-  virtual ~Int64Functor()
+  ~Int64Functor() override
   {
   }
 
@@ -370,7 +370,7 @@ public:
 class UInt64Functor : public ParserFunctor
 {
 public:
-  virtual ~UInt64Functor()
+  ~UInt64Functor() override
   {
   }
 
@@ -410,7 +410,7 @@ public:
 class FloatFunctor : public ParserFunctor
 {
 public:
-  virtual ~FloatFunctor()
+  ~FloatFunctor() override
   {
   }
 
@@ -427,7 +427,7 @@ public:
 class DoubleFunctor : public ParserFunctor
 {
 public:
-  virtual ~DoubleFunctor()
+  ~DoubleFunctor() override
   {
   }
 
@@ -444,7 +444,7 @@ public:
 class StringFunctor : public ParserFunctor
 {
 public:
-  virtual ~StringFunctor()
+  ~StringFunctor() override
   {
   }
 

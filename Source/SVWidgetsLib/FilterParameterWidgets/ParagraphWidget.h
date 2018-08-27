@@ -66,12 +66,12 @@ public:
   */
   ParagraphWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-  virtual ~ParagraphWidget();
+  ~ParagraphWidget() override;
 
   /**
   * @brief This method does additional GUI widget connections
   */
-  void setupGui();
+  void setupGui() override;
 
 public slots:
   void beforePreflight();

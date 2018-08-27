@@ -49,7 +49,7 @@ class SVWidgetsLib_EXPORT StatusBarWidget : public QFrame, private Ui::StatusBar
 
   public:
     StatusBarWidget(QWidget* parent = nullptr);
-    virtual ~StatusBarWidget();
+    ~StatusBarWidget() override;
 
 
     using EnumType = unsigned int;

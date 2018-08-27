@@ -92,7 +92,7 @@ class SIMPLib_EXPORT LinkedBooleanFilterParameter : public FilterParameter
                        SetterCallbackType setterCallback, GetterCallbackType getterCallback,
                        QStringList conditionalProperties, int groupIndex = -1);
 
-    virtual ~LinkedBooleanFilterParameter();
+    ~LinkedBooleanFilterParameter() override;
 
     SIMPL_INSTANCE_PROPERTY(QStringList, ConditionalProperties)
 

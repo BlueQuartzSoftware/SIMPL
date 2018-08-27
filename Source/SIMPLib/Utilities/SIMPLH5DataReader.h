@@ -64,7 +64,7 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
     SIMPL_STATIC_NEW_MACRO(SIMPLH5DataReader)
 
     SIMPLH5DataReader();
-    virtual ~SIMPLH5DataReader();
+    ~SIMPLH5DataReader() override;
 
     /**
      * @brief openFile
@@ -107,7 +107,7 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
      * @param str
      * @param code
      */
-    void notifyErrorMessage(const QString& humanLabel, const QString& str, int code);
+    void notifyErrorMessage(const QString& humanLabel, const QString& str, int code) override;
 
   signals:
     void errorGenerated(const QString &title, const QString &msg, const int &code);

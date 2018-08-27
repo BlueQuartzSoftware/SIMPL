@@ -54,9 +54,9 @@ class SIMPLib_EXPORT PowOperator : public BinaryOperator
       return Pointer(new PowOperator());
     }
 
-    virtual ~PowOperator();
+    ~PowOperator() override;
 
-    virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
+    void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack) override;
 
   protected:
     PowOperator();

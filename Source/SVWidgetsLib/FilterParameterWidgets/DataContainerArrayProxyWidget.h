@@ -77,14 +77,14 @@ class SVWidgetsLib_EXPORT DataContainerArrayProxyWidget : public FilterParameter
      */
     DataContainerArrayProxyWidget(QWidget* parent = nullptr);
 
-    virtual ~DataContainerArrayProxyWidget();
+    ~DataContainerArrayProxyWidget() override;
 
     void initialize(FilterParameter* parameter, AbstractFilter* filter = nullptr);
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
     void setFilterParameter(FilterParameter* value);
     FilterParameter* getFilterParameter() const;

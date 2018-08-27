@@ -94,7 +94,7 @@ public:
                       SetterCallbackType setterCallback, GetterCallbackType getterCallback,
                       int groupIndex = -1);
 
-    virtual ~RangeFilterParameter();
+    ~RangeFilterParameter() override;
 
   /**
    * @brief getWidgetType Returns the type of widget that displays and controls

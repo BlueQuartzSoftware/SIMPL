@@ -68,7 +68,7 @@ public:
   /**
    * @brief ~DataStructureTreeView()
    */
-  virtual ~DataStructureTreeView();
+  ~DataStructureTreeView() override;
 
   /**
    * @brief Returns the DataArrayPath for the given QModelIndex

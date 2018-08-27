@@ -70,12 +70,12 @@ class SVWidgetsLib_EXPORT DynamicChoiceWidget : public FilterParameterWidget, pr
     */
     DynamicChoiceWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~DynamicChoiceWidget();
+    ~DynamicChoiceWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
 
     void setFilterParameter(FilterParameter* value);

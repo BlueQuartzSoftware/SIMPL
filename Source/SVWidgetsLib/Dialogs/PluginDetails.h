@@ -53,7 +53,7 @@ class PluginDetails : public QDialog, private Ui::PluginDetails
 
   public:
     PluginDetails(QString pluginName, QWidget* parent = nullptr);
-    virtual ~PluginDetails();
+    ~PluginDetails() override;
 
     SIMPL_INSTANCE_PROPERTY(QString, PluginName)
 

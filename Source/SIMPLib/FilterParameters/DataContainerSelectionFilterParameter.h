@@ -102,7 +102,7 @@ class SIMPLib_EXPORT DataContainerSelectionFilterParameter : public FilterParame
                        SetterCallbackType setterCallback, GetterCallbackType getterCallback,
                        const RequirementType req, int groupIndex = -1);
 
-    virtual ~DataContainerSelectionFilterParameter();
+    ~DataContainerSelectionFilterParameter() override;
 
     /**
      * @brief getWidgetType Returns the type of widget that displays and controls

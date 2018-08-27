@@ -70,12 +70,12 @@ class SVWidgetsLib_EXPORT IntWidget : public FilterParameterWidget, private Ui::
     */
     IntWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~IntWidget();
+    ~IntWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
   public slots:
     void widgetChanged(const QString& msg);
