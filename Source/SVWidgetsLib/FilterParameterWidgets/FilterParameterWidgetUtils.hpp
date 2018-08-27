@@ -318,7 +318,7 @@ class FilterParameterWidgetUtils
 
 
   protected:
-    FilterParameterWidgetUtils() {}
+    FilterParameterWidgetUtils() = default;
 
   private:
 

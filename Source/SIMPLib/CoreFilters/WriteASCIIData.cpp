@@ -57,12 +57,8 @@ template <typename TInputType> class WriteASCIIDataPrivate
 public:
   typedef DataArray<TInputType> DataArrayType;
 
-  WriteASCIIDataPrivate()
-  {
-  }
-  virtual ~WriteASCIIDataPrivate()
-  {
-  }
+  WriteASCIIDataPrivate() = default;
+  virtual ~WriteASCIIDataPrivate() = default;
 
   // -----------------------------------------------------------------------------
   //

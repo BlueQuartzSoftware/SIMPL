@@ -49,7 +49,7 @@ class SIMPLib_EXPORT IGeometry2D : public IGeometry
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometry2D, Observable)
 
     IGeometry2D();
-    virtual ~IGeometry2D();
+    ~IGeometry2D() override;
 
 // -----------------------------------------------------------------------------
 // Inherited from SharedVertexOps

@@ -63,13 +63,9 @@ class WriteASCIIDataTest
 public:
   const size_t k_ArraySize = 10;
 
-  WriteASCIIDataTest()
-  {
-  }
+  WriteASCIIDataTest() = default;
 
-  virtual ~WriteASCIIDataTest()
-  {
-  }
+  virtual ~WriteASCIIDataTest() = default;
 
   // -----------------------------------------------------------------------------
   //

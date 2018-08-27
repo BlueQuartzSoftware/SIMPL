@@ -61,7 +61,7 @@ class SIMPLib_EXPORT H5MatrixStatsDataDelegate : public H5StatsDataDelegate
     SIMPL_SHARED_POINTERS(H5MatrixStatsDataDelegate)
     SIMPL_STATIC_NEW_MACRO(H5MatrixStatsDataDelegate)
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(H5MatrixStatsDataDelegate, H5StatsDataDelegate)
-    virtual ~H5MatrixStatsDataDelegate();
+    ~H5MatrixStatsDataDelegate() override;
 
     int writeMatrixStatsData(MatrixStatsData* data, hid_t groupId);
     int readMatrixStatsData(MatrixStatsData* data, hid_t groupId);

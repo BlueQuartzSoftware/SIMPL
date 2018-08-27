@@ -49,7 +49,7 @@ class SVWidgetsLib_EXPORT QtSBookmarkMissingDialog : public QDialog, private Ui:
 
   public:
     QtSBookmarkMissingDialog(QWidget* parent = nullptr, Qt::WindowFlags flags = 0);
-    virtual ~QtSBookmarkMissingDialog();
+    ~QtSBookmarkMissingDialog() override;
 
     void setBookmarkName(QString name);
 

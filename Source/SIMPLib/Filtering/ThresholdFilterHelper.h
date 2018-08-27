@@ -49,7 +49,7 @@ class SIMPLib_EXPORT ThresholdFilterHelper : public IDataArrayFilter
 public:
   ThresholdFilterHelper(SIMPL::Comparison::Enumeration compType, double compValue, BoolArrayType* output);
 
-  virtual ~ThresholdFilterHelper();
+  ~ThresholdFilterHelper() override;
 
   /**
    *

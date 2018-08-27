@@ -60,14 +60,10 @@ class ExecuteProcessObserver : public QObject, public IObserver
   Q_OBJECT
 
 public:
-  ExecuteProcessObserver()
-  {
-  }
+  ExecuteProcessObserver() = default;
   SIMPL_TYPE_MACRO_SUPER(ExecuteProcessObserver, IObserver)
 
-  virtual ~ExecuteProcessObserver()
-  {
-  }
+  ~ExecuteProcessObserver() override = default;
 
   QString getStdOutput()
   {
@@ -80,7 +76,7 @@ public:
   }
 
 public slots:
-  virtual void processPipelineMessage(const PipelineMessage& pm)
+  void processPipelineMessage(const PipelineMessage& pm) override
   {
     if(pm.getType() == PipelineMessage::MessageType::StandardOutputMessage)
     {
@@ -105,12 +101,8 @@ class ExecuteProcessTest
 {
 
 public:
-  ExecuteProcessTest()
-  {
-  }
-  virtual ~ExecuteProcessTest()
-  {
-  }
+  ExecuteProcessTest() = default;
+  virtual ~ExecuteProcessTest() = default;
 
   // -----------------------------------------------------------------------------
   //

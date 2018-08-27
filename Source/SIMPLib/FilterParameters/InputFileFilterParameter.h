@@ -93,7 +93,7 @@ public:
     GetterCallbackType getterCallback, const QString& fileExtension = QString(""),
     const QString& fileType = QString(""), int groupIndex = -1);
 
-    virtual ~InputFileFilterParameter();
+    ~InputFileFilterParameter() override;
 
     SIMPL_INSTANCE_STRING_PROPERTY(FileExtension)
       SIMPL_INSTANCE_STRING_PROPERTY(FileType)

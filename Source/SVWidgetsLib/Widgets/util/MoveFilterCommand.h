@@ -71,17 +71,17 @@ public:
    */
   MoveFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, int insertIndex, QUndoCommand* parent = nullptr);
 
-  virtual ~MoveFilterCommand();
+  ~MoveFilterCommand() override;
 
   /**
    * @brief undo
    */
-  virtual void undo();
+  void undo() override;
 
   /**
    * @brief redo
    */
-  virtual void redo();
+  void redo() override;
 
 private:
   std::vector<AbstractFilter::Pointer> m_Filters;

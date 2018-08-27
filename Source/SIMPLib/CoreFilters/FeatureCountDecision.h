@@ -57,7 +57,7 @@ class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
     SIMPL_STATIC_NEW_MACRO(FeatureCountDecision)
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FeatureCountDecision, AbstractDecisionFilter)
 
-    virtual ~FeatureCountDecision();
+    ~FeatureCountDecision() override;
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, FeatureIdsArrayPath)
     Q_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
@@ -69,7 +69,7 @@ class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
     * @brief
     * @param jsonDoc
     */
-    virtual void extractProperties(const QJsonDocument &jsonDoc);
+    void extractProperties(const QJsonDocument &jsonDoc) override;
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class

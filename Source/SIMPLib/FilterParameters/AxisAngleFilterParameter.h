@@ -93,7 +93,7 @@ class SIMPLib_EXPORT AxisAngleFilterParameter : public FilterParameter
                        SetterCallbackType setterCallback, GetterCallbackType getterCallback,
                        int groupIndex = -1);
 
-    virtual ~AxisAngleFilterParameter();
+    ~AxisAngleFilterParameter() override;
 
     /**
    * @brief getWidgetType Returns the type of widget that displays and controls

@@ -54,7 +54,7 @@ class SIMPLib_EXPORT ICalculatorArray : public CalculatorItem
 
     SIMPL_SHARED_POINTERS(ICalculatorArray)
 
-    virtual ~ICalculatorArray();
+    ~ICalculatorArray() override;
 
     virtual IDataArray::Pointer getArray() = 0;
     virtual double getValue(int i) = 0;

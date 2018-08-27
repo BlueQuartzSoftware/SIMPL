@@ -73,10 +73,7 @@ GenerateColorTableWidget::GenerateColorTableWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-GenerateColorTableWidget::~GenerateColorTableWidget()
-{
-
-}
+GenerateColorTableWidget::~GenerateColorTableWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

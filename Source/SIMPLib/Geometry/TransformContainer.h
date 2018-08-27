@@ -48,7 +48,7 @@ public:
   SIMPL_STATIC_NEW_MACRO(TransformContainer)
   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(TransformContainer, ITransformContainer)
   TransformContainer();
-  virtual ~TransformContainer();
+  ~TransformContainer() override;
   TransformContainer& operator=(const TransformContainer&);
   int writeTransformContainerToHDF5(hid_t parentId, const std::string& transformContainerName) override;
   int readTransformContainerFromHDF5(hid_t parentId, bool metaDataOnly, const std::string& transformContainerName) override;

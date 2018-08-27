@@ -43,7 +43,7 @@ class AbstractWizardPage : public QWizardPage
   Q_OBJECT
 
   public:
-    virtual ~AbstractWizardPage();
+    ~AbstractWizardPage() override;
 
     /**
     * @brief Polymorphic function that refreshes the model based on what page we are currently on
@@ -53,7 +53,7 @@ class AbstractWizardPage : public QWizardPage
     /**
     * @brief Controls which page to navigate to after the user clicks "Next" button
     */
-    virtual int nextId() const;
+    int nextId() const override;
 
   protected:
     AbstractWizardPage(const QString &inputFilePath, QWidget* parent = nullptr);

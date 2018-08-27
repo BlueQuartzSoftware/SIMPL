@@ -66,7 +66,7 @@ class SVWidgetsLib_EXPORT DataStructureWidget : public QWidget, public IObserver
   Q_OBJECT
 public:
   DataStructureWidget(QWidget* parent = nullptr);
-  virtual ~DataStructureWidget();
+  ~DataStructureWidget() override;
 
 public slots:
   /**

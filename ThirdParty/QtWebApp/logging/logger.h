@@ -69,7 +69,7 @@ public:
          QObject* parent = 0);
 
   /** Destructor */
-  virtual ~Logger();
+  ~Logger() override;
 
   /**
     Decorate and log the message, if type>=minLevel.

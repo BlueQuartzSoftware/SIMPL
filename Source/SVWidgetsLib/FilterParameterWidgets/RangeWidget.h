@@ -72,12 +72,12 @@ class SVWidgetsLib_EXPORT RangeWidget : public FilterParameterWidget, private Ui
     */
     RangeWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~RangeWidget();
+    ~RangeWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
   public slots:
     void beforePreflight();

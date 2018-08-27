@@ -133,9 +133,7 @@ QDataStream& operator>>(QDataStream& in, EnsembleInfo& v)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QMetaObjectUtilities::QMetaObjectUtilities()
-{
-}
+QMetaObjectUtilities::QMetaObjectUtilities() = default;
 
 // -----------------------------------------------------------------------------
 //

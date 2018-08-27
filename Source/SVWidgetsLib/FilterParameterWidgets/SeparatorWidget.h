@@ -70,12 +70,12 @@ class SVWidgetsLib_EXPORT SeparatorWidget : public FilterParameterWidget, privat
     */
     SeparatorWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~SeparatorWidget();
+    ~SeparatorWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
     /**
      * @brief Returns the OS Specific Style Sheet for the QLabel

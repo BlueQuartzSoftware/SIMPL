@@ -47,10 +47,10 @@ class SIMPLib_EXPORT TestObserver : public QObject, public IObserver
   public:
     TestObserver();
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(TestObserver, IObserver)
-    virtual ~TestObserver();
+    ~TestObserver() override;
 
  public slots:
-      virtual void processPipelineMessage(const PipelineMessage& pm);
+      void processPipelineMessage(const PipelineMessage& pm) override;
 
   private:
     TestObserver(const TestObserver&) = delete;   // Copy Constructor Not Implemented

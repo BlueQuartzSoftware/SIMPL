@@ -46,7 +46,7 @@ public:
     @param line Line Number of the source file, where the message was generated (usually filles with the macro __func__ or __FUNCTION__)
     @see LogMessage for a description of the message decoration.
   */
-  virtual void log(const QtMsgType type, const QString& message, const QString& file = "", const QString& function = "", const int line = 0);
+  void log(const QtMsgType type, const QString& message, const QString& file = "", const QString& function = "", const int line = 0) override;
 
   /**
     Clear the thread-local data of the current thread.
@@ -54,7 +54,7 @@ public:
     @param buffer Whether to clear the backtrace buffer
     @param variables Whether to clear the log variables
   */
-  virtual void clear(const bool buffer = true, const bool variables = true);
+  void clear(const bool buffer = true, const bool variables = true) override;
 
 private:
   /** First logger */

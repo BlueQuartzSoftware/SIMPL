@@ -69,12 +69,12 @@ class SVWidgetsLib_EXPORT UnknownWidget : public FilterParameterWidget, private 
     */
     UnknownWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~UnknownWidget();
+    ~UnknownWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
   public slots:
     void widgetChanged(const QString& msg);

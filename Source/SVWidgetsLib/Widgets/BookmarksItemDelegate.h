@@ -46,7 +46,7 @@ class BookmarksItemDelegate : public QStyledItemDelegate
   public:
     explicit BookmarksItemDelegate(QObject* parent = 0);
 
-    virtual ~BookmarksItemDelegate();
+    ~BookmarksItemDelegate() override;
 
   protected:
     QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const override;

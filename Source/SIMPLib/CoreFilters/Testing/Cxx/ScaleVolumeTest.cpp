@@ -61,12 +61,8 @@ const FloatVec3_t SCALE = FloatVec3_t{3, 3, 3};
 class ScaleVolumeTest
 {
 public:
-  ScaleVolumeTest()
-  {
-  }
-  virtual ~ScaleVolumeTest()
-  {
-  }
+  ScaleVolumeTest() = default;
+  virtual ~ScaleVolumeTest() = default;
 
   // -----------------------------------------------------------------------------
   //

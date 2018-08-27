@@ -96,7 +96,7 @@ class SIMPLib_EXPORT LinkedDataContainerSelectionFilterParameter : public Filter
                        const RequirementType req, QStringList linkedProperties,
                        int groupIndex = -1);
 
-    virtual ~LinkedDataContainerSelectionFilterParameter();
+    ~LinkedDataContainerSelectionFilterParameter() override;
 
     SIMPL_INSTANCE_PROPERTY(QStringList, LinkedProperties)
     SIMPL_INSTANCE_PROPERTY(IGeometry::Types, DefaultGeometryTypes)

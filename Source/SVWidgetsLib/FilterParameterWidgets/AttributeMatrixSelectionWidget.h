@@ -77,12 +77,12 @@ class SVWidgetsLib_EXPORT AttributeMatrixSelectionWidget : public FilterParamete
      */
     AttributeMatrixSelectionWidget(QWidget* parent = nullptr);
 
-    virtual ~AttributeMatrixSelectionWidget();
+    ~AttributeMatrixSelectionWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
     /**
      * @brief checkStringValues
@@ -92,7 +92,7 @@ class SVWidgetsLib_EXPORT AttributeMatrixSelectionWidget : public FilterParamete
      */
     QString checkStringValues(QString current, QString filtDcName);
 
-    bool eventFilter(QObject* obj, QEvent* event);
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
   public slots:
     void beforePreflight();

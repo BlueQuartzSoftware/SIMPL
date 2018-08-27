@@ -83,7 +83,7 @@ public:
   SIMPL_TYPE_MACRO(FilterPipeline)
   SIMPL_STATIC_NEW_MACRO(FilterPipeline)
 
-  virtual ~FilterPipeline();
+  ~FilterPipeline() override;
 
   typedef QList<AbstractFilter::Pointer> FilterContainerType;
 

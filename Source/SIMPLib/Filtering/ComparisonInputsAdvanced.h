@@ -63,7 +63,7 @@ public:
   ComparisonInputsAdvanced();
   ComparisonInputsAdvanced(const ComparisonInputsAdvanced& rhs);
 
-  virtual ~ComparisonInputsAdvanced();
+  ~ComparisonInputsAdvanced() override;
 
   /**
    * @brief size

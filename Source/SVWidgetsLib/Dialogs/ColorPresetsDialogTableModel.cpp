@@ -48,10 +48,7 @@ ColorPresetsDialogTableModel::ColorPresetsDialogTableModel(QObject* parentObject
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ColorPresetsDialogTableModel::~ColorPresetsDialogTableModel()
-{
-
-}
+ColorPresetsDialogTableModel::~ColorPresetsDialogTableModel() = default;
 
 // -----------------------------------------------------------------------------
 //

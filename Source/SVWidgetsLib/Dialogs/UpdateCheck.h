@@ -68,7 +68,7 @@ class SVWidgetsLib_EXPORT UpdateCheck : public QObject
 
 
     UpdateCheck(SIMPLVersionData_t versionData, QObject* parent = 0);
-    virtual ~UpdateCheck();
+    ~UpdateCheck() override;
 
 
     void checkVersion(QUrl website);

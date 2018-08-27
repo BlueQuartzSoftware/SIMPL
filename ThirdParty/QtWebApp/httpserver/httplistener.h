@@ -54,7 +54,7 @@ public:
   HttpListener(QSettings* settings, HttpRequestHandler* requestHandler, QObject* parent = NULL);
 
   /** Destructor */
-  virtual ~HttpListener();
+  ~HttpListener() override;
 
   /**
     Restart listening after close().
@@ -71,7 +71,7 @@ public:
 
 protected:
   /** Serves new incoming connection requests */
-  void incomingConnection(tSocketDescriptor socketDescriptor);
+  void incomingConnection(tSocketDescriptor socketDescriptor) override;
 
 private:
   /** Configuration settings for the HTTP server */

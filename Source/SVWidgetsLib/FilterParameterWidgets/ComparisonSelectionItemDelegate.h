@@ -60,21 +60,21 @@ class SVWidgetsLib_EXPORT ComparisonSelectionItemDelegate : public QStyledItemDe
   public:
     explicit ComparisonSelectionItemDelegate(QStringList possibleFeatures, int numPhases, QObject* parent = 0);
 
-    virtual ~ComparisonSelectionItemDelegate();
+    ~ComparisonSelectionItemDelegate() override;
 
 
     void setNumberOfPhases(int n);
 
 
-    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const;
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 
     void setFeatureList(QStringList features);
 
-    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
+    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 
-    void setEditorData(QWidget* editor, const QModelIndex& index) const;
+    void setEditorData(QWidget* editor, const QModelIndex& index) const override;
 
-    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override;
 
   public slots:
     void arrayNameChangedData(int i);

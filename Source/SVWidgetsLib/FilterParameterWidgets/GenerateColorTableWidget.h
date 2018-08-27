@@ -77,14 +77,14 @@ class SVWidgetsLib_EXPORT GenerateColorTableWidget : public FilterParameterWidge
      */
     GenerateColorTableWidget(QWidget* parent = nullptr);
 
-    virtual ~GenerateColorTableWidget();
+    ~GenerateColorTableWidget() override;
 
     void initialize(FilterParameter* parameter, AbstractFilter* filter = nullptr);
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
     void setFilter(AbstractFilter* value);
     AbstractFilter* getFilter() const;

@@ -138,13 +138,13 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
       * @param index
       * @return
       */
-     virtual int openFilterGroup(AbstractFilter* unused, int index);
+     int openFilterGroup(AbstractFilter* unused, int index) override;
 
      /**
       * @brief closeFilterGroup
       * @return
       */
-     virtual int closeFilterGroup();
+     int closeFilterGroup() override;
 
      /*
       * @brief getCurrentGroupObject

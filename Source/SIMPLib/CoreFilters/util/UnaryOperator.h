@@ -47,11 +47,11 @@ class SIMPLib_EXPORT UnaryOperator : public CalculatorOperator
       return Pointer(new UnaryOperator());
     }
 
-    virtual ~UnaryOperator();
+    ~UnaryOperator() override;
 
-    virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
+    void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack) override;
 
-    virtual CalculatorItem::ErrorCode checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex, QString& msg) final;
+    CalculatorItem::ErrorCode checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex, QString& msg) final;
 
     int getNumberOfArguments();
 

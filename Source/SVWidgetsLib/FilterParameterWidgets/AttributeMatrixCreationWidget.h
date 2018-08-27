@@ -74,14 +74,14 @@ public:
 
   AttributeMatrixCreationWidget(QWidget* parent = nullptr);
 
-  virtual ~AttributeMatrixCreationWidget();
+  ~AttributeMatrixCreationWidget() override;
 
   typedef QSharedPointer<QMenu> QMenuPtr;
 
   /**
   * @brief This method does additional GUI widget connections
   */
-  void setupGui();
+  void setupGui() override;
 
   /**
   * @brief checkStringValues
@@ -104,7 +104,7 @@ public:
    * @param event
    * @return
    */
-  bool eventFilter(QObject* obj, QEvent* event);
+  bool eventFilter(QObject* obj, QEvent* event) override;
 
 public slots:
   void beforePreflight();

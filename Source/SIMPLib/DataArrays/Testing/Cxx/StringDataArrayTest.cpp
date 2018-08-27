@@ -95,12 +95,8 @@ public:
   const size_t k_ResizeLarger = 8;
   const size_t k_InitSize = 0;
 
-  StringDataArrayTest()
-  {
-  }
-  virtual ~StringDataArrayTest()
-  {
-  }
+  StringDataArrayTest() = default;
+  virtual ~StringDataArrayTest() = default;
 
   // -----------------------------------------------------------------------------
   //

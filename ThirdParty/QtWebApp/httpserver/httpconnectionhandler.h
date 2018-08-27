@@ -58,7 +58,7 @@ public:
   HttpConnectionHandler(QSettings* settings, HttpRequestHandler* requestHandler, QSslConfiguration* sslConfiguration = NULL);
 
   /** Destructor */
-  virtual ~HttpConnectionHandler();
+  ~HttpConnectionHandler() override;
 
   /** Returns true, if this handler is in use. */
   bool isBusy();
@@ -91,7 +91,7 @@ private:
   QSslConfiguration* sslConfiguration;
 
   /** Executes the threads own event loop */
-  void run();
+  void run() override;
 
   /**  Create SSL or TCP socket */
   void createSocket();

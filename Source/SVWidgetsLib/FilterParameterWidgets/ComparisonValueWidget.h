@@ -52,7 +52,7 @@ class SVWidgetsLib_EXPORT ComparisonValueWidget : public IComparisonWidget, priv
 
 public:
   ComparisonValueWidget(QWidget* parent, ComparisonValue::Pointer comparisonValue = nullptr);
-  ~ComparisonValueWidget();
+  ~ComparisonValueWidget() override;
 
   /**
   * @brief Returns the ComparisonValue used by this widget
@@ -69,7 +69,7 @@ public:
   * @brief Returns the ComparisonValue used by this widget as an AbstractComparison::Pointer
   * @return
   */
-  AbstractComparison::Pointer getComparison();
+  AbstractComparison::Pointer getComparison() override;
 
   /**
   * @brief Sets the array of names to use

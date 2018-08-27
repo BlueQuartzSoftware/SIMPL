@@ -90,7 +90,7 @@ class DataArray : public IDataArray
      * can be a primitive like char, float, int or the name of a class.
      * @return
      */
-    void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision)
+    void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) override
     {
       T value = static_cast<T>(0x00);
       xdmfTypeName = "UNKNOWN";
@@ -426,7 +426,7 @@ class DataArray : public IDataArray
      * @param sourceArray
      * @return
      */
-    bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples)
+    bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) override
     {
       if(!m_IsAllocated) { return false; }
       if(nullptr == m_Array) { return false; }
@@ -476,7 +476,7 @@ class DataArray : public IDataArray
      * @param name
      * @return
      */
-    virtual IDataArray::Pointer createNewArray(size_t numTuples, int rank, size_t* dims, const QString& name, bool allocate = true)
+    IDataArray::Pointer createNewArray(size_t numTuples, int rank, size_t* dims, const QString& name, bool allocate = true) override
     {
       IDataArray::Pointer p = DataArray<T>::CreateArray(numTuples, rank, dims, name, allocate);
       return p;
@@ -489,7 +489,7 @@ class DataArray : public IDataArray
      * @param name
      * @return
      */
-    virtual IDataArray::Pointer createNewArray(size_t numTuples, std::vector<size_t> dims, const QString& name, bool allocate = true)
+    IDataArray::Pointer createNewArray(size_t numTuples, std::vector<size_t> dims, const QString& name, bool allocate = true) override
     {
       IDataArray::Pointer p = DataArray<T>::CreateArray(numTuples, dims, name, allocate);
       return p;
@@ -502,7 +502,7 @@ class DataArray : public IDataArray
      * @param name
      * @return
      */
-    virtual IDataArray::Pointer createNewArray(size_t numTuples, QVector<size_t> dims, const QString& name, bool allocate = true)
+    IDataArray::Pointer createNewArray(size_t numTuples, QVector<size_t> dims, const QString& name, bool allocate = true) override
     {
       IDataArray::Pointer p = DataArray<T>::CreateArray(numTuples, dims, name, allocate);
       return p;
@@ -511,7 +511,7 @@ class DataArray : public IDataArray
     /**
      * @brief Destructor
      */
-    virtual ~DataArray()
+    ~DataArray() override
     {
       //qDebug() << "~DataArrayTemplate '" << m_Name << "'" ;
       if ((nullptr != m_Array) && (true == m_OwnsData))
@@ -524,7 +524,7 @@ class DataArray : public IDataArray
      * @brief isAllocated
      * @return
      */
-    virtual bool isAllocated() { return m_IsAllocated; }
+    bool isAllocated() override { return m_IsAllocated; }
 
     /**
      * @brief Gives this array a human readable name
@@ -539,7 +539,7 @@ class DataArray : public IDataArray
      * @brief Gives this array a human readable name
      * @param name The name of this array
      */
-    virtual void setName(const QString& name)
+    void setName(const QString& name) override
     {
       m_Name = name;
     }
@@ -548,7 +548,7 @@ class DataArray : public IDataArray
      * @brief Returns the human readable name of this array
      * @return
      */
-    virtual QString getName()
+    QString getName() override
     {
       return m_Name;
     }
@@ -556,7 +556,7 @@ class DataArray : public IDataArray
     /**
      * @brief Makes this class responsible for freeing the memory
      */
-    virtual void takeOwnership()
+    void takeOwnership() override
     {
       m_OwnsData = true;
     }
@@ -566,7 +566,7 @@ class DataArray : public IDataArray
      * This can be useful if the user wishes to keep the data around after this
      * class goes out of scope.
      */
-    virtual void releaseOwnership()
+    void releaseOwnership() override
     {
       m_OwnsData = false;
     }
@@ -632,7 +632,7 @@ class DataArray : public IDataArray
     /**
      * @brief Sets all the values to zero.
      */
-    virtual void initializeWithZeros()
+    void initializeWithZeros() override
     {
       if(!m_IsAllocated || nullptr == m_Array) { return; }
       size_t typeSize = sizeof(T);
@@ -659,7 +659,7 @@ class DataArray : public IDataArray
      * @param idxs The indices to remove
      * @return error code.
      */
-    virtual int eraseTuples(QVector<size_t>& idxs)
+    int eraseTuples(QVector<size_t>& idxs) override
     {
 
       int err = 0;
@@ -773,7 +773,7 @@ class DataArray : public IDataArray
      * @param newPos
      * @return
      */
-    virtual int copyTuple(size_t currentPos, size_t newPos)
+    int copyTuple(size_t currentPos, size_t newPos) override
     {
       size_t max =  ((m_MaxId + 1) / m_NumComponents);
       if (currentPos >= max
@@ -793,7 +793,7 @@ class DataArray : public IDataArray
      * 4 = 32 bit integer/Float
      * 8 = 64 bit integer/Double
      */
-    virtual size_t getTypeSize()
+    size_t getTypeSize() override
     {
       return sizeof(T);
     }
@@ -802,7 +802,7 @@ class DataArray : public IDataArray
     /**
      * @brief Returns the number of elements in the internal array.
      */
-    virtual size_t getNumberOfTuples()
+    size_t getNumberOfTuples() override
     {
       return m_NumTuples;
     }
@@ -810,7 +810,7 @@ class DataArray : public IDataArray
     /**
     * @brief Returns the total number of elements that make up this array. Equal to NumTuples * NumComponents
     */
-    virtual size_t getSize()
+    size_t getSize() override
     {
       return m_Size;
     }
@@ -820,7 +820,7 @@ class DataArray : public IDataArray
     * at each tuple then this will return a single element QVector. If you have a 1x3 array (like EUler Angles) then
     * this will return a 3 Element QVector.
     */
-    virtual QVector<size_t> getComponentDimensions()
+    QVector<size_t> getComponentDimensions() override
     {
       return m_CompDims;
     }
@@ -830,7 +830,7 @@ class DataArray : public IDataArray
     * 3 element component (vector) then this will be 3. If you are storing a small image of size 80x60
     * at each Tuple (like EBSD Kikuchi patterns) then the result would be 4800.
     */
-    virtual int getNumberOfComponents()
+    int getNumberOfComponents() override
     {
       return m_NumComponents;
     }
@@ -843,7 +843,7 @@ class DataArray : public IDataArray
      * @param i The index to have the returned pointer pointing to.
      * @return Void Pointer. Possibly nullptr.
      */
-    virtual void* getVoidPointer(size_t i)
+    void* getVoidPointer(size_t i) override
     {
       if (i >= m_Size) { return nullptr;}
 
@@ -948,7 +948,7 @@ class DataArray : public IDataArray
      * @param i The index of the Tuple
      * @param c The value to splat across all components in the tuple
      */
-    void initializeTuple(size_t i, void* p)
+    void initializeTuple(size_t i, void* p) override
     {
       if(!m_IsAllocated) { return; }
 #ifndef NDEBUG
@@ -979,7 +979,7 @@ class DataArray : public IDataArray
      * @param numTuples
      * @return
      */
-    virtual int32_t resize(size_t numTuples)
+    int32_t resize(size_t numTuples) override
     {
       int32_t check = resizeTotalElements(numTuples * m_NumComponents);
       if(check > 0) { m_NumTuples = numTuples; }
@@ -992,7 +992,7 @@ class DataArray : public IDataArray
      * @param i
      * @param delimiter
      */
-    virtual void printTuple(QTextStream& out, size_t i, char delimiter = ',')
+    void printTuple(QTextStream& out, size_t i, char delimiter = ',') override
     {
       int precision = out.realNumberPrecision();
       T value = static_cast<T>(0x00);
@@ -1013,7 +1013,7 @@ class DataArray : public IDataArray
      * @param i
      * @param j
      */
-    virtual void printComponent(QTextStream& out, size_t i, int j)
+    void printComponent(QTextStream& out, size_t i, int j) override
     {
       out << m_Array[i * m_NumComponents + j];
     }
@@ -1035,7 +1035,7 @@ class DataArray : public IDataArray
      * @brief getTypeAsString
      * @return
      */
-    QString getTypeAsString()
+    QString getTypeAsString() override
     {
       T value = static_cast<T>(0);
       if (typeid(value) == typeid(float)) { return "float"; }
@@ -1104,7 +1104,7 @@ class DataArray : public IDataArray
      * @param forceNoAllocate
      * @return
      */
-    virtual IDataArray::Pointer deepCopy(bool forceNoAllocate = false)
+    IDataArray::Pointer deepCopy(bool forceNoAllocate = false) override
     {
       IDataArray::Pointer daCopy = createNewArray(getNumberOfTuples(), getComponentDimensions(), getName(), m_IsAllocated);
       if(m_IsAllocated == true && forceNoAllocate == false)
@@ -1124,7 +1124,7 @@ class DataArray : public IDataArray
      * @param parentId
      * @return
      */
-    virtual int writeH5Data(hid_t parentId, QVector<size_t> tDims)
+    int writeH5Data(hid_t parentId, QVector<size_t> tDims) override
     {
       if (m_Array == nullptr)
       { return -85648; }
@@ -1141,8 +1141,8 @@ class DataArray : public IDataArray
      * @param volDims
      * @return
      */
-    virtual int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName,
-                                   const QString& groupPath, const QString& label)
+    int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName,
+                                   const QString& groupPath, const QString& label) override
     {
       if (m_Array == nullptr) { return -85648; }
       QString dimStr;
@@ -1195,7 +1195,7 @@ class DataArray : public IDataArray
      * @return Returns a formatted string that contains general infomation about
      * the instance of the object.
      */
-    virtual QString getInfoString(SIMPL::InfoStringFormat format)
+    QString getInfoString(SIMPL::InfoStringFormat format) override
     {
 
       QLocale usa(QLocale::English, QLocale::UnitedStates);
@@ -1247,7 +1247,7 @@ class DataArray : public IDataArray
      * @param parentId
      * @return
      */
-    virtual int readH5Data(hid_t parentId)
+    int readH5Data(hid_t parentId) override
     {
       int err = 0;
 
@@ -1387,7 +1387,7 @@ class DataArray : public IDataArray
      * @param size The new size of the internal array
      * @return 1 on success, 0 on failure
      */
-    virtual int32_t resizeTotalElements(size_t size)
+    int32_t resizeTotalElements(size_t size) override
     {
       // std::cout << "DataArray::resizeTotalElements(" << size << ")" << std::endl;
       if (size == 0)

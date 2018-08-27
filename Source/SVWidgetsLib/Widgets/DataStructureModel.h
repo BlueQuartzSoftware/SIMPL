@@ -60,7 +60,7 @@ class SVWidgetsLib_EXPORT DataStructureModel : public QStandardItemModel
     SIMPL_TYPE_MACRO(DataStructureModel)
 
     DataStructureModel(QObject* parent = 0);
-    ~DataStructureModel();
+    ~DataStructureModel() override;
 
     using EnumType = unsigned int;
 

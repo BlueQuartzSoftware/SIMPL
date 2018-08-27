@@ -94,7 +94,7 @@ class SIMPLib_EXPORT ChoiceFilterParameter : public FilterParameter
                        QVector<QString> choices, bool editable,
                        int groupIndex = -1);
 
-    virtual ~ChoiceFilterParameter();
+    ~ChoiceFilterParameter() override;
 
     SIMPL_INSTANCE_PROPERTY(QVector<QString>, Choices)
     SIMPL_INSTANCE_PROPERTY(bool, Editable)

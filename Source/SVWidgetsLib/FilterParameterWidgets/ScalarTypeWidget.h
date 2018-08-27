@@ -69,12 +69,12 @@ class SVWidgetsLib_EXPORT ScalarTypeWidget : public FilterParameterWidget, priva
     */
     ScalarTypeWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~ScalarTypeWidget();
+    ~ScalarTypeWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
   public slots:
     void widgetChanged(int index);

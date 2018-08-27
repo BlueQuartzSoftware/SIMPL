@@ -73,12 +73,12 @@ class SVWidgetsLib_EXPORT DataContainerCreationWidget : public FilterParameterWi
     */
     DataContainerCreationWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~DataContainerCreationWidget();
+    ~DataContainerCreationWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
   public slots:
     void beforePreflight();

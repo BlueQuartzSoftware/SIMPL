@@ -64,12 +64,12 @@ class SVWidgetsLib_EXPORT InputPathWidget : public AbstractIOFileWidget
     */
     InputPathWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~InputPathWidget();
+    ~InputPathWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
   public slots:
     void selectInputPath();

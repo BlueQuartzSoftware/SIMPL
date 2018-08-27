@@ -57,7 +57,7 @@ class SIMPLib_EXPORT MaskCountDecision : public AbstractDecisionFilter
     SIMPL_STATIC_NEW_MACRO(MaskCountDecision)
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MaskCountDecision, AbstractDecisionFilter)
 
-    virtual ~MaskCountDecision();
+    ~MaskCountDecision() override;
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, MaskArrayPath)
     Q_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
@@ -69,7 +69,7 @@ class SIMPLib_EXPORT MaskCountDecision : public AbstractDecisionFilter
     * @brief
     * @param jsonDoc
     */
-    virtual void extractProperties(const QJsonDocument &jsonDoc);
+    void extractProperties(const QJsonDocument &jsonDoc) override;
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class

@@ -64,8 +64,8 @@ class SVWidgetsLib_EXPORT QtSFSDropLineEdit : public QLineEdit
 
     QtSFSDropLineEdit(QWidget* parent = nullptr);
 
-    void dragEnterEvent(QDragEnterEvent* event);
-    void dropEvent(QDropEvent* event);
+    void dragEnterEvent(QDragEnterEvent* event) override;
+    void dropEvent(QDropEvent* event) override;
 
     void changeStyleSheet(int style);
 

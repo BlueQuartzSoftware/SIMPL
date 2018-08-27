@@ -206,7 +206,7 @@ class NeighborList : public IDataArray
      * @param name
      * @return
      */
-    virtual IDataArray::Pointer createNewArray(size_t numElements, int rank, size_t* dims, const QString& name, bool allocate = true)
+    IDataArray::Pointer createNewArray(size_t numElements, int rank, size_t* dims, const QString& name, bool allocate = true) override
     {
       return NeighborList<T>::CreateArray(numElements, rank, dims, name, allocate);
     }
@@ -218,7 +218,7 @@ class NeighborList : public IDataArray
      * @param name
      * @return
      */
-    virtual IDataArray::Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true)
+    IDataArray::Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) override
     {
       return NeighborList<T>::CreateArray(numElements, dims, name, allocate);
     }
@@ -230,7 +230,7 @@ class NeighborList : public IDataArray
      * @param name
      * @return
      */
-    virtual IDataArray::Pointer createNewArray(size_t numElements, QVector<size_t> dims, const QString& name, bool allocate = true)
+    IDataArray::Pointer createNewArray(size_t numElements, QVector<size_t> dims, const QString& name, bool allocate = true) override
     {
       return NeighborList<T>::CreateArray(numElements, dims, name, allocate);
     }
@@ -239,7 +239,7 @@ class NeighborList : public IDataArray
     typedef std::vector<T> VectorType;
     typedef std::shared_ptr<VectorType> SharedVectorType;
 
-    virtual ~NeighborList()
+    ~NeighborList() override
     {
       //std::cout << "~NeighborList<T> size()=" << _data.size() << std::endl;
     }
@@ -248,7 +248,7 @@ class NeighborList : public IDataArray
      * @brief isAllocated
      * @return
      */
-    virtual bool isAllocated() { return true; }
+    bool isAllocated() override { return true; }
 
     /**
      * @brief Gives this array a human readable name
@@ -272,7 +272,7 @@ class NeighborList : public IDataArray
      * can be a primitive like char, float, int or the name of a class.
      * @return
      */
-    void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision)
+    void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) override
     {
       T value = 0x00;
       xdmfTypeName = "UNKNOWN";
@@ -300,36 +300,36 @@ class NeighborList : public IDataArray
      * @brief getTypeAsString
      * @return
      */
-    virtual QString getTypeAsString() { return NeighborList<T>::ClassName();}
+    QString getTypeAsString() override { return NeighborList<T>::ClassName();}
 
     /**
      * @brief setName
      * @param name
      */
-    void setName(const QString& name) { m_Name = name; }
+    void setName(const QString& name) override { m_Name = name; }
 
     /**
      * @brief getName
      * @return
      */
-    QString getName() { return m_Name; }
+    QString getName() override { return m_Name; }
 
     /**
      * @brief takeOwnership
      */
-    void takeOwnership() {    }
+    void takeOwnership() override {    }
 
     /**
      * @brief releaseOwnership
      */
-    void releaseOwnership()  { }
+    void releaseOwnership() override  { }
 
     /**
      * @brief getVoidPointer
      * @param i
      * @return
      */
-    void* getVoidPointer(size_t i) { return nullptr; }
+    void* getVoidPointer(size_t i) override { return nullptr; }
 
     /**
      * @brief Removes Tuples from the Array. If the size of the vector is Zero nothing is done. If the size of the
@@ -339,7 +339,7 @@ class NeighborList : public IDataArray
      * @param idxs The indices to remove
      * @return error code.
      */
-    virtual int eraseTuples(QVector<size_t>& idxs)
+    int eraseTuples(QVector<size_t>& idxs) override
     {
       int err = 0;
       // If nothing is to be erased just return
@@ -391,7 +391,7 @@ class NeighborList : public IDataArray
      * @param newPos
      * @return
      */
-    virtual int copyTuple(size_t currentPos, size_t newPos)
+    int copyTuple(size_t currentPos, size_t newPos) override
     {
       m_Array[newPos] = m_Array[currentPos];
       return 0;
@@ -420,7 +420,7 @@ class NeighborList : public IDataArray
      * @param sourceArray
      * @return
      */
-    bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples)
+    bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) override
     {
       if(!m_IsAllocated) { return false; }
       if(destTupleOffset >= m_Array.size() ) { return false; }
@@ -473,7 +473,7 @@ class NeighborList : public IDataArray
      * @param i The index of the Tuple
      * @param c The value to splat across all components in the tuple
      */
-    void initializeTuple(size_t i, void* p)
+    void initializeTuple(size_t i, void* p) override
     {
       Q_UNUSED(i);
       Q_UNUSED(p);
@@ -483,7 +483,7 @@ class NeighborList : public IDataArray
     /**
      * @brief Returns the number of elements in the internal array.
      */
-    virtual size_t getNumberOfTuples()
+    size_t getNumberOfTuples() override
     {
       return m_NumTuples;
     }
@@ -494,7 +494,7 @@ class NeighborList : public IDataArray
      * of the internal storage arrays for this class.
      * @return
      */
-    size_t getSize()
+    size_t getSize() override
     {
       size_t total = 0;
       for(size_t dIdx = 0; dIdx < m_Array.size(); ++dIdx)
@@ -514,13 +514,13 @@ class NeighborList : public IDataArray
      * @brief getNumberOfComponents
      * @return
      */
-    int getNumberOfComponents() { return 1; }
+    int getNumberOfComponents() override { return 1; }
 
     /**
      * @brief getComponentDimensions
      * @return
      */
-    QVector<size_t> getComponentDimensions()
+    QVector<size_t> getComponentDimensions() override
     {
       QVector<size_t> dims(1, 1);
       return dims;
@@ -542,12 +542,12 @@ class NeighborList : public IDataArray
      * @brief getTypeSize
      * @return
      */
-    size_t getTypeSize()  { return sizeof(SharedVectorType); }
+    size_t getTypeSize() override  { return sizeof(SharedVectorType); }
 
     /**
      * @brief initializeWithZeros
      */
-    void initializeWithZeros() {
+    void initializeWithZeros() override {
       m_Array.clear();
       m_IsAllocated = false;
     }
@@ -556,7 +556,7 @@ class NeighborList : public IDataArray
      * @brief deepCopy
      * @return
      */
-    IDataArray::Pointer deepCopy(bool forceNoAllocate = false)
+    IDataArray::Pointer deepCopy(bool forceNoAllocate = false) override
     {
       typename NeighborList<T>::Pointer daCopyPtr = NeighborList<T>::CreateArray(getNumberOfTuples(), getName(), m_IsAllocated);
 
@@ -577,7 +577,7 @@ class NeighborList : public IDataArray
      * @param size
      * @return
      */
-    int32_t resizeTotalElements(size_t size)
+    int32_t resizeTotalElements(size_t size) override
     {
       //std::cout << "NeighborList::resizeTotalElements(" << size << ")" << std::endl;
       size_t old = m_Array.size();
@@ -598,10 +598,10 @@ class NeighborList : public IDataArray
      * @param numTuples
      * @return
      */
-    virtual int32_t resize(size_t numTuples) { return resizeTotalElements(numTuples); }
+    int32_t resize(size_t numTuples) override { return resizeTotalElements(numTuples); }
 
     //FIXME: These need to be implemented
-    virtual void printTuple(QTextStream& out, size_t i, char delimiter = ',')
+    void printTuple(QTextStream& out, size_t i, char delimiter = ',') override
     {
       SharedVectorType sharedVec = m_Array[i];
       VectorType* vec = sharedVec.get();
@@ -619,7 +619,7 @@ class NeighborList : public IDataArray
      * @param i
      * @param j
      */
-    virtual void printComponent(QTextStream& out, size_t i, int j)
+    void printComponent(QTextStream& out, size_t i, int j) override
     {
       Q_ASSERT(false);
     }
@@ -629,7 +629,7 @@ class NeighborList : public IDataArray
      * @param parentId
      * @return
      */
-    virtual int writeH5Data(hid_t parentId, QVector<size_t> tDims)
+    int writeH5Data(hid_t parentId, QVector<size_t> tDims) override
     {
       int err = 0;
 
@@ -759,8 +759,8 @@ class NeighborList : public IDataArray
      * @param groupPath
      * @return
      */
-    virtual int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName,
-                                   const QString& groupPath, const QString& label)
+    int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName,
+                                   const QString& groupPath, const QString& label) override
     {
       int precision = 0;
       QString xdmfTypeName;
@@ -780,7 +780,7 @@ class NeighborList : public IDataArray
      * @return Returns a formatted string that contains general infomation about
      * the instance of the object.
      */
-    virtual QString getInfoString(SIMPL::InfoStringFormat format)
+    QString getInfoString(SIMPL::InfoStringFormat format) override
     {
       QString info;
       QTextStream ss (&info);
@@ -815,7 +815,7 @@ class NeighborList : public IDataArray
      * @param parentId
      * @return
      */
-    virtual int readH5Data(hid_t parentId)
+    int readH5Data(hid_t parentId) override
     {
       int err = 0;
 

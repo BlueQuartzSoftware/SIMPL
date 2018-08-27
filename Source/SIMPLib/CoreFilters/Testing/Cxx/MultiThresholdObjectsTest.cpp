@@ -52,12 +52,8 @@
 class MultiThresholdObjectsTest
 {
 public:
-  MultiThresholdObjectsTest()
-  {
-  }
-  virtual ~MultiThresholdObjectsTest()
-  {
-  }
+  MultiThresholdObjectsTest() = default;
+  virtual ~MultiThresholdObjectsTest() = default;
   SIMPL_TYPE_MACRO(MultiThresholdObjectsTest)
 
   // -----------------------------------------------------------------------------

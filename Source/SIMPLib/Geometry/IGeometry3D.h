@@ -50,7 +50,7 @@ class SIMPLib_EXPORT IGeometry3D : public IGeometry
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometry3D, Observable)
 
     IGeometry3D();
-    virtual ~IGeometry3D();
+    ~IGeometry3D() override;
 
 // -----------------------------------------------------------------------------
 // Inherited from SharedVertexOps

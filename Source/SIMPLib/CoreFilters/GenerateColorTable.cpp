@@ -80,9 +80,7 @@ public:
       if (arrayPtr->getValue(i) > m_ArrayMax) { m_ArrayMax = arrayPtr->getValue(i); }
     }
   }
-  virtual ~GenerateColorTableImpl()
-  {
-  }
+  virtual ~GenerateColorTableImpl() = default;
 
   void convert(size_t start, size_t end) const
   {

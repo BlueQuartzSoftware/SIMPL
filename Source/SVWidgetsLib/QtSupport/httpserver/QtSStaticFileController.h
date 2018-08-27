@@ -50,7 +50,7 @@ public:
   QtSStaticFileController(QSettings* settings, QObject* parent = NULL);
 
   /** Generates the response */
-  void service(HttpRequest& request, HttpResponse& response);
+  void service(HttpRequest& request, HttpResponse& response) override;
 
 private:
   /** Encoding of text files */

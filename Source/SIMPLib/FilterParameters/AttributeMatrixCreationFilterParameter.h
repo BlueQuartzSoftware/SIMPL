@@ -105,7 +105,7 @@ class SIMPLib_EXPORT AttributeMatrixCreationFilterParameter : public FilterParam
                        SetterCallbackType setterCallback, GetterCallbackType getterCallback,
                        const RequirementType req, int groupIndex = -1);
 
-    virtual ~AttributeMatrixCreationFilterParameter();
+    ~AttributeMatrixCreationFilterParameter() override;
 
     /**
      * @brief getWidgetType Returns the type of widget that displays and controls

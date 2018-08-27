@@ -59,8 +59,7 @@ ConstrainedDoubleWidget::ConstrainedDoubleWidget(FilterParameter* parameter, Abs
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ConstrainedDoubleWidget::~ConstrainedDoubleWidget()
-{}
+ConstrainedDoubleWidget::~ConstrainedDoubleWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

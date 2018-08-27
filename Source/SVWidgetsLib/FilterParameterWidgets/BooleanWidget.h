@@ -71,12 +71,12 @@ class SVWidgetsLib_EXPORT BooleanWidget : public FilterParameterWidget, private 
     */
     BooleanWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~BooleanWidget();
+    ~BooleanWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
 
   public slots:

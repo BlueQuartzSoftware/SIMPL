@@ -92,7 +92,7 @@ public:
                      GetterCallbackType getterCallback, const QString& PhaseTypesArrayName, const QString& phaseTypeCountProperty, const QString& attributeMatrixProperty,
                      const QStringList phaseListChoices, int groupIndex = -1);
 
-  virtual ~PhaseTypeSelectionFilterParameter();
+  ~PhaseTypeSelectionFilterParameter() override;
 
   SIMPL_INSTANCE_PROPERTY(QString, PhaseTypeCountProperty)
   SIMPL_INSTANCE_PROPERTY(QString, PhaseTypeDataProperty)

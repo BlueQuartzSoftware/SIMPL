@@ -70,12 +70,12 @@ class SVWidgetsLib_EXPORT ConstrainedIntWidget : public FilterParameterWidget, p
     */
     ConstrainedIntWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~ConstrainedIntWidget();
+    ~ConstrainedIntWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
   public slots:
     void widgetChanged(int i);

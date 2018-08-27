@@ -53,7 +53,7 @@ class SVWidgetsLib_EXPORT IComparisonWidget : public QWidget
 
 public:
   IComparisonWidget(QWidget* parent);
-  ~IComparisonWidget();
+  ~IComparisonWidget() override;
 
   /**
   * @brief Creates a new IComparisonWidget for a given comparison

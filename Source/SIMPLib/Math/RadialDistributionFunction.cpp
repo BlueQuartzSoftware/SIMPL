@@ -175,9 +175,7 @@ int RdfData::writeJson(QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RadialDistributionFunction::RadialDistributionFunction()
-{
-}
+RadialDistributionFunction::RadialDistributionFunction() = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -53,7 +53,7 @@ class SIMPLib_EXPORT DocRequestManager : public QObject
 
   public:
     DocRequestManager();
-    virtual ~DocRequestManager();
+    ~DocRequestManager() override;
 
     static DocRequestManager* Instance();
 

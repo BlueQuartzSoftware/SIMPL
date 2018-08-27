@@ -57,7 +57,7 @@ class SVWidgetsLib_EXPORT StandardOutputWidget : public QWidget, public IObserve
     static void SetHideDockSetting(SIMPLView::DockWidgetSettings::HideDockSetting setting);
 
     StandardOutputWidget(QWidget* parent = nullptr);
-    virtual ~StandardOutputWidget();
+    ~StandardOutputWidget() override;
 
     /**
      * @brief appendText

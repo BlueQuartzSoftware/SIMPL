@@ -40,9 +40,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ShapeTypeSelectionFilterParameter::ShapeTypeSelectionFilterParameter()
-{
-}
+ShapeTypeSelectionFilterParameter::ShapeTypeSelectionFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

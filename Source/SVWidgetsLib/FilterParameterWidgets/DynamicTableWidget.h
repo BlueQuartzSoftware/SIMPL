@@ -70,12 +70,12 @@ class SVWidgetsLib_EXPORT DynamicTableWidget : public FilterParameterWidget, pri
     */
     DynamicTableWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~DynamicTableWidget();
+    ~DynamicTableWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
     /**
     * @brief initializeWidget

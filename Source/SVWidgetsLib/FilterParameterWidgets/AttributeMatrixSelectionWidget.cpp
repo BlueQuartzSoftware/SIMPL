@@ -79,9 +79,7 @@ AttributeMatrixSelectionWidget::AttributeMatrixSelectionWidget(FilterParameter* 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixSelectionWidget::~AttributeMatrixSelectionWidget()
-{
-}
+AttributeMatrixSelectionWidget::~AttributeMatrixSelectionWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

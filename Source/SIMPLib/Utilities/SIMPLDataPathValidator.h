@@ -44,7 +44,7 @@ class SIMPLib_EXPORT SIMPLDataPathValidator : public QObject
     Q_OBJECT
 
   public:
-    virtual ~SIMPLDataPathValidator();
+    ~SIMPLDataPathValidator() override;
 
     static SIMPLDataPathValidator* Instance();
 

@@ -64,10 +64,10 @@ public:
   /**
     Destructor. Closes the file.
   */
-  virtual ~FileLogger();
+  ~FileLogger() override;
 
   /** Write a message to the log file */
-  virtual void write(const LogMessage* logMessage);
+  void write(const LogMessage* logMessage) override;
 
 protected:
   /**
@@ -76,7 +76,7 @@ protected:
     This method is thread-safe.
     @param event used to distinguish between the two timers.
   */
-  void timerEvent(QTimerEvent* event);
+  void timerEvent(QTimerEvent* event) override;
 
 private:
   /** Configured name of the log file */

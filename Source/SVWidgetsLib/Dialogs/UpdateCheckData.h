@@ -59,7 +59,7 @@ class SVWidgetsLib_EXPORT UpdateCheckData : public QObject
     void operator=(const UpdateCheckData&);
     bool operator==(const UpdateCheckData&);
 
-    virtual ~UpdateCheckData();
+    ~UpdateCheckData() override;
 
     bool hasUpdate();
     bool hasError();

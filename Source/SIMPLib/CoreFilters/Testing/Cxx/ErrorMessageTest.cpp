@@ -45,12 +45,8 @@
 class ErrorMessageTest
 {
 public:
-  ErrorMessageTest()
-  {
-  }
-  virtual ~ErrorMessageTest()
-  {
-  }
+  ErrorMessageTest() = default;
+  virtual ~ErrorMessageTest() = default;
 
   // -----------------------------------------------------------------------------
   //

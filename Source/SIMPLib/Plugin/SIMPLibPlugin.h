@@ -54,7 +54,7 @@ class SIMPLib_EXPORT SIMPLibPlugin : public QObject
 
   public:
     SIMPLibPlugin();
-    virtual ~SIMPLibPlugin();
+    ~SIMPLibPlugin() override;
     /**
     * @brief Returns the name of the plugin
     */

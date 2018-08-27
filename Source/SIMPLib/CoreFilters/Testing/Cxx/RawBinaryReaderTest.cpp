@@ -99,13 +99,9 @@ public:
   const size_t k_ZDim = 1000;
   const size_t k_ArraySize = k_XDim * k_YDim * k_ZDim;
 
-  RawBinaryReaderTest()
-  {
-  }
+  RawBinaryReaderTest() = default;
 
-  ~RawBinaryReaderTest()
-  {
-  }
+  ~RawBinaryReaderTest() = default;
 
   // -----------------------------------------------------------------------------
   //

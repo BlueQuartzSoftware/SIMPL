@@ -56,7 +56,7 @@ class SVWidgetsLib_EXPORT QtSDisclosableGroupBox : public QGroupBox
   Q_OBJECT
 public:
   QtSDisclosableGroupBox(QWidget* parent = nullptr);
-  virtual ~QtSDisclosableGroupBox();
+  ~QtSDisclosableGroupBox() override;
 
   virtual void setupGui();
 

@@ -51,12 +51,8 @@
 class StringOperationsTest
 {
 public:
-  StringOperationsTest()
-  {
-  }
-  virtual ~StringOperationsTest()
-  {
-  }
+  StringOperationsTest() = default;
+  virtual ~StringOperationsTest() = default;
 
   // -----------------------------------------------------------------------------
   //

@@ -52,7 +52,7 @@ class SVWidgetsLib_EXPORT ProgressDialog : public QDialog
 
   public:
     ProgressDialog(QWidget *parent = Q_NULLPTR, Qt::WindowFlags f = Qt::WindowFlags());
-    ~ProgressDialog();
+    ~ProgressDialog() override;
 
   public slots:
 

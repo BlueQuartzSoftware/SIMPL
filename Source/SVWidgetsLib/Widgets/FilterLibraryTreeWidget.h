@@ -50,7 +50,7 @@ class SVWidgetsLib_EXPORT FilterLibraryTreeWidget: public QTreeWidget
 
   public:
     FilterLibraryTreeWidget(QWidget* parent = nullptr);
-    virtual ~FilterLibraryTreeWidget();
+    ~FilterLibraryTreeWidget() override;
 
     enum ItemType
     {
@@ -60,11 +60,11 @@ class SVWidgetsLib_EXPORT FilterLibraryTreeWidget: public QTreeWidget
     };
 
   protected:
-    void mousePressEvent(QMouseEvent* event);
-    void mouseMoveEvent(QMouseEvent* event);
-    void dragEnterEvent(QDragEnterEvent* event);
-    void dragMoveEvent(QDragMoveEvent* event);
-    void dropEvent(QDropEvent* event);
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void dragEnterEvent(QDragEnterEvent* event) override;
+    void dragMoveEvent(QDragMoveEvent* event) override;
+    void dropEvent(QDropEvent* event) override;
 
   private:
     void performDrag();

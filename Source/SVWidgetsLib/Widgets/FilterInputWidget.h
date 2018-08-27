@@ -62,13 +62,13 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget
 
   public:
     FilterInputWidget(AbstractFilter::Pointer filter, QWidget* parent = nullptr);
-    virtual ~FilterInputWidget();
+    ~FilterInputWidget() override;
 
     virtual void setupGui();
 
     void setFilterIndex(const QString& index);
 
-    bool eventFilter(QObject* o, QEvent* e);
+    bool eventFilter(QObject* o, QEvent* e) override;
 
     void toRunningState();
     void toIdleState();

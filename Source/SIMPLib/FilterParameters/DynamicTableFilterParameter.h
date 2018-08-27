@@ -97,7 +97,7 @@ class SIMPLib_EXPORT DynamicTableFilterParameter : public FilterParameter
                        SetterCallbackType setterCallback, GetterCallbackType getterCallback,
                        int groupIndex = -1);
 
-    virtual ~DynamicTableFilterParameter();
+    ~DynamicTableFilterParameter() override;
 
     SIMPL_INSTANCE_PROPERTY(DynamicTableData, DefaultTableData)
     SIMPL_INSTANCE_PROPERTY(int, ErrorCondition)

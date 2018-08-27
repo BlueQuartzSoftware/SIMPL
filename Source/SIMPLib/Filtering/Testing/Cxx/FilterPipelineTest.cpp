@@ -61,12 +61,8 @@
 class FilterPipelineTest
 {
 public:
-  FilterPipelineTest()
-  {
-  }
-  virtual ~FilterPipelineTest()
-  {
-  }
+  FilterPipelineTest() = default;
+  virtual ~FilterPipelineTest() = default;
 
   // -----------------------------------------------------------------------------
   // These are input files

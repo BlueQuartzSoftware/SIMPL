@@ -69,12 +69,12 @@ class SVWidgetsLib_EXPORT LinkedBooleanWidget : public FilterParameterWidget, pr
     */
     LinkedBooleanWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~LinkedBooleanWidget();
+    ~LinkedBooleanWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
     /**
      * @brief updateLinkedWidgets

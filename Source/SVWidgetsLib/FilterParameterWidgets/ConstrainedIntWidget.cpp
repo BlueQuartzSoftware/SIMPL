@@ -59,8 +59,7 @@ ConstrainedIntWidget::ConstrainedIntWidget(FilterParameter* parameter, AbstractF
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ConstrainedIntWidget::~ConstrainedIntWidget()
-{}
+ConstrainedIntWidget::~ConstrainedIntWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

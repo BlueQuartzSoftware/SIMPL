@@ -96,7 +96,7 @@ public:
   SIMPL_GET_PROPERTY(QAction*, ActionClearPipeline)
 
   SVPipelineView(QWidget* parent = nullptr);
-  virtual ~SVPipelineView();
+  ~SVPipelineView() override;
 
   /**
    * @brief addPipelineMessageObserver

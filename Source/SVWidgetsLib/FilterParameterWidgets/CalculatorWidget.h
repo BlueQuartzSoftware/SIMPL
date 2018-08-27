@@ -73,12 +73,12 @@ class SVWidgetsLib_EXPORT CalculatorWidget : public FilterParameterWidget, priva
     */
     CalculatorWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~CalculatorWidget();
+    ~CalculatorWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
   public slots:
     void beforePreflight();

@@ -228,9 +228,7 @@ public:
       m_Pair1.second = 5.23;
     }
   }
-  virtual ~FilterParametersRWTest()
-  {
-  }
+  virtual ~FilterParametersRWTest() = default;
 
   SIMPL_INSTANCE_PROPERTY(bool, Bool1)
   Q_PROPERTY(bool Bool1 READ getBool1 WRITE setBool1)

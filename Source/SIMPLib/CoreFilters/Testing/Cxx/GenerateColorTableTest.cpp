@@ -61,12 +61,8 @@ class GenerateColorTableTest
 {
 
 public:
-  GenerateColorTableTest()
-  {
-  }
-  virtual ~GenerateColorTableTest()
-  {
-  }
+  GenerateColorTableTest() = default;
+  virtual ~GenerateColorTableTest() = default;
 
   // -----------------------------------------------------------------------------
   //

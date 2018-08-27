@@ -54,12 +54,8 @@
 class RemoveComponentFromArrayTest
 {
 public:
-  RemoveComponentFromArrayTest()
-  {
-  }
-  virtual ~RemoveComponentFromArrayTest()
-  {
-  }
+  RemoveComponentFromArrayTest() = default;
+  virtual ~RemoveComponentFromArrayTest() = default;
 
   static const int k_NoError = 0;
 

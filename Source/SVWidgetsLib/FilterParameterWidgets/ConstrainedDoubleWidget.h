@@ -70,12 +70,12 @@ class SVWidgetsLib_EXPORT ConstrainedDoubleWidget : public FilterParameterWidget
     */
     ConstrainedDoubleWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~ConstrainedDoubleWidget();
+    ~ConstrainedDoubleWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
   public slots:
     void widgetChanged(double d);// when something in the widget changes

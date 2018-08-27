@@ -180,8 +180,8 @@ namespace TemplateHelpers
   class CanDynamicCast
   {
     public:
-      CanDynamicCast() {}
-      virtual ~CanDynamicCast() {}
+      CanDynamicCast() = default;
+      virtual ~CanDynamicCast() = default;
       bool operator()(IDataArray::Pointer p)
       {
         return (std::dynamic_pointer_cast<T>(p).get() != nullptr);
@@ -196,8 +196,8 @@ namespace TemplateHelpers
   class CreateNonPrereqArrayFromArrayType
   {
     public:
-      CreateNonPrereqArrayFromArrayType() {}
-      ~CreateNonPrereqArrayFromArrayType() {}
+      CreateNonPrereqArrayFromArrayType() = default;
+      ~CreateNonPrereqArrayFromArrayType() = default;
 
       IDataArray::WeakPointer operator()(AbstractFilter* f, DataArrayPath arrayPath, QVector<size_t> compDims, IDataArray::Pointer sourceArrayType)
       {
@@ -267,8 +267,8 @@ namespace TemplateHelpers
   class CreateNonPrereqArrayFromTypeEnum
   {
     public:
-      CreateNonPrereqArrayFromTypeEnum() {}
-      ~CreateNonPrereqArrayFromTypeEnum() {}
+      CreateNonPrereqArrayFromTypeEnum() = default;
+      ~CreateNonPrereqArrayFromTypeEnum() = default;
 
       IDataArray::WeakPointer operator()(AbstractFilter* f, DataArrayPath arrayPath, QVector<size_t> compDims, int arrayType, double initValue)
       {
@@ -330,8 +330,8 @@ namespace TemplateHelpers
   class CreateArrayFromArrayType
   {
     public:
-      CreateArrayFromArrayType() {}
-      ~CreateArrayFromArrayType() {}
+      CreateArrayFromArrayType() = default;
+      ~CreateArrayFromArrayType() = default;
 
       IDataArray::Pointer operator()(AbstractFilter* f, size_t numTuples, QVector<size_t> compDims, QString arrayName, bool allocate, IDataArray::Pointer sourceArrayType)
       {
@@ -405,8 +405,8 @@ namespace TemplateHelpers
   class CreateArrayFromType
   {
     public:
-      CreateArrayFromType() {}
-      ~CreateArrayFromType() {}
+      CreateArrayFromType() = default;
+      ~CreateArrayFromType() = default;
 
       IDataArray::Pointer operator()(AbstractFilter* f, size_t numTuples, QVector<size_t> compDims, QString arrayName, bool allocate, QString type)
       {
@@ -476,8 +476,8 @@ namespace TemplateHelpers
   class GetPrereqArrayFromPath
   {
     public:
-      GetPrereqArrayFromPath() {}
-      virtual ~GetPrereqArrayFromPath() {}
+      GetPrereqArrayFromPath() = default;
+      virtual ~GetPrereqArrayFromPath() = default;
 
       IDataArray::WeakPointer operator()(FilterClass* f, DataArrayPath arrayPath, QVector<size_t>& compDims)
       {

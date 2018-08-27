@@ -76,7 +76,7 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
       ItemTypeRole
     };
 
-    ~BookmarksModel();
+    ~BookmarksModel() override;
 
     /**
      * @brief Instance

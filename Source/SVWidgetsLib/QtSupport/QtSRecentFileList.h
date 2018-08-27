@@ -146,7 +146,7 @@ class SVWidgetsLib_EXPORT QtSRecentFileList: public QObject
   private:
     static QtSRecentFileList* self;
 
-    ~QtSRecentFileList();
+    ~QtSRecentFileList() override;
 
     QStringList recentFiles;
     int m_MaxListSize = 0;

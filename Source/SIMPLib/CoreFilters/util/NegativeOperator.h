@@ -52,9 +52,9 @@ class SIMPLib_EXPORT NegativeOperator : public CalculatorOperator
       return Pointer(new NegativeOperator());
     }
 
-    virtual ~NegativeOperator();
+    ~NegativeOperator() override;
 
-    virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
+    void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack) override;
 
     CalculatorItem::ErrorCode checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex, QString& errMsg) final;
 

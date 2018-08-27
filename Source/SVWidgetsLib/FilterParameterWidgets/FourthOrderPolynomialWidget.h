@@ -70,12 +70,12 @@ class SVWidgetsLib_EXPORT FourthOrderPolynomialWidget : public FilterParameterWi
     */
     FourthOrderPolynomialWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~FourthOrderPolynomialWidget();
+    ~FourthOrderPolynomialWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
   public slots:
     void widgetChanged(const QString& msg);

@@ -59,7 +59,7 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
     static double toDegrees(double radians);
     static double toRadians(double degrees);
 
-    virtual ~CalculatorOperator();
+    ~CalculatorOperator() override;
 
     bool hasHigherPrecedence(CalculatorOperator::Pointer other);
 

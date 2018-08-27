@@ -41,7 +41,4 @@ PipelineFilterMimeData::PipelineFilterMimeData()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineFilterMimeData::~PipelineFilterMimeData()
-{
-
-}
+PipelineFilterMimeData::~PipelineFilterMimeData() = default;

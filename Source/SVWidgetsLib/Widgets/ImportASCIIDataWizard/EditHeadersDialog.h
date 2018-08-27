@@ -50,7 +50,7 @@ class EditHeadersDialog : public QDialog, private Ui::EditHeadersDialog
 public:
   EditHeadersDialog(QSharedPointer<ASCIIDataModel> model, QWidget* parent = nullptr);
 
-  virtual ~EditHeadersDialog();
+  ~EditHeadersDialog() override;
 
   /**
   * @brief Initializes some of the GUI elements with selections or other GUI related items

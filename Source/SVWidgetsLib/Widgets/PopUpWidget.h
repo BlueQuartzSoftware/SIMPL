@@ -48,7 +48,7 @@ class SVWidgetsLib_EXPORT PopUpWidget : public QWidget, private Ui::PopUpWidget
 
   public:
     PopUpWidget(QWidget *parent = Q_NULLPTR);
-    ~PopUpWidget();
+    ~PopUpWidget() override;
 
     using EnumType = unsigned int;
 
@@ -83,7 +83,7 @@ class SVWidgetsLib_EXPORT PopUpWidget : public QWidget, private Ui::PopUpWidget
     void setArrowOrientation(ArrowOrientation orientation);
 
   protected:
-    void paintEvent(QPaintEvent* event);
+    void paintEvent(QPaintEvent* event) override;
 
   private:
     ArrowOrientation                    m_ArrowOrientation;

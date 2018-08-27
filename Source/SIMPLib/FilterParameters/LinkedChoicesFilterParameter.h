@@ -78,7 +78,7 @@ class SIMPLib_EXPORT LinkedChoicesFilterParameter : public ChoiceFilterParameter
                        QVector<QString> choices, QStringList linkedProperties,
                        int groupIndex = -1);
 
-    virtual ~LinkedChoicesFilterParameter();
+    ~LinkedChoicesFilterParameter() override;
 
     SIMPL_INSTANCE_PROPERTY(QStringList, LinkedProperties)
 

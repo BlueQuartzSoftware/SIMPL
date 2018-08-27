@@ -52,7 +52,7 @@ class SVWidgetsLib_EXPORT PipelineItemSlideAnimation : public QVariantAnimation
     };
 
     PipelineItemSlideAnimation(PipelineModel* model, QPersistentModelIndex index, int numberOfPixels, AnimationDirection direction);
-    virtual ~PipelineItemSlideAnimation() = default;
+    ~PipelineItemSlideAnimation() override = default;
 
   private slots:
     void listenValueChanged(const QVariant & value);

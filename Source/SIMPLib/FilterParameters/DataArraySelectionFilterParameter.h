@@ -107,7 +107,7 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
                        SetterCallbackType setterCallback, GetterCallbackType getterCallback,
                        const RequirementType req, int groupIndex = -1);
 
-    virtual ~DataArraySelectionFilterParameter();
+    ~DataArraySelectionFilterParameter() override;
 
     /**
      * @brief CreateRequirement

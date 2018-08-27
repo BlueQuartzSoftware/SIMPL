@@ -92,12 +92,8 @@ template <typename T> herr_t testWritePointer1DArrayAttribute(hid_t file_id, con
 class H5LiteTest
 {
 public:
-  H5LiteTest()
-  {
-  }
-  virtual ~H5LiteTest()
-  {
-  }
+  H5LiteTest() = default;
+  virtual ~H5LiteTest() = default;
 
   // -----------------------------------------------------------------------------
   //

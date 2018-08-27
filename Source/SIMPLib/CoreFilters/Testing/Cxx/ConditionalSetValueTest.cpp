@@ -122,12 +122,8 @@
 class ConditionalSetValueTest
 {
 public:
-  ConditionalSetValueTest()
-  {
-  }
-  virtual ~ConditionalSetValueTest()
-  {
-  }
+  ConditionalSetValueTest() = default;
+  virtual ~ConditionalSetValueTest() = default;
 
   // -----------------------------------------------------------------------------
   //

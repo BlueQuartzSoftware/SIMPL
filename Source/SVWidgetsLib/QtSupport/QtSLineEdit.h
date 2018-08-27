@@ -51,7 +51,7 @@ class SVWidgetsLib_EXPORT IconButton : public QAbstractButton
     Q_PROPERTY(QPixmap pixmap READ pixmap WRITE setPixmap)
   public:
     explicit IconButton(QWidget* parent = nullptr);
-    void paintEvent(QPaintEvent* event);
+    void paintEvent(QPaintEvent* event) override;
     void setPixmap(const QPixmap& pixmap) { m_pixmap = pixmap; update(); }
     QPixmap pixmap() const { return m_pixmap; }
     float iconOpacity() { return m_iconOpacity; }
@@ -86,7 +86,7 @@ class SVWidgetsLib_EXPORT QtSLineEdit : public QLineEdit
     enum Side {Left = 0, Right = 1};
 
     explicit QtSLineEdit(QWidget* parent = nullptr);
-    ~QtSLineEdit();
+    ~QtSLineEdit() override;
 
     QPixmap buttonPixmap(Side side) const;
     void setButtonPixmap(Side side, const QPixmap& pixmap);
@@ -112,8 +112,8 @@ class SVWidgetsLib_EXPORT QtSLineEdit : public QLineEdit
     void setAutoHideButton(Side side, bool h);
     bool hasAutoHideButton(Side side) const;
 
-    void dragEnterEvent(QDragEnterEvent* event);
-    void dropEvent(QDropEvent* event);
+    void dragEnterEvent(QDragEnterEvent* event) override;
+    void dropEvent(QDropEvent* event) override;
 
   signals:
     void buttonClicked(QtSLineEdit::Side side);
@@ -128,9 +128,9 @@ class SVWidgetsLib_EXPORT QtSLineEdit : public QLineEdit
     void iconClicked();
 
   protected:
-    virtual void resizeEvent(QResizeEvent* e);
+    void resizeEvent(QResizeEvent* e) override;
 
-    void keyPressEvent(QKeyEvent* event);
+    void keyPressEvent(QKeyEvent* event) override;
 
   private:
 

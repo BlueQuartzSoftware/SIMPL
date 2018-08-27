@@ -141,12 +141,12 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
      * @param obj The json object to add the filter parameters into
      * @param rootObject The parent object of **obj**
      */
-    virtual void preWriteFilterParameters(QJsonObject& obj, QJsonObject& rootObject) override;
+    void preWriteFilterParameters(QJsonObject& obj, QJsonObject& rootObject) override;
 
     /**
      * @brief writeFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void writeFilterParameters(QJsonObject& obj) const override;
+    void writeFilterParameters(QJsonObject& obj) const override;
 
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
@@ -156,7 +156,7 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(QJsonObject& obj) override;
+    void readFilterParameters(QJsonObject& obj) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class

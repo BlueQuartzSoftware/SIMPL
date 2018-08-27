@@ -91,7 +91,7 @@ public:
   static Pointer New(const QString& humanLabel, const QString& propertyName, SIMPL::NumericTypes::Type defaultValue, Category category, 
                      SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex = -1);
 
-  virtual ~NumericTypeFilterParameter();
+  ~NumericTypeFilterParameter() override;
 
   /**
   * @brief getWidgetType Returns the type of widget that displays and controls
@@ -104,13 +104,13 @@ public:
   * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
   * @param json The QJsonObject that the filter parameter reads from.
   */
-  void readJson(const QJsonObject& json);
+  void readJson(const QJsonObject& json) override;
 
   /**
   * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
   * @param json The QJsonObject that the filter parameter writes to.
   */
-  void writeJson(QJsonObject& json);
+  void writeJson(QJsonObject& json) override;
 
   /**
   * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property

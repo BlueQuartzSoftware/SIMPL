@@ -51,19 +51,19 @@ public:
   SIMPL_STATIC_NEW_MACRO(ComparisonValue)
    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ComparisonValue, AbstractComparison)
 
-  ~ComparisonValue();
+  ~ComparisonValue() override;
 
   /**
   * @brief Writes the ComparisonValue to JSon
   * @param json
   */
-  void writeJson(QJsonObject& json);
+  void writeJson(QJsonObject& json) override;
 
   /**
   * @brief Reads the ComparisonValue from JSon
   * @param json
   */
-  bool readJson(QJsonObject& json);
+  bool readJson(QJsonObject& json) override;
 
   /**
   * @brief Returns the AttributeArray name

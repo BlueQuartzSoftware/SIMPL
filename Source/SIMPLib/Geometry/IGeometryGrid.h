@@ -60,7 +60,7 @@ class SIMPLib_EXPORT IGeometryGrid : public IGeometry
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometryGrid, Observable)
 
     IGeometryGrid();
-    virtual ~IGeometryGrid();
+    ~IGeometryGrid() override;
     
     virtual void setDimensions(size_t dims[3]) = 0;
     virtual void setDimensions(size_t a, size_t b, size_t c) = 0;

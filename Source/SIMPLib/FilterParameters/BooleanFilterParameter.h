@@ -90,7 +90,7 @@ public:
     const bool& defaultValue, Category category, SetterCallbackType setterCallback,
     GetterCallbackType getterCallback, int groupIndex = -1);
 
-    virtual ~BooleanFilterParameter();
+    ~BooleanFilterParameter() override;
 
     /**
      * @brief getWidgetType Returns the type of widget that displays and controls

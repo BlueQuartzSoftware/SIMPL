@@ -59,7 +59,7 @@ class SVWidgetsLib_EXPORT FilterListToolboxWidget : public QWidget, private Ui::
 
   public:
     FilterListToolboxWidget(QWidget* parent = nullptr);
-    virtual ~FilterListToolboxWidget();
+    ~FilterListToolboxWidget() override;
 
     /**
     * @brief Reads the preferences from the users pref file

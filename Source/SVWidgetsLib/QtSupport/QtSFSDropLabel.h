@@ -64,9 +64,9 @@ class SVWidgetsLib_EXPORT QtSFSDropLabel : public QLabel
     QtSFSDropLabel(QWidget* parent = nullptr);
 
 
-    void dragEnterEvent(QDragEnterEvent* event);
-    void dropEvent(QDropEvent* event);
-    void dragLeaveEvent(QDragLeaveEvent* event);
+    void dragEnterEvent(QDragEnterEvent* event) override;
+    void dropEvent(QDropEvent* event) override;
+    void dragLeaveEvent(QDragLeaveEvent* event) override;
     void changeStyleSheet(int style);
 
   signals:

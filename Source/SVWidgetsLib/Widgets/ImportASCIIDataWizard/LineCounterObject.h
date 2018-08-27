@@ -60,7 +60,7 @@ public:
  */
   LineCounterObject(const QString& filePath, int numLines, QObject* parent = nullptr);
 
-  virtual ~LineCounterObject();
+  ~LineCounterObject() override;
 
   /**
    * @brief getNumberOfLines

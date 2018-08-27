@@ -54,9 +54,9 @@ class SIMPLib_EXPORT TanOperator : public UnaryOperator
       return Pointer(new TanOperator());
     }
 
-    virtual ~TanOperator();
+    ~TanOperator() override;
 
-    virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
+    void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack) override;
 
   protected:
     TanOperator();
