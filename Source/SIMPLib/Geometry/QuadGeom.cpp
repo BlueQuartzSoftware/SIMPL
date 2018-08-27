@@ -71,7 +71,6 @@ public:
   , m_Derivatives(derivs)
   {
   }
-  virtual ~FindQuadDerivativesImpl() = default;
 
   void compute(int64_t start, int64_t end) const
   {
