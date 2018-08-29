@@ -10,7 +10,7 @@
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QLabel>
-
+#include <QtWidgets/QDialog>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
@@ -182,3 +182,18 @@ public:
   ~SVTabWidget() override;
 
 };
+
+
+/**
+* @brief The SVTabWidget class
+*/
+class SVWidgetsLib_EXPORT SVDialog : public QDialog
+{
+  Q_OBJECT
+
+public:
+  SVDialog(QWidget* parent = nullptr);
+  ~SVDialog() override;
+
+};
+
