@@ -85,7 +85,7 @@ public:
   EnsembleInfo();
   EnsembleInfo(const EnsembleInfo& rhs);
 
-  virtual ~EnsembleInfo();
+  ~EnsembleInfo() override;
 
   size_t size() const;
 

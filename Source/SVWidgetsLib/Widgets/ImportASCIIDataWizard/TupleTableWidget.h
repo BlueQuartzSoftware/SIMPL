@@ -60,7 +60,7 @@ class TupleTableWidget : public QWidget, private Ui::TupleTableWidget
     */
     TupleTableWidget(QWidget* parent = nullptr);
 
-    virtual ~TupleTableWidget();
+    ~TupleTableWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections

@@ -70,7 +70,7 @@ class SVWidgetsLib_EXPORT QtSSettings : public QObject
   public:
     QtSSettings(QObject* parent = 0);
     QtSSettings(const QString& filePath, QObject* parent = 0);
-    ~QtSSettings();
+    ~QtSSettings() override;
 
     QString fileName();
 

@@ -214,7 +214,7 @@ public Q_SLOTS:
     void setValue(int val);
 
 protected:
-    virtual void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent *event) override;
     virtual void drawBackground(QPainter& p, const QRectF& baseRect);
     virtual void drawBase(QPainter& p, const QRectF& baseRect);
     virtual void drawValue(QPainter& p, const QRectF& baseRect, double value, double arcLength);
@@ -224,10 +224,10 @@ protected:
     virtual QString valueToText(double value) const;
     virtual void valueFormatChanged();
 
-    virtual QSize minimumSizeHint() const { return QSize(32,32); }
+    QSize minimumSizeHint() const override { return QSize(32,32); }
 
-    virtual bool hasHeightForWidth() const { return true; }
-    virtual int heightForWidth(int w) const { return w; }
+    bool hasHeightForWidth() const override { return true; }
+    int heightForWidth(int w) const override { return w; }
 
     void rebuildDataBrushIfNeeded();
 

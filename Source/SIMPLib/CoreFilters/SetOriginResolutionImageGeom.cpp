@@ -67,9 +67,7 @@ public:
   {
   }
 
-  virtual ~SetOriginResolutionImageUpdateVerticesImpl()
-  {
-  }
+  virtual ~SetOriginResolutionImageUpdateVerticesImpl() = default;
 
   void generate(size_t start, size_t end) const
   {

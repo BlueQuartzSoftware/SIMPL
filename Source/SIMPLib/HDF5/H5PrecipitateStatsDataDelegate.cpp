@@ -42,9 +42,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-H5PrecipitateStatsDataDelegate::H5PrecipitateStatsDataDelegate()
-{
-}
+H5PrecipitateStatsDataDelegate::H5PrecipitateStatsDataDelegate() = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -114,12 +114,8 @@
 class FindDerivativesFilterTest
 {
 public:
-  FindDerivativesFilterTest()
-  {
-  }
-  virtual ~FindDerivativesFilterTest()
-  {
-  }
+  FindDerivativesFilterTest() = default;
+  virtual ~FindDerivativesFilterTest() = default;
   SIMPL_TYPE_MACRO(FindDerivativesFilterTest)
 
   // -----------------------------------------------------------------------------

@@ -79,7 +79,7 @@ class ImportASCIIDataWizard : public QWizard
      */
     ImportASCIIDataWizard(ASCIIWizardData* wizardData, DataContainerArray::Pointer dca, QWidget* parent = nullptr);
 
-    virtual ~ImportASCIIDataWizard();
+    ~ImportASCIIDataWizard() override;
 
     static const int TotalPreviewLines = 50;
 
@@ -147,7 +147,7 @@ class ImportASCIIDataWizard : public QWizard
 
   protected slots:
     void refreshModel();
-    void cleanupPage(int id);
+    void cleanupPage(int id) override;
 
   private:
     QString                                             m_InputFilePath;

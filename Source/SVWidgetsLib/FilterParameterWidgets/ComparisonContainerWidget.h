@@ -57,7 +57,7 @@ class SVWidgetsLib_EXPORT ComparisonContainerWidget : public QFrame, private Ui:
 
 public:
   ComparisonContainerWidget(QWidget* parent, AbstractComparison::Pointer comparison);
-  ~ComparisonContainerWidget();
+  ~ComparisonContainerWidget() override;
 
   /**
   * @brief Returns the union operator for this comparison
@@ -147,19 +147,19 @@ protected:
   * @brief MousePressEvent
   * @param event Move press event
   */
-  void mousePressEvent(QMouseEvent* event);
+  void mousePressEvent(QMouseEvent* event) override;
 
   /**
   * @brief MouseMoveEvent
   * @param event Mouse move event
   */
-  void mouseMoveEvent(QMouseEvent* event);
+  void mouseMoveEvent(QMouseEvent* event) override;
 
   /**
   * @brief MouseReleaseEvent
   * @param event Mouse release event
   */
-  void mouseReleaseEvent(QMouseEvent* event);
+  void mouseReleaseEvent(QMouseEvent* event) override;
 
 protected slots:
   /**

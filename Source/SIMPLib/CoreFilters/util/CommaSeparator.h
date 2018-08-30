@@ -49,9 +49,9 @@ class SIMPLib_EXPORT CommaSeparator : public CalculatorSeparator
       return Pointer(new CommaSeparator());
     }
 
-    virtual ~CommaSeparator();
+    ~CommaSeparator() override;
 
-    virtual CalculatorItem::ErrorCode checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex, QString& msg);
+    CalculatorItem::ErrorCode checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex, QString& msg) override;
 
   protected:
     CommaSeparator();

@@ -54,9 +54,9 @@ class SIMPLib_EXPORT Log10Operator : public UnaryOperator
       return Pointer(new Log10Operator());
     }
 
-    virtual ~Log10Operator();
+    ~Log10Operator() override;
 
-    virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
+    void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack) override;
 
   protected:
     Log10Operator();

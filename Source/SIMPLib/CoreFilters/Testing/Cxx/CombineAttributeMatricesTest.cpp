@@ -188,12 +188,8 @@
 class CombineAttributeMatricesTest
 {
 public:
-  CombineAttributeMatricesTest()
-  {
-  }
-  virtual ~CombineAttributeMatricesTest()
-  {
-  }
+  CombineAttributeMatricesTest() = default;
+  virtual ~CombineAttributeMatricesTest() = default;
 
   // -----------------------------------------------------------------------------
   //

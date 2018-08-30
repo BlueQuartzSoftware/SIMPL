@@ -36,9 +36,7 @@ DocRequestManager* DocRequestManager::self = nullptr;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DocRequestManager::DocRequestManager()
-{
-}
+DocRequestManager::DocRequestManager() = default;
 
 // -----------------------------------------------------------------------------
 //

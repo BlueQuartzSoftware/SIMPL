@@ -66,7 +66,7 @@ class SVWidgetsLib_EXPORT FilterListModel : public QAbstractItemModel
 
     FilterListModel(QObject* parent = nullptr);
 
-    ~FilterListModel();
+    ~FilterListModel() override;
 
     QVariant data(const QModelIndex& index, int role) const Q_DECL_OVERRIDE;
 

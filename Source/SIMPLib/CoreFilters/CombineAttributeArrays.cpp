@@ -52,9 +52,7 @@ template <typename DataType> class CombineAttributeArraysTemplatePrivate
 public:
   typedef DataArray<DataType> DataArrayType;
 
-  CombineAttributeArraysTemplatePrivate()
-  {
-  }
+  CombineAttributeArraysTemplatePrivate() = default;
 
   virtual ~CombineAttributeArraysTemplatePrivate() = default;
 

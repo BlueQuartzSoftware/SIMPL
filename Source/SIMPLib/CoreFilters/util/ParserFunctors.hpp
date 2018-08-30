@@ -47,9 +47,7 @@ const QString CouldNotConvert = "Value could not be converted to the specified d
 class ParserFunctor
 {
 public:
-  virtual ~ParserFunctor()
-  {
-  }
+  virtual ~ParserFunctor() = default;
 
   struct ErrorObject
   {
@@ -64,9 +62,7 @@ public:
 class Int8Functor : public ParserFunctor
 {
 public:
-  virtual ~Int8Functor()
-  {
-  }
+  ~Int8Functor() override = default;
 
   int8_t operator()(const QString& token, ErrorObject& obj)
   {
@@ -106,9 +102,7 @@ public:
 class UInt8Functor : public ParserFunctor
 {
 public:
-  virtual ~UInt8Functor()
-  {
-  }
+  ~UInt8Functor() override = default;
 
   uint8_t operator()(const QString& token, ErrorObject& obj)
   {
@@ -150,9 +144,7 @@ public:
 class Int16Functor : public ParserFunctor
 {
 public:
-  virtual ~Int16Functor()
-  {
-  }
+  ~Int16Functor() override = default;
 
   int16_t operator()(const QString& token, ErrorObject& obj)
   {
@@ -192,9 +184,7 @@ public:
 class UInt16Functor : public ParserFunctor
 {
 public:
-  virtual ~UInt16Functor()
-  {
-  }
+  ~UInt16Functor() override = default;
 
   uint16_t operator()(const QString& token, ErrorObject& obj)
   {
@@ -242,9 +232,7 @@ public:
 class Int32Functor : public ParserFunctor
 {
 public:
-  virtual ~Int32Functor()
-  {
-  }
+  ~Int32Functor() override = default;
 
   int32_t operator()(const QString& token, ErrorObject& obj)
   {
@@ -284,9 +272,7 @@ public:
 class UInt32Functor : public ParserFunctor
 {
 public:
-  virtual ~UInt32Functor()
-  {
-  }
+  ~UInt32Functor() override = default;
 
   uint32_t operator()(const QString& token, ErrorObject& obj)
   {
@@ -334,9 +320,7 @@ public:
 class Int64Functor : public ParserFunctor
 {
 public:
-  virtual ~Int64Functor()
-  {
-  }
+  ~Int64Functor() override = default;
 
   int64_t operator()(const QString& token, ErrorObject& obj)
   {
@@ -370,9 +354,7 @@ public:
 class UInt64Functor : public ParserFunctor
 {
 public:
-  virtual ~UInt64Functor()
-  {
-  }
+  ~UInt64Functor() override = default;
 
   uint64_t operator()(const QString& token, ErrorObject& obj)
   {
@@ -410,9 +392,7 @@ public:
 class FloatFunctor : public ParserFunctor
 {
 public:
-  virtual ~FloatFunctor()
-  {
-  }
+  ~FloatFunctor() override = default;
 
   float operator()(const QString& token, ErrorObject& obj)
   {
@@ -427,9 +407,7 @@ public:
 class DoubleFunctor : public ParserFunctor
 {
 public:
-  virtual ~DoubleFunctor()
-  {
-  }
+  ~DoubleFunctor() override = default;
 
   double operator()(const QString& token, ErrorObject& obj)
   {
@@ -444,9 +422,7 @@ public:
 class StringFunctor : public ParserFunctor
 {
 public:
-  virtual ~StringFunctor()
-  {
-  }
+  ~StringFunctor() override = default;
 
   QString operator()(const QString& token, ErrorObject& obj)
   {

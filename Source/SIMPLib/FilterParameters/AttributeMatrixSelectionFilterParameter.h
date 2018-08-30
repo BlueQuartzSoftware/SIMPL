@@ -105,7 +105,7 @@ class SIMPLib_EXPORT AttributeMatrixSelectionFilterParameter : public FilterPara
                        SetterCallbackType setterCallback, GetterCallbackType getterCallback,
                        const RequirementType req, int groupIndex = -1);
 
-    virtual ~AttributeMatrixSelectionFilterParameter();
+    ~AttributeMatrixSelectionFilterParameter() override;
 
     /**
      * @brief CreateRequirement

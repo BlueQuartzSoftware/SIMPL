@@ -106,7 +106,7 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
     /**
      * @brief ~DataArrayPath
      */
-    virtual ~DataArrayPath();
+    ~DataArrayPath() override;
 
         /**
     * @brief checks that a vector of paths have the same data container and attribute matrix

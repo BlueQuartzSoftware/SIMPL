@@ -80,7 +80,7 @@ public:
   static bool CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, DataArraySelectionFilterParameter::RequirementType reqs);
 
   DataArrayPathSelectionWidget(QWidget* parent = nullptr);
-  virtual ~DataArrayPathSelectionWidget() = default;
+  ~DataArrayPathSelectionWidget() override = default;
 
   Q_PROPERTY(DataArrayPath::DataType PathType READ getDataType)
   Q_PROPERTY(State State READ getState)

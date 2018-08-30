@@ -86,7 +86,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
     SIMPL_STATIC_NEW_MACRO(DataContainerArray)
     SIMPL_TYPE_MACRO(DataContainerArray)
 
-    virtual ~DataContainerArray();
+    ~DataContainerArray() override;
 
     /**
      * @brief

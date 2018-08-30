@@ -52,43 +52,43 @@ public:
    * a parent  OR take responsibility for deleting this object.
    * @return
    */
-  AbstractFilter::Pointer create() const
+  AbstractFilter::Pointer create() const override
   {
     typename T::Pointer w = T::New();
     return w;
   }
 
-  QString getFilterClassName() const
+  QString getFilterClassName() const override
   {
     return m_FilterClassName;
   }
 
-  QString getFilterGroup() const
+  QString getFilterGroup() const override
   {
     return m_GroupName;
   }
 
-  QString getFilterSubGroup() const
+  QString getFilterSubGroup() const override
   {
     return m_SubGroupName;
   }
 
-  QString getFilterHumanLabel() const
+  QString getFilterHumanLabel() const override
   {
     return m_HumanName;
   }
 
-  QString getBrandingString() const
+  QString getBrandingString() const override
   {
     return m_BrandingString;
   }
 
-  QString getCompiledLibraryName() const
+  QString getCompiledLibraryName() const override
   {
     return m_CompiledLibraryName;
   }
   
-  QUuid getUuid() const
+  QUuid getUuid() const override
   {
     return m_Uuid;
   }

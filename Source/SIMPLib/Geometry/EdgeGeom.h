@@ -49,7 +49,7 @@ class SIMPLib_EXPORT EdgeGeom : public IGeometry
     SIMPL_STATIC_NEW_MACRO(EdgeGeom)
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(EdgeGeom, Observable)
 
-    virtual ~EdgeGeom();
+    ~EdgeGeom() override;
 
     /**
      * @brief CreateGeometry
@@ -196,108 +196,108 @@ class SIMPLib_EXPORT EdgeGeom : public IGeometry
     /**
      * @brief initializeWithZeros
      */
-    virtual void initializeWithZeros();
+    void initializeWithZeros() override;
 
     /**
      * @brief getNumberOfElements
      * @return
      */
-    virtual size_t getNumberOfElements();
+    size_t getNumberOfElements() override;
 
     /**
      * @brief findElementSizes
      * @return
      */
-    virtual int findElementSizes();
+    int findElementSizes() override;
 
     /**
      * @brief getElementSizes
      * @return
      */
-    virtual FloatArrayType::Pointer getElementSizes();
+    FloatArrayType::Pointer getElementSizes() override;
 
     /**
      * @brief deleteElementSizes
      */
-    virtual void deleteElementSizes();
+    void deleteElementSizes() override;
 
     /**
      * @brief findElementsContainingVert
      * @return
      */
-    virtual int findElementsContainingVert();
+    int findElementsContainingVert() override;
 
     /**
      * @brief getElementsContainingVert
      * @return
      */
-    virtual ElementDynamicList::Pointer getElementsContainingVert();
+    ElementDynamicList::Pointer getElementsContainingVert() override;
 
     /**
      * @brief deleteElementsContainingVert
      */
-    virtual void deleteElementsContainingVert();
+    void deleteElementsContainingVert() override;
 
     /**
      * @brief findElementNeighbors
      * @return
      */
-    virtual int findElementNeighbors();
+    int findElementNeighbors() override;
 
     /**
      * @brief getElementNeighbors
      * @return
      */
-    virtual ElementDynamicList::Pointer getElementNeighbors();
+    ElementDynamicList::Pointer getElementNeighbors() override;
 
     /**
      * @brief deleteElementNeighbors
      */
-    virtual void deleteElementNeighbors();
+    void deleteElementNeighbors() override;
 
     /**
      * @brief findElementCentroids
      * @return
      */
-    virtual int findElementCentroids();
+    int findElementCentroids() override;
 
     /**
      * @brief getElementCentroids
      * @return
      */
-    virtual FloatArrayType::Pointer getElementCentroids();
+    FloatArrayType::Pointer getElementCentroids() override;
 
     /**
      * @brief deleteElementCentroids
      */
-    virtual void deleteElementCentroids();
+    void deleteElementCentroids() override;
 
     /**
      * @brief getParametricCenter
      * @param pCoords
      */
-    virtual void getParametricCenter(double pCoords[3]);
+    void getParametricCenter(double pCoords[3]) override;
 
     /**
      * @brief getShapeFunctions
      * @param pCoords
      * @param shape
      */
-    virtual void getShapeFunctions(double pCoords[3], double* shape);
+    void getShapeFunctions(double pCoords[3], double* shape) override;
 
     /**
      * @brief findDerivatives
      * @param field
      * @param derivatives
      */
-    virtual void findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable = nullptr);
+    void findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable = nullptr) override;
 
     /**
      * @brief getInfoString
      * @return Returns a formatted string that contains general infomation about
      * the instance of the object.
      */
-    virtual QString getInfoString(SIMPL::InfoStringFormat format);
+    QString getInfoString(SIMPL::InfoStringFormat format) override;
 
     /**
      * @brief writeGeometryToHDF5
@@ -305,7 +305,7 @@ class SIMPLib_EXPORT EdgeGeom : public IGeometry
      * @param writeXdmf
      * @return
      */
-    virtual int writeGeometryToHDF5(hid_t parentId, bool writeXdmf);
+    int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) override;
 
     /**
      * @brief writeXdmf
@@ -314,7 +314,7 @@ class SIMPLib_EXPORT EdgeGeom : public IGeometry
      * @param hdfFileName
      * @return
      */
-    virtual int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName);
+    int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) override;
 
     /**
      * @brief readGeometryFromHDF5
@@ -322,18 +322,18 @@ class SIMPLib_EXPORT EdgeGeom : public IGeometry
      * @param preflight
      * @return
      */
-    virtual int readGeometryFromHDF5(hid_t parentId, bool preflight);
+    int readGeometryFromHDF5(hid_t parentId, bool preflight) override;
 
     /**
      * @brief deepCopy
      * @return
      */
-    virtual IGeometry::Pointer deepCopy(bool forceNoAllocate = false) override;
+    IGeometry::Pointer deepCopy(bool forceNoAllocate = false) override;
 
     /**
      * @brief addAttributeMatrix
      */
-    virtual void addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data);
+    void addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data) override;
 
   protected:
 
@@ -343,25 +343,25 @@ class SIMPLib_EXPORT EdgeGeom : public IGeometry
      * @brief setElementsContainingVert
      * @param elementsContainingVert
      */
-    virtual void setElementsContainingVert(ElementDynamicList::Pointer elementsContainingVert);
+    void setElementsContainingVert(ElementDynamicList::Pointer elementsContainingVert) override;
 
     /**
      * @brief setElementNeighbors
      * @param elementNeighbors
      */
-    virtual void setElementNeighbors(ElementDynamicList::Pointer elementNeighbors);
+    void setElementNeighbors(ElementDynamicList::Pointer elementNeighbors) override;
 
     /**
      * @brief setElementCentroids
      * @param elementCentroids
      */
-    virtual void setElementCentroids(FloatArrayType::Pointer elementCentroids);
+    void setElementCentroids(FloatArrayType::Pointer elementCentroids) override;
 
     /**
      * @brief setElementSizes
      * @param elementSizes
      */
-    virtual void setElementSizes(FloatArrayType::Pointer elementSizes);
+    void setElementSizes(FloatArrayType::Pointer elementSizes) override;
 
   private:
     SharedVertexList::Pointer m_VertexList;

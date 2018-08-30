@@ -72,12 +72,8 @@ const std::vector<double> outputIntAsDoubleVector({1.0, 2.0, 3.0, 4.0, 5.0, 6.0,
 class ReadASCIIDataTest
 {
 public:
-  ReadASCIIDataTest()
-  {
-  }
-  virtual ~ReadASCIIDataTest()
-  {
-  }
+  ReadASCIIDataTest() = default;
+  virtual ~ReadASCIIDataTest() = default;
   SIMPL_TYPE_MACRO(ReadASCIIDataTest)
 
   // -----------------------------------------------------------------------------

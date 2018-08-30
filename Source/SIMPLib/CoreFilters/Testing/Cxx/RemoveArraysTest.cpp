@@ -61,12 +61,8 @@ class RemoveArraysTest
 {
 
 public:
-  RemoveArraysTest()
-  {
-  }
-  virtual ~RemoveArraysTest()
-  {
-  }
+  RemoveArraysTest() = default;
+  virtual ~RemoveArraysTest() = default;
 
   // -----------------------------------------------------------------------------
   //

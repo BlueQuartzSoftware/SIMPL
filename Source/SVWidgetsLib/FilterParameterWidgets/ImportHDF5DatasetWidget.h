@@ -103,17 +103,17 @@ protected:
   /**
    * @brief Drag and drop implementation
    */
-  void dragEnterEvent(QDragEnterEvent*);
+  void dragEnterEvent(QDragEnterEvent*) override;
 
   /**
    * @brief Drag and drop implementation
    */
-  void dropEvent(QDropEvent*);
+  void dropEvent(QDropEvent*) override;
 
   /**
    * @brief Initializes some of the GUI elements with selections or other GUI related items
    */
-  void setupGui();
+  void setupGui() override;
 
   /**
    * @brief initWithFile Initializes the window by trying to open and populate the window
@@ -174,7 +174,7 @@ private:
    */
   void calculatePrimeFactors(int n, QVector<int>& primeFactors);
 
-  ~ImportHDF5DatasetWidget();
+  ~ImportHDF5DatasetWidget() override;
   ImportHDF5DatasetWidget(const ImportHDF5DatasetWidget&) = delete; // Copy Constructor Not Implemented
   void operator=(const ImportHDF5DatasetWidget&);                   // Copy Assignment Not Implemented
 };

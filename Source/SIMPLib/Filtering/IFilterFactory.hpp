@@ -51,9 +51,7 @@ public:
   SIMPL_SHARED_POINTERS(IFilterFactory)
   SIMPL_TYPE_MACRO(IFilterFactory)
 
-  virtual ~IFilterFactory()
-  {
-  }
+  virtual ~IFilterFactory() = default;
 
   /** @brief This function should NEVER get called. The subclass should ALWAYS implement
    * this method so we are going to crash the program.
@@ -135,9 +133,7 @@ public:
   }
 
 protected:
-  IFilterFactory()
-  {
-  }
+  IFilterFactory() = default;
 
 private:
   IFilterFactory(const IFilterFactory&); // Copy Constructor Not Implemented

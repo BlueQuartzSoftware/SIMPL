@@ -56,7 +56,7 @@
 class H5DataArrayWriter
 {
   public:
-    virtual ~H5DataArrayWriter() {}
+    virtual ~H5DataArrayWriter() = default;
 
     /**
      * @brief writeDataArrayAttributes
@@ -214,7 +214,7 @@ class H5DataArrayWriter
 
 
   protected:
-    H5DataArrayWriter() {}
+    H5DataArrayWriter() = default;
 
   private:
     H5DataArrayWriter(const H5DataArrayWriter&); // Copy Constructor Not Implemented
@@ -235,7 +235,7 @@ template<typename T>
 class H5GBCDArrayWriter
 {
   public:
-    virtual ~H5GBCDArrayWriter() {}
+    virtual ~H5GBCDArrayWriter() = default;
 
     static int writeArray(hid_t gid, const QString& name, size_t* gbcdDims, T* data, const QString& className)
     {
@@ -261,7 +261,7 @@ class H5GBCDArrayWriter
 
 
   protected:
-    H5GBCDArrayWriter() {}
+    H5GBCDArrayWriter() = default;
 
   private:
     H5GBCDArrayWriter(const H5GBCDArrayWriter&); // Copy Constructor Not Implemented

@@ -35,14 +35,15 @@
 
 #pragma once
 
-#include <math.h>
+#include <cmath>
+
+#include <Eigen/Core>
+#include <Eigen/Dense>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 
-#include "Eigen/LU"
-#include "Eigen/Eigenvalues"
 
 class EdgeGeom;
 class TriangleGeom;
@@ -59,30 +60,27 @@ namespace DerivativeHelpers
   /**
    * @brief TriJacobian
    */
-  typedef Eigen::Matrix<double, 2, 2, Eigen::RowMajor> TriangleJacobian;
+using TriangleJacobian = Eigen::Matrix<double, 2, 2, Eigen::RowMajor>;
 
-  /**
-   * @brief QuadJacobian
-   */
-  typedef Eigen::Matrix<double, 2, 2, Eigen::RowMajor> QuadJacobian;
+/**
+ * @brief QuadJacobian
+ */
+using QuadJacobian = Eigen::Matrix<double, 2, 2, Eigen::RowMajor>;
 
-  /**
-   * @brief TetJacobian
-   */
-  typedef Eigen::Matrix<double, 3, 3, Eigen::RowMajor> TetJacobian;
+/**
+ * @brief TetJacobian
+ */
+using TetJacobian = Eigen::Matrix<double, 3, 3, Eigen::RowMajor>;
 
-  /**
-  * @brief HexJacobian
-  */
-  typedef Eigen::Matrix<double, 3, 3, Eigen::RowMajor> HexJacobian;
+/**
+ * @brief HexJacobian
+ */
+using HexJacobian = Eigen::Matrix<double, 3, 3, Eigen::RowMajor>;
 
-  class EdgeDeriv
-  {
-    public:
-      EdgeDeriv() {}
-      virtual ~EdgeDeriv() {}
-
-      void operator()(EdgeGeom* edges, int64_t edgeId, double values[2], double derivs[3]);
+class EdgeDeriv
+{
+public:
+  void operator()(EdgeGeom* edges, int64_t edgeId, double values[2], double derivs[3]);
   };
 
   /**
@@ -91,8 +89,6 @@ namespace DerivativeHelpers
   class TriangleDeriv
   {
     public:
-      TriangleDeriv() {}
-      virtual ~TriangleDeriv() {}
 
       void operator()(TriangleGeom* triangles, int64_t triId, double values[3], double derivs[3]);
   };
@@ -103,8 +99,6 @@ namespace DerivativeHelpers
   class QuadDeriv
   {
     public:
-      QuadDeriv() {}
-      virtual ~QuadDeriv() {}
 
       void operator()(QuadGeom* quads, int64_t quadId, double values[4], double derivs[3]);
   };
@@ -115,8 +109,6 @@ namespace DerivativeHelpers
   class TetDeriv
   {
     public:
-      TetDeriv() {}
-      virtual ~TetDeriv() {}
 
       void operator()(TetrahedralGeom* tets, int64_t tetId, double values[4], double derivs[3]);
   };
@@ -127,10 +119,8 @@ namespace DerivativeHelpers
   class HexDeriv
   {
     public:
-    HexDeriv() {}
-    virtual ~HexDeriv() {}
 
-    void operator()(HexahedralGeom* hexas, int64_t hexId, double values[8], double derivs[3]);
+      void operator()(HexahedralGeom* hexas, int64_t hexId, double values[8], double derivs[3]);
   };
 
 }

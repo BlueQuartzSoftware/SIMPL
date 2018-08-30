@@ -54,12 +54,8 @@
 class FloatSummationTest
 {
 public:
-  FloatSummationTest()
-  {
-  }
-  virtual ~FloatSummationTest()
-  {
-  }
+  FloatSummationTest() = default;
+  virtual ~FloatSummationTest() = default;
 
   const size_t NUM_ITEMS = 10000;
 

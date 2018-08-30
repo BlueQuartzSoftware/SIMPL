@@ -87,12 +87,8 @@ protected:
 class GeomIO
 {
 public:
-  GeomIO()
-  {
-  }
-  virtual ~GeomIO()
-  {
-  }
+  GeomIO() = default;
+  virtual ~GeomIO() = default;
 
   /**
    * @brief ReadMeshFromHDF5
@@ -265,12 +261,8 @@ public:
 class Connectivity
 {
 public:
-  Connectivity()
-  {
-  }
-  virtual ~Connectivity()
-  {
-  }
+  Connectivity() = default;
+  virtual ~Connectivity() = default;
 
   /**
    * @brief FindElementsContainingVert
@@ -1035,12 +1027,8 @@ public:
 class Topology
 {
 public:
-  Topology()
-  {
-  }
-  virtual ~Topology()
-  {
-  }
+  Topology() = default;
+  virtual ~Topology() = default;
 
   /**
    * @brief FindElementCentroids
@@ -1352,12 +1340,8 @@ public:
 class Generic
 {
 public:
-  Generic()
-  {
-  }
-  virtual ~Generic()
-  {
-  }
+  Generic() = default;
+  virtual ~Generic() = default;
 
   /**
    * @brief AverageVertexArrayValues

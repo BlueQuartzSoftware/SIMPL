@@ -101,19 +101,19 @@ class SVWidgetsLib_EXPORT QtSGraphicsView : public QGraphicsView
     * @brief Over-riding implementation from base class
     * @param event QDragEnterEvent Event fired when dragging enters the QGraphicsView
     */
-    void dragEnterEvent(QDragEnterEvent* event);
+    void dragEnterEvent(QDragEnterEvent* event) override;
 
     /**
     * @brief Over-riding implementation from base class
     * @param event QDropEvent Event fired when object is dropped on QGraphicsView
     */
-    void dropEvent(QDropEvent* event);
+    void dropEvent(QDropEvent* event) override;
 
     /**
     * @brief Over-riding implementation from base class
     * @param event QDragLeaveEvent Event fired when dragging leaves QGraphicsView
     */
-    void dragLeaveEvent(QDragLeaveEvent* event);
+    void dragLeaveEvent(QDragLeaveEvent* event) override;
 
 //    void mousePressEvent( QMouseEvent* event );
 //    void mouseMoveEvent( QMouseEvent* event );

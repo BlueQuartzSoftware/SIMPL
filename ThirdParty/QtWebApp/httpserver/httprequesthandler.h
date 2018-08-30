@@ -33,7 +33,7 @@ public:
   HttpRequestHandler(QObject* parent = NULL);
 
   /** Destructor */
-  virtual ~HttpRequestHandler();
+  ~HttpRequestHandler() override;
 
   /**
   Generate a response for an incoming HTTP request.

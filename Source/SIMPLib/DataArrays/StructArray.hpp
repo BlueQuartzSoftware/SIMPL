@@ -90,19 +90,19 @@ class StructArray : public IDataArray
      * @param name The name of the array
      * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
      */
-    virtual IDataArray::Pointer createNewArray(size_t numElements, int rank, size_t* dims, const QString& name, bool allocate = true)
+    IDataArray::Pointer createNewArray(size_t numElements, int rank, size_t* dims, const QString& name, bool allocate = true) override
     {
       IDataArray::Pointer p = StructArray<T>::CreateArray(numElements, name, allocate);
       return p;
     }
 
-    virtual IDataArray::Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true)
+    IDataArray::Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) override
     {
       IDataArray::Pointer p = StructArray<T>::CreateArray(numElements, name, allocate);
       return p;
     }
 
-    virtual IDataArray::Pointer createNewArray(size_t numElements, QVector<size_t> dims, const QString& name, bool allocate = true)
+    IDataArray::Pointer createNewArray(size_t numElements, QVector<size_t> dims, const QString& name, bool allocate = true) override
     {
       IDataArray::Pointer p = StructArray<T>::CreateArray(numElements, name, allocate);
       return p;
@@ -111,7 +111,7 @@ class StructArray : public IDataArray
     /**
      * @brief Destructor
      */
-    virtual ~StructArray()
+    ~StructArray() override
     {
       //qDebug() << "~StructArrayTemplate '" << m_Name << "'" ;
       if ((nullptr != m_Array) && (true == this->_ownsData))
@@ -124,7 +124,7 @@ class StructArray : public IDataArray
      * @brief isAllocated
      * @return
      */
-    virtual bool isAllocated()
+    bool isAllocated() override
     {
       return m_IsAllocated;
     }
@@ -135,7 +135,7 @@ class StructArray : public IDataArray
      * can be a primitive like char, float, int or the name of a class.
      * @return
      */
-    void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision)
+    void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) override
     {
       xdmfTypeName = getNameOfClass();
       precision = 0;
@@ -145,7 +145,7 @@ class StructArray : public IDataArray
      * @brief getTypeAsString
      * @return
      */
-    virtual QString getTypeAsString() { return "struct"; }
+    QString getTypeAsString() override { return "struct"; }
 
     /**
     * @brief Returns the HDF Type for a given primitive value.
@@ -165,7 +165,7 @@ class StructArray : public IDataArray
      * @brief Gives this array a human readable name
      * @param name The name of this array
      */
-    void setName(const QString& name)
+    void setName(const QString& name) override
     {
       m_Name = name;
     }
@@ -174,7 +174,7 @@ class StructArray : public IDataArray
      * @brief Returns the human readable name of this array
      * @return
      */
-    QString getName()
+    QString getName() override
     {
       return m_Name;
     }
@@ -182,7 +182,7 @@ class StructArray : public IDataArray
     /**
      * @brief Makes this class responsible for freeing the memory
      */
-    virtual void takeOwnership()
+    void takeOwnership() override
     {
       this->_ownsData = true;
     }
@@ -192,7 +192,7 @@ class StructArray : public IDataArray
      * This can be useful if the user wishes to keep the data around after this
      * class goes out of scope.
      */
-    virtual void releaseOwnership()
+    void releaseOwnership() override
     {
       this->_ownsData = false;
     }
@@ -253,7 +253,7 @@ class StructArray : public IDataArray
     /**
      * @brief Sets all the values to zero.
      */
-    virtual void initializeWithZeros()
+    void initializeWithZeros() override
     {
       size_t typeSize = sizeof(T);
       ::memset(m_Array, 0, this->m_Size * typeSize);
@@ -278,7 +278,7 @@ class StructArray : public IDataArray
      * @param idxs The indices to remove
      * @return error code.
      */
-    virtual int eraseTuples(QVector<size_t>& idxs)
+    int eraseTuples(QVector<size_t>& idxs) override
     {
 
       int err = 0;
@@ -393,7 +393,7 @@ class StructArray : public IDataArray
      * @param newPos
      * @return
      */
-    virtual int copyTuple(size_t currentPos, size_t newPos)
+    int copyTuple(size_t currentPos, size_t newPos) override
     {
       size_t max =  ((this->m_MaxId + 1));
       if (currentPos >= max
@@ -430,7 +430,7 @@ class StructArray : public IDataArray
      * @param sourceArray
      * @return
      */
-    bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples)
+    bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) override
     {
       if(!m_IsAllocated)
       {
@@ -479,7 +479,7 @@ class StructArray : public IDataArray
      * 4 = 32 bit integer/Float
      * 8 = 64 bit integer/Double
      */
-    virtual size_t getTypeSize()
+    size_t getTypeSize() override
     {
       return sizeof(T);
     }
@@ -487,7 +487,7 @@ class StructArray : public IDataArray
     /**
      * @brief Returns the number of elements in the internal array.
      */
-    virtual size_t getNumberOfTuples()
+    size_t getNumberOfTuples() override
     {
       if (m_Size == 0) { return 0; }
       return (this->m_MaxId + 1);
@@ -497,7 +497,7 @@ class StructArray : public IDataArray
      * @brief getSize
      * @return
      */
-    virtual size_t getSize()
+    size_t getSize() override
     {
       return m_Size;
     }
@@ -506,7 +506,7 @@ class StructArray : public IDataArray
      * @brief getNumberOfComponents
      * @return
      */
-    int getNumberOfComponents()
+    int getNumberOfComponents() override
     {
       return 1;
     }
@@ -515,7 +515,7 @@ class StructArray : public IDataArray
      * @brief getNumberOfComponents
      * @return
      */
-    QVector<size_t> getComponentDimensions()
+    QVector<size_t> getComponentDimensions() override
     {
       QVector<size_t> dims(1, 1);
       return dims;
@@ -546,7 +546,7 @@ class StructArray : public IDataArray
      * @param i The index to have the returned pointer pointing to.
      * @return Void Pointer. Possibly nullptr.
      */
-    virtual void* getVoidPointer(size_t i)
+    void* getVoidPointer(size_t i) override
     {
       if (i >= m_Size) { return nullptr;}
 
@@ -574,7 +574,7 @@ class StructArray : public IDataArray
      * @param i The index of the Tuple
      * @param c The value to splat across all components in the tuple
      */
-    void initializeTuple(size_t i, void* p)
+    void initializeTuple(size_t i, void* p) override
     {
 #ifndef NDEBUG
       if (m_Size > 0) { Q_ASSERT(i < m_Size);}
@@ -587,7 +587,7 @@ class StructArray : public IDataArray
       }
     }
 
-    virtual IDataArray::Pointer deepCopy(bool forceNoAllocate = false)
+    IDataArray::Pointer deepCopy(bool forceNoAllocate = false) override
     {
       IDataArray::Pointer daCopy = createNewArray(getNumberOfTuples(), getComponentDimensions(), getName(), m_IsAllocated);
       if(m_IsAllocated == true && forceNoAllocate == false)
@@ -605,7 +605,7 @@ class StructArray : public IDataArray
      * @param size The new size of the internal array
      * @return 1 on success, 0 on failure
      */
-    virtual int32_t resizeTotalElements(size_t size)
+    int32_t resizeTotalElements(size_t size) override
     {
       if (this->resizeAndExtend(size) || size == 0)
       {
@@ -622,7 +622,7 @@ class StructArray : public IDataArray
      * @param numTuples
      * @return
      */
-    virtual int32_t resize(size_t numTuples)
+    int32_t resize(size_t numTuples) override
     {
       return resizeTotalElements(numTuples );
     }
@@ -633,7 +633,7 @@ class StructArray : public IDataArray
      * @param i
      * @param delimiter
      */
-    virtual void printTuple(QTextStream& out, size_t i, char delimiter = ',')
+    void printTuple(QTextStream& out, size_t i, char delimiter = ',') override
     {
       Q_ASSERT(false);
       //        for(int j = 0; j < NumberOfComponents; ++j)
@@ -649,7 +649,7 @@ class StructArray : public IDataArray
      * @param i
      * @param j
      */
-    virtual void printComponent(QTextStream& out, size_t i, int j)
+    void printComponent(QTextStream& out, size_t i, int j) override
     {
       Q_ASSERT(false);
       //        out << Array[i + j];
@@ -661,7 +661,7 @@ class StructArray : public IDataArray
      * @param parentId
      * @return
      */
-    virtual int writeH5Data(hid_t parentId, QVector<size_t> tDims)
+    int writeH5Data(hid_t parentId, QVector<size_t> tDims) override
     {
       Q_ASSERT(false);
       return -1;
@@ -676,8 +676,8 @@ class StructArray : public IDataArray
      * @param groupPath
      * @return
      */
-    virtual int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName,
-                                   const QString& groupPath, const QString& labelb)
+    int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName,
+                                   const QString& groupPath, const QString& labelb) override
     {
       out << "<!-- Xdmf is not supported for " << getNameOfClass() << " with type " << getTypeAsString() << " --> ";
       return -1;
@@ -688,7 +688,7 @@ class StructArray : public IDataArray
      * @return Returns a formatted string that contains general infomation about
      * the instance of the object.
      */
-    virtual QString getInfoString(SIMPL::InfoStringFormat format)
+    QString getInfoString(SIMPL::InfoStringFormat format) override
     {
       QString info;
       QTextStream ss (&info);
@@ -720,7 +720,7 @@ class StructArray : public IDataArray
      * @param parentId
      * @return
      */
-    virtual int readH5Data(hid_t parentId)
+    int readH5Data(hid_t parentId) override
     {
       Q_ASSERT(false);
       int err = -1;

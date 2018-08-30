@@ -77,12 +77,12 @@ class SVWidgetsLib_EXPORT MultiAttributeMatrixSelectionWidget : public FilterPar
 
     MultiAttributeMatrixSelectionWidget(QWidget* parent = nullptr);
 
-    virtual ~MultiAttributeMatrixSelectionWidget();
+    ~MultiAttributeMatrixSelectionWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
     /**
     * @brief checkStringValues
@@ -105,7 +105,7 @@ class SVWidgetsLib_EXPORT MultiAttributeMatrixSelectionWidget : public FilterPar
      * @param event
      * @return
      */
-    bool eventFilter(QObject* obj, QEvent* event);
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
   public slots:
     void beforePreflight();

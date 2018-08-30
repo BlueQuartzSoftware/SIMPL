@@ -54,9 +54,9 @@ class SIMPLib_EXPORT ExpOperator : public UnaryOperator
       return Pointer(new ExpOperator());
     }
 
-    virtual ~ExpOperator();
+    ~ExpOperator() override;
 
-    virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
+    void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack) override;
 
   protected:
     ExpOperator();

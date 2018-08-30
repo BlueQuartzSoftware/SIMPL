@@ -303,8 +303,8 @@ template<typename T>
 class CheckDataArrayType
 {
   public:
-    CheckDataArrayType() {}
-    virtual ~CheckDataArrayType() {}
+    CheckDataArrayType() = default;
+    virtual ~CheckDataArrayType() = default;
     bool operator()(IDataArray::Pointer p)
     {
       return (std::dynamic_pointer_cast<T>(p).get() != nullptr);

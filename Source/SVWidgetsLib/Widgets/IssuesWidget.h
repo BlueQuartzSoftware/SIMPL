@@ -67,7 +67,7 @@ class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver
     static void SetHideDockSetting(SIMPLView::DockWidgetSettings::HideDockSetting setting);
 
     IssuesWidget(QWidget* parent = nullptr);
-    virtual ~IssuesWidget();
+    ~IssuesWidget() override;
 
     QLabel* createHyperlinkLabel(PipelineMessage msg);
 
@@ -77,7 +77,7 @@ class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver
     static const int ErrorCode = 3;
 
   public slots:
-    void processPipelineMessage(const PipelineMessage& msg);
+    void processPipelineMessage(const PipelineMessage& msg) override;
     void clearIssues();
     void on_errorTableWidget_itemClicked( QTableWidgetItem* item );
     void displayCachedMessages();

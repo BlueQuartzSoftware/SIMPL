@@ -70,12 +70,12 @@ class SVWidgetsLib_EXPORT ChoiceWidget : public FilterParameterWidget, private U
     */
     ChoiceWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~ChoiceWidget();
+    ~ChoiceWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
     int getCurrentIndex();
 

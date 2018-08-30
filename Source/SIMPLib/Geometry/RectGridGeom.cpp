@@ -69,9 +69,7 @@ public:
   , m_Derivatives(derivs)
   {
   }
-  virtual ~FindRectGridDerivativesImpl()
-  {
-  }
+  virtual ~FindRectGridDerivativesImpl() = default;
 
   void compute(size_t zStart, size_t zEnd, size_t yStart, size_t yEnd, size_t xStart, size_t xEnd) const
   {

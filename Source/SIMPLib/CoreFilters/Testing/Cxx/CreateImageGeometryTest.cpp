@@ -52,13 +52,9 @@
 class CreateImageGeometryTest
 {
 public:
-  CreateImageGeometryTest()
-  {
-  }
+  CreateImageGeometryTest() = default;
 
-  ~CreateImageGeometryTest()
-  {
-  }
+  ~CreateImageGeometryTest() = default;
 
   CreateImageGeometry::Pointer initializeData()
   {

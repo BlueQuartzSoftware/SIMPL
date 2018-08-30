@@ -50,10 +50,7 @@ SIMPLDataPathValidator::SIMPLDataPathValidator() :
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPLDataPathValidator::~SIMPLDataPathValidator()
-{
-
-}
+SIMPLDataPathValidator::~SIMPLDataPathValidator() = default;
 
 // -----------------------------------------------------------------------------
 //

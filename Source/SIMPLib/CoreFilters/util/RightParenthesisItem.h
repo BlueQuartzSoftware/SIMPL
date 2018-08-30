@@ -49,9 +49,9 @@ class SIMPLib_EXPORT RightParenthesisItem : public CalculatorItem
       return Pointer(new RightParenthesisItem());
     }
 
-    virtual ~RightParenthesisItem();
+    ~RightParenthesisItem() override;
 
-    virtual CalculatorItem::ErrorCode checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex, QString& msg);
+    CalculatorItem::ErrorCode checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex, QString& msg) override;
 
   protected:
     RightParenthesisItem();

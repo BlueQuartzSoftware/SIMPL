@@ -120,12 +120,8 @@
 class ReplaceValueTest
 {
 public:
-  ReplaceValueTest()
-  {
-  }
-  virtual ~ReplaceValueTest()
-  {
-  }
+  ReplaceValueTest() = default;
+  virtual ~ReplaceValueTest() = default;
 
   // -----------------------------------------------------------------------------
   //

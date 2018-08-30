@@ -44,7 +44,7 @@ class SVWidgetsLib_EXPORT PipelineItemBorderSizeAnimation : public QVariantAnima
 
   public:
     PipelineItemBorderSizeAnimation(PipelineModel* model, QPersistentModelIndex index);
-    virtual ~PipelineItemBorderSizeAnimation() = default;
+    ~PipelineItemBorderSizeAnimation() override = default;
 
   private slots:
     void listenValueChanged(const QVariant & value);

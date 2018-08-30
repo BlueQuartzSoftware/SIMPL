@@ -10,7 +10,7 @@
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QLabel>
-
+#include <QtWidgets/QDialog>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
@@ -24,7 +24,7 @@ class SVWidgetsLib_EXPORT SVPushButton : public QPushButton
   
   public:
   SVPushButton(QWidget* parent = nullptr);
-  virtual ~SVPushButton();
+  ~SVPushButton() override;
   
 };
 
@@ -38,7 +38,7 @@ class SVWidgetsLib_EXPORT SVIconPushButton : public QPushButton
   
   public:
   SVIconPushButton(QWidget* parent = nullptr);
-  virtual ~SVIconPushButton();
+  ~SVIconPushButton() override;
   
 };
 
@@ -52,7 +52,7 @@ class SVWidgetsLib_EXPORT SVToolButton : public QToolButton
   
   public:
   SVToolButton(QWidget* parent = nullptr);
-  virtual ~SVToolButton();
+  ~SVToolButton() override;
   
 };
 
@@ -66,7 +66,7 @@ class SVWidgetsLib_EXPORT SVSpinBox : public QSpinBox
 
   public:
   SVSpinBox(QWidget* parent = nullptr);
-  virtual ~SVSpinBox();
+  ~SVSpinBox() override;
 
 };
 
@@ -80,7 +80,7 @@ class SVWidgetsLib_EXPORT SVDoubleSpinBox : public QDoubleSpinBox
 
   public:
   SVDoubleSpinBox(QWidget* parent = nullptr);
-  virtual ~SVDoubleSpinBox();
+  ~SVDoubleSpinBox() override;
 
 };
 
@@ -94,7 +94,7 @@ class SVWidgetsLib_EXPORT SVLineEdit : public QLineEdit
   
   public:
   SVLineEdit(QWidget* parent = nullptr);
-  virtual ~SVLineEdit();
+  ~SVLineEdit() override;
   
 };
 
@@ -107,7 +107,7 @@ class SVWidgetsLib_EXPORT SVSmallLabel : public QLabel
   
   public:
   SVSmallLabel(QWidget* parent = nullptr);
-  virtual ~SVSmallLabel();
+  ~SVSmallLabel() override;
   
 };
 
@@ -123,7 +123,7 @@ class SVWidgetsLib_EXPORT SVTreeView : public QTreeView
   
   public:
   SVTreeView(QWidget* parent = nullptr);
-  virtual ~SVTreeView();
+  ~SVTreeView() override;
   
 };
 
@@ -139,7 +139,7 @@ class SVWidgetsLib_EXPORT SVListView : public QListView
   
   public:
   SVListView(QWidget* parent = nullptr);
-  virtual ~SVListView();
+  ~SVListView() override;
   
 };
 
@@ -153,7 +153,7 @@ class SVWidgetsLib_EXPORT SVListWidget : public QListWidget
   
   public:
   SVListWidget(QWidget* parent = nullptr);
-  virtual ~SVListWidget();
+  ~SVListWidget() override;
   
 };
 
@@ -166,7 +166,7 @@ class SVWidgetsLib_EXPORT SVTreeWidget : public QTreeWidget
 
   public:
   SVTreeWidget(QWidget* parent = nullptr);
-  virtual ~SVTreeWidget();
+  ~SVTreeWidget() override;
 
 };
 
@@ -179,6 +179,21 @@ class SVWidgetsLib_EXPORT SVTabWidget : public QTabWidget
 
 public:
   SVTabWidget(QWidget* parent = nullptr);
-  virtual ~SVTabWidget();
+  ~SVTabWidget() override;
 
 };
+
+
+/**
+* @brief The SVTabWidget class
+*/
+class SVWidgetsLib_EXPORT SVDialog : public QDialog
+{
+  Q_OBJECT
+
+public:
+  SVDialog(QWidget* parent = nullptr);
+  ~SVDialog() override;
+
+};
+

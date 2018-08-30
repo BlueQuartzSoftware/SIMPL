@@ -48,8 +48,8 @@ class SVWidgetsLib_EXPORT QtSSplitterHandle : public QSplitterHandle
 
     // Paint the horizontal handle as a gradient, paint
     // the vertical handle as a line.
-    void paintEvent(QPaintEvent* evt);
+    void paintEvent(QPaintEvent* evt) override;
 
-    QSize sizeHint() const;
+    QSize sizeHint() const override;
 };
 

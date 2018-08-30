@@ -56,12 +56,8 @@
 class ConvertDataTest
 {
 public:
-  ConvertDataTest()
-  {
-  }
-  virtual ~ConvertDataTest()
-  {
-  }
+  ConvertDataTest() = default;
+  virtual ~ConvertDataTest() = default;
 
   // -----------------------------------------------------------------------------
   //

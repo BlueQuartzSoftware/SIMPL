@@ -7,34 +7,15 @@
 namespace SIMPL
 {
   namespace PyBind11
-  {
-  #if 0
-
+  {      
       /**
-      * @brief Returns the path to the SIMPL Source directory
-      */
-      QString GetSIMPLProj_SourceDir()
-      {
-        return QString("@SIMPLProj_SOURCE_DIR_NORM@");
-      }
+       * @brief Returns the path to the RUNTIME_OUTPUT_DIR which should be the "Bin"
+       * directory inside the build directory. Note when building with a multi-configuration
+       * IDE such as Visual Studio or Xcode there is another directory level past that.
+       * @return
+       */
+      static const QString RuntimeOutputDir("@GeneratePythonBindings_RUNTIME_OUTPUT_DIR@");
 
-      /**
-      * @brief Returns the path to the SIMPL PyBind11 Source directory
-      */
-      QString GetSIMPLPyBind11_SourceDir()
-      {
-        return QString("@SIMPLPyBind11_SOURCE_DIR_NORM@");
-      }
-
-      /**
-      * @brief Returns the path to the SIMPL PyBind11 Binary directory
-      */
-      QString GetSIMPLPyBind11_BinaryDir()
-      {
-        return QString("@SIMPLPyBind11_BINARY_DIR_NORM@");
-      }
-  #endif
-         
       /**
        * @brief Returns the path to where the Python C++ modules will be created.
        * @return 
@@ -46,6 +27,12 @@ namespace SIMPL
        * @return 
        */
       static const QString TemplateDir("@SIMPLPyBind11_SOURCE_DIR_NORM@/Templates");
+
+      /**
+       * @brief PythonWrappingDir
+       * @return 
+       */
+      static const QString PythonWrappingDir("@SIMPL_PYB11_PARENT_DIR@");
       
       /**
        * @brief PythonModuleSuffix
@@ -57,6 +44,15 @@ namespace SIMPL
        */
       static const QString SIMPL_LibraryName("@SIMPL_PYTHON_MODULE_NAME@");
 
+      static const QString SIMPLProjBinaryDir("@SIMPLProj_BINARY_DIR@");
+
+      static const QString BuildDirectory("@CMAKE_LIBRARY_OUTPUT_DIRECTORY@");
+
+      static const QString TestDirectory("@SIMPLProj_BINARY_DIR@/Testing");
+
+      static const QString TestTempDirectory("@SIMPLProj_BINARY_DIR@/Testing/Temporary");
+
+      static const QString DataDirectory("@DREAM3D_DATA_DIR@");
   }
   
 }

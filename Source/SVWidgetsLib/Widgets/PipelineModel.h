@@ -56,7 +56,7 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
 
     PipelineModel(QObject* parent = 0);
 
-    ~PipelineModel();
+    ~PipelineModel() override;
 
     enum Roles
     {

@@ -74,12 +74,12 @@ class SVWidgetsLib_EXPORT ShapeTypeSelectionWidget : public FilterParameterWidge
 
     ShapeTypeSelectionWidget(QWidget* parent = nullptr);
 
-    virtual ~ShapeTypeSelectionWidget();
+    ~ShapeTypeSelectionWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
 
   public slots:

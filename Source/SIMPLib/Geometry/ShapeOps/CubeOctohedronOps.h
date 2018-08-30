@@ -51,12 +51,12 @@ class SIMPLib_EXPORT CubeOctohedronOps : public ShapeOps
     SIMPL_TYPE_MACRO(CubeOctohedronOps)
     SIMPL_STATIC_NEW_MACRO(CubeOctohedronOps)
 
-    virtual ~CubeOctohedronOps();
+    ~CubeOctohedronOps() override;
 
-    virtual float radcur1(QMap<ArgName, float> args);
+    float radcur1(QMap<ArgName, float> args) override;
 
-    virtual float inside(float axis1comp, float axis2comp, float axis3comp);
-    virtual void init() { Gvalue = 0.0f; }
+    float inside(float axis1comp, float axis2comp, float axis3comp) override;
+    void init() override { Gvalue = 0.0f; }
 
   protected:
     CubeOctohedronOps();

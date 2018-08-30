@@ -57,7 +57,7 @@ class DelimitedPage : public AbstractWizardPage, private Ui::DelimitedPage
     */
     DelimitedPage(QSharedPointer<ASCIIDataModel> model, const QString& inputFilePath, int numLines, QWidget* parent = nullptr);
 
-    virtual ~DelimitedPage();
+    ~DelimitedPage() override;
 
     /**
      * @brief Initializes some of the GUI elements with selections or other GUI related items
@@ -67,17 +67,17 @@ class DelimitedPage : public AbstractWizardPage, private Ui::DelimitedPage
     /**
     * @brief Refreshes the model
     */
-    virtual void refreshModel();
+    void refreshModel() override;
 
     /**
     * @brief Controls which page to navigate to after the user clicks "Next" button
     */
-    int nextId() const;
+    int nextId() const override;
 
     void setEditSettings(bool value);
 
   protected slots:
-    void showEvent(QShowEvent* event);
+    void showEvent(QShowEvent* event) override;
     void checkBox_Toggled(int state);
 
   private:

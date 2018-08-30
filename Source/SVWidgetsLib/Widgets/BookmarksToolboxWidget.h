@@ -70,7 +70,7 @@ class SVWidgetsLib_EXPORT BookmarksToolboxWidget : public QWidget, private Ui::B
      * @param parent
      */
     BookmarksToolboxWidget(QWidget* parent = nullptr);
-    virtual ~BookmarksToolboxWidget();
+    ~BookmarksToolboxWidget() override;
 
     /**
      * @brief setupGui

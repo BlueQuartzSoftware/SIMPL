@@ -73,12 +73,12 @@ class SVWidgetsLib_EXPORT DataContainerSelectionWidget : public FilterParameterW
 
     DataContainerSelectionWidget(QWidget* parent = nullptr);
 
-    virtual ~DataContainerSelectionWidget();
+    ~DataContainerSelectionWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
     /**
      * @brief checkStringValues
@@ -101,7 +101,7 @@ class SVWidgetsLib_EXPORT DataContainerSelectionWidget : public FilterParameterW
      * @param event
      * @return
      */
-    bool eventFilter(QObject* obj, QEvent* event);
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
   public slots:
     void beforePreflight();

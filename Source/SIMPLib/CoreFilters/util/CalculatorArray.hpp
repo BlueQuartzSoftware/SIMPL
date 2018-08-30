@@ -53,16 +53,16 @@ class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
       return Pointer(new CalculatorArray(dataArray, type, allocate));
     }
 
-    virtual ~CalculatorArray() {}
+    ~CalculatorArray() override = default;
 
-    IDataArray::Pointer getArray() { return m_Array; }
+    IDataArray::Pointer getArray() override { return m_Array; }
 
-    void setValue(int i, double val)
+    void setValue(int i, double val) override
     {
       m_Array->setValue(i, val);
     }
 
-    double getValue(int i)
+    double getValue(int i) override
     {
       if (m_Array->getNumberOfTuples() > 1)
       {
@@ -79,12 +79,12 @@ class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
       }
     }
 
-    ICalculatorArray::ValueType getType()
+    ICalculatorArray::ValueType getType() override
     {
       return m_Type;
     }
 
-    DoubleArrayType::Pointer reduceToOneComponent(int c, bool allocate = true)
+    DoubleArrayType::Pointer reduceToOneComponent(int c, bool allocate = true) override
     {
       if(c >= 0 && c <= m_Array->getNumberOfComponents())
       {
@@ -106,7 +106,7 @@ class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
       return DoubleArrayType::NullPointer();
     }
 
-    CalculatorItem::ErrorCode checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex, QString& msg)
+    CalculatorItem::ErrorCode checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex, QString& msg) override
     {
       Q_UNUSED(infixVector)
       Q_UNUSED(currentIndex)
@@ -115,7 +115,7 @@ class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
     }
 
   protected:
-    CalculatorArray() {}
+    CalculatorArray() = default;
 
     CalculatorArray(typename DataArray<T>::Pointer dataArray, ValueType type, bool allocate) :
       ICalculatorArray(),

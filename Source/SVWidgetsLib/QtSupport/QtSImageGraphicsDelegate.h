@@ -67,7 +67,7 @@ class SVWidgetsLib_EXPORT QtSImageGraphicsDelegate : public QObject
 
   public:
     QtSImageGraphicsDelegate(QObject* parent = 0);
-    virtual ~QtSImageGraphicsDelegate();
+    ~QtSImageGraphicsDelegate() override;
 
 
     SIMPL_POINTER_PROPERTY(QMainWindow, MainWindow)

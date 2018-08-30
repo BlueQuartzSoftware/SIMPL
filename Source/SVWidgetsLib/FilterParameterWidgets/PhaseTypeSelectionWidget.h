@@ -76,12 +76,12 @@ class SVWidgetsLib_EXPORT PhaseTypeSelectionWidget : public FilterParameterWidge
 
     PhaseTypeSelectionWidget(QWidget* parent = nullptr);
 
-    virtual ~PhaseTypeSelectionWidget();
+    ~PhaseTypeSelectionWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
     /**
      * @brief checkStringValues
@@ -91,7 +91,7 @@ class SVWidgetsLib_EXPORT PhaseTypeSelectionWidget : public FilterParameterWidge
      */
     QString checkStringValues(QString current, QString filtDcName);
 
-    bool eventFilter(QObject* obj, QEvent* event);
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
   public slots:
     void beforePreflight();

@@ -62,12 +62,8 @@ const FloatVec3_t RESOLUTION = FloatVec3_t{4, 5, 6};
 class SetOriginResolutionImageGeomTest
 {
 public:
-  SetOriginResolutionImageGeomTest()
-  {
-  }
-  virtual ~SetOriginResolutionImageGeomTest()
-  {
-  }
+  SetOriginResolutionImageGeomTest() = default;
+  virtual ~SetOriginResolutionImageGeomTest() = default;
 
   // -----------------------------------------------------------------------------
   //

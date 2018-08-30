@@ -302,10 +302,7 @@ void PythonBindingsModule::generateModuleFile(const QString& outputPath, const Q
 //
 // -----------------------------------------------------------------------------
 void PythonBindingsModule::generatePythonTestFile(const QString& outputPath, const QString& isSIMPLib)
-{ 
-  QFileInfo fi(outputPath);
-  QString libOutputPath = QString("%1/%2").arg(SIMPL::PyBind11::LibraryOutputDirectory).arg(fi.fileName());
-  
+{   
   QString code;
   QTextStream out(&code);
   out << "\"\"\"\n"
@@ -350,7 +347,7 @@ void PythonBindingsModule::generatePythonTestFile(const QString& outputPath, con
       << "  " << m_LibName << "UnitTest()\n"
       << "  print(\"" << m_LibName << " UnitTest Complete\")\n";
   
-  writeOutput(true, code, libOutputPath);
+  writeOutput(true, code, outputPath);
   
 }
 
@@ -360,7 +357,6 @@ void PythonBindingsModule::generatePythonTestFile(const QString& outputPath, con
 void PythonBindingsModule::generatePythonicInterface(const QString& outputPath, const QString& isSIMPLib)
 {
   QFileInfo fi(outputPath);
-  //QString libOutputPath = QString("%1/%2").arg(SIMPL::PyBind11::LibraryOutputDirectory).arg(fi.fileName());
   
   QString code;
   QTextStream out(&code);

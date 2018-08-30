@@ -11,7 +11,7 @@ class SVWidgetsLib_EXPORT StatusBarButton : public QToolButton
   public:
     StatusBarButton(QWidget* parent = nullptr);
     
-    virtual ~StatusBarButton();
+    ~StatusBarButton() override;
     
     /**
    * @brief paintEvent
@@ -26,13 +26,13 @@ class SVWidgetsLib_EXPORT StatusBarButton : public QToolButton
      * @brief mousePressEvent
      * @param event
      */
-    virtual void mousePressEvent( QMouseEvent* event ) override;
+    void mousePressEvent( QMouseEvent* event ) override;
     
     /**
      * @brief mouseReleaseEvent
      * @param event
      */
-    virtual void mouseReleaseEvent( QMouseEvent* event ) override;
+    void mouseReleaseEvent( QMouseEvent* event ) override;
 
     virtual void updateMinimumWidth();
 

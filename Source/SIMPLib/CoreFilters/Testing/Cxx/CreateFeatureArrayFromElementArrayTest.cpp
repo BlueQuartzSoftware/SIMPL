@@ -52,12 +52,8 @@
 class CreateFeatureArrayFromElementArrayTest
 {
 public:
-  CreateFeatureArrayFromElementArrayTest()
-  {
-  }
-  virtual ~CreateFeatureArrayFromElementArrayTest()
-  {
-  }
+  CreateFeatureArrayFromElementArrayTest() = default;
+  virtual ~CreateFeatureArrayFromElementArrayTest() = default;
 
   // -----------------------------------------------------------------------------
   //

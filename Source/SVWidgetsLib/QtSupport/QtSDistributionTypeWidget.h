@@ -52,7 +52,7 @@ class SVWidgetsLib_EXPORT QtSDistributionTypeWidget : public QWidget, private Ui
     Q_OBJECT
   public:
     QtSDistributionTypeWidget(QString distributionName, QWidget* parent = nullptr);
-    virtual ~QtSDistributionTypeWidget();
+    ~QtSDistributionTypeWidget() override;
 
 
     void setDistributionName(QString name);

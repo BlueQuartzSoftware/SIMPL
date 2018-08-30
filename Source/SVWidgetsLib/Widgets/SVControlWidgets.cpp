@@ -138,3 +138,16 @@ SVTabWidget::SVTabWidget(QWidget* parent) :
 }
 
 SVTabWidget::~SVTabWidget() = default;
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+SVDialog::SVDialog(QWidget* parent) :
+  QDialog(parent)
+{
+  setAttribute(Qt::WA_MacShowFocusRect, false);
+}
+
+SVDialog::~SVDialog() = default;
+

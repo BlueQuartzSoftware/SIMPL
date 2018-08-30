@@ -70,12 +70,12 @@ class SVWidgetsLib_EXPORT DoubleWidget : public FilterParameterWidget, private U
     */
     DoubleWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~DoubleWidget();
+    ~DoubleWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
   public slots:
     void widgetChanged(const QString& msg);// when something in the widget changes

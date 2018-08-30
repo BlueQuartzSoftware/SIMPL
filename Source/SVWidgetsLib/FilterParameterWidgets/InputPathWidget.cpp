@@ -76,10 +76,7 @@ InputPathWidget::InputPathWidget(FilterParameter* parameter, AbstractFilter* fil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-InputPathWidget::~InputPathWidget()
-{
-
-}
+InputPathWidget::~InputPathWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

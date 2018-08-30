@@ -54,7 +54,7 @@ class QtSStringEdit : public QWidget, private Ui::QtSStringEdit
 
 public:
   QtSStringEdit(QWidget* parent);
-  ~QtSStringEdit();
+  ~QtSStringEdit() override;
 
   void setupGui();
 

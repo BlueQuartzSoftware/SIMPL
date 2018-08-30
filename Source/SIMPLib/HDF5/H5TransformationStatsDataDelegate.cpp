@@ -41,9 +41,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-H5TransformationStatsDataDelegate::H5TransformationStatsDataDelegate()
-{
-}
+H5TransformationStatsDataDelegate::H5TransformationStatsDataDelegate() = default;
 
 // -----------------------------------------------------------------------------
 //

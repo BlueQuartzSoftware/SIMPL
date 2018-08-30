@@ -52,9 +52,9 @@ class SIMPLib_EXPORT DivisionOperator : public BinaryOperator
       return Pointer(new DivisionOperator());
     }
 
-    virtual ~DivisionOperator();
+    ~DivisionOperator() override;
 
-    virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
+    void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack) override;
 
   protected:
     DivisionOperator();

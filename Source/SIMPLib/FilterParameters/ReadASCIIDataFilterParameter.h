@@ -48,7 +48,7 @@ public:
 
     static Pointer New(const QString& humanLabel, const QString& propertyName, const QVariant& defaultValue, Category category, int groupIndex = -1);
 
-    virtual ~ReadASCIIDataFilterParameter();
+    ~ReadASCIIDataFilterParameter() override;
 
     QString getWidgetType() const override;
 

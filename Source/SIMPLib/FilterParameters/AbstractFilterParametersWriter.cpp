@@ -38,9 +38,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilterParametersWriter::AbstractFilterParametersWriter()
-{
-}
+AbstractFilterParametersWriter::AbstractFilterParametersWriter() = default;
 
 // -----------------------------------------------------------------------------
 //

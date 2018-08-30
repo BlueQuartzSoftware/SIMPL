@@ -77,12 +77,12 @@ class SVWidgetsLib_EXPORT MultiDataArraySelectionWidget : public FilterParameter
 
     MultiDataArraySelectionWidget(QWidget* parent = nullptr);
 
-    virtual ~MultiDataArraySelectionWidget();
+    ~MultiDataArraySelectionWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
     /**
     * @brief checkStringValues
@@ -105,7 +105,7 @@ class SVWidgetsLib_EXPORT MultiDataArraySelectionWidget : public FilterParameter
      * @param event
      * @return
      */
-    bool eventFilter(QObject* obj, QEvent* event);
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
   public slots:
     void beforePreflight();

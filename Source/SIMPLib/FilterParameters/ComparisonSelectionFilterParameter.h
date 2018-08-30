@@ -96,7 +96,7 @@ class SIMPLib_EXPORT ComparisonSelectionFilterParameter : public FilterParameter
                        GetterCallbackType getterCallback, QVector<QString> choices,
                        bool showOperators, int groupIndex = -1);
 
-    virtual ~ComparisonSelectionFilterParameter();
+    ~ComparisonSelectionFilterParameter() override;
 
     SIMPL_INSTANCE_PROPERTY(QVector<QString>, Choices)
     SIMPL_INSTANCE_PROPERTY(bool, ShowOperators)

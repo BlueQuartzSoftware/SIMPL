@@ -56,12 +56,8 @@
 class CreateAttributeMatrixTest
 {
 public:
-  CreateAttributeMatrixTest()
-  {
-  }
-  virtual ~CreateAttributeMatrixTest()
-  {
-  }
+  CreateAttributeMatrixTest() = default;
+  virtual ~CreateAttributeMatrixTest() = default;
 
   // -----------------------------------------------------------------------------
   //

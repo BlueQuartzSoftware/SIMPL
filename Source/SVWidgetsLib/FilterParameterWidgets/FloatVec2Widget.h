@@ -70,12 +70,12 @@ class SVWidgetsLib_EXPORT FloatVec2Widget : public FilterParameterWidget, privat
     */
     FloatVec2Widget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~FloatVec2Widget();
+    ~FloatVec2Widget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
   public slots:
     void widgetChanged(const QString& msg);

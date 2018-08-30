@@ -54,9 +54,9 @@ class SIMPLib_EXPORT FloorOperator : public UnaryOperator
       return Pointer(new FloorOperator());
     }
 
-    virtual ~FloorOperator();
+    ~FloorOperator() override;
 
-    virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
+    void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack) override;
 
   protected:
     FloorOperator();

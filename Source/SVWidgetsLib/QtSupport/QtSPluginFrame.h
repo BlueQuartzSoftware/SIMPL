@@ -67,7 +67,7 @@ class SVWidgetsLib_EXPORT QtSPluginFrame : public QFrame
 
   public:
     QtSPluginFrame(QWidget* parent = nullptr);
-    virtual ~QtSPluginFrame();
+    ~QtSPluginFrame() override;
 
 
     /**

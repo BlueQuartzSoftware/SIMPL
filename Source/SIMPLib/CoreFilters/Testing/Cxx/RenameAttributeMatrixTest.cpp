@@ -54,12 +54,8 @@
 class RenameAttributeMatrixTest
 {
 public:
-  RenameAttributeMatrixTest()
-  {
-  }
-  virtual ~RenameAttributeMatrixTest()
-  {
-  }
+  RenameAttributeMatrixTest() = default;
+  virtual ~RenameAttributeMatrixTest() = default;
 
   // -----------------------------------------------------------------------------
   //

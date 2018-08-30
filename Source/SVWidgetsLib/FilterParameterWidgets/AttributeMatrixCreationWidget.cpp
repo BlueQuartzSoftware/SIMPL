@@ -79,9 +79,7 @@ AttributeMatrixCreationWidget::AttributeMatrixCreationWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixCreationWidget::~AttributeMatrixCreationWidget()
-{
-}
+AttributeMatrixCreationWidget::~AttributeMatrixCreationWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

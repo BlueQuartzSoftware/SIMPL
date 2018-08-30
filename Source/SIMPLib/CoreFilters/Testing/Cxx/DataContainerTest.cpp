@@ -124,12 +124,8 @@ QString H5File()
 class DataContainerTest
 {
 public:
-  DataContainerTest()
-  {
-  }
-  virtual ~DataContainerTest()
-  {
-  }
+  DataContainerTest() = default;
+  virtual ~DataContainerTest() = default;
 
   // -----------------------------------------------------------------------------
   //

@@ -30,7 +30,7 @@ class SVWidgetsLib_EXPORT DataContainerArrayWidget : public QWidget, private Ui:
     DataContainerArrayWidget(QWidget* parent = nullptr);
     DataContainerArrayWidget(AbstractFilter* filter, QWidget* parent = nullptr);
 
-    virtual ~DataContainerArrayWidget();
+    ~DataContainerArrayWidget() override;
 
 
     /**

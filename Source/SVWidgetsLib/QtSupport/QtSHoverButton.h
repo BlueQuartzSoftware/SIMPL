@@ -45,10 +45,10 @@ class SVWidgetsLib_EXPORT QtSHoverButton : public QPushButton
   public:
     explicit QtSHoverButton(QWidget* parent = nullptr);
 
-    virtual ~QtSHoverButton();
+    ~QtSHoverButton() override;
 
   protected:
-    bool event(QEvent* event);
+    bool event(QEvent* event) override;
 
   private:
     QtSHoverButton(const QtSHoverButton&) = delete; // Copy Constructor Not Implemented

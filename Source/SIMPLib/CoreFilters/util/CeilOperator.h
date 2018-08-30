@@ -54,9 +54,9 @@ class SIMPLib_EXPORT CeilOperator : public UnaryOperator
       return Pointer(new CeilOperator());
     }
 
-    virtual ~CeilOperator();
+    ~CeilOperator() override;
 
-    virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
+    void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack) override;
 
   protected:
     CeilOperator();

@@ -62,12 +62,8 @@ standard C++ library."
 class H5UtilitiesTest
 {
 public:
-  H5UtilitiesTest()
-  {
-  }
-  virtual ~H5UtilitiesTest()
-  {
-  }
+  H5UtilitiesTest() = default;
+  virtual ~H5UtilitiesTest() = default;
 
   int32_t AttrSize = 0;
 

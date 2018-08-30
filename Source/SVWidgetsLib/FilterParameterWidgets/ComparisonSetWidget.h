@@ -61,7 +61,7 @@ class SVWidgetsLib_EXPORT ComparisonSetWidget : public IComparisonWidget, privat
 
 public:
   ComparisonSetWidget(QWidget* parent, ComparisonSet::Pointer comparisonSet = nullptr);
-  ~ComparisonSetWidget();
+  ~ComparisonSetWidget() override;
 
   /**
   * @brief Returns the comparisons used by the ComparisonSet
@@ -104,7 +104,7 @@ public:
   * @brief returns the ComparisonSet as an AbstractComparison
   * @return
   */
-  AbstractComparison::Pointer getComparison();
+  AbstractComparison::Pointer getComparison() override;
 
   /**
   * @brief Sets the array of names to use in any nested IComparisonWidgets
@@ -169,19 +169,19 @@ protected:
   * @brief Handles dragging ComparisonContainerWidgets into the ComparisonSet
   * @param event
   */
-  void dragEnterEvent(QDragEnterEvent* event);
+  void dragEnterEvent(QDragEnterEvent* event) override;
   
   /**
   * @brief Handles moving ComparisonContainerWidgets in the ComparisonSet
   * @param event
   */
-  void dragMoveEvent(QDragMoveEvent* event);
+  void dragMoveEvent(QDragMoveEvent* event) override;
 
   /**
   * @brief Handles dropping ComparisonContainerWidgets in the ComparisonSet
   * @param event
   */
-  void dropEvent(QDropEvent* event);
+  void dropEvent(QDropEvent* event) override;
 
 protected slots:
   /**

@@ -86,9 +86,7 @@ public:
   : kArrayName("TestArray")
   {
   }
-  virtual ~StructArrayTest()
-  {
-  }
+  virtual ~StructArrayTest() = default;
 
   typedef struct
   {

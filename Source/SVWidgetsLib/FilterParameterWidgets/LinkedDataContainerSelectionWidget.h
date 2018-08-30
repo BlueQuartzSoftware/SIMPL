@@ -71,12 +71,12 @@ class SVWidgetsLib_EXPORT LinkedDataContainerSelectionWidget : public FilterPara
 
     LinkedDataContainerSelectionWidget(QWidget* parent = nullptr);
 
-    virtual ~LinkedDataContainerSelectionWidget();
+    ~LinkedDataContainerSelectionWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
     /**
      * @brief checkStringValues
@@ -99,7 +99,7 @@ class SVWidgetsLib_EXPORT LinkedDataContainerSelectionWidget : public FilterPara
      * @param event
      * @return
      */
-    bool eventFilter(QObject* obj, QEvent* event);
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
   public slots:
     void widgetChanged();

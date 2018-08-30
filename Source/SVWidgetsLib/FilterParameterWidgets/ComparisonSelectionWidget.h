@@ -74,7 +74,7 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
     Q_OBJECT
   public:
     ComparisonSelectionWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
-    virtual ~ComparisonSelectionWidget();
+    ~ComparisonSelectionWidget() override;
 
     enum ArrayListType
     {
@@ -92,7 +92,7 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
     /**
      * @brief setupGui Initializes some of the GUI elements with selections or other GUI related items
      */
-    virtual void setupGui();
+    void setupGui() override;
 
     /**
      * @brief eventFilter
@@ -100,7 +100,7 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
      * @param event
      * @return
      */
-    bool eventFilter(QObject* obj, QEvent* event);
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
   public slots:
     /**

@@ -54,12 +54,8 @@
 class RenameAttributeArrayTest
 {
 public:
-  RenameAttributeArrayTest()
-  {
-  }
-  virtual ~RenameAttributeArrayTest()
-  {
-  }
+  RenameAttributeArrayTest() = default;
+  virtual ~RenameAttributeArrayTest() = default;
 
   // -----------------------------------------------------------------------------
   //

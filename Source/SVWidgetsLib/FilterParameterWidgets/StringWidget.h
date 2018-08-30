@@ -71,12 +71,12 @@ class SVWidgetsLib_EXPORT StringWidget : public FilterParameterWidget, private U
     */
     StringWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~StringWidget();
+    ~StringWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
   public slots:
     void beforePreflight();

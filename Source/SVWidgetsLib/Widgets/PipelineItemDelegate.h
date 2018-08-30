@@ -52,7 +52,7 @@ class SVWidgetsLib_EXPORT PipelineItemDelegate : public QStyledItemDelegate
   public:    
     explicit PipelineItemDelegate(SVPipelineView* view);
 
-    virtual ~PipelineItemDelegate();
+    ~PipelineItemDelegate() override;
 
     QPixmap createPixmap(const QModelIndex &index) const;
 

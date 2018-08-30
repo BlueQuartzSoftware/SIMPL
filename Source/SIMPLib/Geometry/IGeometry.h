@@ -93,7 +93,7 @@ class SIMPLib_EXPORT IGeometry : public Observable
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometry, Observable)
 
     IGeometry();
-    virtual ~IGeometry();
+    ~IGeometry() override;
 
     using EnumType = unsigned int;
 

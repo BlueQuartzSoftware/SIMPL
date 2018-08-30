@@ -136,7 +136,7 @@ public:
   static Pointer New(const QString& humanLabel, const QString& propertyName, const FileListInfo_t& defaultValue, Category category, SetterCallbackType setterCallback,
                      GetterCallbackType getterCallback);
 
-  virtual ~FileListInfoFilterParameter();
+  ~FileListInfoFilterParameter() override;
 
   /**
    * @brief getWidgetType Returns the type of widget that displays and controls

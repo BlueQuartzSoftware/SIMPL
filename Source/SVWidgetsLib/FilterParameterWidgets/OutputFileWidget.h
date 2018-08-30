@@ -60,12 +60,12 @@ class SVWidgetsLib_EXPORT OutputFileWidget : public AbstractIOFileWidget
     */
     OutputFileWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~OutputFileWidget();
+    ~OutputFileWidget() override;
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
   public slots:
     void selectOutputFile();

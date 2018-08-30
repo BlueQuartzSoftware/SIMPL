@@ -41,15 +41,16 @@ int main(int argc, char* argv[])
   QCoreApplication::setOrganizationDomain("bluequartz.net");
   QCoreApplication::setApplicationName("GeneratePythonBindings");
 
-  if(argc != 7)
+  if(argc != 8)
   {
-    std::cout << "GeneratePythonBindings needs 6 arguments:" << std::endl;
+    std::cout << "GeneratePythonBindings needs 7 arguments:" << std::endl;
     std::cout << "   [1] Path to the source directory to recursively search" << std::endl;
     std::cout << "   [2] Characters to strip from the path. '-' means do not strip anything" << std::endl;
     std::cout << "   [3] Name of the Library/Plugin" << std::endl;
     std::cout << "   [4] Top Level Directory where to write the generated files" << std::endl;
     std::cout << "   [5] Path to the module template file" << std::endl;
     std::cout << "   [6] Is this SIMPLib being compiled" << std::endl;
+    std::cout << "   [7] The type of Build this is .|Debug|Release|MinSizeRel|RelWithDebInfo|. Use a '.' for anything OTHER than VisualStudio|XCode";
     std::cout << "Arguments were:" << std::endl;
     for(int i = 0; i < argc; i++)
     {
@@ -73,8 +74,9 @@ int main(int argc, char* argv[])
   QString genDir = QString::fromLatin1(argv[4]);
   QString modTemplateFile = QString::fromLatin1(argv[5]);
   QString isSIMPLib = QString::fromLatin1(argv[6]);
+  QString cfgIntDir = QString::fromLatin1(argv[7]);
 
-  PyBind11Generator bindingsGenerator(QDir(QString::fromLatin1(argv[1])), charsToStrip, libName, genDir, modTemplateFile, isSIMPLib);
+  PyBind11Generator bindingsGenerator(QDir(QString::fromLatin1(argv[1])), charsToStrip, libName, genDir, modTemplateFile, isSIMPLib, cfgIntDir);
 
   bindingsGenerator.execute();
 

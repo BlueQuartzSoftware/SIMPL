@@ -70,10 +70,7 @@ OutputPathWidget::OutputPathWidget(FilterParameter* parameter, AbstractFilter* f
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-OutputPathWidget::~OutputPathWidget()
-{
-
-}
+OutputPathWidget::~OutputPathWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

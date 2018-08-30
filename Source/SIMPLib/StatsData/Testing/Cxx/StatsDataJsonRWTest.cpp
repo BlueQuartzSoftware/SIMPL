@@ -62,9 +62,7 @@ public:
   {
   }
 
-  virtual ~StatsDataJsonRWTest()
-  {
-  }
+  virtual ~StatsDataJsonRWTest() = default;
 
   SIMPL_INSTANCE_STRING_PROPERTY(BoundaryStatsFileName)
   SIMPL_INSTANCE_STRING_PROPERTY(MatrixStatsFileName)

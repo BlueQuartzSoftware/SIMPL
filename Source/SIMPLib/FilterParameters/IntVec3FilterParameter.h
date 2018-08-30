@@ -120,7 +120,7 @@ public:
     const IntVec3_t& defaultValue, Category category, SetterCallbackType setterCallback,
     GetterCallbackType getterCallback, int groupIndex = -1);
 
-    virtual ~IntVec3FilterParameter();
+    ~IntVec3FilterParameter() override;
 
   /**
    * @brief getWidgetType Returns the type of widget that displays and controls

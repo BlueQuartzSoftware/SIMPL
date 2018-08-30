@@ -100,7 +100,7 @@ public:
   SIMPL_SHARED_POINTERS(AttributeMatrix)
   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AttributeMatrix, Observable)
 
-  virtual ~AttributeMatrix();
+  ~AttributeMatrix() override;
 
   using EnumType = unsigned int;
 

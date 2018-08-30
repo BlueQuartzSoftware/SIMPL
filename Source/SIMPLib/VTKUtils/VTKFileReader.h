@@ -91,7 +91,7 @@ class SIMPLib_EXPORT VTKFileReader : public FileReader
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(VTKFileReader, FileReader)
      SIMPL_FILTER_NEW_MACRO(VTKFileReader)
 
-     virtual ~VTKFileReader();
+     ~VTKFileReader() override;
 
      SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
 
@@ -104,12 +104,12 @@ class SIMPLib_EXPORT VTKFileReader : public FileReader
       * @brief Reads the VTK header and sets the values that are described in the header
       * @return Error Condition. Negative is Error.
       */
-     int readHeader();
+     int readHeader() override;
 
      /**
       * @brief This method should be re-implemented in a subclass
       */
-     virtual int readFile()
+     int readFile() override
      {
        return -1;
     }

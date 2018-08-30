@@ -51,11 +51,11 @@ class SIMPLib_EXPORT CylinderBOps : public ShapeOps
     SIMPL_STATIC_NEW_MACRO(CylinderBOps)
 
 
-    virtual ~CylinderBOps();
+    ~CylinderBOps() override;
 
-    virtual float radcur1(QMap<ArgName, float> args);
-    virtual float inside(float axis1comp, float axis2comp, float axis3comp);
-    virtual void init() {  }
+    float radcur1(QMap<ArgName, float> args) override;
+    float inside(float axis1comp, float axis2comp, float axis3comp) override;
+    void init() override {  }
 
   protected:
     CylinderBOps();

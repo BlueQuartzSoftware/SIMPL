@@ -81,14 +81,14 @@ class SVWidgetsLib_EXPORT DataContainerReaderWidget : public FilterParameterWidg
      */
     DataContainerReaderWidget(QWidget* parent = nullptr);
 
-    virtual ~DataContainerReaderWidget();
+    ~DataContainerReaderWidget() override;
 
     void initialize(FilterParameter* parameter, AbstractFilter* filter = nullptr);
 
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
     /**
      * @brief verifyPathExists
@@ -142,7 +142,7 @@ class SVWidgetsLib_EXPORT DataContainerReaderWidget : public FilterParameterWidg
     /**
      * @brief showFileInFileSystem
      */
-    void showFileInFileSystem();
+    void showFileInFileSystem() override;
 
 
   private:

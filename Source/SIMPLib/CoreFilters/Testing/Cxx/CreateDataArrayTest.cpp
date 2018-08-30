@@ -54,12 +54,8 @@
 class CreateDataArrayTest
 {
 public:
-  CreateDataArrayTest()
-  {
-  }
-  virtual ~CreateDataArrayTest()
-  {
-  }
+  CreateDataArrayTest() = default;
+  virtual ~CreateDataArrayTest() = default;
   static const int k_NoError = 0;
   static const int k_Int8Error = -4050;
 

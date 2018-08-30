@@ -90,7 +90,7 @@ class SIMPLib_EXPORT StringFilterParameter : public FilterParameter
                        const QString& defaultValue, Category category, SetterCallbackType setterCallback,
                        GetterCallbackType getterCallback, int groupIndex = -1);
 
-    virtual ~StringFilterParameter();
+    ~StringFilterParameter() override;
 
     /**
    * @brief getWidgetType Returns the type of widget that displays and controls

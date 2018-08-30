@@ -50,9 +50,9 @@ class SVWidgetsLib_EXPORT QtSSplitter : public QSplitter
 
   public:
     QtSSplitter(QWidget* parent = nullptr);
-    virtual ~QtSSplitter();
+    ~QtSSplitter() override;
 
-    QSplitterHandle* createHandle();
+    QSplitterHandle* createHandle() override;
 
   private:
     QtSSplitter(const QtSSplitter&) = delete;    // Copy Constructor Not Implemented

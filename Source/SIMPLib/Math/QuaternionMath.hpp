@@ -91,7 +91,7 @@ class QuaternionMath
     /**
      * @brief ~QuaternionMath
      */
-    virtual ~QuaternionMath() {}
+    virtual ~QuaternionMath() = default;
 
     /**
      * @brief QuaternionMath Copy Constructor

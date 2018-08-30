@@ -49,12 +49,12 @@ class SIMPLib_EXPORT SuperEllipsoidOps : public ShapeOps
     SIMPL_TYPE_MACRO(SuperEllipsoidOps)
     SIMPL_STATIC_NEW_MACRO(SuperEllipsoidOps)
 
-    virtual ~SuperEllipsoidOps();
+    ~SuperEllipsoidOps() override;
 
-    virtual float radcur1(QMap<ArgName, float> args) override;
+    float radcur1(QMap<ArgName, float> args) override;
 
-    virtual float inside(float axis1comp, float axis2comp, float axis3comp) override;
-    virtual void init() override;
+    float inside(float axis1comp, float axis2comp, float axis3comp) override;
+    void init() override;
 
   protected:
     SuperEllipsoidOps();

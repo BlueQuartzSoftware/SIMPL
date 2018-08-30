@@ -90,7 +90,7 @@ class SIMPLib_EXPORT ConstrainedIntFilterParameter : public FilterParameter
                        const int& defaultValue, Category category, SetterCallbackType setterCallback,
                        GetterCallbackType getterCallback, int groupIndex = -1);
 
-    virtual ~ConstrainedIntFilterParameter();
+    ~ConstrainedIntFilterParameter() override;
 
     /**
    * @brief getWidgetType Returns the type of widget that displays and controls
