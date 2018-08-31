@@ -36,7 +36,7 @@
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"
-
+#include "SVWidgetsLib/Widgets/SVControlWidgets.h"
 
 class SearchLineEditPrivate;
 
@@ -77,7 +77,7 @@ class SVWidgetsLib_EXPORT IconButton : public QAbstractButton
     text if isShowingHintText() returns true (that is, does not contain
     valid user input).
  */
-class SVWidgetsLib_EXPORT QtSLineEdit : public QLineEdit
+class SVWidgetsLib_EXPORT QtSLineEdit : public SVLineEdit
 {
     Q_OBJECT
     Q_ENUMS(Side)
