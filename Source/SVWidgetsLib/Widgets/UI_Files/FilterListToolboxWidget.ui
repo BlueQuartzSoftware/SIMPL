@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>655</width>
+    <width>443</width>
     <height>458</height>
    </rect>
   </property>
@@ -48,39 +48,6 @@
        <width>16777215</width>
        <height>30</height>
       </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QLineEdit {
-    color: rgb(127, 0, 63);
-    selection-color: white;
-    border: 1px groove gray;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    padding: 2px 4px;
-}
-QLineEdit:focus {
-    color: rgb(127, 0, 63);
-    selection-color: white;
-    border: 1px groove gray;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    padding: 2px 4px;
-}
-
-QLineEdit:edit-focus {
-    color: rgb(127, 0, 63);
-    selection-color: white;
-    border: 1px groove gray;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    padding: 2px 4px;
-}</string>
      </property>
      <property name="text">
       <string/>
