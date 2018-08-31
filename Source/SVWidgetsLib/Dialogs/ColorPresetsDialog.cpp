@@ -65,7 +65,7 @@ public:
 //
 // -----------------------------------------------------------------------------
 ColorPresetsDialog::ColorPresetsDialog(QWidget* parentObject) :
-  QDialog(parentObject),
+  SVDialog(parentObject),
   Internals(new ColorPresetsDialog::pqInternals(this))
 {
   const Ui::ColorPresetsDialog &ui = this->Internals->Ui;
