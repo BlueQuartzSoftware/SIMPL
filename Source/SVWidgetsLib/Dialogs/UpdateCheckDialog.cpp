@@ -63,7 +63,7 @@ const QString UpdateFrequencyKey("Frequency");
 //
 // -----------------------------------------------------------------------------
 UpdateCheckDialog::UpdateCheckDialog(UpdateCheck::SIMPLVersionData_t versionData, QWidget* parent)
-: QDialog(parent)
+: SVDialog(parent)
 , m_WhenToCheck(UpdateCheckMonthly)
 , m_UpdateCheck(nullptr)
 , m_DialogState(DefaultDialog)
