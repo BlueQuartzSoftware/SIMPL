@@ -6,30 +6,42 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>695</width>
-    <height>534</height>
+    <width>687</width>
+    <height>413</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Installed Plugins</string>
   </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
-    <number>4</number>
+    <number>0</number>
    </property>
    <property name="topMargin">
-    <number>4</number>
+    <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>4</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <property name="spacing">
     <number>4</number>
    </property>
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QTableWidget" name="pluginsTable">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="verticalScrollBarPolicy">
         <enum>Qt::ScrollBarAsNeeded</enum>
        </property>
@@ -39,6 +51,12 @@
        <property name="editTriggers">
         <set>QAbstractItemView::NoEditTriggers</set>
        </property>
+       <attribute name="horizontalHeaderDefaultSectionSize">
+        <number>125</number>
+       </attribute>
+       <attribute name="horizontalHeaderMinimumSectionSize">
+        <number>35</number>
+       </attribute>
        <attribute name="horizontalHeaderStretchLastSection">
         <bool>false</bool>
        </attribute>
@@ -72,29 +90,6 @@
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QPushButton" name="detailsBtn">
-         <property name="text">
-          <string>Details</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
        <item>
         <widget class="QPushButton" name="addPluginBtn">
          <property name="text">
@@ -136,8 +131,19 @@
      </item>
     </layout>
    </item>
+   <item row="0" column="1">
+    <widget class="PluginDetails" name="m_PluginDetails" native="true"/>
+   </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PluginDetails</class>
+   <extends>QWidget</extends>
+   <header location="global">PluginDetails.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

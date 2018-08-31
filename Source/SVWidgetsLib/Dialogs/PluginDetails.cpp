@@ -39,10 +39,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PluginDetails::PluginDetails(QString pluginName, QWidget* parent)
+PluginDetails::PluginDetails(QWidget* parent)
+: QWidget(parent)
 {
-  m_PluginName = pluginName;
-
   setupUi(this);
 
   setupGui();
@@ -58,10 +57,7 @@ PluginDetails::~PluginDetails() = default;
 // -----------------------------------------------------------------------------
 void PluginDetails::setupGui()
 {
-  QString wt = "'" + m_PluginName + "' Details";
-  setWindowTitle(wt);
 
-  loadPluginDetails();
 }
 
 // -----------------------------------------------------------------------------
@@ -92,7 +88,8 @@ void PluginDetails::loadPluginDetails()
   descriptionTextEdit->setText(plugin->getDescription());
   copyrightLabel->setText(plugin->getCopyright());
   licenseTextEdit->setText(plugin->getLicense());
-
+  
+  filtersListWidget->clear();
   QList<QString> filters = plugin->getFilters();
   for(QList<QString>::iterator iter = filters.begin(); iter != filters.end(); iter++)
   {
@@ -104,13 +101,4 @@ void PluginDetails::loadPluginDetails()
   statusHeader->setHidden(true);
   statusLabel->setHidden(true);
 #endif
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PluginDetails::on_closeBtn_clicked()
-{
-  // Close the dialog box
-  close();
 }

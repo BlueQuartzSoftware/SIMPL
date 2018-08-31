@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>PluginDetails</class>
- <widget class="QDialog" name="PluginDetails">
+ <widget class="QWidget" name="PluginDetails">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>586</width>
-    <height>565</height>
+    <width>472</width>
+    <height>482</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -59,6 +59,9 @@
          <property name="text">
           <string>StatusText</string>
          </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item row="6" column="1">
@@ -67,7 +70,7 @@
           <string>LocationText</string>
          </property>
          <property name="wordWrap">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -76,6 +79,9 @@
          <property name="text">
           <string>VendorText</string>
          </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item row="5" column="1">
@@ -83,12 +89,18 @@
          <property name="text">
           <string>URLText</string>
          </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item row="3" column="1">
         <widget class="QLabel" name="cVersionLabel">
          <property name="text">
           <string>CVersionText</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -106,6 +118,9 @@
         <widget class="QLabel" name="copyrightLabel">
          <property name="text">
           <string>CopyrightText</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -157,6 +172,9 @@
          <property name="text">
           <string>VersionText</string>
          </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item row="0" column="0">
@@ -176,6 +194,9 @@
         <widget class="QLabel" name="nameLabel">
          <property name="text">
           <string>NameText</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -214,6 +235,18 @@
        </item>
        <item row="8" column="0" colspan="2">
         <widget class="QTextEdit" name="descriptionTextEdit">
+         <property name="minimumSize">
+          <size>
+           <width>450</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>450</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
@@ -277,36 +310,6 @@
       </layout>
      </widget>
     </widget>
-   </item>
-   <item row="12" column="2">
-    <layout class="QGridLayout" name="gridLayout_2">
-     <property name="bottomMargin">
-      <number>0</number>
-     </property>
-     <item row="0" column="0">
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="closeBtn">
-       <property name="text">
-        <string>Close</string>
-       </property>
-       <property name="default">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </item>
   </layout>
  </widget>
