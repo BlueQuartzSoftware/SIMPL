@@ -5,6 +5,9 @@
     <!-- License Text Resources -->
     <file>SIMPL/SIMPLLicense.txt</file>
 
+    <!-- Description Text Resources -->
+    <file>SIMPL/Core/CoreDescription.txt</file>
+    
     <!-- Font Resources -->
     <file>SIMPL/fonts/FiraSans-Regular.ttf</file>
 

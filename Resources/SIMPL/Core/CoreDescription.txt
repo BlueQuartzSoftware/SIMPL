@@ -1,0 +1,1 @@
+This plugin contains the core filters that make up the SIMPL library.
