@@ -76,29 +76,31 @@ QString SIMPLDataPathValidator::convertToAbsolutePath(const QString &path)
   {
     QDir dir = QDir(qApp->applicationDirPath());
 
-	QString parentPath;
+	  QString parentPath;
 
 #if defined(SIMPL_RELATIVE_PATH_CHECK)
-	parentPath = m_SIMPLDataDirectory;
+	  parentPath = m_SIMPLDataDirectory;
 #else
-#if defined (Q_OS_MAC)
+  #if defined (Q_OS_MAC)
     if(dir.dirName() == "MacOS")
     {
       dir.cdUp();
       dir.cdUp();
       dir.cdUp();
     }
+  #elif defined(Q_OS_LINUX)
+    dir.cdUp();
+  #endif
+
+    parentPath = dir.absolutePath();
 #endif
 
-	parentPath = dir.absolutePath();
-#endif
-
-	if (path.startsWith(QDir::separator()) == false && parentPath.endsWith(QDir::separator()) == false)
-	{
-		absolutePath.prepend(QDir::separator());
-	}
-	absolutePath.prepend(parentPath);
-	absolutePath = QDir::toNativeSeparators(absolutePath);
+    if (path.startsWith(QDir::separator()) == false && parentPath.endsWith(QDir::separator()) == false)
+    {
+      absolutePath.prepend(QDir::separator());
+    }
+    absolutePath.prepend(parentPath);
+    absolutePath = QDir::toNativeSeparators(absolutePath);
   }
 
   return absolutePath;
