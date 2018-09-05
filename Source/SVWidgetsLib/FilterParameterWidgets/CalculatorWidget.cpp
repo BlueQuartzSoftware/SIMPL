@@ -42,6 +42,7 @@
 #include <QtWidgets/QMenu>
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "FilterParameterWidgetsDialogs.h"
 
@@ -379,7 +380,7 @@ void CalculatorWidget::hideButton()
 // -----------------------------------------------------------------------------
 void CalculatorWidget::widgetChanged(const QString& text)
 {
-  equation->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
+  SVStyle::Instance()->SetErrorColor("QLineEdit", equation);
   equation->setToolTip("Press the 'Return' key to apply your changes");
   if(applyChangesBtn->isVisible() == false)
   {

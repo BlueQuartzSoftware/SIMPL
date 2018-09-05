@@ -372,7 +372,7 @@ void DataFormatPage::widgetChanged(const QString& text)
 {
   Q_UNUSED(text)
 
-  amName->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
+  SVStyle::Instance()->SetErrorColor("QLineEdit", amName);
   amName->setToolTip("Press the 'Return' key to apply your changes");
   if (applyChangesBtn->isVisible() == false)
   {

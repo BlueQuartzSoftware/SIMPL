@@ -151,7 +151,7 @@ void QtSStringEdit::widgetChanged(const QString& text)
   }
   else
   {
-    value->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
+    SVStyle::Instance()->SetErrorColor("QLineEdit", value);
     value->setToolTip("Press the 'Return' key to apply your changes\nPress the 'Esc' key to cancel your changes");
 
     applyChangesBtn->setVisible(true);

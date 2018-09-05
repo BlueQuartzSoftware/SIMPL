@@ -428,9 +428,11 @@ void SVStyle::LineEditErrorStyle(QLineEdit* lineEdit)
   QString str;
   QTextStream ss(&str);
   ss << "QLineEdit#" << lineEdit->objectName() << "{";
-  ss << "border: 1px solid rgb(180, 0, 0);";
-//  ss << "background-color: rgb(255, 246, 179);"; // Yellow background
-  ss << "}";
+  ss << "border: 1px solid rgb("
+  << m_Widget_Error_color.red() << ", "
+  << m_Widget_Error_color.green() << ", "
+  << m_Widget_Error_color.blue() << ");"
+  << "}";
   lineEdit->setStyleSheet(str);
 }
 
@@ -445,15 +447,37 @@ void SVStyle::LineEditClearStyle(QLineEdit* lineEdit)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVStyle::LineEditRedErrorStyle(QLineEdit* lineEdit)
+void SVStyle::LineEditBackgroundErrorStyle(QLineEdit* lineEdit)
 {
   QString str;
   QTextStream ss(&str);
   ss << "QLineEdit#" << lineEdit->objectName() << "{";
   //  ss << "border: 1px solid rgb(180, 0, 0);";
-  ss << "background-color: rgb(208, 128, 139);"; // Yellow background
-  ss << "}";
+  ss << "background-color: rgb("
+  << m_QLineEditError_background_color.red() << ", "
+  << m_QLineEditError_background_color.green() << ", "
+  << m_QLineEditError_background_color.blue() << ");"
+  << "}";
+  
   lineEdit->setStyleSheet(str);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVStyle::SetErrorColor(const QString &widgetType, QWidget* widget)
+{
+  QString str;
+  QTextStream ss(&str);
+  ss << widgetType << "#" << widget->objectName() << "{";
+  //  ss << "border: 1px solid rgb(180, 0, 0);";
+  ss << "color: rgb("
+  << m_Text_Error_color.red() << ", "
+  << m_Text_Error_color.green() << ", "
+  << m_Text_Error_color.blue() << ");"
+  << "}";
+  
+  widget->setStyleSheet(str);
 }
 
 // -----------------------------------------------------------------------------

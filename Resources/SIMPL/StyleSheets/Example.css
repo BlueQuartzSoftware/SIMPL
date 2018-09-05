@@ -437,6 +437,17 @@ SVLineEdit:disabled
     /* Style all disabled SVLineEdits */
 }
 
+QtSLineEdit
+{
+    /* Style all disabled SVLineEdits */
+}
+QtSLineEdit:focus
+{
+    /* Style all disabled SVLineEdits */
+}
+
+
+
 /* ----------------------------------------------------------------------------
 * QSpinBox Section
 * ----------------------------------------------------------------------------*/

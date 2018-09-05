@@ -121,10 +121,10 @@ void FloatWidget::filterNeedsInputParameters(AbstractFilter* filter)
     //  make sure we can convert the entered value to a 32 bit signed int
     if(!ok)
     {
-      errorLabel->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
+      SVStyle::Instance()->LineEditBackgroundErrorStyle(value);
+      SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);
       errorLabel->setText("Value entered is beyond the representable range for a float.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());
       errorLabel->show();
-      SVStyle::Instance()->LineEditErrorStyle(value);
       i = defValue;
     }
     else
@@ -135,12 +135,12 @@ void FloatWidget::filterNeedsInputParameters(AbstractFilter* filter)
   }
   else
   {
-    SVStyle::Instance()->LineEditErrorStyle(value);
-    errorLabel->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
+    SVStyle::Instance()->LineEditBackgroundErrorStyle(value);
+    SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);
     errorLabel->setText("No value entered. Filter will use default value of " + getFilterParameter()->getDefaultValue().toString());
     errorLabel->show();
   }
-
+  
   QVariant v(i);
   ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
   if(false == ok)

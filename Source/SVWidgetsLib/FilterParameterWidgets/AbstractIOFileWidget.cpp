@@ -47,6 +47,7 @@
 #include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
 #include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
 
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
 #include "SVWidgetsLib/QtSupport/QtSFileUtils.h"
@@ -137,9 +138,10 @@ void AbstractIOFileWidget::setupGui()
 void AbstractIOFileWidget::keyPressEvent(QKeyEvent* event)
 {
   if (event->key() == Qt::Key_Escape)
-  {
+  {  
+    SVStyle* style = SVStyle::Instance();
     m_LineEdit->setText(m_CurrentText);
-    m_LineEdit->setStyleSheet("");
+    style->LineEditClearStyle(m_LineEdit);
     m_LineEdit->setToolTip("");
   }
 }
@@ -195,13 +197,14 @@ void AbstractIOFileWidget::setupMenuField()
 bool AbstractIOFileWidget::verifyPathExists(QString filePath, QLineEdit* lineEdit)
 {
   QFileInfo fileinfo(filePath);
+  SVStyle* style = SVStyle::Instance();
   if(false == fileinfo.exists())
   {
-    lineEdit->setStyleSheet("QLineEdit { border: 1px solid red; }");
+    style->LineEditErrorStyle(lineEdit);
   }
   else
   {
-    lineEdit->setStyleSheet("");
+    style->LineEditClearStyle(lineEdit);
   }
   return fileinfo.exists();
 }
@@ -224,8 +227,9 @@ void AbstractIOFileWidget::on_m_LineEdit_editingFinished()
   {
     absPathLabel->hide();
   }
-
-  m_LineEdit->setStyleSheet(QString(""));
+  
+  SVStyle* style = SVStyle::Instance();
+  style->LineEditClearStyle(m_LineEdit);
   m_CurrentText = m_LineEdit->text();
   emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }
@@ -261,14 +265,16 @@ void AbstractIOFileWidget::on_m_LineEdit_textChanged(const QString& text)
     m_ShowFileAction->setDisabled(true);
   }
 
+  SVStyle* style = SVStyle::Instance();
+
   if (text != m_CurrentText)
   {
-    m_LineEdit->setStyleSheet(QString::fromLatin1("QLineEdit { color: rgb(255, 0, 0); }"));
+    style->LineEditBackgroundErrorStyle(m_LineEdit);
     m_LineEdit->setToolTip("Press the 'Return' key to apply your changes");
   }
   else
   {
-    m_LineEdit->setStyleSheet("");
+    style->LineEditClearStyle(m_LineEdit);
     m_LineEdit->setToolTip("");
   }
 }

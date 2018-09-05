@@ -84,6 +84,12 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
 
     SIMPL_GET_PROPERTY(QString, CurrentThemeFilePath)
 
+    SIMPL_INSTANCE_PROPERTY(QColor, Widget_Error_color)    
+    Q_PROPERTY(QColor Widget_Error_color READ getWidget_Error_color WRITE setWidget_Error_color)    
+
+    SIMPL_INSTANCE_PROPERTY(QColor, Text_Error_color)    
+    Q_PROPERTY(QColor Text_Error_color READ getText_Error_color WRITE setText_Error_color)
+        
     SIMPL_INSTANCE_PROPERTY(QColor, CentralWidget_background_color)    
     Q_PROPERTY(QColor CentralWidget_background_color READ getCentralWidget_background_color WRITE setCentralWidget_background_color)    
     
@@ -300,7 +306,10 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     
     SIMPL_INSTANCE_PROPERTY(QColor, QLineEditDisabled_background_color)    
     Q_PROPERTY(QColor QLineEditDisabled_background_color READ getQLineEditDisabled_background_color WRITE setQLineEditDisabled_background_color)    
-    
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QLineEditError_background_color)    
+    Q_PROPERTY(QColor QLineEditError_background_color READ getQLineEditError_background_color WRITE setQLineEditError_background_color)    
+        
     
     SIMPL_INSTANCE_PROPERTY(QColor, QSpinBoxArrow_background_color)
     Q_PROPERTY(QColor QSpinBoxArrow_background_color READ getQSpinBoxArrow_background_color WRITE setQSpinBoxArrow_background_color)
@@ -516,7 +525,13 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
      * @brief LineEditRedErrorStyle
      * @param lineEdit
      */
-    void LineEditRedErrorStyle(QLineEdit* lineEdit);
+    void LineEditBackgroundErrorStyle(QLineEdit* lineEdit);
+    
+    /**
+     * @brief SetErrorColor
+     * @param widget
+     */
+    void SetErrorColor(const QString &widgetType, QWidget* widget);
     
     /**
      * @brief DAPSelectionButtonStyle
