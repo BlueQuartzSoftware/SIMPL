@@ -42,6 +42,7 @@ set(SVWidgetsLib_Widgets_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/ProgressDialog.h
   
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVControlWidgets.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVOverlayWidgetButton.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVStyle.h
 )
 
@@ -95,6 +96,7 @@ set(SVWidgetsLib_Widgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/ProgressDialog.cpp
   
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVControlWidgets.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVOverlayWidgetButton.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVStyle.cpp
   )
 
