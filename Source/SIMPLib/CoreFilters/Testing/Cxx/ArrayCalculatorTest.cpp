@@ -36,7 +36,6 @@
 #include <QtCore/QCoreApplication>
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/Common/TemplateHelpers.hpp"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
