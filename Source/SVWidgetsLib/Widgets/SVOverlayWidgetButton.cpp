@@ -50,9 +50,7 @@ SVOverlayWidgetButton::SVOverlayWidgetButton(QWidget* parent)
 
   setCheckable(true);
   connect(this, &SVOverlayWidgetButton::toggled, this, &SVOverlayWidgetButton::setExpanded);
-  connect(m_Animation, &QVariantAnimation::valueChanged, this, [=]{
-    updateOverlay();
-  });
+  connect(m_Animation, &QVariantAnimation::valueChanged, this, [=] { updateOverlay(); });
 
   m_Layout = new QGridLayout(m_Frame);
   m_Layout->setMargin(4);
@@ -62,6 +60,8 @@ SVOverlayWidgetButton::SVOverlayWidgetButton(QWidget* parent)
   m_Frame->setLayout(m_Layout);
   m_Frame->setAutoFillBackground(true);
   m_Frame->setFrameStyle(QFrame::Box | QFrame::Plain);
+
+  checkValidity();
 }
 
 // -----------------------------------------------------------------------------
@@ -78,6 +78,11 @@ void SVOverlayWidgetButton::setSide(TargetSide side)
 // -----------------------------------------------------------------------------
 void SVOverlayWidgetButton::setTarget(QWidget* target)
 {
+  if(nullptr != m_Target)
+  {
+    m_Target->removeEventFilter(this);
+  }
+
   m_Target = target;
 
   if(nullptr == target)
@@ -88,13 +93,16 @@ void SVOverlayWidgetButton::setTarget(QWidget* target)
   else
   {
     m_Frame->setParent(m_Target);
+    m_Target->installEventFilter(this);
   }
 
   if(m_Source && m_Target)
   {
     updateOverlay();
-    //m_Frame->show();
+    // m_Frame->show();
   }
+
+  checkValidity();
 }
 
 // -----------------------------------------------------------------------------
@@ -119,6 +127,22 @@ void SVOverlayWidgetButton::setSource(QWidget* source)
     m_Frame->hide();
     setExpanded(false);
   }
+
+  checkValidity();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool SVOverlayWidgetButton::checkValidity()
+{
+  bool valid = m_Source && m_Target;
+  if(!valid)
+  {
+    setChecked(false);
+  }
+  setEnabled(valid);
+  return valid;
 }
 
 // -----------------------------------------------------------------------------
@@ -126,7 +150,7 @@ void SVOverlayWidgetButton::setSource(QWidget* source)
 // -----------------------------------------------------------------------------
 void SVOverlayWidgetButton::updateOverlay()
 {
-  if(nullptr == m_Target)
+  if(nullptr == m_Target || nullptr == m_Source)
   {
     return;
   }
@@ -287,7 +311,36 @@ int SVOverlayWidgetButton::getDuration() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void SVOverlayWidgetButton::addOverlappingButton(SVOverlayWidgetButton* button)
+{
+  m_OverlappingButtons.push_back(button);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void SVOverlayWidgetButton::setOverlappingButtons(QVector<SVOverlayWidgetButton*> buttons)
 {
   m_OverlappingButtons = buttons;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QVector<SVOverlayWidgetButton*> SVOverlayWidgetButton::getOverlappingButtons() const
+{
+  return m_OverlappingButtons;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool SVOverlayWidgetButton::eventFilter(QObject* obj, QEvent* event)
+{
+  if(event->type() == QEvent::Resize)
+  {
+    updateOverlay();
+  }
+
+  return QPushButton::eventFilter(obj, event);
 }

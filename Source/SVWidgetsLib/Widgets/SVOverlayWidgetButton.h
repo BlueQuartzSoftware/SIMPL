@@ -35,6 +35,7 @@
 
 #pragma once
 
+#include <QtCore/QEvent>
 #include <QtCore/QVariantAnimation>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
@@ -60,10 +61,22 @@ public:
   virtual ~SVOverlayWidgetButton() = default;
 
   /**
-   * @brief Sets the side of the target widget to extend from
+   * @brief Returns the side that the target will be overlaying
+   * @return
+   */
+  TargetSide getSide() const;
+
+  /**
+   * @brief Sets the side of the target widget that will be covered by the source
    * @param side
    */
   void setSide(TargetSide side);
+
+  /**
+   * @brief Returns the target widget
+   * @return
+   */
+  QWidget* getTarget() const;
 
   /**
    * @brief Sets the widget to overlay onto
@@ -72,29 +85,89 @@ public:
   void setTarget(QWidget* target);
 
   /**
+   * @brief Returns the source widget
+   * @return
+   */
+  QWidget* getSource() const;
+
+  /**
    * @brief Sets the widget being shown / hidden
+   * @param source
    */
   void setSource(QWidget* source);
 
-  TargetSide getSide() const;
-
-  QWidget* getTarget() const;
-
-  QWidget* getSource() const;
-
+  /**
+   * @brief Returns true if the widget is expanded.  Returns false otherwise.
+   * @return
+   */
   bool isExpanded() const;
 
+  /**
+   * @brief Sets the duration of the slide animation in milliseconds
+   * @param duration
+   */
   void setDuration(int duration);
 
+  /**
+   * @brief Returns the duration of the slide animation in milliseconds.
+   * @return
+   */
   int getDuration() const;
 
+  /**
+   * @brief Marks another SVOverlayWidgetButton as overlapping this one.\
+   * @param button
+   */
+  void addOverlappingButton(SVOverlayWidgetButton* button);
+
+  /**
+   * @brief Sets the overlapping SVOverlayWidgetButton.
+   * @param buttons
+   */
   void setOverlappingButtons(QVector<SVOverlayWidgetButton*> buttons);
 
+  /**
+   * @brief Returns the overlapping SVOverlayWidgetButtons
+   * @return
+   */
+  QVector<SVOverlayWidgetButton*> getOverlappingButtons() const;
+
 protected:
+  /**
+   * @brief Updates the overlay position
+   */
   void updateOverlay();
+
+  /**
+   * @brief Handles changes to the target visibility
+   * @param expanded
+   */
   void setExpanded(bool expanded);
+
+  /**
+   * @brief Starts or stops the slide animation
+   * @param forward
+   */
   void startAnimation(bool forward);
+
+  /**
+   * @brief Returns the end value for the animation
+   * @return
+   */
   double getEndValue() const;
+
+  /**
+   * @brief Checks the validity of the button for user interaction
+   * @return
+   */
+  bool checkValidity();
+
+  /**
+   * @brief The event filter handles resizing of the target widget to keep the overlay in an accurate size
+   * @param obj
+   * @param event
+   */
+  bool eventFilter(QObject* obj, QEvent* event) Q_DECL_OVERRIDE;
 
 private:
   QWidget* m_Target = nullptr;
