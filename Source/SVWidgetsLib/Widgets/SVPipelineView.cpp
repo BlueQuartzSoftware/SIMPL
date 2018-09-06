@@ -107,9 +107,9 @@
 SVPipelineView::SVPipelineView(QWidget* parent)
 : QListView(parent)
 , PipelineView()
+, m_PipelineState(PipelineViewState::Idle)
 , m_SavedPipeline(FilterPipeline::New())
 , m_TempPipeline(FilterPipeline::New())
-, m_PipelineState(PipelineViewState::Idle)
 {
   setupGui();
 }
