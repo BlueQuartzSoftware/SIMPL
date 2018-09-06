@@ -48,7 +48,7 @@ SVOverlayWidgetButton::SVOverlayWidgetButton(QWidget* parent)
 //
 // -----------------------------------------------------------------------------
 SVOverlayWidgetButton::SVOverlayWidgetButton(QString text, QWidget* parent)
-  : QPushButton(text, parent)
+: QPushButton(text, parent)
 {
   setupGui();
 }
@@ -227,7 +227,13 @@ void SVOverlayWidgetButton::setSource(QWidget* source)
   else
   {
     m_Frame->hide();
-    setExpanded(false);
+    m_Frame->setUpdatesEnabled(true);
+    setChecked(false);
+
+    if(m_Target)
+    {
+      m_Target->update();
+    }
   }
 
   updateSourcePolicy();
