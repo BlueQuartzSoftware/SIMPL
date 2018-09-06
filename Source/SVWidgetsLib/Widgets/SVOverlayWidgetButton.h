@@ -57,7 +57,8 @@ public:
     Bottom
   };
 
-  SVOverlayWidgetButton(QWidget* parent);
+  SVOverlayWidgetButton(QWidget* parent = nullptr);
+  SVOverlayWidgetButton(QString text, QWidget* parent = nullptr);
   virtual ~SVOverlayWidgetButton() = default;
 
   /**
@@ -134,10 +135,18 @@ public:
 
 protected:
   /**
+   * @brief Performs initial setup work for the GUI
+   */
+  void setupGui();
+
+  /**
    * @brief Updates the overlay position
    */
   void updateOverlay();
 
+  /**
+   * @brief Updates the source QSizePolicy
+   */
   void updateSourcePolicy();
 
   /**

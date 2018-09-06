@@ -41,6 +41,23 @@
 SVOverlayWidgetButton::SVOverlayWidgetButton(QWidget* parent)
 : QPushButton(parent)
 {
+  setupGui();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+SVOverlayWidgetButton::SVOverlayWidgetButton(QString text, QWidget* parent)
+  : QPushButton(text, parent)
+{
+  setupGui();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVOverlayWidgetButton::setupGui()
+{
   m_Animation = new QVariantAnimation(this);
   m_Animation->setEasingCurve(QEasingCurve::InOutQuad);
   m_Animation->setStartValue(0.0);
