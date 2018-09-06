@@ -138,6 +138,8 @@ protected:
    */
   void updateOverlay();
 
+  void updateSourcePolicy();
+
   /**
    * @brief Handles changes to the target visibility
    * @param expanded
@@ -177,4 +179,8 @@ private:
   TargetSide m_Side = TargetSide::Bottom;
   QVariantAnimation* m_Animation = nullptr;
   QVector<SVOverlayWidgetButton*> m_OverlappingButtons;
+  QSpacerItem* m_TopSpacer = nullptr;
+  QSpacerItem* m_BottomSpacer = nullptr;
+  QSpacerItem* m_LeftSpacer = nullptr;
+  QSpacerItem* m_RightSpacer = nullptr;
 };

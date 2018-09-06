@@ -52,8 +52,17 @@ SVOverlayWidgetButton::SVOverlayWidgetButton(QWidget* parent)
   connect(this, &SVOverlayWidgetButton::toggled, this, &SVOverlayWidgetButton::setExpanded);
   connect(m_Animation, &QVariantAnimation::valueChanged, this, [=] { updateOverlay(); });
 
+  m_TopSpacer = new QSpacerItem(0, 0);
+  m_BottomSpacer = new QSpacerItem(0, 0);
+  m_LeftSpacer = new QSpacerItem(0, 0);
+  m_RightSpacer = new QSpacerItem(0, 0);
+
   m_Layout = new QGridLayout(m_Frame);
-  m_Layout->setMargin(4);
+  m_Layout->addItem(m_TopSpacer, 0, 1);
+  m_Layout->addItem(m_LeftSpacer, 1, 0);
+  m_Layout->addItem(m_RightSpacer, 1, 2);
+  m_Layout->addItem(m_BottomSpacer, 2, 1);
+  m_Layout->setMargin(2);
 
   m_Frame = new SVFrame();
   m_Frame->hide();
@@ -61,6 +70,7 @@ SVOverlayWidgetButton::SVOverlayWidgetButton(QWidget* parent)
   m_Frame->setAutoFillBackground(true);
   m_Frame->setFrameStyle(QFrame::Box | QFrame::Plain);
 
+  setSide(m_Side);
   checkValidity();
 }
 
@@ -70,7 +80,68 @@ SVOverlayWidgetButton::SVOverlayWidgetButton(QWidget* parent)
 void SVOverlayWidgetButton::setSide(TargetSide side)
 {
   m_Side = side;
+
+  QSizePolicy::Policy min = QSizePolicy::Policy::Minimum;
+  QSizePolicy::Policy max = QSizePolicy::Policy::Expanding;
+
+  m_Frame->setUpdatesEnabled(false);
+  switch(m_Side)
+  {
+  case TargetSide::Top:
+    m_TopSpacer->changeSize(0, 0, min, max);
+    m_BottomSpacer->changeSize(0, 0, min, min);
+    m_LeftSpacer->changeSize(0, 0, min, min);
+    m_RightSpacer->changeSize(0, 0, min, min);
+    break;
+  case TargetSide::Bottom:
+    m_TopSpacer->changeSize(0, 0, min, min);
+    m_BottomSpacer->changeSize(0, 0, min, max);
+    m_LeftSpacer->changeSize(0, 0, min, min);
+    m_RightSpacer->changeSize(0, 0, min, min);
+    break;
+  case TargetSide::Left:
+    m_TopSpacer->changeSize(0, 0, min, min);
+    m_BottomSpacer->changeSize(0, 0, min, min);
+    m_LeftSpacer->changeSize(0, 0, max, min);
+    m_RightSpacer->changeSize(0, 0, min, min);
+    break;
+  case TargetSide::Right:
+    m_TopSpacer->changeSize(0, 0, min, min);
+    m_BottomSpacer->changeSize(0, 0, min, max);
+    m_LeftSpacer->changeSize(0, 0, min, min);
+    m_RightSpacer->changeSize(0, 0, max, min);
+    break;
+  default:
+    m_TopSpacer->changeSize(0, 0, min, min);
+    m_BottomSpacer->changeSize(0, 0, min, min);
+    m_LeftSpacer->changeSize(0, 0, min, min);
+    m_RightSpacer->changeSize(0, 0, min, min);
+    break;
+  }
+
+  updateSourcePolicy();
   updateOverlay();
+  m_Frame->setUpdatesEnabled(true);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVOverlayWidgetButton::updateSourcePolicy()
+{
+  if(nullptr == m_Source)
+  {
+    return;
+  }
+
+  if(TargetSide::Left == m_Side || TargetSide::Right == m_Side)
+  {
+    m_Source->setSizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Expanding);
+  }
+  else
+  {
+    m_Source->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Fixed);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -94,12 +165,12 @@ void SVOverlayWidgetButton::setTarget(QWidget* target)
   {
     m_Frame->setParent(m_Target);
     m_Target->installEventFilter(this);
+    m_Frame->setFixedSize(m_Target->size());
   }
 
   if(m_Source && m_Target)
   {
     updateOverlay();
-    // m_Frame->show();
   }
 
   checkValidity();
@@ -110,15 +181,29 @@ void SVOverlayWidgetButton::setTarget(QWidget* target)
 // -----------------------------------------------------------------------------
 void SVOverlayWidgetButton::setSource(QWidget* source)
 {
-  m_Layout->removeWidget(m_Source);
+  m_Frame->setUpdatesEnabled(false);
+  bool addItem = (nullptr == m_Source);
+  if(m_Source)
+  {
+    m_Layout->replaceWidget(m_Source, source);
+    m_Source->hide();
+  }
   m_Source = source;
 
   if(source)
   {
-    m_Layout->addWidget(m_Source);
+    if(addItem)
+    {
+      m_Layout->addWidget(m_Source, 1, 1);
+    }
+
     m_Source->show();
     if(m_Target)
     {
+      if(isExpanded())
+      {
+        setExpanded(true);
+      }
       updateOverlay();
     }
   }
@@ -128,6 +213,8 @@ void SVOverlayWidgetButton::setSource(QWidget* source)
     setExpanded(false);
   }
 
+  updateSourcePolicy();
+  m_Frame->setUpdatesEnabled(true);
   checkValidity();
 }
 
@@ -155,52 +242,46 @@ void SVOverlayWidgetButton::updateOverlay()
     return;
   }
 
-  int maxWidth = 15;
-  int maxHeight = 15;
-  if(m_Source)
-  {
-    maxWidth = m_Source->sizeHint().width();
-    maxHeight = m_Source->sizeHint().height();
-  }
+  m_Frame->setUpdatesEnabled(false);
+  int targetHeight = m_Target->height();
+  int targetWidth = m_Target->width();
 
   if(TargetSide::Left == m_Side || TargetSide::Right == m_Side)
   {
-    int height = m_Target->height();
-    int currentWidth = m_Animation->currentValue().toDouble();
+    int currentWidth = m_Animation->currentValue().toInt();
 
     if(TargetSide::Left == m_Side)
     {
-      QRect geom(currentWidth - maxWidth, 0, maxWidth, height);
-      m_Frame->setGeometry(geom);
+      QPoint pos(currentWidth - targetWidth, 0);
+      m_Frame->move(pos);
     }
     else
     {
-      QRect geom(m_Target->width() - currentWidth, 0, maxWidth, height);
-      m_Frame->setGeometry(geom);
+      QPoint pos(targetWidth - currentWidth, 0);
+      m_Frame->move(pos);
     }
   }
   else
   {
-    int width = m_Target->width();
-    int currentHeight = m_Animation->currentValue().toDouble();
+    int currentHeight = m_Animation->currentValue().toInt();
 
     if(TargetSide::Bottom == m_Side)
     {
-      QRect geom(0, m_Target->height() - currentHeight, width, maxHeight);
-      m_Frame->setGeometry(geom);
+      QPoint pos(0, targetHeight - currentHeight);
+      m_Frame->move(pos);
     }
     else
     {
-      QRect geom(0, currentHeight - maxHeight, width, maxHeight);
-      m_Frame->setGeometry(geom);
+      QPoint pos(0, currentHeight - targetHeight);
+      m_Frame->move(pos);
     }
   }
 
-  m_Frame->update();
   if(isChecked())
   {
     m_Frame->show();
   }
+  m_Frame->setUpdatesEnabled(true);
 }
 
 // -----------------------------------------------------------------------------
@@ -229,16 +310,16 @@ double SVOverlayWidgetButton::getEndValue() const
 {
   if(nullptr == m_Source)
   {
-    return 50;
+    return 0;
   }
 
   if(TargetSide::Left == m_Side || TargetSide::Right == m_Side)
   {
-    return m_Source->sizeHint().width();
+    return m_Source->sizeHint().width() + m_Layout->margin() * 2;
   }
   else
   {
-    return m_Source->sizeHint().height();
+    return m_Source->sizeHint().height() + m_Layout->margin() * 2;
   }
 }
 
@@ -278,9 +359,9 @@ void SVOverlayWidgetButton::setExpanded(bool expanded)
     {
       button->setChecked(false);
     }
+    m_Frame->raise();
   }
 
-  m_Frame->raise();
   startAnimation(expanded);
 }
 
@@ -339,7 +420,10 @@ bool SVOverlayWidgetButton::eventFilter(QObject* obj, QEvent* event)
 {
   if(event->type() == QEvent::Resize)
   {
+    setUpdatesEnabled(false);
+    m_Frame->setFixedSize(m_Target->size());
     updateOverlay();
+    setUpdatesEnabled(true);
   }
 
   return QPushButton::eventFilter(obj, event);
