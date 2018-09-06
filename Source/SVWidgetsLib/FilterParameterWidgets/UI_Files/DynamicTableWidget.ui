@@ -62,7 +62,7 @@
       <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
      </property>
      <property name="alternatingRowColors">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="selectionMode">
       <enum>QAbstractItemView::ExtendedSelection</enum>
@@ -108,8 +108,8 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../icons/images/Icons.qrc">
-       <normaloff>:/SIMPL/icons/images/add.png</normaloff>:/add.png</iconset>
+      <iconset resource="../../../../Resources/SIMPL.qrc">
+       <normaloff>:/SIMPL/icons/images/add.png</normaloff>:/SIMPL/icons/images/add.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -175,8 +175,8 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../icons/images/Icons.qrc">
-       <normaloff>:/SIMPL/icons/images/delete.png</normaloff>:/delete.png</iconset>
+      <iconset resource="../../../../Resources/SIMPL.qrc">
+       <normaloff>:/SIMPL/icons/images/delete.png</normaloff>:/SIMPL/icons/images/delete.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -219,8 +219,8 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../icons/images/Icons.qrc">
-       <normaloff>:/SIMPL/icons/images/delete.png</normaloff>:/delete.png</iconset>
+      <iconset resource="../../../../Resources/SIMPL.qrc">
+       <normaloff>:/SIMPL/icons/images/delete.png</normaloff>:/SIMPL/icons/images/delete.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -260,8 +260,8 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../icons/images/Icons.qrc">
-       <normaloff>:/SIMPL/icons/images/add.png</normaloff>:/add.png</iconset>
+      <iconset resource="../../../../Resources/SIMPL.qrc">
+       <normaloff>:/SIMPL/icons/images/add.png</normaloff>:/SIMPL/icons/images/add.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -284,7 +284,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../icons/images/Icons.qrc"/>
+  <include location="../../../../Resources/SIMPL.qrc"/>
  </resources>
  <connections/>
 </ui>

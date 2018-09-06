@@ -107,7 +107,7 @@ void NumericTypeWidget::filterNeedsInputParameters(AbstractFilter* filter)
   //  make sure we can convert the entered value to a 32 bit signed int
   if(i < 0)
   {
-    errorLabel->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
+    SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);
     errorLabel->setText("Invalid numeric type selected. The filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());
     errorLabel->show();
       

@@ -32,14 +32,14 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-
 #pragma once
 
 #include <QtCore/QObject>
 
-#include <SIMPLib/Plugin/PluginManager.h>
-#include <SIMPLib/Plugin/ISIMPLibPlugin.h>
+#include "SIMPLib/Plugin/PluginManager.h"
+#include "SIMPLib/Plugin/ISIMPLibPlugin.h"
+
+#include "SVWidgetsLib/Widgets/SVControlWidgets.h"
 
 
 //-- UIC generated Header
@@ -47,22 +47,26 @@
 
 #define SIMPLView_PLUGINDETAILS_PLUGIN_CONFIG 0
 
-class PluginDetails : public QDialog, private Ui::PluginDetails
+class PluginDetails : public QWidget, private Ui::PluginDetails
 {
     Q_OBJECT
 
   public:
-    PluginDetails(QString pluginName, QWidget* parent = nullptr);
+    PluginDetails(QWidget* parent = nullptr);
     ~PluginDetails() override;
 
     SIMPL_INSTANCE_PROPERTY(QString, PluginName)
-
-    void setupGui();
-
+  
+    /**
+     * @brief Load the details for the plugin name stored in the PluginName property
+     */
     void loadPluginDetails();
-
-  public slots:
-    void on_closeBtn_clicked();
+    
+  protected:
+    /**
+     * @brief Instance specific UI setup codes
+     */
+    void setupGui();
 
   private:
     PluginDetails(const PluginDetails&) = delete;  // Copy Constructor Not Implemented

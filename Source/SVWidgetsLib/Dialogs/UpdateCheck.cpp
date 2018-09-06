@@ -173,10 +173,11 @@ void UpdateCheck::networkReplied(QNetworkReply* reply)
     if(serverVersion > appVersion)
     {
       dataObj->setHasUpdate(true);
-      outMsg << "<qt><b>There is an update available for " << appName;
-      outMsg << ". The update is a " << releaseType << " and was released on " << releaseDate;
-      outMsg << ".</b><br /><br />  You are currently running version " << appVersionStr;
-      outMsg << ". If you are ready to update you can go to the main download <a href=\"http://dream3d.bluequartz.net\">website</a>.</qt>";
+      outMsg << "<qt><b>There is an update available for " << appName << ".</b><br />";
+      outMsg << "Update Type: " << releaseType << "<br />";
+      outMsg << "Release Date: " << releaseDate << "<br />";
+      outMsg << "Current Version: " << appVersionStr << "<br />";
+      outMsg << "If you are ready to update you can go to the main download <a href=\"http://dream3d.bluequartz.net\">website</a>.</qt>";
     }
     else
     {

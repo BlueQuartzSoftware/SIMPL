@@ -42,6 +42,8 @@
 
 #include "SVWidgetsLib/Dialogs/ColorPresetsDialogTableModel.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"
+#include "SVWidgetsLib/Widgets/SVControlWidgets.h"
+
 
 class QModelIndex;
 namespace Json
@@ -57,7 +59,7 @@ namespace Json
 /// This class works with vtkSMTransferFunctionPresets, which acts as the preset
 /// manager for the application with support to inspect existing presets as well
 /// as updating them.
-class SVWidgetsLib_EXPORT ColorPresetsDialog : public QDialog
+class SVWidgetsLib_EXPORT ColorPresetsDialog : public SVDialog
 {
   Q_OBJECT
 

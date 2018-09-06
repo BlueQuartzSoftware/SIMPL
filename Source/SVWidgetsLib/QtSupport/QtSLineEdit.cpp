@@ -173,7 +173,7 @@ bool SearchLineEditPrivate::eventFilter(QObject* obj, QEvent* event)
 //
 // -----------------------------------------------------------------------------
 QtSLineEdit::QtSLineEdit(QWidget* parent)
-: QLineEdit(parent)
+: SVLineEdit(parent)
 , d(new SearchLineEditPrivate(this))
 {
   setAttribute(Qt::WA_MacShowFocusRect, false);

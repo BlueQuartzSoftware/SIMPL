@@ -48,9 +48,9 @@ CorePlugin::CorePlugin()
 : m_Version(SIMPLib::Version::Package())
 , m_CompatibilityVersion(SIMPLib::Version::Package())
 , m_Vendor("OpenSource")
-, m_URL("http://")
+, m_URL("http:/dream3d.bluequratz./")
 , m_Location("")
-, m_Copyright()
+, m_Copyright("(C) 2018 BlueQuartz Software, LLC")
 , m_Filters(QList<QString>())
 , m_DidLoad(false)
 {
@@ -131,7 +131,7 @@ QString CorePlugin::getLocation()
 // -----------------------------------------------------------------------------
 QString CorePlugin::getDescription()
 {
-  QFile licenseFile(":/Core/CoreDescription.txt");
+  QFile licenseFile(":/SIMPL/Core/CoreDescription.txt");
   QFileInfo licenseFileInfo(licenseFile);
   QString text = "<<--Description was not read-->>";
 

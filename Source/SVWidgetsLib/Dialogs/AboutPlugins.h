@@ -40,17 +40,18 @@
 
 #include <QtCore/QObject>
 
-#include <SIMPLib/Plugin/PluginProxy.h>
-#include <SIMPLib/Plugin/PluginManager.h>
-#include <SIMPLib/Plugin/ISIMPLibPlugin.h>
-#include <SIMPLib/Plugin/SIMPLibPlugin.h>
+#include "SIMPLib/Plugin/PluginProxy.h"
+#include "SIMPLib/Plugin/PluginManager.h"
+#include "SIMPLib/Plugin/ISIMPLibPlugin.h"
+#include "SIMPLib/Plugin/SIMPLibPlugin.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
+#include "SVWidgetsLib/Widgets/SVControlWidgets.h"
 
 //-- UIC generated Header
 #include "ui_AboutPlugins.h"
 
-class SVWidgetsLib_EXPORT AboutPlugins : public QDialog, private Ui::AboutPlugins
+class SVWidgetsLib_EXPORT AboutPlugins : public SVDialog, private Ui::AboutPlugins
 {
     Q_OBJECT
 
@@ -82,13 +83,14 @@ class SVWidgetsLib_EXPORT AboutPlugins : public QDialog, private Ui::AboutPlugin
 
   public slots:
     void on_closeBtn_clicked();
-    void on_detailsBtn_clicked();
     void on_addPluginBtn_clicked();
     void on_removePluginBtn_clicked();
     void on_pluginsTable_currentItemChanged(QTableWidgetItem* current, QTableWidgetItem* previous);
-    void displayDetailsWindow(QTableWidgetItem* item);
     void setLoadPreferencesFlag(int state);
     void togglePluginState(int state);
+    
+    void on_pluginsTable_itemSelectionChanged();
+
 
   private:
     bool m_loadPreferencesDidChange;

@@ -57,6 +57,7 @@
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
 #include "SVWidgetsLib/QtSupport/QtSFileUtils.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #include "FilterParameterWidgetsDialogs.h"
 
@@ -668,13 +669,14 @@ void DataContainerReaderWidget::showFileInFileSystem()
 bool DataContainerReaderWidget::verifyPathExists(QString path, QLineEdit* lineEdit)
 {
   QFileInfo fileinfo(path);
+  SVStyle* style = SVStyle::Instance();
   if(false == fileinfo.exists())
   {
-    lineEdit->setStyleSheet("QLineEdit { border: 1px solid red; }");
+    style->LineEditErrorStyle(lineEdit);
   }
   else
   {
-    lineEdit->setStyleSheet("");
+   style->LineEditClearStyle(lineEdit);
   }
   return fileinfo.exists();
 }
@@ -697,8 +699,8 @@ void DataContainerReaderWidget::checkFilePath(const QString& text)
   {
     absPathLabel->hide();
   }
-
-  m_LineEdit->setStyleSheet(QString(""));
+  SVStyle* style = SVStyle::Instance();
+  style->LineEditClearStyle(m_LineEdit);
   m_CurrentText = text;
 
   updateDCAProxy(text);
@@ -770,14 +772,16 @@ void DataContainerReaderWidget::updateStylingForPath(const QString& text)
     m_ShowFileAction->setDisabled(true);
   }
 
+  SVStyle* style = SVStyle::Instance();
+  
   if (text != m_CurrentText)
   {
-    m_LineEdit->setStyleSheet(QString::fromLatin1("QLineEdit { color: rgb(255, 0, 0); }"));
+    style->LineEditBackgroundErrorStyle(m_LineEdit);
     m_LineEdit->setToolTip("Press the 'Return' key to apply your changes");
   }
   else
   {
-    m_LineEdit->setStyleSheet("");
+  style->LineEditClearStyle(m_LineEdit);
     m_LineEdit->setToolTip("");
   }
 }

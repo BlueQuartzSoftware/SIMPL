@@ -42,7 +42,6 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QFrame>
 
-#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -52,6 +51,9 @@
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
+#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
+
 
 namespace Detail
 {
@@ -204,7 +206,7 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
   if(sender() == cell && cell->text().isEmpty())\
   {\
     SVStyle::Instance()->LineEditErrorStyle(cell);\
-    errorLabel->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));\
+    SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);\
     errorLabel->setText("No value entered. Filter will use default value of " + getFilterParameter()->getDefaultValue().toString());\
     errorLabel->show();\
   }\
@@ -217,8 +219,8 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
   if(!ok)\
   {\
     if(errorLabel) {\
-    errorLabel->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));\
-    errorLabel->setText("c40 Value entered is beyond the representable range for a double.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());\
+    SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);\
+    errorLabel->setText("Value entered is beyond the representable range for a double.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());\
     errorLabel->show();\
     }\
     SVStyle::Instance()->LineEditErrorStyle(cell);\

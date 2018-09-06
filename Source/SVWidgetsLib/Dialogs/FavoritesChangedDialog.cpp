@@ -41,7 +41,7 @@
 //
 // -----------------------------------------------------------------------------
 FavoritesChangedDialog::FavoritesChangedDialog(QWidget* parent)
-: QDialog(parent)
+: SVDialog(parent)
 , m_OpenDialogLastFilePath("")
 {
   setupUi(this);

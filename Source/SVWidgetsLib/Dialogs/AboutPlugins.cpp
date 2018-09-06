@@ -69,7 +69,8 @@ static const QString NOT_FOUND_STRING = "Not Found";
 //
 // -----------------------------------------------------------------------------
 AboutPlugins::AboutPlugins(QWidget* parent)
-: m_loadPreferencesDidChange(false)
+: SVDialog(parent)
+, m_loadPreferencesDidChange(false)
 {
   setupUi(this);
 
@@ -114,9 +115,10 @@ void AboutPlugins::setupGui()
 
   // Set default cell to the first item in the list
   pluginsTable->setCurrentCell(0, 0);
+  pluginsTable->setCurrentIndex(pluginsTable->model()->index(0,0));
   QTableWidgetItem* statusItem = pluginsTable->item(pluginsTable->currentRow(), STATUS_INDEX);
 
-  if(statusItem->text() == NOT_FOUND_STRING)
+  if(statusItem && statusItem->text() == NOT_FOUND_STRING)
   {
     removePluginBtn->setVisible(true);
   }
@@ -125,10 +127,8 @@ void AboutPlugins::setupGui()
     removePluginBtn->setVisible(false);
   }
 
-  connect(pluginsTable, SIGNAL(itemDoubleClicked(QTableWidgetItem*)), this, SLOT(displayDetailsWindow(QTableWidgetItem*)));
-
   setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
-
+  
 #if defined(Q_OS_MAC)
   m_CloseAction = new QAction(this);
   m_CloseAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_W));
@@ -276,13 +276,14 @@ void AboutPlugins::on_closeBtn_clicked()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AboutPlugins::on_detailsBtn_clicked()
+void AboutPlugins::on_pluginsTable_itemSelectionChanged()
 {
   QTableWidgetItem* item = pluginsTable->item(pluginsTable->currentRow(), NAME_INDEX);
-
-  // Launch Details dialog box
-  PluginDetails dialog(item->text());
-  dialog.exec();
+  if(item)
+  {
+    m_PluginDetails->setPluginName(item->text());
+    m_PluginDetails->loadPluginDetails();
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -292,12 +293,10 @@ void AboutPlugins::on_pluginsTable_currentItemChanged(QTableWidgetItem* current,
 {
   if(nullptr != current && current->text() == NOT_FOUND_STRING)
   {
-    detailsBtn->setDisabled(true);
     removePluginBtn->setVisible(true);
   }
   else
   {
-    detailsBtn->setEnabled(true);
     removePluginBtn->setVisible(false);
   }
 }
@@ -473,19 +472,6 @@ void AboutPlugins::readCheckState(QCheckBox* checkBox, QString pluginName)
   checkBox->setChecked(prefs.value("Enabled", true).toBool());
   prefs.endGroup();
   prefs.endGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void AboutPlugins::displayDetailsWindow(QTableWidgetItem* item)
-{
-  QTableWidgetItem* statusItem = pluginsTable->item(item->row(), STATUS_INDEX);
-
-  if(nullptr != statusItem && statusItem->text() != NOT_FOUND_STRING)
-  {
-    on_detailsBtn_clicked();
-  }
 }
 
 // -----------------------------------------------------------------------------
