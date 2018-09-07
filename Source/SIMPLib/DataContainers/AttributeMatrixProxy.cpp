@@ -285,3 +285,64 @@ void AttributeMatrixProxy::updatePath(DataArrayPath::RenameType renamePath)
     dataArrays.insert(newPath.getDataArrayName(), daProxy);
   }
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataArrayProxy& AttributeMatrixProxy::getDataArrayProxy(const QString& name)
+{
+	for (QMap<QString, DataArrayProxy>::iterator iter = dataArrays.begin(); iter != dataArrays.end(); ++iter) // DataArray Level
+	{
+		DataArrayProxy& dataArray = iter.value();
+		if (dataArray.name.compare(name) == 0)
+		{
+			return dataArray;
+		}
+	}
+
+	DataArrayProxy proxy;
+	proxy.name = name;
+	dataArrays.insert(proxy.name, proxy);
+	return dataArrays[name];
+}
+
+
+QMap<QString, DataArrayProxy> AttributeMatrixProxy::getdataArrays()
+{
+	return dataArrays;
+}
+
+void AttributeMatrixProxy::setdataArrays(QMap<QString, DataArrayProxy> newDataArrays)
+{
+	dataArrays = newDataArrays;
+}
+
+QString AttributeMatrixProxy::getname()
+{
+	return name;
+}
+
+void AttributeMatrixProxy::setname(QString newName)
+{
+	name = newName;
+}
+
+AttributeMatrix::Type AttributeMatrixProxy::getamType()
+{
+	return amType;
+}
+
+void AttributeMatrixProxy::setamType(AttributeMatrix::Type newType)
+{
+	amType = newType;
+}
+
+uint8_t AttributeMatrixProxy::getflag()
+{
+	return flag;
+}
+
+void AttributeMatrixProxy::setflag(uint8_t newFlag)
+{
+	flag = newFlag;
+}

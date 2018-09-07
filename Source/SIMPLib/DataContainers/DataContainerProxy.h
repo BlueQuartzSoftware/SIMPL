@@ -51,6 +51,19 @@
  */
 class SIMPLib_EXPORT DataContainerProxy
 {
+  PYB11_CREATE_BINDINGS(DataContainerProxy)
+
+  PYB11_CREATION()
+
+  typedef QMap<QString, AttributeMatrixProxy> AttributeMatricesMap;
+ 
+  PYB11_PROPERTY(AttributeMatricesMap attributeMatricies READ getattributeMatricies WRITE setattributeMatricies)
+  PYB11_PROPERTY(QString name READ getname WRITE setname)
+  PYB11_PROPERTY(uint8_t flag READ getflag WRITE setflag)
+
+  PYB11_METHOD(AttributeMatrixProxy getAttributeMatrixProxy ARGS name RETURN_VALUE_POLICY py::return_value_policy::reference)
+  PYB11_METHOD(void toggleFlag)
+  
   public:
 
     // This enumeration is not a class enumeration because it is not possible to
@@ -126,6 +139,52 @@ class SIMPLib_EXPORT DataContainerProxy
     * @return
     */
     bool readJson(QJsonObject& json);
+
+
+	/**
+	 * @brief Get the attribute matrices (Python Binding)
+	 */
+	QMap<QString, AttributeMatrixProxy> getattributeMatricies();
+
+	/**
+	 * @brief Get the attribute matrices(Python Binding)
+	 * @param new AttributeMatrices map
+	 */
+	void setattributeMatricies(QMap<QString, AttributeMatrixProxy>);
+
+	/**
+	 * @brief Get the data container name (Python Binding)
+	 */
+	QString getname();
+
+	/**
+	 * @brief Set the data container name (Python Binding)
+	 * @param new data container name
+	 */
+	void setname(QString);
+
+	/**
+	 * @brief Get the data container flag (Python Binding)
+	 */
+	uint8_t getflag();
+
+	/**
+	 * @brief Set the data container flag (Python Binding)
+	 * @param new data container flag
+	 */
+	void setflag(uint8_t);
+
+	/**
+	 * @brief Toggle the data container flag (Python Binding)
+	 */
+	void toggleFlag();
+
+	/**
+	 * @brief Get the Attribute Matrix proxy
+	 * @param the name of the attribute matrix
+	 * @return the attribute matrix proxy
+	 */
+	AttributeMatrixProxy& getAttributeMatrixProxy(const QString& name);
 
     /**
      * @brief setFlags

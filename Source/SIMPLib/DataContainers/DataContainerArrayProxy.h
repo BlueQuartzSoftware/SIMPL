@@ -52,9 +52,14 @@ class DataContainerArray;
  * @brief DataContainerArrayProxy
  */
 class SIMPLib_EXPORT DataContainerArrayProxy
-{
-  
+{  
   PYB11_CREATE_BINDINGS(DataContainerArrayProxy)
+
+  PYB11_CREATION()
+  typedef QMap<QString, DataContainerProxy> DataContainersMap;
+
+  PYB11_PROPERTY(DataContainersMap dataContainers READ getdataContainersMap WRITE setdataContainersMap)
+  PYB11_METHOD(DataContainerProxy.& getDataContainerProxy ARGS name RETURN_VALUE_POLICY py::return_value_policy::reference)
 
   public:
 
@@ -120,6 +125,17 @@ class SIMPLib_EXPORT DataContainerArrayProxy
      * @param out
      */
     void print(const QString &header = QString(""));
+
+	/**
+	 * @brief Get the data containers (Python Binding)
+	 */
+	QMap<QString, DataContainerProxy> getdataContainers();
+
+	/**
+	 * @brief Get the data containers (Python Binding)
+	 * @param new dataContainers map
+	 */
+	 void setdataContainers(QMap<QString, DataContainerProxy>);
 
     /**
      * @brief Sets the flags of the proxy items that match the geometry, attribute matrix type, primitive type, and number of components flags that are input as parameters.

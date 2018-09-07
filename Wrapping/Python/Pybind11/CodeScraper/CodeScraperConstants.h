@@ -25,6 +25,7 @@ namespace
   static const QString kConstMethod("CONST_METHOD");
   static const QString kSuperClass("SUPERCLASS");
   static const QString kOverload("OVERLOAD");
+  static const QString kReturnValuePolicy("RETURN_VALUE_POLICY");
 
   /* These are for the macros that appear in the header files */
   static const QString kPYB11_CREATE_BINDINGS("PYB11_CREATE_BINDINGS");

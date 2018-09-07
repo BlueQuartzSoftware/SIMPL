@@ -44,8 +44,18 @@
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 
+#include <iostream>
+
 class ASCIIWizardData
 {
+  PYB11_CREATE_BINDINGS(ASCIIWizardData)
+  
+  PYB11_CREATION(ASCIIWizardData ARGS QString int int)
+
+  PYB11_METHOD(void updateDataArrayPath ARGS DataArrayPath::RenameType,renamePath)
+  PYB11_METHOD(bool isEmpty)
+
+  
 public:
   ASCIIWizardData() :
     inputFilePath(""),

@@ -45,6 +45,18 @@
 
 class SIMPLib_EXPORT AttributeMatrixProxy
 {
+  PYB11_CREATE_BINDINGS(AttributeMatrixProxy)
+
+  PYB11_CREATION()
+
+  typedef QMap<QString, DataArrayProxy> DataArraysMap;
+  typedef AttributeMatrix::Type AMType;
+  PYB11_PROPERTY(DataArraysMap dataArrays READ getdataArrays WRITE setdataArrays)
+  PYB11_PROPERTY(QString name READ getname WRITE setname)
+  PYB11_PROPERTY(AMType amType READ getamType WRITE setamType)
+  PYB11_PROPERTY(uint8_t flag READ getflag WRITE setflag)
+  PYB11_METHOD(DataArrayProxy getDataArrayProxy ARGS name RETURN_VALUE_POLICY py::return_value_policy::reference)
+
   public:
 
     // This enumeration is not a class enumeration because it is not possible to
@@ -136,6 +148,58 @@ class SIMPLib_EXPORT AttributeMatrixProxy
      * @param renamePath
      */
     void updatePath(DataArrayPath::RenameType renamePath);
+
+
+	/**
+	 * @brief Get the attribute matrices (Python Binding)
+	 */
+	QMap<QString, DataArrayProxy> getdataArrays();
+
+	/**
+	 * @brief Get the attribute matrices(Python Binding)
+	 * @param new DataArrayProxy map
+	 */
+	void setdataArrays(QMap<QString, DataArrayProxy>);
+
+	/**
+	 * @brief Get the Data Array proxy
+	 * @param the name of the data array
+	 * @return the data array proxy
+	 */
+	DataArrayProxy& getDataArrayProxy(const QString& name);
+
+	/**
+	 * @brief Get the attribute matrix name (Python Binding)
+	 */
+	QString getname();
+
+	/**
+	 * @brief Set the attribute matrix name (Python Binding)
+	 * @param new attribute matrix name
+	 */
+	void setname(QString);
+
+	/**
+	 * @brief Get the attribute matrix type (Python Binding)
+	 */
+	AttributeMatrix::Type getamType();
+
+	/**
+	 * @brief Set the attribute matrix name (Python Binding)
+	 * @param new attribute matrix type
+	 */
+	void setamType(AttributeMatrix::Type);
+
+	/**
+	 * @brief Get the attribute matrix flag (Python Binding)
+	 */
+	uint8_t getflag();
+
+	/**
+	 * @brief Set the attribute matrix flag (Python Binding)
+	 * @param new attribute matrix flag
+	 */
+	void setflag(uint8_t);
 
     //----- Our variables, publicly available
     uint8_t flag;

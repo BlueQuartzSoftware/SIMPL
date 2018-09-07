@@ -152,10 +152,12 @@ void PythonBindingsModule::addDependency(QString superClassName, QString classNa
   {
     QObject* object = new QObject(nullptr);
     object->setObjectName(superClassName);
+	object->setProperty("superClass", "");
     m_ClassVector.push_back(object);
 
     QObject* obj = new QObject(object);
     obj->setObjectName(className);
+	object->setProperty("superClass", superClassName);
     superClassAdded = true;
     classNameAdded = true;
   }
@@ -164,6 +166,7 @@ void PythonBindingsModule::addDependency(QString superClassName, QString classNa
   {
     QObject* obj = new QObject(nullptr);
     obj->setObjectName(className);
+	obj->setProperty("superClass", superClassName);
     m_ClassVector.push_back(obj);
   }
 }
@@ -339,13 +342,30 @@ void PythonBindingsModule::generatePythonTestFile(const QString& outputPath, con
       << "\"\"\"\n";
   QString shortLibName = m_LibName;
   shortLibName.replace("_py", "");
-  out << "import dream3d\n"
-    << "import dream3d.dream3d_py as d3d\n"
-    << "import dream3d.dream3d_py.simpl_py as simpl\n"
-    << "import dream3d.utils.simpl_common as sc\n"
-    << "import dream3d.utils.simpl_test_dirs as sd\n"
-    << "import dream3d.dream3d_py." << m_LibName << " as " << shortLibName << "\n"
- ;
+  if (shortLibName == "dream3d")
+  {
+	  shortLibName = "simpl";
+
+	  out << "import dream3d\n"
+		  << "import dream3d.dream3d_py as d3d\n"
+		  << "import dream3d.dream3d_py.simpl_py as simpl\n"
+		  << "import dream3d.utils.simpl_common as sc\n"
+		  << "import dream3d.utils.simpl_test_dirs as sd\n"
+		  << "\n\n\n"
+		  ;
+  }
+  else
+  {
+
+	  out << "import dream3d\n"
+		  << "import dream3d.dream3d_py as d3d\n"
+		  << "import dream3d.dream3d_py.simpl_py as simpl\n"
+		  << "import dream3d.utils.simpl_common as sc\n"
+		  << "import dream3d.utils.simpl_test_dirs as sd\n"
+		  << "import dream3d.dream3d_py." << m_LibName << " as " << shortLibName << "\n"
+		  << "\n\n\n"
+		  ;
+  }
 
 
  // out << "from "<< SIMPL::PyBind11::SIMPL_LibraryName << SIMPL::PyBind11::PythonModuleSuffix << " import *\n";
@@ -359,8 +379,11 @@ void PythonBindingsModule::generatePythonTestFile(const QString& outputPath, con
   
   for(auto object : m_ClassVector)
   {
-    out << "\n";
-    dumpRecursivePythonCode(0, object, out);
+	  if (object->property("superClass").toString().compare("AbstractFilter") == 0)
+	  {
+		  out << "\n";
+		  dumpRecursivePythonCode(0, object, out);
+	  }
   }
   
   
@@ -392,14 +415,31 @@ void PythonBindingsModule::generatePythonicInterface(const QString& outputPath, 
   out << "\n\n";
   QString shortLibName = m_LibName;
   shortLibName.replace("_py", "");
-  out << "import dream3d\n"
-    << "import dream3d.dream3d_py as d3d\n"
-    // << "import dream3d.dream3d_py.simpl_py as simpl\n"
-    // << "import dream3d.utils.simpl_common as sc\n"
-    // << "import dream3d.utils.simpl_test_dirs as sd\n"
-    << "import dream3d.dream3d_py." << m_LibName << " as " << shortLibName << "\n"
-    << "\n\n\n"
-    ;
+  if (shortLibName == "dream3d")
+  {
+	  shortLibName = "simpl";
+
+	  out << "import dream3d\n"
+		  << "import dream3d.dream3d_py as d3d\n"
+		  // << "import dream3d.dream3d_py.simpl_py as simpl\n"
+		  // << "import dream3d.utils.simpl_common as sc\n"
+		  // << "import dream3d.utils.simpl_test_dirs as sd\n"
+		  << "import dream3d.dream3d_py.simpl_py as " << shortLibName << "\n"
+		  << "\n\n\n"
+		  ;
+  }
+  else 
+  {
+
+	  out << "import dream3d\n"
+		  << "import dream3d.dream3d_py as d3d\n"
+		  // << "import dream3d.dream3d_py.simpl_py as simpl\n"
+		  // << "import dream3d.utils.simpl_common as sc\n"
+		  // << "import dream3d.utils.simpl_test_dirs as sd\n"
+		  << "import dream3d.dream3d_py." << m_LibName << " as " << shortLibName << "\n"
+		  << "\n\n\n"
+		  ;
+  }
     
     
   QList<QString> classes = m_Headers.keys();
@@ -417,6 +457,9 @@ void PythonBindingsModule::generatePythonicInterface(const QString& outputPath, 
     {
       continue;
     }
+	else if (bodyCodes.isEmpty()) {
+		continue;
+	}
     out << "def " << SIMPL::Python::fromCamelCase(aClass) << initCodes << ":\n"
         << "    \"\"\"" << "\n"
         << "    Instantiates " << aClass << "\n"
@@ -441,7 +484,7 @@ void PythonBindingsModule::dumpRecursivePythonCode(int level, const QObject* obj
   { 
     // These are a list of Abstract or Top level classes that do not need to be tested
     // so let's avoid those.
-    QStringList avoidThese = {"AbstractFilter", "FileReader", "FileWriter" };
+    QStringList avoidThese = {"AbstractFilter", "FileReader", "FileWriter", "Observable"};
 
     QByteArray buf;
     buf.fill(' ', level / 2 * 8);
@@ -452,6 +495,10 @@ void PythonBindingsModule::dumpRecursivePythonCode(int level, const QObject* obj
     QString initCode = m_PythonCodes[object->objectName()];
     QString shortLibName = m_LibName;
     shortLibName.replace("_py", "");
+	if (shortLibName == "dream3d")
+	{
+		shortLibName = "simpl";
+	}
 
     const char* pycode = R"PY(
     # @FILTER_NAME@

@@ -324,3 +324,13 @@ void DataArrayProxy::updatePath(DataArrayPath::RenameType renamePath)
     path = newPath.serialize();
   }
 }
+
+uint8_t DataArrayProxy::getflag()
+{
+	return flag;
+}
+
+void DataArrayProxy::setflag(uint8_t newFlag)
+{
+	flag = newFlag;
+}

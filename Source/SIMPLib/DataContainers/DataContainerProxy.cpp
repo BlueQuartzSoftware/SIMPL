@@ -235,3 +235,64 @@ void DataContainerProxy::setFlags(uint8_t flag, AttributeMatrixProxy::AMTypeFlag
     }
   }
 }
+
+QMap<QString, AttributeMatrixProxy> DataContainerProxy::getattributeMatricies()
+{
+	return attributeMatricies;
+}
+
+void DataContainerProxy::setattributeMatricies(QMap<QString, AttributeMatrixProxy> newAttributeMatricies)
+{
+	attributeMatricies = newAttributeMatricies;
+}
+
+QString DataContainerProxy::getname()
+{
+	return name;
+}
+
+void DataContainerProxy::setname(QString newName)
+{
+	name = newName;
+}
+
+uint8_t DataContainerProxy::getflag()
+{
+	return flag;
+}
+
+void DataContainerProxy::setflag(uint8_t newFlag)
+{
+	flag = newFlag;
+}
+
+void DataContainerProxy::toggleFlag()
+{
+	if (flag == Qt::Checked)
+	{
+		flag = Qt::Unchecked;
+	}
+	else
+	{
+		flag = Qt::Checked;
+	}
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AttributeMatrixProxy& DataContainerProxy::getAttributeMatrixProxy(const QString& name)
+{
+	for (QMap<QString, AttributeMatrixProxy>::iterator amIter = attributeMatricies.begin(); amIter != attributeMatricies.end(); ++amIter) // AttributeMatrix Level
+	{
+		AttributeMatrixProxy& am = amIter.value();
+		if (am.name.compare(name) == 0)
+		{
+			return am;
+		}
+	}
+
+	AttributeMatrixProxy proxy(name);
+	attributeMatricies.insert(proxy.name, proxy);
+	return attributeMatricies[name];
+}

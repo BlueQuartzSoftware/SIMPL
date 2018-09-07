@@ -620,16 +620,26 @@ QString PythonBindingClass::generateMethodCode()
     tokens = tokens[1].replace(")", "").trimmed().split(" ");
    // QString returnType = tokens[0];
     QString methodName = tokens[1];
+	QString returnValuePolicy = "";
     out << TAB << "/* Class instance method " << methodName << " */" << NEWLINE_SIMPL;
     bool methodIsConst = false;
+	bool hasReturnValuePolicy = false;
     if(tokens.last().compare(::kConstMethod) == 0)
     {
       methodIsConst = true;
       tokens.pop_back();
     }
+	if (tokens.contains(::kReturnValuePolicy))
+	{
+		hasReturnValuePolicy = true;
+		int index = tokens.indexOf(::kReturnValuePolicy);
+		returnValuePolicy = ", " + tokens[index + 1];
+		tokens.removeAt(index);
+		tokens.removeAt(index);
+	}
     if(tokens.size() == 2)
     {
-      out << TAB << ".def(\"" << methodName << "\", &" << getClassName() << "::" << methodName << ")" << NEWLINE_SIMPL;
+      out << TAB << ".def(\"" << methodName << "\", &" << getClassName() << "::" << methodName << returnValuePolicy << ")" << NEWLINE_SIMPL;
     }
     else if(tokens.size() >= 3 && tokens[2] == ::kOverload)
     {
@@ -654,7 +664,7 @@ QString PythonBindingClass::generateMethodCode()
       {
         out << ", py::const_";
       }
-      out << ")";
+      out << returnValuePolicy << ")";
 
 #else /* C++11 Style */
       /*
@@ -680,7 +690,7 @@ QString PythonBindingClass::generateMethodCode()
         QStringList varPair = tokens[i].split(","); // Split the var,type pair using a comma
         out << ", \n" << TAB << TAB << TAB << TAB << "py::arg(\"" << varPair[1] << "\")";
       }
-      out << NEWLINE_SIMPL << TAB << TAB << TAB << ")" << NEWLINE_SIMPL;
+      out << NEWLINE_SIMPL << TAB << TAB << TAB << returnValuePolicy << ")" << NEWLINE_SIMPL;
            
     }
     else if(tokens.size() > 3 && tokens[2] == ::kArgs)
@@ -690,7 +700,7 @@ QString PythonBindingClass::generateMethodCode()
       {
         out << ", \n" << TAB << TAB << TAB << TAB << "py::arg(\"" << tokens[i] << "\")";
       }
-      out << NEWLINE_SIMPL << TAB << TAB << TAB << ")" << NEWLINE_SIMPL;
+      out << NEWLINE_SIMPL << TAB << TAB << TAB << returnValuePolicy << ")" << NEWLINE_SIMPL;
     }
   }
   return code;

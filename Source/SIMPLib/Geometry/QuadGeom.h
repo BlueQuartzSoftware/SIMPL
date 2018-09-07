@@ -43,6 +43,28 @@
  */
 class SIMPLib_EXPORT QuadGeom : public IGeometry2D
 {
+  PYB11_CREATE_BINDINGS(QuadGeom SUPERCLASS IGeometry2D)
+
+  PYB11_CREATION(CreateGeometry ARGS OVERLOAD int64_t SharedVertexList::Pointer QString bool)
+  PYB11_CREATION(CreateGeometry ARGS OVERLOAD SharedQuadList::Pointer SharedVertexList::Pointer QString)
+
+  PYB11_METHOD(void setVertices SharedVertexList::Pointer,vertices)
+  PYB11_METHOD(SharedVertextList::Pointer getVertices)
+
+  PYB11_METHOD(void setEdges SharedEdgeList::Pointer,edges)
+  PYB11_METHOD(SharedEdgeList::Pointer getEdges)
+
+  PYB11_METHOD(void setQuads SharedQuadList::Pointer,quads)
+  PYB11_METHOD(SharedQuadList::Pointer getQuads)
+
+  PYB11_METHOD(void setCoords int64_t,vertId float,coords[3])
+  PYB11_METHOD(void getCoords int64_t,vertId float,coords[3])
+
+  PYB11_METHOD(int64_t getNumberOfVertices)
+  PYB11_METHOD(int64_t getNumberOfEdges)
+  PYB11_METHOD(int64_t getNumberOfQuads)
+  PYB11_METHOD(size_t getNumberOfElements)
+
   public:
 
     SIMPL_SHARED_POINTERS(QuadGeom)

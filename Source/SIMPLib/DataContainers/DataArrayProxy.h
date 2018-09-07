@@ -53,6 +53,15 @@ class SIMPLH5DataReaderRequirements;
  */
 class SIMPLib_EXPORT DataArrayProxy
 {
+  PYB11_CREATE_BINDINGS(DataArrayProxy)
+
+  PYB11_CREATION()
+
+  PYB11_PROPERTY(QVector<size_t> tupleDims)
+  PYB11_PROPERTY(QVector<size_t> compDims)
+  PYB11_PROPERTY(QString path)
+  PYB11_PROPERTY(QString name)
+  PYB11_PROPERTY(uint8_t flag READ getflag WRITE setflag)
 public:
     typedef QVector<QVector<size_t> > CompDimsVector;
 
@@ -147,6 +156,17 @@ public:
   * @brief operator == method
   */
   bool operator==(const DataArrayProxy& rhs) const;
+
+  /**
+   * @brief Get the data array flag (Python Binding)
+   */
+  uint8_t getflag();
+
+  /**
+   * @brief Set the data array flag (Python Binding)
+   * @param new data array flag
+   */
+  void setflag(uint8_t);
 
   //----- Our variables, publicly available
   uint8_t flag;

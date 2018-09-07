@@ -47,6 +47,8 @@
 */
 class SIMPLib_EXPORT AbstractComparison
 {
+	PYB11_CREATE_BINDINGS(AbstractComparison)
+	PYB11_PROPERTY(int UnionOperator READ getUnionOperator WRITE setUnionOperator)
 public:
   SIMPL_SHARED_POINTERS(AbstractComparison)
   SIMPL_TYPE_MACRO(AbstractComparison)

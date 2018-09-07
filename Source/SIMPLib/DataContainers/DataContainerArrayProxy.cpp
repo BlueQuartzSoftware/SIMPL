@@ -544,3 +544,14 @@ QMap<QString, DataContainerProxy> DataContainerArrayProxy::readMap(QJsonArray js
   }
   return map;
 }
+
+QMap<QString, DataContainerProxy> DataContainerArrayProxy::getdataContainers()
+{
+	return dataContainers;
+}
+
+
+ void DataContainerArrayProxy::setdataContainers(QMap<QString, DataContainerProxy> newDataContainers)
+{
+	 dataContainers = newDataContainers;
+}

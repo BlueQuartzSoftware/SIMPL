@@ -44,6 +44,8 @@
  */
 class SIMPLib_EXPORT IGeometry2D : public IGeometry
 {
+  PYB11_CREATE_BINDINGS(IGeometry2D SUPERCLASS IGeometry)
+
   public:
     SIMPL_SHARED_POINTERS(IGeometry2D)
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometry2D, Observable)
