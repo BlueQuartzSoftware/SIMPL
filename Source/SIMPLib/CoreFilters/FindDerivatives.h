@@ -42,8 +42,6 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
-#include "SIMPLib/Common/TemplateHelpers.hpp"
-
 /**
  * @brief The FindDerivatives class. See [Filter documentation](@ref findderivatives) for details.
  */
