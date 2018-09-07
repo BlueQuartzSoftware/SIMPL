@@ -196,7 +196,7 @@ public:
  * @brief The CreateNonPrereqArrayFromArrayType class will create a DataArray of the same type as another DataArray and attach it to
  * a supplied data container.
  */
-class CreateNonPrereqArrayFromArrayType
+class SIMPLib_EXPORT CreateNonPrereqArrayFromArrayType
 {
 public:
   CreateNonPrereqArrayFromArrayType() = default;
@@ -217,7 +217,7 @@ public:
  * @brief The CreateNonPrereqArrayFromArrayType class will create a DataArray of the same type as another DataArray and attach it to
  * a supplied data container.
  */
-class CreateNonPrereqArrayFromTypeEnum
+class SIMPLib_EXPORT CreateNonPrereqArrayFromTypeEnum
 {
 public:
   CreateNonPrereqArrayFromTypeEnum() = default;
@@ -239,7 +239,7 @@ public:
  * @brief The CreateArrayFromArrayType class will create a DataArray of the same type as another DataArray but not attach
  * it to any data container.
  */
-class CreateArrayFromArrayType
+class SIMPLib_EXPORT CreateArrayFromArrayType
 {
 public:
   CreateArrayFromArrayType() = default;
@@ -269,7 +269,7 @@ public:
  * @brief The CreateArrayFromType class will create a DataArray matching the type supplied as a QString.  Available types are listed
  * in Constants.h.
  */
-class CreateArrayFromType
+class SIMPLib_EXPORT CreateArrayFromType
 {
 public:
   CreateArrayFromType() = default;
@@ -303,7 +303,7 @@ public:
 /**
  * @brief The GetPrereqArrayFromPath class will return a pointer to a DataArray of unknown type given the path.
  */
-class GetPrereqArrayFromPath
+class SIMPLib_EXPORT GetPrereqArrayFromPath
 {
 public:
   GetPrereqArrayFromPath() = default;
