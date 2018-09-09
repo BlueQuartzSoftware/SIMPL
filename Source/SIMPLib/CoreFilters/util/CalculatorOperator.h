@@ -40,10 +40,11 @@
 #include <QtCore/QStack>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/TemplateHelpers.hpp"
-#include "SIMPLib/DataArrays/IDataArray.h"
 
 #include "CalculatorArray.hpp"
+#include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
 {
