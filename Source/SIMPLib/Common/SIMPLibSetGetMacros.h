@@ -330,17 +330,88 @@ public:     \
   SIMPL_GET_PROPERTY(type, prpty)
 
 
-/* *****************************************************************************'
+/* *****************************************************************************
+ * *****************************************************************************
+ * *****************************************************************************
+ * 
  * PyBind11 Macros that we can use to explicitly define which setters & getters
  * will be exposed to the Python library
  */
-/* This macro declares a class that needs to be wrapped in Python */
+ 
+/**
+* @brief PYB11_CREATE_BINDINGS This macro lets the wrapper know that we want to
+* wrap this class with Python bindings. It should only take a single argument
+* which is the name of the class. If this line is commented out using the standard
+* C++ style of single line comment then <b>NO WRAPPING</b> will be performed
+* on the class.
+* @code
+* PYB11_CREATE_BINDINGS(AbstractFilter)
+* @endcode
+*/
 #define PYB11_CREATE_BINDINGS(...)
+
+/**
+* @brief PYB11_NO_BINDINGS This macro will ensure that the class is NOT wrapped
+* with python bindings. Only a single argument which is the name of the class
+* should be used.
+* @code
+* PYB11_NO_BINDINGS(AbstractFilter)
+* @endcode
+*/
 #define PYB11_NO_BINDINGS(...)
+
+/**
+* @brief PYB11_STATIC_CREATION This macro will wrap the "static New()" function
+* that most of the SIMPL classes implement as a way to instantiate the class in
+* addition to other static methods that are used for a class. The argument types
+* to the static method should be listed <b>WITHOUT</b> any spaces for each argument.
+* 
+* @code
+* PYB11_STATIC_CREATION(Create ARGS std::vector<std::vector<double>> std::list<std::string> std::list<std::string>)
+* @endcode
+*/
 #define PYB11_STATIC_CREATION(...)
+
+/**
+* @brief PYB11_CREATION This macro is used for non-static constructors that need
+* to be wrapped. The argument types need to be lists where each argument cannot
+* containe spaces. Use a typedef if needed, but using a typedef also has its
+* own issues. @see DataArrayPath for an example.
+* 
+* @code
+* PYB11_CREATION(ARGS QString QString QString)
+* @endcode
+*/ 
 #define PYB11_CREATION(...)
+
+/**
+* @brief PYB11_ENUMERATION This macro will allow a class enumeration to be wrapped
+* in Python an available to the Python side. @see IGeoemtry for an example. The
+* macro should only take a single argument.
+* @code
+* PYB11_ENUMERATION(Type)
+* PYB11_ENUMERATION(VtkCellType)
+* @endcode
+*/
 #define PYB11_ENUMERATION(...)
+
+/**
+* @brief PYB11_PROPERTY This macro is used to wrap a single class instance property
+* that is typically used as an input parameter for a filter. This macro should
+* <b>NOT</b> be used for just wrapping instance methods. Use the PYB11_METHOD for
+* that. @see AbstractFilter. There are number of arguments depending on if the 
+* property is a read-only or read-write variable. At least 4 arguments to the
+* macro are required when the property is read only
+* @code
+  PYB11_PROPERTY(QString NameOfClass READ getNameOfClass)  
+* @endcode
+* and 6 arguments when the property is read-write.
+* @code
+* PYB11_PROPERTY(bool Cancel READ getCancel WRITE setCancel)
+* @endcode
+*/ 
 #define PYB11_PROPERTY(...)
+
 /**
 * @brief This macro is used to expose a method to the Python bindings. The signature
 * of the macro should be the following:
@@ -373,10 +444,11 @@ public:     \
 */ 
 #define PYB11_METHOD(...)
 
-#define PYB11_METHOD_MAPPER(...)
-
 // End of PYBIND11 Macro Definitions
-/* **************************************************************************** */
+/* *****************************************************************************
+ * *****************************************************************************
+ * *****************************************************************************
+ */
 
 
 

@@ -4,7 +4,7 @@ in order to use the below modules.
 """
 import time
 import imageio
-
+  
 try:
     import numpy as np
 except ImportError:

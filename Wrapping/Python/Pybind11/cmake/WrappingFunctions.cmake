@@ -25,7 +25,6 @@ function(CreatePybind11Module)
 
   # --------------------------------------------------------------------------
   # Find the Pybind11 installation
-  set(PYBIND11_PYTHON_VERSION "3")
   find_package(pybind11 CONFIG REQUIRED)
 
   if(NOT pybind11_FOUND)
