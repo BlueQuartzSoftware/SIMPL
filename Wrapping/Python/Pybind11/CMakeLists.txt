@@ -4,6 +4,8 @@
 project(SIMPLPyBind11 VERSION 0.0.1.0)
 #message(STATUS "pybind11_INCLUDE_DIRS: ${pybind11_INCLUDE_DIRS}")
 
+find_package(PythonInterp REQUIRED)
+
 # --------------------------------------------------------------------------
 # macro to convert a file system path to compatible C++ strings, i.e., on
 # Windows, convert the backslash to forward slash.

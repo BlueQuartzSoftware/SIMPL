@@ -11,6 +11,7 @@
 #include "CodeScraper/SIMPLPyBind11Config.h"
 #include "CodeScraper/PythonUtils.h"
 
+#define PBM_TAB "    "
 
 // -----------------------------------------------------------------------------
 //
@@ -307,7 +308,7 @@ void PythonBindingsModule::generatePythonTestFile(const QString& outputPath, con
   QTextStream out(&code);
   out << "\"\"\"\n"
       << "This is a basic unit test file to ensure that the filters can be instantiated\n"
-      << "This file is auto generated as part of the 'CodeScraper' program that is executed\n"
+      << "This file is AUTO GENERATED as part of the 'CodeScraper' program that is executed\n"
       << "during the compilation phase.\n"
       << "m_LibName=" << m_LibName << "\n"
       << "\"\"\"\n";
@@ -326,10 +327,10 @@ void PythonBindingsModule::generatePythonTestFile(const QString& outputPath, con
  // out << "from " << m_LibName << " import *\n";
   out << "\n\n";
   
-  out << "def " << m_LibName << "UnitTest () :\n"
-      << "  \"\"\"\n"
-      << "  Just Try to instantiate all the filters\n"
-      << "  \"\"\"\n";
+  out << "def " << m_LibName << "UnitTest():\n"
+      << PBM_TAB << "\"\"\"\n"
+      << PBM_TAB << "Just Try to instantiate all the filters\n"
+      << PBM_TAB << "\"\"\"\n";
   
   for(auto object : m_ClassVector)
   {
@@ -343,9 +344,9 @@ void PythonBindingsModule::generatePythonTestFile(const QString& outputPath, con
       << "Main Entry point for the python script\n"
       << "\"\"\"\n";
   out << "if __name__ == \"__main__\":\n"
-      << "  print(\"" << m_LibName << " UnitTest Starting\")\n"
-      << "  " << m_LibName << "UnitTest()\n"
-      << "  print(\"" << m_LibName << " UnitTest Complete\")\n";
+      << PBM_TAB << "print(\"" << m_LibName << " UnitTest Starting\")\n"
+      << PBM_TAB << m_LibName << "UnitTest()\n"
+      << PBM_TAB << "print(\"" << m_LibName << " UnitTest Complete\")\n";
   
   writeOutput(true, code, outputPath);
   
@@ -428,15 +429,15 @@ void PythonBindingsModule::dumpRecursivePythonCode(int level, const QObject* obj
     shortLibName.replace("_py", "");
 
     const char* pycode = R"PY(
-  # @FILTER_NAME@
-  # @INIT_CODE@
-  print("# --- @FILTER_NAME@ ")
-  filter = @LIB_NAME@.@FILTER_NAME@.New()
-  filter.preflight()
-  # print("  Preflight Error Code:%s" % filter.ErrorCondition)
-  filterName = filter.NameOfClass
-  if filterName != "@FILTER_NAME@" :
-    print("  Error: Filter class name is not correct. %s != @FILTER_NAME@" % filterName)
+    # @FILTER_NAME@
+    # @INIT_CODE@
+    print("# --- @FILTER_NAME@ ")
+    filter = @LIB_NAME@.@FILTER_NAME@.New()
+    filter.preflight()
+    # print("  Preflight Error Code:%s" % filter.ErrorCondition)
+    filterName = filter.NameOfClass
+    if filterName != "@FILTER_NAME@" :
+        print("  Error: Filter class name is not correct. %s != @FILTER_NAME@" % filterName)
 
 )PY";
     

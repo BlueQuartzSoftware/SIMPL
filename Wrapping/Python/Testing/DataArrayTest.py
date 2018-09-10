@@ -16,6 +16,7 @@ import dream3d.dream3d_py.simpl_py as simpl
 import dream3d.utils.simpl_common as sc
 import dream3d.utils.simpl_test_dirs as sd
 
+
 def DataArrayTest():
     """
     This is the Top level to test the creation of Data Arrays from numpy and placing those
@@ -26,8 +27,8 @@ def DataArrayTest():
     dc = sc.CreateDataContainer("ImageDataContainer")
     dca.addDataContainer(dc)
 
-    shape = simpl.VectorSizeT([4,5,2])
-    cellAm = sc.CreateAttributeMatrix(shape, "CellAttributeMatrix", simpl.AttributeMatrix.Type.Cell )
+    shape = simpl.VectorSizeT([4, 5, 2])
+    cellAm = sc.CreateAttributeMatrix(shape, "CellAttributeMatrix", simpl.AttributeMatrix.Type.Cell)
     dc.addAttributeMatrix(cellAm.Name, cellAm)
 
     # Create the Component Dimensions for the Array, 1 Component in this case
@@ -38,7 +39,7 @@ def DataArrayTest():
     # go out of scope then the SIMPL.DataArray will have garbage values since it will
     # be wrapping an invalid pointer.
     arrayList = []
-    
+
     for index, item in enumerate(arrayTypes):
         # print("+++ Creating Array: %s" % item)
         z_flat, array = sc.CreateDataArray(arrayTypes[index].__name__, shape, cDims, item)
@@ -68,5 +69,5 @@ def DataArrayTest():
 Main entry point for python script
 """
 if __name__ == "__main__":
-  DataArrayTest()
-  print("[DataArrayTest] Complete")
+    DataArrayTest()
+    print("[DataArrayTest] Complete")
