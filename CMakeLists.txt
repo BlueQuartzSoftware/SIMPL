@@ -217,6 +217,10 @@ SIMPL_ENABLE_GROUP(GROUP_NAME PLUGIN
             ENABLE ON
             DESC "Compile SIMPL Plugin functionality"
             DEPENDENCIES BASE FILTERS)
+SIMPL_ENABLE_GROUP(GROUP_NAME REST
+            ENABLE OFF
+            DESC "Compile SIMPL REST functionality"
+            DEPENDENCIES BASE)
 SIMPL_ENABLE_GROUP(GROUP_NAME WIDGETS
             ENABLE ON
             DESC "Compile SIMPL Qt Widgets functionality"
