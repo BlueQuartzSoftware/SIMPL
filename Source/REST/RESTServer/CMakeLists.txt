@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.10.0)
+
 project(SIMPLRestServer)
 
 INCLUDE_DIRECTORIES(${SIMPLRestServer_SOURCE_DIR})
@@ -46,7 +48,7 @@ set(SIMPLRestServerController_HDRS
   ${SIMPLRestServer_SOURCE_DIR}/SIMPLRestServer/V1Controllers/SIMPLStaticFileController.h
 )
 
-QT5_WRAP_CPP( QtWebApp_MOC_SRCS 
+QT5_WRAP_CPP( QtWebApp_MOC_SRCS
   ${SIMPLRestServerController_HDRS}
   )
 

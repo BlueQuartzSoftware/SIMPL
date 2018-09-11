@@ -21,13 +21,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 *******************************************************************************/
 
-#ifndef SIMPLClientRequest_H
-#define SIMPLClientRequest_H
+#pragma once
 
 #include <QObject>
 #include <QtCore/QJsonObject>
 
-#include "Core/mrestrequest.h"
+#include "REST/RESTClient/Core/mrestrequest.h"
 
 class SIMPLClientRequest : public MRestRequest
 {
@@ -45,5 +44,3 @@ protected:
 private:
   QUrl generateCommandUrl(Command command);
 };
-
-#endif // SIMPLClientRequest_H
