@@ -492,6 +492,7 @@ template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>
         })) /* Class instance method setValue */                                                                                                                                                       \
         .def("setValue", &DataArrayType::setValue, py::arg("index"), py::arg("value"))                                                                                                                 \
         .def("getValue", &DataArrayType::getValue, py::arg("index"))                                                                                                                                   \
+	    .def_property("Data", &DataArrayType::getArray, &DataArrayType::setArray, py::return_value_policy::reference)                                                                                          \
         .def_property("Name", &DataArrayType::getName, &DataArrayType::setName)                                                                                                                        \
         .def("Cleanup", []() { return DataArrayType::NullPointer(); });                                                                                                                                \
     ;                                                                                                                                                                                                  \

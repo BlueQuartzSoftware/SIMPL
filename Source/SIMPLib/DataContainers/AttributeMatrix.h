@@ -95,7 +95,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
   PYB11_METHOD(bool doesAttributeArrayExist ARGS Name)
   PYB11_METHOD(IDataArray removeAttributeArray ARGS Name)
   PYB11_METHOD(int renameAttributeArray ARGS OldName NewName OverWrite)
-  PYB11_METHOD(IDataArray::Pointer getAttributeArray ARGS const.QString.&,name)
+  PYB11_METHOD(IDataArray::Pointer getAttributeArray ARGS const.QString.&,name RETURN_VALUE_POLICY py::return_value_policy::reference)
 public:
   SIMPL_SHARED_POINTERS(AttributeMatrix)
   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AttributeMatrix, Observable)

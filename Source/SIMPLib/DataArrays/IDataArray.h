@@ -42,6 +42,8 @@ class SIMPLib_EXPORT IDataArray
   PYB11_CREATE_BINDINGS(IDataArray)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
 
+  PYB11_METHOD(QString getTypeAsString)
+
   public:
     SIMPL_SHARED_POINTERS(IDataArray)
     SIMPL_TYPE_MACRO(IDataArray)

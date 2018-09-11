@@ -855,6 +855,31 @@ class DataArray : public IDataArray
     }
 
 
+	/**
+	 * @brief Returns a list of the contents of DataArray (For Python Binding)
+	 * @return std::list. Possibly empty
+	 */
+	std::list<T> getArray()
+	{
+		return std::list<T>(m_Array, m_Array + ( m_Size * sizeof(T)) / sizeof(T));
+	}
+
+	/**
+	 * @brief Sets the contents of the array to the list (For Python Binding)
+	 * @param std::list. New array contents
+	 */
+	void setArray(std::list<T> newArray)
+	{
+		if (newArray.size() != m_Size) {
+			return;
+		}
+		int i = 0;
+		for (auto elem : newArray)
+		{
+			m_Array[i++] = elem;
+		}
+	}
+
     /**
      * @brief Returns the pointer to a specific index into the array. No checks are made
      * as to the correctness of the index being passed in. If you ask for an index off
