@@ -35,6 +35,8 @@
 
 #include "SVOverlayWidgetButton.h"
 
+#include <QtWidgets/QMainWindow>
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -144,6 +146,30 @@ void SVOverlayWidgetButton::setSide(TargetSide side)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void SVOverlayWidgetButton::setDockLocation(Qt::DockWidgetArea dockLocation)
+{
+  switch(dockLocation)
+  {
+  case Qt::DockWidgetArea::LeftDockWidgetArea:
+    setSide(TargetSide::Left);
+    break;
+  case Qt::DockWidgetArea::RightDockWidgetArea:
+    setSide(TargetSide::Right);
+    break;
+  case Qt::DockWidgetArea::TopDockWidgetArea:
+    setSide(TargetSide::Top);
+    break;
+  case Qt::DockWidgetArea::BottomDockWidgetArea:
+    setSide(TargetSide::Bottom);
+    break;
+  default:
+    break;
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void SVOverlayWidgetButton::updateSourcePolicy()
 {
   if(nullptr == m_Source)
@@ -151,14 +177,40 @@ void SVOverlayWidgetButton::updateSourcePolicy()
     return;
   }
 
-  if(TargetSide::Left == m_Side || TargetSide::Right == m_Side)
+  if(expandsEntireDistance())
   {
-    m_Source->setSizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Expanding);
+    if(nullptr == m_Target)
+    {
+      return;
+    }
+
+    if(TargetSide::Left == m_Side || TargetSide::Right == m_Side)
+    {
+      m_Source->setMinimumWidth(m_Target->width());
+      m_Source->setMinimumHeight(0);
+    }
+    else
+    {
+      m_Source->setMinimumWidth(0);
+      m_Source->setMinimumHeight(m_Target->height());
+    }
   }
   else
   {
-    m_Source->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Fixed);
+    m_Source->setMinimumWidth(0);
+    m_Source->setMinimumHeight(0);
+
+    if(TargetSide::Left == m_Side || TargetSide::Right == m_Side)
+    {
+      m_Source->setSizePolicy(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Expanding);
+    }
+    else
+    {
+      m_Source->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Preferred);
+    }
   }
+
+  m_Frame->update();
 }
 
 // -----------------------------------------------------------------------------
@@ -191,6 +243,23 @@ void SVOverlayWidgetButton::setTarget(QWidget* target)
   }
 
   checkValidity();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVOverlayWidgetButton::setDockWidget(QMainWindow* window, QDockWidget* dockWidget)
+{
+  if(nullptr == dockWidget)
+  {
+    m_DockWidget = dockWidget;
+    return;
+  }
+
+  m_DockWidget = dockWidget;
+  setTarget(dockWidget->widget());
+  setDockLocation(window->dockWidgetArea(dockWidget));
+  connect(dockWidget, &QDockWidget::dockLocationChanged, this, &SVOverlayWidgetButton::setDockLocation);
 }
 
 // -----------------------------------------------------------------------------
@@ -336,13 +405,27 @@ double SVOverlayWidgetButton::getEndValue() const
     return 0;
   }
 
-  if(TargetSide::Left == m_Side || TargetSide::Right == m_Side)
+  if(m_ExpandsEntireDistance)
   {
-    return m_Source->sizeHint().width() + m_Layout->margin() * 2;
+    if(TargetSide::Left == m_Side || TargetSide::Right == m_Side)
+    {
+      return m_Target->size().width();
+    }
+    else
+    {
+      return m_Target->size().height();
+    }
   }
   else
   {
-    return m_Source->sizeHint().height() + m_Layout->margin() * 2;
+    if(TargetSide::Left == m_Side || TargetSide::Right == m_Side)
+    {
+      return m_Source->sizeHint().width() + m_Layout->margin() * 2;
+    }
+    else
+    {
+      return m_Source->sizeHint().height() + m_Layout->margin() * 2;
+    }
   }
 }
 
@@ -377,6 +460,12 @@ void SVOverlayWidgetButton::setExpanded(bool expanded)
 {
   if(expanded)
   {
+    // Force the dock widget to be visible.  This is only done for dock widgets
+    if(m_DockWidget)
+    {
+      m_DockWidget->setVisible(true);
+    }
+
     // Do not allow multiple overlapping buttons to be checked
     for(SVOverlayWidgetButton* button : m_OverlappingButtons)
     {
@@ -410,6 +499,31 @@ void SVOverlayWidgetButton::setDuration(int duration)
 int SVOverlayWidgetButton::getDuration() const
 {
   return m_Animation->duration();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool SVOverlayWidgetButton::expandsEntireDistance() const
+{
+  return m_ExpandsEntireDistance;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVOverlayWidgetButton::setExpandsEntireDistance(bool expands)
+{
+  m_ExpandsEntireDistance = expands;
+
+  if(expands)
+  {
+    updateSourcePolicy();
+    if(isExpanded())
+    {
+      startAnimation(true);
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------

@@ -37,6 +37,7 @@
 
 #include <QtCore/QEvent>
 #include <QtCore/QVariantAnimation>
+#include <QtWidgets/QDockWidget>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QPushButton>
@@ -86,6 +87,12 @@ public:
   void setTarget(QWidget* target);
 
   /**
+   * @brief Sets the widget to overlay onto and listens for change in the dock location
+   * @param dockWidget
+   */
+  void setDockWidget(QMainWindow* window, QDockWidget* dockWidget);
+
+  /**
    * @brief Returns the source widget
    * @return
    */
@@ -116,7 +123,19 @@ public:
   int getDuration() const;
 
   /**
-   * @brief Marks another SVOverlayWidgetButton as overlapping this one.\
+   * @brief Returns true if the widget should expand the entire distance.  Returns false otherwise.
+   * @return
+   */
+  bool expandsEntireDistance() const;
+
+  /**
+   * @brief Sets whether or not the widget should expand the entire distance.
+   * @param expands
+   */
+  void setExpandsEntireDistance(bool expands);
+
+  /**
+   * @brief Marks another SVOverlayWidgetButton as overlapping this one.
    * @param button
    */
   void addOverlappingButton(SVOverlayWidgetButton* button);
@@ -174,6 +193,12 @@ protected:
   bool checkValidity();
 
   /**
+   * @brief Updates the side based on the given location
+   * @param dockLocation
+   */
+  void setDockLocation(Qt::DockWidgetArea dockLocation);
+
+  /**
    * @brief The event filter handles resizing of the target widget to keep the overlay in an accurate size
    * @param obj
    * @param event
@@ -187,9 +212,11 @@ private:
   QGridLayout* m_Layout = nullptr;
   TargetSide m_Side = TargetSide::Bottom;
   QVariantAnimation* m_Animation = nullptr;
+  bool m_ExpandsEntireDistance = false;
   QVector<SVOverlayWidgetButton*> m_OverlappingButtons;
   QSpacerItem* m_TopSpacer = nullptr;
   QSpacerItem* m_BottomSpacer = nullptr;
   QSpacerItem* m_LeftSpacer = nullptr;
   QSpacerItem* m_RightSpacer = nullptr;
+  QDockWidget* m_DockWidget = nullptr;
 };
