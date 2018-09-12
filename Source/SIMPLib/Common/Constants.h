@@ -157,6 +157,18 @@ namespace SIMPL
                                     NumericTypes::Names::Float + ", " + NumericTypes::Names::Double + ", " + NumericTypes::Names::Bool);
   }
 
+  namespace DelimiterTypes
+  {
+    enum class Type : int
+    {
+      Comma = 0,
+      Semicolon = 1,
+      Colon = 2,
+      Tab = 3,
+      Space = 4
+    };
+  }
+
   namespace ScalarTypes
   {
     enum class Type : int
@@ -1027,6 +1039,7 @@ const QString TestBaseName("Test");
 
 Q_DECLARE_METATYPE(SIMPL::NumericTypes::Type)
 Q_DECLARE_METATYPE(SIMPL::ScalarTypes::Type)
+Q_DECLARE_METATYPE(SIMPL::DelimiterTypes::Type)
 
 #if 0
 namespace Generic
