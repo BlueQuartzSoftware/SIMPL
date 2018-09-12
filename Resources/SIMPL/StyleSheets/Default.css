@@ -160,3 +160,11 @@ FilterParameterWidget
     background-origin: content;
     background-clip: margin;
 }
+
+/* This is here for the search box at the top of the FilterLibrary */
+QtSLineEdit#filterSearch
+{
+    border-radius: 0;
+    min-height: 24;
+}
+

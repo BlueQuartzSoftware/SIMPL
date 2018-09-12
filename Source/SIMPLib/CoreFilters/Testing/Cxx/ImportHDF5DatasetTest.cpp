@@ -402,13 +402,13 @@ public:
       statusMessage.append("tDims = " + tDimsStr + "\n");
       statusMessage.append("cDims = \n" + cDimsVectorStr);
 
-      std::cout << statusMessage.toStdString() << std::endl;
+      //std::cout << statusMessage.toStdString() << std::endl;
     }
     else
     {
       ImportHDF5Dataset::DatasetImportInfo info = dsetInfoList[0];
-      std::cout << QObject::tr("Starting %1 Dataset Test: Dataset Path = %2, tDims = %3, cDims = %4").arg(typeStr).arg(info.dataSetPath).arg(tDimsStr).arg(info.componentDimensions).toStdString()
-                << std::endl;
+//      std::cout << QObject::tr("Starting %1 Dataset Test: Dataset Path = %2, tDims = %3, cDims = %4").arg(typeStr).arg(info.dataSetPath).arg(tDimsStr).arg(info.componentDimensions).toStdString()
+//                << std::endl;
     }
 
     filter->execute();

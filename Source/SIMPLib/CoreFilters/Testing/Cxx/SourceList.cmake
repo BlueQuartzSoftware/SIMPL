@@ -34,6 +34,7 @@ set(TEST_${SUBDIR_NAME}_NAMES
   RequiredZThicknessTest
   ScaleVolumeTest
   SetOriginResolutionImageGeomTest
+  SplitAttributeArrayTest
   WriteASCIIDataTest
 )
 

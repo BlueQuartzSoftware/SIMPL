@@ -36,6 +36,7 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QFile>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
@@ -44,10 +45,8 @@
 #include "SIMPLib/Filtering/QMetaObjectUtilities.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
-#include "SIMPLib/SIMPLib.h"
-#include "UnitTestSupport.hpp"
-
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 class SplitAttributeArrayTest
 {
@@ -68,8 +67,8 @@ public:
 		UInt32ArrayType::Pointer mcArray1 = UInt32ArrayType::CreateArray(QVector<size_t>(1, 10), QVector<size_t>(1, 5), "MultiComponent Array uint32_t");
 		fillDataArray<uint32_t>(mcArray1);
 
-		BoolArrayType::Pointer mcArray2 = BoolArrayType::CreateArray(QVector<size_t>(1, 10), QVector<size_t>(1, 5), "MultiComponent Array bool");
-		fillDataArray<bool>(mcArray2);
+//		BoolArrayType::Pointer mcArray2 = BoolArrayType::CreateArray(QVector<size_t>(1, 10), QVector<size_t>(1, 5), "MultiComponent Array bool");
+//		fillDataArray<bool>(mcArray2);
 
 		UCharArrayType::Pointer mcArray3 = UCharArrayType::CreateArray(QVector<size_t>(1, 10), QVector<size_t>(1, 5), "MultiComponent Array unsigned char");
 		fillDataArray<unsigned char>(mcArray3);
@@ -105,7 +104,7 @@ public:
 		fillDataArray<size_t>(mcArray13);
 	
 		am1->addAttributeArray("MultiComponent Array uint32_t", mcArray1);
-		am1->addAttributeArray("MultiComponent Array bool", mcArray2);
+		//am1->addAttributeArray("MultiComponent Array bool", mcArray2);
 		am1->addAttributeArray("MultiComponent Array unsigned char", mcArray3);
 		am1->addAttributeArray("MultiComponent Array int8_t", mcArray4);
 		am1->addAttributeArray("MultiComponent Array uint8_t", mcArray5);
@@ -221,7 +220,9 @@ public:
 		return EXIT_SUCCESS;
 	}
 
-	template <typename T> void TestSplitByType(AbstractFilter::Pointer filter, DataContainerArray::Pointer dca, QString dataType) {
+	template <typename T> 
+	void TestSplitByType(AbstractFilter::Pointer filter, DataContainerArray::Pointer dca, QString dataType)
+	{
 
 		DataArrayPath arrayPath("DataContainer", "AttributeMatrix", "MultiComponent Array " + dataType);
 		int err = 0;
@@ -243,24 +244,24 @@ public:
 		filter->execute();
 		err = filter->getErrorCondition();
 		DREAM3D_REQUIRED(err, >= , 0)
-
-		DataArray<T>::Pointer mcArray_original =
+    using DataArrayPtrType = std::shared_ptr<DataArray<T>>;
+		DataArrayPtrType mcArray_original =
 			filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DataArray<T>, AbstractFilter>(filter.get(), DataArrayPath("DataContainer", "AttributeMatrix", "MultiComponent Array " + dataType));
 
-		std::vector<DataArray<T>::Pointer> mcArraysAfterSplit;
-		DataArray<T>::Pointer mcArray0 =
+		std::vector<DataArrayPtrType> mcArraysAfterSplit;
+		DataArrayPtrType mcArray0 =
 			filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DataArray<T>, AbstractFilter>(filter.get(), DataArrayPath("DataContainer", "AttributeMatrix", "MultiComponent Array " + dataType + "Component0"));
 		mcArraysAfterSplit.push_back(mcArray0);
-		DataArray<T>::Pointer mcArray1 =
+		DataArrayPtrType mcArray1 =
 			filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DataArray<T>, AbstractFilter>(filter.get(), DataArrayPath("DataContainer", "AttributeMatrix", "MultiComponent Array " + dataType + "Component1"));
 		mcArraysAfterSplit.push_back(mcArray1);
-		DataArray<T>::Pointer mcArray2 =
+		DataArrayPtrType mcArray2 =
 			filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DataArray<T>, AbstractFilter>(filter.get(), DataArrayPath("DataContainer", "AttributeMatrix", "MultiComponent Array " + dataType + "Component2"));
 		mcArraysAfterSplit.push_back(mcArray2);
-		DataArray<T>::Pointer mcArray3 =
+		DataArrayPtrType mcArray3 =
 			filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DataArray<T>, AbstractFilter>(filter.get(), DataArrayPath("DataContainer", "AttributeMatrix", "MultiComponent Array " + dataType + "Component3"));
 		mcArraysAfterSplit.push_back(mcArray3);
-		DataArray<T>::Pointer mcArray4 =
+		DataArrayPtrType mcArray4 =
 			filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DataArray<T>, AbstractFilter>(filter.get(), DataArrayPath("DataContainer", "AttributeMatrix", "MultiComponent Array " + dataType + "Component4"));
 		mcArraysAfterSplit.push_back(mcArray4);
 
