@@ -202,11 +202,11 @@ void SVOverlayWidgetButton::updateSourcePolicy()
 
     if(TargetSide::Left == m_Side || TargetSide::Right == m_Side)
     {
-      m_Source->setSizePolicy(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Expanding);
+      m_Source->setSizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Expanding);
     }
     else
     {
-      m_Source->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Preferred);
+      m_Source->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Fixed);
     }
   }
 
