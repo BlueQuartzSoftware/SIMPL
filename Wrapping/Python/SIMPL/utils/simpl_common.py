@@ -118,3 +118,68 @@ def CreateDataArray(name, shape, cDims, type):
     
     # we need to return the 'z' numpy array so it does not go out of scope.
     return (z, array)
+
+
+def ConvertToDataArray(name, array):
+    """
+    Converts a numpy array into a Data Array for DREAM3D.
+    \nKeyword arguments:
+    \nname:  The name of the DataArray
+    \narray: The numpy array to be converted
+    """
+    # Make sure it is a numpy array
+    array = np.array(array)
+    # Get shape
+    shape = array.shape
+    # Determine cDims
+    cDims = simpl.VectorSizeT([1])  # Default
+    dimensions = []
+    arraySize = np.size(array)
+    if arraySize > 0 and np.size(array[0]) > 1:
+        for i in range(0, arraySize):
+            dimensions.append(np.size(array[i]))
+        cDims = simpl.VectorSizeT(dimensions)
+
+    # Determine type
+    type = array.dtype
+    # Make sure it is contiguous
+    z = np.asarray(array)
+    if not z.flags.contiguous:
+        z = np.ascontiguousarray(z)
+
+    shape = z.shape
+    assert z.flags.contiguous, 'Only contiguous arrays are supported.'
+    assert not np.issubdtype(z.dtype, np.complex128), \
+        'Complex numpy arrays cannot be converted to vtk arrays.' \
+        'Use real() or imag() to get a component of the array before' \
+        ' passing it to vtk.'
+
+    # Flatten
+    z_flat = np.ravel(z)
+
+    # Declare the number of components for the array
+    if type == np.int8:
+        da = simpl.Int8ArrayType(z_flat, cDims, name, False)
+    elif type == np.uint8:
+        da = simpl.UInt8ArrayType(z_flat, cDims, name, False)
+    elif type == np.int16:
+        da = simpl.Int16ArrayType(z_flat, cDims, name, False)
+    elif type == np.uint16:
+        da = simpl.UInt16ArrayType(z_flat, cDims, name, False)
+    elif type == np.int32:
+        da = simpl.Int32ArrayType(z_flat, cDims, name, False)
+    elif type == np.uint32:
+        da = simpl.UInt32ArrayType(z_flat, cDims, name, False)
+    elif type == np.int64:
+        da = simpl.Int64ArrayType(z_flat, cDims, name, False)
+    elif type == np.uint64:
+        da = simpl.UInt64ArrayType(z_flat, cDims, name, False)
+    elif type == np.float32:
+        da = simpl.FloatArrayType(z_flat, cDims, name, False)
+    elif type == np.double:
+        da = simpl.DoubleArrayType(z_flat, cDims, name, False)
+
+    # we need to return the 'z' numpy array so it does not go out of scope.
+    return (z, da)
+
+
