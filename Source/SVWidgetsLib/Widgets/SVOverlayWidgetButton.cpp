@@ -269,6 +269,11 @@ void SVOverlayWidgetButton::setTarget(QWidget* target)
 // -----------------------------------------------------------------------------
 void SVOverlayWidgetButton::setDockWidget(QMainWindow* window, QDockWidget* dockWidget)
 {
+  if(m_DockWidget)
+  {
+    m_DockWidget->removeEventFilter(this);
+  }
+
   if(nullptr == dockWidget)
   {
     m_DockWidget = dockWidget;
@@ -277,6 +282,7 @@ void SVOverlayWidgetButton::setDockWidget(QMainWindow* window, QDockWidget* dock
 
   m_DockWidget = dockWidget;
   setTarget(dockWidget->widget());
+  dockWidget->installEventFilter(this);
   setDockLocation(window->dockWidgetArea(dockWidget));
   connect(dockWidget, &QDockWidget::dockLocationChanged, this, &SVOverlayWidgetButton::setDockLocation);
 }
@@ -357,9 +363,14 @@ void SVOverlayWidgetButton::updateOverlay()
   int targetHeight = m_Target->height();
   int targetWidth = m_Target->width();
 
+  bool animationComplete = m_Animation->currentTime() == m_Animation->duration();
   if(TargetSide::Left == m_Side || TargetSide::Right == m_Side)
   {
     int currentWidth = m_Animation->currentValue().toInt();
+    if(animationComplete && m_ExpandsEntireDistance && currentWidth != 0)
+    {
+      currentWidth = targetWidth;
+    }
 
     if(TargetSide::Left == m_Side)
     {
@@ -375,6 +386,10 @@ void SVOverlayWidgetButton::updateOverlay()
   else
   {
     int currentHeight = m_Animation->currentValue().toInt();
+    if(animationComplete && m_ExpandsEntireDistance && currentHeight != 0)
+    {
+      currentHeight = targetHeight;
+    }
 
     if(TargetSide::Bottom == m_Side)
     {
@@ -574,12 +589,14 @@ QVector<SVOverlayWidgetButton*> SVOverlayWidgetButton::getOverlappingButtons() c
 // -----------------------------------------------------------------------------
 bool SVOverlayWidgetButton::eventFilter(QObject* obj, QEvent* event)
 {
-  if(event->type() == QEvent::Resize)
+  QEvent::Type type = event->type();
+  if(type == QEvent::Resize)
   {
-    setUpdatesEnabled(false);
+    m_Frame->setUpdatesEnabled(false);
     m_Frame->setFixedSize(m_Target->size());
+    updateSourcePolicy();
     updateOverlay();
-    setUpdatesEnabled(true);
+    m_Frame->setUpdatesEnabled(true);
   }
 
   return QPushButton::eventFilter(obj, event);
