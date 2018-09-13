@@ -182,4 +182,103 @@ def ConvertToDataArray(name, array):
     # we need to return the 'z' numpy array so it does not go out of scope.
     return (z, da)
 
+def CreateGeometry(data_container_array, array_handling, geometry_type, data_container_name, treat_warnings_as_errors, dimensions = simpl.IntVec3(0,0,0),
+origin = simpl.FloatVec3(0,0,0), resolution = simpl.FloatVec3(0,0,0), cell_attribute_matrix_name="", x_bounds_array_path = simpl.DataArrayPath("", "", ""),
+y_bounds_array_path = simpl.DataArrayPath("", "", ""), z_bounds_array_path = simpl.DataArrayPath("", "", ""), 
+shared_vertex_list_array_path = simpl.DataArrayPath("", "", ""), vertex_attribute_matrix_name = "", shared_edge_list_array_path = simpl.DataArrayPath("", "", ""),
+edge_attribute_matrix_name = "", shared_tri_list_array_path = simpl.DataArrayPath("", "", ""), face_attribute_matrix_name="",
+shared_quad_list_array_path = simpl.DataArrayPath("", "", ""), shared_tet_list_array_path = simpl.DataArrayPath("", "", "")):
+    """
+    Create Geometry
 
+    Required inputs: 
+    * Data Container Array
+    * Array Handling
+    * Geometry Type [simpl.IGeometry.Type.*  (where * is Image, RectGrid, Vertex, Edge, Triangle, Quad, Tetrahedral)]
+    * Data Container Name
+    * Treat Warnings As Errors
+
+    Options by Geometry Type
+    * Image
+        * Dimensions
+        * Origin
+        * Resolution
+        * Cell Attribute Matrix Name
+    * Rectilinear grid
+        * X Bounds
+        * Y Bounds
+        * Z Bounds
+        * Cell Attribute Matrix Name
+    * Vertex
+        * Vertex List
+        * Vertex Attribute Matrix Name
+    * Edge
+        * Shared Vertex List
+        * Edge List
+        * Vertex Attribute Matrix Name
+        * Edge Attribute Matrix Name
+    * Triangle
+        * Shared Vertex List
+        * Triangle List
+        * Vertex Attribute Matrix Name
+        * Face Attribute Matrix Name
+    * Quadrilateral
+        * Shared Vertex List
+        * Quadrilateral List
+        * Vertex Attribute Matrix Name
+        * Face Attribute Matrix Name
+    * Tetrahedral
+        * Shared Vertex List
+        * Tetrahedral List
+        * Vertex Attribute Matrix Name
+        * Cell Attribute Matrix Name
+
+    """
+
+    # For all geometry types
+    create_geometry = simpl.CreateGeometry.New()
+    create_geometry.setDataContainerArray(data_container_array)
+    create_geometry.DataContainerName = data_container_name
+    create_geometry.GeometryType = geometry_type
+    create_geometry.TreatWarningsAsErrors = treat_warnings_as_errors
+    create_geometry.ArrayHandling = array_handling
+
+	# Set required parameters based on Geometry Type
+    if geometry_type == simpl.IGeometry.Type.Image:     
+        create_geometry.Dimensions = dimensions
+        create_geometry.Origin = origin
+        create_geometry.Resolution = resolution
+        create_geometry.ImageCellAttributeMatrixName = cell_attribute_matrix_name
+    elif geometry_type == simpl.IGeometry.Type.RectGrid:
+        create_geometry.XBoundsArrayPath = x_bounds_array_path
+        create_geometry.YBoundsArrayPath = y_bounds_array_path
+        create_geometry.ZBoundsArrayPath = z_bounds_array_path
+        create_geometry.RectGridCellAttributeMatrixName = cell_attribute_matrix_name
+    elif geometry_type == simpl.IGeometry.Type.Vertex:
+        create_geometry.SharedVertexListArrayPath0 = shared_vertex_list_array_path
+        create_geometry.VertexAttributeMatrixName0 = vertex_attribute_matrix_name
+    elif geometry_type == simpl.IGeometry.Type.Edge:
+        create_geometry.SharedVertexListArrayPath1 = shared_vertex_list_array_path
+        create_geometry.VertexAttributeMatrixName1 = vertex_attribute_matrix_name
+        create_geometry.SharedEdgeListArrayPath = shared_edge_list_array_path
+        create_geometry.EdgeAttributeMatrixName = edge_attribute_matrix_name
+    elif geometry_type == simpl.IGeometry.Type.Triangle:
+        create_geometry.SharedVertexListArrayPath2 = shared_vertex_list_array_path
+        create_geometry.VertexAttributeMatrixName2 = vertex_attribute_matrix_name
+        create_geometry.SharedTriListArrayPath = shared_tri_list_array_path
+        create_geometry.FaceAttributeMatrixName0 = face_attribute_matrix_name
+    elif geometry_type == simpl.IGeometry.Type.Quad:
+        create_geometry.SharedVertexListArrayPath3 = shared_vertex_list_array_path
+        create_geometry.VertexAttributeMatrixName3 = vertex_attribute_matrix_name
+        create_geometry.SharedQuadListArrayPath = shared_quad_list_array_path
+        create_geometry.FaceAttributeMatrixName1 = face_attribute_matrix_name
+    elif geometry_type == simpl.IGeometry.Type.Tetrahedral:
+        create_geometry.SharedVertexListArrayPath4 = shared_vertex_list_array_path
+        create_geometry.VertexAttributeMatrixName4 = vertex_attribute_matrix_name
+        create_geometry.SharedTetListArrayPath = shared_tet_list_array_path
+        create_geometry.TetCellAttributeMatrixName = cell_attribute_matrix_name
+
+    # Execute the filter and return the error condition
+    create_geometry.execute()
+    executeError = create_geometry.ErrorCondition
+    return executeError
