@@ -125,6 +125,47 @@ function(CreatePybind11Module)
     )
     set_target_properties(${SIMPL_PY_MODULE_NAME} PROPERTIES LINKER_LANGUAGE CXX)
     target_compile_features(${SIMPL_PY_MODULE_NAME} PRIVATE cxx_local_type_template_args)
+
+    # Copy dream3d Python "package" to specified site_packages directory
+    set (source "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/python/site-packages/dream3d")
+    set (destination "${PYTHON_SITE_PACKAGES}/dream3d")
+    add_custom_command(
+      TARGET ${SIMPL_PY_MODULE_NAME} POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy_directory ${source} ${destination} 
+      DEPENDS ${destination}
+      COMMENT "copy folder from ${source} => ${destination}"
+    )
+    # create a list of files to copy
+    set( DREAM3D_PY_DEPENDENCIES
+      "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/GENERIC_DEBUG.PLUGIN"      
+      "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/SIMPLIB_DEBUG.DLL"
+      "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/H5SUPPORT_DEBUG.DLL"
+      "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/QT5CORED.DLL"
+      "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/HDF5_D.DLL"
+      "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/IO_DEBUG.PLUGIN"
+      "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/ORIENTATIONLIB_DEBUG.DLL"
+      "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/ORIENTATIONANALYSIS_DEBUG.PLUGIN"
+      "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/QT5GUID.DLL"
+      "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/EBSDLIB_DEBUG.DLL"
+      "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/PROCESSING_DEBUG.PLUGIN"
+      "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/RECONSTRUCTION_DEBUG.PLUGIN"
+      "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/SAMPLING_DEBUG.PLUGIN"
+      "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/STATISTICS_DEBUG.PLUGIN"
+      "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/SURFACEMESHING_DEBUG.PLUGIN"
+      "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/SYNTHETICBUILDING_DEBUG.PLUGIN"
+      "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/QT5NETWORKD.DLL"
+    )
+    
+    # do the copying
+    foreach( file_i ${DREAM3D_PY_DEPENDENCIES})
+       add_custom_command(
+        TARGET ${SIMPL_PY_MODULE_NAME}
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy ${file_i} ${destination}
+        DEPENDS ${destination}
+     )
+     endforeach( file_i )
+
   else()
     file(APPEND ${submodules_headers_file_name} "\n /* Pybind11 Init Code for ${ARGS_MODULE_NAME} */\n")
     file(APPEND ${submodules_headers_file_name} "#include \"${pybind_module_file_name}\"\n")
