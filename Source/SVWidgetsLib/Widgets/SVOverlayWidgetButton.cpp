@@ -96,6 +96,25 @@ void SVOverlayWidgetButton::setupGui()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void SVOverlayWidgetButton::enable()
+{
+  m_Enabled = true;
+  checkValidity();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVOverlayWidgetButton::disable()
+{
+  m_Enabled = false;
+  setChecked(false);
+  setEnabled(false);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void SVOverlayWidgetButton::setSide(TargetSide side)
 {
   m_Side = side;
@@ -320,7 +339,7 @@ bool SVOverlayWidgetButton::checkValidity()
   {
     setChecked(false);
   }
-  setEnabled(valid);
+  setEnabled(valid && m_Enabled);
   return valid;
 }
 

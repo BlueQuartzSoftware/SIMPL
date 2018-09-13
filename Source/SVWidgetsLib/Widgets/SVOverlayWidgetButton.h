@@ -63,6 +63,18 @@ public:
   virtual ~SVOverlayWidgetButton() = default;
 
   /**
+   * @brief Updates the internal state to allow the widget to be enabled.
+   * Enables the widget if it passes validity checks.
+   */
+  void enable();
+
+  /**
+   * @brief Disables the button and updates the internal state to prevent the 
+   * widget from being enabled by validity checks.
+   */
+  void disable();
+
+  /**
    * @brief Returns the side that the target will be overlaying
    * @return
    */
@@ -219,4 +231,5 @@ private:
   QSpacerItem* m_LeftSpacer = nullptr;
   QSpacerItem* m_RightSpacer = nullptr;
   QDockWidget* m_DockWidget = nullptr;
+  bool m_Enabled = true;
 };
