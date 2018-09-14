@@ -68,15 +68,12 @@ signals:
 
 public slots:
   void widgetChanged(const QString& msg);
-  void on_value_returnPressed();
   void on_applyChangesBtn_clicked();
   void on_cancelChangesBtn_clicked();
 
   void hideButtons();
 
 protected:
-  void keyPressEvent(QKeyEvent* event) override;
-
   QString getStoredValue();
 
 private:
