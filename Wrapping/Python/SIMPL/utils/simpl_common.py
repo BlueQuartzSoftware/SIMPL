@@ -327,7 +327,15 @@ def CreateDynamicTableData(data):
         columnheaders.append(str(i))
     for j in range(rows):
         rowheaders.append(str(j))
-    dtd = simpl.DynamicTableData(data, columnheaders, rowheaders)
+    
+    # Convert list of lists into list of VectorDoubles
+    tabledata = list()
+    for row in data:
+        newRow = simpl.VectorDouble()
+        for col in row:
+            newRow.append(col)
+        tabledata.append(newRow)
+    dtd = simpl.DynamicTableData(tabledata, columnheaders, rowheaders)
     return dtd
 
     
