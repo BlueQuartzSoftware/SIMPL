@@ -282,3 +282,52 @@ shared_quad_list_array_path = simpl.DataArrayPath("", "", ""), shared_tet_list_a
     create_geometry.execute()
     executeError = create_geometry.ErrorCondition
     return executeError
+
+def CreateAsciiWizardData(input_file_path, begin_index, number_of_lines, delimiters, consecutive_delimiters,
+automatic_AM, selected_path, headers, attribute_matrix_type, tuple_dimensions, data_types):
+    """
+    Creates an ASCII Wizard Data object for use in the ReadASCIIData filter
+    \ninput_file_path: a string containing the path to the input file
+    \nbegin_index: an integer for the line number to start reading in the file
+    \nnumber_of_lines: an integer of the number of lines to read
+    \ndelimiters: a list of characters to parse file with (ie. [',', ':'])
+    \nconsecutive_delimiters: a boolean for whether to treat consecutive delimiters as one
+    \nautomatic_AM: a boolean for whether to create a new attribute matrix
+    \nselected_path: a DataArrayPath object for the input data
+    \nheaders: a list of strings containing header names (ie. ["x", "y", "z"])
+    \nattribute_matrix_type: either an AttributeMatrix.Type object or the integer equivalent
+    \ntuple_dimensions: a list of integers for the dimensions of each tuple
+    \ndata_types: a list of strings for the data types (ie. ["float", "float", "float"])
+    """
+    wizardData = {
+    "inputFilePath": input_file_path,
+    "beginIndex": begin_index,
+    "numberOfLines": number_of_lines,
+    "delimiters": delimiters,    
+    "consecutiveDelimiters": consecutive_delimiters,
+    "automaticAM": automatic_AM,
+    "selectedPath": selected_path,
+    "headers": headers,
+    "attrMatType": attribute_matrix_type,
+    "tupleDimensions": tuple_dimensions,
+    "dataTypes": data_types
+    }
+    return wizardData
+
+def CreateDynamicTableData(data):
+    """
+    Creates a DynamicTableData object for use in creation of attribute matrices
+    \ndata: a list of lists of integer values for the tuple dimensions of the attribute matrix
+    """
+    cols = len(data[0])
+    rows = len(data)
+    columnheaders = []
+    rowheaders = []
+    for i in range(cols):
+        columnheaders.append(str(i))
+    for j in range(rows):
+        rowheaders.append(str(j))
+    dtd = simpl.DynamicTableData(data, columnheaders, rowheaders)
+    return dtd
+
+    
