@@ -40,6 +40,8 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
+#include "SIMPLib/Common/Constants.h"
+
 /**
  * @brief The FeatureDataCSVWriter class. See [Filter documentation](@ref featuredatacsvwriter) for details.
  */
@@ -69,13 +71,24 @@ class  SIMPLib_EXPORT FeatureDataCSVWriter : public AbstractFilter
     SIMPL_FILTER_PARAMETER(bool, WriteNeighborListData)
     Q_PROPERTY(bool WriteNeighborListData READ getWriteNeighborListData WRITE setWriteNeighborListData)
 
-    SIMPL_FILTER_PARAMETER(int, DelimiterChoice)
-    Q_PROPERTY(int DelimiterChoice READ getDelimiterChoice WRITE setDelimiterChoice)
+    SIMPL_FILTER_PARAMETER(SIMPL::DelimiterTypes::Type, DelimiterChoice)
+    Q_PROPERTY(SIMPL::DelimiterTypes::Type DelimiterChoice READ getDelimiterChoice WRITE setDelimiterChoice)
+    Q_PROPERTY(int DelimiterChoiceInt READ getDelimiterChoiceInt WRITE setDelimiterChoiceInt)
 
     SIMPL_FILTER_PARAMETER(bool, WriteNumFeaturesLine)
     Q_PROPERTY(bool WriteNumFeaturesLine READ getWriteNumFeaturesLine WRITE setWriteNumFeaturesLine)
 
     SIMPL_INSTANCE_PROPERTY(char, Delimiter)
+
+    /**
+     * @brief getDelimiterChoiceInt Returns the corresponding int from the enum SIMPL::DelimiterTypes::Type for DelimiterChoice
+     */
+    int getDelimiterChoiceInt() const;
+
+    /**
+     * @brief setDelimiterChoiceInt Sets DelimiterChoice to the enum type from SIMPL::DelimiterTypes::Type corresponding to the int parameter
+     */
+    void setDelimiterChoiceInt(const int& value);
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
@@ -177,19 +190,9 @@ class  SIMPLib_EXPORT FeatureDataCSVWriter : public AbstractFilter
      */
     void initialize();
 
-
-    enum DelimiterChoicesEnum : int
-    {
-      COMMA = 0,
-      SEMICOLON = 1,
-      COLON = 2,
-      TAB = 3
-    };
-
   public:
     FeatureDataCSVWriter(const FeatureDataCSVWriter&) = delete; // Copy Constructor Not Implemented
     FeatureDataCSVWriter(FeatureDataCSVWriter&&) = delete;      // Move Constructor Not Implemented
     FeatureDataCSVWriter& operator=(const FeatureDataCSVWriter&) = delete; // Copy Assignment Not Implemented
     FeatureDataCSVWriter& operator=(FeatureDataCSVWriter&&) = delete;      // Move Assignment
 };
-

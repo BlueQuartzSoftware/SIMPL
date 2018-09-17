@@ -1,5 +1,4 @@
-Write Feature Data as CSV File 
-=============
+# Write Feature Data as CSV File #
 
 ## Group (Subgroup) ##
 
@@ -14,28 +13,32 @@ This **Filter** writes the data associated with each **Feature** to a file name 
 
 The *CSV* file:     
 	 
-	2352														
-    Feature_ID	Active	AvgEulerAngles_0	AvgEulerAngles_1	AvgEulerAngles_2	AvgQuats_0	AvgQuats_1	AvgQuats_2	AvgQuats_3	EquivalentDiameters	NumCells	NumNeighbors	ParentIds	Phases	Volumes
-    1	1	0.915113	0.790951	-0.89174	0.238438	0.302593	0.010785	0.92275	2.19832	356	8	947	1	5.5625
-    2	1	1.20286	0.829786	-0.72003	0.230703	0.330544	0.218794	0.88862	1.88375	224	8	1673	1	3.5
-    3	1	-0.65165	0.787782	0.261665	0.344458	-0.16923	-0.17892	0.905923	0.781593	16	7	1301	1	0.25
-    4	1	-2.6596	0.629984	2.50802	-0.26285	-0.16398	-0.07199	0.94807	4.61277	3289	22	1818	1	51.3906
-    5	1	0.140752	0.727944	-0.48842	0.338518	0.110151	-0.16163	0.920407	3.05771	958	12	535	1	14.9688
-    6	1	-1.303	0.552201	1.37898	0.062097	-0.26544	0.03654	0.961432	1.03357	37	3	1026	1	0.578125
-    7	1	0.978054	0.717843	-0.86783	0.21198	0.280091	0.051574	0.934855	0.984745	32	6	576	1	0.5
+    5414
+    Feature_ID,Active,AvgEuler_0,AvgEuler_1,AvgEuler_2,AvgQuats_0,AvgQuats_1,AvgQuats_2,AvgQuats_3,NumNeighbors2,Phases
+    1,1,4.7367158,0.40832964,1.1398145,-0.045759138,0.19751814,0.19773535,0.95905864,6,1
+    2,1,3.315398,0.74920797,3.2314293,0.3655816,0.015357733,-0.12232465,0.92257845,2,1
+    3,1,3.8660862,0.20160854,2.8935425,0.088968314,0.047029439,-0.23477697,0.96682608,2,1
+    4,1,1.2659892,0.89199567,5.6040425,-0.24293284,-0.35644585,-0.26093844,0.86362094,1,1
+    5,1,0.96062404,0.576078,5.2663703,-0.15617171,-0.23729226,0.026934497,0.95842445,26,1
 
 The *CSV* file with Write Neighbor Data checked:
 
-    2352														
-    Feature_ID	Active	AvgEulerAngles_0	AvgEulerAngles_1	AvgEulerAngles_2	AvgQuats_0	AvgQuats_1	AvgQuats_2	AvgQuats_3	EquivalentDiameters	NumCells	NumNeighbors	ParentIds	Phases	Volumes
-    1	1	0.915113	0.790951	-0.89174	0.238438	0.302593	0.010785	0.92275	2.19832	356	8	947	1	5.5625
-    2	1	1.20286	0.829786	-0.72003	0.230703	0.330544	0.218794	0.88862	1.88375	224	8	1673	1	3.5
-    3	1	-0.65165	0.787782	0.261665	0.344458	-0.16923	-0.17892	0.905923	0.781593	16	7	1301	1	0.25
-    4	1	-2.6596	0.629984	2.50802	-0.26285	-0.16398	-0.07199	0.94807	4.61277	3289	22	1818	1	51.3906
-    5	1	0.140752	0.727944	-0.48842	0.338518	0.110151	-0.16163	0.920407	3.05771	958	12	535	1	14.9688
-    6	1	-1.303	0.552201	1.37898	0.062097	-0.26544	0.03654	0.961432	1.03357	37	3	1026	1	0.578125
-    7	1	0.978054	0.717843	-0.86783	0.21198	0.280091	0.051574	0.934855	0.984745	32	6	576	1	0.5
-    8	1	-3.10085	0.678288	-2.69658	-0.32591	0.066789	0.226799	0.915361	2.51958	536	12	627	1	8.375
+    5414
+    Feature_ID,Active,AvgEuler_0,AvgEuler_1,AvgEuler_2,AvgQuats_0,AvgQuats_1,AvgQuats_2,AvgQuats_3,NumNeighbors2,Phases
+    1,1,4.7367158,0.40832964,1.1398145,-0.045759138,0.19751814,0.19773535,0.95905864,6,1
+    2,1,3.315398,0.74920797,3.2314293,0.3655816,0.015357733,-0.12232465,0.92257845,2,1
+    3,1,3.8660862,0.20160854,2.8935425,0.088968314,0.047029439,-0.23477697,0.96682608,2,1
+    4,1,1.2659892,0.89199567,5.6040425,-0.24293284,-0.35644585,-0.26093844,0.86362094,1,1
+    5,1,0.96062404,0.576078,5.2663703,-0.15617171,-0.23729226,0.026934497,0.95842445,26,1
+    .
+    .
+    .
+    Feature_ID,NumNeighbors,NeighborList2
+    1,6,229,607,639,2432,3280,5057
+    2,2,518,3933
+    3,2,1561,3145
+    4,1,886
+    5,26,61,224,278,454,786,923,1119,1137,1478,1517,1525,1651,1812,1814,2227,2233,2731,2750,2907,2930,3175,3548,3619,4492,4791,5010
 
 
 ## Parameters ##
@@ -45,6 +48,7 @@ The *CSV* file with Write Neighbor Data checked:
 | Output File | File Path | The output .csv file path |
 | Write Neighbor Data | bool | Whether to write the **Feature** neighbor data |
 | Write Number of Features Line | bool | Write the total number of features as the first line. Writing this line may interfere with standard CSV parsers. Default=ON |
+| Delimiter | char | The delimiter character used to parse the file (Takes _COMMA_, _SEMICOLON_, _COLON_, _TAB_, or _SPACE_) |
 
 ## Required Geometry ##
 
@@ -54,7 +58,7 @@ Not Applicable
 
 | Kind | Default Name | Type | Component Dimensions | Description |
 |------|--------------|------|----------------------|-------------|
-| **Attribute Matrix** | None | Feature | N/A | **Feature Attribute Matrix** that holds the data write |
+| **Attribute Matrix** | None | Feature | N/A | **Feature Attribute Matrix** that holds the data to write |
 
 ## Created Objects ##
 
