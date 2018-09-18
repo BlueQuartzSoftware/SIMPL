@@ -1,7 +1,7 @@
 
 import dream3d
 import dream3d.dream3d_py
-import dream3d.dream3d_py as d3d
+import dream3d.dream3d as d3d
 import dream3d.dream3d_py.simpl_py as simpl
 
 try:
@@ -182,6 +182,7 @@ def ConvertToDataArray(name, array):
     # we need to return the 'z' numpy array so it does not go out of scope.
     return (z, da)
 
+
 def CreateGeometry(data_container_array, array_handling, geometry_type, data_container_name, treat_warnings_as_errors, dimensions = simpl.IntVec3(0,0,0),
 origin = simpl.FloatVec3(0,0,0), resolution = simpl.FloatVec3(0,0,0), cell_attribute_matrix_name="", x_bounds_array_path = simpl.DataArrayPath("", "", ""),
 y_bounds_array_path = simpl.DataArrayPath("", "", ""), z_bounds_array_path = simpl.DataArrayPath("", "", ""), 
@@ -283,6 +284,7 @@ shared_quad_list_array_path = simpl.DataArrayPath("", "", ""), shared_tet_list_a
     executeError = create_geometry.ErrorCondition
     return executeError
 
+
 def CreateAsciiWizardData(input_file_path, begin_index, number_of_lines, delimiters, consecutive_delimiters,
 automatic_AM, selected_path, headers, attribute_matrix_type, tuple_dimensions, data_types):
     """
@@ -314,6 +316,7 @@ automatic_AM, selected_path, headers, attribute_matrix_type, tuple_dimensions, d
     }
     return wizardData
 
+
 def CreateDynamicTableData(data):
     """
     Creates a DynamicTableData object for use in creation of attribute matrices
@@ -326,16 +329,126 @@ def CreateDynamicTableData(data):
     for i in range(cols):
         columnheaders.append(str(i))
     for j in range(rows):
-        rowheaders.append(str(j))
-    
-    # Convert list of lists into list of VectorDoubles
+        rowheaders.append(str(j))    
     tabledata = list()
-    for row in data:
-        newRow = simpl.VectorDouble()
-        for col in row:
-            newRow.append(col)
-        tabledata.append(newRow)
-    dtd = simpl.DynamicTableData(tabledata, columnheaders, rowheaders)
-    return dtd
+    if isinstance(data, simpl.VectorDouble):
+        dtd = simpl.DynamicTableData(data, columnheaders, rowheaders)
+        return dtd
+    # Convert list of lists into list of VectorDoubles
+    else:
+        for row in data:
+            newRow = simpl.VectorDouble()
+            for col in row:
+                newRow.append(col)
+            tabledata.append(newRow)
+        dtd = simpl.DynamicTableData(tabledata, columnheaders, rowheaders)        
+        return dtd
 
     
+def RemoveArray(dca, path):
+    """
+    Removes the array given by 'path'
+    \ndca: Data Container Array containing the array to be removed
+    \npath: Either a DataArrayPath object or a list of 3 strings (data container, attribute matrix name, array name)
+    \nReturns a boolean variable of True if successful, False otherwise
+    """
+    # Validate path object and get names of path elements
+    datacontainername = ""
+    attrmatrixname = ""
+    dataarrayname = ""
+    if isinstance(path, simpl.DataArrayPath):
+        datacontainername = path.DataContainerName
+        attrmatrixname = path.AttributeMatrixName
+        dataarrayname = path.DataArrayName
+    elif isinstance(path, tuple) or isinstance(path, list):
+        if len(path) != 3:
+            return False
+        datacontainername = path[0]
+        attrmatrixname = path[1]
+        dataarrayname = path[2]
+    else:
+        print("Invalid path object")
+        return False
+    
+    # Construct Data Container Array Proxy
+    dcap = simpl.DataContainerArrayProxy()
+    dcap.getDataContainerProxy(datacontainername).flag = 0
+    dcap.getDataContainerProxy(datacontainername).getAttributeMatrixProxy(attrmatrixname).flag = 0
+    dcap.getDataContainerProxy(datacontainername).getAttributeMatrixProxy(attrmatrixname).getDataArrayProxy(dataarrayname).flag = 2
+
+    err = d3d.remove_arrays(dca, dcap)
+    if err < 0:
+        print("Error condition for Remove Arrays: %d" % err)
+        return False
+    else:      
+        return True
+
+
+def RemoveArrays(dca, paths):
+    """
+    Remove the list of data array paths
+    \ndca: Data Container Array containing the arrays to be removed
+    \npaths: List of either DataArrayPath objects or of lists of 3 strings (data container, attribute matrix name, array name)
+    \nReturns a boolean variable of True if successful, False otherwise
+    """
+    success = True
+
+    for path in paths:
+        if not RemoveArray(dca, path):
+            success = False
+    
+    return success
+
+def MultiThresholdObjects(dca, destination_array_name, selected_thresholds):
+    """
+    Create and run a Multi Threshold Objects filter
+    \ndca: Data Container Array containing the arrays
+    \ndestination_array_name: The name of the destination array for storing the results
+    \nselected_thresholds: A list of tuples containing the Data Container Name, Attribute Matrix Name, Data Array Name,  a Comparison Operator, and a Comparison Value
+    \n The comparison operator choices are ["<", ">", "=", "!="] (or their index in this list)
+    \n The comparison value is an double floating point number to compare the values with. 
+    """
+    comparison_operators = ["<", ">", "=", "!="]
+    if len(selected_thresholds) == 0:
+        print("Insufficient data passed")
+        return
+    thresholds = simpl.ComparisonInputs()
+    for selected_threshold in selected_thresholds:
+        if len(selected_threshold) < 5:
+            print("Selected threshold has insufficient data")
+            continue
+        datacontainername = selected_threshold[0]
+        attrmatrixname = selected_threshold[1]
+        dataarrayname = selected_threshold[2]
+        comparison_operator = selected_threshold[3]
+        if not is_number(comparison_operator):
+            comparison_operator = comparison_operators.index([selected_threshold[3])
+            if comparison_operator < 0:
+                print("Invalid comparison operator passed in selected threshold")
+                continue
+        elif comparison_operator < 0 or comparison_operator (len(comparison_operators) - 1):
+            print("Invalid comparison operator passed in selected threshold")
+            continue
+        comparison_value = selected_threshold[4]
+        if not is_number(comparison_value):
+            print("Non-numerical value passed for comparison value")
+        thresholds.addInput(datacontainername, attrmatrixname, dataarrayname, comparison_operator, comparison_value)
+    
+    err = d3d.multi_threshold_objects(dca, destination_array_name, thresholds)
+    return err
+
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        pass
+ 
+    try:
+        import unicodedata
+        unicodedata.numeric(s)
+        return True
+    except (TypeError, ValueError):
+        pass
+ 
+return False
