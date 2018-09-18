@@ -267,9 +267,34 @@ void PythonBindingsModule::generateModuleFile(const QString& outputPath, const Q
   
   // Create the Top part of the file from a template file
   QFile source(m_TemplatePath);
+  QString headerTemplate;
 
-  source.open(QFile::ReadOnly);
-  QString headerTemplate = source.readAll();
+  if(source.open(QFile::ReadOnly) )
+  {
+    headerTemplate = source.readAll();
+  }
+  else
+  {
+    QTextStream in(&headerTemplate);
+    in << "/* *******************************************************************\n";
+    in << "* ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR \n";
+    in << "* Error generating this header file. Details are below.\n";
+    in << "*/\n";
+    in << "#error There was an error generating the Python Bindings Module file for " << m_LibName << "\n";
+    in << "/*\n";
+    in << "* The headerTemplateFile '" << m_TemplatePath << "' was not opened successfully.\n";
+    QFileInfo fi(m_TemplatePath);
+    if(fi.exists())
+    {
+      in << "* The headerTemplateFile DOES exist at the path " << m_TemplatePath << "\n";
+      in << "* Do you have permissions to access the file?\n";
+    }
+    else
+    {
+      in << "* The headerTemplateFile does NOT exist at the path:\n " << m_TemplatePath << "\n";
+    }
+    in << "*/\n";
+  }
   source.close();
 
   QString code;
