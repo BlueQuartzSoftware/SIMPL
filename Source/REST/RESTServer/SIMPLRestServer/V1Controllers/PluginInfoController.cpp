@@ -95,6 +95,16 @@ void PluginInfoController::service(HttpRequest& request, HttpResponse& response)
     QJsonParseError jsonParseError;
     QByteArray jsonBytes = request.getBody();
     QJsonDocument requestJsonDoc = QJsonDocument::fromJson(jsonBytes, &jsonParseError);
+    if (jsonParseError.error != QJsonParseError::ParseError::NoError)
+    {
+      // Form Error response
+      QJsonObject rootObj;
+      rootObj[SIMPL::JSON::ErrorMessage] = tr("%1: JSON Request Parsing Error - %2").arg(EndPoint()).arg(jsonParseError.errorString());
+      rootObj[SIMPL::JSON::ErrorCode] = -30;
+      QJsonDocument jdoc(rootObj);
+      response.write(jdoc.toJson(), true);
+      return;
+    }
     QJsonObject rootObject = requestJsonDoc.object();
 
     QJsonValue nameValue = rootObject.value(QString("PluginBaseName"));
@@ -112,20 +122,17 @@ void PluginInfoController::service(HttpRequest& request, HttpResponse& response)
   //   response.setCookie(HttpCookie("firstCookie","hello",600,QByteArray(),QByteArray(),QByteArray(),false,true));
   //   response.setCookie(HttpCookie("secondCookie","world",600));
   
-  if(!pluginName.isEmpty())
-  {
-    PluginManager* pm = PluginManager::Instance();
-    ISIMPLibPlugin* plugin = pm->findPlugin(pluginName);
+  PluginManager* pm = PluginManager::Instance();
+  ISIMPLibPlugin* plugin = pm->findPlugin(pluginName);
 
-    if(nullptr == plugin)
-    {
-      responseJsonRootObj[SIMPL::JSON::ErrorCode] = -30;
-      responseJsonRootObj[SIMPL::JSON::ErrorMessage] = "Plugin with name " + pluginName + " was not loaded or does not exist";
-    }
-    else
-    {
-      createPluginJson(plugin, responseJsonRootObj);
-    }
+  if(nullptr == plugin)
+  {
+    responseJsonRootObj[SIMPL::JSON::ErrorCode] = -50;
+    responseJsonRootObj[SIMPL::JSON::ErrorMessage] = "Plugin with name " + pluginName + " was not loaded or does not exist";
+  }
+  else
+  {
+    createPluginJson(plugin, responseJsonRootObj);
   }
 
   QJsonDocument jdoc(responseJsonRootObj);
