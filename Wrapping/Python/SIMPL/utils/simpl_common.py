@@ -422,7 +422,7 @@ def MultiThresholdObjects(dca, destination_array_name, selected_thresholds):
         dataarrayname = selected_threshold[2]
         comparison_operator = selected_threshold[3]
         if not is_number(comparison_operator):
-            comparison_operator = comparison_operators.index([selected_threshold[3])
+            comparison_operator = comparison_operators.index(selected_threshold[3])
             if comparison_operator < 0:
                 print("Invalid comparison operator passed in selected threshold")
                 continue
@@ -436,6 +436,158 @@ def MultiThresholdObjects(dca, destination_array_name, selected_thresholds):
     
     err = d3d.multi_threshold_objects(dca, destination_array_name, thresholds)
     return err
+
+
+def MultiThresholdObjects2(dca, source_path, destination_array_name, selected_thresholds):
+    """
+    Create and run a Multi Threshold Objects filter
+    \ndca: Data Container Array containing the arrays
+    \nsource_path: Data Array Path or tuple/list of 3 strings representing a Data Array Path
+    \ndestination_array_name: The name of the destination array for storing the results
+    \nselected_thresholds: A list of Comparison Sets that has a DataContainerName, AttributeMatrixName, and a Union Operator (AND, OR)
+    \nA list of tuples containing the AttributeArrayName, a CompOperator, and a CompValue
+    \nThe comparison operator choices are ["<", ">", "=", "!="] (or their index in this list)
+    \nThe comparison value is an double floating point number to compare the values with. 
+    \nNOTE: Comparison Sets can contain Comparison Sets or Values but Comparison Values cannot contain either
+    \n Place the UnionOperator in front of the Comparison Values in a a Comparison Set
+    \n Comparison Sets should be lists in [] form and Comparison Values should be tuples in () form
+    \nExample:
+    \n["AND", (CV1), (CV2), ["OR", (CV3, (CV4)]] ==> CV1 && CV2 && (CV3 OR CV4)
+    """
+    thresholds = simpl.ComparisonInputsAdvanced()
+    topLevelComparisonSet = simpl.ComparisonSet()
+    for selected_threshold in selected_thresholds:
+        if selected_threshold == "AND":
+            topLevelComparisonSet.UnionOperator = 0
+        elif selected_threshold == "OR":
+            topLevelComparisonSet.UnionOperator = 1
+        if isinstance(selected_threshold, tuple):
+            comparisonValue = simpl.ComparisonValue()
+            comparisonValue.AttributeArrayName = selected_threshold[0]
+            comparisonValue.CompOperator = selected_threshold[1]
+            comparisonValue.CompValue = selected_threshold[2]
+            topLevelComparisonSet.addComparison(comparisonValue)
+        if isinstance(selected_threshold, list):
+            comparisonSet = BuildSelectedThresholds(selected_threshold)
+            topLevelComparisonSet.addComparison(comparisonSet)
+    thresholds.addInput(topLevelComparisonSet)
+    if isinstance(source_path, (tuple, list)):
+        thresholds.DataContainerName = source_path[0]
+        thresholds.AttributeMatrixName = source_path[1]
+    elif isinstance(source_path, simpl.DataArrayPath):
+        thresholds.DataContainerName = source_path.DataContainerName
+        thresholds.AttributeMatrixName = source_path.AttributeMatrixName
+    else:
+        print("Invalid source path")
+        return -1        
+    
+    err = d3d.multi_threshold_objects2(dca, destination_array_name, thresholds)
+    if err < 0:
+        print("MultiThresholdObjects ErrorCondition: %d" % err)
+    return err
+
+
+def BuildSelectedThresholds(selected_threshold):
+    """
+    Recursive function to build a Comparison Set
+    \nselected_threshold: A nested Comparison Set to be built
+    """
+    # AND = 0 / OR = 1
+    newComparisonSet = simpl.ComparisonSet()
+    if selected_threshold[0] == "AND":
+        newComparisonSet.UnionOperator = 0
+    elif selected_threshold[0] == "OR":
+        newComparisonSet.UnionOperator = 1
+    for element in selected_threshold:
+        if isinstance(element, tuple):
+            comparisonValue = simpl.ComparisonValue()
+            comparisonValue.AttributeArrayName = element[0]
+            comparisonValue.CompOperator = element[1]
+            comparisonValue.CompValue = element[2]
+            newComparisonSet.addComparison(comparisonValue)
+        if isinstance(element, list):
+            comparisonSet = BuildSelectedThresholds(element)
+            newComparisonSet.addComparison(comparisonSet) 
+    return newComparisonSet
+
+
+def MoveData(dca, what_to_move, source_path, destination_path):
+    """
+    Move the data from source to destination
+    \ndca: Data Container Array containing project data
+    \nwhat_to_move: Either "Attribute Matrix" or "Data Array" (or the actual type such as simpl.AttributeMatrix or simpl.IDataArray)
+    \nsource_path: The full Data Array Path to the object being moved (or a list/tuple of strings)
+    \ndestination: The full Data Array Path where the object is moved to (or a list/tuple of strings)
+    """
+    what_to_move_number = 0
+    if not isinstance(what_to_move, simpl.AttributeMatrix) or not isinstance(what_to_move, simpl.IDataArray):
+        if what_to_move == "Data Array" or what_to_move == "Attribute Array":
+            what_to_move_number = 1
+        elif what_to_move != "Attribute Matrix":
+            print("Invalid type for 'what to move'")
+            return -1
+    if not isinstance(source_path, (simpl.DataArrayPath, list, tuple)):
+        print("Invalid source path")
+        return -1
+    if not isinstance(destination_path, (simpl.DataArrayPath, list, tuple)):
+        print("Invalid destination path")
+        return -1
+    
+    destination_datacontainername = ""
+    if isinstance(destination_path, simpl.DataArrayPath):
+        destination_datacontainername = destination_path.DataContainerName
+    else:
+        destination_datacontainername = destination_path[0]
+    destination_attrmatrixname = ""
+    if isinstance(destination_path, simpl.DataArrayPath):
+        destination_attrmatrixname = destination_path.AttributeMatrixName
+    else:
+        destination_attrmatrixname = destination_path[1]
+    destination_dataarrayname = ""
+    if isinstance(destination_path, simpl.DataArrayPath):
+        destination_dataarrayname = destination_path.DataArrayName
+    else:
+        destination_dataarrayname = destination_path[2]
+    
+    source_datacontainername = ""
+    if isinstance(source_path, simpl.DataArrayPath):
+        source_datacontainername = source_path.DataContainerName
+    else:
+        source_datacontainername = source_path[0]
+    source_attrmatrixname = ""
+    if isinstance(source_path, simpl.DataArrayPath):
+        source_attrmatrixname = source_path.AttributeMatrixName
+    else:
+        source_attrmatrixname = source_path[1]
+    source_dataarrayname = ""
+    if isinstance(source_path, simpl.DataArrayPath):
+        source_dataarrayname = source_path.DataArrayName
+    else:
+        source_dataarrayname = source_path[2]
+
+    err = d3d.move_data(dca, what_to_move_number, destination_datacontainername, simpl.DataArrayPath(source_datacontainername, source_attrmatrixname, ""),
+    simpl.DataArrayPath(destination_datacontainername, destination_attrmatrixname, ""), simpl.DataArrayPath(source_datacontainername, source_attrmatrixname, source_dataarrayname))
+    if err < 0:
+        print("MoveData ErrorCondition %d: " % err)
+    return err
+    
+
+def MoveMultiData(dca, what_to_move, source_paths, destination_path):
+    """
+    Moves multiple data arrays or attribute matrices to the destination path
+    \ndca: Data Container Array with the data in it
+    \nwhat_to_move: Either "Attribute Matrix" or "Data Array" (or the actual type such as simpl.AttributeMatrix or simpl.IDataArray)
+    \nsource_paths: A list of full Data Array Paths to the objects being moved (or a list of list/tuple of strings)
+    \ndestination: The full Data Array Path where the object is moved to (or a list/tuple of strings)
+    """
+    if len(source_paths) < 1:
+        print("Invalid or insufficient source paths")
+        return -1
+    err = 0
+    for source_path in source_paths:
+        err = MoveData(dca, what_to_move, source_path, destination_path)
+    return err
+
 
 def is_number(s):
     try:
@@ -451,4 +603,4 @@ def is_number(s):
     except (TypeError, ValueError):
         pass
  
-return False
+    return False
