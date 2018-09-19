@@ -45,6 +45,7 @@
 #include "SIMPLRestServer/V1Controllers/PluginInfoController.h"
 #include "SIMPLRestServer/V1Controllers/PreflightPipelineController.h"
 #include "SIMPLRestServer/V1Controllers/SIMPLStaticFileController.h"
+#include "SIMPLRestServer/V1Controllers/SIMPLibVersionController.h"
 
 /** Redirects log messages to a file */
 extern FileLogger* logger;
@@ -85,6 +86,10 @@ void V1RequestMapper::service(HttpRequest& request, HttpResponse& response)
   else if(path.endsWith(ListFilterParametersController::EndPoint()))
   {
     ListFilterParametersController(getListenHost(), getListenPort()).service(request, response);
+  }
+  else if(path.endsWith(SIMPLibVersionController::EndPoint()))
+  {
+    SIMPLibVersionController(getListenHost(), getListenPort()).service(request, response);
   }
   else if(path.endsWith(LoadedPluginsController::EndPoint()))
   {

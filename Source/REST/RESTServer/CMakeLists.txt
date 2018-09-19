@@ -29,6 +29,7 @@ set(SIMPLRestServerController_SRCS
   ${SIMPLRestServer_SOURCE_DIR}/SIMPLRestServer/V1Controllers/NamesOfFiltersController.cpp
   ${SIMPLRestServer_SOURCE_DIR}/SIMPLRestServer/V1Controllers/ApiNotFoundController.cpp
   ${SIMPLRestServer_SOURCE_DIR}/SIMPLRestServer/V1Controllers/SIMPLStaticFileController.cpp
+  ${SIMPLRestServer_SOURCE_DIR}/SIMPLRestServer/V1Controllers/SIMPLibVersionController.cpp
 )
 
 set(SIMPLRestServerController_HDRS
@@ -46,6 +47,7 @@ set(SIMPLRestServerController_HDRS
   ${SIMPLRestServer_SOURCE_DIR}/SIMPLRestServer/V1Controllers/NamesOfFiltersController.h
   ${SIMPLRestServer_SOURCE_DIR}/SIMPLRestServer/V1Controllers/ApiNotFoundController.h
   ${SIMPLRestServer_SOURCE_DIR}/SIMPLRestServer/V1Controllers/SIMPLStaticFileController.h
+  ${SIMPLRestServer_SOURCE_DIR}/SIMPLRestServer/V1Controllers/SIMPLibVersionController.h
 )
 
 QT5_WRAP_CPP( QtWebApp_MOC_SRCS
