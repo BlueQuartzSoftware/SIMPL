@@ -205,13 +205,13 @@ void SVOverlayWidgetButton::updateSourcePolicy()
 
     if(TargetSide::Left == m_Side || TargetSide::Right == m_Side)
     {
-      m_Source->setMinimumWidth(m_Target->width());
+      m_Source->setMinimumWidth(m_Target->width() - 2 * m_Layout->margin());
       m_Source->setMinimumHeight(0);
     }
     else
     {
       m_Source->setMinimumWidth(0);
-      m_Source->setMinimumHeight(m_Target->height());
+      m_Source->setMinimumHeight(m_Target->height() - 2 * m_Layout->margin());
     }
   }
   else
