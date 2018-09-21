@@ -292,7 +292,7 @@ QModelIndex PipelineModel::indexOfFilter(AbstractFilter* filter, const QModelInd
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QModelIndex PipelineModel::getActivePipeline()
+QModelIndex PipelineModel::getActivePipelineIndex()
 {
   return m_ActivePipelineIndex;
 }
@@ -717,7 +717,7 @@ int PipelineModel::getMaxFilterCount() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineModel::pipelineSaved(const QModelIndex &index)
+bool PipelineModel::isPipelineSaved(const QModelIndex &index)
 {
   PipelineItem* item = getItem(index);
   return item->isPipelineSaved();

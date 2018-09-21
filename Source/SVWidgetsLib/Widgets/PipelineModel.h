@@ -117,10 +117,10 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
 
     bool setData(const QModelIndex& index, const QVariant& value, int role) override;
 
-    bool pipelineSaved(const QModelIndex &index);
+    bool isPipelineSaved(const QModelIndex &index);
     void setPipelineSaved(const QModelIndex &index, bool saved);
 
-    QModelIndex getActivePipeline();
+    QModelIndex getActivePipelineIndex();
     void setActivePipeline(const QModelIndex &index, bool value);
     void clearActivePipeline();
 
