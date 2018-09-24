@@ -31,11 +31,16 @@ SOFTWARE.
 #include <QtNetwork/QNetworkInterface>
 #include <QtNetwork/QHostAddress>
 
+#include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
+#include "SIMPLib/Plugin/SIMPLPluginConstants.h"
 
-//#include "SIMPLRestClient_UI.h"
+#define REST_UI 1
+
+#if REST_UI
+#include "SIMPLRestClient_UI.h"
+#endif
 
 #include "Core/SIMPLRestClient.h"
-
 
 // -----------------------------------------------------------------------------
 //
@@ -147,18 +152,60 @@ void TestAvailableFilters(QUrl url)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void TestSIMPLibVersion(QUrl url)
+{
+  url.setPath("/api/v1/SIMPLibVersion");
+  qDebug() << url;
+
+  QByteArray data; // No actual Application data is required.
+
+  QNetworkRequest netRequest;
+  netRequest.setUrl(url);
+  netRequest.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+  QEventLoop waitLoop;
+  QNetworkAccessManager* connection = new QNetworkAccessManager();
+  QNetworkReply* reply = connection->post(netRequest, data);
+  QObject::connect(reply, SIGNAL(finished()), &waitLoop, SLOT(quit()));
+  waitLoop.exec();
+
+  int errorCode = reply->error();
+  qDebug() << "ErrorCode: " << errorCode;
+
+  if(errorCode != 0)
+  {
+    qDebug() << "An error occurred requesting the loaded plugins: " << errorCode;
+  }
+
+  std::string replyContent = reply->readAll().toStdString();
+
+  std::cout << replyContent << std::endl;
+  delete reply;
+  delete connection;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 int main(int argc, char* argv[])
 {
+  #if REST_UI
+  QApplication app(argc, argv);
+  #else
   QCoreApplication app(argc, argv);
+  #endif
+
   app.setApplicationVersion("1.0.0");
   app.setOrganizationName("BlueQuartz Software");
   app.setApplicationName("REST API Communication");
 
-//#if defined(Q_OS_MAC)
-//  QGuiApplication::setQuitOnLastWindowClosed(false);
-//#endif
+#if defined(Q_OS_MAC)
+#if REST_UI
+  QGuiApplication::setQuitOnLastWindowClosed(false);
+#endif
+#endif
 
-#if 0
+#if REST_UI
   QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
   SIMPLRestClient_UI* ui = new SIMPLRestClient_UI(nullptr);
@@ -166,24 +213,24 @@ int main(int argc, char* argv[])
 
   return app.exec();
   
-#endif
-  
-  
+#else
   SIMPLRestClient client(nullptr);
   QUrl url;
-  for (auto address : QNetworkInterface::allAddresses()) 
+  for (auto address : QNetworkInterface::allAddresses())
   {
     if (address.protocol() == QAbstractSocket::IPv4Protocol && address != QHostAddress(QHostAddress::LocalHost))
     {
       url.setHost(address.toString());
       break;
     }
-    
+
   }
   url.setScheme("http");
   url.setPort(8080);
-  
+
   TestLoadedPlugins(url);
   TestFilterCount(url);
   TestAvailableFilters(url);
+  TestSIMPLibVersion(url);
+#endif
 }
