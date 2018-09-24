@@ -121,46 +121,6 @@ public:
     }
   }
 
-  //// -----------------------------------------------------------------------------
-  ////
-  //// -----------------------------------------------------------------------------
-  // void checkDataArray(FloatArrayType::Pointer vert, FloatArrayType::Pointer daVert)
-  //{
-  //  size_t numVertices = vert->getNumberOfTuples();
-
-  //  DREAM3D_REQUIRE_EQUAL(numVertices, daVert->getNumberOfTuples())
-
-  //  for(size_t i = 0; i < numVertices; i++)
-  //  {
-  //    float* tuple = vert->getTuplePointer(i);
-  //    float* originalTuple = daVert->getTuplePointer(i);
-  //    for(int j = 0; j < daVert->getNumberOfComponents(); j++)
-  //    {
-  //      DREAM3D_REQUIRE_EQUAL(tuple[j], originalTuple[j])
-  //    }
-  //  }
-  //}
-
-  //// -----------------------------------------------------------------------------
-  ////
-  //// -----------------------------------------------------------------------------
-  // void checkDataArray(Int64ArrayType::Pointer elements, Int64ArrayType::Pointer daList)
-  //{
-  //  size_t numElements = elements->getNumberOfTuples();
-
-  //  DREAM3D_REQUIRE_EQUAL(numElements, daList->getNumberOfTuples())
-
-  //  for(size_t i = 0; i < numElements; i++)
-  //  {
-  //    int64_t* tuple = elements->getTuplePointer(i);
-  //    int64_t* originalTuple = daList->getTuplePointer(i);
-  //    for(int j = 0; j < daList->getNumberOfComponents(); j++)
-  //    {
-  //      DREAM3D_REQUIRE_EQUAL(tuple[j], originalTuple[j])
-  //    }
-  //  }
-  //}
-
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
