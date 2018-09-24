@@ -53,6 +53,7 @@
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 #include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
+#include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 
 #include "SIMPLib/Geometry/EdgeGeom.h"
 #include "SIMPLib/Geometry/HexahedralGeom.h"
