@@ -16,6 +16,7 @@ set(TEST_${SUBDIR_NAME}_NAMES
   DataContainerTest
   ErrorMessageTest
   ExecuteProcessTest
+  ExtractAttributeArraysFromGeometryTest
   ExtractComponentAsArrayTest
   FindDerivativesFilterTest
   GenerateColorTableTest

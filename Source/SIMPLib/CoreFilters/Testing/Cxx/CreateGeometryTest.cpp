@@ -1,6 +1,38 @@
-// -----------------------------------------------------------------------------
-// Insert your license & copyright information here
-// -----------------------------------------------------------------------------
+/* ============================================================================
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 #pragma once
 
 #include <QtCore/QCoreApplication>
@@ -77,42 +109,57 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void checkDataArray(FloatArrayType::Pointer vert, FloatArrayType::Pointer daVert)
+  template <typename T> void checkDataArray(std::shared_ptr<DataArray<T>> originalData, std::shared_ptr<DataArray<T>> newData)
   {
-    size_t numVertices = vert->getNumberOfTuples();
+    DREAM3D_REQUIRE_EQUAL(originalData->getSize(), newData->getSize())
 
-    DREAM3D_REQUIRE_EQUAL(numVertices, daVert->getNumberOfTuples())
-
-    for(size_t i = 0; i < numVertices; i++)
+    for(int i = 0; i < originalData->getSize(); i++)
     {
-      float* tuple = vert->getTuplePointer(i);
-      float* originalTuple = daVert->getTuplePointer(i);
-      for(int j = 0; j < daVert->getNumberOfComponents(); j++)
-      {
-        DREAM3D_REQUIRE_EQUAL(tuple[j], originalTuple[j])
-      }
+      T* valueOld = originalData->getPointer(i);
+      T* valueNew = newData->getPointer(i);
+      DREAM3D_REQUIRE_EQUAL(valueNew[0], valueOld[0])
     }
   }
 
-  // -----------------------------------------------------------------------------
-  //
-  // -----------------------------------------------------------------------------
-  void checkDataArray(Int64ArrayType::Pointer elements, Int64ArrayType::Pointer daList)
-  {
-    size_t numElements = elements->getNumberOfTuples();
+  //// -----------------------------------------------------------------------------
+  ////
+  //// -----------------------------------------------------------------------------
+  // void checkDataArray(FloatArrayType::Pointer vert, FloatArrayType::Pointer daVert)
+  //{
+  //  size_t numVertices = vert->getNumberOfTuples();
 
-    DREAM3D_REQUIRE_EQUAL(numElements, daList->getNumberOfTuples())
+  //  DREAM3D_REQUIRE_EQUAL(numVertices, daVert->getNumberOfTuples())
 
-    for(size_t i = 0; i < numElements; i++)
-    {
-      int64_t* tuple = elements->getTuplePointer(i);
-      int64_t* originalTuple = daList->getTuplePointer(i);
-      for(int j = 0; j < daList->getNumberOfComponents(); j++)
-      {
-        DREAM3D_REQUIRE_EQUAL(tuple[j], originalTuple[j])
-      }
-    }
-  }
+  //  for(size_t i = 0; i < numVertices; i++)
+  //  {
+  //    float* tuple = vert->getTuplePointer(i);
+  //    float* originalTuple = daVert->getTuplePointer(i);
+  //    for(int j = 0; j < daVert->getNumberOfComponents(); j++)
+  //    {
+  //      DREAM3D_REQUIRE_EQUAL(tuple[j], originalTuple[j])
+  //    }
+  //  }
+  //}
+
+  //// -----------------------------------------------------------------------------
+  ////
+  //// -----------------------------------------------------------------------------
+  // void checkDataArray(Int64ArrayType::Pointer elements, Int64ArrayType::Pointer daList)
+  //{
+  //  size_t numElements = elements->getNumberOfTuples();
+
+  //  DREAM3D_REQUIRE_EQUAL(numElements, daList->getNumberOfTuples())
+
+  //  for(size_t i = 0; i < numElements; i++)
+  //  {
+  //    int64_t* tuple = elements->getTuplePointer(i);
+  //    int64_t* originalTuple = daList->getTuplePointer(i);
+  //    for(int j = 0; j < daList->getNumberOfComponents(); j++)
+  //    {
+  //      DREAM3D_REQUIRE_EQUAL(tuple[j], originalTuple[j])
+  //    }
+  //  }
+  //}
 
   // -----------------------------------------------------------------------------
   //
@@ -227,9 +274,9 @@ public:
       FloatArrayType::Pointer y = rectGridGeom->getYBounds();
       FloatArrayType::Pointer z = rectGridGeom->getZBounds();
 
-      checkDataArray(x, xBounds);
-      checkDataArray(y, yBounds);
-      checkDataArray(z, zBounds);
+      checkDataArray<float>(x, xBounds);
+      checkDataArray<float>(y, yBounds);
+      checkDataArray<float>(z, zBounds);
 
       if(arrayHandling)
       {
@@ -314,12 +361,15 @@ public:
 
       DREAM3D_REQUIRE_EQUAL(correctGeom, true)
 
+      FloatArrayType::Pointer vert = FloatArrayType::NullPointer();
+      Int64ArrayType::Pointer elements = Int64ArrayType::NullPointer();
+
       if(geomType == IGeometry::Type::Vertex)
       {
         VertexGeom::Pointer vertexGeom = dc->getGeometryAs<VertexGeom>();
         FloatArrayType::Pointer vert = vertexGeom->getVertices();
 
-        checkDataArray(vert, daVertices);
+        checkDataArray<float>(vert, daVertices);
       }
       else if(geomType == IGeometry::Type::Edge)
       {
@@ -327,8 +377,8 @@ public:
         FloatArrayType::Pointer vert = edgeGeom->getVertices();
         Int64ArrayType::Pointer edges = edgeGeom->getEdges();
 
-        checkDataArray(vert, daVertices);
-        checkDataArray(edges, daElements);
+        checkDataArray<float>(vert, daVertices);
+        checkDataArray<int64_t>(edges, daElements);
       }
       else if(geomType == IGeometry::Type::Triangle)
       {
@@ -336,8 +386,8 @@ public:
         FloatArrayType::Pointer vert = triGeom->getVertices();
         Int64ArrayType::Pointer triangles = triGeom->getTriangles();
 
-        checkDataArray(vert, daVertices);
-        checkDataArray(triangles, daElements);
+        checkDataArray<float>(vert, daVertices);
+        checkDataArray<int64_t>(triangles, daElements);
       }
       else if(geomType == IGeometry::Type::Quad)
       {
@@ -345,8 +395,8 @@ public:
         FloatArrayType::Pointer vert = quadGeom->getVertices();
         Int64ArrayType::Pointer quads = quadGeom->getQuads();
 
-        checkDataArray(vert, daVertices);
-        checkDataArray(quads, daElements);
+        checkDataArray<float>(vert, daVertices);
+        checkDataArray<int64_t>(quads, daElements);
       }
       else if(geomType == IGeometry::Type::Tetrahedral)
       {
@@ -354,8 +404,8 @@ public:
         FloatArrayType::Pointer vert = tetraGeom->getVertices();
         Int64ArrayType::Pointer tetrahedra = tetraGeom->getTetrahedra();
 
-        checkDataArray(vert, daVertices);
-        checkDataArray(tetrahedra, daElements);
+        checkDataArray<float>(vert, daVertices);
+        checkDataArray<int64_t>(tetrahedra, daElements);
       }
       else if(geomType == IGeometry::Type::Hexahedral)
       {
@@ -363,8 +413,8 @@ public:
         FloatArrayType::Pointer vert = hexaGeom->getVertices();
         Int64ArrayType::Pointer hexahedra = hexaGeom->getHexahedra();
 
-        checkDataArray(vert, daVertices);
-        checkDataArray(hexahedra, daElements);
+        checkDataArray<float>(vert, daVertices);
+        checkDataArray<int64_t>(hexahedra, daElements);
       }
 
       if(arrayHandling)
