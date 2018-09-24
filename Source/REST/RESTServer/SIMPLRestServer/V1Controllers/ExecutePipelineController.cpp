@@ -90,12 +90,43 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
     return;
   }
 
+  QJsonParseError jsonParseError;
   QString requestBody = request.getBody();
-  QJsonDocument requestDoc = QJsonDocument::fromJson(requestBody.toUtf8());
+  QJsonDocument requestDoc = QJsonDocument::fromJson(requestBody.toUtf8(), &jsonParseError);
+  if (jsonParseError.error != QJsonParseError::ParseError::NoError)
+  {
+    // Form Error response
+    QJsonObject rootObj;
+    rootObj[SIMPL::JSON::ErrorMessage] = tr("%1: JSON Request Parsing Error - %2").arg(EndPoint()).arg(jsonParseError.errorString());
+    rootObj[SIMPL::JSON::ErrorCode] = -30;
+    QJsonDocument jdoc(rootObj);
+    response.write(jdoc.toJson(), true);
+    return;
+  }
+
   QJsonObject requestObj = requestDoc.object();
+  if (!requestObj.contains(SIMPL::JSON::Pipeline))
+  {
+    QJsonObject rootObj;
+    rootObj[SIMPL::JSON::ErrorMessage] = tr("%1: No Pipeline object found in the JSON request body.").arg(EndPoint());
+    rootObj[SIMPL::JSON::ErrorCode] = -40;
+    QJsonDocument jdoc(rootObj);
+    response.write(jdoc.toJson(), true);
+    return;
+  }
 
   QJsonObject pipelineObj = requestObj[SIMPL::JSON::Pipeline].toObject();
   FilterPipeline::Pointer pipeline = FilterPipeline::FromJson(pipelineObj);
+  if (pipeline.get() == nullptr)
+  {
+    QJsonObject rootObj;
+    rootObj[SIMPL::JSON::ErrorMessage] = tr("%1: Pipeline could not be created from the JSON request body.").arg(EndPoint());
+    rootObj[SIMPL::JSON::ErrorCode] = -50;
+    QJsonDocument jdoc(rootObj);
+    response.write(jdoc.toJson(), true);
+    return;
+  }
+
   qDebug() << "Number of Filters in Pipeline: " << pipeline->size();
 
   QString linkAddress = "http://" + getListenHost().toString() + ":" + QString::number(getListenPort()) + QDir::separator() + QString(session.getId()) + QDir::separator();
@@ -194,10 +225,13 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
   int err = pipeline->preflightPipeline();
   qDebug() << "Preflight Error: " << err;
 
-  qDebug() << "Pipeline About to Execute....";
-  pipeline->execute();
+  if (listener.getErrorMessages().size() <= 0)
+  {
+    qDebug() << "Pipeline About to Execute....";
+    pipeline->execute();
 
-  qDebug() << "Pipeline Done Executing...." << pipeline->getErrorCondition();
+    qDebug() << "Pipeline Done Executing...." << pipeline->getErrorCondition();
+  }
 
   // Return messages
   std::vector<PipelineMessage> errorMessages = listener.getErrorMessages();
@@ -252,13 +286,8 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
   tar.setWorkingDirectory(docRoot);
   std::cout << "Working Directory from Process: " << tar.workingDirectory().toStdString() << std::endl;
   tar.start("/usr/bin/tar", QStringList() << "-cvf" << QString(session.getId() + ".tar.gz") << QString(session.getId()));
-  if(!tar.waitForStarted())
-  {
-  }
-
-  if(!tar.waitForFinished())
-  {
-  }
+  tar.waitForStarted();
+  tar.waitForFinished();
 
   QByteArray result = tar.readAllStandardError();
   std::cout << result.data() << std::endl;

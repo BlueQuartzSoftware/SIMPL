@@ -91,43 +91,43 @@ void PluginInfoController::service(HttpRequest& request, HttpResponse& response)
 
   QString pluginName;
 
-  { 
-    QJsonParseError jsonParseError;
-    QByteArray jsonBytes = request.getBody();
-    QJsonDocument requestJsonDoc = QJsonDocument::fromJson(jsonBytes, &jsonParseError);
-    if (jsonParseError.error != QJsonParseError::ParseError::NoError)
-    {
-      // Form Error response
-      QJsonObject rootObj;
-      rootObj[SIMPL::JSON::ErrorMessage] = tr("%1: JSON Request Parsing Error - %2").arg(EndPoint()).arg(jsonParseError.errorString());
-      rootObj[SIMPL::JSON::ErrorCode] = -30;
-      QJsonDocument jdoc(rootObj);
-      response.write(jdoc.toJson(), true);
-      return;
-    }
-    QJsonObject rootObject = requestJsonDoc.object();
-
-    QJsonValue nameValue = rootObject.value(QString("PluginBaseName"));
-    if(nameValue.isString())
-    {
-      pluginName = nameValue.toString();
-    }
-    else
-    {
-      responseJsonRootObj[SIMPL::JSON::ErrorMessage] = "Key 'PluginBaseName' does not exist in the JSON payload.";
-      responseJsonRootObj[SIMPL::JSON::ErrorCode] = -40;
-    }
+  QJsonParseError jsonParseError;
+  QByteArray jsonBytes = request.getBody();
+  QJsonDocument requestJsonDoc = QJsonDocument::fromJson(jsonBytes, &jsonParseError);
+  if (jsonParseError.error != QJsonParseError::ParseError::NoError)
+  {
+    // Form Error response
+    QJsonObject rootObj;
+    rootObj[SIMPL::JSON::ErrorMessage] = tr("%1: JSON Request Parsing Error - %2").arg(EndPoint()).arg(jsonParseError.errorString());
+    rootObj[SIMPL::JSON::ErrorCode] = -30;
+    QJsonDocument jdoc(rootObj);
+    response.write(jdoc.toJson(), true);
+    return;
   }
-  qDebug() << "PluginBaseName: " << pluginName;
-  //   response.setCookie(HttpCookie("firstCookie","hello",600,QByteArray(),QByteArray(),QByteArray(),false,true));
-  //   response.setCookie(HttpCookie("secondCookie","world",600));
+  QJsonObject rootObject = requestJsonDoc.object();
+  if (!rootObject.contains("PluginBaseName"))
+  {
+    responseJsonRootObj[SIMPL::JSON::ErrorMessage] = "Key 'PluginBaseName' does not exist in the JSON payload.";
+    responseJsonRootObj[SIMPL::JSON::ErrorCode] = -40;
+  }
+
+  QJsonValue nameValue = rootObject.value(QString("PluginBaseName"));
+  if(nameValue.isString())
+  {
+    pluginName = nameValue.toString();
+  }
+  else
+  {
+    responseJsonRootObj[SIMPL::JSON::ErrorMessage] = "Key 'PluginBaseName' does not have a paired value that is a string.";
+    responseJsonRootObj[SIMPL::JSON::ErrorCode] = -50;
+  }
   
   PluginManager* pm = PluginManager::Instance();
   ISIMPLibPlugin* plugin = pm->findPlugin(pluginName);
 
   if(nullptr == plugin)
   {
-    responseJsonRootObj[SIMPL::JSON::ErrorCode] = -50;
+    responseJsonRootObj[SIMPL::JSON::ErrorCode] = -60;
     responseJsonRootObj[SIMPL::JSON::ErrorMessage] = "Plugin with name " + pluginName + " was not loaded or does not exist";
   }
   else

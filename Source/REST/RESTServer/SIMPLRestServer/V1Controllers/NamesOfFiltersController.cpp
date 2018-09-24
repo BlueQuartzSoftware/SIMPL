@@ -76,21 +76,16 @@ void NamesOfFiltersController::service(HttpRequest& request, HttpResponse& respo
   }
 
   FilterManager* fm = FilterManager::Instance();
+  if (fm != nullptr)
+  {
+    rootObj[SIMPL::JSON::ErrorMessage] = tr("%1: Could not load the Filter Manager needed to get the list of filter names.").arg(EndPoint());
+    rootObj[SIMPL::JSON::ErrorCode] = -30;
+    QJsonDocument jdoc(rootObj);
+    response.write(jdoc.toJson(), true);
+    return;
+  }
 
-  FilterManager::Collection factories = fm->getFactories();
-
-//  QJsonArray filters;
-
-//  QMap<QString, IFilterFactory::Pointer>::const_iterator i = factories.constBegin();
-//  while(i != factories.constEnd())
-//  {
-//    QJsonObject obj;
-//    obj["ClassName"] = i.key();
-//    obj["HumanLabel"] = i.value()->getFilterHumanLabel();
-//    filters.append(obj);
-//    ++i;
-//  }
-
+  rootObj[SIMPL::JSON::ErrorMessage] = "";
   rootObj[SIMPL::JSON::ErrorCode] = 0;
   rootObj[SIMPL::JSON::Filters] = fm->toJsonArray();
   QJsonDocument jdoc(rootObj);

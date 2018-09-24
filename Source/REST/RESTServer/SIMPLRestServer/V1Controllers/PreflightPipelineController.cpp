@@ -84,9 +84,19 @@ void PreflightPipelineController::service(HttpRequest& request, HttpResponse& re
     return;
   }
 
+  QJsonParseError jsonParseError;
   QString requestBody = request.getBody();
-  QJsonDocument requestDoc = QJsonDocument::fromJson(requestBody.toUtf8());
-  QJsonObject requestObj = requestDoc.object();
+  QJsonDocument requestDoc = QJsonDocument::fromJson(requestBody.toUtf8(), &jsonParseError);
+  if (jsonParseError.error != QJsonParseError::ParseError::NoError)
+  {
+    // Form Error response
+    QJsonObject rootObj;
+    rootObj[SIMPL::JSON::ErrorMessage] = tr("%1: JSON Request Parsing Error - %2").arg(EndPoint()).arg(jsonParseError.errorString());
+    rootObj[SIMPL::JSON::ErrorCode] = -30;
+    QJsonDocument jdoc(rootObj);
+    response.write(jdoc.toJson(), true);
+    return;
+  }
 
   QString linkAddress = "http://" + getListenHost().toString() + ":" + QString::number(getListenPort()) + QDir::separator() + QString(session.getId()) + QDir::separator();
   SIMPLStaticFileController* staticFileController = SIMPLStaticFileController::Instance();
@@ -94,9 +104,30 @@ void PreflightPipelineController::service(HttpRequest& request, HttpResponse& re
   QString newFilePath = docRoot + QDir::separator() + QString(session.getId()) + QDir::separator();
   QJsonArray outputLinks;
 
+  QJsonObject requestObj = requestDoc.object();
+  if (!requestObj.contains(SIMPL::JSON::Pipeline))
+  {
+    QJsonObject rootObj;
+    rootObj[SIMPL::JSON::ErrorMessage] = tr("%1: No Pipeline object found in the JSON request body.").arg(EndPoint());
+    rootObj[SIMPL::JSON::ErrorCode] = -40;
+    QJsonDocument jdoc(rootObj);
+    response.write(jdoc.toJson(), true);
+    return;
+  }
+
   // Pipeline
   QJsonObject pipelineObj = requestObj[SIMPL::JSON::Pipeline].toObject();
   FilterPipeline::Pointer pipeline = FilterPipeline::FromJson(pipelineObj);
+  if (pipeline.get() == nullptr)
+  {
+    QJsonObject rootObj;
+    rootObj[SIMPL::JSON::ErrorMessage] = tr("%1: Pipeline could not be created from the JSON request body.").arg(EndPoint());
+    rootObj[SIMPL::JSON::ErrorCode] = -50;
+    QJsonDocument jdoc(rootObj);
+    response.write(jdoc.toJson(), true);
+    return;
+  }
+
   PipelineListener listener(nullptr);
   pipeline->addMessageReceiver(&listener);
 

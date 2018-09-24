@@ -58,9 +58,28 @@ void ListFilterParametersController::createFilterParametersJson(const QString& f
 {
   // Register all the filters including trying to load those from Plugins
   FilterManager* fm = FilterManager::Instance();
+  if (fm != nullptr)
+  {
+    rootObject[SIMPL::JSON::ErrorMessage] = tr("%1: Could not load the Filter Manager needed to get the filter parameters for filter '%2'.").arg(EndPoint()).arg(filterName);
+    rootObject[SIMPL::JSON::ErrorCode] = -80;
+    return;
+  }
 
   IFilterFactory::Pointer factory = fm->getFactoryFromClassName(filterName);
+  if (factory.get() != nullptr)
+  {
+    rootObject[SIMPL::JSON::ErrorMessage] = tr("%1: Could not load the filter factory needed to get the filter parameters for filter '%2'.").arg(EndPoint()).arg(filterName);
+    rootObject[SIMPL::JSON::ErrorCode] = -90;
+    return;
+  }
+
   AbstractFilter::Pointer filter = factory->create();
+  if (filter.get() != nullptr)
+  {
+    rootObject[SIMPL::JSON::ErrorMessage] = tr("%1: Could not load '%2' using its filter factory.").arg(EndPoint()).arg(filterName);
+    rootObject[SIMPL::JSON::ErrorCode] = -100;
+    return;
+  }
 
   QVector<FilterParameter::Pointer> parameters = filter->getFilterParameters();
   QJsonArray jsonParameters;
@@ -80,6 +99,8 @@ void ListFilterParametersController::createFilterParametersJson(const QString& f
   }
   rootObject[SIMPL::JSON::FilterParameters] = jsonParameters;
   rootObject[SIMPL::JSON::ClassName] = filterName;
+  rootObject[SIMPL::JSON::ErrorMessage] = "";
+  rootObject[SIMPL::JSON::ErrorCode] = 0;
 }
 
 // -----------------------------------------------------------------------------
@@ -100,7 +121,6 @@ void ListFilterParametersController::service(HttpRequest& request, HttpResponse&
     responseJsonRootObj[SIMPL::JSON::ErrorMessage]  = EndPoint() + ": Content Type is not application/json";
     responseJsonRootObj[SIMPL::JSON::ErrorCode] = -20;
     QJsonDocument jdoc(responseJsonRootObj);
-
     response.write(jdoc.toJson(), true);
     return;
   }
@@ -111,23 +131,62 @@ void ListFilterParametersController::service(HttpRequest& request, HttpResponse&
     QJsonParseError jsonParseError;
     QByteArray jsonBytes = request.getBody();
     QJsonDocument requestJsonDoc = QJsonDocument::fromJson(jsonBytes, &jsonParseError);
+    if (jsonParseError.error != QJsonParseError::ParseError::NoError)
+    {
+      // Form Error response
+      responseJsonRootObj[SIMPL::JSON::ErrorMessage] = tr("%1: JSON Request Parsing Error - %2").arg(EndPoint()).arg(jsonParseError.errorString());
+      responseJsonRootObj[SIMPL::JSON::ErrorCode] = -30;
+      QJsonDocument jdoc(responseJsonRootObj);
+      response.write(jdoc.toJson(), true);
+      return;
+    }
+
     QJsonObject rootObject = requestJsonDoc.object();
+    if (!rootObject.contains(SIMPL::JSON::ClassName))
+    {
+      responseJsonRootObj[SIMPL::JSON::ErrorMessage] = tr("%1: No filter class name found in the JSON request body.").arg(EndPoint());
+      responseJsonRootObj[SIMPL::JSON::ErrorCode] = -40;
+      QJsonDocument jdoc(responseJsonRootObj);
+      response.write(jdoc.toJson(), true);
+      return;
+    }
+
     QJsonValue nameValue = rootObject[SIMPL::JSON::ClassName];
     if(nameValue.isString())
     {
       filterName = nameValue.toString();
     }
+    else
+    {
+      responseJsonRootObj[SIMPL::JSON::ErrorMessage] = tr("%1: Class name value that was found in the JSON request body is not a string.").arg(EndPoint());
+      responseJsonRootObj[SIMPL::JSON::ErrorCode] = -50;
+      QJsonDocument jdoc(responseJsonRootObj);
+      response.write(jdoc.toJson(), true);
+      return;
+    }
   }
- 
 
   if(filterName.isEmpty())
   {
-    responseJsonRootObj[SIMPL::JSON::ErrorCode] = -30;
-    responseJsonRootObj[SIMPL::JSON::ErrorMessage] = "Filter with name " + filterName + " was not loaded or does not exist";
+    responseJsonRootObj[SIMPL::JSON::ErrorMessage] = tr("%1: Class name that was found in the JSON request body is empty.").arg(EndPoint());
+    responseJsonRootObj[SIMPL::JSON::ErrorCode] = -60;
+    QJsonDocument jdoc(responseJsonRootObj);
+    response.write(jdoc.toJson(), true);
+    return;
   }
   else
   {
     createFilterParametersJson(filterName, responseJsonRootObj);
+    if (responseJsonRootObj.contains(SIMPL::JSON::ErrorCode))
+    {
+      int errCode = responseJsonRootObj[SIMPL::JSON::ErrorCode].toInt();
+      if (errCode < 0)
+      {
+        QJsonDocument jdoc(responseJsonRootObj);
+        response.write(jdoc.toJson(), true);
+        return;
+      }
+    }
   }
 
   QJsonDocument jdoc(responseJsonRootObj);
