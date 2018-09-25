@@ -256,7 +256,7 @@ public:
 
     DataArray<float>::Pointer daVert = createDataArray<float>("Vertices", vertices, m_Dims2, m_Dims3);
 
-    VertexGeom::Pointer geom = VertexGeom::CreateGeometry(daVert, SIMPL::Geometry::EdgeGeometry);
+    VertexGeom::Pointer geom = VertexGeom::CreateGeometry(daVert, SIMPL::Geometry::VertexGeometry);
 
     dc->setGeometry(geom);
 
@@ -745,6 +745,8 @@ public:
   void operator()()
   {
     int err = EXIT_SUCCESS;
+
+    std::cout << "#### ExtractAttributeArraysFromGeometryTest Starting ####" << std::endl;
 
     DREAM3D_REGISTER_TEST(TestFilterAvailability());
 

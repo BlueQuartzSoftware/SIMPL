@@ -1310,6 +1310,8 @@ public:
   {
     int err = EXIT_SUCCESS;
 
+    std::cout << "#### CreateGeometryTest Starting ####" << std::endl;
+
     DREAM3D_REGISTER_TEST(TestFilterAvailability());
 
     DREAM3D_REGISTER_TEST(CreateGeometryImageTest())
