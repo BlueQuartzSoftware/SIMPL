@@ -18,6 +18,7 @@ This **Filter** creates a **Geometry** object within a **Data Container**.  The 
 | Triangle | Vertex + Face |
 | Quadrilateral | Vertex + Face |
 | Tetrahedral | Vertex + Cell |
+| Hexahedral | Vertex + Cell |
 
 ### Understanding Geometries ###
 
@@ -57,6 +58,7 @@ The following **Geometries** are considered _mesh-like_, and all share similar f
 | Triangle | triangle | 3 |
 | Quadrilateral | quadrilateral | 4 |
 | Tetrahedral | tetrahedron | 4 |
+| Hexahedral | hexahedron | 8 |
 
 The storage scheme adopted by **DREAM.3D** requires at least two arrays to define mesh-like **Geometries**: a list of **Vertices** (i.e., the vertex coordinates) and the **Element** connectivities (i.e., which vertices belong to a given **Element**).  To maintain simplicity, flexibility, and small memory overhead, **DREAM.3D** uses the concept of _shared vertex lists_.  In this paradigm, the vertex coordinates are stored only once per _unique_ vertex.  Consider a **Quadrilateral Geometry** that consists of just two squares that share one side.  In this example, there are exactly _six_ unique vertices.  The **Attribute Array** that defines the coordinates of these **Vertices** would then have six _tuples_, with three values at each tuple (the x, y, and z positions of that **Vertex**).  Writing each tuple on one line, the array could look like this:
 
@@ -93,6 +95,10 @@ A **Quadrilateral Geometry** is a _mesh-like_ **Geometry**, consisting of a coll
 ##### Tetrahedral #####
 
 A **Tetrahedral Geometry** is a _mesh-like_ **Geometry**, consisting of a collection of tetrahedra connecting four vertices; it is a type of _volume mesh_.  Creating a **Tetrahedral Geometry** requires supplying a shared **Vertex** list and a **Tetrahedral** list.  The winding that define tetrahedra require one additional convention to complement the right hand rule.  By convention, the first three vertices define the tetrahedra _base_; the winding of these vertices by the right hand rule defines a normal that points _towards the fourth vertex_.  This convention is useful since applying it consistently allows for the volume of the tetrahedra to be _signed_, which is important for determining if a tetrahedron is "inverted".
+
+##### Hexahedral #####
+
+A **Hexahedral Geometry** is a _mesh-like_ **Geometry**, consisting of a collection of hexahedra connecting eight vertices; it is a type of _volume mesh_.  Creating a **Hexahedral Geometry** requires supplying a shared **Vertex** list and a **Hexahedral** list.
 
 ### Defining Geometries with Attribute Arrays ###
 
