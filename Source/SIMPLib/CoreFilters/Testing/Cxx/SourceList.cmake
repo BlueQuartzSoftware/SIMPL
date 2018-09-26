@@ -17,6 +17,7 @@ set(TEST_${SUBDIR_NAME}_NAMES
   ExecuteProcessTest
   ExtractComponentAsArrayTest
   FindDerivativesFilterTest
+  FeatureDataCSVWriterTest
   GenerateColorTableTest
   ImportAsciDataArrayTest
   ImportHDF5DatasetTest
