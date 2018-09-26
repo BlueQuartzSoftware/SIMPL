@@ -44,6 +44,8 @@
 
 #include <QtGui/QDesktopServices>
 
+#include <QtWidgets/QAction>
+
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
