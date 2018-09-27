@@ -1,34 +1,25 @@
 set(SUBDIR_NAME REST)
 
-configure_file(${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/SIMPLRestServer.ini ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/SIMPLRestServer.ini )
+configure_file(${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLRestServer.ini ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/SIMPLRestServer.ini )
 
 # --------------------------------------------------------------------
 # Any Class that inherits from QObject, either directly or through the heirarchy needs to have its header listed here
 set(SIMPLib_${SUBDIR_NAME}_Moc_HDRS
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTClient/config.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTClient/mrestrequest.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTClient/mrestrequestmanager.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTClient/mrestrequestptr.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTClient/mrestrequestqueue.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTClient/SIMPLClientRequest.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTClient/SIMPLRestClient.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTClient/userptr.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/SIMPLRequestMapper.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/PipelineListener.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/SIMPLDirectoryListing.h
 
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/SIMPLRequestMapper.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/PipelineListener.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/SIMPLDirectoryListing.h
-
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/V1Controllers/V1RequestMapper.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/V1Controllers/ExecutePipelineController.h      
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/V1Controllers/NumFiltersController.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/V1Controllers/ListFilterParametersController.h 
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/V1Controllers/PluginInfoController.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/V1Controllers/LoadedPluginsController.h        
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/V1Controllers/PreflightPipelineController.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/V1Controllers/NamesOfFiltersController.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/V1Controllers/ApiNotFoundController.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/V1Controllers/SIMPLStaticFileController.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/V1Controllers/SIMPLibVersionController.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/V1Controllers/V1RequestMapper.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/V1Controllers/ExecutePipelineController.h      
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/V1Controllers/NumFiltersController.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/V1Controllers/ListFilterParametersController.h 
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/V1Controllers/PluginInfoController.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/V1Controllers/LoadedPluginsController.h        
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/V1Controllers/PreflightPipelineController.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/V1Controllers/NamesOfFiltersController.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/V1Controllers/ApiNotFoundController.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/V1Controllers/SIMPLStaticFileController.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/V1Controllers/SIMPLibVersionController.h
 )
 
 # --------------------------------------------------------------------
@@ -43,29 +34,22 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
 
 
 set(SIMPLib_${SUBDIR_NAME}_SRCS
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTClient/config.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTClient/mrestrequest.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTClient/mrestrequestmanager.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTClient/mrestrequestqueue.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTClient/SIMPLClientRequest.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTClient/SIMPLRestClient.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/SIMPLRequestMapper.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/PipelineListener.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/SIMPLDirectoryListing.cpp
 
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/SIMPLRequestMapper.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/PipelineListener.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/SIMPLDirectoryListing.cpp
-
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/V1Controllers/NumFiltersController.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/V1Controllers/V1RequestMapper.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/V1Controllers/ExecutePipelineController.cpp      
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/V1Controllers/NumFiltersController.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/V1Controllers/ListFilterParametersController.cpp 
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/V1Controllers/PluginInfoController.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/V1Controllers/LoadedPluginsController.cpp        
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/V1Controllers/PreflightPipelineController.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/V1Controllers/NamesOfFiltersController.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/V1Controllers/ApiNotFoundController.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/V1Controllers/SIMPLStaticFileController.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/RESTServer/V1Controllers/SIMPLibVersionController.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/V1Controllers/NumFiltersController.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/V1Controllers/V1RequestMapper.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/V1Controllers/ExecutePipelineController.cpp      
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/V1Controllers/NumFiltersController.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/V1Controllers/ListFilterParametersController.cpp 
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/V1Controllers/PluginInfoController.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/V1Controllers/LoadedPluginsController.cpp        
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/V1Controllers/PreflightPipelineController.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/V1Controllers/NamesOfFiltersController.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/V1Controllers/ApiNotFoundController.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/V1Controllers/SIMPLStaticFileController.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/V1Controllers/SIMPLibVersionController.cpp
 
 )
 

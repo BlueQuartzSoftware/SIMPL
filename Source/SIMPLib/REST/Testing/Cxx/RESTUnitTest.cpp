@@ -53,7 +53,7 @@
 
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
 
-#include "REST/RESTClient/SIMPLRestClient.h"
+#include "RESTClient/SIMPLRestClient.h"
 
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 

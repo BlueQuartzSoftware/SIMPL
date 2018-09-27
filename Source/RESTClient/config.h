@@ -23,11 +23,39 @@ SOFTWARE.
 
 #pragma once
 
-#include "mrestrequestptr.h"
-#include <QQueue>
+#include <QByteArray>
+#include <QHash>
+#include <QMetaType>
 
-class MRestRequestQueue : public QQueue<MRestRequestPtr>
+#include "RESTClient/RESTClient.h"
+
+#define CONFIG_VALUE(name, type) mValues.insert(#name, ValuePtr(type, static_cast<void*>(&name)));
+
+class RESTClient_EXPORT Config
 {
 public:
-  void enqueue(MRestRequestPtr request);
+  Config(const QByteArray& groupName);
+  void load();
+  void save();
+
+protected:
+  class ValuePtr
+  {
+  public:
+    ValuePtr()
+    {
+    }
+    ValuePtr(int t, void* v)
+    : type(t)
+    , ptr(v)
+    {
+    }
+    int type = QMetaType::UnknownType;
+    void* ptr = nullptr;
+  };
+  QHash<QByteArray, ValuePtr> mValues;
+
+private:
+  const QByteArray mGroupName;
+  static void copyValue(void* dst, int type, const QVariant& value);
 };

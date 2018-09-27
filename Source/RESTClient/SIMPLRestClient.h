@@ -30,9 +30,11 @@ SOFTWARE.
 
 #include <QObject>
 
+#include "RESTClient/RESTClient.h"
+
 class SIMPLClientRequest;
 
-class SIMPLRestClient : public MRestRequestManager
+class RESTClient_EXPORT SIMPLRestClient : public MRestRequestManager
 {
   Q_OBJECT
 public:

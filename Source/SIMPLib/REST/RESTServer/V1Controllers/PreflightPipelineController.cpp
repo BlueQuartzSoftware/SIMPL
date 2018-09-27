@@ -29,37 +29,30 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#include "ExecutePipelineController.h"
+#include "PreflightPipelineController.h"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QDir>
+#include <QtCore/QVariant>
+#include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
-#include <QtCore/QJsonArray>
-#include <QtCore/QProcess>
-#include <QtCore/QVariant>
-#include <QtNetwork/QNetworkInterface>
-#include <QtWidgets/QApplication>
 
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
-#include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
-#include "SIMPLib/FilterParameters/InputPathFilterParameter.h"
-#include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
-#include "SIMPLib/FilterParameters/OutputPathFilterParameter.h"
 #include "SIMPLib/Plugin/PluginManager.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 #include "SIMPLib/Plugin/SIMPLPluginConstants.h"
 
 #include "QtWebApp/httpserver/httplistener.h"
 #include "QtWebApp/httpserver/httpsessionstore.h"
-#include "REST/RESTServer/RESTServer/PipelineListener.h"
-#include "SIMPLStaticFileController.h"
+#include "REST/RESTServer/PipelineListener.h"
+#include "REST/RESTServer/V1Controllers/SIMPLStaticFileController.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ExecutePipelineController::ExecutePipelineController(const QHostAddress& hostAddress, const int hostPort)
+PreflightPipelineController::PreflightPipelineController(const QHostAddress& hostAddress, const int hostPort)
 {
   setListenHost(hostAddress, hostPort);
 }
@@ -67,7 +60,7 @@ ExecutePipelineController::ExecutePipelineController(const QHostAddress& hostAdd
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ExecutePipelineController::service(HttpRequest& request, HttpResponse& response)
+void PreflightPipelineController::service(HttpRequest& request, HttpResponse& response)
 {
   // Get current session, or create a new one
   HttpSessionStore* sessionStore = HttpSessionStore::Instance();
@@ -76,7 +69,8 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
   QString content_type = request.getHeader(QByteArray("content-type"));
 
   QJsonObject rootObj;
-  rootObj[SIMPL::JSON::SessionID] = QString(session.getId());
+  rootObj["SessionID"] = QString(session.getId());
+
   response.setHeader("Content-Type", "application/json");
 
   if(content_type.compare("application/json") != 0)
@@ -104,6 +98,12 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
     return;
   }
 
+  QString linkAddress = "http://" + getListenHost().toString() + ":" + QString::number(getListenPort()) + QDir::separator() + QString(session.getId()) + QDir::separator();
+  SIMPLStaticFileController* staticFileController = SIMPLStaticFileController::Instance();
+  QString docRoot = staticFileController->getDocRoot();
+  QString newFilePath = docRoot + QDir::separator() + QString(session.getId()) + QDir::separator();
+  QJsonArray outputLinks;
+
   QJsonObject requestObj = requestDoc.object();
   if (!requestObj.contains(SIMPL::JSON::Pipeline))
   {
@@ -115,6 +115,7 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
     return;
   }
 
+  // Pipeline
   QJsonObject pipelineObj = requestObj[SIMPL::JSON::Pipeline].toObject();
   FilterPipeline::Pointer pipeline = FilterPipeline::FromJson(pipelineObj);
   if (pipeline.get() == nullptr)
@@ -127,59 +128,10 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
     return;
   }
 
-  qDebug() << "Number of Filters in Pipeline: " << pipeline->size();
-
-  QString linkAddress = "http://" + getListenHost().toString() + ":" + QString::number(getListenPort()) + QDir::separator() + QString(session.getId()) + QDir::separator();
-  SIMPLStaticFileController* staticFileController = SIMPLStaticFileController::Instance();
-  QString docRoot = staticFileController->getDocRoot();
-
-  QString newFilePath = docRoot + QDir::separator() + QString(session.getId()) + QDir::separator();
-  QJsonArray outputLinks;
-  // Look through the pipeline to find any input or output filter parameters.  Replace
-  // the file paths in these filter parameters with session-id specific paths.
-  QList<AbstractFilter::Pointer> filters = pipeline->getFilterContainer();
-  for(int i = 0; i < filters.size(); i++)
-  {
-    AbstractFilter::Pointer filter = filters[i];
-    QVector<FilterParameter::Pointer> filterParams = filter->getFilterParameters();
-
-    for(QVector<FilterParameter::Pointer>::iterator iter = filterParams.begin(); iter != filterParams.end(); ++iter)
-    {
-      FilterParameter* parameter = (*iter).get();
-      OutputFileFilterParameter* outFileParam = dynamic_cast<OutputFileFilterParameter*>(parameter);
-      OutputPathFilterParameter* outPathParam = dynamic_cast<OutputPathFilterParameter*>(parameter);
-      InputFileFilterParameter* inFileParam = dynamic_cast<InputFileFilterParameter*>(parameter);
-      InputPathFilterParameter* inPathParam = dynamic_cast<InputPathFilterParameter*>(parameter);
-
-      if(outFileParam != nullptr)
-      {
-        QString existingPath = outFileParam->getGetterCallback()();
-        outFileParam->getSetterCallback()(newFilePath + existingPath);
-        outputLinks.append(linkAddress + existingPath);
-      }
-      else if(outPathParam != nullptr)
-      {
-        QString existingPath = outPathParam->getGetterCallback()();
-        outPathParam->getSetterCallback()(newFilePath + existingPath);
-        outputLinks.append(linkAddress + existingPath);
-      }
-      else if(inFileParam != nullptr)
-      {
-        QString existingPath = inFileParam->getGetterCallback()();
-        inFileParam->getSetterCallback()(newFilePath + existingPath);
-        outputLinks.append(linkAddress + existingPath);
-      }
-      else if(inPathParam != nullptr)
-      {
-        QString existingPath = inPathParam->getGetterCallback()();
-        inPathParam->getSetterCallback()(newFilePath + existingPath);
-        outputLinks.append(linkAddress + existingPath);
-      }
-    }
-  }
+  PipelineListener listener(nullptr);
+  pipeline->addMessageReceiver(&listener);
 
   // Log Files
-  PipelineListener listener(nullptr);
   bool createErrorLog = requestObj[SIMPL::JSON::ErrorLog].toBool(false);
   bool createWarningLog = requestObj[SIMPL::JSON::WarningLog].toBool(false);
   bool createStatusLog = requestObj[SIMPL::JSON::StatusLog].toBool(false);
@@ -217,21 +169,11 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
   // Append to the json response payload all the output links
   rootObj[SIMPL::JSON::OutputLinks] = outputLinks;
 
-  // Execute the pipeline
-  Observer obs; // Create an Observer to report errors/progress from the executing pipeline
-  pipeline->addMessageReceiver(&obs);
-  pipeline->addMessageReceiver(&listener);
+  // Preflight
+  pipeline->preflightPipeline();
 
-  int err = pipeline->preflightPipeline();
-  qDebug() << "Preflight Error: " << err;
-
-  if (listener.getErrorMessages().size() <= 0)
-  {
-    qDebug() << "Pipeline About to Execute....";
-    pipeline->execute();
-
-    qDebug() << "Pipeline Done Executing...." << pipeline->getErrorCondition();
-  }
+  //   response.setCookie(HttpCookie("firstCookie","hello",600,QByteArray(),QByteArray(),QByteArray(),false,true));
+  //   response.setCookie(HttpCookie("secondCookie","world",600));
 
   // Return messages
   std::vector<PipelineMessage> errorMessages = listener.getErrorMessages();
@@ -239,8 +181,8 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
   if(!completed)
   {
     QJsonArray errors;
-    size_t numErrors = errorMessages.size();
-    for(size_t i = 0; i < numErrors; i++)
+    int numErrors = errorMessages.size();
+    for(int i = 0; i < numErrors; i++)
     {
       QJsonObject error;
       error[SIMPL::JSON::Code] = errorMessages[i].generateErrorString();
@@ -255,8 +197,8 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
 
   std::vector<PipelineMessage> warningMessages = listener.getWarningMessages();
   QJsonArray warnings;
-  size_t numWarnings = warningMessages.size();
-  for(size_t i = 0; i < numWarnings; i++)
+  int numWarnings = warningMessages.size();
+  for(int i = 0; i < numWarnings; i++)
   {
     QJsonObject warning;
     warning[SIMPL::JSON::Code] = warningMessages[i].generateWarningString();
@@ -266,48 +208,18 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
 
     warnings.push_back(warning);
   }
-
-  std::vector<PipelineMessage> statusMessages = listener.getStatusMessages();
-  QJsonArray statusMsgs;
-  size_t numStatusMsgs = statusMessages.size();
-  for(size_t i = 0; i < numStatusMsgs; i++)
-  {
-    QJsonObject msg;
-    msg[SIMPL::JSON::Message] = statusMessages[i].generateStatusString();
-    statusMsgs.push_back(msg);
-  }
-  // rootObj["StatusMessages"] = statusMsgs;
   rootObj[SIMPL::JSON::Warnings] = warnings;
+
   rootObj[SIMPL::JSON::Completed] = completed;
-
-  // **************************************************************************
-  // This section archives the working directory for this session
-  QProcess tar;
-  tar.setWorkingDirectory(docRoot);
-  std::cout << "Working Directory from Process: " << tar.workingDirectory().toStdString() << std::endl;
-  tar.start("/usr/bin/tar", QStringList() << "-cvf" << QString(session.getId() + ".tar.gz") << QString(session.getId()));
-  tar.waitForStarted();
-  tar.waitForFinished();
-
-  QByteArray result = tar.readAllStandardError();
-  std::cout << result.data() << std::endl;
-  result = tar.readAllStandardOutput();
-  std::cout << result.data() << std::endl;
-
-  outputLinks.append("http://" + getListenHost().toString() + ":8080" + QDir::separator() + QString(session.getId()) + ".tar.gz");
-  // **************************************************************************
-
-  // Append to the json response payload all the output links
-  rootObj[SIMPL::JSON::OutputLinks] = outputLinks;
-
   QJsonDocument jdoc(rootObj);
+
   response.write(jdoc.toJson(), true);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString ExecutePipelineController::EndPoint()
+QString PreflightPipelineController::EndPoint()
 {
-  return QString("ExecutePipeline");
+  return QString("PreflightPipeline");
 }

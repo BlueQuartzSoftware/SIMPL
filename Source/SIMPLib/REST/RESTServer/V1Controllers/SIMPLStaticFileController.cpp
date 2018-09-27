@@ -7,7 +7,7 @@
 #include "SIMPLib/Plugin/SIMPLPluginConstants.h"
 
 
-#include "REST/RESTServer/RESTServer/SIMPLDirectoryListing.h"
+#include "REST/RESTServer/SIMPLDirectoryListing.h"
 
 SIMPLStaticFileController* SIMPLStaticFileController::m_Instance = nullptr;
 

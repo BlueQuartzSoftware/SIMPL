@@ -24,23 +24,36 @@ SOFTWARE.
 #pragma once
 
 #include <QObject>
-#include <QtCore/QJsonObject>
+#include <QStringList>
+#include <QVector>
 
-#include "REST/RESTClient/mrestrequest.h"
+#include "mrestrequest.h"
+#include "mrestrequestptr.h"
+#include "mrestrequestqueue.h"
 
-class SIMPLClientRequest : public MRestRequest
+#include "RESTClient/RESTClient.h"
+
+class QNetworkAccessManager;
+
+class RESTClient_EXPORT MRestRequestManager : public QObject
 {
   Q_OBJECT
-
 public:
-  SIMPLClientRequest(QUrl url, Command command, Type msgType, QJsonObject jsonMsg = QJsonObject());
-
+  MRestRequestManager(QObject* parent = nullptr);
+  void send(MRestRequestPtr request);
+  void ignoreSslErrors();
 signals:
-  void replyInfo(const QString& cityName, int humidity, int pressure, float temp) const;
+  void sslErrorsChanged(const QStringList& errors);
 
 protected:
-  void parseReplyData() override;
-
-private:
-  QUrl generateCommandUrl(Command command);
+  void onRequestFinished();
+  void removeActiveRequest(QObject* sender);
+  MRestRequestQueue pendingRequests;
+  QVector<MRestRequestPtr> mActiveRequests;
+  QStringList mLastSslErrors;
+  bool mIgnoreSslErrors;
+  QNetworkAccessManager* networkManager = nullptr;
+  int MaxActiveRequestsCount = 3;
+private slots:
+  void onSslErrors(QNetworkReply* reply, const QList<QSslError>& errors);
 };

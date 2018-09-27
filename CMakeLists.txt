@@ -417,6 +417,10 @@ if(SIMPL_Group_WIDGETS)
   add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SVWidgetsLib ${PROJECT_BINARY_DIR}/SVWidgetsLib)
 endif()
 
+if(SIMPL_Group_REST)
+  add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/RESTClient ${PROJECT_BINARY_DIR}/RESTClient)
+endif()
+
 # --------------------------------------------------------------------
 # This should be the last line in this file:
 include(${PROJECT_RESOURCES_DIR}/CPack/PackageProject.cmake)

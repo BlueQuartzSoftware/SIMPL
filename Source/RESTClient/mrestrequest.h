@@ -28,11 +28,13 @@ SOFTWARE.
 #include <QObject>
 #include <QUrl>
 
+#include "RESTClient/RESTClient.h"
+
 class QTimer;
 class QNetworkReply;
 class QNetworkAccessManager;
 
-class MRestRequest : public QObject
+class RESTClient_EXPORT MRestRequest : public QObject
 {
   Q_OBJECT
 public:
