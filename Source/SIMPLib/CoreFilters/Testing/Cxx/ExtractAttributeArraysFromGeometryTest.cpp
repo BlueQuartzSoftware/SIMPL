@@ -591,7 +591,7 @@ public:
 
     // Create Geometry
 
-    std::vector<std::vector<float>> vertices = {{1.0, 1.0, 1.55}, {3.0, 1.0, 1.55}, {2.0, 3.0, 1.55}, {2.0, 2.0, 3.55}};
+    std::vector<std::vector<float>> vertices = {{1.0f, 1.0f, 1.55f}, {3.0f, 1.0f, 1.55f}, {2.0f, 3.0f, 1.55f}, {2.0f, 2.0f, 3.55f}};
 
     std::vector<std::vector<int64_t>> elements = {{0, 1, 2, 3}};
 
@@ -679,7 +679,7 @@ public:
 
     // Create Geometry
 
-    std::vector<std::vector<float>> vertices = {{1.0, 1.0, 1.55}, {3.0, 1.0, 1.55}, {2.0, 3.0, 1.55}, {2.0, 2.0, 3.55}, {2.5, 1.0, 1.55}, {4.3, 1.0, 1.55}, {5.1, 3.0, 1.55}, {7.63, 2.0, 3.55}};
+    std::vector<std::vector<float>> vertices = {{1.0f, 1.0f, 1.55f}, {3.0f, 1.0f, 1.55f}, {2.0f, 3.0f, 1.55f}, {2.0f, 2.0f, 3.55f}, {2.5f, 1.0f, 1.55f}, {4.3f, 1.0f, 1.55f}, {5.1f, 3.0f, 1.55f}, {7.63f, 2.0f, 3.55f}};
 
     std::vector<std::vector<int64_t>> elements = {{0, 1, 2, 3, 4, 5, 6, 7}};
 
