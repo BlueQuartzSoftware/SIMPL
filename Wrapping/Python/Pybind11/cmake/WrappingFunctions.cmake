@@ -133,9 +133,9 @@ function(CreatePybind11Module)
 
     add_custom_command(
       TARGET ${SIMPL_PY_MODULE_NAME} POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy_directory ${source} ${PythonSitePackages} 
+      COMMAND ${CMAKE_COMMAND} -E copy_directory ${source} "${PythonSitePackages}/dream3d"
       DEPENDS ${PythonSitePackages}
-      COMMENT "copy folder from ${source} => ${PythonSitePackages}"
+      COMMENT "copy folder from ${source} => ${PythonSitePackages}/dream3d"
     )
     # create a list of files to copy
     set (PLUGIN_DEBUG_EXTENSION $<$<CONFIG:Debug>:"_debug">)
