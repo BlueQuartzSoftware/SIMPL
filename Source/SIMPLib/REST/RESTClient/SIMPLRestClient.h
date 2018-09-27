@@ -24,7 +24,7 @@ SOFTWARE.
 #ifndef simplrestclient_h
 #define simplrestclient_h
 
-#include "Core/mrestrequestmanager.h"
+#include "mrestrequestmanager.h"
 
 #include <QtCore/QJsonObject>
 

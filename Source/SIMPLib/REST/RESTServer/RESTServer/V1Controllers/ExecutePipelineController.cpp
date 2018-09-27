@@ -53,8 +53,8 @@
 
 #include "QtWebApp/httpserver/httplistener.h"
 #include "QtWebApp/httpserver/httpsessionstore.h"
-#include "SIMPLRestServer/PipelineListener.h"
-#include "SIMPLRestServer/V1Controllers/SIMPLStaticFileController.h"
+#include "REST/RESTServer/RESTServer/PipelineListener.h"
+#include "SIMPLStaticFileController.h"
 
 // -----------------------------------------------------------------------------
 //

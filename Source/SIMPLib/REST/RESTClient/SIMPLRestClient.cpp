@@ -28,7 +28,7 @@ SOFTWARE.
 #include <QLoggingCategory>
 #include <QSharedPointer>
 
-#include "SIMPLRestClient/SIMPLClientRequest.h"
+#include "SIMPLClientRequest.h"
 
 Q_LOGGING_CATEGORY(mrbrequest, "request")
 

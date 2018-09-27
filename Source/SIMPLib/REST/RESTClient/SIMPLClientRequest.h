@@ -26,7 +26,7 @@ SOFTWARE.
 #include <QObject>
 #include <QtCore/QJsonObject>
 
-#include "REST/RESTClient/Core/mrestrequest.h"
+#include "REST/RESTClient/mrestrequest.h"
 
 class SIMPLClientRequest : public MRestRequest
 {

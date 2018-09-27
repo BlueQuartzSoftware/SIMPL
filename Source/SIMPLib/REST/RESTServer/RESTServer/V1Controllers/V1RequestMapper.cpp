@@ -36,16 +36,16 @@
 
 #include "QtWebApp/logging/filelogger.h"
 
-#include "SIMPLRestServer/V1Controllers/ApiNotFoundController.h"
-#include "SIMPLRestServer/V1Controllers/ExecutePipelineController.h"
-#include "SIMPLRestServer/V1Controllers/ListFilterParametersController.h"
-#include "SIMPLRestServer/V1Controllers/LoadedPluginsController.h"
-#include "SIMPLRestServer/V1Controllers/NamesOfFiltersController.h"
-#include "SIMPLRestServer/V1Controllers/NumFiltersController.h"
-#include "SIMPLRestServer/V1Controllers/PluginInfoController.h"
-#include "SIMPLRestServer/V1Controllers/PreflightPipelineController.h"
-#include "SIMPLRestServer/V1Controllers/SIMPLStaticFileController.h"
-#include "SIMPLRestServer/V1Controllers/SIMPLibVersionController.h"
+#include "ApiNotFoundController.h"
+#include "ExecutePipelineController.h"
+#include "ListFilterParametersController.h"
+#include "LoadedPluginsController.h"
+#include "NamesOfFiltersController.h"
+#include "NumFiltersController.h"
+#include "PluginInfoController.h"
+#include "PreflightPipelineController.h"
+#include "SIMPLStaticFileController.h"
+#include "SIMPLibVersionController.h"
 
 /** Redirects log messages to a file */
 extern FileLogger* logger;

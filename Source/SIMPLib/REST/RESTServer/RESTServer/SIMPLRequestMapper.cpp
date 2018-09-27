@@ -29,73 +29,75 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#include "LoadedPluginsController.h"
+#include "SIMPLRequestMapper.h"
 
-#include <QtCore/QDateTime>
-#include <QtCore/QVariant>
-#include <QtCore/QJsonArray>
+#include <QtCore/QCoreApplication>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 
-#include "SIMPLib/Filtering/FilterManager.h"
-#include "SIMPLib/Plugin/PluginManager.h"
-#include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
-#include "SIMPLib/Plugin/SIMPLPluginConstants.h"
+#include "QtWebApp/logging/filelogger.h"
 
+#include "V1Controllers/SIMPLStaticFileController.h"
+#include "V1Controllers/V1RequestMapper.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LoadedPluginsController::LoadedPluginsController(const QHostAddress& hostAddress, const int hostPort)
+SIMPLRequestMapper::SIMPLRequestMapper(QObject* parent)
+: HttpRequestHandler(parent)
 {
-  setListenHost(hostAddress, hostPort);
+  // qDebug() << "SIMPLRequestMapper: created";
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void LoadedPluginsController::service(HttpRequest& request, HttpResponse& response)
+SIMPLRequestMapper::~SIMPLRequestMapper()
 {
+  // qDebug() << "SIMPLRequestMapper: deleted";
+}
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SIMPLRequestMapper::service(HttpRequest& request, HttpResponse& response)
+{
   QString content_type = request.getHeader(QByteArray("content-type"));
 
-  QJsonObject rootObj;
+  QByteArray path = request.getPath();
+  // qDebug() << "SIMPLRequestMapper: path=%s"<< path.data();
 
-  response.setHeader("Content-Type", "application/json");
-
-  if(content_type.compare("application/json") != 0)
+  // For the following pathes, each request gets its own new instance of the related controller.
+  if(path.startsWith("/api/v1"))
   {
-    // Form Error response
-    rootObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Content Type is not application/json";
-    rootObj[SIMPL::JSON::ErrorCode] = -20;
+    V1RequestMapper v1RequestMapper;
+    v1RequestMapper.setListenHost(getListenHost(), getListenPort());
+    v1RequestMapper.service(request, response);
+  }
+  else if(content_type.compare("application/json") != 0)
+  {
+    SIMPLStaticFileController* staticFileController = SIMPLStaticFileController::Instance();
+    staticFileController->setListenHost(getListenHost(), getListenPort());
+    staticFileController->service(request, response);
+  }
+  else
+  {
+    QJsonObject rootObj;
+    QString msg;
+    QTextStream ss(&msg);
+    ss << "The end point '" << path << "' is not valid for this server. Please check your request settings.";
+
+    rootObj["ErrorCode"] = -1;
+    rootObj["ErrorMessage"] = msg;
     QJsonDocument jdoc(rootObj);
     response.write(jdoc.toJson(), true);
-    return;
   }
 
-  PluginManager* pm = PluginManager::Instance();
-  if (pm != nullptr)
-  {
-    rootObj[SIMPL::JSON::ErrorMessage] = tr("%1: Could not load the Plugin Manager needed to get the list of plugins.").arg(EndPoint());
-    rootObj[SIMPL::JSON::ErrorCode] = -30;
-    QJsonDocument jdoc(rootObj);
-    response.write(jdoc.toJson(), true);
-    return;
-  }
-  
-  rootObj[SIMPL::JSON::ErrorMessage] = "";
-  rootObj[SIMPL::JSON::ErrorCode] = 0;
-  rootObj[SIMPL::JSON::Plugins] = pm->toJsonArray();
+  qDebug() << "SIMPLRequestMapper: finished request";
 
-  QJsonDocument jdoc(rootObj);
-
-  response.write(jdoc.toJson(), true);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString LoadedPluginsController::EndPoint()
-{
-  return QString("LoadedPlugins");
+  // Clear the log buffer
+  //    if (logger)
+  //    {
+  //       logger->clear();
+  //    }
 }

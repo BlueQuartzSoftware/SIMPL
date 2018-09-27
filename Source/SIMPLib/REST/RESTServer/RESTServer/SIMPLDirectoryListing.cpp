@@ -38,7 +38,7 @@
 #include <QtCore/QFileInfoList>
 #include <QtCore/QTextStream>
 
-#include "SIMPLRestServer/V1Controllers/SIMPLStaticFileController.h"
+#include "V1Controllers/SIMPLStaticFileController.h"
 
 // -----------------------------------------------------------------------------
 //

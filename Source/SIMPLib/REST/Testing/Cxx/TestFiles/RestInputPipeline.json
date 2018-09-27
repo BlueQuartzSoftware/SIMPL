@@ -1,0 +1,67 @@
+{
+    "0": {
+        "DataContainerName": "DataContainer",
+        "FilterVersion": "1.2.709",
+        "Filter_Enabled": true,
+        "Filter_Human_Label": "Create Data Container",
+        "Filter_Name": "CreateDataContainer",
+        "Filter_Uuid": "{816fbe6b-7c38-581b-b149-3f839fb65b93}"
+    },
+    "1": {
+        "AttributeMatrixType": 3,
+        "CreatedAttributeMatrix": {
+            "Attribute Matrix Name": "AttributeMatrix",
+            "Data Array Name": "",
+            "Data Container Name": "DataContainer"
+        },
+        "FilterVersion": "1.2.709",
+        "Filter_Enabled": true,
+        "Filter_Human_Label": "Create Attribute Matrix",
+        "Filter_Name": "CreateAttributeMatrix",
+        "Filter_Uuid": "{93375ef0-7367-5372-addc-baa019b1b341}",
+        "TupleDimensions": {
+            "Column Headers": [
+                "0"
+            ],
+            "DefaultColCount": 0,
+            "DefaultRowCount": 0,
+            "HasDynamicCols": true,
+            "HasDynamicRows": false,
+            "MinColCount": 0,
+            "MinRowCount": 0,
+            "Row Headers": [
+                "0"
+            ],
+            "Table Data": [
+                [
+                    100
+                ]
+            ]
+        }
+    },
+    "2": {
+        "FilterVersion": "1.2.709",
+        "Filter_Enabled": true,
+        "Filter_Human_Label": "Create Data Array",
+        "Filter_Name": "CreateDataArray",
+        "Filter_Uuid": "{77f392fb-c1eb-57da-a1b1-e7acf9239fb8}",
+        "InitializationRange": {
+            "Max": 0,
+            "Min": 0
+        },
+        "InitializationType": 0,
+        "InitializationValue": "0",
+        "NewArray": {
+            "Attribute Matrix Name": "AttributeMatrix",
+            "Data Array Name": "DataArray",
+            "Data Container Name": "DataContainer"
+        },
+        "NumberOfComponents": 1,
+        "ScalarType": 0
+    },
+    "PipelineBuilder": {
+        "Name": "RestInputPipeline",
+        "Number_Filters": 3,
+        "Version": 6
+    }
+}
