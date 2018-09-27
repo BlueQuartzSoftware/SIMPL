@@ -2,6 +2,11 @@ set(SUBDIR_NAME REST)
 
 configure_file(${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLRestServer.ini ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/SIMPLRestServer.ini )
 
+set(SERVER_FILE_PATH_POSTFIX "")
+if(CMAKE_BUILD_TYPE MATCHES "Debug")
+  set(SERVER_FILE_PATH_POSTFIX "_debug")
+endif()
+
 # --------------------------------------------------------------------
 # Any Class that inherits from QObject, either directly or through the heirarchy needs to have its header listed here
 set(SIMPLib_${SUBDIR_NAME}_Moc_HDRS

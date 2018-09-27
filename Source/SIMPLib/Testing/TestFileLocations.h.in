@@ -212,7 +212,7 @@ namespace UnitTest
   namespace RestUnitTest
   {
     const QString RestServerExecutableFilePath("@CMAKE_RUNTIME_OUTPUT_DIRECTORY@/SIMPLRestServer@SERVER_FILE_PATH_POSTFIX@");
-    const QString InputPipelineFile("@TESTFILES_BINARY_DIR@/RestInputPipeline.json");
-    const QString SmallIN100ArchivePipelineFile("@TESTFILES_BINARY_DIR@/(01) SmallIN100 Archive.json");
+    const QString InputPipelineFile("@TEST_TEMP_DIR@/RestInputPipeline.json");
+    const QString SmallIN100ArchivePipelineFile("@TEST_TEMP_DIR@/(01) SmallIN100 Archive.json");
   }
 }
