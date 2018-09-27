@@ -432,7 +432,11 @@ QString PythonBindingClass::generateStaticNewCode()
         }
       }
       constructors << TAB << ".def(py::init([](" << s1 << ") {\n      return " << getClassName() << "::" << methodName << "(" << s2 << ");\n    }))" << NEWLINE_SIMPL;
-      constructors << TAB << ".def_static(\"" << methodName << "\", &" << getClassName() << "::" << methodName << ")" << NEWLINE_SIMPL;
+
+	  if (tokens.size() < 2 || tokens[1] != ::kOverload)
+	  {
+		  constructors << TAB << ".def_static(\"" << methodName << "\", &" << getClassName() << "::" << methodName << ")" << NEWLINE_SIMPL;
+	  }
     }
   }
 

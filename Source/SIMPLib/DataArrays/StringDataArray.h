@@ -55,8 +55,17 @@
  */
 class SIMPLib_EXPORT StringDataArray : public IDataArray
 {
+  PYB11_CREATE_BINDINGS(StringDataArray SUPER IDataArray)
+  PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t QString bool)
+  PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t QVector<size_t> QString bool)
+  PYB11_PROPERTY(QString Name READ getName WRITE setName)
+  PYB11_METHOD(QString getValue ARGS size_t,i)
+  PYB11_METHOD(void setValue ARGS size_t,i const.QString.&,value)
+  PYB11_METHOD(size_t getSize)
+  PYB11_METHOD(size_t getNumberOfTuples)
 public:
   SIMPL_SHARED_POINTERS(StringDataArray)
+  SIMPL_STATIC_NEW_MACRO(StringDataArray)
   SIMPL_TYPE_MACRO_SUPER(StringDataArray, IDataArray)
   SIMPL_CLASS_VERSION(2)
 

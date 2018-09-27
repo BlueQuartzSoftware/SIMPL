@@ -3,6 +3,7 @@ import dream3d
 import dream3d.dream3d_py
 import dream3d.dream3d as d3d
 import dream3d.dream3d_py.simpl_py as simpl
+import dream3d.synthetic_building as synthetic_building
 
 try:
     import numpy as np
@@ -587,6 +588,51 @@ def MoveMultiData(dca, what_to_move, source_paths, destination_path):
     for source_path in source_paths:
         err = MoveData(dca, what_to_move, source_path, destination_path)
     return err
+
+
+def GenerateStatsData(dca, stats_data_type, phase_name, phase_index, crystal_symmetry, micro_preset_model, phase_fraction,
+ mu, sigma, min_cut_off, max_cut_off, bin_step_size, create_ensemble_attribute_matrix, data_container_name,
+  cell_ensemble_attribute_matrix_name, append_to_existing_attribute_matrix, selected_ensemble_attribute_matrix,
+   odf_data, mdf_data, axis_odf_data, rdf_min_max_distance=0, rdf_num_bins=0, rdf_box_size=0):
+   """
+   Generate StatsData for use in Synthetic Building filters
+   \ndca: Data Container Array to place data in
+   \nstats_data_type: The type of StatsData to generate, either "Primary" or "Precipitate"
+   \nphase_name: The name of the Phase
+   \nphase_index: The index of the Phase
+   \ncrystal_symmetry: The classification of the structure by symmetry
+   \nmicro_preset_model: The type of microstructure preset model (Equiaxed, Rolled, or Recrystallized (Primary only))
+   \nphase_fraction: The volume fraction of the Phase
+   \nmu: The average value of the lognormal grain size distribution
+   \nsigma: The standard deviation of the lognormal grain size distribution.
+   \nmin_cut_off: Minimum cutoff value of sigma
+   \nmax_cut_off: Maximum cutoff value of sigma
+   \nbin_step_size: The size of bin to use in segregating the Feature size distribution into classes for correlating other statistics to Feature size.
+   \ncreate_ensemble_attribute_matrix: Whether to create ensemble matrix
+   \ndata_container_name: The name of the new DataContainer holding the output
+   \ncell_ensemble_attribute_matrix_name: The name of the new Attribute Matrix holding output
+   \nappend_to_existing_attribute_matrix: Whether to append to an existing attribute matrix
+   \nselected_ensemble_attribute_matrix: The DataArrayPath of the Attribute Matrix to append data to
+   \nodf_data: DynamicTableData of weights for the ODF generation
+   \nmdf_data: DynamicTableData of weights for the MDF generation
+   \naxis_odf_data: DynamicTableData of weights for the AxisODF generation
+   \nrdf_min_max_distance: The min / max distance of RDF
+   \nrdf_num_bins: The number of bins
+   \nrdf_box_size: The (X, Y, Z) size of the box
+   """
+   if stats_data_type == "Primary":
+       err = synthetic_building.generate_primary_stats_data(dca, phase_name, phase_index, crystal_symmetry, micro_preset_model,
+            phase_fraction, mu, sigma, min_cut_off, max_cut_off, bin_step_size, create_ensemble_attribute_matrix,
+            data_container_name, cell_ensemble_attribute_matrix_name, append_to_existing_attribute_matrix,
+            selected_ensemble_attribute_matrix, odf_data, mdf_data, axis_odf_data)
+       return err
+   elif stats_data_type == "Precipitate":
+        err = synthetic_building.generate_precipitate_stats_data(dca, phase_name, phase_index, crystal_symmetry,
+            micro_preset_model, phase_fraction, mu, sigma, min_cut_off, max_cut_off, bin_step_size,
+            create_ensemble_attribute_matrix, data_container_name, cell_ensemble_attribute_matrix_name,
+            append_to_existing_attribute_matrix, selected_ensemble_attribute_matrix, odf_data, mdf_data,
+            axis_odf_data, rdf_min_max_distance, rdf_num_bins, rdf_box_size)
+        return err
 
 
 def is_number(s):

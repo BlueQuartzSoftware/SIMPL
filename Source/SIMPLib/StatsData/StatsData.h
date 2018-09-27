@@ -89,6 +89,11 @@ typedef QVector<FloatArrayType::Pointer> VectorOfFloatArray;
  */
 class SIMPLib_EXPORT StatsData
 {
+	PYB11_CREATE_BINDINGS(StatsData)
+	PYB11_METHOD(QString getStatsType)
+	PYB11_METHOD(PhaseType::Type getPhaseType)
+    PYB11_PROPERTY(float PhaseFraction READ getPhaseFraction WRITE setPhaseFraction)
+
   public:
     SIMPL_SHARED_POINTERS(StatsData)
     SIMPL_STATIC_NEW_MACRO(StatsData)

@@ -47,6 +47,16 @@
  */
 class SIMPLib_EXPORT StatsDataArray : public IDataArray
 {
+  PYB11_CREATE_BINDINGS(StatsDataArray SUPER IDataArray)
+  PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t QString bool)
+  PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t int size_t* QString bool)
+  PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t std::vector<size_t> QString bool)
+  PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t QVector<size_t> QString bool)
+  PYB11_STATIC_CREATION(CreateArray OVERLOAD QVector<size_t> QVector<size_t> QString bool)
+  PYB11_METHOD(void setStatsData ARGS int,index StatsData::Pointer,statsData)
+  PYB11_METHOD(StatsData::Pointer getStatsData ARGS int,index)
+  PYB11_METHOD(void fillArrayWithNewStatsData OVERLOAD size_t,n PhaseType::Type*,phase_types)
+  PYB11_METHOD(void fillArrayWithNewStatsData OVERLOAD size_t,n PhaseType::EnumType*,phase_types)
   public:
     SIMPL_SHARED_POINTERS(StatsDataArray)
     SIMPL_STATIC_NEW_MACRO(StatsDataArray)

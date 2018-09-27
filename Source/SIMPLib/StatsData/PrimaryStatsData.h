@@ -82,6 +82,19 @@ typedef QVector<FloatArrayType::Pointer> VectorOfFloatArray;
  */
 class SIMPLib_EXPORT PrimaryStatsData : public StatsData
 {
+	PYB11_CREATE_BINDINGS(PrimaryStatsData SUPER StatsData)
+	PYB11_STATIC_CREATION(initialize)
+
+	PYB11_PROPERTY(float BinStepSize READ getBinStepSize WRITE setBinStepSize)
+	PYB11_PROPERTY(float MaxFeatureDiameter READ getMaxFeatureDiameter WRITE setMaxFeatureDiameter)
+	PYB11_PROPERTY(float MinFeatureDiameter READ getMinFeatureDiameter WRITE setMinFeatureDiameter)
+	PYB11_PROPERTY(VectorOfFloatArray FeatureSizeDistribution READ getFeatureSizeDistribution WRITE setFeatureSizeDistribution)
+	PYB11_PROPERTY(uint32_t FeatureSize_DistType READ getFeatureSize_DistType WRITE setFeatureSize_DistType)
+	PYB11_METHOD(PhaseType::Type getPhaseType)
+	PYB11_METHOD(FloatArrayType::Pointer generateBinNumbers)
+	PYB11_PROPERTY(float PhaseFraction READ getPhaseFraction WRITE setPhaseFraction)
+	PYB11_PROPERTY(float BoundaryArea READ getBoundaryArea WRITE setBoundaryArea)
+
   public:
     SIMPL_SHARED_POINTERS(PrimaryStatsData)
     SIMPL_STATIC_NEW_MACRO(PrimaryStatsData)

@@ -32,6 +32,8 @@ PYBIND11_MAKE_OPAQUE(std::vector<size_t>);
 #include <utility>
 
 #include <QtCore/QString>
+#include <QtCore/QDateTime>
+#include "SIMPLib/Common/ShapeType.h"
 #include "SIMPLib/FilterParameters/RangeFilterParameter.h"
 #include "SIMPLib/CoreFilters/util/ASCIIWizardData.hpp"
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
@@ -41,6 +43,7 @@ namespace py = pybind11;
 PYBIND11_DECLARE_HOLDER_TYPE(T, std::shared_ptr<T>);
 typedef QMap<QString, DataContainerProxy> DataContainersMap;
 typedef QMap<QString, AttributeMatrixProxy> AttributeMatricesMap;
+typedef QVector<FloatArrayType::Pointer> VectorOfFloatArray;
 
 //PYBIND11_MAKE_OPAQUE(DataContainersMap)
 //PYBIND11_MAKE_OPAQUE(AttributeMatricesMap)
@@ -448,6 +451,172 @@ public:
 			}
 		};
 
+		/* Create a TypeCaster for auto python list <--> QVector<ShapeType::Type> conversion */
+		template <> struct type_caster<QVector<ShapeType::Type>>
+		{
+		public:
+			/**
+			 * This macro establishes the name 'QVector<ShapeType::Type>' in
+			 * function signatures and declares a local variable
+			 * 'value' of type QVector<ShapeType::Type>
+			 */
+			PYBIND11_TYPE_CASTER(QVector<ShapeType::Type>, _("QVector<ShapeType::Type>"));
+
+			/**
+			 *  @brief Conversion part 1 (Python->C++): convert a lsit into a QVector<ShapeType::Type>
+			 * instance or return false upon failure. The second argument
+			 * indicates whether implicit conversions should be applied.
+			 * @param src
+			 * @return boolean
+			 */
+			bool load(handle src, bool)
+			{
+				if (!src)
+				{
+					return false;
+				}
+				if (py::isinstance<py::list>(src))
+				{
+					value = QVector<ShapeType::Type>();
+					for (auto shapeType : src)
+					{
+						value.push_back(py::cast<ShapeType::Type>(shapeType));
+					}
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+
+			/**
+			 * @brief Conversion part 2 (C++ -> Python): convert QVector<ShapeType::Type> instance into
+			 * a Python object. The second and third arguments are used to
+			 * indicate the return value policy and parent object (for
+			 * ``return_value_policy::reference_internal``) and are generally
+			 * ignored by implicit casters.
+			 *
+			 * @param src
+			 * @return
+			 */
+			static handle cast(const QVector<ShapeType::Type>& src, return_value_policy /* policy */, handle /* parent */)
+			{
+				py::list shapeTypes = py::list();
+				for (auto shapeType : src) {
+					shapeTypes.append(shapeType);
+				}
+				return shapeTypes;
+			}
+		};
+
+		/* Create a TypeCaster for auto python list <--> VectorOfFloatArray conversion */
+		template <> struct type_caster<VectorOfFloatArray>
+		{
+		public:
+			/**
+			 * This macro establishes the name 'VectorOfFloatArray' in
+			 * function signatures and declares a local variable
+			 * 'value' of type VectorOfFloatArray
+			 */
+			PYBIND11_TYPE_CASTER(VectorOfFloatArray, _("VectorOfFloatArray"));
+
+			/**
+			 *  @brief Conversion part 1 (Python->C++): convert a lsit into a VectorOfFloatArray
+			 * instance or return false upon failure. The second argument
+			 * indicates whether implicit conversions should be applied.
+			 * @param src
+			 * @return boolean
+			 */
+			bool load(handle src, bool)
+			{
+				py::print("Python to C++");
+				if (!src)
+				{
+					return false;
+				}
+				if (py::isinstance<py::list>(src))
+				{
+					/* Extract PyObject from handle */
+					PyObject *source = src.ptr();
+					/* Try converting into a Python integer value */
+					VectorOfFloatArray floatArrays;
+					for (auto floatArray : src)
+					{
+						py::print(floatArray);
+						if (py::isinstance<py::list>(floatArray) || py::isinstance<py::tuple>(floatArray))
+						{
+							FloatArrayType::Pointer floatArrayPtr;
+							std::vector<float> floatArrayVector;
+							size_t index = 0;
+							for (auto value : floatArray)
+							{
+								if (index == 0)
+								{
+									QString name = py::cast<QString>(value);
+									floatArrayPtr->setName(name);
+								}
+								else 
+								{
+									floatArrayVector.push_back(py::cast<float>(value));
+								}
+							}
+							floatArrayPtr = FloatArrayType::FromStdVector(floatArrayVector, "FloatArrays");
+							floatArrays.push_back(floatArrayPtr);
+						}
+						else if (py::isinstance<FloatArrayType>(floatArray))
+						{
+							PyObject *floatArrayPy = floatArray.ptr();
+							floatArrays.push_back(py::cast<FloatArrayType::Pointer>(floatArray));
+							Py_XDECREF(floatArrayPy);
+						}
+						else
+						{
+							py::print(floatArray, " is an invalid float array");
+						}
+					}
+
+					value = floatArrays;
+					Py_XDECREF(source);
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+
+			/**
+			 * @brief Conversion part 2 (C++ -> Python): convert VectorOfFloatArray instance into
+			 * a Python object. The second and third arguments are used to
+			 * indicate the return value policy and parent object (for
+			 * ``return_value_policy::reference_internal``) and are generally
+			 * ignored by implicit casters.
+			 *
+			 * @param src
+			 * @return
+			 */
+			static handle cast(const VectorOfFloatArray& src, return_value_policy /* policy */, handle /* parent */)
+			{
+				std::cout << "C++ to Python" << std::endl;
+				py::list floatArrays = py::list();
+				for (FloatArrayType::Pointer floatArray : src) 
+				{			
+					std::cout << "Float array name: " << floatArray->getName().toStdString() << std::endl;
+					py::list floatArrayList = py::list();
+					floatArrayList.append(floatArray->getName());
+					for (float value : floatArray->getArray())
+					{
+						std::cout << "Value: " << value << std::endl;
+						floatArrayList.append(value);
+					}
+					
+					floatArrays.append(floatArray);
+				}
+				return floatArrays;
+			}
+		};
+
 	} // namespace detail
 } // namespace pybind11
 
@@ -541,10 +710,37 @@ PYBIND11_MODULE(dream3d_py, m)
   py::class_<FloatVec3_t>(mod, "FloatVec3")
       .def(py::init<const float &, const float &, const float &>())
   ;
+  py::class_<FloatVec2_t>(mod, "FloatVec2")
+	  .def(py::init<const float &, const float &>())
+  ;
   py::class_<IntVec3_t>(mod, "IntVec3")
       .def(py::init<const int &, const int &, const int &>())
   ;
 
+  py::class_<AxisAngleInput_t>(mod, "AxisAngleInput")
+	  .def(py::init< const float &, const float &, const float &, const float &>())
+  ;
+
+  // Handle QSet of QString
+  py::class_<QSet<QString>>(mod, "StringSet")
+	  .def(py::init<>([](py::set stringSet) {
+	  QSet<QString> newQStringSet = QSet<QString>();
+	  for (auto newString : stringSet)
+	  {
+		  newQStringSet.insert(py::cast<QString>(newString));
+	  }
+	  return newQStringSet;
+      }))
+  ;
+
+  // Handle QDateTime
+  py::class_<QDateTime>(mod, "DateTime")
+	  .def(py::init<>([](int year, int month, int day, int seconds) {
+	  QDateTime dateTime(QDate(year, month, day));
+	  dateTime.setTime_t(seconds);
+	  return dateTime;
+      }))
+  ;
 
   /* STL Binding code */
   py::bind_vector<std::vector<int8_t>>(mod, "VectorInt8");
@@ -570,6 +766,39 @@ PYBIND11_MODULE(dream3d_py, m)
   {
     py::bind_vector<std::vector<size_t>>(mod, "VectorSizeT");
   }
+
+  /* Enumeration code for Comparison Operators */
+  py::enum_<SIMPL::Comparison::Enumeration>(mod, "ComparisonOperators")
+	  .value("LessThan", SIMPL::Comparison::Enumeration::Operator_LessThan)
+	  .value("GreaterThan", SIMPL::Comparison::Enumeration::Operator_GreaterThan)
+	  .value("Equal", SIMPL::Comparison::Enumeration::Operator_Equal)
+	  .value("NotEqual", SIMPL::Comparison::Enumeration::Operator_NotEqual)
+	  .value("Unknown", SIMPL::Comparison::Enumeration::Operator_Unknown)
+	  .export_values();
+
+  /* Enumeration code for PhaseType */
+  py::enum_<PhaseType::Type>(mod, "PhaseType")
+	  .value("Primary", PhaseType::Type::Primary)
+	  .value("Precipitate", PhaseType::Type::Precipitate)
+	  .value("Transformation", PhaseType::Type::Transformation)
+	  .value("Matrix", PhaseType::Type::Matrix)
+	  .value("Boundary", PhaseType::Type::Boundary)
+	  .value("Unknown", PhaseType::Type::Unknown)
+	  .value("Any", PhaseType::Type::Any)
+	  .export_values();
+
+  /* Enumeration code for ShapeType */
+  py::enum_<ShapeType::Type>(mod, "ShapeType")
+	  .value("Ellipsoid", ShapeType::Type::Ellipsoid)
+	  .value("SuperEllipsoid", ShapeType::Type::SuperEllipsoid)
+	  .value("CubeOctahedron", ShapeType::Type::CubeOctahedron)
+	  .value("CylinderA", ShapeType::Type::CylinderA)
+	  .value("CylinderB", ShapeType::Type::CylinderB)
+	  .value("CylinderC", ShapeType::Type::CylinderC)
+	  .value("ShapeTypeEnd", ShapeType::Type::ShapeTypeEnd)
+	  .value("Unknown", ShapeType::Type::Unknown)
+	  .value("Any", ShapeType::Type::Any)
+	  .export_values();
 
   /* Enumeration code for AttributeMatrix::Type ******************/
   py::enum_<SIMPL::ScalarTypes::Type>(mod, "ScalarTypes")
