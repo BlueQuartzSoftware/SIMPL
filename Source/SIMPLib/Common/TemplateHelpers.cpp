@@ -37,18 +37,18 @@
 using namespace TemplateHelpers;
 
 // -----------------------------------------------------------------------------
-IDataArrayWkPtr CreateNonPrereqArrayFromArrayType::operator()(AbstractFilter* f, DataArrayPath arrayPath, QVector<size_t> compDims, IDataArrayShPtr sourceArrayType)
+IDataArrayWkPtr CreateNonPrereqArrayFromArrayType::operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const QVector<size_t>& compDims, const IDataArrayShPtr& sourceArrayType)
 {
 
   IDataArrayShPtr ptr = IDataArray::NullPointer();
 
   if(CanDynamicCast<FloatArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(f, arrayPath, 0, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(f, arrayPath, 0.0f, compDims);
   }
   else if(CanDynamicCast<DoubleArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(f, arrayPath, 0, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(f, arrayPath, 0.0, compDims);
   }
   else if(CanDynamicCast<Int8ArrayType>()(sourceArrayType))
   {
@@ -84,7 +84,11 @@ IDataArrayWkPtr CreateNonPrereqArrayFromArrayType::operator()(AbstractFilter* f,
   }
   else if(CanDynamicCast<BoolArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<BoolArrayType, AbstractFilter, uint64_t>(f, arrayPath, 0, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<BoolArrayType, AbstractFilter, bool>(f, arrayPath, false, compDims);
+  }
+  else if(CanDynamicCast<SizeTArrayType>()(sourceArrayType))
+  {
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<SizeTArrayType, AbstractFilter, size_t>(f, arrayPath, 0, compDims);
   }
   else
   {
@@ -96,7 +100,7 @@ IDataArrayWkPtr CreateNonPrereqArrayFromArrayType::operator()(AbstractFilter* f,
 }
 
 // -----------------------------------------------------------------------------
-IDataArrayWkPtr CreateNonPrereqArrayFromTypeEnum::operator()(AbstractFilter* f, DataArrayPath arrayPath, QVector<size_t> compDims, int arrayType, double initValue)
+IDataArrayWkPtr CreateNonPrereqArrayFromTypeEnum::operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const QVector<size_t>& compDims, int arrayType, double initValue)
 {
   IDataArrayShPtr ptr = IDataArray::NullPointer();
 
@@ -135,6 +139,9 @@ IDataArrayWkPtr CreateNonPrereqArrayFromTypeEnum::operator()(AbstractFilter* f, 
   case SIMPL::TypeEnums::Bool:
     ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(f, arrayPath, static_cast<bool>(initValue), compDims);
     break;
+  case SIMPL::TypeEnums::SizeT:
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<SizeTArrayType, AbstractFilter, size_t>(f, arrayPath, static_cast<size_t>(initValue), compDims);
+    break;
   default:
     QString msg = QObject::tr("The created array '%1' is of unsupported type. The following types are supported: %3").arg(arrayPath.getDataArrayName()).arg(SIMPL::TypeEnums::SupportedTypeList);
     f->setErrorCondition(Errors::UnsupportedType);
@@ -145,7 +152,17 @@ IDataArrayWkPtr CreateNonPrereqArrayFromTypeEnum::operator()(AbstractFilter* f, 
 }
 
 // -----------------------------------------------------------------------------
-IDataArrayShPtr CreateArrayFromArrayType::operator()(AbstractFilter* f, QVector<size_t> tupleDims, QVector<size_t> compDims, QString arrayName, bool allocate, IDataArrayShPtr sourceArrayType)
+IDataArrayShPtr CreateArrayFromArrayType::operator()(AbstractFilter* f, const size_t& numTuples, const QVector<size_t>& compDims, const QString& arrayName, bool allocate,
+                                                     const IDataArrayShPtr& sourceArrayType)
+{
+  CreateArrayFromArrayType classInstance;
+  QVector<size_t> tupleDims(1, numTuples);
+  return classInstance(f, tupleDims, compDims, arrayName, allocate, sourceArrayType);
+}
+
+// -----------------------------------------------------------------------------
+IDataArrayShPtr CreateArrayFromArrayType::operator()(AbstractFilter* f, const QVector<size_t>& tupleDims, const QVector<size_t>& compDims, const QString& arrayName, bool allocate,
+                                                     const IDataArrayShPtr& sourceArrayType)
 {
   IDataArrayShPtr ptr = IDataArray::NullPointer();
 
@@ -193,6 +210,10 @@ IDataArrayShPtr CreateArrayFromArrayType::operator()(AbstractFilter* f, QVector<
   {
     ptr = BoolArrayType::CreateArray(tupleDims, compDims, arrayName, allocate);
   }
+  else if(CanDynamicCast<SizeTArrayType>()(sourceArrayType))
+  {
+    ptr = SizeTArrayType::CreateArray(tupleDims, compDims, arrayName, allocate);
+  }
   else
   {
     QString msg = QObject::tr("The created array is of unsupported type.");
@@ -203,7 +224,7 @@ IDataArrayShPtr CreateArrayFromArrayType::operator()(AbstractFilter* f, QVector<
 }
 
 // -----------------------------------------------------------------------------
-IDataArrayShPtr CreateArrayFromType::operator()(AbstractFilter* f, size_t numTuples, QVector<size_t> compDims, QString arrayName, bool allocate, QString type)
+IDataArrayShPtr CreateArrayFromType::operator()(AbstractFilter* f, const size_t& numTuples, const QVector<size_t>& compDims, const QString& arrayName, bool allocate, const QString& type)
 {
   CreateArrayFromType classInstance;
   QVector<size_t> tupleDims(1, numTuples);
@@ -211,7 +232,7 @@ IDataArrayShPtr CreateArrayFromType::operator()(AbstractFilter* f, size_t numTup
 }
 
 // -----------------------------------------------------------------------------
-IDataArrayShPtr CreateArrayFromType::operator()(AbstractFilter* f, QVector<size_t> tupleDims, QVector<size_t> compDims, QString arrayName, bool allocate, QString type)
+IDataArrayShPtr CreateArrayFromType::operator()(AbstractFilter* f, const QVector<size_t>& tupleDims, const QVector<size_t>& compDims, const QString& arrayName, bool allocate, const QString& type)
 {
   IDataArrayShPtr ptr = IDataArray::NullPointer();
 
@@ -255,6 +276,11 @@ IDataArrayShPtr CreateArrayFromType::operator()(AbstractFilter* f, QVector<size_
   {
     ptr = UInt64ArrayType::CreateArray(tupleDims, compDims, arrayName, allocate);
   }
+  else if(type.compare(SIMPL::TypeNames::SizeT) == 0)
+  {
+    ptr = SizeTArrayType::CreateArray(tupleDims, compDims, arrayName, allocate);
+  }
+
   else
   {
     QString msg = QObject::tr("The created array is of unsupported type.");
@@ -265,7 +291,7 @@ IDataArrayShPtr CreateArrayFromType::operator()(AbstractFilter* f, QVector<size_
 }
 
 // -----------------------------------------------------------------------------
-IDataArrayWkPtr GetPrereqArrayFromPath::operator()(AbstractFilter* f, DataArrayPath arrayPath, QVector<size_t>& compDims)
+IDataArrayWkPtr GetPrereqArrayFromPath::operator()(AbstractFilter* f, const DataArrayPath& arrayPath, QVector<size_t>& compDims)
 {
   IDataArrayShPtr retPtr = IDataArray::NullPointer();
   DataContainer::Pointer volDataCntr = f->getDataContainerArray()->template getPrereqDataContainer<AbstractFilter>(f, arrayPath.getDataContainerName(), false);
@@ -341,6 +367,10 @@ IDataArrayWkPtr GetPrereqArrayFromPath::operator()(AbstractFilter* f, DataArrayP
   else if(CanDynamicCast<BoolArrayType>()(i_data_array))
   {
     retPtr = f->getDataContainerArray()->template getPrereqArrayFromPath<DataArray<bool>, AbstractFilter>(f, arrayPath, compDims);
+  }
+  else if(CanDynamicCast<SizeTArrayType>()(i_data_array))
+  {
+    retPtr = f->getDataContainerArray()->template getPrereqArrayFromPath<SizeTArrayType, AbstractFilter>(f, arrayPath, compDims);
   }
   else
   {
