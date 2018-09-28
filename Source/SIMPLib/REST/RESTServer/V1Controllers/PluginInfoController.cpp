@@ -56,16 +56,22 @@ PluginInfoController::PluginInfoController(const QHostAddress& hostAddress, cons
 // -----------------------------------------------------------------------------
 void PluginInfoController::createPluginJson(ISIMPLibPlugin* plugin, QJsonObject& rootObject)
 {
-  rootObject["PluginFileName"] = plugin->getPluginFileName();
-  rootObject["DisplayName"] = plugin->getPluginDisplayName();
-  rootObject["Version"] = plugin->getVersion();
-  rootObject["CompatibilityVersion"] = plugin->getCompatibilityVersion();
-  rootObject["Vendor"] = plugin->getVendor();
-  rootObject["URL"] = plugin->getURL();
-  rootObject["Location"] = plugin->getLocation();
-  rootObject["Description"] = plugin->getDescription();
-  rootObject["Copyright"] = plugin->getCopyright();
-  rootObject["License"] = plugin->getLicense();
+  QJsonObject pluginObj;
+  pluginObj[SIMPL::JSON::PluginFileName] = plugin->getPluginFileName();
+  pluginObj[SIMPL::JSON::DisplayName] = plugin->getPluginDisplayName();
+  pluginObj[SIMPL::JSON::Version] = plugin->getVersion();
+  pluginObj[SIMPL::JSON::CompatibilityVersion] = plugin->getCompatibilityVersion();
+  pluginObj[SIMPL::JSON::Vendor] = plugin->getVendor();
+  pluginObj[SIMPL::JSON::URL] = plugin->getURL();
+  pluginObj[SIMPL::JSON::Location] = plugin->getLocation();
+  pluginObj[SIMPL::JSON::Description] = plugin->getDescription();
+  pluginObj[SIMPL::JSON::Copyright] = plugin->getCopyright();
+  pluginObj[SIMPL::JSON::License] = plugin->getLicense();
+
+  rootObject[SIMPL::JSON::Plugin] = pluginObj;
+  rootObject[SIMPL::JSON::ErrorCode] = 0;
+  rootObject[SIMPL::JSON::ErrorMessage] = "";
+  rootObject[SIMPL::JSON::PluginBaseName] = plugin->getPluginBaseName();
 }
 
 // -----------------------------------------------------------------------------
@@ -105,10 +111,13 @@ void PluginInfoController::service(HttpRequest& request, HttpResponse& response)
     return;
   }
   QJsonObject rootObject = requestJsonDoc.object();
-  if (!rootObject.contains("PluginBaseName"))
+  if (!rootObject.contains(SIMPL::JSON::PluginBaseName))
   {
     responseJsonRootObj[SIMPL::JSON::ErrorMessage] = "Key 'PluginBaseName' does not exist in the JSON payload.";
     responseJsonRootObj[SIMPL::JSON::ErrorCode] = -40;
+    QJsonDocument jdoc(responseJsonRootObj);
+    response.write(jdoc.toJson(), true);
+    return;
   }
 
   QJsonValue nameValue = rootObject.value(QString("PluginBaseName"));
@@ -120,6 +129,9 @@ void PluginInfoController::service(HttpRequest& request, HttpResponse& response)
   {
     responseJsonRootObj[SIMPL::JSON::ErrorMessage] = "Key 'PluginBaseName' does not have a paired value that is a string.";
     responseJsonRootObj[SIMPL::JSON::ErrorCode] = -50;
+    QJsonDocument jdoc(responseJsonRootObj);
+    response.write(jdoc.toJson(), true);
+    return;
   }
   
   PluginManager* pm = PluginManager::Instance();
@@ -129,6 +141,9 @@ void PluginInfoController::service(HttpRequest& request, HttpResponse& response)
   {
     responseJsonRootObj[SIMPL::JSON::ErrorCode] = -60;
     responseJsonRootObj[SIMPL::JSON::ErrorMessage] = "Plugin with name " + pluginName + " was not loaded or does not exist";
+    QJsonDocument jdoc(responseJsonRootObj);
+    response.write(jdoc.toJson(), true);
+    return;
   }
   else
   {

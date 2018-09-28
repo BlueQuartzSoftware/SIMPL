@@ -78,14 +78,6 @@ void NumFiltersController::service(HttpRequest& request, HttpResponse& response)
 
   // Register all the filters including trying to load those from Plugins
   FilterManager* fm = FilterManager::Instance();
-  if (fm != nullptr)
-  {
-    rootObj[SIMPL::JSON::ErrorMessage] = tr("%1: Could not load the Filter Manager needed to get the list of filter names.").arg(EndPoint());
-    rootObj[SIMPL::JSON::ErrorCode] = -30;
-    QJsonDocument jdoc(rootObj);
-    response.write(jdoc.toJson(), true);
-    return;
-  }
 
   FilterManager::Collection factories = fm->getFactories();
 

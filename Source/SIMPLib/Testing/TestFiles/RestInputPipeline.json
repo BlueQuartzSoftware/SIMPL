@@ -1,7 +1,7 @@
 {
     "0": {
         "DataContainerName": "DataContainer",
-        "FilterVersion": "1.2.709",
+        "FilterVersion": "1.2.717",
         "Filter_Enabled": true,
         "Filter_Human_Label": "Create Data Container",
         "Filter_Name": "CreateDataContainer",
@@ -14,7 +14,7 @@
             "Data Array Name": "",
             "Data Container Name": "DataContainer"
         },
-        "FilterVersion": "1.2.709",
+        "FilterVersion": "1.2.717",
         "Filter_Enabled": true,
         "Filter_Human_Label": "Create Attribute Matrix",
         "Filter_Name": "CreateAttributeMatrix",
@@ -34,13 +34,13 @@
             ],
             "Table Data": [
                 [
-                    100
+                    10
                 ]
             ]
         }
     },
     "2": {
-        "FilterVersion": "1.2.709",
+        "FilterVersion": "1.2.717",
         "Filter_Enabled": true,
         "Filter_Human_Label": "Create Data Array",
         "Filter_Name": "CreateDataArray",
@@ -60,7 +60,7 @@
         "ScalarType": 0
     },
     "PipelineBuilder": {
-        "Name": "RestInputPipeline",
+        "Name": "RESTInputPipeline",
         "Number_Filters": 3,
         "Version": 6
     }

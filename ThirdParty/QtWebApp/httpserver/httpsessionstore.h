@@ -45,7 +45,7 @@ public:
    * @param parent
    * @return
    */
-  static HttpSessionStore* CreateInstance(QSettings* settings, QObject* parent);
+  static HttpSessionStore* CreateInstance(QSettings* settings, QObject* parent = nullptr);
 
   /**
    * @brief Instance
@@ -92,7 +92,7 @@ protected:
   /** Storage for the sessions */
   QMap<QByteArray, HttpSession> sessions;
 
-  HttpSessionStore(QSettings* settings, QObject* parent = NULL);
+  HttpSessionStore(QSettings* settings, QObject* parent = nullptr);
 
 private:
   /** Configuration settings */

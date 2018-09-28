@@ -70,6 +70,8 @@ void SIMPLibVersionController::service(HttpRequest& request, HttpResponse& respo
   }
   
   rootObj[SIMPL::JSON::Version] = SIMPLib::Version::Complete();
+  rootObj[SIMPL::JSON::ErrorMessage] = "";
+  rootObj[SIMPL::JSON::ErrorCode] = 0;
 
   QJsonDocument jdoc(rootObj);
 

@@ -139,7 +139,7 @@ HttpSession HttpSessionStore::getSession(HttpRequest& request, HttpResponse& res
     //    QByteArray cookieDomain = settings->value("cookieDomain").toByteArray();
 
     HttpSession session(true);
-    qDebug() << "HttpSessionStore: create new session with ID " << session.getId().data();
+//    qDebug() << "HttpSessionStore: create new session with ID " << session.getId().data();
     sessions.insert(session.getId(), session);
     // response.setCookie(HttpCookie(cookieName, session.getId(), expirationTime / 1000, cookiePath, cookieComment, cookieDomain));
     return session;

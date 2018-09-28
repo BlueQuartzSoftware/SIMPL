@@ -96,7 +96,6 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
   if (jsonParseError.error != QJsonParseError::ParseError::NoError)
   {
     // Form Error response
-    QJsonObject rootObj;
     rootObj[SIMPL::JSON::ErrorMessage] = tr("%1: JSON Request Parsing Error - %2").arg(EndPoint()).arg(jsonParseError.errorString());
     rootObj[SIMPL::JSON::ErrorCode] = -30;
     QJsonDocument jdoc(rootObj);
@@ -107,7 +106,6 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
   QJsonObject requestObj = requestDoc.object();
   if (!requestObj.contains(SIMPL::JSON::Pipeline))
   {
-    QJsonObject rootObj;
     rootObj[SIMPL::JSON::ErrorMessage] = tr("%1: No Pipeline object found in the JSON request body.").arg(EndPoint());
     rootObj[SIMPL::JSON::ErrorCode] = -40;
     QJsonDocument jdoc(rootObj);
@@ -119,7 +117,6 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
   FilterPipeline::Pointer pipeline = FilterPipeline::FromJson(pipelineObj);
   if (pipeline.get() == nullptr)
   {
-    QJsonObject rootObj;
     rootObj[SIMPL::JSON::ErrorMessage] = tr("%1: Pipeline could not be created from the JSON request body.").arg(EndPoint());
     rootObj[SIMPL::JSON::ErrorCode] = -50;
     QJsonDocument jdoc(rootObj);
@@ -236,22 +233,20 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
   // Return messages
   std::vector<PipelineMessage> errorMessages = listener.getErrorMessages();
   bool completed = (errorMessages.size() == 0);
-  if(!completed)
-  {
-    QJsonArray errors;
-    size_t numErrors = errorMessages.size();
-    for(size_t i = 0; i < numErrors; i++)
-    {
-      QJsonObject error;
-      error[SIMPL::JSON::Code] = errorMessages[i].generateErrorString();
-      error[SIMPL::JSON::Message] = errorMessages[i].getText();
-      error[SIMPL::JSON::FilterHumanLabel] = errorMessages[i].getFilterHumanLabel();
-      error[SIMPL::JSON::FilterIndex] = errorMessages[i].getPipelineIndex();
 
-      errors.push_back(error);
-    }
-    rootObj[SIMPL::JSON::Errors] = errors;
+  QJsonArray errors;
+  size_t numErrors = errorMessages.size();
+  for(size_t i = 0; i < numErrors; i++)
+  {
+    QJsonObject error;
+    error[SIMPL::JSON::Code] = errorMessages[i].generateErrorString();
+    error[SIMPL::JSON::Message] = errorMessages[i].getText();
+    error[SIMPL::JSON::FilterHumanLabel] = errorMessages[i].getFilterHumanLabel();
+    error[SIMPL::JSON::FilterIndex] = errorMessages[i].getPipelineIndex();
+
+    errors.push_back(error);
   }
+  rootObj[SIMPL::JSON::Errors] = errors;
 
   std::vector<PipelineMessage> warningMessages = listener.getWarningMessages();
   QJsonArray warnings;

@@ -75,7 +75,7 @@ void V1RequestMapper::service(HttpRequest& request, HttpResponse& response)
   QMultiMap<QByteArray, QByteArray> headerMap = request.getHeaderMap();
 
   QString path(request.getPath());
-  qDebug() << "V1RequestMapper: path=" << QString(path.data());
+//  qDebug() << "V1RequestMapper: path=" << QString(path.data());
 
   // For the following paths, each request gets its own new instance of the related controller.
 
@@ -120,7 +120,7 @@ void V1RequestMapper::service(HttpRequest& request, HttpResponse& response)
     staticFileController->service(request, response);
   }
 
-  qDebug() << "V1RequestMapper: finished request";
+//  qDebug() << "V1RequestMapper: finished request";
 
   // Clear the log buffer
   //    if (logger)

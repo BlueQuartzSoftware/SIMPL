@@ -93,7 +93,7 @@ void SIMPLRequestMapper::service(HttpRequest& request, HttpResponse& response)
     response.write(jdoc.toJson(), true);
   }
 
-  qDebug() << "SIMPLRequestMapper: finished request";
+//  qDebug() << "SIMPLRequestMapper: finished request";
 
   // Clear the log buffer
   //    if (logger)

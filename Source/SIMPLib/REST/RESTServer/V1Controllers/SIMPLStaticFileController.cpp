@@ -24,6 +24,11 @@ SIMPLStaticFileController* SIMPLStaticFileController::Instance()
 // -----------------------------------------------------------------------------
 void SIMPLStaticFileController::CreateInstance(QSettings* settings, QObject* parent)
 {
+  if (m_Instance != nullptr)
+  {
+    delete m_Instance;
+  }
+
   m_Instance = new SIMPLStaticFileController(settings, parent);
 }
 

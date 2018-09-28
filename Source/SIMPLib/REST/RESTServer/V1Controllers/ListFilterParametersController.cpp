@@ -58,26 +58,20 @@ void ListFilterParametersController::createFilterParametersJson(const QString& f
 {
   // Register all the filters including trying to load those from Plugins
   FilterManager* fm = FilterManager::Instance();
-  if (fm != nullptr)
-  {
-    rootObject[SIMPL::JSON::ErrorMessage] = tr("%1: Could not load the Filter Manager needed to get the filter parameters for filter '%2'.").arg(EndPoint()).arg(filterName);
-    rootObject[SIMPL::JSON::ErrorCode] = -80;
-    return;
-  }
 
   IFilterFactory::Pointer factory = fm->getFactoryFromClassName(filterName);
-  if (factory.get() != nullptr)
+  if (factory.get() == nullptr)
   {
     rootObject[SIMPL::JSON::ErrorMessage] = tr("%1: Could not load the filter factory needed to get the filter parameters for filter '%2'.").arg(EndPoint()).arg(filterName);
-    rootObject[SIMPL::JSON::ErrorCode] = -90;
+    rootObject[SIMPL::JSON::ErrorCode] = -70;
     return;
   }
 
   AbstractFilter::Pointer filter = factory->create();
-  if (filter.get() != nullptr)
+  if (filter.get() == nullptr)
   {
     rootObject[SIMPL::JSON::ErrorMessage] = tr("%1: Could not load '%2' using its filter factory.").arg(EndPoint()).arg(filterName);
-    rootObject[SIMPL::JSON::ErrorCode] = -100;
+    rootObject[SIMPL::JSON::ErrorCode] = -80;
     return;
   }
 

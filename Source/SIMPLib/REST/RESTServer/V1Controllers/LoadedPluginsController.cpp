@@ -74,15 +74,6 @@ void LoadedPluginsController::service(HttpRequest& request, HttpResponse& respon
   }
 
   PluginManager* pm = PluginManager::Instance();
-  if (pm == nullptr)
-  {
-    rootObj[SIMPL::JSON::ErrorMessage] = tr("%1: Could not load the Plugin Manager needed to get the list of plugins.").arg(EndPoint());
-    rootObj[SIMPL::JSON::ErrorCode] = -30;
-    QJsonDocument jdoc(rootObj);
-    response.write(jdoc.toJson(), true);
-    return;
-  }
-  
   rootObj[SIMPL::JSON::ErrorMessage] = "";
   rootObj[SIMPL::JSON::ErrorCode] = 0;
   rootObj[SIMPL::JSON::Plugins] = pm->toJsonArray();
