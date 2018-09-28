@@ -100,6 +100,10 @@ namespace TemplateHelpers
   {                                                                                                                                                                                                    \
     templateName<bool>(__VA_ARGS__);                                                                                                                                                                   \
   }                                                                                                                                                                                                    \
+  else if(TemplateHelpers::CanDynamicCast<DataArray<size_t>>()(inputData))                                                                                                                             \
+  {                                                                                                                                                                                                    \
+    templateName<size_t>(__VA_ARGS__);                                                                                                                                                                 \
+  }                                                                                                                                                                                                    \
   else                                                                                                                                                                                                 \
   {                                                                                                                                                                                                    \
     observableObj->notifyErrorMessage(#templateName, "The input array was of unsupported type", TemplateHelpers::Errors::UnsupportedType);                                                             \
@@ -161,6 +165,11 @@ namespace TemplateHelpers
     templateName<bool> pimpl;                                                                                                                                                                          \
     pimpl.Execute(__VA_ARGS__);                                                                                                                                                                        \
   }                                                                                                                                                                                                    \
+  else if(templateName<size_t>()(inputData))                                                                                                                                                           \
+  {                                                                                                                                                                                                    \
+    templateName<size_t> pimpl;                                                                                                                                                                        \
+    pimpl.Execute(__VA_ARGS__);                                                                                                                                                                        \
+  }                                                                                                                                                                                                    \
   else                                                                                                                                                                                                 \
   {                                                                                                                                                                                                    \
     observableObj->notifyErrorMessage(#templateName, "The input array was of unsupported type", TemplateHelpers::Errors::UnsupportedType);                                                             \
@@ -186,6 +195,11 @@ template <typename T> class CanDynamicCast
 public:
   CanDynamicCast() = default;
   virtual ~CanDynamicCast() = default;
+  CanDynamicCast(const CanDynamicCast&) = delete;            // Copy Constructor Not Implemented
+  CanDynamicCast(CanDynamicCast&&) = delete;                 // Move Constructor Not Implemented
+  CanDynamicCast& operator=(const CanDynamicCast&) = delete; // Copy Assignment Not Implemented
+  CanDynamicCast& operator=(CanDynamicCast&&) = delete;      // Move Assignment Not Implemented
+
   bool operator()(IDataArrayShPtr p)
   {
     return (std::dynamic_pointer_cast<T>(p).get() != nullptr);
@@ -201,6 +215,10 @@ class SIMPLib_EXPORT CreateNonPrereqArrayFromArrayType
 public:
   CreateNonPrereqArrayFromArrayType() = default;
   ~CreateNonPrereqArrayFromArrayType() = default;
+  CreateNonPrereqArrayFromArrayType(const CreateNonPrereqArrayFromArrayType&) = delete;            // Copy Constructor Not Implemented
+  CreateNonPrereqArrayFromArrayType(CreateNonPrereqArrayFromArrayType&&) = delete;                 // Move Constructor Not Implemented
+  CreateNonPrereqArrayFromArrayType& operator=(const CreateNonPrereqArrayFromArrayType&) = delete; // Copy Assignment Not Implemented
+  CreateNonPrereqArrayFromArrayType& operator=(CreateNonPrereqArrayFromArrayType&&) = delete;      // Move Assignment Not Implemented
 
   /**
    * @brief operator ()
@@ -210,7 +228,7 @@ public:
    * @param sourceArrayType
    * @return
    */
-  IDataArrayWkPtr operator()(AbstractFilter* f, DataArrayPath arrayPath, QVector<size_t> compDims, IDataArrayShPtr sourceArrayType);
+  IDataArrayWkPtr operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const QVector<size_t>& compDims, const IDataArrayShPtr& sourceArrayType);
 };
 
 /**
@@ -222,6 +240,10 @@ class SIMPLib_EXPORT CreateNonPrereqArrayFromTypeEnum
 public:
   CreateNonPrereqArrayFromTypeEnum() = default;
   ~CreateNonPrereqArrayFromTypeEnum() = default;
+  CreateNonPrereqArrayFromTypeEnum(const CreateNonPrereqArrayFromTypeEnum&) = delete;            // Copy Constructor Not Implemented
+  CreateNonPrereqArrayFromTypeEnum(CreateNonPrereqArrayFromTypeEnum&&) = delete;                 // Move Constructor Not Implemented
+  CreateNonPrereqArrayFromTypeEnum& operator=(const CreateNonPrereqArrayFromTypeEnum&) = delete; // Copy Assignment Not Implemented
+  CreateNonPrereqArrayFromTypeEnum& operator=(CreateNonPrereqArrayFromTypeEnum&&) = delete;      // Move Assignment Not Implemented
 
   /**
    * @brief operator ()
@@ -232,7 +254,7 @@ public:
    * @param initValue
    * @return
    */
-  IDataArrayWkPtr operator()(AbstractFilter* f, DataArrayPath arrayPath, QVector<size_t> compDims, int arrayType, double initValue);
+  IDataArrayWkPtr operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const QVector<size_t>& compDims, int arrayType, double initValue);
 };
 
 /**
@@ -244,13 +266,12 @@ class SIMPLib_EXPORT CreateArrayFromArrayType
 public:
   CreateArrayFromArrayType() = default;
   ~CreateArrayFromArrayType() = default;
+  CreateArrayFromArrayType(const CreateArrayFromArrayType&) = delete;            // Copy Constructor Not Implemented
+  CreateArrayFromArrayType(CreateArrayFromArrayType&&) = delete;                 // Move Constructor Not Implemented
+  CreateArrayFromArrayType& operator=(const CreateArrayFromArrayType&) = delete; // Copy Assignment Not Implemented
+  CreateArrayFromArrayType& operator=(CreateArrayFromArrayType&&) = delete;      // Move Assignment Not Implemented
 
-  IDataArrayShPtr operator()(AbstractFilter* f, size_t numTuples, QVector<size_t> compDims, QString arrayName, bool allocate, IDataArrayShPtr sourceArrayType)
-  {
-    CreateArrayFromArrayType classInstance;
-    QVector<size_t> tupleDims(1, numTuples);
-    return classInstance(f, tupleDims, compDims, arrayName, allocate, sourceArrayType);
-  }
+  IDataArrayShPtr operator()(AbstractFilter* f, const size_t& numTuples, const QVector<size_t>& compDims, const QString& arrayName, bool allocate, const IDataArrayShPtr& sourceArrayType);
 
   /**
    * @brief operator ()
@@ -262,7 +283,7 @@ public:
    * @param sourceArrayType
    * @return
    */
-  IDataArrayShPtr operator()(AbstractFilter* f, QVector<size_t> tupleDims, QVector<size_t> compDims, QString arrayName, bool allocate, IDataArrayShPtr sourceArrayType);
+  IDataArrayShPtr operator()(AbstractFilter* f, const QVector<size_t>& tupleDims, const QVector<size_t>& compDims, const QString& arrayName, bool allocate, const IDataArrayShPtr& sourceArrayType);
 };
 
 /**
@@ -274,6 +295,10 @@ class SIMPLib_EXPORT CreateArrayFromType
 public:
   CreateArrayFromType() = default;
   ~CreateArrayFromType() = default;
+  CreateArrayFromType(const CreateArrayFromType&) = delete;            // Copy Constructor Not Implemented
+  CreateArrayFromType(CreateArrayFromType&&) = delete;                 // Move Constructor Not Implemented
+  CreateArrayFromType& operator=(const CreateArrayFromType&) = delete; // Copy Assignment Not Implemented
+  CreateArrayFromType& operator=(CreateArrayFromType&&) = delete;      // Move Assignment Not Implemented
 
   /**
    * @brief operator ()
@@ -285,7 +310,7 @@ public:
    * @param type
    * @return
    */
-  IDataArrayShPtr operator()(AbstractFilter* f, size_t numTuples, QVector<size_t> compDims, QString arrayName, bool allocate, QString type);
+  IDataArrayShPtr operator()(AbstractFilter* f, const size_t& numTuples, const QVector<size_t>& compDims, const QString& arrayName, bool allocate, const QString& type);
 
   /**
    * @brief operator ()
@@ -297,7 +322,7 @@ public:
    * @param type
    * @return
    */
-  IDataArrayShPtr operator()(AbstractFilter* f, QVector<size_t> tupleDims, QVector<size_t> compDims, QString arrayName, bool allocate, QString type);
+  IDataArrayShPtr operator()(AbstractFilter* f, const QVector<size_t>& tupleDims, const QVector<size_t>& compDims, const QString& arrayName, bool allocate, const QString& type);
 };
 
 /**
@@ -308,6 +333,10 @@ class SIMPLib_EXPORT GetPrereqArrayFromPath
 public:
   GetPrereqArrayFromPath() = default;
   virtual ~GetPrereqArrayFromPath() = default;
+  GetPrereqArrayFromPath(const GetPrereqArrayFromPath&) = delete;            // Copy Constructor Not Implemented
+  GetPrereqArrayFromPath(GetPrereqArrayFromPath&&) = delete;                 // Move Constructor Not Implemented
+  GetPrereqArrayFromPath& operator=(const GetPrereqArrayFromPath&) = delete; // Copy Assignment Not Implemented
+  GetPrereqArrayFromPath& operator=(GetPrereqArrayFromPath&&) = delete;      // Move Assignment Not Implemented
 
   /**
    * @brief operator ()
@@ -316,11 +345,8 @@ public:
    * @param compDims
    * @return
    */
-  IDataArrayWkPtr operator()(AbstractFilter* f, DataArrayPath arrayPath, QVector<size_t>& compDims);
-
-private:
-  GetPrereqArrayFromPath(const GetPrereqArrayFromPath&); // Copy Constructor Not Implemented
-  void operator=(const GetPrereqArrayFromPath&);         // Move assignment Not Implemented
+  IDataArrayWkPtr operator()(AbstractFilter* f, const DataArrayPath& arrayPath, QVector<size_t>& compDims);
+  // Move assignment Not Implemented
 };
 
 } // namespace TemplateHelpers

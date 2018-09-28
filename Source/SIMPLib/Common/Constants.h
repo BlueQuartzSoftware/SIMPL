@@ -91,13 +91,15 @@ namespace SIMPL
     const QString UInt32("uint32_t");
     const QString Int64("int64_t");
     const QString UInt64("uint64_t");
+    const QString SizeT("size_t");
     const QString String("string");
     const QString StatsDataArray("StatsDataArray");
     const QString NeighborList("NeighborList<T>");
     const QString StringArray("StringDataArray");
     const QString Unknown("Unknown");
     const QString SupportedTypeList(TypeNames::Bool + ", " + TypeNames::StringArray + ", " + TypeNames::Int8 + ", " + TypeNames::UInt8 + ", " + TypeNames::Int16 + ", " + TypeNames::UInt16 + ", " +
-                                    TypeNames::Int32 + ", " + TypeNames::UInt32 + ", " + TypeNames::Int64 + ", " + TypeNames::UInt64 + ", " + TypeNames::Float + ", " + TypeNames::Double);
+                                    TypeNames::Int32 + ", " + TypeNames::UInt32 + ", " + TypeNames::Int64 + ", " + TypeNames::UInt64 + ", " + TypeNames::Float + ", " + TypeNames::Double + ", " +
+                                    TypeNames::SizeT);
   }
 
   namespace TypeEnums
@@ -113,10 +115,11 @@ namespace SIMPL
     static const int Float = 8;
     static const int Double = 9;
     static const int Bool = 10;
+    static const int SizeT = 11;
 
-    static const int UnknownType = 11;
+    static const int UnknownType = 12;
     const QString SupportedTypeList(TypeNames::Bool + ", " + TypeNames::Int8 + ", " + TypeNames::UInt8 + ", " + TypeNames::Int16 + ", " + TypeNames::UInt16 + ", " + TypeNames::Int32 + ", " +
-                                    TypeNames::UInt32 + ", " + TypeNames::Int64 + ", " + TypeNames::UInt64 + ", " + TypeNames::Float + ", " + TypeNames::Double);
+                                    TypeNames::UInt32 + ", " + TypeNames::Int64 + ", " + TypeNames::UInt64 + ", " + TypeNames::Float + ", " + TypeNames::Double + ", " + TypeNames::SizeT);
   }
 
   namespace NumericTypes
@@ -134,6 +137,7 @@ namespace SIMPL
       const QString Float("       Float 32 bit");
       const QString Double("      Double 64 bit");
       const QString Bool("Bool");
+      const QString SizeT("size_t");
     }
 
     enum class Type : int
@@ -149,12 +153,13 @@ namespace SIMPL
       Float,
       Double,
       Bool,
+      SizeT,
       UnknownNumType
     };
 
     const QString SupportedTypeList(NumericTypes::Names::Int8 + ", " + NumericTypes::Names::UInt8 + ", " + NumericTypes::Names::Int16 + ", " + NumericTypes::Names::UInt16 + ", " +
                                     NumericTypes::Names::Int32 + ", " + NumericTypes::Names::UInt32 + ", " + NumericTypes::Names::Int64 + ", " + NumericTypes::Names::UInt64 + ", " +
-                                    NumericTypes::Names::Float + ", " + NumericTypes::Names::Double + ", " + NumericTypes::Names::Bool);
+                                    NumericTypes::Names::Float + ", " + NumericTypes::Names::Double + ", " + NumericTypes::Names::Bool + ", " + NumericTypes::Names::SizeT);
   }
 
   namespace DelimiterTypes
@@ -171,20 +176,21 @@ namespace SIMPL
 
   namespace ScalarTypes
   {
-    enum class Type : int
-    {
-      Int8 = 0,
-      UInt8,
-      Int16,
-      UInt16,
-      Int32,
-      UInt32,
-      Int64,
-      UInt64,
-      Float,
-      Double,
-      Bool
-    };
+  enum class Type : int
+  {
+    Int8 = 0,
+    UInt8,
+    Int16,
+    UInt16,
+    Int32,
+    UInt32,
+    Int64,
+    UInt64,
+    Float,
+    Double,
+    Bool,
+    SizeT
+  };
   }
 
   namespace IO
