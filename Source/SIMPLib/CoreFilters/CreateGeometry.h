@@ -108,6 +108,9 @@ public:
   SIMPL_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath4)
   Q_PROPERTY(DataArrayPath SharedVertexListArrayPath4 READ getSharedVertexListArrayPath4 WRITE setSharedVertexListArrayPath4)
 
+  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath5)
+  Q_PROPERTY(DataArrayPath SharedVertexListArrayPath5 READ getSharedVertexListArrayPath5 WRITE setSharedVertexListArrayPath5)
+
   SIMPL_FILTER_PARAMETER(DataArrayPath, SharedEdgeListArrayPath)
   Q_PROPERTY(DataArrayPath SharedEdgeListArrayPath READ getSharedEdgeListArrayPath WRITE setSharedEdgeListArrayPath)
 
@@ -119,6 +122,9 @@ public:
 
   SIMPL_FILTER_PARAMETER(DataArrayPath, SharedTetListArrayPath)
   Q_PROPERTY(DataArrayPath SharedTetListArrayPath READ getSharedTetListArrayPath WRITE setSharedTetListArrayPath)
+
+  SIMPL_FILTER_PARAMETER(DataArrayPath, SharedHexListArrayPath)
+  Q_PROPERTY(DataArrayPath SharedHexListArrayPath READ getSharedHexListArrayPath WRITE setSharedHexListArrayPath)
 
   SIMPL_FILTER_PARAMETER(DataArrayPath, XBoundsArrayPath)
   Q_PROPERTY(DataArrayPath XBoundsArrayPath READ getXBoundsArrayPath WRITE setXBoundsArrayPath)
@@ -159,6 +165,9 @@ public:
   SIMPL_FILTER_PARAMETER(QString, VertexAttributeMatrixName4)
   Q_PROPERTY(QString VertexAttributeMatrixName4 READ getVertexAttributeMatrixName4 WRITE setVertexAttributeMatrixName4)
 
+  SIMPL_FILTER_PARAMETER(QString, VertexAttributeMatrixName5)
+  Q_PROPERTY(QString VertexAttributeMatrixName5 READ getVertexAttributeMatrixName5 WRITE setVertexAttributeMatrixName5)
+
   SIMPL_FILTER_PARAMETER(QString, EdgeAttributeMatrixName)
   Q_PROPERTY(QString EdgeAttributeMatrixName READ getEdgeAttributeMatrixName WRITE setEdgeAttributeMatrixName)
 
@@ -170,6 +179,9 @@ public:
 
   SIMPL_FILTER_PARAMETER(QString, TetCellAttributeMatrixName)
   Q_PROPERTY(QString TetCellAttributeMatrixName READ getTetCellAttributeMatrixName WRITE setTetCellAttributeMatrixName)
+
+  SIMPL_FILTER_PARAMETER(QString, HexCellAttributeMatrixName)
+  Q_PROPERTY(QString HexCellAttributeMatrixName READ getHexCellAttributeMatrixName WRITE setHexCellAttributeMatrixName)
 
   SIMPL_FILTER_PARAMETER(bool, TreatWarningsAsErrors)
   Q_PROPERTY(bool TreatWarningsAsErrors READ getTreatWarningsAsErrors WRITE setTreatWarningsAsErrors)
@@ -283,6 +295,7 @@ private:
   DEFINE_DATAARRAY_VARIABLE(int64_t, Tris)
   DEFINE_DATAARRAY_VARIABLE(int64_t, Quads)
   DEFINE_DATAARRAY_VARIABLE(int64_t, Tets)
+  DEFINE_DATAARRAY_VARIABLE(int64_t, Hexes)
 
   int64_t m_NumVerts;
 

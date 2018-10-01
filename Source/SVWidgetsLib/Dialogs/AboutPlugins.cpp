@@ -34,10 +34,11 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "AboutPlugins.h"
 
+#include <QtCore/QPluginLoader>
+
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
-
-#include <QtCore/QPluginLoader>
+#include <QtWidgets/QAction>
 
 #include "SIMPLib/Filtering/FilterManager.h"
 

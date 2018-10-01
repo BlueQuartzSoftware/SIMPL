@@ -12,11 +12,14 @@ set(TEST_${SUBDIR_NAME}_NAMES
   CreateDataContainerTest
   CreateFeatureArrayFromElementArrayTest
   CreateImageGeometryTest
+  CreateGeometryTest
   DataContainerTest
   ErrorMessageTest
   ExecuteProcessTest
+  ExtractAttributeArraysFromGeometryTest
   ExtractComponentAsArrayTest
   FindDerivativesFilterTest
+  FeatureDataCSVWriterTest
   GenerateColorTableTest
   ImportAsciDataArrayTest
   ImportHDF5DatasetTest

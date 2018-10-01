@@ -333,7 +333,7 @@ void SVPipelineView::preflightPipeline()
   {
     return;
   }
-  qDebug() << "----------- SVPipelineView::preflightPipeline Begin --------------";
+  //qDebug() << "----------- SVPipelineView::preflightPipeline Begin --------------";
   emit clearIssuesTriggered();
 
   PipelineModel* model = getPipelineModel();
@@ -342,7 +342,7 @@ void SVPipelineView::preflightPipeline()
   updateLocalTempPipeline();
   FilterPipeline::Pointer pipeline = m_TempPipeline;
 
-  qDebug() << "Prepping Filters for preflight... ";
+  //qDebug() << "Prepping Filters for preflight... ";
 
   FilterPipeline::FilterContainerType filters = pipeline->getFilterContainer();
   for(int i = 0; i < filters.size(); i++)
@@ -371,7 +371,7 @@ void SVPipelineView::preflightPipeline()
   //  progressDialog->activateWindow();
 
   // Preflight the pipeline
-  qDebug() << "Preflight the Pipeline ... ";
+  //qDebug() << "Preflight the Pipeline ... ";
 
   int err = pipeline->preflightPipeline();
   if(err < 0)
@@ -379,7 +379,7 @@ void SVPipelineView::preflightPipeline()
     // FIXME: Implement error handling.
   }
 
-  qDebug() << "Checking for Filters with Errors or Warnings ... ";
+  //qDebug() << "Checking for Filters with Errors or Warnings ... ";
 
   int count = pipeline->getFilterContainer().size();
   // Now that the preflight has been executed loop through the filters and check their error condition and set the
@@ -403,7 +403,7 @@ void SVPipelineView::preflightPipeline()
 
   emit preflightFinished(pipeline, err);
   updateFilterInputWidgetIndices();
-  qDebug() << "----------- SVPipelineView::preflightPipeline End --------------";
+  //qDebug() << "----------- SVPipelineView::preflightPipeline End --------------";
   
 }
 

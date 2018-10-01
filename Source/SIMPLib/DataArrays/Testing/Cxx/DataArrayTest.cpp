@@ -1157,6 +1157,67 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
+  template <typename T> void TestSetTupleForType()
+  {
+    size_t numTuples = 10;
+    QVector<size_t> cDims(1, 5);
+    QString name("Source Array");
+
+    // Each index of the vector is a tuple with a vector containing the components for that tuple
+
+    typename std::vector<std::vector<T>> data;
+
+    for (size_t i = 0; i < numTuples; i++)
+    {
+      typename std::vector<T> tempVector;
+      for (size_t j = 0; j < cDims[0]; j++)
+      {
+        tempVector.push_back(static_cast<T>(i + j));
+      }
+      data.push_back(tempVector);
+    }
+
+    // Set each tuple of the DataArray using the corresponding vector
+
+    typename DataArray<T>::Pointer src = DataArray<T>::CreateArray(numTuples, cDims, name, true);
+
+    for (size_t i = 0; i < numTuples; i++)
+    {
+      src->setTuple(i, data[i]);
+    }
+
+    // Check each element of the DataArray against the original vector
+
+    for (size_t i = 0; i < numTuples; i++)
+    {
+      for (size_t j = 0; j < cDims[0]; j++)
+      {
+        T val = src->getComponent(i, j);
+        DREAM3D_REQUIRE_EQUAL(data[i][j], val)
+      }
+    }
+  }
+
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
+  void TestSetTuple()
+  {
+    TestSetTupleForType<uint8_t>();
+    TestSetTupleForType<int8_t>();
+    TestSetTupleForType<uint16_t>();
+    TestSetTupleForType<int16_t>();
+    TestSetTupleForType<uint32_t>();
+    TestSetTupleForType<int32_t>();
+    TestSetTupleForType<uint64_t>();
+    TestSetTupleForType<int64_t>();
+    TestSetTupleForType<float>();
+    TestSetTupleForType<double>();
+  }
+
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
   void operator()()
   {
     int err = EXIT_SUCCESS;
@@ -1177,6 +1238,7 @@ public:
     DREAM3D_REGISTER_TEST(TestNeighborList())
     DREAM3D_REGISTER_TEST(TestWrapPointer())
     DREAM3D_REGISTER_TEST(TestPrintDataArray())
+    DREAM3D_REGISTER_TEST(TestSetTuple())
 
 #if REMOVE_TEST_FILES
     DREAM3D_REGISTER_TEST(RemoveTestFiles())

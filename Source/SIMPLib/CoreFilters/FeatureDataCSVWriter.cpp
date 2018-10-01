@@ -54,7 +54,7 @@ FeatureDataCSVWriter::FeatureDataCSVWriter()
 : m_CellFeatureAttributeMatrixPath("", "", "")
 , m_FeatureDataFile("")
 , m_WriteNeighborListData(false)
-, m_DelimiterChoice(0)
+, m_DelimiterChoice(SIMPL::DelimiterTypes::Type::Comma)
 , m_WriteNumFeaturesLine(true)
 , m_Delimiter(',')
 {
@@ -80,8 +80,9 @@ void FeatureDataCSVWriter::setupFilterParameters()
     choices.push_back(";");
     choices.push_back(":");
     choices.push_back("Tab");
+    choices.push_back("Space");
 
-    parameters.push_back(SIMPL_NEW_CHOICE_FP("Delimiter", DelimiterChoice, FilterParameter::Parameter, FeatureDataCSVWriter, choices, false));
+    parameters.push_back(SIMPL_NEW_CHOICE_FP("Delimiter", DelimiterChoiceInt, FilterParameter::Parameter, FeatureDataCSVWriter, choices, false));
   }
 
   parameters.push_back(SeparatorFilterParameter::New("Feature Data", FilterParameter::RequiredArray));
@@ -142,19 +143,22 @@ void FeatureDataCSVWriter::dataCheck()
     setFeatureDataFile(getFeatureDataFile().append(".csv"));
   }
 
-  switch(getDelimiterChoice())
+  switch (getDelimiterChoice())
   {
-  case DelimiterChoicesEnum::COMMA:
+  case SIMPL::DelimiterTypes::Type::Comma:
     setDelimiter(',');
     break;
-  case DelimiterChoicesEnum::SEMICOLON:
+  case SIMPL::DelimiterTypes::Type::Semicolon:
     setDelimiter(';');
     break;
-  case DelimiterChoicesEnum::COLON:
+  case SIMPL::DelimiterTypes::Type::Colon:
     setDelimiter(':');
     break;
-  case DelimiterChoicesEnum::TAB:
+  case SIMPL::DelimiterTypes::Type::Tab:
     setDelimiter('\t');
+    break;
+  case SIMPL::DelimiterTypes::Type::Space:
+    setDelimiter(' ');
     break;
   default:
     setDelimiter(',');
@@ -394,3 +398,24 @@ const QString FeatureDataCSVWriter::getHumanLabel() const
 {
   return "Export Feature Data as CSV File";
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int FeatureDataCSVWriter::getDelimiterChoiceInt() const
+{
+  return static_cast<int>(this->m_DelimiterChoice);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FeatureDataCSVWriter::setDelimiterChoiceInt(const int& value)
+{
+  // Allowed integer values of the enum SIMPL::DelimiterTypes::Type; see defintion in Constants.h
+  if (value >= 0 && value <= 4)
+  {
+    this->m_DelimiterChoice = static_cast<SIMPL::DelimiterTypes::Type>(value);
+  }
+}
+

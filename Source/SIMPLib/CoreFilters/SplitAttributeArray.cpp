@@ -127,11 +127,17 @@ void SplitAttributeArray::dataCheck()
       {
         m_SplitArraysPtrVector.push_back(ptr.lock());
       }
+      else
+      {
+        QString ss = QObject::tr("Unable to create an Attribute Array for component %1 in the selected multicomponent Attribute Array").arg(i);
+        setErrorCondition(-11051);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      }
     }
 
     if(numComps != m_SplitArraysPtrVector.size())
     {
-      QString ss = QObject::tr("Unable to create an Attribute Array for each component in the selected multicomponent Attribute Array");
+      QString ss = QObject::tr("The number of created arrays %1 does not match the number of components %2").arg(m_SplitArraysPtrVector.size()).arg(numComps);
       setErrorCondition(-11001);
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }

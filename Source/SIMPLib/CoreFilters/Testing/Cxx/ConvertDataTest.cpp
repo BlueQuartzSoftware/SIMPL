@@ -113,6 +113,9 @@ public:
     case SIMPL::NumericTypes::Type::Bool:
       da = DataArray<bool>::CreateArray(2, cdims, "DataArray");
       break;
+    case SIMPL::NumericTypes::Type::SizeT:
+      da = DataArray<size_t>::CreateArray(2, cdims, "DataArray");
+      break;
     case SIMPL::NumericTypes::Type::UnknownNumType:
       break;
     }
