@@ -5,6 +5,8 @@ import dream3d.dream3d as d3d
 import dream3d.dream3d_py.simpl_py as simpl
 import dream3d.synthetic_building as synthetic_building
 
+from enum import IntEnum
+
 try:
     import numpy as np
 except ImportError:
@@ -243,7 +245,14 @@ shared_quad_list_array_path = simpl.DataArrayPath("", "", ""), shared_tet_list_a
     create_geometry.DataContainerName = data_container_name
     create_geometry.GeometryType = geometry_type
     create_geometry.TreatWarningsAsErrors = treat_warnings_as_errors
-    create_geometry.ArrayHandling = array_handling
+
+    # Array Handling
+    if not type(array_handling) == ArrayHandling and is_number(array_handling):
+        create_geometry.ArrayHandling = array_handling
+    elif array_handling == ArrayHandling.CopyArrays or "copy" in array_handling.toLowerCase():
+        create_geometry.ArrayHandling = 0
+    elif  array_handling == ArrayHandling.MoveArrays or "move" in array_handling.toLowerCase():
+        create_geometry.ArrayHandling = 1        
 
 	# Set required parameters based on Geometry Type
     if geometry_type == simpl.IGeometry.Type.Image:     
@@ -318,19 +327,22 @@ automatic_AM, selected_path, headers, attribute_matrix_type, tuple_dimensions, d
     return wizardData
 
 
-def CreateDynamicTableData(data):
+def CreateDynamicTableData(data, columnheaders = [], rowheaders = []):
     """
     Creates a DynamicTableData object for use in creation of attribute matrices
     \ndata: a list of lists of integer values for the tuple dimensions of the attribute matrix
+    \ncolumnheaders: a list of the column headers for the data (optional)
+    \nrowheaders: a list of the row headers for the data (optional)
     """
-    cols = len(data[0])
-    rows = len(data)
-    columnheaders = []
-    rowheaders = []
-    for i in range(cols):
-        columnheaders.append(str(i))
-    for j in range(rows):
-        rowheaders.append(str(j))    
+    if not columnheaders:
+        cols = len(data[0])
+        for i in range(cols):
+            columnheaders.append(str(i))
+    if not rowheaders:
+        rows = len(data)
+        for j in range(rows):
+            rowheaders.append(str(j))
+    
     tabledata = list()
     if isinstance(data, simpl.VectorDouble):
         dtd = simpl.DynamicTableData(data, columnheaders, rowheaders)
@@ -650,3 +662,61 @@ def is_number(s):
         pass
  
     return False
+
+
+# Custom enumerations for Python
+
+class ArrayHandling(IntEnum):
+    CopyArrays = 0
+    MoveArrays = 1
+
+
+class FeatureGeneration(IntEnum):
+    GenerateFeatures = 0
+    AlreadyHaveFeatures = 1
+
+
+class SaveShapeDescArrays(IntEnum):
+    DoNotSave = 0
+    SaveToNewAttrMatrix = 1
+    AppendToExistingAttrMatrix = 2
+
+
+class Delimiter(IntEnum):
+    COMMA = 0
+    SEMICOLON = 1
+    COLON = 2
+    TAB = 3
+
+
+class Hemisphere(IntEnum):
+    Northern = 0
+    Southern = 1
+
+
+class WhatToMove(IntNum):
+    AttributeMatrix = 0
+    AttributeArray = 1
+
+
+class AngleRepresentation(IntNum):
+    Radians = 0
+    Degrees = 1
+    Invalid = 2
+
+
+class BadDataOperation(IntEnum):
+    Dilate = 0
+    Erode = 1
+
+
+class ReferenceOrientation(IntEnum):
+    AverageOrientation = 0
+    OrientationAtFeatureCentroid = 1
+
+
+class DistributionFitType(IntEnum):
+    Beta = 0
+    Lognormal = 1
+    Power = 2
+

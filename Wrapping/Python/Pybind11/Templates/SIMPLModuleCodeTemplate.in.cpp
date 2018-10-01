@@ -36,7 +36,9 @@ PYBIND11_MAKE_OPAQUE(std::vector<size_t>);
 #include "SIMPLib/Common/ShapeType.h"
 #include "SIMPLib/FilterParameters/RangeFilterParameter.h"
 #include "SIMPLib/CoreFilters/util/ASCIIWizardData.hpp"
+#include "SIMPLib/CoreFilters/CreateDataArray.h"
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
+#include "OrientationLib/OrientationMath/OrientationConverter.hpp"
 
 namespace py = pybind11;
 
@@ -815,6 +817,25 @@ PYBIND11_MODULE(dream3d_py, m)
     .value("Bool", SIMPL::ScalarTypes::Type::Bool)
 
     .export_values();
+
+  /* Enumeration code for OrientationType */
+  py::enum_<OrientationConverter<float>::OrientationType>(mod, "OrientationType")
+	  .value("Euler", OrientationConverter<float>::Euler)
+	  .value("OrientationMatrix", OrientationConverter<float>::OrientationMatrix)
+	  .value("Quaternion", OrientationConverter<float>::Quaternion)
+	  .value("AxisAngle", OrientationConverter<float>::AxisAngle)
+	  .value("Rodrigues", OrientationConverter<float>::Rodrigues)
+	  .value("Homochoric", OrientationConverter<float>::Homochoric)
+	  .value("Cubochoric", OrientationConverter<float>::Cubochoric)
+	  .value("UnknownOrientationType", OrientationConverter<float>::UnknownOrientationType)
+	  .export_values();
+
+  /* Enumeration code for Initialization Choices */
+  py::enum_<CreateDataArray::InitializationChoices>(mod, "InitializationChoice")
+	  .value("Manual", CreateDataArray::InitializationChoices::Manual)
+	  .value("RandomWithRange", CreateDataArray::InitializationChoices::RandomWithRange)
+	  .export_values();
+
 
   /* Init codes for classes in the Module */
   @MODULE_INIT_CODE@

@@ -566,8 +566,17 @@ QString PythonBindingClass::generatePropertiesCode()
          << "    executeError = " << camelClassName << ".ErrorCondition" << NEWLINE_SIMPL
          << "    return executeError" << NEWLINE_SIMPL
          ;
-         
-         
+  
+  /* 
+    Replace any Python keywords in arguments
+     For now, just replace the occurence of 'lambda'
+  */
+  if (methodArgs.contains("lambda") || bodyCodes.contains("lambda"))
+  {
+	  methodArgs.replace("lambda", "lambda_1");
+	  bodyCodes.replace("lambda", "lambda_1");
+  }
+
   QVector<QString> pythonicCodes;
   pythonicCodes.push_back(methodArgs);
   pythonicCodes.push_back(bodyCodes);
