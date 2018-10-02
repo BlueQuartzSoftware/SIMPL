@@ -34,6 +34,7 @@ PYBIND11_MAKE_OPAQUE(std::vector<size_t>);
 #include <QtCore/QString>
 #include <QtCore/QDateTime>
 #include "SIMPLib/Common/ShapeType.h"
+#include "SIMPLib/Common/PhaseType.h"
 #include "SIMPLib/FilterParameters/RangeFilterParameter.h"
 #include "SIMPLib/CoreFilters/util/ASCIIWizardData.hpp"
 #include "SIMPLib/CoreFilters/CreateDataArray.h"
@@ -512,6 +513,65 @@ public:
 			}
 		};
 
+		/* Create a TypeCaster for auto python list <--> QVector<PhaseType::Type> conversion */
+		template <> struct type_caster<QVector<PhaseType::Type>>
+		{
+		public:
+			/**
+			 * This macro establishes the name 'QVector<PhaseType::Type>' in
+			 * function signatures and declares a local variable
+			 * 'value' of type QVector<PhaseType::Type>
+			 */
+			PYBIND11_TYPE_CASTER(QVector<PhaseType::Type>, _("QVector<PhaseType::Type>"));
+
+			/**
+			 *  @brief Conversion part 1 (Python->C++): convert a lsit into a QVector<PhaseType::Type>
+			 * instance or return false upon failure. The second argument
+			 * indicates whether implicit conversions should be applied.
+			 * @param src
+			 * @return boolean
+			 */
+			bool load(handle src, bool)
+			{
+				if (!src)
+				{
+					return false;
+				}
+				if (py::isinstance<py::list>(src))
+				{
+					value = QVector<PhaseType::Type>();
+					for (auto phaseType : src)
+					{
+						value.push_back(py::cast<PhaseType::Type>(phaseType));
+					}
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+
+			/**
+			 * @brief Conversion part 2 (C++ -> Python): convert QVector<PhaseType::Type> instance into
+			 * a Python object. The second and third arguments are used to
+			 * indicate the return value policy and parent object (for
+			 * ``return_value_policy::reference_internal``) and are generally
+			 * ignored by implicit casters.
+			 *
+			 * @param src
+			 * @return
+			 */
+			static handle cast(const QVector<PhaseType::Type>& src, return_value_policy /* policy */, handle /* parent */)
+			{
+				py::list phaseTypes = py::list();
+				for (PhaseType::Type phaseType : src) {
+					phaseTypes.append(phaseType);
+				}
+				return phaseTypes;
+			}
+		};
+
 		/* Create a TypeCaster for auto python list <--> VectorOfFloatArray conversion */
 		template <> struct type_caster<VectorOfFloatArray>
 		{
@@ -831,7 +891,7 @@ PYBIND11_MODULE(dream3d_py, m)
 	  .export_values();
 
   /* Enumeration code for Initialization Choices */
-  py::enum_<CreateDataArray::InitializationChoices>(mod, "InitializationChoice")
+  py::enum_<CreateDataArray::InitializationChoices>(mod, "InitializationType")
 	  .value("Manual", CreateDataArray::InitializationChoices::Manual)
 	  .value("RandomWithRange", CreateDataArray::InitializationChoices::RandomWithRange)
 	  .export_values();

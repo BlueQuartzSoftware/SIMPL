@@ -533,10 +533,10 @@ def MoveData(dca, what_to_move, source_path, destination_path):
     \ndestination: The full Data Array Path where the object is moved to (or a list/tuple of strings)
     """
     what_to_move_number = 0
-    if not isinstance(what_to_move, simpl.AttributeMatrix) or not isinstance(what_to_move, simpl.IDataArray):
-        if what_to_move == "Data Array" or what_to_move == "Attribute Array":
+    if not isinstance(what_to_move, (simpl.AttributeMatrix, simpl.IDataArray)):
+        if what_to_move == "Data Array" or what_to_move == "Attribute Array" or what_to_move == WhatToMove.AttributeArray:
             what_to_move_number = 1
-        elif what_to_move != "Attribute Matrix":
+        elif what_to_move != "Attribute Matrix" and what_to_move != WhatToMove.AttributeMatrix:
             print("Invalid type for 'what to move'")
             return -1
     if not isinstance(source_path, (simpl.DataArrayPath, list, tuple)):
@@ -694,12 +694,12 @@ class Hemisphere(IntEnum):
     Southern = 1
 
 
-class WhatToMove(IntNum):
+class WhatToMove(IntEnum):
     AttributeMatrix = 0
     AttributeArray = 1
 
 
-class AngleRepresentation(IntNum):
+class AngleRepresentation(IntEnum):
     Radians = 0
     Degrees = 1
     Invalid = 2
