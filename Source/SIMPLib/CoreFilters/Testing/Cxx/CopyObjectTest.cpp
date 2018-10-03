@@ -534,7 +534,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(sameArrayNames, true)
 
     QMap<QString, AttributeMatrix::Pointer> oldAttrMatrices = oldDC->getAttributeMatrices();
-    QMap<QString, AttributeMatrix::Pointer> newAttrMatrices = oldDC->getAttributeMatrices();
+    QMap<QString, AttributeMatrix::Pointer> newAttrMatrices = newDC->getAttributeMatrices();
 
     for(int i = 0; i < newMatrixNames.size(); i++)
     {
