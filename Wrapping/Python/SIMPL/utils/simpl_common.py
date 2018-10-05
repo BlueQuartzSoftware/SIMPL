@@ -186,6 +186,38 @@ def ConvertToDataArray(name, array):
     return (z, da)
 
 
+def CreateDataContainerProxy(dca, data_array_paths):
+    """
+    Create a DataContainerProxy
+    \ndca: Data Container Array
+    \ndata_array_paths: list of DataArrayPaths (or list/tuple equivalent) to be "checked"
+    """
+    dcap = simpl.DataContainerArrayProxy()
+    checked = 2 # The flag for "checking" an item
+    for data_array_path in data_array_paths:
+        data_container_name = ""
+        attr_matrix_name = ""
+        data_array_name = ""
+        if isinstance(data_array_path, (list, tuple)):
+            data_container_name = data_array_path[0]
+            attr_matrix_name = data_array_path[1]
+            data_array_name = data_array_path[2]
+        if isinstance(data_array_path, simpl.DataArrayPath):
+            data_container_name = data_array_path.DataContainerName
+            attr_matrix_name = data_array_path.AttributeMatrixName
+            data_array_name = data_array_path.DataArrayName
+        if data_container_name == "":
+            continue
+        elif attr_matrix_name == "":
+            dcap.getDataContainerProxy(data_container_name).flag = checked
+        elif data_array_name == "":
+            dcap.getDataContainerProxy(data_container_name).getAttributeMatrixProxy(attr_matrix_name).flag = checked
+        else:
+            dcap.getDataContainerProxy(data_container_name).getAttributeMatrixProxy(attr_matrix_name) \
+            .getDataArrayProxy(data_array_name).flag = checked
+    return dcap
+
+
 def CreateGeometry(data_container_array, array_handling, geometry_type, data_container_name, treat_warnings_as_errors, dimensions = simpl.IntVec3(0,0,0),
 origin = simpl.FloatVec3(0,0,0), resolution = simpl.FloatVec3(0,0,0), cell_attribute_matrix_name="", x_bounds_array_path = simpl.DataArrayPath("", "", ""),
 y_bounds_array_path = simpl.DataArrayPath("", "", ""), z_bounds_array_path = simpl.DataArrayPath("", "", ""), 

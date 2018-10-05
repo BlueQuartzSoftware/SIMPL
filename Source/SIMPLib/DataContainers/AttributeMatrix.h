@@ -90,6 +90,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
   PYB11_ENUMERATION(Category)
  
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
+  PYB11_PROPERTY(QVector<size_t> TupleDimensions READ getTupleDimensions WRITE setTupleDimensions)
 
   PYB11_METHOD(int addAttributeArray ARGS Name Array)
   PYB11_METHOD(bool doesAttributeArrayExist ARGS Name)
