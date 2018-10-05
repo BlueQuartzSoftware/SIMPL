@@ -54,29 +54,29 @@
 
 #include "SIMPLib/Common/Constants.h"
 
-class MoveDataTest
+class MoveMultiDataTest
 {
 
 public:
-  MoveDataTest() = default;
-  ~MoveDataTest() = default;
-  MoveDataTest(const MoveDataTest&) = delete;            // Copy Constructor
-  MoveDataTest(MoveDataTest&&) = delete;                 // Move Constructor
-  MoveDataTest& operator=(const MoveDataTest&) = delete; // Copy Assignment
-  MoveDataTest& operator=(MoveDataTest&&) = delete;      // Move Assignment
+  MoveMultiDataTest() = default;
+  ~MoveMultiDataTest() = default;
+  MoveMultiDataTest(const MoveMultiDataTest&) = delete;            // Copy Constructor
+  MoveMultiDataTest(MoveMultiDataTest&&) = delete;                 // Move Constructor
+  MoveMultiDataTest& operator=(const MoveMultiDataTest&) = delete; // Copy Assignment
+  MoveMultiDataTest& operator=(MoveMultiDataTest&&) = delete;      // Move Assignment
 
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
   int TestFilterAvailability()
   {
-    // Now instantiate the MoveDataTest Filter from the FilterManager
+    // Now instantiate the MoveMultiDataTest Filter from the FilterManager
     FilterManager* fm = FilterManager::Instance();
     IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(m_FilterName);
     if(nullptr == filterFactory.get())
     {
       std::stringstream ss;
-      ss << "The MoveDataTest Requires the use of the " << m_FilterName.toStdString() << " filter which is found in Core Filters";
+      ss << "The MoveMultiDataTest Requires the use of the " << m_FilterName.toStdString() << " filter which is found in Core Filters";
       DREAM3D_TEST_THROW_EXCEPTION(ss.str())
     }
     return 0;
@@ -217,63 +217,71 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void TestCase(DataContainerArray::Pointer dca, DataArrayPath dapSrc, DataArrayPath dapDst, int whatToMove, int err)
+  void TestCase(DataContainerArray::Pointer dca, QVector<DataArrayPath> sources, DataArrayPath dapDst, int whatToMove, int err)
   {
-    AttributeMatrix::Pointer amSrcCopy = AttributeMatrix::NullPointer();
-    IDataArray::Pointer daSrcCopy = IDataArray::NullPointer();
+
+    QVector<AttributeMatrix::Pointer> amSourcesCopy;
+    QVector<IDataArray::Pointer> daSourcesCopy;
 
     // Create Filter
 
     FilterManager* fm = FilterManager::Instance();
     IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(m_FilterName);
-    AbstractFilter::Pointer moveData = filterFactory->create();
+    AbstractFilter::Pointer moveMultiData = filterFactory->create();
 
-    moveData->setDataContainerArray(dca);
+    moveMultiData->setDataContainerArray(dca);
 
     // Setup Filter
 
     QVariant var;
 
     var.setValue(whatToMove);
-    bool propWasSet = moveData->setProperty("WhatToMove", var);
+    bool propWasSet = moveMultiData->setProperty("WhatToMove", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     if(whatToMove == 0) // Move AttributeMatrix
     {
       var.setValue(dapDst.getDataContainerName());
-      propWasSet = moveData->setProperty("DataContainerDestination", var);
+      propWasSet = moveMultiData->setProperty("DataContainerDestination", var);
       DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-      var.setValue(dapSrc);
-      propWasSet = moveData->setProperty("AttributeMatrixSource", var);
+      var.setValue(sources);
+      propWasSet = moveMultiData->setProperty("AttributeMatrixSources", var);
       DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-      amSrcCopy = dca->getDataContainer(dapSrc.getDataContainerName())->getAttributeMatrix(dapSrc.getAttributeMatrixName())->deepCopy();
+      for(int i = 0; i < sources.size(); i++)
+      {
+        amSourcesCopy.push_back(dca->getDataContainer(sources[i].getDataContainerName())->getAttributeMatrix(sources[i].getAttributeMatrixName())->deepCopy());
+      }
     }
     else if(whatToMove == 1) // Move DataArray
     {
       var.setValue(dapDst);
-      propWasSet = moveData->setProperty("AttributeMatrixDestination", var);
+      propWasSet = moveMultiData->setProperty("AttributeMatrixDestination", var);
       DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-      var.setValue(dapSrc);
-      propWasSet = moveData->setProperty("DataArraySource", var);
+      var.setValue(sources);
+      propWasSet = moveMultiData->setProperty("DataArraySources", var);
       DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-      daSrcCopy = dca->getDataContainer(dapSrc.getDataContainerName())->getAttributeMatrix(dapSrc.getAttributeMatrixName())->getAttributeArray(dapSrc.getDataArrayName())->deepCopy();
+      for(int i = 0; i < sources.size(); i++)
+      {
+        daSourcesCopy.push_back(
+            dca->getDataContainer(sources[i].getDataContainerName())->getAttributeMatrix(sources[i].getAttributeMatrixName())->getAttributeArray(sources[i].getDataArrayName())->deepCopy());
+      }
     }
 
     // Run Filter
 
-    moveData->execute();
+    moveMultiData->execute();
 
     if(err >= 0)
     {
-      DREAM3D_REQUIRED(moveData->getErrorCondition(), >=, err)
+      DREAM3D_REQUIRED(moveMultiData->getErrorCondition(), >=, err)
     }
     else
     {
-      DREAM3D_REQUIRED(moveData->getErrorCondition(), ==, err)
+      DREAM3D_REQUIRED(moveMultiData->getErrorCondition(), ==, err)
     }
 
     // Check filter results if filter successfully executed
@@ -282,81 +290,88 @@ public:
     {
       if(whatToMove == 0) // Move AttributeMatrix
       {
-        DataContainer::Pointer dc = dca->getDataContainer(dapSrc.getDataContainerName());
-        DataContainer::Pointer dcDst = dca->getDataContainer(dapDst);
+        for(int i = 0; i < sources.size(); i++)
+        {
+          DataContainer::Pointer dc = dca->getDataContainer(sources[i].getDataContainerName());
+          DataContainer::Pointer dcDst = dca->getDataContainer(dapDst);
 
-        QList<QString> srcMatrixNames = dc->getAttributeMatrixNames();
-        QList<QString> dstMatrixNames = dcDst->getAttributeMatrixNames();
+          QList<QString> srcMatrixNames = dc->getAttributeMatrixNames();
+          QList<QString> dstMatrixNames = dcDst->getAttributeMatrixNames();
 
-        // Check that it was successfully moved
+          // Check that it was successfully moved
 
-        DREAM3D_REQUIRE_EQUAL(srcMatrixNames.contains(dapSrc.getAttributeMatrixName()), false)
-        DREAM3D_REQUIRE_EQUAL(dstMatrixNames.contains(dapSrc.getAttributeMatrixName()), true)
+          DREAM3D_REQUIRE_EQUAL(srcMatrixNames.contains(sources[i].getAttributeMatrixName()), false)
+          DREAM3D_REQUIRE_EQUAL(dstMatrixNames.contains(sources[i].getAttributeMatrixName()), true)
 
-        // Check that the data stayed the same after the move
+          // Check that the data stayed the same after the move
 
-        checkAttributeMatrix(amSrcCopy, dcDst->getAttributeMatrix(dapSrc.getAttributeMatrixName()), false);
+          checkAttributeMatrix(amSourcesCopy[i], dcDst->getAttributeMatrix(sources[i].getAttributeMatrixName()), false);
+        }
       }
       else if(whatToMove == 1) // Move DataArray
       {
-        AttributeMatrix::Pointer amSrc = dca->getDataContainer(dapSrc.getDataContainerName())->getAttributeMatrix(dapSrc.getAttributeMatrixName());
-        AttributeMatrix::Pointer amDst = dca->getDataContainer(dapDst.getDataContainerName())->getAttributeMatrix(dapDst.getAttributeMatrixName());
+        for(int i = 0; i < sources.size(); i++)
+        {
+          AttributeMatrix::Pointer amSrc = dca->getDataContainer(sources[i].getDataContainerName())->getAttributeMatrix(sources[i].getAttributeMatrixName());
+          AttributeMatrix::Pointer amDst = dca->getDataContainer(dapDst.getDataContainerName())->getAttributeMatrix(dapDst.getAttributeMatrixName());
 
-        QList<QString> srcDataArrayNames = amSrc->getAttributeArrayNames();
-        QList<QString> dstDataArrayNames = amDst->getAttributeArrayNames();
+          QList<QString> srcDataArrayNames = amSrc->getAttributeArrayNames();
+          QList<QString> dstDataArrayNames = amDst->getAttributeArrayNames();
 
-        // Check that it was successfully moved
+          // Check that it was successfully moved
 
-        DREAM3D_REQUIRE_EQUAL(srcDataArrayNames.contains(dapSrc.getDataArrayName()), false)
-        DREAM3D_REQUIRE_EQUAL(dstDataArrayNames.contains(dapSrc.getDataArrayName()), true)
+          DREAM3D_REQUIRE_EQUAL(srcDataArrayNames.contains(sources[i].getDataArrayName()), false)
+          DREAM3D_REQUIRE_EQUAL(dstDataArrayNames.contains(sources[i].getDataArrayName()), true)
 
-        // Check that the data stayed the same after the move
+          // Check that the data stayed the same after the move
 
-        IDataArray::Pointer daDst = amDst->getAttributeArray(dapSrc.getDataArrayName());
+          IDataArray::Pointer daDst = amDst->getAttributeArray(sources[i].getDataArrayName());
+          IDataArray::Pointer daSrcCopy = daSourcesCopy[i];
 
-        QString oldType = daSrcCopy->getTypeAsString();
-        QString newType = daDst->getTypeAsString();
-        DREAM3D_REQUIRE_EQUAL(newType, oldType)
+          QString oldType = daSrcCopy->getTypeAsString();
+          QString newType = daDst->getTypeAsString();
+          DREAM3D_REQUIRE_EQUAL(newType, oldType)
 
-        if(newType == "int8_t")
-        {
-          checkDataArray<int8_t>(daSrcCopy, daDst, false);
-        }
-        else if(newType == "uint8_t")
-        {
-          checkDataArray<uint8_t>(daSrcCopy, daDst, false);
-        }
-        else if(newType == "int16_t")
-        {
-          checkDataArray<int16_t>(daSrcCopy, daDst, false);
-        }
-        else if(newType == "uint16_t")
-        {
-          checkDataArray<uint16_t>(daSrcCopy, daDst, false);
-        }
-        else if(newType == "int32_t")
-        {
-          checkDataArray<int32_t>(daSrcCopy, daDst, false);
-        }
-        else if(newType == "uint32_t")
-        {
-          checkDataArray<uint32_t>(daSrcCopy, daDst, false);
-        }
-        else if(newType == "int64_t")
-        {
-          checkDataArray<int64_t>(daSrcCopy, daDst, false);
-        }
-        else if(newType == "uint64_t")
-        {
-          checkDataArray<uint64_t>(daSrcCopy, daDst, false);
-        }
-        else if(newType == "float")
-        {
-          checkDataArray<float>(daSrcCopy, daDst, false);
-        }
-        else if(newType == "double")
-        {
-          checkDataArray<double>(daSrcCopy, daDst, false);
+          if(newType == "int8_t")
+          {
+            checkDataArray<int8_t>(daSrcCopy, daDst, false);
+          }
+          else if(newType == "uint8_t")
+          {
+            checkDataArray<uint8_t>(daSrcCopy, daDst, false);
+          }
+          else if(newType == "int16_t")
+          {
+            checkDataArray<int16_t>(daSrcCopy, daDst, false);
+          }
+          else if(newType == "uint16_t")
+          {
+            checkDataArray<uint16_t>(daSrcCopy, daDst, false);
+          }
+          else if(newType == "int32_t")
+          {
+            checkDataArray<int32_t>(daSrcCopy, daDst, false);
+          }
+          else if(newType == "uint32_t")
+          {
+            checkDataArray<uint32_t>(daSrcCopy, daDst, false);
+          }
+          else if(newType == "int64_t")
+          {
+            checkDataArray<int64_t>(daSrcCopy, daDst, false);
+          }
+          else if(newType == "uint64_t")
+          {
+            checkDataArray<uint64_t>(daSrcCopy, daDst, false);
+          }
+          else if(newType == "float")
+          {
+            checkDataArray<float>(daSrcCopy, daDst, false);
+          }
+          else if(newType == "double")
+          {
+            checkDataArray<double>(daSrcCopy, daDst, false);
+          }
         }
       }
     }
@@ -365,7 +380,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void TestMoveDataTest()
+  void TestMoveMultiDataTest()
   {
     // Names and constants
 
@@ -374,7 +389,16 @@ public:
     static const QString k_AttributeMatrixSrcName("AttributeMatrixSrc");
     static const QString k_AttributeMatrixDstName("AttributeMatrixDst");
     static const QString k_AttributeMatrixBadDstName("AttributeMatrixBadDst");
-    static const QString k_DataArraySrcName("DataArraySrc");
+    static const QString k_uint8ArrayName("uint8Array");
+    static const QString k_int8ArrayName("int8Array");
+    static const QString k_uint16ArrayName("uint16Array");
+    static const QString k_int16ArrayName("int16Array");
+    static const QString k_uint32ArrayName("uint32Array");
+    static const QString k_int32ArrayName("int32Array");
+    static const QString k_uint64ArrayName("uint64Array");
+    static const QString k_int64ArrayName("int64Array");
+    static const QString k_floatArrayName("floatDataArray");
+    static const QString k_doubleArrayName("doubleDataArray");
 
     QVector<size_t> tupleDims = {12};
     QVector<size_t> badTupleDims = {14};
@@ -405,8 +429,35 @@ public:
 
     // Create DataArray
 
-    IDataArray::Pointer daSrc = createDataArray<int8_t>(k_DataArraySrcName, tupleDims, cDims);
-    amSrc->addAttributeArray(k_DataArraySrcName, daSrc);
+    IDataArray::Pointer daSrc = createDataArray<uint8_t>(k_uint8ArrayName, tupleDims, cDims);
+    amSrc->addAttributeArray(k_uint8ArrayName, daSrc);
+
+    daSrc = createDataArray<int8_t>(k_int8ArrayName, tupleDims, cDims);
+    amSrc->addAttributeArray(k_int8ArrayName, daSrc);
+
+    daSrc = createDataArray<uint16_t>(k_uint16ArrayName, tupleDims, cDims);
+    amSrc->addAttributeArray(k_uint16ArrayName, daSrc);
+
+    daSrc = createDataArray<int16_t>(k_int16ArrayName, tupleDims, cDims);
+    amSrc->addAttributeArray(k_int16ArrayName, daSrc);
+
+    daSrc = createDataArray<uint32_t>(k_uint32ArrayName, tupleDims, cDims);
+    amSrc->addAttributeArray(k_uint32ArrayName, daSrc);
+
+    daSrc = createDataArray<int32_t>(k_int32ArrayName, tupleDims, cDims);
+    amDst->addAttributeArray(k_int32ArrayName, daSrc);
+
+    daSrc = createDataArray<uint64_t>(k_uint64ArrayName, tupleDims, cDims);
+    amDst->addAttributeArray(k_uint64ArrayName, daSrc);
+
+    daSrc = createDataArray<int64_t>(k_int64ArrayName, tupleDims, cDims);
+    amDst->addAttributeArray(k_int64ArrayName, daSrc);
+
+    daSrc = createDataArray<float>(k_floatArrayName, tupleDims, cDims);
+    amDst->addAttributeArray(k_floatArrayName, daSrc);
+
+    daSrc = createDataArray<double>(k_doubleArrayName, tupleDims, cDims);
+    amDst->addAttributeArray(k_doubleArrayName, daSrc);
 
     // Run test cases
 
@@ -414,23 +465,33 @@ public:
 
     DataContainerArray::Pointer dcaTest = dca->deepCopy();
 
-    DataArrayPath src(k_DataContainerName, k_AttributeMatrixSrcName, "");
+    QVector<DataArrayPath> sources = {DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, ""), DataArrayPath(k_DataContainerName, k_AttributeMatrixDstName, "")};
+
     DataArrayPath dst(k_DataContainerDstName);
 
-    TestCase(dcaTest, src, dst, 0, 0);
+    TestCase(dcaTest, sources, dst, 0, 0);
 
     // Move DataArray
 
-    // Move array to different DataContainer
+    // Move arrays of different types together
 
     dcaTest = dca->deepCopy();
 
-    dcaTest->getDataContainer(k_DataContainerDstName)->addAttributeMatrix(k_AttributeMatrixDstName, dcaTest->getDataContainer(k_DataContainerName)->removeAttributeMatrix(k_AttributeMatrixDstName));
+    sources = {DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, k_uint8ArrayName), DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, k_int8ArrayName),
+               DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, k_uint16ArrayName), DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, k_int16ArrayName),
+               DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, k_uint32ArrayName)};
 
-    src = DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, k_DataArraySrcName);
-    dst = DataArrayPath(k_DataContainerDstName, k_AttributeMatrixDstName, "");
+    dst = DataArrayPath(k_DataContainerName, k_AttributeMatrixDstName, "");
 
-    TestCase(dcaTest, src, dst, 1, 0);
+    TestCase(dcaTest, sources, dst, 1, 0);
+
+    sources = { DataArrayPath(k_DataContainerName, k_AttributeMatrixDstName, k_int32ArrayName), DataArrayPath(k_DataContainerName, k_AttributeMatrixDstName, k_uint64ArrayName),
+           DataArrayPath(k_DataContainerName, k_AttributeMatrixDstName, k_int64ArrayName), DataArrayPath(k_DataContainerName, k_AttributeMatrixDstName, k_floatArrayName),
+           DataArrayPath(k_DataContainerName, k_AttributeMatrixDstName, k_doubleArrayName) };
+
+    dst = DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, "");
+
+    TestCase(dcaTest, sources, dst, 1, 0);
 
     // Yield error -11019 when source and destination AttributeMatrices number of tuples don't match
 
@@ -438,105 +499,21 @@ public:
 
     dst = DataArrayPath(k_DataContainerName, k_AttributeMatrixBadDstName, "");
 
-    TestCase(dcaTest, src, dst, 1, -11019);
+    TestCase(dcaTest, sources, dst, 1, -11019);
 
-    // Move int8_t
-
-    dcaTest = dca->deepCopy();
-
-    dst = DataArrayPath(k_DataContainerName, k_AttributeMatrixDstName, "");
-
-    TestCase(dcaTest, src, dst, 1, 0);
-
-    // Move uint8_t
+    // Move arrays to different DataContainer
 
     dcaTest = dca->deepCopy();
 
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->removeAttributeArray(k_DataArraySrcName);
-    daSrc = createDataArray<uint8_t>(k_DataArraySrcName, tupleDims, cDims);
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->addAttributeArray(k_DataArraySrcName, daSrc);
+    dcaTest->getDataContainer(k_DataContainerDstName)->addAttributeMatrix(k_AttributeMatrixDstName, dcaTest->getDataContainer(k_DataContainerName)->removeAttributeMatrix(k_AttributeMatrixDstName));
 
-    TestCase(dcaTest, src, dst, 1, 0);
+    sources = { DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, k_uint8ArrayName), DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, k_int8ArrayName),
+           DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, k_uint16ArrayName), DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, k_int16ArrayName),
+           DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, k_uint32ArrayName) };
 
-    // Move int16_t
+    dst = DataArrayPath(k_DataContainerDstName, k_AttributeMatrixDstName, "");
 
-    dcaTest = dca->deepCopy();
-
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->removeAttributeArray(k_DataArraySrcName);
-    daSrc = createDataArray<int16_t>(k_DataArraySrcName, tupleDims, cDims);
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->addAttributeArray(k_DataArraySrcName, daSrc);
-
-    TestCase(dcaTest, src, dst, 1, 0);
-
-    // Move uint16_t
-
-    dcaTest = dca->deepCopy();
-
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->removeAttributeArray(k_DataArraySrcName);
-    daSrc = createDataArray<uint16_t>(k_DataArraySrcName, tupleDims, cDims);
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->addAttributeArray(k_DataArraySrcName, daSrc);
-
-    TestCase(dcaTest, src, dst, 1, 0);
-
-    // Move int32_t
-
-    dcaTest = dca->deepCopy();
-
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->removeAttributeArray(k_DataArraySrcName);
-    daSrc = createDataArray<int32_t>(k_DataArraySrcName, tupleDims, cDims);
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->addAttributeArray(k_DataArraySrcName, daSrc);
-
-    TestCase(dcaTest, src, dst, 1, 0);
-
-    // Move uint32_t
-
-    dcaTest = dca->deepCopy();
-
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->removeAttributeArray(k_DataArraySrcName);
-    daSrc = createDataArray<uint32_t>(k_DataArraySrcName, tupleDims, cDims);
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->addAttributeArray(k_DataArraySrcName, daSrc);
-
-    TestCase(dcaTest, src, dst, 1, 0);
-
-    // Move int64_t
-
-    dcaTest = dca->deepCopy();
-
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->removeAttributeArray(k_DataArraySrcName);
-    daSrc = createDataArray<uint32_t>(k_DataArraySrcName, tupleDims, cDims);
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->addAttributeArray(k_DataArraySrcName, daSrc);
-
-    TestCase(dcaTest, src, dst, 1, 0);
-
-    // Move uint64_t
-
-    dcaTest = dca->deepCopy();
-
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->removeAttributeArray(k_DataArraySrcName);
-    daSrc = createDataArray<uint64_t>(k_DataArraySrcName, tupleDims, cDims);
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->addAttributeArray(k_DataArraySrcName, daSrc);
-
-    TestCase(dcaTest, src, dst, 1, 0);
-
-    // Move float
-
-    dcaTest = dca->deepCopy();
-
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->removeAttributeArray(k_DataArraySrcName);
-    daSrc = createDataArray<float>(k_DataArraySrcName, tupleDims, cDims);
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->addAttributeArray(k_DataArraySrcName, daSrc);
-
-    TestCase(dcaTest, src, dst, 1, 0);
-
-    // Move double
-
-    dcaTest = dca->deepCopy();
-
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->removeAttributeArray(k_DataArraySrcName);
-    daSrc = createDataArray<double>(k_DataArraySrcName, tupleDims, cDims);
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->addAttributeArray(k_DataArraySrcName, daSrc);
-
-    TestCase(dcaTest, src, dst, 1, 0);
+    TestCase(dcaTest, sources, dst, 1, 0);
   }
 
   // -----------------------------------------------------------------------------
@@ -546,13 +523,13 @@ public:
   {
     int err = EXIT_SUCCESS;
 
-    std::cout << "#### MoveDataTest Starting ####" << std::endl;
+    std::cout << "#### MoveMultiDataTest Starting ####" << std::endl;
 
     DREAM3D_REGISTER_TEST(TestFilterAvailability());
 
-    DREAM3D_REGISTER_TEST(TestMoveDataTest())
+    DREAM3D_REGISTER_TEST(TestMoveMultiDataTest())
   }
 
 private:
-  QString m_FilterName = QString("MoveData");
+  QString m_FilterName = QString("MoveMultiData");
 };
