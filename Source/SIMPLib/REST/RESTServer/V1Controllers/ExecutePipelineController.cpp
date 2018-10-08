@@ -38,6 +38,7 @@
 #include <QtCore/QJsonArray>
 #include <QtCore/QProcess>
 #include <QtCore/QVariant>
+#include <QtCore/QTemporaryDir>
 #include <QtNetwork/QNetworkInterface>
 #include <QtWidgets/QApplication>
 
@@ -67,70 +68,37 @@ ExecutePipelineController::ExecutePipelineController(const QHostAddress& hostAdd
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ExecutePipelineController::service(HttpRequest& request, HttpResponse& response)
+void ExecutePipelineController::serviceJSON(HttpResponse& response, QJsonObject pipelineObj, QJsonObject &responseObj)
 {
-  // Get current session, or create a new one
-  HttpSessionStore* sessionStore = HttpSessionStore::Instance();
-  HttpSession session = sessionStore->getSession(request, response);
-
-  QString content_type = request.getHeader(QByteArray("content-type"));
-
-  QJsonObject rootObj;
-  rootObj[SIMPL::JSON::SessionID] = QString(session.getId());
-  response.setHeader("Content-Type", "application/json");
-
-  if(content_type.compare("application/json") != 0)
+  if (!pipelineObj.contains(SIMPL::JSON::Pipeline))
   {
-    // Form Error response
-    rootObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Content Type is not application/json";
-    rootObj[SIMPL::JSON::ErrorCode] = -20;
-    QJsonDocument jdoc(rootObj);
-
+    responseObj[SIMPL::JSON::ErrorMessage] = tr("%1: No Pipeline object found in the JSON request body.").arg(EndPoint());
+    responseObj[SIMPL::JSON::ErrorCode] = -60;
+    QJsonDocument jdoc(responseObj);
     response.write(jdoc.toJson(), true);
     return;
   }
 
-  QJsonParseError jsonParseError;
-  QString requestBody = request.getBody();
-  QJsonDocument requestDoc = QJsonDocument::fromJson(requestBody.toUtf8(), &jsonParseError);
-  if (jsonParseError.error != QJsonParseError::ParseError::NoError)
-  {
-    // Form Error response
-    rootObj[SIMPL::JSON::ErrorMessage] = tr("%1: JSON Request Parsing Error - %2").arg(EndPoint()).arg(jsonParseError.errorString());
-    rootObj[SIMPL::JSON::ErrorCode] = -30;
-    QJsonDocument jdoc(rootObj);
-    response.write(jdoc.toJson(), true);
-    return;
-  }
-
-  QJsonObject requestObj = requestDoc.object();
-  if (!requestObj.contains(SIMPL::JSON::Pipeline))
-  {
-    rootObj[SIMPL::JSON::ErrorMessage] = tr("%1: No Pipeline object found in the JSON request body.").arg(EndPoint());
-    rootObj[SIMPL::JSON::ErrorCode] = -40;
-    QJsonDocument jdoc(rootObj);
-    response.write(jdoc.toJson(), true);
-    return;
-  }
-
-  QJsonObject pipelineObj = requestObj[SIMPL::JSON::Pipeline].toObject();
+  pipelineObj = pipelineObj[SIMPL::JSON::Pipeline].toObject();
   FilterPipeline::Pointer pipeline = FilterPipeline::FromJson(pipelineObj);
   if (pipeline.get() == nullptr)
   {
-    rootObj[SIMPL::JSON::ErrorMessage] = tr("%1: Pipeline could not be created from the JSON request body.").arg(EndPoint());
-    rootObj[SIMPL::JSON::ErrorCode] = -50;
-    QJsonDocument jdoc(rootObj);
+    responseObj[SIMPL::JSON::ErrorMessage] = tr("%1: Pipeline could not be created from the JSON request body.").arg(EndPoint());
+    responseObj[SIMPL::JSON::ErrorCode] = -70;
+    QJsonDocument jdoc(responseObj);
     response.write(jdoc.toJson(), true);
     return;
   }
 
   qDebug() << "Number of Filters in Pipeline: " << pipeline->size();
 
-  QString linkAddress = "http://" + getListenHost().toString() + ":" + QString::number(getListenPort()) + QDir::separator() + QString(session.getId()) + QDir::separator();
+  QByteArray sessionId = responseObj[SIMPL::JSON::SessionID].toVariant().toByteArray();
+
+  QString linkAddress = "http://" + getListenHost().toString() + ":" + QString::number(getListenPort()) + QDir::separator() + QString(sessionId) + QDir::separator();
   SIMPLStaticFileController* staticFileController = SIMPLStaticFileController::Instance();
   QString docRoot = staticFileController->getDocRoot();
 
-  QString newFilePath = docRoot + QDir::separator() + QString(session.getId()) + QDir::separator();
+  QString newFilePath = docRoot + QDir::separator() + QString(sessionId) + QDir::separator();
   QJsonArray outputLinks;
   // Look through the pipeline to find any input or output filter parameters.  Replace
   // the file paths in these filter parameters with session-id specific paths.
@@ -177,9 +145,9 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
 
   // Log Files
   PipelineListener listener(nullptr);
-  bool createErrorLog = requestObj[SIMPL::JSON::ErrorLog].toBool(false);
-  bool createWarningLog = requestObj[SIMPL::JSON::WarningLog].toBool(false);
-  bool createStatusLog = requestObj[SIMPL::JSON::StatusLog].toBool(false);
+  bool createErrorLog = pipelineObj[SIMPL::JSON::ErrorLog].toBool(false);
+  bool createWarningLog = pipelineObj[SIMPL::JSON::WarningLog].toBool(false);
+  bool createStatusLog = pipelineObj[SIMPL::JSON::StatusLog].toBool(false);
 
   QDir docRootDir(docRoot);
   docRootDir.mkpath(newFilePath);
@@ -212,7 +180,7 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
   }
 
   // Append to the json response payload all the output links
-  rootObj[SIMPL::JSON::OutputLinks] = outputLinks;
+  responseObj[SIMPL::JSON::OutputLinks] = outputLinks;
 
   // Execute the pipeline
   Observer obs; // Create an Observer to report errors/progress from the executing pipeline
@@ -246,7 +214,7 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
 
     errors.push_back(error);
   }
-  rootObj[SIMPL::JSON::Errors] = errors;
+  responseObj[SIMPL::JSON::Errors] = errors;
 
   std::vector<PipelineMessage> warningMessages = listener.getWarningMessages();
   QJsonArray warnings;
@@ -271,16 +239,16 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
     msg[SIMPL::JSON::Message] = statusMessages[i].generateStatusString();
     statusMsgs.push_back(msg);
   }
-  // rootObj["StatusMessages"] = statusMsgs;
-  rootObj[SIMPL::JSON::Warnings] = warnings;
-  rootObj[SIMPL::JSON::Completed] = completed;
+  // responseObj["StatusMessages"] = statusMsgs;
+  responseObj[SIMPL::JSON::Warnings] = warnings;
+  responseObj[SIMPL::JSON::Completed] = completed;
 
   // **************************************************************************
   // This section archives the working directory for this session
   QProcess tar;
   tar.setWorkingDirectory(docRoot);
   std::cout << "Working Directory from Process: " << tar.workingDirectory().toStdString() << std::endl;
-  tar.start("/usr/bin/tar", QStringList() << "-cvf" << QString(session.getId() + ".tar.gz") << QString(session.getId()));
+  tar.start("/usr/bin/tar", QStringList() << "-cvf" << QString(sessionId + ".tar.gz") << QString(sessionId));
   tar.waitForStarted();
   tar.waitForFinished();
 
@@ -289,14 +257,164 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
   result = tar.readAllStandardOutput();
   std::cout << result.data() << std::endl;
 
-  outputLinks.append("http://" + getListenHost().toString() + ":8080" + QDir::separator() + QString(session.getId()) + ".tar.gz");
+  outputLinks.append("http://" + getListenHost().toString() + ":8080" + QDir::separator() + QString(sessionId) + ".tar.gz");
   // **************************************************************************
 
   // Append to the json response payload all the output links
-  rootObj[SIMPL::JSON::OutputLinks] = outputLinks;
+  responseObj[SIMPL::JSON::OutputLinks] = outputLinks;
 
-  QJsonDocument jdoc(rootObj);
+  QJsonDocument jdoc(responseObj);
   response.write(jdoc.toJson(), true);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ExecutePipelineController::serviceJSON(HttpRequest& request, HttpResponse &response, QJsonObject &responseObj)
+{
+  QJsonParseError jsonParseError;
+  QString requestBody = request.getBody();
+  QJsonDocument requestDoc = QJsonDocument::fromJson(requestBody.toUtf8(), &jsonParseError);
+  if (jsonParseError.error != QJsonParseError::ParseError::NoError)
+  {
+    // Form Error response
+    responseObj[SIMPL::JSON::ErrorMessage] = tr("%1: JSON Request Parsing Error - %2").arg(EndPoint()).arg(jsonParseError.errorString());
+    responseObj[SIMPL::JSON::ErrorCode] = -30;
+    QJsonDocument jdoc(responseObj);
+    response.write(jdoc.toJson(), true);
+    return;
+  }
+
+  QJsonObject requestObj = requestDoc.object();
+
+  serviceJSON(response, requestObj, responseObj);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ExecutePipelineController::serviceMultiPart(HttpRequest& request, HttpResponse &response, QJsonObject &responseObj)
+{
+  QJsonArray fileFolderLookupArray = getFileFolderLookupArray(request, response, responseObj);
+  if (responseObj[SIMPL::JSON::ErrorCode].toInt() < 0)
+  {
+    return;
+  }
+
+  QJsonObject pipelineObj = getPipelineObject(request, response, responseObj);
+  if (responseObj[SIMPL::JSON::ErrorCode].toInt() < 0)
+  {
+    return;
+  }
+
+  std::vector<QTemporaryFile*> tempFiles;
+
+  QMultiMap<QByteArray, QByteArray> parametersMap = request.getParameterMap();
+  for (QMultiMap<QByteArray, QByteArray>::iterator iter = parametersMap.begin(); iter != parametersMap.end(); iter++)
+  {
+    QString nameParameter = nameParameterArray[j].toString();
+    QByteArray pipelineData = request.getParameter(QByteArray::fromStdString(nameParameter.toStdString()));
+    QTemporaryFile* tempFile = new QTemporaryFile(replacementHelper.tempDir.path());
+    if (tempFile.open())
+    {
+      tempFile.write(pipelineData);
+      tempFile.close();
+
+      replacementHelper.tempFiles.push_back(tempFile);
+    }
+    else
+    {
+      // Form Error response
+      responseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": File data included in the request could not be written to a temporary file on the server.";
+      responseObj[SIMPL::JSON::ErrorCode] = -50;
+      QJsonDocument jdoc(responseObj);
+
+      response.write(jdoc.toJson(), true);
+      return;
+    }
+  }
+
+//  QString fileName = tempFile.fileName();
+
+  serviceJSON(response, pipelineObj, responseObj);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QJsonArray ExecutePipelineController::getFileFolderLookupArray(HttpRequest& request, HttpResponse &response, QJsonObject &responseObj)
+{
+  QJsonParseError jsonParseError;
+  QByteArray jsonData = request.getParameter("fpLookup");
+  QJsonDocument fileFolderLookupDoc = QJsonDocument::fromJson(jsonData, &jsonParseError);
+  if (jsonParseError.error != QJsonParseError::ParseError::NoError)
+  {
+    // Form Error response
+    responseObj[SIMPL::JSON::ErrorMessage] = tr("%1: JSON Request Parsing Error - %2").arg(EndPoint()).arg(jsonParseError.errorString());
+    responseObj[SIMPL::JSON::ErrorCode] = -30;
+    QJsonDocument jdoc(responseObj);
+    response.write(jdoc.toJson(), true);
+    return QJsonArray();
+  }
+
+  QJsonArray fileFolderLookupArray = fileFolderLookupDoc.array();
+  return fileFolderLookupArray;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QJsonObject ExecutePipelineController::getPipelineObject(HttpRequest &request, HttpResponse &response, QJsonObject &responseObj)
+{
+  QJsonParseError jsonParseError;
+  QByteArray jsonData = request.getParameter("json");
+  QJsonDocument pipelineDoc = QJsonDocument::fromJson(jsonData, &jsonParseError);
+  if (jsonParseError.error != QJsonParseError::ParseError::NoError)
+  {
+    // Form Error response
+    responseObj[SIMPL::JSON::ErrorMessage] = tr("%1: JSON Request Parsing Error - %2").arg(EndPoint()).arg(jsonParseError.errorString());
+    responseObj[SIMPL::JSON::ErrorCode] = -30;
+    QJsonDocument jdoc(responseObj);
+    response.write(jdoc.toJson(), true);
+    return QJsonObject();
+  }
+
+  QJsonObject pipelineObj = pipelineDoc.object();
+  return pipelineObj;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ExecutePipelineController::service(HttpRequest& request, HttpResponse& response)
+{
+  // Get current session, or create a new one
+  HttpSessionStore* sessionStore = HttpSessionStore::Instance();
+  HttpSession session = sessionStore->getSession(request, response);
+
+  QJsonObject responseObj;
+  responseObj[SIMPL::JSON::SessionID] = QString(session.getId());
+  response.setHeader("Content-Type", "application/json");
+
+  QString content_type = request.getHeader(QByteArray("content-type"));
+  if (content_type == "application/json")
+  {
+    serviceJSON(request, response, responseObj);
+  }
+  else if (content_type.startsWith("multipart/form-data"))
+  {
+    serviceMultiPart(request, response, responseObj);
+  }
+  else
+  {
+    // Form Error response
+    responseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Content Type is not application/json";
+    responseObj[SIMPL::JSON::ErrorCode] = -50;
+    QJsonDocument jdoc(responseObj);
+
+    response.write(jdoc.toJson(), true);
+    return;
+  }
 }
 
 // -----------------------------------------------------------------------------

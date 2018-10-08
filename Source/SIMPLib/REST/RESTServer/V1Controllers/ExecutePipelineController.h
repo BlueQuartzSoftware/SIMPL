@@ -56,6 +56,14 @@ public:
    * @return
    */
   static QString EndPoint();
+
+private:
+  void serviceJSON(HttpResponse &response, QJsonObject pipelineObj, QJsonObject &responseObj);
+  void serviceJSON(HttpRequest& request, HttpResponse &response, QJsonObject &responseObj);
+
+  void serviceMultiPart(HttpRequest& request, HttpResponse &response, QJsonObject &responseObj);
+  QJsonArray getFileFolderLookupArray(HttpRequest &request, HttpResponse &response, QJsonObject &responseObj);
+  QJsonObject getPipelineObject(HttpRequest &request, HttpResponse &response, QJsonObject &responseObj);
 };
 
 #endif // ExecutePipelineController_H_

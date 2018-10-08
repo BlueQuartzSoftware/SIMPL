@@ -109,7 +109,7 @@ int main(int argc, char* argv[])
 {
   QCoreApplication app(argc, argv);
 
-  app.setApplicationName("SIMPLRestServer");
+  app.setApplicationName("RESTServer");
   app.setOrganizationName("BlueQuartz Software");
 
   //
