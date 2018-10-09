@@ -25,7 +25,7 @@ ConvertPathToHeaderCompatible(${SIMPLPyBind11_SOURCE_DIR_NORM})
 set(SIMPLPyBind11_BINARY_DIR_NORM ${SIMPLPyBind11_BINARY_DIR})
 ConvertPathToHeaderCompatible(${SIMPLPyBind11_BINARY_DIR_NORM})
 
-set(SIMPLPyBind11_LIBRARY_OUTPUT_DIR "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/python/site-packages")
+set(SIMPLPyBind11_LIBRARY_OUTPUT_DIR "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
 ConvertPathToHeaderCompatible(${SIMPLPyBind11_LIBRARY_OUTPUT_DIR})
 
 # --------------------------------------------------------------------------

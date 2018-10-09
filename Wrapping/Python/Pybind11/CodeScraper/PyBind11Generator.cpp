@@ -55,13 +55,13 @@ void PyBind11Generator::execute()
   m_ModuleCode.generateModuleFile(genHeaderPath, m_IsSIMPLib);
   
   genHeaderPath = QString("");
-  ss << SIMPL::PyBind11::RuntimeOutputDir << "/" << m_CfgIntDir << "/python/site-packages/" << m_LibName << "_UnitTest.py";
+  ss << SIMPL::PyBind11::RuntimeOutputDir << "/" << m_CfgIntDir << "/" << m_LibName << "_UnitTest.py";
   genHeaderPath = genHeaderPath.replace("/./", "/");
   m_ModuleCode.generatePythonTestFile(genHeaderPath, m_IsSIMPLib);
   
   genHeaderPath = QString("");
   QString libName = m_LibNameUpper;
-  ss << SIMPL::PyBind11::RuntimeOutputDir << "/" << m_CfgIntDir << "/python/site-packages/dream3d/" << SIMPL::Python::fromCamelCase(libName) << ".py";
+  ss << SIMPL::PyBind11::RuntimeOutputDir << "/" << m_CfgIntDir << "/" << SIMPL::Python::fromCamelCase(libName) << ".py";
   genHeaderPath = genHeaderPath.replace("/./", "/");
   m_ModuleCode.generatePythonicInterface(genHeaderPath, m_IsSIMPLib);
 }
@@ -80,7 +80,7 @@ void PyBind11Generator::copyPyInitFiles()
 
   QString outputPath;
   QTextStream op(&outputPath);
-  op << SIMPL::PyBind11::RuntimeOutputDir << "/" << m_CfgIntDir << "/python/site-packages/" << libName;
+  op << SIMPL::PyBind11::RuntimeOutputDir << "/" << m_CfgIntDir << "/";
   QDir dir;
   dir.mkpath(outputPath);
 

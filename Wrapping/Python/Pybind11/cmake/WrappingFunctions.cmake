@@ -66,7 +66,7 @@ function(CreatePybind11Module)
   set(pybind_module_file_name "${SIMPLProj_BINARY_DIR}/Wrapping/PythonCore/${pybind_module_name}_pybind11_module.${file_ext}")
   set(submodules_headers_file_name "${SIMPLProj_BINARY_DIR}/Wrapping/PythonCore/DREAM3D_SubmoduleHeaders.h")
   set(submodule_init_cxx_file_name "${SIMPLProj_BINARY_DIR}/Wrapping/PythonCore/DREAM3D_SubmoduleInit.hpp")
-  set(dream3d_py_init_file_name "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/python/site-packages/dream3d/__init__.py")
+  set(dream3d_py_init_file_name "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/__init__.py")
   if(NOT EXISTS "${pybind_module_file_name}")
     FILE(WRITE "${pybind_module_file_name}" "/* Pybind11 Module code */\n") 
   endif()
@@ -118,60 +118,17 @@ from .dream3d import simpl
       PREFIX "${PYTHON_MODULE_PREFIX}"
       SUFFIX "${PYTHON_MODULE_EXTENSION}"
       OUTPUT_NAME ${SIMPL_PY_MODULE_NAME}
-      LIBRARY_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/python/site-packages/dream3d
-      LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/python/site-packages/dream3d
-      LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/python/site-packages/dream3d
-      LIBRARY_OUTPUT_DIRECTORY_RELWDEBUG ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/python/site-packages/dream3d
-      LIBRARY_OUTPUT_DIRECTORY_RELMINSIZE ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/python/site-packages/dream3d
+      LIBRARY_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}
+      LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}
+      LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}
+      LIBRARY_OUTPUT_DIRECTORY_RELWDEBUG ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}
+      LIBRARY_OUTPUT_DIRECTORY_RELMINSIZE ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}
     )
     set_target_properties(${SIMPL_PY_MODULE_NAME} PROPERTIES LINKER_LANGUAGE CXX)
     target_compile_features(${SIMPL_PY_MODULE_NAME} PRIVATE cxx_local_type_template_args)
 
     if(WIN32)
-      # Copy dream3d Python "package" to specified site_packages directory
-      set (source "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/python/site-packages/dream3d")
-      set (PythonSitePackages ${PYTHON_SITE_PACKAGES} CACHE PATH "The directory for the Python site-packages")
-      set (PythonDependencies ${PYTHON_SITE_PACKAGES} CACHE PATH "The directory to place the dependencies for Python wrapping")
-
-      add_custom_command(
-        TARGET ${SIMPL_PY_MODULE_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory ${source} "${PythonSitePackages}/dream3d"
-        DEPENDS ${PythonSitePackages}
-        COMMENT "copy folder from ${source} => ${PythonSitePackages}/dream3d"
-      )
-      # create a list of files to copy
-      set (PLUGIN_DEBUG_EXTENSION $<$<CONFIG:Debug>:"_debug">)
-      set (QT_DEBUG_EXTENSION $<$<CONFIG:Debug>:"d">)
-      set (OTHER_DEBUG_EXTENSION $<$<CONFIG:Debug>:"_D">)
-      set( DREAM3D_PY_DEPENDENCIES
-        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/Generic${PLUGIN_DEBUG_EXTENSION}.plugin"      
-        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/SIMPLib${PLUGIN_DEBUG_EXTENSION}.dll"
-        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/H5Support${PLUGIN_DEBUG_EXTENSION}.dll"
-        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/Qt5Core${QT_DEBUG_EXTENSION}.dll"
-        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/hdf5${OTHER_DEBUG_EXTENSION}.dll"
-        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/IO${PLUGIN_DEBUG_EXTENSION}.plugin"
-        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/OrientationLib${PLUGIN_DEBUG_EXTENSION}.dll"
-        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/OrientationAnalysis${PLUGIN_DEBUG_EXTENSION}.plugin"
-        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/Qt5Gui${QT_DEBUG_EXTENSION}.dll"
-        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/EbsdLib${PLUGIN_DEBUG_EXTENSION}.dll"
-        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/Processing${PLUGIN_DEBUG_EXTENSION}.plugin"
-        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/Reconstruction${PLUGIN_DEBUG_EXTENSION}.plugin"
-        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/Sampling${PLUGIN_DEBUG_EXTENSION}.plugin"
-        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/Statistics${PLUGIN_DEBUG_EXTENSION}.plugin"
-        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/SurfaceMeshing${PLUGIN_DEBUG_EXTENSION}.plugin"
-        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/SyntheticBuilding${PLUGIN_DEBUG_EXTENSION}.plugin"
-        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}/Qt5Network${QT_DEBUG_EXTENSION}.dll"
-      )
-      
-      # do the copying
-      foreach( file_i ${DREAM3D_PY_DEPENDENCIES})
-        add_custom_command(
-          TARGET ${SIMPL_PY_MODULE_NAME}
-          POST_BUILD
-          COMMAND ${CMAKE_COMMAND} -E copy ${file_i} ${PythonDependencies}
-          DEPENDS ${PythonDependencies}
-      )
-      endforeach( file_i )
+  
     endif()
     
   else()
