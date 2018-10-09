@@ -62,8 +62,9 @@ private:
   void serviceJSON(HttpRequest& request, HttpResponse &response, QJsonObject &responseObj);
 
   void serviceMultiPart(HttpRequest& request, HttpResponse &response, QJsonObject &responseObj);
-  QJsonArray getFileFolderLookupArray(HttpRequest &request, HttpResponse &response, QJsonObject &responseObj);
-  QJsonObject getPipelineObject(HttpRequest &request, HttpResponse &response, QJsonObject &responseObj);
+  QJsonObject getPipelineReplacementLookupObject(HttpRequest &request, HttpResponse &response, QJsonObject &responseObj);
+  QString getType(QJsonObject pipelineReplacementObj, HttpResponse &response, QJsonObject &responseObj);
+  QJsonArray getFileParameterNames(QJsonObject pipelineReplacementObj, HttpResponse &response, QJsonObject &responseObj);
 };
 
 #endif // ExecutePipelineController_H_

@@ -329,7 +329,7 @@ public:
       QJsonObject pipelineObj = doc.object();
 
       QJsonObject filterObj = pipelineObj["0"].toObject();
-      filterObj["InputFile"] = "@@DataFile1@@";
+      filterObj["InputFile"] = "@@Replacement1@@";
       pipelineObj["0"] = filterObj;
 
       rootObj[SIMPL::JSON::Pipeline] = pipelineObj;
@@ -347,28 +347,29 @@ public:
     }
 
     {
-      QHttpPart fileFolderLookupPart;
-      fileFolderLookupPart.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-      fileFolderLookupPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"fpLookup\""));
+      QHttpPart pipelineReplacementLookupPart;
+      pipelineReplacementLookupPart.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+      pipelineReplacementLookupPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"pipelineReplacementLookup\""));
 
-      QJsonArray objArray;
-      QJsonObject obj;
+      QJsonObject rootObj;
+      QJsonObject pipelineReplacementObject;
+      pipelineReplacementObject["Type"] = "File";
 
-      QJsonArray nameParameterArray;
+      QJsonArray fileParameterNames;
       for (int i = 0; i < filePathList.size(); i++)
       {
-        nameParameterArray.push_back("form-data; name=\"@@DataFile1@@\"");
+        fileParameterNames.push_back(QObject::tr("DataFile%1").arg(i));
       }
 
-      obj["NameParameterArray"] = nameParameterArray;
+      pipelineReplacementObject["FileParameterNames"] = fileParameterNames;
 
-      objArray.push_back(obj);
+      rootObj["@@Replacement1@@"] = pipelineReplacementObject;
 
-      QJsonDocument doc(objArray);
+      QJsonDocument doc(rootObj);
 
-      fileFolderLookupPart.setBody(doc.toJson());
+      pipelineReplacementLookupPart.setBody(doc.toJson());
 
-      multiPart->append(fileFolderLookupPart);
+      multiPart->append(pipelineReplacementLookupPart);
     }
 
     for (int i = 0; i < filePathList.size(); i++)
@@ -398,7 +399,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(jsonParseError.error, QJsonParseError::ParseError::NoError);
 
     QJsonObject responseObject = doc.object();
-    DREAM3D_REQUIRE_EQUAL(responseObject.size(), 5);
+    DREAM3D_REQUIRE_EQUAL(responseObject.size(), 7);
     DREAM3D_REQUIRE_EQUAL(responseObject.contains(SIMPL::JSON::Completed), true);
     DREAM3D_REQUIRE_EQUAL(responseObject[SIMPL::JSON::Completed].isBool(), true);
     DREAM3D_REQUIRE_EQUAL(responseObject[SIMPL::JSON::Completed].toBool(), true);
