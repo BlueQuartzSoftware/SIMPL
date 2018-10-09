@@ -14,6 +14,7 @@ set(TEST_${SUBDIR_NAME}_NAMES
   CreateDataContainerTest
   CreateFeatureArrayFromElementArrayTest
   CreateImageGeometryTest
+  CreateStringArrayTest
   DataContainerTest
   ErrorMessageTest
   ExecuteProcessTest
