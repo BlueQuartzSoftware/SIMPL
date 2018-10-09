@@ -24,6 +24,8 @@ set(TEST_${SUBDIR_NAME}_NAMES
   GenerateColorTableTest
   ImportAsciDataArrayTest
   ImportHDF5DatasetTest
+  MoveDataTest
+  MoveMultiDataTest
   MultiThresholdObjectsTest
   MultiThresholdObjects2Test
   RawBinaryReaderTest
