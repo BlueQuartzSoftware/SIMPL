@@ -938,7 +938,7 @@ class DataArray : public IDataArray
     void setTuple(size_t tupleIndex, const std::vector<T> &data)
     {
 #ifndef NDEBUG
-      if (m_Size > 0) { Q_ASSERT(tupleIndex * m_NumComponents + m_NumComponents < m_Size);}
+      if (m_Size > 0) { Q_ASSERT(tupleIndex * m_NumComponents + (m_NumComponents - 1) < m_Size); }
 #endif
       std::memcpy(getTuplePointer(tupleIndex), data.data(), m_NumComponents * sizeof(T));
     }

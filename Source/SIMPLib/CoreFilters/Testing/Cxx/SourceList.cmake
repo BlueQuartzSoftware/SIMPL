@@ -13,14 +13,17 @@ set(TEST_${SUBDIR_NAME}_NAMES
   CreateDataArrayTest
   CreateDataContainerTest
   CreateFeatureArrayFromElementArrayTest
+  CreateGeometryTest
   CreateImageGeometryTest
   CreateStringArrayTest
   CropVertexGeometryTest
   DataContainerTest
   ErrorMessageTest
   ExecuteProcessTest
+  ExtractAttributeArraysFromGeometryTest
   ExtractComponentAsArrayTest
   FindDerivativesFilterTest
+  FeatureDataCSVWriterTest
   GenerateColorTableTest
   ImportAsciDataArrayTest
   ImportHDF5DatasetTest
@@ -40,6 +43,7 @@ set(TEST_${SUBDIR_NAME}_NAMES
   RequiredZThicknessTest
   ScaleVolumeTest
   SetOriginResolutionImageGeomTest
+  SplitAttributeArrayTest
   WriteASCIIDataTest
   WriteTriangleGeometryTest
 )

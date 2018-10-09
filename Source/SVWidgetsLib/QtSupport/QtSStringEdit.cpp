@@ -35,6 +35,11 @@
 
 #include "QtSStringEdit.h"
 
+#include <QtWidgets/QShortcut>
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 QtSStringEdit::QtSStringEdit(QWidget* parent) : QWidget(parent)
 {
   setupUi(this);
@@ -53,6 +58,14 @@ void QtSStringEdit::setupGui()
   value->setAttribute(Qt::WA_MacShowFocusRect, false);
 
   connect(value, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
+
+  QShortcut* applyShortcut = new QShortcut(QKeySequence(Qt::Key::Key_Return), this);
+  QShortcut* cancelShortcut = new QShortcut(QKeySequence(Qt::Key::Key_Escape), this);
+  applyShortcut->setContext(Qt::ShortcutContext::WidgetWithChildrenShortcut);
+  cancelShortcut->setContext(Qt::ShortcutContext::WidgetWithChildrenShortcut);
+
+  connect(applyShortcut, &QShortcut::activated, this, &QtSStringEdit::on_applyChangesBtn_clicked);
+  connect(cancelShortcut, &QShortcut::activated, this, &QtSStringEdit::on_cancelChangesBtn_clicked);
 }
 
 // -----------------------------------------------------------------------------
@@ -89,14 +102,6 @@ void QtSStringEdit::setText(QString newValue, bool signalsBlocked)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSStringEdit::on_value_returnPressed()
-{
-  on_applyChangesBtn_clicked();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void QtSStringEdit::on_applyChangesBtn_clicked()
 {
   value->setStyleSheet(QString(""));
@@ -104,17 +109,6 @@ void QtSStringEdit::on_applyChangesBtn_clicked()
   emit valueChanged(m_storedValue);
 
   hideButtons();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void QtSStringEdit::keyPressEvent(QKeyEvent* e)
-{
-  if (e->key() == Qt::Key_Escape)
-  {
-    on_cancelChangesBtn_clicked();
-  }
 }
 
 // -----------------------------------------------------------------------------

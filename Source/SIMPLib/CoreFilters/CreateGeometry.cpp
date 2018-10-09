@@ -51,6 +51,7 @@
 #include "SIMPLib/Geometry/TetrahedralGeom.h"
 #include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
+#include "SIMPLib/Geometry/HexahedralGeom.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
 // -----------------------------------------------------------------------------
@@ -64,10 +65,12 @@ CreateGeometry::CreateGeometry()
 , m_SharedVertexListArrayPath2("", "", "")
 , m_SharedVertexListArrayPath3("", "", "")
 , m_SharedVertexListArrayPath4("", "", "")
+, m_SharedVertexListArrayPath5("", "", "")
 , m_SharedEdgeListArrayPath("", "", "")
 , m_SharedTriListArrayPath("", "", "")
 , m_SharedQuadListArrayPath("", "", "")
 , m_SharedTetListArrayPath("", "", "")
+, m_SharedHexListArrayPath("", "", "")
 , m_XBoundsArrayPath("", "", "")
 , m_YBoundsArrayPath("", "", "")
 , m_ZBoundsArrayPath("", "", "")
@@ -81,10 +84,12 @@ CreateGeometry::CreateGeometry()
 , m_VertexAttributeMatrixName2(SIMPL::Defaults::VertexAttributeMatrixName)
 , m_VertexAttributeMatrixName3(SIMPL::Defaults::VertexAttributeMatrixName)
 , m_VertexAttributeMatrixName4(SIMPL::Defaults::VertexAttributeMatrixName)
+, m_VertexAttributeMatrixName5(SIMPL::Defaults::VertexAttributeMatrixName)
 , m_EdgeAttributeMatrixName(SIMPL::Defaults::EdgeAttributeMatrixName)
 , m_FaceAttributeMatrixName0(SIMPL::Defaults::FaceAttributeMatrixName)
 , m_FaceAttributeMatrixName1(SIMPL::Defaults::FaceAttributeMatrixName)
 , m_TetCellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
+, m_HexCellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
 , m_TreatWarningsAsErrors(false)
 , m_ArrayHandling(false)
 , m_NumVerts(0)
@@ -127,6 +132,7 @@ void CreateGeometry::setupFilterParameters()
     choices.push_back("Triangle");
     choices.push_back("Quadrilateral");
     choices.push_back("Tetrahedral");
+    choices.push_back("Hexahedral");
     parameter->setChoices(choices);
     QStringList linkedProps = {"Dimensions",
                                "Origin",
@@ -154,7 +160,11 @@ void CreateGeometry::setupFilterParameters()
                                "SharedVertexListArrayPath4",
                                "SharedTetListArrayPath",
                                "VertexAttributeMatrixName4",
-                               "TetCellAttributeMatrixName"}; // TetrahedralGeom
+                               "TetCellAttributeMatrixName", // TetrahedralGeom
+                               "SharedVertexListArrayPath5",
+                               "SharedHexListArrayPath",
+                               "VertexAttributeMatrixName5",
+                               "HexCellAttributeMatrixName" }; // HexahedralGeom
     parameter->setLinkedProperties(linkedProps);
     parameter->setEditable(false);
     parameter->setCategory(FilterParameter::Parameter);
@@ -223,6 +233,14 @@ void CreateGeometry::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Tetrahedral List", SharedTetListArrayPath, FilterParameter::RequiredArray, CreateGeometry, req, 6));
     parameters.push_back(SIMPL_NEW_STRING_FP("Vertex Attribute Matrix", VertexAttributeMatrixName4, FilterParameter::CreatedArray, CreateGeometry, 6));
     parameters.push_back(SIMPL_NEW_STRING_FP("Cell Attribute Matrix", TetCellAttributeMatrixName, FilterParameter::CreatedArray, CreateGeometry, 6));
+  }
+  {
+    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Float, 3, AttributeMatrix::Category::Any);
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Shared Vertex List", SharedVertexListArrayPath5, FilterParameter::RequiredArray, CreateGeometry, req, 7));
+    req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Int64, 8, AttributeMatrix::Category::Any);
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Hexahedral List", SharedHexListArrayPath, FilterParameter::RequiredArray, CreateGeometry, req, 7));
+    parameters.push_back(SIMPL_NEW_STRING_FP("Vertex Attribute Matrix", VertexAttributeMatrixName5, FilterParameter::CreatedArray, CreateGeometry, 7));
+    parameters.push_back(SIMPL_NEW_STRING_FP("Cell Attribute Matrix", HexCellAttributeMatrixName, FilterParameter::CreatedArray, CreateGeometry, 7));
   }
   setFilterParameters(parameters);
 }
@@ -405,7 +423,7 @@ void CreateGeometry::dataCheck()
     else
     {
       edge = EdgeGeom::CreateGeometry(m_EdgesPtr.lock(), verts, SIMPL::Geometry::EdgeGeometry);
-      getDataContainerArray()->getAttributeMatrix(getSharedVertexListArrayPath0())->removeAttributeArray(getSharedVertexListArrayPath0().getDataArrayName());
+      getDataContainerArray()->getAttributeMatrix(getSharedVertexListArrayPath1())->removeAttributeArray(getSharedVertexListArrayPath1().getDataArrayName());
       getDataContainerArray()->getAttributeMatrix(getSharedEdgeListArrayPath())->removeAttributeArray(getSharedEdgeListArrayPath().getDataArrayName());
     }
     dc->setGeometry(edge);
@@ -444,7 +462,7 @@ void CreateGeometry::dataCheck()
     else
     {
       triangle = TriangleGeom::CreateGeometry(m_TrisPtr.lock(), verts, SIMPL::Geometry::TriangleGeometry);
-      getDataContainerArray()->getAttributeMatrix(getSharedVertexListArrayPath0())->removeAttributeArray(getSharedVertexListArrayPath0().getDataArrayName());
+      getDataContainerArray()->getAttributeMatrix(getSharedVertexListArrayPath2())->removeAttributeArray(getSharedVertexListArrayPath2().getDataArrayName());
       getDataContainerArray()->getAttributeMatrix(getSharedTriListArrayPath())->removeAttributeArray(getSharedTriListArrayPath().getDataArrayName());
     }
     dc->setGeometry(triangle);
@@ -484,7 +502,7 @@ void CreateGeometry::dataCheck()
     else
     {
       quadrilateral = QuadGeom::CreateGeometry(m_QuadsPtr.lock(), verts, SIMPL::Geometry::QuadGeometry);
-      getDataContainerArray()->getAttributeMatrix(getSharedVertexListArrayPath0())->removeAttributeArray(getSharedVertexListArrayPath0().getDataArrayName());
+      getDataContainerArray()->getAttributeMatrix(getSharedVertexListArrayPath3())->removeAttributeArray(getSharedVertexListArrayPath3().getDataArrayName());
       getDataContainerArray()->getAttributeMatrix(getSharedQuadListArrayPath())->removeAttributeArray(getSharedQuadListArrayPath().getDataArrayName());
     }
     dc->setGeometry(quadrilateral);
@@ -519,12 +537,12 @@ void CreateGeometry::dataCheck()
     if(getArrayHandling() == k_CopyArrays)
     {
       tetrahedral = TetrahedralGeom::CreateGeometry(std::static_pointer_cast<Int64ArrayType>(m_TetsPtr.lock()->deepCopy(getInPreflight())),
-                                                    std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::QuadGeometry);
+                                                    std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::TetrahedralGeometry);
     }
     else
     {
-      tetrahedral = TetrahedralGeom::CreateGeometry(m_TetsPtr.lock(), verts, SIMPL::Geometry::QuadGeometry);
-      getDataContainerArray()->getAttributeMatrix(getSharedVertexListArrayPath0())->removeAttributeArray(getSharedVertexListArrayPath0().getDataArrayName());
+      tetrahedral = TetrahedralGeom::CreateGeometry(m_TetsPtr.lock(), verts, SIMPL::Geometry::TetrahedralGeometry);
+      getDataContainerArray()->getAttributeMatrix(getSharedVertexListArrayPath4())->removeAttributeArray(getSharedVertexListArrayPath4().getDataArrayName());
       getDataContainerArray()->getAttributeMatrix(getSharedTetListArrayPath())->removeAttributeArray(getSharedTetListArrayPath().getDataArrayName());
     }
 
@@ -536,6 +554,48 @@ void CreateGeometry::dataCheck()
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
     tDims[0] = tetrahedral->getNumberOfTets();
     path.update(getDataContainerName(), getTetCellAttributeMatrixName(), "");
+    dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Cell);
+    break;
+  }
+  case 7: // HexahedralGeom
+  {
+    QVector<size_t> cDims(1, 3);
+
+    FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath5(), cDims);
+    cDims[0] = 8;
+    m_HexesPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter>(this, getSharedHexListArrayPath(), cDims);
+    if (m_HexesPtr.lock())
+    {
+      m_Hexes = m_HexesPtr.lock()->getPointer(0);
+    }
+
+    if (getErrorCondition() < 0)
+    {
+      return;
+    }
+
+
+    HexahedralGeom::Pointer hexahedral = HexahedralGeom::NullPointer();
+    if (getArrayHandling() == k_CopyArrays)
+    {
+      hexahedral = HexahedralGeom::CreateGeometry(std::static_pointer_cast<Int64ArrayType>(m_HexesPtr.lock()->deepCopy(getInPreflight())),
+        std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::HexahedralGeometry);
+    }
+    else
+    {
+      hexahedral = HexahedralGeom::CreateGeometry(m_HexesPtr.lock(), verts, SIMPL::Geometry::HexahedralGeometry);
+      getDataContainerArray()->getAttributeMatrix(getSharedVertexListArrayPath5())->removeAttributeArray(getSharedVertexListArrayPath5().getDataArrayName());
+      getDataContainerArray()->getAttributeMatrix(getSharedHexListArrayPath())->removeAttributeArray(getSharedHexListArrayPath().getDataArrayName());
+    }
+
+    dc->setGeometry(hexahedral);
+
+    m_NumVerts = hexahedral->getNumberOfVertices();
+    QVector<size_t> tDims(1, hexahedral->getNumberOfVertices());
+    DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName5(), "");
+    dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
+    tDims[0] = hexahedral->getNumberOfHexas();
+    path.update(getDataContainerName(), getHexCellAttributeMatrixName(), "");
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Cell);
     break;
   }
@@ -791,6 +851,39 @@ void CreateGeometry::execute()
                        .arg(idx)
                        .arg(m_NumVerts);
       if(m_TreatWarningsAsErrors)
+      {
+        setErrorCondition(-1);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      }
+      else
+      {
+        setWarningCondition(-1);
+        notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+      }
+      return;
+    }
+
+    break;
+  }
+  case 7: // HexahedralGeom
+  {
+    int64_t idx = 0;
+    for (size_t i = 0; i < m_HexesPtr.lock()->getSize(); i++)
+    {
+      if (m_Hexes[i] > idx)
+      {
+        idx = m_Hexes[i];
+      }
+    }
+
+    if ((idx + 1) > m_NumVerts)
+    {
+      QString ss = QObject::tr("Supplied hexahedra list contains a vertex index larger than the total length of the supplied shared vertex list\n"
+        "Index Value: %1\n"
+        "Number of Vertices: %2")
+        .arg(idx)
+        .arg(m_NumVerts);
+      if (m_TreatWarningsAsErrors)
       {
         setErrorCondition(-1);
         notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());

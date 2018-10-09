@@ -39,10 +39,6 @@ SVSpinBox::SVSpinBox(QWidget* parent) :
 QSpinBox(parent)
 {
   setAttribute(Qt::WA_MacShowFocusRect, false);
-  QStyle* style = this->style();
-  QIcon arrowUpIcon = style->standardIcon(QStyle::SP_TitleBarShadeButton);
-  QPixmap pixmap = arrowUpIcon.pixmap(QSize(24, 24));
-  pixmap.save("/Users/bluequartz/Downloads/up_arrow.png");
 }
 
 SVSpinBox::~SVSpinBox() = default;

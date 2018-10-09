@@ -197,4 +197,9 @@ namespace UnitTest
     const QString NodesFile("@TEST_TEMP_DIR@/WriteTriangleGeometryNodesFile.txt");
     const QString TrianglesFile("@TEST_TEMP_DIR@/WriteTriangleGeometryTrianglesFile.txt");
   }
+  
+  namespace FeatureDataCSVWriterTest
+  {
+   const QString OutputFile("@TEST_TEMP_DIR@/FeatureDataCSVOutputTestFile.txt");
+  }
 }

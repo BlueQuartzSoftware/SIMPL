@@ -48,6 +48,9 @@
     "_comment2" : "These colors can be in any standard CSS notation.",
 
     "QLabel_color" : "black",
+    "Widget_Error_color": "rgb(180,0,0)",
+    "QLineEditError_background_color": "rgb(208, 128, 139)",
+    "Text_Error_color": "rgb(255, 0, 0)",
     
     "QToolButton_background_color": "qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #DDDDDD, stop: 1 #FFFFFF)",
     "QToolButton_color": "black",

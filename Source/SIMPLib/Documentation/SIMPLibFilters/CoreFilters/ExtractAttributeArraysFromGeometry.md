@@ -17,6 +17,7 @@ This **Filter** extracts the **Attribute Arrays** that define the topology of a 
 | Triangle | vertex coordinates, triangle-to-vertex connectivity |
 | Quadrilateral | vertex coordinates, quadrilateral-to-vertex connectivity |
 | Tetrahedral | vertex coordinates, tetrahedral-to-vertex connectivity |
+| Hexahedral | vertex coordinates, hexahedral-to-vertex connectivity |
 
 **Image Geometries** do not store their topological information using **Attribute Arrays**, since the number of values needed to define an **Image** is small.  For more information on how to understand the arrays produced by this **Filter** (e.g., rectilinear bounds, edge-to-vertex connectivities, etc.), read the [documentation for the Create Geometry Filter](@ref creategeometry).
 
@@ -32,7 +33,7 @@ None
 
 ## Required Geometry ###
 
-RectGrid, Vertex, Edge, Triangle, Quadrilateral, or Tetrahedral
+RectGrid, Vertex, Edge, Triangle, Quadrilateral, Tetrahedral, or Hexahedral
 
 ## Required Objects ##
 
