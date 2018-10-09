@@ -15,6 +15,7 @@ set(TEST_${SUBDIR_NAME}_NAMES
   CreateFeatureArrayFromElementArrayTest
   CreateImageGeometryTest
   CreateStringArrayTest
+  CropVertexGeometryTest
   DataContainerTest
   ErrorMessageTest
   ExecuteProcessTest
