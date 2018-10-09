@@ -124,12 +124,12 @@ PYB11_DEFINE_DATAARRAY_INIT(double, DoubleArrayType);
  * what classes are available within the module.
  *
  */
-PYBIND11_MODULE(dream3d_py, m)
+PYBIND11_MODULE(dream3d, m)
 {
   m.doc() = "Python wrapping for dream3d";
 
   /* Define a python submodule for SIMPL */
-  py::module mod = m.def_submodule("simpl_py", "  Python wrapping for  SIMPL");
+  py::module mod = m.def_submodule("simpl", "  Python wrapping for SIMPL");
 
   //
   //

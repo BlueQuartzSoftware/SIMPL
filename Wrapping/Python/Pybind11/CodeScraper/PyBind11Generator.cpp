@@ -23,7 +23,7 @@ const QString& genDir, const QString& moduleTemplatePath, const QString& isSIMPL
 , m_CfgIntDir(cfgIntDir)
 {
 
-  m_LibName = m_LibNameUpper.toLower() + "_py";
+  m_LibName = m_LibNameUpper.toLower();// + "_py";
   m_SourceDir = m_TopLevelDir;
   m_SourceDir.cdUp();
 

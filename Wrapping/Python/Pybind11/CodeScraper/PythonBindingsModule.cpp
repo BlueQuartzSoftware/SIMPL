@@ -339,37 +339,16 @@ void PythonBindingsModule::generatePythonTestFile(const QString& outputPath, con
       << "This file is AUTO GENERATED as part of the 'CodeScraper' program that is executed\n"
       << "during the compilation phase.\n"
       << "m_LibName=" << m_LibName << "\n"
+      << "isSIMPLib:" << isSIMPLib << "\n"
       << "\"\"\"\n";
   QString shortLibName = m_LibName;
   shortLibName.replace("_py", "");
-  if (shortLibName == "dream3d")
+  if(isSIMPLib.compare("TRUE") == 0) 
   {
-	  shortLibName = "simpl";
-
-	  out << "import dream3d\n"
-		  << "import dream3d.dream3d_py as d3d\n"
-		  << "import dream3d.dream3d_py.simpl_py as simpl\n"
-		  << "import dream3d.utils.simpl_common as sc\n"
-		  << "import dream3d.utils.simpl_test_dirs as sd\n"
-		  << "\n\n\n"
-		  ;
+    shortLibName = QString("simpl");
   }
-  else
-  {
-
-	  out << "import dream3d\n"
-		  << "import dream3d.dream3d_py as d3d\n"
-		  << "import dream3d.dream3d_py.simpl_py as simpl\n"
-		  << "import dream3d.utils.simpl_common as sc\n"
-		  << "import dream3d.utils.simpl_test_dirs as sd\n"
-		  << "import dream3d.dream3d_py." << m_LibName << " as " << shortLibName << "\n"
-		  << "\n\n\n"
-		  ;
-  }
-
-
- // out << "from "<< SIMPL::PyBind11::SIMPL_LibraryName << SIMPL::PyBind11::PythonModuleSuffix << " import *\n";
- // out << "from " << m_LibName << " import *\n";
+  out << "import dream3d\n";
+  out << "from dream3d import " << shortLibName << "\n";
   out << "\n\n";
   
   out << "def " << m_LibName << "UnitTest():\n"
@@ -411,35 +390,20 @@ void PythonBindingsModule::generatePythonicInterface(const QString& outputPath, 
   QTextStream out(&code);
   
   out << "\"\"\"\n Pythonic Interface to SIMPL Plugin " << getLibNameUpper() << "\n";
+  out << " This file is auto generated during the build of DREAM.3D and the plugin " << getLibNameUpper() << "\n";
   out << "\"\"\"" << "\n";
   out << "\n\n";
   QString shortLibName = m_LibName;
   shortLibName.replace("_py", "");
-  if (shortLibName == "dream3d")
-  {
-	  shortLibName = "simpl";
 
-	  out << "import dream3d\n"
-		  << "import dream3d.dream3d_py as d3d\n"
-		  // << "import dream3d.dream3d_py.simpl_py as simpl\n"
-		  // << "import dream3d.utils.simpl_common as sc\n"
-		  // << "import dream3d.utils.simpl_test_dirs as sd\n"
-		  << "import dream3d.dream3d_py.simpl_py as " << shortLibName << "\n"
-		  << "\n\n\n"
-		  ;
-  }
-  else 
+  if(isSIMPLib.compare("TRUE") == 0) 
   {
-
-	  out << "import dream3d\n"
-		  << "import dream3d.dream3d_py as d3d\n"
-		  // << "import dream3d.dream3d_py.simpl_py as simpl\n"
-		  // << "import dream3d.utils.simpl_common as sc\n"
-		  // << "import dream3d.utils.simpl_test_dirs as sd\n"
-		  << "import dream3d.dream3d_py." << m_LibName << " as " << shortLibName << "\n"
-		  << "\n\n\n"
-		  ;
+    shortLibName = QString("simpl");
   }
+  out << "import dream3d\n"
+    << "from dream3d import " << shortLibName << "\n"
+    << "\n\n\n"
+    ;
     
     
   QList<QString> classes = m_Headers.keys();
@@ -462,7 +426,7 @@ void PythonBindingsModule::generatePythonicInterface(const QString& outputPath, 
 	}
     out << "def " << SIMPL::Python::fromCamelCase(aClass) << initCodes << ":\n"
         << "    \"\"\"" << "\n"
-        << "    Instantiates " << aClass << "\n"
+        << "    Executes the filter " << aClass << " and returns the error.\n"
         << "    \"\"\"" << "\n"
         << bodyCodes << "\n"
        
@@ -484,7 +448,7 @@ void PythonBindingsModule::dumpRecursivePythonCode(int level, const QObject* obj
   { 
     // These are a list of Abstract or Top level classes that do not need to be tested
     // so let's avoid those.
-    QStringList avoidThese = {"AbstractFilter", "FileReader", "FileWriter", "Observable"};
+    QStringList avoidThese = {"AbstractFilter", "FileReader", "FileWriter", "Observable", "IDataArray", "SegmentFeatures"};
 
     QByteArray buf;
     buf.fill(' ', level / 2 * 8);
@@ -495,10 +459,10 @@ void PythonBindingsModule::dumpRecursivePythonCode(int level, const QObject* obj
     QString initCode = m_PythonCodes[object->objectName()];
     QString shortLibName = m_LibName;
     shortLibName.replace("_py", "");
-	if (shortLibName == "dream3d")
-	{
-		shortLibName = "simpl";
-	}
+    if(shortLibName.compare("dream3d") == 0) 
+    {
+      shortLibName = QString("simpl");
+    }
 
     const char* pycode = R"PY(
     # @FILTER_NAME@

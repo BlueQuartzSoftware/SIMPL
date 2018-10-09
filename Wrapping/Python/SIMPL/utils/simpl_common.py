@@ -1,10 +1,5 @@
 
-import dream3d
-import dream3d.dream3d_py
-import dream3d.dream3d as d3d
-import dream3d.dream3d_py.simpl_py as simpl
-import dream3d.synthetic_building as synthetic_building
-
+from dream3d import simpl
 from enum import IntEnum
 
 try:

@@ -8,11 +8,8 @@ except ImportError:
 sure that it is installed properly.")
 
 # These are the SIMPL python modules
+from dream3d import simpl
 
-import dream3d
-import dream3d.dream3d_py
-import dream3d.dream3d_py as d3d
-import dream3d.dream3d_py.simpl_py as simpl
 import dream3d.utils.simpl_common as sc
 import dream3d.utils.simpl_test_dirs as sd
 

@@ -30,7 +30,7 @@ ConvertPathToHeaderCompatible(${SIMPLPyBind11_LIBRARY_OUTPUT_DIR})
 
 # --------------------------------------------------------------------------
 # Configure the header file with build specific paths
-set(SIMPL_PYTHON_MODULE_SUFFIX "_py")
+set(SIMPL_PYTHON_MODULE_SUFFIX "")
 set_property(GLOBAL PROPERTY SIMPL_PYTHON_MODULE_SUFFIX ${SIMPL_PYTHON_MODULE_SUFFIX})
 set(SIMPL_PYTHON_MODULE_NAME "dream3d")
 
