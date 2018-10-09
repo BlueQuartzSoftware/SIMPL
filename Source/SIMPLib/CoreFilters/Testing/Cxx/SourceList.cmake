@@ -8,6 +8,7 @@ set(TEST_${SUBDIR_NAME}_NAMES
   ConditionalSetValueTest
   ConvertDataTest
   CopyFeatureArrayToElementArrayTest
+  CopyObjectTest
   CreateAttributeMatrixTest
   CreateDataArrayTest
   CreateDataContainerTest
