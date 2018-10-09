@@ -41,6 +41,7 @@ set(TEST_${SUBDIR_NAME}_NAMES
   ScaleVolumeTest
   SetOriginResolutionImageGeomTest
   WriteASCIIDataTest
+  WriteTriangleGeometryTest
 )
 
 SIMPL_ADD_UNIT_TEST("${TEST_${SUBDIR_NAME}_NAMES}" "${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Testing/Cxx")
