@@ -39,8 +39,6 @@ function(CreatePybind11Module)
   string(TOLOWER ${pybind_module_name} pybind_module_name)
 
   set(SIMPL_PY_MODULE_NAME "dream3d")
-  set(pybind_module_output_name "${ARGS_MODULE_NAME}${SIMPL_PYTHON_MODULE_SUFFIX}")
-  string(TOLOWER SIMPL_PY_MODULE_NAME ${pybind_module_output_name})
 
   # Now create a custom task to scrape through our code and generate all the binding sources
   add_custom_target(${pybind_module_name}CreatePythonBindings ALL
@@ -106,12 +104,7 @@ function(CreatePybind11Module)
     target_link_libraries(${SIMPL_PY_MODULE_NAME} 
                             LINK_PRIVATE pybind11::module SIMPLib
     )
-    
-    # message(STATUS "SIMPL_PY_MODULE_NAME: ${SIMPL_PY_MODULE_NAME}")
-    # message(STATUS "PYTHON_MODULE_EXTENSION: ${PYTHON_MODULE_EXTENSION}")
-    # message(STATUS "PYTHON_MODULE_PREFIX: ${PYTHON_MODULE_PREFIX}")
-    # message(STATUS "CMAKE_ARCHIVE_SUFFIX: ${CMAKE_ARCHIVE_SUFFIX}")
-
+  
     set_target_properties(${SIMPL_PY_MODULE_NAME} PROPERTIES 
       PREFIX "${PYTHON_MODULE_PREFIX}"
       SUFFIX "${PYTHON_MODULE_EXTENSION}"
@@ -121,10 +114,8 @@ function(CreatePybind11Module)
       LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}
       LIBRARY_OUTPUT_DIRECTORY_RELWDEBUG ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}
       LIBRARY_OUTPUT_DIRECTORY_RELMINSIZE ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR}
-      #ARCHIVE_OUTPUT_NAME ${PYTHON_MODULE_PREFIX}${SIMPL_PY_MODULE_NAME}${CMAKE_ARCHIVE_SUFFIX}
+      ARCHIVE_OUTPUT_NAME ${PYTHON_MODULE_PREFIX}${SIMPL_PY_MODULE_NAME}${PYTHON_MODULE_EXTENSION}
       PDB_NAME ${PYTHON_MODULE_PREFIX}${SIMPL_PY_MODULE_NAME}${PYTHON_MODULE_EXTENSION}
-     # IMPORT_PREFIX LibPy_
-      IMPORT_SUFFIX ${PYTHON_MODULE_EXTENSION}
     )
     set_target_properties(${SIMPL_PY_MODULE_NAME} PROPERTIES LINKER_LANGUAGE CXX)
     target_compile_features(${SIMPL_PY_MODULE_NAME} PRIVATE cxx_local_type_template_args)
@@ -147,16 +138,6 @@ function(CreatePybind11Module)
                                   HEADER_FILE_ONLY TRUE
                                   SKIP_AUTOMOC TRUE
     )
-
-    get_target_property(LibOutputDir ${ARGS_MODULE_NAME}Server LIBRARY_OUTPUT_DIRECTORY)
-    get_target_property(LibDebugPostfix ${ARGS_MODULE_NAME}Server DEBUG_POSTFIX)
-    get_target_property(LibOutputSuffix ${ARGS_MODULE_NAME}Server SUFFIX)
-    get_target_property(LibOutputName ${ARGS_MODULE_NAME}Server OUTPUT_NAME)
-    #  message(STATUS "ARGS_MODULE_NAME:${ARGS_MODULE_NAME}")
-    # message(STATUS "LibOutputDir: ${LibOutputDir}")
-    # message(STATUS "LibDebugPostfix: ${LibDebugPostfix}")
-    # message(STATUS "LibOutputSuffix: ${LibOutputSuffix}")
-    # message(STATUS "LibOutputName: ${LibOutputName}")
 
   endif() 
   #---------------------------------------------------------------------
