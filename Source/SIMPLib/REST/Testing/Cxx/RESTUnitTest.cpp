@@ -147,19 +147,6 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  DataContainerArray::Pointer CreateDataContainerArray()
-  {
-    DataContainerArray::Pointer dca = DataContainerArray::New();
-    DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    dca->addDataContainer(m);
-    AttributeMatrix::Pointer attrMatrix = AttributeMatrix::New(QVector<size_t>(1, 1), SIMPL::Defaults::AttributeMatrixName, AttributeMatrix::Type::Generic);
-    m->addAttributeMatrix(SIMPL::Defaults::AttributeMatrixName, attrMatrix);
-    return dca;
-  }
-
-  // -----------------------------------------------------------------------------
-  //
-  // -----------------------------------------------------------------------------
   void TestExecutePipeline()
   {    
     QUrl url = getConnectionURL();
@@ -248,7 +235,7 @@ public:
 
     // Test Pipeline Execution
     {
-      QFile file(UnitTest::RestUnitTest::InputPipelineFilePath);
+      QFile file(UnitTest::RestUnitTest::RESTPipelineFilePath);
       DREAM3D_REQUIRE_EQUAL(file.open(QIODevice::ReadOnly), true);
 
       QTextStream in(&file);
@@ -271,7 +258,7 @@ public:
       DREAM3D_REQUIRE_EQUAL(jsonParseError.error, QJsonParseError::ParseError::NoError);
 
       QJsonObject responseObject = doc.object();
-      DREAM3D_REQUIRE_EQUAL(responseObject.size(), 5);
+      DREAM3D_REQUIRE_EQUAL(responseObject.size(), 7);
       DREAM3D_REQUIRE_EQUAL(responseObject.contains(SIMPL::JSON::Completed), true);
       DREAM3D_REQUIRE_EQUAL(responseObject[SIMPL::JSON::Completed].isBool(), true);
       DREAM3D_REQUIRE_EQUAL(responseObject[SIMPL::JSON::Completed].toBool(), true);
@@ -287,7 +274,7 @@ public:
       DREAM3D_REQUIRE_EQUAL(responseWarningsArray.size(), 0);
 
       JsonFilterParametersReader::Pointer reader = JsonFilterParametersReader::New();
-      FilterPipeline::Pointer pipeline = reader->readPipelineFromFile(UnitTest::RestUnitTest::InputPipelineFilePath);
+      FilterPipeline::Pointer pipeline = reader->readPipelineFromFile(UnitTest::RestUnitTest::RESTPipelineFilePath);
 
       PipelineListener listener(nullptr);
       pipeline->addMessageReceiver(&listener);
@@ -312,36 +299,23 @@ public:
     url.setPath("/api/v1/ExecutePipeline");
 
     QStringList filePathList;
-    filePathList.push_back(UnitTest::RestUnitTest::RESTDCADataFilePath);
+    filePathList.push_back(UnitTest::RestUnitTest::RESTFileIOInputDataFilePath);
 
     QHttpMultiPart* multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
 
     {
-      QFile inputFile(UnitTest::RestUnitTest::RESTCreateDCAPipelineFilePath);
+      QFile inputFile(UnitTest::RestUnitTest::RESTFileIOPipelineFilePath);
       DREAM3D_REQUIRE_EQUAL(inputFile.open(QIODevice::ReadOnly), true);
 
       QTextStream in(&inputFile);
       QString jsonString = in.readAll();
       QByteArray jsonByteArray = QByteArray::fromStdString(jsonString.toStdString());
-      QJsonDocument doc = QJsonDocument::fromJson(jsonByteArray);
-
-      QJsonObject rootObj;
-      QJsonObject pipelineObj = doc.object();
-
-      QJsonObject filterObj = pipelineObj["0"].toObject();
-      filterObj["InputFile"] = "@@Replacement1@@";
-      pipelineObj["0"] = filterObj;
-
-      rootObj[SIMPL::JSON::Pipeline] = pipelineObj;
-
-      QJsonDocument doc2(rootObj);
-      QByteArray jsonData = doc2.toJson();
 
       QHttpPart jsonPart;
       jsonPart.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
       jsonPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"json\""));
 
-      jsonPart.setBody(jsonData);
+      jsonPart.setBody(jsonByteArray);
 
       multiPart->append(jsonPart);
     }
@@ -352,18 +326,26 @@ public:
       pipelineReplacementLookupPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"pipelineReplacementLookup\""));
 
       QJsonObject rootObj;
-      QJsonObject pipelineReplacementObject;
-      pipelineReplacementObject["Type"] = "File";
 
-      QJsonArray fileParameterNames;
-      for (int i = 0; i < filePathList.size(); i++)
       {
-        fileParameterNames.push_back(QObject::tr("DataFile%1").arg(i));
+        QJsonObject pipelineReplacementObject;
+        pipelineReplacementObject["IO_Type"] = "Input";
+
+        QJsonArray fileParameterNames;
+        for (int i = 0; i < filePathList.size(); i++)
+        {
+          fileParameterNames.push_back(QObject::tr("DataFile%1").arg(i));
+        }
+
+        pipelineReplacementObject["FileParameterNames"] = fileParameterNames;
+
+        rootObj["@@Replacement1@@"] = pipelineReplacementObject;
       }
-
-      pipelineReplacementObject["FileParameterNames"] = fileParameterNames;
-
-      rootObj["@@Replacement1@@"] = pipelineReplacementObject;
+      {
+        QJsonObject pipelineReplacementObject;
+        pipelineReplacementObject["IO_Type"] = "Output";
+        rootObj["@@Replacement2@@"] = pipelineReplacementObject;
+      }
 
       QJsonDocument doc(rootObj);
 
@@ -415,7 +397,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(responseWarningsArray.size(), 0);
 
     JsonFilterParametersReader::Pointer reader = JsonFilterParametersReader::New();
-    FilterPipeline::Pointer pipeline = reader->readPipelineFromFile(UnitTest::RestUnitTest::InputPipelineFilePath);
+    FilterPipeline::Pointer pipeline = reader->readPipelineFromFile(UnitTest::RestUnitTest::RESTPipelineFilePath);
 
     PipelineListener listener(nullptr);
     pipeline->addMessageReceiver(&listener);
@@ -1086,7 +1068,7 @@ public:
 
     // Test pipeline that has errors
     {
-      QFile file(UnitTest::RestUnitTest::ErrorInputPipelineFilePath);
+      QFile file(UnitTest::RestUnitTest::RESTErrorPipelineFilePath);
       DREAM3D_REQUIRE_EQUAL(file.open(QIODevice::ReadOnly), true);
 
       QTextStream in(&file);
@@ -1125,7 +1107,7 @@ public:
       DREAM3D_REQUIRE_EQUAL(responseWarningsArray.size(), 0);
 
       JsonFilterParametersReader::Pointer reader = JsonFilterParametersReader::New();
-      FilterPipeline::Pointer pipeline = reader->readPipelineFromFile(UnitTest::RestUnitTest::ErrorInputPipelineFilePath);
+      FilterPipeline::Pointer pipeline = reader->readPipelineFromFile(UnitTest::RestUnitTest::RESTErrorPipelineFilePath);
 
       PipelineListener listener(nullptr);
       pipeline->addMessageReceiver(&listener);
@@ -1156,7 +1138,7 @@ public:
 
     // Test pipeline with no errors
     {
-      QFile file(UnitTest::RestUnitTest::InputPipelineFilePath);
+      QFile file(UnitTest::RestUnitTest::RESTPipelineFilePath);
       DREAM3D_REQUIRE_EQUAL(file.open(QIODevice::ReadOnly), true);
 
       QTextStream in(&file);
@@ -1195,7 +1177,7 @@ public:
       DREAM3D_REQUIRE_EQUAL(responseWarningsArray.size(), 0);
 
       JsonFilterParametersReader::Pointer reader = JsonFilterParametersReader::New();
-      FilterPipeline::Pointer pipeline = reader->readPipelineFromFile(UnitTest::RestUnitTest::InputPipelineFilePath);
+      FilterPipeline::Pointer pipeline = reader->readPipelineFromFile(UnitTest::RestUnitTest::RESTPipelineFilePath);
 
       PipelineListener listener(nullptr);
       pipeline->addMessageReceiver(&listener);
@@ -1322,16 +1304,16 @@ public:
 
     startServer();
 
-    DREAM3D_REGISTER_TEST(TestExecutePipelineWithFiles());
+//    DREAM3D_REGISTER_TEST(TestExecutePipelineWithFiles());
 
-//    DREAM3D_REGISTER_TEST(TestExecutePipeline());
-//    DREAM3D_REGISTER_TEST(TestListFilterParameters());
-//    DREAM3D_REGISTER_TEST(TestLoadedPlugins());
-//    DREAM3D_REGISTER_TEST(TestNamesOfFilters());
-//    DREAM3D_REGISTER_TEST(TestNumFilters());
-//    DREAM3D_REGISTER_TEST(TestPluginInfo());
-//    DREAM3D_REGISTER_TEST(TestPreflightPipeline());
-//    DREAM3D_REGISTER_TEST(TestSIMPLibVersion());
+    DREAM3D_REGISTER_TEST(TestExecutePipeline());
+    DREAM3D_REGISTER_TEST(TestListFilterParameters());
+    DREAM3D_REGISTER_TEST(TestLoadedPlugins());
+    DREAM3D_REGISTER_TEST(TestNamesOfFilters());
+    DREAM3D_REGISTER_TEST(TestNumFilters());
+    DREAM3D_REGISTER_TEST(TestPluginInfo());
+    DREAM3D_REGISTER_TEST(TestPreflightPipeline());
+    DREAM3D_REGISTER_TEST(TestSIMPLibVersion());
 
     endServer();
   }

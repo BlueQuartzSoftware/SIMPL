@@ -212,10 +212,9 @@ namespace UnitTest
   namespace RestUnitTest
   {
     const QString RestServerConfigFilePath("@CMAKE_RUNTIME_OUTPUT_DIRECTORY@/RESTServer.ini");
-    const QString InputPipelineFilePath("@TEST_TEMP_DIR@/RESTInputPipeline.json");
-    const QString ErrorInputPipelineFilePath("@TEST_TEMP_DIR@/RESTErrorInputPipeline.json");
-    const QString SmallIN100ArchivePipelineFilePath("@TEST_TEMP_DIR@/(01) SmallIN100 Archive.json");
-    const QString RESTCreateDCAPipelineFilePath("@TEST_TEMP_DIR@/RESTCreateDCAPipeline.json");
-    const QString RESTDCADataFilePath("@TEST_TEMP_DIR@/RESTDCAData.dream3d");
+    const QString RESTPipelineFilePath("@TEST_TEMP_DIR@/RESTPipeline.json");
+    const QString RESTErrorPipelineFilePath("@TEST_TEMP_DIR@/RESTErrorPipeline.json");
+    const QString RESTFileIOPipelineFilePath("@TEST_TEMP_DIR@/RESTFileIOPipeline.json");
+    const QString RESTFileIOInputDataFilePath("@TEST_TEMP_DIR@/RESTFileIOInputData.dream3d");
   }
 }

@@ -63,7 +63,7 @@ private:
 
   void serviceMultiPart(HttpRequest& request, HttpResponse &response, QJsonObject &responseObj);
   QJsonObject getPipelineReplacementLookupObject(HttpRequest &request, HttpResponse &response, QJsonObject &responseObj);
-  QString getType(QJsonObject pipelineReplacementObj, HttpResponse &response, QJsonObject &responseObj);
+  QString getIOType(QJsonObject pipelineReplacementObj, HttpResponse &response, QJsonObject &responseObj);
   QJsonArray getFileParameterNames(QJsonObject pipelineReplacementObj, HttpResponse &response, QJsonObject &responseObj);
 };
 

@@ -73,7 +73,7 @@ void ExecutePipelineController::serviceJSON(HttpResponse& response, QJsonObject 
   if (!pipelineObj.contains(SIMPL::JSON::Pipeline))
   {
     responseObj[SIMPL::JSON::ErrorMessage] = tr("%1: No Pipeline object found in the JSON request body.").arg(EndPoint());
-    responseObj[SIMPL::JSON::ErrorCode] = -60;
+    responseObj[SIMPL::JSON::ErrorCode] = -40;
     QJsonDocument jdoc(responseObj);
     response.write(jdoc.toJson(), true);
     return;
@@ -84,7 +84,7 @@ void ExecutePipelineController::serviceJSON(HttpResponse& response, QJsonObject 
   if (pipeline.get() == nullptr)
   {
     responseObj[SIMPL::JSON::ErrorMessage] = tr("%1: Pipeline could not be created from the JSON request body.").arg(EndPoint());
-    responseObj[SIMPL::JSON::ErrorCode] = -70;
+    responseObj[SIMPL::JSON::ErrorCode] = -50;
     QJsonDocument jdoc(responseObj);
     response.write(jdoc.toJson(), true);
     return;
@@ -295,142 +295,145 @@ void ExecutePipelineController::serviceJSON(HttpRequest& request, HttpResponse &
 // -----------------------------------------------------------------------------
 void ExecutePipelineController::serviceMultiPart(HttpRequest& request, HttpResponse &response, QJsonObject &responseObj)
 {
-  QJsonObject pipelineReplacementLookupObject = getPipelineReplacementLookupObject(request, response, responseObj);
-  if (responseObj[SIMPL::JSON::ErrorCode].toInt() < 0)
-  {
-    return;
-  }
+//  QJsonObject pipelineReplacementLookupObject = getPipelineReplacementLookupObject(request, response, responseObj);
+//  if (responseObj[SIMPL::JSON::ErrorCode].toInt() < 0)
+//  {
+//    return;
+//  }
 
-  QByteArray jsonData = request.getParameter("json");
-  QString pipelineString(jsonData);
+//  QByteArray jsonData = request.getParameter("json");
+//  QString pipelineString(jsonData);
 
-  std::vector<QTemporaryDir*> tempDirs;       // We need this to keep the temporary directories around until the pipeline is done executing
-  std::vector<QTemporaryFile*> tempFiles;     // We need this to keep the temporary files around until the pipeline is done executing
+//  std::vector<QTemporaryDir*> tempDirs;       // We need this to keep the temporary directories around until the pipeline is done executing
+//  std::vector<QTemporaryFile*> tempFiles;     // We need this to keep the temporary files around until the pipeline is done executing
 
-  for(QJsonObject::iterator iter = pipelineReplacementLookupObject.begin(); iter != pipelineReplacementLookupObject.end(); iter++)
-  {
-    QString pipelineReplacementString = iter.key();
+//  for(QJsonObject::iterator iter = pipelineReplacementLookupObject.begin(); iter != pipelineReplacementLookupObject.end(); iter++)
+//  {
+//    QString pipelineReplacementString = iter.key();
 
-    if (!iter.value().isObject())
-    {
-      responseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Pipeline replacement lookup is not in the right format: top-level value is not an object.";
-      responseObj[SIMPL::JSON::ErrorCode] = -60;
-      QJsonDocument jdoc(responseObj);
+//    if (!iter.value().isObject())
+//    {
+//      responseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Pipeline replacement lookup is not in the right format: top-level value is not an object.";
+//      responseObj[SIMPL::JSON::ErrorCode] = -60;
+//      QJsonDocument jdoc(responseObj);
 
-      response.write(jdoc.toJson(), true);
-      return;
-    }
+//      response.write(jdoc.toJson(), true);
+//      return;
+//    }
 
-    QJsonObject pipelineReplacementObj = iter.value().toObject();
+//    QJsonObject pipelineReplacementObj = iter.value().toObject();
 
-    QJsonArray fileParameterNames = getFileParameterNames(pipelineReplacementObj, response, responseObj);
-    if (responseObj[SIMPL::JSON::ErrorCode].toInt() < 0)
-    {
-      return;
-    }
+//    QString ioTypeString = getIOType(pipelineReplacementObj, response, responseObj);
+//    if (responseObj[SIMPL::JSON::ErrorCode].toInt() < 0)
+//    {
+//      return;
+//    }
 
-    QString typeString = getType(pipelineReplacementObj, response, responseObj);
-    if (responseObj[SIMPL::JSON::ErrorCode].toInt() < 0)
-    {
-      return;
-    }
+//    if (ioTypeString == "Input")
+//    {
+//      QJsonArray fileParameterNames = getFileParameterNames(pipelineReplacementObj, response, responseObj);
+//      if (responseObj[SIMPL::JSON::ErrorCode].toInt() < 0)
+//      {
+//        return;
+//      }
+//    }
 
-    QString replacementToken = "";
-    if (typeString == "Directory")
-    {
-      QTemporaryDir* tempDir = new QTemporaryDir();
-      tempDirs.push_back(tempDir);
-      replacementToken = tempDir->path();
-    }
+//    QString replacementToken = "";
+//    if (typeString == "Directory")
+//    {
+//      QTemporaryDir* tempDir = new QTemporaryDir();
+//      tempDirs.push_back(tempDir);
+//      replacementToken = tempDir->path();
+//    }
 
-    for (int i = 0; i < fileParameterNames.size(); i++)
-    {
-      if (!fileParameterNames[i].isString())
-      {
-        responseObj[SIMPL::JSON::ErrorMessage] = tr("%1: Pipeline replacement lookup is not in the right format: FileParameterName at index %2 in top-level object"
-                                                              " is not a string.").arg(EndPoint()).arg(i+1);
-        responseObj[SIMPL::JSON::ErrorCode] = -80;
-        QJsonDocument jdoc(responseObj);
+//    for (int i = 0; i < fileParameterNames.size(); i++)
+//    {
+//      if (!fileParameterNames[i].isString())
+//      {
+//        responseObj[SIMPL::JSON::ErrorMessage] = tr("%1: Pipeline replacement lookup is not in the right format: FileParameterName at index %2 in top-level object"
+//                                                              " is not a string.").arg(EndPoint()).arg(i+1);
+//        responseObj[SIMPL::JSON::ErrorCode] = -80;
+//        QJsonDocument jdoc(responseObj);
 
-        response.write(jdoc.toJson(), true);
-        return;
-      }
+//        response.write(jdoc.toJson(), true);
+//        return;
+//      }
 
-      QString fileParameterName = fileParameterNames[i].toString();
-      QByteArray rawData = request.getParameter(QByteArray::fromStdString(fileParameterName.toStdString()));
+//      QString fileParameterName = fileParameterNames[i].toString();
+//      QByteArray rawData = request.getParameter(QByteArray::fromStdString(fileParameterName.toStdString()));
 
-      QTemporaryFile* tempFile = new QTemporaryFile(replacementToken);
+//      QTemporaryFile* tempFile = new QTemporaryFile(replacementToken);
 
-      tempFiles.push_back(tempFile);
-      if (tempFile->open())
-      {
-        if (replacementToken.isEmpty())
-        {
-          replacementToken = tempFile->fileName();
-        }
+//      tempFiles.push_back(tempFile);
+//      if (tempFile->open())
+//      {
+//        if (replacementToken.isEmpty())
+//        {
+//          replacementToken = tempFile->fileName();
+//        }
 
-        tempFile->write(rawData);
-        tempFile->close();
-      }
-      else
-      {
-        // Form Error response
-        responseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": File data included in the request could not be written to a temporary file on the server.";
-        responseObj[SIMPL::JSON::ErrorCode] = -90;
-        QJsonDocument jdoc(responseObj);
+//        tempFile->write(rawData);
+//        tempFile->close();
+//      }
+//      else
+//      {
+//        // Form Error response
+//        responseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": File data included in the request could not be written to a temporary file on the server.";
+//        responseObj[SIMPL::JSON::ErrorCode] = -90;
+//        QJsonDocument jdoc(responseObj);
 
-        response.write(jdoc.toJson(), true);
-        return;
-      }
-    }
+//        response.write(jdoc.toJson(), true);
+//        return;
+//      }
+//    }
 
-    pipelineString.replace(pipelineReplacementString, replacementToken);
-  }
+//    pipelineString.replace(pipelineReplacementString, replacementToken);
+//  }
 
-  QJsonParseError jsonParseError;
-  QJsonDocument pipelineDoc = QJsonDocument::fromJson(QByteArray::fromStdString(pipelineString.toStdString()), &jsonParseError);
-  if (jsonParseError.error != QJsonParseError::ParseError::NoError)
-  {
-    // Form Error response
-    responseObj[SIMPL::JSON::ErrorMessage] = tr("%1: JSON Request Parsing Error - %2").arg(EndPoint()).arg(jsonParseError.errorString());
-    responseObj[SIMPL::JSON::ErrorCode] = -30;
-    QJsonDocument jdoc(responseObj);
-    response.write(jdoc.toJson(), true);
-    return;
-  }
+//  QJsonParseError jsonParseError;
+//  QJsonDocument pipelineDoc = QJsonDocument::fromJson(QByteArray::fromStdString(pipelineString.toStdString()), &jsonParseError);
+//  if (jsonParseError.error != QJsonParseError::ParseError::NoError)
+//  {
+//    // Form Error response
+//    responseObj[SIMPL::JSON::ErrorMessage] = tr("%1: JSON Request Parsing Error - %2").arg(EndPoint()).arg(jsonParseError.errorString());
+//    responseObj[SIMPL::JSON::ErrorCode] = -30;
+//    QJsonDocument jdoc(responseObj);
+//    response.write(jdoc.toJson(), true);
+//    return;
+//  }
 
-  QJsonObject pipelineObj = pipelineDoc.object();
+//  QJsonObject pipelineObj = pipelineDoc.object();
 
-  serviceJSON(response, pipelineObj, responseObj);
+//  serviceJSON(response, pipelineObj, responseObj);
 
-  for (int i = 0; i < tempFiles.size(); i++)
-  {
-    delete tempFiles[i];
-  }
+//  for (int i = 0; i < tempFiles.size(); i++)
+//  {
+//    delete tempFiles[i];
+//  }
 
-  for (int i = 0; i < tempDirs.size(); i++)
-  {
-    delete tempDirs[i];
-  }
+//  for (int i = 0; i < tempDirs.size(); i++)
+//  {
+//    delete tempDirs[i];
+//  }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString ExecutePipelineController::getType(QJsonObject pipelineReplacementObj, HttpResponse &response, QJsonObject &responseObj)
+QString ExecutePipelineController::getIOType(QJsonObject pipelineReplacementObj, HttpResponse &response, QJsonObject &responseObj)
 {
-  if (!pipelineReplacementObj.contains("Type"))
+  if (!pipelineReplacementObj.contains("IO_Type"))
   {
-    responseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Pipeline replacement lookup is not in the right format: Top-level object does not contain 'Type' value.";
+    responseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Pipeline replacement lookup is not in the right format: Top-level object does not contain 'IO_Type' value.";
     responseObj[SIMPL::JSON::ErrorCode] = -70;
     QJsonDocument jdoc(responseObj);
 
     response.write(jdoc.toJson(), true);
     return QString();
   }
-  else if (!pipelineReplacementObj["Type"].isString())
+  else if (!pipelineReplacementObj["IO_Type"].isString())
   {
-    responseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Pipeline replacement lookup is not in the right format: The 'Type' value in a top-level object"
+    responseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Pipeline replacement lookup is not in the right format: The 'IO_Type' value in a top-level object"
                                                           " is not a string.";
     responseObj[SIMPL::JSON::ErrorCode] = -70;
     QJsonDocument jdoc(responseObj);
@@ -439,7 +442,7 @@ QString ExecutePipelineController::getType(QJsonObject pipelineReplacementObj, H
     return QString();
   }
 
-  QString typeString = pipelineReplacementObj["Type"].toString();
+  QString typeString = pipelineReplacementObj["IO_Type"].toString();
   return typeString;
 }
 
@@ -527,13 +530,13 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
   }
   else if (content_type.startsWith("multipart/form-data"))
   {
-    serviceMultiPart(request, response, responseObj);
+//    serviceMultiPart(request, response, responseObj);
   }
   else
   {
     // Form Error response
     responseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Content Type is not application/json";
-    responseObj[SIMPL::JSON::ErrorCode] = -50;
+    responseObj[SIMPL::JSON::ErrorCode] = -20;
     QJsonDocument jdoc(responseObj);
 
     response.write(jdoc.toJson(), true);
