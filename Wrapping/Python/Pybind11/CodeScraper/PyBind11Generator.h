@@ -47,6 +47,12 @@ public:
    */
   void copyPyInitFiles();
 
+  /**
+   * 
+   */
+  void generateModuleInitPy();
+
+
 private:
   QDir m_TopLevelDir;
   QDir m_SourceDir;
