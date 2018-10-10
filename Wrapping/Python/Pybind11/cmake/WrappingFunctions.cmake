@@ -37,6 +37,9 @@ function(CreatePybind11Module)
   set(pybind_module_name "${ARGS_MODULE_NAME}${SIMPL_PYTHON_MODULE_SUFFIX}")
   set(pybind_module_name_CamelCase "${ARGS_MODULE_NAME}")
   string(TOLOWER ${pybind_module_name} pybind_module_name)
+  set(pybind_plugin_list_file "${SIMPLProj_BINARY_DIR}/Pybind11Plugins.txt")
+
+
 
   set(SIMPL_PY_MODULE_NAME "dream3d")
 
@@ -70,7 +73,7 @@ function(CreatePybind11Module)
   if(NOT TARGET ${SIMPL_PY_MODULE_NAME})
     file(WRITE ${submodules_headers_file_name} "/* This file includes all the submodule CXX files */\n")
     file(WRITE ${submodule_init_cxx_file_name} "/* This file includes the submodule init code. */\n")
-
+    file(WRITE ${pybind_plugin_list_file} "SIMPL\n")
 
     pybind11_add_module(${SIMPL_PY_MODULE_NAME}
       ${submodules_headers_file_name}
@@ -138,6 +141,7 @@ function(CreatePybind11Module)
                                   HEADER_FILE_ONLY TRUE
                                   SKIP_AUTOMOC TRUE
     )
+    file(APPEND ${pybind_plugin_list_file} "${ARGS_MODULE_NAME}\n")
 
   endif() 
   #---------------------------------------------------------------------

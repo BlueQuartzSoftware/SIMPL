@@ -416,7 +416,7 @@ def RemoveArray(dca, path):
     dcap.getDataContainerProxy(datacontainername).getAttributeMatrixProxy(attrmatrixname).flag = 0
     dcap.getDataContainerProxy(datacontainername).getAttributeMatrixProxy(attrmatrixname).getDataArrayProxy(dataarrayname).flag = 2
 
-    err = d3d.remove_arrays(dca, dcap)
+    err = simpl.remove_arrays(dca, dcap)
     if err < 0:
         print("Error condition for Remove Arrays: %d" % err)
         return False
@@ -474,7 +474,7 @@ def MultiThresholdObjects(dca, destination_array_name, selected_thresholds):
             print("Non-numerical value passed for comparison value")
         thresholds.addInput(datacontainername, attrmatrixname, dataarrayname, comparison_operator, comparison_value)
     
-    err = d3d.multi_threshold_objects(dca, destination_array_name, thresholds)
+    err = simpl.multi_threshold_objects(dca, destination_array_name, thresholds)
     return err
 
 
@@ -521,7 +521,7 @@ def MultiThresholdObjects2(dca, source_path, destination_array_name, selected_th
         print("Invalid source path")
         return -1        
     
-    err = d3d.multi_threshold_objects2(dca, destination_array_name, thresholds)
+    err = simpl.multi_threshold_objects2(dca, destination_array_name, thresholds)
     if err < 0:
         print("MultiThresholdObjects ErrorCondition: %d" % err)
     return err
@@ -605,7 +605,7 @@ def MoveData(dca, what_to_move, source_path, destination_path):
     else:
         source_dataarrayname = source_path[2]
 
-    err = d3d.move_data(dca, what_to_move_number, destination_datacontainername, simpl.DataArrayPath(source_datacontainername, source_attrmatrixname, ""),
+    err = simpl.move_data(dca, what_to_move_number, destination_datacontainername, simpl.DataArrayPath(source_datacontainername, source_attrmatrixname, ""),
     simpl.DataArrayPath(destination_datacontainername, destination_attrmatrixname, ""), simpl.DataArrayPath(source_datacontainername, source_attrmatrixname, source_dataarrayname))
     if err < 0:
         print("MoveData ErrorCondition %d: " % err)

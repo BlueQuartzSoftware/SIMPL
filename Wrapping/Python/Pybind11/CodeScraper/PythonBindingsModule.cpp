@@ -392,16 +392,17 @@ void PythonBindingsModule::generatePythonicInterface(const QString& outputPath, 
   out << "\"\"\"\n Pythonic Interface to SIMPL Plugin " << getLibNameUpper() << "\n";
   out << " This file is auto generated during the build of DREAM.3D and the plugin " << getLibNameUpper() << "\n";
   out << "\"\"\"" << "\n";
-  out << "\n\n";
+  out << "\n";
   QString shortLibName = m_LibName;
   shortLibName.replace("_py", "");
 
-  if(isSIMPLib.compare("TRUE") == 0) 
+  if(isSIMPLib.compare("TRUE") == 0)
   {
     shortLibName = QString("simpl");
   }
-  out << "import dream3d\n"
-    << "from dream3d import " << shortLibName << "\n"
+  out 
+    //<< "import dream3d\n"
+    << "from .dream3d import " << shortLibName << "\n"
     << "\n\n\n"
     ;
     
