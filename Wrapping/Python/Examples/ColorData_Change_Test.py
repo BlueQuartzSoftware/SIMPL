@@ -9,18 +9,13 @@ from dream3d import simplpy
 from dream3d import simpl
 from dream3d import simpl_helpers as sc
 from dream3d import simpl_test_dirs as sd
-from dream3d import orientationanalysispy as orientationanalysis
-from dream3d import reconstructionpy as reconstruction
-from dream3d import processingpy as processing
-from dream3d import genericpy as generic
-from dream3d import statisticspy as statistics
-from dream3d import syntheticbuildingpy as syntheticbuilding
 
 # Numpy for some data management assistance
 import numpy as np
 import datetime as datetime
 
-def ColorDataChangeTest():
+
+def color_data_change_test():
 
     # Create Data Container Array
     dca = simpl.DataContainerArray.New()
@@ -76,25 +71,26 @@ def ColorDataChangeTest():
     now_time = datetime.datetime.now()
     now_time_seconds = now_time.hour * 3600 + now_time.minute * 60 + now_time.second
     dt = simpl.DateTime(now_time.year, now_time.month, now_time.day, now_time_seconds)
-    err = simplpy.data_container_reader(dca, sd.GetBuildDirectory() + "/Debug/Data/Output/Synthetic/06_SmallIN100Synthetic.dream3d",
-                                False, "", dt, dcap)
+    err = simplpy.data_container_reader(dca, sd.GetBuildDirectory() +
+                                        "/Debug/Data/Output/Synthetic/06_SmallIN100Synthetic.dream3d",
+                                        False, "", dt, dcap)
     if err < 0:
-      print("DataContainerReader ErrorCondition %d" % err)
-      print("Exiting...")
-      return
+        print("DataContainerReader ErrorCondition %d" % err)
+        print("Exiting...")
+        return
 
     # Change the color data
     am = dca.getAttributeMatrix(simpl.DataArrayPath("Small IN100", "EBSD Scan Data", ""))
-    dataArray = am.getAttributeArray("IPFColor")
-    compDims = dataArray.getComponentDimensions()
-    tupleDims = am.TupleDimensions
-    data = dataArray.Data
-	
+    data_array = am.getAttributeArray("IPFColor")
+    comp_dims = data_array.getComponentDimensions()
+    data = data_array.Data
+
     # Zero array
-    # np_array = np.zeros_like(data).astype('uint8').reshape(dataArray.getNumberOfTuples(), dataArray.getNumberOfComponents())
-	
+    # np_array = np.zeros_like(data).astype('uint8').reshape(dataArray.getNumberOfTuples(),
+    # dataArray.getNumberOfComponents())
+
     # Unchanged array
-    np_array = np.asanyarray(data).reshape(dataArray.getNumberOfTuples(), dataArray.getNumberOfComponents())
+    np_array = np.asanyarray(data).reshape(data_array.getNumberOfTuples(), data_array.getNumberOfComponents())
     for row in np_array:
         if row[0] > 0:
             row[0] = row[0] / 2
@@ -102,12 +98,13 @@ def ColorDataChangeTest():
             row[0] = 255
         row[1] = 128
         row[2] = 0
-    newdata = sc.ConvertToDataArray("IPFColor", np_array, compDims[0])
+    newdata = sc.ConvertToDataArray("IPFColor", np_array, comp_dims[0])
     sc.RemoveArray(dca, ["Small IN100", "EBSD Scan Data", "IPFColor"])
     am.addAttributeArray("IPFColor", newdata[1])
 
     # Write to DREAM3D file
-    err = sc.WriteDREAM3DFile(sd.GetBuildDirectory() + "/Debug/Data/Output/Synthetic/06_SmallIN100Synthetic_ColorChanged.dream3d",
+    err = sc.WriteDREAM3DFile(sd.GetBuildDirectory() +
+                              "/Debug/Data/Output/Synthetic/06_SmallIN100Synthetic_ColorChanged.dream3d",
                               dca)
     if err < 0:
         print("WriteDREAM3DFile ErrorCondition: %d" % err)
@@ -116,6 +113,6 @@ def ColorDataChangeTest():
 Main entry point for python script
 """
 if __name__ == "__main__":
-    ColorDataChangeTest()
+    color_data_change_test()
 
 
