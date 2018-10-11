@@ -1,7 +1,7 @@
 
 from dream3d import simpl
 from dream3d import simplpy as d3d
-from dream3d import synthetic_building
+from dream3d import syntheticbuildingpy as synthetic_building
 from enum import IntEnum
 
 try:
