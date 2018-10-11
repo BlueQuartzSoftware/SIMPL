@@ -6,11 +6,10 @@ import time
 
 # These are the simpl_py python modules
 
-import dream3d
-import dream3d.core as d3d
-import dream3d.dream3d.simpl as simpl
-import dream3d.utils.simpl_common as sc
-import dream3d.utils.simpl_test_dirs as sd
+from dream3d import simplpy as d3d
+from dream3d import simpl
+from dream3d import simpl_helpers as sc
+from dream3d import simpl_test_dirs as sd
 
 def CreateEdgeGeometryTest():
   # Create Data Container Array

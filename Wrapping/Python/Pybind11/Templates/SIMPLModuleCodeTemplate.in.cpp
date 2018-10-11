@@ -234,6 +234,15 @@ PYBIND11_MODULE(dream3d, m)
 	  .value("Unknown", SIMPL::Comparison::Enumeration::Operator_Unknown)
 	  .export_values();
 
+  /* Enumeration code for Delimiter types */
+  py::enum_<SIMPL::DelimiterTypes::Type>(mod, "DelimiterTypes")
+	  .value("Comma", SIMPL::DelimiterTypes::Type::Comma)
+	  .value("Semicolon", SIMPL::DelimiterTypes::Type::Semicolon)
+	  .value("Colon", SIMPL::DelimiterTypes::Type::Colon)
+	  .value("Tab", SIMPL::DelimiterTypes::Type::Tab)
+	  .value("Space", SIMPL::DelimiterTypes::Type::Space)
+	  .export_values();
+
   /* Enumeration code for PhaseType */
   py::enum_<PhaseType::Type>(mod, "PhaseType")
 	  .value("Primary", PhaseType::Type::Primary)

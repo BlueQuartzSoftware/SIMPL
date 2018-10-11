@@ -2,20 +2,14 @@
 # 
 
 # These are the simpl_py python modules
+from dream3d import simplpy
+from dream3d import simpl
+from dream3d import simpl_helpers as sc
+from dream3d import simpl_test_dirs as sd
+from dream3d import orientationanalysispy
+from dream3d import statisticspy
+from dream3d import samplingpy
 
-import dream3d
-from dream3d import *
-
-# import dream3d.core as simpl
-# from dream3d.dream3d import simpl
-import dream3d.simpl_helpers as sc
-import dream3d.simpl_test_dirs as sd
-# import dream3d.dream3d.orientationanalysis as orientationanalysis
-# import dream3d.orientationanalysis as orientationanalysispy
-# import dream3d.dream3d.sampling as sampling
-# import dream3d.sampling as samplingpy
-# import dream3d.dream3d.statistics as statistics
-# import dream3d.statistics as statisticspy
 
 def ConfidenceIndexHistogramTest():
   # Create Data Container Array
@@ -46,7 +40,7 @@ def ConfidenceIndexHistogramTest():
     print("MultiThresholdObjects ErrorCondition: %d" % err)
 
   # Replace Value in Array (Conditional)
-  err = simpl.conditional_set_value(dca, simpl.DataArrayPath("Small IN100 Slice 1", "EBSD Scan Data", "Confidence Index"), 
+  err = simplpy.conditional_set_value(dca, simpl.DataArrayPath("Small IN100 Slice 1", "EBSD Scan Data", "Confidence Index"), 
   simpl.DataArrayPath("Small IN100 Slice 1", "EBSD Scan Data", "Mask"), 0)
   if err < 0:
     print("ConditionalSetValue ErrorCondition: %d" % err)
@@ -59,7 +53,7 @@ def ConfidenceIndexHistogramTest():
 
   # Export ASCII Data
   selectedDataArrayPaths = [simpl.DataArrayPath("Small IN100 Slice 1", "Histograms", "CI_Histogram")]
-  err = simpl.write_ascii_data(dca, selectedDataArrayPaths, sd.GetBuildDirectory() + "/Debug/Data/Output/Histograms", 0, ".csv", 1)
+  err = simplpy.write_ascii_data(dca, selectedDataArrayPaths, sd.GetBuildDirectory() + "/Debug/Data/Output/Histograms", 0, ".csv", 1)
   if err < 0:
     print("WriteAsciiData ErrorCondition: %d" % err)
 

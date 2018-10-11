@@ -5,19 +5,16 @@ using Numpy and re-added to the attribute matrix
 
 """
 
-import dream3d
-import dream3d.core as d3d
-import dream3d.dream3d.simpl as simpl
-import dream3d.utils.simpl_common as sc
-import dream3d.utils.simpl_test_dirs as sd
-import dream3d.dream3d.syntheticbuilding as syntheticbuilding
-import dream3d.synthetic_building as syntheticbuilding_pythonic
-import dream3d.dream3d.statistics as statistics
-import dream3d.statistics as statistics_pythonic
-import dream3d.dream3d.orientationanalysis as orientationanalysis
-import dream3d.orientation_analysis as orientationanalysis_pythonic
-import dream3d.dream3d.generic as generic
-import dream3d.generic as generic_pythonic
+from dream3d import simplpy
+from dream3d import simpl
+from dream3d import simpl_helpers as sc
+from dream3d import simpl_test_dirs as sd
+from dream3d import orientationanalysispy as orientationanalysis
+from dream3d import reconstructionpy as reconstruction
+from dream3d import processingpy as processing
+from dream3d import genericpy as generic
+from dream3d import statisticspy as statistics
+from dream3d import syntheticbuildingpy as syntheticbuilding
 
 # Numpy for some data management assistance
 import numpy as np
@@ -75,11 +72,11 @@ def ColorDataChangeTest():
     dcap.getDataContainerProxy("Small IN100").getAttributeMatrixProxy("Grain Data").getDataArrayProxy("Size Volumes").flag = 2
     dcap.getDataContainerProxy("Small IN100").getAttributeMatrixProxy("Grain Data").getDataArrayProxy("Sphericity").flag = 2
     dcap.getDataContainerProxy("Small IN100").getAttributeMatrixProxy("Grain Data").getDataArrayProxy("SurfaceAreaVolumeRatio").flag = 2
-	
+
     now_time = datetime.datetime.now()
     now_time_seconds = now_time.hour * 3600 + now_time.minute * 60 + now_time.second
     dt = simpl.DateTime(now_time.year, now_time.month, now_time.day, now_time_seconds)
-    err = d3d.data_container_reader(dca, sd.GetBuildDirectory() + "/Debug/Data/Output/Synthetic/06_SmallIN100Synthetic.dream3d",
+    err = simplpy.data_container_reader(dca, sd.GetBuildDirectory() + "/Debug/Data/Output/Synthetic/06_SmallIN100Synthetic.dream3d",
                                 False, "", dt, dcap)
     if err < 0:
       print("DataContainerReader ErrorCondition %d" % err)

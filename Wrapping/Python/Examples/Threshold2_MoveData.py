@@ -3,17 +3,13 @@
 
 # These are the simpl_py python modules
 
-import dream3d
-import dream3d.core as d3d
-import dream3d.dream3d.simpl as simpl
-import dream3d.utils.simpl_common as sc
-import dream3d.utils.simpl_test_dirs as sd
-import dream3d.dream3d.orientationanalysis as orientationanalysis
-import dream3d.orientation_analysis as orientationanalysis_pythonic
-import dream3d.dream3d.sampling as sampling
-import dream3d.sampling as sampling_pythonic
-import dream3d.dream3d.statistics as statistics
-import dream3d.statistics as statistics_pythonic
+from dream3d import simplpy
+from dream3d import simpl
+from dream3d import simpl_helpers as sc
+from dream3d import simpl_test_dirs as sd
+from dream3d import orientationanalysispy as orientationanalysis
+from dream3d import statisticspy as statistics
+from dream3d import samplingpy as sampling
 
 
 def Threshold2_MoveDataTest():
@@ -21,22 +17,22 @@ def Threshold2_MoveDataTest():
   dca = simpl.DataContainerArray.New()
 
   # Pipeline Annotation 1
-  err = d3d.pipeline_annotation(dca, "This pipeline shows using the newer threshold objects filter and moving data around in the data structure.")
+  err = simplpy.pipeline_annotation(dca, "This pipeline shows using the newer threshold objects filter and moving data around in the data structure.")
   if err < 0:
       print("PipelineAnnotation 1 ErrorCondition: %d" % err)
 
   # ReadAngData
-  err = orientationanalysis_pythonic.read_ang_data(dca, "Small IN100", "Phase Data", "EBSD Scan Data",
+  err = orientationanalysis.read_ang_data(dca, "Small IN100", "Phase Data", "EBSD Scan Data",
    False, sd.GetBuildDirectory() + "/Debug/Data/SmallIN100/Slice_1.ang")
   if err < 0:
     print("ReadAngData ErrorCondition: %d" % err)
 
-  err = sampling_pythonic.rotate_sample_ref_frame(dca, simpl.DataArrayPath("Small IN100", "EBSD Scan Data", ""),
+  err = sampling.rotate_sample_ref_frame(dca, simpl.DataArrayPath("Small IN100", "EBSD Scan Data", ""),
    simpl.FloatVec3(0.0, 1.0, 0.0), 180.0, False)
   if err < 0:
     print("RotateSampleRefFrame ErrorCondition: %d" % err)
 
-  err = orientationanalysis_pythonic.rotate_euler_ref_frame(dca, simpl.FloatVec3(0.0, 0.0, 1.0), 90.0,
+  err = orientationanalysis.rotate_euler_ref_frame(dca, simpl.FloatVec3(0.0, 0.0, 1.0), 90.0,
    simpl.DataArrayPath("Small IN100", "EBSD Scan Data", "EulerAngles"))
   if err < 0:
     print("RotateEulerRefFrame ErrorCondition: %d" % err)
@@ -48,7 +44,7 @@ def Threshold2_MoveDataTest():
     print("MultiThresholdObjects ErrorCondition: %d" % err)
 
   # Pipeline Annotation 2
-  err = d3d.pipeline_annotation(dca, "These next filters show creating a new DataContainer and AttributeMatrix, \
+  err = simplpy.pipeline_annotation(dca, "These next filters show creating a new DataContainer and AttributeMatrix, \
    then we move some data arrays from the Small IN100/EBSD Scan Data Attribute Matrix to the new attributeMatrix using the \
    \"Move Multi Data\" filter and the \"Move Data\" filter.")
   if err < 0:
@@ -56,14 +52,14 @@ def Threshold2_MoveDataTest():
   
   # Create Data Container
   # Improve helper function for creation of data containers to include a dca
-  err = d3d.create_data_container(dca, "Extra_DataContainer")
+  err = simplpy.create_data_container(dca, "Extra_DataContainer")
   if err < 0:
     print("CreateDataContainer ErrorCondition: %d" % err)
   
   # Create Attribute Matrix
   # Using helper function
   dynamicTableData = sc.CreateDynamicTableData([[189, 201, 1]], ["0", "1", "2"], ["1"])
-  err = d3d.create_attribute_matrix(dca, simpl.DataArrayPath("Extra_DataContainer","Positions",""), 13, dynamicTableData)
+  err = simplpy.create_attribute_matrix(dca, simpl.DataArrayPath("Extra_DataContainer","Positions",""), 13, dynamicTableData)
 
   if err < 0:
     print("CreateAttributeMatrix ErrorCondition: %d" % err)
@@ -81,13 +77,13 @@ def Threshold2_MoveDataTest():
     print("MoveData ErrorCondition: %d" % err)
 
   # Pipeline Annotation 3
-  err = d3d.pipeline_annotation(dca, "This next part simply changes (arbitrarily) the Origin \
+  err = simplpy.pipeline_annotation(dca, "This next part simply changes (arbitrarily) the Origin \
   and Resolution of the Image Geometry that the data resides on.")
   if err < 0:
       print("PipelineAnnotation 3 ErrorCondition: %d" % err) 
 
   # Set Origin & Resolution (Image)
-  err = d3d.set_origin_resolution_image_geom(dca, "Small IN100", True, simpl.FloatVec3(50, 25, 10), 
+  err = simplpy.set_origin_resolution_image_geom(dca, "Small IN100", True, simpl.FloatVec3(50, 25, 10), 
   True, simpl.FloatVec3(1, 1, 25))
   if err < 0:
       print("SetOriginResolutionImageGeom ErrorCondition: %d" % err)
@@ -98,12 +94,12 @@ def Threshold2_MoveDataTest():
     print("WriteDREAM3DFile 1 ErrorCondition: %d" % err)
 
   # Pipeline Annotation 4
-  err = d3d.pipeline_annotation(dca, "This next part simply scales the image geometry by some arbitrary amount.")
+  err = simplpy.pipeline_annotation(dca, "This next part simply scales the image geometry by some arbitrary amount.")
   if err < 0:
       print("PipelineAnnotation 4 ErrorCondition: %d" % err) 
   
   # Change Scaling of Volume
-  err = d3d.scale_volume(dca, "Small IN100", "", True, False,simpl.FloatVec3(2, 2, 2))
+  err = simplpy.scale_volume(dca, "Small IN100", "", True, False,simpl.FloatVec3(2, 2, 2))
   if err < 0:
       print("ScaleVolume ErrorCondition: %d" % err) 
 

@@ -6,15 +6,12 @@ import time
 
 # These are the simpl_py python modules
 
-import dream3d
-import dream3d.core as d3d
-import dream3d.dream3d.simpl as simpl
-import dream3d.utils.simpl_common as sc
-import dream3d.utils.simpl_test_dirs as sd
-import dream3d.dream3d.orientationanalysis as orientationanalysis
-import dream3d.orientation_analysis as orientationanalysis_pythonic
-import dream3d.dream3d.sampling as sampling
-import dream3d.sampling as sampling_pythonic
+from dream3d import simplpy
+from dream3d import simpl
+from dream3d import simpl_helpers as sc
+from dream3d import simpl_test_dirs as sd
+from dream3d import orientationanalysispy as orientationanalysis
+from dream3d import samplingpy as sampling
 
 
 def Dream3DTest():
@@ -142,19 +139,19 @@ def PipelineTest(dca):
 
 
 def PythonicTest(dca):
-    err = orientationanalysis_pythonic.read_ang_data(dca, "Small IN100 Slice 1", "Phase Data", "EBSD Scan Data",
+    err = orientationanalysis.read_ang_data(dca, "Small IN100 Slice 1", "Phase Data", "EBSD Scan Data",
                                                      False,
                                                      sd.GetBuildDirectory() + "/Debug/Data/SmallIN100/Slice_1.ang")
     if err < 0:
         print("ReadAngData ErrorCondition: %d" % err)
 
-    err = orientationanalysis_pythonic.rotate_euler_ref_frame(dca, simpl.FloatVec3(0.0, 0.0, 1.0), 90.0,
+    err = orientationanalysis.rotate_euler_ref_frame(dca, simpl.FloatVec3(0.0, 0.0, 1.0), 90.0,
                                                               simpl.DataArrayPath("Small IN100 Slice 1",
                                                                                   "EBSD Scan Data", "EulerAngles"))
     if err < 0:
         print("RotateEulerRefFrame ErrorCondition: %d" % err)
 
-    err = sampling_pythonic.rotate_sample_ref_frame(dca,
+    err = sampling.rotate_sample_ref_frame(dca,
                                                     simpl.DataArrayPath("Small IN100 Slice 1", "EBSD Scan Data", ""),
                                                     simpl.FloatVec3(0.0, 1.0, 0.0), 180.0, False)
     if err < 0:
@@ -165,7 +162,7 @@ def PythonicTest(dca):
     selectedThresholds.addInput("Small IN100 Slice 1", "EBSD Scan Data", "Confidence Index", 1, 0.1)
     selectedThresholds.addInput("Small IN100 Slice 1", "EBSD Scan Data", "Image Quality", 1, 120)
 
-    err = d3d.multi_threshold_objects(dca, "Mask", selectedThresholds)
+    err = simplpy.multi_threshold_objects(dca, "Mask", selectedThresholds)
     if err < 0:
         print("MultiThresholdObjects ErrorCondition: %d" % err)
 
@@ -173,7 +170,7 @@ def PythonicTest(dca):
     dataArray = am.getAttributeArray("EulerAngles")
     rawdata = dataArray.Data
     # print(rawdata)
-    err = orientationanalysis_pythonic.write_stats_gen_odf_angle_file(dca,
+    err = orientationanalysis.write_stats_gen_odf_angle_file(dca,
                                                                       sd.GetTestTempDirectory() + "/StatsGenODF.txt",
                                                                       1, 1, 2,
                                                                       simpl.DataArrayPath("Small IN100 Slice 1",

@@ -1,5 +1,7 @@
 
 from dream3d import simpl
+from dream3d import simplpy as d3d
+from dream3d import synthetic_building
 from enum import IntEnum
 
 try:
@@ -118,7 +120,7 @@ def CreateDataArray(name, shape, cDims, type):
     return (z, array)
 
 
-def ConvertToDataArray(name, array):
+def ConvertToDataArray(name, array, componentDimensions = 1):
     """
     Converts a numpy array into a Data Array for DREAM3D.
     \nKeyword arguments:
@@ -126,17 +128,11 @@ def ConvertToDataArray(name, array):
     \narray: The numpy array to be converted
     """
     # Make sure it is a numpy array
-    array = np.array(array)
+    # array = np.asanyarray(array)
     # Get shape
     shape = array.shape
     # Determine cDims
-    cDims = simpl.VectorSizeT([1])  # Default
-    dimensions = []
-    arraySize = np.size(array)
-    if arraySize > 0 and np.size(array[0]) > 1:
-        for i in range(0, arraySize):
-            dimensions.append(np.size(array[i]))
-        cDims = simpl.VectorSizeT(dimensions)
+    cDims = simpl.VectorSizeT([componentDimensions])  # Default is 1
 
     # Determine type
     type = array.dtype
@@ -178,7 +174,7 @@ def ConvertToDataArray(name, array):
         da = simpl.DoubleArrayType(z_flat, cDims, name, False)
 
     # we need to return the 'z' numpy array so it does not go out of scope.
-    return (z, da)
+    return (z_flat, da)
 
 
 def CreateDataContainerProxy(dca, data_array_paths):
@@ -416,7 +412,7 @@ def RemoveArray(dca, path):
     dcap.getDataContainerProxy(datacontainername).getAttributeMatrixProxy(attrmatrixname).flag = 0
     dcap.getDataContainerProxy(datacontainername).getAttributeMatrixProxy(attrmatrixname).getDataArrayProxy(dataarrayname).flag = 2
 
-    err = simpl.remove_arrays(dca, dcap)
+    err = d3d.remove_arrays(dca, dcap)
     if err < 0:
         print("Error condition for Remove Arrays: %d" % err)
         return False
@@ -474,7 +470,7 @@ def MultiThresholdObjects(dca, destination_array_name, selected_thresholds):
             print("Non-numerical value passed for comparison value")
         thresholds.addInput(datacontainername, attrmatrixname, dataarrayname, comparison_operator, comparison_value)
     
-    err = simpl.multi_threshold_objects(dca, destination_array_name, thresholds)
+    err = d3d.multi_threshold_objects(dca, destination_array_name, thresholds)
     return err
 
 
@@ -521,7 +517,7 @@ def MultiThresholdObjects2(dca, source_path, destination_array_name, selected_th
         print("Invalid source path")
         return -1        
     
-    err = simpl.multi_threshold_objects2(dca, destination_array_name, thresholds)
+    err = d3d.multi_threshold_objects2(dca, destination_array_name, thresholds)
     if err < 0:
         print("MultiThresholdObjects ErrorCondition: %d" % err)
     return err
@@ -605,7 +601,7 @@ def MoveData(dca, what_to_move, source_path, destination_path):
     else:
         source_dataarrayname = source_path[2]
 
-    err = simpl.move_data(dca, what_to_move_number, destination_datacontainername, simpl.DataArrayPath(source_datacontainername, source_attrmatrixname, ""),
+    err = d3d.move_data(dca, what_to_move_number, destination_datacontainername, simpl.DataArrayPath(source_datacontainername, source_attrmatrixname, ""),
     simpl.DataArrayPath(destination_datacontainername, destination_attrmatrixname, ""), simpl.DataArrayPath(source_datacontainername, source_attrmatrixname, source_dataarrayname))
     if err < 0:
         print("MoveData ErrorCondition %d: " % err)
