@@ -32,6 +32,10 @@
 #ifndef ExecutePipelineController_H_
 #define ExecutePipelineController_H_
 
+#include <QtCore/QJsonObject>
+#include <QtCore/QTemporaryDir>
+#include <QtCore/QTemporaryFile>
+
 #include "QtWebApp/httpserver/httprequest.h"
 #include "QtWebApp/httpserver/httprequesthandler.h"
 #include "QtWebApp/httpserver/httpresponse.h"
@@ -58,13 +62,27 @@ public:
   static QString EndPoint();
 
 private:
-  void serviceJSON(HttpResponse &response, QJsonObject pipelineObj, QJsonObject &responseObj);
-  void serviceJSON(HttpRequest& request, HttpResponse &response, QJsonObject &responseObj);
+  HttpRequest* m_Request = nullptr;
+  HttpResponse* m_Response = nullptr;
+  QJsonObject m_ResponseObj;
 
-  void serviceMultiPart(HttpRequest& request, HttpResponse &response, QJsonObject &responseObj);
-  QJsonObject getPipelineReplacementLookupObject(HttpRequest &request, HttpResponse &response, QJsonObject &responseObj);
-  QString getIOType(QJsonObject pipelineReplacementObj, HttpResponse &response, QJsonObject &responseObj);
-  QJsonArray getFileParameterNames(QJsonObject pipelineReplacementObj, HttpResponse &response, QJsonObject &responseObj);
+  QTemporaryDir* m_TempDir = nullptr;       // We need this to keep the temporary directories around until the pipeline is done executing
+  QStringList m_OutputFilePaths;
+
+  void cleanup();
+
+  void serviceJSON(QJsonObject pipelineObj);
+  void serviceJSON();
+
+  // Functions that process multi-part requests
+  void serviceMultiPart();
+
+  QJsonObject getPipelineMetadata();
+  QString getStringValue(const QString &key, QJsonObject pipelineReplacementObj);
+  QJsonArray getFileParameterNames(QJsonObject pipelineReplacementObj);
+
+  QJsonObject replacePipelineValuesUsingMetadata(QJsonObject pipelineJsonObj, QJsonObject pipelineMetadataObject);
+
 };
 
 #endif // ExecutePipelineController_H_

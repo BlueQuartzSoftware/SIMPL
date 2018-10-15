@@ -241,20 +241,13 @@ public:
       QTextStream in(&file);
       QString jsonString = in.readAll();
       QByteArray jsonByteArray = QByteArray::fromStdString(jsonString.toStdString());
-      QJsonDocument doc = QJsonDocument::fromJson(jsonByteArray);
 
-      QJsonObject rootObj;
-      rootObj[SIMPL::JSON::Pipeline] = doc.object();
-
-      QJsonDocument doc2(rootObj);
-      QByteArray data = doc2.toJson();
-
-      QSharedPointer<QNetworkReply> reply = sendRequest(url, "application/json", data);
+      QSharedPointer<QNetworkReply> reply = sendRequest(url, "application/json", jsonByteArray);
       DREAM3D_REQUIRE_EQUAL(reply->error(), 0);
 
       QJsonParseError jsonParseError;
       QByteArray jsonResponse = reply->readAll();
-      doc = QJsonDocument::fromJson(jsonResponse, &jsonParseError);
+      QJsonDocument doc = QJsonDocument::fromJson(jsonResponse, &jsonParseError);
       DREAM3D_REQUIRE_EQUAL(jsonParseError.error, QJsonParseError::ParseError::NoError);
 
       QJsonObject responseObject = doc.object();
@@ -311,6 +304,19 @@ public:
       QString jsonString = in.readAll();
       QByteArray jsonByteArray = QByteArray::fromStdString(jsonString.toStdString());
 
+      QJsonDocument doc = QJsonDocument::fromJson(jsonByteArray);
+      QJsonObject pipelineObj = doc.object();
+      QJsonObject filterObj = pipelineObj["0"].toObject();
+      filterObj["InputFile"] = UnitTest::RestUnitTest::RESTFileIOInputDataFilePath;
+      pipelineObj["0"] = filterObj;
+
+      filterObj = pipelineObj["1"].toObject();
+      filterObj["OutputFile"] = UnitTest::RestUnitTest::RESTFileIOOutputDataFilePath;
+      pipelineObj["1"] = filterObj;
+
+      doc.setObject(pipelineObj);
+      jsonByteArray = doc.toJson();
+
       QHttpPart jsonPart;
       jsonPart.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
       jsonPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"json\""));
@@ -323,28 +329,27 @@ public:
     {
       QHttpPart pipelineReplacementLookupPart;
       pipelineReplacementLookupPart.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-      pipelineReplacementLookupPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"pipelineReplacementLookup\""));
+      pipelineReplacementLookupPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"PipelineMetadata\""));
 
       QJsonObject rootObj;
 
       {
-        QJsonObject pipelineReplacementObject;
-        pipelineReplacementObject["IO_Type"] = "Input";
+        QJsonObject filterMetadataObj;
+        QJsonObject inputFileObj;
+        inputFileObj["IO_Type"] = "Input";
 
-        QJsonArray fileParameterNames;
-        for (int i = 0; i < filePathList.size(); i++)
-        {
-          fileParameterNames.push_back(QObject::tr("DataFile%1").arg(i));
-        }
+        filterMetadataObj["InputFile"] = inputFileObj;
 
-        pipelineReplacementObject["FileParameterNames"] = fileParameterNames;
-
-        rootObj["@@Replacement1@@"] = pipelineReplacementObject;
+        rootObj["0"] = filterMetadataObj;
       }
       {
-        QJsonObject pipelineReplacementObject;
-        pipelineReplacementObject["IO_Type"] = "Output";
-        rootObj["@@Replacement2@@"] = pipelineReplacementObject;
+        QJsonObject filterMetadataObj;
+        QJsonObject outputFileObj;
+        outputFileObj["IO_Type"] = "Output";
+
+        filterMetadataObj["OutputFile"] = outputFileObj;
+
+        rootObj["1"] = filterMetadataObj;
       }
 
       QJsonDocument doc(rootObj);
@@ -363,7 +368,7 @@ public:
       QMimeType mimeType = mimeDb.mimeTypeForFile(filePath);
       QString contentType = mimeType.name();
       dataPart.setHeader(QNetworkRequest::ContentTypeHeader, contentType);
-      dataPart.setHeader(QNetworkRequest::ContentDispositionHeader, QObject::tr("form-data; name=\"DataFile%1\"").arg(i));
+      dataPart.setHeader(QNetworkRequest::ContentDispositionHeader, QObject::tr("form-data; name=\"%1\"").arg(filePath));
       QFile* file = new QFile(filePath);
       file->open(QIODevice::ReadOnly);
       dataPart.setBodyDevice(file);
@@ -394,7 +399,7 @@ public:
 
     DREAM3D_REQUIRE_EQUAL(responseObject[SIMPL::JSON::Warnings].isArray(), true);
     QJsonArray responseWarningsArray = responseObject[SIMPL::JSON::Warnings].toArray();
-    DREAM3D_REQUIRE_EQUAL(responseWarningsArray.size(), 0);
+    DREAM3D_REQUIRE_EQUAL(responseWarningsArray.size(), 2);
 
     JsonFilterParametersReader::Pointer reader = JsonFilterParametersReader::New();
     FilterPipeline::Pointer pipeline = reader->readPipelineFromFile(UnitTest::RestUnitTest::RESTPipelineFilePath);
@@ -1304,16 +1309,16 @@ public:
 
     startServer();
 
-//    DREAM3D_REGISTER_TEST(TestExecutePipelineWithFiles());
+    DREAM3D_REGISTER_TEST(TestExecutePipelineWithFiles());
 
-    DREAM3D_REGISTER_TEST(TestExecutePipeline());
-    DREAM3D_REGISTER_TEST(TestListFilterParameters());
-    DREAM3D_REGISTER_TEST(TestLoadedPlugins());
-    DREAM3D_REGISTER_TEST(TestNamesOfFilters());
-    DREAM3D_REGISTER_TEST(TestNumFilters());
-    DREAM3D_REGISTER_TEST(TestPluginInfo());
-    DREAM3D_REGISTER_TEST(TestPreflightPipeline());
-    DREAM3D_REGISTER_TEST(TestSIMPLibVersion());
+//    DREAM3D_REGISTER_TEST(TestExecutePipeline());
+//    DREAM3D_REGISTER_TEST(TestListFilterParameters());
+//    DREAM3D_REGISTER_TEST(TestLoadedPlugins());
+//    DREAM3D_REGISTER_TEST(TestNamesOfFilters());
+//    DREAM3D_REGISTER_TEST(TestNumFilters());
+//    DREAM3D_REGISTER_TEST(TestPluginInfo());
+//    DREAM3D_REGISTER_TEST(TestPreflightPipeline());
+//    DREAM3D_REGISTER_TEST(TestSIMPLibVersion());
 
     endServer();
   }

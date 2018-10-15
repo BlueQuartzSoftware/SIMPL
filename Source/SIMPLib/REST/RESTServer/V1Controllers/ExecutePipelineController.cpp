@@ -38,7 +38,7 @@
 #include <QtCore/QJsonArray>
 #include <QtCore/QProcess>
 #include <QtCore/QVariant>
-#include <QtCore/QTemporaryDir>
+#include <QtCore/QMimeDatabase>
 #include <QtNetwork/QNetworkInterface>
 #include <QtWidgets/QApplication>
 
@@ -68,31 +68,21 @@ ExecutePipelineController::ExecutePipelineController(const QHostAddress& hostAdd
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ExecutePipelineController::serviceJSON(HttpResponse& response, QJsonObject pipelineObj, QJsonObject &responseObj)
+void ExecutePipelineController::serviceJSON(QJsonObject pipelineObj)
 {
-  if (!pipelineObj.contains(SIMPL::JSON::Pipeline))
-  {
-    responseObj[SIMPL::JSON::ErrorMessage] = tr("%1: No Pipeline object found in the JSON request body.").arg(EndPoint());
-    responseObj[SIMPL::JSON::ErrorCode] = -40;
-    QJsonDocument jdoc(responseObj);
-    response.write(jdoc.toJson(), true);
-    return;
-  }
-
-  pipelineObj = pipelineObj[SIMPL::JSON::Pipeline].toObject();
   FilterPipeline::Pointer pipeline = FilterPipeline::FromJson(pipelineObj);
   if (pipeline.get() == nullptr)
   {
-    responseObj[SIMPL::JSON::ErrorMessage] = tr("%1: Pipeline could not be created from the JSON request body.").arg(EndPoint());
-    responseObj[SIMPL::JSON::ErrorCode] = -50;
-    QJsonDocument jdoc(responseObj);
-    response.write(jdoc.toJson(), true);
+    m_ResponseObj[SIMPL::JSON::ErrorMessage] = tr("%1: Pipeline could not be created from the JSON request body.").arg(EndPoint());
+    m_ResponseObj[SIMPL::JSON::ErrorCode] = -50;
+    QJsonDocument jdoc(m_ResponseObj);
+    m_Response->write(jdoc.toJson(), true);
     return;
   }
 
   qDebug() << "Number of Filters in Pipeline: " << pipeline->size();
 
-  QByteArray sessionId = responseObj[SIMPL::JSON::SessionID].toVariant().toByteArray();
+  QByteArray sessionId = m_ResponseObj[SIMPL::JSON::SessionID].toVariant().toByteArray();
 
   QString linkAddress = "http://" + getListenHost().toString() + ":" + QString::number(getListenPort()) + QDir::separator() + QString(sessionId) + QDir::separator();
   SIMPLStaticFileController* staticFileController = SIMPLStaticFileController::Instance();
@@ -180,7 +170,7 @@ void ExecutePipelineController::serviceJSON(HttpResponse& response, QJsonObject 
   }
 
   // Append to the json response payload all the output links
-  responseObj[SIMPL::JSON::OutputLinks] = outputLinks;
+  m_ResponseObj[SIMPL::JSON::OutputLinks] = outputLinks;
 
   // Execute the pipeline
   Observer obs; // Create an Observer to report errors/progress from the executing pipeline
@@ -214,7 +204,7 @@ void ExecutePipelineController::serviceJSON(HttpResponse& response, QJsonObject 
 
     errors.push_back(error);
   }
-  responseObj[SIMPL::JSON::Errors] = errors;
+  m_ResponseObj[SIMPL::JSON::Errors] = errors;
 
   std::vector<PipelineMessage> warningMessages = listener.getWarningMessages();
   QJsonArray warnings;
@@ -240,8 +230,8 @@ void ExecutePipelineController::serviceJSON(HttpResponse& response, QJsonObject 
     statusMsgs.push_back(msg);
   }
   // responseObj["StatusMessages"] = statusMsgs;
-  responseObj[SIMPL::JSON::Warnings] = warnings;
-  responseObj[SIMPL::JSON::Completed] = completed;
+  m_ResponseObj[SIMPL::JSON::Warnings] = warnings;
+  m_ResponseObj[SIMPL::JSON::Completed] = completed;
 
   // **************************************************************************
   // This section archives the working directory for this session
@@ -261,225 +251,260 @@ void ExecutePipelineController::serviceJSON(HttpResponse& response, QJsonObject 
   // **************************************************************************
 
   // Append to the json response payload all the output links
-  responseObj[SIMPL::JSON::OutputLinks] = outputLinks;
+  m_ResponseObj[SIMPL::JSON::OutputLinks] = outputLinks;
 
-  QJsonDocument jdoc(responseObj);
-  response.write(jdoc.toJson(), true);
+  QJsonDocument jdoc(m_ResponseObj);
+  m_Response->write(jdoc.toJson(), true);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ExecutePipelineController::serviceJSON(HttpRequest& request, HttpResponse &response, QJsonObject &responseObj)
+void ExecutePipelineController::serviceJSON()
 {
   QJsonParseError jsonParseError;
-  QString requestBody = request.getBody();
+  QString requestBody = m_Request->getBody();
   QJsonDocument requestDoc = QJsonDocument::fromJson(requestBody.toUtf8(), &jsonParseError);
   if (jsonParseError.error != QJsonParseError::ParseError::NoError)
   {
     // Form Error response
-    responseObj[SIMPL::JSON::ErrorMessage] = tr("%1: JSON Request Parsing Error - %2").arg(EndPoint()).arg(jsonParseError.errorString());
-    responseObj[SIMPL::JSON::ErrorCode] = -30;
-    QJsonDocument jdoc(responseObj);
-    response.write(jdoc.toJson(), true);
+    m_ResponseObj[SIMPL::JSON::ErrorMessage] = tr("%1: JSON Request Parsing Error - %2").arg(EndPoint()).arg(jsonParseError.errorString());
+    m_ResponseObj[SIMPL::JSON::ErrorCode] = -30;
+    QJsonDocument jdoc(m_ResponseObj);
+    m_Response->write(jdoc.toJson(), true);
     return;
   }
 
   QJsonObject requestObj = requestDoc.object();
 
-  serviceJSON(response, requestObj, responseObj);
+  serviceJSON(requestObj);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ExecutePipelineController::serviceMultiPart(HttpRequest& request, HttpResponse &response, QJsonObject &responseObj)
+void ExecutePipelineController::serviceMultiPart()
 {
-//  QJsonObject pipelineReplacementLookupObject = getPipelineReplacementLookupObject(request, response, responseObj);
-//  if (responseObj[SIMPL::JSON::ErrorCode].toInt() < 0)
-//  {
-//    return;
-//  }
-
-//  QByteArray jsonData = request.getParameter("json");
-//  QString pipelineString(jsonData);
-
-//  std::vector<QTemporaryDir*> tempDirs;       // We need this to keep the temporary directories around until the pipeline is done executing
-//  std::vector<QTemporaryFile*> tempFiles;     // We need this to keep the temporary files around until the pipeline is done executing
-
-//  for(QJsonObject::iterator iter = pipelineReplacementLookupObject.begin(); iter != pipelineReplacementLookupObject.end(); iter++)
-//  {
-//    QString pipelineReplacementString = iter.key();
-
-//    if (!iter.value().isObject())
-//    {
-//      responseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Pipeline replacement lookup is not in the right format: top-level value is not an object.";
-//      responseObj[SIMPL::JSON::ErrorCode] = -60;
-//      QJsonDocument jdoc(responseObj);
-
-//      response.write(jdoc.toJson(), true);
-//      return;
-//    }
-
-//    QJsonObject pipelineReplacementObj = iter.value().toObject();
-
-//    QString ioTypeString = getIOType(pipelineReplacementObj, response, responseObj);
-//    if (responseObj[SIMPL::JSON::ErrorCode].toInt() < 0)
-//    {
-//      return;
-//    }
-
-//    if (ioTypeString == "Input")
-//    {
-//      QJsonArray fileParameterNames = getFileParameterNames(pipelineReplacementObj, response, responseObj);
-//      if (responseObj[SIMPL::JSON::ErrorCode].toInt() < 0)
-//      {
-//        return;
-//      }
-//    }
-
-//    QString replacementToken = "";
-//    if (typeString == "Directory")
-//    {
-//      QTemporaryDir* tempDir = new QTemporaryDir();
-//      tempDirs.push_back(tempDir);
-//      replacementToken = tempDir->path();
-//    }
-
-//    for (int i = 0; i < fileParameterNames.size(); i++)
-//    {
-//      if (!fileParameterNames[i].isString())
-//      {
-//        responseObj[SIMPL::JSON::ErrorMessage] = tr("%1: Pipeline replacement lookup is not in the right format: FileParameterName at index %2 in top-level object"
-//                                                              " is not a string.").arg(EndPoint()).arg(i+1);
-//        responseObj[SIMPL::JSON::ErrorCode] = -80;
-//        QJsonDocument jdoc(responseObj);
-
-//        response.write(jdoc.toJson(), true);
-//        return;
-//      }
-
-//      QString fileParameterName = fileParameterNames[i].toString();
-//      QByteArray rawData = request.getParameter(QByteArray::fromStdString(fileParameterName.toStdString()));
-
-//      QTemporaryFile* tempFile = new QTemporaryFile(replacementToken);
-
-//      tempFiles.push_back(tempFile);
-//      if (tempFile->open())
-//      {
-//        if (replacementToken.isEmpty())
-//        {
-//          replacementToken = tempFile->fileName();
-//        }
-
-//        tempFile->write(rawData);
-//        tempFile->close();
-//      }
-//      else
-//      {
-//        // Form Error response
-//        responseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": File data included in the request could not be written to a temporary file on the server.";
-//        responseObj[SIMPL::JSON::ErrorCode] = -90;
-//        QJsonDocument jdoc(responseObj);
-
-//        response.write(jdoc.toJson(), true);
-//        return;
-//      }
-//    }
-
-//    pipelineString.replace(pipelineReplacementString, replacementToken);
-//  }
-
-//  QJsonParseError jsonParseError;
-//  QJsonDocument pipelineDoc = QJsonDocument::fromJson(QByteArray::fromStdString(pipelineString.toStdString()), &jsonParseError);
-//  if (jsonParseError.error != QJsonParseError::ParseError::NoError)
-//  {
-//    // Form Error response
-//    responseObj[SIMPL::JSON::ErrorMessage] = tr("%1: JSON Request Parsing Error - %2").arg(EndPoint()).arg(jsonParseError.errorString());
-//    responseObj[SIMPL::JSON::ErrorCode] = -30;
-//    QJsonDocument jdoc(responseObj);
-//    response.write(jdoc.toJson(), true);
-//    return;
-//  }
-
-//  QJsonObject pipelineObj = pipelineDoc.object();
-
-//  serviceJSON(response, pipelineObj, responseObj);
-
-//  for (int i = 0; i < tempFiles.size(); i++)
-//  {
-//    delete tempFiles[i];
-//  }
-
-//  for (int i = 0; i < tempDirs.size(); i++)
-//  {
-//    delete tempDirs[i];
-//  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString ExecutePipelineController::getIOType(QJsonObject pipelineReplacementObj, HttpResponse &response, QJsonObject &responseObj)
-{
-  if (!pipelineReplacementObj.contains("IO_Type"))
+  QJsonObject pipelineMetadataObject = getPipelineMetadata();
+  if (m_ResponseObj[SIMPL::JSON::ErrorCode].toInt() < 0)
   {
-    responseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Pipeline replacement lookup is not in the right format: Top-level object does not contain 'IO_Type' value.";
-    responseObj[SIMPL::JSON::ErrorCode] = -70;
-    QJsonDocument jdoc(responseObj);
-
-    response.write(jdoc.toJson(), true);
-    return QString();
-  }
-  else if (!pipelineReplacementObj["IO_Type"].isString())
-  {
-    responseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Pipeline replacement lookup is not in the right format: The 'IO_Type' value in a top-level object"
-                                                          " is not a string.";
-    responseObj[SIMPL::JSON::ErrorCode] = -70;
-    QJsonDocument jdoc(responseObj);
-
-    response.write(jdoc.toJson(), true);
-    return QString();
+    return;
   }
 
-  QString typeString = pipelineReplacementObj["IO_Type"].toString();
-  return typeString;
+  QByteArray jsonData = m_Request->getParameter("json");
+
+  QJsonParseError jsonParseError;
+  QJsonDocument pipelineDoc = QJsonDocument::fromJson(jsonData, &jsonParseError);
+  if (jsonParseError.error != QJsonParseError::ParseError::NoError)
+  {
+    // Form Error response
+    m_ResponseObj[SIMPL::JSON::ErrorMessage] = tr("%1: JSON Request Parsing Error - %2").arg(EndPoint()).arg(jsonParseError.errorString());
+    m_ResponseObj[SIMPL::JSON::ErrorCode] = -30;
+    QJsonDocument jdoc(m_ResponseObj);
+    m_Response->write(jdoc.toJson(), true);
+    return;
+  }
+
+  QJsonObject pipelineObj = pipelineDoc.object();
+
+  pipelineObj = replacePipelineValuesUsingMetadata(pipelineObj, pipelineMetadataObject);
+  if (m_ResponseObj[SIMPL::JSON::ErrorCode].toInt() < 0)
+  {
+    return;
+  }
+
+  serviceJSON(pipelineObj);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QJsonArray ExecutePipelineController::getFileParameterNames(QJsonObject pipelineReplacementObj, HttpResponse &response, QJsonObject &responseObj)
+QJsonObject ExecutePipelineController::replacePipelineValuesUsingMetadata(QJsonObject pipelineJsonObj, QJsonObject pipelineMetadataObject)
+{
+  QMultiMap<QByteArray,QByteArray> parameterMap = m_Request->getParameterMap();
+
+  // Loop over every parameter that was received from the request
+  for(QJsonObject::iterator pIter = pipelineMetadataObject.begin(); pIter != pipelineMetadataObject.end(); pIter++)
+  {
+    QString filterKey = pIter.key();
+    QJsonObject filterObj = pipelineJsonObj[filterKey].toObject();
+
+    // Get the filter metadata object - this contains metadata pertaining to the filter's properties
+    if (!pIter.value().isObject())
+    {
+      m_ResponseObj[SIMPL::JSON::ErrorMessage] = tr("%1: Pipeline metadata is not in the right format: filter %2 does not have an associated metadata object.").arg(EndPoint()).arg(filterKey);
+      m_ResponseObj[SIMPL::JSON::ErrorCode] = -60;
+      QJsonDocument jdoc(m_ResponseObj);
+
+      m_Response->write(jdoc.toJson(), true);
+      return QJsonObject();
+    }
+
+    QJsonObject filterMetadataObj = pIter.value().toObject();
+
+    // Loop over every entry in the filter metadata object
+    for(QJsonObject::iterator fIter = filterMetadataObj.begin(); fIter != filterMetadataObj.end(); fIter++)
+    {
+      QString propertyName = fIter.key();
+      QString propertyValue = filterObj[propertyName].toString();
+
+      // Get the property metadata object - this contains information such as whether the property is an input or an output
+      if (!fIter.value().isObject())
+      {
+        m_ResponseObj[SIMPL::JSON::ErrorMessage] = tr("%1: Pipeline metadata is not in the right format: property '%2' in filter %2 metadata does not have an associated metadata object.").arg(EndPoint()).arg(propertyName).arg(filterKey);
+        m_ResponseObj[SIMPL::JSON::ErrorCode] = -60;
+        QJsonDocument jdoc(m_ResponseObj);
+
+        m_Response->write(jdoc.toJson(), true);
+        return QJsonObject();
+      }
+
+      QJsonObject propertyMetadataObj = fIter.value().toObject();
+
+      // Get the IO_Type value - This will tell us whether the property is an input or an output
+      QString propertyIOType = getStringValue("IO_Type", propertyMetadataObj);
+      if (m_ResponseObj[SIMPL::JSON::ErrorCode].toInt() < 0)
+      {
+        return QJsonObject();
+      }
+
+      if (propertyIOType == "Output")
+      {
+        // The property is an output, so create the file path where we will temporarily store the file data on the server,
+        // create the directory structure, and update the pipeline json with that file path.
+        QString tempFilePath = m_TempDir->path() + propertyValue;
+        QFileInfo fi(tempFilePath);
+        QDir dir;
+        dir.mkpath(fi.path());
+
+        m_OutputFilePaths.push_back(tempFilePath);
+
+        propertyValue = tempFilePath;
+        filterObj[propertyName] = propertyValue;
+        pipelineJsonObj[filterKey] = filterObj;
+      }
+      else if (propertyIOType == "Input")
+      {
+        // This property is an input, so we need to figure out which other request parameter is the matching input file data.
+        // This parameter's name will match the file path to the file on the client's file system.  If the path is a folder, each
+        // file in the folder will be listed as a separate request parameter and this algorithm will still match the files correctly
+        // because it tests to see if each request parameter name starts with the client's file path.
+        for(QMultiMap<QByteArray,QByteArray>::iterator mapIter = parameterMap.begin(); mapIter != parameterMap.end(); mapIter++)
+        {
+          QString parameterName = mapIter.key();
+          QByteArray parameterData = mapIter.value();
+
+          if (parameterName.startsWith(propertyValue))
+          {
+            QString tempFilePath = m_TempDir->path() + parameterName;
+            QFileInfo fi(tempFilePath);
+            QDir dir;
+            dir.mkpath(fi.path());
+
+            QFile* tempFile = new QFile(tempFilePath);
+            if (tempFile->open(QFile::ReadWrite))
+            {
+              // Write out the file data to the temporary file we created on the server
+              tempFile->write(parameterData);
+              tempFile->close();
+
+              // Update the pipeline json with the file path that we just wrote out to
+              propertyValue = m_TempDir->path() + propertyValue;
+              filterObj[propertyName] = propertyValue;
+              pipelineJsonObj[filterKey] = filterObj;
+            }
+            else
+            {
+              // Form Error response
+              m_ResponseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": File data included in the request could not be written to a temporary file on the server.";
+              m_ResponseObj[SIMPL::JSON::ErrorCode] = -90;
+              QJsonDocument jdoc(m_ResponseObj);
+
+              m_Response->write(jdoc.toJson(), true);
+              return QJsonObject();
+            }
+          }
+        }
+      }
+      else
+      {
+        // Form Error response
+        m_ResponseObj[SIMPL::JSON::ErrorMessage] = tr("%1: Unrecognized 'IO_Type' value for property '%2'.").arg(EndPoint()).arg(propertyName);
+        m_ResponseObj[SIMPL::JSON::ErrorCode] = -100;
+        QJsonDocument jdoc(m_ResponseObj);
+
+        m_Response->write(jdoc.toJson(), true);
+        return QJsonObject();
+      }
+    }
+  }
+
+  return pipelineJsonObj;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString ExecutePipelineController::getStringValue(const QString &key, QJsonObject pipelineReplacementObj)
+{
+  if (!pipelineReplacementObj.contains(key))
+  {
+    m_ResponseObj[SIMPL::JSON::ErrorMessage] = tr("%1: Pipeline replacement lookup is not in the right format: Top-level object does not contain '%2' value.").arg(EndPoint()).arg(key);
+    m_ResponseObj[SIMPL::JSON::ErrorCode] = -70;
+    QJsonDocument jdoc(m_ResponseObj);
+
+    m_Response->write(jdoc.toJson(), true);
+    return QString();
+  }
+  else if (!pipelineReplacementObj[key].isString())
+  {
+    m_ResponseObj[SIMPL::JSON::ErrorMessage] = tr("%1: Pipeline replacement lookup is not in the right format: The '%2' value in a top-level object is not a string.").arg(EndPoint()).arg(key);
+
+    m_ResponseObj[SIMPL::JSON::ErrorCode] = -70;
+    QJsonDocument jdoc(m_ResponseObj);
+
+    m_Response->write(jdoc.toJson(), true);
+    return QString();
+  }
+
+  QString stringValue = pipelineReplacementObj[key].toString();
+  return stringValue;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QJsonArray ExecutePipelineController::getFileParameterNames(QJsonObject pipelineReplacementObj)
 {
   if (!pipelineReplacementObj.contains("FileParameterNames"))
   {
-    responseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Pipeline replacement lookup is not in the right format: Top-level object does not contain 'FileParameterNames' value.";
-    responseObj[SIMPL::JSON::ErrorCode] = -70;
-    QJsonDocument jdoc(responseObj);
+    m_ResponseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Pipeline replacement lookup is not in the right format: Top-level object does not contain 'FileParameterNames' value.";
+    m_ResponseObj[SIMPL::JSON::ErrorCode] = -70;
+    QJsonDocument jdoc(m_ResponseObj);
 
-    response.write(jdoc.toJson(), true);
+    m_Response->write(jdoc.toJson(), true);
     return QJsonArray();
   }
   else if (!pipelineReplacementObj["FileParameterNames"].isArray())
   {
-    responseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Pipeline replacement lookup is not in the right format: The 'FileParameterNames' value in a top-level object"
+    m_ResponseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Pipeline replacement lookup is not in the right format: The 'FileParameterNames' value in a top-level object"
                                                           " is not an array.";
-    responseObj[SIMPL::JSON::ErrorCode] = -70;
-    QJsonDocument jdoc(responseObj);
+    m_ResponseObj[SIMPL::JSON::ErrorCode] = -70;
+    QJsonDocument jdoc(m_ResponseObj);
 
-    response.write(jdoc.toJson(), true);
+    m_Response->write(jdoc.toJson(), true);
     return QJsonArray();
   }
 
   QJsonArray fileParameterNames = pipelineReplacementObj["FileParameterNames"].toArray();
   if (fileParameterNames.size() <= 0)
   {
-    responseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Pipeline replacement lookup is not in the right format: The 'FileParameterNames' value in a top-level object"
+    m_ResponseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Pipeline replacement lookup is not in the right format: The 'FileParameterNames' value in a top-level object"
                                                           " is empty.";
-    responseObj[SIMPL::JSON::ErrorCode] = -80;
-    QJsonDocument jdoc(responseObj);
+    m_ResponseObj[SIMPL::JSON::ErrorCode] = -80;
+    QJsonDocument jdoc(m_ResponseObj);
 
-    response.write(jdoc.toJson(), true);
+    m_Response->write(jdoc.toJson(), true);
     return QJsonArray();
   }
 
@@ -489,18 +514,18 @@ QJsonArray ExecutePipelineController::getFileParameterNames(QJsonObject pipeline
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QJsonObject ExecutePipelineController::getPipelineReplacementLookupObject(HttpRequest& request, HttpResponse &response, QJsonObject &responseObj)
+QJsonObject ExecutePipelineController::getPipelineMetadata()
 {
   QJsonParseError jsonParseError;
-  QByteArray jsonData = request.getParameter("pipelineReplacementLookup");
+  QByteArray jsonData = m_Request->getParameter("PipelineMetadata");
   QJsonDocument pipelineReplacementLookupDoc = QJsonDocument::fromJson(jsonData, &jsonParseError);
   if (jsonParseError.error != QJsonParseError::ParseError::NoError)
   {
     // Form Error response
-    responseObj[SIMPL::JSON::ErrorMessage] = tr("%1: JSON Request Parsing Error - %2").arg(EndPoint()).arg(jsonParseError.errorString());
-    responseObj[SIMPL::JSON::ErrorCode] = -30;
-    QJsonDocument jdoc(responseObj);
-    response.write(jdoc.toJson(), true);
+    m_ResponseObj[SIMPL::JSON::ErrorMessage] = tr("%1: JSON Request Parsing Error - %2").arg(EndPoint()).arg(jsonParseError.errorString());
+    m_ResponseObj[SIMPL::JSON::ErrorCode] = -30;
+    QJsonDocument jdoc(m_ResponseObj);
+    m_Response->write(jdoc.toJson(), true);
     return QJsonObject();
   }
 
@@ -523,25 +548,48 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
   responseObj[SIMPL::JSON::ErrorMessage] = "";
   response.setHeader("Content-Type", "application/json");
 
+  m_Request = &request;
+  m_Response = &response;
+  m_ResponseObj = responseObj;
+
+  m_TempDir = new QTemporaryDir();
+
   QString content_type = request.getHeader(QByteArray("content-type"));
   if (content_type == "application/json")
   {
-    serviceJSON(request, response, responseObj);
+    serviceJSON();
   }
   else if (content_type.startsWith("multipart/form-data"))
   {
-//    serviceMultiPart(request, response, responseObj);
+    serviceMultiPart();
   }
   else
   {
     // Form Error response
-    responseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Content Type is not application/json";
-    responseObj[SIMPL::JSON::ErrorCode] = -20;
-    QJsonDocument jdoc(responseObj);
+    m_ResponseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Content Type is not application/json or multipart/form-data";
+    m_ResponseObj[SIMPL::JSON::ErrorCode] = -20;
+    QJsonDocument jdoc(m_ResponseObj);
 
     response.write(jdoc.toJson(), true);
+
+    cleanup();
     return;
   }
+
+  cleanup();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ExecutePipelineController::cleanup()
+{
+  m_Request = nullptr;
+  m_Response = nullptr;
+  m_ResponseObj = QJsonObject();
+
+  delete m_TempDir;
+  m_TempDir = nullptr;
 }
 
 // -----------------------------------------------------------------------------

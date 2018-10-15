@@ -216,5 +216,6 @@ namespace UnitTest
     const QString RESTErrorPipelineFilePath("@TEST_TEMP_DIR@/RESTErrorPipeline.json");
     const QString RESTFileIOPipelineFilePath("@TEST_TEMP_DIR@/RESTFileIOPipeline.json");
     const QString RESTFileIOInputDataFilePath("@TEST_TEMP_DIR@/RESTFileIOInputData.dream3d");
+    const QString RESTFileIOOutputDataFilePath("@TEST_TEMP_DIR@/RESTFileIOOutputData.dream3d");
   }
 }
