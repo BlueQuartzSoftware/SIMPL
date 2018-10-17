@@ -92,7 +92,7 @@ namespace H5Support_NAMESPACE
        * @param obj_type The HDF5_TYPE of object
        * @return Standard HDF5 Error Conditions
        */
-      static H5Support_EXPORT herr_t openId(hid_t loc_id, const QString& obj_name, H5O_type_t obj_type);
+      static H5Support_EXPORT hid_t openId(hid_t loc_id, const QString& obj_name, H5O_type_t obj_type);
 
       /**
        * @brief Opens an HDF5 Object
@@ -865,7 +865,7 @@ namespace H5Support_NAMESPACE
           }
           else
           {
-            retErr = attr_id;
+            //retErr = attr_id;
           }
           err = QH5Lite::closeId( obj_id, statbuf.type );
           if ( err < 0 )

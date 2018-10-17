@@ -65,7 +65,7 @@ void QH5Lite::disableErrorHandlers()
 // -----------------------------------------------------------------------------
 //  Opens an ID for HDF5 operations
 // -----------------------------------------------------------------------------
-herr_t QH5Lite::openId(hid_t loc_id, const QString& obj_name, H5O_type_t obj_type)
+hid_t QH5Lite::openId(hid_t loc_id, const QString& obj_name, H5O_type_t obj_type)
 {
   return H5Lite::openId(loc_id, obj_name.toStdString(), obj_type);
 }

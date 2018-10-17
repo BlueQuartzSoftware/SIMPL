@@ -169,7 +169,7 @@ namespace H5Support_NAMESPACE
        * @param parent The HDF unique id for the parent
        * @return Error Condition: Negative is error. Positive is success.
        */
-      static H5Support_EXPORT herr_t  createGroupsFromPath(const std::string& pathToCheck, hid_t parent);
+      static H5Support_EXPORT hid_t  createGroupsFromPath(const std::string& pathToCheck, hid_t parent);
 
       /**
        * @brief Given a path relative to the Parent ID, this method will create all
@@ -178,7 +178,7 @@ namespace H5Support_NAMESPACE
        * @param parent The HDF unique id for the parent
        * @return Error Condition: Negative is error. Positive is success.
        */
-      static H5Support_EXPORT herr_t createGroupsForDataset(const std::string& datasetPath, hid_t parent);
+      static H5Support_EXPORT hid_t createGroupsForDataset(const std::string& datasetPath, hid_t parent);
 
       /**
       * @brief Extracts the object name from a given path

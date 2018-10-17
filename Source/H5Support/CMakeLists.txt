@@ -170,7 +170,7 @@ TARGET_INCLUDE_DIRECTORIES( ${PROJECT_NAME} PUBLIC
 
 if(BUILD_SHARED_LIBS)
   if(WIN32)
-    target_compile_definitions(${PROJECT_NAME} PUBLIC "-DH5Support_BUILT_AS_DYNAMIC_LIB -DH5_USE_18_API")
+    target_compile_definitions(${PROJECT_NAME} PUBLIC "-DH5Support_BUILT_AS_DYNAMIC_LIB")
   endif(WIN32)
 endif(BUILD_SHARED_LIBS)
 target_link_libraries(${PROJECT_NAME} ${HDF5_C_TARGET_NAME} Qt5::Core )
