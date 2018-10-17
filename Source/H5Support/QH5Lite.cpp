@@ -343,7 +343,7 @@ herr_t QH5Lite::readStringAttribute(hid_t loc_id, const QString& objName, const 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-hid_t QH5Lite::getDatasetNDims(hid_t loc_id, const QString& dsetName, hid_t& rank)
+herr_t QH5Lite::getDatasetNDims(hid_t loc_id, const QString& dsetName, hid_t& rank)
 {
   return H5Lite::getDatasetNDims(loc_id, dsetName.toStdString(), rank);
 }
@@ -351,7 +351,7 @@ hid_t QH5Lite::getDatasetNDims(hid_t loc_id, const QString& dsetName, hid_t& ran
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-hid_t QH5Lite::getAttributeNDims(hid_t loc_id, const QString& objName, const QString& attrName, hid_t& rank)
+herr_t QH5Lite::getAttributeNDims(hid_t loc_id, const QString& objName, const QString& attrName, hid_t& rank)
 {
   return H5Lite::getAttributeNDims(loc_id, objName.toStdString(), attrName.toStdString(), rank);
 }
