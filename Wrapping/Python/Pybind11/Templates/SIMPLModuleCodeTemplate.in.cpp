@@ -148,6 +148,29 @@ PYBIND11_MODULE(dream3d, m)
 	  .def(py::init< const float &, const float &, const float &, const float &>())
   ;
 
+  py::class_<FileListInfo_t>(mod, "FileListInfo")
+	  .def(py::init <> ([] ( const int & paddingDigits, const unsigned int & ordering, const int & startIndex,
+		  const int & endIndex, const int & incrementIndex, const py::str & inputPath, const py::str & filePrefix,
+		  const py::str & fileSuffix, const py::str &fileExtension)
+      {
+	  FileListInfo_t fileListInfo;
+	  fileListInfo.PaddingDigits = paddingDigits;
+	  fileListInfo.Ordering = ordering;
+	  fileListInfo.StartIndex = startIndex;
+	  fileListInfo.EndIndex = endIndex;
+	  fileListInfo.IncrementIndex = incrementIndex;
+	  QString InputPath = QString::fromStdString(py::cast<std::string>(inputPath));
+	  QString FilePrefix = QString::fromStdString(py::cast<std::string>(filePrefix));
+	  QString FileSuffix = QString::fromStdString(py::cast<std::string>(fileSuffix));
+	  QString FileExtension = QString::fromStdString(py::cast<std::string>(fileExtension));
+	  fileListInfo.InputPath = InputPath;
+	  fileListInfo.FilePrefix = FilePrefix;
+	  fileListInfo.FileSuffix = FileSuffix;
+	  fileListInfo.FileExtension = FileExtension;
+	  return fileListInfo;
+      }))
+  ;
+
   // Handle QVector of size_t
   py::class_<QVector<size_t>>(mod, "Dims")
 	  .def(py::init<>([](py::list dimensions) {
@@ -197,6 +220,18 @@ PYBIND11_MODULE(dream3d, m)
 	  QDateTime dateTime(QDate(year, month, day));
 	  dateTime.setTime_t(seconds);
 	  return dateTime;
+      }))
+  ;
+
+  // Handle QJsonArray
+  py::class_<QJsonArray>(mod, "JsonArray")
+	  .def(py::init<>([](py::list values) {
+	  QJsonArray qJsonArray;
+	  for (auto value : values) {
+		  QJsonValue qJsonValue(py::cast<double>(value));
+		  qJsonArray.push_back(qJsonValue);
+	  }
+	  return qJsonArray;
       }))
   ;
 
@@ -299,6 +334,22 @@ PYBIND11_MODULE(dream3d, m)
   py::enum_<CreateDataArray::InitializationChoices>(mod, "InitializationType")
 	  .value("Manual", CreateDataArray::InitializationChoices::Manual)
 	  .value("RandomWithRange", CreateDataArray::InitializationChoices::RandomWithRange)
+	  .export_values();
+
+  /* Enumeration code for Crystal Structures */
+  py::enum_<EnsembleInfo::CrystalStructure>(mod, "CrystalStructure")
+	  .value("Hexagonal_High", EnsembleInfo::CrystalStructure::Hexagonal_High)
+	  .value("Cubic_High", EnsembleInfo::CrystalStructure::Cubic_High)
+	  .value("Hexagonal_Low", EnsembleInfo::CrystalStructure::Hexagonal_Low)
+	  .value("Cubic_Low", EnsembleInfo::CrystalStructure::Cubic_Low)
+	  .value("Triclinic", EnsembleInfo::CrystalStructure::Triclinic)
+	  .value("Monoclinic", EnsembleInfo::CrystalStructure::Monoclinic)
+	  .value("OrthoRhombic", EnsembleInfo::CrystalStructure::OrthoRhombic)
+	  .value("Tetragonal_Low", EnsembleInfo::CrystalStructure::Tetragonal_Low)
+	  .value("Tetragonal_High", EnsembleInfo::CrystalStructure::Tetragonal_High)
+	  .value("Trigonal_Low", EnsembleInfo::CrystalStructure::Trigonal_Low)
+	  .value("Trigonal_High", EnsembleInfo::CrystalStructure::Trigonal_High)
+	  .value("UnknownCrystalStructure", EnsembleInfo::CrystalStructure::UnknownCrystalStructure)
 	  .export_values();
 
 
