@@ -7,12 +7,16 @@ set(TEST_${SUBDIR_NAME}_NAMES
   CombineAttributeMatricesTest
   ConditionalSetValueTest
   ConvertDataTest
+  CopyFeatureArrayToElementArrayTest
+  CopyObjectTest
   CreateAttributeMatrixTest
   CreateDataArrayTest
   CreateDataContainerTest
   CreateFeatureArrayFromElementArrayTest
-  CreateImageGeometryTest
   CreateGeometryTest
+  CreateImageGeometryTest
+  CreateStringArrayTest
+  CropVertexGeometryTest
   DataContainerTest
   ErrorMessageTest
   ExecuteProcessTest
@@ -23,6 +27,8 @@ set(TEST_${SUBDIR_NAME}_NAMES
   GenerateColorTableTest
   ImportAsciDataArrayTest
   ImportHDF5DatasetTest
+  MoveDataTest
+  MoveMultiDataTest
   MultiThresholdObjectsTest
   MultiThresholdObjects2Test
   RawBinaryReaderTest
@@ -39,6 +45,7 @@ set(TEST_${SUBDIR_NAME}_NAMES
   SetOriginResolutionImageGeomTest
   SplitAttributeArrayTest
   WriteASCIIDataTest
+  WriteTriangleGeometryTest
 )
 
 SIMPL_ADD_UNIT_TEST("${TEST_${SUBDIR_NAME}_NAMES}" "${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Testing/Cxx")
