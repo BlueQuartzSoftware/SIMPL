@@ -68,6 +68,7 @@ private:
 
   QTemporaryDir* m_TempDir = nullptr;       // We need this to keep the temporary directories around until the pipeline is done executing
   QStringList m_OutputFilePaths;
+  QStringList m_TemporaryOutputFilePaths;
 
   void cleanup();
 

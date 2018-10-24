@@ -90,48 +90,48 @@ void ExecutePipelineController::serviceJSON(QJsonObject pipelineObj)
 
   QString newFilePath = docRoot + QDir::separator() + QString(sessionId) + QDir::separator();
   QJsonArray outputLinks;
-  // Look through the pipeline to find any input or output filter parameters.  Replace
-  // the file paths in these filter parameters with session-id specific paths.
-  QList<AbstractFilter::Pointer> filters = pipeline->getFilterContainer();
-  for(int i = 0; i < filters.size(); i++)
-  {
-    AbstractFilter::Pointer filter = filters[i];
-    QVector<FilterParameter::Pointer> filterParams = filter->getFilterParameters();
+//  // Look through the pipeline to find any input or output filter parameters.  Replace
+//  // the file paths in these filter parameters with session-id specific paths.
+//  QList<AbstractFilter::Pointer> filters = pipeline->getFilterContainer();
+//  for(int i = 0; i < filters.size(); i++)
+//  {
+//    AbstractFilter::Pointer filter = filters[i];
+//    QVector<FilterParameter::Pointer> filterParams = filter->getFilterParameters();
 
-    for(QVector<FilterParameter::Pointer>::iterator iter = filterParams.begin(); iter != filterParams.end(); ++iter)
-    {
-      FilterParameter* parameter = (*iter).get();
-      OutputFileFilterParameter* outFileParam = dynamic_cast<OutputFileFilterParameter*>(parameter);
-      OutputPathFilterParameter* outPathParam = dynamic_cast<OutputPathFilterParameter*>(parameter);
-      InputFileFilterParameter* inFileParam = dynamic_cast<InputFileFilterParameter*>(parameter);
-      InputPathFilterParameter* inPathParam = dynamic_cast<InputPathFilterParameter*>(parameter);
+//    for(QVector<FilterParameter::Pointer>::iterator iter = filterParams.begin(); iter != filterParams.end(); ++iter)
+//    {
+//      FilterParameter* parameter = (*iter).get();
+//      OutputFileFilterParameter* outFileParam = dynamic_cast<OutputFileFilterParameter*>(parameter);
+//      OutputPathFilterParameter* outPathParam = dynamic_cast<OutputPathFilterParameter*>(parameter);
+//      InputFileFilterParameter* inFileParam = dynamic_cast<InputFileFilterParameter*>(parameter);
+//      InputPathFilterParameter* inPathParam = dynamic_cast<InputPathFilterParameter*>(parameter);
 
-      if(outFileParam != nullptr)
-      {
-        QString existingPath = outFileParam->getGetterCallback()();
-        outFileParam->getSetterCallback()(newFilePath + existingPath);
-        outputLinks.append(linkAddress + existingPath);
-      }
-      else if(outPathParam != nullptr)
-      {
-        QString existingPath = outPathParam->getGetterCallback()();
-        outPathParam->getSetterCallback()(newFilePath + existingPath);
-        outputLinks.append(linkAddress + existingPath);
-      }
-      else if(inFileParam != nullptr)
-      {
-        QString existingPath = inFileParam->getGetterCallback()();
-        inFileParam->getSetterCallback()(newFilePath + existingPath);
-        outputLinks.append(linkAddress + existingPath);
-      }
-      else if(inPathParam != nullptr)
-      {
-        QString existingPath = inPathParam->getGetterCallback()();
-        inPathParam->getSetterCallback()(newFilePath + existingPath);
-        outputLinks.append(linkAddress + existingPath);
-      }
-    }
-  }
+//      if(outFileParam != nullptr)
+//      {
+//        QString existingPath = outFileParam->getGetterCallback()();
+//        outFileParam->getSetterCallback()(newFilePath + existingPath);
+//        outputLinks.append(linkAddress + existingPath);
+//      }
+//      else if(outPathParam != nullptr)
+//      {
+//        QString existingPath = outPathParam->getGetterCallback()();
+//        outPathParam->getSetterCallback()(newFilePath + existingPath);
+//        outputLinks.append(linkAddress + existingPath);
+//      }
+//      else if(inFileParam != nullptr)
+//      {
+//        QString existingPath = inFileParam->getGetterCallback()();
+//        inFileParam->getSetterCallback()(newFilePath + existingPath);
+//        outputLinks.append(linkAddress + existingPath);
+//      }
+//      else if(inPathParam != nullptr)
+//      {
+//        QString existingPath = inPathParam->getGetterCallback()();
+//        inPathParam->getSetterCallback()(newFilePath + existingPath);
+//        outputLinks.append(linkAddress + existingPath);
+//      }
+//    }
+//  }
 
   // Log Files
   PipelineListener listener(nullptr);
@@ -233,28 +233,25 @@ void ExecutePipelineController::serviceJSON(QJsonObject pipelineObj)
   m_ResponseObj[SIMPL::JSON::Warnings] = warnings;
   m_ResponseObj[SIMPL::JSON::Completed] = completed;
 
-  // **************************************************************************
-  // This section archives the working directory for this session
-  QProcess tar;
-  tar.setWorkingDirectory(docRoot);
-  std::cout << "Working Directory from Process: " << tar.workingDirectory().toStdString() << std::endl;
-  tar.start("/usr/bin/tar", QStringList() << "-cvf" << QString(sessionId + ".tar.gz") << QString(sessionId));
-  tar.waitForStarted();
-  tar.waitForFinished();
+//  // **************************************************************************
+//  // This section archives the working directory for this session
+//  QProcess tar;
+//  tar.setWorkingDirectory(docRoot);
+//  std::cout << "Working Directory from Process: " << tar.workingDirectory().toStdString() << std::endl;
+//  tar.start("/usr/bin/tar", QStringList() << "-cvf" << QString(sessionId + ".tar.gz") << QString(sessionId));
+//  tar.waitForStarted();
+//  tar.waitForFinished();
 
-  QByteArray result = tar.readAllStandardError();
-  std::cout << result.data() << std::endl;
-  result = tar.readAllStandardOutput();
-  std::cout << result.data() << std::endl;
+//  QByteArray result = tar.readAllStandardError();
+//  std::cout << result.data() << std::endl;
+//  result = tar.readAllStandardOutput();
+//  std::cout << result.data() << std::endl;
 
-  outputLinks.append("http://" + getListenHost().toString() + ":8080" + QDir::separator() + QString(sessionId) + ".tar.gz");
-  // **************************************************************************
+//  outputLinks.append("http://" + getListenHost().toString() + ":8080" + QDir::separator() + QString(sessionId) + ".tar.gz");
+//  // **************************************************************************
 
-  // Append to the json response payload all the output links
-  m_ResponseObj[SIMPL::JSON::OutputLinks] = outputLinks;
-
-  QJsonDocument jdoc(m_ResponseObj);
-  m_Response->write(jdoc.toJson(), true);
+//  // Append to the json response payload all the output links
+//  m_ResponseObj[SIMPL::JSON::OutputLinks] = outputLinks;
 }
 
 // -----------------------------------------------------------------------------
@@ -278,6 +275,9 @@ void ExecutePipelineController::serviceJSON()
   QJsonObject requestObj = requestDoc.object();
 
   serviceJSON(requestObj);
+
+  QJsonDocument jdoc(m_ResponseObj);
+  m_Response->write(jdoc.toJson(), true);
 }
 
 // -----------------------------------------------------------------------------
@@ -314,6 +314,76 @@ void ExecutePipelineController::serviceMultiPart()
   }
 
   serviceJSON(pipelineObj);
+
+  QJsonDocument jdoc(m_ResponseObj);
+
+  // Create the server response
+  QString responseMsg;
+
+  QString responseHeader;
+  QTextStream headerStream(&responseHeader);
+
+  QString boundary = "@@@@@@@@@@@@@@@";
+
+  headerStream << "HTTP/1.1 200 OK\n";
+  headerStream << tr("Content-Type: multipart/form-data; boundary=\"%1\"\n").arg(boundary);
+  headerStream << "\n";
+
+  QDateTime utcDateTime = QDateTime::currentDateTimeUtc();
+
+  headerStream << tr("Date: %1\n").arg(utcDateTime.toString("ddd, d MMM yyyy hh:mm:ss t"));
+  headerStream << "\n";
+
+  QString responseBody;
+  QTextStream bodyStream(&responseBody);
+
+  bodyStream << tr("--%1\n").arg(boundary);
+  bodyStream << "Content-Disposition: form-data; name=\"pipelineResponse\"\n";
+  bodyStream << "\n";
+  bodyStream << jdoc.toJson() << "\n";
+  bodyStream << "\n";
+
+  bodyStream << tr("--%1\n").arg(boundary);
+
+  int fileCount = 1;
+  for (int i = 0; i < m_TemporaryOutputFilePaths.size(); i++)
+  {
+    QFile file(m_TemporaryOutputFilePaths[i]);
+    if (file.open(QFile::ReadOnly))
+    {
+      QByteArray fileData = file.readAll();
+      fileData = fileData.toBase64();
+
+      bodyStream << tr("Content-Disposition: form-data; name=\"%1\"\n").arg(m_OutputFilePaths[i]);
+      bodyStream << "\n";
+      bodyStream << fileData << "\n";
+      bodyStream << "\n";
+
+      bodyStream << tr("--%1").arg(boundary);
+
+      fileCount++;
+    }
+    else
+    {
+      QString errString = file.errorString();
+      m_ResponseObj[SIMPL::JSON::ErrorMessage] = tr("%1: Server Response Creation Error - %2").arg(EndPoint()).arg(errString);
+      m_ResponseObj[SIMPL::JSON::ErrorCode] = -110;
+      QJsonDocument errDoc(m_ResponseObj);
+      m_Response->write(errDoc.toJson(), true);
+      return;
+    }
+  }
+
+  QByteArray bodyArray = responseBody.toUtf8();
+  int contentLength = bodyArray.size();
+
+  headerStream << tr("Content-Length: %1\n").arg(contentLength);
+  headerStream << "\n";
+
+  responseMsg.append(responseHeader);
+  responseMsg.append(responseBody);
+
+  m_Response->write(QByteArray::fromStdString(responseMsg.toStdString()), true);
 }
 
 // -----------------------------------------------------------------------------
@@ -377,7 +447,8 @@ QJsonObject ExecutePipelineController::replacePipelineValuesUsingMetadata(QJsonO
         QDir dir;
         dir.mkpath(fi.path());
 
-        m_OutputFilePaths.push_back(tempFilePath);
+        m_OutputFilePaths.push_back(propertyValue);
+        m_TemporaryOutputFilePaths.push_back(tempFilePath);
 
         propertyValue = tempFilePath;
         filterObj[propertyName] = propertyValue;
