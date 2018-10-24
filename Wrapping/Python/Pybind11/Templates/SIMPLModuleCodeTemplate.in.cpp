@@ -36,6 +36,8 @@ PYBIND11_MAKE_OPAQUE(std::vector<size_t>);
 #include "SIMPLib/Common/ShapeType.h"
 #include "SIMPLib/Common/PhaseType.h"
 #include "OrientationLib/OrientationMath/OrientationConverter.hpp"
+#include "SIMPLib/CoreFilters/ArrayCalculator.h"
+#include "SIMPLib/CoreFilters/ImportHDF5Dataset.h"
 
 namespace py = pybind11;
 
@@ -235,6 +237,22 @@ PYBIND11_MODULE(dream3d, m)
       }))
   ;
 
+  py::class_<QList<ImportHDF5Dataset::DatasetImportInfo>>(mod, "DatasetImportInfoList")
+     .def(py::init<>([](py::list values) {
+	  QList<ImportHDF5Dataset::DatasetImportInfo> datasetImportInfoList;
+	  for (auto value : values) {
+		  py::list valueAsList = py::cast<py::list>(value);
+		  py::print(valueAsList);
+		  ImportHDF5Dataset::DatasetImportInfo datasetImportInfo;
+		  datasetImportInfo.dataSetPath = py::cast<QString>(valueAsList[0]);
+		  datasetImportInfo.componentDimensions = py::cast<QString>(valueAsList[1]);
+		  py::print(valueAsList[0]);
+		  py::print(valueAsList[1]);
+		  datasetImportInfoList.push_back(datasetImportInfo);
+	  }
+	  return datasetImportInfoList;
+	  }));
+
   /* STL Binding code */
   py::bind_vector<std::vector<int8_t>>(mod, "VectorInt8");
   py::bind_vector<std::vector<uint8_t>>(mod, "VectorUInt8");
@@ -350,6 +368,28 @@ PYBIND11_MODULE(dream3d, m)
 	  .value("Trigonal_Low", EnsembleInfo::CrystalStructure::Trigonal_Low)
 	  .value("Trigonal_High", EnsembleInfo::CrystalStructure::Trigonal_High)
 	  .value("UnknownCrystalStructure", EnsembleInfo::CrystalStructure::UnknownCrystalStructure)
+	  .export_values();
+
+  /* Enumeration code for AngleUnits */
+  py::enum_<ArrayCalculator::AngleUnits>(mod, "AngleUnits")
+	  .value("Radians", ArrayCalculator::AngleUnits::Radians)
+	  .value("Degrees", ArrayCalculator::AngleUnits::Degrees)
+	  .export_values();
+
+  py::enum_<SIMPL::NumericTypes::Type>(mod, "NumericTypes")
+	  .value("Int8", SIMPL::NumericTypes::Type::Int8)
+	  .value("UInt8", SIMPL::NumericTypes::Type::UInt8)
+	  .value("Int16", SIMPL::NumericTypes::Type::Int16)
+	  .value("UInt16", SIMPL::NumericTypes::Type::UInt16)
+	  .value("Int32", SIMPL::NumericTypes::Type::Int32)
+	  .value("UInt32", SIMPL::NumericTypes::Type::UInt32)
+	  .value("Int64", SIMPL::NumericTypes::Type::Int64)
+	  .value("UInt64", SIMPL::NumericTypes::Type::UInt64)
+	  .value("Float", SIMPL::NumericTypes::Type::Float)
+	  .value("Double", SIMPL::NumericTypes::Type::Double)
+	  .value("Bool", SIMPL::NumericTypes::Type::Bool)
+	  .value("SizeT", SIMPL::NumericTypes::Type::SizeT)
+	  .value("UnknownNumType", SIMPL::NumericTypes::Type::UnknownNumType)
 	  .export_values();
 
 
