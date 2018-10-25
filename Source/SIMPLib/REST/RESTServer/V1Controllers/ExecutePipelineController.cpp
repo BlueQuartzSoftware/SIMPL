@@ -54,6 +54,7 @@
 
 #include "QtWebApp/httpserver/httplistener.h"
 #include "QtWebApp/httpserver/httpsessionstore.h"
+#include "REST/RESTServer/HttpResponseGenerator.h"
 #include "REST/RESTServer/PipelineListener.h"
 #include "SIMPLStaticFileController.h"
 
@@ -317,35 +318,16 @@ void ExecutePipelineController::serviceMultiPart()
 
   QJsonDocument jdoc(m_ResponseObj);
 
-  // Create the server response
-  QString responseMsg;
-
-  QString responseHeader;
-  QTextStream headerStream(&responseHeader);
-
-  QString boundary = "@@@@@@@@@@@@@@@";
-
-  headerStream << "HTTP/1.1 200 OK\n";
-  headerStream << tr("Content-Type: multipart/form-data; boundary=\"%1\"\n").arg(boundary);
-  headerStream << "\n";
+  HttpResponseGenerator responseGenerator;
+  responseGenerator.setVersion("HTTP/1.1");
+  responseGenerator.setResponseCode(HttpResponseGenerator::HttpResponseCode::OK);
+  responseGenerator.setHeader("Content-Type", tr("multipart/form-data; boundary=\"%1\"").arg("@@@@@@@@@@@@@@@@@@@@"));
 
   QDateTime utcDateTime = QDateTime::currentDateTimeUtc();
+  responseGenerator.setHeader("Date", utcDateTime.toString("ddd, d MMM yyyy hh:mm:ss t"));
 
-  headerStream << tr("Date: %1\n").arg(utcDateTime.toString("ddd, d MMM yyyy hh:mm:ss t"));
-  headerStream << "\n";
+  responseGenerator.setParameter("pipelineResponse", QString::fromStdString(jdoc.toJson().toStdString()));
 
-  QString responseBody;
-  QTextStream bodyStream(&responseBody);
-
-  bodyStream << tr("--%1\n").arg(boundary);
-  bodyStream << "Content-Disposition: form-data; name=\"pipelineResponse\"\n";
-  bodyStream << "\n";
-  bodyStream << jdoc.toJson() << "\n";
-  bodyStream << "\n";
-
-  bodyStream << tr("--%1\n").arg(boundary);
-
-  int fileCount = 1;
   for (int i = 0; i < m_TemporaryOutputFilePaths.size(); i++)
   {
     QFile file(m_TemporaryOutputFilePaths[i]);
@@ -354,34 +336,35 @@ void ExecutePipelineController::serviceMultiPart()
       QByteArray fileData = file.readAll();
       fileData = fileData.toBase64();
 
-      bodyStream << tr("Content-Disposition: form-data; name=\"%1\"\n").arg(m_OutputFilePaths[i]);
-      bodyStream << "\n";
-      bodyStream << fileData << "\n";
-      bodyStream << "\n";
-
-      bodyStream << tr("--%1").arg(boundary);
-
-      fileCount++;
+      responseGenerator.setParameter(m_OutputFilePaths[i], QString::fromStdString(fileData.toStdString()));
     }
     else
     {
+      HttpResponseGenerator errorGenerator;
+      errorGenerator.setVersion("HTTP/1.1");
+      errorGenerator.setResponseCode(HttpResponseGenerator::HttpResponseCode::InternalServerError);
+      errorGenerator.setHeader("Content-Type", tr("application/json"));
+
+      QDateTime utcDateTime = QDateTime::currentDateTimeUtc();
+      errorGenerator.setHeader("Date", utcDateTime.toString("ddd, d MMM yyyy hh:mm:ss t"));
+
       QString errString = file.errorString();
       m_ResponseObj[SIMPL::JSON::ErrorMessage] = tr("%1: Server Response Creation Error - %2").arg(EndPoint()).arg(errString);
       m_ResponseObj[SIMPL::JSON::ErrorCode] = -110;
       QJsonDocument errDoc(m_ResponseObj);
-      m_Response->write(errDoc.toJson(), true);
+
+      errorGenerator.setParameter("pipelineResponse", QString::fromStdString(errDoc.toJson().toStdString()));
+
+      QString errorResponse = errorGenerator.generateResponse();
+      m_Response->write(QByteArray::fromStdString(errorResponse.toStdString()), true);
       return;
     }
   }
 
-  QByteArray bodyArray = responseBody.toUtf8();
-  int contentLength = bodyArray.size();
+  responseGenerator.setHeader("Content-Length", QString::number(responseGenerator.getBodySize()));
 
-  headerStream << tr("Content-Length: %1\n").arg(contentLength);
-  headerStream << "\n";
-
-  responseMsg.append(responseHeader);
-  responseMsg.append(responseBody);
+  // Create the server response
+  QString responseMsg = responseGenerator.generateResponse();
 
   m_Response->write(QByteArray::fromStdString(responseMsg.toStdString()), true);
 }

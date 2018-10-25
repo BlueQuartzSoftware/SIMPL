@@ -8,6 +8,7 @@ configure_file(${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLRestServer.ini ${CMAKE_
 # Any Class that inherits from QObject, either directly or through the heirarchy needs to have its header listed here
 set(SIMPLib_${SUBDIR_NAME}_Moc_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/HttpResponseParser.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/HttpResponseGenerator.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/SIMPLRequestMapper.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/PipelineListener.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/SIMPLDirectoryListing.h
@@ -38,6 +39,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
 
 set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/HttpResponseParser.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/HttpResponseGenerator.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/SIMPLRequestMapper.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/PipelineListener.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RESTServer/SIMPLDirectoryListing.cpp
