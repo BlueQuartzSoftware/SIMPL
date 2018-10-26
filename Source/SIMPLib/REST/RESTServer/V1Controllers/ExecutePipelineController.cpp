@@ -54,7 +54,6 @@
 
 #include "QtWebApp/httpserver/httplistener.h"
 #include "QtWebApp/httpserver/httpsessionstore.h"
-#include "REST/RESTServer/HttpResponseGenerator.h"
 #include "REST/RESTServer/PipelineListener.h"
 #include "SIMPLStaticFileController.h"
 
@@ -74,10 +73,8 @@ void ExecutePipelineController::serviceJSON(QJsonObject pipelineObj)
   FilterPipeline::Pointer pipeline = FilterPipeline::FromJson(pipelineObj);
   if (pipeline.get() == nullptr)
   {
-    m_ResponseObj[SIMPL::JSON::ErrorMessage] = tr("%1: Pipeline could not be created from the JSON request body.").arg(EndPoint());
-    m_ResponseObj[SIMPL::JSON::ErrorCode] = -50;
-    QJsonDocument jdoc(m_ResponseObj);
-    m_Response->write(jdoc.toJson(), true);
+    QString errMsg = tr("%1: Pipeline could not be created from the JSON request body.").arg(EndPoint());
+    sendErrorResponse(HttpResponse::HttpStatusCode::BadRequest, errMsg, -50);
     return;
   }
 
@@ -265,17 +262,22 @@ void ExecutePipelineController::serviceJSON()
   QJsonDocument requestDoc = QJsonDocument::fromJson(requestBody.toUtf8(), &jsonParseError);
   if (jsonParseError.error != QJsonParseError::ParseError::NoError)
   {
-    // Form Error response
-    m_ResponseObj[SIMPL::JSON::ErrorMessage] = tr("%1: JSON Request Parsing Error - %2").arg(EndPoint()).arg(jsonParseError.errorString());
-    m_ResponseObj[SIMPL::JSON::ErrorCode] = -30;
-    QJsonDocument jdoc(m_ResponseObj);
-    m_Response->write(jdoc.toJson(), true);
+    QString errMsg = tr("%1: JSON Request Parsing Error - %2").arg(EndPoint()).arg(jsonParseError.errorString());
+    sendErrorResponse(HttpResponse::HttpStatusCode::BadRequest, errMsg, -40);
     return;
   }
 
   QJsonObject requestObj = requestDoc.object();
 
   serviceJSON(requestObj);
+  if (m_ResponseObj[SIMPL::JSON::ErrorCode].toInt() < 0)
+  {
+    return;
+  }
+
+  m_Response->setStatusCode(HttpResponse::HttpStatusCode::OK);
+
+  m_Response->setHeader("Content-Type", "application/json");
 
   QJsonDocument jdoc(m_ResponseObj);
   m_Response->write(jdoc.toJson(), true);
@@ -298,11 +300,8 @@ void ExecutePipelineController::serviceMultiPart()
   QJsonDocument pipelineDoc = QJsonDocument::fromJson(jsonData, &jsonParseError);
   if (jsonParseError.error != QJsonParseError::ParseError::NoError)
   {
-    // Form Error response
-    m_ResponseObj[SIMPL::JSON::ErrorMessage] = tr("%1: JSON Request Parsing Error - %2").arg(EndPoint()).arg(jsonParseError.errorString());
-    m_ResponseObj[SIMPL::JSON::ErrorCode] = -30;
-    QJsonDocument jdoc(m_ResponseObj);
-    m_Response->write(jdoc.toJson(), true);
+    QString errMsg = tr("%1: JSON Request Parsing Error - %2").arg(EndPoint()).arg(jsonParseError.errorString());
+    sendErrorResponse(HttpResponse::HttpStatusCode::BadRequest, errMsg, -30);
     return;
   }
 
@@ -315,58 +314,71 @@ void ExecutePipelineController::serviceMultiPart()
   }
 
   serviceJSON(pipelineObj);
+  if (m_ResponseObj[SIMPL::JSON::ErrorCode].toInt() < 0)
+  {
+    return;
+  }
 
   QJsonDocument jdoc(m_ResponseObj);
 
-  HttpResponseGenerator responseGenerator;
-  responseGenerator.setVersion("HTTP/1.1");
-  responseGenerator.setResponseCode(HttpResponseGenerator::HttpResponseCode::OK);
-  responseGenerator.setHeader("Content-Type", tr("multipart/form-data; boundary=\"%1\"").arg("@@@@@@@@@@@@@@@@@@@@"));
+  m_Response->setStatusCode(HttpResponse::HttpStatusCode::OK);
 
-  QDateTime utcDateTime = QDateTime::currentDateTimeUtc();
-  responseGenerator.setHeader("Date", utcDateTime.toString("ddd, d MMM yyyy hh:mm:ss t"));
+  QString boundary = "@@@@@@@@@@@@@@@@@@@@";
 
-  responseGenerator.setParameter("pipelineResponse", QString::fromStdString(jdoc.toJson().toStdString()));
+  m_Response->setHeader("Content-Type", QByteArray::fromStdString(tr("multipart/form-data; boundary=\"%1\"").arg(boundary).toStdString()));
 
+  QByteArray body;
+
+  // Add pipeline response part to the body
+  body.append(boundary + "\r\n");
+  body.append("Content-Disposition: form-data; name=\"pipelineResponse\"\r\n");
+  body.append("\r\n");
+  body.append(jdoc.toJson() + "\n");
+
+  // Add output file data to the body
   for (int i = 0; i < m_TemporaryOutputFilePaths.size(); i++)
   {
-    QFile file(m_TemporaryOutputFilePaths[i]);
+    QString tempFilePath = m_TemporaryOutputFilePaths[i];
+    QString filePath = m_OutputFilePaths[i];
+    QFile file(tempFilePath);
     if (file.open(QFile::ReadOnly))
     {
       QByteArray fileData = file.readAll();
       fileData = fileData.toBase64();
 
-      responseGenerator.setParameter(m_OutputFilePaths[i], QString::fromStdString(fileData.toStdString()));
+      body.append(boundary + "\r\n");
+      body.append(tr("Content-Disposition: form-data; name=\"%1\"\r\n").arg(filePath));
+      body.append("\r\n");
+      body.append(fileData + "\n");
     }
     else
     {
-      HttpResponseGenerator errorGenerator;
-      errorGenerator.setVersion("HTTP/1.1");
-      errorGenerator.setResponseCode(HttpResponseGenerator::HttpResponseCode::InternalServerError);
-      errorGenerator.setHeader("Content-Type", tr("application/json"));
-
-      QDateTime utcDateTime = QDateTime::currentDateTimeUtc();
-      errorGenerator.setHeader("Date", utcDateTime.toString("ddd, d MMM yyyy hh:mm:ss t"));
-
       QString errString = file.errorString();
-      m_ResponseObj[SIMPL::JSON::ErrorMessage] = tr("%1: Server Response Creation Error - %2").arg(EndPoint()).arg(errString);
-      m_ResponseObj[SIMPL::JSON::ErrorCode] = -110;
-      QJsonDocument errDoc(m_ResponseObj);
-
-      errorGenerator.setParameter("pipelineResponse", QString::fromStdString(errDoc.toJson().toStdString()));
-
-      QString errorResponse = errorGenerator.generateResponse();
-      m_Response->write(QByteArray::fromStdString(errorResponse.toStdString()), true);
+      QString errMsg = tr("%1: Server Response Creation Error - %2").arg(EndPoint()).arg(errString);
+      sendErrorResponse(HttpResponse::HttpStatusCode::InternalServerError, errMsg, -110);
       return;
     }
   }
 
-  responseGenerator.setHeader("Content-Length", QString::number(responseGenerator.getBodySize()));
+  m_Response->write(body, true);
+}
 
-  // Create the server response
-  QString responseMsg = responseGenerator.generateResponse();
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ExecutePipelineController::sendErrorResponse(HttpResponse::HttpStatusCode statusCode, const QString &errorMsg, int errCode)
+{
+  m_Response->setStatusCode(statusCode);
+  QByteArray contentType = "application/json";
+  m_Response->setHeader("Content-Type", contentType);
 
-  m_Response->write(QByteArray::fromStdString(responseMsg.toStdString()), true);
+  m_ResponseObj[SIMPL::JSON::ErrorMessage] = errorMsg;
+  m_ResponseObj[SIMPL::JSON::ErrorCode] = errCode;
+  QJsonDocument errDoc(m_ResponseObj);
+
+  QByteArray json = errDoc.toJson();
+
+  m_Response->write(json, true);
 }
 
 // -----------------------------------------------------------------------------
@@ -600,7 +612,6 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
   responseObj[SIMPL::JSON::SessionID] = QString(session.getId());
   responseObj[SIMPL::JSON::ErrorCode] = 0;
   responseObj[SIMPL::JSON::ErrorMessage] = "";
-  response.setHeader("Content-Type", "application/json");
 
   m_Request = &request;
   m_Response = &response;
@@ -619,14 +630,8 @@ void ExecutePipelineController::service(HttpRequest& request, HttpResponse& resp
   }
   else
   {
-    // Form Error response
-    m_ResponseObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Content Type is not application/json or multipart/form-data";
-    m_ResponseObj[SIMPL::JSON::ErrorCode] = -20;
-    QJsonDocument jdoc(m_ResponseObj);
-
-    response.write(jdoc.toJson(), true);
-
-    cleanup();
+    QString errMsg = EndPoint() + ": Content Type is not application/json or multipart/form-data";
+    sendErrorResponse(HttpResponse::HttpStatusCode::BadRequest, errMsg, -20);
     return;
   }
 

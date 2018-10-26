@@ -34,6 +34,57 @@ class DECLSPEC HttpResponse
 {
   Q_DISABLE_COPY(HttpResponse)
 public:
+
+    enum class HttpStatusCode : unsigned int
+    {
+      Unknown = 0,
+
+      Continue = 100,
+      SwitchingProtocols = 101,
+
+      OK = 200,
+      Created = 201,
+      Accepted = 202,
+      NonAuthoritativeInformation = 203,
+      NoContent = 204,
+      ResetContent = 205,
+      PartialContent = 206,
+
+      MultipleChoices = 300,
+      MovedPermanently = 301,
+      Found = 302,
+      SeeOther = 303,
+      NotModified = 304,
+      UseProxy = 305,
+      TemporaryRedirect = 307,
+
+      BadRequest = 400,
+      Unauthorized = 401,
+      PaymentRequired = 402,
+      Forbidden = 403,
+      NotFound = 404,
+      MethodNotAllowed = 405,
+      NotAcceptable = 406,
+      ProxyAuthenticationRequired = 407,
+      RequestTimeout = 408,
+      Conflict = 409,
+      Gone = 410,
+      LengthRequired = 411,
+      PreconditionFailed = 412,
+      RequestEntityTooLarge = 413,
+      RequestURITooLarge = 414,
+      UnsupportedMediaType = 415,
+      RequestedRangeNotSatisfiable = 416,
+      ExpectationFailed = 417,
+
+      InternalServerError = 500,
+      NotImplemented = 501,
+      BadGateway = 502,
+      ServiceUnavailable = 503,
+      GatewayTimeout = 504,
+      HTTPVersionNotSupported = 505
+    };
+
   /**
     Constructor.
     @param socket used to write the response
@@ -66,10 +117,10 @@ public:
     Set status code and description. The default is 200,OK.
     You must call this method before the first write().
   */
-  void setStatus(int statusCode, QByteArray description = QByteArray());
+  void setStatusCode(HttpStatusCode statusCode);
 
   /** Return the status code. */
-  int getStatusCode() const;
+  HttpStatusCode getStatusCode() const;
 
   /**
     Write body data to the socket.
@@ -125,10 +176,7 @@ private:
   QTcpSocket* socket;
 
   /** HTTP status code*/
-  int statusCode;
-
-  /** HTTP status code description */
-  QByteArray statusText;
+  HttpStatusCode statusCode;
 
   /** Indicator whether headers have been sent */
   bool sentHeaders;
@@ -142,6 +190,9 @@ private:
   /** Cookies */
   QMap<QByteArray, HttpCookie> cookies;
 
+  /* The mapping between status codes and their descriptions */
+  QMap<HttpStatusCode,QByteArray> m_StatusCodeLookup;
+
   /** Write raw data to the socket. This method blocks until all bytes have been passed to the TCP buffer */
   bool writeToSocket(QByteArray data);
 
@@ -151,5 +202,10 @@ private:
     it automatically when required.
   */
   void writeHeaders();
+
+  /**
+   * @brief Creates the lookup for every possible status code
+   */
+  void createStatusCodeLookup();
 };
 

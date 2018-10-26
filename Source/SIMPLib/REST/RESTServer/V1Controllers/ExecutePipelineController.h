@@ -29,8 +29,8 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef ExecutePipelineController_H_
-#define ExecutePipelineController_H_
+
+#pragma once
 
 #include <QtCore/QJsonObject>
 #include <QtCore/QTemporaryDir>
@@ -39,6 +39,8 @@
 #include "QtWebApp/httpserver/httprequest.h"
 #include "QtWebApp/httpserver/httprequesthandler.h"
 #include "QtWebApp/httpserver/httpresponse.h"
+
+//#include "REST/RESTServer/HttpResponseGenerator.h"
 
 /**
   @brief This class responds to REST API endpoint
@@ -78,6 +80,8 @@ private:
   // Functions that process multi-part requests
   void serviceMultiPart();
 
+  void sendErrorResponse(HttpResponse::HttpStatusCode statusCode, const QString &errorMsg, int errCode);
+
   QJsonObject getPipelineMetadata();
   QString getStringValue(const QString &key, QJsonObject pipelineReplacementObj);
   QJsonArray getFileParameterNames(QJsonObject pipelineReplacementObj);
@@ -85,5 +89,3 @@ private:
   QJsonObject replacePipelineValuesUsingMetadata(QJsonObject pipelineJsonObj, QJsonObject pipelineMetadataObject);
 
 };
-
-#endif // ExecutePipelineController_H_

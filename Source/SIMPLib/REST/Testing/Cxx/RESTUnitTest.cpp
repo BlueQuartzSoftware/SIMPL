@@ -69,7 +69,6 @@
 #include "REST/RESTServer/V1Controllers/SIMPLStaticFileController.h"
 #include "REST/RESTServer/SIMPLRequestMapper.h"
 #include "REST/RESTServer/PipelineListener.h"
-#include "REST/RESTServer/HttpResponseParser.h"
 
 #include "QtWebApp/httpserver/httplistener.h"
 #include "QtWebApp/httpserver/httpsessionstore.h"
@@ -156,14 +155,12 @@ public:
 
     url.setPath("/api/v1/ExecutePipeline");
 
-    QByteArray data; // No actual Application data is required.
-
     // Test 'Incorrect Content Type'
     {
       QByteArray data;
 
       QSharedPointer<QNetworkReply> reply = sendRequest(url, "text/plain", data);
-      DREAM3D_REQUIRE_EQUAL(reply->error(), 0);
+      DREAM3D_REQUIRE_EQUAL(reply->error(), QNetworkReply::ProtocolInvalidOperationError);
 
       QJsonParseError jsonParseError;
       QByteArray jsonResponse = reply->readAll();
@@ -181,7 +178,8 @@ public:
       QByteArray data = QByteArray::fromStdString("{ CreateAttributeMatrix");
 
       QSharedPointer<QNetworkReply> reply = sendRequest(url, "application/json", data);
-      DREAM3D_REQUIRE_EQUAL(reply->error(), 0);
+      QString errString = reply->errorString();
+      DREAM3D_REQUIRE_EQUAL(reply->error(), QNetworkReply::ProtocolInvalidOperationError);
 
       QJsonParseError jsonParseError;
       QByteArray jsonResponse = reply->readAll();
@@ -191,7 +189,7 @@ public:
       QJsonObject responseObject = doc.object();
       DREAM3D_REQUIRE_EQUAL(responseObject.size(), 3);
       DREAM3D_REQUIRE_EQUAL(responseObject.contains(SIMPL::JSON::ErrorCode), true);
-      DREAM3D_REQUIRE_EQUAL(responseObject[SIMPL::JSON::ErrorCode].toInt(), -30);
+      DREAM3D_REQUIRE_EQUAL(responseObject[SIMPL::JSON::ErrorCode].toInt(), -40);
     }
 
     // Test 'Missing Pipeline Object'
@@ -202,7 +200,7 @@ public:
       QByteArray data = doc.toJson();
 
       QSharedPointer<QNetworkReply> reply = sendRequest(url, "application/json", data);
-      DREAM3D_REQUIRE_EQUAL(reply->error(), 0);
+      DREAM3D_REQUIRE_EQUAL(reply->error(), QNetworkReply::ProtocolInvalidOperationError);
 
       QJsonParseError jsonParseError;
       QByteArray jsonResponse = reply->readAll();
@@ -212,7 +210,7 @@ public:
       QJsonObject responseObject = doc.object();
       DREAM3D_REQUIRE_EQUAL(responseObject.size(), 3);
       DREAM3D_REQUIRE_EQUAL(responseObject.contains(SIMPL::JSON::ErrorCode), true);
-      DREAM3D_REQUIRE_EQUAL(responseObject[SIMPL::JSON::ErrorCode].toInt(), -40);
+      DREAM3D_REQUIRE_EQUAL(responseObject[SIMPL::JSON::ErrorCode].toInt(), -50);
     }
 
     // Test 'Pipeline Could Not Be Created'
@@ -223,7 +221,7 @@ public:
       QByteArray data = doc.toJson();
 
       QSharedPointer<QNetworkReply> reply = sendRequest(url, "application/json", data);
-      DREAM3D_REQUIRE_EQUAL(reply->error(), 0);
+      DREAM3D_REQUIRE_EQUAL(reply->error(), QNetworkReply::ProtocolInvalidOperationError);
 
       QJsonParseError jsonParseError;
       QByteArray jsonResponse = reply->readAll();
@@ -246,7 +244,7 @@ public:
       QByteArray jsonByteArray = QByteArray::fromStdString(jsonString.toStdString());
 
       QSharedPointer<QNetworkReply> reply = sendRequest(url, "application/json", jsonByteArray);
-      DREAM3D_REQUIRE_EQUAL(reply->error(), 0);
+      DREAM3D_REQUIRE_EQUAL(reply->error(), QNetworkReply::NoError);
 
       QJsonParseError jsonParseError;
       QByteArray jsonResponse = reply->readAll();
@@ -382,96 +380,132 @@ public:
     }
 
     QSharedPointer<QNetworkReply> reply = sendRequest(url, multiPart);
-    DREAM3D_REQUIRE_EQUAL(reply->error(), 0);
+    DREAM3D_REQUIRE_EQUAL(reply->error(), QNetworkReply::NoError);
 
-    QString responseData = QString::fromStdString(reply->readAll().toStdString());
+    QList<QNetworkReply::RawHeaderPair> headerPairs = reply->rawHeaderPairs();
 
-    HttpResponseParser parser;
-    HttpResponseParseError parseError;
-    parser.parseResponse(responseData, &parseError);
-    DREAM3D_REQUIRE_EQUAL(static_cast<int>(parseError.error()), static_cast<int>(HttpResponseParseError::ParseError::NoError));
-
-    HttpResponseParser::StringMultiMap parameterMap = parser.getParameters();
-    for (HttpResponseParser::StringMultiMap::iterator iter = parameterMap.begin(); iter != parameterMap.end(); iter++)
+    bool hasContentTypeHeader = false;
+    foreach (QNetworkReply::RawHeaderPair headerPair, headerPairs)
     {
-      QString key = iter.key();
-      QString value = iter.value();
-
-      QFileInfo fi(key);
-      if (key == "pipelineResponse")
+      if (headerPair.first == "Content-Type")
       {
-        continue;
+        DREAM3D_REQUIRE_EQUAL(headerPair.second.startsWith("multipart/form-data"), true);
+        DREAM3D_REQUIRE_EQUAL(headerPair.second.contains("boundary=\""), true);
+        hasContentTypeHeader = true;
       }
-
-      QDir dir;
-      DREAM3D_REQUIRE_EQUAL(dir.mkpath(fi.path()), true);
-
-      QFile file(key);
-      DREAM3D_REQUIRE_EQUAL(file.open(QFile::WriteOnly), true);
-
-      QByteArray fileData = QByteArray::fromStdString(value.toStdString());
-      fileData = QByteArray::fromBase64(fileData);
-
-      file.write(fileData);
-      file.close();
     }
 
-    QString pipelineResponse = parameterMap.value("pipelineResponse");
+    DREAM3D_REQUIRE_EQUAL(hasContentTypeHeader, true);
 
-    QJsonParseError jsonParseError;
-    QJsonDocument doc = QJsonDocument::fromJson(QByteArray::fromStdString(pipelineResponse.toStdString()), &jsonParseError);
-    DREAM3D_REQUIRE_EQUAL(jsonParseError.error, QJsonParseError::ParseError::NoError);
+    QString boundary = "@@@@@@@@@@@@@@@@@@@@";
 
-    QJsonObject responseObject = doc.object();
-    DREAM3D_REQUIRE_EQUAL(responseObject.size(), 7);
-    DREAM3D_REQUIRE_EQUAL(responseObject.contains(SIMPL::JSON::Completed), true);
-    DREAM3D_REQUIRE_EQUAL(responseObject[SIMPL::JSON::Completed].isBool(), true);
-    DREAM3D_REQUIRE_EQUAL(responseObject[SIMPL::JSON::Completed].toBool(), true);
+    QString bodyData = QString::fromStdString(reply->readAll().toStdString());
 
-    DREAM3D_REQUIRE_EQUAL(responseObject.contains(SIMPL::JSON::Errors), true);
-    DREAM3D_REQUIRE_EQUAL(responseObject[SIMPL::JSON::Errors].isArray(), true);
+    QStringList bodyPartDataList = bodyData.split(boundary + "\r\n", QString::SplitBehavior::SkipEmptyParts);
+    DREAM3D_REQUIRE_EQUAL(bodyPartDataList.size(), 2);
 
-    QJsonArray responseErrorsArray = responseObject[SIMPL::JSON::Errors].toArray();
-    DREAM3D_REQUIRE_EQUAL(responseErrorsArray.size(), 0);
+    for (int i = 0; i < bodyPartDataList.size(); i++)
+    {
+      QString bodyPartData = bodyPartDataList[i];
+      QTextStream textStream(&bodyPartData);
 
-    DREAM3D_REQUIRE_EQUAL(responseObject[SIMPL::JSON::Warnings].isArray(), true);
-    QJsonArray responseWarningsArray = responseObject[SIMPL::JSON::Warnings].toArray();
-    DREAM3D_REQUIRE_EQUAL(responseWarningsArray.size(), 0);
+      QString line = textStream.readLine();
+      DREAM3D_REQUIRE_EQUAL(line.startsWith("Content-Disposition:"), true);
+      DREAM3D_REQUIRE_EQUAL(line.contains("form-data"), true);
+      DREAM3D_REQUIRE_EQUAL(line.contains("name="), true);
 
-    QFile inputFile(UnitTest::RestUnitTest::RESTFileIOPipelineFilePath);
-    DREAM3D_REQUIRE_EQUAL(inputFile.open(QIODevice::ReadOnly), true);
+      QString parameterNameLabel = "name=";
 
-    QTextStream in(&inputFile);
-    QString jsonString = in.readAll();
-    inputFile.close();
-    QByteArray jsonByteArray = QByteArray::fromStdString(jsonString.toStdString());
+      int nameLabelIndex = line.indexOf(parameterNameLabel);
+      QString bodyPartName = line.right(line.size() - nameLabelIndex - parameterNameLabel.size());
+      if (bodyPartName.startsWith("\""))
+      {
+        bodyPartName.remove(0, 1);
+      }
+      if (bodyPartName.endsWith("\""))
+      {
+        bodyPartName.chop(1);
+      }
 
-    doc = QJsonDocument::fromJson(jsonByteArray);
-    QJsonObject pipelineObj = doc.object();
-    QJsonObject filterObj = pipelineObj["0"].toObject();
-    filterObj["InputFile"] = UnitTest::RestUnitTest::RESTFileIOInputDataFilePath;
-    pipelineObj["0"] = filterObj;
+      // Read empty line that separates part-specific headers with the part body
+      textStream.readLine();
 
-    filterObj = pipelineObj["1"].toObject();
-    filterObj["OutputFile"] = UnitTest::RestUnitTest::RESTFileIOOutputDataFilePath;
-    pipelineObj["1"] = filterObj;
+      // Read the part body
+      QString bodyPartValue = textStream.read(bodyPartData.size());
 
-    doc.setObject(pipelineObj);
-    jsonByteArray = doc.toJson();
+      if (bodyPartName == "pipelineResponse")
+      {
+        QJsonParseError jsonParseError;
+        QJsonDocument doc = QJsonDocument::fromJson(QByteArray::fromStdString(bodyPartValue.toStdString()), &jsonParseError);
+        DREAM3D_REQUIRE_EQUAL(jsonParseError.error, QJsonParseError::ParseError::NoError);
 
-    JsonFilterParametersReader::Pointer reader = JsonFilterParametersReader::New();
-    FilterPipeline::Pointer pipeline = reader->readPipelineFromString(QString::fromStdString(jsonByteArray.toStdString()));
+        QJsonObject responseObject = doc.object();
+        DREAM3D_REQUIRE_EQUAL(responseObject.size(), 7);
+        DREAM3D_REQUIRE_EQUAL(responseObject.contains(SIMPL::JSON::Completed), true);
+        DREAM3D_REQUIRE_EQUAL(responseObject[SIMPL::JSON::Completed].isBool(), true);
+        DREAM3D_REQUIRE_EQUAL(responseObject[SIMPL::JSON::Completed].toBool(), true);
 
-    PipelineListener listener(nullptr);
-    pipeline->addMessageReceiver(&listener);
+        DREAM3D_REQUIRE_EQUAL(responseObject.contains(SIMPL::JSON::Errors), true);
+        DREAM3D_REQUIRE_EQUAL(responseObject[SIMPL::JSON::Errors].isArray(), true);
 
-    pipeline->execute();
+        QJsonArray responseErrorsArray = responseObject[SIMPL::JSON::Errors].toArray();
+        DREAM3D_REQUIRE_EQUAL(responseErrorsArray.size(), 0);
 
-    std::vector<PipelineMessage> warningMessages = listener.getWarningMessages();
-    DREAM3D_REQUIRE_EQUAL(warningMessages.size(), 0);
+        DREAM3D_REQUIRE_EQUAL(responseObject[SIMPL::JSON::Warnings].isArray(), true);
+        QJsonArray responseWarningsArray = responseObject[SIMPL::JSON::Warnings].toArray();
+        DREAM3D_REQUIRE_EQUAL(responseWarningsArray.size(), 0);
 
-    std::vector<PipelineMessage> errorMessages = listener.getErrorMessages();
-    DREAM3D_REQUIRE_EQUAL(errorMessages.size(), 0);
+        QFile inputFile(UnitTest::RestUnitTest::RESTFileIOPipelineFilePath);
+        DREAM3D_REQUIRE_EQUAL(inputFile.open(QIODevice::ReadOnly), true);
+
+        QTextStream in(&inputFile);
+        QString jsonString = in.readAll();
+        inputFile.close();
+        QByteArray jsonByteArray = QByteArray::fromStdString(jsonString.toStdString());
+
+        doc = QJsonDocument::fromJson(jsonByteArray);
+        QJsonObject pipelineObj = doc.object();
+        QJsonObject filterObj = pipelineObj["0"].toObject();
+        filterObj["InputFile"] = UnitTest::RestUnitTest::RESTFileIOInputDataFilePath;
+        pipelineObj["0"] = filterObj;
+
+        filterObj = pipelineObj["1"].toObject();
+        filterObj["OutputFile"] = UnitTest::RestUnitTest::RESTFileIOOutputDataFilePath;
+        pipelineObj["1"] = filterObj;
+
+        doc.setObject(pipelineObj);
+        jsonByteArray = doc.toJson();
+
+        JsonFilterParametersReader::Pointer reader = JsonFilterParametersReader::New();
+        FilterPipeline::Pointer pipeline = reader->readPipelineFromString(QString::fromStdString(jsonByteArray.toStdString()));
+
+        PipelineListener listener(nullptr);
+        pipeline->addMessageReceiver(&listener);
+
+        pipeline->execute();
+
+        std::vector<PipelineMessage> warningMessages = listener.getWarningMessages();
+        DREAM3D_REQUIRE_EQUAL(warningMessages.size(), 0);
+
+        std::vector<PipelineMessage> errorMessages = listener.getErrorMessages();
+        DREAM3D_REQUIRE_EQUAL(errorMessages.size(), 0);
+      }
+      else
+      {
+        QDir dir;
+        QFileInfo fi(bodyPartName);
+        DREAM3D_REQUIRE_EQUAL(dir.mkpath(fi.path()), true);
+
+        QFile file(bodyPartName);
+        DREAM3D_REQUIRE_EQUAL(file.open(QFile::WriteOnly), true);
+
+        QByteArray fileData = QByteArray::fromStdString(bodyPartValue.toStdString());
+        fileData = QByteArray::fromBase64(fileData);
+
+        file.write(fileData);
+        file.close();
+      }
+    }
   }
 
   // -----------------------------------------------------------------------------
@@ -1379,14 +1413,14 @@ public:
 
     DREAM3D_REGISTER_TEST(TestExecutePipelineWithFiles());
 
-//    DREAM3D_REGISTER_TEST(TestExecutePipeline());
-//    DREAM3D_REGISTER_TEST(TestListFilterParameters());
-//    DREAM3D_REGISTER_TEST(TestLoadedPlugins());
-//    DREAM3D_REGISTER_TEST(TestNamesOfFilters());
-//    DREAM3D_REGISTER_TEST(TestNumFilters());
-//    DREAM3D_REGISTER_TEST(TestPluginInfo());
-//    DREAM3D_REGISTER_TEST(TestPreflightPipeline());
-//    DREAM3D_REGISTER_TEST(TestSIMPLibVersion());
+    DREAM3D_REGISTER_TEST(TestExecutePipeline());
+    DREAM3D_REGISTER_TEST(TestListFilterParameters());
+    DREAM3D_REGISTER_TEST(TestLoadedPlugins());
+    DREAM3D_REGISTER_TEST(TestNamesOfFilters());
+    DREAM3D_REGISTER_TEST(TestNumFilters());
+    DREAM3D_REGISTER_TEST(TestPluginInfo());
+    DREAM3D_REGISTER_TEST(TestPreflightPipeline());
+    DREAM3D_REGISTER_TEST(TestSIMPLibVersion());
 
     endServer();
   }
