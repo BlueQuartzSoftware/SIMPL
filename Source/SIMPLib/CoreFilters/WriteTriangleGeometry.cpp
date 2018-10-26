@@ -110,7 +110,19 @@ void WriteTriangleGeometry::dataCheck()
   setErrorCondition(0);
   setWarningCondition(0);
 
+
+  QFileInfo fi(getOutputNodesFile());
+  if(fi.suffix().compare("") == 0)
+  {
+    m_OutputNodesFile.append(".bin");
+  }
   FileSystemPathHelper::CheckOutputFile(this, "Output Nodes File", getOutputNodesFile(), true);
+
+  fi= QFileInfo(getOutputTrianglesFile());
+  if(fi.suffix().compare("") == 0)
+  {
+    m_OutputTrianglesFile.append(".bin");
+  }
   FileSystemPathHelper::CheckOutputFile(this, "Output Triangles File", getOutputTrianglesFile(), true);
 
   DataContainer::Pointer dataContainer = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerSelection());

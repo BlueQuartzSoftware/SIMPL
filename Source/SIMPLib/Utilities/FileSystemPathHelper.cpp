@@ -46,7 +46,10 @@ FileSystemPathHelper::~FileSystemPathHelper() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FileSystemPathHelper::CheckOutputFile(AbstractFilter* filter, const QString &parameterName, const QString &filePath, bool requireExtension)
+void FileSystemPathHelper::CheckOutputFile(AbstractFilter* filter,
+                                           const QString &parameterName,
+                                           const QString &filePath,
+                                           bool requireExtension)
 {
   if(filePath.isEmpty())
   {
@@ -54,29 +57,52 @@ void FileSystemPathHelper::CheckOutputFile(AbstractFilter* filter, const QString
     QString ss = QObject::tr("The output file for input parameter '%1' is empty. Please set a path to an output file.").arg(parameterName);
     filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
   }
-   QFileInfo fi(filePath);
-   if(fi.isDir() && fi.suffix().isEmpty())
-   {
-     filter->setErrorCondition(-901);
-     QString ss = QObject::tr("The output file for input parameter '%1' is a directory. Please set a path to an output file.").arg(parameterName);
-     filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-   }
+  QFileInfo fi(filePath);
+  if(fi.isDir() && fi.suffix().isEmpty())
+  {
+    filter->setErrorCondition(-901);
+    QString ss = QObject::tr("The output file for input parameter '%1' is a directory. Please set a path to an output file.").arg(parameterName);
+    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+  }
 
-   QDir parentPath = fi.path();
-   if(!parentPath.exists())
-   {
-     filter->setWarningCondition(902);
-     QString ss = QObject::tr("The directory path for input parameter '%1' does not exist. DREAM.3D will attempt to create this path during execution of the filter").arg(parameterName);
-     filter->notifyWarningMessage(filter->getHumanLabel(), ss, filter->getWarningCondition());
-   }
+  QDir parentPath = fi.path();
+  if(!parentPath.exists())
+  {
+    filter->setWarningCondition(902);
+    QString ss = QObject::tr("The directory path for input parameter '%1' does not exist. DREAM.3D will attempt to create this path during execution of the filter").arg(parameterName);
+    filter->notifyWarningMessage(filter->getHumanLabel(), ss, filter->getWarningCondition());
+  }
 
-   if(requireExtension)
-   {
-     if(fi.suffix().isEmpty())
-     {
-       filter->setErrorCondition(-903);
-       QString ss = QObject::tr("The file path for input parameter '%1' does not have a file extension. Please use a file extension to denote the type of file being written.").arg(parameterName);
-       filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getWarningCondition());
-     }
-   }
+  if(requireExtension)
+  {
+    if(fi.suffix().isEmpty())
+    {
+      filter->setErrorCondition(-903);
+      QString ss = QObject::tr("The file path for input parameter '%1' does not have a file extension. Please use a file extension to denote the type of file being written.").arg(parameterName);
+      filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getWarningCondition());
+    }
+
+  }
+
+#ifdef _WIN32
+  // Turn file permission checking on, if requested
+#ifdef SIMPL_NTFS_FILE_CHECK
+// qt_ntfs_permission_lookup++;
+#endif
+#endif
+
+  QFileInfo dirInfo(fi.path());
+  if(dirInfo.isWritable() == false && parentPath.exists() == true)
+  {
+    filter->setErrorCondition(-10002);
+    QString ss = QObject::tr("The user does not have the proper permissions to write to the output file");
+    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+  }
+
+#ifdef _WIN32
+  // Turn file permission checking off, if requested
+#ifdef SIMPL_NTFS_FILE_CHECK
+// qt_ntfs_permission_lookup--;
+#endif
+#endif
 }
