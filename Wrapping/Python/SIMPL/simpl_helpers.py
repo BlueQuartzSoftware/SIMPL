@@ -408,9 +408,16 @@ def RemoveArray(dca, path):
     
     # Construct Data Container Array Proxy
     dcap = simpl.DataContainerArrayProxy()
-    dcap.getDataContainerProxy(datacontainername).flag = 0
-    dcap.getDataContainerProxy(datacontainername).getAttributeMatrixProxy(attrmatrixname).flag = 0
-    dcap.getDataContainerProxy(datacontainername).getAttributeMatrixProxy(attrmatrixname).getDataArrayProxy(dataarrayname).flag = 2
+    if datacontainername == "":
+        return False
+    elif attrmatrixname == "" and dataarrayname == "":
+        dcap.getDataContainerProxy(datacontainername).flag = 2
+    elif dataarrayname == "":
+        dcap.getDataContainerProxy(datacontainername).getAttributeMatrixProxy(attrmatrixname).flag = 2
+    else:
+        dcap.getDataContainerProxy(datacontainername).flag = 0
+        dcap.getDataContainerProxy(datacontainername).getAttributeMatrixProxy(attrmatrixname).flag = 0
+        dcap.getDataContainerProxy(datacontainername).getAttributeMatrixProxy(attrmatrixname).getDataArrayProxy(dataarrayname).flag = 2
 
     err = d3d.remove_arrays(dca, dcap)
     if err < 0:
@@ -462,7 +469,7 @@ def MultiThresholdObjects(dca, destination_array_name, selected_thresholds):
             if comparison_operator < 0:
                 print("Invalid comparison operator passed in selected threshold")
                 continue
-        elif comparison_operator < 0 or comparison_operator (len(comparison_operators) - 1):
+        elif comparison_operator < 0 or comparison_operator > (len(comparison_operators) - 1):
             print("Invalid comparison operator passed in selected threshold")
             continue
         comparison_value = selected_threshold[4]
@@ -743,3 +750,9 @@ class DistributionFitType(IntEnum):
     Lognormal = 1
     Power = 2
 
+	
+class ObjectToCopy(IntEnum):
+    DataContainer = 0
+    AttributeMatrix = 1
+    AttributeArray = 2
+	
