@@ -691,7 +691,7 @@ void DataFormatPage::on_startRowSpin_valueChanged(int value)
 
   wizard()->button(QWizard::FinishButton)->setEnabled(true);
 
-  m_ASCIIDataModel->clear();
+  m_ASCIIDataModel->clearContents();
 
   bool tabAsDelimiter = field("tabAsDelimiter").toBool();
   bool semicolonAsDelimiter = field("semicolonAsDelimiter").toBool();

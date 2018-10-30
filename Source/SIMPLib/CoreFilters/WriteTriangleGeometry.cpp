@@ -46,6 +46,7 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/Utilities/FileSystemPathHelper.h"
 
 #define WRITE_EDGES_FILE 0
 
@@ -109,17 +110,20 @@ void WriteTriangleGeometry::dataCheck()
   setErrorCondition(0);
   setWarningCondition(0);
 
-  if(true == m_OutputNodesFile.isEmpty())
-  {
-    setErrorCondition(-380);
-    notifyErrorMessage(getHumanLabel(), "The output Nodes file needs to be set", getErrorCondition());
-  }
 
-  if(true == m_OutputTrianglesFile.isEmpty())
+  QFileInfo fi(getOutputNodesFile());
+  if(fi.suffix().compare("") == 0)
   {
-    setErrorCondition(-382);
-    notifyErrorMessage(getHumanLabel(), "The output Triangles file needs to be set", getErrorCondition());
+    m_OutputNodesFile.append(".bin");
   }
+  FileSystemPathHelper::CheckOutputFile(this, "Output Nodes File", getOutputNodesFile(), true);
+
+  fi= QFileInfo(getOutputTrianglesFile());
+  if(fi.suffix().compare("") == 0)
+  {
+    m_OutputTrianglesFile.append(".bin");
+  }
+  FileSystemPathHelper::CheckOutputFile(this, "Output Triangles File", getOutputTrianglesFile(), true);
 
   DataContainer::Pointer dataContainer = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerSelection());
   if(getErrorCondition() < 0)
@@ -180,73 +184,96 @@ void WriteTriangleGeometry::execute()
   float* nodes = triangleGeom->getVertexPointer(0);
   int64_t* triangles = triangleGeom->getTriPointer(0);
 
-  qint64 numNodes = triangleGeom->getNumberOfVertices();
-  qint64 maxNodeId = numNodes - 1;
+  int64_t numNodes = triangleGeom->getNumberOfVertices();
+  int64_t maxNodeId = numNodes - 1;
   int64_t numTriangles = triangleGeom->getNumberOfTris();
 
   // ++++++++++++++ Write the Nodes File +++++++++++++++++++++++++++++++++++++++++++
   // Make sure any directory path is also available as the user may have just typed
   // in a path without actually creating the full path
+
   notifyStatusMessage(getHumanLabel(), "Writing Nodes Text File");
   QFileInfo fi(getOutputNodesFile());
   QDir parentPath = fi.path();
 
   if(!parentPath.mkpath("."))
   {
-
     QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath.absolutePath());
     setErrorCondition(-1);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
-  FILE* nodesFile = nullptr;
-  nodesFile = fopen(getOutputNodesFile().toLatin1().data(), "wb");
-  if(nullptr == nodesFile)
+  
+  QFile fileNodes(getOutputNodesFile());
+  
+  if (!fileNodes.open(QIODevice::WriteOnly | QIODevice::Text))
   {
+    QString ss = QObject::tr("Output file could not be opened: %1").arg(getOutputNodesFile());
     setErrorCondition(-100);
-    notifyErrorMessage(getHumanLabel(), "Error opening Nodes file for writing", -100);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
-  fprintf(nodesFile, "# All lines starting with '#' are comments\n");
-  fprintf(nodesFile, "# DREAM.3D Nodes file\n");
-  fprintf(nodesFile, "# DREAM.3D Version %s\n", SIMPLib::Version::Complete().toLatin1().constData());
-  fprintf(nodesFile, "# Node Data is X Y Z space delimited.\n");
-  fprintf(nodesFile, "Node Count: %lld\n", numNodes);
-  for(int i = 0; i < numNodes; i++)
+
+  QTextStream outFileNodes(&fileNodes);
+
+  outFileNodes << "# All lines starting with '#' are comments\n";
+  outFileNodes << "# DREAM.3D Nodes file\n";
+  outFileNodes << "# DREAM.3D Version " << SIMPLib::Version::Complete().toLatin1().constData() << "\n";
+  outFileNodes << "# Node Data is X Y Z space delimited.\n";
+  outFileNodes << "Node Count: " << numNodes << "\n";
+
+  outFileNodes.setFieldWidth(8);
+  outFileNodes.setRealNumberPrecision(5);
+  outFileNodes.setRealNumberNotation(QTextStream::FixedNotation);
+
+  for(int64_t i = 0; i < numNodes; i++)
   {
-    fprintf(nodesFile, "%8.5f %8.5f %8.5f\n", nodes[i * 3], nodes[i * 3 + 1], nodes[i * 3 + 2]);
+    outFileNodes.setFieldWidth(8);
+    outFileNodes << nodes[i * 3] << qSetFieldWidth(0);
+    outFileNodes << " " << qSetFieldWidth(8);
+    outFileNodes << nodes[i * 3 + 1] << qSetFieldWidth(0);
+    outFileNodes << " " << qSetFieldWidth(8);
+    outFileNodes << nodes[i * 3 + 2] << qSetFieldWidth(0);
+    outFileNodes << "\n";
   }
-  fclose(nodesFile);
+
+  fileNodes.close();
 
   // ++++++++++++++ Write the Triangles File +++++++++++++++++++++++++++++++++++++++++++
+
   notifyStatusMessage(getHumanLabel(), "Writing Triangles Text File");
   QFileInfo triFI(getOutputTrianglesFile());
   parentPath = triFI.path();
+
   if(!parentPath.mkpath("."))
   {
-
     QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath.absolutePath());
     setErrorCondition(-1);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
-  FILE* triFile = fopen(getOutputTrianglesFile().toLatin1().data(), "wb");
-  if(nullptr == triFile)
+
+  QFile fileTri(getOutputTrianglesFile());
+
+  if (!fileTri.open(QIODevice::WriteOnly | QIODevice::Text))
   {
+    QString ss = QObject::tr("Output file could not be opened: %1").arg(getOutputTrianglesFile());
     setErrorCondition(-100);
-    notifyErrorMessage(getHumanLabel(), "Error opening Triangles file for writing", -100);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
-  fprintf(triFile, "# All lines starting with '#' are comments\n");
-  fprintf(triFile, "# DREAM.3D Triangle file\n");
-  fprintf(triFile, "# DREAM.3D Version %s\n", SIMPLib::Version::Complete().toLatin1().constData());
-  fprintf(triFile, "# Each Triangle consists of 3 Node Ids.\n");
-  fprintf(triFile, "# NODE IDs START AT 0.\n");
-  fprintf(triFile, "Geometry Type: %s\n", geometryType.toLatin1().constData());
-  fprintf(triFile, "Node Count: %lld\n", numNodes);
-  fprintf(triFile, "Max Node Id: %lld\n", maxNodeId);
-  fprintf(triFile, "Triangle Count: %lld\n", (long long int)(numTriangles));
+  QTextStream outFileTri(&fileTri);
+
+  outFileTri << "# All lines starting with '#' are comments\n";
+  outFileTri << "# DREAM.3D Triangle file\n";
+  outFileTri << "# DREAM.3D Version " << SIMPLib::Version::Complete().toLatin1().constData() << "\n";
+  outFileTri << "# Each Triangle consists of 3 Node Ids.\n";
+  outFileTri << "# NODE IDs START AT 0.\n";
+  outFileTri << "Geometry Type: " << geometryType.toLatin1().constData() << "\n";
+  outFileTri << "Node Count: " << numNodes << "\n";
+  outFileTri << "Max Node Id: " << maxNodeId << "\n";
+  outFileTri << "Triangle Count: " << numTriangles << "\n";
 
   int n1, n2, n3;
   for(int64_t j = 0; j < numTriangles; ++j)
@@ -255,10 +282,10 @@ void WriteTriangleGeometry::execute()
     n2 = triangles[j * 3 + 1];
     n3 = triangles[j * 3 + 2];
 
-    fprintf(triFile, "%d %d %d\n", n1, n2, n3);
+    outFileTri << n1 << " " << n2 << " " << n3 << "\n";
   }
 
-  fclose(triFile);
+  fileTri.close();
 
   /* Let the GUI know we are done with this filter */
   notifyStatusMessage(getHumanLabel(), "Complete");

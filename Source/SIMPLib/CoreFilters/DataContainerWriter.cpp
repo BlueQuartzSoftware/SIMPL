@@ -47,7 +47,7 @@
 #include "SIMPLib/FilterParameters/H5FilterParametersWriter.h"
 #include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
-#include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/Utilities/FileSystemPathHelper.h"
 
 
 #ifdef _WIN32
@@ -120,54 +120,13 @@ void DataContainerWriter::dataCheck()
   setWarningCondition(0);
   QString ss;
 
-  if(m_OutputFile.isEmpty() == true)
-  {
-    setErrorCondition(-10000);
-    ss = QObject::tr("The output file must be set");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-  }
-
   QFileInfo fi(m_OutputFile);
-  QDir parentPath(fi.path());
-  if(parentPath.exists() == false)
-  {
-    setWarningCondition(-10001);
-    ss = QObject::tr("The directory path for the output file does not exist. The application will attempt to create this path during execution of the filter");
-    notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
-  }
   if(fi.suffix().compare("") == 0)
   {
     m_OutputFile.append(".dream3d");
   }
-  if(fi.baseName().compare("") == 0)
-  {
-    setErrorCondition(-10002);
-    ss = QObject::tr("The output file must have its actual filename set");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-  }
+  FileSystemPathHelper::CheckOutputFile(this, "Output File Path", getOutputFile(), true);
 
-#ifdef _WIN32
-  // Turn file permission checking on, if requested
-#ifdef SIMPL_NTFS_FILE_CHECK
-// qt_ntfs_permission_lookup++;
-#endif
-#endif
-
-  QFileInfo dirInfo(fi.path());
-
-  if(dirInfo.isWritable() == false && parentPath.exists() == true)
-  {
-    setErrorCondition(-10003);
-    ss = QObject::tr("The user does not have the proper permissions to write to the output file");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-  }
-
-#ifdef _WIN32
-  // Turn file permission checking off, if requested
-#ifdef SIMPL_NTFS_FILE_CHECK
-// qt_ntfs_permission_lookup--;
-#endif
-#endif
 }
 
 // -----------------------------------------------------------------------------
