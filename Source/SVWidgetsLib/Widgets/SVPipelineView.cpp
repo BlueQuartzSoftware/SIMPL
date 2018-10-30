@@ -1609,12 +1609,12 @@ FilterPipeline::Pointer SVPipelineView::readPipelineFromFile(const QString& file
   if(ext == "dream3d")
   {
     H5FilterParametersReader::Pointer dream3dReader = H5FilterParametersReader::New();
-    pipeline = dream3dReader->readPipelineFromFile(filePath);
+    pipeline = dream3dReader->readPipelineFromFile(filePath, this);
   }
   else if(ext == "json")
   {
     JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
-    pipeline = jsonReader->readPipelineFromFile(filePath);
+    pipeline = jsonReader->readPipelineFromFile(filePath, this);
   }
   else
   {
