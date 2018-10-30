@@ -46,6 +46,7 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/Utilities/FileSystemPathHelper.h"
 
 #define WRITE_EDGES_FILE 0
 
@@ -109,17 +110,20 @@ void WriteTriangleGeometry::dataCheck()
   setErrorCondition(0);
   setWarningCondition(0);
 
-  if(true == m_OutputNodesFile.isEmpty())
-  {
-    setErrorCondition(-380);
-    notifyErrorMessage(getHumanLabel(), "The output Nodes file needs to be set", getErrorCondition());
-  }
 
-  if(true == m_OutputTrianglesFile.isEmpty())
+  QFileInfo fi(getOutputNodesFile());
+  if(fi.suffix().compare("") == 0)
   {
-    setErrorCondition(-382);
-    notifyErrorMessage(getHumanLabel(), "The output Triangles file needs to be set", getErrorCondition());
+    m_OutputNodesFile.append(".bin");
   }
+  FileSystemPathHelper::CheckOutputFile(this, "Output Nodes File", getOutputNodesFile(), true);
+
+  fi= QFileInfo(getOutputTrianglesFile());
+  if(fi.suffix().compare("") == 0)
+  {
+    m_OutputTrianglesFile.append(".bin");
+  }
+  FileSystemPathHelper::CheckOutputFile(this, "Output Triangles File", getOutputTrianglesFile(), true);
 
   DataContainer::Pointer dataContainer = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerSelection());
   if(getErrorCondition() < 0)

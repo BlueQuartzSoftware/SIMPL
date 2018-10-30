@@ -66,6 +66,7 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/ShapeTypeSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/Utilities/FileSystemPathHelper.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -376,6 +377,9 @@ void GenericExample::dataCheck()
   DataArrayPath tempPath;
   setErrorCondition(0);
   setWarningCondition(0);
+
+  FileSystemPathHelper::CheckOutputFile(this, "Output File Name", getOutputFile(), true);
+
 }
 
 // -----------------------------------------------------------------------------
