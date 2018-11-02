@@ -48,6 +48,7 @@
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QVBoxLayout>
 
+#include "SIMPLib/Common/Observer.h"
 #include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
@@ -73,7 +74,7 @@ class QSignalMapper;
 /*
  *
  */
-class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
+class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView, public IObserver
 {
   Q_OBJECT
 
@@ -322,6 +323,12 @@ public slots:
    */
   void toStoppedState();
 
+  /**
+   * @brief processPipelineMessage
+   * @param pm
+   */
+  void processPipelineMessage(const PipelineMessage& pm) override;
+
 signals:
   void displayIssuesTriggered();
   void clearIssuesTriggered();
@@ -410,12 +417,6 @@ private slots:
    * @param pipelineIndex
    */
   void finishPipeline();
-
-  /**
-   * @brief processPipelineMessage
-   * @param msg
-   */
-  void processPipelineMessage(const PipelineMessage& msg);
 
 private:
   QThread* m_WorkerThread = nullptr;
