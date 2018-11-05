@@ -361,7 +361,7 @@ const QString FeatureDataCSVWriter::getFilterVersion() const
 // -----------------------------------------------------------------------------
 const QString FeatureDataCSVWriter::getGroupName() const
 {
-  return SIMPL::FilterGroups::CoreFilters;
+  return SIMPL::FilterGroups::IOFilters;
 }
 
 // -----------------------------------------------------------------------------

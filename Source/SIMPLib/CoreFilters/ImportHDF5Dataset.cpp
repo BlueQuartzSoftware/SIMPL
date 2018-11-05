@@ -624,7 +624,7 @@ const QString ImportHDF5Dataset::getFilterVersion() const
 // -----------------------------------------------------------------------------
 const QString ImportHDF5Dataset::getGroupName() const
 {
-  return SIMPL::FilterGroups::CoreFilters;
+  return SIMPL::FilterGroups::IOFilters;
 }
 
 // -----------------------------------------------------------------------------
