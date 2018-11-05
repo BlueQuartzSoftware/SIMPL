@@ -138,7 +138,7 @@ void H5Lite::disableErrorHandlers()
 // -----------------------------------------------------------------------------
 //  Opens an ID for HDF5 operations
 // -----------------------------------------------------------------------------
-herr_t H5Lite::openId(hid_t loc_id, const std::string& obj_name, H5O_type_t obj_type)
+hid_t H5Lite::openId(hid_t loc_id, const std::string& obj_name, H5O_type_t obj_type)
 {
   H5SUPPORT_MUTEX_LOCK()
 
@@ -451,7 +451,8 @@ herr_t H5Lite::writeStringDataset(hid_t loc_id, const std::string& dsetName, siz
           }
           else
           {
-            retErr = did;
+            //retErr = did;
+            retErr = 0;
           }
           CloseH5D(did, err, retErr);
         }
@@ -570,7 +571,8 @@ herr_t H5Lite::writeStringDataset(hid_t loc_id, const std::string& dsetName, con
           }
           else
           {
-            retErr = did;
+            //retErr = did;
+            retErr = 0;
           }
           CloseH5D(did, err, retErr);
           //          err = H5Dclose(did);
@@ -661,7 +663,7 @@ hsize_t H5Lite::getNumberOfElements(hid_t loc_id, const std::string& dsetName)
     else
     {
       std::cout << "Error Opening SpaceID" << std::endl;
-      retErr = spaceId;
+      //retErr = spaceId;
     }
     err = H5Dclose(did);
     if(err < 0)
@@ -758,7 +760,7 @@ herr_t H5Lite::writeStringAttribute(hid_t loc_id, const std::string& objName, co
       }
       else
       {
-        retErr = attr_type;
+        //retErr = attr_type;
       }
       /* Close the object */
       err = H5Lite::closeId(obj_id, statbuf.type);
@@ -1032,7 +1034,7 @@ herr_t H5Lite::readStringAttribute(hid_t loc_id, const std::string& objName, con
     }
     else
     {
-      retErr = attr_id;
+      //retErr = attr_id;
     }
     err = H5Lite::closeId(obj_id, statbuf.type);
     if(err < 0)
@@ -1091,7 +1093,7 @@ herr_t H5Lite::readStringAttribute(hid_t loc_id, const std::string& objName, con
     }
     else
     {
-      retErr = attr_id;
+      //retErr = attr_id;
     }
     err = H5Lite::closeId(obj_id, statbuf.type);
     if(err < 0)
@@ -1132,7 +1134,7 @@ herr_t H5Lite::getDatasetNDims(hid_t loc_id, const std::string& dsetName, hid_t&
     rank = H5Sget_simple_extent_ndims(sid);
     if(rank < 0)
     {
-      retErr = rank;
+      //retErr = rank;
       rank = 0;
       std::cout << "Error Getting the rank of the dataset:" << std::endl;
     }
@@ -1189,7 +1191,7 @@ herr_t H5Lite::getAttributeNDims(hid_t loc_id, const std::string& objName, const
     }
     else
     {
-      retErr = attr_id;
+      //retErr = attr_id;
     }
     err = H5Lite::closeId(obj_id, statbuf.type);
     if(err < 0)

@@ -395,7 +395,7 @@ hid_t H5Utilities::createGroup(hid_t loc_id, const std::string& group)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int32_t H5Utilities::createGroupsForDataset(const std::string& datasetPath, hid_t parent)
+hid_t H5Utilities::createGroupsForDataset(const std::string& datasetPath, hid_t parent)
 {
   H5SUPPORT_MUTEX_LOCK()
 
@@ -415,7 +415,7 @@ int32_t H5Utilities::createGroupsForDataset(const std::string& datasetPath, hid_
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int32_t H5Utilities::createGroupsFromPath(const std::string& pathToCheck, hid_t parent)
+hid_t H5Utilities::createGroupsFromPath(const std::string& pathToCheck, hid_t parent)
 {
   H5SUPPORT_MUTEX_LOCK()
 
@@ -580,7 +580,7 @@ herr_t H5Utilities::getAllAttributeNames(hid_t loc_id, const std::string& obj_na
   obj_id = openHDF5Object(loc_id, obj_name);
   if(obj_id < 0)
   {
-    return obj_id;
+    return static_cast<herr_t>(obj_id);
   }
   err = getAllAttributeNames(obj_id, names);
   err = closeHDF5Object(obj_id);
