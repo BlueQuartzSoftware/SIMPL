@@ -640,7 +640,7 @@ const QString ReadASCIIData::getFilterVersion() const
 // -----------------------------------------------------------------------------
 const QString ReadASCIIData::getGroupName() const
 {
-  return SIMPL::FilterGroups::CoreFilters;
+  return SIMPL::FilterGroups::IOFilters;
 }
 
 // -----------------------------------------------------------------------------
