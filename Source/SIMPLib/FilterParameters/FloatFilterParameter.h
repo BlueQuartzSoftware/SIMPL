@@ -134,8 +134,10 @@ class SIMPLib_EXPORT FloatFilterParameter : public FilterParameter
        */
       FloatFilterParameter();
 
-  private:
-    FloatFilterParameter(const FloatFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const FloatFilterParameter&) = delete;       // Move assignment Not Implemented
+    public:
+      FloatFilterParameter(const FloatFilterParameter&) = delete;            // Copy Constructor Not Implemented
+      FloatFilterParameter(FloatFilterParameter&&) = delete;                 // Move Constructor Not Implemented
+      FloatFilterParameter& operator=(const FloatFilterParameter&) = delete; // Copy Assignment Not Implemented
+      FloatFilterParameter& operator=(FloatFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

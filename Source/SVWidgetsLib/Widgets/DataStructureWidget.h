@@ -161,7 +161,10 @@ private:
   QIcon m_TriangleGeomIcon;
   QIcon m_QuadGeomIcon;
 
+public:
   DataStructureWidget(const DataStructureWidget&) = delete; // Copy Constructor Not Implemented
-  void operator=(const DataStructureWidget&);               // Move assignment Not Implemented
+  DataStructureWidget(DataStructureWidget&&) = delete;      // Move Constructor Not Implemented
+  DataStructureWidget& operator=(const DataStructureWidget&) = delete; // Copy Assignment Not Implemented
+  DataStructureWidget& operator=(DataStructureWidget&&) = delete;      // Move Assignment Not Implemented
 };
 

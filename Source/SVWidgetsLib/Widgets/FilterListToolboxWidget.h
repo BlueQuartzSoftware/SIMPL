@@ -140,8 +140,11 @@ class SVWidgetsLib_EXPORT FilterListToolboxWidget : public QWidget, private Ui::
 
     int getMatchingRelevanceForFilter(QStringList searchTokens, AbstractFilter::Pointer filter, FilterListView::SearchGroup searchGroup);
 
+  public:
     FilterListToolboxWidget(const FilterListToolboxWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const FilterListToolboxWidget&) = delete;          // Move assignment Not Implemented
+    FilterListToolboxWidget(FilterListToolboxWidget&&) = delete;      // Move Constructor Not Implemented
+    FilterListToolboxWidget& operator=(const FilterListToolboxWidget&) = delete; // Copy Assignment Not Implemented
+    FilterListToolboxWidget& operator=(FilterListToolboxWidget&&) = delete;      // Move Assignment Not Implemented
 };
 
 

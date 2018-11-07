@@ -50,8 +50,10 @@ public:
 
   int execute(IDataArray* input, IDataArray* output);
 
-private:
+public:
   IDataArrayFilter(const IDataArrayFilter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const IDataArrayFilter&);            // Move assignment Not Implemented
+  IDataArrayFilter(IDataArrayFilter&&) = delete;      // Move Constructor Not Implemented
+  IDataArrayFilter& operator=(const IDataArrayFilter&) = delete; // Copy Assignment Not Implemented
+  IDataArrayFilter& operator=(IDataArrayFilter&&) = delete;      // Move Assignment Not Implemented
 };
 

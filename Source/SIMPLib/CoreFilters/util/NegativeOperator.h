@@ -61,8 +61,10 @@ class SIMPLib_EXPORT NegativeOperator : public CalculatorOperator
   protected:
     NegativeOperator();
 
-  private:
+  public:
     NegativeOperator(const NegativeOperator&) = delete; // Copy Constructor Not Implemented
-    void operator=(const NegativeOperator&) = delete;   // Move assignment Not Implemented
+    NegativeOperator(NegativeOperator&&) = delete;      // Move Constructor Not Implemented
+    NegativeOperator& operator=(const NegativeOperator&) = delete; // Copy Assignment Not Implemented
+    NegativeOperator& operator=(NegativeOperator&&) = delete;      // Move Assignment Not Implemented
 };
 

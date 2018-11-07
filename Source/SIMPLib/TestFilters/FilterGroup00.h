@@ -146,7 +146,7 @@ protected:
   void initialize();
 
 private:
-  TESTCLASSNAME(const TESTCLASSNAME&);  // Copy Constructor Not Implemented
+  TESTCLASSNAME(const TESTCLASSNAME&) = delete;  // Copy Constructor Not Implemented
   void operator=(const TESTCLASSNAME&) = delete; // Move assignment Not Implemented
 };
 

@@ -70,9 +70,11 @@ class SIMPLib_EXPORT H5StatsDataDelegate
 
     int readStatsDataName(StatsData* data, hid_t groupId);
 
-  private:
+  public:
     H5StatsDataDelegate(const H5StatsDataDelegate&) = delete; // Copy Constructor Not Implemented
-    void operator=(const H5StatsDataDelegate&) = delete;      // Move assignment Not Implemented
+    H5StatsDataDelegate(H5StatsDataDelegate&&) = delete;      // Move Constructor Not Implemented
+    H5StatsDataDelegate& operator=(const H5StatsDataDelegate&) = delete; // Copy Assignment Not Implemented
+    H5StatsDataDelegate& operator=(H5StatsDataDelegate&&) = delete;      // Move Assignment Not Implemented
 };
 
 

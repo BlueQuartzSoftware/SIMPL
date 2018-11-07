@@ -175,6 +175,10 @@ private:
   void calculatePrimeFactors(int n, QVector<int>& primeFactors);
 
   ~ImportHDF5DatasetWidget() override;
+
+public:
   ImportHDF5DatasetWidget(const ImportHDF5DatasetWidget&) = delete; // Copy Constructor Not Implemented
-  void operator=(const ImportHDF5DatasetWidget&);                   // Copy Assignment Not Implemented
+  ImportHDF5DatasetWidget(ImportHDF5DatasetWidget&&) = delete;      // Move Constructor Not Implemented
+  ImportHDF5DatasetWidget& operator=(const ImportHDF5DatasetWidget&) = delete; // Copy Assignment Not Implemented
+  ImportHDF5DatasetWidget& operator=(ImportHDF5DatasetWidget&&) = delete;      // Move Assignment Not Implemented
 };

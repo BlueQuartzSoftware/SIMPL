@@ -76,10 +76,11 @@ class FilterWidgetsLib_EXPORT CustomWidget : public QWidget, private Ui::CustomW
 
   public slots:
 
-
-  private:
+  public:
     CustomWidget(const CustomWidget&) = delete;   // Copy Constructor Not Implemented
-    void operator=(const CustomWidget&) = delete; // Move assignment Not Implemented
+    CustomWidget(CustomWidget&&) = delete;        // Move Constructor Not Implemented
+    CustomWidget& operator=(const CustomWidget&) = delete; // Copy Assignment Not Implemented
+    CustomWidget& operator=(CustomWidget&&) = delete;      // Move Assignment Not Implemented
 };
 
 

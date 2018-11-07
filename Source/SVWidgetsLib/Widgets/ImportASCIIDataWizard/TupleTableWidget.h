@@ -92,7 +92,10 @@ class TupleTableWidget : public QWidget, private Ui::TupleTableWidget
 
     bool m_UserEdited = false;
 
+  public:
     TupleTableWidget(const TupleTableWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const TupleTableWidget&) = delete;   // Move assignment Not Implemented
+    TupleTableWidget(TupleTableWidget&&) = delete;      // Move Constructor Not Implemented
+    TupleTableWidget& operator=(const TupleTableWidget&) = delete; // Copy Assignment Not Implemented
+    TupleTableWidget& operator=(TupleTableWidget&&) = delete;      // Move Assignment Not Implemented
 };
 

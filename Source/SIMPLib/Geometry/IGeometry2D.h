@@ -201,10 +201,11 @@ class SIMPLib_EXPORT IGeometry2D : public IGeometry
      */
     virtual void setUnsharedEdges(SharedEdgeList::Pointer bEdgeList) = 0;
 
-
-  private:
+  public:
     IGeometry2D(const IGeometry2D&) = delete;    // Copy Constructor Not Implemented
-    void operator=(const IGeometry2D&) = delete; // Move assignment Not Implemented
+    IGeometry2D(IGeometry2D&&) = delete;         // Move Constructor Not Implemented
+    IGeometry2D& operator=(const IGeometry2D&) = delete; // Copy Assignment Not Implemented
+    IGeometry2D& operator=(IGeometry2D&&) = delete;      // Move Assignment Not Implemented
 };
 
 

@@ -215,8 +215,10 @@ public:
      */
   FourthOrderPolynomialFilterParameter();
 
-private:
+public:
   FourthOrderPolynomialFilterParameter(const FourthOrderPolynomialFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const FourthOrderPolynomialFilterParameter&) = delete;                       // Move assignment Not Implemented
+  FourthOrderPolynomialFilterParameter(FourthOrderPolynomialFilterParameter&&) = delete;      // Move Constructor Not Implemented
+  FourthOrderPolynomialFilterParameter& operator=(const FourthOrderPolynomialFilterParameter&) = delete; // Copy Assignment Not Implemented
+  FourthOrderPolynomialFilterParameter& operator=(FourthOrderPolynomialFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

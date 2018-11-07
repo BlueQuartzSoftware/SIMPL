@@ -547,8 +547,11 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
 
     friend class FindHexDerivativesImpl;
 
+  public:
     HexahedralGeom(const HexahedralGeom&) = delete; // Copy Constructor Not Implemented
-    void operator=(const HexahedralGeom&) = delete;  // Operator '=' Not Implemented
+    HexahedralGeom(HexahedralGeom&&) = delete;      // Move Constructor Not Implemented
+    HexahedralGeom& operator=(const HexahedralGeom&) = delete; // Copy Assignment Not Implemented
+    HexahedralGeom& operator=(HexahedralGeom&&) = delete;      // Move Assignment Not Implemented
 };
 
 

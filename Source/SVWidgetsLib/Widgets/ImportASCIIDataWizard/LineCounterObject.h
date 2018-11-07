@@ -92,7 +92,10 @@ private:
   QString m_FilePath;
   int m_NumOfLines;
 
+public:
   LineCounterObject(const LineCounterObject&) = delete; // Copy Constructor Not Implemented
-  void operator=(const LineCounterObject&);             // Move assignment Not Implemented
+  LineCounterObject(LineCounterObject&&) = delete;      // Move Constructor Not Implemented
+  LineCounterObject& operator=(const LineCounterObject&) = delete; // Copy Assignment Not Implemented
+  LineCounterObject& operator=(LineCounterObject&&) = delete;      // Move Assignment Not Implemented
 };
 

@@ -94,8 +94,11 @@ class SVWidgetsLib_EXPORT ChoiceWidget : public FilterParameterWidget, private U
   private:
     ChoiceFilterParameter* m_FilterParameter;
 
+  public:
     ChoiceWidget(const ChoiceWidget&) = delete;   // Copy Constructor Not Implemented
-    void operator=(const ChoiceWidget&) = delete; // Move assignment Not Implemented
+    ChoiceWidget(ChoiceWidget&&) = delete;        // Move Constructor Not Implemented
+    ChoiceWidget& operator=(const ChoiceWidget&) = delete; // Copy Assignment Not Implemented
+    ChoiceWidget& operator=(ChoiceWidget&&) = delete;      // Move Assignment Not Implemented
 };
 
 

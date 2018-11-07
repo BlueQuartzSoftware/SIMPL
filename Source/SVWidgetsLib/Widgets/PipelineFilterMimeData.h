@@ -48,7 +48,9 @@ class SVWidgetsLib_EXPORT PipelineFilterMimeData : public QMimeData
 
     SIMPL_INSTANCE_PROPERTY(std::vector<FilterDragMetadata>, FilterDragData)
 
-  private:
+  public:
     PipelineFilterMimeData(const PipelineFilterMimeData&) = delete; // Copy Constructor Not Implemented
-    void operator=(const PipelineFilterMimeData&) = delete;  // Operator '=' Not Implemented
+    PipelineFilterMimeData(PipelineFilterMimeData&&) = delete;      // Move Constructor Not Implemented
+    PipelineFilterMimeData& operator=(const PipelineFilterMimeData&) = delete; // Copy Assignment Not Implemented
+    PipelineFilterMimeData& operator=(PipelineFilterMimeData&&) = delete;      // Move Assignment Not Implemented
 };

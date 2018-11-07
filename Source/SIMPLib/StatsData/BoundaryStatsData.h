@@ -168,9 +168,11 @@ class SIMPLib_EXPORT BoundaryStatsData : public StatsData
   protected:
     BoundaryStatsData();
 
-  private:
+  public:
     BoundaryStatsData(const BoundaryStatsData&) = delete; // Copy Constructor Not Implemented
-    void operator=(const BoundaryStatsData&) = delete;    // Move assignment Not Implemented
+    BoundaryStatsData(BoundaryStatsData&&) = delete;      // Move Constructor Not Implemented
+    BoundaryStatsData& operator=(const BoundaryStatsData&) = delete; // Copy Assignment Not Implemented
+    BoundaryStatsData& operator=(BoundaryStatsData&&) = delete;      // Move Assignment Not Implemented
 };
 
 

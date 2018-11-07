@@ -128,7 +128,10 @@ class SVWidgetsLib_EXPORT DataStructureItem
     QIcon                               m_Icon;
     ItemType                            m_ItemType;
 
-    DataStructureItem(const DataStructureItem&);    // Copy Constructor Not Implemented
-    void operator=(const DataStructureItem&);       // Move assignment Not Implemented
+  public:
+    DataStructureItem(const DataStructureItem&) = delete;            // Copy Constructor Not Implemented
+    DataStructureItem(DataStructureItem&&) = delete;                 // Move Constructor Not Implemented
+    DataStructureItem& operator=(const DataStructureItem&) = delete; // Copy Assignment Not Implemented
+    DataStructureItem& operator=(DataStructureItem&&) = delete;      // Move Assignment Not Implemented
 };
 

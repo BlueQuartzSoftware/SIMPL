@@ -123,8 +123,11 @@ class SVWidgetsLib_EXPORT DataContainerSelectionWidget : public FilterParameterW
 
     void setSelectedPath(DataArrayPath dcPath);
 
+  public:
     DataContainerSelectionWidget(const DataContainerSelectionWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DataContainerSelectionWidget&) = delete;               // Move assignment Not Implemented
+    DataContainerSelectionWidget(DataContainerSelectionWidget&&) = delete;      // Move Constructor Not Implemented
+    DataContainerSelectionWidget& operator=(const DataContainerSelectionWidget&) = delete; // Copy Assignment Not Implemented
+    DataContainerSelectionWidget& operator=(DataContainerSelectionWidget&&) = delete;      // Move Assignment Not Implemented
 };
 
 

@@ -175,7 +175,10 @@ class SVWidgetsLib_EXPORT QtSGraphicsView : public QGraphicsView
     QVector<QRgb> m_CustomColorTable;
     QVector<QRgb> m_OriginalColorTable;
 
+  public:
     QtSGraphicsView(const QtSGraphicsView&) = delete; // Copy Constructor Not Implemented
-    void operator=(const QtSGraphicsView&) = delete;  // Move assignment Not Implemented
+    QtSGraphicsView(QtSGraphicsView&&) = delete;      // Move Constructor Not Implemented
+    QtSGraphicsView& operator=(const QtSGraphicsView&) = delete; // Copy Assignment Not Implemented
+    QtSGraphicsView& operator=(QtSGraphicsView&&) = delete;      // Move Assignment Not Implemented
 };
 

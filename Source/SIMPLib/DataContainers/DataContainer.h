@@ -384,8 +384,11 @@ public:
     IGeometry::Pointer m_Geometry;
     QString m_Name;
 
+  public:
     DataContainer(const DataContainer&) = delete;  // Copy Constructor Not Implemented
-    void operator=(const DataContainer&) = delete; // Move assignment Not Implemented
+    DataContainer(DataContainer&&) = delete;       // Move Constructor Not Implemented
+    DataContainer& operator=(const DataContainer&) = delete; // Copy Assignment Not Implemented
+    DataContainer& operator=(DataContainer&&) = delete;      // Move Assignment Not Implemented
 };
 
 

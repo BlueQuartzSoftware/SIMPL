@@ -173,7 +173,10 @@ private:
    */
   void connectSignalsSlots();
 
+public:
   FileListInfoWidget(const FileListInfoWidget&) = delete; // Copy Constructor Not Implemented
-  void operator=(const FileListInfoWidget&) = delete;     // Move assignment Not Implemented
+  FileListInfoWidget(FileListInfoWidget&&) = delete;      // Move Constructor Not Implemented
+  FileListInfoWidget& operator=(const FileListInfoWidget&) = delete; // Copy Assignment Not Implemented
+  FileListInfoWidget& operator=(FileListInfoWidget&&) = delete;      // Move Assignment Not Implemented
 };
 

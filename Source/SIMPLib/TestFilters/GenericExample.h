@@ -310,7 +310,6 @@ protected:
    */
   void initialize();
 
-private:
 public:
   GenericExample(const GenericExample&) = delete; // Copy Constructor Not Implemented
   GenericExample(GenericExample&&) = delete;      // Move Constructor Not Implemented

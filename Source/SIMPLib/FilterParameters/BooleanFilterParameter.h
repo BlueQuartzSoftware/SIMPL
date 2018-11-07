@@ -132,8 +132,10 @@ protected:
        */
   BooleanFilterParameter();
 
-private:
+public:
   BooleanFilterParameter(const BooleanFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const BooleanFilterParameter&) = delete;         // Move assignment Not Implemented
+  BooleanFilterParameter(BooleanFilterParameter&&) = delete;      // Move Constructor Not Implemented
+  BooleanFilterParameter& operator=(const BooleanFilterParameter&) = delete; // Copy Assignment Not Implemented
+  BooleanFilterParameter& operator=(BooleanFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

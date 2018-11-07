@@ -179,8 +179,11 @@ class CorePlugin : public QObject, public ISIMPLibPlugin
     QList<QString>      m_Filters;
     bool                m_DidLoad;
 
+  public:
     CorePlugin(const CorePlugin&) = delete; // Copy Constructor Not Implemented
-    void operator=(const CorePlugin&) = delete; // Move assignment Not Implemented
+    CorePlugin(CorePlugin&&) = delete;      // Move Constructor Not Implemented
+    CorePlugin& operator=(const CorePlugin&) = delete; // Copy Assignment Not Implemented
+    CorePlugin& operator=(CorePlugin&&) = delete;      // Move Assignment Not Implemented
 };
 
 

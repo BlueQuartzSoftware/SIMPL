@@ -148,7 +148,6 @@ protected:
    */
   void initialize();
 
-private:
 public:
   AbstractDecisionFilter(const AbstractDecisionFilter&) = delete; // Copy Constructor Not Implemented
   AbstractDecisionFilter(AbstractDecisionFilter&&) = delete;      // Move Constructor Not Implemented

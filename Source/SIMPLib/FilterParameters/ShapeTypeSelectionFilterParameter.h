@@ -136,8 +136,10 @@ protected:
   */
   ShapeTypeSelectionFilterParameter();
 
-private:
+public:
   ShapeTypeSelectionFilterParameter(const ShapeTypeSelectionFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const ShapeTypeSelectionFilterParameter&);                             // Move assignment Not Implemented
+  ShapeTypeSelectionFilterParameter(ShapeTypeSelectionFilterParameter&&) = delete;      // Move Constructor Not Implemented
+  ShapeTypeSelectionFilterParameter& operator=(const ShapeTypeSelectionFilterParameter&) = delete; // Copy Assignment Not Implemented
+  ShapeTypeSelectionFilterParameter& operator=(ShapeTypeSelectionFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

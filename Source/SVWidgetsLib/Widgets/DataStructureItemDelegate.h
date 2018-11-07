@@ -123,9 +123,11 @@ protected:
   */
   void createNewPathIcons();
 
-private:
+public:
   DataStructureItemDelegate(const DataStructureItemDelegate&) = delete; // Copy Constructor Not Implemented
-  void operator=(const DataStructureItemDelegate&) = delete;            // Move assignment Not Implemented
+  DataStructureItemDelegate(DataStructureItemDelegate&&) = delete;      // Move Constructor Not Implemented
+  DataStructureItemDelegate& operator=(const DataStructureItemDelegate&) = delete; // Copy Assignment Not Implemented
+  DataStructureItemDelegate& operator=(DataStructureItemDelegate&&) = delete;      // Move Assignment Not Implemented
 
   AbstractFilter::Pointer m_Filter = nullptr;
   std::list<DataArrayPath> m_CreatedPaths;

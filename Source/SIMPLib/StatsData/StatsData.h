@@ -272,9 +272,11 @@ class SIMPLib_EXPORT StatsData
   protected:
     StatsData();
 
-  private:
+  public:
     StatsData(const StatsData&) = delete;      // Copy Constructor Not Implemented
-    void operator=(const StatsData&) = delete; // Move assignment Not Implemented
+    StatsData(StatsData&&) = delete;           // Move Constructor Not Implemented
+    StatsData& operator=(const StatsData&) = delete; // Copy Assignment Not Implemented
+    StatsData& operator=(StatsData&&) = delete;      // Move Assignment Not Implemented
 };
 
 

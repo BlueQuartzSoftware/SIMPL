@@ -83,6 +83,9 @@ class SVWidgetsLib_EXPORT FilterListItem
     QList<FilterListItem*>               m_ChildItems;
     FilterListItem*                      m_ParentItem;
 
-    FilterListItem(const FilterListItem&);    // Copy Constructor Not Implemented
-    void operator=(const FilterListItem&);   // Move assignment Not Implemented
+  public:
+    FilterListItem(const FilterListItem&) = delete;            // Copy Constructor Not Implemented
+    FilterListItem(FilterListItem&&) = delete;                 // Move Constructor Not Implemented
+    FilterListItem& operator=(const FilterListItem&) = delete; // Copy Assignment Not Implemented
+    FilterListItem& operator=(FilterListItem&&) = delete;      // Move Assignment Not Implemented
 };

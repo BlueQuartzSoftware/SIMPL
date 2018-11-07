@@ -181,8 +181,11 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
     QGraphicsOpacityEffect*       effect;
     QString                       m_CurrentlyValidPath;
 
+  public:
     FilterParameterWidget(const FilterParameterWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const FilterParameterWidget&) = delete;        // Move assignment Not Implemented
+    FilterParameterWidget(FilterParameterWidget&&) = delete;      // Move Constructor Not Implemented
+    FilterParameterWidget& operator=(const FilterParameterWidget&) = delete; // Copy Assignment Not Implemented
+    FilterParameterWidget& operator=(FilterParameterWidget&&) = delete;      // Move Assignment Not Implemented
 };
 
 // -----------------------------------------------------------------------------

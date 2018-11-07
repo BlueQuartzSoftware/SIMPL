@@ -65,9 +65,11 @@ class SIMPLib_EXPORT SIMPLibPluginLoader
   protected:
     SIMPLibPluginLoader();
 
-  private:
+  public:
     SIMPLibPluginLoader(const SIMPLibPluginLoader&) = delete; // Copy Constructor Not Implemented
-    void operator=(const SIMPLibPluginLoader&) = delete;      // Move assignment Not Implemented
+    SIMPLibPluginLoader(SIMPLibPluginLoader&&) = delete;      // Move Constructor Not Implemented
+    SIMPLibPluginLoader& operator=(const SIMPLibPluginLoader&) = delete; // Copy Assignment Not Implemented
+    SIMPLibPluginLoader& operator=(SIMPLibPluginLoader&&) = delete;      // Move Assignment Not Implemented
 };
 
 

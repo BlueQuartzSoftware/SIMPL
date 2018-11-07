@@ -162,8 +162,10 @@ public:
      */
   IntVec3FilterParameter();
 
-private:
+public:
   IntVec3FilterParameter(const IntVec3FilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const IntVec3FilterParameter&) = delete;         // Move assignment Not Implemented
+  IntVec3FilterParameter(IntVec3FilterParameter&&) = delete;      // Move Constructor Not Implemented
+  IntVec3FilterParameter& operator=(const IntVec3FilterParameter&) = delete; // Copy Assignment Not Implemented
+  IntVec3FilterParameter& operator=(IntVec3FilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

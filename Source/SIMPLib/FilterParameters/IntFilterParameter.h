@@ -133,8 +133,10 @@ class SIMPLib_EXPORT IntFilterParameter : public FilterParameter
        */
       IntFilterParameter();
 
-  private:
-    IntFilterParameter(const IntFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const IntFilterParameter&) = delete;     // Move assignment Not Implemented
+    public:
+      IntFilterParameter(const IntFilterParameter&) = delete;            // Copy Constructor Not Implemented
+      IntFilterParameter(IntFilterParameter&&) = delete;                 // Move Constructor Not Implemented
+      IntFilterParameter& operator=(const IntFilterParameter&) = delete; // Copy Assignment Not Implemented
+      IntFilterParameter& operator=(IntFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

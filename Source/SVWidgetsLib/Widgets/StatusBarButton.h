@@ -49,8 +49,11 @@ class SVWidgetsLib_EXPORT StatusBarButton : public QToolButton
     int m_TextMargin = 6;
     
     bool m_Pressed = false;
-    
+
+  public:
     StatusBarButton(const StatusBarButton&) = delete; // Copy Constructor Not Implemented
-    void operator=(const StatusBarButton&) = delete;  // Move assignment Not Implemented
+    StatusBarButton(StatusBarButton&&) = delete;      // Move Constructor Not Implemented
+    StatusBarButton& operator=(const StatusBarButton&) = delete; // Copy Assignment Not Implemented
+    StatusBarButton& operator=(StatusBarButton&&) = delete;      // Move Assignment Not Implemented
 };
 

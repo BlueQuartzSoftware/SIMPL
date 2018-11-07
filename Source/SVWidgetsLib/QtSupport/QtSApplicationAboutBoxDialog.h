@@ -94,8 +94,11 @@ class SVWidgetsLib_EXPORT QtSApplicationAboutBoxDialog: public QDialog, private 
   private:
     QStringList m_licenseFiles;
 
+  public:
     QtSApplicationAboutBoxDialog(const QtSApplicationAboutBoxDialog&) = delete; // Copy Constructor Not Implemented
-    void operator=(const QtSApplicationAboutBoxDialog&) = delete;               // Move assignment Not Implemented
+    QtSApplicationAboutBoxDialog(QtSApplicationAboutBoxDialog&&) = delete;      // Move Constructor Not Implemented
+    QtSApplicationAboutBoxDialog& operator=(const QtSApplicationAboutBoxDialog&) = delete; // Copy Assignment Not Implemented
+    QtSApplicationAboutBoxDialog& operator=(QtSApplicationAboutBoxDialog&&) = delete;      // Move Assignment Not Implemented
 };
 
 

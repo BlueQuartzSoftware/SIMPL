@@ -123,9 +123,11 @@ class SIMPLib_EXPORT H5PrecipitateStatsDataDelegate : public H5StatsDataDelegate
 
     VectorOfFloatArray createRDFMaxMinDistributionArrays();
 
-  private:
+  public:
     H5PrecipitateStatsDataDelegate(const H5PrecipitateStatsDataDelegate&) = delete; // Copy Constructor Not Implemented
-    void operator=(const H5PrecipitateStatsDataDelegate&) = delete;                 // Move assignment Not Implemented
+    H5PrecipitateStatsDataDelegate(H5PrecipitateStatsDataDelegate&&) = delete;      // Move Constructor Not Implemented
+    H5PrecipitateStatsDataDelegate& operator=(const H5PrecipitateStatsDataDelegate&) = delete; // Copy Assignment Not Implemented
+    H5PrecipitateStatsDataDelegate& operator=(H5PrecipitateStatsDataDelegate&&) = delete;      // Move Assignment Not Implemented
 };
 
 

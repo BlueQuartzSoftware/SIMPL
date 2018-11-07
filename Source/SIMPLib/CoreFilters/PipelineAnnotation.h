@@ -151,7 +151,6 @@ protected:
    */
   void initialize();
 
-private:
 public:
   PipelineAnnotation(const PipelineAnnotation&) = delete; // Copy Constructor Not Implemented
   PipelineAnnotation(PipelineAnnotation&&) = delete;      // Move Constructor Not Implemented

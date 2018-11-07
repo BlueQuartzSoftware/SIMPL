@@ -162,7 +162,10 @@ class SVWidgetsLib_EXPORT DataContainerReaderWidget : public FilterParameterWidg
      */
     bool hasValidFilePath(const QString &filePath);
 
+  public:
     DataContainerReaderWidget(const DataContainerReaderWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DataContainerReaderWidget&) = delete;            // Move assignment Not Implemented
+    DataContainerReaderWidget(DataContainerReaderWidget&&) = delete;      // Move Constructor Not Implemented
+    DataContainerReaderWidget& operator=(const DataContainerReaderWidget&) = delete; // Copy Assignment Not Implemented
+    DataContainerReaderWidget& operator=(DataContainerReaderWidget&&) = delete;      // Move Assignment Not Implemented
 };
 

@@ -72,8 +72,10 @@ public:
   */
   static double Kahan(std::initializer_list<double> values);
 
-private:
+public:
   FloatSummation(const FloatSummation&) = delete; // Copy Constructor Not Implemented
-  void operator=(const FloatSummation&) = delete; // Move assignment Not Implemented
+  FloatSummation(FloatSummation&&) = delete;      // Move Constructor Not Implemented
+  FloatSummation& operator=(const FloatSummation&) = delete; // Copy Assignment Not Implemented
+  FloatSummation& operator=(FloatSummation&&) = delete;      // Move Assignment Not Implemented
 };
 

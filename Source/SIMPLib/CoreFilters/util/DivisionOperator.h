@@ -59,8 +59,10 @@ class SIMPLib_EXPORT DivisionOperator : public BinaryOperator
   protected:
     DivisionOperator();
 
-  private:
+  public:
     DivisionOperator(const DivisionOperator&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DivisionOperator&) = delete;   // Move assignment Not Implemented
+    DivisionOperator(DivisionOperator&&) = delete;      // Move Constructor Not Implemented
+    DivisionOperator& operator=(const DivisionOperator&) = delete; // Copy Assignment Not Implemented
+    DivisionOperator& operator=(DivisionOperator&&) = delete;      // Move Assignment Not Implemented
 };
 

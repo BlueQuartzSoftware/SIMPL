@@ -178,8 +178,10 @@ protected:
    */
   FileListInfoFilterParameter();
 
-private:
+public:
   FileListInfoFilterParameter(const FileListInfoFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const FileListInfoFilterParameter&) = delete;              // Move assignment Not Implemented
+  FileListInfoFilterParameter(FileListInfoFilterParameter&&) = delete;      // Move Constructor Not Implemented
+  FileListInfoFilterParameter& operator=(const FileListInfoFilterParameter&) = delete; // Copy Assignment Not Implemented
+  FileListInfoFilterParameter& operator=(FileListInfoFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

@@ -86,8 +86,11 @@ class SVWidgetsLib_EXPORT UpdateCheck : public QObject
     QNetworkAccessManager*        m_Nam;
     UpdateCheck::SIMPLVersionData_t m_VersionData;
 
-    UpdateCheck(const UpdateCheck&);    // Copy Constructor Not Implemented
-    void operator=(const UpdateCheck&); // Move assignment Not Implemented
+  public:
+    UpdateCheck(const UpdateCheck&) = delete;            // Copy Constructor Not Implemented
+    UpdateCheck(UpdateCheck&&) = delete;                 // Move Constructor Not Implemented
+    UpdateCheck& operator=(const UpdateCheck&) = delete; // Copy Assignment Not Implemented
+    UpdateCheck& operator=(UpdateCheck&&) = delete;      // Move Assignment Not Implemented
 };
 
 

@@ -145,8 +145,9 @@ protected:
   */
   void initialize();
 
-private:
-  FilterGroup06(const FilterGroup06&);  // Copy Constructor Not Implemented
+public:
+  FilterGroup06(const FilterGroup06&) = delete;            // Copy Constructor Not Implemented
+  FilterGroup06(FilterGroup06&&) = delete;                 // Move Constructor Not Implemented
   FilterGroup06& operator=(const FilterGroup06&) = delete; // Copy Assignment Not Implemented
   FilterGroup06& operator=(FilterGroup06&&) = delete;      // Move Assignment Not Implemented
 };

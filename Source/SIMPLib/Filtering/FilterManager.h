@@ -158,7 +158,10 @@ private:
   
   static FilterManager* self;
 
-  FilterManager(const FilterManager&);  // Copy Constructor Not Implemented
-  void operator=(const FilterManager&) = delete; // Move assignment Not Implemented
+public:
+  FilterManager(const FilterManager&) = delete;            // Copy Constructor Not Implemented
+  FilterManager(FilterManager&&) = delete;                 // Move Constructor Not Implemented
+  FilterManager& operator=(const FilterManager&) = delete; // Copy Assignment Not Implemented
+  FilterManager& operator=(FilterManager&&) = delete;      // Move Assignment Not Implemented
 };
 

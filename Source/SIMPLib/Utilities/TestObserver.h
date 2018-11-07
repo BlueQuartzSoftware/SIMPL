@@ -52,9 +52,11 @@ class SIMPLib_EXPORT TestObserver : public QObject, public IObserver
  public slots:
       void processPipelineMessage(const PipelineMessage& pm) override;
 
-  private:
-    TestObserver(const TestObserver&) = delete;   // Copy Constructor Not Implemented
-    void operator=(const TestObserver&) = delete; // Move assignment Not Implemented
+    public:
+      TestObserver(const TestObserver&) = delete;            // Copy Constructor Not Implemented
+      TestObserver(TestObserver&&) = delete;                 // Move Constructor Not Implemented
+      TestObserver& operator=(const TestObserver&) = delete; // Copy Assignment Not Implemented
+      TestObserver& operator=(TestObserver&&) = delete;      // Move Assignment Not Implemented
 };
 
 

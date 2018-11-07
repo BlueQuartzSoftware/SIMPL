@@ -110,7 +110,10 @@ class SVWidgetsLib_EXPORT QtSSettings : public QObject
       Type
     };
 
-    QtSSettings(const QtSSettings&);    // Copy Constructor Not Implemented
-    void operator=(const QtSSettings&); // Move assignment Not Implemented
+  public:
+    QtSSettings(const QtSSettings&) = delete;            // Copy Constructor Not Implemented
+    QtSSettings(QtSSettings&&) = delete;                 // Move Constructor Not Implemented
+    QtSSettings& operator=(const QtSSettings&) = delete; // Copy Assignment Not Implemented
+    QtSSettings& operator=(QtSSettings&&) = delete;      // Move Assignment Not Implemented
 };
 

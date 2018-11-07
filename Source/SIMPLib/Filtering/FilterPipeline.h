@@ -236,7 +236,10 @@ private:
   void connectSignalsSlots();
   void disconnectSignalsSlots();
 
+public:
   FilterPipeline(const FilterPipeline&) = delete; // Copy Constructor Not Implemented
-  void operator=(const FilterPipeline&) = delete; // Move assignment Not Implemented
+  FilterPipeline(FilterPipeline&&) = delete;      // Move Constructor Not Implemented
+  FilterPipeline& operator=(const FilterPipeline&) = delete; // Copy Assignment Not Implemented
+  FilterPipeline& operator=(FilterPipeline&&) = delete;      // Move Assignment Not Implemented
 };
 

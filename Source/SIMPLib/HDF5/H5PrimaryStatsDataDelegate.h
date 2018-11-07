@@ -111,9 +111,11 @@ class SIMPLib_EXPORT H5PrimaryStatsDataDelegate : public H5StatsDataDelegate
 
     VectorOfFloatArray createLogNormalDistributionArrays();
 
-  private:
+  public:
     H5PrimaryStatsDataDelegate(const H5PrimaryStatsDataDelegate&) = delete; // Copy Constructor Not Implemented
-    void operator=(const H5PrimaryStatsDataDelegate&) = delete;             // Move assignment Not Implemented
+    H5PrimaryStatsDataDelegate(H5PrimaryStatsDataDelegate&&) = delete;      // Move Constructor Not Implemented
+    H5PrimaryStatsDataDelegate& operator=(const H5PrimaryStatsDataDelegate&) = delete; // Copy Assignment Not Implemented
+    H5PrimaryStatsDataDelegate& operator=(H5PrimaryStatsDataDelegate&&) = delete;      // Move Assignment Not Implemented
 };
 
 

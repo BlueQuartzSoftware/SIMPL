@@ -49,8 +49,10 @@ class SIMPLib_EXPORT CalculatorSeparator : public CalculatorItem
   protected:
     CalculatorSeparator();
 
-  private:
+  public:
     CalculatorSeparator(const CalculatorSeparator&) = delete; // Copy Constructor Not Implemented
-    void operator=(const CalculatorSeparator&) = delete;      // Move assignment Not Implemented
+    CalculatorSeparator(CalculatorSeparator&&) = delete;      // Move Constructor Not Implemented
+    CalculatorSeparator& operator=(const CalculatorSeparator&) = delete; // Copy Assignment Not Implemented
+    CalculatorSeparator& operator=(CalculatorSeparator&&) = delete;      // Move Assignment Not Implemented
 };
 

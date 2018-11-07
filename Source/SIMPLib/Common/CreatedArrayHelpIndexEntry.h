@@ -67,10 +67,11 @@ class SIMPLib_EXPORT CreatedArrayHelpIndexEntry
   protected:
     CreatedArrayHelpIndexEntry();
 
-
-  private:
+  public:
     CreatedArrayHelpIndexEntry(const CreatedArrayHelpIndexEntry&) = delete; // Copy Constructor Not Implemented
-    void operator=(const CreatedArrayHelpIndexEntry&) = delete;             // Move assignment Not Implemented
+    CreatedArrayHelpIndexEntry(CreatedArrayHelpIndexEntry&&) = delete;      // Move Constructor Not Implemented
+    CreatedArrayHelpIndexEntry& operator=(const CreatedArrayHelpIndexEntry&) = delete; // Copy Assignment Not Implemented
+    CreatedArrayHelpIndexEntry& operator=(CreatedArrayHelpIndexEntry&&) = delete;      // Move Assignment Not Implemented
 };
 
 

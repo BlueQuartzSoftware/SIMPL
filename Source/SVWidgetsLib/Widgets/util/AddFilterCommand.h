@@ -95,7 +95,10 @@ private:
    */
   void disconnectFilterSignalsSlots(AbstractFilter::Pointer filter);
 
+public:
   AddFilterCommand(const AddFilterCommand&) = delete; // Copy Constructor Not Implemented
-  void operator=(const AddFilterCommand&) = delete;   // Move assignment Not Implemented
+  AddFilterCommand(AddFilterCommand&&) = delete;      // Move Constructor Not Implemented
+  AddFilterCommand& operator=(const AddFilterCommand&) = delete; // Copy Assignment Not Implemented
+  AddFilterCommand& operator=(AddFilterCommand&&) = delete;      // Move Assignment Not Implemented
 };
 

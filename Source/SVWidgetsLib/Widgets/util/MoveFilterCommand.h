@@ -102,7 +102,10 @@ private:
    */
   void removeFilter(int filterIndex);
 
+public:
   MoveFilterCommand(const MoveFilterCommand&) = delete; // Copy Constructor Not Implemented
-  void operator=(const MoveFilterCommand&);             // Move assignment Not Implemented
+  MoveFilterCommand(MoveFilterCommand&&) = delete;      // Move Constructor Not Implemented
+  MoveFilterCommand& operator=(const MoveFilterCommand&) = delete; // Copy Assignment Not Implemented
+  MoveFilterCommand& operator=(MoveFilterCommand&&) = delete;      // Move Assignment Not Implemented
 };
 

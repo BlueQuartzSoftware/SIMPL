@@ -56,8 +56,10 @@ class DynamicTableItemDelegate : public QStyledItemDelegate
     void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override;
     void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 
-  private:
+  public:
     DynamicTableItemDelegate(const DynamicTableItemDelegate&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DynamicTableItemDelegate&) = delete;           // Move assignment Not Implemented
+    DynamicTableItemDelegate(DynamicTableItemDelegate&&) = delete;      // Move Constructor Not Implemented
+    DynamicTableItemDelegate& operator=(const DynamicTableItemDelegate&) = delete; // Copy Assignment Not Implemented
+    DynamicTableItemDelegate& operator=(DynamicTableItemDelegate&&) = delete;      // Move Assignment Not Implemented
 };
 
