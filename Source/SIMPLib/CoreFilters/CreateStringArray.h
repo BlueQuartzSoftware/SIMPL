@@ -175,6 +175,6 @@ class SIMPLib_EXPORT CreateStringArray : public AbstractFilter
     CreateStringArray(const CreateStringArray&) = delete; // Copy Constructor Not Implemented
     CreateStringArray(CreateStringArray&&) = delete;      // Move Constructor Not Implemented
     CreateStringArray& operator=(const CreateStringArray&) = delete; // Copy Assignment Not Implemented
-    CreateStringArray& operator=(CreateStringArray&&) = delete;      // Move Assignment
+    CreateStringArray& operator=(CreateStringArray&&) = delete;      // Move Assignment Not Implemented
 };
 

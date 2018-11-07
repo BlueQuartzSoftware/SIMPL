@@ -137,7 +137,7 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
     JsonFilterParametersWriter(const JsonFilterParametersWriter&) = delete; // Copy Constructor Not Implemented
     JsonFilterParametersWriter(JsonFilterParametersWriter&&) = delete;      // Move Constructor Not Implemented
     JsonFilterParametersWriter& operator=(const JsonFilterParametersWriter&) = delete; // Copy Assignment Not Implemented
-    JsonFilterParametersWriter& operator=(JsonFilterParametersWriter&&) = delete;      // Move Assignment
+    JsonFilterParametersWriter& operator=(JsonFilterParametersWriter&&) = delete;      // Move Assignment Not Implemented
 };
 
 

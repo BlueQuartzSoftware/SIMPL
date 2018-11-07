@@ -213,7 +213,7 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
     CreateDataArray(const CreateDataArray&) = delete; // Copy Constructor Not Implemented
     CreateDataArray(CreateDataArray&&) = delete;      // Move Constructor Not Implemented
     CreateDataArray& operator=(const CreateDataArray&) = delete; // Copy Assignment Not Implemented
-    CreateDataArray& operator=(CreateDataArray&&) = delete;      // Move Assignment
+    CreateDataArray& operator=(CreateDataArray&&) = delete;      // Move Assignment Not Implemented
 };
 
 

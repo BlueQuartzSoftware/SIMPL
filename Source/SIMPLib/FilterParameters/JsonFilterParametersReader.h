@@ -169,7 +169,7 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
      JsonFilterParametersReader(const JsonFilterParametersReader&) = delete;            // Copy Constructor Not Implemented
      JsonFilterParametersReader(JsonFilterParametersReader&&) = delete;                 // Move Constructor Not Implemented
      JsonFilterParametersReader& operator=(const JsonFilterParametersReader&) = delete; // Copy Assignment Not Implemented
-     JsonFilterParametersReader& operator=(JsonFilterParametersReader&&) = delete;      // Move Assignment
+     JsonFilterParametersReader& operator=(JsonFilterParametersReader&&) = delete;      // Move Assignment Not Implemented
 };
 
 

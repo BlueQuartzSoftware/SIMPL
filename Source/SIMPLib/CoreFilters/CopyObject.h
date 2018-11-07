@@ -177,6 +177,6 @@ protected:
 private:
   CopyObject(const CopyObject&);                     // Copy Constructor Not Implemented
   CopyObject& operator=(const CopyObject&) = delete; // Copy Assignment Not Implemented
-  CopyObject& operator=(CopyObject&&) = delete;      // Move Assignment
+  CopyObject& operator=(CopyObject&&) = delete;      // Move Assignment Not Implemented
 };
 

@@ -205,6 +205,6 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
     WriteASCIIData(const WriteASCIIData&) = delete; // Copy Constructor Not Implemented
     WriteASCIIData(WriteASCIIData&&) = delete;      // Move Constructor Not Implemented
     WriteASCIIData& operator=(const WriteASCIIData&) = delete; // Copy Assignment Not Implemented
-    WriteASCIIData& operator=(WriteASCIIData&&) = delete;      // Move Assignment
+    WriteASCIIData& operator=(WriteASCIIData&&) = delete;      // Move Assignment Not Implemented
 };
 

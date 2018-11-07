@@ -185,6 +185,6 @@ class SIMPLib_EXPORT RemoveComponentFromArray : public AbstractFilter
     RemoveComponentFromArray(const RemoveComponentFromArray&) = delete; // Copy Constructor Not Implemented
     RemoveComponentFromArray(RemoveComponentFromArray&&) = delete;      // Move Constructor Not Implemented
     RemoveComponentFromArray& operator=(const RemoveComponentFromArray&) = delete; // Copy Assignment Not Implemented
-    RemoveComponentFromArray& operator=(RemoveComponentFromArray&&) = delete;      // Move Assignment
+    RemoveComponentFromArray& operator=(RemoveComponentFromArray&&) = delete;      // Move Assignment Not Implemented
 };
 

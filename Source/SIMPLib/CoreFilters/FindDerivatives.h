@@ -179,6 +179,6 @@ private:
     FindDerivatives(const FindDerivatives&) = delete; // Copy Constructor Not Implemented
     FindDerivatives(FindDerivatives&&) = delete;      // Move Constructor Not Implemented
     FindDerivatives& operator=(const FindDerivatives&) = delete; // Copy Assignment Not Implemented
-    FindDerivatives& operator=(FindDerivatives&&) = delete;      // Move Assignment
+    FindDerivatives& operator=(FindDerivatives&&) = delete;      // Move Assignment Not Implemented
 };
 

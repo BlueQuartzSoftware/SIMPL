@@ -193,6 +193,6 @@ class SIMPLib_EXPORT CombineAttributeMatrices : public AbstractFilter
     CombineAttributeMatrices(const CombineAttributeMatrices&) = delete; // Copy Constructor Not Implemented
     CombineAttributeMatrices(CombineAttributeMatrices&&) = delete;      // Move Constructor Not Implemented
     CombineAttributeMatrices& operator=(const CombineAttributeMatrices&) = delete; // Copy Assignment Not Implemented
-    CombineAttributeMatrices& operator=(CombineAttributeMatrices&&) = delete;      // Move Assignment
+    CombineAttributeMatrices& operator=(CombineAttributeMatrices&&) = delete;      // Move Assignment Not Implemented
 };
 

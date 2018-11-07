@@ -180,6 +180,6 @@ class SIMPLib_EXPORT MoveMultiData : public AbstractFilter
     MoveMultiData(const MoveMultiData&) = delete;  // Copy Constructor Not Implemented
     MoveMultiData(MoveMultiData&&) = delete;       // Move Constructor Not Implemented
     MoveMultiData& operator=(const MoveMultiData&) = delete; // Copy Assignment Not Implemented
-    MoveMultiData& operator=(MoveMultiData&&) = delete;      // Move Assignment
+    MoveMultiData& operator=(MoveMultiData&&) = delete;      // Move Assignment Not Implemented
 };
 

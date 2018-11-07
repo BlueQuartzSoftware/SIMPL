@@ -182,6 +182,6 @@ class SIMPLib_EXPORT WriteTriangleGeometry : public AbstractFilter
     WriteTriangleGeometry(const WriteTriangleGeometry&) = delete; // Copy Constructor Not Implemented
     WriteTriangleGeometry(WriteTriangleGeometry&&) = delete;      // Move Constructor Not Implemented
     WriteTriangleGeometry& operator=(const WriteTriangleGeometry&) = delete; // Copy Assignment Not Implemented
-    WriteTriangleGeometry& operator=(WriteTriangleGeometry&&) = delete;      // Move Assignment
+    WriteTriangleGeometry& operator=(WriteTriangleGeometry&&) = delete;      // Move Assignment Not Implemented
 };
 

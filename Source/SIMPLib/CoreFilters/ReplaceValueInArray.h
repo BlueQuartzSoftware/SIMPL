@@ -176,6 +176,6 @@ class SIMPLib_EXPORT ReplaceValueInArray : public AbstractFilter
     ReplaceValueInArray(const ReplaceValueInArray&) = delete; // Copy Constructor Not Implemented
     ReplaceValueInArray(ReplaceValueInArray&&) = delete;      // Move Constructor Not Implemented
     ReplaceValueInArray& operator=(const ReplaceValueInArray&) = delete; // Copy Assignment Not Implemented
-    ReplaceValueInArray& operator=(ReplaceValueInArray&&) = delete;      // Move Assignment
+    ReplaceValueInArray& operator=(ReplaceValueInArray&&) = delete;      // Move Assignment Not Implemented
 };
 
