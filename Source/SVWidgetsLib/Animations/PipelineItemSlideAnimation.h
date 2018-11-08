@@ -64,6 +64,9 @@ class SVWidgetsLib_EXPORT PipelineItemSlideAnimation : public QVariantAnimation
     int m_NumberOfPixels = 0;
     int m_StartX = 0;
 
+  public:
     PipelineItemSlideAnimation(const PipelineItemSlideAnimation&) = delete; // Copy Constructor Not Implemented
-    void operator=(const PipelineItemSlideAnimation&) = delete;        // Operator '=' Not Implemented
+    PipelineItemSlideAnimation(PipelineItemSlideAnimation&&) = delete;      // Move Constructor Not Implemented
+    PipelineItemSlideAnimation& operator=(const PipelineItemSlideAnimation&) = delete; // Copy Assignment Not Implemented
+    PipelineItemSlideAnimation& operator=(PipelineItemSlideAnimation&&) = delete;      // Move Assignment Not Implemented
 };

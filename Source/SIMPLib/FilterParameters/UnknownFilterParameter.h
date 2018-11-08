@@ -80,8 +80,10 @@ public:
      */
     UnknownFilterParameter();
 
-  private:
+  public:
     UnknownFilterParameter(const UnknownFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const UnknownFilterParameter&) = delete;         // Move assignment Not Implemented
+    UnknownFilterParameter(UnknownFilterParameter&&) = delete;      // Move Constructor Not Implemented
+    UnknownFilterParameter& operator=(const UnknownFilterParameter&) = delete; // Copy Assignment Not Implemented
+    UnknownFilterParameter& operator=(UnknownFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

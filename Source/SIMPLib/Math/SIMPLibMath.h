@@ -253,9 +253,11 @@ class SIMPLibMath
   protected:
     SIMPLibMath();
 
-  private:
+  public:
     SIMPLibMath(const SIMPLibMath&) = delete;    // Copy Constructor Not Implemented
-    void operator=(const SIMPLibMath&) = delete; // Move assignment Not Implemented
+    SIMPLibMath(SIMPLibMath&&) = delete;         // Move Constructor Not Implemented
+    SIMPLibMath& operator=(const SIMPLibMath&) = delete; // Copy Assignment Not Implemented
+    SIMPLibMath& operator=(SIMPLibMath&&) = delete;      // Move Assignment Not Implemented
 };
 
 

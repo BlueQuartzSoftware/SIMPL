@@ -86,8 +86,11 @@ class SVWidgetsLib_EXPORT IntWidget : public FilterParameterWidget, private Ui::
   private:
     IntFilterParameter* m_FilterParameter;
 
+  public:
     IntWidget(const IntWidget&) = delete;      // Copy Constructor Not Implemented
-    void operator=(const IntWidget&) = delete; // Move assignment Not Implemented
+    IntWidget(IntWidget&&) = delete;           // Move Constructor Not Implemented
+    IntWidget& operator=(const IntWidget&) = delete; // Copy Assignment Not Implemented
+    IntWidget& operator=(IntWidget&&) = delete;      // Move Assignment Not Implemented
 };
 
 

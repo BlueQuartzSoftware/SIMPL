@@ -142,7 +142,10 @@ the setData() and setHeaderData() functions, respectively.
 
     //    QModelIndexList findIndexByPath(const QModelIndex& index, QString filePath);
 
-    DataStructureModel(const DataStructureModel&);    // Copy Constructor Not Implemented
-    void operator=(const DataStructureModel&);        // Move assignment Not Implemented
+  public:
+    DataStructureModel(const DataStructureModel&) = delete;            // Copy Constructor Not Implemented
+    DataStructureModel(DataStructureModel&&) = delete;                 // Move Constructor Not Implemented
+    DataStructureModel& operator=(const DataStructureModel&) = delete; // Copy Assignment Not Implemented
+    DataStructureModel& operator=(DataStructureModel&&) = delete;      // Move Assignment Not Implemented
 };
 

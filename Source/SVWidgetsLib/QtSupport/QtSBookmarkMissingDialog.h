@@ -60,8 +60,11 @@ class SVWidgetsLib_EXPORT QtSBookmarkMissingDialog : public QDialog, private Ui:
   private:
     QString m_OpenDialogLastFilePath;
 
+  public:
     QtSBookmarkMissingDialog(const QtSBookmarkMissingDialog&) = delete; // Copy Constructor Not Implemented
-    void operator=(const QtSBookmarkMissingDialog&) = delete;           // Move assignment Not Implemented
+    QtSBookmarkMissingDialog(QtSBookmarkMissingDialog&&) = delete;      // Move Constructor Not Implemented
+    QtSBookmarkMissingDialog& operator=(const QtSBookmarkMissingDialog&) = delete; // Copy Assignment Not Implemented
+    QtSBookmarkMissingDialog& operator=(QtSBookmarkMissingDialog&&) = delete;      // Move Assignment Not Implemented
 };
 
 

@@ -135,6 +135,8 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget
 
   public:
     FilterInputWidget(const FilterInputWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const FilterInputWidget&) = delete;    // Move assignment Not Implemented
+    FilterInputWidget(FilterInputWidget&&) = delete;      // Move Constructor Not Implemented
+    FilterInputWidget& operator=(const FilterInputWidget&) = delete; // Copy Assignment Not Implemented
+    FilterInputWidget& operator=(FilterInputWidget&&) = delete;      // Move Assignment Not Implemented
 };
 

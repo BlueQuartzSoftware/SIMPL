@@ -77,8 +77,10 @@ class SIMPLib_EXPORT IDataContainerBundle : public QObject
   protected:
     IDataContainerBundle();
 
-  private:
+  public:
     IDataContainerBundle(const IDataContainerBundle&) = delete; // Copy Constructor Not Implemented
-    void operator=(const IDataContainerBundle&) = delete;       // Move assignment Not Implemented
+    IDataContainerBundle(IDataContainerBundle&&) = delete;      // Move Constructor Not Implemented
+    IDataContainerBundle& operator=(const IDataContainerBundle&) = delete; // Copy Assignment Not Implemented
+    IDataContainerBundle& operator=(IDataContainerBundle&&) = delete;      // Move Assignment Not Implemented
 };
 

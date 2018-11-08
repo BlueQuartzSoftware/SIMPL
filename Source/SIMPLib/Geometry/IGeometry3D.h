@@ -235,9 +235,11 @@ class SIMPLib_EXPORT IGeometry3D : public IGeometry
      */
     virtual void setUnsharedFaces(SharedFaceList::Pointer bFaceList) = 0;
 
-  private:
+  public:
     IGeometry3D(const IGeometry3D&) = delete;    // Copy Constructor Not Implemented
-    void operator=(const IGeometry3D&) = delete; // Move assignment Not Implemented
+    IGeometry3D(IGeometry3D&&) = delete;         // Move Constructor Not Implemented
+    IGeometry3D& operator=(const IGeometry3D&) = delete; // Copy Assignment Not Implemented
+    IGeometry3D& operator=(IGeometry3D&&) = delete;      // Move Assignment Not Implemented
 };
 
 

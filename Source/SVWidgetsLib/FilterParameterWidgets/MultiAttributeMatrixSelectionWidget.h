@@ -139,8 +139,11 @@ class SVWidgetsLib_EXPORT MultiAttributeMatrixSelectionWidget : public FilterPar
 
     void selectionChanged();
 
+  public:
     MultiAttributeMatrixSelectionWidget(const MultiAttributeMatrixSelectionWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const MultiAttributeMatrixSelectionWidget&) = delete;                      // Move assignment Not Implemented
+    MultiAttributeMatrixSelectionWidget(MultiAttributeMatrixSelectionWidget&&) = delete;      // Move Constructor Not Implemented
+    MultiAttributeMatrixSelectionWidget& operator=(const MultiAttributeMatrixSelectionWidget&) = delete; // Copy Assignment Not Implemented
+    MultiAttributeMatrixSelectionWidget& operator=(MultiAttributeMatrixSelectionWidget&&) = delete;      // Move Assignment Not Implemented
 };
 
 

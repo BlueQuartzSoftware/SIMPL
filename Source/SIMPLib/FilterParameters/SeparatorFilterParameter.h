@@ -74,8 +74,10 @@ class SIMPLib_EXPORT SeparatorFilterParameter : public FilterParameter
      */
     SeparatorFilterParameter();
 
-  private:
+  public:
     SeparatorFilterParameter(const SeparatorFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const SeparatorFilterParameter&) = delete;           // Move assignment Not Implemented
+    SeparatorFilterParameter(SeparatorFilterParameter&&) = delete;      // Move Constructor Not Implemented
+    SeparatorFilterParameter& operator=(const SeparatorFilterParameter&) = delete; // Copy Assignment Not Implemented
+    SeparatorFilterParameter& operator=(SeparatorFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

@@ -68,8 +68,10 @@ class PluginDetails : public QWidget, private Ui::PluginDetails
      */
     void setupGui();
 
-  private:
+  public:
     PluginDetails(const PluginDetails&) = delete;  // Copy Constructor Not Implemented
-    void operator=(const PluginDetails&) = delete; // Move assignment Not Implemented
+    PluginDetails(PluginDetails&&) = delete;       // Move Constructor Not Implemented
+    PluginDetails& operator=(const PluginDetails&) = delete; // Copy Assignment Not Implemented
+    PluginDetails& operator=(PluginDetails&&) = delete;      // Move Assignment Not Implemented
 };
 

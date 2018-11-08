@@ -142,8 +142,11 @@ class SVWidgetsLib_EXPORT MultiDataArraySelectionWidget : public FilterParameter
 
     void selectionChanged();
 
+  public:
     MultiDataArraySelectionWidget(const MultiDataArraySelectionWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const MultiDataArraySelectionWidget&) = delete;                // Move assignment Not Implemented
+    MultiDataArraySelectionWidget(MultiDataArraySelectionWidget&&) = delete;      // Move Constructor Not Implemented
+    MultiDataArraySelectionWidget& operator=(const MultiDataArraySelectionWidget&) = delete; // Copy Assignment Not Implemented
+    MultiDataArraySelectionWidget& operator=(MultiDataArraySelectionWidget&&) = delete;      // Move Assignment Not Implemented
 };
 
 

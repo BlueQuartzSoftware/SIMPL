@@ -33,8 +33,10 @@ public slots:
     m_ErrorList.push_back(msg);
   }
 
-private:
+public:
   RemoveArraysObserver(const RemoveArraysObserver&) = delete; // Copy Constructor Not Implemented
-  void operator=(const RemoveArraysObserver&);                // Move assignment Not Implemented
+  RemoveArraysObserver(RemoveArraysObserver&&) = delete;      // Move Constructor Not Implemented
+  RemoveArraysObserver& operator=(const RemoveArraysObserver&) = delete; // Copy Assignment Not Implemented
+  RemoveArraysObserver& operator=(RemoveArraysObserver&&) = delete;      // Move Assignment Not Implemented
 };
 

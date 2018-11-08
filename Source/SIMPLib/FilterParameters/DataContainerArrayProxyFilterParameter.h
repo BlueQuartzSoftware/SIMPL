@@ -145,8 +145,10 @@ class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParam
        */
     DataContainerArrayProxyFilterParameter();
 
-  private:
+  public:
     DataContainerArrayProxyFilterParameter(const DataContainerArrayProxyFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DataContainerArrayProxyFilterParameter&) = delete;                         // Move assignment Not Implemented
+    DataContainerArrayProxyFilterParameter(DataContainerArrayProxyFilterParameter&&) = delete;      // Move Constructor Not Implemented
+    DataContainerArrayProxyFilterParameter& operator=(const DataContainerArrayProxyFilterParameter&) = delete; // Copy Assignment Not Implemented
+    DataContainerArrayProxyFilterParameter& operator=(DataContainerArrayProxyFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

@@ -107,8 +107,11 @@ class SIMPLib_EXPORT PluginManager
     QVector<ISIMPLibPlugin*> plugins;
     static PluginManager* self;
 
+  public:
     PluginManager(const PluginManager&) = delete;  // Copy Constructor Not Implemented
-    void operator=(const PluginManager&) = delete; // Move assignment Not Implemented
+    PluginManager(PluginManager&&) = delete;       // Move Constructor Not Implemented
+    PluginManager& operator=(const PluginManager&) = delete; // Copy Assignment Not Implemented
+    PluginManager& operator=(PluginManager&&) = delete;      // Move Assignment Not Implemented
 };
 
 

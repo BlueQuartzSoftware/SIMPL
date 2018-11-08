@@ -433,7 +433,10 @@ private:
   bool m_Cancel;
   QUuid m_Uuid;
 
+public:
   AbstractFilter(const AbstractFilter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const AbstractFilter&) = delete; // Move assignment Not Implemented
+  AbstractFilter(AbstractFilter&&) = delete;      // Move Constructor Not Implemented
+  AbstractFilter& operator=(const AbstractFilter&) = delete; // Copy Assignment Not Implemented
+  AbstractFilter& operator=(AbstractFilter&&) = delete;      // Move Assignment Not Implemented
 };
 

@@ -56,8 +56,10 @@ class TupleTableItemDelegate : public QStyledItemDelegate
     void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override;
     void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 
-  private:
+  public:
     TupleTableItemDelegate(const TupleTableItemDelegate&) = delete; // Copy Constructor Not Implemented
-    void operator=(const TupleTableItemDelegate&) = delete;         // Move assignment Not Implemented
+    TupleTableItemDelegate(TupleTableItemDelegate&&) = delete;      // Move Constructor Not Implemented
+    TupleTableItemDelegate& operator=(const TupleTableItemDelegate&) = delete; // Copy Assignment Not Implemented
+    TupleTableItemDelegate& operator=(TupleTableItemDelegate&&) = delete;      // Move Assignment Not Implemented
 };
 

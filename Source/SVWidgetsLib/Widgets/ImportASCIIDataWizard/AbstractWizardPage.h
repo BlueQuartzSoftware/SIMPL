@@ -60,8 +60,10 @@ class AbstractWizardPage : public QWizardPage
 
     QString                                         m_InputFilePath;
 
-  private:
+  public:
     AbstractWizardPage(const AbstractWizardPage&) = delete; // Copy Constructor Not Implemented
-    void operator=(const AbstractWizardPage&) = delete;     // Move assignment Not Implemented
+    AbstractWizardPage(AbstractWizardPage&&) = delete;      // Move Constructor Not Implemented
+    AbstractWizardPage& operator=(const AbstractWizardPage&) = delete; // Copy Assignment Not Implemented
+    AbstractWizardPage& operator=(AbstractWizardPage&&) = delete;      // Move Assignment Not Implemented
 };
 

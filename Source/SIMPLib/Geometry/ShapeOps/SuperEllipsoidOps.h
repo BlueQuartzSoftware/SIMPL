@@ -61,8 +61,11 @@ class SIMPLib_EXPORT SuperEllipsoidOps : public ShapeOps
   private:
     float Nvalue;
 
+  public:
     SuperEllipsoidOps(const SuperEllipsoidOps&) = delete; // Copy Constructor Not Implemented
-    void operator=(const SuperEllipsoidOps&) = delete;    // Move assignment Not Implemented
+    SuperEllipsoidOps(SuperEllipsoidOps&&) = delete;      // Move Constructor Not Implemented
+    SuperEllipsoidOps& operator=(const SuperEllipsoidOps&) = delete; // Copy Assignment Not Implemented
+    SuperEllipsoidOps& operator=(SuperEllipsoidOps&&) = delete;      // Move Assignment Not Implemented
 };
 
 

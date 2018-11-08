@@ -141,7 +141,6 @@ protected:
    */
   void initialize();
 
-private:
 public:
   ThresholdExample(const ThresholdExample&) = delete; // Copy Constructor Not Implemented
   ThresholdExample(ThresholdExample&&) = delete;      // Move Constructor Not Implemented

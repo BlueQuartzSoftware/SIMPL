@@ -120,8 +120,11 @@ class SVWidgetsLib_EXPORT PhaseTypeSelectionWidget : public FilterParameterWidge
 
     void setSelectedPath(DataArrayPath amPath);
 
+  public:
     PhaseTypeSelectionWidget(const PhaseTypeSelectionWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const PhaseTypeSelectionWidget&) = delete;           // Move assignment Not Implemented
+    PhaseTypeSelectionWidget(PhaseTypeSelectionWidget&&) = delete;      // Move Constructor Not Implemented
+    PhaseTypeSelectionWidget& operator=(const PhaseTypeSelectionWidget&) = delete; // Copy Assignment Not Implemented
+    PhaseTypeSelectionWidget& operator=(PhaseTypeSelectionWidget&&) = delete;      // Move Assignment Not Implemented
 };
 
 

@@ -62,10 +62,11 @@ class SVWidgetsLib_EXPORT QtSDistributionTypeWidget : public QWidget, private Ui
   protected:
     void setupGui();
 
-
-  private:
+  public:
     QtSDistributionTypeWidget(const QtSDistributionTypeWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const QtSDistributionTypeWidget&) = delete;            // Move assignment Not Implemented
+    QtSDistributionTypeWidget(QtSDistributionTypeWidget&&) = delete;      // Move Constructor Not Implemented
+    QtSDistributionTypeWidget& operator=(const QtSDistributionTypeWidget&) = delete; // Copy Assignment Not Implemented
+    QtSDistributionTypeWidget& operator=(QtSDistributionTypeWidget&&) = delete;      // Move Assignment Not Implemented
 };
 
 

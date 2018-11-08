@@ -139,8 +139,10 @@ class SIMPLib_EXPORT DynamicChoiceFilterParameter : public FilterParameter
        */
     DynamicChoiceFilterParameter();
 
-  private:
+  public:
     DynamicChoiceFilterParameter(const DynamicChoiceFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DynamicChoiceFilterParameter&) = delete;               // Move assignment Not Implemented
+    DynamicChoiceFilterParameter(DynamicChoiceFilterParameter&&) = delete;      // Move Constructor Not Implemented
+    DynamicChoiceFilterParameter& operator=(const DynamicChoiceFilterParameter&) = delete; // Copy Assignment Not Implemented
+    DynamicChoiceFilterParameter& operator=(DynamicChoiceFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

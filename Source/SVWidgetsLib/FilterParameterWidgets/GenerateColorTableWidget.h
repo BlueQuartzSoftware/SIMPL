@@ -108,8 +108,11 @@ class SVWidgetsLib_EXPORT GenerateColorTableWidget : public FilterParameterWidge
     QSharedPointer<ColorPresetsDialog>        m_PresetsDialog;
     bool                                      m_DidCausePreflight;
 
+  public:
     GenerateColorTableWidget(const GenerateColorTableWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const GenerateColorTableWidget&) = delete;           // Move assignment Not Implemented
+    GenerateColorTableWidget(GenerateColorTableWidget&&) = delete;      // Move Constructor Not Implemented
+    GenerateColorTableWidget& operator=(const GenerateColorTableWidget&) = delete; // Copy Assignment Not Implemented
+    GenerateColorTableWidget& operator=(GenerateColorTableWidget&&) = delete;      // Move Assignment Not Implemented
 };
 
 

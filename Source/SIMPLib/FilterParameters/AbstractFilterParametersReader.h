@@ -134,9 +134,11 @@ class SIMPLib_EXPORT AbstractFilterParametersReader
   protected:
     AbstractFilterParametersReader();
 
-  private:
+  public:
     AbstractFilterParametersReader(const AbstractFilterParametersReader&) = delete; // Copy Constructor Not Implemented
-    void operator=(const AbstractFilterParametersReader&) = delete;                 // Move assignment Not Implemented
+    AbstractFilterParametersReader(AbstractFilterParametersReader&&) = delete;      // Move Constructor Not Implemented
+    AbstractFilterParametersReader& operator=(const AbstractFilterParametersReader&) = delete; // Copy Assignment Not Implemented
+    AbstractFilterParametersReader& operator=(AbstractFilterParametersReader&&) = delete;      // Move Assignment Not Implemented
 };
 
 

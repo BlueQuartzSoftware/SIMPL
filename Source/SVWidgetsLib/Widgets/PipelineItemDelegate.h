@@ -88,6 +88,9 @@ class SVWidgetsLib_EXPORT PipelineItemDelegate : public QStyledItemDelegate
      */
     const PipelineModel* getPipelineModel(const QModelIndex &index) const;
 
+  public:
     PipelineItemDelegate(const PipelineItemDelegate&) = delete; // Copy Constructor Not Implemented
-    void operator=(const PipelineItemDelegate&) = delete;        // Operator '=' Not Implemented
+    PipelineItemDelegate(PipelineItemDelegate&&) = delete;      // Move Constructor Not Implemented
+    PipelineItemDelegate& operator=(const PipelineItemDelegate&) = delete; // Copy Assignment Not Implemented
+    PipelineItemDelegate& operator=(PipelineItemDelegate&&) = delete;      // Move Assignment Not Implemented
 };

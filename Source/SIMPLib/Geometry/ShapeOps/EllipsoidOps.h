@@ -56,9 +56,12 @@ class SIMPLib_EXPORT EllipsoidOps : public ShapeOps
 
   protected:
     EllipsoidOps();
-  private:
+
+  public:
     EllipsoidOps(const EllipsoidOps&) = delete;   // Copy Constructor Not Implemented
-    void operator=(const EllipsoidOps&) = delete; // Move assignment Not Implemented
+    EllipsoidOps(EllipsoidOps&&) = delete;        // Move Constructor Not Implemented
+    EllipsoidOps& operator=(const EllipsoidOps&) = delete; // Copy Assignment Not Implemented
+    EllipsoidOps& operator=(EllipsoidOps&&) = delete;      // Move Assignment Not Implemented
 };
 
 

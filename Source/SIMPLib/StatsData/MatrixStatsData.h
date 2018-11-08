@@ -153,9 +153,11 @@ class SIMPLib_EXPORT MatrixStatsData : public StatsData
   protected:
     MatrixStatsData();
 
-  private:
+  public:
     MatrixStatsData(const MatrixStatsData&) = delete; // Copy Constructor Not Implemented
-    void operator=(const MatrixStatsData&) = delete;  // Move assignment Not Implemented
+    MatrixStatsData(MatrixStatsData&&) = delete;      // Move Constructor Not Implemented
+    MatrixStatsData& operator=(const MatrixStatsData&) = delete; // Copy Assignment Not Implemented
+    MatrixStatsData& operator=(MatrixStatsData&&) = delete;      // Move Assignment Not Implemented
 };
 
 

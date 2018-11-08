@@ -548,6 +548,9 @@ private:
    */
   QPixmap setPixmapColor(QPixmap pixmap, QColor pixmapColor);
 
+public:
   SVPipelineView(const SVPipelineView&) = delete; // Copy Constructor Not Implemented
-  void operator=(const SVPipelineView&) = delete; // Move assignment Not Implemented
+  SVPipelineView(SVPipelineView&&) = delete;      // Move Constructor Not Implemented
+  SVPipelineView& operator=(const SVPipelineView&) = delete; // Copy Assignment Not Implemented
+  SVPipelineView& operator=(SVPipelineView&&) = delete;      // Move Assignment Not Implemented
 };

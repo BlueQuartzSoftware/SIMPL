@@ -109,6 +109,8 @@ private:
 
 public:
   SVUserManualDialog(const SVUserManualDialog&) = delete; // Copy Constructor Not Implemented
-  void operator=(const SVUserManualDialog&) = delete;     // Move assignment Not Implemented
+  SVUserManualDialog(SVUserManualDialog&&) = delete;      // Move Constructor Not Implemented
+  SVUserManualDialog& operator=(const SVUserManualDialog&) = delete; // Copy Assignment Not Implemented
+  SVUserManualDialog& operator=(SVUserManualDialog&&) = delete;      // Move Assignment Not Implemented
 };
 

@@ -132,8 +132,10 @@ public:
      */
   DataContainerCreationFilterParameter();
 
-private:
+public:
   DataContainerCreationFilterParameter(const DataContainerCreationFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const DataContainerCreationFilterParameter&) = delete;                       // Move assignment Not Implemented
+  DataContainerCreationFilterParameter(DataContainerCreationFilterParameter&&) = delete;      // Move Constructor Not Implemented
+  DataContainerCreationFilterParameter& operator=(const DataContainerCreationFilterParameter&) = delete; // Copy Assignment Not Implemented
+  DataContainerCreationFilterParameter& operator=(DataContainerCreationFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

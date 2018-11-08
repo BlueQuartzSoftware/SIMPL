@@ -200,9 +200,11 @@ class SIMPLib_EXPORT PrimaryStatsData : public StatsData
   protected:
     PrimaryStatsData();
 
-  private:
+  public:
     PrimaryStatsData(const PrimaryStatsData&) = delete; // Copy Constructor Not Implemented
-    void operator=(const PrimaryStatsData&) = delete;   // Move assignment Not Implemented
+    PrimaryStatsData(PrimaryStatsData&&) = delete;      // Move Constructor Not Implemented
+    PrimaryStatsData& operator=(const PrimaryStatsData&) = delete; // Copy Assignment Not Implemented
+    PrimaryStatsData& operator=(PrimaryStatsData&&) = delete;      // Move Assignment Not Implemented
 };
 
 

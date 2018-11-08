@@ -137,8 +137,10 @@ class SIMPLib_EXPORT LinkedBooleanFilterParameter : public FilterParameter
        */
     LinkedBooleanFilterParameter();
 
-  private:
+  public:
     LinkedBooleanFilterParameter(const LinkedBooleanFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const LinkedBooleanFilterParameter&) = delete;               // Move assignment Not Implemented
+    LinkedBooleanFilterParameter(LinkedBooleanFilterParameter&&) = delete;      // Move Constructor Not Implemented
+    LinkedBooleanFilterParameter& operator=(const LinkedBooleanFilterParameter&) = delete; // Copy Assignment Not Implemented
+    LinkedBooleanFilterParameter& operator=(LinkedBooleanFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

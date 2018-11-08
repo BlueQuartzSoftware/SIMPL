@@ -61,8 +61,10 @@ class SIMPLib_EXPORT FloorOperator : public UnaryOperator
   protected:
     FloorOperator();
 
-  private:
+  public:
     FloorOperator(const FloorOperator&) = delete;  // Copy Constructor Not Implemented
-    void operator=(const FloorOperator&) = delete; // Move assignment Not Implemented
+    FloorOperator(FloorOperator&&) = delete;       // Move Constructor Not Implemented
+    FloorOperator& operator=(const FloorOperator&) = delete; // Copy Assignment Not Implemented
+    FloorOperator& operator=(FloorOperator&&) = delete;      // Move Assignment Not Implemented
 };
 

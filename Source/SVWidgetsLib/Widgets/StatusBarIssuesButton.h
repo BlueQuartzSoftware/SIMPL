@@ -32,7 +32,10 @@ class SVWidgetsLib_EXPORT StatusBarIssuesButton : public StatusBarButton
     
     int m_BadgeMargin = 4;
     int m_BadgeWidth = 0;
-    
+
+  public:
     StatusBarIssuesButton(const StatusBarIssuesButton&) = delete; // Copy Constructor Not Implemented
-    void operator=(const StatusBarIssuesButton&) = delete;  // Move assignment Not Implemented
+    StatusBarIssuesButton(StatusBarIssuesButton&&) = delete;      // Move Constructor Not Implemented
+    StatusBarIssuesButton& operator=(const StatusBarIssuesButton&) = delete; // Copy Assignment Not Implemented
+    StatusBarIssuesButton& operator=(StatusBarIssuesButton&&) = delete;      // Move Assignment Not Implemented
 };

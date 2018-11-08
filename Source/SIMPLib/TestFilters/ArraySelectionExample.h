@@ -141,7 +141,6 @@ protected:
    */
   void initialize();
 
-private:
 public:
   ArraySelectionExample(const ArraySelectionExample&) = delete; // Copy Constructor Not Implemented
   ArraySelectionExample(ArraySelectionExample&&) = delete;      // Move Constructor Not Implemented

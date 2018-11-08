@@ -111,9 +111,11 @@ public:
 protected:
   ShapeType();
 
-private:
-  ShapeType(const ShapeType&);      // Not Implemented
-  void operator=(const ShapeType&); // Not Implemented
+public:
+  ShapeType(const ShapeType&) = delete;            // Copy Constructor Not Implemented
+  ShapeType(ShapeType&&) = delete;                 // Move Constructor Not Implemented
+  ShapeType& operator=(const ShapeType&) = delete; // Copy Assignment Not Implemented
+  ShapeType& operator=(ShapeType&&) = delete;      // Move Assignment Not Implemented
 };
 
 Q_DECLARE_METATYPE(ShapeType::Type)

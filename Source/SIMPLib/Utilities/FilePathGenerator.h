@@ -74,8 +74,10 @@ public:
 protected:
   FilePathGenerator();
 
-private:
+public:
   FilePathGenerator(const FilePathGenerator&) = delete; // Copy Constructor Not Implemented
-  void operator=(const FilePathGenerator&) = delete;    // Move assignment Not Implemented
+  FilePathGenerator(FilePathGenerator&&) = delete;      // Move Constructor Not Implemented
+  FilePathGenerator& operator=(const FilePathGenerator&) = delete; // Copy Assignment Not Implemented
+  FilePathGenerator& operator=(FilePathGenerator&&) = delete;      // Move Assignment Not Implemented
 };
 

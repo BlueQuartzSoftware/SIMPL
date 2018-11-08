@@ -94,7 +94,10 @@ class SVWidgetsLib_EXPORT PipelineView
      */
     void setupUndoStack();
 
+  public:
     PipelineView(const PipelineView&) = delete;   // Copy Constructor Not Implemented
-    void operator=(const PipelineView&) = delete; // Move assignment Not Implemented
+    PipelineView(PipelineView&&) = delete;        // Move Constructor Not Implemented
+    PipelineView& operator=(const PipelineView&) = delete; // Copy Assignment Not Implemented
+    PipelineView& operator=(PipelineView&&) = delete;      // Move Assignment Not Implemented
 };
 

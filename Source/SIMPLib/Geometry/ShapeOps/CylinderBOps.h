@@ -59,9 +59,12 @@ class SIMPLib_EXPORT CylinderBOps : public ShapeOps
 
   protected:
     CylinderBOps();
-  private:
+
+  public:
     CylinderBOps(const CylinderBOps&) = delete;   // Copy Constructor Not Implemented
-    void operator=(const CylinderBOps&) = delete; // Move assignment Not Implemented
+    CylinderBOps(CylinderBOps&&) = delete;        // Move Constructor Not Implemented
+    CylinderBOps& operator=(const CylinderBOps&) = delete; // Copy Assignment Not Implemented
+    CylinderBOps& operator=(CylinderBOps&&) = delete;      // Move Assignment Not Implemented
 };
 
 

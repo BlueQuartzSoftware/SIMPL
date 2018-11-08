@@ -222,8 +222,11 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
      */
     ComparisonSelectionTableModel* createComparisonModel();
 
+  public:
     ComparisonSelectionWidget(const ComparisonSelectionWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ComparisonSelectionWidget&) = delete;            // Move assignment Not Implemented
+    ComparisonSelectionWidget(ComparisonSelectionWidget&&) = delete;      // Move Constructor Not Implemented
+    ComparisonSelectionWidget& operator=(const ComparisonSelectionWidget&) = delete; // Copy Assignment Not Implemented
+    ComparisonSelectionWidget& operator=(ComparisonSelectionWidget&&) = delete;      // Move Assignment Not Implemented
 };
 
 

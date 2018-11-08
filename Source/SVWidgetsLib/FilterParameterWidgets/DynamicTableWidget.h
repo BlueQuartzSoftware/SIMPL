@@ -113,7 +113,10 @@ class SVWidgetsLib_EXPORT DynamicTableWidget : public FilterParameterWidget, pri
     void renumberDynamicHeaders();
     void updateDynamicButtons();
 
+  public:
     DynamicTableWidget(const DynamicTableWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DynamicTableWidget&) = delete;     // Move assignment Not Implemented
+    DynamicTableWidget(DynamicTableWidget&&) = delete;      // Move Constructor Not Implemented
+    DynamicTableWidget& operator=(const DynamicTableWidget&) = delete; // Copy Assignment Not Implemented
+    DynamicTableWidget& operator=(DynamicTableWidget&&) = delete;      // Move Assignment Not Implemented
 };
 

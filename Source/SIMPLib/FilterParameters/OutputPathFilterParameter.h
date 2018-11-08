@@ -140,8 +140,10 @@ public:
        */
   OutputPathFilterParameter();
 
-private:
+public:
   OutputPathFilterParameter(const OutputPathFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const OutputPathFilterParameter&) = delete;            // Move assignment Not Implemented
+  OutputPathFilterParameter(OutputPathFilterParameter&&) = delete;      // Move Constructor Not Implemented
+  OutputPathFilterParameter& operator=(const OutputPathFilterParameter&) = delete; // Copy Assignment Not Implemented
+  OutputPathFilterParameter& operator=(OutputPathFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

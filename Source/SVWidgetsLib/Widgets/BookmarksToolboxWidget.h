@@ -172,7 +172,10 @@ class SVWidgetsLib_EXPORT BookmarksToolboxWidget : public QWidget, private Ui::B
      */
     bool locateBookmark();
 
+  public:
     BookmarksToolboxWidget(const BookmarksToolboxWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const BookmarksToolboxWidget&) = delete;         // Move assignment Not Implemented
+    BookmarksToolboxWidget(BookmarksToolboxWidget&&) = delete;      // Move Constructor Not Implemented
+    BookmarksToolboxWidget& operator=(const BookmarksToolboxWidget&) = delete; // Copy Assignment Not Implemented
+    BookmarksToolboxWidget& operator=(BookmarksToolboxWidget&&) = delete;      // Move Assignment Not Implemented
 };
 

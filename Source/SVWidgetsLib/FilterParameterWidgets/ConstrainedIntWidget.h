@@ -86,8 +86,11 @@ class SVWidgetsLib_EXPORT ConstrainedIntWidget : public FilterParameterWidget, p
   private:
     ConstrainedIntFilterParameter* m_FilterParameter;
 
+  public:
     ConstrainedIntWidget(const ConstrainedIntWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ConstrainedIntWidget&) = delete;       // Move assignment Not Implemented
+    ConstrainedIntWidget(ConstrainedIntWidget&&) = delete;      // Move Constructor Not Implemented
+    ConstrainedIntWidget& operator=(const ConstrainedIntWidget&) = delete; // Copy Assignment Not Implemented
+    ConstrainedIntWidget& operator=(ConstrainedIntWidget&&) = delete;      // Move Assignment Not Implemented
 };
 
 

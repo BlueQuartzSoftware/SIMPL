@@ -296,6 +296,8 @@ class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
   
   public:
     DataFormatPage(const DataFormatPage&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DataFormatPage&) = delete; // Move assignment Not Implemented
+    DataFormatPage(DataFormatPage&&) = delete;      // Move Constructor Not Implemented
+    DataFormatPage& operator=(const DataFormatPage&) = delete; // Copy Assignment Not Implemented
+    DataFormatPage& operator=(DataFormatPage&&) = delete;      // Move Assignment Not Implemented
 };
 

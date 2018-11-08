@@ -144,7 +144,6 @@ protected:
    */
   void initialize();
 
-private:
 public:
   DynamicTableExample(const DynamicTableExample&) = delete; // Copy Constructor Not Implemented
   DynamicTableExample(DynamicTableExample&&) = delete;      // Move Constructor Not Implemented

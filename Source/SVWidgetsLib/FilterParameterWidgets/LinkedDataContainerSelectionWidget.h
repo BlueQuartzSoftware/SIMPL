@@ -124,8 +124,11 @@ class SVWidgetsLib_EXPORT LinkedDataContainerSelectionWidget : public FilterPara
     void setSelectedPath(QString path);
     void setSelectedPath(DataArrayPath dcPath);
 
+  public:
     LinkedDataContainerSelectionWidget(const LinkedDataContainerSelectionWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const LinkedDataContainerSelectionWidget&) = delete;                     // Move assignment Not Implemented
+    LinkedDataContainerSelectionWidget(LinkedDataContainerSelectionWidget&&) = delete;      // Move Constructor Not Implemented
+    LinkedDataContainerSelectionWidget& operator=(const LinkedDataContainerSelectionWidget&) = delete; // Copy Assignment Not Implemented
+    LinkedDataContainerSelectionWidget& operator=(LinkedDataContainerSelectionWidget&&) = delete;      // Move Assignment Not Implemented
 };
 
 

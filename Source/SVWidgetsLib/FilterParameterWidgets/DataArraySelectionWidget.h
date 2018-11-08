@@ -121,8 +121,11 @@ class SVWidgetsLib_EXPORT DataArraySelectionWidget : public FilterParameterWidge
 
     void setSelectedPath(DataArrayPath path);
 
+  public:
     DataArraySelectionWidget(const DataArraySelectionWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DataArraySelectionWidget&) = delete;           // Move assignment Not Implemented
+    DataArraySelectionWidget(DataArraySelectionWidget&&) = delete;      // Move Constructor Not Implemented
+    DataArraySelectionWidget& operator=(const DataArraySelectionWidget&) = delete; // Copy Assignment Not Implemented
+    DataArraySelectionWidget& operator=(DataArraySelectionWidget&&) = delete;      // Move Assignment Not Implemented
 };
 
 

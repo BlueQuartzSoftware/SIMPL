@@ -97,8 +97,11 @@ class SVWidgetsLib_EXPORT LinkedBooleanWidget : public FilterParameterWidget, pr
   private:
     LinkedBooleanFilterParameter* m_FilterParameter;
 
+  public:
     LinkedBooleanWidget(const LinkedBooleanWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const LinkedBooleanWidget&) = delete;      // Move assignment Not Implemented
+    LinkedBooleanWidget(LinkedBooleanWidget&&) = delete;      // Move Constructor Not Implemented
+    LinkedBooleanWidget& operator=(const LinkedBooleanWidget&) = delete; // Copy Assignment Not Implemented
+    LinkedBooleanWidget& operator=(LinkedBooleanWidget&&) = delete;      // Move Assignment Not Implemented
 };
 
 

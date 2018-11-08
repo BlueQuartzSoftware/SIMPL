@@ -80,10 +80,10 @@ public slots:
   void updateWidgetStyle();
 
 
-protected:
-
-private:
+public:
   QtSDisclosableGroupBox(const QtSDisclosableGroupBox&) = delete; // Copy Constructor Not Implemented
-  void operator=(const QtSDisclosableGroupBox&) = delete;         // Move assignment Not Implemented
+  QtSDisclosableGroupBox(QtSDisclosableGroupBox&&) = delete;      // Move Constructor Not Implemented
+  QtSDisclosableGroupBox& operator=(const QtSDisclosableGroupBox&) = delete; // Copy Assignment Not Implemented
+  QtSDisclosableGroupBox& operator=(QtSDisclosableGroupBox&&) = delete;      // Move Assignment Not Implemented
 };
 

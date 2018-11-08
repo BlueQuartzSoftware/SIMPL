@@ -49,9 +49,10 @@ class SVWidgetsLib_EXPORT QtSApplicationFileInfo
 
     static QString GenerateFileSystemPath(QString pathEnding);
 
-  private:
-
-    QtSApplicationFileInfo(const QtSApplicationFileInfo&);    // Copy Constructor Not Implemented
-    void operator=(const QtSApplicationFileInfo&);            // Move assignment Not Implemented
+  public:
+    QtSApplicationFileInfo(const QtSApplicationFileInfo&) = delete;            // Copy Constructor Not Implemented
+    QtSApplicationFileInfo(QtSApplicationFileInfo&&) = delete;                 // Move Constructor Not Implemented
+    QtSApplicationFileInfo& operator=(const QtSApplicationFileInfo&) = delete; // Copy Assignment Not Implemented
+    QtSApplicationFileInfo& operator=(QtSApplicationFileInfo&&) = delete;      // Move Assignment Not Implemented
 };
 

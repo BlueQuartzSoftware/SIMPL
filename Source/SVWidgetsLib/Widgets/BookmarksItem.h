@@ -94,7 +94,10 @@ class SVWidgetsLib_EXPORT BookmarksItem
     QList<BookmarksItem*>               m_ChildItems;
     BookmarksItem*                      m_ParentItem;
 
-    BookmarksItem(const BookmarksItem&);    // Copy Constructor Not Implemented
-    void operator=(const BookmarksItem&);   // Move assignment Not Implemented
+  public:
+    BookmarksItem(const BookmarksItem&) = delete;            // Copy Constructor Not Implemented
+    BookmarksItem(BookmarksItem&&) = delete;                 // Move Constructor Not Implemented
+    BookmarksItem& operator=(const BookmarksItem&) = delete; // Copy Assignment Not Implemented
+    BookmarksItem& operator=(BookmarksItem&&) = delete;      // Move Assignment Not Implemented
 };
 

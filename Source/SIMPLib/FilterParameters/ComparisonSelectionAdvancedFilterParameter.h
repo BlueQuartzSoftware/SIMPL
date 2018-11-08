@@ -152,8 +152,10 @@ class SIMPLib_EXPORT ComparisonSelectionAdvancedFilterParameter : public FilterP
      */
     ComparisonSelectionAdvancedFilterParameter();
 
-  private:
+  public:
     ComparisonSelectionAdvancedFilterParameter(const ComparisonSelectionAdvancedFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ComparisonSelectionAdvancedFilterParameter&) = delete;                             // Move assignment Not Implemented
+    ComparisonSelectionAdvancedFilterParameter(ComparisonSelectionAdvancedFilterParameter&&) = delete;      // Move Constructor Not Implemented
+    ComparisonSelectionAdvancedFilterParameter& operator=(const ComparisonSelectionAdvancedFilterParameter&) = delete; // Copy Assignment Not Implemented
+    ComparisonSelectionAdvancedFilterParameter& operator=(ComparisonSelectionAdvancedFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

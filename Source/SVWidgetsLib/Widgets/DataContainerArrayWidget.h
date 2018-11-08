@@ -61,7 +61,10 @@ class SVWidgetsLib_EXPORT DataContainerArrayWidget : public QWidget, private Ui:
   private:
     AbstractFilter*     m_Filter;
 
+  public:
     DataContainerArrayWidget(const DataContainerArrayWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DataContainerArrayWidget&) = delete;           // Move assignment Not Implemented
+    DataContainerArrayWidget(DataContainerArrayWidget&&) = delete;      // Move Constructor Not Implemented
+    DataContainerArrayWidget& operator=(const DataContainerArrayWidget&) = delete; // Copy Assignment Not Implemented
+    DataContainerArrayWidget& operator=(DataContainerArrayWidget&&) = delete;      // Move Assignment Not Implemented
 };
 

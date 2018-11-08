@@ -140,8 +140,11 @@ class SVWidgetsLib_EXPORT DataContainerArrayProxyWidget : public FilterParameter
 
     void toggleStrikeOutFont(QListWidgetItem* item, Qt::CheckState state);
 
+  public:
     DataContainerArrayProxyWidget(const DataContainerArrayProxyWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DataContainerArrayProxyWidget&) = delete;                // Move assignment Not Implemented
+    DataContainerArrayProxyWidget(DataContainerArrayProxyWidget&&) = delete;      // Move Constructor Not Implemented
+    DataContainerArrayProxyWidget& operator=(const DataContainerArrayProxyWidget&) = delete; // Copy Assignment Not Implemented
+    DataContainerArrayProxyWidget& operator=(DataContainerArrayProxyWidget&&) = delete;      // Move Assignment Not Implemented
 };
 
 

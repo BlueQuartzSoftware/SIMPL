@@ -85,8 +85,11 @@ class SVWidgetsLib_EXPORT ComparisonSelectionItemDelegate : public QStyledItemDe
     QStringList m_FeatureList;
     int m_NumberOfPhases;
 
+  public:
     ComparisonSelectionItemDelegate(const ComparisonSelectionItemDelegate&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ComparisonSelectionItemDelegate&) = delete;                  // Move assignment Not Implemented
+    ComparisonSelectionItemDelegate(ComparisonSelectionItemDelegate&&) = delete;      // Move Constructor Not Implemented
+    ComparisonSelectionItemDelegate& operator=(const ComparisonSelectionItemDelegate&) = delete; // Copy Assignment Not Implemented
+    ComparisonSelectionItemDelegate& operator=(ComparisonSelectionItemDelegate&&) = delete;      // Move Assignment Not Implemented
 };
 
 

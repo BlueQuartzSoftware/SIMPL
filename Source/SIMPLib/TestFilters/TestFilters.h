@@ -100,7 +100,7 @@ protected:
   void initialize();
 
 private:
-  Filt0(const Filt0&);          // Copy Constructor Not Implemented
+  Filt0(const Filt0&) = delete;          // Copy Constructor Not Implemented
   void operator=(const Filt0&) = delete; // Move assignment Not Implemented
 };
 
@@ -192,7 +192,7 @@ protected:
   void initialize();
 
 private:
-  Filt1(const Filt1&);          // Copy Constructor Not Implemented
+  Filt1(const Filt1&) = delete;          // Copy Constructor Not Implemented
   void operator=(const Filt1&) = delete; // Move assignment Not Implemented
 };
 

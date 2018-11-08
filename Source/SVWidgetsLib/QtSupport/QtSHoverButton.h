@@ -50,8 +50,10 @@ class SVWidgetsLib_EXPORT QtSHoverButton : public QPushButton
   protected:
     bool event(QEvent* event) override;
 
-  private:
+  public:
     QtSHoverButton(const QtSHoverButton&) = delete; // Copy Constructor Not Implemented
-    void operator=(const QtSHoverButton&) = delete; // Move assignment Not Implemented
+    QtSHoverButton(QtSHoverButton&&) = delete;      // Move Constructor Not Implemented
+    QtSHoverButton& operator=(const QtSHoverButton&) = delete; // Copy Assignment Not Implemented
+    QtSHoverButton& operator=(QtSHoverButton&&) = delete;      // Move Assignment Not Implemented
 };
 
