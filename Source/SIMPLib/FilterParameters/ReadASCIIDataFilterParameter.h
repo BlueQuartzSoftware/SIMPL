@@ -62,8 +62,10 @@ public:
   protected:
     ReadASCIIDataFilterParameter();
 
-  private:
+  public:
     ReadASCIIDataFilterParameter(const ReadASCIIDataFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ReadASCIIDataFilterParameter&) = delete;               // Move assignment Not Implemented
+    ReadASCIIDataFilterParameter(ReadASCIIDataFilterParameter&&) = delete;      // Move Constructor Not Implemented
+    ReadASCIIDataFilterParameter& operator=(const ReadASCIIDataFilterParameter&) = delete; // Copy Assignment Not Implemented
+    ReadASCIIDataFilterParameter& operator=(ReadASCIIDataFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

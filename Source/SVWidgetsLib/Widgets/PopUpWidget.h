@@ -95,7 +95,10 @@ class SVWidgetsLib_EXPORT PopUpWidget : public QWidget, private Ui::PopUpWidget
     ArrowOrientation                    m_ArrowOrientation;
     QWidget*                            m_Widget = nullptr;
 
-    PopUpWidget(const PopUpWidget&); // Copy Constructor Not Implemented
-    void operator=(const PopUpWidget&); // Move assignment Not Implemented
+  public:
+    PopUpWidget(const PopUpWidget&) = delete;            // Copy Constructor Not Implemented
+    PopUpWidget(PopUpWidget&&) = delete;                 // Move Constructor Not Implemented
+    PopUpWidget& operator=(const PopUpWidget&) = delete; // Copy Assignment Not Implemented
+    PopUpWidget& operator=(PopUpWidget&&) = delete;      // Move Assignment Not Implemented
 };
 

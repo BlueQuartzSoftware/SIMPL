@@ -72,9 +72,11 @@ class SIMPLib_EXPORT H5MatrixStatsDataDelegate : public H5StatsDataDelegate
     int writePhaseFraction(MatrixStatsData* data, hid_t groupId);
     int readPhaseFraction(MatrixStatsData* data, hid_t groupId);
 
-  private:
+  public:
     H5MatrixStatsDataDelegate(const H5MatrixStatsDataDelegate&) = delete; // Copy Constructor Not Implemented
-    void operator=(const H5MatrixStatsDataDelegate&) = delete;            // Move assignment Not Implemented
+    H5MatrixStatsDataDelegate(H5MatrixStatsDataDelegate&&) = delete;      // Move Constructor Not Implemented
+    H5MatrixStatsDataDelegate& operator=(const H5MatrixStatsDataDelegate&) = delete; // Copy Assignment Not Implemented
+    H5MatrixStatsDataDelegate& operator=(H5MatrixStatsDataDelegate&&) = delete;      // Move Assignment Not Implemented
 };
 
 

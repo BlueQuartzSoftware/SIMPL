@@ -216,6 +216,6 @@ class  SIMPLib_EXPORT MultiThresholdObjects2 : public AbstractFilter
     MultiThresholdObjects2(const MultiThresholdObjects2&) = delete; // Copy Constructor Not Implemented
     MultiThresholdObjects2(MultiThresholdObjects2&&) = delete;      // Move Constructor Not Implemented
     MultiThresholdObjects2& operator=(const MultiThresholdObjects2&) = delete; // Copy Assignment Not Implemented
-    MultiThresholdObjects2& operator=(MultiThresholdObjects2&&) = delete;      // Move Assignment
+    MultiThresholdObjects2& operator=(MultiThresholdObjects2&&) = delete;      // Move Assignment Not Implemented
 };
 

@@ -54,8 +54,10 @@ class SVWidgetsLib_EXPORT QtSSplitter : public QSplitter
 
     QSplitterHandle* createHandle() override;
 
-  private:
+  public:
     QtSSplitter(const QtSSplitter&) = delete;    // Copy Constructor Not Implemented
-    void operator=(const QtSSplitter&) = delete; // Move assignment Not Implemented
+    QtSSplitter(QtSSplitter&&) = delete;         // Move Constructor Not Implemented
+    QtSSplitter& operator=(const QtSSplitter&) = delete; // Copy Assignment Not Implemented
+    QtSSplitter& operator=(QtSSplitter&&) = delete;      // Move Assignment Not Implemented
 };
 

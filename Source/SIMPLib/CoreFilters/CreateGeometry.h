@@ -303,5 +303,5 @@ public:
   CreateGeometry(const CreateGeometry&) = delete;            // Copy Constructor Not Implemented
   CreateGeometry(CreateGeometry&&) = delete;                 // Move Constructor Not Implemented
   CreateGeometry& operator=(const CreateGeometry&) = delete; // Copy Assignment Not Implemented
-  CreateGeometry& operator=(CreateGeometry&&) = delete;      // Move Assignment
+  CreateGeometry& operator=(CreateGeometry&&) = delete;      // Move Assignment Not Implemented
 };

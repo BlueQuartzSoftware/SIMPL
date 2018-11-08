@@ -80,9 +80,12 @@ class IFilter
     
   private:
     std::vector<IFilterParameter::Pointer> m_FilterParameters;
-    
+
+  public:
     IFilter(const IFilter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const IFilter&) = delete; // Move assignment Not Implemented
+    IFilter(IFilter&&) = delete;      // Move Constructor Not Implemented
+    IFilter& operator=(const IFilter&) = delete; // Copy Assignment Not Implemented
+    IFilter& operator=(IFilter&&) = delete;      // Move Assignment Not Implemented
 };
 
 

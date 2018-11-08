@@ -165,7 +165,10 @@ class SVWidgetsLib_EXPORT StatusBarWidget : public QFrame, private Ui::StatusBar
      */
     QAction* addButtonVisibilityAction(StatusBarButton* button);
 
+  public:
     StatusBarWidget(const StatusBarWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const StatusBarWidget&) = delete;  // Move assignment Not Implemented
+    StatusBarWidget(StatusBarWidget&&) = delete;      // Move Constructor Not Implemented
+    StatusBarWidget& operator=(const StatusBarWidget&) = delete; // Copy Assignment Not Implemented
+    StatusBarWidget& operator=(StatusBarWidget&&) = delete;      // Move Assignment Not Implemented
 };
 

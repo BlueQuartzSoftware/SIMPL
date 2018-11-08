@@ -156,9 +156,11 @@ public:
 protected:
   PhaseType();
 
-private:
-  PhaseType(const PhaseType&);      // Not Implemented
-  void operator=(const PhaseType&); // Not Implemented
+public:
+  PhaseType(const PhaseType&) = delete;            // Copy Constructor Not Implemented
+  PhaseType(PhaseType&&) = delete;                 // Move Constructor Not Implemented
+  PhaseType& operator=(const PhaseType&) = delete; // Copy Assignment Not Implemented
+  PhaseType& operator=(PhaseType&&) = delete;      // Move Assignment Not Implemented
 };
 
 Q_DECLARE_METATYPE(PhaseType::Type)

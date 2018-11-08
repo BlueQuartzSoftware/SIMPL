@@ -260,9 +260,9 @@ public:
     //  0.0f <= y <= 10.0f
     //  0.0f <= z <= 10.0f
 
-    std::vector<std::vector<float>> vertices = {{1.0, 1.0, 0.0}, {3.0, 1.0, 0.0}, {3.1, 1.0, -1.0}, {-1.0, 1.0, 2.0}};
+    std::vector<std::vector<float>> vertices = {{1.0f, 1.0f, 0.0f}, {3.0f, 1.0f, 0.0f}, {3.1f, 1.0f, -1.0f}, {-1.0f, 1.0f, 2.0f}};
 
-    std::vector<std::vector<float>> croppedVertices = {{1.0, 1.0, 0.0}, {3.0, 1.0, 0.0}};
+    std::vector<std::vector<float>> croppedVertices = {{1.0f, 1.0f, 0.0f}, {3.0f, 1.0f, 0.0f}};
 
     testCase(vertices, croppedVertices, 0.0f, 0.0f, 0.0f, 3.0f, 10.0f, 10.0f);
 
@@ -270,9 +270,9 @@ public:
     //  0.0f <= y <= 10.0f
     //  0.0f <= z <= 10.0f
 
-    vertices = {{1.0, 1.0, 0.0}, {3.0, 1.0, 0.0}, {3.1, 1.0, -1.0}, {-1.0, 1.0, 2.0}};
+    vertices = {{1.0f, 1.0f, 0.0f}, {3.0f, 1.0f, 0.0f}, {3.1f, 1.0f, -1.0f}, {-1.0f, 1.0f, 2.0f}};
 
-    croppedVertices = {{1.0, 1.0, 0.0}, {-1.0, 1.0, 2.0}};
+    croppedVertices = {{1.0f, 1.0f, 0.0f}, {-1.0f, 1.0f, 2.0f}};
 
     testCase(vertices, croppedVertices, -1.0f, 0.0f, 0.0f, 2.0f, 10.0f, 10.0f);
 
@@ -280,9 +280,9 @@ public:
     //  2.3f <= y <= 10.0f
     // -4.4f <= z <=  3.2f
 
-    vertices = {{-0.5, 7.91, 1.15}, {0.0, 2.3, -5.5}, {0.3, 11.0, 3.2}, {1.0, 9.99, -4.399}, {0.0214f, 2.300001f, 3.19999f}};
+    vertices = {{-0.5f, 7.91f, 1.15f}, {0.0f, 2.3f, -5.5f}, {0.3f, 11.0f, 3.2f}, {1.0f, 9.99f, -4.399f}, {0.0214f, 2.300001f, 3.19999f}};
 
-    croppedVertices = {{-0.5, 7.91, 1.15}, {1.0, 9.99, -4.399}, {0.0214f, 2.300001f, 3.19999f}};
+    croppedVertices = {{-0.5f, 7.91f, 1.15f}, {1.0f, 9.99f, -4.399f}, {0.0214f, 2.300001f, 3.19999f}};
 
     testCase(vertices, croppedVertices, -1.0f, 2.3f, -4.4f, 2.0f, 10.0f, 3.2f);
   }

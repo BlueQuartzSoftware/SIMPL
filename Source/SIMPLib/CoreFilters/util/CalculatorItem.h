@@ -107,7 +107,10 @@ class SIMPLib_EXPORT CalculatorItem
   private:
     QString m_InfixToken = "";
 
+  public:
     CalculatorItem(const CalculatorItem&) = delete; // Copy Constructor Not Implemented
-    void operator=(const CalculatorItem&) = delete; // Move assignment Not Implemented
+    CalculatorItem(CalculatorItem&&) = delete;      // Move Constructor Not Implemented
+    CalculatorItem& operator=(const CalculatorItem&) = delete; // Copy Assignment Not Implemented
+    CalculatorItem& operator=(CalculatorItem&&) = delete;      // Move Assignment Not Implemented
 };
 

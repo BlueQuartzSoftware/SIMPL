@@ -124,7 +124,10 @@ private:
   double comparisonValue;
   BoolArrayType* m_Output;
 
+public:
   ThresholdFilterHelper(const ThresholdFilterHelper&) = delete; // Copy Constructor Not Implemented
-  void operator=(const ThresholdFilterHelper&);                 // Move assignment Not Implemented
+  ThresholdFilterHelper(ThresholdFilterHelper&&) = delete;      // Move Constructor Not Implemented
+  ThresholdFilterHelper& operator=(const ThresholdFilterHelper&) = delete; // Copy Assignment Not Implemented
+  ThresholdFilterHelper& operator=(ThresholdFilterHelper&&) = delete;      // Move Assignment Not Implemented
 };
 

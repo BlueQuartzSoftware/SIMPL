@@ -74,6 +74,9 @@ class SIMPLib_EXPORT SIMPLDataPathValidator : public QObject
 
     QString m_SIMPLDataDirectory;
 
-    SIMPLDataPathValidator(const SIMPLDataPathValidator&);    // Copy Constructor Not Implemented
-    void operator=(const SIMPLDataPathValidator&);    // Move assignment Not Implemented
+  public:
+    SIMPLDataPathValidator(const SIMPLDataPathValidator&) = delete;            // Copy Constructor Not Implemented
+    SIMPLDataPathValidator(SIMPLDataPathValidator&&) = delete;                 // Move Constructor Not Implemented
+    SIMPLDataPathValidator& operator=(const SIMPLDataPathValidator&) = delete; // Copy Assignment Not Implemented
+    SIMPLDataPathValidator& operator=(SIMPLDataPathValidator&&) = delete;      // Move Assignment Not Implemented
 };

@@ -282,8 +282,11 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
 
     friend class FindRectGridDerivativesImpl;
 
+  public:
     RectGridGeom(const RectGridGeom&) = delete;   // Copy Constructor Not Implemented
-    void operator=(const RectGridGeom&) = delete; // Move assignment Not Implemented
+    RectGridGeom(RectGridGeom&&) = delete;        // Move Constructor Not Implemented
+    RectGridGeom& operator=(const RectGridGeom&) = delete; // Copy Assignment Not Implemented
+    RectGridGeom& operator=(RectGridGeom&&) = delete;      // Move Assignment Not Implemented
 };
 
 

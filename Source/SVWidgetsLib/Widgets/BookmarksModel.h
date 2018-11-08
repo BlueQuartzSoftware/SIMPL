@@ -205,7 +205,10 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
      */
     void loadModel();
 
-    BookmarksModel(const BookmarksModel&);    // Copy Constructor Not Implemented
-    void operator=(const BookmarksModel&);    // Move assignment Not Implemented
+  public:
+    BookmarksModel(const BookmarksModel&) = delete;            // Copy Constructor Not Implemented
+    BookmarksModel(BookmarksModel&&) = delete;                 // Move Constructor Not Implemented
+    BookmarksModel& operator=(const BookmarksModel&) = delete; // Copy Assignment Not Implemented
+    BookmarksModel& operator=(BookmarksModel&&) = delete;      // Move Assignment Not Implemented
 };
 

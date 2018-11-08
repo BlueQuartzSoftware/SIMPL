@@ -138,8 +138,10 @@ public:
        */
   InputPathFilterParameter();
 
-private:
+public:
   InputPathFilterParameter(const InputPathFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const InputPathFilterParameter&) = delete;           // Move assignment Not Implemented
+  InputPathFilterParameter(InputPathFilterParameter&&) = delete;      // Move Constructor Not Implemented
+  InputPathFilterParameter& operator=(const InputPathFilterParameter&) = delete; // Copy Assignment Not Implemented
+  InputPathFilterParameter& operator=(InputPathFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

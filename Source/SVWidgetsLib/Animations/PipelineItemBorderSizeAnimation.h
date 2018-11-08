@@ -53,6 +53,9 @@ class SVWidgetsLib_EXPORT PipelineItemBorderSizeAnimation : public QVariantAnima
     QPersistentModelIndex m_Index;
     PipelineModel* m_PipelineModel;
 
+  public:
     PipelineItemBorderSizeAnimation(const PipelineItemBorderSizeAnimation&) = delete; // Copy Constructor Not Implemented
-    void operator=(const PipelineItemBorderSizeAnimation&) = delete;        // Operator '=' Not Implemented
+    PipelineItemBorderSizeAnimation(PipelineItemBorderSizeAnimation&&) = delete;      // Move Constructor Not Implemented
+    PipelineItemBorderSizeAnimation& operator=(const PipelineItemBorderSizeAnimation&) = delete; // Copy Assignment Not Implemented
+    PipelineItemBorderSizeAnimation& operator=(PipelineItemBorderSizeAnimation&&) = delete;      // Move Assignment Not Implemented
 };

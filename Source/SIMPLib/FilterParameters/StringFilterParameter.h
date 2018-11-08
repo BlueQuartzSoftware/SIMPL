@@ -133,9 +133,11 @@ class SIMPLib_EXPORT StringFilterParameter : public FilterParameter
        */
       StringFilterParameter();
 
-  private:
-    StringFilterParameter(const StringFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const StringFilterParameter&) = delete;        // Move assignment Not Implemented
+    public:
+      StringFilterParameter(const StringFilterParameter&) = delete;            // Copy Constructor Not Implemented
+      StringFilterParameter(StringFilterParameter&&) = delete;                 // Move Constructor Not Implemented
+      StringFilterParameter& operator=(const StringFilterParameter&) = delete; // Copy Assignment Not Implemented
+      StringFilterParameter& operator=(StringFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 
 

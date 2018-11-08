@@ -48,6 +48,7 @@
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QVBoxLayout>
 
+#include "SIMPLib/Common/Observer.h"
 #include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
@@ -73,7 +74,7 @@ class QSignalMapper;
 /*
  *
  */
-class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView
+class SVWidgetsLib_EXPORT SVPipelineView : public QListView, public PipelineView, public IObserver
 {
   Q_OBJECT
 
@@ -341,6 +342,12 @@ public slots:
    */
   void toStoppedState();
 
+  /**
+   * @brief processPipelineMessage
+   * @param pm
+   */
+  void processPipelineMessage(const PipelineMessage& pm) override;
+
 signals:
   void displayIssuesTriggered();
   void clearIssuesTriggered();
@@ -584,6 +591,9 @@ private:
    */
   QPixmap setPixmapColor(QPixmap pixmap, QColor pixmapColor);
 
+public:
   SVPipelineView(const SVPipelineView&) = delete; // Copy Constructor Not Implemented
-  void operator=(const SVPipelineView&) = delete; // Move assignment Not Implemented
+  SVPipelineView(SVPipelineView&&) = delete;      // Move Constructor Not Implemented
+  SVPipelineView& operator=(const SVPipelineView&) = delete; // Copy Assignment Not Implemented
+  SVPipelineView& operator=(SVPipelineView&&) = delete;      // Move Assignment Not Implemented
 };

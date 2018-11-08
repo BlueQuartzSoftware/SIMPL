@@ -474,7 +474,7 @@ const QString WriteASCIIData::getFilterVersion() const
 // -----------------------------------------------------------------------------
 const QString WriteASCIIData::getGroupName() const
 {
-  return SIMPL::FilterGroups::CoreFilters;
+  return SIMPL::FilterGroups::IOFilters;
 }
 
 // -----------------------------------------------------------------------------

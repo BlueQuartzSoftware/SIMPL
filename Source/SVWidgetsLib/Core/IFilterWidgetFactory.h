@@ -74,9 +74,11 @@ class SVWidgetsLib_EXPORT IFilterWidgetFactory
   protected:
     IFilterWidgetFactory();
 
-  private:
+  public:
     IFilterWidgetFactory(const IFilterWidgetFactory&) = delete; // Copy Constructor Not Implemented
-    void operator=(const IFilterWidgetFactory&) = delete;       // Move assignment Not Implemented
+    IFilterWidgetFactory(IFilterWidgetFactory&&) = delete;      // Move Constructor Not Implemented
+    IFilterWidgetFactory& operator=(const IFilterWidgetFactory&) = delete; // Copy Assignment Not Implemented
+    IFilterWidgetFactory& operator=(IFilterWidgetFactory&&) = delete;      // Move Assignment Not Implemented
 };
 
 

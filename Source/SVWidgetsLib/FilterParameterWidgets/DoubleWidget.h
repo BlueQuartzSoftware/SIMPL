@@ -86,8 +86,11 @@ class SVWidgetsLib_EXPORT DoubleWidget : public FilterParameterWidget, private U
   private:
     DoubleFilterParameter* m_FilterParameter;
 
+  public:
     DoubleWidget(const DoubleWidget&) = delete;   // Copy Constructor Not Implemented
-    void operator=(const DoubleWidget&) = delete; // Move assignment Not Implemented
+    DoubleWidget(DoubleWidget&&) = delete;        // Move Constructor Not Implemented
+    DoubleWidget& operator=(const DoubleWidget&) = delete; // Copy Assignment Not Implemented
+    DoubleWidget& operator=(DoubleWidget&&) = delete;      // Move Assignment Not Implemented
 };
 
 

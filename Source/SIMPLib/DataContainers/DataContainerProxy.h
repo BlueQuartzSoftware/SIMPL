@@ -93,7 +93,7 @@ class SIMPLib_EXPORT DataContainerProxy
     ~DataContainerProxy() = default;
 
     DataContainerProxy(DataContainerProxy&&) = default;      // Move Constructor Not Implemented
-    DataContainerProxy& operator=(DataContainerProxy&&) = delete;      // Move Assignment
+    DataContainerProxy& operator=(DataContainerProxy&&) = delete;      // Move Assignment Not Implemented
     
 
     /**

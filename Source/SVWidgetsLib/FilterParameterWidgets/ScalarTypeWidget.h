@@ -85,8 +85,11 @@ class SVWidgetsLib_EXPORT ScalarTypeWidget : public FilterParameterWidget, priva
   private:
     ScalarTypeFilterParameter* m_FilterParameter;
 
+  public:
     ScalarTypeWidget(const ScalarTypeWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ScalarTypeWidget&) = delete;   // Move assignment Not Implemented
+    ScalarTypeWidget(ScalarTypeWidget&&) = delete;      // Move Constructor Not Implemented
+    ScalarTypeWidget& operator=(const ScalarTypeWidget&) = delete; // Copy Assignment Not Implemented
+    ScalarTypeWidget& operator=(ScalarTypeWidget&&) = delete;      // Move Assignment Not Implemented
 };
 
 

@@ -143,8 +143,10 @@ protected:
   */
   PhaseTypeSelectionFilterParameter();
 
-private:
+public:
   PhaseTypeSelectionFilterParameter(const PhaseTypeSelectionFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const PhaseTypeSelectionFilterParameter&);                             // Move assignment Not Implemented
+  PhaseTypeSelectionFilterParameter(PhaseTypeSelectionFilterParameter&&) = delete;      // Move Constructor Not Implemented
+  PhaseTypeSelectionFilterParameter& operator=(const PhaseTypeSelectionFilterParameter&) = delete; // Copy Assignment Not Implemented
+  PhaseTypeSelectionFilterParameter& operator=(PhaseTypeSelectionFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

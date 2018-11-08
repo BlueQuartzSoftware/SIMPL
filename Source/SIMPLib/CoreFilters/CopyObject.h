@@ -174,9 +174,10 @@ protected:
    */
   void initialize();
 
-private:
-  CopyObject(const CopyObject&);                     // Copy Constructor Not Implemented
+public:
+  CopyObject(const CopyObject&) = delete;            // Copy Constructor Not Implemented
+  CopyObject(CopyObject&&) = delete;                 // Move Constructor Not Implemented
   CopyObject& operator=(const CopyObject&) = delete; // Copy Assignment Not Implemented
-  CopyObject& operator=(CopyObject&&) = delete;      // Move Assignment
+  CopyObject& operator=(CopyObject&&) = delete;      // Move Assignment Not Implemented
 };
 

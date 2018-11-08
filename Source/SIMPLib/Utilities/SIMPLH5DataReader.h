@@ -124,8 +124,11 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
      */
     bool readDataContainerBundles(hid_t fileId, DataContainerArray::Pointer dca);
 
+  public:
     SIMPLH5DataReader(const SIMPLH5DataReader&) = delete; // Copy Constructor Not Implemented
-    void operator=(const SIMPLH5DataReader&) = delete;    // Move assignment Not Implemented
+    SIMPLH5DataReader(SIMPLH5DataReader&&) = delete;      // Move Constructor Not Implemented
+    SIMPLH5DataReader& operator=(const SIMPLH5DataReader&) = delete; // Copy Assignment Not Implemented
+    SIMPLH5DataReader& operator=(SIMPLH5DataReader&&) = delete;      // Move Assignment Not Implemented
 };
 
 

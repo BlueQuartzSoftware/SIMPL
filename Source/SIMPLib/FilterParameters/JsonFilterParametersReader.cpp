@@ -64,6 +64,70 @@ JsonFilterParametersReader::~JsonFilterParametersReader() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QString createErrorMessageFromJsonParseError(const QJsonParseError& parseError)
+{
+  QString msg;
+  QTextStream ss(&msg);
+
+  switch(parseError.error)
+  {
+  case QJsonParseError::NoError:
+    ss << "No Error";
+    break;
+  case QJsonParseError::UnterminatedObject:
+    ss << "Json Parsing Error: " << parseError.error << " of type UnterminatedObject.";
+    break;
+  case QJsonParseError::MissingNameSeparator:
+    ss << "Json Parsing Error: " << parseError.error << " of type MissingNameSeparator.";
+    break;
+  case QJsonParseError::UnterminatedArray:
+    ss << "Json Parsing Error: " << parseError.error << " of type UnterminatedArray.";
+    break;
+  case QJsonParseError::MissingValueSeparator:
+    ss << "Json Parsing Error: " << parseError.error << " of type MissingValueSeparator.";
+    break;
+  case QJsonParseError::IllegalValue:
+    ss << "Json Parsing Error: " << parseError.error << " of type IllegalValue.";
+    break;
+  case QJsonParseError::TerminationByNumber:
+    ss << "Json Parsing Error: " << parseError.error << " of type TerminationByNumber.";
+    break;
+  case QJsonParseError::IllegalNumber:
+    ss << "Json Parsing Error: " << parseError.error << " of type IllegalNumber.";
+    break;
+  case QJsonParseError::IllegalEscapeSequence:
+    ss << "Json Parsing Error: " << parseError.error << " of type IllegalEscapeSequence.";
+    break;
+  case QJsonParseError::IllegalUTF8String:
+    ss << "Json Parsing Error: " << parseError.error << " of type IllegalUTF8String.";
+    break;
+  case QJsonParseError::UnterminatedString:
+    ss << "Json Parsing Error: " << parseError.error << " of type UnterminatedString.";
+    break;
+  case QJsonParseError::MissingObject:
+    ss << "Json Parsing Error: " << parseError.error << " of type MissingObject.";
+    break;
+  case QJsonParseError::DeepNesting:
+    ss << "Json Parsing Error: " << parseError.error << " of type DeepNesting.";
+    break;
+  case QJsonParseError::DocumentTooLarge:
+    ss << "Json Parsing Error: " << parseError.error << " of type DocumentTooLarge.";
+    break;
+  case QJsonParseError::GarbageAtEnd:
+    ss << "Json Parsing Error: " << parseError.error << " of type GarbageAtEnd.";
+    break;
+  default:
+    ss << "Json Parsing Error: " << parseError.error << " is of an unknown type.";
+    break;
+  }
+  ss << "The error occurred at offset " << parseError.offset << ". Reported error message is: " << parseError.errorString();
+
+  return msg;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromFile(QString filePath, IObserver* obs)
 {
   QFileInfo fInfo(filePath);
@@ -78,13 +142,15 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromFile(QString
     return FilterPipeline::NullPointer();
   }
 
-  int err = openFile(filePath);
+  QJsonParseError parseError = openFile(filePath);
 
-  if(err != QJsonParseError::NoError)
+  if(parseError.error != QJsonParseError::NoError)
   {
     if(nullptr != obs)
     {
-      PipelineMessage pm(JsonFilterParametersReader::ClassName(), "File '" + fInfo.fileName() + "' could not be opened for reading.", -1, PipelineMessage::MessageType::Error);
+      QString msg = createErrorMessageFromJsonParseError(parseError);
+      msg = QString("File '%1' had errors while parsing the json data.%2").arg(fInfo.absoluteFilePath()) + msg;
+      PipelineMessage pm(JsonFilterParametersReader::ClassName(), msg, -1, PipelineMessage::MessageType::Error);
       obs->processPipelineMessage(pm);
     }
     return FilterPipeline::NullPointer();
@@ -127,6 +193,13 @@ QString JsonFilterParametersReader::getJsonFromFile(QString filePath, IObserver*
     QJsonDocument doc = QJsonDocument::fromJson(byteArray, &parseError);
     if(parseError.error != QJsonParseError::NoError)
     {
+      if(nullptr != obs)
+      {
+        QString msg = createErrorMessageFromJsonParseError(parseError);
+        msg = QString("File '%1' had errors while parsing the json data.%2").arg(filePath) + msg;
+        PipelineMessage pm(JsonFilterParametersReader::ClassName(), msg, -1, PipelineMessage::MessageType::Error);
+        obs->processPipelineMessage(pm);
+      }
       return QString();
     }
 
@@ -403,13 +476,15 @@ void JsonFilterParametersReader::readNameOfPipelineFromFile(QString filePath, QS
     return;
   }
 
-  int err = openFile(filePath);
+  QJsonParseError parseError = openFile(filePath);
 
-  if(err != QJsonParseError::NoError)
+  if(parseError.error != QJsonParseError::NoError)
   {
     if(nullptr != obs)
     {
-      PipelineMessage pm(JsonFilterParametersReader::ClassName(), "File '" + fInfo.fileName() + "' could not be opened for reading.", -1, PipelineMessage::MessageType::Error);
+      QString msg = createErrorMessageFromJsonParseError(parseError);
+      msg = QString("File '%1' had errors while parsing the json data.%2").arg(fInfo.absoluteFilePath()) + msg;
+      PipelineMessage pm(JsonFilterParametersReader::ClassName(), msg, -1, PipelineMessage::MessageType::Error);
       obs->processPipelineMessage(pm);
     }
     name = QString("ERROR: Could not open file specified.");
@@ -417,7 +492,7 @@ void JsonFilterParametersReader::readNameOfPipelineFromFile(QString filePath, QS
     return;
   }
 
-  err = openGroup(SIMPL::Settings::PipelineBuilderGroup);
+  openGroup(SIMPL::Settings::PipelineBuilderGroup);
   name = m_CurrentFilterIndex[SIMPL::Settings::PipelineName].toString();
   version = m_CurrentFilterIndex[SIMPL::Settings::Version].toString();
   closeGroup();
@@ -434,32 +509,29 @@ QJsonObject& JsonFilterParametersReader::getCurrentGroupObject()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int JsonFilterParametersReader::openFile(QString filePath)
+QJsonParseError JsonFilterParametersReader::openFile(QString filePath)
 {
   if(m_Root.isEmpty() == false || m_CurrentFilterIndex.isEmpty() == false)
   {
     closeFile();
   }
-  int err = -100;
+  QJsonParseError parseError;
   QFile inputFile(filePath);
   if(inputFile.open(QIODevice::ReadOnly))
   {
-    QJsonParseError parseError;
     QByteArray byteArray = inputFile.readAll();
     QJsonDocument doc = QJsonDocument::fromJson(byteArray, &parseError);
     if(parseError.error != QJsonParseError::NoError)
     {
-      return parseError.error;
+      return parseError;
     }
     m_Root = doc.object();
 
     QJsonObject meta = m_Root[SIMPL::Settings::PipelineBuilderGroup].toObject();
     m_MaxFilterIndex = meta[SIMPL::Settings::NumFilters].toInt();
-
-    err = QJsonParseError::NoError;
   }
 
-  return err;
+  return parseError;
 }
 
 // -----------------------------------------------------------------------------

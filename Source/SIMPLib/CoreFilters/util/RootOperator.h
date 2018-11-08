@@ -61,8 +61,10 @@ class SIMPLib_EXPORT RootOperator : public UnaryOperator
   protected:
     RootOperator();
 
-  private:
+  public:
     RootOperator(const RootOperator&) = delete;   // Copy Constructor Not Implemented
-    void operator=(const RootOperator&) = delete; // Move assignment Not Implemented
+    RootOperator(RootOperator&&) = delete;        // Move Constructor Not Implemented
+    RootOperator& operator=(const RootOperator&) = delete; // Copy Assignment Not Implemented
+    RootOperator& operator=(RootOperator&&) = delete;      // Move Assignment Not Implemented
 };
 

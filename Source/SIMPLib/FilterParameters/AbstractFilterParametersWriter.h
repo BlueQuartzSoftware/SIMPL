@@ -142,11 +142,11 @@ class SIMPLib_EXPORT AbstractFilterParametersWriter
 
     virtual int writeValue(const QString name, AxisAngleInput_t v, int vectorPos);
 
-
-
-  private:
+  public:
     AbstractFilterParametersWriter(const AbstractFilterParametersWriter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const AbstractFilterParametersWriter&) = delete;                 // Move assignment Not Implemented
+    AbstractFilterParametersWriter(AbstractFilterParametersWriter&&) = delete;      // Move Constructor Not Implemented
+    AbstractFilterParametersWriter& operator=(const AbstractFilterParametersWriter&) = delete; // Copy Assignment Not Implemented
+    AbstractFilterParametersWriter& operator=(AbstractFilterParametersWriter&&) = delete;      // Move Assignment Not Implemented
 };
 
 

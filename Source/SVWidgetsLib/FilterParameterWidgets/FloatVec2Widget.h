@@ -86,8 +86,11 @@ class SVWidgetsLib_EXPORT FloatVec2Widget : public FilterParameterWidget, privat
   private:
     FloatVec2FilterParameter* m_FilterParameter;
 
+  public:
     FloatVec2Widget(const FloatVec2Widget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const FloatVec2Widget&) = delete;  // Move assignment Not Implemented
+    FloatVec2Widget(FloatVec2Widget&&) = delete;      // Move Constructor Not Implemented
+    FloatVec2Widget& operator=(const FloatVec2Widget&) = delete; // Copy Assignment Not Implemented
+    FloatVec2Widget& operator=(FloatVec2Widget&&) = delete;      // Move Assignment Not Implemented
 };
 
 

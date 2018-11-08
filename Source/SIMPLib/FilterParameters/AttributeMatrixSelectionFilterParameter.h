@@ -181,8 +181,10 @@ class SIMPLib_EXPORT AttributeMatrixSelectionFilterParameter : public FilterPara
        */
     AttributeMatrixSelectionFilterParameter();
 
-  private:
+  public:
     AttributeMatrixSelectionFilterParameter(const AttributeMatrixSelectionFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const AttributeMatrixSelectionFilterParameter&) = delete;                          // Move assignment Not Implemented
+    AttributeMatrixSelectionFilterParameter(AttributeMatrixSelectionFilterParameter&&) = delete;      // Move Constructor Not Implemented
+    AttributeMatrixSelectionFilterParameter& operator=(const AttributeMatrixSelectionFilterParameter&) = delete; // Copy Assignment Not Implemented
+    AttributeMatrixSelectionFilterParameter& operator=(AttributeMatrixSelectionFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

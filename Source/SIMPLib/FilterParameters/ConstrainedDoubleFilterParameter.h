@@ -134,8 +134,10 @@ class SIMPLib_EXPORT ConstrainedDoubleFilterParameter : public FilterParameter
        */
       ConstrainedDoubleFilterParameter();
 
-  private:
-    ConstrainedDoubleFilterParameter(const ConstrainedDoubleFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ConstrainedDoubleFilterParameter&) = delete;                   // Move assignment Not Implemented
+    public:
+      ConstrainedDoubleFilterParameter(const ConstrainedDoubleFilterParameter&) = delete;            // Copy Constructor Not Implemented
+      ConstrainedDoubleFilterParameter(ConstrainedDoubleFilterParameter&&) = delete;                 // Move Constructor Not Implemented
+      ConstrainedDoubleFilterParameter& operator=(const ConstrainedDoubleFilterParameter&) = delete; // Copy Assignment Not Implemented
+      ConstrainedDoubleFilterParameter& operator=(ConstrainedDoubleFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

@@ -95,6 +95,9 @@ class SVWidgetsLib_EXPORT FilterListModel : public QAbstractItemModel
 
     FilterListItem* getItem(const QModelIndex& index) const;
 
-    FilterListModel(const FilterListModel&);    // Copy Constructor Not Implemented
-    void operator=(const FilterListModel&);    // Move assignment Not Implemented
+  public:
+    FilterListModel(const FilterListModel&) = delete;            // Copy Constructor Not Implemented
+    FilterListModel(FilterListModel&&) = delete;                 // Move Constructor Not Implemented
+    FilterListModel& operator=(const FilterListModel&) = delete; // Copy Assignment Not Implemented
+    FilterListModel& operator=(FilterListModel&&) = delete;      // Move Assignment Not Implemented
 };

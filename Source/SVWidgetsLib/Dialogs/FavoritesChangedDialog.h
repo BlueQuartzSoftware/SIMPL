@@ -74,10 +74,11 @@ class SVWidgetsLib_EXPORT FavoritesChangedDialog : public SVDialog, private Ui::
   private:
     QString m_OpenDialogLastFilePath;
 
-
-  private:
+  public:
     FavoritesChangedDialog(const FavoritesChangedDialog&) = delete; // Copy Constructor Not Implemented
-    void operator=(const FavoritesChangedDialog&) = delete;         // Move assignment Not Implemented
+    FavoritesChangedDialog(FavoritesChangedDialog&&) = delete;      // Move Constructor Not Implemented
+    FavoritesChangedDialog& operator=(const FavoritesChangedDialog&) = delete; // Copy Assignment Not Implemented
+    FavoritesChangedDialog& operator=(FavoritesChangedDialog&&) = delete;      // Move Assignment Not Implemented
 };
 
 

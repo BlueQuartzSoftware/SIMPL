@@ -117,8 +117,11 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
     QString  m_CurrentlyValidPath = "";
     QString  m_CurrentText = "";
 
+  public:
     AbstractIOFileWidget(const AbstractIOFileWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const AbstractIOFileWidget&) = delete;       // Move assignment Not Implemented
+    AbstractIOFileWidget(AbstractIOFileWidget&&) = delete;      // Move Constructor Not Implemented
+    AbstractIOFileWidget& operator=(const AbstractIOFileWidget&) = delete; // Copy Assignment Not Implemented
+    AbstractIOFileWidget& operator=(AbstractIOFileWidget&&) = delete;      // Move Assignment Not Implemented
 };
 
 

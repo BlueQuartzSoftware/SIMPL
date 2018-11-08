@@ -139,7 +139,10 @@ class SIMPLib_EXPORT RequiredZThickness : public AbstractDecisionFilter
   private:
     DEFINE_DATAARRAY_WEAKPTR(int32_t, FeatureIds)
 
+  public:
     RequiredZThickness(const RequiredZThickness&) = delete; // Copy Constructor Not Implemented
-    void operator=(const RequiredZThickness&) = delete;     // Move assignment Not Implemented
+    RequiredZThickness(RequiredZThickness&&) = delete;      // Move Constructor Not Implemented
+    RequiredZThickness& operator=(const RequiredZThickness&) = delete; // Copy Assignment Not Implemented
+    RequiredZThickness& operator=(RequiredZThickness&&) = delete;      // Move Assignment Not Implemented
 };
 

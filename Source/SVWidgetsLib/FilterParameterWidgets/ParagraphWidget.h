@@ -85,7 +85,10 @@ private:
 
   ParagraphFilterParameter* m_FilterParameter;
 
+public:
   ParagraphWidget(const ParagraphWidget&) = delete; // Copy Constructor Not Implemented
-  void operator=(const ParagraphWidget&);           // Move assignment Not Implemented
+  ParagraphWidget(ParagraphWidget&&) = delete;      // Move Constructor Not Implemented
+  ParagraphWidget& operator=(const ParagraphWidget&) = delete; // Copy Assignment Not Implemented
+  ParagraphWidget& operator=(ParagraphWidget&&) = delete;      // Move Assignment Not Implemented
 };
 

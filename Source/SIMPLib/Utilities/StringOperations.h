@@ -74,9 +74,11 @@ class SIMPLib_EXPORT StringOperations
      */
     static QString GeneratePaddedString(int value, int totalDigits, char padChar);
 
-  private:
+  public:
     StringOperations(const StringOperations&) = delete; // Copy Constructor Not Implemented
-    void operator=(const StringOperations&) = delete;   // Move assignment Not Implemented
+    StringOperations(StringOperations&&) = delete;      // Move Constructor Not Implemented
+    StringOperations& operator=(const StringOperations&) = delete; // Copy Assignment Not Implemented
+    StringOperations& operator=(StringOperations&&) = delete;      // Move Assignment Not Implemented
 };
 
 

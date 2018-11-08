@@ -742,8 +742,11 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
     QList<DataContainerShPtr>  m_Array;
     QMap<QString, IDataContainerBundle::Pointer> m_DataContainerBundles;
 
+  public:
     DataContainerArray(const DataContainerArray&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DataContainerArray&) = delete;     // Move assignment Not Implemented
+    DataContainerArray(DataContainerArray&&) = delete;      // Move Constructor Not Implemented
+    DataContainerArray& operator=(const DataContainerArray&) = delete; // Copy Assignment Not Implemented
+    DataContainerArray& operator=(DataContainerArray&&) = delete;      // Move Assignment Not Implemented
 };
 
 

@@ -166,7 +166,6 @@ protected:
   */
   void initialize();
 
-private:
 public:
   ErrorWarningFilter(const ErrorWarningFilter&) = delete; // Copy Constructor Not Implemented
   ErrorWarningFilter(ErrorWarningFilter&&) = delete;      // Move Constructor Not Implemented

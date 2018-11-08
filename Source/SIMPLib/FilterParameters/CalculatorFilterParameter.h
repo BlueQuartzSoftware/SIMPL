@@ -139,8 +139,10 @@ public:
      */
   CalculatorFilterParameter();
 
-private:
+public:
   CalculatorFilterParameter(const CalculatorFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const CalculatorFilterParameter&) = delete;            // Move assignment Not Implemented
+  CalculatorFilterParameter(CalculatorFilterParameter&&) = delete;      // Move Constructor Not Implemented
+  CalculatorFilterParameter& operator=(const CalculatorFilterParameter&) = delete; // Copy Assignment Not Implemented
+  CalculatorFilterParameter& operator=(CalculatorFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

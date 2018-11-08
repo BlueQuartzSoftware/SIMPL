@@ -310,11 +310,10 @@ protected:
    */
   void initialize();
 
-private:
 public:
   GenericExample(const GenericExample&) = delete; // Copy Constructor Not Implemented
   GenericExample(GenericExample&&) = delete;      // Move Constructor Not Implemented
   GenericExample& operator=(const GenericExample&) = delete; // Copy Assignment Not Implemented
-  GenericExample& operator=(GenericExample&&) = delete;      // Move Assignment
+  GenericExample& operator=(GenericExample&&) = delete;      // Move Assignment Not Implemented
 };
 

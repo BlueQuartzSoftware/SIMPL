@@ -61,8 +61,10 @@ class SIMPLib_EXPORT PowOperator : public BinaryOperator
   protected:
     PowOperator();
 
-  private:
+  public:
     PowOperator(const PowOperator&) = delete;    // Copy Constructor Not Implemented
-    void operator=(const PowOperator&) = delete; // Move assignment Not Implemented
+    PowOperator(PowOperator&&) = delete;         // Move Constructor Not Implemented
+    PowOperator& operator=(const PowOperator&) = delete; // Copy Assignment Not Implemented
+    PowOperator& operator=(PowOperator&&) = delete;      // Move Assignment Not Implemented
 };
 

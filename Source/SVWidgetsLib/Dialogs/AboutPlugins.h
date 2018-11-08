@@ -96,7 +96,10 @@ class SVWidgetsLib_EXPORT AboutPlugins : public SVDialog, private Ui::AboutPlugi
     bool m_loadPreferencesDidChange;
     QAction* m_CloseAction = nullptr;
 
+  public:
     AboutPlugins(const AboutPlugins&) = delete;   // Copy Constructor Not Implemented
-    void operator=(const AboutPlugins&) = delete; // Move assignment Not Implemented
+    AboutPlugins(AboutPlugins&&) = delete;        // Move Constructor Not Implemented
+    AboutPlugins& operator=(const AboutPlugins&) = delete; // Copy Assignment Not Implemented
+    AboutPlugins& operator=(AboutPlugins&&) = delete;      // Move Assignment Not Implemented
 };
 

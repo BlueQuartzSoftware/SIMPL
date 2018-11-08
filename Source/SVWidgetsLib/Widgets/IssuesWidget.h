@@ -99,7 +99,10 @@ class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver
     QSharedPointer<Ui::IssuesWidget> ui = nullptr;
     QVector<PipelineMessage> m_CachedMessages;
 
+  public:
     IssuesWidget(const IssuesWidget&) = delete;   // Copy Constructor Not Implemented
-    void operator=(const IssuesWidget&) = delete; // Move assignment Not Implemented
+    IssuesWidget(IssuesWidget&&) = delete;        // Move Constructor Not Implemented
+    IssuesWidget& operator=(const IssuesWidget&) = delete; // Copy Assignment Not Implemented
+    IssuesWidget& operator=(IssuesWidget&&) = delete;      // Move Assignment Not Implemented
 };
 

@@ -57,8 +57,10 @@ class BookmarksItemDelegate : public QStyledItemDelegate
 
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
-  private:
+  public:
     BookmarksItemDelegate(const BookmarksItemDelegate&) = delete; // Copy Constructor Not Implemented
-    void operator=(const BookmarksItemDelegate&) = delete;        // Move assignment Not Implemented
+    BookmarksItemDelegate(BookmarksItemDelegate&&) = delete;      // Move Constructor Not Implemented
+    BookmarksItemDelegate& operator=(const BookmarksItemDelegate&) = delete; // Copy Assignment Not Implemented
+    BookmarksItemDelegate& operator=(BookmarksItemDelegate&&) = delete;      // Move Assignment Not Implemented
 };
 

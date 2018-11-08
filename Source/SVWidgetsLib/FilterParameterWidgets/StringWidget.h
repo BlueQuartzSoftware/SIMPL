@@ -86,8 +86,11 @@ class SVWidgetsLib_EXPORT StringWidget : public FilterParameterWidget, private U
   private:
     StringFilterParameter* m_FilterParameter;
 
+  public:
     StringWidget(const StringWidget&) = delete;   // Copy Constructor Not Implemented
-    void operator=(const StringWidget&) = delete; // Move assignment Not Implemented
+    StringWidget(StringWidget&&) = delete;        // Move Constructor Not Implemented
+    StringWidget& operator=(const StringWidget&) = delete; // Copy Assignment Not Implemented
+    StringWidget& operator=(StringWidget&&) = delete;      // Move Assignment Not Implemented
 };
 
 

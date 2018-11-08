@@ -105,6 +105,8 @@ class SVWidgetsLib_EXPORT PipelineListWidget : public QFrame, private Ui::Pipeli
 
   public:
     PipelineListWidget(const PipelineListWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const PipelineListWidget&) = delete;  // Operator '=' Not Implemented
+    PipelineListWidget(PipelineListWidget&&) = delete;      // Move Constructor Not Implemented
+    PipelineListWidget& operator=(const PipelineListWidget&) = delete; // Copy Assignment Not Implemented
+    PipelineListWidget& operator=(PipelineListWidget&&) = delete;      // Move Assignment Not Implemented
 };
 

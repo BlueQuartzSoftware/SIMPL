@@ -50,8 +50,10 @@ public:
 protected:
   QMetaObjectUtilities();
 
-private:
+public:
   QMetaObjectUtilities(const QMetaObjectUtilities&) = delete; // Copy Constructor Not Implemented
-  void operator=(const QMetaObjectUtilities&);                // Move assignment Not Implemented
+  QMetaObjectUtilities(QMetaObjectUtilities&&) = delete;      // Move Constructor Not Implemented
+  QMetaObjectUtilities& operator=(const QMetaObjectUtilities&) = delete; // Copy Assignment Not Implemented
+  QMetaObjectUtilities& operator=(QMetaObjectUtilities&&) = delete;      // Move Assignment Not Implemented
 };
 

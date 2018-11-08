@@ -127,7 +127,10 @@ class SVWidgetsLib_EXPORT FilterLibraryToolboxWidget : public QWidget, private U
     QMenu* m_ContextMenu;
     QSignalMapper* m_Mapper;
 
+  public:
     FilterLibraryToolboxWidget(const FilterLibraryToolboxWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const FilterLibraryToolboxWidget&) = delete;             // Move assignment Not Implemented
+    FilterLibraryToolboxWidget(FilterLibraryToolboxWidget&&) = delete;      // Move Constructor Not Implemented
+    FilterLibraryToolboxWidget& operator=(const FilterLibraryToolboxWidget&) = delete; // Copy Assignment Not Implemented
+    FilterLibraryToolboxWidget& operator=(FilterLibraryToolboxWidget&&) = delete;      // Move Assignment Not Implemented
 };
 

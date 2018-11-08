@@ -149,7 +149,10 @@ class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
 
     QColor getForegroundColor(const QModelIndex &index) const;
 
-    PipelineModel(const PipelineModel&);    // Copy Constructor Not Implemented
-    void operator=(const PipelineModel&);  // Operator '=' Not Implemented
+  public:
+    PipelineModel(const PipelineModel&) = delete;            // Copy Constructor Not Implemented
+    PipelineModel(PipelineModel&&) = delete;                 // Move Constructor Not Implemented
+    PipelineModel& operator=(const PipelineModel&) = delete; // Copy Assignment Not Implemented
+    PipelineModel& operator=(PipelineModel&&) = delete;      // Move Assignment Not Implemented
 };
 

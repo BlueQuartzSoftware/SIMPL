@@ -375,8 +375,11 @@ class SIMPLib_EXPORT StatsDataArray : public IDataArray
     QString m_Name;
     bool m_IsAllocated;
 
+  public:
     StatsDataArray(const StatsDataArray&) = delete; // Copy Constructor Not Implemented
-    void operator=(const StatsDataArray&) = delete; // Move assignment Not Implemented
+    StatsDataArray(StatsDataArray&&) = delete;      // Move Constructor Not Implemented
+    StatsDataArray& operator=(const StatsDataArray&) = delete; // Copy Assignment Not Implemented
+    StatsDataArray& operator=(StatsDataArray&&) = delete;      // Move Assignment Not Implemented
 };
 
 

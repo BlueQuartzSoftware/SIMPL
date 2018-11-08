@@ -98,7 +98,10 @@ private:
   class pqInternals;
   const QScopedPointer<pqInternals> Internals;
 
+public:
   ColorPresetsDialog(const ColorPresetsDialog&) = delete; // Copy Constructor Not Implemented
-  void operator=(const ColorPresetsDialog&) = delete;     // Move assignment Not Implemented
+  ColorPresetsDialog(ColorPresetsDialog&&) = delete;      // Move Constructor Not Implemented
+  ColorPresetsDialog& operator=(const ColorPresetsDialog&) = delete; // Copy Assignment Not Implemented
+  ColorPresetsDialog& operator=(ColorPresetsDialog&&) = delete;      // Move Assignment Not Implemented
 };
 

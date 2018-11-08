@@ -99,7 +99,10 @@ private:
 
   ASCIIDataItem* getItem(const QModelIndex& index) const;
 
-  ASCIIDataModel(const ASCIIDataModel&);    // Copy Constructor Not Implemented
-  void operator=(const ASCIIDataModel&);    // Move assignment Not Implemented
+public:
+  ASCIIDataModel(const ASCIIDataModel&) = delete;            // Copy Constructor Not Implemented
+  ASCIIDataModel(ASCIIDataModel&&) = delete;                 // Move Constructor Not Implemented
+  ASCIIDataModel& operator=(const ASCIIDataModel&) = delete; // Copy Assignment Not Implemented
+  ASCIIDataModel& operator=(ASCIIDataModel&&) = delete;      // Move Assignment Not Implemented
 };
 

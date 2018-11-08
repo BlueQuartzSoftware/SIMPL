@@ -119,8 +119,10 @@ class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParamet
        */
     PreflightUpdatedValueFilterParameter();
 
-  private:
+  public:
     PreflightUpdatedValueFilterParameter(const PreflightUpdatedValueFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const PreflightUpdatedValueFilterParameter&) = delete;                       // Move assignment Not Implemented
+    PreflightUpdatedValueFilterParameter(PreflightUpdatedValueFilterParameter&&) = delete;      // Move Constructor Not Implemented
+    PreflightUpdatedValueFilterParameter& operator=(const PreflightUpdatedValueFilterParameter&) = delete; // Copy Assignment Not Implemented
+    PreflightUpdatedValueFilterParameter& operator=(PreflightUpdatedValueFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

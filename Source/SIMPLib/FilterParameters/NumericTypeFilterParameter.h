@@ -133,8 +133,10 @@ protected:
   */
   NumericTypeFilterParameter();
 
-private:
+public:
   NumericTypeFilterParameter(const NumericTypeFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const NumericTypeFilterParameter&);                      // Move assignment Not Implemented
+  NumericTypeFilterParameter(NumericTypeFilterParameter&&) = delete;      // Move Constructor Not Implemented
+  NumericTypeFilterParameter& operator=(const NumericTypeFilterParameter&) = delete; // Copy Assignment Not Implemented
+  NumericTypeFilterParameter& operator=(NumericTypeFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

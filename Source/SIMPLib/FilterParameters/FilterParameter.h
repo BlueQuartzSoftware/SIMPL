@@ -110,9 +110,11 @@ class SIMPLib_EXPORT FilterParameter
   protected:
     FilterParameter();
 
-  private:
+  public:
     FilterParameter(const FilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const FilterParameter&) = delete;  // Move assignment Not Implemented
+    FilterParameter(FilterParameter&&) = delete;      // Move Constructor Not Implemented
+    FilterParameter& operator=(const FilterParameter&) = delete; // Copy Assignment Not Implemented
+    FilterParameter& operator=(FilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 
 typedef QVector<FilterParameter::Pointer> FilterParameterVector;

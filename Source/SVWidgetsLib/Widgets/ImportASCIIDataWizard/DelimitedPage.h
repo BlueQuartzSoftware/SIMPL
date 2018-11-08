@@ -85,7 +85,10 @@ class DelimitedPage : public AbstractWizardPage, private Ui::DelimitedPage
     int m_NumLines = -1;
     bool m_EditSettings = false;
 
+  public:
     DelimitedPage(const DelimitedPage&) = delete;  // Copy Constructor Not Implemented
-    void operator=(const DelimitedPage&) = delete; // Move assignment Not Implemented
+    DelimitedPage(DelimitedPage&&) = delete;       // Move Constructor Not Implemented
+    DelimitedPage& operator=(const DelimitedPage&) = delete; // Copy Assignment Not Implemented
+    DelimitedPage& operator=(DelimitedPage&&) = delete;      // Move Assignment Not Implemented
 };
 

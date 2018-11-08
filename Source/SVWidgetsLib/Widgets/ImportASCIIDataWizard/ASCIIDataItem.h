@@ -64,7 +64,10 @@ private:
 
   QString                                                       m_OriginalString;
 
-  ASCIIDataItem(const ASCIIDataItem&);    // Copy Constructor Not Implemented
-  void operator=(const ASCIIDataItem&);   // Move assignment Not Implemented
+public:
+  ASCIIDataItem(const ASCIIDataItem&) = delete;            // Copy Constructor Not Implemented
+  ASCIIDataItem(ASCIIDataItem&&) = delete;                 // Move Constructor Not Implemented
+  ASCIIDataItem& operator=(const ASCIIDataItem&) = delete; // Copy Assignment Not Implemented
+  ASCIIDataItem& operator=(ASCIIDataItem&&) = delete;      // Move Assignment Not Implemented
 };
 

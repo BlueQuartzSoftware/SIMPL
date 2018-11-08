@@ -66,8 +66,10 @@ class SIMPLib_EXPORT ICalculatorArray : public CalculatorItem
   protected:
     ICalculatorArray();
 
-  private:
+  public:
     ICalculatorArray(const ICalculatorArray&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ICalculatorArray&) = delete;   // Move assignment Not Implemented
+    ICalculatorArray(ICalculatorArray&&) = delete;      // Move Constructor Not Implemented
+    ICalculatorArray& operator=(const ICalculatorArray&) = delete; // Copy Assignment Not Implemented
+    ICalculatorArray& operator=(ICalculatorArray&&) = delete;      // Move Assignment Not Implemented
 };
 

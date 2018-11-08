@@ -72,7 +72,10 @@ class SIMPLib_EXPORT DocRequestManager : public QObject
 
      static DocRequestManager *self;
 
+   public:
      DocRequestManager(const DocRequestManager&) = delete; // Copy Constructor Not Implemented
-     void operator=(const DocRequestManager&) = delete;    // Move assignment Not Implemented
+     DocRequestManager(DocRequestManager&&) = delete;      // Move Constructor Not Implemented
+     DocRequestManager& operator=(const DocRequestManager&) = delete; // Copy Assignment Not Implemented
+     DocRequestManager& operator=(DocRequestManager&&) = delete;      // Move Assignment Not Implemented
 };
 

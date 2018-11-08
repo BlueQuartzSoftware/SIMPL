@@ -34,8 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
-
-
+#include <QtCore/QJsonDocument>
 #include <QtCore/QString>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -118,7 +117,7 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
       * @param filePath The path to the pipeline file
       * @return
       */
-     int openFile(QString filePath);
+     QJsonParseError openFile(QString filePath);
 
      /**
       * @brief setPipelineContents
@@ -170,7 +169,7 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
      JsonFilterParametersReader(const JsonFilterParametersReader&) = delete;            // Copy Constructor Not Implemented
      JsonFilterParametersReader(JsonFilterParametersReader&&) = delete;                 // Move Constructor Not Implemented
      JsonFilterParametersReader& operator=(const JsonFilterParametersReader&) = delete; // Copy Assignment Not Implemented
-     JsonFilterParametersReader& operator=(JsonFilterParametersReader&&) = delete;      // Move Assignment
+     JsonFilterParametersReader& operator=(JsonFilterParametersReader&&) = delete;      // Move Assignment Not Implemented
 };
 
 

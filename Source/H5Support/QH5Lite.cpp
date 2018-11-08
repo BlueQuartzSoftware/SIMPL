@@ -65,7 +65,7 @@ void QH5Lite::disableErrorHandlers()
 // -----------------------------------------------------------------------------
 //  Opens an ID for HDF5 operations
 // -----------------------------------------------------------------------------
-herr_t QH5Lite::openId(hid_t loc_id, const QString& obj_name, H5O_type_t obj_type)
+hid_t QH5Lite::openId(hid_t loc_id, const QString& obj_name, H5O_type_t obj_type)
 {
   return H5Lite::openId(loc_id, obj_name.toStdString(), obj_type);
 }
@@ -351,7 +351,7 @@ herr_t QH5Lite::getDatasetNDims(hid_t loc_id, const QString& dsetName, hid_t& ra
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-hid_t QH5Lite::getAttributeNDims(hid_t loc_id, const QString& objName, const QString& attrName, hid_t& rank)
+herr_t QH5Lite::getAttributeNDims(hid_t loc_id, const QString& objName, const QString& attrName, hid_t& rank)
 {
   return H5Lite::getAttributeNDims(loc_id, objName.toStdString(), attrName.toStdString(), rank);
 }

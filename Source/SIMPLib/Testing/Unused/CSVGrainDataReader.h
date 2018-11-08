@@ -194,7 +194,10 @@ private:
   */
   void readData(const QString& line, int row, size_t i);
 
+public:
   CSVGrainDataReader(const CSVGrainDataReader&) = delete; // Copy Constructor Not Implemented
-  void operator=(const CSVGrainDataReader&);              // Move assignment Not Implemented
+  CSVGrainDataReader(CSVGrainDataReader&&) = delete;      // Move Constructor Not Implemented
+  CSVGrainDataReader& operator=(const CSVGrainDataReader&) = delete; // Copy Assignment Not Implemented
+  CSVGrainDataReader& operator=(CSVGrainDataReader&&) = delete;      // Move Assignment Not Implemented
 };
 

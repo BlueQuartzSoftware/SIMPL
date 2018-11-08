@@ -118,9 +118,11 @@ class SIMPLib_EXPORT RadialDistributionFunction
   protected:
     RadialDistributionFunction();
 
-  private:
+  public:
     RadialDistributionFunction(const RadialDistributionFunction&) = delete; // Copy Constructor Not Implemented
-    void operator=(const RadialDistributionFunction&) = delete;             // Move assignment Not Implemented
+    RadialDistributionFunction(RadialDistributionFunction&&) = delete;      // Move Constructor Not Implemented
+    RadialDistributionFunction& operator=(const RadialDistributionFunction&) = delete; // Copy Assignment Not Implemented
+    RadialDistributionFunction& operator=(RadialDistributionFunction&&) = delete;      // Move Assignment Not Implemented
 };
 
 

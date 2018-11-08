@@ -114,7 +114,10 @@ private:
   class vtkInternals;
   vtkInternals* Internals;
 
+public:
   ColorPresets(const ColorPresets&) = delete;   // Copy Constructor Not Implemented
-  void operator=(const ColorPresets&) = delete; // Move assignment Not Implemented
+  ColorPresets(ColorPresets&&) = delete;        // Move Constructor Not Implemented
+  ColorPresets& operator=(const ColorPresets&) = delete; // Copy Assignment Not Implemented
+  ColorPresets& operator=(ColorPresets&&) = delete;      // Move Assignment Not Implemented
 };
 

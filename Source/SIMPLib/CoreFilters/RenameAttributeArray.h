@@ -174,6 +174,6 @@ class SIMPLib_EXPORT RenameAttributeArray : public AbstractFilter
     RenameAttributeArray(const RenameAttributeArray&) = delete; // Copy Constructor Not Implemented
     RenameAttributeArray(RenameAttributeArray&&) = delete;      // Move Constructor Not Implemented
     RenameAttributeArray& operator=(const RenameAttributeArray&) = delete; // Copy Assignment Not Implemented
-    RenameAttributeArray& operator=(RenameAttributeArray&&) = delete;      // Move Assignment
+    RenameAttributeArray& operator=(RenameAttributeArray&&) = delete;      // Move Assignment Not Implemented
 };
 

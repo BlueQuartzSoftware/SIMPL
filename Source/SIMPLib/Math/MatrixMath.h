@@ -311,9 +311,11 @@ class SIMPLib_EXPORT MatrixMath
   protected:
     MatrixMath();
 
-  private:
+  public:
     MatrixMath(const MatrixMath&) = delete;     // Copy Constructor Not Implemented
-    void operator=(const MatrixMath&) = delete; // Move assignment Not Implemented
+    MatrixMath(MatrixMath&&) = delete;          // Move Constructor Not Implemented
+    MatrixMath& operator=(const MatrixMath&) = delete; // Copy Assignment Not Implemented
+    MatrixMath& operator=(MatrixMath&&) = delete;      // Move Assignment Not Implemented
 };
 
 

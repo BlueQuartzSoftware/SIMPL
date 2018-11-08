@@ -59,6 +59,9 @@ class SVWidgetsLib_EXPORT PipelineItemHeightAnimation : public QVariantAnimation
     PipelineModel* m_PipelineModel;
     AnimationDirection m_Direction;
 
+  public:
     PipelineItemHeightAnimation(const PipelineItemHeightAnimation&) = delete; // Copy Constructor Not Implemented
-    void operator=(const PipelineItemHeightAnimation&) = delete;        // Operator '=' Not Implemented
+    PipelineItemHeightAnimation(PipelineItemHeightAnimation&&) = delete;      // Move Constructor Not Implemented
+    PipelineItemHeightAnimation& operator=(const PipelineItemHeightAnimation&) = delete; // Copy Assignment Not Implemented
+    PipelineItemHeightAnimation& operator=(PipelineItemHeightAnimation&&) = delete;      // Move Assignment Not Implemented
 };

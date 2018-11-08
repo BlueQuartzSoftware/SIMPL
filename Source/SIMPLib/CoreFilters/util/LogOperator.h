@@ -64,7 +64,10 @@ class SIMPLib_EXPORT LogOperator : public UnaryOperator
   private:
     double log_arbitrary_base(double base, double value);
 
+  public:
     LogOperator(const LogOperator&) = delete;    // Copy Constructor Not Implemented
-    void operator=(const LogOperator&) = delete; // Move assignment Not Implemented
+    LogOperator(LogOperator&&) = delete;         // Move Constructor Not Implemented
+    LogOperator& operator=(const LogOperator&) = delete; // Copy Assignment Not Implemented
+    LogOperator& operator=(LogOperator&&) = delete;      // Move Assignment Not Implemented
 };
 

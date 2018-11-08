@@ -154,8 +154,10 @@ class SIMPLib_EXPORT DoubleFilterParameter : public FilterParameter
        */
       DoubleFilterParameter();
 
-  private:
-    DoubleFilterParameter(const DoubleFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DoubleFilterParameter&) = delete;        // Move assignment Not Implemented
+    public:
+      DoubleFilterParameter(const DoubleFilterParameter&) = delete;            // Copy Constructor Not Implemented
+      DoubleFilterParameter(DoubleFilterParameter&&) = delete;                 // Move Constructor Not Implemented
+      DoubleFilterParameter& operator=(const DoubleFilterParameter&) = delete; // Copy Assignment Not Implemented
+      DoubleFilterParameter& operator=(DoubleFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

@@ -1,5 +1,5 @@
 /* ============================================================================
- * Copyright (c) 2009-2017 BlueQuartz Software, LLC
+ * Copyright (c) 2018 BlueQuartz Software, LLC
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -27,9 +27,7 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * The code contained herein was partially funded by the followig contracts:
- *    United States Air Force Prime Contract FA8650-07-D-5800
- *    United States Air Force Prime Contract FA8650-10-D-5210
- *    United States Prime Contract Navy N00173-07-C-2068
+ *    United States Air Force Prime Contract FA8650-15-D-5231
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
@@ -45,6 +43,14 @@
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/Widgets/SVControlWidgets.h"
 
+/**
+ * @class SVOverlayWidgetButton SVOverlayWidgetButton.h SVWidgetsLib/Widgets/SVOverlayWidgetButton.h
+ * @brief The SVOverlayWidgetButton class is a QPushButton that toggles another
+ * widget's visibility as it slides in or out over a target widget.  The direction
+ * and duration can be changed between animations.  If the target widget is set to
+ * a QDockWidget, the direction used will be based on the side the dock widget was
+ * last docked on.
+ */
 class SVWidgetsLib_EXPORT SVOverlayWidgetButton : public QPushButton
 {
   Q_OBJECT
@@ -69,7 +75,7 @@ public:
   void enable();
 
   /**
-   * @brief Disables the button and updates the internal state to prevent the 
+   * @brief Disables the button and updates the internal state to prevent the
    * widget from being enabled by validity checks.
    */
   void disable();
@@ -115,6 +121,18 @@ public:
    * @param source
    */
   void setSource(QWidget* source);
+
+  /**
+   * @brief Returns the margin used by the overlay frame.
+   * @return
+   */
+  int getMargin() const;
+
+  /**
+   * @brief Sets the margin used by the overlay frame.
+   * @param margin
+   */
+  void setMargin(int margin);
 
   /**
    * @brief Returns true if the widget is expanded.  Returns false otherwise.

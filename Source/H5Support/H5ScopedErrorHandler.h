@@ -26,10 +26,12 @@ class H5Support_EXPORT H5ScopedErrorHandler
   private:
     herr_t (*_oldHDF_error_func)(hid_t, void *);
     void *_oldHDF_error_client_data;
-    
-    
+
+  public:
     H5ScopedErrorHandler(const H5ScopedErrorHandler&) = delete; // Copy Constructor Not Implemented
-    void operator=(const H5ScopedErrorHandler&) = delete;       // Move assignment Not Implemented
+    H5ScopedErrorHandler(H5ScopedErrorHandler&&) = delete;      // Move Constructor Not Implemented
+    H5ScopedErrorHandler& operator=(const H5ScopedErrorHandler&) = delete; // Copy Assignment Not Implemented
+    H5ScopedErrorHandler& operator=(H5ScopedErrorHandler&&) = delete;      // Move Assignment Not Implemented
 };
 
 

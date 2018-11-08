@@ -61,8 +61,10 @@ class SIMPLib_EXPORT CeilOperator : public UnaryOperator
   protected:
     CeilOperator();
 
-  private:
+  public:
     CeilOperator(const CeilOperator&) = delete;   // Copy Constructor Not Implemented
-    void operator=(const CeilOperator&) = delete; // Move assignment Not Implemented
+    CeilOperator(CeilOperator&&) = delete;        // Move Constructor Not Implemented
+    CeilOperator& operator=(const CeilOperator&) = delete; // Copy Assignment Not Implemented
+    CeilOperator& operator=(CeilOperator&&) = delete;      // Move Assignment Not Implemented
 };
 

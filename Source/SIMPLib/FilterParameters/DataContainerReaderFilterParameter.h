@@ -101,8 +101,10 @@ class SIMPLib_EXPORT DataContainerReaderFilterParameter : public FilterParameter
      */
     DataContainerReaderFilterParameter();
 
-  private:
+  public:
     DataContainerReaderFilterParameter(const DataContainerReaderFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DataContainerReaderFilterParameter&) = delete;                     // Move assignment Not Implemented
+    DataContainerReaderFilterParameter(DataContainerReaderFilterParameter&&) = delete;      // Move Constructor Not Implemented
+    DataContainerReaderFilterParameter& operator=(const DataContainerReaderFilterParameter&) = delete; // Copy Assignment Not Implemented
+    DataContainerReaderFilterParameter& operator=(DataContainerReaderFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

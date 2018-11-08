@@ -129,8 +129,10 @@ protected:
    */
   ParagraphFilterParameter();
 
-private:
+public:
   ParagraphFilterParameter(const ParagraphFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const ParagraphFilterParameter&);                    // Move assignment Not Implemented
+  ParagraphFilterParameter(ParagraphFilterParameter&&) = delete;      // Move Constructor Not Implemented
+  ParagraphFilterParameter& operator=(const ParagraphFilterParameter&) = delete; // Copy Assignment Not Implemented
+  ParagraphFilterParameter& operator=(ParagraphFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 
