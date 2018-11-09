@@ -83,3 +83,13 @@ CreatePybind11Module(MODULE_NAME ${SIMPL_PYTHON_MODULE_NAME}
                     SIMPLIB
 )
 
+# --------------------------------------------------------------------------
+# This section sets up the Conda package building to run after the Python wrapping
+if (SIMPL_PYTHON_BUILD_CONDA_PACKAGE)    
+  set(PYTHON_CONDA_DIRECTORY "" CACHE PATH "The location of the Conda installation scripts")
+  set(PYTHON_CONDA_ENVIRONMENT_NAME "" CACHE STRING "The name of the environment for building the Conda package")
+  add_custom_command(TARGET dream3d PRE_LINK COMMAND ${PYTHON_CONDA_DIRECTORY}/Scripts/activate ${PYTHON_CONDA_ENVIRONMENT_NAME} COMMENT "Preparing to build the Conda package of DREAM3D using Conda environment: ${PYTHON_CONDA_ENVIRONMENT_NAME} and Conda installation: ${PYTHON_CONDA_DIRECTORY}. Activating the environment...")
+  add_custom_command(TARGET dream3d PRE_LINK COMMAND ${PYTHON_CONDA_DIRECTORY}/envs/py365/Scripts/conda install conda-build COMMENT "Ensuring conda-build is installed...")
+  add_custom_target(MakeCondaPackageDirectory ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/conda-package)  
+  add_custom_command(TARGET dream3d POST_BUILD COMMAND ${PYTHON_CONDA_DIRECTORY}/envs/${PYTHON_CONDA_ENVIRONMENT_NAME}/Scripts/conda build  --quiet  --output-folder ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/conda-package ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/conda-recipe COMMAND ${PYTHON_CONDA_DIRECTORY}/envs/${PYTHON_CONDA_ENVIRONMENT_NAME}/Scripts/conda build purge COMMENT "Building the Conda package...")  
+endif()

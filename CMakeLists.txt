@@ -454,3 +454,17 @@ if(SIMPL_WRAP_PYTHON)
 
 endif()
 
+# --------------------------------------------------------------------------
+# Copy the recipe and egg info for the building Conda package to the 
+# output directory
+option(SIMPL_PYTHON_BUILD_CONDA_PACKAGE "Build a Conda package" OFF)
+if (SIMPL_PYTHON_BUILD_CONDA_PACKAGE)
+  add_custom_target(CondaRecipeCopy ALL
+		  COMMAND ${CMAKE_COMMAND} -E copy_directory ${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Conda/conda-recipe  ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/conda-recipe
+		  COMMENT "Copying Conda Recipe Folder into Binary Directory")
+  set_target_properties(CondaRecipeCopy PROPERTIES FOLDER ZZ_COPY_FILES)
+  add_custom_target(EggInfoCopy ALL
+		  COMMAND ${CMAKE_COMMAND} -E copy_directory ${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Conda/egg-info  ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/src_python)
+  set_target_properties(EggInfoCopy PROPERTIES FOLDER ZZ_COPY_FILES)
+  add_custom_target(MakePythonEggDirectory ALL COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/src_python/dream3d)  
+endif()

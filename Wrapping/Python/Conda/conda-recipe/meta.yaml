@@ -1,0 +1,35 @@
+{% set name = "dream3d" %}
+{% set version = "0.1.0" %}
+
+package:
+  name: "{{ name|lower }}"
+  version: "{{ version }}"
+
+source:
+  path: $RECIPE_DIR/../../src_python
+
+
+requirements:
+  host:
+    - python
+    - numpy
+    - setuptools
+    - pybind11
+    
+  build:
+    - python
+    - numpy
+    - setuptools
+    - pybind11
+
+  run:
+    - python
+    - numpy
+    - setuptools
+    - vs2015_runtime # [win]
+
+about:
+  home: https://github.com/BlueQuartzSoftware/DREAM3D
+  license: BSD
+  license_file: LICENSE
+  summary: An advanced data analysis package suited for material science and engineering.

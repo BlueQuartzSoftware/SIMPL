@@ -128,6 +128,13 @@ function(CreatePybind11Module)
       set (PLUGIN_DEBUG_EXTENSION $<$<CONFIG:Debug>:"_debug">)
       set (QT_DEBUG_EXTENSION $<$<CONFIG:Debug>:"d">)
       set (OTHER_DEBUG_EXTENSION $<$<CONFIG:Debug>:"_D">)
+  
+      # Copy all necessary content from the CMake output directory to the "egg" directory
+      if (SIMPL_PYTHON_BUILD_CONDA_PACKAGE)
+        set(copy_dest "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/src_python/dream3d")
+  
+        add_custom_command(TARGET ${SIMPL_PY_MODULE_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR} ${copy_dest})
+      endif()
     endif()
     
   else()
