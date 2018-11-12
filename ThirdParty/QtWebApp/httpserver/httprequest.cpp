@@ -199,7 +199,7 @@ void HttpRequest::readBody(QTcpSocket* socket)
       qDebug("HttpRequest: received whole multipart body");
 #endif
       tempFile->flush();
-      if(tempFile->error())
+      if(tempFile->error() != 0u)
       {
         qCritical("HttpRequest: Error writing temp file for multipart body");
       }
@@ -272,7 +272,7 @@ void HttpRequest::extractCookies()
       QByteArray name;
       QByteArray value;
       int posi = part.indexOf('=');
-      if(posi)
+      if(posi != 0)
       {
         name = part.left(posi).trimmed();
         value = part.mid(posi + 1).trimmed();
@@ -400,14 +400,14 @@ void HttpRequest::parseMultiPartFile()
   qDebug("HttpRequest: parsing multipart temp file");
   tempFile->seek(0);
   bool finished = false;
-  while(!tempFile->atEnd() && !finished && !tempFile->error())
+  while(!tempFile->atEnd() && !finished && (tempFile->error() == 0u))
   {
 #ifdef SUPERVERBOSE
     qDebug("HttpRequest: reading multpart headers");
 #endif
     QByteArray fieldName;
     QByteArray fileName;
-    while(!tempFile->atEnd() && !finished && !tempFile->error())
+    while(!tempFile->atEnd() && !finished && (tempFile->error() == 0u))
     {
       QByteArray line = tempFile->readLine(65536).trimmed();
       if(line.startsWith("Content-Disposition:"))
@@ -446,7 +446,7 @@ void HttpRequest::parseMultiPartFile()
 #endif
     QTemporaryFile* uploadedFile = 0;
     QByteArray fieldValue;
-    while(!tempFile->atEnd() && !finished && !tempFile->error())
+    while(!tempFile->atEnd() && !finished && (tempFile->error() == 0u))
     {
       QByteArray line = tempFile->readLine(65536);
       if(line.startsWith("--" + boundary))
@@ -480,8 +480,7 @@ void HttpRequest::parseMultiPartFile()
         }
         break;
       }
-      else
-      {
+
         if(fileName.isEmpty() && !fieldName.isEmpty())
         {
           // this is a form field.
@@ -491,21 +490,20 @@ void HttpRequest::parseMultiPartFile()
         else if(!fileName.isEmpty() && !fieldName.isEmpty())
         {
           // this is a file
-          if(!uploadedFile)
+          if(uploadedFile == nullptr)
           {
             uploadedFile = new QTemporaryFile();
             uploadedFile->open();
           }
           uploadedFile->write(line);
-          if(uploadedFile->error())
+          if(uploadedFile->error() != 0u)
           {
             qCritical("HttpRequest: error writing temp file, %s", qPrintable(uploadedFile->errorString()));
           }
         }
-      }
     }
   }
-  if(tempFile->error())
+  if(tempFile->error() != 0u)
   {
     qCritical("HttpRequest: cannot read temp file, %s", qPrintable(tempFile->errorString()));
   }

@@ -141,13 +141,13 @@ void DataContainerArrayWidget::updateView()
   model = qobject_cast<QStandardItemModel*>(dcaProxyView->model());
 
   QItemSelectionModel* selectionModel = dcaProxyView->selectionModel();
-  if(selectionModel)
+  if(selectionModel != nullptr)
   {
     connect(selectionModel, SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)), this, SLOT(dcaProxyView_indexChanged(const QModelIndex&, const QModelIndex&)));
   }
 
   // Sanity check model
-  if(!model)
+  if(model == nullptr)
   {
     Q_ASSERT_X(model, "Model was not a QStandardItemModel in QColumnView", "");
     return;
@@ -170,7 +170,7 @@ void DataContainerArrayWidget::updateView()
 
     dcItem->setData(dc->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
 
-    if(path.size() > 0 && dc->getName().compare(path[0]) == 0)
+    if(!path.empty() && dc->getName().compare(path[0]) == 0)
     {
       dcaProxyView->setCurrentIndex(model->indexFromItem(dcItem));
     }

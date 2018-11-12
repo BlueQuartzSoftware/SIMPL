@@ -53,7 +53,7 @@ QStringList StringOperations::TokenizeString(QString line, QList<char> delimiter
 {
   QStringList tokenList;
 
-  if(delimiters.isEmpty() == true)
+  if(delimiters.isEmpty())
   {
     tokenList.push_back(line);
     return tokenList;
@@ -63,16 +63,16 @@ QStringList StringOperations::TokenizeString(QString line, QList<char> delimiter
   for(int i = 0; i < line.size(); i++)
   {
     char character = line.at(i).toLatin1();
-    if(delimiters.contains(character) == true)
+    if(delimiters.contains(character))
     {
       QString token = line.mid(start, i - start);
-      if(token.isEmpty() == false)
+      if(!token.isEmpty())
       {
         tokenList.push_back(token);
 
-        if(consecutiveDelimiters == true)
+        if(consecutiveDelimiters)
         {
-          while(i < line.size() - 1 && delimiters.contains(character) == true)
+          while(i < line.size() - 1 && delimiters.contains(character))
           {
             i++;
             character = line.at(i).toLatin1();
@@ -86,7 +86,7 @@ QStringList StringOperations::TokenizeString(QString line, QList<char> delimiter
   }
 
   QString token = line.mid(start, line.size() - start);
-  if(token.isEmpty() == false)
+  if(!token.isEmpty())
   {
     tokenList.push_back(token);
   }

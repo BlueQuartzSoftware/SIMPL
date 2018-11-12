@@ -280,7 +280,7 @@ void FeatureDataCSVWriter::execute()
     outFile << "\n";
   }
 
-  if(m_WriteNeighborListData == true)
+  if(m_WriteNeighborListData)
   {
     // Print the FeatureIds Header before the rest of the headers
     // Loop throught the list and print the rest of the headers, ignoring those we don't want
@@ -322,7 +322,7 @@ AbstractFilter::Pointer FeatureDataCSVWriter::newFilterInstance(bool copyFilterP
   * WriteNeighborListData
   */
   FeatureDataCSVWriter::Pointer filter = FeatureDataCSVWriter::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

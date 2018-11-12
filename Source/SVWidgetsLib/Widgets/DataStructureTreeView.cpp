@@ -133,10 +133,10 @@ DataArrayPath DataStructureTreeView::getDataArrayPath(QModelIndex index)
   if(index.isValid())
   {
     QStandardItem* item = stdModel->itemFromIndex(index);
-    if(item->parent())
+    if(item->parent() != nullptr)
     {
       QStandardItem* parentItem = item->parent();
-      if(parentItem->parent())
+      if(parentItem->parent() != nullptr)
       {
         path.setDataContainerName(parentItem->parent()->text());
         path.setAttributeMatrixName(parentItem->text());
@@ -168,7 +168,7 @@ void DataStructureTreeView::emitFilterPath(QModelIndex& index)
     return;
   }
 
-  if(false == index.isValid())
+  if(!index.isValid())
   {
     emit endDataStructureFiltering();
     return;
@@ -198,7 +198,7 @@ void DataStructureTreeView::mouseMoveEvent(QMouseEvent* event)
 {
   QTreeView::mouseMoveEvent(event);
 
-  if(event->buttons() & Qt::LeftButton)
+  if(event->buttons() & static_cast<int>(Qt::LeftButton != 0u != 0u))
   {
     QModelIndex index = indexAt(m_StartPos);
     if(m_Delegate->isFiltered() && !m_Delegate->indexMatchesReqs(index))
@@ -245,7 +245,7 @@ void DataStructureTreeView::leaveEvent(QEvent* event)
 void DataStructureTreeView::performDrag()
 {
   QModelIndex index = indexAt(m_StartPos);
-  if(false == index.isValid())
+  if(!index.isValid())
   {
     return;
   }
@@ -290,7 +290,7 @@ void DataStructureTreeView::dragEnterEvent(QDragEnterEvent* event)
   if(event->mimeData()->hasFormat(SIMPLView::DragAndDrop::SelectionWidget))
   {
     DataArrayPathSelectionWidget* selectionWidget = dynamic_cast<DataArrayPathSelectionWidget*>(event->source());
-    if(selectionWidget)
+    if(selectionWidget != nullptr)
     {
       event->accept();
       return;
@@ -309,11 +309,11 @@ void DataStructureTreeView::dragMoveEvent(QDragMoveEvent* event)
   if(event->mimeData()->hasFormat(SIMPLView::DragAndDrop::SelectionWidget))
   {
     DataArrayPathSelectionWidget* selectionWidget = dynamic_cast<DataArrayPathSelectionWidget*>(event->source());
-    if(selectionWidget)
+    if(selectionWidget != nullptr)
     {
       // Get the DataArrayPath under the cursor
       QModelIndex index = indexAt(event->pos());
-      if(false == index.isValid())
+      if(!index.isValid())
       {
         return;
       }
@@ -341,10 +341,10 @@ void DataStructureTreeView::dropEvent(QDropEvent* event)
   if(event->mimeData()->hasFormat(SIMPLView::DragAndDrop::SelectionWidget))
   {
     DataArrayPathSelectionWidget* selectionWidget = dynamic_cast<DataArrayPathSelectionWidget*>(event->source());
-    if(selectionWidget)
+    if(selectionWidget != nullptr)
     {
       QModelIndex index = indexAt(event->pos());
-      if(false == index.isValid())
+      if(!index.isValid())
       {
         return;
       }
@@ -369,7 +369,7 @@ void DataStructureTreeView::dropEvent(QDropEvent* event)
 void DataStructureTreeView::mouseDoubleClickEvent(QMouseEvent* event)
 {
   QModelIndex index = indexAt(event->pos());
-  if(false == index.isValid())
+  if(!index.isValid())
   {
     return;
   }

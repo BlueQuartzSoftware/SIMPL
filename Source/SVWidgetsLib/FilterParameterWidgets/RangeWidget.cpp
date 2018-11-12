@@ -133,7 +133,7 @@ void RangeWidget::filterNeedsInputParameters(AbstractFilter* filter)
   var.setValue(pair);
   QString propertyName = PROPERTY_NAME_AS_CHAR;
   bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-  if(false == ok)
+  if(!ok)
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

@@ -140,7 +140,7 @@ void Breakpoint::resumePipeline()
 AbstractFilter::Pointer Breakpoint::newFilterInstance(bool copyFilterParameters) const
 {
   Breakpoint::Pointer filter = Breakpoint::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

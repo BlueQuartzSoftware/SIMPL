@@ -47,7 +47,6 @@
 //
 // -----------------------------------------------------------------------------
 NegativeOperator::NegativeOperator()
-: CalculatorOperator()
 {
   setOperatorType(Unary);
   setPrecedence(D_Precedence);
@@ -63,7 +62,7 @@ NegativeOperator::~NegativeOperator() = default;
 // -----------------------------------------------------------------------------
 void NegativeOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
 {
-  if(executionStack.size() >= 1)
+  if(!executionStack.empty())
   {
     ICalculatorArray::Pointer arrayPtr = executionStack.pop();
 
@@ -97,9 +96,9 @@ CalculatorItem::ErrorCode NegativeOperator::checkValidity(QVector<CalculatorItem
     errMsg = QObject::tr("The negative operator '%1' does not have a valid 'left' value.").arg(getInfixToken());
     return NegativeOperator::ErrorCode::OPERATOR_NO_LEFT_VALUE;
   }
-  else if(currentIndex + 1 >= infixVector.size() || (currentIndex + 1 < infixVector.size() && (nullptr == std::dynamic_pointer_cast<ICalculatorArray>(infixVector[currentIndex + 1]) &&
-                                                                                               nullptr == std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[currentIndex + 1]) &&
-                                                                                               nullptr == std::dynamic_pointer_cast<UnaryOperator>(infixVector[currentIndex + 1]))))
+  if(currentIndex + 1 >= infixVector.size() || (currentIndex + 1 < infixVector.size() && (nullptr == std::dynamic_pointer_cast<ICalculatorArray>(infixVector[currentIndex + 1]) &&
+                                                                                          nullptr == std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[currentIndex + 1]) &&
+                                                                                          nullptr == std::dynamic_pointer_cast<UnaryOperator>(infixVector[currentIndex + 1]))))
   {
     // The symbol to the right of the negative sign is not an array, left parenthesis, or unary operator
     errMsg = QObject::tr("The negative operator '%1' does not have a valid 'right' value.").arg(getInfixToken());

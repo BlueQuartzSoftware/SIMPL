@@ -55,7 +55,7 @@ ColorPresetsDialogTableModel::~ColorPresetsDialogTableModel() = default;
 // -----------------------------------------------------------------------------
 QModelIndex ColorPresetsDialogTableModel::indexFromName(const char* presetName) const
 {
-  if (!presetName)
+  if(presetName == nullptr)
   {
     return QModelIndex();
   }

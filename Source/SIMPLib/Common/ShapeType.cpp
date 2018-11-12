@@ -169,15 +169,15 @@ ShapeType::Type ShapeType::getShapeType(const char* str)
   {
     return Type::Ellipsoid;
   }
-  else if(SuperEllipsoid().compare(str) == 0)
+  if(SuperEllipsoid().compare(str) == 0)
   {
     return Type::SuperEllipsoid;
   }
-  else if(CubeOctahedronStr().compare(str) == 0)
+  if(CubeOctahedronStr().compare(str) == 0)
   {
     return Type::CubeOctahedron;
   }
-  else if(CylinderAStr().compare(str) == 0)
+  if(CylinderAStr().compare(str) == 0)
   {
     return Type::CylinderA;
   }

@@ -72,7 +72,7 @@ void FavoritesChangedDialog::on_outputDir_textChanged(const QString& text)
 {
   QFileInfo fi(text);
 
-  if(fi.exists() == false)
+  if(!fi.exists())
   {
     exportBtn->setDisabled(true);
   }

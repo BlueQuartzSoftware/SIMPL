@@ -117,7 +117,7 @@ void ShapeTypeSelectionWidget::updateComboBoxes()
   // If there is a PhaseName array in the Ensemble AttributeMatrix then use that to
   // label the QComboBoxes.
   AbstractFilter* filter = getFilter();
-  if(filter)
+  if(filter != nullptr)
   {
     DataArrayPath phasePath = getFilter()->property("InputPhaseTypesArrayPath").value<DataArrayPath>();
     phasePath.setDataArrayName("PhaseName");
@@ -173,7 +173,7 @@ void ShapeTypeSelectionWidget::updateComboBoxes()
     {
       shapeTypeLabel = new QLabel(m_ShapeTypeScrollContents);
       QString str;
-      if(names.get() && names->getNumberOfTuples() > 0)
+      if((names.get() != nullptr) && names->getNumberOfTuples() > 0)
       {
         str = names->getValue(i);
       }
@@ -206,7 +206,7 @@ void ShapeTypeSelectionWidget::updateComboBoxes()
       shapeTypeComboBox = m_ShapeTypeCombos.at(i-1);
 
       QString str;
-      if(names.get() && names->getNumberOfTuples() > 0)
+      if((names.get() != nullptr) && names->getNumberOfTuples() > 0)
       {
         str = names->getValue(i);
       }
@@ -264,7 +264,7 @@ void ShapeTypeSelectionWidget::beforePreflight()
   {
     return;
   }
-  if(m_DidCausePreflight == true)
+  if(m_DidCausePreflight)
   {
     //  std::cout << "***  ShapeTypeSelectionWidget already caused a preflight, just returning" << std::endl;
     return;
@@ -299,7 +299,7 @@ void ShapeTypeSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
   ok = false;
   // Set the value into the Filter
   ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-  if(false == ok)
+  if(!ok)
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

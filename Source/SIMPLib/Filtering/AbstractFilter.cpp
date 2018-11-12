@@ -47,8 +47,7 @@
 //
 // -----------------------------------------------------------------------------
 AbstractFilter::AbstractFilter()
-: Observable()
-, m_ErrorCondition(0)
+: m_ErrorCondition(0)
 , m_WarningCondition(0)
 , m_InPreflight(false)
 , m_Enabled(true)
@@ -303,7 +302,7 @@ std::list<DataArrayPath> AbstractFilter::getCreatedPaths()
     // Check DataContainers
     for(DataContainer::Pointer dc : dca->getDataContainers())
     {
-      if(false == prevDca->doesDataContainerExist(dc->getName()))
+      if(!prevDca->doesDataContainerExist(dc->getName()))
       {
         insertDataContainerPaths(dc, createdPaths);
       }
@@ -313,7 +312,7 @@ std::list<DataArrayPath> AbstractFilter::getCreatedPaths()
         for(AttributeMatrix::Pointer am : dc->getAttributeMatrices())
         {
           DataArrayPath amPath(dc->getName(), am->getName(), "");
-          if(false == prevDca->doesAttributeMatrixExist(amPath))
+          if(!prevDca->doesAttributeMatrixExist(amPath))
           {
             insertAttributeMatrixPaths(dc, am, createdPaths);
           }
@@ -323,7 +322,7 @@ std::list<DataArrayPath> AbstractFilter::getCreatedPaths()
             for(QString daName : am->getAttributeArrayNames())
             {
               DataArrayPath daPath(dc->getName(), am->getName(), daName);
-              if(false == prevDca->doesAttributeArrayExist(daPath))
+              if(!prevDca->doesAttributeArrayExist(daPath))
               {
                 createdPaths.push_back(daPath);
               }

@@ -72,7 +72,7 @@ namespace Detail
 QList<QStandardItem*> findChildItems(QStandardItem* parent, QString text)
 {
   QList<QStandardItem*> list;
-  if(parent->hasChildren() == false)
+  if(!parent->hasChildren())
   {
     return list;
   } // No children, nothing to find
@@ -101,7 +101,7 @@ void removeNonExistantChildren(QStandardItem* parent, QStringList possibleNames)
   {
     QStandardItem* item = parent->child(i);
     QStringList list = possibleNames.filter(item->text());
-    if(list.size() == 0) // the name is in the model but NOT in the proxy so we need to remove it
+    if(list.empty()) // the name is in the model but NOT in the proxy so we need to remove it
     {
       // qDebug() << "!! Removing " << item->text();
       parent->removeRow(i);
@@ -407,8 +407,7 @@ void DataContainerReaderWidget::setupMenuField()
     connect(m_ShowFileAction, SIGNAL(triggered()), this, SLOT(showFileInFileSystem()));
   }
 
-
-  if (m_LineEdit->text().isEmpty() == false && fi.exists())
+  if(!m_LineEdit->text().isEmpty() && fi.exists())
   {
     m_ShowFileAction->setEnabled(true);
   }
@@ -440,7 +439,7 @@ void DataContainerReaderWidget::updateModelFromProxy(DataContainerArrayProxy& pr
 {
   m_DcaProxy = proxy;
   QStandardItemModel* model = qobject_cast<QStandardItemModel*>(dcaProxyView->model());
-  if(!model)
+  if(model == nullptr)
   {
     Q_ASSERT_X(model, "Model was not a QStandardItemModel in QColumnView", "");
     return;
@@ -503,7 +502,7 @@ void DataContainerReaderWidget::updateModelFromProxy(DataContainerArrayProxy& pr
 void DataContainerReaderWidget::updateProxyFromModel()
 {
   QStandardItemModel* model = qobject_cast<QStandardItemModel*>(dcaProxyView->model());
-  if(!model)
+  if(model == nullptr)
   {
     Q_ASSERT_X(model, "Model was not a QStandardItemModel in QColumnView", "");
     return;
@@ -670,7 +669,7 @@ bool DataContainerReaderWidget::verifyPathExists(QString path, QLineEdit* lineEd
 {
   QFileInfo fileinfo(path);
   SVStyle* style = SVStyle::Instance();
-  if(false == fileinfo.exists())
+  if(!fileinfo.exists())
   {
     style->LineEditErrorStyle(lineEdit);
   }
@@ -720,7 +719,7 @@ void DataContainerReaderWidget::updateDCAProxy(const QString& text)
   setOpenDialogLastFilePath(path);
   // Set/Remove the red outline if the file does exist
 
-  if(verifyPathExists(path, m_LineEdit) == true)
+  if(verifyPathExists(path, m_LineEdit))
   {
     if(getFilter() != nullptr)
     {
@@ -732,7 +731,7 @@ void DataContainerReaderWidget::updateDCAProxy(const QString& text)
           model->clear();
         }
 
-        if(m_Filter->getInputFileDataContainerArrayProxy().dataContainers.size() > 0 && (path == m_Filter->getLastFileRead() || m_Filter->getLastFileRead().isEmpty()))
+        if(!m_Filter->getInputFileDataContainerArrayProxy().dataContainers.empty() && (path == m_Filter->getLastFileRead() || m_Filter->getLastFileRead().isEmpty()))
         {
           proxy = m_Filter->getInputFileDataContainerArrayProxy();
         }
@@ -763,7 +762,7 @@ void DataContainerReaderWidget::updateStylingForPath(const QString& text)
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
   QString path = validator->convertToAbsolutePath(text);
 
-  if (hasValidFilePath(path) == true)
+  if(hasValidFilePath(path))
   {
     m_ShowFileAction->setEnabled(true);
   }
@@ -808,7 +807,10 @@ void DataContainerReaderWidget::on_m_LineEdit_returnPressed()
 bool DataContainerReaderWidget::hasValidFilePath(const QString &filePath)
 {
   QStringList pathParts = filePath.split(QDir::separator());
-  if (pathParts.size() <= 0) { return false; }
+  if(pathParts.empty())
+  {
+    return false;
+  }
 
   QString pathBuildUp;
   QFileInfo fi(filePath);
@@ -838,7 +840,7 @@ bool DataContainerReaderWidget::hasValidFilePath(const QString &filePath)
   }
   /* If the first part is empty and the filePath is relative, then that means that
    * we are starting with the first folder part and need to add that to our pathBuildUp */
-  else if (pathParts[0].isEmpty() == false && fi.isRelative())
+  else if(!pathParts[0].isEmpty() && fi.isRelative())
   {
     pathBuildUp.append(pathParts[0] + QDir::separator());
   }
@@ -855,7 +857,7 @@ bool DataContainerReaderWidget::hasValidFilePath(const QString &filePath)
 
   QFileInfo buildingFi(pathBuildUp);
   size_t pathPartsIdx = 1; // We already processed the first path part above
-  while (buildingFi.exists() == true && pathPartsIdx <= pathParts.size())
+  while(buildingFi.exists() && pathPartsIdx <= pathParts.size())
   {
     valid = true;
     m_CurrentlyValidPath = pathBuildUp; // Save the most current, valid built-up path
@@ -905,7 +907,7 @@ void DataContainerReaderWidget::on_selectBtn_clicked()
   QString defaultName = m_OpenDialogLastFilePath;
   QString filePath = QFileDialog::getOpenFileName(this, tr("Select Input File"), defaultName, s);
 
-  if(true == filePath.isEmpty())
+  if(filePath.isEmpty())
   {
     return;
   }

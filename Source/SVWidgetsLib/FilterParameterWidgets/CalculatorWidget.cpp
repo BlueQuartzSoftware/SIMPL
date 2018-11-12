@@ -181,7 +181,7 @@ void CalculatorWidget::printStringToEquation(QString str)
 {
   QString equationText = equation->text();
 
-  if(m_SelectedText.isEmpty() == false && m_SelectionStart >= 0)
+  if(!m_SelectedText.isEmpty() && m_SelectionStart >= 0)
   {
     equationText.replace(m_SelectionStart, m_SelectedText.size(), str);
     equation->setFocus();
@@ -382,7 +382,7 @@ void CalculatorWidget::widgetChanged(const QString& text)
 {
   SVStyle::Instance()->SetErrorColor("QLineEdit", equation);
   equation->setToolTip("Press the 'Return' key to apply your changes");
-  if(applyChangesBtn->isVisible() == false)
+  if(!applyChangesBtn->isVisible())
   {
     applyChangesBtn->setVisible(true);
     fadeInWidget(applyChangesBtn);
@@ -409,7 +409,7 @@ void CalculatorWidget::afterPreflight()
 void CalculatorWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, equation->text());
-  if(false == ok)
+  if(!ok)
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }
@@ -438,7 +438,7 @@ void CalculatorWidget::on_applyChangesBtn_clicked()
   QPointer<QtSFaderWidget> faderWidget = new QtSFaderWidget(applyChangesBtn);
   setFaderWidget(faderWidget);
 
-  if(getFaderWidget())
+  if(getFaderWidget() != nullptr)
   {
     faderWidget->close();
   }

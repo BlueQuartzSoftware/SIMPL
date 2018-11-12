@@ -112,8 +112,10 @@ ImportHDF5TreeModelItem* ImportHDF5TreeModelItem::parent()
 // -----------------------------------------------------------------------------
 int ImportHDF5TreeModelItem::row()
 {
-  if(m_ParentItem)
+  if(m_ParentItem != nullptr)
+  {
     return m_ParentItem->m_ChildItems.indexOf(const_cast<ImportHDF5TreeModelItem*>(this));
+  }
 
   return 0;
 }
@@ -188,7 +190,7 @@ QIcon ImportHDF5TreeModelItem::icon()
 {
   QString iconName = "";
 
-  if(isGroup() == true)
+  if(isGroup())
   {
     iconName = ":/SIMPL/icons/images/folder_blue.png";
   }

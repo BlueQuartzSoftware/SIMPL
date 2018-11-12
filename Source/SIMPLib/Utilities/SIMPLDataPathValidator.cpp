@@ -40,8 +40,7 @@ SIMPLDataPathValidator* SIMPLDataPathValidator::m_Self = nullptr;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPLDataPathValidator::SIMPLDataPathValidator() :
-  QObject()
+SIMPLDataPathValidator::SIMPLDataPathValidator()
 {
   // Default data directory for Macs with choosable data directory turned on (generally for Release builds)
   m_SIMPLDataDirectory = QDir::homePath() + QDir::separator() + tr("%1Data").arg(QCoreApplication::applicationName());
@@ -95,7 +94,7 @@ QString SIMPLDataPathValidator::convertToAbsolutePath(const QString &path)
     parentPath = dir.absolutePath();
 #endif
 
-    if (path.startsWith(QDir::separator()) == false && parentPath.endsWith(QDir::separator()) == false)
+    if(!path.startsWith(QDir::separator()) && !parentPath.endsWith(QDir::separator()))
     {
       absolutePath.prepend(QDir::separator());
     }

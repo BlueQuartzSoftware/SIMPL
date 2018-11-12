@@ -86,7 +86,7 @@ FloatArrayType::Pointer PrecipitateStatsData::generateBinNumbers()
     bins.push_back(d);
     d = d + featureDiameterInfo[0];
   }
-  if(bins.size() > 0)
+  if(!bins.empty())
   {
     // Copy this into the DataArray<float>
     m_BinNumbers = FloatArrayType::CreateArray(bins.size(), SIMPL::StringConstants::BinNumber);

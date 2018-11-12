@@ -121,7 +121,7 @@ HexahedralGeom::~HexahedralGeom() = default;
 // -----------------------------------------------------------------------------
 HexahedralGeom::Pointer HexahedralGeom::CreateGeometry(int64_t numHexas, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
 {
-  if(name.isEmpty() == true)
+  if(name.isEmpty())
   {
     return NullPointer();
   }
@@ -139,7 +139,7 @@ HexahedralGeom::Pointer HexahedralGeom::CreateGeometry(int64_t numHexas, SharedV
 // -----------------------------------------------------------------------------
 HexahedralGeom::Pointer HexahedralGeom::CreateGeometry(SharedHexList::Pointer hexas, SharedVertexList::Pointer vertices, const QString& name)
 {
-  if(name.isEmpty() == true)
+  if(name.isEmpty())
   {
     return NullPointer();
   }
@@ -559,7 +559,7 @@ void HexahedralGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArray
   m_ProgressCounter = 0;
   int64_t numHexas = getNumberOfHexas();
 
-  if(observable)
+  if(observable != nullptr)
   {
     connect(this, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), observable, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
   }
@@ -570,7 +570,7 @@ void HexahedralGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArray
 #endif
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  if(doParallel == true)
+  if(doParallel)
   {
     tbb::parallel_for(tbb::blocked_range<int64_t>(0, numHexas), FindHexDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());
   }

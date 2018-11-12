@@ -110,7 +110,10 @@ void StandardOutputWidget::on_saveLogBtn_clicked()
   QString s = QString("Text Files (*.txt *.log);;All Files(*.*)");
   QString defaultName = m_LastPathOpened + QDir::separator() + "Untitled";
   QString filePath = QFileDialog::getSaveFileName(this, tr("Save File As"), defaultName, s);
-  if (true == filePath.isEmpty()) { return; }
+  if(filePath.isEmpty())
+  {
+    return;
+  }
 
   filePath = QDir::toNativeSeparators(filePath);
 
@@ -134,7 +137,7 @@ void StandardOutputWidget::on_clearLogBtn_clicked()
 
   QSharedPointer<QtSSettings> prefs = QSharedPointer<QtSSettings>(new QtSSettings());
   bool displayDialog = prefs->value("DisplayClearMessageBox", true).toBool();
-  if (displayDialog == true)
+  if(displayDialog)
   {
     QCheckBox* cb = new QCheckBox("Do not ask me this again");
     QMessageBox msgBox;

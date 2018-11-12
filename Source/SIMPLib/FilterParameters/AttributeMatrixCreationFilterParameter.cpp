@@ -38,10 +38,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixCreationFilterParameter::AttributeMatrixCreationFilterParameter()
-: FilterParameter()
-{
-}
+AttributeMatrixCreationFilterParameter::AttributeMatrixCreationFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

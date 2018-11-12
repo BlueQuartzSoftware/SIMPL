@@ -92,7 +92,7 @@ void FileSystemPathHelper::CheckOutputFile(AbstractFilter* filter,
 #endif
 
   QFileInfo dirInfo(fi.path());
-  if(dirInfo.isWritable() == false && parentPath.exists() == true)
+  if(!dirInfo.isWritable() && parentPath.exists())
   {
     filter->setErrorCondition(-10002);
     QString ss = QObject::tr("The user does not have the proper permissions to write to the output file");

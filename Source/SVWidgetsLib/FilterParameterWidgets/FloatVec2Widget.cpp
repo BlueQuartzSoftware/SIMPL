@@ -117,7 +117,7 @@ void FloatVec2Widget::widgetChanged(const QString& text)
 
   errorLabel->hide();
 
-  if(le)
+  if(le != nullptr)
   {
     if(le->text().isEmpty())
     {
@@ -163,7 +163,7 @@ void FloatVec2Widget::filterNeedsInputParameters(AbstractFilter* filter)
   QVariant v;
   v.setValue(data);
   ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
-  if(false == ok)
+  if(!ok)
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

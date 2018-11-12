@@ -73,7 +73,7 @@ DataArrayPath::DataArrayPath(const QString& path)
 {
   QStringList tokens = path.split(SIMPL::PathSep);
 
-  if(tokens.size() > 0)
+  if(!tokens.empty())
   {
     m_DataContainerName = tokens.at(0);
   }
@@ -131,12 +131,7 @@ void DataArrayPath::operator=(const DataArrayPath& rhs)
 // -----------------------------------------------------------------------------
 bool DataArrayPath::operator==(const DataArrayPath& rhs) const
 {
-  if(m_DataContainerName == rhs.getDataContainerName() && m_AttributeMatrixName == rhs.getAttributeMatrixName() && m_DataArrayName == rhs.getDataArrayName())
-  {
-    return true;
-  }
-
-  return false;
+  return m_DataContainerName == rhs.getDataContainerName() && m_AttributeMatrixName == rhs.getAttributeMatrixName() && m_DataArrayName == rhs.getDataArrayName();
 }
 
 // -----------------------------------------------------------------------------
@@ -145,14 +140,14 @@ bool DataArrayPath::operator==(const DataArrayPath& rhs) const
 QString DataArrayPath::serialize(QString delimiter) const
 {
   QString s = "";
-  if(m_DataContainerName.isEmpty() == false)
+  if(!m_DataContainerName.isEmpty())
   {
     s = m_DataContainerName;
-    if(m_AttributeMatrixName.isEmpty() == false)
+    if(!m_AttributeMatrixName.isEmpty())
     {
       s = s.append(delimiter);
       s = s.append(m_AttributeMatrixName);
-      if(m_DataArrayName.isEmpty() == false)
+      if(!m_DataArrayName.isEmpty())
       {
         s = s.append(delimiter);
         s = s.append(m_DataArrayName);
@@ -206,7 +201,7 @@ DataArrayPath DataArrayPath::Deserialize(QString str, QString delimiter)
 bool DataArrayPath::CheckRenamePath(DataContainerArrayShPtr oldDca, DataContainerArrayShPtr newDca, DataArrayPath oldPath, DataArrayPath newPath)
 {
   // If the paths are not possible renames, return false
-  if(false == oldPath.possibleRename(newPath))
+  if(!oldPath.possibleRename(newPath))
   {
     return false;
   }
@@ -222,7 +217,7 @@ bool DataArrayPath::CheckRenamePath(DataContainerArrayShPtr oldDca, DataContaine
     IGeometry::Pointer newGeom = newDc->getGeometry();
 
     bool hasGeom = oldGeom && newGeom;
-    if((hasGeom && oldGeom->getGeometryType() == newGeom->getGeometryType()) || false == hasGeom)
+    if((hasGeom && oldGeom->getGeometryType() == newGeom->getGeometryType()) || !hasGeom)
     {
       // No Attribute Matrix path
       if(oldPath.getAttributeMatrixName().isEmpty() && newPath.getAttributeMatrixName().isEmpty())
@@ -336,15 +331,15 @@ DataArrayPath::DataType DataArrayPath::getDataType()
   {
     return DataType::None;
   }
-  else if(getAttributeMatrixName().isEmpty() && getDataArrayName().isEmpty())
+  if(getAttributeMatrixName().isEmpty() && getDataArrayName().isEmpty())
   {
     return DataType::DataContainer;
   }
-  else if(getDataArrayName().isEmpty())
+  if(getDataArrayName().isEmpty())
   {
     return DataType::AttributeMatrix;
   }
-  else if(false == getAttributeMatrixName().isEmpty())
+  if(!getAttributeMatrixName().isEmpty())
   {
     return DataType::DataArray;
   }
@@ -369,11 +364,7 @@ QVector<QString> DataArrayPath::toQVector()
 // -----------------------------------------------------------------------------
 bool DataArrayPath::isEmpty() const
 {
-  if(m_DataContainerName.isEmpty() && m_AttributeMatrixName.isEmpty() && m_DataArrayName.isEmpty())
-  {
-    return true;
-  }
-  return false;
+  return m_DataContainerName.isEmpty() && m_AttributeMatrixName.isEmpty() && m_DataArrayName.isEmpty();
 }
 
 // -----------------------------------------------------------------------------
@@ -381,11 +372,7 @@ bool DataArrayPath::isEmpty() const
 // -----------------------------------------------------------------------------
 bool DataArrayPath::isValid() const
 {
-  if(m_DataContainerName.isEmpty() == false && m_AttributeMatrixName.isEmpty() == false && m_DataArrayName.isEmpty() == false)
-  {
-    return true;
-  }
-  return false;
+  return !m_DataContainerName.isEmpty() && !m_AttributeMatrixName.isEmpty() && !m_DataArrayName.isEmpty();
 }
 
 // -----------------------------------------------------------------------------
@@ -411,10 +398,8 @@ DataArrayPath DataArrayPath::GetAttributeMatrixPath(const QVector<DataArrayPath>
   {
     return DataArrayPath();
   }
-  else
-  {
+
     return DataArrayPath(paths.first().getDataContainerName(), paths.first().getAttributeMatrixName(), "");
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -480,36 +465,31 @@ bool DataArrayPath::possibleRename(const DataArrayPath& updated) const
   {
     return false;
   }
-  else if(updated.getAttributeMatrixName().isEmpty() != getAttributeMatrixName().isEmpty())
+  if(updated.getAttributeMatrixName().isEmpty() != getAttributeMatrixName().isEmpty())
   {
     return false;
   }
-  else if(updated.getDataArrayName().isEmpty() != getDataArrayName().isEmpty())
+  if(updated.getDataArrayName().isEmpty() != getDataArrayName().isEmpty())
   {
     return false;
   }
 
   // Check number of differences
   int differences = 0;
-  if(false == hasSameDataArray(updated))
+  if(!hasSameDataArray(updated))
   {
     differences++;
   }
-  if(false == hasSameAttributeMatrix(updated))
+  if(!hasSameAttributeMatrix(updated))
   {
     differences++;
   }
-  if(false == hasSameDataContainer(updated))
+  if(!hasSameDataContainer(updated))
   {
     differences++;
   }
 
-  if(1 == differences)
-  {
-    return true;
-  }
-
-  return false;
+  return 1 == differences;
 }
 
 // -----------------------------------------------------------------------------
@@ -522,19 +502,19 @@ bool DataArrayPath::updatePath(const DataArrayPath::RenameType& renamePath)
   std::tie(oldPath, newPath) = renamePath;
 
   // Check for differences with original path
-  if(false == hasSameDataArray(oldPath) && false == oldPath.getDataArrayName().isEmpty())
+  if(!hasSameDataArray(oldPath) && !oldPath.getDataArrayName().isEmpty())
   {
     return false;
   }
-  else if(false == hasSameAttributeMatrix(oldPath) && false == oldPath.getAttributeMatrixName().isEmpty())
+  if(!hasSameAttributeMatrix(oldPath) && !oldPath.getAttributeMatrixName().isEmpty())
   {
     return false;
   }
-  else if(false == hasSameDataContainer(oldPath) && false == oldPath.getDataContainerName().isEmpty())
+  if(!hasSameDataContainer(oldPath) && !oldPath.getDataContainerName().isEmpty())
   {
     return false;
   }
-  else if(oldPath.getDataContainerName().isEmpty() || newPath.getDataContainerName().isEmpty())
+  if(oldPath.getDataContainerName().isEmpty() || newPath.getDataContainerName().isEmpty())
   {
     return false;
   }
@@ -570,11 +550,9 @@ bool DataArrayPath::ValidateVector(const QVector<DataArrayPath>& other)
   {
     return true;
   }
-  else
-  {
+
     dcName = other.first().getDataContainerName();
     amName = other.first().getAttributeMatrixName();
-  }
 
   for(int i = 0; i < other.size(); ++i)
   {

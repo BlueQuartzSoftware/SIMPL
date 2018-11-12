@@ -88,10 +88,10 @@ ImportHDF5DatasetWidget::ImportHDF5DatasetWidget(FilterParameter* parameter, Abs
   setupUi(this);
   setupGui();
 
-  if(m_Filter)
+  if(m_Filter != nullptr)
   {
     QString currentPath = m_Filter->property(PROPERTY_NAME_AS_CHAR).toString();
-    if(currentPath.isEmpty() == false)
+    if(!currentPath.isEmpty())
     {
       currentPath = QDir::toNativeSeparators(currentPath);
       // Store the last used directory into the private instance variable
@@ -152,7 +152,7 @@ void ImportHDF5DatasetWidget::setupGui()
   {
     QString hdf5FilePath = m_Filter->getHDF5FilePath();
 
-    if(hdf5FilePath.isEmpty() == false)
+    if(!hdf5FilePath.isEmpty())
     {
       value->setText(hdf5FilePath);
 
@@ -193,13 +193,13 @@ void ImportHDF5DatasetWidget::initializeHDF5Paths()
       QModelIndex parentIdx = treeModel->index(0, 0);
       hdfTreeView->expand(parentIdx);
       treeModel->setData(parentIdx, Qt::Checked, Qt::CheckStateRole);
-      while(hdf5PathTokens.size() > 0)
+      while(!hdf5PathTokens.empty())
       {
         QString hdf5PathToken = hdf5PathTokens.front();
         QString dsetToken = hdf5PathTokens.back();
         hdf5PathTokens.pop_front();
         QModelIndexList idxList = treeModel->match(treeModel->index(0, 0, parentIdx), Qt::DisplayRole, hdf5PathToken);
-        if(idxList.size() > 0)
+        if(!idxList.empty())
         {
           QModelIndex foundIdx = idxList[0];
           hdfTreeView->expand(foundIdx);
@@ -229,7 +229,7 @@ void ImportHDF5DatasetWidget::initializeHDF5Paths()
 bool ImportHDF5DatasetWidget::verifyPathExists(QString filePath, QtSFSDropLabel* lineEdit)
 {
   QFileInfo fileinfo(filePath);
-  if(false == fileinfo.exists())
+  if(!fileinfo.exists())
   {
     lineEdit->changeStyleSheet(QtSFSDropLabel::FS_DOESNOTEXIST_STYLE);
   }
@@ -248,7 +248,7 @@ void ImportHDF5DatasetWidget::on_value_fileDropped(const QString& text)
   m_OpenDialogLastDirectory = text;
 
   // Set/Remove the red outline if the file does exist
-  if(verifyPathExists(text, value) == true)
+  if(verifyPathExists(text, value))
   {
     if(initWithFile(text))
     {
@@ -265,7 +265,7 @@ void ImportHDF5DatasetWidget::on_selectBtn_clicked()
   QString s = QString("HDF5 Files (*.hdf5 *.h5);;All Files(*.*)");
   QString file = QFileDialog::getOpenFileName(this, tr("Select HDF5 File"), m_OpenDialogLastDirectory, s);
 
-  if(true == file.isEmpty())
+  if(file.isEmpty())
   {
     return;
   }
@@ -299,12 +299,12 @@ void ImportHDF5DatasetWidget::dragEnterEvent(QDragEnterEvent* e)
 {
   const QMimeData* dat = e->mimeData();
   QList<QUrl> urls = dat->urls();
-  QString file = urls.count() ? urls[0].toLocalFile() : QString();
+  QString file = urls.count() != 0 ? urls[0].toLocalFile() : QString();
   QDir parent(file);
   m_OpenDialogLastDirectory = parent.dirName();
   QFileInfo fi(file);
   QString ext = fi.suffix();
-  if(fi.exists() && fi.isFile() && (ext.compare("dream3d") || ext.compare("h5") || ext.compare("hdf5")))
+  if(fi.exists() && fi.isFile() && ((ext.compare("dream3d") != 0) || (ext.compare("h5") != 0) || (ext.compare("hdf5") != 0)))
   {
     e->accept();
   }
@@ -321,17 +321,17 @@ void ImportHDF5DatasetWidget::dropEvent(QDropEvent* e)
 {
   const QMimeData* dat = e->mimeData();
   QList<QUrl> urls = dat->urls();
-  QString file = urls.count() ? urls[0].toLocalFile() : QString();
+  QString file = urls.count() != 0 ? urls[0].toLocalFile() : QString();
   QDir parent(file);
   m_OpenDialogLastDirectory = parent.dirName();
   QFileInfo fi(file);
   QString ext = fi.suffix();
   file = QDir::toNativeSeparators(file);
-  if(fi.exists() && fi.isFile() && (ext.compare("h5") || ext.compare("hdf5") || ext.compare("dream3d")))
+  if(fi.exists() && fi.isFile() && ((ext.compare("h5") != 0) || (ext.compare("hdf5") != 0) || (ext.compare("dream3d") != 0)))
   {
     QDir parent(file);
     m_OpenDialogLastDirectory = parent.dirName();
-    if(initWithFile(file) == true)
+    if(initWithFile(file))
     {
       emit parametersChanged();
     }
@@ -343,7 +343,7 @@ void ImportHDF5DatasetWidget::dropEvent(QDropEvent* e)
 // -----------------------------------------------------------------------------
 bool ImportHDF5DatasetWidget::initWithFile(QString hdf5File)
 {
-  if(true == hdf5File.isNull())
+  if(hdf5File.isNull())
   {
     return false;
   }
@@ -357,10 +357,8 @@ bool ImportHDF5DatasetWidget::initWithFile(QString hdf5File)
 
   // Delete the old model
   QAbstractItemModel* oldModel = hdfTreeView->model();
-  if(oldModel != nullptr)
-  {
+
     delete oldModel;
-  }
 
   m_ComponentDimsMap.clear();
 
@@ -524,7 +522,7 @@ herr_t ImportHDF5DatasetWidget::updateGeneralTable(const QString& path)
   addRow(generalTable, row, "Object ID", objectIdString);
   ++row;
 
-  if(isGroup == false)
+  if(!isGroup)
   {
     generalTable->setRowCount(7);
     H5T_class_t classType;
@@ -757,7 +755,7 @@ herr_t ImportHDF5DatasetWidget::updateComponentDimensions(const QString& path)
     QString cDimsStr;
     std::tie(err, cDimsStr) = bestGuess;
 
-    if(!cDimsStr.isEmpty() && !err)
+    if(!cDimsStr.isEmpty() && (err == 0))
     {
       cDimsLE->setText(cDimsStr);
     }
@@ -843,7 +841,7 @@ std::tuple<herr_t, QString> ImportHDF5DatasetWidget::bestGuessCDims(const QStrin
       }
     }
 
-    if(fileDims.size() > 0)
+    if(!fileDims.empty())
     {
       cDimsStr = QString::number(fileDims[0]);
       for(int i = 1; i < fileDims.size(); i++)
@@ -854,7 +852,7 @@ std::tuple<herr_t, QString> ImportHDF5DatasetWidget::bestGuessCDims(const QStrin
 
       m_ComponentDimsMap.insert(path, cDimsStr);
     }
-    else if(fileDimsSize == amTupleDims.size() && amTupleDims.size() != 0)
+    else if(fileDimsSize == amTupleDims.size() && !amTupleDims.empty())
     {
       // If no dimensions remain, and the starting dimension sizes were the same, set component dimension to 1
       cDimsStr = QString::number(1);
@@ -940,13 +938,13 @@ void ImportHDF5DatasetWidget::beforePreflight()
     QStringList selectedPaths = treeModel->getSelectedHDF5Paths();
     for(QString selectedPath : selectedPaths)
     {
-      if(false == m_ComponentDimsMap.contains(selectedPath))
+      if(!m_ComponentDimsMap.contains(selectedPath))
       {
         herr_t err;
         QString bestCDimGuess;
         std::tie(err, bestCDimGuess) = bestGuessCDims(selectedPath);
 
-        if(!bestCDimGuess.isEmpty() && !err)
+        if(!bestCDimGuess.isEmpty() && (err == 0))
         {
           m_ComponentDimsMap[selectedPath] = bestCDimGuess;
         }

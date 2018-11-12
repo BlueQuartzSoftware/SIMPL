@@ -77,7 +77,7 @@ ColorPresetsDialog::ColorPresetsDialog(QWidget* parentObject) :
   this->connect(ui.okBtn, SIGNAL(clicked()), SLOT(triggerApply()));
   this->connect(ui.cancelBtn, SIGNAL(clicked()), SLOT(cancel()));
 
-  if (ui.gradients->selectionModel()->selectedRows().size() <= 0)
+  if(ui.gradients->selectionModel()->selectedRows().empty())
   {
     ui.okBtn->setDisabled(true);
   }

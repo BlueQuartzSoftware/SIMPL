@@ -115,7 +115,7 @@ AddFilterCommand::~AddFilterCommand() = default;
 // -----------------------------------------------------------------------------
 void AddFilterCommand::undo()
 {
-  if(m_Filters.size() <= 0)
+  if(m_Filters.empty())
   {
     return;
   }
@@ -152,7 +152,7 @@ void AddFilterCommand::undo()
 // -----------------------------------------------------------------------------
 void AddFilterCommand::redo()
 {
-  if(m_Filters.size() <= 0)
+  if(m_Filters.empty())
   {
     return;
   }
@@ -177,7 +177,7 @@ void AddFilterCommand::redo()
     statusMessage = QObject::tr("Added '%1' filter at index %2").arg(m_Filters[0]->getHumanLabel()).arg(m_FilterRows[0] + 1);
   }
 
-  if(m_FirstRun == false)
+  if(!m_FirstRun)
   {
     statusMessage.prepend("Redo \"");
     statusMessage.append('\"');
@@ -210,12 +210,12 @@ void AddFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertionIn
 
   connectFilterSignalsSlots(filter);
 
-  if(filter->getEnabled() == false)
+  if(!filter->getEnabled())
   {
     model->setData(filterIndex, static_cast<int>(PipelineItem::WidgetState::Disabled), PipelineModel::WidgetStateRole);
   }
 
-  if(m_UseAnimationOnFirstRun == false && m_FirstRun == true)
+  if(!m_UseAnimationOnFirstRun && m_FirstRun)
   {
     QSize size = model->data(filterIndex, Qt::SizeHintRole).toSize();
     model->setData(filterIndex, size.height(), PipelineModel::Roles::HeightRole);

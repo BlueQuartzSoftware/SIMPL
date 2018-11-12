@@ -43,8 +43,7 @@
 //
 // -----------------------------------------------------------------------------
 ComparisonSet::ComparisonSet()
-: AbstractComparison()
-, m_invertComparison(false)
+: m_invertComparison(false)
 {
 }
 
@@ -179,8 +178,10 @@ void ComparisonSet::insertComparison(int index, AbstractComparison::Pointer comp
 // -----------------------------------------------------------------------------
 bool ComparisonSet::hasComparisonValue()
 {
-  if(m_comparisons.size() == 0)
+  if(m_comparisons.empty())
+  {
     return false;
+  }
 
   for(int i = 0; i < m_comparisons.size(); i++)
   {

@@ -83,7 +83,7 @@ int32_t SanityCheckFileSizeVersusAllocatedSize(size_t allocatedBytes, size_t fil
   {
     return -1;
   }
-  else if(fileSize - skipHeaderBytes > allocatedBytes)
+  if(fileSize - skipHeaderBytes > allocatedBytes)
   {
     return 1;
   }
@@ -238,13 +238,13 @@ void RawBinaryReader::dataCheck()
   setWarningCondition(0);
 
   QFileInfo fi(getInputFile());
-  if(getInputFile().isEmpty() == true)
+  if(getInputFile().isEmpty())
   {
     QString ss = QObject::tr("The input file must be set");
     setErrorCondition(-387);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
-  else if(fi.exists() == false)
+  else if(!fi.exists())
   {
     QString ss = QObject::tr("The input file does not exist");
     setErrorCondition(-388);
@@ -510,7 +510,7 @@ void RawBinaryReader::execute()
 AbstractFilter::Pointer RawBinaryReader::newFilterInstance(bool copyFilterParameters) const
 {
   RawBinaryReader::Pointer filter = RawBinaryReader::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

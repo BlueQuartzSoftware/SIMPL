@@ -72,7 +72,7 @@ VertexGeom::~VertexGeom() = default;
 // -----------------------------------------------------------------------------
 VertexGeom::Pointer VertexGeom::CreateGeometry(int64_t numVertices, const QString& name, bool allocate)
 {
-  if(name.isEmpty() == true)
+  if(name.isEmpty())
   {
     return NullPointer();
   }
@@ -89,7 +89,7 @@ VertexGeom::Pointer VertexGeom::CreateGeometry(int64_t numVertices, const QStrin
 // -----------------------------------------------------------------------------
 VertexGeom::Pointer VertexGeom::CreateGeometry(SharedVertexList::Pointer vertices, const QString& name)
 {
-  if(name.isEmpty() == true)
+  if(name.isEmpty())
   {
     return VertexGeom::NullPointer();
   }
@@ -162,7 +162,6 @@ ElementDynamicList::Pointer VertexGeom::getElementsContainingVert()
 // -----------------------------------------------------------------------------
 void VertexGeom::setElementsContainingVert(ElementDynamicList::Pointer SIMPL_NOT_USED(elementsContainingVert))
 {
-  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -170,7 +169,6 @@ void VertexGeom::setElementsContainingVert(ElementDynamicList::Pointer SIMPL_NOT
 // -----------------------------------------------------------------------------
 void VertexGeom::deleteElementsContainingVert()
 {
-  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -194,7 +192,6 @@ ElementDynamicList::Pointer VertexGeom::getElementNeighbors()
 // -----------------------------------------------------------------------------
 void VertexGeom::setElementNeighbors(ElementDynamicList::Pointer SIMPL_NOT_USED(elementNeighbors))
 {
-  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -202,7 +199,6 @@ void VertexGeom::setElementNeighbors(ElementDynamicList::Pointer SIMPL_NOT_USED(
 // -----------------------------------------------------------------------------
 void VertexGeom::deleteElementNeighbors()
 {
-  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -226,7 +222,6 @@ FloatArrayType::Pointer VertexGeom::getElementCentroids()
 // -----------------------------------------------------------------------------
 void VertexGeom::setElementCentroids(FloatArrayType::Pointer SIMPL_NOT_USED(elementCentroids))
 {
-  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -234,7 +229,6 @@ void VertexGeom::setElementCentroids(FloatArrayType::Pointer SIMPL_NOT_USED(elem
 // -----------------------------------------------------------------------------
 void VertexGeom::deleteElementCentroids()
 {
-  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -320,7 +314,7 @@ int VertexGeom::writeGeometryToHDF5(hid_t parentId, bool writeXdmf)
     {
       return err;
     }
-    if(writeXdmf == true)
+    if(writeXdmf)
     {
       QVector<size_t> cDims(1, 1);
       DataArray<int64_t>::Pointer vertsPtr = DataArray<int64_t>::CreateArray(getNumberOfVertices(), cDims, SIMPL::StringConstants::VertsName);

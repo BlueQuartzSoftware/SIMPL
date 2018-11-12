@@ -107,7 +107,7 @@ void FilterParameterWidget::setLinkedConditionalState(int state)
 // -----------------------------------------------------------------------------
 void FilterParameterWidget::setLinkedComboBoxState(int groupId)
 {
-  if(m_FilterParameter)
+  if(m_FilterParameter != nullptr)
   {
     int groupIndex = m_FilterParameter->getGroupIndex();
     int state = (groupIndex == groupId) ? Qt::Checked : Qt::Unchecked;
@@ -369,14 +369,14 @@ void FilterParameterWidget::fadeWidget(QWidget* widget, bool in)
   alphaGradient.setColorAt(0.5, Qt::black);
   alphaGradient.setColorAt(1.0, Qt::black);
 
-  if(!effect)
+  if(effect == nullptr)
   {
     effect = new QGraphicsOpacityEffect(this);
     effect->setOpacityMask(alphaGradient);
     // this->setGraphicsEffect(effect);
   }
 
-  if(!animation)
+  if(animation == nullptr)
   {
     animation = new QPropertyAnimation(effect, "opacity", this);
     animation->setDuration(detail::Duration);
@@ -434,7 +434,7 @@ bool FilterParameterWidget::verifyPathExists(QString filePath, QLineEdit* lineEd
 {
   hasValidFilePath(filePath);
   QFileInfo fileinfo(filePath);
-  if(false == fileinfo.exists())
+  if(!fileinfo.exists())
   {
     SVStyle::Instance()->LineEditErrorStyle(lineEdit);
   }
@@ -451,7 +451,10 @@ bool FilterParameterWidget::verifyPathExists(QString filePath, QLineEdit* lineEd
 bool FilterParameterWidget::hasValidFilePath(const QString &filePath)
 {
   QStringList pathParts = filePath.split(QDir::separator());
-  if (pathParts.size() <= 0) { return false; }
+  if(pathParts.empty())
+  {
+    return false;
+  }
 
   QString pathBuildUp;
   QFileInfo fi(filePath);
@@ -481,7 +484,7 @@ bool FilterParameterWidget::hasValidFilePath(const QString &filePath)
   }
   /* If the first part is empty and the filePath is relative, then that means that
    * we are starting with the first folder part and need to add that to our pathBuildUp */
-  else if (pathParts[0].isEmpty() == false && fi.isRelative())
+  else if(!pathParts[0].isEmpty() && fi.isRelative())
   {
     pathBuildUp.append(pathParts[0] + QDir::separator());
   }
@@ -498,7 +501,7 @@ bool FilterParameterWidget::hasValidFilePath(const QString &filePath)
 
   QFileInfo buildingFi(pathBuildUp);
   size_t pathPartsIdx = 1; // We already processed the first path part above
-  while (buildingFi.exists() == true && pathPartsIdx <= pathParts.size())
+  while(buildingFi.exists() && pathPartsIdx <= pathParts.size())
   {
     valid = true;
     m_CurrentlyValidPath = pathBuildUp; // Save the most current, valid built-up path

@@ -47,8 +47,7 @@
 //
 // -----------------------------------------------------------------------------
 FilterPipeline::FilterPipeline()
-: QObject()
-, m_ErrorCondition(0)
+: m_ErrorCondition(0)
 , m_Cancel(false)
 , m_PipelineName("")
 , m_Dca(nullptr)
@@ -115,7 +114,7 @@ QJsonObject FilterPipeline::toJson()
     if(nullptr != filter.get())
     {
       DataContainerReader::Pointer reader = std::dynamic_pointer_cast<DataContainerReader>(filter);
-      if(reader.get())
+      if(reader.get() != nullptr)
       {
         offset = reader->writeExistingPipelineToFile(json, i);
       }
@@ -139,7 +138,7 @@ QJsonObject FilterPipeline::toJson()
     meta[SIMPL::Settings::PipelineName] = m_PipelineName;
     meta[SIMPL::Settings::Version] = SIMPL::PipelineVersionNumbers::CurrentVersion;
 
-    if(json.size() > 0)
+    if(!json.empty())
     {
       meta[SIMPL::Settings::NumFilters] = count;
     }
@@ -687,7 +686,7 @@ DataContainerArray::Pointer FilterPipeline::execute()
       }
     }
 
-    if(this->getCancel() == true)
+    if(this->getCancel())
     {
       // Clear cancel filter state
       filt->setCancel(false);

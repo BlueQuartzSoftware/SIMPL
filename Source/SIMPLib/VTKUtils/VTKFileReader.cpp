@@ -187,7 +187,7 @@ int VTKFileReader::readHeader()
 {
 
   int err = 0;
-  if(getInputFile().isEmpty() == true)
+  if(getInputFile().isEmpty())
   {
     setErrorCondition(-1);
     notifyErrorMessage(getHumanLabel(), "FileName was not set and must be valid", -1);
@@ -218,11 +218,11 @@ int VTKFileReader::readHeader()
 
   buf = in.readLine(); // Read Line 3 - BINARY or ASCII
   QString fileType(buf);
-  if(fileType.startsWith("BINARY") == true)
+  if(fileType.startsWith("BINARY"))
   {
     setFileIsBinary(true);
   }
-  else if(fileType.startsWith("ASCII") == true)
+  else if(fileType.startsWith("ASCII"))
   {
     setFileIsBinary(false);
   }

@@ -107,9 +107,13 @@ void QtSDisclosableGroupBox::disclose(bool on)
     if(nullptr != w)
     {
       if(on)
+      {
         w->show();
+      }
       else
+      {
         w->hide();
+      }
     }
   }
 }

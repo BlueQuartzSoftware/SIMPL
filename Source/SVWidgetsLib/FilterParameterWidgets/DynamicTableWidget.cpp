@@ -195,7 +195,7 @@ void DynamicTableWidget::filterNeedsInputParameters(AbstractFilter* filter)
   v.setValue(data);
   bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
 
-  if(false == ok)
+  if(!ok)
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), m_FilterParameter);
   }
@@ -221,7 +221,7 @@ std::vector<std::vector<double>> DynamicTableWidget::getData()
       }
       data[row][col] = item->data(Qt::DisplayRole).toDouble(&ok);
 
-      if(ok == false)
+      if(!ok)
       {
         qDebug() << "Could not set the model data into the DynamicTableData object.";
         data.clear();
@@ -330,7 +330,7 @@ void DynamicTableWidget::on_deleteRowBtn_clicked()
 
   dynamicTable->removeRow(dynamicTable->currentRow());
 
-  if(dynamicTable->rowCount() <= 0 && data.getDynamicCols() == true)
+  if(dynamicTable->rowCount() <= 0 && data.getDynamicCols())
   {
     while(dynamicTable->columnCount() > 0)
     {
@@ -357,7 +357,7 @@ void DynamicTableWidget::on_deleteColBtn_clicked()
 
   dynamicTable->removeColumn(dynamicTable->currentColumn());
 
-  if(dynamicTable->columnCount() <= 0 && data.getDynamicRows() == true)
+  if(dynamicTable->columnCount() <= 0 && data.getDynamicRows())
   {
     while(dynamicTable->rowCount() > 0)
     {
@@ -476,11 +476,11 @@ void DynamicTableWidget::populateHeaders()
 {
   DynamicTableData data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DynamicTableData>();
 
-  if(data.getDynamicRows() == false)
+  if(!data.getDynamicRows())
   {
     dynamicTable->setVerticalHeaderLabels(data.getRowHeaders());
   }
-  if(data.getDynamicCols() == false)
+  if(!data.getDynamicCols())
   {
     dynamicTable->setHorizontalHeaderLabels(data.getColHeaders());
   }
@@ -495,7 +495,7 @@ void DynamicTableWidget::renumberDynamicHeaders()
 {
   DynamicTableData data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DynamicTableData>();
 
-  if(data.getDynamicRows() == true)
+  if(data.getDynamicRows())
   {
     QStringList rHeaders;
     for(int i = 0; i < dynamicTable->rowCount(); i++)
@@ -505,7 +505,7 @@ void DynamicTableWidget::renumberDynamicHeaders()
     dynamicTable->setVerticalHeaderLabels(rHeaders);
   }
 
-  if(data.getDynamicCols() == true)
+  if(data.getDynamicCols())
   {
     QStringList cHeaders;
     for(int i = 0; i < dynamicTable->columnCount(); i++)
@@ -524,14 +524,14 @@ void DynamicTableWidget::updateDynamicButtons()
   DynamicTableData data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DynamicTableData>();
 
   // Hide add/remove row buttons if row count is not dynamic
-  if(data.getDynamicRows() == false)
+  if(!data.getDynamicRows())
   {
     addRowBtn->setHidden(true);
     deleteRowBtn->setHidden(true);
   }
 
   // Hide add/remove column buttons if column count is not dynamic
-  if(data.getDynamicCols() == false)
+  if(!data.getDynamicCols())
   {
     addColBtn->setHidden(true);
     deleteColBtn->setHidden(true);

@@ -42,7 +42,7 @@
 static QDirModel* fileDirModel()
 {
   static QDirModel* m = nullptr;
-  if(!m)
+  if(m == nullptr)
   {
     m = new QDirModel();
     QStringList nameFilters;
@@ -59,7 +59,7 @@ static QDirModel* fileDirModel()
 static QDirModel* pathDirModel()
 {
   static QDirModel* m = nullptr;
-  if(!m)
+  if(m == nullptr)
   {
     m = new QDirModel();
     m->setFilter(QDir::AllDirs | QDir::Drives | QDir::NoDotAndDotDot);

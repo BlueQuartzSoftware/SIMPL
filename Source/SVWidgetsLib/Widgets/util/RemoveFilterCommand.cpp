@@ -164,7 +164,7 @@ void RemoveFilterCommand::redo()
     statusMessage = QObject::tr("Removed '%1' filter at index %2").arg(m_Filters[0]->getHumanLabel()).arg(m_FilterRows[0] + 1);
   }
 
-  if(m_FirstRun == false)
+  if(!m_FirstRun)
   {
     statusMessage.prepend("Redo \"");
     statusMessage.append('\"');
@@ -198,7 +198,7 @@ void RemoveFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertio
 
   connectFilterSignalsSlots(filter);
 
-  if(filter->getEnabled() == false)
+  if(!filter->getEnabled())
   {
     model->setData(filterIndex, static_cast<int>(PipelineItem::WidgetState::Disabled), PipelineModel::WidgetStateRole);
   }
@@ -236,7 +236,7 @@ void RemoveFilterCommand::removeFilter(AbstractFilter::Pointer filter)
 
   QRect filterRect = m_PipelineView->visualRect(index);
 
-  if(m_UseAnimationOnFirstRun == false && m_FirstRun == true)
+  if(!m_UseAnimationOnFirstRun && m_FirstRun)
   {
     model->removeRow(persistentIndex.row());
   }

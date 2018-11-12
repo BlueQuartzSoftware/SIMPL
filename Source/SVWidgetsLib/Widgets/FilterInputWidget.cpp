@@ -120,7 +120,7 @@ QFileInfo getFilterParameterPath(AbstractFilter* filter, FilterParameter* parame
   }
 
   QFileInfo fi;
-  if(currentPath.isEmpty() == false)
+  if(!currentPath.isEmpty())
   {
     SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
     currentPath = validator->convertToAbsolutePath(currentPath);
@@ -165,7 +165,7 @@ FilterInputWidget::~FilterInputWidget()
 // -----------------------------------------------------------------------------
 bool FilterInputWidget::eventFilter(QObject* o, QEvent* e)
 {
-  if(e->type() == QEvent::Resize && qobject_cast<QLabel*>(o) && m_Ui->brandingLabel == o)
+  if(e->type() == QEvent::Resize && (qobject_cast<QLabel*>(o) != nullptr) && m_Ui->brandingLabel == o)
   {
     QFontMetrics metrics(m_Ui->brandingLabel->font());
     QString elidedText = metrics.elidedText(m_BrandingLabel, Qt::ElideMiddle, m_Ui->brandingLabel->width());
@@ -528,7 +528,7 @@ void FilterInputWidget::linkConditionalWidgets(QVector<FilterParameter::Pointer>
           w = m_PropertyToWidget[propName];
           connect(checkboxSource, SIGNAL(conditionalPropertyChanged(int)), w, SLOT(setLinkedConditionalState(int)));
           LinkedBooleanWidget* lbw = qobject_cast<LinkedBooleanWidget*>(checkboxSource);
-          if(lbw && lbw->getLinkedState() != Qt::Checked)
+          if((lbw != nullptr) && lbw->getLinkedState() != Qt::Checked)
           {
             w->hide();
           }
@@ -565,7 +565,7 @@ void FilterInputWidget::linkConditionalWidgets(QVector<FilterParameter::Pointer>
           connect(checkboxSource, SIGNAL(conditionalPropertyChanged(int)), w, SLOT(setLinkedComboBoxState(int)));
 
           ChoiceWidget* choiceWidget = qobject_cast<ChoiceWidget*>(checkboxSource);
-          if(choiceWidget)
+          if(choiceWidget != nullptr)
           {
             choiceWidget->widgetChanged(choiceWidget->getCurrentIndex(), false);
           }
@@ -595,7 +595,7 @@ void FilterInputWidget::linkConditionalWidgets(QVector<FilterParameter::Pointer>
           connect(checkboxSource, SIGNAL(conditionalPropertyChanged(int)), w, SLOT(setLinkedComboBoxState(int)));
 
           LinkedDataContainerSelectionWidget* linkedDataContainerSelectionWidget = qobject_cast<LinkedDataContainerSelectionWidget*>(checkboxSource);
-          if(linkedDataContainerSelectionWidget)
+          if(linkedDataContainerSelectionWidget != nullptr)
           {
             linkedDataContainerSelectionWidget->widgetChanged();
           }
@@ -624,7 +624,7 @@ void FilterInputWidget::clearInputWidgets()
   if(nullptr != item)
   {
     QWidget* w = item->widget();
-    if(w)
+    if(w != nullptr)
     {
       w->setVisible(false);
       m_Ui->variablesGrid->removeWidget(w);
@@ -801,7 +801,7 @@ void FilterInputWidget::emitFilterPath(DataArrayPath path)
   for(QWidget* widget : m_PropertyToWidget)
   {
     FilterParameterWidget* fpWidget = dynamic_cast<FilterParameterWidget*>(widget);
-    if(fpWidget && fpWidget != obj)
+    if((fpWidget != nullptr) && fpWidget != obj)
     {
       emit fpWidget->filterPathInput(path);
     }

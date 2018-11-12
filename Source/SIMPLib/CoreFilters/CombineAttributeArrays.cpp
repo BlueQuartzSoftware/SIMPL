@@ -255,7 +255,7 @@ void CombineAttributeArrays::dataCheck()
 
   QVector<DataArrayPath> paths = getSelectedDataArrayPaths();
 
-  if(DataArrayPath::ValidateVector(paths) == false)
+  if(!DataArrayPath::ValidateVector(paths))
   {
     setErrorCondition(-11002);
     QString ss = QObject::tr("There are Attribute Arrays selected that are not contained in the same Attribute Matrix. All selected Attribute Arrays must belong to the same Attribute Matrix");
@@ -348,7 +348,7 @@ void CombineAttributeArrays::execute()
 AbstractFilter::Pointer CombineAttributeArrays::newFilterInstance(bool copyFilterParameters) const
 {
   CombineAttributeArrays::Pointer filter = CombineAttributeArrays::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

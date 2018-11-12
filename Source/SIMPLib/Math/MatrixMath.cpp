@@ -392,14 +392,12 @@ int MatrixMath::FindIndexOfMaxVal3x1(float g[3])
   {
     return 0;
   }
-  else if(b >= a && b >= c)
+  if(b >= a && b >= c)
   {
     return 1;
   }
-  else
-  {
+
     return 2;
-  }
 }
 
 // -----------------------------------------------------------------------------

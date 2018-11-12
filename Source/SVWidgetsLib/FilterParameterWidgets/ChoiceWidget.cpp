@@ -85,7 +85,7 @@ void ChoiceWidget::setupGui()
 
     // setup the list of choices for the widget
     ChoiceFilterParameter* choice = dynamic_cast<ChoiceFilterParameter*>(getFilterParameter());
-    if(choice)
+    if(choice != nullptr)
     {
       QList<QString> choices = choice->getChoices().toList();
       value->blockSignals(true);
@@ -117,7 +117,7 @@ void ChoiceWidget::widgetChanged(int index, bool emitParametersChanged)
   // If the parameter type is LinkedChoicesFilterParameter then we need to emit the index that
   // was selected
   LinkedChoicesFilterParameter* lnkedChoices = dynamic_cast<LinkedChoicesFilterParameter*>(fp);
-  if(lnkedChoices)
+  if(lnkedChoices != nullptr)
   {
     emit conditionalPropertyChanged(index);
   }
@@ -138,7 +138,7 @@ void ChoiceWidget::filterNeedsInputParameters(AbstractFilter* filter)
   QVariant v(index);
   bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
 
-  if(false == ok)
+  if(!ok)
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

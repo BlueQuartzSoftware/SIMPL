@@ -60,7 +60,6 @@ DataContainerReader::DataContainerReader()
 , m_OverwriteExistingDataContainers(false)
 , m_LastFileRead("")
 , m_LastRead(QDateTime::currentDateTime())
-, m_InputFileDataContainerArrayProxy()
 {
   m_PipelineFromFile = FilterPipeline::New();
 }
@@ -146,27 +145,27 @@ void DataContainerReader::dataCheck()
   QFileInfo fi(getInputFile());
   if(getInputFile() == getLastFileRead() && getLastRead() < fi.lastModified())
   {
-    if(syncProxies() == false)
+    if(!syncProxies())
     {
       return;
     }
   }
 
   QString ss;
-  if(getInputFile().isEmpty() == true)
+  if(getInputFile().isEmpty())
   {
     ss = QObject::tr("The input file must be set");
     setErrorCondition(-387);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
-  else if(fi.exists() == false)
+  else if(!fi.exists())
   {
     ss = QObject::tr("The input file %1 does not exist").arg(getInputFile());
     setErrorCondition(-388);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
-  if(getErrorCondition())
+  if(getErrorCondition() != 0)
   {
     // something has gone wrong and errors were logged already so just return
     return;
@@ -176,7 +175,7 @@ void DataContainerReader::dataCheck()
 
   // Read either the structure or all the data depending on the preflight status
   DataContainerArray::Pointer tempDCA = readData(m_InputFileDataContainerArrayProxy);
-  if(!tempDCA.get())
+  if(tempDCA.get() == nullptr)
   {
     return;
   }
@@ -188,9 +187,9 @@ void DataContainerReader::dataCheck()
   {
     DataContainer::Pointer container = iter.next();
 
-    if(getOverwriteExistingDataContainers() == true)
+    if(getOverwriteExistingDataContainers())
     {
-      if(dca->doesDataContainerExist(container->getName()) == true)
+      if(dca->doesDataContainerExist(container->getName()))
       {
         dca->removeDataContainer(container->getName());
       }
@@ -198,7 +197,7 @@ void DataContainerReader::dataCheck()
     }
     else
     {
-      if(dca->doesDataContainerExist(container->getName()) == true)
+      if(dca->doesDataContainerExist(container->getName()))
       {
         ss = QObject::tr("The input file has a DataContainer with a name (%1) that already exists in the current DataContainerArray structure").arg(container->getName());
         setErrorCondition(-390);
@@ -303,7 +302,7 @@ DataContainerArray::Pointer DataContainerReader::readData(DataContainerArrayProx
 DataContainerArrayProxy DataContainerReader::readDataContainerArrayStructure(const QString& path)
 {
   SIMPLH5DataReader::Pointer h5Reader = SIMPLH5DataReader::New();
-  if(h5Reader->openFile(path) == false)
+  if(!h5Reader->openFile(path))
   {
     return DataContainerArrayProxy();
   }
@@ -424,13 +423,13 @@ bool DataContainerReader::syncProxies()
     notifyErrorMessage(getHumanLabel(), msg, getErrorCondition());
   });
 
-  if(simplReader->openFile(getInputFile()) == false)
+  if(!simplReader->openFile(getInputFile()))
   {
     return false;
   }
 
   // If there is something in the cached proxy...
-  if(m_InputFileDataContainerArrayProxy.dataContainers.size() > 0)
+  if(!m_InputFileDataContainerArrayProxy.dataContainers.empty())
   {
     int err = 0;
     DataContainerArrayProxy fileProxy = simplReader->readDataContainerArrayStructure(&req, err);
@@ -466,7 +465,7 @@ bool DataContainerReader::syncProxies()
 AbstractFilter::Pointer DataContainerReader::newFilterInstance(bool copyFilterParameters) const
 {
   DataContainerReader::Pointer filter = DataContainerReader::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
 

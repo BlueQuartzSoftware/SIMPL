@@ -48,8 +48,8 @@
 
 namespace
 {
-static const int32_t k_MoveAttributeMatrix = 0;
-static const int32_t k_MoveMultiDataArray = 1;
+const int32_t k_MoveAttributeMatrix = 0;
+const int32_t k_MoveMultiDataArray = 1;
 }
 
 // -----------------------------------------------------------------------------
@@ -58,9 +58,6 @@ static const int32_t k_MoveMultiDataArray = 1;
 MoveMultiData::MoveMultiData()
 : m_WhatToMove(k_MoveAttributeMatrix)
 , m_DataContainerDestination("")
-, m_AttributeMatrixSources()
-, m_AttributeMatrixDestination()
-, m_DataArraySources()
 {
 }
 
@@ -206,7 +203,7 @@ void MoveMultiData::dataCheck()
         return;
       }
       // Source and Destination match
-      else if(daSrcPaths[i].hasSameAttributeMatrix(amDestPath))
+      if(daSrcPaths[i].hasSameAttributeMatrix(amDestPath))
       {
         setWarningCondition(-11020);
         QString ss = QObject::tr("The source and destination Attribute Matrix are the same.  Is this what you meant to do?");
@@ -264,7 +261,7 @@ void MoveMultiData::execute()
 AbstractFilter::Pointer MoveMultiData::newFilterInstance(bool copyFilterParameters) const
 {
   MoveMultiData::Pointer filter = MoveMultiData::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

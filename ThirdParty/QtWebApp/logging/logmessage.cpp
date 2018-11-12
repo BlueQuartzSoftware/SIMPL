@@ -18,7 +18,7 @@ LogMessage::LogMessage(const QtMsgType type, const QString& message, QHash<QStri
 
   // Copy the logVars if not null,
   // so that later changes in the original do not affect the copy
-  if(logVars)
+  if(logVars != nullptr)
   {
     this->logVars = *logVars;
   }

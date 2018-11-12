@@ -85,14 +85,7 @@ float GeometryMath::AngleBetweenVectors(const float a[3], const float b[3])
 // -----------------------------------------------------------------------------
 bool GeometryMath::PointInBox(const float p[3], const float ll[3], const float ur[3])
 {
-  if((ll[0] <= p[0]) && (p[0] <= ur[0]) && (ll[1] <= p[1]) && (p[1] <= ur[1]) && (ll[2] <= p[2]) && (p[2] <= ur[2]))
-  {
-    return true;
-  }
-  else
-  {
-    return false;
-  }
+  return (ll[0] <= p[0]) && (p[0] <= ur[0]) && (ll[1] <= p[1]) && (p[1] <= ur[1]) && (ll[2] <= p[2]) && (p[2] <= ur[2]);
 }
 
 // -----------------------------------------------------------------------------
@@ -104,15 +97,15 @@ bool GeometryMath::RayIntersectsBox(const float* p, const float* q, const float*
   {
     return false;
   }
-  else if((ur[0] < p[0]) && (ur[0] < q[0]))
+  if((ur[0] < p[0]) && (ur[0] < q[0]))
   {
     return false;
   }
-  else if((ll[1] > p[1]) && (ll[1] > q[1]))
+  if((ll[1] > p[1]) && (ll[1] > q[1]))
   {
     return false;
   }
-  else if((ur[1] < p[1]) && (ur[1] < q[1]))
+  if((ur[1] < p[1]) && (ur[1] < q[1]))
   {
     return false;
   }
@@ -773,15 +766,15 @@ char GeometryMath::RayIntersectsTriangle(const float* a, const float* b, const f
   {
     return '0';
   }
-  else if(code == 'q')
+  if(code == 'q')
   {
     return PointInTriangle3D(a, b, c, m, q);
   }
-  else if(code == 'r')
+  if(code == 'r')
   {
     return PointInTriangle3D(a, b, c, m, r);
   }
-  else if(code == 'p')
+  if(code == 'p')
   {
     return 'p';
   }
@@ -819,13 +812,10 @@ char GeometryMath::RayIntersectsPlane(const float* a, const float* b, const floa
     {
       return 'p';
     }
-    else
-    {
+
       return '0';
-    }
   }
-  else
-  {
+
     t = num / denom;
     for(int i = 0; i < 3; i++)
     {
@@ -835,19 +825,16 @@ char GeometryMath::RayIntersectsPlane(const float* a, const float* b, const floa
     {
       return '1';
     }
-    else if(num == 0.0)
+    if(num == 0.0)
     {
       return 'q';
     }
-    else if(num == denom)
+    if(num == denom)
     {
       return 'r';
     }
-    else
-    {
+
       return '0';
-    }
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -870,13 +857,10 @@ char GeometryMath::RayIntersectsPlane(const float* n, const float d, const float
     {
       return 'p';
     }
-    else
-    {
+
       return '0';
-    }
   }
-  else
-  {
+
     t = num / denom;
     for(int i = 0; i < 3; i++)
     {
@@ -886,19 +870,16 @@ char GeometryMath::RayIntersectsPlane(const float* n, const float d, const float
     {
       return '1';
     }
-    else if(num == 0.0)
+    if(num == 0.0)
     {
       return 'q';
     }
-    else if(num == denom)
+    if(num == denom)
     {
       return 'r';
     }
-    else
-    {
+
       return '0';
-    }
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -938,15 +919,15 @@ char GeometryMath::PointInTriangle2D(const float* a, const float* b, const float
   {
     return 'E';
   }
-  else if((area0 == 0 && area1 < 0 && area2 < 0) || (area1 == 0 && area0 < 0 && area2 < 0) || (area2 == 0 && area0 < 0 && area1 < 0))
+  if((area0 == 0 && area1 < 0 && area2 < 0) || (area1 == 0 && area0 < 0 && area2 < 0) || (area2 == 0 && area0 < 0 && area1 < 0))
   {
     return 'E';
   }
-  else if((area0 > 0 && area1 > 0 && area2 > 0) || (area0 < 0 && area1 < 0 && area2 < 0))
+  if((area0 > 0 && area1 > 0 && area2 > 0) || (area0 < 0 && area1 < 0 && area2 < 0))
   {
     return 'F';
   }
-  else if((area0 == 0 && area1 == 0 && area2 == 0))
+  if((area0 == 0 && area1 == 0 && area2 == 0))
   {
     return '?';
   }
@@ -975,15 +956,15 @@ char GeometryMath::RayCrossesTriangle(const float* a, const float* b, const floa
   {
     return 'f';
   }
-  else if((vol0 > 0 || vol1 > 0 || vol2 > 0) && (vol0 < 0 || vol1 < 0 || vol2 < 0))
+  if((vol0 > 0 || vol1 > 0 || vol2 > 0) && (vol0 < 0 || vol1 < 0 || vol2 < 0))
   {
     return '0';
   }
-  else if((vol0 == 0 && vol1 == 0 && vol2 == 0))
+  if((vol0 == 0 && vol1 == 0 && vol2 == 0))
   {
     return '?';
   }
-  else if((vol0 == 0 && vol1 == 0) || (vol0 == 0 && vol2 == 0) || (vol1 == 0 && vol2 == 0))
+  if((vol0 == 0 && vol1 == 0) || (vol0 == 0 && vol2 == 0) || (vol1 == 0 && vol2 == 0))
   {
     return 'v';
   }
@@ -1013,7 +994,7 @@ char GeometryMath::PointInPolyhedron(TriangleGeom* faces, const Int32Int32Dynami
   float c[3];
 
   //* If query point is outside bounding box, finished. */
-  if(PointInBox(q, ll, ur) == false)
+  if(!PointInBox(q, ll, ur))
   {
     return 'o';
   }
@@ -1042,7 +1023,7 @@ LOOP:
       int32_t idx = 2 * faceId[f];
       float* v0 = faceBBs->getVertexPointer(idx);
       float* v1 = faceBBs->getVertexPointer(idx + 1);
-      if(RayIntersectsBox(q, r, v0, v1) == false)
+      if(!RayIntersectsBox(q, r, v0, v1))
       {
         code = '0';
       }
@@ -1082,10 +1063,8 @@ LOOP:
   {
     return 'i';
   }
-  else
-  {
+
     return 'o';
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -1108,7 +1087,7 @@ char GeometryMath::PointInPolyhedron(TriangleGeom* faces, const Int32Int32Dynami
   float distance = 0.0f;
 
   //* If query point is outside bounding box, finished. */
-  if(PointInBox(q, ll, ur) == false)
+  if(!PointInBox(q, ll, ur))
   {
     return 'o';
   }
@@ -1146,7 +1125,7 @@ LOOP:
         FindDistanceFromPlane(q, n, d, distance);
         distToBoundary = fabs(distance);
       }
-      if(RayIntersectsBox(q, r, v0, v1) == false)
+      if(!RayIntersectsBox(q, r, v0, v1))
       {
         code = '0';
       }
@@ -1185,8 +1164,6 @@ LOOP:
   {
     return 'i';
   }
-  else
-  {
+
     return 'o';
-  }
 }

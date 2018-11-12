@@ -58,7 +58,6 @@ AbstractWizardPage::~AbstractWizardPage() = default;
 void AbstractWizardPage::refreshModel()
 {
   // This should never be called
-  return;
 }
 
 // -----------------------------------------------------------------------------

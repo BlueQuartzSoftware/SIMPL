@@ -247,7 +247,7 @@ int IGeometry::readGeometryFromHDF5(hid_t parentId, bool preflight)
     return 0;
   }
 
-  if(transformTypeName.compare(SIMPL::Geometry::TransformContainer.toStdString()) == 0)
+  if(transformTypeName == SIMPL::Geometry::TransformContainer.toStdString())
   {
     TransformContainer::Pointer transformContainer = TransformContainer::New();
     err = transformContainer->readTransformContainerFromHDF5(parentId, preflight, transformName.toLatin1().data());
@@ -257,7 +257,7 @@ int IGeometry::readGeometryFromHDF5(hid_t parentId, bool preflight)
     }
     setTransformContainer(transformContainer);
   }
-  else if(transformTypeName.compare(SIMPL::Geometry::CompositeTransformContainer.toStdString()) == 0)
+  else if(transformTypeName == SIMPL::Geometry::CompositeTransformContainer.toStdString())
   {
     CompositeTransformContainer::Pointer compositeTransformContainer = CompositeTransformContainer::New();
     err = compositeTransformContainer->readTransformContainerFromHDF5(parentId, preflight, transformName.toLatin1().data());

@@ -8,7 +8,6 @@
 #include <QDir>
 
 HttpConnectionHandlerPool::HttpConnectionHandlerPool(QSettings* settings, HttpRequestHandler* requestHandler)
-: QObject()
 {
   Q_ASSERT(settings != 0);
   this->settings = settings;
@@ -28,7 +27,10 @@ HttpConnectionHandlerPool::~HttpConnectionHandlerPool()
     delete handler;
   }
   delete sslConfiguration;
-  if(verbose) qDebug("HttpConnectionHandlerPool (%p): destroyed", this);
+  if(verbose)
+  {
+    qDebug("HttpConnectionHandlerPool (%p): destroyed", this);
+  }
 }
 
 HttpConnectionHandler* HttpConnectionHandlerPool::getConnectionHandler()
@@ -46,7 +48,7 @@ HttpConnectionHandler* HttpConnectionHandlerPool::getConnectionHandler()
     }
   }
   // create a new handler, if necessary
-  if(!freeHandler)
+  if(freeHandler == nullptr)
   {
     int maxConnectionHandlers = settings->value("maxThreads", 100).toInt();
     if(pool.count() < maxConnectionHandlers)
@@ -73,7 +75,10 @@ void HttpConnectionHandlerPool::cleanup()
       {
         delete handler;
         pool.removeOne(handler);
-        if(verbose) qDebug("HttpConnectionHandlerPool: Removed connection handler (%p), pool size is now %i", handler, pool.size());
+        if(verbose)
+        {
+          qDebug("HttpConnectionHandlerPool: Removed connection handler (%p), pool size is now %i", handler, pool.size());
+        }
         break; // remove only one handler in each interval
       }
     }

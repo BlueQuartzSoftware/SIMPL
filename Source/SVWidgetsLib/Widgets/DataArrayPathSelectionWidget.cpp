@@ -188,17 +188,17 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
   }
 
   // Check Geometry
-  if(reqs.dcGeometryTypes.size() > 0)
+  if(!reqs.dcGeometryTypes.empty())
   {
     // Unknown Geometry gets a pass
-    if(false == reqs.dcGeometryTypes.contains(IGeometry::Type::Unknown))
+    if(!reqs.dcGeometryTypes.contains(IGeometry::Type::Unknown))
     {
       IGeometry::Pointer geom = dc->getGeometry();
       if(nullptr == geom)
       {
         return false;
       }
-      if(false == reqs.dcGeometryTypes.contains(geom->getGeometryType()) && false == reqs.dcGeometryTypes.contains(IGeometry::Type::Any))
+      if(!reqs.dcGeometryTypes.contains(geom->getGeometryType()) && !reqs.dcGeometryTypes.contains(IGeometry::Type::Any))
       {
         return false;
       }
@@ -234,17 +234,17 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
   }
 
   // Check if geometry exists and matches the requirements only if a geometry is required
-  if(reqs.dcGeometryTypes.size() > 0)
+  if(!reqs.dcGeometryTypes.empty())
   {
     // Unknown Geometry gets a pass
-    if(false == reqs.dcGeometryTypes.contains(IGeometry::Type::Unknown))
+    if(!reqs.dcGeometryTypes.contains(IGeometry::Type::Unknown))
     {
       IGeometry::Pointer geom = dc->getGeometry();
       if(nullptr == geom)
       {
         return false;
       }
-      if(false == reqs.dcGeometryTypes.contains(geom->getGeometryType()) && false == reqs.dcGeometryTypes.contains(IGeometry::Type::Any))
+      if(!reqs.dcGeometryTypes.contains(geom->getGeometryType()) && !reqs.dcGeometryTypes.contains(IGeometry::Type::Any))
       {
         return false;
       }
@@ -258,9 +258,9 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
     return false;
   }
 
-  if(false == reqs.amTypes.contains(AttributeMatrix::Type::Unknown))
+  if(!reqs.amTypes.contains(AttributeMatrix::Type::Unknown))
   {
-    if(reqs.amTypes.size() > 0 && false == (reqs.amTypes.contains(am->getType()) || reqs.amTypes.contains(AttributeMatrix::Type::Any)))
+    if(!reqs.amTypes.empty() && !(reqs.amTypes.contains(am->getType()) || reqs.amTypes.contains(AttributeMatrix::Type::Any)))
     {
       return false;
     }
@@ -295,17 +295,17 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
   }
 
   // Check if geometry exists and matches the requirements only if a geometry is required
-  if(reqs.dcGeometryTypes.size() > 0)
+  if(!reqs.dcGeometryTypes.empty())
   {
     // Unknown Geometry gets a pass
-    if(false == reqs.dcGeometryTypes.contains(IGeometry::Type::Unknown))
+    if(!reqs.dcGeometryTypes.contains(IGeometry::Type::Unknown))
     {
       IGeometry::Pointer geom = dc->getGeometry();
       if(nullptr == geom)
       {
         return false;
       }
-      if(false == reqs.dcGeometryTypes.contains(geom->getGeometryType()) && false == reqs.dcGeometryTypes.contains(IGeometry::Type::Any))
+      if(!reqs.dcGeometryTypes.contains(geom->getGeometryType()) && !reqs.dcGeometryTypes.contains(IGeometry::Type::Any))
       {
         return false;
       }
@@ -319,9 +319,9 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
     return false;
   }
 
-  if(false == reqs.amTypes.contains(AttributeMatrix::Type::Unknown))
+  if(!reqs.amTypes.contains(AttributeMatrix::Type::Unknown))
   {
-    if(reqs.amTypes.size() > 0 && false == reqs.amTypes.contains(am->getType()) && false == reqs.amTypes.contains(AttributeMatrix::Type::Any))
+    if(!reqs.amTypes.empty() && !reqs.amTypes.contains(am->getType()) && !reqs.amTypes.contains(AttributeMatrix::Type::Any))
     {
       return false;
     }
@@ -334,12 +334,12 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
     return false;
   }
 
-  if(reqs.daTypes.size() > 0 && false == reqs.daTypes.contains(da->getTypeAsString()))
+  if(!reqs.daTypes.empty() && !reqs.daTypes.contains(da->getTypeAsString()))
   {
     return false;
   }
 
-  if(reqs.componentDimensions.size() > 0 && false == reqs.componentDimensions.contains(da->getComponentDimensions()))
+  if(!reqs.componentDimensions.empty() && !reqs.componentDimensions.contains(da->getComponentDimensions()))
   {
     return false;
   }
@@ -467,7 +467,7 @@ QString DataArrayPathSelectionWidget::createTooltipFooter()
 QString DataArrayPathSelectionWidget::createGeomReqString(QVector<IGeometry::Type> geomTypes)
 {
   QString reqStr = "<tr><td><i>Required Geometries:</i></td>";
-  if(geomTypes.size() == 0)
+  if(geomTypes.empty())
   {
     reqStr += "<td>None</td>";
   }
@@ -521,7 +521,7 @@ QString DataArrayPathSelectionWidget::createGeomReqString(QVector<IGeometry::Typ
 QString DataArrayPathSelectionWidget::createAttrMatrixReqString(QVector<AttributeMatrix::Type> amTypes)
 {
   QString reqStr = "<tr><td><i>Required Matrix Type:</i></td>";
-  if(amTypes.size() == 0)
+  if(amTypes.empty())
   {
     reqStr += "<td>None</td>";
   }
@@ -593,7 +593,7 @@ QString DataArrayPathSelectionWidget::createAttrMatrixReqString(QVector<Attribut
 QString DataArrayPathSelectionWidget::createDataArrayTypeString(QVector<QString> daTypes)
 {
   QString reqStr = "<tr><td><i>Required Array Type:</i></td>";
-  if(daTypes.size() == 0)
+  if(daTypes.empty())
   {
     reqStr += "<td>None</td>";
   }
@@ -615,7 +615,7 @@ QString DataArrayPathSelectionWidget::createDataArrayTypeString(QVector<QString>
 QString DataArrayPathSelectionWidget::createComponentReqString(QVector<QVector<size_t>> comps)
 {
   QString reqStr = "<tr><td><i>Required Component Size:</i></td>";
-  if(comps.size() == 0)
+  if(comps.empty())
   {
     reqStr += "<td>None</td>";
   }
@@ -715,7 +715,7 @@ void DataArrayPathSelectionWidget::setDataArrayPath(DataArrayPath path)
 // -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::setFilteredDataArrayPath(DataArrayPath path)
 {
-  if(false == isChecked())
+  if(!isChecked())
   {
     return;
   }
@@ -898,7 +898,7 @@ void DataArrayPathSelectionWidget::emitRequirements()
 // -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::enterEvent(QEvent* event)
 {
-  if(m_LockedSelection)
+  if(m_LockedSelection != nullptr)
   {
     return;
   }
@@ -912,7 +912,7 @@ void DataArrayPathSelectionWidget::enterEvent(QEvent* event)
 void DataArrayPathSelectionWidget::leaveEvent(QEvent* event)
 {
   // Do not end filtering if the button state is checked
-  if(m_LockedSelection)
+  if(m_LockedSelection != nullptr)
   {
     return;
   }
@@ -934,7 +934,7 @@ void DataArrayPathSelectionWidget::leaveEvent(QEvent* event)
 // -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::dragEnterEvent(QDragEnterEvent* event)
 {
-  if(false == event->mimeData()->hasFormat(SIMPLView::DragAndDrop::DataArrayPath))
+  if(!event->mimeData()->hasFormat(SIMPLView::DragAndDrop::DataArrayPath))
   {
     return;
   }
@@ -1146,7 +1146,7 @@ void DataArrayPathSelectionWidget::setPathFiltering(bool active)
   updateCheckState(active);
   m_FilteringPassed = false;
 
-  if(false == active && false == underMouse())
+  if(!active && !underMouse())
   {
     if(checkCurrentPath())
     {
@@ -1309,7 +1309,7 @@ void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
 {
   QToolButton::paintEvent(event);
 
-  if(false == (isEnabled() && (isChecked() || m_FilteringPassed)))
+  if(!(isEnabled() && (isChecked() || m_FilteringPassed)))
   {
     return;
   }
@@ -1334,7 +1334,7 @@ void DataArrayPathSelectionWidget::paintEvent(QPaintEvent* event)
   {
     penColor = getBorderColor(State::NotFound);
   }
-  if(false == isEnabled())
+  if(!isEnabled())
   {
     fillColor = QColor(221, 221, 221);
   }
@@ -1437,7 +1437,7 @@ bool DataArrayPathSelectionWidget::isCreatedPath(DataArrayPath path)
 void DataArrayPathSelectionWidget::showContextMenu(const QPoint& pos)
 {
   // Do not create the menu if the widget is disabled
-  if(false == isEnabled())
+  if(!isEnabled())
   {
     return;
   }

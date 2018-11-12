@@ -98,7 +98,7 @@ void HttpResponse::write(QByteArray data, bool lastPart)
   Q_ASSERT(sentLastPart == false);
 
   // Send HTTP headers, if not already done (that happens only on the first call to write())
-  if(sentHeaders == false)
+  if(!sentHeaders)
   {
     // If the whole response is generated with a single call to write(), then we know the total
     // size of the response and therefore can set the Content-Length header automatically.

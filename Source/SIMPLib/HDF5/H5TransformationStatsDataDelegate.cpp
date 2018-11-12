@@ -87,7 +87,7 @@ VectorOfFloatArray H5TransformationStatsDataDelegate::createDistributionVector(u
   //  {
   //    return createPowerDistributionArrays();
   //  }
-  else if(distType == SIMPL::DistributionType::LogNormal)
+  if(distType == SIMPL::DistributionType::LogNormal)
   {
     return createLogNormalDistributionArrays();
   }
@@ -277,7 +277,7 @@ int H5TransformationStatsDataDelegate::writeVectorOfArrays(hid_t pid, VectorOfFl
   {
     // qDebug() << "Writing Dataset:" << hdf5GroupName << "/" << columnHeaders[c] ;
     err = -1;
-    if(nullptr != colData[c].get() && colData[c]->getSize() > 0)
+    if(nullptr != colData[c] && colData[c]->getSize() > 0)
     {
       QVector<size_t> tDims(1, colData[c]->getNumberOfTuples());
       err = colData[c]->writeH5Data(pid, tDims);
@@ -421,7 +421,7 @@ int H5TransformationStatsDataDelegate::readAxisODFWeights(hid_t pid, Transformat
 int H5TransformationStatsDataDelegate::writeWeightsData(hid_t pid, const QString& hdf5GroupName, VectorOfFloatArray colData)
 {
   herr_t err = 0;
-  if(colData.size() == 0)
+  if(colData.empty())
   {
     return err;
   }

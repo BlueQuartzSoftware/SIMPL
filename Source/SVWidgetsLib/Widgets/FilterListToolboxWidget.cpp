@@ -411,8 +411,7 @@ int FilterListToolboxWidget::getMatchingRelevanceForFilter(QStringList searchTok
   {
     QString keyword = searchTokens[i];
 
-    if(searchGroupTerm.contains(keyword, Qt::CaseInsensitive)
-          && filterListView->findIndexByName(searchGroupTerm).isValid() == false)
+    if(searchGroupTerm.contains(keyword, Qt::CaseInsensitive) && !filterListView->findIndexByName(searchGroupTerm).isValid())
     {
       bitArray.setBit(i, true);
 
@@ -488,14 +487,12 @@ QAction* FilterListToolboxWidget::getActiveSearchAction()
   {
     return m_ActionExactPhrase;
   }
-  else if(m_ActionAnyWords->isChecked())
+  if(m_ActionAnyWords->isChecked())
   {
     return m_ActionAnyWords;
   }
-  else
-  {
+
     return m_ActionAllWords;
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -583,7 +580,7 @@ void FilterListToolboxWidget::readSettings(QtSSettings* prefs)
     }
   }
 
-  if(didCheck == false && list.size() > 0)
+  if(!didCheck && !list.empty())
   {
     // Set "All Words" as checked by default
     list[0]->setChecked(true);

@@ -285,11 +285,11 @@ bool DataContainerArrayProxyWidget::shouldStrikeOutItem(QListWidgetItem* item)
   bool dcChecked = false;
   bool amChecked = false;
 
-  if(false == m_DcName.isEmpty())
+  if(!m_DcName.isEmpty())
   {
     dcChecked = (getDataContainerProxy().flag == Qt::Checked);
   }
-  if(false == m_AmName.isEmpty())
+  if(!m_AmName.isEmpty())
   {
     amChecked = (getAttributeMatrixProxy().flag == Qt::Checked);
   }
@@ -298,11 +298,11 @@ bool DataContainerArrayProxyWidget::shouldStrikeOutItem(QListWidgetItem* item)
   {
     return item->checkState() == Qt::Checked;
   }
-  else if(item->listWidget() == attributeMatrixList)
+  if(item->listWidget() == attributeMatrixList)
   {
     return dcChecked || item->checkState() == Qt::Checked;
   }
-  else if(item->listWidget() == dataArrayList)
+  if(item->listWidget() == dataArrayList)
   {
     return dcChecked || amChecked || item->checkState() == Qt::Checked;
   }
@@ -352,7 +352,7 @@ void DataContainerArrayProxyWidget::toggleStrikeOutFont(QListWidgetItem* item, Q
   {
     item->setBackground(errorBrush);
   }
-  else if(item->checkState() == false)
+  else if(!static_cast<bool>(item->checkState()))
   {
     item->setBackground(defaultBrush);
   }
@@ -433,7 +433,7 @@ void DataContainerArrayProxyWidget::filterNeedsInputParameters(AbstractFilter* f
   bool ok = false;
   // Set the value into the Filter
   ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-  if(false == ok)
+  if(!ok)
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }
@@ -559,7 +559,7 @@ QList<QListWidgetItem*> DataContainerArrayProxyWidget::getAllItems(QListWidget* 
 
   for(int i = 0; listWidget->item(i) != nullptr; i++)
   {
-    if((false == ignoreSelectAll) || (listWidget->item(i)->text() != "Select All"))
+    if((!ignoreSelectAll) || (listWidget->item(i)->text() != "Select All"))
     {
       listItems.append(listWidget->item(i));
     }
@@ -628,7 +628,7 @@ Qt::CheckState DataContainerArrayProxyWidget::updateSelectAllState(QListWidget* 
     selectAll = selectAllDataArray;
   }
 
-  if(selectAll)
+  if(selectAll != nullptr)
   {
     selectAll->setCheckState(state);
   }
@@ -663,7 +663,7 @@ void DataContainerArrayProxyWidget::applyDataContainerProxy()
   QListWidget* listWidget = attributeMatrixList;
   listWidget->clear();
 
-  if(false == m_DcName.isEmpty())
+  if(!m_DcName.isEmpty())
   {
     listWidget->blockSignals(true);
     DataContainerProxy proxy = getDataContainerProxy();
@@ -692,7 +692,7 @@ void DataContainerArrayProxyWidget::applyAttributeMatrixProxy()
   QListWidget* listWidget = dataArrayList;
   listWidget->clear();
 
-  if(false == m_AmName.isEmpty())
+  if(!m_AmName.isEmpty())
   {
     listWidget->blockSignals(true);
     AttributeMatrixProxy proxy = getAttributeMatrixProxy();
@@ -846,7 +846,7 @@ void DataContainerArrayProxyWidget::updateProxyFromProxy(DataContainerArrayProxy
 // -----------------------------------------------------------------------------
 void DataContainerArrayProxyWidget::beforePreflight()
 {
-  if(m_DidCausePreflight == false)
+  if(!m_DidCausePreflight)
   {
     //  qDebug() << getFilter()->getNameOfClass() << " DataContainerArrayProxyWidget::beforePreflight()";
     // Get the DataContainerArray from the Filter instance. This will have what will become the choices for the user

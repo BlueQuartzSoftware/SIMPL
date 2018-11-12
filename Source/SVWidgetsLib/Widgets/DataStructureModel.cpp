@@ -77,14 +77,12 @@ QModelIndex DataStructureModel::index(int row, int column, const QModelIndex& pa
   DataStructureItem* parentItem = getItem(parent);
 
   DataStructureItem* childItem = parentItem->child(row);
-  if(childItem)
+  if(childItem != nullptr)
   {
     return createIndex(row, column, childItem);
   }
-  else
-  {
+
     return QModelIndex();
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -142,7 +140,7 @@ QVariant DataStructureModel::data(const QModelIndex& index, int role) const
   {
     return item->data(index.column());
   }
-  else if(role == Qt::UserRole)
+  if(role == Qt::UserRole)
   {
     //return item->getItemHasErrors();
   }
@@ -169,10 +167,8 @@ QVariant DataStructureModel::data(const QModelIndex& index, int role) const
       DataStructureItem* item = getItem(index);
       return item->getIcon();
     }
-    else
-    {
+
       return QVariant();
-    }
   }
 
   return QVariant();
@@ -243,11 +239,9 @@ Qt::ItemFlags DataStructureModel::flags(const QModelIndex& index) const
     // This is a node
     return (defaultFlags | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
   }
-  else
-  {
+
     // This is a leaf
     return (defaultFlags | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsDragEnabled);
-  }
 }
 
 
@@ -295,7 +289,7 @@ DataStructureItem* DataStructureModel::getItem(const QModelIndex& index) const
   if(index.isValid())
   {
     DataStructureItem* item = static_cast<DataStructureItem*>(index.internalPointer());
-    if(item)
+    if(item != nullptr)
     {
       return item;
     }

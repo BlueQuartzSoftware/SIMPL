@@ -83,7 +83,7 @@ void ComparisonInputsAdvanced::readJson(QJsonObject obj)
     QJsonObject comparisonObj = jsonArray[i].toObject();
     AbstractComparison::Pointer input;
     input = AbstractComparison::FromJson(comparisonObj);
-    if(input.get())
+    if(input.get() != nullptr)
     {
       addInput(input);
     }
@@ -243,7 +243,7 @@ void ComparisonInputsAdvanced::operator=(const ComparisonInputsAdvanced& rhs)
 // -----------------------------------------------------------------------------
 bool ComparisonInputsAdvanced::hasComparisonValue()
 {
-  if(m_Inputs.size() == 0)
+  if(m_Inputs.empty())
   {
     return false;
   }

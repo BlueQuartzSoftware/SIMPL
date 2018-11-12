@@ -325,11 +325,9 @@ QString SVStyle::GetUIFont()
   {
     return font.toString();
   }
-  else
-  {
-    QFont font;
-    return font.toString();
-  }
+
+  font = QFont();
+  return font.toString();
 }
 
 // -----------------------------------------------------------------------------

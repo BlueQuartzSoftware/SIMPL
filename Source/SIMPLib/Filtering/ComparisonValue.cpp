@@ -41,7 +41,6 @@
 //
 // -----------------------------------------------------------------------------
 ComparisonValue::ComparisonValue()
-: AbstractComparison()
 {
   m_attributeArrayName = "";
   m_compOperator = SIMPL::Comparison::Operator_GreaterThan;

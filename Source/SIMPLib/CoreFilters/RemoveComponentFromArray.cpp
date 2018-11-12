@@ -117,9 +117,9 @@ void RemoveComponentFromArray::dataCheck()
 
   m_InArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArrayPath());
 
-  if(m_SaveRemovedComponent == true)
+  if(m_SaveRemovedComponent)
   {
-    if(m_NewArrayArrayName.isEmpty() == true)
+    if(m_NewArrayArrayName.isEmpty())
     {
       setErrorCondition(-11001);
       notifyErrorMessage(getHumanLabel(), "Removed Component array name must be set.", getErrorCondition());
@@ -127,7 +127,7 @@ void RemoveComponentFromArray::dataCheck()
     }
   }
 
-  if(m_ReducedArrayArrayName.isEmpty() == true)
+  if(m_ReducedArrayArrayName.isEmpty())
   {
     setErrorCondition(-11002);
     notifyErrorMessage(getHumanLabel(), "Reduced array name must be set.", getErrorCondition());
@@ -161,7 +161,7 @@ void RemoveComponentFromArray::dataCheck()
   }
 
   QVector<size_t> cDims(1, 1);
-  if(m_SaveRemovedComponent == true)
+  if(m_SaveRemovedComponent)
   {
     DataArrayPath tempPath(getSelectedArrayPath().getDataContainerName(), getSelectedArrayPath().getAttributeMatrixName(), getNewArrayArrayName());
     m_NewArrayPtr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, m_InArrayPtr.lock());
@@ -275,11 +275,11 @@ void RemoveComponentFromArray::execute()
     return;
   }
 
-  if(m_SaveRemovedComponent == true)
+  if(m_SaveRemovedComponent)
   {
     EXECUTE_FUNCTION_TEMPLATE(this, extractComponent, m_InArrayPtr.lock(), m_InArrayPtr.lock(), m_NewArrayPtr.lock(), m_ReducedArrayPtr.lock(), m_CompNumber)
   }
-  else if(m_SaveRemovedComponent == false)
+  else if(!m_SaveRemovedComponent)
   {
     EXECUTE_FUNCTION_TEMPLATE(this, reduceArrayOnly, m_InArrayPtr.lock(), m_InArrayPtr.lock(), m_ReducedArrayPtr.lock(), m_CompNumber)
   }
@@ -293,7 +293,7 @@ void RemoveComponentFromArray::execute()
 AbstractFilter::Pointer RemoveComponentFromArray::newFilterInstance(bool copyFilterParameters) const
 {
   RemoveComponentFromArray::Pointer filter = RemoveComponentFromArray::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

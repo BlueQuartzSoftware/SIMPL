@@ -112,7 +112,7 @@ void ParagraphWidget::afterPreflight()
 void ParagraphWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, textEdit->toHtml());
-  if(false == ok)
+  if(!ok)
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

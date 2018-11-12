@@ -48,8 +48,7 @@
 //
 // -----------------------------------------------------------------------------
 RequiredZThickness::RequiredZThickness()
-: AbstractDecisionFilter()
-, m_DataContainerSelection("")
+: m_DataContainerSelection("")
 , m_NumZVoxels(-1)
 , m_PreflightCheck(false)
 {
@@ -209,7 +208,7 @@ void RequiredZThickness::execute()
 AbstractFilter::Pointer RequiredZThickness::newFilterInstance(bool copyFilterParameters) const
 {
   RequiredZThickness::Pointer filter = RequiredZThickness::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

@@ -41,10 +41,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayCreationFilterParameter::DataArrayCreationFilterParameter()
-: FilterParameter()
-{
-}
+DataArrayCreationFilterParameter::DataArrayCreationFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

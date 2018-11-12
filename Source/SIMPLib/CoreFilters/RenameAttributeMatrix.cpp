@@ -98,7 +98,7 @@ void RenameAttributeMatrix::dataCheck()
   setErrorCondition(0);
   setWarningCondition(0);
 
-  if(m_NewAttributeMatrix.isEmpty() == true)
+  if(m_NewAttributeMatrix.isEmpty())
   {
     setErrorCondition(-11004);
     QString ss = QObject::tr("The new Attribute Matrix name must be set");
@@ -117,7 +117,7 @@ void RenameAttributeMatrix::dataCheck()
   }
 
   bool check = dc->renameAttributeMatrix(amName, getNewAttributeMatrix());
-  if(check == false)
+  if(!check)
   {
     setErrorCondition(-11006);
     QString ss = QObject::tr("Attempt to rename Attribute Matrix '%1' to '%2' failed").arg(amName).arg(getNewAttributeMatrix());
@@ -159,7 +159,7 @@ void RenameAttributeMatrix::execute()
 AbstractFilter::Pointer RenameAttributeMatrix::newFilterInstance(bool copyFilterParameters) const
 {
   RenameAttributeMatrix::Pointer filter = RenameAttributeMatrix::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

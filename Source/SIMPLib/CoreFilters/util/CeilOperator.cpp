@@ -45,7 +45,6 @@
 //
 // -----------------------------------------------------------------------------
 CeilOperator::CeilOperator()
-: UnaryOperator()
 {
   setNumberOfArguments(1);
   setInfixToken("ceil");

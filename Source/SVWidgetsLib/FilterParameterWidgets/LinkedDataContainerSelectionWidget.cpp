@@ -149,15 +149,15 @@ void LinkedDataContainerSelectionWidget::widgetChanged()
 // -----------------------------------------------------------------------------
 QString LinkedDataContainerSelectionWidget::checkStringValues(QString curDcName, QString filtDcName)
 {
-  if(curDcName.isEmpty() == true && filtDcName.isEmpty() == false)
+  if(curDcName.isEmpty() && !filtDcName.isEmpty())
   {
     return filtDcName;
   }
-  else if(curDcName.isEmpty() == false && filtDcName.isEmpty() == true)
+  if(!curDcName.isEmpty() && filtDcName.isEmpty())
   {
     return curDcName;
   }
-  else if(curDcName.isEmpty() == false && filtDcName.isEmpty() == false && m_DidCausePreflight == true)
+  if(!curDcName.isEmpty() && !filtDcName.isEmpty() && m_DidCausePreflight)
   {
     return curDcName;
   }
@@ -180,13 +180,13 @@ void LinkedDataContainerSelectionWidget::createSelectionMenu()
 
   // Get the menu and clear it out
   QMenu* menu = m_SelectedDataContainerPath->menu();
-  if(!menu)
+  if(menu == nullptr)
   {
     menu = new QMenu();
     m_SelectedDataContainerPath->setMenu(menu);
     menu->installEventFilter(this);
   }
-  if(menu)
+  if(menu != nullptr)
   {
     menu->clear();
   }
@@ -299,7 +299,7 @@ void LinkedDataContainerSelectionWidget::beforePreflight()
   {
     return;
   }
-  if(m_DidCausePreflight == true)
+  if(m_DidCausePreflight)
   {
     // std::cout << "***  DataContainerSelectionWidget already caused a preflight, just returning" << std::endl;
     return;
@@ -343,7 +343,7 @@ void LinkedDataContainerSelectionWidget::filterNeedsInputParameters(AbstractFilt
   bool ok = false;
   // Set the value into the Filter
   ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-  if(false == ok)
+  if(!ok)
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

@@ -102,8 +102,8 @@ void FilterListView::addFilter(AbstractFilter::Pointer filter)
 //
 // -----------------------------------------------------------------------------
 void FilterListView::addFilter(AbstractFilter::Pointer filter, SearchGroup group)
-{ 
-  if (m_SearchGroupIndexMap.contains(group) == false)
+{
+  if(!m_SearchGroupIndexMap.contains(group))
   {
     addGroup(group);
   }
@@ -280,7 +280,7 @@ void FilterListView::listenKeyPressed(QKeyEvent* event)
 
       return;
     }
-    else if(event->key() == Qt::Key_Return)
+    if(event->key() == Qt::Key_Return)
     {
       if(selectedIndexes.size() == 1)
       {
@@ -323,15 +323,11 @@ QModelIndex FilterListView::findNextSelectableIndex()
     {
       return model->index(0, FilterListModel::Column::Contents, nextParent);
     }
-    else
-    {
+
       return selectedIndexes[0];
-    }
   }
-  else
-  {
+
     return model->index(selectedIndexes[0].row() + 1, FilterListModel::Column::Contents, parent);
-  }
 
   return QModelIndex();
 }

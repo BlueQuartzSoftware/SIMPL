@@ -62,10 +62,10 @@ AbstractIOFileWidget::AbstractIOFileWidget(FilterParameter* parameter, AbstractF
 {
   setupUi(this);
   setupGui();
-  if(filter)
+  if(filter != nullptr)
   {
     QString currentPath = filter->property(PROPERTY_NAME_AS_CHAR).toString();
-    if(currentPath.isEmpty() == false)
+    if(!currentPath.isEmpty())
     {
       currentPath = QDir::toNativeSeparators(currentPath);
       // Store the last used directory into the private instance variable
@@ -180,8 +180,7 @@ void AbstractIOFileWidget::setupMenuField()
     connect(m_ShowFileAction, SIGNAL(triggered()), this, SLOT(showFileInFileSystem()));
   }
 
-
-  if (m_LineEdit->text().isEmpty() == false && fi.exists())
+  if(!m_LineEdit->text().isEmpty() && fi.exists())
   {
     m_ShowFileAction->setEnabled(true);
   }
@@ -198,7 +197,7 @@ bool AbstractIOFileWidget::verifyPathExists(QString filePath, QLineEdit* lineEdi
 {
   QFileInfo fileinfo(filePath);
   SVStyle* style = SVStyle::Instance();
-  if(false == fileinfo.exists())
+  if(!fileinfo.exists())
   {
     style->LineEditErrorStyle(lineEdit);
   }
@@ -256,7 +255,7 @@ void AbstractIOFileWidget::on_m_LineEdit_textChanged(const QString& text)
     absPathLabel->setText(inputPath);
   }
 
-  if (hasValidFilePath(inputPath) == true)
+  if(hasValidFilePath(inputPath))
   {
     m_ShowFileAction->setEnabled(true);
   }
@@ -305,7 +304,7 @@ void AbstractIOFileWidget::filterNeedsInputParameters(AbstractFilter* filter)
   text = validator->convertToAbsolutePath(text);
 
   bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, text);
-  if(false == ok)
+  if(!ok)
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

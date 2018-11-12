@@ -48,7 +48,6 @@
 // -----------------------------------------------------------------------------
 MultiThresholdObjects2::MultiThresholdObjects2()
 : m_DestinationArrayName(SIMPL::GeneralData::Mask)
-, m_SelectedThresholds()
 , m_Destination(nullptr)
 {
 }
@@ -107,7 +106,7 @@ void MultiThresholdObjects2::dataCheck()
 
   QVector<AbstractComparison::Pointer> comparisonValues = m_SelectedThresholds.getComparisonValues();
 
-  if(comparisonValues.size() == 0)
+  if(comparisonValues.empty())
   {
     setErrorCondition(-12000);
     notifyErrorMessage(getHumanLabel(), "You must add at least 1 threshold value.", getErrorCondition());
@@ -214,8 +213,7 @@ void MultiThresholdObjects2::execute()
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
-  else
-  {
+
     bool invert = m_SelectedThresholds.shouldInvert();
 
     int64_t thresholdSize;
@@ -251,9 +249,7 @@ void MultiThresholdObjects2::execute()
     {
       m_Destination[p] = threshold[p];
     }
-    
-  }
-  
+
   /* Let the GUI know we are done with this filter */
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
@@ -298,7 +294,7 @@ void MultiThresholdObjects2::insertThreshold(int64_t numItems, BoolArrayType::Po
     {
       currentArray[i] = currentArray[i] || newArray[i];
     }
-    else if (currentArray[i] == false || newArray[i] == false)
+    else if(!currentArray[i] || !newArray[i])
     {
       currentArray[i] = false;
     }
@@ -443,7 +439,7 @@ void MultiThresholdObjects2::thresholdValue(ComparisonValue::Pointer comparisonV
 AbstractFilter::Pointer MultiThresholdObjects2::newFilterInstance(bool copyFilterParameters) const
 {
   MultiThresholdObjects2::Pointer filter = MultiThresholdObjects2::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

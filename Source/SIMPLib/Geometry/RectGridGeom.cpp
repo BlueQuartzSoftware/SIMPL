@@ -398,7 +398,6 @@ private:
 //
 // -----------------------------------------------------------------------------
 RectGridGeom::RectGridGeom()
-: IGeometryGrid()
 {
   m_GeometryTypeName = SIMPL::Geometry::RectGridGeometry;
   m_GeometryType = IGeometry::Type::RectGrid;
@@ -428,7 +427,7 @@ RectGridGeom::~RectGridGeom() = default;
 // -----------------------------------------------------------------------------
 RectGridGeom::Pointer RectGridGeom::CreateGeometry(const QString& name)
 {
-  if(name.isEmpty() == true)
+  if(name.isEmpty())
   {
     return NullPointer();
   }
@@ -445,7 +444,7 @@ void RectGridGeom::setXBounds(FloatArrayType::Pointer xBnds)
 {
   if(xBnds.get() != nullptr)
   {
-    if(xBnds->getName().compare(SIMPL::Geometry::xBoundsList))
+    if(xBnds->getName().compare(SIMPL::Geometry::xBoundsList) != 0)
     {
       xBnds->setName(SIMPL::Geometry::xBoundsList);
     }
@@ -460,7 +459,7 @@ void RectGridGeom::setYBounds(FloatArrayType::Pointer yBnds)
 {
   if(yBnds.get() != nullptr)
   {
-    if(yBnds->getName().compare(SIMPL::Geometry::yBoundsList))
+    if(yBnds->getName().compare(SIMPL::Geometry::yBoundsList) != 0)
     {
       yBnds->setName(SIMPL::Geometry::yBoundsList);
     }
@@ -475,7 +474,7 @@ void RectGridGeom::setZBounds(FloatArrayType::Pointer zBnds)
 {
   if(zBnds.get() != nullptr)
   {
-    if(zBnds->getName().compare(SIMPL::Geometry::zBoundsList))
+    if(zBnds->getName().compare(SIMPL::Geometry::zBoundsList) != 0)
     {
       zBnds->setName(SIMPL::Geometry::zBoundsList);
     }
@@ -731,7 +730,6 @@ ElementDynamicList::Pointer RectGridGeom::getElementsContainingVert()
 // -----------------------------------------------------------------------------
 void RectGridGeom::setElementsContainingVert(ElementDynamicList::Pointer SIMPL_NOT_USED(elementsContainingVert))
 {
-  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -739,7 +737,6 @@ void RectGridGeom::setElementsContainingVert(ElementDynamicList::Pointer SIMPL_N
 // -----------------------------------------------------------------------------
 void RectGridGeom::deleteElementsContainingVert()
 {
-  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -763,7 +760,6 @@ ElementDynamicList::Pointer RectGridGeom::getElementNeighbors()
 // -----------------------------------------------------------------------------
 void RectGridGeom::setElementNeighbors(ElementDynamicList::Pointer SIMPL_NOT_USED(elementNeighbors))
 {
-  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -771,7 +767,6 @@ void RectGridGeom::setElementNeighbors(ElementDynamicList::Pointer SIMPL_NOT_USE
 // -----------------------------------------------------------------------------
 void RectGridGeom::deleteElementNeighbors()
 {
-  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -795,7 +790,6 @@ FloatArrayType::Pointer RectGridGeom::getElementCentroids()
 // -----------------------------------------------------------------------------
 void RectGridGeom::setElementCentroids(FloatArrayType::Pointer SIMPL_NOT_USED(elementsCentroids))
 {
-  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -803,7 +797,6 @@ void RectGridGeom::setElementCentroids(FloatArrayType::Pointer SIMPL_NOT_USED(el
 // -----------------------------------------------------------------------------
 void RectGridGeom::deleteElementCentroids()
 {
-  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -930,7 +923,7 @@ void RectGridGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayTy
   size_t dims[3] = {0, 0, 0};
   std::tie(dims[0], dims[1], dims[2]) = getDimensions();
 
-  if(observable)
+  if(observable != nullptr)
   {
     connect(this, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), observable, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
   }
@@ -941,12 +934,12 @@ void RectGridGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayTy
 #endif
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  size_t grain = dims[2] == 1 ? 1 : dims[2] / init.default_num_threads();
+  size_t grain = dims[2] == 1 ? 1 : dims[2] / tbb::task_scheduler_init::default_num_threads();
   if(grain == 0)
   {
     grain = 1;
   }
-  if(doParallel == true)
+  if(doParallel)
   {
     tbb::parallel_for(tbb::blocked_range3d<size_t, size_t, size_t>(0, dims[2], grain, 0, dims[1], dims[1], 0, dims[0], dims[0]),
                       FindRectGridDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());

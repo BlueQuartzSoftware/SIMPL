@@ -132,12 +132,7 @@ void DataContainerArrayProxy::operator=(const DataContainerArrayProxy& rhs)
 // -----------------------------------------------------------------------------
 bool DataContainerArrayProxy::operator==(const DataContainerArrayProxy& rhs) const
 {
-  if(dataContainers == rhs.dataContainers)
-  {
-    return true;
-  }
-
-  return false;
+  return dataContainers == rhs.dataContainers;
 }
 
 // -----------------------------------------------------------------------------
@@ -145,12 +140,7 @@ bool DataContainerArrayProxy::operator==(const DataContainerArrayProxy& rhs) con
 // -----------------------------------------------------------------------------
 bool DataContainerArrayProxy::operator!=(const DataContainerArrayProxy& rhs) const
 {
-  if(dataContainers == rhs.dataContainers)
-  {
-    return false;
-  }
-
-  return true;
+  return dataContainers != rhs.dataContainers;
 }
 
 // -----------------------------------------------------------------------------
@@ -348,7 +338,7 @@ DataContainerArrayProxy DataContainerArrayProxy::MergeProxies(DataContainerArray
     DataContainerProxy fileDcProxy = fDcIter.value();
 
     // If the cache does not have the file dc proxy, add it to the cache
-    if(cDcMap.contains(fileDcName) == false)
+    if(!cDcMap.contains(fileDcName))
     {
       cDcMap.insert(fileDcName, fileDcProxy);
     }
@@ -360,7 +350,7 @@ DataContainerArrayProxy DataContainerArrayProxy::MergeProxies(DataContainerArray
       QString fileAmName = fAmIter.key();
       AttributeMatrixProxy fileAmProxy = fAmIter.value();
       // If the cache does not have the file am proxy, add it to the cache
-      if(cAmMap.contains(fileAmName) == false)
+      if(!cAmMap.contains(fileAmName))
       {
         cAmMap.insert(fileAmName, fileAmProxy);
       }
@@ -372,7 +362,7 @@ DataContainerArrayProxy DataContainerArrayProxy::MergeProxies(DataContainerArray
         QString fileDaName = fDaIter.key();
         DataArrayProxy fileDaProxy = fDaIter.value();
         // If the cache does not have the file da proxy, add it to the cache
-        if(cDaMap.contains(fileDaName) == false)
+        if(!cDaMap.contains(fileDaName))
         {
           cDaMap.insert(fileDaName, fileDaProxy);
         }
@@ -388,7 +378,7 @@ DataContainerArrayProxy DataContainerArrayProxy::MergeProxies(DataContainerArray
     DataContainerProxy& cacheDcProxy = cDcIter.value();
 
     // If the file does not have the cached dc proxy, remove it from the cache
-    if(fDcMap.contains(cacheDcName) == false)
+    if(!fDcMap.contains(cacheDcName))
     {
       dcItemsToDelete.push_back(cacheDcName);
     }
@@ -403,7 +393,7 @@ DataContainerArrayProxy DataContainerArrayProxy::MergeProxies(DataContainerArray
         QString cacheAmName = amIter.key();
         AttributeMatrixProxy& cacheAmProxy = amIter.value();
         // If the file does not have the cached am proxy, remove it from the cache
-        if(fAmMap.contains(cacheAmName) == false)
+        if(!fAmMap.contains(cacheAmName))
         {
           amItemsToDelete.push_back(cacheAmName);
         }
@@ -418,7 +408,7 @@ DataContainerArrayProxy DataContainerArrayProxy::MergeProxies(DataContainerArray
             QString cacheDaName = daIter.key();
             DataArrayProxy cacheDaProxy = daIter.value();
             // If the file does not have the cached da proxy, remove it from the cache
-            if(fDaMap.contains(cacheDaName) == false)
+            if(!fDaMap.contains(cacheDaName))
             {
               daItemsToDelete.push_back(cacheDaName);
             }

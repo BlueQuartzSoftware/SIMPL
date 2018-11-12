@@ -155,15 +155,15 @@ PhaseType::Type PhaseType::getPhaseType(const char* str)
   {
     return Type::Primary;
   }
-  else if(PrecipitateStr().compare(str) == 0)
+  if(PrecipitateStr().compare(str) == 0)
   {
     return Type::Precipitate;
   }
-  else if(TransformationStr().compare(str) == 0)
+  if(TransformationStr().compare(str) == 0)
   {
     return Type::Transformation;
   }
-  else if(MatrixStr().compare(str) == 0)
+  if(MatrixStr().compare(str) == 0)
   {
     return Type::Matrix;
   }

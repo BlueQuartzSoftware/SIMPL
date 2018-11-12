@@ -98,11 +98,11 @@ void FilterLibraryTreeWidget::mouseMoveEvent(QMouseEvent* event)
 void FilterLibraryTreeWidget::performDrag()
 {
   QTreeWidgetItem* item = itemAt(startPos);
-  if(item)
+  if(item != nullptr)
   {
     QString filterHumanLabel = item->text(0);
     QString filterClassName = item->data(0, Qt::UserRole + 1).toString();
-    if(filterClassName.isEmpty() == false)
+    if(!filterClassName.isEmpty())
     {
       QJsonObject obj;
       obj[item->text(0)] = filterClassName;
@@ -142,7 +142,7 @@ void FilterLibraryTreeWidget::performDrag()
 void FilterLibraryTreeWidget::dragEnterEvent(QDragEnterEvent* event)
 {
   FilterLibraryTreeWidget* source = qobject_cast<FilterLibraryTreeWidget*>(event->source());
-  if(source && source != this)
+  if((source != nullptr) && source != this)
   {
     event->setDropAction(Qt::MoveAction);
     event->accept();
@@ -155,7 +155,7 @@ void FilterLibraryTreeWidget::dragEnterEvent(QDragEnterEvent* event)
 void FilterLibraryTreeWidget::dragMoveEvent(QDragMoveEvent* event)
 {
   FilterLibraryTreeWidget* source = qobject_cast<FilterLibraryTreeWidget*>(event->source());
-  if(source && source != this)
+  if((source != nullptr) && source != this)
   {
     event->setDropAction(Qt::MoveAction);
     event->accept();

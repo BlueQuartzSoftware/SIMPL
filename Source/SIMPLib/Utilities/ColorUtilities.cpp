@@ -160,7 +160,9 @@ SIMPL::Rgb ColorUtilities::Hsv2Rgb(float h, float s, float v)
   }
   hh = in.h;
   if(hh >= 360.0)
+  {
     hh = 0.0;
+  }
   hh /= 60.0;
   i = (long)hh;
   ff = hh - i;

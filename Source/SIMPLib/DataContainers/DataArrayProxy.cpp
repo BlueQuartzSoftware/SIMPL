@@ -97,7 +97,7 @@ bool DataArrayProxy::readJson(const QJsonObject& json)
   if(json["Flag"].isDouble() && json["Version"].isDouble() && json["Path"].isString() && json["Name"].isString() && json["Object Type"].isString() && json["Tuple Dimensions"].isArray() &&
      json["Component Dimensions"].isArray())
   {
-    if(json["Flag"].toDouble() >= std::numeric_limits<uint8_t>().min() && json["Flag"].toDouble() <= std::numeric_limits<uint8_t>().max())
+    if(json["Flag"].toDouble() >= std::numeric_limits<uint8_t>::min() && json["Flag"].toDouble() <= std::numeric_limits<uint8_t>::max())
     {
       flag = static_cast<uint8_t>(json["Flag"].toDouble());
     }
@@ -145,7 +145,7 @@ void DataArrayProxy::ReadDataArrayStructure(hid_t attrMatGid, QMap<QString, Data
     if (req != nullptr)
     {
       QVector<QVector<size_t>> cDims = req->getComponentDimensions();
-      if(cDims.size() <= 0 || cDims.contains(proxy.compDims))
+      if(cDims.empty() || cDims.contains(proxy.compDims))
       {
         cDimsResult = true;
       }
@@ -166,7 +166,7 @@ void DataArrayProxy::ReadDataArrayStructure(hid_t attrMatGid, QMap<QString, Data
     if (req != nullptr)
     {
       QVector<QString> daTypes = req->getDATypes();
-      if((daTypes.size() <= 0 || daTypes.contains(proxy.objectType)) && cDimsResult == true)
+      if((daTypes.empty() || daTypes.contains(proxy.objectType)) && cDimsResult)
       {
         proxy.flag = Qt::Checked;
       }
@@ -195,12 +195,7 @@ void DataArrayProxy::operator=(const DataArrayProxy& rhs)
 // -----------------------------------------------------------------------------
 bool DataArrayProxy::operator==(const DataArrayProxy& rhs) const
 {
-  if(flag == rhs.flag && version == rhs.version && path == rhs.path && name == rhs.name && objectType == rhs.objectType && tupleDims == rhs.tupleDims && compDims == rhs.compDims)
-  {
-    return true;
-  }
-
-  return false;
+  return flag == rhs.flag && version == rhs.version && path == rhs.path && name == rhs.name && objectType == rhs.objectType && tupleDims == rhs.tupleDims && compDims == rhs.compDims;
 }
 
 // -----------------------------------------------------------------------------
@@ -227,7 +222,7 @@ QVector<size_t> DataArrayProxy::readVector(QJsonArray jsonArray)
   {
     if(val.isDouble())
     {
-      if(val.toDouble() >= std::numeric_limits<size_t>().min() && val.toDouble() <= std::numeric_limits<size_t>().max())
+      if(val.toDouble() >= std::numeric_limits<size_t>::min() && val.toDouble() <= std::numeric_limits<size_t>::max())
       {
         vector.push_back(static_cast<size_t>(val.toDouble()));
       }
@@ -245,15 +240,15 @@ DataArrayProxy::PrimitiveTypeFlag DataArrayProxy::PrimitiveTypeToFlag(const QStr
   {
     return Any_PType;
   }
-  else if (pType == SIMPL::TypeNames::Bool)
+  if(pType == SIMPL::TypeNames::Bool)
   {
     return Bool_PType;
   }
-  else if (pType == SIMPL::TypeNames::Double)
+  if(pType == SIMPL::TypeNames::Double)
   {
     return Double_PType;
   }
-  else if (pType == SIMPL::TypeNames::Float)
+  if(pType == SIMPL::TypeNames::Float)
   {
     return Float_PType;
   }

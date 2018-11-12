@@ -132,7 +132,7 @@ void CreateDataContainer::execute()
 AbstractFilter::Pointer CreateDataContainer::newFilterInstance(bool copyFilterParameters) const
 {
   CreateDataContainer::Pointer filter = CreateDataContainer::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

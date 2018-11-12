@@ -214,7 +214,7 @@ void SetOriginResolutionImageGeom::execute()
 AbstractFilter::Pointer SetOriginResolutionImageGeom::newFilterInstance(bool copyFilterParameters) const
 {
   SetOriginResolutionImageGeom::Pointer filter = SetOriginResolutionImageGeom::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

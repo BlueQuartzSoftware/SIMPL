@@ -123,7 +123,7 @@ void AbstractDecisionFilter::extractProperties(const QJsonDocument& jsonDoc)
 AbstractFilter::Pointer AbstractDecisionFilter::newFilterInstance(bool copyFilterParameters) const
 {
   AbstractDecisionFilter::Pointer filter = AbstractDecisionFilter::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

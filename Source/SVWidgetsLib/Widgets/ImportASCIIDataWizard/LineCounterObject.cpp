@@ -86,7 +86,7 @@ void LineCounterObject::run()
   int64_t fileSize = qFile.size();
 
   // Open the file
-  if(qFile.open(QIODevice::ReadOnly) == false)
+  if(!qFile.open(QIODevice::ReadOnly))
   {
     QString errorStr = "Error: Unable to open file \"" + m_FilePath + "\"";
     fputs(errorStr.toStdString().c_str(), stderr);
@@ -113,7 +113,7 @@ void LineCounterObject::run()
   }
   m_NumOfLines = 0;
   int64_t currentByte = 0;
-  while(qFile.atEnd() == false)
+  while(!qFile.atEnd())
   {
     // Copy the file contents into the buffer
     result = qFile.read(buffer, actualSize);
