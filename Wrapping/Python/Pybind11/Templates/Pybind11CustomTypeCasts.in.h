@@ -554,7 +554,6 @@ namespace pybind11
 			 */
 			bool load(handle src, bool)
 			{
-				py::print("Python to C++");
 				if (!src)
 				{
 					return false;
@@ -567,7 +566,6 @@ namespace pybind11
 					VectorOfFloatArray floatArrays;
 					for (auto floatArray : src)
 					{
-						py::print(floatArray);
 						if (py::isinstance<py::list>(floatArray) || py::isinstance<py::tuple>(floatArray))
 						{
 							FloatArrayType::Pointer floatArrayPtr;
@@ -622,16 +620,13 @@ namespace pybind11
 			 */
 			static handle cast(const VectorOfFloatArray& src, return_value_policy /* policy */, handle /* parent */)
 			{
-				std::cout << "C++ to Python" << std::endl;
 				py::list floatArrays = py::list();
 				for (FloatArrayType::Pointer floatArray : src)
 				{
-					std::cout << "Float array name: " << floatArray->getName().toStdString() << std::endl;
 					py::list floatArrayList = py::list();
 					floatArrayList.append(floatArray->getName());
 					for (float value : floatArray->getArray())
 					{
-						std::cout << "Value: " << value << std::endl;
 						floatArrayList.append(value);
 					}
 

@@ -46,7 +46,7 @@ PYBIND11_DECLARE_HOLDER_TYPE(T, std::shared_ptr<T>);
 //PYBIND11_MAKE_OPAQUE(DataContainersMap)
 //PYBIND11_MAKE_OPAQUE(AttributeMatricesMap)
 
-#include "Templates/Pybind11CustomTypeCasts.in.h"
+#include "Pybind11CustomTypeCasts.in.h"
 
 #ifndef PySharedPtrClass_TEMPLATE
 #define PySharedPtrClass_TEMPLATE
