@@ -342,12 +342,6 @@ public slots:
    */
   void toStoppedState();
 
-  /**
-   * @brief processPipelineMessage
-   * @param pm
-   */
-  void processPipelineMessage(const PipelineMessage& pm) override;
-
 signals:
   void displayIssuesTriggered();
   void clearIssuesTriggered();
