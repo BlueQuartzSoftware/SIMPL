@@ -124,7 +124,7 @@ void FilterGroup06::execute()
 AbstractFilter::Pointer FilterGroup06::newFilterInstance(bool copyFilterParameters) const
 {
   FilterGroup06::Pointer filter = FilterGroup06::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

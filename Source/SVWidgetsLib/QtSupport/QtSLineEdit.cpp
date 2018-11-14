@@ -156,7 +156,7 @@ bool SearchLineEditPrivate::eventFilter(QObject* obj, QEvent* event)
   switch(event->type())
   {
   case QEvent::FocusIn:
-    if(m_MenuTabFocusTriggers[buttonIndex] && m_ButtonMenus[buttonIndex])
+    if(m_MenuTabFocusTriggers[buttonIndex] && (m_ButtonMenus[buttonIndex] != nullptr))
     {
       m_LineEdit->setFocus();
       execMenuAtWidget(m_ButtonMenus[buttonIndex], m_IconButtons[buttonIndex]);
@@ -262,15 +262,17 @@ void QtSLineEdit::iconClicked()
   IconButton* button = qobject_cast<IconButton*>(sender());
   int index = -1;
   for(int i = 0; i < 2; ++i)
+  {
     if(d->m_IconButtons[i] == button)
     {
       index = i;
     }
+  }
   if(index == -1)
   {
     return;
   }
-  if(d->m_ButtonMenus[index])
+  if(d->m_ButtonMenus[index] != nullptr)
   {
     execMenuAtWidget(d->m_ButtonMenus[index], button);
   }
@@ -372,7 +374,7 @@ void QtSLineEdit::dropEvent(QDropEvent* event)
     urlList = event->mimeData()->urls(); // returns list of QUrls
     // if just text was dropped, urlList is empty (size == 0)
 
-    if(urlList.size() > 0) // if at least one QUrl is present in list
+    if(!urlList.empty()) // if at least one QUrl is present in list
     {
       fName = urlList[0].toLocalFile(); // convert first QUrl to local path
       fName = QDir::toNativeSeparators(fName);

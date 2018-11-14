@@ -113,7 +113,7 @@ int CompositeTransformContainer::readTransformContainerFromHDF5(hid_t parentId, 
       return err;
     }
 
-    if(transformContainerTypeName.compare(SIMPL::Geometry::TransformContainer.toStdString()) == 0)
+    if(transformContainerTypeName == SIMPL::Geometry::TransformContainer.toStdString())
     {
       TransformContainer::Pointer transformContainer = TransformContainer::New();
       err = transformContainer->readTransformContainerFromHDF5(transformContainerGrpId, metaDataOnly, childTransformContainerName.toLatin1().data());
@@ -123,7 +123,7 @@ int CompositeTransformContainer::readTransformContainerFromHDF5(hid_t parentId, 
       }
       this->addTransformContainer(transformContainer);
     }
-    else if(transformContainerTypeName.compare(SIMPL::Geometry::CompositeTransformContainer.toStdString()) == 0)
+    else if(transformContainerTypeName == SIMPL::Geometry::CompositeTransformContainer.toStdString())
     {
       CompositeTransformContainer::Pointer CompositeTransformContainer = CompositeTransformContainer::New();
       err = CompositeTransformContainer->readTransformContainerFromHDF5(transformContainerGrpId, metaDataOnly, childTransformContainerName.toLatin1().data());

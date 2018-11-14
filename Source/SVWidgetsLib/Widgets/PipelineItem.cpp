@@ -100,7 +100,7 @@ int PipelineItem::childCount() const
 // -----------------------------------------------------------------------------
 int PipelineItem::childNumber() const
 {
-  if(m_ParentItem)
+  if(m_ParentItem != nullptr)
   {
     return m_ParentItem->m_ChildItems.indexOf(const_cast<PipelineItem*>(this));
   }
@@ -280,7 +280,7 @@ void PipelineItem::setParent(PipelineItem* parent)
 void PipelineItem::setupFilterInputWidget()
 {
   // Instantiate the filter input widget object
-  if(m_FilterInputWidget)
+  if(m_FilterInputWidget != nullptr)
   {
     m_FilterInputWidget->deleteLater();
   }

@@ -55,7 +55,7 @@ QVector<QString> FilePathGenerator::GenerateFileList(int start, int end, int inc
 {
   QVector<QString> fileList;
   QDir dir(inputPath);
-  if(dir.exists() == false)
+  if(!dir.exists())
   {
     return fileList;
   }
@@ -78,7 +78,7 @@ QVector<QString> FilePathGenerator::GenerateFileList(int start, int end, int inc
     filePath = QDir::toNativeSeparators(filePath);
 
     QFileInfo fi(filePath);
-    if(fi.exists() == false)
+    if(!fi.exists())
     {
       missingFiles = true;
     }
@@ -99,7 +99,7 @@ QVector<QString> FilePathGenerator::GenerateVectorFileList(int start, int end, i
 {
   QVector<QString> fileList;
   QDir dir(inputPath);
-  if(dir.exists() == false)
+  if(!dir.exists())
   {
     return fileList;
   }

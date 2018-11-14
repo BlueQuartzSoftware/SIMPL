@@ -45,7 +45,6 @@
 //
 // -----------------------------------------------------------------------------
 ACosOperator::ACosOperator()
-: UnaryOperator()
 {
   setNumberOfArguments(1);
   setInfixToken("acos");

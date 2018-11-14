@@ -87,7 +87,7 @@ void BookmarksItemDelegate::setModelData(QWidget* editor, QAbstractItemModel* mo
   QLineEdit* line = static_cast<QLineEdit*>(editor);
   QString value = line->text();
 
-  if(value.isEmpty() == false)
+  if(!value.isEmpty())
   {
     QModelIndex bIndex = bModel->index(index.row(), BookmarksItem::Contents, index.parent());
     bModel->setData(bIndex, value, Qt::DisplayRole);

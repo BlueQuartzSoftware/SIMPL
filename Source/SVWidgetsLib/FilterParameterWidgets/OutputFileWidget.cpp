@@ -73,7 +73,7 @@ void OutputFileWidget::setupGui()
 void OutputFileWidget::selectOutputFile()
 {
   QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
-  if(currentPath.isEmpty() == true)
+  if(currentPath.isEmpty())
   {
     currentPath = getOpenDialogLastFilePath();
   }
@@ -83,7 +83,7 @@ void OutputFileWidget::selectOutputFile()
   QString defaultName = getOpenDialogLastFilePath();
   QString file = QFileDialog::getSaveFileName(this, tr("Save File As"), defaultName, s);
 
-  if(true == file.isEmpty())
+  if(file.isEmpty())
   {
     return;
   }

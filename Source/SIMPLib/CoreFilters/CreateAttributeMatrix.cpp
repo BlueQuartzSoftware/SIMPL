@@ -48,7 +48,6 @@
 CreateAttributeMatrix::CreateAttributeMatrix()
 : m_CreatedAttributeMatrix("", "AttributeMatrix", "")
 , m_AttributeMatrixType(static_cast<int32_t>(AttributeMatrix::Type::Generic))
-, m_TupleDimensions()
 {
 }
 
@@ -192,7 +191,7 @@ void CreateAttributeMatrix::execute()
 AbstractFilter::Pointer CreateAttributeMatrix::newFilterInstance(bool copyFilterParameters) const
 {
   CreateAttributeMatrix::Pointer filter = CreateAttributeMatrix::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

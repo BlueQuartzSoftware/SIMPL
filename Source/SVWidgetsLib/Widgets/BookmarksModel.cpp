@@ -151,15 +151,15 @@ QVariant BookmarksModel::data(const QModelIndex& index, int role) const
   {
     return item->getName();
   }
-  else if(role == static_cast<int>(Roles::PathRole))
+  if(role == static_cast<int>(Roles::PathRole))
   {
     return item->getPath();
   }
-  else if(role == static_cast<int>(Roles::ErrorsRole))
+  if(role == static_cast<int>(Roles::ErrorsRole))
   {
     return item->getHasErrors();
   }
-  else if(role == static_cast<int>(Roles::ExpandedRole))
+  if(role == static_cast<int>(Roles::ExpandedRole))
   {
     return item->isExpanded();
   }
@@ -170,27 +170,25 @@ QVariant BookmarksModel::data(const QModelIndex& index, int role) const
   }
   else if(role == Qt::ForegroundRole)
   {
-    if(item->getHasErrors() == true)
+    if(item->getHasErrors())
     {
       return styles->getQTreeViewItem_error_color();
     }
-    else
-    {
+
       return styles->getQTreeViewItem_color();
-    }
   }
   else if(role == Qt::ToolTipRole && item->getItemType() == BookmarksItem::ItemType::Bookmark)
   {
     QString path = item->getPath();
     QFileInfo info(path);
-    if(path.isEmpty() == false)
+    if(!path.isEmpty())
     {
-      if(info.exists() == false)
+      if(!info.exists())
       {
         QString tooltip = tr("'%1' was not found on the file system.\nYou can either locate the file or delete the entry from the table.").arg(item->getPath());
         return tooltip;
       }
-      else if(info.suffix().compare("json") == 0)
+      if(info.suffix().compare("json") == 0)
       {
         QString html = JsonFilterParametersReader::HtmlSummaryFromFile(path, nullptr);
         return html;
@@ -226,11 +224,9 @@ Qt::ItemFlags BookmarksModel::flags(const QModelIndex& index) const
     // This is a node
     return (defaultFlags | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
   }
-  else
-  {
+
     // This is a leaf
     return (defaultFlags | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsDragEnabled);
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -241,7 +237,7 @@ BookmarksItem* BookmarksModel::getItem(const QModelIndex& index) const
   if(index.isValid())
   {
     BookmarksItem* item = static_cast<BookmarksItem*>(index.internalPointer());
-    if(item)
+    if(item != nullptr)
     {
       return item;
     }
@@ -262,14 +258,12 @@ QModelIndex BookmarksModel::index(int row, int column, const QModelIndex& parent
   BookmarksItem* parentItem = getItem(parent);
 
   BookmarksItem* childItem = parentItem->child(row);
-  if(childItem)
+  if(childItem != nullptr)
   {
     return createIndex(row, column, childItem);
   }
-  else
-  {
+
     return QModelIndex();
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -284,7 +278,7 @@ bool BookmarksModel::insertRows(int position, int rows, const QModelIndex& paren
   success = parentItem->insertChildren(position, rows, columnCount());
   endInsertRows();
 
-  if (m_LoadingModel == false)
+  if(!m_LoadingModel)
   {
     writeBookmarksToPrefsFile();
   }
@@ -304,7 +298,7 @@ bool BookmarksModel::removeRows(int position, int rows, const QModelIndex& paren
   success = parentItem->removeChildren(position, rows);
   endRemoveRows();
 
-  if (m_LoadingModel == false)
+  if(!m_LoadingModel)
   {
     writeBookmarksToPrefsFile();
   }
@@ -334,7 +328,7 @@ bool BookmarksModel::moveRows(const QModelIndex& sourceParent, int sourceRow, in
 
   endMoveRows();
 
-  if (m_LoadingModel == false)
+  if(!m_LoadingModel)
   {
     writeBookmarksToPrefsFile();
   }
@@ -415,7 +409,7 @@ bool BookmarksModel::setData(const QModelIndex& index, const QVariant& value, in
 
   emit dataChanged(index, index);
 
-  if (m_LoadingModel == false)
+  if(!m_LoadingModel)
   {
     writeBookmarksToPrefsFile();
   }
@@ -436,11 +430,7 @@ BookmarksItem* BookmarksModel::getRootItem()
 // -----------------------------------------------------------------------------
 bool BookmarksModel::isEmpty()
 {
-  if(rowCount(QModelIndex()) <= 0)
-  {
-    return true;
-  }
-  return false;
+  return rowCount(QModelIndex()) <= 0;
 }
 
 // -----------------------------------------------------------------------------
@@ -595,7 +585,7 @@ void BookmarksModel::unwrapModel(QString objectName, QJsonObject object, QModelI
   if(itemType == BookmarksItem::ItemType::Bookmark)
   {
     setData(index, QIcon(":/SIMPL/icons/images/bookmark.png"), Qt::DecorationRole);
-    if(fi.exists() == false)
+    if(!fi.exists())
     {
       // Set the itemHasError variable
       setData(index, true, static_cast<int>(Roles::ErrorsRole));
@@ -642,7 +632,7 @@ QStringList BookmarksModel::getFilePaths(BookmarksItem* item)
   if(item != rootItem && item->childCount() <= 0)
   {
     QString filePath = item->getPath();
-    if(filePath.isEmpty() == false)
+    if(!filePath.isEmpty())
     {
       list.append(filePath);
     }
@@ -715,7 +705,7 @@ void BookmarksModel::updateModel(const QModelIndex& topLeft, const QModelIndex& 
     QModelIndex index = this->index(topLeft.row(), BookmarksItem::Contents, topLeft.parent());
     QString path = data(index, static_cast<int>(Roles::PathRole)).toString();
     QFileInfo fi(path);
-    if(nullptr != m_Watcher && path.isEmpty() == false && fi.exists())
+    if(nullptr != m_Watcher && !path.isEmpty() && fi.exists())
     {
       m_Watcher->addPath(path);
     }
@@ -725,7 +715,7 @@ void BookmarksModel::updateModel(const QModelIndex& topLeft, const QModelIndex& 
     QModelIndex index = this->index(bottomRight.row(), BookmarksItem::Contents, bottomRight.parent());
     QString path = data(index, static_cast<int>(Roles::PathRole)).toString();
     QFileInfo fi(path);
-    if(nullptr != m_Watcher && path.isEmpty() == false && fi.exists())
+    if(nullptr != m_Watcher && !path.isEmpty() && fi.exists())
     {
       m_Watcher->addPath(path);
     }
@@ -882,7 +872,7 @@ void BookmarksModel::addPipelinesRecursively(QDir currentDir, QModelIndex parent
 
   // Get a list of all the directories
   QFileInfoList dirList = currentDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
-  if(dirList.size() > 0)
+  if(!dirList.empty())
   {
     foreach(QFileInfo fi, dirList)
     {

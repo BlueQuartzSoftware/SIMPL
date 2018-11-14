@@ -41,10 +41,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FileListInfoFilterParameter::FileListInfoFilterParameter()
-: FilterParameter()
-{
-}
+FileListInfoFilterParameter::FileListInfoFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -123,7 +123,7 @@ void NumericTypeWidget::filterNeedsInputParameters(AbstractFilter* filter)
   v.setValue(type);
 
   ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
-  if(false == ok)
+  if(!ok)
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

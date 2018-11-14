@@ -127,7 +127,7 @@ void QtSFSDropLabel::dropEvent(QDropEvent* event)
     urlList = event->mimeData()->urls(); // returns list of QUrls
     // if just text was dropped, urlList is empty (size == 0)
 
-    if(urlList.size() > 0) // if at least one QUrl is present in list
+    if(!urlList.empty()) // if at least one QUrl is present in list
     {
       fName = urlList[0].toLocalFile(); // convert first QUrl to local path
       fName = QDir::toNativeSeparators(fName);

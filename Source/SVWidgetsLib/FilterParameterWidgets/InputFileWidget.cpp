@@ -80,7 +80,7 @@ void InputFileWidget::selectInputFile()
   // QString defaultName = m_OpenDialogLastDirectory + QDir::separator() + "Untitled";
   QString file = QFileDialog::getOpenFileName(this, tr("Select Input File"), getOpenDialogLastFilePath(), s);
 
-  if(true == file.isEmpty())
+  if(file.isEmpty())
   {
     return;
   }

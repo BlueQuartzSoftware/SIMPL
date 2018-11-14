@@ -186,7 +186,7 @@ void PostSlackMessage::execute()
 AbstractFilter::Pointer PostSlackMessage::newFilterInstance(bool copyFilterParameters) const
 {
   PostSlackMessage::Pointer filter = PostSlackMessage::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

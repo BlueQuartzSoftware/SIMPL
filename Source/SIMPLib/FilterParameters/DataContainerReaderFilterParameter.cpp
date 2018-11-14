@@ -39,8 +39,7 @@
 //
 // -----------------------------------------------------------------------------
 DataContainerReaderFilterParameter::DataContainerReaderFilterParameter()
-: FilterParameter()
-, m_DefaultFlagValue(Qt::Checked)
+: m_DefaultFlagValue(Qt::Checked)
 {
   setFileExtension(".dream3d");
   setFileType("");

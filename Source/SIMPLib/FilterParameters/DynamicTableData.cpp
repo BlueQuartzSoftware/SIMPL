@@ -154,11 +154,7 @@ DynamicTableData::~DynamicTableData() = default;
 // -----------------------------------------------------------------------------
 bool DynamicTableData::isEmpty()
 {
-  if( !m_TableData.empty() || !m_RowHeaders.empty() || m_ColHeaders.empty() )
-  {
-    return false;
-  }
-  return true;
+  return !(!m_TableData.empty() || !m_RowHeaders.empty() || m_ColHeaders.empty());
 }
 
 // -----------------------------------------------------------------------------
@@ -169,7 +165,7 @@ void DynamicTableData::checkAndAdjustDimensions()
   QSize dataSize(m_TableData.size(), 0);
   QSize headerSize(m_RowHeaders.size(), m_ColHeaders.size());
 
-  if(m_TableData.size() > 0)
+  if(!m_TableData.empty())
   {
     dataSize.setHeight(m_TableData[0].size());
   }
@@ -178,8 +174,7 @@ void DynamicTableData::checkAndAdjustDimensions()
   {
     return;
   }
-  else
-  {
+
     /* The header dimensions do not equal the data dimensions.
        The data dimensions will be used and will overwrite the current header dimensions.
        This may result in data loss.
@@ -203,7 +198,6 @@ void DynamicTableData::checkAndAdjustDimensions()
         m_ColHeaders.pop_back();
       }
     }
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -401,7 +395,7 @@ void DynamicTableData::writeJson(QJsonObject& json) const
 // -----------------------------------------------------------------------------
 bool DynamicTableData::readJson(QJsonObject& json)
 {
-  if(json.contains("Dynamic Table Data") == true)
+  if(json.contains("Dynamic Table Data"))
   {
     QJsonObject obj = json["Dynamic Table Data"].toObject();
     m_TableData = readData(obj);

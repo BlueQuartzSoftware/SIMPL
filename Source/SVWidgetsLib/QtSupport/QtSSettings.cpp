@@ -139,7 +139,7 @@ bool QtSSettings::beginGroup(const QString& prefix)
   {
     return false;
   }
-  else if(m_Stack.isEmpty() == false && m_Stack.top()->group.contains(prefix) == true && m_Stack.top()->group[prefix].isObject() == true)
+  if(!m_Stack.isEmpty() && m_Stack.top()->group.contains(prefix) && m_Stack.top()->group[prefix].isObject())
   {
     SIMPLViewSettingsGroup::Pointer newGroup = SIMPLViewSettingsGroup::Pointer(new SIMPLViewSettingsGroup(prefix, m_Stack.top()->group[prefix].toObject()));
     m_Stack.push(newGroup);
@@ -211,7 +211,7 @@ void QtSSettings::clear()
 // -----------------------------------------------------------------------------
 QVariant QtSSettings::value(const QString& key, const QVariant& defaultValue)
 {
-  if(m_Stack.top()->group.contains(key) == false)
+  if(!m_Stack.top()->group.contains(key))
   {
     return defaultValue;
   }
@@ -224,7 +224,7 @@ QVariant QtSSettings::value(const QString& key, const QVariant& defaultValue)
 // -----------------------------------------------------------------------------
 QJsonObject QtSSettings::value(const QString& key, const QJsonObject& defaultObject)
 {
-  if(m_Stack.top()->group.contains(key) == false)
+  if(!m_Stack.top()->group.contains(key))
   {
     return defaultObject;
   }
@@ -241,7 +241,7 @@ QJsonObject QtSSettings::value(const QString& key, const QJsonObject& defaultObj
 // -----------------------------------------------------------------------------
 QStringList QtSSettings::value(const QString& key, const QStringList& defaultList)
 {
-  if(m_Stack.top()->group[key].isArray() == false)
+  if(!m_Stack.top()->group[key].isArray())
   {
     return defaultList;
   }
@@ -345,7 +345,7 @@ void QtSSettings::setValue(const QString& key, const QStringList& list)
 // -----------------------------------------------------------------------------
 void QtSSettings::openFile()
 {
-  if(m_Stack.size() > 0)
+  if(!m_Stack.empty())
   {
     closeFile();
   }
@@ -391,14 +391,14 @@ void QtSSettings::writeToFile()
   QString parentPath = info.absolutePath();
   QDir parentDir(parentPath);
 
-  if(parentDir.exists() == false)
+  if(!parentDir.exists())
   {
     parentDir.mkpath(parentPath);
   }
 
   QJsonDocument doc(m_Stack.front()->group);
 
-  if(outputFile.exists() == true)
+  if(outputFile.exists())
   {
     outputFile.remove();
   }

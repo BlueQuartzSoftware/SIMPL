@@ -407,11 +407,10 @@ int StatsData::ParseFloat3Vec(const QJsonObject& json, const QString key, float*
     values[2] = array.at(2).toDouble(0.0f);
     return 0;
   }
-  else
-  {
+
     values[0] = defaultValue;
     values[1] = defaultValue;
     values[2] = defaultValue;
-  }
+
   return -1;
 }

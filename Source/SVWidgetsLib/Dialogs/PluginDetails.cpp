@@ -71,7 +71,7 @@ void PluginDetails::loadPluginDetails()
   // Add plugin details to PluginDetails dialog box
   nameLabel->setText(plugin->getPluginBaseName());
 
-  if(plugin->getDidLoad() == true)
+  if(plugin->getDidLoad())
   {
     statusLabel->setText("Enabled");
   }

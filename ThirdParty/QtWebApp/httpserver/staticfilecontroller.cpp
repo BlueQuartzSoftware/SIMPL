@@ -41,7 +41,7 @@ void StaticFileController::service(HttpRequest& request, HttpResponse& response)
   qint64 now = QDateTime::currentMSecsSinceEpoch();
   mutex.lock();
   CacheEntry* entry = cache.object(path);
-  if(entry && (cacheTimeout == 0 || entry->created > now - cacheTimeout))
+  if((entry != nullptr) && (cacheTimeout == 0 || entry->created > now - cacheTimeout))
   {
     QByteArray document = entry->document; // copy the cached document, because other threads may destroy the cached entry immediately after mutex unlock.
     QByteArray filename = entry->filename;
@@ -80,7 +80,7 @@ void StaticFileController::service(HttpRequest& request, HttpResponse& response)
       {
         // Return the file content and store it also in the cache
         entry = new CacheEntry();
-        while(!file.atEnd() && !file.error())
+        while(!file.atEnd() && (file.error() == 0u))
         {
           QByteArray buffer = file.read(65536);
           response.write(buffer);
@@ -95,7 +95,7 @@ void StaticFileController::service(HttpRequest& request, HttpResponse& response)
       else
       {
         // Return the file content, do not store in cache
-        while(!file.atEnd() && !file.error())
+        while(!file.atEnd() && (file.error() == 0u))
         {
           response.write(file.read(65536));
         }

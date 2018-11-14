@@ -42,7 +42,6 @@
 //
 // -----------------------------------------------------------------------------
 CommaSeparator::CommaSeparator()
-: CalculatorSeparator()
 {
   setInfixToken(",");
 }
@@ -69,7 +68,7 @@ CalculatorItem::ErrorCode CommaSeparator::checkValidity(QVector<CalculatorItem::
     }
   }
 
-  if(foundUnaryOperator == false)
+  if(!foundUnaryOperator)
   {
     errMsg = QObject::tr("A comma in the expression does not have a corresponding operator preceding it.");
     return CalculatorItem::ErrorCode::NO_PRECEDING_UNARY_OPERATOR;

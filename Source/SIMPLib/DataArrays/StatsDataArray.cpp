@@ -66,7 +66,7 @@ StatsDataArray::~StatsDataArray() = default;
 // -----------------------------------------------------------------------------
 StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numElements, const QString& name, bool allocate)
 {
-  if(name.isEmpty() == true)
+  if(name.isEmpty())
   {
     return NullPointer();
   }
@@ -85,7 +85,7 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numElements, const QS
 // -----------------------------------------------------------------------------
 StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, int rank, size_t* dims, const QString& name, bool allocate)
 {
-  if(name.isEmpty() == true)
+  if(name.isEmpty())
   {
     return NullPointer();
   }
@@ -104,7 +104,7 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, int rank, 
 // -----------------------------------------------------------------------------
 StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, std::vector<size_t> cDims, const QString& name, bool allocate)
 {
-  if(name.isEmpty() == true)
+  if(name.isEmpty())
   {
     return NullPointer();
   }
@@ -123,7 +123,7 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, std::vecto
 // -----------------------------------------------------------------------------
 StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, QVector<size_t> cDims, const QString& name, bool allocate)
 {
-  if(name.isEmpty() == true)
+  if(name.isEmpty())
   {
     return NullPointer();
   }
@@ -142,7 +142,7 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, QVector<si
 // -----------------------------------------------------------------------------
 StatsDataArray::Pointer StatsDataArray::CreateArray(QVector<size_t> tDims, QVector<size_t> cDims, const QString& name, bool allocate)
 {
-  if(name.isEmpty() == true)
+  if(name.isEmpty())
   {
     return NullPointer();
   }
@@ -229,7 +229,7 @@ void StatsDataArray::releaseOwnership()
 void* StatsDataArray::getVoidPointer(size_t i)
 {
 #ifndef NDEBUG
-  if(m_StatsDataArray.size() > 0)
+  if(!m_StatsDataArray.empty())
   {
     Q_ASSERT(i < static_cast<size_t>(m_StatsDataArray.size()));
   }
@@ -290,7 +290,7 @@ int StatsDataArray::eraseTuples(QVector<size_t>& idxs)
   int err = 0;
 
   // If nothing is to be erased just return
-  if(idxs.size() == 0)
+  if(idxs.empty())
   {
     return 0;
   }
@@ -353,7 +353,7 @@ bool StatsDataArray::copyFromArray(size_t destTupleOffset, IDataArray::Pointer s
   {
     return false;
   }
-  if(0 == m_StatsDataArray.size())
+  if(m_StatsDataArray.empty())
   {
     return false;
   }
@@ -482,7 +482,7 @@ int StatsDataArray::writeH5Data(hid_t parentId, QVector<size_t> tDims)
   // We start numbering our phases at 1. Anything in slot 0 is considered "Dummy" or invalid
   for(qint32 i = 1; i < m_StatsDataArray.size(); ++i)
   {
-    if(m_StatsDataArray[i].get() != nullptr)
+    if(m_StatsDataArray[i] != nullptr)
     {
       QString indexString = QString::number(i);
       hid_t tupleId = QH5Utilities::createGroup(gid, indexString);
@@ -855,7 +855,7 @@ void StatsDataArray::fillArrayWithNewStatsData(size_t n, PhaseType::EnumType* ph
 StatsData::Pointer StatsDataArray::getStatsData(int idx)
 {
 #ifndef NDEBUG
-  if(m_StatsDataArray.size() > 0)
+  if(!m_StatsDataArray.empty())
   {
     Q_ASSERT(idx < static_cast<int>(m_StatsDataArray.size()));
   }
@@ -869,7 +869,7 @@ StatsData::Pointer StatsDataArray::getStatsData(int idx)
 StatsData::Pointer StatsDataArray::operator[](int idx)
 {
 #ifndef NDEBUG
-  if(m_StatsDataArray.size() > 0)
+  if(!m_StatsDataArray.empty())
   {
     Q_ASSERT(idx < static_cast<int>(m_StatsDataArray.size()));
   }

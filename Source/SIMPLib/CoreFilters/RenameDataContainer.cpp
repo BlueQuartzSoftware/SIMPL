@@ -98,7 +98,7 @@ void RenameDataContainer::dataCheck()
   setErrorCondition(0);
   setWarningCondition(0);
 
-  if(getNewDataContainerName().isEmpty() == true)
+  if(getNewDataContainerName().isEmpty())
   {
     setErrorCondition(-11001);
     QString ss = QObject::tr("The new Data Container name must be set");
@@ -113,7 +113,7 @@ void RenameDataContainer::dataCheck()
   }
 
   bool check = getDataContainerArray()->renameDataContainer(getSelectedDataContainerName(), getNewDataContainerName());
-  if(check == false)
+  if(!check)
   {
     setErrorCondition(-11006);
     QString ss = QObject::tr("Attempt to rename DataContainer '%1' to '%2' failed").arg(getSelectedDataContainerName()).arg(getNewDataContainerName());
@@ -155,7 +155,7 @@ void RenameDataContainer::execute()
 AbstractFilter::Pointer RenameDataContainer::newFilterInstance(bool copyFilterParameters) const
 {
   RenameDataContainer::Pointer filter = RenameDataContainer::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

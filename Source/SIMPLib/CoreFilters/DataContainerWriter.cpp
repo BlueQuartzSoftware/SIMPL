@@ -188,11 +188,11 @@ void DataContainerWriter::execute()
   QH5Lite::writeStringAttribute(m_FileId, "/", SIMPL::HDF5::DREAM3DVersion, SIMPLib::Version::Complete());
   QFile xdmfFile;
   QTextStream xdmfOut(&xdmfFile);
-  if(m_WriteXdmfFile == true)
+  if(m_WriteXdmfFile)
   {
     QFileInfo ofFi(m_OutputFile);
     QString name = ofFi.completeBaseName();
-    if(parentPath.isEmpty() == true)
+    if(parentPath.isEmpty())
     {
       name = name + ".xdmf";
     }
@@ -252,7 +252,7 @@ void DataContainerWriter::execute()
       notifyErrorMessage(getHumanLabel(), "Error writing DataContainer Geometry", -804);
       return;
     }
-    if(m_WriteXdmfFile == true && geometry.get() != nullptr)
+    if(m_WriteXdmfFile && geometry.get() != nullptr)
     {
 
       if(getWriteTimeSeries())
@@ -286,7 +286,7 @@ void DataContainerWriter::execute()
   }
 
   // Write the XDMF File
-  if(m_WriteXdmfFile == true)
+  if(m_WriteXdmfFile)
   {
     writeXdmfFooter(xdmfOut);
   }
@@ -379,14 +379,12 @@ int DataContainerWriter::writePipeline()
   AbstractFilter::Pointer previousFilter = getPreviousFilter().lock();
   while(previousFilter.get() != nullptr)
   {
-    if(nullptr == previousFilter->getPreviousFilter().lock().get())
+    if(nullptr == previousFilter->getPreviousFilter().lock())
     {
       break;
     }
-    else
-    {
+
       previousFilter = previousFilter->getPreviousFilter().lock();
-    }
   }
 
   FilterPipeline::Pointer pipeline = FilterPipeline::New();
@@ -410,12 +408,12 @@ int DataContainerWriter::writePipeline()
 hid_t DataContainerWriter::openFile(bool appendData)
 {
   // Try to open a file to append data into
-  if(APPEND_DATA_TRUE == appendData)
+  if(APPEND_DATA_TRUE == static_cast<int>(appendData))
   {
     m_FileId = QH5Utilities::openFile(m_OutputFile, false);
   }
   // No file was found or we are writing new data only to a clean file
-  if(APPEND_DATA_FALSE == appendData || m_FileId < 0)
+  if(APPEND_DATA_FALSE == static_cast<int>(appendData) || m_FileId < 0)
   {
     m_FileId = QH5Utilities::createFile(m_OutputFile);
   }
@@ -432,7 +430,7 @@ herr_t DataContainerWriter::closeFile()
   {
     return QH5Utilities::closeFile(m_FileId);
   }
-  return true;
+  return 1;
 }
 
 // -----------------------------------------------------------------------------
@@ -441,7 +439,7 @@ herr_t DataContainerWriter::closeFile()
 AbstractFilter::Pointer DataContainerWriter::newFilterInstance(bool copyFilterParameters) const
 {
   DataContainerWriter::Pointer filter = DataContainerWriter::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

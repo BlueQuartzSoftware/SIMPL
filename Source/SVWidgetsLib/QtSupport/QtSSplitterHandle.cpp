@@ -54,7 +54,7 @@ void QtSSplitterHandle::paintEvent(QPaintEvent* evt)
   QColor gradientStart = styles->getQSplitter_handle_start_color();
   QColor gradientStop = styles->getQSplitter_handle_end_color();
 
-  if (gradientStart.isValid() == false || gradientStop.isValid() == false)
+  if(!gradientStart.isValid() || !gradientStop.isValid())
   {
     return QSplitterHandle::paintEvent(evt);
   }

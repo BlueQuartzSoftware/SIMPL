@@ -267,52 +267,52 @@ hid_t H5Lite::HDFTypeFromString(const std::string& value)
 {
   H5SUPPORT_MUTEX_LOCK()
 
-  if(value.compare("H5T_STRING") == 0)
+  if(value == "H5T_STRING")
   {
     return H5T_STRING;
   }
 
-  if(value.compare("H5T_NATIVE_INT8") == 0)
+  if(value == "H5T_NATIVE_INT8")
   {
     return H5T_NATIVE_INT8;
   }
-  if(value.compare("H5T_NATIVE_UINT8") == 0)
+  if(value == "H5T_NATIVE_UINT8")
   {
     return H5T_NATIVE_UINT8;
   }
 
-  if(value.compare("H5T_NATIVE_INT16") == 0)
+  if(value == "H5T_NATIVE_INT16")
   {
     return H5T_NATIVE_INT16;
   }
-  if(value.compare("H5T_NATIVE_UINT16") == 0)
+  if(value == "H5T_NATIVE_UINT16")
   {
     return H5T_NATIVE_UINT16;
   }
 
-  if(value.compare("H5T_NATIVE_INT32") == 0)
+  if(value == "H5T_NATIVE_INT32")
   {
     return H5T_NATIVE_INT32;
   }
-  if(value.compare("H5T_NATIVE_UINT32") == 0)
+  if(value == "H5T_NATIVE_UINT32")
   {
     return H5T_NATIVE_UINT32;
   }
 
-  if(value.compare("H5T_NATIVE_INT64") == 0)
+  if(value == "H5T_NATIVE_INT64")
   {
     return H5T_NATIVE_INT64;
   }
-  if(value.compare("H5T_NATIVE_UINT64") == 0)
+  if(value == "H5T_NATIVE_UINT64")
   {
     return H5T_NATIVE_UINT64;
   }
 
-  if(value.compare("H5T_NATIVE_FLOAT") == 0)
+  if(value == "H5T_NATIVE_FLOAT")
   {
     return H5T_NATIVE_FLOAT;
   }
-  if(value.compare("H5T_NATIVE_DOUBLE") == 0)
+  if(value == "H5T_NATIVE_DOUBLE")
   {
     return H5T_NATIVE_DOUBLE;
   }
@@ -333,47 +333,47 @@ std::string H5Lite::StringForHDFType(hid_t dataTypeIdentifier)
     return "H5T_STRING";
   }
 
-  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_INT8))
+  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_INT8) != 0)
   {
     return "H5T_NATIVE_INT8";
   }
-  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_UINT8))
+  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_UINT8) != 0)
   {
     return "H5T_NATIVE_UINT8";
   }
 
-  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_INT16))
+  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_INT16) != 0)
   {
     return "H5T_NATIVE_INT16";
   }
-  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_UINT16))
+  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_UINT16) != 0)
   {
     return "H5T_NATIVE_UINT16";
   }
 
-  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_INT32))
+  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_INT32) != 0)
   {
     return "H5T_NATIVE_INT32";
   }
-  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_UINT32))
+  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_UINT32) != 0)
   {
     return "H5T_NATIVE_UINT32";
   }
 
-  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_INT64))
+  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_INT64) != 0)
   {
     return "H5T_NATIVE_INT64";
   }
-  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_UINT64))
+  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_UINT64) != 0)
   {
     return "H5T_NATIVE_UINT64";
   }
 
-  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_FLOAT))
+  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_FLOAT) != 0)
   {
     return "H5T_NATIVE_FLOAT";
   }
-  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_DOUBLE))
+  if(H5Tequal(dataTypeIdentifier, H5T_NATIVE_DOUBLE) != 0)
   {
     return "H5T_NATIVE_DOUBLE";
   }

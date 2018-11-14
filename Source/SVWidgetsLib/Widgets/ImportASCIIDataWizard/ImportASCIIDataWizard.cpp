@@ -84,13 +84,13 @@ void ImportASCIIDataWizard::setEditSettings(bool value)
 {
   m_EditSettings = value;
   DelimitedPage* delimitedPage = qobject_cast<DelimitedPage*>(this->page(Delimited));
-  if(delimitedPage)
+  if(delimitedPage != nullptr)
   {
     delimitedPage->setEditSettings(value);
   }
 
   DataFormatPage* dataFormatPage = qobject_cast<DataFormatPage*>(this->page(DataFormat));
-  if(dataFormatPage)
+  if(dataFormatPage != nullptr)
   {
     dataFormatPage->setEditSettings(value);
   }
@@ -228,19 +228,19 @@ void ImportASCIIDataWizard::cleanupPage(int id)
 QList<char> ImportASCIIDataWizard::ConvertToDelimiters(bool tabAsDelimiter, bool semicolonAsDelimiter, bool commaAsDelimiter, bool spaceAsDelimiter)
 {
   QList<char> delimiters;
-  if(tabAsDelimiter == true)
+  if(tabAsDelimiter)
   {
     delimiters.push_back('\t');
   }
-  if(semicolonAsDelimiter == true)
+  if(semicolonAsDelimiter)
   {
     delimiters.push_back(';');
   }
-  if(commaAsDelimiter == true)
+  if(commaAsDelimiter)
   {
     delimiters.push_back(',');
   }
-  if(spaceAsDelimiter == true)
+  if(spaceAsDelimiter)
   {
     delimiters.push_back(' ');
   }
@@ -485,7 +485,7 @@ DataArrayPath ImportASCIIDataWizard::getSelectedPath()
   if (NULL != dfPage)
   {
     DataArrayPath dap = dfPage->getSelectedPath();
-    if (dfPage->getAutomaticAM() == true)
+    if(dfPage->getAutomaticAM())
     {
       dap.setAttributeMatrixName(dfPage->getAutomaticAttrMatrixName());
     }

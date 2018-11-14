@@ -39,7 +39,7 @@ HttpCookie::HttpCookie(const QByteArray source)
     QByteArray name;
     QByteArray value;
     int posi = part.indexOf('=');
-    if(posi)
+    if(posi != 0)
     {
       name = part.left(posi).trimmed();
       value = part.mid(posi + 1).trimmed();
@@ -225,7 +225,7 @@ QList<QByteArray> HttpCookie::splitCSV(const QByteArray source)
   for(int i = 0; i < source.size(); ++i)
   {
     char c = source.at(i);
-    if(inString == false)
+    if(!inString)
     {
       if(c == '\"')
       {

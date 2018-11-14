@@ -72,10 +72,10 @@ int main(int argc, char* argv[])
 
   // Instantiate the QCoreApplication that we need to get the current path and load plugins.
   QCoreApplication* app = new QCoreApplication(argc, argv);
-  app->setOrganizationName("BlueQuartz Software");
-  app->setOrganizationDomain("bluequartz.net");
-  app->setApplicationName("PipelineRunner");
-  app->setApplicationVersion(SIMPLib::Version::Major() + "." + SIMPLib::Version::Minor() + "." + SIMPLib::Version::Patch());
+  QCoreApplication::setOrganizationName("BlueQuartz Software");
+  QCoreApplication::setOrganizationDomain("bluequartz.net");
+  QCoreApplication::setApplicationName("PipelineRunner");
+  QCoreApplication::setApplicationVersion(SIMPLib::Version::Major() + "." + SIMPLib::Version::Minor() + "." + SIMPLib::Version::Patch());
 
   QCommandLineParser parser;
   QString str;
@@ -110,7 +110,7 @@ int main(int argc, char* argv[])
 
   // Sanity Check the filepath to make sure it exists, Report an error and bail if it does not
   QFileInfo fi(pipelineFile);
-  if(fi.exists() == false)
+  if(!fi.exists())
   {
     std::cout << "The input file '" << pipelineFile.toStdString() << "' does not exist" << std::endl;
     return EXIT_FAILURE;

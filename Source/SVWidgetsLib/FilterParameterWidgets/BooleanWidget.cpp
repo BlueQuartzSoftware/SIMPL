@@ -81,7 +81,7 @@ void BooleanWidget::setupGui()
     label->setText(getFilterParameter()->getHumanLabel());
 
     QVariant objValue = getFilter()->property(PROPERTY_NAME_AS_CHAR);
-    if(objValue.isValid() == true)
+    if(objValue.isValid())
     {
       value->setChecked(objValue.toBool());
     }
@@ -110,7 +110,7 @@ void BooleanWidget::filterNeedsInputParameters(AbstractFilter* filter)
 
   QVariant var(value->isChecked());
   bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-  if(false == ok)
+  if(!ok)
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

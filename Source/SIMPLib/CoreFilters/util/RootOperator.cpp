@@ -45,7 +45,6 @@
 //
 // -----------------------------------------------------------------------------
 RootOperator::RootOperator()
-: UnaryOperator()
 {
   setNumberOfArguments(2);
   setInfixToken("root");

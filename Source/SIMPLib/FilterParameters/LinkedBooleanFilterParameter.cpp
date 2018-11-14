@@ -38,10 +38,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkedBooleanFilterParameter::LinkedBooleanFilterParameter()
-: FilterParameter()
-{
-}
+LinkedBooleanFilterParameter::LinkedBooleanFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

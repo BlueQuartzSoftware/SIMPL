@@ -297,7 +297,7 @@ void WriteTriangleGeometry::execute()
 AbstractFilter::Pointer WriteTriangleGeometry::newFilterInstance(bool copyFilterParameters) const
 {
   WriteTriangleGeometry::Pointer filter = WriteTriangleGeometry::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

@@ -45,7 +45,6 @@
 //
 // -----------------------------------------------------------------------------
 SinOperator::SinOperator()
-: UnaryOperator()
 {
   setNumberOfArguments(1);
   setInfixToken("sin");

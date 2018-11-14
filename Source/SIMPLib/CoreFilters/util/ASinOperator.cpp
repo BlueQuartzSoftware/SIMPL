@@ -45,7 +45,6 @@
 //
 // -----------------------------------------------------------------------------
 ASinOperator::ASinOperator()
-: UnaryOperator()
 {
   setNumberOfArguments(1);
   setInfixToken("asin");

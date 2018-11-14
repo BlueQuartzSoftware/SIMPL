@@ -103,7 +103,7 @@ void DREAM3DListWidget::performDrag()
 void DREAM3DListWidget::dragEnterEvent(QDragEnterEvent* event)
 {
   QListWidget* source = qobject_cast<QListWidget*>(event->source());
-  if(source && source != this)
+  if((source != nullptr) && source != this)
   {
     event->setDropAction(Qt::MoveAction);
     event->accept();
@@ -116,7 +116,7 @@ void DREAM3DListWidget::dragEnterEvent(QDragEnterEvent* event)
 void DREAM3DListWidget::dropEvent(QDropEvent* event)
 {
   QListWidget* source = qobject_cast<QListWidget*>(event->source());
-  if(source && source != this)
+  if((source != nullptr) && source != this)
   {
     event->setDropAction(Qt::MoveAction);
     emit dropOccurred(); // We want to emit this signal so that we can respond in a slot when a drop occurs

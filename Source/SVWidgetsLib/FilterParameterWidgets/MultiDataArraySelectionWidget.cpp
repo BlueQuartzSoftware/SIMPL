@@ -169,15 +169,15 @@ void MultiDataArraySelectionWidget::setupGui()
 // -----------------------------------------------------------------------------
 QString MultiDataArraySelectionWidget::checkStringValues(QString curDcName, QString filtDcName)
 {
-  if(curDcName.isEmpty() == true && filtDcName.isEmpty() == false)
+  if(curDcName.isEmpty() && !filtDcName.isEmpty())
   {
     return filtDcName;
   }
-  else if(curDcName.isEmpty() == false && filtDcName.isEmpty() == true)
+  if(!curDcName.isEmpty() && filtDcName.isEmpty())
   {
     return curDcName;
   }
-  else if(curDcName.isEmpty() == false && filtDcName.isEmpty() == false && m_DidCausePreflight == true)
+  if(!curDcName.isEmpty() && !filtDcName.isEmpty() && m_DidCausePreflight)
   {
     return curDcName;
   }
@@ -196,7 +196,7 @@ bool MultiDataArraySelectionWidget::eventFilter(QObject* obj, QEvent* event)
     m_SelectedAttributeMatrixPath->menu()->move(pos);
     return true;
   }
-  else if(event->type() == QEvent::FocusIn && obj == selectedArraysListWidget)
+  if(event->type() == QEvent::FocusIn && obj == selectedArraysListWidget)
   {
     on_selectedArraysListWidget_itemSelectionChanged();
   }
@@ -265,7 +265,7 @@ void MultiDataArraySelectionWidget::on_selectedArraysListWidget_itemDoubleClicke
 void MultiDataArraySelectionWidget::on_selectBtn_clicked()
 {
   QModelIndexList indexList = availableArraysListWidget->selectionModel()->selectedRows();
-  if (indexList.size() > 0)
+  if(!indexList.empty())
   {
     int offset = 0;
     for (int i=0; i<indexList.size(); i++)
@@ -273,7 +273,7 @@ void MultiDataArraySelectionWidget::on_selectBtn_clicked()
       int row = indexList[i].row() - offset;
       QListWidgetItem* item = availableArraysListWidget->takeItem(row);
       offset++;
-      if (item)
+      if(item != nullptr)
       {
         selectedArraysListWidget->addItem(item);
       }
@@ -347,7 +347,7 @@ void MultiDataArraySelectionWidget::on_downBtn_clicked()
 void MultiDataArraySelectionWidget::on_removeBtn_clicked()
 {
   QModelIndexList indexList = selectedArraysListWidget->selectionModel()->selectedRows();
-  if (indexList.size() > 0)
+  if(!indexList.empty())
   {
     int offset = 0;
     for (int i=0; i<indexList.size(); i++)
@@ -384,10 +384,14 @@ void MultiDataArraySelectionWidget::removeNonexistantPaths(QVector<DataArrayPath
     bool valid = true;
 
     if(nullptr == filter->getDataContainerArray()->getAttributeMatrix(paths[i])->getAttributeArray(paths[i].getDataArrayName()))
+    {
       valid = false;
+    }
 
-    if(false == paths[i].isValid())
+    if(!paths[i].isValid())
+    {
       valid = false;
+    }
 
     if(!valid)
     {
@@ -451,7 +455,7 @@ void MultiDataArraySelectionWidget::selectionChanged()
       }
     }
 
-    if (allErrorRows == true)
+    if(allErrorRows)
     {
       removeBtn->show();
     }
@@ -507,7 +511,7 @@ void MultiDataArraySelectionWidget::beforePreflight()
         QListWidgetItem* item = selectedArraysListWidget->item(i);
         QString name = item->text();
         orderListNames.append(name);
-        if(arrayNames.contains(name) == false)
+        if(!arrayNames.contains(name))
         {
           //item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
           // item->setBackgroundColor(QColor(235, 110, 110));
@@ -522,7 +526,7 @@ void MultiDataArraySelectionWidget::beforePreflight()
 
       for(int i = 0; i<arrayNames.size(); i++)
       {
-        if(selectListNames.contains(arrayNames[i]) == false && orderListNames.contains(arrayNames[i]) == false)
+        if(!selectListNames.contains(arrayNames[i]) && !orderListNames.contains(arrayNames[i]))
         {
           QListWidgetItem* item = new QListWidgetItem(QIcon(":/SIMPL/icons/images/bullet_ball_green.png"), arrayNames[i]);
           availableArraysListWidget->addItem(item);
@@ -563,7 +567,7 @@ void MultiDataArraySelectionWidget::filterNeedsInputParameters(AbstractFilter* f
   bool ok = false;
   // Set the value into the Filter
   ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-  if(false == ok)
+  if(!ok)
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }
@@ -589,8 +593,8 @@ void MultiDataArraySelectionWidget::updateDataArrayPath(QString propertyName, Da
     DataArrayPath currentPath = DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter);
     if(currentPath.hasSameDataContainer(oldPath))
     {
-      bool hasAM = false == newPath.getAttributeMatrixName().isEmpty();
-      bool hasDA = false == newPath.getDataArrayName().isEmpty();
+      bool hasAM = !newPath.getAttributeMatrixName().isEmpty();
+      bool hasDA = !newPath.getDataArrayName().isEmpty();
 
       // Update the DataArray options
       if(hasDA && currentPath.hasSameAttributeMatrix(oldPath))
@@ -625,9 +629,9 @@ void MultiDataArraySelectionWidget::updateDataArrayPath(QString propertyName, Da
       }// End DataArray section
 
       // Update the AttributeMatrix Selection widget
-      if(false == hasDA)
+      if(!hasDA)
       {
-        if(false == hasAM)
+        if(!hasAM)
         {
           DataArrayPath updatedPath(newPath.getDataContainerName(), currentPath.getAttributeMatrixName(), "");
           m_SelectedAttributeMatrixPath->setText(updatedPath.serialize(Detail::Delimiter));

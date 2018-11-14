@@ -77,7 +77,7 @@ bool CalculatorItem::isICalculatorArray()
 bool CalculatorItem::isArray()
 {
   ICalculatorArray* calculatorArray = dynamic_cast<ICalculatorArray*>(this);
-  if (calculatorArray)
+  if(calculatorArray != nullptr)
   {
     return (calculatorArray->getType() == ICalculatorArray::ValueType::Array);
   }
@@ -91,7 +91,7 @@ bool CalculatorItem::isArray()
 bool CalculatorItem::isNumber()
 {
   ICalculatorArray* calculatorArray = dynamic_cast<ICalculatorArray*>(this);
-  if (calculatorArray)
+  if(calculatorArray != nullptr)
   {
     return (calculatorArray->getType() == ICalculatorArray::ValueType::Number);
   }

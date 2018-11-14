@@ -74,18 +74,18 @@ int TransformContainer::writeTransformContainerToHDF5(hid_t parentId, const std:
   {
     return err;
   }
-  err = H5Lite::writeStringAttribute(parentId, transformName, SIMPL::Geometry::TransformContainerMovingName.toLatin1().data(), this->getMovingName().c_str());
+  err = H5Lite::writeStringAttribute(parentId, transformName, SIMPL::Geometry::TransformContainerMovingName.toLatin1().data(), this->getMovingName());
   if(err < 0)
   {
     return err;
   }
-  err = H5Lite::writeStringAttribute(parentId, transformName, SIMPL::Geometry::TransformContainerReferenceName.toLatin1().data(), this->getReferenceName().c_str());
+  err = H5Lite::writeStringAttribute(parentId, transformName, SIMPL::Geometry::TransformContainerReferenceName.toLatin1().data(), this->getReferenceName());
   if(err < 0)
   {
     return err;
   }
   dims[0] = this->getTransformTypeAsString().size();
-  err = H5Lite::writeStringDataset(transformId, SIMPL::Geometry::TransformContainerTypeAsString.toLatin1().data(), this->getTransformTypeAsString().c_str());
+  err = H5Lite::writeStringDataset(transformId, SIMPL::Geometry::TransformContainerTypeAsString.toLatin1().data(), this->getTransformTypeAsString());
   if(err < 0)
   {
     return err;

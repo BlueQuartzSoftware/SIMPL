@@ -44,8 +44,7 @@
 //
 // -----------------------------------------------------------------------------
 MultiDataArraySelectionFilterParameter::MultiDataArraySelectionFilterParameter()
-: FilterParameter()
-, m_DefaultPaths(QVector<DataArrayPath>())
+: m_DefaultPaths(QVector<DataArrayPath>())
 {
 }
 

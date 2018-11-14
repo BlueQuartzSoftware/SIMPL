@@ -166,14 +166,7 @@ template <> void initializeArrayWithInts<bool>(IDataArray::Pointer outputArrayPt
   if(initializationType == CreateDataArray::Manual)
   {
     bool result;
-    if(initializationValue.toInt() == 0)
-    {
-      result = false;
-    }
-    else
-    {
-      result = true;
-    }
+    result = initializationValue.toInt() != 0;
 
     for(size_t i = 0; i < count; i++)
     {
@@ -500,7 +493,7 @@ template <typename T> void CreateDataArray::checkInitialization(QString dataArra
   {
     bool ok;
     double input = m_InitializationValue.toDouble(&ok);
-    if(ok == false)
+    if(!ok)
     {
       QString ss = "Could not convert initialization value to a double.";
       setErrorCondition(-5559);
@@ -527,14 +520,14 @@ template <typename T> void CreateDataArray::checkInitialization(QString dataArra
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }
-    else if(min < static_cast<double>(std::numeric_limits<T>().lowest()) || max > static_cast<double>(std::numeric_limits<T>().max()))
+    if(min < static_cast<double>(std::numeric_limits<T>().lowest()) || max > static_cast<double>(std::numeric_limits<T>().max()))
     {
       setErrorCondition(-4001);
       QString ss = QObject::tr("%1: The initialization range can only be from %2 to %3").arg(dataArrayName).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }
-    else if(min == max)
+    if(min == max)
     {
       setErrorCondition(-4002);
       QString ss = dataArrayName + ": The initialization range must have differing values";
@@ -550,7 +543,7 @@ template <typename T> void CreateDataArray::checkInitialization(QString dataArra
 AbstractFilter::Pointer CreateDataArray::newFilterInstance(bool copyFilterParameters) const
 {
   CreateDataArray::Pointer filter = CreateDataArray::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

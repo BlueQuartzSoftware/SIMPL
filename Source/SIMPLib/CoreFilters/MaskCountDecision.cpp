@@ -46,8 +46,7 @@
 //
 // -----------------------------------------------------------------------------
 MaskCountDecision::MaskCountDecision()
-: AbstractDecisionFilter()
-, m_MaskArrayPath("", "", "")
+: m_MaskArrayPath("", "", "")
 , m_NumberOfTrues(0)
 , m_Mask(nullptr)
 {
@@ -208,7 +207,7 @@ void MaskCountDecision::extractProperties(const QJsonDocument& jsonDoc)
 AbstractFilter::Pointer MaskCountDecision::newFilterInstance(bool copyFilterParameters) const
 {
   MaskCountDecision::Pointer filter = MaskCountDecision::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

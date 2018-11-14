@@ -39,8 +39,7 @@
 //
 // -----------------------------------------------------------------------------
 DynamicTableFilterParameter::DynamicTableFilterParameter()
-: FilterParameter()
-, m_ErrorCondition(0)
+: m_ErrorCondition(0)
 {
 }
 
@@ -64,7 +63,7 @@ DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::New(const QStr
   ptr->setGetterCallback(getterCallback);
 
   // Check that all columns are initialized to the same size
-  if(defaultTableData.getTableData().size() > 0)
+  if(!defaultTableData.getTableData().empty())
   {
     QSet<int> colSizes;
     colSizes.insert(defaultTableData.getTableData()[0].size());

@@ -269,7 +269,7 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
   int fullWidth = rect.width() - indexBoxWidth;
   int allowableWidth = fullWidth;
 
-  if (drawButtons == true)
+  if(drawButtons)
   {
     // Draw the "delete" button
     QRectF deleteBtnRect;

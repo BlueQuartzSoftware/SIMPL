@@ -80,7 +80,7 @@ bool QtSPluginFrame::verifyPathExists(QString outFilePath, QLineEdit* lineEdit)
 {
   //  qDebug() << "outFilePath: " << outFilePath() << "\n";
   QFileInfo fileinfo(outFilePath);
-  if(false == fileinfo.exists())
+  if(!fileinfo.exists())
   {
     lineEdit->setStyleSheet("border: 1px solid red;");
   }
@@ -113,13 +113,13 @@ QStatusBar* QtSPluginFrame::statusBar()
 bool QtSPluginFrame::sanityCheckOutputDirectory(QLineEdit* le, QString msgTitle)
 {
 
-  if(le->text().isEmpty() == true)
+  if(le->text().isEmpty())
   {
     QMessageBox::critical(this, msgTitle, "The output directory has NOT been set. Please set a directory path and try again.", QMessageBox::Ok | QMessageBox::Default);
     return false;
   }
 
-  if(verifyPathExists(le->text(), le) == false)
+  if(!verifyPathExists(le->text(), le))
   {
     QString msg("The Output Directory '");
     msg.append(le->text()).append("'\ndoes not exist. Would you like to create it?");
@@ -128,21 +128,19 @@ bool QtSPluginFrame::sanityCheckOutputDirectory(QLineEdit* le, QString msgTitle)
     {
       return false;
     }
-    else if(ret == QMessageBox::Yes)
+    if(ret == QMessageBox::Yes)
     {
       QDir outputDir(le->text());
-      if(outputDir.exists() == false)
+      if(!outputDir.exists())
       {
         bool ok = outputDir.mkpath(".");
-        if(ok == false)
+        if(!ok)
         {
           QMessageBox::critical(this, tr("Output Directory Creation"), tr("The output directory could not be created."), QMessageBox::Ok);
           return false;
         }
-        else
-        {
+
           return true;
-        }
       }
     }
   }

@@ -73,7 +73,7 @@ QtSStyles::~QtSStyles() = default;
 // -----------------------------------------------------------------------------
 QtSStyles* QtSStyles::Instance()
 {
-  if (!m_Self)
+  if(m_Self == nullptr)
   {
     m_Self = new QtSStyles();
   }
@@ -98,11 +98,9 @@ QString QtSStyles::GetUIFont()
   {
     return font.toString();
   }
-  else
-  {
-    QFont font;
-    return font.toString();
-  }
+
+  font = QFont();
+  return font.toString();
 }
 
 // -----------------------------------------------------------------------------

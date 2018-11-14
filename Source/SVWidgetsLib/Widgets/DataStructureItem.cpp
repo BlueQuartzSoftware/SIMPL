@@ -88,7 +88,7 @@ int DataStructureItem::childCount() const
 // -----------------------------------------------------------------------------
 int DataStructureItem::childNumber() const
 {
-  if(m_ParentItem)
+  if(m_ParentItem != nullptr)
   {
     return m_ParentItem->m_ChildItems.indexOf(const_cast<DataStructureItem*>(this));
   }

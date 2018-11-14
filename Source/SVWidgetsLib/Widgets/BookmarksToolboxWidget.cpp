@@ -166,7 +166,7 @@ QStringList BookmarksToolboxWidget::generateFilterListFromPipelineFile(QString p
   bool ok = false;
   int filterCount = prefs.value("Number_Filters").toInt(&ok);
   prefs.endGroup();
-  if(false == ok)
+  if(!ok)
   {
     filterCount = 0;
   }
@@ -200,12 +200,12 @@ void BookmarksToolboxWidget::on_bookmarksTreeView_doubleClicked(const QModelInde
   {
     return; // The user double clicked a folder, so don't do anything
   }
-  else if(itemType == BookmarksItem::ItemType::Bookmark)
+  if(itemType == BookmarksItem::ItemType::Bookmark)
   {
     QString path = model->data(index, static_cast<int>(BookmarksModel::Roles::PathRole)).toString();
     QFileInfo fi(path);
 
-    if (fi.exists() == false)
+    if(!fi.exists())
     {
       bookmarksTreeView->blockSignals(true);
       QtSBookmarkMissingDialog* dialog = new QtSBookmarkMissingDialog(this, Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint | Qt::WindowTitleHint);
@@ -228,7 +228,7 @@ void BookmarksToolboxWidget::on_bookmarksTreeView_doubleClicked(const QModelInde
     else
     {
       bool itemHasErrors = model->data(index, static_cast<int>(BookmarksModel::Roles::ErrorsRole)).toBool();
-      if(itemHasErrors == true)
+      if(itemHasErrors)
       {
         // Set the itemHasError variable, and have the watcher monitor the file again
         model->setData(index, false, static_cast<int>(BookmarksModel::Roles::ErrorsRole));
@@ -279,7 +279,7 @@ bool BookmarksToolboxWidget::locateBookmark()
   }
 
   QString filePath = QFileDialog::getOpenFileName(this, tr("Locate Pipeline File"), path, tr(restrictions.toStdString().c_str()));
-  if(true == filePath.isEmpty())
+  if(filePath.isEmpty())
   {
     return false;
   }
@@ -311,7 +311,7 @@ QString BookmarksToolboxWidget::writeNewFavoriteFilePath(QString newFavoriteTitl
 
   QFile f(favoritePath);
   bool success = f.rename(newPath);
-  if(false == success)
+  if(!success)
   {
     QMessageBox::StandardButton reply;
     reply = QMessageBox::critical(this, QObject::tr("Error renaming a file"), QObject::tr("Error renaming file '%1' to '%2'.").arg(favoritePath).arg(newPath), QMessageBox::Ok);
@@ -402,7 +402,7 @@ QList<QString> BookmarksToolboxWidget::deserializeTreePath(QString treePath)
   int spaceIndex = 0;
   QString strPart = "";
 
-  while(spaceIndex >= 0 && treePath.isEmpty() == false)
+  while(spaceIndex >= 0 && !treePath.isEmpty())
   {
     spaceIndex = treePath.indexOf('/');
     strPart = treePath.left(spaceIndex);

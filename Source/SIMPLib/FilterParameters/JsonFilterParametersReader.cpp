@@ -51,8 +51,7 @@
 //
 // -----------------------------------------------------------------------------
 JsonFilterParametersReader::JsonFilterParametersReader()
-: AbstractFilterParametersReader()
-, m_MaxFilterIndex(-1)
+: m_MaxFilterIndex(-1)
 {
 }
 
@@ -132,12 +131,12 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromFile(QString
 {
   QFileInfo fInfo(filePath);
 
-  if(filePath.isEmpty() == true)
+  if(filePath.isEmpty())
   {
     return FilterPipeline::NullPointer();
   }
   QFileInfo fi(filePath);
-  if(fi.exists() == false)
+  if(!fi.exists())
   {
     return FilterPipeline::NullPointer();
   }
@@ -169,18 +168,18 @@ QString JsonFilterParametersReader::getJsonFromFile(QString filePath, IObserver*
 {
   QFileInfo fInfo(filePath);
 
-  if(filePath.isEmpty() == true)
+  if(filePath.isEmpty())
   {
     return QString();
   }
   QFileInfo fi(filePath);
-  if(fi.exists() == false)
+  if(!fi.exists())
   {
     return QString();
   }
 
   QString jsonString = "";
-  if(m_Root.isEmpty() == false || m_CurrentFilterIndex.isEmpty() == false)
+  if(!m_Root.isEmpty() || !m_CurrentFilterIndex.isEmpty())
   {
     closeFile();
   }
@@ -236,12 +235,12 @@ QString JsonFilterParametersReader::HtmlSummaryFromFile(QString filePath, IObser
 
   QFileInfo fInfo(filePath);
 
-  if(filePath.isEmpty() == true)
+  if(filePath.isEmpty())
   {
     return generateErrorHtml(QString("The file path was empty"));
   }
   QFileInfo fi(filePath);
-  if(fi.exists() == false)
+  if(!fi.exists())
   {
     return generateErrorHtml(QString("The file path does not exist on the system."));
   }
@@ -371,8 +370,8 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
   FilterManager* filtManager = FilterManager::Instance();
   FilterFactory<EmptyFilter>::Pointer emptyFilterFactory = FilterFactory<EmptyFilter>::New();
   filtManager->addFilterFactory("EmptyFilter", emptyFilterFactory);
-  
-  if(containsGroup(SIMPL::Settings::PipelineBuilderGroup) == false)
+
+  if(!containsGroup(SIMPL::Settings::PipelineBuilderGroup))
   {
     return FilterPipeline::NullPointer();
   }
@@ -462,14 +461,14 @@ void JsonFilterParametersReader::readNameOfPipelineFromFile(QString filePath, QS
 {
   QFileInfo fInfo(filePath);
 
-  if(filePath.isEmpty() == true)
+  if(filePath.isEmpty())
   {
     name = QString("ERROR: No File Path Specified");
     version = QString("ERROR: No File Path Specified");
     return;
   }
   QFileInfo fi(filePath);
-  if(fi.exists() == false)
+  if(!fi.exists())
   {
     name = QString("ERROR: File Path Does Not Exist");
     version = QString("ERROR: File Path Does Not Exist");
@@ -511,7 +510,7 @@ QJsonObject& JsonFilterParametersReader::getCurrentGroupObject()
 // -----------------------------------------------------------------------------
 QJsonParseError JsonFilterParametersReader::openFile(QString filePath)
 {
-  if(m_Root.isEmpty() == false || m_CurrentFilterIndex.isEmpty() == false)
+  if(!m_Root.isEmpty() || !m_CurrentFilterIndex.isEmpty())
   {
     closeFile();
   }
@@ -539,7 +538,7 @@ QJsonParseError JsonFilterParametersReader::openFile(QString filePath)
 // -----------------------------------------------------------------------------
 int JsonFilterParametersReader::setPipelineContents(QString contents)
 {
-  if(m_Root.isEmpty() == false || m_CurrentFilterIndex.isEmpty() == false)
+  if(!m_Root.isEmpty() || !m_CurrentFilterIndex.isEmpty())
   {
     closeFile();
   }
@@ -610,12 +609,12 @@ int JsonFilterParametersReader::closeFilterGroup()
 // -----------------------------------------------------------------------------
 bool JsonFilterParametersReader::containsGroup(QString key)
 {
-  if(m_Root.isEmpty() == false)
+  if(!m_Root.isEmpty())
   {
-    if(m_Root[key].isObject() == true)
+    if(m_Root[key].isObject())
     {
       QJsonObject obj = m_Root[key].toObject();
-      if(obj.isEmpty() == false)
+      if(!obj.isEmpty())
       {
         return true;
       }

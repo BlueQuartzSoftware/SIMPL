@@ -117,7 +117,7 @@ QWidget* ComparisonSelectionItemDelegate::createEditor(QWidget* widgetParent, co
     operatorCombo = new QComboBox(widgetParent);
     operatorCombo->addItems(m_FeatureList);
     operatorCombo->setAutoFillBackground(true);
-    if(tableModel)
+    if(tableModel != nullptr)
     {
       connect(operatorCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(arrayNameChangedData(int)));
     }
@@ -136,7 +136,7 @@ QWidget* ComparisonSelectionItemDelegate::createEditor(QWidget* widgetParent, co
     QString dStr = loc.toString(var.toDouble(&ok));
     featureValue->setText(dStr);
 
-    if(tableModel)
+    if(tableModel != nullptr)
     {
       connect(featureValue, SIGNAL(textChanged(const QString&)), this, SLOT(valueChangedData(const QString&)));
     }
@@ -146,7 +146,7 @@ QWidget* ComparisonSelectionItemDelegate::createEditor(QWidget* widgetParent, co
     operatorCombo = new QComboBox(widgetParent);
     operatorCombo->addItems(operators);
     operatorCombo->setAutoFillBackground(true);
-    if(tableModel)
+    if(tableModel != nullptr)
     {
       connect(operatorCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(operatorChangedData(int)));
     }
@@ -243,7 +243,7 @@ void ComparisonSelectionItemDelegate::arrayNameChangedData(int i)
 {
   ComparisonSelectionTableModel* tableModel = qobject_cast<ComparisonSelectionTableModel*>(parent());
   QWidget* w = qobject_cast<QWidget*>(sender());
-  if(tableModel && w)
+  if((tableModel != nullptr) && (w != nullptr))
   {
     QString objName = w->objectName();
     QStringList tokens = objName.split(',');
@@ -261,7 +261,7 @@ void ComparisonSelectionItemDelegate::operatorChangedData(int i)
 {
   ComparisonSelectionTableModel* tableModel = qobject_cast<ComparisonSelectionTableModel*>(parent());
   QWidget* w = qobject_cast<QWidget*>(sender());
-  if(tableModel && w)
+  if((tableModel != nullptr) && (w != nullptr))
   {
     QString objName = w->objectName();
     QStringList tokens = objName.split(',');
@@ -281,7 +281,7 @@ void ComparisonSelectionItemDelegate::valueChangedData(const QString& text)
 {
   ComparisonSelectionTableModel* tableModel = qobject_cast<ComparisonSelectionTableModel*>(parent());
   QWidget* w = qobject_cast<QWidget*>(sender());
-  if(tableModel && w)
+  if((tableModel != nullptr) && (w != nullptr))
   {
     QString objName = w->objectName();
     QStringList tokens = objName.split(',');

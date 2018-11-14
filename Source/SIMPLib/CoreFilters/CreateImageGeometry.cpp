@@ -201,7 +201,7 @@ QString CreateImageGeometry::getBoxDimensions()
 AbstractFilter::Pointer CreateImageGeometry::newFilterInstance(bool copyFilterParameters) const
 {
   CreateImageGeometry::Pointer filter = CreateImageGeometry::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

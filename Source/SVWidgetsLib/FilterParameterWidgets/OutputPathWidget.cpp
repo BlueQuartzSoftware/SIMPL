@@ -50,10 +50,10 @@ OutputPathWidget::OutputPathWidget(FilterParameter* parameter, AbstractFilter* f
 
   setupGui();
 
-  if(filter)
+  if(filter != nullptr)
   {
     QString currentPath = filter->property(PROPERTY_NAME_AS_CHAR).toString();
-    if(currentPath.isEmpty() == false)
+    if(!currentPath.isEmpty())
     {
       currentPath = QDir::toNativeSeparators(currentPath);
       // Store the last used directory into the private instance variable
@@ -88,7 +88,7 @@ void OutputPathWidget::setupGui()
 void OutputPathWidget::selectOutputPath()
 {
   QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
-  if(currentPath.isEmpty() == true)
+  if(currentPath.isEmpty())
   {
     currentPath = getOpenDialogLastFilePath();
   }
@@ -98,7 +98,7 @@ void OutputPathWidget::selectOutputPath()
   QString defaultName = currentPath;
   QString file = QFileDialog::getExistingDirectory(this, tr("Select Output Folder"), defaultName, QFileDialog::ShowDirsOnly);
 
-  if(true == file.isEmpty())
+  if(file.isEmpty())
   {
     return;
   }

@@ -238,11 +238,11 @@ QString ComparisonSelectionAdvancedWidget::checkStringValues(QString curDcName, 
   {
     return filtDcName;
   }
-  else if (!curDcName.isEmpty()  && filtDcName.isEmpty() )
+  if(!curDcName.isEmpty() && filtDcName.isEmpty())
   {
     return curDcName;
   }
-  else if (!curDcName.isEmpty()  && !filtDcName.isEmpty() && m_DidCausePreflight)
+  if(!curDcName.isEmpty() && !filtDcName.isEmpty() && m_DidCausePreflight)
   {
     return curDcName;
   }
@@ -491,7 +491,7 @@ void ComparisonSelectionAdvancedWidget::updateDataArrayPath(QString propertyName
     }
 
     // Update the DataArray choices
-    if(false == oldPath.getDataArrayName().isEmpty() && oldPath.getDataArrayName() != newPath.getDataArrayName())
+    if(!oldPath.getDataArrayName().isEmpty() && oldPath.getDataArrayName() != newPath.getDataArrayName())
     {
       comparisonSetWidget->renameDataArrayPath(renamePath);
     }

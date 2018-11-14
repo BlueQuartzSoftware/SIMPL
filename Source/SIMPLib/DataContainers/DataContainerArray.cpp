@@ -40,10 +40,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerArray::DataContainerArray()
-: QObject()
-{
-}
+DataContainerArray::DataContainerArray() = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -299,7 +296,7 @@ int DataContainerArray::readDataContainersFromHDF5(bool preflight, hid_t dcaGid,
     {
       continue;
     }
-    if(this->doesDataContainerExist(dcProxy.name) == true)
+    if(this->doesDataContainerExist(dcProxy.name))
     {
       if(nullptr != obs)
       {
@@ -484,12 +481,10 @@ bool DataContainerArray::renameDataContainerBundle(const QString& oldName, const
     {
       return false;
     }
-    else
-    {
+
       m_DataContainerBundles.insert(newName, iter.value());
       iter.value()->setName(newName);
       m_DataContainerBundles.remove(oldName);
-    }
   }
   return false;
 }

@@ -246,7 +246,7 @@ void ConvertData::dataCheck()
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getSelectedCellArrayPath().getDataContainerName(), false);
 
   QString ss;
-  if(m_OutputArrayName.isEmpty() == true)
+  if(m_OutputArrayName.isEmpty())
   {
     ss = QObject::tr("The output array name must be set");
     setErrorCondition(-398);
@@ -378,7 +378,7 @@ void ConvertData::execute()
 AbstractFilter::Pointer ConvertData::newFilterInstance(bool copyFilterParameters) const
 {
   ConvertData::Pointer filter = ConvertData::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

@@ -345,7 +345,7 @@ void CreateGeometry::dataCheck()
     }
 
     RectGridGeom::Pointer rectgrid = RectGridGeom::CreateGeometry(SIMPL::Geometry::RectGridGeometry);
-    if(getArrayHandling() == k_CopyArrays)
+    if(static_cast<int>(getArrayHandling()) == k_CopyArrays)
     {
       rectgrid->setXBounds(std::static_pointer_cast<FloatArrayType>(m_XBoundsPtr.lock()->deepCopy(getInPreflight())));
       rectgrid->setYBounds(std::static_pointer_cast<FloatArrayType>(m_YBoundsPtr.lock()->deepCopy(getInPreflight())));
@@ -381,7 +381,7 @@ void CreateGeometry::dataCheck()
     }
 
     VertexGeom::Pointer vertex = VertexGeom::NullPointer();
-    if(getArrayHandling() == k_CopyArrays)
+    if(static_cast<int>(getArrayHandling()) == k_CopyArrays)
     {
       vertex = VertexGeom::CreateGeometry(std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::VertexGeometry);
     }
@@ -415,7 +415,7 @@ void CreateGeometry::dataCheck()
     }
 
     EdgeGeom::Pointer edge = EdgeGeom::NullPointer();
-    if(getArrayHandling() == k_CopyArrays)
+    if(static_cast<int>(getArrayHandling()) == k_CopyArrays)
     {
       edge = EdgeGeom::CreateGeometry(std::static_pointer_cast<Int64ArrayType>(m_EdgesPtr.lock()->deepCopy(getInPreflight())),
                                       std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::EdgeGeometry);
@@ -454,7 +454,7 @@ void CreateGeometry::dataCheck()
     }
 
     TriangleGeom::Pointer triangle = TriangleGeom::NullPointer();
-    if(getArrayHandling() == k_CopyArrays)
+    if(static_cast<int>(getArrayHandling()) == k_CopyArrays)
     {
       triangle = TriangleGeom::CreateGeometry(std::static_pointer_cast<Int64ArrayType>(m_TrisPtr.lock()->deepCopy(getInPreflight())),
                                               std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::TriangleGeometry);
@@ -494,7 +494,7 @@ void CreateGeometry::dataCheck()
     }
 
     QuadGeom::Pointer quadrilateral = QuadGeom::NullPointer();
-    if(getArrayHandling() == k_CopyArrays)
+    if(static_cast<int>(getArrayHandling()) == k_CopyArrays)
     {
       quadrilateral = QuadGeom::CreateGeometry(std::static_pointer_cast<Int64ArrayType>(m_QuadsPtr.lock()->deepCopy(getInPreflight())),
                                                std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::QuadGeometry);
@@ -534,7 +534,7 @@ void CreateGeometry::dataCheck()
     }
 
     TetrahedralGeom::Pointer tetrahedral = TetrahedralGeom::NullPointer();
-    if(getArrayHandling() == k_CopyArrays)
+    if(static_cast<int>(getArrayHandling()) == k_CopyArrays)
     {
       tetrahedral = TetrahedralGeom::CreateGeometry(std::static_pointer_cast<Int64ArrayType>(m_TetsPtr.lock()->deepCopy(getInPreflight())),
                                                     std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::TetrahedralGeometry);
@@ -576,7 +576,7 @@ void CreateGeometry::dataCheck()
 
 
     HexahedralGeom::Pointer hexahedral = HexahedralGeom::NullPointer();
-    if (getArrayHandling() == k_CopyArrays)
+    if(static_cast<int>(getArrayHandling()) == k_CopyArrays)
     {
       hexahedral = HexahedralGeom::CreateGeometry(std::static_pointer_cast<Int64ArrayType>(m_HexesPtr.lock()->deepCopy(getInPreflight())),
         std::static_pointer_cast<FloatArrayType>(verts->deepCopy(getInPreflight())), SIMPL::Geometry::HexahedralGeometry);

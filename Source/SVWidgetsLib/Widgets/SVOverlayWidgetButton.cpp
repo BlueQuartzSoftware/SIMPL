@@ -254,7 +254,7 @@ void SVOverlayWidgetButton::setTarget(QWidget* target)
     m_Frame->setFixedSize(m_Target->size());
   }
 
-  if(m_Source && m_Target)
+  if((m_Source != nullptr) && (m_Target != nullptr))
   {
     updateOverlay();
   }
@@ -267,7 +267,7 @@ void SVOverlayWidgetButton::setTarget(QWidget* target)
 // -----------------------------------------------------------------------------
 void SVOverlayWidgetButton::setDockWidget(QMainWindow* window, QDockWidget* dockWidget)
 {
-  if(m_DockWidget)
+  if(m_DockWidget != nullptr)
   {
     m_DockWidget->removeEventFilter(this);
   }
@@ -292,14 +292,14 @@ void SVOverlayWidgetButton::setSource(QWidget* source)
 {
   m_Frame->setUpdatesEnabled(false);
   bool addItem = (nullptr == m_Source);
-  if(m_Source)
+  if(m_Source != nullptr)
   {
     m_Layout->replaceWidget(m_Source, source);
     m_Source->hide();
   }
   m_Source = source;
 
-  if(source)
+  if(source != nullptr)
   {
     if(addItem)
     {
@@ -307,7 +307,7 @@ void SVOverlayWidgetButton::setSource(QWidget* source)
     }
 
     m_Source->show();
-    if(m_Target)
+    if(m_Target != nullptr)
     {
       if(isExpanded())
       {
@@ -322,7 +322,7 @@ void SVOverlayWidgetButton::setSource(QWidget* source)
     m_Frame->setUpdatesEnabled(true);
     setChecked(false);
 
-    if(m_Target)
+    if(m_Target != nullptr)
     {
       m_Target->update();
     }
@@ -355,7 +355,7 @@ void SVOverlayWidgetButton::setMargin(int margin)
 // -----------------------------------------------------------------------------
 bool SVOverlayWidgetButton::checkValidity()
 {
-  bool valid = m_Source && m_Target;
+  bool valid = (m_Source != nullptr) && (m_Target != nullptr);
   if(!valid)
   {
     setChecked(false);
@@ -460,22 +460,16 @@ double SVOverlayWidgetButton::getEndValue() const
     {
       return m_Target->size().width();
     }
-    else
-    {
+
       return m_Target->size().height();
-    }
   }
-  else
-  {
+
     if(TargetSide::Left == m_Side || TargetSide::Right == m_Side)
     {
       return m_Source->sizeHint().width() + m_Layout->margin() * 2;
     }
-    else
-    {
+
       return m_Source->sizeHint().height() + m_Layout->margin() * 2;
-    }
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -510,7 +504,7 @@ void SVOverlayWidgetButton::setExpanded(bool expanded)
   if(expanded)
   {
     // Force the dock widget to be visible.  This is only done for dock widgets
-    if(m_DockWidget)
+    if(m_DockWidget != nullptr)
     {
       m_DockWidget->setVisible(true);
     }

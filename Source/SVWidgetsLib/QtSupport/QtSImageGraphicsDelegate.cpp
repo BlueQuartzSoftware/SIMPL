@@ -109,7 +109,7 @@ void QtSImageGraphicsDelegate::displayTextMessage(QString message)
 void QtSImageGraphicsDelegate::increaseZoom()
 {
   _shouldFitToWindow = false;
-  if(m_CachedImage.isNull() == true)
+  if(m_CachedImage.isNull())
   {
     return;
   }
@@ -152,7 +152,7 @@ void QtSImageGraphicsDelegate::decreaseZoom()
 {
   _shouldFitToWindow = false;
   // Find the next scaling factor down
-  if(m_CachedImage.isNull() == true)
+  if(m_CachedImage.isNull())
   {
     return;
   }
@@ -191,7 +191,7 @@ void QtSImageGraphicsDelegate::decreaseZoom()
 // -----------------------------------------------------------------------------
 void QtSImageGraphicsDelegate::fitToWindow()
 {
-  if(m_CachedImage.isNull() == true)
+  if(m_CachedImage.isNull())
   {
     return;
   }
@@ -274,7 +274,7 @@ void QtSImageGraphicsDelegate::on_parentResized()
   //  int gvWidth = m_GraphicsView->size().width();
   //  int gvHeight = m_GraphicsView->size().height();
   // qDebug() << "    GV Size (W X H) :" << gvWidth << " x " << gvHeight << "\n";
-  if(_shouldFitToWindow == true)
+  if(_shouldFitToWindow)
   {
     fitToWindow();
   }
@@ -290,7 +290,7 @@ void QtSImageGraphicsDelegate::on_parentResized()
 void QtSImageGraphicsDelegate::updateGraphicsScene(bool update)
 {
 
-  if(this->m_CachedImage.isNull() == true)
+  if(this->m_CachedImage.isNull())
   {
     return;
   }
@@ -303,7 +303,7 @@ void QtSImageGraphicsDelegate::updateGraphicsScene(bool update)
 
   QImage dataImage = _scaleImage();
   QPixmap imagePixmap;
-  if(m_CompositeImages == true && m_OverlayImage.isNull() == false)
+  if(m_CompositeImages && !m_OverlayImage.isNull())
   {
     QImage topImage = _scaleImage(m_OverlayImage);
     QPainter painter;

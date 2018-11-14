@@ -55,8 +55,8 @@ static QtSStaticFileController* staticFileController = nullptr;
 
 namespace
 {
-static const int k_Port = 32456;
-static const QString k_IPAddress = QString("127.0.0.1");
+const int k_Port = 32456;
+const QString k_IPAddress = QString("127.0.0.1");
 }
 
 // -----------------------------------------------------------------------------

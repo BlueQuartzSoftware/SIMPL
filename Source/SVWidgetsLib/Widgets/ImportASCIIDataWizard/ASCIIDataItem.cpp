@@ -55,7 +55,9 @@ ASCIIDataItem::~ASCIIDataItem() = default;
 bool ASCIIDataItem::insertColumns(int position, int columns)
 {
   if(position < 0 || position > m_ItemData.size())
+  {
     return false;
+  }
 
   for(int column = 0; column < columns; ++column)
   {
@@ -71,7 +73,9 @@ bool ASCIIDataItem::insertColumns(int position, int columns)
 bool ASCIIDataItem::removeColumns(int position, int columns)
 {
   if(position < 0 || position + columns > m_ItemData.size())
+  {
     return false;
+  }
 
   for(int column = 0; column < columns; ++column)
   {

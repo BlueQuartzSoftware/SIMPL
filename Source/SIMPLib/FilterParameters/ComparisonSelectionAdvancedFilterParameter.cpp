@@ -129,8 +129,8 @@ void ComparisonSelectionAdvancedFilterParameter::dataArrayPathRenamed(AbstractFi
   ComparisonInputsAdvanced inputs = m_GetterCallback();
   bool hasChanges = false;
 
-  bool hasAttributeMatrix = oldPath.getAttributeMatrixName().isEmpty() == false;
-  bool hasDataArray = oldPath.getDataArrayName().isEmpty() == false;
+  bool hasAttributeMatrix = !oldPath.getAttributeMatrixName().isEmpty();
+  bool hasDataArray = !oldPath.getDataArrayName().isEmpty();
 
   // Update the values contained by ComparisonInputsAdvanced
   bool sameDC = inputs.getDataContainerName() == oldPath.getDataContainerName();

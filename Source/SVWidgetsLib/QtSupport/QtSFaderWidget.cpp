@@ -32,7 +32,7 @@ QtSFaderWidget::QtSFaderWidget(QWidget* parent)
 : QWidget(parent)
 , timer(nullptr)
 {
-  if(parent)
+  if(parent != nullptr)
   {
     startColor = Qt::white; /* parent->palette().window().color();*/
   }
@@ -50,7 +50,7 @@ QtSFaderWidget::QtSFaderWidget(QWidget* parent)
   connect(timer, SIGNAL(timeout()), this, SLOT(update()));
 
   setAttribute(Qt::WA_DeleteOnClose);
-  if(parent)
+  if(parent != nullptr)
   {
     resize(parent->size());
   }
@@ -61,10 +61,7 @@ QtSFaderWidget::QtSFaderWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 QtSFaderWidget::~QtSFaderWidget()
 {
-  if(timer)
-  {
-    delete timer;
-  }
+  delete timer;
 }
 
 // -----------------------------------------------------------------------------

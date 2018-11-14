@@ -103,7 +103,7 @@ void FilterListWidget::mouseMoveEvent(QMouseEvent* event)
 void FilterListWidget::performDrag()
 {
   QListWidgetItem* item = currentItem();
-  if(item)
+  if(item != nullptr)
   {
     QJsonObject obj;
     QString filterHumanLabel = item->text();
@@ -145,7 +145,7 @@ void FilterListWidget::performDrag()
 void FilterListWidget::dragEnterEvent(QDragEnterEvent* event)
 {
   FilterListWidget* source = qobject_cast<FilterListWidget*>(event->source());
-  if(source && source != this)
+  if((source != nullptr) && source != this)
   {
     event->setDropAction(Qt::MoveAction);
     event->accept();
@@ -158,7 +158,7 @@ void FilterListWidget::dragEnterEvent(QDragEnterEvent* event)
 void FilterListWidget::dragMoveEvent(QDragMoveEvent* event)
 {
   FilterListWidget* source = qobject_cast<FilterListWidget*>(event->source());
-  if(source && source != this)
+  if((source != nullptr) && source != this)
   {
     event->setDropAction(Qt::MoveAction);
     event->accept();
@@ -171,7 +171,7 @@ void FilterListWidget::dragMoveEvent(QDragMoveEvent* event)
 void FilterListWidget::dropEvent(QDropEvent* event)
 {
   FilterListWidget* source = qobject_cast<FilterListWidget*>(event->source());
-  if(source && source != this)
+  if((source != nullptr) && source != this)
   {
     addItem(event->mimeData()->text());
     event->setDropAction(Qt::MoveAction);

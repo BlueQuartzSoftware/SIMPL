@@ -43,7 +43,6 @@
 //
 // -----------------------------------------------------------------------------
 BinaryOperator::BinaryOperator()
-: CalculatorOperator()
 {
   setOperatorType(Binary);
 }
@@ -59,7 +58,6 @@ BinaryOperator::~BinaryOperator() = default;
 void BinaryOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
 {
   // This should never be executed
-  return;
 }
 
 // -----------------------------------------------------------------------------

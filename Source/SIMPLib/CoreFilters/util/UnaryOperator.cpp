@@ -46,8 +46,7 @@
 //
 // -----------------------------------------------------------------------------
 UnaryOperator::UnaryOperator()
-: CalculatorOperator()
-, m_NumOfArguments(-1)
+: m_NumOfArguments(-1)
 {
   setPrecedence(E_Precedence);
   setOperatorType(Unary);
@@ -64,7 +63,6 @@ UnaryOperator::~UnaryOperator() = default;
 void UnaryOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
 {
   // This should never be executed
-  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -108,7 +106,7 @@ CalculatorItem::ErrorCode UnaryOperator::checkValidity(QVector<CalculatorItem::P
           errMsg = QObject::tr("The operator '%1' needs %2 arguments.  %3 arguments were found.").arg(getInfixToken()).arg(m_NumOfArguments).arg(commaCount + 1);
           return CalculatorItem::ErrorCode::NOT_ENOUGH_ARGUMENTS;
         }
-        else if(hasArray == false)
+        if(!hasArray)
         {
           errMsg = QObject::tr("The operator '%1' does not have any arguments that simplify down to a number.").arg(getInfixToken());
           return CalculatorItem::ErrorCode::NO_NUMERIC_ARGUMENTS;
@@ -116,7 +114,7 @@ CalculatorItem::ErrorCode UnaryOperator::checkValidity(QVector<CalculatorItem::P
 
         return CalculatorItem::ErrorCode::SUCCESS;
       }
-      else if(nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[index]))
+      if(nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[index]))
       {
         /* We found another left parenthesis, but we don't care what's inside this set of parentheses
            (other operators' checkValidity functions will take care of these values), so just iterate

@@ -97,7 +97,7 @@ void DynamicChoiceWidget::setupGui()
   if(m_FilterParameter != nullptr)
   {
     QString units = m_FilterParameter->getUnits();
-    if(units.isEmpty() == false)
+    if(!units.isEmpty())
     {
       label->setText(m_FilterParameter->getHumanLabel() + " (" + units + ")");
     }
@@ -118,7 +118,7 @@ void DynamicChoiceWidget::updateComboBox()
 {
   // setup the list of choices for the widget
 
-  if(getFilter())
+  if(getFilter() != nullptr)
   {
     //  QString currentText = value->currentText();
 
@@ -127,7 +127,7 @@ void DynamicChoiceWidget::updateComboBox()
     // qDebug() << listProp;
 
     QVariant var = getFilter()->property(listProp.toLatin1().constData());
-    if(var.isValid() == false)
+    if(!var.isValid())
     {
       qDebug() << "Error getting Property " << m_FilterParameter->getListProperty() << " from Filter";
     }
@@ -169,12 +169,12 @@ void DynamicChoiceWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   QString index = value->currentText();
 
-  if(index.isEmpty() == false)
+  if(!index.isEmpty())
   {
     QVariant v(index);
     bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
 
-    if(false == ok)
+    if(!ok)
     {
       FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), m_FilterParameter);
     }

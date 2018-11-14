@@ -57,8 +57,7 @@
 //
 // -----------------------------------------------------------------------------
 H5FilterParametersReader::H5FilterParametersReader()
-: AbstractFilterParametersReader()
-, m_PipelineGroupId(-1)
+: m_PipelineGroupId(-1)
 {
 }
 
@@ -372,10 +371,8 @@ QString H5FilterParametersReader::readString(const QString name, QString value)
   {
     return value;
   }
-  else
-  {
+
     return defaultStr;
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -543,10 +540,9 @@ QVector<int8_t> H5FilterParametersReader::readArray(const QString name, QVector<
   {
     return value;
   }
-  else
-  {
+
     value.clear();
-  }
+
   for(int i = 0; i < vectorSize; i++)
   {
     QString ss = QString::number(i, 10);
@@ -569,10 +565,9 @@ QVector<int16_t> H5FilterParametersReader::readArray(const QString name, QVector
   {
     return value;
   }
-  else
-  {
+
     value.clear();
-  }
+
   for(int i = 0; i < vectorSize; i++)
   {
     QString ss = QString::number(i, 10);
@@ -595,10 +590,9 @@ QVector<int32_t> H5FilterParametersReader::readArray(const QString name, QVector
   {
     return value;
   }
-  else
-  {
+
     value.clear();
-  }
+
   for(int i = 0; i < vectorSize; i++)
   {
     QString ss = QString::number(i, 10);
@@ -622,10 +616,9 @@ QVector<int64_t> H5FilterParametersReader::readArray(const QString name, QVector
   {
     return value;
   }
-  else
-  {
+
     value.clear();
-  }
+
   for(int i = 0; i < vectorSize; i++)
   {
     QString ss = QString::number(i, 10);
@@ -648,10 +641,9 @@ QVector<uint8_t> H5FilterParametersReader::readArray(const QString name, QVector
   {
     return value;
   }
-  else
-  {
+
     value.clear();
-  }
+
   for(int i = 0; i < vectorSize; i++)
   {
     QString ss = QString::number(i, 10);
@@ -674,10 +666,9 @@ QVector<uint16_t> H5FilterParametersReader::readArray(const QString name, QVecto
   {
     return value;
   }
-  else
-  {
+
     value.clear();
-  }
+
   for(int i = 0; i < vectorSize; i++)
   {
     QString ss = QString::number(i, 10);
@@ -700,10 +691,9 @@ QVector<uint32_t> H5FilterParametersReader::readArray(const QString name, QVecto
   {
     return value;
   }
-  else
-  {
+
     value.clear();
-  }
+
   for(int i = 0; i < vectorSize; i++)
   {
     QString ss = QString::number(i, 10);
@@ -726,10 +716,9 @@ QVector<uint64_t> H5FilterParametersReader::readArray(const QString name, QVecto
   {
     return value;
   }
-  else
-  {
+
     value.clear();
-  }
+
   for(int i = 0; i < vectorSize; i++)
   {
     QString ss = QString::number(i, 10);
@@ -752,10 +741,9 @@ QVector<float> H5FilterParametersReader::readArray(const QString name, QVector<f
   {
     return value;
   }
-  else
-  {
+
     value.clear();
-  }
+
   for(int i = 0; i < vectorSize; i++)
   {
     QString ss = QString::number(i, 10);
@@ -778,10 +766,9 @@ QVector<double> H5FilterParametersReader::readArray(const QString name, QVector<
   {
     return value;
   }
-  else
-  {
+
     value.clear();
-  }
+
   for(int i = 0; i < vectorSize; i++)
   {
     QString ss = QString::number(i, 10);
@@ -946,7 +933,7 @@ ComparisonInputs H5FilterParametersReader::readComparisonInputs(const QString na
   QString strData = "";
   bool ok = false;
   // See if the data set actually exists, if it does NOT just return what the user passed in as a default value
-  if(false == QH5Lite::datasetExists(m_CurrentGroupId, name))
+  if(!QH5Lite::datasetExists(m_CurrentGroupId, name))
   {
     return defValue;
   }
@@ -974,7 +961,7 @@ ComparisonInputs H5FilterParametersReader::readComparisonInputs(const QString na
   {
     ComparisonInput_t v;
     QStringList tokens = strVector[i].split(',', QString::SkipEmptyParts);
-    if(tokens.size() >= 1)
+    if(!tokens.empty())
     {
       v.dataContainerName = tokens[0];
     }
@@ -1085,7 +1072,7 @@ QSet<QString> H5FilterParametersReader::readArraySelections(const QString name, 
   QString strData = "";
 
   // See if the data set actually exists, if it does NOT just return what the user passed in as a default value
-  if(false == QH5Lite::datasetExists(m_CurrentGroupId, name))
+  if(!QH5Lite::datasetExists(m_CurrentGroupId, name))
   {
     return v;
   }
@@ -1154,7 +1141,7 @@ DataContainerArrayProxy H5FilterParametersReader::readDataContainerArrayProxy(co
       QString amName = amNames.at(j);
       hid_t amGid = QH5Utilities::openHDF5Object(dcGid, amName);
       H5ScopedGroupSentinel sentinal_am(&amGid, false);
-      AttributeMatrixProxy amProxy(amName, true);
+      AttributeMatrixProxy amProxy(amName, 1u);
       amProxy.flag = Qt::Checked;
       QString data; // Output will be read into this object
       err = QH5Lite::readStringDataset(amGid, "Arrays", data);
@@ -1166,7 +1153,7 @@ DataContainerArrayProxy H5FilterParametersReader::readDataContainerArrayProxy(co
       QString path = SIMPL::StringConstants::DataContainerGroupName + "/" + dcProxy.name + "/" + amProxy.name;
       for(int k = 0; k < arrayNames.size(); k++)
       {
-        DataArrayProxy daProxy(path, arrayNames.at(k), true);
+        DataArrayProxy daProxy(path, arrayNames.at(k), 1u);
         daProxy.flag = Qt::Checked;
         amProxy.dataArrays.insert(arrayNames.at(k), daProxy);
       }
@@ -1191,10 +1178,8 @@ DataArrayPath H5FilterParametersReader::readDataArrayPath(const QString& name, D
     DataArrayPath path(value);
     return path;
   }
-  else
-  {
+
     return def;
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -1250,10 +1235,8 @@ DynamicTableData H5FilterParametersReader::readDynamicTableData(const QString& n
     DynamicTableData tableData(data, rHeaders, cHeaders);
     return tableData;
   }
-  else
-  {
+
     return def;
-  }
 }
 
 // -----------------------------------------------------------------------------

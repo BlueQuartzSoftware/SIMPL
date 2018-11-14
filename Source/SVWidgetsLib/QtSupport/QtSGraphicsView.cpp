@@ -175,7 +175,7 @@ void QtSGraphicsView::dropEvent(QDropEvent* event)
     urlList = event->mimeData()->urls(); // returns list of QUrls
     // if just text was dropped, urlList is empty (size == 0)
 
-    if(urlList.size() > 0) // if at least one QUrl is present in list
+    if(!urlList.empty()) // if at least one QUrl is present in list
     {
       fName = urlList[0].toLocalFile(); // convert first QUrl to local path
       info.setFile(fName);              // information about file
@@ -280,7 +280,7 @@ void QtSGraphicsView::updateDisplay()
   //  std::cout << "QtSGraphicsView::updateDisplay()" << std::endl;
   QPainter painter;
   QSize pSize(0, 0);
-  if(m_BaseImage.isNull() == false)
+  if(!m_BaseImage.isNull())
   {
     pSize = m_BaseImage.size();
   }
@@ -300,7 +300,7 @@ void QtSGraphicsView::updateDisplay()
 
   painter.end();
 
-  if(paintImage.isNull() == true)
+  if(paintImage.isNull())
   {
     return;
   }
@@ -414,7 +414,7 @@ QImage QtSGraphicsView::getOverlayImage()
 // -----------------------------------------------------------------------------
 void QtSGraphicsView::setBaseImage(QImage image)
 {
-  if(image.isNull() == true)
+  if(image.isNull())
   {
     return;
   }
@@ -430,7 +430,7 @@ void QtSGraphicsView::setBaseImage(QImage image)
   }
   m_BaseImage.setColorTable(colorTable);
 
-  if(m_BaseImage.isNull() == true)
+  if(m_BaseImage.isNull())
   {
     std::cout << "Base Image was nullptr for some reason. Returning" << std::endl;
     return;

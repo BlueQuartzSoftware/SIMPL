@@ -200,7 +200,7 @@ void WriteASCIIData::dataCheck()
   setErrorCondition(0);
   setWarningCondition(0);
 
-  if(m_SelectedDataArrayPaths.isEmpty() == true)
+  if(m_SelectedDataArrayPaths.isEmpty())
   {
     setErrorCondition(-11001);
     QString ss = QObject::tr("At least one Attribute Array must be selected");
@@ -208,7 +208,7 @@ void WriteASCIIData::dataCheck()
     return;
   }
 
-  if(m_OutputPath.isEmpty() == true)
+  if(m_OutputPath.isEmpty())
   {
     setErrorCondition(-11002);
     QString ss = QObject::tr("The output path must be set");
@@ -226,7 +226,7 @@ void WriteASCIIData::dataCheck()
 
   QVector<DataArrayPath> paths = getSelectedDataArrayPaths();
 
-  if(DataArrayPath::ValidateVector(paths) == false)
+  if(!DataArrayPath::ValidateVector(paths))
   {
     setErrorCondition(-11004);
     QString ss = QObject::tr("There are Attribute Arrays selected that are not contained in the same Attribute Matrix. All selected Attribute Arrays must belong to the same Attribute Matrix");
@@ -312,7 +312,7 @@ void WriteASCIIData::execute()
     return;
   }
 
-  if(m_FileExtension.startsWith(".") == false) // if no '.', add '.' to file extension
+  if(!m_FileExtension.startsWith(".")) // if no '.', add '.' to file extension
   {
     m_FileExtension = "." + m_FileExtension;
   }
@@ -435,7 +435,7 @@ char WriteASCIIData::lookupDelimiter()
 AbstractFilter::Pointer WriteASCIIData::newFilterInstance(bool copyFilterParameters) const
 {
   WriteASCIIData::Pointer filter = WriteASCIIData::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

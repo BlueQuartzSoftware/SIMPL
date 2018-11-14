@@ -96,7 +96,7 @@ void RenameAttributeArray::dataCheck()
   setErrorCondition(0);
   setWarningCondition(0);
 
-  if(m_NewArrayName.isEmpty() == true)
+  if(m_NewArrayName.isEmpty())
   {
     setErrorCondition(-11009);
     QString ss = QObject::tr("The new Attribute Array name must be set");
@@ -172,7 +172,7 @@ void RenameAttributeArray::execute()
 AbstractFilter::Pointer RenameAttributeArray::newFilterInstance(bool copyFilterParameters) const
 {
   RenameAttributeArray::Pointer filter = RenameAttributeArray::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }
