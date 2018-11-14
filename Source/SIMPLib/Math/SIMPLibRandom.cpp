@@ -135,7 +135,7 @@ void SIMPLibRandom::init_by_array(unsigned long init_key[], int key_length)
   i = 1;
   j = 0;
   k = (MERSENNNE_TWISTER_N > key_length ? MERSENNNE_TWISTER_N : key_length);
-  for(; k; k--)
+  for(; k != 0; k--)
   {
     mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >> 30)) * 1664525UL)) + init_key[j] + j; /* non linear */
     mt[i] &= 0xffffffffUL;                                                             /* for WORDSIZE > 32 machines */
@@ -151,7 +151,7 @@ void SIMPLibRandom::init_by_array(unsigned long init_key[], int key_length)
       j = 0;
     }
   }
-  for(k = MERSENNNE_TWISTER_N - 1; k; k--)
+  for(k = MERSENNNE_TWISTER_N - 1; k != 0; k--)
   {
     mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >> 30)) * 1566083941UL)) - i; /* non linear */
     mt[i] &= 0xffffffffUL;                                                  /* for WORDSIZE > 32 machines */
@@ -258,8 +258,8 @@ double SIMPLibRandom::genrand_beta(double aa, double bb)
   static double genbet, u1, u2, a, alpha, b, beta, delta, gamma, k1, k2, r, s, t, v, w, y, z;
   static long qsame;
 
-  qsame = olda == aa && oldb == bb;
-  if(qsame)
+  qsame = static_cast<long>(olda == aa && oldb == bb);
+  if(qsame != 0)
   {
     goto S20;
   }
@@ -271,7 +271,7 @@ S20:
   {
     goto S100;
   }
-  if(qsame)
+  if(qsame != 0)
   {
     goto S30;
   }
@@ -327,7 +327,7 @@ S80:
 S90:
   goto S230;
 S100:
-  if(qsame)
+  if(qsame != 0)
   {
     goto S110;
   }

@@ -201,7 +201,7 @@ AbstractFilter::Pointer ThresholdExample::newFilterInstance(bool copyFilterParam
   * EdgeComparisonInputs
   */
   ThresholdExample::Pointer filter = ThresholdExample::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

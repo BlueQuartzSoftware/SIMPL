@@ -281,7 +281,7 @@ void ReplaceValueInArray::execute()
 AbstractFilter::Pointer ReplaceValueInArray::newFilterInstance(bool copyFilterParameters) const
 {
   ReplaceValueInArray::Pointer filter = ReplaceValueInArray::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

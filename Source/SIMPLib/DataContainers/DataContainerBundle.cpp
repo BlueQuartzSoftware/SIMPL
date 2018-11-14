@@ -198,7 +198,7 @@ QVector<DataArrayPath> DataContainerBundle::findCommonDataArrayPaths(bool filter
         {
           match = true;
         }
-        if(filterMetaData == true && (path.getAttributeMatrixName() == SIMPL::StringConstants::MetaData))
+        if(filterMetaData && (path.getAttributeMatrixName() == SIMPL::StringConstants::MetaData))
         {
           match = false;
         }

@@ -292,11 +292,11 @@ QLabel* IssuesWidget::createHyperlinkLabel(PipelineMessage msg)
 
   if(filterClassName.isEmpty() || filterHumanLabel.isEmpty())
   {
-    if(filterClassName.isEmpty() == false)
+    if(!filterClassName.isEmpty())
     {
       return new QLabel(filterClassName);
     }
-    else if(filterHumanLabel.isEmpty() == false)
+    if(!filterHumanLabel.isEmpty())
     {
       return new QLabel(filterHumanLabel);
     }

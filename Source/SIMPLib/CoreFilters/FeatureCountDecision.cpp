@@ -48,8 +48,7 @@
 //
 // -----------------------------------------------------------------------------
 FeatureCountDecision::FeatureCountDecision()
-: AbstractDecisionFilter()
-, m_FeatureIdsArrayPath("", "", "")
+: m_FeatureIdsArrayPath("", "", "")
 , m_MaxGrains(0)
 , m_FeatureIds(nullptr)
 {
@@ -194,7 +193,7 @@ void FeatureCountDecision::extractProperties(const QJsonDocument& jsonDoc)
 AbstractFilter::Pointer FeatureCountDecision::newFilterInstance(bool copyFilterParameters) const
 {
   FeatureCountDecision::Pointer filter = FeatureCountDecision::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

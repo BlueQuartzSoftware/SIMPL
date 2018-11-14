@@ -79,7 +79,7 @@ QString QtSApplicationFileInfo::GenerateFileSystemPath(QString pathEnding)
 
 #if defined(Q_OS_WIN) || defined(Q_OS_MAC)
   QFileInfo fi(dir.absolutePath() + pathEnding);
-  if(fi.exists() == false)
+  if(!fi.exists())
   {
     // The help file does not exist at the default location because we are probably running from visual studio.
     // Try up one more directory

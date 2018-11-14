@@ -42,7 +42,7 @@ HttpListener::~HttpListener()
 // -----------------------------------------------------------------------------
 void HttpListener::listen()
 {
-  if(!pool)
+  if(pool == nullptr)
   {
     pool = new HttpConnectionHandlerPool(settings, requestHandler);
   }
@@ -88,7 +88,7 @@ void HttpListener::close()
 {
   QTcpServer::close();
   qDebug() << "HttpListener: closed";
-  if(pool)
+  if(pool != nullptr)
   {
     delete pool;
     pool = nullptr;
@@ -113,13 +113,13 @@ void HttpListener::incomingConnection(tSocketDescriptor socketDescriptor)
 #endif
 
   HttpConnectionHandler* freeHandler = nullptr;
-  if(pool)
+  if(pool != nullptr)
   {
     freeHandler = pool->getConnectionHandler();
   }
 
   // Let the handler process the new connection.
-  if(freeHandler)
+  if(freeHandler != nullptr)
   {
     // The descriptor is passed via event queue because the handler lives in another thread
     QMetaObject::invokeMethod(freeHandler, "handleConnection", Qt::QueuedConnection, Q_ARG(tSocketDescriptor, socketDescriptor));

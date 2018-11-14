@@ -82,14 +82,12 @@ QVariant ASCIIDataModel::data(const QModelIndex& index, int role) const
       QString dataType = m_ColumnDataType[index.column()];
       return dataType;
     }
-    else
-    {
+
       QModelIndex actualIndex = this->index(index.row() - 1, index.column());
       ASCIIDataItem* item = getItem(actualIndex);
       return item->data(index.column());
-    }
   }
-  else if(role == Qt::FontRole)
+  if(role == Qt::FontRole)
   {
     if(index.row() == 0)
     {
@@ -105,14 +103,12 @@ QVariant ASCIIDataModel::data(const QModelIndex& index, int role) const
   else if(role == Qt::BackgroundRole)
   {
 
-    if(columnHasErrors(index.column()) == true)
+    if(columnHasErrors(index.column()))
     {
       return QColor(255, 191, 193);
     }
-    else
-    {
+
       return QVariant();
-    }
   }
 
   return QVariant();
@@ -140,7 +136,7 @@ ASCIIDataItem* ASCIIDataModel::getItem(const QModelIndex& index) const
   if(index.isValid())
   {
     ASCIIDataItem* item = m_TableItems[index.row()];
-    if(item)
+    if(item != nullptr)
     {
       return item;
     }
@@ -162,16 +158,14 @@ QVariant ASCIIDataModel::headerData(int section, Qt::Orientation orientation, in
   {
     return m_HorizontalHeaders[section];
   }
-  else if(section < m_VerticalHeaders.size() && orientation == Qt::Vertical && role == Qt::DisplayRole)
+  if(section < m_VerticalHeaders.size() && orientation == Qt::Vertical && role == Qt::DisplayRole)
   {
     if(section == 0)
     {
       return "Data Type";
     }
-    else
-    {
+
       return m_VerticalHeaders[section - 1];
-    }
   }
 
   return QVariant();
@@ -188,7 +182,7 @@ bool ASCIIDataModel::setHeaderData(int section, Qt::Orientation orientation, con
     emit headerDataChanged(Qt::Horizontal, section, section);
     return true;
   }
-  else if(orientation == Qt::Vertical && role == Qt::DisplayRole)
+  if(orientation == Qt::Vertical && role == Qt::DisplayRole)
   {
     m_VerticalHeaders[section] = value.toString();
     emit headerDataChanged(Qt::Vertical, section, section);

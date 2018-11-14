@@ -48,7 +48,6 @@
 // -----------------------------------------------------------------------------
 MultiThresholdObjects::MultiThresholdObjects()
 : m_DestinationArrayName(SIMPL::GeneralData::Mask)
-, m_SelectedThresholds()
 , m_Destination(nullptr)
 {
 }
@@ -252,7 +251,7 @@ void MultiThresholdObjects::execute()
       }
       for(int64_t p = 0; p < totalTuples; ++p)
       {
-        if(m_Destination[p] == false || currentArray[p] == false)
+        if(!m_Destination[p] || !currentArray[p])
         {
           m_Destination[p] = false;
         }
@@ -270,7 +269,7 @@ void MultiThresholdObjects::execute()
 AbstractFilter::Pointer MultiThresholdObjects::newFilterInstance(bool copyFilterParameters) const
 {
   MultiThresholdObjects::Pointer filter = MultiThresholdObjects::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

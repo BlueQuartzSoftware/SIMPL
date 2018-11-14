@@ -248,7 +248,7 @@ void FileListInfoWidget::setupMenuField()
     connect(m_ShowFileAction, SIGNAL(triggered()), this, SLOT(showFileInFileSystem()));
   }
 
-  if(inputPath.isEmpty() == false && fi.exists())
+  if(!inputPath.isEmpty() && fi.exists())
   {
     m_ShowFileAction->setEnabled(true);
   }
@@ -292,14 +292,14 @@ void FileListInfoWidget::validateInputFile()
 
   QString currentPath = data.InputPath;
   QFileInfo fi(currentPath);
-  if(currentPath.isEmpty() == false && fi.exists() == false)
+  if(!currentPath.isEmpty() && !fi.exists())
   {
     QString defaultName = m_OpenDialogLastFilePath;
 
     QString title = QObject::tr("Select a replacement input file in filter '%2'").arg(getFilter()->getHumanLabel());
 
     QString file = QFileDialog::getExistingDirectory(this, title, getInputDirectory(), QFileDialog::ShowDirsOnly);
-    if(true == file.isEmpty())
+    if(file.isEmpty())
     {
       file = currentPath;
     }
@@ -328,7 +328,7 @@ void FileListInfoWidget::checkIOFiles()
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
   QString inputPath = validator->convertToAbsolutePath(m_Ui->inputDir->text());
 
-  if(true == this->verifyPathExists(inputPath, m_Ui->inputDir))
+  if(this->verifyPathExists(inputPath, m_Ui->inputDir))
   {
     findMaxSliceAndPrefix();
   }
@@ -455,7 +455,7 @@ void FileListInfoWidget::generateExampleInputFile()
     QString filePath(fileList.at(i));
     QFileInfo fi(filePath);
     QListWidgetItem* item = new QListWidgetItem(filePath, m_Ui->fileListView);
-    if(fi.exists() == true)
+    if(fi.exists())
     {
       item->setIcon(greenDot);
     }
@@ -466,7 +466,7 @@ void FileListInfoWidget::generateExampleInputFile()
     }
   }
 
-  if(hasMissingFiles == true)
+  if(hasMissingFiles)
   {
     m_Ui->errorMessage->setVisible(true);
     m_Ui->errorMessage->setText("Alert: Red Dot File(s) on the list do NOT exist on the filesystem. Please make sure all files exist");
@@ -494,7 +494,7 @@ void FileListInfoWidget::findMaxSliceAndPrefix()
   QDir dir(inputPath);
 
   // Final check to make sure we have a valid file extension
-  if(m_Ui->fileExt->text().isEmpty() == true)
+  if(m_Ui->fileExt->text().isEmpty())
   {
     return;
   }
@@ -520,7 +520,7 @@ void FileListInfoWidget::findMaxSliceAndPrefix()
   int minTotalDigits = 1000;
   foreach(QFileInfo fi, angList)
   {
-    if(fi.suffix().compare(ext) && fi.isFile() == true)
+    if((fi.suffix().compare(ext) != 0) && fi.isFile())
     {
       pos = 0;
       list.clear();
@@ -552,10 +552,10 @@ void FileListInfoWidget::findMaxSliceAndPrefix()
         minTotalDigits = digitEnd - digitStart;
       }
       m_Ui->totalDigits->setValue(minTotalDigits);
-      if(list.size() > 0)
+      if(!list.empty())
       {
         currValue = list.front().toInt(&ok);
-        if(false == flag)
+        if(!flag)
         {
           minSlice = currValue;
           flag = true;
@@ -617,7 +617,7 @@ void FileListInfoWidget::filterNeedsInputParameters(AbstractFilter* filter)
   QVariant v;
   v.setValue(data);
   ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
-  if(false == ok)
+  if(!ok)
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }
@@ -628,7 +628,7 @@ void FileListInfoWidget::filterNeedsInputParameters(AbstractFilter* filter)
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::beforePreflight()
 {
-  if(m_DidCausePreflight == false)
+  if(!m_DidCausePreflight)
   {
   }
 }

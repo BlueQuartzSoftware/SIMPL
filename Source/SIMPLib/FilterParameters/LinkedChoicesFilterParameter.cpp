@@ -38,10 +38,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkedChoicesFilterParameter::LinkedChoicesFilterParameter()
-: ChoiceFilterParameter()
-{
-}
+LinkedChoicesFilterParameter::LinkedChoicesFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

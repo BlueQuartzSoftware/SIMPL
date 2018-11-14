@@ -130,7 +130,7 @@ void EmptyFilter::execute()
 AbstractFilter::Pointer EmptyFilter::newFilterInstance(bool copyFilterParameters) const
 {
   EmptyFilter::Pointer filter = EmptyFilter::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

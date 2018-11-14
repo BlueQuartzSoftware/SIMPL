@@ -38,9 +38,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ConstrainedIntFilterParameter::ConstrainedIntFilterParameter() :
-FilterParameter()
-{}
+ConstrainedIntFilterParameter::ConstrainedIntFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

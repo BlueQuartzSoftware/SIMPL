@@ -154,7 +154,7 @@ TriangleGeom::~TriangleGeom() = default;
 // -----------------------------------------------------------------------------
 TriangleGeom::Pointer TriangleGeom::CreateGeometry(int64_t numTriangles, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
 {
-  if(name.isEmpty() == true)
+  if(name.isEmpty())
   {
     return NullPointer();
   }
@@ -172,7 +172,7 @@ TriangleGeom::Pointer TriangleGeom::CreateGeometry(int64_t numTriangles, SharedV
 // -----------------------------------------------------------------------------
 TriangleGeom::Pointer TriangleGeom::CreateGeometry(SharedTriList::Pointer triangles, SharedVertexList::Pointer vertices, const QString& name)
 {
-  if(name.isEmpty() == true)
+  if(name.isEmpty())
   {
     return NullPointer();
   }
@@ -498,7 +498,7 @@ void TriangleGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayTy
   m_ProgressCounter = 0;
   int64_t numTris = getNumberOfTris();
 
-  if(observable)
+  if(observable != nullptr)
   {
     connect(this, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), observable, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
   }
@@ -509,7 +509,7 @@ void TriangleGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayTy
 #endif
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  if(doParallel == true)
+  if(doParallel)
   {
     tbb::parallel_for(tbb::blocked_range<int64_t>(0, numTris), FindTriangleDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());
   }

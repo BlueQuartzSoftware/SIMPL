@@ -79,7 +79,10 @@ private:
   // -----------------------------------------------------------------------------
   void LoadPresets()
   {
-    if (Presets.empty() == false) { return; }
+    if(!Presets.empty())
+    {
+      return;
+    }
 
     QFile inputFile(":/CoreResources/ColorTablePresets/ColorTablePresets.json");
     if(inputFile.open(QIODevice::ReadOnly))

@@ -73,7 +73,7 @@ FileLogger::~FileLogger()
 void FileLogger::write(const LogMessage* logMessage)
 {
   // Try to write to the file
-  if(file)
+  if(file != nullptr)
   {
 
     // Write the message
@@ -87,7 +87,7 @@ void FileLogger::write(const LogMessage* logMessage)
     }
 
     // Check for success
-    if(file->error())
+    if(file->error() != 0u)
     {
       close();
       qWarning("Cannot write to log file %s: %s", qPrintable(fileName), qPrintable(file->errorString()));
@@ -95,7 +95,7 @@ void FileLogger::write(const LogMessage* logMessage)
   }
 
   // Fall-back to the super class method, if writing failed
-  if(!file)
+  if(file == nullptr)
   {
     Logger::write(logMessage);
   }
@@ -120,7 +120,7 @@ void FileLogger::open()
 
 void FileLogger::close()
 {
-  if(file)
+  if(file != nullptr)
   {
     file->close();
     delete file;
@@ -164,15 +164,15 @@ void FileLogger::rotate()
 
 void FileLogger::timerEvent(QTimerEvent* event)
 {
-  if(!event)
+  if(event == nullptr)
   {
     return;
   }
-  else if(event->timerId() == refreshTimer.timerId())
+  if(event->timerId() == refreshTimer.timerId())
   {
     refreshSettings();
   }
-  else if(event->timerId() == flushTimer.timerId() && file)
+  else if(event->timerId() == flushTimer.timerId() && (file != nullptr))
   {
     mutex.lock();
 

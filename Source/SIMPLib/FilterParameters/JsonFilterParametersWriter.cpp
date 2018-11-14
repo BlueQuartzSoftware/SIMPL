@@ -111,7 +111,7 @@ int JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline,
 {
   if(nullptr == pipeline.get())
   {
-    if(obs.size() > 0)
+    if(!obs.empty())
     {
       PipelineMessage pm(JsonFilterParametersWriter::ClassName(), "FilterPipeline Object was nullptr for writing", -1, PipelineMessage::MessageType::Error);
 
@@ -143,7 +143,7 @@ int JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline,
     if(nullptr != filter.get())
     {
       DataContainerReader::Pointer reader = std::dynamic_pointer_cast<DataContainerReader>(filter);
-      if(reader.get() && m_ExpandReaderFilters == true)
+      if((reader.get() != nullptr) && m_ExpandReaderFilters)
       {
         offset = reader->writeExistingPipelineToFile(m_Root, i);
       }
@@ -169,21 +169,21 @@ int JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline,
 void JsonFilterParametersWriter::writePipeline()
 {
   // Write the contents
-  if(m_FileName.isEmpty() == false)
+  if(!m_FileName.isEmpty())
   {
     QFile outputFile(m_FileName);
     QFileInfo info(outputFile);
     QString parentPath = info.absolutePath();
     QDir parentDir(parentPath);
 
-    if(parentDir.exists() == false)
+    if(!parentDir.exists())
     {
       parentDir.mkpath(parentPath);
     }
 
     QJsonDocument doc = toDocument();
 
-    if(outputFile.exists() == true)
+    if(outputFile.exists())
     {
       outputFile.remove();
     }
@@ -215,7 +215,7 @@ QJsonDocument JsonFilterParametersWriter::toDocument()
   meta[SIMPL::Settings::PipelineName] = m_PipelineName;
   meta[SIMPL::Settings::Version] = SIMPL::PipelineVersionNumbers::CurrentVersion;
 
-  if(m_Root.size() > 0)
+  if(!m_Root.empty())
   {
     meta[SIMPL::Settings::NumFilters] = m_CurrentIndex + 1;
   }
@@ -259,7 +259,7 @@ int JsonFilterParametersWriter::openFilterGroup(AbstractFilter* filter, int inde
   else
   {
     m_CurrentFilterIndex = QJsonObject();
-    if(filter)
+    if(filter != nullptr)
     {
       m_CurrentFilterIndex[SIMPL::Settings::FilterName] = filter->getNameOfClass();
       m_CurrentFilterIndex[SIMPL::Settings::HumanLabel] = filter->getHumanLabel();

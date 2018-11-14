@@ -126,7 +126,7 @@ void MoveFilterCommand::undo()
 // -----------------------------------------------------------------------------
 void MoveFilterCommand::redo()
 {
-  if (m_Filters.size() <= 0)
+  if(m_Filters.empty())
   {
     return;
   }
@@ -134,7 +134,7 @@ void MoveFilterCommand::redo()
   PipelineModel* model = m_PipelineView->getPipelineModel();
 
   // Remove the filters from their original positions
-  if (m_FirstRun == true)
+  if(m_FirstRun)
   {
     int filterOffset = 0;
     for(size_t i = 0; i < m_Filters.size(); i++)
@@ -167,7 +167,7 @@ void MoveFilterCommand::redo()
     statusMessage = QObject::tr("Moved '%1' filter").arg(m_Filters[0]->getHumanLabel());
   }
 
-  if (m_FirstRun == false)
+  if(!m_FirstRun)
   {
     statusMessage.prepend("Redo \"");
     statusMessage.append('\"');
@@ -198,7 +198,7 @@ void MoveFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertionI
   model->setData(filterIndex, static_cast<int>(PipelineItem::ItemType::Filter), PipelineModel::ItemTypeRole);
   model->setFilter(filterIndex, filter);
 
-  if (filter->getEnabled() == false)
+  if(!filter->getEnabled())
   {
     model->setData(filterIndex, static_cast<int>(PipelineItem::WidgetState::Disabled), PipelineModel::WidgetStateRole);
   }

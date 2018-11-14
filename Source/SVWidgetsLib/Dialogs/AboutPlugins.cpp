@@ -119,7 +119,7 @@ void AboutPlugins::setupGui()
   pluginsTable->setCurrentIndex(pluginsTable->model()->index(0,0));
   QTableWidgetItem* statusItem = pluginsTable->item(pluginsTable->currentRow(), STATUS_INDEX);
 
-  if(statusItem && statusItem->text() == NOT_FOUND_STRING)
+  if((statusItem != nullptr) && statusItem->text() == NOT_FOUND_STRING)
   {
     removePluginBtn->setVisible(true);
   }
@@ -166,7 +166,7 @@ void AboutPlugins::loadPlugins(QList<PluginProxy::Pointer> proxies)
   for(QList<QString>::iterator nameIter = pluginNames.begin(); nameIter != pluginNames.end(); nameIter++)
   {
     QString proxyName = *nameIter;
-    if(managerNames.contains(proxyName) == false)
+    if(!managerNames.contains(proxyName))
     {
       qDebug() << "The plugin " << proxyName << " was not found in the PluginManager.";
       SIMPLibPlugin* plugin = new SIMPLibPlugin();
@@ -212,7 +212,7 @@ void AboutPlugins::addPluginToTable(ISIMPLibPlugin* plugin, int row)
 
   QTableWidgetItem* statusItem;
   // Add load status information
-  if(plugin->getDidLoad() == true)
+  if(plugin->getDidLoad())
   {
     statusItem = new QTableWidgetItem("Enabled");
   }
@@ -280,7 +280,7 @@ void AboutPlugins::on_closeBtn_clicked()
 void AboutPlugins::on_pluginsTable_itemSelectionChanged()
 {
   QTableWidgetItem* item = pluginsTable->item(pluginsTable->currentRow(), NAME_INDEX);
-  if(item)
+  if(item != nullptr)
   {
     m_PluginDetails->setPluginName(item->text());
     m_PluginDetails->loadPluginDetails();
@@ -349,10 +349,10 @@ void AboutPlugins::addPlugin(QString pluginPath)
   QFileInfo fi(pluginPath);
   QString fileName = fi.fileName();
   QObject* plugin = loader->instance();
-  if(plugin)
+  if(plugin != nullptr)
   {
     ISIMPLibPlugin* ipPlugin = qobject_cast<ISIMPLibPlugin*>(plugin);
-    if(ipPlugin)
+    if(ipPlugin != nullptr)
     {
       QString pluginName = ipPlugin->getPluginBaseName();
 
@@ -522,7 +522,7 @@ QList<PluginProxy::Pointer> AboutPlugins::getPluginCheckBoxSettingsFromGUI()
       }
     }
 
-    if(plugin)
+    if(plugin != nullptr)
     {
       QString filePath = plugin->getLocation();
       proxy->setFilePath(filePath);

@@ -89,7 +89,7 @@ int BookmarksItem::childCount() const
 // -----------------------------------------------------------------------------
 int BookmarksItem::childNumber() const
 {
-  if(m_ParentItem)
+  if(m_ParentItem != nullptr)
   {
     return m_ParentItem->m_ChildItems.indexOf(const_cast<BookmarksItem*>(this));
   }

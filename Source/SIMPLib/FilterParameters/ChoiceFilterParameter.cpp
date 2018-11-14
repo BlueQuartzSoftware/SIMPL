@@ -39,8 +39,7 @@
 //
 // -----------------------------------------------------------------------------
 ChoiceFilterParameter::ChoiceFilterParameter()
-: FilterParameter()
-, m_Editable(false)
+: m_Editable(false)
 {
 }
 

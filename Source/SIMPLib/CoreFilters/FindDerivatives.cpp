@@ -384,7 +384,7 @@ void FindDerivatives::execute()
 AbstractFilter::Pointer FindDerivatives::newFilterInstance(bool copyFilterParameters) const
 {
   FindDerivatives::Pointer filter = FindDerivatives::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

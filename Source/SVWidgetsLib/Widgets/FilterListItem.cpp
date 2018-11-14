@@ -78,7 +78,7 @@ int FilterListItem::childCount() const
 // -----------------------------------------------------------------------------
 int FilterListItem::childNumber() const
 {
-  if(m_ParentItem)
+  if(m_ParentItem != nullptr)
   {
     return m_ParentItem->m_ChildItems.indexOf(const_cast<FilterListItem*>(this));
   }

@@ -41,8 +41,7 @@
 //
 // -----------------------------------------------------------------------------
 CalculatorOperator::CalculatorOperator()
-: CalculatorItem()
-, m_Precedence(Unknown_Precedence)
+: m_Precedence(Unknown_Precedence)
 {
 }
 
@@ -56,12 +55,7 @@ CalculatorOperator::~CalculatorOperator() = default;
 // -----------------------------------------------------------------------------
 bool CalculatorOperator::hasHigherPrecedence(const CalculatorOperator::Pointer other)
 {
-  if(m_Precedence > other->m_Precedence)
-  {
-    return true;
-  }
-
-  return false;
+  return m_Precedence > other->m_Precedence;
 }
 
 // -----------------------------------------------------------------------------
@@ -119,7 +113,7 @@ double CalculatorOperator::root(double base, double root)
 {
   if(root == 0)
   {
-    return std::numeric_limits<double>().infinity();
+    return std::numeric_limits<double>::infinity();
   }
 
   return pow(base, 1 / root);

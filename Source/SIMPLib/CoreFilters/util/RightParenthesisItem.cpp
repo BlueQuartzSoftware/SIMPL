@@ -41,7 +41,6 @@
 //
 // -----------------------------------------------------------------------------
 RightParenthesisItem::RightParenthesisItem()
-: CalculatorItem()
 {
   setInfixToken(")");
 }

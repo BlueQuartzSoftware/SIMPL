@@ -156,7 +156,7 @@ void ErrorWarningFilter::execute()
 AbstractFilter::Pointer ErrorWarningFilter::newFilterInstance(bool copyFilterParameters) const
 {
   ErrorWarningFilter::Pointer filter = ErrorWarningFilter::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

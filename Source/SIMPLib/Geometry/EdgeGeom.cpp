@@ -152,7 +152,7 @@ EdgeGeom::~EdgeGeom() = default;
 // -----------------------------------------------------------------------------
 EdgeGeom::Pointer EdgeGeom::CreateGeometry(int64_t numEdges, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
 {
-  if(name.isEmpty() == true)
+  if(name.isEmpty())
   {
     return NullPointer();
   }
@@ -170,7 +170,7 @@ EdgeGeom::Pointer EdgeGeom::CreateGeometry(int64_t numEdges, SharedVertexList::P
 // -----------------------------------------------------------------------------
 EdgeGeom::Pointer EdgeGeom::CreateGeometry(SharedEdgeList::Pointer edges, SharedVertexList::Pointer vertices, const QString& name)
 {
-  if(name.isEmpty() == true)
+  if(name.isEmpty())
   {
     return EdgeGeom::NullPointer();
   }
@@ -434,7 +434,7 @@ void EdgeGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::
   m_ProgressCounter = 0;
   int64_t numEdges = getNumberOfEdges();
 
-  if(observable)
+  if(observable != nullptr)
   {
     connect(this, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), observable, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
   }
@@ -445,7 +445,7 @@ void EdgeGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::
 #endif
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  if(doParallel == true)
+  if(doParallel)
   {
     tbb::parallel_for(tbb::blocked_range<int64_t>(0, numEdges), FindEdgeDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());
   }

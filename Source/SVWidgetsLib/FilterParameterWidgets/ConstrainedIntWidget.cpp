@@ -107,7 +107,7 @@ void ConstrainedIntWidget::filterNeedsInputParameters(AbstractFilter* filter)
   bool ok = true;
   QVariant v(spinBox->value());
   ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
-  if (false == ok)
+  if(!ok)
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

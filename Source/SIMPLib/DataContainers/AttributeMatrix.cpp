@@ -262,7 +262,7 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
         if (req != nullptr)
         {
           AttributeMatrix::Types amTypes = req->getAMTypes();
-          if (amTypes.size() <= 0 || amTypes.contains(static_cast<AttributeMatrix::Type>(amTypeTmp)))
+          if(amTypes.empty() || amTypes.contains(static_cast<AttributeMatrix::Type>(amTypeTmp)))
           {
             amProxy.flag = Qt::Checked;
           }
@@ -378,7 +378,7 @@ RenameErrorCodes AttributeMatrix::renameAttributeArray(const QString& oldname, c
 
   itNew = m_AttributeArrays.find(newname);
   // If new name doesn't exist or we want to overwrite one that does exist...
-  if(itNew == m_AttributeArrays.end() || overwrite == true)
+  if(itNew == m_AttributeArrays.end() || overwrite)
   {
     itOld = m_AttributeArrays.find(oldname);
     // If old name doesn't exist...
@@ -416,7 +416,7 @@ void AttributeMatrix::setTupleDimensions(QVector<size_t> tupleDims)
 // -----------------------------------------------------------------------------
 size_t AttributeMatrix::getNumberOfTuples()
 {
-  if (m_TupleDims.size() == 0)
+  if(m_TupleDims.empty())
   {
     return 0;
   }
@@ -443,7 +443,7 @@ bool AttributeMatrix::removeInactiveObjects(const QVector<bool> &activeObjects, 
     acceptableMatrix = true;
   }
   size_t totalTuples = getNumberOfTuples();
-  if(static_cast<size_t>(activeObjects.size()) == totalTuples && acceptableMatrix == true)
+  if(static_cast<size_t>(activeObjects.size()) == totalTuples && acceptableMatrix)
   {
     size_t goodcount = 1;
     QVector<size_t> newNames(totalTuples, 0);
@@ -451,7 +451,7 @@ bool AttributeMatrix::removeInactiveObjects(const QVector<bool> &activeObjects, 
 
     for(qint32 i = 1; i < activeObjects.size(); i++)
     {
-      if(activeObjects[i] == false)
+      if(!activeObjects[i])
       {
         removeList.push_back(i);
         newNames[i] = 0;
@@ -463,7 +463,7 @@ bool AttributeMatrix::removeInactiveObjects(const QVector<bool> &activeObjects, 
       }
     }
 
-    if(removeList.size() > 0)
+    if(!removeList.empty())
     {
       QList<QString> headers = getAttributeArrayNames();
       for(QList<QString>::iterator iter = headers.begin(); iter != headers.end(); ++iter)
@@ -600,10 +600,10 @@ int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, QString name, bool
   //   qDebug() << groupName << " Array: " << *iter << " with C++ ClassType of " << classType << "\n";
   IDataArray::Pointer dPtr = IDataArray::NullPointer();
 
-  if(classType.startsWith("DataArray") == true)
+  if(classType.startsWith("DataArray"))
   {
     dPtr = H5DataArrayReader::ReadIDataArray(gid, name, preflight);
-    if(preflight == true)
+    if(preflight)
     {
       dPtr->resize(getNumberOfTuples());
     }
@@ -611,7 +611,7 @@ int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, QString name, bool
   else if(classType.compare("StringDataArray") == 0)
   {
     dPtr = H5DataArrayReader::ReadStringDataArray(gid, name, preflight);
-    if(preflight == true)
+    if(preflight)
     {
       dPtr->resize(getNumberOfTuples());
     }
@@ -622,7 +622,7 @@ int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, QString name, bool
   else if(classType.compare("NeighborList<T>") == 0)
   {
     dPtr = H5DataArrayReader::ReadNeighborListData(gid, name, preflight);
-    if(preflight == true)
+    if(preflight)
     {
       dPtr->resize(getNumberOfTuples());
     }
@@ -633,7 +633,7 @@ int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, QString name, bool
     statsData->setName(SIMPL::EnsembleData::Statistics);
     statsData->readH5Data(gid);
     dPtr = statsData;
-    if(preflight == true)
+    if(preflight)
     {
       dPtr->resize(getNumberOfTuples());
     }
@@ -666,7 +666,7 @@ int AttributeMatrix::readAttributeArraysFromHDF5(hid_t amGid, bool preflight, At
     //   qDebug() << groupName << " Array: " << *iter << " with C++ ClassType of " << classType << "\n";
     IDataArray::Pointer dPtr = IDataArray::NullPointer();
 
-    if(classType.startsWith("DataArray") == true)
+    if(classType.startsWith("DataArray"))
     {
       dPtr = H5DataArrayReader::ReadIDataArray(amGid, iter->name, preflight);
     }

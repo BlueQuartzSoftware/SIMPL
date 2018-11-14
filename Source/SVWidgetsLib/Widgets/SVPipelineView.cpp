@@ -355,7 +355,7 @@ void SVPipelineView::preflightPipeline()
     {
       model->setData(childIndex, static_cast<int>(PipelineItem::ErrorState::Ok), PipelineModel::ErrorStateRole);
       AbstractFilter::Pointer filter = model->filter(childIndex);
-      if(filter->getEnabled() == true)
+      if(filter->getEnabled())
       {
         model->setData(childIndex, static_cast<int>(PipelineItem::WidgetState::Ready), PipelineModel::WidgetStateRole);
       }
@@ -414,11 +414,8 @@ void SVPipelineView::executePipeline()
 {
   if(m_WorkerThread != nullptr)
   {
-    if(false == m_WorkerThread->isFinished())
-    {
-      m_WorkerThread->wait(); // Wait until the thread is complete
-    }
-    if(m_WorkerThread->isFinished() == true)
+    m_WorkerThread->wait(); // Wait until the thread is complete
+    if(m_WorkerThread->isFinished())
     {
       delete m_WorkerThread;
       m_WorkerThread = nullptr;
@@ -516,7 +513,7 @@ void SVPipelineView::updateFilterInputWidgetIndices()
   for(int row = 0; row < rowCount; row++)
   {
     QModelIndex index = model->index(row, col);
-    if(false == index.isValid())
+    if(!index.isValid())
     {
       return;
     }
@@ -524,7 +521,7 @@ void SVPipelineView::updateFilterInputWidgetIndices()
     // Update the FilterInputWidget based on the pipeline index
     AbstractFilter::Pointer filter = model->filter(index);
     FilterInputWidget* fip = model->filterInputWidget(index);
-    if(filter && fip)
+    if(filter && (fip != nullptr))
     {
       fip->setFilterIndex(QString::number(filter->getPipelineIndex() + 1));
     }
@@ -703,10 +700,10 @@ int SVPipelineView::writePipeline(const QString& outputPath)
   QString ext = fi.completeSuffix();
 
   // If the filePath already exists - delete it so that we get a clean write to the file
-  if(fi.exists() == true && (ext == "dream3d" || ext == "json"))
+  if(fi.exists() && (ext == "dream3d" || ext == "json"))
   {
     QFile f(outputPath);
-    if(f.remove() == false)
+    if(!f.remove())
     {
       QMessageBox::warning(nullptr, QString::fromLatin1("Pipeline Write Error"), QString::fromLatin1("There was an error removing the existing pipeline file. The pipeline was NOT saved."));
       return -1;
@@ -750,10 +747,8 @@ int SVPipelineView::writePipeline(const QString& outputPath)
     emit statusMessage(tr("There was an error while saving the pipeline to file '%1'.").arg(fi.fileName()));
     return -1;
   }
-  else
-  {
+
     emit statusMessage(tr("The pipeline has been saved successfully to '%1'.").arg(fi.fileName()));
-  }
 
   // Store output path
   m_CurrentPath = outputPath;
@@ -869,7 +864,7 @@ void SVPipelineView::listenPasteTriggered()
 void SVPipelineView::listenDeleteKeyTriggered()
 {
   QModelIndexList selectedIndexes = selectionModel()->selectedRows();
-  if(selectedIndexes.size() <= 0)
+  if(selectedIndexes.empty())
   {
     return;
   }
@@ -940,7 +935,7 @@ void SVPipelineView::clearPipeline()
 // -----------------------------------------------------------------------------
 QPixmap SVPipelineView::getDraggingPixmap(QModelIndexList indexes)
 {
-  if(indexes.size() <= 0)
+  if(indexes.empty())
   {
     return QPixmap();
   }
@@ -979,7 +974,7 @@ QPixmap SVPipelineView::getDraggingPixmap(QModelIndexList indexes)
 // -----------------------------------------------------------------------------
 void SVPipelineView::mouseMoveEvent(QMouseEvent* event)
 {
-  if((event->buttons() & Qt::LeftButton) && (event->pos() - m_DragStartPosition).manhattanLength() >= QApplication::startDragDistance() + 1 && dragEnabled() == true)
+  if(((event->buttons() & Qt::LeftButton) != 0u) && (event->pos() - m_DragStartPosition).manhattanLength() >= QApplication::startDragDistance() + 1 && dragEnabled())
   {
     beginDrag(event);
   }
@@ -995,7 +990,7 @@ void SVPipelineView::mouseMoveEvent(QMouseEvent* event)
 void SVPipelineView::beginDrag(QMouseEvent* event)
 {
   QModelIndexList selectedIndexes = selectionModel()->selectedRows();
-  if(selectedIndexes.size() <= 0)
+  if(selectedIndexes.empty())
   {
     return;
   }
@@ -1015,7 +1010,7 @@ void SVPipelineView::beginDrag(QMouseEvent* event)
 
     AbstractFilter::Pointer filter = model->filter(selectedIndex);
 
-    if(modifiers.testFlag(Qt::AltModifier) == true)
+    if(modifiers.testFlag(Qt::AltModifier))
     {
       filter = filter->newFilterInstance(true);
     }
@@ -1034,7 +1029,7 @@ void SVPipelineView::beginDrag(QMouseEvent* event)
 
   QRect firstSelectionRect = visualRect(selectedIndexes[0]);
 
-  if(modifiers.testFlag(Qt::AltModifier) == false)
+  if(!modifiers.testFlag(Qt::AltModifier))
   {
     m_MoveCommand = new QUndoCommand();
 
@@ -1128,7 +1123,7 @@ void SVPipelineView::dragMoveEvent(QDragMoveEvent* event)
     QString filePath = iter.value().toString();
 
     QFileInfo fi(filePath);
-    if(fi.isDir() == true)
+    if(fi.isDir())
     {
       event->ignore();
       return;
@@ -1180,7 +1175,7 @@ void SVPipelineView::dragMoveEvent(QDragMoveEvent* event)
 
   PipelineItem::ItemType itemType = static_cast<PipelineItem::ItemType>(model->data(index, PipelineModel::ItemTypeRole).toInt());
 
-  if(index.isValid() == false)
+  if(!index.isValid())
   {
     int dropIndicatorRow;
     if(mousePos.y() > lastIndexRect.y())
@@ -1199,7 +1194,7 @@ void SVPipelineView::dragMoveEvent(QDragMoveEvent* event)
       removeDropIndicator();
       addDropIndicator(dropIndicatorText, dropIndicatorRow);
     }
-    else if(m_DropIndicatorIndex.isValid() == false)
+    else if(!m_DropIndicatorIndex.isValid())
     {
       addDropIndicator(dropIndicatorText, dropIndicatorRow);
     }
@@ -1264,7 +1259,7 @@ int SVPipelineView::findNextRow(const QPoint& pos)
 
   QPoint currentPos = pos;
 
-  while(indexAt(currentPos).isValid() == false && currentPos.y() <= viewport()->size().height())
+  while(!indexAt(currentPos).isValid() && currentPos.y() <= viewport()->size().height())
   {
     currentPos.setY(currentPos.y() + stepHeight);
   }
@@ -1301,7 +1296,7 @@ int SVPipelineView::findPreviousRow(const QPoint& pos)
 
   QPoint currentPos = pos;
 
-  while(indexAt(currentPos).isValid() == false && currentPos.y() >= 0)
+  while(!indexAt(currentPos).isValid() && currentPos.y() >= 0)
   {
     currentPos.setY(currentPos.y() - stepHeight);
   }
@@ -1311,10 +1306,8 @@ int SVPipelineView::findPreviousRow(const QPoint& pos)
   {
     return index.row();
   }
-  else
-  {
+
     return 0;
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -1379,7 +1372,7 @@ void SVPipelineView::dropEvent(QDropEvent* event)
     }
 
     Qt::KeyboardModifiers modifiers = QApplication::queryKeyboardModifiers();
-    if(event->source() == this && modifiers.testFlag(Qt::AltModifier) == false)
+    if(event->source() == this && !modifiers.testFlag(Qt::AltModifier))
     {
       // This is an internal move, so we need to create an Add command and add it as a child to the overall move command.
       AddFilterCommand* cmd = new AddFilterCommand(filters, this, dropRow, "Move", true, m_MoveCommand);
@@ -1387,7 +1380,7 @@ void SVPipelineView::dropEvent(QDropEvent* event)
       // Set the text of the drag command
       QString text = cmd->text();
 
-      if(m_MoveCommand)
+      if(m_MoveCommand != nullptr)
       {
         m_MoveCommand->setText(text);
       }
@@ -1503,7 +1496,7 @@ void SVPipelineView::blockPreflightSignals(bool b)
     m_BlockPreflightStack.pop();
   }
 
-  m_BlockPreflight = (m_BlockPreflightStack.size() > 0) ? true : false;
+  m_BlockPreflight = !m_BlockPreflightStack.empty();
 }
 
 // -----------------------------------------------------------------------------
@@ -1517,7 +1510,7 @@ void SVPipelineView::setFiltersEnabled(QModelIndexList indexes, bool enabled)
   {
     QModelIndex index = indexes[i];
     AbstractFilter::Pointer filter = model->filter(index);
-    if(enabled == true)
+    if(enabled)
     {
       filter->setEnabled(true);
       model->setData(index, static_cast<int>(PipelineItem::WidgetState::Ready), PipelineModel::WidgetStateRole);
@@ -1623,7 +1616,7 @@ void SVPipelineView::toStoppedState()
     AbstractFilter::Pointer filter = model->filter(index);
     inputWidget->toIdleState();
 
-    if(filter->getEnabled() == true)
+    if(filter->getEnabled())
     {
       // Do not set state to Completed if the filter is disabled
       PipelineItem::WidgetState wState = static_cast<PipelineItem::WidgetState>(model->data(index, PipelineModel::WidgetStateRole).toInt());
@@ -1648,10 +1641,10 @@ int SVPipelineView::openPipeline(const QString& filePath, int insertIndex)
   m_CurrentPath = filePath;
 
   QFileInfo fi(filePath);
-  if(fi.exists() == false)
+  if(!fi.exists())
   {
     QMessageBox::warning(nullptr, QString::fromLatin1("Pipeline Read Error"), QString::fromLatin1("There was an error opening the specified pipeline file. The pipeline file does not exist."));
-    return false;
+    return 0;
   }
 
   QString ext = fi.suffix();
@@ -1753,7 +1746,7 @@ void SVPipelineView::mousePressEvent(QMouseEvent* event)
   {
     m_DragStartPosition = event->pos();
 
-    if(indexAt(event->pos()).isValid() == false)
+    if(!indexAt(event->pos()).isValid())
     {
       clearSelection();
 
@@ -1842,7 +1835,7 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint& pos, const QMode
     }
   }
 
-  if(selectedIndexes.contains(index) == false)
+  if(!selectedIndexes.contains(index))
   {
     // Only toggle the target filter widget if it is not in the selected objects
     QModelIndexList toggledIndices = QModelIndexList();
@@ -1875,7 +1868,7 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint& pos, const QMode
   shortcutList.push_back(QKeySequence(Qt::Key_Backspace));
   shortcutList.push_back(QKeySequence(Qt::Key_Delete));
 
-  if(selectedIndexes.contains(index) == false || selectedIndexes.size() == 1)
+  if(!selectedIndexes.contains(index) || selectedIndexes.size() == 1)
   {
     removeAction = new QAction("Delete Filter", &menu);
     connect(removeAction, &QAction::triggered, [=] {
@@ -2064,10 +2057,8 @@ void SVPipelineView::requestDefaultContextMenu(const QPoint& pos)
 void SVPipelineView::setModel(QAbstractItemModel* model)
 {
   QAbstractItemModel* oldModel = this->model();
-  if(oldModel != nullptr)
-  {
+
     delete oldModel;
-  }
 
   QListView::setModel(model);
 
@@ -2083,8 +2074,8 @@ void SVPipelineView::setModel(QAbstractItemModel* model)
   }
 
   connect(selectionModel(), &QItemSelectionModel::selectionChanged, [=](const QItemSelection& selected, const QItemSelection& deselected) {
-    m_ActionCut->setEnabled(selected.size() > 0);
-    m_ActionCopy->setEnabled(selected.size() > 0);
+    m_ActionCut->setEnabled(!selected.empty());
+    m_ActionCopy->setEnabled(!selected.empty());
   });
 
   m_ActionClearPipeline->setEnabled(model->rowCount() > 0);
@@ -2128,10 +2119,8 @@ QPixmap SVPipelineView::getDisableBtnPixmap(bool highlighted)
   {
     return m_DisableHighlightedPixmap;
   }
-  else
-  {
+
     return m_DisableBtnPixmap;
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -2156,10 +2145,8 @@ QPixmap SVPipelineView::getHighDPIDisableBtnPixmap(bool highlighted)
   {
     return m_DisableBtnHighlightedPixmap2x;
   }
-  else
-  {
+
     return m_DisableBtnPixmap2x;
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -2214,10 +2201,8 @@ QPixmap SVPipelineView::getDisableBtnHoveredPixmap(bool highlighted)
   {
     return m_DisableBtnHoveredHighlightedPixmap;
   }
-  else
-  {
+
     return m_DisableBtnHoveredPixmap;
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -2242,10 +2227,8 @@ QPixmap SVPipelineView::getHighDPIDisableBtnHoveredPixmap(bool highlighted)
   {
     return m_DisableBtnHoveredHighlightedPixmap2x;
   }
-  else
-  {
+
     return m_DisableBtnHoveredPixmap2x;
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -2270,10 +2253,8 @@ QPixmap SVPipelineView::getDeleteBtnPixmap(bool highlighted)
   {
     return m_DeleteBtnHighlightedPixmap;
   }
-  else
-  {
+
     return m_DeleteBtnPixmap;
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -2298,10 +2279,8 @@ QPixmap SVPipelineView::getHighDPIDeleteBtnPixmap(bool highlighted)
   {
     return m_DeleteBtnHighlightedPixmap2x;
   }
-  else
-  {
+
     return m_DeleteBtnPixmap2x;
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -2326,10 +2305,8 @@ QPixmap SVPipelineView::getDeleteBtnHoveredPixmap(bool highlighted)
   {
     return m_DeleteBtnHoveredHighlightedPixmap;
   }
-  else
-  {
+
     return m_DeleteBtnHoveredPixmap;
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -2354,10 +2331,8 @@ QPixmap SVPipelineView::getHighDPIDeleteBtnHoveredPixmap(bool highlighted)
   {
     return m_DeleteBtnHoveredHighlightedPixmap2x;
   }
-  else
-  {
+
     return m_DeleteBtnHoveredPixmap2x;
-  }
 }
 
 // -----------------------------------------------------------------------------

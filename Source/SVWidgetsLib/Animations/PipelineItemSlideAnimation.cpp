@@ -72,7 +72,7 @@ PipelineItemSlideAnimation::PipelineItemSlideAnimation(PipelineModel* model, QPe
 // -----------------------------------------------------------------------------
 void PipelineItemSlideAnimation::listenValueChanged(const QVariant& value)
 {
-  if(m_PipelineModel)
+  if(m_PipelineModel != nullptr)
   {
     if (m_Direction == AnimationDirection::EnterLeft)
     {

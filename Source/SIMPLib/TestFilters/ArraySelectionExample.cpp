@@ -137,7 +137,7 @@ AbstractFilter::Pointer ArraySelectionExample::newFilterInstance(bool copyFilter
   * DataContainerArrayProxy
   */
   ArraySelectionExample::Pointer filter = ArraySelectionExample::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     filter->setDataContainerArrayProxy(getDataContainerArrayProxy());
   }

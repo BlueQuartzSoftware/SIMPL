@@ -138,7 +138,7 @@ void ImportHDF5Dataset::dataCheck()
     return;
   }
 
-  if(hdf5FileInfo.exists() == false)
+  if(!hdf5FileInfo.exists())
   {
     QString ss = tr("The selected file '%1' does not exist.").arg(hdf5FileInfo.fileName());
     setErrorCondition(-20003);
@@ -182,7 +182,7 @@ void ImportHDF5Dataset::dataCheck()
     }
     else
     {
-      if(openedParentPathsMap.contains(parentPath) == false)
+      if(!openedParentPathsMap.contains(parentPath))
       {
         parentId = QH5Utilities::openHDF5Object(fileId, parentPath);
         sentinel.addGroupId(&parentId);
@@ -383,7 +383,7 @@ QVector<size_t> ImportHDF5Dataset::createComponentDimensions(const QString& cDim
 
     bool ok = false;
     int val = dimsStr.toInt(&ok);
-    if(ok == false)
+    if(!ok)
     {
       return QVector<size_t>();
     }
@@ -435,9 +435,9 @@ IDataArray::Pointer ImportHDF5Dataset::readIDataArray(hid_t gid, const QString& 
     break;
   case H5T_INTEGER:
     // qDebug() << "User Meta Data Type is Integer" ;
-    if(H5Tequal(typeId, H5T_STD_U8BE) || H5Tequal(typeId, H5T_STD_U8LE))
+    if((H5Tequal(typeId, H5T_STD_U8BE) != 0) || (H5Tequal(typeId, H5T_STD_U8LE) != 0))
     {
-      if(metaDataOnly == false)
+      if(!metaDataOnly)
       {
         ptr = Detail::readH5Dataset<uint8_t>(gid, name, numOfTuples, cDims);
       }
@@ -446,9 +446,9 @@ IDataArray::Pointer ImportHDF5Dataset::readIDataArray(hid_t gid, const QString& 
         ptr = DataArray<uint8_t>::CreateArray(numOfTuples, cDims, name, false);
       }
     }
-    else if(H5Tequal(typeId, H5T_STD_U16BE) || H5Tequal(typeId, H5T_STD_U16LE))
+    else if((H5Tequal(typeId, H5T_STD_U16BE) != 0) || (H5Tequal(typeId, H5T_STD_U16LE) != 0))
     {
-      if(metaDataOnly == false)
+      if(!metaDataOnly)
       {
         ptr = Detail::readH5Dataset<uint16_t>(gid, name, numOfTuples, cDims);
       }
@@ -457,9 +457,9 @@ IDataArray::Pointer ImportHDF5Dataset::readIDataArray(hid_t gid, const QString& 
         ptr = DataArray<uint16_t>::CreateArray(numOfTuples, cDims, name, false);
       }
     }
-    else if(H5Tequal(typeId, H5T_STD_U32BE) || H5Tequal(typeId, H5T_STD_U32LE))
+    else if((H5Tequal(typeId, H5T_STD_U32BE) != 0) || (H5Tequal(typeId, H5T_STD_U32LE) != 0))
     {
-      if(metaDataOnly == false)
+      if(!metaDataOnly)
       {
         ptr = Detail::readH5Dataset<uint32_t>(gid, name, numOfTuples, cDims);
       }
@@ -468,9 +468,9 @@ IDataArray::Pointer ImportHDF5Dataset::readIDataArray(hid_t gid, const QString& 
         ptr = DataArray<uint32_t>::CreateArray(numOfTuples, cDims, name, false);
       }
     }
-    else if(H5Tequal(typeId, H5T_STD_U64BE) || H5Tequal(typeId, H5T_STD_U64LE))
+    else if((H5Tequal(typeId, H5T_STD_U64BE) != 0) || (H5Tequal(typeId, H5T_STD_U64LE) != 0))
     {
-      if(metaDataOnly == false)
+      if(!metaDataOnly)
       {
         ptr = Detail::readH5Dataset<uint64_t>(gid, name, numOfTuples, cDims);
       }
@@ -479,9 +479,9 @@ IDataArray::Pointer ImportHDF5Dataset::readIDataArray(hid_t gid, const QString& 
         ptr = DataArray<uint64_t>::CreateArray(numOfTuples, cDims, name, false);
       }
     }
-    else if(H5Tequal(typeId, H5T_STD_I8BE) || H5Tequal(typeId, H5T_STD_I8LE))
+    else if((H5Tequal(typeId, H5T_STD_I8BE) != 0) || (H5Tequal(typeId, H5T_STD_I8LE) != 0))
     {
-      if(metaDataOnly == false)
+      if(!metaDataOnly)
       {
         ptr = Detail::readH5Dataset<int8_t>(gid, name, numOfTuples, cDims);
       }
@@ -490,9 +490,9 @@ IDataArray::Pointer ImportHDF5Dataset::readIDataArray(hid_t gid, const QString& 
         ptr = DataArray<int8_t>::CreateArray(numOfTuples, cDims, name, false);
       }
     }
-    else if(H5Tequal(typeId, H5T_STD_I16BE) || H5Tequal(typeId, H5T_STD_I16LE))
+    else if((H5Tequal(typeId, H5T_STD_I16BE) != 0) || (H5Tequal(typeId, H5T_STD_I16LE) != 0))
     {
-      if(metaDataOnly == false)
+      if(!metaDataOnly)
       {
         ptr = Detail::readH5Dataset<int16_t>(gid, name, numOfTuples, cDims);
       }
@@ -501,9 +501,9 @@ IDataArray::Pointer ImportHDF5Dataset::readIDataArray(hid_t gid, const QString& 
         ptr = DataArray<int16_t>::CreateArray(numOfTuples, cDims, name, false);
       }
     }
-    else if(H5Tequal(typeId, H5T_STD_I32BE) || H5Tequal(typeId, H5T_STD_I32LE))
+    else if((H5Tequal(typeId, H5T_STD_I32BE) != 0) || (H5Tequal(typeId, H5T_STD_I32LE) != 0))
     {
-      if(metaDataOnly == false)
+      if(!metaDataOnly)
       {
         ptr = Detail::readH5Dataset<int32_t>(gid, name, numOfTuples, cDims);
       }
@@ -512,9 +512,9 @@ IDataArray::Pointer ImportHDF5Dataset::readIDataArray(hid_t gid, const QString& 
         ptr = DataArray<int32_t>::CreateArray(numOfTuples, cDims, name, false);
       }
     }
-    else if(H5Tequal(typeId, H5T_STD_I64BE) || H5Tequal(typeId, H5T_STD_I64LE))
+    else if((H5Tequal(typeId, H5T_STD_I64BE) != 0) || (H5Tequal(typeId, H5T_STD_I64LE) != 0))
     {
-      if(metaDataOnly == false)
+      if(!metaDataOnly)
       {
         ptr = Detail::readH5Dataset<int64_t>(gid, name, numOfTuples, cDims);
       }
@@ -532,7 +532,7 @@ IDataArray::Pointer ImportHDF5Dataset::readIDataArray(hid_t gid, const QString& 
   case H5T_FLOAT:
     if(attr_size == 4)
     {
-      if(metaDataOnly == false)
+      if(!metaDataOnly)
       {
         ptr = Detail::readH5Dataset<float>(gid, name, numOfTuples, cDims);
       }
@@ -543,7 +543,7 @@ IDataArray::Pointer ImportHDF5Dataset::readIDataArray(hid_t gid, const QString& 
     }
     else if(attr_size == 8)
     {
-      if(metaDataOnly == false)
+      if(!metaDataOnly)
       {
         ptr = Detail::readH5Dataset<double>(gid, name, numOfTuples, cDims);
       }
@@ -582,7 +582,7 @@ QString ImportHDF5Dataset::getHDF5Dimensions()
 AbstractFilter::Pointer ImportHDF5Dataset::newFilterInstance(bool copyFilterParameters) const
 {
   ImportHDF5Dataset::Pointer filter = ImportHDF5Dataset::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     filter->setFilterParameters(getFilterParameters());
     filter->setHDF5FilePath(getHDF5FilePath());

@@ -221,15 +221,15 @@ void DataArraySelectionWidget::setSelectedPath(DataArrayPath daPath)
 QString DataArraySelectionWidget::checkStringValues(QString curDcName, QString filtDcName)
 {
   ////qDebug() << "    checkStringValues(...)" << curDcName << "  " << filtDcName;
-  if(curDcName.isEmpty() == true && filtDcName.isEmpty() == false)
+  if(curDcName.isEmpty() && !filtDcName.isEmpty())
   {
     return filtDcName;
   }
-  else if(curDcName.isEmpty() == false && filtDcName.isEmpty() == true)
+  if(!curDcName.isEmpty() && filtDcName.isEmpty())
   {
     return curDcName;
   }
-  else if(curDcName.isEmpty() == false && filtDcName.isEmpty() == false && m_DidCausePreflight == true)
+  if(!curDcName.isEmpty() && !filtDcName.isEmpty() && m_DidCausePreflight)
   {
     return curDcName;
   }
@@ -246,7 +246,7 @@ void DataArraySelectionWidget::beforePreflight()
   {
     return;
   }
-  if(m_DidCausePreflight == true)
+  if(m_DidCausePreflight)
   {
     // std::cout << "***  DataArraySelectionWidget already caused a preflight, just returning" << std::endl;
     return;
@@ -280,7 +280,7 @@ void DataArraySelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
   bool ok = false;
   // Set the value into the Filter
   ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-  if(false == ok)
+  if(!ok)
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

@@ -75,7 +75,7 @@ void PipelineModel::updateActivePipeline(const QModelIndex &pipelineIdx)
 
   m_ActivePipelineIndex = pipelineIdx;
 
-  if (m_ActivePipelineIndex.isValid() == true)
+  if(m_ActivePipelineIndex.isValid())
   {
     emit preflightTriggered(m_ActivePipelineIndex, this);
   }
@@ -105,15 +105,15 @@ QVariant PipelineModel::data(const QModelIndex& index, int role) const
   {
     return static_cast<int>(item->getWidgetState());
   }
-  else if (role == PipelineModel::Roles::ErrorStateRole)
+  if(role == PipelineModel::Roles::ErrorStateRole)
   {
     return static_cast<int>(item->getErrorState());
   }
-  else if (role == PipelineModel::Roles::PipelineStateRole)
+  if(role == PipelineModel::Roles::PipelineStateRole)
   {
     return static_cast<int>(item->getPipelineState());
   }
-  else if (role == PipelineModel::Roles::ItemTypeRole)
+  if(role == PipelineModel::Roles::ItemTypeRole)
   {
     return static_cast<int>(item->getItemType());
   }
@@ -161,10 +161,8 @@ QVariant PipelineModel::data(const QModelIndex& index, int role) const
       font.setBold(true);
       return font;
     }
-    else
-    {
+
       return QVariant();
-    }
   }
   else if(role == Qt::ForegroundRole)
   {
@@ -183,10 +181,8 @@ QVariant PipelineModel::data(const QModelIndex& index, int role) const
       PipelineItem* item = getItem(index);
       return item->getIcon();
     }
-    else
-    {
+
       return QVariant();
-    }
   }
 
   return QVariant();
@@ -388,7 +384,7 @@ PipelineItem* PipelineModel::getItem(const QModelIndex& index) const
   if(index.isValid())
   {
     PipelineItem* item = static_cast<PipelineItem*>(index.internalPointer());
-    if(item)
+    if(item != nullptr)
     {
       return item;
     }
@@ -422,14 +418,12 @@ QModelIndex PipelineModel::index(int row, int column, const QModelIndex& parent)
   PipelineItem* parentItem = getItem(parent);
 
   PipelineItem* childItem = parentItem->child(row);
-  if(childItem)
+  if(childItem != nullptr)
   {
     return createIndex(row, column, childItem);
   }
-  else
-  {
+
     return QModelIndex();
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -534,7 +528,7 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
   {
     bool ok = false;
     int intValue = value.toInt(&ok);
-    if (ok == false)
+    if(!ok)
     {
       return false;
     }
@@ -546,7 +540,7 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
   {
     bool ok = false;
     int intValue = value.toInt(&ok);
-    if (ok == false)
+    if(!ok)
     {
       return false;
     }
@@ -558,7 +552,7 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
   {
     bool ok = false;
     int intValue = value.toInt(&ok);
-    if (ok == false)
+    if(!ok)
     {
       return false;
     }
@@ -570,7 +564,7 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
   {
     bool ok = false;
     int intValue = value.toInt(&ok);
-    if (ok == false)
+    if(!ok)
     {
       return false;
     }
@@ -582,7 +576,7 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
   {
     bool ok = false;
     int borderSize = value.toInt(&ok);
-    if (ok == false)
+    if(!ok)
     {
       return false;
     }
@@ -593,7 +587,7 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
   {
     bool ok = false;
     int height = value.toInt(&ok);
-    if (ok == false)
+    if(!ok)
     {
       return false;
     }
@@ -604,7 +598,7 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
   {
     bool ok = false;
     int width = value.toInt(&ok);
-    if (ok == false)
+    if(!ok)
     {
       return false;
     }
@@ -615,7 +609,7 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
   {
     bool ok = false;
     int offset = value.toInt(&ok);
-    if (ok == false)
+    if(!ok)
     {
       return false;
     }
@@ -626,7 +620,7 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
   {
     bool ok = false;
     int offset = value.toInt(&ok);
-    if (ok == false)
+    if(!ok)
     {
       return false;
     }
@@ -637,7 +631,7 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
   {
     bool ok = false;
     int animationInt = value.toInt(&ok);
-    if (ok == false)
+    if(!ok)
     {
       return false;
     }
@@ -647,8 +641,8 @@ bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int
   }
   else if (role == PipelineModel::Roles::ExpandedRole)
   {
-    int expanded = value.toBool();
-    item->setExpanded(expanded);
+    int expanded = static_cast<int>(value.toBool());
+    item->setExpanded(expanded != 0);
   }
   else if(role == Qt::DecorationRole)
   {
@@ -756,11 +750,7 @@ PipelineItem* PipelineModel::getRootItem()
 // -----------------------------------------------------------------------------
 bool PipelineModel::isEmpty()
 {
-  if(rowCount(QModelIndex()) <= 0)
-  {
-    return true;
-  }
-  return false;
+  return rowCount(QModelIndex()) <= 0;
 }
 
 // -----------------------------------------------------------------------------
@@ -768,7 +758,7 @@ bool PipelineModel::isEmpty()
 // -----------------------------------------------------------------------------
 QColor PipelineModel::getForegroundColor(const QModelIndex &index) const
 {
-  if (index.isValid() == false)
+  if(!index.isValid())
   {
     return QColor();
   }

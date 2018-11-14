@@ -169,12 +169,12 @@ void ScaleVolume::dataCheck()
   setErrorCondition(0);
   setWarningCondition(0);
 
-  if(m_ApplyToVoxelVolume == true)
+  if(m_ApplyToVoxelVolume)
   {
     getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, getDataContainerName());
   }
 
-  if(m_ApplyToSurfaceMesh == true)
+  if(m_ApplyToSurfaceMesh)
   {
     getDataContainerArray()->getPrereqGeometryFromDataContainer<IGeometry2D, AbstractFilter>(this, getSurfaceDataContainerName());
   }
@@ -245,7 +245,7 @@ void ScaleVolume::updateSurfaceMesh()
   }
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  if(doParallel == true)
+  if(doParallel)
   {
     tbb::parallel_for(tbb::blocked_range<size_t>(0, count), ScaleVolumeUpdateVerticesImpl(nodes, min, m_ScaleFactor), tbb::auto_partitioner());
   }
@@ -270,7 +270,7 @@ void ScaleVolume::execute()
     return;
   }
 
-  if(m_ApplyToVoxelVolume == true)
+  if(m_ApplyToVoxelVolume)
   {
     DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
     ImageGeom::Pointer image = m->getGeometryAs<ImageGeom>();
@@ -283,7 +283,7 @@ void ScaleVolume::execute()
     image->setResolution(resolution);
   }
 
-  if(m_ApplyToSurfaceMesh == true)
+  if(m_ApplyToSurfaceMesh)
   {
     updateSurfaceMesh();
   }
@@ -297,7 +297,7 @@ void ScaleVolume::execute()
 AbstractFilter::Pointer ScaleVolume::newFilterInstance(bool copyFilterParameters) const
 {
   ScaleVolume::Pointer filter = ScaleVolume::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

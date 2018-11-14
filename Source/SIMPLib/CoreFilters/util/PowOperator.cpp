@@ -45,7 +45,6 @@
 //
 // -----------------------------------------------------------------------------
 PowOperator::PowOperator()
-: BinaryOperator()
 {
   setPrecedence(C_Precedence);
   setInfixToken("^");

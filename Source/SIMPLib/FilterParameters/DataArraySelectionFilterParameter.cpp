@@ -40,10 +40,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArraySelectionFilterParameter::DataArraySelectionFilterParameter()
-: FilterParameter()
-{
-}
+DataArraySelectionFilterParameter::DataArraySelectionFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

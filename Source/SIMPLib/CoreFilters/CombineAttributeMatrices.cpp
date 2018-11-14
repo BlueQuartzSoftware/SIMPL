@@ -248,7 +248,7 @@ void CombineAttributeMatrices::dataCheck()
     IDataArray::Pointer tmpDataArray = secondAttrMat->getPrereqIDataArray<IDataArray, AbstractFilter>(this, *iter, -90001);
     if(getErrorCondition() >= 0)
     {
-      if(fArrayNames.contains(*iter) == false)
+      if(!fArrayNames.contains(*iter))
       {
         QVector<size_t> cDims = tmpDataArray->getComponentDimensions();
         TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, tmpDataArray);
@@ -364,7 +364,7 @@ void CombineAttributeMatrices::execute()
 AbstractFilter::Pointer CombineAttributeMatrices::newFilterInstance(bool copyFilterParameters) const
 {
   CombineAttributeMatrices::Pointer filter = CombineAttributeMatrices::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

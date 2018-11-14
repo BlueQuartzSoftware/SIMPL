@@ -111,7 +111,7 @@ void CopyFeatureArrayToElementArray::dataCheck()
   setErrorCondition(0);
   setWarningCondition(0);
 
-  if(getCreatedArrayName().isEmpty() == true)
+  if(getCreatedArrayName().isEmpty())
   {
     setErrorCondition(-11002);
     notifyErrorMessage(getHumanLabel(), "The new Element array name must be set", getErrorCondition());
@@ -225,7 +225,7 @@ void CopyFeatureArrayToElementArray::execute()
     }
   }
 
-  if(mismatchedFeatures == true)
+  if(mismatchedFeatures)
   {
     QString ss = QObject::tr("The largest Feature Id (%1) in the FeatureIds array is larger than the number of Features in the InArray array (%2)").arg(largestFeature).arg(numFeatures);
     setErrorCondition(-5555);
@@ -310,7 +310,7 @@ void CopyFeatureArrayToElementArray::execute()
 AbstractFilter::Pointer CopyFeatureArrayToElementArray::newFilterInstance(bool copyFilterParameters) const
 {
   CopyFeatureArrayToElementArray::Pointer filter = CopyFeatureArrayToElementArray::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

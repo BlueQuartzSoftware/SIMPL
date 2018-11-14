@@ -86,12 +86,7 @@ void AttributeMatrixProxy::operator=(const AttributeMatrixProxy& amp)
 // -----------------------------------------------------------------------------
 bool AttributeMatrixProxy::operator==(const AttributeMatrixProxy& amp) const
 {
-  if(flag == amp.flag && name == amp.name && amType == amp.amType && dataArrays == amp.dataArrays)
-  {
-    return true;
-  }
-
-  return false;
+  return flag == amp.flag && name == amp.name && amType == amp.amType && dataArrays == amp.dataArrays;
 }
 
 
@@ -114,12 +109,12 @@ bool AttributeMatrixProxy::readJson(QJsonObject& json)
 {
   if(json["Flag"].isDouble() && json["Name"].isString() && json["Type"].isDouble() && json["Data Arrays"].isArray())
   {
-    if(json["Flag"].toDouble() >= std::numeric_limits<uint8_t>().min() && json["Flag"].toDouble() <= std::numeric_limits<uint8_t>().max())
+    if(json["Flag"].toDouble() >= std::numeric_limits<uint8_t>::min() && json["Flag"].toDouble() <= std::numeric_limits<uint8_t>::max())
     {
       flag = static_cast<uint8_t>(json["Flag"].toDouble());
     }
     name = json["Name"].toString();
-    if(json["Type"].toDouble() >= std::numeric_limits<unsigned int>().min() && json["Type"].toDouble() <= std::numeric_limits<unsigned int>().max())
+    if(json["Type"].toDouble() >= std::numeric_limits<unsigned int>::min() && json["Type"].toDouble() <= std::numeric_limits<unsigned int>::max())
     {
       amType = static_cast<AttributeMatrix::Type>(json["Type"].toInt());
     }
@@ -251,7 +246,7 @@ void AttributeMatrixProxy::setFlags(uint8_t flag, DataArrayProxy::PrimitiveTypeF
     DataArrayProxy::PrimitiveTypeFlag pTypeFlag = DataArrayProxy::PrimitiveTypeToFlag(daProxy.objectType);
     if ((primitiveTypes & pTypeFlag) > 0 || primitiveTypes == DataArrayProxy::PrimitiveTypeFlag::Any_PType)
     {
-      if (compDimsVector.size() <= 0)
+      if(compDimsVector.empty())
       {
         daProxy.flag = flag;
       }

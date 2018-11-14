@@ -59,7 +59,7 @@ PipelineItemHeightAnimation::PipelineItemHeightAnimation(PipelineModel* model, Q
 // -----------------------------------------------------------------------------
 void PipelineItemHeightAnimation::listenValueChanged(const QVariant & value)
 {
-  if(m_PipelineModel)
+  if(m_PipelineModel != nullptr)
   {
     int width = m_PipelineModel->data(m_Index, PipelineModel::Roles::WidthRole).toInt();
     if (m_Direction == AnimationDirection::Open)

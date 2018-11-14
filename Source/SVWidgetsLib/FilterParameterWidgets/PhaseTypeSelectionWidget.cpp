@@ -143,15 +143,15 @@ void PhaseTypeSelectionWidget::setupGui()
 // -----------------------------------------------------------------------------
 QString PhaseTypeSelectionWidget::checkStringValues(QString curDcName, QString filtDcName)
 {
-  if(curDcName.isEmpty() == true && filtDcName.isEmpty() == false)
+  if(curDcName.isEmpty() && !filtDcName.isEmpty())
   {
     return filtDcName;
   }
-  else if(curDcName.isEmpty() == false && filtDcName.isEmpty() == true)
+  if(!curDcName.isEmpty() && filtDcName.isEmpty())
   {
     return curDcName;
   }
-  else if(curDcName.isEmpty() == false && filtDcName.isEmpty() == false && m_DidCausePreflight == true)
+  if(!curDcName.isEmpty() && !filtDcName.isEmpty() && m_DidCausePreflight)
   {
     return curDcName;
   }
@@ -311,7 +311,7 @@ void PhaseTypeSelectionWidget::resetPhaseComboBoxes()
   for(int i = 0; i < count; ++i)
   {
     QComboBox* cb = qobject_cast<QComboBox*>(phaseListWidget->itemWidget(phaseListWidget->item(i)));
-    if(cb)
+    if(cb != nullptr)
     {
       cb->setCurrentIndex(-1);
     }
@@ -327,7 +327,7 @@ void PhaseTypeSelectionWidget::beforePreflight()
   {
     return;
   }
-  if(m_DidCausePreflight == true)
+  if(m_DidCausePreflight)
   {
     return;
   }
@@ -370,7 +370,7 @@ void PhaseTypeSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
 
   // Set the value into the Filter
   ok = filter->setProperty(m_FilterParameter->getPhaseTypeDataProperty().toLatin1().constData(), var);
-  if(false == ok)
+  if(!ok)
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }
@@ -381,7 +381,7 @@ void PhaseTypeSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
   ok = false;
   // Set the value into the Filter
   ok = filter->setProperty(m_FilterParameter->getAttributeMatrixPathProperty().toLatin1().constData(), var);
-  if(false == ok)
+  if(!ok)
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

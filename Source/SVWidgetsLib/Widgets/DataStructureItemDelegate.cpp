@@ -226,7 +226,7 @@ void DataStructureItemDelegate::setModelData(QWidget* editor, QAbstractItemModel
   QLineEdit* line = static_cast<QLineEdit*>(editor);
   QString value = line->text();
 
-  if(value.isEmpty() == false)
+  if(!value.isEmpty())
   {
     QModelIndex bIndex = bModel->index(index.row(), DataStructureItem::Name, index.parent());
     bModel->setData(bIndex, value, Qt::DisplayRole);
@@ -290,7 +290,7 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
 
   // Get DataArrayPath
   QVariant var = index.model()->itemData(index)[Qt::DisplayRole];
-  if(false == var.isValid())
+  if(!var.isValid())
   {
     return;
   }
@@ -300,7 +300,7 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
 
   // Get mouse position for mouseOver effects
   QPoint mousePos = QCursor::pos();
-  if(dynamic_cast<QWidget*>(parent()))
+  if(dynamic_cast<QWidget*>(parent()) != nullptr)
   {
     mousePos = dynamic_cast<QWidget*>(parent())->mapFromGlobal(mousePos);
   }

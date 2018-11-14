@@ -171,15 +171,15 @@ void MultiAttributeMatrixSelectionWidget::setupGui()
 QString MultiAttributeMatrixSelectionWidget::checkStringValues(QString curDcName, QString filtDcName)
 {
   ////qDebug() << "    checkStringValues(...)" << curDcName << "  " << filtDcName;
-  if(curDcName.isEmpty() == true && filtDcName.isEmpty() == false)
+  if(curDcName.isEmpty() && !filtDcName.isEmpty())
   {
     return filtDcName;
   }
-  else if(curDcName.isEmpty() == false && filtDcName.isEmpty() == true)
+  if(!curDcName.isEmpty() && filtDcName.isEmpty())
   {
     return curDcName;
   }
-  else if(curDcName.isEmpty() == false && filtDcName.isEmpty() == false && m_DidCausePreflight == true)
+  if(!curDcName.isEmpty() && !filtDcName.isEmpty() && m_DidCausePreflight)
   {
     return curDcName;
   }
@@ -198,7 +198,7 @@ bool MultiAttributeMatrixSelectionWidget::eventFilter(QObject* obj, QEvent* even
     m_SelectedDataContainerPath->menu()->move(pos);
     return true;
   }
-  else if ( event->type() == QEvent::FocusIn && obj == attributeMatricesOrderWidget )
+  if(event->type() == QEvent::FocusIn && obj == attributeMatricesOrderWidget)
   {
     on_attributeMatricesOrderWidget_itemSelectionChanged();
   }
@@ -251,7 +251,7 @@ void MultiAttributeMatrixSelectionWidget::setSelectedPath(DataArrayPath dcPath)
 void MultiAttributeMatrixSelectionWidget::on_selectBtn_clicked()
 {
   QModelIndexList indexList = attributeMatricesSelectWidget->selectionModel()->selectedRows();
-  if (indexList.size() > 0)
+  if(!indexList.empty())
   {
     int offset = 0;
     for (int i=0; i<indexList.size(); i++)
@@ -259,7 +259,7 @@ void MultiAttributeMatrixSelectionWidget::on_selectBtn_clicked()
       int row = indexList[i].row() - offset;
       QListWidgetItem* item = attributeMatricesSelectWidget->takeItem(row);
       offset++;
-      if (item)
+      if(item != nullptr)
       {
         attributeMatricesOrderWidget->addItem(item);
       }
@@ -277,7 +277,7 @@ void MultiAttributeMatrixSelectionWidget::on_selectBtn_clicked()
 void MultiAttributeMatrixSelectionWidget::on_deselectBtn_clicked()
 {
   QModelIndexList indexList = attributeMatricesOrderWidget->selectionModel()->selectedRows();
-  if (indexList.size() > 0)
+  if(!indexList.empty())
   {
     int offset = 0;
     for (int i=0; i<indexList.size(); i++)
@@ -285,7 +285,7 @@ void MultiAttributeMatrixSelectionWidget::on_deselectBtn_clicked()
       int row = indexList[i].row() - offset;
       QListWidgetItem* item = attributeMatricesOrderWidget->takeItem(row);
       offset++;
-      if (item)
+      if(item != nullptr)
       {
         attributeMatricesSelectWidget->addItem(item);
       }
@@ -341,7 +341,7 @@ void MultiAttributeMatrixSelectionWidget::on_downBtn_clicked()
 void MultiAttributeMatrixSelectionWidget::on_removeBtn_clicked()
 {
   QModelIndexList indexList = attributeMatricesOrderWidget->selectionModel()->selectedRows();
-  if (indexList.size() > 0)
+  if(!indexList.empty())
   {
     int offset = 0;
     for (int i=0; i<indexList.size(); i++)
@@ -372,7 +372,7 @@ void MultiAttributeMatrixSelectionWidget::removeNonexistantPaths(QVector<DataArr
 
   bool reloadPath = false;
   DataArrayPath dcPath;
-  if(paths.size() > 0)
+  if(!paths.empty())
   {
     dcPath = DataArrayPath(paths[0].getDataContainerName(), "", "");
   }
@@ -382,10 +382,14 @@ void MultiAttributeMatrixSelectionWidget::removeNonexistantPaths(QVector<DataArr
     bool valid = true;
 
     if(nullptr == filter->getDataContainerArray()->getAttributeMatrix(paths[i])->getAttributeArray(paths[i].getDataArrayName()))
+    {
       valid = false;
+    }
 
-    if(false == paths[i].isValid())
+    if(!paths[i].isValid())
+    {
       valid = false;
+    }
 
     if(!valid)
     {
@@ -449,7 +453,7 @@ void MultiAttributeMatrixSelectionWidget::selectionChanged()
       }
     }
 
-    if (allErrorRows == true)
+    if(allErrorRows)
     {
       removeBtn->show();
     }
@@ -505,7 +509,7 @@ void MultiAttributeMatrixSelectionWidget::beforePreflight()
         QListWidgetItem* item = attributeMatricesOrderWidget->item(i);
         QString name = item->text();
         orderListNames.append(name);
-        if(matrixNames.contains(name) == false)
+        if(!matrixNames.contains(name))
         {
           //item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
           item->setBackgroundColor(QColor(235, 110, 110));
@@ -518,7 +522,7 @@ void MultiAttributeMatrixSelectionWidget::beforePreflight()
 
       for(int i = 0; i<matrixNames.size(); i++)
       {
-        if(selectListNames.contains(matrixNames[i]) == false && orderListNames.contains(matrixNames[i]) == false)
+        if(!selectListNames.contains(matrixNames[i]) && !orderListNames.contains(matrixNames[i]))
         {
           attributeMatricesSelectWidget->addItem(matrixNames[i]);
         }
@@ -558,7 +562,7 @@ void MultiAttributeMatrixSelectionWidget::filterNeedsInputParameters(AbstractFil
   bool ok = false;
   // Set the value into the Filter
   ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-  if(false == ok)
+  if(!ok)
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }

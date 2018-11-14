@@ -107,7 +107,7 @@ void ExtractComponentAsArray::dataCheck()
 
   m_InArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArrayPath());
 
-  if(m_NewArrayArrayName.isEmpty() == true)
+  if(m_NewArrayArrayName.isEmpty())
   {
     setErrorCondition(-11003);
     notifyErrorMessage(getHumanLabel(), "New array name must be set.", getErrorCondition());
@@ -215,7 +215,7 @@ void ExtractComponentAsArray::execute()
 AbstractFilter::Pointer ExtractComponentAsArray::newFilterInstance(bool copyFilterParameters) const
 {
   ExtractComponentAsArray::Pointer filter = ExtractComponentAsArray::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

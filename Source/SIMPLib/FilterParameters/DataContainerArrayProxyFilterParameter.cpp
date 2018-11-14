@@ -41,8 +41,7 @@
 //
 // -----------------------------------------------------------------------------
 DataContainerArrayProxyFilterParameter::DataContainerArrayProxyFilterParameter()
-: FilterParameter()
-, m_DefaultFlagValue(Qt::Checked)
+: m_DefaultFlagValue(Qt::Checked)
 {
 }
 

@@ -79,11 +79,15 @@ ReadASCIIDataWidget::ReadASCIIDataWidget(FilterParameter* parameter, AbstractFil
 // -----------------------------------------------------------------------------
 ReadASCIIDataWidget::~ReadASCIIDataWidget()
 {
-    if(nullptr != m_ImportWizard)
-      m_ImportWizard->deleteLater();
+  if(nullptr != m_ImportWizard)
+  {
+    m_ImportWizard->deleteLater();
+  }
 
-    if(nullptr != m_LineCounter)
-       m_LineCounter->deleteLater();
+  if(nullptr != m_LineCounter)
+  {
+    m_LineCounter->deleteLater();
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -105,7 +109,7 @@ void ReadASCIIDataWidget::setupGui()
     this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
   // If the filter was loaded from a pipeline file, fill in the information in the widget
-  if(m_Filter->getWizardData().isEmpty() == false)
+  if(!m_Filter->getWizardData().isEmpty())
   {
 
     ASCIIWizardData wizardData = m_Filter->getWizardData();
@@ -118,7 +122,7 @@ void ReadASCIIDataWidget::setupGui()
 
     QVector<size_t> tupleDimsArray = m_Filter->getWizardData().tupleDims;
 
-    if(tupleDimsArray.size() > 0)
+    if(!tupleDimsArray.empty())
     {
       QString tupleDimsStr = "";
       for(int i = 0; i < tupleDimsArray.size(); i++)
@@ -154,7 +158,7 @@ void ReadASCIIDataWidget::on_editImportSettings_clicked()
   if(m_ImportWizard != nullptr)
   {
     int numOfLines = -1;
-    if(m_LineCounter)
+    if(m_LineCounter != nullptr)
     {
       numOfLines = m_LineCounter->getNumberOfLines();
     }
@@ -205,7 +209,7 @@ void ReadASCIIDataWidget::on_importFileBtn_clicked()
   dialog->setWindowTitle("Select File To Import");
   dialog->setLabelText(QFileDialog::Accept, "Import");
 
-  if(dialog->exec())
+  if(dialog->exec() != 0)
   {
     // Clean up previous wizard and settings
     if(nullptr != m_ImportWizard)
@@ -217,7 +221,7 @@ void ReadASCIIDataWidget::on_importFileBtn_clicked()
     m_FilePath = dialog->selectedFiles()[0];
     QFileInfo fi(m_FilePath);
 
-    if(m_FilePath.isEmpty() == true)
+    if(m_FilePath.isEmpty())
     {
       return;
     }
@@ -237,7 +241,7 @@ void ReadASCIIDataWidget::on_importFileBtn_clicked()
       int64_t fileSize = qFile.size();
 
       // Open the file
-      if(qFile.open(QIODevice::ReadOnly) == false)
+      if(!qFile.open(QIODevice::ReadOnly))
       {
         QString errorStr = "Error: Unable to open file \"" + m_FilePath + "\"";
         fputs(errorStr.toStdString().c_str(), stderr);
@@ -288,7 +292,7 @@ void ReadASCIIDataWidget::on_importFileBtn_clicked()
           QMessageBox::critical(this, tr("ASCII Data Import Error"), tr(errorStr.toStdString().c_str()), QMessageBox::Ok, QMessageBox::Ok);
           return;
         }
-        else if(currentChar == 9)
+        if(currentChar == 9)
         {
           hasTabs = true;
         }
@@ -302,7 +306,7 @@ void ReadASCIIDataWidget::on_importFileBtn_clicked()
         }
       }
 
-      if(hasNewLines == false && hasCarriageReturns == false && hasTabs == false)
+      if(!hasNewLines && !hasCarriageReturns && !hasTabs)
       {
         // This might be a binary file, so throw up a warning dialog
         QString warningStr = "The file \"" + m_FilePath + "\" might be a binary file, because line-feed, tab, or carriage return characters have not been detected.\nWarning: Using this file may "
@@ -322,7 +326,7 @@ void ReadASCIIDataWidget::on_importFileBtn_clicked()
     if(m_WorkerThread != nullptr)
     {
       m_WorkerThread->wait(); // Wait until the thread is complete
-      if(m_WorkerThread->isFinished() == true)
+      if(m_WorkerThread->isFinished())
       {
         delete m_WorkerThread;
         m_WorkerThread = nullptr;
@@ -447,7 +451,7 @@ void ReadASCIIDataWidget::filterNeedsInputParameters(AbstractFilter* filter)
     data.delimiters = m_ImportWizard->getDelimiters();
     data.inputFilePath = m_ImportWizard->getInputFilePath();
     data.dataHeaders = m_ImportWizard->getHeaders();
-    data.headerIsCustom = data.dataHeaders.size() > 0 ? true : false;
+    data.headerIsCustom = !data.dataHeaders.empty();
     data.headerLine = data.headerIsCustom ? -1 : m_ImportWizard->getBeginningLineNum() - 1;
 //        data.headerUsesDefaults =
     data.numberOfLines = numOfLines;
@@ -463,7 +467,7 @@ void ReadASCIIDataWidget::filterNeedsInputParameters(AbstractFilter* filter)
   QVariant v;
   v.setValue(data);
   bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
-  if(false == ok)
+  if(!ok)
   {
     // getFilter()->notifyMissingProperty(getFilterParameter());
   }

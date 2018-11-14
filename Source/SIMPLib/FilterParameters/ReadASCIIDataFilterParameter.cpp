@@ -41,10 +41,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ReadASCIIDataFilterParameter::ReadASCIIDataFilterParameter()
-: FilterParameter()
-{
-}
+ReadASCIIDataFilterParameter::ReadASCIIDataFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

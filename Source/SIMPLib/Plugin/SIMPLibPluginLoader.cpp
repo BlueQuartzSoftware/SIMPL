@@ -69,7 +69,10 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool q
   pluginDirs << qApp->applicationDirPath();
 
   QDir aPluginDir = QDir(qApp->applicationDirPath());
-  if(!quiet) qDebug() << "Loading SIMPLib Plugins....";
+  if(!quiet)
+  {
+    qDebug() << "Loading SIMPLib Plugins....";
+  }
   // qDebug() << "aPluginDir: " << aPluginDir.absolutePath() << "\n";
   QString thePath;
 
@@ -85,7 +88,10 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool q
   {
     aPluginDir.cdUp();
     thePath = aPluginDir.absolutePath() + "/Plugins";
-    if(!quiet) qDebug() << "  Adding Path " << thePath;
+    if(!quiet)
+    {
+      qDebug() << "  Adding Path " << thePath;
+    }
     pluginDirs << thePath;
     aPluginDir.cdUp();
     aPluginDir.cdUp();
@@ -100,7 +106,10 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool q
   }
   // aPluginDir.cd("Plugins");
   thePath = aPluginDir.absolutePath() + "/Plugins";
-  if(!quiet) qDebug() << "  Adding Path " << thePath;
+  if(!quiet)
+  {
+    qDebug() << "  Adding Path " << thePath;
+  }
   pluginDirs << thePath;
 
 // This is here for Xcode compatibility
@@ -140,7 +149,13 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool q
 #endif
 
   QByteArray pluginEnvPath = qgetenv("SIMPL_PLUGIN_PATH");
-  if(!quiet) if(!quiet) qDebug() << "SIMPL_PLUGIN_PATH:" << pluginEnvPath;
+  if(!quiet)
+  {
+    if(!quiet)
+    {
+      qDebug() << "SIMPL_PLUGIN_PATH:" << pluginEnvPath;
+    }
+  }
 
   char sep = ';';
 #if defined(Q_OS_WIN)
@@ -156,12 +171,18 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool q
   }
 
   int dupes = pluginDirs.removeDuplicates();
-  if(!quiet) qDebug() << "Removed " << dupes << " duplicate Plugin Paths";
+  if(!quiet)
+  {
+    qDebug() << "Removed " << dupes << " duplicate Plugin Paths";
+  }
   QStringList pluginFilePaths;
 
   foreach(QString pluginDirString, pluginDirs)
   {
-    if(!quiet) qDebug() << "Plugin Directory being Searched: " << pluginDirString;
+    if(!quiet)
+    {
+      qDebug() << "Plugin Directory being Searched: " << pluginDirString;
+    }
     aPluginDir = QDir(pluginDirString);
     foreach(QString fileName, aPluginDir.entryList(QDir::Files))
     {
@@ -180,7 +201,7 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool q
     }
   }
 
-  filterManager->RegisterKnownFilters(filterManager);
+  FilterManager::RegisterKnownFilters(filterManager);
 
   PluginManager* pluginManager = PluginManager::Instance();
   QStringList pluginFileNames;
@@ -190,16 +211,22 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool q
   // file system and add each to the toolbar and menu
   foreach(QString path, pluginFilePaths)
   {
-    if(!quiet) qDebug() << "Plugin Being Loaded:" << path;
+    if(!quiet)
+    {
+      qDebug() << "Plugin Being Loaded:" << path;
+    }
     QPluginLoader loader(path);
     QFileInfo fi(path);
     QString fileName = fi.fileName();
     QObject* plugin = loader.instance();
-    if(!quiet) qDebug() << "    Pointer: " << plugin << "\n";
-    if(plugin && pluginFileNames.contains(fileName, Qt::CaseSensitive) == false)
+    if(!quiet)
+    {
+      qDebug() << "    Pointer: " << plugin << "\n";
+    }
+    if((plugin != nullptr) && !pluginFileNames.contains(fileName, Qt::CaseSensitive))
     {
       ISIMPLibPlugin* ipPlugin = qobject_cast<ISIMPLibPlugin*>(plugin);
-      if(ipPlugin)
+      if(ipPlugin != nullptr)
       {
         loadedPlugins.push_back(ipPlugin);
         ipPlugin->registerFilters(filterManager);

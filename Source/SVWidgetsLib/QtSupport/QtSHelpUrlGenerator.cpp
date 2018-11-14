@@ -95,7 +95,7 @@ QUrl QtSHelpUrlGenerator::GenerateHTMLUrl(QString htmlName)
     
     IFilterFactory::Pointer factory = fm->getFactoryFromClassName(htmlName);
     QString pluginName;
-    if(factory.get())
+    if(factory.get() != nullptr)
     {
       pluginName = "/Filters/" + factory->getCompiledLibraryName();
     }
@@ -106,7 +106,7 @@ QUrl QtSHelpUrlGenerator::GenerateHTMLUrl(QString htmlName)
             .arg(pluginName)
             .arg(htmlName);
     QFileInfo fi(helpFilePath);
-    if(fi.exists() == false)
+    if(!fi.exists())
     {
       // The help file does not exist at the default location because we are probably running from Visual Studio or Xcode
       // Try up one more directory
@@ -153,7 +153,7 @@ QUrl QtSHelpUrlGenerator::GenerateHTMLUrl(QString htmlName)
 void QtSHelpUrlGenerator::openHTMLUrl(QUrl URL, QWidget* parent)
 {
   bool didOpen = QDesktopServices::openUrl(URL);
-  if(false == didOpen)
+  if(!didOpen)
   {
     QMessageBox::critical(parent, "Error Opening Help File", QString("%1 could not open the help file path %2").arg(QCoreApplication::instance()->applicationName()).arg(URL.path()), QMessageBox::Ok,
                           QMessageBox::Ok);

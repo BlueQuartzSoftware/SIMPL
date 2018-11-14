@@ -45,7 +45,6 @@
 //
 // -----------------------------------------------------------------------------
 SubtractionOperator::SubtractionOperator()
-: BinaryOperator()
 {
   setPrecedence(A_Precedence);
   setInfixToken("-");

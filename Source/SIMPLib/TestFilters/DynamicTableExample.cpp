@@ -193,7 +193,7 @@ void DynamicTableExample::execute()
 AbstractFilter::Pointer DynamicTableExample::newFilterInstance(bool copyFilterParameters) const
 {
   DynamicTableExample::Pointer filter = DynamicTableExample::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

@@ -65,7 +65,7 @@ StringDataArray::StringDataArray(size_t numTuples, const QString name, bool allo
 // -----------------------------------------------------------------------------
 StringDataArray::Pointer StringDataArray::CreateArray(size_t numTuples, const QString& name, bool allocate)
 {
-  if(name.isEmpty() == true)
+  if(name.isEmpty())
   {
     return NullPointer();
   }
@@ -80,7 +80,7 @@ StringDataArray::Pointer StringDataArray::CreateArray(size_t numTuples, const QS
 // -----------------------------------------------------------------------------
 StringDataArray::Pointer StringDataArray::CreateArray(size_t numTuples, QVector<size_t> compDims, const QString& name, bool allocate)
 {
-  if(name.isEmpty() == true)
+  if(name.isEmpty())
   {
     return NullPointer();
   }
@@ -265,7 +265,7 @@ int StringDataArray::eraseTuples(QVector<size_t>& idxs)
   int err = 0;
 
   // If nothing is to be erased just return
-  if(idxs.size() == 0)
+  if(idxs.empty())
   {
     return 0;
   }
@@ -397,7 +397,7 @@ void StringDataArray::initializeWithValue(const std::string& value)
 IDataArray::Pointer StringDataArray::deepCopy(bool forceNoAllocate)
 {
   StringDataArray::Pointer daCopy = StringDataArray::CreateArray(getNumberOfTuples(), getName());
-  if(forceNoAllocate == false)
+  if(!forceNoAllocate)
   {
     for(std::vector<QString>::size_type i = 0; i < m_Array.size(); ++i)
     {
@@ -430,7 +430,7 @@ int32_t StringDataArray::resize(size_t numTuples)
 // -----------------------------------------------------------------------------
 void StringDataArray::initialize()
 {
-  if(m_Array.size() > 0)
+  if(!m_Array.empty())
   {
     m_Array.clear();
     this->_ownsData = true;

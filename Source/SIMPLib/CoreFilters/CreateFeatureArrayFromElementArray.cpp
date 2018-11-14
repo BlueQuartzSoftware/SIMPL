@@ -114,7 +114,7 @@ void CreateFeatureArrayFromElementArray::dataCheck()
   setErrorCondition(0);
   setWarningCondition(0);
 
-  if(getCreatedArrayName().isEmpty() == true)
+  if(getCreatedArrayName().isEmpty())
   {
     setErrorCondition(-11002);
     notifyErrorMessage(getHumanLabel(), "The new Feature Array name must be set", getErrorCondition());
@@ -253,7 +253,7 @@ void CreateFeatureArrayFromElementArray::execute()
     }
   }
 
-  if(mismatchedFeatures == true)
+  if(mismatchedFeatures)
   {
     QString ss = QObject::tr("Attribute Matrix %1 has %2 tuples but the input array %3 has a Feature ID value of at least %4").arg(m_CellFeatureAttributeMatrixName.serialize("/")).arg(totalFeatures).arg(getFeatureIdsArrayPath().serialize("/")).arg(largestFeature);
     setErrorCondition(-5555);
@@ -336,7 +336,7 @@ void CreateFeatureArrayFromElementArray::execute()
 AbstractFilter::Pointer CreateFeatureArrayFromElementArray::newFilterInstance(bool copyFilterParameters) const
 {
   CreateFeatureArrayFromElementArray::Pointer filter = CreateFeatureArrayFromElementArray::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

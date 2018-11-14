@@ -110,7 +110,7 @@ void PipelineAnnotation::execute()
 AbstractFilter::Pointer PipelineAnnotation::newFilterInstance(bool copyFilterParameters) const
 {
   PipelineAnnotation::Pointer filter = PipelineAnnotation::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

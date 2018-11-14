@@ -41,16 +41,24 @@ void QRoundProgressBar::setRange(double min, double max)
     m_min = min;
     m_max = max;
 
-    if (m_max < m_min)
-        qSwap(m_max, m_min);
+    if(m_max < m_min)
+    {
+      qSwap(m_max, m_min);
+    }
 
-    if (m_value < m_min)
-        m_value = m_min;
-    else if (m_value > m_max)
-        m_value = m_max;
+    if(m_value < m_min)
+    {
+      m_value = m_min;
+    }
+    else if(m_value > m_max)
+    {
+      m_value = m_max;
+    }
 
-    if (!m_gradientData.isEmpty())
-        m_rebuildBrush = true;
+    if(!m_gradientData.isEmpty())
+    {
+      m_rebuildBrush = true;
+    }
 
     update();
 }
@@ -69,12 +77,18 @@ void QRoundProgressBar::setValue(double val)
 {
     if (m_value != val)
     {
-        if (val < m_min)
-            m_value = m_min;
-        else if (val > m_max)
-            m_value = m_max;
-        else
-            m_value = val;
+      if(val < m_min)
+      {
+        m_value = m_min;
+      }
+      else if(val > m_max)
+      {
+        m_value = m_max;
+      }
+      else
+      {
+        m_value = val;
+      }
 
         update();
     }
@@ -91,8 +105,10 @@ void QRoundProgressBar::setNullPosition(double position)
     {
         m_nullPosition = position;
 
-        if (!m_gradientData.isEmpty())
-            m_rebuildBrush = true;
+        if(!m_gradientData.isEmpty())
+        {
+          m_rebuildBrush = true;
+        }
 
         update();
     }
@@ -241,8 +257,10 @@ void QRoundProgressBar::drawBase(QPainter &p, const QRectF &baseRect)
 void QRoundProgressBar::drawValue(QPainter &p, const QRectF &baseRect, double value, double arcLength)
 {
     // nothing to draw
-    if (value == m_min)
-        return;
+    if(value == m_min)
+    {
+      return;
+    }
 
     // for Line style
     if (m_barStyle == StyleLine)
@@ -296,8 +314,10 @@ void QRoundProgressBar::drawInnerBackground(QPainter &p, const QRectF &innerRect
 
 void QRoundProgressBar::drawText(QPainter &p, const QRectF &innerRect, double innerRadius, double value)
 {
-    if (m_format.isEmpty())
-        return;
+  if(m_format.isEmpty())
+  {
+    return;
+  }
 
     // !!! to revise
     QFont f(font());
@@ -313,17 +333,21 @@ QString QRoundProgressBar::valueToText(double value) const
 {
     QString textToDraw(m_format);
 
-    if (m_updateFlags & UF_VALUE)
-        textToDraw.replace("%v", QString::number(value, 'f', m_decimals));
+    if((m_updateFlags & UF_VALUE) != 0)
+    {
+      textToDraw.replace("%v", QString::number(value, 'f', m_decimals));
+    }
 
-    if (m_updateFlags & UF_PERCENT)
+    if((m_updateFlags & UF_PERCENT) != 0)
     {
         double procent = (value - m_min) / (m_max - m_min) * 100.0;
         textToDraw.replace("%p", QString::number(procent, 'f', m_decimals));
     }
 
-    if (m_updateFlags & UF_MAX)
-        textToDraw.replace("%m", QString::number(m_max - m_min + 1, 'f', m_decimals));
+    if((m_updateFlags & UF_MAX) != 0)
+    {
+      textToDraw.replace("%m", QString::number(m_max - m_min + 1, 'f', m_decimals));
+    }
 
     return textToDraw;
 }
@@ -332,14 +356,20 @@ void QRoundProgressBar::valueFormatChanged()
 {
     m_updateFlags = 0;
 
-    if (m_format.contains("%v"))
-        m_updateFlags |= UF_VALUE;
+    if(m_format.contains("%v"))
+    {
+      m_updateFlags |= UF_VALUE;
+    }
 
-    if (m_format.contains("%p"))
-        m_updateFlags |= UF_PERCENT;
+    if(m_format.contains("%p"))
+    {
+      m_updateFlags |= UF_PERCENT;
+    }
 
-    if (m_format.contains("%m"))
-        m_updateFlags |= UF_MAX;
+    if(m_format.contains("%m"))
+    {
+      m_updateFlags |= UF_MAX;
+    }
 
     update();
 }

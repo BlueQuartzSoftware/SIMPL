@@ -133,14 +133,14 @@ void BookmarksTreeView::listenAddBookmarkTriggered()
 
   newPrefPaths =
       QFileDialog::getOpenFileNames(this, tr("Choose Pipeline File(s)"), proposedDir, tr("Json File (*.json);;DREAM3D File (*.dream3d);;Text File (*.txt);;Ini File (*.ini);;All Files (*.*)"));
-  if(true == newPrefPaths.isEmpty())
+  if(newPrefPaths.isEmpty())
   {
     return;
   }
 
   QModelIndex parent = currentIndex();
 
-  if(parent.isValid() == false)
+  if(!parent.isValid())
   {
     parent = QModelIndex();
   }
@@ -152,7 +152,7 @@ void BookmarksTreeView::listenAddBookmarkTriggered()
     addBookmark(newPrefPath, parent);
   }
 
-  if(newPrefPaths.size() > 0)
+  if(!newPrefPaths.empty())
   {
     // Cache the directory from the last path added
     m_OpenDialogLastFilePath = newPrefPaths[newPrefPaths.size() - 1];
@@ -168,7 +168,7 @@ void BookmarksTreeView::listenAddBookmarkFolderTriggered()
 
   QModelIndex parent = currentIndex();
 
-  if(parent.isValid() == false || static_cast<BookmarksItem::ItemType>(model->data(parent, BookmarksModel::Roles::ItemTypeRole).toInt()) == BookmarksItem::ItemType::Bookmark)
+  if(!parent.isValid() || static_cast<BookmarksItem::ItemType>(model->data(parent, BookmarksModel::Roles::ItemTypeRole).toInt()) == BookmarksItem::ItemType::Bookmark)
   {
     parent = QModelIndex();
   }
@@ -231,7 +231,7 @@ void BookmarksTreeView::listenRemoveBookmarkTriggered()
 
   indexList = filterOutDescendants(indexList);
 
-  if(indexList.size() <= 0)
+  if(indexList.empty())
   {
     return;
   }
@@ -250,7 +250,7 @@ void BookmarksTreeView::listenRemoveBookmarkTriggered()
     msgBox.setWindowTitle("Remove Bookmark Items");
     msgBox.setText("Are you sure that you want to remove these bookmark items? The original bookmark files will not be removed.");
   }
-  else if(model->flags(singleIndex).testFlag(Qt::ItemIsDropEnabled) == false)
+  else if(!model->flags(singleIndex).testFlag(Qt::ItemIsDropEnabled))
   {
     QString name = model->data(singleIndex, Qt::DisplayRole).toString();
     msgBox.setWindowTitle("Remove Bookmark");
@@ -299,8 +299,7 @@ void BookmarksTreeView::listenOpenBookmarkTriggered()
   {
     return; // The user double clicked a folder, so don't do anything
   }
-  else
-  {
+
     QFileInfo fi(pipelinePath);
     if(fi.exists())
     {
@@ -309,7 +308,6 @@ void BookmarksTreeView::listenOpenBookmarkTriggered()
       // Cache the last directory on old instance
       m_OpenDialogLastFilePath = pipelinePath;
     }
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -329,8 +327,7 @@ void BookmarksTreeView::listenExecuteBookmarkTriggered()
   {
     return; // The user double clicked a folder, so don't do anything
   }
-  else
-  {
+
     QFileInfo fi(pipelinePath);
     if(fi.exists())
     {
@@ -339,7 +336,6 @@ void BookmarksTreeView::listenExecuteBookmarkTriggered()
       // Cache the last directory on old instance
       m_OpenDialogLastFilePath = pipelinePath;
     }
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -359,7 +355,7 @@ void BookmarksTreeView::listenClearBookmarksTriggered()
   if(response == QMessageBox::Yes)
   {
     BookmarksModel* model = BookmarksModel::Instance();
-    if(model->isEmpty() == false)
+    if(!model->isEmpty())
     {
       model->removeRows(0, model->rowCount(QModelIndex()));
     }
@@ -389,7 +385,7 @@ void BookmarksTreeView::mousePressEvent(QMouseEvent* event)
 
   QModelIndex index = indexAt(event->pos());
 
-  if(index.isValid() == false)
+  if(!index.isValid())
   {
     // Deselect the current item
     clearSelection();
@@ -407,12 +403,12 @@ void BookmarksTreeView::mouseMoveEvent(QMouseEvent* event)
 {
   BookmarksModel* model = BookmarksModel::Instance();
 
-  if(model != nullptr && event->buttons() & Qt::LeftButton)
+  if(model != nullptr && ((event->buttons() & static_cast<int>(Qt::LeftButton != 0u)) != 0u))
   {
     QModelIndex index = model->index(currentIndex().row(), BookmarksItem::Contents, currentIndex().parent());
     bool itemHasErrors = model->data(index, Qt::UserRole).value<bool>();
     int distance = (event->pos() - m_StartPos).manhattanLength();
-    if(distance >= QApplication::startDragDistance() && itemHasErrors == false)
+    if(distance >= QApplication::startDragDistance() && !itemHasErrors)
     {
       performDrag();
     }
@@ -449,7 +445,7 @@ void BookmarksTreeView::requestContextMenu(const QPoint& pos)
   qSort(indexList);
 
   QMenu menu;
-  if(index.isValid() == false)
+  if(!index.isValid())
   {
     menu.addAction(m_ActionAddBookmark);
     {
@@ -467,10 +463,10 @@ void BookmarksTreeView::requestContextMenu(const QPoint& pos)
       m_ActionRemoveBookmark->setText("Remove Items");
       menu.addAction(m_ActionRemoveBookmark);
     }
-    else if(path.isEmpty() == false)
+    else if(!path.isEmpty())
     {
       bool itemHasErrors = model->data(index, static_cast<int>(BookmarksModel::Roles::ErrorsRole)).toBool();
-      if(itemHasErrors == true)
+      if(itemHasErrors)
       {
         menu.addAction(m_ActionLocateFile);
 
@@ -546,11 +542,11 @@ QModelIndexList BookmarksTreeView::filterOutDescendants(QModelIndexList indexLis
     QPersistentModelIndex index = indexList[i];
     QString name = model->data(index, Qt::DisplayRole).toString();
     // Walk up the tree from the index...if an ancestor is selected, remove the index
-    while(index.isValid() == true)
+    while(index.isValid())
     {
       QPersistentModelIndex parent = index.parent();
       QString parentName = model->data(parent, Qt::DisplayRole).toString();
-      if(indexList.contains(index.parent()) == true)
+      if(indexList.contains(index.parent()))
       {
         indexList.removeAt(i);
         break;
@@ -589,7 +585,7 @@ void BookmarksTreeView::performDrag()
     QModelIndex draggedIndex = m_IndexesBeingDragged[i];
     QString name = model->data(draggedIndex, Qt::DisplayRole).toString();
     QString path = model->data(draggedIndex, static_cast<int>(BookmarksModel::Roles::PathRole)).toString();
-    if(path.isEmpty() == false)
+    if(!path.isEmpty())
     {
       obj[name] = path;
     }
@@ -631,7 +627,7 @@ void BookmarksTreeView::performDrag()
 void BookmarksTreeView::dragEnterEvent(QDragEnterEvent* event)
 {
   BookmarksTreeView* source = qobject_cast<BookmarksTreeView*>(event->source());
-  if(source && source != this)
+  if((source != nullptr) && source != this)
   {
     event->setDropAction(Qt::MoveAction);
     event->accept();
@@ -674,9 +670,9 @@ void BookmarksTreeView::dragMoveEvent(QDragMoveEvent* event)
   int topLevelPHPos = model->rowCount();
 
   QModelIndex index = indexAt(event->pos());
-  if(index.isValid() == false || index.row() == m_TopLevelItemPlaceholder.row())
+  if(!index.isValid() || index.row() == m_TopLevelItemPlaceholder.row())
   {
-    if(m_TopLevelItemPlaceholder.isValid() == false)
+    if(!m_TopLevelItemPlaceholder.isValid())
     {
       clearSelection();
       blockSignals(true);
@@ -696,7 +692,7 @@ void BookmarksTreeView::dragMoveEvent(QDragMoveEvent* event)
     }
     clearSelection();
 
-    if(model->flags(index).testFlag(Qt::ItemIsDropEnabled) == true)
+    if(model->flags(index).testFlag(Qt::ItemIsDropEnabled))
     {
       setCurrentIndex(index);
     }
@@ -708,7 +704,7 @@ void BookmarksTreeView::dragMoveEvent(QDragMoveEvent* event)
   }
 
   BookmarksTreeView* source = qobject_cast<BookmarksTreeView*>(event->source());
-  if(source && source != this)
+  if((source != nullptr) && source != this)
   {
     event->setDropAction(Qt::MoveAction);
     event->accept();
@@ -732,12 +728,12 @@ void BookmarksTreeView::dropEvent(QDropEvent* event)
     QPersistentModelIndex newParent = model->index(currentIndex().row(), BookmarksItem::Contents, currentIndex().parent());
 
     // Don't count the destination item in the list of dragged items (if it happens to be in there)
-    if(m_IndexesBeingDragged.contains(newParent) == true)
+    if(m_IndexesBeingDragged.contains(newParent))
     {
       m_IndexesBeingDragged.removeAt(m_IndexesBeingDragged.indexOf(newParent));
     }
 
-    if(model->flags(newParent).testFlag(Qt::ItemIsDropEnabled) == true)
+    if(model->flags(newParent).testFlag(Qt::ItemIsDropEnabled))
     {
       if(m_TopLevelItemPlaceholder.isValid())
       {
@@ -759,7 +755,7 @@ void BookmarksTreeView::dropEvent(QDropEvent* event)
       if(newParent != QModelIndex())
       {
         QModelIndex testIndex = newParent.parent();
-        while(testIndex.isValid() == true)
+        while(testIndex.isValid())
         {
           for(int i = m_IndexesBeingDragged.size() - 1; i >= 0; i--)
           {

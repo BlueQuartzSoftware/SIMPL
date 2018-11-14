@@ -22,7 +22,7 @@ HttpSessionStore::HttpSessionStore(QSettings* settings, QObject* parent)
   this->settings = settings;
   connect(&cleanupTimer, SIGNAL(timeout()), this, SLOT(sessionTimerEvent()));
   cleanupTimer.start(60000);
-  if(settings)
+  if(settings != nullptr)
   {
     cookieName = settings->value("cookieName", "sessionid").toByteArray();
     expirationTime = settings->value("expirationTime", 3600000).toInt();

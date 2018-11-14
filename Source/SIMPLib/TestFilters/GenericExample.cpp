@@ -428,7 +428,7 @@ void GenericExample::execute()
 AbstractFilter::Pointer GenericExample::newFilterInstance(bool copyFilterParameters) const
 {
   GenericExample::Pointer filter = GenericExample::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

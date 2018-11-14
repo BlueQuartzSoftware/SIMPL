@@ -222,7 +222,7 @@ void RemoveArrays::execute()
 AbstractFilter::Pointer RemoveArrays::newFilterInstance(bool copyFilterParameters) const
 {
   RemoveArrays::Pointer filter = RemoveArrays::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

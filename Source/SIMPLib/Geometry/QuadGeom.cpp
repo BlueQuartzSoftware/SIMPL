@@ -155,7 +155,7 @@ QuadGeom::~QuadGeom() = default;
 // -----------------------------------------------------------------------------
 QuadGeom::Pointer QuadGeom::CreateGeometry(int64_t numQuads, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
 {
-  if(name.isEmpty() == true)
+  if(name.isEmpty())
   {
     return NullPointer();
   }
@@ -173,7 +173,7 @@ QuadGeom::Pointer QuadGeom::CreateGeometry(int64_t numQuads, SharedVertexList::P
 // -----------------------------------------------------------------------------
 QuadGeom::Pointer QuadGeom::CreateGeometry(SharedQuadList::Pointer quads, SharedVertexList::Pointer vertices, const QString& name)
 {
-  if(name.isEmpty() == true)
+  if(name.isEmpty())
   {
     return NullPointer();
   }
@@ -502,7 +502,7 @@ void QuadGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::
   m_ProgressCounter = 0;
   int64_t numQuads = getNumberOfQuads();
 
-  if(observable)
+  if(observable != nullptr)
   {
     connect(this, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), observable, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
   }
@@ -513,7 +513,7 @@ void QuadGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::
 #endif
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  if(doParallel == true)
+  if(doParallel)
   {
     tbb::parallel_for(tbb::blocked_range<int64_t>(0, numQuads), FindQuadDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());
   }

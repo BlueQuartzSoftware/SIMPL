@@ -201,7 +201,7 @@ void CreateStringArray::execute()
 AbstractFilter::Pointer CreateStringArray::newFilterInstance(bool copyFilterParameters) const
 {
   CreateStringArray::Pointer filter = CreateStringArray::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

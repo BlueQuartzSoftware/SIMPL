@@ -41,10 +41,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CalculatorFilterParameter::CalculatorFilterParameter()
-: FilterParameter()
-{
-}
+CalculatorFilterParameter::CalculatorFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -120,9 +117,7 @@ void CalculatorFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, Dat
     bool amChanged = !dcChanged && oldPath.getAttributeMatrixName() != newPath.getAttributeMatrixName();
     bool daChanged = !amChanged && oldPath.getDataArrayName() != newPath.getDataArrayName();
 
-    bool amConsistent = false == dcChanged && false == amChanged
-      && amPath.getDataContainerName() == oldPath.getDataContainerName()
-      && amPath.getAttributeMatrixName() == oldPath.getAttributeMatrixName();
+    bool amConsistent = !dcChanged && !amChanged && amPath.getDataContainerName() == oldPath.getDataContainerName() && amPath.getAttributeMatrixName() == oldPath.getAttributeMatrixName();
 
     // Only update the widget if the DataContainer and AttributeMatrix match and were not renamed
     if(daChanged && amConsistent)

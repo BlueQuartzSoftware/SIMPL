@@ -156,7 +156,7 @@ TetrahedralGeom::~TetrahedralGeom() = default;
 // -----------------------------------------------------------------------------
 TetrahedralGeom::Pointer TetrahedralGeom::CreateGeometry(int64_t numTets, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
 {
-  if(name.isEmpty() == true)
+  if(name.isEmpty())
   {
     return NullPointer();
   }
@@ -174,7 +174,7 @@ TetrahedralGeom::Pointer TetrahedralGeom::CreateGeometry(int64_t numTets, Shared
 // -----------------------------------------------------------------------------
 TetrahedralGeom::Pointer TetrahedralGeom::CreateGeometry(SharedTetList::Pointer tets, SharedVertexList::Pointer vertices, const QString& name)
 {
-  if(name.isEmpty() == true)
+  if(name.isEmpty())
   {
     return NullPointer();
   }
@@ -576,7 +576,7 @@ void TetrahedralGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArra
   m_ProgressCounter = 0;
   int64_t numTets = getNumberOfTets();
 
-  if(observable)
+  if(observable != nullptr)
   {
     connect(this, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), observable, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
   }
@@ -587,7 +587,7 @@ void TetrahedralGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArra
 #endif
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  if(doParallel == true)
+  if(doParallel)
   {
     tbb::parallel_for(tbb::blocked_range<int64_t>(0, numTets), FindTetDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());
   }

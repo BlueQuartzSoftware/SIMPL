@@ -137,7 +137,7 @@ DataContainerArray::Pointer SIMPLH5DataReader::readSIMPLDataUsingProxy(const Dat
     QH5Utilities::closeFile(m_FileId);
     m_FileId = QH5Utilities::openFile(m_CurrentFilePath, true); // Re-Open the file as Read Only
   }
-  if (check == false)
+  if(!check)
   {
     QString ss = QObject::tr("File data unable to be read - file version could not be read");
     emit errorGenerated(Title, ss, -250);
@@ -169,7 +169,7 @@ DataContainerArray::Pointer SIMPLH5DataReader::readSIMPLDataUsingProxy(const Dat
   dcaGid = -1;
 
   bool result = readDataContainerBundles(m_FileId, dca);
-  if(result == false)
+  if(!result)
   {
     QString ss = QObject::tr("Error trying to read the DataContainerBundles from the file '%1'").arg(m_CurrentFilePath);
     emit errorGenerated(Title, ss, err);
@@ -246,13 +246,13 @@ bool SIMPLH5DataReader::readPipelineJson(QString &json)
   bool check = false;
   err = QH5Lite::readStringAttribute(m_FileId, "/", SIMPL::HDF5::FileVersionName, fileVersionString);
   float fVersion = fileVersionString.toFloat(&check);
-  if (check == false)
+  if(!check)
   {
     QString ss = QObject::tr("Pipeline unable to be read - file version could not be read.");
     emit errorGenerated(Title, ss, -252);
     return false;
   }
-  else if (fVersion < 7.0)
+  if(fVersion < 7.0)
   {
     QString ss = QObject::tr("Pipeline unable to be read - file version older than 7.0.");
     emit errorGenerated(Title, ss, -253);

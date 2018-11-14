@@ -190,7 +190,7 @@ template <typename T, typename K> int32_t readAsciFile(typename DataArray<T>::Po
       {
         return err;
       }
-      else if(err == RBR_READ_ERROR || err == RBR_READ_ERROR)
+      if(err == RBR_READ_ERROR || err == RBR_READ_ERROR)
       {
         return err;
       }
@@ -208,7 +208,7 @@ template <typename T, typename K> int32_t readAsciFile(typename DataArray<T>::Po
       {
         return err;
       }
-      else if(err == RBR_READ_ERROR || err == RBR_READ_ERROR)
+      if(err == RBR_READ_ERROR || err == RBR_READ_ERROR)
       {
         return err;
       }
@@ -242,7 +242,6 @@ ImportAsciDataArrayPrivate::ImportAsciDataArrayPrivate(ImportAsciDataArray* ptr)
 : q_ptr(ptr)
 , m_FirstLine()
 , m_InputFile_Cache("")
-, m_LastRead()
 , m_HeaderLines(-1)
 {
 }
@@ -406,13 +405,13 @@ void ImportAsciDataArray::dataCheck()
   setWarningCondition(0);
 
   QFileInfo fi(getInputFile());
-  if(getInputFile().isEmpty() == true)
+  if(getInputFile().isEmpty())
   {
     QString ss = QObject::tr("The input file must be set");
     setErrorCondition(-387);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
-  else if(fi.exists() == false)
+  else if(!fi.exists())
   {
     QString ss = QObject::tr("The input file does not exist");
     setErrorCondition(-388);
@@ -482,7 +481,7 @@ void ImportAsciDataArray::dataCheck()
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Bool)
   {
-    getDataContainerArray()->createNonPrereqArrayFromPath<BoolArrayType, AbstractFilter, bool>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
+    getDataContainerArray()->createNonPrereqArrayFromPath<BoolArrayType, AbstractFilter, bool>(this, getCreatedAttributeArrayPath(), false, cDims, "CreatedAttributeArrayPath");
   }
   
   
@@ -657,11 +656,26 @@ void ImportAsciDataArray::execute()
 // -----------------------------------------------------------------------------
 char ImportAsciDataArray::converSelectedDelimiter()
 {
-  if (getDelimiter() ==  ImportAsciDataArray::Comma) return ',';
-  if (getDelimiter() ==  ImportAsciDataArray::Semicolon) return ';';
-  if (getDelimiter() ==  ImportAsciDataArray::Space) return ' ';
-  if (getDelimiter() ==  ImportAsciDataArray::Colon) return ':';
-  if (getDelimiter() ==  ImportAsciDataArray::Tab) return '\t';
+  if(getDelimiter() == ImportAsciDataArray::Comma)
+  {
+    return ',';
+  }
+  if(getDelimiter() == ImportAsciDataArray::Semicolon)
+  {
+    return ';';
+  }
+  if(getDelimiter() == ImportAsciDataArray::Space)
+  {
+    return ' ';
+  }
+  if(getDelimiter() == ImportAsciDataArray::Colon)
+  {
+    return ':';
+  }
+  if(getDelimiter() == ImportAsciDataArray::Tab)
+  {
+    return '\t';
+  }
   return ' ';
 }
 
@@ -671,7 +685,7 @@ char ImportAsciDataArray::converSelectedDelimiter()
 AbstractFilter::Pointer ImportAsciDataArray::newFilterInstance(bool copyFilterParameters) const
 {
   ImportAsciDataArray::Pointer filter = ImportAsciDataArray::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

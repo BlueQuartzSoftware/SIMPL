@@ -54,7 +54,7 @@ PipelineItemBorderSizeAnimation::PipelineItemBorderSizeAnimation(PipelineModel* 
 // -----------------------------------------------------------------------------
 void PipelineItemBorderSizeAnimation::listenValueChanged(const QVariant & value)
 {
-  if(m_PipelineModel)
+  if(m_PipelineModel != nullptr)
   {
     m_PipelineModel->setData(m_Index, value, PipelineModel::Roles::BorderSizeRole);
   }

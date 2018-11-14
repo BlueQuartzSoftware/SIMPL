@@ -158,7 +158,7 @@ void ComparisonContainerWidget::setComparison(AbstractComparison::Pointer compar
 void ComparisonContainerWidget::setComparisonWidget(IComparisonWidget* widget)
 {
   // replace current widget, save pointer
-  if (m_comparisonWidget)
+  if(m_comparisonWidget != nullptr)
   {
     disconnect(m_comparisonWidget, SIGNAL(comparisonChanged()),
       this, SIGNAL(comparisonChanged()));
@@ -168,7 +168,7 @@ void ComparisonContainerWidget::setComparisonWidget(IComparisonWidget* widget)
     m_comparisonWidget->deleteLater();
   }
 
-  if (widget)
+  if(widget != nullptr)
   {
     contentsLayout->addWidget(widget);
   }
@@ -216,7 +216,7 @@ ComparisonSetWidget* ComparisonContainerWidget::getComparisonSetWidget()
 // -----------------------------------------------------------------------------
 void ComparisonContainerWidget::setComparisonSetWidget(ComparisonSetWidget* comparisonSetWidget)
 {
-  if (m_comparisonSetWidget)
+  if(m_comparisonSetWidget != nullptr)
   {
     disconnect(this, SIGNAL(comparisonChanged()),
       m_comparisonSetWidget, SIGNAL(comparisonChanged()));
@@ -226,7 +226,7 @@ void ComparisonContainerWidget::setComparisonSetWidget(ComparisonSetWidget* comp
   getComparisonWidget()->setAttributeMatrix(comparisonSetWidget->getAttributeMatrix());
   getComparisonWidget()->setArrayNames(comparisonSetWidget->getArrayNames());
 
-  if (comparisonSetWidget)
+  if(comparisonSetWidget != nullptr)
   {
     connect(this, SIGNAL(comparisonChanged()),
       comparisonSetWidget, SIGNAL(comparisonChanged()));
@@ -241,7 +241,7 @@ void ComparisonContainerWidget::deleteItem()
   hide();
   setParent(nullptr);
 
-  if (m_comparisonSetWidget)
+  if(m_comparisonSetWidget != nullptr)
   {
     m_comparisonSetWidget->updateItems();
     emit m_comparisonSetWidget->comparisonChanged();

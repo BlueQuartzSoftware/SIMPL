@@ -151,7 +151,10 @@ void generateColorArray(typename DataArray<T>::Pointer arrayPtr, QJsonArray pres
 {
   if (arrayPtr->getNumberOfTuples() <= 0) { return; }
 
-  if (presetControlPoints.size() <= 0) { return; }
+  if(presetControlPoints.empty())
+  {
+    return;
+  }
 
   int numControlColors = presetControlPoints.count() / 4;
   int numComponents = 4;
@@ -190,7 +193,7 @@ void generateColorArray(typename DataArray<T>::Pointer arrayPtr, QJsonArray pres
 #endif
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  if(doParallel == true)
+  if(doParallel)
   {
     tbb::parallel_for(tbb::blocked_range<size_t>(0, arrayPtr->getNumberOfTuples()), GenerateColorTableImpl<T>(arrayPtr, binPoints, controlPoints, numControlColors, colorArray),
                       tbb::auto_partitioner());
@@ -367,7 +370,7 @@ void GenerateColorTable::execute()
 AbstractFilter::Pointer GenerateColorTable::newFilterInstance(bool copyFilterParameters) const
 {
   GenerateColorTable::Pointer filter = GenerateColorTable::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

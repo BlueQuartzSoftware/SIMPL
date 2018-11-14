@@ -95,7 +95,7 @@ void ExecuteProcess::dataCheck()
   setWarningCondition(0);
 
   QStringList arguments = splitArgumentsString(m_Arguments);
-  if(arguments.size() <= 0)
+  if(arguments.empty())
   {
     QString ss = QObject::tr("No command line arguments have been specified.");
     setErrorCondition(-4001);
@@ -159,7 +159,7 @@ void ExecuteProcess::execute()
 
   m_Mutex.lock();
   m_Pause = true;
-  while(m_Pause == true)
+  while(m_Pause)
   {
     m_WaitCondition.wait(&m_Mutex, 200);
     QCoreApplication::processEvents();
@@ -332,7 +332,7 @@ void ExecuteProcess::sendStandardOutput()
 AbstractFilter::Pointer ExecuteProcess::newFilterInstance(bool copyFilterParameters) const
 {
   ExecuteProcess::Pointer filter = ExecuteProcess::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

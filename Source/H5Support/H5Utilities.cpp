@@ -35,6 +35,8 @@
 
 #include <H5Support/H5Utilities.h>
 
+#include "H5Fpublic.h"
+
 // C Includes
 #include <cstring>
 
@@ -52,6 +54,21 @@
 using namespace H5Support_NAMESPACE;
 #endif
 
+
+/**
+ * Define the libraries features and file compatibility that will be used when opening
+ * or creating a file
+ */
+#if (H5_VERS_MINOR == 8)
+#define HDF5_VERSION_LIB_LOWER_BOUNDS        H5F_LIBVER_18
+#define HDF5_VERSION_LIB_UPPER_BOUNDS        H5F_LIBVER_LATEST
+#endif
+
+#if (H5_VERS_MINOR == 10)
+#define HDF5_VERSION_LIB_LOWER_BOUNDS        H5F_LIBVER_V18
+#define HDF5_VERSION_LIB_UPPER_BOUNDS        H5F_LIBVER_V18
+#endif
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -59,10 +76,18 @@ hid_t H5Utilities::createFile(const std::string& filename)
 {
   H5SUPPORT_MUTEX_LOCK()
 
-  // HDF_ERROR_HANDLER_OFF
-  // Create the HDF File
-  hid_t fileId = H5Fcreate(filename.c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
-  // HDF_ERROR_HANDLER_ON
+  /* Create a file access property list */
+  hid_t fapl = H5Pcreate(H5P_FILE_ACCESS);
+
+  /* Set the fapl */
+  H5Pset_libver_bounds(fapl, HDF5_VERSION_LIB_LOWER_BOUNDS, HDF5_VERSION_LIB_UPPER_BOUNDS);
+
+  /* Create a file with this fapl */
+  hid_t fileId = H5Fcreate(filename.c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, fapl);
+
+  /* Close the apl object */
+  H5Pclose(fapl);
+
   return fileId;
 }
 
@@ -81,7 +106,15 @@ hid_t H5Utilities::openFile(const std::string& filename, bool readOnly)
   }
   else
   {
+    /* Create a file access property list */
+    hid_t fapl = H5Pcreate(H5P_FILE_ACCESS);
+
+    /* Set the fapl */
+    H5Pset_libver_bounds(fapl, HDF5_VERSION_LIB_LOWER_BOUNDS, HDF5_VERSION_LIB_UPPER_BOUNDS);
     fileId = H5Fopen(filename.c_str(), H5F_ACC_RDWR, H5P_DEFAULT);
+
+    /* Close the apl object */
+    H5Pclose(fapl);
   }
 
   HDF_ERROR_HANDLER_ON

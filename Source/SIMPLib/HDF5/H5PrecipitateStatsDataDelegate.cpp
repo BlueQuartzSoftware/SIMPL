@@ -106,7 +106,7 @@ VectorOfFloatArray H5PrecipitateStatsDataDelegate::createDistributionVector(unsi
   //  {
   //    return createPowerDistributionArrays();
   //  }
-  else if(distType == SIMPL::DistributionType::LogNormal)
+  if(distType == SIMPL::DistributionType::LogNormal)
   {
     return createLogNormalDistributionArrays();
   }
@@ -114,7 +114,7 @@ VectorOfFloatArray H5PrecipitateStatsDataDelegate::createDistributionVector(unsi
   //  {
   //    return empty();
   //  }
-  else if(distType == SIMPL::DistributionType::RDFMaxMin)
+  if(distType == SIMPL::DistributionType::RDFMaxMin)
   {
     return createRDFMaxMinDistributionArrays();
   }
@@ -324,7 +324,7 @@ int H5PrecipitateStatsDataDelegate::writeVectorOfArrays(hid_t pid, VectorOfFloat
   {
     // qDebug() << "Writing Dataset:" << hdf5GroupName << "/" << columnHeaders[c] ;
     err = -1;
-    if(nullptr != colData[c].get() && colData[c]->getSize() > 0)
+    if(nullptr != colData[c] && colData[c]->getSize() > 0)
     {
       QVector<size_t> tDims(1, colData[c]->getNumberOfTuples());
       err = colData[c]->writeH5Data(pid, tDims);
@@ -468,7 +468,7 @@ int H5PrecipitateStatsDataDelegate::readAxisODFWeights(hid_t pid, PrecipitateSta
 int H5PrecipitateStatsDataDelegate::writeWeightsData(hid_t pid, const QString& hdf5GroupName, VectorOfFloatArray colData)
 {
   herr_t err = 0;
-  if(colData.size() == 0)
+  if(colData.empty())
   {
     return err;
   }

@@ -240,15 +240,15 @@ QStringList ComparisonSelectionWidget::generateAttributeArrayList(const QString&
 // -----------------------------------------------------------------------------
 QString ComparisonSelectionWidget::checkStringValues(QString curDcName, QString filtDcName)
 {
-  if(curDcName.isEmpty() == true && filtDcName.isEmpty() == false)
+  if(curDcName.isEmpty() && !filtDcName.isEmpty())
   {
     return filtDcName;
   }
-  else if(curDcName.isEmpty() == false && filtDcName.isEmpty() == true)
+  if(!curDcName.isEmpty() && filtDcName.isEmpty())
   {
     return curDcName;
   }
-  else if(curDcName.isEmpty() == false && filtDcName.isEmpty() == false && m_DidCausePreflight == true)
+  if(!curDcName.isEmpty() && !filtDcName.isEmpty() && m_DidCausePreflight)
   {
     return curDcName;
   }
@@ -351,7 +351,7 @@ void ComparisonSelectionWidget::filterNeedsInputParameters(AbstractFilter* filte
   bool ok = false;
   // Set the value into the Filter
   ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-  if(false == ok)
+  if(!ok)
   {
     getFilter()->notifyMissingProperty(getFilterParameter());
   }
@@ -366,7 +366,7 @@ void ComparisonSelectionWidget::beforePreflight()
   {
     return;
   }
-  if(m_DidCausePreflight == true)
+  if(m_DidCausePreflight)
   {
     // std::cout << "***  ComparisonSelectionWidget already caused a preflight, just returning" << std::endl;
     return;
@@ -394,7 +394,7 @@ void ComparisonSelectionWidget::afterPreflight()
   m_ComparisonSelectionTableModel->setPossibleFeatures(possibleArrays);
 
   ComparisonSelectionItemDelegate* aid = dynamic_cast<ComparisonSelectionItemDelegate*>(comparisonSelectionTableView->itemDelegate());
-  if(aid)
+  if(aid != nullptr)
   {
     aid->setFeatureList(possibleArrays);
   }
@@ -423,7 +423,7 @@ void ComparisonSelectionWidget::populateButtonText()
   }
 
   // Check to see if we have any DataContainers to actually populate drop downs with.
-  if(dca->getDataContainers().size() == 0)
+  if(dca->getDataContainers().empty())
   {
     return;
   }
@@ -523,10 +523,8 @@ ComparisonSelectionTableModel* ComparisonSelectionWidget::createComparisonModel(
 {
   ComparisonSelectionTableModel* newModel = new ComparisonSelectionTableModel(m_ShowOperators);
   QAbstractItemModel* oldModel = comparisonSelectionTableView->model();
-  if(nullptr != oldModel)
-  {
+
     delete oldModel;
-  }
 
   comparisonSelectionTableView->setModel(newModel);
   newModel->setNumberOfPhases(1);
@@ -583,7 +581,7 @@ void ComparisonSelectionWidget::updateDataArrayPath(QString propertyName, DataAr
     {
       QAbstractItemModel* model = comparisonSelectionTableView->model();
       ComparisonSelectionTableModel* compModel = dynamic_cast<ComparisonSelectionTableModel*>(model);
-      if(compModel)
+      if(compModel != nullptr)
       {
         compModel->blockSignals(true);
         compModel->updateFeatureName(oldPath.getDataArrayName(), newPath.getDataArrayName());

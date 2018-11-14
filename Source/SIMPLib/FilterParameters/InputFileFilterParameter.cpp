@@ -39,8 +39,7 @@
 //
 // -----------------------------------------------------------------------------
 InputFileFilterParameter::InputFileFilterParameter()
-: FilterParameter()
-, m_FileExtension("")
+: m_FileExtension("")
 , m_FileType("")
 {
 }

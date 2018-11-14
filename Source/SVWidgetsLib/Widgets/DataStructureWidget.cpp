@@ -140,7 +140,7 @@ void DataStructureWidget::refreshData()
   //  }
 
   // Sanity check model
-  if(!model)
+  if(model == nullptr)
   {
     Q_ASSERT_X(model, "Model was not a QStandardItemModel in QColumnView", "");
     return;
@@ -156,7 +156,7 @@ void DataStructureWidget::refreshData()
     DataContainer::Pointer dc = containerIter.next();
 
     QStandardItem* dcItem = findChildByName(rootItem, dc->getName(), 0);
-    if(!dcItem)
+    if(dcItem == nullptr)
     {
       dcItem = new QStandardItem(dc->getName());
       rootItem->appendRow(dcItem);
@@ -194,7 +194,7 @@ void DataStructureWidget::refreshData()
       dcItem->setIcon(QIcon());
     }
 
-    if(path.size() > 0 && dc->getName().compare(path[0]) == 0)
+    if(!path.empty() && dc->getName().compare(path[0]) == 0)
     {
       m_Ui->dataBrowserTreeView->setCurrentIndex(model->indexFromItem(dcItem));
     }
@@ -209,7 +209,7 @@ void DataStructureWidget::refreshData()
       AttributeMatrix::Pointer am = attrMatsIter.value();
 
       QStandardItem* amItem = findChildByName(dcItem, am->getName(), 0);
-      if(!amItem)
+      if(amItem == nullptr)
       {
         amItem = new QStandardItem(am->getName());
         //          amItem->setBackground(QColor(128, 224, 138));
@@ -234,7 +234,7 @@ void DataStructureWidget::refreshData()
         IDataArray::Pointer attrArray = am->getAttributeArray(attrArrayName);
 
         QStandardItem* aaItem = findChildByName(amItem, attrArray->getName(), 0);
-        if(!aaItem)
+        if(aaItem == nullptr)
         {
           aaItem = new QStandardItem(attrArrayName);
           // aaItem->setBackground(QColor(255, 210, 173));
@@ -271,10 +271,10 @@ void DataStructureWidget::filterActivated(AbstractFilter::Pointer filter)
 {
   m_Dca = DataContainerArray::NullPointer();
   m_Ui->dataBrowserTreeView->setActiveFilter(filter);
-  if(filter.get())
+  if(filter.get() != nullptr)
   {
     DataContainerArray::Pointer dca = filter->getDataContainerArray();
-    if(dca.get())
+    if(dca.get() != nullptr)
     {
       m_Dca = dca->deepCopy(true);
     }
@@ -329,7 +329,7 @@ QStandardItem* DataStructureWidget::findItemByPath(DataArrayPath path)
   }
 
   QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
-  if(!model)
+  if(model == nullptr)
   {
     Q_ASSERT_X(model, "Model was not a QStandardItemModel in QColumnView", "");
     return nullptr;

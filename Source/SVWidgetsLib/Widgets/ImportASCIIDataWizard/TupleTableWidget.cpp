@@ -103,7 +103,7 @@ QVector<size_t> TupleTableWidget::getData()
 // -----------------------------------------------------------------------------
 void TupleTableWidget::addTupleDimensions(QVector<size_t> tupleDims)
 {
-  if(m_UserEdited == false)
+  if(!m_UserEdited)
   {
     for(int i = 0; i < tupleDims.size(); i++)
     {

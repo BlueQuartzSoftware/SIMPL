@@ -46,7 +46,7 @@ void Logger::msgHandler(const QtMsgType type, const QString& message, const QStr
   recursiveMutex.lock();
 
   // Fall back to stderr when this method has been called recursively.
-  if(defaultLogger && nonRecursiveMutex.tryLock())
+  if((defaultLogger != nullptr) && nonRecursiveMutex.tryLock())
   {
     defaultLogger->log(type, message, file, function, line);
     nonRecursiveMutex.unlock();
@@ -125,7 +125,7 @@ void Logger::clear(const bool buffer, const bool variables)
   if(buffer && buffers.hasLocalData())
   {
     QList<LogMessage*>* buffer = buffers.localData();
-    while(buffer && !buffer->isEmpty())
+    while((buffer != nullptr) && !buffer->isEmpty())
     {
       LogMessage* logMessage = buffer->takeLast();
       delete logMessage;

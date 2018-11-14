@@ -430,7 +430,7 @@ ImageGeom::~ImageGeom() = default;
 // -----------------------------------------------------------------------------
 ImageGeom::Pointer ImageGeom::CreateGeometry(const QString& name)
 {
-  if(name.isEmpty() == true)
+  if(name.isEmpty())
   {
     return NullPointer();
   }
@@ -703,7 +703,6 @@ ElementDynamicList::Pointer ImageGeom::getElementsContainingVert()
 // -----------------------------------------------------------------------------
 void ImageGeom::setElementsContainingVert(ElementDynamicList::Pointer SIMPL_NOT_USED(elementsContainingVert))
 {
-  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -711,7 +710,6 @@ void ImageGeom::setElementsContainingVert(ElementDynamicList::Pointer SIMPL_NOT_
 // -----------------------------------------------------------------------------
 void ImageGeom::deleteElementsContainingVert()
 {
-  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -735,7 +733,6 @@ ElementDynamicList::Pointer ImageGeom::getElementNeighbors()
 // -----------------------------------------------------------------------------
 void ImageGeom::setElementNeighbors(ElementDynamicList::Pointer SIMPL_NOT_USED(elementNeighbors))
 {
-  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -743,7 +740,6 @@ void ImageGeom::setElementNeighbors(ElementDynamicList::Pointer SIMPL_NOT_USED(e
 // -----------------------------------------------------------------------------
 void ImageGeom::deleteElementNeighbors()
 {
-  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -767,7 +763,6 @@ FloatArrayType::Pointer ImageGeom::getElementCentroids()
 // -----------------------------------------------------------------------------
 void ImageGeom::setElementCentroids(FloatArrayType::Pointer SIMPL_NOT_USED(elementsCentroids))
 {
-  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -775,7 +770,6 @@ void ImageGeom::setElementCentroids(FloatArrayType::Pointer SIMPL_NOT_USED(eleme
 // -----------------------------------------------------------------------------
 void ImageGeom::deleteElementCentroids()
 {
-  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -882,7 +876,7 @@ void ImageGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType:
   size_t dims[3] = {0, 0, 0};
   std::tie(dims[0], dims[1], dims[2]) = getDimensions();
 
-  if(observable)
+  if(observable != nullptr)
   {
     connect(this, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), observable, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
   }
@@ -894,14 +888,14 @@ void ImageGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType:
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
 
-  size_t grain = dims[2] == 1 ? 1 : dims[2] / init.default_num_threads();
+  size_t grain = dims[2] == 1 ? 1 : dims[2] / tbb::task_scheduler_init::default_num_threads();
 
   if(grain == 0) // This can happen if dims[2] > number of processors
   {
     grain = 1;
   }
 
-  if(doParallel == true)
+  if(doParallel)
   {
     tbb::parallel_for(tbb::blocked_range3d<size_t, size_t, size_t>(0, dims[2], grain, 0, dims[1], dims[1], 0, dims[0], dims[0]),
                       FindImageDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());

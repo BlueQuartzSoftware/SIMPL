@@ -164,22 +164,22 @@ QVariant ComparisonSelectionTableModel::data(const QModelIndex& index, qint32 ro
 
     // return qApp->style()->sizeFromContents(QStyle::CT_ComboBox, &comboBox, size);
   }
-  else if(role == Qt::TextAlignmentRole)
+  if(role == Qt::TextAlignmentRole)
   {
     return int(Qt::AlignRight | Qt::AlignVCenter);
   }
-  else if(role == Qt::DisplayRole || role == Qt::EditRole)
+  if(role == Qt::DisplayRole || role == Qt::EditRole)
   {
     int col = index.column();
     if(col == FeatureName)
     {
       return QVariant(m_FeatureNames[index.row()]);
     }
-    else if(col == FeatureValue)
+    if(col == FeatureValue)
     {
       return QVariant(m_FeatureValues[index.row()]);
     }
-    else if(col == FeatureOperator)
+    if(col == FeatureOperator)
     {
       return QVariant(m_FeatureOperators[index.row()]);
     }
@@ -280,7 +280,7 @@ bool ComparisonSelectionTableModel::setData(const QModelIndex& index, const QVar
 // -----------------------------------------------------------------------------
 bool ComparisonSelectionTableModel::insertRows(int row, int count, const QModelIndex& index)
 {
-  if(m_PossibleFeatures.size() < 1)
+  if(m_PossibleFeatures.empty())
   {
     return false;
   }
@@ -460,7 +460,7 @@ void ComparisonSelectionTableModel::setNumberOfPhases(int n)
 {
   m_NumberOfPhases = n;
   ComparisonSelectionItemDelegate* dlg = qobject_cast<ComparisonSelectionItemDelegate*>(getItemDelegate());
-  if(dlg)
+  if(dlg != nullptr)
   {
     dlg->setNumberOfPhases(n);
     delete dlg;
@@ -485,14 +485,14 @@ void ComparisonSelectionTableModel::setPossibleFeatures(QStringList features)
   qint32 count = m_FeatureNames.count();
   for(qint32 i = 0; i < count; ++i)
   {
-    if(m_PossibleFeatures.contains(m_FeatureNames.at(i)) == false && m_PossibleFeatures.count() > 0)
+    if(!m_PossibleFeatures.contains(m_FeatureNames.at(i)) && m_PossibleFeatures.count() > 0)
     {
       m_FeatureNames[i] = m_PossibleFeatures[0]; // Just set it to the first index
     }
   }
 
   ComparisonSelectionItemDelegate* dlg = qobject_cast<ComparisonSelectionItemDelegate*>(getItemDelegate());
-  if(dlg)
+  if(dlg != nullptr)
   {
     dlg->setFeatureList(m_PossibleFeatures);
   }
@@ -514,14 +514,14 @@ void ComparisonSelectionTableModel::setPossibleFeatures(QList<QString>& features
   qint32 count = m_FeatureNames.count();
   for(qint32 i = 0; i < count; ++i)
   {
-    if(m_PossibleFeatures.contains(m_FeatureNames.at(i)) == false && m_PossibleFeatures.count() > 0)
+    if(!m_PossibleFeatures.contains(m_FeatureNames.at(i)) && m_PossibleFeatures.count() > 0)
     {
       m_FeatureNames[i] = m_PossibleFeatures[0]; // Just set it to the first index
     }
   }
 
   ComparisonSelectionItemDelegate* dlg = qobject_cast<ComparisonSelectionItemDelegate*>(getItemDelegate());
-  if(dlg)
+  if(dlg != nullptr)
   {
     dlg->setFeatureList(m_PossibleFeatures);
   }

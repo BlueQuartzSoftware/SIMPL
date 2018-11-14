@@ -122,7 +122,7 @@ ComparisonSet::Pointer ComparisonSetWidget::getComparisonSet()
 // -----------------------------------------------------------------------------
 void ComparisonSetWidget::setComparisonSet(ComparisonSet::Pointer comparisonSet)
 {
-  if(!comparisonSet.get())
+  if(comparisonSet.get() == nullptr)
   {
     comparisonSet = ComparisonSet::New();
   }
@@ -134,7 +134,7 @@ void ComparisonSetWidget::setComparisonSet(ComparisonSet::Pointer comparisonSet)
   {
     ComparisonContainerWidget* widget = dynamic_cast<ComparisonContainerWidget*>(childWidgets.at(i));
 
-    if (widget)
+    if(widget != nullptr)
     {
       widget->hide();
       widget->setParent(nullptr);
@@ -284,7 +284,7 @@ void ComparisonSetWidget::updateItems()
   {
     ComparisonContainerWidget* itemWidget = dynamic_cast<ComparisonContainerWidget*>(conditionalLayout->itemAt(i)->widget());
 
-    if (itemWidget)
+    if(itemWidget != nullptr)
     {
       itemWidget->showUnionOperator(firstItemFound);
       firstItemFound = true;
@@ -311,7 +311,7 @@ int ComparisonSetWidget::insertIndexByPoint(QPoint pos, ComparisonContainerWidge
   {
     ComparisonContainerWidget* itemWidget = dynamic_cast<ComparisonContainerWidget*>(conditionalWidgetContents->children().at(i));
 
-    if (itemWidget && itemWidget != ignore)
+    if((itemWidget != nullptr) && itemWidget != ignore)
     {
       QPoint filterPoint = itemWidget->pos();
       if (pos.y() > filterPoint.y() + itemWidget->height() / 2)
@@ -369,7 +369,7 @@ void ComparisonSetWidget::dropEvent(QDropEvent* event)
 
   updateItems();
 
-  if (ownerComparisonSet)
+  if(ownerComparisonSet != nullptr)
   {
     ownerComparisonSet->updateItems();
   }
@@ -406,7 +406,7 @@ QVector<IComparisonWidget*> ComparisonSetWidget::getComparisonWidgets()
   {
     ComparisonContainerWidget* itemWidget = dynamic_cast<ComparisonContainerWidget*>(conditionalWidgetContents->children().at(i));
 
-    if (itemWidget)
+    if(itemWidget != nullptr)
     {
       comparisonWidgets.push_back(itemWidget->getComparisonWidget());
     }
@@ -425,7 +425,7 @@ void ComparisonSetWidget::clearSet()
   {
     ComparisonContainerWidget* container = dynamic_cast<ComparisonContainerWidget*>(conditionalWidgetContents->children().at(i));
 
-    if (container)
+    if(container != nullptr)
     {
       container->deleteItem();
       i--;

@@ -145,8 +145,8 @@ void ComparisonSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* fi
   {
     ComparisonInput_t& input = inputs.getInput(i);
 
-    bool hasAttributeMatrix = oldPath.getAttributeMatrixName().isEmpty() == false;
-    bool hasDataArray = oldPath.getDataArrayName().isEmpty() == false;
+    bool hasAttributeMatrix = !oldPath.getAttributeMatrixName().isEmpty();
+    bool hasDataArray = !oldPath.getDataArrayName().isEmpty();
 
     bool sameDC = input.dataContainerName == oldPath.getDataContainerName();
     bool sameAM = input.attributeMatrixName == oldPath.getAttributeMatrixName();

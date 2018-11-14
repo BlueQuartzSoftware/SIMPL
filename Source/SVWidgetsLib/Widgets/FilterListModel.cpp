@@ -96,15 +96,15 @@ QVariant FilterListModel::data(const QModelIndex& index, int role) const
     }
     return item->getName();
   }
-  else if(role == static_cast<int>(Roles::ItemTypeRole))
+  if(role == static_cast<int>(Roles::ItemTypeRole))
   {
     return static_cast<int>(item->getItemType());
   }
-  else if(role == static_cast<int>(Roles::ClassNameRole))
+  if(role == static_cast<int>(Roles::ClassNameRole))
   {
     return item->getClassName();
   }
-  else if (role == Qt::FontRole)
+  if(role == Qt::FontRole)
   {
     if (item->getItemType() == FilterListItem::Group)
     {
@@ -153,11 +153,9 @@ Qt::ItemFlags FilterListModel::flags(const QModelIndex& index) const
     // This is a node
     return (Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
   }
-  else
-  {
+
     // This is a leaf
     return Qt::ItemIsEnabled;
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -168,7 +166,7 @@ FilterListItem* FilterListModel::getItem(const QModelIndex& index) const
   if(index.isValid())
   {
     FilterListItem* item = static_cast<FilterListItem*>(index.internalPointer());
-    if(item)
+    if(item != nullptr)
     {
       return item;
     }
@@ -189,14 +187,12 @@ QModelIndex FilterListModel::index(int row, int column, const QModelIndex& paren
   FilterListItem* parentItem = getItem(parent);
 
   FilterListItem* childItem = parentItem->child(row);
-  if(childItem)
+  if(childItem != nullptr)
   {
     return createIndex(row, column, childItem);
   }
-  else
-  {
+
     return QModelIndex();
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -315,9 +311,5 @@ FilterListItem* FilterListModel::getRootItem()
 // -----------------------------------------------------------------------------
 bool FilterListModel::isEmpty()
 {
-  if(rowCount(QModelIndex()) <= 0)
-  {
-    return true;
-  }
-  return false;
+  return rowCount(QModelIndex()) <= 0;
 }

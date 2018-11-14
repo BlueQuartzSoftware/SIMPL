@@ -136,7 +136,7 @@ template <typename T> void replaceValue(AbstractFilter* filter, IDataArray::Poin
 
   for(size_t iter = 0; iter < numTuples; iter++)
   {
-    if(condData[iter] == true)
+    if(condData[iter])
     {
       inData[iter] = replaceVal;
     }
@@ -288,7 +288,7 @@ void ConditionalSetValue::execute()
 AbstractFilter::Pointer ConditionalSetValue::newFilterInstance(bool copyFilterParameters) const
 {
   ConditionalSetValue::Pointer filter = ConditionalSetValue::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }
