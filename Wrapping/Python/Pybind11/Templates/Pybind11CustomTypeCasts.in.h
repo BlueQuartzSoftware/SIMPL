@@ -224,7 +224,7 @@ namespace pybind11
 				awdDict["beginIndex"] = src.beginIndex;
 				awdDict["numberOfLines"] = src.numberOfLines;
 				awdDict["delimiters"] = src.delimiters;
-				awdDict["conescutiveDelimiters"] = src.consecutiveDelimiters;
+				awdDict["consecutiveDelimiters"] = src.consecutiveDelimiters;
 				awdDict["automaticAM"] = src.automaticAM;
 				awdDict["selectedPath"] = src.selectedPath;
 				awdDict["headers"] = src.dataHeaders;

@@ -242,12 +242,9 @@ PYBIND11_MODULE(dream3d, m)
 	  QList<ImportHDF5Dataset::DatasetImportInfo> datasetImportInfoList;
 	  for (auto value : values) {
 		  py::list valueAsList = py::cast<py::list>(value);
-		  py::print(valueAsList);
 		  ImportHDF5Dataset::DatasetImportInfo datasetImportInfo;
 		  datasetImportInfo.dataSetPath = py::cast<QString>(valueAsList[0]);
 		  datasetImportInfo.componentDimensions = py::cast<QString>(valueAsList[1]);
-		  py::print(valueAsList[0]);
-		  py::print(valueAsList[1]);
 		  datasetImportInfoList.push_back(datasetImportInfo);
 	  }
 	  return datasetImportInfoList;

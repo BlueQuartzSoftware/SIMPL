@@ -81,6 +81,7 @@ function(CreatePybind11Module)
       ${pybind_module_file_name}
       "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/DerivedSharedPointerClassInit.in.h"
       "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/PluginModuleCodeTemplate.in.cpp"
+      "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/Pybind11CustomTypeCasts.in.h"
       "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/Pybind11TopMatter.in.h"
       "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/SIMPLModuleCodeTemplate.in.cpp"
       "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/SharedPointerClassInit.in.h"
@@ -88,6 +89,7 @@ function(CreatePybind11Module)
       )
     set_source_files_properties("${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/DerivedSharedPointerClassInit.in.h"
       "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/PluginModuleCodeTemplate.in.cpp"
+      "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/Pybind11CustomTypeCasts.in.h"
       "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/Pybind11TopMatter.in.h"
       "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/SIMPLModuleCodeTemplate.in.cpp"
       "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11/Templates/SharedPointerClassInit.in.h"
