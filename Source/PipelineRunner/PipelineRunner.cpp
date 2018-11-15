@@ -117,7 +117,7 @@ int main(int argc, char* argv[])
   }
 
   // Use the static method to read the Pipeline file and return a Filter Pipeline
-  QString ext = fi.completeSuffix();
+  QString ext = fi.suffix();
 
   FilterPipeline::Pointer pipeline;
   if(ext == "dream3d")
@@ -132,7 +132,7 @@ int main(int argc, char* argv[])
   }
   else
   {
-    std::cout << "Unsupported pipeline file type. Exiting now." << std::endl;
+    std::cout << "Unsupported pipeline file type '" << ext.toStdString() << "'. Exiting now." << std::endl;
     return EXIT_FAILURE;
   }
 
