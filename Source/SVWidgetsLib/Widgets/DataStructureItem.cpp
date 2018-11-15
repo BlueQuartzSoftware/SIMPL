@@ -43,7 +43,6 @@
 DataStructureItem::DataStructureItem(const QVector<QVariant>& data, ItemType itemType, DataStructureItem* parent)
 : m_ItemData(data)
 , m_ParentItem(parent)
-, m_ItemHasErrors(false)
 , m_ItemTooltip("")
 , m_NeedsToBeExpanded(false)
 , m_Icon(QIcon())

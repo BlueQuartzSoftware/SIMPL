@@ -122,7 +122,6 @@ class SVWidgetsLib_EXPORT DataStructureItem
     QList<DataStructureItem*>               m_ChildItems;
     QVector<QVariant>                   m_ItemData;
     DataStructureItem*                      m_ParentItem;
-    bool                                m_ItemHasErrors;
     QString                             m_ItemTooltip;
     bool                                m_NeedsToBeExpanded;
     QIcon                               m_Icon;

@@ -209,9 +209,6 @@ void UpdateCheck::networkReplied(QNetworkReply* reply)
 // -----------------------------------------------------------------------------
 void UpdateCheck::writeUpdateCheckDate()
 {
-  QDate systemDate;
-  QDate currentDateToday = QDate::currentDate();
-
   QtSSettings updatePrefs;
 
   updatePrefs.beginGroup(UpdateCheckDialog::GetUpdatePreferencesGroup());
