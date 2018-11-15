@@ -1,5 +1,7 @@
 include dream3d/*.pyd
 include dream3d/*.lib
 include dream3d/*.dll
+include dream3d/*.so
+include dream3d/*.dylib
 include dream3d/*.plugin
 exclude dream3d/*Qt5WebEngine*
