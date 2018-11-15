@@ -6,6 +6,7 @@ set(TEST_${SUBDIR_NAME}_NAMES
   CombineAttributeArraysTest
   CombineAttributeMatricesTest
   ConditionalSetValueTest
+  ConvertDataContainerGeometryTest
   ConvertDataTest
   CopyFeatureArrayToElementArrayTest
   CopyObjectTest

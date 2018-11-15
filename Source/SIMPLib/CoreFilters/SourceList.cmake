@@ -29,6 +29,7 @@ set(_PublicFilters
   CombineAttributeMatrices
   ConditionalSetValue
   ConvertData
+  ConvertDataContainerGeometry
   CopyFeatureArrayToElementArray
   CreateAttributeMatrix
   CreateDataArray
