@@ -171,6 +171,11 @@ endif()
 add_library(${PROJECT_NAME} ${LIB_TYPE} ${Project_SRCS} )
 CMP_AddDefinitions(TARGET ${PROJECT_NAME})
 
+if(MSVC)
+  # enable per object parallel compilation in this large library
+  target_compile_options(${PROJECT_NAME} PRIVATE "/MP")
+endif()
+
 #-- Add Target specific definitions
 if(WIN32 AND BUILD_SHARED_LIBS)
       target_compile_definitions(${PROJECT_NAME} PUBLIC "-DSIMPLib_BUILT_AS_DYNAMIC_LIB")
