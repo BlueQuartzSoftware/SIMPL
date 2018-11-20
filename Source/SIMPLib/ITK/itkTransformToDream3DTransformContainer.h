@@ -61,7 +61,7 @@ protected:
   TransformToDream3DTransformContainer();
   ~TransformToDream3DTransformContainer() override;
 
-  void VerifyPreconditions() override;
+  void VerifyPreconditions();
 
   void GenerateData() override;
   ProcessObject::DataObjectPointer MakeOutput(ProcessObject::DataObjectPointerArraySizeType) override;
