@@ -227,7 +227,7 @@ Qt::ItemFlags DataStructureModel::flags(const QModelIndex& index) const
 {
   if(!index.isValid())
   {
-    return 0;
+    return nullptr;
   }
 
   Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);
@@ -258,9 +258,7 @@ DataStructureItem* DataStructureModel::getRootItem()
 // -----------------------------------------------------------------------------
 void DataStructureModel::syncDataModel(DataContainerArray::Pointer dca)
 {
-
 }
-
 
 // -----------------------------------------------------------------------------
 //

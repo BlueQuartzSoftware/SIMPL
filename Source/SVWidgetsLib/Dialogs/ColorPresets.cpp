@@ -121,7 +121,6 @@ private:
 ColorPresets::ColorPresets()
   : Internals(new ColorPresets::vtkInternals())
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -130,7 +129,7 @@ ColorPresets::ColorPresets()
 ColorPresets::~ColorPresets()
 {
   delete this->Internals;
-  this->Internals = NULL;
+  this->Internals = nullptr;
 }
 
 // -----------------------------------------------------------------------------
@@ -158,7 +157,7 @@ QJsonObject ColorPresets::GetPreset(unsigned int index)
 // -----------------------------------------------------------------------------
 QJsonObject ColorPresets::GetFirstPresetWithName(const char* name)
 {
-  if (name == NULL)
+  if(name == nullptr)
   {
     return QJsonObject();
   }

@@ -71,7 +71,7 @@ void EditHeadersDialog::setupGui()
   {
     QLabel* label = new QLabel(this);
     QString columnName = "Column " + QString::number(i + 1) + ":";
-    label->setText(QApplication::translate("EditHeadersDialog", columnName.toStdString().c_str(), 0));
+    label->setText(QApplication::translate("EditHeadersDialog", columnName.toStdString().c_str(), nullptr));
     gridLayout->addWidget(label, i, 0, 1, 1);
 
     QLineEdit* lineEdit = new QLineEdit(this);

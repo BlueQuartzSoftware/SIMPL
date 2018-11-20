@@ -113,7 +113,7 @@ void FilterListToolboxWidget::setupSearchField()
   {
     m_ActionAllWords = new QAction(filterSearch);
     m_ActionAllWords->setObjectName(QString::fromUtf8("actionAllWords"));
-    m_ActionAllWords->setText(QApplication::translate("SIMPLView_UI", "All Words", 0));
+    m_ActionAllWords->setText(QApplication::translate("SIMPLView_UI", "All Words", nullptr));
     m_ActionAllWords->setCheckable(true);
     m_ActionAllWords->setChecked(m_SearchAllWords);
     filterSearch->addAction(m_ActionAllWords);
@@ -124,7 +124,7 @@ void FilterListToolboxWidget::setupSearchField()
   {
     m_ActionAnyWords = new QAction(filterSearch);
     m_ActionAnyWords->setObjectName(QString::fromUtf8("actionWordForWord"));
-    m_ActionAnyWords->setText(QApplication::translate("SIMPLView_UI", "Any Words", 0));
+    m_ActionAnyWords->setText(QApplication::translate("SIMPLView_UI", "Any Words", nullptr));
     m_ActionAnyWords->setCheckable(true);
     m_ActionAnyWords->setChecked(m_SearchAnyWords);
     filterSearch->addAction(m_ActionAnyWords);
@@ -135,7 +135,7 @@ void FilterListToolboxWidget::setupSearchField()
   {
     m_ActionExactPhrase = new QAction(filterSearch);
     m_ActionExactPhrase->setObjectName(QString::fromUtf8("actionExactPhrase"));
-    m_ActionExactPhrase->setText(QApplication::translate("SIMPLView_UI", "Exact Phrase", 0));
+    m_ActionExactPhrase->setText(QApplication::translate("SIMPLView_UI", "Exact Phrase", nullptr));
     m_ActionExactPhrase->setCheckable(true);
     m_ActionExactPhrase->setChecked(m_SearchExactPhrase);
     filterSearch->addAction(m_ActionExactPhrase);

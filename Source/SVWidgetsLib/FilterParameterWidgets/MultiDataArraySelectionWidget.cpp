@@ -490,7 +490,10 @@ void MultiDataArraySelectionWidget::beforePreflight()
 
   // Previously in afterPreflight()
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(NULL == dca.get()) { return; }
+  if(nullptr == dca.get())
+  {
+    return;
+  }
 
   if(dca->doesAttributeMatrixExist(m_SelectedAttributeMatrixPath->getDataArrayPath()))
   {

@@ -35,7 +35,7 @@
 
 #include "MultiplicationOperator.h"
 
-#include <math.h>
+#include <cmath>
 
 #include "SIMPLib/CoreFilters/ArrayCalculator.h"
 

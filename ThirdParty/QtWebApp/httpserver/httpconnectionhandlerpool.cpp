@@ -9,10 +9,10 @@
 
 HttpConnectionHandlerPool::HttpConnectionHandlerPool(QSettings* settings, HttpRequestHandler* requestHandler)
 {
-  Q_ASSERT(settings != 0);
+  Q_ASSERT(settings != nullptr);
   this->settings = settings;
   this->requestHandler = requestHandler;
-  this->sslConfiguration = NULL;
+  this->sslConfiguration = nullptr;
   verbose = this->settings->value("verbose", false).toBool();
   loadSslConfig();
   cleanupTimer.start(settings->value("cleanupInterval", 1000).toInt());
@@ -35,7 +35,7 @@ HttpConnectionHandlerPool::~HttpConnectionHandlerPool()
 
 HttpConnectionHandler* HttpConnectionHandlerPool::getConnectionHandler()
 {
-  HttpConnectionHandler* freeHandler = 0;
+  HttpConnectionHandler* freeHandler = nullptr;
   mutex.lock();
   // find a free handler in pool
   foreach(HttpConnectionHandler* handler, pool)

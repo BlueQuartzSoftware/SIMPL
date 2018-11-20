@@ -136,7 +136,7 @@ template <typename T> int32_t readBinaryFile(typename DataArray<T>::Pointer p, c
 
   size_t master_counter = 0;
   size_t bytes_read = 0;
-  while(1)
+  while(true)
   {
     bytes_read = fread(chunkptr, sizeof(uint8_t), chunkSize, f);
     chunkptr = chunkptr + bytes_read;
@@ -166,7 +166,6 @@ RawBinaryReader::RawBinaryReader()
 , m_SkipHeaderBytes(0)
 , m_InputFile("")
 {
-
 }
 
 // -----------------------------------------------------------------------------

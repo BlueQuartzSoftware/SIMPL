@@ -52,7 +52,6 @@ CreateFeatureArrayFromElementArray::CreateFeatureArrayFromElementArray()
 , m_SelectedCellArrayPath("", "", "")
 , m_CreatedArrayName("")
 , m_FeatureIdsArrayPath("", "", "")
-, m_FeatureIds(nullptr)
 {
 }
 
