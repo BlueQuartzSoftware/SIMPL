@@ -62,7 +62,7 @@ protected:
   Dream3DTransformContainerToTransform();
   ~Dream3DTransformContainerToTransform() override;
 
-  void VerifyPreconditions() override;
+  void VerifyPreconditions();
 
   void GenerateData() override;
   ::TransformContainer::Pointer m_TransformContainer;
