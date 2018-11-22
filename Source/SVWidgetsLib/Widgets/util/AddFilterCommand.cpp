@@ -290,11 +290,11 @@ void AddFilterCommand::disconnectFilterSignalsSlots(AbstractFilter::Pointer filt
   PipelineModel* model = m_PipelineView->getPipelineModel();
   QModelIndex index = model->indexOfFilter(filter.get());
 
-  QObject::disconnect(filter.get(), &AbstractFilter::filterCompleted, 0, 0);
+  QObject::disconnect(filter.get(), &AbstractFilter::filterCompleted, nullptr, nullptr);
 
-  QObject::disconnect(filter.get(), &AbstractFilter::filterInProgress, 0, 0);
+  QObject::disconnect(filter.get(), &AbstractFilter::filterInProgress, nullptr, nullptr);
 
   FilterInputWidget* fiw = model->filterInputWidget(index);
 
-  QObject::disconnect(fiw, &FilterInputWidget::filterParametersChanged, 0, 0);
+  QObject::disconnect(fiw, &FilterInputWidget::filterParametersChanged, nullptr, nullptr);
 }

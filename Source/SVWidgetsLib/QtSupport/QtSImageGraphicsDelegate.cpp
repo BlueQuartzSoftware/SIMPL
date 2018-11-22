@@ -57,9 +57,6 @@
 // -----------------------------------------------------------------------------
 QtSImageGraphicsDelegate::QtSImageGraphicsDelegate(QObject* parent)
 : QObject(parent)
-, m_MainWindow(nullptr)
-, m_GraphicsView(nullptr)
-, m_GraphicsScene(nullptr)
 , m_CompositeImages(false)
 , m_CurrentGraphicsItem(nullptr)
 , _zoomFactor(1.0)

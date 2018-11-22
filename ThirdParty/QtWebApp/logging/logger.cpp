@@ -8,10 +8,10 @@
 #include <QObject>
 #include <QThread>
 #include <QtCore/QDateTime>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
-Logger* Logger::defaultLogger = 0;
+Logger* Logger::defaultLogger = nullptr;
 
 QThreadStorage<QHash<QString, QString>*> Logger::logVars;
 
@@ -84,11 +84,11 @@ Logger::~Logger()
   if(defaultLogger == this)
   {
 #if QT_VERSION >= 0x050000
-    qInstallMessageHandler(0);
+    qInstallMessageHandler(nullptr);
 #else
     qInstallMsgHandler(0);
 #endif
-    defaultLogger = 0;
+    defaultLogger = nullptr;
   }
 }
 

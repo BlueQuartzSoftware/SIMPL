@@ -63,10 +63,7 @@ static const int Duration = 400;
 // -----------------------------------------------------------------------------
 FilterParameterWidget::FilterParameterWidget(QWidget* parent)
 : QFrame(parent)
-, m_Filter(nullptr)
-, m_FilterParameter(nullptr)
 , m_WidgetIsExpanding(false)
-, m_Timer(nullptr)
 , animation(nullptr)
 , effect(nullptr)
 {
@@ -81,7 +78,6 @@ FilterParameterWidget::FilterParameterWidget(FilterParameter* parameter, Abstrac
 , m_Filter(filter)
 , m_FilterParameter(parameter)
 , m_WidgetIsExpanding(false)
-, m_Timer(nullptr)
 , animation(nullptr)
 , effect(nullptr)
 {

@@ -61,7 +61,6 @@ namespace Detail
 DataFormatPage::DataFormatPage(QSharedPointer<ASCIIDataModel> model, const QString& inputFilePath, int numLines, DataContainerArray::Pointer dca, QWidget* parent)
 : AbstractWizardPage(inputFilePath, parent)
 , m_NumLines(numLines)
-, m_EditHeadersDialog(nullptr)
 , m_Dca(dca)
 , m_ASCIIDataModel(model)
 {

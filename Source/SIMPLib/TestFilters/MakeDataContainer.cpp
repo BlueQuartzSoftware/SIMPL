@@ -57,13 +57,7 @@ MakeDataContainer::MakeDataContainer()
 , m_CellPhasesArrayName(SIMPL::CellData::Phases)
 , m_CrystalStructuresArrayName(SIMPL::EnsembleData::CrystalStructures)
 , m_LatticeConstantsArrayName(SIMPL::EnsembleData::LatticeConstants)
-, m_FeatureIds(nullptr)
-, m_CellPhases(nullptr)
-, m_CellEulerAngles(nullptr)
-, m_CrystalStructures(nullptr)
-, m_LatticeConstants(nullptr)
 {
-
 }
 
 // -----------------------------------------------------------------------------

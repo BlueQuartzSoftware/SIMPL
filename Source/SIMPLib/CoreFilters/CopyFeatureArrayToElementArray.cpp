@@ -50,7 +50,6 @@ CopyFeatureArrayToElementArray::CopyFeatureArrayToElementArray()
 : m_SelectedFeatureArrayPath("", "", "")
 , m_FeatureIdsArrayPath("", "", "")
 , m_CreatedArrayName("")
-, m_FeatureIds(nullptr)
 {
 }
 

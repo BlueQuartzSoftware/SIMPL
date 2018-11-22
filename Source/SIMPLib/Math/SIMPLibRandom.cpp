@@ -80,11 +80,11 @@
 
 #include "SIMPLibRandom.h"
 
-#include <assert.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cassert>
+#include <cstdio>
+#include <cstdlib>
 
-#include <math.h>
+#include <cmath>
 
 /* Period parameters */
 

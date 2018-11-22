@@ -200,7 +200,6 @@ void GenerateColorTableWidget::filterNeedsInputParameters(AbstractFilter* filter
 // -----------------------------------------------------------------------------
 void GenerateColorTableWidget::beforePreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -208,5 +207,4 @@ void GenerateColorTableWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void GenerateColorTableWidget::afterPreflight()
 {
-
 }

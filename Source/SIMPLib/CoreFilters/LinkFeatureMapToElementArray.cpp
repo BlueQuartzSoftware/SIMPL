@@ -50,8 +50,6 @@ LinkFeatureMapToElementArray::LinkFeatureMapToElementArray()
 : m_CellFeatureAttributeMatrixName("")
 , m_SelectedCellArrayPath("", "", "")
 , m_ActiveArrayName("")
-, m_SelectedCellData(nullptr)
-, m_Active(nullptr)
 {
 }
 

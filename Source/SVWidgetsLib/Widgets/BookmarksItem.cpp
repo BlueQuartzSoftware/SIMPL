@@ -49,7 +49,6 @@ BookmarksItem::BookmarksItem(const QString &name, const QString &path, Bookmarks
 , m_Icon(QIcon())
 , m_ParentItem(parent)
 {
-
 }
 
 // -----------------------------------------------------------------------------

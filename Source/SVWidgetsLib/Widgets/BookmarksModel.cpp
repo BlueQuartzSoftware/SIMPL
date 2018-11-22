@@ -212,7 +212,7 @@ Qt::ItemFlags BookmarksModel::flags(const QModelIndex& index) const
 {
   if(!index.isValid())
   {
-    return 0;
+    return nullptr;
   }
 
   Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);

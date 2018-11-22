@@ -49,7 +49,6 @@ DynamicTableData::DynamicTableData() :
   m_DefaultRowCount(0),
   m_DefaultColCount(0)
 {
-
 }
 
 // -----------------------------------------------------------------------------
