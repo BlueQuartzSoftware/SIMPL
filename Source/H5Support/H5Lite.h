@@ -710,7 +710,7 @@ namespace H5Support_NAMESPACE
         }
 
         /* Create the data space for the attribute. */
-        hsize_t* dimsPtr = 0x0;
+        hsize_t* dimsPtr = nullptr;
 // size mismatch between hsize_t and size_t
         std::vector<hsize_t> _dims(rank, 0);
         for (int32_t i = 0; i < rank; ++i)
@@ -826,7 +826,7 @@ namespace H5Support_NAMESPACE
         }
 
         /* Create the data space for the attribute. */
-        hsize_t* dimsPtr = 0x0;
+        hsize_t* dimsPtr = nullptr;
         //size mismatch between hsize_t and size_t
         std::vector<uint64_t>::size_type _size = dims.size();
         //hsize_t _dims[ _size ];
