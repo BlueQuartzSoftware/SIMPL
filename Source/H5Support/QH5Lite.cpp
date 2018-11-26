@@ -35,8 +35,8 @@
 
 #include <H5Support/QH5Lite.h>
 
+#include <cstring>
 #include <string>
-#include <string.h>
 
 #if defined(H5Support_NAMESPACE)
 using namespace H5Support_NAMESPACE;

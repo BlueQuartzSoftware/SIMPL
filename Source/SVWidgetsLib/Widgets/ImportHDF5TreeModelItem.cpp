@@ -215,7 +215,7 @@ void ImportHDF5TreeModelItem::initializeChildCount()
   herr_t err = 0;
   // Build up an HDF path to the current group
   ImportHDF5TreeModelItem* currentParent = m_ParentItem;
-  if(NULL == currentParent)
+  if(nullptr == currentParent)
   {
     QString name("/"); // Add the "HDF5 Root Directory"
     ImportHDF5TreeModelItem* item = new ImportHDF5TreeModelItem(m_FileId, name, const_cast<ImportHDF5TreeModelItem*>(this));
@@ -273,7 +273,7 @@ void ImportHDF5TreeModelItem::initializeChildItems()
   herr_t err = 0;
   // Build up an HDF path to the current group
   ImportHDF5TreeModelItem* currentParent = m_ParentItem;
-  if(NULL == currentParent)
+  if(nullptr == currentParent)
   {
     QString name("/"); // Add the "HDF5 Root Directory"
     ImportHDF5TreeModelItem* item = new ImportHDF5TreeModelItem(m_FileId, name, const_cast<ImportHDF5TreeModelItem*>(this));
@@ -379,12 +379,12 @@ QString ImportHDF5TreeModelItem::generateHDFPath()
   ImportHDF5TreeModelItem* currentParent = m_ParentItem;
   QString path = m_ItemData.toString();
   // std::cout << "Current Item Data: " << path.toStdString() << std::endl;
-  if(currentParent != NULL && currentParent->m_ItemData.toString().compare("HEADER") == 0)
+  if(currentParent != nullptr && currentParent->m_ItemData.toString().compare("HEADER") == 0)
   {
     // std::cout << "path=" << path.toStdString() << std::endl;
-    currentParent = NULL; // We are at the top
+    currentParent = nullptr; // We are at the top
   }
-  while(currentParent != NULL)
+  while(currentParent != nullptr)
   {
     QString parentName = currentParent->data(0).toString();
     if(parentName.compare("/") == 0)
@@ -398,9 +398,9 @@ QString ImportHDF5TreeModelItem::generateHDFPath()
     // std::cout << "path=" << path.toStdString() << std::endl;
     // Get the parents Parent..
     currentParent = currentParent->parent();
-    if(currentParent->parent() == NULL)
+    if(currentParent->parent() == nullptr)
     {
-      currentParent = NULL; // We are at the top
+      currentParent = nullptr; // We are at the top
     }
   }
   return path;

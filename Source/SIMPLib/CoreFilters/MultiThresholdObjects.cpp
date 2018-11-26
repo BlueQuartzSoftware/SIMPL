@@ -48,7 +48,6 @@
 // -----------------------------------------------------------------------------
 MultiThresholdObjects::MultiThresholdObjects()
 : m_DestinationArrayName(SIMPL::GeneralData::Mask)
-, m_Destination(nullptr)
 {
 }
 

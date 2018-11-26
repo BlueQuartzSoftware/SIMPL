@@ -109,5 +109,4 @@ float ShapeOps::inside(float axis1comp, float axis2comp, float axis3comp)
 // -----------------------------------------------------------------------------
 void ShapeOps::init()
 {
-
 }

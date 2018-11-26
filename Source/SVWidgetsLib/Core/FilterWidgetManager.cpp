@@ -41,7 +41,7 @@
 
 #include "SVWidgetsLib/FilterWidgetHeaders.h"
 
-FilterWidgetManager* FilterWidgetManager::self = 0;
+FilterWidgetManager* FilterWidgetManager::self = nullptr;
 
 // -----------------------------------------------------------------------------
 //

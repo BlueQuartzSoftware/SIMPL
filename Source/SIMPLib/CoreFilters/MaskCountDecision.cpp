@@ -48,7 +48,6 @@
 MaskCountDecision::MaskCountDecision()
 : m_MaskArrayPath("", "", "")
 , m_NumberOfTrues(0)
-, m_Mask(nullptr)
 {
 }
 

@@ -64,7 +64,6 @@ QString FileListInfoWidget::m_OpenDialogLastFilePath = "";
 FileListInfoWidget::FileListInfoWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 , m_Ui(new Ui::FileListInfoWidget)
-, m_DidCausePreflight(false)
 {
   FileListInfoFilterParameter* fli = dynamic_cast<FileListInfoFilterParameter*>(parameter);
   if(nullptr == fli)

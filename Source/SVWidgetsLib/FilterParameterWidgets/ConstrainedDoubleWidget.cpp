@@ -119,7 +119,6 @@ void ConstrainedDoubleWidget::filterNeedsInputParameters(AbstractFilter* filter)
 // -----------------------------------------------------------------------------
 void ConstrainedDoubleWidget::beforePreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -127,5 +126,4 @@ void ConstrainedDoubleWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void ConstrainedDoubleWidget::afterPreflight()
 {
-
 }

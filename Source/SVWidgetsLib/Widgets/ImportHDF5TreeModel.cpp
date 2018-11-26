@@ -153,7 +153,7 @@ Qt::ItemFlags ImportHDF5TreeModel::flags(const QModelIndex& index) const
 {
   if(!index.isValid())
   {
-    return 0;
+    return nullptr;
   }
 
   ImportHDF5TreeModelItem* item = static_cast<ImportHDF5TreeModelItem*>(index.internalPointer());

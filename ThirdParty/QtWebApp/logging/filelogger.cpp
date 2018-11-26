@@ -12,7 +12,7 @@
 #include <QTime>
 #include <QTimerEvent>
 #include <QtGlobal>
-#include <stdio.h>
+#include <cstdio>
 
 void FileLogger::refreshSettings()
 {
@@ -53,10 +53,10 @@ void FileLogger::refreshSettings()
 FileLogger::FileLogger(QSettings* settings, const int refreshInterval, QObject* parent)
 : Logger(parent)
 {
-  Q_ASSERT(settings != 0);
+  Q_ASSERT(settings != nullptr);
   Q_ASSERT(refreshInterval >= 0);
   this->settings = settings;
-  file = 0;
+  file = nullptr;
   if(refreshInterval > 0)
   {
     refreshTimer.start(refreshInterval, this);
@@ -113,7 +113,7 @@ void FileLogger::open()
     if(!file->open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
     {
       qWarning("Cannot open log file %s: %s", qPrintable(fileName), qPrintable(file->errorString()));
-      file = 0;
+      file = nullptr;
     }
   }
 }
@@ -124,7 +124,7 @@ void FileLogger::close()
   {
     file->close();
     delete file;
-    file = 0;
+    file = nullptr;
   }
 }
 

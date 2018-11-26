@@ -621,7 +621,7 @@ herr_t ImportHDF5DatasetWidget::updateAttributeTable(const QString& path)
   }
 
   // Update the attributes table
-  if(NULL != attributesTable)
+  if(nullptr != attributesTable)
   {
     attributesTable->clearContents(); // Clear the attributes Table
     std::list<std::string> attributes;

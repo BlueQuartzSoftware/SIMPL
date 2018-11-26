@@ -263,7 +263,10 @@ void DataArrayCreationWidget::beforePreflight()
 void DataArrayCreationWidget::afterPreflight()
 {
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if (NULL == dca.get()) { return; }
+  if(nullptr == dca.get())
+  {
+    return;
+  }
 
   m_SelectedAttributeMatrixPath->afterPreflight();
 }

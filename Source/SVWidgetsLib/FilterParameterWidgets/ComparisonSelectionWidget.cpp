@@ -386,7 +386,10 @@ void ComparisonSelectionWidget::beforePreflight()
 void ComparisonSelectionWidget::afterPreflight()
 {
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if (NULL == dca.get()) { return; }
+  if(nullptr == dca.get())
+  {
+    return;
+  }
 
   // Update the selectable feature arrays
   DataArrayPath amPath = m_SelectedAttributeMatrixPath->getDataArrayPath();

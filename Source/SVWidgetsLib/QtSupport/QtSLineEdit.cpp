@@ -124,7 +124,7 @@ SearchLineEditPrivate::SearchLineEditPrivate(QtSLineEdit* parent)
 {
   for(int i = 0; i < 2; ++i)
   {
-    m_ButtonMenus[i] = 0;
+    m_ButtonMenus[i] = nullptr;
     m_MenuTabFocusTriggers[i] = false;
     m_IconButtons[i] = new IconButton(parent);
     m_IconButtons[i]->installEventFilter(this);

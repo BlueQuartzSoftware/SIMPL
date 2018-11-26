@@ -8,13 +8,13 @@
 
 HttpConnectionHandler::HttpConnectionHandler(QSettings* settings, HttpRequestHandler* requestHandler, QSslConfiguration* sslConfiguration)
 {
-  Q_ASSERT(settings != 0);
-  Q_ASSERT(requestHandler != 0);
+  Q_ASSERT(settings != nullptr);
+  Q_ASSERT(requestHandler != nullptr);
   this->settings = settings;
   this->requestHandler = requestHandler;
   this->sslConfiguration = sslConfiguration;
   this->verbose = this->settings->value("verbose", false).toBool();
-  currentRequest = 0;
+  currentRequest = nullptr;
   busy = false;
 
   // Create TCP or SSL socket
@@ -121,7 +121,7 @@ void HttpConnectionHandler::handleConnection(tSocketDescriptor socketDescriptor)
   readTimer.start(readTimeout);
   // delete previous request
   delete currentRequest;
-  currentRequest = 0;
+  currentRequest = nullptr;
 }
 
 bool HttpConnectionHandler::isBusy()
@@ -150,7 +150,7 @@ void HttpConnectionHandler::readTimeout()
   }
   socket->disconnectFromHost();
   delete currentRequest;
-  currentRequest = 0;
+  currentRequest = nullptr;
 }
 
 void HttpConnectionHandler::disconnected()
@@ -202,7 +202,7 @@ void HttpConnectionHandler::read()
       }
       socket->disconnectFromHost();
       delete currentRequest;
-      currentRequest = 0;
+      currentRequest = nullptr;
       return;
     }
 
@@ -296,7 +296,7 @@ void HttpConnectionHandler::read()
         readTimer.start(readTimeout);
       }
       delete currentRequest;
-      currentRequest = 0;
+      currentRequest = nullptr;
     }
   }
 }

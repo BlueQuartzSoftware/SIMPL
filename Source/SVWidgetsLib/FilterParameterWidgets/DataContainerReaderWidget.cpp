@@ -35,7 +35,7 @@
 
 #include "DataContainerReaderWidget.h"
 
-#include <assert.h>
+#include <cassert>
 
 #include <QtCore/QDateTime>
 #include <QtCore/QDir>
@@ -269,7 +269,6 @@ DataContainerReaderWidget::DataContainerReaderWidget(FilterParameter* parameter,
 // -----------------------------------------------------------------------------
 DataContainerReaderWidget::DataContainerReaderWidget(QWidget* parent)
 : FilterParameterWidget(nullptr, nullptr, parent)
-, m_Filter(nullptr)
 , m_FilterParameter(nullptr)
 , m_DidCausePreflight(false)
 {

@@ -39,7 +39,6 @@
 //
 // -----------------------------------------------------------------------------
 QtSFileDragMessageBox::QtSFileDragMessageBox(QWidget* parent)
-: okBtnPressed(false)
 {
   setupUi(this);
   setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);

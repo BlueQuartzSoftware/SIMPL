@@ -15,7 +15,7 @@ HttpRequest::HttpRequest(QSettings* settings)
   expectedBodySize = 0;
   maxSize = settings->value("maxRequestSize", "16000").toInt();
   maxMultiPartSize = settings->value("maxMultiPartSize", "1000000").toInt();
-  tempFile = NULL;
+  tempFile = nullptr;
 }
 
 void HttpRequest::readRequest(QTcpSocket* socket)
@@ -172,7 +172,7 @@ void HttpRequest::readBody(QTcpSocket* socket)
     qDebug("HttpRequest: receiving multipart body");
 #endif
     // Create an object for the temporary file, if not already present
-    if(tempFile == NULL)
+    if(tempFile == nullptr)
     {
       tempFile = new QTemporaryFile;
     }
@@ -444,7 +444,7 @@ void HttpRequest::parseMultiPartFile()
 #ifdef SUPERVERBOSE
     qDebug("HttpRequest: reading multpart data");
 #endif
-    QTemporaryFile* uploadedFile = 0;
+    QTemporaryFile* uploadedFile = nullptr;
     QByteArray fieldValue;
     while(!tempFile->atEnd() && !finished && (tempFile->error() == 0u))
     {
@@ -523,7 +523,7 @@ HttpRequest::~HttpRequest()
     }
     delete file;
   }
-  if(tempFile != NULL)
+  if(tempFile != nullptr)
   {
     if(tempFile->isOpen())
     {

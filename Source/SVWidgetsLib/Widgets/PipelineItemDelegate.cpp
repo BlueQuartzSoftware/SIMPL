@@ -61,7 +61,6 @@ PipelineItemDelegate::PipelineItemDelegate(SVPipelineView* view)
   : QStyledItemDelegate(nullptr)
   , m_View(view)
 {
-
 }
 
 // -----------------------------------------------------------------------------

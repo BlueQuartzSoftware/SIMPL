@@ -87,7 +87,6 @@ void FilterManager::RegisterFilterFactory(const QString& name, IFilterFactory::P
 // -----------------------------------------------------------------------------
 void FilterManager::RegisterKnownFilters(FilterManager* /* fm */)
 {
-
 }
 
 // -----------------------------------------------------------------------------

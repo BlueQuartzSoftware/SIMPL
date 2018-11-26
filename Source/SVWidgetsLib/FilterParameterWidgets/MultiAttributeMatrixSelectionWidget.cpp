@@ -488,7 +488,10 @@ void MultiAttributeMatrixSelectionWidget::beforePreflight()
 
   // Previously in afterPreflight()
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(NULL == dca.get()) { return; }
+  if(nullptr == dca.get())
+  {
+    return;
+  }
 
   if(dca->doesDataContainerExist(m_SelectedDataContainerPath->getDataArrayPath().getDataContainerName()))
   {

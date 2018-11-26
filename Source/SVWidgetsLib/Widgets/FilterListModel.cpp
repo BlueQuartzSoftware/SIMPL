@@ -143,7 +143,7 @@ Qt::ItemFlags FilterListModel::flags(const QModelIndex& index) const
 {
   if(!index.isValid())
   {
-    return 0;
+    return nullptr;
   }
 
   FilterListItem* item = getItem(index);

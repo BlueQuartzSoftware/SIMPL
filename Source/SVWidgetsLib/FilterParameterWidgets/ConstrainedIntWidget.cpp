@@ -119,7 +119,6 @@ void ConstrainedIntWidget::filterNeedsInputParameters(AbstractFilter* filter)
 // -----------------------------------------------------------------------------
 void ConstrainedIntWidget::beforePreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -127,5 +126,4 @@ void ConstrainedIntWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void ConstrainedIntWidget::afterPreflight()
 {
-
 }

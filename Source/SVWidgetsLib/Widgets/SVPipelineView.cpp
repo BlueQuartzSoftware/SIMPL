@@ -1730,12 +1730,12 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint& pos, const QMode
       widgetEnabled = filter->getEnabled();
     }
 
-    disconnect(m_ActionEnableFilter, &QAction::toggled, 0, 0);
+    disconnect(m_ActionEnableFilter, &QAction::toggled, nullptr, nullptr);
     connect(m_ActionEnableFilter, &QAction::toggled, [=] { setFiltersEnabled(toggledIndices, m_ActionEnableFilter->isChecked()); });
   }
   else
   {
-    disconnect(m_ActionEnableFilter, &QAction::toggled, 0, 0);
+    disconnect(m_ActionEnableFilter, &QAction::toggled, nullptr, nullptr);
     connect(m_ActionEnableFilter, &QAction::toggled, [=] { setFiltersEnabled(selectedIndexes, m_ActionEnableFilter->isChecked()); });
   }
 

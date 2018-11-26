@@ -35,7 +35,7 @@
 
 #include "DataContainerArrayProxyWidget.h"
 
-#include <assert.h>
+#include <cassert>
 
 #include <QtCore/QMetaProperty>
 

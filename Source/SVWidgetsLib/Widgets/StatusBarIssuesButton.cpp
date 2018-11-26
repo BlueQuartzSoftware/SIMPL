@@ -14,7 +14,6 @@
 StatusBarIssuesButton::StatusBarIssuesButton(QWidget* parent)
 : StatusBarButton(parent)
 {
-
 }
 
 // -----------------------------------------------------------------------------

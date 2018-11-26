@@ -218,7 +218,7 @@ void FilterLibraryToolboxWidget::showContextMenuForWidget(const QPoint& pos)
 
     QAction* actionLaunchHelp = new QAction(m_ContextMenu);
     actionLaunchHelp->setObjectName(QString::fromUtf8("actionLaunchHelp"));
-    actionLaunchHelp->setText(QApplication::translate("SIMPLView_UI", "Filter Help", 0));
+    actionLaunchHelp->setText(QApplication::translate("SIMPLView_UI", "Filter Help", nullptr));
     connect(actionLaunchHelp, SIGNAL(triggered()), m_Mapper, SLOT(map()));
     m_Mapper->setMapping(actionLaunchHelp, itemName);
     connect(m_Mapper, SIGNAL(mapped(QString)), this, SLOT(launchHelpForItem(QString)));
