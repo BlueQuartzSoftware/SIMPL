@@ -100,6 +100,10 @@ QString SIMPLDataPathValidator::convertToAbsolutePath(const QString &path)
     }
     absolutePath.prepend(parentPath);
     absolutePath = QDir::toNativeSeparators(absolutePath);
+    //macOS and Linux do not like to have a ":" character in the path names
+    #if !defined (Q_OS_WIN)
+    absolutePath.replace(":", "");
+    #endif
   }
 
   return absolutePath;
