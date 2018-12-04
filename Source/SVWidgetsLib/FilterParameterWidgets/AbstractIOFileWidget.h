@@ -118,7 +118,6 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
 
   private:
     QAction* m_ShowFileAction = nullptr;
-    QString  m_CurrentlyValidPath = "";
     QString  m_CurrentText = "";
     QPixmap m_Icon = QPixmap(QLatin1String(":/SIMPL/icons/images/caret-bottom.png"));
 

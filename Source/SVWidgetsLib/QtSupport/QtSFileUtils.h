@@ -36,6 +36,8 @@
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
+class QLineEdit;
+
 /**
  * @brief The QtSFileUtils class
  */
@@ -57,6 +59,21 @@ class SVWidgetsLib_EXPORT QtSFileUtils
      * @param path The path to reveal
      */
     static void ShowPathInGui(QWidget* parent, const QString &path);
+
+    /**
+     * @brief verifyPathExists
+     * @param filePath
+     * @param lineEdit
+     * @return
+     */
+    static bool VerifyPathExists(QString filePath, QLineEdit* lineEdit);
+
+    /**
+     * @brief hasValidFilePath
+     * @param filePath
+     * @return
+     */
+    static bool HasValidFilePath(const QString &filePath);
 
     /**
      * @brief GetPathSeperator
