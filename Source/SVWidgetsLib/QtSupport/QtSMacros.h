@@ -54,7 +54,7 @@
   QString var = prefs.value(#var).toString();\
   var = QDir::toNativeSeparators(var);\
   prefix##var->setText(var );\
-  verifyPathExists(var, prefix##var);\
+  QtSFileUtils::VerifyPathExists(var, prefix##var);\
   if (prefix##var->text().isEmpty() == true) { prefix##var->setText(emptyValue); }\
   prefix##var->blockSignals(false);
 
@@ -138,7 +138,7 @@
 
 
 #define SANITY_CHECK_INPUT(prefix, input)\
-  if (verifyPathExists(prefix##input->text(), prefix##input) == false) {\
+  if (QtSFileUtils::VerifyPathExists(prefix##input->text(), prefix##input) == false) {\
     QMessageBox::critical(this, tr("SIMPLView"),\
                           tr("The input " #input " does not exist. Please ensure the file or folder exists before starting the operation"),\
                           QMessageBox::Ok,\

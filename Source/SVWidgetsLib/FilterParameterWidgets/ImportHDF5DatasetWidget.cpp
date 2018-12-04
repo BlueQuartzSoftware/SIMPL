@@ -308,7 +308,7 @@ void ImportHDF5DatasetWidget::on_value_textChanged(const QString& text)
     absPathLabel->setText(inputPath);
   }
 
-  if(hasValidFilePath(inputPath))
+  if(QtSFileUtils::HasValidFilePath(inputPath))
   {
     m_ShowFileAction->setEnabled(true);
   }
@@ -396,24 +396,6 @@ void ImportHDF5DatasetWidget::initializeHDF5Paths()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool ImportHDF5DatasetWidget::verifyPathExists(const QString& filePath, QtSLineEdit* lineEdit)
-{
-  QFileInfo fileinfo(filePath);
-  SVStyle* style = SVStyle::Instance();
-  if(!fileinfo.exists())
-  {
-    style->LineEditErrorStyle(lineEdit);
-  }
-  else
-  {
-    style->LineEditClearStyle(lineEdit);
-  }
-  return fileinfo.exists();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void ImportHDF5DatasetWidget::on_selectBtn_clicked()
 {
   QString s = QString("HDF5 Files (*.hdf5 *.h5);;All Files(*.*)");
@@ -426,7 +408,15 @@ void ImportHDF5DatasetWidget::on_selectBtn_clicked()
 
   file = QDir::toNativeSeparators(file);
 
-  setValue(file);
+  if(initWithFile(file))
+  {
+    value->setText(file);
+    emit parametersChanged();
+  }
+
+  // Store the last used directory into the private instance variable
+  QFileInfo fi(file);
+  m_OpenDialogLastDirectory = fi.path();
 }
 
 // -----------------------------------------------------------------------------
@@ -1161,7 +1151,7 @@ void ImportHDF5DatasetWidget::setValue(const QString& text)
   m_CurrentText = text;
 
   // Set/Remove the red outline if the file does exist
-  if(!verifyPathExists(inputPath, value))
+  if(!QtSFileUtils::VerifyPathExists(inputPath, value))
   {
     return;
   }

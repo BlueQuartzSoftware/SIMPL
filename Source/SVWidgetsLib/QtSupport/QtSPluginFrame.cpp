@@ -41,6 +41,8 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMessageBox>
 
+#include "QtSupport/QtSFileUtils.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -76,24 +78,6 @@ bool QtSPluginFrame::verifyOutputPathParentExists(QString outFilePath, QLineEdit
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool QtSPluginFrame::verifyPathExists(QString outFilePath, QLineEdit* lineEdit)
-{
-  //  qDebug() << "outFilePath: " << outFilePath() << "\n";
-  QFileInfo fileinfo(outFilePath);
-  if(!fileinfo.exists())
-  {
-    lineEdit->setStyleSheet("border: 1px solid red;");
-  }
-  else
-  {
-    lineEdit->setStyleSheet("");
-  }
-  return fileinfo.exists();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void QtSPluginFrame::setStatusBar(QStatusBar* statusBar)
 {
   this->m_StatusBar = statusBar;
@@ -119,7 +103,7 @@ bool QtSPluginFrame::sanityCheckOutputDirectory(QLineEdit* le, QString msgTitle)
     return false;
   }
 
-  if(!verifyPathExists(le->text(), le))
+  if(!QtSFileUtils::VerifyPathExists(le->text(), le))
   {
     QString msg("The Output Directory '");
     msg.append(le->text()).append("'\ndoes not exist. Would you like to create it?");
