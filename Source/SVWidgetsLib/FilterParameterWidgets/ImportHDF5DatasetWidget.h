@@ -70,14 +70,6 @@ public:
     return m_CurrentOpenFile;
   }
 
-  /**
-   * @brief verifyPathExists
-   * @param filePath
-   * @param lineEdit
-   * @return
-   */
-  bool verifyPathExists(QString filePath, QtSFSDropLabel* lineEdit);
-
 public slots:
   void beforePreflight();
   void afterPreflight();

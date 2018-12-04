@@ -270,7 +270,7 @@ void AbstractIOFileWidget::on_m_LineEdit_textChanged(const QString& text)
     absPathLabel->setText(inputPath);
   }
 
-  if(hasValidFilePath(inputPath))
+  if(QtSFileUtils::HasValidFilePath(inputPath))
   {
     m_ShowFileAction->setEnabled(true);
   }

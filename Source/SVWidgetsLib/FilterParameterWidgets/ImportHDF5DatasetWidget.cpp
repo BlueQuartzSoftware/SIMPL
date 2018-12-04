@@ -62,6 +62,7 @@
 #include "SIMPLib/CoreFilters/ImportHDF5Dataset.h"
 #include "SIMPLib/FilterParameters/ImportHDF5DatasetFilterParameter.h"
 
+#include "SVWidgetsLib/QtSupport/QtSFileUtils.h"
 #include "SVWidgetsLib/Widgets/ImportHDF5TreeModel.h"
 #include "SVWidgetsLib/Widgets/ImportHDF5TreeModelItem.h"
 
@@ -226,29 +227,12 @@ void ImportHDF5DatasetWidget::initializeHDF5Paths()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool ImportHDF5DatasetWidget::verifyPathExists(QString filePath, QtSFSDropLabel* lineEdit)
-{
-  QFileInfo fileinfo(filePath);
-  if(!fileinfo.exists())
-  {
-    lineEdit->changeStyleSheet(QtSFSDropLabel::FS_DOESNOTEXIST_STYLE);
-  }
-  else
-  {
-    lineEdit->changeStyleSheet(QtSFSDropLabel::FS_STANDARD_STYLE);
-  }
-  return fileinfo.exists();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void ImportHDF5DatasetWidget::on_value_fileDropped(const QString& text)
 {
   m_OpenDialogLastDirectory = text;
 
   // Set/Remove the red outline if the file does exist
-  if(verifyPathExists(text, value))
+  if(QtSFileUtils::VerifyPathExists(text, dynamic_cast<QLineEdit*>(value)))
   {
     if(initWithFile(text))
     {
@@ -288,7 +272,7 @@ void ImportHDF5DatasetWidget::on_selectBtn_clicked()
 // -----------------------------------------------------------------------------
 void ImportHDF5DatasetWidget::on_showLocationBtn_clicked()
 {
-  hasValidFilePath(value->text());
+  QtSFileUtils::HasValidFilePath(value->text());
   showFileInFileSystem();
 }
 
