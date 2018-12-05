@@ -49,7 +49,7 @@ protected:
   InPlaceDream3DDataToImageFilter();
   virtual ~InPlaceDream3DDataToImageFilter();
 
-  virtual void VerifyPreconditions() override;
+  virtual void VerifyPreconditions() ITKv5_CONST override;
 
   virtual void GenerateOutputInformation() override;
   virtual void GenerateData() override;

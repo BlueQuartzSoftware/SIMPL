@@ -66,7 +66,7 @@ protected:
   Dream3DITransformContainerToTransform();
   ~Dream3DITransformContainerToTransform() override;
 
-  void VerifyPreconditions();
+  void VerifyPreconditions() ITKv5_CONST;
 
   void GenerateData() override;
   ProcessObject::DataObjectPointer MakeOutput(ProcessObject::DataObjectPointerArraySizeType) override;
