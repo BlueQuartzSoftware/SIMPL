@@ -36,6 +36,7 @@ public:
   virtual void SetInput(const ImageType* image);
 
   DecoratorType* GetOutput();
+  const DecoratorType* GetOutput() const;
 
   void SetDataContainer(DataContainer::Pointer dc);
 
@@ -54,13 +55,13 @@ protected:
   InPlaceImageToDream3DDataFilter();
   virtual ~InPlaceImageToDream3DDataFilter();
 
-  virtual void VerifyPreconditions() override;
+  virtual void VerifyPreconditions() ITKv5_CONST override;
   ProcessObject::DataObjectPointer MakeOutput(ProcessObject::DataObjectPointerArraySizeType) override;
 
   virtual void GenerateData() override;
   virtual void GenerateOutputInformation() override;
 
-  void CheckValidArrayPathComponentName(std::string var);
+  void CheckValidArrayPathComponentName(std::string var) const;
 
 private:
   using Superclass::SetInput;
