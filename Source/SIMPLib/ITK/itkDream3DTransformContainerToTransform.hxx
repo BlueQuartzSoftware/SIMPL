@@ -83,14 +83,14 @@ Dream3DTransformContainerToTransform<ITKTransformType>
 template <typename ITKTransformType>
 void
 Dream3DTransformContainerToTransform<ITKTransformType>
-::VerifyPreconditions()
+::VerifyPreconditions() ITKv5_CONST
 {
   if(!m_TransformContainer)
   {
     itkExceptionMacro("Input transform container is empty");
   }
-  DecoratorType* outputPtr = this->GetOutput();
-  typename ITKTransformType::Pointer transform = outputPtr->Get();
+  const DecoratorType* outputPtr = this->GetOutput();
+  typename ITKTransformType::ConstPointer transform = outputPtr->Get();
   // Verifies that the number of Parameters and Fixed Parameters in the transform
   // match the expected number based on the transform type.
   if(transform->GetNumberOfParameters() != m_TransformContainer->getParameters().size())
@@ -143,5 +143,15 @@ Dream3DTransformContainerToTransform<ITKTransformType>
 {
   return itkDynamicCastInDebugMode<DecoratorType*>(this->GetPrimaryOutput());
 }
+
+
+template <typename ITKTransformType>
+const typename Dream3DTransformContainerToTransform<ITKTransformType>::DecoratorType*
+Dream3DTransformContainerToTransform<ITKTransformType>
+::GetOutput() const
+{
+  return itkDynamicCastInDebugMode<const DecoratorType*>(this->GetPrimaryOutput());
+}
+
 
 } // end of itk namespace
