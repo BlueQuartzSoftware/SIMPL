@@ -468,7 +468,7 @@ void DataContainerArray::removeDataContainerFromBundles(const QString& name)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataContainerArray::renameDataContainerBundle(const QString& oldName, const QString newName)
+bool DataContainerArray::renameDataContainerBundle(const QString& oldName, const QString& newName)
 {
   // Make sure we do not already have a DataContainerBundle with the newname
   QMap<QString, IDataContainerBundle::Pointer>::iterator iter = m_DataContainerBundles.find(newName);
