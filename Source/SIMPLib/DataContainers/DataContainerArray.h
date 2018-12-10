@@ -36,7 +36,7 @@
 
 #pragma once
 
-#include <stddef.h>       // for nullptr
+#include <cstddef>       // for nullptr
 
 #include <QtCore/QObject> // for Q_OBJECT
 #include <QtCore/QString>
@@ -244,7 +244,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
      * @param oldName
      * @param newName
      */
-    bool renameDataContainerBundle(const QString& oldName, const QString newName);
+    bool renameDataContainerBundle(const QString& oldName, const QString& newName);
 
     /**
      * @brief removeDataContainerFromBundle
@@ -268,7 +268,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
     DataContainerShPtr getPrereqDataContainer(Filter* filter, const QString& name, bool createIfNotExists = false)
     {
       DataContainerShPtr dc = getDataContainer(name);
-      if(nullptr == dc.get() && createIfNotExists == false)
+      if(nullptr == dc.get() && !createIfNotExists)
       {
         if (filter)
         {
@@ -278,7 +278,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
         }
         return dc;
       }
-      else if(nullptr != dc && createIfNotExists == true)
+      else if(nullptr != dc && createIfNotExists)
       {
         DataContainerShPtr dataContainer = DataContainer::New(name); // Create a new Data Container
         addDataContainer(dataContainer); // Put the new DataContainer into the array
@@ -319,7 +319,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
         }
       }
 
-      if(doesDataContainerExist(dataContainerName) == true)
+      if(doesDataContainerExist(dataContainerName))
       {
         if (filter)
         {
@@ -388,7 +388,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
       QString ss;
       typename ArrayType::Pointer dataArray = ArrayType::NullPointer();
 
-      if(path.isEmpty() == true)
+      if(path.isEmpty())
       {
         if(filter)
         {
@@ -399,7 +399,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
         return dataArray;
       }
 
-      if(path.isValid() == false)
+      if(!path.isValid())
       {
         if(filter)
         {
@@ -456,7 +456,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
       QString ss;
       typename ArrayType::Pointer dataArray = ArrayType::NullPointer();
 
-      if(path.isEmpty() == true)
+      if(path.isEmpty())
       {
         if(filter)
         {
@@ -467,7 +467,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
         return dataArray;
       }
 
-      if(path.isValid() == false)
+      if(!path.isValid())
       {
         if(filter)
         {
@@ -527,11 +527,11 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
                                                              const DataArrayPath& path,
                                                              T initValue,
                                                              QVector<size_t> compDims,
-                                                             const QString property = "")
+                                                             const QString& property = "")
     {
       typename ArrayType::Pointer dataArray = ArrayType::NullPointer();
       QString ss;
-      if(path.isValid() == false)
+      if(!path.isValid())
       {
         if(filter)
         {
@@ -626,13 +626,13 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
      * @return bool Validation check
      */
     template<typename Filter>
-    bool validateNumberOfTuples(Filter* filter, QVector<DataArrayPath> paths)
+    bool validateNumberOfTuples(Filter* filter, const QVector<DataArrayPath>& paths)
     {
       if (paths.size() <= 1) { return false; }
       QVector<IDataArray::Pointer> dataArrays;
       bool valid = true;
       QString ss;
-      if (paths.at(0).isValid() == false && nullptr != filter)
+      if (!paths.at(0).isValid() && nullptr != filter)
       {
         filter->setErrorCondition(-10000);
         ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(paths.at(0).serialize());
@@ -653,7 +653,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
       dataArrays.push_back(array0);
       for (int32_t i = 1; i < paths.size(); i++)
       {
-        if (paths.at(i).isValid() == false && nullptr != filter)
+        if (!paths.at(i).isValid() && nullptr != filter)
         {
           filter->setErrorCondition(-10000);
           ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(paths.at(i).serialize());
@@ -703,9 +703,9 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
       if (dataArrays.size() <= 1) { return false; }
       bool valid = true;
       QString ss;
-      for (int32_t i = 0; i < dataArrays.size(); i++)
+      for (const auto & dataArray : dataArrays)
       {
-        if (nullptr == dataArrays.at(i).get() && nullptr != filter)
+        if (nullptr == dataArray && nullptr != filter)
         {
           filter->setErrorCondition(-10100);
           ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available").arg(__LINE__);
