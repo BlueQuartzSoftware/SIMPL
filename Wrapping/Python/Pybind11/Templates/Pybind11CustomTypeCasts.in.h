@@ -104,7 +104,7 @@ namespace pybind11
 			 * @param src
 			 * @return boolean
 			 */
-			bool load(handle src, bool)
+      bool load(handle src, bool b)
 			{
 				if (!src)
 				{
@@ -118,10 +118,7 @@ namespace pybind11
 					value.second = py::cast<double>(valuePair[1]);
 					return true;
 				}
-				else
-				{
-					return false;
-				}
+        return false;
 			}
 
 			/**
@@ -158,7 +155,7 @@ namespace pybind11
 			 * @param src
 			 * @return boolean
 			 */
-			bool load(handle src, bool)
+      bool load(handle src, bool b)
 			{
 				if (!src)
 				{
@@ -201,10 +198,7 @@ namespace pybind11
 					value.dataTypes = dataTypes;
 					return true;
 				}
-				else
-				{
-					return false;
-				}
+        return false;
 			}
 
 			/**
@@ -268,10 +262,7 @@ namespace pybind11
 					}
 					return true;
 				}
-				else
-				{
-					return false;
-				}
+        return false;
 			}
 
 			/**
@@ -327,10 +318,7 @@ namespace pybind11
 					}
 					return true;
 				}
-				else
-				{
-					return false;
-				}
+        return false;
 			}
 
 			/**
@@ -388,10 +376,7 @@ namespace pybind11
 					}
 					return true;
 				}
-				else
-				{
-					return false;
-				}
+        return false;
 			}
 
 			/**
@@ -449,10 +434,7 @@ namespace pybind11
 					}
 					return true;
 				}
-				else
-				{
-					return false;
-				}
+        return false;
 			}
 
 			/**
@@ -602,10 +584,7 @@ namespace pybind11
 					Py_XDECREF(source);
 					return true;
 				}
-				else
-				{
-					return false;
-				}
+        return false;
 			}
 
 			/**
@@ -638,3 +617,4 @@ namespace pybind11
 
 	} // namespace detail
 } // namespace pybind11
+

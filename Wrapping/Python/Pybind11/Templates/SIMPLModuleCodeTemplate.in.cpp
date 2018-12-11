@@ -197,7 +197,7 @@ PYBIND11_MODULE(dream3d, m)
 		  {
 			  dimensions.append(dim);
 		  }
-		  return dimensions.str();
+      return py::str(dimensions);
 	  })
 	  .def("__getitem__", [](const QVector<size_t> &dims, int key) {
 		  return dims[key];
