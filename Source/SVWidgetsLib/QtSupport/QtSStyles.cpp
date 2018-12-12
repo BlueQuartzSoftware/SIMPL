@@ -538,28 +538,3 @@ QIcon QtSStyles::IconForGroup(const QString &grpName)
 
   return QIcon(QPixmap::fromImage(grpImage));
 }
-
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString QtSStyles::StyleSheetForButton(const QString &objectName, const QString &cssName, const QString &imageName)
-{
-  QString css;
-  #if 0
-  QFile cssFile(QString("%1").arg(cssName));
-  if(cssFile.open(QFile::ReadOnly))
-  {
-    css = cssFile.readAll();
-    cssFile.close();
-  }
-  else
-  {
-    qDebug() << "Could not load CSS file: " << cssName;
-  }
-
-  css = css.replace("@OBJECT_NAME@", objectName);
-  css = css.replace("@IMAGE_PATH@", imageName);
-#endif
-  return css;
-}

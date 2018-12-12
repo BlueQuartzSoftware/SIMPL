@@ -553,16 +553,7 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
      * @return
      */
     QIcon IconForGroup(const QString &grpName);
-    
-    /**
-     * @brief SVStyle::IconForGroup
-     * @param objectName
-     * @param cssName
-     * @param imageName
-     * @return
-     */
-    QString StyleSheetForButton(const QString &objectName, const QString &cssName, const QString &imageName);
-    
+
   protected:
     SVStyle();
 

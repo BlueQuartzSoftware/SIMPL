@@ -80,10 +80,7 @@ void ComparisonContainerWidget::setupGui()
   connect(removeBtn, SIGNAL(clicked()),
     this, SLOT(deleteItem()));
   connect(unionComboBox, SIGNAL(currentIndexChanged(int)),
-    this, SLOT(unionOperatorChanged(int)));
-    
-    removeBtn->setStyleSheet(SVStyle::Instance()->StyleSheetForButton(removeBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::DeleteImagePath));
- 
+    this, SLOT(unionOperatorChanged(int))); 
 }
 
 // -----------------------------------------------------------------------------

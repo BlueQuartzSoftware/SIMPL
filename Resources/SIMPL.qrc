@@ -18,16 +18,14 @@
     <!-- Icon Resources -->
     <file>SIMPL/icons/images/add.png</file>
     <file>SIMPL/icons/images/add@2x.png</file>
-    <file>SIMPL/icons/images/arrow_down_green.png</file>
-    <file>SIMPL/icons/images/arrow_down_green@2x.png</file>
-    <file>SIMPL/icons/images/arrow_left_green.png</file>
-    <file>SIMPL/icons/images/arrow_left_green@2x.png</file>
-    <file>SIMPL/icons/images/arrow_right_black.png</file>
-    <file>SIMPL/icons/images/arrow_right_black@2x.png</file>
-    <file>SIMPL/icons/images/arrow_right_green.png</file>
-    <file>SIMPL/icons/images/arrow_right_green@2x.png</file>
-    <file>SIMPL/icons/images/arrow_up_green.png</file>
-    <file>SIMPL/icons/images/arrow_up_green@2x.png</file>
+    <file>SIMPL/icons/images/arrow_down.png</file>
+    <file>SIMPL/icons/images/arrow_down@2x.png</file>
+    <file>SIMPL/icons/images/arrow_left.png</file>
+    <file>SIMPL/icons/images/arrow_left@2x.png</file>
+    <file>SIMPL/icons/images/arrow_right.png</file>
+    <file>SIMPL/icons/images/arrow_right@2x.png</file>
+    <file>SIMPL/icons/images/arrow_up.png</file>
+    <file>SIMPL/icons/images/arrow_up@2x.png</file>
     <file>SIMPL/icons/images/Asterisk.png</file>
     <file>SIMPL/icons/images/Asterisk@2x.png</file>
     <file>SIMPL/icons/images/ban.png</file>

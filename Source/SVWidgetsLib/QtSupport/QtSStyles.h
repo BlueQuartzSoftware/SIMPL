@@ -147,15 +147,6 @@ class SVWidgetsLib_EXPORT QtSStyles : public QObject
      */
     static QIcon IconForGroup(const QString &grpName);
 
-    /**
-     * @brief QtSStyles::IconForGroup
-     * @param objectName
-     * @param cssName
-     * @param imageName
-     * @return
-     */
-    static QString StyleSheetForButton(const QString &objectName, const QString &cssName, const QString &imageName);
-
   protected:
     QtSStyles();
 

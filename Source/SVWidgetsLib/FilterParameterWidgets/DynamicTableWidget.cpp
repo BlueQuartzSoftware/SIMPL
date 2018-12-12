@@ -146,10 +146,7 @@ void DynamicTableWidget::setupGui()
 void DynamicTableWidget::updateButtonStyles()
 {
   // Set Style
-  addRowBtn->setStyleSheet(SVStyle::Instance()->StyleSheetForButton(addRowBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::AddImagePath));
-  addColBtn->setStyleSheet(SVStyle::Instance()->StyleSheetForButton(addColBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::AddImagePath));
-  deleteColBtn->setStyleSheet(SVStyle::Instance()->StyleSheetForButton(deleteColBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::DeleteImagePath));
-  deleteRowBtn->setStyleSheet(SVStyle::Instance()->StyleSheetForButton(deleteRowBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::DeleteImagePath));
+
 }
 // -----------------------------------------------------------------------------
 //
