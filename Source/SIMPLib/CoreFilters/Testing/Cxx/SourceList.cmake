@@ -6,7 +6,6 @@ set(TEST_${SUBDIR_NAME}_NAMES
   CombineAttributeArraysTest
   CombineAttributeMatricesTest
   ConditionalSetValueTest
-  ConvertDataContainerGeometryTest
   ConvertDataTest
   CopyFeatureArrayToElementArrayTest
   CopyObjectTest
@@ -23,6 +22,7 @@ set(TEST_${SUBDIR_NAME}_NAMES
   ExecuteProcessTest
   ExtractAttributeArraysFromGeometryTest
   ExtractComponentAsArrayTest
+  ExtractVertexGeometryTest
   FindDerivativesFilterTest
   FeatureDataCSVWriterTest
   GenerateColorTableTest

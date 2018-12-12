@@ -27,10 +27,10 @@ namespace UnitTest
     const QString OutputDREAM3DFile("@TEST_TEMP_DIR@/OutputDREAM3DFile.dream3d");
   }
 
-  namespace ConvertDataContainerGeometryTest
+  namespace ExtractVertexGeometryTest
   {
-   const QString TestFile1("@TEST_TEMP_DIR@/TestFile1.txt");
-   const QString TestFile2("@TEST_TEMP_DIR@/TestFile2.txt");
+   const QString TestFile("@TEST_TEMP_DIR@/TestFile1.dream3d");
+   const QString TestFileXdmf("@TEST_TEMP_DIR@/TestFile1.xdmf");
   }
 
   namespace DataArrayTest
