@@ -153,7 +153,7 @@ void ExtractVertexGeometry::dataCheck()
 
   if(getVertexDataContainerName().isEmpty())
   {
-    QString ss = QObject::tr("The name of the created Vertex DataContinaer is empty. Please specify a value.");
+    QString ss = QObject::tr("The name of the created Vertex DataContainer is empty. Please specify a value.");
     setErrorCondition(-2006);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
