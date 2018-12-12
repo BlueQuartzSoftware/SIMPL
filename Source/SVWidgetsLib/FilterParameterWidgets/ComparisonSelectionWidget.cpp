@@ -162,8 +162,6 @@ void ComparisonSelectionWidget::setupGui()
   matrixPropertyName = matrixPropertyName.replace("arrays", "matrix");
   m_SelectedAttributeMatrixPath->setPropertyName(matrixPropertyName);
 
-  addComparison->setStyleSheet(SVStyle::Instance()->StyleSheetForButton(addComparison->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::AddImagePath));
-  removeComparison->setStyleSheet(SVStyle::Instance()->StyleSheetForButton(removeComparison->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::DeleteImagePath));
 }
 
 #if 0

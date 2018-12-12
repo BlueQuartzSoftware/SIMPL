@@ -197,7 +197,6 @@ void FilterInputWidget::setupGui()
     m_Ui->brandingLabel->installEventFilter(this);
   }
   
-  m_Ui->informationBtn->setStyleSheet(SVStyle::Instance()->StyleSheetForButton(m_Ui->informationBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::InformationImagePath));  
   connect(m_Ui->informationBtn, SIGNAL(clicked()),
            this, SLOT(showHelp()));
 }
