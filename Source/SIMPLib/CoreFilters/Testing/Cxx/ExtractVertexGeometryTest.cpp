@@ -84,7 +84,7 @@ public:
 
     // Create an ImageGeometry
     std::vector<size_t> dims = {10ULL, 20ULL, 30ULL};
-    size_t cellCount = std::accumulate(dims.begin(), dims.end(), static_cast<size_t>(1), std::multiplies<>());
+    size_t cellCount = std::accumulate(dims.begin(), dims.end(), static_cast<size_t>(1), std::multiplies<size_t>());
     ImageGeom::Pointer imageGeom = ImageGeom::CreateGeometry("ImageGeometry");
     imageGeom->setDimensions(dims.data());
     imageGeomDC->setGeometry(imageGeom);
@@ -106,7 +106,7 @@ public:
     imageGeomDC->addAttributeMatrix(featureAttrMat->getName(), featureAttrMat);
 
     // Create a feature attribute array
-    cellCount = std::accumulate(dims.begin(), dims.end(), static_cast<size_t>(1), std::multiplies<>());
+    cellCount = std::accumulate(dims.begin(), dims.end(), static_cast<size_t>(1), std::multiplies<size_t>());
     Int32ArrayType::Pointer i32Data = Int32ArrayType::CreateArray(cellCount, k_FeatureArrayName, true);
     i32Data->initializeWithValue(1);
     featureAttrMat->addAttributeArray(i32Data->getName(), i32Data);
