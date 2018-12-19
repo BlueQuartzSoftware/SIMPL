@@ -313,11 +313,11 @@ int SVStyle::loadIntegerProperty(const QString &key, QJsonObject cssRepl, QJsonO
 QString SVStyle::GetUIFont()
 {
 #if defined(Q_OS_MAC)
-  QString fontString("FiraSans");
+  QString fontString("Lato");
 #elif defined(Q_OS_WIN)
-  QString fontString("FiraSans");
+  QString fontString("Lato");
 #else
-  QString fontString("Arial");
+  QString fontString("Lato");
 #endif
 
   QFont font(fontString);

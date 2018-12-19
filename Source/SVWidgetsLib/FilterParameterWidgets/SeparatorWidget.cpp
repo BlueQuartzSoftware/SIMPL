@@ -61,25 +61,6 @@ SeparatorWidget::SeparatorWidget(FilterParameter* parameter, AbstractFilter* fil
 // -----------------------------------------------------------------------------
 SeparatorWidget::~SeparatorWidget() = default;
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString SeparatorWidget::getLabelStyleSheet()
-{
-  QString styleSheet;
-  QTextStream ss(&styleSheet);
-
-  ss << "QLabel#label {";
-#if defined(Q_OS_WIN)
-  ss << "font: 9pt \"" << SVStyle::Instance()->GetUIFont() << "\";";
-#elif defined(Q_OS_MAC)
-  ss << "font: 100 12pt \"" << SVStyle::Instance()->GetUIFont() << "\";";
-#else
-  ss << "font: 100 10pt \"" << SVStyle::Instance()->GetUIFont() << "\";";
-#endif
-  ss << "  font-weight: bold;  }";
-  return styleSheet;
-}
 
 // -----------------------------------------------------------------------------
 //
@@ -96,12 +77,10 @@ void SeparatorWidget::setupGui()
   // Catch when the filter wants its values updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  label->setStyleSheet(getLabelStyleSheet());
-
   blockSignals(true);
   if(getFilterParameter() != nullptr)
   {
-    label->setText(getFilterParameter()->getHumanLabel());
+    separatorLabel->setText(getFilterParameter()->getHumanLabel());
   }
   blockSignals(false);
 }

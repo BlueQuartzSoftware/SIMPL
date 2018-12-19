@@ -69,7 +69,7 @@ class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver
     IssuesWidget(QWidget* parent = nullptr);
     ~IssuesWidget() override;
 
-    QLabel* createHyperlinkLabel(PipelineMessage msg);
+    QLabel* createHyperlinkLabel(const PipelineMessage& msg);
 
     static const int FilterIndex = 0;
     static const int FilterName = 1;
