@@ -418,14 +418,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DataArrayPathSelectionWidget</class>
-   <extends>QToolButton</extends>
-   <header>DataArrayPathSelectionWidget.h</header>
-  </customwidget>
-  <customwidget>
    <class>SVIconPushButton</class>
    <extends>QPushButton</extends>
    <header location="global">SVControlWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>DataArrayPathSelectionWidget</class>
+   <extends>QToolButton</extends>
+   <header>DataArrayPathSelectionWidget.h</header>
   </customwidget>
   <customwidget>
    <class>SVListWidget</class>

@@ -206,7 +206,7 @@ void PipelineItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
   QFont font = SVStyle::Instance()->GetHumanLabelFont();
 
 #if defined(Q_OS_MAC)
-  font.setPointSize(font.pointSize() - 4);
+  font.setPointSize(font.pointSize() - 3);
 #elif defined(Q_OS_WIN)
   font.setPointSize(font.pointSize() - 3);
 #else

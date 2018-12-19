@@ -68,19 +68,23 @@ class SVWidgetsLib_EXPORT StandardOutputWidget : public QWidget, public IObserve
   protected:
     void setupGui();
 
+  public slots:
+    void requestContextMenu(const QPoint& pos);
+
   protected slots:
     /**
-     * @brief on_saveLogBtn_clicked
+     * @brief saveLog
      */
-    void on_saveLogBtn_clicked();
+    void saveLog();
 
     /**
-     * @brief on_clearLogBtn_clicked
+     * @brief clearLog
      */
-    void on_clearLogBtn_clicked();
+    void clearLog();
 
   private:
     QString             m_LastPathOpened = "";
+    QPoint m_ContextMenuPoint;
 
   public:
     StandardOutputWidget(const StandardOutputWidget&) = delete; // Copy Constructor Not Implemented

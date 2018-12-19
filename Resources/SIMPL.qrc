@@ -10,7 +10,18 @@
     
     <!-- Font Resources -->
     <file>SIMPL/fonts/FiraSans-Regular.ttf</file>
+    <file>SIMPL/fonts/Lato-Black.ttf</file>
+    <file>SIMPL/fonts/Lato-BlackItalic.ttf</file>
+    <file>SIMPL/fonts/Lato-Bold.ttf</file>
+    <file>SIMPL/fonts/Lato-BoldItalic.ttf</file>
+    <file>SIMPL/fonts/Lato-Hairline.ttf</file>
+    <file>SIMPL/fonts/Lato-HairlineItalic.ttf</file>
+    <file>SIMPL/fonts/Lato-Italic.ttf</file>
+    <file>SIMPL/fonts/Lato-Light.ttf</file>
+    <file>SIMPL/fonts/Lato-LightItalic.ttf</file>
+    <file>SIMPL/fonts/Lato-Regular.ttf</file>
 
+    
     <!-- StyleSheet Resources -->
     <file>SIMPL/StyleSheets/Default.css</file>
     <file>SIMPL/StyleSheets/Default.json</file>
