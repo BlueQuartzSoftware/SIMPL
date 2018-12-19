@@ -318,7 +318,6 @@ void PipelineModel::setActivePipeline(const QModelIndex &index, bool value)
 // -----------------------------------------------------------------------------
 void PipelineModel::clearActivePipeline()
 {
-
 }
 
 // -----------------------------------------------------------------------------

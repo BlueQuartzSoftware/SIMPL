@@ -43,8 +43,9 @@
 
 #include "SIMPLib/Common/DocRequestManager.h"
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 #ifdef SIMPL_USE_MKDOCS
 #define URL_GENERATOR QtSDocServer
@@ -284,11 +285,10 @@ void IssuesWidget::displayCachedMessages()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QLabel* IssuesWidget::createHyperlinkLabel(PipelineMessage msg)
+QLabel* IssuesWidget::createHyperlinkLabel(const PipelineMessage& msg)
 {
   QString filterClassName = (msg.getFilterClassName());
   QString filterHumanLabel = (msg.getFilterHumanLabel());
-  QString msgPrefix = (msg.getPrefix());
 
   if(filterClassName.isEmpty() || filterHumanLabel.isEmpty())
   {
@@ -304,10 +304,11 @@ QLabel* IssuesWidget::createHyperlinkLabel(PipelineMessage msg)
     return new QLabel("Unknown Filter Class");
   }
 
-
   QUrl filterURL = URL_GENERATOR::GenerateHTMLUrl(filterClassName);
-  QString filterHTMLText("<a href=\"");
-  filterHTMLText.append(filterURL.toString()).append("\">").append(filterHumanLabel).append("</a>");
+  QString filterHTMLText;
+  QTextStream ts(&filterHTMLText);
+  ts << "<a style=\"color: " << SVStyle::Instance()->getText_Error_color().name(QColor::HexRgb) << ";\" href=\"";
+  ts << filterURL.toString() << "\">" << filterHumanLabel << "</a>";
 
   QLabel* hyperlinkLabel = new QLabel(filterHTMLText);
   hyperlinkLabel->setTextFormat(Qt::RichText);

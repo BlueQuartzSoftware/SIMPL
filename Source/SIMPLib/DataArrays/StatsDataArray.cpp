@@ -236,7 +236,7 @@ void* StatsDataArray::getVoidPointer(size_t i)
 #endif
   if(i >= this->getNumberOfTuples())
   {
-    return 0x0;
+    return nullptr;
   }
   return (void*)(&(m_StatsDataArray[i]));
 }

@@ -193,7 +193,7 @@ void AbstractIOFileWidget::setupMenuField()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool AbstractIOFileWidget::verifyPathExists(QString filePath, QLineEdit* lineEdit)
+bool AbstractIOFileWidget::verifyPathExists(const QString& filePath, QLineEdit* lineEdit)
 {
   QFileInfo fileinfo(filePath);
   SVStyle* style = SVStyle::Instance();
@@ -327,7 +327,7 @@ void AbstractIOFileWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractIOFileWidget::setOpenDialogLastFilePath(QString val) 
+void AbstractIOFileWidget::setOpenDialogLastFilePath(const QString& val)
 {
   m_LineEdit->setText(val);
 }

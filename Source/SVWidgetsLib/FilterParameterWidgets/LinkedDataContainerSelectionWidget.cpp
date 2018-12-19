@@ -314,7 +314,10 @@ void LinkedDataContainerSelectionWidget::beforePreflight()
 void LinkedDataContainerSelectionWidget::afterPreflight()
 {
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if (NULL == dca.get()) { return; }
+  if(nullptr == dca.get())
+  {
+    return;
+  }
 
   if (dca->doesDataContainerExist(m_SelectedDataContainerPath->text()))
   {

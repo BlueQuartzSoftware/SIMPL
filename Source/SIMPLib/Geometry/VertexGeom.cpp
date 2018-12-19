@@ -77,7 +77,7 @@ VertexGeom::Pointer VertexGeom::CreateGeometry(int64_t numVertices, const QStrin
     return NullPointer();
   }
   SharedVertexList::Pointer vertices = VertexGeom::CreateSharedVertexList(numVertices, allocate);
-  VertexGeom* d = new VertexGeom();
+  auto d = new VertexGeom();
   d->setVertices(vertices);
   d->setName(name);
   Pointer ptr(d);
@@ -97,7 +97,7 @@ VertexGeom::Pointer VertexGeom::CreateGeometry(SharedVertexList::Pointer vertice
   {
     return VertexGeom::NullPointer();
   }
-  VertexGeom* d = new VertexGeom();
+  auto d = new VertexGeom();
   d->setVertices(vertices);
   d->setName(name);
   Pointer ptr(d);
@@ -160,8 +160,9 @@ ElementDynamicList::Pointer VertexGeom::getElementsContainingVert()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void VertexGeom::setElementsContainingVert(ElementDynamicList::Pointer SIMPL_NOT_USED(elementsContainingVert))
+void VertexGeom::setElementsContainingVert(ElementDynamicList::Pointer elementsContainingVert)
 {
+  Q_UNUSED(elementsContainingVert)
 }
 
 // -----------------------------------------------------------------------------
@@ -190,8 +191,9 @@ ElementDynamicList::Pointer VertexGeom::getElementNeighbors()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void VertexGeom::setElementNeighbors(ElementDynamicList::Pointer SIMPL_NOT_USED(elementNeighbors))
+void VertexGeom::setElementNeighbors(ElementDynamicList::Pointer elementNeighbors)
 {
+  Q_UNUSED(elementNeighbors)
 }
 
 // -----------------------------------------------------------------------------
@@ -220,8 +222,9 @@ FloatArrayType::Pointer VertexGeom::getElementCentroids()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void VertexGeom::setElementCentroids(FloatArrayType::Pointer SIMPL_NOT_USED(elementCentroids))
+void VertexGeom::setElementCentroids(FloatArrayType::Pointer elementCentroids)
 {
+  Q_UNUSED(elementCentroids)
 }
 
 // -----------------------------------------------------------------------------
@@ -349,11 +352,11 @@ int VertexGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
   // Always start the grid
   out << "  <!-- *************** START OF " << dcName << " *************** -->"
       << "\n";
-  out << "  <Grid Name=\"" << dcName << "\" GridType=\"Uniform\">"
+  out << "  <Grid Name=\"" << dcName << R"(" GridType="Uniform">)"
       << "\n";
   if(getEnableTimeSeries())
   {
-    out << "    <Time TimeType=\"Single\" Value=\"" << getTimeValue() << "\"/>\n";
+    out << R"(    <Time TimeType="Single" Value=")" << getTimeValue() << "\"/>\n";
   }
 
 #if 0
@@ -373,9 +376,9 @@ int VertexGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
   }
 #endif
 
-  out << "    <Topology TopologyType=\"Polyvertex\" NumberOfElements=\"" << getNumberOfVertices() << "\">"
+  out << R"(    <Topology TopologyType="Polyvertex" NumberOfElements=")" << getNumberOfVertices() << "\">"
       << "\n";
-  out << "      <DataItem Format=\"HDF\" NumberType=\"Int\" Dimensions=\"" << getNumberOfVertices() << "\">"
+  out << R"(      <DataItem Format="HDF" NumberType="Int" Dimensions=")" << getNumberOfVertices() << "\">"
       << "\n";
   out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << SIMPL::Geometry::Geometry << "/"
       << "Verts"
@@ -387,7 +390,7 @@ int VertexGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
 
   out << "    <Geometry Type=\"XYZ\">"
       << "\n";
-  out << "      <DataItem Format=\"HDF\"  Dimensions=\"" << getNumberOfVertices() << " 3\" NumberType=\"Float\" Precision=\"4\">"
+  out << R"(      <DataItem Format="HDF"  Dimensions=")" << getNumberOfVertices() << R"( 3" NumberType="Float" Precision="4">)"
       << "\n";
   out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << SIMPL::Geometry::Geometry << "/" << SIMPL::Geometry::SharedVertexList << "\n";
   out << "      </DataItem>"
@@ -411,8 +414,8 @@ QString VertexGeom::getInfoString(SIMPL::InfoStringFormat format)
   if(format == SIMPL::HtmlFormat)
   {
     ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Geometry Info</th></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type</th><td>" << GeometryHelpers::Translation::TypeToString(getGeometryType()) << "</td></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Vertices</th><td>" << getNumberOfVertices() << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Type</th><td>)" << GeometryHelpers::Translation::TypeToString(getGeometryType()) << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Number of Vertices</th><td>)" << getNumberOfVertices() << "</td></tr>";
     ss << "</tbody></table>";
   }
   else

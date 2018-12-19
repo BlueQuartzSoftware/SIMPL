@@ -313,11 +313,11 @@ int SVStyle::loadIntegerProperty(const QString &key, QJsonObject cssRepl, QJsonO
 QString SVStyle::GetUIFont()
 {
 #if defined(Q_OS_MAC)
-  QString fontString("FiraSans");
+  QString fontString("Lato");
 #elif defined(Q_OS_WIN)
-  QString fontString("FiraSans");
+  QString fontString("Lato");
 #else
-  QString fontString("Arial");
+  QString fontString("Lato");
 #endif
 
   QFont font(fontString);
@@ -746,27 +746,3 @@ QIcon SVStyle::IconForGroup(const QString &grpName)
   return QIcon(QPixmap::fromImage(grpImage));
 }
 
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString SVStyle::StyleSheetForButton(const QString &objectName, const QString &cssName, const QString &imageName)
-{
-  QString css;
-  #if 0
-  QFile cssFile(QString("%1").arg(cssName));
-  if(cssFile.open(QFile::ReadOnly))
-  {
-    css = cssFile.readAll();
-    cssFile.close();
-  }
-  else
-  {
-    qDebug() << "Could not load CSS file: " << cssName;
-  }
-
-  css = css.replace("@OBJECT_NAME@", objectName);
-  css = css.replace("@IMAGE_PATH@", imageName);
-#endif
-  return css;
-}

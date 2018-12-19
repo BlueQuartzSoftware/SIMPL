@@ -103,7 +103,6 @@ void ImportASCIIDataWizard::setEditSettings(bool value)
 ImportASCIIDataWizard::ImportASCIIDataWizard(ASCIIWizardData* wizardData, DataContainerArray::Pointer dca, QWidget* parent)
 : QWizard(parent)
 , m_InputFilePath("")
-, m_NumLines(-1)
 , m_Dca(dca)
 , m_ASCIIDataModel(new ASCIIDataModel())
 {
@@ -219,7 +218,6 @@ ImportASCIIDataWizard::~ImportASCIIDataWizard() = default;
 // -----------------------------------------------------------------------------
 void ImportASCIIDataWizard::cleanupPage(int id)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -468,7 +466,7 @@ QVector<size_t> ImportASCIIDataWizard::getTupleDims()
 bool ImportASCIIDataWizard::getAutomaticAM()
 {
   DataFormatPage* dfPage = dynamic_cast<DataFormatPage*>(page(DataFormat));
-  if (NULL != dfPage)
+  if(nullptr != dfPage)
   {
     return dfPage->getAutomaticAM();
   }
@@ -482,7 +480,7 @@ bool ImportASCIIDataWizard::getAutomaticAM()
 DataArrayPath ImportASCIIDataWizard::getSelectedPath()
 {
   DataFormatPage* dfPage = dynamic_cast<DataFormatPage*>(page(DataFormat));
-  if (NULL != dfPage)
+  if(nullptr != dfPage)
   {
     DataArrayPath dap = dfPage->getSelectedPath();
     if(dfPage->getAutomaticAM())
@@ -518,7 +516,7 @@ int ImportASCIIDataWizard::getAttributeMatrixType()
 void ImportASCIIDataWizard::updateDataArrayPath(DataArrayPath::RenameType renamePath)
 {
   DataFormatPage* dfPage = dynamic_cast<DataFormatPage*>(page(DataFormat));
-  if(NULL != dfPage)
+  if(nullptr != dfPage)
   {
     dfPage->updateDataArrayPath(renamePath);
   }

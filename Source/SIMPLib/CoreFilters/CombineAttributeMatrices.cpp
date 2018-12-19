@@ -54,9 +54,6 @@ CombineAttributeMatrices::CombineAttributeMatrices()
 , m_SecondIndexArrayPath("", "", "")
 , m_CombinedAttributeMatrixName("")
 , m_NewIndexArrayName("")
-, m_FirstIndex(nullptr)
-, m_SecondIndex(nullptr)
-, m_NewIndex(nullptr)
 {
 }
 

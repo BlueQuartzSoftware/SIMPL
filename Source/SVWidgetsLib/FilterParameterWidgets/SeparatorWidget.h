@@ -77,11 +77,6 @@ class SVWidgetsLib_EXPORT SeparatorWidget : public FilterParameterWidget, privat
     */
     void setupGui() override;
 
-    /**
-     * @brief Returns the OS Specific Style Sheet for the QLabel
-     * @return
-     */
-    QString getLabelStyleSheet();
 
   public slots:
     void beforePreflight();

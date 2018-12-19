@@ -84,7 +84,6 @@
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
 #include "SVWidgetsLib/QtSupport/QtSRecentFileList.h"
-#include "SVWidgetsLib/QtSupport/QtSStyles.h"
 #include "SVWidgetsLib/Widgets/DataStructureWidget.h"
 #include "SVWidgetsLib/Widgets/FilterInputWidget.h"
 #include "SVWidgetsLib/Widgets/PipelineFilterMimeData.h"
@@ -1847,12 +1846,12 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint& pos, const QMode
       widgetEnabled = filter->getEnabled();
     }
 
-    disconnect(m_ActionEnableFilter, &QAction::toggled, 0, 0);
+    disconnect(m_ActionEnableFilter, &QAction::toggled, nullptr, nullptr);
     connect(m_ActionEnableFilter, &QAction::toggled, [=] { setFiltersEnabled(toggledIndices, m_ActionEnableFilter->isChecked()); });
   }
   else
   {
-    disconnect(m_ActionEnableFilter, &QAction::toggled, 0, 0);
+    disconnect(m_ActionEnableFilter, &QAction::toggled, nullptr, nullptr);
     connect(m_ActionEnableFilter, &QAction::toggled, [=] { setFiltersEnabled(selectedIndexes, m_ActionEnableFilter->isChecked()); });
   }
 

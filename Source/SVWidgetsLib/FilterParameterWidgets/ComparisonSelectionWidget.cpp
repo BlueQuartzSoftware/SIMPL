@@ -162,8 +162,6 @@ void ComparisonSelectionWidget::setupGui()
   matrixPropertyName = matrixPropertyName.replace("arrays", "matrix");
   m_SelectedAttributeMatrixPath->setPropertyName(matrixPropertyName);
 
-  addComparison->setStyleSheet(SVStyle::Instance()->StyleSheetForButton(addComparison->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::AddImagePath));
-  removeComparison->setStyleSheet(SVStyle::Instance()->StyleSheetForButton(removeComparison->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::DeleteImagePath));
 }
 
 #if 0
@@ -386,7 +384,10 @@ void ComparisonSelectionWidget::beforePreflight()
 void ComparisonSelectionWidget::afterPreflight()
 {
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if (NULL == dca.get()) { return; }
+  if(nullptr == dca.get())
+  {
+    return;
+  }
 
   // Update the selectable feature arrays
   DataArrayPath amPath = m_SelectedAttributeMatrixPath->getDataArrayPath();

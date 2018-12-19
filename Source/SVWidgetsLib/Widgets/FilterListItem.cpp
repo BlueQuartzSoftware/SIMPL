@@ -46,7 +46,6 @@ FilterListItem::FilterListItem(const QString &name, FilterListItem* parent)
   , m_Icon(QIcon())
   , m_ParentItem(parent)
 {
-
 }
 
 // -----------------------------------------------------------------------------

@@ -83,7 +83,12 @@ class DataArray : public IDataArray
     SIMPL_TYPE_MACRO_SUPER(DataArray<T>, IDataArray)
     SIMPL_CLASS_VERSION(2)
 
-    typedef QVector<Pointer>   ContainterType;
+    DataArray(const DataArray&) = delete; // Copy Constructor Not Implemented
+    DataArray(DataArray&&) = delete;      // Move Constructor Not Implemented
+    DataArray& operator=(const DataArray&) = delete; // Copy Assignment Not Implemented
+    DataArray& operator=(DataArray&&) = delete;      // Move Assignment Not Implemented
+
+    using ContainterType = QVector<Pointer>;
 
     /**
      * @brief GetTypeName Returns a string representation of the type of data that is stored by this class. This
@@ -184,7 +189,7 @@ class DataArray : public IDataArray
      */
     static Pointer CreateArray(size_t numElements, const QString& name, bool allocate = true)
     {
-      if (name.isEmpty() == true)
+      if (name.isEmpty() )
       {
         return NullPointer();
       }
@@ -211,9 +216,9 @@ class DataArray : public IDataArray
      * @param name The name of the array
      * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
      */
-    static Pointer CreateArray(size_t numTuples, int rank, size_t* dims, const QString& name, bool allocate = true)
+    static Pointer CreateArray(size_t numTuples, int rank, const size_t* dims, const QString& name, bool allocate = true)
     {
-      if (name.isEmpty() == true)
+      if (name.isEmpty() )
       {
         return NullPointer();
       }
@@ -243,9 +248,9 @@ class DataArray : public IDataArray
      * @param name The name of the array
      * @return Std::Shared_Ptr wrapping an instance of DataArrayTemplate<T>
      */
-    static Pointer CreateArray(size_t numTuples, std::vector<size_t> cDims, const QString& name, bool allocate = true)
+    static Pointer CreateArray(size_t numTuples, const std::vector<size_t>& cDims, const QString& name, bool allocate = true)
     {
-      if (name.isEmpty() == true)
+      if (name.isEmpty() )
       {
         return NullPointer();
       }
@@ -272,7 +277,7 @@ class DataArray : public IDataArray
      */
     static Pointer CreateArray(size_t numTuples, QVector<size_t> cDims, const QString& name, bool allocate = true)
     {
-      if (name.isEmpty() == true)
+      if (name.isEmpty() )
       {
         return NullPointer();
       }
@@ -300,7 +305,7 @@ class DataArray : public IDataArray
     */
     static Pointer CreateArray(QVector<size_t> tDims, QVector<size_t> cDims, const QString& name, bool allocate = true)
     {
-      if (name.isEmpty() == true)
+      if (name.isEmpty() )
       {
         return NullPointer();
       }
@@ -459,7 +464,7 @@ class DataArray : public IDataArray
      */
     bool copyIntoArray(Pointer dest)
     {
-      if(m_IsAllocated == true && dest->isAllocated() && m_Array && dest->getPointer(0))
+      if(m_IsAllocated  && dest->isAllocated() && m_Array && dest->getPointer(0))
       {
         size_t totalBytes = m_Size * sizeof(T);
         std::memcpy(dest->getPointer(0), m_Array, totalBytes);
@@ -661,11 +666,10 @@ class DataArray : public IDataArray
      */
     int eraseTuples(QVector<size_t>& idxs) override
     {
-
       int err = 0;
 
       // If nothing is to be erased just return
-      if(idxs.size() == 0)
+      if(idxs.empty())
       {
         return 0;
       }
@@ -678,9 +682,9 @@ class DataArray : public IDataArray
 
       // Sanity Check the Indices in the vector to make sure we are not trying to remove any indices that are
       // off the end of the array and return an error code.
-      for(QVector<size_t>::size_type i = 0; i < idxs.size(); ++i)
+      for(size_t& idx : idxs)
       {
-        if (idxs[i] * m_NumComponents > m_MaxId) { return -100; }
+        if (idx * m_NumComponents > m_MaxId) { return -100; }
       }
 
       // Calculate the new size of the array to copy into
@@ -1107,7 +1111,7 @@ class DataArray : public IDataArray
     IDataArray::Pointer deepCopy(bool forceNoAllocate = false) override
     {
       IDataArray::Pointer daCopy = createNewArray(getNumberOfTuples(), getComponentDimensions(), getName(), m_IsAllocated);
-      if(m_IsAllocated == true && forceNoAllocate == false)
+      if(m_IsAllocated  && !forceNoAllocate)
       {
         T* src = getPointer(0);
         void* dest = daCopy->getVoidPointer(0);
@@ -1128,11 +1132,7 @@ class DataArray : public IDataArray
     {
       if (m_Array == nullptr)
       { return -85648; }
-#if 0
-      return H5DataArrayWriter<T>::writeArray(parentId, getName(), getNumberOfTuples(), getNumberOfComponents(), getRank(), getDims(), getClassVersion(), m_Array, getFullNameOfClass());
-#else
       return H5DataArrayWriter::writeDataArray<Self>(parentId, this, tDims);
-#endif
     }
 
     /**
@@ -1179,7 +1179,7 @@ class DataArray : public IDataArray
       }
       out << "Center=\"Cell\">\n" ;
       // Open the <DataItem> Tag
-      out << "      <DataItem Format=\"HDF\" Dimensions=\"" << dimStr <<  "\" ";
+      out << R"(      <DataItem Format="HDF" Dimensions=")" << dimStr <<  R"(" )";
       out << "NumberType=\"" << xdmfTypeName << "\" " << "Precision=\"" << precision << "\" >\n" ;
 
 
@@ -1210,12 +1210,12 @@ class DataArray : public IDataArray
         ss << "<tbody>\n";
         ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Attribute Array Info</th></tr>";
 
-        ss << "<tr bgcolor=\"#E9E7D6\"><th align=\"right\">Name:</th><td>" << getName() << "</td></tr>";
+        ss << R"(<tr bgcolor="#E9E7D6"><th align="right">Name:</th><td>)" << getName() << "</td></tr>";
 
 
-        ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type:</th><td> DataArray&lt;" << getTypeAsString() << "&gt;</td></tr>";
+        ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Type:</th><td> DataArray&lt;)" << getTypeAsString() << "&gt;</td></tr>";
         QString numStr = usa.toString(static_cast<qlonglong>(getNumberOfTuples() ));
-        ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Tuples:</th><td>" << numStr << "</td></tr>";
+        ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Number of Tuples:</th><td>)" << numStr << "</td></tr>";
 
         QString compDimStr = "(";
         for(int i = 0; i < m_CompDims.size(); i++)
@@ -1227,11 +1227,11 @@ class DataArray : public IDataArray
           }
         }
         compDimStr = compDimStr + ")";
-        ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Component Dimensions:</th><td>" << compDimStr << "</td></tr>";
+        ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Component Dimensions:</th><td>)" << compDimStr << "</td></tr>";
         numStr = usa.toString(static_cast<qlonglong>(m_Size));
-        ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Total Elements:</th><td>" << numStr << "</td></tr>";
+        ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Total Elements:</th><td>)" << numStr << "</td></tr>";
         numStr = usa.toString(static_cast<qlonglong>(m_Size * sizeof(T)));
-        ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Total Memory Required:</th><td>" << numStr << "</td></tr>";
+        ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Total Memory Required:</th><td>)" << numStr << "</td></tr>";
         ss << "</tbody></table>\n";
         ss << "</body></html>";
       }
@@ -1322,11 +1322,11 @@ class DataArray : public IDataArray
     * @param dims The actual dimensions the attribute on each Tuple has.
     * @param takeOwnership Will the class clean up the memory. Default=true
     */
-    DataArray(size_t numTuples, QVector<size_t> compDims, const QString& name, bool ownsData = true) :
+    DataArray(size_t numTuples, QVector<size_t> compDims, QString name, bool ownsData = true) :
       m_Array(nullptr),
       m_OwnsData(ownsData),
       m_IsAllocated(false),
-      m_Name(name),
+      m_Name(std::move(name)),
       m_NumTuples(numTuples)
     {
       // Set the Component Dimensions and compute the number of components at each tuple for caching
@@ -1400,10 +1400,7 @@ class DataArray : public IDataArray
       {
         return 1;
       }
-      else
-      {
-        return 0;
-      }
+      return 0;
     }
 
 
@@ -1525,9 +1522,6 @@ class DataArray : public IDataArray
 
     T m_InitValue;
 
-    DataArray(const DataArray&); //Not Implemented
-    void operator=(const DataArray&); //Not Implemented
-
 };
 
 
@@ -1535,24 +1529,24 @@ class DataArray : public IDataArray
 //
 // -----------------------------------------------------------------------------
 
-typedef DataArray<bool> BoolArrayType;
+using BoolArrayType = DataArray<bool>;
 
-typedef DataArray<unsigned char> UCharArrayType;
+using UCharArrayType = DataArray<unsigned char>;
 
-typedef DataArray<int8_t>  Int8ArrayType;
-typedef DataArray<uint8_t>  UInt8ArrayType;
+using Int8ArrayType = DataArray<int8_t>;
+using UInt8ArrayType = DataArray<uint8_t>;
 
-typedef DataArray<int16_t>  Int16ArrayType;
-typedef DataArray<uint16_t>  UInt16ArrayType;
+using Int16ArrayType = DataArray<int16_t>;
+using UInt16ArrayType = DataArray<uint16_t>;
 
-typedef DataArray<int32_t>  Int32ArrayType;
-typedef DataArray<uint32_t>  UInt32ArrayType;
+using Int32ArrayType = DataArray<int32_t>;
+using UInt32ArrayType = DataArray<uint32_t>;
 
-typedef DataArray<int64_t>  Int64ArrayType;
-typedef DataArray<uint64_t>  UInt64ArrayType;
+using Int64ArrayType = DataArray<int64_t>;
+using UInt64ArrayType = DataArray<uint64_t>;
 
-typedef DataArray<float>  FloatArrayType;
-typedef DataArray<double>  DoubleArrayType;
+using FloatArrayType = DataArray<float>;
+using DoubleArrayType = DataArray<double>;
 
-typedef DataArray<size_t>  SizeTArrayType;
+using SizeTArrayType = DataArray<size_t>;
 

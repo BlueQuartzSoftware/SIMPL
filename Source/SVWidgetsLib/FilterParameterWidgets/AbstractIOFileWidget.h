@@ -83,7 +83,7 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
     /**
     * @brief
     */
-    bool verifyPathExists(QString filePath, QLineEdit* lineEdit);
+    bool verifyPathExists(const QString &filePath, QLineEdit* lineEdit);
 
   public slots:
     void beforePreflight();
@@ -97,7 +97,7 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
 
 
   protected:
-    void setOpenDialogLastFilePath(QString val);
+    void setOpenDialogLastFilePath(const QString &val);
 
     QString getOpenDialogLastFilePath();
 

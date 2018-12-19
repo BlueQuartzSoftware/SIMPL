@@ -44,7 +44,6 @@ void ComparisonSetWidget::setupGui()
   connect(invertConditionalCheckBox, SIGNAL(stateChanged(int)),
     this, SLOT(setInverse(int)));
 
-  addItemBtn->setStyleSheet(SVStyle::Instance()->StyleSheetForButton(addItemBtn->objectName(), SVWidgets::Styles::PushButtonStyleSheet, SVWidgets::Styles::AddImagePath));
 }
 
 // -----------------------------------------------------------------------------

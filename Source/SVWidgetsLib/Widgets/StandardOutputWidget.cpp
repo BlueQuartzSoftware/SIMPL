@@ -37,12 +37,13 @@
 
 #include <iostream>
 
-#include <QtWidgets/QMessageBox>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QFileDialog>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QMessageBox>
 
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
-
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -55,7 +56,7 @@ SIMPLView::DockWidgetSettings::HideDockSetting StandardOutputWidget::GetHideDock
 
   int showError = static_cast<int>(SIMPLView::DockWidgetSettings::HideDockSetting::Ignore);
   int hideDockSetting = prefs->value(SIMPLView::DockWidgetSettings::KeyName, QVariant(showError)).toInt();
-  SIMPLView::DockWidgetSettings::HideDockSetting value = static_cast<SIMPLView::DockWidgetSettings::HideDockSetting>(hideDockSetting);
+  auto value = static_cast<SIMPLView::DockWidgetSettings::HideDockSetting>(hideDockSetting);
 
   prefs->endGroup();
   prefs->endGroup();
@@ -96,16 +97,35 @@ StandardOutputWidget::~StandardOutputWidget() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StandardOutputWidget::setupGui()
-{  
-  clearLogBtn->setDisabled(true);
-  saveLogBtn->setDisabled(true);
+void StandardOutputWidget::requestContextMenu(const QPoint& pos)
+{
+  QPoint mapped = mapToGlobal(pos);
+  m_ContextMenuPoint = mapped;
+  QMenu menu;
+  QAction* clearOutputAction = new QAction(QString("Clear Output"), &menu);
+  connect(clearOutputAction, SIGNAL(triggered()), this, SLOT(clearLog()));
+  menu.addAction(clearOutputAction);
+
+  QAction* saveOutput = new QAction(QString("Save Output..."), &menu);
+  connect(saveOutput, SIGNAL(triggered()), this, SLOT(saveLog()));
+  menu.addAction(saveOutput);
+
+  menu.exec(mapped);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StandardOutputWidget::on_saveLogBtn_clicked()
+void StandardOutputWidget::setupGui()
+{
+  stdOutTextEdit->setContextMenuPolicy(Qt::CustomContextMenu);
+  connect(stdOutTextEdit, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(requestContextMenu(const QPoint&)));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void StandardOutputWidget::saveLog()
 {
   QString s = QString("Text Files (*.txt *.log);;All Files(*.*)");
   QString defaultName = m_LastPathOpened + QDir::separator() + "Untitled";
@@ -131,7 +151,7 @@ void StandardOutputWidget::on_saveLogBtn_clicked()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StandardOutputWidget::on_clearLogBtn_clicked()
+void StandardOutputWidget::clearLog()
 {
   int answer;
 
@@ -164,9 +184,6 @@ void StandardOutputWidget::on_clearLogBtn_clicked()
   if (answer == QMessageBox::Yes)
   {
     stdOutTextEdit->clear();
-
-    clearLogBtn->setDisabled(true);
-    saveLogBtn->setDisabled(true);
   }
 }
 
@@ -177,6 +194,4 @@ void StandardOutputWidget::appendText(const QString &text)
 {
   stdOutTextEdit->append(text);
   stdOutTextEdit->ensureCursorVisible();
-  clearLogBtn->setEnabled(true);
-  saveLogBtn->setEnabled(true);
 }

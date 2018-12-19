@@ -34,7 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "VTKFileReader.h"
 
-#include <string.h>
+#include <cstring>
 
 #include <limits>
 #include <sstream>

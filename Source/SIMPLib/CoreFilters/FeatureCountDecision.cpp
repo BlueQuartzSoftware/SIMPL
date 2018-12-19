@@ -50,7 +50,6 @@
 FeatureCountDecision::FeatureCountDecision()
 : m_FeatureIdsArrayPath("", "", "")
 , m_MaxGrains(0)
-, m_FeatureIds(nullptr)
 {
 }
 

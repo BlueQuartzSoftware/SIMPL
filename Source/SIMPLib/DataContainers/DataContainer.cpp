@@ -64,8 +64,8 @@ DataContainer::DataContainer() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainer::DataContainer(const QString& name)
-: m_Name(name)
+DataContainer::DataContainer(const QString &name)
+  : m_Name(name)
 {
 }
 
@@ -73,6 +73,19 @@ DataContainer::DataContainer(const QString& name)
 //
 // -----------------------------------------------------------------------------
 DataContainer::~DataContainer() = default;
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataContainer::Pointer DataContainer::New(const QString& name)
+{
+  if(name.isEmpty())
+  {
+    return DataContainer::NullPointer();
+  }
+  DataContainer::Pointer sharedPtr(new DataContainer(name));
+  return sharedPtr;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -151,7 +164,7 @@ QString DataContainer::getName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainer::setGeometry(IGeometry::Pointer geometry)
+void DataContainer::setGeometry(const IGeometry::Pointer& geometry)
 {
   m_Geometry = geometry;
 }
@@ -183,7 +196,7 @@ bool DataContainer::doesAttributeMatrixExist(const QString& name)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrix::Pointer DataContainer::createAndAddAttributeMatrix(QVector<size_t> tDims, const QString& attrMatName, AttributeMatrix::Type attrType)
+AttributeMatrix::Pointer DataContainer::createAndAddAttributeMatrix(const QVector<size_t>& tDims, const QString& attrMatName, AttributeMatrix::Type attrType)
 {
   AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, attrMatName, attrType);
   addAttributeMatrix(attrMatName, attrMat);
@@ -193,13 +206,13 @@ AttributeMatrix::Pointer DataContainer::createAndAddAttributeMatrix(QVector<size
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainer::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
+void DataContainer::addAttributeMatrix(const QString& name, const AttributeMatrix::Pointer& data)
 {
   if(data->getName().compare(name) != 0)
   {
-    qDebug() << "Adding Attribute Matrix with different array name than key name";
+    qDebug() << "Adding Attribute Matrix with a different name than key name";
     qDebug() << "Key name: " << name;
-    qDebug() << "Array Name: " << data->getName();
+    qDebug() << "AttributeMatrix Name: " << data->getName();
     qDebug() << "This action is NOT typical of DREAM3D Usage. Are you sure you want to be doing this? We are forcing the name of the AttributeMatrix to be the same as the key";
     data->setName(name);
   }
@@ -427,9 +440,9 @@ DataContainer::Pointer DataContainer::deepCopy(bool forceNoAllocate)
     dcCopy->setGeometry(geomCopy);
   }
 
-  for(AttributeMatrixMap_t::iterator iter = getAttributeMatrices().begin(); iter != getAttributeMatrices().end(); ++iter)
+  for(auto & iter : getAttributeMatrices())
   {
-    AttributeMatrix::Pointer attrMat = (*iter)->deepCopy(forceNoAllocate);
+    AttributeMatrix::Pointer attrMat = iter->deepCopy(forceNoAllocate);
     dcCopy->addAttributeMatrix(attrMat->getName(), attrMat);
   }
 
@@ -513,7 +526,7 @@ int DataContainer::writeMeshToHDF5(hid_t dcGid, bool writeXdmf)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
+int DataContainer::writeXdmf(QTextStream& out, const QString& hdfFileName)
 {
   if(nullptr == m_Geometry.get())
   {
@@ -865,7 +878,7 @@ QString DataContainer::getInfoString(SIMPL::InfoStringFormat format)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixShPtr DataContainer::getPrereqAttributeMatrix(AbstractFilter* filter, QString attributeMatrixName, int err)
+AttributeMatrixShPtr DataContainer::getPrereqAttributeMatrix(AbstractFilter* filter, const QString& attributeMatrixName, int err)
 {
   QString ss;
   AttributeMatrixShPtr attributeMatrix(nullptr);
@@ -910,7 +923,16 @@ AttributeMatrixShPtr DataContainer::getPrereqAttributeMatrix(AbstractFilter* fil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilter* filter, const QString& attributeMatrixName, QVector<size_t> tDims, AttributeMatrix::Type amType)
+AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilter* filter, const DataArrayPath& path, const QVector<size_t>& tDims, AttributeMatrix::Type amType)
+{
+  return createNonPrereqAttributeMatrix(filter, path.getAttributeMatrixName(), tDims, amType);
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilter* filter, const QString& attributeMatrixName, const QVector<size_t> &tDims, AttributeMatrix::Type amType)
 {
   AttributeMatrixShPtr attributeMatrix(nullptr);
 
