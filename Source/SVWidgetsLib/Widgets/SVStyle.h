@@ -554,6 +554,16 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
      */
     QIcon IconForGroup(const QString &grpName);
 
+    /**
+     * @brief WrapTextWithHtmlStyle This method will take an existing QString and wrap the contents
+     * with some HTML <b> or <span> with an internal "style=..." html snippet of code. This makes
+     * the string suitable for a QTextEdit. An option to create bold text is also provided.
+     * @param msg
+     * @param bold
+     * @return
+     */
+    QString WrapTextWithHtmlStyle(const QString& msg, bool bold) const;
+
   protected:
     SVStyle();
 

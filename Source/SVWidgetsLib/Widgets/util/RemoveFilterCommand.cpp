@@ -39,6 +39,7 @@
 #include "SVWidgetsLib/Widgets/FilterInputWidget.h"
 #include "SVWidgetsLib/Widgets/PipelineModel.h"
 #include "SVWidgetsLib/Widgets/SVPipelineView.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -127,7 +128,7 @@ void RemoveFilterCommand::undo()
   }
 
   emit m_PipelineView->statusMessage(statusMessage);
-  emit m_PipelineView->stdOutMessage(statusMessage);
+  emit m_PipelineView->stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(statusMessage,false));
 }
 
 // -----------------------------------------------------------------------------
@@ -143,9 +144,9 @@ bool variantCompare(const QVariant& v1, const QVariant& v2)
 // -----------------------------------------------------------------------------
 void RemoveFilterCommand::redo()
 {
-  for(size_t i = 0; i < m_Filters.size(); i++)
+  for(const auto& filter : m_Filters)
   {
-    removeFilter(m_Filters[i]);
+    removeFilter(filter);
   }
 
   QString statusMessage;
@@ -179,7 +180,7 @@ void RemoveFilterCommand::redo()
   emit m_PipelineView->pipelineChanged();
 
   emit m_PipelineView->statusMessage(statusMessage);
-  emit m_PipelineView->stdOutMessage(statusMessage);
+  emit m_PipelineView->stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(statusMessage,false));
 }
 
 // -----------------------------------------------------------------------------
