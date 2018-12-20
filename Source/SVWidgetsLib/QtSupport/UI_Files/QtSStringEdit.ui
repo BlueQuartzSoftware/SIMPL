@@ -81,8 +81,8 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../icons/images/Icons.qrc">
-       <normaloff>:/SIMPL/icons/images/check.png</normaloff>:/check.png</iconset>
+      <iconset resource="../../../../Resources/SIMPL.qrc">
+       <normaloff>:/SIMPL/icons/images/check.png</normaloff>:/SIMPL/icons/images/check.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -131,8 +131,8 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../icons/images/Icons.qrc">
-       <normaloff>:/SIMPL/icons/images/delete.png</normaloff>:/delete.png</iconset>
+      <iconset resource="../../../../Resources/SIMPL.qrc">
+       <normaloff>:/SIMPL/icons/images/delete.png</normaloff>:/SIMPL/icons/images/delete.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -148,7 +148,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../icons/images/Icons.qrc"/>
+  <include location="../../../../Resources/SIMPL.qrc"/>
  </resources>
  <connections/>
 </ui>
