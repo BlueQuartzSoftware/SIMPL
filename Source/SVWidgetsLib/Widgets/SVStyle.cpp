@@ -746,3 +746,29 @@ QIcon SVStyle::IconForGroup(const QString &grpName)
   return QIcon(QPixmap::fromImage(grpImage));
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString SVStyle::WrapTextWithHtmlStyle(const QString& msg, bool bold) const
+{
+  QString formattedMessage;
+  QTextStream out(&formattedMessage);
+
+  if(bold)
+  {
+    out << "<b ";
+  }
+  else {
+    out << "<span ";
+  }
+  out << "style=\"color: " << getQLabel_color().name(QColor::HexRgb) << ";\">";
+  out << msg;
+  if(bold)
+  {
+    out << " </b>";
+  }
+  else {
+    out << "</span>";
+  }
+  return formattedMessage;
+}

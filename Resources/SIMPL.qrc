@@ -143,6 +143,8 @@
     <file>SIMPL/icons/images/zoom_in@2x.png</file>
     <file>SIMPL/icons/images/zoom_out.png</file>
     <file>SIMPL/icons/images/zoom_out@2x.png</file>
+    <file>SIMPL/icons/images/x.png</file>
+    <file>SIMPL/icons/images/x@2x.png</file>
 
  </qresource>
  </RCC>

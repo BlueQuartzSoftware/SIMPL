@@ -1,3 +1,5 @@
+#include <utility>
+
 /* ============================================================================
  * Copyright (c) 2009-2016 BlueQuartz Software, LLC
  *
@@ -201,7 +203,7 @@ void SVPipelineView::addFilterFromClassName(const QString& filterClassName, int 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::addFilter(AbstractFilter::Pointer filter, int insertIndex, bool useAnimationOnFirstRun)
+void SVPipelineView::addFilter(const AbstractFilter::Pointer& filter, int insertIndex, bool useAnimationOnFirstRun)
 {
   AddFilterCommand* cmd = new AddFilterCommand(filter, this, insertIndex, "Add", useAnimationOnFirstRun);
   addUndoCommand(cmd);
@@ -210,7 +212,7 @@ void SVPipelineView::addFilter(AbstractFilter::Pointer filter, int insertIndex, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::addFilters(std::vector<AbstractFilter::Pointer> filters, int insertIndex, bool useAnimationOnFirstRun)
+void SVPipelineView::addFilters(const std::vector<AbstractFilter::Pointer>& filters, int insertIndex, bool useAnimationOnFirstRun)
 {
   AddFilterCommand* cmd = new AddFilterCommand(filters, this, insertIndex, "Add", useAnimationOnFirstRun);
   addUndoCommand(cmd);
@@ -219,7 +221,7 @@ void SVPipelineView::addFilters(std::vector<AbstractFilter::Pointer> filters, in
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::removeFilter(AbstractFilter::Pointer filter, bool useAnimationOnFirstRun)
+void SVPipelineView::removeFilter(const AbstractFilter::Pointer& filter, bool useAnimationOnFirstRun)
 {
   RemoveFilterCommand* cmd = new RemoveFilterCommand(filter, this, "Remove", useAnimationOnFirstRun);
   addUndoCommand(cmd);
@@ -228,7 +230,7 @@ void SVPipelineView::removeFilter(AbstractFilter::Pointer filter, bool useAnimat
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::removeFilters(std::vector<AbstractFilter::Pointer> filters, bool useAnimationOnFirstRun)
+void SVPipelineView::removeFilters(const std::vector<AbstractFilter::Pointer>& filters, bool useAnimationOnFirstRun)
 {
   RemoveFilterCommand* cmd = new RemoveFilterCommand(filters, this, "Remove", useAnimationOnFirstRun);
   addUndoCommand(cmd);
@@ -277,7 +279,7 @@ void SVPipelineView::listenFilterCompleted(AbstractFilter* filter)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::cutFilter(AbstractFilter::Pointer filter, bool useAnimationOnFirstRun)
+void SVPipelineView::cutFilter(const AbstractFilter::Pointer& filter, bool useAnimationOnFirstRun)
 {
   RemoveFilterCommand* cmd = new RemoveFilterCommand(filter, this, "Cut", useAnimationOnFirstRun);
   addUndoCommand(cmd);
@@ -286,7 +288,7 @@ void SVPipelineView::cutFilter(AbstractFilter::Pointer filter, bool useAnimation
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::cutFilters(std::vector<AbstractFilter::Pointer> filters, bool useAnimationOnFirstRun)
+void SVPipelineView::cutFilters(const std::vector<AbstractFilter::Pointer>& filters, bool useAnimationOnFirstRun)
 {
   RemoveFilterCommand* cmd = new RemoveFilterCommand(filters, this, "Cut", useAnimationOnFirstRun);
   addUndoCommand(cmd);
@@ -302,12 +304,12 @@ void SVPipelineView::pasteFilters(int insertIndex, bool useAnimationOnFirstRun)
 
   JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
   FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(jsonString);
-  FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
+  FilterPipeline::FilterContainerType pipelineContainer = pipeline->getFilterContainer();
 
   std::vector<AbstractFilter::Pointer> filters;
-  for(int i = 0; i < container.size(); i++)
+  for(const auto& filter : pipelineContainer)
   {
-    filters.push_back(container[i]);
+    filters.push_back(filter);
   }
 
   AddFilterCommand* addCmd = new AddFilterCommand(filters, this, insertIndex, "Paste", useAnimationOnFirstRun);
@@ -419,7 +421,8 @@ void SVPipelineView::executePipeline()
   //  m_PipelineInFlight = getCopyOfFilterPipeline();
   m_PipelineInFlight = getFilterPipeline();
 
-  emit stdOutMessage("<b>Preflight Pipeline.....</b>");
+  emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("Preflight Pipeline.....", true));
+
   // Give the pipeline one last chance to preflight and get all the latest values from the GUI
   int err = m_PipelineInFlight->preflightPipeline();
   if(err < 0)
@@ -428,14 +431,14 @@ void SVPipelineView::executePipeline()
     emit displayIssuesTriggered();
     return;
   }
-  emit stdOutMessage("    Preflight Results: 0 Errors");
+  emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("    Preflight Results: 0 Errors", false));
 
   // Save each of the DataContainerArrays from each of the filters for when the pipeline is complete
   m_PreflightDataContainerArrays.clear();
   FilterPipeline::FilterContainerType filters = m_PipelineInFlight->getFilterContainer();
-  for(FilterPipeline::FilterContainerType::size_type i = 0; i < filters.size(); i++)
+  for(const auto& filter : filters)
   {
-    m_PreflightDataContainerArrays.push_back(filters[i]->getDataContainerArray()->deepCopy(true));
+    m_PreflightDataContainerArrays.push_back(filter->getDataContainerArray()->deepCopy(true));
   }
 
   // Save the preferences file NOW in case something happens
@@ -471,8 +474,8 @@ void SVPipelineView::executePipeline()
 
   toRunningState();
   m_WorkerThread->start();
-  stdOutMessage("");
-  stdOutMessage("<b>*************** PIPELINE STARTED ***************</b>");
+  emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(" ", false));
+  emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE STARTED ***************", false));
 }
 
 // -----------------------------------------------------------------------------
@@ -529,13 +532,14 @@ void SVPipelineView::finishPipeline()
 {
   if(m_PipelineInFlight->getCancel())
   {
-    stdOutMessage("<b>*************** PIPELINE CANCELED ***************</b>");
+
+    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE CANCELED ***************", true));
   }
   else
   {
-    stdOutMessage("<b>*************** PIPELINE FINISHED ***************</b>");
+    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE FINISHED ***************", true));
   }
-  stdOutMessage("");
+  emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("", false));
 
   // Put back the DataContainerArray for each filter at the conclusion of running
   // the pipeline. this keeps the data browser current and up to date.
@@ -582,9 +586,10 @@ FilterPipeline::Pointer SVPipelineView::getFilterPipeline()
       pipeline->pushBack(filter);
     }
   }
-  for(int i = 0; i < m_PipelineMessageObservers.size(); i++)
+
+  for(const auto& observer : m_PipelineMessageObservers)
   {
-    pipeline->addMessageReceiver(m_PipelineMessageObservers[i]);
+    pipeline->addMessageReceiver(observer);
   }
   return pipeline;
 }
@@ -627,9 +632,10 @@ int SVPipelineView::writePipeline(const QString& outputPath)
   if(ext == "dream3d")
   {
     QList<IObserver*> observers;
-    for(int i = 0; i < m_PipelineMessageObservers.size(); i++)
+
+    for(const auto& observer : m_PipelineMessageObservers)
     {
-      observers.push_back(reinterpret_cast<IObserver*>(m_PipelineMessageObservers[i]));
+      observers.push_back(reinterpret_cast<IObserver*>(observer));
     }
 
     H5FilterParametersWriter::Pointer dream3dWriter = H5FilterParametersWriter::New();
@@ -638,9 +644,9 @@ int SVPipelineView::writePipeline(const QString& outputPath)
   else if(ext == "json")
   {
     QList<IObserver*> observers;
-    for(int i = 0; i < m_PipelineMessageObservers.size(); i++)
+    for(const auto& observer : m_PipelineMessageObservers)
     {
-      observers.push_back(reinterpret_cast<IObserver*>(m_PipelineMessageObservers[i]));
+      observers.push_back(reinterpret_cast<IObserver*>(observer));
     }
 
     JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
@@ -710,9 +716,9 @@ void SVPipelineView::copySelectedFilters()
 {
   FilterPipeline::Pointer pipeline = FilterPipeline::New();
   std::vector<AbstractFilter::Pointer> filters = getSelectedFilters();
-  for(int i = 0; i < filters.size(); i++)
+  for(const auto& filter : filters)
   {
-    pipeline->pushBack(filters[i]);
+    pipeline->pushBack(filter);
   }
 
   JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
@@ -732,9 +738,9 @@ std::vector<AbstractFilter::Pointer> SVPipelineView::getSelectedFilters()
 
   std::vector<AbstractFilter::Pointer> filters;
   PipelineModel* model = getPipelineModel();
-  for(int i = 0; i < selectedIndexes.size(); i++)
+  for(const auto& index : selectedIndexes)
   {
-    AbstractFilter::Pointer filter = model->filter(selectedIndexes[i]);
+    AbstractFilter::Pointer filter = model->filter(index);
     filters.push_back(filter);
   }
 
@@ -765,9 +771,9 @@ void SVPipelineView::listenDeleteKeyTriggered()
   PipelineModel* model = getPipelineModel();
 
   std::vector<AbstractFilter::Pointer> filters;
-  for(int i = 0; i < selectedIndexes.size(); i++)
+  for(const auto& index : selectedIndexes)
   {
-    AbstractFilter::Pointer filter = model->filter(selectedIndexes[i]);
+    AbstractFilter::Pointer filter = model->filter(index);
     filters.push_back(filter);
   }
 
@@ -891,10 +897,8 @@ void SVPipelineView::beginDrag(QMouseEvent* event)
   PipelineModel* model = getPipelineModel();
   Qt::KeyboardModifiers modifiers = QApplication::queryKeyboardModifiers();
 
-  for(int i = 0; i < selectedIndexes.size(); i++)
+  for(const auto& selectedIndex : selectedIndexes)
   {
-    QModelIndex selectedIndex = selectedIndexes[i];
-
     AbstractFilter::Pointer filter = model->filter(selectedIndex);
 
     if(modifiers.testFlag(Qt::AltModifier))
@@ -1250,12 +1254,12 @@ void SVPipelineView::dropEvent(QDropEvent* event)
   if(filterData != nullptr)
   {
     // This is filter data from an SVPipelineView instance
-    std::vector<PipelineFilterMimeData::FilterDragMetadata> dragData = filterData->getFilterDragData();
+    std::vector<PipelineFilterMimeData::FilterDragMetadata> dragMetaDatas = filterData->getFilterDragData();
 
-    std::vector<AbstractFilter::Pointer> filters;
-    for(size_t i = 0; i < dragData.size(); i++)
+    std::vector<AbstractFilter::Pointer> filters(dragMetaDatas.size());
+    for(size_t i = 0; i < dragMetaDatas.size(); i++)
     {
-      filters.push_back(dragData[i].first);
+      filters[i] = dragMetaDatas[i].first;
     }
 
     Qt::KeyboardModifiers modifiers = QApplication::queryKeyboardModifiers();
@@ -1568,19 +1572,19 @@ int SVPipelineView::openPipeline(const QString& filePath, int insertIndex)
   if(pipeline == FilterPipeline::NullPointer())
   {
     emit statusMessage(tr("The pipeline was not read correctly from file '%1'. '%2' is an unsupported file extension.").arg(name).arg(ext));
-    emit stdOutMessage(tr("The pipeline was not read correctly from file '%1'. '%2' is an unsupported file extension.").arg(name).arg(ext));
+    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(tr("The pipeline was not read correctly from file '%1'. '%2' is an unsupported file extension.").arg(name).arg(ext), false));
     return -1;
   }
 
   // Notify user of successful read
   emit statusMessage(tr("Opened \"%1\" Pipeline").arg(baseName));
-  emit stdOutMessage(tr("Opened \"%1\" Pipeline").arg(baseName));
+  emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(tr("Opened \"%1\" Pipeline").arg(baseName), false));
 
   QList<AbstractFilter::Pointer> pipelineFilters = pipeline->getFilterContainer();
   std::vector<AbstractFilter::Pointer> filters;
-  for(int i = 0; i < pipelineFilters.size(); i++)
+  for(const auto& filter : pipelineFilters)
   {
-    filters.push_back(pipelineFilters[i]);
+    filters.push_back(filter);
   }
 
   // Populate the pipeline view
@@ -1763,16 +1767,16 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint& pos, const QMode
     removeAction = new QAction(tr("Delete %1 Filters").arg(selectedIndexes.size()), &menu);
     connect(removeAction, &QAction::triggered, [=] {
       QList<QPersistentModelIndex> persistentList;
-      for(int i = 0; i < selectedIndexes.size(); i++)
+      for(const auto& index : selectedIndexes)
       {
-        persistentList.push_back(selectedIndexes[i]);
+        persistentList.push_back(index);
       }
 
-      std::vector<AbstractFilter::Pointer> filters;
+      std::vector<AbstractFilter::Pointer> filters(persistentList.size());
       for(int i = 0; i < persistentList.size(); i++)
       {
         AbstractFilter::Pointer filter = model->filter(persistentList[i]);
-        filters.push_back(filter);
+        filters[i] = filter;
       }
 
       removeFilters(filters);
@@ -2220,7 +2224,7 @@ QPixmap SVPipelineView::getHighDPIDeleteBtnHoveredPixmap(bool highlighted)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QPixmap SVPipelineView::setPixmapColor(QPixmap pixmap, QColor pixmapColor)
+QPixmap SVPipelineView::setPixmapColor(const QPixmap& pixmap, const QColor& pixmapColor)
 {
   QImage image = pixmap.toImage();
   for(int y = 0; y < image.height(); y++)

@@ -229,38 +229,38 @@ public slots:
    * the filter gets appended to the end of the model
    * @param filter
    */
-  void addFilter(AbstractFilter::Pointer filter, int insertIndex = -1, bool useAnimationOnFirstRun = true);
+  void addFilter(const AbstractFilter::Pointer& filter, int insertIndex = -1, bool useAnimationOnFirstRun = true);
 
   /**
    * @brief Adds multiple filters to the current model.  If insertIndex is < 0,
    * the filters get appended to the end of the model
    * @param filters
    */
-  void addFilters(std::vector<AbstractFilter::Pointer> filters, int insertIndex = -1, bool useAnimationOnFirstRun = true);
+  void addFilters(const std::vector<AbstractFilter::Pointer>& filters, int insertIndex = -1, bool useAnimationOnFirstRun = true);
 
   /**
    * @brief Removes filter from the current model
    * @param filter
    */
-  void removeFilter(AbstractFilter::Pointer filter, bool useAnimationOnFirstRun = true);
+  void removeFilter(const AbstractFilter::Pointer& filter, bool useAnimationOnFirstRun = true);
 
   /**
    * @brief Removes multiple filters from the current model
    * @param filters
    */
-  void removeFilters(std::vector<AbstractFilter::Pointer> filters, bool useAnimationOnFirstRun = true);
+  void removeFilters(const std::vector<AbstractFilter::Pointer>& filters, bool useAnimationOnFirstRun = true);
 
   /**
    * @brief Cuts filter from the current model
    * @param filter
    */
-  void cutFilter(AbstractFilter::Pointer filter, bool useAnimationOnFirstRun = true);
+  void cutFilter(const AbstractFilter::Pointer& filter, bool useAnimationOnFirstRun = true);
 
   /**
    * @brief Cuts multiple filters from the current model
    * @param filters
    */
-  void cutFilters(std::vector<AbstractFilter::Pointer> filters, bool useAnimationOnFirstRun = true);
+  void cutFilters(const std::vector<AbstractFilter::Pointer>& filters, bool useAnimationOnFirstRun = true);
 
   /**
    * @brief Copies the currently selected filters from the current model into the system clipboard
@@ -546,7 +546,7 @@ private:
    * @param pixmap
    * @param pixmapColor
    */
-  QPixmap setPixmapColor(QPixmap pixmap, QColor pixmapColor);
+  QPixmap setPixmapColor(const QPixmap& pixmap, const QColor& pixmapColor);
 
 public:
   SVPipelineView(const SVPipelineView&) = delete; // Copy Constructor Not Implemented

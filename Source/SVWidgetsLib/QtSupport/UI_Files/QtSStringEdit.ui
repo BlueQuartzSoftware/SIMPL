@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>358</width>
-    <height>30</height>
+    <width>565</width>
+    <height>28</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -36,7 +36,7 @@
     <number>2</number>
    </property>
    <item>
-    <widget class="QLineEdit" name="value">
+    <widget class="SVLineEdit" name="value">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
        <horstretch>1</horstretch>
@@ -147,6 +147,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SVLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">SVControlWidgets.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../../../Resources/SIMPL.qrc"/>
  </resources>
