@@ -238,7 +238,7 @@ font-size: 12px;
  </widget>
  <resources>
   <include location="../../../../Resources/icons/images/Icons.qrc"/>
-  <include location="../../icons/images/Icons.qrc"/>
+  <include location="../../../../Resources/SIMPL.qrc"/>
  </resources>
  <connections>
   <connection>
