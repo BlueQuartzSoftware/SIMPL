@@ -71,6 +71,26 @@ public:
   static QVector<QString> GenerateVectorFileList(int start, int end, int compStart, int compEnd, bool& hasMissingFiles, bool stackLowToHigh, const QString& inputPath, const QString& filePrefix,
                                                  const QString& separator, const QString& fileSuffix, const QString& fileExtension, int paddingDigits);
 
+  /**
+   * @brief This method will generate a list of file paths based on the inputs provided. This method is primarily aimed
+   * at generating file paths based on a Row & Column naming convention. The inputs allow for the generation of zero
+   * based or offset based file names.
+   * @param rowStart The starting row
+   * @param rowEnd The Ending row
+   * @param colStart The starting column
+   * @param colEnd The Ending column
+   * @param hasMissingFiles Are there missing files
+   * @param rcOrdering Is the Filename ordering Row-Column or Column-Row
+   * @param inputPath The Path to the files
+   * @param filePrefix The file prefix
+   * @param fileSuffix The file suffix
+   * @param fileExtension The file extension to use
+   * @param paddingDigits The number of padding digits (ZERO character) to use for each of the indices.
+   * @return
+   */
+  static QVector<QString> GenerateMontageFileList(int rowStart, int rowEnd, int colStart, int colEnd, bool& hasMissingFiles, bool rcOrdering, const QString& inputPath, const QString& filePrefix,
+                                                  const QString& fileSuffix, const QString& fileExtension, int paddingDigits);
+
 protected:
   FilePathGenerator();
 
