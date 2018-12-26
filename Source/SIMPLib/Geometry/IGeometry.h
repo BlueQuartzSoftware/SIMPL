@@ -52,14 +52,14 @@ class QTextStream;
 // -----------------------------------------------------------------------------
 // Typedefs
 // -----------------------------------------------------------------------------
-typedef FloatArrayType SharedVertexList;
-typedef Int64ArrayType SharedEdgeList;
-typedef Int64ArrayType SharedTriList;
-typedef Int64ArrayType SharedQuadList;
-typedef Int64ArrayType SharedTetList;
-typedef Int64ArrayType SharedHexList;
-typedef Int64ArrayType SharedFaceList;
-typedef UInt16Int64DynamicListArray ElementDynamicList;
+using SharedVertexList = FloatArrayType;
+using SharedEdgeList = Int64ArrayType;
+using SharedTriList = Int64ArrayType;
+using SharedQuadList = Int64ArrayType;
+using SharedTetList = Int64ArrayType;
+using SharedHexList = Int64ArrayType;
+using SharedFaceList = Int64ArrayType;
+using ElementDynamicList = UInt16Int64DynamicListArray;
 
 /**
  * @brief The IGeometry class
@@ -131,22 +131,53 @@ class SIMPLib_EXPORT IGeometry : public Observable
       Any = 4294967295U
     };
 
+    enum class LengthUnit : EnumType
+    {
+      Yocto,
+      Zepto,
+      Atto,
+      Femto,
+      Pico,
+      Nano,
+      Micro,
+      Milli,
+      Centi,
+      Deci,
+      Deca,
+      Hecto,
+      Kilo,
+      Mega,
+      Giga,
+      Tera,
+      Peta,
+      Exa,
+      Zetta,
+      Yotta,
+      Angstrom,
+      Inch,
+      Foot,
+      Mile,
+      Fathom,
+      Unspecified = 100U,
+      Unknown = 101U
+    };
+
     using VtkCellTypes = QVector <VtkCellType>;
     using Types = QVector<Type>;
 
     /**
      * @brief AttributeMatrixMap_t
      */
-    typedef QMap<QString, AttributeMatrix::Pointer> AttributeMatrixMap_t;
-
+    using AttributeMatrixMap_t = QMap<QString, AttributeMatrix::Pointer>;
 
     SIMPL_INSTANCE_PROPERTY(float, TimeValue)
     SIMPL_INSTANCE_PROPERTY(bool, EnableTimeSeries)
     SIMPL_INSTANCE_PROPERTY(ITransformContainer::Pointer, TransformContainer)
+    SIMPL_INSTANCE_PROPERTY(LengthUnit, Units)
 
-// -----------------------------------------------------------------------------
-// Connectivity
-// -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
+    // Connectivity
+    // -----------------------------------------------------------------------------
 
     /**
      * @brief findElementsContainingVert

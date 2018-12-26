@@ -45,6 +45,7 @@
 IGeometry::IGeometry()
 : m_TimeValue(0.0f)
 , m_EnableTimeSeries(false)
+, m_Units(LengthUnit::Unspecified)
 {
 }
 
