@@ -36,6 +36,7 @@
 #include "FilePathGenerator.h"
 
 #include <QtCore/QDir>
+#include <QtCore/QTextStream>
 
 // -----------------------------------------------------------------------------
 //
@@ -129,5 +130,58 @@ QVector<QString> FilePathGenerator::GenerateVectorFileList(int start, int end, i
       fileList.push_back(filePath);
     }
   }
+  return fileList;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QVector<QString> FilePathGenerator::GenerateMontageFileList(int rowStart, int rowEnd, int colStart, int colEnd, bool& hasMissingFiles, bool rcOrdering, const QString& inputPath,
+                                                            const QString& filePrefix, const QString& fileSuffix, const QString& fileExtension, int paddingDigits)
+{
+  QVector<QString> fileList;
+  QDir dir(inputPath);
+  if(!dir.exists())
+  {
+    return fileList;
+  }
+
+  bool missingFiles = false;
+
+  for(int r = rowStart; r < rowEnd; r++)
+  {
+
+    for(int c = colStart; c < colEnd; c++)
+    {
+      QString filePath;
+      QTextStream fn(&filePath);
+      fn << inputPath << filePrefix;
+
+      fn.setFieldWidth(paddingDigits);
+      fn.setFieldAlignment(QTextStream::AlignRight);
+      fn.setPadChar('0');
+      if(rcOrdering)
+      {
+        fn << "r" << r << "c" << c;
+      }
+      else
+      {
+        fn << "c" << c << "r" << r;
+      }
+      fn << fileSuffix << "." << fileExtension;
+
+      filePath = QDir::toNativeSeparators(filePath);
+
+      QFileInfo fi(filePath);
+      if(!fi.exists())
+      {
+        missingFiles = true;
+      }
+
+      fileList.push_back(filePath);
+    }
+  }
+  hasMissingFiles = missingFiles;
+
   return fileList;
 }
