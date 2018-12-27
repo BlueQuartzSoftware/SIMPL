@@ -133,27 +133,29 @@ class SIMPLib_EXPORT IGeometry : public Observable
 
     enum class LengthUnit : EnumType
     {
-      Yocto,
-      Zepto,
-      Atto,
-      Femto,
-      Pico,
-      Nano,
-      Micro,
-      Milli,
-      Centi,
-      Deci,
-      Deca,
-      Hecto,
-      Kilo,
-      Mega,
-      Giga,
-      Tera,
-      Peta,
-      Exa,
-      Zetta,
-      Yotta,
+      Yoctometer,
+      Zeptometer,
+      Attometer,
+      Femtometer,
+      Picometer,
+      Nanometer,
+      Micrometer,
+      Millimeter,
+      Centimeter,
+      Decimeter,
+      Meter,
+      Decameter,
+      Hectometer,
+      Kilometer,
+      Megameter,
+      Gigameter,
+      Terameter,
+      Petameter,
+      Exameter,
+      Zettameter,
+      Yottameter,
       Angstrom,
+      Mil,
       Inch,
       Foot,
       Mile,
@@ -169,6 +171,34 @@ class SIMPLib_EXPORT IGeometry : public Observable
      * @brief AttributeMatrixMap_t
      */
     using AttributeMatrixMap_t = QMap<QString, AttributeMatrix::Pointer>;
+
+    /**
+     * @brief stringToType
+     * @param str
+     * @return
+     */
+    static IGeometry::Type StringToType(const QString& str);
+
+    /**
+     * @brief typeToString
+     * @param t
+     * @return
+     */
+    static QString TypeToString(IGeometry::Type t);
+
+    /**
+     * @brief stringToLengthUnit
+     * @param str
+     * @return
+     */
+    static IGeometry::LengthUnit StringToLengthUnit(const QString& str);
+
+    /**
+     * @brief lengthUnitToString
+     * @param t
+     * @return
+     */
+    static QString LengthUnitToString(IGeometry::LengthUnit t);
 
     SIMPL_INSTANCE_PROPERTY(float, TimeValue)
     SIMPL_INSTANCE_PROPERTY(bool, EnableTimeSeries)

@@ -889,6 +889,35 @@ namespace Geometry
   const QString TransformContainerMovingName("TransformMovingName");
   const QString TransformContainerReferenceName("TransformReferenceName");
 
+  const QString k_Yoctometer("Yoctometer");
+  const QString k_Zeptometer("Zeptometer");
+  const QString k_Attometer("Attometer");
+  const QString k_Femtometer("Femtometer");
+  const QString k_Picometer("Picometer");
+  const QString k_Nanometer("Nanometer");
+  const QString k_Micrometer("Micrometer");
+  const QString k_Millimeter("Millimeter");
+  const QString k_Centimeter("Centimeter");
+  const QString k_Decimeter("Decimeter");
+  const QString k_Meter("Meter");
+  const QString k_Decameter("Decameter");
+  const QString k_Hectometer("Hectometer");
+  const QString k_Kilometer("Kilometer");
+  const QString k_Megameter("Megameter");
+  const QString k_Gigameter("Gigameter");
+  const QString k_Terameter("Terameter");
+  const QString k_Petameter("Petameter");
+  const QString k_Exameter("Exameter");
+  const QString k_Zettameter("Zettameter");
+  const QString k_Yottameter("Yottameter");
+  const QString k_Angstrom("Angstrom");
+  const QString k_Mil("Mil");
+  const QString k_Inch("Inch");
+  const QString k_Foot("Foot");
+  const QString k_Mile("Mile");
+  const QString k_Fathom("Fathom");
+  const QString k_Unspecified("Unspecified");
+  const QString k_Unknown("Unknown");
 }
 
 //  namespace GeometryType
