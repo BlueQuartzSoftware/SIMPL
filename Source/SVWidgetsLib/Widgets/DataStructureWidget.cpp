@@ -65,6 +65,134 @@ DataStructureWidget::~DataStructureWidget() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void DataStructureWidget::setImageGeomIcon(const QIcon& path)
+{
+  m_ImageGeomIcon = path;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureWidget::setVertexGeomIcon(const QIcon& path)
+{
+  m_VertexGeomIcon = path;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureWidget::setEdgeGeomIcon(const QIcon& path)
+{
+  m_EdgeGeomIcon = path;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureWidget::setTriangleGeomIcon(const QIcon& path)
+{
+  m_TriangleGeomIcon = path;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureWidget::setQuadGeomIcon(const QIcon& path)
+{
+  m_QuadGeomIcon = path;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureWidget::setTetrahedralGeomIcon(const QIcon& path)
+{
+  m_TetrahedralGeomIcon = path;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureWidget::setHexahedralGeomIcon(const QIcon& path)
+{
+  m_HexahedralGeomIcon = path;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureWidget::setRectilinearGeomIcon(const QIcon &path)
+{
+  m_RectilinearGeomIcon = path;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QIcon DataStructureWidget::getImageGeomIcon()
+{
+  return m_ImageGeomIcon;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QIcon DataStructureWidget::getVertexGeomIcon()
+{
+  return m_VertexGeomIcon;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QIcon DataStructureWidget::getEdgeGeomIcon()
+{
+  return m_EdgeGeomIcon;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QIcon DataStructureWidget::getTriangleGeomIcon()
+{
+  return m_TriangleGeomIcon;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QIcon DataStructureWidget::getQuadGeomIcon()
+{
+  return m_QuadGeomIcon;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QIcon DataStructureWidget::getTetrahedralGeomIcon()
+{
+  return m_TetrahedralGeomIcon;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QIcon DataStructureWidget::getHexahedralGeomIcon()
+{
+  return m_HexahedralGeomIcon;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QIcon DataStructureWidget::getRectilinearGeomIcon()
+{
+  return m_RectilinearGeomIcon;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataStructureWidget::setupGui()
 {
   connect(m_Ui->dataBrowserTreeView, SIGNAL(filterPath(DataArrayPath)), this, SIGNAL(filterPath(DataArrayPath)));
@@ -86,11 +214,6 @@ void DataStructureWidget::setupGui()
               }");
   this->setStyleSheet(css);
 
-  m_ImageGeomIcon = QIcon(SIMPLView::GeometryIcons::Image);
-  m_VertexGeomIcon = QIcon(SIMPLView::GeometryIcons::Vertex);
-  m_EdgeGeomIcon = QIcon(SIMPLView::GeometryIcons::Edge);
-  m_TriangleGeomIcon = QIcon(SIMPLView::GeometryIcons::Triangle);
-  m_QuadGeomIcon = QIcon(SIMPLView::GeometryIcons::Quad);
 }
 
 // -----------------------------------------------------------------------------
@@ -184,6 +307,15 @@ void DataStructureWidget::refreshData()
       case IGeometry::Type::Quad:
         dcItem->setIcon(m_QuadGeomIcon);
         break;
+      case IGeometry::Type::Tetrahedral:
+        dcItem->setIcon(m_TetrahedralGeomIcon);
+        break;
+      case IGeometry::Type::Hexahedral:
+        dcItem->setIcon(m_HexahedralGeomIcon);
+        break;
+      case IGeometry::Type::RectGrid:
+        dcItem->setIcon(m_RectilinearGeomIcon);
+        break;
       default:
         dcItem->setIcon(QIcon());
         break;
@@ -205,7 +337,7 @@ void DataStructureWidget::refreshData()
     while(attrMatsIter.hasNext())
     {
       attrMatsIter.next();
-      QString amName = attrMatsIter.key();
+      // QString amName = attrMatsIter.key();
       AttributeMatrix::Pointer am = attrMatsIter.value();
 
       QStandardItem* amItem = findChildByName(dcItem, am->getName(), 0);
