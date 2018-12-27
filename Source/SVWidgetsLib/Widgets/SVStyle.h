@@ -84,6 +84,10 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
 
     SIMPL_GET_PROPERTY(QString, CurrentThemeFilePath)
 
+
+    SIMPL_INSTANCE_PROPERTY(QColor, Fader_color)
+    Q_PROPERTY(QColor Fader_color READ getFader_color WRITE setFader_color)
+
     SIMPL_INSTANCE_PROPERTY(QColor, Widget_Error_color)    
     Q_PROPERTY(QColor Widget_Error_color READ getWidget_Error_color WRITE setWidget_Error_color)    
 

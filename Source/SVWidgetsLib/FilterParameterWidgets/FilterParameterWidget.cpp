@@ -338,9 +338,9 @@ void FilterParameterWidget::fadeWidget(QWidget* widget, bool in)
   QString styleSheet;
   QTextStream ss(&styleSheet);
   ss << "QFrame#" << this->objectName() << " { ";
-  ss << "background-color: rgb(223, 183, 175);";
+  ss << "background-color: " << SVStyle::Instance()->getFader_color().name() << ";";
   ss << "border: 0px Solid;";
-  ss << "border-color: rgb(223, 183, 175);";
+  ss << "border-color: " << SVStyle::Instance()->getFader_color().name() << ";";
   ss << "border-radius: 5px;";
   ss << "}";
 
