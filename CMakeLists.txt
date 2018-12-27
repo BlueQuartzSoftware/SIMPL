@@ -411,6 +411,10 @@ endif()
 # This should be the last line in this file:
 include(${PROJECT_RESOURCES_DIR}/CPack/PackageProject.cmake)
 
+# --------------------------------------------------------------------
+# Include any Support related CMake codes
+include(${SIMPLProj_SOURCE_DIR}/Support/Support.cmake)
+
 
 # --------------------------------------------------------------------------
 # Find the Pybind11 installation
