@@ -524,33 +524,34 @@ int FilterPipeline::preflightPipeline()
   DataArrayPath::RenameContainer filterRenamedPaths;
 
   // Start looping through each filter in the Pipeline and preflight everything
-  for(FilterContainerType::iterator filter = m_Pipeline.begin(); filter != m_Pipeline.end(); ++filter)
+  // for(FilterContainerType::iterator filter = m_Pipeline.begin(); filter != m_Pipeline.end(); ++filter)
+  for(const auto& filter : m_Pipeline)
   {
     // Do not preflight disabled filters
-    if((*filter)->getEnabled())
+    if(filter->getEnabled())
     {
       // Update renamed paths before getting old created paths
-      DataContainerArray::Pointer oldDca = (*filter)->getDataContainerArray();
+      DataContainerArray::Pointer oldDca = filter->getDataContainerArray();
       oldDca->renameDataArrayPaths(filterRenamedPaths);
-      (*filter)->setDataContainerArray(oldDca);
-      (*filter)->renameDataArrayPaths(filterRenamedPaths);
-      
-      std::list<DataArrayPath> oldCreatedPaths = (*filter)->getCreatedPaths();
+      filter->setDataContainerArray(oldDca);
+      filter->renameDataArrayPaths(filterRenamedPaths);
 
-      (*filter)->setDataContainerArray(dca);
-      (*filter)->renameDataArrayPaths(renamedPaths);
-      setCurrentFilter(*filter);
-      connectFilterNotifications((*filter).get());
-      (*filter)->preflight();
-      disconnectFilterNotifications((*filter).get());
+      std::list<DataArrayPath> oldCreatedPaths = filter->getCreatedPaths();
 
-      (*filter)->setCancel(false); // Reset the cancel flag
-      preflightError |= (*filter)->getErrorCondition();
-      (*filter)->setDataContainerArray(dca->deepCopy(false));
-      std::list<DataArrayPath> currentCreatedPaths = (*filter)->getCreatedPaths();
+      filter->setDataContainerArray(dca);
+      filter->renameDataArrayPaths(renamedPaths);
+      setCurrentFilter(filter);
+      connectFilterNotifications(filter.get());
+      filter->preflight();
+      disconnectFilterNotifications(filter.get());
+
+      filter->setCancel(false); // Reset the cancel flag
+      preflightError |= filter->getErrorCondition();
+      filter->setDataContainerArray(dca->deepCopy(false));
+      std::list<DataArrayPath> currentCreatedPaths = filter->getCreatedPaths();
 
       // Check if an existing renamed path was created by this filter
-      for(DataArrayPath createdPath : currentCreatedPaths)
+      for(const DataArrayPath& createdPath : currentCreatedPaths)
       {
         // Filter Parameter changes
         for(DataArrayPath::RenameType rename : renamedPaths)
@@ -579,27 +580,31 @@ int FilterPipeline::preflightPipeline()
       }
 
       DataArrayPath::RenameContainer newRenamedPaths = DataArrayPath::CheckForRenamedPaths(oldDca, dca, oldCreatedPaths, currentCreatedPaths);
-      for(DataArrayPath::RenameType renameType : newRenamedPaths)
-      {
-        renamedPaths.push_back(renameType);
-      }
+      //      for(DataArrayPath::RenameType renameType : newRenamedPaths)
+      //      {
+      //        renamedPaths.push_back(renameType);
+      //      }
+
+      std::copy(newRenamedPaths.begin(), newRenamedPaths.end(), renamedPaths.end());
 
       // Filter renamed existing DataArrayPaths
-      DataArrayPath::RenameContainer hardRenamePaths = (*filter)->getRenamedPaths();
-      for(DataArrayPath::RenameType renameType : hardRenamePaths)
-      {
-        renamedPaths.push_back(renameType);
-        filterRenamedPaths.push_back(renameType);
-      }
+      DataArrayPath::RenameContainer hardRenamePaths = filter->getRenamedPaths();
+      //      for(DataArrayPath::RenameType renameType : hardRenamePaths)
+      //      {
+      //        renamedPaths.push_back(renameType);
+      //        filterRenamedPaths.push_back(renameType);
+      //      }
+      std::copy(hardRenamePaths.begin(), hardRenamePaths.end(), renamedPaths.end());
+      std::copy(hardRenamePaths.begin(), hardRenamePaths.end(), filterRenamedPaths.end());
     }
     else
     {
       // Some widgets require the updated path to be valid before it can be set in the widget
-      (*filter)->setDataContainerArray(dca->deepCopy(false));
-      (*filter)->renameDataArrayPaths(renamedPaths);
+      filter->setDataContainerArray(dca->deepCopy(false));
+      filter->renameDataArrayPaths(renamedPaths);
 
       // Undo filter renaming
-      DataArrayPath::RenameContainer filterRenamedPaths = (*filter)->getRenamedPaths();
+      DataArrayPath::RenameContainer filterRenamedPaths = filter->getRenamedPaths();
       for(DataArrayPath::RenameType renameType : filterRenamedPaths)
       {
         DataArrayPath oldPath;

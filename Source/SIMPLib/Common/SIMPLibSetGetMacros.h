@@ -461,12 +461,12 @@ public:     \
 
 #define SIMPL_PIMPL_PROPERTY_DECL(type, prpty)\
   public:\
-  void set##prpty(type value);\
+  void set##prpty(const type& value);\
   type get##prpty() const;
 
 
 #define SIMPL_PIMPL_PROPERTY_DEF(Class, type, prpty)\
-  void Class::set##prpty(type value) {\
+  void Class::set##prpty(const type& value) {\
     Q_D(Class);\
     d->m_##prpty = value;\
   }\
