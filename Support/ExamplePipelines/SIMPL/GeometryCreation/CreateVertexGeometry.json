@@ -1,0 +1,246 @@
+{
+    "0": {
+        "CreatedDataContainer": "DataContainer",
+        "FilterVersion": "1.0.154",
+        "Filter_Enabled": true,
+        "Filter_Human_Label": "Create Data Container",
+        "Filter_Name": "CreateDataContainer"
+    },
+    "1": {
+        "FilterVersion": "1.0.154",
+        "Filter_Enabled": true,
+        "Filter_Human_Label": "Import ASCII Data",
+        "Filter_Name": "ReadASCIIData",
+        "Wizard_AttributeMatrixType": 3,
+        "Wizard_AutomaticAM": true,
+        "Wizard_BeginIndex": 2,
+        "Wizard_ConsecutiveDelimiters": 0,
+        "Wizard_DataHeaders": [
+            "x",
+            "y",
+            "z"
+        ],
+        "Wizard_DataTypes": [
+            "float",
+            "float",
+            "float"
+        ],
+        "Wizard_Delimiters": ",",
+        "Wizard_HeaderIsCustom": true,
+        "Wizard_HeaderLine": -1,
+        "Wizard_HeaderUseDefaults": false,
+        "Wizard_InputFilePath": "Data/SIMPL/VertexCoordinates.csv",
+        "Wizard_NumberOfLines": 145,
+        "Wizard_SelectedPath": {
+            "Attribute Matrix Name": "Bounds",
+            "Data Array Name": "",
+            "Data Container Name": "DataContainer"
+        },
+        "Wizard_TupleDims": [
+            144
+        ]
+    },
+    "2": {
+        "FilterVersion": "1.0.154",
+        "Filter_Enabled": true,
+        "Filter_Human_Label": "Combine Attribute Arrays",
+        "Filter_Name": "CombineAttributeArrays",
+        "NormalizeData": 0,
+        "SelectedDataArrayPaths": [
+            {
+                "Attribute Matrix Name": "Bounds",
+                "Data Array Name": "x",
+                "Data Container Name": "DataContainer"
+            },
+            {
+                "Attribute Matrix Name": "Bounds",
+                "Data Array Name": "y",
+                "Data Container Name": "DataContainer"
+            },
+            {
+                "Attribute Matrix Name": "Bounds",
+                "Data Array Name": "z",
+                "Data Container Name": "DataContainer"
+            }
+        ],
+        "StackedDataArrayName": "Vertices"
+    },
+    "3": {
+        "DataArraysToRemove": {
+            "Data Containers": [
+                {
+                    "Attribute Matricies": [
+                        {
+                            "Data Arrays": [
+                                {
+                                    "Component Dimensions": [
+                                    ],
+                                    "Flag": 0,
+                                    "Name": "Vertices",
+                                    "Object Type": "float",
+                                    "Path": "DataContainer/Bounds/",
+                                    "Tuple Dimensions": [
+                                    ],
+                                    "Version": 2
+                                },
+                                {
+                                    "Component Dimensions": [
+                                    ],
+                                    "Flag": 2,
+                                    "Name": "x",
+                                    "Object Type": "float",
+                                    "Path": "DataContainer/Bounds/",
+                                    "Tuple Dimensions": [
+                                    ],
+                                    "Version": 2
+                                },
+                                {
+                                    "Component Dimensions": [
+                                    ],
+                                    "Flag": 2,
+                                    "Name": "y",
+                                    "Object Type": "float",
+                                    "Path": "DataContainer/Bounds/",
+                                    "Tuple Dimensions": [
+                                    ],
+                                    "Version": 2
+                                },
+                                {
+                                    "Component Dimensions": [
+                                    ],
+                                    "Flag": 2,
+                                    "Name": "z",
+                                    "Object Type": "float",
+                                    "Path": "DataContainer/Bounds/",
+                                    "Tuple Dimensions": [
+                                    ],
+                                    "Version": 2
+                                }
+                            ],
+                            "Flag": 0,
+                            "Name": "Bounds",
+                            "Type": 3
+                        }
+                    ],
+                    "Flag": 0,
+                    "Name": "DataContainer",
+                    "Type": 0
+                }
+            ]
+        },
+        "FilterVersion": "1.0.154",
+        "Filter_Enabled": true,
+        "Filter_Human_Label": "Delete Data",
+        "Filter_Name": "RemoveArrays"
+    },
+    "4": {
+        "ArrayHandling": 0,
+        "DataContainerName": "DataContainer",
+        "Dimensions": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+        },
+        "EdgeAttributeMatrixName": "EdgeData",
+        "FaceAttributeMatrixName0": "FaceData",
+        "FaceAttributeMatrixName1": "FaceData",
+        "FilterVersion": "1.0.14",
+        "Filter_Enabled": true,
+        "Filter_Human_Label": "Create Geometry",
+        "Filter_Name": "CreateGeometry",
+        "GeometryType": 2,
+        "ImageCellAttributeMatrixName": "CellData",
+        "Origin": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+        },
+        "RectGridCellAttributeMatrixName": "CellData",
+        "Resolution": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+        },
+        "SharedEdgeListArrayPath": {
+            "Attribute Matrix Name": "",
+            "Data Array Name": "",
+            "Data Container Name": ""
+        },
+        "SharedQuadListArrayPath": {
+            "Attribute Matrix Name": "",
+            "Data Array Name": "",
+            "Data Container Name": ""
+        },
+        "SharedTetListArrayPath": {
+            "Attribute Matrix Name": "",
+            "Data Array Name": "",
+            "Data Container Name": ""
+        },
+        "SharedTriListArrayPath": {
+            "Attribute Matrix Name": "",
+            "Data Array Name": "",
+            "Data Container Name": ""
+        },
+        "SharedVertexListArrayPath0": {
+            "Attribute Matrix Name": "Bounds",
+            "Data Array Name": "Vertices",
+            "Data Container Name": "DataContainer"
+        },
+        "SharedVertexListArrayPath1": {
+            "Attribute Matrix Name": "",
+            "Data Array Name": "",
+            "Data Container Name": ""
+        },
+        "SharedVertexListArrayPath2": {
+            "Attribute Matrix Name": "",
+            "Data Array Name": "",
+            "Data Container Name": ""
+        },
+        "SharedVertexListArrayPath3": {
+            "Attribute Matrix Name": "",
+            "Data Array Name": "",
+            "Data Container Name": ""
+        },
+        "SharedVertexListArrayPath4": {
+            "Attribute Matrix Name": "",
+            "Data Array Name": "",
+            "Data Container Name": ""
+        },
+        "TetCellAttributeMatrixName": "CellData",
+        "TreatWarningsAsErrors": 0,
+        "VertexAttributeMatrixName0": "VertexData",
+        "VertexAttributeMatrixName1": "VertexData",
+        "VertexAttributeMatrixName2": "VertexData",
+        "VertexAttributeMatrixName3": "VertexData",
+        "VertexAttributeMatrixName4": "VertexData",
+        "XBoundsArrayPath": {
+            "Attribute Matrix Name": "Bounds",
+            "Data Array Name": "x",
+            "Data Container Name": "DataContainer"
+        },
+        "YBoundsArrayPath": {
+            "Attribute Matrix Name": "Bounds",
+            "Data Array Name": "y",
+            "Data Container Name": "DataContainer"
+        },
+        "ZBoundsArrayPath": {
+            "Attribute Matrix Name": "Bounds",
+            "Data Array Name": "z",
+            "Data Container Name": "DataContainer"
+        }
+    },
+    "5": {
+        "FilterVersion": "1.0.154",
+        "Filter_Enabled": true,
+        "Filter_Human_Label": "Write DREAM.3D Data File",
+        "Filter_Name": "DataContainerWriter",
+        "OutputFile": "Data/Output/SIMPL/CreateVertexGeometry.dream3d",
+        "WriteTimeSeries": 0,
+        "WriteXdmfFile": 1
+    },
+    "PipelineBuilder": {
+        "Name": "CreateVertexGeometry",
+        "Number_Filters": 6,
+        "Version": 6
+    }
+}
