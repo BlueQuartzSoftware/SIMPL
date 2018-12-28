@@ -172,7 +172,7 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
     /**
      * @brief operator =
      */
-    void operator=(const DataArrayPath& rhs);
+    DataArrayPath& operator=(const DataArrayPath& rhs);
 
     /**
      * @brief operator ==

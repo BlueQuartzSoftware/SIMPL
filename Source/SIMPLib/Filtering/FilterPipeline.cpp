@@ -70,7 +70,7 @@ QString FilterPipeline::getName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::setName(QString newName)
+void FilterPipeline::setName(const QString& newName)
 {
   QString oldName = m_PipelineName;
   m_PipelineName = newName;
@@ -110,7 +110,7 @@ QJsonObject FilterPipeline::toJson()
 
   for(qint32 i = 0; i < count; i++)
   {
-    AbstractFilter::Pointer filter = container.at(i);
+    const AbstractFilter::Pointer& filter = container.at(i);
     if(nullptr != filter.get())
     {
       DataContainerReader::Pointer reader = std::dynamic_pointer_cast<DataContainerReader>(filter);
@@ -315,7 +315,7 @@ DataContainerArray::Pointer FilterPipeline::run()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::pushFront(AbstractFilter::Pointer f)
+void FilterPipeline::pushFront(const AbstractFilter::Pointer& f)
 {
   m_Pipeline.push_front(f);
   updatePrevNextFilters();
@@ -333,7 +333,7 @@ void FilterPipeline::popFront()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::pushBack(AbstractFilter::Pointer f)
+void FilterPipeline::pushBack(const AbstractFilter::Pointer& f)
 {
   m_Pipeline.push_back(f);
   updatePrevNextFilters();
@@ -351,7 +351,7 @@ void FilterPipeline::popBack()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::insert(size_t index, AbstractFilter::Pointer f)
+void FilterPipeline::insert(size_t index, const AbstractFilter::Pointer& f)
 {
   FilterContainerType::iterator it = m_Pipeline.begin();
   for(size_t i = 0; i < index; ++i)
@@ -381,10 +381,10 @@ void FilterPipeline::erase(size_t index)
 // -----------------------------------------------------------------------------
 void FilterPipeline::clear()
 {
-  for(FilterContainerType::iterator iter = m_Pipeline.begin(); iter != m_Pipeline.end(); ++iter)
+  for(const auto& filter : m_Pipeline)
   {
-    (*iter)->setPreviousFilter(AbstractFilter::NullPointer());
-    (*iter)->setNextFilter(AbstractFilter::NullPointer());
+    filter->setPreviousFilter(AbstractFilter::NullPointer());
+    filter->setNextFilter(AbstractFilter::NullPointer());
   }
   m_Pipeline.clear();
   emit pipelineWasEdited();
@@ -473,9 +473,9 @@ void FilterPipeline::updatePrevNextFilters()
     }
   }
   int index = 0;
-  for(FilterContainerType::iterator filter = m_Pipeline.begin(); filter != m_Pipeline.end(); ++filter)
+  for(const auto& filter : m_Pipeline)
   {
-    (*filter)->setPipelineIndex(index++);
+    filter->setPipelineIndex(index++);
   }
 }
 
@@ -492,9 +492,9 @@ void FilterPipeline::addMessageReceiver(QObject* obj)
 // -----------------------------------------------------------------------------
 void FilterPipeline::connectFilterNotifications(QObject* filter)
 {
-  for(int i = 0; i < m_MessageReceivers.size(); i++)
+  for(const auto& messageReceiver : m_MessageReceivers)
   {
-    connect(filter, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), m_MessageReceivers.at(i), SLOT(processPipelineMessage(const PipelineMessage&)));
+    connect(filter, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), messageReceiver, SLOT(processPipelineMessage(const PipelineMessage&)));
   }
 }
 
@@ -503,9 +503,9 @@ void FilterPipeline::connectFilterNotifications(QObject* filter)
 // -----------------------------------------------------------------------------
 void FilterPipeline::disconnectFilterNotifications(QObject* filter)
 {
-  for(int i = 0; i < m_MessageReceivers.size(); i++)
+  for(const auto& messageReceiver : m_MessageReceivers)
   {
-    disconnect(filter, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), m_MessageReceivers.at(i), SLOT(processPipelineMessage(const PipelineMessage&)));
+    disconnect(filter, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), messageReceiver, SLOT(processPipelineMessage(const PipelineMessage&)));
   }
 }
 
@@ -554,7 +554,7 @@ int FilterPipeline::preflightPipeline()
       for(const DataArrayPath& createdPath : currentCreatedPaths)
       {
         // Filter Parameter changes
-        for(DataArrayPath::RenameType rename : renamedPaths)
+        for(const DataArrayPath::RenameType& rename : renamedPaths)
         {
           DataArrayPath originalPath;
           DataArrayPath renamePath;
@@ -566,7 +566,7 @@ int FilterPipeline::preflightPipeline()
           }
         }
         // Rename Filters
-        for(DataArrayPath::RenameType rename : filterRenamedPaths)
+        for(const DataArrayPath::RenameType& rename : filterRenamedPaths)
         {
           DataArrayPath originalPath;
           DataArrayPath renamePath;
@@ -580,22 +580,15 @@ int FilterPipeline::preflightPipeline()
       }
 
       DataArrayPath::RenameContainer newRenamedPaths = DataArrayPath::CheckForRenamedPaths(oldDca, dca, oldCreatedPaths, currentCreatedPaths);
-      //      for(DataArrayPath::RenameType renameType : newRenamedPaths)
-      //      {
-      //        renamedPaths.push_back(renameType);
-      //      }
-
       std::copy(newRenamedPaths.begin(), newRenamedPaths.end(), renamedPaths.end());
 
       // Filter renamed existing DataArrayPaths
       DataArrayPath::RenameContainer hardRenamePaths = filter->getRenamedPaths();
-      //      for(DataArrayPath::RenameType renameType : hardRenamePaths)
-      //      {
-      //        renamedPaths.push_back(renameType);
-      //        filterRenamedPaths.push_back(renameType);
-      //      }
-      std::copy(hardRenamePaths.begin(), hardRenamePaths.end(), renamedPaths.end());
-      std::copy(hardRenamePaths.begin(), hardRenamePaths.end(), filterRenamedPaths.end());
+      for(const DataArrayPath::RenameType& renameType : hardRenamePaths)
+      {
+        renamedPaths.push_back(renameType);
+        filterRenamedPaths.push_back(renameType);
+      }
     }
     else
     {
@@ -639,15 +632,14 @@ DataContainerArray::Pointer FilterPipeline::execute()
   float progress = 0.0f;
 
   // Connect this object to anything that wants to know about PipelineMessages
-  for(int i = 0; i < m_MessageReceivers.size(); i++)
+  for(const auto& messageReceiver : m_MessageReceivers)
   {
-    connect(this, SIGNAL(pipelineGeneratedMessage(const PipelineMessage&)), m_MessageReceivers.at(i), SLOT(processPipelineMessage(const PipelineMessage&)));
+    connect(this, SIGNAL(pipelineGeneratedMessage(const PipelineMessage&)), messageReceiver, SLOT(processPipelineMessage(const PipelineMessage&)));
   }
 
   PipelineMessage progValue("", "", 0, PipelineMessage::MessageType::ProgressValue, -1);
-  for(FilterContainerType::iterator filter = m_Pipeline.begin(); filter != m_Pipeline.end(); ++filter)
+  for(const auto& filt : m_Pipeline)
   {
-    AbstractFilter::Pointer filt = *filter;
     progress = progress + 1.0f;
     progValue.setType(PipelineMessage::MessageType::ProgressValue);
     progValue.setProgressValue(static_cast<int>(progress / (m_Pipeline.size() + 1) * 100.0f));
@@ -666,9 +658,9 @@ DataContainerArray::Pointer FilterPipeline::execute()
       filt->setMessagePrefix(ss);
       connectFilterNotifications(filt.get());
       filt->setDataContainerArray(m_Dca);
-      setCurrentFilter(*filter);
+      setCurrentFilter(filt);
       filt->execute();
-      disconnectFilterNotifications((*filter).get());
+      disconnectFilterNotifications(filt.get());
       filt->setDataContainerArray(DataContainerArray::NullPointer());
       err = filt->getErrorCondition();
       if(err < 0)
@@ -680,7 +672,7 @@ DataContainerArray::Pointer FilterPipeline::execute()
         progValue.setProgressValue(100);
         ss = QObject::tr("[%1/%2] %3 caused an error during execution.").arg(progress).arg(m_Pipeline.size()).arg(filt->getHumanLabel());
         progValue.setText(ss);
-        progValue.setPipelineIndex((*filter)->getPipelineIndex());
+        progValue.setPipelineIndex(filt->getPipelineIndex());
         progValue.setCode(filt->getErrorCondition());
         emit pipelineGeneratedMessage(progValue);
         emit filt->filterCompleted(filt.get());
@@ -718,9 +710,9 @@ DataContainerArray::Pointer FilterPipeline::execute()
 void FilterPipeline::printFilterNames(QTextStream& out)
 {
   out << "---------------------------------------------------------------------";
-  for(FilterContainerType::iterator iter = m_Pipeline.begin(); iter != m_Pipeline.end(); ++iter)
+  for(const auto& filter : m_Pipeline)
   {
-    out << (*iter)->getNameOfClass() << "\n";
+    out << filter->getNameOfClass() << "\n";
   }
   out << "---------------------------------------------------------------------";
 }
@@ -730,9 +722,8 @@ void FilterPipeline::printFilterNames(QTextStream& out)
 // -----------------------------------------------------------------------------
 void FilterPipeline::connectSignalsSlots()
 {
-  for(int i = 0; i < m_Pipeline.size(); i++)
+  for(const auto& filter : m_Pipeline)
   {
-    AbstractFilter::Pointer filter = m_Pipeline[i];
     connect(this, SIGNAL(pipelineFinished()), filter.get(), SLOT(cleanupFilter()));
   }
 }
@@ -742,9 +733,8 @@ void FilterPipeline::connectSignalsSlots()
 // -----------------------------------------------------------------------------
 void FilterPipeline::disconnectSignalsSlots()
 {
-  for(int i = 0; i < m_Pipeline.size(); i++)
+  for(const auto& filter : m_Pipeline)
   {
-    AbstractFilter::Pointer filter = m_Pipeline[i];
     disconnect(this, SIGNAL(pipelineFinished()), filter.get(), SLOT(cleanupFilter()));
   }
 }

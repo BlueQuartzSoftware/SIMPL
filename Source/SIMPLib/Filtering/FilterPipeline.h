@@ -111,11 +111,11 @@ public:
   /**
    * @brief
    */
-  virtual void pushFront(AbstractFilter::Pointer f);
+  virtual void pushFront(const AbstractFilter::Pointer& f);
   virtual void popFront();
-  virtual void pushBack(AbstractFilter::Pointer f);
+  virtual void pushBack(const AbstractFilter::Pointer& f);
   virtual void popBack();
-  virtual void insert(size_t index, AbstractFilter::Pointer f);
+  virtual void insert(size_t index, const AbstractFilter::Pointer& f);
   virtual void erase(size_t index);
   virtual void clear();
   virtual size_t size();
@@ -181,7 +181,7 @@ public slots:
    */
   virtual void cancelPipeline();
 
-  void setName(QString name);
+  void setName(const QString& name);
 
 protected:
   FilterPipeline();
