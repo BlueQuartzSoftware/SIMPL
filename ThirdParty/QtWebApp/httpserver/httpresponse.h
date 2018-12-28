@@ -30,7 +30,7 @@
   before calling write(). Web Browsers use that information to display a progress bar.
 */
 
-class DECLSPEC HttpResponse
+class QtWebAppLib_EXPORT HttpResponse
 {
   Q_DISABLE_COPY(HttpResponse)
 public:

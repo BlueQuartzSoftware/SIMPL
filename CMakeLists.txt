@@ -218,7 +218,7 @@ SIMPL_ENABLE_GROUP(GROUP_NAME PLUGIN
             DESC "Compile SIMPL Plugin functionality"
             DEPENDENCIES BASE FILTERS)
 SIMPL_ENABLE_GROUP(GROUP_NAME REST
-            ENABLE OFF
+            ENABLE ON
             DESC "Compile SIMPL REST functionality"
             DEPENDENCIES BASE)
 SIMPL_ENABLE_GROUP(GROUP_NAME WIDGETS
@@ -417,8 +417,11 @@ if(SIMPL_Group_WIDGETS)
   add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SVWidgetsLib ${PROJECT_BINARY_DIR}/SVWidgetsLib)
 endif()
 
+# --------------------------------------------------------------------
+# Include any REST related CMake codes
 if(SIMPL_Group_REST)
   add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/RESTClient ${PROJECT_BINARY_DIR}/RESTClient)
+  add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/RESTServer ${PROJECT_BINARY_DIR}/RESTServer)
 endif()
 
 # --------------------------------------------------------------------
@@ -428,12 +431,6 @@ include(${PROJECT_RESOURCES_DIR}/CPack/PackageProject.cmake)
 # --------------------------------------------------------------------
 # Include any Support related CMake codes
 include(${SIMPLProj_SOURCE_DIR}/Support/Support.cmake)
-
-# --------------------------------------------------------------------
-# Include any REST related CMake codes
-if(SIMPL_Group_REST)
-  include(${SIMPLProj_SOURCE_DIR}/Source/REST/SourceList.cmake)
-endif()
 
 # --------------------------------------------------------------------------
 # Find the Pybind11 installation

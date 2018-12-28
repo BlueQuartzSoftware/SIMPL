@@ -86,7 +86,7 @@
  @see TemplateCache
 */
 
-class DECLSPEC Template : public QString
+class QtWebAppLib_EXPORT Template : public QString
 {
 public:
   /**

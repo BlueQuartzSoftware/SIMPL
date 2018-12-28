@@ -14,7 +14,7 @@ HttpRequest::HttpRequest(QSettings* settings)
   currentSize = 0;
   expectedBodySize = 0;
   maxSize = settings->value("maxRequestSize", "16000").toInt();
-  maxMultiPartSize = settings->value("maxMultiPartSize", "1000000").toInt();
+  maxMultiPartSize = settings->value("maxMultiPartSize", "400000000").toLongLong();
   tempFile = nullptr;
 }
 

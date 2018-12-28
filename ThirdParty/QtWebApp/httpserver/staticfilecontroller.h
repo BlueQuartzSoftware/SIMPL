@@ -39,7 +39,7 @@
   received a related HTTP request.
 */
 
-class DECLSPEC StaticFileController : public HttpRequestHandler
+class QtWebAppLib_EXPORT StaticFileController : public HttpRequestHandler
 {
   Q_OBJECT
   Q_DISABLE_COPY(StaticFileController)

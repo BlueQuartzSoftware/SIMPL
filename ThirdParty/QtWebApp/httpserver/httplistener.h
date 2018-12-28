@@ -38,7 +38,7 @@
   @see HttpRequest for description of config settings maxRequestSize and maxMultiPartSize
 */
 
-class DECLSPEC HttpListener : public QTcpServer
+class QtWebAppLib_EXPORT HttpListener : public QTcpServer
 {
   Q_OBJECT
   Q_DISABLE_COPY(HttpListener)

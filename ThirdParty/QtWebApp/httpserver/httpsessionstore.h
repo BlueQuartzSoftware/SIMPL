@@ -29,7 +29,7 @@
   </pre></code>
 */
 
-class DECLSPEC HttpSessionStore : public QObject
+class QtWebAppLib_EXPORT HttpSessionStore : public QObject
 {
   Q_OBJECT
   Q_DISABLE_COPY(HttpSessionStore)

@@ -236,6 +236,12 @@ if(SIMPL_Group_FILTERS)
   endif()
 endif()
 
+if(SIMPL_Group_REST)
+  target_include_directories(${PROJECT_NAME} PUBLIC 
+                                $<BUILD_INTERFACE:${SIMPLProj_SOURCE_DIR}/ThirdParty>)
+  target_link_libraries(${PROJECT_NAME} QtWebAppLib)                            
+endif()
+
 #-- Configure Link Libraries for the Target
 LibraryProperties( ${PROJECT_NAME} ${EXE_DEBUG_EXTENSION} )
 #-- Link the Target to its dependent libraries

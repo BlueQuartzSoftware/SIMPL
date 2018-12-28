@@ -12,8 +12,8 @@ namespace JSON
 static const QString ErrorCode("ErrorCode");
 static const QString ErrorMessage("ErrorMessage");
 static const QString SessionID("SessionID");
-static const QString Errors("Errors");
-static const QString Warnings("Warnings");
+static const QString PipelineErrors("PipelineErrors");
+static const QString PipelineWarnings("PipelineWarnings");
 static const QString Completed("Completed");
 
 

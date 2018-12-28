@@ -316,7 +316,7 @@ void ImportHDF5TreeModelItem::initializeChildItems()
       ImportHDF5TreeModelItem* item = new ImportHDF5TreeModelItem(m_FileId, name, const_cast<ImportHDF5TreeModelItem*>(this));
       m_ChildItems.append(item);
     }
-    m_ChildCount = itemList.size();
+    m_ChildCount = static_cast<int32_t>(itemList.size());
     err = H5Gclose(groupId);
   }
   else // Get some basic information about the data set
@@ -344,7 +344,7 @@ void ImportHDF5TreeModelItem::initializeChildItems()
     H5T_class_t data_type;
     size_t type_size;
     err = H5Lite::getDatasetInfo(m_FileId, path.toStdString(), dims, data_type, type_size);
-    m_NumDims = dims.size();
+    m_NumDims = static_cast<int32_t>(dims.size());
 
     switch(data_type)
     {

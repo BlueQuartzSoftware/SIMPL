@@ -42,7 +42,7 @@
   @see HttpRequest for description of config settings maxRequestSize and maxMultiPartSize
 */
 
-class DECLSPEC HttpConnectionHandlerPool : public QObject
+class QtWebAppLib_EXPORT HttpConnectionHandlerPool : public QObject
 {
   Q_OBJECT
   Q_DISABLE_COPY(HttpConnectionHandlerPool)
