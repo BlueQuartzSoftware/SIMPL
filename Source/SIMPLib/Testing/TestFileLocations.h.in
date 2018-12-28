@@ -211,13 +211,20 @@ namespace UnitTest
 
   namespace RestUnitTest
   {
+    // Server Configuration File
     const QString RestServerConfigFilePath("@CMAKE_RUNTIME_OUTPUT_DIRECTORY@/RESTServer.ini");
-    const QString SmallIN100ArchivePipeline("@TEST_TEMP_DIR@/(01) SmallIN100 Archive.json");
-    const QString SmallIN100ArchiveInputFolderPath("@TEST_TEMP_DIR@/SmallIN100");
-	const QString SmallIN100ArchiveOutputFilePath("@TEST_TEMP_DIR@/SmallIN100.h5ebsd");
-    const QString RESTPipelineFilePath("@TEST_TEMP_DIR@/RESTPipeline.json");
-    const QString RESTErrorPipelineFilePath("@TEST_TEMP_DIR@/RESTErrorPipeline.json");
-    const QString RESTFileIOPipelineFilePath("@TEST_TEMP_DIR@/RESTFileIOPipeline.json");
+    // Test Pipeline File
+    const QString SmallIN100ArchivePipeline("@DREAM3DProj_SOURCE_DIR@/Support/PrebuiltPipelines/Workshop/EBSD Reconstruction/(01) SmallIN100 Archive.json");
+    // Location of Test Data
+    const QString SmallIN100ArchiveInputFolderPath("@DREAM3D_DATA_DIR@/Data/SmallIN100");
+    // Output File Location
+    const QString SmallIN100ArchiveOutputFilePath("@TEST_TEMP_DIR@/SmallIN100.h5ebsd");
+
+    // Additional Pipeline file locations
+    const QString RESTErrorPipelineFilePath("@SIMPLib_SOURCE_DIR@/Testing/TestFiles/RESTErrorPipeline.json");
+    const QString RESTFileIOPipelineFilePath("@SIMPLib_SOURCE_DIR@/Testing/TestFiles/RESTFileIOPipeline.json");
+    const QString RESTPipelineFilePath("@SIMPLib_SOURCE_DIR@/Testing/TestFiles/RESTPipeline.json");
+    // Output/Temp .dream3d files to write and read
     const QString RESTFileIOInputDataFilePath("@TEST_TEMP_DIR@/RESTFileIOInputData.dream3d");
     const QString RESTFileIOOutputDataFilePath("@TEST_TEMP_DIR@/RESTFileIOOutputData.dream3d");
   }

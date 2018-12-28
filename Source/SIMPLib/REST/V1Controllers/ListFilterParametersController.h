@@ -29,8 +29,7 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef ListFilterParametersController_H_
-#define ListFilterParametersController_H_
+#pragma once
 
 #include "QtWebApp/httpserver/httprequest.h"
 #include "QtWebApp/httpserver/httprequesthandler.h"
@@ -67,4 +66,3 @@ public:
   void createFilterParametersJson(const QString& filterName, QJsonObject& rootObject);
 };
 
-#endif // ListFilterParametersController_H_

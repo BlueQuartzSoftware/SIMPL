@@ -29,8 +29,7 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef NumFiltersController_H_
-#define NumFiltersController_H_
+#pragma once
 
 #include "QtWebApp/httpserver/httprequest.h"
 #include "QtWebApp/httpserver/httprequesthandler.h"
@@ -71,4 +70,3 @@ public:
   static QString EndPoint();
 };
 
-#endif // NumFiltersController_H_

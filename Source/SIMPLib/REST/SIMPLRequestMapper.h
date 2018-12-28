@@ -29,9 +29,7 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-#ifndef SIMPLSIMPLRequestMapper_H_
-#define SIMPLSIMPLRequestMapper_H_
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -69,4 +67,3 @@ public:
   void service(HttpRequest& request, HttpResponse& response);
 };
 
-#endif // SIMPLSIMPLRequestMapper_H_

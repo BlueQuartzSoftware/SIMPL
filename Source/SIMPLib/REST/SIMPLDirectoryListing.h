@@ -33,8 +33,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _simpldirectorylisting_h_
-#define _simpldirectorylisting_h_
+#pragma once
 
 #include <QtCore/QDateTime>
 #include <QtCore/QDir>
@@ -73,4 +72,3 @@ public:
   static QString ParseDirForTable(QDir directory);
 };
 
-#endif

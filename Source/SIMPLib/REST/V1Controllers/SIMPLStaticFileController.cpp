@@ -162,7 +162,7 @@ void SIMPLStaticFileController::service(HttpRequest& request, HttpResponse& resp
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SIMPLStaticFileController::setContentType(QString fileName, HttpResponse& response) const
+void SIMPLStaticFileController::setContentType(const QString& fileName, HttpResponse& response) const
 {
   if(fileName.endsWith(".png"))
   {

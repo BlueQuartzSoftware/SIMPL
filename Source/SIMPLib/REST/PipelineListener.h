@@ -1,5 +1,4 @@
-#ifndef _pipelinelistener_h_
-#define _pipelinelistener_h_
+#pragma once
 
 #include <vector>
 
@@ -48,4 +47,3 @@ private:
   QFile* m_StandardOutputLog;
 };
 
-#endif

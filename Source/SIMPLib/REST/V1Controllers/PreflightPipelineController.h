@@ -29,8 +29,7 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef PreflightPipelineController_H_
-#define PreflightPipelineController_H_
+#pragma once
 
 #include "QtWebApp/httpserver/httprequest.h"
 #include "QtWebApp/httpserver/httprequesthandler.h"
@@ -60,4 +59,3 @@ public:
   static QString EndPoint();
 };
 
-#endif // PreflightPipelineController_H_

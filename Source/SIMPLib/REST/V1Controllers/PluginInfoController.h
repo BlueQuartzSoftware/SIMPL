@@ -29,8 +29,7 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef PluginInfoController_H_
-#define PluginInfoController_H_
+#pragma once
 
 #include "QtWebApp/httpserver/httprequest.h"
 #include "QtWebApp/httpserver/httprequesthandler.h"
@@ -79,4 +78,3 @@ public:
   static QString EndPoint();
 };
 
-#endif // PluginInfoController_H_

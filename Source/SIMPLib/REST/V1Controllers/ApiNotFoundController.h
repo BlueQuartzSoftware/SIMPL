@@ -29,8 +29,7 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef ApiNotFoundController_H_
-#define ApiNotFoundController_H_
+#pragma once
 
 #include "QtWebApp/httpserver/httprequest.h"
 #include "QtWebApp/httpserver/httprequesthandler.h"
@@ -60,4 +59,3 @@ public:
   static QString EndPoint();
 };
 
-#endif // ApiNotFoundController_H_

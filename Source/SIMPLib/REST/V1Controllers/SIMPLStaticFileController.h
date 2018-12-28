@@ -1,6 +1,5 @@
 
-#ifndef _simplstaticfilecontroller_h_
-#define _simplstaticfilecontroller_h_
+#pragma once
 
 #include <QtCore/QCache>
 #include <QtCore/QMutex>
@@ -87,7 +86,5 @@ private:
   QMutex mutex;
 
   /** Set a content-type header in the response depending on the ending of the filename */
-  void setContentType(QString file, HttpResponse& response) const;
+  void setContentType(const QString &file, HttpResponse& response) const;
 };
-
-#endif // _StaticFileController_h_
