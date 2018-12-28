@@ -39,8 +39,7 @@
 
 #include <QtWidgets/QUndoCommand>
 
-#include <SIMPLib/Filtering/AbstractFilter.h>
-#include <SIMPLib/Filtering/FilterPipeline.h>
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
