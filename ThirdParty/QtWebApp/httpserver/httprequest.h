@@ -5,15 +5,16 @@
 
 #pragma once
 
-#include "httpglobal.h"
 #include <QByteArray>
 #include <QHostAddress>
 #include <QMap>
 #include <QMultiMap>
-#include <QSettings>
 #include <QTcpSocket>
 #include <QTemporaryFile>
 #include <QUuid>
+
+#include "httpglobal.h"
+#include "httpserver/ServerSettings.h"
 
 /**
   This object represents a single HTTP request. It reads the request
@@ -52,7 +53,7 @@ public:
     Constructor.
     @param settings Configuration settings
   */
-  HttpRequest(QSettings* settings);
+  HttpRequest(ServerSettings* settings);
 
   /**
     Destructor.

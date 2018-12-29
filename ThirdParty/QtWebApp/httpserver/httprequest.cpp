@@ -8,13 +8,13 @@
 #include <QDir>
 #include <QList>
 
-HttpRequest::HttpRequest(QSettings* settings)
+HttpRequest::HttpRequest(ServerSettings* settings)
 {
   status = waitForRequest;
   currentSize = 0;
   expectedBodySize = 0;
-  maxSize = settings->value("maxRequestSize", "16000").toInt();
-  maxMultiPartSize = settings->value("maxMultiPartSize", "400000000").toLongLong();
+  maxSize = settings->maxRequestSize;
+  maxMultiPartSize = settings->maxMultiPartSize;
   tempFile = nullptr;
 }
 

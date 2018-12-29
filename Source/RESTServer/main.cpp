@@ -47,6 +47,7 @@
 #include <QtCore/QString>
 #include <QtCore/QtDebug>
 
+#include "QtWebApp/httpserver/ServerSettings.h"
 #include "QtWebApp/httpserver/httplistener.h"
 #include "QtWebApp/httpserver/httpsessionstore.h"
 #include "QtWebApp/logging/filelogger.h"
@@ -95,8 +96,7 @@ QString searchConfigFile()
   {
     qWarning("%s/%s not found", qPrintable(dir), qPrintable(fileName));
   }
-  qFatal("Cannot find config file %s", qPrintable(fileName));
-  return 0;
+  return QString();
 }
 
 // -----------------------------------------------------------------------------
@@ -118,7 +118,11 @@ int main(int argc, char* argv[])
 
   // Find the configuration file
   QString configFileName = searchConfigFile();
-
+  if(configFileName.isEmpty())
+  {
+    qDebug() << "Input configuration file was not found. Server cannot continue.";
+    return 1;
+  }
   // Configure logging into a file
   /*
     QSettings* logSettings=new QSettings(configFileName,QSettings::IniFormat,&app);
@@ -133,19 +137,17 @@ int main(int argc, char* argv[])
   //    templateCache=new TemplateCache(templateSettings,&app);
 
   // Configure session store
-  QSettings* sessionSettings = new QSettings(configFileName, QSettings::IniFormat, &app);
-  sessionSettings->beginGroup("sessions");
-  HttpSessionStore* sessionStore = HttpSessionStore::CreateInstance(sessionSettings, &app);
+
+  QSettings config(configFileName, QSettings::IniFormat, &app);
+  ServerSettings serverSettings(config);
+
+  HttpSessionStore* sessionStore = HttpSessionStore::CreateInstance(&serverSettings, &app);
 
   // Configure static file controller
-  QSettings* fileSettings = new QSettings(configFileName, QSettings::IniFormat, &app);
-  fileSettings->beginGroup("docroot");
-  SIMPLStaticFileController::CreateInstance(fileSettings, &app);
+  SIMPLStaticFileController::CreateInstance(&serverSettings, &app);
 
   // Configure and start the TCP listener
-  QSettings* listenerSettings = new QSettings(configFileName, QSettings::IniFormat, &app);
-  listenerSettings->beginGroup("listener");
-  QSharedPointer<HttpListener> httpListener = QSharedPointer<HttpListener>(new HttpListener(listenerSettings, new SIMPLRequestMapper(&app), &app));
+  QSharedPointer<HttpListener> httpListener = QSharedPointer<HttpListener>(new HttpListener(&serverSettings, new SIMPLRequestMapper(&app), &app));
 
   qWarning() << "Application has started";
 

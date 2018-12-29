@@ -16,7 +16,7 @@ HttpSessionStore* HttpSessionStore::self = nullptr;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-HttpSessionStore::HttpSessionStore(QSettings* settings, QObject* parent)
+HttpSessionStore::HttpSessionStore(ServerSettings* settings, QObject* parent)
 : QObject(parent)
 {
   this->settings = settings;
@@ -24,8 +24,8 @@ HttpSessionStore::HttpSessionStore(QSettings* settings, QObject* parent)
   cleanupTimer.start(60000);
   if(settings != nullptr)
   {
-    cookieName = settings->value("cookieName", "sessionid").toByteArray();
-    expirationTime = settings->value("expirationTime", 3600000).toInt();
+    cookieName = settings->cookieName;
+    expirationTime = settings->expirationTime;
   }
 //  qDebug() << "HttpSessionStore: Sessions expire after " << expirationTime << " milliseconds";
 }
@@ -41,7 +41,7 @@ HttpSessionStore::~HttpSessionStore()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-HttpSessionStore* HttpSessionStore::CreateInstance(QSettings* settings, QObject* parent)
+HttpSessionStore* HttpSessionStore::CreateInstance(ServerSettings* settings, QObject* parent)
 {
   if(self == nullptr)
   {

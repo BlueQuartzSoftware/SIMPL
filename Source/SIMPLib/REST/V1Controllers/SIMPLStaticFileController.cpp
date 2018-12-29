@@ -21,7 +21,7 @@ SIMPLStaticFileController* SIMPLStaticFileController::Instance()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SIMPLStaticFileController::CreateInstance(QSettings* settings, QObject* parent)
+void SIMPLStaticFileController::CreateInstance(ServerSettings* settings, QObject* parent)
 {
   if(m_Instance != nullptr)
   {
@@ -42,29 +42,29 @@ QString SIMPLStaticFileController::getDocRoot() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPLStaticFileController::SIMPLStaticFileController(QSettings* settings, QObject* parent)
+SIMPLStaticFileController::SIMPLStaticFileController(ServerSettings* settings, QObject* parent)
 : HttpRequestHandler(parent)
 {
-  maxAge = settings->value("maxAge", "60000").toInt();
-  encoding = settings->value("encoding", "UTF-8").toString();
-  docroot = settings->value("path", ".").toString();
+  maxAge = settings->maxAge;
+  encoding = settings->encoding;
+  docroot = settings->docRootPath;
   if(!(docroot.startsWith(":/") || docroot.startsWith("qrc://")))
   {
     // Convert relative path to absolute, based on the directory of the config file.
 #ifdef Q_OS_WIN32
-    if(QDir::isRelativePath(docroot) && settings->format() != QSettings::NativeFormat)
+    if(QDir::isRelativePath(docroot) && settings->format() != ServerSettings::NativeFormat)
 #else
     if(QDir::isRelativePath(docroot))
 #endif
     {
-      QFileInfo configFile(settings->fileName());
+      QFileInfo configFile(settings->configFileName);
       docroot = QFileInfo(configFile.absolutePath(), docroot).absoluteFilePath();
     }
   }
   qDebug("SIMPLStaticFileController: docroot=%s, encoding=%s, maxAge=%i", qPrintable(docroot), qPrintable(encoding), maxAge);
-  maxCachedFileSize = settings->value("maxCachedFileSize", "65536").toInt();
-  cache.setMaxCost(settings->value("cacheSize", "1000000").toInt());
-  cacheTimeout = settings->value("cacheTime", "60000").toInt();
+  maxCachedFileSize = settings->maxCachedFileSize;
+  cache.setMaxCost(settings->cacheSize);
+  cacheTimeout = settings->cacheTime;
   qDebug("SIMPLStaticFileController: cache timeout=%i, size=%i", cacheTimeout, cache.maxCost());
 }
 

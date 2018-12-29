@@ -7,15 +7,15 @@
 #include "httpconnectionhandlerpool.h"
 #include <QDir>
 
-HttpConnectionHandlerPool::HttpConnectionHandlerPool(QSettings* settings, HttpRequestHandler* requestHandler)
+HttpConnectionHandlerPool::HttpConnectionHandlerPool(ServerSettings* settings, HttpRequestHandler* requestHandler)
 {
   Q_ASSERT(settings != nullptr);
   this->settings = settings;
   this->requestHandler = requestHandler;
   this->sslConfiguration = nullptr;
-  verbose = this->settings->value("verbose", false).toBool();
+  verbose = settings->verbose;
   loadSslConfig();
-  cleanupTimer.start(settings->value("cleanupInterval", 1000).toInt());
+  cleanupTimer.start(settings->cleanupInterval);
   connect(&cleanupTimer, SIGNAL(timeout()), SLOT(cleanup()));
 }
 
@@ -29,7 +29,7 @@ HttpConnectionHandlerPool::~HttpConnectionHandlerPool()
   delete sslConfiguration;
   if(verbose)
   {
-    qDebug("HttpConnectionHandlerPool (%p): destroyed", this);
+    qDebug() << "HttpConnectionHandlerPool (%p): destroyed" << this;
   }
 }
 
@@ -50,7 +50,7 @@ HttpConnectionHandler* HttpConnectionHandlerPool::getConnectionHandler()
   // create a new handler, if necessary
   if(freeHandler == nullptr)
   {
-    int maxConnectionHandlers = settings->value("maxThreads", 100).toInt();
+    int maxConnectionHandlers = settings->maxThreads;
     if(pool.count() < maxConnectionHandlers)
     {
       freeHandler = new HttpConnectionHandler(settings, requestHandler, sslConfiguration);
@@ -64,7 +64,7 @@ HttpConnectionHandler* HttpConnectionHandlerPool::getConnectionHandler()
 
 void HttpConnectionHandlerPool::cleanup()
 {
-  int maxIdleHandlers = settings->value("minThreads", 1).toInt();
+  int maxIdleHandlers = settings->minThreads;
   int idleCounter = 0;
   mutex.lock();
   foreach(HttpConnectionHandler* handler, pool)
@@ -89,8 +89,8 @@ void HttpConnectionHandlerPool::cleanup()
 void HttpConnectionHandlerPool::loadSslConfig()
 {
   // If certificate and key files are configured, then load them
-  QString sslKeyFileName = settings->value("sslKeyFile", "").toString();
-  QString sslCertFileName = settings->value("sslCertFile", "").toString();
+  QString sslKeyFileName = settings->sslKeyFile;
+  QString sslCertFileName = settings->sslCertFile;
   if(!sslKeyFileName.isEmpty() && !sslCertFileName.isEmpty())
   {
 #ifdef QT_NO_OPENSSL
@@ -99,7 +99,7 @@ void HttpConnectionHandlerPool::loadSslConfig()
     // Convert relative fileNames to absolute, based on the directory of the config file.
     QFileInfo configFile(settings->fileName());
 #ifdef Q_OS_WIN32
-    if(QDir::isRelativePath(sslKeyFileName) && settings->format() != QSettings::NativeFormat)
+    if(QDir::isRelativePath(sslKeyFileName) && settings->format() != ServerSettings::NativeFormat)
 #else
     if(QDir::isRelativePath(sslKeyFileName))
 #endif
@@ -107,7 +107,7 @@ void HttpConnectionHandlerPool::loadSslConfig()
       sslKeyFileName = QFileInfo(configFile.absolutePath(), sslKeyFileName).absoluteFilePath();
     }
 #ifdef Q_OS_WIN32
-    if(QDir::isRelativePath(sslCertFileName) && settings->format() != QSettings::NativeFormat)
+    if(QDir::isRelativePath(sslCertFileName) && settings->format() != ServerSettings::NativeFormat)
 #else
     if(QDir::isRelativePath(sslCertFileName))
 #endif

@@ -4,6 +4,7 @@
 #include <QtCore/QCache>
 #include <QtCore/QMutex>
 
+#include "QtWebApp/httpserver/ServerSettings.h"
 #include "QtWebApp/httpserver/httpglobal.h"
 #include "QtWebApp/httpserver/httprequest.h"
 #include "QtWebApp/httpserver/httprequesthandler.h"
@@ -44,7 +45,7 @@ class SIMPLib_EXPORT SIMPLStaticFileController : public HttpRequestHandler
   Q_DISABLE_COPY(SIMPLStaticFileController)
 public:
   static SIMPLStaticFileController* Instance();
-  static void CreateInstance(QSettings* settings, QObject* parent = nullptr);
+  static void CreateInstance(ServerSettings* settings, QObject* parent = nullptr);
 
   /** Generates the response */
   void service(HttpRequest& request, HttpResponse& response);
@@ -55,7 +56,7 @@ private:
   static SIMPLStaticFileController* m_Instance;
 
   /** Constructor */
-  SIMPLStaticFileController(QSettings* settings, QObject* parent = NULL);
+  SIMPLStaticFileController(ServerSettings* settings, QObject* parent = NULL);
 
   /** Encoding of text files */
   QString encoding;

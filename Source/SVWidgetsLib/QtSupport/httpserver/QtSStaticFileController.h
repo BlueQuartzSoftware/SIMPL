@@ -5,12 +5,14 @@
 
 #pragma once
 
+#include <QCache>
+#include <QMutex>
+
+#include "QtWebApp/httpserver/ServerSettings.h"
 #include "QtWebApp/httpserver/httpglobal.h"
 #include "QtWebApp/httpserver/httprequest.h"
 #include "QtWebApp/httpserver/httprequesthandler.h"
 #include "QtWebApp/httpserver/httpresponse.h"
-#include <QCache>
-#include <QMutex>
 
 /**
   Delivers static files. It is usually called by the applications main request handler when
@@ -47,7 +49,7 @@ class SVWidgetsLib_EXPORT QtSStaticFileController : public HttpRequestHandler
   Q_DISABLE_COPY(QtSStaticFileController)
 public:
   /** Constructor */
-  QtSStaticFileController(QSettings* settings, QObject* parent = NULL);
+  QtSStaticFileController(ServerSettings* settings, QObject* parent = nullptr);
 
   /** Generates the response */
   void service(HttpRequest& request, HttpResponse& response) override;

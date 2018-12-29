@@ -1,11 +1,13 @@
 #pragma once
 
-#include "httpconnectionhandler.h"
-#include "httpglobal.h"
 #include <QList>
 #include <QMutex>
 #include <QObject>
 #include <QTimer>
+
+#include "httpserver/ServerSettings.h"
+#include "httpserver/httpconnectionhandler.h"
+#include "httpserver/httpglobal.h"
 
 /**
   Pool of http connection handlers. The size of the pool grows and
@@ -53,7 +55,7 @@ public:
     @param requestHandler The handler that will process each received HTTP request.
     @warning The requestMapper gets deleted by the destructor of this pool
   */
-  HttpConnectionHandlerPool(QSettings* settings, HttpRequestHandler* requestHandler);
+  HttpConnectionHandlerPool(ServerSettings* settings, HttpRequestHandler* requestHandler);
 
   /** Destructor */
   ~HttpConnectionHandlerPool() override;
@@ -63,7 +65,7 @@ public:
 
 private:
   /** Settings for this pool */
-  QSettings* settings;
+  ServerSettings* settings;
 
   /** Will be assigned to each Connectionhandler during their creation */
   HttpRequestHandler* requestHandler;

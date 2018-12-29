@@ -5,10 +5,12 @@
 
 #pragma once
 
-#include "httpglobal.h"
-#include "httprequest.h"
-#include "httpresponse.h"
-#include "httpsession.h"
+#include "httpserver/ServerSettings.h"
+#include "httpserver/httpglobal.h"
+#include "httpserver/httprequest.h"
+#include "httpserver/httpresponse.h"
+#include "httpserver/httpsession.h"
+
 #include <QMap>
 #include <QMutex>
 #include <QObject>
@@ -45,7 +47,7 @@ public:
    * @param parent
    * @return
    */
-  static HttpSessionStore* CreateInstance(QSettings* settings, QObject* parent = nullptr);
+  static HttpSessionStore* CreateInstance(ServerSettings* settings, QObject* parent = nullptr);
 
   /**
    * @brief Instance
@@ -92,11 +94,11 @@ protected:
   /** Storage for the sessions */
   QMap<QByteArray, HttpSession> sessions;
 
-  HttpSessionStore(QSettings* settings, QObject* parent = nullptr);
+  HttpSessionStore(ServerSettings* settings, QObject* parent = nullptr);
 
 private:
   /** Configuration settings */
-  QSettings* settings;
+  ServerSettings* settings;
 
   /** Timer to remove expired sessions */
   QTimer cleanupTimer;

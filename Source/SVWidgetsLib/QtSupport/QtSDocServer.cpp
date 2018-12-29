@@ -47,10 +47,10 @@
 QtSDocServer* QtSDocServer::self = nullptr;
 
 static HttpListener* httpListener = nullptr;
-static QSettings* sessionSettings = nullptr;
 static HttpSessionStore* sessionStore = nullptr;
-static QSettings* fileSettings = nullptr;
-static QSettings* listenerSettings = nullptr;
+
+static ServerSettings* s_ServerSettings = nullptr;
+
 static QtSStaticFileController* staticFileController = nullptr;
 
 namespace
@@ -145,38 +145,18 @@ QString QtSDocServer::GetHelpRootDir()
 // -----------------------------------------------------------------------------
 void QtSDocServer::initializeDocServer()
 {
-  sessionSettings = new QSettings(this);
-  sessionSettings->beginGroup("sessions");
-  sessionSettings->setValue("expirationTime", "3600000");
-  sessionSettings->setValue("cookieName", "sessionid");
-  sessionSettings->setValue("cookiePath", "/");
-  sessionSettings->setValue("cookieComment", "Identifies the user");
-  sessionStore = HttpSessionStore::CreateInstance(sessionSettings, this);
 
-  // Configure static file controller
-  fileSettings = new QSettings(this);
-  fileSettings->beginGroup("docroot");
+  s_ServerSettings = new ServerSettings();
   QString rootDir = QtSDocServer::GetHelpRootDir();
-
-  fileSettings->setValue("path", rootDir);
-  fileSettings->setValue("encoding", "UTF-8");
-  fileSettings->setValue("maxAge", "60000");
-  fileSettings->setValue("cacheTime", "60000");
-  fileSettings->setValue("cacheSize", "1000000");
-  fileSettings->setValue("maxCachedFileSize", "65536");
-  staticFileController = new QtSStaticFileController(fileSettings, this);
+  s_ServerSettings->docRootPath = rootDir;
+  sessionStore = HttpSessionStore::CreateInstance(s_ServerSettings, this);
+  staticFileController = new QtSStaticFileController(s_ServerSettings, this);
 
   // Configure and start the TCP listener
-  listenerSettings = new QSettings(this);
-  listenerSettings->beginGroup("listener");
-  listenerSettings->setValue("host", QtSDocServer::GetIPAddress());
-  listenerSettings->setValue("port", QtSDocServer::GetPort());
-  listenerSettings->setValue("minThreads", "4");
-  listenerSettings->setValue("maxThreads", "100");
-  listenerSettings->setValue("readTimeout", "60000");
-  listenerSettings->setValue("maxRequestSize", "16000");
-  listenerSettings->setValue("maxMultiPartSize", "100000000");
-  httpListener = new HttpListener(listenerSettings, staticFileController, this);
+  s_ServerSettings->host = QtSDocServer::GetIPAddress();
+  s_ServerSettings->port = QtSDocServer::GetPort();
+
+  httpListener = new HttpListener(s_ServerSettings, staticFileController, this);
 }
 
 // -----------------------------------------------------------------------------

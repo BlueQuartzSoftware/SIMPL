@@ -38,7 +38,6 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QJsonParseError>
 #include <QtCore/QMimeDatabase>
-#include <QtCore/QSettings>
 #include <QtCore/QUrl>
 
 #include <QtNetwork/QHostAddress>
@@ -48,6 +47,10 @@
 #include <QtNetwork/QNetworkInterface>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
+
+#include "QtWebApp/httpserver/ServerSettings.h"
+#include "QtWebApp/httpserver/httplistener.h"
+#include "QtWebApp/httpserver/httpsessionstore.h"
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/CoreFilters/CreateAttributeMatrix.h"
@@ -59,19 +62,19 @@
 #include "SIMPLib/Plugin/PluginManager.h"
 #include "SIMPLib/Plugin/SIMPLPluginConstants.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/SIMPLibVersion.h"
-
-#include "SIMPLib/Testing/UnitTestSupport.hpp"
-
-#include "RESTClient/SIMPLRestClient.h"
-
 #include "SIMPLib/REST/PipelineListener.h"
 #include "SIMPLib/REST/SIMPLRequestMapper.h"
 #include "SIMPLib/REST/V1Controllers/SIMPLStaticFileController.h"
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
-#include "QtWebApp/httpserver/httplistener.h"
-#include "QtWebApp/httpserver/httpsessionstore.h"
+#include "SIMPLib/CoreFilters/CreateAttributeMatrix.h"
+#include "SIMPLib/CoreFilters/CreateDataArray.h"
+#include "SIMPLib/CoreFilters/CreateDataContainer.h"
+#include "SIMPLib/CoreFilters/DataContainerWriter.h"
+
+#include "RESTClient/SIMPLRestClient.h"
 
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 
@@ -109,6 +112,9 @@ private:
 
 #include "RESTUnitTest.moc"
 
+/**
+ * @brief The RESTUnitTest class
+ */
 class RESTUnitTest
 {
 
@@ -136,8 +142,10 @@ public:
   void RemoveTestFiles()
   {
 #if REMOVE_TEST_FILES
-//    bool success = QFile::remove(UnitTest::RestTest::InputPipelineFile);
-//    DREAM3D_REQUIRE_EQUAL(success, true);
+    bool success = QFile::remove(UnitTest::RestUnitTest::SmallIN100ArchiveOutputFilePath);
+    success = QFile::remove(UnitTest::RestUnitTest::RESTFileIOInputDataFilePath);
+    success = QFile::remove(UnitTest::RestUnitTest::RESTFileIOOutputDataFilePath);
+    success = QFile::remove(UnitTest::TestTempDir + "/SmallIN100.h5ebsd");
 #endif
   }
 
@@ -551,8 +559,49 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
+  void prepInputDataFile()
+  {
+    FilterPipeline::Pointer pipeline = FilterPipeline::New();
+
+    CreateDataContainer::Pointer createDataContainer = CreateDataContainer::New();
+    createDataContainer->setDataContainerName("DataContainer");
+    pipeline->pushBack(createDataContainer);
+
+    CreateAttributeMatrix::Pointer createAttrMat = CreateAttributeMatrix::New();
+    createAttrMat->setAttributeMatrixType(3);
+    DataArrayPath dap("DataContainer", "AttributeMatrix", "");
+    createAttrMat->setCreatedAttributeMatrix(dap);
+    DynamicTableData dtd;
+    dtd.setTableData({{10.0}});
+    createAttrMat->setTupleDimensions(dtd);
+    pipeline->pushBack(createAttrMat);
+
+    CreateDataArray::Pointer createDataArray = CreateDataArray::New();
+    createDataArray->setInitializationType(0);
+    createDataArray->setInitializationValue("0");
+    dap.setDataArrayName("DataArray");
+    createDataArray->setNewArray(dap);
+    createDataArray->setNumberOfComponents(1);
+    createDataArray->setScalarType(SIMPL::ScalarTypes::Type::Int8);
+    pipeline->pushBack(createDataArray);
+
+    DataContainerWriter::Pointer writer = DataContainerWriter::New();
+    writer->setOutputFile(UnitTest::RestUnitTest::RESTFileIOInputDataFilePath);
+    writer->setWriteXdmfFile(false);
+    pipeline->pushBack(writer);
+
+    DataContainerArray::Pointer dca = pipeline->execute();
+    int32_t err = pipeline->getErrorCondition();
+    DREAM3D_REQUIRE(err >= 0);
+  }
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
   void TestExecutePipelineWithFiles()
   {
+
+    prepInputDataFile();
+
     QUrl url = getConnectionURL();
 
     url.setPath("/api/v1/ExecutePipeline");
@@ -1606,11 +1655,11 @@ public:
   // -----------------------------------------------------------------------------
   void registerFilters()
   {
-    // Register all the filters including trying to load those from Plugins
-    FilterManager* fm = FilterManager::Instance();
-    SIMPLibPluginLoader::LoadPluginFilters(fm);
-    //
-    QMetaObjectUtilities::RegisterMetaTypes();
+    //    // Register all the filters including trying to load those from Plugins
+    //    FilterManager* fm = FilterManager::Instance();
+    //    SIMPLibPluginLoader::LoadPluginFilters(fm);
+    //    //
+    //    QMetaObjectUtilities::RegisterMetaTypes();
   }
 
   // -----------------------------------------------------------------------------
@@ -1620,32 +1669,26 @@ public:
   {
     // Find the configuration file
     QString configFileName = UnitTest::RestUnitTest::RestServerConfigFilePath;
-
+    QSettings settings(configFileName, QSettings::IniFormat);
     // Configure session store
-    QSettings* sessionSettings = new QSettings(configFileName, QSettings::IniFormat);
-    sessionSettings->beginGroup("sessions");
+    ServerSettings* sessionSettings = new ServerSettings(settings);
     m_SessionStore = QSharedPointer<HttpSessionStore>(HttpSessionStore::CreateInstance(sessionSettings));
 
     // Configure static file controller
-    QSettings* fileSettings = new QSettings(configFileName, QSettings::IniFormat);
-    fileSettings->beginGroup("docroot");
-    SIMPLStaticFileController::CreateInstance(fileSettings);
+    SIMPLStaticFileController::CreateInstance(sessionSettings);
 
     // Configure and start the TCP listener
-    QSettings* listenerSettings = new QSettings(configFileName, QSettings::IniFormat);
-    listenerSettings->beginGroup("listener");
-
-    foreach(const QHostAddress& address, QNetworkInterface::allAddresses())
+    for(const QHostAddress& address : QNetworkInterface::allAddresses())
     {
       if(address.protocol() == QAbstractSocket::IPv4Protocol && address.isLoopback() == false)
       {
         QString localhostIP = address.toString();
-        listenerSettings->setValue("host", localhostIP);
+        sessionSettings->host = localhostIP;
         break;
       }
     }
 
-    m_HttpListener = QSharedPointer<HttpListener>(new HttpListener(listenerSettings, new SIMPLRequestMapper()));
+    m_HttpListener = QSharedPointer<HttpListener>(new HttpListener(sessionSettings, new SIMPLRequestMapper()));
   }
 
   // -----------------------------------------------------------------------------
@@ -1691,6 +1734,8 @@ public:
     DREAM3D_REGISTER_TEST(TestPluginInfo());
     DREAM3D_REGISTER_TEST(TestPreflightPipeline());
     DREAM3D_REGISTER_TEST(TestSIMPLibVersion());
+
+    DREAM3D_REGISTER_TEST(RemoveTestFiles());
 
     endServer();
   }

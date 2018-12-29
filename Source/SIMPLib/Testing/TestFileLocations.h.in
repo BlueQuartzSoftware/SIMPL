@@ -221,9 +221,9 @@ namespace UnitTest
     const QString SmallIN100ArchiveOutputFilePath("@TEST_TEMP_DIR@/SmallIN100.h5ebsd");
 
     // Additional Pipeline file locations
-    const QString RESTErrorPipelineFilePath("@SIMPLib_SOURCE_DIR@/Testing/TestFiles/RESTErrorPipeline.json");
-    const QString RESTFileIOPipelineFilePath("@SIMPLib_SOURCE_DIR@/Testing/TestFiles/RESTFileIOPipeline.json");
-    const QString RESTPipelineFilePath("@SIMPLib_SOURCE_DIR@/Testing/TestFiles/RESTPipeline.json");
+    const QString RESTErrorPipelineFilePath("@SIMPLib_SOURCE_DIR@/REST/Testing/Cxx/RESTErrorPipeline.json");
+    const QString RESTFileIOPipelineFilePath("@SIMPLib_SOURCE_DIR@/REST/Testing/Cxx/RESTFileIOPipeline.json");
+    const QString RESTPipelineFilePath("@SIMPLib_SOURCE_DIR@/REST/Testing/Cxx/RESTPipeline.json");
     // Output/Temp .dream3d files to write and read
     const QString RESTFileIOInputDataFilePath("@TEST_TEMP_DIR@/RESTFileIOInputData.dream3d");
     const QString RESTFileIOOutputDataFilePath("@TEST_TEMP_DIR@/RESTFileIOOutputData.dream3d");

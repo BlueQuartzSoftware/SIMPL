@@ -30,10 +30,14 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
+#include <memory>
+
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/SIMPLib.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
+
+#include "httpserver/ServerSettings.h"
 
 class SVWidgetsLib_EXPORT QtSDocServer : public QObject
 {
@@ -84,6 +88,8 @@ protected:
 
 private:
   static QtSDocServer* self;
+
+  std::shared_ptr<ServerSettings> m_ServerSettings;
 
 public:
   QtSDocServer(const QtSDocServer&) = delete;   // Copy Constructor Not Implemented
