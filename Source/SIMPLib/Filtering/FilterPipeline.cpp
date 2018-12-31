@@ -580,7 +580,10 @@ int FilterPipeline::preflightPipeline()
       }
 
       DataArrayPath::RenameContainer newRenamedPaths = DataArrayPath::CheckForRenamedPaths(oldDca, dca, oldCreatedPaths, currentCreatedPaths);
-      std::copy(newRenamedPaths.begin(), newRenamedPaths.end(), renamedPaths.end());
+      for(const DataArrayPath::RenameType& renameType : newRenamedPaths)
+      {
+        renamedPaths.push_back(renameType);
+      }
 
       // Filter renamed existing DataArrayPaths
       DataArrayPath::RenameContainer hardRenamePaths = filter->getRenamedPaths();
