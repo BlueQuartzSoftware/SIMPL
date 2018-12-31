@@ -136,23 +136,27 @@ QVector<QString> FilePathGenerator::GenerateVectorFileList(int start, int end, i
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<QString> FilePathGenerator::GenerateMontageFileList(int rowStart, int rowEnd, int colStart, int colEnd, bool& hasMissingFiles, bool rcOrdering, const QString& inputPath,
-                                                            const QString& filePrefix, const QString& fileSuffix, const QString& fileExtension, int paddingDigits)
+FilePathGenerator::TileRCIncexLayout2D FilePathGenerator::GenerateRCIndexMontageFileList(int rowStart, int rowEnd, int colStart, int colEnd, bool& hasMissingFiles, bool rcOrdering,
+                                                                                         const QString& inputPath, const QString& filePrefix, const QString& fileSuffix, const QString& fileExtension,
+                                                                                         int paddingDigits)
 {
-  QVector<QString> fileList;
+  TileRCIncexLayout2D tileLayout2D;
+
   QDir dir(inputPath);
   if(!dir.exists())
   {
-    return fileList;
+    return tileLayout2D;
   }
 
   bool missingFiles = false;
 
   for(int r = rowStart; r < rowEnd; r++)
   {
-
+    TileRCIndexRow2D tileRow2D;
     for(int c = colStart; c < colEnd; c++)
     {
+      TileRCIndex2D tile2D;
+
       QString filePath;
       QTextStream fn(&filePath);
       fn << inputPath;
@@ -204,16 +208,22 @@ QVector<QString> FilePathGenerator::GenerateMontageFileList(int rowStart, int ro
 
       filePath = QDir::toNativeSeparators(filePath);
 
+      tile2D.FileName = filePath;
+      tile2D.data = {{r, c}};
+
       QFileInfo fi(filePath);
       if(!fi.exists())
       {
         missingFiles = true;
       }
 
-      fileList.push_back(filePath);
+      tileRow2D.emplace_back(tile2D);
     }
+
+    // Push the row back on the TileLayout2D
+    tileLayout2D.emplace_back(tileRow2D);
   }
   hasMissingFiles = missingFiles;
 
-  return fileList;
+  return tileLayout2D;
 }
