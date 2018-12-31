@@ -155,19 +155,51 @@ QVector<QString> FilePathGenerator::GenerateMontageFileList(int rowStart, int ro
     {
       QString filePath;
       QTextStream fn(&filePath);
-      fn << inputPath << filePrefix;
+      fn << inputPath;
+      if(!inputPath.endsWith("/"))
+      {
+        fn << "/";
+      }
+      fn << filePrefix;
 
-      fn.setFieldWidth(paddingDigits);
-      fn.setFieldAlignment(QTextStream::AlignRight);
-      fn.setPadChar('0');
       if(rcOrdering)
       {
-        fn << "r" << r << "c" << c;
+        fn.setFieldWidth(0);
+        fn << "r";
+
+        fn.setFieldWidth(paddingDigits);
+        fn.setFieldAlignment(QTextStream::AlignRight);
+        fn.setPadChar('0');
+        fn << r;
+
+        fn.setFieldWidth(0);
+        fn << "c";
+
+        fn.setFieldWidth(paddingDigits);
+        fn.setFieldAlignment(QTextStream::AlignRight);
+        fn.setPadChar('0');
+        fn << c;
       }
       else
       {
-        fn << "c" << c << "r" << r;
-      }
+        fn.setFieldWidth(0);
+        fn << "c";
+
+        fn.setFieldWidth(paddingDigits);
+        fn.setFieldAlignment(QTextStream::AlignRight);
+        fn.setPadChar('0');
+        fn << c;
+
+        fn.setFieldWidth(0);
+        fn << "r";
+
+        fn.setFieldWidth(paddingDigits);
+        fn.setFieldAlignment(QTextStream::AlignRight);
+        fn.setPadChar('0');
+        fn << r;
+      };
+
+      fn.setFieldWidth(0);
       fn << fileSuffix << "." << fileExtension;
 
       filePath = QDir::toNativeSeparators(filePath);
