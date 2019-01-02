@@ -468,19 +468,30 @@ public:     \
 
 #define SIMPL_PIMPL_PROPERTY_DECL(type, prpty)\
   public:\
-  void set##prpty(const type& value);\
+  SIMPL_PIMPL_GET_PROPERTY_DECL(type, prpty)\
+  SIMPL_PIMPL_SET_PROPERTY_DECL(type, prpty)\
+
+#define SIMPL_PIMPL_GET_PROPERTY_DECL(type, prpty)\
   type get##prpty() const;
 
+#define SIMPL_PIMPL_SET_PROPERTY_DECL(type, prpty)\
+  void set##prpty(const type& value);\
 
 #define SIMPL_PIMPL_PROPERTY_DEF(Class, type, prpty)\
-  void Class::set##prpty(const type& value) {\
-    Q_D(Class);\
-    d->m_##prpty = value;\
-  }\
+  SIMPL_PIMPL_SET_PROPERTY_DEF(Class, type, prpty)\
+  SIMPL_PIMPL_GET_PROPERTY_DEF(Class, type, prpty)\
+
+#define SIMPL_PIMPL_GET_PROPERTY_DEF(Class, type, prpty)\
   type Class::get##prpty() const {\
     Q_D(const Class);\
     return d->m_##prpty;\
   }
+
+#define SIMPL_PIMPL_SET_PROPERTY_DEF(Class, type, prpty)\
+  void Class::set##prpty(const type& value) {\
+    Q_D(Class);\
+    d->m_##prpty = value;\
+  }\
 
 
 #define SIMPL_OVERLOAD_PROPERTY(type, prpty, overload)\
