@@ -140,7 +140,7 @@ public:
   /**
    * @brief Gets the name of the data container
    */
-  virtual QString getName();
+  virtual QString getName() const;
 
   /**
    * @brief Sets the geometry of the data container

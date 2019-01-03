@@ -42,7 +42,7 @@
 
 #include <list>
 #include <set>
-#include <tuple>
+#include <utility>
 
 #include "SIMPLib/Common/SIMPLibDLLExport.h"     // for SIMPLib_EXPORT
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"  // for SIMPL_PIMPL_PROPERTY_DECL
@@ -70,8 +70,8 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
 
   public:
     // tuple <oldPath, newPath>
-    using RenameType = std::tuple<DataArrayPath, DataArrayPath>;
-    using RenameContainer = std::list<RenameType>;
+    using RenameType = std::pair<DataArrayPath, DataArrayPath>;
+    using RenameContainer = std::set<RenameType>;
 
     enum class DataType
     {
@@ -180,6 +180,13 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
      * @return
      */
     bool operator==(const DataArrayPath& rhs) const;
+
+    /**
+     * @brief operator < is required for std::set
+     * @param rhs
+     * @return
+     */
+    bool operator<(const DataArrayPath& rhs) const;
 
     /**
      * @brief serialize Returns the path using the '|' charater by default. This can be over ridden by the programmer

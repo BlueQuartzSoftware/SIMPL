@@ -73,6 +73,7 @@ set(_PublicFilters
   SplitAttributeArray
   WriteASCIIData
   WriteTriangleGeometry
+  MassCreateData
 )
 
 

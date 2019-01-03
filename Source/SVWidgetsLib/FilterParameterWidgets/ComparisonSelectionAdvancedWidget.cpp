@@ -360,7 +360,7 @@ void ComparisonSelectionAdvancedWidget::populateButtonText()
   }
 
   // Check to see if we have any DataContainers to actually populate drop downs with.
-  if (dca->getDataContainers().isEmpty())
+  if (dca->getDataContainers().empty())
   {
     return;
   }

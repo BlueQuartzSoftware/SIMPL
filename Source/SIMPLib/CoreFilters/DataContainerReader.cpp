@@ -180,13 +180,9 @@ void DataContainerReader::dataCheck()
     return;
   }
 
-  QList<DataContainer::Pointer>& tempContainers = tempDCA->getDataContainers();
-
-  QListIterator<DataContainer::Pointer> iter(tempContainers);
-  while(iter.hasNext())
+  DataContainerArray::Container& tempContainers = tempDCA->getDataContainers();
+  for(DataContainer::Pointer container : tempContainers)
   {
-    DataContainer::Pointer container = iter.next();
-
     if(getOverwriteExistingDataContainers())
     {
       if(dca->doesDataContainerExist(container->getName()))

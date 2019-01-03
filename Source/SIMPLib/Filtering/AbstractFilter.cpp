@@ -43,6 +43,8 @@
 #include "SIMPLib/Filtering/FilterPipeline.h"
 #include "SIMPLib/Plugin/PluginManager.h"
 
+
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -54,7 +56,6 @@ AbstractFilter::AbstractFilter()
 , m_Removing(false)
 , m_PipelineIndex(0)
 , m_Cancel(false)
-
 {
   m_DataContainerArray = DataContainerArray::New();
   m_PreviousFilter = NullPointer();
@@ -356,8 +357,7 @@ std::list<DataArrayPath> AbstractFilter::getCreatedPaths()
 DataArrayPath::RenameContainer AbstractFilter::getRenamedPaths()
 {
   // Implemented in filters that rename existing paths
-  DataArrayPath::RenameContainer container;
-  return container;
+  return m_RenamedPaths;
 }
 
 // -----------------------------------------------------------------------------
@@ -664,4 +664,36 @@ void AbstractFilter::notifyMissingProperty(FilterParameter* filterParameter)
 
   setWarningCondition(-1);
   notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool AbstractFilter::checkIfPathRenamed(const DataContainerArray::DataID id, const DataArrayPath& path)
+{
+  if(id == DataContainerArray::k_Invalid_ID)
+  {
+    return false;
+  }
+  else if(m_CreatedPaths.find(id) == m_CreatedPaths.end())
+  {
+    m_CreatedPaths[id] = path;
+    return false;
+  }
+  else if(m_CreatedPaths[id] == path)
+  {
+    return false;
+  }
+
+  m_RenamedPaths.insert(std::make_pair(m_CreatedPaths[id], path));
+  m_CreatedPaths[id] = path;
+  return true;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AbstractFilter::clearRenamedPaths()
+{
+  m_RenamedPaths.clear();
 }

@@ -235,7 +235,7 @@ DataArrayPath::RenameContainer RenameAttributeMatrix::getRenamedPaths()
   newPath.setAttributeMatrixName(getNewAttributeMatrix());
 
   DataArrayPath::RenameContainer container;
-  container.push_back(DataArrayPath::RenameType(oldPath, newPath));
+  container.insert(std::make_pair(oldPath, newPath));
 
   return container;
 }

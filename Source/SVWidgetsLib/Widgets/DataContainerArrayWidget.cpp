@@ -156,15 +156,12 @@ void DataContainerArrayWidget::updateView()
   QStandardItem* rootItem = model->invisibleRootItem();
 
   // Loop over the data containers until we find the proper data container
-  QList<DataContainer::Pointer> containers = dca->getDataContainers();
+  DataContainerArray::Container containers = dca->getDataContainers();
 
-  QListIterator<DataContainer::Pointer> containerIter(containers);
   // QStringList dcList;
   int row0 = 0;
-  while(containerIter.hasNext())
+  for(DataContainer::Pointer dc : containers)
   {
-    DataContainer::Pointer dc = containerIter.next();
-
     QStandardItem* dcItem = new QStandardItem(dc->getName());
     rootItem->appendRow(dcItem);
 

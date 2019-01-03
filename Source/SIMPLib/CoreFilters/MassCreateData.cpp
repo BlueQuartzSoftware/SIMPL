@@ -33,128 +33,109 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "RenameDataContainer.h"
+#include "MassCreateData.h"
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
-#include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RenameDataContainer::RenameDataContainer()
-: m_SelectedDataContainerName("")
-, m_NewDataContainerName("")
+MassCreateData::MassCreateData()
+  : m_DataContainerName("DataContainer")
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RenameDataContainer::~RenameDataContainer() = default;
+MassCreateData::~MassCreateData() = default;
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RenameDataContainer::setupFilterParameters()
+void MassCreateData::setupFilterParameters()
 {
   FilterParameterVector parameters;
-
-  {
-    DataContainerSelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container to Rename", SelectedDataContainerName, FilterParameter::RequiredArray, RenameDataContainer, req));
-  }
-
-  parameters.push_back(SIMPL_NEW_STRING_FP("New Data Container Name", NewDataContainerName, FilterParameter::Parameter, RenameDataContainer));
-
+  parameters.push_back(SIMPL_NEW_DC_CREATION_FP("Data Container Name", DataContainerName, FilterParameter::CreatedArray, MassCreateData));
   setFilterParameters(parameters);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RenameDataContainer::readFilterParameters(AbstractFilterParametersReader* reader, int index)
+void MassCreateData::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setSelectedDataContainerName(reader->readString("SelectedDataContainerName", getSelectedDataContainerName()));
-  setNewDataContainerName(reader->readString("NewDataContainerName", getNewDataContainerName()));
+  setDataContainerName(reader->readString("DataContainerName", getDataContainerName()));
   reader->closeFilterGroup();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RenameDataContainer::initialize()
+void MassCreateData::initialize()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RenameDataContainer::dataCheck()
+void MassCreateData::dataCheck()
 {
   setErrorCondition(0);
   setWarningCondition(0);
 
-  if(getNewDataContainerName().isEmpty())
+  const int iterations = 4000;
+  for(int i = 0; i < iterations; i++)
   {
-    setErrorCondition(-11001);
-    QString ss = QObject::tr("The new Data Container name must be set");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return;
-  }
-
-  getDataContainerArray()->getPrereqDataContainer(this, getSelectedDataContainerName());
-  if(getErrorCondition() < 0)
-  {
-    return;
-  }
-
-  bool check = getDataContainerArray()->renameDataContainer(getSelectedDataContainerName(), getNewDataContainerName());
-  if(!check)
-  {
-    setErrorCondition(-11006);
-    QString ss = QObject::tr("Attempt to rename DataContainer '%1' to '%2' failed").arg(getSelectedDataContainerName()).arg(getNewDataContainerName());
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    DataContainerShPtr dc = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName() + QString::number(i));
   }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RenameDataContainer::preflight()
+void MassCreateData::preflight()
 {
-  setInPreflight(true);
-  emit preflightAboutToExecute();
-  emit updateFilterParameters(this);
+  // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
+  setInPreflight(true);              // Set the fact that we are preflighting.
+  emit preflightAboutToExecute();    // Emit this signal so that other widgets can do one file update
+  emit updateFilterParameters(this); // Emit this signal to have the widgets push their values down to the filter
+  dataCheck();                       // Run our DataCheck to make sure everthing is setup correctly
+  emit preflightExecuted();          // We are done preflighting this filter
+  setInPreflight(false);             // Inform the system this filter is NOT in preflight mode anymore.
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MassCreateData::execute()
+{
+  setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
-  emit preflightExecuted();
-  setInPreflight(false);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void RenameDataContainer::execute()
-{
-  setErrorCondition(0);
-  setWarningCondition(0);
-  dataCheck(); // calling the dataCheck will rename the array, so nothing is required here
   if(getErrorCondition() < 0)
+  {
+    return;
+  }
+
+  if(getCancel())
   {
     return;
   }
 
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer RenameDataContainer::newFilterInstance(bool copyFilterParameters) const
+AbstractFilter::Pointer MassCreateData::newFilterInstance(bool copyFilterParameters) const
 {
-  RenameDataContainer::Pointer filter = RenameDataContainer::New();
+  MassCreateData::Pointer filter = MassCreateData::New();
   if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
@@ -165,7 +146,7 @@ AbstractFilter::Pointer RenameDataContainer::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameDataContainer::getCompiledLibraryName() const
+const QString MassCreateData::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -173,7 +154,7 @@ const QString RenameDataContainer::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameDataContainer::getBrandingString() const
+const QString MassCreateData::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -181,7 +162,7 @@ const QString RenameDataContainer::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameDataContainer::getFilterVersion() const
+const QString MassCreateData::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -192,7 +173,7 @@ const QString RenameDataContainer::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameDataContainer::getGroupName() const
+const QString MassCreateData::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -200,37 +181,23 @@ const QString RenameDataContainer::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid RenameDataContainer::getUuid()
+const QString MassCreateData::getHumanLabel() const
 {
-  return QUuid("{d53c808f-004d-5fac-b125-0fffc8cc78d6}");
+  return "Mass Create Data Containers";
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameDataContainer::getSubGroupName() const
+const QUuid MassCreateData::getUuid()
 {
-  return SIMPL::FilterSubGroups::MemoryManagementFilters;
+  return QUuid("{816fbe6b-7c38-581b-b149-3f839fb65b95}");
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameDataContainer::getHumanLabel() const
+const QString MassCreateData::getSubGroupName() const
 {
-  return "Rename Data Container";
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-DataArrayPath::RenameContainer RenameDataContainer::getRenamedPaths()
-{
-  DataArrayPath oldPath(getSelectedDataContainerName(), "", "");
-  DataArrayPath newPath(getNewDataContainerName(), "", "");
-
-  DataArrayPath::RenameContainer container;
-  container.insert(std::make_pair(oldPath, newPath));
-
-  return container;
+  return SIMPL::FilterSubGroups::GenerationFilters;
 }

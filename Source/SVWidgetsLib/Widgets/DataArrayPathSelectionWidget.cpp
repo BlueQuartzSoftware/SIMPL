@@ -1470,7 +1470,7 @@ QMenu* DataArrayPathSelectionWidget::createSelectionMenu()
   DataArrayPath path;
 
   // Populate Menu with DataContainers
-  QList<DataContainer::Pointer> containers = dca->getDataContainers();
+  DataContainerArray::Container containers = dca->getDataContainers();
   for(DataContainer::Pointer dc : containers)
   {
     path.setDataContainerName(dc->getName());

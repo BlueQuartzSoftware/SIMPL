@@ -37,6 +37,8 @@
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
 
+const DataContainerArray::DataID DataContainerArray::k_Invalid_ID = 0;
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -123,12 +125,12 @@ DataContainer::Pointer DataContainerArray::removeDataContainer(const QString& na
 {
   removeDataContainerFromBundles(name);
   DataContainer::Pointer f = DataContainer::NullPointer();
-  for(QList<DataContainer::Pointer>::iterator it = m_Array.begin(); it != m_Array.end(); ++it)
+  for(DataContainer::Pointer dc : m_Array)
   {
-    if((*it)->getName().compare(name) == 0)
+    if(dc->getName().compare(name) == 0)
     {
-      f = *it;
-      m_Array.erase(it);
+      f = dc;
+      m_Array.remove(dc);
       return f;
     }
   }
@@ -145,11 +147,11 @@ bool DataContainerArray::renameDataContainer(const QString& oldName, const QStri
   DataContainer::Pointer dc = DataContainer::NullPointer();
 
   // Make sure we do not already have a DataContainer with the newname
-  for(QList<DataContainer::Pointer>::iterator it = m_Array.begin(); it != m_Array.end(); ++it)
+  for(DataContainer::Pointer dc : m_Array)
   {
-    if((*it)->getName().compare(newName) == 0)
+    if(dc->getName().compare(newName) == 0)
     {
-      dc = *it;
+      dc = dc;
       break;
     }
   }
@@ -159,12 +161,12 @@ bool DataContainerArray::renameDataContainer(const QString& oldName, const QStri
     // We did not find any data container that matches the new name so we can rename if we find one that matches
     // the 'oldname' argument
     // Now find the data container we want to rename
-    for(QList<DataContainer::Pointer>::iterator it = m_Array.begin(); it != m_Array.end(); ++it)
+    for(DataContainer::Pointer dcIt : m_Array)
     {
-      if((*it)->getName().compare(oldName) == 0)
+      if(dcIt->getName().compare(oldName) == 0)
       {
         // we have an existing DataContainer that matches our "oldname" that we want to rename so all is good.
-        dc = *it;
+        dc = dcIt;
         dc->setName(newName);
         return true;
       }
@@ -185,11 +187,11 @@ bool DataContainerArray::renameDataContainer(const QString& oldName, const QStri
 DataContainer::Pointer DataContainerArray::getDataContainer(const QString& name)
 {
   DataContainer::Pointer f = DataContainer::NullPointer();
-  for(QList<DataContainer::Pointer>::iterator it = m_Array.begin(); it != m_Array.end(); ++it)
+  for(DataContainer::Pointer dc : m_Array)
   {
-    if((*it)->getName().compare(name) == 0)
+    if(dc->getName().compare(name) == 0)
     {
-      f = *it;
+      f = dc;
       break;
     }
   }
@@ -226,11 +228,11 @@ AttributeMatrix::Pointer DataContainerArray::getAttributeMatrix(const DataArrayP
 void DataContainerArray::duplicateDataContainer(const QString& name, const QString& newName)
 {
   DataContainer::Pointer f = DataContainer::NullPointer();
-  for(QList<DataContainer::Pointer>::iterator it = m_Array.begin(); it != m_Array.end(); ++it)
+  for(DataContainer::Pointer dc : m_Array)
   {
-    if((*it)->getName().compare(name) == 0)
+    if(dc->getName().compare(name) == 0)
     {
-      f = *it;
+      f = dc;
       break;
     }
   }
@@ -251,9 +253,9 @@ void DataContainerArray::duplicateDataContainer(const QString& name, const QStri
 QList<QString> DataContainerArray::getDataContainerNames()
 {
   QList<QString> names;
-  for(QList<DataContainer::Pointer>::iterator it = m_Array.begin(); it != m_Array.end(); ++it)
+  for(DataContainer::Pointer dc : m_Array)
   {
-    names.push_back((*it)->getName());
+    names.push_back(dc->getName());
   }
   return names;
 }
@@ -261,7 +263,7 @@ QList<QString> DataContainerArray::getDataContainerNames()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QList<DataContainer::Pointer>& DataContainerArray::getDataContainers()
+DataContainerArray::Container& DataContainerArray::getDataContainers()
 {
   return m_Array;
 }
@@ -272,9 +274,9 @@ QList<DataContainer::Pointer>& DataContainerArray::getDataContainers()
 void DataContainerArray::printDataContainerNames(QTextStream& out)
 {
   out << "---------------------------------------------------------------------";
-  for(QList<DataContainer::Pointer>::iterator iter = m_Array.begin(); iter != m_Array.end(); ++iter)
+  for(DataContainer::Pointer dc : m_Array)
   {
-    out << (*iter)->getNameOfClass();
+    out << dc->getNameOfClass();
   }
   out << "---------------------------------------------------------------------";
 }
@@ -351,9 +353,9 @@ int DataContainerArray::readDataContainersFromHDF5(bool preflight, hid_t dcaGid,
 // -----------------------------------------------------------------------------
 bool DataContainerArray::doesDataContainerExist(const QString& name)
 {
-  for(QList<DataContainer::Pointer>::iterator it = m_Array.begin(); it != m_Array.end(); ++it)
+  for(DataContainer::Pointer dc : m_Array)
   {
-    if((*it)->getName().compare(name) == 0)
+    if(dc->getName() == name)
     {
       return true;
     }
@@ -495,10 +497,10 @@ bool DataContainerArray::renameDataContainerBundle(const QString& oldName, const
 DataContainerArray::Pointer DataContainerArray::deepCopy(bool forceNoAllocate)
 {
   DataContainerArray::Pointer dcaCopy = DataContainerArray::New();
-  QList<DataContainer::Pointer> dcs = getDataContainers();
-  for(int i = 0; i < dcs.size(); i++)
+  Container dcs = getDataContainers();
+  for(DataContainer::Pointer dc : dcs)
   {
-    DataContainer::Pointer dcCopy = dcs[i]->deepCopy(forceNoAllocate);
+    DataContainer::Pointer dcCopy = dc->deepCopy(forceNoAllocate);
 #if 0
 
     // Deep copy geometry if applicable

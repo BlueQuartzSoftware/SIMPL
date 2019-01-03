@@ -450,17 +450,14 @@ void DataFormatPage::createAMSelectionMenu()
 
   // Get the DataContainerArray object
   // Loop over the data containers until we find the proper data container
-  QList<DataContainer::Pointer> containers = dca->getDataContainers();
+  DataContainerArray::Container containers = dca->getDataContainers();
   QVector<QString> daTypes;// = m_FilterParameter->getDefaultAttributeArrayTypes();
   QVector<QVector<size_t>> cDims;// = m_FilterParameter->getDefaultComponentDimensions();
   QVector<AttributeMatrix::Type> amTypes;// = m_FilterParameter->getDefaultAttributeMatrixTypes();
   IGeometry::Types geomTypes;// = m_FilterParameter->getDefaultGeometryTypes();
 
-  QListIterator<DataContainer::Pointer> containerIter(containers);
-  while(containerIter.hasNext())
+  for(DataContainer::Pointer dc : containers)
   {
-    DataContainer::Pointer dc = containerIter.next();
-
     IGeometry::Pointer geom = IGeometry::NullPointer();
     IGeometry::Type geomType = IGeometry::Type::Unknown;
     if(nullptr != dc.get())
@@ -539,14 +536,11 @@ void DataFormatPage::createDCSelectionMenu()
 
   // Get the DataContainerArray object
   // Loop over the data containers until we find the proper data container
-  QList<DataContainer::Pointer> containers = dca->getDataContainers();
+  DataContainerArray::Container containers = dca->getDataContainers();
   IGeometry::Types geomTypes;
 
-  QListIterator<DataContainer::Pointer> containerIter(containers);
-  while(containerIter.hasNext())
+  for(DataContainer::Pointer dc : containers)
   {
-    DataContainer::Pointer dc = containerIter.next();
-
     IGeometry::Pointer geom = IGeometry::NullPointer();
     IGeometry::Type geomType = IGeometry::Type::Unknown;
     if(nullptr != dc.get())

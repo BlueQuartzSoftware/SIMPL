@@ -138,6 +138,14 @@ bool DataArrayPath::operator==(const DataArrayPath& rhs) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+bool DataArrayPath::operator<(const DataArrayPath& rhs) const
+{
+  return serialize() < rhs.serialize();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 QString DataArrayPath::serialize(QString delimiter) const
 {
   QString s = "";
@@ -301,7 +309,7 @@ DataArrayPath::RenameContainer DataArrayPath::CheckForRenamedPaths(DataContainer
       else
       {
         usedNewPaths.push_back(newPath);
-        container.push_back(RenameType(oldPath, newPath));
+        container.insert(std::make_pair(oldPath, newPath));
       }
     }
   }

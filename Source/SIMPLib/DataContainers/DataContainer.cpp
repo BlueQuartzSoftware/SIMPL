@@ -156,7 +156,7 @@ void DataContainer::setName(const QString& name)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataContainer::getName()
+QString DataContainer::getName() const
 {
   return m_Name;
 }

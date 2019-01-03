@@ -88,6 +88,10 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
 
     ~DataContainerArray() override;
 
+    using DataID = size_t;
+    static const DataID k_Invalid_ID;
+    using Container = std::list<DataContainerShPtr>;
+
     /**
      * @brief
      */
@@ -111,7 +115,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
      * @brief getDataContainers
      * @return
      */
-    QList<DataContainerShPtr>& getDataContainers();
+    Container& getDataContainers();
 
     /**
      * @brief Returns if a DataContainer with the give name is in the array
@@ -295,7 +299,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
      * dataContainerName is empty in which case a Null DataContainer will be returned.
      */
     template<typename Filter>
-    DataContainerShPtr createNonPrereqDataContainer(Filter* filter, const QString& dataContainerName)
+    DataContainerShPtr createNonPrereqDataContainer(Filter* filter, const QString& dataContainerName, DataID id = k_Invalid_ID)
     {
       if(dataContainerName.isEmpty())
       {
@@ -329,6 +333,8 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
           return DataContainer::NullPointer();
         }
       }
+      // Check if path was renamed
+      filter->checkIfPathRenamed(id, DataArrayPath(dataContainerName, "", ""));
       DataContainerShPtr dataContainer = DataContainer::New(dataContainerName);
       addDataContainer(dataContainer);
       return dataContainer;
@@ -739,7 +745,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
     DataContainerArray();
 
   private:
-    QList<DataContainerShPtr>  m_Array;
+    Container  m_Array;
     QMap<QString, IDataContainerBundle::Pointer> m_DataContainerBundles;
 
   public:

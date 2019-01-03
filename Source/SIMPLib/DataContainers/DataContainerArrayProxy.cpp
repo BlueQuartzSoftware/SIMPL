@@ -69,10 +69,9 @@ DataContainerArrayProxy::DataContainerArrayProxy(DataContainerArray* dca)
     return;
   }
 
-  QList<DataContainer::Pointer> containers = dca->getDataContainers();
-  for(int i = 0; i < containers.size(); i++) // Loop on each Data Container
+  DataContainerArray::Container containers = dca->getDataContainers();
+  for(DataContainer::Pointer container : containers) // Loop on each Data Container
   {
-    DataContainer::Pointer container = containers.at(i);
     IGeometry::Pointer geo = container->getGeometry();
     IGeometry::Type dcType;
     if (geo != IGeometry::NullPointer())

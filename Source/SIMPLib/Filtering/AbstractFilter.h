@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <map>
+
 #include <QtCore/QObject>
 #include <QtCore/QString>
 #include <QtCore/QVector>
@@ -95,11 +97,14 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   PYB11_METHOD(void preflight)
   PYB11_METHOD(void setDataContainerArray)
   
+  // Friend declarations for DataContainerArray::createNonPrereqs so that they can set and check the instance's created data by ID.
+  friend DataContainerArray;
+
 public:
   SIMPL_SHARED_POINTERS(AbstractFilter)
   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AbstractFilter, Observable)
   SIMPL_STATIC_NEW_MACRO(AbstractFilter)
-
+    
   ~AbstractFilter() override;
 
   /**
@@ -380,6 +385,11 @@ public:
    */
   virtual void copyFilterParameterInstanceVariables(AbstractFilter* filter) const;
 
+  /**
+   * @brief Clears the renamed paths for the filter instance.
+   */
+  void clearRenamedPaths();
+
 signals:
   /**
    * @brief Signal is emitted when filter has completed the execute() method
@@ -422,6 +432,15 @@ public slots:
 protected:
   AbstractFilter();
 
+  /**
+   * @brief Checks if the path matches the one saved with the specified ID.  Index 0 is used for
+   * non-renamable DataArrayPaths, and any DataID 0 value will bypass the check and return false.
+   * If the path does not match and the ID is already used, return true and update the path.  If
+   * the ID is used and the paths match, return false.  If the ID has not been used, add the path
+   * to the createdPaths map.
+   */
+  bool checkIfPathRenamed(const DataContainerArray::DataID id, const DataArrayPath& path);
+
 protected slots:
   /**
    * @brief This function will be called after the pipeline is completely done executing.  This can be reimplemented
@@ -432,6 +451,8 @@ protected slots:
 private:
   bool m_Cancel;
   QUuid m_Uuid;
+  std::map<DataContainerArray::DataID, DataArrayPath> m_CreatedPaths;
+  DataArrayPath::RenameContainer m_RenamedPaths;
 
 public:
   AbstractFilter(const AbstractFilter&) = delete; // Copy Constructor Not Implemented

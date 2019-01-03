@@ -40,6 +40,10 @@
 #include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : DataContainerArray::DataID {
+  DataContainerID = 1
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -88,7 +92,7 @@ void CreateDataContainer::dataCheck()
   setErrorCondition(0);
   setWarningCondition(0);
 
-  getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName());
+  getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName(), DataContainerID);
 }
 
 // -----------------------------------------------------------------------------

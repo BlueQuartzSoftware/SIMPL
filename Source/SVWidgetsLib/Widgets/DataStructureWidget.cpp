@@ -270,14 +270,11 @@ void DataStructureWidget::refreshData()
   }
 
   // Loop over the data containers
-  QList<DataContainer::Pointer> containers = m_Dca->getDataContainers();
+  DataContainerArray::Container containers = m_Dca->getDataContainers();
   QStandardItem* rootItem = model->invisibleRootItem();
-  QListIterator<DataContainer::Pointer> containerIter(containers);
 
-  while(containerIter.hasNext())
+  for(DataContainer::Pointer dc : containers)
   {
-    DataContainer::Pointer dc = containerIter.next();
-
     QStandardItem* dcItem = findChildByName(rootItem, dc->getName(), 0);
     if(dcItem == nullptr)
     {
