@@ -1061,7 +1061,8 @@ QString RectGridGeom::getInfoString(SIMPL::InfoStringFormat format)
   if(format == SIMPL::HtmlFormat)
   {
     ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Geometry Info</th></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type</th><td>" << GeometryHelpers::Translation::TypeToString(getGeometryType()) << "</td></tr>";
+    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type</th><td>" << TypeToString(getGeometryType()) << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Units</th><td>)" << LengthUnitToString(getUnits()) << "</td></tr>";
     ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Dimensions:</th><td>" << volDims[0] << " x " << volDims[1] << " x " << volDims[2] << "</td></tr>";
     ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Resolution:</th><td>"
        << "Variable"

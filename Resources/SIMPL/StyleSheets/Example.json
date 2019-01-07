@@ -84,6 +84,8 @@
   "CSS_Replacements": {
     
     "QLabel_color" : "black",
+    "Widget_Error_color": "rgb(180,0,0)",
+    "Fader_color" : "rgb(223, 183, 175)",
 
     "QTreeViewItem_color": "black",
     "QTreeViewItem_error_color": "#FF0000",

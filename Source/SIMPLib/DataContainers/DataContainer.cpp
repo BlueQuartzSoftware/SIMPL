@@ -858,8 +858,8 @@ QString DataContainer::getInfoString(SIMPL::InfoStringFormat format)
     ss << "<tbody>\n";
     ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Data Container Info</th></tr>";
 
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Name:</th><td>" << getName() << "</td></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Attribute Matrix Count:</th><td>" << getNumAttributeMatrices() << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Name:</th><td>)" << getName() << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Attribute Matrix Count:</th><td>)" << getNumAttributeMatrices() << "</td></tr>";
     ss << "<tr><td></td><td></td></tr>";
     if(getGeometry().get() != nullptr)
     {
@@ -871,6 +871,7 @@ QString DataContainer::getInfoString(SIMPL::InfoStringFormat format)
   }
   else
   {
+    ss << "Requested InfoStringFormat is not supported. " << format;
   }
   return info;
 }

@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <array>
+
 #include <QtCore/QString>
 #include <QtCore/QVector>
 
@@ -43,6 +45,27 @@
 class SIMPLib_EXPORT FilePathGenerator
 {
 public:
+  /**
+   * @brief This struct is used for generating Row/Column Indexes
+   */
+  template <unsigned Dimension, typename T, class String> struct Tile
+  {
+    std::array<int32_t, Dimension> data; // r, c index
+    String FileName;
+  };
+
+  using TileRCIndex2D = Tile<2, int32_t, QString>;
+  using TileRCIndexRow2D = std::vector<TileRCIndex2D>;
+  using TileRCIncexLayout2D = std::vector<TileRCIndexRow2D>;
+
+  /**
+   * @brief This struct is used to hold actual coordinates of each tile. Where those coordinates reference is left
+   * open to interpretation by the classes using this structure.
+   */
+  using Tile2D = Tile<2, double, QString>;
+  using TileRow2D = std::vector<Tile2D>;
+  using TileLayout2D = std::vector<TileRow2D>;
+
   virtual ~FilePathGenerator();
 
   /**
@@ -70,6 +93,26 @@ public:
    */
   static QVector<QString> GenerateVectorFileList(int start, int end, int compStart, int compEnd, bool& hasMissingFiles, bool stackLowToHigh, const QString& inputPath, const QString& filePrefix,
                                                  const QString& separator, const QString& fileSuffix, const QString& fileExtension, int paddingDigits);
+
+  /**
+   * @brief This method will generate a list of file paths based on the inputs provided. This method is primarily aimed
+   * at generating file paths based on a Row & Column naming convention. The inputs allow for the generation of zero
+   * based or offset based file names.
+   * @param rowStart The starting row
+   * @param rowEnd The Ending row
+   * @param colStart The starting column
+   * @param colEnd The Ending column
+   * @param hasMissingFiles Are there missing files
+   * @param rcOrdering Is the Filename ordering Row-Column or Column-Row
+   * @param inputPath The Path to the files
+   * @param filePrefix The file prefix
+   * @param fileSuffix The file suffix
+   * @param fileExtension The file extension to use
+   * @param paddingDigits The number of padding digits (ZERO character) to use for each of the indices.
+   * @return
+   */
+  static TileRCIncexLayout2D GenerateRCIndexMontageFileList(int rowStart, int rowEnd, int colStart, int colEnd, bool& hasMissingFiles, bool rcOrdering, const QString& inputPath,
+                                                            const QString& filePrefix, const QString& fileSuffix, const QString& fileExtension, int paddingDigits);
 
 protected:
   FilePathGenerator();

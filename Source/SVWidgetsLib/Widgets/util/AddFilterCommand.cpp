@@ -49,6 +49,8 @@
 #include "SVWidgetsLib/Widgets/FilterInputWidget.h"
 #include "SVWidgetsLib/Widgets/PipelineModel.h"
 #include "SVWidgetsLib/Widgets/SVPipelineView.h"
+#include "SVWidgetsLib/Widgets/SVStyle.h"
+
 
 // -----------------------------------------------------------------------------
 //
@@ -144,7 +146,7 @@ void AddFilterCommand::undo()
   emit m_PipelineView->pipelineChanged();
 
   emit m_PipelineView->statusMessage(statusMessage);
-  emit m_PipelineView->stdOutMessage(statusMessage);
+  emit m_PipelineView->stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(statusMessage,false));
 }
 
 // -----------------------------------------------------------------------------
@@ -188,7 +190,7 @@ void AddFilterCommand::redo()
   }
 
   emit model->statusMessageGenerated(statusMessage);
-  emit model->standardOutputMessageGenerated(statusMessage);
+  emit model->standardOutputMessageGenerated(SVStyle::Instance()->WrapTextWithHtmlStyle(statusMessage,false));
 }
 
 // -----------------------------------------------------------------------------

@@ -81,16 +81,12 @@
     <file>SIMPL/icons/images/delete_gray@2x.png</file>
     <file>SIMPL/icons/images/delete_plain.png</file>
     <file>SIMPL/icons/images/delete_plain@2x.png</file>
-    <file>SIMPL/icons/images/EdgeGeometry.png</file>
-    <file>SIMPL/icons/images/EdgeGeometry@2x.png</file>
     <file>SIMPL/icons/images/fit_to_window.png</file>
     <file>SIMPL/icons/images/fit_to_window@2x.png</file>
     <file>SIMPL/icons/images/folder_blue.png</file>
     <file>SIMPL/icons/images/folder_blue@2x.png</file>
     <file>SIMPL/icons/images/graph.png</file>
     <file>SIMPL/icons/images/graph@2x.png</file>
-    <file>SIMPL/icons/images/ImageGeometry.png</file>
-    <file>SIMPL/icons/images/ImageGeometry@2x.png</file>
     <file>SIMPL/icons/images/information.png</file>
     <file>SIMPL/icons/images/information@2x.png</file>
     <file>SIMPL/icons/images/list.png</file>
@@ -115,8 +111,6 @@
     <file>SIMPL/icons/images/navigate_left@2x.png</file>
     <file>SIMPL/icons/images/navigate_right.png</file>
     <file>SIMPL/icons/images/navigate_right@2x.png</file>
-    <file>SIMPL/icons/images/QuadGeometry.png</file>
-    <file>SIMPL/icons/images/QuadGeometry@2x.png</file>
     <file>SIMPL/icons/images/refresh.png</file>
     <file>SIMPL/icons/images/refresh@2x.png</file>
     <file>SIMPL/icons/images/reload.png</file>
@@ -133,16 +127,53 @@
     <file>SIMPL/icons/images/trash@2x.png</file>
     <file>SIMPL/icons/images/trash_hover.png</file>
     <file>SIMPL/icons/images/trash_hover@2x.png</file>
-    <file>SIMPL/icons/images/TriangleGeometry.png</file>
-    <file>SIMPL/icons/images/TriangleGeometry@2x.png</file>
-    <file>SIMPL/icons/images/VertexGeometry.png</file>
-    <file>SIMPL/icons/images/VertexGeometry@2x.png</file>
+
     <file>SIMPL/icons/images/warning.png</file>
     <file>SIMPL/icons/images/warning@2x.png</file>
     <file>SIMPL/icons/images/zoom_in.png</file>
     <file>SIMPL/icons/images/zoom_in@2x.png</file>
     <file>SIMPL/icons/images/zoom_out.png</file>
     <file>SIMPL/icons/images/zoom_out@2x.png</file>
+    <file>SIMPL/icons/images/x.png</file>
+    <file>SIMPL/icons/images/x@2x.png</file>
+
+    <file>SIMPL/icons/images/EdgeGeometry.png</file>
+    <file>SIMPL/icons/images/EdgeGeometry@2x.png</file>
+    <file>SIMPL/icons/images/HexahedralGeometry.png</file>
+    <file>SIMPL/icons/images/HexahedralGeometry@2x.png</file>
+    <file>SIMPL/icons/images/ImageGeometry.png</file>
+    <file>SIMPL/icons/images/ImageGeometry@2x.png</file>
+    <file>SIMPL/icons/images/QuadGeometry.png</file>
+    <file>SIMPL/icons/images/QuadGeometry@2x.png</file>
+    <file>SIMPL/icons/images/RectilinearGeometry.png</file>
+    <file>SIMPL/icons/images/RectilinearGeometry@2x.png</file>
+    <file>SIMPL/icons/images/TetrahedralGeometry.png</file>
+    <file>SIMPL/icons/images/TetrahedralGeometry@2x.png</file>
+    <file>SIMPL/icons/images/TriangleGeometry.png</file>
+    <file>SIMPL/icons/images/TriangleGeometry@2x.png</file>
+    <file>SIMPL/icons/images/VertexGeometry.png</file>
+    <file>SIMPL/icons/images/VertexGeometry@2x.png</file>
+
+
+    <file>SIMPL/icons/images-light/caret-bottom.png</file>
+    <file>SIMPL/icons/images-light/caret-bottom@2x.png</file>
+    <file>SIMPL/icons/images-light/EdgeGeometry.png</file>
+    <file>SIMPL/icons/images-light/EdgeGeometry@2x.png</file>
+    <file>SIMPL/icons/images-light/HexahedralGeometry.png</file>
+    <file>SIMPL/icons/images-light/HexahedralGeometry@2x.png</file>
+    <file>SIMPL/icons/images-light/ImageGeometry.png</file>
+    <file>SIMPL/icons/images-light/ImageGeometry@2x.png</file>
+    <file>SIMPL/icons/images-light/QuadGeometry.png</file>
+    <file>SIMPL/icons/images-light/QuadGeometry@2x.png</file>
+    <file>SIMPL/icons/images-light/RectilinearGeometry.png</file>
+    <file>SIMPL/icons/images-light/RectilinearGeometry@2x.png</file>
+    <file>SIMPL/icons/images-light/TetrahedralGeometry.png</file>
+    <file>SIMPL/icons/images-light/TetrahedralGeometry@2x.png</file>
+    <file>SIMPL/icons/images-light/TriangleGeometry.png</file>
+    <file>SIMPL/icons/images-light/TriangleGeometry@2x.png</file>
+    <file>SIMPL/icons/images-light/VertexGeometry.png</file>
+    <file>SIMPL/icons/images-light/VertexGeometry@2x.png</file>
+
 
  </qresource>
  </RCC>

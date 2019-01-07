@@ -65,6 +65,9 @@ namespace SIMPLView
     const QString Edge(":SIMPL/icons/images/EdgeGeometry.png");
     const QString Triangle(":SIMPL/icons/images/TriangleGeometry.png");
     const QString Quad(":SIMPL/icons/images/QuadGeometry.png");
+    const QString Tetetrahedral(":SIMPL/icons/images/TetrahedralGeometry.png");
+    const QString Hexahedral(":SIMPL/icons/images/HexahedralGeometry.png");
+    const QString Rectilinear(":SIMPL/icons/images/RectilinearGeometry.png");
   }
 
   namespace DataArrayPath

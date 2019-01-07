@@ -31,8 +31,7 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
-#include <math.h>
-
+#include <cmath>
 #include <map>
 #include <set>
 
@@ -53,33 +52,6 @@
 */
 namespace GeometryHelpers
 {
-
-/**
- * @brief The Translation class provides a short "translation" to convert between
- * enumeration values and a string representation
- */
-class Translation
-{
-public:
-  ~Translation();
-
-    /**
-     * @brief Translate
-     * @param t
-     * @return
-     */
-  static IGeometry::Type StringToType(const QString& str);
-
-  /**
-  * @brief StringFromGeometryType Returns a String from a IGeometry::Type enumeration value
-  * @param t The value to translate
-  * @return A string representation of the value
-  */
-  static QString TypeToString(IGeometry::Type t);
-
-protected:
-  Translation();
-};
 
 /**
  * @brief The GeomIO class

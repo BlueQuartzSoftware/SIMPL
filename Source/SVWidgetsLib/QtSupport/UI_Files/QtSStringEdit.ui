@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>358</width>
-    <height>30</height>
+    <width>565</width>
+    <height>28</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -36,7 +36,7 @@
     <number>2</number>
    </property>
    <item>
-    <widget class="QLineEdit" name="value">
+    <widget class="SVLineEdit" name="value">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
        <horstretch>1</horstretch>
@@ -52,7 +52,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="applyChangesBtn">
+    <widget class="SVIconPushButton" name="applyChangesBtn">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -81,8 +81,8 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../icons/images/Icons.qrc">
-       <normaloff>:/SIMPL/icons/images/check.png</normaloff>:/check.png</iconset>
+      <iconset resource="../../../../Resources/SIMPL.qrc">
+       <normaloff>:/SIMPL/icons/images/check.png</normaloff>:/SIMPL/icons/images/check.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -102,7 +102,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="cancelChangesBtn">
+    <widget class="SVIconPushButton" name="cancelChangesBtn">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -131,8 +131,8 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../icons/images/Icons.qrc">
-       <normaloff>:/SIMPL/icons/images/delete.png</normaloff>:/delete.png</iconset>
+      <iconset resource="../../../../Resources/SIMPL.qrc">
+       <normaloff>:/SIMPL/icons/images/delete.png</normaloff>:/SIMPL/icons/images/delete.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -147,8 +147,20 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SVLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">SVControlWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SVIconPushButton</class>
+   <extends>QPushButton</extends>
+   <header location="global">SVControlWidgets.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
-  <include location="../../icons/images/Icons.qrc"/>
+  <include location="../../../../Resources/SIMPL.qrc"/>
  </resources>
  <connections/>
 </ui>

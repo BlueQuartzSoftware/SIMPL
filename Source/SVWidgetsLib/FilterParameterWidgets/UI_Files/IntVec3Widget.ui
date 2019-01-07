@@ -106,7 +106,7 @@
   <tabstop>zData</tabstop>
  </tabstops>
  <resources>
-  <include location="../../icons/images/Icons.qrc"/>
+  <include location="../../../../Resources/SIMPL.qrc"/>
  </resources>
  <connections/>
 </ui>

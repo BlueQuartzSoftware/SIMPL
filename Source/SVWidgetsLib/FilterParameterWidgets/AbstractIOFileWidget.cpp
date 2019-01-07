@@ -87,6 +87,23 @@ AbstractIOFileWidget::~AbstractIOFileWidget() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void AbstractIOFileWidget::setIcon(const QPixmap& path)
+{
+  m_Icon = path;
+  setupMenuField();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QPixmap AbstractIOFileWidget::getIcon()
+{
+  return m_Icon;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void AbstractIOFileWidget::setupGui()
 {
   // Catch when the filter is about to execute the preflight
@@ -155,15 +172,13 @@ void AbstractIOFileWidget::setupMenuField()
 
   QMenu* lineEditMenu = new QMenu(m_LineEdit);
   m_LineEdit->setButtonMenu(QtSLineEdit::Left, lineEditMenu);
-  QLatin1String iconPath = QLatin1String(":/SIMPL/icons/images/caret-bottom.png");
 
   m_LineEdit->setButtonVisible(QtSLineEdit::Left, true);
 
   QPixmap pixmap(8, 8);
   pixmap.fill(Qt::transparent);
   QPainter painter(&pixmap);
-  const QPixmap mag = QPixmap(iconPath);
-  painter.drawPixmap(0, (pixmap.height() - mag.height()) / 2, mag);
+  painter.drawPixmap(0, (pixmap.height() - m_Icon.height()) / 2, m_Icon);
   m_LineEdit->setButtonPixmap(QtSLineEdit::Left, pixmap);
 
   {

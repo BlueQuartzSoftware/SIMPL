@@ -979,11 +979,11 @@ int ImageGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
       << "\n";
   out << "      <!-- Origin  Z, Y, X -->"
       << "\n";
-  out << "      <DataItem Format=\"XML\" Dimensions=\"3\">" << origin[2] << " " << origin[1] << " " << origin[0] << "</DataItem>"
+  out << R"(      <DataItem Format="XML" Dimensions="3">)" << origin[2] << " " << origin[1] << " " << origin[0] << "</DataItem>"
       << "\n";
   out << "      <!-- DxDyDz (Spacing/Resolution) Z, Y, X -->"
       << "\n";
-  out << "      <DataItem Format=\"XML\" Dimensions=\"3\">" << spacing[2] << " " << spacing[1] << " " << spacing[0] << "</DataItem>"
+  out << R"(      <DataItem Format="XML" Dimensions="3">)" << spacing[2] << " " << spacing[1] << " " << spacing[0] << "</DataItem>"
       << "\n";
   out << "    </Geometry>"
       << "\n";
@@ -1011,16 +1011,17 @@ QString ImageGeom::getInfoString(SIMPL::InfoStringFormat format)
   if(format == SIMPL::HtmlFormat)
   {
     ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Geometry Info</th></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type</th><td>" << GeometryHelpers::Translation::TypeToString(getGeometryType()) << "</td></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Extents:</th><td>"
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Type</th><td>)" << TypeToString(getGeometryType()) << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Units</th><td>)" << LengthUnitToString(getUnits()) << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Extents:</th><td>)"
        << "<p>X Extent: 0 to " << volDims[0] - 1 << " (dimension: " << volDims[0] << ")</p>"
        << "<p>Y Extent: 0 to " << volDims[1] - 1 << " (dimension: " << volDims[1] << ")</p>"
        << "<p>Z Extent: 0 to " << volDims[2] - 1 << " (dimension: " << volDims[2] << ")</p>"
        << "</td></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Origin:</th><td>" << origin[0] << ", " << origin[1] << ", " << origin[2] << "</td></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Spacing/Resolution:</th><td>" << spacing[0] << ", " << spacing[1] << ", " << spacing[2] << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Origin:</th><td>)" << origin[0] << ", " << origin[1] << ", " << origin[2] << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Spacing/Resolution:</th><td>)" << spacing[0] << ", " << spacing[1] << ", " << spacing[2] << "</td></tr>";
 
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Bounds:</th><td>"
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Bounds:</th><td>)"
        << "<p>X Range: " << (origin[0] - halfRes[0]) << " to " << (origin[0] - halfRes[0] + volDims[0] * spacing[0]) << " (delta: " << (volDims[0] * spacing[0]) << ")</p>"
        << "<p>Y Range: " << (origin[1] - halfRes[1]) << " to " << (origin[1] - halfRes[1] + volDims[1] * spacing[1]) << " (delta: " << (volDims[1] * spacing[1]) << ")</p>"
        << "<p>Z Range: " << (origin[2] - halfRes[2]) << " to " << (origin[2] - halfRes[2] + volDims[2] * spacing[2]) << " (delta: " << (volDims[2] * spacing[2]) << ")</p>"
@@ -1028,6 +1029,7 @@ QString ImageGeom::getInfoString(SIMPL::InfoStringFormat format)
   }
   else
   {
+    ss << "Requested InfoStringFormat is not supported. " << format;
   }
   return info;
 }
@@ -1071,6 +1073,7 @@ IGeometry::Pointer ImageGeom::deepCopy(bool forceNoAllocate)
   FloatArrayType::Pointer elementSizes = std::dynamic_pointer_cast<FloatArrayType>((getElementSizes().get() == nullptr) ? nullptr : getElementSizes()->deepCopy(forceNoAllocate));
   imageCopy->setElementSizes(elementSizes);
   imageCopy->setSpatialDimensionality(getSpatialDimensionality());
+  imageCopy->setUnits(getUnits());
 
   return imageCopy;
 }

@@ -119,11 +119,12 @@ QVector<DataArrayPath> DataArrayPath::ConvertToQVector(QStringList& paths)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayPath::operator=(const DataArrayPath& rhs)
+DataArrayPath& DataArrayPath::operator=(const DataArrayPath& rhs)
 {
-  m_DataContainerName = rhs.getDataContainerName();
-  m_AttributeMatrixName = rhs.getAttributeMatrixName();
-  m_DataArrayName = rhs.getDataArrayName();
+  m_DataContainerName = rhs.m_DataContainerName;
+  m_AttributeMatrixName = rhs.m_AttributeMatrixName;
+  m_DataArrayName = rhs.m_DataArrayName;
+  return *this;
 }
 
 // -----------------------------------------------------------------------------
@@ -131,7 +132,7 @@ void DataArrayPath::operator=(const DataArrayPath& rhs)
 // -----------------------------------------------------------------------------
 bool DataArrayPath::operator==(const DataArrayPath& rhs) const
 {
-  return m_DataContainerName == rhs.getDataContainerName() && m_AttributeMatrixName == rhs.getAttributeMatrixName() && m_DataArrayName == rhs.getDataArrayName();
+  return m_DataContainerName == rhs.m_DataContainerName && m_AttributeMatrixName == rhs.m_AttributeMatrixName && m_DataArrayName == rhs.m_DataArrayName;
 }
 
 // -----------------------------------------------------------------------------

@@ -49,6 +49,8 @@
 
     "QLabel_color" : "black",
     "Widget_Error_color": "rgb(180,0,0)",
+    "Fader_color" : "rgb(223, 183, 175)",
+    
     "QLineEditError_background_color": "rgb(208, 128, 139)",
     "Text_Error_color": "rgb(255, 0, 0)",
     

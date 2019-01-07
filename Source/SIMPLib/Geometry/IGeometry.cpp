@@ -45,6 +45,7 @@
 IGeometry::IGeometry()
 : m_TimeValue(0.0f)
 , m_EnableTimeSeries(false)
+, m_Units(LengthUnit::Unspecified)
 {
 }
 
@@ -52,6 +53,328 @@ IGeometry::IGeometry()
 //
 // -----------------------------------------------------------------------------
 IGeometry::~IGeometry() = default;
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+IGeometry::Type IGeometry::StringToType(const QString& str)
+{
+  IGeometry::Type t = IGeometry::Type::Unknown;
+
+  if(str == SIMPL::Geometry::ImageGeometry)
+  {
+    return IGeometry::Type::Image;
+  }
+  if(str == SIMPL::Geometry::RectGridGeometry)
+  {
+    return IGeometry::Type::RectGrid;
+  }
+  if(str == SIMPL::Geometry::VertexGeometry)
+  {
+    return IGeometry::Type::Vertex;
+  }
+  if(str == SIMPL::Geometry::EdgeGeometry)
+  {
+    return IGeometry::Type::Edge;
+  }
+  if(str == SIMPL::Geometry::TriangleGeometry)
+  {
+    return IGeometry::Type::Triangle;
+  }
+  if(str == SIMPL::Geometry::QuadGeometry)
+  {
+    return IGeometry::Type::Quad;
+  }
+  if(str == SIMPL::Geometry::TetrahedralGeometry)
+  {
+    return IGeometry::Type::Tetrahedral;
+  }
+  if(str == SIMPL::Geometry::UnknownGeometry)
+  {
+    return IGeometry::Type::Unknown;
+  }
+  if(str == SIMPL::Geometry::AnyGeometry)
+  {
+    return IGeometry::Type::Any;
+  }
+
+  return t;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString IGeometry::TypeToString(IGeometry::Type t)
+{
+  QString geomType;
+  // The type values for RectGrid and ImageGeom are the same value (Why?)
+  // which causes compile errors with the switch statement so we special
+  // case the RectGrid here, and leave it out of the Switch block.
+  if(t == IGeometry::Type::RectGrid)
+  {
+    return SIMPL::Geometry::RectGridGeometry;
+  }
+
+  switch(t)
+  {
+
+  case IGeometry::Type::Image:
+    geomType = SIMPL::Geometry::ImageGeometry;
+    break;
+  case IGeometry::Type::Vertex:
+    geomType = SIMPL::Geometry::VertexGeometry;
+    break;
+  case IGeometry::Type::Edge:
+    geomType = SIMPL::Geometry::EdgeGeometry;
+    break;
+  case IGeometry::Type::Triangle:
+    geomType = SIMPL::Geometry::TriangleGeometry;
+    break;
+  case IGeometry::Type::Quad:
+    geomType = SIMPL::Geometry::QuadGeometry;
+    break;
+  case IGeometry::Type::Tetrahedral:
+    geomType = SIMPL::Geometry::TetrahedralGeometry;
+    break;
+  case IGeometry::Type::Hexahedral:
+    geomType = SIMPL::Geometry::HexahedralGeometry;
+    break;
+  case IGeometry::Type::RectGrid:
+    geomType = SIMPL::Geometry::RectGridGeometry;
+    break;
+  case IGeometry::Type::Unknown:
+    geomType = SIMPL::Geometry::UnknownGeometry;
+    break;
+  case IGeometry::Type::Any:
+    geomType = SIMPL::Geometry::AnyGeometry;
+    break;
+  }
+
+  return geomType;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+IGeometry::LengthUnit IGeometry::StringToLengthUnit(const QString& str)
+{
+  if(str == SIMPL::Geometry::k_Yoctometer)
+  {
+    return IGeometry::LengthUnit::Yoctometer;
+  }
+  if(str == SIMPL::Geometry::k_Zeptometer)
+  {
+    return IGeometry::LengthUnit::Zeptometer;
+  }
+  if(str == SIMPL::Geometry::k_Attometer)
+  {
+    return IGeometry::LengthUnit::Attometer;
+  }
+  if(str == SIMPL::Geometry::k_Femtometer)
+  {
+    return IGeometry::LengthUnit::Femtometer;
+  }
+  if(str == SIMPL::Geometry::k_Picometer)
+  {
+    return IGeometry::LengthUnit::Picometer;
+  }
+  if(str == SIMPL::Geometry::k_Nanometer)
+  {
+    return IGeometry::LengthUnit::Nanometer;
+  }
+  if(str == SIMPL::Geometry::k_Micrometer)
+  {
+    return IGeometry::LengthUnit::Micrometer;
+  }
+  if(str == SIMPL::Geometry::k_Millimeter)
+  {
+    return IGeometry::LengthUnit::Millimeter;
+  }
+  if(str == SIMPL::Geometry::k_Centimeter)
+  {
+    return IGeometry::LengthUnit::Centimeter;
+  }
+  if(str == SIMPL::Geometry::k_Decimeter)
+  {
+    return IGeometry::LengthUnit::Decimeter;
+  }
+  if(str == SIMPL::Geometry::k_Meter)
+  {
+    return IGeometry::LengthUnit::Meter;
+  }
+  if(str == SIMPL::Geometry::k_Decameter)
+  {
+    return IGeometry::LengthUnit::Decameter;
+  }
+  if(str == SIMPL::Geometry::k_Hectometer)
+  {
+    return IGeometry::LengthUnit::Hectometer;
+  }
+  if(str == SIMPL::Geometry::k_Kilometer)
+  {
+    return IGeometry::LengthUnit::Kilometer;
+  }
+  if(str == SIMPL::Geometry::k_Megameter)
+  {
+    return IGeometry::LengthUnit::Megameter;
+  }
+  if(str == SIMPL::Geometry::k_Gigameter)
+  {
+    return IGeometry::LengthUnit::Gigameter;
+  }
+  if(str == SIMPL::Geometry::k_Terameter)
+  {
+    return IGeometry::LengthUnit::Terameter;
+  }
+  if(str == SIMPL::Geometry::k_Petameter)
+  {
+    return IGeometry::LengthUnit::Petameter;
+  }
+  if(str == SIMPL::Geometry::k_Exameter)
+  {
+    return IGeometry::LengthUnit::Exameter;
+  }
+  if(str == SIMPL::Geometry::k_Zettameter)
+  {
+    return IGeometry::LengthUnit::Zettameter;
+  }
+  if(str == SIMPL::Geometry::k_Yottameter)
+  {
+    return IGeometry::LengthUnit::Yottameter;
+  }
+  if(str == SIMPL::Geometry::k_Angstrom)
+  {
+    return IGeometry::LengthUnit::Angstrom;
+  }
+  if(str == SIMPL::Geometry::k_Mil)
+  {
+    return IGeometry::LengthUnit::Mil;
+  }
+  if(str == SIMPL::Geometry::k_Inch)
+  {
+    return IGeometry::LengthUnit::Inch;
+  }
+  if(str == SIMPL::Geometry::k_Foot)
+  {
+    return IGeometry::LengthUnit::Foot;
+  }
+  if(str == SIMPL::Geometry::k_Mile)
+  {
+    return IGeometry::LengthUnit::Mile;
+  }
+  if(str == SIMPL::Geometry::k_Fathom)
+  {
+    return IGeometry::LengthUnit::Fathom;
+  }
+  if(str == SIMPL::Geometry::k_Unspecified)
+  {
+    return IGeometry::LengthUnit::Unspecified;
+  }
+  if(str == SIMPL::Geometry::k_Unknown)
+  {
+    return IGeometry::LengthUnit::Unknown;
+  }
+
+  return IGeometry::LengthUnit::Unknown;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString IGeometry::LengthUnitToString(IGeometry::LengthUnit t)
+{
+  switch(t)
+  {
+  case IGeometry::LengthUnit::Yoctometer:
+    return SIMPL::Geometry::k_Yoctometer;
+    break;
+  case IGeometry::LengthUnit::Zeptometer:
+    return SIMPL::Geometry::k_Zeptometer;
+    break;
+  case IGeometry::LengthUnit::Attometer:
+    return SIMPL::Geometry::k_Attometer;
+    break;
+  case IGeometry::LengthUnit::Femtometer:
+    return SIMPL::Geometry::k_Femtometer;
+    break;
+  case IGeometry::LengthUnit::Picometer:
+    return SIMPL::Geometry::k_Picometer;
+    break;
+  case IGeometry::LengthUnit::Nanometer:
+    return SIMPL::Geometry::k_Nanometer;
+    break;
+  case IGeometry::LengthUnit::Micrometer:
+    return SIMPL::Geometry::k_Micrometer;
+    break;
+  case IGeometry::LengthUnit::Millimeter:
+    return SIMPL::Geometry::k_Millimeter;
+    break;
+  case IGeometry::LengthUnit::Centimeter:
+    return SIMPL::Geometry::k_Centimeter;
+    break;
+  case IGeometry::LengthUnit::Decimeter:
+    return SIMPL::Geometry::k_Decimeter;
+    break;
+  case IGeometry::LengthUnit::Meter:
+    return SIMPL::Geometry::k_Meter;
+    break;
+  case IGeometry::LengthUnit::Decameter:
+    return SIMPL::Geometry::k_Decameter;
+    break;
+  case IGeometry::LengthUnit::Hectometer:
+    return SIMPL::Geometry::k_Hectometer;
+    break;
+  case IGeometry::LengthUnit::Kilometer:
+    return SIMPL::Geometry::k_Kilometer;
+    break;
+  case IGeometry::LengthUnit::Megameter:
+    return SIMPL::Geometry::k_Megameter;
+    break;
+  case IGeometry::LengthUnit::Gigameter:
+    return SIMPL::Geometry::k_Gigameter;
+    break;
+  case IGeometry::LengthUnit::Terameter:
+    return SIMPL::Geometry::k_Terameter;
+    break;
+  case IGeometry::LengthUnit::Petameter:
+    return SIMPL::Geometry::k_Petameter;
+    break;
+  case IGeometry::LengthUnit::Exameter:
+    return SIMPL::Geometry::k_Exameter;
+    break;
+  case IGeometry::LengthUnit::Zettameter:
+    return SIMPL::Geometry::k_Zettameter;
+    break;
+  case IGeometry::LengthUnit::Yottameter:
+    return SIMPL::Geometry::k_Yottameter;
+    break;
+  case IGeometry::LengthUnit::Angstrom:
+    return SIMPL::Geometry::k_Angstrom;
+    break;
+  case IGeometry::LengthUnit::Mil:
+    return SIMPL::Geometry::k_Mil;
+    break;
+  case IGeometry::LengthUnit::Inch:
+    return SIMPL::Geometry::k_Inch;
+    break;
+  case IGeometry::LengthUnit::Foot:
+    return SIMPL::Geometry::k_Foot;
+    break;
+  case IGeometry::LengthUnit::Mile:
+    return SIMPL::Geometry::k_Mile;
+    break;
+  case IGeometry::LengthUnit::Fathom:
+    return SIMPL::Geometry::k_Fathom;
+    break;
+  case IGeometry::LengthUnit::Unspecified:
+    return SIMPL::Geometry::k_Unspecified;
+    break;
+  case IGeometry::LengthUnit::Unknown:
+    return SIMPL::Geometry::k_Unknown;
+    break;
+  }
+  return SIMPL::Geometry::k_Unknown;
+}
 
 // -----------------------------------------------------------------------------
 //
