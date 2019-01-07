@@ -1147,13 +1147,10 @@ namespace H5Support_NAMESPACE
         {
           return -1;
         }
-        //std::cout << "HDF5 Data Type: " << H5Lite::HDFTypeForPrimitiveAsStr(test) << std::endl;
-        /* Open the dataset. */
-// std::cout << "  Opening " << dsetName << " for data Retrieval.  " << std::endl;
         did = H5Dopen( loc_id, dsetName.c_str(), H5P_DEFAULT);
         if ( did < 0 )
         {
-          std::cout << "H5Lite.h::readStringDataset(" << __LINE__ << ") Error opening Dataset at loc_id (" << loc_id << ") with object name (" << dsetName << ")" << std::endl;
+          std::cout << "H5Lite.h::readVectorDataset(" << __LINE__ << ") Error opening Dataset at loc_id (" << loc_id << ") with object name (" << dsetName << ")" << std::endl;
           return -1;
         }
         if ( did >= 0 )
@@ -1219,10 +1216,10 @@ namespace H5Support_NAMESPACE
       {
         H5SUPPORT_MUTEX_LOCK()
 
-        hid_t   did;
-        herr_t  err = 0;
+        hid_t did = 0;
+        herr_t err = 0;
         herr_t retErr = 0;
-        hid_t spaceId;
+        hid_t spaceId = 0;
 
         hid_t dataType = H5Lite::HDFTypeForPrimitive(data);
         if (dataType == -1)
@@ -1233,7 +1230,7 @@ namespace H5Support_NAMESPACE
         did = H5Dopen( loc_id, dsetName.c_str(), H5P_DEFAULT );
         if ( did < 0 )
         {
-          std::cout << "H5Lite.h::readStringDataset(" << __LINE__ << ") Error opening Dataset at loc_id (" << loc_id << ") with object name (" << dsetName << ")" << std::endl;
+          std::cout << "H5Lite.h::readScalarDataset(" << __LINE__ << ") Error opening Dataset at loc_id (" << loc_id << ") with object name (" << dsetName << ")" << std::endl;
           return -1;
         }
         if ( did >= 0 )
@@ -1241,24 +1238,13 @@ namespace H5Support_NAMESPACE
           spaceId = H5Dget_space(did);
           if ( spaceId > 0 )
           {
-            int32_t rank = H5Sget_simple_extent_ndims(spaceId);
-            if (rank > 0)
+            err = H5Dread(did, dataType, H5S_ALL, H5S_ALL, H5P_DEFAULT, &data );
+            if (err < 0)
             {
-              std::vector<hsize_t> dims;
-              dims.resize(rank);// Allocate enough room for the dims
-              err = H5Sget_simple_extent_dims(spaceId, &(dims.front()), nullptr);
-              hsize_t numElements = 1;
-              for (std::vector<hsize_t>::iterator iter = dims.begin(); iter < dims.end(); ++iter )
-              {
-                numElements = numElements * (*iter);
-              }
-              err = H5Dread(did, dataType, H5S_ALL, H5S_ALL, H5P_DEFAULT, &data );
-              if (err < 0)
-              {
-                std::cout << "Error Reading Data at loc_id (" << loc_id << ") with object name (" << dsetName << ")" << std::endl;
-                retErr = err;
-              }
+              std::cout << "Error Reading Data at loc_id (" << loc_id << ") with object name (" << dsetName << ")" << std::endl;
+              retErr = err;
             }
+
             err = H5Sclose(spaceId);
             if (err < 0 )
             {

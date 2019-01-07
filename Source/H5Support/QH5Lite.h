@@ -477,73 +477,9 @@ namespace H5Support_NAMESPACE
                                       const QString& dsetName,
                                       std::vector<T>& data)
       {
-        hid_t   did;
-        herr_t  err = 0;
-        herr_t retErr = 0;
-        hid_t spaceId;
-        hid_t dataType;
-        T test = static_cast<T>(0x00);
-        dataType = QH5Lite::HDFTypeForPrimitive(test);
-        if (dataType == -1)
-        {
-          return -1;
-        }
-        //qDebug() << "HDF5 Data Type: " << QH5Lite::HDFTypeForPrimitiveAsStr(test);
-        /* Open the dataset. */
-// qDebug() << "  Opening " << dsetName << " for data Retrieval.  ";
-        did = H5Dopen( loc_id, dsetName.toLatin1().data(), H5P_DEFAULT);
-        if ( did < 0 )
-        {
-          qDebug() << "QH5Lite::readStringDataset(" << __LINE__ << ") Error opening Dataset at loc_id (" << loc_id << ") with object name (" << dsetName << ")";
-          return -1;
-        }
-        if ( did >= 0 )
-        {
-          spaceId = H5Dget_space(did);
-          if ( spaceId > 0 )
-          {
-            int32_t rank = H5Sget_simple_extent_ndims(spaceId);
-            if (rank > 0)
-            {
-              QVector<hsize_t> dims;
-              dims.resize(rank);// Allocate enough room for the dims
-              err = H5Sget_simple_extent_dims(spaceId, &(dims.front()), nullptr);
-              hsize_t numElements = 1;
-              for (QVector<hsize_t>::iterator iter = dims.begin(); iter < dims.end(); ++iter )
-              {
-                numElements = numElements * (*iter);
-              }
-              // qDebug() << "NumElements: " << numElements;
-              //Resize the vector
-              data.resize( static_cast<int>(numElements) );
-              // for (uint32_t i = 0; i<numElements; ++i) { data[i] = 55555555;  }
-              err = H5Dread(did, dataType, H5S_ALL, H5S_ALL, H5P_DEFAULT, &( data.front() ) );
-              if (err < 0)
-              {
-                qDebug() << "Error Reading Data.'" << dsetName << "'";
-                retErr = err;
-              }
-            }
-            err = H5Sclose(spaceId);
-            if (err < 0 )
-            {
-              qDebug() << "Error Closing Data Space";
-              retErr = err;
-            }
-          }
-          else
-          {
-            qDebug() << "Error Opening SpaceID";
-            retErr = spaceId;
-          }
-          err = H5Dclose( did );
-          if (err < 0 )
-          {
-            qDebug() << "Error Closing Dataset";
-            retErr = err;
-          }
-        }
-        return retErr;
+        std::string dsetNameStr = dsetName.toStdString();
+        herr_t  err = H5Lite::readVectorDataset(loc_id, dsetNameStr, data);
+        return err;
       }
 
 
@@ -559,65 +495,9 @@ namespace H5Support_NAMESPACE
                                       const QString& dsetName,
                                       T& data)
       {
-        hid_t   did;
-        herr_t  err = 0;
-        herr_t retErr = 0;
-        hid_t spaceId;
-
-        hid_t dataType = QH5Lite::HDFTypeForPrimitive(data);
-        if (dataType == -1)
-        {
-          return -1;
-        }
-        /* Open the dataset. */
-        did = H5Dopen( loc_id, dsetName.toLatin1().data(), H5P_DEFAULT );
-        if ( did < 0 )
-        {
-          qDebug() << "QH5Lite.h::readStringDataset(" << __LINE__ << ") Error opening Dataset at loc_id (" << loc_id << ") with object name (" << dsetName << ")";
-          return -1;
-        }
-        if ( did >= 0 )
-        {
-          spaceId = H5Dget_space(did);
-          if ( spaceId > 0 )
-          {
-            int32_t rank = H5Sget_simple_extent_ndims(spaceId);
-            if (rank > 0)
-            {
-              QVector<hsize_t> dims;
-              dims.resize(rank);// Allocate enough room for the dims
-              err = H5Sget_simple_extent_dims(spaceId, &(dims.front()), nullptr);
-              hsize_t numElements = 1;
-              for (QVector<hsize_t>::iterator iter = dims.begin(); iter < dims.end(); ++iter )
-              {
-                numElements = numElements * (*iter);
-              }
-              err = H5Dread(did, dataType, H5S_ALL, H5S_ALL, H5P_DEFAULT, &data );
-              if (err < 0)
-              {
-                qDebug() << "Error Reading Data at loc_id (" << loc_id << ") with object name (" << dsetName << ")";
-                retErr = err;
-              }
-            }
-            err = H5Sclose(spaceId);
-            if (err < 0 )
-            {
-              qDebug() << "Error Closing Data Space at loc_id (" << loc_id << ") with object name (" << dsetName << ")";
-              retErr = err;
-            }
-          }
-          else
-          {
-            retErr = spaceId;
-          }
-          err = H5Dclose( did );
-          if (err < 0 )
-          {
-            qDebug() << "Error Closing Dataset at loc_id (" << loc_id << ") with object name (" << dsetName << ")";
-            retErr = err;
-          }
-        }
-        return retErr;
+        std::string dsetNameStr = dsetName.toStdString();
+        herr_t  err = H5Lite::readScalarDataset(loc_id, dsetNameStr, data);
+        return err;
       }
 
 
@@ -674,6 +554,15 @@ namespace H5Support_NAMESPACE
                                         const QString& attrName,
                                         QVector<T>& data)
       {
+
+        std::string objNameStr = objName.toStdString();
+        std::string attrNameStr = attrName.toStdString();
+        std::vector<T> dataV;
+        herr_t  err = H5Lite::readVectorAttribute(loc_id, objNameStr, attrNameStr, dataV);
+        data.resize(dataV.size());
+        std::copy(dataV.begin(), dataV.end(), data.begin());
+        return err;
+#if 0
         /* identifiers */
         hid_t      obj_id;
         H5O_info_t statbuf;
@@ -744,6 +633,7 @@ namespace H5Support_NAMESPACE
           }
         }
         return retErr;
+#endif
       }
 
       /**
@@ -760,7 +650,11 @@ namespace H5Support_NAMESPACE
                                          const QString& attrName,
                                          T& data)
       {
-
+        std::string objNameStr = objName.toStdString();
+        std::string attrNameStr = attrName.toStdString();
+        herr_t  err = H5Lite::readScalarAttribute(loc_id, objNameStr, attrNameStr, data);
+        return err;
+#if 0
         /* identifiers */
         hid_t      obj_id;
         H5O_info_t statbuf;
@@ -810,6 +704,7 @@ namespace H5Support_NAMESPACE
           }
         }
         return retErr;
+#endif
       }
 
       /**
@@ -826,6 +721,11 @@ namespace H5Support_NAMESPACE
                                          const QString& attrName,
                                          T* data)
       {
+        std::string objNameStr = objName.toStdString();
+        std::string attrNameStr = attrName.toStdString();
+        herr_t  err = H5Lite::readPointerAttribute(loc_id, objNameStr, attrNameStr, data);
+        return err;
+#if 0
         /* identifiers */
         hid_t      obj_id;
         H5O_info_t statbuf;
@@ -875,6 +775,7 @@ namespace H5Support_NAMESPACE
           }
         }
         return retErr;
+#endif
       }
 
       /**
