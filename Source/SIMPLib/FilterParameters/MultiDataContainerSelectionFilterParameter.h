@@ -71,8 +71,8 @@ class SIMPLib_EXPORT MultiDataContainerSelectionFilterParameter : public FilterP
     SIMPL_STATIC_NEW_MACRO(MultiDataContainerSelectionFilterParameter)
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MultiDataContainerSelectionFilterParameter, FilterParameter)
 
-    typedef std::function<void(QVector<DataArrayPath>)> SetterCallbackType;
-    typedef std::function<QVector<DataArrayPath>(void)> GetterCallbackType;
+    typedef std::function<void(QStringList)> SetterCallbackType;
+    typedef std::function<QStringList(void)> GetterCallbackType;
 
     typedef struct
     {
@@ -103,7 +103,7 @@ class SIMPLib_EXPORT MultiDataContainerSelectionFilterParameter : public FilterP
      * @return
      */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const QVector<DataArrayPath>& defaultValue, Category category,
+                       const QStringList& defaultValue, Category category,
                        SetterCallbackType setterCallback, GetterCallbackType getterCallback,
                        const RequirementType req, int groupIndex = -1);
 
@@ -133,7 +133,7 @@ class SIMPLib_EXPORT MultiDataContainerSelectionFilterParameter : public FilterP
                                              AttributeMatrix::Type attributeMatrixType,
                                              IGeometry::Type geometryType);
 
-    SIMPL_INSTANCE_PROPERTY(QVector<DataArrayPath>, DefaultPaths)
+    SIMPL_INSTANCE_PROPERTY(QStringList, DefaultNames)
 
     /**
      * @brief getWidgetType Returns the type of widget that displays and controls

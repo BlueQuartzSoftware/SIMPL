@@ -44,7 +44,7 @@
 //
 // -----------------------------------------------------------------------------
 MultiDataContainerSelectionFilterParameter::MultiDataContainerSelectionFilterParameter()
-: m_DefaultPaths(QVector<DataArrayPath>())
+: m_DefaultNames(QStringList())
 {
 }
 
@@ -56,9 +56,9 @@ MultiDataContainerSelectionFilterParameter::~MultiDataContainerSelectionFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MultiDataContainerSelectionFilterParameter::Pointer MultiDataContainerSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QVector<DataArrayPath>& defaultValue,
+MultiDataContainerSelectionFilterParameter::Pointer MultiDataContainerSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QStringList &defaultValue,
                                                                                             Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-	                                                                                        const RequirementType req, int groupIndex)
+                                                                                          const RequirementType req, int groupIndex)
 {
 
   MultiDataContainerSelectionFilterParameter::Pointer ptr = MultiDataContainerSelectionFilterParameter::New();
@@ -171,16 +171,14 @@ void MultiDataContainerSelectionFilterParameter::readJson(const QJsonObject& jso
   if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonArray arrayObj = jsonValue.toArray();
-    QVector<DataArrayPath> dapVec;
+    QStringList dcList;
     for(int i = 0; i < arrayObj.size(); i++)
     {
-      QJsonObject obj = arrayObj.at(i).toObject();
-      DataArrayPath dap;
-      dap.readJson(obj);
-      dapVec.push_back(dap);
+      QString dcName = arrayObj.at(i).toString();
+      dcList.push_back(dcName);
     }
 
-    m_SetterCallback(dapVec);
+    m_SetterCallback(dcList);
   }
 }
 
@@ -191,15 +189,13 @@ void MultiDataContainerSelectionFilterParameter::writeJson(QJsonObject& json)
 {
   if (m_GetterCallback)
   {
-    QVector<DataArrayPath> dapVec = m_GetterCallback();
+    QStringList dcList = m_GetterCallback();
     QJsonArray arrayObj;
 
-    for(int i = 0; i < dapVec.size(); i++)
+    for(int i = 0; i < dcList.size(); i++)
     {
-      DataArrayPath dap = dapVec[i];
-      QJsonObject obj;
-      dap.writeJson(obj);
-      arrayObj.push_back(obj);
+      QString dcName = dcList[i];
+      arrayObj.push_back(dcName);
     }
 
     json[getPropertyName()] = arrayObj;
@@ -215,19 +211,19 @@ void MultiDataContainerSelectionFilterParameter::dataArrayPathRenamed(AbstractFi
   DataArrayPath newPath;
   std::tie(oldPath, newPath) = renamePath;
 
-  QVector<DataArrayPath> paths = m_GetterCallback();
-  int count = paths.size();
+  QStringList dcList = m_GetterCallback();
+  int count = dcList.size();
   bool updated = false;
 
   for(int i = 0; i < count; i++)
   {
-    if(paths[i] == oldPath)
+    if(dcList[i] == oldPath.getDataContainerName())
     {
-      paths[i] = newPath;
+      dcList[i] = newPath.getDataContainerName();
       updated = true;
     }
   }
 
-  m_SetterCallback(paths);
+  m_SetterCallback(dcList);
   emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
 }
