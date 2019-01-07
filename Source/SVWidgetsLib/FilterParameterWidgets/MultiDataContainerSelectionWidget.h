@@ -132,8 +132,6 @@ class SVWidgetsLib_EXPORT MultiDataContainerSelectionWidget : public FilterParam
 
     MultiDataContainerSelectionFilterParameter* m_FilterParameter;
 
-    void removeNonexistantPaths(QVector<DataArrayPath> &paths);
-
     void selectionChanged();
 
   public:

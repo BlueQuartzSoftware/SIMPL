@@ -130,11 +130,11 @@ void MultiDataContainerSelectionWidget::setupGui()
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
     this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
-  QVector<DataArrayPath> selectedPaths = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QVector<DataArrayPath>>();
-  for (int i=0; i<selectedPaths.size(); i++)
+  QStringList dcNames = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QStringList>();
+  for (int i=0; i<dcNames.size(); i++)
   {
-    DataArrayPath selectedPath = selectedPaths[i];
-    QListWidgetItem* item = new QListWidgetItem(QIcon(":/SIMPL/icons/images/bullet_ball_green.png"), selectedPath.getDataContainerName());
+    QString dcName = dcNames[i];
+    QListWidgetItem* item = new QListWidgetItem(QIcon(":/SIMPL/icons/images/bullet_ball_green.png"), dcName);
     selectedDataContainersListWidget->addItem(item);
   }
   selectBtn->setDisabled(true);
@@ -304,13 +304,6 @@ void MultiDataContainerSelectionWidget::on_removeBtn_clicked()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataContainerSelectionWidget::removeNonexistantPaths(QVector<DataArrayPath>& paths)
-{
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void MultiDataContainerSelectionWidget::selectionChanged()
 {
   upBtn->setDisabled(true);
@@ -436,17 +429,15 @@ void MultiDataContainerSelectionWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 void MultiDataContainerSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-	QVector<DataArrayPath> selectedPaths;
+  QStringList dcNames;
 	for (int i = 0; i < selectedDataContainersListWidget->count(); i++)
 	{
-		DataArrayPath path;
-		path.setDataContainerName(selectedDataContainersListWidget->item(i)->text());
-		selectedPaths.push_back(path);
+    dcNames.push_back(selectedDataContainersListWidget->item(i)->text());
 	}
 
 	// Generate the path to the AttributeArray
 	QVariant var;
-	var.setValue(selectedPaths);
+  var.setValue(dcNames);
 	bool ok = false;
 	// Set the value into the Filter
 	ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
