@@ -393,6 +393,12 @@ add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SIMPLib ${PROJECT_BINARY_DIR}/S
 add_subdirectory(${SIMPLProj_SOURCE_DIR}/Source/PipelineRunner ${PROJECT_BINARY_DIR}/PipelineRunner)
 
 # --------------------------------------------------------------------
+# add the Command line MakeFilterUuid
+# Figure out here if we are going to build the command line tools
+add_subdirectory(${SIMPLProj_SOURCE_DIR}/Source/MakeFilterUuid ${PROJECT_BINARY_DIR}/MakeFilterUuid)
+
+
+# --------------------------------------------------------------------
 # add the Command line PipelineRunner
 option(SIMPL_BUILD_EXPERIMENTAL "Build experimental codes." OFF)
 if(SIMPL_BUILD_EXPERIMENTAL)
