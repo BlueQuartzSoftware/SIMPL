@@ -371,7 +371,7 @@ class DataArray : public IDataArray
      * @param name
      * @return
      */
-    static Pointer FromPointer(T* data, size_t size, const QString& name, bool allocate = true)
+    static Pointer CopyFromPointer(T* data, size_t size, const QString& name, bool allocate = true)
     {
       Pointer p = CreateArray(size, name, allocate);
       if (nullptr != p.get())
