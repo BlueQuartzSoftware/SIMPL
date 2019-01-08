@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include <QCache>
-#include <QMutex>
+#include <QtCore/QCache>
+#include <QtCore/QMutex>
 
 #include "QtWebApp/httpserver/ServerSettings.h"
 #include "QtWebApp/httpserver/httpglobal.h"

@@ -44,14 +44,16 @@
 
 #include "SVWidgetsLib/QtSupport/httpserver/QtSStaticFileController.h"
 
+#include "httpserver/ServerSettings.h"
+
 QtSDocServer* QtSDocServer::self = nullptr;
 
-static HttpListener* httpListener = nullptr;
-static HttpSessionStore* sessionStore = nullptr;
+// static HttpListener* httpListener = nullptr;
+// static HttpSessionStore* sessionStore = nullptr;
 
-static ServerSettings* s_ServerSettings = nullptr;
+// static ServerSettings* s_ServerSettings = nullptr;
 
-static QtSStaticFileController* staticFileController = nullptr;
+// static QtSStaticFileController* staticFileController = nullptr;
 
 namespace
 {
@@ -78,6 +80,7 @@ QtSDocServer::~QtSDocServer() = default;
 // -----------------------------------------------------------------------------
 QtSDocServer* QtSDocServer::Instance()
 {
+
   if(self == nullptr)
   {
     self = new QtSDocServer();
@@ -146,17 +149,17 @@ QString QtSDocServer::GetHelpRootDir()
 void QtSDocServer::initializeDocServer()
 {
 
-  s_ServerSettings = new ServerSettings();
+  m_ServerSettings = std::shared_ptr<ServerSettings>(new ServerSettings());
   QString rootDir = QtSDocServer::GetHelpRootDir();
-  s_ServerSettings->docRootPath = rootDir;
-  sessionStore = HttpSessionStore::CreateInstance(s_ServerSettings, this);
-  staticFileController = new QtSStaticFileController(s_ServerSettings, this);
+  m_ServerSettings->docRootPath = rootDir;
+  m_HttpSessionStore = std::shared_ptr<HttpSessionStore>(HttpSessionStore::CreateInstance(m_ServerSettings.get(), this));
+  m_QtSStaticFileController = std::shared_ptr<QtSStaticFileController>(new QtSStaticFileController(m_ServerSettings.get(), this));
 
   // Configure and start the TCP listener
-  s_ServerSettings->host = QtSDocServer::GetIPAddress();
-  s_ServerSettings->port = QtSDocServer::GetPort();
+  m_ServerSettings->host = QtSDocServer::GetIPAddress();
+  m_ServerSettings->port = QtSDocServer::GetPort();
 
-  httpListener = new HttpListener(s_ServerSettings, staticFileController, this);
+  m_HttpListener = std::shared_ptr<HttpListener>(new HttpListener(m_ServerSettings.get(), m_QtSStaticFileController.get(), this));
 }
 
 // -----------------------------------------------------------------------------

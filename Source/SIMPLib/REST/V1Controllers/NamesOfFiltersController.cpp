@@ -1,5 +1,5 @@
 /* ============================================================================
- * Copyright (c) 2017 BlueQuartz Softwae, LLC
+ * Copyright (c) 2017-2019 BlueQuartz Software, LLC
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -63,7 +63,7 @@ void NamesOfFiltersController::service(HttpRequest& request, HttpResponse& respo
 
   response.setHeader("Content-Type", "application/json");
 
-  if(content_type.compare("application/json") != 0)
+  if(content_type != "application/json")
   {
     // Form Error response
     rootObj[SIMPL::JSON::ErrorMessage] = EndPoint() + ": Content Type is not application/json";
