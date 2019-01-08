@@ -52,7 +52,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../../../Resources/SIMPL.qrc">
+        <iconset>
          <normaloff>:/SIMPL/icons/images/arrow_up_green.png</normaloff>:/SIMPL/icons/images/arrow_up_green.png</iconset>
        </property>
        <property name="iconSize">
@@ -87,7 +87,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../../../Resources/SIMPL.qrc">
+        <iconset>
          <normaloff>:/SIMPL/icons/images/arrow_down_green.png</normaloff>:/SIMPL/icons/images/arrow_down_green.png</iconset>
        </property>
        <property name="iconSize">
@@ -223,7 +223,7 @@
        </property>
        <property name="icon">
         <iconset resource="../../../../Resources/SIMPL.qrc">
-         <normaloff>:/SIMPL/icons/images/arrow_right_green.png</normaloff>:/SIMPL/icons/images/arrow_right_green.png</iconset>
+         <normaloff>:/SIMPL/icons/images/arrow_right.png</normaloff>:/SIMPL/icons/images/arrow_right.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -258,7 +258,7 @@
        </property>
        <property name="icon">
         <iconset resource="../../../../Resources/SIMPL.qrc">
-         <normaloff>:/SIMPL/icons/images/arrow_left_green.png</normaloff>:/SIMPL/icons/images/arrow_left_green.png</iconset>
+         <normaloff>:/SIMPL/icons/images/arrow_left.png</normaloff>:/SIMPL/icons/images/arrow_left.png</iconset>
        </property>
        <property name="iconSize">
         <size>
