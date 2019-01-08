@@ -206,7 +206,7 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
      * @param scalarType
      * @return
      */
-    IDataArray::Pointer convertArrayType(IDataArray::Pointer inputArray, SIMPL::ScalarTypes::Type scalarType);
+    IDataArray::Pointer convertArrayType(const IDataArray::Pointer &inputArray, SIMPL::ScalarTypes::Type scalarType);
 
 
   private:
