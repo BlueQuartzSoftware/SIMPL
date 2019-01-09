@@ -123,9 +123,6 @@ void ArraySelectionExample::execute()
   }
 
   /* Place all your code to execute your filter here. */
-
-  /* Let the GUI know we are done with this filter */
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

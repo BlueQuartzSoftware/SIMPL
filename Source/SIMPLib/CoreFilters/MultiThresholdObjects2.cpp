@@ -248,9 +248,6 @@ void MultiThresholdObjects2::execute()
     {
       m_Destination[p] = threshold[p];
     }
-
-  /* Let the GUI know we are done with this filter */
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

@@ -634,7 +634,6 @@ void ExtractAttributeArraysFromGeometry::execute()
   }
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

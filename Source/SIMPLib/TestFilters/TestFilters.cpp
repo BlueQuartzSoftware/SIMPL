@@ -101,9 +101,6 @@ void Filt0::execute()
   setWarningCondition(0);
 
   /* Place all your code to execute your filter here. */
-
-  /* Let the GUI know we are done with this filter */
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------
@@ -199,7 +196,4 @@ void Filt1::execute()
   setWarningCondition(0);
 
   /* Place all your code to execute your filter here. */
-
-  /* Let the GUI know we are done with this filter */
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }

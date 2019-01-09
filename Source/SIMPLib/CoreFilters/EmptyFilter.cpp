@@ -120,8 +120,6 @@ void EmptyFilter::execute()
 {
   dataCheck();
   initialize();
-  /* Let the GUI know we are done with this filter */
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

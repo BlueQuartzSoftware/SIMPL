@@ -205,7 +205,6 @@ void SetOriginResolutionImageGeom::execute()
     return;
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

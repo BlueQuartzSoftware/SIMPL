@@ -166,7 +166,6 @@ void MaskCountDecision::execute()
 
   emit decisionMade(dm);
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

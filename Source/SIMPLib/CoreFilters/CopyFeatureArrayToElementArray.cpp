@@ -300,7 +300,6 @@ void CopyFeatureArrayToElementArray::execute()
     am->addAttributeArray(p->getName(), p);
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

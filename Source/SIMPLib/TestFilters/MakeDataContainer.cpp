@@ -202,9 +202,6 @@ void MakeDataContainer::execute()
   {
     m_FeatureIds[i] = i;
   }
-
-  /* Let the GUI know we are done with this filter */
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 // -----------------------------------------------------------------------------
 //

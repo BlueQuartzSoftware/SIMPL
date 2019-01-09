@@ -315,7 +315,6 @@ void CropVertexGeometry::execute()
     }
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------
