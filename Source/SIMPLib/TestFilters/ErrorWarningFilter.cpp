@@ -147,7 +147,6 @@ void ErrorWarningFilter::execute()
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

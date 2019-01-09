@@ -373,9 +373,6 @@ void FindDerivatives::execute()
 
   geom->setMessagePrefix("");
   geom->setMessageTitle("");
-
-  /* Let the GUI know we are done with this filter */
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

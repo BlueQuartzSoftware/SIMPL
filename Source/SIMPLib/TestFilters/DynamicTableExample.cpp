@@ -182,9 +182,6 @@ void DynamicTableExample::preflight()
 void DynamicTableExample::execute()
 {
   // This filter does nothing during execute!
-
-  /* Let the GUI know we are done with this filter */
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

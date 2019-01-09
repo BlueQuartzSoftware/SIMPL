@@ -337,9 +337,6 @@ void CombineAttributeArrays::execute()
       attrMat->removeAttributeArray(path.getDataArrayName());
     }
   }
-
-  /* Let the GUI know we are done with this filter */
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

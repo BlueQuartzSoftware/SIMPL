@@ -243,7 +243,6 @@ void DataContainerReader::execute()
    */
   dataCheck();
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

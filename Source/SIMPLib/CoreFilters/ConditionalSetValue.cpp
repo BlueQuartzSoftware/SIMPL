@@ -276,9 +276,6 @@ void ConditionalSetValue::execute()
   }
 
   EXECUTE_FUNCTION_TEMPLATE(this, replaceValue, m_ArrayPtr.lock(), this, m_ArrayPtr.lock(), m_ConditionalArrayPtr.lock(), m_ReplaceValue)
-
-  /* Let the GUI know we are done with this filter */
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

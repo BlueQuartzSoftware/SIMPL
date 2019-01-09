@@ -182,7 +182,6 @@ void CreateAttributeMatrix::execute()
     return;
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

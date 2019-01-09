@@ -153,7 +153,6 @@ void FeatureCountDecision::execute()
   emit decisionMade(dm);
   emit targetValue(m_FeatureIds[1]);
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

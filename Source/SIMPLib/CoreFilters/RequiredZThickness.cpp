@@ -199,7 +199,6 @@ void RequiredZThickness::execute()
     emit decisionMade(needMoreData);
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

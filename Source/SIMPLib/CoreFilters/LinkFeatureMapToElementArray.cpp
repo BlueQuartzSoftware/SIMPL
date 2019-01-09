@@ -200,7 +200,6 @@ void LinkFeatureMapToElementArray::execute()
     m_Active[i] = active[i];
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------
