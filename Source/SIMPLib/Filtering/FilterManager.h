@@ -39,6 +39,7 @@
 #include <QtCore/QMapIterator>
 #include <QtCore/QString>
 #include <QtCore/QUuid>
+#include <QtCore/QJsonArray>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/IFilterFactory.hpp"
@@ -85,14 +86,14 @@ public:
   /**
    * @brief FilterManager::printFactoryNames
    */
-  void printFactoryNames();
+  void printFactoryNames() const;
 
   /**
    * @brief Returns the mapping of names to Factory instances for all the
    * factories that are registered.
    * @return
    */
-  Collection getFactories();
+  Collection getFactories() const;
 
   /**
    * @brief Returns the mapping of names to the Factory instances for a given filter group
@@ -148,6 +149,13 @@ public:
    * @return
    */
   IFilterFactory::Pointer getFactoryFromHumanName(const QString& humanName);
+  
+  /**
+   * @brief This will return a QJsonArray object that contains information about
+   * all available filters
+   * @return 
+   */
+  QJsonArray toJsonArray() const;
 
 protected:
   FilterManager();
@@ -156,7 +164,7 @@ private:
   Collection m_Factories;
   UuidCollection m_UuidFactories;
   
-  static FilterManager* self;
+  static FilterManager* s_Self;
 
 public:
   FilterManager(const FilterManager&) = delete;            // Copy Constructor Not Implemented

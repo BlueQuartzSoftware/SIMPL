@@ -45,7 +45,7 @@
   @see Logger for a descrition of the buffer.
 */
 
-class DECLSPEC FileLogger : public Logger
+class QtWebAppLib_EXPORT FileLogger : public Logger
 {
   Q_OBJECT
   Q_DISABLE_COPY(FileLogger)

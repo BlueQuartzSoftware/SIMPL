@@ -9,6 +9,7 @@
 #include "httprequest.h"
 #include "httprequesthandler.h"
 #include "httpresponse.h"
+
 #include <QCache>
 #include <QMutex>
 
@@ -39,7 +40,7 @@
   received a related HTTP request.
 */
 
-class DECLSPEC StaticFileController : public HttpRequestHandler
+class QtWebAppLib_EXPORT StaticFileController : public HttpRequestHandler
 {
   Q_OBJECT
   Q_DISABLE_COPY(StaticFileController)

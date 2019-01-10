@@ -12,23 +12,23 @@
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
 
-QtSStaticFileController::QtSStaticFileController(QSettings* settings, QObject* parent)
+QtSStaticFileController::QtSStaticFileController(ServerSettings* settings, QObject* parent)
 : HttpRequestHandler(parent)
 {
-  verbose = settings->value("verbose", false).toBool();
-  maxAge = settings->value("maxAge", "60000").toInt();
-  encoding = settings->value("encoding", "UTF-8").toString();
-  docroot = settings->value("path", ".").toString();
+  verbose = settings->verbose;
+  maxAge = settings->maxAge;
+  encoding = settings->encoding;
+  docroot = settings->docRootPath;
   if(!(docroot.startsWith(":/") || docroot.startsWith("qrc://")))
   {
 // Convert relative path to absolute, based on the directory of the config file.
 #ifdef Q_OS_WIN32
-    if(QDir::isRelativePath(docroot) && settings->format() != QSettings::NativeFormat)
+    if(QDir::isRelativePath(docroot) && settings->format() != ServerSettings::NativeFormat)
 #else
     if(QDir::isRelativePath(docroot))
 #endif
     {
-      QFileInfo configFile(settings->fileName());
+      QFileInfo configFile(settings->configFileName);
       docroot = QFileInfo(configFile.absolutePath(), docroot).absoluteFilePath();
     }
   }
@@ -36,9 +36,9 @@ QtSStaticFileController::QtSStaticFileController(QSettings* settings, QObject* p
   {
     qDebug("QtSStaticFileController: docroot=%s, encoding=%s, maxAge=%i", qPrintable(docroot), qPrintable(encoding), maxAge);
   }
-  maxCachedFileSize = settings->value("maxCachedFileSize", "65536").toInt();
-  cache.setMaxCost(settings->value("cacheSize", "1000000").toInt());
-  cacheTimeout = settings->value("cacheTime", "60000").toInt();
+  maxCachedFileSize = settings->maxCachedFileSize;
+  cache.setMaxCost(settings->cacheSize);
+  cacheTimeout = settings->cacheTime;
   if(verbose)
   {
     qDebug("QtSStaticFileController: cache timeout=%i, size=%i", cacheTimeout, cache.maxCost());
@@ -80,7 +80,7 @@ void QtSStaticFileController::service(HttpRequest& request, HttpResponse& respon
       {
         qWarning("QtSStaticFileController: detected forbidden characters in path %s", path.data());
       }
-      response.setStatus(403, "forbidden");
+      response.setStatusCode(HttpResponse::HttpStatusCode::Forbidden);
       response.write("403 forbidden", true);
       return;
     }
@@ -133,12 +133,12 @@ void QtSStaticFileController::service(HttpRequest& request, HttpResponse& respon
         {
           qWarning("QtSStaticFileController: Cannot open existing file %s for reading", qPrintable(file.fileName()));
         }
-        response.setStatus(403, "forbidden");
+        response.setStatusCode(HttpResponse::HttpStatusCode::Forbidden);
         response.write("403 forbidden", true);
       }
       else
       {
-        response.setStatus(404, "not found");
+        response.setStatusCode(HttpResponse::HttpStatusCode::NotFound);
         response.write("404 not found", true);
       }
     }

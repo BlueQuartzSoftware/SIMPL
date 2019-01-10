@@ -6,14 +6,14 @@
 #include "httpconnectionhandler.h"
 #include "httpresponse.h"
 
-HttpConnectionHandler::HttpConnectionHandler(QSettings* settings, HttpRequestHandler* requestHandler, QSslConfiguration* sslConfiguration)
+HttpConnectionHandler::HttpConnectionHandler(ServerSettings* settings, HttpRequestHandler* requestHandler, QSslConfiguration* sslConfiguration)
 {
   Q_ASSERT(settings != nullptr);
   Q_ASSERT(requestHandler != nullptr);
   this->settings = settings;
   this->requestHandler = requestHandler;
   this->sslConfiguration = sslConfiguration;
-  this->verbose = this->settings->value("verbose", false).toBool();
+  this->verbose = this->settings->verbose;
   currentRequest = nullptr;
   busy = false;
 
@@ -33,7 +33,7 @@ HttpConnectionHandler::HttpConnectionHandler(QSettings* settings, HttpRequestHan
 
   if(verbose)
   {
-    qDebug("HttpConnectionHandler (%p): constructed", this);
+    qDebug() << "HttpConnectionHandler (%p): constructed" << this;
   }
   this->start();
 }
@@ -44,7 +44,7 @@ HttpConnectionHandler::~HttpConnectionHandler()
   wait();
   if(verbose)
   {
-    qDebug("HttpConnectionHandler (%p): destroyed", this);
+    qDebug() << "HttpConnectionHandler (%p): destroyed" << this;
   }
 }
 
@@ -57,7 +57,8 @@ void HttpConnectionHandler::createSocket()
     QSslSocket* sslSocket = new QSslSocket();
     sslSocket->setSslConfiguration(*sslConfiguration);
     socket = sslSocket;
-    if(verbose) qDebug("HttpConnectionHandler (%p): SSL is enabled", this);
+    if(verbose)
+      qDebug() << "HttpConnectionHandler (%p): SSL is enabled" << this;
     return;
   }
 #endif
@@ -69,21 +70,21 @@ void HttpConnectionHandler::run()
 {
   if(verbose)
   {
-    qDebug("HttpConnectionHandler (%p): thread started", this);
+    qDebug() << "HttpConnectionHandler (%p): thread started" << this;
   }
   try
   {
     exec();
   } catch(...)
   {
-    qCritical("HttpConnectionHandler (%p): an uncatched exception occured in the thread", this);
+    qCritical() << "HttpConnectionHandler (%p): an uncatched exception occured in the thread" << this;
   }
   socket->close();
   delete socket;
   readTimer.stop();
   if(verbose)
   {
-    qDebug("HttpConnectionHandler (%p): thread stopped", this);
+    qDebug() << "HttpConnectionHandler (%p): thread stopped" << this;
   }
 }
 
@@ -91,7 +92,7 @@ void HttpConnectionHandler::handleConnection(tSocketDescriptor socketDescriptor)
 {
   if(verbose)
   {
-    qDebug("HttpConnectionHandler (%p): handle new connection", this);
+    qDebug() << "HttpConnectionHandler (%p): handle new connection" << this;
   }
   busy = true;
   Q_ASSERT(socket->isOpen() == false); // if not, then the handler is already busy
@@ -111,13 +112,14 @@ void HttpConnectionHandler::handleConnection(tSocketDescriptor socketDescriptor)
   // Switch on encryption, if SSL is configured
   if(sslConfiguration)
   {
-    if(verbose) qDebug("HttpConnectionHandler (%p): Starting encryption", this);
+    if(verbose)
+      qDebug() << "HttpConnectionHandler (%p): Starting encryption" << this;
     ((QSslSocket*)socket)->startServerEncryption();
   }
 #endif
 
   // Start timer for read timeout
-  int readTimeout = settings->value("readTimeout", 10000).toInt();
+  int readTimeout = settings->readTimeout;
   readTimer.start(readTimeout);
   // delete previous request
   delete currentRequest;
@@ -138,7 +140,7 @@ void HttpConnectionHandler::readTimeout()
 {
   if(verbose)
   {
-    qDebug("HttpConnectionHandler (%p): read timeout occured", this);
+    qDebug() << "HttpConnectionHandler (%p): read timeout occured" << this;
   }
 
   // Commented out because QWebView cannot handle this.
@@ -157,7 +159,7 @@ void HttpConnectionHandler::disconnected()
 {
   if(verbose)
   {
-    qDebug("HttpConnectionHandler (%p): disconnected", this);
+    qDebug() << "HttpConnectionHandler (%p): disconnected" << this;
   }
   socket->close();
   readTimer.stop();
@@ -170,7 +172,8 @@ void HttpConnectionHandler::read()
   while(socket->bytesAvailable() != 0)
   {
 #ifdef SUPERVERBOSE
-    if(verbose) qDebug("HttpConnectionHandler (%p): read input", this);
+    if(verbose)
+      qDebug() << "HttpConnectionHandler (%p): read input" << this;
 #endif
 
     // Create new HttpRequest object if necessary
@@ -187,7 +190,7 @@ void HttpConnectionHandler::read()
       {
         // Restart timer for read timeout, otherwise it would
         // expire during large file uploads.
-        int readTimeout = settings->value("readTimeout", 10000).toInt();
+        int readTimeout = settings->readTimeout;
         readTimer.start(readTimeout);
       }
     }
@@ -212,7 +215,7 @@ void HttpConnectionHandler::read()
       readTimer.stop();
       if(verbose)
       {
-        qDebug("HttpConnectionHandler (%p): received request", this);
+        qDebug() << "HttpConnectionHandler (%p): received request" << this;
       }
 
       // Copy the Connection:close header to the response
@@ -241,7 +244,7 @@ void HttpConnectionHandler::read()
         requestHandler->service(*currentRequest, response);
       } catch(...)
       {
-        qCritical("HttpConnectionHandler (%p): An uncatched exception occured in the request handler", this);
+        qCritical() << "HttpConnectionHandler (%p): An uncatched exception occured in the request handler" << this;
       }
 
       // Finalize sending the response if not already done
@@ -252,7 +255,7 @@ void HttpConnectionHandler::read()
 
       if(verbose)
       {
-        qDebug("HttpConnectionHandler (%p): finished request", this);
+        qDebug() << "HttpConnectionHandler (%p): finished request" << this;
       }
 
       // Find out whether the connection must be closed
@@ -292,7 +295,7 @@ void HttpConnectionHandler::read()
       else
       {
         // Start timer for next request
-        int readTimeout = settings->value("readTimeout", 10000).toInt();
+        int readTimeout = settings->readTimeout;
         readTimer.start(readTimeout);
       }
       delete currentRequest;

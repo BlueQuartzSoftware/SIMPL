@@ -5,10 +5,12 @@
 
 #pragma once
 
-#include "httpglobal.h"
-#include "httprequest.h"
-#include "httpresponse.h"
-#include "httpsession.h"
+#include "httpserver/ServerSettings.h"
+#include "httpserver/httpglobal.h"
+#include "httpserver/httprequest.h"
+#include "httpserver/httpresponse.h"
+#include "httpserver/httpsession.h"
+
 #include <QMap>
 #include <QMutex>
 #include <QObject>
@@ -29,7 +31,7 @@
   </pre></code>
 */
 
-class DECLSPEC HttpSessionStore : public QObject
+class QtWebAppLib_EXPORT HttpSessionStore : public QObject
 {
   Q_OBJECT
   Q_DISABLE_COPY(HttpSessionStore)
@@ -45,7 +47,7 @@ public:
    * @param parent
    * @return
    */
-  static HttpSessionStore* CreateInstance(QSettings* settings, QObject* parent);
+  static HttpSessionStore* CreateInstance(ServerSettings* settings, QObject* parent = nullptr);
 
   /**
    * @brief Instance
@@ -92,11 +94,11 @@ protected:
   /** Storage for the sessions */
   QMap<QByteArray, HttpSession> sessions;
 
-  HttpSessionStore(QSettings* settings, QObject* parent = NULL);
+  HttpSessionStore(ServerSettings* settings, QObject* parent = nullptr);
 
 private:
   /** Configuration settings */
-  QSettings* settings;
+  ServerSettings* settings;
 
   /** Timer to remove expired sessions */
   QTimer cleanupTimer;

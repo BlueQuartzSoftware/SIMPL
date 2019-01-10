@@ -30,7 +30,7 @@
   - {line}      Line number where the message was generated
 */
 
-class DECLSPEC LogMessage
+class QtWebAppLib_EXPORT LogMessage
 {
   Q_DISABLE_COPY(LogMessage)
 public:

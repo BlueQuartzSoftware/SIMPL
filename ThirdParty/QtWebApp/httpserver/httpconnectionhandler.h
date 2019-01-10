@@ -5,16 +5,18 @@
 
 #pragma once
 
-#ifndef QT_NO_OPENSSL
-#include <QSslConfiguration>
-#endif
-#include "httpglobal.h"
-#include "httprequest.h"
-#include "httprequesthandler.h"
-#include <QSettings>
 #include <QTcpSocket>
 #include <QThread>
 #include <QTimer>
+
+#ifndef QT_NO_OPENSSL
+#include <QSslConfiguration>
+#endif
+
+#include "httpglobal.h"
+#include "httprequest.h"
+#include "httprequesthandler.h"
+#include "httpserver/ServerSettings.h"
 
 /** Alias type definition, for compatibility to different Qt versions */
 #if QT_VERSION >= 0x050000
@@ -43,7 +45,7 @@ typedef int tSocketDescriptor;
   The readTimeout value defines the maximum time to wait for a complete HTTP request.
   @see HttpRequest for description of config settings maxRequestSize and maxMultiPartSize.
 */
-class DECLSPEC HttpConnectionHandler : public QThread
+class QtWebAppLib_EXPORT HttpConnectionHandler : public QThread
 {
   Q_OBJECT
   Q_DISABLE_COPY(HttpConnectionHandler)
@@ -55,7 +57,7 @@ public:
     @param requestHandler Handler that will process each incoming HTTP request
     @param sslConfiguration SSL (HTTPS) will be used if not NULL
   */
-  HttpConnectionHandler(QSettings* settings, HttpRequestHandler* requestHandler, QSslConfiguration* sslConfiguration = NULL);
+  HttpConnectionHandler(ServerSettings* settings, HttpRequestHandler* requestHandler, QSslConfiguration* sslConfiguration = NULL);
 
   /** Destructor */
   ~HttpConnectionHandler() override;
@@ -68,7 +70,7 @@ public:
 
 private:
   /** Configuration settings */
-  QSettings* settings;
+  ServerSettings* settings;
 
   /** TCP socket of the current connection  */
   QTcpSocket* socket;

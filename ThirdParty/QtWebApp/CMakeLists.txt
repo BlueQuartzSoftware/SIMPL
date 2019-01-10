@@ -14,7 +14,7 @@ set(QtWebApp_SRCS
   ${QtWebAppLib_SOURCE_DIR}/httpserver/httplistener.cpp              
   ${QtWebAppLib_SOURCE_DIR}/httpserver/staticfilecontroller.cpp
   ${QtWebAppLib_SOURCE_DIR}/httpserver/httprequest.cpp
-  
+  ${QtWebAppLib_SOURCE_DIR}/httpserver/ServerSettings.cpp
   ${QtWebAppLib_SOURCE_DIR}/logging/dualfilelogger.cpp 
   ${QtWebAppLib_SOURCE_DIR}/logging/filelogger.cpp     
   ${QtWebAppLib_SOURCE_DIR}/logging/logger.cpp         
@@ -33,7 +33,7 @@ set(QtWebApp_HDRS
   ${QtWebAppLib_SOURCE_DIR}/httpserver/httplistener.h              
   ${QtWebAppLib_SOURCE_DIR}/httpserver/staticfilecontroller.h
   ${QtWebAppLib_SOURCE_DIR}/httpserver/httprequest.h
-
+  ${QtWebAppLib_SOURCE_DIR}/httpserver/ServerSettings.h
   ${QtWebAppLib_SOURCE_DIR}/logging/dualfilelogger.h 
   ${QtWebAppLib_SOURCE_DIR}/logging/filelogger.h     
   ${QtWebAppLib_SOURCE_DIR}/logging/logger.h         
@@ -64,6 +64,7 @@ CMP_AddDefinitions(TARGET ${PROJECT_NAME})
 target_link_libraries(QtWebAppLib Qt5::Core Qt5::Network)
 #-- Configure Link Libraries for the Target
 LibraryProperties( QtWebAppLib ${EXE_DEBUG_EXTENSION} )
+target_include_directories(QtWebAppLib PUBLIC ${QtWebAppLib_SOURCE_DIR})
 
 
 set(install_dir "bin")

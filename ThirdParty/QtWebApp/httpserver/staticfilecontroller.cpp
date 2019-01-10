@@ -60,7 +60,7 @@ void StaticFileController::service(HttpRequest& request, HttpResponse& response)
     if(path.contains("/.."))
     {
       qWarning("StaticFileController: detected forbidden characters in path %s", path.data());
-      response.setStatus(403, "forbidden");
+      response.setStatusCode(HttpResponse::HttpStatusCode::Forbidden);
       response.write("403 forbidden", true);
       return;
     }
@@ -107,12 +107,12 @@ void StaticFileController::service(HttpRequest& request, HttpResponse& response)
       if(file.exists())
       {
         qWarning("StaticFileController: Cannot open existing file %s for reading", qPrintable(file.fileName()));
-        response.setStatus(403, "forbidden");
+        response.setStatusCode(HttpResponse::HttpStatusCode::Forbidden);
         response.write("403 forbidden", true);
       }
       else
       {
-        response.setStatus(404, "not found");
+        response.setStatusCode(HttpResponse::HttpStatusCode::NotFound);
         response.write("404 not found", true);
       }
     }

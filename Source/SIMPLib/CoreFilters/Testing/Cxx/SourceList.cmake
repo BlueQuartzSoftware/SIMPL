@@ -34,7 +34,6 @@ set(TEST_${SUBDIR_NAME}_NAMES
   MultiThresholdObjects2Test
   RawBinaryReaderTest
   ReadASCIIDataTest
-  RecursivePipelineTest
   RemoveArraysTest
   RemoveComponentFromArrayTest
   RenameAttributeArrayTest

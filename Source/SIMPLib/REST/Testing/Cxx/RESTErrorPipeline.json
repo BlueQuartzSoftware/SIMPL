@@ -1,0 +1,54 @@
+{
+    "0": {
+        "FeatureIdsArrayPath": {
+            "Attribute Matrix Name": "CellData",
+            "Data Array Name": "FeatureIds",
+            "Data Container Name": "ImageDataContainer"
+        },
+        "FilePrefix": "",
+        "FilterVersion": "6.5.59",
+        "Filter_Enabled": true,
+        "Filter_Human_Label": "Abaqus Hexahedron Exporter",
+        "Filter_Name": "AbaqusHexahedronWriter",
+        "Filter_Uuid": "{0559aa37-c5ad-549a-82d4-bff4bfcb6cc6}",
+        "HourglassStiffness": 250,
+        "JobName": "",
+        "OutputPath": "/Users/joeykleingers"
+    },
+    "1": {
+        "AlignmentShiftFileName": "/Users/joeykleingers",
+        "CellPhasesArrayPath": {
+            "Attribute Matrix Name": "CellData",
+            "Data Array Name": "Phases",
+            "Data Container Name": "ImageDataContainer"
+        },
+        "CrystalStructuresArrayPath": {
+            "Attribute Matrix Name": "CellEnsembleData",
+            "Data Array Name": "CrystalStructures",
+            "Data Container Name": "ImageDataContainer"
+        },
+        "FilterVersion": "6.5.59",
+        "Filter_Enabled": true,
+        "Filter_Human_Label": "Align Sections (Mutual Information)",
+        "Filter_Name": "AlignSectionsMutualInformation",
+        "Filter_Uuid": "{61c5519b-5561-58b8-a522-2ce1324e244d}",
+        "GoodVoxelsArrayPath": {
+            "Attribute Matrix Name": "CellData",
+            "Data Array Name": "Mask",
+            "Data Container Name": "ImageDataContainer"
+        },
+        "MisorientationTolerance": 5,
+        "QuatsArrayPath": {
+            "Attribute Matrix Name": "CellData",
+            "Data Array Name": "Quats",
+            "Data Container Name": "ImageDataContainer"
+        },
+        "UseGoodVoxels": 1,
+        "WriteAlignmentShifts": 0
+    },
+    "PipelineBuilder": {
+        "Name": "ErrorInputPipeline",
+        "Number_Filters": 2,
+        "Version": 6
+    }
+}

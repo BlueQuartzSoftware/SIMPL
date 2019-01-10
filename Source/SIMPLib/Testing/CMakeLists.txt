@@ -42,19 +42,25 @@ foreach(f ${${SIMPL_UNIT_TEST}_TEST_SRCS})
   set_source_files_properties( ${f} PROPERTIES HEADER_FILE_ONLY TRUE)
 endforeach()
 
+set(LINKED_LIBRARIES
+  Qt5::Core
+  H5Support
+  SIMPLib
+  ${ITK_LIBRARIES}
+)
+
+if(SIMPL_Group_REST)
+  set(LINKED_LIBRARIES ${LINKED_LIBRARIES} RESTClient)
+endif()
+
 AddSIMPLUnitTest(TESTNAME SIMPLUnitTest
   SOURCES ${SIMPLTest_BINARY_DIR}/SIMPLUnitTest.cpp ${${SIMPL_UNIT_TEST}_TEST_SRCS}
   FOLDER "SIMPLibProj/Test"
-  LINK_LIBRARIES Qt5::Core H5Support SIMPLib ${ITK_LIBRARIES}
+  LINK_LIBRARIES ${LINKED_LIBRARIES}
   INCLUDE_DIRS 
 			${${PLUGIN_NAME}Test_SOURCE_DIR}
 			${${PLUGIN_NAME}Test_BINARY_DIR}
   )
-
-# AddSIMPLUnitTest(TESTNAME PipelinePauseTest
-#   SOURCES ${SIMPLTest_SOURCE_DIR}/PipelinePauseTest.cpp ${_moc_filter_source}
-#   FOLDER "SIMPLibProj/Test"
-#   LINK_LIBRARIES Qt5::Core H5Support SIMPLib)
 
 if(MSVC)
   set_source_files_properties( ${SIMPLTest_BINARY_DIR}/SIMPLUnitTest.cpp PROPERTIES COMPILE_FLAGS /bigobj)

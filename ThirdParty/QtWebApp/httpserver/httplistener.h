@@ -5,13 +5,14 @@
 
 #pragma once
 
-#include "httpconnectionhandler.h"
-#include "httpconnectionhandlerpool.h"
-#include "httpglobal.h"
-#include "httprequesthandler.h"
 #include <QBasicTimer>
-#include <QSettings>
 #include <QTcpServer>
+
+#include "httpserver/ServerSettings.h"
+#include "httpserver/httpconnectionhandler.h"
+#include "httpserver/httpconnectionhandlerpool.h"
+#include "httpserver/httpglobal.h"
+#include "httpserver/httprequesthandler.h"
 
 /**
   Listens for incoming TCP connections and and passes all incoming HTTP requests to your implementation of HttpRequestHandler,
@@ -38,7 +39,7 @@
   @see HttpRequest for description of config settings maxRequestSize and maxMultiPartSize
 */
 
-class DECLSPEC HttpListener : public QTcpServer
+class QtWebAppLib_EXPORT HttpListener : public QTcpServer
 {
   Q_OBJECT
   Q_DISABLE_COPY(HttpListener)
@@ -51,7 +52,7 @@ public:
     @param parent Parent object.
     @warning Ensure to close or delete the listener before deleting the request handler.
   */
-  HttpListener(QSettings* settings, HttpRequestHandler* requestHandler, QObject* parent = NULL);
+  HttpListener(ServerSettings* settings, HttpRequestHandler* requestHandler, QObject* parent = NULL);
 
   /** Destructor */
   ~HttpListener() override;
@@ -75,7 +76,7 @@ protected:
 
 private:
   /** Configuration settings for the HTTP server */
-  QSettings* settings;
+  ServerSettings* settings;
 
   /** Point to the reuqest handler which processes all HTTP requests */
   HttpRequestHandler* requestHandler;
