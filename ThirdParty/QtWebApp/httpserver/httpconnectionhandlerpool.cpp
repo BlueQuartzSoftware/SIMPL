@@ -97,7 +97,7 @@ void HttpConnectionHandlerPool::loadSslConfig()
     qWarning("HttpConnectionHandlerPool: SSL is not supported");
 #else
     // Convert relative fileNames to absolute, based on the directory of the config file.
-    QFileInfo configFile(settings->fileName());
+    QFileInfo configFile(settings->configFileName);
 #ifdef Q_OS_WIN32
     if(QDir::isRelativePath(sslKeyFileName) && settings->format() != ServerSettings::NativeFormat)
 #else
