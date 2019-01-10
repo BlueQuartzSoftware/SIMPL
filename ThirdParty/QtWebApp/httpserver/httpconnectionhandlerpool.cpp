@@ -107,7 +107,7 @@ void HttpConnectionHandlerPool::loadSslConfig()
       sslKeyFileName = QFileInfo(configFile.absolutePath(), sslKeyFileName).absoluteFilePath();
     }
 #ifdef Q_OS_WIN32
-    if(QDir::isRelativePath(sslCertFileName) && settings->format() != ServerSettings::NativeFormat)
+    if(QDir::isRelativePath(sslCertFileName))
 #else
     if(QDir::isRelativePath(sslCertFileName))
 #endif
@@ -142,7 +142,7 @@ void HttpConnectionHandlerPool::loadSslConfig()
     sslConfiguration->setPeerVerifyMode(QSslSocket::VerifyNone);
     sslConfiguration->setProtocol(QSsl::TlsV1SslV3);
 
-   if(verbose) qDebug("HttpConnectionHandlerPool: SSL settings loaded");
+   if(verbose) { qDebug("HttpConnectionHandlerPool: SSL settings loaded"); }
 #endif
   }
 }
