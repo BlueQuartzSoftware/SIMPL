@@ -14,7 +14,7 @@
 #include <QUuid>
 
 #include "httpglobal.h"
-#include "httpserver/ServerSettings.h"
+#include "ServerSettings.h"
 
 /**
   This object represents a single HTTP request. It reads the request

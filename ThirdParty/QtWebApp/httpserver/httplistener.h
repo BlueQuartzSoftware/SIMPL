@@ -8,11 +8,11 @@
 #include <QBasicTimer>
 #include <QTcpServer>
 
-#include "httpserver/ServerSettings.h"
-#include "httpserver/httpconnectionhandler.h"
-#include "httpserver/httpconnectionhandlerpool.h"
-#include "httpserver/httpglobal.h"
-#include "httpserver/httprequesthandler.h"
+#include "ServerSettings.h"
+#include "httpconnectionhandler.h"
+#include "httpconnectionhandlerpool.h"
+#include "httpglobal.h"
+#include "httprequesthandler.h"
 
 /**
   Listens for incoming TCP connections and and passes all incoming HTTP requests to your implementation of HttpRequestHandler,

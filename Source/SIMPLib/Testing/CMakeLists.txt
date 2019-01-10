@@ -68,7 +68,9 @@ endif()
 
 #-------------------------------------------------------------------------------
 #- This copies all the Test files into the Build directory
-add_custom_target(SIMPLFileCopy ALL
+if(EXISTS ${TESTFILES_SRC_DIR})
+  add_custom_target(SIMPLFileCopy ALL
             COMMAND ${CMAKE_COMMAND} -E copy_directory ${TESTFILES_SRC_DIR} ${TEST_TEMP_DIR}
             COMMENT "Copying ${PROJECT_NAME} Test Files to Build directory...")
-set_target_properties(SIMPLFileCopy PROPERTIES FOLDER ZZ_COPY_FILES)
+  set_target_properties(SIMPLFileCopy PROPERTIES FOLDER ZZ_COPY_FILES)
+endif()

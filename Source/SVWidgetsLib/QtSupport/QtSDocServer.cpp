@@ -44,7 +44,7 @@
 
 #include "SVWidgetsLib/QtSupport/httpserver/QtSStaticFileController.h"
 
-#include "httpserver/ServerSettings.h"
+#include "QtWebApp/httpserver/ServerSettings.h"
 
 QtSDocServer* QtSDocServer::self = nullptr;
 

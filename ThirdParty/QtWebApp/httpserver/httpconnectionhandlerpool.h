@@ -5,9 +5,9 @@
 #include <QObject>
 #include <QTimer>
 
-#include "httpserver/ServerSettings.h"
-#include "httpserver/httpconnectionhandler.h"
-#include "httpserver/httpglobal.h"
+#include "ServerSettings.h"
+#include "httpconnectionhandler.h"
+#include "httpglobal.h"
 
 /**
   Pool of http connection handlers. The size of the pool grows and

@@ -1,7 +1,5 @@
 project(QtWebAppLib)
 
-# INCLUDE_DIRECTORIES(${QtWebAppLib_SOURCE_DIR})
-
 set(QtWebApp_SRCS
   ${QtWebAppLib_SOURCE_DIR}/httpserver/httpconnectionhandler.cpp     
   ${QtWebAppLib_SOURCE_DIR}/httpserver/httprequesthandler.cpp
@@ -64,7 +62,7 @@ CMP_AddDefinitions(TARGET ${PROJECT_NAME})
 target_link_libraries(QtWebAppLib Qt5::Core Qt5::Network)
 #-- Configure Link Libraries for the Target
 LibraryProperties( QtWebAppLib ${EXE_DEBUG_EXTENSION} )
-target_include_directories(QtWebAppLib PUBLIC ${QtWebAppLib_SOURCE_DIR})
+target_include_directories(QtWebAppLib PRIVATE ${QtWebAppLib_SOURCE_DIR})
 
 
 set(install_dir "bin")
@@ -99,7 +97,7 @@ export(EXPORT QtWebAppLibTargets
   NAMESPACE QtWebAppLib::
 )
 
-if (QtWebAppLib_INSTALL_FILES)
+if (PROJECT_INSTALL_HEADERS)
   install(EXPORT QtWebAppLibTargets
     FILE
       ${PROJECT_NAME}Targets.cmake
@@ -110,10 +108,10 @@ if (QtWebAppLib_INSTALL_FILES)
   )
 
   install(FILES 
-      ${CMP_HEADER_DIR}/${CMP_TOP_HEADER_FILE}
-      ${CMP_HEADER_DIR}/${CMP_TYPES_FILE_NAME}
-      ${CMP_HEADER_DIR}/${CMP_CONFIGURATION_FILE_NAME}
-      ${CMP_HEADER_DIR}/${CMP_VERSION_HEADER_FILE_NAME}
+      # ${CMP_HEADER_DIR}/${CMP_TOP_HEADER_FILE}
+      # ${CMP_HEADER_DIR}/${CMP_TYPES_FILE_NAME}
+      # ${CMP_HEADER_DIR}/${CMP_CONFIGURATION_FILE_NAME}
+      # ${CMP_HEADER_DIR}/${CMP_VERSION_HEADER_FILE_NAME}
     DESTINATION
       include/${PROJECT_NAME}
   )

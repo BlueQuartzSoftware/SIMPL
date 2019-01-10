@@ -5,11 +5,11 @@
 
 #pragma once
 
-#include "httpserver/ServerSettings.h"
-#include "httpserver/httpglobal.h"
-#include "httpserver/httprequest.h"
-#include "httpserver/httpresponse.h"
-#include "httpserver/httpsession.h"
+#include "ServerSettings.h"
+#include "httpglobal.h"
+#include "httprequest.h"
+#include "httpresponse.h"
+#include "httpsession.h"
 
 #include <QMap>
 #include <QMutex>
