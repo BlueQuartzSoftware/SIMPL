@@ -47,11 +47,7 @@ SIMPLStaticFileController::SIMPLStaticFileController(ServerSettings* settings, Q
   if(!(docroot.startsWith(":/") || docroot.startsWith("qrc://")))
   {
     // Convert relative path to absolute, based on the directory of the config file.
-#ifdef Q_OS_WIN32
-    if(QDir::isRelativePath(docroot) && settings->format() != ServerSettings::NativeFormat)
-#else
     if(QDir::isRelativePath(docroot))
-#endif
     {
       QFileInfo configFile(settings->configFileName);
       docroot = QFileInfo(configFile.absolutePath(), docroot).absoluteFilePath();
