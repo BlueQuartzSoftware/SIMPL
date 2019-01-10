@@ -98,19 +98,11 @@ void HttpConnectionHandlerPool::loadSslConfig()
 #else
     // Convert relative fileNames to absolute, based on the directory of the config file.
     QFileInfo configFile(settings->configFileName);
-#ifdef Q_OS_WIN32
-    if(QDir::isRelativePath(sslKeyFileName) && settings->format() != ServerSettings::NativeFormat)
-#else
     if(QDir::isRelativePath(sslKeyFileName))
-#endif
     {
       sslKeyFileName = QFileInfo(configFile.absolutePath(), sslKeyFileName).absoluteFilePath();
     }
-#ifdef Q_OS_WIN32
     if(QDir::isRelativePath(sslCertFileName))
-#else
-    if(QDir::isRelativePath(sslCertFileName))
-#endif
     {
       sslCertFileName = QFileInfo(configFile.absolutePath(), sslCertFileName).absoluteFilePath();
     }
