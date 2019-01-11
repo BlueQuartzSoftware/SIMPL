@@ -1509,7 +1509,7 @@ public:
       DREAM3D_REQUIRE_EQUAL(responseObject[SIMPL::JSON::PipelineErrors].isArray(), true);
 
       QJsonArray responseErrorsArray = responseObject[SIMPL::JSON::PipelineErrors].toArray();
-      DREAM3D_REQUIRE_EQUAL(responseErrorsArray.size(), 3);
+      DREAM3D_REQUIRE_EQUAL(responseErrorsArray.size(), 4);
 
       DREAM3D_REQUIRE_EQUAL(responseObject[SIMPL::JSON::PipelineWarnings].isArray(), true);
       QJsonArray responseWarningsArray = responseObject[SIMPL::JSON::PipelineWarnings].toArray();

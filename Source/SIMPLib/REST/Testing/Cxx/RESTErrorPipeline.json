@@ -13,10 +13,10 @@
         "Filter_Uuid": "{0559aa37-c5ad-549a-82d4-bff4bfcb6cc6}",
         "HourglassStiffness": 250,
         "JobName": "",
-        "OutputPath": "/Users/joeykleingers"
+        "OutputPath": ""
     },
     "1": {
-        "AlignmentShiftFileName": "/Users/joeykleingers",
+        "AlignmentShiftFileName": "",
         "CellPhasesArrayPath": {
             "Attribute Matrix Name": "CellData",
             "Data Array Name": "Phases",
