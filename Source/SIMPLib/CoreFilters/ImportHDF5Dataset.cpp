@@ -366,7 +366,6 @@ void ImportHDF5Dataset::execute()
     return;
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

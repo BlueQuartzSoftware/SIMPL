@@ -50,6 +50,9 @@
 /* define to 1 if we are using the SIMPL_Group_PLUGIN*/
 #cmakedefine SIMPL_Group_PLUGIN @SIMPL_Group_PLUGIN@
 
+/* define to 1 if we are using the SIMPL_Group_REST*/
+#cmakedefine SIMPL_Group_REST @SIMPL_Group_REST@
+
 /* define to 1 if we are using the SIMPL_Group_WIDGETS*/
 #cmakedefine SIMPL_Group_WIDGETS @SIMPL_Group_WIDGETS@
 

@@ -4,8 +4,9 @@
 #include <fstream>
 #include <iostream>
 
-#include "SIMPLib/Common/Observer.h"
+#include <QtCore/QFile>
 
+#include "SIMPLib/Common/Observer.h"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
@@ -223,9 +224,23 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
+  void RemoveTestFiles()
+  {
+#if REMOVE_TEST_FILES
+    bool success = QFile::remove(QString::fromStdString(m_FilePath));
+    DREAM3D_REQUIRE(success == true)
+#endif
+  }
+
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
   void operator()()
   {
     std::cout << "#### ImportAsciDataArrayTest Starting ####" << std::endl;
+#if !REMOVE_TEST_FILES
+    DREAM3D_REGISTER_TEST(RemoveTestFiles())
+#endif
 
     int err = EXIT_SUCCESS;
     DREAM3D_REGISTER_TEST(Comma())
@@ -233,6 +248,10 @@ public:
     DREAM3D_REGISTER_TEST(Space())
     DREAM3D_REGISTER_TEST(Colon())
     DREAM3D_REGISTER_TEST(Tab())
+
+#if REMOVE_TEST_FILES
+    DREAM3D_REGISTER_TEST(RemoveTestFiles())
+#endif
   }
 
 private:

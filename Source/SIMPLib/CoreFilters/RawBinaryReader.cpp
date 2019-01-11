@@ -498,9 +498,6 @@ void RawBinaryReader::execute()
     setErrorCondition(RBR_READ_EOF);
     notifyErrorMessage(getHumanLabel(), "RawBinaryReader read past the end of the specified file", getErrorCondition());
   }
-
-  /* Let the GUI know we are done with this filter */
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

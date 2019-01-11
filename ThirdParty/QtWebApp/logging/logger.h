@@ -44,7 +44,7 @@
   because logging to the console is less useful.
 */
 
-class DECLSPEC Logger : public QObject
+class QtWebAppLib_EXPORT Logger : public QObject
 {
   Q_OBJECT
   Q_DISABLE_COPY(Logger)

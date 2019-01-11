@@ -17,7 +17,7 @@
   @see HttpSessionStore should be used to create and get instances of this class.
 */
 
-class DECLSPEC HttpSession
+class QtWebAppLib_EXPORT HttpSession
 {
 
 public:

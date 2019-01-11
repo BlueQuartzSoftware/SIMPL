@@ -18,7 +18,7 @@
   @see FileLogger for a description of the two underlying loggers.
 */
 
-class DECLSPEC DualFileLogger : public Logger
+class QtWebAppLib_EXPORT DualFileLogger : public Logger
 {
   Q_OBJECT
   Q_DISABLE_COPY(DualFileLogger)

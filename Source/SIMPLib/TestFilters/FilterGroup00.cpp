@@ -115,7 +115,6 @@ void TESTCLASSNAME::execute()
     return;
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

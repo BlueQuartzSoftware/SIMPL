@@ -38,7 +38,7 @@
   @see TemplateLoader
 */
 
-class DECLSPEC TemplateCache : public TemplateLoader
+class QtWebAppLib_EXPORT TemplateCache : public TemplateLoader
 {
   Q_OBJECT
   Q_DISABLE_COPY(TemplateCache)

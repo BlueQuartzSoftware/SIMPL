@@ -67,13 +67,16 @@ public:
 
   virtual ~WriteASCIIDataTest() = default;
 
+  const QString k_ArrayName = QString("ASCII_Data");
+  const QString k_Extension = QString(".txt");
+
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
   void RemoveTestFiles()
   {
 #if REMOVE_TEST_FILES
-
+    QFile::remove(UnitTest::TestTempDir + "/" + k_ArrayName + k_Extension);
 #endif
   }
 
@@ -88,7 +91,7 @@ public:
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
     AttributeMatrix::Pointer am = AttributeMatrix::New(QVector<size_t>(1, k_ArraySize), "TestAttributeMatrix", AttributeMatrix::Type::Any);
 
-    StringDataArray::Pointer strArray = StringDataArray::CreateArray(k_ArraySize, "ASCII_Data", true);
+    StringDataArray::Pointer strArray = StringDataArray::CreateArray(k_ArraySize, k_ArrayName, true);
     strArray->setValue(0, QString("Foo"));
     strArray->setValue(1, QString("Bar"));
     strArray->setValue(2, QString("Baz"));
@@ -110,7 +113,7 @@ public:
     writer->setSelectedDataArrayPaths(paths);
     writer->setOutputPath(outputDir);
     writer->setDelimiter(WriteASCIIData::DelimiterType::Comma);
-    writer->setFileExtension("txt");
+    writer->setFileExtension(k_Extension);
     writer->setMaxValPerLine(1);
 
     writer->preflight();

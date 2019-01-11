@@ -1,4 +1,20 @@
 
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.1.0")
+cmake_policy(SET CMP0002 NEW)
+cmake_policy(SET CMP0054 NEW)
+endif()
+
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.12.0")
+cmake_policy(SET CMP0074 NEW)
+endif()
+
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.13.0")
+cmake_policy(SET CMP0079 NEW)
+cmake_policy(SET CMP0077 NEW)
+endif()
+
+cmake_minimum_required(VERSION 3.10.0)
+
 if(NOT "${DREAM3D_SDK}" STREQUAL "")
   include("${DREAM3D_SDK}/DREAM3D_SDK.cmake")
   get_property(DREAM3D_SDK_STATUS_PRINTED GLOBAL PROPERTY DREAM3D_SDK_STATUS_PRINTED)
@@ -13,12 +29,6 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_EXTENSIONS False)
 
-if(${CMAKE_MAJOR_VERSION} STREQUAL "3")
-  # CMake 3.1 introduces if() policies on dereferencing variables in quotes
-  cmake_policy(SET CMP0054 NEW)
-endif()
-
-cmake_minimum_required(VERSION 3.8.0)
 
 #------------------------------------------------------------------------------
 # Create the Top level Project
@@ -217,6 +227,10 @@ SIMPL_ENABLE_GROUP(GROUP_NAME PLUGIN
             ENABLE ON
             DESC "Compile SIMPL Plugin functionality"
             DEPENDENCIES BASE FILTERS)
+SIMPL_ENABLE_GROUP(GROUP_NAME REST
+            ENABLE ON
+            DESC "Compile SIMPL REST functionality"
+            DEPENDENCIES BASE)
 SIMPL_ENABLE_GROUP(GROUP_NAME WIDGETS
             ENABLE ON
             DESC "Compile SIMPL Qt Widgets functionality"
@@ -414,13 +428,19 @@ if(SIMPL_Group_WIDGETS)
 endif()
 
 # --------------------------------------------------------------------
+# Include any REST related CMake codes
+if(SIMPL_Group_REST)
+  add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/RESTClient ${PROJECT_BINARY_DIR}/RESTClient)
+  add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/RESTServer ${PROJECT_BINARY_DIR}/RESTServer)
+endif()
+
+# --------------------------------------------------------------------
 # This should be the last line in this file:
 include(${PROJECT_RESOURCES_DIR}/CPack/PackageProject.cmake)
 
 # --------------------------------------------------------------------
 # Include any Support related CMake codes
 include(${SIMPLProj_SOURCE_DIR}/Support/Support.cmake)
-
 
 # --------------------------------------------------------------------------
 # Find the Pybind11 installation

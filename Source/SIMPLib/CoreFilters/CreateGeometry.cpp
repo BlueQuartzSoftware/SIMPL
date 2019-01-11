@@ -904,7 +904,6 @@ void CreateGeometry::execute()
   }
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

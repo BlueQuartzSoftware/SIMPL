@@ -299,7 +299,6 @@ void ExtractVertexGeometry::execute()
 
   // The moving or copying of the Cell DataArrays was already handled in the dataCheck() method.
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

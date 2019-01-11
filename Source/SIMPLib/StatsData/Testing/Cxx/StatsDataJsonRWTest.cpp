@@ -556,7 +556,7 @@ public:
     DREAM3D_REGISTER_TEST(TransformationReadTest())
 
 #if REMOVE_TEST_FILES
-//   DREAM3D_REGISTER_TEST( RemoveTestFiles() )
+    DREAM3D_REGISTER_TEST(RemoveTestFiles())
 #endif
   }
 

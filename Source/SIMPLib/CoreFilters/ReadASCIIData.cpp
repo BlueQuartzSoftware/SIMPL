@@ -592,7 +592,6 @@ void ReadASCIIData::execute()
     inputFile.close();
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

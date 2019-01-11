@@ -295,7 +295,6 @@ void DataContainerWriter::execute()
 
   dcaGid = -1;
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

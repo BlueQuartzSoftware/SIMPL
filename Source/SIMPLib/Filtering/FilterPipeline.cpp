@@ -158,7 +158,17 @@ QJsonObject FilterPipeline::toJson()
 // -----------------------------------------------------------------------------
 FilterPipeline::Pointer FilterPipeline::FromJson(const QJsonObject& json, IObserver* obs)
 {
+  if (!json.contains(SIMPL::Settings::PipelineBuilderGroup) || !json[SIMPL::Settings::PipelineBuilderGroup].isObject())
+  {
+    return FilterPipeline::NullPointer();
+  }
+
   QJsonObject builderObj = json[SIMPL::Settings::PipelineBuilderGroup].toObject();
+  if (!builderObj.contains(SIMPL::Settings::NumFilters) || !builderObj[SIMPL::Settings::NumFilters].isDouble())
+  {
+    return FilterPipeline::NullPointer();
+  }
+
   int filterCount = builderObj[SIMPL::Settings::NumFilters].toInt();
 
   FilterPipeline::Pointer pipeline;
