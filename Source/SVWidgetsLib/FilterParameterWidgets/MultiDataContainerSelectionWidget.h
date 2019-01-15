@@ -134,6 +134,11 @@ class SVWidgetsLib_EXPORT MultiDataContainerSelectionWidget : public FilterParam
 
     void selectionChanged();
 
+    /**
+     * @brief clearNonexistantDataContainers
+     */
+    void clearNonexistantDataContainers();
+
   public:
     MultiDataContainerSelectionWidget(const MultiDataContainerSelectionWidget&) = delete; // Copy Constructor Not Implemented
     MultiDataContainerSelectionWidget(MultiDataContainerSelectionWidget&&) = delete;      // Move Constructor Not Implemented
