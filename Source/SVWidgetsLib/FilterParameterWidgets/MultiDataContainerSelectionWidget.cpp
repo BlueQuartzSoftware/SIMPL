@@ -366,12 +366,48 @@ void MultiDataContainerSelectionWidget::on_selectedDataContainersListWidget_item
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void MultiDataContainerSelectionWidget::clearNonexistantDataContainers()
+{
+  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
+  if(nullptr == dca.get())
+  {
+    return;
+  }
+
+  QList<QString> dcNames = dca->getDataContainerNames();
+
+  for (int i = 0; i < availableDataContainersListWidget->count(); i++)
+  {
+    if (!dcNames.contains(availableDataContainersListWidget->item(i)->text()))
+    {
+      QListWidgetItem* item = availableDataContainersListWidget->takeItem(i);
+      delete item;
+      i--;
+    }
+  }
+
+  for (int i = 0; i < selectedDataContainersListWidget->count(); i++)
+  {
+    if (!dcNames.contains(selectedDataContainersListWidget->item(i)->text()))
+    {
+      QListWidgetItem* item = selectedDataContainersListWidget->takeItem(i);
+      delete item;
+      i--;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void MultiDataContainerSelectionWidget::beforePreflight()
 {
   if(nullptr == getFilter())
   {
     return;
   }
+
+  clearNonexistantDataContainers();
 
   // Previously in afterPreflight()
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
