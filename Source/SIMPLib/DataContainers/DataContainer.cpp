@@ -379,7 +379,7 @@ int DataContainer::readAttributeMatricesFromHDF5(bool preflight, hid_t dcGid, co
   QString amName;
   for(QMap<QString, AttributeMatrixProxy>::iterator iter = attrMatsToRead.begin(); iter != attrMatsToRead.end(); ++iter)
   {
-    if(iter.value().flag == Qt::Unchecked)
+    if(iter.value().getFlag() == Qt::Unchecked)
     {
       continue;
     }

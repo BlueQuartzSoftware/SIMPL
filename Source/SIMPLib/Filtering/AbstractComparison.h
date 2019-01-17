@@ -47,8 +47,8 @@
 */
 class SIMPLib_EXPORT AbstractComparison
 {
-	PYB11_CREATE_BINDINGS(AbstractComparison)
-	PYB11_PROPERTY(int UnionOperator READ getUnionOperator WRITE setUnionOperator)
+  PYB11_CREATE_BINDINGS(AbstractComparison)
+  PYB11_PROPERTY(int UnionOperator READ getUnionOperator WRITE setUnionOperator)
 public:
   SIMPL_SHARED_POINTERS(AbstractComparison)
   SIMPL_TYPE_MACRO(AbstractComparison)
@@ -56,38 +56,38 @@ public:
   virtual ~AbstractComparison();
 
   /**
-  * @brief Create comparison from JSon
-  * @param json
-  */
+   * @brief Create comparison from JSon
+   * @param json
+   */
   static Pointer FromJson(QJsonObject& json);
 
   /**
-  * @brief Returns the union operator for the comparison
-  * @return
-  */
+   * @brief Returns the union operator for the comparison
+   * @return
+   */
   int getUnionOperator();
 
   /**
-  * @brief Sets the union operator for the comparison
-  * @param unionOperator
-  */
+   * @brief Sets the union operator for the comparison
+   * @param unionOperator
+   */
   void setUnionOperator(int unionOperator);
 
   /**
-  * @brief Write comparison to JSon
-  * @param json
-  */
+   * @brief Write comparison to JSon
+   * @param json
+   */
   virtual void writeJson(QJsonObject& json) = 0;
   /**
-  * @brief Read comparison from JSon
-  * @param json
-  */
+   * @brief Read comparison from JSon
+   * @param json
+   */
   virtual bool readJson(QJsonObject& json) = 0;
 
   /**
-  * @brief Updates the comparison's DataArray options based on the renamed path
-  * @param renamePath
-  */
+   * @brief Updates the comparison's DataArray options based on the renamed path
+   * @param renamePath
+   */
   virtual bool renameDataArrayPath(DataArrayPath::RenameType renamePath) = 0;
 
 protected:

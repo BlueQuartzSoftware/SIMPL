@@ -260,7 +260,7 @@ void DataContainerArrayProxyWidget::updateProxyChecked(QListWidgetItem* item, bo
     }
     else if(attributeMatrixList == widget)
     {
-      getDataContainerProxy().attributeMatricies.find(name).value().flag = item->checkState();
+      getDataContainerProxy().attributeMatricies.find(name).value().setFlag(item->checkState());
     }
     else if(dataArrayList == widget)
     {
@@ -287,11 +287,11 @@ bool DataContainerArrayProxyWidget::shouldStrikeOutItem(QListWidgetItem* item)
 
   if(!m_DcName.isEmpty())
   {
-    dcChecked = (getDataContainerProxy().flag == Qt::Checked);
+    dcChecked = (getDataContainerProxy().getFlag() == Qt::Checked);
   }
   if(!m_AmName.isEmpty())
   {
-    amChecked = (getAttributeMatrixProxy().flag == Qt::Checked);
+    amChecked = (getAttributeMatrixProxy().getFlag() == Qt::Checked);
   }
 
   if(item->listWidget() == dataContainerList)
@@ -672,9 +672,9 @@ void DataContainerArrayProxyWidget::applyDataContainerProxy()
     {
       QListWidgetItem* item = new QListWidgetItem(iter.key(), listWidget);
       item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
-      item->setCheckState(static_cast<Qt::CheckState>(iter.value().flag));
-      
-      toggleStrikeOutFont(item, static_cast<Qt::CheckState>(proxy.flag));
+      item->setCheckState(static_cast<Qt::CheckState>(iter.value().getFlag()));
+
+      toggleStrikeOutFont(item, static_cast<Qt::CheckState>(proxy.getFlag()));
     }
 
     listWidget->blockSignals(false);
@@ -701,9 +701,9 @@ void DataContainerArrayProxyWidget::applyAttributeMatrixProxy()
     {
       QListWidgetItem* item = new QListWidgetItem(iter.key(), listWidget);
       item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
-      item->setCheckState(static_cast<Qt::CheckState>(iter.value().flag));
+      item->setCheckState(static_cast<Qt::CheckState>(iter.value().getFlag()));
 
-      Qt::CheckState checkState = static_cast<Qt::CheckState>(proxy.flag);
+      Qt::CheckState checkState = static_cast<Qt::CheckState>(proxy.getFlag());
       toggleStrikeOutFont(item, checkState);
     }
 
@@ -746,10 +746,10 @@ void transferAttributeMatrixFlags(const QString dcName, const AttributeMatrixPro
       for(QMap<QString, AttributeMatrixProxy>::iterator amIter = amProxies.begin(); amIter != amProxies.end(); ++amIter)
       {
         QString amName = amIter.key();
-        if(amName.compare(source.name) == 0)
+        if(amName.compare(source.getName()) == 0)
         {
           AttributeMatrixProxy& attrProxy = amIter.value();
-          attrProxy.flag = source.flag;
+          attrProxy.setFlag(source.getFlag());
         }
       }
     }
@@ -835,7 +835,7 @@ void DataContainerArrayProxyWidget::updateProxyFromProxy(DataContainerArrayProxy
         dataArraysIter.next();
         DataArrayProxy daProxy = dataArraysIter.value();
 
-        transferDataArrayFlags(dcProxy.name, attrProxy.name, daProxy, incoming);
+        transferDataArrayFlags(dcProxy.getName(), attrProxy.getName(), daProxy, incoming);
       }
     }
   }

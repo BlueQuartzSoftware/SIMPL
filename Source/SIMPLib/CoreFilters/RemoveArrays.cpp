@@ -167,7 +167,7 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
       }
       AttributeMatrixProxy attrProxy = attrMatsIter.value();
       // Check to see if this AttributeMatrix is checked, if not then remove it from the DataContainer and go to the next loop
-      if(attrProxy.flag == state)
+      if(attrProxy.getFlag() == state)
       {
         dcItem->removeAttributeMatrix(amName);
         continue;

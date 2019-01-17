@@ -46,7 +46,7 @@ AttributeMatrixProxy::AttributeMatrixProxy()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixProxy::AttributeMatrixProxy(QString am_name, uint8_t read_am , AttributeMatrix::Type am_type)
+AttributeMatrixProxy::AttributeMatrixProxy(const QString& am_name, uint8_t read_am, AttributeMatrix::Type am_type)
 : flag(read_am)
 , name(am_name)
 , amType(am_type)
@@ -72,14 +72,7 @@ AttributeMatrixProxy::~AttributeMatrixProxy() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AttributeMatrixProxy::operator=(const AttributeMatrixProxy& amp)
-{
-  flag = amp.flag;
-  name = amp.name;
-  amType = amp.amType;
-  dataArrays = amp.dataArrays;
-}
-
+AttributeMatrixProxy& AttributeMatrixProxy::operator=(const AttributeMatrixProxy& amp) = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -130,10 +123,10 @@ bool AttributeMatrixProxy::readJson(QJsonObject& json)
 QJsonArray AttributeMatrixProxy::writeMap(QMap<QString, DataArrayProxy> map)
 {
   QJsonArray daArray;
-  for(QMap<QString, DataArrayProxy>::iterator iter = map.begin(); iter != map.end(); ++iter)
+  for(auto& iter : map)
   {
     QJsonObject obj;
-    (*iter).writeJson(obj);
+    iter.writeJson(obj);
     daArray.push_back(obj);
   }
   return daArray;
@@ -145,7 +138,7 @@ QJsonArray AttributeMatrixProxy::writeMap(QMap<QString, DataArrayProxy> map)
 QMap<QString, DataArrayProxy> AttributeMatrixProxy::readMap(QJsonArray jsonArray)
 {
   QMap<QString, DataArrayProxy> map;
-  foreach(QJsonValue val, jsonArray)
+  for(const auto& val : jsonArray)
   {
     if(val.isObject())
     {
@@ -291,58 +284,57 @@ void AttributeMatrixProxy::updatePath(DataArrayPath::RenameType renamePath)
 // -----------------------------------------------------------------------------
 DataArrayProxy& AttributeMatrixProxy::getDataArrayProxy(const QString& name)
 {
-	for (QMap<QString, DataArrayProxy>::iterator iter = dataArrays.begin(); iter != dataArrays.end(); ++iter) // DataArray Level
-	{
-		DataArrayProxy& dataArray = iter.value();
-		if (dataArray.name.compare(name) == 0)
-		{
-			return dataArray;
-		}
-	}
+  for(QMap<QString, DataArrayProxy>::iterator iter = dataArrays.begin(); iter != dataArrays.end(); ++iter) // DataArray Level
+  {
+    DataArrayProxy& dataArray = iter.value();
+    if(dataArray.name.compare(name) == 0)
+    {
+      return dataArray;
+    }
+  }
 
-	DataArrayProxy proxy;
-	proxy.name = name;
-	dataArrays.insert(proxy.name, proxy);
-	return dataArrays[name];
+  DataArrayProxy proxy;
+  proxy.name = name;
+  dataArrays.insert(proxy.name, proxy);
+  return dataArrays[name];
 }
 
-
-QMap<QString, DataArrayProxy> AttributeMatrixProxy::getdataArrays()
+QMap<QString, DataArrayProxy> AttributeMatrixProxy::getDataArrays()
 {
 	return dataArrays;
 }
 
-void AttributeMatrixProxy::setdataArrays(QMap<QString, DataArrayProxy> newDataArrays)
+void AttributeMatrixProxy::setDataArrays(const QMap<QString, DataArrayProxy>& newDataArrays)
 {
 	dataArrays = newDataArrays;
 }
 
-QString AttributeMatrixProxy::getname()
+QString AttributeMatrixProxy::getName() const
 {
 	return name;
 }
 
-void AttributeMatrixProxy::setname(QString newName)
+void AttributeMatrixProxy::setName(const QString& newName)
 {
 	name = newName;
 }
 
-AttributeMatrix::Type AttributeMatrixProxy::getamType()
+AttributeMatrix::Type AttributeMatrixProxy::getAMType() const
 {
 	return amType;
 }
 
-void AttributeMatrixProxy::setamType(AttributeMatrix::Type newType)
+void AttributeMatrixProxy::setAMType(AttributeMatrix::Type newType)
 {
 	amType = newType;
 }
 
-uint8_t AttributeMatrixProxy::getflag()
+uint8_t AttributeMatrixProxy::getFlag() const
 {
 	return flag;
 }
 
-void AttributeMatrixProxy::setflag(uint8_t newFlag)
+void AttributeMatrixProxy::setFlag(uint8_t newFlag)
 {
 	flag = newFlag;
 }

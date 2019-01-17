@@ -51,178 +51,179 @@ class SIMPLib_EXPORT AttributeMatrixProxy
 
   typedef QMap<QString, DataArrayProxy> DataArraysMap;
   typedef AttributeMatrix::Type AMType;
-  PYB11_PROPERTY(DataArraysMap dataArrays READ getdataArrays WRITE setdataArrays)
+  PYB11_PROPERTY(DataArraysMap dataArrays READ getdataArrays WRITE setDataArrays)
   PYB11_PROPERTY(QString name READ getname WRITE setname)
   PYB11_PROPERTY(AMType amType READ getamType WRITE setamType)
   PYB11_PROPERTY(uint8_t flag READ getflag WRITE setflag)
   PYB11_METHOD(DataArrayProxy getDataArrayProxy ARGS name RETURN_VALUE_POLICY py::return_value_policy::reference)
 
-  public:
+public:
+  // This enumeration is not a class enumeration because it is not possible to
+  // do a bit-wise NOT operation on a class enumeration value.  We need to be
+  // able to do a bit-wise NOT operation so that we can turn off certain flags.
+  // This enumeration allows us to flip integer bits to turn on/off various types.
+  enum AMTypeFlag : unsigned int
+  {
+    None_AMType = 0x0,
+    Vertex_AMType = 0x1,
+    Face_AMType = 0x2,
+    Cell_AMType = 0x4,
+    VertexFeature_AMType = 0x8,
+    Edge_AMType = 0x10,
+    EdgeFeature_AMType = 0x20,
+    FaceFeature_AMType = 0x40,
+    CellFeature_AMType = 0x80,
+    VertexEnsemble_AMType = 0x100,
+    EdgeEnsemble_AMType = 0x200,
+    FaceEnsemble_AMType = 0x400,
+    CellEnsemble_AMType = 0x800,
+    MetaData_AMType = 0x1000,
+    Generic_AMType = 0x2000,
+    Unknown_AMType = 0x4000,
+    Any_AMType = 0x7FFF
+  };
+  Q_DECLARE_FLAGS(AMTypeFlags, AMTypeFlag)
 
-    // This enumeration is not a class enumeration because it is not possible to
-    // do a bit-wise NOT operation on a class enumeration value.  We need to be
-    // able to do a bit-wise NOT operation so that we can turn off certain flags.
-    // This enumeration allows us to flip integer bits to turn on/off various types.
-    enum AMTypeFlag : unsigned int {
-      None_AMType = 0x0,
-      Vertex_AMType = 0x1,
-      Face_AMType = 0x2,
-      Cell_AMType = 0x4,
-      VertexFeature_AMType = 0x8,
-      Edge_AMType = 0x10,
-      EdgeFeature_AMType = 0x20,
-      FaceFeature_AMType = 0x40,
-      CellFeature_AMType = 0x80,
-      VertexEnsemble_AMType = 0x100,
-      EdgeEnsemble_AMType = 0x200,
-      FaceEnsemble_AMType = 0x400,
-      CellEnsemble_AMType = 0x800,
-      MetaData_AMType = 0x1000,
-      Generic_AMType = 0x2000,
-      Unknown_AMType = 0x4000,
-      Any_AMType = 0x7FFF
-    };
-    Q_DECLARE_FLAGS(AMTypeFlags, AMTypeFlag)
+  /**
+   * @brief AttributeMatrixProxy
+   */
+  AttributeMatrixProxy();
 
-    /**
-     * @brief AttributeMatrixProxy
-     */
-    AttributeMatrixProxy();
+  /**
+   * @brief AttributeMatrixProxy
+   * @param am_name
+   * @param read_am
+   * @param am_type
+   */
+  AttributeMatrixProxy(const QString& am_name, uint8_t read_am = Qt::Checked, AttributeMatrix::Type am_type = AttributeMatrix::Type::Unknown);
 
-    /**
-     * @brief AttributeMatrixProxy
-     * @param am_name
-     * @param read_am
-     * @param am_type
-     */
-    AttributeMatrixProxy(QString am_name, uint8_t read_am = Qt::Checked, AttributeMatrix::Type am_type = AttributeMatrix::Type::Unknown);
+  /**
+   * @brief Copy Constructor
+   */
+  AttributeMatrixProxy(const AttributeMatrixProxy& amp);
 
-    /**
-    * @brief Copy Constructor
-    */
-    AttributeMatrixProxy(const AttributeMatrixProxy& amp);
+  virtual ~AttributeMatrixProxy();
 
-    virtual ~AttributeMatrixProxy();
+public:
+  AttributeMatrixProxy(AttributeMatrixProxy&&) = default;           // Move Constructor Not Implemented
+  AttributeMatrixProxy& operator=(AttributeMatrixProxy&&) = delete; // Move Assignment Not Implemented
 
-    /**
-     * @brief Returns the appropriate flag for the attribute matrix type
-     * @param amType The attribute matrix type
-     * @return
-     */
-    static AMTypeFlag AttributeMatrixTypeToFlag(AttributeMatrix::Type amType);
+  /**
+   * @brief Returns the appropriate flag for the attribute matrix type
+   * @param amType The attribute matrix type
+   * @return
+   */
+  static AMTypeFlag AttributeMatrixTypeToFlag(AttributeMatrix::Type amType);
 
-    /**
-    * @brief operator = method
-    */
-    void operator=(const AttributeMatrixProxy& amp);
+  /**
+   * @brief operator = method
+   */
+  AttributeMatrixProxy& operator=(const AttributeMatrixProxy& amp);
 
-    /**
-    * @brief operator == method
-    */
-    bool operator==(const AttributeMatrixProxy& amp) const;
+  /**
+   * @brief operator == method
+   */
+  bool operator==(const AttributeMatrixProxy& amp) const;
 
-    /**
-    * @brief Writes the contents of the proxy to the json object 'json'
-    * @param json
-    * @return
-    */
-    void writeJson(QJsonObject& json);
+  /**
+   * @brief Writes the contents of the proxy to the json object 'json'
+   * @param json
+   * @return
+   */
+  void writeJson(QJsonObject& json);
 
-    /**
-    * @brief Reads the contents of the the json object 'json' into the proxy
-    * @param json
-    * @return
-    */
-    bool readJson(QJsonObject& json);
-    
-    /**
-     * @brief setFlags
-     * @param flag
-     * @param primitiveTypes
-     * @param compDimsVector
-     */
-    void setFlags(uint8_t flag, DataArrayProxy::PrimitiveTypeFlags primitiveTypes = DataArrayProxy::Any_PType, DataArrayProxy::CompDimsVector compDimsVector = DataArrayProxy::CompDimsVector());
+  /**
+   * @brief Reads the contents of the the json object 'json' into the proxy
+   * @param json
+   * @return
+   */
+  bool readJson(QJsonObject& json);
 
-    /**
-     * @brief Updates the proxy to match a renamed DataArrayPath
-     * @param renamePath
-     */
-    void updatePath(DataArrayPath::RenameType renamePath);
+  /**
+   * @brief setFlags
+   * @param flag
+   * @param primitiveTypes
+   * @param compDimsVector
+   */
+  void setFlags(uint8_t flag, DataArrayProxy::PrimitiveTypeFlags primitiveTypes = DataArrayProxy::Any_PType, DataArrayProxy::CompDimsVector compDimsVector = DataArrayProxy::CompDimsVector());
 
+  /**
+   * @brief Updates the proxy to match a renamed DataArrayPath
+   * @param renamePath
+   */
+  void updatePath(DataArrayPath::RenameType renamePath);
 
-	/**
-	 * @brief Get the attribute matrices (Python Binding)
-	 */
-	QMap<QString, DataArrayProxy> getdataArrays();
+  /**
+   * @brief Get the attribute matrices (Python Binding)
+   */
+  QMap<QString, DataArrayProxy> getDataArrays();
 
-	/**
-	 * @brief Get the attribute matrices(Python Binding)
-	 * @param new DataArrayProxy map
-	 */
-	void setdataArrays(QMap<QString, DataArrayProxy>);
+  /**
+   * @brief Get the attribute matrices(Python Binding)
+   * @param new DataArrayProxy map
+   */
+  void setDataArrays(const QMap<QString, DataArrayProxy>&);
 
-	/**
-	 * @brief Get the Data Array proxy
-	 * @param the name of the data array
-	 * @return the data array proxy
-	 */
-	DataArrayProxy& getDataArrayProxy(const QString& name);
+  /**
+   * @brief Get the Data Array proxy
+   * @param the name of the data array
+   * @return the data array proxy
+   */
+  DataArrayProxy& getDataArrayProxy(const QString& name);
 
-	/**
-	 * @brief Get the attribute matrix name (Python Binding)
-	 */
-	QString getname();
+  /**
+   * @brief Get the attribute matrix name (Python Binding)
+   */
+  QString getName() const;
 
-	/**
-	 * @brief Set the attribute matrix name (Python Binding)
-	 * @param new attribute matrix name
-	 */
-	void setname(QString);
+  /**
+   * @brief Set the attribute matrix name (Python Binding)
+   * @param new attribute matrix name
+   */
+  void setName(const QString& name);
 
-	/**
-	 * @brief Get the attribute matrix type (Python Binding)
-	 */
-	AttributeMatrix::Type getamType();
+  /**
+   * @brief Get the attribute matrix type (Python Binding)
+   */
+  AttributeMatrix::Type getAMType() const;
 
-	/**
-	 * @brief Set the attribute matrix name (Python Binding)
-	 * @param new attribute matrix type
-	 */
-	void setamType(AttributeMatrix::Type);
+  /**
+   * @brief Set the attribute matrix name (Python Binding)
+   * @param new attribute matrix type
+   */
+  void setAMType(AttributeMatrix::Type);
 
-	/**
-	 * @brief Get the attribute matrix flag (Python Binding)
-	 */
-	uint8_t getflag();
+  /**
+   * @brief Get the attribute matrix flag (Python Binding)
+   */
+  uint8_t getFlag() const;
 
-	/**
-	 * @brief Set the attribute matrix flag (Python Binding)
-	 * @param new attribute matrix flag
-	 */
-	void setflag(uint8_t);
+  /**
+   * @brief Set the attribute matrix flag (Python Binding)
+   * @param new attribute matrix flag
+   */
+  void setFlag(uint8_t);
 
-    //----- Our variables, publicly available
-    uint8_t flag;
-    QString name;
-    AttributeMatrix::Type amType;
-    QMap<QString, DataArrayProxy> dataArrays;
+  QMap<QString, DataArrayProxy> dataArrays;
 
-  private:
+private:
+  uint8_t flag;
+  QString name;
+  AttributeMatrix::Type amType;
 
-    /**
-     * @brief writeMap
-     * @param map
-     * @return
-     */
-    QJsonArray writeMap(QMap<QString, DataArrayProxy> map);
+  /**
+   * @brief writeMap
+   * @param map
+   * @return
+   */
+  QJsonArray writeMap(QMap<QString, DataArrayProxy> map);
 
-    /**
-     * @brief readMap
-     * @param jsonArray
-     * @return
-     */
-    QMap<QString, DataArrayProxy> readMap(QJsonArray jsonArray);
-
+  /**
+   * @brief readMap
+   * @param jsonArray
+   * @return
+   */
+  QMap<QString, DataArrayProxy> readMap(QJsonArray jsonArray);
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(AttributeMatrixProxy::AMTypeFlags)
 

@@ -55,175 +55,183 @@ class SIMPLib_EXPORT DataContainerProxy
 
   PYB11_CREATION()
 
-  typedef QMap<QString, AttributeMatrixProxy> AttributeMatricesMap;
- 
-  PYB11_PROPERTY(AttributeMatricesMap attributeMatricies READ getattributeMatricies WRITE setattributeMatricies)
+  using AttributeMatricesMap = QMap<QString, AttributeMatrixProxy>;
+
+  PYB11_PROPERTY(AttributeMatricesMap attributeMatricies READ getAttributeMatricies WRITE setattributeMatricies)
   PYB11_PROPERTY(QString name READ getname WRITE setname)
   PYB11_PROPERTY(uint8_t flag READ getflag WRITE setflag)
 
   PYB11_METHOD(AttributeMatrixProxy getAttributeMatrixProxy ARGS name RETURN_VALUE_POLICY py::return_value_policy::reference)
   PYB11_METHOD(void toggleFlag)
-  
-  public:
 
-    // This enumeration is not a class enumeration because it is not possible to
-    // do a bit-wise NOT operation on a class enumeration value.  We need to be
-    // able to do a bit-wise NOT operation so that we can turn off certain flags.
-    // This enumeration allows us to flip integer bits to turn on/off various types.
-    enum DCGeometryTypeFlag : unsigned int {
-      None_DCGeomType = 0x00,
-      Image_DCGeomType = 0x10,
-      RectGrid_DCGeomType = 0x20,
-      Vertex_DCGeomType = 0x40,
-      Edge_DCGeomType = 0x80,
-      Triangle_DCGeomType = 0x1000,
-      Quad_DCGeomType = 0x2000,
-      Tetrahedral_DCGeomType = 0x4000,
-      Hexahedral_DCGeomType = 0x8000,
-      Unknown_DCGeomType = 0x100000,
-      Any_DCGeomType = 0xFF
-    };
-    Q_DECLARE_FLAGS(DCGeometryTypeFlags, DCGeometryTypeFlag)
+public:
+  // This enumeration is not a class enumeration because it is not possible to
+  // do a bit-wise NOT operation on a class enumeration value.  We need to be
+  // able to do a bit-wise NOT operation so that we can turn off certain flags.
+  // This enumeration allows us to flip integer bits to turn on/off various types.
+  enum DCGeometryTypeFlag : unsigned int
+  {
+    None_DCGeomType = 0x00,
+    Image_DCGeomType = 0x10,
+    RectGrid_DCGeomType = 0x20,
+    Vertex_DCGeomType = 0x40,
+    Edge_DCGeomType = 0x80,
+    Triangle_DCGeomType = 0x1000,
+    Quad_DCGeomType = 0x2000,
+    Tetrahedral_DCGeomType = 0x4000,
+    Hexahedral_DCGeomType = 0x8000,
+    Unknown_DCGeomType = 0x100000,
+    Any_DCGeomType = 0xFF
+  };
+  Q_DECLARE_FLAGS(DCGeometryTypeFlags, DCGeometryTypeFlag)
 
-    /**
-     * @brief DataContainerProxy
-     */
-    DataContainerProxy();
+  /**
+   * @brief DataContainerProxy
+   */
+  DataContainerProxy();
 
-    /**
-     * @brief DataContainerProxy
-     * @param dc_name
-     * @param read_dc
-     * @param dc_type
-     */
-    DataContainerProxy(const QString &dc_name, const uint8_t &read_dc = Qt::Checked, IGeometry::Type dc_type = IGeometry::Type::Unknown);
+  /**
+   * @brief DataContainerProxy
+   * @param dc_name
+   * @param read_dc
+   * @param dc_type
+   */
+  DataContainerProxy(const QString& dc_name, const uint8_t& read_dc = Qt::Checked, IGeometry::Type dc_type = IGeometry::Type::Unknown);
 
-    /**
-    * @brief Copy Constructor
-    */
-    DataContainerProxy(const DataContainerProxy& amp);
-    
-    ~DataContainerProxy() = default;
+  /**
+   * @brief Copy Constructor
+   */
+  DataContainerProxy(const DataContainerProxy& amp);
 
-    DataContainerProxy(DataContainerProxy&&) = default;      // Move Constructor Not Implemented
-    DataContainerProxy& operator=(DataContainerProxy&&) = delete;      // Move Assignment Not Implemented
-    
+  ~DataContainerProxy() = default;
 
-    /**
-     * @brief Returns the appropriate flag for the geometry type
-     * @param geoType The data container geometry type
-     * @return
-     */
-    static DataContainerProxy::DCGeometryTypeFlag GeometryTypeToFlag(IGeometry::Type geoType);
+  DataContainerProxy(DataContainerProxy&&) = default;           // Move Constructor Not Implemented
+  DataContainerProxy& operator=(DataContainerProxy&&) = delete; // Move Assignment Not Implemented
 
-    /**
-    * @brief operator = method
-    */
-    DataContainerProxy& operator=(const DataContainerProxy& amp);
+  /**
+   * @brief Returns the appropriate flag for the geometry type
+   * @param geoType The data container geometry type
+   * @return
+   */
+  static DataContainerProxy::DCGeometryTypeFlag GeometryTypeToFlag(IGeometry::Type geoType);
 
-    /**
-    * @brief operator == method
-    */
-    bool operator==(const DataContainerProxy& amp) const;
+  /**
+   * @brief operator = method
+   */
+  DataContainerProxy& operator=(const DataContainerProxy& amp);
 
-    /**
-    * @brief Writes the contents of the proxy to the json object 'json'
-    * @param json
-    * @return
-    */
-    void writeJson(QJsonObject& json);
+  /**
+   * @brief operator == method
+   */
+  bool operator==(const DataContainerProxy& amp) const;
 
-    /**
-    * @brief Reads the contents of the the json object 'json' into the proxy
-    * @param json
-    * @return
-    */
-    bool readJson(QJsonObject& json);
+  /**
+   * @brief Writes the contents of the proxy to the json object 'json'
+   * @param json
+   * @return
+   */
+  void writeJson(QJsonObject& json);
 
+  /**
+   * @brief Reads the contents of the the json object 'json' into the proxy
+   * @param json
+   * @return
+   */
+  bool readJson(QJsonObject& json);
 
-	/**
-	 * @brief Get the attribute matrices (Python Binding)
-	 */
-	QMap<QString, AttributeMatrixProxy> getattributeMatricies();
+  /**
+   * @brief Get the attribute matrices (Python Binding)
+   */
+  QMap<QString, AttributeMatrixProxy> getAttributeMatricies();
 
-	/**
-	 * @brief Get the attribute matrices(Python Binding)
-	 * @param new AttributeMatrices map
-	 */
-	void setattributeMatricies(QMap<QString, AttributeMatrixProxy>);
+  /**
+   * @brief Get the attribute matrices(Python Binding)
+   * @param new AttributeMatrices map
+   */
+  void setattributeMatricies(const QMap<QString, AttributeMatrixProxy>&);
 
-	/**
-	 * @brief Get the data container name (Python Binding)
-	 */
-	QString getname();
+  /**
+   * @brief Get the data container name (Python Binding)
+   */
+  QString getName() const;
 
-	/**
-	 * @brief Set the data container name (Python Binding)
-	 * @param new data container name
-	 */
-	void setname(QString);
+  /**
+   * @brief Set the data container name (Python Binding)
+   * @param new data container name
+   */
+  void setName(const QString& aName);
 
-	/**
-	 * @brief Get the data container flag (Python Binding)
-	 */
-	uint8_t getflag();
+  /**
+   * @brief Get the data container flag (Python Binding)
+   */
+  uint8_t getFlag() const;
 
-	/**
-	 * @brief Set the data container flag (Python Binding)
-	 * @param new data container flag
-	 */
-	void setflag(uint8_t);
+  /**
+   * @brief Set the data container flag (Python Binding)
+   * @param new data container flag
+   */
+  void setFlag(uint8_t flag);
 
-	/**
-	 * @brief Toggle the data container flag (Python Binding)
-	 */
-	void toggleFlag();
+  /**
+   * @brief setDCType
+   * @param dType
+   */
+  void setDCType(uint32_t dType);
 
-	/**
-	 * @brief Get the Attribute Matrix proxy
-	 * @param the name of the attribute matrix
-	 * @return the attribute matrix proxy
-	 */
-	AttributeMatrixProxy& getAttributeMatrixProxy(const QString& name);
+  /**
+   * @brief getDCType
+   * @return
+   */
+  uint32_t getDCType() const;
 
-    /**
-     * @brief setFlags
-     * @param flag
-     * @param amTypes
-     * @param primitiveTypes
-     * @param compDimsVector
-     */
-    void setFlags(uint8_t flag, AttributeMatrixProxy::AMTypeFlags amTypes = AttributeMatrixProxy::Any_AMType,
-                  DataArrayProxy::PrimitiveTypeFlags primitiveTypes = DataArrayProxy::Any_PType, const DataArrayProxy::CompDimsVector &compDimsVector = DataArrayProxy::CompDimsVector());
+  /**
+   * @brief Toggle the data container flag (Python Binding)
+   */
+  void toggleFlag();
 
-    /**
-     * @brief Updates the proxy to match a renamed DataArrayPath
-     * @param renamePath
-     */
-    void updatePath(DataArrayPath::RenameType renamePath);
+  /**
+   * @brief Get the Attribute Matrix proxy
+   * @param the name of the attribute matrix
+   * @return the attribute matrix proxy
+   */
+  AttributeMatrixProxy& getAttributeMatrixProxy(const QString& name);
 
-    //----- Our variables, publicly available
-    uint8_t flag;
-    QString name;
-    unsigned int dcType;
-    QMap<QString, AttributeMatrixProxy> attributeMatricies;
+  /**
+   * @brief setFlags
+   * @param flag
+   * @param amTypes
+   * @param primitiveTypes
+   * @param compDimsVector
+   */
+  void setFlags(uint8_t flag, AttributeMatrixProxy::AMTypeFlags amTypes = AttributeMatrixProxy::Any_AMType, DataArrayProxy::PrimitiveTypeFlags primitiveTypes = DataArrayProxy::Any_PType,
+                const DataArrayProxy::CompDimsVector& compDimsVector = DataArrayProxy::CompDimsVector());
 
-  private:
+  /**
+   * @brief Updates the proxy to match a renamed DataArrayPath
+   * @param renamePath
+   */
+  void updatePath(DataArrayPath::RenameType renamePath);
 
-    /**
-     * @brief writeMap
-     * @param map
-     * @return
-     */
-    QJsonArray writeMap(QMap<QString, AttributeMatrixProxy> map);
+  //----- Our variables, publicly available
+  uint8_t flag;
+  QString name;
+  unsigned int dcType;
+  QMap<QString, AttributeMatrixProxy> attributeMatricies;
 
-    /**
-     * @brief readMap
-     * @param jsonArray
-     * @return
-     */
-    QMap<QString, AttributeMatrixProxy> readMap(QJsonArray jsonArray);
+private:
+  /**
+   * @brief writeMap
+   * @param map
+   * @return
+   */
+  QJsonArray writeMap(QMap<QString, AttributeMatrixProxy> map);
 
+  /**
+   * @brief readMap
+   * @param jsonArray
+   * @return
+   */
+  QMap<QString, AttributeMatrixProxy> readMap(QJsonArray jsonArray);
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(DataContainerProxy::DCGeometryTypeFlags)
 

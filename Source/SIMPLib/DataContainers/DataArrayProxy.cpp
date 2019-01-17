@@ -325,12 +325,22 @@ void DataArrayProxy::updatePath(DataArrayPath::RenameType renamePath)
   }
 }
 
-uint8_t DataArrayProxy::getflag()
+uint8_t DataArrayProxy::getFlag() const
 {
 	return flag;
 }
 
-void DataArrayProxy::setflag(uint8_t newFlag)
+void DataArrayProxy::setFlag(uint8_t newFlag)
 {
 	flag = newFlag;
+}
+
+void DataArrayProxy::setName(const QString& aName)
+{
+  name = aName;
+}
+
+QString DataArrayProxy::getName() const
+{
+  return name;
 }

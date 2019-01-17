@@ -252,8 +252,8 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
       H5ScopedGroupSentinel sentinel(&attrMatGid, true);
 
       AttributeMatrixProxy amProxy(attributeMatrixName);
-      amProxy.name = attributeMatrixName;
-      amProxy.flag = Qt::Unchecked;
+      amProxy.setName(attributeMatrixName);
+      amProxy.setFlag(Qt::Unchecked);
 
       AttributeMatrix::EnumType amTypeTmp = static_cast<AttributeMatrix::EnumType>(AttributeMatrix::Type::Unknown);
       herr_t err = QH5Lite::readScalarAttribute(containerId, attributeMatrixName, SIMPL::StringConstants::AttributeMatrixType, amTypeTmp);
@@ -264,10 +264,10 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
           AttributeMatrix::Types amTypes = req->getAMTypes();
           if(amTypes.empty() || amTypes.contains(static_cast<AttributeMatrix::Type>(amTypeTmp)))
           {
-            amProxy.flag = Qt::Checked;
+            amProxy.setFlag(Qt::Checked);
           }
         }
-        amProxy.amType = static_cast<AttributeMatrix::Type>(amTypeTmp);
+        amProxy.setAMType(static_cast<AttributeMatrix::Type>(amTypeTmp));
       }
       else
       {

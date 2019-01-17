@@ -2,14 +2,14 @@
 
 #include <iostream>
 
-#include <QtCore/QDateTime>
-#include <QtCore/QTemporaryFile>
 #include <QtCore/QCryptographicHash>
+#include <QtCore/QDateTime>
 #include <QtCore/QListIterator>
+#include <QtCore/QTemporaryFile>
 
 #include "CodeScraper/CodeScraperConstants.h"
-#include "CodeScraper/SIMPLPyBind11Config.h"
 #include "CodeScraper/PythonUtils.h"
+#include "CodeScraper/SIMPLPyBind11Config.h"
 
 #define PBM_TAB "    "
 
@@ -152,12 +152,12 @@ void PythonBindingsModule::addDependency(QString superClassName, QString classNa
   {
     QObject* object = new QObject(nullptr);
     object->setObjectName(superClassName);
-	object->setProperty("superClass", "");
+    object->setProperty("superClass", "");
     m_ClassVector.push_back(object);
 
     QObject* obj = new QObject(object);
     obj->setObjectName(className);
-	object->setProperty("superClass", superClassName);
+    object->setProperty("superClass", superClassName);
     superClassAdded = true;
     classNameAdded = true;
   }
@@ -166,7 +166,7 @@ void PythonBindingsModule::addDependency(QString superClassName, QString classNa
   {
     QObject* obj = new QObject(nullptr);
     obj->setObjectName(className);
-	obj->setProperty("superClass", superClassName);
+    obj->setProperty("superClass", superClassName);
     m_ClassVector.push_back(obj);
   }
 }
@@ -174,7 +174,7 @@ void PythonBindingsModule::addDependency(QString superClassName, QString classNa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QByteArray PythonBindingsModule::md5FileContents(const QString &filename)
+QByteArray PythonBindingsModule::md5FileContents(const QString& filename)
 {
   QFile destination(filename);
   destination.open(QFile::ReadOnly);
@@ -187,7 +187,7 @@ QByteArray PythonBindingsModule::md5FileContents(const QString &filename)
   }
   QByteArray desHashResult = destHash.result();
   destination.close();
-  //qDebug() << "MD5: " << desHashResult.toHex();
+  // qDebug() << "MD5: " << desHashResult.toHex();
   return desHashResult;
 }
 
@@ -195,37 +195,36 @@ QByteArray PythonBindingsModule::md5FileContents(const QString &filename)
 //
 // -----------------------------------------------------------------------------
 void PythonBindingsModule::writeOutput(bool didReplace, const QString& outLines, QString filename)
-{ 
-  //qDebug() << "Writing File: " << filename;
+{
+  // qDebug() << "Writing File: " << filename;
   if(didReplace == true)
   {
     QFileInfo fi2(filename);
     QString parentPath = fi2.path();
     QDir dir;
-    //std::cout << "Creating Path: " << parentPath.toStdString() << std::endl;
+    // std::cout << "Creating Path: " << parentPath.toStdString() << std::endl;
     if(!dir.mkpath(parentPath))
     {
       QString ss = QObject::tr("[PythonBindingsModule] Error creating parent path '%1'").arg(parentPath);
       qDebug() << ss;
       return;
     }
-    
+
     QTemporaryFile tempfile;
     QString tempFileName;
-    if (tempfile.open()) 
+    if(tempfile.open())
     {
       tempFileName = tempfile.fileName(); // returns the unique file name
       QTextStream stream(&tempfile);
       stream << outLines;
       tempfile.close();
     }
-    
+
     if(!fi2.exists())
     {
       if(!tempfile.copy(filename))
       {
-        std::cout << "[PythonBindingsModule] Temp file '" << tempFileName.toStdString() << "' could not be copied to '"
-                  << filename.toStdString() << "'" << std::endl;
+        std::cout << "[PythonBindingsModule] Temp file '" << tempFileName.toStdString() << "' could not be copied to '" << filename.toStdString() << "'" << std::endl;
       }
       else
       {
@@ -249,8 +248,7 @@ void PythonBindingsModule::writeOutput(bool didReplace, const QString& outLines,
         }
         if(!tempfile.copy(filename))
         {
-          std::cout << "[PythonBindingsModule] Temp file '" << tempFileName.toStdString() << "' could not be copied to '"
-                    << filename.toStdString() << "'" << std::endl;
+          std::cout << "[PythonBindingsModule] Temp file '" << tempFileName.toStdString() << "' could not be copied to '" << filename.toStdString() << "'" << std::endl;
         }
         else
         {
@@ -258,7 +256,6 @@ void PythonBindingsModule::writeOutput(bool didReplace, const QString& outLines,
         }
       }
     }
-  
   }
 }
 // -----------------------------------------------------------------------------
@@ -267,12 +264,12 @@ void PythonBindingsModule::writeOutput(bool didReplace, const QString& outLines,
 void PythonBindingsModule::generateModuleFile(const QString& outputPath, const QString& isSIMPLib)
 {
   Q_UNUSED(isSIMPLib);
-  
+
   // Create the Top part of the file from a template file
   QFile source(m_TemplatePath);
   QString headerTemplate;
 
-  if(source.open(QFile::ReadOnly) )
+  if(source.open(QFile::ReadOnly))
   {
     headerTemplate = source.readAll();
   }
@@ -331,7 +328,7 @@ void PythonBindingsModule::generateModuleFile(const QString& outputPath, const Q
 //
 // -----------------------------------------------------------------------------
 void PythonBindingsModule::generatePythonTestFile(const QString& outputPath, const QString& isSIMPLib)
-{   
+{
   QString code;
   QTextStream out(&code);
   out << "\"\"\"\n"
@@ -343,29 +340,25 @@ void PythonBindingsModule::generatePythonTestFile(const QString& outputPath, con
       << "\"\"\"\n";
   QString shortLibName = m_LibName;
   shortLibName.replace("_py", "");
-  if(isSIMPLib.compare("TRUE") == 0) 
+  if(isSIMPLib.compare("TRUE") == 0)
   {
     shortLibName = QString("simpl");
   }
   out << "import dream3d\n";
   out << "from dream3d import " << shortLibName << "\n";
   out << "\n\n";
-  
-  out << "def " << m_LibName << "UnitTest():\n"
-      << PBM_TAB << "\"\"\"\n"
-      << PBM_TAB << "Just Try to instantiate all the filters\n"
-      << PBM_TAB << "\"\"\"\n";
-  
+
+  out << "def " << m_LibName << "UnitTest():\n" << PBM_TAB << "\"\"\"\n" << PBM_TAB << "Just Try to instantiate all the filters\n" << PBM_TAB << "\"\"\"\n";
+
   for(auto object : m_ClassVector)
   {
-	  if (object->property("superClass").toString().compare("AbstractFilter") == 0)
-	  {
-		  out << "\n";
-		  dumpRecursivePythonCode(0, object, out);
-	  }
+    if(object->property("superClass").toString().compare("AbstractFilter") == 0)
+    {
+      out << "\n";
+      dumpRecursivePythonCode(0, object, out);
+    }
   }
-  
-  
+
   out << "\n\n";
   out << "\"\"\"\n"
       << "Main Entry point for the python script\n"
@@ -374,9 +367,8 @@ void PythonBindingsModule::generatePythonTestFile(const QString& outputPath, con
       << PBM_TAB << "print(\"" << m_LibName << " UnitTest Starting\")\n"
       << PBM_TAB << m_LibName << "UnitTest()\n"
       << PBM_TAB << "print(\"" << m_LibName << " UnitTest Complete\")\n";
-  
+
   writeOutput(true, code, outputPath);
-  
 }
 
 // -----------------------------------------------------------------------------
@@ -385,13 +377,14 @@ void PythonBindingsModule::generatePythonTestFile(const QString& outputPath, con
 void PythonBindingsModule::generatePythonicInterface(const QString& outputPath, const QString& isSIMPLib)
 {
   QFileInfo fi(outputPath);
-  
+
   QString code;
   QTextStream out(&code);
-  
+
   out << "\"\"\"\n Pythonic Interface to SIMPL Plugin " << getLibNameUpper() << "\n";
   out << " This file is auto generated during the build of DREAM.3D and the plugin " << getLibNameUpper() << "\n";
-  out << "\"\"\"" << "\n";
+  out << "\"\"\""
+      << "\n";
   out << "\n";
   QString shortLibName = m_LibName;
   shortLibName.replace("_py", "");
@@ -400,13 +393,11 @@ void PythonBindingsModule::generatePythonicInterface(const QString& outputPath, 
   {
     shortLibName = QString("simpl");
   }
-  out 
-    //<< "import dream3d\n"
-    << "from .dream3d import " << shortLibName << "\n"
-    << "\n\n\n"
-    ;
-    
-    
+  out
+      //<< "import dream3d\n"
+      << "from .dream3d import " << shortLibName << "\n"
+      << "\n\n\n";
+
   QList<QString> classes = m_Headers.keys();
   QListIterator<QString> iter(classes);
   while(iter.hasNext())
@@ -415,29 +406,34 @@ void PythonBindingsModule::generatePythonicInterface(const QString& outputPath, 
     QVector<QString> pythonicCodes = m_PythonicCodes[aClass];
     QString initCodes;
     QString bodyCodes;
-    if(pythonicCodes.size() >= 1) { initCodes = pythonicCodes[0];}
-    if(pythonicCodes.size() >= 2) { bodyCodes = pythonicCodes[1];}
+    if(pythonicCodes.size() >= 1)
+    {
+      initCodes = pythonicCodes[0];
+    }
+    if(pythonicCodes.size() >= 2)
+    {
+      bodyCodes = pythonicCodes[1];
+    }
     bodyCodes = bodyCodes.replace("@shortLibName@", shortLibName);
     if(aClass.compare("AbstractFilter") == 0 && isSIMPLib.compare("FALSE") == 0)
     {
       continue;
     }
-	else if (bodyCodes.isEmpty()) {
-		continue;
-	}
+    else if(bodyCodes.isEmpty())
+    {
+      continue;
+    }
     out << "def " << SIMPL::Python::fromCamelCase(aClass) << initCodes << ":\n"
-        << "    \"\"\"" << "\n"
+        << "    \"\"\""
+        << "\n"
         << "    Executes the filter " << aClass << " and returns the error.\n"
-        << "    \"\"\"" << "\n"
+        << "    \"\"\""
+        << "\n"
         << bodyCodes << "\n"
-       
-        << "\n\n"    
-       ;
-    
+
+        << "\n\n";
   }
   writeOutput(true, code, outputPath);
-  
-  
 }
 
 // -----------------------------------------------------------------------------
@@ -446,21 +442,22 @@ void PythonBindingsModule::generatePythonicInterface(const QString& outputPath, 
 void PythonBindingsModule::dumpRecursivePythonCode(int level, const QObject* object, QTextStream& out)
 {
   if(object)
-  { 
+  {
     // These are a list of Abstract or Top level classes that do not need to be tested
     // so let's avoid those.
     QStringList avoidThese = {"AbstractFilter", "FileReader", "FileWriter", "Observable", "IDataArray", "SegmentFeatures"};
 
     QByteArray buf;
     buf.fill(' ', level / 2 * 8);
-    if(level % 2) {
+    if(level % 2)
+    {
       buf += "    ";
     }
-    
+
     QString initCode = m_PythonCodes[object->objectName()];
     QString shortLibName = m_LibName;
     shortLibName.replace("_py", "");
-    if(shortLibName.compare("dream3d") == 0) 
+    if(shortLibName.compare("dream3d") == 0)
     {
       shortLibName = QString("simpl");
     }
@@ -477,8 +474,7 @@ void PythonBindingsModule::dumpRecursivePythonCode(int level, const QObject* obj
         print("  Error: Filter class name is not correct. %s != @FILTER_NAME@" % filterName)
 
 )PY";
-    
-      
+
     if(!avoidThese.contains(object->objectName()))
     {
       QString code(pycode);
@@ -491,7 +487,8 @@ void PythonBindingsModule::dumpRecursivePythonCode(int level, const QObject* obj
     if(!children.isEmpty())
     {
       // out << "\n";
-      for(int i = 0; i < children.size(); ++i) {
+      for(int i = 0; i < children.size(); ++i)
+      {
         dumpRecursivePythonCode(level + 1, children.at(i), out);
       }
     }
@@ -507,7 +504,8 @@ void PythonBindingsModule::dumpRecursiveIncludeList(int level, const QObject* ob
   {
     QByteArray buf;
     buf.fill(' ', level / 2 * 8);
-    if(level % 2) {
+    if(level % 2)
+    {
       buf += "    ";
     }
     //    QString name = object->objectName();
@@ -524,7 +522,8 @@ void PythonBindingsModule::dumpRecursiveIncludeList(int level, const QObject* ob
     QObjectList children = object->children();
     if(!children.isEmpty())
     {
-      for(int i = 0; i < children.size(); ++i) {
+      for(int i = 0; i < children.size(); ++i)
+      {
         dumpRecursiveIncludeList(level + 1, children.at(i), out);
       }
     }
@@ -540,10 +539,11 @@ void PythonBindingsModule::dumpRecursiveInitCode(int level, const QObject* objec
   {
     QByteArray buf;
     buf.fill(' ', level / 2 * 8);
-    if(level % 2) {
+    if(level % 2)
+    {
       buf += "    ";
     }
-    
+
     QString initCode = m_InitCodes[object->objectName()];
 
     out << "  " << initCode << "\n";
@@ -551,7 +551,8 @@ void PythonBindingsModule::dumpRecursiveInitCode(int level, const QObject* objec
     if(!children.isEmpty())
     {
       // out << "\n";
-      for(int i = 0; i < children.size(); ++i) {
+      for(int i = 0; i < children.size(); ++i)
+      {
         dumpRecursiveInitCode(level + 1, children.at(i), out);
       }
     }

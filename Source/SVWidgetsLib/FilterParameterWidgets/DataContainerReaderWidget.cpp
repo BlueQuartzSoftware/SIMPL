@@ -119,8 +119,8 @@ template <typename T> QStandardItem* getColumnItem(QStandardItem* parent, QStrin
   if(items.count() == 0)
   {
     // Create a new item because we did not find this item already
-    item = new QStandardItem(proxy.name);
-    item->setCheckState((proxy.flag == 2 ? Qt::Checked : Qt::Unchecked));
+    item = new QStandardItem(proxy.getName());
+    item->setCheckState((proxy.getFlag() == 2 ? Qt::Checked : Qt::Unchecked));
     item->setCheckable(true);
     parent->appendRow(item);
   }
@@ -131,7 +131,7 @@ template <typename T> QStandardItem* getColumnItem(QStandardItem* parent, QStrin
   else
   {
     item = items.at(0);
-    item->setCheckState((proxy.flag == 2 ? Qt::Checked : Qt::Unchecked));
+    item->setCheckState((proxy.getFlag() == 2 ? Qt::Checked : Qt::Unchecked));
     item->setCheckable(true);
   }
 
@@ -153,7 +153,7 @@ template <typename T> QStandardItem* updateProxyItem(QStandardItem* parent, QStr
   {
     item = items.at(0);
     //   qDebug() << parent->text() << " | " << item->text() << " ::"  << proxy.flag << " (Going to Change to) " << item->checkState();
-    proxy.flag = item->checkState();
+    proxy.setFlag(item->checkState());
   }
 
   return item;
@@ -192,11 +192,11 @@ void transferAttributeMatrixFlags(const QString dcName, const AttributeMatrixPro
       QMap<QString, AttributeMatrixProxy>& amProxies = dcProxy.attributeMatricies;
       for(QMap<QString, AttributeMatrixProxy>::iterator amIter = amProxies.begin(); amIter != amProxies.end(); ++amIter)
       {
-        QString amName = amIter.key();
-        if(amName.compare(source.name) == 0)
+        const QString& amName = amIter.key();
+        if(amName == source.getName())
         {
           AttributeMatrixProxy& attrProxy = amIter.value();
-          attrProxy.flag = source.flag;
+          attrProxy.setFlag(source.getFlag());
         }
       }
     }
@@ -229,7 +229,7 @@ void transferDataArrayFlags(const QString dc_name, const QString am_name, const 
           for(QMap<QString, DataArrayProxy>::iterator daIter = daProxies.begin(); daIter != daProxies.end(); ++daIter)
           {
             QString daName = daIter.key();
-            if(daName.compare(source.name) == 0)
+            if(daName == source.getName())
             {
               DataArrayProxy& daProxy = daIter.value();
               daProxy = source;
@@ -583,7 +583,7 @@ void DataContainerReaderWidget::updateProxyFromProxy(DataContainerArrayProxy& cu
         dataArraysIter.next();
         DataArrayProxy daProxy = dataArraysIter.value();
 
-        Detail::transferDataArrayFlags(dcProxy.name, attrProxy.name, daProxy, incoming);
+        Detail::transferDataArrayFlags(dcProxy.getName(), attrProxy.getName(), daProxy, incoming);
       }
     }
   }

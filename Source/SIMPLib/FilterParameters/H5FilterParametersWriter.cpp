@@ -723,11 +723,11 @@ int H5FilterParametersWriter::writeValue(const QString name, const DataContainer
       amIter.next();
 
       const AttributeMatrixProxy& amProxy = amIter.value();
-      if(amProxy.flag == Qt::Unchecked)
+      if(amProxy.getFlag() == Qt::Unchecked)
       {
         continue; // Skip to the next AttributeMatrix if not reading this one
       }
-      hid_t amGid = QH5Utilities::createGroup(dcGid, amProxy.name);
+      hid_t amGid = QH5Utilities::createGroup(dcGid, amProxy.getName());
 
       QMapIterator<QString, DataArrayProxy> dIter(amProxy.dataArrays);
       while(dIter.hasNext()) // DataArray Level
@@ -735,12 +735,12 @@ int H5FilterParametersWriter::writeValue(const QString name, const DataContainer
         dIter.next();
 
         const DataArrayProxy& daProxy = dIter.value();
-        if(daProxy.flag == SIMPL::Unchecked)
+        if(daProxy.getFlag() == SIMPL::Unchecked)
         {
           continue; // Skip to the next DataArray if not reading this one
         }
 
-        flat << dIter.value().name;
+        flat << dIter.value().getName();
       }
       QString data = flat.join(QString('\n'));
       err = QH5Lite::writeStringDataset(amGid, QString::fromLatin1("Arrays"), data);

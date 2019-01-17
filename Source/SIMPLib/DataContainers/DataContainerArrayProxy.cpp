@@ -163,7 +163,7 @@ QStringList DataContainerArrayProxy::flattenHeirarchy(Qt::CheckState dcFlag, Qt:
         amIter.next();
 
         const AttributeMatrixProxy& amProxy = amIter.value();
-        if(amFlag == Qt::Checked && amProxy.flag == Qt::Checked)
+        if(amFlag == Qt::Checked && amProxy.getFlag() == Qt::Checked)
         {
           QMapIterator<QString, DataArrayProxy> dIter(amProxy.dataArrays);
           while(dIter.hasNext()) // DataArray Level
@@ -173,7 +173,7 @@ QStringList DataContainerArrayProxy::flattenHeirarchy(Qt::CheckState dcFlag, Qt:
             const DataArrayProxy& daProxy = dIter.value();
             if(daFlag == Qt::Checked && daProxy.flag == Qt::Checked)
             {
-              QString path = QString("%1|%2|%3").arg(dcProxy.name).arg(amProxy.name).arg(daProxy.name);
+              QString path = QString("%1|%2|%3").arg(dcProxy.getName()).arg(amProxy.getName()).arg(daProxy.getName());
               strList << path;
             }
           }
@@ -206,8 +206,8 @@ void DataContainerArrayProxy::print(const QString& header)
       amIter.next();
 
       const AttributeMatrixProxy& amProxy = amIter.value();
-      out << dcProxy.name << "|" << amProxy.name << "|"
-          << "  [flag:" << (int)(amProxy.flag) << "]\n";
+      out << dcProxy.getName() << "|" << amProxy.getName() << "|"
+          << "  [flag:" << (int)(amProxy.getFlag()) << "]\n";
       QMapIterator<QString, DataArrayProxy> dIter(amProxy.dataArrays);
       while(dIter.hasNext()) // DataArray Level
       {
@@ -215,7 +215,7 @@ void DataContainerArrayProxy::print(const QString& header)
 
         const DataArrayProxy& daProxy = dIter.value();
 
-        out << dcProxy.name << "|" << amProxy.name << "|" << daProxy.name << "  [flag:" << (int)(daProxy.flag) << "]"
+        out << dcProxy.getName() << "|" << amProxy.getName() << "|" << daProxy.getName() << "  [flag:" << (int)(daProxy.getFlag()) << "]"
             << " [Object Type: " << daProxy.objectType << "] [CompDims: ";
         for(int i = 0; i < daProxy.compDims.size(); i++)
         {
@@ -267,13 +267,13 @@ void DataContainerArrayProxy::reverseFlags()
     for(QMap<QString, AttributeMatrixProxy>::iterator amIter = amProxies.begin(); amIter != amProxies.end(); ++amIter) // AttributeMatrix Level
     {
       AttributeMatrixProxy& amProxy = amIter.value();
-      if(amProxy.flag == Qt::Checked)
+      if(amProxy.getFlag() == Qt::Checked)
       {
-        amProxy.flag = Qt::Unchecked;
+        amProxy.setFlag(Qt::Unchecked);
       }
-      else if(amProxy.flag == Qt::Unchecked)
+      else if(amProxy.getFlag() == Qt::Unchecked)
       {
-        amProxy.flag = Qt::Checked;
+        amProxy.setFlag(Qt::Checked);
       }
 
       QMap<QString, DataArrayProxy>& daProxies = amProxy.dataArrays;
@@ -315,7 +315,7 @@ QStringList DataContainerArrayProxy::serialize()
       {
         DataArrayProxy& daProxy = daIter.value();
 
-        QString str = QString("[PATH=%1|%2|%3][FLAG=%4]").arg(dcProxy.name).arg(amProxy.name).arg(daProxy.name).arg(daProxy.flag);
+        QString str = QString("[PATH=%1|%2|%3][FLAG=%4]").arg(dcProxy.getName()).arg(amProxy.getName()).arg(daProxy.getName()).arg(daProxy.getFlag());
         entries << str;
       }
     }
@@ -550,8 +550,7 @@ QMap<QString, DataContainerProxy> DataContainerArrayProxy::getdataContainers()
 	return dataContainers;
 }
 
-
- void DataContainerArrayProxy::setdataContainers(QMap<QString, DataContainerProxy> newDataContainers)
+void DataContainerArrayProxy::setDataContainers(QMap<QString, DataContainerProxy> newDataContainers)
 {
 	 dataContainers = newDataContainers;
 }

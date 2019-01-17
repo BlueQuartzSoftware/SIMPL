@@ -423,7 +423,7 @@ public:
           amName = iter.key();
           if(amName.compare(getCellFeatureAttributeMatrixName()) != 0)
           {
-            iter.value().flag = Qt::Unchecked;
+            iter.value().setFlag(Qt::Unchecked);
           }
           else
           {

@@ -160,13 +160,25 @@ public:
   /**
    * @brief Get the data array flag (Python Binding)
    */
-  uint8_t getflag();
+  uint8_t getFlag() const;
 
   /**
    * @brief Set the data array flag (Python Binding)
    * @param new data array flag
    */
-  void setflag(uint8_t);
+  void setFlag(uint8_t);
+
+  /**
+   * @brief setName
+   * @param name
+   */
+  void setName(const QString& name);
+
+  /**
+   * @brief getName
+   * @return
+   */
+  QString getName() const;
 
   //----- Our variables, publicly available
   uint8_t flag;

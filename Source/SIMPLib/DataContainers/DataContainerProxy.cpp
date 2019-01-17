@@ -160,7 +160,7 @@ QMap<QString, AttributeMatrixProxy> DataContainerProxy::readMap(QJsonArray jsonA
       AttributeMatrixProxy am;
       QJsonObject obj = val.toObject();
       am.readJson(obj);
-      map.insert(am.name, am);
+      map.insert(am.getName(), am);
     }
   }
   return map;
@@ -228,7 +228,7 @@ void DataContainerProxy::setFlags(uint8_t flag, AttributeMatrixProxy::AMTypeFlag
   for(QMap<QString, AttributeMatrixProxy>::iterator amIter = attributeMatricies.begin(); amIter != attributeMatricies.end(); ++amIter) // AttributeMatrix Level
   {
     AttributeMatrixProxy& amProxy = amIter.value();
-    AttributeMatrixProxy::AMTypeFlag amTypeFlag = AttributeMatrixProxy::AttributeMatrixTypeToFlag(static_cast<AttributeMatrix::Type>(amProxy.amType));
+    AttributeMatrixProxy::AMTypeFlag amTypeFlag = AttributeMatrixProxy::AttributeMatrixTypeToFlag(static_cast<AttributeMatrix::Type>(amProxy.getAMType()));
     if ((amTypes & amTypeFlag) > 0 || amTypes == AttributeMatrixProxy::AMTypeFlag::Any_AMType)
     {
       amProxy.setFlags(flag, primitiveTypes, compDimsVector);
@@ -236,34 +236,44 @@ void DataContainerProxy::setFlags(uint8_t flag, AttributeMatrixProxy::AMTypeFlag
   }
 }
 
-QMap<QString, AttributeMatrixProxy> DataContainerProxy::getattributeMatricies()
+QMap<QString, AttributeMatrixProxy> DataContainerProxy::getAttributeMatricies()
 {
 	return attributeMatricies;
 }
 
-void DataContainerProxy::setattributeMatricies(QMap<QString, AttributeMatrixProxy> newAttributeMatricies)
+void DataContainerProxy::setattributeMatricies(const QMap<QString, AttributeMatrixProxy>& newAttributeMatricies)
 {
 	attributeMatricies = newAttributeMatricies;
 }
 
-QString DataContainerProxy::getname()
+QString DataContainerProxy::getName() const
 {
 	return name;
 }
 
-void DataContainerProxy::setname(QString newName)
+void DataContainerProxy::setName(const QString& newName)
 {
 	name = newName;
 }
 
-uint8_t DataContainerProxy::getflag()
+uint8_t DataContainerProxy::getFlag() const
 {
 	return flag;
 }
 
-void DataContainerProxy::setflag(uint8_t newFlag)
+void DataContainerProxy::setFlag(uint8_t newFlag)
 {
 	flag = newFlag;
+}
+
+void DataContainerProxy::setDCType(uint32_t dType)
+{
+  dcType = dType;
+}
+
+uint32_t DataContainerProxy::getDCType() const
+{
+  return dcType;
 }
 
 void DataContainerProxy::toggleFlag()
@@ -286,13 +296,13 @@ AttributeMatrixProxy& DataContainerProxy::getAttributeMatrixProxy(const QString&
 	for (QMap<QString, AttributeMatrixProxy>::iterator amIter = attributeMatricies.begin(); amIter != attributeMatricies.end(); ++amIter) // AttributeMatrix Level
 	{
 		AttributeMatrixProxy& am = amIter.value();
-		if (am.name.compare(name) == 0)
-		{
-			return am;
-		}
-	}
+    if(am.getName() == name)
+    {
+      return am;
+    }
+  }
 
 	AttributeMatrixProxy proxy(name);
-	attributeMatricies.insert(proxy.name, proxy);
-	return attributeMatricies[name];
+  attributeMatricies.insert(proxy.getName(), proxy);
+  return attributeMatricies[name];
 }

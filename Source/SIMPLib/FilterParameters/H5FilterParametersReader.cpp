@@ -1142,7 +1142,7 @@ DataContainerArrayProxy H5FilterParametersReader::readDataContainerArrayProxy(co
       hid_t amGid = QH5Utilities::openHDF5Object(dcGid, amName);
       H5ScopedGroupSentinel sentinal_am(&amGid, false);
       AttributeMatrixProxy amProxy(amName, 1u);
-      amProxy.flag = Qt::Checked;
+      amProxy.setFlag(Qt::Checked);
       QString data; // Output will be read into this object
       err = QH5Lite::readStringDataset(amGid, "Arrays", data);
       if(err < 0)
@@ -1150,7 +1150,7 @@ DataContainerArrayProxy H5FilterParametersReader::readDataContainerArrayProxy(co
         return defValue;
       }
       QStringList arrayNames = data.split('\n');
-      QString path = SIMPL::StringConstants::DataContainerGroupName + "/" + dcProxy.name + "/" + amProxy.name;
+      QString path = SIMPL::StringConstants::DataContainerGroupName + "/" + dcProxy.getName() + "/" + amProxy.getName();
       for(int k = 0; k < arrayNames.size(); k++)
       {
         DataArrayProxy daProxy(path, arrayNames.at(k), 1u);

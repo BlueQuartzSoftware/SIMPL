@@ -122,11 +122,11 @@ public:
         {
           if(amIterator.key() == attributeMatrixKey)
           {
-            amIterator.value().flag = Qt::Checked;
+            amIterator.value().setFlag(Qt::Checked);
           }
           else
           {
-            amIterator.value().flag = Qt::Unchecked;
+            amIterator.value().setFlag(Qt::Unchecked);
 
             QMap<QString, DataArrayProxy>::iterator daIterator = amIterator.value().dataArrays.begin();
             while(daIterator != amIterator.value().dataArrays.end())

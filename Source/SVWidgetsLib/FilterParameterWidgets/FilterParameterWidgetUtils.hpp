@@ -195,7 +195,7 @@ class FilterParameterWidgetUtils
                 dataArraysIter.next();
                 //DataArrayProxy daProxy = dataArraysIter.value();
                 QString daName = dataArraysIter.key();
-                IDataArray::Pointer da = dca->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(nullptr, DataArrayPath(dc.name, amProxy.name, daName));
+                IDataArray::Pointer da = dca->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(nullptr, DataArrayPath(dc.getName(), amProxy.getName(), daName));
                 aaCombo->addItem(daName);
 
                 if (nullptr != da.get() && ((daTypes.isEmpty() == false && daTypes.contains(da->getTypeAsString()) == false) || (cDims.isEmpty() == false && cDims.contains(da->getComponentDimensions()) == false)))
@@ -294,7 +294,7 @@ class FilterParameterWidgetUtils
                   }
                 }
 
-                IDataArray::Pointer da = dca->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(nullptr, DataArrayPath(dc.name, amProxy.name, daName));
+                IDataArray::Pointer da = dca->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(nullptr, DataArrayPath(dc.getName(), amProxy.getName(), daName));
                 attributeArraysWidget->addItem(daItem);
 
                 if (nullptr != da.get() && ((daTypes.isEmpty() == false && daTypes.contains(da->getTypeAsString()) == false) || (cDims.isEmpty() == false && cDims.contains(da->getComponentDimensions()) == false)))
