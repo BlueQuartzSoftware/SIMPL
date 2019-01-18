@@ -82,7 +82,6 @@ bool AttributeMatrixProxy::operator==(const AttributeMatrixProxy& amp) const
   return flag == amp.flag && name == amp.name && amType == amp.amType && dataArrays == amp.dataArrays;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -93,7 +92,6 @@ void AttributeMatrixProxy::writeJson(QJsonObject& json)
   json["Type"] = static_cast<double>(amType);
   json["Data Arrays"] = writeMap(dataArrays);
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -155,72 +153,72 @@ QMap<QString, DataArrayProxy> AttributeMatrixProxy::readMap(QJsonArray jsonArray
 // -----------------------------------------------------------------------------
 AttributeMatrixProxy::AMTypeFlag AttributeMatrixProxy::AttributeMatrixTypeToFlag(AttributeMatrix::Type amType)
 {
-  switch (amType)
+  switch(amType)
   {
-    case AttributeMatrix::Type::Any:
-    {
-      return Any_AMType;
-    }
-    case AttributeMatrix::Type::Cell:
-    {
-      return Cell_AMType;
-    }
-    case AttributeMatrix::Type::CellEnsemble:
-    {
-      return CellEnsemble_AMType;
-    }
-    case AttributeMatrix::Type::CellFeature:
-    {
-      return CellFeature_AMType;
-    }
-    case AttributeMatrix::Type::Edge:
-    {
-      return Edge_AMType;
-    }
-    case AttributeMatrix::Type::EdgeEnsemble:
-    {
-      return EdgeEnsemble_AMType;
-    }
-    case AttributeMatrix::Type::EdgeFeature:
-    {
-      return EdgeFeature_AMType;
-    }
-    case AttributeMatrix::Type::Face:
-    {
-      return Face_AMType;
-    }
-    case AttributeMatrix::Type::FaceEnsemble:
-    {
-      return FaceEnsemble_AMType;
-    }
-    case AttributeMatrix::Type::FaceFeature:
-    {
-      return FaceFeature_AMType;
-    }
-    case AttributeMatrix::Type::Generic:
-    {
-      return Generic_AMType;
-    }
-    case AttributeMatrix::Type::MetaData:
-    {
-      return MetaData_AMType;
-    }
-    case AttributeMatrix::Type::Vertex:
-    {
-      return Vertex_AMType;
-    }
-    case AttributeMatrix::Type::VertexEnsemble:
-    {
-      return VertexEnsemble_AMType;
-    }
-    case AttributeMatrix::Type::VertexFeature:
-    {
-      return VertexFeature_AMType;
-    }
-    case AttributeMatrix::Type::Unknown:
-    {
-      return Unknown_AMType;
-    }
+  case AttributeMatrix::Type::Any:
+  {
+    return Any_AMType;
+  }
+  case AttributeMatrix::Type::Cell:
+  {
+    return Cell_AMType;
+  }
+  case AttributeMatrix::Type::CellEnsemble:
+  {
+    return CellEnsemble_AMType;
+  }
+  case AttributeMatrix::Type::CellFeature:
+  {
+    return CellFeature_AMType;
+  }
+  case AttributeMatrix::Type::Edge:
+  {
+    return Edge_AMType;
+  }
+  case AttributeMatrix::Type::EdgeEnsemble:
+  {
+    return EdgeEnsemble_AMType;
+  }
+  case AttributeMatrix::Type::EdgeFeature:
+  {
+    return EdgeFeature_AMType;
+  }
+  case AttributeMatrix::Type::Face:
+  {
+    return Face_AMType;
+  }
+  case AttributeMatrix::Type::FaceEnsemble:
+  {
+    return FaceEnsemble_AMType;
+  }
+  case AttributeMatrix::Type::FaceFeature:
+  {
+    return FaceFeature_AMType;
+  }
+  case AttributeMatrix::Type::Generic:
+  {
+    return Generic_AMType;
+  }
+  case AttributeMatrix::Type::MetaData:
+  {
+    return MetaData_AMType;
+  }
+  case AttributeMatrix::Type::Vertex:
+  {
+    return Vertex_AMType;
+  }
+  case AttributeMatrix::Type::VertexEnsemble:
+  {
+    return VertexEnsemble_AMType;
+  }
+  case AttributeMatrix::Type::VertexFeature:
+  {
+    return VertexFeature_AMType;
+  }
+  case AttributeMatrix::Type::Unknown:
+  {
+    return Unknown_AMType;
+  }
   }
 
   return Unknown_AMType;
@@ -237,7 +235,7 @@ void AttributeMatrixProxy::setFlags(uint8_t flag, DataArrayProxy::PrimitiveTypeF
   {
     DataArrayProxy& daProxy = daIter.value();
     DataArrayProxy::PrimitiveTypeFlag pTypeFlag = DataArrayProxy::PrimitiveTypeToFlag(daProxy.objectType);
-    if ((primitiveTypes & pTypeFlag) > 0 || primitiveTypes == DataArrayProxy::PrimitiveTypeFlag::Any_PType)
+    if((primitiveTypes & pTypeFlag) > 0 || primitiveTypes == DataArrayProxy::PrimitiveTypeFlag::Any_PType)
     {
       if(compDimsVector.empty())
       {
@@ -245,9 +243,9 @@ void AttributeMatrixProxy::setFlags(uint8_t flag, DataArrayProxy::PrimitiveTypeF
       }
       else
       {
-        for (int i = 0; i < compDimsVector.size(); i++)
+        for(int i = 0; i < compDimsVector.size(); i++)
         {
-          if (compDimsVector[i] == daProxy.compDims)
+          if(compDimsVector[i] == daProxy.compDims)
           {
             daProxy.flag = flag;
           }
@@ -299,42 +297,66 @@ DataArrayProxy& AttributeMatrixProxy::getDataArrayProxy(const QString& name)
   return dataArrays[name];
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 QMap<QString, DataArrayProxy> AttributeMatrixProxy::getDataArrays()
 {
-	return dataArrays;
+  return dataArrays;
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void AttributeMatrixProxy::setDataArrays(const QMap<QString, DataArrayProxy>& newDataArrays)
 {
-	dataArrays = newDataArrays;
+  dataArrays = newDataArrays;
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 QString AttributeMatrixProxy::getName() const
 {
-	return name;
+  return name;
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void AttributeMatrixProxy::setName(const QString& newName)
 {
-	name = newName;
+  name = newName;
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 AttributeMatrix::Type AttributeMatrixProxy::getAMType() const
 {
-	return amType;
+  return amType;
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void AttributeMatrixProxy::setAMType(AttributeMatrix::Type newType)
 {
-	amType = newType;
+  amType = newType;
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 uint8_t AttributeMatrixProxy::getFlag() const
 {
-	return flag;
+  return flag;
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void AttributeMatrixProxy::setFlag(uint8_t newFlag)
 {
-	flag = newFlag;
+  flag = newFlag;
 }

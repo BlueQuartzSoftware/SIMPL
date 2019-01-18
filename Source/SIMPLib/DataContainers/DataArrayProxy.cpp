@@ -40,19 +40,12 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayProxy::DataArrayProxy()
-: flag(SIMPL::Unchecked)
-, version(0)
-, path("")
-, name("")
-, objectType("")
-{
-}
+DataArrayProxy::DataArrayProxy() = default;
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayProxy::DataArrayProxy(QString da_path, QString da_name, uint8_t da_flag, QString da_objectType, int da_version)
+DataArrayProxy::DataArrayProxy(const QString& da_path, const QString& da_name, uint8_t da_flag, const QString& da_objectType, int da_version)
 : flag(da_flag)
 , version(da_version)
 , path(da_path)
@@ -142,7 +135,7 @@ void DataArrayProxy::ReadDataArrayStructure(hid_t attrMatGid, QMap<QString, Data
     }
 
     bool cDimsResult = false;
-    if (req != nullptr)
+    if(req != nullptr)
     {
       QVector<QVector<size_t>> cDims = req->getComponentDimensions();
       if(cDims.empty() || cDims.contains(proxy.compDims))
@@ -163,7 +156,7 @@ void DataArrayProxy::ReadDataArrayStructure(hid_t attrMatGid, QMap<QString, Data
       std::cout << "Error Reading the Object Type for DataArray " << dataArrayName.toStdString() << std::endl;
     }
 
-    if (req != nullptr)
+    if(req != nullptr)
     {
       QVector<QString> daTypes = req->getDATypes();
       if((daTypes.empty() || daTypes.contains(proxy.objectType)) && cDimsResult)
@@ -179,16 +172,7 @@ void DataArrayProxy::ReadDataArrayStructure(hid_t attrMatGid, QMap<QString, Data
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayProxy::operator=(const DataArrayProxy& rhs)
-{
-  flag = rhs.flag;
-  version = rhs.version;
-  path = rhs.path;
-  name = rhs.name;
-  objectType = rhs.objectType;
-  tupleDims = rhs.tupleDims;
-  compDims = rhs.compDims;
-}
+DataArrayProxy& DataArrayProxy::operator=(const DataArrayProxy& rhs) = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -204,11 +188,10 @@ bool DataArrayProxy::operator==(const DataArrayProxy& rhs) const
 QJsonArray DataArrayProxy::writeVector(QVector<size_t> vector)
 {
   QJsonArray jsonArray;
-  foreach(size_t num, vector)
+  for(const auto& num : vector)
   {
     jsonArray.push_back(static_cast<double>(num));
   }
-
   return jsonArray;
 }
 
@@ -218,7 +201,7 @@ QJsonArray DataArrayProxy::writeVector(QVector<size_t> vector)
 QVector<size_t> DataArrayProxy::readVector(QJsonArray jsonArray)
 {
   QVector<size_t> vector;
-  foreach(QJsonValue val, jsonArray)
+  for(const auto& val : jsonArray)
   {
     if(val.isDouble())
     {
@@ -234,9 +217,9 @@ QVector<size_t> DataArrayProxy::readVector(QJsonArray jsonArray)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayProxy::PrimitiveTypeFlag DataArrayProxy::PrimitiveTypeToFlag(const QString &pType)
+DataArrayProxy::PrimitiveTypeFlag DataArrayProxy::PrimitiveTypeToFlag(const QString& pType)
 {
-  if (pType == SIMPL::Defaults::AnyPrimitive)
+  if(pType == SIMPL::Defaults::AnyPrimitive)
   {
     return Any_PType;
   }
@@ -252,51 +235,51 @@ DataArrayProxy::PrimitiveTypeFlag DataArrayProxy::PrimitiveTypeToFlag(const QStr
   {
     return Float_PType;
   }
-  else if (pType == SIMPL::TypeNames::Int8)
+  if(pType == SIMPL::TypeNames::Int8)
   {
     return Int8_PType;
   }
-  else if (pType == SIMPL::TypeNames::Int16)
+  if(pType == SIMPL::TypeNames::Int16)
   {
     return Int16_PType;
   }
-  else if (pType == SIMPL::TypeNames::Int32)
+  if(pType == SIMPL::TypeNames::Int32)
   {
     return Int32_PType;
   }
-  else if (pType == SIMPL::TypeNames::Int64)
+  if(pType == SIMPL::TypeNames::Int64)
   {
     return Int64_PType;
   }
-  else if (pType == SIMPL::TypeNames::NeighborList)
+  if(pType == SIMPL::TypeNames::NeighborList)
   {
     return NeighborList_PType;
   }
-  else if (pType == SIMPL::TypeNames::StatsDataArray)
+  if(pType == SIMPL::TypeNames::StatsDataArray)
   {
     return StatsDataArray_PType;
   }
-  else if (pType == SIMPL::TypeNames::String)
+  if(pType == SIMPL::TypeNames::String)
   {
     return StringArray_PType;
   }
-  else if (pType == SIMPL::TypeNames::UInt8)
+  if(pType == SIMPL::TypeNames::UInt8)
   {
     return UInt8_PType;
   }
-  else if (pType == SIMPL::TypeNames::UInt16)
+  if(pType == SIMPL::TypeNames::UInt16)
   {
     return UInt16_PType;
   }
-  else if (pType == SIMPL::TypeNames::UInt32)
+  if(pType == SIMPL::TypeNames::UInt32)
   {
     return UInt32_PType;
   }
-  else if (pType == SIMPL::TypeNames::UInt64)
+  if(pType == SIMPL::TypeNames::UInt64)
   {
     return UInt64_PType;
   }
-  else if (pType == SIMPL::TypeNames::Unknown)
+  if(pType == SIMPL::TypeNames::Unknown)
   {
     return Unknown_PType;
   }
@@ -325,21 +308,33 @@ void DataArrayProxy::updatePath(DataArrayPath::RenameType renamePath)
   }
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 uint8_t DataArrayProxy::getFlag() const
 {
-	return flag;
+  return flag;
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataArrayProxy::setFlag(uint8_t newFlag)
 {
-	flag = newFlag;
+  flag = newFlag;
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataArrayProxy::setName(const QString& aName)
 {
   name = aName;
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 QString DataArrayProxy::getName() const
 {
   return name;
