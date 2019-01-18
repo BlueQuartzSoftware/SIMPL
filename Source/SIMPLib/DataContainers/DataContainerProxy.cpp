@@ -241,7 +241,7 @@ QMap<QString, AttributeMatrixProxy> DataContainerProxy::getAttributeMatricies()
 	return attributeMatricies;
 }
 
-void DataContainerProxy::setattributeMatricies(const QMap<QString, AttributeMatrixProxy>& newAttributeMatricies)
+void DataContainerProxy::setAttributeMatricies(const QMap<QString, AttributeMatrixProxy>& newAttributeMatricies)
 {
 	attributeMatricies = newAttributeMatricies;
 }

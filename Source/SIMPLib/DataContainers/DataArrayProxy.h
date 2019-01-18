@@ -60,8 +60,8 @@ class SIMPLib_EXPORT DataArrayProxy
   PYB11_PROPERTY(QVector<size_t> tupleDims)
   PYB11_PROPERTY(QVector<size_t> compDims)
   PYB11_PROPERTY(QString path)
-  PYB11_PROPERTY(QString name)
-  PYB11_PROPERTY(uint8_t flag READ getflag WRITE setflag)
+  PYB11_PROPERTY(QString Name)
+  PYB11_PROPERTY(uint8_t Flag READ getFlag WRITE setFlag)
 public:
     typedef QVector<QVector<size_t> > CompDimsVector;
 

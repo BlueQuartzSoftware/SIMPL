@@ -35,16 +35,13 @@
 
 #pragma once
 
-
-
+#include <QtCore/QList>
 #include <QtCore/QMetaType>
 #include <QtCore/QString>
-#include <QtCore/QList>
 #include <QtCore/QStringList>
 
-
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
+#include "SIMPLib/SIMPLib.h"
 
 class DataContainerArray;
 
@@ -52,89 +49,88 @@ class DataContainerArray;
  * @brief DataContainerArrayProxy
  */
 class SIMPLib_EXPORT DataContainerArrayProxy
-{  
+{
   PYB11_CREATE_BINDINGS(DataContainerArrayProxy)
 
   PYB11_CREATION()
   using DataContainersMap = QMap<QString, DataContainerProxy>;
 
-  PYB11_PROPERTY(DataContainersMap dataContainers READ getdataContainersMap WRITE setdataContainersMap)
+  PYB11_PROPERTY(DataContainersMap DataContainers READ getDataContainers WRITE setDataContainers)
   PYB11_METHOD(DataContainerProxy.& getDataContainerProxy ARGS name RETURN_VALUE_POLICY py::return_value_policy::reference)
 
-  public:
+public:
+  /**
+   * @brief DataContainerArrayProxy
+   */
+  DataContainerArrayProxy();
 
-    /**
-     * @brief DataContainerArrayProxy
-     */
-    DataContainerArrayProxy();
+  /**
+   * @brief DataContainerArrayProxy
+   * @param dca
+   */
+  explicit DataContainerArrayProxy(DataContainerArray* dca);
 
-    /**
-     * @brief DataContainerArrayProxy
-     * @param dca
-     */
-    explicit DataContainerArrayProxy(DataContainerArray* dca);
+  /**
+   * @brief DataContainerArrayProxy
+   * @param rhs
+   */
+  DataContainerArrayProxy(const DataContainerArrayProxy& rhs);
 
-    /**
-     * @brief DataContainerArrayProxy
-     * @param rhs
-     */
-    DataContainerArrayProxy(const DataContainerArrayProxy& rhs);
+  /**
+   * @brief ~DataContainerArrayProxy
+   */
+  virtual ~DataContainerArrayProxy();
 
-    /**
-     * @brief ~DataContainerArrayProxy
-     */
-    virtual ~DataContainerArrayProxy();
+  /**
+   * @brief MergeProxies
+   * @param fileProxy
+   * @param cacheProxy
+   * @return
+   */
+  static DataContainerArrayProxy MergeProxies(DataContainerArrayProxy fileProxy, DataContainerArrayProxy cacheProxy);
 
-    /**
-     * @brief MergeProxies
-     * @param fileProxy
-     * @param cacheProxy
-     * @return
-     */
-    static DataContainerArrayProxy MergeProxies(DataContainerArrayProxy fileProxy, DataContainerArrayProxy cacheProxy);
+  /**
+   * @brief operator =
+   * @param rhs
+   */
+  void operator=(const DataContainerArrayProxy& rhs);
 
-    /**
-     * @brief operator =
-     * @param rhs
-     */
-    void operator=(const DataContainerArrayProxy& rhs);
+  /**
+   * @brief operator ==
+   * @param rhs
+   */
+  bool operator==(const DataContainerArrayProxy& rhs) const;
 
-    /**
-     * @brief operator ==
-     * @param rhs
-     */
-    bool operator==(const DataContainerArrayProxy &rhs) const;
+  /**
+   * @brief operator ==
+   * @param rhs
+   */
+  bool operator!=(const DataContainerArrayProxy& rhs) const;
 
-    /**
-     * @brief operator ==
-     * @param rhs
-     */
-    bool operator!=(const DataContainerArrayProxy &rhs) const;
+  /**
+   * @brief flattenHeirarchy
+   * @param dcFlag
+   * @param amFlag
+   * @param daFlag
+   * @return
+   */
+  QStringList flattenHeirarchy(Qt::CheckState dcFlag = Qt::Checked, Qt::CheckState amFlag = Qt::Checked, Qt::CheckState daFlag = Qt::Checked);
 
-    /**
-     * @brief flattenHeirarchy
-     * @param dcFlag
-     * @param amFlag
-     * @param daFlag
-     * @return
-     */
-    QStringList flattenHeirarchy(Qt::CheckState dcFlag = Qt::Checked, Qt::CheckState amFlag = Qt::Checked, Qt::CheckState daFlag = Qt::Checked);
+  /**
+   * @brief Print the Heirarchy and attributes of the Proxy
+   * @param out
+   */
+  void print(const QString& header = QString(""));
 
-    /**
-     * @brief Print the Heirarchy and attributes of the Proxy
-     * @param out
-     */
-    void print(const QString &header = QString(""));
+  /**
+   * @brief Get the data containers (Python Binding)
+   */
+  QMap<QString, DataContainerProxy> getDataContainers();
 
-	/**
-	 * @brief Get the data containers (Python Binding)
-	 */
-	QMap<QString, DataContainerProxy> getdataContainers();
-
-	/**
-	 * @brief Get the data containers (Python Binding)
-	 * @param new dataContainers map
-	 */
+  /**
+   * @brief Get the data containers (Python Binding)
+   * @param new DataContainers map
+   */
   void setDataContainers(QMap<QString, DataContainerProxy>);
 
   /**
@@ -221,5 +217,3 @@ private:
 };
 
 Q_DECLARE_METATYPE(DataContainerArrayProxy)
-
-

@@ -35,10 +35,9 @@
 
 #pragma once
 
+#include <QtCore/QMap>
 #include <QtCore/QMetaType>
 #include <QtCore/QString>
-#include <QtCore/QMap>
-
 
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataContainers/DataArrayProxy.h"
@@ -51,10 +50,10 @@ class SIMPLib_EXPORT AttributeMatrixProxy
 
   typedef QMap<QString, DataArrayProxy> DataArraysMap;
   typedef AttributeMatrix::Type AMType;
-  PYB11_PROPERTY(DataArraysMap dataArrays READ getdataArrays WRITE setDataArrays)
-  PYB11_PROPERTY(QString name READ getname WRITE setname)
-  PYB11_PROPERTY(AMType amType READ getamType WRITE setamType)
-  PYB11_PROPERTY(uint8_t flag READ getflag WRITE setflag)
+  PYB11_PROPERTY(DataArraysMap DataArrays READ getDataArrays WRITE setDataArrays)
+  PYB11_PROPERTY(QString Name READ getName WRITE setName)
+  PYB11_PROPERTY(AMType AMType READ getAMType WRITE setAMType)
+  PYB11_PROPERTY(uint8_t Flag READ getFlag WRITE setFlag)
   PYB11_METHOD(DataArrayProxy getDataArrayProxy ARGS name RETURN_VALUE_POLICY py::return_value_policy::reference)
 
 public:
@@ -228,5 +227,3 @@ private:
 Q_DECLARE_OPERATORS_FOR_FLAGS(AttributeMatrixProxy::AMTypeFlags)
 
 Q_DECLARE_METATYPE(AttributeMatrixProxy)
-
-

@@ -35,16 +35,15 @@
 
 #pragma once
 
-
+#include <QtCore/QJsonArray>
+#include <QtCore/QMap>
 #include <QtCore/QMetaType>
 #include <QtCore/QString>
-#include <QtCore/QMap>
-#include <QtCore/QJsonArray>
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataContainers/AttributeMatrixProxy.h"
 #include "SIMPLib/Geometry/IGeometry.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The DataContainerProxy class
@@ -57,9 +56,9 @@ class SIMPLib_EXPORT DataContainerProxy
 
   using AttributeMatricesMap = QMap<QString, AttributeMatrixProxy>;
 
-  PYB11_PROPERTY(AttributeMatricesMap attributeMatricies READ getAttributeMatricies WRITE setattributeMatricies)
-  PYB11_PROPERTY(QString name READ getname WRITE setname)
-  PYB11_PROPERTY(uint8_t flag READ getflag WRITE setflag)
+  PYB11_PROPERTY(AttributeMatricesMap AttributeMatricies READ getAttributeMatricies WRITE setAttributeMatricies)
+  PYB11_PROPERTY(QString Name READ getName WRITE setName)
+  PYB11_PROPERTY(uint8_t Flag READ getFlag WRITE setFlag)
 
   PYB11_METHOD(AttributeMatrixProxy getAttributeMatrixProxy ARGS name RETURN_VALUE_POLICY py::return_value_policy::reference)
   PYB11_METHOD(void toggleFlag)
@@ -148,7 +147,7 @@ public:
    * @brief Get the attribute matrices(Python Binding)
    * @param new AttributeMatrices map
    */
-  void setattributeMatricies(const QMap<QString, AttributeMatrixProxy>&);
+  void setAttributeMatricies(const QMap<QString, AttributeMatrixProxy>&);
 
   /**
    * @brief Get the data container name (Python Binding)
@@ -236,7 +235,3 @@ private:
 Q_DECLARE_OPERATORS_FOR_FLAGS(DataContainerProxy::DCGeometryTypeFlags)
 
 Q_DECLARE_METATYPE(DataContainerProxy)
-
-
-
-
