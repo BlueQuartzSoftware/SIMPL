@@ -57,14 +57,14 @@
 class SIMPLib_EXPORT EnsembleInfo : public QObject
 {
   Q_OBJECT
-
+  // clang-format off
   PYB11_CREATE_BINDINGS(EnsembleInfo)
   PYB11_CREATION()
   PYB11_METHOD(void addValues ARGS const,CrystalStructure const,PhaseType::Type const,QString)
   PYB11_METHOD(void getValues ARGS size_t CrystalStructure& PhaseType::Type& QString&)
   PYB11_METHOD(void remove ARGS size_t)
   PYB11_METHOD(void clear)
-
+  // clang-format on
 public:
   using EnumType = uint32_t;
 

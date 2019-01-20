@@ -48,7 +48,7 @@ AbstractFilterParametersWriter::~AbstractFilterParametersWriter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, const QString value)
+int AbstractFilterParametersWriter::writeValue(const QString& name, const QString& value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -60,7 +60,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, const QString
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, const QVector<QString> value)
+int AbstractFilterParametersWriter::writeValue(const QString& name, const QVector<QString>& value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -72,7 +72,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, const QVector
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, const QStringList value)
+int AbstractFilterParametersWriter::writeValue(const QString& name, const QStringList& value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -84,7 +84,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, const QString
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, int8_t value)
+int AbstractFilterParametersWriter::writeValue(const QString& name, int8_t value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -96,7 +96,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, int8_t value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, int16_t value)
+int AbstractFilterParametersWriter::writeValue(const QString& name, int16_t value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -108,7 +108,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, int16_t value
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, int32_t value)
+int AbstractFilterParametersWriter::writeValue(const QString& name, int32_t value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -120,7 +120,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, int32_t value
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, int64_t value)
+int AbstractFilterParametersWriter::writeValue(const QString& name, int64_t value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -132,7 +132,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, int64_t value
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, uint8_t value)
+int AbstractFilterParametersWriter::writeValue(const QString& name, uint8_t value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -144,7 +144,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, uint8_t value
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, uint16_t value)
+int AbstractFilterParametersWriter::writeValue(const QString& name, uint16_t value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -156,7 +156,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, uint16_t valu
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, uint32_t value)
+int AbstractFilterParametersWriter::writeValue(const QString& name, uint32_t value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -168,7 +168,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, uint32_t valu
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, uint64_t value)
+int AbstractFilterParametersWriter::writeValue(const QString& name, uint64_t value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -180,7 +180,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, uint64_t valu
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, float value)
+int AbstractFilterParametersWriter::writeValue(const QString& name, float value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -192,7 +192,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, float value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, double value)
+int AbstractFilterParametersWriter::writeValue(const QString& name, double value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -204,7 +204,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, double value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, QVector<int8_t> value)
+int AbstractFilterParametersWriter::writeValue(const QString& name, QVector<int8_t> value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -216,7 +216,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, QVector<int8_
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, QVector<int16_t> value)
+int AbstractFilterParametersWriter::writeValue(const QString& name, QVector<int16_t> value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -228,7 +228,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, QVector<int16
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, QVector<int32_t> value)
+int AbstractFilterParametersWriter::writeValue(const QString& name, QVector<int32_t> value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -240,7 +240,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, QVector<int32
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, QVector<int64_t> value)
+int AbstractFilterParametersWriter::writeValue(const QString& name, QVector<int64_t> value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -252,7 +252,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, QVector<int64
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, QVector<uint8_t> value)
+int AbstractFilterParametersWriter::writeValue(const QString& name, QVector<uint8_t> value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -264,7 +264,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, QVector<uint8
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, QVector<uint16_t> value)
+int AbstractFilterParametersWriter::writeValue(const QString& name, QVector<uint16_t> value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -276,7 +276,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, QVector<uint1
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, QVector<uint32_t> value)
+int AbstractFilterParametersWriter::writeValue(const QString& name, QVector<uint32_t> value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -288,7 +288,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, QVector<uint3
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, QVector<uint64_t> value)
+int AbstractFilterParametersWriter::writeValue(const QString& name, QVector<uint64_t> value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -300,7 +300,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, QVector<uint6
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, QVector<float> value)
+int AbstractFilterParametersWriter::writeValue(const QString& name, QVector<float> value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -312,7 +312,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, QVector<float
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, QVector<double> value)
+int AbstractFilterParametersWriter::writeValue(const QString& name, QVector<double> value)
 {
   Q_UNUSED(name)
   Q_UNUSED(value)
@@ -324,7 +324,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, QVector<doubl
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, IntVec3_t v)
+int AbstractFilterParametersWriter::writeValue(const QString& name, IntVec3_t v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
@@ -336,7 +336,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, IntVec3_t v)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, FloatVec3_t v)
+int AbstractFilterParametersWriter::writeValue(const QString& name, FloatVec3_t v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
@@ -348,7 +348,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, FloatVec3_t v
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, Float2ndOrderPoly_t v)
+int AbstractFilterParametersWriter::writeValue(const QString& name, Float2ndOrderPoly_t v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
@@ -360,7 +360,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, Float2ndOrder
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, Float3rdOrderPoly_t v)
+int AbstractFilterParametersWriter::writeValue(const QString& name, Float3rdOrderPoly_t v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
@@ -372,7 +372,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, Float3rdOrder
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, Float4thOrderPoly_t v)
+int AbstractFilterParametersWriter::writeValue(const QString& name, Float4thOrderPoly_t v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
@@ -384,7 +384,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, Float4thOrder
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, FileListInfo_t v)
+int AbstractFilterParametersWriter::writeValue(const QString& name, FileListInfo_t v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
@@ -396,7 +396,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, FileListInfo_
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, ComparisonInput_t comp)
+int AbstractFilterParametersWriter::writeValue(const QString& name, ComparisonInput_t comp)
 {
   Q_UNUSED(name)
   Q_UNUSED(comp)
@@ -408,7 +408,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, ComparisonInp
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, ComparisonInputs v)
+int AbstractFilterParametersWriter::writeValue(const QString& name, ComparisonInputs v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
@@ -420,7 +420,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, ComparisonInp
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, AxisAngleInput_t v)
+int AbstractFilterParametersWriter::writeValue(const QString& name, AxisAngleInput_t v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
@@ -432,7 +432,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, AxisAngleInpu
 // -----------------------------------------------------------------------------
 // These are actually written as a binary 4x1 float array as an attribute
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, AxisAngleInput_t v, int vectorPos)
+int AbstractFilterParametersWriter::writeValue(const QString& name, AxisAngleInput_t v, int vectorPos)
 {
   Q_UNUSED(name)
   Q_UNUSED(vectorPos)
@@ -444,7 +444,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, AxisAngleInpu
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, QVector<AxisAngleInput_t> v)
+int AbstractFilterParametersWriter::writeValue(const QString& name, QVector<AxisAngleInput_t> v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
@@ -456,7 +456,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, QVector<AxisA
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeArraySelections(const QString name, QSet<QString> v)
+int AbstractFilterParametersWriter::writeArraySelections(const QString& name, QSet<QString> v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
@@ -468,7 +468,19 @@ int AbstractFilterParametersWriter::writeArraySelections(const QString name, QSe
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, const DataContainerArrayProxy& v)
+int AbstractFilterParametersWriter::writeValue(const QString& name, DataContainerArrayProxy& dcaProxy)
+{
+  Q_UNUSED(name)
+  Q_UNUSED(dcaProxy)
+
+  // This should never be executed
+  return -1;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int AbstractFilterParametersWriter::writeValue(const QString& name, const DataArrayPath& v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
@@ -480,7 +492,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, const DataCon
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, const DataArrayPath& v)
+int AbstractFilterParametersWriter::writeValue(const QString& name, const QVector<DataArrayPath>& v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
@@ -492,7 +504,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, const DataArr
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, const QVector<DataArrayPath>& v)
+int AbstractFilterParametersWriter::writeValue(const QString& name, const DynamicTableData& v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
@@ -504,19 +516,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, const QVector
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, const DynamicTableData& v)
-{
-  Q_UNUSED(name)
-  Q_UNUSED(v)
-
-  // This should never be executed
-  return -1;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, const QPair<double, double>& v)
+int AbstractFilterParametersWriter::writeValue(const QString& name, const QPair<double, double>& v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)

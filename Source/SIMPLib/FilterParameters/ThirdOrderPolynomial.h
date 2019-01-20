@@ -31,41 +31,52 @@
 
 #include <QtCore/QJsonObject>
 
-/**
-* @brief
-*/
 typedef struct
 {
-  float angle;
-  float h;
-  float k;
-  float l;
+  float c30;
+  float c03;
+  float c21;
+  float c12;
+  float c20;
+  float c02;
+  float c11;
+  float c10;
+  float c01;
+  float c00;
 
   void writeJson(QJsonObject& json)
   {
-    json["angle"] = angle;
-    json["h"] = h;
-    json["k"] = k;
-    json["l"] = l;
+    json["c30"] = c30;
+    json["c03"] = c03;
+    json["c21"] = c21;
+    json["c12"] = c12;
+    json["c20"] = c20;
+    json["c02"] = c02;
+    json["c11"] = c11;
+    json["c10"] = c10;
+    json["c01"] = c01;
+    json["c00"] = c00;
   }
 
   bool readJson(QJsonObject& json)
   {
-    if (json["angle"].isDouble() && json["h"].isDouble() && json["k"].isDouble() && json["l"].isDouble())
+    if(json["c30"].isDouble() && json["c03"].isDouble() && json["c21"].isDouble() && json["c12"].isDouble() && json["c20"].isDouble() && json["c02"].isDouble() && json["c11"].isDouble() &&
+       json["c10"].isDouble() && json["c01"].isDouble() && json["c00"].isDouble())
     {
-      angle = static_cast<float>(json["angle"].toDouble());
-      h = static_cast<float>(json["h"].toDouble());
-      k = static_cast<float>(json["k"].toDouble());
-      l = static_cast<float>(json["l"].toDouble());
+      c30 = static_cast<float>(json["c30"].toDouble());
+      c03 = static_cast<float>(json["c03"].toDouble());
+      c21 = static_cast<float>(json["c21"].toDouble());
+      c12 = static_cast<float>(json["c12"].toDouble());
+      c20 = static_cast<float>(json["c20"].toDouble());
+      c02 = static_cast<float>(json["c02"].toDouble());
+      c11 = static_cast<float>(json["c11"].toDouble());
+      c10 = static_cast<float>(json["c10"].toDouble());
+      c01 = static_cast<float>(json["c01"].toDouble());
+      c00 = static_cast<float>(json["c00"].toDouble());
       return true;
     }
     return false;
   }
+} Float3rdOrderPoly_t;
 
-} AxisAngleInput_t;
-
-Q_DECLARE_METATYPE(AxisAngleInput_t)
-
-
-
-
+Q_DECLARE_METATYPE(Float3rdOrderPoly_t)

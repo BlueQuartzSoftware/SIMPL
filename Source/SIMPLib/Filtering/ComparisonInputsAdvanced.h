@@ -58,6 +58,7 @@
 class SIMPLib_EXPORT ComparisonInputsAdvanced : public QObject
 {
   Q_OBJECT
+  // clang-format off
 
   PYB11_CREATE_BINDINGS(ComparisonInputsAdvanced)
 
@@ -71,6 +72,7 @@ class SIMPLib_EXPORT ComparisonInputsAdvanced : public QObject
   PYB11_METHOD(void addInput OVERLOAD int,unionOperator bool,invertComparison QVector<AbstractComparison::Pointer>,comparisons)
   PYB11_METHOD(void addInput OVERLOAD AbstractComparison::Pointer,input)
   PYB11_METHOD(int size)
+  // clang-format on
 
 public:
   ComparisonInputsAdvanced();

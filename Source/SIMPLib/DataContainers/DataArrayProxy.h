@@ -95,6 +95,8 @@ public:
    */
   DataArrayProxy();
 
+  ~DataArrayProxy();
+
   /**
    * @brief DataArrayProxy
    * @param da_path
@@ -111,6 +113,13 @@ public:
   DataArrayProxy(const DataArrayProxy& rhs);
 
   /**
+   * @brief DataArrayProxy
+   */
+  DataArrayProxy(DataArrayProxy&&) noexcept;
+
+  DataArrayProxy& operator=(DataArrayProxy&&) = delete; // Move Assignment Not Implemented
+
+  /**
    * @brief Returns the appropriate flag for the primitive type
    * @param pType The primitive type
    * @return
@@ -122,7 +131,7 @@ public:
    * @param json
    * @return
    */
-  void writeJson(QJsonObject& json);
+  void writeJson(QJsonObject& json) const;
 
   /**
    * @brief Reads the contents of the the json object 'json' into the proxy
@@ -171,7 +180,7 @@ public:
    * @brief setName
    * @param name
    */
-  void setName(const QString& name);
+  void setName(const QString& m_Name);
 
   /**
    * @brief getName
@@ -179,20 +188,78 @@ public:
    */
   QString getName() const;
 
-  //----- Our variables, publicly available
-  uint8_t flag = SIMPL::Unchecked;
-  int version = 0;
-  QString path;
-  QString name;
-  QString objectType;
-  QVector<size_t> tupleDims;
-  QVector<size_t> compDims;
+  /**
+   * @brief setPath
+   * @param objType
+   */
+  void setPath(const QString& objType);
+
+  /**
+   * @brief getPath
+   * @return
+   */
+  QString getPath() const;
+
+  /**
+   * @brief setObjectType
+   * @param objType
+   */
+  void setObjectType(const QString& objType);
+
+  /**
+   * @brief getObjectType
+   * @return
+   */
+  QString getObjectType() const;
+
+  /**
+   * @brief setTupleDims
+   * @param tDims
+   */
+  void setTupleDims(const QVector<size_t>& tDims);
+
+  /**
+   * @brief getTupleDims
+   * @return
+   */
+  QVector<size_t> getTupleDims() const;
+
+  /**
+   * @brief setCompDims
+   * @param cDims
+   */
+  void setCompDims(const QVector<size_t>& cDims);
+
+  /**
+   * @brief getCompDims
+   * @return
+   */
+  QVector<size_t> getCompDims() const;
 
 private:
-  QJsonArray writeVector(QVector<size_t> vector);
+  uint8_t m_Flag = SIMPL::Unchecked;
+  int m_Version = 0;
+  QString m_Path;
+  QString m_Name;
+  QString m_ObjectType;
+  QVector<size_t> m_TupleDims;
+  QVector<size_t> m_CompDims;
 
+  /**
+   * @brief writeVector
+   * @param vector
+   * @return
+   */
+  QJsonArray writeVector(QVector<size_t> vector) const;
+
+  /**
+   * @brief readVector
+   * @param jsonArray
+   * @return
+   */
   QVector<size_t> readVector(QJsonArray jsonArray);
 };
+
 Q_DECLARE_OPERATORS_FOR_FLAGS(DataArrayProxy::PrimitiveTypeFlags)
 
 Q_DECLARE_METATYPE(DataArrayProxy)

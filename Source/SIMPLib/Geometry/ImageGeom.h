@@ -49,6 +49,8 @@ namespace SIMPL {
  */
 class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
 {
+  // clang-format off
+
   PYB11_CREATE_BINDINGS(ImageGeom SUPERCLASS IGeometryGrid)
   PYB11_STATIC_CREATION(CreateGeometry ARGS QString)
   
@@ -68,333 +70,332 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
   PYB11_METHOD(SIMPL::Tuple3FVec getOrigin OVERLOAD CONST_METHOD)
 
   PYB11_METHOD(SIMPL::Tuple6FVec getBoundingBox OVERLOAD)
+  // clang-format on
 
+public:
+  SIMPL_SHARED_POINTERS(ImageGeom)
+  SIMPL_STATIC_NEW_MACRO(ImageGeom)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ImageGeom, Observable)
 
-  public:
-    SIMPL_SHARED_POINTERS(ImageGeom)
-    SIMPL_STATIC_NEW_MACRO(ImageGeom)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ImageGeom, Observable)
+  ~ImageGeom() override;
 
-    ~ImageGeom() override;
+  using EnumType = unsigned int;
+  enum class ErrorType : EnumType
+  {
+    XOutOfBoundsLow = 0,
+    XOutOfBoundsHigh = 1,
+    YOutOfBoundsLow = 2,
+    YOutOfBoundsHigh = 3,
+    ZOutOfBoundsLow = 4,
+    ZOutOfBoundsHigh = 5,
+    IndexOutOfBounds = 6,
+    NoError = 7
+  };
 
-    using EnumType = unsigned int;
-    enum class ErrorType : EnumType
-    {
-      XOutOfBoundsLow = 0,
-      XOutOfBoundsHigh = 1,
-      YOutOfBoundsLow = 2,
-      YOutOfBoundsHigh = 3,
-      ZOutOfBoundsLow = 4,
-      ZOutOfBoundsHigh = 5,
-      IndexOutOfBounds = 6,
-      NoError = 7
-    };
+  /**
+   * @brief CreateGeometry
+   * @param name
+   * @return
+   */
+  static Pointer CreateGeometry(const QString& name);
 
-    /**
-     * @brief CreateGeometry
-     * @param name
-     * @return
-     */
-    static Pointer CreateGeometry(const QString& name);
+  /**
+   * @brief Sets/Gets the Resolution property
+   */
+  SIMPL_INSTANCE_VEC3_PROPERTY(float, Resolution)
 
-    /**
-    * @brief Sets/Gets the Resolution property
-    */
-    SIMPL_INSTANCE_VEC3_PROPERTY(float, Resolution)
+  /**
+   * @brief Sets/Gets the Origin property
+   */
+  SIMPL_INSTANCE_VEC3_PROPERTY(float, Origin)
 
-    /**
-    * @brief Sets/Gets the Origin property
-    */
-    SIMPL_INSTANCE_VEC3_PROPERTY(float, Origin)
-    
-    /**
-     * @brief getBoundingBox
-     * @param boundingBox The bounding box will be stored in the input argument in the following order:
-     * xMin, xMax, yMin, yMax, zMin, zMax
-     */
-    void getBoundingBox(float* boundingBox);
-    
-    /**
-     * @brief getBoundingBox
-     * @param boundingBox The bounding box will be stored in the input argument in the following order:
-     * xMin, xMax, yMin, yMax, zMin, zMax
-     */
-    SIMPL::Tuple6FVec getBoundingBox();
+  /**
+   * @brief getBoundingBox
+   * @param boundingBox The bounding box will be stored in the input argument in the following order:
+   * xMin, xMax, yMin, yMax, zMin, zMax
+   */
+  void getBoundingBox(float* boundingBox);
 
-// -----------------------------------------------------------------------------
-// Inherited from IGeometry
-// -----------------------------------------------------------------------------
+  /**
+   * @brief getBoundingBox
+   * @param boundingBox The bounding box will be stored in the input argument in the following order:
+   * xMin, xMax, yMin, yMax, zMin, zMax
+   */
+  SIMPL::Tuple6FVec getBoundingBox();
 
-    /**
-     * @brief initializeWithZeros
-     */
-    void initializeWithZeros() override;
+  // -----------------------------------------------------------------------------
+  // Inherited from IGeometry
+  // -----------------------------------------------------------------------------
 
-    /**
-     * @brief getNumberOfElements
-     * @return
-     */
-    size_t getNumberOfElements() override;
+  /**
+   * @brief initializeWithZeros
+   */
+  void initializeWithZeros() override;
 
-    /**
-     * @brief findElementSizes
-     * @return
-     */
-    int findElementSizes() override;
+  /**
+   * @brief getNumberOfElements
+   * @return
+   */
+  size_t getNumberOfElements() override;
 
-    /**
-     * @brief getElementSizes
-     * @return
-     */
-    FloatArrayType::Pointer getElementSizes() override;
+  /**
+   * @brief findElementSizes
+   * @return
+   */
+  int findElementSizes() override;
 
-    /**
-     * @brief deleteElementSizes
-     */
-    void deleteElementSizes() override;
+  /**
+   * @brief getElementSizes
+   * @return
+   */
+  FloatArrayType::Pointer getElementSizes() override;
 
-    /**
-     * @brief findElementsContainingVert
-     * @return
-     */
-    int findElementsContainingVert() override;
+  /**
+   * @brief deleteElementSizes
+   */
+  void deleteElementSizes() override;
 
-    /**
-     * @brief getElementsContainingVert
-     * @return
-     */
-    ElementDynamicList::Pointer getElementsContainingVert() override;
+  /**
+   * @brief findElementsContainingVert
+   * @return
+   */
+  int findElementsContainingVert() override;
 
-    /**
-     * @brief deleteElementsContainingVert
-     */
-    void deleteElementsContainingVert() override;
+  /**
+   * @brief getElementsContainingVert
+   * @return
+   */
+  ElementDynamicList::Pointer getElementsContainingVert() override;
 
-    /**
-     * @brief findElementNeighbors
-     * @return
-     */
-    int findElementNeighbors() override;
+  /**
+   * @brief deleteElementsContainingVert
+   */
+  void deleteElementsContainingVert() override;
 
-    /**
-     * @brief getElementNeighbors
-     * @return
-     */
-    ElementDynamicList::Pointer getElementNeighbors() override;
+  /**
+   * @brief findElementNeighbors
+   * @return
+   */
+  int findElementNeighbors() override;
 
-    /**
-     * @brief deleteElementNeighbors
-     */
-    void deleteElementNeighbors() override;
+  /**
+   * @brief getElementNeighbors
+   * @return
+   */
+  ElementDynamicList::Pointer getElementNeighbors() override;
 
-    /**
-     * @brief findElementCentroids
-     * @return
-     */
-    int findElementCentroids() override;
+  /**
+   * @brief deleteElementNeighbors
+   */
+  void deleteElementNeighbors() override;
 
-    /**
-     * @brief getElementCentroids
-     * @return
-     */
-    FloatArrayType::Pointer getElementCentroids() override;
+  /**
+   * @brief findElementCentroids
+   * @return
+   */
+  int findElementCentroids() override;
 
-    /**
-     * @brief deleteElementCentroids
-     */
-    void deleteElementCentroids() override;
+  /**
+   * @brief getElementCentroids
+   * @return
+   */
+  FloatArrayType::Pointer getElementCentroids() override;
 
-    /**
-     * @brief getParametricCenter
-     * @param pCoords
-     */
-    void getParametricCenter(double pCoords[3]) override;
+  /**
+   * @brief deleteElementCentroids
+   */
+  void deleteElementCentroids() override;
 
-    /**
-     * @brief getShapeFunctions
-     * @param pCoords
-     * @param shape
-     */
-    void getShapeFunctions(double pCoords[3], double* shape) override;
+  /**
+   * @brief getParametricCenter
+   * @param pCoords
+   */
+  void getParametricCenter(double pCoords[3]) override;
 
-    /**
-     * @brief findDerivatives
-     * @param field
-     * @param derivatives
-     */
-    void findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable = nullptr) override;
+  /**
+   * @brief getShapeFunctions
+   * @param pCoords
+   * @param shape
+   */
+  void getShapeFunctions(double pCoords[3], double* shape) override;
 
-    /**
-     * @brief getInfoString
-     * @return Returns a formatted string that contains general infomation about
-     * the instance of the object.
-     */
-    QString getInfoString(SIMPL::InfoStringFormat format) override;
+  /**
+   * @brief findDerivatives
+   * @param field
+   * @param derivatives
+   */
+  void findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable = nullptr) override;
 
-    /**
-     * @brief writeGeometryToHDF5
-     * @param parentId
-     * @param writeXdmf
-     * @return
-     */
-    int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) override;
+  /**
+   * @brief getInfoString
+   * @return Returns a formatted string that contains general infomation about
+   * the instance of the object.
+   */
+  QString getInfoString(SIMPL::InfoStringFormat format) override;
 
-    /**
-     * @brief writeXdmf
-     * @param out
-     * @param dcName
-     * @param hdfFileName
-     * @return
-     */
-    int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) override;
+  /**
+   * @brief writeGeometryToHDF5
+   * @param parentId
+   * @param writeXdmf
+   * @return
+   */
+  int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) override;
 
-    /**
-     * @brief readGeometryFromHDF5
-     * @param parentId
-     * @param preflight
-     * @return
-     */
-    int readGeometryFromHDF5(hid_t parentId, bool preflight) override;
+  /**
+   * @brief writeXdmf
+   * @param out
+   * @param dcName
+   * @param hdfFileName
+   * @return
+   */
+  int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) override;
 
-    /**
-     * @brief deepCopy
-     * @return
-     */
-    IGeometry::Pointer deepCopy(bool forceNoAllocate = false) override;
+  /**
+   * @brief readGeometryFromHDF5
+   * @param parentId
+   * @param preflight
+   * @return
+   */
+  int readGeometryFromHDF5(hid_t parentId, bool preflight) override;
 
-    /**
-     * @brief addAttributeMatrix
-     */
-    void addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data) override;
+  /**
+   * @brief deepCopy
+   * @return
+   */
+  IGeometry::Pointer deepCopy(bool forceNoAllocate = false) override;
 
-// -----------------------------------------------------------------------------
-// Inherited from IGeometryGrid
-// -----------------------------------------------------------------------------
-    
-    SIMPL_INSTANCE_VEC3_PROPERTY_VO(size_t, Dimensions)
+  /**
+   * @brief addAttributeMatrix
+   */
+  void addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data) override;
 
-    size_t getXPoints() override;
-    size_t getYPoints() override;
-    size_t getZPoints() override;
+  // -----------------------------------------------------------------------------
+  // Inherited from IGeometryGrid
+  // -----------------------------------------------------------------------------
 
-    void getPlaneCoords(size_t idx[3], float coords[3]) override;
-    void getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]) override;
-    void getPlaneCoords(size_t idx, float coords[3]) override;
-    
-    void getPlaneCoords(size_t idx[3], double coords[3]) override;
-    void getPlaneCoords(size_t x, size_t y, size_t z, double coords[3]) override;
-    void getPlaneCoords(size_t idx, double coords[3]) override;
+  SIMPL_INSTANCE_VEC3_PROPERTY_VO(size_t, Dimensions)
 
-    void getCoords(size_t idx[3], float coords[3]) override;
-    void getCoords(size_t x, size_t y, size_t z, float coords[3]) override;
-    void getCoords(size_t idx, float coords[3]) override;
-    
-    void getCoords(size_t idx[3], double coords[3]) override;
-    void getCoords(size_t x, size_t y, size_t z, double coords[3]) override;
-    void getCoords(size_t idx, double coords[3]) override;
+  size_t getXPoints() override;
+  size_t getYPoints() override;
+  size_t getZPoints() override;
 
-    // -----------------------------------------------------------------------------
-    // Misc. ImageGeometry Methods
-    // -----------------------------------------------------------------------------
-    /**
-     * @brief computeCellIndex This method will compute the X, Y & Z Index based
-     * on a given set of coordinates.
-     *
-     * If an ImageGeometry has dimensions 10x20x30 with a resolution of
-     * 0.5 x 0.5 x 0.5 and an Origin of 4.0, 6.0, 10.0 then following examples
-     * are calculated:
-     *
-     * float coords[3] = {4.5f, 9.23f, 12.78f};
-     *
-     * The X, Y, & Z Cell indices would be
-     * Cell[0] = 1
-     * Cell[1] = 6
-     * Cell[2] = 5
-     *
-     * and the raw index into any Cell array would be 1061.
-     *
-     * @param coords The Coords to check
-     * @param index The returned cell indices
-     * @return Int error code. There can be multiple failure mechanisms when doing
-     * this calculation. Any return value != ErrorType::NoError is a failure to compute the indices.
-     */
-    ErrorType computeCellIndex(float coords[3], size_t index[3]);
+  void getPlaneCoords(size_t idx[3], float coords[3]) override;
+  void getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]) override;
+  void getPlaneCoords(size_t idx, float coords[3]) override;
 
-    /**
-    * @brief computeCellIndex This method will compute the X, Y & Z Index based
-    * on a given set of coordinates.
-    *
-    * If an ImageGeometry has dimensions 10x20x30 with a resolution of
-    * 0.5 x 0.5 x 0.5 and an Origin of 4.0, 6.0, 10.0 then following examples
-    * are calculated:
-    *
-    * float coords[3] = {4.5f, 9.23f, 12.78f};
-    *
-    * The X, Y, & Z Cell indices would be
-    * Cell[0] = 1
-    * Cell[1] = 6
-    * Cell[2] = 5
-    *
-    * and the raw index into any Cell array would be 1061.
-    *
-    * @param coords The Coords to check
-    * @param index The returned index into a scalar array
-    * @return Int error code. There can be multiple failure mechanisms when doing
-    * this calculation. Any return value != ErrorType::NoError is a failure to compute the indices.
-    */
-    ErrorType computeCellIndex(float coords[3], size_t& index);
+  void getPlaneCoords(size_t idx[3], double coords[3]) override;
+  void getPlaneCoords(size_t x, size_t y, size_t z, double coords[3]) override;
+  void getPlaneCoords(size_t idx, double coords[3]) override;
 
-  protected:
+  void getCoords(size_t idx[3], float coords[3]) override;
+  void getCoords(size_t x, size_t y, size_t z, float coords[3]) override;
+  void getCoords(size_t idx, float coords[3]) override;
 
-    ImageGeom();
+  void getCoords(size_t idx[3], double coords[3]) override;
+  void getCoords(size_t x, size_t y, size_t z, double coords[3]) override;
+  void getCoords(size_t idx, double coords[3]) override;
 
-    /**
-     * @brief gatherMetaData
-     * @param parentid
-     * @param volDims
-     * @param spacing
-     * @param origin
-     * @param spatialDims
-     * @param geomName
-     * @param preflight
-     * @return
-     */
-    int gatherMetaData(hid_t parentid, size_t volDims[3], float spacing[3], float origin[3], unsigned int spatialDims, QString geomName, bool preflight);
+  // -----------------------------------------------------------------------------
+  // Misc. ImageGeometry Methods
+  // -----------------------------------------------------------------------------
+  /**
+   * @brief computeCellIndex This method will compute the X, Y & Z Index based
+   * on a given set of coordinates.
+   *
+   * If an ImageGeometry has dimensions 10x20x30 with a resolution of
+   * 0.5 x 0.5 x 0.5 and an Origin of 4.0, 6.0, 10.0 then following examples
+   * are calculated:
+   *
+   * float coords[3] = {4.5f, 9.23f, 12.78f};
+   *
+   * The X, Y, & Z Cell indices would be
+   * Cell[0] = 1
+   * Cell[1] = 6
+   * Cell[2] = 5
+   *
+   * and the raw index into any Cell array would be 1061.
+   *
+   * @param coords The Coords to check
+   * @param index The returned cell indices
+   * @return Int error code. There can be multiple failure mechanisms when doing
+   * this calculation. Any return value != ErrorType::NoError is a failure to compute the indices.
+   */
+  ErrorType computeCellIndex(float coords[3], size_t index[3]);
 
-    /**
-     * @brief setElementsContaingVert
-     * @param elementsContaingVert
-     */
-    void setElementsContainingVert(ElementDynamicList::Pointer elementsContainingVert) override;
+  /**
+   * @brief computeCellIndex This method will compute the X, Y & Z Index based
+   * on a given set of coordinates.
+   *
+   * If an ImageGeometry has dimensions 10x20x30 with a resolution of
+   * 0.5 x 0.5 x 0.5 and an Origin of 4.0, 6.0, 10.0 then following examples
+   * are calculated:
+   *
+   * float coords[3] = {4.5f, 9.23f, 12.78f};
+   *
+   * The X, Y, & Z Cell indices would be
+   * Cell[0] = 1
+   * Cell[1] = 6
+   * Cell[2] = 5
+   *
+   * and the raw index into any Cell array would be 1061.
+   *
+   * @param coords The Coords to check
+   * @param index The returned index into a scalar array
+   * @return Int error code. There can be multiple failure mechanisms when doing
+   * this calculation. Any return value != ErrorType::NoError is a failure to compute the indices.
+   */
+  ErrorType computeCellIndex(float coords[3], size_t& index);
 
-    /**
-     * @brief setElementNeighbors
-     * @param elementNeighbors
-     */
-    void setElementNeighbors(ElementDynamicList::Pointer elementsNeighbors) override;
+protected:
+  ImageGeom();
 
-    /**
-     * @brief setElementCentroids
-     * @param elementCentroids
-     */
-    void setElementCentroids(FloatArrayType::Pointer elementCentroids) override;
+  /**
+   * @brief gatherMetaData
+   * @param parentid
+   * @param volDims
+   * @param spacing
+   * @param origin
+   * @param spatialDims
+   * @param geomName
+   * @param preflight
+   * @return
+   */
+  int gatherMetaData(hid_t parentid, size_t volDims[3], float spacing[3], float origin[3], unsigned int spatialDims, QString geomName, bool preflight);
 
-    /**
-     * @brief setElementSizes
-     * @param elementSizes
-     */
-    void setElementSizes(FloatArrayType::Pointer elementSizes) override;
+  /**
+   * @brief setElementsContaingVert
+   * @param elementsContaingVert
+   */
+  void setElementsContainingVert(ElementDynamicList::Pointer elementsContainingVert) override;
 
-  private:
-    FloatArrayType::Pointer m_VoxelSizes;
+  /**
+   * @brief setElementNeighbors
+   * @param elementNeighbors
+   */
+  void setElementNeighbors(ElementDynamicList::Pointer elementsNeighbors) override;
 
-    friend class FindImageDerivativesImpl;
+  /**
+   * @brief setElementCentroids
+   * @param elementCentroids
+   */
+  void setElementCentroids(FloatArrayType::Pointer elementCentroids) override;
 
-  public:
-    ImageGeom(const ImageGeom&) = delete;      // Copy Constructor Not Implemented
-    ImageGeom(ImageGeom&&) = delete;           // Move Constructor Not Implemented
-    ImageGeom& operator=(const ImageGeom&) = delete; // Copy Assignment Not Implemented
-    ImageGeom& operator=(ImageGeom&&) = delete;      // Move Assignment Not Implemented
+  /**
+   * @brief setElementSizes
+   * @param elementSizes
+   */
+  void setElementSizes(FloatArrayType::Pointer elementSizes) override;
+
+private:
+  FloatArrayType::Pointer m_VoxelSizes;
+
+  friend class FindImageDerivativesImpl;
+
+public:
+  ImageGeom(const ImageGeom&) = delete;            // Copy Constructor Not Implemented
+  ImageGeom(ImageGeom&&) = delete;                 // Move Constructor Not Implemented
+  ImageGeom& operator=(const ImageGeom&) = delete; // Copy Assignment Not Implemented
+  ImageGeom& operator=(ImageGeom&&) = delete;      // Move Assignment Not Implemented
 };
 
 

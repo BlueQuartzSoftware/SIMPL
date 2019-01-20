@@ -53,12 +53,13 @@ class SIMPLib_EXPORT DataContainerArrayProxy
   PYB11_CREATE_BINDINGS(DataContainerArrayProxy)
 
   PYB11_CREATION()
-  using DataContainersMap = QMap<QString, DataContainerProxy>;
 
   PYB11_PROPERTY(DataContainersMap DataContainers READ getDataContainers WRITE setDataContainers)
   PYB11_METHOD(DataContainerProxy.& getDataContainerProxy ARGS name RETURN_VALUE_POLICY py::return_value_policy::reference)
 
 public:
+  using StorageType = QMap<QString, DataContainerProxy>;
+
   /**
    * @brief DataContainerArrayProxy
    */
@@ -82,6 +83,17 @@ public:
   virtual ~DataContainerArrayProxy();
 
   /**
+   * @brief DataContainerArrayProxy
+   */
+  DataContainerArrayProxy(DataContainerArrayProxy&&) noexcept;
+
+  /**
+   * @brief operator =
+   * @return
+   */
+  DataContainerArrayProxy& operator=(DataContainerArrayProxy&&) noexcept;
+
+  /**
    * @brief MergeProxies
    * @param fileProxy
    * @param cacheProxy
@@ -93,7 +105,7 @@ public:
    * @brief operator =
    * @param rhs
    */
-  void operator=(const DataContainerArrayProxy& rhs);
+  DataContainerArrayProxy& operator=(const DataContainerArrayProxy& rhs);
 
   /**
    * @brief operator ==
@@ -125,13 +137,20 @@ public:
   /**
    * @brief Get the data containers (Python Binding)
    */
-  QMap<QString, DataContainerProxy> getDataContainers();
+  QMap<QString, DataContainerProxy>& getDataContainers();
 
   /**
    * @brief Get the data containers (Python Binding)
    * @param new DataContainers map
    */
-  void setDataContainers(QMap<QString, DataContainerProxy>);
+  void setDataContainers(QMap<QString, DataContainerProxy>&);
+
+  /**
+   * @brief insertDataContainer
+   * @param name
+   * @param proxy
+   */
+  void insertDataContainer(const QString& name, DataContainerProxy& proxy);
 
   /**
    * @brief Sets the flags of the proxy items that match the geometry, attribute matrix type, primitive type, and number of components flags that are input as parameters.
@@ -145,7 +164,7 @@ public:
    * then any component dimensions are flagged/unflagged.
    */
   void setFlags(uint8_t flag, DataContainerProxy::DCGeometryTypeFlags dcGeoms = DataContainerProxy::Any_DCGeomType, AttributeMatrixProxy::AMTypeFlags amTypes = AttributeMatrixProxy::Any_AMType,
-                DataArrayProxy::PrimitiveTypeFlags primitiveTypes = DataArrayProxy::Any_PType, DataArrayProxy::CompDimsVector compDimsVector = DataArrayProxy::CompDimsVector());
+                DataArrayProxy::PrimitiveTypeFlags primitiveTypes = DataArrayProxy::Any_PType, const DataArrayProxy::CompDimsVector& compDimsVector = DataArrayProxy::CompDimsVector());
 
   /**
    * @brief reverseFlags
@@ -197,16 +216,15 @@ public:
    */
   bool readJson(QJsonObject& json);
 
-  //----- Our variables, publicly available
-  QMap<QString, DataContainerProxy> dataContainers;
-
 private:
+  QMap<QString, DataContainerProxy> m_DataContainers;
+
   /**
    * @brief Writes the contents of the map to a json array
    * @param map
    * @return QJsonArray
    */
-  QJsonArray writeMap(QMap<QString, DataContainerProxy> map) const;
+  QJsonArray writeMap(const QMap<QString, DataContainerProxy>& map) const;
 
   /**
    * @brief Reads the contents of the json array to a QMap

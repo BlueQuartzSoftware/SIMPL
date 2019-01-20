@@ -45,6 +45,7 @@
 */
 class SIMPLib_EXPORT ComparisonSet : public AbstractComparison
 {
+  // clang-format off
   PYB11_CREATE_BINDINGS(ComparisonSet SUPERCLASS AbstractComparison)
   PYB11_CREATION()
   typedef AbstractComparison::Pointer AbstractComparisonPtr;
@@ -53,6 +54,7 @@ class SIMPLib_EXPORT ComparisonSet : public AbstractComparison
   PYB11_PROPERTY(int UnionOperator READ getUnionOperator WRITE setUnionOperator)
   PYB11_METHOD(void addComparison ARGS AbstractComparisonPtr,comparison)
   PYB11_METHOD(void insertComparison ARGS int,index AbstractComparisonPtr,comparison)
+  // clang-format om
 public:
   SIMPL_SHARED_POINTERS(ComparisonSet)
   SIMPL_STATIC_NEW_MACRO(ComparisonSet)

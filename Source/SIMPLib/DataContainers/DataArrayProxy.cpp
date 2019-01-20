@@ -46,11 +46,11 @@ DataArrayProxy::DataArrayProxy() = default;
 //
 // -----------------------------------------------------------------------------
 DataArrayProxy::DataArrayProxy(const QString& da_path, const QString& da_name, uint8_t da_flag, const QString& da_objectType, int da_version)
-: flag(da_flag)
-, version(da_version)
-, path(da_path)
-, name(da_name)
-, objectType(da_objectType)
+: m_Flag(da_flag)
+, m_Version(da_version)
+, m_Path(da_path)
+, m_Name(da_name)
+, m_ObjectType(da_objectType)
 {
 }
 
@@ -59,27 +59,33 @@ DataArrayProxy::DataArrayProxy(const QString& da_path, const QString& da_name, u
 // -----------------------------------------------------------------------------
 DataArrayProxy::DataArrayProxy(const DataArrayProxy& rhs)
 {
-  flag = rhs.flag;
-  version = rhs.version;
-  path = rhs.path;
-  name = rhs.name;
-  objectType = rhs.objectType;
-  tupleDims = rhs.tupleDims;
-  compDims = rhs.compDims;
+  m_Flag = rhs.m_Flag;
+  m_Version = rhs.m_Version;
+  m_Path = rhs.m_Path;
+  m_Name = rhs.m_Name;
+  m_ObjectType = rhs.m_ObjectType;
+  m_TupleDims = rhs.m_TupleDims;
+  m_CompDims = rhs.m_CompDims;
 }
+
+// -----------------------------------------------------------------------------
+DataArrayProxy::~DataArrayProxy() = default;
+
+// -----------------------------------------------------------------------------
+DataArrayProxy::DataArrayProxy(DataArrayProxy&& dap) noexcept = default;
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayProxy::writeJson(QJsonObject& json)
+void DataArrayProxy::writeJson(QJsonObject& json) const
 {
-  json["Flag"] = static_cast<double>(flag);
-  json["Version"] = static_cast<double>(version);
-  json["Path"] = path;
-  json["Name"] = name;
-  json["Object Type"] = objectType;
-  json["Tuple Dimensions"] = writeVector(tupleDims);
-  json["Component Dimensions"] = writeVector(compDims);
+  json["Flag"] = static_cast<double>(m_Flag);
+  json["Version"] = static_cast<double>(m_Version);
+  json["Path"] = m_Path;
+  json["Name"] = m_Name;
+  json["Object Type"] = m_ObjectType;
+  json["Tuple Dimensions"] = writeVector(m_TupleDims);
+  json["Component Dimensions"] = writeVector(m_CompDims);
 }
 
 // -----------------------------------------------------------------------------
@@ -92,14 +98,14 @@ bool DataArrayProxy::readJson(const QJsonObject& json)
   {
     if(json["Flag"].toDouble() >= std::numeric_limits<uint8_t>::min() && json["Flag"].toDouble() <= std::numeric_limits<uint8_t>::max())
     {
-      flag = static_cast<uint8_t>(json["Flag"].toDouble());
+      m_Flag = static_cast<uint8_t>(json["Flag"].toDouble());
     }
-    version = json["Version"].toInt();
-    path = json["Path"].toString();
-    name = json["Name"].toString();
-    objectType = json["Object Type"].toString();
-    tupleDims = readVector(json["Tuple Dimensions"].toArray());
-    compDims = readVector(json["Component Dimensions"].toArray());
+    m_Version = json["Version"].toInt();
+    m_Path = json["Path"].toString();
+    m_Name = json["Name"].toString();
+    m_ObjectType = json["Object Type"].toString();
+    m_TupleDims = readVector(json["Tuple Dimensions"].toArray());
+    m_CompDims = readVector(json["Component Dimensions"].toArray());
     return true;
   }
   return false;
@@ -122,13 +128,13 @@ void DataArrayProxy::ReadDataArrayStructure(hid_t attrMatGid, QMap<QString, Data
 
     DataArrayProxy proxy(h5InternalPath, dataArrayName, SIMPL::Unchecked);
 
-    herr_t err = QH5Lite::readVectorAttribute(attrMatGid, dataArrayName, SIMPL::HDF5::TupleDimensions, proxy.tupleDims);
+    herr_t err = QH5Lite::readVectorAttribute(attrMatGid, dataArrayName, SIMPL::HDF5::TupleDimensions, proxy.m_TupleDims);
     if(err < 0)
     {
       std::cout << "Error Reading the Tuple Dimensions for DataArray " << dataArrayName.toStdString() << std::endl;
     }
 
-    err = QH5Lite::readVectorAttribute(attrMatGid, dataArrayName, SIMPL::HDF5::ComponentDimensions, proxy.compDims);
+    err = QH5Lite::readVectorAttribute(attrMatGid, dataArrayName, SIMPL::HDF5::ComponentDimensions, proxy.m_CompDims);
     if(err < 0)
     {
       std::cout << "Error Reading the Component Dimensions for DataArray " << dataArrayName.toStdString() << std::endl;
@@ -138,19 +144,19 @@ void DataArrayProxy::ReadDataArrayStructure(hid_t attrMatGid, QMap<QString, Data
     if(req != nullptr)
     {
       QVector<QVector<size_t>> cDims = req->getComponentDimensions();
-      if(cDims.empty() || cDims.contains(proxy.compDims))
+      if(cDims.empty() || cDims.contains(proxy.m_CompDims))
       {
         cDimsResult = true;
       }
     }
 
-    err = QH5Lite::readScalarAttribute(attrMatGid, dataArrayName, SIMPL::HDF5::DataArrayVersion, proxy.version);
+    err = QH5Lite::readScalarAttribute(attrMatGid, dataArrayName, SIMPL::HDF5::DataArrayVersion, proxy.m_Version);
     if(err < 0)
     {
       std::cout << "Error Reading the Version for DataArray " << dataArrayName.toStdString() << std::endl;
     }
 
-    err = QH5Lite::readStringAttribute(attrMatGid, dataArrayName, SIMPL::HDF5::ObjectType, proxy.objectType);
+    err = QH5Lite::readStringAttribute(attrMatGid, dataArrayName, SIMPL::HDF5::ObjectType, proxy.m_ObjectType);
     if(err < 0)
     {
       std::cout << "Error Reading the Object Type for DataArray " << dataArrayName.toStdString() << std::endl;
@@ -159,9 +165,9 @@ void DataArrayProxy::ReadDataArrayStructure(hid_t attrMatGid, QMap<QString, Data
     if(req != nullptr)
     {
       QVector<QString> daTypes = req->getDATypes();
-      if((daTypes.empty() || daTypes.contains(proxy.objectType)) && cDimsResult)
+      if((daTypes.empty() || daTypes.contains(proxy.m_ObjectType)) && cDimsResult)
       {
-        proxy.flag = Qt::Checked;
+        proxy.m_Flag = Qt::Checked;
       }
     }
 
@@ -179,13 +185,14 @@ DataArrayProxy& DataArrayProxy::operator=(const DataArrayProxy& rhs) = default;
 // -----------------------------------------------------------------------------
 bool DataArrayProxy::operator==(const DataArrayProxy& rhs) const
 {
-  return flag == rhs.flag && version == rhs.version && path == rhs.path && name == rhs.name && objectType == rhs.objectType && tupleDims == rhs.tupleDims && compDims == rhs.compDims;
+  return m_Flag == rhs.m_Flag && m_Version == rhs.m_Version && m_Path == rhs.m_Path && m_Name == rhs.m_Name && m_ObjectType == rhs.m_ObjectType && m_TupleDims == rhs.m_TupleDims &&
+         m_CompDims == rhs.m_CompDims;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QJsonArray DataArrayProxy::writeVector(QVector<size_t> vector)
+QJsonArray DataArrayProxy::writeVector(QVector<size_t> vector) const
 {
   QJsonArray jsonArray;
   for(const auto& num : vector)
@@ -303,8 +310,8 @@ void DataArrayProxy::updatePath(DataArrayPath::RenameType renamePath)
 
   if(oldPath.getDataArrayName() != newPath.getDataArrayName())
   {
-    name = newPath.getDataArrayName();
-    path = newPath.serialize();
+    m_Name = newPath.getDataArrayName();
+    m_Path = newPath.serialize();
   }
 }
 
@@ -313,7 +320,7 @@ void DataArrayProxy::updatePath(DataArrayPath::RenameType renamePath)
 // -----------------------------------------------------------------------------
 uint8_t DataArrayProxy::getFlag() const
 {
-  return flag;
+  return m_Flag;
 }
 
 // -----------------------------------------------------------------------------
@@ -321,7 +328,7 @@ uint8_t DataArrayProxy::getFlag() const
 // -----------------------------------------------------------------------------
 void DataArrayProxy::setFlag(uint8_t newFlag)
 {
-  flag = newFlag;
+  m_Flag = newFlag;
 }
 
 // -----------------------------------------------------------------------------
@@ -329,7 +336,7 @@ void DataArrayProxy::setFlag(uint8_t newFlag)
 // -----------------------------------------------------------------------------
 void DataArrayProxy::setName(const QString& aName)
 {
-  name = aName;
+  m_Name = aName;
 }
 
 // -----------------------------------------------------------------------------
@@ -337,5 +344,69 @@ void DataArrayProxy::setName(const QString& aName)
 // -----------------------------------------------------------------------------
 QString DataArrayProxy::getName() const
 {
-  return name;
+  return m_Name;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayProxy::setPath(const QString& objPath)
+{
+  this->m_Path = objPath;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString DataArrayProxy::getPath() const
+{
+  return m_Path;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayProxy::setObjectType(const QString& objType)
+{
+  this->m_ObjectType = objType;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString DataArrayProxy::getObjectType() const
+{
+  return m_ObjectType;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayProxy::setTupleDims(const QVector<size_t>& tDims)
+{
+  m_TupleDims = tDims;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QVector<size_t> DataArrayProxy::getTupleDims() const
+{
+  return m_TupleDims;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayProxy::setCompDims(const QVector<size_t>& cDims)
+{
+  m_CompDims = cDims;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QVector<size_t> DataArrayProxy::getCompDims() const
+{
+  return m_CompDims;
 }

@@ -115,18 +115,18 @@ public:
       DataArrayProxy daProxy = DataArrayProxy("TestPath", "TestName");
 
       AttributeMatrixProxy amProxy = AttributeMatrixProxy("AttributeMatrixProxyTestName");
-      amProxy.dataArrays.insert("TestName", daProxy);
+      amProxy.insertDataArray("TestName", daProxy);
       amProxy.setAMType(AttributeMatrix::Type::Face);
       amProxy.setFlag(3);
       amProxy.setName("AttributeMatrixProxyTestName");
 
       DataContainerProxy dcProxy = DataContainerProxy("DataContainerProxyTestName");
-      dcProxy.attributeMatricies.insert("AttributeMatrixProxyTestName", amProxy);
+      dcProxy.insertAttributeMatrix("AttributeMatrixProxyTestName", amProxy);
       dcProxy.setDCType(1);
       dcProxy.setFlag(4);
       dcProxy.setName("DataContainerProxyTestName");
 
-      m_DcaProxy1.dataContainers.insert("DataContainerProxyTestName", dcProxy);
+      m_DcaProxy1.insertDataContainer("DataContainerProxyTestName", dcProxy);
     }
 
     {

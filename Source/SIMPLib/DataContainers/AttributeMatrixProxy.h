@@ -48,9 +48,7 @@ class SIMPLib_EXPORT AttributeMatrixProxy
 
   PYB11_CREATION()
 
-  typedef QMap<QString, DataArrayProxy> DataArraysMap;
-  typedef AttributeMatrix::Type AMType;
-  PYB11_PROPERTY(DataArraysMap DataArrays READ getDataArrays WRITE setDataArrays)
+  PYB11_PROPERTY(StorageType DataArrays READ getDataArrays WRITE setDataArrays)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
   PYB11_PROPERTY(AMType AMType READ getAMType WRITE setAMType)
   PYB11_PROPERTY(uint8_t Flag READ getFlag WRITE setFlag)
@@ -83,6 +81,8 @@ public:
   };
   Q_DECLARE_FLAGS(AMTypeFlags, AMTypeFlag)
 
+  using StorageType = QMap<QString, DataArrayProxy>;
+
   /**
    * @brief AttributeMatrixProxy
    */
@@ -103,8 +103,8 @@ public:
 
   virtual ~AttributeMatrixProxy();
 
-public:
-  AttributeMatrixProxy(AttributeMatrixProxy&&) = default;           // Move Constructor Not Implemented
+  AttributeMatrixProxy(AttributeMatrixProxy&&) noexcept;
+
   AttributeMatrixProxy& operator=(AttributeMatrixProxy&&) = delete; // Move Assignment Not Implemented
 
   /**
@@ -112,7 +112,7 @@ public:
    * @param amType The attribute matrix type
    * @return
    */
-  static AMTypeFlag AttributeMatrixTypeToFlag(AttributeMatrix::Type amType);
+  static AMTypeFlag AttributeMatrixTypeToFlag(AttributeMatrix::Type m_AMType);
 
   /**
    * @brief operator = method
@@ -129,7 +129,7 @@ public:
    * @param json
    * @return
    */
-  void writeJson(QJsonObject& json);
+  void writeJson(QJsonObject& json) const;
 
   /**
    * @brief Reads the contents of the the json object 'json' into the proxy
@@ -144,7 +144,7 @@ public:
    * @param primitiveTypes
    * @param compDimsVector
    */
-  void setFlags(uint8_t flag, DataArrayProxy::PrimitiveTypeFlags primitiveTypes = DataArrayProxy::Any_PType, DataArrayProxy::CompDimsVector compDimsVector = DataArrayProxy::CompDimsVector());
+  void setFlags(uint8_t m_Flag, DataArrayProxy::PrimitiveTypeFlags primitiveTypes = DataArrayProxy::Any_PType, DataArrayProxy::CompDimsVector compDimsVector = DataArrayProxy::CompDimsVector());
 
   /**
    * @brief Updates the proxy to match a renamed DataArrayPath
@@ -155,20 +155,27 @@ public:
   /**
    * @brief Get the attribute matrices (Python Binding)
    */
-  QMap<QString, DataArrayProxy> getDataArrays();
+  QMap<QString, DataArrayProxy>& getDataArrays();
 
   /**
    * @brief Get the attribute matrices(Python Binding)
    * @param new DataArrayProxy map
    */
-  void setDataArrays(const QMap<QString, DataArrayProxy>&);
+  void setDataArrays(const QMap<QString, DataArrayProxy>& proxies);
 
   /**
    * @brief Get the Data Array proxy
    * @param the name of the data array
    * @return the data array proxy
    */
-  DataArrayProxy& getDataArrayProxy(const QString& name);
+  DataArrayProxy& getDataArrayProxy(const QString& m_Name);
+
+  /**
+   * @brief insertDataArray
+   * @param name
+   * @param proxy
+   */
+  void insertDataArray(const QString& m_Name, const DataArrayProxy& proxy);
 
   /**
    * @brief Get the attribute matrix name (Python Binding)
@@ -179,7 +186,7 @@ public:
    * @brief Set the attribute matrix name (Python Binding)
    * @param new attribute matrix name
    */
-  void setName(const QString& name);
+  void setName(const QString& m_Name);
 
   /**
    * @brief Get the attribute matrix type (Python Binding)
@@ -203,19 +210,18 @@ public:
    */
   void setFlag(uint8_t);
 
-  QMap<QString, DataArrayProxy> dataArrays;
-
 private:
-  uint8_t flag;
-  QString name;
-  AttributeMatrix::Type amType;
+  uint8_t m_Flag;
+  QString m_Name;
+  AttributeMatrix::Type m_AMType;
+  QMap<QString, DataArrayProxy> m_DataArrays;
 
   /**
    * @brief writeMap
    * @param map
    * @return
    */
-  QJsonArray writeMap(QMap<QString, DataArrayProxy> map);
+  QJsonArray writeMap(const QMap<QString, DataArrayProxy>& map) const;
 
   /**
    * @brief readMap

@@ -620,7 +620,7 @@ QString PythonBindingClass::generateMethodCode()
   QString code;
   QTextStream out(&code);
 
-  for(auto line : m_Methods)
+  for(const auto& line : m_Methods)
   {
     QStringList tokens = line.split("(");
     tokens = tokens[1].replace(")", "").trimmed().split(" ");
@@ -654,7 +654,6 @@ QString PythonBindingClass::generateMethodCode()
       .def("set", py::overload_cast<int>(&Pet::set), "Set the pet's age")
       .def("set", py::overload_cast<const std::string &>(&Pet::set), "Set the pet's name");
       */
-#if 1 /* C++14 style */
       out << TAB << ".def(\"" << methodName << "\", py::overload_cast<";
       for(int32_t i = 3; i < tokens.size(); i++)
       {
@@ -671,25 +670,6 @@ QString PythonBindingClass::generateMethodCode()
         out << ", py::const_";
       }
       out << returnValuePolicy << ")";
-
-#else /* C++11 Style */
-      /*
-       * .def("getAttributeMatrix", (AttributeMatrix::Pointer (DataContainer::*)(const QString &)) &DataContainer::getAttributeMatrix, "Set the pet's age")
-       * .def("getAttributeMatrix", (AttributeMatrix::Pointer (DataContainer::*)(const DataArrayPath &)) &DataContainer::getAttributeMatrix, "Set the pet's name")
-       */
-      out << TAB << ".def(\"" << methodName << "\", (" << tokens[0] << " (" << getClassName() << "::*)(";
-      for(int32_t i = 3; i < tokens.size(); i++)
-      {
-        QStringList varPair = tokens[i].split(","); // Split the var,type pair using a comma
-
-        out << varPair[0].replace('.', ' ');
-        if(i != tokens.size() - 1)
-        {
-          out << ", ";
-        }
-      }
-      out << ")) &" << getClassName() << "::" << tokens[1];
-#endif
 
       for(int32_t i = 3; i < tokens.size(); i++)
       {

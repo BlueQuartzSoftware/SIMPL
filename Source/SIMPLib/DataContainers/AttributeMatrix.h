@@ -53,11 +53,12 @@
 #include <QtCore/QVector>
 
 //-- DREAM3D Includes
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/Observable.h"
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/SIMPLib.h"
 
 class AttributeMatrixProxy;
 class DataContainerProxy;
@@ -82,7 +83,7 @@ enum RenameErrorCodes
  */
 class SIMPLib_EXPORT AttributeMatrix : public Observable
 {
-  // This line MUST be first when exposing a class and properties to Python
+  // clang-format off
   PYB11_CREATE_BINDINGS(AttributeMatrix)
   PYB11_STATIC_CREATION(Create ARGS std::vector<size_t> QString AttributeMatrix::Type)
   
@@ -96,7 +97,10 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
   PYB11_METHOD(bool doesAttributeArrayExist ARGS Name)
   PYB11_METHOD(IDataArray removeAttributeArray ARGS Name)
   PYB11_METHOD(int renameAttributeArray ARGS OldName NewName OverWrite)
-  PYB11_METHOD(IDataArray::Pointer getAttributeArray ARGS const.QString.&,name RETURN_VALUE_POLICY py::return_value_policy::reference)
+  PYB11_METHOD(IDataArray::Pointer getAttributeArray OVERLOAD const.QString.&,Name)
+  PYB11_METHOD(IDataArray::Pointer getAttributeArray OVERLOAD const.DataArrayPath.&,Path)
+  // clang-format on
+
 public:
   SIMPL_SHARED_POINTERS(AttributeMatrix)
   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AttributeMatrix, Observable)
@@ -216,7 +220,7 @@ public:
     * @param data The IDataArray::Pointer that will hold the data
     * @return error code if the addition did not work
     */
-    virtual int addAttributeArray(const QString& name, IDataArray::Pointer data);
+    virtual int addAttributeArray(const QString& name, const IDataArray::Pointer& data);
 
     /**
      * @brief Returns the array for a given named array or the equivelant to a
@@ -225,6 +229,12 @@ public:
      */
     virtual IDataArray::Pointer getAttributeArray(const QString& name);
 
+    /**
+     * @brief getAttributeArray
+     * @param path
+     * @return
+     */
+    virtual IDataArray::Pointer getAttributeArray(const DataArrayPath& path);
 
     /**
     * @brief returns a IDataArray based object that is stored in the attribute matrix by a
@@ -284,7 +294,7 @@ public:
     * @brief Resizes an array from the Attribute Matrix
     * @param size The new size of the array
     */
-    void resizeAttributeArrays(QVector<size_t> tDims);
+    void resizeAttributeArrays(const QVector<size_t>& tDims);
 
     /**
      * @brief Returns bool of whether a named array exists
@@ -312,7 +322,7 @@ public:
       //Make sure the name is not empty for the AttributeArrayName. This would be detected below
       // in the call to get either one BUT the reason for the failure would not be evident so we make these explicit checks
       // here and send back nice error messages to ther user/programmer.
-      if (attributeArrayName.isEmpty() == true)
+      if(attributeArrayName.isEmpty())
       {
         if(filter)
         {
@@ -322,7 +332,7 @@ public:
         }
       }
       // Now ask for the actual AttributeArray from the AttributeMatrix
-      if (doesAttributeArrayExist(attributeArrayName) == false)
+      if(!doesAttributeArrayExist(attributeArrayName))
       {
         if(filter)
         {
@@ -360,17 +370,14 @@ public:
      * @param err
      * @return
      */
-    template<class ArrayType, class Filter>
-    typename ArrayType::Pointer getPrereqIDataArray(Filter* filter,
-                                                    QString attributeArrayName,
-                                                    int err)
+    template <class ArrayType, class Filter> typename ArrayType::Pointer getPrereqIDataArray(Filter* filter, const QString& attributeArrayName, int err)
     {
       QString ss;
       typename ArrayType::Pointer attributeArray = ArrayType::NullPointer();
       // Make sure the name is not empty for the AttributeArrayName. This would be detected below
       // in the call to get either one BUT the reason for the failure would not be evident so we make these explicit checks
       // here and send back nice error messages to ther user/programmer.
-      if (attributeArrayName.isEmpty() == true)
+      if(attributeArrayName.isEmpty())
       {
         if(filter)
         {
@@ -380,7 +387,7 @@ public:
         }
       }
       // Now ask for the actual AttributeArray from the AttributeMatrix
-      if (doesAttributeArrayExist(attributeArrayName) == false)
+      if(!doesAttributeArrayExist(attributeArrayName))
       {
         if(filter)
         {
@@ -390,20 +397,17 @@ public:
         }
         return attributeArray;
       }
-      else
+
+      IDataArray::Pointer ptr = getAttributeArray(attributeArrayName);
+      if(std::dynamic_pointer_cast<ArrayType>(ptr) != nullptr)
       {
-        IDataArray::Pointer ptr = getAttributeArray(attributeArrayName);
-        if (std::dynamic_pointer_cast<ArrayType>(ptr) != nullptr)
-        {
-          return std::dynamic_pointer_cast<ArrayType>(ptr);
-        }
-        else
-        {
-          filter->setErrorCondition(err);
-          ss = QObject::tr("Unable to cast input array %1 to the necessary type.").arg(attributeArrayName);
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-        }
+        return std::dynamic_pointer_cast<ArrayType>(ptr);
       }
+
+      filter->setErrorCondition(err);
+      ss = QObject::tr("Unable to cast input array %1 to the necessary type.").arg(attributeArrayName);
+      filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+
       return attributeArray;
     }
 
@@ -426,7 +430,7 @@ public:
       typename ArrayType::Pointer attributeArray = ArrayType::NullPointer();
 
       QString ss;
-      if (attributeArrayName.isEmpty() == true)
+      if(attributeArrayName.isEmpty())
       {
         if(filter)
         {
@@ -568,7 +572,7 @@ public:
      * @brief Sets the Tuple Dimensions for the Attribute Matrix
      * @param tupleDims
      */
-    void setTupleDimensions(QVector<size_t> tupleDims);
+    void setTupleDimensions(const QVector<size_t>& tupleDims);
 
     /**
      * @brief Returns the Tuple Dimensions of the AttributeMatrix
@@ -604,7 +608,7 @@ public:
      * @param preflight
      * @return
      */
-    virtual int addAttributeArrayFromHDF5Path(hid_t gid, QString name, bool preflight);
+    virtual int addAttributeArrayFromHDF5Path(hid_t gid, const QString& name, bool preflight);
 
     /**
      * @brief readAttributeArraysFromHDF5
@@ -623,7 +627,7 @@ public:
      * @param gridType
      * @return
      */
-    virtual QString generateXdmfText(const QString& centering, const QString& dataContainerName, const QString& hdfFileName, const uint8_t gridType = 0);
+    virtual QString generateXdmfText(const QString& centering, const QString& dataContainerName, const QString& hdfFileName, uint8_t gridType = 0);
 
     /**
      * @brief getInfoString Returns a text string in the given format that has information
@@ -645,11 +649,7 @@ public:
      * @param gridType
      * @return
      */
-    virtual QString writeXdmfAttributeData(IDataArray::Pointer array,
-                                           const QString& centering,
-                                           const QString& dataContainerName,
-                                           const QString& hdfFileName,
-                                           const uint8_t gridType = 0);
+    virtual QString writeXdmfAttributeData(const IDataArray::Pointer& array, const QString& centering, const QString& dataContainerName, const QString& hdfFileName, const uint8_t gridType = 0);
 
     /**
      * @brief writeXdmfAttributeDataHelper
@@ -664,15 +664,8 @@ public:
      * @param gridType
      * @return
      */
-    virtual QString writeXdmfAttributeDataHelper(int numComp,
-                                                 const QString& attrType,
-                                                 const QString& dataContainerName,
-                                                 IDataArray::Pointer array,
-                                                 const QString& centering,
-                                                 int precision,
-                                                 const QString& xdmfTypeName,
-                                                 const QString& hdfFileName,
-                                                 const uint8_t gridType = 0);
+    virtual QString writeXdmfAttributeDataHelper(int numComp, const QString& attrType, const QString& dataContainerName, IDataArray::Pointer array, const QString& centering, int precision,
+                                                 const QString& xdmfTypeName, const QString& hdfFileName, uint8_t gridType = 0);
 
   private:
     QVector<size_t> m_TupleDims;

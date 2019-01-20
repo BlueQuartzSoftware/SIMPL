@@ -48,14 +48,15 @@
 
 class ASCIIWizardData
 {
+  // clang-format off
   PYB11_CREATE_BINDINGS(ASCIIWizardData)
   
   PYB11_CREATION(ASCIIWizardData ARGS QString int int)
 
   PYB11_METHOD(void updateDataArrayPath ARGS DataArrayPath::RenameType,renamePath)
   PYB11_METHOD(bool isEmpty)
+  // clang-format on
 
-  
 public:
   ASCIIWizardData() :
     inputFilePath(""),

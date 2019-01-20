@@ -30,42 +30,51 @@
 #pragma once
 
 #include <QtCore/QJsonObject>
+#include <QtCore/QString>
 
-/**
-* @brief
-*/
 typedef struct
 {
-  float angle;
-  float h;
-  float k;
-  float l;
+  qint32 PaddingDigits = 3;
+  quint32 Ordering = 0; /* Ordering=0 = Ascending, Ordering=1 = Descending */
+  qint32 StartIndex = 0;
+  qint32 EndIndex = 1;
+  qint32 IncrementIndex = 1;
+  QString InputPath;
+  QString FilePrefix;
+  QString FileSuffix;
+  QString FileExtension;
 
   void writeJson(QJsonObject& json)
   {
-    json["angle"] = angle;
-    json["h"] = h;
-    json["k"] = k;
-    json["l"] = l;
+    json["PaddingDigits"] = static_cast<double>(PaddingDigits);
+    json["Ordering"] = static_cast<double>(Ordering);
+    json["StartIndex"] = static_cast<double>(StartIndex);
+    json["EndIndex"] = static_cast<double>(EndIndex);
+    json["IncrementIndex"] = static_cast<double>(IncrementIndex);
+    json["InputPath"] = InputPath;
+    json["FilePrefix"] = FilePrefix;
+    json["FileSuffix"] = FileSuffix;
+    json["FileExtension"] = FileExtension;
   }
 
   bool readJson(QJsonObject& json)
   {
-    if (json["angle"].isDouble() && json["h"].isDouble() && json["k"].isDouble() && json["l"].isDouble())
+    if(json["PaddingDigits"].isDouble() && json["Ordering"].isDouble() && json["StartIndex"].isDouble() && json["EndIndex"].isDouble() && json["IncrementIndex"].isDouble() &&
+       json["InputPath"].isString() && json["FilePrefix"].isString() && json["FileSuffix"].isString() && json["FileExtension"].isString())
     {
-      angle = static_cast<float>(json["angle"].toDouble());
-      h = static_cast<float>(json["h"].toDouble());
-      k = static_cast<float>(json["k"].toDouble());
-      l = static_cast<float>(json["l"].toDouble());
+      PaddingDigits = static_cast<qint32>(json["PaddingDigits"].toDouble());
+      Ordering = static_cast<quint32>(json["Ordering"].toDouble());
+      StartIndex = static_cast<qint32>(json["StartIndex"].toDouble());
+      EndIndex = static_cast<qint32>(json["EndIndex"].toDouble());
+      IncrementIndex = static_cast<qint32>(json["IncrementIndex"].toDouble());
+      InputPath = json["InputPath"].toString();
+      FilePrefix = json["FilePrefix"].toString();
+      FileSuffix = json["FileSuffix"].toString();
+      FileExtension = json["FileExtension"].toString();
       return true;
     }
     return false;
   }
+} FileListInfo_t;
 
-} AxisAngleInput_t;
-
-Q_DECLARE_METATYPE(AxisAngleInput_t)
-
-
-
-
+Q_DECLARE_METATYPE(FileListInfo_t)

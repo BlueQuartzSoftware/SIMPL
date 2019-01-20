@@ -62,7 +62,7 @@ class RemoveArraysTest
 
 public:
   RemoveArraysTest() = default;
-  virtual ~RemoveArraysTest() = default;
+  ~RemoveArraysTest() = default;
 
   // -----------------------------------------------------------------------------
   //
@@ -104,21 +104,21 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void setFlags(DataContainerArrayProxy& proxy, QString dataContainerKey, QString attributeMatrixKey, QString dataArrayKey)
+  void setFlags(DataContainerArrayProxy& proxy, const QString& dataContainerKey, const QString& attributeMatrixKey, const QString& dataArrayKey)
   {
-    QMap<QString, DataContainerProxy>::iterator dcIterator = proxy.dataContainers.begin();
-    while(dcIterator != proxy.dataContainers.end())
+    QMap<QString, DataContainerProxy>::iterator dcIterator = proxy.getDataContainers().begin();
+    while(dcIterator != proxy.getDataContainers().end())
     {
       if(dcIterator.key() == dataContainerKey)
       {
-        dcIterator.value().flag = Qt::Checked;
+        dcIterator.value().setFlag(Qt::Checked);
       }
       else
       {
-        dcIterator.value().flag = Qt::Unchecked;
+        dcIterator.value().setFlag(Qt::Unchecked);
 
-        QMap<QString, AttributeMatrixProxy>::iterator amIterator = dcIterator.value().attributeMatricies.begin();
-        while(amIterator != dcIterator.value().attributeMatricies.end())
+        QMap<QString, AttributeMatrixProxy>::iterator amIterator = dcIterator.value().getAttributeMatricies().begin();
+        while(amIterator != dcIterator.value().getAttributeMatricies().end())
         {
           if(amIterator.key() == attributeMatrixKey)
           {
@@ -128,16 +128,16 @@ public:
           {
             amIterator.value().setFlag(Qt::Unchecked);
 
-            QMap<QString, DataArrayProxy>::iterator daIterator = amIterator.value().dataArrays.begin();
-            while(daIterator != amIterator.value().dataArrays.end())
+            QMap<QString, DataArrayProxy>::iterator daIterator = amIterator.value().getDataArrays().begin();
+            while(daIterator != amIterator.value().getDataArrays().end())
             {
               if(daIterator.key() == dataArrayKey)
               {
-                daIterator.value().flag = Qt::Checked;
+                daIterator.value().setFlag(Qt::Checked);
               }
               else
               {
-                daIterator.value().flag = Qt::Unchecked;
+                daIterator.value().setFlag(Qt::Unchecked);
               }
 
               daIterator++;
@@ -253,7 +253,9 @@ public:
     DREAM3D_REGISTER_TEST(TestDeleteDataContainer());
   }
 
-private:
-  RemoveArraysTest(const RemoveArraysTest&); // Copy Constructor Not Implemented
-  void operator=(const RemoveArraysTest&);   // Move assignment Not Implemented
+public:
+  RemoveArraysTest(const RemoveArraysTest&) = delete;            // Copy Constructor Not Implemented
+  RemoveArraysTest(RemoveArraysTest&&) = delete;                 // Move Constructor Not Implemented
+  RemoveArraysTest& operator=(const RemoveArraysTest&) = delete; // Copy Assignment Not Implemented
+  RemoveArraysTest& operator=(RemoveArraysTest&&) = delete;      // Move Assignment Not Implemented
 };

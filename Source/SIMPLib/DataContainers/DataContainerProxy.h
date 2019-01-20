@@ -54,7 +54,6 @@ class SIMPLib_EXPORT DataContainerProxy
 
   PYB11_CREATION()
 
-  using AttributeMatricesMap = QMap<QString, AttributeMatrixProxy>;
 
   PYB11_PROPERTY(AttributeMatricesMap AttributeMatricies READ getAttributeMatricies WRITE setAttributeMatricies)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
@@ -83,6 +82,8 @@ public:
     Any_DCGeomType = 0xFF
   };
   Q_DECLARE_FLAGS(DCGeometryTypeFlags, DCGeometryTypeFlag)
+
+  using StorageType = QMap<QString, AttributeMatrixProxy>;
 
   /**
    * @brief DataContainerProxy
@@ -129,7 +130,7 @@ public:
    * @param json
    * @return
    */
-  void writeJson(QJsonObject& json);
+  void writeJson(QJsonObject& json) const;
 
   /**
    * @brief Reads the contents of the the json object 'json' into the proxy
@@ -141,13 +142,20 @@ public:
   /**
    * @brief Get the attribute matrices (Python Binding)
    */
-  QMap<QString, AttributeMatrixProxy> getAttributeMatricies();
+  QMap<QString, AttributeMatrixProxy>& getAttributeMatricies();
 
   /**
    * @brief Get the attribute matrices(Python Binding)
    * @param new AttributeMatrices map
    */
   void setAttributeMatricies(const QMap<QString, AttributeMatrixProxy>&);
+
+  /**
+   * @brief insertAttributeMatrix
+   * @param name
+   * @param proxy
+   */
+  void insertAttributeMatrix(const QString& m_Name, const AttributeMatrixProxy& proxy);
 
   /**
    * @brief Get the data container name (Python Binding)
@@ -169,7 +177,7 @@ public:
    * @brief Set the data container flag (Python Binding)
    * @param new data container flag
    */
-  void setFlag(uint8_t flag);
+  void setFlag(uint8_t m_Flag);
 
   /**
    * @brief setDCType
@@ -193,7 +201,7 @@ public:
    * @param the name of the attribute matrix
    * @return the attribute matrix proxy
    */
-  AttributeMatrixProxy& getAttributeMatrixProxy(const QString& name);
+  AttributeMatrixProxy& getAttributeMatrixProxy(const QString& m_Name);
 
   /**
    * @brief setFlags
@@ -202,7 +210,7 @@ public:
    * @param primitiveTypes
    * @param compDimsVector
    */
-  void setFlags(uint8_t flag, AttributeMatrixProxy::AMTypeFlags amTypes = AttributeMatrixProxy::Any_AMType, DataArrayProxy::PrimitiveTypeFlags primitiveTypes = DataArrayProxy::Any_PType,
+  void setFlags(uint8_t m_Flag, AttributeMatrixProxy::AMTypeFlags amTypes = AttributeMatrixProxy::Any_AMType, DataArrayProxy::PrimitiveTypeFlags primitiveTypes = DataArrayProxy::Any_PType,
                 const DataArrayProxy::CompDimsVector& compDimsVector = DataArrayProxy::CompDimsVector());
 
   /**
@@ -211,19 +219,18 @@ public:
    */
   void updatePath(DataArrayPath::RenameType renamePath);
 
-  //----- Our variables, publicly available
-  uint8_t flag;
-  QString name;
-  unsigned int dcType;
-  QMap<QString, AttributeMatrixProxy> attributeMatricies;
-
 private:
+  uint8_t m_Flag = Qt::Unchecked;
+  QString m_Name;
+  uint32_t m_DCType = static_cast<uint32_t>(IGeometry::Type::Any);
+  QMap<QString, AttributeMatrixProxy> m_AttributeMatrices;
+
   /**
    * @brief writeMap
    * @param map
    * @return
    */
-  QJsonArray writeMap(QMap<QString, AttributeMatrixProxy> map);
+  QJsonArray writeMap(const QMap<QString, AttributeMatrixProxy>& map) const;
 
   /**
    * @brief readMap

@@ -38,19 +38,15 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerProxy::DataContainerProxy() :
-  flag(Qt::Unchecked),
-  name(""),
-  dcType(static_cast<unsigned int>(IGeometry::Type::Any))
-{}
+DataContainerProxy::DataContainerProxy() = default;
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerProxy::DataContainerProxy(const QString& dc_name, const uint8_t& read_dc, IGeometry::Type dc_type) :
-  flag(read_dc),
-  name(dc_name),
-  dcType(static_cast<unsigned int>(dc_type))
+DataContainerProxy::DataContainerProxy(const QString& dc_name, const uint8_t& read_dc, IGeometry::Type dc_type)
+: m_Flag(read_dc)
+, m_Name(dc_name)
+, m_DCType(static_cast<unsigned int>(dc_type))
 {}
 
 // -----------------------------------------------------------------------------
@@ -58,10 +54,10 @@ DataContainerProxy::DataContainerProxy(const QString& dc_name, const uint8_t& re
 // -----------------------------------------------------------------------------
 DataContainerProxy::DataContainerProxy(const DataContainerProxy& amp)
 {
-  flag = amp.flag;
-  name = amp.name;
-  dcType = amp.dcType;
-  attributeMatricies = amp.attributeMatricies;
+  m_Flag = amp.m_Flag;
+  m_Name = amp.m_Name;
+  m_DCType = amp.m_DCType;
+  m_AttributeMatrices = amp.m_AttributeMatrices;
 }
 
 // -----------------------------------------------------------------------------
@@ -74,7 +70,7 @@ DataContainerProxy& DataContainerProxy::operator=(const DataContainerProxy& amp)
 // -----------------------------------------------------------------------------
 bool DataContainerProxy::operator==(const DataContainerProxy& amp) const
 {
-  return flag == amp.flag && name == amp.name && dcType == amp.dcType && attributeMatricies == amp.attributeMatricies;
+  return m_Flag == amp.m_Flag && m_Name == amp.m_Name && m_DCType == amp.m_DCType && m_AttributeMatrices == amp.m_AttributeMatrices;
 }
 
 // -----------------------------------------------------------------------------
@@ -88,26 +84,26 @@ void DataContainerProxy::updatePath(DataArrayPath::RenameType renamePath)
 
   if(oldPath.getDataContainerName() != newPath.getDataContainerName())
   {
-    name = newPath.getDataContainerName();
+    m_Name = newPath.getDataContainerName();
   }
 
-  if(attributeMatricies.contains(oldPath.getAttributeMatrixName()))
+  if(m_AttributeMatrices.contains(oldPath.getAttributeMatrixName()))
   {
-    AttributeMatrixProxy amProxy = attributeMatricies.take(oldPath.getAttributeMatrixName());
+    AttributeMatrixProxy amProxy = m_AttributeMatrices.take(oldPath.getAttributeMatrixName());
     amProxy.updatePath(renamePath);
-    attributeMatricies.insert(newPath.getAttributeMatrixName(), amProxy);
+    m_AttributeMatrices.insert(newPath.getAttributeMatrixName(), amProxy);
   }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerProxy::writeJson(QJsonObject& json)
+void DataContainerProxy::writeJson(QJsonObject& json) const
 {
-  json["Flag"] = static_cast<double>(flag);
-  json["Name"] = name;
-  json["Type"] = static_cast<double>(dcType);
-  json["Attribute Matricies"] = writeMap(attributeMatricies);
+  json["Flag"] = static_cast<double>(m_Flag);
+  json["Name"] = m_Name;
+  json["Type"] = static_cast<double>(m_DCType);
+  json["Attribute Matricies"] = writeMap(m_AttributeMatrices);
 }
 
 // -----------------------------------------------------------------------------
@@ -119,14 +115,14 @@ bool DataContainerProxy::readJson(QJsonObject& json)
   {
     if (json["Flag"].toDouble() >= std::numeric_limits<uint8_t>::min() && json["Flag"].toDouble() <= std::numeric_limits<uint8_t>::max())
     {
-      flag = static_cast<uint8_t>(json["Flag"].toDouble());
+      m_Flag = static_cast<uint8_t>(json["Flag"].toDouble());
     }
-    name = json["Name"].toString();
+    m_Name = json["Name"].toString();
     if (json["Type"].toDouble() >= std::numeric_limits<unsigned int>::min() && json["Type"].toDouble() <= std::numeric_limits<unsigned int>::max())
     {
-      dcType = static_cast<unsigned int>(json["Type"].toDouble());
+      m_DCType = static_cast<unsigned int>(json["Type"].toDouble());
     }
-    attributeMatricies = readMap(json["Attribute Matricies"].toArray());
+    m_AttributeMatrices = readMap(json["Attribute Matricies"].toArray());
     return true;
   }
   return false;
@@ -135,13 +131,13 @@ bool DataContainerProxy::readJson(QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QJsonArray DataContainerProxy::writeMap(QMap<QString, AttributeMatrixProxy> map)
+QJsonArray DataContainerProxy::writeMap(const QMap<QString, AttributeMatrixProxy>& map) const
 {
   QJsonArray amArray;
-  for (QMap<QString, AttributeMatrixProxy>::iterator iter = map.begin(); iter != map.end(); ++iter)
+  for(const auto& amProxy : map)
   {
     QJsonObject obj;
-    (*iter).writeJson(obj);
+    amProxy.writeJson(obj);
     amArray.push_back(obj);
   }
   return amArray;
@@ -223,9 +219,9 @@ DataContainerProxy::DCGeometryTypeFlag DataContainerProxy::GeometryTypeToFlag(IG
 // -----------------------------------------------------------------------------
 void DataContainerProxy::setFlags(uint8_t flag, AttributeMatrixProxy::AMTypeFlags amTypes, DataArrayProxy::PrimitiveTypeFlags primitiveTypes, const DataArrayProxy::CompDimsVector& compDimsVector)
 {
-  this->flag = flag;
+  this->m_Flag = flag;
 
-  for(QMap<QString, AttributeMatrixProxy>::iterator amIter = attributeMatricies.begin(); amIter != attributeMatricies.end(); ++amIter) // AttributeMatrix Level
+  for(QMap<QString, AttributeMatrixProxy>::iterator amIter = m_AttributeMatrices.begin(); amIter != m_AttributeMatrices.end(); ++amIter) // AttributeMatrix Level
   {
     AttributeMatrixProxy& amProxy = amIter.value();
     AttributeMatrixProxy::AMTypeFlag amTypeFlag = AttributeMatrixProxy::AttributeMatrixTypeToFlag(static_cast<AttributeMatrix::Type>(amProxy.getAMType()));
@@ -239,9 +235,9 @@ void DataContainerProxy::setFlags(uint8_t flag, AttributeMatrixProxy::AMTypeFlag
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QMap<QString, AttributeMatrixProxy> DataContainerProxy::getAttributeMatricies()
+QMap<QString, AttributeMatrixProxy>& DataContainerProxy::getAttributeMatricies()
 {
-	return attributeMatricies;
+  return m_AttributeMatrices;
 }
 
 // -----------------------------------------------------------------------------
@@ -249,7 +245,13 @@ QMap<QString, AttributeMatrixProxy> DataContainerProxy::getAttributeMatricies()
 // -----------------------------------------------------------------------------
 void DataContainerProxy::setAttributeMatricies(const QMap<QString, AttributeMatrixProxy>& newAttributeMatricies)
 {
-	attributeMatricies = newAttributeMatricies;
+  m_AttributeMatrices = newAttributeMatricies;
+}
+
+// -----------------------------------------------------------------------------
+void DataContainerProxy::insertAttributeMatrix(const QString& name, const AttributeMatrixProxy& proxy)
+{
+  m_AttributeMatrices.insert(name, proxy);
 }
 
 // -----------------------------------------------------------------------------
@@ -257,7 +259,7 @@ void DataContainerProxy::setAttributeMatricies(const QMap<QString, AttributeMatr
 // -----------------------------------------------------------------------------
 QString DataContainerProxy::getName() const
 {
-	return name;
+  return m_Name;
 }
 
 // -----------------------------------------------------------------------------
@@ -265,7 +267,7 @@ QString DataContainerProxy::getName() const
 // -----------------------------------------------------------------------------
 void DataContainerProxy::setName(const QString& newName)
 {
-	name = newName;
+  m_Name = newName;
 }
 
 // -----------------------------------------------------------------------------
@@ -273,7 +275,7 @@ void DataContainerProxy::setName(const QString& newName)
 // -----------------------------------------------------------------------------
 uint8_t DataContainerProxy::getFlag() const
 {
-	return flag;
+  return m_Flag;
 }
 
 // -----------------------------------------------------------------------------
@@ -281,7 +283,7 @@ uint8_t DataContainerProxy::getFlag() const
 // -----------------------------------------------------------------------------
 void DataContainerProxy::setFlag(uint8_t newFlag)
 {
-	flag = newFlag;
+  m_Flag = newFlag;
 }
 
 // -----------------------------------------------------------------------------
@@ -289,7 +291,7 @@ void DataContainerProxy::setFlag(uint8_t newFlag)
 // -----------------------------------------------------------------------------
 void DataContainerProxy::setDCType(uint32_t dType)
 {
-  dcType = dType;
+  m_DCType = dType;
 }
 
 // -----------------------------------------------------------------------------
@@ -297,7 +299,7 @@ void DataContainerProxy::setDCType(uint32_t dType)
 // -----------------------------------------------------------------------------
 uint32_t DataContainerProxy::getDCType() const
 {
-  return dcType;
+  return m_DCType;
 }
 
 // -----------------------------------------------------------------------------
@@ -305,14 +307,14 @@ uint32_t DataContainerProxy::getDCType() const
 // -----------------------------------------------------------------------------
 void DataContainerProxy::toggleFlag()
 {
-	if (flag == Qt::Checked)
-	{
-		flag = Qt::Unchecked;
-	}
-	else
-	{
-		flag = Qt::Checked;
-	}
+  if(m_Flag == Qt::Checked)
+  {
+    m_Flag = Qt::Unchecked;
+  }
+  else
+  {
+    m_Flag = Qt::Checked;
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -320,16 +322,16 @@ void DataContainerProxy::toggleFlag()
 // -----------------------------------------------------------------------------
 AttributeMatrixProxy& DataContainerProxy::getAttributeMatrixProxy(const QString& name)
 {
-	for (QMap<QString, AttributeMatrixProxy>::iterator amIter = attributeMatricies.begin(); amIter != attributeMatricies.end(); ++amIter) // AttributeMatrix Level
-	{
-		AttributeMatrixProxy& am = amIter.value();
+  for(QMap<QString, AttributeMatrixProxy>::iterator amIter = m_AttributeMatrices.begin(); amIter != m_AttributeMatrices.end(); ++amIter) // AttributeMatrix Level
+  {
+    AttributeMatrixProxy& am = amIter.value();
     if(am.getName() == name)
     {
       return am;
     }
   }
 
-	AttributeMatrixProxy proxy(name);
-  attributeMatricies.insert(proxy.getName(), proxy);
-  return attributeMatricies[name];
+  AttributeMatrixProxy proxy(name);
+  m_AttributeMatrices.insert(proxy.getName(), proxy);
+  return m_AttributeMatrices[name];
 }

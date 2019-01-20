@@ -31,41 +31,44 @@
 
 #include <QtCore/QJsonObject>
 
-/**
-* @brief
-*/
 typedef struct
 {
-  float angle;
-  float h;
-  float k;
-  float l;
+  float x;
+  float y;
+  float z;
+  void FloatVec3(const float& xx, const float& yy, const float& zz)
+  {
+    x = xx;
+    y = yy;
+    z = zz;
+  }
 
   void writeJson(QJsonObject& json)
   {
-    json["angle"] = angle;
-    json["h"] = h;
-    json["k"] = k;
-    json["l"] = l;
+    json["x"] = static_cast<double>(x);
+    json["y"] = static_cast<double>(y);
+    json["z"] = static_cast<double>(z);
   }
 
   bool readJson(QJsonObject& json)
   {
-    if (json["angle"].isDouble() && json["h"].isDouble() && json["k"].isDouble() && json["l"].isDouble())
+    if(json["x"].isDouble() && json["y"].isDouble() && json["z"].isDouble())
     {
-      angle = static_cast<float>(json["angle"].toDouble());
-      h = static_cast<float>(json["h"].toDouble());
-      k = static_cast<float>(json["k"].toDouble());
-      l = static_cast<float>(json["l"].toDouble());
+      x = static_cast<float>(json["x"].toDouble());
+      y = static_cast<float>(json["y"].toDouble());
+      z = static_cast<float>(json["z"].toDouble());
       return true;
     }
     return false;
   }
 
-} AxisAngleInput_t;
+  void normalize()
+  {
+    float denom = std::sqrt(x * x + y * y + z * z);
+    x = x / denom;
+    y = y / denom;
+    z = z / denom;
+  }
+} FloatVec3_t;
 
-Q_DECLARE_METATYPE(AxisAngleInput_t)
-
-
-
-
+Q_DECLARE_METATYPE(FloatVec3_t)

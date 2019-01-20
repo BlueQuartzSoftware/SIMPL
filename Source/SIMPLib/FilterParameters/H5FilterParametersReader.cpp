@@ -1121,14 +1121,13 @@ DataContainerArrayProxy H5FilterParametersReader::readDataContainerArrayProxy(co
     return defValue;
   }
   // Loop over all the data Containers
-  for(int i = 0; i < dcaNames.size(); i++)
+  for(const auto& dcName : dcaNames)
   {
-    QString dcName = dcaNames.at(i);
     hid_t dcGid = QH5Utilities::openHDF5Object(dcaGid, dcName);
     H5ScopedGroupSentinel sentinal_dc(&dcGid, false);
     DataContainerProxy dcProxy;
-    dcProxy.name = dcName;
-    dcProxy.flag = Qt::Checked;
+    dcProxy.setName(dcName);
+    dcProxy.setFlag(Qt::Checked);
     // Loop over the attribute Matrices
     QList<QString> amNames;
     err = QH5Utilities::getGroupObjects(dcGid, H5Utilities::H5Support_GROUP, amNames);
@@ -1136,9 +1135,9 @@ DataContainerArrayProxy H5FilterParametersReader::readDataContainerArrayProxy(co
     {
       return defValue;
     }
-    for(int j = 0; j < amNames.size(); j++)
+
+    for(const auto& amName : amNames)
     {
-      QString amName = amNames.at(j);
       hid_t amGid = QH5Utilities::openHDF5Object(dcGid, amName);
       H5ScopedGroupSentinel sentinal_am(&amGid, false);
       AttributeMatrixProxy amProxy(amName, 1u);
@@ -1154,13 +1153,13 @@ DataContainerArrayProxy H5FilterParametersReader::readDataContainerArrayProxy(co
       for(int k = 0; k < arrayNames.size(); k++)
       {
         DataArrayProxy daProxy(path, arrayNames.at(k), 1u);
-        daProxy.flag = Qt::Checked;
-        amProxy.dataArrays.insert(arrayNames.at(k), daProxy);
+        daProxy.setFlag(Qt::Checked);
+        amProxy.insertDataArray(arrayNames.at(k), daProxy);
       }
-      dcProxy.attributeMatricies.insert(amName, amProxy);
+      dcProxy.insertAttributeMatrix(amName, amProxy);
     }
     // Add this DataContainerProxy to the DataContainerArrayProxy
-    dcaProxy.dataContainers.insert(dcProxy.name, dcProxy);
+    dcaProxy.insertDataContainer(dcProxy.getName(), dcProxy);
   }
   return dcaProxy;
 }
@@ -1198,9 +1197,8 @@ QVector<DataArrayPath> H5FilterParametersReader::readDataArrayPathVector(const Q
   }
   QStringList tokens = pathStr.split('\n');
 
-  for(int i = 0; i < tokens.size(); i++)
+  for(const auto& str : tokens)
   {
-    QString str = tokens.at(i);
     DataArrayPath path = DataArrayPath::Deserialize(str, "|");
     defPaths.push_back(path);
   }

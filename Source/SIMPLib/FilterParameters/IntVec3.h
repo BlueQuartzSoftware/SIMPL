@@ -31,41 +31,35 @@
 
 #include <QtCore/QJsonObject>
 
-/**
-* @brief
-*/
 typedef struct
 {
-  float angle;
-  float h;
-  float k;
-  float l;
-
+  int x;
+  int y;
+  int z;
+  void IntVec3(const int& x_, const int& y_, const int& z_)
+  {
+    x = x_;
+    y = y_;
+    z = z_;
+  }
   void writeJson(QJsonObject& json)
   {
-    json["angle"] = angle;
-    json["h"] = h;
-    json["k"] = k;
-    json["l"] = l;
+    json["x"] = x;
+    json["y"] = y;
+    json["z"] = z;
   }
 
   bool readJson(QJsonObject& json)
   {
-    if (json["angle"].isDouble() && json["h"].isDouble() && json["k"].isDouble() && json["l"].isDouble())
+    if(json["x"].isDouble() && json["y"].isDouble() && json["z"].isDouble())
     {
-      angle = static_cast<float>(json["angle"].toDouble());
-      h = static_cast<float>(json["h"].toDouble());
-      k = static_cast<float>(json["k"].toDouble());
-      l = static_cast<float>(json["l"].toDouble());
+      x = json["x"].toInt();
+      y = json["y"].toInt();
+      z = json["z"].toInt();
       return true;
     }
     return false;
   }
+} IntVec3_t;
 
-} AxisAngleInput_t;
-
-Q_DECLARE_METATYPE(AxisAngleInput_t)
-
-
-
-
+Q_DECLARE_METATYPE(IntVec3_t)

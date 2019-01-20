@@ -31,13 +31,20 @@ PYBIND11_MAKE_OPAQUE(std::vector<size_t>);
 
 #include <utility>
 
-#include <QtCore/QString>
-#include <QtCore/QDateTime>
-#include "SIMPLib/Common/ShapeType.h"
 #include "SIMPLib/Common/PhaseType.h"
-#include "OrientationLib/OrientationMath/OrientationConverter.hpp"
+#include "SIMPLib/Common/ShapeType.h"
 #include "SIMPLib/CoreFilters/ArrayCalculator.h"
 #include "SIMPLib/CoreFilters/ImportHDF5Dataset.h"
+#include "SIMPLib/FilterParameters/AxisAngleInput.h"
+#include "SIMPLib/FilterParameters/FileListInfo.h"
+#include "SIMPLib/FilterParameters/FloatVec2.h"
+#include "SIMPLib/FilterParameters/FloatVec3.h"
+#include "SIMPLib/FilterParameters/IntVec3.h"
+#include "SIMPLib/FilterParameters/ThirdOrderPolynomial.h"
+#include <QtCore/QDateTime>
+#include <QtCore/QString>
+
+//#include "OrientationLib/OrientationMath/OrientationConverter.hpp"
 
 namespace py = pybind11;
 
@@ -333,7 +340,14 @@ PYBIND11_MODULE(dream3d, m)
 
     .export_values();
 
+  /* Enumeration code for Initialization Choices */
+  py::enum_<CreateDataArray::InitializationChoices>(mod, "InitializationType")
+      .value("Manual", CreateDataArray::InitializationChoices::Manual)
+      .value("RandomWithRange", CreateDataArray::InitializationChoices::RandomWithRange)
+      .export_values();
+
   /* Enumeration code for OrientationType */
+#if 0
   py::enum_<OrientationConverter<float>::OrientationType>(mod, "OrientationType")
 	  .value("Euler", OrientationConverter<float>::Euler)
 	  .value("OrientationMatrix", OrientationConverter<float>::OrientationMatrix)
@@ -343,12 +357,6 @@ PYBIND11_MODULE(dream3d, m)
 	  .value("Homochoric", OrientationConverter<float>::Homochoric)
 	  .value("Cubochoric", OrientationConverter<float>::Cubochoric)
 	  .value("UnknownOrientationType", OrientationConverter<float>::UnknownOrientationType)
-	  .export_values();
-
-  /* Enumeration code for Initialization Choices */
-  py::enum_<CreateDataArray::InitializationChoices>(mod, "InitializationType")
-	  .value("Manual", CreateDataArray::InitializationChoices::Manual)
-	  .value("RandomWithRange", CreateDataArray::InitializationChoices::RandomWithRange)
 	  .export_values();
 
   /* Enumeration code for Crystal Structures */
@@ -366,6 +374,7 @@ PYBIND11_MODULE(dream3d, m)
 	  .value("Trigonal_High", EnsembleInfo::CrystalStructure::Trigonal_High)
 	  .value("UnknownCrystalStructure", EnsembleInfo::CrystalStructure::UnknownCrystalStructure)
 	  .export_values();
+#endif
 
   /* Enumeration code for AngleUnits */
   py::enum_<ArrayCalculator::AngleUnits>(mod, "AngleUnits")
