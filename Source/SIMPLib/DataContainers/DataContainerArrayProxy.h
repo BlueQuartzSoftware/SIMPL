@@ -51,10 +51,8 @@ class DataContainerArray;
 class SIMPLib_EXPORT DataContainerArrayProxy
 {
   PYB11_CREATE_BINDINGS(DataContainerArrayProxy)
-
   PYB11_CREATION()
-
-  PYB11_PROPERTY(DataContainersMap DataContainers READ getDataContainers WRITE setDataContainers)
+  PYB11_PROPERTY(StorageType DataContainers READ getDataContainers WRITE setDataContainers CONST_GET_OVERLOAD)
   PYB11_METHOD(DataContainerProxy.& getDataContainerProxy ARGS name RETURN_VALUE_POLICY py::return_value_policy::reference)
 
 public:
@@ -137,13 +135,19 @@ public:
   /**
    * @brief Get the data containers (Python Binding)
    */
-  QMap<QString, DataContainerProxy>& getDataContainers();
+  StorageType& getDataContainers();
+
+  /**
+   * @brief getDataContainers
+   * @return
+   */
+  const StorageType& getDataContainers() const;
 
   /**
    * @brief Get the data containers (Python Binding)
    * @param new DataContainers map
    */
-  void setDataContainers(QMap<QString, DataContainerProxy>&);
+  void setDataContainers(StorageType& dataContainers);
 
   /**
    * @brief insertDataContainer
@@ -217,7 +221,7 @@ public:
   bool readJson(QJsonObject& json);
 
 private:
-  QMap<QString, DataContainerProxy> m_DataContainers;
+  StorageType m_DataContainers;
 
   /**
    * @brief Writes the contents of the map to a json array

@@ -205,9 +205,9 @@ QByteArray PythonBindingClass::md5FileContents(const QString& filename)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PythonBindingClass::writeOutput(bool didReplace, const QString& outLines, QString filename)
+void PythonBindingClass::writeOutput(bool didReplace, const QString& outLines, const QString& filename)
 {
-  if(didReplace == true)
+  if(didReplace)
   {
     QFileInfo fi2(filename);
     QString parentPath = fi2.path();
@@ -405,7 +405,7 @@ QString PythonBindingClass::generateStaticNewCode()
     constructors << TAB << ".def_static(\"New\", &" << getClassName() << "::New)" << NEWLINE_SIMPL;
   }
 
-  for(auto line : m_StaticNewMethods)
+  for(const auto& line : m_StaticNewMethods)
   {
     QStringList tokens = line.split("(");
     tokens = tokens[1].replace(")", "").trimmed().split(" ");
@@ -475,7 +475,7 @@ QString PythonBindingClass::generateConstructorsCodes()
   {
     constructors << TAB << "/* Number of non-default constructors: " << m_Constructors.size() << "*/" << NEWLINE_SIMPL;
   }
-  for(auto line : m_Constructors)
+  for(const auto& line : m_Constructors)
   {
     QStringList tokens = line.split("(");
     tokens = tokens[1].replace(")", "").trimmed().split(" ");
@@ -527,10 +527,23 @@ QString PythonBindingClass::generatePropertiesCode()
     QString line = m_Properties.at(i);
     QStringList tokens = line.split("(");
     tokens = tokens[1].replace(")", "").trimmed().split(" ");
-    QString pyType = tokens[0];
+    // QString pyType = tokens[0];
     QString varName = tokens[1];
 
-    if(tokens.size() == 6)
+    if(tokens.size() == 7 && tokens[6] == ::kConstGetOverload)
+    {
+      out << TAB << "/* Property accessors for " << varName << " */" << NEWLINE_SIMPL;
+      out << TAB << ".def_property(\"" << varName << "\", py::overload_cast<>(&" << getClassName() << "::get" << varName << ", py::const_), &" << getClassName() << "::set" << varName << ")"
+          << NEWLINE_SIMPL;
+
+      pcodes << SIMPL::Python::fromCamelCase(varName);
+      if(i < m_Properties.size() - 1)
+      {
+        pcodes << ", ";
+      }
+      bcodes << "    " << camelClassName << "." << varName << " = " << SIMPL::Python::fromCamelCase(varName) << NEWLINE_SIMPL;
+    }
+    else if(tokens.size() == 6)
     {
       out << TAB << "/* Property accessors for " << varName << " */" << NEWLINE_SIMPL;
       out << TAB << ".def_property(\"" << varName << "\", &" << getClassName() << "::get" << varName << ", &" << getClassName() << "::set" << varName << ")" << NEWLINE_SIMPL;
@@ -586,11 +599,11 @@ QString PythonBindingClass::generatePythonTestCode()
 {
   QString code;
   QTextStream out(&code);
-  for(auto line : m_Properties)
+  for(const auto& line : m_Properties)
   {
     QStringList tokens = line.split("(");
     tokens = tokens[1].replace(")", "").trimmed().split(" ");
-    QString pyType = tokens[0];
+    // QString pyType = tokens[0];
     QString varName = tokens[1];
 
     if(tokens.size() == 6)

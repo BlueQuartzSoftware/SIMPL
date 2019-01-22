@@ -334,9 +334,9 @@ void DataArrayProxy::setFlag(uint8_t newFlag)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayProxy::setName(const QString& aName)
+void DataArrayProxy::setName(const QString& name)
 {
-  m_Name = aName;
+  m_Name = name;
 }
 
 // -----------------------------------------------------------------------------

@@ -18,23 +18,24 @@
 
 namespace
 {
-  static const QString kRead("READ");
-  static const QString kWrite("WRITE");
-  static const QString kArgs("ARGS");
-  static const QString kConst("CONST");
-  static const QString kConstMethod("CONST_METHOD");
-  static const QString kSuperClass("SUPERCLASS");
-  static const QString kOverload("OVERLOAD");
-  static const QString kReturnValuePolicy("RETURN_VALUE_POLICY");
+const QString kRead("READ");
+const QString kWrite("WRITE");
+const QString kArgs("ARGS");
+const QString kConst("CONST");
+const QString kConstMethod("CONST_METHOD");
+const QString kSuperClass("SUPERCLASS");
+const QString kOverload("OVERLOAD");
+const QString kReturnValuePolicy("RETURN_VALUE_POLICY");
+const QString kConstGetOverload("CONST_GET_OVERLOAD");
 
-  /* These are for the macros that appear in the header files */
-  static const QString kPYB11_CREATE_BINDINGS("PYB11_CREATE_BINDINGS");
-  static const QString kSIMPL_STATIC_NEW_MACRO("SIMPL_STATIC_NEW_MACRO");
-  static const QString kSIMPL_FILTER_NEW_MACRO("SIMPL_FILTER_NEW_MACRO");
-  static const QString kSIMPL_SHARED_POINTERS("SIMPL_SHARED_POINTERS");
-  static const QString kPYB11_PROPERTY("PYB11_PROPERTY");
-  static const QString kPYB11_METHOD("PYB11_METHOD");
-  static const QString kPYB11_STATIC_CREATION("PYB11_STATIC_CREATION");
-  static const QString kPYB11_CREATION("PYB11_CREATION");
-  static const QString kPYB11_ENUMERATION("PYB11_ENUMERATION");
+/* These are for the macros that appear in the header files */
+const QString kPYB11_CREATE_BINDINGS("PYB11_CREATE_BINDINGS");
+const QString kSIMPL_STATIC_NEW_MACRO("SIMPL_STATIC_NEW_MACRO");
+const QString kSIMPL_FILTER_NEW_MACRO("SIMPL_FILTER_NEW_MACRO");
+const QString kSIMPL_SHARED_POINTERS("SIMPL_SHARED_POINTERS");
+const QString kPYB11_PROPERTY("PYB11_PROPERTY");
+const QString kPYB11_METHOD("PYB11_METHOD");
+const QString kPYB11_STATIC_CREATION("PYB11_STATIC_CREATION");
+const QString kPYB11_CREATION("PYB11_CREATION");
+const QString kPYB11_ENUMERATION("PYB11_ENUMERATION");
 }

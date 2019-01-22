@@ -36,12 +36,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixProxy::AttributeMatrixProxy()
-: m_Flag(0)
-, m_Name("")
-, m_AMType(AttributeMatrix::Type::Unknown)
-{
-}
+AttributeMatrixProxy::AttributeMatrixProxy() = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -309,7 +304,15 @@ void AttributeMatrixProxy::insertDataArray(const QString& name, const DataArrayP
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QMap<QString, DataArrayProxy>& AttributeMatrixProxy::getDataArrays()
+AttributeMatrixProxy::StorageType& AttributeMatrixProxy::getDataArrays()
+{
+  return m_DataArrays;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const AttributeMatrixProxy::StorageType& AttributeMatrixProxy::getDataArrays() const
 {
   return m_DataArrays;
 }

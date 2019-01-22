@@ -50,15 +50,12 @@
  */
 class SIMPLib_EXPORT DataContainerProxy
 {
+
   PYB11_CREATE_BINDINGS(DataContainerProxy)
-
   PYB11_CREATION()
-
-
-  PYB11_PROPERTY(AttributeMatricesMap AttributeMatricies READ getAttributeMatricies WRITE setAttributeMatricies)
+  PYB11_PROPERTY(StorageType AttributeMatricies READ getAttributeMatricies WRITE setAttributeMatricies CONST_GET_OVERLOAD)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
   PYB11_PROPERTY(uint8_t Flag READ getFlag WRITE setFlag)
-
   PYB11_METHOD(AttributeMatrixProxy getAttributeMatrixProxy ARGS name RETURN_VALUE_POLICY py::return_value_policy::reference)
   PYB11_METHOD(void toggleFlag)
 
@@ -142,7 +139,13 @@ public:
   /**
    * @brief Get the attribute matrices (Python Binding)
    */
-  QMap<QString, AttributeMatrixProxy>& getAttributeMatricies();
+  StorageType& getAttributeMatricies();
+
+  /**
+   * @brief Get the attribute matrices (Python Binding)
+   * @return
+   */
+  const StorageType& getAttributeMatricies() const;
 
   /**
    * @brief Get the attribute matrices(Python Binding)
@@ -155,7 +158,7 @@ public:
    * @param name
    * @param proxy
    */
-  void insertAttributeMatrix(const QString& m_Name, const AttributeMatrixProxy& proxy);
+  void insertAttributeMatrix(const QString& name, const AttributeMatrixProxy& proxy);
 
   /**
    * @brief Get the data container name (Python Binding)
@@ -177,10 +180,10 @@ public:
    * @brief Set the data container flag (Python Binding)
    * @param new data container flag
    */
-  void setFlag(uint8_t m_Flag);
+  void setFlag(uint8_t flag);
 
   /**
-   * @brief setDCType
+   * @brief set DataContainer Type
    * @param dType
    */
   void setDCType(uint32_t dType);
@@ -223,7 +226,7 @@ private:
   uint8_t m_Flag = Qt::Unchecked;
   QString m_Name;
   uint32_t m_DCType = static_cast<uint32_t>(IGeometry::Type::Any);
-  QMap<QString, AttributeMatrixProxy> m_AttributeMatrices;
+  StorageType m_AttributeMatrices;
 
   /**
    * @brief writeMap

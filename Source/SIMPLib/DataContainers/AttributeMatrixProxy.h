@@ -45,10 +45,8 @@
 class SIMPLib_EXPORT AttributeMatrixProxy
 {
   PYB11_CREATE_BINDINGS(AttributeMatrixProxy)
-
   PYB11_CREATION()
-
-  PYB11_PROPERTY(StorageType DataArrays READ getDataArrays WRITE setDataArrays)
+  PYB11_PROPERTY(StorageType DataArrays READ getDataArrays WRITE setDataArrays CONST_GET_OVERLOAD)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
   PYB11_PROPERTY(AMType AMType READ getAMType WRITE setAMType)
   PYB11_PROPERTY(uint8_t Flag READ getFlag WRITE setFlag)
@@ -144,7 +142,7 @@ public:
    * @param primitiveTypes
    * @param compDimsVector
    */
-  void setFlags(uint8_t m_Flag, DataArrayProxy::PrimitiveTypeFlags primitiveTypes = DataArrayProxy::Any_PType, DataArrayProxy::CompDimsVector compDimsVector = DataArrayProxy::CompDimsVector());
+  void setFlags(uint8_t flag, DataArrayProxy::PrimitiveTypeFlags primitiveTypes = DataArrayProxy::Any_PType, DataArrayProxy::CompDimsVector compDimsVector = DataArrayProxy::CompDimsVector());
 
   /**
    * @brief Updates the proxy to match a renamed DataArrayPath
@@ -156,6 +154,7 @@ public:
    * @brief Get the attribute matrices (Python Binding)
    */
   QMap<QString, DataArrayProxy>& getDataArrays();
+  const StorageType& getDataArrays() const;
 
   /**
    * @brief Get the attribute matrices(Python Binding)
@@ -211,10 +210,10 @@ public:
   void setFlag(uint8_t);
 
 private:
-  uint8_t m_Flag;
+  uint8_t m_Flag = Qt::Unchecked;
   QString m_Name;
-  AttributeMatrix::Type m_AMType;
-  QMap<QString, DataArrayProxy> m_DataArrays;
+  AttributeMatrix::Type m_AMType = AttributeMatrix::Type::Unknown;
+  StorageType m_DataArrays;
 
   /**
    * @brief writeMap

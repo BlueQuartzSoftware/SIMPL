@@ -546,6 +546,14 @@ QMap<QString, DataContainerProxy>& DataContainerArrayProxy::getDataContainers()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const DataContainerArrayProxy::StorageType& DataContainerArrayProxy::getDataContainers() const
+{
+  return m_DataContainers;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataContainerArrayProxy::setDataContainers(QMap<QString, DataContainerProxy>& newDataContainers)
 {
   m_DataContainers = newDataContainers;

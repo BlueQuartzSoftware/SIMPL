@@ -235,7 +235,15 @@ void DataContainerProxy::setFlags(uint8_t flag, AttributeMatrixProxy::AMTypeFlag
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QMap<QString, AttributeMatrixProxy>& DataContainerProxy::getAttributeMatricies()
+DataContainerProxy::StorageType& DataContainerProxy::getAttributeMatricies()
+{
+  return m_AttributeMatrices;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const DataContainerProxy::StorageType& DataContainerProxy::getAttributeMatricies() const
 {
   return m_AttributeMatrices;
 }
@@ -281,9 +289,9 @@ uint8_t DataContainerProxy::getFlag() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerProxy::setFlag(uint8_t newFlag)
+void DataContainerProxy::setFlag(uint8_t flag)
 {
-  m_Flag = newFlag;
+  m_Flag = flag;
 }
 
 // -----------------------------------------------------------------------------

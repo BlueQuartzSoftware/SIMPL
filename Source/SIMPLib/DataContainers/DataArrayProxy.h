@@ -180,7 +180,7 @@ public:
    * @brief setName
    * @param name
    */
-  void setName(const QString& m_Name);
+  void setName(const QString& name);
 
   /**
    * @brief getName
