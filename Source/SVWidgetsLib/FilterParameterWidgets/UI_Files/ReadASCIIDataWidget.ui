@@ -110,8 +110,17 @@
    </item>
    <item row="1" column="3" colspan="2">
     <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,1">
+     <property name="leftMargin">
+      <number>2</number>
+     </property>
+     <property name="topMargin">
+      <number>2</number>
+     </property>
+     <property name="rightMargin">
+      <number>2</number>
+     </property>
      <property name="bottomMargin">
-      <number>0</number>
+      <number>2</number>
      </property>
      <property name="verticalSpacing">
       <number>2</number>
@@ -155,13 +164,6 @@
       <widget class="QLabel" name="fileImportedPrefixLabel">
        <property name="text">
         <string>Path:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="fileImportedAbsPrefixLabel">
-       <property name="text">
-        <string>Absolute Path:</string>
        </property>
       </widget>
      </item>
