@@ -60,7 +60,7 @@ void PyBind11Generator::execute()
   {
     libName = QString("simpl");
   }
-  ss << SIMPL::PyBind11::RuntimeOutputDir << "/" << m_CfgIntDir << "/" << libName << "_UnitTest.py";
+  ss << SIMPL::PyBind11::RuntimeOutputDir << "/UnitTest/" << libName << "_UnitTest.py";
   genHeaderPath = genHeaderPath.replace("/./", "/");
   m_ModuleCode.generatePythonTestFile(genHeaderPath, m_IsSIMPLib);
   
@@ -70,7 +70,7 @@ void PyBind11Generator::execute()
   {
     libName = QString("simpl");
   }
-  ss << SIMPL::PyBind11::RuntimeOutputDir << "/" << m_CfgIntDir << "/" << SIMPL::PyBind11::SIMPL_LibraryName 
+  ss << SIMPL::PyBind11::RuntimeOutputDir << "/package/" << SIMPL::PyBind11::SIMPL_LibraryName 
     << "/" << libName.toLower() << "py.py";
   genHeaderPath = genHeaderPath.replace("/./", "/");
   m_ModuleCode.generatePythonicInterface(genHeaderPath, m_IsSIMPLib);
@@ -80,10 +80,10 @@ void PyBind11Generator::execute()
 //-----------------------------------------------------------------------------
 void PyBind11Generator::generateModuleInitPy()
 {
-  std::cout << "PyBind11Generator::generateModuleInitPy(): " << m_LibName.toStdString() << std::endl;
+  //std::cout << "PyBind11Generator::generateModuleInitPy(): " << m_LibName.toStdString() << std::endl;
   QString filePath;
   QTextStream out(&filePath);
-  out << SIMPL::PyBind11::BuildDirectory << "/" << m_CfgIntDir << "/" << "__init__.py";
+  out << SIMPL::PyBind11::RuntimeOutputDir << "/package/" << SIMPL::PyBind11::SIMPL_LibraryName << "__init__.py";
   if(m_IsSIMPLib.compare("TRUE") == PYB11_TRUE)
   {
     QFile f(filePath);

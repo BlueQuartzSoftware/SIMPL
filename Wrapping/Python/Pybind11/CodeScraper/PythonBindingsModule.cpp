@@ -334,7 +334,7 @@ void PythonBindingsModule::generatePythonTestFile(const QString& outputPath, con
   out << "\"\"\"\n"
       << "This is a basic unit test file to ensure that the filters can be instantiated\n"
       << "This file is AUTO GENERATED as part of the 'CodeScraper' program that is executed\n"
-      << "during the compilation phase.\n"
+      << "during the compilation phase. PythonBindingsModule.cpp at line " << __LINE__  << "\n"
       << "m_LibName=" << m_LibName << "\n"
       << "isSIMPLib:" << isSIMPLib << "\n"
       << "\"\"\"\n";

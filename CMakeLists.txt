@@ -468,7 +468,10 @@ if(SIMPL_WRAP_PYTHON)
     if("${PYTHON_CONDA_DIRECTORY}" STREQUAL "")
       message(FATAL_ERROR "Please set the PYTHON_CONDA_DIRECTORY variable either through the CMake-GUI or through the -DPYTHON_CONDA_DIRECTORY=/path/to/Anaconda3")
     endif()
-
+    
+    file(MAKE_DIRECTORY ${SIMPL_CONDA_OUTPUT_DIR}/UnitTest)
+    file(MAKE_DIRECTORY ${SIMPL_CONDA_OUTPUT_DIR}/package/dream3d)
+    
     file(TO_NATIVE_PATH ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} CROD_NATIVE)
     file(TO_NATIVE_PATH ${SIMPL_CONDA_OUTPUT_DIR} SCOD_NATIVE)
 
