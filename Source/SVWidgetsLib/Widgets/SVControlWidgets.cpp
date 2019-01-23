@@ -77,16 +77,6 @@ QLabel(parent)
 
 SVSmallLabel::~SVSmallLabel() = default;
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-SVBoldLabel::SVBoldLabel(QWidget* parent) :
-QLabel(parent)
-{
-  setAttribute(Qt::WA_MacShowFocusRect, false);
-}
-
-SVBoldLabel::~SVBoldLabel() = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -115,22 +115,6 @@ class SVWidgetsLib_EXPORT SVSmallLabel : public QLabel
 
 
 /**
- * @brief The SVLineEdit class
- */
-class SVWidgetsLib_EXPORT SVBoldLabel : public QLabel
-{
-  Q_OBJECT
-
-  public:
-  SVBoldLabel(QWidget* parent = nullptr);
-  ~SVBoldLabel() override;
-
-};
-
-
-
-
-/**
  * @brief The SVTreeView class
  */
 class SVWidgetsLib_EXPORT SVTreeView : public QTreeView
