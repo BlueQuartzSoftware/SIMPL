@@ -46,6 +46,7 @@
 #include "SIMPLib/CoreFilters/util/AbstractDataParser.hpp"
 #include "SIMPLib/FilterParameters/ReadASCIIDataFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
 
 #include "Widgets/ImportASCIIDataWizard/DataFormatPage.h"
 #include "Widgets/ImportASCIIDataWizard/ImportASCIIDataWizard.h"
@@ -134,10 +135,15 @@ void ReadASCIIDataWidget::setupGui()
 
     tupleCount->setText(QString::number(numOfDataLines));
     fileImportedLabel->setText(m_Filter->getWizardData().inputFilePath);
+
+    SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+    QString absFilePath = validator->convertToAbsolutePath(m_Filter->getWizardData().inputFilePath);
+    fileImportedAbsLabel->setText(absFilePath);
   }
   else
   {
     fileImportedLabel->hide();
+    fileImportedAbsLabel->hide();
     warningLabel->hide();
     resetWizardBtn->hide();
     tupleCountLabel->hide();
@@ -183,6 +189,12 @@ void ReadASCIIDataWidget::on_editImportSettings_clicked()
       m_FilePath = m_ImportWizard->getInputFilePath();
       fileImportedLabel->setText(m_FilePath);
       fileImportedLabel->show();
+
+      SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+      QString absFilePath = validator->convertToAbsolutePath(m_FilePath);
+      fileImportedAbsLabel->setText(absFilePath);
+      fileImportedAbsLabel->show();
+
       warningLabel->show();
       resetWizardBtn->show();
       tupleCountLabel->show();
@@ -403,6 +415,12 @@ void ReadASCIIDataWidget::lineCountDidFinish()
 
     fileImportedLabel->setText(m_FilePath);
     fileImportedLabel->show();
+
+    SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+    QString absFilePath = validator->convertToAbsolutePath(m_FilePath);
+    fileImportedAbsLabel->setText(absFilePath);
+    fileImportedAbsLabel->show();
+
     warningLabel->show();
     resetWizardBtn->show();
     tupleCountLabel->show();
@@ -424,6 +442,7 @@ void ReadASCIIDataWidget::on_resetWizardBtn_clicked()
   m_ImportWizard = nullptr;
 
   fileImportedLabel->hide();
+  fileImportedAbsLabel->hide();
   warningLabel->hide();
   resetWizardBtn->hide();
   tupleCount->hide();

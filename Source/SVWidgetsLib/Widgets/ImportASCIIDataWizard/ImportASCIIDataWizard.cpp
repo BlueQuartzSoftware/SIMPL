@@ -39,6 +39,7 @@
 
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/CoreFilters/util/ASCIIWizardData.hpp"
+#include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
 
 #include "ASCIIDataModel.h"
 #include "DataFormatPage.h"
@@ -271,7 +272,11 @@ QStringList ImportASCIIDataWizard::ReadLines(const QString& inputFilePath, int b
   {
     return result;
   }
-  QFile inputFile(inputFilePath);
+
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  QString absInputPath = validator->convertToAbsolutePath(inputFilePath);
+
+  QFile inputFile(absInputPath);
   if(inputFile.open(QIODevice::ReadOnly))
   {
     QTextStream in(&inputFile);
