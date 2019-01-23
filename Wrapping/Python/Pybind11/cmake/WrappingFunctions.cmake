@@ -39,8 +39,6 @@ function(CreatePybind11Module)
   string(TOLOWER ${pybind_module_name} pybind_module_name)
   set(pybind_plugin_list_file "${SIMPLProj_BINARY_DIR}/Pybind11Plugins.txt")
 
-
-
   set(SIMPL_PY_MODULE_NAME "dream3d")
 
   # Now create a custom task to scrape through our code and generate all the binding sources
@@ -131,15 +129,17 @@ function(CreatePybind11Module)
       set (QT_DEBUG_EXTENSION $<$<CONFIG:Debug>:"d">)
       set (OTHER_DEBUG_EXTENSION $<$<CONFIG:Debug>:"_D">)
     endif()
-  
-      # Copy all necessary content from the CMake output directory to the "egg" directory
+
+    # Copy all necessary content from the CMake output directory to the "egg" directory
     if (SIMPL_PYTHON_BUILD_CONDA_PACKAGE)
-      set(copy_dest "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/src_python/dream3d")
-  
-      add_custom_command(TARGET ${SIMPL_PY_MODULE_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR} ${copy_dest})
+      get_property(SIMPL_CONDA_OUTPUT_DIR GLOBAL PROPERTY SIMPL_CONDA_OUTPUT_DIR)
+      add_custom_command(TARGET ${SIMPL_PY_MODULE_NAME} 
+            POST_BUILD 
+            COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR} ${SIMPL_CONDA_OUTPUT_DIR}/dream3d)
     endif()
     
   else()
+
     file(APPEND ${submodules_headers_file_name} "\n /* Pybind11 Init Code for ${ARGS_MODULE_NAME} */\n")
     file(APPEND ${submodules_headers_file_name} "#include \"${pybind_module_file_name}\"\n")
     file(APPEND ${submodule_init_cxx_file_name} "  Init_${pybind_module_name}(m);\n")

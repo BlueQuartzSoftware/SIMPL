@@ -5,7 +5,7 @@ with open("ReadMe.md", "r") as fh:
 
 setuptools.setup(
     name="dream3d",
-    version="0.0.1",
+    version="0.1.0",
     author="BlueQuartz Software",
     author_email="dream3d-developers@bluequartz.net",
     description="An open source, cross-platform and modular software package that allows users to reconstruct, instantiate, quantify, mesh, handle and visualize multidimensional, multimodal data",
@@ -17,7 +17,7 @@ setuptools.setup(
 	zip_safe = False,
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
     ],
 )

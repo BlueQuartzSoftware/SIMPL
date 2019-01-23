@@ -1,12 +1,12 @@
 {% set name = "dream3d" %}
-{% set version = "0.1.0" %}
+{% set version = "@SIMPLProj_VERSION_MAJOR@.@SIMPLProj_VERSION_MINOR@.@SIMPLProj_VERSION_PATCH@" %}
 
 package:
   name: "{{ name|lower }}"
   version: "{{ version }}"
 
 source:
-  path: $RECIPE_DIR/../../src_python
+    path: $RECIPE_DIR/../package
 
 
 requirements:

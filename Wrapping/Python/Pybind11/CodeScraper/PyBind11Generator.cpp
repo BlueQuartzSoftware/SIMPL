@@ -70,7 +70,8 @@ void PyBind11Generator::execute()
   {
     libName = QString("simpl");
   }
-  ss << SIMPL::PyBind11::RuntimeOutputDir << "/" << m_CfgIntDir << "/" << libName.toLower() << "py.py";
+  ss << SIMPL::PyBind11::RuntimeOutputDir << "/" << m_CfgIntDir << "/" << SIMPL::PyBind11::SIMPL_LibraryName 
+    << "/" << libName.toLower() << "py.py";
   genHeaderPath = genHeaderPath.replace("/./", "/");
   m_ModuleCode.generatePythonicInterface(genHeaderPath, m_IsSIMPLib);
 

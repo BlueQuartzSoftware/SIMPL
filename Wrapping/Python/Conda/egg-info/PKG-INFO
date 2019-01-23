@@ -1,11 +1,11 @@
 Metadata-Version: 2.1
 Name: dream3d
-Version: 0.0.1
+Version: @SIMPLProj_VERSION_MAJOR@.@SIMPLProj_VERSION_MINOR@.@SIMPLProj_VERSION_PATCH@
 Summary: An open source, cross-platform and modular software package that allows users to reconstruct, instantiate, quantify, mesh, handle and visualize multidimensional, multimodal data
 Home-page: https://github.com/BlueQuartzSoftware/DREAM3D
 Author: BlueQuartz Software
 Author-email: dream3d-developers@bluequartz.net
-License: UNKNOWN
+License: BSD
 Description: ![](https://github.com/BlueQuartzSoftware/DREAM3D/raw/develop/Resources/OpenSourceEdition/splash/branded_splash.png)
         
         # DREAM.3D  #
@@ -36,30 +36,8 @@ Description: ![](https://github.com/BlueQuartzSoftware/DREAM3D/raw/develop/Resou
         
         See the Copying.md file for CopyRight & license
         
-        
-        ## Building DREAM.3D ##
-        
-        For information on building DREAM.3D and all its necessary dependencies, see the Documentation/ReferenceManual/Developer/ directory. [View it here on the GitHub website](https://github.com/BlueQuartzSoftware/DREAM3D/tree/develop/Documentation/ReferenceManual/6_Developer).
-        
-        Current build status for the build farm is located at [our CDash site.](http://my.cdash.org/index.php?project=DREAM3D)
-        
-        ## Nightly Builds ##
-        
-        Nightly snapshot builds are available for download [here](http://dream3d.bluequartz.net/binaries/experimental/). These binaries are built every night from the head of the develop branch, and may have bugs or other instabilities.
-        
-        ## Getting Help ##
-        
-        Please sign up for the [DREAM.3D Users Google group](https://groups.google.com/forum/?hl=en#!forum/dream3d-users). It's the fastest way to ask your DREAM.3D questions, get help with using DREAM.3D, and connect with both developers and the community at large.  If you are interested in contributing to the DREAM.3D project, also sign up to the <a href="https://groups.google.com/forum/?hl=en#!forum/dream3d-developers">DREAM.3D Developers Google group</a> to get help with compiling and adding to DREAM.3D. If you find an error with DREAM.3D or want to request a new feature, please [open up an issue](https://github.com/dream3d/DREAM3D/issues).
-        
-        ## Contributing to DREAM.3D ##
-        
-        Please reference the Contributing file for more information on contributing to the DREAM.3D project.
-        
-        ## Acknowledgments ##
-        
-        See the file for contributors to DREAM.3D
-Platform: UNKNOWN
+Platform: ALL
 Classifier: Programming Language :: Python :: 3
-Classifier: License :: OSI Approved :: MIT License
+Classifier: License :: OSI Approved :: BSD License
 Classifier: Operating System :: OS Independent
 Description-Content-Type: text/markdown
