@@ -5,7 +5,7 @@ with open("ReadMe.md", "r") as fh:
 
 setuptools.setup(
     name="dream3d",
-    version="0.1.0",
+    version="@SIMPLProj_VERSION_MAJOR@.@SIMPLProj_VERSION_MINOR@.@SIMPLProj_VERSION_PATCH@",
     author="BlueQuartz Software",
     author_email="dream3d-developers@bluequartz.net",
     description="An open source, cross-platform and modular software package that allows users to reconstruct, instantiate, quantify, mesh, handle and visualize multidimensional, multimodal data",

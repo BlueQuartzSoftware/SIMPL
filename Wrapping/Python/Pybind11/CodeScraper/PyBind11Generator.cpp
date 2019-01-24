@@ -70,7 +70,7 @@ void PyBind11Generator::execute()
   {
     libName = QString("simpl");
   }
-  ss << SIMPL::PyBind11::RuntimeOutputDir << "/package/" << SIMPL::PyBind11::SIMPL_LibraryName 
+  ss << SIMPL::PyBind11::RuntimeOutputDir << "/" << SIMPL::PyBind11::SitePackages << "/" << SIMPL::PyBind11::SIMPL_LibraryName 
     << "/" << libName.toLower() << "py.py";
   genHeaderPath = genHeaderPath.replace("/./", "/");
   m_ModuleCode.generatePythonicInterface(genHeaderPath, m_IsSIMPLib);
@@ -83,7 +83,7 @@ void PyBind11Generator::generateModuleInitPy()
   //std::cout << "PyBind11Generator::generateModuleInitPy(): " << m_LibName.toStdString() << std::endl;
   QString filePath;
   QTextStream out(&filePath);
-  out << SIMPL::PyBind11::RuntimeOutputDir << "/package/" << SIMPL::PyBind11::SIMPL_LibraryName << "__init__.py";
+  out << SIMPL::PyBind11::RuntimeOutputDir << "/" << SIMPL::PyBind11::SitePackages << "/" << SIMPL::PyBind11::SIMPL_LibraryName << "/__init__.py";
   if(m_IsSIMPLib.compare("TRUE") == PYB11_TRUE)
   {
     QFile f(filePath);
@@ -109,7 +109,7 @@ void PyBind11Generator::generateModuleInitPy()
       if(lower.isEmpty()) { continue; }
       fout 
 
-      << "# This imports the pythonic interface from the local site package\n"
+      << "# This imports the pythonic interface from the local site-packages\n"
       << "from . import " << lower << "py\n"
       << "# This imports the "<< lower << " submodule from the native python module\n"
       << "from .dream3d import " << lower << "\n"
@@ -147,7 +147,7 @@ void PyBind11Generator::copyPyInitFiles()
 
   QString outputPath;
   QTextStream op(&outputPath);
-  op << SIMPL::PyBind11::RuntimeOutputDir << "/" << m_CfgIntDir;
+  op << SIMPL::PyBind11::RuntimeOutputDir <<  "/" << SIMPL::PyBind11::SitePackages << "/" << SIMPL::PyBind11::SIMPL_LibraryName;
   QDir dir;
   dir.mkpath(outputPath);
 
@@ -157,24 +157,7 @@ void PyBind11Generator::copyPyInitFiles()
   QFileInfoList dirList = currentDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
 
   QFileInfoList itemList = currentDir.entryInfoList(filters);
-  // foreach(QFileInfo itemInfo, itemList)
-  // {
-  //   QString pyFilePath = itemInfo.absoluteFilePath();
-  //   QFile pyFile(pyFilePath);
-  //   pyFile.copy(outputPath + "/" + itemInfo.fileName());
-  //   // qDebug() << "Copy File: " << itemInfo.absoluteFilePath() << "\n   " 
-  //   //  << "DEST: " << outputPath + "/" + itemInfo.fileName();
-  // }
 
-  // ip << "/utils";
-  // currentDir = QDir(inputPath);
-  
-  // op << "/utils";
-  // dir.mkpath(outputPath);
-
-  // dirList = currentDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
-
-  // itemList = currentDir.entryInfoList(filters);
   foreach(QFileInfo itemInfo, itemList)
   {
     QString pyFilePath = itemInfo.absoluteFilePath();
@@ -183,7 +166,7 @@ void PyBind11Generator::copyPyInitFiles()
     //  << "DEST: " << outputPath + "/" + itemInfo.fileName();
     if( pyFilePath.contains(".in.") )
     {
-      qDebug() << "CONFIGURE FILE: " << pyFilePath;
+      //qDebug() << "CONFIGURE FILE: " << pyFilePath;
       QFile source(pyFilePath);
       source.open(QFile::ReadOnly);
       QString contents = source.readAll();
@@ -191,7 +174,7 @@ void PyBind11Generator::copyPyInitFiles()
 
       QString outName = outputPath + "/" + itemInfo.fileName();
       outName = outName.replace(".in.", ".");
-      qDebug() << "  outName:" << outName;
+      //qDebug() << "  outName:" << outName;
       contents = contents.replace("${CMAKE_LIBRARY_OUTPUT_DIRECTORY}", SIMPL::PyBind11::BuildDirectory);
       contents.replace("${SIMPLProj_BINARY_DIR}", SIMPL::PyBind11::SIMPLProjBinaryDir);
       contents.replace("${DREAM3D_DATA_DIR}", SIMPL::PyBind11::DataDirectory);

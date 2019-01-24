@@ -1,4 +1,4 @@
-{% set name = "dream3d" %}
+{% set name = "@SIMPL_PYTHON_MODULE_NAME@" %}
 {% set version = "@SIMPLProj_VERSION_MAJOR@.@SIMPLProj_VERSION_MINOR@.@SIMPLProj_VERSION_PATCH@" %}
 
 package:
@@ -6,7 +6,7 @@ package:
   version: "{{ version }}"
 
 source:
-    path: $RECIPE_DIR/../package
+    path: $RECIPE_DIR/../../site-packages
 
 
 requirements:

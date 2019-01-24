@@ -447,48 +447,8 @@ include(${SIMPLProj_SOURCE_DIR}/Support/Support.cmake)
 option(SIMPL_WRAP_PYTHON "Generate and Compile Python wrapping codes" OFF)
 if(SIMPL_WRAP_PYTHON)
 
-  option(SIMPL_PYTHON_BUILD_CONDA_PACKAGE "Build a Conda package" OFF)
-  if(DEFINED DREAM3DProj_BINARY_DIR)
-    set(SIMPL_CONDA_OUTPUT_DIR "${DREAM3DProj_BINARY_DIR}/Anaconda")
-  elseif(TARGET SIMPLView)
-    set(SIMPL_CONDA_OUTPUT_DIR "${SIMPLView_BINARY_DIR}/Anaconda")
-  else()
-    set(SIMPL_CONDA_OUTPUT_DIR "${SIMPLProj_BINARY_DIR}/Anaconda")
-  endif()
-  set_property(GLOBAL PROPERTY SIMPL_CONDA_OUTPUT_DIR "${SIMPL_CONDA_OUTPUT_DIR}")
-
   # --------------------------------------------------------------------
   # add the Pybind11 Python Wrapping
   add_subdirectory(${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11 ${PROJECT_BINARY_DIR}/Pybind11)
-
-  # --------------------------------------------------------------------------
-  # Copy the recipe and egg info for the building Conda package to the 
-  # output directory
-  if (SIMPL_PYTHON_BUILD_CONDA_PACKAGE)
-    if("${PYTHON_CONDA_DIRECTORY}" STREQUAL "")
-      message(FATAL_ERROR "Please set the PYTHON_CONDA_DIRECTORY variable either through the CMake-GUI or through the -DPYTHON_CONDA_DIRECTORY=/path/to/Anaconda3")
-    endif()
-    
-    file(MAKE_DIRECTORY ${SIMPL_CONDA_OUTPUT_DIR}/UnitTest)
-    file(MAKE_DIRECTORY ${SIMPL_CONDA_OUTPUT_DIR}/package/dream3d)
-    
-    file(TO_NATIVE_PATH ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} CROD_NATIVE)
-    file(TO_NATIVE_PATH ${SIMPL_CONDA_OUTPUT_DIR} SCOD_NATIVE)
-
-    #--- Copy the Anaconda Recipe files
-    set(conda_recipe_files bld.bat LICENSE meta.yaml setup.py)
-    foreach(f ${conda_recipe_files})
-      configure_file("${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Conda/conda-recipe/${f}"
-                      "${SIMPL_CONDA_OUTPUT_DIR}/conda-recipe/${f}" )
-    endforeach(f ${conda_recipe_files})
-    
-    #--- Copy the Anaconda Egg Files
-    set(conda_egg_files MANIFEST.in PKG-INFO ReadMe.md setup.cfg setup.py)
-    foreach(f ${conda_egg_files})
-      configure_file("${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Conda/egg-info/${f}"
-                      "${SIMPL_CONDA_OUTPUT_DIR}/package/${f}" )
-    endforeach(f ${conda_recipe_files})    
-
-  endif()
 
 endif()

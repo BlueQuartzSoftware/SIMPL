@@ -9,6 +9,12 @@ namespace SIMPL
   namespace PyBind11
   {   
 
+
+      /**
+      * @brief Returns the site-packages dir name
+      */
+      static const QString SitePackages("@PYTHON_SITE_PACKAGES_NAME@");
+
       /**
       * @brief Returns the Anaconda Package directory
       */
