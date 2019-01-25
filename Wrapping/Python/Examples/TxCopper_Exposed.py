@@ -22,7 +22,7 @@ def txcopper_exposed():
                                               "Phase Data", "EBSD Scan Data",
                                               False, 
                                               sd.GetBuildDirectory()
-                                              + "/Debug/Data/Textured_Copper/Cugrid_after 2nd_15kv_2kx_2.ctf")
+                                              + "/Data/Textured_Copper/Cugrid_after 2nd_15kv_2kx_2.ctf")
     if err < 0:
         print("ReadCtfData ErrorCondition: %d" % err)
 
@@ -72,7 +72,7 @@ def txcopper_exposed():
     image_writer = itkimageprocessing.ITKImageWriter.New()
     image_writer.registerImageIOFactories()
     err = itkimageprocessingpy.itk_image_writer(dca, sd.GetBuildDirectory() +
-                                                "/Debug/Data/Output/TexturedCopper/IPF_Exposed.png",
+                                                "/Data/Output/TexturedCopper/IPF_Exposed.png",
                                                 simpl.DataArrayPath(data_container_name, "EBSD Scan Data",
                                                                     "IPF_Exposed_001"), 0)
     if err < 0:
@@ -81,7 +81,7 @@ def txcopper_exposed():
     # Export Pole Figure Images #1
     # Possible enumerations: Image Format, Image Layout, Generation Algorithm / Pole Figure Type
     err = orientationanalysispy.write_pole_figure(dca, "Exposed_Lambert_",
-                                                  sd.GetBuildDirectory() + "/Debug/Data/Output/TexturedCopper", 0,
+                                                  sd.GetBuildDirectory() + "/Data/Output/TexturedCopper", 0,
                                                   1000, 32, 32, 0,
                                                   simpl.DataArrayPath(data_container_name, "EBSD Scan Data",
                                                                       "EulerAngles"),
@@ -97,7 +97,7 @@ def txcopper_exposed():
 
     # Export Pole Figure Images #2
     err = orientationanalysispy.write_pole_figure(dca, "Exposed_Discrete_",
-                                                  sd.GetBuildDirectory() + "/Debug/Data/Output/TexturedCopper", 0,
+                                                  sd.GetBuildDirectory() + "/Data/Output/TexturedCopper", 0,
                                                   1000, 32, 32, 0,
                                                   simpl.DataArrayPath(data_container_name, "EBSD Scan Data",
                                                                       "EulerAngles"),

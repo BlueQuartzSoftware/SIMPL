@@ -102,9 +102,11 @@ CreatePybind11Module(MODULE_NAME ${SIMPL_PYTHON_MODULE_NAME}
 # output directory
 if (SIMPL_PYTHON_BUILD_CONDA_PACKAGE)
   if("${PYTHON_CONDA_DIRECTORY}" STREQUAL "")
+    set(PYTHON_CONDA_DIRECTORY "" CACHE STRING "")
     message(FATAL_ERROR "Please set the PYTHON_CONDA_DIRECTORY variable either through the CMake-GUI or through the -DPYTHON_CONDA_DIRECTORY=/path/to/Anaconda3")
   endif()
   if("${PYTHON_CONDA_ENVIRONMENT_NAME}" STREQUAL "")
+    set(PYTHON_CONDA_ENVIRONMENT_NAME "" CACHE STRING "")
     message(FATAL_ERROR "Please set the PYTHON_CONDA_ENVIRONMENT_NAME variable either through the CMake-GUI or through the -DPYTHON_CONDA_ENVIRONMENT_NAME=ANACONDA_ENV_NAME")
   endif()   
   
@@ -121,6 +123,7 @@ if (SIMPL_PYTHON_BUILD_CONDA_PACKAGE)
   
   file(TO_NATIVE_PATH ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} CROD_NATIVE)
   file(TO_NATIVE_PATH ${SIMPL_CONDA_OUTPUT_DIR} SCOD_NATIVE)
+  file(TO_NATIVE_PATH ${PYTHON_CONDA_DIRECTORY} PCD_NATIVE)
 
   if(WIN32)
     configure_file(${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Conda/package.in.bat
@@ -157,17 +160,17 @@ if (SIMPL_PYTHON_BUILD_CONDA_PACKAGE)
   endforeach(f ${conda_recipe_files})    
 
 
-  option(SIMPL_PYTHON_INSTALL_CONDA_PACKAGE_LOCALLY "Install the dream3d Conda site-package locally" OFF)
+  # option(SIMPL_PYTHON_INSTALL_CONDA_PACKAGE_LOCALLY "Install the dream3d Conda site-package locally" OFF)
   
-  if(SIMPL_PYTHON_INSTALL_CONDA_PACKAGE_LOCALLY)
-    # Build a new copy of the DREAM3D Conda package in the environments conda-bld folder
-    add_custom_command(TARGET dream3d POST_BUILD 
-        COMMAND ${PYTHON_CONDA_DIRECTORY}/envs/${PYTHON_CONDA_ENVIRONMENT_NAME}/${CONDA_SCRIPTS_DIR_NAME}/conda build --quiet ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/conda-recipe 
-        COMMAND ${PYTHON_CONDA_DIRECTORY}/envs/${PYTHON_CONDA_ENVIRONMENT_NAME}/${CONDA_SCRIPTS_DIR_NAME}/conda build purge)
-    add_custom_command(TARGET dream3d POST_BUILD 
-      COMMAND ${PYTHON_CONDA_DIRECTORY}/envs/${PYTHON_CONDA_ENVIRONMENT_NAME}/${CONDA_SCRIPTS_DIR_NAME}/conda remove -y dream3d 
-      COMMENT "Removing any existing dream3d Conda package")
-    add_custom_command(TARGET dream3d POST_BUILD COMMAND ${PYTHON_CONDA_DIRECTORY}/envs/${PYTHON_CONDA_ENVIRONMENT_NAME}/${CONDA_SCRIPTS_DIR_NAME}/conda install -y --use-local dream3d 
-      COMMENT "Installing the dream3d Conda package")
-  endif()
+  # if(SIMPL_PYTHON_INSTALL_CONDA_PACKAGE_LOCALLY)
+  #   # Build a new copy of the DREAM3D Conda package in the environments conda-bld folder
+  #   add_custom_command(TARGET dream3d POST_BUILD 
+  #       COMMAND ${PYTHON_CONDA_DIRECTORY}/envs/${PYTHON_CONDA_ENVIRONMENT_NAME}/${CONDA_SCRIPTS_DIR_NAME}/conda build --quiet ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/conda-recipe 
+  #       COMMAND ${PYTHON_CONDA_DIRECTORY}/envs/${PYTHON_CONDA_ENVIRONMENT_NAME}/${CONDA_SCRIPTS_DIR_NAME}/conda build purge)
+  #   add_custom_command(TARGET dream3d POST_BUILD 
+  #     COMMAND ${PYTHON_CONDA_DIRECTORY}/envs/${PYTHON_CONDA_ENVIRONMENT_NAME}/${CONDA_SCRIPTS_DIR_NAME}/conda remove -y dream3d 
+  #     COMMENT "Removing any existing dream3d Conda package")
+  #   add_custom_command(TARGET dream3d POST_BUILD COMMAND ${PYTHON_CONDA_DIRECTORY}/envs/${PYTHON_CONDA_ENVIRONMENT_NAME}/${CONDA_SCRIPTS_DIR_NAME}/conda install -y --use-local dream3d 
+  #     COMMENT "Installing the dream3d Conda package")
+  # endif()
 endif()

@@ -17,10 +17,10 @@ def color_data_change_test():
 
     # Create Data Container Array
     dca = simpl.DataContainerArray.New()
-
+    print("Build Dir: %s" % sd.GetBuildDirectory())
     # ReadAngData
     err = orientationanalysispy.read_ang_data(dca, "EBSD Scan", "Phase Data", "Scan Data",
-                                              False, sd.GetBuildDirectory() + "/Debug/Data/SmallIN100/Slice_1.ang")
+                                              False, sd.GetBuildDirectory() + "/Data/SmallIN100/Slice_1.ang")
     if err < 0:
         print("ReadAngData ErrorCondition: %d" % err)
 
@@ -56,7 +56,7 @@ def color_data_change_test():
     image_writer = itkimageprocessing.ITKImageWriter.New()
     image_writer.registerImageIOFactories()
     err = itkimageprocessingpy.itk_image_writer(dca, sd.GetBuildDirectory() +
-                                                "/Debug/Data/Output/Small_IN100_Slice_1.png",
+                                                "Data/Output/Small_IN100_Slice_1.png",
                                                 simpl.DataArrayPath("EBSD Scan", "Scan Data", "IPFColor"), 0)
     if err < 0:
         print("ITKImageWriter ErrorCondition: %d" % err)
