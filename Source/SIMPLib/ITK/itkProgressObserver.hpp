@@ -48,20 +48,53 @@ namespace itk
 class ProgressObserver : public itk::Command
 {
   public:
-    void Execute(itk::Object* caller, const itk::EventObject& event) override;
+    void Execute(itk::Object* caller, const itk::EventObject& event) override
+    {
+      Execute((const itk::Object*)caller, event);
+    }
 
-    void Execute(const itk::Object* caller, const itk::EventObject& event) override;
+    void Execute(const itk::Object* caller, const itk::EventObject& event) override
+    {
+      if(!itk::ProgressEvent().CheckEvent(&event))
+      {
+        return;
+      }
+      const auto* processObject = dynamic_cast<const itk::ProcessObject*>(caller);
+      if(!processObject)
+      {
+        return;
+      }
 
-    void setMessagePrefix(const QString &prefix);
+      QString progressStr = QString::number(processObject->GetProgress() * 100);
 
-    void setFilter(AbstractFilter* filter);
+      QString ss;
+      if (m_MessagePrefix.isEmpty())
+      {
+        ss = QObject::tr("%1%").arg(progressStr);
+      }
+      else
+      {
+        ss = QObject::tr("%1: %2%").arg(m_MessagePrefix).arg(progressStr);
+      }
+
+      if (m_Filter)
+      {
+        m_Filter->notifyStatusMessage(m_Filter->getHumanLabel(), ss);
+      }
+    }
+
+    void setMessagePrefix(const QString &prefix)
+    {
+      m_MessagePrefix = prefix;
+    }
+
+    void setFilter(AbstractFilter* filter)
+    {
+      m_Filter = filter;
+    }
 
   private:
     AbstractFilter* m_Filter = nullptr;
     QString m_MessagePrefix;
 };
 } // end of itk namespace
-
-#ifndef ITK_MANUAL_INSTANTIATION
-#include "itkProgressObserver.cpp"
-#endif
