@@ -127,6 +127,7 @@ ImportASCIIDataWizard::ImportASCIIDataWizard(ASCIIWizardData* wizardData, DataCo
   dPage->setEditSettings(m_EditSettings);
   dfPage->getTupleTable()->clearTupleDimensions();
   dfPage->getTupleTable()->addTupleDimensions(wizardData->tupleDims);
+  dfPage->getTupleTable()->setUsedEdit(true);
   dfPage->setUseDefaultHeaders(false);
   dfPage->setHeaderLine(0);
   dfPage->setUseCustomHeaders(false);
@@ -201,10 +202,10 @@ ImportASCIIDataWizard::ImportASCIIDataWizard(ASCIIWizardData* wizardData, DataCo
 
   dfPage->checkHeaders();
 
-#ifndef Q_OS_MAC
-  setWizardStyle(ModernStyle);
-#else
+#ifdef Q_OS_MAC
   setWizardStyle(MacStyle);
+#else
+  setWizardStyle(ModernStyle);
 #endif
 }
 
@@ -275,11 +276,11 @@ QStringList ImportASCIIDataWizard::ReadLines(const QString& inputFilePath, int b
   if(inputFile.open(QIODevice::ReadOnly))
   {
     QTextStream in(&inputFile);
-
+    QString aLine;
     for(int i = 1; i < beginLine; i++)
     {
       // Skip all lines before "value"
-      in.readLine();
+      aLine = in.readLine();
     }
 
     for(int i = beginLine; i < beginLine + numOfLines; i++)
@@ -300,12 +301,16 @@ void ImportASCIIDataWizard::InsertTokenizedLines(QList<QStringList> tokenizedLin
 {
   model->clearContents();
 
+  int maxNumHeaders = 0;
   int vHeaderIndex = firstRowHeaderIndex;
 
   for(int row = 0; row < tokenizedLines.size(); row++)
   {
     QStringList tokenizedLine = tokenizedLines[row];
-
+    if(tokenizedLine.size() > maxNumHeaders)
+    {
+      maxNumHeaders = tokenizedLine.size();
+    }
     while(model->columnCount() < tokenizedLine.size())
     {
       model->insertColumn(model->columnCount());
@@ -321,6 +326,12 @@ void ImportASCIIDataWizard::InsertTokenizedLines(QList<QStringList> tokenizedLin
     model->setHeaderData(row, Qt::Vertical, QString::number(vHeaderIndex), Qt::DisplayRole);
     vHeaderIndex++;
   }
+
+  if(model->columnCount() > maxNumHeaders)
+  {
+    model->removeColumns(maxNumHeaders, model->columnCount() - maxNumHeaders);
+  }
+
 }
 
 // -----------------------------------------------------------------------------
@@ -366,7 +377,10 @@ void ImportASCIIDataWizard::LoadOriginalLines(QStringList lines, ASCIIDataModel*
 void ImportASCIIDataWizard::refreshModel()
 {
   AbstractWizardPage* page = dynamic_cast<AbstractWizardPage*>(currentPage());
-  page->refreshModel();
+  if(page)
+  {
+    page->refreshModel();
+  }
 }
 
 // -----------------------------------------------------------------------------

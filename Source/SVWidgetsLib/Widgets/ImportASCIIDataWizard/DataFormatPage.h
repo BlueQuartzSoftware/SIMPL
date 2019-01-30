@@ -35,6 +35,7 @@
 
 
 #pragma once
+#include <QtCore/QFileSystemWatcher>
 
 #include <QtWidgets/QWizardPage>
 #include <QtWidgets/QButtonGroup>
@@ -61,7 +62,7 @@ class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    DataFormatPage(QSharedPointer<ASCIIDataModel> model, const QString& inputFilePath, int numLines, DataContainerArray::Pointer dca, QWidget* parent = nullptr);
+    DataFormatPage(QSharedPointer<ASCIIDataModel> &model, const QString& inputFilePath, int numLines, DataContainerArray::Pointer &dca, QWidget* parent = nullptr);
 
     ~DataFormatPage() override;
 
@@ -89,7 +90,7 @@ class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
      * @brief checkHeaders
      * @param headers
      */
-    void checkHeaders(QVector<QString> headers);
+    void checkHeaders(const QVector<QString> &headers);
 
     /**
     * @brief Controls which page to navigate to after the user clicks "Next" button
@@ -204,13 +205,13 @@ class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
      * @brief dcaItemSelected
      * @param path
      */
-    void amItemSelected(QString path);
+    void amItemSelected(const QString &path);
 
     /**
      * @brief dcaItemSelected
      * @param path
      */
-    void dcItemSelected(QString path);
+    void dcItemSelected(const QString &path);
 
     /**
      * @brief on_amName_returnPressed
@@ -266,7 +267,7 @@ class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
     void on_amName_returnPressed();
 
     void updateSelection(const QItemSelection &selected, const QItemSelection &deselected);
-    bool checkTupleDimensions(QVector<size_t> tupleDims);
+    bool checkTupleDimensions(const QVector<size_t> &tupleDims);
 
     void on_createAMRadio_toggled(bool b);
     void on_useAMRadio_toggled(bool b);
@@ -275,7 +276,7 @@ class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
     int                                             m_NumLines = -1;
     EditHeadersDialog*                              m_EditHeadersDialog = nullptr;
     DataContainerArray::Pointer                     m_Dca;
-    QSharedPointer<ASCIIDataModel> m_ASCIIDataModel;
+    QSharedPointer<ASCIIDataModel>                  m_ASCIIDataModel;
     QSignalMapper*                                  m_AMMenuMapper = nullptr;
     QSignalMapper*                                  m_DCMenuMapper = nullptr;
 
@@ -291,8 +292,11 @@ class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
     bool                                            m_TupleDimsHasErrors = false;
     bool                                            m_HeadersHasErrors = false;
 
+    QStringList                                     m_PreviewLinesCache;
+    QFileSystemWatcher                              m_InputFileWatcher;
+
     bool validateHeaders(QVector<QString> headers);
-    bool validateTupleDimensions(QVector<size_t> tupleDims);
+    bool validateTupleDimensions(const QVector<size_t> &tupleDims);
   
   public:
     DataFormatPage(const DataFormatPage&) = delete; // Copy Constructor Not Implemented
