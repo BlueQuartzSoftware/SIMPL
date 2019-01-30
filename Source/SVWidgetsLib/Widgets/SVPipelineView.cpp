@@ -329,6 +329,16 @@ void SVPipelineView::preflightPipeline()
   emit clearIssuesTriggered();
 
   PipelineModel* model = getPipelineModel();
+  if(nullptr == model)
+  {
+    QString s;
+    QTextStream out(&s);
+    out << "###############################################################################\n";
+    out << "SVPipelineView::preflightPipeline(" << __LINE__ << "): PipelineModel* model = getPipelineModel(); LINE FAILED\n";
+    out << "###############################################################################\n";
+    stdOutMessage(s);
+    return;
+  }
 
   // Create a Pipeline Object and fill it with the filters from this View
   FilterPipeline::Pointer pipeline = getFilterPipeline();
@@ -346,7 +356,7 @@ void SVPipelineView::preflightPipeline()
     {
       model->setData(childIndex, static_cast<int>(PipelineItem::ErrorState::Ok), PipelineModel::ErrorStateRole);
       AbstractFilter::Pointer filter = model->filter(childIndex);
-      if(filter->getEnabled())
+      if(filter && filter->getEnabled())
       {
         model->setData(childIndex, static_cast<int>(PipelineItem::WidgetState::Ready), PipelineModel::WidgetStateRole);
       }
@@ -1980,7 +1990,7 @@ bool SVPipelineView::isPipelineCurrentlyRunning()
 // -----------------------------------------------------------------------------
 PipelineModel* SVPipelineView::getPipelineModel()
 {
-  return static_cast<PipelineModel*>(model());
+  return dynamic_cast<PipelineModel*>(model());
 }
 
 // -----------------------------------------------------------------------------
