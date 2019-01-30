@@ -325,18 +325,11 @@ void SVPipelineView::preflightPipeline()
   {
     return;
   }
-  //qDebug() << "----------- SVPipelineView::preflightPipeline Begin --------------";
   emit clearIssuesTriggered();
 
   PipelineModel* model = getPipelineModel();
   if(nullptr == model)
   {
-    QString s;
-    QTextStream out(&s);
-    out << "###############################################################################\n";
-    out << "SVPipelineView::preflightPipeline(" << __LINE__ << "): PipelineModel* model = getPipelineModel(); LINE FAILED\n";
-    out << "###############################################################################\n";
-    stdOutMessage(s);
     return;
   }
 
@@ -363,25 +356,11 @@ void SVPipelineView::preflightPipeline()
     }
   }
 
-  //  QSharedPointer<ProgressDialog> progressDialog(new ProgressDialog());
-  //  progressDialog->setWindowTitle("Pipeline Preflighting");
-  //  QString msg = QString("Please wait for %1 filters to preflight...").arg(pipeline->getFilterContainer().count());
-  //  progressDialog->setLabelText(msg);
-  //  progressDialog->show();
-  //  progressDialog->raise();
-  //  progressDialog->activateWindow();
-
-  // Preflight the pipeline
-  //qDebug() << "Preflight the Pipeline ... ";
-
   int err = pipeline->preflightPipeline();
   if(err < 0)
   {
     // FIXME: Implement error handling.
   }
-
-  //qDebug() << "Checking for Filters with Errors or Warnings ... ";
-
   int count = pipeline->getFilterContainer().size();
   // Now that the preflight has been executed loop through the filters and check their error condition and set the
   // outline on the filter widget if there were errors or warnings
@@ -391,21 +370,22 @@ void SVPipelineView::preflightPipeline()
     if(childIndex.isValid())
     {
       AbstractFilter::Pointer filter = model->filter(childIndex);
-      if(filter->getWarningCondition() < 0)
+      if(filter.get() != nullptr)
       {
-        model->setData(childIndex, static_cast<int>(PipelineItem::ErrorState::Warning), PipelineModel::ErrorStateRole);
-      }
-      if(filter->getErrorCondition() < 0)
-      {
-        model->setData(childIndex, static_cast<int>(PipelineItem::ErrorState::Error), PipelineModel::ErrorStateRole);
+        if (filter->getWarningCondition() < 0)
+        {
+          model->setData(childIndex, static_cast<int>(PipelineItem::ErrorState::Warning), PipelineModel::ErrorStateRole);
+        }
+        if(filter->getErrorCondition() < 0)
+        {
+          model->setData(childIndex, static_cast<int>(PipelineItem::ErrorState::Error), PipelineModel::ErrorStateRole);
+        }
       }
     }
   }
 
   emit preflightFinished(pipeline, err);
-  updateFilterInputWidgetIndices();
-  //qDebug() << "----------- SVPipelineView::preflightPipeline End --------------";
-  
+  updateFilterInputWidgetIndices(); 
 }
 
 // -----------------------------------------------------------------------------
