@@ -73,6 +73,7 @@ class TupleTableWidget : public QWidget, private Ui::TupleTableWidget
     void clearTupleDimensions();
 
     bool didUseEdit();
+    void setUsedEdit(bool b);
 
   public slots:
     void on_addTupleBtn_clicked();

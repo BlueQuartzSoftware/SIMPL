@@ -58,7 +58,7 @@ namespace Detail
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataFormatPage::DataFormatPage(QSharedPointer<ASCIIDataModel> model, const QString& inputFilePath, int numLines, DataContainerArray::Pointer dca, QWidget* parent)
+DataFormatPage::DataFormatPage(QSharedPointer<ASCIIDataModel>& model, const QString& inputFilePath, int numLines, DataContainerArray::Pointer& dca, QWidget* parent)
 : AbstractWizardPage(inputFilePath, parent)
 , m_NumLines(numLines)
 , m_Dca(dca)
@@ -79,6 +79,16 @@ DataFormatPage::~DataFormatPage() = default;
 // -----------------------------------------------------------------------------
 void DataFormatPage::setupGui()
 {
+  m_InputFileWatcher.addPath(m_InputFilePath);
+  // Connect the FileSystemWatcher signal to a lambda that will reread the file on changes
+  connect(&m_InputFileWatcher, &QFileSystemWatcher::fileChanged,
+          [this]( const QString& file )
+  {
+    m_PreviewLinesCache = ImportASCIIDataWizard::ReadLines(m_InputFilePath, 0, ImportASCIIDataWizard::TotalPreviewLines);
+  }
+  );
+
+  m_PreviewLinesCache = ImportASCIIDataWizard::ReadLines(m_InputFilePath, 0, ImportASCIIDataWizard::TotalPreviewLines);
 
   dataView->setModel(m_ASCIIDataModel.data());
 
@@ -248,7 +258,7 @@ void DataFormatPage::showEvent(QShowEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataFormatPage::amItemSelected(QString path)
+void DataFormatPage::amItemSelected(const QString& path)
 {
   selectedAMBtn->setText(path);
 
@@ -268,7 +278,7 @@ void DataFormatPage::amItemSelected(QString path)
     selectedAMBtn->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(true));
   }
 
-  ImportASCIIDataWizard* importWizard = dynamic_cast<ImportASCIIDataWizard*>(wizard());
+  auto importWizard = dynamic_cast<ImportASCIIDataWizard*>(wizard());
   if (importWizard == nullptr) { return; }
 
   QStringList headers = importWizard->getHeaders();
@@ -308,7 +318,7 @@ void DataFormatPage::amItemSelected(QString path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataFormatPage::dcItemSelected(QString path)
+void DataFormatPage::dcItemSelected(const QString& path)
 {
   selectedDCBtn->setText(path);
 
@@ -451,10 +461,8 @@ void DataFormatPage::createAMSelectionMenu()
   // Get the DataContainerArray object
   // Loop over the data containers until we find the proper data container
   QList<DataContainer::Pointer> containers = dca->getDataContainers();
-  QVector<QString> daTypes;// = m_FilterParameter->getDefaultAttributeArrayTypes();
-  QVector<QVector<size_t>> cDims;// = m_FilterParameter->getDefaultComponentDimensions();
-  QVector<AttributeMatrix::Type> amTypes;// = m_FilterParameter->getDefaultAttributeMatrixTypes();
-  IGeometry::Types geomTypes;// = m_FilterParameter->getDefaultGeometryTypes();
+  QVector<AttributeMatrix::Type> amTypes;
+  IGeometry::Types geomTypes;
 
   QListIterator<DataContainer::Pointer> containerIter(containers);
   while(containerIter.hasNext())
@@ -684,7 +692,6 @@ void DataFormatPage::on_startRowSpin_valueChanged(int value)
   if(value > m_NumLines)
   {
     wizard()->button(QWizard::FinishButton)->setDisabled(true);
-//    amTuplesLabel->setText("ERR");
     return;
   }
 
@@ -698,7 +705,12 @@ void DataFormatPage::on_startRowSpin_valueChanged(int value)
   bool spaceAsDelimiter = field("spaceAsDelimiter").toBool();
   bool consecutiveDelimiters = field("consecutiveDelimiters").toBool();
 
-  QStringList lines = ImportASCIIDataWizard::ReadLines(m_InputFilePath, value, ImportASCIIDataWizard::TotalPreviewLines);
+  // Get our lines from the file cache.
+  QStringList lines;
+  for(int i = value-1; i < m_PreviewLinesCache.size(); i++)
+  {
+    lines.push_back(m_PreviewLinesCache[i]);
+  }
   ImportASCIIDataWizard::LoadOriginalLines(lines, m_ASCIIDataModel.data());
 
   QList<char> delimiters = ImportASCIIDataWizard::ConvertToDelimiters(tabAsDelimiter, semicolonAsDelimiter, commaAsDelimiter, spaceAsDelimiter);
@@ -707,9 +719,11 @@ void DataFormatPage::on_startRowSpin_valueChanged(int value)
   ImportASCIIDataWizard::InsertTokenizedLines(tokenizedLines, startRowSpin->value(), m_ASCIIDataModel.data());
 
   // Update headers
+//  this->blockSignals(true);
   on_hasHeadersRadio_toggled(hasHeadersRadio->isChecked());
   on_doesNotHaveHeadersRadio_toggled(doesNotHaveHeadersRadio->isChecked());
   on_useDefaultHeaders_toggled(useDefaultHeaders->isChecked());
+//  this->blockSignals(false);
 
   // Update Tuple Dimensions
   linesInFileLabel->setText(QString::number(m_NumLines));
@@ -899,7 +913,7 @@ void DataFormatPage::on_headersIndexLineEdit_textChanged(const QString& text)
 
     if(i < tokenizedLine.size())
     {
-      header = tokenizedLine[i];
+      header = tokenizedLine[i].trimmed();
     }
 
     m_ASCIIDataModel->setHeaderData(i, Qt::Horizontal, header, Qt::DisplayRole);
@@ -966,7 +980,7 @@ void DataFormatPage::updateSelection(const QItemSelection& selected, const QItem
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataFormatPage::checkTupleDimensions(QVector<size_t> tupleDims)
+bool DataFormatPage::checkTupleDimensions(const QVector<size_t>& tupleDims)
 {
   if(!validateTupleDimensions(tupleDims))
   {
@@ -987,15 +1001,10 @@ bool DataFormatPage::checkTupleDimensions(QVector<size_t> tupleDims)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataFormatPage::validateTupleDimensions(QVector<size_t> tupleDims)
+bool DataFormatPage::validateTupleDimensions(const QVector<size_t>& tupleDims)
 {
-  size_t tupleTotal = 1;
+  size_t tupleTotal = std::accumulate(tupleDims.begin(), tupleDims.end(), 1, std::multiplies<size_t>());
 
-  for(int i = 0; i < tupleDims.size(); i++)
-  {
-    tupleTotal = tupleTotal * tupleDims[i];
-  }
-//  amTuplesLabel->setText(QString::number(tupleTotal));
   size_t beginIndex = static_cast<size_t>(startRowSpin->value());
   size_t numOfDataLines = m_NumLines - beginIndex + 1;
   return tupleTotal == numOfDataLines;
@@ -1075,7 +1084,11 @@ void DataFormatPage::refreshModel()
   bool spaceAsDelimiter = field("spaceAsDelimiter").toBool();
   bool consecutiveDelimiters = field("consecutiveDelimiters").toBool();
 
-  QStringList lines = ImportASCIIDataWizard::ReadLines(m_InputFilePath, startRowSpin->value(), ImportASCIIDataWizard::TotalPreviewLines);
+  QStringList lines;
+  for(int i = startRowSpin->value(); i < m_PreviewLinesCache.size(); i++)
+  {
+    lines.push_back(m_PreviewLinesCache[i]);
+  }
 
   ImportASCIIDataWizard::LoadOriginalLines(lines, m_ASCIIDataModel.data());
 
@@ -1155,7 +1168,7 @@ void DataFormatPage::checkHeaders()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataFormatPage::checkHeaders(QVector<QString> headers)
+void DataFormatPage::checkHeaders(const QVector<QString>& headers)
 {
   if(validateHeaders(headers))
   {
