@@ -307,10 +307,7 @@ void ImportASCIIDataWizard::InsertTokenizedLines(QList<QStringList> tokenizedLin
   for(int row = 0; row < tokenizedLines.size(); row++)
   {
     QStringList tokenizedLine = tokenizedLines[row];
-    if(tokenizedLine.size() > maxNumHeaders)
-    {
-      maxNumHeaders = tokenizedLine.size();
-    }
+    maxNumHeaders = std::max(maxNumHeaders, tokenizedLine.size());
     while(model->columnCount() < tokenizedLine.size())
     {
       model->insertColumn(model->columnCount());
@@ -339,7 +336,7 @@ void ImportASCIIDataWizard::InsertTokenizedLines(QList<QStringList> tokenizedLin
 // -----------------------------------------------------------------------------
 void ImportASCIIDataWizard::InsertLines(QStringList lines, int firstRowHeaderIndex, ASCIIDataModel* model)
 {
-
+Q_UNUSED(firstRowHeaderIndex)
   model->insertColumn(0);
   for(int row = 0; row < lines.size(); row++)
   {
@@ -527,7 +524,7 @@ int ImportASCIIDataWizard::getAttributeMatrixType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportASCIIDataWizard::updateDataArrayPath(DataArrayPath::RenameType renamePath)
+void ImportASCIIDataWizard::updateDataArrayPath(const DataArrayPath::RenameType& renamePath)
 {
   DataFormatPage* dfPage = dynamic_cast<DataFormatPage*>(page(DataFormat));
   if(nullptr != dfPage)

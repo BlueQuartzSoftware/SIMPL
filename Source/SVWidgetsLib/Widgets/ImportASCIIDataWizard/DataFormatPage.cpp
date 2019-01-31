@@ -707,7 +707,7 @@ void DataFormatPage::on_startRowSpin_valueChanged(int value)
 
   // Get our lines from the file cache.
   QStringList lines;
-  for(int i = value-1; i < m_PreviewLinesCache.size(); i++)
+  for(int i = ((value < 1) ? 0 : value-1); i < m_PreviewLinesCache.size(); i++)
   {
     lines.push_back(m_PreviewLinesCache[i]);
   }
@@ -728,7 +728,7 @@ void DataFormatPage::on_startRowSpin_valueChanged(int value)
   // Update Tuple Dimensions
   linesInFileLabel->setText(QString::number(m_NumLines));
 
-  int numOfDataLines = m_NumLines - value + 1;
+  size_t numOfDataLines = static_cast<size_t>(m_NumLines - value + 1);
   linesImportedLabel->setText(QString::number(numOfDataLines));
   if(!tupleDimsTable->didUseEdit())
   {

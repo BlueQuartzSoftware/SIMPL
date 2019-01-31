@@ -128,7 +128,7 @@ class ImportASCIIDataWizard : public QWizard
     * @brief Updates the DataArrayPath used for importing data
     * @param renamePath
     */
-    void updateDataArrayPath(DataArrayPath::RenameType renamePath);
+    void updateDataArrayPath(const DataArrayPath::RenameType &renamePath);
 
     QList<char> getDelimiters();
     bool getConsecutiveDelimiters();
