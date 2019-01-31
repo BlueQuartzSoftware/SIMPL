@@ -1,7 +1,5 @@
-#include <utility>
-
 /* ============================================================================
- * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ * Copyright (c) 2009-2019 BlueQuartz Software, LLC
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -34,10 +32,10 @@
  *    United States Prime Contract Navy N00173-07-C-2068
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
 #include "SVPipelineView.h"
 
 #include <iostream>
+#include <utility>
 
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
@@ -325,10 +323,13 @@ void SVPipelineView::preflightPipeline()
   {
     return;
   }
-  //qDebug() << "----------- SVPipelineView::preflightPipeline Begin --------------";
   emit clearIssuesTriggered();
 
   PipelineModel* model = getPipelineModel();
+  if(nullptr == model)
+  {
+    return;
+  }
 
   // Create a Pipeline Object and fill it with the filters from this View
   FilterPipeline::Pointer pipeline = getFilterPipeline();
@@ -346,32 +347,18 @@ void SVPipelineView::preflightPipeline()
     {
       model->setData(childIndex, static_cast<int>(PipelineItem::ErrorState::Ok), PipelineModel::ErrorStateRole);
       AbstractFilter::Pointer filter = model->filter(childIndex);
-      if(filter->getEnabled())
+      if(filter && filter->getEnabled())
       {
         model->setData(childIndex, static_cast<int>(PipelineItem::WidgetState::Ready), PipelineModel::WidgetStateRole);
       }
     }
   }
 
-  //  QSharedPointer<ProgressDialog> progressDialog(new ProgressDialog());
-  //  progressDialog->setWindowTitle("Pipeline Preflighting");
-  //  QString msg = QString("Please wait for %1 filters to preflight...").arg(pipeline->getFilterContainer().count());
-  //  progressDialog->setLabelText(msg);
-  //  progressDialog->show();
-  //  progressDialog->raise();
-  //  progressDialog->activateWindow();
-
-  // Preflight the pipeline
-  //qDebug() << "Preflight the Pipeline ... ";
-
   int err = pipeline->preflightPipeline();
   if(err < 0)
   {
     // FIXME: Implement error handling.
   }
-
-  //qDebug() << "Checking for Filters with Errors or Warnings ... ";
-
   int count = pipeline->getFilterContainer().size();
   // Now that the preflight has been executed loop through the filters and check their error condition and set the
   // outline on the filter widget if there were errors or warnings
@@ -381,21 +368,22 @@ void SVPipelineView::preflightPipeline()
     if(childIndex.isValid())
     {
       AbstractFilter::Pointer filter = model->filter(childIndex);
-      if(filter->getWarningCondition() < 0)
+      if(filter.get() != nullptr)
       {
-        model->setData(childIndex, static_cast<int>(PipelineItem::ErrorState::Warning), PipelineModel::ErrorStateRole);
-      }
-      if(filter->getErrorCondition() < 0)
-      {
-        model->setData(childIndex, static_cast<int>(PipelineItem::ErrorState::Error), PipelineModel::ErrorStateRole);
+        if (filter->getWarningCondition() < 0)
+        {
+          model->setData(childIndex, static_cast<int>(PipelineItem::ErrorState::Warning), PipelineModel::ErrorStateRole);
+        }
+        if(filter->getErrorCondition() < 0)
+        {
+          model->setData(childIndex, static_cast<int>(PipelineItem::ErrorState::Error), PipelineModel::ErrorStateRole);
+        }
       }
     }
   }
 
   emit preflightFinished(pipeline, err);
   updateFilterInputWidgetIndices();
-  //qDebug() << "----------- SVPipelineView::preflightPipeline End --------------";
-  
 }
 
 // -----------------------------------------------------------------------------
@@ -622,12 +610,12 @@ int SVPipelineView::writePipeline(const QString& outputPath)
   {
     QModelIndex childIndex = model->index(i, PipelineItem::Contents);
     if(childIndex.isValid())
-    { 
-      AbstractFilter::Pointer filter = model->filter(childIndex);      
+    {
+      AbstractFilter::Pointer filter = model->filter(childIndex);
       pipeline->pushBack(filter);
     }
   }
-  
+
   int err = 0;
   if(ext == "dream3d")
   {
@@ -1456,7 +1444,7 @@ void SVPipelineView::toReadyState()
   for(int i = 0; i < model->rowCount(); i++)
   {
     QModelIndex index = model->index(i, PipelineItem::Contents);
-    
+
     // Do not set state to Completed if the filter is disabled
     PipelineItem::WidgetState wState = static_cast<PipelineItem::WidgetState>(model->data(index, PipelineModel::WidgetStateRole).toInt());
     if(wState != PipelineItem::WidgetState::Disabled)
@@ -1980,7 +1968,7 @@ bool SVPipelineView::isPipelineCurrentlyRunning()
 // -----------------------------------------------------------------------------
 PipelineModel* SVPipelineView::getPipelineModel()
 {
-  return static_cast<PipelineModel*>(model());
+  return dynamic_cast<PipelineModel*>(model());
 }
 
 // -----------------------------------------------------------------------------
