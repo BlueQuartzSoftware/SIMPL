@@ -276,11 +276,10 @@ QStringList ImportASCIIDataWizard::ReadLines(const QString& inputFilePath, int b
   if(inputFile.open(QIODevice::ReadOnly))
   {
     QTextStream in(&inputFile);
-    QString aLine;
     for(int i = 1; i < beginLine; i++)
     {
       // Skip all lines before "value"
-      aLine = in.readLine();
+      (void)in.readLine();
     }
 
     for(int i = beginLine; i < beginLine + numOfLines; i++)

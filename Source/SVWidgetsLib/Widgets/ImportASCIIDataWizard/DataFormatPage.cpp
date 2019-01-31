@@ -689,6 +689,12 @@ QPoint DataFormatPage::adjustedMenuPosition(QPushButton* pushButton)
 // -----------------------------------------------------------------------------
 void DataFormatPage::on_startRowSpin_valueChanged(int value)
 {
+  // The value MUST be at least 1. This is assumed to be coming from the user
+  // interface from a QSpinBox which _should_l have a minimum of 1.
+  if(value < 1)
+  {
+    return;
+  }
   if(value > m_NumLines)
   {
     wizard()->button(QWizard::FinishButton)->setDisabled(true);
