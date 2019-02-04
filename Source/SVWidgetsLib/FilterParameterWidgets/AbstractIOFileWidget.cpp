@@ -301,7 +301,7 @@ void AbstractIOFileWidget::on_m_LineEdit_fileDropped(const QString& text)
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
   QString inputPath = validator->convertToAbsolutePath(text);
 
-  setOpenDialogLastFilePath(text);
+  setValue(text);
   // Set/Remove the red outline if the file does exist
   verifyPathExists(inputPath, m_LineEdit);
 
@@ -342,7 +342,7 @@ void AbstractIOFileWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractIOFileWidget::setOpenDialogLastFilePath(const QString& val)
+void AbstractIOFileWidget::setValue(const QString& val)
 {
   m_LineEdit->setText(val);
 }
@@ -350,7 +350,7 @@ void AbstractIOFileWidget::setOpenDialogLastFilePath(const QString& val)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString AbstractIOFileWidget::getOpenDialogLastFilePath() 
+QString AbstractIOFileWidget::getValue()
 {
   if(m_LineEdit->text().isEmpty())
   {

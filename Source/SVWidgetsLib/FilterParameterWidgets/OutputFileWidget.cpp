@@ -75,12 +75,12 @@ void OutputFileWidget::selectOutputFile()
   QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
   if(currentPath.isEmpty())
   {
-    currentPath = getOpenDialogLastFilePath();
+    currentPath = getValue();
   }
   QString Ftype = m_FilterParameter->getFileType();
   QString ext = m_FilterParameter->getFileExtension();
   QString s = Ftype + QString(" Files (") + ext + QString(");;All Files(*.*)");
-  QString defaultName = getOpenDialogLastFilePath();
+  QString defaultName = getValue();
   QString file = QFileDialog::getSaveFileName(this, tr("Save File As"), defaultName, s);
 
   if(file.isEmpty())
@@ -91,7 +91,7 @@ void OutputFileWidget::selectOutputFile()
   file = QDir::toNativeSeparators(file);
   // Store the last used directory into the private instance variable
   QFileInfo fi(file);
-  setOpenDialogLastFilePath(fi.filePath());
+  setValue(fi.filePath());
 
   m_LineEdit->setText(file);
   on_m_LineEdit_editingFinished();
