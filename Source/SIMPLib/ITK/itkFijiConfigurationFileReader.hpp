@@ -61,6 +61,7 @@ class FijiConfigurationFileReader : public QObject
   public:
     FijiFileData parseFijiConfigFile(const QString &configFilePath)
     {
+      m_ErrorCondition = 0;
       itk::FijiFileData fileData;
 
       itk::TileLayout2D stageTiles = itk::ParseTileConfiguration2D(configFilePath.toStdString());
