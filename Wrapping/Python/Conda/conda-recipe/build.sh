@@ -1,5 +1,5 @@
 #!/bin/bash
 
-@PYTHON_CONDA_DIRECTORY@/envs/@PYTHON_CONDA_ENVIRONMENT_NAME@/@CONDA_SCRIPTS_DIR_NAME@/python setup.py install
+$PYTHON setup.py install
 
 

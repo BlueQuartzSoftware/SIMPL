@@ -135,7 +135,7 @@ if (SIMPL_PYTHON_BUILD_CONDA_PACKAGE)
                 COMMENT "Building an Anaconda package for ${SIMPL_PYTHON_MODULE_NAME}"
     )
   else()
-    configure_file(${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Conda/package.in.sh
+    configure_file(${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Conda/macOS_package.in.sh
                 ${SIMPL_CONDA_OUTPUT_DIR}/package.sh @ONLY)
     add_custom_target(CreateAnacondaPackage 
                 "${SIMPL_CONDA_OUTPUT_DIR}/package.sh" 
