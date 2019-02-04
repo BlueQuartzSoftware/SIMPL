@@ -58,11 +58,11 @@ OutputPathWidget::OutputPathWidget(FilterParameter* parameter, AbstractFilter* f
       currentPath = QDir::toNativeSeparators(currentPath);
       // Store the last used directory into the private instance variable
       QFileInfo fi(currentPath);
-      setOpenDialogLastFilePath(fi.filePath());
+      setValue(fi.filePath());
     }
     else
     {
-      setOpenDialogLastFilePath(QDir::homePath());
+      setValue(QDir::homePath());
     }
   }
 }
@@ -90,7 +90,7 @@ void OutputPathWidget::selectOutputPath()
   QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
   if(currentPath.isEmpty())
   {
-    currentPath = getOpenDialogLastFilePath();
+    currentPath = getValue();
   }
   QString Ftype = m_FilterParameter->getFileType();
   QString ext = m_FilterParameter->getFileExtension();
@@ -106,7 +106,7 @@ void OutputPathWidget::selectOutputPath()
   file = QDir::toNativeSeparators(file);
   // Store the last used directory into the private instance variable
   QFileInfo fi(file);
-  setOpenDialogLastFilePath(fi.filePath());
+  setValue(fi.filePath());
 
   m_LineEdit->setText(file);
   on_m_LineEdit_editingFinished();

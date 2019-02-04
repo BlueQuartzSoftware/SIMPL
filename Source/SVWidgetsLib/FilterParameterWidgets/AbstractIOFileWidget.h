@@ -101,9 +101,9 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
 
 
   protected:
-    void setOpenDialogLastFilePath(const QString &val);
+    void setValue(const QString& val);
 
-    QString getOpenDialogLastFilePath();
+    QString getValue();
 
     /**
     * @brief
