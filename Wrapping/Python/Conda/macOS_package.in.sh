@@ -17,14 +17,18 @@ CMAKE_COMMAND=@CMAKE_COMMAND@
 # -----------------------------------------------------------------------------
 function printStatus()
 {
-  if [ "@CMAKE_BUILD_TYPE@" = "Debug" ]; then
+#  if [ "@CMAKE_BUILD_TYPE@" = "Debug" ]; then
+  if [ "1" = "1" ]; then
       echo "${1}"
   fi
 }
 
+echo "*********************************************************************"
+echo "Starting Conda Package Generation"
+
+
 PYTHON_MODULE_LIBRARY=`find $BuildDir -type f -name "@SIMPL_PYTHON_MODULE_NAME@.cpython*.so"`
-echo "Found Python Module Library: $PYTHON_MODULE_LIBRARY"
-printStatus "************** Fixing up Tool @SIMPL_PYTHON_MODULE_NAME@ **********************"
+echo "Python Module Library: $PYTHON_MODULE_LIBRARY"
 
 
 InstallPrefix="${ANACONDA_PACKAGE_DIR}/$PYTHON_SITE_PACKAGES_NAME/$SIMPL_PYTHON_MODULE_NAME"
@@ -33,10 +37,12 @@ ProjectBinaryDir=$BuildDir
 printStatus "ProjectBinaryDir = ${ProjectBinaryDir}"
 
 PackageInstallDest=$InstallPrefix
+printStatus "InstallPrefix = ${InstallPrefix}"
+
 ApplicationName="@SIMPL_PYTHON_MODULE_NAME@"
 ApplicationExe="${PYTHON_MODULE_LIBRARY}"
 
-LibDirName="lib"
+LibDirName="."
 LibPath="${InstallPrefix}/${LibDirName}"
 InstallNameLib="@rpath/${LibDirName}"
 FrameworkDirName="Frameworks"
@@ -47,9 +53,6 @@ PluginPath="${ApplicationBundleName}/Contents/${PluginDirName}"
 InstallNamePlugin="@rpath/${PluginDirName}"
 ResourcesDirName="Resources"
 ResourcesPath="${ApplicationBundleName}/Contents/${ResourcesDirName}"
-
-
-echo "Starting Fix up of Tool @SIMPL_PYTHON_MODULE_NAME@ to share the frameworks, libraries and plugins"
 
 TmpDir="/tmp"
 
@@ -359,7 +362,7 @@ function UpdateExecutableDependencies()
         frameworkName="${libName}.framework"
         isFramework=` echo ${oldPath} | grep "${frameworkName}"`
         if [[ "${#isFramework}" = "0" ]]; then
-          cp $d/$dylib $InstallPrefix/lib/.
+          cp $d/$dylib $InstallPrefix/.
         else
           CopyFramework $d/$dylib
         fi
@@ -376,7 +379,7 @@ libSearchDirs=`cat ${BuildDir}/../LibSearchDirs.txt`
 
 libSearchDirs="$libSearchDirs;${qtLibDir}"
 libSearchDirs=`echo $libSearchDirs | tr ";" " "`
-echo "============= LibSearchDirs =============================="
+echo "LibSearchDirs"
 echo ${libSearchDirs}
 
 
@@ -411,7 +414,7 @@ if [[ "$addFrameworksRPath" = "1" ]]; then
 fi
 
 if [[ "$addLibraryRPath" = "1" ]]; then
-  install_name_tool -add_rpath "@rpath/lib/" ${ApplicationExe}
+  install_name_tool -add_rpath "@rpath/" ${ApplicationExe}
 fi
 
 rm -rf "${tmpFile}"
