@@ -116,7 +116,7 @@ public:
     writer->setDelimiter(WriteASCIIData::DelimiterType::Comma);
     writer->setFileExtension(k_Extension);
     writer->setMaxValPerLine(1);
-    writer->setOutputType(0);
+    writer->setOutputStyle(WriteASCIIData::MultiFile);
 
     writer->preflight();
     int err = writer->getErrorCondition();
@@ -127,7 +127,7 @@ public:
     DREAM3D_REQUIRE(err >= 0)
 
     // Test Single File mode
-    writer->setOutputType(1);
+    writer->setOutputStyle(WriteASCIIData::SingleFile);
     writer->setOutputFilePath(UnitTest::TestTempDir + "/" + "SingleFileMode.csv");
     writer->preflight();
     err = writer->getErrorCondition();
@@ -138,7 +138,7 @@ public:
     DREAM3D_REQUIRE(err >= 0)
 
     // Back to MultiFile mode
-    writer->setOutputType(0);
+    writer->setOutputStyle(WriteASCIIData::MultiFile);
 
     NeighborList<int32_t>::Pointer neighborList = NeighborList<int32_t>::CreateArray(k_ArraySize, "NeighborList", true);
     am->addAttributeArray(neighborList->getName(), neighborList);

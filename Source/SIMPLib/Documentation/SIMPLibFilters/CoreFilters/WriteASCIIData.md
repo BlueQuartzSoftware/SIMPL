@@ -50,7 +50,7 @@ Choice of delimiter is as follows:
 ## Parameters ##
 
 | Name             | Type | Description |
-|------------------|------|---------_---|
+|------------------|------|-------------|
 | Output Path      | File Path | The output file path |
 | File Extension   | String | File extension for output file(s) |
 | Maximum Tuples Per Line | int32_t | Number of tuples to print on each line |

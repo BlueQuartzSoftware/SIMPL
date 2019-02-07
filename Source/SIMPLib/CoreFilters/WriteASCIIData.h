@@ -53,7 +53,7 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
     PYB11_PROPERTY(int Delimiter READ getDelimiter WRITE setDelimiter)
     PYB11_PROPERTY(QString FileExtension READ getFileExtension WRITE setFileExtension)
     PYB11_PROPERTY(int MaxValPerLine READ getMaxValPerLine WRITE setMaxValPerLine)
-    PYB11_PROPERTY(int OutputType READ getOutputType WRITE setOutputType)
+    PYB11_PROPERTY(int OutputStyle READ getOutputStyle WRITE setOutputStyle)
 
   public:
     SIMPL_SHARED_POINTERS(WriteASCIIData)
@@ -80,8 +80,8 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
     SIMPL_FILTER_PARAMETER(int, MaxValPerLine)
     Q_PROPERTY(int MaxValPerLine READ getMaxValPerLine WRITE setMaxValPerLine)
 
-    SIMPL_FILTER_PARAMETER(int, OutputType)
-    Q_PROPERTY(int OutputType READ getOutputType WRITE setOutputType)
+    SIMPL_FILTER_PARAMETER(int, OutputStyle)
+    Q_PROPERTY(int OutputStyle READ getOutputStyle WRITE setOutputStyle)
 
     enum DelimiterType
     {
@@ -90,6 +90,12 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
       Space = 2,
       Colon = 3,
       Tab = 4
+    };
+
+    enum OutputType
+    {
+      MultiFile = 0,
+      SingleFile = 1
     };
 
     /**

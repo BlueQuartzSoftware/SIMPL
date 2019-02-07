@@ -51,11 +51,6 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
-namespace
-{
-static const int32_t k_MultiFile = 0;
-static const int32_t k_SingleFile = 1;
-} // namespace
 
 /**
  * @brief The ExportDataPrivate class is a templated class that implements a method to generically
@@ -153,9 +148,9 @@ void WriteASCIIData::setupFilterParameters()
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Output Type");
-    parameter->setPropertyName("OutputType");
-    parameter->setSetterCallback(SIMPL_BIND_SETTER(WriteASCIIData, this, OutputType));
-    parameter->setGetterCallback(SIMPL_BIND_GETTER(WriteASCIIData, this, OutputType));
+    parameter->setPropertyName("OutputStyle");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(WriteASCIIData, this, OutputStyle));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(WriteASCIIData, this, OutputStyle));
     QVector<QString> choices;
     choices.push_back("Multiple Files");
     choices.push_back("Single File");
@@ -235,7 +230,7 @@ void WriteASCIIData::dataCheck()
   setWarningCondition(0);
 
   //**************** MultiFile Checks ******************
-  if(m_OutputType == ::k_MultiFile)
+  if(m_OutputStyle == MultiFile)
   {
     if(m_OutputPath.isEmpty())
     {
@@ -262,7 +257,7 @@ void WriteASCIIData::dataCheck()
     }
   }
   //**************** MultiFile Checks ******************
-  else if(m_OutputType == ::k_SingleFile)
+  else if(m_OutputStyle == SingleFile)
   {
     if(m_OutputFilePath.isEmpty())
     {
@@ -373,11 +368,11 @@ void WriteASCIIData::execute()
     return;
   }
 
-  if(m_OutputType == ::k_MultiFile)
+  if(m_OutputStyle == MultiFile)
   {
     writeMultiFileOutput();
   }
-  else if(m_OutputType == ::k_SingleFile)
+  else if(m_OutputStyle == SingleFile)
   {
     writeSingleFileOutput();
   }
