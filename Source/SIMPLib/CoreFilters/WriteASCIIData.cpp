@@ -39,14 +39,23 @@
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.h"
+#include "SIMPLib/DataArrays/NeighborList.hpp"
 #include "SIMPLib/DataArrays/StringDataArray.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 #include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
 #include "SIMPLib/FilterParameters/OutputPathFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+
+namespace
+{
+static const int32_t k_MultiFile = 0;
+static const int32_t k_SingleFile = 1;
+} // namespace
 
 /**
  * @brief The ExportDataPrivate class is a templated class that implements a method to generically
@@ -55,7 +64,7 @@
 template <typename TInputType> class WriteASCIIDataPrivate
 {
 public:
-  typedef DataArray<TInputType> DataArrayType;
+  using DataArrayType = DataArray<TInputType>;
 
   WriteASCIIDataPrivate() = default;
   virtual ~WriteASCIIDataPrivate() = default;
@@ -71,7 +80,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void static Execute(WriteASCIIData* filter, IDataArray::Pointer inputData, char delimiter, QString outputFile, int32_t MaxValPerLine)
+  void static Execute(WriteASCIIData* filter, IDataArray::Pointer inputData, char delimiter, const QString& outputFile, int32_t MaxValPerLine)
   {
     typename DataArrayType::Pointer inputArray = std::dynamic_pointer_cast<DataArrayType>(inputData);
 
@@ -140,9 +149,34 @@ WriteASCIIData::~WriteASCIIData() = default;
 void WriteASCIIData::setupFilterParameters()
 {
   FilterParameterVector parameters;
-  parameters.push_back(SIMPL_NEW_OUTPUT_PATH_FP("Output Path", OutputPath, FilterParameter::Parameter, WriteASCIIData));
-  parameters.push_back(SIMPL_NEW_STRING_FP("File Extension", FileExtension, FilterParameter::Parameter, WriteASCIIData));
-  parameters.push_back(SIMPL_NEW_INTEGER_FP("Maximum Tuples Per Line", MaxValPerLine, FilterParameter::Parameter, WriteASCIIData));
+
+  {
+    LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
+    parameter->setHumanLabel("Output Type");
+    parameter->setPropertyName("OutputType");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(WriteASCIIData, this, OutputType));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(WriteASCIIData, this, OutputType));
+    QVector<QString> choices;
+    choices.push_back("Multiple Files");
+    choices.push_back("Single File");
+    parameter->setChoices(choices);
+
+    QStringList linkedProps = {"OutputPath", "FileExtension", "MaxValPerLine", "OutputFilePath"};
+    parameter->setLinkedProperties(linkedProps);
+    parameter->setEditable(false);
+    parameter->setCategory(FilterParameter::Parameter);
+    parameters.push_back(parameter);
+    linkedProps.clear();
+  }
+
+  // Multiple File Output
+  parameters.push_back(SIMPL_NEW_OUTPUT_PATH_FP("Output Path", OutputPath, FilterParameter::Parameter, WriteASCIIData, "*", "*", 0));
+  parameters.push_back(SIMPL_NEW_STRING_FP("File Extension", FileExtension, FilterParameter::Parameter, WriteASCIIData, 0));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Maximum Tuples Per Line", MaxValPerLine, FilterParameter::Parameter, WriteASCIIData, 0));
+
+  // Single File Output
+  parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Output File Path", OutputFilePath, FilterParameter::Parameter, WriteASCIIData, "*", "*", 1));
+
   {
     ChoiceFilterParameter::Pointer parameter = ChoiceFilterParameter::New(); // Delimiter choice
     parameter->setHumanLabel("Delimiter");
@@ -200,26 +234,64 @@ void WriteASCIIData::dataCheck()
   setErrorCondition(0);
   setWarningCondition(0);
 
+  //**************** MultiFile Checks ******************
+  if(m_OutputType == ::k_MultiFile)
+  {
+    if(m_OutputPath.isEmpty())
+    {
+      setErrorCondition(-11002);
+      QString ss = QObject::tr("The output path must be set");
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      return;
+    }
+
+    if(m_MaxValPerLine <= 0)
+    {
+      setErrorCondition(-11003);
+      QString ss = QObject::tr("The Maximum Tuples Per Line (%1) must be positive").arg(m_MaxValPerLine);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      return;
+    }
+
+    if(m_FileExtension.isEmpty())
+    {
+      setErrorCondition(-11004);
+      QString ss = QObject::tr("The file extension must be set.");
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      return;
+    }
+  }
+  //**************** MultiFile Checks ******************
+  else if(m_OutputType == ::k_SingleFile)
+  {
+    if(m_OutputFilePath.isEmpty())
+    {
+      setErrorCondition(-11005);
+      QString ss = QObject::tr("The output file path must be set");
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    }
+
+    QFileInfo fi(m_OutputPath);
+    QDir parentPath = fi.path();
+    if(!parentPath.exists())
+    {
+      setWarningCondition(-11006);
+      QString ss = QObject::tr("The directory path for the output file does not exist. DREAM.3D will attempt to create this path during execution of the filter");
+      notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+    }
+  }
+  else
+  {
+    QString ss = QObject::tr("The type of output did not match either 0 (Multi-File) or 1 (Single File)");
+    setErrorCondition(-11009);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
+  }
+
   if(m_SelectedDataArrayPaths.isEmpty())
   {
-    setErrorCondition(-11001);
+    setErrorCondition(-11007);
     QString ss = QObject::tr("At least one Attribute Array must be selected");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return;
-  }
-
-  if(m_OutputPath.isEmpty())
-  {
-    setErrorCondition(-11002);
-    QString ss = QObject::tr("The output path must be set");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return;
-  }
-
-  if(m_MaxValPerLine <= 0)
-  {
-    setErrorCondition(-11003);
-    QString ss = QObject::tr("The Maximum Tuples Per Line (%1) must be positive").arg(m_MaxValPerLine);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
@@ -228,15 +300,14 @@ void WriteASCIIData::dataCheck()
 
   if(!DataArrayPath::ValidateVector(paths))
   {
-    setErrorCondition(-11004);
+    setErrorCondition(-11008);
     QString ss = QObject::tr("There are Attribute Arrays selected that are not contained in the same Attribute Matrix. All selected Attribute Arrays must belong to the same Attribute Matrix");
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
-  for(int32_t i = 0; i < paths.count(); i++)
+  for(auto const& path : paths)
   {
-    DataArrayPath path = paths.at(i);
     IDataArray::WeakPointer ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, path);
 
     if(getErrorCondition() < 0)
@@ -302,6 +373,26 @@ void WriteASCIIData::execute()
     return;
   }
 
+  if(m_OutputType == ::k_MultiFile)
+  {
+    writeMultiFileOutput();
+  }
+  else if(m_OutputType == ::k_SingleFile)
+  {
+    writeSingleFileOutput();
+  }
+  else
+  {
+    QString ss = QObject::tr("The type of output did not match either 0 (Multi-File) or 1 (Single File)");
+    setErrorCondition(-11009);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
+  }
+}
+
+// -----------------------------------------------------------------------------
+void WriteASCIIData::writeMultiFileOutput()
+{
   QString ss;
   QDir dir;
   if(!dir.mkpath(m_OutputPath))
@@ -357,13 +448,111 @@ void WriteASCIIData::execute()
       break;
     }
   }
+}
 
+// -----------------------------------------------------------------------------
+
+void WriteASCIIData::writeSingleFileOutput()
+{
+  // Make sure any directory path is also available as the user may have just typed
+  // in a path without actually creating the full path
+  QFileInfo fi(getOutputFilePath());
+  QDir parentPath(fi.path());
+  if(!parentPath.mkpath("."))
+  {
+    QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath.absolutePath());
+    setErrorCondition(-11020);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
+  }
+
+  QFile file(getOutputFilePath());
+  if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
+  {
+    QString ss = QObject::tr("Output file could not be opened: %1").arg(getOutputFilePath());
+    setErrorCondition(-11021);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
+  }
+
+  QTextStream outFile(&file);
+
+  std::vector<IDataArray::Pointer> data;
+
+  // *********** Print the header Line *******************
+  char delimiter = lookupDelimiter();
+
+  for(int32_t i = 0; i < m_SelectedWeakPtrVector.count(); i++)
+  {
+    IDataArray::Pointer selectedArrayPtr = m_SelectedWeakPtrVector.at(i).lock();
+    if(selectedArrayPtr->getNumberOfComponents() == 1)
+    {
+      outFile << selectedArrayPtr->getName();
+    }
+    else // There are more than a single component so we need to add multiple header values
+    {
+      for(int32_t k = 0; k < selectedArrayPtr->getNumberOfComponents(); ++k)
+      {
+        outFile << selectedArrayPtr->getName() << "_" << k;
+        if(k < selectedArrayPtr->getNumberOfComponents() - 1)
+        {
+          outFile << delimiter;
+        }
+      }
+    }
+    if(i < m_SelectedWeakPtrVector.count() - 1)
+    {
+      outFile << delimiter;
+    }
+    // Get the IDataArray from the DataContainer
+    data.push_back(selectedArrayPtr);
+  }
+  outFile << "\n";
+
+  // Get the number of tuples in the arrays
+  size_t numTuples = 0;
+  if(!data.empty())
+  {
+    numTuples = data[0]->getNumberOfTuples();
+  }
+
+  float threshold = 0.0f;
+  size_t numArrays = data.size();
+  for(size_t i = 0; i < numTuples; ++i)
+  {
+    float percentIncrement = static_cast<float>(i) / static_cast<float>(numTuples) * 100.0f;
+    if(percentIncrement > threshold)
+    {
+      QString ss = QObject::tr("Writing Output: %1%").arg(static_cast<int32_t>(percentIncrement));
+      notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
+      threshold = threshold + 5.0f;
+      if(threshold < percentIncrement)
+      {
+        threshold = percentIncrement;
+      }
+    }
+
+    // Print a row of data
+    for(size_t c = 0; c < numArrays; c++)
+    {
+      QString s;
+      QTextStream out(&s);
+      data.at(c)->printTuple(out, i, delimiter);
+
+      if(c < numArrays - 1) // Last column
+      {
+        out << delimiter;
+      }
+      outFile << s;
+    }
+    outFile << "\n";
+  }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void WriteASCIIData::writeStringArray(IDataArray::Pointer inputData, QString outputFile, char delimiter)
+void WriteASCIIData::writeStringArray(const IDataArray::Pointer& inputData, const QString& outputFile, char delimiter)
 {
   StringDataArray::Pointer inputArray = std::dynamic_pointer_cast<StringDataArray>(inputData);
 

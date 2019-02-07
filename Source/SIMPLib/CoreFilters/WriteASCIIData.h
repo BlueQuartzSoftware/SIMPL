@@ -49,9 +49,11 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
     PYB11_CREATE_BINDINGS(WriteASCIIData SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
     PYB11_PROPERTY(QString OutputPath READ getOutputPath WRITE setOutputPath)
+    PYB11_PROPERTY(QString OutputFilePath READ getOutputFilePath WRITE setOutputFilePath)
     PYB11_PROPERTY(int Delimiter READ getDelimiter WRITE setDelimiter)
     PYB11_PROPERTY(QString FileExtension READ getFileExtension WRITE setFileExtension)
     PYB11_PROPERTY(int MaxValPerLine READ getMaxValPerLine WRITE setMaxValPerLine)
+    PYB11_PROPERTY(int OutputType READ getOutputType WRITE setOutputType)
 
   public:
     SIMPL_SHARED_POINTERS(WriteASCIIData)
@@ -66,6 +68,9 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
     SIMPL_FILTER_PARAMETER(QString, OutputPath)
     Q_PROPERTY(QString OutputPath READ getOutputPath WRITE setOutputPath)
 
+    SIMPL_FILTER_PARAMETER(QString, OutputFilePath)
+    Q_PROPERTY(QString OutputFilePath READ getOutputFilePath WRITE setOutputFilePath)
+
     SIMPL_FILTER_PARAMETER(int, Delimiter)
     Q_PROPERTY(int Delimiter READ getDelimiter WRITE setDelimiter)
 
@@ -74,6 +79,9 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
 
     SIMPL_FILTER_PARAMETER(int, MaxValPerLine)
     Q_PROPERTY(int MaxValPerLine READ getMaxValPerLine WRITE setMaxValPerLine)
+
+    SIMPL_FILTER_PARAMETER(int, OutputType)
+    Q_PROPERTY(int OutputType READ getOutputType WRITE setOutputType)
 
     enum DelimiterType
     {
@@ -197,9 +205,22 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
      * @brief Specific function to write string arrays to a text file
      * @param inputData
      */
-    void writeStringArray(IDataArray::Pointer inputData, QString outputFile, char delimiter);
+    void writeStringArray(const IDataArray::Pointer& inputData, const QString& outputFile, char delimiter);
 
+    /**
+     * @brief m_SelectedWeakPtrVector
+     */
     QVector<IDataArray::WeakPointer> m_SelectedWeakPtrVector;
+
+    /**
+     * @brief writeMultifileOutput
+     */
+    void writeMultiFileOutput();
+
+    /**
+     * @brief writeSingleFileOutput
+     */
+    void writeSingleFileOutput();
 
   public:
     WriteASCIIData(const WriteASCIIData&) = delete; // Copy Constructor Not Implemented

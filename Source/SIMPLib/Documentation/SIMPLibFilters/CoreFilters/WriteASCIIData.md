@@ -1,5 +1,4 @@
-Export ASCII Data 
-=============
+# Export ASCII Data #
 
 ## Group (Subgroup) ##
 
@@ -9,32 +8,34 @@ IO (Output)
 
 This **Filter** writes an array to a file as ASCII representations. The user may select the file extension and the maximum number of tuples printed per line. The user may also select the file delimiter from an enumerated list of values.  For example, if an array has only 1 component (a simple scalar array) and the user selects "1" for the _Maximum Tuples Per Line_ parameter then only a single vale will appear on each line. If the user selects an array that has 3 components (an array of 3D coordinates representing X, Y, Z locations in space) and the user selected 1 tuple per line, then the file will actually contain 3 values per line (the X, Y, Z values). If that same user selected 3 tuples per line then 9 values would be printed per line, and so on. More than one array to export may be selected at a time. All arrays may be selected or deselected at once with the _Select/Deselect All_ checkbox.  Each exported array is written as a separate file.  All file names will match the array name.
 
+The user may select to output a folder of files (MultiFile mode) or a single file that has all the data in column form.
+
 
 ### Example Output ###
 
-Phases.txt (one component) with 3 tuples/line, comma delimited:     
+Phases.txt (one component) with 3 tuples/line, comma delimited:
 
 	1,1,1
 	1,1,1
-	1,1,1  
 	1,1,1
-	   .. 
+	1,1,1
+	   ..
 
-EulerAngles.txt (three components) with 3 tuples/line, comma delimited:     
+EulerAngles.txt (three components) with 3 tuples/line, comma delimited:
 
 	0.785398,0,0.785398,0.785398,0,0.785398,0.785398,0,0.785398
 	0.785398,0,0.785398,0.785398,0,0.785398,0.785398,0,0.785398
-	0.785398,0,0.785398,0.785398,0,0.785398,0.785398,0,0.785398  
 	0.785398,0,0.785398,0.785398,0,0.785398,0.785398,0,0.785398
-	   .. 
+	0.785398,0,0.785398,0.785398,0,0.785398,0.785398,0,0.785398
+	   ..
 
-EulerAngles.txt (three components) with 1 tuple/line, space delimited:     
+EulerAngles.txt (three components) with 1 tuple/line, space delimited:
 
 	0.785398 0 0.785398
 	0.785398 0 0.785398
-	0.785398 0 0.785398  
 	0.785398 0 0.785398
-	   .. 
+	0.785398 0 0.785398
+	   ..
 
 ### Delimiter ###
 
@@ -49,11 +50,13 @@ Choice of delimiter is as follows:
 ## Parameters ##
 
 | Name             | Type | Description |
-|------------------|------|------------|
-| Output Path | File Path | The output file path |
-| File Extension | String | File extension for output file(s) |
+|------------------|------|---------_---|
+| Output Path      | File Path | The output file path |
+| File Extension   | String | File extension for output file(s) |
 | Maximum Tuples Per Line | int32_t | Number of tuples to print on each line |
-| Delimiter | Enumeration | The delimeter separating the data |
+| OutputType       | Int  | 0=MultiFile, 1=Single File |
+| OutputFilePath   | String | In Single File Mode, the complete path to the output file |
+| Delimiter        | Enumeration | The delimeter separating the data |
 
 ## Required Geometry ##
 
@@ -71,7 +74,7 @@ None
 
 ## Example Pipelines ##
 
-
+PrebuiltPipelines/Examples/INL Export
 
 ## License & Copyright ##
 
