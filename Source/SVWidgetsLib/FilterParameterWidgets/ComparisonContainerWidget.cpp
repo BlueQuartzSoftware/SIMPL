@@ -45,7 +45,6 @@
 
 // Border stylesheet requires QFrame
 ComparisonContainerWidget* ComparisonContainerWidget::SelectedItem = nullptr;
-QString ComparisonContainerWidget::BorderStyleSheet = "ComparisonContainerWidget#SelectedItem { border-style: outset; border-width: 2px; border-radius: 5px; border-color: blue; }";
 
 // -----------------------------------------------------------------------------
 //
@@ -74,9 +73,6 @@ void ComparisonContainerWidget::setupGui()
 {
   contentsLayout->setAlignment(Qt::AlignTop);
   contentsLayout->setDirection(QBoxLayout::Direction::TopToBottom);
-
-  setStyleSheet(ComparisonContainerWidget::BorderStyleSheet);
-
   connect(removeBtn, SIGNAL(clicked()),
     this, SLOT(deleteItem()));
   connect(unionComboBox, SIGNAL(currentIndexChanged(int)),
@@ -281,7 +277,6 @@ void ComparisonContainerWidget::select()
 
   setObjectName("SelectedItem");
   ComparisonContainerWidget::SelectedItem = this;
-  setStyleSheet(ComparisonContainerWidget::BorderStyleSheet);
 }
 
 // -----------------------------------------------------------------------------
@@ -295,7 +290,6 @@ void ComparisonContainerWidget::deselect()
   }
 
   setObjectName(m_BaseName);
-  setStyleSheet(ComparisonContainerWidget::BorderStyleSheet);
 }
 
 // -----------------------------------------------------------------------------
