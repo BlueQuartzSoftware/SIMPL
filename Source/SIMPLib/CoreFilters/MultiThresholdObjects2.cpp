@@ -497,5 +497,5 @@ const QString MultiThresholdObjects2::getSubGroupName() const
 // -----------------------------------------------------------------------------
 const QString MultiThresholdObjects2::getHumanLabel() const
 {
-  return "Threshold Objects 2";
+  return "Threshold Objects (Advanced)";
 }
