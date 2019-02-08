@@ -102,6 +102,40 @@
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/QtSupport/QtSRecentFileList.h"
 
+namespace
+{
+
+class JsonObserver : public IObserver
+{
+public:
+  JsonObserver() = default;
+  ~JsonObserver() override = default;
+
+  JsonObserver(const JsonObserver&) = delete;            // Copy Constructor Not Implemented
+  JsonObserver(JsonObserver&&) = delete;                 // Move Constructor Not Implemented
+  JsonObserver& operator=(const JsonObserver&) = delete; // Copy Assignment Not Implemented
+  JsonObserver& operator=(JsonObserver&&) = delete;      // Move Assignment Not Implemented
+
+  void processPipelineMessage(const PipelineMessage& pm) override
+  {
+    m_ErrorCode = pm.getCode();
+    m_ErrorMessage = pm.getText();
+  }
+
+  QString getErrorMessage()
+  {
+    return m_ErrorMessage;
+  }
+  int32_t getErrorCode()
+  {
+    return m_ErrorCode;
+  }
+
+private:
+  QString m_ErrorMessage;
+  int32_t m_ErrorCode = 0;
+};
+} // namespace
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -1571,8 +1605,6 @@ int SVPipelineView::openPipeline(const QString& filePath, int insertIndex)
   // Check that a valid extension was read...
   if(pipeline == FilterPipeline::NullPointer())
   {
-    emit statusMessage(tr("The pipeline was not read correctly from file '%1'. '%2' is an unsupported file extension.").arg(name).arg(ext));
-    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(tr("The pipeline was not read correctly from file '%1'. '%2' is an unsupported file extension.").arg(name).arg(ext), false));
     return -1;
   }
 
@@ -1604,20 +1636,24 @@ FilterPipeline::Pointer SVPipelineView::readPipelineFromFile(const QString& file
   QFileInfo fi(filePath);
   QString ext = fi.suffix();
 
-  FilterPipeline::Pointer pipeline;
+  ::JsonObserver jsonObs;
+
+  FilterPipeline::Pointer pipeline = FilterPipeline::NullPointer();
   if(ext == "dream3d")
   {
     H5FilterParametersReader::Pointer dream3dReader = H5FilterParametersReader::New();
-    pipeline = dream3dReader->readPipelineFromFile(filePath, this);
+    pipeline = dream3dReader->readPipelineFromFile(filePath, &jsonObs);
   }
   else if(ext == "json")
   {
     JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
-    pipeline = jsonReader->readPipelineFromFile(filePath, this);
+    pipeline = jsonReader->readPipelineFromFile(filePath, &jsonObs);
   }
-  else
+
+  if(jsonObs.getErrorCode() != 0)
   {
-    pipeline = FilterPipeline::NullPointer();
+    emit statusMessage(jsonObs.getErrorMessage());
+    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(jsonObs.getErrorMessage(), true));
   }
 
   return pipeline;
