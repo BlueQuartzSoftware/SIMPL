@@ -46,10 +46,12 @@
 // Border stylesheet requires QFrame
 ComparisonContainerWidget* ComparisonContainerWidget::SelectedItem = nullptr;
 
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonContainerWidget::ComparisonContainerWidget(QWidget* parent, AbstractComparison::Pointer comparison) : QFrame(parent)
+ComparisonContainerWidget::ComparisonContainerWidget(QWidget* parent, AbstractComparison::Pointer& comparison)
+: QFrame(parent)
 {
   setupUi(this);
 
@@ -64,6 +66,18 @@ ComparisonContainerWidget::ComparisonContainerWidget(QWidget* parent, AbstractCo
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QString ComparisonContainerWidget::BorderStyleSheet()
+{
+  QString style;
+  QTextStream out(&style);
+  out << "ComparisonContainerWidget#SelectedItem { border-style: inset; border-width: 2px; border-radius: 0px; border-color: "
+      << SVStyle::Instance()->getFilterSelectionColor().name(QColor::HexRgb) << "; }";
+  return style;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 ComparisonContainerWidget::~ComparisonContainerWidget() = default;
 
 // -----------------------------------------------------------------------------
@@ -73,6 +87,9 @@ void ComparisonContainerWidget::setupGui()
 {
   contentsLayout->setAlignment(Qt::AlignTop);
   contentsLayout->setDirection(QBoxLayout::Direction::TopToBottom);
+
+  setStyleSheet(ComparisonContainerWidget::BorderStyleSheet());
+
   connect(removeBtn, SIGNAL(clicked()),
     this, SLOT(deleteItem()));
   connect(unionComboBox, SIGNAL(currentIndexChanged(int)),
@@ -137,7 +154,7 @@ void ComparisonContainerWidget::hideUnionOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonContainerWidget::setComparison(AbstractComparison::Pointer comparison)
+void ComparisonContainerWidget::setComparison(AbstractComparison::Pointer& comparison)
 {
   // create widget, replace current widget, and save the pointer
   IComparisonWidget* widget = IComparisonWidget::CreateWidget(comparison);
@@ -216,9 +233,12 @@ void ComparisonContainerWidget::setComparisonSetWidget(ComparisonSetWidget* comp
   }
 
   m_comparisonSetWidget = comparisonSetWidget;
-  getComparisonWidget()->setAttributeMatrix(comparisonSetWidget->getAttributeMatrix());
-  getComparisonWidget()->setArrayNames(comparisonSetWidget->getArrayNames());
 
+  if(getComparisonWidget()->getAttributeMatrix().get() != comparisonSetWidget->getAttributeMatrix().get())
+  {
+    getComparisonWidget()->setAttributeMatrix(comparisonSetWidget->getAttributeMatrix());
+    getComparisonWidget()->setArrayNames(comparisonSetWidget->getArrayNames());
+  }
   if(comparisonSetWidget != nullptr)
   {
     connect(this, SIGNAL(comparisonChanged()),
@@ -277,6 +297,7 @@ void ComparisonContainerWidget::select()
 
   setObjectName("SelectedItem");
   ComparisonContainerWidget::SelectedItem = this;
+  setStyleSheet(ComparisonContainerWidget::BorderStyleSheet());
 }
 
 // -----------------------------------------------------------------------------
@@ -290,6 +311,7 @@ void ComparisonContainerWidget::deselect()
   }
 
   setObjectName(m_BaseName);
+  setStyleSheet(ComparisonContainerWidget::BorderStyleSheet());
 }
 
 // -----------------------------------------------------------------------------
