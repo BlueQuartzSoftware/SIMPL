@@ -65,31 +65,32 @@ private:
   std::vector<int> m_FilterRows;
   bool m_FirstRun = true;
   bool m_UseAnimationOnFirstRun = true;
+  QMetaObject::Connection m_connection;
 
   /**
    * @brief addFilter
    * @param filter
    * @param insertionIndex
    */
-  void addFilter(AbstractFilter::Pointer filter, int insertionIndex = -1);
+  void addFilter(const AbstractFilter::Pointer &filter, int insertionIndex = -1);
 
   /**
    * @brief removeFilter
    * @param row
    */
-  void removeFilter(AbstractFilter::Pointer filter);
+  void removeFilter(const AbstractFilter::Pointer& filter);
 
   /**
    * @brief connectFilterSignalsSlots
    * @param filter
    */
-  void connectFilterSignalsSlots(AbstractFilter::Pointer filter);
+  void connectFilterSignalsSlots(const AbstractFilter::Pointer& filter);
 
   /**
    * @brief disconnectFilterSignalsSlots
    * @param filter
    */
-  void disconnectFilterSignalsSlots(AbstractFilter::Pointer filter);
+  void disconnectFilterSignalsSlots(const AbstractFilter::Pointer& filter);
 
 public:
   RemoveFilterCommand(const RemoveFilterCommand&) = delete; // Copy Constructor Not Implemented

@@ -64,7 +64,7 @@ class SVWidgetsLib_EXPORT PipelineListWidget : public QFrame, private Ui::Pipeli
     /**
      * @brief preflightFinished
      */
-    void preflightFinished(FilterPipeline::Pointer pipeline, int err);
+    void preflightFinished(int pipelineFilterCount, int err);
 
     /**
      * @brief pipelineFinished
