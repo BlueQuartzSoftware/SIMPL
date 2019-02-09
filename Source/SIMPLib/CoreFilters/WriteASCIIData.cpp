@@ -83,7 +83,7 @@ public:
     if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
       QString ss = QObject::tr("The output file could not be opened: '%1'").arg(outputFile);
-      filter->setErrorCondition(-11008);
+      filter->setErrorCondition(-11012);
       filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
       return;
     }
@@ -363,7 +363,7 @@ void WriteASCIIData::execute()
   if(m_SelectedDataArrayPaths.count() != m_SelectedWeakPtrVector.count())
   {
     QString ss = QObject::tr("The number of selected Attribute Arrays does not equal the number of internal weak pointers");
-    setErrorCondition(-11008);
+    setErrorCondition(-11010);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
@@ -555,7 +555,7 @@ void WriteASCIIData::writeStringArray(const IDataArray::Pointer& inputData, cons
   if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
   {
     QString ss = QObject::tr("The output file could not be opened: '%1'").arg(outputFile);
-    setErrorCondition(-11008);
+    setErrorCondition(-11011);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
