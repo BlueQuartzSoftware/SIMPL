@@ -197,7 +197,7 @@ void RemoveFilterCommand::redo()
 void RemoveFilterCommand::addFilter(const AbstractFilter::Pointer& filter, int insertionIndex)
 {
   filter->setRemoving(false);
-
+  m_PipelineView->setDisabled(true);
   PipelineModel* model = m_PipelineView->getPipelineModel();
 
   model->insertRow(insertionIndex);
@@ -217,8 +217,10 @@ void RemoveFilterCommand::addFilter(const AbstractFilter::Pointer& filter, int i
   PipelineItemSlideAnimation* animation = new PipelineItemSlideAnimation(model, QPersistentModelIndex(filterIndex), filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::EnterRight);
   model->setData(QPersistentModelIndex(filterIndex), PipelineItem::AnimationType::Add, PipelineModel::Roles::AnimationTypeRole);
 
-  QObject::connect(animation, &PipelineItemSlideAnimation::finished,
-                   [=] { model->setData(QPersistentModelIndex(filterIndex), PipelineItem::AnimationType::None, PipelineModel::Roles::AnimationTypeRole); });
+  QObject::connect(animation, &PipelineItemSlideAnimation::finished, [=] {
+    model->setData(QPersistentModelIndex(filterIndex), PipelineItem::AnimationType::None, PipelineModel::Roles::AnimationTypeRole);
+    m_PipelineView->setEnabled(true);
+  });
   animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
@@ -233,6 +235,7 @@ void RemoveFilterCommand::removeFilter(const AbstractFilter::Pointer& filter)
   {
     return;
   }
+  m_PipelineView->setDisabled(true);
   filter->setRemoving(true);
 
   PipelineModel* model = m_PipelineView->getPipelineModel();
@@ -248,13 +251,17 @@ void RemoveFilterCommand::removeFilter(const AbstractFilter::Pointer& filter)
   if(!m_UseAnimationOnFirstRun && m_FirstRun)
   {
     model->removeRow(persistentIndex.row());
+    m_PipelineView->setEnabled(true);
   }
   else
   {
     PipelineItemSlideAnimation* animation = new PipelineItemSlideAnimation(model, persistentIndex, filterRect.width(), PipelineItemSlideAnimation::AnimationDirection::ExitRight);
     model->setData(persistentIndex, PipelineItem::AnimationType::Remove, PipelineModel::Roles::AnimationTypeRole);
 
-    QObject::connect(animation, &PipelineItemSlideAnimation::finished, [=] { model->removeRow(persistentIndex.row()); });
+    QObject::connect(animation, &PipelineItemSlideAnimation::finished, [=] {
+      model->removeRow(persistentIndex.row());
+      m_PipelineView->setEnabled(true);
+    });
     animation->start(QAbstractAnimation::DeleteWhenStopped);
   }
 }
