@@ -45,6 +45,8 @@
 #include <QtCore/QVariant>
 
 #include <QtGui/QCloseEvent>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QPainter>
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
@@ -52,6 +54,7 @@
 #include <QtWidgets/QDockWidget>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QStatusBar>
 
@@ -61,11 +64,14 @@
 
 #include "SIMPLib/CoreFilters/ImportHDF5Dataset.h"
 #include "SIMPLib/FilterParameters/ImportHDF5DatasetFilterParameter.h"
-
-#include "SVWidgetsLib/Widgets/ImportHDF5TreeModel.h"
-#include "SVWidgetsLib/Widgets/ImportHDF5TreeModelItem.h"
+#include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
 
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
+#include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
+#include "SVWidgetsLib/QtSupport/QtSFileUtils.h"
+#include "SVWidgetsLib/QtSupport/QtSLineEdit.h"
+#include "SVWidgetsLib/Widgets/ImportHDF5TreeModel.h"
+#include "SVWidgetsLib/Widgets/ImportHDF5TreeModelItem.h"
 
 // Initialize private static member variable
 QString ImportHDF5DatasetWidget::m_OpenDialogLastDirectory = "";
@@ -119,8 +125,34 @@ ImportHDF5DatasetWidget::~ImportHDF5DatasetWidget()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void ImportHDF5DatasetWidget::setIcon(const QPixmap& path)
+{
+  m_Icon = path;
+  setupMenuField();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QPixmap ImportHDF5DatasetWidget::getIcon()
+{
+  return m_Icon;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString ImportHDF5DatasetWidget::getCurrentFile() const
+{
+  return m_CurrentOpenFile;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void ImportHDF5DatasetWidget::setupGui()
 {
+  setErrorText("");
   // Catch when the filter is about to execute the preflight
   connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
@@ -129,6 +161,24 @@ void ImportHDF5DatasetWidget::setupGui()
 
   // Catch when the filter wants its values updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+
+  QtSFileCompleter* com = new QtSFileCompleter(this, false);
+  value->setCompleter(com);
+  QObject::connect(com, SIGNAL(activated(const QString&)), this, SLOT(on_value_textChanged(const QString&)));
+
+  setupMenuField();
+
+  // Update the widget when the data directory changes
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  connect(validator, &SIMPLDataPathValidator::dataDirectoryChanged, [=] {
+    blockSignals(true);
+    on_value_textChanged(value->text());
+    on_value_fileDropped(value->text());
+    on_value_returnPressed();
+    blockSignals(false);
+
+    emit parametersChanged();
+  });
 
   // Allow the widget to fill the entire FilterInputWidget space
   setWidgetIsExpanding(true);
@@ -154,9 +204,10 @@ void ImportHDF5DatasetWidget::setupGui()
 
     if(!hdf5FilePath.isEmpty())
     {
+      value->blockSignals(true);
       value->setText(hdf5FilePath);
-
-      initWithFile(hdf5FilePath);
+      value->blockSignals(false);
+      setValue(hdf5FilePath);
 
       QString currentPath = QString::fromStdString(m_CurrentHDFDataPath);
       cDimsLE->setText(m_ComponentDimsMap[currentPath], true);
@@ -167,6 +218,125 @@ void ImportHDF5DatasetWidget::setupGui()
   {
     selectBtn->setText(m_FilterParameter->getHumanLabel() + " ...");
   }
+
+  m_CurrentText = value->text();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ImportHDF5DatasetWidget::keyPressEvent(QKeyEvent* event)
+{
+  if(event->key() == Qt::Key_Escape)
+  {
+    SVStyle* style = SVStyle::Instance();
+    value->setText(m_CurrentText);
+    style->LineEditClearStyle(value);
+    value->setToolTip("");
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ImportHDF5DatasetWidget::setupMenuField()
+{
+  QFileInfo fi(value->text());
+
+  QMenu* lineEditMenu = new QMenu(value);
+  value->setButtonMenu(QtSLineEdit::Left, lineEditMenu);
+
+  value->setButtonVisible(QtSLineEdit::Left, true);
+
+  QPixmap pixmap(8, 8);
+  pixmap.fill(Qt::transparent);
+  QPainter painter(&pixmap);
+  painter.drawPixmap(0, (pixmap.height() - m_Icon.height()) / 2, m_Icon);
+  value->setButtonPixmap(QtSLineEdit::Left, pixmap);
+
+  {
+    m_ShowFileAction = new QAction(lineEditMenu);
+    m_ShowFileAction->setObjectName(QString::fromUtf8("showFileAction"));
+#if defined(Q_OS_WIN)
+    m_ShowFileAction->setText("Show in Windows Explorer");
+#elif defined(Q_OS_MAC)
+    m_ShowFileAction->setText("Show in Finder");
+#else
+    m_ShowFileAction->setText("Show in File System");
+#endif
+    lineEditMenu->addAction(m_ShowFileAction);
+    connect(m_ShowFileAction, SIGNAL(triggered()), this, SLOT(showFileInFileSystem()));
+  }
+
+  if(!value->text().isEmpty() && fi.exists())
+  {
+    m_ShowFileAction->setEnabled(true);
+  }
+  else
+  {
+    m_ShowFileAction->setDisabled(true);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ImportHDF5DatasetWidget::on_value_editingFinished()
+{
+  setValue(value->text());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ImportHDF5DatasetWidget::on_value_returnPressed()
+{
+  setValue(value->text());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ImportHDF5DatasetWidget::on_value_textChanged(const QString& text)
+{
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  QString inputPath = validator->convertToAbsolutePath(text);
+
+  QFileInfo fi(text);
+  if(fi.isRelative())
+  {
+    absPathLabel->setText(inputPath);
+  }
+
+  if(hasValidFilePath(inputPath))
+  {
+    m_ShowFileAction->setEnabled(true);
+  }
+  else
+  {
+    m_ShowFileAction->setDisabled(true);
+  }
+
+  SVStyle* style = SVStyle::Instance();
+
+  if(text != m_CurrentText)
+  {
+    style->LineEditBackgroundErrorStyle(value);
+    value->setToolTip("Press the 'Return' key to apply your changes");
+  }
+  else
+  {
+    style->LineEditClearStyle(value);
+    value->setToolTip("");
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ImportHDF5DatasetWidget::on_value_fileDropped(const QString& text)
+{
+  setValue(text);
 }
 
 // -----------------------------------------------------------------------------
@@ -175,10 +345,10 @@ void ImportHDF5DatasetWidget::setupGui()
 void ImportHDF5DatasetWidget::initializeHDF5Paths()
 {
   QList<ImportHDF5Dataset::DatasetImportInfo> importInfoList = m_Filter->getDatasetImportInfoList();
-  for(int i = 0; i < importInfoList.size(); i++)
+  for(const auto& importInfo : importInfoList)
   {
-    QString hdf5Path = importInfoList[i].dataSetPath;
-    QString cDimsStr = importInfoList[i].componentDimensions;
+    QString hdf5Path = importInfo.dataSetPath;
+    QString cDimsStr = importInfo.componentDimensions;
     m_ComponentDimsMap.insert(hdf5Path, cDimsStr);
   }
 
@@ -186,9 +356,9 @@ void ImportHDF5DatasetWidget::initializeHDF5Paths()
   ImportHDF5TreeModel* treeModel = dynamic_cast<ImportHDF5TreeModel*>(hdfTreeView->model());
   if(treeModel != nullptr)
   {
-    for(int i = 0; i < importInfoList.size(); i++)
+    for(const auto& importInfo : importInfoList)
     {
-      QString hdf5Path = importInfoList[i].dataSetPath;
+      QString hdf5Path = importInfo.dataSetPath;
       QStringList hdf5PathTokens = hdf5Path.split("/", QString::SkipEmptyParts);
       QModelIndex parentIdx = treeModel->index(0, 0);
       hdfTreeView->expand(parentIdx);
@@ -226,35 +396,19 @@ void ImportHDF5DatasetWidget::initializeHDF5Paths()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool ImportHDF5DatasetWidget::verifyPathExists(QString filePath, QtSFSDropLabel* lineEdit)
+bool ImportHDF5DatasetWidget::verifyPathExists(const QString& filePath, QtSLineEdit* lineEdit)
 {
   QFileInfo fileinfo(filePath);
+  SVStyle* style = SVStyle::Instance();
   if(!fileinfo.exists())
   {
-    lineEdit->changeStyleSheet(QtSFSDropLabel::FS_DOESNOTEXIST_STYLE);
+    style->LineEditErrorStyle(lineEdit);
   }
   else
   {
-    lineEdit->changeStyleSheet(QtSFSDropLabel::FS_STANDARD_STYLE);
+    style->LineEditClearStyle(lineEdit);
   }
   return fileinfo.exists();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ImportHDF5DatasetWidget::on_value_fileDropped(const QString& text)
-{
-  m_OpenDialogLastDirectory = text;
-
-  // Set/Remove the red outline if the file does exist
-  if(verifyPathExists(text, value))
-  {
-    if(initWithFile(text))
-    {
-      emit parametersChanged();
-    }
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -272,24 +426,7 @@ void ImportHDF5DatasetWidget::on_selectBtn_clicked()
 
   file = QDir::toNativeSeparators(file);
 
-  if(initWithFile(file))
-  {
-    value->setText(file);
-    emit parametersChanged();
-  }
-
-  // Store the last used directory into the private instance variable
-  QFileInfo fi(file);
-  m_OpenDialogLastDirectory = fi.path();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ImportHDF5DatasetWidget::on_showLocationBtn_clicked()
-{
-  hasValidFilePath(value->text());
-  showFileInFileSystem();
+  setValue(file);
 }
 
 // -----------------------------------------------------------------------------
@@ -341,45 +478,50 @@ void ImportHDF5DatasetWidget::dropEvent(QDropEvent* e)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool ImportHDF5DatasetWidget::initWithFile(QString hdf5File)
+bool ImportHDF5DatasetWidget::initWithFile(const QString& hdf5File)
 {
   if(hdf5File.isNull())
   {
     return false;
   }
 
-  hid_t fileId = H5Utilities::openFile(hdf5File.toStdString(), true);
-  if(fileId < 0)
-  {
-    std::cout << "Error Reading HDF5 file: " << hdf5File.toStdString() << std::endl;
-    return false;
-  }
-
-  // Delete the old model
-  QAbstractItemModel* oldModel = hdfTreeView->model();
-
-    delete oldModel;
-
-  m_ComponentDimsMap.clear();
-
+  // If there is current file open, close it.
   if(m_FileId >= 0)
   {
     herr_t err = H5Utilities::closeFile(m_FileId);
     if(err < 0)
     {
-      std::cout << "Error closing HDF5 file: " << m_CurrentOpenFile.toStdString() << std::endl;
+      QString msg;
+      QTextStream out(&msg);
+      out << "Error closing HDF5 file: " << m_CurrentOpenFile;
+      setErrorText(msg);
       return false;
     }
   }
 
-  m_FileId = fileId;
+  setErrorText("");
+  m_FileId = H5Utilities::openFile(hdf5File.toStdString(), true);
+  if(m_FileId < 0)
+  {
+    QString msg;
+    QTextStream out(&msg);
+    out << "Error Reading HDF5 file: " << hdf5File;
+    setErrorText(msg);
+    return false;
+  }
+  // Delete the old model
+  QAbstractItemModel* oldModel = hdfTreeView->model();
+
+  delete oldModel;
+
+  m_ComponentDimsMap.clear();
 
   // Save the last place the user visited while opening the file
-  hdf5File = QDir::toNativeSeparators(hdf5File);
+  QString nativeHdf5File = QDir::toNativeSeparators(hdf5File);
 
-  QFileInfo fileInfo(hdf5File);
+  QFileInfo fileInfo(nativeHdf5File);
   m_OpenDialogLastDirectory = fileInfo.path();
-  m_CurrentOpenFile = hdf5File;
+  m_CurrentOpenFile = nativeHdf5File;
 
   // Set the Window Title to the file name
   setWindowTitle(fileInfo.fileName());
@@ -410,7 +552,7 @@ bool ImportHDF5DatasetWidget::initWithFile(QString hdf5File)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportHDF5DatasetWidget::_updateViewFromHDFPath(std::string dataPath)
+void ImportHDF5DatasetWidget::_updateViewFromHDFPath(const std::string& dataPath)
 {
   m_CurrentHDFDataPath = dataPath;
   QString message("Current Dataset:");
@@ -420,7 +562,7 @@ void ImportHDF5DatasetWidget::_updateViewFromHDFPath(std::string dataPath)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportHDF5DatasetWidget::on_cDimsLE_valueChanged(QString text)
+void ImportHDF5DatasetWidget::on_cDimsLE_valueChanged(const QString& text)
 {
   m_ComponentDimsMap.insert(QString::fromStdString(m_CurrentHDFDataPath), text);
 
@@ -432,12 +574,16 @@ void ImportHDF5DatasetWidget::on_cDimsLE_valueChanged(QString text)
 // -----------------------------------------------------------------------------
 void ImportHDF5DatasetWidget::hdfTreeView_currentChanged(const QModelIndex& current, const QModelIndex& previous)
 {
+  setErrorText("");
   cDimsLE->setText(QString());
 
   // Check to make sure we have a data file opened
   if(m_FileId < 0)
   {
-    std::cout << "\t No data file is opened" << std::endl;
+    QString msg;
+    QTextStream out(&msg);
+    out << "No data file is opened";
+    setErrorText(msg);
     return;
   }
 
@@ -456,6 +602,7 @@ void ImportHDF5DatasetWidget::hdfTreeView_currentChanged(const QModelIndex& curr
 // -----------------------------------------------------------------------------
 herr_t ImportHDF5DatasetWidget::updateGeneralTable(const QString& path)
 {
+  setErrorText("");
   std::string datasetPath = path.toStdString();
   std::string objName = H5Utilities::extractObjectName(datasetPath);
   QString objType;
@@ -463,7 +610,10 @@ herr_t ImportHDF5DatasetWidget::updateGeneralTable(const QString& path)
   herr_t err = 0;
   if(m_FileId < 0)
   {
-    std::cout << "Error: FileId is Invalid: " << m_FileId << std::endl;
+    QString msg;
+    QTextStream out(&msg);
+    out << "Error: FileId is Invalid: " << m_FileId;
+    setErrorText(msg);
     return m_FileId;
   }
   // Test for Dataset Existance
@@ -473,7 +623,10 @@ herr_t ImportHDF5DatasetWidget::updateGeneralTable(const QString& path)
   if(err < 0)
   {
     generalTable->clearContents(); // Clear the attributes Table
-    std::cout << "Data Set Does NOT exist at Path given: FileId: " << m_FileId << std::endl;
+    QString msg;
+    QTextStream out(&msg);
+    out << "Data Set Does NOT exist at Path: " << path << "\nFileId: " << m_FileId;
+    setErrorText(msg);
     return err;
   }
   generalTable->clearContents(); // Clear the attributes Table
@@ -531,7 +684,10 @@ herr_t ImportHDF5DatasetWidget::updateGeneralTable(const QString& path)
     err = H5Lite::getDatasetInfo(m_FileId, datasetPath, dims, classType, classSize);
     if(err < 0)
     {
-      std::cout << "Could not get dataset info for " << datasetPath << std::endl;
+      QString msg;
+      QTextStream out(&msg);
+      out << "Could not get dataset info for " << QString::fromStdString(datasetPath);
+      setErrorText(msg);
       return err;
     }
 
@@ -568,7 +724,10 @@ herr_t ImportHDF5DatasetWidget::updateGeneralTable(const QString& path)
     err = H5Gget_info(grpId, &group_info);
     if(err < 0)
     {
-      std::cout << "Error getting number of objects for group: " << grpId << std::endl;
+      QString msg;
+      QTextStream out(&msg);
+      out << "Error getting number of objects for group: " << grpId;
+      setErrorText(msg);
       return err;
     }
     num_objs = group_info.nlinks;
@@ -603,11 +762,14 @@ void ImportHDF5DatasetWidget::addRow(QTableWidget* table, int row, const QString
 herr_t ImportHDF5DatasetWidget::updateAttributeTable(const QString& path)
 {
   QString objName = QH5Utilities::extractObjectName(path);
-
+  setErrorText("");
   herr_t err = 0;
   if(m_FileId < 0)
   {
-    std::cout << "Error: FileId is Invalid: " << m_FileId << std::endl;
+    QString msg;
+    QTextStream out(&msg);
+    out << "Error: FileId is Invalid: " << m_FileId;
+    setErrorText(msg);
     return m_FileId;
   }
   // Test for Dataset Existance
@@ -616,7 +778,10 @@ herr_t ImportHDF5DatasetWidget::updateAttributeTable(const QString& path)
   if(err < 0)
   {
     attributesTable->clearContents(); // Clear the attributes Table
-    std::cout << "Data Set Does NOT exist at Path given: FileId: " << m_FileId << std::endl;
+    QString msg;
+    QTextStream out(&msg);
+    out << "Data Set Does NOT exist at Path: " << path << "\nFileId: " << m_FileId;
+    setErrorText(msg);
     return err;
   }
 
@@ -628,7 +793,10 @@ herr_t ImportHDF5DatasetWidget::updateAttributeTable(const QString& path)
     err = H5Utilities::getAllAttributeNames(m_FileId, path.toStdString(), attributes);
     if(err < 0)
     {
-      std::cout << "Error Reading Attributes for datasetPath: " << path.toStdString() << std::endl;
+      QString msg;
+      QTextStream out(&msg);
+      out << "Error Reading Attributes for datasetPath: " << path;
+      setErrorText(msg);
     }
     else
     {
@@ -640,9 +808,10 @@ herr_t ImportHDF5DatasetWidget::updateAttributeTable(const QString& path)
       headerLabels.insert(1, tr("Value"));
       attributesTable->setHorizontalHeaderLabels(headerLabels);
       qint32 row = 0;
-      for(std::list<std::string>::iterator iter = attributes.begin(); iter != attributes.end(); iter++)
+      // for(std::list<std::string>::iterator iter = attributes.begin(); iter != attributes.end(); iter++)
+      for(const auto& keyStdStr : attributes)
       {
-        QString key = QString::fromStdString(*iter);
+        QString key = QString::fromStdString(keyStdStr);
 
         QString parentPath = "";
         if(path == "/")
@@ -751,11 +920,10 @@ herr_t ImportHDF5DatasetWidget::updateComponentDimensions(const QString& path)
   }
   else
   {
-    std::tuple<herr_t, QString> bestGuess = bestGuessCDims(path);
     QString cDimsStr;
-    std::tie(err, cDimsStr) = bestGuess;
+    std::tie(err, cDimsStr) = bestGuessCDims(path);
 
-    if(!cDimsStr.isEmpty() && (err == 0))
+    if(!cDimsStr.isEmpty() && err == 0)
     {
       cDimsLE->setText(cDimsStr);
     }
@@ -769,14 +937,22 @@ herr_t ImportHDF5DatasetWidget::updateComponentDimensions(const QString& path)
 // -----------------------------------------------------------------------------
 std::tuple<herr_t, QString> ImportHDF5DatasetWidget::bestGuessCDims(const QString& path)
 {
+  setErrorText("");
   herr_t err = 0;
   QString cDimsStr = "";
   QString objName = QH5Utilities::extractObjectName(path);
-
+  if(path.isEmpty())
+  {
+    return std::make_tuple(err, cDimsStr);
+  }
   if(m_FileId < 0)
   {
-    std::cout << "Error: FileId is Invalid: " << m_FileId << std::endl;
-    return std::make_tuple(m_FileId, cDimsStr);
+    err = -1;
+    QString msg;
+    QTextStream out(&msg);
+    out << "Error: File: " << path << "\nFileId is Invalid: " << m_FileId;
+    setErrorText(msg);
+    return std::make_tuple(err, cDimsStr);
   }
 
   // Test for Dataset Existance
@@ -784,7 +960,10 @@ std::tuple<herr_t, QString> ImportHDF5DatasetWidget::bestGuessCDims(const QStrin
   err = H5Oget_info_by_name(m_FileId, path.toStdString().c_str(), &statbuf, H5P_DEFAULT);
   if(err < 0)
   {
-    std::cout << "Data Set Does NOT exist at Path given: FileId: " << m_FileId << std::endl;
+    QString msg;
+    QTextStream out(&msg);
+    out << "Data Set Does NOT exist at Path: " << path << "\nFileId: " << m_FileId;
+    setErrorText(msg);
     return std::make_tuple(err, cDimsStr);
   }
 
@@ -936,7 +1115,7 @@ void ImportHDF5DatasetWidget::beforePreflight()
 
     // Check for unspecified component dimensions and fill it in with the best guess
     QStringList selectedPaths = treeModel->getSelectedHDF5Paths();
-    for(QString selectedPath : selectedPaths)
+    for(const QString& selectedPath : selectedPaths)
     {
       if(!m_ComponentDimsMap.contains(selectedPath))
       {
@@ -970,4 +1149,69 @@ void ImportHDF5DatasetWidget::afterPreflight()
       treeModel->setData(index, true, ImportHDF5TreeModel::Roles::HasErrorsRole);
     }
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ImportHDF5DatasetWidget::setValue(const QString& text)
+{
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  QString inputPath = validator->convertToAbsolutePath(text);
+  m_CurrentText = text;
+
+  // Set/Remove the red outline if the file does exist
+  if(!verifyPathExists(inputPath, value))
+  {
+    return;
+  }
+
+  QFileInfo fi(value->text());
+  if(fi.isRelative())
+  {
+    absPathLabel->setText(inputPath);
+    absPathLabel->show();
+  }
+  else
+  {
+    absPathLabel->hide();
+  }
+
+  QString file = QDir::toNativeSeparators(inputPath);
+
+  if(initWithFile(file))
+  {
+    value->setText(file);
+    // Store the last used directory into the private instance variable
+    QFileInfo fi(file);
+    m_OpenDialogLastDirectory = fi.path();
+    setErrorText("");
+    emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
+  }
+  errorLabel->update();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString ImportHDF5DatasetWidget::getValue()
+{
+  if(value->text().isEmpty())
+  {
+    return QDir::homePath();
+  }
+  return value->text();
+}
+
+// -----------------------------------------------------------------------------
+void ImportHDF5DatasetWidget::setErrorText(const QString& value)
+{
+  errorLabel->setText(value);
+  errorLabel->setVisible(!value.isEmpty());
+}
+
+// -----------------------------------------------------------------------------
+QString ImportHDF5DatasetWidget::getErrorText() const
+{
+  return errorLabel->text();
 }

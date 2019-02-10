@@ -41,6 +41,7 @@
 
 #include <QtGui/QPainter>
 #include <QtGui/QKeyEvent>
+
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMenu>
 
@@ -241,9 +242,8 @@ void AbstractIOFileWidget::on_m_LineEdit_editingFinished()
   {
     absPathLabel->hide();
   }
-  
-  SVStyle* style = SVStyle::Instance();
-  style->LineEditClearStyle(m_LineEdit);
+
+  verifyPathExists(path, m_LineEdit);
   m_CurrentText = m_LineEdit->text();
   emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }
@@ -301,7 +301,7 @@ void AbstractIOFileWidget::on_m_LineEdit_fileDropped(const QString& text)
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
   QString inputPath = validator->convertToAbsolutePath(text);
 
-  setValue(text);
+  m_LineEdit->setText(text);
   // Set/Remove the red outline if the file does exist
   verifyPathExists(inputPath, m_LineEdit);
 
