@@ -66,7 +66,7 @@ void PipelineView::addUndoCommand(QUndoCommand* cmd)
 void PipelineView::setupUndoStack()
 {
   m_UndoStack = QSharedPointer<QUndoStack>(new QUndoStack());
-  m_UndoStack->setUndoLimit(10);
+ // m_UndoStack->setUndoLimit(4);
 
   m_ActionUndo = m_UndoStack->createUndoAction(m_UndoStack.data());
   m_ActionRedo = m_UndoStack->createRedoAction(m_UndoStack.data());

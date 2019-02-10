@@ -92,7 +92,15 @@ RemoveFilterCommand::RemoveFilterCommand(std::vector<AbstractFilter::Pointer> fi
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RemoveFilterCommand::~RemoveFilterCommand() = default;
+RemoveFilterCommand::~RemoveFilterCommand()
+{
+  for(const auto& filter : m_Filters)
+  {
+ //   qDebug() << "~RemoveFilterCommand(): ";
+ //   if(nullptr != filter.get()) { qDebug() << filter->getNameOfClass(); }
+    disconnectFilterSignalsSlots(filter);
+  }
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -186,7 +194,7 @@ void RemoveFilterCommand::redo()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RemoveFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertionIndex)
+void RemoveFilterCommand::addFilter(const AbstractFilter::Pointer& filter, int insertionIndex)
 {
   filter->setRemoving(false);
 
@@ -217,7 +225,7 @@ void RemoveFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertio
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RemoveFilterCommand::removeFilter(AbstractFilter::Pointer filter)
+void RemoveFilterCommand::removeFilter(const AbstractFilter::Pointer& filter)
 {
   // Check if the given filter is already being removed before removing it again
   // Multiple calls to remove the same object causes crashes.
@@ -254,7 +262,7 @@ void RemoveFilterCommand::removeFilter(AbstractFilter::Pointer filter)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RemoveFilterCommand::connectFilterSignalsSlots(AbstractFilter::Pointer filter)
+void RemoveFilterCommand::connectFilterSignalsSlots(const AbstractFilter::Pointer& filter)
 {
   PipelineModel* model = m_PipelineView->getPipelineModel();
   QModelIndex index = model->indexOfFilter(filter.get());
@@ -277,16 +285,16 @@ void RemoveFilterCommand::connectFilterSignalsSlots(AbstractFilter::Pointer filt
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RemoveFilterCommand::disconnectFilterSignalsSlots(AbstractFilter::Pointer filter)
+void RemoveFilterCommand::disconnectFilterSignalsSlots(const AbstractFilter::Pointer &filter)
 {
-  PipelineModel* model = m_PipelineView->getPipelineModel();
-  QModelIndex index = model->indexOfFilter(filter.get());
+  if(filter.get() == nullptr)
+  {
+    return;
+  }
+  //PipelineModel* model = m_PipelineView->getPipelineModel();
 
   QObject::disconnect(filter.get(), &AbstractFilter::filterCompleted, nullptr, nullptr);
 
   QObject::disconnect(filter.get(), &AbstractFilter::filterInProgress, nullptr, nullptr);
-
-  FilterInputWidget* fiw = model->filterInputWidget(index);
-
-  QObject::disconnect(fiw, &FilterInputWidget::filterParametersChanged, nullptr, nullptr);
+  QObject::disconnect( m_connection );
 }

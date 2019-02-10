@@ -339,7 +339,7 @@ signals:
   void addPlaceHolderFilter(QPoint p);
   void removePlaceHolderFilter();
 
-  void preflightFinished(FilterPipeline::Pointer pipeline, int err);
+  void preflightFinished(int32_t pipelineFilterCount, int err);
 
   void filterParametersChanged(AbstractFilter::Pointer filter);
 

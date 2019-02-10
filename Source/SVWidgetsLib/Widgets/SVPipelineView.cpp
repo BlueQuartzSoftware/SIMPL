@@ -426,7 +426,7 @@ void SVPipelineView::preflightPipeline()
     }
   }
 
-  emit preflightFinished(pipeline, err);
+  emit preflightFinished(count, err);
   updateFilterInputWidgetIndices();
   //qDebug() << "----------- SVPipelineView::preflightPipeline End --------------";
   
