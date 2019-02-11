@@ -1,43 +1,45 @@
+#include <utility>
+
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "MultiDataContainerSelectionWidget.h"
 
 #include <QtCore/QList>
 #include <QtCore/QMetaProperty>
-#include <QtCore/QSignalMapper>
 #include <QtCore/QModelIndex>
+#include <QtCore/QSignalMapper>
 
 #include <QtGui/QStandardItemModel>
 
@@ -55,350 +57,46 @@
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 MultiDataContainerSelectionWidget::MultiDataContainerSelectionWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
-, m_DidCausePreflight(false)
 {
   m_FilterParameter = dynamic_cast<MultiDataContainerSelectionFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "MultiDataContainerSelectionWidget can ONLY be used with a MultiDataContainerSelectionFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "MultiDataContainerSelectionWidget can ONLY be used with a MultiDataContainerFilterParameter object");
 
   setupUi(this);
   setupGui();
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-MultiDataContainerSelectionWidget::MultiDataContainerSelectionWidget(QWidget* parent)
-: FilterParameterWidget(nullptr, nullptr, parent)
-, m_DidCausePreflight(false)
-{
-  setupUi(this);
-  setupGui();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 MultiDataContainerSelectionWidget::~MultiDataContainerSelectionWidget() = default;
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiDataContainerSelectionWidget::initializeWidget(FilterParameter* parameter, AbstractFilter* filter)
-{
-  setFilter(filter);
-  setFilterParameter(parameter);
-  setupGui();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void MultiDataContainerSelectionWidget::setupGui()
 {
   // Sanity Check the filter and the filter parameter
-  if(getFilter() == nullptr)
+  if(getFilter() == nullptr) // Trivial
   {
     return;
   }
-  if(getFilterParameter() == nullptr)
+  if(getFilterParameter() == nullptr) // Trivial
   {
     return;
   }
 
-  selectedDataContainersListWidget->installEventFilter(this);
-  availableDataContainersListWidget->installEventFilter(this);
-
-  // Generate the text for the QLabel
-  //label->setText(getFilterParameter()->getHumanLabel());
-
-  // Lastly, hook up the filter's signals and slots to our own signals and slots
-  // Catch when the filter is about to execute the preflight
   connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
-
-  // Catch when the filter is finished running the preflight
   connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
-
-  // Catch when the filter wants its values updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)), this, SLOT(updateDataContainerName(QString, DataArrayPath::RenameType)));
 
-  // If the DataArrayPath is updated in the filter, update the widget
-  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)),
-    this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
-
-  QStringList dcNames = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QStringList>();
-  for (int i=0; i<dcNames.size(); i++)
+  for(const auto& eachDC : getFilterParameter()->getDefaultValue().toStringList())
   {
-    QString dcName = dcNames[i];
-    QListWidgetItem* item = new QListWidgetItem(QIcon(":/SIMPL/icons/images/bullet_ball_green.png"), dcName);
-    selectedDataContainersListWidget->addItem(item);
-  }
-  selectBtn->setDisabled(true);
-  deselectBtn->setDisabled(true);
-  removeBtn->hide();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString MultiDataContainerSelectionWidget::checkStringValues(QString curDcName, QString filtDcName)
-{
-  if(curDcName.isEmpty() && !filtDcName.isEmpty())
-  {
-    return filtDcName;
-  }
-  if(!curDcName.isEmpty() && filtDcName.isEmpty())
-  {
-    return curDcName;
-  }
-  if(!curDcName.isEmpty() && !filtDcName.isEmpty() && m_DidCausePreflight)
-  {
-    return curDcName;
-  }
-
-  return filtDcName;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool MultiDataContainerSelectionWidget::eventFilter(QObject* obj, QEvent* event)
-{
-  if(event->type() == QEvent::FocusIn && obj == selectedDataContainersListWidget)
-  {
-    on_selectedDataContainersListWidget_itemSelectionChanged();
-  }
-  else if(event->type() == QEvent::FocusIn && obj == availableDataContainersListWidget)
-  {
-    on_availableDataContainersListWidget_itemSelectionChanged();
-  }
-  return false;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiDataContainerSelectionWidget::on_availableDataContainersListWidget_itemDoubleClicked(QListWidgetItem* item)
-{
-  on_selectBtn_clicked();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiDataContainerSelectionWidget::on_selectedDataContainersListWidget_itemDoubleClicked(QListWidgetItem* item)
-{
-  on_deselectBtn_clicked();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiDataContainerSelectionWidget::on_selectBtn_clicked()
-{
-  QModelIndexList indexList = availableDataContainersListWidget->selectionModel()->selectedRows();
-  if(!indexList.empty())
-  {
-    int offset = 0;
-    for (int i=0; i<indexList.size(); i++)
-    {
-      int row = indexList[i].row() - offset;
-      QListWidgetItem* item = availableDataContainersListWidget->takeItem(row);
-      offset++;
-      if(item != nullptr)
-      {
-        selectedDataContainersListWidget->addItem(item);
-      }
-    }
-
-    m_DidCausePreflight = true;
-    emit parametersChanged();
-    m_DidCausePreflight = false;
+    dataContainersOrderWidget->addItem(eachDC);
   }
 }
 
 // -----------------------------------------------------------------------------
-//
+// Slot callbacks
 // -----------------------------------------------------------------------------
-void MultiDataContainerSelectionWidget::on_deselectBtn_clicked()
-{
-  // QModelIndexList indexList = selectedDataContainersListWidget->selectionModel()->selectedRows();
-  QList<QListWidgetItem*> items = selectedDataContainersListWidget->selectedItems();
-  foreach(QListWidgetItem* item, items)
-  {
-    int row = selectedDataContainersListWidget->row(item);
-    selectedDataContainersListWidget->takeItem(row);
-    availableDataContainersListWidget->addItem(item);
-  }
-  m_DidCausePreflight = true;
-  emit parametersChanged();
-  m_DidCausePreflight = false;
-}
-
 // -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiDataContainerSelectionWidget::on_upBtn_clicked()
-{
-  int currentIndex = selectedDataContainersListWidget->currentRow();
-
-  if(currentIndex > 0)
-  {
-    QListWidgetItem* item = selectedDataContainersListWidget->takeItem(currentIndex);
-    selectedDataContainersListWidget->insertItem(currentIndex - 1, item);
-    selectedDataContainersListWidget->setCurrentRow(currentIndex - 1);
-
-    m_DidCausePreflight = true;
-    emit parametersChanged();
-    m_DidCausePreflight = false;
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiDataContainerSelectionWidget::on_downBtn_clicked()
-{
-  int currentIndex = selectedDataContainersListWidget->currentRow();
-
-  if(currentIndex < selectedDataContainersListWidget->count() - 1)
-  {
-    QListWidgetItem* item = selectedDataContainersListWidget->takeItem(currentIndex);
-    selectedDataContainersListWidget->insertItem(currentIndex + 1, item);
-    selectedDataContainersListWidget->setCurrentRow(currentIndex + 1);
-
-    m_DidCausePreflight = true;
-    emit parametersChanged();
-    m_DidCausePreflight = false;
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiDataContainerSelectionWidget::on_removeBtn_clicked()
-{
-  QModelIndexList indexList = selectedDataContainersListWidget->selectionModel()->selectedRows();
-  if(!indexList.empty())
-  {
-    int offset = 0;
-    for (int i=0; i<indexList.size(); i++)
-    {
-      int row = indexList[i].row() - offset;
-      QListWidgetItem* item = selectedDataContainersListWidget->item(row);
-      selectedDataContainersListWidget->removeItemWidget(item);
-      delete item;
-      offset++;
-    }
-
-    m_DidCausePreflight = true;
-    emit parametersChanged();
-    m_DidCausePreflight = false;
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiDataContainerSelectionWidget::selectionChanged()
-{
-  upBtn->setDisabled(true);
-  downBtn->setDisabled(true);
-  selectBtn->setDisabled(true);
-  deselectBtn->setDisabled(true);
-  removeBtn->hide();
-
-  int selectSize = availableDataContainersListWidget->selectionModel()->selectedRows().size();
-  int orderSize = selectedDataContainersListWidget->selectionModel()->selectedRows().size();
-
-  if (selectSize > 0)
-  {
-    selectBtn->setEnabled(true);
-  }
-
-  if (orderSize > 0)
-  {
-    deselectBtn->setEnabled(true);
-
-    if (orderSize == 1)
-    {
-      upBtn->setEnabled(true);
-      downBtn->setEnabled(true);
-    }
-
-    bool allErrorRows = true;
-    for (int i=0; i<orderSize; i++)
-    {
-      int row = selectedDataContainersListWidget->selectionModel()->selectedRows()[i].row();
-      if(selectedDataContainersListWidget->item(row)->backgroundColor() != QColor(235, 110, 110))
-      {
-        allErrorRows = false;
-      }
-    }
-
-    if(allErrorRows)
-    {
-      removeBtn->show();
-    }
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiDataContainerSelectionWidget::on_availableDataContainersListWidget_itemSelectionChanged()
-{
-  selectionChanged();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiDataContainerSelectionWidget::on_selectedDataContainersListWidget_itemSelectionChanged()
-{
-  selectionChanged();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiDataContainerSelectionWidget::clearNonexistantDataContainers()
-{
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get())
-  {
-    return;
-  }
-
-  QList<QString> dcNames = dca->getDataContainerNames();
-
-  for (int i = 0; i < availableDataContainersListWidget->count(); i++)
-  {
-    if (!dcNames.contains(availableDataContainersListWidget->item(i)->text()))
-    {
-      QListWidgetItem* item = availableDataContainersListWidget->takeItem(i);
-      delete item;
-      i--;
-    }
-  }
-
-  for (int i = 0; i < selectedDataContainersListWidget->count(); i++)
-  {
-    if (!dcNames.contains(selectedDataContainersListWidget->item(i)->text()))
-    {
-      QListWidgetItem* item = selectedDataContainersListWidget->takeItem(i);
-      delete item;
-      i--;
-    }
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
+// Validate containers in each list are in the filter data container array
 // -----------------------------------------------------------------------------
 void MultiDataContainerSelectionWidget::beforePreflight()
 {
@@ -407,88 +105,219 @@ void MultiDataContainerSelectionWidget::beforePreflight()
     return;
   }
 
-  clearNonexistantDataContainers();
-
-  // Previously in afterPreflight()
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get())
+  if(nullptr == getFilter()->getDataContainerArray().get())
   {
     return;
   }
 
-  QList<QString> dcNames = dca->getDataContainerNames();
-
-  QList<QString> selectListNames;
-  for (int i = 0; i < availableDataContainersListWidget->count(); i++)
+  QStringList dcNames{getFilter()->getDataContainerArray()->getDataContainerNames()};
+  for(const auto& eachDC : getFilter()->getDataContainerArray()->getDataContainerNames())
   {
-	  selectListNames.append(availableDataContainersListWidget->item(i)->text());
+    dcNames.push_back(eachDC);
   }
 
-  QList<QString> orderListNames;
-  for (int i = 0; i < selectedDataContainersListWidget->count(); i++)
-  {
-	  QListWidgetItem* item = selectedDataContainersListWidget->item(i);
-	  QString name = item->text();
-	  orderListNames.append(name);
-	  if (!dcNames.contains(name))
-	  {
-		  //item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
-		  // item->setBackgroundColor(QColor(235, 110, 110));
-		  item->setIcon(QIcon(":/SIMPL/icons/images/bullet_ball_red.png"));
-	  }
-	  else
-	  {
-		  // item->setBackgroundColor(QColor(255, 255, 255));
-		  item->setIcon(QIcon(":/SIMPL/icons/images/bullet_ball_green.png"));
-	  }
-  }
-
-  for (int i = 0; i < dcNames.size(); i++)
-  {
-	  if (!selectListNames.contains(dcNames[i]) && !orderListNames.contains(dcNames[i]))
-	  {
-		  QListWidgetItem* item = new QListWidgetItem(QIcon(":/SIMPL/icons/images/bullet_ball_green.png"), dcNames[i]);
-		  availableDataContainersListWidget->addItem(item);
-	  }
-  }
+  validateDataContainerNames(dataContainersSelectWidget, dcNames);
+  validateDataContainerNames(dataContainersOrderWidget, dcNames);
 }
 
 // -----------------------------------------------------------------------------
-//
+// Populate and syncronize the lists
 // -----------------------------------------------------------------------------
 void MultiDataContainerSelectionWidget::afterPreflight()
 {
+  QStringList dcNames{getFilter()->getDataContainerArray()->getDataContainerNames()};
+  QStringList newItems{dcNames};
+
+  syncItems(dataContainersSelectWidget, dcNames, newItems);
+  syncItems(dataContainersOrderWidget, dcNames, newItems);
+
+  dataContainersSelectWidget->addItems(newItems);
 }
 
 // -----------------------------------------------------------------------------
-//
+// Set the filter's active data containers or notify that parameter is missing
 // -----------------------------------------------------------------------------
 void MultiDataContainerSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  QStringList dcNames;
-	for (int i = 0; i < selectedDataContainersListWidget->count(); i++)
-	{
-    dcNames.push_back(selectedDataContainersListWidget->item(i)->text());
-	}
-
-	// Generate the path to the AttributeArray
-	QVariant var;
-  var.setValue(dcNames);
-	bool ok = false;
-	// Set the value into the Filter
-	ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-	if (!ok)
-	{
-		getFilter()->notifyMissingProperty(getFilterParameter());
-	}
+  QStringList selectedDCs;
+  for(int itemIndex = 0; itemIndex < dataContainersOrderWidget->count(); itemIndex++)
+  {
+    selectedDCs.push_back(dataContainersOrderWidget->item(itemIndex)->text());
+  }
+  QVariant var;
+  var.setValue(selectedDCs);
+  if(!filter->setProperty(PROPERTY_NAME_AS_CHAR, var))
+  {
+    getFilter()->notifyMissingProperty(getFilterParameter());
+  }
 }
 
 // -----------------------------------------------------------------------------
-//
+// Update the name of a data container in the appropriate list widget
 // -----------------------------------------------------------------------------
-void MultiDataContainerSelectionWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
+void MultiDataContainerSelectionWidget::updateDataContainerName(const QString& propertyName, const DataArrayPath::RenameType& renamePath)
 {
   DataArrayPath oldPath;
   DataArrayPath newPath;
   std::tie(oldPath, newPath) = renamePath;
+
+  if(propertyName.compare(getFilterParameter()->getPropertyName()) == 0)
+  {
+    if(oldPath.getDataContainerName() != newPath.getDataContainerName())
+    {
+      blockSignals(true);
+      for (const auto& eachOrderDC : dataContainersOrderWidget->findItems(oldPath.getDataContainerName(), Qt::MatchFlag::MatchCaseSensitive))
+      {
+        eachOrderDC->setText(newPath.getDataContainerName());
+      }
+      for (const auto& eachOrderDC : dataContainersSelectWidget->findItems(oldPath.getDataContainerName(), Qt::MatchFlag::MatchCaseSensitive))
+      {
+        eachOrderDC->setText(newPath.getDataContainerName());
+      }
+      blockSignals(false);
+    }
+  }
 }
+
+// -----------------------------------------------------------------------------
+// Helper Methods
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// Sync list widgets with updated data container array
+// -----------------------------------------------------------------------------
+void MultiDataContainerSelectionWidget::syncItems(QListWidget* listWidget, const QStringList& list, QStringList& newItems)
+{
+  for(const auto& eachItem : listWidget->findItems("*", Qt::MatchFlag::MatchWildcard))
+  {
+    QString itemText{eachItem->text()};
+    bool listContainsItemText{list.contains(itemText)};
+    if (listContainsItemText)
+    {
+      newItems.removeOne(itemText);
+      continue;
+    }
+    delete listWidget->takeItem(listWidget->row(eachItem));
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Validate ListWidget item exists in data container array
+// -----------------------------------------------------------------------------
+void MultiDataContainerSelectionWidget::validateDataContainerNames(const SVListWidget* list, const QList<QString>& compareList)
+{
+  for(int i = 0; i < list->count(); i++)
+  {
+    QListWidgetItem* item = list->item(i);
+    QString name = item->text();
+    if(!compareList.contains(name))
+    {
+      item->setBackgroundColor(QColor(235, 110, 110));
+    }
+    else
+    {
+      item->setBackgroundColor(QColor(255, 255, 255));
+    }
+  }
+}
+
+/* Unused
+// -----------------------------------------------------------------------------
+// This doesn't appear to get used - disabling and will remove if nothing adverse happens at runtime
+// -----------------------------------------------------------------------------
+//void MultiDataContainerSelectionWidget::initializeWidget(FilterParameter* parameter, AbstractFilter* filter)
+//{
+//  setFilter(filter);
+//  setFilterParameter(parameter);
+//  setupGui();
+//}
+
+// -----------------------------------------------------------------------------
+// ???
+// -----------------------------------------------------------------------------
+//QString MultiDataContainerSelectionWidget::checkStringValues(QString curDcName, QString filtDcName)
+//{
+//  if(curDcName.isEmpty() && !filtDcName.isEmpty())
+//  {
+//    return filtDcName;
+//  }
+//  if(!curDcName.isEmpty() && filtDcName.isEmpty())
+//  {
+//    return curDcName;
+//  }
+//  if(!curDcName.isEmpty() && !filtDcName.isEmpty() && m_DidCausePreflight)
+//  {
+//    return curDcName;
+//  }
+
+//  return filtDcName;
+//}
+
+// -----------------------------------------------------------------------------
+// TODO - does not appear to get used
+// -----------------------------------------------------------------------------
+//void MultiDataContainerSelectionWidget::dataContainerSelected(QString path)
+//{
+//  setSelectedPath(std::move(path));
+
+//  m_DidCausePreflight = true;
+//  emit parametersChanged();
+//  m_DidCausePreflight = false;
+//}
+
+// -----------------------------------------------------------------------------
+// Unlikely this has any use for top level data container list
+// -----------------------------------------------------------------------------
+//void MultiDataContainerSelectionWidget::removeNonexistantPaths(QVector<DataArrayPath>& paths)
+//{
+//  AbstractFilter* filter = getFilter();
+//  if(nullptr == filter)
+//  {
+//    return;
+//  }
+
+//  bool reloadPath = false;
+//  DataArrayPath dcPath;
+//  if(!paths.empty())
+//  {
+//    dcPath = DataArrayPath(paths[0].getDataContainerName(), "", "");
+//  }
+
+//  for(int i = 0; i < paths.size(); i++)
+//  {
+//    bool valid = true;
+
+//    if(nullptr == filter->getDataContainerArray()->getAttributeMatrix(paths[i])->getAttributeArray(paths[i].getDataArrayName()))
+//    {
+//      valid = false;
+//    }
+
+//    if(!paths[i].isValid())
+//    {
+//      valid = false;
+//    }
+
+//    if(!valid)
+//    {
+//      const QString& pathName = paths[i].getDataArrayName();
+//      QList<QListWidgetItem*> invalidDataArrayWidgets = dataContainersOrderWidget->findItems(pathName, Qt::MatchExactly);
+//      for(const auto& invalidDataArrayWidget : invalidDataArrayWidgets)
+//      {
+//        invalidDataArrayWidget->setCheckState(Qt::Unchecked);
+//        dataContainersOrderWidget->removeItemWidget(invalidDataArrayWidgets);
+//      }
+
+//      paths.removeAt(i);
+//      i--;
+
+//      reloadPath = true;
+//    }
+//  }
+
+//  if(reloadPath && !dcPath.isEmpty())
+//  {
+//    dataContainersSelectWidget->clear(); // ???
+//    dataContainersOrderWidget->clear(); // ???
+//  }
+//}
+
+*/
