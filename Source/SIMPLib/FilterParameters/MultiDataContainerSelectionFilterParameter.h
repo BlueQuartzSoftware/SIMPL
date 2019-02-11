@@ -1,3 +1,4 @@
+#pragma once
 /* ============================================================================
 * Copyright (c) 2009-2016 BlueQuartz Software, LLC
 *
@@ -33,13 +34,9 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#pragma once
-
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
-#include "SIMPLib/DataContainers/DataArrayPath.h"
-#include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 
 /**
@@ -94,9 +91,9 @@ class SIMPLib_EXPORT MultiDataContainerSelectionFilterParameter : public FilterP
      * @param category The category for the filter parameter in the DREAM.3D user interface.  There
      * are three categories: Parameter, Required Arrays, and Created Arrays.
      * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-    * that this FilterParameter subclass represents.
+     * that this FilterParameter subclass represents.
      * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-    * that this FilterParameter subclass represents.
+     * that this FilterParameter subclass represents.
      * @param req The RequirementType that greys out non-conforming selection options in the DREAM.3D
      * user interface.
      * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
@@ -157,7 +154,7 @@ class SIMPLib_EXPORT MultiDataContainerSelectionFilterParameter : public FilterP
     SIMPL_INSTANCE_PROPERTY(IGeometry::Types, DefaultGeometryTypes)
     SIMPL_INSTANCE_PROPERTY(QVector<AttributeMatrix::Type>, DefaultAttributeMatrixTypes)
     SIMPL_INSTANCE_PROPERTY(QVector<QString>, DefaultAttributeArrayTypes)
-    SIMPL_INSTANCE_PROPERTY(QVector< QVector<size_t> >, DefaultComponentDimensions)
+    SIMPL_INSTANCE_PROPERTY(QVector<QVector<size_t>>, DefaultComponentDimensions)
 
     /**
     * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
@@ -193,4 +190,3 @@ class SIMPLib_EXPORT MultiDataContainerSelectionFilterParameter : public FilterP
     MultiDataContainerSelectionFilterParameter& operator=(const MultiDataContainerSelectionFilterParameter&) = delete; // Copy Assignment Not Implemented
     MultiDataContainerSelectionFilterParameter& operator=(MultiDataContainerSelectionFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
-
