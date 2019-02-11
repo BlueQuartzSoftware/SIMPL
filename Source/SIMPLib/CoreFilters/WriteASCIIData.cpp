@@ -312,17 +312,17 @@ void WriteASCIIData::dataCheck()
 
     if( ptr.lock()->getTypeAsString().compare("NeighborList<T>") == 0)
     {
-      setErrorCondition(TemplateHelpers::Errors::UnsupportedType);
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType);
       notifyErrorMessage(getHumanLabel(), "NeighborList is unsupported when writing ASCII Data.", getErrorCondition());
     }
     else if( ptr.lock()->getTypeAsString().compare("struct") == 0)
     {
-      setErrorCondition(TemplateHelpers::Errors::UnsupportedType);
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType);
       notifyErrorMessage(getHumanLabel(), "StructArray is unsupported when writing ASCII Data.", getErrorCondition());
     }
     else if( ptr.lock()->getTypeAsString().compare("StatsDataArray") == 0)
     {
-      setErrorCondition(TemplateHelpers::Errors::UnsupportedType);
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType);
       notifyErrorMessage(getHumanLabel(), "StatsDataArray is unsupported when writing ASCII Data.", getErrorCondition());
     }
     else
@@ -421,17 +421,17 @@ void WriteASCIIData::writeMultiFileOutput()
     }
     else if( selectedArrayPtr->getTypeAsString().compare("NeighborList<T>") == 0)
     {
-      setErrorCondition(TemplateHelpers::Errors::UnsupportedType);
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType);
       notifyErrorMessage(getHumanLabel(), "NeighborList is unsupported when writing ASCII Data.", getErrorCondition());
     }
     else if( selectedArrayPtr->getTypeAsString().compare("struct") == 0)
     {
-      setErrorCondition(TemplateHelpers::Errors::UnsupportedType);
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType);
       notifyErrorMessage(getHumanLabel(), "StructArray is unsupported when writing ASCII Data.", getErrorCondition());
     }
     else if( selectedArrayPtr->getTypeAsString().compare("StatsDataArray") == 0)
     {
-      setErrorCondition(TemplateHelpers::Errors::UnsupportedType);
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType);
       notifyErrorMessage(getHumanLabel(), "StatsDataArray is unsupported when writing ASCII Data.", getErrorCondition());
     }
     else
