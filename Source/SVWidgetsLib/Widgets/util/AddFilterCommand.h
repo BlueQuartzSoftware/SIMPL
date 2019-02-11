@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <vector>
+
 #include <QtCore/QModelIndex>
 
 #include <QtWidgets/QUndoCommand>
@@ -67,7 +69,7 @@ private:
   std::vector<int> m_FilterRows;
   bool m_FirstRun = true;
   bool m_UseAnimationOnFirstRun;
-  QMetaObject::Connection m_connection;
+  std::vector<QMetaObject::Connection> m_Connections;
 
   /**
    * @brief addFilter

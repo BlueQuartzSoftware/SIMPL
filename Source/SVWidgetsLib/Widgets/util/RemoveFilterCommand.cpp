@@ -273,13 +273,14 @@ void RemoveFilterCommand::connectFilterSignalsSlots(const AbstractFilter::Pointe
 
   FilterInputWidget* fiw = model->filterInputWidget(index);
 
-  QObject::connect(fiw, &FilterInputWidget::filterParametersChanged, [=] (bool preflight) {
+  QMetaObject::Connection connection = QObject::connect(fiw, &FilterInputWidget::filterParametersChanged, [=](bool preflight) {
     if (preflight)
     {
       m_PipelineView->preflightPipeline();
     }
     emit m_PipelineView->filterParametersChanged(filter);
   });
+  m_Connections.push_back(connection);
 }
 
 // -----------------------------------------------------------------------------
@@ -296,5 +297,9 @@ void RemoveFilterCommand::disconnectFilterSignalsSlots(const AbstractFilter::Poi
   QObject::disconnect(filter.get(), &AbstractFilter::filterCompleted, nullptr, nullptr);
 
   QObject::disconnect(filter.get(), &AbstractFilter::filterInProgress, nullptr, nullptr);
-  QObject::disconnect( m_connection );
+
+  for(auto& connection : m_Connections)
+  {
+    QObject::disconnect(connection);
+  }
 }
