@@ -106,7 +106,7 @@ namespace TemplateHelpers
   }                                                                                                                                                                                                    \
   else                                                                                                                                                                                                 \
   {                                                                                                                                                                                                    \
-    observableObj->notifyErrorMessage(#templateName, "The input array was of unsupported type", TemplateHelpers::Errors::UnsupportedType);                                                             \
+    observableObj->notifyErrorMessage(#templateName, "The input array was of unsupported type", TemplateHelpers::Errors::UnsupportedDataType);                                                             \
   }
 
 #define EXECUTE_TEMPLATE(observableObj, templateName, inputData, ...)                                                                                                                                  \
@@ -172,7 +172,7 @@ namespace TemplateHelpers
   }                                                                                                                                                                                                    \
   else                                                                                                                                                                                                 \
   {                                                                                                                                                                                                    \
-    observableObj->notifyErrorMessage(#templateName, "The input array was of unsupported type", TemplateHelpers::Errors::UnsupportedType);                                                             \
+    observableObj->notifyErrorMessage(#templateName, "The input array was of unsupported type", TemplateHelpers::Errors::UnsupportedDataType);                                                             \
   }
 
 /**
@@ -180,10 +180,11 @@ namespace TemplateHelpers
  */
 namespace Errors
 {
-const int UnsupportedType(-401);
-const int MissingDataContainer(-402);
-const int MissingAttributeMatrix(-403);
-const int MissingArray(-404);
+const int UnsupportedDataType(-401);
+const int UnsupportedImageType(-402);
+const int MissingDataContainer(-403);
+const int MissingAttributeMatrix(-404);
+const int MissingArray(-405);
 } // namespace Errors
 
 /**
