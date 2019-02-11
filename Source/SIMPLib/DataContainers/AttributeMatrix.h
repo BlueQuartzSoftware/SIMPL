@@ -128,6 +128,10 @@ public:
   };
 
   using Types = QVector<Type>;
+  using size_type = int32_t;
+  using value_type = QPair<QString, IDataArray::Pointer>;
+  using reference = value_type&;
+  using const_reference = value_type&;
 
   /**
    * @brief TypeToString Returns a String representation of the AttributeMatrix Type
@@ -209,6 +213,57 @@ public:
     SIMPL_INSTANCE_PROPERTY(QString, Name)
 
 
+
+    // ######### STL Interface #########
+
+    // ######### Iterators #########
+    QMap<QString, IDataArray::Pointer>::iterator begin() { return m_AttributeArrays.begin(); }
+    QMap<QString, IDataArray::Pointer>::iterator end() { return m_AttributeArrays.end(); }
+
+
+    QMap<QString, IDataArray::Pointer>::const_iterator begin() const
+    {
+      return m_AttributeArrays.begin();
+    }
+
+    QMap<QString, IDataArray::Pointer>::const_iterator end() const
+    {
+      return m_AttributeArrays.end();
+    }
+
+    // ######### Capacity #########
+    bool empty() { return m_AttributeArrays.isEmpty(); }
+    size_type size() const { return m_AttributeArrays.size(); }
+    size_type max_size() const { return m_AttributeArrays.size(); }
+
+    // ######### Element Access #########
+    IDataArray::Pointer& operator[](const QString &key)
+    {
+      return m_AttributeArrays[key];
+    }
+    const IDataArray::Pointer  operator[](const QString &key) const
+    {
+       return m_AttributeArrays[key];
+    }
+
+    IDataArray::Pointer& at(const QString &key)
+    {
+      return m_AttributeArrays[key];
+    }
+
+    const IDataArray::Pointer at(const QString &key) const
+    {
+      return m_AttributeArrays[key];
+    }
+
+
+    void emplace(const QString& name, const IDataArray::Pointer& data)
+    {
+      m_AttributeArrays.insert(name, data);
+    }
+
+
+
     /**
     * @brief Adds/overwrites the data for a named array
     * @param name The name that the array will be known by
@@ -216,6 +271,7 @@ public:
     * @return error code if the addition did not work
     */
     virtual int addAttributeArray(const QString& name, IDataArray::Pointer data);
+
 
     /**
      * @brief Returns the array for a given named array or the equivelant to a

@@ -41,39 +41,6 @@ elseif(WIN32)
   set(lib_install_dir ".")
 endif()
 
-
-#-------------------------------------------------------------------------------
-# Function COMPILE_TOOL to help alleviate lots of extra code below for adding
-# simple command line tools that just need one or two source files
-#
-function(COMPILE_TOOL)
-    set(options)
-    set(oneValueArgs TARGET DEBUG_EXTENSION BINARY_DIR COMPONENT INSTALL_DEST DEFINITION)
-    set(multiValueArgs SOURCES LINK_LIBRARIES)
-    cmake_parse_arguments(D3DTOOL "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN} )
-
-    BuildToolBundle(
-        TARGET ${D3DTOOL_TARGET}
-        SOURCES ${D3DTOOL_SOURCES}
-        DEBUG_EXTENSION ${D3DTOOL_DEBUG_EXTENSION}
-        VERSION_MAJOR ${D3DTOOL_SIMPL_VER_MAJOR}
-        VERSION_MINOR ${D3DTOOL_SIMPL_VER_MINOR}
-        VERSION_PATCH ${D3DTOOL_SIMPL_VER_PATCH}
-        BINARY_DIR    ${D3DTOOL_BINARY_DIR}
-        LINK_LIBRARIES Qt5::Core "${D3DTOOL_LINK_LIBRARIES}"
-        LIB_SEARCH_DIRS ${CMAKE_LIBRARY_OUTPUT_DIRECTORY} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-        COMPONENT     ${D3DTOOL_COMPONENT}
-        INSTALL_DEST  "${D3DTOOL_INSTALL_DEST}"
-        SOLUTION_FOLDER "Applications"
-    )
-
-    if( ${D3DTOOL_DEFINITION} )
-        target_compile_definitions(${D3DTOOL_TARGET} PRIVATE -D${D3DTOOL_DEFINITION})
-    endif()
-endfunction()
-
-
-
 AddSIMPLUnitTest(TESTNAME FilterParameterCallbackExample
                   SOURCES 
                     ${SIMPLExperimental_SOURCE_DIR}/FilterCallback/FilterParameterCallbackExample.cpp
@@ -87,6 +54,23 @@ AddSIMPLUnitTest(TESTNAME FilterParameterCallbackExample
                     "DREAM3D UnitTests"
                   LINK_LIBRARIES 
                     Qt5::Core H5Support SIMPLib  
+                  INCLUDE_DIRS
+                    ${SIMPLTools_BINARY_DIR}
+                    ${SIMPLProj_SOURCE_DIR}/Source
+                    ${SIMPLProj_BINARY_DIR}
+)
+
+
+
+AddSIMPLUnitTest(TESTNAME AttributeArrayIteratorExample
+                  SOURCES
+                    ${SIMPLExperimental_SOURCE_DIR}/AttributeArrayIteratorExample/AttributeArrayIterators.cpp
+                    ${SIMPLExperimental_SOURCE_DIR}/AttributeArrayIteratorExample/AttributeArray.hpp
+
+                  FOLDER
+                    "DREAM3D UnitTests"
+                  LINK_LIBRARIES
+                    Qt5::Core H5Support SIMPLib
                   INCLUDE_DIRS
                     ${SIMPLTools_BINARY_DIR}
                     ${SIMPLProj_SOURCE_DIR}/Source
