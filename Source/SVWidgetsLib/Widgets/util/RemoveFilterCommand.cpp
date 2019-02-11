@@ -302,4 +302,5 @@ void RemoveFilterCommand::disconnectFilterSignalsSlots(const AbstractFilter::Poi
   {
     QObject::disconnect(connection);
   }
+  m_Connections.clear();
 }

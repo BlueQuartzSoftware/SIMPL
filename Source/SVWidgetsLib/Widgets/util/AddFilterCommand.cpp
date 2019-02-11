@@ -311,4 +311,5 @@ void AddFilterCommand::disconnectFilterSignalsSlots(const AbstractFilter::Pointe
   {
     QObject::disconnect(connection);
   }
+  m_Connections.clear();
 }
