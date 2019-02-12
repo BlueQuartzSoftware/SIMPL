@@ -69,7 +69,7 @@ private:
   std::vector<int> m_FilterRows;
   bool m_FirstRun = true;
   bool m_UseAnimationOnFirstRun;
-  std::vector<QMetaObject::Connection> m_Connections;
+  std::map<AbstractFilter::Pointer, QMetaObject::Connection> m_Connections;
 
   /**
    * @brief addFilter

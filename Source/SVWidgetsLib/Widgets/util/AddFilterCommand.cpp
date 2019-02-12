@@ -135,9 +135,9 @@ void AddFilterCommand::undo()
   for(int i = 0; i < m_Filters.size(); i++)
   {
     QPersistentModelIndex filterIndex = model->indexOfFilter(m_Filters[i].get());
-
     removeFilter(filterIndex);
   }
+  m_Connections.clear();
 
   QString statusMessage;
   if(m_Filters.size() > 1)
@@ -290,7 +290,7 @@ void AddFilterCommand::connectFilterSignalsSlots(const AbstractFilter::Pointer& 
     }
     emit m_PipelineView->filterParametersChanged(filter);
   });
-  m_Connections.push_back(connection);
+  m_Connections[filter] = connection;
 }
 
 // -----------------------------------------------------------------------------
@@ -307,9 +307,6 @@ void AddFilterCommand::disconnectFilterSignalsSlots(const AbstractFilter::Pointe
 
   QObject::disconnect(filter.get(), &AbstractFilter::filterInProgress, nullptr, nullptr);
 
-  for(auto& connection : m_Connections)
-  {
-    QObject::disconnect(connection);
-  }
-  m_Connections.clear();
+  QMetaObject::Connection connection = m_Connections[filter];
+  QObject::disconnect(connection);
 }

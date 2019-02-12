@@ -156,6 +156,7 @@ void RemoveFilterCommand::redo()
   {
     removeFilter(filter);
   }
+  m_Connections.clear();
 
   QString statusMessage;
   if(m_Filters.size() > 1)
@@ -280,7 +281,7 @@ void RemoveFilterCommand::connectFilterSignalsSlots(const AbstractFilter::Pointe
     }
     emit m_PipelineView->filterParametersChanged(filter);
   });
-  m_Connections.push_back(connection);
+  m_Connections[filter] = connection;
 }
 
 // -----------------------------------------------------------------------------
@@ -298,9 +299,6 @@ void RemoveFilterCommand::disconnectFilterSignalsSlots(const AbstractFilter::Poi
 
   QObject::disconnect(filter.get(), &AbstractFilter::filterInProgress, nullptr, nullptr);
 
-  for(auto& connection : m_Connections)
-  {
-    QObject::disconnect(connection);
-  }
-  m_Connections.clear();
+  QMetaObject::Connection connection = m_Connections[filter];
+  QObject::disconnect(connection);
 }
