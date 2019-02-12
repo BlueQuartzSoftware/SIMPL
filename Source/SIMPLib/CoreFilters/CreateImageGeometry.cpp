@@ -173,7 +173,6 @@ void CreateImageGeometry::execute()
     return;
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

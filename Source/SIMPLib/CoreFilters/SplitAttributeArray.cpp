@@ -201,7 +201,6 @@ void SplitAttributeArray::execute()
 
   EXECUTE_FUNCTION_TEMPLATE(this, splitMulticomponentArray, m_InputArrayPtr.lock(), m_InputArrayPtr.lock(), m_SplitArraysPtrVector)
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

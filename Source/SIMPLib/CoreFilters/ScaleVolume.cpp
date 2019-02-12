@@ -288,7 +288,6 @@ void ScaleVolume::execute()
     updateSurfaceMesh();
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

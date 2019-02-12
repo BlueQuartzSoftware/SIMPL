@@ -147,7 +147,6 @@ void RenameDataContainer::execute()
     return;
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 // -----------------------------------------------------------------------------
 //

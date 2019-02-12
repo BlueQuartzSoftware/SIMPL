@@ -326,7 +326,6 @@ void CreateFeatureArrayFromElementArray::execute()
     getDataContainerArray()->getAttributeMatrix(m_CellFeatureAttributeMatrixName)->addAttributeArray(p->getName(), p);
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

@@ -264,16 +264,15 @@ void ArrayCalculator::dataCheck()
     return;
   }
 
-  DataArrayPath calculatedAMPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
-  AttributeMatrix::Pointer calculatedAM = getDataContainerArray()->getAttributeMatrix(calculatedAMPath);
   AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getAttributeMatrix(m_SelectedAttributeMatrix);
 
   QVector<size_t> cDims;
   ICalculatorArray::ValueType resultType = ICalculatorArray::ValueType::Unknown;
 
-  for(int32_t i = 0; i < parsedInfix.size(); i++)
+  for(const auto& item1 : parsedInfix)
+  //for(int32_t i = 0; i < parsedInfix.size(); i++)
   {
-    CalculatorItem::Pointer item1 = parsedInfix[i];
+    //CalculatorItem::Pointer item1 = parsedInfix[i];
     if(item1->isICalculatorArray())
     {
       ICalculatorArray::Pointer array1 = std::dynamic_pointer_cast<ICalculatorArray>(item1);
@@ -305,6 +304,19 @@ void ArrayCalculator::dataCheck()
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
+
+  DataArrayPath calculatedAMPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
+  AttributeMatrix::Pointer calculatedAM = getDataContainerArray()->getAttributeMatrix(calculatedAMPath);
+  if(nullptr == calculatedAM.get())
+  {
+    QString ss = QObject::tr("The AttributeMatrix at %1/%2 was not found")
+                     .arg(calculatedAMPath.getDataContainerName(), calculatedAMPath.getAttributeMatrixName());
+    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::LOST_ATTR_MATRIX));
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
+  }
+
+
   if(resultType == ICalculatorArray::ValueType::Number)
   {
     QString ss = QObject::tr("The result of the chosen expression will be a numeric value or contain one tuple."
@@ -317,8 +329,7 @@ void ArrayCalculator::dataCheck()
       QString ss = QObject::tr("The tuple count in the output attribute matrix at path '%1/%2' is greater than 1.  The current"
                                " expression evaluates to an array with a tuple count of 1, which does not match the output attribute matrix"
                                " tuple count.")
-                       .arg(calculatedAMPath.getDataContainerName())
-                       .arg(calculatedAMPath.getAttributeMatrixName());
+                       .arg(calculatedAMPath.getDataContainerName(), calculatedAMPath.getAttributeMatrixName());
       setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INCORRECT_TUPLE_COUNT));
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
@@ -484,13 +495,12 @@ void ArrayCalculator::execute()
     return;
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T> IDataArray::Pointer convertArray(DoubleArrayType::Pointer inputArray)
+template<typename T> IDataArray::Pointer convertArray(const DoubleArrayType::Pointer& inputArray)
 {
   if(nullptr == inputArray)
   {
@@ -515,7 +525,7 @@ template<typename T> IDataArray::Pointer convertArray(DoubleArrayType::Pointer i
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataArray::Pointer ArrayCalculator::convertArrayType(IDataArray::Pointer inputArray, SIMPL::ScalarTypes::Type scalarType)
+IDataArray::Pointer ArrayCalculator::convertArrayType(const IDataArray::Pointer& inputArray, SIMPL::ScalarTypes::Type scalarType)
 {
   DoubleArrayType::Pointer inputDblArray = std::dynamic_pointer_cast<DoubleArrayType>(inputArray);
   if(nullptr == inputDblArray)

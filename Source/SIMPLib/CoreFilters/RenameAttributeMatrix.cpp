@@ -151,7 +151,6 @@ void RenameAttributeMatrix::execute()
     return;
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 // -----------------------------------------------------------------------------
 //

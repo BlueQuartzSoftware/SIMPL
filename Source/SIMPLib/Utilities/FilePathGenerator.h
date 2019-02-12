@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <array>
+
 #include <QtCore/QString>
 #include <QtCore/QVector>
 
@@ -43,6 +45,27 @@
 class SIMPLib_EXPORT FilePathGenerator
 {
 public:
+  /**
+   * @brief This struct is used for generating Row/Column Indexes
+   */
+  template <unsigned Dimension, typename T, class String> struct Tile
+  {
+    std::array<int32_t, Dimension> data; // r, c index
+    String FileName;
+  };
+
+  using TileRCIndex2D = Tile<2, int32_t, QString>;
+  using TileRCIndexRow2D = std::vector<TileRCIndex2D>;
+  using TileRCIncexLayout2D = std::vector<TileRCIndexRow2D>;
+
+  /**
+   * @brief This struct is used to hold actual coordinates of each tile. Where those coordinates reference is left
+   * open to interpretation by the classes using this structure.
+   */
+  using Tile2D = Tile<2, double, QString>;
+  using TileRow2D = std::vector<Tile2D>;
+  using TileLayout2D = std::vector<TileRow2D>;
+
   virtual ~FilePathGenerator();
 
   /**
@@ -88,8 +111,8 @@ public:
    * @param paddingDigits The number of padding digits (ZERO character) to use for each of the indices.
    * @return
    */
-  static QVector<QString> GenerateMontageFileList(int rowStart, int rowEnd, int colStart, int colEnd, bool& hasMissingFiles, bool rcOrdering, const QString& inputPath, const QString& filePrefix,
-                                                  const QString& fileSuffix, const QString& fileExtension, int paddingDigits);
+  static TileRCIncexLayout2D GenerateRCIndexMontageFileList(int rowStart, int rowEnd, int colStart, int colEnd, bool& hasMissingFiles, bool rcOrdering, const QString& inputPath,
+                                                            const QString& filePrefix, const QString& fileSuffix, const QString& fileExtension, int paddingDigits);
 
 protected:
   FilePathGenerator();

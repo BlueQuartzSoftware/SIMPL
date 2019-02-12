@@ -55,7 +55,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, int insertIndex, QString actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
+AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, int insertIndex, const QString& actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
 : QUndoCommand(parent)
 , m_ActionText(actionText)
 , m_PipelineView(view)
@@ -78,7 +78,7 @@ AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineVie
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFilterCommand::AddFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, int insertIndex, QString actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
+AddFilterCommand::AddFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, int insertIndex, const QString& actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
 : QUndoCommand(parent)
 , m_Filters(filters)
 , m_ActionText(actionText)
@@ -110,7 +110,13 @@ AddFilterCommand::AddFilterCommand(std::vector<AbstractFilter::Pointer> filters,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFilterCommand::~AddFilterCommand() = default;
+AddFilterCommand::~AddFilterCommand()
+{
+  for(const auto& filter : m_Filters)
+  {
+    disconnectFilterSignalsSlots(filter);
+  }
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -124,12 +130,12 @@ void AddFilterCommand::undo()
 
   PipelineModel* model = m_PipelineView->getPipelineModel();
 
-  for(int i = 0; i < m_Filters.size(); i++)
+  for(const auto& filter : m_Filters)
   {
-    QPersistentModelIndex filterIndex = model->indexOfFilter(m_Filters[i].get());
-
+    QPersistentModelIndex filterIndex = model->indexOfFilter(filter.get());
     removeFilter(filterIndex);
   }
+  m_Connections.clear();
 
   QString statusMessage;
   if(m_Filters.size() > 1)
@@ -196,7 +202,7 @@ void AddFilterCommand::redo()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AddFilterCommand::addFilter(AbstractFilter::Pointer filter, int insertionIndex)
+void AddFilterCommand::addFilter(const AbstractFilter::Pointer &filter, int insertionIndex)
 {
   // Reset the filter's Removing property
   filter->setRemoving(false);
@@ -264,7 +270,7 @@ void AddFilterCommand::removeFilter(const QPersistentModelIndex& index)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AddFilterCommand::connectFilterSignalsSlots(AbstractFilter::Pointer filter)
+void AddFilterCommand::connectFilterSignalsSlots(const AbstractFilter::Pointer& filter)
 {
   PipelineModel* model = m_PipelineView->getPipelineModel();
   QModelIndex index = model->indexOfFilter(filter.get());
@@ -275,28 +281,30 @@ void AddFilterCommand::connectFilterSignalsSlots(AbstractFilter::Pointer filter)
 
   FilterInputWidget* fiw = model->filterInputWidget(index);
 
-  QObject::connect(fiw, &FilterInputWidget::filterParametersChanged, [=] (bool preflight) {
+  QMetaObject::Connection connection = QObject::connect(fiw, &FilterInputWidget::filterParametersChanged, [=](bool preflight) {
     if (preflight)
     {
       m_PipelineView->preflightPipeline();
     }
     emit m_PipelineView->filterParametersChanged(filter);
   });
+  m_Connections[filter] = connection;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AddFilterCommand::disconnectFilterSignalsSlots(AbstractFilter::Pointer filter)
+void AddFilterCommand::disconnectFilterSignalsSlots(const AbstractFilter::Pointer& filter)
 {
-  PipelineModel* model = m_PipelineView->getPipelineModel();
-  QModelIndex index = model->indexOfFilter(filter.get());
+  if(filter.get() == nullptr)
+  {
+    return;
+  }
 
   QObject::disconnect(filter.get(), &AbstractFilter::filterCompleted, nullptr, nullptr);
 
   QObject::disconnect(filter.get(), &AbstractFilter::filterInProgress, nullptr, nullptr);
 
-  FilterInputWidget* fiw = model->filterInputWidget(index);
-
-  QObject::disconnect(fiw, &FilterInputWidget::filterParametersChanged, nullptr, nullptr);
+  QMetaObject::Connection connection = m_Connections[filter];
+  QObject::disconnect(connection);
 }

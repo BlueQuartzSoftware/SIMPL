@@ -352,7 +352,6 @@ void CombineAttributeMatrices::execute()
     EXECUTE_FUNCTION_TEMPLATE(this, copyData, fromDataArray, fromDataArray, toDataArray, location);
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

@@ -2,52 +2,51 @@
 set(TEST_TESTFILES_DIR ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Testing/Cxx/TestFiles)
 
 set(TEST_${SUBDIR_NAME}_NAMES
-  # ArrayCalculatorTest
-  # CombineAttributeArraysTest
-  # CombineAttributeMatricesTest
-  # ConditionalSetValueTest
-  # ConvertDataTest
-  # CopyFeatureArrayToElementArrayTest
-  # CopyObjectTest
-  # CreateAttributeMatrixTest
-  # CreateDataArrayTest
-  # CreateDataContainerTest
-  # CreateFeatureArrayFromElementArrayTest
-  # CreateGeometryTest
-  # CreateImageGeometryTest
-  # CreateStringArrayTest
-  # CropVertexGeometryTest
-  # DataContainerTest
-  # ErrorMessageTest
-  # ExecuteProcessTest
-  # ExtractAttributeArraysFromGeometryTest
-  # ExtractComponentAsArrayTest
-  # ExtractVertexGeometryTest
-  # FindDerivativesFilterTest
-  # FeatureDataCSVWriterTest
-  # GenerateColorTableTest
-  # ImportAsciDataArrayTest
-  # ImportHDF5DatasetTest
-  # MoveDataTest
-  # MoveMultiDataTest
-  # MultiThresholdObjectsTest
-  # MultiThresholdObjects2Test
-  # RawBinaryReaderTest
-  # ReadASCIIDataTest
-  # RecursivePipelineTest
-  # RemoveArraysTest
-  # RemoveComponentFromArrayTest
-  # RenameAttributeArrayTest
-  # RenameAttributeMatrixTest
-  # RenameDataContainerTest
-  # ReplaceValueTest
-  # RequiredZThicknessTest
-  # ScaleVolumeTest
-  # SetOriginResolutionImageGeomTest
-  # SplitAttributeArrayTest
-  # WriteASCIIDataTest
-  # WriteTriangleGeometryTest
+  ArrayCalculatorTest
+  CombineAttributeArraysTest
+  CombineAttributeMatricesTest
+  ConditionalSetValueTest
+  ConvertDataTest
+  CopyFeatureArrayToElementArrayTest
+  CopyObjectTest
+  CreateAttributeMatrixTest
+  CreateDataArrayTest
+  CreateDataContainerTest
+  CreateFeatureArrayFromElementArrayTest
+  CreateGeometryTest
+  CreateImageGeometryTest
+  CreateStringArrayTest
+  CropVertexGeometryTest
+  DataContainerTest
+  ErrorMessageTest
+  ExecuteProcessTest
+  ExtractAttributeArraysFromGeometryTest
+  ExtractComponentAsArrayTest
+  ExtractVertexGeometryTest
+  FindDerivativesFilterTest
+  FeatureDataCSVWriterTest
+  GenerateColorTableTest
+  ImportAsciDataArrayTest
+  ImportHDF5DatasetTest
+  MoveDataTest
+  MoveMultiDataTest
+  MultiThresholdObjectsTest
+  MultiThresholdObjects2Test
+  RawBinaryReaderTest
+  ReadASCIIDataTest
+  RemoveArraysTest
+  RemoveComponentFromArrayTest
+  RenameAttributeArrayTest
+  RenameAttributeMatrixTest
+  RenameDataContainerTest
   RenameTimingTest
+  ReplaceValueTest
+  RequiredZThicknessTest
+  ScaleVolumeTest
+  SetOriginResolutionImageGeomTest
+  SplitAttributeArrayTest
+  WriteASCIIDataTest
+  WriteTriangleGeometryTest
 )
 
 SIMPL_ADD_UNIT_TEST("${TEST_${SUBDIR_NAME}_NAMES}" "${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Testing/Cxx")

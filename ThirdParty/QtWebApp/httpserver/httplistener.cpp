@@ -14,7 +14,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-HttpListener::HttpListener(QSettings* settings, HttpRequestHandler* requestHandler, QObject* parent)
+HttpListener::HttpListener(ServerSettings* settings, HttpRequestHandler* requestHandler, QObject* parent)
 : QTcpServer(parent)
 {
   Q_ASSERT(settings != nullptr);
@@ -46,7 +46,7 @@ void HttpListener::listen()
   {
     pool = new HttpConnectionHandlerPool(settings, requestHandler);
   }
-  QString host = settings->value("host").toString();
+  QString host = settings->host;
   QHostAddress hostAddress(host);
   if(hostAddress.isNull())
   {
@@ -65,7 +65,7 @@ void HttpListener::listen()
       }
     }
   }
-  int port = settings->value("port").toInt();
+  int port = settings->port;
 
   QTcpServer::listen(hostAddress, static_cast<quint16>(port));
   if(!isListening())
@@ -100,7 +100,7 @@ void HttpListener::close()
 // -----------------------------------------------------------------------------
 int HttpListener::getPort()
 {
-  return settings->value("port").toInt();
+  return settings->port;
 }
 
 // -----------------------------------------------------------------------------

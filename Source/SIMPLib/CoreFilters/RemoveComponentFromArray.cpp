@@ -284,7 +284,6 @@ void RemoveComponentFromArray::execute()
     EXECUTE_FUNCTION_TEMPLATE(this, reduceArrayOnly, m_InArrayPtr.lock(), m_InArrayPtr.lock(), m_ReducedArrayPtr.lock(), m_CompNumber)
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

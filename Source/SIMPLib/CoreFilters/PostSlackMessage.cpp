@@ -177,7 +177,6 @@ void PostSlackMessage::execute()
   delete reply;
   delete connection;
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

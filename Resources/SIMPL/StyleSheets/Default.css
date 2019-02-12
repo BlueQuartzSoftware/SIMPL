@@ -168,3 +168,54 @@ QtSLineEdit#filterSearch
     min-height: 24;
 }
 
+/* ****************************************************************************
+*
+******************************************************************************/
+QwtPlot
+{
+    background-color: white;
+    border: 1px solid #6b6b6b;
+    border-radius: 5px;
+}
+
+QwtPlotCanvas
+{
+    background-color: white;
+}
+
+QwtPlotGLCanvas
+{
+    border: 1px solid white;
+    background-color: #616d7e;
+}
+
+QwtScaleWidget
+{
+    color: black;
+}
+
+QwtTextLabel#QwtPlotTitle
+{
+    color: black;
+    padding: 0px;
+    margin: 0px;
+}
+
+QwtTextLabel#QwtPlotFooter
+{
+    color: black;
+}
+
+QwtLegend
+{
+    border: 1px solid black;
+    border-radius: 0px;
+    padding: 2px;
+    background: #616d7e;
+}
+
+QwtLegendLabel
+{
+    color: black;
+}
+

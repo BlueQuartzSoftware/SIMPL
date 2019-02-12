@@ -248,9 +248,6 @@ void MultiThresholdObjects2::execute()
     {
       m_Destination[p] = threshold[p];
     }
-
-  /* Let the GUI know we are done with this filter */
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------
@@ -500,5 +497,5 @@ const QString MultiThresholdObjects2::getSubGroupName() const
 // -----------------------------------------------------------------------------
 const QString MultiThresholdObjects2::getHumanLabel() const
 {
-  return "Threshold Objects 2";
+  return "Threshold Objects (Advanced)";
 }

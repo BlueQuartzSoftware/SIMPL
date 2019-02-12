@@ -15,7 +15,7 @@
   2109.
 */
 
-class DECLSPEC HttpCookie
+class QtWebAppLib_EXPORT HttpCookie
 {
 public:
   /** Creates an empty cookie */

@@ -5,15 +5,16 @@
 
 #pragma once
 
-#include "httpglobal.h"
 #include <QByteArray>
 #include <QHostAddress>
 #include <QMap>
 #include <QMultiMap>
-#include <QSettings>
 #include <QTcpSocket>
 #include <QTemporaryFile>
 #include <QUuid>
+
+#include "httpglobal.h"
+#include "ServerSettings.h"
 
 /**
   This object represents a single HTTP request. It reads the request
@@ -32,7 +33,7 @@
   The body is always a little larger than the file itself.
 */
 
-class DECLSPEC HttpRequest
+class QtWebAppLib_EXPORT HttpRequest
 {
   Q_DISABLE_COPY(HttpRequest)
   friend class HttpSessionStore;
@@ -52,7 +53,7 @@ public:
     Constructor.
     @param settings Configuration settings
   */
-  HttpRequest(QSettings* settings);
+  HttpRequest(ServerSettings* settings);
 
   /**
     Destructor.
@@ -197,7 +198,7 @@ private:
   int maxSize;
 
   /** Maximum allowed size of multipart forms in bytes. */
-  int maxMultiPartSize;
+  int64_t maxMultiPartSize;
 
   /** Current size */
   int currentSize;

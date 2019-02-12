@@ -287,6 +287,7 @@ void BookmarksTreeView::listenRemoveBookmarkTriggered()
 // -----------------------------------------------------------------------------
 void BookmarksTreeView::listenOpenBookmarkTriggered()
 {
+  qDebug() << "void BookmarksTreeView::listenOpenBookmarkTriggered()";
   BookmarksModel* model = BookmarksModel::Instance();
 
   QModelIndexList indexList = selectionModel()->selectedRows(BookmarksItem::Contents);

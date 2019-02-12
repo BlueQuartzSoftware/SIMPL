@@ -74,52 +74,52 @@ QString createErrorMessageFromJsonParseError(const QJsonParseError& parseError)
     ss << "No Error";
     break;
   case QJsonParseError::UnterminatedObject:
-    ss << "Json Parsing Error: " << parseError.error << " of type UnterminatedObject.";
+    ss << "Json Parsing Error: " << parseError.error << " of type UnterminatedObject. An object is not correctly terminated with a closing curly bracket";
     break;
   case QJsonParseError::MissingNameSeparator:
-    ss << "Json Parsing Error: " << parseError.error << " of type MissingNameSeparator.";
+    ss << "Json Parsing Error: " << parseError.error << " of type MissingNameSeparator. A comma separating different items is missing";
     break;
   case QJsonParseError::UnterminatedArray:
-    ss << "Json Parsing Error: " << parseError.error << " of type UnterminatedArray.";
+    ss << "Json Parsing Error: " << parseError.error << " of type UnterminatedArray. The array is not correctly terminated with a closing square bracket";
     break;
   case QJsonParseError::MissingValueSeparator:
-    ss << "Json Parsing Error: " << parseError.error << " of type MissingValueSeparator.";
+    ss << "Json Parsing Error: " << parseError.error << " of type MissingValueSeparator. A colon separating keys from values inside objects is missing";
     break;
   case QJsonParseError::IllegalValue:
-    ss << "Json Parsing Error: " << parseError.error << " of type IllegalValue.";
+    ss << "Json Parsing Error: " << parseError.error << " of type IllegalValue. The value is illegal";
     break;
   case QJsonParseError::TerminationByNumber:
-    ss << "Json Parsing Error: " << parseError.error << " of type TerminationByNumber.";
+    ss << "Json Parsing Error: " << parseError.error << " of type TerminationByNumber. The input stream ended while parsing a number";
     break;
   case QJsonParseError::IllegalNumber:
-    ss << "Json Parsing Error: " << parseError.error << " of type IllegalNumber.";
+    ss << "Json Parsing Error: " << parseError.error << " of type IllegalNumber. The number is not well formed";
     break;
   case QJsonParseError::IllegalEscapeSequence:
-    ss << "Json Parsing Error: " << parseError.error << " of type IllegalEscapeSequence.";
+    ss << "Json Parsing Error: " << parseError.error << " of type IllegalEscapeSequence. An illegal escape sequence occurred in the input";
     break;
   case QJsonParseError::IllegalUTF8String:
-    ss << "Json Parsing Error: " << parseError.error << " of type IllegalUTF8String.";
+    ss << "Json Parsing Error: " << parseError.error << " of type IllegalUTF8String. An illegal UTF8 sequence occurred in the input";
     break;
   case QJsonParseError::UnterminatedString:
-    ss << "Json Parsing Error: " << parseError.error << " of type UnterminatedString.";
+    ss << "Json Parsing Error: " << parseError.error << " of type UnterminatedString. A string wasn't terminated with a quote";
     break;
   case QJsonParseError::MissingObject:
-    ss << "Json Parsing Error: " << parseError.error << " of type MissingObject.";
+    ss << "Json Parsing Error: " << parseError.error << " of type MissingObject. An object was expected but couldn't be found";
     break;
   case QJsonParseError::DeepNesting:
-    ss << "Json Parsing Error: " << parseError.error << " of type DeepNesting.";
+    ss << "Json Parsing Error: " << parseError.error << " of type DeepNesting. The JSON document is too deeply nested for the parser to parse it";
     break;
   case QJsonParseError::DocumentTooLarge:
-    ss << "Json Parsing Error: " << parseError.error << " of type DocumentTooLarge.";
+    ss << "Json Parsing Error: " << parseError.error << " of type DocumentTooLarge. The JSON document is too large for the parser to parse it";
     break;
   case QJsonParseError::GarbageAtEnd:
-    ss << "Json Parsing Error: " << parseError.error << " of type GarbageAtEnd.";
+    ss << "Json Parsing Error: " << parseError.error << " of type GarbageAtEnd. The parsed document contains additional garbage characters at the end";
     break;
   default:
     ss << "Json Parsing Error: " << parseError.error << " is of an unknown type.";
     break;
   }
-  ss << "The error occurred at offset " << parseError.offset << ". Reported error message is: " << parseError.errorString();
+  ss << "\nThe error occurred at offset " << parseError.offset << ".\nReported error message is: " << parseError.errorString();
 
   return msg;
 }
@@ -147,8 +147,35 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromFile(QString
   {
     if(nullptr != obs)
     {
-      QString msg = createErrorMessageFromJsonParseError(parseError);
-      msg = QString("File '%1' had errors while parsing the json data.%2").arg(fInfo.absoluteFilePath()) + msg;
+      QString msg;
+      QTextStream out(&msg);
+
+      out << "File '" << fInfo.absoluteFilePath() << "' had errors while parsing the json data.\n";
+      out << createErrorMessageFromJsonParseError(parseError) << ".\n";
+
+      QFile source(filePath);
+      source.open(QFile::ReadOnly);
+      QString contents = source.readAll();
+      source.close();
+      QStringList list = contents.split(QRegExp("\\n"));
+      QStringListIterator sourceLines(list);
+      int32_t currentPos = 0;
+      int32_t errPos = parseError.offset;
+      int32_t currentLine = 1;
+      while(sourceLines.hasNext())
+      {
+        QString line = sourceLines.next();
+
+        if(currentPos + line.size() + 1 > errPos)
+        {
+          int32_t lineCol = errPos - currentPos;
+          out << " The parse error occurred at or near line " << currentLine << ", position " << lineCol;
+          break;
+        }
+        currentPos = currentPos + line.size() + 1;
+        currentLine++;
+      }
+
       PipelineMessage pm(JsonFilterParametersReader::ClassName(), msg, -1, PipelineMessage::MessageType::Error);
       obs->processPipelineMessage(pm);
     }

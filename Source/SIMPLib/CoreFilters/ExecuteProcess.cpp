@@ -233,7 +233,6 @@ void ExecuteProcess::processHasFinished(int exitCode, QProcess::ExitStatus exitS
   }
   else if(getErrorCondition() >= 0)
   {
-    notifyStatusMessage(getHumanLabel(), "Complete");
   }
 
   m_Pause = false;

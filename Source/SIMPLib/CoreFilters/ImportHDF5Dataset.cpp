@@ -323,19 +323,33 @@ void ImportHDF5Dataset::dataCheck()
       return;
     }
 
-    IDataArray::Pointer dPtr = readIDataArray(parentId, objectName, am->getNumberOfTuples(), cDims, getInPreflight());
-    if(nullptr != dPtr)
+    if(am->doesAttributeArrayExist(objectName))
     {
-      am->addAttributeArray(dPtr->getName(), dPtr);
+      setErrorCondition(-20010);
+      ss.clear();
+
+      DataArrayPath dap = getSelectedAttributeMatrix();
+      dap.setDataArrayName(objectName);
+
+      stream << tr("The selected dataset '") << dap.serialize("/") << tr("' already exists.");
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
     else
     {
-      setErrorCondition(-20009);
-      ss.clear();
-      stream << tr("The selected datatset is not a supported type for importing. Please select a different data set");
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      IDataArray::Pointer dPtr = readIDataArray(parentId, objectName, am->getNumberOfTuples(), cDims, getInPreflight());
+      if(nullptr != dPtr)
+      {
+        am->addAttributeArray(dPtr->getName(), dPtr);
+      }
+      else
+      {
+        setErrorCondition(-20009);
+        ss.clear();
+        stream << tr("The selected datatset is not a supported type for importing. Please select a different data set");
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      }
     }
-  } // End Switch statement
+  } // End For Loop over dataset imoprt info list
 
   // The sentinel will close the HDF5 File and any groups that were open.
 }
@@ -366,7 +380,6 @@ void ImportHDF5Dataset::execute()
     return;
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------

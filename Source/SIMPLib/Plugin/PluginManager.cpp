@@ -35,9 +35,14 @@
 
 #include "PluginManager.h"
 
-#include "SIMPLib/Filtering/CorePlugin.h"
+#include <QtCore/QJsonArray>
 
-PluginManager* PluginManager::self = nullptr;
+#include "SIMPLib/Filtering/CorePlugin.h"
+#include "SIMPLib/Plugin/SIMPLPluginConstants.h"
+
+
+
+PluginManager* PluginManager::m_Self = nullptr;
 
 // -----------------------------------------------------------------------------
 //
@@ -45,8 +50,8 @@ PluginManager* PluginManager::self = nullptr;
 PluginManager::PluginManager()
 {
   //  qDebug() << "PluginManager()" << this;
-  Q_ASSERT_X(!self, "PluginManager", "There should be only one PluginManager object");
-  PluginManager::self = this;
+  Q_ASSERT_X(!m_Self, "PluginManager", "There should be only one PluginManager object");
+  PluginManager::m_Self = this;
 }
 
 // -----------------------------------------------------------------------------
@@ -63,24 +68,27 @@ PluginManager::~PluginManager()
 PluginManager* PluginManager::Instance()
 {
 
-  if(self == nullptr)
+  if(m_Self == nullptr)
   {
     //  qDebug() << "PluginManager::Instance self was nullptr" << "\n";
-    self = new PluginManager();
+    m_Self = new PluginManager();
     CorePlugin* corePlug = new CorePlugin;
-    self->addPlugin(corePlug);
+    m_Self->addPlugin(corePlug);
   }
-  return self;
+  return m_Self;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PluginManager::printPluginNames()
+void PluginManager::printPluginNames() const
 {
-  for(QVector<ISIMPLibPlugin*>::iterator iter = plugins.begin(); iter != plugins.end(); ++iter)
+  for(auto const plugin : m_Plugins )
   {
-    qDebug() << "Name: " << *iter << "\n";
+    if(nullptr != plugin)
+    {
+      qDebug() << "Name: " << plugin->getPluginBaseName() << "\n";
+    }
   }
 }
 
@@ -89,18 +97,17 @@ void PluginManager::printPluginNames()
 // -----------------------------------------------------------------------------
 void PluginManager::addPlugin(ISIMPLibPlugin* plugin)
 {
-  plugins.push_back(plugin);
+  m_Plugins.push_back(plugin);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QList<QString> PluginManager::getPluginNames()
+QList<QString> PluginManager::getPluginNames() const
 {
   QList<QString> pluginNames;
-  for(QVector<ISIMPLibPlugin*>::iterator iter = plugins.begin(); iter != plugins.end(); ++iter)
+  for(auto const plugin : m_Plugins )
   {
-    ISIMPLibPlugin* plugin = *iter;
     if(nullptr != plugin)
     {
       pluginNames.push_back(plugin->getPluginBaseName());
@@ -112,28 +119,27 @@ QList<QString> PluginManager::getPluginNames()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString PluginManager::getPluginName(QString filtName)
+QString PluginManager::getPluginName(QString filtName) const
 {
-  QVector<ISIMPLibPlugin*> plugins = getPluginsVector();
-  for(int i = 0; i < plugins.size(); i++)
+  for(auto const plugin : m_Plugins )
   {
-    ISIMPLibPlugin* plugin = plugins[i];
-
-    if(plugin->getFilters().contains(filtName))
+    if(nullptr != plugin)
     {
-      return plugin->getPluginBaseName();
+      if(plugin->getFilters().contains(filtName))
+      {
+        return plugin->getPluginBaseName();
+      }
     }
   }
-
   return "";
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<ISIMPLibPlugin*> PluginManager::getPluginsVector()
+QVector<ISIMPLibPlugin*> PluginManager::getPluginsVector() const
 {
-  return plugins;
+  return m_Plugins;
 }
 
 // -----------------------------------------------------------------------------
@@ -141,15 +147,41 @@ QVector<ISIMPLibPlugin*> PluginManager::getPluginsVector()
 // -----------------------------------------------------------------------------
 ISIMPLibPlugin* PluginManager::findPlugin(QString pluginName)
 {
-  for(QVector<ISIMPLibPlugin*>::iterator iter = plugins.begin(); iter != plugins.end(); iter++)
+  for(auto const plugin : m_Plugins )
   {
-    ISIMPLibPlugin* plugin = *iter;
-    if(plugin->getPluginBaseName() == pluginName)
+    if(nullptr != plugin)
     {
-      return plugin;
+      if(plugin->getPluginBaseName() == pluginName)
+      {
+        return plugin;
+      }
     }
   }
-
   // If the plugin isn't found in the vector...
   return nullptr;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QJsonArray PluginManager::toJsonArray() const
+{
+  QVector<ISIMPLibPlugin*> plugins = getPluginsVector();
+  QJsonArray plugArray;
+  
+  for(auto const plugin : m_Plugins )
+  {
+    if(nullptr != plugin)
+    {
+      QJsonObject jobj;
+      jobj[SIMPL::JSON::BaseName] = plugin->getPluginBaseName();
+      jobj[SIMPL::JSON::Version] = plugin->getVersion();
+      jobj[SIMPL::JSON::Vendor] = plugin->getVendor();
+      jobj[SIMPL::JSON::CompatibilityVersion] = plugin->getCompatibilityVersion();
+      jobj[SIMPL::JSON::DisplayName] = plugin->getPluginDisplayName();
+      jobj[SIMPL::JSON::URL] = plugin->getURL();
+      plugArray.append(jobj);
+    }
+  }
+  return plugArray;
 }

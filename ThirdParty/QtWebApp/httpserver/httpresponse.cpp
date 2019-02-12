@@ -5,11 +5,14 @@
 
 #include "httpresponse.h"
 
+#include <QtCore/QDateTime>
+
 HttpResponse::HttpResponse(QTcpSocket* socket)
 {
+  createStatusCodeLookup();
+
   this->socket = socket;
-  statusCode = 200;
-  statusText = "OK";
+  statusCode = HttpStatusCode::OK;
   sentHeaders = false;
   sentLastPart = false;
   chunkedMode = false;
@@ -32,13 +35,12 @@ QMap<QByteArray, QByteArray>& HttpResponse::getHeaders()
   return headers;
 }
 
-void HttpResponse::setStatus(int statusCode, QByteArray description)
+void HttpResponse::setStatusCode(HttpStatusCode statusCode)
 {
   this->statusCode = statusCode;
-  statusText = description;
 }
 
-int HttpResponse::getStatusCode() const
+HttpResponse::HttpStatusCode HttpResponse::getStatusCode() const
 {
   return this->statusCode;
 }
@@ -48,9 +50,9 @@ void HttpResponse::writeHeaders()
   Q_ASSERT(sentHeaders == false);
   QByteArray buffer;
   buffer.append("HTTP/1.1 ");
-  buffer.append(QByteArray::number(statusCode));
+  buffer.append(QByteArray::number(static_cast<int>(statusCode)));
   buffer.append(' ');
-  buffer.append(statusText);
+  buffer.append(m_StatusCodeLookup.value(statusCode));
   buffer.append("\r\n");
   foreach(QByteArray name, headers.keys())
   {
@@ -106,6 +108,10 @@ void HttpResponse::write(QByteArray data, bool lastPart)
     {
       // Automatically set the Content-Length header
       headers.insert("Content-Length", QByteArray::number(data.size()));
+
+      // Automatically set the Date header
+      QDateTime utcDateTime = QDateTime::currentDateTimeUtc();
+      headers.insert("Date", QByteArray::fromStdString(utcDateTime.toString("ddd, d MMM yyyy hh:mm:ss t").toStdString()));
     }
 
     // else if we will not close the connection at the end, them we must use the chunked mode.
@@ -176,7 +182,7 @@ QMap<QByteArray, HttpCookie>& HttpResponse::getCookies()
 
 void HttpResponse::redirect(const QByteArray& url)
 {
-  setStatus(303, "See Other");
+  setStatusCode(HttpResponse::HttpStatusCode::SeeOther);
   setHeader("Location", url);
   write("Redirect", true);
 }
@@ -189,4 +195,52 @@ void HttpResponse::flush()
 bool HttpResponse::isConnected() const
 {
   return socket->isOpen();
+}
+
+void HttpResponse::createStatusCodeLookup()
+{
+  m_StatusCodeLookup.insert(HttpStatusCode::Continue, "Continue");
+  m_StatusCodeLookup.insert(HttpStatusCode::SwitchingProtocols, "Switching Protocols");
+
+  m_StatusCodeLookup.insert(HttpStatusCode::OK, "OK");
+  m_StatusCodeLookup.insert(HttpStatusCode::Created, "Created");
+  m_StatusCodeLookup.insert(HttpStatusCode::Accepted, "Accepted");
+  m_StatusCodeLookup.insert(HttpStatusCode::NonAuthoritativeInformation, "Non-Authoritative Information");
+  m_StatusCodeLookup.insert(HttpStatusCode::NoContent, "No Content");
+  m_StatusCodeLookup.insert(HttpStatusCode::ResetContent, "Reset Content");
+  m_StatusCodeLookup.insert(HttpStatusCode::PartialContent, "Partial Content");
+
+  m_StatusCodeLookup.insert(HttpStatusCode::MultipleChoices, "Multiple Choices");
+  m_StatusCodeLookup.insert(HttpStatusCode::MovedPermanently, "Moved Permanently");
+  m_StatusCodeLookup.insert(HttpStatusCode::Found, "Found");
+  m_StatusCodeLookup.insert(HttpStatusCode::SeeOther, "See Other");
+  m_StatusCodeLookup.insert(HttpStatusCode::NotModified, "Not Modified");
+  m_StatusCodeLookup.insert(HttpStatusCode::UseProxy, "Use Proxy");
+  m_StatusCodeLookup.insert(HttpStatusCode::TemporaryRedirect, "Temporary Redirect");
+
+  m_StatusCodeLookup.insert(HttpStatusCode::BadRequest, "Bad Request");
+  m_StatusCodeLookup.insert(HttpStatusCode::Unauthorized, "Unauthorized");
+  m_StatusCodeLookup.insert(HttpStatusCode::PaymentRequired, "Payment Required");
+  m_StatusCodeLookup.insert(HttpStatusCode::Forbidden, "Forbidden");
+  m_StatusCodeLookup.insert(HttpStatusCode::NotFound, "Not Found");
+  m_StatusCodeLookup.insert(HttpStatusCode::MethodNotAllowed, "Method Not Allowed");
+  m_StatusCodeLookup.insert(HttpStatusCode::NotAcceptable, "Not Acceptable");
+  m_StatusCodeLookup.insert(HttpStatusCode::ProxyAuthenticationRequired, "Proxy Authentication Required");
+  m_StatusCodeLookup.insert(HttpStatusCode::RequestTimeout, "Request Time-out");
+  m_StatusCodeLookup.insert(HttpStatusCode::Conflict, "Conflict");
+  m_StatusCodeLookup.insert(HttpStatusCode::Gone, "Gone");
+  m_StatusCodeLookup.insert(HttpStatusCode::LengthRequired, "Length Required");
+  m_StatusCodeLookup.insert(HttpStatusCode::PreconditionFailed, "Precondition Failed");
+  m_StatusCodeLookup.insert(HttpStatusCode::RequestEntityTooLarge, "Request Entity Too Large");
+  m_StatusCodeLookup.insert(HttpStatusCode::RequestURITooLarge, "Request-URI Too Large");
+  m_StatusCodeLookup.insert(HttpStatusCode::UnsupportedMediaType, "Unsupported Media Type");
+  m_StatusCodeLookup.insert(HttpStatusCode::RequestedRangeNotSatisfiable, "Requested Range Not Satisfiable");
+  m_StatusCodeLookup.insert(HttpStatusCode::ExpectationFailed, "Expectation Failed");
+
+  m_StatusCodeLookup.insert(HttpStatusCode::InternalServerError, "Internal Server Error");
+  m_StatusCodeLookup.insert(HttpStatusCode::NotImplemented, "Not Implemented");
+  m_StatusCodeLookup.insert(HttpStatusCode::BadGateway, "Bad Gateway");
+  m_StatusCodeLookup.insert(HttpStatusCode::ServiceUnavailable, "Service Unavailable");
+  m_StatusCodeLookup.insert(HttpStatusCode::GatewayTimeout, "Gateway Time-out");
+  m_StatusCodeLookup.insert(HttpStatusCode::HTTPVersionNotSupported, "HTTP Version Not Supported");
 }

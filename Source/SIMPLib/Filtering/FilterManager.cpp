@@ -38,15 +38,17 @@
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/CorePlugin.h"
 
-FilterManager* FilterManager::self = nullptr;
+#include "SIMPLib/Plugin/SIMPLPluginConstants.h"
+
+FilterManager* FilterManager::s_Self = nullptr;
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 FilterManager::FilterManager()
 {
-  Q_ASSERT_X(!self, "FilterManager", "there should be only one FilterManager object");
-  FilterManager::self = this;
+  Q_ASSERT_X(!s_Self, "FilterManager", "there should be only one FilterManager object");
+  FilterManager::s_Self = this;
 }
 
 // -----------------------------------------------------------------------------
@@ -59,14 +61,14 @@ FilterManager::~FilterManager() = default;
 // -----------------------------------------------------------------------------
 FilterManager* FilterManager::Instance()
 {
-  if(self == nullptr)
+  if(s_Self == nullptr)
   {
-    self = new FilterManager();
+    s_Self = new FilterManager();
     // Always register the Core Filters
     CorePlugin cp;
-    cp.registerFilters(self);
+    cp.registerFilters(s_Self);
   }
-  return self;
+  return s_Self;
 }
 
 // -----------------------------------------------------------------------------
@@ -92,7 +94,7 @@ void FilterManager::RegisterKnownFilters(FilterManager* /* fm */)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterManager::Collection FilterManager::getFactories()
+FilterManager::Collection FilterManager::getFactories() const
 {
   return m_Factories;
 }
@@ -100,11 +102,12 @@ FilterManager::Collection FilterManager::getFactories()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterManager::printFactoryNames()
+void FilterManager::printFactoryNames() const
 {
-  for(Collection::iterator iter = m_Factories.begin(); iter != m_Factories.end(); ++iter)
+  QList<QString> keys = m_Factories.keys();
+  for(auto const key : keys)
   {
-    qDebug() << "Name: " << iter.key() << "\n";
+    qDebug() << "Name: " << key << "\n";
   }
 }
 
@@ -240,3 +243,28 @@ IFilterFactory::Pointer FilterManager::getFactoryFromHumanName(const QString& hu
   return Factory;
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QJsonArray FilterManager::toJsonArray() const
+{
+  QJsonArray filterArray;
+  
+  FilterManager::Collection factories = getFactories();
+  for(auto factory : factories)
+  {
+    AbstractFilter::Pointer filter = factory->create();
+    QJsonObject filtJson;
+    
+    filtJson[SIMPL::JSON::Name] = filter->getHumanLabel();
+    filtJson[SIMPL::JSON::ClassName] = filter->getNameOfClass();
+    filtJson[SIMPL::JSON::Uuid] = filter->getUuid().toString();
+    filtJson[SIMPL::JSON::PluginName] = filter->getCompiledLibraryName();
+    filtJson[SIMPL::JSON::Version] = filter->getFilterVersion();
+    filtJson[SIMPL::JSON::GroupName] = filter->getGroupName();
+    filtJson[SIMPL::JSON::SubGroupName] = filter->getSubGroupName();
+    
+    filterArray.append(filtJson);
+  }
+  return filterArray;
+}

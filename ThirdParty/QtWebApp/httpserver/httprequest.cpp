@@ -8,13 +8,13 @@
 #include <QDir>
 #include <QList>
 
-HttpRequest::HttpRequest(QSettings* settings)
+HttpRequest::HttpRequest(ServerSettings* settings)
 {
   status = waitForRequest;
   currentSize = 0;
   expectedBodySize = 0;
-  maxSize = settings->value("maxRequestSize", "16000").toInt();
-  maxMultiPartSize = settings->value("maxMultiPartSize", "1000000").toInt();
+  maxSize = settings->maxRequestSize;
+  maxMultiPartSize = settings->maxMultiPartSize;
   tempFile = nullptr;
 }
 
@@ -397,7 +397,9 @@ QByteArray HttpRequest::urlDecode(const QByteArray source)
 
 void HttpRequest::parseMultiPartFile()
 {
+#ifdef SUPERVERBOSE
   qDebug("HttpRequest: parsing multipart temp file");
+#endif
   tempFile->seek(0);
   bool finished = false;
   while(!tempFile->atEnd() && !finished && (tempFile->error() == 0u))
@@ -458,7 +460,9 @@ void HttpRequest::parseMultiPartFile()
           // last field was a form field
           fieldValue.remove(fieldValue.size() - 2, 2);
           parameters.insert(fieldName, fieldValue);
+          #ifdef SUPERVERBOSE
           qDebug("HttpRequest: set parameter %s=%s", fieldName.data(), fieldValue.data());
+          #endif
         }
         else if(!fileName.isEmpty() && !fieldName.isEmpty())
         {

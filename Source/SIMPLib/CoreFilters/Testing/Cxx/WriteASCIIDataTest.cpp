@@ -33,7 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include <iostream>
 #include <string>
@@ -67,13 +67,17 @@ public:
 
   virtual ~WriteASCIIDataTest() = default;
 
+  const QString k_ArrayName = QString("ASCII_Data");
+  const QString k_Extension = QString(".txt");
+
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
   void RemoveTestFiles()
   {
 #if REMOVE_TEST_FILES
-
+    QFile::remove(UnitTest::TestTempDir + "/" + k_ArrayName + k_Extension);
+    QFile::remove(UnitTest::TestTempDir + "/" + "SingleFileMode.csv");
 #endif
   }
 
@@ -88,7 +92,7 @@ public:
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
     AttributeMatrix::Pointer am = AttributeMatrix::New(QVector<size_t>(1, k_ArraySize), "TestAttributeMatrix", AttributeMatrix::Type::Any);
 
-    StringDataArray::Pointer strArray = StringDataArray::CreateArray(k_ArraySize, "ASCII_Data", true);
+    StringDataArray::Pointer strArray = StringDataArray::CreateArray(k_ArraySize, k_ArrayName, true);
     strArray->setValue(0, QString("Foo"));
     strArray->setValue(1, QString("Bar"));
     strArray->setValue(2, QString("Baz"));
@@ -110,8 +114,9 @@ public:
     writer->setSelectedDataArrayPaths(paths);
     writer->setOutputPath(outputDir);
     writer->setDelimiter(WriteASCIIData::DelimiterType::Comma);
-    writer->setFileExtension("txt");
+    writer->setFileExtension(k_Extension);
     writer->setMaxValPerLine(1);
+    writer->setOutputStyle(WriteASCIIData::MultiFile);
 
     writer->preflight();
     int err = writer->getErrorCondition();
@@ -120,6 +125,20 @@ public:
     writer->execute();
     err = writer->getErrorCondition();
     DREAM3D_REQUIRE(err >= 0)
+
+    // Test Single File mode
+    writer->setOutputStyle(WriteASCIIData::SingleFile);
+    writer->setOutputFilePath(UnitTest::TestTempDir + "/" + "SingleFileMode.csv");
+    writer->preflight();
+    err = writer->getErrorCondition();
+    DREAM3D_REQUIRE(err >= 0)
+
+    writer->execute();
+    err = writer->getErrorCondition();
+    DREAM3D_REQUIRE(err >= 0)
+
+    // Back to MultiFile mode
+    writer->setOutputStyle(WriteASCIIData::MultiFile);
 
     NeighborList<int32_t>::Pointer neighborList = NeighborList<int32_t>::CreateArray(k_ArraySize, "NeighborList", true);
     am->addAttributeArray(neighborList->getName(), neighborList);
@@ -178,7 +197,9 @@ public:
 #endif
   }
 
-private:
-  WriteASCIIDataTest(const WriteASCIIDataTest&); // Copy Constructor Not Implemented
-  void operator=(const WriteASCIIDataTest&);     // Move assignment Not Implemented
+public:
+  WriteASCIIDataTest(const WriteASCIIDataTest&) = delete;            // Copy Constructor Not Implemented
+  WriteASCIIDataTest(WriteASCIIDataTest&&) = delete;                 // Move Constructor Not Implemented
+  WriteASCIIDataTest& operator=(const WriteASCIIDataTest&) = delete; // Copy Assignment Not Implemented
+  WriteASCIIDataTest& operator=(WriteASCIIDataTest&&) = delete;      // Move Assignment Not Implemented
 };

@@ -128,6 +128,13 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool q
     pluginDirs << thePath;
     aPluginDir.cdUp(); // Move back up a directory level
   }
+  // On Linux installs the .plugin file is installed into the lib directory so search there also
+  if(aPluginDir.cd("lib"))
+  {
+    thePath = aPluginDir.absolutePath();
+    pluginDirs << thePath;
+    aPluginDir.cdUp(); // Move back up a directory level
+  }
 
   if(thePath.isEmpty())
   {

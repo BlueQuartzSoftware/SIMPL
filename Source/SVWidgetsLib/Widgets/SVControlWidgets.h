@@ -197,3 +197,14 @@ public:
 
 };
 
+/**
+ * @brief The SVTabWidget class
+ */
+class SVWidgetsLib_EXPORT SVFrame : public QFrame
+{
+  Q_OBJECT
+
+public:
+  SVFrame(QWidget* parent = nullptr);
+  ~SVFrame() override;
+};
