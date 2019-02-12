@@ -52,9 +52,10 @@ class QPushButton;
 class SVWidgetsLib_EXPORT AddFilterCommand : public QUndoCommand
 {
 public:
-  AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, int insertIndex, QString actionText, bool useAnimationOnFirstRun = true, QUndoCommand* parent = nullptr);
+  AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, int insertIndex, const QString& actionText, bool useAnimationOnFirstRun = true, QUndoCommand* parent = nullptr);
 
-  AddFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, int insertIndex, QString actionText, bool useAnimationOnFirstRun = true, QUndoCommand* parent = nullptr);
+  AddFilterCommand(const std::vector<AbstractFilter::Pointer>& filters, SVPipelineView* view, int insertIndex, const QString& actionText, bool useAnimationOnFirstRun = true,
+                   QUndoCommand* parent = nullptr);
 
   ~AddFilterCommand() override;
 

@@ -55,7 +55,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, int insertIndex, QString actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
+AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, int insertIndex, const QString& actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
 : QUndoCommand(parent)
 , m_ActionText(actionText)
 , m_PipelineView(view)
@@ -78,7 +78,7 @@ AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineVie
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFilterCommand::AddFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, int insertIndex, QString actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
+AddFilterCommand::AddFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, int insertIndex, const QString& actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
 : QUndoCommand(parent)
 , m_Filters(filters)
 , m_ActionText(actionText)
@@ -114,8 +114,6 @@ AddFilterCommand::~AddFilterCommand()
 {
   for(const auto& filter : m_Filters)
   {
-   // qDebug() << "~AddFilterCommand(): ";
-   // if(nullptr != filter.get()) { qDebug() << filter->getNameOfClass(); }
     disconnectFilterSignalsSlots(filter);
   }
 }
@@ -132,9 +130,9 @@ void AddFilterCommand::undo()
 
   PipelineModel* model = m_PipelineView->getPipelineModel();
 
-  for(int i = 0; i < m_Filters.size(); i++)
+  for(const auto& filter : m_Filters)
   {
-    QPersistentModelIndex filterIndex = model->indexOfFilter(m_Filters[i].get());
+    QPersistentModelIndex filterIndex = model->indexOfFilter(filter.get());
     removeFilter(filterIndex);
   }
   m_Connections.clear();

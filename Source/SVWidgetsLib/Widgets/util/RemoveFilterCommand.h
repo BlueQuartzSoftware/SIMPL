@@ -53,8 +53,8 @@ class SVPipelineView;
 class SVWidgetsLib_EXPORT RemoveFilterCommand : public QUndoCommand
 {
 public:
-  RemoveFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, QString actionText, bool useAnimationOnFirstRun = true, QUndoCommand* parent = 0);
-  RemoveFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, QString actionText, bool useAnimationOnFirstRun = true, QUndoCommand* parent = 0);
+  RemoveFilterCommand(const AbstractFilter::Pointer& filter, SVPipelineView* view, const QString& actionText, bool useAnimationOnFirstRun = true, QUndoCommand* parent = 0);
+  RemoveFilterCommand(const std::vector<AbstractFilter::Pointer>& filters, SVPipelineView* view, const QString& actionText, bool useAnimationOnFirstRun = true, QUndoCommand* parent = 0);
   ~RemoveFilterCommand() override;
 
   void undo() override;
