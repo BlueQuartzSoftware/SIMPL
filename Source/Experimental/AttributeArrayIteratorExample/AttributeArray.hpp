@@ -103,7 +103,7 @@ template <typename T> class AttributeArray
     class const_tuple_iterator
     {
       public:
-        using self_type = tuple_iterator;
+        using self_type = const_tuple_iterator;
         using value_type = T;
         using reference = T&;
         using pointer = T*;
