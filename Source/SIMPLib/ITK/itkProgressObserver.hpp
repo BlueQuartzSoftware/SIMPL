@@ -48,6 +48,9 @@ namespace itk
 class ProgressObserver : public itk::Command
 {
   public:
+    SIMPL_SHARED_POINTERS(ProgressObserver)
+    SIMPL_STATIC_NEW_MACRO(ProgressObserver)
+
     void Execute(itk::Object* caller, const itk::EventObject& event) override
     {
       Execute((const itk::Object*)caller, event);
@@ -93,8 +96,16 @@ class ProgressObserver : public itk::Command
       m_Filter = filter;
     }
 
+  protected:
+    ProgressObserver() {}
+
   private:
     AbstractFilter* m_Filter = nullptr;
     QString m_MessagePrefix;
+
+    ProgressObserver(const ProgressObserver&) = delete; // Copy Constructor Not Implemented
+    ProgressObserver(ProgressObserver&&) = delete;      // Move Constructor Not Implemented
+    ProgressObserver& operator=(const ProgressObserver&) = delete; // Copy Assignment Not Implemented
+    ProgressObserver& operator=(ProgressObserver&&) = delete;      // Move Assignment Not Implemented
 };
 } // end of itk namespace
