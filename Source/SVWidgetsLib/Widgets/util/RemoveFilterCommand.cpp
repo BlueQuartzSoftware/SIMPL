@@ -44,7 +44,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RemoveFilterCommand::RemoveFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, QString actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
+RemoveFilterCommand::RemoveFilterCommand(const AbstractFilter::Pointer& filter, SVPipelineView* view, const QString& actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
 : QUndoCommand(parent)
 , m_PipelineView(view)
 , m_UseAnimationOnFirstRun(useAnimationOnFirstRun)
@@ -67,7 +67,7 @@ RemoveFilterCommand::RemoveFilterCommand(AbstractFilter::Pointer filter, SVPipel
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RemoveFilterCommand::RemoveFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, QString actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
+RemoveFilterCommand::RemoveFilterCommand(const std::vector<AbstractFilter::Pointer>& filters, SVPipelineView* view, const QString& actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
 : QUndoCommand(parent)
 , m_PipelineView(view)
 , m_Filters(filters)
@@ -82,9 +82,9 @@ RemoveFilterCommand::RemoveFilterCommand(std::vector<AbstractFilter::Pointer> fi
 
   PipelineModel* model = m_PipelineView->getPipelineModel();
 
-  for(size_t i = 0; i < m_Filters.size(); i++)
+  for(const auto& filter : m_Filters)
   {
-    QModelIndex index = model->indexOfFilter(m_Filters[i].get());
+    QModelIndex index = model->indexOfFilter(filter.get());
     m_FilterRows.push_back(index.row());
   }
 }
@@ -96,8 +96,6 @@ RemoveFilterCommand::~RemoveFilterCommand()
 {
   for(const auto& filter : m_Filters)
   {
- //   qDebug() << "~RemoveFilterCommand(): ";
- //   if(nullptr != filter.get()) { qDebug() << filter->getNameOfClass(); }
     disconnectFilterSignalsSlots(filter);
   }
 }
@@ -156,6 +154,7 @@ void RemoveFilterCommand::redo()
   {
     removeFilter(filter);
   }
+  m_Connections.clear();
 
   QString statusMessage;
   if(m_Filters.size() > 1)
@@ -273,13 +272,14 @@ void RemoveFilterCommand::connectFilterSignalsSlots(const AbstractFilter::Pointe
 
   FilterInputWidget* fiw = model->filterInputWidget(index);
 
-  QObject::connect(fiw, &FilterInputWidget::filterParametersChanged, [=] (bool preflight) {
+  QMetaObject::Connection connection = QObject::connect(fiw, &FilterInputWidget::filterParametersChanged, [=](bool preflight) {
     if (preflight)
     {
       m_PipelineView->preflightPipeline();
     }
     emit m_PipelineView->filterParametersChanged(filter);
   });
+  m_Connections[filter] = connection;
 }
 
 // -----------------------------------------------------------------------------
@@ -296,5 +296,7 @@ void RemoveFilterCommand::disconnectFilterSignalsSlots(const AbstractFilter::Poi
   QObject::disconnect(filter.get(), &AbstractFilter::filterCompleted, nullptr, nullptr);
 
   QObject::disconnect(filter.get(), &AbstractFilter::filterInProgress, nullptr, nullptr);
-  QObject::disconnect( m_connection );
+
+  QMetaObject::Connection connection = m_Connections[filter];
+  QObject::disconnect(connection);
 }

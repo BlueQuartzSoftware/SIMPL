@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <vector>
+
 #include <QtCore/QModelIndex>
 
 #include <QtWidgets/QUndoCommand>
@@ -50,9 +52,10 @@ class QPushButton;
 class SVWidgetsLib_EXPORT AddFilterCommand : public QUndoCommand
 {
 public:
-  AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, int insertIndex, QString actionText, bool useAnimationOnFirstRun = true, QUndoCommand* parent = nullptr);
+  AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, int insertIndex, const QString& actionText, bool useAnimationOnFirstRun = true, QUndoCommand* parent = nullptr);
 
-  AddFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, int insertIndex, QString actionText, bool useAnimationOnFirstRun = true, QUndoCommand* parent = nullptr);
+  AddFilterCommand(const std::vector<AbstractFilter::Pointer>& filters, SVPipelineView* view, int insertIndex, const QString& actionText, bool useAnimationOnFirstRun = true,
+                   QUndoCommand* parent = nullptr);
 
   ~AddFilterCommand() override;
 
@@ -67,7 +70,7 @@ private:
   std::vector<int> m_FilterRows;
   bool m_FirstRun = true;
   bool m_UseAnimationOnFirstRun;
-  QMetaObject::Connection m_connection;
+  std::map<AbstractFilter::Pointer, QMetaObject::Connection> m_Connections;
 
   /**
    * @brief addFilter
