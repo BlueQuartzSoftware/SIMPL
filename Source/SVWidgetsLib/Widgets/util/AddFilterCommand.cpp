@@ -55,7 +55,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, int insertIndex, const QString& actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
+AddFilterCommand::AddFilterCommand(const AbstractFilter::Pointer& filter, SVPipelineView* view, int insertIndex, const QString& actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
 : QUndoCommand(parent)
 , m_ActionText(actionText)
 , m_PipelineView(view)
@@ -78,7 +78,7 @@ AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, SVPipelineVie
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFilterCommand::AddFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, int insertIndex, const QString& actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
+AddFilterCommand::AddFilterCommand(const std::vector<AbstractFilter::Pointer>& filters, SVPipelineView* view, int insertIndex, const QString& actionText, bool useAnimationOnFirstRun, QUndoCommand* parent)
 : QUndoCommand(parent)
 , m_Filters(filters)
 , m_ActionText(actionText)
