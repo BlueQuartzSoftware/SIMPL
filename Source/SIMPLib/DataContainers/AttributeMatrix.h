@@ -58,6 +58,7 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/DataContainers/RenameDataPath.h"
 
 class AttributeMatrixProxy;
 class DataContainerProxy;
@@ -461,6 +462,11 @@ public:
         ss = QObject::tr("AttributeMatrix:'%1' An array with name '%2' could not be downcast using std::dynamic_pointer_cast<T>.").arg(getName()).arg(attributeArrayName);
         filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
       }
+      else if(nullptr != attributeArray && filter)
+      {
+        // Check if path was renamed
+        RenameDataPath::AlertFilterCreatedPath(filter, id, DataArrayPath(=, getName(), name));
+      }
       return attributeArray;
     }
 
@@ -470,7 +476,7 @@ public:
     * @param dims The size the data on each tuple
     */
     template<class ArrayType, class Filter, typename T>
-    void createAndAddAttributeArray(Filter* filter, const QString& name, T initValue, QVector<size_t> compDims)
+    void createAndAddAttributeArray(Filter* filter, const QString& name, T initValue, QVector<size_t> compDims, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
     {
       bool allocateData = false;
       if(nullptr == filter) { allocateData = true; }
@@ -484,6 +490,8 @@ public:
         }
         attributeArray->setInitValue(initValue);
         addAttributeArray(name, attributeArray);
+        // Check if path was renamed
+        RenameDataPath::AlertFilterCreatedPath(filter, id, DataArrayPath(=, getName(), name));
       }
     }
 

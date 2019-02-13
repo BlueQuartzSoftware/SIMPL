@@ -37,7 +37,7 @@
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
 
-const DataContainerArray::DataID DataContainerArray::k_Invalid_ID = 0;
+const DataContainerArray::DataID_t DataContainerArray::k_Invalid_ID = 0;
 
 // -----------------------------------------------------------------------------
 //

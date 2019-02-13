@@ -45,6 +45,7 @@
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/SIMPLib.h"
 
@@ -97,8 +98,8 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   PYB11_METHOD(void preflight)
   PYB11_METHOD(void setDataContainerArray)
   
-  // Friend declarations for DataContainerArray::createNonPrereqs so that they can set and check the instance's created data by ID.
-  friend DataContainerArray;
+  // Friend declarations for RenameDataPath so that it can set and check the instance's created data by ID.
+  friend void RenameDataPath::AlertFilterCreatedPath(AbstractFilter*, DataID_t, const DataArrayPath&);
 
 public:
   SIMPL_SHARED_POINTERS(AbstractFilter)
@@ -439,7 +440,7 @@ protected:
    * the ID is used and the paths match, return false.  If the ID has not been used, add the path
    * to the createdPaths map.
    */
-  bool checkIfPathRenamed(const DataContainerArray::DataID id, const DataArrayPath& path);
+  bool checkIfPathRenamed(const DataContainerArray::DataID_t id, const DataArrayPath& path);
 
 protected slots:
   /**
@@ -451,7 +452,7 @@ protected slots:
 private:
   bool m_Cancel;
   QUuid m_Uuid;
-  std::map<DataContainerArray::DataID, DataArrayPath> m_CreatedPaths;
+  std::map<DataContainerArray::DataID_t, DataArrayPath> m_CreatedPaths;
   DataArrayPath::RenameContainer m_RenamedPaths;
 
 public:

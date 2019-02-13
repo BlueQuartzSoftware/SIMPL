@@ -669,7 +669,7 @@ void AbstractFilter::notifyMissingProperty(FilterParameter* filterParameter)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool AbstractFilter::checkIfPathRenamed(const DataContainerArray::DataID id, const DataArrayPath& path)
+bool AbstractFilter::checkIfPathRenamed(const DataContainerArray::DataID_t id, const DataArrayPath& path)
 {
   if(id == DataContainerArray::k_Invalid_ID)
   {

@@ -46,6 +46,7 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/IDataContainerBundle.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/DataContainers/RenameDataPath.h"
 
 
 class DataContainer;
@@ -88,8 +89,6 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
 
     ~DataContainerArray() override;
 
-    using DataID = size_t;
-    static const DataID k_Invalid_ID;
     using Container = std::list<DataContainerShPtr>;
 
     /**
@@ -299,7 +298,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
      * dataContainerName is empty in which case a Null DataContainer will be returned.
      */
     template<typename Filter>
-    DataContainerShPtr createNonPrereqDataContainer(Filter* filter, const QString& dataContainerName, DataID id = k_Invalid_ID)
+    DataContainerShPtr createNonPrereqDataContainer(Filter* filter, const QString& dataContainerName, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
     {
       if(dataContainerName.isEmpty())
       {
@@ -334,7 +333,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
         }
       }
       // Check if path was renamed
-      filter->checkIfPathRenamed(id, DataArrayPath(dataContainerName, "", ""));
+      RenameDataPath::AlertFilterCreatedPath(filter, id, DataArrayPath(dataContainerName, "", ""));
       DataContainerShPtr dataContainer = DataContainer::New(dataContainerName);
       addDataContainer(dataContainer);
       return dataContainer;

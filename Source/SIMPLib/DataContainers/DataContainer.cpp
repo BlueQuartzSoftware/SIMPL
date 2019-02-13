@@ -924,16 +924,16 @@ AttributeMatrixShPtr DataContainer::getPrereqAttributeMatrix(AbstractFilter* fil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilter* filter, const DataArrayPath& path, const QVector<size_t>& tDims, AttributeMatrix::Type amType)
+AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilter* filter, const DataArrayPath& path, const QVector<size_t>& tDims, AttributeMatrix::Type amType, RenameDataPath::DataID_t id)
 {
-  return createNonPrereqAttributeMatrix(filter, path.getAttributeMatrixName(), tDims, amType);
+  return createNonPrereqAttributeMatrix(filter, path.getAttributeMatrixName(), tDims, amType, id);
 }
 
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilter* filter, const QString& attributeMatrixName, const QVector<size_t> &tDims, AttributeMatrix::Type amType)
+AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilter* filter, const QString& attributeMatrixName, const QVector<size_t> &tDims, AttributeMatrix::Type amType, RenameDataPath::DataID_t id)
 {
   AttributeMatrixShPtr attributeMatrix(nullptr);
 
@@ -974,6 +974,8 @@ AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilte
   if(nullptr == attributeMatrix.get())
   {
     attributeMatrix = createAndAddAttributeMatrix(tDims, attributeMatrixName, amType);
+    // Check if path was renamed
+    RenameDataPath::AlertFilterCreatedPath(filter, id, DataArrayPath(getName(), attributeMatrixName, ""));
     return attributeMatrix;
   }
   if(filter != nullptr) // If the filter object is NOT null (is valid) then set the error condition and send an error message

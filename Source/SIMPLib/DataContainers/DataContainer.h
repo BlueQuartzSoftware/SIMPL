@@ -44,6 +44,7 @@
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 #include "SIMPLib/SIMPLib.h"
 
@@ -252,7 +253,7 @@ public:
    * @param amType The Type of AttributeMatrix
    * @return A Shared Pointer to the AttributeMatrix
    */
-  AttributeMatrixShPtr createNonPrereqAttributeMatrix(AbstractFilter* filter, const DataArrayPath& path, const QVector<size_t>& tDims, AttributeMatrix::Type amType);
+  AttributeMatrixShPtr createNonPrereqAttributeMatrix(AbstractFilter* filter, const DataArrayPath& path, const QVector<size_t>& tDims, AttributeMatrix::Type amType, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID);
 
   /**
    * @brief createNonPrereqAttributeMatrix This method will create a new AttributeMatrix with the given tuple dimensions
@@ -264,7 +265,7 @@ public:
    * @param amType The Type of AttributeMatrix
    * @return A Shared Pointer to the AttributeMatrix
    */
-  AttributeMatrixShPtr createNonPrereqAttributeMatrix(AbstractFilter* filter, const QString& attributeMatrixName, const QVector<size_t>& tDims, AttributeMatrix::Type amType);
+  AttributeMatrixShPtr createNonPrereqAttributeMatrix(AbstractFilter* filter, const QString& attributeMatrixName, const QVector<size_t>& tDims, AttributeMatrix::Type amType, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID);
 
   /**
    * @brief Returns the geometry as the templated type
