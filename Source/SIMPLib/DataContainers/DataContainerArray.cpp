@@ -125,7 +125,7 @@ DataContainer::Pointer DataContainerArray::removeDataContainer(const QString& na
   DataContainer::Pointer f = DataContainer::NullPointer();
   for(auto iter = begin(); iter != end(); ++iter)
   {
-    DataContainer::Pointer dc = std::dynamic_pointer_cast<DataContainer>(*iter);
+    DataContainer::Pointer dc = (*iter);
     if(dc->getName().compare(name) == 0)
     {
       f = dc;
@@ -156,12 +156,7 @@ bool DataContainerArray::renameDataContainer(const QString& oldName, const QStri
 // -----------------------------------------------------------------------------
 DataContainer::Pointer DataContainerArray::getDataContainer(const QString& name)
 {
-  auto iter = find(name);
-  if(iter == end())
-  {
-    return DataContainer::NullPointer();
-  }
-  return std::dynamic_pointer_cast<DataContainer>(*iter);
+  return getChildByName(name);
 }
 
 // -----------------------------------------------------------------------------
@@ -369,7 +364,7 @@ IDataContainerBundle::Pointer DataContainerArray::getDataContainerBundle(const Q
   IDataContainerBundle::Pointer f = IDataContainerBundle::NullPointer();
   for(QMap<QString, IDataContainerBundle::Pointer>::iterator it = m_DataContainerBundles.begin(); it != m_DataContainerBundles.end(); ++it)
   {
-    if((*it)->getName().compare(name) == 0)
+    if((*it)->getName() == name)
     {
       f = *it;
       break;

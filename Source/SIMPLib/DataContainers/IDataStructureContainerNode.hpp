@@ -201,7 +201,7 @@ public:
       }
     }
 
-    return {};
+    return end();
   }
 
   /**
@@ -220,7 +220,23 @@ public:
       }
     }
 
-    return {};
+    return cend();
+  }
+
+  /**
+   * @brief Returns the child with the given name as a shared_ptr.
+   * If no child is found, return nullptr.
+   * @param name
+   * @return
+   */
+  constexpr ChildShPtr getChildByName(const QString& name) const
+  {
+    const_iterator iter = find(name);
+    if(iter == cend())
+    {
+      return nullptr;
+    }
+    return *iter;
   }
 
   /**
@@ -270,23 +286,33 @@ public:
    */
   constexpr bool push_back(const ChildShPtr& node)
   {
-    if(std::dynamic_pointer_cast<ChildShPtr>(node) == nullptr)
+    if(node == nullptr)
     {
       return false;
     }
-    if(*find(node->getName()) != nullptr)
+    if(getChildByName(node->getName()) != nullptr)
     {
       return false;
     }
 
+    // node->setParent(this);
     m_Children.push_back(node);
     return true;
   }
 
+  /**
+   * @brief Erases the child at the given iterator
+   * @param iter
+   */
   constexpr void erase(iterator iter)
   {
     m_Children.erase(iter);
   }
+
+  /**
+   * @brief Erases the child at the given iterator
+   * @param iter
+   */
   constexpr void erase(const_iterator iter)
   {
     m_Children.erase(iter);

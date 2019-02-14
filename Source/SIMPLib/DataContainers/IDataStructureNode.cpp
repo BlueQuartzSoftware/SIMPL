@@ -55,6 +55,7 @@ IDataStructureNode::IDataStructureNode(ParentWkPtr parent, const QString& name)
 : m_Name(name)
 , m_Parent(parent)
 {
+  // Add to parent's children
 }
 
 // -----------------------------------------------------------------------------

@@ -303,7 +303,7 @@ bool AttributeMatrix::validateAttributeArraySizes()
   int64_t matrixSize = getNumberOfTuples();
   for(auto iter = begin(); iter != end(); ++iter)
   {
-    IDataArray::Pointer d = std::dynamic_pointer_cast<IDataArray>(*iter);
+    IDataArray::Pointer d = (*iter);
     arraySize = d->getNumberOfTuples();
     if(arraySize != matrixSize)
     {
@@ -334,12 +334,7 @@ int AttributeMatrix::addAttributeArray(IDataArray::Pointer data)
 // -----------------------------------------------------------------------------
 IDataArray::Pointer AttributeMatrix::getAttributeArray(const QString& name)
 {
-  auto it = find(name);
-  if(it == end())
-  {
-    return IDataArray::NullPointer();
-  }
-  return std::dynamic_pointer_cast<IDataArray>(*it);
+  return getChildByName(name);
 }
 
 // -----------------------------------------------------------------------------
@@ -353,7 +348,7 @@ IDataArray::Pointer AttributeMatrix::removeAttributeArray(const QString& name)
     // DO NOT return a NullPointer for any reason other than "Data Array was not found"
     return IDataArray::NullPointer();
   }
-  IDataArray::Pointer p = std::dynamic_pointer_cast<IDataArray>(*it);
+  IDataArray::Pointer p = (*it);
   erase(it);
   return p;
 }
@@ -455,13 +450,13 @@ bool AttributeMatrix::removeInactiveObjects(const QVector<bool> &activeObjects, 
     if(!removeList.empty())
     {
       QList<QString> headers = getAttributeArrayNames();
-      for(QList<QString>::iterator iter = headers.begin(); iter != headers.end(); ++iter)
+      for(const QString& headerName : headers)
       {
-        IDataArray::Pointer p = getAttributeArray(*iter);
+        IDataArray::Pointer p = getAttributeArray(headerName);
         QString type = p->getTypeAsString();
         if(type.compare("NeighborList<T>") == 0)
         {
-          removeAttributeArray(*iter);
+          removeAttributeArray(headerName);
         }
         else
         {
@@ -506,7 +501,7 @@ void AttributeMatrix::resizeAttributeArrays(QVector<size_t> tDims)
   for(auto iter = begin(); iter != end(); ++iter)
   {
     // std::cout << "Resizing Array '" << (*iter).first << "' : " << success << std::endl;
-    IDataArray::Pointer d = std::dynamic_pointer_cast<IDataArray>(*iter);
+    IDataArray::Pointer d = (*iter);
     d->resize(numTuples);
   }
 }
@@ -557,7 +552,7 @@ AttributeMatrix::Pointer AttributeMatrix::deepCopy(bool forceNoAllocate)
 
   for(auto iter = begin(); iter != end(); ++iter)
   {
-    IDataArray::Pointer d = std::dynamic_pointer_cast<IDataArray>(*iter);
+    IDataArray::Pointer d = (*iter);
     IDataArray::Pointer new_d = d->deepCopy(forceNoAllocate);
     if(new_d.get() == nullptr)
     {
@@ -576,7 +571,7 @@ int AttributeMatrix::writeAttributeArraysToHDF5(hid_t parentId)
   int err;
   for(auto iter = begin(); iter != end(); ++iter)
   {
-    IDataArray::Pointer d = std::dynamic_pointer_cast<IDataArray>(*iter);
+    IDataArray::Pointer d = (*iter);
     err = d->writeH5Data(parentId, m_TupleDims);
     if(err < 0)
     {
@@ -713,7 +708,7 @@ QString AttributeMatrix::generateXdmfText(const QString& centering, const QStrin
 
   for(auto iter = begin(); iter != end(); ++iter)
   {
-    IDataArray::Pointer d = std::dynamic_pointer_cast<IDataArray>(*iter);
+    IDataArray::Pointer d = (*iter);
     block = writeXdmfAttributeData(d, centering, dataContainerName, hdfFileName, gridType);
     out << block;
   }

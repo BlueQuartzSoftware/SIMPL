@@ -192,7 +192,8 @@ bool DataContainer::addAttributeMatrix(const AttributeMatrix::Pointer& data)
 // -----------------------------------------------------------------------------
 AttributeMatrix::Pointer DataContainer::getAttributeMatrix(const QString& name)
 {
-  return std::dynamic_pointer_cast<AttributeMatrix>(*find(name));
+  return getChildByName(name);
+  //return std::dynamic_pointer_cast<AttributeMatrix>(*find(name));
 }
 
 // -----------------------------------------------------------------------------
@@ -204,7 +205,7 @@ AttributeMatrix::Pointer DataContainer::getAttributeMatrix(const DataArrayPath& 
   {
     return nullptr;
   }
-  return std::dynamic_pointer_cast<AttributeMatrix>(*find(path.getAttributeMatrixName()));
+  return getChildByName(path.getAttributeMatrixName());
 }
 
 // -----------------------------------------------------------------------------
@@ -213,7 +214,7 @@ AttributeMatrix::Pointer DataContainer::getAttributeMatrix(const DataArrayPath& 
 AttributeMatrix::Pointer DataContainer::removeAttributeMatrix(const QString& name)
 {
   auto iter = find(name);
-  AttributeMatrix::Pointer am = std::dynamic_pointer_cast<AttributeMatrix>(*iter);
+  AttributeMatrix::Pointer am = (*iter);
   erase(iter);
   return am;
 }
@@ -278,7 +279,7 @@ int DataContainer::writeAttributeMatricesToHDF5(hid_t parentId)
   hid_t attributeMatrixId;
   for(auto iter = begin(); iter != end(); ++iter)
   {
-    auto attrMat = std::dynamic_pointer_cast<AttributeMatrix>(*iter);
+    auto attrMat = (*iter);
     const QString amName = attrMat->getName();
 
     err = QH5Utilities::createGroupsFromPath(amName, parentId);
@@ -486,7 +487,7 @@ int DataContainer::writeXdmf(QTextStream& out, const QString& hdfFileName)
   for(auto iter = begin(); iter != end(); ++iter)
   {
     xdmfCenter = "";
-    AttributeMatrix::Pointer attrMat = std::dynamic_pointer_cast<AttributeMatrix>(*iter);
+    AttributeMatrix::Pointer attrMat = (*iter);
     AttributeMatrix::Type amType = attrMat->getType();
     switch(geomType)
     {
@@ -772,7 +773,7 @@ QVector<DataArrayPath> DataContainer::getAllDataArrayPaths()
   QVector<DataArrayPath> paths;
   for(auto iter = begin(); iter != end(); ++iter)
   {
-    AttributeMatrix::Pointer am = std::dynamic_pointer_cast<AttributeMatrix>(*iter);
+    AttributeMatrix::Pointer am = (*iter);
     QString amName = am->getName();
     QList<QString> aaNames = am->getAttributeArrayNames();
 
