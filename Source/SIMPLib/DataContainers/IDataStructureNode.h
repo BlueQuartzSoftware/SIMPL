@@ -38,8 +38,8 @@
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
-class DnsIterator;
-class DnsConstIterator;
+//class DsnIterator;
+//class DsnConstIterator;
 
 /**
  * @class IDataStructureNode IDataStructureNode.h SIMPLib/DataContainers/IDataStructureNode.h
@@ -51,15 +51,29 @@ class IDataStructureNode
 public:
   SIMPL_SHARED_POINTERS(IDataStructureNode)
 
-  using iterator = DnsIterator;
-  using const_iterator = DnsConstIterator;
-  using ParentType = WeakPointer;
   using children_collection = std::vector<Pointer>;
-  //using parent_collection = std::vector<ParentType>;
+  // using parent_collection = std::vector<ParentType>;
+  using iterator = children_collection::iterator;
+  using const_iterator = children_collection::const_iterator;
+  using ParentType = WeakPointer;
 
-  IDataStructureNode();
-  IDataStructureNode(IDataStructureNode::WeakPointer parent);
+  IDataStructureNode(const QString& name = "");
+  IDataStructureNode(IDataStructureNode::WeakPointer parent, const QString& name = "");
   virtual ~IDataStructureNode();
+
+  /**
+   * @brief Returns the node's name.
+   * @return
+   */
+  QString getName() const;
+
+  /**
+   * @brief Attempts to rename the container.  Returns true if the operation succeeded.
+   * Returns false otherwise.
+   * @param newName
+   * @return
+   */
+  bool setName(const QString& newName);
 
   /**
    * @brief Returns the parent node.  This currently only returns a single weak_ptr,
@@ -68,22 +82,119 @@ public:
    */
   ParentType getParent() const;
 
+  /**
+   * @brief Returns true if a parent node exists.  Returns false otherwise.
+   * @return
+   */
   bool hasParent() const;
 
+  /**
+   * @brief Returns a copy of the children collection.
+   * @return
+   */
+  children_collection getChildren() const;
+
+  /**
+   * @brief Returns an iterator pointing to the start of the children collection.
+   * @return
+   */
   iterator begin() noexcept;
+
+  /**
+   * @brief Returns a const iterator pointing to the start of the children collection.
+   * @return
+   */
   const_iterator begin() const noexcept;
+
+  /**
+   * @brief Returns a const iterator pointing to the start of the children collection.
+   * @return
+   */
   const_iterator cbegin() const noexcept;
 
+  /**
+   * @brief Returns an iterator pointing past the end of the children collection.
+   * @return
+   */
   iterator end() noexcept;
+
+  /**
+   * @brief Returns a const iterator pointing past the end of the children collection.
+   * @return
+   */
   const_iterator end() const noexcept;
+
+  /**
+   * @brief Returns a const iterator pointing past the end of the children collection.
+   * @return
+   */
   const_iterator cend() const noexcept;
 
+  /**
+   * @brief Returns true if the child collection is empty.  Returns false otherwise.
+   * @return
+   */
   bool empty() const;
-  size_t size() const;
-  size_t max_size() const;
 
+  /**
+   * @brief Returns the size of the children collection.
+   * @return
+   */
+  size_t size() const;
+
+  /**
+   * @brief Clears the children collection.  Items are not deleted unless this
+   * was the last shared_ptr referencing them.
+   */
   void clear() noexcept;
-  virtual void push_back(const IDataStructureNode& value) = 0;
+
+  /**
+   * @brief Returns the child node with the given name.  If no children nodes
+   * are found with the given name, return nullptr.
+   * @param name
+   * @return
+   */
+  const_iterator find(const QString& name) const;
+
+  /**
+   * @brief Returns the child node at the given index.  If index is greater than
+   * the specified index, throw out_of_range exception.
+   * @param index
+   * @return
+   */
+  Pointer& operator[](size_t index);
+
+  /**
+   * @brief Returns the child node with the given name.  If no children nodes
+   * are found with the given name, return nullptr.
+   * @param name
+   * @return
+   */
+  inline Pointer& operator[](const QString& name) { return *find(name); }
+
+  size_t size() const;
+
+  /**
+   * @brief Attempts to append the given IDataStructureNode as a child.
+   * Returns true if the process succeeded.  Returns false otherwise.
+   * @param value
+   * @return success
+   */
+  virtual bool push_back(const Pointer& value);
+
+  bool erase(iterator pos);
+  bool erase(const_iterator pos);
+
+  /**
+   * @brief Returns true if the given type_info is acceptable as a child node.
+   */
+  virtual bool acceptableChildType(const std::type_info& type) = 0;
+
+  /**
+   * @brief Returns true if the given node is of the correct type of be added
+   * as a child node.  This is an overloaded method.
+   */
+  inline bool acceptableChildType(const Pointer& node) { return acceptableChildType(typeid(node)); }
 
 protected:
   /**
@@ -97,6 +208,7 @@ protected:
   // bool removeParent(const ParentType& removedParent);
 
 private:
+  QString m_Name;
   ParentType m_Parent;
   children_collection m_Children;
 };

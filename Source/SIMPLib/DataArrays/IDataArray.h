@@ -24,6 +24,7 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/DataContainers/IDataStructureNode.h"
 
 
 /**
@@ -37,7 +38,7 @@
 * @date Jan 3, 2008
 * @version $Revision: 1.2 $
 */
-class SIMPLib_EXPORT IDataArray
+class SIMPLib_EXPORT IDataArray : public IDataStructureNode
 {
   PYB11_CREATE_BINDINGS(IDataArray)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
@@ -72,8 +73,8 @@ class SIMPLib_EXPORT IDataArray
     IDataArray();
     virtual ~IDataArray();
 
-    virtual void setName(const QString& name) = 0;
-    virtual QString getName() = 0;
+    //virtual void setName(const QString& name) = 0;
+    //virtual QString getName() = 0;
 
     virtual Pointer createNewArray(size_t numElements, int rank, size_t* dims, const QString& name, bool allocate = true) = 0;
     virtual Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) = 0;

@@ -37,8 +37,6 @@
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
 
-const DataContainerArray::DataID_t DataContainerArray::k_Invalid_ID = 0;
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -54,7 +52,7 @@ DataContainerArray::~DataContainerArray() = default;
 // -----------------------------------------------------------------------------
 void DataContainerArray::addDataContainer(DataContainer::Pointer f)
 {
-  m_Array.push_back(f);
+  push_back(f);
 }
 
 // -----------------------------------------------------------------------------
@@ -62,7 +60,7 @@ void DataContainerArray::addDataContainer(DataContainer::Pointer f)
 // -----------------------------------------------------------------------------
 int DataContainerArray::getNumDataContainers()
 {
-  return m_Array.size();
+  return static_cast<int>(size());
 }
 
 // -----------------------------------------------------------------------------
@@ -70,7 +68,7 @@ int DataContainerArray::getNumDataContainers()
 // -----------------------------------------------------------------------------
 void DataContainerArray::clearDataContainers()
 {
-  m_Array.clear();
+  clear();
 }
 
 #if 0
@@ -125,12 +123,13 @@ DataContainer::Pointer DataContainerArray::removeDataContainer(const QString& na
 {
   removeDataContainerFromBundles(name);
   DataContainer::Pointer f = DataContainer::NullPointer();
-  for(DataContainer::Pointer dc : m_Array)
+  for(auto& iter = begin(); iter != end(); ++iter)
   {
+    DataContainer::Pointer dc = std::dynamic_pointer_cast<DataContainer>(*iter);
     if(dc->getName().compare(name) == 0)
     {
       f = dc;
-      m_Array.remove(dc);
+      erase(iter);
       return f;
     }
   }
@@ -144,41 +143,12 @@ DataContainer::Pointer DataContainerArray::removeDataContainer(const QString& na
 // -----------------------------------------------------------------------------
 bool DataContainerArray::renameDataContainer(const QString& oldName, const QString& newName)
 {
-  DataContainer::Pointer dc = DataContainer::NullPointer();
-
-  // Make sure we do not already have a DataContainer with the newname
-  for(DataContainer::Pointer dc : m_Array)
+  auto iter = find(oldName);
+  if(iter == end())
   {
-    if(dc->getName().compare(newName) == 0)
-    {
-      dc = dc;
-      break;
-    }
-  }
-
-  if(nullptr == dc)
-  {
-    // We did not find any data container that matches the new name so we can rename if we find one that matches
-    // the 'oldname' argument
-    // Now find the data container we want to rename
-    for(DataContainer::Pointer dcIt : m_Array)
-    {
-      if(dcIt->getName().compare(oldName) == 0)
-      {
-        // we have an existing DataContainer that matches our "oldname" that we want to rename so all is good.
-        dc = dcIt;
-        dc->setName(newName);
-        return true;
-      }
-    }
-  }
-  else if(nullptr != dc)
-  {
-    // We found an existing Data Container with the 'newname' but we do NOT want to over write it so just bail out now
     return false;
   }
-
-  return false; // default (but we should just NEVER make it here)
+  return (*iter)->setName(newName);
 }
 
 // -----------------------------------------------------------------------------
@@ -186,17 +156,12 @@ bool DataContainerArray::renameDataContainer(const QString& oldName, const QStri
 // -----------------------------------------------------------------------------
 DataContainer::Pointer DataContainerArray::getDataContainer(const QString& name)
 {
-  DataContainer::Pointer f = DataContainer::NullPointer();
-  for(DataContainer::Pointer dc : m_Array)
+  auto iter = find(name);
+  if(iter == end())
   {
-    if(dc->getName().compare(name) == 0)
-    {
-      f = dc;
-      break;
-    }
+    return DataContainer::NullPointer();
   }
-
-  return f;
+  return std::dynamic_pointer_cast<DataContainer>(*iter);
 }
 
 // -----------------------------------------------------------------------------
@@ -227,16 +192,7 @@ AttributeMatrix::Pointer DataContainerArray::getAttributeMatrix(const DataArrayP
 // -----------------------------------------------------------------------------
 void DataContainerArray::duplicateDataContainer(const QString& name, const QString& newName)
 {
-  DataContainer::Pointer f = DataContainer::NullPointer();
-  for(DataContainer::Pointer dc : m_Array)
-  {
-    if(dc->getName().compare(name) == 0)
-    {
-      f = dc;
-      break;
-    }
-  }
-
+  DataContainer::Pointer f = getDataContainer(name);
   if(f == nullptr)
   {
     return;
@@ -253,9 +209,9 @@ void DataContainerArray::duplicateDataContainer(const QString& name, const QStri
 QList<QString> DataContainerArray::getDataContainerNames()
 {
   QList<QString> names;
-  for(DataContainer::Pointer dc : m_Array)
+  for(auto iter = begin(); iter != end(); ++iter)
   {
-    names.push_back(dc->getName());
+    names.push_back((*iter)->getName());
   }
   return names;
 }
@@ -263,9 +219,14 @@ QList<QString> DataContainerArray::getDataContainerNames()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerArray::Container& DataContainerArray::getDataContainers()
+DataContainerArray::Container DataContainerArray::getDataContainers()
 {
-  return m_Array;
+  Container container;
+  for(auto iter : getChildren())
+  {
+    container.push_back(std::dynamic_pointer_cast<DataContainer>(iter));
+  }
+  return container;
 }
 
 // -----------------------------------------------------------------------------
@@ -274,7 +235,8 @@ DataContainerArray::Container& DataContainerArray::getDataContainers()
 void DataContainerArray::printDataContainerNames(QTextStream& out)
 {
   out << "---------------------------------------------------------------------";
-  for(DataContainer::Pointer dc : m_Array)
+  Container dcArray = getDataContainers();
+  for(DataContainer::Pointer dc : dcArray)
   {
     out << dc->getNameOfClass();
   }
@@ -353,14 +315,7 @@ int DataContainerArray::readDataContainersFromHDF5(bool preflight, hid_t dcaGid,
 // -----------------------------------------------------------------------------
 bool DataContainerArray::doesDataContainerExist(const QString& name)
 {
-  for(DataContainer::Pointer dc : m_Array)
-  {
-    if(dc->getName() == name)
-    {
-      return true;
-    }
-  }
-  return false;
+  return find(name) != end();
 }
 
 // -----------------------------------------------------------------------------

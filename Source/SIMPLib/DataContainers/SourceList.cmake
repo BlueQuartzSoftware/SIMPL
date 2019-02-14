@@ -72,7 +72,6 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerArrayProxy.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerProxy.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerBundle.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DsnIterators.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IDataContainerBundle.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IDataStructureNode.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RenameDataPath.cpp

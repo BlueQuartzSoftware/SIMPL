@@ -1322,12 +1322,13 @@ class DataArray : public IDataArray
     * @param dims The actual dimensions the attribute on each Tuple has.
     * @param takeOwnership Will the class clean up the memory. Default=true
     */
-    DataArray(size_t numTuples, QVector<size_t> compDims, QString name, bool ownsData = true) :
-      m_Array(nullptr),
-      m_OwnsData(ownsData),
-      m_IsAllocated(false),
-      m_Name(std::move(name)),
-      m_NumTuples(numTuples)
+    DataArray(size_t numTuples, QVector<size_t> compDims, QString name, bool ownsData = true) 
+      : IDataStructureNode(name)
+      , m_Array(nullptr)
+      , m_OwnsData(ownsData)
+      , m_IsAllocated(false)
+      , m_Name(std::move(name))
+      , m_NumTuples(numTuples)
     {
       // Set the Component Dimensions and compute the number of components at each tuple for caching
       m_CompDims = compDims;
@@ -1512,7 +1513,6 @@ class DataArray : public IDataArray
 
     bool m_IsAllocated;
     //   unsigned long long int MUD_FLAP_3;
-    QString m_Name;
     //  unsigned long long int MUD_FLAP_5;
 
     size_t m_NumTuples;

@@ -58,6 +58,7 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/DataContainers/IDataStructureNode.h"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 
 class AttributeMatrixProxy;
@@ -81,7 +82,7 @@ enum RenameErrorCodes
  * @date
  * @version 1.0
  */
-class SIMPLib_EXPORT AttributeMatrix : public Observable
+class SIMPLib_EXPORT AttributeMatrix : public Observable, public IDataStructureNode
 {
   // This line MUST be first when exposing a class and properties to Python
   PYB11_CREATE_BINDINGS(AttributeMatrix)
@@ -205,18 +206,12 @@ public:
     SIMPL_INSTANCE_PROPERTY(AttributeMatrix::Type, Type)
 
     /**
-    * @brief Name
-    */
-    SIMPL_INSTANCE_PROPERTY(QString, Name)
-
-
-    /**
     * @brief Adds/overwrites the data for a named array
     * @param name The name that the array will be known by
     * @param data The IDataArray::Pointer that will hold the data
     * @return error code if the addition did not work
     */
-    virtual int addAttributeArray(const QString& name, IDataArray::Pointer data);
+    virtual int addAttributeArray(IDataArray::Pointer data);
 
     /**
      * @brief Returns the array for a given named array or the equivelant to a
@@ -683,7 +678,6 @@ public:
 
   private:
     QVector<size_t> m_TupleDims;
-    QMap<QString, IDataArray::Pointer> m_AttributeArrays;
 
     AttributeMatrix(const AttributeMatrix&);
     void operator =(const AttributeMatrix&);

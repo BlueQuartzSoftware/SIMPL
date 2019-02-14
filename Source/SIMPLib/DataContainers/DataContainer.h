@@ -44,6 +44,7 @@
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/DataContainers/IDataStructureNode.h"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 #include "SIMPLib/SIMPLib.h"
@@ -61,7 +62,7 @@ using AttributeMatrixShPtr = std::shared_ptr<AttributeMatrix>;
 /**
  * @brief The DataContainer class
  */
-class SIMPLib_EXPORT DataContainer : public Observable
+class SIMPLib_EXPORT DataContainer : public Observable, public IDataStructureNode
 {
 
   // This line MUST be first when exposing a class and properties to Python
@@ -111,7 +112,7 @@ public:
   /**
    * @brief AttributeMatrixMap_t
    */
-  using AttributeMatrixMap_t = QMap<QString, AttributeMatrixShPtr>;
+  //using AttributeMatrixMap_t = QMap<QString, AttributeMatrixShPtr>;
 
   /**
    * @brief Creates a new shared pointer instance of this class
@@ -134,16 +135,6 @@ public:
   static void ReadDataContainerStructure(hid_t dcArrayGroupId, DataContainerArrayProxy& proxy, SIMPLH5DataReaderRequirements* req, const QString& h5InternalPath);
 
   /**
-   * @brief Sets the name of the data container
-   */
-  virtual void setName(const QString& name);
-
-  /**
-   * @brief Gets the name of the data container
-   */
-  virtual QString getName() const;
-
-  /**
    * @brief Sets the geometry of the data container
    * @param geometry
    */
@@ -161,11 +152,19 @@ public:
   virtual QString getInfoString(SIMPL::InfoStringFormat format);
 
   /**
+   * @brief Returns true if the given type would make an acceptable child node.
+   * Returns false if the given type cannot be added as a child node.
+   * @param type
+   * @return
+   */
+  bool acceptableChildType(const std::type_info& type) override;
+
+  /**
    * @brief Adds/overwrites the data for a named array
    * @param name The name that the array will be known by
    * @param data The IDataArray::Pointer that will hold the data
    */
-  virtual void addAttributeMatrix(const QString& name, const AttributeMatrixShPtr& matrix);
+  virtual bool addAttributeMatrix(const AttributeMatrixShPtr& matrix);
 
   /**
    * @brief Returns the array for a given named array or the equivelant to a
@@ -180,12 +179,6 @@ public:
    * @param name The Name of the AttributeMatrix will be extracted from the DataArratPath object
    */
   virtual AttributeMatrixShPtr getAttributeMatrix(const DataArrayPath& path);
-
-  /**
-   * @brief getAttributeMatrices
-   * @return
-   */
-  AttributeMatrixMap_t& getAttributeMatrices();
 
   /**
    * @brief Returns bool of whether a named array exists
@@ -369,7 +362,5 @@ protected:
   explicit DataContainer(const QString& name);
 
 private:
-  AttributeMatrixMap_t m_AttributeMatrices;
   IGeometry::Pointer m_Geometry;
-  QString m_Name;
 };

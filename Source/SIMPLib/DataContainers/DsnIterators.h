@@ -33,6 +33,7 @@
 
 #pragma once
 
+#include <iterator>
 #include <memory>
 #include <vector>
 
@@ -45,54 +46,171 @@ class IDataStructureNode;
  * AttributeMatrix iterators only iterate over their DataArrays.
  * This was made constexpr for the sake of creating faster runtime operations.
  */
-class DsnIterator
+class DsnIterator : public std::iterator<std::random_access_iterator_tag, std::shared_ptr<IDataStructureNode>, size_t> //std::iterator_traits<std::shared_ptr<IDataStructureNode>>
 {
   using self_type = DsnIterator;
-  using value_type = IDataStructureNode*;
+  using difference_type = size_t;
+  using value_type = std::shared_ptr<IDataStructureNode>;
+  using pointer = IDataStructureNode*;
   using reference = value_type&;
-  using collection = std::vector<std::shared_ptr<IDataStructureNode>>;
+  using collection_type = std::vector<value_type>;
+  using iterator_category = std::random_access_iterator_tag;
 
 public:
-  DsnIterator(const collection& col, size_t index)
-  : m_Collection(col)
+  /**
+   * @brief Default constructor creates an invalid iterator
+   */
+  DsnIterator() = default;
+
+  /**
+   * @brief Creates an iterator for the given collection and index
+   * @param collection
+   * @param index
+   */
+  DsnIterator(const collection_type& collection, size_t index)
+  : m_Collection(collection)
   , m_Index(index)
   {}
+  
+  /**
+   * @brief Copy iterator
+   * @param other
+   */
+  DsnIterator(const self_type& other)
+  : m_Collection(other.m_Collection)
+  , m_Index(other.m_Index)
+  {}
+
+  /**
+   * @brief Destructor
+   */
   ~DsnIterator() = default;
+
+  /**
+   * @brief Returns the iterator's index.
+   * @return
+   */
+  constexpr difference_type position() const
+  {
+    return m_Index;
+  }
 
   /**
    * @brief Returns the next iterator in the collection.
    * @return
    */
-  constexpr self_type& operator++(int) const
+  constexpr self_type& operator++(int)
   {
-    return self_type(m_Collection, m_Index + 1);
+    m_Index++;
+    return *this;
   }
 
   /**
    * @brief Returns the previous iterator in the collection.
    * @return
    */
-  constexpr self_type& operator--(int) const
+  constexpr self_type& operator--(int)
   {
-    return self_type(m_Collection, m_Index - 1);
+    m_Index--;
+    return *this;
+  }
+
+  /**
+   * @brief Proceeds n positions.
+   * @param n
+   * @return
+   */
+  constexpr self_type& operator+(difference_type n)
+  {
+    m_Index += n;
+    return *this;
+  }
+
+  /**
+   * @brief Regresses n positions.
+   * @param n
+   * @return
+   */
+  constexpr self_type& operator-(difference_type n)
+  {
+    if(n > m_Index)
+    {
+      throw std::out_of_range("Iterator out of range");
+    }
+    m_Index -= n;
+    return *this;
+  }
+
+  /**
+   * @brief Returns the difference in position with the given iterator.
+   * @param other
+   * @return
+   */
+  constexpr difference_type operator-(const self_type& other)
+  {
+    return m_Index - other.m_Index;
   }
 
   /**
    * @brief Returns the stored value.
    * @return
    */
-  constexpr value_type operator*() const
+  constexpr reference operator*()
   {
-    return m_Collection[m_Index].get();
+    return m_Collection[m_Index];
   }
 
   /**
    * @brief Returns the stored value.
    * @return
    */
-  constexpr value_type operator->() const
+  constexpr pointer operator->()
   {
     return m_Collection[m_Index].get();
+  }
+
+  /**
+  * @brief Returns true if the given iterator comes later in the collection.
+  * Returns false otherwise.
+  * @param other
+  * @return
+  */
+  constexpr bool operator<(const self_type& other) const
+  {
+    return m_Index < other.m_Index;
+  }
+
+  /**
+   * @brief Returns true if the given iterator comes later or equal to the iterator in the collection.
+   * Returns false otherwise.
+   * @param other
+   * @return
+   */
+  constexpr bool operator<=(const self_type& other) const
+  {
+    return m_Index <= other.m_Index;
+  }
+
+  /**
+   * @brief Returns true if the given iterator comes earlier in the collection.
+   * Returns false otherwise.
+   * @param other
+   * @return
+   */
+  constexpr bool operator>(const self_type& other) const
+  {
+    return m_Index > other.m_Index;
+  }
+
+  /**
+   * @brief Returns true if the given iterator comes earlier or equal to the iterator in the collection.
+   * Returns false otherwise.
+   * @param other
+   * @return
+   */
+  constexpr bool operator>=(const self_type& other) const
+  {
+    return m_Index >= other.m_Index;
   }
 
   /**
@@ -115,9 +233,24 @@ public:
     return !operator==(rhs);
   }
 
+  /**
+   * @brief Swaps values with the given iterator.
+   * @param other
+   */
+  inline void swap(self_type& other) noexcept
+  {
+    const collection_type tempCollection = m_Collection;
+    m_Collection = other.m_Collection;
+    other.m_Collection = tempCollection;
+
+    const difference_type tempIndex = m_Index;
+    m_Index = other.m_Index;
+    other.m_Index = tempIndex;
+  }
+
 private:
-  collection m_Collection;
-  const size_t m_Index;
+  collection_type m_Collection;
+  difference_type m_Index;
 };
 
 
@@ -128,53 +261,171 @@ private:
  * AttributeMatrix iterators only iterate over their DataArrays.
  * This was made constexpr for the sake of creating faster runtime operations.
  */
-class DsnConstIterator
+class DsnConstIterator : public std::iterator<std::random_access_iterator_tag, const std::shared_ptr<IDataStructureNode>, size_t> //std::iterator_traits<const std::shared_ptr<IDataStructureNode>>
 {
   using self_type = DsnConstIterator;
-  using value_type = const IDataStructureNode*;
-  using collection = std::vector<std::shared_ptr<IDataStructureNode>>;
+  using difference_type = size_t;
+  using value_type = const std::shared_ptr<IDataStructureNode>;
+  using pointer = const IDataStructureNode*;
+  using reference = value_type&;
+  using collection_type = std::vector<std::shared_ptr<IDataStructureNode>>;
+  using iterator_category = std::random_access_iterator_tag;
 
 public:
-  DsnConstIterator(const collection& col, size_t index)
-    : m_Collection(col)
-    , m_Index(index)
+  /**
+   * @brief Calling the default constructor will return an invalid iterator.
+   */
+  DsnConstIterator() = default;
+
+  /**
+   * @brief Constructor for the given collection and index
+   * @param collection
+   * @param index
+   */
+  DsnConstIterator(const collection_type& collection, size_t index)
+  : m_Collection(collection)
+  , m_Index(index)
   {}
+
+  /**
+   * @brief Copy constructor
+   * @param other
+   */
+  DsnConstIterator(const self_type& other)
+  : m_Collection(other.m_Collection)
+  , m_Index(other.m_Index)
+  {}
+
+  /**
+   * @brief Destructor
+   */
   ~DsnConstIterator() = default;
+
+  /**
+   * @brief Returns the iterator's index.
+   * @return
+   */
+  constexpr difference_type position() const
+  {
+    return m_Index;
+  }
 
   /**
    * @brief Returns the next iterator in the collection
    * @return
    */
-  constexpr self_type& operator++(int) const
+  constexpr self_type& operator++()
   {
-    return self_type(m_Collection, m_Index + 1);
+    m_Index++;
+    return *this;
   }
 
   /**
    * @brief Returns the previous iterator in the collection
    * @return
    */
-  constexpr self_type& operator--(int) const
+  constexpr self_type& operator--(int)
   {
-    return self_type(m_Collection, m_Index - 1);
+    m_Index--;
+    return *this;
+  }
+
+  /**
+   * @brief Proceeds n positions.
+   * @param n
+   * @return
+   */
+  constexpr self_type& operator+(difference_type n)
+  {
+    m_Index += n;
+    return *this;
+  }
+
+  /**
+   * @brief Regresses n positions
+   * @param n
+   * @return
+   */
+  constexpr self_type& operator-(difference_type n)
+  {
+    if(n > m_Index)
+    {
+      throw std::out_of_range("Iterator out of range");
+    }
+    m_Index -= n;
+    return *this;
+  }
+
+  /**
+   * @brief Returns the difference in position with the given iterator.
+   * @param other
+   * @return
+   */
+  constexpr difference_type operator-(const self_type& other)
+  {
+    return m_Index - other.m_Index;
   }
 
   /**
    * @brief Returns a the stored value as const.
    * @return
    */
-  constexpr value_type operator*() const
+  constexpr reference operator*() const
   {
-    return m_Collection[m_Index].get();
+    return m_Collection[m_Index];
   }
 
   /**
    * @brief Returns the value as const.
    * @return
    */
-  constexpr value_type operator->() const
+  constexpr pointer operator->() const
   {
     return m_Collection[m_Index].get();
+  }
+
+  /**
+  * @brief Returns true if the given iterator comes later in the collection.
+  * Returns false otherwise.
+  * @param other
+  * @return
+  */
+  constexpr bool operator<(const self_type& other) const
+  {
+    return m_Index < other.m_Index;
+  }
+
+  /**
+   * @brief Returns true if the given iterator comes later or equal to the iterator in the collection.
+   * Returns false otherwise.
+   * @param other
+   * @return
+   */
+  constexpr bool operator<=(const self_type& other) const
+  {
+    return m_Index <= other.m_Index;
+  }
+
+  /**
+   * @brief Returns true if the given iterator comes earlier in the collection.
+   * Returns false otherwise.
+   * @param other
+   * @return
+   */
+  constexpr bool operator>(const self_type& other) const
+  {
+    return m_Index > other.m_Index;
+  }
+
+  /**
+   * @brief Returns true if the given iterator comes earlier or equal to the iterator in the collection.
+   * Returns false otherwise.
+   * @param other
+   * @return
+   */
+  constexpr bool operator>=(const self_type& other) const
+  {
+    return m_Index >= other.m_Index;
   }
 
   /**
@@ -199,7 +450,22 @@ public:
     return !operator==(rhs);
   }
 
+  /**
+   * @brief Swaps values with the given iterator.
+   * @param other
+   */
+  inline void swap(self_type& other) noexcept
+  {
+    const collection_type tempCollection = m_Collection;
+    m_Collection = other.m_Collection;
+    other.m_Collection = tempCollection;
+
+    const difference_type tempIndex = m_Index;
+    m_Index = other.m_Index;
+    other.m_Index = tempIndex;
+  }
+
 private:
-  const collection m_Collection;
-  const size_t m_Index;
+  collection_type m_Collection;
+  size_t m_Index;
 };

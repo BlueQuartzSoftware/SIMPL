@@ -46,6 +46,7 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/IDataContainerBundle.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/DataContainers/IDataStructureNode.h"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 
 
@@ -61,7 +62,7 @@ using DataContainerShPtr = std::shared_ptr<DataContainer>;
  * @date Sep 28, 2011
  * @version 1.0
  */
-class SIMPLib_EXPORT DataContainerArray : public QObject
+class SIMPLib_EXPORT DataContainerArray : public QObject, public IDataStructureNode
 {
     Q_OBJECT
     // This line MUST be first when exposing a class and properties to Python
@@ -114,7 +115,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
      * @brief getDataContainers
      * @return
      */
-    Container& getDataContainers();
+    Container getDataContainers();
 
     /**
      * @brief Returns if a DataContainer with the give name is in the array
@@ -744,7 +745,6 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
     DataContainerArray();
 
   private:
-    Container  m_Array;
     QMap<QString, IDataContainerBundle::Pointer> m_DataContainerBundles;
 
   public:

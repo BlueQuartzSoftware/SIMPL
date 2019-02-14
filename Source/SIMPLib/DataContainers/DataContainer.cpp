@@ -65,7 +65,7 @@ DataContainer::DataContainer() = default;
 //
 // -----------------------------------------------------------------------------
 DataContainer::DataContainer(const QString &name)
-  : m_Name(name)
+  : IDataStructureNode()
 {
 }
 
@@ -148,22 +148,6 @@ void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContain
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainer::setName(const QString& name)
-{
-  m_Name = name;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString DataContainer::getName() const
-{
-  return m_Name;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void DataContainer::setGeometry(const IGeometry::Pointer& geometry)
 {
   m_Geometry = geometry;
@@ -180,17 +164,9 @@ IGeometry::Pointer DataContainer::getGeometry()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainer::AttributeMatrixMap_t& DataContainer::getAttributeMatrices()
-{
-  return m_AttributeMatrices;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 bool DataContainer::doesAttributeMatrixExist(const QString& name)
 {
-  return m_AttributeMatrices.contains(name);
+  return find(name) != end();
 }
 
 // -----------------------------------------------------------------------------
@@ -199,24 +175,24 @@ bool DataContainer::doesAttributeMatrixExist(const QString& name)
 AttributeMatrix::Pointer DataContainer::createAndAddAttributeMatrix(const QVector<size_t>& tDims, const QString& attrMatName, AttributeMatrix::Type attrType)
 {
   AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, attrMatName, attrType);
-  addAttributeMatrix(attrMatName, attrMat);
+  addAttributeMatrix(attrMat);
   return attrMat; // Return the shared pointer
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainer::addAttributeMatrix(const QString& name, const AttributeMatrix::Pointer& data)
+bool DataContainer::acceptableChildType(const std::type_info& type)
 {
-  if(data->getName().compare(name) != 0)
-  {
-    qDebug() << "Adding Attribute Matrix with a different name than key name";
-    qDebug() << "Key name: " << name;
-    qDebug() << "AttributeMatrix Name: " << data->getName();
-    qDebug() << "This action is NOT typical of DREAM3D Usage. Are you sure you want to be doing this? We are forcing the name of the AttributeMatrix to be the same as the key";
-    data->setName(name);
-  }
-  m_AttributeMatrices[name] = data;
+  return type == typeid(AttributeMatrix::Pointer);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool DataContainer::addAttributeMatrix(const AttributeMatrix::Pointer& data)
+{
+  return push_back(data);
 }
 
 // -----------------------------------------------------------------------------
@@ -224,13 +200,7 @@ void DataContainer::addAttributeMatrix(const QString& name, const AttributeMatri
 // -----------------------------------------------------------------------------
 AttributeMatrix::Pointer DataContainer::getAttributeMatrix(const QString& name)
 {
-  QMap<QString, AttributeMatrix::Pointer>::iterator it;
-  it = m_AttributeMatrices.find(name);
-  if(it == m_AttributeMatrices.end())
-  {
-    return AttributeMatrix::NullPointer();
-  }
-  return it.value();
+  return std::dynamic_pointer_cast<AttributeMatrix>(*find(name));
 }
 
 // -----------------------------------------------------------------------------
@@ -238,13 +208,11 @@ AttributeMatrix::Pointer DataContainer::getAttributeMatrix(const QString& name)
 // -----------------------------------------------------------------------------
 AttributeMatrix::Pointer DataContainer::getAttributeMatrix(const DataArrayPath& path)
 {
-  QMap<QString, AttributeMatrix::Pointer>::iterator it;
-  it = m_AttributeMatrices.find(path.getAttributeMatrixName());
-  if(it == m_AttributeMatrices.end())
+  if(path.getDataContainerName() != getName())
   {
-    return AttributeMatrix::NullPointer();
+    return nullptr;
   }
-  return it.value();
+  return std::dynamic_pointer_cast<AttributeMatrix>(*find(path.getAttributeMatrixName()));
 }
 
 // -----------------------------------------------------------------------------
@@ -252,16 +220,10 @@ AttributeMatrix::Pointer DataContainer::getAttributeMatrix(const DataArrayPath& 
 // -----------------------------------------------------------------------------
 AttributeMatrix::Pointer DataContainer::removeAttributeMatrix(const QString& name)
 {
-  QMap<QString, AttributeMatrix::Pointer>::iterator it;
-  it = m_AttributeMatrices.find(name);
-  if(it == m_AttributeMatrices.end())
-  {
-    // DO NOT return a NullPointer for any reason other than "Attribute Matrix was not found"
-    return AttributeMatrix::NullPointer();
-  }
-  AttributeMatrix::Pointer p = it.value();
-  m_AttributeMatrices.erase(it);
-  return p;
+  auto iter = find(name);
+  AttributeMatrix::Pointer am = std::dynamic_pointer_cast<AttributeMatrix>(*iter);
+  erase(iter);
+  return am;
 }
 
 // -----------------------------------------------------------------------------
@@ -270,31 +232,12 @@ AttributeMatrix::Pointer DataContainer::removeAttributeMatrix(const QString& nam
 bool DataContainer::renameAttributeMatrix(const QString& oldname, const QString& newname, bool overwrite)
 {
   QMap<QString, AttributeMatrix::Pointer>::iterator it;
-  it = m_AttributeMatrices.find(oldname);
-  if(it == m_AttributeMatrices.end())
+  auto iter = find(oldname);
+  if(iter == end())
   {
     return false;
   }
-  AttributeMatrix::Pointer p = it.value();
-  p->setName(newname);
-  removeAttributeMatrix(oldname);
-
-  // Now check to make sure there isn't one with the same name
-  it = m_AttributeMatrices.find(newname);
-  if(it == m_AttributeMatrices.end()) // Didn't find another AttributeMatrix with the new name
-  {
-    addAttributeMatrix(newname, p);
-  }
-  else if(overwrite) // We are here because we found another attribute matrix with the new name
-  {
-    AttributeMatrix::Pointer removedAttributeMatrix = removeAttributeMatrix(newname); // Remove the existing one
-    addAttributeMatrix(newname, p);
-  }
-  else
-  {
-    return false;
-  }
-  return true;
+  return (*iter)->setName(newname);
 }
 
 // -----------------------------------------------------------------------------
@@ -302,7 +245,7 @@ bool DataContainer::renameAttributeMatrix(const QString& oldname, const QString&
 // -----------------------------------------------------------------------------
 void DataContainer::clearAttributeMatrices()
 {
-  m_AttributeMatrices.clear();
+  clear();
 }
 
 // -----------------------------------------------------------------------------
@@ -311,9 +254,9 @@ void DataContainer::clearAttributeMatrices()
 QList<QString> DataContainer::getAttributeMatrixNames()
 {
   QList<QString> keys;
-  for(QMap<QString, AttributeMatrix::Pointer>::iterator iter = m_AttributeMatrices.begin(); iter != m_AttributeMatrices.end(); ++iter)
+  for(auto& iter = cbegin(); iter != cend(); iter++)
   {
-    keys.push_back(iter.key());
+    keys.push_back((*iter)->getName());
   }
   return keys;
 }
@@ -323,7 +266,7 @@ QList<QString> DataContainer::getAttributeMatrixNames()
 // -----------------------------------------------------------------------------
 int DataContainer::getNumAttributeMatrices()
 {
-  return static_cast<int>(m_AttributeMatrices.size());
+  return static_cast<int>(size());
 }
 
 // -----------------------------------------------------------------------------
@@ -333,31 +276,32 @@ int DataContainer::writeAttributeMatricesToHDF5(hid_t parentId)
 {
   int err;
   hid_t attributeMatrixId;
-  for(QMap<QString, AttributeMatrix::Pointer>::iterator iter = m_AttributeMatrices.begin(); iter != m_AttributeMatrices.end(); ++iter)
+  for(auto iter = begin(); iter != end(); ++iter)
   {
-    AttributeMatrix::Pointer attrMat = iter.value();
+    auto attrMat = std::dynamic_pointer_cast<AttributeMatrix>(*iter);
+    const QString amName = attrMat->getName();
 
-    err = QH5Utilities::createGroupsFromPath(iter.key(), parentId);
+    err = QH5Utilities::createGroupsFromPath(amName, parentId);
     if(err < 0)
     {
       return err;
     }
-    attributeMatrixId = H5Gopen(parentId, iter.key().toLatin1().data(), H5P_DEFAULT);
+    attributeMatrixId = H5Gopen(parentId, attrMat->getName().toLatin1().data(), H5P_DEFAULT);
     H5ScopedGroupSentinel gSentinel(&attributeMatrixId, false);
 
     AttributeMatrix::EnumType attrMatType = static_cast<AttributeMatrix::EnumType>(attrMat->getType());
-    err = QH5Lite::writeScalarAttribute(parentId, iter.key(), SIMPL::StringConstants::AttributeMatrixType, attrMatType);
+    err = QH5Lite::writeScalarAttribute(parentId, amName, SIMPL::StringConstants::AttributeMatrixType, attrMatType);
     if(err < 0)
     {
       return err;
     }
-    hsize_t size = (*iter)->getTupleDimensions().size();
-    err = QH5Lite::writePointerAttribute(parentId, iter.key(), SIMPL::HDF5::TupleDimensions, 1, &size, (*iter)->getTupleDimensions().data());
+    hsize_t size = attrMat->getTupleDimensions().size();
+    err = QH5Lite::writePointerAttribute(parentId, amName, SIMPL::HDF5::TupleDimensions, 1, &size, attrMat->getTupleDimensions().data());
     if(err < 0)
     {
       return err;
     }
-    err = (*iter)->writeAttributeArraysToHDF5(attributeMatrixId);
+    err = attrMat->writeAttributeArraysToHDF5(attributeMatrixId);
     if(err < 0)
     {
       return err;
@@ -408,7 +352,7 @@ int DataContainer::readAttributeMatricesFromHDF5(bool preflight, hid_t dcGid, co
     {
       amType = static_cast<AttributeMatrix::Type>(amTypeTmp);
       AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, amName, amType);
-      addAttributeMatrix(amName, am);
+      addAttributeMatrix(am);
     }
 
     AttributeMatrixProxy amProxy = iter.value();
@@ -440,10 +384,11 @@ DataContainer::Pointer DataContainer::deepCopy(bool forceNoAllocate)
     dcCopy->setGeometry(geomCopy);
   }
 
-  for(auto & iter : getAttributeMatrices())
+  for(auto & iter : getChildren())
   {
-    AttributeMatrix::Pointer attrMat = iter->deepCopy(forceNoAllocate);
-    dcCopy->addAttributeMatrix(attrMat->getName(), attrMat);
+    auto initAM = std::dynamic_pointer_cast<AttributeMatrix>(iter);
+    AttributeMatrix::Pointer attrMat = initAM->deepCopy(forceNoAllocate);
+    dcCopy->addAttributeMatrix(attrMat);
   }
 
   return dcCopy;
@@ -536,14 +481,12 @@ int DataContainer::writeXdmf(QTextStream& out, const QString& hdfFileName)
   m_Geometry->writeXdmf(out, getName(), hdfFileName);
   IGeometry::Type geomType = m_Geometry->getGeometryType();
 
-  // Get all of our AttributeMatrices
-  AttributeMatrixMap_t amMap = getAttributeMatrices();
   // Loop over each AttributeMatrix and write the meta data to the Xdmf file
   QString xdmfCenter = "";
-  for(QMap<QString, AttributeMatrix::Pointer>::iterator iter = amMap.begin(); iter != amMap.end(); ++iter)
+  for(auto iter = begin(); iter != end(); ++iter)
   {
     xdmfCenter = "";
-    AttributeMatrix::Pointer attrMat = iter.value();
+    AttributeMatrix::Pointer attrMat = std::dynamic_pointer_cast<AttributeMatrix>(*iter);
     AttributeMatrix::Type amType = attrMat->getType();
     switch(geomType)
     {
@@ -827,9 +770,9 @@ QVector<DataArrayPath> DataContainer::getAllDataArrayPaths()
 {
 
   QVector<DataArrayPath> paths;
-  for(QMap<QString, AttributeMatrix::Pointer>::iterator iter = m_AttributeMatrices.begin(); iter != m_AttributeMatrices.end(); ++iter)
+  for(auto iter = begin(); iter != end(); ++iter)
   {
-    AttributeMatrix::Pointer am = iter.value();
+    AttributeMatrix::Pointer am = std::dynamic_pointer_cast<AttributeMatrix>(*iter);
     QString amName = am->getName();
     QList<QString> aaNames = am->getAttributeArrayNames();
 
