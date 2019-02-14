@@ -88,7 +88,6 @@ protected slots:
   void updateDataContainerName(const QString& propertyName, const DataArrayPath::RenameType& renamePath);
 
 private:
-  const QString m_gridAMName{"Grid"};
   MultiDataContainerSelectionFilterParameter* m_FilterParameter;
 
   static void syncItems(QListWidget*, const QStringList&, QStringList&);
