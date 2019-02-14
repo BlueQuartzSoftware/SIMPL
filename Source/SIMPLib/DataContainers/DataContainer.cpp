@@ -182,14 +182,6 @@ AttributeMatrix::Pointer DataContainer::createAndAddAttributeMatrix(const QVecto
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataContainer::acceptableChildType(const std::type_info& type)
-{
-  return type == typeid(AttributeMatrix::Pointer);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 bool DataContainer::addAttributeMatrix(const AttributeMatrix::Pointer& data)
 {
   return push_back(data);
@@ -238,6 +230,14 @@ bool DataContainer::renameAttributeMatrix(const QString& oldname, const QString&
     return false;
   }
   return (*iter)->setName(newname);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataContainer::Container_t DataContainer::getAttributeMatrices()
+{
+  return getChildren();
 }
 
 // -----------------------------------------------------------------------------

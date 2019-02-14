@@ -440,7 +440,7 @@ protected:
    * the ID is used and the paths match, return false.  If the ID has not been used, add the path
    * to the createdPaths map.
    */
-  bool checkIfPathRenamed(const DataContainerArray::DataID_t id, const DataArrayPath& path);
+  bool checkIfPathRenamed(const RenameDataPath::DataID_t id, const DataArrayPath& path);
 
 protected slots:
   /**
@@ -452,7 +452,7 @@ protected slots:
 private:
   bool m_Cancel;
   QUuid m_Uuid;
-  std::map<DataContainerArray::DataID_t, DataArrayPath> m_CreatedPaths;
+  std::map<RenameDataPath::DataID_t, DataArrayPath> m_CreatedPaths;
   DataArrayPath::RenameContainer m_RenamedPaths;
 
 public:

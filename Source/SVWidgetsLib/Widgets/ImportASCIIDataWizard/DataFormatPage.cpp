@@ -478,13 +478,9 @@ void DataFormatPage::createAMSelectionMenu()
     }
 
     // We found the proper Data Container, now populate the AttributeMatrix List
-    DataContainer::AttributeMatrixMap_t attrMats = dc->getAttributeMatrices();
-    QMapIterator<QString, AttributeMatrix::Pointer> attrMatsIter(attrMats);
-    while(attrMatsIter.hasNext())
+    for(const auto& am : dc->getChildren())
     {
-      attrMatsIter.next();
-      QString amName = attrMatsIter.key();
-      AttributeMatrix::Pointer am = attrMatsIter.value();
+      QString amName = am->getName();
 
       QAction* amAction = dcMenu->addAction(amName); // dcMenu owns the created action
       // QAction* action = new QAction(amName, dcMenu);

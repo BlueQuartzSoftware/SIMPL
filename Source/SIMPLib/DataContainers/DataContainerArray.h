@@ -62,7 +62,7 @@ using DataContainerShPtr = std::shared_ptr<DataContainer>;
  * @date Sep 28, 2011
  * @version 1.0
  */
-class SIMPLib_EXPORT DataContainerArray : public QObject, public IDataStructureNode
+class SIMPLib_EXPORT DataContainerArray : public QObject, public IDataStructureNode<DataContainer>
 {
     Q_OBJECT
     // This line MUST be first when exposing a class and properties to Python

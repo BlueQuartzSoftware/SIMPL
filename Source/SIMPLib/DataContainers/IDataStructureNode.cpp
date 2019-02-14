@@ -51,7 +51,7 @@ IDataStructureNode::IDataStructureNode(const QString& name)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataStructureNode::IDataStructureNode(IDataStructureNode::WeakPointer parent, const QString& name)
+IDataStructureNode::IDataStructureNode(ParentWkPtr parent, const QString& name)
 : m_Name(name)
 , m_Parent(parent)
 {
@@ -75,19 +75,28 @@ QString IDataStructureNode::getName() const
 // -----------------------------------------------------------------------------
 bool IDataStructureNode::setName(const QString& newName)
 {
-  Pointer parent = m_Parent.lock();
+  ParentPointer parent = m_Parent.lock();
   if(nullptr != parent)
   {
-    if(nullptr != (*parent)[newName])
+    if(nullptr == (*parent)[newName])
     {
+      m_Name = newName;
+      return true;
     }
   }
+  else
+  {
+    m_Name = newName;
+    return true;
+  }
+
+  return false;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataStructureNode::ParentType IDataStructureNode::getParent() const
+IDataStructureNode::ParentWkPtr IDataStructureNode::getParent() const
 {
   return m_Parent;
 }
@@ -95,8 +104,16 @@ IDataStructureNode::ParentType IDataStructureNode::getParent() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IDataStructureNode::setParent(const ParentType& parent)
+void IDataStructureNode::setParent(const ParentWkPtr& parent)
 {
+  // Remove from parent's children
+  Pointer tempPtr;
+  Pointer parentPtr = m_Parent.lock();
+  if(nullptr != parentPtr)
+  {
+    tempPtr = parentPtr->removeChild(*this);
+  }
+
   m_Parent = parent;
 }
 
@@ -106,164 +123,4 @@ void IDataStructureNode::setParent(const ParentType& parent)
 bool IDataStructureNode::hasParent() const
 {
   return !m_Parent.expired();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IDataStructureNode::children_collection IDataStructureNode::getChildren() const
-{
-  return m_Children;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IDataStructureNode::iterator IDataStructureNode::begin() noexcept
-{
-  return m_Children.begin();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IDataStructureNode::const_iterator IDataStructureNode::begin() const noexcept
-{
-  return m_Children.begin();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IDataStructureNode::const_iterator IDataStructureNode::cbegin() const noexcept
-{
-  return m_Children.cbegin();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IDataStructureNode::iterator IDataStructureNode::end() noexcept
-{
-  return m_Children.end();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IDataStructureNode::const_iterator IDataStructureNode::end() const noexcept
-{
-  return m_Children.end();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IDataStructureNode::const_iterator IDataStructureNode::cend() const noexcept
-{
-  return m_Children.cend();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool IDataStructureNode::empty() const
-{
-  return m_Children.empty();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-size_t IDataStructureNode::size() const
-{
-  return m_Children.size();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void IDataStructureNode::clear() noexcept
-{
-  m_Children.clear();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IDataStructureNode::const_iterator IDataStructureNode::find(const QString& name) const
-{
-  for(auto& iter = begin(); iter != end(); iter++)
-  {
-    if((*iter)->getName() == name)
-    {
-      return iter;
-    }
-  }
-
-  return {};
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IDataStructureNode::Pointer& IDataStructureNode::operator[](size_t index)
-{
-  if(index < m_Children.size())
-  {
-    std::ostringstream ss;
-    ss << "Index " << index << " is out of range for " << getName().toStdString()
-      << "'s children collection.";
-    throw std::out_of_range(ss.str());
-  }
-
-  return m_Children[index];
-  return NullPointer();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-size_t IDataStructureNode::size() const
-{
-  return m_Children.size();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool IDataStructureNode::push_back(const Pointer& node)
-{
-  if(node == nullptr)
-  {
-    return false;
-  }
-  if(!acceptableChildType(node))
-  {
-    return false;
-  }
-  if(*find(node->getName()) != nullptr)
-  {
-    return false;
-  }
-
-  m_Children.push_back(node);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool IDataStructureNode::erase(iterator iter)
-{
-  m_Children.erase(iter);
-  return true;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool IDataStructureNode::erase(const_iterator iter)
-{
-  m_Children.erase(iter);
-  return true;
 }

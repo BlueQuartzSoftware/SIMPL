@@ -82,7 +82,7 @@ enum RenameErrorCodes
  * @date
  * @version 1.0
  */
-class SIMPLib_EXPORT AttributeMatrix : public Observable, public IDataStructureNode
+class SIMPLib_EXPORT AttributeMatrix : public Observable, public IDataStructureNode<IDataArray>
 {
   // This line MUST be first when exposing a class and properties to Python
   PYB11_CREATE_BINDINGS(AttributeMatrix)
@@ -105,6 +105,7 @@ public:
   ~AttributeMatrix() override;
 
   using EnumType = unsigned int;
+  using Container_t = std::vector<std::shared_ptr<IDataArray>>;
 
   /**
   * @brief The Type is an enum that describes the type of data that the AttributeMatrix holds
@@ -260,6 +261,8 @@ public:
      * @brief Removes all the Cell Arrays
      */
     virtual void clearAttributeArrays();
+
+    Container_t getAttributeArrays() const;
 
     /**
     * @brief Returns a list that contains the names of all the arrays currently stored in the

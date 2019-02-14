@@ -1491,8 +1491,7 @@ QMenu* DataArrayPathSelectionWidget::createSelectionMenu()
       menu->addMenu(dcMenu);
       bool dcMenuEnabled = false;
 
-      DataContainer::AttributeMatrixMap_t attrMats = dc->getAttributeMatrices();
-      for(AttributeMatrix::Pointer am : attrMats)
+      for(const AttributeMatrix::Pointer& am : dc->getChildren())
       {
         path.setAttributeMatrixName(am->getName());
         if(isCreatedPath(path))

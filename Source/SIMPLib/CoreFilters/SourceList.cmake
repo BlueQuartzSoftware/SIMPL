@@ -24,56 +24,56 @@ SIMPL_START_FILTER_GROUP(
 # List your public filters here
 
 set(_PublicFilters
-  ArrayCalculator
-  CombineAttributeArrays
-  CombineAttributeMatrices
-  ConditionalSetValue
-  ConvertData
-  ExtractVertexGeometry
-  CopyFeatureArrayToElementArray
-  CreateAttributeMatrix
-  CreateDataArray
-  CreateDataContainer
-  CreateFeatureArrayFromElementArray
-  CreateImageGeometry
-  CreateStringArray
-  CopyObject
-  CreateGeometry
-  CropVertexGeometry
-  DataContainerReader
-  DataContainerWriter
-  ExecuteProcess
-  ExtractAttributeArraysFromGeometry
-  ExtractComponentAsArray
-  FeatureCountDecision
-  FeatureDataCSVWriter
-  FindDerivatives
-  GenerateColorTable
-  ImportAsciDataArray
-  ImportHDF5Dataset
-  LinkFeatureMapToElementArray
-  MaskCountDecision
-  MoveData
-  MoveMultiData
-  MultiThresholdObjects
-  MultiThresholdObjects2
-  PipelineAnnotation
-  PostSlackMessage
-  RawBinaryReader
-  ReadASCIIData
-  RemoveArrays
-  RemoveComponentFromArray
-  RenameAttributeArray
-  RenameAttributeMatrix
-  RenameDataContainer
-  ReplaceValueInArray
-  RequiredZThickness
-  ScaleVolume
-  SetOriginResolutionImageGeom
-  SplitAttributeArray
-  WriteASCIIData
-  WriteTriangleGeometry
-  MassCreateData
+  # ArrayCalculator
+  # CombineAttributeArrays
+  # CombineAttributeMatrices
+  # ConditionalSetValue
+  # ConvertData
+  # ExtractVertexGeometry
+  # CopyFeatureArrayToElementArray
+  # CreateAttributeMatrix
+  # CreateDataArray
+  # CreateDataContainer
+  # CreateFeatureArrayFromElementArray
+  # CreateImageGeometry
+  # CreateStringArray
+  # CopyObject
+  # CreateGeometry
+  # CropVertexGeometry
+  # DataContainerReader
+  # DataContainerWriter
+  # ExecuteProcess
+  # ExtractAttributeArraysFromGeometry
+  # ExtractComponentAsArray
+  # FeatureCountDecision
+  # FeatureDataCSVWriter
+  # FindDerivatives
+  # GenerateColorTable
+  # ImportAsciDataArray
+  # ImportHDF5Dataset
+  # LinkFeatureMapToElementArray
+  # MaskCountDecision
+  # MoveData
+  # MoveMultiData
+  # MultiThresholdObjects
+  # MultiThresholdObjects2
+  # PipelineAnnotation
+  # PostSlackMessage
+  # RawBinaryReader
+  # ReadASCIIData
+  # RemoveArrays
+  # RemoveComponentFromArray
+  # RenameAttributeArray
+  # RenameAttributeMatrix
+  # RenameDataContainer
+  # ReplaceValueInArray
+  # RequiredZThickness
+  # ScaleVolume
+  # SetOriginResolutionImageGeom
+  # SplitAttributeArray
+  # WriteASCIIData
+  # WriteTriangleGeometry
+  # MassCreateData
 )
 
 

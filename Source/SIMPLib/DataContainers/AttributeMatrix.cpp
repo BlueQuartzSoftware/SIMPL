@@ -522,12 +522,20 @@ void AttributeMatrix::clearAttributeArrays()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+AttributeMatrix::Container_t AttributeMatrix::getAttributeArrays() const
+{
+  return getChildren();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 QList<QString> AttributeMatrix::getAttributeArrayNames()
 {
   QList<QString> keys;
-  for(auto iter = begin(); iter != end(); ++iter)
+  for(auto aa : getChildren())
   {
-    keys.push_back((*iter)->getName());
+    keys.push_back(aa->getName());
   }
   return keys;
 }

@@ -173,14 +173,10 @@ void DataContainerArrayWidget::updateView()
     }
 
     // We found the proper Data Container, now populate the AttributeMatrix List
-    DataContainer::AttributeMatrixMap_t attrMats = dc->getAttributeMatrices();
-    QMapIterator<QString, AttributeMatrix::Pointer> attrMatsIter(attrMats);
     int row1 = 0;
-    while(attrMatsIter.hasNext())
+    for(const auto& am : dc->getChildren())
     {
-      attrMatsIter.next();
-      QString amName = attrMatsIter.key();
-      AttributeMatrix::Pointer am = attrMatsIter.value();
+      QString amName = am->getName();
 
       QStandardItem* amItem = new QStandardItem(am->getName());
       dcItem->appendRow(amItem);

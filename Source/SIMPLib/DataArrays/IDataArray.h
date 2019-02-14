@@ -38,7 +38,7 @@
 * @date Jan 3, 2008
 * @version $Revision: 1.2 $
 */
-class SIMPLib_EXPORT IDataArray : public IDataStructureNode
+class SIMPLib_EXPORT IDataArray : public IDataStructureNode<void*>
 {
   PYB11_CREATE_BINDINGS(IDataArray)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)

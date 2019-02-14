@@ -34,12 +34,17 @@
 #pragma once
 
 #include <memory>
+#include <sstream>
+#include <stdexcept>
+#include <string>
 #include <vector>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
-//class DsnIterator;
-//class DsnConstIterator;
+// class DsnIterator;
+// class DsnConstIterator;
+class IDataStructureNode;
+#include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
 
 /**
  * @class IDataStructureNode IDataStructureNode.h SIMPLib/DataContainers/IDataStructureNode.h
@@ -51,15 +56,36 @@ class IDataStructureNode
 public:
   SIMPL_SHARED_POINTERS(IDataStructureNode)
 
-  using children_collection = std::vector<Pointer>;
+  using ParentType = IDataStructureContainerNode<IDataStructureNode>;
+  using ParentPointer = std::shared_ptr<ParentType>;
+  using ParentWkPtr = std::weak_ptr<ParentType>;
   // using parent_collection = std::vector<ParentType>;
-  using iterator = children_collection::iterator;
-  using const_iterator = children_collection::const_iterator;
-  using ParentType = WeakPointer;
 
+private:
+  QString m_Name;
+  ParentWkPtr m_Parent;
+
+protected:
+  inline virtual Pointer removeChild(const IDataStructureNode& rmChild)
+  {
+    return NullPointer();
+  }
+
+  /**
+   * @brief Sets the parent weak_ptr.  As additional graph support is added,
+   * this will instead be replaced with addParent(const ParentType&) and
+   * removeParent(const ParentType&)
+   */
+  void setParent(const ParentWkPtr& parent);
+
+  // constexpr void addParent(const ParentType& newParent);
+  // constexpr bool removeParent(const ParentType& removedParent);
+
+public:
   IDataStructureNode(const QString& name = "");
-  IDataStructureNode(IDataStructureNode::WeakPointer parent, const QString& name = "");
-  virtual ~IDataStructureNode();
+  IDataStructureNode(ParentWkPtr parent, const QString& name = "");
+
+  virtual ~IDataStructureNode() = default;
 
   /**
    * @brief Returns the node's name.
@@ -80,135 +106,14 @@ public:
    * but as additional graph support is added, this will instead return a parent_collection.
    * @return
    */
-  ParentType getParent() const;
+  ParentWkPtr getParent() const;
 
   /**
    * @brief Returns true if a parent node exists.  Returns false otherwise.
    * @return
    */
-  bool hasParent() const;
-
-  /**
-   * @brief Returns a copy of the children collection.
-   * @return
-   */
-  children_collection getChildren() const;
-
-  /**
-   * @brief Returns an iterator pointing to the start of the children collection.
-   * @return
-   */
-  iterator begin() noexcept;
-
-  /**
-   * @brief Returns a const iterator pointing to the start of the children collection.
-   * @return
-   */
-  const_iterator begin() const noexcept;
-
-  /**
-   * @brief Returns a const iterator pointing to the start of the children collection.
-   * @return
-   */
-  const_iterator cbegin() const noexcept;
-
-  /**
-   * @brief Returns an iterator pointing past the end of the children collection.
-   * @return
-   */
-  iterator end() noexcept;
-
-  /**
-   * @brief Returns a const iterator pointing past the end of the children collection.
-   * @return
-   */
-  const_iterator end() const noexcept;
-
-  /**
-   * @brief Returns a const iterator pointing past the end of the children collection.
-   * @return
-   */
-  const_iterator cend() const noexcept;
-
-  /**
-   * @brief Returns true if the child collection is empty.  Returns false otherwise.
-   * @return
-   */
-  bool empty() const;
-
-  /**
-   * @brief Returns the size of the children collection.
-   * @return
-   */
-  size_t size() const;
-
-  /**
-   * @brief Clears the children collection.  Items are not deleted unless this
-   * was the last shared_ptr referencing them.
-   */
-  void clear() noexcept;
-
-  /**
-   * @brief Returns the child node with the given name.  If no children nodes
-   * are found with the given name, return nullptr.
-   * @param name
-   * @return
-   */
-  const_iterator find(const QString& name) const;
-
-  /**
-   * @brief Returns the child node at the given index.  If index is greater than
-   * the specified index, throw out_of_range exception.
-   * @param index
-   * @return
-   */
-  Pointer& operator[](size_t index);
-
-  /**
-   * @brief Returns the child node with the given name.  If no children nodes
-   * are found with the given name, return nullptr.
-   * @param name
-   * @return
-   */
-  inline Pointer& operator[](const QString& name) { return *find(name); }
-
-  size_t size() const;
-
-  /**
-   * @brief Attempts to append the given IDataStructureNode as a child.
-   * Returns true if the process succeeded.  Returns false otherwise.
-   * @param value
-   * @return success
-   */
-  virtual bool push_back(const Pointer& value);
-
-  bool erase(iterator pos);
-  bool erase(const_iterator pos);
-
-  /**
-   * @brief Returns true if the given type_info is acceptable as a child node.
-   */
-  virtual bool acceptableChildType(const std::type_info& type) = 0;
-
-  /**
-   * @brief Returns true if the given node is of the correct type of be added
-   * as a child node.  This is an overloaded method.
-   */
-  inline bool acceptableChildType(const Pointer& node) { return acceptableChildType(typeid(node)); }
-
-protected:
-  /**
-   * @brief Sets the parent weak_ptr.  As additional graph support is added,
-   * this will instead be replaced with addParent(const ParentType&) and
-   * removeParent(const ParentType&)
-   */
-  void setParent(const ParentType& parent);
-
-  // void addParent(const ParentType& newParent);
-  // bool removeParent(const ParentType& removedParent);
-
-private:
-  QString m_Name;
-  ParentType m_Parent;
-  children_collection m_Children;
+  constexpr bool hasParent() const
+  {
+    return !m_Parent.expired();
+  }
 };

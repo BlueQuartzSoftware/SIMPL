@@ -62,7 +62,7 @@ using AttributeMatrixShPtr = std::shared_ptr<AttributeMatrix>;
 /**
  * @brief The DataContainer class
  */
-class SIMPLib_EXPORT DataContainer : public Observable, public IDataStructureNode
+class SIMPLib_EXPORT DataContainer : public Observable, public IDataStructureNode<AttributeMatrix>
 {
 
   // This line MUST be first when exposing a class and properties to Python
@@ -109,6 +109,8 @@ public:
 
   using Types = QVector<Type>;
 
+  using Container_t = std::vector<AttributeMatrixShPtr>;
+
   /**
    * @brief AttributeMatrixMap_t
    */
@@ -150,14 +152,6 @@ public:
    * @param format The format of the string to be returned.
    */
   virtual QString getInfoString(SIMPL::InfoStringFormat format);
-
-  /**
-   * @brief Returns true if the given type would make an acceptable child node.
-   * Returns false if the given type cannot be added as a child node.
-   * @param type
-   * @return
-   */
-  bool acceptableChildType(const std::type_info& type) override;
 
   /**
    * @brief Adds/overwrites the data for a named array
@@ -204,6 +198,8 @@ public:
    * @brief Removes all the Cell Arrays
    */
   virtual void clearAttributeMatrices();
+
+  Container_t getAttributeMatrices();
 
   /**
    * @brief Returns a list that contains the names of all the arrays currently stored in the

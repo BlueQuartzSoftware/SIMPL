@@ -40,7 +40,7 @@
 #include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
-enum createdPathID : DataContainerArray::DataID_t {
+enum createdPathID : RenameDataPath::DataID_t {
   DataContainerID = 1
 };
 

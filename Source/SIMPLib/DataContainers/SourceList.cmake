@@ -58,6 +58,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerArrayProxy.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerProxy.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DsnIterators.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IDataStructureContainerNode.hpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IDataStructureNode.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RenameDataPath.h
 )
