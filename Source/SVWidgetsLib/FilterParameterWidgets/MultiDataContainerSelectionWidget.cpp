@@ -139,12 +139,12 @@ void MultiDataContainerSelectionWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 void MultiDataContainerSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  QStringList selectedDCs;
+  QStringList selectedDCs{nullptr};
   for(int itemIndex = 0; itemIndex < dataContainersOrderWidget->count(); itemIndex++)
   {
     selectedDCs.push_back(dataContainersOrderWidget->item(itemIndex)->text());
   }
-  QVariant var;
+  QVariant var{0};
   var.setValue(selectedDCs);
   if(!filter->setProperty(PROPERTY_NAME_AS_CHAR, var))
   {
@@ -166,11 +166,11 @@ void MultiDataContainerSelectionWidget::updateDataContainerName(const QString& p
     if(oldPath.getDataContainerName() != newPath.getDataContainerName())
     {
       blockSignals(true);
-      for (const auto& eachOrderDC : dataContainersOrderWidget->findItems(oldPath.getDataContainerName(), Qt::MatchFlag::MatchCaseSensitive))
+      for(const auto& eachOrderDC : dataContainersOrderWidget->findItems(oldPath.getDataContainerName(), Qt::MatchFlag::MatchCaseSensitive))
       {
         eachOrderDC->setText(newPath.getDataContainerName());
       }
-      for (const auto& eachOrderDC : dataContainersSelectWidget->findItems(oldPath.getDataContainerName(), Qt::MatchFlag::MatchCaseSensitive))
+      for(const auto& eachOrderDC : dataContainersSelectWidget->findItems(oldPath.getDataContainerName(), Qt::MatchFlag::MatchCaseSensitive))
       {
         eachOrderDC->setText(newPath.getDataContainerName());
       }
@@ -189,9 +189,8 @@ void MultiDataContainerSelectionWidget::syncItems(QListWidget* listWidget, const
 {
   for(const auto& eachItem : listWidget->findItems("*", Qt::MatchFlag::MatchWildcard))
   {
-    QString itemText{eachItem->text()};
-    bool listContainsItemText{list.contains(itemText)};
-    if (listContainsItemText)
+    QString itemText = eachItem->text();
+    if(list.contains(itemText))
     {
       newItems.removeOne(itemText);
       continue;
@@ -208,8 +207,7 @@ void MultiDataContainerSelectionWidget::validateDataContainerNames(const SVListW
   for(int i = 0; i < list->count(); i++)
   {
     QListWidgetItem* item = list->item(i);
-    QString name = item->text();
-    if(!compareList.contains(name))
+    if(!compareList.contains(item->text()))
     {
       item->setBackgroundColor(QColor(235, 110, 110));
     }
@@ -219,105 +217,3 @@ void MultiDataContainerSelectionWidget::validateDataContainerNames(const SVListW
     }
   }
 }
-
-/* Unused
-// -----------------------------------------------------------------------------
-// This doesn't appear to get used - disabling and will remove if nothing adverse happens at runtime
-// -----------------------------------------------------------------------------
-//void MultiDataContainerSelectionWidget::initializeWidget(FilterParameter* parameter, AbstractFilter* filter)
-//{
-//  setFilter(filter);
-//  setFilterParameter(parameter);
-//  setupGui();
-//}
-
-// -----------------------------------------------------------------------------
-// ???
-// -----------------------------------------------------------------------------
-//QString MultiDataContainerSelectionWidget::checkStringValues(QString curDcName, QString filtDcName)
-//{
-//  if(curDcName.isEmpty() && !filtDcName.isEmpty())
-//  {
-//    return filtDcName;
-//  }
-//  if(!curDcName.isEmpty() && filtDcName.isEmpty())
-//  {
-//    return curDcName;
-//  }
-//  if(!curDcName.isEmpty() && !filtDcName.isEmpty() && m_DidCausePreflight)
-//  {
-//    return curDcName;
-//  }
-
-//  return filtDcName;
-//}
-
-// -----------------------------------------------------------------------------
-// TODO - does not appear to get used
-// -----------------------------------------------------------------------------
-//void MultiDataContainerSelectionWidget::dataContainerSelected(QString path)
-//{
-//  setSelectedPath(std::move(path));
-
-//  m_DidCausePreflight = true;
-//  emit parametersChanged();
-//  m_DidCausePreflight = false;
-//}
-
-// -----------------------------------------------------------------------------
-// Unlikely this has any use for top level data container list
-// -----------------------------------------------------------------------------
-//void MultiDataContainerSelectionWidget::removeNonexistantPaths(QVector<DataArrayPath>& paths)
-//{
-//  AbstractFilter* filter = getFilter();
-//  if(nullptr == filter)
-//  {
-//    return;
-//  }
-
-//  bool reloadPath = false;
-//  DataArrayPath dcPath;
-//  if(!paths.empty())
-//  {
-//    dcPath = DataArrayPath(paths[0].getDataContainerName(), "", "");
-//  }
-
-//  for(int i = 0; i < paths.size(); i++)
-//  {
-//    bool valid = true;
-
-//    if(nullptr == filter->getDataContainerArray()->getAttributeMatrix(paths[i])->getAttributeArray(paths[i].getDataArrayName()))
-//    {
-//      valid = false;
-//    }
-
-//    if(!paths[i].isValid())
-//    {
-//      valid = false;
-//    }
-
-//    if(!valid)
-//    {
-//      const QString& pathName = paths[i].getDataArrayName();
-//      QList<QListWidgetItem*> invalidDataArrayWidgets = dataContainersOrderWidget->findItems(pathName, Qt::MatchExactly);
-//      for(const auto& invalidDataArrayWidget : invalidDataArrayWidgets)
-//      {
-//        invalidDataArrayWidget->setCheckState(Qt::Unchecked);
-//        dataContainersOrderWidget->removeItemWidget(invalidDataArrayWidgets);
-//      }
-
-//      paths.removeAt(i);
-//      i--;
-
-//      reloadPath = true;
-//    }
-//  }
-
-//  if(reloadPath && !dcPath.isEmpty())
-//  {
-//    dataContainersSelectWidget->clear(); // ???
-//    dataContainersOrderWidget->clear(); // ???
-//  }
-//}
-
-*/
