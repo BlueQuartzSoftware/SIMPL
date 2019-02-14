@@ -41,7 +41,7 @@
 
 #include "IDataStructureNode.h"
 
-template <class DerivedChild_t> class IDataStructureContainerNode : public IDataStructureNode
+template <class DerivedChild_t> class SIMPLib_EXPORT IDataStructureContainerNode : public IDataStructureNode
 {
 public:
   using ChildShPtr = std::shared_ptr<DerivedChild_t>;
@@ -51,15 +51,6 @@ public:
 
 private:
   ChildCollection m_Children;
-
-  /**
-   * @brief forceDerivedChildType throws a compile error if the child type is not an IDataStructureNode.
-   * As a constexpr, this is run at compile time, and as noexcept, exceptions will cause termination.
-   */
-  constexpr void forceDerivedChildType() noexcept
-  {
-    IDataStructureNode* typeCheck = new DerivedChild_t();
-  }
 
 protected:
   /**
@@ -266,7 +257,7 @@ public:
    * @param name
    * @return
    */
-  bool hasChildWithName(const QString& name) const
+  bool hasChildWithName(const QString& name) const override
   {
     return *find(name) != nullptr;
   }
@@ -289,6 +280,7 @@ public:
     }
 
     m_Children.push_back(node);
+    return true;
   }
 
   constexpr void erase(iterator iter)

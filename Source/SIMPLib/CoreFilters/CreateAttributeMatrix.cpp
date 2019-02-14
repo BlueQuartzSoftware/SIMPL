@@ -42,7 +42,7 @@
 #include "SIMPLib/FilterParameters/DynamicTableFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
-enum createdPathID : DataContainerArray::DataID_t {
+enum createdPathID : RenameDataPath::DataID_t {
   AttributeMatrixID = 1
 };
 

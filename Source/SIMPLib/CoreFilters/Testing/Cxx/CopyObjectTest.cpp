@@ -533,13 +533,13 @@ public:
     bool sameArrayNames = (newMatrixNames == oldMatrixNames);
     DREAM3D_REQUIRE_EQUAL(sameArrayNames, true)
 
-    QMap<QString, AttributeMatrix::Pointer> oldAttrMatrices = oldDC->getAttributeMatrices();
-    QMap<QString, AttributeMatrix::Pointer> newAttrMatrices = newDC->getAttributeMatrices();
+    //DataContainer::Container_t oldAttrMatrices = oldDC->getAttributeMatrices();
+    //DataContainer::Container_t newAttrMatrices = newDC->getAttributeMatrices();
 
     for(int i = 0; i < newMatrixNames.size(); i++)
     {
-      AttributeMatrix::Pointer oldAM = oldAttrMatrices[oldMatrixNames[i]];
-      AttributeMatrix::Pointer newAM = newAttrMatrices[newMatrixNames[i]];
+      AttributeMatrix::Pointer oldAM = *oldDC->find(oldMatrixNames[i]);
+      AttributeMatrix::Pointer newAM = *newDC->find(newMatrixNames[i]);
       checkAttributeMatrix(oldAM, newAM, false);
     }
   }

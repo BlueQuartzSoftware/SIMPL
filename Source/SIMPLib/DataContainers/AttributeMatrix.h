@@ -215,6 +215,17 @@ public:
     virtual int addAttributeArray(IDataArray::Pointer data);
 
     /**
+     * @brief Inline call to addAttributeArray to avoid breaking old API
+     * @param name
+     * @param data
+     * @return
+     */
+    inline int addAttributeArray(const QString& name, IDataArray::Pointer data)
+    {
+      return addAttributeArray(data);
+    }
+
+    /**
      * @brief Returns the array for a given named array or the equivelant to a
      * null pointer if the name does not exist.
      * @param name The name of the data array

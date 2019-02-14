@@ -90,7 +90,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject, public IDataStructureC
 
     ~DataContainerArray() override;
 
-    using Container = std::list<DataContainerShPtr>;
+    using Container = ChildCollection;
 
     /**
      * @brief

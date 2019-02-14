@@ -160,25 +160,6 @@ class StructArray : public IDataArray
       return theType;
     }
 
-
-    /**
-     * @brief Gives this array a human readable name
-     * @param name The name of this array
-     */
-    void setName(const QString& name) override
-    {
-      m_Name = name;
-    }
-
-    /**
-     * @brief Returns the human readable name of this array
-     * @return
-     */
-    QString getName() override
-    {
-      return m_Name;
-    }
-
     /**
      * @brief Makes this class responsible for freeing the memory
      */
@@ -899,7 +880,6 @@ class StructArray : public IDataArray
 
     bool m_IsAllocated;
     //   unsigned long long int MUD_FLAP_3;
-    QString m_Name;
     //  unsigned long long int MUD_FLAP_5;
 
     StructArray(const StructArray&); //Not Implemented

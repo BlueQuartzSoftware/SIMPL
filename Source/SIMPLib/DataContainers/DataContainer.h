@@ -160,6 +160,11 @@ public:
    */
   virtual bool addAttributeMatrix(const AttributeMatrixShPtr& matrix);
 
+  inline bool addAttributeMatrix(const QString& name, const AttributeMatrixShPtr& matrix)
+  {
+    return addAttributeMatrix(matrix);
+  }
+
   /**
    * @brief Returns the array for a given named array or the equivelant to a
    * null pointer if the name does not exist.

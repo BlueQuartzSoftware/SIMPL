@@ -221,12 +221,7 @@ QList<QString> DataContainerArray::getDataContainerNames()
 // -----------------------------------------------------------------------------
 DataContainerArray::Container DataContainerArray::getDataContainers()
 {
-  Container container;
-  for(auto iter : getChildren())
-  {
-    container.push_back(std::dynamic_pointer_cast<DataContainer>(iter));
-  }
-  return container;
+  return getChildren();
 }
 
 // -----------------------------------------------------------------------------

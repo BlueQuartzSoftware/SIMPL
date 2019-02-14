@@ -123,43 +123,41 @@ public:
   // -----------------------------------------------------------------------------
   void initializeDataArrays(DataContainer::Pointer m, QVector<size_t> cDims)
   {
-    QMap<QString, AttributeMatrix::Pointer> attrMats = m->getAttributeMatrices();
-    QMap<QString, AttributeMatrix::Pointer>::Iterator it;
-    for(it = attrMats.begin(); it != attrMats.end(); ++it)
+    for(auto& am : m->getChildren())
     {
-      DoubleArrayType::Pointer dblArray = DoubleArrayType::CreateArray((*it)->getTupleDimensions(), cDims, "TEST_D");
+      DoubleArrayType::Pointer dblArray = DoubleArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_D");
       dblArray->initializeWithValue(5);
-      (*it)->addAttributeArray("TEST_D", dblArray);
-      FloatArrayType::Pointer fltArray = FloatArrayType::CreateArray((*it)->getTupleDimensions(), cDims, "TEST_F");
+      am->addAttributeArray("TEST_D", dblArray);
+      FloatArrayType::Pointer fltArray = FloatArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_F");
       fltArray->initializeWithValue(5);
-      (*it)->addAttributeArray("TEST_F", fltArray);
-      Int8ArrayType::Pointer int8Array = Int8ArrayType::CreateArray((*it)->getTupleDimensions(), cDims, "TEST_I8");
+      am->addAttributeArray("TEST_F", fltArray);
+      Int8ArrayType::Pointer int8Array = Int8ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I8");
       int8Array->initializeWithValue(5);
-      (*it)->addAttributeArray("TEST_I8", int8Array);
-      UInt8ArrayType::Pointer uint8Array = UInt8ArrayType::CreateArray((*it)->getTupleDimensions(), cDims, "TEST_UI8");
+      am->addAttributeArray("TEST_I8", int8Array);
+      UInt8ArrayType::Pointer uint8Array = UInt8ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI8");
       uint8Array->initializeWithValue(5);
-      (*it)->addAttributeArray("TEST_UI8", uint8Array);
-      Int16ArrayType::Pointer int16Array = Int16ArrayType::CreateArray((*it)->getTupleDimensions(), cDims, "TEST_I16");
+      am->addAttributeArray("TEST_UI8", uint8Array);
+      Int16ArrayType::Pointer int16Array = Int16ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I16");
       int16Array->initializeWithValue(5);
-      (*it)->addAttributeArray("TEST_I16", int16Array);
-      UInt16ArrayType::Pointer uint16Array = UInt16ArrayType::CreateArray((*it)->getTupleDimensions(), cDims, "TEST_UI16");
+      am->addAttributeArray("TEST_I16", int16Array);
+      UInt16ArrayType::Pointer uint16Array = UInt16ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI16");
       uint16Array->initializeWithValue(5);
-      (*it)->addAttributeArray("TEST_UI16", uint16Array);
-      Int32ArrayType::Pointer int32Array = Int32ArrayType::CreateArray((*it)->getTupleDimensions(), cDims, "TEST_I32");
+      am->addAttributeArray("TEST_UI16", uint16Array);
+      Int32ArrayType::Pointer int32Array = Int32ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I32");
       int32Array->initializeWithValue(5);
-      (*it)->addAttributeArray("TEST_I32", int32Array);
-      UInt32ArrayType::Pointer uint32Array = UInt32ArrayType::CreateArray((*it)->getTupleDimensions(), cDims, "TEST_UI32");
+      am->addAttributeArray("TEST_I32", int32Array);
+      UInt32ArrayType::Pointer uint32Array = UInt32ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI32");
       uint32Array->initializeWithValue(5);
-      (*it)->addAttributeArray("TEST_UI32", uint32Array);
-      Int64ArrayType::Pointer int64Array = Int64ArrayType::CreateArray((*it)->getTupleDimensions(), cDims, "TEST_I64");
+      am->addAttributeArray("TEST_UI32", uint32Array);
+      Int64ArrayType::Pointer int64Array = Int64ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I64");
       int64Array->initializeWithValue(5);
-      (*it)->addAttributeArray("TEST_I64", int64Array);
-      UInt64ArrayType::Pointer uint64Array = UInt64ArrayType::CreateArray((*it)->getTupleDimensions(), cDims, "TEST_UI64");
+      am->addAttributeArray("TEST_I64", int64Array);
+      UInt64ArrayType::Pointer uint64Array = UInt64ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI64");
       uint64Array->initializeWithValue(5);
-      (*it)->addAttributeArray("TEST_UI64", uint64Array);
-      BoolArrayType::Pointer boolArray = BoolArrayType::CreateArray((*it)->getTupleDimensions(), cDims, "TEST_BOOL");
+      am->addAttributeArray("TEST_UI64", uint64Array);
+      BoolArrayType::Pointer boolArray = BoolArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_BOOL");
       boolArray->initializeWithZeros();
-      (*it)->addAttributeArray("TEST_BOOL", boolArray);
+      am->addAttributeArray("TEST_BOOL", boolArray);
     }
   }
 

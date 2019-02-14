@@ -39,7 +39,10 @@
 #include <string>
 #include <vector>
 
+#include <QString>
+
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/SIMPLib.h"
 
 // class DsnIterator;
 // class DsnConstIterator;
@@ -52,7 +55,7 @@
  * @brief the IDataStructureNode class serves as the base class for data
  * structure classes from DataContainer to DataArray
  */
-class IDataStructureNode
+class SIMPLib_EXPORT IDataStructureNode
 {
 public:
   SIMPL_SHARED_POINTERS(IDataStructureNode)
@@ -115,7 +118,7 @@ public:
    * @brief Returns true if a parent node exists.  Returns false otherwise.
    * @return
    */
-  constexpr bool hasParent() const
+  inline bool hasParent() const
   {
     return !m_Parent.expired();
   }

@@ -35,6 +35,8 @@
 
 #include <cstddef>
 
+#include "SIMPLib/SIMPLib.h"
+
 class AbstractFilter;
 class DataArrayPath;
 
@@ -68,5 +70,5 @@ namespace RenameDataPath
    * @param id The local ID for the filter to perform rename checks on
    * @param path The new DataArrayPath
    */
-  void AlertFilterCreatedPath(AbstractFilter* filter, DataID_t id, const DataArrayPath& path);
+  void SIMPLib_EXPORT AlertFilterCreatedPath(AbstractFilter* filter, DataID_t id, const DataArrayPath& path);
 }
