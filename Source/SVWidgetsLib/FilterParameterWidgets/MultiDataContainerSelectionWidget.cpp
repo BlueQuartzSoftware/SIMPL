@@ -86,10 +86,7 @@ void MultiDataContainerSelectionWidget::setupGui()
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)), this, SLOT(updateDataContainerName(QString, DataArrayPath::RenameType)));
 
-  for(const auto& eachDC : getFilterParameter()->getDefaultValue().toStringList())
-  {
-    dataContainersOrderWidget->addItem(eachDC);
-  }
+  dataContainersSelectWidget->addItems(getFilterParameter()->getDefaultValue().toStringList());
 }
 
 // -----------------------------------------------------------------------------
