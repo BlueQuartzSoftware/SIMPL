@@ -123,7 +123,7 @@ DataContainer::Pointer DataContainerArray::removeDataContainer(const QString& na
 {
   removeDataContainerFromBundles(name);
   DataContainer::Pointer f = DataContainer::NullPointer();
-  for(auto& iter = begin(); iter != end(); ++iter)
+  for(auto iter = begin(); iter != end(); ++iter)
   {
     DataContainer::Pointer dc = std::dynamic_pointer_cast<DataContainer>(*iter);
     if(dc->getName().compare(name) == 0)

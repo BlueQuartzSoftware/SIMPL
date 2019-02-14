@@ -166,10 +166,6 @@ class SIMPLib_EXPORT StatsDataArray : public IDataArray
     /* **************** This is the interface for the IDataArray Class which MUST
      *  Be implemented. Most of it is useless and will simply ASSERT if called. */
 
-    void setName(const QString& name) override;
-    QString getName() override;
-
-
     /**
      * @brief getFullNameOfClass
      * @return

@@ -540,23 +540,6 @@ class DataArray : public IDataArray
       m_InitValue = initValue;
     }
 
-    /**
-     * @brief Gives this array a human readable name
-     * @param name The name of this array
-     */
-    void setName(const QString& name) override
-    {
-      m_Name = name;
-    }
-
-    /**
-     * @brief Returns the human readable name of this array
-     * @return
-     */
-    QString getName() override
-    {
-      return m_Name;
-    }
 
     /**
      * @brief Makes this class responsible for freeing the memory
@@ -1262,7 +1245,7 @@ class DataArray : public IDataArray
       m_OwnsData = true;
       m_MaxId = (m_Size == 0) ? 0 : m_Size - 1;
       m_IsAllocated = true;
-      m_Name = p->getName();
+      setName(p->getName());
       m_NumTuples = p->getNumberOfTuples();
       m_CompDims = p->getComponentDimensions();
       m_NumComponents = p->getNumberOfComponents();
@@ -1323,13 +1306,13 @@ class DataArray : public IDataArray
     * @param takeOwnership Will the class clean up the memory. Default=true
     */
     DataArray(size_t numTuples, QVector<size_t> compDims, QString name, bool ownsData = true) 
-      : IDataStructureNode(name)
+      : IDataArray()
       , m_Array(nullptr)
       , m_OwnsData(ownsData)
       , m_IsAllocated(false)
-      , m_Name(std::move(name))
       , m_NumTuples(numTuples)
     {
+      setName(name);
       // Set the Component Dimensions and compute the number of components at each tuple for caching
       m_CompDims = compDims;
       m_NumComponents = m_CompDims[0];

@@ -143,18 +143,6 @@ public:
   QString getTypeAsString() override;
 
   /**
-   * @brief Gives this array a human readable name
-   * @param name The name of this array
-   */
-  void setName(const QString& name) override;
-
-  /**
-   * @brief Returns the human readable name of this array
-   * @return
-   */
-  QString getName() override;
-
-  /**
    * @brief
    */
   void takeOwnership() override;
@@ -378,7 +366,6 @@ protected:
   StringDataArray();
 
 private:
-  QString m_Name;
   QString m_InitValue;
   std::vector<QString> m_Array;
   bool _ownsData;

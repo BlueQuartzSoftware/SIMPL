@@ -60,11 +60,6 @@ IDataStructureNode::IDataStructureNode(ParentWkPtr parent, const QString& name)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataStructureNode::~IDataStructureNode() = default;
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 QString IDataStructureNode::getName() const
 {
   return m_Name;
@@ -78,7 +73,7 @@ bool IDataStructureNode::setName(const QString& newName)
   ParentPointer parent = m_Parent.lock();
   if(nullptr != parent)
   {
-    if(nullptr == (*parent)[newName])
+    if((*parent).hasChildWithName(newName))
     {
       m_Name = newName;
       return true;
@@ -96,6 +91,14 @@ bool IDataStructureNode::setName(const QString& newName)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+bool IDataStructureNode::hasChildWithName(const QString& name) const
+{
+  return false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 IDataStructureNode::ParentWkPtr IDataStructureNode::getParent() const
 {
   return m_Parent;
@@ -107,20 +110,12 @@ IDataStructureNode::ParentWkPtr IDataStructureNode::getParent() const
 void IDataStructureNode::setParent(const ParentWkPtr& parent)
 {
   // Remove from parent's children
-  Pointer tempPtr;
+  ConstPointer tempPtr;
   Pointer parentPtr = m_Parent.lock();
   if(nullptr != parentPtr)
   {
-    tempPtr = parentPtr->removeChild(*this);
+    tempPtr = parentPtr->removeChild(this);
   }
 
   m_Parent = parent;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool IDataStructureNode::hasParent() const
-{
-  return !m_Parent.expired();
 }

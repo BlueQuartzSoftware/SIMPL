@@ -58,7 +58,7 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
-#include "SIMPLib/DataContainers/IDataStructureNode.h"
+#include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 
 class AttributeMatrixProxy;
@@ -82,7 +82,7 @@ enum RenameErrorCodes
  * @date
  * @version 1.0
  */
-class SIMPLib_EXPORT AttributeMatrix : public Observable, public IDataStructureNode<IDataArray>
+class SIMPLib_EXPORT AttributeMatrix : public Observable, public IDataStructureContainerNode<IDataArray>
 {
   // This line MUST be first when exposing a class and properties to Python
   PYB11_CREATE_BINDINGS(AttributeMatrix)
@@ -463,7 +463,7 @@ public:
       else if(nullptr != attributeArray && filter)
       {
         // Check if path was renamed
-        RenameDataPath::AlertFilterCreatedPath(filter, id, DataArrayPath(=, getName(), name));
+        //RenameDataPath::AlertFilterCreatedPath(filter, id, DataArrayPath(=, getName(), name));
       }
       return attributeArray;
     }
@@ -487,9 +487,9 @@ public:
           attributeArray->initializeWithValue(initValue);
         }
         attributeArray->setInitValue(initValue);
-        addAttributeArray(name, attributeArray);
+        addAttributeArray(attributeArray);
         // Check if path was renamed
-        RenameDataPath::AlertFilterCreatedPath(filter, id, DataArrayPath(=, getName(), name));
+        //RenameDataPath::AlertFilterCreatedPath(filter, id, DataArrayPath(=, getName(), name));
       }
     }
 

@@ -33,6 +33,12 @@
 
 #pragma once
 
+#include <vector>
+#include <memory>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+
 #include "IDataStructureNode.h"
 
 template <class DerivedChild_t> class IDataStructureContainerNode : public IDataStructureNode
@@ -40,9 +46,20 @@ template <class DerivedChild_t> class IDataStructureContainerNode : public IData
 public:
   using ChildShPtr = std::shared_ptr<DerivedChild_t>;
   using ChildCollection = std::vector<ChildShPtr>;
+  using iterator = typename ChildCollection::iterator;
+  using const_iterator =  typename ChildCollection::const_iterator;
 
 private:
   ChildCollection m_Children;
+
+  /**
+   * @brief forceDerivedChildType throws a compile error if the child type is not an IDataStructureNode.
+   * As a constexpr, this is run at compile time, and as noexcept, exceptions will cause termination.
+   */
+  constexpr void forceDerivedChildType() noexcept
+  {
+    IDataStructureNode* typeCheck = new DerivedChild_t();
+  }
 
 protected:
   /**
@@ -50,11 +67,11 @@ protected:
    * @param child
    * @return
    */
-  inline IDataStructureNode::Pointer removeChild(const IDataStructureNode& rmChild) override
+  IDataStructureNode::Pointer removeChild(const IDataStructureNode* rmChild) override
   {
-    for(auto iter& = m_Children.begin(); iter != m_Children.end(); ++iter)
+    for(auto iter = m_Children.begin(); iter != m_Children.end(); ++iter)
     {
-      if((*iter) == rmChild)
+      if((*iter).get() == rmChild)
       {
         ChildShPtr ptr = *iter;
         m_Children.erase(iter);
@@ -82,7 +99,7 @@ public:
   IDataStructureContainerNode(const QString& name = "")
     : IDataStructureNode(name)
   {}
-  IDataStructureContainerNode(IDataStructurNode::WeakPointer parent, const QString& name = "")
+  IDataStructureContainerNode(IDataStructureNode::WeakPointer parent, const QString& name = "")
     : IDataStructureNode(parent, name)
   {}
   ~IDataStructureContainerNode() override = default;
@@ -185,7 +202,7 @@ public:
    */
   constexpr iterator find(const QString& name)
   {
-    for(auto& iter = begin(); iter != end(); iter++)
+    for(auto iter = begin(); iter != end(); iter++)
     {
       if((*iter)->getName() == name)
       {
@@ -204,7 +221,7 @@ public:
    */
   constexpr const_iterator find(const QString& name) const
   {
-    for(auto& iter = begin(); iter != end(); iter++)
+    for(auto iter = begin(); iter != end(); iter++)
     {
       if((*iter)->getName() == name)
       {
@@ -225,9 +242,8 @@ public:
   {
     if(index < m_Children.size())
     {
-      std::ostringstream ss;
-      ss << "Index " << index << " is out of range for " << getName().toStdString() << "'s children collection.";
-      throw std::out_of_range(ss.str());
+      const char msg[] = "Index is out of range for the IDataStructureContainerNode's children collection.";
+      throw std::out_of_range(msg);
     }
 
     return m_Children[index];
@@ -245,12 +261,14 @@ public:
   }
 
   /**
-   * @brief Returns the size of the child collection.
+   * @brief Returns true if the container has a child by the given name.
+   * Returns false otherwise.
+   * @param name
    * @return
    */
-  constexpr size_t size() const
+  bool hasChildWithName(const QString& name) const
   {
-    return m_Children.size();
+    return *find(name) != nullptr;
   }
 
   /**
@@ -259,13 +277,9 @@ public:
    * @param value
    * @return success
    */
-  constexpr bool push_back(const ChildShPtr& value)
+  constexpr bool push_back(const ChildShPtr& node)
   {
     if(std::dynamic_pointer_cast<ChildShPtr>(node) == nullptr)
-    {
-      return false;
-    }
-    if(!acceptableChildType(node))
     {
       return false;
     }

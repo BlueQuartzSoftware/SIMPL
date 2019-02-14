@@ -42,7 +42,7 @@
 //
 // -----------------------------------------------------------------------------
 StringDataArray::StringDataArray() 
-: m_Name("")
+: IDataArray()
 , _ownsData(false)
 {
 }
@@ -51,9 +51,10 @@ StringDataArray::StringDataArray()
 //
 // -----------------------------------------------------------------------------
 StringDataArray::StringDataArray(size_t numTuples, const QString name, bool allocate)
-: m_Name(name)
+: IDataArray()
 , _ownsData(true)
 {
+  setName(name);
   // if (allocate == true)
   {
     m_Array.resize(numTuples);
@@ -158,22 +159,6 @@ void StringDataArray::getXdmfTypeAndSize(QString& xdmfTypeName, int& precision)
 QString StringDataArray::getTypeAsString()
 {
   return "StringDataArray";
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void StringDataArray::setName(const QString& name)
-{
-  m_Name = name;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString StringDataArray::getName()
-{
-  return m_Name;
 }
 
 // -----------------------------------------------------------------------------

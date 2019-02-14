@@ -44,7 +44,7 @@
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
-#include "SIMPLib/DataContainers/IDataStructureNode.h"
+#include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 #include "SIMPLib/SIMPLib.h"
@@ -62,7 +62,7 @@ using AttributeMatrixShPtr = std::shared_ptr<AttributeMatrix>;
 /**
  * @brief The DataContainer class
  */
-class SIMPLib_EXPORT DataContainer : public Observable, public IDataStructureNode<AttributeMatrix>
+class SIMPLib_EXPORT DataContainer : public Observable, public IDataStructureContainerNode<AttributeMatrix>
 {
 
   // This line MUST be first when exposing a class and properties to Python

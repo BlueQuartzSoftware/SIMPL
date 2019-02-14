@@ -99,7 +99,7 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   PYB11_METHOD(void setDataContainerArray)
   
   // Friend declarations for RenameDataPath so that it can set and check the instance's created data by ID.
-  friend void RenameDataPath::AlertFilterCreatedPath(AbstractFilter*, DataID_t, const DataArrayPath&);
+  friend void RenameDataPath::AlertFilterCreatedPath(AbstractFilter*, RenameDataPath::DataID_t, const DataArrayPath&);
 
 public:
   SIMPL_SHARED_POINTERS(AbstractFilter)

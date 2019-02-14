@@ -43,8 +43,9 @@
 
 // class DsnIterator;
 // class DsnConstIterator;
-class IDataStructureNode;
-#include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
+//class IDataStructureNode;
+//class IDataStructureContainerNode;
+//#include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
 
 /**
  * @class IDataStructureNode IDataStructureNode.h SIMPLib/DataContainers/IDataStructureNode.h
@@ -56,7 +57,7 @@ class IDataStructureNode
 public:
   SIMPL_SHARED_POINTERS(IDataStructureNode)
 
-  using ParentType = IDataStructureContainerNode<IDataStructureNode>;
+  using ParentType = IDataStructureNode;
   using ParentPointer = std::shared_ptr<ParentType>;
   using ParentWkPtr = std::weak_ptr<ParentType>;
   // using parent_collection = std::vector<ParentType>;
@@ -66,7 +67,7 @@ private:
   ParentWkPtr m_Parent;
 
 protected:
-  inline virtual Pointer removeChild(const IDataStructureNode& rmChild)
+  inline virtual Pointer removeChild(const IDataStructureNode* rmChild)
   {
     return NullPointer();
   }
@@ -80,6 +81,8 @@ protected:
 
   // constexpr void addParent(const ParentType& newParent);
   // constexpr bool removeParent(const ParentType& removedParent);
+
+  virtual bool hasChildWithName(const QString& name) const;
 
 public:
   IDataStructureNode(const QString& name = "");

@@ -65,7 +65,7 @@ DataContainer::DataContainer() = default;
 //
 // -----------------------------------------------------------------------------
 DataContainer::DataContainer(const QString &name)
-  : IDataStructureNode()
+  : IDataStructureContainerNode(name)
 {
 }
 
@@ -254,7 +254,7 @@ void DataContainer::clearAttributeMatrices()
 QList<QString> DataContainer::getAttributeMatrixNames()
 {
   QList<QString> keys;
-  for(auto& iter = cbegin(); iter != cend(); iter++)
+  for(auto iter = cbegin(); iter != cend(); iter++)
   {
     keys.push_back((*iter)->getName());
   }

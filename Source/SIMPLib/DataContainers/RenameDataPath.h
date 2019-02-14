@@ -33,6 +33,8 @@
 
 #pragma once
 
+#include <cstddef>
+
 class AbstractFilter;
 class DataArrayPath;
 

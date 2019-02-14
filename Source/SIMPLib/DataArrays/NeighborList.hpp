@@ -303,18 +303,6 @@ class NeighborList : public IDataArray
     QString getTypeAsString() override { return NeighborList<T>::ClassName();}
 
     /**
-     * @brief setName
-     * @param name
-     */
-    void setName(const QString& name) override { m_Name = name; }
-
-    /**
-     * @brief getName
-     * @return
-     */
-    QString getName() override { return m_Name; }
-
-    /**
      * @brief takeOwnership
      */
     void takeOwnership() override {    }
@@ -1036,15 +1024,16 @@ class NeighborList : public IDataArray
      * @brief NeighborList
      */
     NeighborList(size_t numTuples, const QString name) :
+      IDataArray(),
       m_NumNeighborsArrayName(SIMPL::FeatureData::NumNeighbors),
-      m_Name(name),
       m_NumTuples(numTuples),
       m_IsAllocated(false)
-    {    }
+    {
+      setName(name);
+    }
 
   private:
     std::vector<SharedVectorType> m_Array;
-    QString m_Name;
     size_t m_NumTuples;
     bool m_IsAllocated;
     T m_InitValue;

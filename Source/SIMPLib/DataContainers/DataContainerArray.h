@@ -46,7 +46,7 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/IDataContainerBundle.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
-#include "SIMPLib/DataContainers/IDataStructureNode.h"
+#include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 
 
@@ -62,7 +62,7 @@ using DataContainerShPtr = std::shared_ptr<DataContainer>;
  * @date Sep 28, 2011
  * @version 1.0
  */
-class SIMPLib_EXPORT DataContainerArray : public QObject, public IDataStructureNode<DataContainer>
+class SIMPLib_EXPORT DataContainerArray : public QObject, public IDataStructureContainerNode<DataContainer>
 {
     Q_OBJECT
     // This line MUST be first when exposing a class and properties to Python

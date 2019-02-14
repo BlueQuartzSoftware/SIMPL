@@ -60,7 +60,7 @@
 //
 // -----------------------------------------------------------------------------
 AttributeMatrix::AttributeMatrix(QVector<size_t> tDims, const QString& name, AttributeMatrix::Type attrType)
-: IDataStructureNode(name)
+: IDataStructureContainerNode(name)
 , m_Type(attrType)
 , m_TupleDims(tDims)
 {
