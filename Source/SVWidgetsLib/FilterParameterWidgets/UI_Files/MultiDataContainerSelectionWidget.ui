@@ -54,7 +54,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Available Data Containers</string>
+          <string>Select Your Data Containers</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -62,75 +62,9 @@
         </widget>
        </item>
        <item>
-        <widget class="SVListWidget" name="availableDataContainers">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="sizeAdjustPolicy">
-          <enum>QAbstractScrollArea::AdjustIgnored</enum>
-         </property>
-         <property name="editTriggers">
-          <set>QAbstractItemView::NoEditTriggers</set>
-         </property>
-         <property name="dragEnabled">
-          <bool>true</bool>
-         </property>
-         <property name="dragDropMode">
-          <enum>QAbstractItemView::DragDrop</enum>
-         </property>
-         <property name="defaultDropAction">
-          <enum>Qt::MoveAction</enum>
-         </property>
+        <widget class="SVListView" name="dataContainers">
          <property name="selectionMode">
           <enum>QAbstractItemView::ExtendedSelection</enum>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <item>
-        <widget class="QLabel" name="label_2">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Selected Data Containers</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="SVListWidget" name="selectedDataContainers">
-         <property name="editTriggers">
-          <set>QAbstractItemView::NoEditTriggers</set>
-         </property>
-         <property name="dragEnabled">
-          <bool>true</bool>
-         </property>
-         <property name="dragDropMode">
-          <enum>QAbstractItemView::DragDrop</enum>
-         </property>
-         <property name="defaultDropAction">
-          <enum>Qt::MoveAction</enum>
-         </property>
-         <property name="selectionMode">
-          <enum>QAbstractItemView::ExtendedSelection</enum>
-         </property>
-         <property name="sortingEnabled">
-          <bool>false</bool>
          </property>
         </widget>
        </item>
@@ -142,8 +76,8 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>SVListWidget</class>
-   <extends>QListWidget</extends>
+   <class>SVListView</class>
+   <extends>QListView</extends>
    <header location="global">SVControlWidgets.h</header>
   </customwidget>
  </customwidgets>
