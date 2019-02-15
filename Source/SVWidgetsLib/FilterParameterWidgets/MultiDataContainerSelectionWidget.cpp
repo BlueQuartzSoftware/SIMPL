@@ -57,6 +57,9 @@
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
 
+// -----------------------------------------------------------------------------
+// Constructor - calls Qt setupUi and setupGui
+// -----------------------------------------------------------------------------
 MultiDataContainerSelectionWidget::MultiDataContainerSelectionWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 {
@@ -67,8 +70,14 @@ MultiDataContainerSelectionWidget::MultiDataContainerSelectionWidget(FilterParam
   setupGui();
 }
 
+// -----------------------------------------------------------------------------
+// Default destructor
+// -----------------------------------------------------------------------------
 MultiDataContainerSelectionWidget::~MultiDataContainerSelectionWidget() = default;
 
+// -----------------------------------------------------------------------------
+// Connects signals and adds default values to select widget
+// -----------------------------------------------------------------------------
 void MultiDataContainerSelectionWidget::setupGui()
 {
   // Sanity Check the filter and the filter parameter
@@ -85,8 +94,31 @@ void MultiDataContainerSelectionWidget::setupGui()
   connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)), this, SLOT(updateDataContainerName(QString, DataArrayPath::RenameType)));
+  connect(availableDataContainers->model(), SIGNAL(rowsInserted(QModelIndex, int, int)), this, SIGNAL(parametersChanged()));
+  connect(availableDataContainers->model(), SIGNAL(rowsRemoved (QModelIndex, int, int)), this, SIGNAL(parametersChanged()));
+  connect(selectedDataContainers->model(),  SIGNAL(rowsInserted(QModelIndex, int, int)), this, SIGNAL(parametersChanged()));
+  connect(selectedDataContainers->model(),  SIGNAL(rowsRemoved (QModelIndex, int, int)), this, SIGNAL(parametersChanged()));
 
-  dataContainersSelectWidget->addItems(getFilterParameter()->getDefaultValue().toStringList());
+  availableDataContainers->addItems(getFilterParameter()->getDefaultValue().toStringList());
+}
+
+// -----------------------------------------------------------------------------
+// Default Slot callbacks
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// Select widget item double-clicked -> send to order widget
+// -----------------------------------------------------------------------------
+void MultiDataContainerSelectionWidget::on_availableDataContainers_itemDoubleClicked(QListWidgetItem *item)
+{
+  moveItems({item}, availableDataContainers, selectedDataContainers);
+}
+
+// -----------------------------------------------------------------------------
+// Order widget item double-clicked -> send to select widget
+// -----------------------------------------------------------------------------
+void MultiDataContainerSelectionWidget::on_selectedDataContainers_itemDoubleClicked(QListWidgetItem *item)
+{
+  moveItems({item}, selectedDataContainers, availableDataContainers);
 }
 
 // -----------------------------------------------------------------------------
@@ -108,13 +140,8 @@ void MultiDataContainerSelectionWidget::beforePreflight()
   }
 
   QStringList dcNames{getFilter()->getDataContainerArray()->getDataContainerNames()};
-  for(const auto& eachDC : getFilter()->getDataContainerArray()->getDataContainerNames())
-  {
-    dcNames.push_back(eachDC);
-  }
-
-  validateDataContainerNames(dataContainersSelectWidget, dcNames);
-  validateDataContainerNames(dataContainersOrderWidget, dcNames);
+  validateDataContainerNames(availableDataContainers, dcNames);
+  validateDataContainerNames(selectedDataContainers, dcNames);
 }
 
 // -----------------------------------------------------------------------------
@@ -125,10 +152,13 @@ void MultiDataContainerSelectionWidget::afterPreflight()
   QStringList dcNames{getFilter()->getDataContainerArray()->getDataContainerNames()};
   QStringList newItems{dcNames};
 
-  syncItems(dataContainersSelectWidget, dcNames, newItems);
-  syncItems(dataContainersOrderWidget, dcNames, newItems);
+  // Syncing will remove already existing items from newItems list
+  // newItems will contain a removed item because the proper event hasn't been fired yet...
+  syncItems(availableDataContainers, dcNames, newItems);
+  syncItems(selectedDataContainers, dcNames, newItems);
 
-  dataContainersSelectWidget->addItems(newItems);
+  // Any remaining items in newItems should be added to selectWidget
+  availableDataContainers->addItems(newItems);
 }
 
 // -----------------------------------------------------------------------------
@@ -136,12 +166,12 @@ void MultiDataContainerSelectionWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 void MultiDataContainerSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  QStringList selectedDCs{nullptr};
-  for(int itemIndex = 0; itemIndex < dataContainersOrderWidget->count(); itemIndex++)
+  QStringList selectedDCs{};
+  for (const auto& eachItem : selectedDataContainers->findItems("*", Qt::MatchFlag::MatchWildcard))
   {
-    selectedDCs.push_back(dataContainersOrderWidget->item(itemIndex)->text());
+    selectedDCs.push_back(eachItem->text());
   }
-  QVariant var{0};
+  QVariant var{};
   var.setValue(selectedDCs);
   if(!filter->setProperty(PROPERTY_NAME_AS_CHAR, var))
   {
@@ -163,11 +193,11 @@ void MultiDataContainerSelectionWidget::updateDataContainerName(const QString& p
     if(oldPath.getDataContainerName() != newPath.getDataContainerName())
     {
       blockSignals(true);
-      for(const auto& eachOrderDC : dataContainersOrderWidget->findItems(oldPath.getDataContainerName(), Qt::MatchFlag::MatchCaseSensitive))
+      for(const auto& eachOrderDC : selectedDataContainers->findItems(oldPath.getDataContainerName(), Qt::MatchFlag::MatchCaseSensitive))
       {
         eachOrderDC->setText(newPath.getDataContainerName());
       }
-      for(const auto& eachOrderDC : dataContainersSelectWidget->findItems(oldPath.getDataContainerName(), Qt::MatchFlag::MatchCaseSensitive))
+      for(const auto& eachOrderDC : availableDataContainers->findItems(oldPath.getDataContainerName(), Qt::MatchFlag::MatchCaseSensitive))
       {
         eachOrderDC->setText(newPath.getDataContainerName());
       }
@@ -197,20 +227,37 @@ void MultiDataContainerSelectionWidget::syncItems(QListWidget* listWidget, const
 }
 
 // -----------------------------------------------------------------------------
+// Move items from one list to another (as in the double-click event)
+// -----------------------------------------------------------------------------
+void MultiDataContainerSelectionWidget::moveItems(const QList<QListWidgetItem*>& items, QListWidget* fromList, QListWidget* toList)
+{
+  QStringList newItems{};
+  for(const auto& eachItem : items)
+  {
+    newItems.push_back(eachItem->text());
+    delete fromList->takeItem(fromList->row(eachItem));
+  }
+  toList->addItems(newItems);
+}
+
+// -----------------------------------------------------------------------------
 // Validate ListWidget item exists in data container array
 // -----------------------------------------------------------------------------
-void MultiDataContainerSelectionWidget::validateDataContainerNames(const SVListWidget* list, const QList<QString>& compareList)
+void MultiDataContainerSelectionWidget::validateDataContainerNames(const QListWidget* list, const QList<QString>& compareList)
 {
-  for(int i = 0; i < list->count(); i++)
+  for(const auto& eachItem : list->findItems("*", Qt::MatchFlag::MatchWildcard))
   {
-    QListWidgetItem* item = list->item(i);
-    if(!compareList.contains(item->text()))
+    QIcon icon{":/SIMPL/icons/images/bullet_ball_green.png"};
+    if(!compareList.contains(eachItem->text()))
     {
-      item->setBackgroundColor(QColor(235, 110, 110));
+      getFilter()->notifyMissingProperty(getFilterParameter());
+      getFilter()->notifyWarningMessage(
+        "List contains invalid data container name",
+        "Invalid data container in list",
+        -66000
+      );
+      icon.addFile(":/SIMPL/icons/images/bullet_ball_red.png");
     }
-    else
-    {
-      item->setBackgroundColor(QColor(255, 255, 255));
-    }
+    eachItem->setIcon(icon);
   }
 }

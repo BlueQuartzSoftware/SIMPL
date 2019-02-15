@@ -62,7 +62,7 @@
         </widget>
        </item>
        <item>
-        <widget class="SVListWidget" name="dataContainersSelectWidget">
+        <widget class="SVListWidget" name="availableDataContainers">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
@@ -113,7 +113,7 @@
         </widget>
        </item>
        <item>
-        <widget class="SVListWidget" name="dataContainersOrderWidget">
+        <widget class="SVListWidget" name="selectedDataContainers">
          <property name="editTriggers">
           <set>QAbstractItemView::NoEditTriggers</set>
          </property>

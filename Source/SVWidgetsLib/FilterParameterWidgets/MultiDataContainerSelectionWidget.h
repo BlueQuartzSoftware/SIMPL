@@ -63,6 +63,12 @@ class SVWidgetsLib_EXPORT MultiDataContainerSelectionWidget : public FilterParam
 {
   Q_OBJECT
 
+  MultiDataContainerSelectionFilterParameter* m_FilterParameter;
+
+  static void syncItems(QListWidget*, const QStringList&, QStringList&);
+  static void moveItems(const QList<QListWidgetItem*>&, QListWidget*, QListWidget*);
+  void validateDataContainerNames(const QListWidget*, const QList<QString>&);
+
 public:
   /**
    * @brief Constructor
@@ -70,7 +76,7 @@ public:
    * @param filter The instance of the filter that this parameter is a part of
    * @param parent The parent QWidget for this Widget
    */
-  MultiDataContainerSelectionWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
+  MultiDataContainerSelectionWidget(FilterParameter*, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
   ~MultiDataContainerSelectionWidget() override;
 
@@ -78,6 +84,10 @@ public:
    * @brief This method does additional GUI widget connections
    */
   void setupGui() override;
+  MultiDataContainerSelectionWidget(const MultiDataContainerSelectionWidget&) = delete;            // Copy Constructor Not Implemented
+  MultiDataContainerSelectionWidget(MultiDataContainerSelectionWidget&&) = delete;                 // Move Constructor Not Implemented
+  MultiDataContainerSelectionWidget& operator=(const MultiDataContainerSelectionWidget&) = delete; // Copy Assignment Not Implemented
+  MultiDataContainerSelectionWidget& operator=(MultiDataContainerSelectionWidget&&) = delete;      // Move Assignment Not Implemented
 
 public slots:
   void beforePreflight();
@@ -85,17 +95,7 @@ public slots:
   void filterNeedsInputParameters(AbstractFilter* filter);
 
 protected slots:
-  void updateDataContainerName(const QString& propertyName, const DataArrayPath::RenameType& renamePath);
-
-private:
-  MultiDataContainerSelectionFilterParameter* m_FilterParameter;
-
-  static void syncItems(QListWidget*, const QStringList&, QStringList&);
-  static void validateDataContainerNames(const SVListWidget*, const QList<QString>&);
-
-public:
-  MultiDataContainerSelectionWidget(const MultiDataContainerSelectionWidget&) = delete;            // Copy Constructor Not Implemented
-  MultiDataContainerSelectionWidget(MultiDataContainerSelectionWidget&&) = delete;                 // Move Constructor Not Implemented
-  MultiDataContainerSelectionWidget& operator=(const MultiDataContainerSelectionWidget&) = delete; // Copy Assignment Not Implemented
-  MultiDataContainerSelectionWidget& operator=(MultiDataContainerSelectionWidget&&) = delete;      // Move Assignment Not Implemented
+  void updateDataContainerName(const QString&, const DataArrayPath::RenameType&);
+  void on_availableDataContainers_itemDoubleClicked(QListWidgetItem*);
+  void on_selectedDataContainers_itemDoubleClicked(QListWidgetItem*);
 };
