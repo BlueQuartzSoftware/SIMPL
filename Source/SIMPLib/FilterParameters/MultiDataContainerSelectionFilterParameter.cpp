@@ -60,6 +60,7 @@ MultiDataContainerSelectionFilterParameter::Pointer MultiDataContainerSelectionF
                                                                                             Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
                                                                                           const RequirementType req, int groupIndex)
 {
+
   MultiDataContainerSelectionFilterParameter::Pointer ptr = MultiDataContainerSelectionFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
   ptr->setPropertyName(propertyName);
@@ -93,7 +94,7 @@ QString MultiDataContainerSelectionFilterParameter::getWidgetType() const
 MultiDataContainerSelectionFilterParameter::RequirementType MultiDataContainerSelectionFilterParameter::CreateCategoryRequirement(const QString& primitiveType, size_t allowedCompDim,
 	AttributeMatrix::Category attributeMatrixCategory)
 {
-  using QVectorOfSizeType = QVector<size_t>;
+	typedef QVector<size_t> QVectorOfSizeType;
 	MultiDataContainerSelectionFilterParameter::RequirementType req;
 	AttributeMatrix::Types amTypes;
 	if (attributeMatrixCategory == AttributeMatrix::Category::Element)
@@ -139,7 +140,7 @@ MultiDataContainerSelectionFilterParameter::RequirementType MultiDataContainerSe
 MultiDataContainerSelectionFilterParameter::RequirementType MultiDataContainerSelectionFilterParameter::CreateRequirement(const QString& primitiveType, size_t allowedCompDim, AttributeMatrix::Type attributeMatrixType,
 	IGeometry::Type geometryType)
 {
-  using QVectorOfSizeType = QVector<size_t>;
+	typedef QVector<size_t> QVectorOfSizeType;
 	MultiDataContainerSelectionFilterParameter::RequirementType req;
 	if (primitiveType.compare(SIMPL::Defaults::AnyPrimitive) != 0)
 	{
@@ -171,11 +172,12 @@ void MultiDataContainerSelectionFilterParameter::readJson(const QJsonObject& jso
   {
     QJsonArray arrayObj = jsonValue.toArray();
     QStringList dcList;
-    for (const auto &eachDCObj : arrayObj)
+    for(int i = 0; i < arrayObj.size(); i++)
     {
-      QJsonObject obj = eachDCObj.toObject();
-      dcList.push_back(obj["Data Container Name"].toString());
+      QString dcName = arrayObj.at(i).toString();
+      dcList.push_back(dcName);
     }
+
     m_SetterCallback(dcList);
   }
 }
@@ -190,11 +192,10 @@ void MultiDataContainerSelectionFilterParameter::writeJson(QJsonObject& json)
     QStringList dcList = m_GetterCallback();
     QJsonArray arrayObj;
 
-    for (const auto &eachDCName : dcList)
+    for(int i = 0; i < dcList.size(); i++)
     {
-      QJsonObject obj;
-      obj["Data Container Name"] = eachDCName;
-      arrayObj.push_back(obj);
+      QString dcName = dcList[i];
+      arrayObj.push_back(dcName);
     }
 
     json[getPropertyName()] = arrayObj;
@@ -211,13 +212,14 @@ void MultiDataContainerSelectionFilterParameter::dataArrayPathRenamed(AbstractFi
   std::tie(oldPath, newPath) = renamePath;
 
   QStringList dcList = m_GetterCallback();
+  int count = dcList.size();
   bool updated = false;
 
-  for (auto &eachDCName : dcList)
+  for(int i = 0; i < count; i++)
   {
-    if (eachDCName == oldPath.getDataContainerName())
+    if(dcList[i] == oldPath.getDataContainerName())
     {
-      eachDCName = newPath.getDataContainerName();
+      dcList[i] = newPath.getDataContainerName();
       updated = true;
     }
   }
