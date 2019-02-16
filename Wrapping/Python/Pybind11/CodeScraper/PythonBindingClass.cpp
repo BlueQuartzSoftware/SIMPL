@@ -2,15 +2,14 @@
 
 #include <iostream>
 
-#include <QtCore/QDateTime>
-#include <QtCore/QTemporaryFile>
 #include <QtCore/QCryptographicHash>
+#include <QtCore/QDateTime>
 #include <QtCore/QRegularExpression>
-
+#include <QtCore/QTemporaryFile>
 
 #include "CodeScraper/CodeScraperConstants.h"
-#include "CodeScraper/SIMPLPyBind11Config.h"
 #include "CodeScraper/PythonUtils.h"
+#include "CodeScraper/SIMPLPyBind11Config.h"
 #include "PythonBindingsModule.h"
 
 PythonBindingClass::PythonBindingClass(PythonBindingsModule* moduleCode, const QString& isSIMPLib)
@@ -83,64 +82,62 @@ void PythonBindingClass::writeBindingFile(const QString& outputFilePath)
     QString output;
     QTextStream out(&output);
     bool hasInstanceVar = false;
-  //  out << "#if 0\n";
-  //  out << "Properties.size(): " << m_Properties.size() << "\n";
-  //  out << "Methods.size(): " << m_Methods.size() << "\n";
-  //  out << "StaticNewMethods.size(): " << m_StaticNewMethods.size() << "\n";
-  //  out << "Constructors.size(): " << m_Constructors.size() << "\n";
-  //  out << "Enumerations.size(): " << m_Enumerations.size() << "\n";
-  //  out << "#endif\n";
-    
-    out << generateTopMatterCode();
-    
-    //out << "/* BEFORE generateSharedPointerInitCode CODE */" << "\n";
-    out << generateSharedPointerInitCode();
-    //out << "/* AFTER generateSharedPointerInitCode CODE */" << "\n";
-    
-    //out << "/* BEFORE generateConstructorsCodes CODE */" << "\n";
-    out << generateConstructorsCodes();
-    //out << "/* AFTER generateConstructorsCodes CODE */" << "\n";
+    //  out << "#if 0\n";
+    //  out << "Properties.size(): " << m_Properties.size() << "\n";
+    //  out << "Methods.size(): " << m_Methods.size() << "\n";
+    //  out << "StaticNewMethods.size(): " << m_StaticNewMethods.size() << "\n";
+    //  out << "Constructors.size(): " << m_Constructors.size() << "\n";
+    //  out << "Enumerations.size(): " << m_Enumerations.size() << "\n";
+    //  out << "#endif\n";
 
-    if(getHasStaticNewMacro() || (!m_StaticNewMethods.isEmpty() && getIsSharedPointer()) )
+    out << generateTopMatterCode();
+
+    // out << "/* BEFORE generateSharedPointerInitCode CODE */" << "\n";
+    out << generateSharedPointerInitCode();
+    // out << "/* AFTER generateSharedPointerInitCode CODE */" << "\n";
+
+    // out << "/* BEFORE generateConstructorsCodes CODE */" << "\n";
+    out << generateConstructorsCodes();
+    // out << "/* AFTER generateConstructorsCodes CODE */" << "\n";
+
+    if(getHasStaticNewMacro() || (!m_StaticNewMethods.isEmpty() && getIsSharedPointer()))
     {
       out << "  /* Instantiate the class instance variable*/\n";
       out << "  instance\n";
       hasInstanceVar = true;
     }
-    //out << "/* BEFORE generateStaticNewCode CODE */" << "\n";
+    // out << "/* BEFORE generateStaticNewCode CODE */" << "\n";
     out << generateStaticNewCode();
-    //out << "/* AFTER generateStaticNewCode CODE */" << "\n";
-    
+    // out << "/* AFTER generateStaticNewCode CODE */" << "\n";
+
     if(!getIsSharedPointer())
     {
       hasInstanceVar = true;
     }
 
-    
     if(!m_Properties.isEmpty() && !hasInstanceVar)
     {
       out << "  /* Instantiate the class instance variable*/\n";
       out << "  instance\n";
       hasInstanceVar = true;
-    }    
+    }
     out << generatePropertiesCode();
-    
-    
+
     if(!m_Methods.isEmpty() && !hasInstanceVar)
     {
       out << "  /* Instantiate the class instance variable*/\n";
       out << "  instance\n";
       hasInstanceVar = true;
-    }    
+    }
     out << generateMethodCode();
-    
+
     if(hasInstanceVar)
     {
       out << "  ;\n";
     }
     out << generateEnumerationCode();
     out << generateFooterCode();
-    
+
     // -----------------------------------------------------------------------------
     //
     // -----------------------------------------------------------------------------
@@ -155,20 +152,20 @@ void PythonBindingClass::writeBindingFile(const QString& outputFilePath)
     {
       if(m_IsSIMPLib.compare("TRUE") == 0)
       {
-      //  init << "pybind11_init_" << getLibName() << "_" << getClassName() << "(mod, " << getLibName() << "_" << getSuperClass() << ");\n";
+        //  init << "pybind11_init_" << getLibName() << "_" << getClassName() << "(mod, " << getLibName() << "_" << getSuperClass() << ");\n";
         init << "declare" << getClassName() << "(mod, " << getLibName() << "_" << getSuperClass() << ");\n";
       }
       else
       {
-      //  init << "pybind11_init_" << getLibName() << "_" << getClassName() << "(mod"
-      init << "declare" << getClassName() << "(mod"
+        //  init << "pybind11_init_" << getLibName() << "_" << getClassName() << "(mod"
+        init << "declare" << getClassName() << "(mod"
 
              << ");\n";
       }
     }
     else
     {
-      //init << "pybind11_init_" << getLibName() << "_" << getClassName() << "(mod);";
+      // init << "pybind11_init_" << getLibName() << "_" << getClassName() << "(mod);";
       init << "declare" << getClassName() << "(mod);";
     }
 
@@ -188,7 +185,7 @@ QString quote(const QString& str)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QByteArray PythonBindingClass::md5FileContents(const QString &filename)
+QByteArray PythonBindingClass::md5FileContents(const QString& filename)
 {
   QFile destination(filename);
   destination.open(QFile::ReadOnly);
@@ -208,9 +205,9 @@ QByteArray PythonBindingClass::md5FileContents(const QString &filename)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PythonBindingClass::writeOutput(bool didReplace, const QString& outLines, QString filename)
+void PythonBindingClass::writeOutput(bool didReplace, const QString& outLines, const QString& filename)
 {
-  if(didReplace == true)
+  if(didReplace)
   {
     QFileInfo fi2(filename);
     QString parentPath = fi2.path();
@@ -222,24 +219,24 @@ void PythonBindingClass::writeOutput(bool didReplace, const QString& outLines, Q
       qDebug() << ss;
       return;
     }
-    
+
     QTemporaryFile tempfile;
     QString tempFileName;
-    if (tempfile.open()) {
+    if(tempfile.open())
+    {
       tempFileName = tempfile.fileName(); // returns the unique file name
       QTextStream stream(&tempfile);
       stream << outLines;
       tempfile.close();
-      //qDebug() << "Wrote " << tempFileName;
+      // qDebug() << "Wrote " << tempFileName;
     }
-    
+
     if(!fi2.exists())
-    { 
-      //qDebug() << "DOES NOT EXIST: " << filename;
+    {
+      // qDebug() << "DOES NOT EXIST: " << filename;
       if(!tempfile.copy(filename))
       {
-        std::cout << "[PythonBindingClass] Temp file '" << tempFileName.toStdString() << "' could not be copied to '"
-                  << filename.toStdString() << "'" << std::endl;
+        std::cout << "[PythonBindingClass] Temp file '" << tempFileName.toStdString() << "' could not be copied to '" << filename.toStdString() << "'" << std::endl;
       }
       else
       {
@@ -263,8 +260,7 @@ void PythonBindingClass::writeOutput(bool didReplace, const QString& outLines, Q
         }
         if(!tempfile.copy(filename))
         {
-          std::cout << "[PythonBindingClass] Temp file '" << tempFileName.toStdString() << "' could not be copied to '"
-                    << filename.toStdString() << "'" << std::endl;
+          std::cout << "[PythonBindingClass] Temp file '" << tempFileName.toStdString() << "' could not be copied to '" << filename.toStdString() << "'" << std::endl;
         }
         else
         {
@@ -272,9 +268,8 @@ void PythonBindingClass::writeOutput(bool didReplace, const QString& outLines, Q
         }
       }
     }
-    
-    
-    #if 0
+
+#if 0
 #if OVERWRITE_SOURCE_FILE
     QFile hOut(filename);
 #else
@@ -286,7 +281,6 @@ void PythonBindingClass::writeOutput(bool didReplace, const QString& outLines, Q
     stream << outLines;
     hOut.close();
 #endif
-
   }
 }
 
@@ -338,7 +332,7 @@ QString PythonBindingClass::generateSharedPointerInitCode()
     source.close();
 
     QTextStream out(&headerTemplate);
-    
+
     out << "PySharedPtrClass<@CLASS_NAME@> declare@CLASS_NAME@(py::module &m";
     if(m_IsSIMPLib.compare("TRUE") == 0)
     {
@@ -356,7 +350,7 @@ QString PythonBindingClass::generateSharedPointerInitCode()
       out << "  using Py@CLASS_NAME@Type = py::class_<@CLASS_NAME@, AbstractFilter, std::shared_ptr<@CLASS_NAME@>>;\n";
       out << "\n";
       out << "  /* Import the SIMPL pybind11 module so that we can inherit from AbstractFilter */\n";
-      out << "  //py::module::import(\""<< SIMPL::PyBind11::SIMPL_LibraryName << SIMPL::PyBind11::PythonModuleSuffix << "\");\n"
+      out << "  //py::module::import(\"" << SIMPL::PyBind11::SIMPL_LibraryName << SIMPL::PyBind11::PythonModuleSuffix << "\");\n"
           << "  Py@CLASS_NAME@Type instance(m, \"@CLASS_NAME@\");\n"
           << "\n";
     }
@@ -380,13 +374,13 @@ QString PythonBindingClass::generateSharedPointerInitCode()
   headerTemplate = headerTemplate.replace(SUPERCLASS_NAME, getSuperClass());
   headerTemplate = headerTemplate.replace(LIB_NAME, m_LibName);
 
-//  QString pybind11HeaderPath = QString("%1/pybind11/%2_PY11.h").arg(subPath).arg(getClassName());
+  //  QString pybind11HeaderPath = QString("%1/pybind11/%2_PY11.h").arg(subPath).arg(getClassName());
   QString pybind11HeaderPath = QString("%1/%2_PY11.h").arg(subPath, 1).arg(getClassName(), 2);
   if(!m_CharsToStrip.isEmpty())
   {
     pybind11HeaderPath = pybind11HeaderPath.replace(m_CharsToStrip, "");
   }
-    
+
   m_Module->addHeader(getClassName(), pybind11HeaderPath);
   m_Module->addDependency(getSuperClass(), getClassName());
 
@@ -411,7 +405,7 @@ QString PythonBindingClass::generateStaticNewCode()
     constructors << TAB << ".def_static(\"New\", &" << getClassName() << "::New)" << NEWLINE_SIMPL;
   }
 
-  for(auto line : m_StaticNewMethods)
+  for(const auto& line : m_StaticNewMethods)
   {
     QStringList tokens = line.split("(");
     tokens = tokens[1].replace(")", "").trimmed().split(" ");
@@ -432,7 +426,11 @@ QString PythonBindingClass::generateStaticNewCode()
         }
       }
       constructors << TAB << ".def(py::init([](" << s1 << ") {\n      return " << getClassName() << "::" << methodName << "(" << s2 << ");\n    }))" << NEWLINE_SIMPL;
-      constructors << TAB << ".def_static(\"" << methodName << "\", &" << getClassName() << "::" << methodName << ")" << NEWLINE_SIMPL;
+
+      if(tokens.size() < 2 || tokens[1] != ::kOverload)
+      {
+        constructors << TAB << ".def_static(\"" << methodName << "\", &" << getClassName() << "::" << methodName << ")" << NEWLINE_SIMPL;
+      }
     }
   }
 
@@ -475,19 +473,22 @@ QString PythonBindingClass::generateConstructorsCodes()
   constructors << TAB << ".def(py::init<" << getClassName() << " const &>())" << NEWLINE_SIMPL;
   if(!m_Constructors.isEmpty())
   {
-    constructors << TAB << "/* Number of non-default constructors: " <<  m_Constructors.size()  << "*/" << NEWLINE_SIMPL;
+    constructors << TAB << "/* Number of non-default constructors: " << m_Constructors.size() << "*/" << NEWLINE_SIMPL;
   }
-  for(auto line : m_Constructors)
+  for(const auto& line : m_Constructors)
   {
     QStringList tokens = line.split("(");
     tokens = tokens[1].replace(")", "").trimmed().split(" ");
-    //QString keyword = tokens[0];
+    // QString keyword = tokens[0];
     //.def(py::init<const std::string &>())
     constructors << TAB << ".def(py::init<";
     for(int i = 1; i < tokens.size(); i++)
     {
       constructors << "const " << tokens[i] << " &";
-      if(i != tokens.size() - 1) { constructors << ", "; }
+      if(i != tokens.size() - 1)
+      {
+        constructors << ", ";
+      }
     }
     constructors << ">())" << NEWLINE_SIMPL;
   }
@@ -510,11 +511,11 @@ QString PythonBindingClass::generatePropertiesCode()
 {
   QString code;
   QTextStream out(&code);
-  
+
   QString methodArgs;
   QTextStream pcodes(&methodArgs);
   pcodes << "(data_container_array, ";
-  
+
   QString bodyCodes;
   QTextStream bcodes(&bodyCodes);
   QString camelClassName = SIMPL::Python::fromCamelCase(getClassName());
@@ -526,14 +527,27 @@ QString PythonBindingClass::generatePropertiesCode()
     QString line = m_Properties.at(i);
     QStringList tokens = line.split("(");
     tokens = tokens[1].replace(")", "").trimmed().split(" ");
-    QString pyType = tokens[0];
+    // QString pyType = tokens[0];
     QString varName = tokens[1];
 
-    if(tokens.size() == 6)
+    if(tokens.size() == 7 && tokens[6] == ::kConstGetOverload)
+    {
+      out << TAB << "/* Property accessors for " << varName << " */" << NEWLINE_SIMPL;
+      out << TAB << ".def_property(\"" << varName << "\", py::overload_cast<>(&" << getClassName() << "::get" << varName << ", py::const_), &" << getClassName() << "::set" << varName << ")"
+          << NEWLINE_SIMPL;
+
+      pcodes << SIMPL::Python::fromCamelCase(varName);
+      if(i < m_Properties.size() - 1)
+      {
+        pcodes << ", ";
+      }
+      bcodes << "    " << camelClassName << "." << varName << " = " << SIMPL::Python::fromCamelCase(varName) << NEWLINE_SIMPL;
+    }
+    else if(tokens.size() == 6)
     {
       out << TAB << "/* Property accessors for " << varName << " */" << NEWLINE_SIMPL;
       out << TAB << ".def_property(\"" << varName << "\", &" << getClassName() << "::get" << varName << ", &" << getClassName() << "::set" << varName << ")" << NEWLINE_SIMPL;
-      
+
       pcodes << SIMPL::Python::fromCamelCase(varName);
       if(i < m_Properties.size() - 1)
       {
@@ -553,21 +567,27 @@ QString PythonBindingClass::generatePropertiesCode()
     }
   }
   pcodes << ")";
-  
-  bcodes 
-    //     << "    " << camelClassName << ".preflight()" << NEWLINE_SIMPL
-    //     << "    preflightError = " << camelClassName << ".ErrorCondition" << NEWLINE_SIMPL
-    //     << "    if preflightError >= 0 :" << NEWLINE_SIMPL
-         << "    "  << camelClassName << ".execute()" << NEWLINE_SIMPL
-         << "    executeError = " << camelClassName << ".ErrorCondition" << NEWLINE_SIMPL
-         << "    return executeError" << NEWLINE_SIMPL
-         ;
-         
-         
+
+  bcodes
+      //     << "    " << camelClassName << ".preflight()" << NEWLINE_SIMPL
+      //     << "    preflightError = " << camelClassName << ".ErrorCondition" << NEWLINE_SIMPL
+      //     << "    if preflightError >= 0 :" << NEWLINE_SIMPL
+      << "    " << camelClassName << ".execute()" << NEWLINE_SIMPL << "    executeError = " << camelClassName << ".ErrorCondition" << NEWLINE_SIMPL << "    return executeError" << NEWLINE_SIMPL;
+
+  /*
+    Replace any Python keywords in arguments
+     For now, just replace the occurence of 'lambda'
+  */
+  if(methodArgs.contains("lambda") || bodyCodes.contains("lambda"))
+  {
+    methodArgs.replace("lambda", "lambda_1");
+    bodyCodes.replace("lambda", "lambda_1");
+  }
+
   QVector<QString> pythonicCodes;
   pythonicCodes.push_back(methodArgs);
   pythonicCodes.push_back(bodyCodes);
-  
+
   m_Module->addPythonicCodes(getClassName(), pythonicCodes);
   return code;
 }
@@ -579,11 +599,11 @@ QString PythonBindingClass::generatePythonTestCode()
 {
   QString code;
   QTextStream out(&code);
-  for(auto line : m_Properties)
+  for(const auto& line : m_Properties)
   {
     QStringList tokens = line.split("(");
     tokens = tokens[1].replace(")", "").trimmed().split(" ");
-    QString pyType = tokens[0];
+    // QString pyType = tokens[0];
     QString varName = tokens[1];
 
     if(tokens.size() == 6)
@@ -605,7 +625,6 @@ QString PythonBindingClass::generatePythonTestCode()
   return code;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -614,22 +633,32 @@ QString PythonBindingClass::generateMethodCode()
   QString code;
   QTextStream out(&code);
 
-  for(auto line : m_Methods)
+  for(const auto& line : m_Methods)
   {
     QStringList tokens = line.split("(");
     tokens = tokens[1].replace(")", "").trimmed().split(" ");
-   // QString returnType = tokens[0];
+    // QString returnType = tokens[0];
     QString methodName = tokens[1];
+    QString returnValuePolicy = "";
     out << TAB << "/* Class instance method " << methodName << " */" << NEWLINE_SIMPL;
     bool methodIsConst = false;
+    bool hasReturnValuePolicy = false;
     if(tokens.last().compare(::kConstMethod) == 0)
     {
       methodIsConst = true;
       tokens.pop_back();
     }
+    if(tokens.contains(::kReturnValuePolicy))
+    {
+      hasReturnValuePolicy = true;
+      int index = tokens.indexOf(::kReturnValuePolicy);
+      returnValuePolicy = ", " + tokens[index + 1];
+      tokens.removeAt(index);
+      tokens.removeAt(index);
+    }
     if(tokens.size() == 2)
     {
-      out << TAB << ".def(\"" << methodName << "\", &" << getClassName() << "::" << methodName << ")" << NEWLINE_SIMPL;
+      out << TAB << ".def(\"" << methodName << "\", &" << getClassName() << "::" << methodName << returnValuePolicy << ")" << NEWLINE_SIMPL;
     }
     else if(tokens.size() >= 3 && tokens[2] == ::kOverload)
     {
@@ -638,13 +667,12 @@ QString PythonBindingClass::generateMethodCode()
       .def("set", py::overload_cast<int>(&Pet::set), "Set the pet's age")
       .def("set", py::overload_cast<const std::string &>(&Pet::set), "Set the pet's name");
       */
-#if 1 /* C++14 style */
       out << TAB << ".def(\"" << methodName << "\", py::overload_cast<";
       for(int32_t i = 3; i < tokens.size(); i++)
       {
         QStringList varPair = tokens[i].split(","); // Split the var,type pair using a comma
         out << varPair[0].replace('.', ' ');
-        if(i != tokens.size()-1)
+        if(i != tokens.size() - 1)
         {
           out << ", ";
         }
@@ -654,34 +682,14 @@ QString PythonBindingClass::generateMethodCode()
       {
         out << ", py::const_";
       }
-      out << ")";
+      out << returnValuePolicy << ")";
 
-#else /* C++11 Style */
-      /*
-      * .def("getAttributeMatrix", (AttributeMatrix::Pointer (DataContainer::*)(const QString &)) &DataContainer::getAttributeMatrix, "Set the pet's age")
-      * .def("getAttributeMatrix", (AttributeMatrix::Pointer (DataContainer::*)(const DataArrayPath &)) &DataContainer::getAttributeMatrix, "Set the pet's name")
-      */
-      out << TAB << ".def(\"" << methodName << "\", (" << tokens[0] << " (" << getClassName() << "::*)(";
-      for(int32_t i = 3; i < tokens.size(); i++)
-      {  
-        QStringList varPair = tokens[i].split(","); // Split the var,type pair using a comma
-        
-        out << varPair[0].replace('.', ' ');
-        if(i != tokens.size()-1)
-        {
-          out << ", ";
-        }
-      }
-      out << ")) &"<<getClassName()<<"::"<<tokens[1];
-#endif
-      
       for(int32_t i = 3; i < tokens.size(); i++)
       {
         QStringList varPair = tokens[i].split(","); // Split the var,type pair using a comma
         out << ", \n" << TAB << TAB << TAB << TAB << "py::arg(\"" << varPair[1] << "\")";
       }
-      out << NEWLINE_SIMPL << TAB << TAB << TAB << ")" << NEWLINE_SIMPL;
-           
+      out << NEWLINE_SIMPL << TAB << TAB << TAB << returnValuePolicy << ")" << NEWLINE_SIMPL;
     }
     else if(tokens.size() > 3 && tokens[2] == ::kArgs)
     {
@@ -690,7 +698,7 @@ QString PythonBindingClass::generateMethodCode()
       {
         out << ", \n" << TAB << TAB << TAB << TAB << "py::arg(\"" << tokens[i] << "\")";
       }
-      out << NEWLINE_SIMPL << TAB << TAB << TAB << ")" << NEWLINE_SIMPL;
+      out << NEWLINE_SIMPL << TAB << TAB << TAB << returnValuePolicy << ")" << NEWLINE_SIMPL;
     }
   }
   return code;
@@ -704,16 +712,16 @@ QString PythonBindingClass::generateEnumerationCode()
   QString code;
   QTextStream out(&code);
   EnumerationType::Iterator iter = m_Enumerations.begin();
-  
-  for (iter = m_Enumerations.begin(); iter != m_Enumerations.end(); iter++)
+
+  for(iter = m_Enumerations.begin(); iter != m_Enumerations.end(); iter++)
   {
-    
+
     out << "\n\n  /* Enumeration code for " << getClassName() << "::" << iter.key() << " ******************/\n";
     QString n = iter.key(); // Get the variable name of the enumeration
     out << "  py::enum_<" << getClassName() << "::" << n << ">(instance, \"" << n << "\")\n";
     QStringList values = iter.value();
     for(auto v : values)
-    { 
+    {
       if(v.endsWith(',')) // For those enumerations that do not have an actual value.
       {
         v = v.remove(',');
@@ -721,8 +729,8 @@ QString PythonBindingClass::generateEnumerationCode()
       out << "    .value(\"" << v << "\", " << getClassName() << "::" << n << "::" << v << ")\n";
     }
     out << "    .export_values();\n";
-  } 
-  //qDebug() << code;
+  }
+  // qDebug() << code;
   return code;
 }
 
@@ -733,14 +741,13 @@ QString PythonBindingClass::generateFooterCode()
 {
   QString code;
   QTextStream out(&code);
-  //out << TAB << ";" << NEWLINE_SIMPL;
+  // out << TAB << ";" << NEWLINE_SIMPL;
   out << NEWLINE_SIMPL << "  /* Return the instance */" << NEWLINE_SIMPL;
   out << TAB << "return instance;" << NEWLINE_SIMPL;
   out << "}" << NEWLINE_SIMPL;
   out << "\n\n";
-  
+
   // Close up the Anonymous namespace
   out << "} /* End anonymous namespace */\n\n";
   return code;
-  
 }

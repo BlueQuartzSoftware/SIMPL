@@ -252,8 +252,8 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
       H5ScopedGroupSentinel sentinel(&attrMatGid, true);
 
       AttributeMatrixProxy amProxy(attributeMatrixName);
-      amProxy.name = attributeMatrixName;
-      amProxy.flag = Qt::Unchecked;
+      amProxy.setName(attributeMatrixName);
+      amProxy.setFlag(Qt::Unchecked);
 
       AttributeMatrix::EnumType amTypeTmp = static_cast<AttributeMatrix::EnumType>(AttributeMatrix::Type::Unknown);
       herr_t err = QH5Lite::readScalarAttribute(containerId, attributeMatrixName, SIMPL::StringConstants::AttributeMatrixType, amTypeTmp);
@@ -264,10 +264,10 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
           AttributeMatrix::Types amTypes = req->getAMTypes();
           if(amTypes.empty() || amTypes.contains(static_cast<AttributeMatrix::Type>(amTypeTmp)))
           {
-            amProxy.flag = Qt::Checked;
+            amProxy.setFlag(Qt::Checked);
           }
         }
-        amProxy.amType = static_cast<AttributeMatrix::Type>(amTypeTmp);
+        amProxy.setAMType(static_cast<AttributeMatrix::Type>(amTypeTmp));
       }
       else
       {
@@ -277,11 +277,12 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
       QString h5Path = h5InternalPath + "/" + attributeMatrixName;
 
       // Read in the names of the Data Arrays that make up the AttributeMatrix
-      QMap<QString, DataArrayProxy>& daProxies = amProxy.dataArrays;
+      AttributeMatrixProxy::StorageType daProxies = amProxy.getDataArrays();
       DataArrayProxy::ReadDataArrayStructure(attrMatGid, daProxies, req, h5Path);
+      amProxy.setDataArrays(daProxies);
 
       // Insert the AttributeMatrixProxy proxy into the dataContainer proxy
-      dcProxy->attributeMatricies.insert(attributeMatrixName, amProxy);
+      dcProxy->insertAttributeMatrix(attributeMatrixName, amProxy);
     }
   }
 }
@@ -316,7 +317,7 @@ bool AttributeMatrix::validateAttributeArraySizes()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AttributeMatrix::addAttributeArray(const QString& name, IDataArray::Pointer data)
+int AttributeMatrix::addAttributeArray(const QString& name, const IDataArray::Pointer& data)
 {
   if(data->getName().compare(name) != 0)
   {
@@ -349,6 +350,14 @@ IDataArray::Pointer AttributeMatrix::getAttributeArray(const QString& name)
     return IDataArray::NullPointer();
   }
   return it.value();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+IDataArray::Pointer AttributeMatrix::getAttributeArray(const DataArrayPath& path)
+{
+  return getAttributeArray(path.getDataArrayName());
 }
 
 // -----------------------------------------------------------------------------
@@ -406,7 +415,7 @@ QVector<size_t> AttributeMatrix::getTupleDimensions()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AttributeMatrix::setTupleDimensions(QVector<size_t> tupleDims)
+void AttributeMatrix::setTupleDimensions(const QVector<size_t>& tupleDims)
 {
   resizeAttributeArrays(tupleDims);
 }
@@ -466,13 +475,13 @@ bool AttributeMatrix::removeInactiveObjects(const QVector<bool> &activeObjects, 
     if(!removeList.empty())
     {
       QList<QString> headers = getAttributeArrayNames();
-      for(QList<QString>::iterator iter = headers.begin(); iter != headers.end(); ++iter)
+      for(const auto& header : headers)
       {
-        IDataArray::Pointer p = getAttributeArray(*iter);
+        IDataArray::Pointer p = getAttributeArray(header);
         QString type = p->getTypeAsString();
         if(type.compare("NeighborList<T>") == 0)
         {
-          removeAttributeArray(*iter);
+          removeAttributeArray(header);
         }
         else
         {
@@ -504,9 +513,8 @@ bool AttributeMatrix::removeInactiveObjects(const QVector<bool> &activeObjects, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AttributeMatrix::resizeAttributeArrays(QVector<size_t> tDims)
+void AttributeMatrix::resizeAttributeArrays(const QVector<size_t>& tDims)
 {
-  // int success = 0;
   m_TupleDims = tDims;
   size_t numTuples = m_TupleDims[0];
   for(int i = 1; i < m_TupleDims.size(); i++)
@@ -516,7 +524,6 @@ void AttributeMatrix::resizeAttributeArrays(QVector<size_t> tDims)
 
   for(QMap<QString, IDataArray::Pointer>::iterator iter = m_AttributeArrays.begin(); iter != m_AttributeArrays.end(); ++iter)
   {
-    // std::cout << "Resizing Array '" << (*iter).first << "' : " << success << std::endl;
     IDataArray::Pointer d = iter.value();
     d->resize(numTuples);
   }
@@ -592,7 +599,7 @@ int AttributeMatrix::writeAttributeArraysToHDF5(hid_t parentId)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, QString name, bool preflight)
+int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, const QString& name, bool preflight)
 {
   int err = 0;
   QString classType;
@@ -653,48 +660,40 @@ int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, QString name, bool
 int AttributeMatrix::readAttributeArraysFromHDF5(hid_t amGid, bool preflight, AttributeMatrixProxy* attrMatProxy)
 {
   int err = 0;
-  QMap<QString, DataArrayProxy> dasToRead = attrMatProxy->dataArrays;
+  AttributeMatrixProxy::StorageType dasToRead = attrMatProxy->getDataArrays();
   QString classType;
-  for(QMap<QString, DataArrayProxy>::iterator iter = dasToRead.begin(); iter != dasToRead.end(); ++iter)
+  for(const auto& daToRead : dasToRead)
   {
-    // qDebug() << "Reading the " << iter->name << " Array from the " << m_Name << " Attribute Matrix \n";
-    if(iter->flag == SIMPL::Unchecked)
+    if(daToRead.getFlag() == SIMPL::Unchecked)
     {
       continue;
     }
-    QH5Lite::readStringAttribute(amGid, iter->name, SIMPL::HDF5::ObjectType, classType);
+    QH5Lite::readStringAttribute(amGid, daToRead.getName(), SIMPL::HDF5::ObjectType, classType);
     //   qDebug() << groupName << " Array: " << *iter << " with C++ ClassType of " << classType << "\n";
     IDataArray::Pointer dPtr = IDataArray::NullPointer();
 
     if(classType.startsWith("DataArray"))
     {
-      dPtr = H5DataArrayReader::ReadIDataArray(amGid, iter->name, preflight);
+      dPtr = H5DataArrayReader::ReadIDataArray(amGid, daToRead.getName(), preflight);
     }
     else if(classType.compare("StringDataArray") == 0)
     {
-      dPtr = H5DataArrayReader::ReadStringDataArray(amGid, iter->name, preflight);
+      dPtr = H5DataArrayReader::ReadStringDataArray(amGid, daToRead.getName(), preflight);
     }
     else if(classType.compare("vector") == 0)
     {
     }
     else if(classType.compare("NeighborList<T>") == 0)
     {
-      dPtr = H5DataArrayReader::ReadNeighborListData(amGid, iter->name, preflight);
+      dPtr = H5DataArrayReader::ReadNeighborListData(amGid, daToRead.getName(), preflight);
     }
     else if(classType.compare("Statistics") == 0)
     {
       StatsDataArray::Pointer statsData = StatsDataArray::New();
-      statsData->setName(iter->name);
+      statsData->setName(daToRead.getName());
       statsData->readH5Data(amGid);
       dPtr = statsData;
     }
-    //    else if ( (iter->name).compare(SIMPL::EnsembleData::Statistics) == 0)
-    //    {
-    //      StatsDataArray::Pointer statsData = StatsDataArray::New();
-    //      statsData->setName(SIMPL::EnsembleData::Statistics);
-    //      statsData->readH5Data(amGid);
-    //      dPtr = statsData;
-    //    }
 
     if(nullptr != dPtr.get())
     {
@@ -818,7 +817,7 @@ QString AttributeMatrix::getInfoString(SIMPL::InfoStringFormat format)
 //
 // -----------------------------------------------------------------------------
 QString AttributeMatrix::writeXdmfAttributeDataHelper(int numComp, const QString& attrType, const QString& dataContainerName, IDataArray::Pointer array, const QString& centering, int precision,
-                                                      const QString& xdmfTypeName, const QString& hdfFileName, const uint8_t gridType)
+                                                      const QString& xdmfTypeName, const QString& hdfFileName, uint8_t gridType)
 {
   QString buf;
   QTextStream out(&buf);
@@ -925,7 +924,7 @@ QString AttributeMatrix::writeXdmfAttributeDataHelper(int numComp, const QString
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString AttributeMatrix::writeXdmfAttributeData(IDataArray::Pointer array, const QString& centering, const QString& dataContainerName, const QString& hdfFileName, const uint8_t gridType)
+QString AttributeMatrix::writeXdmfAttributeData(const IDataArray::Pointer& array, const QString& centering, const QString& dataContainerName, const QString& hdfFileName, const uint8_t gridType)
 {
   QString xdmfText;
   QTextStream out(&xdmfText);

@@ -428,7 +428,7 @@ bool DataContainerReader::syncProxies()
   }
 
   // If there is something in the cached proxy...
-  if(!m_InputFileDataContainerArrayProxy.dataContainers.empty())
+  if(!m_InputFileDataContainerArrayProxy.getDataContainers().empty())
   {
     int err = 0;
     DataContainerArrayProxy fileProxy = simplReader->readDataContainerArrayStructure(&req, err);

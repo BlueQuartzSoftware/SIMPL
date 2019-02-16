@@ -46,6 +46,13 @@
 */
 class SIMPLib_EXPORT ComparisonValue : public AbstractComparison
 {
+  PYB11_CREATE_BINDINGS(ComparisonValue SUPERCLASS AbstractComparison)
+  PYB11_CREATION()
+  PYB11_PROPERTY(QString AttributeArrayName READ getAttributeArrayName WRITE setAttributeArrayName)
+  PYB11_PROPERTY(int CompOperator READ getCompOperator WRITE setCompOperator)
+  PYB11_PROPERTY(double CompValue READ getCompValue WRITE setCompValue)
+  PYB11_PROPERTY(ComparisonSet::Pointer ParentSet READ getParentSet WRITE setParentSet)
+  PYB11_PROPERTY(int UnionOperator READ getUnionOperator WRITE setUnionOperator)
 public:
   SIMPL_SHARED_POINTERS(ComparisonValue)
   SIMPL_STATIC_NEW_MACRO(ComparisonValue)

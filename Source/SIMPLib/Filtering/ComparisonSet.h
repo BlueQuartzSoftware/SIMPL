@@ -45,6 +45,16 @@
 */
 class SIMPLib_EXPORT ComparisonSet : public AbstractComparison
 {
+  using AbstractComparisonPtr = AbstractComparison::Pointer;
+  // clang-format off
+  PYB11_CREATE_BINDINGS(ComparisonSet SUPERCLASS AbstractComparison)
+  PYB11_CREATION()
+  PYB11_PROPERTY(QVector<AbstractComparison::Pointer> Comparisons READ getComparisons WRITE setComparisons)
+  PYB11_PROPERTY(bool InvertComparison READ getInvertComparison WRITE setInvertComparison)
+  PYB11_PROPERTY(int UnionOperator READ getUnionOperator WRITE setUnionOperator)
+  PYB11_METHOD(void addComparison ARGS AbstractComparisonPtr,comparison)
+  PYB11_METHOD(void insertComparison ARGS int,index AbstractComparisonPtr,comparison)
+  // clang-format on
 public:
   SIMPL_SHARED_POINTERS(ComparisonSet)
   SIMPL_STATIC_NEW_MACRO(ComparisonSet)

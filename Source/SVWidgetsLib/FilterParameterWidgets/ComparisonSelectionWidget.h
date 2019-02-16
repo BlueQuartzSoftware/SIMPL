@@ -119,7 +119,7 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
      */
     void filterNeedsInputParameters(AbstractFilter* filter);
 
-    void attributeMatrixSelected(QString path);
+    void attributeMatrixSelected(const QString& path);
 
   protected:
     /**
@@ -189,16 +189,16 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
      * @brief setSelectedPath
      * @param path
      */
-    void setSelectedPath(QString path);
+    void setSelectedPath(const QString& path);
 
-    void setSelectedPath(DataArrayPath amPath);
+    void setSelectedPath(const DataArrayPath& amPath);
 
     /**
      * @brief Handles changes to an affected DataArrayPath
      * @param propertyName
      * @param renamePath
      */
-    void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
+    void updateDataArrayPath(const QString& propertyName, const DataArrayPath::RenameType& renamePath);
 
     /**
     * @brief Handles AttributeMatrix path changes through DataArrayPathSelectionWidget

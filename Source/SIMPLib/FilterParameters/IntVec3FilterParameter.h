@@ -38,36 +38,7 @@
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
-
-typedef struct {
-  int x; int y; int z;
-  void IntVec3(const int& x_, const int& y_, const int& z_)
-  {
-    x = x_;
-    y = y_;
-    z = z_;
-  }
-  void writeJson(QJsonObject &json)
-  {
-    json["x"] = x;
-    json["y"] = y;
-    json["z"] = z;
-  }
-
-  bool readJson(QJsonObject &json)
-  {
-    if (json["x"].isDouble() && json["y"].isDouble() && json["z"].isDouble())
-    {
-      x = json["x"].toInt();
-      y = json["y"].toInt();
-      z = json["z"].toInt();
-      return true;
-    }
-    return false;
-  }
-} IntVec3_t;
-
-Q_DECLARE_METATYPE(IntVec3_t)
+#include "SIMPLib/FilterParameters/IntVec3.h"
 
 /**
  * @brief SIMPL_NEW_INT_VEC3_FP This macro is a short-form way of instantiating an instance of

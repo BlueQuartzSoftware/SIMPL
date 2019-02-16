@@ -22,8 +22,8 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/BooleanFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/CalculatorFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ChoiceFilterParameter.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonSelectionFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonSelectionAdvancedFilterParameter.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonSelectionFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ConstrainedDoubleFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ConstrainedIntFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataArrayCreationFilterParameter.h
@@ -35,19 +35,24 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DoubleFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DynamicChoiceFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DynamicTableFilterParameter.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FileListInfo.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FileListInfoFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatFilterParameter.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatVec2.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatVec2FilterParameter.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatVec3.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatVec3FilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FourthOrderPolynomialFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/GenerateColorTableFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/H5FilterParametersConstants.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/H5FilterParametersReader.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/H5FilterParametersWriter.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ImportHDF5DatasetFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/InputFileFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/InputPathFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IntFilterParameter.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IntVec3.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IntVec3FilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/JsonFilterParametersReader.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/JsonFilterParametersWriter.h
@@ -63,13 +68,13 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PhaseTypeSelectionFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PreflightUpdatedValueFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RangeFilterParameter.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ImportHDF5DatasetFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ReadASCIIDataFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ScalarTypeFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SecondOrderPolynomialFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SeparatorFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ShapeTypeSelectionFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/StringFilterParameter.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ThirdOrderPolynomial.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ThirdOrderPolynomialFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/UnknownFilterParameter.h
 )

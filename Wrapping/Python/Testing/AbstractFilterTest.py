@@ -3,9 +3,8 @@
 import time
 
 import dream3d
-import dream3d.dream3d_py
-import dream3d.dream3d_py as d3d
-import dream3d.dream3d_py.simpl_py as simpl
+
+from dream3d import simpl
 
 
 def BasicTest():

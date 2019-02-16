@@ -99,14 +99,14 @@ class SVWidgetsLib_EXPORT DataContainerArrayProxyWidget : public FilterParameter
   protected:
     QString getDataContainerName();
     QString getAttrMatrixName();
-    
-    void selectDataContainer(QString name);
-    void selectAttributeMatrix(QString name);
+
+    void selectDataContainer(const QString& name);
+    void selectAttributeMatrix(const QString& name);
 
     DataContainerProxy& getDataContainerProxy();
     AttributeMatrixProxy& getAttributeMatrixProxy();
 
-    void applyDataContainerArrayProxy(DataContainerArrayProxy proxy);
+    void applyDataContainerArrayProxy(DataContainerArrayProxy& proxy);
     void applyDataContainerProxy();
     void applyAttributeMatrixProxy();
 

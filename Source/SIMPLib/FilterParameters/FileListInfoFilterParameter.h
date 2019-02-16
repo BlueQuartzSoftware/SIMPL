@@ -40,54 +40,9 @@
 #include <QtCore/QMetaType>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/FilterParameters/FileListInfo.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/SIMPLib.h"
-
-typedef struct {
-  qint32 PaddingDigits = 3;
-  quint32 Ordering = 0; /* Ordering=0 = Ascending, Ordering=1 = Descending */
-  qint32 StartIndex = 0;
-  qint32 EndIndex = 1;
-  qint32 IncrementIndex = 1;
-  QString InputPath;
-  QString FilePrefix;
-  QString FileSuffix;
-  QString FileExtension;
-
-  void writeJson(QJsonObject& json)
-  {
-    json["PaddingDigits"] = static_cast<double>(PaddingDigits);
-    json["Ordering"] = static_cast<double>(Ordering);
-    json["StartIndex"] = static_cast<double>(StartIndex);
-    json["EndIndex"] = static_cast<double>(EndIndex);
-    json["IncrementIndex"] = static_cast<double>(IncrementIndex);
-    json["InputPath"] = InputPath;
-    json["FilePrefix"] = FilePrefix;
-    json["FileSuffix"] = FileSuffix;
-    json["FileExtension"] = FileExtension;
-  }
-
-  bool readJson(QJsonObject& json)
-  {
-    if(json["PaddingDigits"].isDouble() && json["Ordering"].isDouble() && json["StartIndex"].isDouble() && json["EndIndex"].isDouble() && json["IncrementIndex"].isDouble() &&
-       json["InputPath"].isString() && json["FilePrefix"].isString() && json["FileSuffix"].isString() && json["FileExtension"].isString())
-    {
-      PaddingDigits = static_cast<qint32>(json["PaddingDigits"].toDouble());
-      Ordering = static_cast<quint32>(json["Ordering"].toDouble());
-      StartIndex = static_cast<qint32>(json["StartIndex"].toDouble());
-      EndIndex = static_cast<qint32>(json["EndIndex"].toDouble());
-      IncrementIndex = static_cast<qint32>(json["IncrementIndex"].toDouble());
-      InputPath = json["InputPath"].toString();
-      FilePrefix = json["FilePrefix"].toString();
-      FileSuffix = json["FileSuffix"].toString();
-      FileExtension = json["FileExtension"].toString();
-      return true;
-    }
-    return false;
-  }
-} FileListInfo_t;
-
-Q_DECLARE_METATYPE(FileListInfo_t)
 
 /**
  * @brief SIMPL_NEW_FILELISTINFO_FP This macro is a short-form way of instantiating an instance of
