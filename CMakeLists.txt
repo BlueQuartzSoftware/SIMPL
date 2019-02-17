@@ -444,8 +444,8 @@ include(${SIMPLProj_SOURCE_DIR}/Support/Support.cmake)
 
 # --------------------------------------------------------------------------
 # Find the Pybind11 installation
-option(SIMPL_WRAP_PYTHON "Generate and Compile Python wrapping codes" OFF)
-if(SIMPL_WRAP_PYTHON)
+option(SIMPL_ENABLE_PYTHON "Generate and Compile Python wrapping codes" OFF)
+if(SIMPL_ENABLE_PYTHON)
 
   # --------------------------------------------------------------------
   # add the Pybind11 Python Wrapping

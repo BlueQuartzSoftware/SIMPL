@@ -18,7 +18,7 @@ namespace SIMPL
       /**
       * @brief Returns the Anaconda Package directory
       */
-      static const QString AnacondaPackageDir("@SIMPL_CONDA_OUTPUT_DIR@");
+      static const QString AnacondaPackageDir("@SIMPL_ANACONDA_OUTPUT_DIR@");
 
       /**
        * @brief Returns the path to the RUNTIME_OUTPUT_DIR which should be the "Bin"
@@ -27,7 +27,7 @@ namespace SIMPL
        * @return
        */
       //static const QString RuntimeOutputDir("@GeneratePythonBindings_RUNTIME_OUTPUT_DIR@");
-      static const QString RuntimeOutputDir("@SIMPL_CONDA_OUTPUT_DIR@");
+      static const QString RuntimeOutputDir("@SIMPL_ANACONDA_OUTPUT_DIR@");
 
       /**
        * @brief Returns the path to where the Python C++ modules will be created.

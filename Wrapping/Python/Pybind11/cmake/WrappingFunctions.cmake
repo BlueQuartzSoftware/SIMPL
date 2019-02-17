@@ -131,11 +131,11 @@ function(CreatePybind11Module)
     endif()
 
     # Copy all necessary content from the CMake output directory to the "egg" directory
-    # if (SIMPL_PYTHON_BUILD_CONDA_PACKAGE)
-    #   get_property(SIMPL_CONDA_OUTPUT_DIR GLOBAL PROPERTY SIMPL_CONDA_OUTPUT_DIR)
+    # if (SIMPL_ENABLE_ANACONDA_PACKAGE)
+    #   get_property(SIMPL_ANACONDA_OUTPUT_DIR GLOBAL PROPERTY SIMPL_ANACONDA_OUTPUT_DIR)
     #   add_custom_command(TARGET ${SIMPL_PY_MODULE_NAME} 
     #         POST_BUILD 
-    #         COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR} ${SIMPL_CONDA_OUTPUT_DIR}/package/dream3d)
+    #         COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_CFG_INTDIR} ${SIMPL_ANACONDA_OUTPUT_DIR}/package/dream3d)
     # endif()
     
   else()

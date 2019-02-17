@@ -42,12 +42,12 @@ goto :eof
 ::Set some varaibles
 set BUILD_DIR=@CROD_NATIVE@%CONFIG_DIR%
 set ANACONDA_PACKAGE_DIR=@SCOD_NATIVE@
-set PYTHON_CONDA_DIRECTORY=@PCD_NATIVE@
-set CONDA_SCRIPTS_DIR_NAME=@CONDA_SCRIPTS_DIR_NAME@
-set PYTHON_CONDA_ENVIRONMENT_NAME=@PYTHON_CONDA_ENVIRONMENT_NAME@
+set ANACONDA_DIR=@PCD_NATIVE@
+set ANACONDA_SCRIPTS_DIR_NAME=@ANACONDA_SCRIPTS_DIR_NAME@
+set ANACONDA_ENVIRONMENT_NAME=@ANACONDA_ENVIRONMENT_NAME@
 set PYTHON_SITE_PACKAGES_NAME=@PYTHON_SITE_PACKAGES_NAME@
 set SIMPL_PYTHON_MODULE_NAME=@SIMPL_PYTHON_MODULE_NAME@
-set ENV_CONDA_EXE=%PYTHON_CONDA_DIRECTORY%\envs\%PYTHON_CONDA_ENVIRONMENT_NAME%\%CONDA_SCRIPTS_DIR_NAME%\conda.exe
+set ENV_CONDA_EXE=%ANACONDA_DIR%\envs\%ANACONDA_ENVIRONMENT_NAME%\%ANACONDA_SCRIPTS_DIR_NAME%\conda.exe
 
 ::---------------------------------------------------------------------------------------
 ::Copy the build artifacts from the normal build directory into the Anaconda package dir
@@ -64,8 +64,8 @@ xcopy /i /q /y /s %BUILD_DIR%\Data %ANACONDA_PACKAGE_DIR%\%PYTHON_SITE_PACKAGES_
 xcopy /i /q /y /s %BUILD_DIR%\Help %ANACONDA_PACKAGE_DIR%\%PYTHON_SITE_PACKAGES_NAME%\%SIMPL_PYTHON_MODULE_NAME%\Help
 xcopy /i /q /y /s %BUILD_DIR%\PrebuiltPipelines %ANACONDA_PACKAGE_DIR%\%PYTHON_SITE_PACKAGES_NAME%\%SIMPL_PYTHON_MODULE_NAME%\PrebuiltPipelines
 
-@echo "Preparing to build the Conda %PYTHON_SITE_PACKAGES_NAME% of DREAM3D using Conda environment: %PYTHON_CONDA_ENVIRONMENT_NAME% and Conda installation: %PYTHON_CONDA_DIRECTORY%. Activating the environment..."
-call %PYTHON_CONDA_DIRECTORY%\%CONDA_SCRIPTS_DIR_NAME%\activate.bat %PYTHON_CONDA_ENVIRONMENT_NAME% 
+@echo "Preparing to build the Conda %PYTHON_SITE_PACKAGES_NAME% of DREAM3D using Conda environment: %ANACONDA_ENVIRONMENT_NAME% and Conda installation: %ANACONDA_DIR%. Activating the environment..."
+call %ANACONDA_DIR%\%ANACONDA_SCRIPTS_DIR_NAME%\activate.bat %ANACONDA_ENVIRONMENT_NAME% 
 
 @echo "Ensuring conda-build is installed..."         
 call %ENV_CONDA_EXE% install conda-build 
@@ -81,9 +81,9 @@ call %ENV_CONDA_EXE% build --output-folder %ANACONDA_PACKAGE_DIR%\conda-package 
 call %ENV_CONDA_EXE% build purge 
 
 
-IF "@SIMPL_PYTHON_INSTALL_CONDA_PACKAGE_LOCALLY@" == "ON" (
+IF "@SIMPL_ENABLE_ANACONDA_LOCAL_INSTALL@" == "ON" (
     echo "====================================================================="
-    echo "        Starting Local Install of %SIMPL_PYTHON_MODULE_NAME% into %PYTHON_CONDA_DIRECTORY%\envs\%PYTHON_CONDA_ENVIRONMENT_NAME%"
+    echo "        Starting Local Install of %SIMPL_PYTHON_MODULE_NAME% into %ANACONDA_DIR%\envs\%ANACONDA_ENVIRONMENT_NAME%"
     echo "====================================================================="
     echo "Removing any existing dream3d Conda package"
     call %ENV_CONDA_EXE% remove -y %SIMPL_PYTHON_MODULE_NAME% 

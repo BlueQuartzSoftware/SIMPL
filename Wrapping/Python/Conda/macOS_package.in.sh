@@ -3,13 +3,13 @@
 # Set some Variables
 BuildDir=@CROD_NATIVE@
 ANACONDA_PACKAGE_DIR=@SCOD_NATIVE@
-PYTHON_CONDA_DIRECTORY=@PYTHON_CONDA_DIRECTORY@
-CONDA_SCRIPTS_DIR_NAME=@CONDA_SCRIPTS_DIR_NAME@
-PYTHON_CONDA_ENVIRONMENT_NAME=@PYTHON_CONDA_ENVIRONMENT_NAME@
+ANACONDA_DIR=@ANACONDA_DIR@
+ANACONDA_SCRIPTS_DIR_NAME=@ANACONDA_SCRIPTS_DIR_NAME@
+ANACONDA_ENVIRONMENT_NAME=@ANACONDA_ENVIRONMENT_NAME@
 PYTHON_SITE_PACKAGES_NAME=@PYTHON_SITE_PACKAGES_NAME@
 SIMPL_PYTHON_MODULE_NAME=@SIMPL_PYTHON_MODULE_NAME@
 
-ENV_CONDA_EXE=${PYTHON_CONDA_DIRECTORY}/envs/${PYTHON_CONDA_ENVIRONMENT_NAME}/${CONDA_SCRIPTS_DIR_NAME}/conda
+ENV_CONDA_EXE=${ANACONDA_DIR}/envs/${ANACONDA_ENVIRONMENT_NAME}/${ANACONDA_SCRIPTS_DIR_NAME}/conda
 CMAKE_COMMAND=@CMAKE_COMMAND@
 
 # -----------------------------------------------------------------------------
@@ -422,8 +422,8 @@ rm -rf "${tmpFile}"
 #---------------------------------------------------------------------------------------
 # This part starts the actual creation and optional installation of the Anaconda package
 
-echo "Preparing to build the Conda package of DREAM3D using Conda environment: ${PYTHON_CONDA_ENVIRONMENT_NAME} and Conda installation: ${PYTHON_CONDA_DIRECTORY}. Activating the environment..."
-${PYTHON_CONDA_DIRECTORY}/${CONDA_SCRIPTS_DIR_NAME}/activate ${PYTHON_CONDA_ENVIRONMENT_NAME} 
+echo "Preparing to build the Conda package of DREAM3D using Conda environment: ${ANACONDA_ENVIRONMENT_NAME} and Conda installation: ${ANACONDA_DIR}. Activating the environment..."
+${ANACONDA_DIR}/${ANACONDA_SCRIPTS_DIR_NAME}/activate ${ANACONDA_ENVIRONMENT_NAME} 
 
 echo "Ensuring conda-build is installed..."         
 $ENV_CONDA_EXE install conda-build 
@@ -438,9 +438,9 @@ $ENV_CONDA_EXE build --output-folder ${ANACONDA_PACKAGE_DIR}/conda-package .
 echo "Purging the Anaconda Build directory...."
 $ENV_CONDA_EXE build purge 
 
-if [ "@SIMPL_PYTHON_INSTALL_CONDA_PACKAGE_LOCALLY@" = "ON" ]; then
-  echo "Removing any existing dream3d Conda package from ${PYTHON_CONDA_DIRECTORY}/envs/${PYTHON_CONDA_ENVIRONMENT_NAME}"
+if [ "@SIMPL_ENABLE_ANACONDA_LOCAL_INSTALL@" = "ON" ]; then
+  echo "Removing any existing dream3d Conda package from ${ANACONDA_DIR}/envs/${ANACONDA_ENVIRONMENT_NAME}"
   $ENV_CONDA_EXE remove -y ${SIMPL_PYTHON_MODULE_NAME}
-  echo "Installing the dream3d Conda package into ${PYTHON_CONDA_DIRECTORY}/envs/${PYTHON_CONDA_ENVIRONMENT_NAME}"
+  echo "Installing the dream3d Conda package into ${ANACONDA_DIR}/envs/${ANACONDA_ENVIRONMENT_NAME}"
   $ENV_CONDA_EXE install -y --use-local  ${SIMPL_PYTHON_MODULE_NAME}
 fi
