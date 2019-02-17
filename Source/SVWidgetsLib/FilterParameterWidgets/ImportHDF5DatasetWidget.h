@@ -74,6 +74,14 @@ public:
   void setIcon(const QPixmap& path);
   QPixmap getIcon();
 
+  /**
+   * @brief verifyPathExists
+   * @param filePath
+   * @param lineEdit
+   * @return
+   */
+  bool verifyPathExists(const QString& filePath, QtSLineEdit* lineEdit);
+
 public slots:
   void beforePreflight();
   void afterPreflight();

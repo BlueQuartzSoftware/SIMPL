@@ -149,6 +149,22 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
      */
     QPoint adjustedMenuPosition(QToolButton *pushButton);
 
+    /**
+     * @brief hasValidFilePath
+     * @param filePath
+     * @return
+     */
+    bool hasValidFilePath(const QString &filePath);
+
+    /**
+     * @brief verifyPathExists
+     * @param filePath
+     * @param lineEdit
+     * @return
+     */
+    bool verifyPathExists(QString filePath, QLineEdit* lineEdit);
+
+
   protected slots:
     void showBorder();
     void hideBorder();

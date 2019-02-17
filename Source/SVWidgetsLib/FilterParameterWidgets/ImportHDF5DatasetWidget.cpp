@@ -396,7 +396,6 @@ void ImportHDF5DatasetWidget::initializeHDF5Paths()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-<<<<<<< HEAD
 bool ImportHDF5DatasetWidget::verifyPathExists(const QString& filePath, QtSLineEdit* lineEdit)
 {
   QFileInfo fileinfo(filePath);
@@ -410,20 +409,6 @@ bool ImportHDF5DatasetWidget::verifyPathExists(const QString& filePath, QtSLineE
     style->LineEditClearStyle(lineEdit);
   }
   return fileinfo.exists();
-=======
-void ImportHDF5DatasetWidget::on_value_fileDropped(const QString& text)
-{
-  m_OpenDialogLastDirectory = text;
-
-  // Set/Remove the red outline if the file does exist
-  if(QtSFileUtils::VerifyPathExists(text, dynamic_cast<QLineEdit*>(value)))
-  {
-    if(initWithFile(text))
-    {
-      emit parametersChanged();
-    }
-  }
->>>>>>> Moving a few functions out of FilterParameterWidget and into QtSFileUtils, so that we can use those functions in our standalone TileListWidget.
 }
 
 // -----------------------------------------------------------------------------
@@ -441,28 +426,7 @@ void ImportHDF5DatasetWidget::on_selectBtn_clicked()
 
   file = QDir::toNativeSeparators(file);
 
-<<<<<<< HEAD
   setValue(file);
-=======
-  if(initWithFile(file))
-  {
-    value->setText(file);
-    emit parametersChanged();
-  }
-
-  // Store the last used directory into the private instance variable
-  QFileInfo fi(file);
-  m_OpenDialogLastDirectory = fi.path();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ImportHDF5DatasetWidget::on_showLocationBtn_clicked()
-{
-  QtSFileUtils::HasValidFilePath(value->text());
-  showFileInFileSystem();
->>>>>>> Moving a few functions out of FilterParameterWidget and into QtSFileUtils, so that we can use those functions in our standalone TileListWidget.
 }
 
 // -----------------------------------------------------------------------------
