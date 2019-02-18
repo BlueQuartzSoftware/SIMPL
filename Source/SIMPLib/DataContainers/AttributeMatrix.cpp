@@ -367,8 +367,6 @@ IDataArray::Pointer AttributeMatrix::removeAttributeArray(const QString& name)
 // -----------------------------------------------------------------------------
 RenameErrorCodes AttributeMatrix::renameAttributeArray(const QString& oldname, const QString& newname, bool overwrite)
 {
-  QMap<QString, IDataArray::Pointer>::iterator itOld;
-
   auto itNew = find(newname);
   // If new name doesn't exist or we want to overwrite one that does exist...
   if(itNew == end() || overwrite)
