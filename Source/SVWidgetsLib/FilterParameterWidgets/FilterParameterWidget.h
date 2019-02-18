@@ -140,6 +140,13 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
      */
     virtual void loadData();
 
+    /**
+     * @brief hasValidFilePath
+     * @param filePath
+     * @return
+     */
+    bool hasValidFilePath(const QString &filePath);
+
   protected:
 
     /**
@@ -149,12 +156,6 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
      */
     QPoint adjustedMenuPosition(QToolButton *pushButton);
 
-    /**
-     * @brief hasValidFilePath
-     * @param filePath
-     * @return
-     */
-    bool hasValidFilePath(const QString &filePath);
 
     /**
      * @brief verifyPathExists
