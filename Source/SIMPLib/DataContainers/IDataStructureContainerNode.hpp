@@ -44,6 +44,8 @@
 template <class DerivedChild_t> class SIMPLib_EXPORT IDataStructureContainerNode : public IDataStructureNode
 {
 public:
+  SIMPL_SHARED_POINTERS(IDataStructureContainerNode<DerivedChild_t>)
+
   using ChildShPtr = std::shared_ptr<DerivedChild_t>;
   using ChildCollection = std::vector<ChildShPtr>;
   using iterator = typename ChildCollection::iterator;
