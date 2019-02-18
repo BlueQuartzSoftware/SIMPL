@@ -72,15 +72,12 @@ QString IDataStructureNode::getName() const
 bool IDataStructureNode::setName(const QString& newName)
 {
   ParentPointer parent = m_Parent.lock();
-  if(nullptr != parent)
+  if(nullptr == parent)
   {
-    if((*parent).hasChildWithName(newName))
-    {
-      m_Name = newName;
-      return true;
-    }
+    m_Name = newName;
+    return true;
   }
-  else
+  else if(parent->hasChildWithName(newName))
   {
     m_Name = newName;
     return true;
