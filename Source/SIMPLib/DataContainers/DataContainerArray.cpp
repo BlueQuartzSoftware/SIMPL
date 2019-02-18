@@ -143,12 +143,8 @@ DataContainer::Pointer DataContainerArray::removeDataContainer(const QString& na
 // -----------------------------------------------------------------------------
 bool DataContainerArray::renameDataContainer(const QString& oldName, const QString& newName)
 {
-  auto iter = find(oldName);
-  if(iter == end())
-  {
-    return false;
-  }
-  return (*iter)->setName(newName);
+  DataContainer::Pointer dc = getChildByName(oldName);
+  return dc && dc->setName(newName);
 }
 
 // -----------------------------------------------------------------------------
@@ -201,14 +197,9 @@ void DataContainerArray::duplicateDataContainer(const QString& name, const QStri
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QList<QString> DataContainerArray::getDataContainerNames()
+DataContainerArray::NameList DataContainerArray::getDataContainerNames()
 {
-  QList<QString> names;
-  for(auto iter = begin(); iter != end(); ++iter)
-  {
-    names.push_back((*iter)->getName());
-  }
-  return names;
+  return getNamesOfChildren();
 }
 
 // -----------------------------------------------------------------------------
@@ -303,7 +294,7 @@ int DataContainerArray::readDataContainersFromHDF5(bool preflight, hid_t dcaGid,
 // -----------------------------------------------------------------------------
 bool DataContainerArray::doesDataContainerExist(const QString& name)
 {
-  return find(name) != end();
+  return contains(name);
 }
 
 // -----------------------------------------------------------------------------
@@ -427,9 +418,9 @@ bool DataContainerArray::renameDataContainerBundle(const QString& oldName, const
       return false;
     }
 
-      m_DataContainerBundles.insert(newName, iter.value());
-      iter.value()->setName(newName);
-      m_DataContainerBundles.remove(oldName);
+    m_DataContainerBundles.insert(newName, iter.value());
+    iter.value()->setName(newName);
+    m_DataContainerBundles.remove(oldName);
   }
   return false;
 }

@@ -193,7 +193,6 @@ bool DataContainer::addAttributeMatrix(const AttributeMatrix::Pointer& data)
 AttributeMatrix::Pointer DataContainer::getAttributeMatrix(const QString& name)
 {
   return getChildByName(name);
-  //return std::dynamic_pointer_cast<AttributeMatrix>(*find(name));
 }
 
 // -----------------------------------------------------------------------------
@@ -224,13 +223,8 @@ AttributeMatrix::Pointer DataContainer::removeAttributeMatrix(const QString& nam
 // -----------------------------------------------------------------------------
 bool DataContainer::renameAttributeMatrix(const QString& oldname, const QString& newname, bool overwrite)
 {
-  QMap<QString, AttributeMatrix::Pointer>::iterator it;
-  auto iter = find(oldname);
-  if(iter == end())
-  {
-    return false;
-  }
-  return (*iter)->setName(newname);
+  auto am = getChildByName(oldname);
+  return am && am->setName(newname);
 }
 
 // -----------------------------------------------------------------------------
@@ -252,14 +246,9 @@ void DataContainer::clearAttributeMatrices()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QList<QString> DataContainer::getAttributeMatrixNames()
+DataContainer::NameList DataContainer::getAttributeMatrixNames()
 {
-  QList<QString> keys;
-  for(auto iter = cbegin(); iter != cend(); iter++)
-  {
-    keys.push_back((*iter)->getName());
-  }
-  return keys;
+  return getNamesOfChildren();
 }
 
 // -----------------------------------------------------------------------------
@@ -774,9 +763,9 @@ QVector<DataArrayPath> DataContainer::getAllDataArrayPaths()
   {
     AttributeMatrix::Pointer am = (*iter);
     QString amName = am->getName();
-    QList<QString> aaNames = am->getAttributeArrayNames();
+    NameList aaNames = am->getAttributeArrayNames();
 
-    foreach(QString aaName, aaNames)
+    for(QString aaName : aaNames)
     {
       DataArrayPath dap(getName(), amName, aaName);
       paths.push_back(dap);

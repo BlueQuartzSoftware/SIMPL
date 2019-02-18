@@ -1024,12 +1024,11 @@ class NeighborList : public IDataArray
      * @brief NeighborList
      */
     NeighborList(size_t numTuples, const QString name) :
-      IDataArray(),
+      IDataArray(name),
       m_NumNeighborsArrayName(SIMPL::FeatureData::NumNeighbors),
       m_NumTuples(numTuples),
       m_IsAllocated(false)
     {
-      setName(name);
     }
 
   private:

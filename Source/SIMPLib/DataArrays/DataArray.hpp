@@ -1527,12 +1527,12 @@ protected:
    * @param takeOwnership Will the class clean up the memory. Default=true
    */
   DataArray(size_t numTuples, QVector<size_t> compDims, QString name, bool ownsData = true)
-  : m_Array(nullptr)
+  : IDataArray(name)
+  , m_Array(nullptr)
   , m_OwnsData(ownsData)
   , m_IsAllocated(false)
   , m_NumTuples(numTuples)
   {
-    setName(name);
     // Set the Component Dimensions and compute the number of components at each tuple for caching
     m_CompDims = compDims;
     m_NumComponents = m_CompDims[0];

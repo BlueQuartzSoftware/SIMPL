@@ -161,7 +161,7 @@ public:
    * @brief getDataContainerNames
    * @return
    */
-  QList<QString> getDataContainerNames();
+  NameList getDataContainerNames();
 
   /**
    * @brief Returns the number of DataContainers
@@ -739,7 +739,6 @@ public:
     DataContainerArray();
 
   private:
-    QList<DataContainerShPtr>  m_Array;
     QMap<QString, IDataContainerBundle::Pointer> m_DataContainerBundles;
 
   public:

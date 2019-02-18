@@ -212,7 +212,7 @@ public:
    * Cell (Formerly Cell) group
    * @return
    */
-  virtual QList<QString> getAttributeMatrixNames();
+  virtual NameList getAttributeMatrixNames();
 
   /**
    * @brief Returns the total number of arrays that are stored in the Cell group

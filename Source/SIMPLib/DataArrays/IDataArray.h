@@ -59,7 +59,7 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
      * @code
      *    typedef DataArray<int32_t>  Int32ArrayType;
      *    int32_t* iPtr = IDataArray::SafeReinterpretCast<IDataArray*, Int32ArrayType*, int32_t*>(ptr.get());
-    *     Q_ASSERT(nullptr != iPtr);
+     *    Q_ASSERT(nullptr != iPtr);
      * @endcode
      * @param x The Pointer to IDataArray
      * @return
@@ -75,11 +75,8 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
     }
 
 
-    IDataArray();
+    IDataArray(const QString& name = "");
     virtual ~IDataArray();
-
-    //virtual void setName(const QString& name) = 0;
-    //virtual QString getName() = 0;
 
     virtual Pointer createNewArray(size_t numElements, int rank, size_t* dims, const QString& name, bool allocate = true) = 0;
     virtual Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) = 0;

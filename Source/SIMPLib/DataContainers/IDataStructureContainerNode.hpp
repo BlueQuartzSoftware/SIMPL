@@ -50,6 +50,7 @@ public:
   using ChildCollection = std::vector<ChildShPtr>;
   using iterator = typename ChildCollection::iterator;
   using const_iterator =  typename ChildCollection::const_iterator;
+  using NameList = QList<QString>;
 
 private:
   ChildCollection m_Children;
@@ -104,6 +105,20 @@ public:
   constexpr ChildCollection getChildren() const
   {
     return m_Children;
+  }
+
+  /**
+   * @brief Returns the names of all children nodes.
+   * @return
+   */
+  constexpr NameList getNamesOfChildren() const
+  {
+    NameList names;
+    for(const auto& child : m_Children)
+    {
+      names.push_back(child->getName());
+    }
+    return names;
   }
 
   /**
@@ -242,6 +257,17 @@ public:
   }
 
   /**
+   * @brief Returns true if the container has a child node with the given name.
+   * Returns false otherwise.
+   * @param name
+   * @return
+   */
+  constexpr bool contains(const QString& name) const
+  {
+    return find(name) != cend();
+  }
+
+  /**
    * @brief Returns the child node at the given index.  If index is greater than
    * the specified index, throw out_of_range exception.
    * @param index
@@ -307,15 +333,6 @@ public:
    * @param iter
    */
   constexpr void erase(iterator iter)
-  {
-    m_Children.erase(iter);
-  }
-
-  /**
-   * @brief Erases the child at the given iterator
-   * @param iter
-   */
-  constexpr void erase(const_iterator iter)
   {
     m_Children.erase(iter);
   }

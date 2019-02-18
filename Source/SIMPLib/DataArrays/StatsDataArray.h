@@ -379,7 +379,6 @@ protected:
   StatsDataArray();
 
 private:
-  QString m_Name;
   bool m_IsAllocated;
 
 public:

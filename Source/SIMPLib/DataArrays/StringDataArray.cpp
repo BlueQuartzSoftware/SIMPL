@@ -51,10 +51,9 @@ StringDataArray::StringDataArray()
 //
 // -----------------------------------------------------------------------------
 StringDataArray::StringDataArray(size_t numTuples, const QString name, bool allocate)
-: IDataArray()
+: IDataArray(name)
 , _ownsData(true)
 {
-  setName(name);
   // if (allocate == true)
   {
     m_Array.resize(numTuples);
@@ -71,7 +70,6 @@ StringDataArray::Pointer StringDataArray::CreateArray(size_t numTuples, const QS
     return NullPointer();
   }
   StringDataArray* d = new StringDataArray(numTuples, name, allocate);
-  d->setName(name);
   Pointer ptr(d);
   return ptr;
 }
@@ -86,7 +84,6 @@ StringDataArray::Pointer StringDataArray::CreateArray(size_t numTuples, QVector<
     return NullPointer();
   }
   StringDataArray* d = new StringDataArray(numTuples, name, allocate);
-  d->setName(name);
   Pointer ptr(d);
   return ptr;
 }

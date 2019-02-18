@@ -292,7 +292,7 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
 // -----------------------------------------------------------------------------
 bool AttributeMatrix::doesAttributeArrayExist(const QString& name) const
 {
-  return find(name) != end();
+  return contains(name);
 }
 
 // -----------------------------------------------------------------------------
@@ -351,7 +351,7 @@ IDataArray::Pointer AttributeMatrix::getAttributeArray(const DataArrayPath& path
 // -----------------------------------------------------------------------------
 IDataArray::Pointer AttributeMatrix::removeAttributeArray(const QString& name)
 {
-  auto it = find(name);
+  iterator it = find(name);
   if(it == end())
   {
     // DO NOT return a NullPointer for any reason other than "Data Array was not found"
@@ -367,22 +367,32 @@ IDataArray::Pointer AttributeMatrix::removeAttributeArray(const QString& name)
 // -----------------------------------------------------------------------------
 RenameErrorCodes AttributeMatrix::renameAttributeArray(const QString& oldname, const QString& newname, bool overwrite)
 {
-  auto itNew = find(newname);
-  // If new name doesn't exist or we want to overwrite one that does exist...
-  if(itNew == end() || overwrite)
+  bool hasNewName = contains(newname);
+  if(hasNewName && !overwrite)
   {
-    auto itOld = find(oldname);
-    // If old name doesn't exist...
-    if(itOld == end())
+    if(overwrite)
     {
-      return OLD_DOES_NOT_EXIST;
+      removeAttributeArray(newname);
     }
-    IDataArray::Pointer p = std::dynamic_pointer_cast<IDataArray>(*itOld);
-    p->setName(newname);
-    removeAttributeArray(oldname);
-    addAttributeArray(p);
+    else
+    {
+      return NEW_EXISTS;
+    }
+  }
+
+  // If new name doesn't exist or we want to overwrite one that does exist...
+  auto oldArray = getChildByName(oldname);
+  // If old name doesn't exist...
+  if(nullptr == oldArray)
+  {
+    return OLD_DOES_NOT_EXIST;
+  }
+  if(oldArray->setName(newname))
+  {
     return SUCCESS;
   }
+  
+  // Rename not successful
   return NEW_EXISTS;
 }
 
@@ -530,14 +540,9 @@ AttributeMatrix::Container_t AttributeMatrix::getAttributeArrays() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QList<QString> AttributeMatrix::getAttributeArrayNames()
+AttributeMatrix::NameList AttributeMatrix::getAttributeArrayNames()
 {
-  QList<QString> keys;
-  for(auto aa : getChildren())
-  {
-    keys.push_back(aa->getName());
-  }
-  return keys;
+  return getNamesOfChildren();
 }
 
 // -----------------------------------------------------------------------------

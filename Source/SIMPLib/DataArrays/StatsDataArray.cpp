@@ -51,7 +51,7 @@
 //
 // -----------------------------------------------------------------------------
 StatsDataArray::StatsDataArray()
-: m_Name(SIMPL::EnsembleData::Statistics)
+: IDataArray(SIMPL::EnsembleData::Statistics)
 {
   m_IsAllocated = true;
 }
@@ -457,7 +457,7 @@ void StatsDataArray::printComponent(QTextStream& out, size_t i, int j)
 int StatsDataArray::writeH5Data(hid_t parentId, QVector<size_t> tDims)
 {
   herr_t err = 0;
-  hid_t gid = QH5Utilities::createGroup(parentId, m_Name);
+  hid_t gid = QH5Utilities::createGroup(parentId, getName());
   if(gid < 0)
   {
     return -1;
@@ -493,7 +493,7 @@ int StatsDataArray::readH5Data(hid_t parentId)
   bool ok = false;
   int err = 0;
   QString statsType;
-  hid_t gid = QH5Utilities::openHDF5Object(parentId, m_Name);
+  hid_t gid = QH5Utilities::openHDF5Object(parentId, getName());
   if(gid < 0)
   {
     return err;
