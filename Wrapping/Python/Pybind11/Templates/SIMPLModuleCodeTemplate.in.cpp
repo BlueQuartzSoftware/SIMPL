@@ -31,87 +31,29 @@ PYBIND11_MAKE_OPAQUE(std::vector<size_t>);
 
 #include <utility>
 
+#include "SIMPLib/Common/PhaseType.h"
+#include "SIMPLib/Common/ShapeType.h"
+#include "SIMPLib/CoreFilters/ArrayCalculator.h"
+#include "SIMPLib/CoreFilters/ImportHDF5Dataset.h"
+#include "SIMPLib/FilterParameters/AxisAngleInput.h"
+#include "SIMPLib/FilterParameters/FileListInfo.h"
+#include "SIMPLib/FilterParameters/FloatVec2.h"
+#include "SIMPLib/FilterParameters/FloatVec3.h"
+#include "SIMPLib/FilterParameters/IntVec3.h"
+#include "SIMPLib/FilterParameters/ThirdOrderPolynomial.h"
+#include <QtCore/QDateTime>
 #include <QtCore/QString>
+
+//#include "OrientationLib/OrientationMath/OrientationConverter.hpp"
 
 namespace py = pybind11;
 
 PYBIND11_DECLARE_HOLDER_TYPE(T, std::shared_ptr<T>);
 
-namespace pybind11
-{
-namespace detail
-{
-/* Create a TypeCaster for auto python string <--> QString conversion */
-template <> struct type_caster<QString>
-{
-public:
-  /**
-   * This macro establishes the name 'QString' in
-   * function signatures and declares a local variable
-   * 'value' of type QString
-   */
-  PYBIND11_TYPE_CASTER(QString, _("QString"));
+//PYBIND11_MAKE_OPAQUE(DataContainersMap)
+//PYBIND11_MAKE_OPAQUE(AttributeMatricesMap)
 
-  /**
-   *  @brief Conversion part 1 (Python->C++): convert a PyObject into a QString
-   * instance or return false upon failure. The second argument
-   * indicates whether implicit conversions should be applied.
-   * @param src
-   * @return boolean
-   */
-  bool load(handle src, bool)
-  {
-    if(!src)
-    {
-      return false;
-    }
-    object temp;
-    handle load_src = src;
-    if(PyUnicode_Check(load_src.ptr()))
-    {
-      temp = reinterpret_steal<object>(PyUnicode_AsUTF8String(load_src.ptr()));
-      if(!temp) /* A UnicodeEncodeError occured */
-      {
-        PyErr_Clear();
-        return false;
-      }
-      load_src = temp;
-    }
-    char* buffer = nullptr;
-    ssize_t length = 0;
-    int err = PYBIND11_BYTES_AS_STRING_AND_SIZE(load_src.ptr(), &buffer, &length);
-    if(err == -1) /* A TypeError occured */
-    {
-      PyErr_Clear();
-      return false;
-    }
-    value = QString::fromUtf8(buffer, static_cast<int>(length));
-    return true;
-  }
-
-  /**
-   * @brief Conversion part 2 (C++ -> Python): convert an QString instance into
-   * a Python object. The second and third arguments are used to
-   * indicate the return value policy and parent object (for
-   * ``return_value_policy::reference_internal``) and are generally
-   * ignored by implicit casters.
-   *
-   * @param src
-   * @return
-   */
-  static handle cast(const QString& src, return_value_policy /* policy */, handle /* parent */)
-  {
-#if PY_VERSION_HEX >= 0x03030000 // Python 3.3
-    assert(sizeof(QChar) == 2);
-    return PyUnicode_FromKindAndData(PyUnicode_2BYTE_KIND, src.constData(), src.length());
-#else
-    QByteArray a = src.toUtf8();
-    return PyUnicode_FromStringAndSize(a.data(), (ssize_t)a.length());
-#endif
-  }
-};
-} // namespace detail
-} // namespace pybind11
+#include "Templates/Pybind11CustomTypeCasts.in.h"
 
 #ifndef PySharedPtrClass_TEMPLATE
 #define PySharedPtrClass_TEMPLATE
@@ -150,10 +92,12 @@ template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>
           {                                                                                                                                                                                            \
             numElements *= b.shape(e);                                                                                                                                                                 \
           }                                                                                                                                                                                            \
+          numElements /= cDims[0];                                                                                                                                                                     \
           return DataArrayType::WrapPointer(reinterpret_cast<T*>(b.mutable_data(0)), static_cast<size_t>(numElements), QVector<size_t>::fromStdVector(cDims), name, ownsData);                         \
         })) /* Class instance method setValue */                                                                                                                                                       \
         .def("setValue", &DataArrayType::setValue, py::arg("index"), py::arg("value"))                                                                                                                 \
         .def("getValue", &DataArrayType::getValue, py::arg("index"))                                                                                                                                   \
+	    .def_property("Data", &DataArrayType::getArray, &DataArrayType::setArray, py::return_value_policy::reference)                                                                                  \
         .def_property("Name", &DataArrayType::getName, &DataArrayType::setName)                                                                                                                        \
         .def("Cleanup", []() { return DataArrayType::NullPointer(); });                                                                                                                                \
     ;                                                                                                                                                                                                  \
@@ -189,12 +133,12 @@ PYB11_DEFINE_DATAARRAY_INIT(double, DoubleArrayType);
  * what classes are available within the module.
  *
  */
-PYBIND11_MODULE(dream3d_py, m)
+PYBIND11_MODULE(dream3d, m)
 {
   m.doc() = "Python wrapping for dream3d";
 
   /* Define a python submodule for SIMPL */
-  py::module mod = m.def_submodule("simpl_py", "  Python wrapping for  SIMPL");
+  py::module mod = m.def_submodule("simpl", "  Python wrapping for SIMPL");
 
   //
   //
@@ -202,10 +146,116 @@ PYBIND11_MODULE(dream3d_py, m)
   py::class_<FloatVec3_t>(mod, "FloatVec3")
       .def(py::init<const float &, const float &, const float &>())
   ;
+  py::class_<FloatVec2_t>(mod, "FloatVec2")
+	  .def(py::init<const float &, const float &>())
+  ;
   py::class_<IntVec3_t>(mod, "IntVec3")
       .def(py::init<const int &, const int &, const int &>())
   ;
 
+  py::class_<AxisAngleInput_t>(mod, "AxisAngleInput")
+	  .def(py::init< const float &, const float &, const float &, const float &>())
+  ;
+
+  py::class_<FileListInfo_t>(mod, "FileListInfo")
+	  .def(py::init <> ([] ( const int & paddingDigits, const unsigned int & ordering, const int & startIndex,
+		  const int & endIndex, const int & incrementIndex, const py::str & inputPath, const py::str & filePrefix,
+		  const py::str & fileSuffix, const py::str &fileExtension)
+      {
+	  FileListInfo_t fileListInfo;
+	  fileListInfo.PaddingDigits = paddingDigits;
+	  fileListInfo.Ordering = ordering;
+	  fileListInfo.StartIndex = startIndex;
+	  fileListInfo.EndIndex = endIndex;
+	  fileListInfo.IncrementIndex = incrementIndex;
+	  QString InputPath = QString::fromStdString(py::cast<std::string>(inputPath));
+	  QString FilePrefix = QString::fromStdString(py::cast<std::string>(filePrefix));
+	  QString FileSuffix = QString::fromStdString(py::cast<std::string>(fileSuffix));
+	  QString FileExtension = QString::fromStdString(py::cast<std::string>(fileExtension));
+	  fileListInfo.InputPath = InputPath;
+	  fileListInfo.FilePrefix = FilePrefix;
+	  fileListInfo.FileSuffix = FileSuffix;
+	  fileListInfo.FileExtension = FileExtension;
+	  return fileListInfo;
+      }))
+  ;
+
+  // Handle QVector of size_t
+  py::class_<QVector<size_t>>(mod, "Dims")
+	  .def(py::init<>([](py::list dimensions) {
+	  QVector<size_t> dims = QVector<size_t>();
+	  for (auto dimension : dimensions)
+	  {
+		  dims.push_back(py::cast<size_t>(dimension));
+	  }
+	  return dims;
+      }))
+	  .def("__repr__", [](const QVector<size_t> &dims) {
+		  py::list dimensions;
+		  for (size_t dim : dims)
+		  {
+			  dimensions.append(dim);
+		  }
+		  return dimensions;
+	  })
+	  .def("__str__", [](const QVector<size_t> &dims) {
+		  py::list dimensions;
+		  for (size_t dim : dims)
+		  {
+			  dimensions.append(dim);
+		  }
+      return py::str(dimensions);
+	  })
+	  .def("__getitem__", [](const QVector<size_t> &dims, int key) {
+		  return dims[key];
+	  })
+  ;
+
+  // Handle QSet of QString
+  py::class_<QSet<QString>>(mod, "StringSet")
+	  .def(py::init<>([](py::set stringSet) {
+	  QSet<QString> newQStringSet = QSet<QString>();
+	  for (auto newString : stringSet)
+	  {
+		  newQStringSet.insert(py::cast<QString>(newString));
+	  }
+	  return newQStringSet;
+      }))
+  ;
+
+  // Handle QDateTime
+  py::class_<QDateTime>(mod, "DateTime")
+	  .def(py::init<>([](int year, int month, int day, int seconds) {
+	  QDateTime dateTime(QDate(year, month, day));
+	  dateTime.setTime_t(seconds);
+	  return dateTime;
+      }))
+  ;
+
+  // Handle QJsonArray
+  py::class_<QJsonArray>(mod, "JsonArray")
+	  .def(py::init<>([](py::list values) {
+	  QJsonArray qJsonArray;
+	  for (auto value : values) {
+		  QJsonValue qJsonValue(py::cast<double>(value));
+		  qJsonArray.push_back(qJsonValue);
+	  }
+	  return qJsonArray;
+      }))
+  ;
+
+  py::class_<QList<ImportHDF5Dataset::DatasetImportInfo>>(mod, "DatasetImportInfoList")
+     .def(py::init<>([](py::list values) {
+	  QList<ImportHDF5Dataset::DatasetImportInfo> datasetImportInfoList;
+	  for (auto value : values) {
+		  py::list valueAsList = py::cast<py::list>(value);
+		  ImportHDF5Dataset::DatasetImportInfo datasetImportInfo;
+		  datasetImportInfo.dataSetPath = py::cast<QString>(valueAsList[0]);
+		  datasetImportInfo.componentDimensions = py::cast<QString>(valueAsList[1]);
+		  datasetImportInfoList.push_back(datasetImportInfo);
+	  }
+	  return datasetImportInfoList;
+	  }));
 
   /* STL Binding code */
   py::bind_vector<std::vector<int8_t>>(mod, "VectorInt8");
@@ -232,6 +282,48 @@ PYBIND11_MODULE(dream3d_py, m)
     py::bind_vector<std::vector<size_t>>(mod, "VectorSizeT");
   }
 
+  /* Enumeration code for Comparison Operators */
+  py::enum_<SIMPL::Comparison::Enumeration>(mod, "ComparisonOperators")
+	  .value("LessThan", SIMPL::Comparison::Enumeration::Operator_LessThan)
+	  .value("GreaterThan", SIMPL::Comparison::Enumeration::Operator_GreaterThan)
+	  .value("Equal", SIMPL::Comparison::Enumeration::Operator_Equal)
+	  .value("NotEqual", SIMPL::Comparison::Enumeration::Operator_NotEqual)
+	  .value("Unknown", SIMPL::Comparison::Enumeration::Operator_Unknown)
+	  .export_values();
+
+  /* Enumeration code for Delimiter types */
+  py::enum_<SIMPL::DelimiterTypes::Type>(mod, "DelimiterTypes")
+	  .value("Comma", SIMPL::DelimiterTypes::Type::Comma)
+	  .value("Semicolon", SIMPL::DelimiterTypes::Type::Semicolon)
+	  .value("Colon", SIMPL::DelimiterTypes::Type::Colon)
+	  .value("Tab", SIMPL::DelimiterTypes::Type::Tab)
+	  .value("Space", SIMPL::DelimiterTypes::Type::Space)
+	  .export_values();
+
+  /* Enumeration code for PhaseType */
+  py::enum_<PhaseType::Type>(mod, "PhaseType")
+	  .value("Primary", PhaseType::Type::Primary)
+	  .value("Precipitate", PhaseType::Type::Precipitate)
+	  .value("Transformation", PhaseType::Type::Transformation)
+	  .value("Matrix", PhaseType::Type::Matrix)
+	  .value("Boundary", PhaseType::Type::Boundary)
+	  .value("Unknown", PhaseType::Type::Unknown)
+	  .value("Any", PhaseType::Type::Any)
+	  .export_values();
+
+  /* Enumeration code for ShapeType */
+  py::enum_<ShapeType::Type>(mod, "ShapeType")
+	  .value("Ellipsoid", ShapeType::Type::Ellipsoid)
+	  .value("SuperEllipsoid", ShapeType::Type::SuperEllipsoid)
+	  .value("CubeOctahedron", ShapeType::Type::CubeOctahedron)
+	  .value("CylinderA", ShapeType::Type::CylinderA)
+	  .value("CylinderB", ShapeType::Type::CylinderB)
+	  .value("CylinderC", ShapeType::Type::CylinderC)
+	  .value("ShapeTypeEnd", ShapeType::Type::ShapeTypeEnd)
+	  .value("Unknown", ShapeType::Type::Unknown)
+	  .value("Any", ShapeType::Type::Any)
+	  .export_values();
+
   /* Enumeration code for AttributeMatrix::Type ******************/
   py::enum_<SIMPL::ScalarTypes::Type>(mod, "ScalarTypes")
     .value("Int8", SIMPL::ScalarTypes::Type::Int8)
@@ -247,6 +339,65 @@ PYBIND11_MODULE(dream3d_py, m)
     .value("Bool", SIMPL::ScalarTypes::Type::Bool)
 
     .export_values();
+
+  /* Enumeration code for Initialization Choices */
+  py::enum_<CreateDataArray::InitializationChoices>(mod, "InitializationType")
+      .value("Manual", CreateDataArray::InitializationChoices::Manual)
+      .value("RandomWithRange", CreateDataArray::InitializationChoices::RandomWithRange)
+      .export_values();
+
+  /* Enumeration code for OrientationType */
+#if 0
+  py::enum_<OrientationConverter<float>::OrientationType>(mod, "OrientationType")
+	  .value("Euler", OrientationConverter<float>::Euler)
+	  .value("OrientationMatrix", OrientationConverter<float>::OrientationMatrix)
+	  .value("Quaternion", OrientationConverter<float>::Quaternion)
+	  .value("AxisAngle", OrientationConverter<float>::AxisAngle)
+	  .value("Rodrigues", OrientationConverter<float>::Rodrigues)
+	  .value("Homochoric", OrientationConverter<float>::Homochoric)
+	  .value("Cubochoric", OrientationConverter<float>::Cubochoric)
+	  .value("UnknownOrientationType", OrientationConverter<float>::UnknownOrientationType)
+	  .export_values();
+
+  /* Enumeration code for Crystal Structures */
+  py::enum_<EnsembleInfo::CrystalStructure>(mod, "CrystalStructure")
+	  .value("Hexagonal_High", EnsembleInfo::CrystalStructure::Hexagonal_High)
+	  .value("Cubic_High", EnsembleInfo::CrystalStructure::Cubic_High)
+	  .value("Hexagonal_Low", EnsembleInfo::CrystalStructure::Hexagonal_Low)
+	  .value("Cubic_Low", EnsembleInfo::CrystalStructure::Cubic_Low)
+	  .value("Triclinic", EnsembleInfo::CrystalStructure::Triclinic)
+	  .value("Monoclinic", EnsembleInfo::CrystalStructure::Monoclinic)
+	  .value("OrthoRhombic", EnsembleInfo::CrystalStructure::OrthoRhombic)
+	  .value("Tetragonal_Low", EnsembleInfo::CrystalStructure::Tetragonal_Low)
+	  .value("Tetragonal_High", EnsembleInfo::CrystalStructure::Tetragonal_High)
+	  .value("Trigonal_Low", EnsembleInfo::CrystalStructure::Trigonal_Low)
+	  .value("Trigonal_High", EnsembleInfo::CrystalStructure::Trigonal_High)
+	  .value("UnknownCrystalStructure", EnsembleInfo::CrystalStructure::UnknownCrystalStructure)
+	  .export_values();
+#endif
+
+  /* Enumeration code for AngleUnits */
+  py::enum_<ArrayCalculator::AngleUnits>(mod, "AngleUnits")
+	  .value("Radians", ArrayCalculator::AngleUnits::Radians)
+	  .value("Degrees", ArrayCalculator::AngleUnits::Degrees)
+	  .export_values();
+
+  py::enum_<SIMPL::NumericTypes::Type>(mod, "NumericTypes")
+	  .value("Int8", SIMPL::NumericTypes::Type::Int8)
+	  .value("UInt8", SIMPL::NumericTypes::Type::UInt8)
+	  .value("Int16", SIMPL::NumericTypes::Type::Int16)
+	  .value("UInt16", SIMPL::NumericTypes::Type::UInt16)
+	  .value("Int32", SIMPL::NumericTypes::Type::Int32)
+	  .value("UInt32", SIMPL::NumericTypes::Type::UInt32)
+	  .value("Int64", SIMPL::NumericTypes::Type::Int64)
+	  .value("UInt64", SIMPL::NumericTypes::Type::UInt64)
+	  .value("Float", SIMPL::NumericTypes::Type::Float)
+	  .value("Double", SIMPL::NumericTypes::Type::Double)
+	  .value("Bool", SIMPL::NumericTypes::Type::Bool)
+	  .value("SizeT", SIMPL::NumericTypes::Type::SizeT)
+	  .value("UnknownNumType", SIMPL::NumericTypes::Type::UnknownNumType)
+	  .export_values();
+
 
   /* Init codes for classes in the Module */
   @MODULE_INIT_CODE@

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <assert.h>
+#include <cassert>
 
 #include <QtCore/QString>
 #include <QtWidgets/QComboBox>
@@ -37,28 +37,28 @@ class FilterParameterWidgetUtils
       assert(fp != nullptr);
       DataContainerArray::Pointer dca = filter->getDataContainerArray();
       // Populate the DataContainerArray Combo Box with all the DataContainers
-      QList<DataContainerProxy> dcList = dcaProxy.dataContainers.values();
+      QList<DataContainerProxy> dcList = dcaProxy.getDataContainers().values();
       QListIterator<DataContainerProxy> iter(dcList);
       dcCombo->clear();
       IGeometry::Types geomTypes = fp->getDefaultGeometryTypes();
       while(iter.hasNext() )
       {
         DataContainerProxy dcProxy = iter.next();
-        DataContainer::Pointer dc = dca->getDataContainer(dcProxy.name);
+        DataContainer::Pointer dc = dca->getDataContainer(dcProxy.getName());
         IGeometry::Pointer geom = IGeometry::NullPointer();
         IGeometry::Type geomType = IGeometry::Type::Unknown;
         if (nullptr != dc.get()) { geom = dc->getGeometry(); }
         if (nullptr != geom.get()) { geomType = geom->getGeometryType(); }
-        dcCombo->addItem(dcProxy.name);
+        dcCombo->addItem(dcProxy.getName());
 
-        if (geomTypes.isEmpty() == false)
+        if(!geomTypes.isEmpty())
         {
-          if (geomTypes.contains(geomType) == false)
+          if(!geomTypes.contains(geomType))
           {
             QStandardItemModel* model = qobject_cast<QStandardItemModel*>(dcCombo->model());
             if (nullptr != model)
             {
-              QStandardItem* item = model->item(dcCombo->findText(dcProxy.name));
+              QStandardItem* item = model->item(dcCombo->findText(dcProxy.getName()));
               if (nullptr != item)
               {
                 item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
@@ -96,26 +96,26 @@ class FilterParameterWidgetUtils
       amCombo->clear();
 
       // Loop over the data containers until we find the proper data container
-      QList<DataContainerProxy> containers = dcaProxy.dataContainers.values();
+      QList<DataContainerProxy> containers = dcaProxy.getDataContainers().values();
       QListIterator<DataContainerProxy> containerIter(containers);
       QVector<AttributeMatrix::Type> defVec = fp->getDefaultAttributeMatrixTypes();
       while(containerIter.hasNext())
       {
         DataContainerProxy dc = containerIter.next();
 
-        if(dc.name.compare(dcName) == 0 )
+        if(dc.getName() == dcName)
         {
           // We found the proper Data Container, now populate the AttributeMatrix List
-          QMap<QString, AttributeMatrixProxy> attrMats = dc.attributeMatricies;
+          QMap<QString, AttributeMatrixProxy> attrMats = dc.getAttributeMatricies();
           QMapIterator<QString, AttributeMatrixProxy> attrMatsIter(attrMats);
           while(attrMatsIter.hasNext() )
           {
             attrMatsIter.next();
             QString amName = attrMatsIter.key();
-            AttributeMatrix::Pointer am = dca->getAttributeMatrix(DataArrayPath(dc.name, amName, ""));
+            AttributeMatrix::Pointer am = dca->getAttributeMatrix(DataArrayPath(dc.getName(), amName, ""));
             amCombo->addItem(amName);
 
-            if (nullptr != am.get() && defVec.isEmpty() == false && defVec.contains(am->getType()) == false)
+            if(nullptr != am.get() && !defVec.isEmpty() && !defVec.contains(am->getType()))
             {
               QStandardItemModel* model = qobject_cast<QStandardItemModel*>(amCombo->model());
               if (nullptr != model)
@@ -166,39 +166,32 @@ class FilterParameterWidgetUtils
       QString currentAttrMatName = amCombo->currentText();
 
       // Loop over the data containers until we find the proper data container
-      QList<DataContainerProxy> containers = dcaProxy.dataContainers.values();
-      QListIterator<DataContainerProxy> containerIter(containers);
+      DataContainerArrayProxy::StorageType& dcMap = dcaProxy.getDataContainers();
+
       QVector<QString> daTypes = fp->getDefaultAttributeArrayTypes();
       QVector< QVector<size_t> > cDims = fp->getDefaultComponentDimensions();
-      while (containerIter.hasNext())
+      for(auto& dc : dcMap)
       {
-        DataContainerProxy dc = containerIter.next();
-        if (dc.name.compare(currentDCName) == 0)
+        if(dc.getName() == currentDCName)
         {
           // We found the proper Data Container, now populate the AttributeMatrix List
-          QMap<QString, AttributeMatrixProxy> attrMats = dc.attributeMatricies;
-          QMapIterator<QString, AttributeMatrixProxy> attrMatsIter(attrMats);
-          while (attrMatsIter.hasNext())
+          DataContainerProxy::StorageType& attrMats = dc.getAttributeMatricies();
+          for(auto& amProxy : attrMats)
           {
-            attrMatsIter.next();
-            QString amName = attrMatsIter.key();
+            QString amName = amProxy.getName();
             if (amName.compare(currentAttrMatName) == 0)
             {
               // Clear the list of arrays from the QListWidget
               aaCombo->clear();
               // We found the selected AttributeMatrix, so loop over this attribute matrix arrays and populate the list widget
-              AttributeMatrixProxy amProxy = attrMatsIter.value();
-              QMap<QString, DataArrayProxy> dataArrays = amProxy.dataArrays;
-              QMapIterator<QString, DataArrayProxy> dataArraysIter(dataArrays);
-              while (dataArraysIter.hasNext())
+              QMap<QString, DataArrayProxy>& dataArrays = amProxy.getDataArrays();
+              for(auto& daProxy : dataArrays)
               {
-                dataArraysIter.next();
-                //DataArrayProxy daProxy = dataArraysIter.value();
-                QString daName = dataArraysIter.key();
-                IDataArray::Pointer da = dca->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(nullptr, DataArrayPath(dc.name, amProxy.name, daName));
+                QString daName = daProxy.getName();
+                IDataArray::Pointer da = dca->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(nullptr, DataArrayPath(dc.getName(), amProxy.getName(), daName));
                 aaCombo->addItem(daName);
 
-                if (nullptr != da.get() && ((daTypes.isEmpty() == false && daTypes.contains(da->getTypeAsString()) == false) || (cDims.isEmpty() == false && cDims.contains(da->getComponentDimensions()) == false)))
+                if(nullptr != da.get() && ((!daTypes.isEmpty() && !daTypes.contains(da->getTypeAsString())) || (!cDims.isEmpty() && !cDims.contains(da->getComponentDimensions()))))
                 {
                   QStandardItemModel* model = qobject_cast<QStandardItemModel*>(aaCombo->model());
                   if (nullptr != model)
@@ -216,7 +209,7 @@ class FilterParameterWidgetUtils
         }
 
         aaCombo->setCurrentIndex(-1);
-        if(alreadyBlocked == false)
+        if(!alreadyBlocked)
         {
           aaCombo->blockSignals(false);
         }
@@ -236,10 +229,8 @@ class FilterParameterWidgetUtils
      * @param selectedPaths The paths that need to be set to selected
      */
     template <typename FilterParameterType, typename WidgetType>
-    static void PopulateAttributeArrayList(AbstractFilter* filter, FilterParameter* filterParameter,
-                                           QComboBox* dcCombo, QComboBox* amCombo, WidgetType* attributeArraysWidget,
-                                           DataContainerArrayProxy& dcaProxy,
-                                           QVector<DataArrayPath> selectedPaths)
+    static void PopulateAttributeArrayList(AbstractFilter* filter, FilterParameter* filterParameter, QComboBox* dcCombo, QComboBox* amCombo, WidgetType* attributeArraysWidget,
+                                           DataContainerArrayProxy& dcaProxy, const QVector<DataArrayPath>& selectedPaths)
     {
       FilterParameterType* fp = dynamic_cast<FilterParameterType*>(filterParameter);
       assert(fp != nullptr);
@@ -255,54 +246,47 @@ class FilterParameterWidgetUtils
       QString currentAttrMatName = amCombo->currentText();
 
       // Loop over the data containers until we find the proper data container
-      QList<DataContainerProxy> containers = dcaProxy.dataContainers.values();
-      QListIterator<DataContainerProxy> containerIter(containers);
+      DataContainerArrayProxy::StorageType& dcMap = dcaProxy.getDataContainers();
+
       QVector<QString> daTypes = fp->getDefaultAttributeArrayTypes();
       QVector< QVector<size_t> > cDims = fp->getDefaultComponentDimensions();
-      while (containerIter.hasNext())
+      for(auto& dc : dcMap)
       {
-        DataContainerProxy dc = containerIter.next();
-        if (dc.name.compare(currentDCName) == 0)
+        if(dc.getName() == currentDCName)
         {
           // We found the proper Data Container, now populate the AttributeMatrix List
-          QMap<QString, AttributeMatrixProxy> attrMats = dc.attributeMatricies;
-          QMapIterator<QString, AttributeMatrixProxy> attrMatsIter(attrMats);
-          while (attrMatsIter.hasNext())
+          DataContainerProxy::StorageType& attrMats = dc.getAttributeMatricies();
+          for(auto& amProxy : attrMats)
           {
-            attrMatsIter.next();
-            QString amName = attrMatsIter.key();
-            if (amName.compare(currentAttrMatName) == 0)
+            QString amName = amProxy.getName();
+            if(amName == currentAttrMatName)
             {
               // Clear the list of arrays from the QListWidget
               attributeArraysWidget->clear();
               // We found the selected AttributeMatrix, so loop over this attribute matrix arrays and populate the list widget
-              AttributeMatrixProxy amProxy = attrMatsIter.value();
-              QMap<QString, DataArrayProxy> dataArrays = amProxy.dataArrays;
-              QMapIterator<QString, DataArrayProxy> dataArraysIter(dataArrays);
-              while (dataArraysIter.hasNext())
+              QMap<QString, DataArrayProxy>& dataArrays = amProxy.getDataArrays();
+              for(auto& daProxy : dataArrays)
               {
-                dataArraysIter.next();
-                QString daName = dataArraysIter.key();
+                QString daName = daProxy.getName();
                 QListWidgetItem* daItem = new QListWidgetItem(daName);
                 daItem->setCheckState(Qt::Unchecked);
 
-                for (int i = 0; i < selectedPaths.size(); i++)
+                for(const auto& selectedPath : selectedPaths)
                 {
-                  if (selectedPaths.at(i).getDataArrayName() == daName)
+                  if(selectedPath.getDataArrayName() == daName)
                   {
                     daItem->setCheckState(Qt::Checked);
                   }
                 }
 
-                IDataArray::Pointer da = dca->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(nullptr, DataArrayPath(dc.name, amProxy.name, daName));
+                IDataArray::Pointer da = dca->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(nullptr, DataArrayPath(dc.getName(), amProxy.getName(), daName));
                 attributeArraysWidget->addItem(daItem);
 
-                if (nullptr != da.get() && ((daTypes.isEmpty() == false && daTypes.contains(da->getTypeAsString()) == false) || (cDims.isEmpty() == false && cDims.contains(da->getComponentDimensions()) == false)))
+                if(nullptr != da.get() && ((!daTypes.isEmpty() && !daTypes.contains(da->getTypeAsString())) || (!cDims.isEmpty() && !cDims.contains(da->getComponentDimensions()))))
                 {
                   QList<QListWidgetItem*> rejectList = attributeArraysWidget->findItems(daName, Qt::MatchRecursive);
-                  for (int i = 0; i < rejectList.size(); i++)
+                  for(const auto& item : rejectList)
                   {
-                    QListWidgetItem* item = rejectList[i];
                     item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
                   }
                 }

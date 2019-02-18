@@ -46,269 +46,284 @@
  */
 class SIMPLib_EXPORT VertexGeom : public IGeometry
 {
-  public:
+  // clang-format off
 
-    SIMPL_SHARED_POINTERS(VertexGeom)
-    SIMPL_STATIC_NEW_MACRO(VertexGeom)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(VertexGeom, Observable)
+  PYB11_CREATE_BINDINGS(VertexGeom SUPERCLASS IGeometry)
+  
+  PYB11_CREATION(CreateGeometry ARGS int64_t QString bool)
+  PYB11_CREATION(CreateGeometry ARGS SharedVertexList::Pointer QString)
 
-    ~VertexGeom() override;
+  PYB11_METHOD(void setVertices SharedVertexList::Pointer,vertices)
+  PYB11_METHOD(SharedVertexList::Pointer getVertices)
 
-    /**
-     * @brief CreateGeometry
-     * @param numVertices
-     * @param name
-     * @return
-     */
-    static Pointer CreateGeometry(int64_t numVertices, const QString& name, bool allocate = true);
+  PYB11_METHOD(void setCoords int64_t,vertId float,coords[3])
+  PYB11_METHOD(void getCoords int64_t,vertId float,coords[3])
 
-    /**
-     * @brief CreateGeometry
-     * @param vertices
-     * @param name
-     * @return
-     */
-    static Pointer CreateGeometry(SharedVertexList::Pointer vertices, const QString& name);
+  PYB11_METHOD(int64_t getNumberOfVertices)
+  PYB11_METHOD(size_t getNumberOfElements)
+  // clang-format on
 
-// -----------------------------------------------------------------------------
-// Inherited from SharedVertexOps
-// -----------------------------------------------------------------------------
+public:
+  SIMPL_SHARED_POINTERS(VertexGeom)
+  SIMPL_STATIC_NEW_MACRO(VertexGeom)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(VertexGeom, Observable)
 
-    /**
-     * @brief CreateSharedVertexList
-     * @param numVertices
-     * @return
-     */
-    static SharedVertexList::Pointer CreateSharedVertexList(int64_t numVertices, bool allocate = true);
+  ~VertexGeom() override;
 
-    /**
-     * @brief resizeVertexList
-     * @param newNumVertices
-     */
-    void resizeVertexList(int64_t newNumVertices);
+  /**
+   * @brief CreateGeometry
+   * @param numVertices
+   * @param name
+   * @return
+   */
+  static Pointer CreateGeometry(int64_t numVertices, const QString& name, bool allocate = true);
 
-    /**
-     * @brief setVertices
-     * @param vertices
-     */
-    void setVertices(SharedVertexList::Pointer vertices);
+  /**
+   * @brief CreateGeometry
+   * @param vertices
+   * @param name
+   * @return
+   */
+  static Pointer CreateGeometry(SharedVertexList::Pointer vertices, const QString& name);
 
-    /**
-     * @brief getVertices
-     * @return
-     */
-    SharedVertexList::Pointer getVertices();
+  // -----------------------------------------------------------------------------
+  // Inherited from SharedVertexOps
+  // -----------------------------------------------------------------------------
 
-    /**
-     * @brief setCoords
-     * @param vertId
-     * @param coords
-     */
-    void setCoords(int64_t vertId, float coords[3]);
+  /**
+   * @brief CreateSharedVertexList
+   * @param numVertices
+   * @return
+   */
+  static SharedVertexList::Pointer CreateSharedVertexList(int64_t numVertices, bool allocate = true);
 
-    /**
-     * @brief getCoords
-     * @param vertId
-     * @param coords
-     */
-    void getCoords(int64_t vertId, float coords[3]);
+  /**
+   * @brief resizeVertexList
+   * @param newNumVertices
+   */
+  void resizeVertexList(int64_t newNumVertices);
 
-    /**
-     * @brief getVertexPointer
-     * @param i
-     * @return
-     */
-    float* getVertexPointer(int64_t i);
+  /**
+   * @brief setVertices
+   * @param vertices
+   */
+  void setVertices(SharedVertexList::Pointer vertices);
 
-    /**
-     * @brief getNumberOfVertices
-     * @return
-     */
-    int64_t getNumberOfVertices();
+  /**
+   * @brief getVertices
+   * @return
+   */
+  SharedVertexList::Pointer getVertices();
 
-// -----------------------------------------------------------------------------
-// Inherited from IGeometry
-// -----------------------------------------------------------------------------
+  /**
+   * @brief setCoords
+   * @param vertId
+   * @param coords
+   */
+  void setCoords(int64_t vertId, float coords[3]);
 
-    /**
-     * @brief initializeWithZeros
-     */
-    void initializeWithZeros() override;
+  /**
+   * @brief getCoords
+   * @param vertId
+   * @param coords
+   */
+  void getCoords(int64_t vertId, float coords[3]);
 
-    /**
-     * @brief getNumberOfElements
-     * @return
-     */
-    size_t getNumberOfElements() override;
+  /**
+   * @brief getVertexPointer
+   * @param i
+   * @return
+   */
+  float* getVertexPointer(int64_t i);
 
-    /**
-     * @brief findElementSizes
-     * @return
-     */
-    int findElementSizes() override;
+  /**
+   * @brief getNumberOfVertices
+   * @return
+   */
+  int64_t getNumberOfVertices();
 
-    /**
-     * @brief getElementSizes
-     * @return
-     */
-    FloatArrayType::Pointer getElementSizes() override;
+  // -----------------------------------------------------------------------------
+  // Inherited from IGeometry
+  // -----------------------------------------------------------------------------
 
-    /**
-     * @brief deleteElementSizes
-     */
-    void deleteElementSizes() override;
+  /**
+   * @brief initializeWithZeros
+   */
+  void initializeWithZeros() override;
 
-    /**
-     * @brief findElementsContainingVert
-     * @return
-     */
-    int findElementsContainingVert() override;
+  /**
+   * @brief getNumberOfElements
+   * @return
+   */
+  size_t getNumberOfElements() override;
 
-    /**
-     * @brief getElementsContainingVert
-     * @return
-     */
-    ElementDynamicList::Pointer getElementsContainingVert() override;
+  /**
+   * @brief findElementSizes
+   * @return
+   */
+  int findElementSizes() override;
 
-    /**
-     * @brief deleteElementsContainingVert
-     */
-    void deleteElementsContainingVert() override;
+  /**
+   * @brief getElementSizes
+   * @return
+   */
+  FloatArrayType::Pointer getElementSizes() override;
 
-    /**
-     * @brief findElementNeighbors
-     * @return
-     */
-    int findElementNeighbors() override;
+  /**
+   * @brief deleteElementSizes
+   */
+  void deleteElementSizes() override;
 
-    /**
-     * @brief getElementNeighbors
-     * @return
-     */
-    ElementDynamicList::Pointer getElementNeighbors() override;
+  /**
+   * @brief findElementsContainingVert
+   * @return
+   */
+  int findElementsContainingVert() override;
 
-    /**
-     * @brief deleteElementNeighbors
-     */
-    void deleteElementNeighbors() override;
+  /**
+   * @brief getElementsContainingVert
+   * @return
+   */
+  ElementDynamicList::Pointer getElementsContainingVert() override;
 
-    /**
-     * @brief findElementCentroids
-     * @return
-     */
-    int findElementCentroids() override;
+  /**
+   * @brief deleteElementsContainingVert
+   */
+  void deleteElementsContainingVert() override;
 
-    /**
-     * @brief getElementCentroids
-     * @return
-     */
-    FloatArrayType::Pointer getElementCentroids() override;
+  /**
+   * @brief findElementNeighbors
+   * @return
+   */
+  int findElementNeighbors() override;
 
-    /**
-     * @brief deleteElementCentroids
-     */
-    void deleteElementCentroids() override;
+  /**
+   * @brief getElementNeighbors
+   * @return
+   */
+  ElementDynamicList::Pointer getElementNeighbors() override;
 
-    /**
-     * @brief getParametricCenter
-     * @param pCoords
-     */
-    void getParametricCenter(double pCoords[3]) override;
+  /**
+   * @brief deleteElementNeighbors
+   */
+  void deleteElementNeighbors() override;
 
-    /**
-     * @brief getShapeFunctions
-     * @param pCoords
-     * @param shape
-     */
-    void getShapeFunctions(double pCoords[3], double* shape) override;
+  /**
+   * @brief findElementCentroids
+   * @return
+   */
+  int findElementCentroids() override;
 
-    /**
-     * @brief findDerivatives
-     * @param field
-     * @param derivatives
-     */
-    void findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable = nullptr) override;
+  /**
+   * @brief getElementCentroids
+   * @return
+   */
+  FloatArrayType::Pointer getElementCentroids() override;
 
-    /**
-     * @brief getInfoString
-     * @return Returns a formatted string that contains general infomation about
-     * the instance of the object.
-     */
-    QString getInfoString(SIMPL::InfoStringFormat format) override;
+  /**
+   * @brief deleteElementCentroids
+   */
+  void deleteElementCentroids() override;
 
-    /**
-     * @brief writeGeometryToHDF5
-     * @param parentId
-     * @param writeXdmf
-     * @return
-     */
-    int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) override;
+  /**
+   * @brief getParametricCenter
+   * @param pCoords
+   */
+  void getParametricCenter(double pCoords[3]) override;
 
-    /**
-     * @brief writeXdmf
-     * @param out
-     * @param dcName
-     * @param hdfFileName
-     * @return
-     */
-    int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) override;
+  /**
+   * @brief getShapeFunctions
+   * @param pCoords
+   * @param shape
+   */
+  void getShapeFunctions(double pCoords[3], double* shape) override;
 
-    /**
-     * @brief readGeometryFromHDF5
-     * @param parentId
-     * @param preflight
-     * @return
-     */
-    int readGeometryFromHDF5(hid_t parentId, bool preflight) override;
+  /**
+   * @brief findDerivatives
+   * @param field
+   * @param derivatives
+   */
+  void findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable = nullptr) override;
 
-    /**
-     * @brief deepCopy
-     * @return
-     */
-    IGeometry::Pointer deepCopy(bool forceNoAllocate = false) override;
+  /**
+   * @brief getInfoString
+   * @return Returns a formatted string that contains general infomation about
+   * the instance of the object.
+   */
+  QString getInfoString(SIMPL::InfoStringFormat format) override;
 
-    /**
-     * @brief addAttributeMatrix
-     */
-    void addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data) override;
+  /**
+   * @brief writeGeometryToHDF5
+   * @param parentId
+   * @param writeXdmf
+   * @return
+   */
+  int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) override;
 
-  protected:
+  /**
+   * @brief writeXdmf
+   * @param out
+   * @param dcName
+   * @param hdfFileName
+   * @return
+   */
+  int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) override;
 
-    VertexGeom();
+  /**
+   * @brief readGeometryFromHDF5
+   * @param parentId
+   * @param preflight
+   * @return
+   */
+  int readGeometryFromHDF5(hid_t parentId, bool preflight) override;
 
-    /**
-     * @brief setElementsContainingVert
-     * @param elementsContainingVert
-     */
-    void setElementsContainingVert(ElementDynamicList::Pointer elementsContainingVert) override;
+  /**
+   * @brief deepCopy
+   * @return
+   */
+  IGeometry::Pointer deepCopy(bool forceNoAllocate = false) override;
 
-    /**
-     * @brief setElementNeighbors
-     * @param elementNeighbors
-     */
-    void setElementNeighbors(ElementDynamicList::Pointer elementNeighbors) override;
+  /**
+   * @brief addAttributeMatrix
+   */
+  void addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data) override;
 
-    /**
-     * @brief setElementCentroids
-     * @param elementCentroids
-     */
-    void setElementCentroids(FloatArrayType::Pointer elementCentroids) override;
+protected:
+  VertexGeom();
 
-    /**
-     * @brief setElementSizes
-     * @param elementSizes
-     */
-    void setElementSizes(FloatArrayType::Pointer elementSizes) override;
+  /**
+   * @brief setElementsContainingVert
+   * @param elementsContainingVert
+   */
+  void setElementsContainingVert(ElementDynamicList::Pointer elementsContainingVert) override;
 
-  private:
-    SharedVertexList::Pointer m_VertexList;
-    FloatArrayType::Pointer m_VertexSizes;
+  /**
+   * @brief setElementNeighbors
+   * @param elementNeighbors
+   */
+  void setElementNeighbors(ElementDynamicList::Pointer elementNeighbors) override;
 
-  public:
-    VertexGeom(const VertexGeom&) = delete;     // Copy Constructor Not Implemented
-    VertexGeom(VertexGeom&&) = delete;          // Move Constructor Not Implemented
-    VertexGeom& operator=(const VertexGeom&) = delete; // Copy Assignment Not Implemented
-    VertexGeom& operator=(VertexGeom&&) = delete;      // Move Assignment Not Implemented
+  /**
+   * @brief setElementCentroids
+   * @param elementCentroids
+   */
+  void setElementCentroids(FloatArrayType::Pointer elementCentroids) override;
+
+  /**
+   * @brief setElementSizes
+   * @param elementSizes
+   */
+  void setElementSizes(FloatArrayType::Pointer elementSizes) override;
+
+private:
+  SharedVertexList::Pointer m_VertexList;
+  FloatArrayType::Pointer m_VertexSizes;
+
+public:
+  VertexGeom(const VertexGeom&) = delete;            // Copy Constructor Not Implemented
+  VertexGeom(VertexGeom&&) = delete;                 // Move Constructor Not Implemented
+  VertexGeom& operator=(const VertexGeom&) = delete; // Copy Assignment Not Implemented
+  VertexGeom& operator=(VertexGeom&&) = delete;      // Move Assignment Not Implemented
 };
 
 

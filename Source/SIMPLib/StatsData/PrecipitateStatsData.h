@@ -83,23 +83,38 @@ typedef QVector<FloatArrayType::Pointer> VectorOfFloatArray;
  */
 class SIMPLib_EXPORT PrecipitateStatsData : public StatsData
 {
-  public:
-    SIMPL_SHARED_POINTERS(PrecipitateStatsData)
-    SIMPL_STATIC_NEW_MACRO(PrecipitateStatsData)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PrecipitateStatsData, StatsData)
+  PYB11_CREATE_BINDINGS(PrecipitateStatsData SUPERCLASS StatsData)
+  PYB11_STATIC_CREATION(initialize)
 
-    ~PrecipitateStatsData() override;
+  PYB11_PROPERTY(float BinStepSize READ getBinStepSize WRITE setBinStepSize)
+  PYB11_PROPERTY(float MaxFeatureDiameter READ getMaxFeatureDiameter WRITE setMaxFeatureDiameter)
+  PYB11_PROPERTY(float MinFeatureDiameter READ getMinFeatureDiameter WRITE setMinFeatureDiameter)
+  PYB11_PROPERTY(VectorOfFloatArray FeatureSizeDistribution READ getFeatureSizeDistribution WRITE setFeatureSizeDistribution)
+  PYB11_PROPERTY(uint32_t FeatureSize_DistType READ getFeatureSize_DistType WRITE setFeatureSize_DistType)
+  PYB11_METHOD(PhaseType::Type getPhaseType)
+  PYB11_METHOD(FloatArrayType::Pointer generateBinNumbers)
+  PYB11_PROPERTY(float PhaseFraction READ getPhaseFraction WRITE setPhaseFraction)
+  PYB11_PROPERTY(float BoundaryArea READ getBoundaryArea WRITE setBoundaryArea)
+  PYB11_PROPERTY(float PrecipBoundaryFraction READ getPrecipBoundaryFraction WRITE setPrecipBoundaryFraction)
+  PYB11_METHOD(QString getStatsType)
 
-    /**
-     * @brief GetTypeName Returns a string representation of the type of data that is stored by this class. This
-     * can be a primitive like char, float, int or the name of a class.
-     * @return
-     */
-    void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision)
-    {
-      xdmfTypeName = getNameOfClass();
-      precision = 0;
-    }
+public:
+  SIMPL_SHARED_POINTERS(PrecipitateStatsData)
+  SIMPL_STATIC_NEW_MACRO(PrecipitateStatsData)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PrecipitateStatsData, StatsData)
+
+  ~PrecipitateStatsData() override;
+
+  /**
+   * @brief GetTypeName Returns a string representation of the type of data that is stored by this class. This
+   * can be a primitive like char, float, int or the name of a class.
+   * @return
+   */
+  void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision)
+  {
+    xdmfTypeName = getNameOfClass();
+    precision = 0;
+  }
 
     SIMPL_INSTANCE_PROPERTY(float, BoundaryArea)
     SIMPL_INSTANCE_PROPERTY(float, PrecipBoundaryFraction)

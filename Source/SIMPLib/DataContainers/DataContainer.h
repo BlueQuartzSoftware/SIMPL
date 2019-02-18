@@ -66,6 +66,7 @@ class SIMPLib_EXPORT DataContainer : public Observable, public IDataStructureCon
 {
 
   // This line MUST be first when exposing a class and properties to Python
+  // clang-format off
   PYB11_CREATE_BINDINGS(DataContainer)
   PYB11_STATIC_CREATION(New ARGS QString)
 
@@ -75,15 +76,15 @@ class SIMPLib_EXPORT DataContainer : public Observable, public IDataStructureCon
   PYB11_METHOD(QString getInfoString ARGS InfoStringFormat)
   PYB11_METHOD(void addAttributeMatrix ARGS Name AttributeMatrix)
 
-  PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix OVERLOAD const.QString.&, Name)
-  PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix OVERLOAD const.DataArrayPath.&, Path)
+  PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix OVERLOAD const.QString.&,Name)
+  PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix OVERLOAD const.DataArrayPath.&,Path)
 
   PYB11_METHOD(AttributeMatrix removeAttributeMatrix ARGS Name)
   PYB11_METHOD(bool renameAttributeMatrix ARGS OldName NewName OverWrite)
 
   PYB11_METHOD(bool doesAttributeMatrixExist ARGS Name)
   PYB11_METHOD(void setGeometry ARGS Geometry)
-
+  // clang-format on
 public:
   SIMPL_SHARED_POINTERS(DataContainer)
   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainer, Observable)
@@ -325,7 +326,7 @@ public:
    * @brief Reads desired Attribute Matrices from HDF5 file
    * @return
    */
-  virtual int readAttributeMatricesFromHDF5(bool preflight, hid_t dcGid, const DataContainerProxy& dcProxy);
+  virtual int readAttributeMatricesFromHDF5(bool preflight, hid_t dcGid, DataContainerProxy& dcProxy);
 
   /**
    * @brief creates copy of dataContainer

@@ -29,12 +29,12 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_EXTENSIONS False)
 
+cmake_minimum_required(VERSION 3.13.0)
 
 #------------------------------------------------------------------------------
 # Create the Top level Project
 #
 project(SIMPLProj VERSION 1.2.0.0)
-
 
 # ---------- Setup output Directories -------------------------
 if(NOT DEFINED CMAKE_LIBRARY_OUTPUT_DIRECTORY)
@@ -444,12 +444,11 @@ include(${SIMPLProj_SOURCE_DIR}/Support/Support.cmake)
 
 # --------------------------------------------------------------------------
 # Find the Pybind11 installation
-option(SIMPL_WRAP_PYTHON "Generate and Compile Python wrapping codes" OFF)
-message(STATUS "SIMPL_WRAP_PYTHON: ${SIMPL_WRAP_PYTHON}")
-if(SIMPL_WRAP_PYTHON)
+option(SIMPL_ENABLE_PYTHON "Generate and Compile Python wrapping codes" OFF)
+if(SIMPL_ENABLE_PYTHON)
+
   # --------------------------------------------------------------------
   # add the Pybind11 Python Wrapping
   add_subdirectory(${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11 ${PROJECT_BINARY_DIR}/Pybind11)
 
 endif()
-

@@ -36,20 +36,15 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixProxy::AttributeMatrixProxy()
-: flag(0)
-, name("")
-, amType(AttributeMatrix::Type::Unknown)
-{
-}
+AttributeMatrixProxy::AttributeMatrixProxy() = default;
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixProxy::AttributeMatrixProxy(QString am_name, uint8_t read_am , AttributeMatrix::Type am_type)
-: flag(read_am)
-, name(am_name)
-, amType(am_type)
+AttributeMatrixProxy::AttributeMatrixProxy(const QString& am_name, uint8_t read_am, AttributeMatrix::Type am_type)
+: m_Flag(read_am)
+, m_Name(am_name)
+, m_AMType(am_type)
 {
 }
 
@@ -58,10 +53,10 @@ AttributeMatrixProxy::AttributeMatrixProxy(QString am_name, uint8_t read_am , At
 // -----------------------------------------------------------------------------
 AttributeMatrixProxy::AttributeMatrixProxy(const AttributeMatrixProxy& amp)
 {
-  flag = amp.flag;
-  name = amp.name;
-  amType = amp.amType;
-  dataArrays = amp.dataArrays;
+  m_Flag = amp.m_Flag;
+  m_Name = amp.m_Name;
+  m_AMType = amp.m_AMType;
+  m_DataArrays = amp.m_DataArrays;
 }
 
 // -----------------------------------------------------------------------------
@@ -72,35 +67,29 @@ AttributeMatrixProxy::~AttributeMatrixProxy() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AttributeMatrixProxy::operator=(const AttributeMatrixProxy& amp)
-{
-  flag = amp.flag;
-  name = amp.name;
-  amType = amp.amType;
-  dataArrays = amp.dataArrays;
-}
+AttributeMatrixProxy& AttributeMatrixProxy::operator=(const AttributeMatrixProxy& amp) = default;
 
+// -----------------------------------------------------------------------------
+AttributeMatrixProxy::AttributeMatrixProxy(AttributeMatrixProxy&&) noexcept = default;
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 bool AttributeMatrixProxy::operator==(const AttributeMatrixProxy& amp) const
 {
-  return flag == amp.flag && name == amp.name && amType == amp.amType && dataArrays == amp.dataArrays;
+  return m_Flag == amp.m_Flag && m_Name == amp.m_Name && m_AMType == amp.m_AMType && m_DataArrays == amp.m_DataArrays;
 }
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AttributeMatrixProxy::writeJson(QJsonObject& json)
+void AttributeMatrixProxy::writeJson(QJsonObject& json) const
 {
-  json["Flag"] = static_cast<double>(flag);
-  json["Name"] = name;
-  json["Type"] = static_cast<double>(amType);
-  json["Data Arrays"] = writeMap(dataArrays);
+  json["Flag"] = static_cast<double>(m_Flag);
+  json["Name"] = m_Name;
+  json["Type"] = static_cast<double>(m_AMType);
+  json["Data Arrays"] = writeMap(m_DataArrays);
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -111,14 +100,14 @@ bool AttributeMatrixProxy::readJson(QJsonObject& json)
   {
     if(json["Flag"].toDouble() >= std::numeric_limits<uint8_t>::min() && json["Flag"].toDouble() <= std::numeric_limits<uint8_t>::max())
     {
-      flag = static_cast<uint8_t>(json["Flag"].toDouble());
+      m_Flag = static_cast<uint8_t>(json["Flag"].toDouble());
     }
-    name = json["Name"].toString();
+    m_Name = json["Name"].toString();
     if(json["Type"].toDouble() >= std::numeric_limits<unsigned int>::min() && json["Type"].toDouble() <= std::numeric_limits<unsigned int>::max())
     {
-      amType = static_cast<AttributeMatrix::Type>(json["Type"].toInt());
+      m_AMType = static_cast<AttributeMatrix::Type>(json["Type"].toInt());
     }
-    dataArrays = readMap(json["Data Arrays"].toArray());
+    m_DataArrays = readMap(json["Data Arrays"].toArray());
     return true;
   }
   return false;
@@ -127,13 +116,13 @@ bool AttributeMatrixProxy::readJson(QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QJsonArray AttributeMatrixProxy::writeMap(QMap<QString, DataArrayProxy> map)
+QJsonArray AttributeMatrixProxy::writeMap(const QMap<QString, DataArrayProxy>& map) const
 {
   QJsonArray daArray;
-  for(QMap<QString, DataArrayProxy>::iterator iter = map.begin(); iter != map.end(); ++iter)
+  for(const DataArrayProxy& iter : map)
   {
     QJsonObject obj;
-    (*iter).writeJson(obj);
+    iter.writeJson(obj);
     daArray.push_back(obj);
   }
   return daArray;
@@ -145,13 +134,13 @@ QJsonArray AttributeMatrixProxy::writeMap(QMap<QString, DataArrayProxy> map)
 QMap<QString, DataArrayProxy> AttributeMatrixProxy::readMap(QJsonArray jsonArray)
 {
   QMap<QString, DataArrayProxy> map;
-  foreach(QJsonValue val, jsonArray)
+  for(const auto& val : jsonArray)
   {
     if(val.isObject())
     {
       DataArrayProxy da;
       da.readJson(val.toObject());
-      map.insert(da.name, da);
+      map.insert(da.getName(), da);
     }
   }
   return map;
@@ -162,72 +151,72 @@ QMap<QString, DataArrayProxy> AttributeMatrixProxy::readMap(QJsonArray jsonArray
 // -----------------------------------------------------------------------------
 AttributeMatrixProxy::AMTypeFlag AttributeMatrixProxy::AttributeMatrixTypeToFlag(AttributeMatrix::Type amType)
 {
-  switch (amType)
+  switch(amType)
   {
-    case AttributeMatrix::Type::Any:
-    {
-      return Any_AMType;
-    }
-    case AttributeMatrix::Type::Cell:
-    {
-      return Cell_AMType;
-    }
-    case AttributeMatrix::Type::CellEnsemble:
-    {
-      return CellEnsemble_AMType;
-    }
-    case AttributeMatrix::Type::CellFeature:
-    {
-      return CellFeature_AMType;
-    }
-    case AttributeMatrix::Type::Edge:
-    {
-      return Edge_AMType;
-    }
-    case AttributeMatrix::Type::EdgeEnsemble:
-    {
-      return EdgeEnsemble_AMType;
-    }
-    case AttributeMatrix::Type::EdgeFeature:
-    {
-      return EdgeFeature_AMType;
-    }
-    case AttributeMatrix::Type::Face:
-    {
-      return Face_AMType;
-    }
-    case AttributeMatrix::Type::FaceEnsemble:
-    {
-      return FaceEnsemble_AMType;
-    }
-    case AttributeMatrix::Type::FaceFeature:
-    {
-      return FaceFeature_AMType;
-    }
-    case AttributeMatrix::Type::Generic:
-    {
-      return Generic_AMType;
-    }
-    case AttributeMatrix::Type::MetaData:
-    {
-      return MetaData_AMType;
-    }
-    case AttributeMatrix::Type::Vertex:
-    {
-      return Vertex_AMType;
-    }
-    case AttributeMatrix::Type::VertexEnsemble:
-    {
-      return VertexEnsemble_AMType;
-    }
-    case AttributeMatrix::Type::VertexFeature:
-    {
-      return VertexFeature_AMType;
-    }
-    case AttributeMatrix::Type::Unknown:
-    {
-      return Unknown_AMType;
-    }
+  case AttributeMatrix::Type::Any:
+  {
+    return Any_AMType;
+  }
+  case AttributeMatrix::Type::Cell:
+  {
+    return Cell_AMType;
+  }
+  case AttributeMatrix::Type::CellEnsemble:
+  {
+    return CellEnsemble_AMType;
+  }
+  case AttributeMatrix::Type::CellFeature:
+  {
+    return CellFeature_AMType;
+  }
+  case AttributeMatrix::Type::Edge:
+  {
+    return Edge_AMType;
+  }
+  case AttributeMatrix::Type::EdgeEnsemble:
+  {
+    return EdgeEnsemble_AMType;
+  }
+  case AttributeMatrix::Type::EdgeFeature:
+  {
+    return EdgeFeature_AMType;
+  }
+  case AttributeMatrix::Type::Face:
+  {
+    return Face_AMType;
+  }
+  case AttributeMatrix::Type::FaceEnsemble:
+  {
+    return FaceEnsemble_AMType;
+  }
+  case AttributeMatrix::Type::FaceFeature:
+  {
+    return FaceFeature_AMType;
+  }
+  case AttributeMatrix::Type::Generic:
+  {
+    return Generic_AMType;
+  }
+  case AttributeMatrix::Type::MetaData:
+  {
+    return MetaData_AMType;
+  }
+  case AttributeMatrix::Type::Vertex:
+  {
+    return Vertex_AMType;
+  }
+  case AttributeMatrix::Type::VertexEnsemble:
+  {
+    return VertexEnsemble_AMType;
+  }
+  case AttributeMatrix::Type::VertexFeature:
+  {
+    return VertexFeature_AMType;
+  }
+  case AttributeMatrix::Type::Unknown:
+  {
+    return Unknown_AMType;
+  }
   }
 
   return Unknown_AMType;
@@ -238,25 +227,25 @@ AttributeMatrixProxy::AMTypeFlag AttributeMatrixProxy::AttributeMatrixTypeToFlag
 // -----------------------------------------------------------------------------
 void AttributeMatrixProxy::setFlags(uint8_t flag, DataArrayProxy::PrimitiveTypeFlags primitiveTypes, DataArrayProxy::CompDimsVector compDimsVector)
 {
-  this->flag = flag;
+  this->m_Flag = flag;
 
-  for(QMap<QString, DataArrayProxy>::iterator daIter = dataArrays.begin(); daIter != dataArrays.end(); ++daIter) // DataArray Level
+  for(QMap<QString, DataArrayProxy>::iterator daIter = m_DataArrays.begin(); daIter != m_DataArrays.end(); ++daIter) // DataArray Level
   {
     DataArrayProxy& daProxy = daIter.value();
-    DataArrayProxy::PrimitiveTypeFlag pTypeFlag = DataArrayProxy::PrimitiveTypeToFlag(daProxy.objectType);
-    if ((primitiveTypes & pTypeFlag) > 0 || primitiveTypes == DataArrayProxy::PrimitiveTypeFlag::Any_PType)
+    DataArrayProxy::PrimitiveTypeFlag pTypeFlag = DataArrayProxy::PrimitiveTypeToFlag(daProxy.getObjectType());
+    if((primitiveTypes & pTypeFlag) > 0 || primitiveTypes == DataArrayProxy::PrimitiveTypeFlag::Any_PType)
     {
       if(compDimsVector.empty())
       {
-        daProxy.flag = flag;
+        daProxy.setFlag(flag);
       }
       else
       {
-        for (int i = 0; i < compDimsVector.size(); i++)
+        for(const auto& compDim : compDimsVector)
         {
-          if (compDimsVector[i] == daProxy.compDims)
+          if(compDim == daProxy.getCompDims())
           {
-            daProxy.flag = flag;
+            daProxy.setFlag(flag);
           }
         }
       }
@@ -275,13 +264,111 @@ void AttributeMatrixProxy::updatePath(DataArrayPath::RenameType renamePath)
 
   if(oldPath.getAttributeMatrixName() != newPath.getAttributeMatrixName())
   {
-    name = newPath.getAttributeMatrixName();
+    m_Name = newPath.getAttributeMatrixName();
   }
 
-  if(dataArrays.contains(oldPath.getDataArrayName()))
+  if(m_DataArrays.contains(oldPath.getDataArrayName()))
   {
-    DataArrayProxy daProxy = dataArrays.take(oldPath.getDataArrayName());
+    DataArrayProxy daProxy = m_DataArrays.take(oldPath.getDataArrayName());
     daProxy.updatePath(renamePath);
-    dataArrays.insert(newPath.getDataArrayName(), daProxy);
+    m_DataArrays.insert(newPath.getDataArrayName(), daProxy);
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataArrayProxy& AttributeMatrixProxy::getDataArrayProxy(const QString& name)
+{
+  for(QMap<QString, DataArrayProxy>::iterator iter = m_DataArrays.begin(); iter != m_DataArrays.end(); ++iter) // DataArray Level
+  {
+    DataArrayProxy& dataArray = iter.value();
+    if(dataArray.getName() == name)
+    {
+      return dataArray;
+    }
+  }
+
+  DataArrayProxy proxy;
+  proxy.setName(name);
+  m_DataArrays.insert(proxy.getName(), proxy);
+  return m_DataArrays[name];
+}
+
+// -----------------------------------------------------------------------------
+void AttributeMatrixProxy::insertDataArray(const QString& name, const DataArrayProxy& proxy)
+{
+  m_DataArrays.insert(name, proxy);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AttributeMatrixProxy::StorageType& AttributeMatrixProxy::getDataArrays()
+{
+  return m_DataArrays;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const AttributeMatrixProxy::StorageType& AttributeMatrixProxy::getDataArrays() const
+{
+  return m_DataArrays;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixProxy::setDataArrays(const QMap<QString, DataArrayProxy>& proxies)
+{
+  m_DataArrays = proxies;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString AttributeMatrixProxy::getName() const
+{
+  return m_Name;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixProxy::setName(const QString& newName)
+{
+  m_Name = newName;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AttributeMatrix::Type AttributeMatrixProxy::getAMType() const
+{
+  return m_AMType;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixProxy::setAMType(AttributeMatrix::Type newType)
+{
+  m_AMType = newType;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+uint8_t AttributeMatrixProxy::getFlag() const
+{
+  return m_Flag;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixProxy::setFlag(uint8_t newFlag)
+{
+  m_Flag = newFlag;
 }

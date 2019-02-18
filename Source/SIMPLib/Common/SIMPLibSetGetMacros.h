@@ -399,49 +399,56 @@ public:     \
 * @brief PYB11_PROPERTY This macro is used to wrap a single class instance property
 * that is typically used as an input parameter for a filter. This macro should
 * <b>NOT</b> be used for just wrapping instance methods. Use the PYB11_METHOD for
-* that. @see AbstractFilter. There are number of arguments depending on if the 
+* that. @see AbstractFilter. There are number of arguments depending on if the
 * property is a read-only or read-write variable. At least 4 arguments to the
-* macro are required when the property is read only
+* macro are required when the property is read only.
 * @code
-  PYB11_PROPERTY(QString NameOfClass READ getNameOfClass)  
+  PYB11_PROPERTY(QString NameOfClass READ getNameOfClass)
 * @endcode
 * and 6 arguments when the property is read-write.
 * @code
 * PYB11_PROPERTY(bool Cancel READ getCancel WRITE setCancel)
 * @endcode
-*/ 
+*
+* and if there are additional overloads of the Getter that returns a const reference such as
+* @code
+* const QString& getFoo() const;
+* @endcode
+*
+* then you would add on the CONST_GET_OVERLOAD as the last argument to the macro.
+*/
 #define PYB11_PROPERTY(...)
 
 /**
-* @brief This macro is used to expose a method to the Python bindings. The signature
-* of the macro should be the following:
-* PYB11_METHOD( _return_type_ _name_of_method_ [ARGS|OVERLOAD] ....)
-* If the ARGS command is used the simply list the variable names for each argument.
-* For example if you have a method "void getFoo(const QString &foo)" that you want
-* to expose:
-* @code
-* PYB11_METHOD(void getFoo ARGS Foo)
-* @endcode
-* 
-* If your method does not take any arguments then leave out the ARGS keyword.
-* 
-* If you are have overloads of the method that you want to expose to Python then
-* the "OVERLOAD" version of the method should be used. Again, say we have two 
-* methods that we want to expose.
-* @code
-* void setPath(const QString &name)
-* void setPath(const DataArrayPath &path)
-* @endcode
-* 
-* then we would use the following set of invocations:
-* @code
-* PYB11_METHOD(void setPath OVERLOAD const.QString.&,Name)
-* PYB11_METHOD(void setPath OVERLOAD const.DataArrayPath.&,Path)
-* @endcode
-* Note that in order to get the (const QString &) correct we used the '.' charater
-* to declare the type. This is required as the macro is split using spaces. When
-* then end code is generated the '.' characters will be replaced with spaces.
-*/ 
+ * @brief This macro is used to expose a method to the Python bindings. The signature
+ * of the macro should be the following:
+ * PYB11_METHOD( _return_type_ _name_of_method_ [ARGS|OVERLOAD] ....)
+ * If the ARGS command is used then simply list the variable names for each argument.
+ * For example if you have a method "void getFoo(const QString &foo)" that you want
+ * to expose:
+ * @code
+ * PYB11_METHOD(void getFoo ARGS Foo)
+ * @endcode
+ *
+ * If your method does not take any arguments then leave out the ARGS keyword.
+ *
+ * If you are have overloads of the method that you want to expose to Python then
+ * the "OVERLOAD" version of the method should be used. Again, say we have two
+ * methods that we want to expose.
+ * @code
+ * void setPath(const QString &name)
+ * void setPath(const DataArrayPath &path)
+ * @endcode
+ *
+ * then we would use the following set of invocations:
+ * @code
+ * PYB11_METHOD(void setPath OVERLOAD const.QString.&,Name)
+ * PYB11_METHOD(void setPath OVERLOAD const.DataArrayPath.&,Path)
+ * @endcode
+ * Note that in order to get the (const QString &) correct we used the '.' charater
+ * to declare the type. This is required as the macro is split using spaces. When
+ * then end code is generated the '.' characters will be replaced with spaces.
+ */
 #define PYB11_METHOD(...)
 
 // End of PYBIND11 Macro Definitions

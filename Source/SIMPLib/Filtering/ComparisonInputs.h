@@ -41,9 +41,18 @@
 #include <QtCore/QVector>
 
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"  // for SIMPL_PIMPL_PROPERTY_DECL
 
 typedef struct
 {
+  PYB11_CREATE_BINDINGS(ComparisonInput_t)
+
+  PYB11_PROPERTY(QString dataContainerName)
+  PYB11_PROPERTY(QString attributeMatrixName)
+  PYB11_PROPERTY(QString attributeArrayName)
+  PYB11_PROPERTY(int compOperator) 
+  PYB11_PROPERTY(double compValue)
+
   QString dataContainerName;
   QString attributeMatrixName;
   QString attributeArrayName;
@@ -76,6 +85,8 @@ typedef struct
 
 } ComparisonInput_t;
 
+
+
 /**
  * @class ComparisonInputs ComparisonInputs.h DREAM3DLib/Common/ComparisonInputs.h
  * @brief  This class
@@ -86,6 +97,16 @@ typedef struct
 class SIMPLib_EXPORT ComparisonInputs : public QObject
 {
   Q_OBJECT
+  // clang-format off
+  PYB11_CREATE_BINDINGS(ComparisonInputs)
+  PYB11_CREATION()  
+  PYB11_PROPERTY(QVector<ComparisonInput_t> Inputs READ getInputs)
+  PYB11_METHOD(void addInput OVERLOAD const.QString,dataContainerName const.QString,attributeMatrixName const.QString,arrayName int,compOperator double,compValue)
+  PYB11_METHOD(void addInput OVERLOAD const.ComparisonInput_t.&,input)
+  //PYB11_METHOD(ComparisonInput_t& getInput ARGS index)
+  //PYB11_METHOD(ComparisonInput_t& operator[] ARGS index)
+  PYB11_METHOD(int size)
+  // clang-format on
 
 public:
   ComparisonInputs();

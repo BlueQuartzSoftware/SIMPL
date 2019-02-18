@@ -236,62 +236,60 @@ void DataContainerArray::printDataContainerNames(QTextStream& out)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int DataContainerArray::readDataContainersFromHDF5(bool preflight, hid_t dcaGid, 
-                                                   const DataContainerArrayProxy &dcaProxy, 
-                                                   Observable* obs)
+int DataContainerArray::readDataContainersFromHDF5(bool preflight, hid_t dcaGid, DataContainerArrayProxy& dcaProxy, Observable* obs)
 {
   int err = 0;
-  QList<DataContainerProxy> dcsToRead = dcaProxy.dataContainers.values();
-  QListIterator<DataContainerProxy> dcIter(dcsToRead);
-  while(dcIter.hasNext()) // DataContainerLevel
+
+  DataContainerArrayProxy::StorageType dcMap = dcaProxy.getDataContainers();
+
+  for(auto& dcProxy : dcMap)
   {
-    const DataContainerProxy& dcProxy = dcIter.next();
-    if(dcProxy.flag == Qt::Unchecked)
+    if(dcProxy.getFlag() == Qt::Unchecked)
     {
       continue;
     }
-    if(this->doesDataContainerExist(dcProxy.name))
+    if(this->doesDataContainerExist(dcProxy.getName()))
     {
       if(nullptr != obs)
       {
         QString ss =
             QObject::tr("A Data Container with name %1 already exists in Memory. Reading a Data Container with the same name would over write the one in memory. Currently this is not allowed.")
-                .arg(dcProxy.name);
+                .arg(dcProxy.getName());
         obs->notifyErrorMessage(getNameOfClass(), ss, -198745600);
       }
       return -198745600;
     }
-    DataContainer::Pointer dc = DataContainer::New(dcProxy.name);
+    DataContainer::Pointer dc = DataContainer::New(dcProxy.getName());
     this->addDataContainer(dc);
 
     // Now open the DataContainer Group in the HDF5 file
-    hid_t dcGid = H5Gopen(dcaGid, dcProxy.name.toLatin1().data(), H5P_DEFAULT);
+    hid_t dcGid = H5Gopen(dcaGid, dcProxy.getName().toLatin1().data(), H5P_DEFAULT);
     if(dcGid < 0)
     {
       if(nullptr != obs)
       {
-        QString ss = QObject::tr("Error opening Group '%1'").arg(dcProxy.name);
+        QString ss = QObject::tr("Error opening Group '%1'").arg(dcProxy.getName());
         obs->notifyErrorMessage(getNameOfClass(), ss, -198745602);
       }
       return -198745602;
     }
 
-    err = this->getDataContainer(dcProxy.name)->readMeshDataFromHDF5(dcGid, preflight);
+    err = this->getDataContainer(dcProxy.getName())->readMeshDataFromHDF5(dcGid, preflight);
     if(err < 0)
     {
       if(nullptr != obs)
       {
-        QString ss = QObject::tr("Error reading Mesh Data from '%1'").arg(dcProxy.name);
+        QString ss = QObject::tr("Error reading Mesh Data from '%1'").arg(dcProxy.getName());
         obs->notifyErrorMessage(getNameOfClass(), ss, -198745603);
       }
       return -198745603;
     }
-    err = this->getDataContainer(dcProxy.name)->readAttributeMatricesFromHDF5(preflight, dcGid, dcProxy);
+    err = this->getDataContainer(dcProxy.getName())->readAttributeMatricesFromHDF5(preflight, dcGid, dcProxy);
     if(err < 0)
     {
       if(nullptr != obs)
       {
-        QString ss = QObject::tr("Error reading AttributeMatrix Data from '%1'").arg(dcProxy.name);
+        QString ss = QObject::tr("Error reading AttributeMatrix Data from '%1'").arg(dcProxy.getName());
         obs->notifyErrorMessage(getNameOfClass(), ss, -198745604);
       }
       return -198745604;

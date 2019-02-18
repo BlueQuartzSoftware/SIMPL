@@ -41,48 +41,10 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QMetaType>
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
-
-typedef struct {
-  float x; float y; float z;
-  void FloatVec3(const float& xx, const float& yy, const float& zz)
-  {
-    x = xx;
-    y = yy;
-    z = zz;
-  }
-
-  void writeJson(QJsonObject &json)
-  {
-    json["x"] = static_cast<double>(x);
-    json["y"] = static_cast<double>(y);
-    json["z"] = static_cast<double>(z);
-  }
-
-  bool readJson(QJsonObject &json)
-  {
-    if (json["x"].isDouble() && json["y"].isDouble() && json["z"].isDouble())
-    {
-      x = static_cast<float>(json["x"].toDouble());
-      y = static_cast<float>(json["y"].toDouble());
-      z = static_cast<float>(json["z"].toDouble());
-      return true;
-    }
-    return false;
-  }
-  
-  void normalize() 
-  {
-    float denom = std::sqrt(x*x + y*y + z*z);
-    x = x / denom;
-    y = y / denom;
-    z = z / denom;
-  }
-} FloatVec3_t;
-
-Q_DECLARE_METATYPE(FloatVec3_t)
+#include "SIMPLib/FilterParameters/FloatVec3.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief SIMPL_NEW_FLOAT_VEC3_FP This macro is a short-form way of instantiating an instance of
