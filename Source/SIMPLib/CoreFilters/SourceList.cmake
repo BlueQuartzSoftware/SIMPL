@@ -28,6 +28,7 @@ set(_PublicFilters
   CombineAttributeArrays
   CombineAttributeMatrices
   ConditionalSetValue
+  ConvertColorToGrayScale
   ConvertData
   ExtractVertexGeometry
   CopyFeatureArrayToElementArray
@@ -51,6 +52,7 @@ set(_PublicFilters
   GenerateColorTable
   ImportAsciDataArray
   ImportHDF5Dataset
+  InitializeData
   LinkFeatureMapToElementArray
   MaskCountDecision
   MoveData
