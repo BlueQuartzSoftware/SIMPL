@@ -131,6 +131,10 @@
     itemPtr = CalculatorArray<bool>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                       \
   }
 
+enum createdPathID : RenameDataPath::DataID_t {
+  DataArrayID = 1
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -352,37 +356,37 @@ void ArrayCalculator::dataCheck()
   switch(m_ScalarType)
   {
   case SIMPL::ScalarTypes::Type::Int8:
-    getDataContainerArray()->createNonPrereqArrayFromPath<Int8ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims);
+    getDataContainerArray()->createNonPrereqArrayFromPath<Int8ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::UInt8:
-    getDataContainerArray()->createNonPrereqArrayFromPath<UInt8ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims);
+    getDataContainerArray()->createNonPrereqArrayFromPath<UInt8ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::Int16:
-    getDataContainerArray()->createNonPrereqArrayFromPath<Int16ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims);
+    getDataContainerArray()->createNonPrereqArrayFromPath<Int16ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::UInt16:
-    getDataContainerArray()->createNonPrereqArrayFromPath<UInt16ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims);
+    getDataContainerArray()->createNonPrereqArrayFromPath<UInt16ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::Int32:
-    getDataContainerArray()->createNonPrereqArrayFromPath<Int32ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims);
+    getDataContainerArray()->createNonPrereqArrayFromPath<Int32ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::UInt32:
-    getDataContainerArray()->createNonPrereqArrayFromPath<UInt32ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims);
+    getDataContainerArray()->createNonPrereqArrayFromPath<UInt32ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::Int64:
-    getDataContainerArray()->createNonPrereqArrayFromPath<Int64ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims);
+    getDataContainerArray()->createNonPrereqArrayFromPath<Int64ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::UInt64:
-    getDataContainerArray()->createNonPrereqArrayFromPath<UInt64ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims);
+    getDataContainerArray()->createNonPrereqArrayFromPath<UInt64ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::Float:
-    getDataContainerArray()->createNonPrereqArrayFromPath<FloatArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims);
+    getDataContainerArray()->createNonPrereqArrayFromPath<FloatArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::Double:
-    getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims);
+    getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::Bool:
-    getDataContainerArray()->createNonPrereqArrayFromPath<BoolArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims);
+    getDataContainerArray()->createNonPrereqArrayFromPath<BoolArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   default:
     QString ss = QObject::tr("The output array type is not valid.  No DataArray could be created.");

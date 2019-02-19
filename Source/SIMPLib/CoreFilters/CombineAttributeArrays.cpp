@@ -43,6 +43,10 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t {
+  CombinedArrayID = 1
+};
+
 /**
  * @brief The CombineAttributeArraysTemplatePrivate class is a templated private implementation that deals with
  * combining the various input arrays into one contiguous array
@@ -287,7 +291,7 @@ void CombineAttributeArrays::dataCheck()
   QVector<size_t> cDims(1, totalComps);
 
   DataArrayPath tempPath(getSelectedDataArrayPaths()[0].getDataContainerName(), getSelectedDataArrayPaths()[0].getAttributeMatrixName(), getStackedDataArrayName());
-  m_StackedDataPtr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, m_SelectedWeakPtrVector[0].lock());
+  m_StackedDataPtr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, m_SelectedWeakPtrVector[0].lock(), CombinedArrayID);
 
   if(getMoveValues() && getInPreflight())
   {
@@ -337,6 +341,18 @@ void CombineAttributeArrays::execute()
       attrMat->removeAttributeArray(path.getDataArrayName());
     }
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+std::list<DataArrayPath> CombineAttributeArrays::getDeletedPaths()
+{
+  if(getMoveValues())
+  {
+    return getSelectedDataArrayPaths().toList().toStdList();
+  }
+  return std::list<DataArrayPath>();
 }
 
 // -----------------------------------------------------------------------------

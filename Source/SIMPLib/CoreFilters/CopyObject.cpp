@@ -44,6 +44,12 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t {
+  DataContainerID = 1,
+  AttributeMatrixID,
+  DataArrayID
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -161,6 +167,7 @@ void CopyObject::dataCheck()
     DataContainer::Pointer dcCopy = m->deepCopy(getInPreflight());
     dcCopy->setName(getCopiedObjectName());
     getDataContainerArray()->addDataContainer(dcCopy);
+    RenameDataPath::AlertFilterCreatedPath(this, DataContainerID, dcCopy->getDataArrayPath());
 
     break;
   }
@@ -185,6 +192,7 @@ void CopyObject::dataCheck()
     AttributeMatrix::Pointer attrMatCopy = attrMat->deepCopy(getInPreflight());
     attrMatCopy->setName(getCopiedObjectName());
     getDataContainerArray()->getDataContainer(getAttributeMatrixToCopy().getDataContainerName())->addAttributeMatrix(getCopiedObjectName(), attrMatCopy);
+    RenameDataPath::AlertFilterCreatedPath(this, AttributeMatrixID, attrMatCopy->getDataArrayPath());
 
     break;
   }
@@ -212,6 +220,7 @@ void CopyObject::dataCheck()
         ->getDataContainer(getAttributeArrayToCopy().getDataContainerName())
         ->getAttributeMatrix(getAttributeArrayToCopy().getAttributeMatrixName())
         ->addAttributeArray(getCopiedObjectName(), arrayCopy);
+    RenameDataPath::AlertFilterCreatedPath(this, DataArrayID, arrayCopy->getDataArrayPath());
 
     break;
   }

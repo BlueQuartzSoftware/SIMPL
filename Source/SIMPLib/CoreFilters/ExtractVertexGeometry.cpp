@@ -45,6 +45,11 @@
 #include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t {
+  DataContainerID = 1,
+  AttributeMatrixID
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -180,7 +185,7 @@ void ExtractVertexGeometry::dataCheck()
   size_t elementCount = 0;
   if(IGeometry::Type::Image == geomType || IGeometry::Type::RectGrid == geomType)
   {
-    vertexDataContainer = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getVertexDataContainerName());
+    vertexDataContainer = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getVertexDataContainerName(), DataContainerID);
     IGeometryGrid::Pointer imageGeom = std::dynamic_pointer_cast<IGeometryGrid>(fromGeometry);
     SIMPL::Tuple3SVec imageDims = imageGeom->getDimensions();
     VertexGeom::Pointer vertexGeom = VertexGeom::CreateGeometry(static_cast<int64_t>(std::get<0>(imageDims) * std::get<1>(imageDims) * std::get<2>(imageDims)), "VertexGeometry", !getInPreflight());
@@ -243,7 +248,7 @@ void ExtractVertexGeometry::dataCheck()
     AttributeMatrix::Pointer vertexCellAttrMat = vertexDataContainer->getAttributeMatrix(newDap);
     if(vertexCellAttrMat == nullptr)
     {
-      vertexCellAttrMat = vertexDataContainer->createNonPrereqAttributeMatrix(this, sourceCellAttrMat->getName(), sourceCellAttrMat->getTupleDimensions(), AttributeMatrix::Type::Vertex);
+      vertexCellAttrMat = vertexDataContainer->createNonPrereqAttributeMatrix(this, sourceCellAttrMat->getName(), sourceCellAttrMat->getTupleDimensions(), AttributeMatrix::Type::Vertex, AttributeMatrixID);
     }
 
     vertexCellAttrMat->addAttributeArray(newArrayPtr->getName(), newArrayPtr);

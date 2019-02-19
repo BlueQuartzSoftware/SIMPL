@@ -49,6 +49,10 @@
 #include "SIMPLib/Math/SIMPLibRandom.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t {
+  DerivativesArrayID = 1
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -320,7 +324,7 @@ void FindDerivatives::dataCheck()
   QVector<size_t> dims(1, cDims);
 
   m_DerivativesArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(
-      this, getDerivativesArrayPath(), 0, dims);    /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+      this, getDerivativesArrayPath(), 0, dims, "", DerivativesArrayID);    /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if(nullptr != m_DerivativesArrayPtr.lock())       /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_DerivativesArray = m_DerivativesArrayPtr.lock()->getPointer(0);

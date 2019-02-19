@@ -229,7 +229,7 @@ public:
    * @param sourceArrayType
    * @return
    */
-  IDataArrayWkPtr operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const QVector<size_t>& compDims, const IDataArrayShPtr& sourceArrayType);
+  IDataArrayWkPtr operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const QVector<size_t>& compDims, const IDataArrayShPtr& sourceArrayType, RenameDataPath::DataID_t = RenameDataPath::k_Invalid_ID);
 };
 
 /**

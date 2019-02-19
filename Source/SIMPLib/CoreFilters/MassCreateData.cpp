@@ -40,6 +40,10 @@
 #include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t {
+  DataContainerBaseID = 1
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -91,7 +95,7 @@ void MassCreateData::dataCheck()
   const int iterations = 4000;
   for(int i = 0; i < iterations; i++)
   {
-    DataContainerShPtr dc = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName() + QString::number(i));
+    DataContainerShPtr dc = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName() + QString::number(i), DataContainerBaseID + i);
   }
 }
 

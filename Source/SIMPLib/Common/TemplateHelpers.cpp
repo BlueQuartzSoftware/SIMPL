@@ -224,7 +224,7 @@ IDataArrayShPtr CreateArrayFromArrayType::operator()(AbstractFilter* f, const QV
 }
 
 // -----------------------------------------------------------------------------
-IDataArrayShPtr CreateArrayFromType::operator()(AbstractFilter* f, const size_t& numTuples, const QVector<size_t>& compDims, const QString& arrayName, bool allocate, const QString& type)
+IDataArrayShPtr CreateArrayFromType::operator()(AbstractFilter* f, const size_t& numTuples, const QVector<size_t>& compDims, const QString& arrayName, bool allocate, const QString& type, RenameDataPath::DataID_t id)
 {
   CreateArrayFromType classInstance;
   QVector<size_t> tupleDims(1, numTuples);

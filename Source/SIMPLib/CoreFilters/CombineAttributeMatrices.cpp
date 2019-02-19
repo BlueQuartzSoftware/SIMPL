@@ -44,6 +44,10 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t {
+  CombinedMatrixID = 1
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -196,7 +200,7 @@ void CombineAttributeMatrices::dataCheck()
   // All Feature or Ensemble AMs should start from 1 and the zeroth tuple can be combined in the two AMs
   size_t totalTuples = firstAttrMat->getNumberOfTuples() + secondAttrMat->getNumberOfTuples() - 1;
   QVector<size_t> tDims(1, totalTuples);
-  m->createNonPrereqAttributeMatrix(this, getCombinedAttributeMatrixName(), tDims, firstAttrMat->getType());
+  m->createNonPrereqAttributeMatrix(this, getCombinedAttributeMatrixName(), tDims, firstAttrMat->getType(), CombinedMatrixID);
   if(getErrorCondition() < 0)
   {
     return;
@@ -352,6 +356,14 @@ void CombineAttributeMatrices::execute()
     EXECUTE_FUNCTION_TEMPLATE(this, copyData, fromDataArray, fromDataArray, toDataArray, location);
   }
 
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+std::list<DataArrayPath> CombineAttributeMatrices::getDeletedPaths()
+{
+  return { getFirstAttributeMatrixPath(), getSecondAttributeMatrixPath() };
 }
 
 // -----------------------------------------------------------------------------
