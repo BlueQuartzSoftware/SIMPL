@@ -53,7 +53,7 @@ public:
   using NameList = QList<QString>;
 
 private:
-  ChildCollection m_Children;
+  ChildCollection m_ChildrenNodes;
 
 protected:
   /**
@@ -61,14 +61,14 @@ protected:
    * @param child
    * @return
    */
-  IDataStructureNode::Pointer removeChild(const IDataStructureNode* rmChild) override
+  IDataStructureNode::Pointer removeChildNode(const IDataStructureNode* rmChild) override
   {
-    for(auto iter = m_Children.begin(); iter != m_Children.end(); ++iter)
+    for(auto iter = m_ChildrenNodes.begin(); iter != m_ChildrenNodes.end(); ++iter)
     {
       if((*iter).get() == rmChild)
       {
         ChildShPtr ptr = *iter;
-        m_Children.erase(iter);
+        m_ChildrenNodes.erase(iter);
         return ptr;
       }
     }
@@ -104,7 +104,7 @@ public:
    */
   constexpr ChildCollection getChildren() const
   {
-    return m_Children;
+    return m_ChildrenNodes;
   }
 
   /**
@@ -114,11 +114,43 @@ public:
   constexpr NameList getNamesOfChildren() const
   {
     NameList names;
-    for(const auto& child : m_Children)
+    for(const auto& child : m_ChildrenNodes)
     {
       names.push_back(child->getName());
     }
     return names;
+  }
+
+  /**
+   * @brief Returns the DataArrayPaths of all descendants.
+   * @return
+   */
+  constexpr DataArrayPathList getDescendantPaths() const
+  {
+    DataArrayPathList paths;
+
+    for(const auto& child : m_ChildrenNodes)
+    {
+      paths.push_back(child->getDataArrayPath());
+      // Check if child is a container node
+      auto childContainer = std::dynamic_pointer_cast<IDataStructureContainerNode>(child);
+      if(nullptr != childContainer)
+      {
+        paths.merge(childContainer->getDescendantPaths());
+      }
+    }
+
+    return paths;
+  }
+
+  /**
+   * @brief Returns a list of DataArrayPaths from both itself and all its descendants.
+   * @return
+   */
+  constexpr DataArrayPathList getAllPaths() const
+  {
+    DataArrayPathList list = getDescendantPaths();
+    list.push_front(getDataArrayPath());
   }
 
   /**
@@ -127,7 +159,7 @@ public:
    */
   constexpr iterator begin() noexcept
   {
-    return m_Children.begin();
+    return m_ChildrenNodes.begin();
   }
 
   /**
@@ -136,7 +168,7 @@ public:
    */
   constexpr const_iterator begin() const noexcept
   {
-    return m_Children.begin();
+    return m_ChildrenNodes.begin();
   }
 
   /**
@@ -145,7 +177,7 @@ public:
    */
   constexpr const_iterator cbegin() const noexcept
   {
-    return m_Children.cbegin();
+    return m_ChildrenNodes.cbegin();
   }
 
   /**
@@ -154,7 +186,7 @@ public:
    */
   constexpr iterator end() noexcept
   {
-    return m_Children.end();
+    return m_ChildrenNodes.end();
   }
 
   /**
@@ -163,7 +195,7 @@ public:
    */
   constexpr const_iterator end() const noexcept
   {
-    return m_Children.end();
+    return m_ChildrenNodes.end();
   }
 
   /**
@@ -172,7 +204,7 @@ public:
    */
   constexpr const_iterator cend() const noexcept
   {
-    return m_Children.cend();
+    return m_ChildrenNodes.cend();
   }
 
   /**
@@ -181,7 +213,7 @@ public:
    */
   constexpr bool empty() const
   {
-    return m_Children.empty();
+    return m_ChildrenNodes.empty();
   }
 
   /**
@@ -190,7 +222,7 @@ public:
    */
   constexpr size_t size() const
   {
-    return m_Children.size();
+    return m_ChildrenNodes.size();
   }
 
   /**
@@ -199,7 +231,7 @@ public:
    */
   constexpr void clear() noexcept
   {
-    m_Children.clear();
+    m_ChildrenNodes.clear();
   }
 
   /**
@@ -275,13 +307,13 @@ public:
    */
   constexpr ChildShPtr& operator[](size_t index)
   {
-    if(index < m_Children.size())
+    if(index < m_ChildrenNodes.size())
     {
       const char msg[] = "Index is out of range for the IDataStructureContainerNode's children collection.";
       throw std::out_of_range(msg);
     }
 
-    return m_Children[index];
+    return m_ChildrenNodes[index];
   }
 
   /**
@@ -303,7 +335,7 @@ public:
    */
   bool hasChildWithName(const QString& name) const override
   {
-    return *find(name) != nullptr;
+    return find(name) != end();
   }
 
   /**
@@ -323,8 +355,8 @@ public:
       return false;
     }
 
-    // node->setParent(this);
-    m_Children.push_back(node);
+    m_ChildrenNodes.push_back(node);
+    node->_setParentNode(this);
     return true;
   }
 
@@ -334,6 +366,6 @@ public:
    */
   constexpr void erase(iterator iter)
   {
-    m_Children.erase(iter);
+    m_ChildrenNodes.erase(iter);
   }
 };

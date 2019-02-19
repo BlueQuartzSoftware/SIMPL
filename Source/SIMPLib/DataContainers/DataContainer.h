@@ -138,6 +138,12 @@ public:
   static void ReadDataContainerStructure(hid_t dcArrayGroupId, DataContainerArrayProxy& proxy, SIMPLH5DataReaderRequirements* req, const QString& h5InternalPath);
 
   /**
+   * @brief Creates and returns a DataArrayPath for the DataContainer
+   * @return
+   */
+  DataArrayPath getDataArrayPath() const override;
+
+  /**
    * @brief Sets the geometry of the data container
    * @param geometry
    */

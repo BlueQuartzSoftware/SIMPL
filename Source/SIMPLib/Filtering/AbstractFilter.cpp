@@ -354,6 +354,14 @@ std::list<DataArrayPath> AbstractFilter::getCreatedPaths()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+std::list<DataArrayPath> AbstractFilter::getDeletedPaths()
+{
+  return std::list<DataArrayPath>();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 DataArrayPath::RenameContainer AbstractFilter::getRenamedPaths()
 {
   // Implemented in filters that rename existing paths

@@ -301,6 +301,12 @@ public:
   std::list<DataArrayPath> getCreatedPaths();
 
   /**
+   * @brief Returns the list of deleted data paths.
+   * @return
+   */
+  virtual std::list<DataArrayPath> getDeletedPaths();
+
+  /**
    * @brief Returns a list of DataArrayPaths that have been renamed along with their corresponding renamed value
    * @return
    */

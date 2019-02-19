@@ -166,7 +166,7 @@ void MoveData::dataCheck()
     }
 
     amDestDataContainer->addAttributeMatrix(amSrcAttributeMatrix->getName(), amSrcAttributeMatrix);
-    amSrcDataContainer->removeAttributeMatrix(amSrcAttributeMatrix->getName());
+    //amSrcDataContainer->removeAttributeMatrix(amSrcAttributeMatrix->getName());
   }
   else if(getWhatToMove() == k_MoveDataArray)
   {
@@ -197,7 +197,7 @@ void MoveData::dataCheck()
     }
 
     daDestAttributeMatrix->addAttributeArray(daSrcPath.getDataArrayName(), daSrcDataArray);
-    daSrcAttributeMatrix->removeAttributeArray(daSrcPath.getDataArrayName());
+    //daSrcAttributeMatrix->removeAttributeArray(daSrcPath.getDataArrayName());
   }
   else
   {

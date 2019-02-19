@@ -82,6 +82,12 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
     virtual Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) = 0;
     virtual Pointer createNewArray(size_t numElements, QVector<size_t> dims, const QString& name, bool allocate = true) = 0;
 
+    /**
+     * @brief Creates and returns a DataArrayPath for the DataArray
+     * @return
+     */
+    DataArrayPath getDataArrayPath() const override;
+
     virtual int getClassVersion() = 0;
 
     /**

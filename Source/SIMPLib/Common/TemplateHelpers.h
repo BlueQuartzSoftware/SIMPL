@@ -40,6 +40,7 @@
 #include <QtCore/QString>
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/DataContainers/RenameDataPath.h"
 
 class AbstractFilter;
 
@@ -254,7 +255,7 @@ public:
    * @param initValue
    * @return
    */
-  IDataArrayWkPtr operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const QVector<size_t>& compDims, int arrayType, double initValue);
+  IDataArrayWkPtr operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const QVector<size_t>& compDims, int arrayType, double initValue, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID);
 };
 
 /**

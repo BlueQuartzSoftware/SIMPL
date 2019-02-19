@@ -540,10 +540,10 @@ int FilterPipeline::preflightPipeline()
     if(filter->getEnabled())
     {
       // Update renamed paths before getting old created paths
-      DataContainerArray::Pointer oldDca = filter->getDataContainerArray();
-      oldDca->renameDataArrayPaths(renamedPaths);
-      filter->setDataContainerArray(oldDca);
-      filter->renameDataArrayPaths(renamedPaths);
+      //DataContainerArray::Pointer oldDca = filter->getDataContainerArray();
+      //oldDca->renameDataArrayPaths(renamedPaths);
+      //filter->setDataContainerArray(oldDca);
+      //filter->renameDataArrayPaths(renamedPaths);
 
       //std::list<DataArrayPath> oldCreatedPaths = filter->getCreatedPaths();
 
@@ -559,18 +559,17 @@ int FilterPipeline::preflightPipeline()
       preflightError |= filter->getErrorCondition();
       filter->setDataContainerArray(dca->deepCopy(false));
 #if 1
-      std::list<DataArrayPath> currentCreatedPaths = filter->getCreatedPaths();
+      std::list<DataArrayPath> deletedPaths = filter->getDeletedPaths();
 
-      // Check if an existing renamed path was created by this filter
-      for(const DataArrayPath& createdPath : currentCreatedPaths)
+      // Check if an existing renamed path was deleted by this filter
+      for(const DataArrayPath& deletedPath : deletedPaths)
       {
-        // Filter Parameter changes
         for(const DataArrayPath::RenameType& rename : renamedPaths)
         {
           DataArrayPath originalPath;
           DataArrayPath renamePath;
           std::tie(originalPath, renamePath) = rename;
-          if(originalPath == createdPath)
+          if(originalPath == deletedPath)
           {
             renamedPaths.erase(rename);
             break;

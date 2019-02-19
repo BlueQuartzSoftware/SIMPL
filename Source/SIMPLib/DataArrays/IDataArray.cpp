@@ -30,3 +30,13 @@ bool IDataArray::copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourc
 {
   return copyFromArray(destTupleOffset, sourceArray, 0, sourceArray->getNumberOfTuples());
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataArrayPath IDataArray::getDataArrayPath() const
+{
+  DataArrayPath path = getParentPath();
+  path.setDataArrayName(getName());
+  return path;
+}

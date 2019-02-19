@@ -290,6 +290,16 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+DataArrayPath AttributeMatrix::getDataArrayPath() const
+{
+  DataArrayPath path = getParentPath();
+  path.setAttributeMatrixName(getName());
+  return path;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 bool AttributeMatrix::doesAttributeArrayExist(const QString& name) const
 {
   return contains(name);

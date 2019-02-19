@@ -50,6 +50,14 @@ DataContainerArray::~DataContainerArray() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+DataArrayPath DataContainerArray::getDataArrayPath() const
+{
+  return DataArrayPath();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataContainerArray::addDataContainer(DataContainer::Pointer f)
 {
   push_back(f);

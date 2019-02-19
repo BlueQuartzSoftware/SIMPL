@@ -148,6 +148,14 @@ void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContain
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+DataArrayPath DataContainer::getDataArrayPath() const
+{
+  return DataArrayPath(getName(), "", "");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataContainer::setGeometry(const IGeometry::Pointer& geometry)
 {
   m_Geometry = geometry;
@@ -867,8 +875,6 @@ AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilte
 // -----------------------------------------------------------------------------
 AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilter* filter, const QString& attributeMatrixName, const QVector<size_t> &tDims, AttributeMatrix::Type amType, RenameDataPath::DataID_t id)
 {
-  AttributeMatrixShPtr attributeMatrix(nullptr);
-
   QString ss;
   if(attributeMatrixName.isEmpty())
   {
@@ -878,7 +884,7 @@ AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilte
       ss = QObject::tr("The name of the Attribute Matrix was empty. Please provide a name for this Attribute Matrix.");
       filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
     }
-    return attributeMatrix;
+    return nullptr;
   }
 
   if(attributeMatrixName.contains('/'))
@@ -889,7 +895,7 @@ AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilte
       ss = QObject::tr("The AttributeMatrix '%1' has forward slashes in its name").arg(attributeMatrixName);
       filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
     }
-    return attributeMatrix;
+    return nullptr;
   }
 
   if(attributeMatrixName.compare(SIMPL::Geometry::Geometry) == 0)
@@ -900,9 +906,9 @@ AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilte
       ss = QObject::tr("%1 is a protected name.  Please provide a different name for this Attribute Matrix.").arg(SIMPL::Geometry::Geometry);
       filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
     }
-    return attributeMatrix;
+    return nullptr;
   }
-  attributeMatrix = getAttributeMatrix(attributeMatrixName);
+  AttributeMatrixShPtr attributeMatrix = getAttributeMatrix(attributeMatrixName);
   if(nullptr == attributeMatrix.get())
   {
     attributeMatrix = createAndAddAttributeMatrix(tDims, attributeMatrixName, amType);

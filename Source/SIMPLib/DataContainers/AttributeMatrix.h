@@ -207,6 +207,12 @@ public:
     static void ReadAttributeMatrixStructure(hid_t containerId, DataContainerProxy* dcProxy, SIMPLH5DataReaderRequirements* req, const QString& h5InternalPath);
 
     /**
+     * @brief Creates and returns a DataArrayPath for the AttributeMatrix
+     * @return
+     */
+    DataArrayPath getDataArrayPath() const override;
+
+    /**
     * @brief Type
     */
     SIMPL_INSTANCE_PROPERTY(AttributeMatrix::Type, Type)
@@ -435,7 +441,8 @@ public:
     typename ArrayType::Pointer createNonPrereqArray(Filter* filter,
                                                      const QString& attributeArrayName,
                                                      T initValue,
-                                                     QVector<size_t> compDims)
+                                                     QVector<size_t> compDims,
+                                                     RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
     {
       typename ArrayType::Pointer attributeArray = ArrayType::NullPointer();
 
@@ -479,7 +486,9 @@ public:
       else if(nullptr != attributeArray && filter)
       {
         // Check if path was renamed
-        //RenameDataPath::AlertFilterCreatedPath(filter, id, DataArrayPath(=, getName(), name));
+        // This will crash if no parent node is found
+        IDataStructureNode* parentPtr = getParentNode();
+        RenameDataPath::AlertFilterCreatedPath(filter, id, DataArrayPath(parentPtr->getName(), getName(), attributeArrayName));
       }
       return attributeArray;
     }

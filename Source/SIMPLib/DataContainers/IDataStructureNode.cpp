@@ -44,14 +44,14 @@
 // -----------------------------------------------------------------------------
 IDataStructureNode::IDataStructureNode(const QString& name)
 : m_Name(name)
+, m_Parent(nullptr)
 {
-  m_Parent = NullPointer();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataStructureNode::IDataStructureNode(ParentWkPtr parent, const QString& name)
+IDataStructureNode::IDataStructureNode(ParentType* parent, const QString& name)
 : m_Name(name)
 , m_Parent(parent)
 {
@@ -71,13 +71,12 @@ QString IDataStructureNode::getName() const
 // -----------------------------------------------------------------------------
 bool IDataStructureNode::setName(const QString& newName)
 {
-  ParentPointer parent = m_Parent.lock();
-  if(nullptr == parent)
+  if(nullptr == m_Parent)
   {
     m_Name = newName;
     return true;
   }
-  else if(parent->hasChildWithName(newName))
+  else if(!m_Parent->hasChildWithName(newName))
   {
     m_Name = newName;
     return true;
@@ -97,7 +96,7 @@ bool IDataStructureNode::hasChildWithName(const QString& name) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataStructureNode::ParentWkPtr IDataStructureNode::getParent() const
+IDataStructureNode::ParentType* IDataStructureNode::getParentNode() const
 {
   return m_Parent;
 }
@@ -105,15 +104,11 @@ IDataStructureNode::ParentWkPtr IDataStructureNode::getParent() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IDataStructureNode::setParent(const ParentWkPtr& parent)
+DataArrayPath IDataStructureNode::getParentPath() const
 {
-  // Remove from parent's children
-  ConstPointer tempPtr;
-  Pointer parentPtr = m_Parent.lock();
-  if(nullptr != parentPtr)
+  if(!hasParent())
   {
-    tempPtr = parentPtr->removeChild(this);
+    return DataArrayPath();
   }
-
-  m_Parent = parent;
+  return getParentNode()->getDataArrayPath();
 }

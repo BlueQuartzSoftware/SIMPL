@@ -174,7 +174,7 @@ void MoveMultiData::dataCheck()
 
       // Move Attribute Matrix
       amDestDataContainer->addAttributeMatrix(amSrcAttributeMatrix->getName(), amSrcAttributeMatrix);
-      amSrcDataContainer->removeAttributeMatrix(amSrcAttributeMatrix->getName());
+      //amSrcDataContainer->removeAttributeMatrix(amSrcAttributeMatrix->getName());
     }
   }
   else if(getWhatToMove() == k_MoveMultiDataArray)
@@ -213,7 +213,7 @@ void MoveMultiData::dataCheck()
 
       // Move Array
       daDestAttributeMatrix->addAttributeArray(daSrcPaths[i].getDataArrayName(), daSrcDataArray);
-      daSrcAttributeMatrix->removeAttributeArray(daSrcPaths[i].getDataArrayName());
+      //daSrcAttributeMatrix->removeAttributeArray(daSrcPaths[i].getDataArrayName());
     }
   }
   else

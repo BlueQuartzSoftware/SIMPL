@@ -42,6 +42,7 @@
 #include <QString>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/SIMPLib.h"
 
 // class DsnIterator;
@@ -61,35 +62,28 @@ public:
   SIMPL_SHARED_POINTERS(IDataStructureNode)
 
   using ParentType = IDataStructureNode;
-  using ParentPointer = std::shared_ptr<ParentType>;
-  using ParentWkPtr = std::weak_ptr<ParentType>;
-  // using parent_collection = std::vector<ParentType>;
+  // using ParentWkPtr = std::weak_ptr<ParentType>;
+  // using parent_collection = std::vector<ParentWkPtr>;
+  using DataArrayPathList = std::list<DataArrayPath>;
 
 private:
   QString m_Name;
-  ParentWkPtr m_Parent;
+  ParentType* m_Parent = nullptr;
 
 protected:
-  inline virtual Pointer removeChild(const IDataStructureNode* rmChild)
+  inline virtual Pointer removeChildNode(const IDataStructureNode* rmChild)
   {
     return NullPointer();
   }
 
-  /**
-   * @brief Sets the parent weak_ptr.  As additional graph support is added,
-   * this will instead be replaced with addParent(const ParentType&) and
-   * removeParent(const ParentType&)
-   */
-  void setParent(const ParentWkPtr& parent);
-
-  // constexpr void addParent(const ParentType& newParent);
-  // constexpr bool removeParent(const ParentType& removedParent);
+  // constexpr void addParentNode(const ParentType& newParent);
+  // constexpr bool removeParentNode(const ParentType& removedParent);
 
   virtual bool hasChildWithName(const QString& name) const;
 
 public:
   IDataStructureNode(const QString& name = "");
-  IDataStructureNode(ParentWkPtr parent, const QString& name = "");
+  IDataStructureNode(ParentType* parent, const QString& name = "");
 
   virtual ~IDataStructureNode() = default;
 
@@ -108,18 +102,47 @@ public:
   bool setName(const QString& newName);
 
   /**
-   * @brief Returns the parent node.  This currently only returns a single weak_ptr,
+   * @brief Returns the parent node.  This currently only returns a single pointer,
    * but as additional graph support is added, this will instead return a parent_collection.
    * @return
    */
-  ParentWkPtr getParent() const;
+  ParentType* getParentNode() const;
+
+  /**
+   * @brief Returns the data structure node's DataArrayPath.
+   * @return
+   */
+  virtual DataArrayPath getDataArrayPath() const = 0;
+
+  /**
+   * @brief Returns the parent node's DataArrayPath.  If no parent node exists, return an empty path;
+   * @return
+   */
+  DataArrayPath getParentPath() const;
 
   /**
    * @brief Returns true if a parent node exists.  Returns false otherwise.
    * @return
    */
-  inline bool hasParent() const
+  constexpr bool hasParent() const
   {
-    return !m_Parent.expired();
+    return m_Parent != nullptr;
+  }
+
+  /**
+   * @brief Sets the raw parent pointer.  As additional graph support is added,
+   * this will instead be replaced with addParentNode(const ParentType&) and
+   * removeParentNode(const ParentType&).  This should only be called from
+   * IDataStructureContainerNode::push_back.
+   */
+  constexpr void _setParentNode(ParentType* const parent)
+  {
+    // Remove from parent's children
+    if(nullptr != m_Parent)
+    {
+      m_Parent->removeChildNode(this);
+    }
+
+    m_Parent = parent;
   }
 };

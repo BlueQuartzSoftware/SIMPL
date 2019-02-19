@@ -94,6 +94,12 @@ public:
   ~DataContainerArray() override;
 
   /**
+   * @brief Creates and returns an empty DataArrayPath
+   * @return
+   */
+  DataArrayPath getDataArrayPath() const override;
+
+  /**
    * @brief
    */
   virtual void addDataContainer(DataContainerShPtr f);
@@ -331,6 +337,7 @@ public:
       }
       DataContainerShPtr dataContainer = DataContainer::New(dataContainerName);
       addDataContainer(dataContainer);
+      RenameDataPath::AlertFilterCreatedPath(filter, id, DataArrayPath(dataContainerName, "", ""));
       return dataContainer;
     }
 
@@ -527,7 +534,8 @@ public:
                                                              const DataArrayPath& path,
                                                              T initValue,
                                                              QVector<size_t> compDims,
-                                                             const QString& property = "")
+                                                             const QString& property = "",
+                                                             RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
     {
       typename ArrayType::Pointer dataArray = ArrayType::NullPointer();
       QString ss;
@@ -612,7 +620,7 @@ public:
 
       // If something goes wrong at this point the error message will be directly set in the 'filter' object so we just
       // simply return what ever is given to us.
-      dataArray = attrMat->createNonPrereqArray<ArrayType, Filter, T>(filter, path.getDataArrayName(), initValue, compDims);
+      dataArray = attrMat->createNonPrereqArray<ArrayType, Filter, T>(filter, path.getDataArrayName(), initValue, compDims, id);
       return dataArray;
     }
 
