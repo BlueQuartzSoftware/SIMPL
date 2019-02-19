@@ -38,6 +38,7 @@ set(_PublicFilters
   CreateImageGeometry
   CreateStringArray
   CopyObject
+  ConvertColorToGrayScale
   CreateGeometry
   CropVertexGeometry
   DataContainerReader
