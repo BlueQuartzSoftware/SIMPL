@@ -8,6 +8,7 @@ set(TEST_${SUBDIR_NAME}_NAMES
   CombineAttributeMatricesTest
   ConditionalSetValueTest
   ConvertDataTest
+  ConvertColorToGrayScaleTest
   CopyFeatureArrayToElementArrayTest
   CopyObjectTest
   CreateAttributeMatrixTest
