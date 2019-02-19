@@ -196,11 +196,11 @@ void HexahedralGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Po
   {
     return;
   }
-  if(data->getName().compare(name) != 0)
-  {
-    data->setName(name);
-  }
-  m_AttributeMatrices[name] = data;
+  //if(data->getName().compare(name) != 0)
+  //{
+  //  data->setName(name);
+  //}
+  m_AttributeMatrices[data->getName()] = data;
 }
 
 // -----------------------------------------------------------------------------

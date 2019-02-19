@@ -275,8 +275,8 @@ public:
 
       // The data array added last in code will be the first printed and first in daList
 
-      checkDataList<float>(am, daList[0]->getName(), tokens, i, 1);
-      checkDataList<int32_t>(am, daList[1]->getName(), tokens, i, 1 + daList[0]->getNumberOfComponents());
+      checkDataList<int32_t>(am, daList[0]->getName(), tokens, i, 1);
+      checkDataList<float>(am, daList[1]->getName(), tokens, i, 1 + daList[0]->getNumberOfComponents());
     }
 
     if(writeNeighborListData)

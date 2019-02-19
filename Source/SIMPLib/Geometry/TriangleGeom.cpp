@@ -223,10 +223,10 @@ void TriangleGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Poin
   {
     return;
   }
-  if(data->getName().compare(name) != 0)
-  {
-    data->setName(name);
-  }
+  //if(data->getName().compare(name) != 0)
+  //{
+  //  data->setName(name);
+  //}
   m_AttributeMatrices[name] = data;
 }
 

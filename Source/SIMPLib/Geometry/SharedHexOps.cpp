@@ -22,13 +22,13 @@ void GEOM_CLASS_NAME::resizeHexList(int64_t newNumHexas)
 // -----------------------------------------------------------------------------
 void GEOM_CLASS_NAME::setHexahedra(SharedHexList::Pointer hexas)
 {
-  if(hexas.get() != nullptr)
-  {
-    if(hexas->getName().compare(SIMPL::Geometry::SharedHexList) != 0)
-    {
-      hexas->setName(SIMPL::Geometry::SharedHexList);
-    }
-  }
+  //if(hexas.get() != nullptr)
+  //{
+  //  if(hexas->getName().compare(SIMPL::Geometry::SharedHexList) != 0)
+  //  {
+  //    hexas->setName(SIMPL::Geometry::SharedHexList);
+  //  }
+  //}
   m_HexList = hexas;
 }
 

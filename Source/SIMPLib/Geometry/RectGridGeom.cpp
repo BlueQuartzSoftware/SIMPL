@@ -442,13 +442,13 @@ RectGridGeom::Pointer RectGridGeom::CreateGeometry(const QString& name)
 // -----------------------------------------------------------------------------
 void RectGridGeom::setXBounds(FloatArrayType::Pointer xBnds)
 {
-  if(xBnds.get() != nullptr)
-  {
-    if(xBnds->getName().compare(SIMPL::Geometry::xBoundsList) != 0)
-    {
-      xBnds->setName(SIMPL::Geometry::xBoundsList);
-    }
-  }
+  //if(xBnds.get() != nullptr)
+  //{
+  //  if(xBnds->getName().compare(SIMPL::Geometry::xBoundsList) != 0)
+  //  {
+  //    xBnds->setName(SIMPL::Geometry::xBoundsList);
+  //  }
+  //}
   m_xBounds = xBnds;
 }
 
@@ -457,13 +457,13 @@ void RectGridGeom::setXBounds(FloatArrayType::Pointer xBnds)
 // -----------------------------------------------------------------------------
 void RectGridGeom::setYBounds(FloatArrayType::Pointer yBnds)
 {
-  if(yBnds.get() != nullptr)
-  {
-    if(yBnds->getName().compare(SIMPL::Geometry::yBoundsList) != 0)
-    {
-      yBnds->setName(SIMPL::Geometry::yBoundsList);
-    }
-  }
+  //if(yBnds.get() != nullptr)
+  //{
+  //  if(yBnds->getName().compare(SIMPL::Geometry::yBoundsList) != 0)
+  //  {
+  //    yBnds->setName(SIMPL::Geometry::yBoundsList);
+  //  }
+  //}
   m_yBounds = yBnds;
 }
 
@@ -472,13 +472,13 @@ void RectGridGeom::setYBounds(FloatArrayType::Pointer yBnds)
 // -----------------------------------------------------------------------------
 void RectGridGeom::setZBounds(FloatArrayType::Pointer zBnds)
 {
-  if(zBnds.get() != nullptr)
-  {
-    if(zBnds->getName().compare(SIMPL::Geometry::zBoundsList) != 0)
-    {
-      zBnds->setName(SIMPL::Geometry::zBoundsList);
-    }
-  }
+  //if(zBnds.get() != nullptr)
+  //{
+  //  if(zBnds->getName().compare(SIMPL::Geometry::zBoundsList) != 0)
+  //  {
+  //    zBnds->setName(SIMPL::Geometry::zBoundsList);
+  //  }
+  //}
   m_zBounds = zBnds;
 }
 
@@ -694,10 +694,10 @@ void RectGridGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Poin
   {
     return;
   }
-  if(data->getName().compare(name) != 0)
-  {
-    data->setName(name);
-  }
+  //if(data->getName().compare(name) != 0)
+  //{
+  //  data->setName(name);
+  //}
   m_AttributeMatrices[name] = data;
 }
 
