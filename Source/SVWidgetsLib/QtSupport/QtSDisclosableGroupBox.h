@@ -33,7 +33,13 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
-#include <QtWidgets/QGroupBox>
+#include <QtCore/QParallelAnimationGroup>
+
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QFrame>
+#include <QtWidgets/QToolButton>
+#include <QtWidgets/QScrollArea>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
@@ -51,7 +57,7 @@ class QRect;
  * @date Jan 6, 2012
  * @version 1.0
  */
-class SVWidgetsLib_EXPORT QtSDisclosableGroupBox : public QGroupBox
+class SVWidgetsLib_EXPORT QtSDisclosableGroupBox : public QWidget
 {
   Q_OBJECT
 public:
@@ -60,12 +66,15 @@ public:
 
   virtual void setupGui();
 
+  void setContentLayout(QLayout* contentLayout);
+
+  void setTitle(const QString &title);
 
 signals:
   void dragStarted(QtSDisclosableGroupBox* widget);
 
 public slots:
-  void disclose(bool on);
+//  void disclose(bool on);
 
   /**
       * @brief Sets the style of the Widget to indicate a selected or non-selected
@@ -79,6 +88,13 @@ public slots:
       */
   void updateWidgetStyle();
 
+private:
+  QGridLayout mainLayout;
+  QToolButton toggleButton;
+  QFrame headerLine;
+  QParallelAnimationGroup toggleAnimation;
+  QScrollArea contentArea;
+  int animationDuration = 300;
 
 public:
   QtSDisclosableGroupBox(const QtSDisclosableGroupBox&) = delete; // Copy Constructor Not Implemented
