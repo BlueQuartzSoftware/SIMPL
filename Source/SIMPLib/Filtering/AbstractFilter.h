@@ -448,6 +448,13 @@ protected:
    */
   bool checkIfPathRenamed(const RenameDataPath::DataID_t id, const DataArrayPath& path);
 
+  /**
+   * @brief Adds the specified change to the list of renamed DataArrayPaths.
+   * @param oldPath
+   * @param newPath
+   */
+  void addPathRename(const DataArrayPath& oldPath, const DataArrayPath& newPath);
+
 protected slots:
   /**
    * @brief This function will be called after the pipeline is completely done executing.  This can be reimplemented

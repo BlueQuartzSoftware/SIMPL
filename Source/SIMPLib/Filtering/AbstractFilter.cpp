@@ -103,69 +103,6 @@ void AbstractFilter::setCancel(bool value)
 // -----------------------------------------------------------------------------
 void AbstractFilter::renameDataArrayPath(DataArrayPath::RenameType renamePath)
 {
-  // Updates any DataArrayPath or proxy property assigned to this filter.
-  // A signal is emitted if a change was required stating the property name, old path, and new path.
-  // No additional methods are required aside from a connecting slot in filter parameter widgets to update their UI.
-  // If all filters stored their data paths as DataArrayPaths instead of QString without delimiters,
-  // this would handle all required updates.  This was moved to FilterParameter::dataArrayRenamed.
-  // However, moving this to FilterParameter does not update any private properties that do not 
-  // have a FilterParameter assigned.
-#if 0
-  const QMetaObject* metaobject = metaObject();
-  int count = metaobject->propertyCount();
-  for(int i = 0; i < count; i++)
-  {
-    QMetaProperty metaproperty = metaobject->property(i);
-    const char* name = metaproperty.name();
-    QVariant var = property(name);
-    if(var.isValid() && var.canConvert<DataArrayPath>())
-    {
-      DataArrayPath path = var.value<DataArrayPath>();
-      if(path.updatePath(oldPath, newPath))
-      {
-        //QString ss = QString("Updated property '%1' in %2").arg(name).arg(getHumanLabel());
-        //notifyStandardOutputMessage(getHumanLabel(), getPipelineIndex(), ss);
-        //notifyStatusMessage(getHumanLabel(), ss);
-        var.setValue(path);
-        this->setProperty(name, var);
-        emit dataArrayPathUpdated(name, oldPath, newPath);
-      }
-    }
-    else if(var.isValid() && var.canConvert<DataContainerArrayProxy>())
-    {
-      DataContainerArrayProxy proxy = var.value<DataContainerArrayProxy>();
-      proxy.updatePath(oldPath, newPath);
-      var.setValue(proxy);
-      this->setProperty(name, var);
-      emit dataArrayPathUpdated(name, oldPath, newPath);
-    }
-    else if(var.isValid() && var.canConvert<DataContainerProxy>())
-    {
-      DataContainerProxy proxy = var.value<DataContainerProxy>();
-      proxy.updatePath(oldPath, newPath);
-      var.setValue(proxy);
-      this->setProperty(name, var);
-      emit dataArrayPathUpdated(name, oldPath, newPath);
-    }
-    else if(var.isValid() && var.canConvert<AttributeMatrixProxy>())
-    {
-      AttributeMatrixProxy proxy = var.value<AttributeMatrixProxy>();
-      proxy.updatePath(oldPath, newPath);
-      var.setValue(proxy);
-      this->setProperty(name, var);
-      emit dataArrayPathUpdated(name, oldPath, newPath);
-    }
-    else if(var.isValid() && var.canConvert<DataArrayProxy>())
-    {
-      DataArrayProxy proxy = var.value<DataArrayProxy>();
-      proxy.updatePath(oldPath, newPath);
-      var.setValue(proxy);
-      this->setProperty(name, var);
-      emit dataArrayPathUpdated(name, oldPath, newPath);
-    }
-  }
-#endif
-
   // Some filter parameters handle paths as nothing but a QString (i.e. DataContainerSelectionFilterParameter)
   // This does not store data in a way that represents what is stored or in a consistent manner with anything else.
   // Because this format cannot be quieried nicely like the above code, filter parameters have to be able to update
@@ -175,6 +112,16 @@ void AbstractFilter::renameDataArrayPath(DataArrayPath::RenameType renamePath)
   for(FilterParameter::Pointer filterParam : filterParams)
   {
     filterParam->dataArrayPathRenamed(this, renamePath);
+  }
+
+  // Update created paths
+  for(auto createdPathItem : m_CreatedPaths)
+  {
+    DataArrayPath createdPath = createdPathItem.second;
+    if(createdPath.updatePath(renamePath))
+    {
+      m_CreatedPaths[createdPathItem.first] = createdPath;
+    }
   }
 }
 
@@ -693,7 +640,7 @@ bool AbstractFilter::checkIfPathRenamed(const RenameDataPath::DataID_t id, const
     return false;
   }
 
-  m_RenamedPaths.insert(std::make_pair(m_CreatedPaths[id], path));
+  m_RenamedPaths.push_back(std::make_pair(m_CreatedPaths[id], path));
   m_CreatedPaths[id] = path;
   return true;
 }
@@ -704,4 +651,12 @@ bool AbstractFilter::checkIfPathRenamed(const RenameDataPath::DataID_t id, const
 void AbstractFilter::clearRenamedPaths()
 {
   m_RenamedPaths.clear();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AbstractFilter::addPathRename(const DataArrayPath& oldPath, const DataArrayPath& newPath)
+{
+  m_RenamedPaths.push_back(std::make_pair(oldPath, newPath));
 }

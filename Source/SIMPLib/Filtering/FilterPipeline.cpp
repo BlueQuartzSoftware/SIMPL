@@ -533,20 +533,11 @@ int FilterPipeline::preflightPipeline()
   DataArrayPath::RenameContainer renamedPaths;
 
   // Start looping through each filter in the Pipeline and preflight everything
-  // for(FilterContainerType::iterator filter = m_Pipeline.begin(); filter != m_Pipeline.end(); ++filter)
   for(const auto& filter : m_Pipeline)
   {
     // Do not preflight disabled filters
     if(filter->getEnabled())
     {
-      // Update renamed paths before getting old created paths
-      //DataContainerArray::Pointer oldDca = filter->getDataContainerArray();
-      //oldDca->renameDataArrayPaths(renamedPaths);
-      //filter->setDataContainerArray(oldDca);
-      //filter->renameDataArrayPaths(renamedPaths);
-
-      //std::list<DataArrayPath> oldCreatedPaths = filter->getCreatedPaths();
-
       filter->setDataContainerArray(dca);
       filter->renameDataArrayPaths(renamedPaths);
       setCurrentFilter(filter);
@@ -571,17 +562,33 @@ int FilterPipeline::preflightPipeline()
           std::tie(originalPath, renamePath) = rename;
           if(originalPath == deletedPath)
           {
-            renamedPaths.erase(rename);
+            auto iter = std::find(renamedPaths.begin(), renamedPaths.end(), rename);
+            renamedPaths.erase(iter);
             break;
           }
         }
       }
 #endif
       // Filter renamed existing DataArrayPaths
-      DataArrayPath::RenameContainer hardRenamePaths = filter->getRenamedPaths();
-      for(const DataArrayPath::RenameType& renameType : hardRenamePaths)
+      DataArrayPath::RenameContainer newRenamePaths = filter->getRenamedPaths();
+      for(const DataArrayPath::RenameType& newRename : newRenamePaths)
       {
-        renamedPaths.insert(renameType);
+#if 1
+        bool updated = false;
+        // Loop through all existing rename paths and update as appropriate
+        for(auto iter = renamedPaths.cbegin(); iter != renamedPaths.cend(); ++iter)
+        {
+          auto existingRename = (*iter);
+          auto updatedRenameOpt = DataArrayPath::CreateLinkingRename(existingRename, newRename);
+          if(true == updatedRenameOpt.first)
+          {
+            // Remove the old rename, insert the updated one, and update the iterator
+            renamedPaths.insert(iter, updatedRenameOpt.second);
+          }
+        }
+#endif
+        // Add the new rename path
+        renamedPaths.push_back(newRename);
       }
     }
     else
@@ -599,7 +606,7 @@ int FilterPipeline::preflightPipeline()
         std::tie(oldPath, newPath) = renameType;
         renameType = std::make_pair(newPath, oldPath);
 
-        renamedPaths.insert(renameType);
+        renamedPaths.push_back(renameType);
       }
     }
   }

@@ -377,8 +377,14 @@ IDataArray::Pointer AttributeMatrix::removeAttributeArray(const QString& name)
 // -----------------------------------------------------------------------------
 RenameErrorCodes AttributeMatrix::renameAttributeArray(const QString& oldname, const QString& newname, bool overwrite)
 {
+  // Cannot rename a DataArray when the name does not change.
+  if(oldname == newname)
+  {
+    return SAME_PATH;
+  }
+
   bool hasNewName = contains(newname);
-  if(hasNewName && !overwrite)
+  if(hasNewName)
   {
     if(overwrite)
     {

@@ -71,7 +71,7 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
   public:
     // tuple <oldPath, newPath>
     using RenameType = std::pair<DataArrayPath, DataArrayPath>;
-    using RenameContainer = std::set<RenameType>;
+    using RenameContainer = std::list<RenameType>;
 
     enum class DataType
     {
@@ -162,7 +162,7 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
     * @brief Returns the DataType matching the current path
     * @return
     */
-    DataType getDataType();
+    DataType getDataType() const;
 
     SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
     SIMPL_INSTANCE_STRING_PROPERTY(AttributeMatrixName)
@@ -260,6 +260,13 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
     bool hasSameDataArray(const DataArrayPath& other) const;
 
     /**
+     * @brief Returns true if this DataArrayPath is a subset of the given path.  Returns false otherwise.
+     * @param other
+     * @return
+     */
+    bool isSubset(const DataArrayPath& other) const;
+
+    /**
      * @brief checks if the given DataArrayPath could indicate a possible renamed path.
      * This requires that the given path be no longer than the current path and only one value is changed.
      * Returns true if this is a possible rename and returns false otherwise.
@@ -274,6 +281,17 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
      * return
      */
     bool updatePath(const DataArrayPath::RenameType& renamePath);
+
+    /**
+     * @brief Creates the missing RenameType resulting from two other RenameTypes.
+     * This can fail if the previous and new RenameTypes are not adequately related.
+     * This returns a pair of a bool signifying the success of the operation and the
+     * resulting RenameType.
+     * @param oldRename
+     * @param newRename
+     * @return std::pair<success, resulting rename>
+     */
+    static std::pair<bool, RenameType> CreateLinkingRename(const RenameType& oldRename, const RenameType& newRename);
 
     /**
     * @brief Writes the contents of the proxy to the json object 'json'

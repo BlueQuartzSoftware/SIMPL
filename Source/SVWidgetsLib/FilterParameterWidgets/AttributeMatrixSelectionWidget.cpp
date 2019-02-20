@@ -111,8 +111,7 @@ void AttributeMatrixSelectionWidget::setupGui()
           this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
   // If the DataArrayPath is updated in the filter, update the widget
-  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)), 
-    this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
+  connect(getFilter(), &AbstractFilter::dataArrayPathUpdated, this, &AttributeMatrixSelectionWidget::updateDataArrayPath);
 
   connect(this, SIGNAL(filterPathInput(DataArrayPath)), m_SelectedAttributeMatrixPath, SLOT(checkDragPath(DataArrayPath)));
   connect(this, SIGNAL(endViewPathRequirements()), m_SelectedAttributeMatrixPath, SLOT(clearPathFiltering()));

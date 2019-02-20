@@ -309,7 +309,7 @@ DataArrayPath::RenameContainer DataArrayPath::CheckForRenamedPaths(DataContainer
       else
       {
         usedNewPaths.push_back(newPath);
-        container.insert(std::make_pair(oldPath, newPath));
+        container.push_back(std::make_pair(oldPath, newPath));
       }
     }
   }
@@ -334,7 +334,7 @@ DataArrayPath::RenameContainer DataArrayPath::CheckForRenamedPaths(DataContainer
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayPath::DataType DataArrayPath::getDataType()
+DataArrayPath::DataType DataArrayPath::getDataType() const
 {
   if(getDataContainerName().isEmpty())
   {
@@ -466,6 +466,63 @@ bool DataArrayPath::hasSameAttributeMatrixPath(const DataArrayPath& other) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+bool DataArrayPath::isSubset(const DataArrayPath& other) const
+{
+  // Check types
+  DataType type = getDataType();
+  DataType otherType = other.getDataType();
+
+  // If both are of the same DataType, require identical paths
+  if(type == otherType)
+  {
+    return (*this) == other;
+  }
+
+  switch(otherType)
+  {
+  case DataType::DataArray:
+    // [[fallthrough]];
+  case DataType::AttributeMatrix:
+    if(type == DataType::DataArray)
+    {
+      return false;
+    }
+    // [[fallthrough]];
+  case DataType::DataContainer:
+    if(type == DataType::AttributeMatrix || type == DataType::DataArray)
+    {
+      return false;
+    }
+    break;
+  case DataType::None:
+    if(type != DataType::None)
+    {
+      return false;
+    }
+  }
+
+  bool valid = true;
+  switch(type)
+  {
+  case DataType::DataArray:
+    valid &= getDataArrayName() == other.getDataArrayName();
+    // [[fallthrough]];
+  case DataType::AttributeMatrix:
+    valid &= getAttributeMatrixName() == other.getAttributeMatrixName();
+    // [[fallthrough]];
+  case DataType::DataContainer:
+    valid &= getDataContainerName() == other.getDataContainerName();
+    break;
+  case DataType::None:
+    break;
+  }
+
+  return valid;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 bool DataArrayPath::possibleRename(const DataArrayPath& updated) const
 {
   // Empty DataArrayPaths are not considered renames
@@ -510,41 +567,90 @@ bool DataArrayPath::updatePath(const DataArrayPath::RenameType& renamePath)
   DataArrayPath newPath;
   std::tie(oldPath, newPath) = renamePath;
 
+  bool valid = true;
   // Check for differences with original path
-  if(!hasSameDataArray(oldPath) && !oldPath.getDataArrayName().isEmpty())
+  switch(oldPath.getDataType())
   {
-    return false;
+  case DataArrayPath::DataType::DataArray:
+    valid &= hasSameDataArray(oldPath);
+    // [[fallthrough]];
+  case DataArrayPath::DataType::AttributeMatrix:
+    valid &= hasSameAttributeMatrix(oldPath);
+    // [[fallthrough]];
+  case DataArrayPath::DataType::DataContainer:
+    valid &= hasSameDataContainer(oldPath);
+    break;
+  default:
+    valid = false;
+    break;
   }
-  if(!hasSameAttributeMatrix(oldPath) && !oldPath.getAttributeMatrixName().isEmpty())
-  {
-    return false;
-  }
-  if(!hasSameDataContainer(oldPath) && !oldPath.getDataContainerName().isEmpty())
-  {
-    return false;
-  }
-  if(oldPath.getDataContainerName().isEmpty() || newPath.getDataContainerName().isEmpty())
+
+  if(!valid)
   {
     return false;
   }
 
   // Substitude in the new DataArrayPath
-  if(hasSameDataContainer(oldPath))
+  switch(oldPath.getDataType())
   {
+  case DataArrayPath::DataType::DataArray:
+    setDataArrayName(newPath.getDataArrayName());
+    // [[fallthrough]];
+  case DataArrayPath::DataType::AttributeMatrix:
+    setAttributeMatrixName(newPath.getAttributeMatrixName());
+    // [[fallthrough]];
+  case DataArrayPath::DataType::DataContainer:
     setDataContainerName(newPath.getDataContainerName());
-
-    if(hasSameAttributeMatrix(oldPath))
-    {
-      setAttributeMatrixName(newPath.getAttributeMatrixName());
-
-      if(hasSameDataArray(oldPath))
-      {
-        setDataArrayName(newPath.getDataArrayName());
-      }
-    }
+    break;
   }
   
   return true;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+std::pair<bool, DataArrayPath::RenameType> DataArrayPath::CreateLinkingRename(const RenameType& oldRename, const RenameType& newRename)
+{
+  DataArrayPath oldOldPath;
+  DataArrayPath oldNewPath;
+  std::tie(oldOldPath, oldNewPath) = oldRename;
+
+  DataArrayPath newOldPath;
+  DataArrayPath newNewPath;
+  std::tie(newOldPath, newNewPath) = newRename;
+
+  // Require newOldPath to be a subset of oldNewPath
+  // Require newOldPath != oldNewPath
+  bool isSubset = newOldPath.isSubset(oldNewPath);
+  if(!isSubset || (newOldPath == oldNewPath))
+  {
+    return std::make_pair(false, RenameType{});
+  }
+
+  // Create output rename
+  DataArrayPath replacementOldPath = oldOldPath;
+  replacementOldPath.updatePath(newRename);
+  DataArrayPath replacementNewPath = oldNewPath;
+
+  DataType newOldType = newOldPath.getDataType();
+  switch(newOldType)
+  {
+  case DataType::DataArray:
+    replacementNewPath.setDataArrayName(newNewPath.getDataArrayName());
+    // [[fallthrough]];
+  case DataType::AttributeMatrix:
+    replacementNewPath.setAttributeMatrixName(newNewPath.getAttributeMatrixName());
+    // [[fallthrough]];
+  case DataType::DataContainer:
+    replacementNewPath.setDataContainerName(newNewPath.getDataContainerName());
+    break;
+  case DataType::None:
+    break;
+  }
+
+  RenameType replacementRename = std::make_pair(replacementOldPath, replacementNewPath);
+  return std::make_pair(true, replacementRename);
 }
 
 // -----------------------------------------------------------------------------

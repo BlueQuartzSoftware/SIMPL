@@ -42,6 +42,10 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t {
+  SplitArrayID = 1
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -122,7 +126,7 @@ void SplitAttributeArray::dataCheck()
     {
       QString arrayName = getInputArrayPath().getDataArrayName() + getSplitArraysSuffix() + QString::number(i);
       DataArrayPath path(getInputArrayPath().getDataContainerName(), getInputArrayPath().getAttributeMatrixName(), arrayName);
-      IDataArray::WeakPointer ptr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, path, cDims, m_InputArrayPtr.lock());
+      IDataArray::WeakPointer ptr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, path, cDims, m_InputArrayPtr.lock(), SplitArrayID + i);
       if(getErrorCondition() >= 0)
       {
         m_SplitArraysPtrVector.push_back(ptr.lock());

@@ -106,6 +106,14 @@ void RenameDataContainer::dataCheck()
     return;
   }
 
+  if(m_LastContainerName != getNewDataContainerName())
+  {
+    DataArrayPath oldContainerPath(m_LastContainerName, "", "");
+    DataArrayPath newContainerPath(getNewDataContainerName(), "", "");
+    addPathRename(oldContainerPath, newContainerPath);
+    m_LastContainerName = getNewDataContainerName();
+  }
+
   getDataContainerArray()->getPrereqDataContainer(this, getSelectedDataContainerName());
   if(getErrorCondition() < 0)
   {
@@ -118,6 +126,12 @@ void RenameDataContainer::dataCheck()
     setErrorCondition(-11006);
     QString ss = QObject::tr("Attempt to rename DataContainer '%1' to '%2' failed").arg(getSelectedDataContainerName()).arg(getNewDataContainerName());
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  }
+  else
+  {
+    DataArrayPath oldPath = DataArrayPath(getSelectedDataContainerName(), "", "");
+    DataArrayPath newPath = DataArrayPath(getNewDataContainerName(), "", "");
+    addPathRename(oldPath, newPath);
   }
 }
 
@@ -228,8 +242,8 @@ DataArrayPath::RenameContainer RenameDataContainer::getRenamedPaths()
   DataArrayPath oldPath(getSelectedDataContainerName(), "", "");
   DataArrayPath newPath(getNewDataContainerName(), "", "");
 
-  DataArrayPath::RenameContainer container;
-  container.insert(std::make_pair(oldPath, newPath));
+  DataArrayPath::RenameContainer container = AbstractFilter::getRenamedPaths();
+  container.push_back(std::make_pair(oldPath, newPath));
 
   return container;
 }

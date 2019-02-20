@@ -37,58 +37,58 @@
 using namespace TemplateHelpers;
 
 // -----------------------------------------------------------------------------
-IDataArrayWkPtr CreateNonPrereqArrayFromArrayType::operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const QVector<size_t>& compDims, const IDataArrayShPtr& sourceArrayType)
+IDataArrayWkPtr CreateNonPrereqArrayFromArrayType::operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const QVector<size_t>& compDims, const IDataArrayShPtr& sourceArrayType, RenameDataPath::DataID_t id)
 {
 
   IDataArrayShPtr ptr = IDataArray::NullPointer();
 
   if(CanDynamicCast<FloatArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(f, arrayPath, 0.0f, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(f, arrayPath, 0.0f, compDims, "", id);
   }
   else if(CanDynamicCast<DoubleArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(f, arrayPath, 0.0, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(f, arrayPath, 0.0, compDims, "", id);
   }
   else if(CanDynamicCast<Int8ArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int8_t>, AbstractFilter, int8_t>(f, arrayPath, 0, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int8_t>, AbstractFilter, int8_t>(f, arrayPath, 0, compDims, "", id);
   }
   else if(CanDynamicCast<UInt8ArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint8_t>, AbstractFilter, uint8_t>(f, arrayPath, 0, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint8_t>, AbstractFilter, uint8_t>(f, arrayPath, 0, compDims, "", id);
   }
   else if(CanDynamicCast<Int16ArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int16_t>, AbstractFilter, int16_t>(f, arrayPath, 0, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int16_t>, AbstractFilter, int16_t>(f, arrayPath, 0, compDims, "", id);
   }
   else if(CanDynamicCast<UInt16ArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint16_t>, AbstractFilter, uint16_t>(f, arrayPath, 0, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint16_t>, AbstractFilter, uint16_t>(f, arrayPath, 0, compDims, "", id);
   }
   else if(CanDynamicCast<Int32ArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(f, arrayPath, 0, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(f, arrayPath, 0, compDims, "", id);
   }
   else if(CanDynamicCast<UInt32ArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint32_t>, AbstractFilter, uint32_t>(f, arrayPath, 0, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint32_t>, AbstractFilter, uint32_t>(f, arrayPath, 0, compDims, "", id);
   }
   else if(CanDynamicCast<Int64ArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(f, arrayPath, 0, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(f, arrayPath, 0, compDims, "", id);
   }
   else if(CanDynamicCast<UInt64ArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint64_t>, AbstractFilter, uint64_t>(f, arrayPath, 0, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint64_t>, AbstractFilter, uint64_t>(f, arrayPath, 0, compDims, "", id);
   }
   else if(CanDynamicCast<BoolArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<BoolArrayType, AbstractFilter, bool>(f, arrayPath, false, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<BoolArrayType, AbstractFilter, bool>(f, arrayPath, false, compDims, "", id);
   }
   else if(CanDynamicCast<SizeTArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<SizeTArrayType, AbstractFilter, size_t>(f, arrayPath, 0, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<SizeTArrayType, AbstractFilter, size_t>(f, arrayPath, 0, compDims, "", id);
   }
   else
   {
@@ -224,7 +224,7 @@ IDataArrayShPtr CreateArrayFromArrayType::operator()(AbstractFilter* f, const QV
 }
 
 // -----------------------------------------------------------------------------
-IDataArrayShPtr CreateArrayFromType::operator()(AbstractFilter* f, const size_t& numTuples, const QVector<size_t>& compDims, const QString& arrayName, bool allocate, const QString& type, RenameDataPath::DataID_t id)
+IDataArrayShPtr CreateArrayFromType::operator()(AbstractFilter* f, const size_t& numTuples, const QVector<size_t>& compDims, const QString& arrayName, bool allocate, const QString& type)
 {
   CreateArrayFromType classInstance;
   QVector<size_t> tupleDims(1, numTuples);

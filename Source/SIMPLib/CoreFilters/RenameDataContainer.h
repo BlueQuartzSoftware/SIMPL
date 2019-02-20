@@ -169,6 +169,8 @@ class SIMPLib_EXPORT RenameDataContainer : public AbstractFilter
      */
     void initialize();
 
+  private:
+    QString m_LastContainerName = "";
 
   public:
     RenameDataContainer(const RenameDataContainer&) = delete; // Copy Constructor Not Implemented
