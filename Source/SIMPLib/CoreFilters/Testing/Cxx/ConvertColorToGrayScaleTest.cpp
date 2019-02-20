@@ -310,7 +310,7 @@ class ConvertColorToGrayScaleTest
   int CheckFilterParameters(const QVariant& algorithm, const FloatVec3_t& cws, const uint8_t& cc)
   {
     QVariant conversionAlgorithm{m_colorToGrayscaleFilter->property("ConversionAlgorithm")};
-    FloatVec3_t colorWeights{(m_colorToGrayscaleFilter->property("ColorWeights").value<FloatVec3_t>())};
+    FloatVec3_t colorWeights = (m_colorToGrayscaleFilter->property("ColorWeights").value<FloatVec3_t>());
     QVariant outputArrayPrefix{m_colorToGrayscaleFilter->property("OutputArrayPrefix")};
     QVariant colorChannel{m_colorToGrayscaleFilter->property("ColorChannel")};
     QVariant createNewAM{m_colorToGrayscaleFilter->property("CreateNewAttributeMatrix")};
