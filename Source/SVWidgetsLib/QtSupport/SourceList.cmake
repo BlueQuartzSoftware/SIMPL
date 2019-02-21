@@ -15,7 +15,7 @@ set(SVWidgetsLib_QtSupport_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSCheckboxDialog.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QRoundProgressBar.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSColorComboPicker.h
-  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDisclosableGroupBox.h
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDisclosableWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDistributionTypeWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDroppableScrollArea.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDocServer.h
@@ -33,7 +33,6 @@ set(SVWidgetsLib_QtSupport_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSettings.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSplitter.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSplitterHandle.h
-  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDisclosableGroupBox.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStringEdit.h
   
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/httpserver/QtSStaticFileController.h
@@ -46,7 +45,7 @@ set(SVWidgetsLib_QtSupport_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSCheckboxDialog.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QRoundProgressBar.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSColorComboPicker.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDisclosableGroupBox.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDisclosableWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDistributionTypeWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDroppableScrollArea.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDocServer.cpp  

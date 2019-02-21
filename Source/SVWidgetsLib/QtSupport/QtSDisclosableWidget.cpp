@@ -34,7 +34,7 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "QtSDisclosableGroupBox.h"
+#include "QtSDisclosableWidget.h"
 
 #include <iostream>
 
@@ -56,7 +56,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSDisclosableGroupBox::QtSDisclosableGroupBox(QWidget* parent)
+QtSDisclosableWidget::QtSDisclosableWidget(QWidget* parent)
 : QWidget(parent)
 {
 //  connect(this, SIGNAL(toggled(bool)), this, SLOT(disclose(bool)));
@@ -95,26 +95,26 @@ QtSDisclosableGroupBox::QtSDisclosableGroupBox(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSDisclosableGroupBox::~QtSDisclosableGroupBox() = default;
+QtSDisclosableWidget::~QtSDisclosableWidget() = default;
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSDisclosableGroupBox::changeStyle()
+void QtSDisclosableWidget::changeStyle()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSDisclosableGroupBox::updateWidgetStyle()
+void QtSDisclosableWidget::updateWidgetStyle()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSDisclosableGroupBox::setupGui()
+void QtSDisclosableWidget::setupGui()
 {
 
 }
@@ -122,7 +122,7 @@ void QtSDisclosableGroupBox::setupGui()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSDisclosableGroupBox::setTitle(const QString &title)
+void QtSDisclosableWidget::setTitle(const QString &title)
 {
   toggleButton.setText(title);
 }
@@ -130,7 +130,7 @@ void QtSDisclosableGroupBox::setTitle(const QString &title)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSDisclosableGroupBox::setContentLayout(QLayout* contentLayout)
+void QtSDisclosableWidget::setContentLayout(QLayout* contentLayout)
 {
   delete contentArea.layout();
   contentArea.setLayout(contentLayout);
@@ -152,7 +152,7 @@ void QtSDisclosableGroupBox::setContentLayout(QLayout* contentLayout)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSDisclosableGroupBox::disclose(bool on)
+void QtSDisclosableWidget::disclose(bool on)
 {
   if(on)
   {
