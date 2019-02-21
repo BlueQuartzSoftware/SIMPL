@@ -318,7 +318,7 @@ public:
     dca->addDataContainer(m);
 
     // add a feature AM to the second DC to allow for check that AMs are in same DC
-    m2->addAttributeMatrix("featureAttrMat2", featureAttrMat2);
+    m2->addAttributeMatrix("featureAttrMat2", featureAttrMat2->deepCopy());
     dca->addDataContainer(m2);
 
     return dca;
