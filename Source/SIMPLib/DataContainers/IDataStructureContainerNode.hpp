@@ -102,7 +102,7 @@ public:
    * @brief Returns a copy of the children collection.
    * @return
    */
-  constexpr ChildCollection getChildren() const
+  constexpr const ChildCollection& getChildren() const
   {
     return m_ChildrenNodes;
   }
@@ -242,9 +242,10 @@ public:
    */
   constexpr iterator find(const QString& name)
   {
+    const auto hash = CreateStringHash(name);
     for(auto iter = begin(); iter != end(); iter++)
     {
-      if((*iter)->getName() == name)
+      if((*iter)->checkNameHash(hash))
       {
         return iter;
       }
@@ -261,9 +262,10 @@ public:
    */
   constexpr const_iterator find(const QString& name) const
   {
+    const auto hash = CreateStringHash(name);
     for(auto iter = begin(); iter != end(); iter++)
     {
-      if((*iter)->getName() == name)
+      if((*iter)->checkNameHash(hash))
       {
         return iter;
       }
@@ -280,12 +282,17 @@ public:
    */
   constexpr ChildShPtr getChildByName(const QString& name) const
   {
-    const_iterator iter = find(name);
-    if(iter == cend())
+    HashType nameHash = CreateStringHash(name);
+
+    const auto& children = getChildren();
+    for(const auto& child : children)
     {
-      return nullptr;
+      if(child->checkNameHash(nameHash))
+      {
+        return child;
+      }
     }
-    return *iter;
+    return nullptr;
   }
 
   /**
@@ -296,7 +303,26 @@ public:
    */
   constexpr bool contains(const QString& name) const
   {
-    return find(name) != cend();
+    return getChildByName(name) != nullptr;
+  }
+
+  /**
+   * @brief Returns true if the given object is one of the container's children.
+   * Returns false otherwise.
+   * @param obj
+   * @return
+   */
+  constexpr bool contains(const ChildShPtr& obj) const
+  {
+    const auto& children = getChildren();
+    for(const auto& child : children)
+    {
+      if(child == obj)
+      {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
@@ -307,7 +333,7 @@ public:
    */
   constexpr ChildShPtr& operator[](size_t index)
   {
-    if(index < m_ChildrenNodes.size())
+    if(index < 0 || index > m_ChildrenNodes.size())
     {
       const char msg[] = "Index is out of range for the IDataStructureContainerNode's children collection.";
       throw std::out_of_range(msg);
@@ -324,7 +350,7 @@ public:
    */
   constexpr ChildShPtr& operator[](const QString& name)
   {
-    return *find(name);
+    return getChildByName(name);
   }
 
   /**
@@ -335,7 +361,7 @@ public:
    */
   bool hasChildWithName(const QString& name) const override
   {
-    return find(name) != end();
+    return contains(name);
   }
 
   /**
@@ -350,7 +376,7 @@ public:
     {
       return false;
     }
-    if(getChildByName(node->getName()) != nullptr)
+    if(contains(node->getName()))
     {
       return false;
     }

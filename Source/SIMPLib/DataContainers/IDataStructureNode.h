@@ -65,12 +65,26 @@ public:
   // using ParentWkPtr = std::weak_ptr<ParentType>;
   // using parent_collection = std::vector<ParentWkPtr>;
   using DataArrayPathList = std::list<DataArrayPath>;
+  using HashType = size_t;
 
 private:
   QString m_Name;
   ParentType* m_Parent = nullptr;
+  HashType m_NameHash;
+
+  /**
+   * @brief Updates the name hash variable based on the current name.
+   */
+  void updateNameHash();
 
 protected:
+  /**
+   * @brief Inline method for creating hashes from QString values.
+   * @param string
+   * @return
+   */
+  static HashType CreateStringHash(const QString& string);
+
   inline virtual Pointer removeChildNode(const IDataStructureNode* rmChild)
   {
     return NullPointer();
@@ -86,6 +100,17 @@ public:
   IDataStructureNode(ParentType* parent, const QString& name = "");
 
   virtual ~IDataStructureNode() = default;
+
+  /**
+   * @brief Checks the name hash for equality.  Returns true if they are equal.
+   * Returns false otherwise.
+   * @param nameHash
+   * @return
+   */
+  constexpr bool checkNameHash(size_t nameHash) const
+  {
+    return m_NameHash == nameHash;
+  }
 
   /**
    * @brief Returns the node's name.

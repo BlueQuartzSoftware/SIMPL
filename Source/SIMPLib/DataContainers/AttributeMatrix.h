@@ -224,7 +224,17 @@ public:
     * @param data The IDataArray::Pointer that will hold the data
     * @return error code if the addition did not work
     */
-    virtual int addAttributeArray(IDataArray::Pointer data);
+    inline bool addAttributeArray(IDataArray::Pointer data)
+    {
+      if(getNumberOfTuples() != data->getNumberOfTuples())
+      {
+        qDebug() << "AttributeMatrix::Name: " << getName() << "  dataArray::name:  " << data->getName() << " Type: " << data->getTypeAsString();
+        qDebug() << "getNumberOfTuples(): " << getNumberOfTuples() << "  data->getNumberOfTuples(): " << data->getNumberOfTuples();
+      }
+      Q_ASSERT(getNumberOfTuples() == data->getNumberOfTuples());
+
+      return push_back(data);
+    }
 
     /**
      * @brief Inline call to addAttributeArray to avoid breaking old API
@@ -242,14 +252,20 @@ public:
      * null pointer if the name does not exist.
      * @param name The name of the data array
      */
-    virtual IDataArray::Pointer getAttributeArray(const QString& name);
+    inline IDataArray::Pointer getAttributeArray(const QString& name)
+    {
+      return getChildByName(name);
+    }
 
     /**
      * @brief getAttributeArray
      * @param path
      * @return
      */
-    virtual IDataArray::Pointer getAttributeArray(const DataArrayPath& path);
+    inline IDataArray::Pointer getAttributeArray(const DataArrayPath& path)
+    {
+      return getAttributeArray(path.getDataArrayName());
+    }
 
     /**
     * @brief returns a IDataArray based object that is stored in the attribute matrix by a
@@ -257,7 +273,7 @@ public:
     * @param name The name of the array
     */
     template<class ArrayType>
-    typename ArrayType::Pointer getAttributeArrayAs(const QString& name)
+    inline typename ArrayType::Pointer getAttributeArrayAs(const QString& name)
     {
       IDataArray::Pointer iDataArray = getAttributeArray(name);
       return std::dynamic_pointer_cast< ArrayType >(iDataArray);
@@ -268,7 +284,10 @@ public:
      * @brief Returns bool of whether a named array exists
      * @param name The name of the data array
      */
-    virtual bool doesAttributeArrayExist(const QString& name) const;
+    inline bool doesAttributeArrayExist(const QString& name) const
+    {
+      return contains(name);
+    }
 
 
     /**
@@ -291,7 +310,14 @@ public:
      */
     virtual void clearAttributeArrays();
 
-    Container_t getAttributeArrays() const;
+    /**
+     * @brief Returns the collection of contained DataArrays
+     * @return
+     */
+    inline Container_t getAttributeArrays() const
+    {
+      return getChildren();
+    }
 
     /**
     * @brief Returns a list that contains the names of all the arrays currently stored in the
@@ -304,7 +330,10 @@ public:
     * @brief Returns the total number of arrays that are stored in the Cell group
     * @return
     */
-    virtual int getNumAttributeArrays() const;
+    constexpr int getNumAttributeArrays() const
+    {
+      return static_cast<int>(size());
+    }
 
 
     /**
@@ -439,7 +468,7 @@ public:
      * @return A Shared Pointer to the newly created array
      */
     template<class ArrayType, class Filter, typename T>
-    typename ArrayType::Pointer createNonPrereqArray(Filter* filter,
+    inline typename ArrayType::Pointer createNonPrereqArray(Filter* filter,
                                                      const QString& attributeArrayName,
                                                      T initValue,
                                                      QVector<size_t> compDims,
@@ -500,7 +529,7 @@ public:
     * @param dims The size the data on each tuple
     */
     template<class ArrayType, class Filter, typename T>
-    void createAndAddAttributeArray(Filter* filter, const QString& name, T initValue, QVector<size_t> compDims, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
+    inline void createAndAddAttributeArray(Filter* filter, const QString& name, T initValue, QVector<size_t> compDims, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
     {
       bool allocateData = false;
       if(nullptr == filter) { allocateData = true; }
@@ -515,7 +544,9 @@ public:
         attributeArray->setInitValue(initValue);
         addAttributeArray(attributeArray);
         // Check if path was renamed
-        //RenameDataPath::AlertFilterCreatedPath(filter, id, DataArrayPath(=, getName(), name));
+        DataArrayPath path = getDataArrayPath();
+        path.setDataArrayName(name);
+        RenameDataPath::AlertFilterCreatedPath(filter, id, path);
       }
     }
 

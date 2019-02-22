@@ -172,47 +172,11 @@ IGeometry::Pointer DataContainer::getGeometry()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataContainer::doesAttributeMatrixExist(const QString& name)
-{
-  return find(name) != end();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 AttributeMatrix::Pointer DataContainer::createAndAddAttributeMatrix(const QVector<size_t>& tDims, const QString& attrMatName, AttributeMatrix::Type attrType)
 {
   AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, attrMatName, attrType);
   addAttributeMatrix(attrMat);
   return attrMat; // Return the shared pointer
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool DataContainer::addAttributeMatrix(const AttributeMatrix::Pointer& data)
-{
-  return push_back(data);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-AttributeMatrix::Pointer DataContainer::getAttributeMatrix(const QString& name)
-{
-  return getChildByName(name);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-AttributeMatrix::Pointer DataContainer::getAttributeMatrix(const DataArrayPath& path)
-{
-  if(path.getDataContainerName() != getName())
-  {
-    return nullptr;
-  }
-  return getChildByName(path.getAttributeMatrixName());
 }
 
 // -----------------------------------------------------------------------------
@@ -238,14 +202,6 @@ bool DataContainer::renameAttributeMatrix(const QString& oldname, const QString&
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainer::Container_t DataContainer::getAttributeMatrices()
-{
-  return getChildren();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void DataContainer::clearAttributeMatrices()
 {
   clear();
@@ -257,14 +213,6 @@ void DataContainer::clearAttributeMatrices()
 DataContainer::NameList DataContainer::getAttributeMatrixNames()
 {
   return getNamesOfChildren();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int DataContainer::getNumAttributeMatrices()
-{
-  return static_cast<int>(size());
 }
 
 // -----------------------------------------------------------------------------
@@ -381,10 +329,10 @@ DataContainer::Pointer DataContainer::deepCopy(bool forceNoAllocate)
     dcCopy->setGeometry(geomCopy);
   }
 
-  for(auto & iter : getChildren())
+  const auto attrMatrices = getChildren();
+  for(const auto& am : attrMatrices)
   {
-    auto initAM = std::dynamic_pointer_cast<AttributeMatrix>(iter);
-    AttributeMatrix::Pointer attrMat = initAM->deepCopy(forceNoAllocate);
+    AttributeMatrix::Pointer attrMat = am->deepCopy(forceNoAllocate);
     dcCopy->addAttributeMatrix(attrMat);
   }
 
@@ -765,11 +713,10 @@ int DataContainer::readMeshDataFromHDF5(hid_t dcGid, bool preflight)
 // -----------------------------------------------------------------------------
 QVector<DataArrayPath> DataContainer::getAllDataArrayPaths()
 {
-
   QVector<DataArrayPath> paths;
-  for(auto iter = begin(); iter != end(); ++iter)
+  const auto attributeMatrices = getChildren();
+  for(const auto& am : attributeMatrices)
   {
-    AttributeMatrix::Pointer am = (*iter);
     QString amName = am->getName();
     NameList aaNames = am->getAttributeArrayNames();
 

@@ -300,14 +300,6 @@ DataArrayPath AttributeMatrix::getDataArrayPath() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool AttributeMatrix::doesAttributeArrayExist(const QString& name) const
-{
-  return contains(name);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 bool AttributeMatrix::validateAttributeArraySizes()
 {
   int64_t arraySize = 0;
@@ -322,38 +314,6 @@ bool AttributeMatrix::validateAttributeArraySizes()
     }
   }
   return true;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int AttributeMatrix::addAttributeArray(IDataArray::Pointer data)
-{
-  if(getNumberOfTuples() != data->getNumberOfTuples())
-  {
-    qDebug() << "AttributeMatrix::Name: " << getName() << "  dataArray::name:  " << data->getName() << " Type: " << data->getTypeAsString();
-    qDebug() << "getNumberOfTuples(): " << getNumberOfTuples() << "  data->getNumberOfTuples(): " << data->getNumberOfTuples();
-  }
-  Q_ASSERT(getNumberOfTuples() == data->getNumberOfTuples());
-
-  push_back(data);
-  return 0;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IDataArray::Pointer AttributeMatrix::getAttributeArray(const QString& name)
-{
-  return getChildByName(name);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IDataArray::Pointer AttributeMatrix::getAttributeArray(const DataArrayPath& path)
-{
-  return getAttributeArray(path.getDataArrayName());
 }
 
 // -----------------------------------------------------------------------------
@@ -548,25 +508,9 @@ void AttributeMatrix::clearAttributeArrays()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrix::Container_t AttributeMatrix::getAttributeArrays() const
-{
-  return getChildren();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 AttributeMatrix::NameList AttributeMatrix::getAttributeArrayNames()
 {
   return getNamesOfChildren();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int AttributeMatrix::getNumAttributeArrays() const
-{
-  return static_cast<int>(size());
 }
 
 // -----------------------------------------------------------------------------
@@ -576,9 +520,9 @@ AttributeMatrix::Pointer AttributeMatrix::deepCopy(bool forceNoAllocate)
 {
   AttributeMatrix::Pointer newAttrMat = AttributeMatrix::New(getTupleDimensions(), getName(), getType());
 
-  for(auto iter = begin(); iter != end(); ++iter)
+  const auto dataArrays = getChildren();
+  for(const auto& d : dataArrays)
   {
-    IDataArray::Pointer d = (*iter);
     IDataArray::Pointer new_d = d->deepCopy(forceNoAllocate);
     if(new_d.get() == nullptr)
     {

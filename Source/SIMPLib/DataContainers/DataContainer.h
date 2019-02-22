@@ -165,7 +165,10 @@ public:
    * @param name The name that the array will be known by
    * @param data The IDataArray::Pointer that will hold the data
    */
-  virtual bool addAttributeMatrix(const AttributeMatrixShPtr& matrix);
+  inline bool addAttributeMatrix(const AttributeMatrixShPtr& matrix)
+  {
+    return push_back(matrix);
+  }
 
   inline bool addAttributeMatrix(const QString& name, const AttributeMatrixShPtr& matrix)
   {
@@ -177,20 +180,34 @@ public:
    * null pointer if the name does not exist.
    * @param name The name of the data array
    */
-  virtual AttributeMatrixShPtr getAttributeMatrix(const QString& name);
+  inline AttributeMatrixShPtr getAttributeMatrix(const QString& name)
+  {
+    return getChildByName(name);
+  }
 
   /**
    * @brief Returns the array for a given named array or the equivelant to a
    * null pointer if the name does not exist.
    * @param name The Name of the AttributeMatrix will be extracted from the DataArratPath object
    */
-  virtual AttributeMatrixShPtr getAttributeMatrix(const DataArrayPath& path);
+  inline AttributeMatrixShPtr getAttributeMatrix(const DataArrayPath& path)
+  {
+    // Could this be sped-up if we hashed DataArrayPath as well?
+    if(path.getDataContainerName() != getName())
+    {
+      return nullptr;
+    }
+    return getChildByName(path.getAttributeMatrixName());
+  }
 
   /**
    * @brief Returns bool of whether a named array exists
    * @param name The name of the data array
    */
-  virtual bool doesAttributeMatrixExist(const QString& name);
+  inline bool doesAttributeMatrixExist(const QString& name)
+  {
+    return contains(name);
+  }
 
   /**
    * @brief Removes the named data array from the Data Container and returns it to the calling
@@ -211,7 +228,10 @@ public:
    */
   virtual void clearAttributeMatrices();
 
-  Container_t getAttributeMatrices();
+  inline Container_t getAttributeMatrices()
+  {
+    return getChildren();
+  }
 
   /**
    * @brief Returns a list that contains the names of all the arrays currently stored in the
@@ -224,7 +244,10 @@ public:
    * @brief Returns the total number of arrays that are stored in the Cell group
    * @return
    */
-  virtual int getNumAttributeMatrices();
+  inline int getNumAttributeMatrices()
+  {
+    return static_cast<int>(size());
+  }
 
   /**
    * @brief getAllDataArrayPaths

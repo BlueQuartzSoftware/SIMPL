@@ -42,10 +42,20 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+IDataStructureNode::HashType IDataStructureNode::CreateStringHash(const QString& string)
+{
+  std::hash<std::string> hashFn;
+  return hashFn(string.toStdString());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 IDataStructureNode::IDataStructureNode(const QString& name)
 : m_Name(name)
 , m_Parent(nullptr)
 {
+  updateNameHash();
 }
 
 // -----------------------------------------------------------------------------
@@ -55,7 +65,17 @@ IDataStructureNode::IDataStructureNode(ParentType* parent, const QString& name)
 : m_Name(name)
 , m_Parent(parent)
 {
+  updateNameHash();
+
   // Add to parent's children
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void IDataStructureNode::updateNameHash()
+{
+  m_NameHash = CreateStringHash(getName());
 }
 
 // -----------------------------------------------------------------------------
@@ -74,11 +94,13 @@ bool IDataStructureNode::setName(const QString& newName)
   if(nullptr == m_Parent)
   {
     m_Name = newName;
+    updateNameHash();
     return true;
   }
   else if(!m_Parent->hasChildWithName(newName))
   {
     m_Name = newName;
+    updateNameHash();
     return true;
   }
 

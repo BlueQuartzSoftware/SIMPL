@@ -58,14 +58,6 @@ DataArrayPath DataContainerArray::getDataArrayPath() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerArray::addDataContainer(DataContainer::Pointer f)
-{
-  push_back(f);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 int DataContainerArray::getNumDataContainers()
 {
   return static_cast<int>(size());
@@ -439,40 +431,13 @@ bool DataContainerArray::renameDataContainerBundle(const QString& oldName, const
 DataContainerArray::Pointer DataContainerArray::deepCopy(bool forceNoAllocate)
 {
   DataContainerArray::Pointer dcaCopy = DataContainerArray::New();
-  Container dcs = getDataContainers();
-  for(DataContainer::Pointer dc : dcs)
+  const Container dcs = getDataContainers();
+  for(const auto& dc : dcs)
   {
     DataContainer::Pointer dcCopy = dc->deepCopy(forceNoAllocate);
-#if 0
 
-    // Deep copy geometry if applicable
-    if(nullptr != dcs[i]->getGeometry().get())
-    {
-      dcCopy->setGeometry(dcs[i]->getGeometry()->deepCopy());
-    }
-
-    // Add AttributeMatrix copies
-    QMap<QString, AttributeMatrix::Pointer> ams = dcs[i]->getAttributeMatrices();
-    for(QMap<QString, AttributeMatrix::Pointer>::Iterator iter = ams.begin(); iter != ams.end(); iter++)
-    {
-      QVector<size_t> dims = (*iter)->getTupleDimensions();
-      AttributeMatrix::Pointer amCopy = AttributeMatrix::New(dims, (*iter)->getName(), (*iter)->getType());
-
-      // Add DataArray copies without allocating memory
-      QList<QString> daNames = (*iter)->getAttributeArrayNames();
-      for(int i = 0; i < daNames.size(); i++)
-      {
-        // Copy and add DataArray to AttributeMatrix copy without allocating memory
-        IDataArray::Pointer daCopy = (*iter)->getAttributeArray(daNames[i])->deepCopy(true);
-        amCopy->addAttributeArray(daNames[i], daCopy);
-      }
-
-      // End add AttributeMatrix
-      dcCopy->addAttributeMatrix(amCopy->getName(), amCopy);
-    }
-#endif
     // End add DataContainer
-    dcaCopy->addDataContainer(dcCopy);
+    dcaCopy->push_back(dcCopy);
   }
 
   return dcaCopy;
