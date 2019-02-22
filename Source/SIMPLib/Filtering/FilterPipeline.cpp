@@ -43,6 +43,8 @@
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/Utilities/StringOperations.h"
 
+#define RENAME_ENABLED 1
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -539,7 +541,9 @@ int FilterPipeline::preflightPipeline()
     if(filter->getEnabled())
     {
       filter->setDataContainerArray(dca);
+#if RENAME_ENABLED
       filter->renameDataArrayPaths(renamedPaths);
+#endif
       setCurrentFilter(filter);
       connectFilterNotifications(filter.get());
       filter->clearRenamedPaths();
@@ -549,7 +553,7 @@ int FilterPipeline::preflightPipeline()
       filter->setCancel(false); // Reset the cancel flag
       preflightError |= filter->getErrorCondition();
       filter->setDataContainerArray(dca->deepCopy(false));
-#if 1
+#if RENAME_ENABLED
       std::list<DataArrayPath> deletedPaths = filter->getDeletedPaths();
 
       // Check if an existing renamed path was deleted by this filter
@@ -568,13 +572,10 @@ int FilterPipeline::preflightPipeline()
           }
         }
       }
-#endif
       // Filter renamed existing DataArrayPaths
       DataArrayPath::RenameContainer newRenamePaths = filter->getRenamedPaths();
       for(const DataArrayPath::RenameType& newRename : newRenamePaths)
       {
-#if 1
-        bool updated = false;
         // Loop through all existing rename paths and update as appropriate
         for(auto iter = renamedPaths.cbegin(); iter != renamedPaths.cend(); ++iter)
         {
@@ -586,11 +587,12 @@ int FilterPipeline::preflightPipeline()
             renamedPaths.insert(iter, updatedRenameOpt.second);
           }
         }
-#endif
         // Add the new rename path
         renamedPaths.push_back(newRename);
       }
+#endif
     }
+#if RENAME_ENABLED
     else
     {
       // Some widgets require the updated path to be valid before it can be set in the widget
@@ -609,6 +611,7 @@ int FilterPipeline::preflightPipeline()
         renamedPaths.push_back(renameType);
       }
     }
+#endif
   }
   setCurrentFilter(AbstractFilter::NullPointer());
 
