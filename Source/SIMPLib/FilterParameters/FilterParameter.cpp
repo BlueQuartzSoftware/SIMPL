@@ -76,7 +76,7 @@ void FilterParameter::writeJson(QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath)
+void FilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath)
 {
   QVariant var = filter->property(qPrintable(getPropertyName()));
   if(var.isValid() && var.canConvert<DataArrayPath>())

@@ -34,6 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "AttributeMatrixCreationFilterParameter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -101,5 +102,25 @@ void AttributeMatrixCreationFilterParameter::writeJson(QJsonObject& json)
     QJsonObject obj;
     dap.writeJson(obj);
     json[getPropertyName()] = obj;
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixCreationFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath)
+{
+  QVariant var = filter->property(qPrintable(getPropertyName()));
+  if(var.isValid() && var.canConvert<DataArrayPath>())
+  {
+    DataArrayPath path = var.value<DataArrayPath>();
+    if(path.updatePath(renamePath))
+    {
+      if(m_SetterCallback)
+      {
+        m_SetterCallback(path);
+      }
+      emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+    }
   }
 }

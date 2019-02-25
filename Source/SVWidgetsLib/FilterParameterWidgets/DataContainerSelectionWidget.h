@@ -111,7 +111,7 @@ class SVWidgetsLib_EXPORT DataContainerSelectionWidget : public FilterParameterW
     void dataContainerSelected(QString path);
 
   protected slots:
-    void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
+    void updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath);
 
   private:
 

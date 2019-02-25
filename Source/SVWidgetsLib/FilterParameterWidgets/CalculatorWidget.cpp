@@ -451,7 +451,7 @@ void CalculatorWidget::on_applyChangesBtn_clicked()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void CalculatorWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
+void CalculatorWidget::updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath)
 {
   DataArrayPath oldPath;
   DataArrayPath newPath;

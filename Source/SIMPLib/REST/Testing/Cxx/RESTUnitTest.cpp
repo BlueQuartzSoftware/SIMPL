@@ -977,7 +977,7 @@ public:
       QJsonArray responseFPArray = responseObject[SIMPL::JSON::FilterParameters].toArray();
 
       CreateAttributeMatrix::Pointer filter = CreateAttributeMatrix::New();
-      QVector<FilterParameter::Pointer> parameters = filter->getFilterParameters();
+      FilterParameterVectorType parameters = filter->getFilterParameters();
 
       DREAM3D_REQUIRE_EQUAL(responseFPArray.size(), parameters.size());
 

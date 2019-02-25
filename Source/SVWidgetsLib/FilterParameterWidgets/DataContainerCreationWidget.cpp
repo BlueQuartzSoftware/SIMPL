@@ -129,7 +129,7 @@ void DataContainerCreationWidget::filterNeedsInputParameters(AbstractFilter* fil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerCreationWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
+void DataContainerCreationWidget::updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath)
 {
   if(propertyName.compare(PROPERTY_NAME_AS_CHAR) == 0)
   {

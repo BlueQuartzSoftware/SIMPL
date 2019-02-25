@@ -174,6 +174,11 @@ class SIMPLib_EXPORT AttributeMatrixSelectionFilterParameter : public FilterPara
     */
     SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
+    /**
+     * @brief Handle DataArrayPath changes if necessary
+     */
+    void dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath) override;
+
   protected:
       /**
        * @brief AttributeMatrixSelectionFilterParameter The default constructor.  It is protected because this

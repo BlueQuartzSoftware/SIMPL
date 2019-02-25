@@ -88,9 +88,9 @@ public:
   * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
   * @return
   */
-  static Pointer New(const QString& humanLabel, const QString& phaseTypeDataProperty, const DataArrayPath attributeMatrixDefault, Category category, SetterCallbackType setterCallback,
+  static Pointer New(const QString& humanLabel, const QString& phaseTypeDataProperty, const DataArrayPath& attributeMatrixDefault, Category category, SetterCallbackType setterCallback,
                      GetterCallbackType getterCallback, const QString& PhaseTypesArrayName, const QString& phaseTypeCountProperty, const QString& attributeMatrixProperty,
-                     const QStringList phaseListChoices, int groupIndex = -1);
+                     const QStringList& phaseListChoices, int groupIndex = -1);
 
   ~PhaseTypeSelectionFilterParameter() override;
 
@@ -135,6 +135,11 @@ public:
   * @return The GetterCallback
   */
   SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+
+  /**
+   * @brief Handle DataArrayPath changes if necessary
+   */
+  void dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath) override;
 
 protected:
   /**
