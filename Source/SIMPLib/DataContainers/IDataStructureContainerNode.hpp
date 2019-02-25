@@ -93,7 +93,7 @@ public:
   IDataStructureContainerNode(const QString& name = "")
     : IDataStructureNode(name)
   {}
-  IDataStructureContainerNode(IDataStructureNode::WeakPointer parent, const QString& name = "")
+  IDataStructureContainerNode(ParentType* parent, const QString& name = "")
     : IDataStructureNode(parent, name)
   {}
   ~IDataStructureContainerNode() override = default;
@@ -111,7 +111,7 @@ public:
    * @brief Returns the names of all children nodes.
    * @return
    */
-  constexpr NameList getNamesOfChildren() const
+  NameList getNamesOfChildren() const
   {
     NameList names;
     for(const auto& child : m_ChildrenNodes)
@@ -125,7 +125,7 @@ public:
    * @brief Returns the DataArrayPaths of all descendants.
    * @return
    */
-  constexpr DataArrayPathList getDescendantPaths() const
+  DataArrayPathList getDescendantPaths() const
   {
     DataArrayPathList paths;
 
@@ -147,7 +147,7 @@ public:
    * @brief Returns a list of DataArrayPaths from both itself and all its descendants.
    * @return
    */
-  constexpr DataArrayPathList getAllPaths() const
+  DataArrayPathList getAllPaths() const
   {
     DataArrayPathList list = getDescendantPaths();
     list.push_front(getDataArrayPath());

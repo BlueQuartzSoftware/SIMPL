@@ -180,7 +180,7 @@ void DataContainerReader::dataCheck()
     return;
   }
 
-  DataContainerArray::Container& tempContainers = tempDCA->getDataContainers();
+  DataContainerArray::Container tempContainers = tempDCA->getDataContainers();
   for(DataContainer::Pointer container : tempContainers)
   {
     if(getOverwriteExistingDataContainers())
