@@ -64,7 +64,7 @@ RequiredZThickness::~RequiredZThickness() = default;
 // -----------------------------------------------------------------------------
 void RequiredZThickness::setupFilterParameters()
 {
-  FilterParameterVector parameters = getFilterParameters();
+  FilterParameterVectorType parameters = getFilterParameters();
 
   {
     DataContainerSelectionFilterParameter::RequirementType req;

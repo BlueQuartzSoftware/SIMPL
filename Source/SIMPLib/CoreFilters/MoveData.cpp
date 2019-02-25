@@ -69,7 +69,7 @@ MoveData::~MoveData() = default;
 // -----------------------------------------------------------------------------
 void MoveData::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   QStringList linkedProps;
   linkedProps << "DataContainerDestination"

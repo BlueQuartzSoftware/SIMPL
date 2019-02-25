@@ -108,7 +108,7 @@ void AbstractFilter::renameDataArrayPath(DataArrayPath::RenameType renamePath)
   // Because this format cannot be quieried nicely like the above code, filter parameters have to be able to update
   // their own paths in these cases.  In cases where private properties need to be updated but do not have
   // assigned filter parameters, although this should not be the case, this code, unlike the above snippet, will not update them.
-  FilterParameterVector filterParams = getFilterParameters();
+  FilterParameterVectorType filterParams = getFilterParameters();
   for(FilterParameter::Pointer filterParam : filterParams)
   {
     filterParam->dataArrayPathRenamed(this, renamePath);
@@ -209,7 +209,7 @@ void insertAttributeMatrixPaths(DataContainer::Pointer dc, AttributeMatrix::Poin
 {
   paths.push_back(DataArrayPath(dc->getName(), am->getName(), ""));
   // Insert all DataArrayPaths
-  for(QString daName : am->getAttributeArrayNames())
+  for(const QString& daName : am->getAttributeArrayNames())
   {
     DataArrayPath daPath(dc->getName(), am->getName(), daName);
     paths.push_back(daPath);
@@ -219,11 +219,11 @@ void insertAttributeMatrixPaths(DataContainer::Pointer dc, AttributeMatrix::Poin
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void insertDataContainerPaths(DataContainer::Pointer dc, std::list<DataArrayPath>& paths)
+void insertDataContainerPaths(const DataContainer::Pointer& dc, std::list<DataArrayPath>& paths)
 {
-  paths.push_back(DataArrayPath(dc->getName(), "", ""));
+  paths.emplace_back(DataArrayPath(dc->getName(), "", ""));
   // Insert all AttributeMatrix paths
-  for(AttributeMatrix::Pointer am : dc->getAttributeMatrices())
+  for(const AttributeMatrix::Pointer& am : dc->getAttributeMatrices())
   {
     insertAttributeMatrixPaths(dc, am, paths);
   }
@@ -248,7 +248,7 @@ std::list<DataArrayPath> AbstractFilter::getCreatedPaths()
     DataContainerArray::Pointer dca = getDataContainerArray();
 
     // Check DataContainers
-    for(DataContainer::Pointer dc : dca->getDataContainers())
+    for(const DataContainer::Pointer& dc : dca->getDataContainers())
     {
       if(!prevDca->doesDataContainerExist(dc->getName()))
       {
@@ -257,7 +257,7 @@ std::list<DataArrayPath> AbstractFilter::getCreatedPaths()
       else
       {
         // Check AttributeMatrices
-        for(AttributeMatrix::Pointer am : dc->getAttributeMatrices())
+        for(const AttributeMatrix::Pointer& am : dc->getAttributeMatrices())
         {
           DataArrayPath amPath(dc->getName(), am->getName(), "");
           if(!prevDca->doesAttributeMatrixExist(amPath))
@@ -267,7 +267,7 @@ std::list<DataArrayPath> AbstractFilter::getCreatedPaths()
           else
           {
             // Check DataArrays
-            for(QString daName : am->getAttributeArrayNames())
+            for(const QString& daName : am->getAttributeArrayNames())
             {
               DataArrayPath daPath(dc->getName(), am->getName(), daName);
               if(!prevDca->doesAttributeArrayExist(daPath))
@@ -288,7 +288,7 @@ std::list<DataArrayPath> AbstractFilter::getCreatedPaths()
     if(dca)
     {
       // Add all paths if there is no previous filter to compare to
-      for(DataContainer::Pointer dc : dca->getDataContainers())
+      for(const DataContainer::Pointer& dc : dca->getDataContainers())
       {
         insertDataContainerPaths(dc, createdPaths);
       }
@@ -330,10 +330,9 @@ void AbstractFilter::readFilterParameters(AbstractFilterParametersReader* reader
 // -----------------------------------------------------------------------------
 void AbstractFilter::readFilterParameters(QJsonObject& obj)
 {
-  QVector<FilterParameter::Pointer> filterParameters = getFilterParameters();
-  for(int i = 0; i < filterParameters.size(); i++)
+  FilterParameterVectorType filterParameters = getFilterParameters();
+  for(auto const& fp : filterParameters)
   {
-    FilterParameter::Pointer fp = filterParameters[i];
     fp->readJson(obj);
   }
 }
@@ -352,8 +351,8 @@ void AbstractFilter::preWriteFilterParameters(QJsonObject& obj, QJsonObject& roo
 // -----------------------------------------------------------------------------
 void AbstractFilter::writeFilterParameters(QJsonObject& obj) const
 {
-  QVector<FilterParameter::Pointer> filterParameters = getFilterParameters();
-  for(auto const fp : filterParameters)
+  FilterParameterVectorType filterParameters = getFilterParameters();
+  for(auto const& fp : filterParameters)
   {
     fp->writeJson(obj);
   }

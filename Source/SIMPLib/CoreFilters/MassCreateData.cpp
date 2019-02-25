@@ -62,7 +62,7 @@ MassCreateData::~MassCreateData() = default;
 // -----------------------------------------------------------------------------
 void MassCreateData::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   parameters.push_back(SIMPL_NEW_DC_CREATION_FP("Data Container Name", DataContainerName, FilterParameter::CreatedArray, MassCreateData));
   setFilterParameters(parameters);
 }

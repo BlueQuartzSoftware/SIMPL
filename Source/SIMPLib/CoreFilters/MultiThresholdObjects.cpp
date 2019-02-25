@@ -65,7 +65,7 @@ MultiThresholdObjects::~MultiThresholdObjects() = default;
 // -----------------------------------------------------------------------------
 void MultiThresholdObjects::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   {
     ComparisonSelectionFilterParameter::Pointer parameter = ComparisonSelectionFilterParameter::New();
     parameter->setHumanLabel("Select Arrays to Threshold");

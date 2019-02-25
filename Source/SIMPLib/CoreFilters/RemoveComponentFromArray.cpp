@@ -71,7 +71,7 @@ RemoveComponentFromArray::~RemoveComponentFromArray() = default;
 // -----------------------------------------------------------------------------
 void RemoveComponentFromArray::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Component Number to Remove", CompNumber, FilterParameter::Parameter, RemoveComponentFromArray));
 

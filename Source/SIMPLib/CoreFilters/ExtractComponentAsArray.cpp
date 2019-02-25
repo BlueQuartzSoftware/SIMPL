@@ -68,7 +68,7 @@ ExtractComponentAsArray::~ExtractComponentAsArray() = default;
 // -----------------------------------------------------------------------------
 void ExtractComponentAsArray::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Component Number to Extract", CompNumber, FilterParameter::Parameter, ExtractComponentAsArray));
 

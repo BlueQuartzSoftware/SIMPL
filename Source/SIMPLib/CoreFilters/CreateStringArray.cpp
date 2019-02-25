@@ -87,7 +87,7 @@ CreateStringArray::~CreateStringArray() = default;
 // -----------------------------------------------------------------------------
 void CreateStringArray::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   // Do not let the user change the number of components in a StringDataArray
   setNumberOfComponents(1);

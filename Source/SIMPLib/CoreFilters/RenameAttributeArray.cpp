@@ -60,7 +60,7 @@ RenameAttributeArray::~RenameAttributeArray() = default;
 // -----------------------------------------------------------------------------
 void RenameAttributeArray::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   DataArraySelectionFilterParameter::RequirementType req;
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array to Rename", SelectedArrayPath, FilterParameter::RequiredArray, RenameAttributeArray, req));

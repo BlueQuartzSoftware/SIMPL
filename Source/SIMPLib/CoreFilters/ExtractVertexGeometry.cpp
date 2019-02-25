@@ -84,7 +84,7 @@ void ExtractVertexGeometry::setupFilterParameters()
   m_NewDCGeometryChoices.clear();
   m_ArrayHandlingChoices.clear();
 
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   //  {
   //    m_NewDCGeometryChoices.push_back("Vertex Geometry");

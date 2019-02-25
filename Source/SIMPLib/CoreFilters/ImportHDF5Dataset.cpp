@@ -94,7 +94,7 @@ void ImportHDF5Dataset::initialize()
 // -----------------------------------------------------------------------------
 void ImportHDF5Dataset::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   ImportHDF5DatasetFilterParameter::Pointer parameter = ImportHDF5DatasetFilterParameter::New(QString("Select HDF5 File"), // Human Label
                                                                                               QString("ImportHDF5File"),   // Property Name

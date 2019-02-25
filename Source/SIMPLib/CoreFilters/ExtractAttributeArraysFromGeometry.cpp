@@ -112,7 +112,7 @@ void ExtractAttributeArraysFromGeometry::initialize()
 // -----------------------------------------------------------------------------
 void ExtractAttributeArraysFromGeometry::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   {
     LinkedDataContainerSelectionFilterParameter::Pointer parameter = LinkedDataContainerSelectionFilterParameter::New();
     parameter->setHumanLabel("Geometry");

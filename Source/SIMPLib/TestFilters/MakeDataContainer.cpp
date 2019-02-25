@@ -69,7 +69,7 @@ MakeDataContainer::~MakeDataContainer() = default;
 // -----------------------------------------------------------------------------
 void MakeDataContainer::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(SIMPL_NEW_STRING_FP("FeatureIds", FeatureIdsArrayName, FilterParameter::CreatedArray, MakeDataContainer));
   parameters.push_back(SIMPL_NEW_STRING_FP("Cell Euler Angles", CellEulerAnglesArrayName, FilterParameter::CreatedArray, MakeDataContainer));

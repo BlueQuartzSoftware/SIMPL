@@ -191,7 +191,7 @@ CombineAttributeArrays::~CombineAttributeArrays() = default;
 // -----------------------------------------------------------------------------
 void CombineAttributeArrays::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   parameters.push_back(SIMPL_NEW_BOOL_FP("Normalize Data", NormalizeData, FilterParameter::Parameter, CombineAttributeArrays));
   parameters.push_back(SIMPL_NEW_BOOL_FP("Move Data", MoveValues, FilterParameter::Parameter, CombineAttributeArrays));
   {

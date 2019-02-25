@@ -117,7 +117,7 @@ CreateGeometry::~CreateGeometry() = default;
 // -----------------------------------------------------------------------------
 void CreateGeometry::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Geometry Type");

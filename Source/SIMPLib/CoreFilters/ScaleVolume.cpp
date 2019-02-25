@@ -114,7 +114,7 @@ ScaleVolume::~ScaleVolume() = default;
 // -----------------------------------------------------------------------------
 void ScaleVolume::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Scaling Factor", ScaleFactor, FilterParameter::Parameter, ScaleVolume));
 

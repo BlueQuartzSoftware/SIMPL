@@ -75,7 +75,7 @@ CropVertexGeometry::~CropVertexGeometry() = default;
 // -----------------------------------------------------------------------------
 void CropVertexGeometry::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   DataContainerSelectionFilterParameter::RequirementType req;
   IGeometry::Types reqGeom = {IGeometry::Type::Vertex};
   req.dcGeometryTypes = reqGeom;

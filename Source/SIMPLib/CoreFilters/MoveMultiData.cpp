@@ -71,7 +71,7 @@ MoveMultiData::~MoveMultiData() = default;
 // -----------------------------------------------------------------------------
 void MoveMultiData::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   QStringList linkedProps;
   linkedProps << "DataContainerDestination"

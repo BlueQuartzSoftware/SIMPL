@@ -72,7 +72,7 @@ CopyObject::~CopyObject() = default;
 // -----------------------------------------------------------------------------
 void CopyObject::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Object Type to Copy");

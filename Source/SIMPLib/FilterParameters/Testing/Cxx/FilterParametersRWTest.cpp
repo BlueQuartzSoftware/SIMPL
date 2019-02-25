@@ -848,8 +848,6 @@ public:
           ShapeTypeSelectionFilterParameter::New("Test", "String1", shapeData, FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, ShapeType::Types),
                                                  SIMPL_BIND_GETTER(FilterParametersRWTest, this, ShapeType::Types), "String1", "");
 
-      //SIMPL_NEW_SHAPETYPE_SELECTION_FP("Shape Types", ShapeTypeData, FilterParameter::CreatedArray, EstablishShapeTypes, "PhaseCount", "InputPhaseTypesArrayPath");
-
       QJsonObject obj;
       fp->writeJson(obj);
       fp->readJson(obj);

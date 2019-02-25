@@ -60,7 +60,7 @@ RenameDataContainer::~RenameDataContainer() = default;
 // -----------------------------------------------------------------------------
 void RenameDataContainer::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   {
     DataContainerSelectionFilterParameter::RequirementType req;

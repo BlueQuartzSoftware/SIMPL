@@ -123,7 +123,7 @@ GenericExample::~GenericExample() = default;
 // -----------------------------------------------------------------------------
 void GenericExample::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   /* Place all your option initialization code here */
   /* For String input use this code */
   parameters.push_back(SIMPL_NEW_STRING_FP("STL Output Prefix", StlFilePrefix, FilterParameter::Parameter, GenericExample));
