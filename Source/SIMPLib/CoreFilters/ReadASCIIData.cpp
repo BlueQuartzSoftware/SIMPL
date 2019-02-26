@@ -224,7 +224,7 @@ void ReadASCIIData::writeFilterParameters(QJsonObject& obj) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ReadASCIIData::renameDataArrayPath(DataArrayPath::RenameType renamePath)
+void ReadASCIIData::renameDataArrayPath(const DataArrayPath::RenameType& renamePath)
 {
   getWizardData().updateDataArrayPath(renamePath);
 

@@ -71,10 +71,10 @@ public:
   Q_ENUM(State)
 
   static const QPixmap CreateDragIcon(DataArrayPath path);
-  static const QPixmap CreateDragIcon(QString text, DataArrayPath::DataType dataType);
+  static const QPixmap CreateDragIcon(QString text, DataArrayPathHelper::DataType dataType);
   static const QPixmap CreateDragIcon(QString text, QColor backgroundColor);
-  static const QColor GetActiveColor(DataArrayPath::DataType type);
-  static const QColor GetCheckedColor(DataArrayPath::DataType type);
+  static const QColor GetActiveColor(DataArrayPathHelper::DataType type);
+  static const QColor GetCheckedColor(DataArrayPathHelper::DataType type);
   static bool CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, DataContainerSelectionFilterParameter::RequirementType reqs);
   static bool CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, AttributeMatrixSelectionFilterParameter::RequirementType reqs);
   static bool CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, DataArraySelectionFilterParameter::RequirementType reqs);
@@ -82,14 +82,14 @@ public:
   DataArrayPathSelectionWidget(QWidget* parent = nullptr);
   ~DataArrayPathSelectionWidget() override = default;
 
-  Q_PROPERTY(DataArrayPath::DataType PathType READ getDataType)
+  Q_PROPERTY(DataArrayPathHelper::DataType PathType READ getDataType)
   Q_PROPERTY(State State READ getState)
 
   /**
   * @brief Returns the type of DataArrayPath this widget can handle
   * @return
   */
-  DataArrayPath::DataType getDataType();
+  DataArrayPathHelper::DataType getDataType();
 
   /**
   * @brief Sets the DataContainer requirements and sets the DataType to DataContainer
@@ -441,7 +441,7 @@ private slots:
   void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
 
 private:
-  DataArrayPath::DataType m_DataType = DataArrayPath::DataType::None;
+  DataArrayPathHelper::DataType m_DataType = DataArrayPathHelper::DataType::None;
   State m_State = State::Normal;
   AbstractFilter* m_Filter = nullptr;
   DataContainerSelectionFilterParameter::RequirementType m_DataContainerReqs;

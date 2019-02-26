@@ -79,7 +79,12 @@ void FilterParameter::writeJson(QJsonObject& json)
 void FilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath)
 {
   QVariant var = filter->property(qPrintable(getPropertyName()));
-  if(var.isValid() && var.canConvert<DataArrayPath>())
+  if(!var.isValid())
+  {
+    return;
+  }
+
+  if(var.canConvert<DataArrayPath>())
   {
     DataArrayPath path = var.value<DataArrayPath>();
     if(path.updatePath(renamePath))
@@ -89,7 +94,7 @@ void FilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArr
       emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
     }
   }
-  else if(var.isValid() && var.canConvert<DataContainerArrayProxy>())
+  else if(var.canConvert<DataContainerArrayProxy>())
   {
     DataContainerArrayProxy proxy = var.value<DataContainerArrayProxy>();
     proxy.updatePath(renamePath);
@@ -97,7 +102,7 @@ void FilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArr
     filter->setProperty(qPrintable(getPropertyName()), var);
     emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
-  else if(var.isValid() && var.canConvert<DataContainerProxy>())
+  else if(var.canConvert<DataContainerProxy>())
   {
     DataContainerProxy proxy = var.value<DataContainerProxy>();
     proxy.updatePath(renamePath);
@@ -105,7 +110,7 @@ void FilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArr
     filter->setProperty(qPrintable(getPropertyName()), var);
     emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
-  else if(var.isValid() && var.canConvert<AttributeMatrixProxy>())
+  else if(var.canConvert<AttributeMatrixProxy>())
   {
     AttributeMatrixProxy proxy = var.value<AttributeMatrixProxy>();
     proxy.updatePath(renamePath);
@@ -113,7 +118,7 @@ void FilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArr
     filter->setProperty(qPrintable(getPropertyName()), var);
     emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
-  else if(var.isValid() && var.canConvert<DataArrayProxy>())
+  else if(var.canConvert<DataArrayProxy>())
   {
     DataArrayProxy proxy = var.value<DataArrayProxy>();
     proxy.updatePath(renamePath);

@@ -445,8 +445,8 @@ QStandardItem* DataStructureWidget::findChildByName(QStandardItem* rootItem, con
 // -----------------------------------------------------------------------------
 QStandardItem* DataStructureWidget::findItemByPath(DataArrayPath path)
 {
-  DataArrayPath::DataType dataType = path.getDataType();
-  if(dataType == DataArrayPath::DataType::None)
+  DataArrayPathHelper::DataType dataType = path.getDataType();
+  if(dataType == DataArrayPathHelper::DataType::None)
   {
     return nullptr;
   }
@@ -461,14 +461,14 @@ QStandardItem* DataStructureWidget::findItemByPath(DataArrayPath path)
   QStandardItem* rootItem = model->invisibleRootItem();
   QStandardItem* targetItem = nullptr;
   QStandardItem* dcItem = findChildByName(rootItem, path.getDataContainerName(), 0);
-  if(dataType == DataArrayPath::DataType::DataContainer)
+  if(dataType == DataArrayPathHelper::DataType::DataContainer)
   {
     targetItem = dcItem;
   }
   else
   {
     QStandardItem* amItem = findChildByName(dcItem, path.getAttributeMatrixName(), 0);
-    if(dataType == DataArrayPath::DataType::AttributeMatrix)
+    if(dataType == DataArrayPathHelper::DataType::AttributeMatrix)
     {
       targetItem = amItem;
     }

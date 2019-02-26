@@ -90,8 +90,8 @@ protected:
     return NullPointer();
   }
 
-  // constexpr void addParentNode(const ParentType& newParent);
-  // constexpr bool removeParentNode(const ParentType& removedParent);
+  // inline void addParentNode(const ParentType& newParent);
+  // inline bool removeParentNode(const ParentType& removedParent);
 
   virtual bool hasChildWithName(const QString& name) const;
 
