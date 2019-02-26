@@ -111,7 +111,7 @@ public:
    * @brief Returns the names of all children nodes.
    * @return
    */
-  NameList getNamesOfChildren() const
+  inline NameList getNamesOfChildren() const
   {
     NameList names;
     for(const auto& child : m_ChildrenNodes)
@@ -125,7 +125,7 @@ public:
    * @brief Returns the DataArrayPaths of all descendants.
    * @return
    */
-  DataArrayPathList getDescendantPaths() const
+  inline DataArrayPathList getDescendantPaths() const
   {
     DataArrayPathList paths;
 
@@ -147,7 +147,7 @@ public:
    * @brief Returns a list of DataArrayPaths from both itself and all its descendants.
    * @return
    */
-  DataArrayPathList getAllPaths() const
+  inline DataArrayPathList getAllPaths() const
   {
     DataArrayPathList list = getDescendantPaths();
     list.push_front(getDataArrayPath());

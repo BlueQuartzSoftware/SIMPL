@@ -105,7 +105,7 @@ class SIMPLib_EXPORT FilterParameter
      * @param filter
      * @param renamePath
      */
-    virtual void dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath);
+    virtual void dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath);
 
   protected:
     FilterParameter();

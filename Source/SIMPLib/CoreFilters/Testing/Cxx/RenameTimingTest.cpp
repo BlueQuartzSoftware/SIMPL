@@ -120,6 +120,11 @@ public:
       std::cout << "\tFirst Preflight Duration: " << elapsed.count() << " milliseconds" << std::endl;
     }
 
+    QVariant value;
+    value.setValue(QString("NewName"));
+    AbstractFilter::Pointer filter = pipeline->getFilterContainer().front();
+    filter->setProperty("DataContainerName", value);    
+
     {
       auto start = std::chrono::steady_clock::now();
       //for(int i = 0; i < iterations; i++)

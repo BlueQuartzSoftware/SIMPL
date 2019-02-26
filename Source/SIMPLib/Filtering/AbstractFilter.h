@@ -413,7 +413,7 @@ signals:
   * @param propertyName
   * @param renamePath
   */
-  void dataArrayPathUpdated(QString propertyName, DataArrayPath::RenameType renamePath);
+  void dataArrayPathUpdated(QString propertyName, const DataArrayPath::RenameType& renamePath);
 
 public slots:
 
@@ -427,14 +427,20 @@ public slots:
    * For DataArrayPaths longer than the given path, only the specified values are modified
    * @param renamePath
    */
-  virtual void renameDataArrayPath(DataArrayPath::RenameType renamePath);
+  virtual void renameDataArrayPath(const DataArrayPath::RenameType& renamePath);
 
   /**
   * @brief Updates any DataArrayPath properties from the old paths to their corresponding new paths.
   * For DataArrayPaths longer than the new path, only the values provided by the new path are modified
   * @param renamedPaths
   */
-  virtual void renameDataArrayPaths(DataArrayPath::RenameContainer renamedPaths);
+  inline void renameDataArrayPaths(const DataArrayPath::RenameContainer& renamedPaths)
+  {
+    for(const DataArrayPath::RenameType& rename : renamedPaths)
+    {
+      renameDataArrayPath(rename);
+    }
+  }
 
 protected:
   AbstractFilter();

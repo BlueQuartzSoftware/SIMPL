@@ -113,7 +113,7 @@ void DataContainerArrayProxyFilterParameter::writeJson(QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerArrayProxyFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath)
+void DataContainerArrayProxyFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath)
 {
   QVariant var = filter->property(qPrintable(getPropertyName()));
   DataContainerArrayProxy dcaProxy = var.value<DataContainerArrayProxy>();

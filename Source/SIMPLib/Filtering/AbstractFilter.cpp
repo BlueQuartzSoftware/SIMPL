@@ -101,7 +101,7 @@ void AbstractFilter::setCancel(bool value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::renameDataArrayPath(DataArrayPath::RenameType renamePath)
+void AbstractFilter::renameDataArrayPath(const DataArrayPath::RenameType& renamePath)
 {
   // Some filter parameters handle paths as nothing but a QString (i.e. DataContainerSelectionFilterParameter)
   // This does not store data in a way that represents what is stored or in a consistent manner with anything else.
@@ -109,30 +109,19 @@ void AbstractFilter::renameDataArrayPath(DataArrayPath::RenameType renamePath)
   // their own paths in these cases.  In cases where private properties need to be updated but do not have
   // assigned filter parameters, although this should not be the case, this code, unlike the above snippet, will not update them.
   FilterParameterVector filterParams = getFilterParameters();
-  for(FilterParameter::Pointer filterParam : filterParams)
+  for(FilterParameter::Pointer& filterParam : filterParams)
   {
     filterParam->dataArrayPathRenamed(this, renamePath);
   }
 
   // Update created paths
-  for(auto createdPathItem : m_CreatedPaths)
+  for(const auto& createdPathItem : m_CreatedPaths)
   {
     DataArrayPath createdPath = createdPathItem.second;
     if(createdPath.updatePath(renamePath))
     {
       m_CreatedPaths[createdPathItem.first] = createdPath;
     }
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void AbstractFilter::renameDataArrayPaths(DataArrayPath::RenameContainer renamedPaths)
-{
-  for(DataArrayPath::RenameType rename : renamedPaths)
-  {
-    renameDataArrayPath(rename);
   }
 }
 
