@@ -143,7 +143,7 @@ public:
 
     QVariant value;
 
-    value.setValue(QString("DataContainer1"));
+    value.setValue(DataArrayPath("DataContainer1"));
     filter->setProperty("DataContainerSelection", value);
 
     value.setValue(numZVoxels);
@@ -162,7 +162,7 @@ public:
 
     QVariant value;
 
-    value.setValue(QString("DataContainer2"));
+    value.setValue(DataArrayPath("DataContainer2"));
     filter->setProperty("DataContainerSelection", value);
 
     value.setValue(numZVoxels);
@@ -181,7 +181,7 @@ public:
 
     QVariant value;
 
-    value.setValue(QString("DataContainer3"));
+    value.setValue(DataArrayPath("DataContainer3"));
     filter->setProperty("DataContainerSelection", value);
 
     value.setValue(0);

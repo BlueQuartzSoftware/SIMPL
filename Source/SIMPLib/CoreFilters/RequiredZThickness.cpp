@@ -82,7 +82,7 @@ void RequiredZThickness::readFilterParameters(AbstractFilterParametersReader* re
 {
   AbstractDecisionFilter::readFilterParameters(reader, index);
   reader->openFilterGroup(this, index);
-  setDataContainerSelection(reader->readString("DataContainerSelection", getDataContainerSelection()));
+  setDataContainerSelection(reader->readDataArrayPath("DataContainerSelection", getDataContainerSelection()));
   setNumZVoxels(reader->readValue("NumZVoxels", getNumZVoxels()));
   setPreflightCheck(reader->readValue("PreflightCheck", getPreflightCheck()));
   reader->closeFilterGroup();

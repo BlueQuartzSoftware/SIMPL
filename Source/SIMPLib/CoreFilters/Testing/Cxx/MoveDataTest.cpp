@@ -240,7 +240,7 @@ public:
 
     if(whatToMove == 0) // Move AttributeMatrix
     {
-      var.setValue(dapDst.getDataContainerName());
+      var.setValue(dapDst);
       propWasSet = moveData->setProperty("DataContainerDestination", var);
       DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 

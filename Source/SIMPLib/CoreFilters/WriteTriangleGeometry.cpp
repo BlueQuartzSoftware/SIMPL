@@ -89,7 +89,7 @@ void WriteTriangleGeometry::setupFilterParameters()
 void WriteTriangleGeometry::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setDataContainerSelection(reader->readString("DataContainerSelection", getDataContainerSelection()));
+  setDataContainerSelection(reader->readDataArrayPath("DataContainerSelection", getDataContainerSelection()));
   setOutputNodesFile(reader->readString("OutputNodesFile", getOutputNodesFile()));
   setOutputTrianglesFile(reader->readString("OutputTrianglesFile", getOutputTrianglesFile()));
   reader->closeFilterGroup();

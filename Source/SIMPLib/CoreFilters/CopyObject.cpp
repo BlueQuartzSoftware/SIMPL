@@ -116,7 +116,7 @@ void CopyObject::readFilterParameters(AbstractFilterParametersReader* reader, in
 {
   reader->openFilterGroup(this, index);
   setObjectToCopy(reader->readValue("ObjectToCopy", getObjectToCopy()));
-  setDataContainerToCopy(reader->readString("DataContainerToCopy", getDataContainerToCopy()));
+  setDataContainerToCopy(reader->readDataArrayPath("DataContainerToCopy", getDataContainerToCopy()));
   setAttributeMatrixToCopy(reader->readDataArrayPath("AttributeMatrixToCopy", getAttributeMatrixToCopy()));
   setAttributeArrayToCopy(reader->readDataArrayPath("AttributeArrayToCopy", getAttributeArrayToCopy()));
   setCopiedObjectName(reader->readString("CopiedObjectName", getCopiedObjectName()));

@@ -48,8 +48,8 @@ class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(ScaleVolume SUPERCLASS AbstractFilter)
-    PYB11_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
-    PYB11_PROPERTY(QString SurfaceDataContainerName READ getSurfaceDataContainerName WRITE setSurfaceDataContainerName)
+    PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
+    PYB11_PROPERTY(DataArrayPath SurfaceDataContainerName READ getSurfaceDataContainerName WRITE setSurfaceDataContainerName)
     PYB11_PROPERTY(bool ApplyToVoxelVolume READ getApplyToVoxelVolume WRITE setApplyToVoxelVolume)
     PYB11_PROPERTY(bool ApplyToSurfaceMesh READ getApplyToSurfaceMesh WRITE setApplyToSurfaceMesh)
     PYB11_PROPERTY(FloatVec3_t ScaleFactor READ getScaleFactor WRITE setScaleFactor)
@@ -61,11 +61,11 @@ class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
 
     ~ScaleVolume() override;
 
-    SIMPL_FILTER_PARAMETER(QString, DataContainerName)
-    Q_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
+    SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerName)
+    Q_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
-    SIMPL_FILTER_PARAMETER(QString, SurfaceDataContainerName)
-    Q_PROPERTY(QString SurfaceDataContainerName READ getSurfaceDataContainerName WRITE setSurfaceDataContainerName)
+    SIMPL_FILTER_PARAMETER(DataArrayPath, SurfaceDataContainerName)
+    Q_PROPERTY(DataArrayPath SurfaceDataContainerName READ getSurfaceDataContainerName WRITE setSurfaceDataContainerName)
 
     SIMPL_FILTER_PARAMETER(bool, ApplyToVoxelVolume)
     Q_PROPERTY(bool ApplyToVoxelVolume READ getApplyToVoxelVolume WRITE setApplyToVoxelVolume)

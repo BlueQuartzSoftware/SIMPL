@@ -80,7 +80,7 @@ class SIMPLib_EXPORT GenericExample : public AbstractFilter
   PYB11_PROPERTY(FileListInfo_t InputFileListInfo READ getInputFileListInfo WRITE setInputFileListInfo)
   PYB11_PROPERTY(QString SelectedXCoordArrayName READ getSelectedXCoordArrayName WRITE setSelectedXCoordArrayName)
   PYB11_PROPERTY(QStringList DataArrayList READ getDataArrayList WRITE setDataArrayList)
-  PYB11_PROPERTY(QString CreatedDataContainer READ getCreatedDataContainer WRITE setCreatedDataContainer)
+  PYB11_PROPERTY(DataArrayPath CreatedDataContainer READ getCreatedDataContainer WRITE setCreatedDataContainer)
   PYB11_PROPERTY(DataContainerArrayProxy DcaProxy READ getDcaProxy WRITE setDcaProxy)
   PYB11_PROPERTY(QString InputPath READ getInputPath WRITE setInputPath)
   PYB11_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
@@ -94,7 +94,7 @@ class SIMPLib_EXPORT GenericExample : public AbstractFilter
   PYB11_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
   PYB11_PROPERTY(DataArrayPath AttributeMatrixPath READ getAttributeMatrixPath WRITE setAttributeMatrixPath)
   PYB11_PROPERTY(DataArrayPath CreatedAttributeMatrix READ getCreatedAttributeMatrix WRITE setCreatedAttributeMatrix)
-  PYB11_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
+  PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
   PYB11_PROPERTY(int SizeDistributionFitType READ getSizeDistributionFitType WRITE setSizeDistributionFitType)
   PYB11_PROPERTY(ComparisonInputs SelectedThresholds READ getSelectedThresholds WRITE setSelectedThresholds)
   PYB11_PROPERTY(QString CalcExpression READ getCalcExpression WRITE setCalcExpression)
@@ -162,8 +162,8 @@ public:
   SIMPL_FILTER_PARAMETER(QStringList, DataArrayList)
   Q_PROPERTY(QStringList DataArrayList READ getDataArrayList WRITE setDataArrayList)
 
-  SIMPL_FILTER_PARAMETER(QString, CreatedDataContainer)
-  Q_PROPERTY(QString CreatedDataContainer READ getCreatedDataContainer WRITE setCreatedDataContainer)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, CreatedDataContainer)
+  Q_PROPERTY(DataArrayPath CreatedDataContainer READ getCreatedDataContainer WRITE setCreatedDataContainer)
 
   SIMPL_FILTER_PARAMETER(DataContainerArrayProxy, DcaProxy)
   Q_PROPERTY(DataContainerArrayProxy DcaProxy READ getDcaProxy WRITE setDcaProxy)
@@ -204,8 +204,8 @@ public:
   SIMPL_FILTER_PARAMETER(DataArrayPath, CreatedAttributeMatrix)
   Q_PROPERTY(DataArrayPath CreatedAttributeMatrix READ getCreatedAttributeMatrix WRITE setCreatedAttributeMatrix)
 
-  SIMPL_FILTER_PARAMETER(QString, DataContainerName)
-  Q_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerName)
+  Q_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
   SIMPL_FILTER_PARAMETER(int, SizeDistributionFitType)
   Q_PROPERTY(int SizeDistributionFitType READ getSizeDistributionFitType WRITE setSizeDistributionFitType)

@@ -132,7 +132,14 @@ public:
    * @param name The name of the DataContiner to find
    * @return
    */
-  virtual bool doesDataContainerExist(const QString& name);
+  virtual bool doesDataContainerExist(const QString& name) const;
+
+  /**
+   * @brief doesDataContainerExist
+   * @param dap
+   * @return
+   */
+  virtual bool doesDataContainerExist(const DataArrayPath& dap) const;
 
   /**
    * @brief DataContainerArray::doesAttributeMatrixExist
@@ -160,6 +167,14 @@ public:
    * @return
    */
   bool renameDataContainer(const QString& oldName, const QString& newName);
+
+  /**
+   * @brief renameDataContainer
+   * @param oldName
+   * @param newName
+   * @return
+   */
+  bool renameDataContainer(const DataArrayPath& oldName, const DataArrayPath& newName);
 
   /**
    * @brief Removes all DataContainers from this DataContainerArray
@@ -266,6 +281,11 @@ public:
     */
     void renameDataArrayPaths(DataArrayPath::RenameContainer renamePaths);
 
+    template <class Filter> DataContainerShPtr getPrereqDataContainer(Filter* filter, const DataArrayPath& dap, bool createIfNotExists = false)
+    {
+      return getPrereqDataContainer(filter, dap.getDataContainerName(), createIfNotExists);
+    }
+
     /**
      * @brief getPrereqDataContainer
      * @param name
@@ -295,6 +315,18 @@ public:
       }
       // The DataContainer we asked for was present and NON Null so return that.
       return dc;
+    }
+
+    /**
+     * @brief createNonPrereqDataContainer
+     * @param filter
+     * @param dap
+     * @param id
+     * @return
+     */
+    template <class Filter> inline DataContainerShPtr createNonPrereqDataContainer(Filter* filter, const DataArrayPath& dap, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
+    {
+      return createNonPrereqDataContainer<Filter>(filter, dap.getDataContainerName(), id);
     }
 
     /**
@@ -364,6 +396,24 @@ public:
       return dc->getPrereqGeometry<GeometryType>(filter);
     }
 
+    /**
+     * @brief getPrereqGeometryFromDataContainer Returns an IGeometry object of the templated type
+     * if it is available for the given DataContainer
+     * @param filter
+     * @param dcName
+     * @return
+     */
+    template <typename GeometryType, typename Filter> typename GeometryType::Pointer getPrereqGeometryFromDataContainer(Filter* filter, const DataArrayPath& path)
+    {
+      typename GeometryType::Pointer geom = GeometryType::NullPointer();
+      DataContainerShPtr dc = getPrereqDataContainer<Filter>(filter, path.getDataContainerName(), false);
+      if(nullptr == dc)
+      {
+        return geom;
+      }
+
+      return dc->getPrereqGeometry<GeometryType>(filter);
+    }
 
     /**
      * @brief getPrereqAttributeMatrixFromPath This function will return an AttributeMatrix if it is availabe

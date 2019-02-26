@@ -183,7 +183,7 @@ public:
     QVariant var;
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(k_DataContainerName);
+    var.setValue(dap);
     bool propWasSet = extractAttributeArraysFromGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -273,7 +273,7 @@ public:
     QVariant var;
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(k_DataContainerName);
+    var.setValue(dap);
     bool propWasSet = extractAttributeArraysFromGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -351,7 +351,7 @@ public:
     QVariant var;
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(k_DataContainerName);
+    var.setValue(dap);
     bool propWasSet = extractAttributeArraysFromGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -439,7 +439,7 @@ public:
     QVariant var;
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(k_DataContainerName);
+    var.setValue(dap);
     bool propWasSet = extractAttributeArraysFromGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -527,7 +527,7 @@ public:
     QVariant var;
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(k_DataContainerName);
+    var.setValue(dap);
     bool propWasSet = extractAttributeArraysFromGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -615,7 +615,7 @@ public:
     QVariant var;
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(k_DataContainerName);
+    var.setValue(dap);
     bool propWasSet = extractAttributeArraysFromGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -703,7 +703,7 @@ public:
     QVariant var;
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(k_DataContainerName);
+    var.setValue(dap);
     bool propWasSet = extractAttributeArraysFromGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 

@@ -73,7 +73,7 @@ void MassCreateData::setupFilterParameters()
 void MassCreateData::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setDataContainerName(reader->readString("DataContainerName", getDataContainerName()));
+  setDataContainerName(reader->readDataArrayPath("DataContainerName", getDataContainerName()));
   reader->closeFilterGroup();
 }
 
@@ -95,7 +95,7 @@ void MassCreateData::dataCheck()
   const int iterations = 4000;
   for(int i = 0; i < iterations; i++)
   {
-    DataContainerShPtr dc = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName() + QString::number(i), DataContainerBaseID + i);
+    DataContainerShPtr dc = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName().getDataContainerName() + QString::number(i), DataContainerBaseID + i);
   }
 }
 

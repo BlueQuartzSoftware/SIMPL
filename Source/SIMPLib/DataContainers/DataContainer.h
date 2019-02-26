@@ -125,6 +125,13 @@ public:
   static Pointer New(const QString& name);
 
   /**
+   * @brief Creates a new shared pointer instance of this class
+   * @param name The name to give to the DataContainer and must NOT be empty.
+   * @return Shared Pointer to a DataContainer instance.
+   */
+  static Pointer New(const DataArrayPath& name);
+
+  /**
    * @brief Creates a new data container
    */
   virtual Pointer createNewDataContainer(const QString& name);

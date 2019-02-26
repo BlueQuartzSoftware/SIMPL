@@ -47,7 +47,7 @@ class SIMPLib_EXPORT CreateGeometry : public AbstractFilter
   Q_OBJECT
   PYB11_CREATE_BINDINGS(CreateGeometry SUPERCLASS AbstractFilter)
   PYB11_PROPERTY(int GeometryType READ getGeometryType WRITE setGeometryType)
-  PYB11_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
+  PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
   PYB11_PROPERTY(DataArrayPath SharedVertexListArrayPath0 READ getSharedVertexListArrayPath0 WRITE setSharedVertexListArrayPath0)
   PYB11_PROPERTY(DataArrayPath SharedVertexListArrayPath1 READ getSharedVertexListArrayPath1 WRITE setSharedVertexListArrayPath1)
   PYB11_PROPERTY(DataArrayPath SharedVertexListArrayPath2 READ getSharedVertexListArrayPath2 WRITE setSharedVertexListArrayPath2)
@@ -90,8 +90,8 @@ public:
   SIMPL_FILTER_PARAMETER(int, GeometryType)
   Q_PROPERTY(int GeometryType READ getGeometryType WRITE setGeometryType)
 
-  SIMPL_FILTER_PARAMETER(QString, DataContainerName)
-  Q_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerName)
+  Q_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
   SIMPL_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath0)
   Q_PROPERTY(DataArrayPath SharedVertexListArrayPath0 READ getSharedVertexListArrayPath0 WRITE setSharedVertexListArrayPath0)

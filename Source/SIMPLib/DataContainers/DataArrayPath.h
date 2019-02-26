@@ -56,11 +56,11 @@ using DataContainerArrayShPtr = std::shared_ptr<DataContainerArray>;
  */
 class SIMPLib_EXPORT DataArrayPath : public QObject
 {
-  Q_OBJECT
-  
+    Q_OBJECT
+
   PYB11_CREATE_BINDINGS(DataArrayPath)
   PYB11_CREATION(ARGS QString QString QString)
-  PYB11_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
+  PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
   PYB11_PROPERTY(QString AttributeMatrixName READ getAttributeMatrixName WRITE setAttributeMatrixName)
   PYB11_PROPERTY(QString DataArrayName READ getDataArrayName WRITE setDataArrayName)
 
@@ -139,7 +139,7 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
     * @param delimiter
     * @return
     */
-    static DataArrayPath Deserialize(QString str, QString delimiter);
+    static DataArrayPath Deserialize(const QString& str, const QString& delimiter);
 
     /**
      * @brief checks for and returns any updated DataArrayPaths between two sets
@@ -182,6 +182,13 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
     bool operator==(const DataArrayPath& rhs) const;
 
     /**
+     * @brief operator !=
+     * @param rhs
+     * @return
+     */
+    bool operator!=(const DataArrayPath& rhs) const;
+
+    /**
      * @brief operator < is required for std::set
      * @param rhs
      * @return
@@ -193,7 +200,7 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
      * @param delimiter
      * @return
      */
-    QString serialize(QString delimiter = "|") const;
+    QString serialize(const QString& delimiter = "|") const;
 
     /**
      * @brief getAsVector Returns the DataArrayPath represented as a QVector<String> where index[0] = DataContainer Name,
@@ -312,20 +319,7 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
      * @return
      */
     QJsonObject toJsonObject() const;
-
-
-  protected:
-
-
-
-  private:
-
-
 };
-
 
 Q_DECLARE_METATYPE(DataArrayPath)
 Q_DECLARE_METATYPE(DataArrayPath::DataType)
-
-
-

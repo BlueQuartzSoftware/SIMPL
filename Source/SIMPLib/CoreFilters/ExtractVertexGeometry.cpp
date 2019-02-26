@@ -150,7 +150,7 @@ void ExtractVertexGeometry::dataCheck()
     return;
   }
 
-  DataContainer::Pointer dc = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, m_SelectedDataContainerName);
+  DataContainer::Pointer dc = getDataContainerArray()->getPrereqDataContainer(this, getSelectedDataContainerName());
   if(getErrorCondition() < 0)
   {
     return;
@@ -166,7 +166,7 @@ void ExtractVertexGeometry::dataCheck()
 
   if(getDataContainerArray()->doesDataContainerExist(getVertexDataContainerName()))
   {
-    QString ss = QObject::tr("A Data Container with name '%1' already exists.").arg(getVertexDataContainerName());
+    QString ss = QObject::tr("A Data Container with name '%1' already exists.").arg(getVertexDataContainerName().getDataContainerName());
     setErrorCondition(-2007);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
@@ -204,7 +204,7 @@ void ExtractVertexGeometry::dataCheck()
   for(int i = 0; i < selectedArraysSize; i++)
   {
     DataArrayPath dap = m_IncludedDataArrayPaths[i];
-    dc = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, dap.getDataContainerName());
+    dc = getDataContainerArray()->getPrereqDataContainer(this, dap.getDataContainerName());
 
     int err = 0;
     AttributeMatrix::Pointer sourceCellAttrMat = dc->getPrereqAttributeMatrix(this, dap.getAttributeMatrixName(), err);
@@ -220,7 +220,7 @@ void ExtractVertexGeometry::dataCheck()
                        .arg(dap.serialize("/"))
                        .arg(sourceCellAttrMat->getNumberOfTuples())
                        .arg(elementCount)
-                       .arg(m_VertexDataContainerName);
+                       .arg(m_VertexDataContainerName.getDataContainerName());
       setErrorCondition(-2009);
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
@@ -243,9 +243,9 @@ void ExtractVertexGeometry::dataCheck()
     }
 
     DataArrayPath newDap = dap;
-    newDap.setDataContainerName(m_VertexDataContainerName);
+    newDap.setDataContainerName(m_VertexDataContainerName.getDataContainerName());
 
-    AttributeMatrix::Pointer vertexCellAttrMat = vertexDataContainer->getAttributeMatrix(newDap);
+    AttributeMatrix::Pointer vertexCellAttrMat = vertexDataContainer->getAttributeMatrix(dap);
     if(vertexCellAttrMat == nullptr)
     {
       vertexCellAttrMat = vertexDataContainer->createNonPrereqAttributeMatrix(this, sourceCellAttrMat->getName(), sourceCellAttrMat->getTupleDimensions(), AttributeMatrix::Type::Vertex, AttributeMatrixID);

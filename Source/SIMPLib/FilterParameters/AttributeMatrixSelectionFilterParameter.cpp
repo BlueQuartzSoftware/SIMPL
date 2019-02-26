@@ -53,8 +53,8 @@ AttributeMatrixSelectionFilterParameter::~AttributeMatrixSelectionFilterParamete
 //
 // -----------------------------------------------------------------------------
 AttributeMatrixSelectionFilterParameter::Pointer AttributeMatrixSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue,
-                                                                                              Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-                                                                                              const RequirementType req, int groupIndex)
+                                                                                              Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
+                                                                                              const RequirementType& req, int groupIndex)
 {
 
   AttributeMatrixSelectionFilterParameter::Pointer ptr = AttributeMatrixSelectionFilterParameter::New();

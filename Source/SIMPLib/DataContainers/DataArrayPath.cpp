@@ -138,6 +138,15 @@ bool DataArrayPath::operator==(const DataArrayPath& rhs) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+bool DataArrayPath::operator!=(const DataArrayPath& rhs) const
+{
+  bool b = (*this == rhs);
+  return !b;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 bool DataArrayPath::operator<(const DataArrayPath& rhs) const
 {
   return serialize() < rhs.serialize();
@@ -146,7 +155,7 @@ bool DataArrayPath::operator<(const DataArrayPath& rhs) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataArrayPath::serialize(QString delimiter) const
+QString DataArrayPath::serialize(const QString& delimiter) const
 {
   QString s = "";
   if(!m_DataContainerName.isEmpty())
@@ -170,7 +179,7 @@ QString DataArrayPath::serialize(QString delimiter) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayPath DataArrayPath::Deserialize(QString str, QString delimiter)
+DataArrayPath DataArrayPath::Deserialize(const QString& str, const QString& delimiter)
 {
   if(str.isEmpty())
   {

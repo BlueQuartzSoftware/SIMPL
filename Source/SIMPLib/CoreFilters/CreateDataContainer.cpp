@@ -73,7 +73,6 @@ void CreateDataContainer::setupFilterParameters()
 void CreateDataContainer::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setDataContainerName(reader->readString("DataContainerName", getDataContainerName()));
   reader->closeFilterGroup();
 }
 

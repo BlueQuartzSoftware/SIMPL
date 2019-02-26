@@ -145,7 +145,7 @@ void SetOriginResolutionImageGeom::readFilterParameters(AbstractFilterParameters
   setChangeResolution(reader->readValue("ChangeResolution", getChangeResolution()));
   setOrigin(reader->readFloatVec3("Origin", getOrigin()));
   setResolution(reader->readFloatVec3("Resolution", getResolution()));
-  setDataContainerName(reader->readString("DataContainerName", getDataContainerName()));
+  setDataContainerName(reader->readDataArrayPath("DataContainerName", getDataContainerName()));
   reader->closeFilterGroup();
 }
 

@@ -2,21 +2,21 @@
 set(TEST_TESTFILES_DIR ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Testing/Cxx/TestFiles)
 
 set(TEST_${SUBDIR_NAME}_NAMES
-  ArrayCalculatorTest
-  CombineAttributeArraysTest
-  CombineAttributeMatricesTest
-  ConditionalSetValueTest
-  ConvertDataTest
-  CopyFeatureArrayToElementArrayTest
-  CopyObjectTest
-  CreateAttributeMatrixTest
-  CreateDataArrayTest
-  CreateDataContainerTest
-  CreateFeatureArrayFromElementArrayTest
-  CreateGeometryTest
-  CreateImageGeometryTest
-  CreateStringArrayTest
-  CropVertexGeometryTest
+#  ArrayCalculatorTest
+#  CombineAttributeArraysTest
+#  CombineAttributeMatricesTest
+#  ConditionalSetValueTest
+#  ConvertDataTest
+#  CopyFeatureArrayToElementArrayTest
+#  CopyObjectTest
+#  CreateAttributeMatrixTest
+#  CreateDataArrayTest
+#  CreateDataContainerTest
+#  CreateFeatureArrayFromElementArrayTest
+#  CreateGeometryTest
+#  CreateImageGeometryTest
+#  CreateStringArrayTest
+#  CropVertexGeometryTest
   DataContainerTest
   ErrorMessageTest
   ExecuteProcessTest

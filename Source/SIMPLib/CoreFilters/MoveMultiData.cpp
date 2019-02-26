@@ -123,7 +123,7 @@ void MoveMultiData::readFilterParameters(AbstractFilterParametersReader* reader,
 {
   reader->openFilterGroup(this, index);
   setWhatToMove(reader->readValue("WhatToMove", getWhatToMove()));
-  setDataContainerDestination(reader->readString("DataContainerDestination", getDataContainerDestination()));
+  setDataContainerDestination(reader->readDataArrayPath("DataContainerDestination", getDataContainerDestination()));
   setAttributeMatrixSources(reader->readDataArrayPathVector("AttributeMatrixSource", getAttributeMatrixSources()));
   setAttributeMatrixDestination(reader->readDataArrayPath("AttributeMatrixDestination", getAttributeMatrixDestination()));
   setDataArraySources(reader->readDataArrayPathVector("DataArraySources", getDataArraySources()));

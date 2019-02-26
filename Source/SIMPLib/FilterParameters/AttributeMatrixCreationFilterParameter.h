@@ -77,10 +77,10 @@ class SIMPLib_EXPORT AttributeMatrixCreationFilterParameter : public FilterParam
     using SetterCallbackType = std::function<void(DataArrayPath)>;
     using GetterCallbackType = std::function<DataArrayPath(void)>;
 
-    typedef struct
+    using RequirementType = struct
     {
       IGeometry::Types dcGeometryTypes;
-    } RequirementType;
+    };
 
     /**
      * @brief New This function instantiates an instance of the AttributeMatrixCreationFilterParameter.  Specifying a RequirementType will
@@ -102,10 +102,8 @@ class SIMPLib_EXPORT AttributeMatrixCreationFilterParameter : public FilterParam
      * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
      * @return
      */
-    static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const DataArrayPath& defaultValue, Category category,
-                       SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-                       const RequirementType req, int groupIndex = -1);
+    static Pointer New(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category, const SetterCallbackType& setterCallback,
+                       const GetterCallbackType& getterCallback, const RequirementType& req, int groupIndex = -1);
 
     ~AttributeMatrixCreationFilterParameter() override;
 

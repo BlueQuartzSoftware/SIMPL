@@ -461,7 +461,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(k_DataContainerName);
+    var.setValue(dap);
     propWasSet = createGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -572,7 +572,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(k_DataContainerName);
+    var.setValue(dap);
     propWasSet = createGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -701,7 +701,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(k_DataContainerName);
+    var.setValue(dap);
     propWasSet = createGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -790,7 +790,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(k_DataContainerName);
+    var.setValue(dap);
     propWasSet = createGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -906,7 +906,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(k_DataContainerName);
+    var.setValue(dap);
     propWasSet = createGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -1022,7 +1022,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(k_DataContainerName);
+    var.setValue(dap);
     propWasSet = createGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -1139,7 +1139,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(k_DataContainerName);
+    var.setValue(dap);
     propWasSet = createGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -1256,7 +1256,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(k_DataContainerName);
+    var.setValue(dap);
     propWasSet = createGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 

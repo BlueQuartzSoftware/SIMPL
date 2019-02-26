@@ -571,7 +571,7 @@ public:
 
     if(objectToCopy == 0) // DataContainer
     {
-      var.setValue(dap.getDataContainerName());
+      var.setValue(dap);
       propWasSet = extractAttributeArraysFromGeometry->setProperty("DataContainerToCopy", var);
       DREAM3D_REQUIRE_EQUAL(propWasSet, true)
     }

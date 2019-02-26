@@ -564,7 +564,7 @@ public:
     FilterPipeline::Pointer pipeline = FilterPipeline::New();
 
     CreateDataContainer::Pointer createDataContainer = CreateDataContainer::New();
-    createDataContainer->setDataContainerName("DataContainer");
+    createDataContainer->setDataContainerName(DataArrayPath("DataContainer", "", ""));
     pipeline->pushBack(createDataContainer);
 
     CreateAttributeMatrix::Pointer createAttrMat = CreateAttributeMatrix::New();
