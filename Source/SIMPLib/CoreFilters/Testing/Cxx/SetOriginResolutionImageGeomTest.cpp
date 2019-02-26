@@ -152,8 +152,9 @@ public:
 
     QVariant value;
 
-    value.setValue(QString("DataContainer1"));
-    filter->setProperty("DataContainerName", value);
+    value.setValue(DataArrayPath("DataContainer1"));
+    bool propWasSet = filter->setProperty("DataContainerName", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
   }
 
   // -----------------------------------------------------------------------------
@@ -168,8 +169,9 @@ public:
 
     QVariant value;
 
-    value.setValue(QString("DataContainer2"));
-    filter->setProperty("DataContainerName", value);
+    value.setValue(DataArrayPath("DataContainer2"));
+    bool propWasSet = filter->setProperty("DataContainerName", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
   }
 
   // -----------------------------------------------------------------------------
@@ -184,8 +186,9 @@ public:
 
     QVariant value;
 
-    value.setValue(QString("DataContainer3"));
-    filter->setProperty("DataContainerName", value);
+    value.setValue(DataArrayPath("DataContainer3"));
+    bool propWasSet = filter->setProperty("DataContainerName", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
   }
 
   // -----------------------------------------------------------------------------
@@ -201,10 +204,12 @@ public:
     QVariant value;
 
     value.setValue(true);
-    filter->setProperty("ChangeOrigin", value);
+    bool propWasSet = filter->setProperty("ChangeOrigin", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     value.setValue(SetOriginResolutionImageGeometryTest::ORIGIN);
-    filter->setProperty("Origin", value);
+    propWasSet = filter->setProperty("Origin", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
   }
 
   // -----------------------------------------------------------------------------
@@ -220,10 +225,12 @@ public:
     QVariant value;
 
     value.setValue(true);
-    filter->setProperty("ChangeResolution", value);
+    bool propWasSet = filter->setProperty("ChangeResolution", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     value.setValue(SetOriginResolutionImageGeometryTest::RESOLUTION);
-    filter->setProperty("Resolution", value);
+    propWasSet = filter->setProperty("Resolution", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
   }
 
   // -----------------------------------------------------------------------------
