@@ -282,7 +282,7 @@ int StatsDataArray::eraseTuples(QVector<size_t>& idxs)
 
   if(static_cast<size_t>(idxs.size()) >= getNumberOfTuples())
   {
-    resize(0);
+    resizeTuples(0);
     return 0;
   }
 
@@ -402,7 +402,7 @@ IDataArray::Pointer StatsDataArray::deepCopy(bool forceNoAllocate)
 {
   StatsDataArray::Pointer daCopyPtr = StatsDataArray::CreateArray(getNumberOfTuples() * getNumberOfComponents(), getName());
 
-  daCopyPtr->resize(getNumberOfTuples());
+  daCopyPtr->resizeTuples(getNumberOfTuples());
   for(size_t i = 0; i < getNumberOfTuples(); i++)
   {
     // This should be a Deep Copy of each of the StatsData subclasses instead of a reference copy
@@ -431,9 +431,17 @@ int32_t StatsDataArray::resizeTotalElements(size_t size)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int32_t StatsDataArray::resize(size_t numTuples)
+int32_t StatsDataArray::resizeTuples(size_t numTuples)
 {
   return resizeTotalElements(numTuples);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void StatsDataArray::resize(size_t numTuples)
+{
+  resizeTotalElements(numTuples);
 }
 
 // -----------------------------------------------------------------------------

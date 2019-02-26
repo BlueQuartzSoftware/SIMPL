@@ -41,18 +41,16 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-StringDataArray::StringDataArray() 
-: IDataArray()
-, _ownsData(false)
+StringDataArray::StringDataArray()
+: _ownsData(false)
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-StringDataArray::StringDataArray(size_t numTuples, const QString name, bool allocate)
-: IDataArray(name)
-, _ownsData(true)
+StringDataArray::StringDataArray(size_t numTuples, const QString& name, bool allocate)
+: _ownsData(true)
 {
   // if (allocate == true)
   {
@@ -260,9 +258,10 @@ int StringDataArray::eraseTuples(QVector<size_t>& idxs)
 
   // Sanity Check the Indices in the vector to make sure we are not trying to remove any indices that are
   // off the end of the array and return an error code.
-  for(QVector<size_t>::size_type i = 0; i < idxs.size(); ++i)
+  // for(QVector<size_t>::size_type i = 0; i < idxs.size(); ++i)
+  for(auto& value : idxs)
   {
-    if(idxs[i] >= static_cast<size_t>(m_Array.size()))
+    if(value >= static_cast<size_t>(m_Array.size()))
     {
       return -100;
     }
@@ -360,7 +359,7 @@ void StringDataArray::initializeWithZeros()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StringDataArray::initializeWithValue(QString value)
+void StringDataArray::initializeWithValue(const QString& value)
 {
   m_Array.assign(m_Array.size(), value);
 }
@@ -401,10 +400,15 @@ int32_t StringDataArray::resizeTotalElements(size_t size)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int32_t StringDataArray::resize(size_t numTuples)
+int32_t StringDataArray::resizeTuples(size_t numTuples)
 {
   m_Array.resize(numTuples);
   return 1;
+}
+
+void StringDataArray::resize(size_t numTuples)
+{
+  m_Array.resize(numTuples);
 }
 
 // -----------------------------------------------------------------------------
@@ -474,11 +478,11 @@ QString StringDataArray::getInfoString(SIMPL::InfoStringFormat format)
     ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
     ss << "<tbody>\n";
     ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Attribute Array Info</th></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Name:</th><td>" << getName() << "</td></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type:</th><td>" << getTypeAsString() << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Name:</th><td>)" << getName() << R"(</td></tr>)";
+    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type:</th><td>" << getTypeAsString() << R"(</td></tr>)";
     QLocale usa(QLocale::English, QLocale::UnitedStates);
     QString numStr = usa.toString(static_cast<qlonglong>(getNumberOfTuples()));
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Tuples:</th><td>" << numStr << "</td></tr>";
+    ss << R"(<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Tuples:</th><td>)" << numStr << R"(</td></tr>)";
     ss << "</tbody></table>\n";
     ss << "<br/>";
     ss << "</body></html>";

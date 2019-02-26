@@ -64,7 +64,7 @@ class StructArray : public IDataArray
      */
     static Pointer CreateArray(size_t numElements, const QString& name, bool allocate = true)
     {
-      if (name.isEmpty() == true)
+      if(name.isEmpty())
       {
         return NullPointer();
       }
@@ -273,7 +273,7 @@ class StructArray : public IDataArray
       size_t idxs_size = static_cast<size_t>(idxs.size());
       if (idxs_size >= getNumberOfTuples() )
       {
-        resize(0);
+        resizeTuples(0);
         return 0;
       }
 
@@ -592,10 +592,7 @@ class StructArray : public IDataArray
       {
         return 1;
       }
-      else
-      {
-        return 0;
-      }
+      return 0;
     }
 
     /**
@@ -603,9 +600,18 @@ class StructArray : public IDataArray
      * @param numTuples
      * @return
      */
-    int32_t resize(size_t numTuples) override
+    int32_t resizeTuples(size_t numTuples) override
     {
       return resizeTotalElements(numTuples );
+    }
+
+    /**
+     * @brief resize
+     * @param numTuples
+     */
+    void resize(size_t numTuples) override
+    {
+      resizeTotalElements(numTuples);
     }
 
     /**

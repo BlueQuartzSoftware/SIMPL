@@ -397,6 +397,8 @@ private:
       case DataArrayPathHelper::DataType::DataContainer:
         setDataContainerName(newPath.getDataContainerName());
         break;
+      case DataArrayPathHelper::DataType::None:
+        break;
       }
 
       return true;
