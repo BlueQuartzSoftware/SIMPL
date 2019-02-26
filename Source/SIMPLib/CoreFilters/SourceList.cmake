@@ -28,6 +28,7 @@ set(_PublicFilters
   CombineAttributeArrays
   CombineAttributeMatrices
   ConditionalSetValue
+  ConvertColorToGrayScale
   ConvertData
   ExtractVertexGeometry
   CopyFeatureArrayToElementArray
@@ -38,7 +39,6 @@ set(_PublicFilters
   CreateImageGeometry
   CreateStringArray
   CopyObject
-  ConvertColorToGrayScale
   CreateGeometry
   CropVertexGeometry
   DataContainerReader
