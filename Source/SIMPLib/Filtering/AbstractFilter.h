@@ -413,7 +413,7 @@ signals:
   * @param propertyName
   * @param renamePath
   */
-  void dataArrayPathUpdated(QString propertyName, const DataArrayPath::RenameType& renamePath);
+  void dataArrayPathUpdated(const QString& propertyName, const DataArrayPath::RenameType& renamePath);
 
 public slots:
 

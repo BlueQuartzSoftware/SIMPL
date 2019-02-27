@@ -554,33 +554,32 @@ int FilterPipeline::preflightPipeline()
       preflightError |= filter->getErrorCondition();
       filter->setDataContainerArray(dca->deepCopy(false));
 #if RENAME_ENABLED
-      std::list<DataArrayPath> deletedPaths = filter->getDeletedPaths();
+      const std::list<DataArrayPath> deletedPaths = filter->getDeletedPaths();
 
       // Check if an existing renamed path was deleted by this filter
       for(const DataArrayPath& deletedPath : deletedPaths)
       {
         for(const DataArrayPath::RenameType& rename : renamedPaths)
         {
-          DataArrayPath originalPath;
-          DataArrayPath renamePath;
-          std::tie(originalPath, renamePath) = rename;
+          const DataArrayPath& originalPath = std::get<0>(rename);
+          const DataArrayPath& renamePath = std::get<1>(rename);
           if(originalPath == deletedPath)
           {
-            auto iter = std::find(renamedPaths.begin(), renamedPaths.end(), rename);
+            const auto iter = std::find(renamedPaths.begin(), renamedPaths.end(), rename);
             renamedPaths.erase(iter);
             break;
           }
         }
       }
       // Filter renamed existing DataArrayPaths
-      DataArrayPath::RenameContainer newRenamePaths = filter->getRenamedPaths();
+      const DataArrayPath::RenameContainer newRenamePaths = filter->getRenamedPaths();
       for(const DataArrayPath::RenameType& newRename : newRenamePaths)
       {
         // Loop through all existing rename paths and update as appropriate
         for(auto iter = renamedPaths.cbegin(); iter != renamedPaths.cend(); ++iter)
         {
-          auto existingRename = (*iter);
-          auto updatedRenameOpt = DataArrayPath::CreateLinkingRename(existingRename, newRename);
+          const auto& existingRename = (*iter);
+          const auto updatedRenameOpt = DataArrayPath::CreateLinkingRename(existingRename, newRename);
           if(true == updatedRenameOpt.first)
           {
             // Remove the old rename, insert the updated one, and update the iterator
@@ -600,15 +599,13 @@ int FilterPipeline::preflightPipeline()
       filter->renameDataArrayPaths(renamedPaths);
 
       // Undo filter renaming
-      DataArrayPath::RenameContainer filterRenamedPaths = filter->getRenamedPaths();
-      for(DataArrayPath::RenameType renameType : filterRenamedPaths)
+      const DataArrayPath::RenameContainer filterRenamedPaths = filter->getRenamedPaths();
+      for(const DataArrayPath::RenameType& renameType : filterRenamedPaths)
       {
-        DataArrayPath oldPath;
-        DataArrayPath newPath;
-        std::tie(oldPath, newPath) = renameType;
-        renameType = std::make_pair(newPath, oldPath);
+        const DataArrayPath& oldPath = std::get<0>(renameType);
+        const DataArrayPath& newPath = std::get<1>(renameType);
 
-        renamedPaths.push_back(renameType);
+        renamedPaths.push_back(std::make_pair(newPath, oldPath));
       }
     }
 #endif
