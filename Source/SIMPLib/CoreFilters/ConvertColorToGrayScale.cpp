@@ -431,7 +431,7 @@ void ConvertColorToGrayScale::execute()
       ParallelWrapper::Run<LuminosityImpl>(LuminosityImpl(inputColorData->getPointer(0), outputGrayData->getPointer(0), m_ColorWeights, comp), totalPoints);
       break;
     case ConversionType::Average:
-      ParallelWrapper::Run<LuminosityImpl>(LuminosityImpl(inputColorData->getPointer(0), outputGrayData->getPointer(0), {0.3333f, 0.3333f, 0.3333f}, comp), totalPoints);
+      ParallelWrapper::Run<LuminosityImpl>(LuminosityImpl(inputColorData->getPointer(0), outputGrayData->getPointer(0), {1 / 3.0f, 1 / 3.0f, 1 / 3.0f}, comp), totalPoints);
       break;
     case ConversionType::Lightness:
       ParallelWrapper::Run<LightnessImpl>(LightnessImpl(inputColorData->getPointer(0), outputGrayData->getPointer(0), comp), totalPoints);
