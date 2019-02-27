@@ -44,6 +44,7 @@
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
+#include "SIMPLib/Filtering/QMetaObjectUtilities.h"
 #include "SIMPLib/Geometry/EdgeGeom.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/TriangleGeom.h"
@@ -51,12 +52,10 @@
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Filtering/QMetaObjectUtilities.h"
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 #include <tbb/parallel_for.h>
-
 
 class ConvertColorToGrayScaleTest
 {
