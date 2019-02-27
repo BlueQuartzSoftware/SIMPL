@@ -109,7 +109,11 @@ public:
   //
   ~DataArray() override
   {
-    deallocate();
+    // Do not delete data the DataArray does not own
+    if((nullptr != m_Array) && (true == m_OwnsData))
+    {
+      deallocate();
+    }
   }
 
   DataArray(const DataArray&) = default;           // Copy Constructor Default
