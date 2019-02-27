@@ -28,7 +28,7 @@ Filt0::~Filt0() = default;
 // -----------------------------------------------------------------------------
 void Filt0::setupFilterParameters()
 {
-  QVector<FilterParameter::Pointer> parameters;
+  FilterParameterVectorType parameters;
   /* Place all your option initialization code here */
 
   /*  For an Integer use this code*/
@@ -124,7 +124,7 @@ Filt1::~Filt1() = default;
 // -----------------------------------------------------------------------------
 void Filt1::setupFilterParameters()
 {
-  QVector<FilterParameter::Pointer> parameters;
+  FilterParameterVectorType parameters;
   /* Place all your option initialization code here */
 
   /*  For an Integer use this code*/

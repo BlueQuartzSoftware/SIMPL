@@ -69,7 +69,7 @@ CreateFeatureArrayFromElementArray::~CreateFeatureArrayFromElementArray() = defa
 // -----------------------------------------------------------------------------
 void CreateFeatureArrayFromElementArray::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   parameters.push_back(SeparatorFilterParameter::New("Element Data", FilterParameter::RequiredArray));
   {
     DataArraySelectionFilterParameter::RequirementType req =

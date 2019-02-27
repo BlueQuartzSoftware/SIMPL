@@ -242,7 +242,7 @@ void GenerateColorTable::initialize()
 // -----------------------------------------------------------------------------
 void GenerateColorTable::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   {
     GenerateColorTableFilterParameter::Pointer parameter = GenerateColorTableFilterParameter::New();

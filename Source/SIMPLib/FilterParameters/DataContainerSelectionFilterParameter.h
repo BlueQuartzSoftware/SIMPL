@@ -37,6 +37,7 @@
 
 #include <QtCore/QJsonObject>
 
+#include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 
@@ -69,13 +70,13 @@ class SIMPLib_EXPORT DataContainerSelectionFilterParameter : public FilterParame
     SIMPL_STATIC_NEW_MACRO(DataContainerSelectionFilterParameter)
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainerSelectionFilterParameter, FilterParameter)
 
-    using SetterCallbackType = std::function<void(QString)>;
-    using GetterCallbackType = std::function<QString(void)>;
+    using SetterCallbackType = std::function<void(DataArrayPath)>;
+    using GetterCallbackType = std::function<DataArrayPath(void)>;
 
-    typedef struct
+    using RequirementType = struct
     {
       IGeometry::Types dcGeometryTypes;
-    } RequirementType;
+    };
 
     /**
      * @brief New This function instantiates an instance of the DataContainerSelectionFilterParameter.  Specifying a RequirementType will
@@ -97,10 +98,8 @@ class SIMPLib_EXPORT DataContainerSelectionFilterParameter : public FilterParame
      * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
      * @return
      */
-    static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const QString& defaultValue, Category category,
-                       SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-                       const RequirementType req, int groupIndex = -1);
+    static Pointer New(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category, SetterCallbackType setterCallback,
+                       GetterCallbackType getterCallback, const RequirementType& req, int groupIndex = -1);
 
     ~DataContainerSelectionFilterParameter() override;
 

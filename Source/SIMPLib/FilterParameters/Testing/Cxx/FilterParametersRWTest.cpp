@@ -93,6 +93,7 @@
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
 
+
 class FilterParametersRWTest
 {
 public:
@@ -103,6 +104,8 @@ public:
     m_Double1 = 4.7;
     m_String1 = "This is the FilterParametersRWTest";
     m_ArrayPath1 = DataArrayPath("DataContainer", "AttributeMatrix", "DataArray");
+
+    m_Path1 = DataArrayPath("DataContainer Name", "", "");
 
     m_AxisAngle1.angle = 2.2f;
     m_AxisAngle1.h = 3.4f;
@@ -249,6 +252,11 @@ public:
   Q_PROPERTY(QString String1 READ getString1 WRITE setString1)
   SIMPL_INSTANCE_PROPERTY(QString, String2)
   Q_PROPERTY(QString String2 READ getString2 WRITE setString2)
+
+  SIMPL_INSTANCE_PROPERTY(DataArrayPath, Path1)
+  Q_PROPERTY(DataArrayPath Path1 READ getPath1 WRITE setPath1)
+  SIMPL_INSTANCE_PROPERTY(DataArrayPath, Path2)
+  Q_PROPERTY(DataArrayPath Path2 READ getPath2 WRITE setPath2)
 
   SIMPL_INSTANCE_PROPERTY(DataArrayPath, ArrayPath1)
   Q_PROPERTY(DataArrayPath ArrayPath1 READ getArrayPath1 WRITE setArrayPath1)
@@ -513,13 +521,13 @@ public:
 
     {
       DataContainerCreationFilterParameter::Pointer fp = DataContainerCreationFilterParameter::New(
-          "Test", "String1", getString1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
+          "Test", "Path1", getPath1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Path2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, Path1));
 
       QJsonObject obj;
       fp->writeJson(obj);
       fp->readJson(obj);
 
-      DREAM3D_REQUIRE_EQUAL(m_String1, m_String2)
+      DREAM3D_REQUIRE_EQUAL(m_Path1, m_Path2)
 
       m_String2.clear();
     }
@@ -527,13 +535,13 @@ public:
     {
       DataContainerSelectionFilterParameter::RequirementType req;
       DataContainerSelectionFilterParameter::Pointer fp = DataContainerSelectionFilterParameter::New(
-          "Test", "String1", getString1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1), req);
+          "Test", "Path1", getPath1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Path2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, Path1), req);
 
       QJsonObject obj;
       fp->writeJson(obj);
       fp->readJson(obj);
 
-      DREAM3D_REQUIRE_EQUAL(m_String1, m_String2)
+      DREAM3D_REQUIRE_EQUAL(m_Path1, m_Path2)
 
       m_String2.clear();
     }
@@ -847,8 +855,6 @@ public:
       ShapeTypeSelectionFilterParameter::Pointer fp =
           ShapeTypeSelectionFilterParameter::New("Test", "String1", shapeData, FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, ShapeType::Types),
                                                  SIMPL_BIND_GETTER(FilterParametersRWTest, this, ShapeType::Types), "String1", "");
-
-      //SIMPL_NEW_SHAPETYPE_SELECTION_FP("Shape Types", ShapeTypeData, FilterParameter::CreatedArray, EstablishShapeTypes, "PhaseCount", "InputPhaseTypesArrayPath");
 
       QJsonObject obj;
       fp->writeJson(obj);

@@ -65,7 +65,7 @@ CreateAttributeMatrix::~CreateAttributeMatrix() = default;
 // -----------------------------------------------------------------------------
 void CreateAttributeMatrix::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   {
     QVector<QString> choices;

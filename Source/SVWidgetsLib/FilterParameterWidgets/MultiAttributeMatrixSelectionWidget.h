@@ -124,7 +124,7 @@ class SVWidgetsLib_EXPORT MultiAttributeMatrixSelectionWidget : public FilterPar
     void on_attributeMatricesSelectWidget_itemSelectionChanged();
     void on_attributeMatricesOrderWidget_itemSelectionChanged();
 
-    void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
+    void updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath);
 
   private:
     bool m_DidCausePreflight;

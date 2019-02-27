@@ -154,19 +154,24 @@ public:
     QVariant value;
 
     value.setValue(imageGeometry);
-    filter->setProperty("ApplyToVoxelVolume", value);
+    bool propWasSet = filter->setProperty("ApplyToVoxelVolume", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     value.setValue(surfaceGeometry);
-    filter->setProperty("ApplyToSurfaceMesh", value);
+    propWasSet = filter->setProperty("ApplyToSurfaceMesh", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     value.setValue(ScaleVolumeTestConsts::SCALE);
-    filter->setProperty("ScaleFactor", value);
+    propWasSet = filter->setProperty("ScaleFactor", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-    value.setValue(QString("DataContainer1"));
-    filter->setProperty("DataContainerName", value);
+    value.setValue(DataArrayPath("DataContainer1"));
+    propWasSet = filter->setProperty("DataContainerName", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-    value.setValue(QString("DataContainer2"));
-    filter->setProperty("SurfaceDataContainerName", value);
+    value.setValue(DataArrayPath("DataContainer2"));
+    propWasSet = filter->setProperty("SurfaceDataContainerName", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
   }
 
   // -----------------------------------------------------------------------------
@@ -182,19 +187,24 @@ public:
     QVariant value;
 
     value.setValue(imageGeometry);
-    filter->setProperty("ApplyToVoxelVolume", value);
+    bool propWasSet = filter->setProperty("ApplyToVoxelVolume", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     value.setValue(surfaceGeometry);
-    filter->setProperty("ApplyToSurfaceMesh", value);
+    propWasSet = filter->setProperty("ApplyToSurfaceMesh", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     value.setValue(ScaleVolumeTestConsts::SCALE);
-    filter->setProperty("ScaleFactor", value);
+    propWasSet = filter->setProperty("ScaleFactor", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-    value.setValue(QString("DataContainer2"));
-    filter->setProperty("DataContainerName", value);
+    value.setValue(DataArrayPath("DataContainer2"));
+    propWasSet = filter->setProperty("DataContainerName", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-    value.setValue(QString("DataContainer1"));
-    filter->setProperty("SurfaceDataContainerName", value);
+    value.setValue(DataArrayPath("DataContainer1"));
+    propWasSet = filter->setProperty("SurfaceDataContainerName", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
   }
 
   // -----------------------------------------------------------------------------
@@ -210,19 +220,24 @@ public:
     QVariant value;
 
     value.setValue(imageGeometry);
-    filter->setProperty("ApplyToVoxelVolume", value);
+    bool propWasSet = filter->setProperty("ApplyToVoxelVolume", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     value.setValue(surfaceGeometry);
-    filter->setProperty("ApplyToSurfaceMesh", value);
+    propWasSet = filter->setProperty("ApplyToSurfaceMesh", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     value.setValue(ScaleVolumeTestConsts::SCALE);
-    filter->setProperty("ScaleFactor", value);
+    propWasSet = filter->setProperty("ScaleFactor", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-    value.setValue(QString("DataContainer3"));
-    filter->setProperty("DataContainerName", value);
+    value.setValue(DataArrayPath("DataContainer3"));
+    propWasSet = filter->setProperty("DataContainerName", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-    value.setValue(QString("DataContainer4"));
-    filter->setProperty("SurfaceDataContainerName", value);
+    value.setValue(DataArrayPath("DataContainer4"));
+    propWasSet = filter->setProperty("SurfaceDataContainerName", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
   }
 
   // -----------------------------------------------------------------------------

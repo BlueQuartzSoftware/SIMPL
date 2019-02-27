@@ -117,7 +117,7 @@ class SIMPLib_EXPORT FilterParameter
     FilterParameter& operator=(FilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 
-typedef QVector<FilterParameter::Pointer> FilterParameterVector;
+using FilterParameterVectorType = std::vector<FilterParameter::Pointer>;
 
 // -----------------------------------------------------------------------------
 // This section of Macros allows each FilterParameter subclass to create a macro

@@ -574,7 +574,7 @@ void MultiAttributeMatrixSelectionWidget::filterNeedsInputParameters(AbstractFil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiAttributeMatrixSelectionWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
+void MultiAttributeMatrixSelectionWidget::updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath)
 {
   DataArrayPath oldPath;
   DataArrayPath newPath;

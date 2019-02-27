@@ -117,7 +117,7 @@ CreateGeometry::~CreateGeometry() = default;
 // -----------------------------------------------------------------------------
 void CreateGeometry::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Geometry Type");
@@ -301,7 +301,8 @@ void CreateGeometry::dataCheck()
     dc->setGeometry(image);
 
     QVector<size_t> tDims = {image->getXPoints(), image->getYPoints(), image->getZPoints()};
-    DataArrayPath path(getDataContainerName(), getImageCellAttributeMatrixName(), "");
+    DataArrayPath path = getDataContainerName();
+    path.setAttributeMatrixName(getImageCellAttributeMatrixName());
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Cell);
     break;
   }
@@ -365,7 +366,8 @@ void CreateGeometry::dataCheck()
     dc->setGeometry(rectgrid);
 
     QVector<size_t> tDims = {rectgrid->getXPoints(), rectgrid->getYPoints(), rectgrid->getZPoints()};
-    DataArrayPath path(getDataContainerName(), getRectGridCellAttributeMatrixName(), "");
+    DataArrayPath path = getDataContainerName();
+    path.setAttributeMatrixName(getRectGridCellAttributeMatrixName());
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Cell);
     break;
   }
@@ -393,7 +395,8 @@ void CreateGeometry::dataCheck()
     dc->setGeometry(vertex);
 
     QVector<size_t> tDims(1, vertex->getNumberOfVertices());
-    DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName0(), "");
+    DataArrayPath path = getDataContainerName();
+    path.setAttributeMatrixName(getVertexAttributeMatrixName0());
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
     break;
   }
@@ -430,10 +433,11 @@ void CreateGeometry::dataCheck()
 
     m_NumVerts = edge->getNumberOfVertices();
     QVector<size_t> tDims(1, edge->getNumberOfVertices());
-    DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName1(), "");
+    DataArrayPath path = getDataContainerName();
+    path.setAttributeMatrixName(getVertexAttributeMatrixName1());
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
     tDims[0] = edge->getNumberOfEdges();
-    path.update(getDataContainerName(), getEdgeAttributeMatrixName(), "");
+    path.setAttributeMatrixName(getEdgeAttributeMatrixName());
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Edge);
     break;
   }
@@ -469,10 +473,11 @@ void CreateGeometry::dataCheck()
 
     m_NumVerts = triangle->getNumberOfVertices();
     QVector<size_t> tDims(1, triangle->getNumberOfVertices());
-    DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName2(), "");
+    DataArrayPath path = getDataContainerName();
+    path.setAttributeMatrixName(getVertexAttributeMatrixName2());
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
     tDims[0] = triangle->getNumberOfTris();
-    path.update(getDataContainerName(), getFaceAttributeMatrixName0(), "");
+    path.setAttributeMatrixName(getFaceAttributeMatrixName0());
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Face);
     break;
   }
@@ -509,10 +514,11 @@ void CreateGeometry::dataCheck()
 
     m_NumVerts = quadrilateral->getNumberOfVertices();
     QVector<size_t> tDims(1, quadrilateral->getNumberOfVertices());
-    DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName3(), "");
+    DataArrayPath path = getDataContainerName();
+    path.setAttributeMatrixName(getVertexAttributeMatrixName3());
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
     tDims[0] = quadrilateral->getNumberOfQuads();
-    path.update(getDataContainerName(), getFaceAttributeMatrixName1(), "");
+    path.setAttributeMatrixName(getFaceAttributeMatrixName1());
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Face);
     break;
   }
@@ -550,10 +556,11 @@ void CreateGeometry::dataCheck()
 
     m_NumVerts = tetrahedral->getNumberOfVertices();
     QVector<size_t> tDims(1, tetrahedral->getNumberOfVertices());
-    DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName4(), "");
+    DataArrayPath path = getDataContainerName();
+    path.setAttributeMatrixName(getVertexAttributeMatrixName4());
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
     tDims[0] = tetrahedral->getNumberOfTets();
-    path.update(getDataContainerName(), getTetCellAttributeMatrixName(), "");
+    path.setAttributeMatrixName(getTetCellAttributeMatrixName());
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Cell);
     break;
   }
@@ -592,10 +599,11 @@ void CreateGeometry::dataCheck()
 
     m_NumVerts = hexahedral->getNumberOfVertices();
     QVector<size_t> tDims(1, hexahedral->getNumberOfVertices());
-    DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName5(), "");
+    DataArrayPath path = getDataContainerName();
+    path.setAttributeMatrixName(getVertexAttributeMatrixName5());
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
     tDims[0] = hexahedral->getNumberOfHexas();
-    path.update(getDataContainerName(), getHexCellAttributeMatrixName(), "");
+    path.setAttributeMatrixName(getHexCellAttributeMatrixName());
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Cell);
     break;
   }

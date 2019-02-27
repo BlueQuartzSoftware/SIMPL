@@ -90,6 +90,19 @@ DataContainer::Pointer DataContainer::New(const QString& name)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+DataContainer::Pointer DataContainer::New(const DataArrayPath& path)
+{
+  if(path.isEmpty())
+  {
+    return DataContainer::NullPointer();
+  }
+  DataContainer::Pointer sharedPtr(new DataContainer(path.getDataContainerName()));
+  return sharedPtr;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 DataContainer::Pointer DataContainer::createNewDataContainer(const QString& name)
 {
   DataContainer::Pointer p = DataContainer::New(name);

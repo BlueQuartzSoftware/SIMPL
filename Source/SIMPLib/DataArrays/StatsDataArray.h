@@ -311,7 +311,13 @@ public:
    * @param size The new size of the internal array
    * @return 1 on success, 0 on failure
    */
-  int32_t resize(size_t numTuples) override;
+  int32_t resizeTuples(size_t numTuples) override;
+
+  /**
+   * @brief resize
+   * @param count
+   */
+  void resize(size_t count) override;
 
   /**
    * @brief printTuple

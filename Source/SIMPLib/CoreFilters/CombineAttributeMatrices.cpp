@@ -71,7 +71,7 @@ CombineAttributeMatrices::~CombineAttributeMatrices() = default;
 // -----------------------------------------------------------------------------
 void CombineAttributeMatrices::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   parameters.push_back(SeparatorFilterParameter::New("Feature/Ensemble Data", FilterParameter::RequiredArray));
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;

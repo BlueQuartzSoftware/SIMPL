@@ -102,7 +102,7 @@ public:
   {
     // Names and Constants
 
-    static const QString k_DataContainerName("DataContainer");
+    static const DataArrayPath k_DataContainerPath("DataContainer", "", "");
     static const QString k_TriVertexListDAName("TriVertexList");
     static const QString k_TriListDAName("TriangleList");
 
@@ -116,7 +116,7 @@ public:
 
     // Create DataContainer
 
-    DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
+    DataContainer::Pointer dc = DataContainer::New(k_DataContainerPath);
     dca->addDataContainer(dc);
 
     // Create Triangle Data Arrays
@@ -164,7 +164,7 @@ public:
 
     QVariant var;
 
-    var.setValue(k_DataContainerName);
+    var.setValue(k_DataContainerPath);
     bool propWasSet = writeTriangleGeometry->setProperty("DataContainerSelection", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 

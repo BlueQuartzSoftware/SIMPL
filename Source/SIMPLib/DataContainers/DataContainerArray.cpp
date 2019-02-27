@@ -150,6 +150,15 @@ bool DataContainerArray::renameDataContainer(const QString& oldName, const QStri
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+bool DataContainerArray::renameDataContainer(const DataArrayPath& oldName, const DataArrayPath& newName)
+{
+  DataContainer::Pointer dc = getChildByName(oldName.getDataContainerName());
+  return dc && dc->setName(newName.getDataContainerName());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 DataContainer::Pointer DataContainerArray::getDataContainer(const QString& name)
 {
   return getChildByName(name);
@@ -292,7 +301,15 @@ int DataContainerArray::readDataContainersFromHDF5(bool preflight, hid_t dcaGid,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataContainerArray::doesDataContainerExist(const QString& name)
+bool DataContainerArray::doesDataContainerExist(const DataArrayPath& dap) const
+{
+  return contains(dap.getDataContainerName());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool DataContainerArray::doesDataContainerExist(const QString& name) const
 {
   return contains(name);
 }

@@ -91,7 +91,10 @@ class NeighborList : public IDataArray
         return NullPointer();
       }
       Pointer ptr = Pointer(new NeighborList<T>(numTuples, name));
-      if (allocate) { ptr->resize(numTuples); }
+      if(allocate)
+      {
+        ptr->resizeTuples(numTuples);
+      }
       return ptr;
     }
 
@@ -118,7 +121,10 @@ class NeighborList : public IDataArray
         numElements *= dims[iter];
       }
       Pointer ptr = Pointer(new NeighborList<T>(numElements, name));
-      if (allocate) { ptr->resize(numElements); }
+      if(allocate)
+      {
+        ptr->resizeTuples(numElements);
+      }
       return ptr;
     }
 
@@ -142,7 +148,10 @@ class NeighborList : public IDataArray
         numElements *= cDims[iter];
       }
       Pointer ptr = Pointer(new NeighborList<T>(numElements, name));
-      if (allocate) { ptr->resize(numElements); }
+      if(allocate)
+      {
+        ptr->resizeTuples(numElements);
+      }
       return ptr;
     }
 
@@ -166,7 +175,10 @@ class NeighborList : public IDataArray
         numElements *= cDims[iter];
       }
       Pointer ptr = Pointer(new NeighborList<T>(numElements, name));
-      if (allocate) { ptr->resize(numElements); }
+      if(allocate)
+      {
+        ptr->resizeTuples(numElements);
+      }
       return ptr;
     }
 
@@ -194,7 +206,10 @@ class NeighborList : public IDataArray
         numElements *= cDims[iter];
       }
       Pointer ptr = Pointer(new NeighborList<T>(numElements, name));
-      if (allocate) { ptr->resize(numElements); }
+      if(allocate)
+      {
+        ptr->resizeTuples(numElements);
+      }
       return ptr;
     }
 
@@ -339,7 +354,7 @@ class NeighborList : public IDataArray
       size_t idxsSize = static_cast<size_t>(idxs.size());
       if (idxsSize >= getNumberOfTuples() )
       {
-        resize(0);
+        resizeTuples(0);
         return 0;
       }
 
@@ -586,7 +601,19 @@ class NeighborList : public IDataArray
      * @param numTuples
      * @return
      */
-    int32_t resize(size_t numTuples) override { return resizeTotalElements(numTuples); }
+    int32_t resizeTuples(size_t numTuples) override
+    {
+      return resizeTotalElements(numTuples);
+    }
+
+    /**
+     * @brief resize
+     * @param numTuples
+     */
+    void resize(size_t numTuples) override
+    {
+      resizeTotalElements(numTuples);
+    }
 
     //FIXME: These need to be implemented
     void printTuple(QTextStream& out, size_t i, char delimiter = ',') override

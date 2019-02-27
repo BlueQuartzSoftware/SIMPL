@@ -192,7 +192,7 @@ bool DataArrayCreationWidget::eventFilter(QObject* obj, QEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayCreationWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
+void DataArrayCreationWidget::updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath)
 {
   if(propertyName.compare(getFilterParameter()->getPropertyName()) == 0)
   {

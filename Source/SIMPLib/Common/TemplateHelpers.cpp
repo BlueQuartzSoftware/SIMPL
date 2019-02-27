@@ -294,7 +294,7 @@ IDataArrayShPtr CreateArrayFromType::operator()(AbstractFilter* f, const QVector
 IDataArrayWkPtr GetPrereqArrayFromPath::operator()(AbstractFilter* f, const DataArrayPath& arrayPath, QVector<size_t>& compDims)
 {
   IDataArrayShPtr retPtr = IDataArray::NullPointer();
-  DataContainer::Pointer volDataCntr = f->getDataContainerArray()->template getPrereqDataContainer<AbstractFilter>(f, arrayPath.getDataContainerName(), false);
+  DataContainer::Pointer volDataCntr = f->getDataContainerArray()->template getPrereqDataContainer(f, arrayPath.getDataContainerName(), false);
   if(f->getErrorCondition() < 0 || nullptr == volDataCntr)
   {
     QString ss = QObject::tr("The Data Container '%1' does not exist").arg(arrayPath.getDataContainerName());

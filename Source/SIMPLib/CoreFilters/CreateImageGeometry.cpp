@@ -74,7 +74,7 @@ CreateImageGeometry::~CreateImageGeometry() = default;
 // -----------------------------------------------------------------------------
 void CreateImageGeometry::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   {
     DataContainerSelectionFilterParameter::RequirementType req;
     parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container Destination", SelectedDataContainer, FilterParameter::Parameter, CreateImageGeometry, req));
@@ -101,7 +101,7 @@ void CreateImageGeometry::readFilterParameters(AbstractFilterParametersReader* r
   setDimensions(reader->readIntVec3("Dimensions", getDimensions()));
   setOrigin(reader->readFloatVec3("Origin", getOrigin()));
   setResolution(reader->readFloatVec3("Resolution", getResolution()));
-  setSelectedDataContainer(reader->readString("SelectedDataContainer", getSelectedDataContainer()));
+  setSelectedDataContainer(reader->readDataArrayPath("SelectedDataContainer", getSelectedDataContainer()));
   reader->closeFilterGroup();
 }
 

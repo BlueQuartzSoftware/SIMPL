@@ -143,7 +143,7 @@ WriteASCIIData::~WriteASCIIData() = default;
 // -----------------------------------------------------------------------------
 void WriteASCIIData::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();

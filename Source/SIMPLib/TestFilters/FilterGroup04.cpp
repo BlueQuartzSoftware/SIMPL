@@ -62,7 +62,7 @@ void FilterGroup04::initialize()
 // -----------------------------------------------------------------------------
 void FilterGroup04::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   setFilterParameters(parameters);
 }

@@ -465,7 +465,7 @@ void ComparisonSelectionAdvancedWidget::presetAttributeMatrix(DataArrayPath amPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonSelectionAdvancedWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
+void ComparisonSelectionAdvancedWidget::updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath)
 {
   if(propertyName.compare(getFilterParameter()->getPropertyName()) == 0)
   {

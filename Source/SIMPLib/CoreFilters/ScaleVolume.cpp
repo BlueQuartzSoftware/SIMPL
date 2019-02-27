@@ -114,7 +114,7 @@ ScaleVolume::~ScaleVolume() = default;
 // -----------------------------------------------------------------------------
 void ScaleVolume::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Scaling Factor", ScaleFactor, FilterParameter::Parameter, ScaleVolume));
 
@@ -149,8 +149,8 @@ void ScaleVolume::readFilterParameters(AbstractFilterParametersReader* reader, i
   setApplyToVoxelVolume(reader->readValue("ApplyToVoxelVolume", getApplyToVoxelVolume()));
   setApplyToSurfaceMesh(reader->readValue("ApplyToSurfaceMesh", getApplyToSurfaceMesh()));
   setScaleFactor(reader->readFloatVec3("ScaleFactor", getScaleFactor()));
-  setDataContainerName(reader->readString("DataContainerName", getDataContainerName()));
-  setSurfaceDataContainerName(reader->readString("SurfaceDataContainerName", getSurfaceDataContainerName()));
+  setDataContainerName(reader->readDataArrayPath("DataContainerName", getDataContainerName()));
+  setSurfaceDataContainerName(reader->readDataArrayPath("SurfaceDataContainerName", getSurfaceDataContainerName()));
   reader->closeFilterGroup();
 }
 

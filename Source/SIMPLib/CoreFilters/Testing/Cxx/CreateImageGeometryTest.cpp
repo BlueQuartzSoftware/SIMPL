@@ -73,7 +73,7 @@ public:
     dca->addDataContainer(dc);
 
     imageGeometry->setDataContainerArray(dca);
-    imageGeometry->setSelectedDataContainer("Data Container");
+    imageGeometry->setSelectedDataContainer(DataArrayPath("Data Container", "", ""));
     return imageGeometry;
   }
 

@@ -116,7 +116,7 @@ SetOriginResolutionImageGeom::~SetOriginResolutionImageGeom() = default;
 // -----------------------------------------------------------------------------
 void SetOriginResolutionImageGeom::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   {
     DataContainerSelectionFilterParameter::RequirementType req;
     req.dcGeometryTypes = IGeometry::Types(1, IGeometry::Type::Image);
@@ -145,7 +145,7 @@ void SetOriginResolutionImageGeom::readFilterParameters(AbstractFilterParameters
   setChangeResolution(reader->readValue("ChangeResolution", getChangeResolution()));
   setOrigin(reader->readFloatVec3("Origin", getOrigin()));
   setResolution(reader->readFloatVec3("Resolution", getResolution()));
-  setDataContainerName(reader->readString("DataContainerName", getDataContainerName()));
+  setDataContainerName(reader->readDataArrayPath("DataContainerName", getDataContainerName()));
   reader->closeFilterGroup();
 }
 

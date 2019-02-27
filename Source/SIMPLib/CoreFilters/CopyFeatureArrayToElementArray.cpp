@@ -67,7 +67,7 @@ CopyFeatureArrayToElementArray::~CopyFeatureArrayToElementArray() = default;
 // -----------------------------------------------------------------------------
 void CopyFeatureArrayToElementArray::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   parameters.push_back(SeparatorFilterParameter::New("Feature Data", FilterParameter::RequiredArray));
 
   {

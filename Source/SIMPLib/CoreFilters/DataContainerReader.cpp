@@ -74,7 +74,7 @@ DataContainerReader::~DataContainerReader() = default;
 // -----------------------------------------------------------------------------
 void DataContainerReader::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(SIMPL_NEW_BOOL_FP("Overwrite Existing Data Containers", OverwriteExistingDataContainers, FilterParameter::Parameter, DataContainerReader));
   {

@@ -60,7 +60,7 @@ RenameAttributeMatrix::~RenameAttributeMatrix() = default;
 // -----------------------------------------------------------------------------
 void RenameAttributeMatrix::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;

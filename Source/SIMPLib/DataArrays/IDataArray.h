@@ -231,7 +231,13 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
      * @param size The new size of the internal array
      * @return 1 on success, 0 on failure
      */
-    virtual int32_t resize(size_t numTuples) = 0;
+    virtual int32_t resizeTuples(size_t numTuples) = 0;
+
+    /**
+     * @brief resize
+     * @param count
+     */
+    virtual void resize(size_t count) = 0;
 
     /**
      * @brief printTuple

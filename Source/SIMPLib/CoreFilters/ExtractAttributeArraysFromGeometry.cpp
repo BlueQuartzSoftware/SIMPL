@@ -112,7 +112,7 @@ void ExtractAttributeArraysFromGeometry::initialize()
 // -----------------------------------------------------------------------------
 void ExtractAttributeArraysFromGeometry::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   {
     LinkedDataContainerSelectionFilterParameter::Pointer parameter = LinkedDataContainerSelectionFilterParameter::New();
     parameter->setHumanLabel("Geometry");
@@ -197,7 +197,7 @@ void ExtractAttributeArraysFromGeometry::setupFilterParameters()
 void ExtractAttributeArraysFromGeometry::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setDataContainerName(reader->readString("DataContainerName", getDataContainerName()));
+  setDataContainerName(reader->readDataArrayPath("DataContainerName", getDataContainerName()));
   setSharedVertexListArrayPath0(reader->readDataArrayPath("SharedVertexListArrayPath0", getSharedVertexListArrayPath0()));
   setSharedVertexListArrayPath1(reader->readDataArrayPath("SharedVertexListArrayPath1", getSharedVertexListArrayPath1()));
   setSharedVertexListArrayPath2(reader->readDataArrayPath("SharedVertexListArrayPath2", getSharedVertexListArrayPath2()));
@@ -500,7 +500,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
     QString ss = QObject::tr("Selected Data Container (%1) does not contain a valid geometry\n"
                              "Geometry Type: %2\n"
                              "Valid Geometry Types: Rectilinear Grid, Vertex, Edge, Triangle, Quadrilateral, Tetrahedral")
-                     .arg(getDataContainerName())
+                     .arg(getDataContainerName().getDataContainerName())
                      .arg(igeom->getGeometryTypeAsString());
     setErrorCondition(-701);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());

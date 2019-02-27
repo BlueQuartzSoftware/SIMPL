@@ -49,7 +49,7 @@ ArraySelectionExample::~ArraySelectionExample() = default;
 // -----------------------------------------------------------------------------
 void ArraySelectionExample::setupFilterParameters()
 {
-  QVector<FilterParameter::Pointer> parameters;
+  FilterParameterVectorType parameters;
   DataContainerArrayProxy proxy;
   /* To select arrays */
   // parameters.push_back(DataContainerArrayProxyFilterParameter::New("Array to Select", "DataContainerArrayProxy", "", FilterParameter::Parameter, SIMPL_BIND_SETTER(ArraySelectionExample, this,

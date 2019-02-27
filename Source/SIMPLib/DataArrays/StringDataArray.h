@@ -266,7 +266,7 @@ public:
    * @brief initializeWithValue
    * @param value
    */
-  virtual void initializeWithValue(QString value);
+  virtual void initializeWithValue(const QString& value);
 
   /**
    * @brief initializeWithValue
@@ -293,7 +293,13 @@ public:
    * @param size The new size of the internal array
    * @return 1 on success, 0 on failure
    */
-  int32_t resize(size_t numTuples) override;
+  int32_t resizeTuples(size_t numTuples) override;
+
+  /**
+   * @brief resize
+   * @param numTuples
+   */
+  void resize(size_t numTuples) override;
 
   /**
    * @brief Initializes this class to zero bytes freeing any data that it currently owns
@@ -373,7 +379,7 @@ protected:
    * @param numElements The number of elements in the internal array.
    * @param takeOwnership Will the class clean up the memory. Default=true
    */
-  StringDataArray(size_t numTuples, const QString name, bool allocate = true);
+  StringDataArray(size_t numTuples, const QString& name, bool allocate = true);
 
   StringDataArray();
 

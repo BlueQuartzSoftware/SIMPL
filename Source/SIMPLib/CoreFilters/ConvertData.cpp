@@ -202,7 +202,7 @@ ConvertData::~ConvertData() = default;
 // -----------------------------------------------------------------------------
 void ConvertData::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(SIMPL_NEW_NUMERICTYPE_FP("Scalar Type", ScalarType, FilterParameter::Parameter, ConvertData));
 

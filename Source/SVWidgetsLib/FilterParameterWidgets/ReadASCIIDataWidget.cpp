@@ -509,7 +509,7 @@ void ReadASCIIDataWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ReadASCIIDataWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
+void ReadASCIIDataWidget::updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath)
 {
   DataArrayPath oldPath;
   DataArrayPath newPath;

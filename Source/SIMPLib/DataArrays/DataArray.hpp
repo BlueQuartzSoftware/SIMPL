@@ -37,6 +37,10 @@
 
 // STL Includes
 #include <cstring>
+#include <functional>
+#include <iostream>
+#include <numeric>
+#include <string>
 #include <vector>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -72,150 +76,46 @@ template <typename T> class DataArray : public IDataArray
 {
 
 public:
+  //========================================= STL INTERFACE COMPATIBILITY =================================
+  using comp_dims_type = std::vector<size_t>;
+  using size_type = size_t;
+  using value_type = T;
+  using reference = T&;
+  using iterator_category = std::input_iterator_tag;
+  using pointer = T*;
+  using difference_type = value_type;
+  //========================================= END STL INTERFACE COMPATIBILITY ==============================
+
   SIMPL_SHARED_POINTERS(DataArray<T>)
   SIMPL_TYPE_MACRO_SUPER(DataArray<T>, IDataArray)
-  SIMPL_CLASS_VERSION(2)
+  SIMPL_CLASS_VERSION(3)
 
-  DataArray(const DataArray&) = delete;            // Copy Constructor Not Implemented
+  DataArray() = default;
+
+  DataArray(size_t ntuples, std::string name)
+  : m_Name(std::move(name))
+  {
+    m_Array = resizeAndExtend(ntuples);
+  }
+
+  DataArray(size_t ntuples, comp_dims_type cdims, const std::string& name)
+  : m_NumTuples(ntuples)
+  , m_CompDims(std::move(cdims))
+  {
+    m_NumComponents = std::accumulate(m_CompDims.begin(), m_CompDims.end(), 1, std::multiplies<T>());
+    m_InitValue = static_cast<T>(0);
+    m_Array = resizeAndExtend(m_NumTuples * m_NumComponents);
+  }
+  //
+  ~DataArray() override
+  {
+    deallocate();
+  }
+
+  DataArray(const DataArray&) = default;           // Copy Constructor Default
   DataArray(DataArray&&) = delete;                 // Move Constructor Not Implemented
   DataArray& operator=(const DataArray&) = delete; // Copy Assignment Not Implemented
   DataArray& operator=(DataArray&&) = delete;      // Move Assignment Not Implemented
-
-  using ContainterType = QVector<Pointer>;
-
-  /**
-   * @brief GetTypeName Returns a string representation of the type of data that is stored by this class. This
-   * can be a primitive like char, float, int or the name of a class.
-   * @return
-   */
-  void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) override
-  {
-    T value = static_cast<T>(0x00);
-    xdmfTypeName = "UNKNOWN";
-    precision = 0;
-    if(typeid(value) == typeid(int8_t))
-    {
-      xdmfTypeName = "Char";
-      precision = 1;
-    }
-    if(typeid(value) == typeid(uint8_t))
-    {
-      xdmfTypeName = "UChar";
-      precision = 1;
-    }
-
-    if(typeid(value) == typeid(int16_t))
-    {
-      xdmfTypeName = "Int";
-      precision = 2;
-    }
-    if(typeid(value) == typeid(uint16_t))
-    {
-      xdmfTypeName = "UInt";
-      precision = 2;
-    }
-
-    if(typeid(value) == typeid(int32_t))
-    {
-      xdmfTypeName = "Int";
-      precision = 4;
-    }
-    if(typeid(value) == typeid(uint32_t))
-    {
-      xdmfTypeName = "UInt";
-      precision = 4;
-    }
-
-    if(typeid(value) == typeid(int64_t))
-    {
-      xdmfTypeName = "Int";
-      precision = 8;
-    }
-    if(typeid(value) == typeid(uint64_t))
-    {
-      xdmfTypeName = "UInt";
-      precision = 8;
-    }
-
-    if(typeid(value) == typeid(float))
-    {
-      xdmfTypeName = "Float";
-      precision = 4;
-    }
-    if(typeid(value) == typeid(double))
-    {
-      xdmfTypeName = "Float";
-      precision = 8;
-    }
-
-    if(typeid(value) == typeid(bool))
-    {
-      xdmfTypeName = "uchar";
-      precision = 1;
-    }
-  }
-
-  /**
-   * @brief GetTypeName Returns a string representation of the type of data that is stored by this class. This
-   * can be a primitive like char, float, int or the name of a class.
-   * @return
-   */
-
-  SIMPL::NumericTypes::Type getType()
-  {
-    T value = static_cast<T>(0x00);
-    if(typeid(value) == typeid(int8_t))
-    {
-      return SIMPL::NumericTypes::Type::Int8;
-    }
-    if(typeid(value) == typeid(uint8_t))
-    {
-      return SIMPL::NumericTypes::Type::UInt8;
-    }
-
-    if(typeid(value) == typeid(int16_t))
-    {
-      return SIMPL::NumericTypes::Type::Int16;
-    }
-    if(typeid(value) == typeid(uint16_t))
-    {
-      return SIMPL::NumericTypes::Type::UInt16;
-    }
-
-    if(typeid(value) == typeid(int32_t))
-    {
-      return SIMPL::NumericTypes::Type::Int32;
-    }
-    if(typeid(value) == typeid(uint32_t))
-    {
-      return SIMPL::NumericTypes::Type::UInt32;
-    }
-
-    if(typeid(value) == typeid(int64_t))
-    {
-      return SIMPL::NumericTypes::Type::Int64;
-    }
-    if(typeid(value) == typeid(uint64_t))
-    {
-      return SIMPL::NumericTypes::Type::UInt64;
-    }
-
-    if(typeid(value) == typeid(float))
-    {
-      return SIMPL::NumericTypes::Type::Float;
-    }
-    if(typeid(value) == typeid(double))
-    {
-      return SIMPL::NumericTypes::Type::Double;
-    }
-
-    if(typeid(value) == typeid(bool))
-    {
-      return SIMPL::NumericTypes::Type::Bool;
-    }
-
-    return SIMPL::NumericTypes::Type::UnknownNumType;
-  }
 
   /**
    * @brief Static constructor
@@ -445,6 +345,603 @@ public:
     return p;
   }
 
+  /**
+   * @brief createNewArray
+   * @param numTuples
+   * @param rank
+   * @param dims
+   * @param name
+   * @return
+   */
+  IDataArray::Pointer createNewArray(size_t numTuples, int rank, size_t* dims, const QString& name, bool allocate = true) override
+  {
+    IDataArray::Pointer p = DataArray<T>::CreateArray(numTuples, rank, dims, name, allocate);
+    return p;
+  }
+
+  /**
+   * @brief createNewArray
+   * @param numTuples
+   * @param dims
+   * @param name
+   * @return
+   */
+  IDataArray::Pointer createNewArray(size_t numTuples, std::vector<size_t> dims, const QString& name, bool allocate = true) override
+  {
+    IDataArray::Pointer p = DataArray<T>::CreateArray(numTuples, dims, name, allocate);
+    return p;
+  }
+
+  /**
+   * @brief createNewArray
+   * @param numTuples
+   * @param dims
+   * @param name
+   * @return
+   */
+  IDataArray::Pointer createNewArray(size_t numTuples, QVector<size_t> dims, const QString& name, bool allocate = true) override
+  {
+    IDataArray::Pointer p = DataArray<T>::CreateArray(numTuples, dims, name, allocate);
+    return p;
+  }
+
+  //========================================= STL INTERFACE COMPATIBILITY =================================
+
+  class tuple_iterator
+  {
+  public:
+    using self_type = tuple_iterator;
+    using value_type = T;
+    using reference = T&;
+    using pointer = T*;
+    using difference_type = value_type;
+    using iterator_category = std::forward_iterator_tag;
+
+    tuple_iterator(pointer ptr, size_type numComps)
+    : ptr_(ptr)
+    , num_comps_(numComps)
+    {
+    }
+    self_type operator++()
+    {
+      ptr_ = ptr_ + num_comps_;
+      return *this;
+    } // PREFIX
+    self_type operator++(int junk)
+    {
+      self_type i = *this;
+      ptr_ = ptr_ + num_comps_;
+      return i;
+    } // POSTFIX
+    reference operator*()
+    {
+      return *ptr_;
+    }
+    pointer operator->()
+    {
+      return ptr_;
+    }
+    bool operator==(const self_type& rhs)
+    {
+      return ptr_ == rhs.ptr_;
+    }
+    bool operator!=(const self_type& rhs)
+    {
+      return ptr_ != rhs.ptr_;
+    }
+    reference comp_value(size_type comp)
+    {
+      return *(ptr_ + comp);
+    }
+
+  private:
+    pointer ptr_;
+    size_t num_comps_;
+  };
+
+  class const_tuple_iterator
+  {
+  public:
+    using self_type = const_tuple_iterator;
+    using value_type = T;
+    using reference = T&;
+    using pointer = T*;
+    using difference_type = value_type;
+    using iterator_category = std::forward_iterator_tag;
+
+    const_tuple_iterator(pointer ptr, size_type numComps)
+    : ptr_(ptr)
+    , num_comps_(numComps)
+    {
+    }
+    self_type operator++()
+    {
+      ptr_ = ptr_ + num_comps_;
+      return *this;
+    } // PREFIX
+    self_type operator++(int junk)
+    {
+      self_type i = *this;
+      ptr_ = ptr_ + num_comps_;
+      return i;
+    } // POSTFIX
+    const value_type& operator*()
+    {
+      return *ptr_;
+    }
+    const pointer operator->()
+    {
+      return ptr_;
+    }
+    bool operator==(const self_type& rhs)
+    {
+      return ptr_ == rhs.ptr_;
+    }
+    bool operator!=(const self_type& rhs)
+    {
+      return ptr_ != rhs.ptr_;
+    }
+    const value_type& comp_value(size_type comp)
+    {
+      return *(ptr_ + comp);
+    }
+
+  private:
+    pointer ptr_;
+    size_t num_comps_;
+  };
+
+  class iterator
+  {
+  public:
+    using self_type = iterator;
+    using value_type = T;
+    using reference = T&;
+    using pointer = T*;
+    using difference_type = value_type;
+    using iterator_category = std::forward_iterator_tag;
+
+    iterator(pointer ptr)
+    : ptr_(ptr)
+    {
+    }
+    iterator(pointer ptr, size_type ununsed)
+    : ptr_(ptr)
+    {
+    }
+
+    self_type operator++()
+    {
+      ptr_++;
+      return *this;
+    } // PREFIX
+    self_type operator++(int junk)
+    {
+      self_type i = *this;
+      ptr_++;
+      return i;
+    } // POSTFIX
+    reference operator*()
+    {
+      return *ptr_;
+    }
+    pointer operator->()
+    {
+      return ptr_;
+    }
+    bool operator==(const self_type& rhs)
+    {
+      return ptr_ == rhs.ptr_;
+    }
+    bool operator!=(const self_type& rhs)
+    {
+      return ptr_ != rhs.ptr_;
+    }
+
+  private:
+    pointer ptr_;
+  };
+
+  class const_iterator
+  {
+  public:
+    using self_type = const_iterator;
+    using value_type = T;
+    using reference = T&;
+    using pointer = T*;
+    using difference_type = value_type;
+    using iterator_category = std::forward_iterator_tag;
+    const_iterator(pointer ptr)
+    : ptr_(ptr)
+    {
+    }
+    const_iterator(pointer ptr, size_type unused)
+    : ptr_(ptr)
+    {
+    }
+
+    self_type operator++()
+    {
+      ptr_++;
+      return *this;
+    } // PREFIX
+    self_type operator++(int junk)
+    {
+      self_type i = *this;
+      ptr_++;
+      return i;
+    } // POSTFIX
+    const value_type& operator*()
+    {
+      return *ptr_;
+    }
+    const pointer operator->()
+    {
+      return ptr_;
+    }
+    bool operator==(const self_type& rhs)
+    {
+      return ptr_ == rhs.ptr_;
+    }
+    bool operator!=(const self_type& rhs)
+    {
+      return ptr_ != rhs.ptr_;
+    }
+
+  private:
+    pointer ptr_;
+  };
+
+  // ######### Iterators #########
+
+  template <typename IteratorType> IteratorType begin()
+  {
+    return IteratorType(m_Array, m_NumComponents);
+  }
+  iterator begin()
+  {
+    return iterator(m_Array);
+  }
+
+  template <typename IteratorType> IteratorType end()
+  {
+    return IteratorType(m_Array + m_Size, m_NumComponents);
+  }
+  iterator end()
+  {
+    return iterator(m_Array + m_Size);
+  }
+
+  const_iterator begin() const
+  {
+    return const_iterator(m_Array);
+  }
+
+  const_iterator end() const
+  {
+    return const_iterator(m_Array + m_Size);
+  }
+
+  // rbegin
+  // rend
+  // cbegin
+  // cend
+  // crbegin
+  // crend
+
+  // ######### Capacity #########
+
+  size_type size() const
+  {
+    return m_Size;
+  }
+
+  size_type max_size() const
+  {
+    return m_Size;
+  }
+  void resize(size_type n) override
+  {
+    resizeAndExtend(n);
+  }
+  // void resize (size_type n, const value_type& val);
+  size_type capacity() const noexcept
+  {
+    return m_Size;
+  }
+  bool empty() const noexcept
+  {
+    return (m_Size == 0);
+  }
+  // reserve()
+  // shrink_to_fit()
+
+  // ######### Element Access #########
+
+  inline reference operator[](size_type index)
+  {
+    assert(index < m_Size);
+    return m_Array[index];
+  }
+
+  inline const T& operator[](size_type index) const
+  {
+    assert(index < m_Size);
+    return m_Array[index];
+  }
+
+  inline reference at(size_type index)
+  {
+    assert(index < m_Size);
+    return m_Array[index];
+  }
+
+  inline const T& at(size_type index) const
+  {
+    assert(index < m_Size);
+    return m_Array[index];
+  }
+
+  inline reference front()
+  {
+    return m_Array[0];
+  }
+  inline const T& front() const
+  {
+    return m_Array[0];
+  }
+
+  inline reference back()
+  {
+    return m_Array[m_MaxId];
+  }
+  inline const T& back() const
+  {
+    return m_Array[m_MaxId];
+  }
+
+  inline T* data() noexcept
+  {
+    return m_Array;
+  }
+  inline const T* data() const noexcept
+  {
+    return m_Array;
+  }
+
+  // ######### Modifiers #########
+
+  /**
+   * @brief In the range version (1), the new contents are elements constructed from each of the elements in the range
+   * between first and last, in the same order.
+   */
+  template <class InputIterator> void assign(InputIterator first, InputIterator last) // range (1)
+  {
+    size_type size = last - first;
+    resizeAndExtend(size);
+    size_type idx = 0;
+    while(first != last)
+    {
+      m_Array[idx] = *first;
+      first++;
+    }
+  }
+
+  /**
+   * @brief In the fill version (2), the new contents are n elements, each initialized to a copy of val.
+   * @param n
+   * @param val
+   */
+  void assign(size_type n, const value_type& val) // fill (2)
+  {
+    resizeAndExtend(n);
+    std::for_each(begin(), end(), [=](T& n) { n = val; });
+  }
+
+  /**
+   * @brief In the initializer list version (3), the new contents are copies of the values passed as initializer list, in the same order.
+   * @param il
+   */
+  void assign(std::initializer_list<value_type> il) //  initializer list (3)
+  {
+    assign(il.begin(), il.end());
+  }
+
+  /**
+   * @brief push_back
+   * @param val
+   */
+  void push_back(const value_type& val)
+  {
+    resizeAndExtend(m_Size + 1);
+    m_Array[m_MaxId] = val;
+  }
+  void push_back(value_type&& val)
+  {
+    resizeAndExtend(m_Size + 1);
+    m_Array[m_MaxId] = val;
+  }
+
+  void pop_back()
+  {
+    resizeAndExtend(m_Size - 1);
+  }
+  // insert
+  // iterator erase (const_iterator position)
+  // iterator erase (const_iterator first, const_iterator last);
+  // swap
+
+  /**
+   * @brief Removes all elements from the array (which are destroyed), leaving the container with a size of 0.
+   */
+  void clear()
+  {
+    if(nullptr != m_Array && m_OwnsData)
+    {
+      deallocate();
+    }
+    m_Array = nullptr;
+    m_Size = 0;
+    m_OwnsData = true;
+    m_MaxId = 0;
+    m_IsAllocated = false;
+    m_NumTuples = 0;
+  }
+  // emplace
+  // emplace_back
+
+  /**
+   * @brief equal
+   * @param range1
+   * @param range2
+   * @return
+   */
+  template <typename Range1, typename Range2> bool equal(Range1 const& range1, Range2 const& range2)
+  {
+    if(range1.size() != range2.size())
+    {
+      return false;
+    }
+
+    return std::equal(begin(range1), end(range1), begin(range2));
+  }
+
+  // =================================== END STL COMPATIBLE INTERFACe ===================================================
+
+  /**
+   * @brief GetTypeName Returns a string representation of the type of data that is stored by this class. This
+   * can be a primitive like char, float, int or the name of a class.
+   * @return
+   */
+  void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision) override
+  {
+    T value = static_cast<T>(0x00);
+    xdmfTypeName = "UNKNOWN";
+    precision = 0;
+    if(typeid(value) == typeid(int8_t))
+    {
+      xdmfTypeName = "Char";
+      precision = 1;
+    }
+    if(typeid(value) == typeid(uint8_t))
+    {
+      xdmfTypeName = "UChar";
+      precision = 1;
+    }
+
+    if(typeid(value) == typeid(int16_t))
+    {
+      xdmfTypeName = "Int";
+      precision = 2;
+    }
+    if(typeid(value) == typeid(uint16_t))
+    {
+      xdmfTypeName = "UInt";
+      precision = 2;
+    }
+
+    if(typeid(value) == typeid(int32_t))
+    {
+      xdmfTypeName = "Int";
+      precision = 4;
+    }
+    if(typeid(value) == typeid(uint32_t))
+    {
+      xdmfTypeName = "UInt";
+      precision = 4;
+    }
+
+    if(typeid(value) == typeid(int64_t))
+    {
+      xdmfTypeName = "Int";
+      precision = 8;
+    }
+    if(typeid(value) == typeid(uint64_t))
+    {
+      xdmfTypeName = "UInt";
+      precision = 8;
+    }
+
+    if(typeid(value) == typeid(float))
+    {
+      xdmfTypeName = "Float";
+      precision = 4;
+    }
+    if(typeid(value) == typeid(double))
+    {
+      xdmfTypeName = "Float";
+      precision = 8;
+    }
+
+    if(typeid(value) == typeid(bool))
+    {
+      xdmfTypeName = "uchar";
+      precision = 1;
+    }
+  }
+
+  /**
+   * @brief GetTypeName Returns a string representation of the type of data that is stored by this class. This
+   * can be a primitive like char, float, int or the name of a class.
+   * @return
+   */
+
+  SIMPL::NumericTypes::Type getType()
+  {
+    T value = static_cast<T>(0x00);
+    if(typeid(value) == typeid(int8_t))
+    {
+      return SIMPL::NumericTypes::Type::Int8;
+    }
+    if(typeid(value) == typeid(uint8_t))
+    {
+      return SIMPL::NumericTypes::Type::UInt8;
+    }
+
+    if(typeid(value) == typeid(int16_t))
+    {
+      return SIMPL::NumericTypes::Type::Int16;
+    }
+    if(typeid(value) == typeid(uint16_t))
+    {
+      return SIMPL::NumericTypes::Type::UInt16;
+    }
+
+    if(typeid(value) == typeid(int32_t))
+    {
+      return SIMPL::NumericTypes::Type::Int32;
+    }
+    if(typeid(value) == typeid(uint32_t))
+    {
+      return SIMPL::NumericTypes::Type::UInt32;
+    }
+
+    if(typeid(value) == typeid(int64_t))
+    {
+      return SIMPL::NumericTypes::Type::Int64;
+    }
+    if(typeid(value) == typeid(uint64_t))
+    {
+      return SIMPL::NumericTypes::Type::UInt64;
+    }
+
+    if(typeid(value) == typeid(float))
+    {
+      return SIMPL::NumericTypes::Type::Float;
+    }
+    if(typeid(value) == typeid(double))
+    {
+      return SIMPL::NumericTypes::Type::Double;
+    }
+
+    if(typeid(value) == typeid(bool))
+    {
+      return SIMPL::NumericTypes::Type::Bool;
+    }
+
+    return SIMPL::NumericTypes::Type::UnknownNumType;
+  }
+
   // This line must be here, because we are overloading the copyData pure virtual function in IDataArray.
   // This is required so that other classes can call this version of copyData from the subclasses.
   using IDataArray::copyFromArray;
@@ -528,57 +1025,6 @@ public:
     return false;
   }
 
-  /**
-   * @brief createNewArray
-   * @param numTuples
-   * @param rank
-   * @param dims
-   * @param name
-   * @return
-   */
-  IDataArray::Pointer createNewArray(size_t numTuples, int rank, size_t* dims, const QString& name, bool allocate = true) override
-  {
-    IDataArray::Pointer p = DataArray<T>::CreateArray(numTuples, rank, dims, name, allocate);
-    return p;
-  }
-
-  /**
-   * @brief createNewArray
-   * @param numTuples
-   * @param dims
-   * @param name
-   * @return
-   */
-  IDataArray::Pointer createNewArray(size_t numTuples, std::vector<size_t> dims, const QString& name, bool allocate = true) override
-  {
-    IDataArray::Pointer p = DataArray<T>::CreateArray(numTuples, dims, name, allocate);
-    return p;
-  }
-
-  /**
-   * @brief createNewArray
-   * @param numTuples
-   * @param dims
-   * @param name
-   * @return
-   */
-  IDataArray::Pointer createNewArray(size_t numTuples, QVector<size_t> dims, const QString& name, bool allocate = true) override
-  {
-    IDataArray::Pointer p = DataArray<T>::CreateArray(numTuples, dims, name, allocate);
-    return p;
-  }
-
-  /**
-   * @brief Destructor
-   */
-  ~DataArray() override
-  {
-    // qDebug() << "~DataArrayTemplate '" << m_Name << "'" ;
-    if((nullptr != m_Array) && (true == m_OwnsData))
-    {
-      _deallocate();
-    }
-  }
 
   /**
    * @brief isAllocated
@@ -624,7 +1070,7 @@ public:
   {
     if((nullptr != m_Array) && (true == m_OwnsData))
     {
-      _deallocate();
+      deallocate();
     }
     m_Array = nullptr;
     m_OwnsData = true;
@@ -653,23 +1099,6 @@ public:
   }
 
   /**
-   * @brief Removes all elements from the array (which are destroyed), leaving the container with a size of 0.
-   */
-  virtual void clear()
-  {
-    if(nullptr != m_Array && true == m_OwnsData)
-    {
-      _deallocate();
-    }
-    m_Array = nullptr;
-    m_Size = 0;
-    m_OwnsData = true;
-    m_MaxId = 0;
-    m_IsAllocated = false;
-    m_NumTuples = 0;
-  }
-
-  /**
    * @brief Sets all the values to zero.
    */
   void initializeWithZeros() override
@@ -685,16 +1114,13 @@ public:
   /**
    * @brief Sets all the values to value.
    */
-  virtual void initializeWithValue(T initValue, size_t offset = 0)
+  virtual void initializeWithValue(T initValue)
   {
     if(!m_IsAllocated || nullptr == m_Array)
     {
       return;
     }
-    for(size_t i = offset; i < m_Size; i++)
-    {
-      m_Array[i] = initValue;
-    }
+    std::for_each(begin(), end(), [=](T& n) { n = initValue; });
   }
 
   /**
@@ -761,7 +1187,7 @@ public:
     {
       T* currentSrc = m_Array + (j * m_NumComponents);
       std::memcpy(currentDest, currentSrc, (getNumberOfTuples() - idxs.size()) * m_NumComponents * sizeof(T));
-      _deallocate(); // We are done copying - delete the current m_Array
+      deallocate(); // We are done copying - delete the current m_Array
       m_Size = newSize;
       m_Array = newArray;
       m_OwnsData = true;
@@ -802,7 +1228,7 @@ public:
     }
 
     // We are done copying - delete the current m_Array
-    _deallocate();
+    deallocate();
 
     // Allocation was successful.  Save it.
     m_Size = newSize;
@@ -870,7 +1296,7 @@ public:
    */
   QVector<size_t> getComponentDimensions() override
   {
-    return m_CompDims;
+    return QVector<size_type>::fromStdVector(m_CompDims);
   }
 
   /**
@@ -1079,21 +1505,6 @@ public:
     }
 #endif
     return m_Array + (tupleIndex * m_NumComponents);
-  }
-
-  /**
-   * @brief resize
-   * @param numTuples
-   * @return
-   */
-  int32_t resize(size_t numTuples) override
-  {
-    int32_t check = resizeTotalElements(numTuples * m_NumComponents);
-    if(check > 0)
-    {
-      m_NumTuples = numTuples;
-    }
-    return check;
   }
 
   /**
@@ -1468,7 +1879,7 @@ public:
     m_IsAllocated = true;
     setName(p->getName());
     m_NumTuples = p->getNumberOfTuples();
-    m_CompDims = p->getComponentDimensions();
+    m_CompDims = p->getComponentDimensions().toStdVector();
     m_NumComponents = p->getNumberOfComponents();
 
     // Tell the intermediate DataArray to release ownership of the data as we are going to be responsible
@@ -1507,16 +1918,6 @@ public:
     }
   }
 
-  /**
-   * @brief operator []
-   * @param i
-   * @return
-   */
-  inline T& operator[](size_t i)
-  {
-    Q_ASSERT(i < m_Size);
-    return m_Array[i];
-  }
 
 protected:
   /**
@@ -1529,12 +1930,11 @@ protected:
   DataArray(size_t numTuples, QVector<size_t> compDims, QString name, bool ownsData = true)
   : IDataArray(name)
   , m_Array(nullptr)
-  , m_OwnsData(ownsData)
-  , m_IsAllocated(false)
   , m_NumTuples(numTuples)
+  , m_OwnsData(ownsData)
   {
     // Set the Component Dimensions and compute the number of components at each tuple for caching
-    m_CompDims = compDims;
+    m_CompDims = compDims.toStdVector();
     m_NumComponents = m_CompDims[0];
     for(int i = 1; i < m_CompDims.size(); i++)
     {
@@ -1551,7 +1951,7 @@ protected:
   /**
    * @brief deallocates the memory block
    */
-  void _deallocate()
+  void deallocate()
   {
     // We are going to splat 0xABABAB across the first value of the array as a debugging aid
     auto cptr = reinterpret_cast<unsigned char*>(m_Array);
@@ -1600,6 +2000,11 @@ protected:
 #endif
     m_Array = nullptr;
     m_IsAllocated = false;
+  }
+
+  int32_t resizeTuples(size_type n) override
+  {
+    return (resizeAndExtend(n) == nullptr) ? 0 : 1;
   }
 
   /**
@@ -1695,7 +2100,7 @@ protected:
         std::memcpy(newArray, m_Array, (newSize < m_Size ? newSize : m_Size) * sizeof(T));
       }
       // Free the old array
-      _deallocate();
+      deallocate();
     }
 
     // Allocation was successful.  Save it.
@@ -1711,32 +2116,26 @@ protected:
     // Initialize the new tuples if newSize is larger than old size
     if(newSize > oldSize)
     {
-      initializeWithValue(m_InitValue, oldSize);
+      for(size_type i = oldSize; i < m_Size; i++)
+      {
+        m_Array[i] = m_InitValue;
+      }
     }
 
     return m_Array;
   }
 
 private:
-  //  unsigned long long int MUD_FLAP_0;
-  T* m_Array;
-  //  unsigned long long int MUD_FLAP_1;
-  size_t m_Size;
-  //  unsigned long long int MUD_FLAP_4;
-  bool m_OwnsData;
-  //  unsigned long long int MUD_FLAP_2;
-  size_t m_MaxId;
-
-  bool m_IsAllocated;
-  //   unsigned long long int MUD_FLAP_3;
-  //  unsigned long long int MUD_FLAP_5;
-
-  size_t m_NumTuples;
-
-  QVector<size_t> m_CompDims;
-  size_t m_NumComponents;
-
-  T m_InitValue;
+  T* m_Array = nullptr;
+  size_t m_Size = 0;
+  size_t m_MaxId = 0;
+  size_t m_NumTuples = 0;
+  size_t m_NumComponents = 1;
+  T m_InitValue = static_cast<T>(0);
+  std::vector<size_t> m_CompDims = {1};
+  bool m_IsAllocated = false;
+  bool m_OwnsData = true;
+  std::string m_Name;
 };
 
 // -----------------------------------------------------------------------------

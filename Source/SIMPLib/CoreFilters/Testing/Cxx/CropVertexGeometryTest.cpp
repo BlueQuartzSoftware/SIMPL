@@ -178,12 +178,13 @@ public:
     // Setup Filter
 
     QVariant var;
-
-    var.setValue(k_DataContainerName);
+    DataArrayPath dap(k_DataContainerName);
+    var.setValue(dap);
     bool propWasSet = cropVertexGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-    var.setValue(k_CroppedDataContainerName);
+    dap = DataArrayPath(k_CroppedDataContainerName);
+    var.setValue(dap);
     propWasSet = cropVertexGeometry->setProperty("CroppedDataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 

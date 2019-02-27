@@ -55,7 +55,7 @@ RemoveArrays::~RemoveArrays() = default;
 // -----------------------------------------------------------------------------
 void RemoveArrays::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   {
     DataContainerArrayProxyFilterParameter::Pointer parameter = DataContainerArrayProxyFilterParameter::New();

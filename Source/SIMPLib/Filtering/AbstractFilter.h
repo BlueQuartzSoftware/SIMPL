@@ -243,7 +243,7 @@ public:
 
   SIMPL_INSTANCE_PROPERTY(DataContainerArray::Pointer, DataContainerArray)
 
-  SIMPL_INSTANCE_PROPERTY(QVector<FilterParameter::Pointer>, FilterParameters)
+  SIMPL_INSTANCE_PROPERTY(FilterParameterVectorType, FilterParameters)
 
   SIMPL_INSTANCE_PROPERTY(QString, MessagePrefix)
 

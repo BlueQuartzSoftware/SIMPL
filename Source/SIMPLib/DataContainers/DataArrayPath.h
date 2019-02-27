@@ -74,9 +74,10 @@ namespace DataArrayPathHelper
  */
 class SIMPLib_EXPORT DataArrayPath
 {
+
   PYB11_CREATE_BINDINGS(DataArrayPath)
   PYB11_CREATION(ARGS QString QString QString)
-  PYB11_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
+  PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
   PYB11_PROPERTY(QString AttributeMatrixName READ getAttributeMatrixName WRITE setAttributeMatrixName)
   PYB11_PROPERTY(QString DataArrayName READ getDataArrayName WRITE setDataArrayName)
 
@@ -158,7 +159,7 @@ private:
     * @param delimiter
     * @return
     */
-    static DataArrayPath Deserialize(QString str, QString delimiter);
+    static DataArrayPath Deserialize(const QString& str, const QString& delimiter);
 
     /**
      * @brief checks for and returns any updated DataArrayPaths between two sets
@@ -220,6 +221,13 @@ private:
     bool operator==(const DataArrayPath& rhs) const;
 
     /**
+     * @brief operator !=
+     * @param rhs
+     * @return
+     */
+    bool operator!=(const DataArrayPath& rhs) const;
+
+    /**
      * @brief operator < is required for std::set
      * @param rhs
      * @return
@@ -231,7 +239,7 @@ private:
      * @param delimiter
      * @return
      */
-    QString serialize(QString delimiter = "|") const;
+    QString serialize(const QString& delimiter = "|") const;
 
     /**
      * @brief getAsVector Returns the DataArrayPath represented as a QVector<String> where index[0] = DataContainer Name,
@@ -389,6 +397,8 @@ private:
       case DataArrayPathHelper::DataType::DataContainer:
         setDataContainerName(newPath.getDataContainerName());
         break;
+      case DataArrayPathHelper::DataType::None:
+        break;
       }
 
       return true;
@@ -463,7 +473,6 @@ private:
      */
     QJsonObject toJsonObject() const;
 
-
   protected:
     void updateDataType();
 
@@ -471,9 +480,5 @@ private:
     DataArrayPathHelper::DataType m_DataType = DataArrayPathHelper::DataType::None;
 };
 
-
 Q_DECLARE_METATYPE(DataArrayPath)
-//Q_DECLARE_METATYPE(DataArrayPath::DataType)
-
-
 
