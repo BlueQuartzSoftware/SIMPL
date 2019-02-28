@@ -36,6 +36,7 @@
 #pragma once
 
 // STL Includes
+#include <cassert>
 #include <cstring>
 #include <functional>
 #include <iostream>
@@ -92,14 +93,15 @@ public:
 
   DataArray() = default;
 
-  DataArray(size_t ntuples, std::string name)
-  : m_Name(std::move(name))
+  DataArray(size_t ntuples, const QString& name)
+  : IDataArray(name)
   {
     m_Array = resizeAndExtend(ntuples);
   }
 
-  DataArray(size_t ntuples, comp_dims_type cdims, const std::string& name)
-  : m_NumTuples(ntuples)
+  DataArray(size_t ntuples, comp_dims_type cdims, const QString& name)
+  : IDataArray(name)
+  , m_NumTuples(ntuples)
   , m_CompDims(std::move(cdims))
   {
     m_NumComponents = std::accumulate(m_CompDims.begin(), m_CompDims.end(), 1, std::multiplies<T>());
@@ -110,7 +112,7 @@ public:
   ~DataArray() override
   {
     // Do not delete data the DataArray does not own
-    if((nullptr != m_Array) && (true == m_OwnsData))
+    if((nullptr != m_Array) && (true == m_OwnsData) && (true == m_IsAllocated))
     {
       deallocate();
     }
@@ -664,7 +666,7 @@ public:
 
   inline reference operator[](size_type index)
   {
-    assert(index < m_Size);
+    assert((index < m_Size));
     return m_Array[index];
   }
 
@@ -2139,7 +2141,6 @@ private:
   std::vector<size_t> m_CompDims = {1};
   bool m_IsAllocated = false;
   bool m_OwnsData = true;
-  std::string m_Name;
 };
 
 // -----------------------------------------------------------------------------
