@@ -45,6 +45,7 @@
 #include "SIMPLib/CoreFilters/CreateDataArray.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
+#include "SIMPLib/Filtering/FilterPipeline.h"
 #include "SIMPLib/FilterParameters/AxisAngleFilterParameter.h"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
@@ -152,6 +153,7 @@ void QMetaObjectUtilities::RegisterMetaTypes()
   qRegisterMetaType<ComparisonInputs>("ComparisonInputs");
   qRegisterMetaType<ComparisonInputsAdvanced>("ComparisonInputsAdvanced");
   qRegisterMetaType<DataContainerArrayProxy>("DataContainerArrayProxy");
+  qRegisterMetaType<FilterPipeline::Pointer>("FilterPipeline");
   qRegisterMetaType<IntVec3_t>("IntVec3_t");
   qRegisterMetaType<FloatVec3_t>("FloatVec3_t");
   qRegisterMetaType<PipelineMessage>("PipelineMessage");

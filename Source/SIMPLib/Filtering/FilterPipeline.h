@@ -242,4 +242,4 @@ public:
   FilterPipeline& operator=(const FilterPipeline&) = delete; // Copy Assignment Not Implemented
   FilterPipeline& operator=(FilterPipeline&&) = delete;      // Move Assignment Not Implemented
 };
-
+Q_DECLARE_METATYPE(FilterPipeline::Pointer);
