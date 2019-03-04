@@ -52,7 +52,7 @@ class SVWidgetsLib_EXPORT QtSFileUtils
      * @param pathEnding
      * @return
      */
-    static QString GenerateFileSystemPath(QString pathEnding);
+    static QString GenerateFileSystemPath(const QString &pathEnding);
 
     /**
      * @brief Reveals the path in the operating systems UI shell (Windows Explorer or macOS Finder)
@@ -66,7 +66,7 @@ class SVWidgetsLib_EXPORT QtSFileUtils
      * @param lineEdit
      * @return
      */
-    static bool VerifyPathExists(QString filePath, QLineEdit* lineEdit);
+    static bool VerifyPathExists(const QString &filePath, QLineEdit* lineEdit);
 
     /**
      * @brief hasValidFilePath

@@ -54,7 +54,7 @@ QtSFileUtils::~QtSFileUtils() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString QtSFileUtils::GenerateFileSystemPath(QString pathEnding)
+QString QtSFileUtils::GenerateFileSystemPath(const QString &pathEnding)
 {
   QString appPath = QApplication::applicationDirPath();
 
@@ -184,7 +184,7 @@ void QtSFileUtils::ShowPathInGui(QWidget* parent, const QString &pathIn)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool QtSFileUtils::VerifyPathExists(QString filePath, QLineEdit* lineEdit)
+bool QtSFileUtils::VerifyPathExists(const QString &filePath, QLineEdit* lineEdit)
 {
   HasValidFilePath(filePath);
   QFileInfo fileinfo(filePath);
