@@ -419,7 +419,7 @@ public:
      * @brief getPrereqGeometryFromDataContainer Returns an IGeometry object of the templated type
      * if it is available for the given DataContainer
      * @param filter
-     * @param dcName
+     * @param path
      * @return
      */
     template <typename GeometryType, typename Filter> typename GeometryType::Pointer getPrereqGeometryFromDataContainer(Filter* filter, const DataArrayPath& path)

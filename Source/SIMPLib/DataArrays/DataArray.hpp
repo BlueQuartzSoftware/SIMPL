@@ -37,6 +37,7 @@
 #pragma once
 
 // STL Includes
+#include <cassert>
 #include <cstring>
 #include <functional>
 #include <iostream>
@@ -2062,6 +2063,11 @@ protected:
 #endif
     m_Array = nullptr;
     m_IsAllocated = false;
+  }
+
+  int32_t resizeTuples(size_type n) override
+  {
+    return (resizeAndExtend(n) == nullptr) ? 0 : 1;
   }
 
   /**
