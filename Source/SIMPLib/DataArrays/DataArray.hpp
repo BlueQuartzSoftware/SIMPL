@@ -2064,12 +2064,6 @@ protected:
     m_Array = nullptr;
     m_IsAllocated = false;
   }
-
-  int32_t resizeTuples(size_type n) override
-  {
-    return (resizeAndExtend(n) == nullptr) ? 0 : 1;
-  }
-
   /**
    * @brief Resizes the internal array
    * @param size The new size of the internal array
