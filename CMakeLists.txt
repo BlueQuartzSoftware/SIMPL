@@ -261,10 +261,11 @@ set(SIMPL_USE_EIGEN "")
 Find_Package(Eigen3 REQUIRED)
 if(EIGEN3_FOUND)
   message(STATUS "Eigen3: ${EIGEN3_VERSION_STRING}")
-  set(SIMPL_USE_EIGEN "1" CACHE BOOL "")
+  set(SIMPL_USE_EIGEN "1" CACHE INTERNAL "")
 else()
   message(WARNING "The Eigen Library is required for some algorithms to execute. These algorithms will be disabled.")
 endif()
+
 
 # --------------------------------------------------------------------
 # Find and Use the Qt5 Libraries
