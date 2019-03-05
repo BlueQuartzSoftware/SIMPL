@@ -60,10 +60,10 @@ class ScaleVolumeUpdateVerticesImpl
 {
   float* m_Nodes;
   float* m_Min;
-  FloatVec3_t m_ScaleFactor;
+  FloatVec3Type m_ScaleFactor;
 
 public:
-  ScaleVolumeUpdateVerticesImpl(float* nodes, float* min, FloatVec3_t scale)
+  ScaleVolumeUpdateVerticesImpl(float* nodes, float* min, FloatVec3Type scale)
   : m_Nodes(nodes)
   , m_Min(min)
   , m_ScaleFactor(scale)
@@ -75,9 +75,9 @@ public:
   {
     for(size_t i = start; i < end; i++)
     {
-      m_Nodes[3 * i] = m_Min[0] + (m_Nodes[3 * i] - m_Min[0]) * m_ScaleFactor.x;
-      m_Nodes[3 * i + 1] = m_Min[1] + (m_Nodes[3 * i + 1] - m_Min[1]) * m_ScaleFactor.y;
-      m_Nodes[3 * i + 2] = m_Min[2] + (m_Nodes[3 * i + 2] - m_Min[2]) * m_ScaleFactor.z;
+      m_Nodes[3 * i] = m_Min[0] + (m_Nodes[3 * i] - m_Min[0]) * m_ScaleFactor[0];
+      m_Nodes[3 * i + 1] = m_Min[1] + (m_Nodes[3 * i + 1] - m_Min[1]) * m_ScaleFactor[1];
+      m_Nodes[3 * i + 2] = m_Min[2] + (m_Nodes[3 * i + 2] - m_Min[2]) * m_ScaleFactor[2];
     }
   }
 
@@ -98,10 +98,9 @@ ScaleVolume::ScaleVolume()
 , m_ApplyToVoxelVolume(true)
 , m_ApplyToSurfaceMesh(true)
 {
-  m_ScaleFactor.x = 1.0f;
-  m_ScaleFactor.y = 1.0f;
-  m_ScaleFactor.z = 1.0f;
-
+  m_ScaleFactor[0] = 1.0f;
+  m_ScaleFactor[1] = 1.0f;
+  m_ScaleFactor[2] = 1.0f;
 }
 
 // -----------------------------------------------------------------------------
@@ -275,12 +274,12 @@ void ScaleVolume::execute()
     DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
     ImageGeom::Pointer image = m->getGeometryAs<ImageGeom>();
 
-    float resolution[3] = {0.0f, 0.0f, 0.0f};
-    image->getResolution(resolution);
-    resolution[0] *= m_ScaleFactor.x;
-    resolution[1] *= m_ScaleFactor.y;
-    resolution[2] *= m_ScaleFactor.z;
-    image->setResolution(resolution);
+    FloatVec3Type spacing = {0.0f, 0.0f, 0.0f};
+    image->getSpacing(spacing);
+    spacing[0] *= m_ScaleFactor[0];
+    spacing[1] *= m_ScaleFactor[1];
+    spacing[2] *= m_ScaleFactor[2];
+    image->setSpacing(spacing);
   }
 
   if(m_ApplyToSurfaceMesh)

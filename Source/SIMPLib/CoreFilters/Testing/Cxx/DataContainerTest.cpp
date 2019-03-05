@@ -186,7 +186,7 @@ public:
     typename DataArray<T>::Pointer foo = DataArray<T>::CreateArray(attrMat->getTupleDimensions(), compDims, "RENAME_ME");
     foo->setName(foo->getFullNameOfClass() + name);
     foo->initializeWithValue(static_cast<T>(1));
-    attrMat->addAttributeArray(foo->getName(), foo);
+    attrMat->insert_or_assign(foo);
 
     QString autoName = foo->getName() + "_Auto";
     attrMat->createNonPrereqArray<DataArray<T>, AbstractFilter, T>(nullptr, autoName, static_cast<T>(10), compDims);
@@ -204,7 +204,7 @@ public:
       QString value = QString("string_%1").arg(i);
       data->setValue(i, value);
     }
-    attrMat->addAttributeArray(data->getName(), data);
+    attrMat->insert_or_assign(data);
   }
 
   // -----------------------------------------------------------------------------
@@ -246,7 +246,7 @@ public:
     FillAttributeMatrix(attrMat, compDims);
 
     // Add the AttributeMatrix to the Data Container
-    dc->addAttributeMatrix(attrMat->getName(), attrMat);
+    dc->addAttributeMatrix(attrMat);
 
     QString autoAddName = name + QString::fromLatin1("_Auto");
     AttributeMatrix::Pointer autoAttrMat = dc->createNonPrereqAttributeMatrix(nullptr, autoAddName, tupleDims, AttributeMatrix::Type::Cell);
@@ -308,7 +308,7 @@ public:
     m->setGeometry(image);
 
     AttributeMatrix::Pointer attrMatrix = AttributeMatrix::New(tupleDims, getCellFeatureAttributeMatrixName(), AttributeMatrix::Type::CellFeature);
-    m->addAttributeMatrix(getCellFeatureAttributeMatrixName(), attrMatrix);
+    m->addAttributeMatrix(attrMatrix);
 
     int size = nx * ny * nz;
     Int32ArrayType::Pointer featureIds = Int32ArrayType::CreateArray(size, SIMPL::CellData::FeatureIds);
@@ -316,14 +316,14 @@ public:
     {
       featureIds->setValue(i, i + DataContainerIOTest::Offset);
     }
-    attrMatrix->addAttributeArray(SIMPL::CellData::FeatureIds, featureIds);
+    attrMatrix->insert_or_assign(featureIds);
 
     BoolArrayType::Pointer boolArray = BoolArrayType::CreateArray(size, SIMPL::CellData::BoundaryCells);
     for(int i = 0; i < size; ++i)
     {
       boolArray->setValue(i, i + DataContainerIOTest::Offset);
     }
-    attrMatrix->addAttributeArray(SIMPL::CellData::BoundaryCells, boolArray);
+    attrMatrix->insert_or_assign(boolArray);
 
     QVector<size_t> dims(1, 3);
     FloatArrayType::Pointer avgEuler = FloatArrayType::CreateArray(size, dims, SIMPL::FeatureData::AxisEulerAngles);
@@ -333,19 +333,19 @@ public:
       avgEuler->setComponent(i, 1, i * 0.325f);
       avgEuler->setComponent(i, 2, i * 0.165f);
     }
-    m->getAttributeMatrix(getCellFeatureAttributeMatrixName())->addAttributeArray(SIMPL::FeatureData::AxisEulerAngles, avgEuler);
+    m->getAttributeMatrix(getCellFeatureAttributeMatrixName())->insert_or_assign(avgEuler);
 
     tupleDims.resize(1);
     tupleDims[0] = 4;
     AttributeMatrix::Pointer ensemAttrMat = AttributeMatrix::New(tupleDims, getCellEnsembleAttributeMatrixName(), AttributeMatrix::Type::CellEnsemble);
-    m->addAttributeMatrix(getCellEnsembleAttributeMatrixName(), ensemAttrMat);
+    m->addAttributeMatrix(ensemAttrMat);
 
     FloatArrayType::Pointer surfArea = FloatArrayType::CreateArray(4, SIMPL::EnsembleData::TotalSurfaceAreas);
     for(int i = 0; i < 4; ++i)
     {
       surfArea->setValue(i, i + 41.2f);
     }
-    m->getAttributeMatrix(getCellEnsembleAttributeMatrixName())->addAttributeArray(SIMPL::EnsembleData::TotalSurfaceAreas, surfArea);
+    m->getAttributeMatrix(getCellEnsembleAttributeMatrixName())->insert_or_assign(surfArea);
 
     Observer obs;
     // Send progress messages from PipelineBuilder to this object for display
@@ -479,7 +479,7 @@ public:
 
     tDims[0] = 5;
     attrMat->resizeAttributeArrays(tDims);
-    int err = attrMat->addAttributeArray("Test", p);
+    int err = attrMat->insert_or_assign(p);
     DREAM3D_REQUIRED(err, >=, 0)
 
     // Now get it back out as the specific type that we put it in as

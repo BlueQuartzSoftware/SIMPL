@@ -829,6 +829,19 @@ AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilte
   return createNonPrereqAttributeMatrix(filter, path.getAttributeMatrixName(), tDims, amType, id);
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AttributeMatrixShPtr DataContainer::createNonPrereqAttributeMatrix(AbstractFilter* filter, const DataArrayPath& path, const SizeVec3Type& tDims, AttributeMatrix::Type amType,
+                                                                   RenameDataPath::DataID_t id)
+{
+  QVector<size_t> tupleDims;
+  for(const auto& value : tDims)
+  {
+    tupleDims.push_back(value);
+  }
+  return createNonPrereqAttributeMatrix(filter, path.getAttributeMatrixName(), tupleDims, amType, id);
+}
 
 // -----------------------------------------------------------------------------
 //

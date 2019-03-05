@@ -66,9 +66,7 @@ InPlaceDream3DDataToImageFilter< PixelType, VDimension >
 
 
 template< typename PixelType, unsigned int VDimension>
-void
-InPlaceDream3DDataToImageFilter< PixelType, VDimension >
-::GenerateOutputInformation()
+void InPlaceDream3DDataToImageFilter< PixelType, VDimension >::GenerateOutputInformation()
 {
   // call the superclass' implementation of this method
   Superclass::GenerateOutputInformation();
@@ -82,13 +80,13 @@ InPlaceDream3DDataToImageFilter< PixelType, VDimension >
     itkExceptionMacro("Error casting geometry!!!");
   }
   // Get data container properties
-  QVector<float> torigin(3, 0);
+  FloatVec3Type torigin;
   // Setting spacing to 0 means dimension is not used. Used to know if
   // image is 2D or 3D. Setting dimensions to 0 leads to crashes
-  QVector<float> tspacing(3, 0);
-  QVector<size_t> tDims(3, 1);
-  imageGeom->getOrigin(torigin[0], torigin[1], torigin[2]);
-  imageGeom->getResolution(tspacing[0], tspacing[1], tspacing[2]);
+  FloatVec3Type tspacing;
+  SizeVec3Type tDims;
+  imageGeom->getOrigin(torigin);
+  imageGeom->getSpacing(tspacing);
   std::tie(tDims[0], tDims[1], tDims[2]) = imageGeom->getDimensions();
   typename ImageType::PointType origin;
   typename ImageType::SizeType size;
@@ -114,9 +112,7 @@ InPlaceDream3DDataToImageFilter< PixelType, VDimension >
 
 
 template< typename PixelType, unsigned int VDimension>
-void
-InPlaceDream3DDataToImageFilter< PixelType, VDimension >
-::GenerateData()
+void InPlaceDream3DDataToImageFilter< PixelType, VDimension >::GenerateData()
 {
   // Get data pointer
   AttributeMatrix::Pointer ma = m_DataContainer->getAttributeMatrix(m_AttributeMatrixArrayName.c_str());

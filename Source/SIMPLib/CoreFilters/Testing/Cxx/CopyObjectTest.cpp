@@ -298,8 +298,8 @@ public:
         bool sameDims = (oldDims == newDims);
         DREAM3D_REQUIRE_EQUAL(sameDims, true)
 
-        SIMPL::Tuple3FVec oldRes = oldImageGeom->getResolution();
-        SIMPL::Tuple3FVec newRes = newImageGeom->getResolution();
+        SIMPL::Tuple3FVec oldRes = oldImageGeom->getSpacing();
+        SIMPL::Tuple3FVec newRes = newImageGeom->getSpacing();
         bool sameRes = (oldRes == newRes);
         DREAM3D_REQUIRE_EQUAL(sameRes, true)
 
@@ -734,13 +734,13 @@ public:
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer am1 = AttributeMatrix::New(m_Dims8, k_AttributeMatrix1Name, AttributeMatrix::Type::Vertex);
-    dc->addAttributeMatrix(k_AttributeMatrix1Name, am1);
+    dc->addAttributeMatrix(am1);
 
     AttributeMatrix::Pointer am2 = AttributeMatrix::New(m_Dims8, k_AttributeMatrix2Name, AttributeMatrix::Type::Cell);
-    dc->addAttributeMatrix(k_AttributeMatrix2Name, am2);
+    dc->addAttributeMatrix(am2);
 
     AttributeMatrix::Pointer emptyAM = AttributeMatrix::New(m_Dims1, k_EmptyAttributeMatrixName, AttributeMatrix::Type::Generic);
-    dc->addAttributeMatrix(k_EmptyAttributeMatrixName, emptyAM);
+    dc->addAttributeMatrix(emptyAM);
 
     // Create DataArray
 
@@ -761,8 +761,8 @@ public:
 
     ImageGeom::Pointer imageGeom = ImageGeom::CreateGeometry(SIMPL::Geometry::ImageGeometry);
     imageGeom->setDimensions(std::forward_as_tuple(5, 5, 5));
-    imageGeom->setResolution(std::forward_as_tuple(5, 5, 5));
-    imageGeom->setOrigin(std::forward_as_tuple(5, 5, 5));
+    imageGeom->setSpacing(FloatVec3Type(5, 5, 5));
+    imageGeom->setOrigin(FloatVec3Type(5, 5, 5));
 
     // RectGrid
 
@@ -837,17 +837,17 @@ public:
 
     // Add DataArrays to AttributeMatrices
 
-    am1->addAttributeArray(k_uint8ArrayName, daUint8);
-    am1->addAttributeArray(k_int8ArrayName, daInt8);
-    am1->addAttributeArray(k_uint16ArrayName, daUint16);
-    am1->addAttributeArray(k_int16ArrayName, daInt16);
-    am1->addAttributeArray(k_uint32ArrayName, daUint32);
+    am1->insert_or_assign(daUint8);
+    am1->insert_or_assign(daInt8);
+    am1->insert_or_assign(daUint16);
+    am1->insert_or_assign(daInt16);
+    am1->insert_or_assign(daUint32);
 
-    am2->addAttributeArray(k_int32ArrayName, daInt32);
-    am2->addAttributeArray(k_uint64ArrayName, daUint64);
-    am2->addAttributeArray(k_int64ArrayName, daInt64);
-    am2->addAttributeArray(k_floatArrayName, daFloat);
-    am2->addAttributeArray(k_doubleArrayName, daDouble);
+    am2->insert_or_assign(daInt32);
+    am2->insert_or_assign(daUint64);
+    am2->insert_or_assign(daInt64);
+    am2->insert_or_assign(daFloat);
+    am2->insert_or_assign(daDouble);
 
     dc->setGeometry(hexGeom);
 
@@ -895,7 +895,7 @@ public:
 
     TestCase(dca, DataArrayPath(k_DataContainerName, k_AttributeMatrix2Name, ""), 1, k_CopiedObjectName);
 
-    emptyDC->addAttributeMatrix(k_EmptyAttributeMatrixName, emptyAM);
+    emptyDC->addAttributeMatrix(emptyAM);
     TestCase(dca, DataArrayPath(k_EmptyDataContainerName, k_EmptyAttributeMatrixName, ""), 1, k_CopiedObjectName);
 
     // Test Copy DataArrays

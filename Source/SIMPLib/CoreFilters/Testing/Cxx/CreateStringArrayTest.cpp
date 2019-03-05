@@ -109,7 +109,7 @@ public:
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer am = AttributeMatrix::New(tupleDims, k_AttributeMatrixName, AttributeMatrix::Type::Generic);
-    dc->addAttributeMatrix(k_AttributeMatrixName, am);
+    dc->addAttributeMatrix(am);
 
     // Create Filter
 

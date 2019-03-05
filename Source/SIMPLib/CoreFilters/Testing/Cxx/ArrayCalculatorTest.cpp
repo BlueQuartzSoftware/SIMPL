@@ -120,15 +120,15 @@ public:
     IDataArray::Pointer signArray = mcArray1->deepCopy();
     signArray->setName("*");
 
-    am1->addAttributeArray("InputArray1", array1);
-    am1->addAttributeArray("InputArray2", array2);
-    am1->addAttributeArray("Spaced Array", sArray);
-    am1->addAttributeArray("MultiComponent Array1", mcArray1);
-    am1->addAttributeArray("MultiComponent Array2", mcArray2);
-    am1->addAttributeArray("4", numberArray);
-    am1->addAttributeArray("*", signArray);
-    dc->addAttributeMatrix("AttributeMatrix", am1);
-    dc->addAttributeMatrix("NumericMatrix", am2);
+    am1->insert_or_assign(array1);
+    am1->insert_or_assign(array2);
+    am1->insert_or_assign(sArray);
+    am1->insert_or_assign(mcArray1);
+    am1->insert_or_assign(mcArray2);
+    am1->insert_or_assign(numberArray);
+    am1->insert_or_assign(signArray);
+    dc->addAttributeMatrix(am1);
+    dc->addAttributeMatrix(am2);
     dca->addDataContainer(dc);
 
     return dca;

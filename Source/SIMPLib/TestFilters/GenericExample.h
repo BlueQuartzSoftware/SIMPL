@@ -88,8 +88,8 @@ class SIMPLib_EXPORT GenericExample : public AbstractFilter
   PYB11_PROPERTY(QVector<DataArrayPath> SelectedMultiArrayPaths READ getSelectedMultiArrayPaths WRITE setSelectedMultiArrayPaths)
   PYB11_PROPERTY(bool WriteAlignmentShifts READ getWriteAlignmentShifts WRITE setWriteAlignmentShifts)
   PYB11_PROPERTY(int ConversionType READ getConversionType WRITE setConversionType)
-  PYB11_PROPERTY(IntVec3_t Dimensions READ getDimensions WRITE setDimensions)
-  PYB11_PROPERTY(FloatVec3_t Origin READ getOrigin WRITE setOrigin)
+  PYB11_PROPERTY(IntVec3Type Dimensions READ getDimensions WRITE setDimensions)
+  PYB11_PROPERTY(FloatVec3Type Origin READ getOrigin WRITE setOrigin)
   PYB11_PROPERTY(AxisAngleInput_t CrystalSymmetryRotations READ getCrystalSymmetryRotations WRITE setCrystalSymmetryRotations)
   PYB11_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
   PYB11_PROPERTY(DataArrayPath AttributeMatrixPath READ getAttributeMatrixPath WRITE setAttributeMatrixPath)
@@ -186,11 +186,11 @@ public:
   SIMPL_FILTER_PARAMETER(int, ConversionType)
   Q_PROPERTY(int ConversionType READ getConversionType WRITE setConversionType)
 
-  SIMPL_FILTER_PARAMETER(IntVec3_t, Dimensions)
-  Q_PROPERTY(IntVec3_t Dimensions READ getDimensions WRITE setDimensions)
+  SIMPL_FILTER_PARAMETER(IntVec3Type, Dimensions)
+  Q_PROPERTY(IntVec3Type Dimensions READ getDimensions WRITE setDimensions)
 
-  SIMPL_FILTER_PARAMETER(FloatVec3_t, Origin)
-  Q_PROPERTY(FloatVec3_t Origin READ getOrigin WRITE setOrigin)
+  SIMPL_FILTER_PARAMETER(FloatVec3Type, Origin)
+  Q_PROPERTY(FloatVec3Type Origin READ getOrigin WRITE setOrigin)
 
   SIMPL_FILTER_PARAMETER(AxisAngleInput_t, CrystalSymmetryRotations)
   Q_PROPERTY(AxisAngleInput_t CrystalSymmetryRotations READ getCrystalSymmetryRotations WRITE setCrystalSymmetryRotations)

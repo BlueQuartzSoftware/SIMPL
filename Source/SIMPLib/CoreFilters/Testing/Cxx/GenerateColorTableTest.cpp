@@ -208,7 +208,7 @@ public:
     DataContainerArray::Pointer dca = DataContainerArray::New();
     DataContainer::Pointer dc = DataContainer::New(SIMPL::Defaults::ImageDataContainerName);
     AttributeMatrix::Pointer am = AttributeMatrix::New(QVector<size_t>(1, 37989), SIMPL::Defaults::CellAttributeMatrixName, AttributeMatrix::Type::Generic);
-    dc->addAttributeMatrix(SIMPL::Defaults::CellAttributeMatrixName, am);
+    dc->addAttributeMatrix(am);
     dca->addDataContainer(dc);
 
     // Read Image File

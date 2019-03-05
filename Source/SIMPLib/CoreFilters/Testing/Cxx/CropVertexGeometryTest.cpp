@@ -136,15 +136,15 @@ public:
     QVector<size_t> dims(1, vertices.size());
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(dims, k_VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
-    dc->addAttributeMatrix(k_VertexAttributeMatrixName, vertexAM);
+    dc->addAttributeMatrix(vertexAM);
 
     AttributeMatrix::Pointer nonVertexAM = AttributeMatrix::New(m_Dims4, k_AttributeMatrixName, AttributeMatrix::Type::Generic);
-    dc->addAttributeMatrix(k_AttributeMatrixName, nonVertexAM);
+    dc->addAttributeMatrix(nonVertexAM);
 
     // Create DataArray used for geometry creation
 
     FloatArrayType::Pointer daVert = createDataArray<float>(k_VertexCoordinatesDAName, vertices, dims, m_Dims3);
-    vertexAM->addAttributeArray(k_VertexCoordinatesDAName, daVert);
+    vertexAM->insert_or_assign(daVert);
 
     // Manually create cropped DataArray for comparison
 
@@ -159,7 +159,7 @@ public:
     {
       da->setValue(i, i + 0.5f);
     }
-    nonVertexAM->addAttributeArray(k_DataArray0Name, da);
+    nonVertexAM->insert_or_assign(da);
 
     // Create Geometry
 

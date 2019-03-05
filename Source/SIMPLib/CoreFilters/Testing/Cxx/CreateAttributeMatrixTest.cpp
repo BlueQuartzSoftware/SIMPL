@@ -36,7 +36,7 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
 
-#include <assert.h>
+#include <cassert>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
@@ -359,11 +359,23 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
+  void TestOperators()
+  {
+    QVector<size_t> tDims = {10, 10};
+    AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, "Test", AttributeMatrix::Type::Cell);
+
+    FloatArrayType::Pointer floatArray = FloatArrayType::CreateArray(100, "Float");
+    Int32ArrayType::Pointer int32Array = Int32ArrayType::CreateArray(100, "Int32");
+  }
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
   void operator()()
   {
     std::cout << "#### CreateAttributeMatrixTest Starting ####" << std::endl;
 
     int err = EXIT_SUCCESS;
+    DREAM3D_REGISTER_TEST(TestOperators());
 
     DREAM3D_REGISTER_TEST(TestVertexMatrix());
     DREAM3D_REGISTER_TEST(TestVertexFeatureMatrix());

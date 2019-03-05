@@ -72,7 +72,7 @@ public:
 
     typename DataArray<T>::Pointer data = DataArray<T>::CreateArray(tDims, cDims, name);
 
-    am->addAttributeArray(data->getName(), data);
+    am->insert_or_assign(data);
   }
 
   // -----------------------------------------------------------------------------
@@ -94,11 +94,11 @@ public:
     AddDataArray<uint8_t>(am, "Uint8 Array", tDims, cDims);
     AddDataArray<float>(am, "Float Array", tDims, cDims);
     AddDataArray<int32_t>(am, "int32 Array", tDims, cDims);
-    dc0->addAttributeMatrix(am->getName(), am);
+    dc0->addAttributeMatrix(am);
 
     QVector<size_t> tupleDims(1, 1);
     AttributeMatrix::Pointer metaAm = AttributeMatrix::New(tupleDims, DataContainerBundle::GetMetaDataName(), AttributeMatrix::Type::MetaData);
-    dc0->addAttributeMatrix(metaAm->getName(), metaAm);
+    dc0->addAttributeMatrix(metaAm);
 
     DataContainer::Pointer dc1 = dc0->deepCopy(false);
     dc1->setName("DC 1");

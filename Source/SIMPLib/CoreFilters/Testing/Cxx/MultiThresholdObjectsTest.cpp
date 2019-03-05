@@ -107,9 +107,9 @@ public:
       data1->setValue(i, inum); // int array
       inum += 1;
     }
-    am->addAttributeArray(data->getName(), data);   // float array
-    am->addAttributeArray(data1->getName(), data1); // int array
-    vdc->addAttributeMatrix(am->getName(), am);
+    am->insert_or_assign(data);  // float array
+    am->insert_or_assign(data1); // int array
+    vdc->addAttributeMatrix(am);
     dca->addDataContainer(vdc);
 
     // Now instantiate the MultiThresholdObjectsTest Filter from the FilterManager

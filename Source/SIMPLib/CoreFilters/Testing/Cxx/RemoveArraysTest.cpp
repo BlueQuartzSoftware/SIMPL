@@ -81,11 +81,11 @@ public:
     sizeList.push_back(1);
 
     AttributeMatrix::Pointer am = AttributeMatrix::New(sizeList, "AttributeMatrix", AttributeMatrix::Type::Any);
-    am->addAttributeArray("DataArray", da);
+    am->insert_or_assign(da);
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dc->addAttributeMatrix("AttributeMatrix", am);
+    dc->addAttributeMatrix(am);
 
     DataContainerArray::Pointer dca = DataContainerArray::New();
     dca->addDataContainer(dc);

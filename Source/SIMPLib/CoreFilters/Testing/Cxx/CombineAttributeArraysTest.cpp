@@ -54,11 +54,11 @@
 
 #define CREATE_DATA_ARRAY(type, attrMat, tDims, cDimsVec, cDimsScalar, vecName, scalarName, err)                                                                                                       \
   DataArray<type>::Pointer _##type##VectorArray = DataArray<type>::CreateArray(tDims, cDimsVec, #vecName, true);                                                                                       \
-  err = attrMat->addAttributeArray(#vecName, _##type##VectorArray);                                                                                                                                    \
+  err = attrMat->insert_or_assign(_##type##VectorArray);                                                                                                                                               \
   _##type##VectorArray->initializeWithZeros();                                                                                                                                                         \
   DREAM3D_REQUIRE(err >= 0);                                                                                                                                                                           \
   DataArray<type>::Pointer _##type##ScalarArray = DataArray<type>::CreateArray(tDims, cDimsScalar, #scalarName, true);                                                                                 \
-  err = attrMat->addAttributeArray(#scalarName, _##type##ScalarArray);                                                                                                                                 \
+  err = attrMat->insert_or_assign(_##type##ScalarArray);                                                                                                                                               \
   _##type##ScalarArray->initializeWithZeros();                                                                                                                                                         \
   DREAM3D_REQUIRE(err >= 0);
 
@@ -120,7 +120,7 @@ public:
 
     QVector<size_t> tDims(1, 100);
     AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "CombineAttributeArraysTest", AttributeMatrix::Type::Cell);
-    m->addAttributeMatrix("CombineAttributeArraysTest", attrMat);
+    m->addAttributeMatrix(attrMat);
     dca->addDataContainer(m);
 
     QVector<size_t> cDimsVec(1, 3);

@@ -43,11 +43,11 @@
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
+#include "SIMPLib/Filtering/QMetaObjectUtilities.h"
+#include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 #include "SIMPLib/SIMPLib.h"
-
-#include "SIMPLib/Filtering/QMetaObjectUtilities.h"
 
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
@@ -396,13 +396,13 @@ public:
     // Create Image Geometry
 
     ImageGeom::Pointer ig = ImageGeom::New();
-    ig->setDimensions(xDim, yDim, zDim);
+    ig->setDimensions(SizeVec3Type(xDim, yDim, zDim));
     dc->setGeometry(ig);
 
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer am = AttributeMatrix::New(tupleDims, k_AttributeMatrixName, AttributeMatrix::Type::CellFeature);
-    dc->addAttributeMatrix(k_AttributeMatrixName, am);
+    dc->addAttributeMatrix(am);
 
     // Create DataArrayInt (add in under checkFilter)
 
@@ -411,7 +411,7 @@ public:
     {
       da->setValue(i, i);
     }
-    am->addAttributeArray(k_DataArrayIntName, da);
+    am->insert_or_assign(da);
 
     // Create DataArrayFloat
 
@@ -427,7 +427,7 @@ public:
         daFloat->setValue(i, static_cast<float>(i) * -0.1);
       }
     }
-    am->addAttributeArray(k_DataArrayFloatName, daFloat);
+    am->insert_or_assign(daFloat);
 
     // Create NeighborLists (must be int32_t)
 
@@ -437,7 +437,7 @@ public:
       nl->addEntry(i, i);
       nl->addEntry(i, i * 2);
     }
-    am->addAttributeArray(k_NeighborListName, nl);
+    am->insert_or_assign(nl);
 
     NeighborList<int32_t>::Pointer nl2 = NeighborList<int32_t>::CreateArray(tupleDims, cDimsNeighbor, k_NeighborListName2);
     for(size_t i = 0; i < nl2->getNumberOfTuples(); i++)
@@ -446,7 +446,7 @@ public:
       nl2->addEntry(i, i);
       nl2->addEntry(i, i + 1);
     }
-    am->addAttributeArray(k_NeighborListName2, nl2);
+    am->insert_or_assign(nl2);
 
     // Create Filter
 

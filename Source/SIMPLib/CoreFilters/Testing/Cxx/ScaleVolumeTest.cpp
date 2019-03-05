@@ -55,7 +55,7 @@
 
 namespace ScaleVolumeTestConsts
 {
-const FloatVec3_t SCALE = FloatVec3_t{3, 3, 3};
+const FloatVec3Type SCALE = FloatVec3Type{3, 3, 3};
 }
 
 class ScaleVolumeTest
@@ -258,14 +258,12 @@ public:
 
     DREAM3D_REQUIRE(imgGeom != nullptr);
 
-    float xRes = 0.0f;
-    float yRes = 0.0f;
-    float zRes = 0.0f;
-    std::tie(xRes, yRes, zRes) = imgGeom->getResolution();
+    FloatVec3Type spacing;
+    imgGeom->getSpacing(spacing);
 
-    DREAM3D_REQUIRE_EQUAL(xRes, ScaleVolumeTestConsts::SCALE.x);
-    DREAM3D_REQUIRE_EQUAL(yRes, ScaleVolumeTestConsts::SCALE.y);
-    DREAM3D_REQUIRE_EQUAL(zRes, ScaleVolumeTestConsts::SCALE.z);
+    DREAM3D_REQUIRE_EQUAL(spacing[0], ScaleVolumeTestConsts::SCALE[0]);
+    DREAM3D_REQUIRE_EQUAL(spacing[1], ScaleVolumeTestConsts::SCALE[1]);
+    DREAM3D_REQUIRE_EQUAL(spacing[2], ScaleVolumeTestConsts::SCALE[2]);
   }
 
   // -----------------------------------------------------------------------------

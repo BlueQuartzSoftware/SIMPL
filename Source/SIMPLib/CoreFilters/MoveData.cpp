@@ -164,7 +164,7 @@ void MoveData::dataCheck()
       return;
     }
 
-    amDestDataContainer->addAttributeMatrix(amSrcAttributeMatrix->getName(), amSrcAttributeMatrix);
+    amDestDataContainer->addAttributeMatrix(amSrcAttributeMatrix);
     //amSrcDataContainer->removeAttributeMatrix(amSrcAttributeMatrix->getName());
     addPathRename(amSrcPath, amSrcAttributeMatrix->getDataArrayPath());
   }
@@ -196,7 +196,7 @@ void MoveData::dataCheck()
       return;
     }
 
-    daDestAttributeMatrix->addAttributeArray(daSrcPath.getDataArrayName(), daSrcDataArray);
+    daDestAttributeMatrix->insert_or_assign(daSrcDataArray);
     //daSrcAttributeMatrix->removeAttributeArray(daSrcPath.getDataArrayName());
     addPathRename(daSrcPath, daSrcDataArray->getDataArrayPath());
   }

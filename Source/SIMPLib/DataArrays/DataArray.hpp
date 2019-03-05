@@ -92,14 +92,15 @@ public:
 
   DataArray() = default;
 
-  DataArray(size_t ntuples, std::string name)
-  : m_Name(std::move(name))
+  DataArray(size_t ntuples, const std::string& name)
+  : IDataArray(QString::fromStdString(name))
   {
     m_Array = resizeAndExtend(ntuples);
   }
 
   DataArray(size_t ntuples, comp_dims_type cdims, const std::string& name)
-  : m_NumTuples(ntuples)
+  : IDataArray(QString::fromStdString(name))
+  , m_NumTuples(ntuples)
   , m_CompDims(std::move(cdims))
   {
     m_NumComponents = std::accumulate(m_CompDims.begin(), m_CompDims.end(), 1, std::multiplies<T>());
@@ -660,13 +661,13 @@ public:
 
   inline reference operator[](size_type index)
   {
-    assert(index < m_Size);
+    // assert(index < m_Size);
     return m_Array[index];
   }
 
   inline const T& operator[](size_type index) const
   {
-    assert(index < m_Size);
+    // assert(index < m_Size);
     return m_Array[index];
   }
 
@@ -756,12 +757,19 @@ public:
     resizeAndExtend(m_Size + 1);
     m_Array[m_MaxId] = val;
   }
+  /**
+   * @brief push_back
+   * @param val
+   */
   void push_back(value_type&& val)
   {
     resizeAndExtend(m_Size + 1);
     m_Array[m_MaxId] = val;
   }
 
+  /**
+   * @brief pop_back
+   */
   void pop_back()
   {
     resizeAndExtend(m_Size - 1);
@@ -807,6 +815,22 @@ public:
   }
 
   // =================================== END STL COMPATIBLE INTERFACe ===================================================
+
+  /**
+   * @brief resizeTuples
+   * @param numTuples
+   * @return
+   */
+  int32_t resizeTuples(size_type numTuples) override
+  {
+    if(resizeAndExtend(numTuples * getNumberOfComponents()) != nullptr)
+    {
+      m_NumTuples = numTuples;
+      return 1;
+    }
+    clear();
+    return 0;
+  }
 
   /**
    * @brief GetTypeName Returns a string representation of the type of data that is stored by this class. This
@@ -2002,11 +2026,6 @@ protected:
     m_IsAllocated = false;
   }
 
-  int32_t resizeTuples(size_type n) override
-  {
-    return (resizeAndExtend(n) == nullptr) ? 0 : 1;
-  }
-
   /**
    * @brief Resizes the internal array
    * @param size The new size of the internal array
@@ -2135,7 +2154,6 @@ private:
   std::vector<size_t> m_CompDims = {1};
   bool m_IsAllocated = false;
   bool m_OwnsData = true;
-  std::string m_Name;
 };
 
 // -----------------------------------------------------------------------------

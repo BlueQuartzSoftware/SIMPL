@@ -173,7 +173,7 @@ public:
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
     dca->addDataContainer(m);
     AttributeMatrix::Pointer attrMatrix = AttributeMatrix::New(QVector<size_t>(1, numTuples), SIMPL::Defaults::AttributeMatrixName, AttributeMatrix::Type::Generic);
-    m->addAttributeMatrix(SIMPL::Defaults::AttributeMatrixName, attrMatrix);
+    m->addAttributeMatrix(attrMatrix);
     return dca;
   }
   // -----------------------------------------------------------------------------

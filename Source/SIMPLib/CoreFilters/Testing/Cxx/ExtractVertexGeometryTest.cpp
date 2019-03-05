@@ -91,25 +91,25 @@ public:
 
     // Create the Cell AttributeMatrix
     AttributeMatrix::Pointer cellAttrMat = AttributeMatrix::Create(dims, k_CellAttrMatName, AttributeMatrix::Type::Cell);
-    imageGeomDC->addAttributeMatrix(cellAttrMat->getName(), cellAttrMat);
+    imageGeomDC->addAttributeMatrix(cellAttrMat);
 
     // Create a cell attribute array
     FloatArrayType::Pointer f32Data = FloatArrayType::CreateArray(cellCount, k_FloatArrayName, true);
     f32Data->initializeWithValue(45.243f);
-    cellAttrMat->addAttributeArray(f32Data->getName(), f32Data);
+    cellAttrMat->insert_or_assign(f32Data);
 
     // Create a Feature AttributeMatrix with different dimensions
     dims[0] = 1;
     dims[1] = 2;
     dims[2] = 3;
     AttributeMatrix::Pointer featureAttrMat = AttributeMatrix::Create(dims, k_FeatureAttrMatName, AttributeMatrix::Type::CellFeature);
-    imageGeomDC->addAttributeMatrix(featureAttrMat->getName(), featureAttrMat);
+    imageGeomDC->addAttributeMatrix(featureAttrMat);
 
     // Create a feature attribute array
     cellCount = std::accumulate(dims.begin(), dims.end(), static_cast<size_t>(1), std::multiplies<size_t>());
     Int32ArrayType::Pointer i32Data = Int32ArrayType::CreateArray(cellCount, k_FeatureArrayName, true);
     i32Data->initializeWithValue(1);
-    featureAttrMat->addAttributeArray(i32Data->getName(), i32Data);
+    featureAttrMat->insert_or_assign(i32Data);
     return dca;
   }
 

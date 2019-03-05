@@ -334,7 +334,7 @@ public:
     dca->addDataContainer(dc);
 
     AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "AttributeMatrix", AttributeMatrix::Type::Generic);
-    dc->addAttributeMatrix(attrMat->getName(), attrMat);
+    dc->addAttributeMatrix(attrMat);
 
     return dca;
   }

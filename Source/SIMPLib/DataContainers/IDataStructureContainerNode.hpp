@@ -33,11 +33,12 @@
 
 #pragma once
 
-#include <vector>
+#include <iostream>
 #include <memory>
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 #include "IDataStructureNode.h"
 
@@ -372,7 +373,7 @@ public:
    */
   constexpr bool push_back(const ChildShPtr& node)
   {
-    if(node == nullptr)
+    if(node.get() == nullptr)
     {
       return false;
     }
@@ -380,7 +381,6 @@ public:
     {
       return false;
     }
-
     m_ChildrenNodes.push_back(node);
     node->_setParentNode(this);
     return true;

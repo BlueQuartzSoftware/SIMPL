@@ -207,7 +207,7 @@ public:
     // filt->setOrigin(origin);
     // FloatVec3Widget_t spacing;
     // spacing.x = spacing.y = spacing.z = 0.55f;
-    // filt->setResolution(spacing);
+    // filt->setSpacing(spacing);
     filt->setCreatedAttributeArrayPath(DataArrayPath("DataContainer", "AttributeMatrix", "Test_Array"));
 
     return filt;
@@ -250,7 +250,7 @@ public:
 
     // Create the data container
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    m->addAttributeMatrix("AttributeMatrix", am);
+    m->addAttributeMatrix(am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
     dca->addDataContainer(m);
 
@@ -355,7 +355,7 @@ public:
 
     // Create the data container
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    m->addAttributeMatrix("AttributeMatrix", am);
+    m->addAttributeMatrix(am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
     dca->addDataContainer(m);
 
@@ -455,7 +455,7 @@ public:
 
     // Create the data container
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    m->addAttributeMatrix("AttributeMatrix", am);
+    m->addAttributeMatrix(am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
     dca->addDataContainer(m);
 
@@ -565,7 +565,7 @@ public:
 
     // Create the data container
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    m->addAttributeMatrix("AttributeMatrix", am);
+    m->addAttributeMatrix(am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
     dca->addDataContainer(m);
 
@@ -601,7 +601,7 @@ public:
 
     // Create another data container
     DataContainer::Pointer m2 = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    m2->addAttributeMatrix("AttributeMatrix", am);
+    m2->addAttributeMatrix(am);
     DataContainerArray::Pointer dca2 = DataContainerArray::New();
     dca2->addDataContainer(m2);
 
@@ -703,7 +703,7 @@ public:
 
     // Create the data container
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    m->addAttributeMatrix("AttributeMatrix", am);
+    m->addAttributeMatrix(am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
     dca->addDataContainer(m);
 
@@ -813,7 +813,7 @@ public:
 
     // Create the data container
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    m->addAttributeMatrix("AttributeMatrix", am);
+    m->addAttributeMatrix(am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
     dca->addDataContainer(m);
 
