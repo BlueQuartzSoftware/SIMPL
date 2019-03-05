@@ -213,7 +213,7 @@ void MoveMultiData::dataCheck()
       }
 
       // Move Array
-      daDestAttributeMatrix->insert_or_assign(daSrcDataArray);
+      daDestAttributeMatrix->insertOrAssign(daSrcDataArray);
       //daSrcAttributeMatrix->removeAttributeArray(daSrcPaths[i].getDataArrayName());
       addPathRename(daSrcPaths[i], daSrcDataArray->getDataArrayPath());
     }

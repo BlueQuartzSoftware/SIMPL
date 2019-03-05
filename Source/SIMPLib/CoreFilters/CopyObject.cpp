@@ -216,7 +216,7 @@ void CopyObject::dataCheck()
 
     IDataArray::Pointer arrayCopy = array->deepCopy(getInPreflight());
     arrayCopy->setName(getCopiedObjectName());
-    getDataContainerArray()->getDataContainer(getAttributeArrayToCopy().getDataContainerName())->getAttributeMatrix(getAttributeArrayToCopy().getAttributeMatrixName())->insert_or_assign(arrayCopy);
+    getDataContainerArray()->getDataContainer(getAttributeArrayToCopy().getDataContainerName())->getAttributeMatrix(getAttributeArrayToCopy().getAttributeMatrixName())->insertOrAssign(arrayCopy);
     RenameDataPath::AlertFilterCreatedPath(this, DataArrayID, arrayCopy->getDataArrayPath());
 
     break;

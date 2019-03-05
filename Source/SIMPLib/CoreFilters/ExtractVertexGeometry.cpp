@@ -251,7 +251,7 @@ void ExtractVertexGeometry::dataCheck()
       vertexCellAttrMat = vertexDataContainer->createNonPrereqAttributeMatrix(this, sourceCellAttrMat->getName(), sourceCellAttrMat->getTupleDimensions(), AttributeMatrix::Type::Vertex, AttributeMatrixID);
     }
 
-    vertexCellAttrMat->insert_or_assign(newArrayPtr);
+    vertexCellAttrMat->insertOrAssign(newArrayPtr);
   }
 }
 

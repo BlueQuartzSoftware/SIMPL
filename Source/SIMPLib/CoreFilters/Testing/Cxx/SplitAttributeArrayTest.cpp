@@ -108,19 +108,19 @@ public:
     SizeTArrayType::Pointer mcArray13 = SizeTArrayType::CreateArray(QVector<size_t>(1, 10), QVector<size_t>(1, 5), "MultiComponent Array size_t");
     fillDataArray<size_t>(mcArray13);
 
-    am1->insert_or_assign(mcArray1);
-    am1->insert_or_assign(mcArray2);
-    am1->insert_or_assign(mcArray3);
-    am1->insert_or_assign(mcArray4);
-    am1->insert_or_assign(mcArray5);
-    am1->insert_or_assign(mcArray6);
-    am1->insert_or_assign(mcArray7);
-    am1->insert_or_assign(mcArray8);
-    am1->insert_or_assign(mcArray9);
-    am1->insert_or_assign(mcArray10);
-    am1->insert_or_assign(mcArray11);
-    am1->insert_or_assign(mcArray12);
-    am1->insert_or_assign(mcArray13);
+    am1->insertOrAssign(mcArray1);
+    am1->insertOrAssign(mcArray2);
+    am1->insertOrAssign(mcArray3);
+    am1->insertOrAssign(mcArray4);
+    am1->insertOrAssign(mcArray5);
+    am1->insertOrAssign(mcArray6);
+    am1->insertOrAssign(mcArray7);
+    am1->insertOrAssign(mcArray8);
+    am1->insertOrAssign(mcArray9);
+    am1->insertOrAssign(mcArray10);
+    am1->insertOrAssign(mcArray11);
+    am1->insertOrAssign(mcArray12);
+    am1->insertOrAssign(mcArray13);
     dc->addAttributeMatrix(am1);
     dca->addDataContainer(dc);
 

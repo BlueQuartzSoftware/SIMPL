@@ -406,7 +406,7 @@ public:
     // Create DataArray
 
     IDataArray::Pointer daSrc = createDataArray<int8_t>(k_DataArraySrcName, tupleDims, cDims);
-    amSrc->insert_or_assign(daSrc);
+    amSrc->insertOrAssign(daSrc);
 
     // Run test cases
 
@@ -454,7 +454,7 @@ public:
 
     dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->removeAttributeArray(k_DataArraySrcName);
     daSrc = createDataArray<uint8_t>(k_DataArraySrcName, tupleDims, cDims);
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->insert_or_assign(daSrc);
+    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->insertOrAssign(daSrc);
 
     TestCase(dcaTest, src, dst, 1, 0);
 
@@ -464,7 +464,7 @@ public:
 
     dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->removeAttributeArray(k_DataArraySrcName);
     daSrc = createDataArray<int16_t>(k_DataArraySrcName, tupleDims, cDims);
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->insert_or_assign(daSrc);
+    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->insertOrAssign(daSrc);
 
     TestCase(dcaTest, src, dst, 1, 0);
 
@@ -474,7 +474,7 @@ public:
 
     dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->removeAttributeArray(k_DataArraySrcName);
     daSrc = createDataArray<uint16_t>(k_DataArraySrcName, tupleDims, cDims);
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->insert_or_assign(daSrc);
+    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->insertOrAssign(daSrc);
 
     TestCase(dcaTest, src, dst, 1, 0);
 
@@ -484,7 +484,7 @@ public:
 
     dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->removeAttributeArray(k_DataArraySrcName);
     daSrc = createDataArray<int32_t>(k_DataArraySrcName, tupleDims, cDims);
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->insert_or_assign(daSrc);
+    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->insertOrAssign(daSrc);
 
     TestCase(dcaTest, src, dst, 1, 0);
 
@@ -494,7 +494,7 @@ public:
 
     dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->removeAttributeArray(k_DataArraySrcName);
     daSrc = createDataArray<uint32_t>(k_DataArraySrcName, tupleDims, cDims);
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->insert_or_assign(daSrc);
+    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->insertOrAssign(daSrc);
 
     TestCase(dcaTest, src, dst, 1, 0);
 
@@ -504,7 +504,7 @@ public:
 
     dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->removeAttributeArray(k_DataArraySrcName);
     daSrc = createDataArray<uint32_t>(k_DataArraySrcName, tupleDims, cDims);
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->insert_or_assign(daSrc);
+    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->insertOrAssign(daSrc);
 
     TestCase(dcaTest, src, dst, 1, 0);
 
@@ -514,7 +514,7 @@ public:
 
     dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->removeAttributeArray(k_DataArraySrcName);
     daSrc = createDataArray<uint64_t>(k_DataArraySrcName, tupleDims, cDims);
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->insert_or_assign(daSrc);
+    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->insertOrAssign(daSrc);
 
     TestCase(dcaTest, src, dst, 1, 0);
 
@@ -524,7 +524,7 @@ public:
 
     dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->removeAttributeArray(k_DataArraySrcName);
     daSrc = createDataArray<float>(k_DataArraySrcName, tupleDims, cDims);
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->insert_or_assign(daSrc);
+    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->insertOrAssign(daSrc);
 
     TestCase(dcaTest, src, dst, 1, 0);
 
@@ -534,7 +534,7 @@ public:
 
     dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->removeAttributeArray(k_DataArraySrcName);
     daSrc = createDataArray<double>(k_DataArraySrcName, tupleDims, cDims);
-    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->insert_or_assign(daSrc);
+    dcaTest->getDataContainer(k_DataContainerName)->getAttributeMatrix(k_AttributeMatrixSrcName)->insertOrAssign(daSrc);
 
     TestCase(dcaTest, src, dst, 1, 0);
   }

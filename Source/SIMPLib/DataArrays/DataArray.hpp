@@ -1,3 +1,4 @@
+
 /* ============================================================================
  * Copyright (c) 2009-2016 BlueQuartz Software, LLC
  *
@@ -92,25 +93,57 @@ public:
 
   DataArray() = default;
 
-  DataArray(size_t ntuples, const std::string& name)
+  /**
+   * @brief DataArray
+   * @param ntuples
+   * @param name
+   * @param allocate
+   */
+  DataArray(size_t ntuples, const std::string& name, bool allocate = true)
   : IDataArray(QString::fromStdString(name))
   {
-    m_Array = resizeAndExtend(ntuples);
+    m_NumComponents = 1;
+    if(allocate)
+    {
+      resizeTuples(ntuples);
+    }
+    else
+    {
+      m_Size = ntuples;
+      m_MaxId = (ntuples == 0) ? 0 : ntuples - 1;
+      m_NumTuples = ntuples;
+      m_NumComponents = 1;
+    }
   }
 
-  DataArray(size_t ntuples, comp_dims_type cdims, const std::string& name)
+  /**
+   * @brief DataArray
+   * @param ntuples
+   * @param cdims
+   * @param name
+   * @param allocate
+   */
+  DataArray(size_t ntuples, comp_dims_type cdims, const std::string& name, bool allocate = true)
   : IDataArray(QString::fromStdString(name))
   , m_NumTuples(ntuples)
   , m_CompDims(std::move(cdims))
   {
     m_NumComponents = std::accumulate(m_CompDims.begin(), m_CompDims.end(), 1, std::multiplies<T>());
     m_InitValue = static_cast<T>(0);
-    m_Array = resizeAndExtend(m_NumTuples * m_NumComponents);
+    if(allocate)
+    {
+      m_Array = resizeAndExtend(m_NumTuples * m_NumComponents);
+    }
+    else
+    {
+      m_Size = m_NumTuples * m_NumComponents;
+      m_MaxId = (m_Size == 0) ? 0 : m_Size - 1;
+    }
   }
-  //
+
   ~DataArray() override
   {
-    deallocate();
+    clear();
   }
 
   DataArray(const DataArray&) = default;           // Copy Constructor Default
@@ -1977,6 +2010,11 @@ protected:
    */
   void deallocate()
   {
+    if(!m_OwnsData)
+    {
+      clear();
+      return;
+    }
     // We are going to splat 0xABABAB across the first value of the array as a debugging aid
     auto cptr = reinterpret_cast<unsigned char*>(m_Array);
     if(nullptr != cptr)

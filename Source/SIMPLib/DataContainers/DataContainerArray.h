@@ -68,7 +68,8 @@ class SIMPLib_EXPORT DataContainerArray : public QObject, public IDataStructureC
   // clang-format off
   PYB11_CREATE_BINDINGS(DataContainerArray)
 
-  PYB11_METHOD(void addDataContainer ARGS DataContainer)
+  PYB11_METHOD(bool addDataContainer ARGS DataContainer)
+  PYB11_METHOD(bool insertOrAssign ARGS DataContainer)
   PYB11_METHOD(bool doesDataContainerExist OVERLOAD const.QString.&,Name CONST_METHOD)
   PYB11_METHOD(bool doesDataContainerExist OVERLOAD const.DataArrayPath.&,Path CONST_METHOD)
 
@@ -105,9 +106,24 @@ public:
   /**
    * @brief
    */
-  inline bool addDataContainer(DataContainerShPtr f)
+  inline bool addDataContainer(const DataContainerShPtr& f)
   {
     return push_back(f);
+  }
+
+  /**
+   * @brief This function will insert the IDataArray into the AttributeMatrix if one does not exist with the name
+   * or replace an existing IDataArray that has the same name assuming that the number of tuples is a match.
+   * @param data The IDataArray object to add to the the AttributeMatrix
+   * @return
+   */
+  inline bool insertOrAssign(const DataContainerShPtr& dataContainer)
+  {
+    if(contains(dataContainer))
+    {
+      removeDataContainer(dataContainer->getName());
+    }
+    return push_back(dataContainer);
   }
 
   /**

@@ -186,7 +186,7 @@ public:
     typename DataArray<T>::Pointer foo = DataArray<T>::CreateArray(attrMat->getTupleDimensions(), compDims, "RENAME_ME");
     foo->setName(foo->getFullNameOfClass() + name);
     foo->initializeWithValue(static_cast<T>(1));
-    attrMat->insert_or_assign(foo);
+    attrMat->insertOrAssign(foo);
 
     QString autoName = foo->getName() + "_Auto";
     attrMat->createNonPrereqArray<DataArray<T>, AbstractFilter, T>(nullptr, autoName, static_cast<T>(10), compDims);
@@ -204,7 +204,7 @@ public:
       QString value = QString("string_%1").arg(i);
       data->setValue(i, value);
     }
-    attrMat->insert_or_assign(data);
+    attrMat->insertOrAssign(data);
   }
 
   // -----------------------------------------------------------------------------
@@ -316,14 +316,14 @@ public:
     {
       featureIds->setValue(i, i + DataContainerIOTest::Offset);
     }
-    attrMatrix->insert_or_assign(featureIds);
+    attrMatrix->insertOrAssign(featureIds);
 
     BoolArrayType::Pointer boolArray = BoolArrayType::CreateArray(size, SIMPL::CellData::BoundaryCells);
     for(int i = 0; i < size; ++i)
     {
       boolArray->setValue(i, i + DataContainerIOTest::Offset);
     }
-    attrMatrix->insert_or_assign(boolArray);
+    attrMatrix->insertOrAssign(boolArray);
 
     QVector<size_t> dims(1, 3);
     FloatArrayType::Pointer avgEuler = FloatArrayType::CreateArray(size, dims, SIMPL::FeatureData::AxisEulerAngles);
@@ -333,7 +333,7 @@ public:
       avgEuler->setComponent(i, 1, i * 0.325f);
       avgEuler->setComponent(i, 2, i * 0.165f);
     }
-    m->getAttributeMatrix(getCellFeatureAttributeMatrixName())->insert_or_assign(avgEuler);
+    m->getAttributeMatrix(getCellFeatureAttributeMatrixName())->insertOrAssign(avgEuler);
 
     tupleDims.resize(1);
     tupleDims[0] = 4;
@@ -345,7 +345,7 @@ public:
     {
       surfArea->setValue(i, i + 41.2f);
     }
-    m->getAttributeMatrix(getCellEnsembleAttributeMatrixName())->insert_or_assign(surfArea);
+    m->getAttributeMatrix(getCellEnsembleAttributeMatrixName())->insertOrAssign(surfArea);
 
     Observer obs;
     // Send progress messages from PipelineBuilder to this object for display
@@ -479,7 +479,7 @@ public:
 
     tDims[0] = 5;
     attrMat->resizeAttributeArrays(tDims);
-    int err = attrMat->insert_or_assign(p);
+    int err = attrMat->insertOrAssign(p);
     DREAM3D_REQUIRED(err, >=, 0)
 
     // Now get it back out as the specific type that we put it in as

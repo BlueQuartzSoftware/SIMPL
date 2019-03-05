@@ -127,37 +127,37 @@ public:
     {
       DoubleArrayType::Pointer dblArray = DoubleArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_D");
       dblArray->initializeWithValue(5);
-      am->insert_or_assign(dblArray);
+      am->insertOrAssign(dblArray);
       FloatArrayType::Pointer fltArray = FloatArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_F");
       fltArray->initializeWithValue(5);
-      am->insert_or_assign(fltArray);
+      am->insertOrAssign(fltArray);
       Int8ArrayType::Pointer int8Array = Int8ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I8");
       int8Array->initializeWithValue(5);
-      am->insert_or_assign(int8Array);
+      am->insertOrAssign(int8Array);
       UInt8ArrayType::Pointer uint8Array = UInt8ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI8");
       uint8Array->initializeWithValue(5);
-      am->insert_or_assign(uint8Array);
+      am->insertOrAssign(uint8Array);
       Int16ArrayType::Pointer int16Array = Int16ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I16");
       int16Array->initializeWithValue(5);
-      am->insert_or_assign(int16Array);
+      am->insertOrAssign(int16Array);
       UInt16ArrayType::Pointer uint16Array = UInt16ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI16");
       uint16Array->initializeWithValue(5);
-      am->insert_or_assign(uint16Array);
+      am->insertOrAssign(uint16Array);
       Int32ArrayType::Pointer int32Array = Int32ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I32");
       int32Array->initializeWithValue(5);
-      am->insert_or_assign(int32Array);
+      am->insertOrAssign(int32Array);
       UInt32ArrayType::Pointer uint32Array = UInt32ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI32");
       uint32Array->initializeWithValue(5);
-      am->insert_or_assign(uint32Array);
+      am->insertOrAssign(uint32Array);
       Int64ArrayType::Pointer int64Array = Int64ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I64");
       int64Array->initializeWithValue(5);
-      am->insert_or_assign(int64Array);
+      am->insertOrAssign(int64Array);
       UInt64ArrayType::Pointer uint64Array = UInt64ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI64");
       uint64Array->initializeWithValue(5);
-      am->insert_or_assign(uint64Array);
+      am->insertOrAssign(uint64Array);
       BoolArrayType::Pointer boolArray = BoolArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_BOOL");
       boolArray->initializeWithZeros();
-      am->insert_or_assign(boolArray);
+      am->insertOrAssign(boolArray);
     }
   }
 

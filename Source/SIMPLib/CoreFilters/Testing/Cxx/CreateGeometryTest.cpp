@@ -525,21 +525,21 @@ public:
     {
       daXBounds->setValue(i, i);
     }
-    boundsAM->insert_or_assign(daXBounds);
+    boundsAM->insertOrAssign(daXBounds);
 
     DataArray<float>::Pointer daYBounds = DataArray<float>::CreateArray(m_Dims4, m_Dims1, k_YBoundsDAName);
     for(size_t i = 0; i < daYBounds->getSize(); i++)
     {
       daYBounds->setValue(i, i);
     }
-    boundsAM->insert_or_assign(daYBounds);
+    boundsAM->insertOrAssign(daYBounds);
 
     DataArray<float>::Pointer daZBounds = DataArray<float>::CreateArray(m_Dims4, m_Dims1, k_ZBoundsDAName);
     for(size_t i = 0; i < daZBounds->getSize(); i++)
     {
       daZBounds->setValue(i, i);
     }
-    boundsAM->insert_or_assign(daZBounds);
+    boundsAM->insertOrAssign(daZBounds);
 
     // Create bad xBounds arrays
 
@@ -549,7 +549,7 @@ public:
       daBadXBounds->setValue(i, i);
     }
     daBadXBounds->setValue(0, 100);
-    boundsAM->insert_or_assign(daBadXBounds);
+    boundsAM->insertOrAssign(daBadXBounds);
 
     // Create Filter
 
@@ -678,7 +678,7 @@ public:
     std::vector<std::vector<float>> vertices = {{1.0f, 1.0f, 0.0f}, {3.0f, 1.0f, 0.0f}};
 
     DataArray<float>::Pointer daVert = createDataArray<float>(k_VertexListDAName, vertices, m_Dims2, m_Dims3);
-    vertexAM->insert_or_assign(daVert);
+    vertexAM->insertOrAssign(daVert);
 
     // Create Filter
 
@@ -759,15 +759,15 @@ public:
 
     DataArray<float>::Pointer daEdgeVert = createDataArray<float>(k_EdgeVertexListDAName, vertices, m_Dims2, m_Dims3);
     DataArray<int64_t>::Pointer daEdgeList = createDataArray<int64_t>(k_EdgeListDAName, elements, m_Dims1, m_Dims2);
-    edgeVertexAM->insert_or_assign(daEdgeVert);
-    edgeElementAM->insert_or_assign(daEdgeList);
+    edgeVertexAM->insertOrAssign(daEdgeVert);
+    edgeElementAM->insertOrAssign(daEdgeList);
 
     // Create Bad EdgeList
 
     elements = {{0, 2}};
 
     DataArray<int64_t>::Pointer daBadEdgeList = createDataArray<int64_t>(k_BadEdgeListDAName, elements, m_Dims1, m_Dims2);
-    edgeElementAM->insert_or_assign(daBadEdgeList);
+    edgeElementAM->insertOrAssign(daBadEdgeList);
 
     // Create Filter
 
@@ -875,15 +875,15 @@ public:
 
     DataArray<float>::Pointer daTriVert = createDataArray<float>(k_TriVertexListDAName, vertices, m_Dims3, m_Dims3);
     DataArray<int64_t>::Pointer daTriList = createDataArray<int64_t>(k_TriListDAName, elements, m_Dims1, m_Dims3);
-    triVertexAM->insert_or_assign(daTriVert);
-    triElementAM->insert_or_assign(daTriList);
+    triVertexAM->insertOrAssign(daTriVert);
+    triElementAM->insertOrAssign(daTriList);
 
     // Create Bad TriangleList
 
     elements = {{0, 3, 2}};
 
     DataArray<int64_t>::Pointer daBadTriList = createDataArray<int64_t>(k_BadTriListDAName, elements, m_Dims1, m_Dims3);
-    triElementAM->insert_or_assign(daBadTriList);
+    triElementAM->insertOrAssign(daBadTriList);
 
     // Create Filter
 
@@ -991,15 +991,15 @@ public:
 
     DataArray<float>::Pointer daQuadVert = createDataArray<float>(k_QuadVertexListDAName, vertices, m_Dims4, m_Dims3);
     DataArray<int64_t>::Pointer daQuadList = createDataArray<int64_t>(k_QuadListDAName, elements, m_Dims1, m_Dims4);
-    quadVertexAM->insert_or_assign(daQuadVert);
-    quadElementAM->insert_or_assign(daQuadList);
+    quadVertexAM->insertOrAssign(daQuadVert);
+    quadElementAM->insertOrAssign(daQuadList);
 
     // Create Bad QuadrilateralList
 
     elements = {{0, 1, 7, 3}};
 
     DataArray<int64_t>::Pointer daBadQuadList = createDataArray<int64_t>(k_BadQuadListDAName, elements, m_Dims1, m_Dims4);
-    quadElementAM->insert_or_assign(daBadQuadList);
+    quadElementAM->insertOrAssign(daBadQuadList);
 
     // Create Filter
 
@@ -1108,15 +1108,15 @@ public:
 
     DataArray<float>::Pointer daTetVert = createDataArray<float>(k_TetVertexListDAName, vertices, m_Dims4, m_Dims3);
     DataArray<int64_t>::Pointer daTetList = createDataArray<int64_t>(k_TetListDAName, elements, m_Dims1, m_Dims4);
-    tetVertexAM->insert_or_assign(daTetVert);
-    tetElementAM->insert_or_assign(daTetList);
+    tetVertexAM->insertOrAssign(daTetVert);
+    tetElementAM->insertOrAssign(daTetList);
 
     // Create Bad TetrahedronList
 
     elements = {{0, 10, 2, 3}};
 
     DataArray<int64_t>::Pointer daBadTetList = createDataArray<int64_t>(k_BadTetListDAName, elements, m_Dims1, m_Dims4);
-    tetElementAM->insert_or_assign(daBadTetList);
+    tetElementAM->insertOrAssign(daBadTetList);
 
     // Create Filter
 
@@ -1225,15 +1225,15 @@ public:
 
     DataArray<float>::Pointer daHexVert = createDataArray<float>(k_HexVertexListDAName, vertices, m_Dims8, m_Dims3);
     DataArray<int64_t>::Pointer daHexList = createDataArray<int64_t>(k_HexListDAName, elements, m_Dims1, m_Dims8);
-    hexVertexAM->insert_or_assign(daHexVert);
-    hexElementAM->insert_or_assign(daHexList);
+    hexVertexAM->insertOrAssign(daHexVert);
+    hexElementAM->insertOrAssign(daHexList);
 
     // Create Bad HexahedronList
 
     elements = {{0, 1, 2, 32, 4, 5, 6, 7}};
 
     DataArray<int64_t>::Pointer daBadHexList = createDataArray<int64_t>(k_BadHexListDAName, elements, m_Dims1, m_Dims8);
-    hexElementAM->insert_or_assign(daBadHexList);
+    hexElementAM->insertOrAssign(daBadHexList);
 
     // Create Filter
 

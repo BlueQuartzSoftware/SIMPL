@@ -127,7 +127,7 @@ public:
 
     // Create Cell FeatureIds array
     typename DataArray<int32_t>::Pointer cellFeatureIds = DataArray<int32_t>::CreateArray(cellAM->getNumberOfTuples(), k_CellFeatureIdsArrayName);
-    cellAM->insert_or_assign(cellFeatureIds);
+    cellAM->insertOrAssign(cellFeatureIds);
 
     for(size_t y = 0; y < 3; y++)
     {
@@ -140,7 +140,7 @@ public:
 
     //Create an array in teh Feature Attribute Matrix with 3 values since we created 3 features in the cell attribute matrix
     typename DataArray<T>::Pointer avgTempValue = DataArray<T>::CreateArray(3, k_FeatureDataArrayName);
-    featureAM->insert_or_assign(avgTempValue);
+    featureAM->insertOrAssign(avgTempValue);
     for(int i = 0; i < 3; i++)
     {
       avgTempValue->setValue(i, static_cast<T>(0));

@@ -196,7 +196,7 @@ void MoveData::dataCheck()
       return;
     }
 
-    daDestAttributeMatrix->insert_or_assign(daSrcDataArray);
+    daDestAttributeMatrix->insertOrAssign(daSrcDataArray);
     //daSrcAttributeMatrix->removeAttributeArray(daSrcPath.getDataArrayName());
     addPathRename(daSrcPath, daSrcDataArray->getDataArrayPath());
   }

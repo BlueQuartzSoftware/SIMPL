@@ -133,8 +133,8 @@ public:
           cellDataArray->initializeTuple(i, &temp);
         }
 
-        cellAttr->insert_or_assign(cellDataArray);
-        cellAttr->insert_or_assign(featureIds);
+        cellAttr->insertOrAssign(cellDataArray);
+        cellAttr->insertOrAssign(featureIds);
         dc->addAttributeMatrix(cellAttr);
         dc->addAttributeMatrix(featureAttr);
         dca->addDataContainer(dc);
@@ -224,8 +224,8 @@ public:
           cellDataArray->initializeTuple(i, &temp);
         }
 
-        cellAttr->insert_or_assign(cellDataArray);
-        cellAttr->insert_or_assign(featureIds);
+        cellAttr->insertOrAssign(cellDataArray);
+        cellAttr->insertOrAssign(featureIds);
         dc->addAttributeMatrix(cellAttr);
         dc->addAttributeMatrix(featureAttr);
         dca->addDataContainer(dc);
@@ -305,7 +305,7 @@ public:
         featureIds->initializeTuple(14, &value);
         featureIds->initializeTuple(15, &value);
 
-        cellAttr->insert_or_assign(featureIds);
+        cellAttr->insertOrAssign(featureIds);
         dc->addAttributeMatrix(cellAttr);
         dc->addAttributeMatrix(featureAttr);
         dca->addDataContainer(dc);

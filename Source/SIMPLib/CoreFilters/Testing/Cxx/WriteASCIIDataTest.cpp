@@ -104,7 +104,7 @@ public:
     strArray->setValue(8, QString("Weird words"));
     strArray->setValue(9, QString("Sierra"));
 
-    am->insert_or_assign(strArray);
+    am->insertOrAssign(strArray);
     dc->addAttributeMatrix(am);
     dca->addDataContainer(dc);
 
@@ -141,7 +141,7 @@ public:
     writer->setOutputStyle(WriteASCIIData::MultiFile);
 
     NeighborList<int32_t>::Pointer neighborList = NeighborList<int32_t>::CreateArray(k_ArraySize, "NeighborList", true);
-    am->insert_or_assign(neighborList);
+    am->insertOrAssign(neighborList);
 
     paths = {DataArrayPath("DataContainer", "TestAttributeMatrix", "NeighborList")};
     writer->setSelectedDataArrayPaths(paths);
@@ -154,7 +154,7 @@ public:
     DREAM3D_REQUIRE(err < 0)
 
     StructArray<int32_t>::Pointer structArray = StructArray<int32_t>::CreateArray(k_ArraySize, "StructArray", true);
-    am->insert_or_assign(structArray);
+    am->insertOrAssign(structArray);
     paths = {DataArrayPath("DataContainer", "TestAttributeMatrix", "StructArray")};
     writer->setSelectedDataArrayPaths(paths);
     writer->preflight();
@@ -166,7 +166,7 @@ public:
     DREAM3D_REQUIRE(err < 0)
 
     StatsDataArray::Pointer statsDataArray = StatsDataArray::CreateArray(k_ArraySize, "StatsDataArray", true);
-    am->insert_or_assign(statsDataArray);
+    am->insertOrAssign(statsDataArray);
     paths = {DataArrayPath("DataContainer", "TestAttributeMatrix", "StatsDataArray")};
     writer->setSelectedDataArrayPaths(paths);
     writer->preflight();

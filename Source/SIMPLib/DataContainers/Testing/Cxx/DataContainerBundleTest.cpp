@@ -72,7 +72,7 @@ public:
 
     typename DataArray<T>::Pointer data = DataArray<T>::CreateArray(tDims, cDims, name);
 
-    am->insert_or_assign(data);
+    am->insertOrAssign(data);
   }
 
   // -----------------------------------------------------------------------------

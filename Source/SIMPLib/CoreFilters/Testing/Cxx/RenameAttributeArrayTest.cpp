@@ -134,7 +134,7 @@ public:
     dc->addAttributeMatrix(am);
 
     DataArray<int>::Pointer da = DataArray<int>::CreateArray(1, "DataArray");
-    am->insert_or_assign(da);
+    am->insertOrAssign(da);
 
     filter->setDataContainerArray(dca);
 
@@ -172,7 +172,7 @@ public:
     dc->addAttributeMatrix(am);
 
     DataArray<int>::Pointer da = DataArray<int>::CreateArray(1, "DataArray");
-    am->insert_or_assign(da);
+    am->insertOrAssign(da);
 
     filter->setDataContainerArray(dca);
 
@@ -212,7 +212,7 @@ public:
     dc->addAttributeMatrix(am);
 
     DataArray<int>::Pointer da = DataArray<int>::CreateArray(1, "DataArray");
-    am->insert_or_assign(da);
+    am->insertOrAssign(da);
 
     filter->setDataContainerArray(dca);
 
@@ -250,7 +250,7 @@ public:
     dc->addAttributeMatrix(am);
 
     DataArray<int>::Pointer da = DataArray<int>::CreateArray(1, "DataArray");
-    am->insert_or_assign(da);
+    am->insertOrAssign(da);
 
     filter->setDataContainerArray(dca);
 
@@ -287,9 +287,9 @@ public:
     dc->addAttributeMatrix(am);
 
     DataArray<int>::Pointer da = DataArray<int>::CreateArray(1, "DataArray");
-    am->insert_or_assign(da);
+    am->insertOrAssign(da);
     DataArray<int>::Pointer da2 = DataArray<int>::CreateArray(1, "DataArray_2");
-    am->insert_or_assign(da2);
+    am->insertOrAssign(da2);
 
     filter->setDataContainerArray(dca);
 

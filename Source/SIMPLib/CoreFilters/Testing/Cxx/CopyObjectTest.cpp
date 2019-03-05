@@ -837,17 +837,17 @@ public:
 
     // Add DataArrays to AttributeMatrices
 
-    am1->insert_or_assign(daUint8);
-    am1->insert_or_assign(daInt8);
-    am1->insert_or_assign(daUint16);
-    am1->insert_or_assign(daInt16);
-    am1->insert_or_assign(daUint32);
+    am1->insertOrAssign(daUint8);
+    am1->insertOrAssign(daInt8);
+    am1->insertOrAssign(daUint16);
+    am1->insertOrAssign(daInt16);
+    am1->insertOrAssign(daUint32);
 
-    am2->insert_or_assign(daInt32);
-    am2->insert_or_assign(daUint64);
-    am2->insert_or_assign(daInt64);
-    am2->insert_or_assign(daFloat);
-    am2->insert_or_assign(daDouble);
+    am2->insertOrAssign(daInt32);
+    am2->insertOrAssign(daUint64);
+    am2->insertOrAssign(daInt64);
+    am2->insertOrAssign(daFloat);
+    am2->insertOrAssign(daDouble);
 
     dc->setGeometry(hexGeom);
 

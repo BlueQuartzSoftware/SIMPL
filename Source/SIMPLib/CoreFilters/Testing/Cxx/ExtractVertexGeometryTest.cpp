@@ -96,7 +96,7 @@ public:
     // Create a cell attribute array
     FloatArrayType::Pointer f32Data = FloatArrayType::CreateArray(cellCount, k_FloatArrayName, true);
     f32Data->initializeWithValue(45.243f);
-    cellAttrMat->insert_or_assign(f32Data);
+    cellAttrMat->insertOrAssign(f32Data);
 
     // Create a Feature AttributeMatrix with different dimensions
     dims[0] = 1;
@@ -109,7 +109,7 @@ public:
     cellCount = std::accumulate(dims.begin(), dims.end(), static_cast<size_t>(1), std::multiplies<size_t>());
     Int32ArrayType::Pointer i32Data = Int32ArrayType::CreateArray(cellCount, k_FeatureArrayName, true);
     i32Data->initializeWithValue(1);
-    featureAttrMat->insert_or_assign(i32Data);
+    featureAttrMat->insertOrAssign(i32Data);
     return dca;
   }
 

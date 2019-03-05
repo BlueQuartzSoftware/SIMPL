@@ -411,7 +411,7 @@ public:
     {
       da->setValue(i, i);
     }
-    am->insert_or_assign(da);
+    am->insertOrAssign(da);
 
     // Create DataArrayFloat
 
@@ -427,7 +427,7 @@ public:
         daFloat->setValue(i, static_cast<float>(i) * -0.1);
       }
     }
-    am->insert_or_assign(daFloat);
+    am->insertOrAssign(daFloat);
 
     // Create NeighborLists (must be int32_t)
 
@@ -437,7 +437,7 @@ public:
       nl->addEntry(i, i);
       nl->addEntry(i, i * 2);
     }
-    am->insert_or_assign(nl);
+    am->insertOrAssign(nl);
 
     NeighborList<int32_t>::Pointer nl2 = NeighborList<int32_t>::CreateArray(tupleDims, cDimsNeighbor, k_NeighborListName2);
     for(size_t i = 0; i < nl2->getNumberOfTuples(); i++)
@@ -446,7 +446,7 @@ public:
       nl2->addEntry(i, i);
       nl2->addEntry(i, i + 1);
     }
-    am->insert_or_assign(nl2);
+    am->insertOrAssign(nl2);
 
     // Create Filter
 

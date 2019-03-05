@@ -327,7 +327,7 @@ void CreateFeatureArrayFromElementArray::execute()
 
   if(p.get() != nullptr)
   {
-    getDataContainerArray()->getAttributeMatrix(m_CellFeatureAttributeMatrixName)->insert_or_assign(p);
+    getDataContainerArray()->getAttributeMatrix(m_CellFeatureAttributeMatrixName)->insertOrAssign(p);
   }
 
 }

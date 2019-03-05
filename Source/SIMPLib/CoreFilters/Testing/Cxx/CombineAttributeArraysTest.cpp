@@ -54,11 +54,11 @@
 
 #define CREATE_DATA_ARRAY(type, attrMat, tDims, cDimsVec, cDimsScalar, vecName, scalarName, err)                                                                                                       \
   DataArray<type>::Pointer _##type##VectorArray = DataArray<type>::CreateArray(tDims, cDimsVec, #vecName, true);                                                                                       \
-  err = attrMat->insert_or_assign(_##type##VectorArray);                                                                                                                                               \
+  err = attrMat->insertOrAssign(_##type##VectorArray);                                                                                                                                                 \
   _##type##VectorArray->initializeWithZeros();                                                                                                                                                         \
   DREAM3D_REQUIRE(err >= 0);                                                                                                                                                                           \
   DataArray<type>::Pointer _##type##ScalarArray = DataArray<type>::CreateArray(tDims, cDimsScalar, #scalarName, true);                                                                                 \
-  err = attrMat->insert_or_assign(_##type##ScalarArray);                                                                                                                                               \
+  err = attrMat->insertOrAssign(_##type##ScalarArray);                                                                                                                                                 \
   _##type##ScalarArray->initializeWithZeros();                                                                                                                                                         \
   DREAM3D_REQUIRE(err >= 0);
 

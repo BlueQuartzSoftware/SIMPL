@@ -339,7 +339,7 @@ void ImportHDF5Dataset::dataCheck()
       IDataArray::Pointer dPtr = readIDataArray(parentId, objectName, am->getNumberOfTuples(), cDims, getInPreflight());
       if(nullptr != dPtr)
       {
-        am->insert_or_assign(dPtr);
+        am->insertOrAssign(dPtr);
       }
       else
       {

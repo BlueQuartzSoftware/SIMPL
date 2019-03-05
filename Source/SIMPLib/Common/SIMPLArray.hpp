@@ -35,6 +35,12 @@
 
 #include <QtCore/QMetaObject>
 
+/**
+ * @brief This class is a facade pattern around a std::array<T,D> array to allow for some semantics
+ * for either a 2D or 3D point such as X,Y,Z. We Provide 2 concrete implementations that are for 2 and 3 element
+ * arrays used in some of the filter parameters. The devloper can extend this quite easily to more
+ * elements should they need them
+ */
 template <class T, unsigned int Dimension> class SIMPLArray
 {
 public:
@@ -154,15 +160,15 @@ public:
     this->setValue(2, data[2]);
   }
 
-  T constexpr x()
+  T constexpr x() const
   {
     return SIMPLArray<T, 3>::operator[](0);
   }
-  T constexpr y()
+  T constexpr y() const
   {
     return SIMPLArray<T, 3>::operator[](1);
   }
-  T constexpr z()
+  T constexpr z() const
   {
     return SIMPLArray<T, 3>::operator[](2);
   }
@@ -209,11 +215,11 @@ public:
     this->setValue(1, data[1]);
   }
 
-  T x() const
+  T constexpr x() const
   {
     return SIMPLArray<T, 2>::operator[](0);
   }
-  T y() const
+  T constexpr y() const
   {
     return SIMPLArray<T, 2>::operator[](1);
   }
@@ -227,3 +233,71 @@ public:
 using FloatVec2Type = IVec2<float>;
 using IntVec2Type = IVec2<int>;
 using SizeVec2Type = IVec2<size_t>;
+
+// -----------------------------------------------------------------------------
+template <typename T> class IVec4 : public SIMPLArray<T, 4>
+{
+public:
+  IVec4(const IVec4&) = default;
+  IVec4(IVec4&&) noexcept = default;
+  IVec4& operator=(const IVec4&) = default;
+  IVec4& operator=(IVec4&&) noexcept = default;
+  ~IVec4() = default;
+
+  IVec4(T x = 0.0f, T y = 0.0f, T z = 0.0f, T w = 0.0f)
+  {
+    this->setValue(0, x);
+    this->setValue(1, y);
+    this->setValue(2, z);
+    this->setValue(3, w);
+  }
+
+  IVec4(std::array<T, 4> data)
+  {
+    this->setValue(0, data[0]);
+    this->setValue(1, data[1]);
+    this->setValue(2, data[2]);
+    this->setValue(3, data[3]);
+  }
+  IVec4(std::tuple<T, T> data)
+  {
+    this->setValue(0, std::get<0>(data));
+    this->setValue(1, std::get<1>(data));
+    this->setValue(2, std::get<2>(data));
+    this->setValue(3, std::get<3>(data));
+  }
+  IVec4(const T* data)
+  {
+    this->setValue(0, data[0]);
+    this->setValue(1, data[1]);
+    this->setValue(2, data[2]);
+    this->setValue(3, data[3]);
+  }
+
+  T constexpr x() const
+  {
+    return SIMPLArray<T, 4>::operator[](0);
+  }
+  T constexpr y() const
+  {
+    return SIMPLArray<T, 4>::operator[](1);
+  }
+  T constexpr z() const
+  {
+    return SIMPLArray<T, 4>::operator[](2);
+  }
+  T constexpr w() const
+  {
+    return SIMPLArray<T, 4>::operator[](3);
+  }
+
+  std::tuple<T, T> toTuple() const
+  {
+    return std::make_tuple(SIMPLArray<T, 4>::operator[](0), SIMPLArray<T, 4>::operator[](1), SIMPLArray<T, 4>::operator[](2), SIMPLArray<T, 4>::operator[](3));
+  }
+};
+
+using QuaternionType = IVec4<float>;
+using FloatVec4Type = IVec4<float>;
+using IntVec4Type = IVec4<int>;
+using SizeVec4Type = IVec4<size_t>;

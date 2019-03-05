@@ -430,34 +430,34 @@ public:
     // Create DataArray
 
     IDataArray::Pointer daSrc = createDataArray<uint8_t>(k_uint8ArrayName, tupleDims, cDims);
-    amSrc->insert_or_assign(daSrc);
+    amSrc->insertOrAssign(daSrc);
 
     daSrc = createDataArray<int8_t>(k_int8ArrayName, tupleDims, cDims);
-    amSrc->insert_or_assign(daSrc);
+    amSrc->insertOrAssign(daSrc);
 
     daSrc = createDataArray<uint16_t>(k_uint16ArrayName, tupleDims, cDims);
-    amSrc->insert_or_assign(daSrc);
+    amSrc->insertOrAssign(daSrc);
 
     daSrc = createDataArray<int16_t>(k_int16ArrayName, tupleDims, cDims);
-    amSrc->insert_or_assign(daSrc);
+    amSrc->insertOrAssign(daSrc);
 
     daSrc = createDataArray<uint32_t>(k_uint32ArrayName, tupleDims, cDims);
-    amSrc->insert_or_assign(daSrc);
+    amSrc->insertOrAssign(daSrc);
 
     daSrc = createDataArray<int32_t>(k_int32ArrayName, tupleDims, cDims);
-    amDst->insert_or_assign(daSrc);
+    amDst->insertOrAssign(daSrc);
 
     daSrc = createDataArray<uint64_t>(k_uint64ArrayName, tupleDims, cDims);
-    amDst->insert_or_assign(daSrc);
+    amDst->insertOrAssign(daSrc);
 
     daSrc = createDataArray<int64_t>(k_int64ArrayName, tupleDims, cDims);
-    amDst->insert_or_assign(daSrc);
+    amDst->insertOrAssign(daSrc);
 
     daSrc = createDataArray<float>(k_floatArrayName, tupleDims, cDims);
-    amDst->insert_or_assign(daSrc);
+    amDst->insertOrAssign(daSrc);
 
     daSrc = createDataArray<double>(k_doubleArrayName, tupleDims, cDims);
-    amDst->insert_or_assign(daSrc);
+    amDst->insertOrAssign(daSrc);
 
     // Run test cases
 

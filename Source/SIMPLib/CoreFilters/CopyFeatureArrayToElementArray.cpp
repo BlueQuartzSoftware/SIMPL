@@ -301,7 +301,7 @@ void CopyFeatureArrayToElementArray::execute()
   {
     p->setName(getCreatedArrayName());
     AttributeMatrix::Pointer am = getDataContainerArray()->getAttributeMatrix(getFeatureIdsArrayPath());
-    am->insert_or_assign(p);
+    am->insertOrAssign(p);
   }
 
 }

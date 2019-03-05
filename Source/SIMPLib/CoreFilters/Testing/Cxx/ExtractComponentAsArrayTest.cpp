@@ -80,7 +80,7 @@ public:
     da->setComponent(0, 1, 2);
     da->setComponent(1, 0, 3);
     da->setComponent(1, 1, 4);
-    am->insert_or_assign(da);
+    am->insertOrAssign(da);
 
     return dca;
   }

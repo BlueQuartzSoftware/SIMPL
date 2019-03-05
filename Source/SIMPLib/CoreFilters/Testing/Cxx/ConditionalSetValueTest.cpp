@@ -54,7 +54,7 @@
 
 #define CREATE_DATA_ARRAY(type, attrMat, tDims, cDims, initVal, comps, err)                                                                                                                            \
   DataArray<type>::Pointer _##type##_##comps##_##attrMat##Array = DataArray<type>::CreateArray(tDims, cDims, #type #comps, true);                                                                      \
-  err = attrMat->insert_or_assign(_##type##_##comps##_##attrMat##Array);                                                                                                                               \
+  err = attrMat->insertOrAssign(_##type##_##comps##_##attrMat##Array);                                                                                                                                 \
   _##type##_##comps##_##attrMat##Array->initializeWithValue(initVal);                                                                                                                                  \
   DREAM3D_REQUIRE(err >= 0);
 
@@ -192,7 +192,7 @@ public:
     // this is the conditional array
     QString name = "ConditionalArray";
     BoolArrayType::Pointer condArrayPtr = BoolArrayType::CreateArray(tDims, cDims, name);
-    attrMat->insert_or_assign(condArrayPtr);
+    attrMat->insertOrAssign(condArrayPtr);
     condArrayPtr->initializeWithValue(true);
     // Set some of the values to false int he conditional array
     bool* condArray = condArrayPtr->getPointer(0);

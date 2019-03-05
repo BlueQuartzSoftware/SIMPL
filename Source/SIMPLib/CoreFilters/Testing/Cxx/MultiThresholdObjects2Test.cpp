@@ -109,8 +109,8 @@ public:
       datai->setValue(i, inum); // int array
       inum += 1;
     }
-    am->insert_or_assign(dataf); // float array
-    am->insert_or_assign(datai); // int array
+    am->insertOrAssign(dataf); // float array
+    am->insertOrAssign(datai); // int array
     vdc->addAttributeMatrix(am);
     dca->addDataContainer(vdc);
 

@@ -107,8 +107,8 @@ public:
       data1->setValue(i, inum); // int array
       inum += 1;
     }
-    am->insert_or_assign(data);  // float array
-    am->insert_or_assign(data1); // int array
+    am->insertOrAssign(data);  // float array
+    am->insertOrAssign(data1); // int array
     vdc->addAttributeMatrix(am);
     dca->addDataContainer(vdc);
 

@@ -159,7 +159,7 @@ void BuildNewDream3dFile()
     StatsDataArray::Pointer p = StatsDataArray::New();
     m_StatsDataArray = p.get();
     m_StatsDataArray->fillArrayWithNewStatsData(cellEnsembleAttrMat->getNumberOfTuples(), m_PhaseTypes);
-    cellEnsembleAttrMat->insert_or_assign(p);
+    cellEnsembleAttrMat->insertOrAssign(p);
   }
 
   StatsDataArray& statsDataArray = *m_StatsDataArray;

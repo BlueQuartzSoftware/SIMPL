@@ -97,8 +97,8 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable, public IDataStructureC
   PYB11_PROPERTY(QVector<size_t> TupleDimensions READ getTupleDimensions WRITE setTupleDimensions)
 
   PYB11_METHOD(bool doesAttributeArrayExist ARGS Name)
-  PYB11_METHOD(bool addAttributeArray OVERLOAD const.QString.&,Name IDataArray::Pointer,Data)
   PYB11_METHOD(bool addAttributeArray OVERLOAD IDataArray::Pointer,Data)
+  PYB11_METHOD(bool insertOrAssign ARGS IDataArray::Pointer)
 
   PYB11_METHOD(IDataArray removeAttributeArray ARGS Name)
   PYB11_METHOD(int renameAttributeArray ARGS OldName NewName OverWrite)
@@ -237,12 +237,12 @@ public:
     }
 
     /**
-     * @brief This function will insert the IDataArra into the AttributeMatrix if one does not exist with the name
+     * @brief This function will insert the IDataArray into the AttributeMatrix if one does not exist with the name
      * or replace an existing IDataArray that has the same name assuming that the number of tuples is a match.
-     * @param data
+     * @param data The IDataArray object to add to the the AttributeMatrix
      * @return
      */
-    inline bool insert_or_assign(const IDataArray::Pointer& data)
+    inline bool insertOrAssign(const IDataArray::Pointer& data)
     {
       if(getNumberOfTuples() != data->getNumberOfTuples())
       {
@@ -250,7 +250,7 @@ public:
         qDebug() << "getNumberOfTuples(): " << getNumberOfTuples() << "  data->getNumberOfTuples(): " << data->getNumberOfTuples();
         return false;
       }
-      if(doesAttributeArrayExist(data->getName()))
+      if(contains(data))
       {
         removeAttributeArray(data->getName());
       }

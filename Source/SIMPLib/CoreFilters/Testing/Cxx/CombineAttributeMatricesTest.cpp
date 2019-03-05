@@ -54,7 +54,7 @@
 
 #define CREATE_DATA_ARRAY(type, attrMat, tDims, cDims, initVal, name, err)                                                                                                                             \
   DataArray<type>::Pointer name##Array = DataArray<type>::CreateArray(tDims, cDims, name, true);                                                                                                       \
-  err = attrMat->insert_or_assign(name##Array);                                                                                                                                                        \
+  err = attrMat->insertOrAssign(name##Array);                                                                                                                                                          \
   name##Array->initializeWithValue(initVal);                                                                                                                                                           \
   DREAM3D_REQUIRE(err >= 0);
 

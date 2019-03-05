@@ -525,7 +525,7 @@ AttributeMatrix::Pointer AttributeMatrix::deepCopy(bool forceNoAllocate)
     {
       return AttributeMatrix::NullPointer();
     }
-    newAttrMat->insert_or_assign(new_d);
+    newAttrMat->insertOrAssign(new_d);
   }
 
   return newAttrMat;

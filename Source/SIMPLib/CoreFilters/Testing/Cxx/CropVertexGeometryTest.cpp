@@ -144,7 +144,7 @@ public:
     // Create DataArray used for geometry creation
 
     FloatArrayType::Pointer daVert = createDataArray<float>(k_VertexCoordinatesDAName, vertices, dims, m_Dims3);
-    vertexAM->insert_or_assign(daVert);
+    vertexAM->insertOrAssign(daVert);
 
     // Manually create cropped DataArray for comparison
 
@@ -159,7 +159,7 @@ public:
     {
       da->setValue(i, i + 0.5f);
     }
-    nonVertexAM->insert_or_assign(da);
+    nonVertexAM->insertOrAssign(da);
 
     // Create Geometry
 
