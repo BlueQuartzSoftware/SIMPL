@@ -209,24 +209,6 @@ void AbstractIOFileWidget::setupMenuField()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool AbstractIOFileWidget::verifyPathExists(const QString& filePath, QLineEdit* lineEdit)
-{
-  QFileInfo fileinfo(filePath);
-  SVStyle* style = SVStyle::Instance();
-  if(!fileinfo.exists())
-  {
-    style->LineEditErrorStyle(lineEdit);
-  }
-  else
-  {
-    style->LineEditClearStyle(lineEdit);
-  }
-  return fileinfo.exists();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void AbstractIOFileWidget::on_m_LineEdit_editingFinished()
 {
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
@@ -243,7 +225,7 @@ void AbstractIOFileWidget::on_m_LineEdit_editingFinished()
     absPathLabel->hide();
   }
 
-  verifyPathExists(path, m_LineEdit);
+  QtSFileUtils::VerifyPathExists(path, m_LineEdit);
   m_CurrentText = m_LineEdit->text();
   emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }
@@ -270,7 +252,7 @@ void AbstractIOFileWidget::on_m_LineEdit_textChanged(const QString& text)
     absPathLabel->setText(inputPath);
   }
 
-  if(hasValidFilePath(inputPath))
+  if(QtSFileUtils::HasValidFilePath(inputPath))
   {
     m_ShowFileAction->setEnabled(true);
   }
@@ -303,7 +285,7 @@ void AbstractIOFileWidget::on_m_LineEdit_fileDropped(const QString& text)
 
   m_LineEdit->setText(text);
   // Set/Remove the red outline if the file does exist
-  verifyPathExists(inputPath, m_LineEdit);
+  QtSFileUtils::VerifyPathExists(inputPath, m_LineEdit);
 
   emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }
