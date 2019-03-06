@@ -55,6 +55,7 @@ public:
   using size_type = size_t;
   using value_type = T;
   using reference = T&;
+  using const_reference = const T&;
   using iterator_category = std::input_iterator_tag;
   using pointer = T*;
   using difference_type = value_type;
@@ -67,7 +68,7 @@ public:
     return m_Array[index];
   }
 
-  inline const T& operator[](size_type index) const
+  inline const_reference operator[](size_type index) const
   {
     return m_Array[index];
   }
@@ -78,7 +79,7 @@ public:
     return m_Array[index];
   }
 
-  inline const T& at(size_type index) const
+  inline const_reference at(size_type index) const
   {
     assert(index < Dimension);
     return m_Array[index];
@@ -104,7 +105,7 @@ public:
     return m_Array.cend();
   }
 
-  value_type* data()
+  pointer data()
   {
     return m_Array.data();
   }
@@ -127,6 +128,7 @@ private:
 // -----------------------------------------------------------------------------
 template <typename T> class IVec3 : public SIMPLArray<T, 3>
 {
+  using ParentType = SIMPLArray<T, 3>;
 public:
   IVec3(const IVec3&) = default;
   IVec3(IVec3&&) noexcept = default;
@@ -160,22 +162,22 @@ public:
     this->setValue(2, data[2]);
   }
 
-  T constexpr x() const
+  inline T x()
   {
-    return SIMPLArray<T, 3>::operator[](0);
+    return ParentType::operator[](0);
   }
-  T constexpr y() const
+  inline T y()
   {
-    return SIMPLArray<T, 3>::operator[](1);
+    return ParentType::operator[](1);
   }
-  T constexpr z() const
+  inline T z()
   {
-    return SIMPLArray<T, 3>::operator[](2);
+    return ParentType::operator[](2);
   }
 
   std::tuple<T, T, T> toTuple() const
   {
-    return std::make_tuple(SIMPLArray<T, 3>::operator[](0), SIMPLArray<T, 3>::operator[](1), SIMPLArray<T, 3>::operator[](2));
+    return std::make_tuple(x(), y(), z());
   }
 };
 
@@ -186,6 +188,7 @@ using SizeVec3Type = IVec3<size_t>;
 // -----------------------------------------------------------------------------
 template <typename T> class IVec2 : public SIMPLArray<T, 2>
 {
+  using ParentType = SIMPLArray<T, 2>;
 public:
   IVec2(const IVec2&) = default;
   IVec2(IVec2&&) noexcept = default;
@@ -215,18 +218,18 @@ public:
     this->setValue(1, data[1]);
   }
 
-  T constexpr x() const
+  inline T x()
   {
-    return SIMPLArray<T, 2>::operator[](0);
+    return ParentType::operator[](0);
   }
-  T constexpr y() const
+  inline T y()
   {
-    return SIMPLArray<T, 2>::operator[](1);
+    return ParentType::operator[](1);
   }
 
   std::tuple<T, T> toTuple() const
   {
-    return std::make_tuple(SIMPLArray<T, 2>::operator[](0), SIMPLArray<T, 2>::operator[](1));
+    return std::make_tuple(x(), y());
   }
 };
 
@@ -237,6 +240,7 @@ using SizeVec2Type = IVec2<size_t>;
 // -----------------------------------------------------------------------------
 template <typename T> class IVec4 : public SIMPLArray<T, 4>
 {
+  using ParentType = SIMPLArray<T, 4>;
 public:
   IVec4(const IVec4&) = default;
   IVec4(IVec4&&) noexcept = default;
@@ -274,26 +278,26 @@ public:
     this->setValue(3, data[3]);
   }
 
-  T constexpr x() const
+  inline T x()
   {
-    return SIMPLArray<T, 4>::operator[](0);
+    return ParentType::operator[](0);
   }
-  T constexpr y() const
+  inline T y()
   {
-    return SIMPLArray<T, 4>::operator[](1);
+    return ParentType::operator[](1);
   }
-  T constexpr z() const
+  inline T z()
   {
-    return SIMPLArray<T, 4>::operator[](2);
+    return ParentType::operator[](2);
   }
-  T constexpr w() const
+  inline T w()
   {
-    return SIMPLArray<T, 4>::operator[](3);
+    return ParentType::operator[](3);
   }
 
   std::tuple<T, T> toTuple() const
   {
-    return std::make_tuple(SIMPLArray<T, 4>::operator[](0), SIMPLArray<T, 4>::operator[](1), SIMPLArray<T, 4>::operator[](2), SIMPLArray<T, 4>::operator[](3));
+    return std::make_tuple(x(), y(), z(), w());
   }
 };
 
