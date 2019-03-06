@@ -487,7 +487,7 @@ void ArrayCalculator::execute()
     if(nullptr != createdAM)
     {
       resultTypeArray->setName(m_CalculatedArray.getDataArrayName());
-      createdAM->addAttributeArray(resultTypeArray->getName(), resultTypeArray);
+      createdAM->insertOrAssign(resultTypeArray);
     }
   }
   else

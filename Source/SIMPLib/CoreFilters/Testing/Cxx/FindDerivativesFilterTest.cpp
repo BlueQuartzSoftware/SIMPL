@@ -127,37 +127,37 @@ public:
     {
       DoubleArrayType::Pointer dblArray = DoubleArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_D");
       dblArray->initializeWithValue(5);
-      am->addAttributeArray("TEST_D", dblArray);
+      am->insertOrAssign(dblArray);
       FloatArrayType::Pointer fltArray = FloatArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_F");
       fltArray->initializeWithValue(5);
-      am->addAttributeArray("TEST_F", fltArray);
+      am->insertOrAssign(fltArray);
       Int8ArrayType::Pointer int8Array = Int8ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I8");
       int8Array->initializeWithValue(5);
-      am->addAttributeArray("TEST_I8", int8Array);
+      am->insertOrAssign(int8Array);
       UInt8ArrayType::Pointer uint8Array = UInt8ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI8");
       uint8Array->initializeWithValue(5);
-      am->addAttributeArray("TEST_UI8", uint8Array);
+      am->insertOrAssign(uint8Array);
       Int16ArrayType::Pointer int16Array = Int16ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I16");
       int16Array->initializeWithValue(5);
-      am->addAttributeArray("TEST_I16", int16Array);
+      am->insertOrAssign(int16Array);
       UInt16ArrayType::Pointer uint16Array = UInt16ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI16");
       uint16Array->initializeWithValue(5);
-      am->addAttributeArray("TEST_UI16", uint16Array);
+      am->insertOrAssign(uint16Array);
       Int32ArrayType::Pointer int32Array = Int32ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I32");
       int32Array->initializeWithValue(5);
-      am->addAttributeArray("TEST_I32", int32Array);
+      am->insertOrAssign(int32Array);
       UInt32ArrayType::Pointer uint32Array = UInt32ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI32");
       uint32Array->initializeWithValue(5);
-      am->addAttributeArray("TEST_UI32", uint32Array);
+      am->insertOrAssign(uint32Array);
       Int64ArrayType::Pointer int64Array = Int64ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I64");
       int64Array->initializeWithValue(5);
-      am->addAttributeArray("TEST_I64", int64Array);
+      am->insertOrAssign(int64Array);
       UInt64ArrayType::Pointer uint64Array = UInt64ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI64");
       uint64Array->initializeWithValue(5);
-      am->addAttributeArray("TEST_UI64", uint64Array);
+      am->insertOrAssign(uint64Array);
       BoolArrayType::Pointer boolArray = BoolArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_BOOL");
       boolArray->initializeWithZeros();
-      am->addAttributeArray("TEST_BOOL", boolArray);
+      am->insertOrAssign(boolArray);
     }
   }
 
@@ -169,16 +169,16 @@ public:
     AttributeMatrix::Pointer attrMat;
     QString ss = QObject::tr("AttrMatType%1").arg(0);
     attrMat = AttributeMatrix::New(tDimsVert, ss, AttributeMatrix::Type::Vertex);
-    m->addAttributeMatrix(ss, attrMat);
+    m->addAttributeMatrix(attrMat);
     ss = QObject::tr("AttrMatType%1").arg(1);
     attrMat = AttributeMatrix::New(tDimsVert, ss, AttributeMatrix::Type::Edge);
-    m->addAttributeMatrix(ss, attrMat);
+    m->addAttributeMatrix(attrMat);
     ss = QObject::tr("AttrMatType%1").arg(2);
     attrMat = AttributeMatrix::New(tDimsVert, ss, AttributeMatrix::Type::Face);
-    m->addAttributeMatrix(ss, attrMat);
+    m->addAttributeMatrix(attrMat);
     ss = QObject::tr("AttrMatType%1").arg(3);
     attrMat = AttributeMatrix::New(tDimsCell, ss, AttributeMatrix::Type::Cell);
-    m->addAttributeMatrix(ss, attrMat);
+    m->addAttributeMatrix(attrMat);
   }
 
   // -----------------------------------------------------------------------------
@@ -205,7 +205,7 @@ public:
 
     image->setDimensions(std::make_tuple(10, 10, 10));
     image->setOrigin(std::make_tuple(0.0f, 0.0f, 0.0f));
-    image->setResolution(std::make_tuple(1.0f, 1.0f, 1.0f));
+    image->setSpacing(std::make_tuple(1.0f, 1.0f, 1.0f));
     rectGrid->setDimensions(std::make_tuple(10, 10, 10));
     FloatArrayType::Pointer xBounds = FloatArrayType::CreateArray(11, SIMPL::Geometry::xBoundsList);
     FloatArrayType::Pointer yBounds = FloatArrayType::CreateArray(11, SIMPL::Geometry::yBoundsList);

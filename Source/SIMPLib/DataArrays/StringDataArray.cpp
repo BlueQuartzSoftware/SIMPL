@@ -50,12 +50,11 @@ StringDataArray::StringDataArray()
 //
 // -----------------------------------------------------------------------------
 StringDataArray::StringDataArray(size_t numTuples, const QString& name, bool allocate)
-: _ownsData(true)
+: IDataArray(name)
+, _ownsData(true)
 {
-  // if (allocate == true)
-  {
-    m_Array.resize(numTuples);
-  }
+  m_Array.resize(numTuples);
+  setName(name);
 }
 
 // -----------------------------------------------------------------------------

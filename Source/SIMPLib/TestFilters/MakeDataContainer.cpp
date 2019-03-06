@@ -130,7 +130,7 @@ void MakeDataContainer::dataCheck()
   }
 
   // ImageGeom::Pointer image = ImageGeom::CreateGeometry("TestImageGeom");
-  // image->setResolution(0.1f, 0.2f, 0.3f);
+  // image->setSpacing(0.1f, 0.2f, 0.3f);
   // image->setOrigin(100.3f, 987.234f, 0.0f);
   // image->setDimensions(64, 64, 64);
   // m->setGeometry(image);

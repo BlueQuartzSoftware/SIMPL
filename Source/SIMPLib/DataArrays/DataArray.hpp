@@ -1,3 +1,4 @@
+
 /* ============================================================================
  * Copyright (c) 2009-2016 BlueQuartz Software, LLC
  *
@@ -93,29 +94,57 @@ public:
 
   DataArray() = default;
 
-  DataArray(size_t ntuples, const QString& name)
-  : IDataArray(name)
+  /**
+   * @brief DataArray
+   * @param ntuples
+   * @param name
+   * @param allocate
+   */
+  DataArray(size_t ntuples, const std::string& name, bool allocate = true)
+  : IDataArray(QString::fromStdString(name))
   {
-    m_Array = resizeAndExtend(ntuples);
+    m_NumComponents = 1;
+    if(allocate)
+    {
+      resizeTuples(ntuples);
+    }
+    else
+    {
+      m_Size = ntuples;
+      m_MaxId = (ntuples == 0) ? 0 : ntuples - 1;
+      m_NumTuples = ntuples;
+      m_NumComponents = 1;
+    }
   }
 
-  DataArray(size_t ntuples, comp_dims_type cdims, const QString& name)
-  : IDataArray(name)
+  /**
+   * @brief DataArray
+   * @param ntuples
+   * @param cdims
+   * @param name
+   * @param allocate
+   */
+  DataArray(size_t ntuples, comp_dims_type cdims, const std::string& name, bool allocate = true)
+  : IDataArray(QString::fromStdString(name))
   , m_NumTuples(ntuples)
   , m_CompDims(std::move(cdims))
   {
     m_NumComponents = std::accumulate(m_CompDims.begin(), m_CompDims.end(), 1, std::multiplies<T>());
     m_InitValue = static_cast<T>(0);
-    m_Array = resizeAndExtend(m_NumTuples * m_NumComponents);
+    if(allocate)
+    {
+      m_Array = resizeAndExtend(m_NumTuples * m_NumComponents);
+    }
+    else
+    {
+      m_Size = m_NumTuples * m_NumComponents;
+      m_MaxId = (m_Size == 0) ? 0 : m_Size - 1;
+    }
   }
-  //
+
   ~DataArray() override
   {
-    // Do not delete data the DataArray does not own
-    if((nullptr != m_Array) && (true == m_OwnsData) && (true == m_IsAllocated))
-    {
-      deallocate();
-    }
+    clear();
   }
 
   DataArray(const DataArray&) = default;           // Copy Constructor Default
@@ -666,13 +695,13 @@ public:
 
   inline reference operator[](size_type index)
   {
-    assert((index < m_Size));
+    // assert(index < m_Size);
     return m_Array[index];
   }
 
   inline const T& operator[](size_type index) const
   {
-    assert(index < m_Size);
+    // assert(index < m_Size);
     return m_Array[index];
   }
 
@@ -762,12 +791,19 @@ public:
     resizeAndExtend(m_Size + 1);
     m_Array[m_MaxId] = val;
   }
+  /**
+   * @brief push_back
+   * @param val
+   */
   void push_back(value_type&& val)
   {
     resizeAndExtend(m_Size + 1);
     m_Array[m_MaxId] = val;
   }
 
+  /**
+   * @brief pop_back
+   */
   void pop_back()
   {
     resizeAndExtend(m_Size - 1);
@@ -813,6 +849,22 @@ public:
   }
 
   // =================================== END STL COMPATIBLE INTERFACe ===================================================
+
+  /**
+   * @brief resizeTuples
+   * @param numTuples
+   * @return
+   */
+  int32_t resizeTuples(size_type numTuples) override
+  {
+    if(resizeAndExtend(numTuples * getNumberOfComponents()) != nullptr)
+    {
+      m_NumTuples = numTuples;
+      return 1;
+    }
+    clear();
+    return 0;
+  }
 
   /**
    * @brief GetTypeName Returns a string representation of the type of data that is stored by this class. This
@@ -1959,6 +2011,11 @@ protected:
    */
   void deallocate()
   {
+    if(!m_OwnsData)
+    {
+      clear();
+      return;
+    }
     // We are going to splat 0xABABAB across the first value of the array as a debugging aid
     auto cptr = reinterpret_cast<unsigned char*>(m_Array);
     if(nullptr != cptr)
@@ -2007,12 +2064,6 @@ protected:
     m_Array = nullptr;
     m_IsAllocated = false;
   }
-
-  int32_t resizeTuples(size_type n) override
-  {
-    return (resizeAndExtend(n) == nullptr) ? 0 : 1;
-  }
-
   /**
    * @brief Resizes the internal array
    * @param size The new size of the internal array

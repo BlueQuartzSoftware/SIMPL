@@ -135,7 +135,7 @@ public:
     DataContainerArray::Pointer dca = DataContainerArray::New();
     DataContainer::Pointer dc = DataContainer::New(DataContainerName);
     AttributeMatrix::Pointer am = AttributeMatrix::New(QVector<size_t>(1, data.numberOfLines), AttributeMatrixName, AttributeMatrix::Type::Cell);
-    dc->addAttributeMatrix(AttributeMatrixName, am);
+    dc->addAttributeMatrix(am);
     dca->addDataContainer(dc);
 
     // Now instantiate the DxWriter Filter from the FilterManager

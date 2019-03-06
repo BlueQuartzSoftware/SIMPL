@@ -96,14 +96,13 @@ SetOriginResolutionImageGeom::SetOriginResolutionImageGeom()
 , m_ChangeOrigin(false)
 , m_ChangeResolution(false)
 {
-  m_Origin.x = 0.0f;
-  m_Origin.y = 0.0f;
-  m_Origin.z = 0.0f;
+  m_Origin[0] = 0.0f;
+  m_Origin[1] = 0.0f;
+  m_Origin[2] = 0.0f;
 
-  m_Resolution.x = 1.0f;
-  m_Resolution.y = 1.0f;
-  m_Resolution.z = 1.0f;
-
+  m_Spacing[0] = 1.0f;
+  m_Spacing[1] = 1.0f;
+  m_Spacing[2] = 1.0f;
 }
 
 // -----------------------------------------------------------------------------
@@ -128,9 +127,9 @@ void SetOriginResolutionImageGeom::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Origin", Origin, FilterParameter::Parameter, SetOriginResolutionImageGeom));
 
   linkedProps.clear();
-  linkedProps << "Resolution";
-  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Change Resolution", ChangeResolution, FilterParameter::Parameter, SetOriginResolutionImageGeom, linkedProps));
-  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Resolution", Resolution, FilterParameter::Parameter, SetOriginResolutionImageGeom));
+  linkedProps << "Spacing";
+  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Change Spacing", ChangeResolution, FilterParameter::Parameter, SetOriginResolutionImageGeom, linkedProps));
+  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Spacing", Spacing, FilterParameter::Parameter, SetOriginResolutionImageGeom));
 
   setFilterParameters(parameters);
 }
@@ -144,7 +143,7 @@ void SetOriginResolutionImageGeom::readFilterParameters(AbstractFilterParameters
   setChangeOrigin(reader->readValue("ChangeOrigin", getChangeOrigin()));
   setChangeResolution(reader->readValue("ChangeResolution", getChangeResolution()));
   setOrigin(reader->readFloatVec3("Origin", getOrigin()));
-  setResolution(reader->readFloatVec3("Resolution", getResolution()));
+  setSpacing(reader->readFloatVec3("Spacing", getSpacing()));
   setDataContainerName(reader->readDataArrayPath("DataContainerName", getDataContainerName()));
   reader->closeFilterGroup();
 }
@@ -171,11 +170,11 @@ void SetOriginResolutionImageGeom::dataCheck()
   }
   if(getChangeOrigin())
   {
-    image->setOrigin(std::make_tuple(m_Origin.x, m_Origin.y, m_Origin.z));
+    image->setOrigin(std::make_tuple(m_Origin[0], m_Origin[1], m_Origin[2]));
   }
   if(getChangeResolution())
   {
-    image->setResolution(std::make_tuple(m_Resolution.x, m_Resolution.y, m_Resolution.z));
+    image->setSpacing(std::make_tuple(m_Spacing[0], m_Spacing[1], m_Spacing[2]));
   }
 }
 
@@ -276,5 +275,5 @@ const QString SetOriginResolutionImageGeom::getSubGroupName() const
 // -----------------------------------------------------------------------------
 const QString SetOriginResolutionImageGeom::getHumanLabel() const
 {
-  return "Set Origin & Resolution (Image)";
+  return "Set Origin & Spacing (Image)";
 }

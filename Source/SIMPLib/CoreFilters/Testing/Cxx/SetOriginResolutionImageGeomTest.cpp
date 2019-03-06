@@ -55,8 +55,8 @@
 
 namespace SetOriginResolutionImageGeometryTest
 {
-const FloatVec3_t ORIGIN = FloatVec3_t{1, 2, 3};
-const FloatVec3_t RESOLUTION = FloatVec3_t{4, 5, 6};
+const FloatVec3Type ORIGIN = FloatVec3Type{1, 2, 3};
+const FloatVec3Type RESOLUTION = FloatVec3Type{4, 5, 6};
 }
 
 class SetOriginResolutionImageGeomTest
@@ -229,7 +229,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     value.setValue(SetOriginResolutionImageGeometryTest::RESOLUTION);
-    propWasSet = filter->setProperty("Resolution", value);
+    propWasSet = filter->setProperty("Spacing", value);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
   }
 
@@ -252,11 +252,11 @@ public:
 
     DREAM3D_REQUIRE(imgGeom != nullptr);
 
-    float origin[3];
+    FloatVec3Type origin;
     imgGeom->getOrigin(origin);
-    DREAM3D_REQUIRE_EQUAL(origin[0], SetOriginResolutionImageGeometryTest::ORIGIN.x);
-    DREAM3D_REQUIRE_EQUAL(origin[1], SetOriginResolutionImageGeometryTest::ORIGIN.y);
-    DREAM3D_REQUIRE_EQUAL(origin[2], SetOriginResolutionImageGeometryTest::ORIGIN.z);
+    DREAM3D_REQUIRE_EQUAL(origin[0], SetOriginResolutionImageGeometryTest::ORIGIN[0]);
+    DREAM3D_REQUIRE_EQUAL(origin[1], SetOriginResolutionImageGeometryTest::ORIGIN[1]);
+    DREAM3D_REQUIRE_EQUAL(origin[2], SetOriginResolutionImageGeometryTest::ORIGIN[2]);
   }
 
   // -----------------------------------------------------------------------------
@@ -281,11 +281,11 @@ public:
     float xRes = 0.0f;
     float yRes = 0.0f;
     float zRes = 0.0f;
-    std::tie(xRes, yRes, zRes) = imgGeom->getResolution();
+    std::tie(xRes, yRes, zRes) = imgGeom->getSpacing();
 
-    DREAM3D_REQUIRE_EQUAL(xRes, SetOriginResolutionImageGeometryTest::RESOLUTION.x);
-    DREAM3D_REQUIRE_EQUAL(yRes, SetOriginResolutionImageGeometryTest::RESOLUTION.y);
-    DREAM3D_REQUIRE_EQUAL(zRes, SetOriginResolutionImageGeometryTest::RESOLUTION.z);
+    DREAM3D_REQUIRE_EQUAL(xRes, SetOriginResolutionImageGeometryTest::RESOLUTION[0]);
+    DREAM3D_REQUIRE_EQUAL(yRes, SetOriginResolutionImageGeometryTest::RESOLUTION[1]);
+    DREAM3D_REQUIRE_EQUAL(zRes, SetOriginResolutionImageGeometryTest::RESOLUTION[2]);
   }
 
   // -----------------------------------------------------------------------------

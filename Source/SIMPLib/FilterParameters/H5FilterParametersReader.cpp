@@ -782,10 +782,10 @@ QVector<double> H5FilterParametersReader::readArray(const QString name, QVector<
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IntVec3_t H5FilterParametersReader::readIntVec3(const QString name, IntVec3_t defaultValue)
+IntVec3Type H5FilterParametersReader::readIntVec3(const QString name, IntVec3Type defaultValue)
 {
   int err = 0;
-  IntVec3_t v;
+  IntVec3Type v;
   err = QH5Lite::readPointerDataset<int32_t>(m_CurrentGroupId, name, reinterpret_cast<int32_t*>(&v));
   if(err < 0)
   {
@@ -798,10 +798,10 @@ IntVec3_t H5FilterParametersReader::readIntVec3(const QString name, IntVec3_t de
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatVec3_t H5FilterParametersReader::readFloatVec3(const QString name, FloatVec3_t defaultValue)
+FloatVec3Type H5FilterParametersReader::readFloatVec3(const QString name, FloatVec3Type defaultValue)
 {
   int err = 0;
-  FloatVec3_t v;
+  FloatVec3Type v;
   err = QH5Lite::readPointerDataset<float>(m_CurrentGroupId, name, reinterpret_cast<float*>(&v));
   if(err < 0)
   {

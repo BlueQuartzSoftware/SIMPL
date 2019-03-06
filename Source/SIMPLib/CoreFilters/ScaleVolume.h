@@ -52,7 +52,7 @@ class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
     PYB11_PROPERTY(DataArrayPath SurfaceDataContainerName READ getSurfaceDataContainerName WRITE setSurfaceDataContainerName)
     PYB11_PROPERTY(bool ApplyToVoxelVolume READ getApplyToVoxelVolume WRITE setApplyToVoxelVolume)
     PYB11_PROPERTY(bool ApplyToSurfaceMesh READ getApplyToSurfaceMesh WRITE setApplyToSurfaceMesh)
-    PYB11_PROPERTY(FloatVec3_t ScaleFactor READ getScaleFactor WRITE setScaleFactor)
+    PYB11_PROPERTY(FloatVec3Type ScaleFactor READ getScaleFactor WRITE setScaleFactor)
 
   public:
     SIMPL_SHARED_POINTERS(ScaleVolume)
@@ -73,8 +73,8 @@ class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
     SIMPL_FILTER_PARAMETER(bool, ApplyToSurfaceMesh)
     Q_PROPERTY(bool ApplyToSurfaceMesh READ getApplyToSurfaceMesh WRITE setApplyToSurfaceMesh)
 
-    SIMPL_FILTER_PARAMETER(FloatVec3_t, ScaleFactor)
-    Q_PROPERTY(FloatVec3_t ScaleFactor READ getScaleFactor WRITE setScaleFactor)
+    SIMPL_FILTER_PARAMETER(FloatVec3Type, ScaleFactor)
+    Q_PROPERTY(FloatVec3Type ScaleFactor READ getScaleFactor WRITE setScaleFactor)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class

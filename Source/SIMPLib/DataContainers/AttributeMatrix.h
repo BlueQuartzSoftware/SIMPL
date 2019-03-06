@@ -96,8 +96,10 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable, public IDataStructureC
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
   PYB11_PROPERTY(QVector<size_t> TupleDimensions READ getTupleDimensions WRITE setTupleDimensions)
 
-  PYB11_METHOD(int addAttributeArray ARGS Name Array)
   PYB11_METHOD(bool doesAttributeArrayExist ARGS Name)
+  PYB11_METHOD(bool addAttributeArray OVERLOAD IDataArray::Pointer,Data)
+  PYB11_METHOD(bool insertOrAssign ARGS IDataArray::Pointer)
+
   PYB11_METHOD(IDataArray removeAttributeArray ARGS Name)
   PYB11_METHOD(int renameAttributeArray ARGS OldName NewName OverWrite)
   PYB11_METHOD(IDataArray::Pointer getAttributeArray OVERLOAD const.QString.&,Name)
@@ -219,12 +221,11 @@ public:
     SIMPL_INSTANCE_PROPERTY(AttributeMatrix::Type, Type)
 
     /**
-    * @brief Adds/overwrites the data for a named array
-    * @param name The name that the array will be known by
-    * @param data The IDataArray::Pointer that will hold the data
-    * @return error code if the addition did not work
-    */
-    inline bool addAttributeArray(IDataArray::Pointer data)
+     * @brief Adds the IDataArray to the AttributeMatrix.
+     * @param data The IDataArray::Pointer that will hold the data
+     * @return Bool: True if the addition happened, FALSE if an IDataArray with the same name already exists.
+     */
+    inline bool addAttributeArray(const IDataArray::Pointer& data)
     {
       if(getNumberOfTuples() != data->getNumberOfTuples())
       {
@@ -232,19 +233,28 @@ public:
         qDebug() << "getNumberOfTuples(): " << getNumberOfTuples() << "  data->getNumberOfTuples(): " << data->getNumberOfTuples();
       }
       Q_ASSERT(getNumberOfTuples() == data->getNumberOfTuples());
-
       return push_back(data);
     }
 
     /**
-     * @brief Inline call to addAttributeArray to avoid breaking old API
-     * @param name
-     * @param data
+     * @brief This function will insert the IDataArray into the AttributeMatrix if one does not exist with the name
+     * or replace an existing IDataArray that has the same name assuming that the number of tuples is a match.
+     * @param data The IDataArray object to add to the the AttributeMatrix
      * @return
      */
-    inline int addAttributeArray(const QString& name, IDataArray::Pointer data)
+    inline bool insertOrAssign(const IDataArray::Pointer& data)
     {
-      return addAttributeArray(data);
+      if(getNumberOfTuples() != data->getNumberOfTuples())
+      {
+        qDebug() << "AttributeMatrix::Name: " << getName() << "  dataArray::name:  " << data->getName() << " Type: " << data->getTypeAsString();
+        qDebug() << "getNumberOfTuples(): " << getNumberOfTuples() << "  data->getNumberOfTuples(): " << data->getNumberOfTuples();
+        return false;
+      }
+      if(contains(data))
+      {
+        removeAttributeArray(data->getName());
+      }
+      return push_back(data);
     }
 
     /**
@@ -696,7 +706,7 @@ public:
     virtual QString getInfoString(SIMPL::InfoStringFormat format);
 
   protected:
-    AttributeMatrix(QVector<size_t> tDims, const QString& name, AttributeMatrix::Type attrType);
+    AttributeMatrix(const QVector<size_t>& tDims, const QString& name, AttributeMatrix::Type attrType);
 
     /**
      * @brief writeXdmfAttributeData
@@ -722,7 +732,7 @@ public:
      * @param gridType
      * @return
      */
-    virtual QString writeXdmfAttributeDataHelper(int numComp, const QString& attrType, const QString& dataContainerName, IDataArray::Pointer array, const QString& centering, int precision,
+    virtual QString writeXdmfAttributeDataHelper(int numComp, const QString& attrType, const QString& dataContainerName, const IDataArray::Pointer& array, const QString& centering, int precision,
                                                  const QString& xdmfTypeName, const QString& hdfFileName, uint8_t gridType = 0);
 
   private:

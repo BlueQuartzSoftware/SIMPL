@@ -42,6 +42,7 @@
 #include <QtCore/QVector>
 
 #include "SIMPLib/Common/Observable.h"
+#include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
@@ -68,13 +69,15 @@ class SIMPLib_EXPORT DataContainer : public Observable, public IDataStructureCon
   // This line MUST be first when exposing a class and properties to Python
   // clang-format off
   PYB11_CREATE_BINDINGS(DataContainer)
-  PYB11_STATIC_CREATION(New ARGS QString)
+  PYB11_STATIC_CREATION(New OVERLOAD QString)
+  PYB11_STATIC_CREATION(New OVERLOAD DataArrayPath)
 
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
   PYB11_PROPERTY(IGeometry Geometry READ getGeometry WRITE setGeometry)
 
   PYB11_METHOD(QString getInfoString ARGS InfoStringFormat)
-  PYB11_METHOD(void addAttributeMatrix ARGS Name AttributeMatrix)
+  PYB11_METHOD(bool addAttributeMatrix ARGS AttributeMatrix)
+  PYB11_METHOD(bool insertOrAssign ARGS AttributeMatrix)
 
   PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix OVERLOAD const.QString.&,Name)
   PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix OVERLOAD const.DataArrayPath.&,Path)
@@ -168,18 +171,29 @@ public:
   virtual QString getInfoString(SIMPL::InfoStringFormat format);
 
   /**
-   * @brief Adds/overwrites the data for a named array
-   * @param name The name that the array will be known by
-   * @param data The IDataArray::Pointer that will hold the data
+   * @brief Adds the data for a named array. If an AttributeMatrix with the same
+   * name already exists in the DataContainer then the add will fail.
+   * @param matrix The IDataArray::Pointer that will hold the data
+   * @return Bool TRUE if the addition was successful, FALSE Otherwise.
    */
   inline bool addAttributeMatrix(const AttributeMatrixShPtr& matrix)
   {
     return push_back(matrix);
   }
 
-  inline bool addAttributeMatrix(const QString& name, const AttributeMatrixShPtr& matrix)
+  /**
+   * @brief This function will insert the AttributeMatrix into the DataContainer if one does not exist with the name
+   * or replace an existing AttributeMatrix that has the same name assuming that the number of tuples is a match.
+   * @param data The AttributeMatrix object to add to the the DataContainer
+   * @return
+   */
+  inline bool insertOrAssign(const AttributeMatrixShPtr& matrix)
   {
-    return addAttributeMatrix(matrix);
+    if(contains(matrix))
+    {
+      removeAttributeMatrix(matrix->getName());
+    }
+    return push_back(matrix);
   }
 
   /**
@@ -285,6 +299,17 @@ public:
    * @return A Shared Pointer to the AttributeMatrix
    */
   AttributeMatrixShPtr createNonPrereqAttributeMatrix(AbstractFilter* filter, const DataArrayPath& path, const QVector<size_t>& tDims, AttributeMatrix::Type amType, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID);
+
+  /**
+   * @brief createNonPrereqAttributeMatrix
+   * @param filter
+   * @param path
+   * @param tDims
+   * @param amType
+   * @param id
+   * @return
+   */
+  AttributeMatrixShPtr createNonPrereqAttributeMatrix(AbstractFilter* filter, const DataArrayPath& path, const SizeVec3Type& tDims, AttributeMatrix::Type amType, RenameDataPath::DataID_t id);
 
   /**
    * @brief createNonPrereqAttributeMatrix This method will create a new AttributeMatrix with the given tuple dimensions

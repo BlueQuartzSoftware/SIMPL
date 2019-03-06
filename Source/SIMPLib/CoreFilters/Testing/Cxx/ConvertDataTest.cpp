@@ -72,7 +72,7 @@ public:
     QVector<size_t> dims;
     dims.push_back(2);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix("AttributeMatrix", am);
+    dc->addAttributeMatrix(am);
 
     QVector<size_t> cdims;
     cdims.push_back(2);
@@ -120,7 +120,7 @@ public:
       break;
     }
     da->initializeWithZeros();
-    am->addAttributeArray("DataArray", da);
+    am->insertOrAssign(da);
 
     return dca;
   }

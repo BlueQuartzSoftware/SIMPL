@@ -104,9 +104,9 @@ InPlaceImageToDream3DDataFilter<PixelType, VDimension>
 	  tspacing[i] = spacing[i];
 	  tDims[i] = size[i];
   }
-  imageGeom->setOrigin(torigin[0], torigin[1], torigin[2]);
-  imageGeom->setResolution(tspacing[0], tspacing[1], tspacing[2]);
-  imageGeom->setDimensions(tDims[0], tDims[1], tDims[2]);
+  imageGeom->setOrigin(FloatVec3Type(torigin[0], torigin[1], torigin[2]));
+  imageGeom->setSpacing(FloatVec3Type(tspacing[0], tspacing[1], tspacing[2]));
+  imageGeom->setDimensions(SizeVec3Type(tDims[0], tDims[1], tDims[2]));
   dataContainer->setGeometry(imageGeom);
 }
 
@@ -177,7 +177,7 @@ InPlaceImageToDream3DDataFilter<PixelType, VDimension>
       ::memcpy(data->getPointer(0), reinterpret_cast<ValueType*>(inputPtr->GetBufferPointer()), imageGeom->getNumberOfElements() * sizeof(ValueType));
     }
   }
-  attrMat->addAttributeArray(m_DataArrayName.c_str(), data);
+  attrMat->insertOrAssign(data);
   outputPtr->Set(dataContainer);
 }
 

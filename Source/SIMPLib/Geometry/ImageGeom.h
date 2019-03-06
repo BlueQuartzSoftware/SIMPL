@@ -35,6 +35,7 @@
 
 #pragma once
 
+#include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Geometry/IGeometryGrid.h"
 
@@ -53,19 +54,19 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
 
   PYB11_CREATE_BINDINGS(ImageGeom SUPERCLASS IGeometryGrid)
   PYB11_STATIC_CREATION(CreateGeometry ARGS QString)
-  
+
   PYB11_ENUMERATION(ErrorType)
 
   PYB11_METHOD(void setDimensions OVERLOAD size_t,x size_t,y size_t,z)
-  PYB11_METHOD(SIMPL::Tuple3SVec getDimensions)
+  PYB11_METHOD(SIMPL::Tuple3SVec getDimensions OVERLOAD CONST_METHOD)
 
-  PYB11_METHOD(void setResolution OVERLOAD float,x float,y float,z)
-  PYB11_METHOD(SIMPL::Tuple3FVec getResolution OVERLOAD CONST_METHOD)
+  PYB11_METHOD(void setSpacing OVERLOAD float,x float,y float,z)
+  PYB11_METHOD(SIMPL::Tuple3FVec getSpacing OVERLOAD CONST_METHOD)
 
   PYB11_METHOD(size_t getXPoints)
   PYB11_METHOD(size_t getYPoints)
   PYB11_METHOD(size_t getZPoints)
-  
+
   PYB11_METHOD(void setOrigin OVERLOAD float,x float,y float,z)
   PYB11_METHOD(SIMPL::Tuple3FVec getOrigin OVERLOAD CONST_METHOD)
 
@@ -100,14 +101,24 @@ public:
   static Pointer CreateGeometry(const QString& name);
 
   /**
-   * @brief Sets/Gets the Resolution property
+   * @brief Sets/Gets the Spacing property
    */
-  SIMPL_INSTANCE_VEC3_PROPERTY(float, Resolution)
+  // SIMPL_INSTANCE_VEC3_PROPERTY(float, Spacing)
+  SIMPL::Tuple3FVec getSpacing() const;
+  void getSpacing(FloatVec3Type& spacing) const;
+  void setSpacing(const FloatVec3Type& spacing);
+  void setSpacing(FloatVec3Type& spacing);
+  void setSpacing(float x, float y, float z);
 
   /**
    * @brief Sets/Gets the Origin property
    */
-  SIMPL_INSTANCE_VEC3_PROPERTY(float, Origin)
+  // SIMPL_INSTANCE_VEC3_PROPERTY(float, Origin)
+  SIMPL::Tuple3FVec getOrigin() const;
+  void getOrigin(FloatVec3Type& origin) const;
+  void setOrigin(const FloatVec3Type& origin);
+  void setOrigin(FloatVec3Type& origin);
+  void setOrigin(float x, float y, float z);
 
   /**
    * @brief getBoundingBox
@@ -272,8 +283,13 @@ public:
   // -----------------------------------------------------------------------------
   // Inherited from IGeometryGrid
   // -----------------------------------------------------------------------------
+  SIMPL::Tuple3SVec getDimensions() const override;
+  void getDimensions(SizeVec3Type& dims) const;
 
-  SIMPL_INSTANCE_VEC3_PROPERTY_VO(size_t, Dimensions)
+  void setDimensions(const SizeVec3Type& dims) override;
+  void setDimensions(SizeVec3Type& dims) override;
+  void setDimensions(const SIMPL::Tuple3SVec& dims) override;
+  void setDimensions(size_t x, size_t y, size_t z);
 
   size_t getXPoints() override;
   size_t getYPoints() override;
@@ -388,6 +404,10 @@ protected:
 
 private:
   FloatArrayType::Pointer m_VoxelSizes;
+
+  FloatVec3Type m_Spacing;
+  FloatVec3Type m_Origin;
+  SizeVec3Type m_Dimensions;
 
   friend class FindImageDerivativesImpl;
 

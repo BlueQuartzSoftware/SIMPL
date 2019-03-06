@@ -133,10 +133,10 @@ public:
           cellDataArray->initializeTuple(i, &temp);
         }
 
-        cellAttr->addAttributeArray("CellData", cellDataArray);
-        cellAttr->addAttributeArray("FeatureIds", featureIds);
-        dc->addAttributeMatrix("Cell Attribute Matrix", cellAttr);
-        dc->addAttributeMatrix("Feature Attribute Matrix", featureAttr);
+        cellAttr->insertOrAssign(cellDataArray);
+        cellAttr->insertOrAssign(featureIds);
+        dc->addAttributeMatrix(cellAttr);
+        dc->addAttributeMatrix(featureAttr);
         dca->addDataContainer(dc);
 
         DataArrayPath path = DataArrayPath(dc->getName(), cellAttr->getName(), cellDataArray->getName());
@@ -224,10 +224,10 @@ public:
           cellDataArray->initializeTuple(i, &temp);
         }
 
-        cellAttr->addAttributeArray("CellData", cellDataArray);
-        cellAttr->addAttributeArray("FeatureIds", featureIds);
-        dc->addAttributeMatrix("Cell Attribute Matrix", cellAttr);
-        dc->addAttributeMatrix("Feature Attribute Matrix", featureAttr);
+        cellAttr->insertOrAssign(cellDataArray);
+        cellAttr->insertOrAssign(featureIds);
+        dc->addAttributeMatrix(cellAttr);
+        dc->addAttributeMatrix(featureAttr);
         dca->addDataContainer(dc);
 
         DataArrayPath path = DataArrayPath(dc->getName(), cellAttr->getName(), cellDataArray->getName());
@@ -305,9 +305,9 @@ public:
         featureIds->initializeTuple(14, &value);
         featureIds->initializeTuple(15, &value);
 
-        cellAttr->addAttributeArray("FeatureIds", featureIds);
-        dc->addAttributeMatrix("Cell Attribute Matrix", cellAttr);
-        dc->addAttributeMatrix("Feature Attribute Matrix", featureAttr);
+        cellAttr->insertOrAssign(featureIds);
+        dc->addAttributeMatrix(cellAttr);
+        dc->addAttributeMatrix(featureAttr);
         dca->addDataContainer(dc);
 
         DataArrayPath path = DataArrayPath(dc->getName(), cellAttr->getName(), featureIds->getName());

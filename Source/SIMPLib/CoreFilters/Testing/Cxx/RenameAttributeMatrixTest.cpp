@@ -126,7 +126,7 @@ public:
     QVector<size_t> dims = QVector<size_t>();
     dims.push_back(1);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix("AttributeMatrix", am);
+    dc->addAttributeMatrix(am);
 
     filter->setDataContainerArray(dca);
 
@@ -161,7 +161,7 @@ public:
     QVector<size_t> dims = QVector<size_t>();
     dims.push_back(1);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix("AttributeMatrix", am);
+    dc->addAttributeMatrix(am);
 
     filter->setDataContainerArray(dca);
 
@@ -198,7 +198,7 @@ public:
     QVector<size_t> dims = QVector<size_t>();
     dims.push_back(1);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix("AttributeMatrix", am);
+    dc->addAttributeMatrix(am);
 
     filter->setDataContainerArray(dca);
 
@@ -233,7 +233,7 @@ public:
     QVector<size_t> dims = QVector<size_t>();
     dims.push_back(1);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix("AttributeMatrix", am);
+    dc->addAttributeMatrix(am);
 
     filter->setDataContainerArray(dca);
 

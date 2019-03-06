@@ -140,7 +140,7 @@ public:
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer boundsAM = AttributeMatrix::New(m_Dims4, SIMPL::Defaults::CellAttributeMatrixName, AttributeMatrix::Type::Cell);
-    dc->addAttributeMatrix(SIMPL::Defaults::CellAttributeMatrixName, boundsAM);
+    dc->addAttributeMatrix(boundsAM);
 
     // Create Geometry
 
@@ -248,7 +248,7 @@ public:
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(m_Dims2, SIMPL::Defaults::VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
-    dc->addAttributeMatrix(SIMPL::Defaults::VertexAttributeMatrixName, vertexAM);
+    dc->addAttributeMatrix(vertexAM);
 
     // Create Geometry
 
@@ -320,10 +320,10 @@ public:
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(m_Dims2, SIMPL::Defaults::VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
-    dc->addAttributeMatrix(SIMPL::Defaults::VertexAttributeMatrixName, vertexAM);
+    dc->addAttributeMatrix(vertexAM);
 
     AttributeMatrix::Pointer elementAM = AttributeMatrix::New(m_Dims1, SIMPL::Defaults::CellAttributeMatrixName, AttributeMatrix::Type::Edge);
-    dc->addAttributeMatrix(SIMPL::Defaults::CellAttributeMatrixName, elementAM);
+    dc->addAttributeMatrix(elementAM);
 
     // Create Geometry
 
@@ -408,10 +408,10 @@ public:
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(m_Dims3, SIMPL::Defaults::VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
-    dc->addAttributeMatrix(SIMPL::Defaults::VertexAttributeMatrixName, vertexAM);
+    dc->addAttributeMatrix(vertexAM);
 
     AttributeMatrix::Pointer elementAM = AttributeMatrix::New(m_Dims1, SIMPL::Defaults::CellAttributeMatrixName, AttributeMatrix::Type::Face);
-    dc->addAttributeMatrix(SIMPL::Defaults::CellAttributeMatrixName, elementAM);
+    dc->addAttributeMatrix(elementAM);
 
     // Create Geometry
 
@@ -496,10 +496,10 @@ public:
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(m_Dims4, SIMPL::Defaults::VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
-    dc->addAttributeMatrix(SIMPL::Defaults::VertexAttributeMatrixName, vertexAM);
+    dc->addAttributeMatrix(vertexAM);
 
     AttributeMatrix::Pointer elementAM = AttributeMatrix::New(m_Dims1, SIMPL::Defaults::CellAttributeMatrixName, AttributeMatrix::Type::Face);
-    dc->addAttributeMatrix(SIMPL::Defaults::CellAttributeMatrixName, elementAM);
+    dc->addAttributeMatrix(elementAM);
 
     // Create Geometry
 
@@ -584,10 +584,10 @@ public:
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(m_Dims4, SIMPL::Defaults::VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
-    dc->addAttributeMatrix(SIMPL::Defaults::VertexAttributeMatrixName, vertexAM);
+    dc->addAttributeMatrix(vertexAM);
 
     AttributeMatrix::Pointer elementAM = AttributeMatrix::New(m_Dims1, SIMPL::Defaults::CellAttributeMatrixName, AttributeMatrix::Type::Cell);
-    dc->addAttributeMatrix(SIMPL::Defaults::CellAttributeMatrixName, elementAM);
+    dc->addAttributeMatrix(elementAM);
 
     // Create Geometry
 
@@ -672,10 +672,10 @@ public:
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(m_Dims8, SIMPL::Defaults::VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
-    dc->addAttributeMatrix(SIMPL::Defaults::VertexAttributeMatrixName, vertexAM);
+    dc->addAttributeMatrix(vertexAM);
 
     AttributeMatrix::Pointer elementAM = AttributeMatrix::New(m_Dims1, SIMPL::Defaults::CellAttributeMatrixName, AttributeMatrix::Type::Cell);
-    dc->addAttributeMatrix(SIMPL::Defaults::CellAttributeMatrixName, elementAM);
+    dc->addAttributeMatrix(elementAM);
 
     // Create Geometry
 

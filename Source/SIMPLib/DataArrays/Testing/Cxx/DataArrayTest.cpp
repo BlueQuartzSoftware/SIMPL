@@ -481,7 +481,7 @@ public:
       }
 
       // Resize Larger
-      int32Array->resize(NUM_TUPLES_2);
+      int32Array->resizeTuples(NUM_TUPLES_2);
       DREAM3D_REQUIRE_EQUAL(NUM_TUPLES_2, int32Array->getNumberOfTuples());
       DREAM3D_REQUIRE_EQUAL(NUM_ELEMENTS_2, int32Array->getSize());
       DREAM3D_REQUIRE_EQUAL(int32Array->isAllocated(), true);
@@ -496,7 +496,7 @@ public:
       }
 
       // Resize Smaller - Which should have still saved some of our data
-      int32Array->resize(NUM_TUPLES_3);
+      int32Array->resizeTuples(NUM_TUPLES_3);
       DREAM3D_REQUIRE_EQUAL(NUM_TUPLES_3, int32Array->getNumberOfTuples());
       DREAM3D_REQUIRE_EQUAL(NUM_ELEMENTS_3, int32Array->getSize());
       DREAM3D_REQUIRE_EQUAL(int32Array->isAllocated(), true);
@@ -756,15 +756,15 @@ public:
 
     ///     virtual QVector<size_t> getComponentDimensions()
     // Test resizing the array based on a give number of tuples. The number of Components will stay the same at each tuple
-    array->resize(numTuples * 2);
+    array->resizeTuples(numTuples);
     array->initializeWithZeros(); // Init the grown array to all Zeros
     nt = array->getNumberOfTuples();
-    DREAM3D_REQUIRED(nt, ==, (numTuples * 2));
+    DREAM3D_REQUIRED(nt, ==, (numTuples));
     nc = array->getNumberOfComponents();
     DREAM3D_REQUIRED(nc, ==, numComp);
 
     // Test resizing the array to a smaller size
-    array->resize(numTuples);
+    array->resizeTuples(numTuples);
     array->initializeWithZeros(); // Init the grown array to all Zeros
     nt = array->getNumberOfTuples();
     DREAM3D_REQUIRED(nt, ==, (numTuples));
@@ -786,7 +786,7 @@ public:
     DREAM3D_REQUIRED_PTR(ptr, ==, nullptr);
 
     // Test resizing the array to a any larger size
-    array->resize(numTuples);
+    array->resizeTuples(numTuples);
     array->initializeWithZeros(); // Init the grown array to all Zeros
     nt = array->getNumberOfTuples();
     DREAM3D_REQUIRED(nt, ==, (numTuples));
@@ -1031,7 +1031,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(didCopy, false);
 
     // Resize the DataArray to accomondate the true amount of data that we want (20 Tuples)
-    src->resize(numTuples * 2);
+    src->resizeTuples(numTuples * 2);
     didCopy = src->copyFromArray(numTuples, copy);
     DREAM3D_REQUIRE_EQUAL(didCopy, true);
 

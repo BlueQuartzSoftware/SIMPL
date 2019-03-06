@@ -35,7 +35,8 @@
 
 #pragma once
 
-#include <stdlib.h>
+#include <cassert>
+#include <cstdlib>
 
 #include "SIMPLib/Math/SIMPLibMath.h"
 #include "SIMPLib/Math/MatrixMath.h"
@@ -60,16 +61,64 @@ template<typename T>
 class QuaternionMath
 {
   public:
+    using size_type = size_t;
+    using value_type = T;
+    using reference = T&;
+
     /**
     * @brief
     */
-    typedef struct
+    using Quaternion = struct
     {
       T x;
       T y;
       T z;
       T w;
-    } Quaternion;
+
+      inline reference operator[](size_type index)
+      {
+        if(index == 0)
+        {
+          return x;
+        }
+        if(index == 1)
+        {
+          return y;
+        }
+        if(index == 2)
+        {
+          return z;
+        }
+        if(index == 3)
+        {
+          return w;
+        }
+        assert(index < 4);
+        return w; // This line will NEVER get hit (The program would assert, but to keep the compiler quiet we need something to return.
+      }
+
+      inline const T& operator[](size_type index) const
+      {
+        if(index == 0)
+        {
+          return x;
+        }
+        if(index == 1)
+        {
+          return y;
+        }
+        if(index == 2)
+        {
+          return z;
+        }
+        if(index == 3)
+        {
+          return w;
+        }
+        assert(index < 4);
+        return w; // This line will NEVER get hit (The program would assert, but to keep the compiler quiet we need something to return.
+      }
+    };
 
     enum Order
     {
@@ -465,23 +514,19 @@ class QuaternionMath
 /**
  * @brief QuaternionMathF Typedef for 32 bit floats for convenience
  */
-typedef QuaternionMath<float> QuaternionMathF;
+using QuaternionMathF = QuaternionMath<float>;
 
 /**
  * @brief QuaternionMathD Typedef for 64 bit floats for convenience
  */
-typedef QuaternionMath<double> QuaternionMathD;
+using QuaternionMathD = QuaternionMath<double>;
 
 /**
  * @brief QuatF 32 Bit Floating point Quaternion for convenience.
  */
-typedef QuaternionMath<float>::Quaternion QuatF;
+using QuatF = QuaternionMath<float>::Quaternion;
 
 /**
  * @brief QuatD 64 Bit Floating point Quaternion for convenience.
  */
-typedef QuaternionMath<double>::Quaternion QuatD;
-
-
-
-
+using QuatD = QuaternionMath<double>::Quaternion;

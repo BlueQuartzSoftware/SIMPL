@@ -481,4 +481,4 @@ private:
 };
 
 Q_DECLARE_METATYPE(DataArrayPath)
-
+Q_DECLARE_METATYPE(DataArrayPathHelper::DataType)

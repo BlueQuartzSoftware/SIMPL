@@ -120,14 +120,14 @@ public:
     // Create AttributeMatrices
     QVector<size_t> tDims = {{10, 3}};
     AttributeMatrix::Pointer cellAM = AttributeMatrix::New(tDims, k_Cell_AMName, AttributeMatrix::Type::Cell);
-    dc->addAttributeMatrix(k_Cell_AMName, cellAM);
+    dc->addAttributeMatrix(cellAM);
 
     AttributeMatrix::Pointer featureAM = AttributeMatrix::New(m_Dims3, k_Feature_AMName, AttributeMatrix::Type::CellFeature);
-    dc->addAttributeMatrix(k_Feature_AMName, featureAM);
+    dc->addAttributeMatrix(featureAM);
 
     // Create Cell FeatureIds array
     typename DataArray<int32_t>::Pointer cellFeatureIds = DataArray<int32_t>::CreateArray(cellAM->getNumberOfTuples(), k_CellFeatureIdsArrayName);
-    cellAM->addAttributeArray(k_CellFeatureIdsArrayName, cellFeatureIds);
+    cellAM->insertOrAssign(cellFeatureIds);
 
     for(size_t y = 0; y < 3; y++)
     {
@@ -140,7 +140,7 @@ public:
 
     //Create an array in teh Feature Attribute Matrix with 3 values since we created 3 features in the cell attribute matrix
     typename DataArray<T>::Pointer avgTempValue = DataArray<T>::CreateArray(3, k_FeatureDataArrayName);
-    featureAM->addAttributeArray(k_FeatureDataArrayName, avgTempValue);
+    featureAM->insertOrAssign(avgTempValue);
     for(int i = 0; i < 3; i++)
     {
       avgTempValue->setValue(i, static_cast<T>(0));

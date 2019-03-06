@@ -68,20 +68,24 @@ class SIMPLib_EXPORT DataContainerArray : public QObject, public IDataStructureC
   // clang-format off
   PYB11_CREATE_BINDINGS(DataContainerArray)
 
-  PYB11_METHOD(void addDataContainer ARGS data_container)
-  //PYB11_METHOD(DataContainer::Pointer getDataContainer ARGS name)
-  PYB11_METHOD(bool doesDataContainerExist ARGS name)
-  PYB11_METHOD(DataContainer::Pointer removeDataContainer ARGS name)
-  PYB11_METHOD(bool renameDataContainer ARGS oldName newName)
+  PYB11_METHOD(bool addDataContainer ARGS DataContainer)
+  PYB11_METHOD(bool insertOrAssign ARGS DataContainer)
+  PYB11_METHOD(bool doesDataContainerExist OVERLOAD const.QString.&,Name CONST_METHOD)
+  PYB11_METHOD(bool doesDataContainerExist OVERLOAD const.DataArrayPath.&,Path CONST_METHOD)
+
+  PYB11_METHOD(DataContainer::Pointer removeDataContainer ARGS Name)
+  PYB11_METHOD(bool renameDataContainer OVERLOAD const.QString.&,OldName const.QString.&,NewName)
+  PYB11_METHOD(bool renameDataContainer OVERLOAD const.DataArrayPath.&,OldPath const.DataArrayPath.&,NewPath )
+
   PYB11_METHOD(void clearDataContainers)
   //PYB11_METHOD(XXXX getDataContainerNames)
   PYB11_METHOD(int getNumDataContainers)
-  PYB11_METHOD(void duplicateDataContainer ARGS oldName, newName)
+  PYB11_METHOD(void duplicateDataContainer ARGS OldName, NewName)
 
-  PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix ARGS dataArrayPath)
-  PYB11_METHOD(bool doesAttributeMatrixExist ARGS dataArrayPath)
+  PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix ARGS DataArrayPath)
+  PYB11_METHOD(bool doesAttributeMatrixExist ARGS DataArrayPath)
 
-  PYB11_METHOD(bool doesAttributeArrayExist ARGS dataArrayPath)
+  PYB11_METHOD(bool doesAttributeArrayExist ARGS DataArrayPath)
   // clang-format on
 
 public:
@@ -102,9 +106,24 @@ public:
   /**
    * @brief
    */
-  inline bool addDataContainer(DataContainerShPtr f)
+  inline bool addDataContainer(const DataContainerShPtr& f)
   {
     return push_back(f);
+  }
+
+  /**
+   * @brief This function will insert the IDataArray into the AttributeMatrix if one does not exist with the name
+   * or replace an existing IDataArray that has the same name assuming that the number of tuples is a match.
+   * @param data The IDataArray object to add to the the AttributeMatrix
+   * @return
+   */
+  inline bool insertOrAssign(const DataContainerShPtr& dataContainer)
+  {
+    if(contains(dataContainer))
+    {
+      removeDataContainer(dataContainer->getName());
+    }
+    return push_back(dataContainer);
   }
 
   /**
