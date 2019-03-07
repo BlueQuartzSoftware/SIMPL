@@ -630,24 +630,6 @@ void DataContainerReaderWidget::showFileInFileSystem()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataContainerReaderWidget::verifyPathExists(QString path, QLineEdit* lineEdit)
-{
-  QFileInfo fileinfo(path);
-  SVStyle* style = SVStyle::Instance();
-  if(!fileinfo.exists())
-  {
-    style->LineEditErrorStyle(lineEdit);
-  }
-  else
-  {
-   style->LineEditClearStyle(lineEdit);
-  }
-  return fileinfo.exists();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void DataContainerReaderWidget::checkFilePath(const QString& text)
 {
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
@@ -684,7 +666,7 @@ void DataContainerReaderWidget::updateDCAProxy(const QString& text)
   setOpenDialogLastFilePath(path);
   // Set/Remove the red outline if the file does exist
 
-  if(verifyPathExists(path, m_LineEdit))
+  if(QtSFileUtils::VerifyPathExists(path, m_LineEdit))
   {
     if(getFilter() != nullptr)
     {
@@ -727,7 +709,7 @@ void DataContainerReaderWidget::updateStylingForPath(const QString& text)
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
   QString path = validator->convertToAbsolutePath(text);
 
-  if(hasValidFilePath(path))
+  if(QtSFileUtils::HasValidFilePath(path))
   {
     m_ShowFileAction->setEnabled(true);
   }
@@ -764,85 +746,6 @@ void DataContainerReaderWidget::on_m_LineEdit_editingFinished()
 void DataContainerReaderWidget::on_m_LineEdit_returnPressed()
 {
   checkFilePath(m_LineEdit->text());
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool DataContainerReaderWidget::hasValidFilePath(const QString &filePath)
-{
-  QStringList pathParts = filePath.split(QDir::separator());
-  if(pathParts.empty())
-  {
-    return false;
-  }
-
-  QString pathBuildUp;
-  QFileInfo fi(filePath);
-
-  /* This block of code figures out, based on the current OS, how the built-up path should begin.
-   * For Mac and Linux, it should start with a separator for absolute paths or a path part for relative paths.
-   * For Windows, it should start with a path part for both absolute and relative paths.
-   * A "path part" is defined as a portion of string that is delimited by separators in a typical path. */
-  {
-#if defined(Q_OS_WIN)
-  /* If there is at least one part, then add it to the pathBuildUp variable.
-    A valid Windows path, absolute or relative, has to have at least one part. */
-  if (pathParts[0].isEmpty() == false)
-  {
-    pathBuildUp.append(pathParts[0]);
-  }
-  else
-  {
-    return false;
-  }
-#else
-  /* If the first part is empty and the filePath is absolute, then that means that
-   * we are starting with the root directory and need to add it to our pathBuildUp */
-  if (pathParts[0].isEmpty() && fi.isAbsolute())
-  {
-    pathBuildUp.append(QDir::separator());
-  }
-  /* If the first part is empty and the filePath is relative, then that means that
-   * we are starting with the first folder part and need to add that to our pathBuildUp */
-  else if(!pathParts[0].isEmpty() && fi.isRelative())
-  {
-    pathBuildUp.append(pathParts[0] + QDir::separator());
-  }
-  else
-  {
-    return false;
-  }
-#endif
-  }
-
-  /* Now that we have started our built-up path, continue adding to the built-up path
-   * until either the built-up path is invalid, or until we have processed all remaining path parts. */
-  bool valid = false;
-
-  QFileInfo buildingFi(pathBuildUp);
-  size_t pathPartsIdx = 1; // We already processed the first path part above
-  while(buildingFi.exists() && pathPartsIdx <= pathParts.size())
-  {
-    valid = true;
-    m_CurrentlyValidPath = pathBuildUp; // Save the most current, valid built-up path
-
-    // If there's another path part to add, add it to the end of the built-up path
-    if (pathPartsIdx < pathParts.size())
-    {
-      /* If the built-up path doesn't already have a separator on the end, add one. */
-      if (pathBuildUp[pathBuildUp.size() - 1] != QDir::separator())
-      {
-        pathBuildUp.append(QDir::separator());
-      }
-
-      pathBuildUp.append(pathParts[pathPartsIdx]);  // Add the next path part to the built-up path
-      buildingFi.setFile(pathBuildUp);
-    }
-    pathPartsIdx++;
-  }
-
-  return valid;
 }
 
 // -----------------------------------------------------------------------------
