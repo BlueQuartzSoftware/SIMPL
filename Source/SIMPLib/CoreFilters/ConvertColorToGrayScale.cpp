@@ -62,11 +62,11 @@ class LuminosityImpl
 private:
   uint8_t* m_ImageData;
   uint8_t* m_FlatImageData;
-  FloatVec3_t m_ColorWeights;
+  FloatVec3Type m_ColorWeights;
   size_t m_NumComp;
 
 public:
-  LuminosityImpl(uint8_t* data, uint8_t* newdata, FloatVec3_t colorWeights, size_t comp)
+  LuminosityImpl(uint8_t* data, uint8_t* newdata, FloatVec3Type colorWeights, size_t comp)
   : m_ImageData(data)
   , m_FlatImageData(newdata)
   , m_ColorWeights(colorWeights)
@@ -83,11 +83,8 @@ public:
   {
     for(size_t i = start; i < end; i++)
     {
-      m_FlatImageData[i] = static_cast<uint8_t>(roundf(
-        (m_ImageData[m_NumComp * i] * m_ColorWeights.x)
-        + (m_ImageData[m_NumComp * i + 1] * m_ColorWeights.y)
-        + (m_ImageData[m_NumComp * i + 2] * m_ColorWeights.z)
-      ));
+      m_FlatImageData[i] = static_cast<uint8_t>(
+          roundf((m_ImageData[m_NumComp * i] * m_ColorWeights.getX()) + (m_ImageData[m_NumComp * i + 1] * m_ColorWeights.getY()) + (m_ImageData[m_NumComp * i + 2] * m_ColorWeights.getZ())));
     }
   }
 
@@ -196,11 +193,11 @@ class ParallelWrapper
 // -----------------------------------------------------------------------------
 ConvertColorToGrayScale::ConvertColorToGrayScale()
 : m_ConversionAlgorithm(0)
+, m_ColorWeights{0.2125f, 0.7154f, 0.0721f}
 , m_ColorChannel(0)
 , m_CreateNewAttributeMatrix(false)
 , m_OutputAttributeMatrixName("GrayScaleData")
 , m_OutputArrayPrefix("")
-, m_ColorWeights{0.2125f, 0.7154f, 0.0721f}
 {
 }
 
@@ -215,7 +212,7 @@ ConvertColorToGrayScale::~ConvertColorToGrayScale() = default;
 void ConvertColorToGrayScale::setupFilterParameters()
 {
 
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   {
     QVector<QString> choices;
     choices.push_back("Luminosity");
