@@ -596,20 +596,10 @@ class StructArray : public IDataArray
     }
 
     /**
-     * @brief Resize
-     * @param numTuples
-     * @return
-     */
-    int32_t resizeTuples(size_t numTuples) override
-    {
-      return resizeTotalElements(numTuples );
-    }
-
-    /**
-     * @brief resize
+     * @brief Resizes the internal array to accomondate numTuples
      * @param numTuples
      */
-    void resize(size_t numTuples) override
+    void resizeTuples(size_t numTuples) override
     {
       resizeTotalElements(numTuples);
     }

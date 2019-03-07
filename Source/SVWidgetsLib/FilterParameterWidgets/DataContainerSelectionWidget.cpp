@@ -268,15 +268,10 @@ void DataContainerSelectionWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 void DataContainerSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  // Generate the path to the AttributeArray
-  // DataArrayPath path(dataContainerList->currentText(), attributeMatrixList->currentText(), attributeArrayList->currentText());
-  QVariant var(m_SelectedDataContainerPath->text());
-  // var.setValue(path);
-  bool ok = false;
-  // Set the value into the Filter
-  ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-  if(!ok)
+  DataArrayPath dap(m_SelectedDataContainerPath->text());
+  DataContainerSelectionFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
+  if(setter)
   {
-    getFilter()->notifyMissingProperty(getFilterParameter());
+    setter(dap);
   }
 }

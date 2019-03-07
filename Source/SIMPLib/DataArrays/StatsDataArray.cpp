@@ -431,15 +431,7 @@ int32_t StatsDataArray::resizeTotalElements(size_t size)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int32_t StatsDataArray::resizeTuples(size_t numTuples)
-{
-  return resizeTotalElements(numTuples);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void StatsDataArray::resize(size_t numTuples)
+void StatsDataArray::resizeTuples(size_t numTuples)
 {
   resizeTotalElements(numTuples);
 }
