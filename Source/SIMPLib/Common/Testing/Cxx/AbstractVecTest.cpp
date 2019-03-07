@@ -74,9 +74,9 @@ public:
     std::vector<int32_t> iv3 = {4, 5};
     i3 = iv3.data();
 
-    int32_t x = i3.x();
+    int32_t x = i3.getX();
     DREAM3D_REQUIRED(x, ==, 4)
-    int32_t y = i3.y();
+    int32_t y = i3.getY();
     DREAM3D_REQUIRED(y, ==, 5)
 
     tpl = i3.toTuple();
@@ -104,11 +104,11 @@ public:
     std::vector<int32_t> iv3 = {4, 5, 6};
     i3 = iv3.data();
 
-    int32_t x = i3.x();
+    int32_t x = i3.getX();
     DREAM3D_REQUIRED(x, ==, 4)
-    int32_t y = i3.y();
+    int32_t y = i3.getY();
     DREAM3D_REQUIRED(y, ==, 5)
-    int32_t z = i3.z();
+    int32_t z = i3.getZ();
     DREAM3D_REQUIRED(z, ==, 6)
 
     tpl = i3.toTuple();

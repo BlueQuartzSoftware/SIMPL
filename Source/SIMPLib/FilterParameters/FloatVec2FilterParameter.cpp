@@ -100,8 +100,8 @@ void FloatVec2FilterParameter::writeJson(QJsonObject& obj)
   {
     FloatVec2Type floatVec2 = m_GetterCallback();
     QJsonObject json;
-    json["x"] = static_cast<double>(floatVec2.x());
-    json["y"] = static_cast<double>(floatVec2.y());
+    json["x"] = static_cast<double>(floatVec2.getX());
+    json["y"] = static_cast<double>(floatVec2.getY());
     obj[getPropertyName()] = obj;
   }
 }

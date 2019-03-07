@@ -103,9 +103,9 @@ void IntVec3FilterParameter::writeJson(QJsonObject& obj)
   {
     IntVec3Type intVec3 = m_GetterCallback();
     QJsonObject json;
-    json["x"] = intVec3.x();
-    json["y"] = intVec3.y();
-    json["z"] = intVec3.z();
+    json["x"] = intVec3.getX();
+    json["y"] = intVec3.getY();
+    json["z"] = intVec3.getZ();
     obj[getPropertyName()] = json;
   }
 }

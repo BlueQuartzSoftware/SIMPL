@@ -269,15 +269,15 @@ void CreateGeometry::dataCheck()
   {
   case 0: // ImageGeom
   {
-    if(getDimensions().x() <= 0 || getDimensions().y() <= 0 || getDimensions().z() <= 0)
+    if(getDimensions().getX() <= 0 || getDimensions().getY() <= 0 || getDimensions().getZ() <= 0)
     {
       QString ss = QObject::tr("One of the dimensions has a size less than or equal to zero; all dimensions must be positive\n"
                                "X Dimension: %1\n"
                                "Y Dimension: %2\n"
                                "Z Dimension: %3\n")
-                       .arg(getDimensions().x())
-                       .arg(getDimensions().y())
-                       .arg(getDimensions().z());
+                       .arg(getDimensions().getX())
+                       .arg(getDimensions().getY())
+                       .arg(getDimensions().getZ());
       setErrorCondition(-390);
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;

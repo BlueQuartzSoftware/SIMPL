@@ -162,22 +162,34 @@ public:
     this->setValue(2, data[2]);
   }
 
-  inline T x()
+  inline T getX() const
   {
     return ParentType::operator[](0);
   }
-  inline T y()
+  inline T getY() const
   {
     return ParentType::operator[](1);
   }
-  inline T z()
+  inline T getZ() const
   {
     return ParentType::operator[](2);
+  }
+  inline void setX(const T& x)
+  {
+    this->setValue(0, x);
+  }
+  inline void setY(const T& y)
+  {
+    this->setValue(1, y);
+  }
+  inline void setZ(const T& z)
+  {
+    this->setValue(2, z);
   }
 
   std::tuple<T, T, T> toTuple() const
   {
-    return std::make_tuple(x(), y(), z());
+    return std::make_tuple(getX(), getY(), getZ());
   }
 };
 
@@ -218,18 +230,26 @@ public:
     this->setValue(1, data[1]);
   }
 
-  inline T x()
+  inline T getX() const
   {
     return ParentType::operator[](0);
   }
-  inline T y()
+  inline T getY() const
   {
     return ParentType::operator[](1);
+  }
+  inline void setX(const T& x)
+  {
+    this->setValue(0, x);
+  }
+  inline void setY(const T& y)
+  {
+    this->setValue(1, y);
   }
 
   std::tuple<T, T> toTuple() const
   {
-    return std::make_tuple(x(), y());
+    return std::make_tuple(getX(), getY());
   }
 };
 
@@ -278,26 +298,42 @@ public:
     this->setValue(3, data[3]);
   }
 
-  inline T x()
+  inline T getX() const
   {
     return ParentType::operator[](0);
   }
-  inline T y()
+  inline T getY() const
   {
     return ParentType::operator[](1);
   }
-  inline T z()
+  inline T getZ() const
   {
     return ParentType::operator[](2);
   }
-  inline T w()
+  inline T getW() const
   {
     return ParentType::operator[](3);
+  }
+  inline void setX(const T& x)
+  {
+    this->setValue(0, x);
+  }
+  inline void setY(const T& y)
+  {
+    this->setValue(1, y);
+  }
+  inline void setZ(const T& z)
+  {
+    this->setValue(2, z);
+  }
+  inline void setW(const T& w)
+  {
+    this->setValue(3, w);
   }
 
   std::tuple<T, T> toTuple() const
   {
-    return std::make_tuple(x(), y(), z(), w());
+    return std::make_tuple(getX(), getY(), getZ(), getW());
   }
 };
 
