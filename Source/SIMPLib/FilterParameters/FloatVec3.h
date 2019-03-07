@@ -29,7 +29,10 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
+#include <cmath>
+
 #include <QtCore/QJsonObject>
+#include <QtCore/QMetaType>
 
 typedef struct
 {
