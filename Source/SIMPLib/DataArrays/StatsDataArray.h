@@ -307,17 +307,10 @@ public:
   int32_t resizeTotalElements(size_t size) override;
 
   /**
-   * @brief Reseizes the internal array
-   * @param size The new size of the internal array
-   * @return 1 on success, 0 on failure
+   * @brief Resizes the internal array to accomondate numTuples
+   * @param numTuples
    */
-  int32_t resizeTuples(size_t numTuples) override;
-
-  /**
-   * @brief resize
-   * @param count
-   */
-  void resize(size_t count) override;
+  void resizeTuples(size_t numTuples) override;
 
   /**
    * @brief printTuple

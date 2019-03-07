@@ -251,7 +251,7 @@ int StringDataArray::eraseTuples(QVector<size_t>& idxs)
   size_t idxs_size = static_cast<size_t>(idxs.size());
   if(idxs_size >= getNumberOfTuples())
   {
-    resize(0);
+    resizeTuples(0);
     return 0;
   }
 
@@ -399,13 +399,7 @@ int32_t StringDataArray::resizeTotalElements(size_t size)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int32_t StringDataArray::resizeTuples(size_t numTuples)
-{
-  m_Array.resize(numTuples);
-  return 1;
-}
-
-void StringDataArray::resize(size_t numTuples)
+void StringDataArray::resizeTuples(size_t numTuples)
 {
   m_Array.resize(numTuples);
 }
@@ -498,7 +492,7 @@ QString StringDataArray::getInfoString(SIMPL::InfoStringFormat format)
 int StringDataArray::readH5Data(hid_t parentId)
 {
   int err = 0;
-  this->resize(0);
+  this->resizeTuples(0);
   std::vector<std::string> strings;
   err = H5Lite::readVectorOfStringDataset(parentId, getName().toStdString(), strings);
 

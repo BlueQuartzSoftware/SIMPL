@@ -49,7 +49,7 @@ SharedTetList::Pointer GEOM_CLASS_NAME::CreateSharedTetList(int64_t numTets, boo
 // -----------------------------------------------------------------------------
 void GEOM_CLASS_NAME::resizeTetList(int64_t newNumTets)
 {
-  m_TetList->resize(newNumTets);
+  m_TetList->resizeTuples(newNumTets);
 }
 
 // -----------------------------------------------------------------------------

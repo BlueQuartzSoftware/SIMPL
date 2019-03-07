@@ -550,7 +550,13 @@ public:
   void TestCase(DataContainerArray::Pointer dca, DataArrayPath dap, int objectToCopy, const QString& copyName)
   {
     // Create Filter
+    std::cout << "  TestCase: " << dca->getName().toStdString() << " " << dap.serialize("/").toStdString() << " " << copyName.toStdString();
 
+    if(dca->getDataContainer(dap)->getGeometry().get() != nullptr)
+    {
+      std::cout << "   " << dca->getDataContainer(dap)->getGeometry()->getName().toStdString();
+    }
+    std::cout << std::endl;
     FilterManager* fm = FilterManager::Instance();
     IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(m_FilterName);
     AbstractFilter::Pointer extractAttributeArraysFromGeometry = filterFactory->create();
@@ -763,6 +769,7 @@ public:
     imageGeom->setDimensions(std::forward_as_tuple(5, 5, 5));
     imageGeom->setSpacing(FloatVec3Type(5, 5, 5));
     imageGeom->setOrigin(FloatVec3Type(5, 5, 5));
+    imageGeom->setName("Image Geom");
 
     // RectGrid
 
@@ -774,6 +781,7 @@ public:
     rectGridGeom->setXBounds(daXBounds);
     rectGridGeom->setYBounds(daYBounds);
     rectGridGeom->setZBounds(daZBounds);
+    rectGridGeom->setName("rectGridGeom");
 
     // Vertex
 
@@ -782,6 +790,7 @@ public:
     DataArray<float>::Pointer daVert = createDataArray<float>(k_VerticesDAName, vertices, m_Dims2, m_Dims3);
 
     VertexGeom::Pointer vertexGeom = VertexGeom::CreateGeometry(daVert, SIMPL::Geometry::VertexGeometry);
+    vertexGeom->setName("vertexGeom");
 
     // Edge
 
@@ -802,6 +811,7 @@ public:
     DataArray<int64_t>::Pointer daTriList = createDataArray<int64_t>(k_ElementListDAName, elements, m_Dims1, m_Dims3);
 
     TriangleGeom::Pointer triGeom = TriangleGeom::CreateGeometry(daTriList, daTriVert, SIMPL::Geometry::TriangleGeometry);
+    triGeom->setName("triGeom");
 
     // Quad
 
@@ -812,6 +822,7 @@ public:
     DataArray<int64_t>::Pointer daQuadList = createDataArray<int64_t>(k_ElementListDAName, elements, m_Dims1, m_Dims4);
 
     QuadGeom::Pointer quadGeom = QuadGeom::CreateGeometry(daQuadList, daQuadVert, SIMPL::Geometry::QuadGeometry);
+    quadGeom->setName("quadGeom");
 
     // Tetrahedral
 
@@ -823,6 +834,7 @@ public:
     DataArray<int64_t>::Pointer daTetList = createDataArray<int64_t>(k_ElementListDAName, elements, m_Dims1, m_Dims4);
 
     TetrahedralGeom::Pointer tetGeom = TetrahedralGeom::CreateGeometry(daTetList, daTetVert, SIMPL::Geometry::TetrahedralGeometry);
+    tetGeom->setName("tetGeom");
 
     // Hexahedral
 
@@ -834,6 +846,7 @@ public:
     DataArray<int64_t>::Pointer daHexList = createDataArray<int64_t>(k_ElementListDAName, elements, m_Dims1, m_Dims8);
 
     HexahedralGeom::Pointer hexGeom = HexahedralGeom::CreateGeometry(daHexList, daHexVert, SIMPL::Geometry::HexahedralGeometry);
+    hexGeom->setName("hexGeom");
 
     // Add DataArrays to AttributeMatrices
 

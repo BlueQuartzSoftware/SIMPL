@@ -565,7 +565,7 @@ int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, const QString& nam
     dPtr = H5DataArrayReader::ReadIDataArray(gid, name, preflight);
     if(preflight)
     {
-      dPtr->resize(getNumberOfTuples());
+      dPtr->resizeTuples(getNumberOfTuples());
     }
   }
   else if(classType.compare("StringDataArray") == 0)
@@ -573,7 +573,7 @@ int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, const QString& nam
     dPtr = H5DataArrayReader::ReadStringDataArray(gid, name, preflight);
     if(preflight)
     {
-      dPtr->resize(getNumberOfTuples());
+      dPtr->resizeTuples(getNumberOfTuples());
     }
   }
   else if(classType.compare("vector") == 0)
@@ -584,7 +584,7 @@ int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, const QString& nam
     dPtr = H5DataArrayReader::ReadNeighborListData(gid, name, preflight);
     if(preflight)
     {
-      dPtr->resize(getNumberOfTuples());
+      dPtr->resizeTuples(getNumberOfTuples());
     }
   }
   else if(name.compare(SIMPL::EnsembleData::Statistics) == 0)
@@ -595,7 +595,7 @@ int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, const QString& nam
     dPtr = statsData;
     if(preflight)
     {
-      dPtr->resize(getNumberOfTuples());
+      dPtr->resizeTuples(getNumberOfTuples());
     }
   }
 
