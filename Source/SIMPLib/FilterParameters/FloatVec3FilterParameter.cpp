@@ -106,6 +106,6 @@ void FloatVec3FilterParameter::writeJson(QJsonObject& obj)
     json["x"] = static_cast<double>(floatVec3.getX());
     json["y"] = static_cast<double>(floatVec3.getY());
     json["z"] = static_cast<double>(floatVec3.getZ());
-    json[getPropertyName()] = obj;
+    obj[getPropertyName()] = json;
   }
 }
