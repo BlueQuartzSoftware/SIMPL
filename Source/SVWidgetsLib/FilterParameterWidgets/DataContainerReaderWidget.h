@@ -90,14 +90,6 @@ class SVWidgetsLib_EXPORT DataContainerReaderWidget : public FilterParameterWidg
     */
     void setupGui() override;
 
-    /**
-     * @brief verifyPathExists
-     * @param filePath
-     * @param lineEdit
-     * @return
-     */
-    bool verifyPathExists(QString filePath, QLineEdit *lineEdit);
-
     void setFilter(AbstractFilter* value);
     AbstractFilter* getFilter() const;
 
@@ -154,13 +146,6 @@ class SVWidgetsLib_EXPORT DataContainerReaderWidget : public FilterParameterWidg
     DataContainerArrayProxy              m_DcaProxy;
     bool                                 m_DidCausePreflight;
     QAction*                             m_ShowFileAction = nullptr;
-
-    /**
-     * @brief hasValidFilePath
-     * @param filePath
-     * @return
-     */
-    bool hasValidFilePath(const QString &filePath);
 
   public:
     DataContainerReaderWidget(const DataContainerReaderWidget&) = delete; // Copy Constructor Not Implemented

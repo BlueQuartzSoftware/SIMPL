@@ -193,8 +193,15 @@ target_include_directories(${PROJECT_NAME}
                               $<BUILD_INTERFACE:${TARGET_SOURCE_DIR_PARENT}>
                               $<BUILD_INTERFACE:${TARGET_BINARY_DIR_PARENT}>
                               $<BUILD_INTERFACE:${TBB_INCLUDE_DIRS}>
-                              $<BUILD_INTERFACE:${EIGEN_INCLUDE_DIRS}>
 )
+
+if(SIMPL_USE_EIGEN)
+  target_include_directories(${PROJECT_NAME} 
+                            PUBLIC
+                            $<BUILD_INTERFACE:${EIGEN3_INCLUDE_DIRS}>
+)
+endif()
+
 CMP_MODULE_INCLUDE_DIRS (TARGET ${PROJECT_NAME} LIBVARS HDF5 Qt5Core Qt5Network)
 
 if(SIMPL_Group_BASE)
