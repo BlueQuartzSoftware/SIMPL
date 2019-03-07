@@ -476,18 +476,22 @@ void ArrayCalculator::execute()
 
   if(arrayItem != ICalculatorArray::NullPointer())
   {
-    IDataArray::Pointer resultArray = IDataArray::NullPointer();
-    resultArray = arrayItem->getArray();
+    IDataArray::Pointer resultArray = arrayItem->getArray();
 
-    IDataArray::Pointer resultTypeArray = IDataArray::NullPointer();
-    resultTypeArray = convertArrayType(resultArray, m_ScalarType);
+    IDataArray::Pointer resultTypeArray = convertArrayType(resultArray, m_ScalarType);
 
     DataArrayPath createdAMPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
     AttributeMatrix::Pointer createdAM = getDataContainerArray()->getAttributeMatrix(createdAMPath);
     if(nullptr != createdAM)
     {
       resultTypeArray->setName(m_CalculatedArray.getDataArrayName());
-      createdAM->insertOrAssign(resultTypeArray);
+      if(!createdAM->insertOrAssign(resultTypeArray))
+      {
+        QString ss = QObject::tr("Error inserting Output Array into Attribute Matrix");
+        setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::AttributeMatrixInsertionError));
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        return;
+      }
     }
   }
   else

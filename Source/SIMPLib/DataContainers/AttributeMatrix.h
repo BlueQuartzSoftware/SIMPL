@@ -250,7 +250,7 @@ public:
         qDebug() << "getNumberOfTuples(): " << getNumberOfTuples() << "  data->getNumberOfTuples(): " << data->getNumberOfTuples();
         return false;
       }
-      if(contains(data))
+      if(contains(data->getName()))
       {
         removeAttributeArray(data->getName());
       }

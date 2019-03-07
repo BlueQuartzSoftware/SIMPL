@@ -122,20 +122,15 @@ bool DataContainerArray::empty()
 DataContainer::Pointer DataContainerArray::removeDataContainer(const QString& name)
 {
   removeDataContainerFromBundles(name);
-  DataContainer::Pointer f = DataContainer::NullPointer();
-  for(auto iter = begin(); iter != end(); ++iter)
+  auto it = find(name);
+  if(it == end())
   {
-    DataContainer::Pointer dc = (*iter);
-    if(dc->getName().compare(name) == 0)
-    {
-      f = dc;
-      erase(iter);
-      return f;
-    }
+    // DO NOT return a NullPointer for any reason other than "DataContainer was not found"
+    return DataContainer::NullPointer();
   }
-
-  // DO NOT return a NullPointer for any reason other than "DataContainer was not found"
-  return f;
+  DataContainer::Pointer p = (*it);
+  erase(it);
+  return p;
 }
 
 // -----------------------------------------------------------------------------

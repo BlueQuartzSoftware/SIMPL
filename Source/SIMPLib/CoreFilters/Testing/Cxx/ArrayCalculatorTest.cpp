@@ -58,10 +58,7 @@
 class DummyObserver : public Observer
 {
 public:
-  DummyObserver()
-  : Observer()
-  {
-  }
+  DummyObserver() = default;
   ~DummyObserver() override = default;
   SIMPL_TYPE_MACRO(DummyObserver)
 
@@ -70,9 +67,11 @@ public:
     // Don't do anything...this class only exists to stifle the messages being dumped to the console
   }
 
-private:
-  DummyObserver(const DummyObserver&);  // Copy Constructor Not Implemented
-  void operator=(const DummyObserver&); // Move assignment Not Implemented
+public:
+  DummyObserver(const DummyObserver&) = delete;            // Copy Constructor Not Implemented
+  DummyObserver(DummyObserver&&) = delete;                 // Move Constructor Not Implemented
+  DummyObserver& operator=(const DummyObserver&) = delete; // Copy Assignment Not Implemented
+  DummyObserver& operator=(DummyObserver&&) = delete;      // Move Assignment Not Implemented
 };
 
 class ArrayCalculatorTest
@@ -137,7 +136,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  AbstractFilter::Pointer createArrayCalculatorFilter(DataArrayPath calculatedPath)
+  AbstractFilter::Pointer createArrayCalculatorFilter(const DataArrayPath& calculatedPath)
   {
     QString filtName = "ArrayCalculator";
     FilterManager* fm = FilterManager::Instance();
@@ -170,9 +169,11 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void runTest(QString equation, DataArrayPath targetArrayPath, CalculatorItem::ErrorCode expectedErrorCondition, CalculatorItem::WarningCode expectedWarningCondition,
-               int* expectedNumberOfTuples = nullptr, double* expectedValue = nullptr, ArrayCalculator::AngleUnits units = ArrayCalculator::Radians)
+  void runTest(const QString& equation, const DataArrayPath& targetArrayPath, CalculatorItem::ErrorCode expectedErrorCondition, CalculatorItem::WarningCode expectedWarningCondition,
+               const int* expectedNumberOfTuples = nullptr, const double* expectedValue = nullptr, ArrayCalculator::AngleUnits units = ArrayCalculator::Radians)
   {
+    std::cout << "  Testing equation: ==>" << equation.toStdString() << "<==" << std::endl;
+
     bool propWasSet = false;
 
     AbstractFilter::Pointer filter = createArrayCalculatorFilter(targetArrayPath);
@@ -182,8 +183,11 @@ public:
     propWasSet = filter->setProperty("Units", units);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true);
     filter->execute();
+    if(filter->getErrorCondition() < 0 && expectedErrorCondition == CalculatorItem::ErrorCode::SUCCESS)
+    {
+      std::cout << "    Error " << filter->getErrorCondition() << " executing filter." << std::endl;
+    }
 
-	std::cout << "Testing equation: " << equation.toStdString() << std::endl;
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(expectedErrorCondition));
     DREAM3D_REQUIRE_EQUAL(filter->getWarningCondition(), static_cast<int>(expectedWarningCondition));
 
@@ -202,7 +206,7 @@ public:
 
       for(size_t i = 0; i < arrayPtr->getNumberOfTuples(); i++)
       {
-        DREAM3D_REQUIRE(SIMPLibMath::closeEnough<double>(arrayPtr->getValue(i), value, 0.01) == true);
+        DREAM3D_REQUIRED(SIMPLibMath::closeEnough<double>(arrayPtr->getValue(i), value, 0.01), ==, true);
       }
     }
   }
@@ -215,7 +219,6 @@ public:
     DataArrayPath numericArrayPath("DataContainer", "NumericMatrix", "NewArray");
     DataArrayPath arrayPath("DataContainer", "AttributeMatrix", "NewArray");
 
-    QVariant var;
     bool propWasSet = false;
 
     // Multi-Component Array Tests
@@ -387,7 +390,6 @@ public:
     DataArrayPath numericArrayPath("DataContainer", "NumericMatrix", "NewArray");
     DataArrayPath arrayPath("DataContainer", "AttributeMatrix", "NewArray");
 
-    QVariant var;
     bool propWasSet = false;
 
     // Empty Tests
