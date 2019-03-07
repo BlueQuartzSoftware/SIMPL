@@ -41,7 +41,7 @@ class itkDream3DITransformContainerToTransformTest
 
 public:
   itkDream3DITransformContainerToTransformTest() = default;
-  virtual ~ITKDream3DITransformContainerToTransformTest() override = default;
+  ~itkDream3DITransformContainerToTransformTest() = default;
 
   int TestitkDream3DITransformContainerToTransformTest()
   {
