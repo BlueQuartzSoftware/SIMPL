@@ -119,10 +119,38 @@ public:
    */
   inline bool insertOrAssign(const DataContainerShPtr& dataContainer)
   {
-    if(dataContainer.get() != nullptr && contains(dataContainer->getName()))
+    // Can not insert a null DataContainer
+    if(dataContainer.get() == nullptr)
     {
-      removeDataContainer(dataContainer->getName());
+      return false;
     }
+
+    bool containsPointer = contains(dataContainer);
+    bool parentEqualsThis = (dataContainer->getParentNode() == this);
+    bool thisContainsSameName = contains(dataContainer->getName());
+
+    // The dataContainer is already a child of this node, The parent got set to null somehow.
+    // Reset the parent to this and return
+    if(containsPointer && dataContainer->getParentNode() == nullptr)
+    {
+      dataContainer->_setParentNode(this);
+      return true;
+    }
+
+    // DataContainer is already in this DataContainerArray
+    if(containsPointer && parentEqualsThis)
+    {
+      return true;
+    }
+
+    // There is another DataContainer by the same name but different object (pointer value)
+    if(thisContainsSameName && !containsPointer)
+    {
+      removeDataContainer(dataContainer->getName()); // Remove the other from this Data Container Array that has the same name
+    }
+    // Ensure there is a nullptr for the parent otherwise the push_back will not work(?)
+    dataContainer->_setParentNode(nullptr);
+    // The DataContainer should finally be inserted into this DataContainer Array
     return push_back(dataContainer);
   }
 
