@@ -119,7 +119,7 @@ public:
    */
   inline bool insertOrAssign(const DataContainerShPtr& dataContainer)
   {
-    if(contains(dataContainer->getName()))
+    if(dataContainer.get() != nullptr && contains(dataContainer->getName()))
     {
       removeDataContainer(dataContainer->getName());
     }

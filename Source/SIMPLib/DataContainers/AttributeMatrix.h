@@ -244,13 +244,13 @@ public:
      */
     inline bool insertOrAssign(const IDataArray::Pointer& data)
     {
-      if(getNumberOfTuples() != data->getNumberOfTuples())
+      if(data.get() != nullptr && getNumberOfTuples() != data->getNumberOfTuples())
       {
         qDebug() << "AttributeMatrix::Name: " << getName() << "  dataArray::name:  " << data->getName() << " Type: " << data->getTypeAsString();
         qDebug() << "getNumberOfTuples(): " << getNumberOfTuples() << "  data->getNumberOfTuples(): " << data->getNumberOfTuples();
         return false;
       }
-      if(contains(data->getName()))
+      if(data.get() != nullptr && contains(data->getName()))
       {
         removeAttributeArray(data->getName());
       }

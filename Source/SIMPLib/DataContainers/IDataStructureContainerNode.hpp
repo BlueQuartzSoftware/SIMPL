@@ -371,7 +371,7 @@ public:
    * @param value
    * @return success
    */
-  constexpr bool push_back(const ChildShPtr& node)
+  bool push_back(const ChildShPtr& node)
   {
     if(node.get() == nullptr)
     {
@@ -381,9 +381,11 @@ public:
     {
       return false;
     }
+    typename ChildCollection::size_type size = m_ChildrenNodes.size();
     m_ChildrenNodes.push_back(node);
+
     node->_setParentNode(this);
-    return true;
+    return (size != m_ChildrenNodes.size());
   }
 
   /**

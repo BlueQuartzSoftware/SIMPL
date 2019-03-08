@@ -47,7 +47,9 @@
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataArrays/StructArray.hpp"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -210,7 +212,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void FillAttributeMatrix(AttributeMatrix::Pointer attrMat, QVector<size_t> compDims)
+  void FillAttributeMatrix(const AttributeMatrix::Pointer& attrMat, const QVector<size_t>& compDims)
   {
     CreateDataArray<int8_t>(attrMat, compDims);
     CreateDataArray<uint8_t>(attrMat, compDims);
@@ -228,7 +230,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void PopulateVolumeDataContainer(DataContainer::Pointer dc, QVector<size_t> tupleDims, const QString& name)
+  void PopulateVolumeDataContainer(const DataContainer::Pointer& dc, QVector<size_t> tupleDims, const QString& name)
   {
     // Create the attribute matrix with the dimensions and name
     AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tupleDims, name, AttributeMatrix::Type::Cell);
@@ -587,8 +589,6 @@ public:
   {
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
 
-    QList<QString> nameList;
-
     insertDeleteArray<Int8ArrayType>(m);
     insertDeleteArray<UInt16ArrayType>(m);
     insertDeleteArray<Int16ArrayType>(m);
@@ -886,6 +886,53 @@ public:
 #endif
 
   // -----------------------------------------------------------------------------
+  void TestDataContainerArraySTL()
+  {
+    DataContainerArray::Pointer dca = DataContainerArray::New();
+    // addDataContainer
+    // insertOrAssign
+    // getDataContainer(QString | DataArrayPath)
+    const QString k_DC0("DCO");
+    const QString k_DC1("DC1");
+    DataContainer::Pointer dc0 = DataContainer::New(k_DC0);
+    DataContainer::Pointer dc1 = DataContainer::New(k_DC1);
+
+    DREAM3D_REQUIRED(true, ==, dca->addDataContainer(dc0));
+    DREAM3D_REQUIRED(dca->size(), ==, 1)
+    DREAM3D_REQUIRED(false, ==, dca->addDataContainer(dc0));
+    DREAM3D_REQUIRED(dca->size(), ==, 1)
+    DREAM3D_REQUIRED(true, ==, dca->addDataContainer(dc1));
+    DREAM3D_REQUIRED(dca->size(), ==, 2)
+
+    // getDataContainers
+    DataContainerArray::Container dcContainer = dca->getDataContainers();
+    DREAM3D_REQUIRED(dcContainer.size(), ==, 2)
+
+    dc0 = dca->getDataContainer(k_DC0);
+    DREAM3D_REQUIRE_VALID_POINTER(dc0.get())
+    DataArrayPath dap(k_DC0);
+    dc0 = dca->getDataContainer(dap);
+    DREAM3D_REQUIRE_VALID_POINTER(dc0.get())
+
+    DREAM3D_REQUIRED(dca->size(), ==, 2)
+    dca->clear();
+    DREAM3D_REQUIRED(dca->size(), ==, 0)
+
+    DREAM3D_REQUIRED(true, ==, dca->addDataContainer(dc0)); //<====== THIS WILL FAIL....
+    DREAM3D_REQUIRED(dca->size(), ==, 1)
+
+    DREAM3D_REQUIRED(true, ==, dca->insertOrAssign(dc0));
+    DREAM3D_REQUIRED(dca->size(), ==, 1)
+    DREAM3D_REQUIRED(true, ==, dca->insertOrAssign(dc1));
+    DREAM3D_REQUIRED(dca->size(), ==, 2)
+
+    DataContainer::Pointer nullDc = DataContainer::NullPointer();
+    DREAM3D_REQUIRED(false, ==, dca->addDataContainer(nullDc))
+    DREAM3D_REQUIRED(false, ==, dca->insertOrAssign(nullDc))
+    DREAM3D_REQUIRED(dca->size(), ==, 2)
+  }
+
+  // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
   void operator()()
@@ -899,6 +946,9 @@ public:
     DREAM3D_REGISTER_TEST(RemoveTestFiles())
 #endif
     int err = EXIT_SUCCESS;
+
+    DREAM3D_REGISTER_TEST(TestDataContainerArraySTL())
+
     DREAM3D_REGISTER_TEST(TestInsertDelete())
 
     DREAM3D_REGISTER_TEST(TestDataContainerWriter())

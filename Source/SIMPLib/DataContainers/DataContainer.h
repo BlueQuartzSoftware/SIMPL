@@ -189,7 +189,7 @@ public:
    */
   inline bool insertOrAssign(const AttributeMatrixShPtr& matrix)
   {
-    if(contains(matrix->getName()))
+    if(matrix.get() != nullptr && contains(matrix->getName()))
     {
       removeAttributeMatrix(matrix->getName());
     }
