@@ -162,6 +162,11 @@ public:
    */
   constexpr void _setParentNode(ParentType* const parent)
   {
+    if(parent == m_Parent)
+    {
+      return;
+    }
+
     // Remove from parent's children
     if(nullptr != m_Parent)
     {
