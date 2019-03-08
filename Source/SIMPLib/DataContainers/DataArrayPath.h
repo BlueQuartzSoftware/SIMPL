@@ -54,10 +54,11 @@ using DataContainerArrayShPtr = std::shared_ptr<DataContainerArray>;
  * @brief The DataArrayPathHelper namespace is used to contain the QMetaType
  * and enum DataType without requiring DataArrayPath to be a QObject.
  */
-namespace DataArrayPathHelper
+class SIMPLib_EXPORT DataArrayPathHelper final : public QObject
 {
-  Q_NAMESPACE
+  Q_OBJECT
 
+public:
   enum class DataType
   {
     DataContainer,
@@ -65,8 +66,13 @@ namespace DataArrayPathHelper
     DataArray,
     None
   };
-  Q_ENUM_NS(DataType)
-}
+  Q_ENUM(DataType)
+
+  ~DataArrayPathHelper() = default;
+
+private:
+  DataArrayPathHelper() = default;
+};
 
 /**
  * @brief The DataArrayPath class holds a complete or partial path to a data array starting at the DataContainer
