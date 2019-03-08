@@ -632,6 +632,14 @@ int FilterPipeline::preflightPipeline()
 // -----------------------------------------------------------------------------
 DataContainerArray::Pointer FilterPipeline::execute()
 {
+  return execute(DataContainerArray::New());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataContainerArray::Pointer FilterPipeline::execute(DataContainerArray::Pointer dca)
+{
   int err = 0;
 
   // Clear pipeline cancel state
@@ -639,7 +647,7 @@ DataContainerArray::Pointer FilterPipeline::execute()
 
   connectSignalsSlots();
 
-  m_Dca = DataContainerArray::New();
+  m_Dca = dca;
 
   // Start looping through the Pipeline
   float progress = 0.0f;
@@ -647,64 +655,64 @@ DataContainerArray::Pointer FilterPipeline::execute()
   // Connect this object to anything that wants to know about PipelineMessages
   for(const auto& messageReceiver : m_MessageReceivers)
   {
-    connect(this, SIGNAL(pipelineGeneratedMessage(const PipelineMessage&)), messageReceiver, SLOT(processPipelineMessage(const PipelineMessage&)));
+	connect(this, SIGNAL(pipelineGeneratedMessage(const PipelineMessage&)), messageReceiver, SLOT(processPipelineMessage(const PipelineMessage&)));
   }
 
   PipelineMessage progValue("", "", 0, PipelineMessage::MessageType::ProgressValue, -1);
   for(const auto& filt : m_Pipeline)
   {
-    progress = progress + 1.0f;
-    progValue.setType(PipelineMessage::MessageType::ProgressValue);
-    progValue.setProgressValue(static_cast<int>(progress / (m_Pipeline.size() + 1) * 100.0f));
-    emit pipelineGeneratedMessage(progValue);
+	progress = progress + 1.0f;
+	progValue.setType(PipelineMessage::MessageType::ProgressValue);
+	progValue.setProgressValue(static_cast<int>(progress / (m_Pipeline.size() + 1) * 100.0f));
+	emit pipelineGeneratedMessage(progValue);
 
-    QString ss = QObject::tr("[%1/%2] %3 ").arg(progress).arg(m_Pipeline.size()).arg(filt->getHumanLabel());
+	QString ss = QObject::tr("[%1/%2] %3 ").arg(progress).arg(m_Pipeline.size()).arg(filt->getHumanLabel());
 
-    progValue.setType(PipelineMessage::MessageType::StatusMessage);
-    progValue.setText(ss);
-    emit pipelineGeneratedMessage(progValue);
-    emit filt->filterInProgress(filt.get());
+	progValue.setType(PipelineMessage::MessageType::StatusMessage);
+	progValue.setText(ss);
+	emit pipelineGeneratedMessage(progValue);
+	emit filt->filterInProgress(filt.get());
 
-    // Do not execute disabled filters
-    if(filt->getEnabled())
-    {
-      filt->setMessagePrefix(ss);
-      connectFilterNotifications(filt.get());
-      filt->setDataContainerArray(m_Dca);
-      setCurrentFilter(filt);
-      filt->execute();
-      disconnectFilterNotifications(filt.get());
-      filt->setDataContainerArray(DataContainerArray::NullPointer());
-      err = filt->getErrorCondition();
-      if(err < 0)
-      {
-        setErrorCondition(err);
-        progValue.setFilterClassName(filt->getNameOfClass());
-        progValue.setFilterHumanLabel(filt->getHumanLabel());
-        progValue.setType(PipelineMessage::MessageType::Error);
-        progValue.setProgressValue(100);
-        ss = QObject::tr("[%1/%2] %3 caused an error during execution.").arg(progress).arg(m_Pipeline.size()).arg(filt->getHumanLabel());
-        progValue.setText(ss);
-        progValue.setPipelineIndex(filt->getPipelineIndex());
-        progValue.setCode(filt->getErrorCondition());
-        emit pipelineGeneratedMessage(progValue);
-        emit filt->filterCompleted(filt.get());
-        emit pipelineFinished();
-        disconnectSignalsSlots();
+	// Do not execute disabled filters
+	if(filt->getEnabled())
+	{
+	  filt->setMessagePrefix(ss);
+	  connectFilterNotifications(filt.get());
+	  filt->setDataContainerArray(m_Dca);
+	  setCurrentFilter(filt);
+	  filt->execute();
+	  disconnectFilterNotifications(filt.get());
+	  filt->setDataContainerArray(DataContainerArray::NullPointer());
+	  err = filt->getErrorCondition();
+	  if(err < 0)
+	  {
+		setErrorCondition(err);
+		progValue.setFilterClassName(filt->getNameOfClass());
+		progValue.setFilterHumanLabel(filt->getHumanLabel());
+		progValue.setType(PipelineMessage::MessageType::Error);
+		progValue.setProgressValue(100);
+		ss = QObject::tr("[%1/%2] %3 caused an error during execution.").arg(progress).arg(m_Pipeline.size()).arg(filt->getHumanLabel());
+		progValue.setText(ss);
+		progValue.setPipelineIndex(filt->getPipelineIndex());
+		progValue.setCode(filt->getErrorCondition());
+		emit pipelineGeneratedMessage(progValue);
+		emit filt->filterCompleted(filt.get());
+		emit pipelineFinished();
+		disconnectSignalsSlots();
 
-        return m_Dca;
-      }
-    }
+		return m_Dca;
+	  }
+	}
 
-    if(this->getCancel())
-    {
-      // Clear cancel filter state
-      filt->setCancel(false);
-      break;
-    }
+	if(this->getCancel())
+	{
+	  // Clear cancel filter state
+	  filt->setCancel(false);
+	  break;
+	}
 
-    // Emit that the filter is completed for those objects that care, even the disabled ones.
-    emit filt->filterCompleted(filt.get());
+	// Emit that the filter is completed for those objects that care, even the disabled ones.
+	emit filt->filterCompleted(filt.get());
   }
 
   emit pipelineFinished();

@@ -103,6 +103,11 @@ public:
   virtual DataContainerArray::Pointer execute();
 
   /**
+   * @brief An execute method using an existing data container array
+   */
+  DataContainerArray::Pointer execute(DataContainerArray::Pointer dca);
+
+  /**
    * @brief This will preflight the pipeline and report any errors that would occur during
    * execution of the pipeline
    */
