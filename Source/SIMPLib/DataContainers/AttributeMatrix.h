@@ -227,6 +227,11 @@ public:
      */
     inline bool addAttributeArray(const IDataArray::Pointer& data)
     {
+      // Can not insert a null IDataArray object
+      if(data.get() == nullptr)
+      {
+        return false;
+      }
       if(getNumberOfTuples() != data->getNumberOfTuples())
       {
         qDebug() << "AttributeMatrix::Name: " << getName() << "  dataArray::name:  " << data->getName() << " Type: " << data->getTypeAsString();
@@ -244,16 +249,45 @@ public:
      */
     inline bool insertOrAssign(const IDataArray::Pointer& data)
     {
-      if(getNumberOfTuples() != data->getNumberOfTuples())
+      // Can not insert a null IDataArray
+      if(data.get() == nullptr)
+      {
+        return false;
+      }
+
+      bool containsPointer = contains(data);
+      bool parentEqualsThis = (data->getParentNode() == this);
+      bool thisContainsSameName = contains(data->getName());
+
+      // The IDataArray is already a child of this node, The parent got set to null some how.
+      // Reset the parent to this and return
+      if(containsPointer && data->getParentNode() == nullptr)
+      {
+        data->_setParentNode(this);
+        return true;
+      }
+
+      // IDataArray is already in this DataContainer
+      if(containsPointer && parentEqualsThis)
+      {
+        return true;
+      }
+
+      // There is another IDataArray by the same name but different object (pointer value)
+      if(thisContainsSameName && !containsPointer)
+      {
+        removeAttributeArray(data->getName()); // Remove the other from this AttributeMatrix that has the same name
+      }
+
+      if(data.get() != nullptr && getNumberOfTuples() != data->getNumberOfTuples())
       {
         qDebug() << "AttributeMatrix::Name: " << getName() << "  dataArray::name:  " << data->getName() << " Type: " << data->getTypeAsString();
         qDebug() << "getNumberOfTuples(): " << getNumberOfTuples() << "  data->getNumberOfTuples(): " << data->getNumberOfTuples();
         return false;
       }
-      if(contains(data))
-      {
-        removeAttributeArray(data->getName());
-      }
+      // Ensure there is a nullptr for the parent otherwise the push_back will not work(?)
+      data->_setParentNode(nullptr);
+      // The AttributeMatrix should finally be inserted into this AttributeMatrix
       return push_back(data);
     }
 

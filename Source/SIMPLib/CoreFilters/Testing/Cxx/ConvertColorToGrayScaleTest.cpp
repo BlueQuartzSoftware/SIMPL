@@ -369,7 +369,9 @@ class ConvertColorToGrayScaleTest
    */
   void SetUp(const QVariant& algorithm, const DataContainer::Pointer& dc, const FloatVec3Type& colorWeights = {0.2125f, 0.7154f, 0.0721f}, const uint8_t& colorChannel = 0)
   {
-    m_dca->addDataContainer(dc);
+    m_dca = DataContainerArray::New();
+    m_dca->setName("TEST DATA CONTAINER ARRAY");
+    m_dca->insertOrAssign(dc);
     QVector<DataArrayPath> daps{};
     for(const AttributeMatrix::Pointer& eachAM : dc->getAttributeMatrices())
     {
@@ -410,6 +412,8 @@ class ConvertColorToGrayScaleTest
 
   int RunTest(const uint8_t& algoMapIndex)
   {
+    Observer obs;
+    m_colorToGrayscaleFilter->connect(m_colorToGrayscaleFilter.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)), &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
     m_colorToGrayscaleFilter->execute();
     int erred = m_colorToGrayscaleFilter->getErrorCondition();
     DREAM3D_REQUIRE_EQUAL(erred, 0);
@@ -469,6 +473,8 @@ public:
 
   void operator()()
   {
+    std::cout << "#### ConvertColorToGrayScaleTest Starting ####" << std::endl;
+
     int err = 0;
 
     const QString aaName = SIMPL::VertexData::SurfaceMeshNodes;

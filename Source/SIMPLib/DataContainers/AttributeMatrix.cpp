@@ -326,6 +326,7 @@ IDataArray::Pointer AttributeMatrix::removeAttributeArray(const QString& name)
   }
   IDataArray::Pointer p = (*it);
   erase(it);
+  p->_setParentNode(nullptr);
   return p;
 }
 

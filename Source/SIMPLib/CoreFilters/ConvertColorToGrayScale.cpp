@@ -371,7 +371,6 @@ void ConvertColorToGrayScale::execute()
   dataCheck();
   if(getErrorCondition() < 0)
   {
-    setErrorCondition(-62106);
     ss = QObject::tr("DataCheck did not pass during execute");
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;

@@ -197,10 +197,16 @@ AttributeMatrix::Pointer DataContainer::createAndAddAttributeMatrix(const QVecto
 // -----------------------------------------------------------------------------
 AttributeMatrix::Pointer DataContainer::removeAttributeMatrix(const QString& name)
 {
-  auto iter = find(name);
-  AttributeMatrix::Pointer am = (*iter);
-  erase(iter);
-  return am;
+  auto it = find(name);
+  if(it == end())
+  {
+    // DO NOT return a NullPointer for any reason other than "AttributeMatrix was not found"
+    return AttributeMatrix::NullPointer();
+  }
+  AttributeMatrix::Pointer p = (*it);
+  erase(it);
+  p->_setParentNode(nullptr);
+  return p;
 }
 
 // -----------------------------------------------------------------------------

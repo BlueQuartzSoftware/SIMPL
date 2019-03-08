@@ -189,10 +189,38 @@ public:
    */
   inline bool insertOrAssign(const AttributeMatrixShPtr& matrix)
   {
-    if(contains(matrix))
+    // Can not insert a null AttributeMatrix
+    if(matrix.get() == nullptr)
     {
-      removeAttributeMatrix(matrix->getName());
+      return false;
     }
+
+    bool containsPointer = contains(matrix);
+    bool parentEqualsThis = (matrix->getParentNode() == this);
+    bool thisContainsSameName = contains(matrix->getName());
+
+    // The AttributeMatrix is already a child of this node, The parent got set to null some how.
+    // Reset the parent to this and return
+    if(containsPointer && matrix->getParentNode() == nullptr)
+    {
+      matrix->_setParentNode(this);
+      return true;
+    }
+
+    // AttributeMatrix is already in this DataContainer
+    if(containsPointer && parentEqualsThis)
+    {
+      return true;
+    }
+
+    // There is another AttributeMatrix by the same name but different object (pointer value)
+    if(thisContainsSameName && !containsPointer)
+    {
+      removeAttributeMatrix(matrix->getName()); // Remove the other from this Data Container that has the same name
+    }
+    // Ensure there is a nullptr for the parent otherwise the push_back will not work(?)
+    matrix->_setParentNode(nullptr);
+    // The AttributeMatrix should finally be inserted into this DataContainer
     return push_back(matrix);
   }
 
