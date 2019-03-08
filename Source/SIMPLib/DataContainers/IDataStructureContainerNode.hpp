@@ -42,7 +42,7 @@
 
 #include "IDataStructureNode.h"
 
-template <class DerivedChild_t> class SIMPLib_EXPORT IDataStructureContainerNode : public IDataStructureNode
+template <class DerivedChild_t> class IDataStructureContainerNode : public IDataStructureNode
 {
 public:
   SIMPL_SHARED_POINTERS(IDataStructureContainerNode<DerivedChild_t>)
@@ -152,6 +152,7 @@ public:
   {
     DataArrayPathList list = getDescendantPaths();
     list.push_front(getDataArrayPath());
+    return list;
   }
 
   /**
@@ -327,6 +328,22 @@ public:
   }
 
   /**
+   * @brief Returns the index for the child with the given name.
+   * Returns -1 if there is no child with the given name.
+   * @param name
+   * @return
+   */
+  constexpr int64_t getIndex(const QString& name) const
+  {
+    auto iter = find(name);
+    if(iter == cend())
+    {
+      return -1;
+    }
+    return iter - begin();
+  }
+
+  /**
    * @brief Returns the child node at the given index.  If index is greater than
    * the specified index, throw out_of_range exception.
    * @param index
@@ -351,7 +368,7 @@ public:
    */
   constexpr ChildShPtr& operator[](const QString& name)
   {
-    return getChildByName(name);
+    return operator[](getIndex(name));
   }
 
   /**
