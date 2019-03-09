@@ -50,6 +50,9 @@ class IH5DataWindow;
 class QDockWidget;
 class ImportHDF5DatasetFilterParameter;
 class ImportHDF5Dataset;
+class QtSLineEdit;
+class QKeyEvent;
+class QAction;
 
 /**
  * @brief The ImportHDF5DatasetWidget class
@@ -65,18 +68,11 @@ public:
    * @brief getCurrentFile
    * @return
    */
-  QString getCurrentFile()
-  {
-    return m_CurrentOpenFile;
-  }
+  QString getCurrentFile() const;
 
-  /**
-   * @brief verifyPathExists
-   * @param filePath
-   * @param lineEdit
-   * @return
-   */
-  bool verifyPathExists(QString filePath, QtSFSDropLabel* lineEdit);
+  Q_PROPERTY(QPixmap Icon READ getIcon WRITE setIcon)
+  void setIcon(const QPixmap& path);
+  QPixmap getIcon();
 
 public slots:
   void beforePreflight();
@@ -84,31 +80,36 @@ public slots:
   void filterNeedsInputParameters(AbstractFilter* filter);
 
   /**
-   * @brief on_value_fileDropped
-   * @param text
-   */
-  void on_value_fileDropped(const QString& text);
-
-  /**
    * @brief on_selectBtn_clicked
    */
   void on_selectBtn_clicked();
 
-  /**
-   * @brief on_showLocationBtn_clicked
-   */
-  void on_showLocationBtn_clicked();
+  void on_value_fileDropped(const QString& text);
+  void on_value_editingFinished();
+  void on_value_textChanged(const QString& text);
+  void on_value_returnPressed();
 
 protected:
   /**
-   * @brief Drag and drop implementation
+   * @brief
+   * @param event
    */
-  void dragEnterEvent(QDragEnterEvent*) override;
+  void keyPressEvent(QKeyEvent* event) override;
+
+  /**
+   * @brief setupMenuField
+   */
+  void setupMenuField();
 
   /**
    * @brief Drag and drop implementation
    */
-  void dropEvent(QDropEvent*) override;
+  void dragEnterEvent(QDragEnterEvent* dragEvent) override;
+
+  /**
+   * @brief Drag and drop implementation
+   */
+  void dropEvent(QDropEvent* dropEvent) override;
 
   /**
    * @brief Initializes some of the GUI elements with selections or other GUI related items
@@ -120,7 +121,7 @@ protected:
    * with values from the passed in hdf5 file
    * @param hdf5File
    */
-  bool initWithFile(QString hdf5File);
+  bool initWithFile(const QString& hdf5File);
 
   /**
   * @brief Returns the best guess at component dimensions for the given path.  This requires a valid AttributeMatrix, ImageGeometry, and HDF5 path
@@ -129,8 +130,32 @@ protected:
   */
   std::tuple<herr_t, QString> bestGuessCDims(const QString& path);
 
+  /**
+   * @brief setValue
+   * @param val
+   */
+  void setValue(const QString& val);
+
+  /**
+   * @brief getValue
+   * @return
+   */
+  QString getValue();
+
+  /**
+   * @brief setErrorText
+   * @param value
+   */
+  void setErrorText(const QString& value);
+
+  /**
+   * @brief getErrorText
+   * @return
+   */
+  QString getErrorText() const;
+
 protected slots:
-  void on_cDimsLE_valueChanged(QString text);
+  void on_cDimsLE_valueChanged(const QString& text);
 
 private slots:
   /**
@@ -147,22 +172,51 @@ private:
   hid_t m_FileId;
   QMap<QString, QString> m_ComponentDimsMap;
   QStringList m_CurrentPathsWithErrors;
-
   ImportHDF5Dataset* m_Filter = nullptr;
-
   ImportHDF5DatasetFilterParameter* m_FilterParameter = nullptr;
+  QPixmap m_Icon = QPixmap(QLatin1String(":/SIMPL/icons/images/caret-bottom.png"));
+  QAction* m_ShowFileAction = nullptr;
+  QString m_CurrentText = "";
 
   /**
    * @brief Updates the QGraphicsView based on the current Data Dimension and Data record values
    * @param path The path to the HDF data set
    */
-  void _updateViewFromHDFPath(std::string path);
+  void _updateViewFromHDFPath(const std::string& path);
 
+  /**
+   * @brief updateAttributeTable
+   * @param datasetPath
+   * @return
+   */
   herr_t updateAttributeTable(const QString& datasetPath);
+
+  /**
+   * @brief updateGeneralTable
+   * @param path
+   * @return
+   */
   herr_t updateGeneralTable(const QString& path);
+
+  /**
+   * @brief updateComponentDimensions
+   * @param datasetPath
+   * @return
+   */
   herr_t updateComponentDimensions(const QString& datasetPath);
+
+  /**
+   * @brief addRow
+   * @param table
+   * @param row
+   * @param key
+   * @param value
+   */
   void addRow(QTableWidget* table, int row, const QString& key, const QString& value);
 
+  /**
+   * @brief initializeHDF5Paths
+   */
   void initializeHDF5Paths();
 
   /**

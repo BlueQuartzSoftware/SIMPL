@@ -164,7 +164,6 @@ private:
   static QString m_OpenDialogLastFilePath;
 
   QAction* m_ShowFileAction = nullptr;
-  QString m_CurrentlyValidPath = "";
   QString m_CurrentText = "";
   bool m_DidCausePreflight = false;
 

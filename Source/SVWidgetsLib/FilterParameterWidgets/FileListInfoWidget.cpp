@@ -327,7 +327,7 @@ void FileListInfoWidget::checkIOFiles()
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
   QString inputPath = validator->convertToAbsolutePath(m_Ui->inputDir->text());
 
-  if(this->verifyPathExists(inputPath, m_Ui->inputDir))
+  if(QtSFileUtils::VerifyPathExists(inputPath, m_Ui->inputDir))
   {
     findMaxSliceAndPrefix();
   }
@@ -373,7 +373,7 @@ void FileListInfoWidget::inputDir_textChanged(const QString& text)
 
   m_Ui->inputDir->setToolTip("Absolute File Path: " + inputPath);
 
-  if(verifyPathExists(inputPath, m_Ui->inputDir))
+  if(QtSFileUtils::VerifyPathExists(inputPath, m_Ui->inputDir))
   {
     m_ShowFileAction->setEnabled(true);
     findMaxSliceAndPrefix();

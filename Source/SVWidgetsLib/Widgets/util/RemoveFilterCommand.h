@@ -35,6 +35,8 @@
 
 #pragma once
 
+#include <vector>
+
 #include <QtCore/QModelIndex>
 #include <QtCore/QUuid>
 #include <QtCore/QVariant>
@@ -51,8 +53,8 @@ class SVPipelineView;
 class SVWidgetsLib_EXPORT RemoveFilterCommand : public QUndoCommand
 {
 public:
-  RemoveFilterCommand(AbstractFilter::Pointer filter, SVPipelineView* view, QString actionText, bool useAnimationOnFirstRun = true, QUndoCommand* parent = 0);
-  RemoveFilterCommand(std::vector<AbstractFilter::Pointer> filters, SVPipelineView* view, QString actionText, bool useAnimationOnFirstRun = true, QUndoCommand* parent = 0);
+  RemoveFilterCommand(const AbstractFilter::Pointer& filter, SVPipelineView* view, const QString& actionText, bool useAnimationOnFirstRun = true, QUndoCommand* parent = 0);
+  RemoveFilterCommand(const std::vector<AbstractFilter::Pointer>& filters, SVPipelineView* view, const QString& actionText, bool useAnimationOnFirstRun = true, QUndoCommand* parent = 0);
   ~RemoveFilterCommand() override;
 
   void undo() override;
@@ -65,31 +67,32 @@ private:
   std::vector<int> m_FilterRows;
   bool m_FirstRun = true;
   bool m_UseAnimationOnFirstRun = true;
+  std::map<AbstractFilter::Pointer, QMetaObject::Connection> m_Connections;
 
   /**
    * @brief addFilter
    * @param filter
    * @param insertionIndex
    */
-  void addFilter(AbstractFilter::Pointer filter, int insertionIndex = -1);
+  void addFilter(const AbstractFilter::Pointer &filter, int insertionIndex = -1);
 
   /**
    * @brief removeFilter
    * @param row
    */
-  void removeFilter(AbstractFilter::Pointer filter);
+  void removeFilter(const AbstractFilter::Pointer& filter);
 
   /**
    * @brief connectFilterSignalsSlots
    * @param filter
    */
-  void connectFilterSignalsSlots(AbstractFilter::Pointer filter);
+  void connectFilterSignalsSlots(const AbstractFilter::Pointer& filter);
 
   /**
    * @brief disconnectFilterSignalsSlots
    * @param filter
    */
-  void disconnectFilterSignalsSlots(AbstractFilter::Pointer filter);
+  void disconnectFilterSignalsSlots(const AbstractFilter::Pointer& filter);
 
 public:
   RemoveFilterCommand(const RemoveFilterCommand&) = delete; // Copy Constructor Not Implemented

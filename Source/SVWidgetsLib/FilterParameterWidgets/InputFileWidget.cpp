@@ -78,7 +78,7 @@ void InputFileWidget::selectInputFile()
   QString ext = m_FilterParameter->getFileExtension();
   QString s = Ftype + QString(" Files (") + ext + QString(");;All Files(*.*)");
   // QString defaultName = m_OpenDialogLastDirectory + QDir::separator() + "Untitled";
-  QString file = QFileDialog::getOpenFileName(this, tr("Select Input File"), getOpenDialogLastFilePath(), s);
+  QString file = QFileDialog::getOpenFileName(this, tr("Select Input File"), getValue(), s);
 
   if(file.isEmpty())
   {
@@ -87,7 +87,7 @@ void InputFileWidget::selectInputFile()
   file = QDir::toNativeSeparators(file);
   // Store the last used directory into the private instance variable
   QFileInfo fi(file);
-  setOpenDialogLastFilePath(fi.filePath());
+  setValue(fi.filePath());
   m_LineEdit->setText(file);
   on_m_LineEdit_editingFinished();
 

@@ -68,7 +68,7 @@ public:
   *@param outLines
   *@param filename
   */
-  void writeOutput(bool didReplace, const QString& outLines, QString filename);
+  void writeOutput(bool didReplace, const QString& outLines, const QString& filename);
 
 protected:
   PythonBindingClass() = delete;

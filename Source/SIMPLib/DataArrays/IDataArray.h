@@ -42,6 +42,11 @@ class SIMPLib_EXPORT IDataArray
   PYB11_CREATE_BINDINGS(IDataArray)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
 
+  PYB11_METHOD(QString getTypeAsString)
+  PYB11_METHOD(QVector<size_t> getComponentDimensions)
+  PYB11_METHOD(size_t getNumberOfTuples)
+  PYB11_METHOD(int getNumberOfComponents)
+
   public:
     SIMPL_SHARED_POINTERS(IDataArray)
     SIMPL_TYPE_MACRO(IDataArray)

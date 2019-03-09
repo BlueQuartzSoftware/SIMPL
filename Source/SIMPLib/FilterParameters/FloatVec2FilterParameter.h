@@ -41,36 +41,10 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QMetaType>
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
-
-typedef struct {
-  float x; float y; float z;
-  void FloatVec2(const float& xx, const float& yy)
-  {
-    x = xx;
-    y = yy;
-  }
-  void writeJson(QJsonObject &json)
-  {
-    json["x"] = static_cast<double>(x);
-    json["y"] = static_cast<double>(y);
-  }
-
-  bool readJson(QJsonObject &json)
-  {
-    if (json["x"].isDouble() && json["y"].isDouble() )
-    {
-      x = static_cast<float>(json["x"].toDouble());
-      y = static_cast<float>(json["y"].toDouble());
-      return true;
-    }
-    return false;
-  }
-} FloatVec2_t;
-
-Q_DECLARE_METATYPE(FloatVec2_t)
+#include "SIMPLib/FilterParameters/FloatVec2.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief SIMPL_NEW_FLOAT_VEC3_FP This macro is a short-form way of instantiating an instance of

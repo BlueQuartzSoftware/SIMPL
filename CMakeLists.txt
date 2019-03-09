@@ -29,12 +29,12 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_EXTENSIONS False)
 
+cmake_minimum_required(VERSION 3.13.0)
 
 #------------------------------------------------------------------------------
 # Create the Top level Project
 #
 project(SIMPLProj VERSION 1.2.0.0)
-
 
 # ---------- Setup output Directories -------------------------
 if(NOT DEFINED CMAKE_LIBRARY_OUTPUT_DIRECTORY)
@@ -258,13 +258,14 @@ endif()
 # --------------------------------------------------------------------
 # SIMPL needs the Eigen library for Least Squares fit and Eigen value/vector calculations.
 set(SIMPL_USE_EIGEN "")
-Find_Package(Eigen REQUIRED)
-if(EIGEN_FOUND)
-  message(STATUS "Found Eigen Library")
-  set(SIMPL_USE_EIGEN "1")
+Find_Package(Eigen3 REQUIRED)
+if(EIGEN3_FOUND)
+  message(STATUS "Eigen3: ${EIGEN3_VERSION_STRING}")
+  set(SIMPL_USE_EIGEN "1" CACHE INTERNAL "")
 else()
   message(WARNING "The Eigen Library is required for some algorithms to execute. These algorithms will be disabled.")
 endif()
+
 
 # --------------------------------------------------------------------
 # Find and Use the Qt5 Libraries
@@ -444,12 +445,11 @@ include(${SIMPLProj_SOURCE_DIR}/Support/Support.cmake)
 
 # --------------------------------------------------------------------------
 # Find the Pybind11 installation
-option(SIMPL_WRAP_PYTHON "Generate and Compile Python wrapping codes" OFF)
-message(STATUS "SIMPL_WRAP_PYTHON: ${SIMPL_WRAP_PYTHON}")
-if(SIMPL_WRAP_PYTHON)
+option(SIMPL_ENABLE_PYTHON "Generate and Compile Python wrapping codes" OFF)
+if(SIMPL_ENABLE_PYTHON)
+
   # --------------------------------------------------------------------
   # add the Pybind11 Python Wrapping
   add_subdirectory(${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11 ${PROJECT_BINARY_DIR}/Pybind11)
 
 endif()
-

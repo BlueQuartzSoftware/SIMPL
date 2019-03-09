@@ -87,13 +87,6 @@ class SVWidgetsLib_EXPORT QtSPluginFrame : public QFrame
     virtual void setWidgetListEnabled(bool b) = 0;
 
     /**
-     * @brief Verifies that a path exists on the file system.
-     * @param outFilePath The file path to check
-     * @param lineEdit The QLineEdit object to modify visuals of (Usually by placing a red line around the QLineEdit widget)
-     */
-    bool verifyPathExists(QString outFilePath, QLineEdit* lineEdit);
-
-    /**
      * @brief Verifies that a parent path exists on the file system.
      * @param outFilePath The parent file path to check
      * @param lineEdit The QLineEdit object to modify visuals of (Usually by placing a red line around the QLineEdit widget)

@@ -117,14 +117,14 @@ void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContain
     H5ScopedGroupSentinel sentinel(&containerGid, false);
 
     DataContainerProxy dcProxy(dataContainerName);
-    dcProxy.name = dataContainerName;
-    dcProxy.flag = Qt::Unchecked;
+    dcProxy.setName(dataContainerName);
+    dcProxy.setFlag(Qt::Unchecked);
 
     int32_t geometryType;
     herr_t err = QH5Lite::readScalarAttribute(containerGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryType, geometryType);
     if(err >= 0)
     {
-      dcProxy.dcType = static_cast<unsigned int>(geometryType);
+      dcProxy.setDCType(static_cast<unsigned int>(geometryType));
       if(req != nullptr)
       {
         IGeometry::Types geomTypes = req->getDCGeometryTypes();
@@ -132,7 +132,7 @@ void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContain
         {
         }
 
-        dcProxy.flag = Qt::Checked;
+        dcProxy.setFlag(Qt::Checked);
       }
     }
 
@@ -141,7 +141,7 @@ void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContain
     AttributeMatrix::ReadAttributeMatrixStructure(containerGid, &dcProxy, req, h5Path);
 
     // Insert the DataContainerProxy proxy into the DataContainerArrayProxy
-    proxy.dataContainers.insert(dcProxy.name, dcProxy);
+    proxy.insertDataContainer(dcProxy.getName(), dcProxy);
   }
 }
 
@@ -369,23 +369,23 @@ int DataContainer::writeAttributeMatricesToHDF5(hid_t parentId)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int DataContainer::readAttributeMatricesFromHDF5(bool preflight, hid_t dcGid, const DataContainerProxy& dcProxy)
+int DataContainer::readAttributeMatricesFromHDF5(bool preflight, hid_t dcGid, DataContainerProxy& dcProxy)
 {
   int err = 0;
   QVector<size_t> tDims;
 
-  QMap<QString, AttributeMatrixProxy> attrMatsToRead = dcProxy.attributeMatricies;
+  DataContainerProxy::StorageType& attrMatsToRead = dcProxy.getAttributeMatricies();
   AttributeMatrix::Type amType = AttributeMatrix::Type::Unknown;
   QString amName;
   for(QMap<QString, AttributeMatrixProxy>::iterator iter = attrMatsToRead.begin(); iter != attrMatsToRead.end(); ++iter)
   {
-    if(iter.value().flag == Qt::Unchecked)
+    if(iter.value().getFlag() == Qt::Unchecked)
     {
       continue;
     }
     amName = iter.key();
 
-    unsigned int amTypeTmp = static_cast<unsigned int>(AttributeMatrix::Type::Unknown);
+    uint32_t amTypeTmp = static_cast<uint32_t>(AttributeMatrix::Type::Unknown);
     err = QH5Lite::readScalarAttribute(dcGid, amName, SIMPL::StringConstants::AttributeMatrixType, amTypeTmp);
     if(err < 0)
     {
@@ -416,7 +416,6 @@ int DataContainer::readAttributeMatricesFromHDF5(bool preflight, hid_t dcGid, co
     if(err < 0)
     {
       err |= H5Gclose(dcGid);
-      //      setErrorCondition(err);
       return -1;
     }
   }

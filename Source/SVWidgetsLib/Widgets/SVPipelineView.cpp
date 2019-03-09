@@ -1,7 +1,5 @@
-#include <utility>
-
 /* ============================================================================
- * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ * Copyright (c) 2009-2019 BlueQuartz Software, LLC
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -34,10 +32,10 @@
  *    United States Prime Contract Navy N00173-07-C-2068
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
 #include "SVPipelineView.h"
 
 #include <iostream>
+#include <utility>
 
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
@@ -102,6 +100,40 @@
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/QtSupport/QtSRecentFileList.h"
 
+namespace
+{
+
+class JsonObserver : public IObserver
+{
+public:
+  JsonObserver() = default;
+  ~JsonObserver() override = default;
+
+  JsonObserver(const JsonObserver&) = delete;            // Copy Constructor Not Implemented
+  JsonObserver(JsonObserver&&) = delete;                 // Move Constructor Not Implemented
+  JsonObserver& operator=(const JsonObserver&) = delete; // Copy Assignment Not Implemented
+  JsonObserver& operator=(JsonObserver&&) = delete;      // Move Assignment Not Implemented
+
+  void processPipelineMessage(const PipelineMessage& pm) override
+  {
+    m_ErrorCode = pm.getCode();
+    m_ErrorMessage = pm.getText();
+  }
+
+  QString getErrorMessage()
+  {
+    return m_ErrorMessage;
+  }
+  int32_t getErrorCode()
+  {
+    return m_ErrorCode;
+  }
+
+private:
+  QString m_ErrorMessage;
+  int32_t m_ErrorCode = 0;
+};
+} // namespace
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -334,10 +366,13 @@ void SVPipelineView::preflightPipeline()
   {
     return;
   }
-  //qDebug() << "----------- SVPipelineView::preflightPipeline Begin --------------";
   emit clearIssuesTriggered();
 
   PipelineModel* model = getPipelineModel();
+  if(nullptr == model)
+  {
+    return;
+  }
 
   // Create a Pipeline Object and fill it with the filters from this View
   updateLocalTempPipeline();
@@ -356,32 +391,18 @@ void SVPipelineView::preflightPipeline()
     {
       model->setData(childIndex, static_cast<int>(PipelineItem::ErrorState::Ok), PipelineModel::ErrorStateRole);
       AbstractFilter::Pointer filter = model->filter(childIndex);
-      if(filter->getEnabled())
+      if(filter && filter->getEnabled())
       {
         model->setData(childIndex, static_cast<int>(PipelineItem::WidgetState::Ready), PipelineModel::WidgetStateRole);
       }
     }
   }
 
-  //  QSharedPointer<ProgressDialog> progressDialog(new ProgressDialog());
-  //  progressDialog->setWindowTitle("Pipeline Preflighting");
-  //  QString msg = QString("Please wait for %1 filters to preflight...").arg(pipeline->getFilterContainer().count());
-  //  progressDialog->setLabelText(msg);
-  //  progressDialog->show();
-  //  progressDialog->raise();
-  //  progressDialog->activateWindow();
-
-  // Preflight the pipeline
-  //qDebug() << "Preflight the Pipeline ... ";
-
   int err = pipeline->preflightPipeline();
   if(err < 0)
   {
     // FIXME: Implement error handling.
   }
-
-  //qDebug() << "Checking for Filters with Errors or Warnings ... ";
-
   int count = pipeline->getFilterContainer().size();
   // Now that the preflight has been executed loop through the filters and check their error condition and set the
   // outline on the filter widget if there were errors or warnings
@@ -391,21 +412,22 @@ void SVPipelineView::preflightPipeline()
     if(childIndex.isValid())
     {
       AbstractFilter::Pointer filter = model->filter(childIndex);
-      if(filter->getWarningCondition() < 0)
+      if(filter.get() != nullptr)
       {
-        model->setData(childIndex, static_cast<int>(PipelineItem::ErrorState::Warning), PipelineModel::ErrorStateRole);
-      }
-      if(filter->getErrorCondition() < 0)
-      {
-        model->setData(childIndex, static_cast<int>(PipelineItem::ErrorState::Error), PipelineModel::ErrorStateRole);
+        if (filter->getWarningCondition() < 0)
+        {
+          model->setData(childIndex, static_cast<int>(PipelineItem::ErrorState::Warning), PipelineModel::ErrorStateRole);
+        }
+        if(filter->getErrorCondition() < 0)
+        {
+          model->setData(childIndex, static_cast<int>(PipelineItem::ErrorState::Error), PipelineModel::ErrorStateRole);
+        }
       }
     }
   }
 
-  emit preflightFinished(pipeline, err);
+  emit preflightFinished(count, err);
   updateFilterInputWidgetIndices();
-  //qDebug() << "----------- SVPipelineView::preflightPipeline End --------------";
-  
 }
 
 // -----------------------------------------------------------------------------
@@ -715,8 +737,20 @@ int SVPipelineView::writePipeline(const QString& outputPath)
   }
 
   // Create a Pipeline Object and fill it with the filters from this View
-  FilterPipeline::Pointer pipeline = getFilterPipelineCopy();
-  
+  FilterPipeline::Pointer pipeline = FilterPipeline::New();
+  PipelineModel* model = getPipelineModel();
+
+  qint32 count = model->rowCount();
+  for(qint32 i = 0; i < count; ++i)
+  {
+    QModelIndex childIndex = model->index(i, PipelineItem::Contents);
+    if(childIndex.isValid())
+    {
+      AbstractFilter::Pointer filter = model->filter(childIndex);
+      pipeline->pushBack(filter);
+    }
+  }
+
   int err = 0;
   if(ext == "dream3d")
   {
@@ -1568,7 +1602,7 @@ void SVPipelineView::toReadyState()
   for(int i = 0; i < model->rowCount(); i++)
   {
     QModelIndex index = model->index(i, PipelineItem::Contents);
-    
+
     // Do not set state to Completed if the filter is disabled
     PipelineItem::WidgetState wState = static_cast<PipelineItem::WidgetState>(model->data(index, PipelineModel::WidgetStateRole).toInt());
     if(wState != PipelineItem::WidgetState::Disabled)
@@ -1688,8 +1722,6 @@ int SVPipelineView::openPipeline(const QString& filePath, int insertIndex)
   // Check that a valid extension was read...
   if(pipeline == FilterPipeline::NullPointer())
   {
-    emit statusMessage(tr("The pipeline was not read correctly from file '%1'. '%2' is an unsupported file extension.").arg(name).arg(ext));
-    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(tr("The pipeline was not read correctly from file '%1'. '%2' is an unsupported file extension.").arg(name).arg(ext), false));
     return -1;
   }
 
@@ -1721,20 +1753,24 @@ FilterPipeline::Pointer SVPipelineView::readPipelineFromFile(const QString& file
   QFileInfo fi(filePath);
   QString ext = fi.suffix();
 
-  FilterPipeline::Pointer pipeline;
+  ::JsonObserver jsonObs;
+
+  FilterPipeline::Pointer pipeline = FilterPipeline::NullPointer();
   if(ext == "dream3d")
   {
     H5FilterParametersReader::Pointer dream3dReader = H5FilterParametersReader::New();
-    pipeline = dream3dReader->readPipelineFromFile(filePath, this);
+    pipeline = dream3dReader->readPipelineFromFile(filePath, &jsonObs);
   }
   else if(ext == "json")
   {
     JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
-    pipeline = jsonReader->readPipelineFromFile(filePath, this);
+    pipeline = jsonReader->readPipelineFromFile(filePath, &jsonObs);
   }
-  else
+
+  if(jsonObs.getErrorCode() != 0)
   {
-    pipeline = FilterPipeline::NullPointer();
+    emit statusMessage(jsonObs.getErrorMessage());
+    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(jsonObs.getErrorMessage(), true));
   }
 
   return pipeline;
@@ -2097,7 +2133,7 @@ bool SVPipelineView::isPipelineCurrentlyRunning()
 // -----------------------------------------------------------------------------
 PipelineModel* SVPipelineView::getPipelineModel()
 {
-  return static_cast<PipelineModel*>(model());
+  return dynamic_cast<PipelineModel*>(model());
 }
 
 // -----------------------------------------------------------------------------

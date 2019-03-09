@@ -197,15 +197,15 @@ QStringList ComparisonSelectionWidget::generateAttributeArrayList(const QString&
   QStringList attributeArrayList;
 
   // Loop over the data containers until we find the proper data container
-  QList<DataContainerProxy> containers = m_DcaProxy.dataContainers.values();
+  QList<DataContainerProxy> containers = m_DcaProxy.getDataContainers().values();
   QListIterator<DataContainerProxy> containerIter(containers);
   while(containerIter.hasNext())
   {
     DataContainerProxy dc = containerIter.next();
-    if(dc.name.compare(currentDCName) == 0)
+    if(dc.getName() == currentDCName)
     {
       // We found the proper Data Container, now populate the AttributeMatrix List
-      QMap<QString, AttributeMatrixProxy> attrMats = dc.attributeMatricies;
+      QMap<QString, AttributeMatrixProxy> attrMats = dc.getAttributeMatricies();
       QMapIterator<QString, AttributeMatrixProxy> attrMatsIter(attrMats);
       while(attrMatsIter.hasNext())
       {
@@ -216,7 +216,7 @@ QStringList ComparisonSelectionWidget::generateAttributeArrayList(const QString&
 
           // We found the selected AttributeMatrix, so loop over this attribute matrix arrays and populate the list widget
           AttributeMatrixProxy amProxy = attrMatsIter.value();
-          QMap<QString, DataArrayProxy> dataArrays = amProxy.dataArrays;
+          QMap<QString, DataArrayProxy> dataArrays = amProxy.getDataArrays();
           QMapIterator<QString, DataArrayProxy> dataArraysIter(dataArrays);
           while(dataArraysIter.hasNext())
           {
@@ -446,7 +446,6 @@ void ComparisonSelectionWidget::populateButtonText()
   }
   QString filtDcName = comp.dataContainerName;
   QString filtAmName = comp.attributeMatrixName;
-  QString filtDaName = comp.attributeArrayName;
 
   QString dcName = checkStringValues(curDcName, filtDcName);
   QString amName = checkStringValues(curAmName, filtAmName);
@@ -480,7 +479,7 @@ void ComparisonSelectionWidget::attributeMatrixUpdated()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonSelectionWidget::attributeMatrixSelected(QString path)
+void ComparisonSelectionWidget::attributeMatrixSelected(const QString& path)
 {
   setSelectedPath(path);
 
@@ -492,7 +491,7 @@ void ComparisonSelectionWidget::attributeMatrixSelected(QString path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonSelectionWidget::setSelectedPath(QString path)
+void ComparisonSelectionWidget::setSelectedPath(const QString& path)
 {
   DataArrayPath amPath = DataArrayPath::Deserialize(path, Detail::Delimiter);
   setSelectedPath(amPath);
@@ -501,7 +500,7 @@ void ComparisonSelectionWidget::setSelectedPath(QString path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonSelectionWidget::setSelectedPath(DataArrayPath amPath)
+void ComparisonSelectionWidget::setSelectedPath(const DataArrayPath& amPath)
 {
   if (amPath.isEmpty()) { return; }
 
@@ -553,7 +552,7 @@ ComparisonSelectionTableModel* ComparisonSelectionWidget::createComparisonModel(
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonSelectionWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
+void ComparisonSelectionWidget::updateDataArrayPath(const QString& propertyName, const DataArrayPath::RenameType& renamePath)
 {
   if(propertyName.compare(getFilterParameter()->getPropertyName()) == 0)
   {

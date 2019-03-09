@@ -10,9 +10,9 @@
 #include "SIMPLib/DataArrays/StringDataArray.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
-#include "SIMPLib/Utilities/StringOperations.h"
-
 #include "SIMPLib/FilterParameters/ReadASCIIDataFilterParameter.h"
+#include "SIMPLib/Utilities/StringOperations.h"
+#include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
 
 #include "SIMPLib/SIMPLibVersion.h"
 
@@ -267,7 +267,12 @@ void ReadASCIIData::dataCheck()
     setErrorCondition(-387);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
-  else if(!fi.exists())
+
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  inputFilePath = validator->convertToAbsolutePath(inputFilePath);
+  fi.setFile(inputFilePath);
+
+  if(!fi.exists())
   {
     QString ss = QObject::tr("The input file does not exist");
     setErrorCondition(-388);
@@ -522,6 +527,9 @@ void ReadASCIIData::execute()
   }
 
   int insertIndex = 0;
+
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  inputFilePath = validator->convertToAbsolutePath(inputFilePath);
 
   QFile inputFile(inputFilePath);
   if(inputFile.open(QIODevice::ReadOnly))

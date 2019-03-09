@@ -405,34 +405,34 @@ public:
     err = writer->getErrorCondition();
     DREAM3D_REQUIRE_EQUAL(err, 0);
 
-    QMap<QString, DataContainerProxy>& dcsToRead = dcaProxy.dataContainers;
+    QMap<QString, DataContainerProxy>& dcsToRead = dcaProxy.getDataContainers();
     // uint32_t dcType = SIMPL::DataContainerType::UnknownDataContainer;
     for(QMap<QString, DataContainerProxy>::iterator iter = dcsToRead.begin(); iter != dcsToRead.end(); ++iter)
     {
       DataContainerProxy& dcProxy = iter.value();
-      if(dcProxy.name.compare(SIMPL::Defaults::DataContainerName) != 0)
+      if(dcProxy.getName() != SIMPL::Defaults::DataContainerName)
       {
-        dcProxy.flag = Qt::Unchecked;
+        dcProxy.setFlag(Qt::Unchecked);
       }
       else
       {
-        QMap<QString, AttributeMatrixProxy>& attrMatsToRead = dcProxy.attributeMatricies;
+        QMap<QString, AttributeMatrixProxy> attrMatsToRead = dcProxy.getAttributeMatricies();
         QString amName;
         for(QMap<QString, AttributeMatrixProxy>::iterator iter = attrMatsToRead.begin(); iter != attrMatsToRead.end(); ++iter)
         {
           amName = iter.key();
           if(amName.compare(getCellFeatureAttributeMatrixName()) != 0)
           {
-            iter.value().flag = Qt::Unchecked;
+            iter.value().setFlag(Qt::Unchecked);
           }
           else
           {
-            QMap<QString, DataArrayProxy>& dasToRead = iter.value().dataArrays;
+            QMap<QString, DataArrayProxy> dasToRead = iter.value().getDataArrays();
             for(QMap<QString, DataArrayProxy>::iterator iter2 = dasToRead.begin(); iter2 != dasToRead.end(); ++iter2)
             {
-              if(iter2->name.compare(SIMPL::CellData::FeatureIds) != 0 && iter2->name.compare(SIMPL::FeatureData::AxisEulerAngles) != 0)
+              if(iter2->getName() != SIMPL::CellData::FeatureIds && iter2->getName() != SIMPL::FeatureData::AxisEulerAngles)
               {
-                iter2->flag = SIMPL::Unchecked;
+                iter2->setFlag(SIMPL::Unchecked);
               }
             }
           }

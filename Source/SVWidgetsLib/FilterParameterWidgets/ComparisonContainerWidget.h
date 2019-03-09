@@ -56,7 +56,7 @@ class SVWidgetsLib_EXPORT ComparisonContainerWidget : public QFrame, private Ui:
   Q_OBJECT
 
 public:
-  ComparisonContainerWidget(QWidget* parent, AbstractComparison::Pointer comparison);
+  ComparisonContainerWidget(QWidget* parent, AbstractComparison::Pointer &comparison);
   ~ComparisonContainerWidget() override;
 
   /**
@@ -84,7 +84,7 @@ public:
   * @brief Sets the comparison this widget represents
   * @param comparison AbstractComparison to be represented by this widget
   */
-  void setComparison(AbstractComparison::Pointer comparison);
+  void setComparison(AbstractComparison::Pointer &comparison);
   /**
   * @brief Sets the comparison widget to be shown in this widget
   * @param widget the IComparisonWidget that stores the AbstractComparison shown
@@ -141,7 +141,7 @@ signals:
 
 protected:
   static ComparisonContainerWidget* SelectedItem; // Currently Selected Widget
-  static QString BorderStyleSheet; // Style Sheet Used When Selected
+  static QString BorderStyleSheet(); // Style Sheet Used When Selected
 
   /**
   * @brief MousePressEvent

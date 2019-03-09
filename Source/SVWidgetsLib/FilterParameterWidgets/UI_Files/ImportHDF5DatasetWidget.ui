@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>666</width>
-    <height>442</height>
+    <width>769</width>
+    <height>503</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0">
+  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0">
    <property name="leftMargin">
     <number>3</number>
    </property>
@@ -27,89 +27,51 @@
     <number>3</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QPushButton" name="selectBtn">
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="1" column="1" colspan="2">
+      <widget class="SVSmallLabel" name="absPathLabel">
+       <property name="font">
+        <font>
+         <italic>false</italic>
+        </font>
+       </property>
        <property name="text">
-        <string>Select ...</string>
+        <string/>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QtSFSDropLabel" name="value">
+     <item row="0" column="2">
+      <widget class="QPushButton" name="selectBtn">
+       <property name="text">
+        <string>Select...</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QtSLineEdit" name="value">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="mouseTracking">
-        <bool>true</bool>
-       </property>
-       <property name="acceptDrops">
-        <bool>true</bool>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
        <property name="text">
         <string/>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="SVIconPushButton" name="showLocationBtn">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>24</width>
-         <height>24</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>24</width>
-         <height>24</height>
-        </size>
-       </property>
-       <property name="toolTip">
-        <string>Click to show the file's location</string>
-       </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="humanLabel">
        <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="../../../../Resources/SIMPL.qrc">
-         <normaloff>:/SIMPL/icons/images/arrow_right_black.png</normaloff>:/SIMPL/icons/images/arrow_right_black.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>24</width>
-         <height>24</height>
-        </size>
-       </property>
-       <property name="flat">
-        <bool>true</bool>
+        <string>Input File</string>
        </property>
       </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
      </item>
     </layout>
    </item>
@@ -308,19 +270,16 @@
      </layout>
     </widget>
    </item>
+   <item>
+    <widget class="QLabel" name="errorLabel">
+     <property name="text">
+      <string>Error:</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>SVIconPushButton</class>
-   <extends>QPushButton</extends>
-   <header location="global">SVControlWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>QtSFSDropLabel</class>
-   <extends>QLabel</extends>
-   <header location="global">QtSFSDropLabel.h</header>
-  </customwidget>
   <customwidget>
    <class>SVTreeView</class>
    <extends>QTreeView</extends>
@@ -337,6 +296,16 @@
    <extends>QTabWidget</extends>
    <header location="global">SVControlWidgets.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QtSLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">QtSLineEdit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SVSmallLabel</class>
+   <extends>QLabel</extends>
+   <header location="global">SVControlWidgets.h</header>
   </customwidget>
  </customwidgets>
  <resources>

@@ -62,169 +62,164 @@ using DataContainerShPtr = std::shared_ptr<DataContainer>;
  */
 class SIMPLib_EXPORT DataContainerArray : public QObject
 {
-    Q_OBJECT
-    // This line MUST be first when exposing a class and properties to Python
-    PYB11_CREATE_BINDINGS(DataContainerArray)
+  Q_OBJECT
+  // clang-format off
+  PYB11_CREATE_BINDINGS(DataContainerArray)
 
-    PYB11_METHOD(void addDataContainer ARGS data_container)
-    //PYB11_METHOD(DataContainer::Pointer getDataContainer ARGS name)
-    PYB11_METHOD(bool doesDataContainerExist ARGS name)
-    PYB11_METHOD(DataContainer::Pointer removeDataContainer ARGS name)
-    PYB11_METHOD(bool renameDataContainer ARGS oldName newName)
-    PYB11_METHOD(void clearDataContainers)
-    //PYB11_METHOD(XXXX getDataContainerNames)
-    PYB11_METHOD(int getNumDataContainers)
-    PYB11_METHOD(void duplicateDataContainer ARGS oldName, newName)
-    
-    PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix ARGS dataArrayPath)
-    PYB11_METHOD(bool doesAttributeMatrixExist ARGS dataArrayPath)
-    
-    PYB11_METHOD(bool doesAttributeArrayExist ARGS dataArrayPath)
+  PYB11_METHOD(void addDataContainer ARGS data_container)
+  //PYB11_METHOD(DataContainer::Pointer getDataContainer ARGS name)
+  PYB11_METHOD(bool doesDataContainerExist ARGS name)
+  PYB11_METHOD(DataContainer::Pointer removeDataContainer ARGS name)
+  PYB11_METHOD(bool renameDataContainer ARGS oldName newName)
+  PYB11_METHOD(void clearDataContainers)
+  //PYB11_METHOD(XXXX getDataContainerNames)
+  PYB11_METHOD(int getNumDataContainers)
+  PYB11_METHOD(void duplicateDataContainer ARGS oldName, newName)
 
-  public:
-    SIMPL_SHARED_POINTERS(DataContainerArray)
-    SIMPL_STATIC_NEW_MACRO(DataContainerArray)
-    SIMPL_TYPE_MACRO(DataContainerArray)
+  PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix ARGS dataArrayPath)
+  PYB11_METHOD(bool doesAttributeMatrixExist ARGS dataArrayPath)
 
-    ~DataContainerArray() override;
+  PYB11_METHOD(bool doesAttributeArrayExist ARGS dataArrayPath)
+  // clang-format on
 
-    /**
-     * @brief
-     */
-    virtual void addDataContainer(DataContainerShPtr f);
+public:
+  SIMPL_SHARED_POINTERS(DataContainerArray)
+  SIMPL_STATIC_NEW_MACRO(DataContainerArray)
+  SIMPL_TYPE_MACRO(DataContainerArray)
 
-    /**
-     * @brief getDataContainer
-     * @param path Uses the DataContainerName from the DataArrayPath to return a data container
-     * @return
-     */
-    virtual DataContainerShPtr getDataContainer(const DataArrayPath& path);
+  ~DataContainerArray() override;
 
-    /**
-     * @brief getDataContainer
-     * @param name
-     * @return
-     */
-    virtual DataContainerShPtr getDataContainer(const QString& name);
+  /**
+   * @brief
+   */
+  virtual void addDataContainer(DataContainerShPtr f);
 
-    /**
-     * @brief getDataContainers
-     * @return
-     */
-    QList<DataContainerShPtr>& getDataContainers();
+  /**
+   * @brief getDataContainer
+   * @param path Uses the DataContainerName from the DataArrayPath to return a data container
+   * @return
+   */
+  virtual DataContainerShPtr getDataContainer(const DataArrayPath& path);
 
-    /**
-     * @brief Returns if a DataContainer with the give name is in the array
-     * @param name The name of the DataContiner to find
-     * @return
-     */
-    virtual bool doesDataContainerExist(const QString& name);
+  /**
+   * @brief getDataContainer
+   * @param name
+   * @return
+   */
+  virtual DataContainerShPtr getDataContainer(const QString& name);
 
-    /**
-     * @brief DataContainerArray::doesAttributeMatrixExist
-     * @param path
-     * @return
-     */
-    virtual bool doesAttributeMatrixExist(const DataArrayPath& path);
+  /**
+   * @brief getDataContainers
+   * @return
+   */
+  QList<DataContainerShPtr>& getDataContainers();
 
-    /**
-     * @brief doesAttributeArrayExist
-     * @param path
-     * @return
-     */
-    virtual bool doesAttributeArrayExist(const DataArrayPath& path);
+  /**
+   * @brief Returns if a DataContainer with the give name is in the array
+   * @param name The name of the DataContiner to find
+   * @return
+   */
+  virtual bool doesDataContainerExist(const QString& name);
 
-    /**
-     * @brief
-     */
-    virtual DataContainerShPtr removeDataContainer(const QString& name);
+  /**
+   * @brief DataContainerArray::doesAttributeMatrixExist
+   * @param path
+   * @return
+   */
+  virtual bool doesAttributeMatrixExist(const DataArrayPath& path);
 
-    /**
-     * @brief renameDataContainer
-     * @param oldName
-     * @param newName
-     * @return
-     */
-    bool renameDataContainer(const QString& oldName, const QString& newName);
+  /**
+   * @brief doesAttributeArrayExist
+   * @param path
+   * @return
+   */
+  virtual bool doesAttributeArrayExist(const DataArrayPath& path);
 
-    /**
-     * @brief Removes all DataContainers from this DataContainerArray
-     */
-    virtual void clearDataContainers();
+  /**
+   * @brief
+   */
+  virtual DataContainerShPtr removeDataContainer(const QString& name);
 
-    /**
-     * @brief getDataContainerNames
-     * @return
-     */
-    QList<QString> getDataContainerNames();
+  /**
+   * @brief renameDataContainer
+   * @param oldName
+   * @param newName
+   * @return
+   */
+  bool renameDataContainer(const QString& oldName, const QString& newName);
 
-    /**
-     * @brief Returns the number of DataContainers
-     * @return
-     */
-    virtual int getNumDataContainers();
+  /**
+   * @brief Removes all DataContainers from this DataContainerArray
+   */
+  virtual void clearDataContainers();
 
-    /**
-     * @brief duplicateDataContainer
-     * @param name
-     * @param newName
-     */
-    virtual void duplicateDataContainer(const QString& name, const QString& newName);
+  /**
+   * @brief getDataContainerNames
+   * @return
+   */
+  QList<QString> getDataContainerNames();
 
+  /**
+   * @brief Returns the number of DataContainers
+   * @return
+   */
+  virtual int getNumDataContainers();
 
-    //////////////////////  AttributeMatrix Functions //////////////////////////
-    /**
-     * @brief getAttributeMatrix
-     * @param path
-     * @return
-     */
-    virtual AttributeMatrix::Pointer getAttributeMatrix(const DataArrayPath& path);
+  /**
+   * @brief duplicateDataContainer
+   * @param name
+   * @param newName
+   */
+  virtual void duplicateDataContainer(const QString& name, const QString& newName);
 
-    /**
-     * @brief printDataContainerNames
-     * @param out
-     */
-    virtual void printDataContainerNames(QTextStream& out);
+  //////////////////////  AttributeMatrix Functions //////////////////////////
+  /**
+   * @brief getAttributeMatrix
+   * @param path
+   * @return
+   */
+  virtual AttributeMatrix::Pointer getAttributeMatrix(const DataArrayPath& path);
 
-    /**
-    * @brief Reads desired the DataContainers from HDF5 file
-     * @param preflight
-     * @param dcaGid
-     * @param dcaProxy
-     * @param obs
-     * @return
-     */
-    virtual int readDataContainersFromHDF5(bool preflight,
-                                           hid_t dcaGid,
-                                           const DataContainerArrayProxy& dcaProxy,
-                                           Observable* obs = nullptr);
+  /**
+   * @brief printDataContainerNames
+   * @param out
+   */
+  virtual void printDataContainerNames(QTextStream& out);
 
+  /**
+   * @brief Reads desired the DataContainers from HDF5 file
+   * @param preflight
+   * @param dcaGid
+   * @param dcaProxy
+   * @param obs
+   * @return
+   */
+  virtual int readDataContainersFromHDF5(bool preflight, hid_t dcaGid, DataContainerArrayProxy& dcaProxy, Observable* obs = nullptr);
 
-    /**
-     * @brief setDataContainerBundles
-     * @param bundles
-     */
-    void setDataContainerBundles(QMap<QString, IDataContainerBundle::Pointer> bundles);
+  /**
+   * @brief setDataContainerBundles
+   * @param bundles
+   */
+  void setDataContainerBundles(QMap<QString, IDataContainerBundle::Pointer> bundles);
 
-    /**
-     * @brief getDataContainerBundles
-     * @return
-     */
-    QMap<QString, IDataContainerBundle::Pointer>& getDataContainerBundles();
+  /**
+   * @brief getDataContainerBundles
+   * @return
+   */
+  QMap<QString, IDataContainerBundle::Pointer>& getDataContainerBundles();
 
-    /**
-    * @brief getDataContainerBundle
-    * @param name
-    * @return
-    */
-    IDataContainerBundle::Pointer getDataContainerBundle(const QString& name);
+  /**
+   * @brief getDataContainerBundle
+   * @param name
+   * @return
+   */
+  IDataContainerBundle::Pointer getDataContainerBundle(const QString& name);
 
-    template<typename BundleType>
-    typename BundleType::Pointer getDataContainerBundleAs(const QString& name)
-    {
-      typename BundleType::Pointer dcb = std::dynamic_pointer_cast<BundleType>(getDataContainerBundle(name));
-      return dcb;
-    }
+  template <typename BundleType> typename BundleType::Pointer getDataContainerBundleAs(const QString& name)
+  {
+    typename BundleType::Pointer dcb = std::dynamic_pointer_cast<BundleType>(getDataContainerBundle(name));
+    return dcb;
+  }
 
     /**
      * @brief addDataContainerBundle
@@ -278,7 +273,8 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
         }
         return dc;
       }
-      else if(nullptr != dc && createIfNotExists)
+
+      if(nullptr != dc && createIfNotExists)
       {
         DataContainerShPtr dataContainer = DataContainer::New(name); // Create a new Data Container
         addDataContainer(dataContainer); // Put the new DataContainer into the array

@@ -753,7 +753,8 @@ QString SVStyle::WrapTextWithHtmlStyle(const QString& msg, bool bold) const
 {
   QString formattedMessage;
   QTextStream out(&formattedMessage);
-
+  QString msg2 = msg;
+  msg2 = msg2.replace("\n", "<br>");
   if(bold)
   {
     out << "<b ";
@@ -762,7 +763,7 @@ QString SVStyle::WrapTextWithHtmlStyle(const QString& msg, bool bold) const
     out << "<span ";
   }
   out << "style=\"color: " << getQLabel_color().name(QColor::HexRgb) << ";\">";
-  out << msg;
+  out << msg2;
   if(bold)
   {
     out << " </b>";

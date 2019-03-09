@@ -108,7 +108,7 @@ bool SIMPLH5DataReader::closeFile()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerArray::Pointer SIMPLH5DataReader::readSIMPLDataUsingProxy(const DataContainerArrayProxy &proxy, bool preflight)
+DataContainerArray::Pointer SIMPLH5DataReader::readSIMPLDataUsingProxy(DataContainerArrayProxy& proxy, bool preflight)
 {
   if (m_FileId < 0)
   {
@@ -278,7 +278,7 @@ bool SIMPLH5DataReader::readPipelineJson(QString &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool SIMPLH5DataReader::readDataContainerBundles(hid_t fileId, DataContainerArray::Pointer dca)
+bool SIMPLH5DataReader::readDataContainerBundles(hid_t fileId, const DataContainerArray::Pointer& dca)
 {
   herr_t err = 0;
   hid_t dcbGroupId = H5Gopen(fileId, SIMPL::StringConstants::DataContainerBundleGroupName.toLatin1().constData(), H5P_DEFAULT);

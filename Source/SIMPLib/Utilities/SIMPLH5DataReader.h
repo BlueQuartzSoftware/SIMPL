@@ -92,7 +92,7 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
      * @param preflight
      * @return
      */
-    DataContainerArray::Pointer readSIMPLDataUsingProxy(const DataContainerArrayProxy &proxy, bool preflight);
+    DataContainerArray::Pointer readSIMPLDataUsingProxy(DataContainerArrayProxy& proxy, bool preflight);
 
     /**
      * @brief readPipelineJson
@@ -122,7 +122,7 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
      * @param dca
      * @return
      */
-    bool readDataContainerBundles(hid_t fileId, DataContainerArray::Pointer dca);
+    bool readDataContainerBundles(hid_t fileId, const DataContainerArray::Pointer& dca);
 
   public:
     SIMPLH5DataReader(const SIMPLH5DataReader&) = delete; // Copy Constructor Not Implemented

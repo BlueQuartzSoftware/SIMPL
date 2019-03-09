@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>102</height>
+    <width>525</width>
+    <height>176</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -30,16 +30,16 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
-    <number>0</number>
+    <number>2</number>
    </property>
    <property name="topMargin">
-    <number>0</number>
+    <number>2</number>
    </property>
    <property name="rightMargin">
-    <number>0</number>
+    <number>2</number>
    </property>
    <property name="bottomMargin">
-    <number>0</number>
+    <number>2</number>
    </property>
    <item row="0" column="0">
     <widget class="QWidget" name="optionsWidget" native="true">
@@ -57,7 +57,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="spacing">
-       <number>0</number>
+       <number>5</number>
       </property>
       <property name="leftMargin">
        <number>0</number>
@@ -79,19 +79,56 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="addItemBtn">
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>6</width>
+          <height>10</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="SVIconPushButton" name="addItemBtn">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
           <width>24</width>
           <height>24</height>
          </size>
         </property>
+        <property name="maximumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Add Threshold Criteria</string>
+        </property>
+        <property name="statusTip">
+         <string/>
+        </property>
+        <property name="whatsThis">
+         <string/>
+        </property>
         <property name="text">
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../../icons/images/Icons.qrc">
-          <normaloff>:/SIMPL/icons/images/add.png</normaloff>:/add.png</iconset>
+         <iconset resource="../../../../Resources/SIMPL.qrc">
+          <normaloff>:/SIMPL/icons/images/add.png</normaloff>:/SIMPL/icons/images/add.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -137,6 +174,9 @@
      <property name="acceptDrops">
       <bool>true</bool>
      </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
      <property name="sizeAdjustPolicy">
       <enum>QAbstractScrollArea::AdjustToContents</enum>
      </property>
@@ -148,8 +188,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>339</width>
-        <height>100</height>
+        <width>451</width>
+        <height>172</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -178,7 +218,7 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QWidget" name="spacerWidget" native="true">
+        <widget class="QWidget" name="comparisonSetMainWidget" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
            <horstretch>1</horstretch>
@@ -193,8 +233,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SVIconPushButton</class>
+   <extends>QPushButton</extends>
+   <header location="global">SVControlWidgets.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
-  <tabstop>addItemBtn</tabstop>
   <tabstop>conditionalScrollArea</tabstop>
  </tabstops>
  <resources>

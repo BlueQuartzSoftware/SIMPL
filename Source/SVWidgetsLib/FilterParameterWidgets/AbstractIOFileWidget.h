@@ -84,11 +84,6 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
     */
     void setupGui() override;
 
-    /**
-    * @brief
-    */
-    bool verifyPathExists(const QString &filePath, QLineEdit* lineEdit);
-
   public slots:
     void beforePreflight();
     void afterPreflight();
@@ -101,9 +96,9 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
 
 
   protected:
-    void setOpenDialogLastFilePath(const QString &val);
+    void setValue(const QString& val);
 
-    QString getOpenDialogLastFilePath();
+    QString getValue();
 
     /**
     * @brief
@@ -118,7 +113,6 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
 
   private:
     QAction* m_ShowFileAction = nullptr;
-    QString  m_CurrentlyValidPath = "";
     QString  m_CurrentText = "";
     QPixmap m_Icon = QPixmap(QLatin1String(":/SIMPL/icons/images/caret-bottom.png"));
 
