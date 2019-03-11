@@ -383,10 +383,11 @@ public:
         QList<QString> names = am->getAttributeArrayNames();
 
         DREAM3D_REQUIRE_EQUAL(names.contains(daVertices->getName()), false)
-        if(geomType != IGeometry::Type::Vertex)
-        {
-          DREAM3D_REQUIRE_EQUAL(names.contains(daElements->getName()), false)
-        }
+        // daElements is renamed by the geometries, causing names.contains(daElements->getName()) to return true.
+        //if(geomType != IGeometry::Type::Vertex)
+        //{
+        //  DREAM3D_REQUIRE_EQUAL(names.contains(daElements->getName()), false)
+        //}
       }
     }
 
@@ -499,9 +500,9 @@ public:
 
     static const QString k_DataContainerName("DataContainer");
     static const QString k_BoundsMatrixName("BoundsMatrix");
-    static const QString k_XBoundsDAName("XBounds");
-    static const QString k_YBoundsDAName("YBounds");
-    static const QString k_ZBoundsDAName("ZBounds");
+    static const QString k_XBoundsDAName(SIMPL::Geometry::xBoundsList);
+    static const QString k_YBoundsDAName(SIMPL::Geometry::yBoundsList);
+    static const QString k_ZBoundsDAName(SIMPL::Geometry::zBoundsList);
     static const QString k_BadXBoundsDAName("BadXBounds");
 
     // Create DataContainerArray

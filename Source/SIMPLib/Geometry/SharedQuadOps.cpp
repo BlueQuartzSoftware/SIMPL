@@ -57,13 +57,13 @@ void GEOM_CLASS_NAME::resizeQuadList(int64_t newNumQuads)
 // -----------------------------------------------------------------------------
 void GEOM_CLASS_NAME::setQuads(SharedQuadList::Pointer quads)
 {
-  //if(quads.get() != nullptr)
-  //{
-  //  if(quads->getName().compare(SIMPL::Geometry::SharedQuadList) != 0)
-  //  {
-  //    quads->setName(SIMPL::Geometry::SharedQuadList);
-  //  }
-  //}
+  if(quads.get() != nullptr)
+  {
+    if(quads->getName().compare(SIMPL::Geometry::SharedQuadList) != 0)
+    {
+      quads->setName(SIMPL::Geometry::SharedQuadList);
+    }
+  }
   m_QuadList = quads;
 }
 

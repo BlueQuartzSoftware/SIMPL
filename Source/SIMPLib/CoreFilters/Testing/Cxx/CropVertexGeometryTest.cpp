@@ -231,7 +231,7 @@ public:
 
     DREAM3D_REQUIRE_EQUAL((daCroppedVert->getNumberOfTuples() == croppedVertexAM->getNumberOfTuples()), true)
 
-    FloatArrayType::Pointer croppedVerticesFromAM = croppedVertexAM->getAttributeArrayAs<FloatArrayType>(k_VertexCoordinatesDAName);
+    FloatArrayType::Pointer croppedVerticesFromAM = croppedVertexAM->getAttributeArrayAs<FloatArrayType>(SIMPL::Geometry::SharedVertexList);
 
     checkDataArray<float>(daCroppedVert, croppedVerticesFromAM);
 
