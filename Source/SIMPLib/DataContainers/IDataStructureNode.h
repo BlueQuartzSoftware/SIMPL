@@ -99,7 +99,7 @@ public:
   IDataStructureNode(const QString& name = "");
   IDataStructureNode(ParentType* parent, const QString& name = "");
 
-  virtual ~IDataStructureNode() = default;
+  virtual ~IDataStructureNode();
 
   /**
    * @brief Checks the name hash for equality.  Returns true if they are equal.

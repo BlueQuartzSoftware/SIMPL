@@ -97,7 +97,10 @@ public:
   IDataStructureContainerNode(ParentType* parent, const QString& name = "")
     : IDataStructureNode(parent, name)
   {}
-  ~IDataStructureContainerNode() override = default;
+  ~IDataStructureContainerNode() override
+  {
+    clear();
+  }
 
   /**
    * @brief Returns a copy of the children collection.
@@ -233,6 +236,14 @@ public:
    */
   constexpr void clear() noexcept
   {
+    auto children = getChildren();
+    for(auto& child : children)
+    {
+      if(child != nullptr)
+      {
+        child->_setParentNode(nullptr);
+      }
+    }
     m_ChildrenNodes.clear();
   }
 

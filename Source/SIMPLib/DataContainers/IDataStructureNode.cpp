@@ -73,6 +73,17 @@ IDataStructureNode::IDataStructureNode(ParentType* parent, const QString& name)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+IDataStructureNode::~IDataStructureNode()
+{
+  if(m_Parent != nullptr)
+  {
+    m_Parent->removeChildNode(this);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void IDataStructureNode::updateNameHash()
 {
   m_NameHash = CreateStringHash(getName());
