@@ -206,7 +206,7 @@ void TetrahedralGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TetrahedralGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
+void TetrahedralGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
   if(data->getType() != AttributeMatrix::Type::Vertex
      || data->getType() != AttributeMatrix::Type::Edge

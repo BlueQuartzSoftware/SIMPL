@@ -120,8 +120,8 @@ public:
 
     QVector<size_t> tDims(1, 100);
     AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "CombineAttributeArraysTest", AttributeMatrix::Type::Cell);
-    m->addAttributeMatrix(attrMat);
-    dca->addDataContainer(m);
+    m->addOrReplaceAttributeMatrix(attrMat);
+    dca->addOrReplaceDataContainer(m);
 
     QVector<size_t> cDimsVec(1, 3);
     QVector<size_t> cDimsScalar(1, 1);

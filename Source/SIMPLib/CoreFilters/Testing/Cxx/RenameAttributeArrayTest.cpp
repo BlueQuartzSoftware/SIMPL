@@ -91,12 +91,12 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     QVector<size_t> dims = QVector<size_t>();
     dims.push_back(1);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix(am);
+    dc->addOrReplaceAttributeMatrix(am);
 
     filter->setDataContainerArray(dca);
 
@@ -126,12 +126,12 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     QVector<size_t> dims = QVector<size_t>();
     dims.push_back(1);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix(am);
+    dc->addOrReplaceAttributeMatrix(am);
 
     DataArray<int>::Pointer da = DataArray<int>::CreateArray(1, "DataArray");
     am->insertOrAssign(da);
@@ -164,12 +164,12 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     QVector<size_t> dims = QVector<size_t>();
     dims.push_back(1);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix(am);
+    dc->addOrReplaceAttributeMatrix(am);
 
     DataArray<int>::Pointer da = DataArray<int>::CreateArray(1, "DataArray");
     am->insertOrAssign(da);
@@ -204,12 +204,12 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     QVector<size_t> dims = QVector<size_t>();
     dims.push_back(1);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix(am);
+    dc->addOrReplaceAttributeMatrix(am);
 
     DataArray<int>::Pointer da = DataArray<int>::CreateArray(1, "DataArray");
     am->insertOrAssign(da);
@@ -242,12 +242,12 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     QVector<size_t> dims = QVector<size_t>();
     dims.push_back(1);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix(am);
+    dc->addOrReplaceAttributeMatrix(am);
 
     DataArray<int>::Pointer da = DataArray<int>::CreateArray(1, "DataArray");
     am->insertOrAssign(da);
@@ -279,12 +279,12 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     QVector<size_t> dims = QVector<size_t>();
     dims.push_back(1);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix(am);
+    dc->addOrReplaceAttributeMatrix(am);
 
     DataArray<int>::Pointer da = DataArray<int>::CreateArray(1, "DataArray");
     am->insertOrAssign(da);

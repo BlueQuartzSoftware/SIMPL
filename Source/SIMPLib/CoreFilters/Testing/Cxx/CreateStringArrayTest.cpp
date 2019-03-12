@@ -104,12 +104,12 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer am = AttributeMatrix::New(tupleDims, k_AttributeMatrixName, AttributeMatrix::Type::Generic);
-    dc->addAttributeMatrix(am);
+    dc->addOrReplaceAttributeMatrix(am);
 
     // Create Filter
 

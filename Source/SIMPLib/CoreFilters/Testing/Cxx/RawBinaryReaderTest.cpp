@@ -250,9 +250,9 @@ public:
 
     // Create the data container
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    m->addAttributeMatrix(am);
+    m->addOrReplaceAttributeMatrix(am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
-    dca->addDataContainer(m);
+    dca->addOrReplaceDataContainer(m);
 
     // Create the filter, passing in the skipHeaderBytes
     RawBinaryReader::Pointer filt = createRawBinaryReaderFilter(scalarType, N, skipHeaderBytes);
@@ -355,9 +355,9 @@ public:
 
     // Create the data container
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    m->addAttributeMatrix(am);
+    m->addOrReplaceAttributeMatrix(am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
-    dca->addDataContainer(m);
+    dca->addOrReplaceDataContainer(m);
 
     // Create the filter, passing in the skipHeaderBytes
     RawBinaryReader::Pointer filt = createRawBinaryReaderFilter(scalarType, N, skipHeaderBytes);
@@ -455,9 +455,9 @@ public:
 
     // Create the data container
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    m->addAttributeMatrix(am);
+    m->addOrReplaceAttributeMatrix(am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
-    dca->addDataContainer(m);
+    dca->addOrReplaceDataContainer(m);
 
     // Create the filter, passing in the skipHeaderBytes
     RawBinaryReader::Pointer filt = createRawBinaryReaderFilter(scalarType, N, skipHeaderBytes);
@@ -565,9 +565,9 @@ public:
 
     // Create the data container
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    m->addAttributeMatrix(am);
+    m->addOrReplaceAttributeMatrix(am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
-    dca->addDataContainer(m);
+    dca->addOrReplaceDataContainer(m);
 
     // Create the filter, passing in the skipHeaderBytes
     RawBinaryReader::Pointer filt = createRawBinaryReaderFilter(scalarType, N, skipHeaderBytes);
@@ -601,9 +601,9 @@ public:
 
     // Create another data container
     DataContainer::Pointer m2 = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    m2->addAttributeMatrix(am);
+    m2->addOrReplaceAttributeMatrix(am);
     DataContainerArray::Pointer dca2 = DataContainerArray::New();
-    dca2->addDataContainer(m2);
+    dca2->addOrReplaceDataContainer(m2);
 
     // Create another filter, passing in the skipHeaderBytes + 1
     RawBinaryReader::Pointer filt2 = createRawBinaryReaderFilter(scalarType, N, skipHeaderBytes + 1);
@@ -703,9 +703,9 @@ public:
 
     // Create the data container
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    m->addAttributeMatrix(am);
+    m->addOrReplaceAttributeMatrix(am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
-    dca->addDataContainer(m);
+    dca->addOrReplaceDataContainer(m);
 
     // Create the filter, passing in the skipHeaderBytes
     RawBinaryReader::Pointer filt = createRawBinaryReaderFilter(scalarType, N, skipHeaderBytes);
@@ -813,9 +813,9 @@ public:
 
     // Create the data container
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    m->addAttributeMatrix(am);
+    m->addOrReplaceAttributeMatrix(am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
-    dca->addDataContainer(m);
+    dca->addOrReplaceDataContainer(m);
 
     // Create the filter, passing in the skipHeaderBytes
     RawBinaryReader::Pointer filt = createRawBinaryReaderFilter(scalarType, N, skipHeaderBytes);

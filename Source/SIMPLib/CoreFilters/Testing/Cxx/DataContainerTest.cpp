@@ -248,7 +248,7 @@ public:
     FillAttributeMatrix(attrMat, compDims);
 
     // Add the AttributeMatrix to the Data Container
-    dc->addAttributeMatrix(attrMat);
+    dc->addOrReplaceAttributeMatrix(attrMat);
 
     QString autoAddName = name + QString::fromLatin1("_Auto");
     AttributeMatrix::Pointer autoAttrMat = dc->createNonPrereqAttributeMatrix(nullptr, autoAddName, tupleDims, AttributeMatrix::Type::Cell);
@@ -306,11 +306,11 @@ public:
 
     // A DataContainer that mimics some real data
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    dca->addDataContainer(m);
+    dca->addOrReplaceDataContainer(m);
     m->setGeometry(image);
 
     AttributeMatrix::Pointer attrMatrix = AttributeMatrix::New(tupleDims, getCellFeatureAttributeMatrixName(), AttributeMatrix::Type::CellFeature);
-    m->addAttributeMatrix(attrMatrix);
+    m->addOrReplaceAttributeMatrix(attrMatrix);
 
     int size = nx * ny * nz;
     Int32ArrayType::Pointer featureIds = Int32ArrayType::CreateArray(size, SIMPL::CellData::FeatureIds);
@@ -340,7 +340,7 @@ public:
     tupleDims.resize(1);
     tupleDims[0] = 4;
     AttributeMatrix::Pointer ensemAttrMat = AttributeMatrix::New(tupleDims, getCellEnsembleAttributeMatrixName(), AttributeMatrix::Type::CellEnsemble);
-    m->addAttributeMatrix(ensemAttrMat);
+    m->addOrReplaceAttributeMatrix(ensemAttrMat);
 
     FloatArrayType::Pointer surfArea = FloatArrayType::CreateArray(4, SIMPL::EnsembleData::TotalSurfaceAreas);
     for(int i = 0; i < 4; ++i)
@@ -896,7 +896,7 @@ public:
 
     // try adding or assigning a null DataContainer
     DataContainer::Pointer nullDc = DataContainer::NullPointer();
-    result = dca->addDataContainer(nullDc);
+    result = dca->addOrReplaceDataContainer(nullDc);
     DREAM3D_REQUIRED(false, ==, result)
     result = dca->insertOrAssign(nullDc);
     DREAM3D_REQUIRED(false, ==, result)
@@ -907,7 +907,7 @@ public:
     DataContainer::Pointer dc0 = DataContainer::New(k_DC0);
     DataContainer::Pointer dc1 = DataContainer::New(k_DC1);
 
-    result = dca->addDataContainer(dc0);
+    result = dca->addOrReplaceDataContainer(dc0);
     DREAM3D_REQUIRED(true, ==, result);
     DREAM3D_REQUIRED(dca->size(), ==, 1)
 
@@ -916,11 +916,11 @@ public:
     DREAM3D_REQUIRED(true, ==, result);
     DREAM3D_REQUIRED(dca->size(), ==, 1)
 
-    result = dca->addDataContainer(dc0);
+    result = dca->push_back(dc0);
     DREAM3D_REQUIRED(false, ==, result);
     DREAM3D_REQUIRED(dca->size(), ==, 1)
 
-    result = dca->addDataContainer(dc1);
+    result = dca->addOrReplaceDataContainer(dc1);
     DREAM3D_REQUIRED(true, ==, result);
     DREAM3D_REQUIRED(dca->size(), ==, 2)
 
@@ -932,15 +932,15 @@ public:
     dca->clear();
     DREAM3D_REQUIRED(dca->empty(), ==, true)
 
-    result = dca->addDataContainer(dc0);
+    result = dca->addOrReplaceDataContainer(dc0);
     DREAM3D_REQUIRED(true, ==, result);
     DREAM3D_REQUIRED(dca->size(), ==, 1)
 
-    result = dca->addDataContainer(dc0);
+    result = dca->push_back(dc0);
     DREAM3D_REQUIRED(false, ==, result);
     DREAM3D_REQUIRED(dca->size(), ==, 1)
 
-    result = dca->addDataContainer(dc1);
+    result = dca->addOrReplaceDataContainer(dc1);
     DREAM3D_REQUIRED(true, ==, result);
     DREAM3D_REQUIRED(dca->size(), ==, 2)
 
@@ -960,7 +960,7 @@ public:
     for(int i = 0; i < 10; i++)
     {
       DataContainer::Pointer dc = DataContainer::New("Foo" + QString::number(i));
-      dca->addDataContainer(dc);
+      dca->addOrReplaceDataContainer(dc);
       //   std::cout << dca->size() << std::endl;
       DREAM3D_REQUIRED(dca->size(), ==, i + 1)
     }
@@ -988,7 +988,7 @@ public:
 
     // try adding or assigning a null DataContainer
     AttributeMatrix::Pointer nullAttrMat = AttributeMatrix::NullPointer();
-    result = dc->addAttributeMatrix(nullAttrMat);
+    result = dc->addOrReplaceAttributeMatrix(nullAttrMat);
     DREAM3D_REQUIRED(false, ==, result)
     result = dc->insertOrAssign(nullAttrMat);
     DREAM3D_REQUIRED(false, ==, result)
@@ -1000,7 +1000,7 @@ public:
     AttributeMatrix::Pointer am0 = AttributeMatrix::New(tDims, k_DC0, AttributeMatrix::Type::Generic);
     AttributeMatrix::Pointer am1 = AttributeMatrix::New(tDims, k_DC1, AttributeMatrix::Type::Generic);
 
-    result = dc->addAttributeMatrix(am0);
+    result = dc->addOrReplaceAttributeMatrix(am0);
     DREAM3D_REQUIRED(true, ==, result);
     DREAM3D_REQUIRED(dc->size(), ==, 1)
 
@@ -1009,11 +1009,11 @@ public:
     DREAM3D_REQUIRED(true, ==, result);
     DREAM3D_REQUIRED(dc->size(), ==, 1)
 
-    result = dc->addAttributeMatrix(am0);
+    result = dc->push_back(am0);
     DREAM3D_REQUIRED(false, ==, result);
     DREAM3D_REQUIRED(dc->size(), ==, 1)
 
-    result = dc->addAttributeMatrix(am1);
+    result = dc->addOrReplaceAttributeMatrix(am1);
     DREAM3D_REQUIRED(true, ==, result);
     DREAM3D_REQUIRED(dc->size(), ==, 2)
 
@@ -1025,15 +1025,15 @@ public:
     dc->clear();
     DREAM3D_REQUIRED(dc->empty(), ==, true)
 
-    result = dc->addAttributeMatrix(am0);
+    result = dc->addOrReplaceAttributeMatrix(am0);
     DREAM3D_REQUIRED(true, ==, result);
     DREAM3D_REQUIRED(dc->size(), ==, 1)
 
-    result = dc->addAttributeMatrix(am0);
+    result = dc->push_back(am0);
     DREAM3D_REQUIRED(false, ==, result);
     DREAM3D_REQUIRED(dc->size(), ==, 1)
 
-    result = dc->addAttributeMatrix(am1);
+    result = dc->addOrReplaceAttributeMatrix(am1);
     DREAM3D_REQUIRED(true, ==, result);
     DREAM3D_REQUIRED(dc->size(), ==, 2)
 
@@ -1053,7 +1053,7 @@ public:
     for(int i = 0; i < 10; i++)
     {
       AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, "Foo" + QString::number(i), AttributeMatrix::Type::Generic);
-      dc->addAttributeMatrix(am);
+      dc->addOrReplaceAttributeMatrix(am);
       //   std::cout << dca->size() << std::endl;
       DREAM3D_REQUIRED(dc->size(), ==, i + 1)
     }
@@ -1082,7 +1082,7 @@ public:
 
     // try adding or assigning a null DataContainer
     Int32ArrayType::Pointer nullAttrMat = Int32ArrayType::NullPointer();
-    result = am->addAttributeArray(nullAttrMat);
+    result = am->addOrReplaceAttributeArray(nullAttrMat);
     DREAM3D_REQUIRED(false, ==, result)
     result = am->insertOrAssign(nullAttrMat);
     DREAM3D_REQUIRED(false, ==, result)
@@ -1093,7 +1093,7 @@ public:
     Int32ArrayType::Pointer am0 = Int32ArrayType::CreateArray(100, k_DC0);
     Int32ArrayType::Pointer am1 = Int32ArrayType::CreateArray(100, k_DC1);
 
-    result = am->addAttributeArray(am0);
+    result = am->addOrReplaceAttributeArray(am0);
     DREAM3D_REQUIRED(true, ==, result);
     DREAM3D_REQUIRED(am->size(), ==, 1)
 
@@ -1102,11 +1102,11 @@ public:
     DREAM3D_REQUIRED(true, ==, result);
     DREAM3D_REQUIRED(am->size(), ==, 1)
 
-    result = am->addAttributeArray(am0);
+    result = am->push_back(am0);
     DREAM3D_REQUIRED(false, ==, result);
     DREAM3D_REQUIRED(am->size(), ==, 1)
 
-    result = am->addAttributeArray(am1);
+    result = am->addOrReplaceAttributeArray(am1);
     DREAM3D_REQUIRED(true, ==, result);
     DREAM3D_REQUIRED(am->size(), ==, 2)
 
@@ -1118,15 +1118,15 @@ public:
     am->clear();
     DREAM3D_REQUIRED(am->empty(), ==, true)
 
-    result = am->addAttributeArray(am0);
+    result = am->addOrReplaceAttributeArray(am0);
     DREAM3D_REQUIRED(true, ==, result);
     DREAM3D_REQUIRED(am->size(), ==, 1)
 
-    result = am->addAttributeArray(am0);
+    result = am->push_back(am0);
     DREAM3D_REQUIRED(false, ==, result);
     DREAM3D_REQUIRED(am->size(), ==, 1)
 
-    result = am->addAttributeArray(am1);
+    result = am->addOrReplaceAttributeArray(am1);
     DREAM3D_REQUIRED(true, ==, result);
     DREAM3D_REQUIRED(am->size(), ==, 2)
 
@@ -1146,7 +1146,7 @@ public:
     for(int i = 0; i < 10; i++)
     {
       Int32ArrayType::Pointer aa = Int32ArrayType::CreateArray(100, "Foo" + QString::number(i));
-      am->addAttributeArray(aa);
+      am->addOrReplaceAttributeArray(aa);
       //   std::cout << dca->size() << std::endl;
       DREAM3D_REQUIRED(am->size(), ==, i + 1)
     }

@@ -750,7 +750,7 @@ void ImageGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImageGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
+void ImageGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
   if(data->getType() != AttributeMatrix::Type::Cell)
   {

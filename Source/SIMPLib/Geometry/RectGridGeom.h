@@ -207,9 +207,9 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
     IGeometry::Pointer deepCopy(bool forceNoAllocate = false) override;
 
     /**
-     * @brief addAttributeMatrix
+     * @brief addOrReplaceAttributeMatrix
      */
-    void addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data) override;
+    void addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data) override;
     
 // -----------------------------------------------------------------------------
 // Inherited from IGeometryGrid

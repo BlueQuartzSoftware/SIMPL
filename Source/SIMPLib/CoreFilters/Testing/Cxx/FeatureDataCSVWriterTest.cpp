@@ -391,7 +391,7 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     // Create Image Geometry
 
@@ -402,7 +402,7 @@ public:
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer am = AttributeMatrix::New(tupleDims, k_AttributeMatrixName, AttributeMatrix::Type::CellFeature);
-    dc->addAttributeMatrix(am);
+    dc->addOrReplaceAttributeMatrix(am);
 
     // Create DataArrayInt (add in under checkFilter)
 

@@ -331,10 +331,10 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "AttributeMatrix", AttributeMatrix::Type::Generic);
-    dc->addAttributeMatrix(attrMat);
+    dc->addOrReplaceAttributeMatrix(attrMat);
 
     return dca;
   }

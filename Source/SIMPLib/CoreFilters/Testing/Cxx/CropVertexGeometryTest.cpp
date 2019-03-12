@@ -129,17 +129,17 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     // Create AttributeMatrix
 
     QVector<size_t> dims(1, vertices.size());
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(dims, k_VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
-    dc->addAttributeMatrix(vertexAM);
+    dc->addOrReplaceAttributeMatrix(vertexAM);
 
     AttributeMatrix::Pointer nonVertexAM = AttributeMatrix::New(m_Dims4, k_AttributeMatrixName, AttributeMatrix::Type::Generic);
-    dc->addAttributeMatrix(nonVertexAM);
+    dc->addOrReplaceAttributeMatrix(nonVertexAM);
 
     // Create DataArray used for geometry creation
 

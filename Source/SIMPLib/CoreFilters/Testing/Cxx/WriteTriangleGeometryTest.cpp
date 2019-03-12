@@ -117,7 +117,7 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerPath);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     // Create Triangle Data Arrays
 

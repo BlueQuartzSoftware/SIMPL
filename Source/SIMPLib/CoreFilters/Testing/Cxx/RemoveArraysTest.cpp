@@ -85,10 +85,10 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dc->addAttributeMatrix(am);
+    dc->addOrReplaceAttributeMatrix(am);
 
     DataContainerArray::Pointer dca = DataContainerArray::New();
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     FilterManager* fm = FilterManager::Instance();
 

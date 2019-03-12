@@ -188,7 +188,7 @@ IGeometry::Pointer DataContainer::getGeometry()
 AttributeMatrix::Pointer DataContainer::createAndAddAttributeMatrix(const QVector<size_t>& tDims, const QString& attrMatName, AttributeMatrix::Type attrType)
 {
   AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, attrMatName, attrType);
-  addAttributeMatrix(attrMat);
+  addOrReplaceAttributeMatrix(attrMat);
   return attrMat; // Return the shared pointer
 }
 
@@ -317,7 +317,7 @@ int DataContainer::readAttributeMatricesFromHDF5(bool preflight, hid_t dcGid, Da
     {
       amType = static_cast<AttributeMatrix::Type>(amTypeTmp);
       AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, amName, amType);
-      addAttributeMatrix(am);
+      addOrReplaceAttributeMatrix(am);
     }
 
     AttributeMatrixProxy amProxy = iter.value();
@@ -352,7 +352,7 @@ DataContainer::Pointer DataContainer::deepCopy(bool forceNoAllocate)
   for(const auto& am : attrMatrices)
   {
     AttributeMatrix::Pointer attrMat = am->deepCopy(forceNoAllocate);
-    dcCopy->addAttributeMatrix(attrMat);
+    dcCopy->addOrReplaceAttributeMatrix(attrMat);
   }
 
   return dcCopy;

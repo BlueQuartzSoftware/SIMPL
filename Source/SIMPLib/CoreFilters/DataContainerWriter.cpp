@@ -261,7 +261,7 @@ void DataContainerWriter::execute()
         dc->getGeometry()->setTimeValue(static_cast<float>(iter));
       }
 #if 0
-      dc->getGeometry()->addAttributeMatrix(SIMPL::StringConstants::MetaData, dc->getAttributeMatrix(SIMPL::StringConstants::MetaData));
+      dc->getGeometry()->addOrReplaceAttributeMatrix(SIMPL::StringConstants::MetaData, dc->getAttributeMatrix(SIMPL::StringConstants::MetaData));
       dc->getGeometry()->setTemporalDataPath(DataArrayPath(dc->getName(), SIMPL::StringConstants::MetaData, "Step #"));
 #endif
 

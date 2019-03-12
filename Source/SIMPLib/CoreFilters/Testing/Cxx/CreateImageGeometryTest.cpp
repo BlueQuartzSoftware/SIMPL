@@ -67,10 +67,10 @@ public:
     AttributeMatrix::Pointer am = AttributeMatrix::New(attributeMatrixSize, "Attribute Matrix", AttributeMatrix::Type::Any);
 
     DataContainer::Pointer dc = DataContainer::New("Data Container");
-    dc->addAttributeMatrix(am);
+    dc->addOrReplaceAttributeMatrix(am);
 
     DataContainerArray::Pointer dca = DataContainerArray::New();
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     imageGeometry->setDataContainerArray(dca);
     imageGeometry->setSelectedDataContainer(DataArrayPath("Data Container", "", ""));

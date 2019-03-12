@@ -67,7 +67,7 @@ public:
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     return dca;
   }

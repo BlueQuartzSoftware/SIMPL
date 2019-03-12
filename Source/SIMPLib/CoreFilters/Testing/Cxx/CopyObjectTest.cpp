@@ -732,21 +732,21 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     DataContainer::Pointer emptyDC = DataContainer::New(k_EmptyDataContainerName);
-    dca->addDataContainer(emptyDC);
+    dca->addOrReplaceDataContainer(emptyDC);
 
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer am1 = AttributeMatrix::New(m_Dims8, k_AttributeMatrix1Name, AttributeMatrix::Type::Vertex);
-    dc->addAttributeMatrix(am1);
+    dc->addOrReplaceAttributeMatrix(am1);
 
     AttributeMatrix::Pointer am2 = AttributeMatrix::New(m_Dims8, k_AttributeMatrix2Name, AttributeMatrix::Type::Cell);
-    dc->addAttributeMatrix(am2);
+    dc->addOrReplaceAttributeMatrix(am2);
 
     AttributeMatrix::Pointer emptyAM = AttributeMatrix::New(m_Dims1, k_EmptyAttributeMatrixName, AttributeMatrix::Type::Generic);
-    dc->addAttributeMatrix(emptyAM);
+    dc->addOrReplaceAttributeMatrix(emptyAM);
 
     // Create DataArray
 
@@ -908,7 +908,7 @@ public:
 
     TestCase(dca, DataArrayPath(k_DataContainerName, k_AttributeMatrix2Name, ""), 1, k_CopiedObjectName);
 
-    emptyDC->addAttributeMatrix(emptyAM);
+    emptyDC->addOrReplaceAttributeMatrix(emptyAM);
     TestCase(dca, DataArrayPath(k_EmptyDataContainerName, k_EmptyAttributeMatrixName, ""), 1, k_CopiedObjectName);
 
     // Test Copy DataArrays

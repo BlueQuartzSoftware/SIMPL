@@ -63,7 +63,7 @@
 #define FDTEST_CREATE_DATA_CONTAINER(name, geom, dca)                                                                                                                                                  \
   DataContainer::Pointer _##geom##Container = DataContainer::New(#name);                                                                                                                               \
   _##geom##Container->setGeometry(geom);                                                                                                                                                               \
-  dca->addDataContainer(_##geom##Container);
+  dca->addOrReplaceDataContainer(_##geom##Container);
 
 #define FDTEST_SET_PROPERTIES_AND_CHECK_EQ(filter, dc, path, derivsName, data)                                                                                                                         \
   var.setValue(path);                                                                                                                                                                                  \
@@ -169,16 +169,16 @@ public:
     AttributeMatrix::Pointer attrMat;
     QString ss = QObject::tr("AttrMatType%1").arg(0);
     attrMat = AttributeMatrix::New(tDimsVert, ss, AttributeMatrix::Type::Vertex);
-    m->addAttributeMatrix(attrMat);
+    m->addOrReplaceAttributeMatrix(attrMat);
     ss = QObject::tr("AttrMatType%1").arg(1);
     attrMat = AttributeMatrix::New(tDimsVert, ss, AttributeMatrix::Type::Edge);
-    m->addAttributeMatrix(attrMat);
+    m->addOrReplaceAttributeMatrix(attrMat);
     ss = QObject::tr("AttrMatType%1").arg(2);
     attrMat = AttributeMatrix::New(tDimsVert, ss, AttributeMatrix::Type::Face);
-    m->addAttributeMatrix(attrMat);
+    m->addOrReplaceAttributeMatrix(attrMat);
     ss = QObject::tr("AttrMatType%1").arg(3);
     attrMat = AttributeMatrix::New(tDimsCell, ss, AttributeMatrix::Type::Cell);
-    m->addAttributeMatrix(attrMat);
+    m->addOrReplaceAttributeMatrix(attrMat);
   }
 
   // -----------------------------------------------------------------------------

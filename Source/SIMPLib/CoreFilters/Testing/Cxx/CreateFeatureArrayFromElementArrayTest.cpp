@@ -135,9 +135,9 @@ public:
 
         cellAttr->insertOrAssign(cellDataArray);
         cellAttr->insertOrAssign(featureIds);
-        dc->addAttributeMatrix(cellAttr);
-        dc->addAttributeMatrix(featureAttr);
-        dca->addDataContainer(dc);
+        dc->addOrReplaceAttributeMatrix(cellAttr);
+        dc->addOrReplaceAttributeMatrix(featureAttr);
+        dca->addOrReplaceDataContainer(dc);
 
         DataArrayPath path = DataArrayPath(dc->getName(), cellAttr->getName(), cellDataArray->getName());
         QVariant var;
@@ -226,9 +226,9 @@ public:
 
         cellAttr->insertOrAssign(cellDataArray);
         cellAttr->insertOrAssign(featureIds);
-        dc->addAttributeMatrix(cellAttr);
-        dc->addAttributeMatrix(featureAttr);
-        dca->addDataContainer(dc);
+        dc->addOrReplaceAttributeMatrix(cellAttr);
+        dc->addOrReplaceAttributeMatrix(featureAttr);
+        dca->addOrReplaceDataContainer(dc);
 
         DataArrayPath path = DataArrayPath(dc->getName(), cellAttr->getName(), cellDataArray->getName());
         QVariant var;
@@ -306,9 +306,9 @@ public:
         featureIds->initializeTuple(15, &value);
 
         cellAttr->insertOrAssign(featureIds);
-        dc->addAttributeMatrix(cellAttr);
-        dc->addAttributeMatrix(featureAttr);
-        dca->addDataContainer(dc);
+        dc->addOrReplaceAttributeMatrix(cellAttr);
+        dc->addOrReplaceAttributeMatrix(featureAttr);
+        dca->addOrReplaceDataContainer(dc);
 
         DataArrayPath path = DataArrayPath(dc->getName(), cellAttr->getName(), featureIds->getName());
         QVariant var;

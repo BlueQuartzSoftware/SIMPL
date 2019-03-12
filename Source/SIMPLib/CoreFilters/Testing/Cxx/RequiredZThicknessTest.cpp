@@ -67,10 +67,10 @@ public:
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
     DataContainer::Pointer dc1 = DataContainer::New("DataContainer1");
-    dca->addDataContainer(dc1);
+    dca->addOrReplaceDataContainer(dc1);
 
     DataContainer::Pointer dc2 = DataContainer::New("DataContainer2");
-    dca->addDataContainer(dc2);
+    dca->addOrReplaceDataContainer(dc2);
 
     ImageGeom::Pointer imgGeom = ImageGeom::New();
     imgGeom->setDimensions(2, 2, 2);

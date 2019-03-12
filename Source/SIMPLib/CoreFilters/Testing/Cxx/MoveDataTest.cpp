@@ -387,21 +387,21 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     DataContainer::Pointer dcDst = DataContainer::New(k_DataContainerDstName);
-    dca->addDataContainer(dcDst);
+    dca->addOrReplaceDataContainer(dcDst);
 
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer amSrc = AttributeMatrix::New(tupleDims, k_AttributeMatrixSrcName, AttributeMatrix::Type::Generic);
-    dc->addAttributeMatrix(amSrc);
+    dc->addOrReplaceAttributeMatrix(amSrc);
 
     AttributeMatrix::Pointer amDst = AttributeMatrix::New(tupleDims, k_AttributeMatrixDstName, AttributeMatrix::Type::Generic);
-    dc->addAttributeMatrix(amDst);
+    dc->addOrReplaceAttributeMatrix(amDst);
 
     AttributeMatrix::Pointer amBadDst = AttributeMatrix::New(badTupleDims, k_AttributeMatrixBadDstName, AttributeMatrix::Type::Generic);
-    dc->addAttributeMatrix(amBadDst);
+    dc->addOrReplaceAttributeMatrix(amBadDst);
 
     // Create DataArray
 
@@ -425,7 +425,7 @@ public:
 
     dcaTest = dca->deepCopy();
 
-    dcaTest->getDataContainer(k_DataContainerDstName)->addAttributeMatrix(dcaTest->getDataContainer(k_DataContainerName)->removeAttributeMatrix(k_AttributeMatrixDstName));
+    dcaTest->getDataContainer(k_DataContainerDstName)->addOrReplaceAttributeMatrix(dcaTest->getDataContainer(k_DataContainerName)->removeAttributeMatrix(k_AttributeMatrixDstName));
 
     src = DataArrayPath(k_DataContainerName, k_AttributeMatrixSrcName, k_DataArraySrcName);
     dst = DataArrayPath(k_DataContainerDstName, k_AttributeMatrixDstName, "");

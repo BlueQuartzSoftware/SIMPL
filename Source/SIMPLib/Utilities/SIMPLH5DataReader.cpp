@@ -332,7 +332,7 @@ bool SIMPLH5DataReader::readDataContainerBundles(hid_t fileId, const DataContain
         qDebug() << "Data Container '" << dcName << "' was nullptr"
                  << " " << __FILE__ << "(" << __LINE__ << ")";
       }
-      bundle->addDataContainer(dc);
+      bundle->addOrReplaceDataContainer(dc);
     }
 
     QString metaArrays;

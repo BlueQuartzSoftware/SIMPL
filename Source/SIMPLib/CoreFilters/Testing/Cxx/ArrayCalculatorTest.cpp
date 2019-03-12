@@ -126,9 +126,9 @@ public:
     am1->insertOrAssign(mcArray2);
     am1->insertOrAssign(numberArray);
     am1->insertOrAssign(signArray);
-    dc->addAttributeMatrix(am1);
-    dc->addAttributeMatrix(am2);
-    dca->addDataContainer(dc);
+    dc->addOrReplaceAttributeMatrix(am1);
+    dc->addOrReplaceAttributeMatrix(am2);
+    dca->addOrReplaceDataContainer(dc);
 
     return dca;
   }

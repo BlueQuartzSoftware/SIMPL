@@ -105,8 +105,8 @@ public:
     strArray->setValue(9, QString("Sierra"));
 
     am->insertOrAssign(strArray);
-    dc->addAttributeMatrix(am);
-    dca->addDataContainer(dc);
+    dc->addOrReplaceAttributeMatrix(am);
+    dca->addOrReplaceDataContainer(dc);
 
     QVector<DataArrayPath> paths = {DataArrayPath("DataContainer", "TestAttributeMatrix", "ASCII_Data")};
     WriteASCIIData::Pointer writer = WriteASCIIData::New();

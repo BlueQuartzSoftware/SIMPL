@@ -115,15 +115,15 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     // Create AttributeMatrices
     QVector<size_t> tDims = {{10, 3}};
     AttributeMatrix::Pointer cellAM = AttributeMatrix::New(tDims, k_Cell_AMName, AttributeMatrix::Type::Cell);
-    dc->addAttributeMatrix(cellAM);
+    dc->addOrReplaceAttributeMatrix(cellAM);
 
     AttributeMatrix::Pointer featureAM = AttributeMatrix::New(m_Dims3, k_Feature_AMName, AttributeMatrix::Type::CellFeature);
-    dc->addAttributeMatrix(featureAM);
+    dc->addOrReplaceAttributeMatrix(featureAM);
 
     // Create Cell FeatureIds array
     typename DataArray<int32_t>::Pointer cellFeatureIds = DataArray<int32_t>::CreateArray(cellAM->getNumberOfTuples(), k_CellFeatureIdsArrayName);

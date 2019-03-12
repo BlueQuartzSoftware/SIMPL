@@ -154,9 +154,9 @@ public:
     QVector<size_t> tDims(1, 100);
     AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "ReplaceValueAttrMat", AttributeMatrix::Type::Cell);
 
-    m->addAttributeMatrix(attrMat);
+    m->addOrReplaceAttributeMatrix(attrMat);
 
-    dca->addDataContainer(m);
+    dca->addOrReplaceDataContainer(m);
 
     QVector<size_t> cDims(1, 3);
     int32_t initVal = 10;

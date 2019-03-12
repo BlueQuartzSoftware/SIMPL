@@ -422,7 +422,7 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     // ImageGeom Parameters
 
@@ -512,12 +512,12 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     // Create AttributeMatrices
 
     AttributeMatrix::Pointer boundsAM = AttributeMatrix::New(m_Dims4, k_BoundsMatrixName, AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix(boundsAM);
+    dc->addOrReplaceAttributeMatrix(boundsAM);
 
     // Create Bounds Arrays
 
@@ -667,12 +667,12 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     // Create AttributeMatrices
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(m_Dims2, k_VertexMatrixName, AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix(vertexAM);
+    dc->addOrReplaceAttributeMatrix(vertexAM);
 
     // Create Vertex Data Arrays
 
@@ -743,15 +743,15 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     // Create AttributeMatrices
 
     AttributeMatrix::Pointer edgeVertexAM = AttributeMatrix::New(m_Dims2, k_EdgeVertexMatrixName, AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix(edgeVertexAM);
+    dc->addOrReplaceAttributeMatrix(edgeVertexAM);
 
     AttributeMatrix::Pointer edgeElementAM = AttributeMatrix::New(m_Dims1, k_EdgeElementAttributeMatrixName, AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix(edgeElementAM);
+    dc->addOrReplaceAttributeMatrix(edgeElementAM);
 
     // Create Edge Data Arrays
 
@@ -859,15 +859,15 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     // Create AttributeMatrices
 
     AttributeMatrix::Pointer triVertexAM = AttributeMatrix::New(m_Dims3, k_TriVertexMatrixName, AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix(triVertexAM);
+    dc->addOrReplaceAttributeMatrix(triVertexAM);
 
     AttributeMatrix::Pointer triElementAM = AttributeMatrix::New(m_Dims1, k_TriElementAttributeMatrixName, AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix(triElementAM);
+    dc->addOrReplaceAttributeMatrix(triElementAM);
 
     // Create Triangle Data Arrays
 
@@ -975,15 +975,15 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     // Create AttributeMatrices
 
     AttributeMatrix::Pointer quadVertexAM = AttributeMatrix::New(m_Dims4, k_QuadVertexMatrixName, AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix(quadVertexAM);
+    dc->addOrReplaceAttributeMatrix(quadVertexAM);
 
     AttributeMatrix::Pointer quadElementAM = AttributeMatrix::New(m_Dims1, k_QuadElementAttributeMatrixName, AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix(quadElementAM);
+    dc->addOrReplaceAttributeMatrix(quadElementAM);
 
     // Create Quadrilateral Data Arrays
 
@@ -1091,15 +1091,15 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     // Create AttributeMatrices
 
     AttributeMatrix::Pointer tetVertexAM = AttributeMatrix::New(m_Dims4, k_TetVertexMatrixName, AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix(tetVertexAM);
+    dc->addOrReplaceAttributeMatrix(tetVertexAM);
 
     AttributeMatrix::Pointer tetElementAM = AttributeMatrix::New(m_Dims1, k_TetElementAttributeMatrixName, AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix(tetElementAM);
+    dc->addOrReplaceAttributeMatrix(tetElementAM);
 
     // Create Tetrahedron Data Arrays
 
@@ -1208,15 +1208,15 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     // Create AttributeMatrices
 
     AttributeMatrix::Pointer hexVertexAM = AttributeMatrix::New(m_Dims8, k_HexVertexMatrixName, AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix(hexVertexAM);
+    dc->addOrReplaceAttributeMatrix(hexVertexAM);
 
     AttributeMatrix::Pointer hexElementAM = AttributeMatrix::New(m_Dims1, k_HexElementAttributeMatrixName, AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix(hexElementAM);
+    dc->addOrReplaceAttributeMatrix(hexElementAM);
 
     // Create Hexahedron Data Arrays
 

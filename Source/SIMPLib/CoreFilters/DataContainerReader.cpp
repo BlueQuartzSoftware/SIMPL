@@ -189,7 +189,7 @@ void DataContainerReader::dataCheck()
       {
         dca->removeDataContainer(container->getName());
       }
-      dca->addDataContainer(container);
+      dca->addOrReplaceDataContainer(container);
     }
     else
     {
@@ -201,7 +201,7 @@ void DataContainerReader::dataCheck()
       }
       else
       {
-        dca->addDataContainer(container);
+        dca->addOrReplaceDataContainer(container);
       }
     }
   }

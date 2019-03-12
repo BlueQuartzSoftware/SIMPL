@@ -602,7 +602,7 @@ int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, const QString& nam
 
   if(nullptr != dPtr.get())
   {
-    addAttributeArray(dPtr);
+    addOrReplaceAttributeArray(dPtr);
   }
 
   return err;
@@ -651,7 +651,7 @@ int AttributeMatrix::readAttributeArraysFromHDF5(hid_t amGid, bool preflight, At
 
     if(nullptr != dPtr.get())
     {
-      addAttributeArray(dPtr);
+      addOrReplaceAttributeArray(dPtr);
     }
   }
   H5Gclose(amGid); // Close the Cell Group

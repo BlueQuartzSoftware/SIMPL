@@ -196,7 +196,7 @@ void DataContainerArray::duplicateDataContainer(const QString& name, const QStri
 
   DataContainer::Pointer new_f = f->deepCopy(false);
   new_f->setName(newName);
-  addDataContainer(new_f);
+  addOrReplaceDataContainer(new_f);
 }
 
 // -----------------------------------------------------------------------------
@@ -256,7 +256,7 @@ int DataContainerArray::readDataContainersFromHDF5(bool preflight, hid_t dcaGid,
       return -198745600;
     }
     DataContainer::Pointer dc = DataContainer::New(dcProxy.getName());
-    this->addDataContainer(dc);
+    this->addOrReplaceDataContainer(dc);
 
     // Now open the DataContainer Group in the HDF5 file
     hid_t dcGid = H5Gopen(dcaGid, dcProxy.getName().toLatin1().data(), H5P_DEFAULT);

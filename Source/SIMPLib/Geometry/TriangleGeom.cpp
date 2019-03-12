@@ -204,7 +204,7 @@ void TriangleGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TriangleGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
+void TriangleGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
   if(data->getType() != AttributeMatrix::Type::Vertex || data->getType() != AttributeMatrix::Type::Edge || data->getType() != AttributeMatrix::Type::Face)
   {

@@ -173,7 +173,7 @@ void MoveMultiData::dataCheck()
       }
 
       // Move Attribute Matrix
-      amDestDataContainer->addAttributeMatrix(amSrcAttributeMatrix);
+      amDestDataContainer->addOrReplaceAttributeMatrix(amSrcAttributeMatrix);
       //amSrcDataContainer->removeAttributeMatrix(amSrcAttributeMatrix->getName());
       addPathRename(amSrcPaths[i], amSrcAttributeMatrix->getDataArrayPath());
     }

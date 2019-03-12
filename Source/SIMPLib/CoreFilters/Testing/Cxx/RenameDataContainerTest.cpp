@@ -117,7 +117,7 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     filter->setDataContainerArray(dca);
 
@@ -147,7 +147,7 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     filter->setDataContainerArray(dca);
 
@@ -181,7 +181,7 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     filter->setDataContainerArray(dca);
 
@@ -211,7 +211,7 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     filter->setDataContainerArray(dca);
 

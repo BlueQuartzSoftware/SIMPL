@@ -97,7 +97,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable, public IDataStructureC
   PYB11_PROPERTY(QVector<size_t> TupleDimensions READ getTupleDimensions WRITE setTupleDimensions)
 
   PYB11_METHOD(bool doesAttributeArrayExist ARGS Name)
-  PYB11_METHOD(bool addAttributeArray OVERLOAD IDataArray::Pointer,Data)
+  PYB11_METHOD(bool addOrReplaceAttributeArray OVERLOAD IDataArray::Pointer,Data)
   PYB11_METHOD(bool insertOrAssign ARGS IDataArray::Pointer)
 
   PYB11_METHOD(IDataArray removeAttributeArray ARGS Name)
@@ -225,7 +225,7 @@ public:
      * @param data The IDataArray::Pointer that will hold the data
      * @return Bool: True if the addition happened, FALSE if an IDataArray with the same name already exists.
      */
-    inline bool addAttributeArray(const IDataArray::Pointer& data)
+    inline bool addOrReplaceAttributeArray(const IDataArray::Pointer& data)
     {
       // Can not insert a null IDataArray object
       if(data.get() == nullptr)
@@ -238,7 +238,7 @@ public:
         qDebug() << "getNumberOfTuples(): " << getNumberOfTuples() << "  data->getNumberOfTuples(): " << data->getNumberOfTuples();
       }
       Q_ASSERT(getNumberOfTuples() == data->getNumberOfTuples());
-      return push_back(data);
+      return insertOrAssign(data);
     }
 
     /**
@@ -586,7 +586,7 @@ public:
           attributeArray->initializeWithValue(initValue);
         }
         attributeArray->setInitValue(initValue);
-        addAttributeArray(attributeArray);
+        addOrReplaceAttributeArray(attributeArray);
         // Check if path was renamed
         DataArrayPath path = getDataArrayPath();
         path.setDataArrayName(name);

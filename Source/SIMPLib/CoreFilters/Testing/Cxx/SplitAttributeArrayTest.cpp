@@ -121,8 +121,8 @@ public:
     am1->insertOrAssign(mcArray11);
     am1->insertOrAssign(mcArray12);
     am1->insertOrAssign(mcArray13);
-    dc->addAttributeMatrix(am1);
-    dca->addDataContainer(dc);
+    dc->addOrReplaceAttributeMatrix(am1);
+    dca->addOrReplaceDataContainer(dc);
 
     return dca;
   }

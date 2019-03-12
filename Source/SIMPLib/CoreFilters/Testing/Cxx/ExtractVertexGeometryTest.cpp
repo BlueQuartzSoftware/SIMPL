@@ -72,13 +72,13 @@ public:
 
     // Create the DataContainer for the ImageGeometry
     DataContainer::Pointer imageGeomDC = DataContainer::New(k_ImageGeomDataContainerPath);
-    dca->addDataContainer(imageGeomDC);
+    dca->addOrReplaceDataContainer(imageGeomDC);
 
     DataContainer::Pointer badDataContainer = DataContainer::New(k_BadDataContainerName);
-    dca->addDataContainer(badDataContainer);
+    dca->addOrReplaceDataContainer(badDataContainer);
 
     DataContainer::Pointer wrongGeomDataContainer = DataContainer::New(k_WrongGeomDataContainerName);
-    dca->addDataContainer(wrongGeomDataContainer);
+    dca->addOrReplaceDataContainer(wrongGeomDataContainer);
     TriangleGeom::Pointer triangleGeom = TriangleGeom::New();
     wrongGeomDataContainer->setGeometry(triangleGeom);
 
@@ -91,7 +91,7 @@ public:
 
     // Create the Cell AttributeMatrix
     AttributeMatrix::Pointer cellAttrMat = AttributeMatrix::Create(dims, k_CellAttrMatName, AttributeMatrix::Type::Cell);
-    imageGeomDC->addAttributeMatrix(cellAttrMat);
+    imageGeomDC->addOrReplaceAttributeMatrix(cellAttrMat);
 
     // Create a cell attribute array
     FloatArrayType::Pointer f32Data = FloatArrayType::CreateArray(cellCount, k_FloatArrayName, true);
@@ -103,7 +103,7 @@ public:
     dims[1] = 2;
     dims[2] = 3;
     AttributeMatrix::Pointer featureAttrMat = AttributeMatrix::Create(dims, k_FeatureAttrMatName, AttributeMatrix::Type::CellFeature);
-    imageGeomDC->addAttributeMatrix(featureAttrMat);
+    imageGeomDC->addOrReplaceAttributeMatrix(featureAttrMat);
 
     // Create a feature attribute array
     cellCount = std::accumulate(dims.begin(), dims.end(), static_cast<size_t>(1), std::multiplies<size_t>());

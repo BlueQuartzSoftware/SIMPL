@@ -94,11 +94,11 @@ public:
     AddDataArray<uint8_t>(am, "Uint8 Array", tDims, cDims);
     AddDataArray<float>(am, "Float Array", tDims, cDims);
     AddDataArray<int32_t>(am, "int32 Array", tDims, cDims);
-    dc0->addAttributeMatrix(am);
+    dc0->addOrReplaceAttributeMatrix(am);
 
     QVector<size_t> tupleDims(1, 1);
     AttributeMatrix::Pointer metaAm = AttributeMatrix::New(tupleDims, DataContainerBundle::GetMetaDataName(), AttributeMatrix::Type::MetaData);
-    dc0->addAttributeMatrix(metaAm);
+    dc0->addOrReplaceAttributeMatrix(metaAm);
 
     DataContainer::Pointer dc1 = dc0->deepCopy(false);
     dc1->setName("DC 1");
@@ -109,14 +109,14 @@ public:
     dc2->getAttributeMatrix("CellAttributeMatrix")->removeAttributeArray("Uint8 Array");
 
     DataContainerArray::Pointer dca = DataContainerArray::New();
-    dca->addDataContainer(dc0);
-    dca->addDataContainer(dc1);
-    dca->addDataContainer(dc2);
+    dca->addOrReplaceDataContainer(dc0);
+    dca->addOrReplaceDataContainer(dc1);
+    dca->addOrReplaceDataContainer(dc2);
 
     DataContainerBundle::Pointer bundle = DataContainerBundle::New("Bundle 1");
-    bundle->addDataContainer(dc0);
-    bundle->addDataContainer(dc1);
-    bundle->addDataContainer(dc2);
+    bundle->addOrReplaceDataContainer(dc0);
+    bundle->addOrReplaceDataContainer(dc1);
+    bundle->addOrReplaceDataContainer(dc2);
 
     QVector<DataArrayPath> paths = bundle->findCommonDataArrayPaths();
 

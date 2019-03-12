@@ -66,12 +66,12 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     QVector<size_t> dims;
     dims.push_back(2);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
-    dc->addAttributeMatrix(am);
+    dc->addOrReplaceAttributeMatrix(am);
 
     QVector<size_t> cdims;
     cdims.push_back(2);

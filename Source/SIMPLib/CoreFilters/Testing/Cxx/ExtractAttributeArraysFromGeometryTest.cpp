@@ -135,12 +135,12 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer boundsAM = AttributeMatrix::New(m_Dims4, SIMPL::Defaults::CellAttributeMatrixName, AttributeMatrix::Type::Cell);
-    dc->addAttributeMatrix(boundsAM);
+    dc->addOrReplaceAttributeMatrix(boundsAM);
 
     // Create Geometry
 
@@ -243,12 +243,12 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(m_Dims2, SIMPL::Defaults::VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
-    dc->addAttributeMatrix(vertexAM);
+    dc->addOrReplaceAttributeMatrix(vertexAM);
 
     // Create Geometry
 
@@ -315,15 +315,15 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(m_Dims2, SIMPL::Defaults::VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
-    dc->addAttributeMatrix(vertexAM);
+    dc->addOrReplaceAttributeMatrix(vertexAM);
 
     AttributeMatrix::Pointer elementAM = AttributeMatrix::New(m_Dims1, SIMPL::Defaults::CellAttributeMatrixName, AttributeMatrix::Type::Edge);
-    dc->addAttributeMatrix(elementAM);
+    dc->addOrReplaceAttributeMatrix(elementAM);
 
     // Create Geometry
 
@@ -403,15 +403,15 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(m_Dims3, SIMPL::Defaults::VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
-    dc->addAttributeMatrix(vertexAM);
+    dc->addOrReplaceAttributeMatrix(vertexAM);
 
     AttributeMatrix::Pointer elementAM = AttributeMatrix::New(m_Dims1, SIMPL::Defaults::CellAttributeMatrixName, AttributeMatrix::Type::Face);
-    dc->addAttributeMatrix(elementAM);
+    dc->addOrReplaceAttributeMatrix(elementAM);
 
     // Create Geometry
 
@@ -491,15 +491,15 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(m_Dims4, SIMPL::Defaults::VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
-    dc->addAttributeMatrix(vertexAM);
+    dc->addOrReplaceAttributeMatrix(vertexAM);
 
     AttributeMatrix::Pointer elementAM = AttributeMatrix::New(m_Dims1, SIMPL::Defaults::CellAttributeMatrixName, AttributeMatrix::Type::Face);
-    dc->addAttributeMatrix(elementAM);
+    dc->addOrReplaceAttributeMatrix(elementAM);
 
     // Create Geometry
 
@@ -579,15 +579,15 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(m_Dims4, SIMPL::Defaults::VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
-    dc->addAttributeMatrix(vertexAM);
+    dc->addOrReplaceAttributeMatrix(vertexAM);
 
     AttributeMatrix::Pointer elementAM = AttributeMatrix::New(m_Dims1, SIMPL::Defaults::CellAttributeMatrixName, AttributeMatrix::Type::Cell);
-    dc->addAttributeMatrix(elementAM);
+    dc->addOrReplaceAttributeMatrix(elementAM);
 
     // Create Geometry
 
@@ -667,15 +667,15 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(m_Dims8, SIMPL::Defaults::VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
-    dc->addAttributeMatrix(vertexAM);
+    dc->addOrReplaceAttributeMatrix(vertexAM);
 
     AttributeMatrix::Pointer elementAM = AttributeMatrix::New(m_Dims1, SIMPL::Defaults::CellAttributeMatrixName, AttributeMatrix::Type::Cell);
-    dc->addAttributeMatrix(elementAM);
+    dc->addOrReplaceAttributeMatrix(elementAM);
 
     // Create Geometry
 

@@ -68,7 +68,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject, public IDataStructureC
   // clang-format off
   PYB11_CREATE_BINDINGS(DataContainerArray)
 
-  PYB11_METHOD(bool addDataContainer ARGS DataContainer)
+  PYB11_METHOD(bool addOrReplaceDataContainer ARGS DataContainer)
   PYB11_METHOD(bool insertOrAssign ARGS DataContainer)
   PYB11_METHOD(bool doesDataContainerExist OVERLOAD const.QString.&,Name CONST_METHOD)
   PYB11_METHOD(bool doesDataContainerExist OVERLOAD const.DataArrayPath.&,Path CONST_METHOD)
@@ -106,9 +106,9 @@ public:
   /**
    * @brief
    */
-  inline bool addDataContainer(const DataContainerShPtr& f)
+  inline bool addOrReplaceDataContainer(const DataContainerShPtr& f)
   {
-    return push_back(f);
+    return insertOrAssign(f);
   }
 
   /**
@@ -357,7 +357,7 @@ public:
       if(nullptr != dc && createIfNotExists)
       {
         DataContainerShPtr dataContainer = DataContainer::New(name); // Create a new Data Container
-        addDataContainer(dataContainer); // Put the new DataContainer into the array
+        addOrReplaceDataContainer(dataContainer); // Put the new DataContainer into the array
         return dataContainer; // Return the wrapped pointer
       }
       // The DataContainer we asked for was present and NON Null so return that.
@@ -409,7 +409,7 @@ public:
 
       
       DataContainerShPtr dataContainer = DataContainer::New(dataContainerName);
-      bool dcExists = !addDataContainer(dataContainer);
+      bool dcExists = !push_back(dataContainer);
       if(dcExists)
       {
         if(filter)

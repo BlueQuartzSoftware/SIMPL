@@ -76,7 +76,7 @@ class SIMPLib_EXPORT DataContainer : public Observable, public IDataStructureCon
   PYB11_PROPERTY(IGeometry Geometry READ getGeometry WRITE setGeometry)
 
   PYB11_METHOD(QString getInfoString ARGS InfoStringFormat)
-  PYB11_METHOD(bool addAttributeMatrix ARGS AttributeMatrix)
+  PYB11_METHOD(bool addOrReplaceAttributeMatrix ARGS AttributeMatrix)
   PYB11_METHOD(bool insertOrAssign ARGS AttributeMatrix)
 
   PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix OVERLOAD const.QString.&,Name)
@@ -176,9 +176,9 @@ public:
    * @param matrix The IDataArray::Pointer that will hold the data
    * @return Bool TRUE if the addition was successful, FALSE Otherwise.
    */
-  inline bool addAttributeMatrix(const AttributeMatrixShPtr& matrix)
+  inline bool addOrReplaceAttributeMatrix(const AttributeMatrixShPtr& matrix)
   {
-    return push_back(matrix);
+    return insertOrAssign(matrix);
   }
 
   /**

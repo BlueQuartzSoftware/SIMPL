@@ -109,8 +109,8 @@ public:
     }
     am->insertOrAssign(data);  // float array
     am->insertOrAssign(data1); // int array
-    vdc->addAttributeMatrix(am);
-    dca->addDataContainer(vdc);
+    vdc->addOrReplaceAttributeMatrix(am);
+    dca->addOrReplaceDataContainer(vdc);
 
     // Now instantiate the MultiThresholdObjectsTest Filter from the FilterManager
     QString filtName = "MultiThresholdObjects";

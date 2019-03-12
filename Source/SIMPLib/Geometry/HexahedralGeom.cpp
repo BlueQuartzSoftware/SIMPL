@@ -171,7 +171,7 @@ void HexahedralGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void HexahedralGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
+void HexahedralGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
   if(data->getType() != AttributeMatrix::Type::Vertex
      || data->getType() != AttributeMatrix::Type::Edge
