@@ -65,6 +65,7 @@ class SIMPLib_EXPORT FilterPipeline : public QObject
   PYB11_PROPERTY(int ErrorCondition READ getErrorCondition WRITE setErrorCondition)
   PYB11_PROPERTY(AbstractFilter CurrentFilter READ getCurrentFilter WRITE setCurrentFilter)
   PYB11_PROPERTY(bool Cancel READ getCancel WRITE setCancel)
+  PYB11_PROPERTY(bool Executing READ isExecuting)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
   
   PYB11_METHOD(DataContainerArray::Pointer run)
@@ -88,6 +89,7 @@ public:
   typedef QList<AbstractFilter::Pointer> FilterContainerType;
 
   SIMPL_INSTANCE_PROPERTY(int, ErrorCondition)
+  SIMPL_GET_BOOL_PROPERTY(Executing)
   SIMPL_INSTANCE_PROPERTY(AbstractFilter::Pointer, CurrentFilter)
 
   /**
@@ -225,7 +227,8 @@ signals:
   void pipelineNameChanged(QString oldName, QString newName);
 
 private:
-  bool m_Cancel;
+  bool m_Cancel = false;
+  bool m_Executing = false;
   FilterContainerType m_Pipeline;
   QString m_PipelineName;
 

@@ -48,7 +48,6 @@
 // -----------------------------------------------------------------------------
 FilterPipeline::FilterPipeline()
 : m_ErrorCondition(0)
-, m_Cancel(false)
 , m_PipelineName("")
 , m_Dca(nullptr)
 {
@@ -637,6 +636,8 @@ DataContainerArray::Pointer FilterPipeline::execute()
   // Clear pipeline cancel state
   setCancel(false);
 
+  m_Executing = true;
+
   connectSignalsSlots();
 
   m_Dca = DataContainerArray::New();
@@ -713,6 +714,8 @@ DataContainerArray::Pointer FilterPipeline::execute()
 
   PipelineMessage completeMessage("", "Pipeline Complete", 0, PipelineMessage::MessageType::StatusMessage, -1);
   emit pipelineGeneratedMessage(completeMessage);
+
+  m_Executing = false;
 
   return m_Dca;
 }
