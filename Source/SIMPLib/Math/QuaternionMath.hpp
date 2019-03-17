@@ -77,46 +77,36 @@ class QuaternionMath
 
       inline reference operator[](size_type index)
       {
-        if(index == 0)
+        switch(index)
         {
+        case 0:
           return x;
-        }
-        if(index == 1)
-        {
+        case 1:
           return y;
-        }
-        if(index == 2)
-        {
+        case 2:
           return z;
-        }
-        if(index == 3)
-        {
+        case 3:
           return w;
+        default:
+          throw std::range_error("Invalid Quaternion index");
         }
-        assert(index < 4);
-        return w; // This line will NEVER get hit (The program would assert, but to keep the compiler quiet we need something to return.
       }
 
       inline const T& operator[](size_type index) const
       {
-        if(index == 0)
+        switch(index)
         {
+        case 0:
           return x;
-        }
-        if(index == 1)
-        {
+        case 1:
           return y;
-        }
-        if(index == 2)
-        {
+        case 2:
           return z;
-        }
-        if(index == 3)
-        {
+        case 3:
           return w;
+        default:
+          throw std::range_error("Invalid Quaternion index");
         }
-        assert(index < 4);
-        return w; // This line will NEVER get hit (The program would assert, but to keep the compiler quiet we need something to return.
       }
     };
 
