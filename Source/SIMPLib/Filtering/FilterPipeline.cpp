@@ -287,8 +287,6 @@ void FilterPipeline::cancel()
 {
   if (m_State != FilterPipeline::State::Executing)
   {
-    connectSignalsSlots();
-
     // We cannot cancel a pipeline that is not executing
     setErrorCondition(-201);
 
@@ -298,7 +296,6 @@ void FilterPipeline::cancel()
     progValue.setText(ss);
     progValue.setCode(getErrorCondition());
     emit pipelineGeneratedMessage(progValue);
-    disconnectSignalsSlots();
     return;
   }
 
