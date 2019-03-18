@@ -856,21 +856,29 @@ DataContainerArray::Pointer FilterPipeline::execute()
 
   disconnectSignalsSlots();
 
-  PipelineMessage completeMessage("", "Pipeline Complete", 0, PipelineMessage::MessageType::StatusMessage, -1);
-  emit pipelineGeneratedMessage(completeMessage);
-
+  PipelineMessage completeMessage("", "", 0, PipelineMessage::MessageType::StatusMessage, -1);
   if(m_State == FilterPipeline::State::Canceling)
   {
+    completeMessage.setText("Pipeline Canceled");
     m_ExecutionResult = FilterPipeline::ExecutionResult::Canceled;
   }
   else if(m_State == FilterPipeline::State::Executing)
   {
+    completeMessage.setText("Pipeline Complete");
     m_ExecutionResult = FilterPipeline::ExecutionResult::Completed;
   }
   else
   {
     // This should never get here
+    completeMessage.setText("Unsupported Pipeline Execution Result");
+    emit pipelineGeneratedMessage(completeMessage);
+
+    setErrorCondition(-210);
+    completeMessage.setType(PipelineMessage::MessageType::Error);
+    completeMessage.setCode(getErrorCondition());
   }
+
+  emit pipelineGeneratedMessage(completeMessage);
 
   m_State = FilterPipeline::State::Idle;
 
