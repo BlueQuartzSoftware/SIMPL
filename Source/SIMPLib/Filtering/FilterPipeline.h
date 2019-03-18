@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #pragma once
 
@@ -60,14 +60,13 @@ class IObserver;
 class SIMPLib_EXPORT FilterPipeline : public QObject
 {
   Q_OBJECT
-  
+
   PYB11_CREATE_BINDINGS(FilterPipeline)
   PYB11_PROPERTY(int ErrorCondition READ getErrorCondition WRITE setErrorCondition)
   PYB11_PROPERTY(AbstractFilter CurrentFilter READ getCurrentFilter WRITE setCurrentFilter)
-  PYB11_PROPERTY(bool Cancel READ getCancel WRITE setCancel)
-  PYB11_PROPERTY(bool Executing READ isExecuting)
+  PYB11_PROPERTY(State State READ getState)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
-  
+
   PYB11_METHOD(DataContainerArray::Pointer run)
   PYB11_METHOD(void preflightPipeline)
   PYB11_METHOD(void pushFront ARGS AbstractFilter)
@@ -77,8 +76,7 @@ class SIMPLib_EXPORT FilterPipeline : public QObject
   PYB11_METHOD(void clear)
   PYB11_METHOD(size_t size)
   PYB11_METHOD(bool empty)
- 
- 
+
 public:
   SIMPL_SHARED_POINTERS(FilterPipeline)
   SIMPL_TYPE_MACRO(FilterPipeline)
@@ -86,17 +84,20 @@ public:
 
   ~FilterPipeline() override;
 
+  enum class State : unsigned int
+  {
+    Ready,
+    Executing,
+    Canceling,
+    Completed,
+    Canceled
+  };
+
   typedef QList<AbstractFilter::Pointer> FilterContainerType;
 
+  SIMPL_GET_PROPERTY(FilterPipeline::State, State)
   SIMPL_INSTANCE_PROPERTY(int, ErrorCondition)
-  SIMPL_GET_BOOL_PROPERTY(Executing)
   SIMPL_INSTANCE_PROPERTY(AbstractFilter::Pointer, CurrentFilter)
-
-  /**
-   * @brief Cancel the operation
-   */
-  virtual void setCancel(bool value);
-  virtual bool getCancel();
 
   /**
    * @brief A pure virtual function that gets called from the "run()" method. Subclasses
@@ -113,13 +114,13 @@ public:
   /**
    * @brief
    */
-  virtual void pushFront(const AbstractFilter::Pointer& f);
-  virtual void popFront();
-  virtual void pushBack(const AbstractFilter::Pointer& f);
-  virtual void popBack();
-  virtual void insert(size_t index, const AbstractFilter::Pointer& f);
-  virtual void erase(size_t index);
-  virtual void clear();
+  virtual bool pushFront(const AbstractFilter::Pointer& f);
+  virtual bool popFront();
+  virtual bool pushBack(const AbstractFilter::Pointer& f);
+  virtual bool popBack();
+  virtual bool insert(size_t index, const AbstractFilter::Pointer& f);
+  virtual bool erase(size_t index);
+  virtual bool clear();
   virtual size_t size();
   virtual bool empty();
 
@@ -142,33 +143,35 @@ public:
    */
   void addMessageReceiver(QObject* obj);
 
+  void removeMessageReceiver(QObject* obj);
+
   void connectFilterNotifications(QObject* filter);
   void disconnectFilterNotifications(QObject* filter);
 
   QString getName();
 
   /**
-  * @brief This method returns a deep copy of the FilterPipeline and all its filters
-  * @return
-  */
+   * @brief This method returns a deep copy of the FilterPipeline and all its filters
+   * @return
+   */
   virtual Pointer deepCopy();
 
   /**
-  * @brief Returns the FilterPipeline contents as a JSon string
-  * @return
-  */
+   * @brief Returns the FilterPipeline contents as a JSon string
+   * @return
+   */
   virtual QJsonObject toJson();
 
   /**
-  * @brief Sets the contents of the FilterPipeline to match the given JSon value.
-  */
+   * @brief Sets the contents of the FilterPipeline to match the given JSon value.
+   */
   virtual void fromJson(const QJsonObject& json, IObserver* obs = nullptr);
 
   /**
-  * @brief Static version of fromJson that creates a FilterPipeline::Pointer.
-  * If the meta data says there are less than zero filters, it returns a FilterPipeline::NullPointer
-  * @return
-  */
+   * @brief Static version of fromJson that creates a FilterPipeline::Pointer.
+   * If the meta data says there are less than zero filters, it returns a FilterPipeline::NullPointer
+   * @return
+   */
   static Pointer FromJson(const QJsonObject& json, IObserver* obs = nullptr);
 
 public slots:
@@ -179,9 +182,9 @@ public slots:
   virtual DataContainerArray::Pointer run();
 
   /**
-   * @brief cancelPipeline
+   * @brief cancel
    */
-  virtual void cancelPipeline();
+  virtual void cancel();
 
   void setName(const QString& name);
 
@@ -194,43 +197,43 @@ signals:
   void pipelineGeneratedMessage(const PipelineMessage& message);
 
   /**
-  * @brief This method is emitted from the pipeline and signals a pipeline pause
-  */
+   * @brief This method is emitted from the pipeline and signals a pipeline pause
+   */
   void pipelineHasPaused();
 
   /**
-  * @brief This method is emitted from the pipeline and signals that the pipeline is resuming
-  */
+   * @brief This method is emitted from the pipeline and signals that the pipeline is resuming
+   */
   void pipelineIsResuming();
 
   /**
-  * @brief This method is emitted from the pipeline and signals a pipeline cancel
-  */
+   * @brief This method is emitted from the pipeline and signals a pipeline cancel
+   */
   void pipelineCanceled();
 
   /**
-  * @brief This signal is emitted from the run() method just before exiting and
-  * signals the end of the pipeline execution
-  */
+   * @brief This signal is emitted from the run() method just before exiting and
+   * signals the end of the pipeline execution
+   */
   void pipelineFinished();
 
   /**
-  * @brief The signal is emitted when changes are applied to the FilterPipeline
-  */
+   * @brief The signal is emitted when changes are applied to the FilterPipeline
+   */
   void pipelineWasEdited();
 
   /**
-  * @brief This signal is emitted when the pipeline name changes
-  * @param oldName The FilterPipeline's previous name
-  * @param newName The FilterPipeline's current name
-  */
+   * @brief This signal is emitted when the pipeline name changes
+   * @param oldName The FilterPipeline's previous name
+   * @param newName The FilterPipeline's current name
+   */
   void pipelineNameChanged(QString oldName, QString newName);
 
 private:
-  bool m_Cancel = false;
-  bool m_Executing = false;
   FilterContainerType m_Pipeline;
   QString m_PipelineName;
+
+  FilterPipeline::State m_State = FilterPipeline::State::Ready;
 
   QVector<QObject*> m_MessageReceivers;
 
@@ -240,9 +243,8 @@ private:
   void disconnectSignalsSlots();
 
 public:
-  FilterPipeline(const FilterPipeline&) = delete; // Copy Constructor Not Implemented
-  FilterPipeline(FilterPipeline&&) = delete;      // Move Constructor Not Implemented
+  FilterPipeline(const FilterPipeline&) = delete;            // Copy Constructor Not Implemented
+  FilterPipeline(FilterPipeline&&) = delete;                 // Move Constructor Not Implemented
   FilterPipeline& operator=(const FilterPipeline&) = delete; // Copy Assignment Not Implemented
   FilterPipeline& operator=(FilterPipeline&&) = delete;      // Move Assignment Not Implemented
 };
-
