@@ -69,11 +69,11 @@ class SIMPLib_EXPORT FilterPipeline : public QObject
 
   PYB11_METHOD(DataContainerArray::Pointer run)
   PYB11_METHOD(void preflightPipeline)
-  PYB11_METHOD(void pushFront ARGS AbstractFilter)
-  PYB11_METHOD(void pushBack ARGS AbstractFilter)
-  PYB11_METHOD(void popFront)
-  PYB11_METHOD(void popBack)
-  PYB11_METHOD(void clear)
+  PYB11_METHOD(bool pushFront ARGS AbstractFilter)
+  PYB11_METHOD(bool pushBack ARGS AbstractFilter)
+  PYB11_METHOD(bool popFront)
+  PYB11_METHOD(bool popBack)
+  PYB11_METHOD(bool clear)
   PYB11_METHOD(size_t size)
   PYB11_METHOD(bool empty)
 
