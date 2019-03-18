@@ -552,11 +552,11 @@ void SVPipelineView::cancelPipeline()
 // -----------------------------------------------------------------------------
 void SVPipelineView::finishPipeline()
 {
-  if(m_PipelineInFlight->getState() == FilterPipeline::State::Canceled)
+  if(m_PipelineInFlight->getExecutionResult() == FilterPipeline::ExecutionResult::Canceled)
   {
     emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE CANCELED ***************", true));
   }
-  else if (m_PipelineInFlight->getState() == FilterPipeline::State::Completed)
+  else if (m_PipelineInFlight->getExecutionResult() == FilterPipeline::ExecutionResult::Completed)
   {
     emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE FINISHED ***************", true));
   }

@@ -326,6 +326,14 @@ bool FilterPipeline::pushFront(const AbstractFilter::Pointer& f)
   if (m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
   {
     // Do not allow anyone to add filters to a pipeline that is executing or canceling
+    setErrorCondition(-202);
+
+    PipelineMessage progValue;
+    progValue.setType(PipelineMessage::MessageType::Error);
+    QString ss = QObject::tr("Filter '%1' could not be added to pipeline '%2' because it is already executing.").arg(f->getHumanLabel()).arg(getName());
+    progValue.setText(ss);
+    progValue.setCode(getErrorCondition());
+    emit pipelineGeneratedMessage(progValue);
     return false;
   }
 
@@ -342,6 +350,16 @@ bool FilterPipeline::popFront()
   if (m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
   {
     // Do not allow anyone to remove filters from a pipeline that is executing or canceling
+    setErrorCondition(-203);
+
+    AbstractFilter::Pointer f = m_Pipeline.front();
+
+    PipelineMessage progValue;
+    progValue.setType(PipelineMessage::MessageType::Error);
+    QString ss = QObject::tr("Filter '%1' could not be removed from pipeline '%2' because it is already executing.").arg(f->getHumanLabel()).arg(getName());
+    progValue.setText(ss);
+    progValue.setCode(getErrorCondition());
+    emit pipelineGeneratedMessage(progValue);
     return false;
   }
 
@@ -358,6 +376,14 @@ bool FilterPipeline::pushBack(const AbstractFilter::Pointer& f)
   if (m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
   {
     // Do not allow anyone to add filters to a pipeline that is executing or canceling
+    setErrorCondition(-204);
+
+    PipelineMessage progValue;
+    progValue.setType(PipelineMessage::MessageType::Error);
+    QString ss = QObject::tr("Filter '%1' could not be added to pipeline '%2' because it is already executing.").arg(f->getHumanLabel()).arg(getName());
+    progValue.setText(ss);
+    progValue.setCode(getErrorCondition());
+    emit pipelineGeneratedMessage(progValue);
     return false;
   }
 
@@ -374,6 +400,16 @@ bool FilterPipeline::popBack()
   if (m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
   {
     // Do not allow anyone to remove filters from a pipeline that is executing or canceling
+    setErrorCondition(-205);
+
+    AbstractFilter::Pointer f = m_Pipeline.back();
+
+    PipelineMessage progValue;
+    progValue.setType(PipelineMessage::MessageType::Error);
+    QString ss = QObject::tr("Filter '%1' could not be removed from pipeline '%2' because it is already executing.").arg(f->getHumanLabel()).arg(getName());
+    progValue.setText(ss);
+    progValue.setCode(getErrorCondition());
+    emit pipelineGeneratedMessage(progValue);
     return false;
   }
 
@@ -390,6 +426,14 @@ bool FilterPipeline::insert(size_t index, const AbstractFilter::Pointer& f)
   if (m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
   {
     // Do not allow anyone to add filters to a pipeline that is executing or canceling
+    setErrorCondition(-206);
+
+    PipelineMessage progValue;
+    progValue.setType(PipelineMessage::MessageType::Error);
+    QString ss = QObject::tr("Filter '%1' could not be added to pipeline '%2' because it is already executing.").arg(f->getHumanLabel()).arg(getName());
+    progValue.setText(ss);
+    progValue.setCode(getErrorCondition());
+    emit pipelineGeneratedMessage(progValue);
     return false;
   }
 
@@ -411,6 +455,16 @@ bool FilterPipeline::erase(size_t index)
   if (m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
   {
     // Do not allow anyone to remove filters from a pipeline that is executing or canceling
+    setErrorCondition(-207);
+
+    AbstractFilter::Pointer f = m_Pipeline[index];
+
+    PipelineMessage progValue;
+    progValue.setType(PipelineMessage::MessageType::Error);
+    QString ss = QObject::tr("Filter '%1' could not be removed from pipeline '%2' because it is already executing.").arg(f->getHumanLabel()).arg(getName());
+    progValue.setText(ss);
+    progValue.setCode(getErrorCondition());
+    emit pipelineGeneratedMessage(progValue);
     return false;
   }
 
@@ -432,7 +486,7 @@ bool FilterPipeline::clear()
   if (m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
   {
     // We cannot clear a pipeline that is executing or canceling
-    setErrorCondition(-202);
+    setErrorCondition(-208);
 
     PipelineMessage progValue;
     progValue.setType(PipelineMessage::MessageType::Error);
@@ -735,6 +789,8 @@ DataContainerArray::Pointer FilterPipeline::execute()
 
   connectSignalsSlots();
 
+  m_ExecutionResult = FilterPipeline::ExecutionResult::Invalid;
+
   m_State = FilterPipeline::State::Executing;
 
   m_Dca = DataContainerArray::New();
@@ -806,17 +862,18 @@ DataContainerArray::Pointer FilterPipeline::execute()
 
   if (m_State == FilterPipeline::State::Canceling)
   {
-    m_State = FilterPipeline::State::Canceled;
-    emit pipelineCanceled();
+    m_ExecutionResult = FilterPipeline::ExecutionResult::Canceled;
   }
   else if (m_State == FilterPipeline::State::Executing)
   {
-    m_State = FilterPipeline::State::Completed;
+    m_ExecutionResult = FilterPipeline::ExecutionResult::Completed;
   }
   else
   {
     // This should never get here
   }
+
+  m_State = FilterPipeline::State::Idle;
 
   emit pipelineFinished();
 
@@ -856,6 +913,30 @@ void FilterPipeline::disconnectSignalsSlots()
   {
     disconnect(this, SIGNAL(pipelineFinished()), filter.get(), SLOT(cleanupFilter()));
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool FilterPipeline::isExecuting() const
+{
+  return (m_State == FilterPipeline::State::Executing);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool FilterPipeline::isCanceling() const
+{
+  return (m_State == FilterPipeline::State::Canceling);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool FilterPipeline::isIdle() const
+{
+  return (m_State == FilterPipeline::State::Idle);
 }
 
 // -----------------------------------------------------------------------------

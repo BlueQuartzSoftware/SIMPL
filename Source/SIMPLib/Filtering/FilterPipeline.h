@@ -65,6 +65,7 @@ class SIMPLib_EXPORT FilterPipeline : public QObject
   PYB11_PROPERTY(int ErrorCondition READ getErrorCondition WRITE setErrorCondition)
   PYB11_PROPERTY(AbstractFilter CurrentFilter READ getCurrentFilter WRITE setCurrentFilter)
   PYB11_PROPERTY(State State READ getState)
+  PYB11_PROPERTY(ExecutionResult ExecutionResult READ getExecutionResult)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
 
   PYB11_METHOD(DataContainerArray::Pointer run)
@@ -86,18 +87,42 @@ public:
 
   enum class State : unsigned int
   {
-    Ready,
+    Idle,
     Executing,
-    Canceling,
+    Canceling
+  };
+
+  enum class ExecutionResult : unsigned int
+  {
+    Invalid,
     Completed,
     Canceled
   };
 
   typedef QList<AbstractFilter::Pointer> FilterContainerType;
 
+  SIMPL_GET_PROPERTY(FilterPipeline::ExecutionResult, ExecutionResult)
   SIMPL_GET_PROPERTY(FilterPipeline::State, State)
   SIMPL_INSTANCE_PROPERTY(int, ErrorCondition)
   SIMPL_INSTANCE_PROPERTY(AbstractFilter::Pointer, CurrentFilter)
+
+  /**
+   * @brief Returns true if the pipeline is executing
+   * @return
+   */
+  bool isExecuting() const;
+
+  /**
+   * @brief Returns true if the pipeline is canceling
+   * @return
+   */
+  bool isCanceling() const;
+
+  /**
+   * @brief Return true if the pipeline is idle
+   * @return
+   */
+  bool isIdle() const;
 
   /**
    * @brief A pure virtual function that gets called from the "run()" method. Subclasses
@@ -207,11 +232,6 @@ signals:
   void pipelineIsResuming();
 
   /**
-   * @brief This method is emitted from the pipeline and signals a pipeline cancel
-   */
-  void pipelineCanceled();
-
-  /**
    * @brief This signal is emitted from the run() method just before exiting and
    * signals the end of the pipeline execution
    */
@@ -233,7 +253,8 @@ private:
   FilterContainerType m_Pipeline;
   QString m_PipelineName;
 
-  FilterPipeline::State m_State = FilterPipeline::State::Ready;
+  FilterPipeline::State m_State = FilterPipeline::State::Idle;
+  FilterPipeline::ExecutionResult m_ExecutionResult = FilterPipeline::ExecutionResult::Invalid;
 
   QVector<QObject*> m_MessageReceivers;
 
