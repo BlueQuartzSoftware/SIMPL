@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "FilterPipeline.h"
 
@@ -157,13 +157,13 @@ QJsonObject FilterPipeline::toJson()
 // -----------------------------------------------------------------------------
 FilterPipeline::Pointer FilterPipeline::FromJson(const QJsonObject& json, IObserver* obs)
 {
-  if (!json.contains(SIMPL::Settings::PipelineBuilderGroup) || !json[SIMPL::Settings::PipelineBuilderGroup].isObject())
+  if(!json.contains(SIMPL::Settings::PipelineBuilderGroup) || !json[SIMPL::Settings::PipelineBuilderGroup].isObject())
   {
     return FilterPipeline::NullPointer();
   }
 
   QJsonObject builderObj = json[SIMPL::Settings::PipelineBuilderGroup].toObject();
-  if (!builderObj.contains(SIMPL::Settings::NumFilters) || !builderObj[SIMPL::Settings::NumFilters].isDouble())
+  if(!builderObj.contains(SIMPL::Settings::NumFilters) || !builderObj[SIMPL::Settings::NumFilters].isDouble())
   {
     return FilterPipeline::NullPointer();
   }
@@ -264,7 +264,7 @@ void FilterPipeline::fromJson(const QJsonObject& json, IObserver* obs)
       filter->setOriginalFilterName(filterName);
       filter->setEnabled(filterEnabled);
       this->pushBack(filter);
-      
+
       if(nullptr != obs)
       {
         QString ss = QObject::tr("An attempt to instantiate a filter from the pipeline file resulted in an error.\
@@ -276,7 +276,6 @@ void FilterPipeline::fromJson(const QJsonObject& json, IObserver* obs)
         obs->processPipelineMessage(pm);
       }
     }
-    
   }
 }
 
@@ -285,7 +284,7 @@ void FilterPipeline::fromJson(const QJsonObject& json, IObserver* obs)
 // -----------------------------------------------------------------------------
 void FilterPipeline::cancel()
 {
-  if (m_State != FilterPipeline::State::Executing)
+  if(m_State != FilterPipeline::State::Executing)
   {
     // We cannot cancel a pipeline that is not executing
     setErrorCondition(-201);
@@ -323,7 +322,7 @@ DataContainerArray::Pointer FilterPipeline::run()
 // -----------------------------------------------------------------------------
 bool FilterPipeline::pushFront(const AbstractFilter::Pointer& f)
 {
-  if (m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
+  if(m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
   {
     // Do not allow anyone to add filters to a pipeline that is executing or canceling
     setErrorCondition(-202);
@@ -347,7 +346,7 @@ bool FilterPipeline::pushFront(const AbstractFilter::Pointer& f)
 // -----------------------------------------------------------------------------
 bool FilterPipeline::popFront()
 {
-  if (m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
+  if(m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
   {
     // Do not allow anyone to remove filters from a pipeline that is executing or canceling
     setErrorCondition(-203);
@@ -373,7 +372,7 @@ bool FilterPipeline::popFront()
 // -----------------------------------------------------------------------------
 bool FilterPipeline::pushBack(const AbstractFilter::Pointer& f)
 {
-  if (m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
+  if(m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
   {
     // Do not allow anyone to add filters to a pipeline that is executing or canceling
     setErrorCondition(-204);
@@ -397,7 +396,7 @@ bool FilterPipeline::pushBack(const AbstractFilter::Pointer& f)
 // -----------------------------------------------------------------------------
 bool FilterPipeline::popBack()
 {
-  if (m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
+  if(m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
   {
     // Do not allow anyone to remove filters from a pipeline that is executing or canceling
     setErrorCondition(-205);
@@ -423,7 +422,7 @@ bool FilterPipeline::popBack()
 // -----------------------------------------------------------------------------
 bool FilterPipeline::insert(size_t index, const AbstractFilter::Pointer& f)
 {
-  if (m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
+  if(m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
   {
     // Do not allow anyone to add filters to a pipeline that is executing or canceling
     setErrorCondition(-206);
@@ -452,7 +451,7 @@ bool FilterPipeline::insert(size_t index, const AbstractFilter::Pointer& f)
 // -----------------------------------------------------------------------------
 bool FilterPipeline::erase(size_t index)
 {
-  if (m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
+  if(m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
   {
     // Do not allow anyone to remove filters from a pipeline that is executing or canceling
     setErrorCondition(-207);
@@ -483,7 +482,7 @@ bool FilterPipeline::erase(size_t index)
 // -----------------------------------------------------------------------------
 bool FilterPipeline::clear()
 {
-  if (m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
+  if(m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
   {
     // We cannot clear a pipeline that is executing or canceling
     setErrorCondition(-208);
@@ -526,7 +525,7 @@ bool FilterPipeline::empty()
 // -----------------------------------------------------------------------------
 AbstractFilter::Pointer FilterPipeline::removeFirstFilterByName(const QString& name)
 {
-  if (m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
+  if(m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
   {
     // Do not allow anyone to remove filters from a pipeline that is executing or canceling
     return AbstractFilter::NullPointer();
@@ -647,7 +646,7 @@ void FilterPipeline::disconnectFilterNotifications(QObject* filter)
 // -----------------------------------------------------------------------------
 int FilterPipeline::preflightPipeline()
 {
-  if (m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
+  if(m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
   {
     // We cannot preflight a pipeline that is already executing or canceling
     setErrorCondition(-203);
@@ -769,7 +768,7 @@ int FilterPipeline::preflightPipeline()
 // -----------------------------------------------------------------------------
 DataContainerArray::Pointer FilterPipeline::execute()
 {
-  if (m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
+  if(m_State == FilterPipeline::State::Executing || m_State == FilterPipeline::State::Canceling)
   {
     // We cannot execute a pipeline that is already executing or canceling
     setErrorCondition(-200);
@@ -860,11 +859,11 @@ DataContainerArray::Pointer FilterPipeline::execute()
   PipelineMessage completeMessage("", "Pipeline Complete", 0, PipelineMessage::MessageType::StatusMessage, -1);
   emit pipelineGeneratedMessage(completeMessage);
 
-  if (m_State == FilterPipeline::State::Canceling)
+  if(m_State == FilterPipeline::State::Canceling)
   {
     m_ExecutionResult = FilterPipeline::ExecutionResult::Canceled;
   }
-  else if (m_State == FilterPipeline::State::Executing)
+  else if(m_State == FilterPipeline::State::Executing)
   {
     m_ExecutionResult = FilterPipeline::ExecutionResult::Completed;
   }
