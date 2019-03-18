@@ -38,6 +38,8 @@
 #include <QtCore/QDir>
 #include <QtCore/QTextStream>
 
+#include "SIMPLib/Utilities/SIMPLDataPathValidator.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -54,8 +56,11 @@ FilePathGenerator::~FilePathGenerator() = default;
 QVector<QString> FilePathGenerator::GenerateFileList(int start, int end, int increment, bool& hasMissingFiles, bool stackLowToHigh, const QString& inputPath, const QString& filePrefix,
                                                      const QString& fileSuffix, const QString& fileExtension, int paddingDigits)
 {
+  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
+  QString convertedInputPath = validator->convertToAbsolutePath(inputPath);
+
   QVector<QString> fileList;
-  QDir dir(inputPath);
+  QDir dir(convertedInputPath);
   if(!dir.exists())
   {
     return fileList;
@@ -75,7 +80,7 @@ QVector<QString> FilePathGenerator::GenerateFileList(int start, int end, int inc
       index = end - i;
     }
     filename = QString("%1%2%3.%4").arg(filePrefix).arg(QString::number(index), paddingDigits, '0').arg(fileSuffix).arg(fileExtension);
-    QString filePath = inputPath + QDir::separator() + filename;
+    QString filePath = convertedInputPath + QDir::separator() + filename;
     filePath = QDir::toNativeSeparators(filePath);
 
     QFileInfo fi(filePath);
