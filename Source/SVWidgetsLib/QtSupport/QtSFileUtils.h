@@ -43,61 +43,58 @@ class QLineEdit;
  */
 class SVWidgetsLib_EXPORT QtSFileUtils
 {
-  public:
-    QtSFileUtils();
-    virtual ~QtSFileUtils();
+public:
+  QtSFileUtils();
+  virtual ~QtSFileUtils();
 
-    /**
-     * @brief Generates a native file system path from the relative path given
-     * @param pathEnding
-     * @return
-     */
-    static QString GenerateFileSystemPath(QString pathEnding);
+  /**
+   * @brief Generates a native file system path from the relative path given
+   * @param pathEnding
+   * @return
+   */
+  static QString GenerateFileSystemPath(const QString& pathEnding);
 
-    /**
-     * @brief Reveals the path in the operating systems UI shell (Windows Explorer or macOS Finder)
-     * @param path The path to reveal
-     */
-    static void ShowPathInGui(QWidget* parent, const QString &path);
+  /**
+   * @brief Reveals the path in the operating systems UI shell (Windows Explorer or macOS Finder)
+   * @param path The path to reveal
+   */
+  static void ShowPathInGui(QWidget* parent, const QString& path);
 
-    /**
-     * @brief verifyPathExists
-     * @param filePath
-     * @param lineEdit
-     * @return
-     */
-    static bool VerifyPathExists(QString filePath, QLineEdit* lineEdit);
+  /**
+   * @brief verifyPathExists
+   * @param filePath
+   * @param lineEdit
+   * @return
+   */
+  static bool VerifyPathExists(const QString& filePath, QLineEdit* lineEdit);
 
-    /**
-     * @brief hasValidFilePath
-     * @param filePath
-     * @return
-     */
-    static bool HasValidFilePath(const QString &filePath);
+  /**
+   * @brief hasValidFilePath
+   * @param filePath
+   * @return
+   */
+  static bool HasValidFilePath(const QString& filePath);
 
-    /**
-     * @brief GetPathSeperator
-     * @return Returns the separator character used in the PATH environment variable
-     */
-    static QString GetPathSeperator();
+  /**
+   * @brief GetPathSeperator
+   * @return Returns the separator character used in the PATH environment variable
+   */
+  static QString GetPathSeperator();
 
-    /**
-     * @brief Finds an executable in the PATH
-     * @param exe The executable to find
-     * @return The absolute path to the executable or empty if it is not found
-     */
-    static QString FindInPath(const QString &exe);
+  /**
+   * @brief Finds an executable in the PATH
+   * @param exe The executable to find
+   * @return The absolute path to the executable or empty if it is not found
+   */
+  static QString FindInPath(const QString& exe);
 
-    /**
-     * @brief Returns an environment variable
-     * @param evnVar
-     * @return
-     */
-    static QStringList GetEnvVar(const QString &evnVar);
+  /**
+   * @brief Returns an environment variable
+   * @param evnVar
+   * @return
+   */
+  static QStringList GetEnvVar(const QString& evnVar);
 
-  protected:
-
-  private:
-
+protected:
+private:
 };
-

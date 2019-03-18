@@ -84,11 +84,6 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
     */
     void setupGui() override;
 
-    /**
-    * @brief
-    */
-    bool verifyPathExists(const QString &filePath, QLineEdit* lineEdit);
-
   public slots:
     void beforePreflight();
     void afterPreflight();
