@@ -1,5 +1,5 @@
 /* ============================================================================
- * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ * Copyright (c) 2009-2019 BlueQuartz Software, LLC
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -30,6 +30,7 @@
  *    United States Air Force Prime Contract FA8650-07-D-5800
  *    United States Air Force Prime Contract FA8650-10-D-5210
  *    United States Prime Contract Navy N00173-07-C-2068
+ *    United States Air Force Prime Contract FA8650-15-D-5231
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
@@ -61,14 +62,14 @@
 
 #ifdef CMP_WORDS_BIGENDIAN
 #define SWAP_ARRAY(array)                                                                                                                                                                              \
-  if(m_Endian == 0)                                                                                                                                                                                    \
+  if(filter->getEndian() == 0)                                                                                                                                                                                    \
   {                                                                                                                                                                                                    \
     array->byteSwapElements();                                                                                                                                                                         \
   }
 
 #else
 #define SWAP_ARRAY(array)                                                                                                                                                                              \
-  if(m_Endian == 1)                                                                                                                                                                                    \
+  if(filter->getEndian() == 1)                                                                                                                                                                                    \
   {                                                                                                                                                                                                    \
     array->byteSwapElements();                                                                                                                                                                         \
   }
@@ -95,8 +96,13 @@ int32_t SanityCheckFileSizeVersusAllocatedSize(size_t allocatedBytes, size_t fil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T> int32_t readBinaryFile(typename DataArray<T>::Pointer p, const QString& filename, size_t skipHeaderBytes)
+template <typename T> int32_t readBinaryFile(RawBinaryReader* filter)
 {
+
+  DataArray<T>::Pointer p = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DataArray<T>, AbstractFilter>(filter, filter->getCreatedAttributeArrayPath());
+  QString filename = filter->getInputFile();
+  int64_t skipHeaderBytes = filter->getSkipHeaderBytes();
+
   int32_t err = 0;
   QFileInfo fi(filename);
   uint64_t fileSize = static_cast<size_t>(fi.size());
@@ -120,12 +126,14 @@ template <typename T> int32_t readBinaryFile(typename DataArray<T>::Pointer p, c
 
   uint8_t* chunkptr = reinterpret_cast<uint8_t*>(p->getPointer(0));
 
-  // Skip some header bytes by just reading those bytes into the pointer knowing that the next
-  // thing we are going to do it over write those bytes with the real data that we are after.
+  // Skip some header bytes if the user asked for it.
   if(skipHeaderBytes > 0)
   {
-    fseek(f, skipHeaderBytes, SEEK_SET);
-    // numRead = fread(chunkptr, 1, static_cast<size_t>(skipHeaderBytes), f);
+    #if defined (_MSC_VER)
+      _fseeki64(f, skipHeaderBytes, SEEK_SET);
+    #else
+      fseek(f, skipHeaderBytes, SEEK_SET);
+    #endif
   }
   numRead = 0;
   // Now start reading the data in chunks if needed.
@@ -153,6 +161,9 @@ template <typename T> int32_t readBinaryFile(typename DataArray<T>::Pointer p, c
       break;
     }
   }
+
+
+  SWAP_ARRAY(p)
 
   return RBR_NO_ERROR;
 }
@@ -374,106 +385,46 @@ void RawBinaryReader::execute()
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getCreatedAttributeArrayPath().getDataContainerName());
 
-  // QVector<size_t> cDims(1, m_NumberOfComponents);
-  if(m_ScalarType == SIMPL::NumericTypes::Type::Int8)
+  switch(m_ScalarType)
   {
-    Int8ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<Int8ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
-    err = readBinaryFile<int8_t>(p, m_InputFile, m_SkipHeaderBytes);
-    if(err >= 0)
-    {
-      SWAP_ARRAY(p)
-      m_Array = p;
-    }
-  }
-  else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt8)
-  {
-    UInt8ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<UInt8ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
-    err = readBinaryFile<uint8_t>(p, m_InputFile, m_SkipHeaderBytes);
-    if(err >= 0)
-    {
-      SWAP_ARRAY(p)
-      m_Array = p;
-    }
-  }
-  else if(m_ScalarType == SIMPL::NumericTypes::Type::Int16)
-  {
-    Int16ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<Int16ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
-    err = readBinaryFile<int16_t>(p, m_InputFile, m_SkipHeaderBytes);
-    if(err >= 0)
-    {
-      SWAP_ARRAY(p)
-      m_Array = p;
-    }
-  }
-  else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt16)
-  {
-    UInt16ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<UInt16ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
-    err = readBinaryFile<uint16_t>(p, m_InputFile, m_SkipHeaderBytes);
-    if(err >= 0)
-    {
-      SWAP_ARRAY(p)
-      m_Array = p;
-    }
-  }
-  else if(m_ScalarType == SIMPL::NumericTypes::Type::Int32)
-  {
-    Int32ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<Int32ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
-    err = readBinaryFile<int32_t>(p, m_InputFile, m_SkipHeaderBytes);
-    if(err >= 0)
-    {
-      SWAP_ARRAY(p)
-      m_Array = p;
-    }
-  }
-  else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt32)
-  {
-    UInt32ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<UInt32ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
-    err = readBinaryFile<uint32_t>(p, m_InputFile, m_SkipHeaderBytes);
-    if(err >= 0)
-    {
-      SWAP_ARRAY(p)
-      m_Array = p;
-    }
-  }
-  else if(m_ScalarType == SIMPL::NumericTypes::Type::Int64)
-  {
-    Int64ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<Int64ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
-    err = readBinaryFile<int64_t>(p, m_InputFile, m_SkipHeaderBytes);
-    if(err >= 0)
-    {
-      SWAP_ARRAY(p)
-      m_Array = p;
-    }
-  }
-  else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt64)
-  {
-    UInt64ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<UInt64ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
-    err = readBinaryFile<uint64_t>(p, m_InputFile, m_SkipHeaderBytes);
-    if(err >= 0)
-    {
-      SWAP_ARRAY(p)
-      m_Array = p;
-    }
-  }
-  else if(m_ScalarType == SIMPL::NumericTypes::Type::Float)
-  {
-    FloatArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<FloatArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
-    err = readBinaryFile<float>(p, m_InputFile, m_SkipHeaderBytes);
-    if(err >= 0)
-    {
-      SWAP_ARRAY(p)
-      m_Array = p;
-    }
-  }
-  else if(m_ScalarType == SIMPL::NumericTypes::Type::Double)
-  {
-    DoubleArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
-    err = readBinaryFile<double>(p, m_InputFile, m_SkipHeaderBytes);
-    if(err >= 0)
-    {
-      SWAP_ARRAY(p)
-      m_Array = p;
-    }
+  case SIMPL::NumericTypes::Type::Int8:
+    err = readBinaryFile<int8_t>(this);
+    break;
+  case SIMPL::NumericTypes::Type::UInt8:
+    err = readBinaryFile<uint8_t>(this);
+    break;
+  case SIMPL::NumericTypes::Type::Int16:
+    err = readBinaryFile<int16_t>(this);
+    break;
+  case SIMPL::NumericTypes::Type::UInt16:
+    err = readBinaryFile<uint16_t>(this);
+    break;
+  case SIMPL::NumericTypes::Type::Int32:
+    err = readBinaryFile<int32_t>(this);
+    break;
+  case SIMPL::NumericTypes::Type::UInt32:
+    err = readBinaryFile<uint32_t>(this);
+    break;
+  case SIMPL::NumericTypes::Type::Int64:
+    err = readBinaryFile<int64_t>(this);
+    break;
+  case SIMPL::NumericTypes::Type::UInt64:
+    err = readBinaryFile<uint64_t>(this);
+    break;
+  case SIMPL::NumericTypes::Type::Float:
+    err = readBinaryFile<float>(this);
+    break;
+  case SIMPL::NumericTypes::Type::Double:
+    err = readBinaryFile<double>(this);
+    break;
+  case SIMPL::NumericTypes::Type::Bool:
+    err = readBinaryFile<uint8_t>(this);
+    break;
+  case SIMPL::NumericTypes::Type::SizeT:
+    err = readBinaryFile<size_t>(this);
+    break;
+  case SIMPL::NumericTypes::Type::UnknownNumType:
+    break;
   }
 
   if(err == RBR_FILE_NOT_OPEN)
