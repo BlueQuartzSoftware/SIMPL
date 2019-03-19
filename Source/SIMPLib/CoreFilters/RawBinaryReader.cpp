@@ -99,7 +99,7 @@ int32_t SanityCheckFileSizeVersusAllocatedSize(size_t allocatedBytes, size_t fil
 template <typename T> int32_t readBinaryFile(RawBinaryReader* filter)
 {
 
-  DataArray<T>::Pointer p = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DataArray<T>, AbstractFilter>(filter, filter->getCreatedAttributeArrayPath());
+  typename DataArray<T>::Pointer p = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DataArray<T>, AbstractFilter>(filter, filter->getCreatedAttributeArrayPath());
   QString filename = filter->getInputFile();
   int64_t skipHeaderBytes = filter->getSkipHeaderBytes();
 
