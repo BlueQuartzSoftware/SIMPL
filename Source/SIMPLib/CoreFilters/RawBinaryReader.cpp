@@ -59,7 +59,6 @@
 #define RBR_READ_EOF -1030
 #define RBR_NO_ERROR 0
 
-
 #ifdef CMP_WORDS_BIGENDIAN
 #define SWAP_ARRAY(array)                                                                                                                                                                              \
   if(filter->getEndian() == 0)                                                                                                                                                                                    \
