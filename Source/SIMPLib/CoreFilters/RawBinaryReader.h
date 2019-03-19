@@ -50,7 +50,7 @@ class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
     PYB11_PROPERTY(SIMPL::NumericTypes::Type ScalarType READ getScalarType WRITE setScalarType)
     PYB11_PROPERTY(int Endian READ getEndian WRITE setEndian)
     PYB11_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
-    PYB11_PROPERTY(int SkipHeaderBytes READ getSkipHeaderBytes WRITE setSkipHeaderBytes)
+    PYB11_PROPERTY(uint64_t SkipHeaderBytes READ getSkipHeaderBytes WRITE setSkipHeaderBytes)
     PYB11_PROPERTY(QString InputFile READ getInputFile WRITE setInputFile)
 
   public:
@@ -72,8 +72,8 @@ class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
     SIMPL_FILTER_PARAMETER(int, NumberOfComponents)
     Q_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
 
-    SIMPL_FILTER_PARAMETER(int, SkipHeaderBytes)
-    Q_PROPERTY(int SkipHeaderBytes READ getSkipHeaderBytes WRITE setSkipHeaderBytes)
+    SIMPL_FILTER_PARAMETER(uint64_t, SkipHeaderBytes)
+    Q_PROPERTY(uint64_t SkipHeaderBytes READ getSkipHeaderBytes WRITE setSkipHeaderBytes)
 
     SIMPL_FILTER_PARAMETER(QString, InputFile)
     Q_PROPERTY(QString InputFile READ getInputFile WRITE setInputFile)
