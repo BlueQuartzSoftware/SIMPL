@@ -510,6 +510,10 @@ public:                                                                         
   bool m_##prpty;\
   public:\
   virtual SIMPL_SET_PROPERTY(bool, prpty)\
+  SIMPL_GET_BOOL_PROPERTY(prpty)\
+
+#define SIMPL_GET_BOOL_PROPERTY(prpty)\
+  public:\
   virtual bool is##prpty() { return m_##prpty; }
 
 /**

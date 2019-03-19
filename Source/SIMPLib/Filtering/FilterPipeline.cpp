@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "FilterPipeline.h"
 
@@ -50,7 +50,6 @@
 // -----------------------------------------------------------------------------
 FilterPipeline::FilterPipeline()
 : m_ErrorCondition(0)
-, m_Cancel(false)
 , m_PipelineName("")
 , m_Dca(nullptr)
 {
@@ -160,13 +159,13 @@ QJsonObject FilterPipeline::toJson()
 // -----------------------------------------------------------------------------
 FilterPipeline::Pointer FilterPipeline::FromJson(const QJsonObject& json, IObserver* obs)
 {
-  if (!json.contains(SIMPL::Settings::PipelineBuilderGroup) || !json[SIMPL::Settings::PipelineBuilderGroup].isObject())
+  if(!json.contains(SIMPL::Settings::PipelineBuilderGroup) || !json[SIMPL::Settings::PipelineBuilderGroup].isObject())
   {
     return FilterPipeline::NullPointer();
   }
 
   QJsonObject builderObj = json[SIMPL::Settings::PipelineBuilderGroup].toObject();
-  if (!builderObj.contains(SIMPL::Settings::NumFilters) || !builderObj[SIMPL::Settings::NumFilters].isDouble())
+  if(!builderObj.contains(SIMPL::Settings::NumFilters) || !builderObj[SIMPL::Settings::NumFilters].isDouble())
   {
     return FilterPipeline::NullPointer();
   }
@@ -267,7 +266,7 @@ void FilterPipeline::fromJson(const QJsonObject& json, IObserver* obs)
       filter->setOriginalFilterName(filterName);
       filter->setEnabled(filterEnabled);
       this->pushBack(filter);
-      
+
       if(nullptr != obs)
       {
         QString ss = QObject::tr("An attempt to instantiate a filter from the pipeline file resulted in an error.\
@@ -279,37 +278,45 @@ void FilterPipeline::fromJson(const QJsonObject& json, IObserver* obs)
         obs->processPipelineMessage(pm);
       }
     }
-    
   }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::setCancel(bool value)
+void FilterPipeline::cancel()
 {
-  this->m_Cancel = value;
+  if(m_State != FilterPipeline::State::Executing)
+  {
+    // We cannot cancel a pipeline that is not executing
+    setErrorCondition(-201);
+
+    PipelineMessage progValue;
+    progValue.setType(PipelineMessage::MessageType::Error);
+    QString ss;
+    if(m_State == FilterPipeline::State::Idle)
+    {
+      ss = QObject::tr("Pipeline '%1' could not be canceled because it is not executing.").arg(getName());
+    }
+    else if(m_State == FilterPipeline::State::Canceling)
+    {
+      ss = QObject::tr("Pipeline '%1' could not be canceled because it is already canceling.").arg(getName());
+    }
+    else
+    {
+      ss = QObject::tr("Pipeline '%1' could not be canceled.").arg(getName());
+    }
+    progValue.setText(ss);
+    progValue.setCode(getErrorCondition());
+    emit pipelineGeneratedMessage(progValue);
+    return;
+  }
+
+  m_State = FilterPipeline::State::Canceling;
   if(nullptr != m_CurrentFilter.get())
   {
-    m_CurrentFilter->setCancel(value);
+    m_CurrentFilter->setCancel(true);
   }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool FilterPipeline::getCancel()
-{
-  return m_Cancel;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void FilterPipeline::cancelPipeline()
-{
-  setCancel(true);
-  emit pipelineCanceled();
 }
 
 // -----------------------------------------------------------------------------
@@ -327,44 +334,122 @@ DataContainerArray::Pointer FilterPipeline::run()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::pushFront(const AbstractFilter::Pointer& f)
+bool FilterPipeline::pushFront(const AbstractFilter::Pointer& f)
 {
+  if(m_State != FilterPipeline::State::Idle)
+  {
+    // Do not allow anyone to add filters to a pipeline that is not idle
+    setErrorCondition(-202);
+
+    PipelineMessage progValue;
+    progValue.setType(PipelineMessage::MessageType::Error);
+    QString ss = QObject::tr("Filter '%1' could not be added to pipeline '%2' because the pipeline is already executing.").arg(f->getHumanLabel()).arg(getName());
+    progValue.setText(ss);
+    progValue.setCode(getErrorCondition());
+    emit pipelineGeneratedMessage(progValue);
+    return false;
+  }
+
   m_Pipeline.push_front(f);
   updatePrevNextFilters();
   emit pipelineWasEdited();
+  return true;
 }
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::popFront()
+bool FilterPipeline::popFront()
 {
+  if(m_State != FilterPipeline::State::Idle)
+  {
+    // Do not allow anyone to remove filters from a pipeline that is not idle
+    setErrorCondition(-203);
+
+    AbstractFilter::Pointer f = m_Pipeline.front();
+
+    PipelineMessage progValue;
+    progValue.setType(PipelineMessage::MessageType::Error);
+    QString ss = QObject::tr("Filter '%1' could not be removed from pipeline '%2' because the pipeline is already executing.").arg(f->getHumanLabel()).arg(getName());
+    progValue.setText(ss);
+    progValue.setCode(getErrorCondition());
+    emit pipelineGeneratedMessage(progValue);
+    return false;
+  }
+
   m_Pipeline.pop_front();
   updatePrevNextFilters();
   emit pipelineWasEdited();
+  return true;
 }
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::pushBack(const AbstractFilter::Pointer& f)
+bool FilterPipeline::pushBack(const AbstractFilter::Pointer& f)
 {
+  if(m_State != FilterPipeline::State::Idle)
+  {
+    // Do not allow anyone to add filters to a pipeline that is not idle
+    setErrorCondition(-204);
+
+    PipelineMessage progValue;
+    progValue.setType(PipelineMessage::MessageType::Error);
+    QString ss = QObject::tr("Filter '%1' could not be added to pipeline '%2' because the pipeline is already executing.").arg(f->getHumanLabel()).arg(getName());
+    progValue.setText(ss);
+    progValue.setCode(getErrorCondition());
+    emit pipelineGeneratedMessage(progValue);
+    return false;
+  }
+
   m_Pipeline.push_back(f);
   updatePrevNextFilters();
   emit pipelineWasEdited();
+  return true;
 }
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::popBack()
+bool FilterPipeline::popBack()
 {
+  if(m_State != FilterPipeline::State::Idle)
+  {
+    // Do not allow anyone to remove filters from a pipeline that is not idle
+    setErrorCondition(-205);
+
+    AbstractFilter::Pointer f = m_Pipeline.back();
+
+    PipelineMessage progValue;
+    progValue.setType(PipelineMessage::MessageType::Error);
+    QString ss = QObject::tr("Filter '%1' could not be removed from pipeline '%2' because the pipeline is already executing.").arg(f->getHumanLabel()).arg(getName());
+    progValue.setText(ss);
+    progValue.setCode(getErrorCondition());
+    emit pipelineGeneratedMessage(progValue);
+    return false;
+  }
+
   m_Pipeline.pop_back();
   updatePrevNextFilters();
   emit pipelineWasEdited();
+  return true;
 }
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::insert(size_t index, const AbstractFilter::Pointer& f)
+bool FilterPipeline::insert(size_t index, const AbstractFilter::Pointer& f)
 {
+  if(m_State != FilterPipeline::State::Idle)
+  {
+    // Do not allow anyone to add filters to a pipeline that is not idle
+    setErrorCondition(-206);
+
+    PipelineMessage progValue;
+    progValue.setType(PipelineMessage::MessageType::Error);
+    QString ss = QObject::tr("Filter '%1' could not be added to pipeline '%2' because the pipeline is already executing.").arg(f->getHumanLabel()).arg(getName());
+    progValue.setText(ss);
+    progValue.setCode(getErrorCondition());
+    emit pipelineGeneratedMessage(progValue);
+    return false;
+  }
+
   FilterContainerType::iterator it = m_Pipeline.begin();
   for(size_t i = 0; i < index; ++i)
   {
@@ -373,12 +458,29 @@ void FilterPipeline::insert(size_t index, const AbstractFilter::Pointer& f)
   m_Pipeline.insert(it, f);
   updatePrevNextFilters();
   emit pipelineWasEdited();
+  return true;
 }
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::erase(size_t index)
+bool FilterPipeline::erase(size_t index)
 {
+  if(m_State != FilterPipeline::State::Idle)
+  {
+    // Do not allow anyone to remove filters from a pipeline that is not idle
+    setErrorCondition(-207);
+
+    AbstractFilter::Pointer f = m_Pipeline[index];
+
+    PipelineMessage progValue;
+    progValue.setType(PipelineMessage::MessageType::Error);
+    QString ss = QObject::tr("Filter '%1' could not be removed from pipeline '%2' because the pipeline is already executing.").arg(f->getHumanLabel()).arg(getName());
+    progValue.setText(ss);
+    progValue.setCode(getErrorCondition());
+    emit pipelineGeneratedMessage(progValue);
+    return false;
+  }
+
   FilterContainerType::iterator it = m_Pipeline.begin();
   for(size_t i = 0; i < index; ++i)
   {
@@ -387,12 +489,27 @@ void FilterPipeline::erase(size_t index)
   m_Pipeline.erase(it);
   updatePrevNextFilters();
   emit pipelineWasEdited();
+  return true;
 }
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::clear()
+bool FilterPipeline::clear()
 {
+  if(m_State != FilterPipeline::State::Idle)
+  {
+    // We cannot clear a pipeline that is not idle
+    setErrorCondition(-208);
+
+    PipelineMessage progValue;
+    progValue.setType(PipelineMessage::MessageType::Error);
+    QString ss = QObject::tr("Pipeline '%1' could not be cleared because it is executing.").arg(getName());
+    progValue.setText(ss);
+    progValue.setCode(getErrorCondition());
+    emit pipelineGeneratedMessage(progValue);
+    return false;
+  }
+
   for(const auto& filter : m_Pipeline)
   {
     filter->setPreviousFilter(AbstractFilter::NullPointer());
@@ -400,6 +517,7 @@ void FilterPipeline::clear()
   }
   m_Pipeline.clear();
   emit pipelineWasEdited();
+  return true;
 }
 // -----------------------------------------------------------------------------
 //
@@ -421,6 +539,20 @@ bool FilterPipeline::empty()
 // -----------------------------------------------------------------------------
 AbstractFilter::Pointer FilterPipeline::removeFirstFilterByName(const QString& name)
 {
+  if(m_State != FilterPipeline::State::Idle)
+  {
+    // Do not allow anyone to remove filters from a pipeline that is not idle
+    setErrorCondition(-209);
+
+    PipelineMessage progValue;
+    progValue.setType(PipelineMessage::MessageType::Error);
+    QString ss = QObject::tr("Filter '%1' could not be removed from pipeline '%2' because the pipeline is already executing.").arg(name).arg(getName());
+    progValue.setText(ss);
+    progValue.setCode(getErrorCondition());
+    emit pipelineGeneratedMessage(progValue);
+    return AbstractFilter::NullPointer();
+  }
+
   AbstractFilter::Pointer f = AbstractFilter::NullPointer();
   for(FilterContainerType::iterator it = m_Pipeline.begin(); it != m_Pipeline.end(); ++it)
   {
@@ -496,7 +628,17 @@ void FilterPipeline::updatePrevNextFilters()
 // -----------------------------------------------------------------------------
 void FilterPipeline::addMessageReceiver(QObject* obj)
 {
+  connect(this, SIGNAL(pipelineGeneratedMessage(const PipelineMessage&)), obj, SLOT(processPipelineMessage(const PipelineMessage&)));
   m_MessageReceivers.push_back(obj);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterPipeline::removeMessageReceiver(QObject* obj)
+{
+  disconnect(this, SIGNAL(pipelineGeneratedMessage(const PipelineMessage&)), obj, SLOT(processPipelineMessage(const PipelineMessage&)));
+  m_MessageReceivers.removeAll(obj);
 }
 
 // -----------------------------------------------------------------------------
@@ -526,6 +668,20 @@ void FilterPipeline::disconnectFilterNotifications(QObject* filter)
 // -----------------------------------------------------------------------------
 int FilterPipeline::preflightPipeline()
 {
+  if(m_State != FilterPipeline::State::Idle)
+  {
+    // We cannot preflight a pipeline that is not idle
+    setErrorCondition(-203);
+
+    PipelineMessage progValue;
+    progValue.setType(PipelineMessage::MessageType::Error);
+    QString ss = QObject::tr("Pipeline '%1' could not be preflighted because it is already executing.").arg(getName());
+    progValue.setText(ss);
+    progValue.setCode(getErrorCondition());
+    emit pipelineGeneratedMessage(progValue);
+    return getErrorCondition();
+  }
+
   // Create the DataContainer object
   DataContainerArray::Pointer dca = DataContainerArray::New();
 
@@ -620,23 +776,34 @@ int FilterPipeline::preflightPipeline()
 // -----------------------------------------------------------------------------
 DataContainerArray::Pointer FilterPipeline::execute()
 {
+  if(m_State != FilterPipeline::State::Idle)
+  {
+    // We cannot execute a pipeline that is not idle
+    setErrorCondition(-200);
+
+    PipelineMessage progValue;
+    progValue.setType(PipelineMessage::MessageType::Error);
+    QString ss = QObject::tr("Pipeline '%1' could not be executed because it is already executing.").arg(getName());
+    progValue.setText(ss);
+    progValue.setCode(getErrorCondition());
+    emit pipelineGeneratedMessage(progValue);
+
+    disconnectSignalsSlots();
+    return DataContainerArray::NullPointer();
+  }
+
   int err = 0;
 
-  // Clear pipeline cancel state
-  setCancel(false);
-
   connectSignalsSlots();
+
+  m_ExecutionResult = FilterPipeline::ExecutionResult::Invalid;
+
+  m_State = FilterPipeline::State::Executing;
 
   m_Dca = DataContainerArray::New();
 
   // Start looping through the Pipeline
   float progress = 0.0f;
-
-  // Connect this object to anything that wants to know about PipelineMessages
-  for(const auto& messageReceiver : m_MessageReceivers)
-  {
-    connect(this, SIGNAL(pipelineGeneratedMessage(const PipelineMessage&)), messageReceiver, SLOT(processPipelineMessage(const PipelineMessage&)));
-  }
 
   PipelineMessage progValue("", "", 0, PipelineMessage::MessageType::ProgressValue, -1);
   for(const auto& filt : m_Pipeline)
@@ -684,7 +851,7 @@ DataContainerArray::Pointer FilterPipeline::execute()
       }
     }
 
-    if(this->getCancel())
+    if(m_State == FilterPipeline::State::Canceling)
     {
       // Clear cancel filter state
       filt->setCancel(false);
@@ -695,12 +862,35 @@ DataContainerArray::Pointer FilterPipeline::execute()
     emit filt->filterCompleted(filt.get());
   }
 
-  emit pipelineFinished();
-
   disconnectSignalsSlots();
 
-  PipelineMessage completeMessage("", "Pipeline Complete", 0, PipelineMessage::MessageType::StatusMessage, -1);
+  PipelineMessage completeMessage("", "", 0, PipelineMessage::MessageType::StatusMessage, -1);
+  if(m_State == FilterPipeline::State::Canceling)
+  {
+    completeMessage.setText("Pipeline Canceled");
+    m_ExecutionResult = FilterPipeline::ExecutionResult::Canceled;
+  }
+  else if(m_State == FilterPipeline::State::Executing)
+  {
+    completeMessage.setText("Pipeline Complete");
+    m_ExecutionResult = FilterPipeline::ExecutionResult::Completed;
+  }
+  else
+  {
+    // This should never get here
+    completeMessage.setText("Unsupported Pipeline Execution Result");
+    emit pipelineGeneratedMessage(completeMessage);
+
+    setErrorCondition(-210);
+    completeMessage.setType(PipelineMessage::MessageType::Error);
+    completeMessage.setCode(getErrorCondition());
+  }
+
   emit pipelineGeneratedMessage(completeMessage);
+
+  m_State = FilterPipeline::State::Idle;
+
+  emit pipelineFinished();
 
   return m_Dca;
 }
@@ -738,6 +928,30 @@ void FilterPipeline::disconnectSignalsSlots()
   {
     disconnect(this, SIGNAL(pipelineFinished()), filter.get(), SLOT(cleanupFilter()));
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool FilterPipeline::isExecuting() const
+{
+  return (m_State == FilterPipeline::State::Executing);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool FilterPipeline::isCanceling() const
+{
+  return (m_State == FilterPipeline::State::Canceling);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool FilterPipeline::isIdle() const
+{
+  return (m_State == FilterPipeline::State::Idle);
 }
 
 // -----------------------------------------------------------------------------
