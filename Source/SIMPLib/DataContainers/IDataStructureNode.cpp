@@ -121,17 +121,28 @@ bool IDataStructureNode::setName(const QString& newName)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool IDataStructureNode::hasChildWithName(const QString& name) const
+IDataStructureNode::ParentType* IDataStructureNode::getParentNode() const
 {
-  return false;
+  return m_Parent;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataStructureNode::ParentType* IDataStructureNode::getParentNode() const
+void IDataStructureNode::setParentNode(ParentType* const parent)
 {
-  return m_Parent;
+  if(parent == m_Parent)
+  {
+    return;
+  }
+
+  // Remove from parent's children
+  if(nullptr != m_Parent)
+  {
+    m_Parent->removeChildNode(this);
+  }
+
+  m_Parent = parent;
 }
 
 // -----------------------------------------------------------------------------

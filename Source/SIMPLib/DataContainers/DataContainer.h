@@ -180,50 +180,7 @@ public:
   {
     return insertOrAssign(matrix);
   }
-
-  /**
-   * @brief This function will insert the AttributeMatrix into the DataContainer if one does not exist with the name
-   * or replace an existing AttributeMatrix that has the same name assuming that the number of tuples is a match.
-   * @param data The AttributeMatrix object to add to the the DataContainer
-   * @return
-   */
-  inline bool insertOrAssign(const AttributeMatrixShPtr& matrix)
-  {
-    // Can not insert a null AttributeMatrix
-    if(matrix.get() == nullptr)
-    {
-      return false;
-    }
-
-    bool containsPointer = contains(matrix);
-    bool parentEqualsThis = (matrix->getParentNode() == this);
-    bool thisContainsSameName = contains(matrix->getName());
-
-    // The AttributeMatrix is already a child of this node, The parent got set to null some how.
-    // Reset the parent to this and return
-    if(containsPointer && matrix->getParentNode() == nullptr)
-    {
-      matrix->_setParentNode(this);
-      return true;
-    }
-
-    // AttributeMatrix is already in this DataContainer
-    if(containsPointer && parentEqualsThis)
-    {
-      return true;
-    }
-
-    // There is another AttributeMatrix by the same name but different object (pointer value)
-    if(thisContainsSameName && !containsPointer)
-    {
-      removeAttributeMatrix(matrix->getName()); // Remove the other from this Data Container that has the same name
-    }
-    // Ensure there is a nullptr for the parent otherwise the push_back will not work(?)
-    matrix->_setParentNode(nullptr);
-    // The AttributeMatrix should finally be inserted into this DataContainer
-    return push_back(matrix);
-  }
-
+  
   /**
    * @brief Returns the array for a given named array or the equivelant to a
    * null pointer if the name does not exist.

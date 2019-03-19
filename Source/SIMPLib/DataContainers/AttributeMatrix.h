@@ -240,57 +240,7 @@ public:
       Q_ASSERT(getNumberOfTuples() == data->getNumberOfTuples());
       return insertOrAssign(data);
     }
-
-    /**
-     * @brief This function will insert the IDataArray into the AttributeMatrix if one does not exist with the name
-     * or replace an existing IDataArray that has the same name assuming that the number of tuples is a match.
-     * @param data The IDataArray object to add to the the AttributeMatrix
-     * @return
-     */
-    inline bool insertOrAssign(const IDataArray::Pointer& data)
-    {
-      // Can not insert a null IDataArray
-      if(data.get() == nullptr)
-      {
-        return false;
-      }
-
-      bool containsPointer = contains(data);
-      bool parentEqualsThis = (data->getParentNode() == this);
-      bool thisContainsSameName = contains(data->getName());
-
-      // The IDataArray is already a child of this node, The parent got set to null some how.
-      // Reset the parent to this and return
-      if(containsPointer && data->getParentNode() == nullptr)
-      {
-        data->_setParentNode(this);
-        return true;
-      }
-
-      // IDataArray is already in this DataContainer
-      if(containsPointer && parentEqualsThis)
-      {
-        return true;
-      }
-
-      // There is another IDataArray by the same name but different object (pointer value)
-      if(thisContainsSameName && !containsPointer)
-      {
-        removeAttributeArray(data->getName()); // Remove the other from this AttributeMatrix that has the same name
-      }
-
-      if(data.get() != nullptr && getNumberOfTuples() != data->getNumberOfTuples())
-      {
-        qDebug() << "AttributeMatrix::Name: " << getName() << "  dataArray::name:  " << data->getName() << " Type: " << data->getTypeAsString();
-        qDebug() << "getNumberOfTuples(): " << getNumberOfTuples() << "  data->getNumberOfTuples(): " << data->getNumberOfTuples();
-        return false;
-      }
-      // Ensure there is a nullptr for the parent otherwise the push_back will not work(?)
-      data->_setParentNode(nullptr);
-      // The AttributeMatrix should finally be inserted into this AttributeMatrix
-      return push_back(data);
-    }
-
+    
     /**
      * @brief Returns the array for a given named array or the equivelant to a
      * null pointer if the name does not exist.

@@ -42,7 +42,7 @@
 
 #include "IDataStructureNode.h"
 
-template <class DerivedChild_t> class IDataStructureContainerNode : public IDataStructureNode
+template <class DerivedChild_t> class IDataStructureContainerNode : public IDSContainer
 {
 public:
   SIMPL_SHARED_POINTERS(IDataStructureContainerNode<DerivedChild_t>)
@@ -50,34 +50,16 @@ public:
   using ChildShPtr = std::shared_ptr<DerivedChild_t>;
   using ChildCollection = std::vector<ChildShPtr>;
   using iterator = typename ChildCollection::iterator;
-  using const_iterator =  typename ChildCollection::const_iterator;
+  using const_iterator = typename ChildCollection::const_iterator;
   using NameList = QList<QString>;
 
 private:
   ChildCollection m_ChildrenNodes;
 
 protected:
-  /**
-   * @brief Removes the given child from the children collection and returns its shared_ptr.
-   * @param child
-   * @return
-   */
-  IDataStructureNode::Pointer removeChildNode(const IDataStructureNode* rmChild) override
-  {
-    for(auto iter = m_ChildrenNodes.begin(); iter != m_ChildrenNodes.end(); ++iter)
-    {
-      if((*iter).get() == rmChild)
-      {
-        ChildShPtr ptr = *iter;
-        m_ChildrenNodes.erase(iter);
-        return ptr;
-      }
-    }
+  
 
-    return NullPointer();
-  }
-
-  //void setParent(const ParentType& parent) override
+  // void setParent(const ParentType& parent) override
   //{
   //  // Remove from parent's children
   //  Pointer tempPtr;
@@ -92,11 +74,13 @@ protected:
 
 public:
   IDataStructureContainerNode(const QString& name = "")
-    : IDataStructureNode(name)
-  {}
+  : IDSContainer(name)
+  {
+  }
   IDataStructureContainerNode(ParentType* parent, const QString& name = "")
-    : IDataStructureNode(parent, name)
-  {}
+  : IDSContainer(parent, name)
+  {
+  }
   ~IDataStructureContainerNode() override
   {
     clear();
@@ -241,7 +225,7 @@ public:
     {
       if(child != nullptr)
       {
-        child->_setParentNode(nullptr);
+        child->clearParentNode();
       }
     }
     m_ChildrenNodes.clear();
@@ -412,8 +396,33 @@ public:
     typename ChildCollection::size_type size = m_ChildrenNodes.size();
     m_ChildrenNodes.push_back(node);
 
-    node->_setParentNode(this);
+    node->setParentNode(this);
     return (size != m_ChildrenNodes.size());
+  }
+
+  /**
+   * @brief Sets the given IDataStructureNode as a child.  If a child already
+   * exists with the given name, it is removed.
+   * @param node
+   * @return success
+   */
+  bool insertOrAssign(const ChildShPtr& node)
+  {
+    // Can not insert a null IDataArray
+    if(node.get() == nullptr)
+    {
+      return false;
+    }
+
+    auto iter = find(node->getName());
+    if(iter != end() && (*iter) != node)
+    {
+      erase(iter);
+    }
+
+    m_ChildrenNodes.push_back(node);
+    node->setParentNode(this);
+    return true;
   }
 
   /**
@@ -422,6 +431,29 @@ public:
    */
   constexpr void erase(iterator iter)
   {
+    ChildShPtr child = (*iter);
     m_ChildrenNodes.erase(iter);
+    child->clearParentNode();
   }
+  
+  /**
+   * @brief Removes the given child from the children collection and returns its shared_ptr.
+   * @param child
+   * @return
+   */
+  IDataStructureNode::Pointer removeChildNode(const IDataStructureNode* rmChild) override
+  {
+    for(auto iter = m_ChildrenNodes.begin(); iter != m_ChildrenNodes.end(); ++iter)
+    {
+      if((*iter).get() == rmChild)
+      {
+        ChildShPtr ptr = *iter;
+        m_ChildrenNodes.erase(iter);
+        return ptr;
+      }
+    }
+
+    return NullPointer();
+  }
+
 };

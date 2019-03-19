@@ -45,11 +45,7 @@
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/SIMPLib.h"
 
-// class DsnIterator;
-// class DsnConstIterator;
-//class IDataStructureNode;
-//class IDataStructureContainerNode;
-//#include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
+class IDSContainer;
 
 /**
  * @class IDataStructureNode IDataStructureNode.h SIMPLib/DataContainers/IDataStructureNode.h
@@ -61,7 +57,7 @@ class SIMPLib_EXPORT IDataStructureNode
 public:
   SIMPL_SHARED_POINTERS(IDataStructureNode)
 
-  using ParentType = IDataStructureNode;
+  using ParentType = IDSContainer;
   // using ParentWkPtr = std::weak_ptr<ParentType>;
   // using parent_collection = std::vector<ParentWkPtr>;
   using DataArrayPathList = std::list<DataArrayPath>;
@@ -84,16 +80,6 @@ protected:
    * @return
    */
   static HashType CreateStringHash(const QString& string);
-
-  inline virtual Pointer removeChildNode(const IDataStructureNode* rmChild)
-  {
-    return NullPointer();
-  }
-
-  // inline void addParentNode(const ParentType& newParent);
-  // inline bool removeParentNode(const ParentType& removedParent);
-
-  virtual bool hasChildWithName(const QString& name) const;
 
 public:
   IDataStructureNode(const QString& name = "");
@@ -158,21 +144,41 @@ public:
    * @brief Sets the raw parent pointer.  As additional graph support is added,
    * this will instead be replaced with addParentNode(const ParentType&) and
    * removeParentNode(const ParentType&).  This should only be called from
-   * IDataStructureContainerNode::push_back.
+   * IDataStructureContainerNode::push_back, insertOrAssign, or
+   * IDataStructureNode::clearParentNode.  THIS DOES NOT ADD THE NODE TO THE TARGET PARENT!
+   * @param parent
    */
-  constexpr void _setParentNode(ParentType* const parent)
+  void setParentNode(ParentType* const parent);
+
+  /**
+   * @brief Clears the parent pointer and removes this from its parent constainer.
+   */
+  inline void clearParentNode()
   {
-    if(parent == m_Parent)
-    {
-      return;
-    }
-
-    // Remove from parent's children
-    if(nullptr != m_Parent)
-    {
-      m_Parent->removeChildNode(this);
-    }
-
-    m_Parent = parent;
+    setParentNode(nullptr);
   }
+
+  // inline void addParentNode(const ParentType& newParent);
+  // inline bool removeParentNode(const ParentType& removedParent);
+};
+
+/**
+ * @class IDSContainer IDataStructureNode.h SIMPLib/DataContainers/IDataStructureNode.h
+ * @brief The IDSContainer is an interface created so that IDataStructureNode can call required methods in IDataStructureContainerNode.
+ */
+class SIMPLib_EXPORT IDSContainer : public IDataStructureNode
+{
+public:
+  IDSContainer(const QString& name = "")
+  : IDataStructureNode(name)
+  {
+  }
+  IDSContainer(ParentType* parent, const QString& name = "")
+  : IDataStructureNode(parent, name)
+  {
+  }
+  ~IDSContainer() override = default;
+
+  virtual bool hasChildWithName(const QString& name) const = 0;
+  virtual IDataStructureNode::Pointer removeChildNode(const IDataStructureNode* rmChild) = 0;
 };

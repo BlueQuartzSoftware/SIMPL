@@ -205,7 +205,7 @@ AttributeMatrix::Pointer DataContainer::removeAttributeMatrix(const QString& nam
   }
   AttributeMatrix::Pointer p = (*it);
   erase(it);
-  p->_setParentNode(nullptr);
+  p->setParentNode(nullptr);
   return p;
 }
 
