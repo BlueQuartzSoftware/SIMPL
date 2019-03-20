@@ -46,14 +46,14 @@ UInt64FilterParameter::~UInt64FilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-UInt64FilterParameter::Pointer UInt64FilterParameter::New(const QString& humanLabel, const QString& propertyName, const uint64_t& defaultValue, Category category, SetterCallbackType setterCallback,
+UInt64FilterParameter::Pointer UInt64FilterParameter::New(const QString& humanLabel, const QString& propertyName, uint64_t defaultValue, Category category, SetterCallbackType setterCallback,
                                                           GetterCallbackType getterCallback, int groupIndex)
 {
 
   UInt64FilterParameter::Pointer ptr = UInt64FilterParameter::New();
   ptr->setHumanLabel(humanLabel);
   ptr->setPropertyName(propertyName);
-  ptr->setDefaultValue(defaultValue);
+  ptr->setDefaultValue(static_cast<quint64>(defaultValue));
   ptr->setCategory(category);
   ptr->setGroupIndex(groupIndex);
   ptr->setSetterCallback(setterCallback);

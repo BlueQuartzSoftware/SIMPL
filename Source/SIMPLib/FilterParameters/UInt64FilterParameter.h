@@ -84,7 +84,7 @@ class SIMPLib_EXPORT UInt64FilterParameter : public FilterParameter
      * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
      * @return
      */
-    static Pointer New(const QString& humanLabel, const QString& propertyName, const uint64_t& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+    static Pointer New(const QString& humanLabel, const QString& propertyName, uint64_t defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
                        int groupIndex = -1);
 
     ~UInt64FilterParameter() override;
