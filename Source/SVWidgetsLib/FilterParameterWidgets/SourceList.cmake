@@ -43,6 +43,7 @@ set(SIMPLView_PARAMETER_WIDGETS
     SeparatorWidget
     StringWidget
     ThirdOrderPolynomialWidget
+    UInt64Widget
 )
 
 set(SIMPLView_PARAMETER_WIDGETS_NO_UI
