@@ -415,9 +415,16 @@ public:
     }
 
     auto iter = find(node->getName());
-    if(iter != end() && (*iter) != node)
+    if(iter != end())
     {
-      erase(iter);
+      if((*iter) != node)
+      {
+        erase(iter);
+      }
+      else
+      {
+        return true;
+      }
     }
 
     m_ChildrenNodes.push_back(node);
@@ -429,7 +436,7 @@ public:
    * @brief Erases the child at the given iterator
    * @param iter
    */
-  constexpr void erase(iterator iter)
+  void erase(iterator iter)
   {
     ChildShPtr child = (*iter);
     m_ChildrenNodes.erase(iter);
@@ -443,6 +450,11 @@ public:
    */
   IDataStructureNode::Pointer removeChildNode(const IDataStructureNode* rmChild) override
   {
+    if(rmChild == nullptr)
+    {
+      return NullPointer();
+    }
+
     for(auto iter = m_ChildrenNodes.begin(); iter != m_ChildrenNodes.end(); ++iter)
     {
       if((*iter).get() == rmChild)

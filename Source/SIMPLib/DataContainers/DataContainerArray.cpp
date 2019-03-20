@@ -130,7 +130,6 @@ DataContainer::Pointer DataContainerArray::removeDataContainer(const QString& na
   }
   DataContainer::Pointer p = (*it);
   erase(it);
-  p->setParentNode(nullptr);
   return p;
 }
 
