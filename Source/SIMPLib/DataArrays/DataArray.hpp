@@ -667,7 +667,7 @@ public:
     {
       return;
     }
-    std::for_each(begin(), end(), [=](T& n) { n = initValue; });
+    std::for_each(begin() + offset, end(), [=](T& n) { n = initValue; });
   }
 
   /**
@@ -1679,6 +1679,11 @@ public:
       ptr_++;
       return i;
     } // POSTFIX
+    self_type operator+(int amt)
+    {
+      ptr_ += amt;
+      return *this;
+    }
     reference operator*()
     {
       return *ptr_;
@@ -1723,12 +1728,17 @@ public:
       ptr_++;
       return *this;
     } // PREFIX
-    self_type operator++(int junk)
+    self_type operator++(int amt)
     {
       self_type i = *this;
-      ptr_++;
+      ptr_ += amt;
       return i;
     } // POSTFIX
+    self_type operator+(int amt)
+    {
+      ptr_ += amt;
+      return *this;
+    }
     const value_type& operator*()
     {
       return *ptr_;
