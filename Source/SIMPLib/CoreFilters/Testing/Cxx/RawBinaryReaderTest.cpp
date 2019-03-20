@@ -776,7 +776,7 @@ public:
   // testCase6: This tests when skipHeaderBytes equals the file size
   template <typename T, size_t N> void testCase6_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
-    int dataArraySize = 0;
+    int dataArraySize = 1000;
     int junkArraySize = k_ArraySize * N;
     int skipHeaderBytes = junkArraySize * sizeof(T);
     int err = 0;
@@ -885,8 +885,7 @@ public:
     DREAM3D_REGISTER_TEST(testCase3())
     DREAM3D_REGISTER_TEST(testCase4())
     DREAM3D_REGISTER_TEST(testCase5())
-// Broken when moving away from Boost
-// DREAM3D_REGISTER_TEST(testCase6())
+    DREAM3D_REGISTER_TEST(testCase6())
 
 #if REMOVE_TEST_FILES
     DREAM3D_REGISTER_TEST(RemoveTestFiles())

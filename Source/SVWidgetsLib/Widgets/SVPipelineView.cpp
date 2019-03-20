@@ -559,7 +559,7 @@ void SVPipelineView::cancelPipeline()
 {
   if(nullptr != m_PipelineInFlight)
   {
-    m_PipelineInFlight->cancelPipeline();
+    m_PipelineInFlight->cancel();
   }
   setPipelineState(SVPipelineView::PipelineViewState::Cancelling);
 }
@@ -569,19 +569,18 @@ void SVPipelineView::cancelPipeline()
 // -----------------------------------------------------------------------------
 void SVPipelineView::finishPipeline()
 {
-  if((nullptr == m_PipelineInFlight) || (!m_PipelineConnection))
+  if(m_PipelineInFlight->getExecutionResult() == FilterPipeline::ExecutionResult::Canceled)
   {
-    return;
-  }
-
-  if(m_PipelineInFlight->getCancel())
-  {
-
     emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE CANCELED ***************", true));
+  }
+  else if(m_PipelineInFlight->getExecutionResult() == FilterPipeline::ExecutionResult::Completed)
+  {
+    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE FINISHED ***************", true));
   }
   else
   {
-    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE FINISHED ***************", true));
+    // We should never hit this
+    return;
   }
   emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("", false));
 
@@ -609,7 +608,7 @@ void SVPipelineView::endPipelineThread()
     return;
   }
 
-  if(!m_PipelineInFlight->getCancel())
+  if(!m_PipelineInFlight->isCanceling())
   {
     // Emit the pipeline output if there were no errors during execution
     if(m_PipelineInFlight->getErrorCondition() == 0)
