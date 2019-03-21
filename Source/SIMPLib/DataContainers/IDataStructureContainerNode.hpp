@@ -225,7 +225,7 @@ public:
     {
       if(child != nullptr)
       {
-        child->clearParentNode();
+        destroyParentConnection(child.get());
       }
     }
     m_ChildrenNodes.clear();
@@ -396,7 +396,7 @@ public:
     typename ChildCollection::size_type size = m_ChildrenNodes.size();
     m_ChildrenNodes.push_back(node);
 
-    node->setParentNode(this);
+    createParentConnection(node.get(), this);
     return (size != m_ChildrenNodes.size());
   }
 
@@ -428,7 +428,7 @@ public:
     }
 
     m_ChildrenNodes.push_back(node);
-    node->setParentNode(this);
+    createParentConnection(node.get(), this);
     return true;
   }
 
@@ -440,7 +440,7 @@ public:
   {
     ChildShPtr child = (*iter);
     m_ChildrenNodes.erase(iter);
-    child->clearParentNode();
+    destroyParentConnection(child.get());
   }
   
   /**

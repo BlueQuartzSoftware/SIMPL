@@ -156,3 +156,19 @@ DataArrayPath IDataStructureNode::getParentPath() const
   }
   return getParentNode()->getDataArrayPath();
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void IDSContainer::createParentConnection(IDataStructureNode* child, IDSContainer* parent) const
+{
+  child->setParentNode(parent);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void IDSContainer::destroyParentConnection(IDataStructureNode* child) const
+{
+  child->clearParentNode();
+}

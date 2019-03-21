@@ -63,6 +63,8 @@ public:
   using DataArrayPathList = std::list<DataArrayPath>;
   using HashType = size_t;
 
+  friend IDSContainer;
+
 private:
   QString m_Name;
   ParentType* m_Parent = nullptr;
@@ -72,6 +74,27 @@ private:
    * @brief Updates the name hash variable based on the current name.
    */
   void updateNameHash();
+
+  /**
+   * @brief Sets the raw parent pointer.  As additional graph support is added,
+   * this will instead be replaced with addParentNode(const ParentType&) and
+   * removeParentNode(const ParentType&).  This should only be called from
+   * IDataStructureContainerNode::push_back, insertOrAssign, or
+   * IDataStructureNode::clearParentNode.  THIS DOES NOT ADD THE NODE TO THE TARGET PARENT!
+   * @param parent
+   */
+  void setParentNode(ParentType* const parent);
+
+  /**
+   * @brief Clears the parent pointer and removes this from its parent constainer.
+   */
+  inline void clearParentNode()
+  {
+    setParentNode(nullptr);
+  }
+
+  // inline void addParentNode(const ParentType& newParent);
+  // inline bool removeParentNode(const ParentType& removedParent);
 
 protected:
   /**
@@ -139,27 +162,6 @@ public:
   {
     return m_Parent != nullptr;
   }
-
-  /**
-   * @brief Sets the raw parent pointer.  As additional graph support is added,
-   * this will instead be replaced with addParentNode(const ParentType&) and
-   * removeParentNode(const ParentType&).  This should only be called from
-   * IDataStructureContainerNode::push_back, insertOrAssign, or
-   * IDataStructureNode::clearParentNode.  THIS DOES NOT ADD THE NODE TO THE TARGET PARENT!
-   * @param parent
-   */
-  void setParentNode(ParentType* const parent);
-
-  /**
-   * @brief Clears the parent pointer and removes this from its parent constainer.
-   */
-  inline void clearParentNode()
-  {
-    setParentNode(nullptr);
-  }
-
-  // inline void addParentNode(const ParentType& newParent);
-  // inline bool removeParentNode(const ParentType& removedParent);
 };
 
 /**
@@ -179,6 +181,34 @@ public:
   }
   ~IDSContainer() override = default;
 
+  /**
+   * @brief Returns true if the container has a child node with the given name.
+   * @param name
+   * @return
+   */
   virtual bool hasChildWithName(const QString& name) const = 0;
+
+  /**
+   * @brief Removes the target node from the container's list of children.
+   * Returns the removed node as a shared pointer.
+   * @param rmChild
+   * @return
+   */
   virtual IDataStructureNode::Pointer removeChildNode(const IDataStructureNode* rmChild) = 0;
+
+protected:
+  /**
+   * @brief Sets the child's parent container.  This does not add the child to the parent's collection.
+   * THIS METHOD IS ONLY USED BY IDataStructureNode<T> AND SHOULD NOT BE USED BY ANY CLASS THAT DERIVES FROM IT.
+   * @param child
+   * @param parent
+   */
+  void createParentConnection(IDataStructureNode* child, IDSContainer* parent) const;
+  
+  /**
+   * @brief Clears the child's parent pointer.  This does not remove the child from the parent's collection.
+   * THIS METHOD IS ONLY USED BY IDataStructureNode<T> AND SHOULD NOT BE USED BY ANY CLASS THAT DERIVES FROM IT.
+   * @param child
+   */
+  void destroyParentConnection(IDataStructureNode* child) const;
 };
