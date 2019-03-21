@@ -46,14 +46,7 @@
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/Widgets/SVStyle.h"
-
-#ifdef SIMPL_USE_MKDOCS
-#define URL_GENERATOR QtSDocServer
-#include "SVWidgetsLib/QtSupport/QtSDocServer.h"
-#else
-#define URL_GENERATOR QtSHelpUrlGenerator
-#include "SVWidgetsLib/QtSupport/QtSHelpUrlGenerator.h"
-#endif
+#include "SVWidgetsLib/Widgets/IssuesWidgetMessageHandler.h"
 
 #include "ui_IssuesWidget.h"
 
@@ -151,7 +144,7 @@ void IssuesWidget::clearIssues()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IssuesWidget::processPipelineMessage(const PipelineMessage& msg)
+void IssuesWidget::processPipelineMessage(const AbstractMessage& msg)
 {
   m_CachedMessages.push_back(msg);
 }
@@ -167,7 +160,7 @@ void IssuesWidget::displayCachedMessages()
   int errCount = 0;
   for(int i = 0; i < m_CachedMessages.size(); i++)
   {
-    PipelineMessage msg = m_CachedMessages[i];
+    AbstractMessage msg = m_CachedMessages[i];
     switch(msg.getType())
     {
     case PipelineMessage::MessageType::Error:
@@ -192,77 +185,14 @@ void IssuesWidget::displayCachedMessages()
   // Now create the correct number of table rows.
   ui->errorTableWidget->setRowCount(count);
   int row = 0;
-  bool updateRow = false;
-  QBrush msgBrush;
-  QColor msgColor;
-  QString msgDesc;
-  QString msgPrefix;
-  int msgCode = -1;
-  QTableWidgetItem* filterNameWidgetItem = nullptr;
-  QTableWidgetItem* descriptionWidgetItem = nullptr;
-  QTableWidgetItem* codeWidgetItem = nullptr;
-  QTableWidgetItem* indexWidgetItem = nullptr;
-  QLabel* hyperlinkLabel = nullptr;
 
   // Add in the content for the cells of the table.
   for(int j = 0; j < m_CachedMessages.size(); j++)
   {
-    PipelineMessage msg = m_CachedMessages[j];
-    // Create error hyperlink
-    updateRow = false;
-    switch(msg.getType())
-    {
-    case PipelineMessage::MessageType::Error:
-      msgColor = QColor(255, 191, 193);
-      updateRow = true;
-      break;
-    case PipelineMessage::MessageType::Warning:
-      msgColor = QColor(251, 254, 137);
-      updateRow = true;
-      break;
-    case PipelineMessage::MessageType::StatusMessage:
-    case PipelineMessage::MessageType::StandardOutputMessage:
-    case PipelineMessage::MessageType::ProgressValue:
-    case PipelineMessage::MessageType::StatusMessageAndProgressValue:
-    case PipelineMessage::MessageType::UnknownMessageType:
-      break;
-    }
+    IssuesWidgetMessageHandler messageHandler(this);
+    m_CachedMessages[j].visit(&messageHandler);
 
-    if(updateRow)
-    {
-      msgBrush = QBrush(msgColor);
-
-      msgDesc = msg.getText();
-      msgCode = msg.getCode();
-      msgPrefix = msg.getPrefix();
-
-      filterNameWidgetItem = new QTableWidgetItem(msgPrefix);
-      filterNameWidgetItem->setTextAlignment(Qt::AlignCenter);
-      descriptionWidgetItem = new QTableWidgetItem(msgDesc);
-      codeWidgetItem = new QTableWidgetItem(QString::number(msgCode));
-      indexWidgetItem = new QTableWidgetItem(QString::number(msg.getPipelineIndex() + 1));
-
-      codeWidgetItem->setTextAlignment(Qt::AlignCenter);
-
-      filterNameWidgetItem->setBackground(msgBrush);
-      descriptionWidgetItem->setBackground(msgBrush);
-      codeWidgetItem->setBackground(msgBrush);
-
-      hyperlinkLabel = createHyperlinkLabel(msg);
-      if(hyperlinkLabel == nullptr)
-      {
-        ui->errorTableWidget->setItem(row, FilterName, filterNameWidgetItem);
-      }
-      else
-      {
-        ui->errorTableWidget->setCellWidget(row, FilterName, hyperlinkLabel);
-      }
-      ui->errorTableWidget->setItem(row, FilterIndex, indexWidgetItem);
-      ui->errorTableWidget->setItem(row, Description, descriptionWidgetItem);
-      ui->errorTableWidget->setItem(row, ErrorCode, codeWidgetItem);
-
-      row++;
-    }
+    row++;
   }
 
   if (ui->errorTableWidget->rowCount() > 0)
@@ -285,47 +215,18 @@ void IssuesWidget::displayCachedMessages()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QLabel* IssuesWidget::createHyperlinkLabel(const PipelineMessage& msg)
-{
-  QString filterClassName = (msg.getFilterClassName());
-  QString filterHumanLabel = (msg.getFilterHumanLabel());
-
-  if(filterClassName.isEmpty() || filterHumanLabel.isEmpty())
-  {
-    if(!filterClassName.isEmpty())
-    {
-      return new QLabel(filterClassName);
-    }
-    if(!filterHumanLabel.isEmpty())
-    {
-      return new QLabel(filterHumanLabel);
-    }
-
-    return new QLabel("Unknown Filter Class");
-  }
-
-  QUrl filterURL = URL_GENERATOR::GenerateHTMLUrl(filterClassName);
-  QString filterHTMLText;
-  QTextStream ts(&filterHTMLText);
-  ts << "<a style=\"color: " << SVStyle::Instance()->getText_Error_color().name(QColor::HexRgb) << ";\" href=\"";
-  ts << filterURL.toString() << "\">" << filterHumanLabel << "</a>";
-
-  QLabel* hyperlinkLabel = new QLabel(filterHTMLText);
-  hyperlinkLabel->setTextFormat(Qt::RichText);
-  hyperlinkLabel->setTextInteractionFlags(Qt::TextBrowserInteraction);
-  hyperlinkLabel->setOpenExternalLinks(false);
-  connect(hyperlinkLabel, SIGNAL(linkActivated(const QString&)), this, SLOT(showFilterHelp(const QString&)));
-
-  return hyperlinkLabel;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void IssuesWidget::showFilterHelp(const QString& urlString)
 {
   QUrl helpURL(urlString);
 
   DocRequestManager* docRequester = DocRequestManager::Instance();
   docRequester->requestFilterDocUrl(helpURL);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QTableWidget* IssuesWidget::getIssuesTable()
+{
+  return ui->errorTableWidget;
 }

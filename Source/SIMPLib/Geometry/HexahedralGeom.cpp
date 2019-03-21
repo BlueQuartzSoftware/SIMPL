@@ -561,7 +561,7 @@ void HexahedralGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArray
 
   if(observable != nullptr)
   {
-    connect(this, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), observable, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
+    connect(this, SIGNAL(messageGenerated(const AbstractMessage&)), observable, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
   }
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS

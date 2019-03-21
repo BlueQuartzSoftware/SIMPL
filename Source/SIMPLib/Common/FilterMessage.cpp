@@ -32,8 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-#include "PipelineMessage.h"
+#include "FilterMessage.h"
 
 #include <QtCore/QMetaType>
 #include <QtCore/QString>
@@ -43,70 +42,101 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineMessage::PipelineMessage() = default;
+FilterMessage::FilterMessage() = default;
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineMessage::PipelineMessage(const QString& prefix, const QString& msg, int code, MessageType msgType, int progress)
-: AbstractMessage(prefix, msg, code, msgType, progress)
+FilterMessage::FilterMessage(const QString& className, const char* msg, int code, MessageType msgType, int progress)
+: AbstractMessage("", msg, code, msgType, progress)
+, m_FilterClassName(className)
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineMessage PipelineMessage::CreateErrorMessage(const QString prefix, const QString msg, int code)
+FilterMessage::FilterMessage(const QString& className, const QString& msg, int code, MessageType msgType, int progress)
+: AbstractMessage("", msg, code, msgType, progress)
+, m_FilterClassName(className)
+, m_FilterHumanLabel("")
 {
-  PipelineMessage em(prefix, msg, code, MessageType::Error);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+FilterMessage::FilterMessage(const QString& className, const QString& humanLabel, const QString& msg, int code, MessageType msgType, int progress)
+: AbstractMessage("", msg, code, msgType, progress)
+, m_FilterClassName(className)
+, m_FilterHumanLabel(humanLabel)
+{
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+FilterMessage::FilterMessage(const QString& humanLabel, int pipelineIndex, const QString& msg, MessageType msgType)
+: AbstractMessage("", msg, 0, msgType)
+, m_FilterHumanLabel(humanLabel)
+, m_PipelineIndex(pipelineIndex)
+{
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+FilterMessage FilterMessage::CreateErrorMessage(const QString className, const QString humanLabel, const QString msg, int code)
+{
+  FilterMessage em(className, humanLabel, msg, code, MessageType::Error, -1);
   return em;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineMessage PipelineMessage::CreateStatusMessage(const QString prefix, const QString msg)
+FilterMessage FilterMessage::CreateStatusMessage(const QString className, const QString humanLabel, const QString msg)
 {
-  PipelineMessage em(prefix, msg, 0, MessageType::StatusMessage);
+  FilterMessage em(className, humanLabel, msg, 0, MessageType::StatusMessage, -1);
   return em;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineMessage PipelineMessage::CreateWarningMessage(const QString prefix, const QString msg, int code)
+FilterMessage FilterMessage::CreateWarningMessage(const QString className, const QString humanLabel, const QString msg, int code)
 {
-  PipelineMessage em(prefix, msg, code, MessageType::Warning);
+  FilterMessage em(className, humanLabel, msg, code, MessageType::Warning, -1);
   return em;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineMessage PipelineMessage::CreateStandardOutputMessage(const QString prefix, const QString msg)
+FilterMessage FilterMessage::CreateStandardOutputMessage(const QString humanLabel, int pipelineIndex, const QString msg)
 {
-  PipelineMessage em(prefix, msg, 0, MessageType::StandardOutputMessage);
+  FilterMessage em(humanLabel, pipelineIndex, msg, MessageType::StandardOutputMessage);
   return em;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineMessage::~PipelineMessage() = default;
+FilterMessage::~FilterMessage() = default;
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineMessage::operator==(const PipelineMessage& rhs)
+bool FilterMessage::operator==(const FilterMessage& rhs)
 {
-  return (getPrefix() == rhs.getPrefix() && getText() == rhs.getText() && getCode() == rhs.getCode() &&
-          getType() == rhs.getType() && getProgressValue() == rhs.getProgressValue());
+  return (m_FilterClassName == rhs.m_FilterClassName && getPrefix() == rhs.getPrefix() && m_FilterHumanLabel == rhs.m_FilterHumanLabel && getText() == rhs.getText() && getCode() == rhs.getCode() &&
+          getType() == rhs.getType() && getProgressValue() == rhs.getProgressValue() && m_PipelineIndex == rhs.m_PipelineIndex);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString PipelineMessage::generateErrorString() const
+QString FilterMessage::generateErrorString() const
 {
   QString ss = QObject::tr("Error (%1): %2: %3").arg(getCode()).arg(getPrefix()).arg(getText());
   return ss;
@@ -115,7 +145,7 @@ QString PipelineMessage::generateErrorString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString PipelineMessage::generateWarningString() const
+QString FilterMessage::generateWarningString() const
 {
   QString ss = QObject::tr("Warning (%1): %2: %3").arg(getCode()).arg(getPrefix()).arg(getText());
   return ss;
@@ -124,7 +154,7 @@ QString PipelineMessage::generateWarningString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString PipelineMessage::generateStatusString() const
+QString FilterMessage::generateStatusString() const
 {
   if(getPrefix().isEmpty())
   {
@@ -139,7 +169,7 @@ QString PipelineMessage::generateStatusString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString PipelineMessage::generateProgressString() const
+QString FilterMessage::generateProgressString() const
 {
   if(getPrefix().isEmpty())
   {
@@ -154,7 +184,7 @@ QString PipelineMessage::generateProgressString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString PipelineMessage::generateStandardOutputString() const
+QString FilterMessage::generateStandardOutputString() const
 {
   return getText();
 }
@@ -162,7 +192,7 @@ QString PipelineMessage::generateStandardOutputString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineMessage::visit(IMessageHandler* msgHandler)
+void FilterMessage::visit(IMessageHandler* msgHandler)
 {
   msgHandler->processMessage(*this);
 }

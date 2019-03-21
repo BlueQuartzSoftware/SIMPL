@@ -24,11 +24,11 @@ public:
   void createStandardOutputLogFile(QString path);
   void closeFiles();
 
-  std::vector<PipelineMessage> getMessages();
-  std::vector<PipelineMessage> getErrorMessages();
-  std::vector<PipelineMessage> getWarningMessages();
-  std::vector<PipelineMessage> getStatusMessages();
-  std::vector<PipelineMessage> getStandardOutputMessages();
+  std::vector<AbstractMessage> getMessages();
+  std::vector<AbstractMessage> getErrorMessages();
+  std::vector<AbstractMessage> getWarningMessages();
+  std::vector<AbstractMessage> getStatusMessages();
+  std::vector<AbstractMessage> getStandardOutputMessages();
 
   QString getErrorLog();
   QString getWarningLog();
@@ -36,10 +36,10 @@ public:
   QString getStandardOutputLog();
 
 public slots:
-  void processPipelineMessage(const PipelineMessage& pm);
+  void processPipelineMessage(const AbstractMessage& pm);
 
 private:
-  std::vector<PipelineMessage> m_Messages;
+  std::vector<AbstractMessage> m_Messages;
 
   QFile* m_ErrorLog;
   QFile* m_WarningLog;

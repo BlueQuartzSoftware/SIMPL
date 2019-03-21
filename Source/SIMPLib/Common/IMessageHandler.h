@@ -33,50 +33,25 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "IObserver.h"
+#pragma once
 
-#include <iostream>
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/GenericMessage.h"
+#include "SIMPLib/Common/PipelineMessage.h"
+#include "SIMPLib/Common/FilterMessage.h"
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IObserver::IObserver() = default;
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IObserver::~IObserver() = default;
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void IObserver::processPipelineMessage(const AbstractMessage& pm)
+/**
+ * @class IMessageHandler IMessageHandler.h DREAM3DLib/Common/IMessageHandler.h
+ * @brief This is the Message handler superclass that enables observers to handle messages that they receive from observable objects
+ */
+class SIMPLib_EXPORT IMessageHandler
 {
-  QString str;
-  QTextStream ss(&str);
-  if(pm.getType() == PipelineMessage::MessageType::Error)
-  {
-    ss << pm.generateErrorString();
-  }
-  else if(pm.getType() == PipelineMessage::MessageType::Warning)
-  {
-    ss << pm.generateWarningString();
-  }
-  else if(pm.getType() == PipelineMessage::MessageType::StatusMessage)
-  {
-    ss << pm.generateStatusString();
-  }
-  else if(pm.getType() == PipelineMessage::MessageType::StandardOutputMessage)
-  {
-    ss << pm.generateStandardOutputString();
-  }
-  else if(pm.getType() == PipelineMessage::MessageType::ProgressValue)
-  {
-    ss << pm.getProgressValue() << "%";
-  }
-  else if(pm.getType() == PipelineMessage::MessageType::StatusMessageAndProgressValue)
-  {
-    ss << pm.getProgressValue() << pm.generateStatusString();
-  }
-  std::cout << str.toStdString() << std::endl;
-}
+  public:
+    virtual void processMessage(GenericMessage msg) = 0;
+
+    virtual void processMessage(PipelineMessage msg) = 0;
+
+    virtual void processMessage(FilterMessage msg) = 0;
+};
+
+

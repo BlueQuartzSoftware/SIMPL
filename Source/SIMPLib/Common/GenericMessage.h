@@ -33,45 +33,76 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #pragma once
 
+#include "SIMPLib/Common/AbstractMessage.h"
 
-#include <QtCore/QObject>
-#include <QtCore/QString>
-
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Common/IObserver.h"
-#include "SIMPLib/Common/PipelineMessage.h"
+class IMessageHandler;
 
 /**
- * @class Observer Observer.h DREAM3D/Common/Observer.h
- * @brief This class implements the <b>Observer</b> pattern from the <b>Gang of
- * Four Design Patterns</b> book. There are various methods that are used for
- * notifications. The <b>Observable</b> will decide which method to call.
- *
- * @date September 22, 2011
- * @version 1.0
+ * @class GenericMessage GenericMessage.h DREAM3DLib/Common/GenericMessage.h
+ * @brief This class enables the creation of Error, Warning, and Status messages that
+ * can be sent up from filters to the DREAM3D GUI.
  */
-class SIMPLib_EXPORT Observer : public QObject, public IObserver
+class SIMPLib_EXPORT GenericMessage : public AbstractMessage
 {
-    Q_OBJECT
-
   public:
-    Observer();
-    SIMPL_TYPE_MACRO_SUPER(Observer, IObserver)
+    GenericMessage();
 
-    ~Observer() override;
+    GenericMessage(const QString& prefix, const QString& msg, int code = 0, MessageType msgType = MessageType::UnknownMessageType, int progress = -1);
 
-  public slots:
-    void processPipelineMessage(const AbstractMessage& pm) override;
+    GenericMessage(const GenericMessage& rhs);
 
-  public:
-    Observer(const Observer&) = delete;       // Copy Constructor Not Implemented
-    Observer(Observer&&) = delete;            // Move Constructor Not Implemented
-    Observer& operator=(const Observer&) = delete; // Copy Assignment Not Implemented
-    Observer& operator=(Observer&&) = delete;      // Move Assignment Not Implemented
+    static GenericMessage CreateErrorMessage(const QString prefix, const QString msg, int code);
+
+    static GenericMessage CreateStatusMessage(const QString prefix, const QString msg);
+
+    static GenericMessage CreateWarningMessage(const QString prefix, const QString msg, int code);
+
+    static GenericMessage CreateStandardOutputMessage(const QString prefix, const QString msg);
+
+
+    SIMPL_TYPE_MACRO(GenericMessage)
+
+    virtual ~GenericMessage();
+
+    bool operator==(const GenericMessage& rhs);
+
+    /**
+     * @brief This method creates and returns a string for error messages
+     */
+    QString generateErrorString() const;
+
+    /**
+     * @brief This method creates and returns a string for warning messages
+     */
+    QString generateWarningString() const;
+
+    /**
+     * @brief This method creates and returns a string for status messages
+     */
+    QString generateStatusString() const;
+
+    /**
+     * @brief This method creates and returns a string for standard output messages
+     */
+    QString generateStandardOutputString() const;
+
+    /**
+     * @brief This method generates a status message that includes a progress value.
+     * @return
+     */
+    QString generateProgressString() const;
+
+    /**
+     * @brief visit
+     * @param msgHandler
+     */
+    virtual void visit(IMessageHandler* msgHandler) override;
+
+  private:
+
 };
+Q_DECLARE_METATYPE(GenericMessage)
 
 

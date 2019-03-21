@@ -32,51 +32,94 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include "AbstractMessage.h"
 
-#include "IObserver.h"
-
-#include <iostream>
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IObserver::IObserver() = default;
+#include <QtCore/QMetaType>
+#include <QtCore/QString>
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IObserver::~IObserver() = default;
+AbstractMessage::AbstractMessage() = default;
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IObserver::processPipelineMessage(const AbstractMessage& pm)
+AbstractMessage::AbstractMessage(const QString& prefix, const QString& msg, int code, MessageType msgType, int progress)
+: m_Prefix(prefix)
+, m_Text(msg)
+, m_Code(code)
+, m_Type(msgType)
+, m_ProgressValue(progress)
 {
-  QString str;
-  QTextStream ss(&str);
-  if(pm.getType() == PipelineMessage::MessageType::Error)
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AbstractMessage::~AbstractMessage() = default;
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString AbstractMessage::generateErrorString() const
+{
+  QString ss = QObject::tr("Error (%1): %2: %3").arg(m_Code).arg(m_Prefix).arg(m_Text);
+  return ss;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString AbstractMessage::generateWarningString() const
+{
+  QString ss = QObject::tr("Warning (%1): %2: %3").arg(m_Code).arg(m_Prefix).arg(m_Text);
+  return ss;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString AbstractMessage::generateStatusString() const
+{
+  if(m_Prefix.isEmpty())
   {
-    ss << pm.generateErrorString();
+    QString ss = QObject::tr("%2").arg(m_Text);
+    return ss;
   }
-  else if(pm.getType() == PipelineMessage::MessageType::Warning)
+
+  QString ss = QObject::tr("%1: %2").arg(m_Prefix).arg(m_Text);
+  return ss;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString AbstractMessage::generateProgressString() const
+{
+  if(m_Prefix.isEmpty())
   {
-    ss << pm.generateWarningString();
+    QString ss = QObject::tr("%1 %2%%").arg(m_Text).arg(m_ProgressValue);
+    return ss;
   }
-  else if(pm.getType() == PipelineMessage::MessageType::StatusMessage)
-  {
-    ss << pm.generateStatusString();
-  }
-  else if(pm.getType() == PipelineMessage::MessageType::StandardOutputMessage)
-  {
-    ss << pm.generateStandardOutputString();
-  }
-  else if(pm.getType() == PipelineMessage::MessageType::ProgressValue)
-  {
-    ss << pm.getProgressValue() << "%";
-  }
-  else if(pm.getType() == PipelineMessage::MessageType::StatusMessageAndProgressValue)
-  {
-    ss << pm.getProgressValue() << pm.generateStatusString();
-  }
-  std::cout << str.toStdString() << std::endl;
+
+  QString ss = QObject::tr("%1: %2 %3%%").arg(m_Prefix).arg(m_Text).arg(m_ProgressValue);
+  return ss;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString AbstractMessage::generateStandardOutputString() const
+{
+  return m_Text;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AbstractMessage::visit(IMessageHandler* msgHandler)
+{
+  // This should never execute
+  return;
 }

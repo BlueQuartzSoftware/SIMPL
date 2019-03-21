@@ -219,7 +219,7 @@ protected:
   void updatePrevNextFilters();
 
 signals:
-  void pipelineGeneratedMessage(const PipelineMessage& message);
+  void pipelineGeneratedMessage(const AbstractMessage& message);
 
   /**
    * @brief This method is emitted from the pipeline and signals a pipeline pause

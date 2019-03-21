@@ -112,7 +112,7 @@ public:
 
 #if 0
     Observer obs;
-    filter->connect(filter.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)),
+    filter->connect(filter.get(), SIGNAL(messageGenerated(const AbstractMessage&)),
             &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
 #endif
     filter->preflight();

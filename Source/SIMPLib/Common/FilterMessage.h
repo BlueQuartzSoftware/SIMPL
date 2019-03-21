@@ -40,59 +40,67 @@
 class IMessageHandler;
 
 /**
- * @class PipelineMessage PipelineMessage.h DREAM3DLib/Common/PipelineMessage.h
+ * @class FilterMessage FilterMessage.h DREAM3DLib/Common/FilterMessage.h
  * @brief This class enables the creation of Error, Warning, and Status messages that
  * can be sent up from filters to the DREAM3D GUI.
  */
-class SIMPLib_EXPORT PipelineMessage : public AbstractMessage
+class SIMPLib_EXPORT FilterMessage : public AbstractMessage
 {
   public:
-    PipelineMessage();
+    FilterMessage();
 
-    PipelineMessage(const QString& prefix, const QString& msg, int code = 0, MessageType msgType = MessageType::UnknownMessageType, int progress = -1);
+    FilterMessage(const QString& className, const char* msg, int code, MessageType msgType = MessageType::UnknownMessageType, int progress = -1);
 
-    PipelineMessage(const PipelineMessage& rhs);
+    FilterMessage(const QString& className, const QString& msg, int code, MessageType msgType = MessageType::UnknownMessageType, int progress = -1);
+    FilterMessage(const QString& className, const QString& humanLabel, const QString& msg, int code, MessageType msgType = MessageType::UnknownMessageType, int progress = -1);
 
-    static PipelineMessage CreateErrorMessage(const QString className, const QString msg, int code);
+    FilterMessage(const QString& humanLabel, int pipelineIndex, const QString& msg, MessageType msgType = MessageType::UnknownMessageType);
 
-    static PipelineMessage CreateStatusMessage(const QString className, const QString msg);
+    static FilterMessage CreateErrorMessage(const QString className, const QString humanLabel, const QString msg, int code);
 
-    static PipelineMessage CreateWarningMessage(const QString className, const QString msg, int code);
+    static FilterMessage CreateStatusMessage(const QString className, const QString humanLabel, const QString msg);
 
-    static PipelineMessage CreateStandardOutputMessage(const QString humanLabel, const QString msg);
+    static FilterMessage CreateWarningMessage(const QString className, const QString humanLabel, const QString msg, int code);
 
+    static FilterMessage CreateStandardOutputMessage(const QString humanLabel, int pipelineIndex, const QString msg);
 
-    SIMPL_TYPE_MACRO(PipelineMessage)
+    SIMPL_TYPE_MACRO(FilterMessage)
 
-    virtual ~PipelineMessage();
+    virtual ~FilterMessage();
 
-    bool operator==(const PipelineMessage& rhs);
+    bool operator==(const FilterMessage& rhs);
+
+    SIMPL_INSTANCE_STRING_PROPERTY(FilterClassName)
+
+    SIMPL_INSTANCE_STRING_PROPERTY(FilterHumanLabel)
+
+    SIMPL_INSTANCE_PROPERTY(int, PipelineIndex)
 
     /**
      * @brief This method creates and returns a string for error messages
      */
-    QString generateErrorString() const;
+    virtual QString generateErrorString() const override;
 
     /**
      * @brief This method creates and returns a string for warning messages
      */
-    QString generateWarningString() const;
+    virtual QString generateWarningString() const override;
 
     /**
      * @brief This method creates and returns a string for status messages
      */
-    QString generateStatusString() const;
+    virtual QString generateStatusString() const override;
 
     /**
      * @brief This method creates and returns a string for standard output messages
      */
-    QString generateStandardOutputString() const;
+    virtual QString generateStandardOutputString() const override;
 
     /**
      * @brief This method generates a status message that includes a progress value.
      * @return
      */
-    QString generateProgressString() const;
+    virtual QString generateProgressString() const override;
 
     /**
      * @brief visit
@@ -103,6 +111,6 @@ class SIMPLib_EXPORT PipelineMessage : public AbstractMessage
   private:
 
 };
-Q_DECLARE_METATYPE(PipelineMessage)
+Q_DECLARE_METATYPE(FilterMessage)
 
 

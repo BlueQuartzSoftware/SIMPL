@@ -37,7 +37,7 @@
 
 #include <QtCore/QMetaProperty>
 
-#include "SIMPLib/Common/PipelineMessage.h"
+#include "SIMPLib/Common/FilterMessage.h"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/IFilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterPipeline.h"
@@ -592,9 +592,9 @@ void AbstractFilter::cleanupFilter()
 // -----------------------------------------------------------------------------
 void AbstractFilter::notifyErrorMessage(const QString& humanLabel, const QString& str, int code)
 {
-  PipelineMessage pm = PipelineMessage::CreateErrorMessage(getNameOfClass(), humanLabel, str, code);
+  FilterMessage pm = FilterMessage::CreateErrorMessage(getNameOfClass(), humanLabel, str, code);
   pm.setPipelineIndex(getPipelineIndex());
-  emit filterGeneratedMessage(pm);
+  emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
@@ -602,53 +602,51 @@ void AbstractFilter::notifyErrorMessage(const QString& humanLabel, const QString
 // -----------------------------------------------------------------------------
 void AbstractFilter::notifyStatusMessage(const QString& humanLabel, const QString& str)
 {
-  PipelineMessage pm = PipelineMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
+  FilterMessage pm = FilterMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
   pm.setPipelineIndex(getPipelineIndex());
-  emit filterGeneratedMessage(pm);
+  emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::notifyStatusMessage(const QString& prefix, const QString& humanLabel, const QString& str)
+void AbstractFilter::notifyStatusMessage(const QString& text)
 {
-  PipelineMessage pm = PipelineMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
-  pm.setPrefix(prefix);
+  FilterMessage pm = FilterMessage::CreateStatusMessage(getNameOfClass(), getHumanLabel(), text);
   pm.setPipelineIndex(getPipelineIndex());
-  emit filterGeneratedMessage(pm);
+  emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::notifyStandardOutputMessage(const QString& humanLabel, int pipelineIndex, const QString& str)
+void AbstractFilter::notifyStandardOutputMessage(const QString& text)
 {
-  PipelineMessage pm = PipelineMessage::CreateStandardOutputMessage(humanLabel, pipelineIndex, str);
-  pm.setPipelineIndex(getPipelineIndex());
-  emit filterGeneratedMessage(pm);
+  FilterMessage pm = FilterMessage::CreateStandardOutputMessage(getHumanLabel(), getPipelineIndex(), text);
+  emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::notifyWarningMessage(const QString& humanLabel, const QString& str, int code)
+void AbstractFilter::notifyWarningMessage(const QString& text, int code)
 {
-  PipelineMessage pm = PipelineMessage::CreateWarningMessage(getNameOfClass(), humanLabel, str, code);
+  FilterMessage pm = FilterMessage::CreateWarningMessage(getNameOfClass(), getHumanLabel(), text, code);
   pm.setPipelineIndex(getPipelineIndex());
-  emit filterGeneratedMessage(pm);
+  emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::notifyProgressMessage(const QString& prefix, const QString& humanLabel, const QString& str, int progress)
+void AbstractFilter::notifyProgressMessage(const QString& prefix, const QString& text, int progress)
 {
-  PipelineMessage pm = PipelineMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
+  FilterMessage pm = FilterMessage::CreateStatusMessage(getNameOfClass(), getHumanLabel(), text);
   pm.setPrefix(prefix);
   pm.setProgressValue(progress);
-  pm.setType(PipelineMessage::MessageType::StatusMessageAndProgressValue);
+  pm.setType(FilterMessage::MessageType::StatusMessageAndProgressValue);
   pm.setPipelineIndex(getPipelineIndex());
-  emit filterGeneratedMessage(pm);
+  emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
@@ -663,5 +661,5 @@ void AbstractFilter::notifyMissingProperty(FilterParameter* filterParameter)
           .arg(getHumanLabel());
 
   setWarningCondition(-1);
-  notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+  notifyWarningMessage(ss, getWarningCondition());
 }

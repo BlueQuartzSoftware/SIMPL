@@ -224,7 +224,7 @@ public:
   {
     //    Observer obs;
     //    QObject::connect(
-    //          filter.get(), &AbstractFilter::filterGeneratedMessage,
+    //          filter.get(), &AbstractFilter::messageGenerated,
     //          &obs, &Observer::processPipelineMessage
     //          );
 

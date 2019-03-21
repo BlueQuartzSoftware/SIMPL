@@ -35,6 +35,8 @@
 
 #include "Observable.h"
 
+#include "SIMPLib/Common/GenericMessage.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -65,65 +67,63 @@ void Observable::operator=(const Observable&)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::broadcastPipelineMessage(const PipelineMessage& msg)
+void Observable::broadcastPipelineMessage(const AbstractMessage& msg)
 {
-  emit filterGeneratedMessage(msg);
+  emit messageGenerated(msg);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::notifyErrorMessage(const QString& humanLabel, const QString& str, int code)
+void Observable::notifyErrorMessage(const QString &prefix, const QString& text, int code)
 {
-  PipelineMessage pm = PipelineMessage::CreateErrorMessage(getNameOfClass(), humanLabel, str, code);
-  emit filterGeneratedMessage(pm);
+  GenericMessage pm = GenericMessage::CreateErrorMessage(prefix, text, code);
+  emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::notifyStatusMessage(const QString& humanLabel, const QString& str)
+void Observable::notifyStatusMessage(const QString& text)
 {
-  PipelineMessage pm = PipelineMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
-  emit filterGeneratedMessage(pm);
+  GenericMessage pm = GenericMessage::CreateStatusMessage("", text);
+  emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::notifyStatusMessage(const QString& prefix, const QString& humanLabel, const QString& str)
+void Observable::notifyStatusMessage(const QString& prefix, const QString& text)
 {
-  PipelineMessage pm = PipelineMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
-  pm.setPrefix(prefix);
-  emit filterGeneratedMessage(pm);
+  GenericMessage pm = GenericMessage::CreateStatusMessage(prefix, text);
+  emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::notifyStandardOutputMessage(const QString& humanLabel, int pipelineIndex, const QString& str)
+void Observable::notifyStandardOutputMessage(const QString& text)
 {
-  PipelineMessage pm = PipelineMessage::CreateStandardOutputMessage(humanLabel, pipelineIndex, str);
-  emit filterGeneratedMessage(pm);
+  GenericMessage pm = GenericMessage::CreateStandardOutputMessage("", text);
+  emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::notifyWarningMessage(const QString& humanLabel, const QString& str, int code)
+void Observable::notifyWarningMessage(const QString& text, int code)
 {
-  PipelineMessage pm = PipelineMessage::CreateWarningMessage(getNameOfClass(), humanLabel, str, code);
-  emit filterGeneratedMessage(pm);
+  GenericMessage pm = GenericMessage::CreateWarningMessage("", text, code);
+  emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::notifyProgressMessage(const QString& prefix, const QString& humanLabel, const QString& str, int progress)
+void Observable::notifyProgressMessage(const QString& prefix, const QString& text, int progress)
 {
-  PipelineMessage pm = PipelineMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
-  pm.setPrefix(prefix);
+  GenericMessage pm = GenericMessage::CreateStatusMessage(prefix, text);
   pm.setProgressValue(progress);
-  pm.setType(PipelineMessage::MessageType::StatusMessageAndProgressValue);
-  emit filterGeneratedMessage(pm);
+  pm.setType(GenericMessage::MessageType::StatusMessageAndProgressValue);
+  emit messageGenerated(pm);
 }

@@ -31,11 +31,50 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
+#include <QtCore/QJsonObject>
+
 #include "QtWebApp/httpserver/httprequest.h"
 #include "QtWebApp/httpserver/httprequesthandler.h"
 #include "QtWebApp/httpserver/httpresponse.h"
 
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/IMessageHandler.h"
+#include "SIMPLib/Plugin/SIMPLPluginConstants.h"
+
+class PreflightPipelineController;
+
+class PreflightPipelineMessageHandler : public IMessageHandler
+{
+  public:
+    explicit PreflightPipelineMessageHandler(PreflightPipelineController* controller, QJsonObject* obj)
+      : m_Controller(controller)
+      , m_Object(obj)
+    {}
+
+    void processMessage(GenericMessage msg)
+    {
+      m_Object->insert(SIMPL::JSON::Code, msg.getCode());
+      m_Object->insert(SIMPL::JSON::Message, msg.getText());
+    }
+
+    void processMessage(PipelineMessage msg)
+    {
+      m_Object->insert(SIMPL::JSON::Code, msg.getCode());
+      m_Object->insert(SIMPL::JSON::Message, msg.getText());
+    }
+
+    void processMessage(FilterMessage msg)
+    {
+      m_Object->insert(SIMPL::JSON::Code, msg.getCode());
+      m_Object->insert(SIMPL::JSON::Message, msg.getText());
+      m_Object->insert(SIMPL::JSON::FilterHumanLabel, msg.getFilterHumanLabel());
+      m_Object->insert(SIMPL::JSON::FilterIndex, msg.getPipelineIndex());
+    }
+
+  private:
+    PreflightPipelineController* m_Controller = nullptr;
+    QJsonObject* m_Object = nullptr;
+};
 
 /**
   @brief This class responds to REST API endpoint

@@ -50,7 +50,7 @@ Observer::~Observer() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observer::processPipelineMessage(const PipelineMessage& pm)
+void Observer::processPipelineMessage(const AbstractMessage& pm)
 {
   // Just call the superclass
   IObserver::processPipelineMessage(pm);

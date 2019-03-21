@@ -23,7 +23,7 @@ PipelineListener::~PipelineListener()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<PipelineMessage> PipelineListener::getMessages()
+std::vector<AbstractMessage> PipelineListener::getMessages()
 {
   return m_Messages;
 }
@@ -31,9 +31,9 @@ std::vector<PipelineMessage> PipelineListener::getMessages()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<PipelineMessage> PipelineListener::getErrorMessages()
+std::vector<AbstractMessage> PipelineListener::getErrorMessages()
 {
-  std::vector<PipelineMessage> errorMessages;
+  std::vector<AbstractMessage> errorMessages;
 
   size_t numMessages = m_Messages.size();
   for(size_t i = 0; i < numMessages; i++)
@@ -50,9 +50,9 @@ std::vector<PipelineMessage> PipelineListener::getErrorMessages()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<PipelineMessage> PipelineListener::getWarningMessages()
+std::vector<AbstractMessage> PipelineListener::getWarningMessages()
 {
-  std::vector<PipelineMessage> warningMessages;
+  std::vector<AbstractMessage> warningMessages;
 
   size_t numMessages = m_Messages.size();
   for(size_t i = 0; i < numMessages; i++)
@@ -69,9 +69,9 @@ std::vector<PipelineMessage> PipelineListener::getWarningMessages()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<PipelineMessage> PipelineListener::getStatusMessages()
+std::vector<AbstractMessage> PipelineListener::getStatusMessages()
 {
-  std::vector<PipelineMessage> statusMessages;
+  std::vector<AbstractMessage> statusMessages;
 
   size_t numMessages = m_Messages.size();
   for(size_t i = 0; i < numMessages; i++)
@@ -88,9 +88,9 @@ std::vector<PipelineMessage> PipelineListener::getStatusMessages()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<PipelineMessage> PipelineListener::getStandardOutputMessages()
+std::vector<AbstractMessage> PipelineListener::getStandardOutputMessages()
 {
-  std::vector<PipelineMessage> stdOutMessages;
+  std::vector<AbstractMessage> stdOutMessages;
 
   size_t numMessages = m_Messages.size();
   for(size_t i = 0; i < numMessages; i++)
@@ -107,7 +107,7 @@ std::vector<PipelineMessage> PipelineListener::getStandardOutputMessages()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineListener::processPipelineMessage(const PipelineMessage& pm)
+void PipelineListener::processPipelineMessage(const AbstractMessage& pm)
 {
   m_Messages.push_back(pm);
 
@@ -166,7 +166,7 @@ void PipelineListener::processPipelineMessage(const PipelineMessage& pm)
 // -----------------------------------------------------------------------------
 QString PipelineListener::getErrorLog()
 {
-  std::vector<PipelineMessage> messages = getErrorMessages();
+  std::vector<AbstractMessage> messages = getErrorMessages();
   int count = messages.size();
   QString log;
 
@@ -183,7 +183,7 @@ QString PipelineListener::getErrorLog()
 // -----------------------------------------------------------------------------
 QString PipelineListener::getWarningLog()
 {
-  std::vector<PipelineMessage> messages = getWarningMessages();
+  std::vector<AbstractMessage> messages = getWarningMessages();
   int count = messages.size();
   QString log;
 
@@ -200,7 +200,7 @@ QString PipelineListener::getWarningLog()
 // -----------------------------------------------------------------------------
 QString PipelineListener::getStatusLog()
 {
-  std::vector<PipelineMessage> messages = getStatusMessages();
+  std::vector<AbstractMessage> messages = getStatusMessages();
   int count = messages.size();
   QString log;
 
@@ -217,7 +217,7 @@ QString PipelineListener::getStatusLog()
 // -----------------------------------------------------------------------------
 QString PipelineListener::getStandardOutputLog()
 {
-  std::vector<PipelineMessage> messages = getStandardOutputMessages();
+  std::vector<AbstractMessage> messages = getStandardOutputMessages();
   int count = messages.size();
   QString log;
 

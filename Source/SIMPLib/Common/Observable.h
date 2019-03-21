@@ -40,7 +40,7 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Common/PipelineMessage.h"
+#include "SIMPLib/Common/AbstractMessage.h"
 
 
 /**
@@ -71,36 +71,36 @@ class SIMPLib_EXPORT Observable : public QObject
     // ------------------------------
     // These are convenience methods that construct a @see PipelineMessage object and then 'emit' that object
     // ------------------------------
-    virtual void notifyErrorMessage(const QString& humanLabel, const QString& ss, int code);
+    virtual void notifyErrorMessage(const QString &prefix, const QString& text, int code);
 
-    virtual void notifyWarningMessage(const QString& humanLabel, const QString& ss, int code);
+    virtual void notifyWarningMessage(const QString& text, int code);
 
-    virtual void notifyStatusMessage(const QString& humanLabel, const QString& ss);
+    virtual void notifyStatusMessage(const QString& text);
 
-    virtual void notifyStandardOutputMessage(const QString& humanLabel, int pipelineIndex, const QString& ss);
+    virtual void notifyStandardOutputMessage(const QString& text);
 
-    virtual void notifyStatusMessage(const QString& prefix, const QString& humanLabel, const QString& ss);
+    virtual void notifyStatusMessage(const QString& prefix, const QString& text);
 
-    virtual void notifyProgressMessage(const QString& prefix, const QString& humanLabel, const QString& str, int progress);
+    virtual void notifyProgressMessage(const QString& prefix, const QString& text, int progress);
 
   public slots:
 
     /**
-     * @brief This method will cause this object to 'emit' the filterGeneratedMessage() signal. This is useful if other
+     * @brief This method will cause this object to 'emit' the messageGenerated() signal. This is useful if other
      * classes need the filter to emit an error or warning messge from a class that is not able to emit the proper signals
      * or the class is not connected to anything that would receive the signals
      * @param msg
      */
-    void broadcastPipelineMessage(const PipelineMessage& msg);
+    void broadcastPipelineMessage(const AbstractMessage& msg);
 
 
   signals:
 
     /**
-     * @brief filterGeneratedMessage This is a Qt Signal that is used when the filter generates Errors, Warnings, Status and Progress Messages
+     * @brief messageGenerated This is a Qt Signal that is used when the filter generates Errors, Warnings, Status and Progress Messages
      * @param msg
      */
-    void filterGeneratedMessage(const PipelineMessage& msg);
+    void messageGenerated(const AbstractMessage& msg);
 };
 
 

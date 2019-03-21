@@ -33,50 +33,50 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "IObserver.h"
+#pragma once
 
-#include <iostream>
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/IMessageHandler.h"
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IObserver::IObserver() = default;
+class IssuesWidget;
+class QLabel;
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IObserver::~IObserver() = default;
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void IObserver::processPipelineMessage(const AbstractMessage& pm)
+/**
+ * @class IssuesWidgetMessageHandler IssuesWidgetMessageHandler.h DREAM3DLib/Common/IssuesWidgetMessageHandler.h
+ * @brief This is the Message handler for the issues widget.  It is responsible for loading the issues table with new messages.
+ */
+class SIMPLib_EXPORT IssuesWidgetMessageHandler : public IMessageHandler
 {
-  QString str;
-  QTextStream ss(&str);
-  if(pm.getType() == PipelineMessage::MessageType::Error)
-  {
-    ss << pm.generateErrorString();
-  }
-  else if(pm.getType() == PipelineMessage::MessageType::Warning)
-  {
-    ss << pm.generateWarningString();
-  }
-  else if(pm.getType() == PipelineMessage::MessageType::StatusMessage)
-  {
-    ss << pm.generateStatusString();
-  }
-  else if(pm.getType() == PipelineMessage::MessageType::StandardOutputMessage)
-  {
-    ss << pm.generateStandardOutputString();
-  }
-  else if(pm.getType() == PipelineMessage::MessageType::ProgressValue)
-  {
-    ss << pm.getProgressValue() << "%";
-  }
-  else if(pm.getType() == PipelineMessage::MessageType::StatusMessageAndProgressValue)
-  {
-    ss << pm.getProgressValue() << pm.generateStatusString();
-  }
-  std::cout << str.toStdString() << std::endl;
-}
+  public:
+    explicit IssuesWidgetMessageHandler(IssuesWidget* issuesWidget);
+
+    /**
+     * @brief visit
+     * @param msg
+     */
+    void processMessage(GenericMessage msg) override;
+
+    /**
+     * @brief visit
+     * @param msg
+     */
+    void processMessage(PipelineMessage msg) override;
+
+    /**
+     * @brief visit
+     * @param msg
+     */
+    void processMessage(FilterMessage msg) override;
+
+  private:
+    IssuesWidget* m_IssuesWidget = nullptr;
+
+    /**
+     * @brief createHyperlinkLabel
+     * @param msg
+     * @return
+     */
+    QLabel* createHyperlinkLabel(const FilterMessage &msg);
+};
+
+

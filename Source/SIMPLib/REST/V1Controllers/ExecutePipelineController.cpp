@@ -189,50 +189,56 @@ void ExecutePipelineController::serviceJSON(QJsonObject pipelineObj)
     qDebug() << "Pipeline Done Executing...." << pipeline->getErrorCondition();
   }
 
+
   // Return messages
-  std::vector<PipelineMessage> errorMessages = listener.getErrorMessages();
-  bool completed = (errorMessages.size() == 0);
-
   QJsonArray errors;
-  size_t numErrors = errorMessages.size();
-  for(size_t i = 0; i < numErrors; i++)
-  {
-    QJsonObject error;
-    error[SIMPL::JSON::Code] = errorMessages[i].generateErrorString();
-    error[SIMPL::JSON::Message] = errorMessages[i].getText();
-    error[SIMPL::JSON::FilterHumanLabel] = errorMessages[i].getFilterHumanLabel();
-    error[SIMPL::JSON::FilterIndex] = errorMessages[i].getPipelineIndex();
-
-    errors.push_back(error);
-  }
-  m_ResponseObj[SIMPL::JSON::PipelineErrors] = errors;
-
-  std::vector<PipelineMessage> warningMessages = listener.getWarningMessages();
   QJsonArray warnings;
-  size_t numWarnings = warningMessages.size();
-  for(size_t i = 0; i < numWarnings; i++)
-  {
-    QJsonObject warning;
-    warning[SIMPL::JSON::Code] = warningMessages[i].generateWarningString();
-    warning[SIMPL::JSON::Message] = warningMessages[i].getText();
-    warning[SIMPL::JSON::FilterHumanLabel] = warningMessages[i].getFilterHumanLabel();
-    warning[SIMPL::JSON::FilterIndex] = warningMessages[i].getPipelineIndex();
-
-    warnings.push_back(warning);
-  }
-
-  std::vector<PipelineMessage> statusMessages = listener.getStatusMessages();
   QJsonArray statusMsgs;
-  size_t numStatusMsgs = statusMessages.size();
-  for(size_t i = 0; i < numStatusMsgs; i++)
-  {
-    QJsonObject msg;
-    msg[SIMPL::JSON::Message] = statusMessages[i].generateStatusString();
-    statusMsgs.push_back(msg);
-  }
-  // responseObj["StatusMessages"] = statusMsgs;
-  m_ResponseObj[SIMPL::JSON::PipelineWarnings] = warnings;
+
+  std::vector<AbstractMessage> errorMessages = listener.getErrorMessages();
+  bool completed = (errorMessages.size() == 0);
   m_ResponseObj[SIMPL::JSON::Completed] = completed;
+
+  std::vector<AbstractMessage> messages = listener.getMessages();
+  for(int i = 0; i < messages.size(); i++)
+  {
+    AbstractMessage message = messages[i];
+
+    switch(message.getType())
+    {
+      case AbstractMessage::MessageType::Error:
+      {
+        QJsonObject error;
+        ExecutePipelineMessageHandler msgHandler(this, &error);
+        messages[i].visit(&msgHandler);
+        errors.push_back(error);
+      }
+      case AbstractMessage::MessageType::Warning:
+      {
+        QJsonObject warning;
+        ExecutePipelineMessageHandler msgHandler(this, &warning);
+        messages[i].visit(&msgHandler);
+        warnings.push_back(warning);
+      }
+      case AbstractMessage::MessageType::StatusMessage:
+      {
+        QJsonObject msg;
+        msg[SIMPL::JSON::Message] = messages[i].generateStatusString();
+        statusMsgs.push_back(msg);
+      }
+      case AbstractMessage::MessageType::ProgressValue:
+      case AbstractMessage::MessageType::StandardOutputMessage:
+      case AbstractMessage::MessageType::StatusMessageAndProgressValue:
+      case AbstractMessage::MessageType::UnknownMessageType:
+      {
+        break;
+      }
+    }
+  }
+
+  m_ResponseObj[SIMPL::JSON::PipelineErrors] = errors;
+  m_ResponseObj[SIMPL::JSON::PipelineWarnings] = warnings;
+  // m_ResponseObj["StatusMessages"] = statusMsgs;
 
   //  // **************************************************************************
   //  // This section archives the working directory for this session

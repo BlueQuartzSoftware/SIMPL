@@ -19,10 +19,13 @@ set_source_files_properties( ${SIMPLib_${SUBDIR_NAME}_Generated_MOC_SRCS} PROPER
 
 set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AppVersion.h
-
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractMessage.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Constants.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/CreatedArrayHelpIndexEntry.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilterMessage.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/GenericMessage.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IObserver.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IMessageHandler.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PhaseType.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PipelineMessage.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLibDLLExport.h
@@ -35,10 +38,12 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
 
 set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AppVersion.cpp
-
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractMessage.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/CreatedArrayHelpIndexEntry.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DocRequestManager.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/EnsembleInfo.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilterMessage.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/GenericMessage.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IObserver.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Observable.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Observer.cpp

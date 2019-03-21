@@ -35,6 +35,7 @@
 
 #include "FilterPipeline.h"
 
+#include "SIMPLib/Common/FilterMessage.h"
 #include "SIMPLib/CoreFilters/EmptyFilter.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
@@ -626,7 +627,7 @@ void FilterPipeline::updatePrevNextFilters()
 // -----------------------------------------------------------------------------
 void FilterPipeline::addMessageReceiver(QObject* obj)
 {
-  connect(this, SIGNAL(pipelineGeneratedMessage(const PipelineMessage&)), obj, SLOT(processPipelineMessage(const PipelineMessage&)));
+  connect(this, SIGNAL(pipelineGeneratedMessage(const AbstractMessage&)), obj, SLOT(processPipelineMessage(const AbstractMessage&)));
   m_MessageReceivers.push_back(obj);
 }
 
@@ -635,7 +636,7 @@ void FilterPipeline::addMessageReceiver(QObject* obj)
 // -----------------------------------------------------------------------------
 void FilterPipeline::removeMessageReceiver(QObject* obj)
 {
-  disconnect(this, SIGNAL(pipelineGeneratedMessage(const PipelineMessage&)), obj, SLOT(processPipelineMessage(const PipelineMessage&)));
+  disconnect(this, SIGNAL(pipelineGeneratedMessage(const AbstractMessage&)), obj, SLOT(processPipelineMessage(const AbstractMessage&)));
   m_MessageReceivers.removeAll(obj);
 }
 
@@ -646,7 +647,7 @@ void FilterPipeline::connectFilterNotifications(QObject* filter)
 {
   for(const auto& messageReceiver : m_MessageReceivers)
   {
-    connect(filter, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), messageReceiver, SLOT(processPipelineMessage(const PipelineMessage&)));
+    connect(filter, SIGNAL(messageGenerated(const AbstractMessage&)), messageReceiver, SLOT(processPipelineMessage(const AbstractMessage&)));
   }
 }
 
@@ -657,7 +658,7 @@ void FilterPipeline::disconnectFilterNotifications(QObject* filter)
 {
   for(const auto& messageReceiver : m_MessageReceivers)
   {
-    disconnect(filter, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), messageReceiver, SLOT(processPipelineMessage(const PipelineMessage&)));
+    disconnect(filter, SIGNAL(messageGenerated(const AbstractMessage&)), messageReceiver, SLOT(processPipelineMessage(const AbstractMessage&)));
   }
 }
 
@@ -817,19 +818,19 @@ DataContainerArray::Pointer FilterPipeline::execute()
   // Start looping through the Pipeline
   float progress = 0.0f;
 
-  PipelineMessage progValue("", "", 0, PipelineMessage::MessageType::ProgressValue, -1);
+  PipelineMessage pipelineMsg("", "", 0, PipelineMessage::MessageType::ProgressValue, -1);
   for(const auto& filt : m_Pipeline)
   {
     progress = progress + 1.0f;
-    progValue.setType(PipelineMessage::MessageType::ProgressValue);
-    progValue.setProgressValue(static_cast<int>(progress / (m_Pipeline.size() + 1) * 100.0f));
-    emit pipelineGeneratedMessage(progValue);
+    pipelineMsg.setType(PipelineMessage::MessageType::ProgressValue);
+    pipelineMsg.setProgressValue(static_cast<int>(progress / (m_Pipeline.size() + 1) * 100.0f));
+    emit pipelineGeneratedMessage(pipelineMsg);
 
     QString ss = QObject::tr("[%1/%2] %3 ").arg(progress).arg(m_Pipeline.size()).arg(filt->getHumanLabel());
 
-    progValue.setType(PipelineMessage::MessageType::StatusMessage);
-    progValue.setText(ss);
-    emit pipelineGeneratedMessage(progValue);
+    pipelineMsg.setType(PipelineMessage::MessageType::StatusMessage);
+    pipelineMsg.setText(ss);
+    emit pipelineGeneratedMessage(pipelineMsg);
     emit filt->filterInProgress(filt.get());
 
     // Do not execute disabled filters
@@ -846,15 +847,12 @@ DataContainerArray::Pointer FilterPipeline::execute()
       if(err < 0)
       {
         setErrorCondition(err);
-        progValue.setFilterClassName(filt->getNameOfClass());
-        progValue.setFilterHumanLabel(filt->getHumanLabel());
-        progValue.setType(PipelineMessage::MessageType::Error);
-        progValue.setProgressValue(100);
+        pipelineMsg.setType(PipelineMessage::MessageType::Error);
+        pipelineMsg.setProgressValue(100);
         ss = QObject::tr("[%1/%2] %3 caused an error during execution.").arg(progress).arg(m_Pipeline.size()).arg(filt->getHumanLabel());
-        progValue.setText(ss);
-        progValue.setPipelineIndex(filt->getPipelineIndex());
-        progValue.setCode(filt->getErrorCondition());
-        emit pipelineGeneratedMessage(progValue);
+        pipelineMsg.setText(ss);
+        pipelineMsg.setCode(filt->getErrorCondition());
+        emit pipelineGeneratedMessage(pipelineMsg);
         emit filt->filterCompleted(filt.get());
         emit pipelineFinished();
         disconnectSignalsSlots();

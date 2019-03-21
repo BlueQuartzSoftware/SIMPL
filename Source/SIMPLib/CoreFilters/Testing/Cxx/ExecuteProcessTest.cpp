@@ -131,7 +131,7 @@ public:
       ExecuteProcess::Pointer filter = ExecuteProcess::New();
       ExecuteProcessObserver obs;
 
-      QObject::connect(filter.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)), &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
+      QObject::connect(filter.get(), SIGNAL(messageGenerated(const AbstractMessage&)), &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
 
       filter->setArguments(QObject::tr("%1 -query QMAKE_VERSION").arg(UnitTest::ExecuteProcessTest::QMakeLocation));
       filter->execute();
@@ -153,7 +153,7 @@ public:
     //      ExecuteProcess::Pointer filter = ExecuteProcess::New();
     //      ExecuteProcessObserver obs;
 
-    //      QObject::connect(filter.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)), &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
+    //      QObject::connect(filter.get(), SIGNAL(messageGenerated(const AbstractMessage&)), &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
 
     //      filter->setArguments(QObject::tr("%1 -version").arg(UnitTest::ExecuteProcessTest::CMakeLocation));
     //      filter->execute();
@@ -171,7 +171,7 @@ public:
       ExecuteProcess::Pointer filter = ExecuteProcess::New();
       ExecuteProcessObserver obs;
 
-      QObject::connect(filter.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)), &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
+      QObject::connect(filter.get(), SIGNAL(messageGenerated(const AbstractMessage&)), &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
 
       filter->setArguments("sdhsdrtfn");
       filter->execute();

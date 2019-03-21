@@ -307,51 +307,45 @@ public:
 
   /**
    * @brief notifyErrorMessage
-   * @param humanLabel
-   * @param ss
+   * @param prefix
+   * @param text
    * @param code
    */
-  void notifyErrorMessage(const QString& humanLabel, const QString& ss, int code) override;
+  void notifyErrorMessage(const QString &prefix, const QString& text, int code) override;
 
   /**
    * @brief notifyWarningMessage
-   * @param humanLabel
-   * @param ss
+   * @param text
    * @param code
    */
-  void notifyWarningMessage(const QString& humanLabel, const QString& ss, int code) override;
+  void notifyWarningMessage(const QString& text, int code) override;
 
   /**
    * @brief notifyStatusMessage
-   * @param humanLabel
-   * @param ss
+   * @param text
    */
-  void notifyStatusMessage(const QString& humanLabel, const QString& ss) override;
+  void notifyStatusMessage(const QString& text) override;
 
   /**
    * @brief notifyStandardOutputMessage
-   * @param humanLabel
-   * @param pipelineIndex
-   * @param ss
+   * @param text
    */
-  void notifyStandardOutputMessage(const QString& humanLabel, int pipelineIndex, const QString& ss) override;
+  void notifyStandardOutputMessage(const QString& text) override;
 
   /**
    * @brief notifyStatusMessage
    * @param prefix
-   * @param humanLabel
-   * @param ss
+   * @param text
    */
-  void notifyStatusMessage(const QString& prefix, const QString& humanLabel, const QString& ss) override;
+  void notifyStatusMessage(const QString& prefix, const QString& text) override;
 
   /**
    * @brief notifyProgressMessage
    * @param prefix
-   * @param humanLabel
-   * @param str
+   * @param text
    * @param progress
    */
-  void notifyProgressMessage(const QString& prefix, const QString& humanLabel, const QString& str, int progress) override;
+  void notifyProgressMessage(const QString& prefix, const QString& text, int progress);
 
   /**
    * @brief notifyMissingProperty

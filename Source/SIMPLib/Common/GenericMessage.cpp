@@ -33,7 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "PipelineMessage.h"
+#include "GenericMessage.h"
 
 #include <QtCore/QMetaType>
 #include <QtCore/QString>
@@ -43,12 +43,12 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineMessage::PipelineMessage() = default;
+GenericMessage::GenericMessage() = default;
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineMessage::PipelineMessage(const QString& prefix, const QString& msg, int code, MessageType msgType, int progress)
+GenericMessage::GenericMessage(const QString& prefix, const QString& msg, int code, MessageType msgType, int progress)
 : AbstractMessage(prefix, msg, code, msgType, progress)
 {
 }
@@ -56,48 +56,48 @@ PipelineMessage::PipelineMessage(const QString& prefix, const QString& msg, int 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineMessage PipelineMessage::CreateErrorMessage(const QString prefix, const QString msg, int code)
+GenericMessage GenericMessage::CreateErrorMessage(const QString prefix, const QString msg, int code)
 {
-  PipelineMessage em(prefix, msg, code, MessageType::Error);
+  GenericMessage em(prefix, msg, code, MessageType::Error);
   return em;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineMessage PipelineMessage::CreateStatusMessage(const QString prefix, const QString msg)
+GenericMessage GenericMessage::CreateStatusMessage(const QString prefix, const QString msg)
 {
-  PipelineMessage em(prefix, msg, 0, MessageType::StatusMessage);
+  GenericMessage em(prefix, msg, 0, MessageType::StatusMessage);
   return em;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineMessage PipelineMessage::CreateWarningMessage(const QString prefix, const QString msg, int code)
+GenericMessage GenericMessage::CreateWarningMessage(const QString prefix, const QString msg, int code)
 {
-  PipelineMessage em(prefix, msg, code, MessageType::Warning);
+  GenericMessage em(prefix, msg, code, MessageType::Warning);
   return em;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineMessage PipelineMessage::CreateStandardOutputMessage(const QString prefix, const QString msg)
+GenericMessage GenericMessage::CreateStandardOutputMessage(const QString prefix, const QString msg)
 {
-  PipelineMessage em(prefix, msg, 0, MessageType::StandardOutputMessage);
+  GenericMessage em(prefix, msg, 0, MessageType::StandardOutputMessage);
   return em;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineMessage::~PipelineMessage() = default;
+GenericMessage::~GenericMessage() = default;
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineMessage::operator==(const PipelineMessage& rhs)
+bool GenericMessage::operator==(const GenericMessage& rhs)
 {
   return (getPrefix() == rhs.getPrefix() && getText() == rhs.getText() && getCode() == rhs.getCode() &&
           getType() == rhs.getType() && getProgressValue() == rhs.getProgressValue());
@@ -106,7 +106,7 @@ bool PipelineMessage::operator==(const PipelineMessage& rhs)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString PipelineMessage::generateErrorString() const
+QString GenericMessage::generateErrorString() const
 {
   QString ss = QObject::tr("Error (%1): %2: %3").arg(getCode()).arg(getPrefix()).arg(getText());
   return ss;
@@ -115,7 +115,7 @@ QString PipelineMessage::generateErrorString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString PipelineMessage::generateWarningString() const
+QString GenericMessage::generateWarningString() const
 {
   QString ss = QObject::tr("Warning (%1): %2: %3").arg(getCode()).arg(getPrefix()).arg(getText());
   return ss;
@@ -124,7 +124,7 @@ QString PipelineMessage::generateWarningString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString PipelineMessage::generateStatusString() const
+QString GenericMessage::generateStatusString() const
 {
   if(getPrefix().isEmpty())
   {
@@ -139,7 +139,7 @@ QString PipelineMessage::generateStatusString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString PipelineMessage::generateProgressString() const
+QString GenericMessage::generateProgressString() const
 {
   if(getPrefix().isEmpty())
   {
@@ -154,7 +154,7 @@ QString PipelineMessage::generateProgressString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString PipelineMessage::generateStandardOutputString() const
+QString GenericMessage::generateStandardOutputString() const
 {
   return getText();
 }
@@ -162,7 +162,7 @@ QString PipelineMessage::generateStandardOutputString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineMessage::visit(IMessageHandler* msgHandler)
+void GenericMessage::visit(IMessageHandler* msgHandler)
 {
   msgHandler->processMessage(*this);
 }
