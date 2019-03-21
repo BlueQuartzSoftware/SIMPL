@@ -276,7 +276,7 @@ void RawBinaryReader::dataCheck()
   }
 
   QVector<size_t> tDims = attrMat->getTupleDimensions();
-  size_t totalDim = std::accumulate(tDims.begin(), tDims.end(), 1, std::multiplies<>());
+  size_t totalDim = std::accumulate(tDims.begin(), tDims.end(), 1, std::multiplies<size_t>());
 
   size_t allocatedBytes = 0;
   QVector<size_t> cDims(1, m_NumberOfComponents);
