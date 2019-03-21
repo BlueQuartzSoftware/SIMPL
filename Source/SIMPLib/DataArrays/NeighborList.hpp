@@ -86,7 +86,7 @@ class NeighborList : public IDataArray
     static Pointer CreateArray(size_t numTuples, const QString& name, bool allocate = true)
     {
       //std::cout << "NeighborList::CreateArray  name= " << name.toStdString() << "   numTuples= " << numTuples << std::endl;
-      if (name.isEmpty() == true)
+      if(name.isEmpty())
       {
         return NullPointer();
       }
@@ -110,7 +110,7 @@ class NeighborList : public IDataArray
     static Pointer CreateArray(size_t numTuples, int rank, size_t* dims, const QString& name, bool allocate = true)
     {
       //std::cout << "NeighborList::CreateArray  name= " << name.toStdString() << "   numTuples= " << numTuples << std::endl;
-      if (name.isEmpty() == true)
+      if(name.isEmpty())
       {
         return NullPointer();
       }
@@ -138,7 +138,7 @@ class NeighborList : public IDataArray
      */
     static Pointer CreateArray(size_t numTuples, std::vector<size_t> cDims, const QString& name, bool allocate = true)
     {
-      if (name.isEmpty() == true)
+      if(name.isEmpty())
       {
         return NullPointer();
       }
@@ -165,7 +165,7 @@ class NeighborList : public IDataArray
      */
     static Pointer CreateArray(size_t numTuples, QVector<size_t> cDims, const QString& name, bool allocate = true)
     {
-      if (name.isEmpty() == true)
+      if(name.isEmpty())
       {
         return NullPointer();
       }
@@ -192,7 +192,7 @@ class NeighborList : public IDataArray
      */
     static Pointer CreateArray(QVector<size_t> tDims, QVector<size_t> cDims, const QString& name, bool allocate = true)
     {
-      if (name.isEmpty() == true)
+      if(name.isEmpty())
       {
         return NullPointer();
       }
@@ -250,14 +250,11 @@ class NeighborList : public IDataArray
       return NeighborList<T>::CreateArray(numElements, dims, name, allocate);
     }
 
+    using VectorType = std::vector<T>;
+    using SharedVectorType = std::shared_ptr<VectorType>;
 
-    typedef std::vector<T> VectorType;
-    typedef std::shared_ptr<VectorType> SharedVectorType;
-
-    ~NeighborList() override
-    {
-      //std::cout << "~NeighborList<T> size()=" << _data.size() << std::endl;
-    }
+    // -----------------------------------------------------------------------------
+    ~NeighborList() override = default;
 
     /**
      * @brief isAllocated
@@ -346,7 +343,7 @@ class NeighborList : public IDataArray
     {
       int err = 0;
       // If nothing is to be erased just return
-      if(idxs.size() == 0)
+      if(idxs.empty())
       {
         return 0;
       }
@@ -563,7 +560,7 @@ class NeighborList : public IDataArray
     {
       typename NeighborList<T>::Pointer daCopyPtr = NeighborList<T>::CreateArray(getNumberOfTuples(), getName(), m_IsAllocated);
 
-      if(forceNoAllocate == false)
+      if(!forceNoAllocate)
       {
         size_t count = (m_IsAllocated ? getNumberOfTuples(): 0);
         for(size_t i = 0; i < count; i++)
@@ -643,6 +640,10 @@ class NeighborList : public IDataArray
       // can compare this with what is written in the file. If they are
       // different we are going to overwrite what is in the file with what
       // we compute here.
+      if(m_NumNeighborsArrayName.isEmpty())
+      {
+        m_NumNeighborsArrayName = getName() + "_NumNeighbors";
+      }
       Int32ArrayType::Pointer numNeighborsPtr = Int32ArrayType::CreateArray(m_Array.size(), m_NumNeighborsArrayName);
       int32_t* numNeighbors = numNeighborsPtr->getPointer(0);
       size_t total = 0;
@@ -654,7 +655,7 @@ class NeighborList : public IDataArray
 
       // Check to see if the NumNeighbors is already written to the file
       bool rewrite = false;
-      if (QH5Lite::datasetExists(parentId, m_NumNeighborsArrayName) == false)
+      if(!QH5Lite::datasetExists(parentId, m_NumNeighborsArrayName))
       {
         // The NumNeighbors Array is NOT already in the file so write it to the file
         numNeighborsPtr->writeH5Data(parentId, tDims);
@@ -686,7 +687,7 @@ class NeighborList : public IDataArray
 
       // Write out the NumNeighbors Array because something was different between what we computed at
       // the top of the function versus what is in memory
-      if(rewrite == true)
+      if(rewrite)
       {
         numNeighborsPtr->writeH5Data(parentId, tDims);
       }
@@ -699,10 +700,13 @@ class NeighborList : public IDataArray
       for(size_t dIdx = 0; dIdx < m_Array.size(); ++dIdx)
       {
         size_t nEle = m_Array[dIdx]->size();
-        if (nEle == 0) { continue; }
-        T* start = &(m_Array[dIdx]->front()); // get the pointer to the front of the array
+        if(nEle == 0)
+        {
+          continue;
+        }
+        T* start = m_Array[dIdx]->data(); // get the pointer to the front of the array
         //    T* end = start + nEle; // get the pointer to the end of the array
-        T* dst = &(flat.front()) + currentStart;
+        T* dst = flat.data() + currentStart;
         ::memcpy(dst, start, nEle * sizeof(T));
 
         currentStart += m_Array[dIdx]->size();
@@ -713,7 +717,7 @@ class NeighborList : public IDataArray
       hsize_t dims[1] = { total };
       if (total > 0)
       {
-        err = QH5Lite::writePointerDataset(parentId, getName(), rank, dims, &(flat.front()));
+        err = QH5Lite::writePointerDataset(parentId, getName(), rank, dims, flat.data());
         if(err < 0)
         {
           return -605;
@@ -824,31 +828,39 @@ class NeighborList : public IDataArray
     {
       int err = 0;
 
+      std::vector<T> flat;
+      err = QH5Lite::readVectorDataset(parentId, getName(), flat);
+      if(err < 0)
+      {
+        return err;
+      }
+
+      // Read the Attribute Off the data set to find the name of the array that holds all the sizes
+      err = QH5Lite::readStringAttribute(parentId, getName(), "Linked NumNeighbors Dataset", m_NumNeighborsArrayName);
+      if(err < 0)
+      {
+        return err;
+      }
       // Generate the number of neighbors array and also compute the total number
       // of elements that would be needed to flatten the array
       std::vector<int32_t> numNeighbors;
 
       // Check to see if the NumNeighbors exists in the file, which it must.
-      if(QH5Lite::datasetExists(parentId, m_NumNeighborsArrayName) == true)
+      if(QH5Lite::datasetExists(parentId, m_NumNeighborsArrayName))
       {
         err = QH5Lite::readVectorDataset(parentId, m_NumNeighborsArrayName, numNeighbors);
         if(err < 0)
         {
           return -702;
         }
-
       }
       else
       {
         return -703;
       }
 
-      std::vector<T> flat;
-      err = QH5Lite::readVectorDataset(parentId, getName(), flat);
-      if (err < 0)
-      {
-        return err;
-      }
+      // int32_t totalElements = std::accumulate(numNeighbors.begin(), numNeighbors.end(), 0);
+
       // Loop over all the entries and make new Vectors to hold the incoming data
       m_Array.resize(numNeighbors.size());
       m_IsAllocated = true;
@@ -861,9 +873,9 @@ class NeighborList : public IDataArray
         {
           m_Array[dIdx] = SharedVectorType(new VectorType(numNeighbors[dIdx]));
 
-          T* dst = &(m_Array[dIdx]->front()); // get the pointer to the front of the array
+          T* dst = m_Array[dIdx]->data(); // get the pointer to the front of the array
           //    T* end = start + nEle; // get the pointer to the end of the array
-          T* start = &(flat.front()) + currentStart;
+          T* start = flat.data() + currentStart;
           ::memcpy(dst, start, nEle * sizeof(T));
           currentStart += nEle;
         }
@@ -1040,11 +1052,11 @@ class NeighborList : public IDataArray
     /**
      * @brief NeighborList
      */
-    NeighborList(size_t numTuples, const QString name) :
-      IDataArray(name),
-      m_NumNeighborsArrayName(SIMPL::FeatureData::NumNeighbors),
-      m_NumTuples(numTuples),
-      m_IsAllocated(false)
+    NeighborList(size_t numTuples, const QString name)
+    : IDataArray(name)
+    , m_NumNeighborsArrayName("")
+    , m_NumTuples(numTuples)
+    , m_IsAllocated(false)
     {
     }
 
@@ -1054,12 +1066,12 @@ class NeighborList : public IDataArray
     bool m_IsAllocated;
     T m_InitValue;
 
-
-    NeighborList(const NeighborList&); // Copy Constructor Not Implemented
-    void operator=(const NeighborList&); // Move assignment Not Implemented
+  public:
+    NeighborList(const NeighborList&) = delete;            // Copy Constructor Not Implemented
+    NeighborList(NeighborList&&) = delete;                 // Move Constructor Not Implemented
+    NeighborList& operator=(const NeighborList&) = delete; // Copy Assignment Not Implemented
+    NeighborList& operator=(NeighborList&&) = delete;      // Move Assignment Not Implemented
 };
 
-typedef NeighborList<int32_t> Int32NeighborListType;
-typedef NeighborList<float> FloatNeighborListType;
-
-
+using Int32NeighborListType = NeighborList<int32_t>;
+using FloatNeighborListType = NeighborList<float>;
