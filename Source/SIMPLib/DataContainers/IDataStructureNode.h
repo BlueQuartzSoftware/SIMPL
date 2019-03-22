@@ -68,7 +68,7 @@ public:
 private:
   QString m_Name;
   ParentType* m_Parent = nullptr;
-  HashType m_NameHash;
+  HashType m_NameHash = 0;
 
   /**
    * @brief Updates the name hash variable based on the current name.
