@@ -140,19 +140,20 @@ void DataContainerSelectionWidget::setupGui()
 
   m_SelectedDataContainerPath->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(false));
 
-  QString dcName = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QString>();
-  m_SelectedDataContainerPath->setText(dcName);
+  DataContainerSelectionFilterParameter::GetterCallbackType getter = m_FilterParameter->getGetterCallback();
+  if(getter)
+  {
+    m_SelectedDataContainerPath->setText(getter().getDataContainerName());
+  }
   m_SelectedDataContainerPath->setPropertyName(getFilterParameter()->getHumanLabel());
 
-
   changeStyleSheet(Style::FS_STANDARD_STYLE);
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataContainerSelectionWidget::checkStringValues(QString curDcName, QString filtDcName)
+QString DataContainerSelectionWidget::checkStringValues(const QString& curDcName, const QString& filtDcName)
 {
   if(curDcName.isEmpty() && !filtDcName.isEmpty())
   {
@@ -187,15 +188,13 @@ bool DataContainerSelectionWidget::eventFilter(QObject* obj, QEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerSelectionWidget::updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath)
+void DataContainerSelectionWidget::updateDataArrayPath(const QString& propertyName, const DataArrayPath::RenameType& renamePath)
 {
-  if(propertyName.compare(PROPERTY_NAME_AS_CHAR) == 0)
+  DataContainerSelectionFilterParameter::GetterCallbackType getter = m_FilterParameter->getGetterCallback();
+  if(getter)
   {
-    QVariant var = getFilter()->property(PROPERTY_NAME_AS_CHAR);
-    QString updatedPath = var.value<QString>();
-
     blockSignals(true);
-    setSelectedPath(updatedPath);
+    setSelectedPath(getter());
     blockSignals(false);
   }
 }
@@ -215,7 +214,7 @@ void DataContainerSelectionWidget::dataContainerSelected(QString path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerSelectionWidget::setSelectedPath(QString path)
+void DataContainerSelectionWidget::setSelectedPath(const QString& path)
 {
   DataArrayPath dcPath = DataArrayPath::Deserialize(path, Detail::Delimiter);
   setSelectedPath(dcPath);
@@ -224,7 +223,7 @@ void DataContainerSelectionWidget::setSelectedPath(QString path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerSelectionWidget::setSelectedPath(DataArrayPath dcPath)
+void DataContainerSelectionWidget::setSelectedPath(const DataArrayPath& dcPath)
 {
   if (dcPath.isEmpty()) { return; }
 
