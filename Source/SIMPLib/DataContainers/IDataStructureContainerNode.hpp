@@ -42,7 +42,7 @@
 
 #include "IDataStructureNode.h"
 
-template <class DerivedChild_t> class IDataStructureContainerNode : public IDSContainer
+template <class DerivedChild_t> class IDataStructureContainerNode : public AbstractDataStructureContainer
 {
 public:
   SIMPL_SHARED_POINTERS(IDataStructureContainerNode<DerivedChild_t>)
@@ -74,11 +74,11 @@ protected:
 
 public:
   IDataStructureContainerNode(const QString& name = "")
-  : IDSContainer(name)
+  : AbstractDataStructureContainer(name)
   {
   }
   IDataStructureContainerNode(ParentType* parent, const QString& name = "")
-  : IDSContainer(parent, name)
+  : AbstractDataStructureContainer(parent, name)
   {
   }
   ~IDataStructureContainerNode() override

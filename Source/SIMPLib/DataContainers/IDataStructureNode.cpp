@@ -160,7 +160,7 @@ DataArrayPath IDataStructureNode::getParentPath() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IDSContainer::createParentConnection(IDataStructureNode* child, IDSContainer* parent) const
+void AbstractDataStructureContainer::createParentConnection(IDataStructureNode* child, AbstractDataStructureContainer* parent) const
 {
   child->setParentNode(parent);
 }
@@ -168,7 +168,7 @@ void IDSContainer::createParentConnection(IDataStructureNode* child, IDSContaine
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IDSContainer::destroyParentConnection(IDataStructureNode* child) const
+void AbstractDataStructureContainer::destroyParentConnection(IDataStructureNode* child) const
 {
   child->clearParentNode();
 }

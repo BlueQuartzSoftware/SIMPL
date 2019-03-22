@@ -45,7 +45,7 @@
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/SIMPLib.h"
 
-class IDSContainer;
+class AbstractDataStructureContainer;
 
 /**
  * @class IDataStructureNode IDataStructureNode.h SIMPLib/DataContainers/IDataStructureNode.h
@@ -57,13 +57,13 @@ class SIMPLib_EXPORT IDataStructureNode
 public:
   SIMPL_SHARED_POINTERS(IDataStructureNode)
 
-  using ParentType = IDSContainer;
+  using ParentType = AbstractDataStructureContainer;
   // using ParentWkPtr = std::weak_ptr<ParentType>;
   // using parent_collection = std::vector<ParentWkPtr>;
   using DataArrayPathList = std::list<DataArrayPath>;
   using HashType = size_t;
 
-  friend IDSContainer;
+  friend AbstractDataStructureContainer;
 
 private:
   QString m_Name;
@@ -165,21 +165,21 @@ public:
 };
 
 /**
- * @class IDSContainer IDataStructureNode.h SIMPLib/DataContainers/IDataStructureNode.h
- * @brief The IDSContainer is an interface created so that IDataStructureNode can call required methods in IDataStructureContainerNode.
+ * @class AbstractDataStructureContainer IDataStructureNode.h SIMPLib/DataContainers/IDataStructureNode.h
+ * @brief The AbstractDataStructureContainer is an interface created so that IDataStructureNode can call required methods in IDataStructureContainerNode.
  */
-class SIMPLib_EXPORT IDSContainer : public IDataStructureNode
+class SIMPLib_EXPORT AbstractDataStructureContainer : public IDataStructureNode
 {
 public:
-  IDSContainer(const QString& name = "")
+  AbstractDataStructureContainer(const QString& name = "")
   : IDataStructureNode(name)
   {
   }
-  IDSContainer(ParentType* parent, const QString& name = "")
+  AbstractDataStructureContainer(ParentType* parent, const QString& name = "")
   : IDataStructureNode(parent, name)
   {
   }
-  ~IDSContainer() override = default;
+  ~AbstractDataStructureContainer() override = default;
 
   /**
    * @brief Returns true if the container has a child node with the given name.
@@ -203,7 +203,7 @@ protected:
    * @param child
    * @param parent
    */
-  void createParentConnection(IDataStructureNode* child, IDSContainer* parent) const;
+  void createParentConnection(IDataStructureNode* child, AbstractDataStructureContainer* parent) const;
   
   /**
    * @brief Clears the child's parent pointer.  This does not remove the child from the parent's collection.
