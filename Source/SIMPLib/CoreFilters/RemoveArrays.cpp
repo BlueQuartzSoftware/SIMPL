@@ -195,8 +195,8 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
         // Check to see if the user selected this item
         if(daProxy.getFlag() == state)
         {
-          auto dc = amItem->removeAttributeArray(daName);
-          m_RemovedPaths.push_back(dc->getDataArrayPath());
+          auto da = amItem->removeAttributeArray(daName);
+          m_RemovedPaths.push_back(da->getDataArrayPath());
           continue;
         }
       }
