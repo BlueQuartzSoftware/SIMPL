@@ -242,10 +242,11 @@ void ExtractVertexGeometry::dataCheck()
       newArrayPtr = sourceCellAttrMat->removeAttributeArray(dap.getDataArrayName());
     }
 
-    DataArrayPath newDap = dap;
-    newDap.setDataContainerName(m_VertexDataContainerName.getDataContainerName());
+    DataArrayPath newDap = m_VertexDataContainerName;
+    newDap.setAttributeMatrixName(sourceCellAttrMat->getName());
+    newDap.setDataArrayName("");
 
-    AttributeMatrix::Pointer vertexCellAttrMat = vertexDataContainer->getAttributeMatrix(dap);
+    AttributeMatrix::Pointer vertexCellAttrMat = vertexDataContainer->getAttributeMatrix(newDap);
     if(vertexCellAttrMat == nullptr)
     {
       vertexCellAttrMat = vertexDataContainer->createNonPrereqAttributeMatrix(this, sourceCellAttrMat->getName(), sourceCellAttrMat->getTupleDimensions(), AttributeMatrix::Type::Vertex, AttributeMatrixID);
