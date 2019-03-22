@@ -34,9 +34,8 @@ PYBIND11_MAKE_OPAQUE(std::vector<size_t>);
 #include <QtCore/QDateTime>
 #include <QtCore/QString>
 
-#include "SIMPLib/Common/IVec2.hpp"
-#include "SIMPLib/Common/IVec3.hpp"
 #include "SIMPLib/Common/PhaseType.h"
+#include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/Common/ShapeType.h"
 #include "SIMPLib/CoreFilters/ArrayCalculator.h"
 #include "SIMPLib/CoreFilters/ImportHDF5Dataset.h"
