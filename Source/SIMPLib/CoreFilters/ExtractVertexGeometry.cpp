@@ -237,8 +237,9 @@ void ExtractVertexGeometry::dataCheck()
       newArrayPtr = sourceCellAttrMat->removeAttributeArray(dap.getDataArrayName());
     }
 
-    DataArrayPath newDap = dap;
-    newDap.setDataContainerName(m_VertexDataContainerName);
+    DataArrayPath newDap(m_VertexDataContainerName);
+    newDap.setAttributeMatrixName(sourceCellAttrMat->getName());
+    newDap.setDataArrayName("");
 
     AttributeMatrix::Pointer vertexCellAttrMat = vertexDataContainer->getAttributeMatrix(newDap);
     if(vertexCellAttrMat == nullptr)
