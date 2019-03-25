@@ -159,9 +159,8 @@ void MoveData::dataCheck()
 
     if(amSrcDataContainer->getName() == amDestDataContainer->getName())
     {
-      setWarningCondition(-11018);
-      QString ss = QObject::tr("The source and destination Data Container are the same.  Is this what you meant to do?");
-      notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+            QString ss = QObject::tr("The source and destination Data Container are the same.  Is this what you meant to do?");
+      notifyWarningMessage("", ss, -11018);
       return;
     }
 
@@ -181,18 +180,16 @@ void MoveData::dataCheck()
 
     if(daDestAttributeMatrix->getNumberOfTuples() != daSrcDataArray->getNumberOfTuples())
     {
-      setErrorCondition(-11019);
       QString ss = QObject::tr("The number of tuples of source Attribute Array (%1) and destination Attribute Matrix (%2) do not match")
                        .arg(daSrcDataArray->getNumberOfTuples())
                        .arg(daDestAttributeMatrix->getNumberOfTuples());
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      notifyErrorMessage("", ss, -11019);
       return;
     }
     if(amSrcPath == amDestPath)
     {
-      setWarningCondition(-11020);
-      QString ss = QObject::tr("The source and destination Attribute Matrix are the same.  Is this what you meant to do?");
-      notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+            QString ss = QObject::tr("The source and destination Attribute Matrix are the same.  Is this what you meant to do?");
+      notifyWarningMessage("", ss, -11020);
       return;
     }
 
@@ -201,9 +198,8 @@ void MoveData::dataCheck()
   }
   else
   {
-    setErrorCondition(-11021);
     QString ss = QObject::tr("Neither an Attribute Matrix nor an Attribute Array was selected to be moved");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -11021);
     return;
   }
 }

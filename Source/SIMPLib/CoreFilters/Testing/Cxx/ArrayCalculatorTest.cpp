@@ -65,7 +65,7 @@ public:
   ~DummyObserver() override = default;
   SIMPL_TYPE_MACRO(DummyObserver)
 
-  void processPipelineMessage(const PipelineMessage& pm) override
+  void processPipelineMessage(AbstractMessage::Pointer pm) override
   {
     // Don't do anything...this class only exists to stifle the messages being dumped to the console
   }

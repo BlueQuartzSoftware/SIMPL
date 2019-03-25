@@ -35,74 +35,47 @@
 
 #pragma once
 
-#include "SIMPLib/Common/AbstractMessage.h"
+#include "SIMPLib/Messages/VisitableStatusMessage.h"
 
-class IMessageHandler;
+class AbstractMessageHandler;
 
 /**
- * @class PipelineMessage PipelineMessage.h DREAM3DLib/Common/PipelineMessage.h
- * @brief This class enables the creation of Error, Warning, and Status messages that
- * can be sent up from filters to the DREAM3D GUI.
+ * @class PipelineStatusMessage PipelineStatusMessage.h SIMPLib/Messages/PipelineStatusMessage.h
+ * @brief This class is a pipeline status message class that is responsible for holding all the details
+ * of a pipeline status message emitted by a FilterPipeline instance.
  */
-class SIMPLib_EXPORT PipelineMessage : public AbstractMessage
+class SIMPLib_EXPORT PipelineStatusMessage : public VisitableStatusMessage<PipelineStatusMessage>
 {
   public:
-    PipelineMessage();
+    SIMPL_SHARED_POINTERS(PipelineStatusMessage)
+    SIMPL_STATIC_NEW_MACRO(PipelineStatusMessage)
+    SIMPL_TYPE_MACRO(PipelineStatusMessage)
 
-    PipelineMessage(const QString& prefix, const QString& msg, int code = 0, MessageType msgType = MessageType::UnknownMessageType, int progress = -1);
+    virtual ~PipelineStatusMessage();
 
-    PipelineMessage(const PipelineMessage& rhs);
-
-    static PipelineMessage CreateErrorMessage(const QString className, const QString msg, int code);
-
-    static PipelineMessage CreateStatusMessage(const QString className, const QString msg);
-
-    static PipelineMessage CreateWarningMessage(const QString className, const QString msg, int code);
-
-    static PipelineMessage CreateStandardOutputMessage(const QString humanLabel, const QString msg);
-
-
-    SIMPL_TYPE_MACRO(PipelineMessage)
-
-    virtual ~PipelineMessage();
-
-    bool operator==(const PipelineMessage& rhs);
+    SIMPL_INSTANCE_STRING_PROPERTY(PipelineName)
 
     /**
-     * @brief This method creates and returns a string for error messages
-     */
-    QString generateErrorString() const;
-
-    /**
-     * @brief This method creates and returns a string for warning messages
-     */
-    QString generateWarningString() const;
-
-    /**
-     * @brief This method creates and returns a string for status messages
-     */
-    QString generateStatusString() const;
-
-    /**
-     * @brief This method creates and returns a string for standard output messages
-     */
-    QString generateStandardOutputString() const;
-
-    /**
-     * @brief This method generates a status message that includes a progress value.
+     * @brief New
+     * @param humanLabel
+     * @param pipelineIndex
+     * @param msg
      * @return
      */
-    QString generateProgressString() const;
+    static Pointer New(const QString &pipelineName, const QString& prefix, const QString& msgText);
 
     /**
-     * @brief visit
-     * @param msgHandler
+     * @brief This method creates and returns a string for pipeline status messages
      */
-    virtual void visit(IMessageHandler* msgHandler) override;
+    virtual QString generateMessageString() const override;
+
+  protected:
+    PipelineStatusMessage();
+    PipelineStatusMessage(const QString &pipelineName, const QString& prefix, const QString& msgText);
 
   private:
 
 };
-Q_DECLARE_METATYPE(PipelineMessage)
+Q_DECLARE_METATYPE(PipelineStatusMessage::Pointer)
 
 

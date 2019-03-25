@@ -35,6 +35,8 @@
 
 #include "ui_ProgressDialog.h"
 
+#include "SVWidgetsLib/Widgets/ProgressDialogMessageHandler.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -61,7 +63,8 @@ void ProgressDialog::setLabelText(const QString& text)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ProgressDialog::processPipelineMessage(const PipelineMessage& msg)
+void ProgressDialog::processPipelineMessage(AbstractMessage::Pointer msg)
 {
-  m_Ui->label->setText(msg.getFilterHumanLabel());
+  ProgressDialogMessageHandler msgHandler(this);
+  msg->visit(&msgHandler);
 }

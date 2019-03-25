@@ -174,10 +174,8 @@ void ConvertData(AbstractFilter* filter, T* ptr, QVector<size_t> dims, DataConta
   }
   else
   {
-    filter->setErrorCondition(-399);
-    QString ss =
-        QString("Error Converting DataArray '%1/%2' from type %3 to type %4").arg(attributeMatrixName).arg(ptr->getName()).arg(static_cast<int>(ptr->getType())).arg(static_cast<int>(scalarType));
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+    QString ss = QString("Error Converting DataArray '%1/%2' from type %3 to type %4").arg(attributeMatrixName).arg(ptr->getName()).arg(static_cast<int>(ptr->getType())).arg(static_cast<int>(scalarType));
+    filter->notifyErrorMessage("", ss, filter->getErrorCondition());
   }
 }
 } // End Namespace Detail
@@ -249,8 +247,7 @@ void ConvertData::dataCheck()
   if(m_OutputArrayName.isEmpty())
   {
     ss = QObject::tr("The output array name must be set");
-    setErrorCondition(-398);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -398);
     return;
   }
 

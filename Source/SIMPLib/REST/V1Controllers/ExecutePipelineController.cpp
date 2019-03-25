@@ -56,6 +56,7 @@
 #include "QtWebApp/httpserver/httpsessionstore.h"
 #include "SIMPLStaticFileController.h"
 #include "SIMPLib/REST/PipelineListener.h"
+#include "SIMPLib/REST/V1Controllers/ExecutePipelineMessageHandler.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -195,45 +196,15 @@ void ExecutePipelineController::serviceJSON(QJsonObject pipelineObj)
   QJsonArray warnings;
   QJsonArray statusMsgs;
 
-  std::vector<AbstractMessage> errorMessages = listener.getErrorMessages();
+  std::vector<AbstractErrorMessage*> errorMessages = listener.getErrorMessages();
   bool completed = (errorMessages.size() == 0);
   m_ResponseObj[SIMPL::JSON::Completed] = completed;
 
-  std::vector<AbstractMessage> messages = listener.getMessages();
-  for(int i = 0; i < messages.size(); i++)
+  std::vector<AbstractMessage*> messages = listener.getMessages();
+  for(AbstractMessage* msg : messages)
   {
-    AbstractMessage message = messages[i];
-
-    switch(message.getType())
-    {
-      case AbstractMessage::MessageType::Error:
-      {
-        QJsonObject error;
-        ExecutePipelineMessageHandler msgHandler(this, &error);
-        messages[i].visit(&msgHandler);
-        errors.push_back(error);
-      }
-      case AbstractMessage::MessageType::Warning:
-      {
-        QJsonObject warning;
-        ExecutePipelineMessageHandler msgHandler(this, &warning);
-        messages[i].visit(&msgHandler);
-        warnings.push_back(warning);
-      }
-      case AbstractMessage::MessageType::StatusMessage:
-      {
-        QJsonObject msg;
-        msg[SIMPL::JSON::Message] = messages[i].generateStatusString();
-        statusMsgs.push_back(msg);
-      }
-      case AbstractMessage::MessageType::ProgressValue:
-      case AbstractMessage::MessageType::StandardOutputMessage:
-      case AbstractMessage::MessageType::StatusMessageAndProgressValue:
-      case AbstractMessage::MessageType::UnknownMessageType:
-      {
-        break;
-      }
-    }
+    ExecutePipelineMessageHandler msgHandler(&errors, &warnings);
+    msg->visit(&msgHandler);
   }
 
   m_ResponseObj[SIMPL::JSON::PipelineErrors] = errors;

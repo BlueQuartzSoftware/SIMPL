@@ -5,9 +5,16 @@
 #include <QtCore/QFile>
 
 #include "SIMPLib/Common/IObserver.h"
-#include "SIMPLib/Common/PipelineMessage.h"
+#include "SIMPLib/Messages/AbstractMessageHandler.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/SIMPLib.h"
+
+class PipelineListenerMessageHandler;
+
+class AbstractErrorMessage;
+class AbstractProgressMessage;
+class AbstractStatusMessage;
+class AbstractWarningMessage;
 
 class SIMPLib_EXPORT PipelineListener : public QObject, public IObserver
 {
@@ -18,28 +25,33 @@ public:
   PipelineListener(QObject* parent);
   virtual ~PipelineListener();
 
+  friend PipelineListenerMessageHandler;
+
   void createErrorLogFile(QString path);
   void createWarningLogFile(QString path);
   void createStatusLogFile(QString path);
-  void createStandardOutputLogFile(QString path);
   void closeFiles();
 
-  std::vector<AbstractMessage> getMessages();
-  std::vector<AbstractMessage> getErrorMessages();
-  std::vector<AbstractMessage> getWarningMessages();
-  std::vector<AbstractMessage> getStatusMessages();
-  std::vector<AbstractMessage> getStandardOutputMessages();
+  std::vector<AbstractMessage*> getMessages();
+  std::vector<AbstractErrorMessage*> getErrorMessages();
+  std::vector<AbstractWarningMessage*> getWarningMessages();
+  std::vector<AbstractStatusMessage*> getStatusMessages();
+  std::vector<AbstractProgressMessage*> getProgressMessages();
 
   QString getErrorLog();
   QString getWarningLog();
   QString getStatusLog();
-  QString getStandardOutputLog();
 
 public slots:
-  void processPipelineMessage(const AbstractMessage& pm);
+  void processPipelineMessage(AbstractMessage::Pointer pm);
 
 private:
-  std::vector<AbstractMessage> m_Messages;
+  std::vector<AbstractMessage::Pointer> m_SharedMessages;
+  std::vector<AbstractMessage*> m_Messages;
+  std::vector<AbstractErrorMessage*> m_ErrorMessages;
+  std::vector<AbstractStatusMessage*> m_StatusMessages;
+  std::vector<AbstractProgressMessage*> m_ProgressMessages;
+  std::vector<AbstractWarningMessage*> m_WarningMessages;
 
   QFile* m_ErrorLog;
   QFile* m_WarningLog;

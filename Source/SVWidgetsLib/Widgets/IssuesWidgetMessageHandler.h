@@ -36,7 +36,7 @@
 #pragma once
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/IMessageHandler.h"
+#include "SIMPLib/Messages/AbstractMessageHandler.h"
 
 class IssuesWidget;
 class QLabel;
@@ -45,38 +45,46 @@ class QLabel;
  * @class IssuesWidgetMessageHandler IssuesWidgetMessageHandler.h DREAM3DLib/Common/IssuesWidgetMessageHandler.h
  * @brief This is the Message handler for the issues widget.  It is responsible for loading the issues table with new messages.
  */
-class SIMPLib_EXPORT IssuesWidgetMessageHandler : public IMessageHandler
+class SIMPLib_EXPORT IssuesWidgetMessageHandler : public AbstractMessageHandler
 {
   public:
-    explicit IssuesWidgetMessageHandler(IssuesWidget* issuesWidget);
+    explicit IssuesWidgetMessageHandler(IssuesWidget* issuesWidget, int* count, int* errCount, int* warningCount);
 
     /**
-     * @brief visit
+     * @brief processMessage
      * @param msg
      */
-    void processMessage(GenericMessage msg) override;
+    void processMessage(FilterErrorMessage* msg) const override;
 
     /**
-     * @brief visit
+     * @brief processMessage
      * @param msg
      */
-    void processMessage(PipelineMessage msg) override;
-
-    /**
-     * @brief visit
-     * @param msg
-     */
-    void processMessage(FilterMessage msg) override;
+    void processMessage(FilterWarningMessage* msg) const override;
 
   private:
     IssuesWidget* m_IssuesWidget = nullptr;
+    int* m_Count = nullptr;
+    int* m_ErrCount = nullptr;
+    int* m_WarningCount = nullptr;
+
+    /**
+     * @brief addItemToIssuesTable
+     * @param className
+     * @param humanLabel
+     * @param pipelineIndex
+     * @param msg
+     * @param code
+     * @param msgColor
+     */
+    void addItemToIssuesTable(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msg, int code, QColor msgColor) const;
 
     /**
      * @brief createHyperlinkLabel
      * @param msg
      * @return
      */
-    QLabel* createHyperlinkLabel(const FilterMessage &msg);
+    QLabel* createHyperlinkLabel(const QString &filterClassName, const QString &filterHumanLabel) const;
 };
 
 

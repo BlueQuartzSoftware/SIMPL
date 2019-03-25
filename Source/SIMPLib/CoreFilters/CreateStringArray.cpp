@@ -131,27 +131,23 @@ void CreateStringArray::dataCheck()
 
   if(getNumberOfComponents() < 0)
   {
-    setErrorCondition(-8150);
     QString ss = QObject::tr("The number of components must non-negative");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -8150);
   }
   if(getNumberOfComponents() == 0)
   {
-    setErrorCondition(-8151);
     QString ss = QObject::tr("The number of components is Zero. This will result in an array that has no memory allocated. Are you sure you wanted to do this?");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -8151);
   }
   if(!getNewArray().isValid())
   {
-    setErrorCondition(-8152);
     QString ss = QObject::tr("The Created DataArrayPath is invalid. Please select the Data Container, Attribute Matrix and set an output DataArray name.");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -8152);
   }
   if (m_InitializationValue.isEmpty())
   {
     QString ss = "Empty initialization value.";
-    setErrorCondition(-5759);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -5759);
   }
   QVector<size_t> cDims(1, getNumberOfComponents());
   if(getErrorCondition() < 0)

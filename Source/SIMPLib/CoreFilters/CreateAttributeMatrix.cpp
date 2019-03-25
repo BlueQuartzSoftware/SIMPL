@@ -131,8 +131,7 @@ void CreateAttributeMatrix::dataCheck()
   if(rows.size() != 1)
   {
     QString ss = QObject::tr("The number of rows of data must be 1. The data currently has %1").arg(rows.size());
-    setErrorCondition(-11000);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -11000);
     return;
   }
 

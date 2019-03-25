@@ -123,15 +123,13 @@ void CreateImageGeometry::dataCheck()
   if(m_Dimensions.x == 0 || m_Dimensions.y == 0 || m_Dimensions.z == 0)
   {
     QString ss = QObject::tr("One of the dimensions has a size less than or equal to zero. The minimum size must be postive");
-    setErrorCondition(-390);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -390);
   }
 
   if(getSelectedDataContainer().isEmpty())
   {
     QString ss = QObject::tr("The Data Container must have a name");
-    setErrorCondition(-391);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -391);
     return;
   }
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getSelectedDataContainer());

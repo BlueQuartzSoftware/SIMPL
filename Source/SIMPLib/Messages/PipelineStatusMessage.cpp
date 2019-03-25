@@ -32,94 +32,56 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#include "AbstractMessage.h"
+
+#include "PipelineStatusMessage.h"
 
 #include <QtCore/QMetaType>
 #include <QtCore/QString>
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-AbstractMessage::AbstractMessage() = default;
+#include "SIMPLib/Messages/AbstractMessageHandler.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractMessage::AbstractMessage(const QString& prefix, const QString& msg, int code, MessageType msgType, int progress)
-: m_Prefix(prefix)
-, m_Text(msg)
-, m_Code(code)
-, m_Type(msgType)
-, m_ProgressValue(progress)
+PipelineStatusMessage::PipelineStatusMessage()
+: VisitableStatusMessage<PipelineStatusMessage>()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractMessage::~AbstractMessage() = default;
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString AbstractMessage::generateErrorString() const
+PipelineStatusMessage::PipelineStatusMessage(const QString &pipelineName, const QString& prefix, const QString& msgText)
+: VisitableStatusMessage<PipelineStatusMessage>(prefix, msgText)
+, m_PipelineName(pipelineName)
 {
-  QString ss = QObject::tr("Error (%1): %2: %3").arg(m_Code).arg(m_Prefix).arg(m_Text);
-  return ss;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString AbstractMessage::generateWarningString() const
+PipelineStatusMessage::~PipelineStatusMessage() = default;
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+PipelineStatusMessage::Pointer PipelineStatusMessage::New(const QString &pipelineName, const QString& prefix, const QString& msgText)
 {
-  QString ss = QObject::tr("Warning (%1): %2: %3").arg(m_Code).arg(m_Prefix).arg(m_Text);
-  return ss;
+  PipelineStatusMessage::Pointer shared_ptr (new PipelineStatusMessage(pipelineName, prefix, msgText));
+  return shared_ptr;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString AbstractMessage::generateStatusString() const
+QString PipelineStatusMessage::generateMessageString() const
 {
-  if(m_Prefix.isEmpty())
+  if(getPrefix().isEmpty())
   {
-    QString ss = QObject::tr("%2").arg(m_Text);
+    QString ss = QObject::tr("%2").arg(getMessageText());
     return ss;
   }
 
-  QString ss = QObject::tr("%1: %2").arg(m_Prefix).arg(m_Text);
+  QString ss = QObject::tr("%1: %2").arg(getPrefix()).arg(getMessageText());
   return ss;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString AbstractMessage::generateProgressString() const
-{
-  if(m_Prefix.isEmpty())
-  {
-    QString ss = QObject::tr("%1 %2%%").arg(m_Text).arg(m_ProgressValue);
-    return ss;
-  }
-
-  QString ss = QObject::tr("%1: %2 %3%%").arg(m_Prefix).arg(m_Text).arg(m_ProgressValue);
-  return ss;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString AbstractMessage::generateStandardOutputString() const
-{
-  return m_Text;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void AbstractMessage::visit(IMessageHandler* msgHandler)
-{
-  // This should never execute
-  return;
 }

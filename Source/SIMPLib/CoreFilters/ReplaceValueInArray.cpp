@@ -95,14 +95,12 @@ template <typename T> void checkValuesInt(AbstractFilter* filter, double removeV
   if(!((removeValue >= std::numeric_limits<T>::min()) && (removeValue <= std::numeric_limits<T>::max())))
   {
     ss = QObject::tr("The %1 remove value was invalid. The valid range is %2 to %3").arg(strType).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
-    filter->setErrorCondition(-100);
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+    filter->notifyErrorMessage("", ss, -100);
   }
   if(!((replaceValue >= std::numeric_limits<T>::min()) && (replaceValue <= std::numeric_limits<T>::max())))
   {
     ss = QObject::tr("The %1 replace value was invalid. The valid range is %2 to %3").arg(strType).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
-    filter->setErrorCondition(-100);
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+    filter->notifyErrorMessage("", ss, -100);
   }
 }
 
@@ -117,15 +115,13 @@ template <typename T> void checkValuesFloatDouble(AbstractFilter* filter, double
        ((removeValue >= std::numeric_limits<T>::min()) && (removeValue <= std::numeric_limits<T>::max()))))
   {
     ss = QObject::tr("The %1 remove value was invalid. The valid ranges are -%3 to -%2, 0, %2 to %3").arg(strType).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
-    filter->setErrorCondition(-101);
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+    filter->notifyErrorMessage("", ss, -101);
   }
   if(!(((replaceValue >= static_cast<T>(-1) * std::numeric_limits<T>::max()) && (replaceValue <= static_cast<T>(-1) * std::numeric_limits<T>::min())) || (replaceValue == 0) ||
        ((replaceValue >= std::numeric_limits<T>::min()) && (replaceValue <= std::numeric_limits<T>::max()))))
   {
     ss = QObject::tr("The %1 replace value was invalid. The valid ranges are -%3 to -%2, 0, %2 to %3").arg(strType).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
-    filter->setErrorCondition(-101);
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+    filter->notifyErrorMessage("", ss, -101);
   }
 }
 
@@ -178,8 +174,7 @@ void ReplaceValueInArray::dataCheck()
     QString ss = QObject::tr("Selected array '%1' must be a scalar array (1 component). The number of components is %2")
                      .arg(getSelectedArray().getDataArrayName())
                      .arg(m_ArrayPtr.lock()->getNumberOfComponents());
-    setErrorCondition(-11002);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -11002);
     return;
   }
 
@@ -237,9 +232,8 @@ void ReplaceValueInArray::dataCheck()
   }
   else
   {
-    setErrorCondition(-4060);
     QString ss = QObject::tr("Incorrect data scalar type");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -4060);
   }
 }
 

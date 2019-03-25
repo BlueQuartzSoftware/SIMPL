@@ -54,6 +54,7 @@ set(SVWidgetsLib_Widgets_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineFilterMimeData.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineItem.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineView.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/ProgressDialogMessageHandler.h
 )
 
 set(SVWidgetsLib_Widgets_SRCS
@@ -96,7 +97,7 @@ set(SVWidgetsLib_Widgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarIssuesButton.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PopUpWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/ProgressDialog.cpp
-  
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/ProgressDialogMessageHandler.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVControlWidgets.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVOverlayWidgetButton.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVStyle.cpp

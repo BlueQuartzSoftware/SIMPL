@@ -40,6 +40,9 @@
 #include <QtWidgets/QTableWidgetItem>
 #include <QtWidgets/QLabel>
 
+#include "SIMPLib/Messages/FilterErrorMessage.h"
+#include "SIMPLib/Messages/FilterWarningMessage.h"
+
 #ifdef SIMPL_USE_MKDOCS
 #define URL_GENERATOR QtSDocServer
 #include "SVWidgetsLib/QtSupport/QtSDocServer.h"
@@ -54,8 +57,11 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IssuesWidgetMessageHandler::IssuesWidgetMessageHandler(IssuesWidget* issuesWidget)
+IssuesWidgetMessageHandler::IssuesWidgetMessageHandler(IssuesWidget* issuesWidget, int* count, int* errCount, int* warningCount)
 : m_IssuesWidget(issuesWidget)
+, m_Count(count)
+, m_ErrCount(errCount)
+, m_WarningCount(warningCount)
 {
 
 }
@@ -63,99 +69,74 @@ IssuesWidgetMessageHandler::IssuesWidgetMessageHandler(IssuesWidget* issuesWidge
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IssuesWidgetMessageHandler::processMessage(GenericMessage msg)
+void IssuesWidgetMessageHandler::processMessage(FilterErrorMessage* msg) const
 {
+  QColor msgColor = QColor(255, 191, 193);
+  addItemToIssuesTable(msg->getClassName(), msg->getHumanLabel(), msg->getPipelineIndex(), msg->getMessageText(), msg->getCode(), msgColor);
 
+  m_ErrCount[0]++;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IssuesWidgetMessageHandler::processMessage(PipelineMessage msg)
+void IssuesWidgetMessageHandler::processMessage(FilterWarningMessage* msg) const
 {
+  QColor msgColor = QColor(251, 254, 137);
+  addItemToIssuesTable(msg->getClassName(), msg->getHumanLabel(), msg->getPipelineIndex(), msg->getMessageText(), msg->getCode(), msgColor);
 
+  m_WarningCount[0]++;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IssuesWidgetMessageHandler::processMessage(FilterMessage msg)
+void IssuesWidgetMessageHandler::addItemToIssuesTable(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msg, int code, QColor msgColor) const
 {
-  bool updateRow = false;
-  QColor msgColor;
-  QBrush msgBrush;
-  QString msgDesc;
-  QString msgPrefix;
-  int msgCode = -1;
+  QBrush msgBrush = QBrush(msgColor);
 
   // Create error hyperlink
-  switch(msg.getType())
+  QTableWidgetItem* codeWidgetItem = nullptr;
+  QTableWidgetItem* indexWidgetItem = nullptr;
+
+  QTableWidgetItem* filterNameWidgetItem = new QTableWidgetItem(humanLabel);
+  filterNameWidgetItem->setTextAlignment(Qt::AlignCenter);
+  QTableWidgetItem* descriptionWidgetItem = new QTableWidgetItem(msg);
+  codeWidgetItem = new QTableWidgetItem(QString::number(code));
+  indexWidgetItem = new QTableWidgetItem(QString::number(pipelineIndex + 1));
+
+  codeWidgetItem->setTextAlignment(Qt::AlignCenter);
+
+  filterNameWidgetItem->setBackground(msgBrush);
+  descriptionWidgetItem->setBackground(msgBrush);
+  codeWidgetItem->setBackground(msgBrush);
+
+  QTableWidget* issuesTable = m_IssuesWidget->getIssuesTable();
+  int row = issuesTable->rowCount();
+
+  issuesTable->insertRow(row);
+
+  QLabel* hyperlinkLabel = createHyperlinkLabel(className, humanLabel);
+  if(hyperlinkLabel == nullptr)
   {
-  case FilterMessage::MessageType::Error:
-    msgColor = QColor(255, 191, 193);
-    updateRow = true;
-    break;
-  case FilterMessage::MessageType::Warning:
-    msgColor = QColor(251, 254, 137);
-    updateRow = true;
-    break;
-  case FilterMessage::MessageType::StatusMessage:
-  case FilterMessage::MessageType::StandardOutputMessage:
-  case FilterMessage::MessageType::ProgressValue:
-  case FilterMessage::MessageType::StatusMessageAndProgressValue:
-  case FilterMessage::MessageType::UnknownMessageType:
-    break;
+    issuesTable->setItem(row, IssuesWidget::FilterName, filterNameWidgetItem);
   }
-
-  if(updateRow)
+  else
   {
-    msgBrush = QBrush(msgColor);
-
-    msgDesc = msg.getText();
-    msgCode = msg.getCode();
-    msgPrefix = msg.getPrefix();
-
-    QTableWidgetItem* codeWidgetItem = nullptr;
-    QTableWidgetItem* indexWidgetItem = nullptr;
-
-    QTableWidgetItem* filterNameWidgetItem = new QTableWidgetItem(msgPrefix);
-    filterNameWidgetItem->setTextAlignment(Qt::AlignCenter);
-    QTableWidgetItem* descriptionWidgetItem = new QTableWidgetItem(msgDesc);
-    codeWidgetItem = new QTableWidgetItem(QString::number(msgCode));
-    indexWidgetItem = new QTableWidgetItem(QString::number(msg.getPipelineIndex() + 1));
-
-    codeWidgetItem->setTextAlignment(Qt::AlignCenter);
-
-    filterNameWidgetItem->setBackground(msgBrush);
-    descriptionWidgetItem->setBackground(msgBrush);
-    codeWidgetItem->setBackground(msgBrush);
-
-    QTableWidget* issuesTable = m_IssuesWidget->getIssuesTable();
-    int row = issuesTable->rowCount();
-
-    QLabel* hyperlinkLabel = createHyperlinkLabel(msg);
-    if(hyperlinkLabel == nullptr)
-    {
-      issuesTable->setItem(row, IssuesWidget::FilterName, filterNameWidgetItem);
-    }
-    else
-    {
-      issuesTable->setCellWidget(row, IssuesWidget::FilterName, hyperlinkLabel);
-    }
-    issuesTable->setItem(row, IssuesWidget::FilterIndex, indexWidgetItem);
-    issuesTable->setItem(row, IssuesWidget::Description, descriptionWidgetItem);
-    issuesTable->setItem(row, IssuesWidget::ErrorCode, codeWidgetItem);
+    issuesTable->setCellWidget(row, IssuesWidget::FilterName, hyperlinkLabel);
   }
+  issuesTable->setItem(row, IssuesWidget::FilterIndex, indexWidgetItem);
+  issuesTable->setItem(row, IssuesWidget::Description, descriptionWidgetItem);
+  issuesTable->setItem(row, IssuesWidget::ErrorCode, codeWidgetItem);
+
+  m_Count[0]++;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QLabel* IssuesWidgetMessageHandler::createHyperlinkLabel(const FilterMessage& msg)
+QLabel* IssuesWidgetMessageHandler::createHyperlinkLabel(const QString &filterClassName, const QString &filterHumanLabel) const
 {
-  QString filterClassName = (msg.getFilterClassName());
-  QString filterHumanLabel = (msg.getFilterHumanLabel());
-
   if(filterClassName.isEmpty() || filterHumanLabel.isEmpty())
   {
     if(!filterClassName.isEmpty())

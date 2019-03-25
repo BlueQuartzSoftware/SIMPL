@@ -121,16 +121,14 @@ void RemoveComponentFromArray::dataCheck()
   {
     if(m_NewArrayArrayName.isEmpty())
     {
-      setErrorCondition(-11001);
-      notifyErrorMessage(getHumanLabel(), "Removed Component array name must be set.", getErrorCondition());
+      notifyErrorMessage("", "Removed Component array name must be set.", -11001);
       return;
     }
   }
 
   if(m_ReducedArrayArrayName.isEmpty())
   {
-    setErrorCondition(-11002);
-    notifyErrorMessage(getHumanLabel(), "Reduced array name must be set.", getErrorCondition());
+    notifyErrorMessage("", "Reduced array name must be set.", -11002);
     return;
   }
 
@@ -141,22 +139,20 @@ void RemoveComponentFromArray::dataCheck()
 
   if(m_InArrayPtr.lock()->getNumberOfComponents() < 2)
   {
-    setErrorCondition(-11003);
     QString ss = QObject::tr("Selected array '%1' must have more than 1 component. The number of components is %2")
                      .arg(getSelectedArrayPath().getDataArrayName())
                      .arg(m_InArrayPtr.lock()->getNumberOfComponents());
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -11003);
     return;
   }
 
   if(m_CompNumber >= m_InArrayPtr.lock()->getNumberOfComponents())
   {
-    setErrorCondition(-11004);
     QString ss = QObject::tr("Error removing component from DataArray '%3', Component to remove (%1) is greater than or equal to the number of components (%2) for array selected.")
                      .arg(m_CompNumber)
                      .arg(m_InArrayPtr.lock()->getNumberOfComponents())
                      .arg(getSelectedArrayPath().getDataArrayName());
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -11004);
     return;
   }
 

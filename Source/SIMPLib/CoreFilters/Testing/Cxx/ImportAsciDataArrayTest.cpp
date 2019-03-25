@@ -112,8 +112,8 @@ public:
 
 #if 0
     Observer obs;
-    filter->connect(filter.get(), SIGNAL(messageGenerated(const AbstractMessage&)),
-            &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
+    filter->connect(filter.get(), SIGNAL(messageGenerated(AbstractMessage::Pointer)),
+            &obs, SLOT(processPipelineMessage(AbstractMessage::Pointer)));
 #endif
     filter->preflight();
     DREAM3D_REQUIRED(filter->getErrorCondition(), >=, 0);

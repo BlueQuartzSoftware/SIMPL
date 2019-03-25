@@ -300,52 +300,36 @@ public:
    */
   virtual DataArrayPath::RenameContainer getRenamedPaths();
 
-  // ------------------------------
-  // These methods are over ridden from the superclass in order to add the
-  // pipeline index to the PipelineMessage Object.
-  // ------------------------------
-
   /**
    * @brief notifyErrorMessage
-   * @param prefix
-   * @param text
+   * @param humanLabel
+   * @param msg
    * @param code
    */
-  void notifyErrorMessage(const QString &prefix, const QString& text, int code) override;
+  void notifyErrorMessage(const QString &prefix, const QString& msg, int code) override;
 
   /**
    * @brief notifyWarningMessage
-   * @param text
+   * @param humanLabel
+   * @param msg
    * @param code
    */
-  void notifyWarningMessage(const QString& text, int code) override;
+  void notifyWarningMessage(const QString &prefix, const QString& msg, int code) override;
 
   /**
    * @brief notifyStatusMessage
-   * @param text
+   * @param humanLabel
+   * @param msg
    */
-  void notifyStatusMessage(const QString& text) override;
-
-  /**
-   * @brief notifyStandardOutputMessage
-   * @param text
-   */
-  void notifyStandardOutputMessage(const QString& text) override;
-
-  /**
-   * @brief notifyStatusMessage
-   * @param prefix
-   * @param text
-   */
-  void notifyStatusMessage(const QString& prefix, const QString& text) override;
+  void notifyStatusMessage(const QString &prefix, const QString& msg) override;
 
   /**
    * @brief notifyProgressMessage
-   * @param prefix
-   * @param text
+   * @param humanLabel
+   * @param msg
    * @param progress
    */
-  void notifyProgressMessage(const QString& prefix, const QString& text, int progress);
+  void notifyProgressMessage(const QString &prefix, const QString& msg, int progress);
 
   /**
    * @brief notifyMissingProperty

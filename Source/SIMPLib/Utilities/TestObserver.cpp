@@ -46,26 +46,7 @@ TestObserver::~TestObserver() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TestObserver::processPipelineMessage(const AbstractMessage& pm)
+void TestObserver::processPipelineMessage(AbstractMessage::Pointer pm)
 {
-  if(pm.getType() == PipelineMessage::MessageType::Error)
-  {
-      std::cout << pm.generateErrorString().toStdString() << std::endl;
-  }
-  else if(pm.getType() == PipelineMessage::MessageType::Warning)
-  {
-      std::cout << pm.generateWarningString().toStdString() << std::endl;
-  }
-  else if(pm.getType() == PipelineMessage::MessageType::StatusMessage)
-  {
-      // std::cout << msg.getFilterHumanLabel().toStdString() << ": " << msg.generateStatusString().toStdString()  << std::endl;
-  }
-  else if(pm.getType() == PipelineMessage::MessageType::ProgressValue)
-  {
-      // std::cout << msg.getFilterHumanLabel().toStdString() << ": " << msg.getProgressValue() << "%" << std::endl;
-  }
-  else if(pm.getType() == PipelineMessage::MessageType::StatusMessageAndProgressValue)
-  {
-      // std::cout << msg.getFilterHumanLabel().toStdString() << ": " << msg.getProgressValue() << "% " << msg.generateStatusString().toStdString() << std::endl;
-  }
+  std::cout << pm->generateMessageString().toStdString() << std::endl;
 }

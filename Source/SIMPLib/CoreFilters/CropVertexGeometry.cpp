@@ -128,20 +128,17 @@ void CropVertexGeometry::dataCheck()
   if(getXMax() < getXMin())
   {
     QString ss = QObject::tr("X Max (%1) less than X Min (%2)").arg(getXMax()).arg(getXMin());
-    setErrorCondition(-5550);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -5550);
   }
   if(getYMax() < getYMin())
   {
     QString ss = QObject::tr("Y Max (%1) less than Y Min (%2)").arg(getYMax()).arg(getYMin());
-    setErrorCondition(-5550);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -5550);
   }
   if(getZMax() < getZMin())
   {
     QString ss = QObject::tr("Z Max (%1) less than Z Min (%2)").arg(getZMax()).arg(getZMin());
-    setErrorCondition(-5550);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -5550);
   }
 
   DataContainer::Pointer dc = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getCroppedDataContainerName());

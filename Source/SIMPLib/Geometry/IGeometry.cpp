@@ -423,60 +423,12 @@ void IGeometry::sendThreadSafeProgressMessage(int64_t counter, int64_t max)
   if(m_ProgressCounter > prog)
   {
     int64_t progressInt = static_cast<int64_t>((static_cast<float>(m_ProgressCounter) / max) * 100.0f);
-    QString ss = m_MessageTitle + QObject::tr(" || %1% Complete").arg(progressInt);
-    notifyStatusMessage(m_MessagePrefix, m_MessageLabel, ss);
+    QString ss = QObject::tr("%1% Complete").arg(progressInt);
+    notifyStatusMessage("", ss);
     prog += progIncrement;
   }
 
   m_Mutex.unlock();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void IGeometry::setMessagePrefix(const QString& name)
-{
-  m_MessagePrefix = name;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString IGeometry::getMessagePrefix()
-{
-  return m_MessagePrefix;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void IGeometry::setMessageTitle(const QString& title)
-{
-  m_MessageTitle = title;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString IGeometry::getMessageTitle()
-{
-  return m_MessageTitle;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void IGeometry::setMessageLabel(const QString& label)
-{
-  m_MessageLabel = label;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString IGeometry::getMessageLabel()
-{
-  return m_MessageLabel;
 }
 
 // -----------------------------------------------------------------------------

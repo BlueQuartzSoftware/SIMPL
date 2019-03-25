@@ -32,167 +32,127 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#include "FilterMessage.h"
 
-#include <QtCore/QMetaType>
-#include <QtCore/QString>
+#include "AbstractMessageHandler.h"
 
-#include "SIMPLib/Common/IMessageHandler.h"
+#include "SIMPLib/Messages/GenericErrorMessage.h"
+#include "SIMPLib/Messages/GenericProgressMessage.h"
+#include "SIMPLib/Messages/GenericStatusMessage.h"
+#include "SIMPLib/Messages/GenericWarningMessage.h"
+#include "SIMPLib/Messages/FilterErrorMessage.h"
+#include "SIMPLib/Messages/FilterProgressMessage.h"
+#include "SIMPLib/Messages/FilterStatusMessage.h"
+#include "SIMPLib/Messages/FilterWarningMessage.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterMessage::FilterMessage() = default;
+AbstractMessageHandler::AbstractMessageHandler() = default;
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterMessage::FilterMessage(const QString& className, const char* msg, int code, MessageType msgType, int progress)
-: AbstractMessage("", msg, code, msgType, progress)
-, m_FilterClassName(className)
+void AbstractMessageHandler::processMessage(GenericErrorMessage* msg) const
 {
+  /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
+   * should reimplement this method if they care about processing generic error messages. */
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterMessage::FilterMessage(const QString& className, const QString& msg, int code, MessageType msgType, int progress)
-: AbstractMessage("", msg, code, msgType, progress)
-, m_FilterClassName(className)
-, m_FilterHumanLabel("")
+void AbstractMessageHandler::processMessage(GenericProgressMessage* msg) const
 {
+  /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
+   * should reimplement this method if they care about processing generic progress messages. */
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterMessage::FilterMessage(const QString& className, const QString& humanLabel, const QString& msg, int code, MessageType msgType, int progress)
-: AbstractMessage("", msg, code, msgType, progress)
-, m_FilterClassName(className)
-, m_FilterHumanLabel(humanLabel)
+void AbstractMessageHandler::processMessage(GenericStatusMessage* msg) const
 {
+  /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
+   * should reimplement this method if they care about processing generic status messages. */
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterMessage::FilterMessage(const QString& humanLabel, int pipelineIndex, const QString& msg, MessageType msgType)
-: AbstractMessage("", msg, 0, msgType)
-, m_FilterHumanLabel(humanLabel)
-, m_PipelineIndex(pipelineIndex)
+void AbstractMessageHandler::processMessage(GenericWarningMessage* msg) const
 {
+  /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
+   * should reimplement this method if they care about processing generic warning messages. */
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterMessage FilterMessage::CreateErrorMessage(const QString className, const QString humanLabel, const QString msg, int code)
+void AbstractMessageHandler::processMessage(PipelineErrorMessage* msg) const
 {
-  FilterMessage em(className, humanLabel, msg, code, MessageType::Error, -1);
-  return em;
+  /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
+   * should reimplement this method if they care about processing pipeline error messages. */
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterMessage FilterMessage::CreateStatusMessage(const QString className, const QString humanLabel, const QString msg)
+void AbstractMessageHandler::processMessage(PipelineProgressMessage* msg) const
 {
-  FilterMessage em(className, humanLabel, msg, 0, MessageType::StatusMessage, -1);
-  return em;
+  /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
+   * should reimplement this method if they care about processing pipeline progress messages. */
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterMessage FilterMessage::CreateWarningMessage(const QString className, const QString humanLabel, const QString msg, int code)
+void AbstractMessageHandler::processMessage(PipelineStatusMessage* msg) const
 {
-  FilterMessage em(className, humanLabel, msg, code, MessageType::Warning, -1);
-  return em;
+  /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
+   * should reimplement this method if they care about processing pipeline status messages. */
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterMessage FilterMessage::CreateStandardOutputMessage(const QString humanLabel, int pipelineIndex, const QString msg)
+void AbstractMessageHandler::processMessage(PipelineWarningMessage* msg) const
 {
-  FilterMessage em(humanLabel, pipelineIndex, msg, MessageType::StandardOutputMessage);
-  return em;
+  /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
+   * should reimplement this method if they care about processing pipeline warning messages. */
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterMessage::~FilterMessage() = default;
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool FilterMessage::operator==(const FilterMessage& rhs)
+void AbstractMessageHandler::processMessage(FilterErrorMessage* msg) const
 {
-  return (m_FilterClassName == rhs.m_FilterClassName && getPrefix() == rhs.getPrefix() && m_FilterHumanLabel == rhs.m_FilterHumanLabel && getText() == rhs.getText() && getCode() == rhs.getCode() &&
-          getType() == rhs.getType() && getProgressValue() == rhs.getProgressValue() && m_PipelineIndex == rhs.m_PipelineIndex);
+  /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
+   * should reimplement this method if they care about processing filter error messages. */
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString FilterMessage::generateErrorString() const
+void AbstractMessageHandler::processMessage(FilterProgressMessage* msg) const
 {
-  QString ss = QObject::tr("Error (%1): %2: %3").arg(getCode()).arg(getPrefix()).arg(getText());
-  return ss;
+  /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
+   * should reimplement this method if they care about processing filter progress messages. */
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString FilterMessage::generateWarningString() const
+void AbstractMessageHandler::processMessage(FilterStatusMessage* msg) const
 {
-  QString ss = QObject::tr("Warning (%1): %2: %3").arg(getCode()).arg(getPrefix()).arg(getText());
-  return ss;
+  /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
+   * should reimplement this method if they care about processing filter status messages. */
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString FilterMessage::generateStatusString() const
+void AbstractMessageHandler::processMessage(FilterWarningMessage* msg) const
 {
-  if(getPrefix().isEmpty())
-  {
-    QString ss = QObject::tr("%2").arg(getText());
-    return ss;
-  }
-
-  QString ss = QObject::tr("%1: %2").arg(getPrefix()).arg(getText());
-  return ss;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString FilterMessage::generateProgressString() const
-{
-  if(getPrefix().isEmpty())
-  {
-    QString ss = QObject::tr("%1 %2%%").arg(getText()).arg(getProgressValue());
-    return ss;
-  }
-
-  QString ss = QObject::tr("%1: %2 %3%%").arg(getPrefix()).arg(getText()).arg(getProgressValue());
-  return ss;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString FilterMessage::generateStandardOutputString() const
-{
-  return getText();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void FilterMessage::visit(IMessageHandler* msgHandler)
-{
-  msgHandler->processMessage(*this);
+  /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
+   * should reimplement this method if they care about processing filter warning messages. */
 }

@@ -485,8 +485,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
                              "Valid Geometry Types: Rectilinear Grid, Vertex, Edge, Triangle, Quadrilateral, Tetrahedral")
                      .arg(getDataContainerName())
                      .arg(igeom->getGeometryTypeAsString());
-    setErrorCondition(-701);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -701);
     break;
   }
   }

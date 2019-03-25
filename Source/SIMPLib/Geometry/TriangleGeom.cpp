@@ -128,9 +128,6 @@ TriangleGeom::TriangleGeom()
   m_GeometryTypeName = SIMPL::Geometry::TriangleGeometry;
   m_GeometryType = IGeometry::Type::Triangle;
   m_XdmfGridType = SIMPL::XdmfGridType::PolyData;
-  m_MessagePrefix = "";
-  m_MessageTitle = "";
-  m_MessageLabel = "";
   m_UnitDimensionality = 2;
   m_SpatialDimensionality = 3;
   m_VertexList = TriangleGeom::CreateSharedVertexList(0);
@@ -500,7 +497,7 @@ void TriangleGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayTy
 
   if(observable != nullptr)
   {
-    connect(this, SIGNAL(messageGenerated(const AbstractMessage&)), observable, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
+    connect(this, SIGNAL(messageGenerated(AbstractMessage::Pointer)), observable, SLOT(processDerivativesMessage(AbstractMessage::Pointer)));
   }
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS

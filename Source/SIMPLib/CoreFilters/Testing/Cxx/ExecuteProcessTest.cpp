@@ -44,6 +44,10 @@
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
 #include "SIMPLib/Filtering/QMetaObjectUtilities.h"
+#include "SIMPLib/Messages/AbstractMessageHandler.h"
+#include "SIMPLib/Messages/FilterStatusMessage.h"
+#include "SIMPLib/Messages/PipelineStatusMessage.h"
+#include "SIMPLib/Messages/AbstractMessageHandler.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 #include "SIMPLib/SIMPLib.h"
@@ -53,8 +57,35 @@
 #include "SIMPLib/CoreFilters/ExecuteProcess.h"
 
 /**
-* @brief
-*/
+ * @brief The ExecuteProcessMessageHandler class
+ */
+class ExecuteProcessMessageHandler : public AbstractMessageHandler
+{
+public:
+  explicit ExecuteProcessMessageHandler(QString* stdOutput)
+  : m_StdOutput(stdOutput)
+  {
+  }
+
+  void processMessage(FilterStatusMessage* msg) const override
+  {
+    QString str = msg->generateMessageString();
+    m_StdOutput->append(str);
+  }
+
+  void processMessage(PipelineStatusMessage* msg) const override
+  {
+    QString str = msg->generateMessageString();
+    m_StdOutput->append(str);
+  }
+
+private:
+  QString* m_StdOutput = nullptr;
+};
+
+/**
+ * @brief The ExecuteProcessObserver class
+ */
 class ExecuteProcessObserver : public QObject, public IObserver
 {
   Q_OBJECT
@@ -76,16 +107,10 @@ public:
   }
 
 public slots:
-  void processPipelineMessage(const PipelineMessage& pm) override
+  void processPipelineMessage(AbstractMessage::Pointer pm) override
   {
-    if(pm.getType() == PipelineMessage::MessageType::StandardOutputMessage)
-    {
-      PipelineMessage msg = pm;
-      QString str;
-      QTextStream ss(&str);
-      ss << msg.generateStandardOutputString();
-      m_StdOutput.append(str);
-    }
+    ExecuteProcessMessageHandler msgHandler(&m_StdOutput);
+    pm->visit(&msgHandler);
   }
 
 private:
@@ -97,6 +122,9 @@ private:
 
 #include "ExecuteProcessTest.moc"
 
+/**
+ * @brief The ExecuteProcessTest class
+ */
 class ExecuteProcessTest
 {
 
@@ -131,7 +159,7 @@ public:
       ExecuteProcess::Pointer filter = ExecuteProcess::New();
       ExecuteProcessObserver obs;
 
-      QObject::connect(filter.get(), SIGNAL(messageGenerated(const AbstractMessage&)), &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
+      QObject::connect(filter.get(), SIGNAL(messageGenerated(AbstractMessage::Pointer)), &obs, SLOT(processPipelineMessage(AbstractMessage::Pointer)));
 
       filter->setArguments(QObject::tr("%1 -query QMAKE_VERSION").arg(UnitTest::ExecuteProcessTest::QMakeLocation));
       filter->execute();
@@ -153,7 +181,7 @@ public:
     //      ExecuteProcess::Pointer filter = ExecuteProcess::New();
     //      ExecuteProcessObserver obs;
 
-    //      QObject::connect(filter.get(), SIGNAL(messageGenerated(const AbstractMessage&)), &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
+    //      QObject::connect(filter.get(), SIGNAL(messageGenerated(AbstractMessage::Pointer)), &obs, SLOT(processPipelineMessage(AbstractMessage::Pointer)));
 
     //      filter->setArguments(QObject::tr("%1 -version").arg(UnitTest::ExecuteProcessTest::CMakeLocation));
     //      filter->execute();
@@ -171,7 +199,7 @@ public:
       ExecuteProcess::Pointer filter = ExecuteProcess::New();
       ExecuteProcessObserver obs;
 
-      QObject::connect(filter.get(), SIGNAL(messageGenerated(const AbstractMessage&)), &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
+      QObject::connect(filter.get(), SIGNAL(messageGenerated(AbstractMessage::Pointer)), &obs, SLOT(processPipelineMessage(AbstractMessage::Pointer)));
 
       filter->setArguments("sdhsdrtfn");
       filter->execute();

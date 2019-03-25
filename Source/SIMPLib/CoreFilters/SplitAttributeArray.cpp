@@ -111,8 +111,7 @@ void SplitAttributeArray::dataCheck()
     if(numComps <= 1)
     {
       QString ss = QObject::tr("Selected Attribute Array must have more than 1 component");
-      setErrorCondition(-11000);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      notifyErrorMessage("", ss, -11000);
       return;
     }
 
@@ -130,16 +129,14 @@ void SplitAttributeArray::dataCheck()
       else
       {
         QString ss = QObject::tr("Unable to create an Attribute Array for component %1 in the selected multicomponent Attribute Array").arg(i);
-        setErrorCondition(-11051);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        notifyErrorMessage("", ss, -11051);
       }
     }
 
     if(numComps != m_SplitArraysPtrVector.size())
     {
       QString ss = QObject::tr("The number of created arrays %1 does not match the number of components %2").arg(m_SplitArraysPtrVector.size()).arg(numComps);
-      setErrorCondition(-11001);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      notifyErrorMessage("", ss, -11001);
     }
   }
 }

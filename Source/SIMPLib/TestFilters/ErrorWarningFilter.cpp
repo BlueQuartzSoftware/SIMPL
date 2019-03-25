@@ -88,14 +88,12 @@ void ErrorWarningFilter::dataCheck()
   if(getPreflightWarning())
   {
     QString ss = QObject::tr("Intentional preflight warning generated");
-    setWarningCondition(-666000);
-    notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+        notifyWarningMessage("", ss, -666000);
   }
   if(getPreflightError())
   {
     QString ss = QObject::tr("Intentional preflight error generated");
-    setErrorCondition(-666001);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -666001);
   }
   if(getPropertyError())
   {
@@ -137,14 +135,12 @@ void ErrorWarningFilter::execute()
   if(getExecuteWarning())
   {
     QString ss = QObject::tr("Intentional execute warning generated");
-    setWarningCondition(-666000);
-    notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+        notifyWarningMessage("", ss, -666000);
   }
   if(getExecuteError())
   {
     QString ss = QObject::tr("Intentional execute error generated");
-    setErrorCondition(-666001);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -666001);
   }
 
 }

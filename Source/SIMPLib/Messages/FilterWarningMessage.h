@@ -35,74 +35,53 @@
 
 #pragma once
 
-#include "SIMPLib/Common/AbstractMessage.h"
+#include "SIMPLib/Messages/VisitableWarningMessage.h"
 
-class IMessageHandler;
+class AbstractMessageHandler;
 
 /**
- * @class GenericMessage GenericMessage.h DREAM3DLib/Common/GenericMessage.h
- * @brief This class enables the creation of Error, Warning, and Status messages that
- * can be sent up from filters to the DREAM3D GUI.
+ * @class FilterWarningMessage FilterWarningMessage.h SIMPLib/Messages/FilterWarningMessage.h
+ * @brief This class is a filter warning message class that is responsible for holding all the details
+ * of a warning message emitted by an AbstractFilter
  */
-class SIMPLib_EXPORT GenericMessage : public AbstractMessage
+class SIMPLib_EXPORT FilterWarningMessage : public VisitableWarningMessage<FilterWarningMessage>
 {
   public:
-    GenericMessage();
+    SIMPL_SHARED_POINTERS(FilterWarningMessage)
+    SIMPL_STATIC_NEW_MACRO(FilterWarningMessage)
+    SIMPL_TYPE_MACRO(FilterWarningMessage)
 
-    GenericMessage(const QString& prefix, const QString& msg, int code = 0, MessageType msgType = MessageType::UnknownMessageType, int progress = -1);
+    virtual ~FilterWarningMessage();
 
-    GenericMessage(const GenericMessage& rhs);
+    SIMPL_INSTANCE_STRING_PROPERTY(ClassName)
 
-    static GenericMessage CreateErrorMessage(const QString prefix, const QString msg, int code);
+    SIMPL_INSTANCE_STRING_PROPERTY(HumanLabel)
 
-    static GenericMessage CreateStatusMessage(const QString prefix, const QString msg);
-
-    static GenericMessage CreateWarningMessage(const QString prefix, const QString msg, int code);
-
-    static GenericMessage CreateStandardOutputMessage(const QString prefix, const QString msg);
-
-
-    SIMPL_TYPE_MACRO(GenericMessage)
-
-    virtual ~GenericMessage();
-
-    bool operator==(const GenericMessage& rhs);
+    SIMPL_INSTANCE_PROPERTY(int, PipelineIndex)
 
     /**
-     * @brief This method creates and returns a string for error messages
-     */
-    QString generateErrorString() const;
-
-    /**
-     * @brief This method creates and returns a string for warning messages
-     */
-    QString generateWarningString() const;
-
-    /**
-     * @brief This method creates and returns a string for status messages
-     */
-    QString generateStatusString() const;
-
-    /**
-     * @brief This method creates and returns a string for standard output messages
-     */
-    QString generateStandardOutputString() const;
-
-    /**
-     * @brief This method generates a status message that includes a progress value.
+     * @brief New
+     * @param className
+     * @param humanLabel
+     * @param pipelineIndex
+     * @param msg
+     * @param code
      * @return
      */
-    QString generateProgressString() const;
+    static Pointer New(const QString& className, const QString& humanLabel, int pipelineIndex, const QString &prefix, const QString& msgText, int code);
 
     /**
-     * @brief visit
-     * @param msgHandler
+     * @brief This method creates and returns a string for filter warning messages
      */
-    virtual void visit(IMessageHandler* msgHandler) override;
+    virtual QString generateMessageString() const override;
+
+  protected:
+    FilterWarningMessage();
+    FilterWarningMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString &prefix, const QString& msgText, int code);
 
   private:
 
 };
-Q_DECLARE_METATYPE(GenericMessage)
+Q_DECLARE_METATYPE(FilterWarningMessage::Pointer)
 
 

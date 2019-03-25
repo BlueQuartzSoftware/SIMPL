@@ -402,9 +402,6 @@ ImageGeom::ImageGeom()
   m_GeometryTypeName = SIMPL::Geometry::ImageGeometry;
   m_GeometryType = IGeometry::Type::Image;
   m_XdmfGridType = SIMPL::XdmfGridType::RectilinearGrid;
-  m_MessagePrefix = "";
-  m_MessageTitle = "";
-  m_MessageLabel = "";
   m_UnitDimensionality = 3;
   m_SpatialDimensionality = 3;
   m_Dimensions[0] = 0;
@@ -878,7 +875,7 @@ void ImageGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType:
 
   if(observable != nullptr)
   {
-    connect(this, SIGNAL(messageGenerated(const AbstractMessage&)), observable, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
+    connect(this, SIGNAL(messageGenerated(AbstractMessage::Pointer)), observable, SLOT(processDerivativesMessage(AbstractMessage::Pointer)));
   }
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS

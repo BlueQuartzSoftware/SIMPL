@@ -157,12 +157,11 @@
   Dream3DTemplateAliasMacroCase_##value(typeIN, typeOUT, call, var_type, tDims, errorCondition, QUOTE(typeIN), isTypeOUT, typeOUTTypename)
 
 // Type is not accepted, throw an error message.
-#define Dream3DTemplateAliasMacroCase_0(typeIN, typeOUT, call, var_type, tDims, errorCondition, quotedType, isTypeOUT, typeOUTTypename)        \
-  if(var_type.compare(quotedType) == 0)           \
-  {                   \
-    setErrorCondition(errorCondition);            \
-    QString errorMessage = QString("Unsupported pixel type: %1.").arg(quotedType);     \
-    notifyErrorMessage(getHumanLabel(), errorMessage, getErrorCondition());   \
+#define Dream3DTemplateAliasMacroCase_0(typeIN, typeOUT, call, var_type, tDims, errorCondition, quotedType, isTypeOUT, typeOUTTypename)                                                                \
+  if(var_type.compare(quotedType) == 0)                                                                                                                                                                \
+  {                                                                                                                                                                                                    \
+    QString errorMessage = QString("Unsupported pixel type: %1.").arg(quotedType);                                                                                                                     \
+    notifyErrorMessage("", errorMessage, errorCondition);                                                                                                                                              \
   }
 
 // Type is accepted, select the dimension of the input and output images
@@ -182,27 +181,26 @@
   }
 
 // Select vector, RGB/RGBA, or scalar images
-#define Dream3DTemplateAliasMacroPixelType(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension)                       \
-  QVector<size_t> cDims = ptr->getComponentDimensions();                      \
-  if(cDims.size() > 1)  \
-  {                   \
-    Dream3DTemplateAliasMacroCaseVectorImage0(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension, DREAM3D_USE_Vector); \
-  }                   \
-  else                \
-  {                   \
-    if(cDims[0] == 1) \
-    {                 \
-      Dream3DTemplateAliasMacroCaseScalarImage0(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension, DREAM3D_USE_Scalar);                         \
-    }                 \
-    else if(cDims[0] == 3 || cDims[0] == 4)       \
-    {                 \
-      Dream3DTemplateAliasMacroCaseRGBRGBAImage0(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension, DREAM3D_USE_RGB_RGBA, cDims[0]);            \
-    }                 \
-    else              \
-    {                 \
-      setErrorCondition(errorCondition);          \
-      notifyErrorMessage(getHumanLabel(), QString("Size of tuple not handled:%1").arg(cDims[0]), getErrorCondition());                         \
-    }                 \
+#define Dream3DTemplateAliasMacroPixelType(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension)                                                                               \
+  QVector<size_t> cDims = ptr->getComponentDimensions();                                                                                                                                               \
+  if(cDims.size() > 1)                                                                                                                                                                                 \
+  {                                                                                                                                                                                                    \
+    Dream3DTemplateAliasMacroCaseVectorImage0(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension, DREAM3D_USE_Vector);                                                       \
+  }                                                                                                                                                                                                    \
+  else                                                                                                                                                                                                 \
+  {                                                                                                                                                                                                    \
+    if(cDims[0] == 1)                                                                                                                                                                                  \
+    {                                                                                                                                                                                                  \
+      Dream3DTemplateAliasMacroCaseScalarImage0(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension, DREAM3D_USE_Scalar);                                                     \
+    }                                                                                                                                                                                                  \
+    else if(cDims[0] == 3 || cDims[0] == 4)                                                                                                                                                            \
+    {                                                                                                                                                                                                  \
+      Dream3DTemplateAliasMacroCaseRGBRGBAImage0(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension, DREAM3D_USE_RGB_RGBA, cDims[0]);                                        \
+    }                                                                                                                                                                                                  \
+    else                                                                                                                                                                                               \
+    {                                                                                                                                                                                                  \
+      notifyErrorMessage("", QString("Size of tuple not handled:%1").arg(cDims[0]), errorCondition);                                                                                                   \
+    }                                                                                                                                                                                                  \
   }
 
 // Replaces typeOUT by typeIN if no typeOUT is given
@@ -228,9 +226,8 @@
 #define Dream3DTemplateAliasMacroCaseScalarImage1(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension, Scalar)        \
   Dream3DTemplateAliasMacroCaseScalarImage1_##Scalar(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension)
 // Scalar images not accepted, throw an error message if a scalar image is given.
-#define Dream3DTemplateAliasMacroCaseScalarImage1_0(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension)              \
-  setErrorCondition(errorCondition);              \
-  notifyErrorMessage(getHumanLabel(), "Scalar images not supported. Try RGB/RGBA or vector images", getErrorCondition());
+#define Dream3DTemplateAliasMacroCaseScalarImage1_0(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension)                                                                      \
+  notifyErrorMessage("", "Scalar images not supported. Try RGB/RGBA or vector images", errorCondition);
 // Scalar images accepted
 #define Dream3DTemplateAliasMacroCaseScalarImage1_1(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension)              \
   Dream3DTemplateAliasMacroCase_1_##isTypeOUT(typeIN, typeOUT, call, typeOUTTypename, dimension)
@@ -330,33 +327,31 @@
 // Define a macro that is specific to Dream3D and dispatches calls to a template
 // instantiated over the aliased scalar type based on the type of a data array
 // which is saved in the filter's data container array.
-#define Dream3DArraySwitchMacroLongOutputType(call, path, errorCondition, typeOUT, isTypeOUT, typeOUTTypename)     \
-  {                   \
-    IDataArray::Pointer ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, path);                    \
-    if(nullptr != ptr)  \
-    {                 \
-      ImageGeom::Pointer imageGeometry = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, path.getDataContainerName());        \
-      if(nullptr != imageGeometry)                \
-      {               \
-        QVector<size_t> tDims(3, 0);              \
-        std::tie(tDims[0], tDims[1], tDims[2]) = imageGeometry->getDimensions();       \
-        if(getErrorCondition() >= 0)              \
-        {             \
-          QString type = ptr->getTypeAsString();  \
-          Dream3DTemplateAliasMacro(call, type, typeOUT, tDims, errorCondition, isTypeOUT, typeOUTTypename);       \
-        }             \
-      }               \
-      else            \
-      {               \
-        setErrorCondition(errorCondition);        \
-        notifyErrorMessage(getHumanLabel(), "Geometry not found", getErrorCondition());  \
-      }               \
-    }                 \
-    else              \
-    {                 \
-      setErrorCondition(errorCondition);          \
-      notifyErrorMessage(getHumanLabel(), "Array not found", getErrorCondition());     \
-    }                 \
+#define Dream3DArraySwitchMacroLongOutputType(call, path, errorCondition, typeOUT, isTypeOUT, typeOUTTypename)                                                                                         \
+  {                                                                                                                                                                                                    \
+    IDataArray::Pointer ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, path);                                                                            \
+    if(nullptr != ptr)                                                                                                                                                                                 \
+    {                                                                                                                                                                                                  \
+      ImageGeom::Pointer imageGeometry = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, path.getDataContainerName());                                    \
+      if(nullptr != imageGeometry)                                                                                                                                                                     \
+      {                                                                                                                                                                                                \
+        QVector<size_t> tDims(3, 0);                                                                                                                                                                   \
+        std::tie(tDims[0], tDims[1], tDims[2]) = imageGeometry->getDimensions();                                                                                                                       \
+        if(getErrorCondition() >= 0)                                                                                                                                                                   \
+        {                                                                                                                                                                                              \
+          QString type = ptr->getTypeAsString();                                                                                                                                                       \
+          Dream3DTemplateAliasMacro(call, type, typeOUT, tDims, errorCondition, isTypeOUT, typeOUTTypename);                                                                                           \
+        }                                                                                                                                                                                              \
+      }                                                                                                                                                                                                \
+      else                                                                                                                                                                                             \
+      {                                                                                                                                                                                                \
+        notifyErrorMessage("", "Geometry not found", errorCondition);                                                                                                                                  \
+      }                                                                                                                                                                                                \
+    }                                                                                                                                                                                                  \
+    else                                                                                                                                                                                               \
+    {                                                                                                                                                                                                  \
+      notifyErrorMessage("", "Array not found", errorCondition);                                                                                                                                       \
+    }                                                                                                                                                                                                  \
   }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -450,14 +445,11 @@
       }                                                                                                                                                                                                \
       else                                                                                                                                                                                             \
       {                                                                                                                                                                                                \
-        setErrorCondition(errorCondition);                                                                                                                                                             \
-        notifyErrorMessage(getHumanLabel(), "Geometry not found", getErrorCondition());                                                                                                                \
+        notifyErrorMessage("", "Geometry not found", errorCondition);                                                                                                                                  \
       }                                                                                                                                                                                                \
     }                                                                                                                                                                                                  \
     else                                                                                                                                                                                               \
     {                                                                                                                                                                                                  \
-      setErrorCondition(errorCondition);                                                                                                                                                               \
-      notifyErrorMessage(getHumanLabel(), "Array not found", getErrorCondition());                                                                                                                     \
+      notifyErrorMessage("", "Array not found", errorCondition);                                                                                                                                       \
     }                                                                                                                                                                                                  \
   }
-

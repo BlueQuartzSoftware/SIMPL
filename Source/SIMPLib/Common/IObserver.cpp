@@ -50,33 +50,10 @@ IObserver::~IObserver() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IObserver::processPipelineMessage(const AbstractMessage& pm)
+void IObserver::processPipelineMessage(AbstractMessage::Pointer pm)
 {
   QString str;
   QTextStream ss(&str);
-  if(pm.getType() == PipelineMessage::MessageType::Error)
-  {
-    ss << pm.generateErrorString();
-  }
-  else if(pm.getType() == PipelineMessage::MessageType::Warning)
-  {
-    ss << pm.generateWarningString();
-  }
-  else if(pm.getType() == PipelineMessage::MessageType::StatusMessage)
-  {
-    ss << pm.generateStatusString();
-  }
-  else if(pm.getType() == PipelineMessage::MessageType::StandardOutputMessage)
-  {
-    ss << pm.generateStandardOutputString();
-  }
-  else if(pm.getType() == PipelineMessage::MessageType::ProgressValue)
-  {
-    ss << pm.getProgressValue() << "%";
-  }
-  else if(pm.getType() == PipelineMessage::MessageType::StatusMessageAndProgressValue)
-  {
-    ss << pm.getProgressValue() << pm.generateStatusString();
-  }
+  ss << pm->generateMessageString();
   std::cout << str.toStdString() << std::endl;
 }

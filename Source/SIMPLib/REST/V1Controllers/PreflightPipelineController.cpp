@@ -29,6 +29,7 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 #include "PreflightPipelineController.h"
 
 #include <QtCore/QDateTime>
@@ -48,6 +49,7 @@
 #include "QtWebApp/httpserver/httpsessionstore.h"
 #include "SIMPLib/REST/PipelineListener.h"
 #include "SIMPLib/REST/V1Controllers/SIMPLStaticFileController.h"
+#include "SIMPLib/REST/V1Controllers/PreflightPipelineMessageHandler.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -174,40 +176,15 @@ void PreflightPipelineController::service(HttpRequest& request, HttpResponse& re
   QJsonArray errors;
   QJsonArray warnings;
 
-  std::vector<AbstractMessage> errorMessages = listener.getErrorMessages();
+  std::vector<AbstractErrorMessage*> errorMessages = listener.getErrorMessages();
   bool completed = (errorMessages.size() == 0);
   rootObj[SIMPL::JSON::Completed] = completed;
 
-  std::vector<AbstractMessage> messages = listener.getMessages();
-  for(int i = 0; i < messages.size(); i++)
+  std::vector<AbstractMessage*> messages = listener.getMessages();
+  for(AbstractMessage* msg : messages)
   {
-    AbstractMessage message = messages[i];
-
-    switch(message.getType())
-    {
-      case AbstractMessage::MessageType::Error:
-      {
-        QJsonObject error;
-        PreflightPipelineMessageHandler msgHandler(this, &error);
-        messages[i].visit(&msgHandler);
-        errors.push_back(error);
-      }
-      case AbstractMessage::MessageType::Warning:
-      {
-        QJsonObject warning;
-        PreflightPipelineMessageHandler msgHandler(this, &warning);
-        messages[i].visit(&msgHandler);
-        warnings.push_back(warning);
-      }
-      case AbstractMessage::MessageType::ProgressValue:
-      case AbstractMessage::MessageType::StatusMessage:
-      case AbstractMessage::MessageType::StandardOutputMessage:
-      case AbstractMessage::MessageType::StatusMessageAndProgressValue:
-      case AbstractMessage::MessageType::UnknownMessageType:
-      {
-        break;
-      }
-    }
+    PreflightPipelineMessageHandler msgHandler(&errors, &warnings);
+    msg->visit(&msgHandler);
   }
 
   rootObj[SIMPL::JSON::PipelineErrors] = errors;

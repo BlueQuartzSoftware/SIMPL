@@ -134,9 +134,8 @@ void CopyObject::dataCheck()
 
   if(getCopiedObjectName().isEmpty())
   {
-    setErrorCondition(-11001);
     QString ss = QObject::tr("The copied object name must be set");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -11001);
   }
 
   switch(getObjectToCopy())
@@ -146,9 +145,8 @@ void CopyObject::dataCheck()
   {
     if(getDataContainerArray()->doesDataContainerExist(getCopiedObjectName()))
     {
-      setErrorCondition(-11001);
       QString ss = QObject::tr("A Data Container already exists with the name %1").arg(getCopiedObjectName());
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      notifyErrorMessage("", ss, -11001);
     }
 
     DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerToCopy());
@@ -170,9 +168,8 @@ void CopyObject::dataCheck()
     DataArrayPath path(getAttributeMatrixToCopy().getDataContainerName(), getCopiedObjectName(), "");
     if(getDataContainerArray()->doesAttributeMatrixExist(path))
     {
-      setErrorCondition(-11001);
       QString ss = QObject::tr("An Attribute Matrix already exists with the name %1").arg(getCopiedObjectName());
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      notifyErrorMessage("", ss, -11001);
     }
 
     AttributeMatrix::Pointer attrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getAttributeMatrixToCopy(), -301);
@@ -194,9 +191,8 @@ void CopyObject::dataCheck()
     DataArrayPath path(getAttributeArrayToCopy().getDataContainerName(), getAttributeArrayToCopy().getAttributeMatrixName(), getCopiedObjectName());
     if(getDataContainerArray()->doesAttributeArrayExist(path))
     {
-      setErrorCondition(-11001);
       QString ss = QObject::tr("An Attribute Array already exists with the name %1").arg(getCopiedObjectName());
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      notifyErrorMessage("", ss, -11001);
     }
 
     IDataArray::Pointer array = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getAttributeArrayToCopy());

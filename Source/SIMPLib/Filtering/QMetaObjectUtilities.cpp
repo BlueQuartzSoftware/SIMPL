@@ -41,7 +41,6 @@
 #include <QtCore/QVector>
 
 #include "SIMPLib/Common/EnsembleInfo.h"
-#include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/CoreFilters/CreateDataArray.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
@@ -145,6 +144,7 @@ QMetaObjectUtilities::~QMetaObjectUtilities() = default;
 // -----------------------------------------------------------------------------
 void QMetaObjectUtilities::RegisterMetaTypes()
 {
+  qRegisterMetaType<AbstractMessage::Pointer>("AbstractMessage::Pointer");
   qRegisterMetaType<DataContainerArrayProxy>("DataContainerArrayProxy");
   qRegisterMetaType<DataArrayPath>("DataArrayPath");
   qRegisterMetaType<AxisAngleInput_t>("AxisAngleInput_t");
@@ -154,7 +154,6 @@ void QMetaObjectUtilities::RegisterMetaTypes()
   qRegisterMetaType<DataContainerArrayProxy>("DataContainerArrayProxy");
   qRegisterMetaType<IntVec3_t>("IntVec3_t");
   qRegisterMetaType<FloatVec3_t>("FloatVec3_t");
-  qRegisterMetaType<PipelineMessage>("PipelineMessage");
   qRegisterMetaType<FPRangePair>("FPRangePair");
   qRegisterMetaType<DynamicTableData>("DynamicTableData");
   qRegisterMetaType<PhaseType::Types>("PhaseType::Types");

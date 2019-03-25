@@ -53,33 +53,29 @@ void FileSystemPathHelper::CheckOutputFile(AbstractFilter* filter,
 {
   if(filePath.isEmpty())
   {
-    filter->setErrorCondition(-900);
     QString ss = QObject::tr("The output file for input parameter '%1' is empty. Please set a path to an output file.").arg(parameterName);
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+    filter->notifyErrorMessage("", ss, -900);
   }
   QFileInfo fi(filePath);
   if(fi.isDir() && fi.suffix().isEmpty())
   {
-    filter->setErrorCondition(-901);
     QString ss = QObject::tr("The output file for input parameter '%1' is a directory. Please set a path to an output file.").arg(parameterName);
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+    filter->notifyErrorMessage("", ss, -901);
   }
 
   QDir parentPath = fi.path();
   if(!parentPath.exists())
   {
-    filter->setWarningCondition(902);
     QString ss = QObject::tr("The directory path for input parameter '%1' does not exist. DREAM.3D will attempt to create this path during execution of the filter").arg(parameterName);
-    filter->notifyWarningMessage(filter->getHumanLabel(), ss, filter->getWarningCondition());
+    filter->notifyWarningMessage("", ss, 902);
   }
 
   if(requireExtension)
   {
     if(fi.suffix().isEmpty())
     {
-      filter->setErrorCondition(-903);
       QString ss = QObject::tr("The file path for input parameter '%1' does not have a file extension. Please use a file extension to denote the type of file being written.").arg(parameterName);
-      filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getWarningCondition());
+      filter->notifyErrorMessage("", ss, -903);
     }
 
   }
@@ -94,9 +90,8 @@ void FileSystemPathHelper::CheckOutputFile(AbstractFilter* filter,
   QFileInfo dirInfo(fi.path());
   if(!dirInfo.isWritable() && parentPath.exists())
   {
-    filter->setErrorCondition(-10002);
     QString ss = QObject::tr("The user does not have the proper permissions to write to the output file");
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+    filter->notifyErrorMessage("", ss, -10002);
   }
 
 #ifdef _WIN32

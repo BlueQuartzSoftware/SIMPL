@@ -169,6 +169,12 @@ protected:
    */
   void initialize();
 
+  /**
+   * @brief processDerivativesMessage
+   * @param msg
+   */
+  void processDerivativesMessage(AbstractMessage::Pointer msg);
+
 private:
   DEFINE_IDATAARRAY_WEAKPTR(InArray)
   DEFINE_DATAARRAY_VARIABLE(double, DerivativesArray)

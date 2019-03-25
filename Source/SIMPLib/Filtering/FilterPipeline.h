@@ -47,6 +47,7 @@
 #include "SIMPLib/SIMPLib.h"
 
 class IObserver;
+class FilterPipelineMessageHandler;
 
 /**
  * @class FilterPipeline FilterPipeline.h DREAM3DLib/Common/FilterPipeline.h
@@ -57,7 +58,7 @@ class IObserver;
  * @date Sep 28, 2011
  * @version 1.0
  */
-class SIMPLib_EXPORT FilterPipeline : public QObject
+class SIMPLib_EXPORT FilterPipeline : public Observable
 {
   Q_OBJECT
 
@@ -85,6 +86,8 @@ public:
 
   ~FilterPipeline() override;
 
+  friend FilterPipelineMessageHandler;
+
   enum class State : unsigned int
   {
     Idle,
@@ -104,6 +107,7 @@ public:
   SIMPL_GET_PROPERTY(FilterPipeline::ExecutionResult, ExecutionResult)
   SIMPL_GET_PROPERTY(FilterPipeline::State, State)
   SIMPL_INSTANCE_PROPERTY(int, ErrorCondition)
+  SIMPL_INSTANCE_PROPERTY(int, WarningCondition)
   SIMPL_INSTANCE_PROPERTY(AbstractFilter::Pointer, CurrentFilter)
 
   /**
@@ -163,17 +167,48 @@ public:
   /**
    * @brief This method adds a QObject based class that is capable of being connected with the following signals from
    * AbstractFilter:
-   * @li processPipelineMessage(PipelineMessage&)
-   * @param obj Class that implements needed processPipelineMessage(PipelineMessage&) method
+   * @li processPipelineMessage(AbstractMessage::Pointer)
+   * @param obj Class that implements needed processPipelineMessage(AbstractMessage::Pointer) method
    */
   void addMessageReceiver(QObject* obj);
 
   void removeMessageReceiver(QObject* obj);
 
-  void connectFilterNotifications(QObject* filter);
-  void disconnectFilterNotifications(QObject* filter);
+  void connectFilterNotifications(AbstractFilter* filter);
+  void disconnectFilterNotifications(AbstractFilter* filter);
 
   QString getName();
+
+  /**
+   * @brief notifyErrorMessage
+   * @param humanLabel
+   * @param msg
+   * @param code
+   */
+  void notifyErrorMessage(const QString &prefix, const QString& msg, int code) override;
+
+  /**
+   * @brief notifyWarningMessage
+   * @param humanLabel
+   * @param msg
+   * @param code
+   */
+  void notifyWarningMessage(const QString &prefix, const QString& msg, int code) override;
+
+  /**
+   * @brief notifyStatusMessage
+   * @param humanLabel
+   * @param msg
+   */
+  void notifyStatusMessage(const QString &prefix, const QString& msg) override;
+
+  /**
+   * @brief notifyProgressMessage
+   * @param humanLabel
+   * @param msg
+   * @param progress
+   */
+  void notifyProgressMessage(const QString &prefix, const QString& msg, int progress);
 
   /**
    * @brief This method returns a deep copy of the FilterPipeline and all its filters
@@ -219,7 +254,7 @@ protected:
   void updatePrevNextFilters();
 
 signals:
-  void pipelineGeneratedMessage(const AbstractMessage& message);
+  void messageGenerated(AbstractMessage::Pointer message);
 
   /**
    * @brief This method is emitted from the pipeline and signals a pipeline pause

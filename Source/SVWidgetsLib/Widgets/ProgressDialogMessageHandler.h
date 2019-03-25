@@ -35,89 +35,33 @@
 
 #pragma once
 
-#include <QtCore/QString>
-#include <QtCore/QMetaType>
-
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Messages/AbstractMessageHandler.h"
 
-class IMessageHandler;
+class ProgressDialog;
 
 /**
- * @class AbstractMessage AbstractMessage.h DREAM3DLib/Common/AbstractMessage.h
- * @brief This class enables the creation of Error, Warning, and Status messages that
- * can be sent up from filters to the DREAM3D GUI.
+ * @class ProgressDialogMessageHandler ProgressDialogMessageHandler.h SVWidgetsLib/Widgets/ProgressDialogMessageHandler.h
  */
-class SIMPLib_EXPORT AbstractMessage
+class SIMPLib_EXPORT ProgressDialogMessageHandler : public AbstractMessageHandler
 {
   public:
-    SIMPL_TYPE_MACRO(AbstractMessage)
-
-    using EnumType = unsigned int;
-
-    enum class MessageType : EnumType
-    {
-      Error = 0,
-      Warning = 1,
-      StatusMessage = 2,
-      StandardOutputMessage = 3,
-      ProgressValue = 4,
-      StatusMessageAndProgressValue = 5,
-      UnknownMessageType = 6
-    };
-
-    AbstractMessage();
-
-    virtual ~AbstractMessage();
-
-    SIMPL_INSTANCE_STRING_PROPERTY(Prefix)
-
-    SIMPL_INSTANCE_STRING_PROPERTY(Text)
-
-    SIMPL_INSTANCE_PROPERTY(int, Code)
-
-    SIMPL_INSTANCE_PROPERTY(MessageType, Type)
-
-    SIMPL_INSTANCE_PROPERTY(int, ProgressValue)
+    explicit ProgressDialogMessageHandler(ProgressDialog* progressDialog);
 
     /**
-     * @brief This method creates and returns a string for error messages
+     * @brief processMessage
+     * @param msg
      */
-    virtual QString generateErrorString() const;
+    void processMessage(FilterErrorMessage* msg) const override;
 
     /**
-     * @brief This method creates and returns a string for warning messages
+     * @brief processMessage
+     * @param msg
      */
-    virtual QString generateWarningString() const;
-
-    /**
-     * @brief This method creates and returns a string for status messages
-     */
-    virtual QString generateStatusString() const;
-
-    /**
-     * @brief This method creates and returns a string for standard output messages
-     */
-    virtual QString generateStandardOutputString() const;
-
-    /**
-     * @brief This method generates a status message that includes a progress value.
-     * @return
-     */
-    virtual QString generateProgressString() const;
-
-    /**
-     * @brief visit
-     * @param msgHandler
-     */
-    virtual void visit(IMessageHandler* msgHandler);
-
-  protected:
-    AbstractMessage(const QString& prefix, const QString& msg, int code, MessageType msgType = MessageType::UnknownMessageType, int progress = -1);
+    void processMessage(FilterWarningMessage* msg) const override;
 
   private:
-
+    ProgressDialog* m_ProgressDialog = nullptr;
 };
-Q_DECLARE_METATYPE(AbstractMessage)
 
 

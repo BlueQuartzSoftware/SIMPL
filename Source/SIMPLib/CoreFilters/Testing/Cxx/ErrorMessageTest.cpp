@@ -35,7 +35,10 @@
 
 #include <string>
 
-#include "SIMPLib/Common/PipelineMessage.h"
+#include "SIMPLib/Messages/FilterErrorMessage.h"
+#include "SIMPLib/Messages/FilterProgressMessage.h"
+#include "SIMPLib/Messages/FilterStatusMessage.h"
+#include "SIMPLib/Messages/FilterWarningMessage.h"
 
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
@@ -60,26 +63,17 @@ public:
   // -----------------------------------------------------------------------------
   void TestErrorMessage()
   {
-    PipelineMessage e0;
-
-    QString a0("Some Class Name");
-    QString a1("Description");
-    int eCode = -10;
-    PipelineMessage e1;
-
-    PipelineMessage e2(a0, a1, eCode);
-
     AbstractFilter::Pointer f = AbstractFilter::New();
-    f->notifyErrorMessage("Some Test", a1, eCode);
-    f->notifyErrorMessage("Another Test", "A description", -10);
+    f->notifyErrorMessage("Some Test", "Description", -10);
 
-    PipelineMessage pm("Joey's Test", "Testing Warning Message...", -23, PipelineMessage::MessageType::Warning);
-    PipelineMessage pm1("Joey's Test", "Testing Error Message...", -23, PipelineMessage::MessageType::Error);
-    PipelineMessage pm2("Joey's Test", "Testing Status Message...", -23, PipelineMessage::MessageType::StatusMessage);
-    PipelineMessage pm3("Joey's Test", "Testing Status Message...", -23, PipelineMessage::MessageType::ProgressValue, 23);
-    f->broadcastPipelineMessage(pm);
-    f->broadcastPipelineMessage(pm1);
-    f->broadcastPipelineMessage(pm2);
+    FilterProgressMessage::Pointer progressMessage = FilterProgressMessage::New(f->getNameOfClass(), f->getHumanLabel(), -1, "Joey's Test", "Testing Warning Message...", -23);
+    FilterErrorMessage::Pointer errorMessage = FilterErrorMessage::New(f->getNameOfClass(), f->getHumanLabel(), -1, "Joey's Test", "Testing Error Message...", -23);
+    FilterStatusMessage::Pointer statusMessage = FilterStatusMessage::New(f->getNameOfClass(), f->getHumanLabel(), -1, "Joey's Test", "Testing Status Message...");
+    FilterWarningMessage::Pointer warningMessage = FilterWarningMessage::New(f->getNameOfClass(), f->getHumanLabel(), -1, "Joey's Test", "Testing Status Message...", 23);
+    emit f->messageGenerated(progressMessage);
+    emit f->messageGenerated(errorMessage);
+    emit f->messageGenerated(statusMessage);
+    emit f->messageGenerated(warningMessage);
 
     if(true)
     {

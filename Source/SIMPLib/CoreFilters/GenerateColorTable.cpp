@@ -356,8 +356,7 @@ void GenerateColorTable::execute()
   else
   {
     QString ss = QObject::tr("The selected array '%1' does not have a compatible type.").arg(getSelectedDataArrayPath().getDataArrayName());
-    setErrorCondition(-10000);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -10000);
     return;
   }
 

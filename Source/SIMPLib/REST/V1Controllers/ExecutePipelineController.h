@@ -41,43 +41,8 @@
 #include "QtWebApp/httpserver/httpresponse.h"
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/IMessageHandler.h"
+#include "SIMPLib/Messages/AbstractMessageHandler.h"
 #include "SIMPLib/Plugin/SIMPLPluginConstants.h"
-
-class ExecutePipelineController;
-
-class ExecutePipelineMessageHandler : public IMessageHandler
-{
-  public:
-    explicit ExecutePipelineMessageHandler(ExecutePipelineController* controller, QJsonObject* obj)
-      : m_Controller(controller)
-      , m_Object(obj)
-    {}
-
-    void processMessage(GenericMessage msg)
-    {
-      m_Object->insert(SIMPL::JSON::Code, msg.getCode());
-      m_Object->insert(SIMPL::JSON::Message, msg.getText());
-    }
-
-    void processMessage(PipelineMessage msg)
-    {
-      m_Object->insert(SIMPL::JSON::Code, msg.getCode());
-      m_Object->insert(SIMPL::JSON::Message, msg.getText());
-    }
-
-    void processMessage(FilterMessage msg)
-    {
-      m_Object->insert(SIMPL::JSON::Code, msg.getCode());
-      m_Object->insert(SIMPL::JSON::Message, msg.getText());
-      m_Object->insert(SIMPL::JSON::FilterHumanLabel, msg.getFilterHumanLabel());
-      m_Object->insert(SIMPL::JSON::FilterIndex, msg.getPipelineIndex());
-    }
-
-  private:
-    ExecutePipelineController* m_Controller = nullptr;
-    QJsonObject* m_Object = nullptr;
-};
 
 /**
   @brief This class responds to REST API endpoint

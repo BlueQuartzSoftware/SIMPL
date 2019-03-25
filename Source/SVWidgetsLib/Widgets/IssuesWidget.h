@@ -40,9 +40,8 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/IObserver.h"
-#include "SIMPLib/Common/IMessageHandler.h"
-#include "SIMPLib/Common/PipelineMessage.h"
-#include "SIMPLib/Common/FilterMessage.h"
+#include "SIMPLib/Messages/AbstractMessageHandler.h"
+#include "SIMPLib/Messages/AbstractMessage.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
@@ -87,7 +86,7 @@ class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver
     QTableWidget* getIssuesTable();
 
   public slots:
-    void processPipelineMessage(const AbstractMessage& msg) override;
+    void processPipelineMessage(AbstractMessage::Pointer msg) override;
     void clearIssues();
     void on_errorTableWidget_itemClicked( QTableWidgetItem* item );
     void displayCachedMessages();
@@ -107,7 +106,7 @@ class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver
 
   private:
     QSharedPointer<Ui::IssuesWidget> ui = nullptr;
-    QVector<AbstractMessage> m_CachedMessages;
+    std::vector<AbstractMessage::Pointer> m_CachedMessages;
 
   public:
     IssuesWidget(const IssuesWidget&) = delete;   // Copy Constructor Not Implemented

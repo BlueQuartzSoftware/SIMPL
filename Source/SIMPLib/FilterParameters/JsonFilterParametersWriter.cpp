@@ -42,6 +42,7 @@
 #include "JsonFilterParametersWriter.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
+#include "SIMPLib/Messages/PipelineErrorMessage.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -113,7 +114,7 @@ int JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline,
   {
     if(!obs.empty())
     {
-      PipelineMessage pm(JsonFilterParametersWriter::ClassName(), "FilterPipeline Object was nullptr for writing", -1, PipelineMessage::MessageType::Error);
+      PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New(pipeline->getName(), JsonFilterParametersWriter::ClassName(), "FilterPipeline Object was nullptr for writing", -1);
 
       for (int i = 0; i < obs.size(); i++)
       {

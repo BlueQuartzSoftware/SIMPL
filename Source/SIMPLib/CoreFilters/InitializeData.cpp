@@ -168,8 +168,7 @@ void InitializeData::dataCheck()
   if(m_CellAttributeMatrixPaths.empty())
   {
     QString ss = "At least one data array must be selected.";
-    setErrorCondition(-5550);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -5550);
     return;
   }
 
@@ -185,56 +184,47 @@ void InitializeData::dataCheck()
   if(getXMax() < getXMin())
   {
     QString ss = QObject::tr("X Max (%1) less than X Min (%2)").arg(getXMax()).arg(getXMin());
-    setErrorCondition(-5551);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -5551);
   }
   if(getYMax() < getYMin())
   {
     QString ss = QObject::tr("Y Max (%1) less than Y Min (%2)").arg(getYMax()).arg(getYMin());
-    setErrorCondition(-5552);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -5552);
   }
   if(getZMax() < getZMin())
   {
     QString ss = QObject::tr("Z Max (%1) less than Z Min (%2)").arg(getZMax()).arg(getZMin());
-    setErrorCondition(-5553);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -5553);
   }
   if(getXMin() < 0)
   {
     QString ss = QObject::tr("X Min (%1) less than 0").arg(getXMin());
-    setErrorCondition(-5554);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -5554);
   }
   if(getYMin() < 0)
   {
     QString ss = QObject::tr("Y Min (%1) less than 0").arg(getYMin());
-    setErrorCondition(-5555);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -5555);
   }
   if(getZMin() < 0)
   {
     QString ss = QObject::tr("Z Min (%1) less than 0").arg(getZMin());
-    setErrorCondition(-5556);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -5556);
   }
   if(getXMax() > (static_cast<int64_t>(image->getXPoints()) - 1))
   {
     QString ss = QObject::tr("The X Max you entered of %1 is greater than your Max X Point of %2").arg(getXMax()).arg(static_cast<int64_t>(image->getXPoints()) - 1);
-    setErrorCondition(-5557);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -5557);
   }
   if(getYMax() > (static_cast<int64_t>(image->getYPoints()) - 1))
   {
     QString ss = QObject::tr("The Y Max you entered of %1 is greater than your Max Y Point of %2").arg(getYMax()).arg(static_cast<int64_t>(image->getYPoints()) - 1);
-    setErrorCondition(-5558);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -5558);
   }
   if(getZMax() > (static_cast<int64_t>(image->getZPoints()) - 1))
   {
     QString ss = QObject::tr("The Z Max you entered of %1) greater than your Max Z Point of %2").arg(getZMax()).arg(static_cast<int64_t>(image->getZPoints()) - 1);
-    setErrorCondition(-5559);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyErrorMessage("", ss, -5559);
   }
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(attributeMatrixPath.getDataContainerName());
@@ -310,9 +300,8 @@ template <typename T> void InitializeData::checkInitialization(IDataArray::Point
     double input = m_InitValue;
     if(input < static_cast<double>(std::numeric_limits<T>().lowest()) || input > static_cast<double>(std::numeric_limits<T>().max()))
     {
-      setErrorCondition(-4000);
       QString ss = QObject::tr("%1: The initialization value could not be converted. The valid range is %2 to %3").arg(arrayName).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      notifyErrorMessage("", ss, -4000);
       return;
     }
   }
@@ -323,22 +312,19 @@ template <typename T> void InitializeData::checkInitialization(IDataArray::Point
     if(min > max)
     {
       QString ss = arrayName + ": Invalid initialization range.  Minimum value is larger than maximum value.";
-      setErrorCondition(-5550);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      notifyErrorMessage("", ss, -5550);
       return;
     }
     if(min < static_cast<double>(std::numeric_limits<T>().lowest()) || max > static_cast<double>(std::numeric_limits<T>().max()))
     {
-      setErrorCondition(-4001);
       QString ss = QObject::tr("%1: The initialization range can only be from %2 to %3").arg(arrayName).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      notifyErrorMessage("", ss, -4001);
       return;
     }
     if(min == max)
     {
-      setErrorCondition(-4002);
       QString ss = arrayName + ": The initialization range must have differing values";
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      notifyErrorMessage("", ss, -4002);
       return;
     }
   }

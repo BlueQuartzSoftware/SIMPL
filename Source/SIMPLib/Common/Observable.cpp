@@ -35,7 +35,10 @@
 
 #include "Observable.h"
 
-#include "SIMPLib/Common/GenericMessage.h"
+#include "SIMPLib/Messages/GenericErrorMessage.h"
+#include "SIMPLib/Messages/GenericProgressMessage.h"
+#include "SIMPLib/Messages/GenericStatusMessage.h"
+#include "SIMPLib/Messages/GenericWarningMessage.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -67,63 +70,35 @@ void Observable::operator=(const Observable&)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::broadcastPipelineMessage(const AbstractMessage& msg)
+void Observable::notifyErrorMessage(const QString &prefix, const QString& msg, int code)
 {
-  emit messageGenerated(msg);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void Observable::notifyErrorMessage(const QString &prefix, const QString& text, int code)
-{
-  GenericMessage pm = GenericMessage::CreateErrorMessage(prefix, text, code);
+  GenericErrorMessage::Pointer pm = GenericErrorMessage::New(prefix, msg, code);
   emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::notifyStatusMessage(const QString& text)
+void Observable::notifyStatusMessage(const QString &prefix, const QString& msg)
 {
-  GenericMessage pm = GenericMessage::CreateStatusMessage("", text);
+  GenericStatusMessage::Pointer pm = GenericStatusMessage::New(prefix, msg);
   emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::notifyStatusMessage(const QString& prefix, const QString& text)
+void Observable::notifyWarningMessage(const QString &prefix, const QString& msg, int code)
 {
-  GenericMessage pm = GenericMessage::CreateStatusMessage(prefix, text);
+  GenericWarningMessage::Pointer pm = GenericWarningMessage::New(prefix, msg, code);
   emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::notifyStandardOutputMessage(const QString& text)
+void Observable::notifyProgressMessage(const QString& prefix, const QString& msg, int progress)
 {
-  GenericMessage pm = GenericMessage::CreateStandardOutputMessage("", text);
-  emit messageGenerated(pm);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void Observable::notifyWarningMessage(const QString& text, int code)
-{
-  GenericMessage pm = GenericMessage::CreateWarningMessage("", text, code);
-  emit messageGenerated(pm);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void Observable::notifyProgressMessage(const QString& prefix, const QString& text, int progress)
-{
-  GenericMessage pm = GenericMessage::CreateStatusMessage(prefix, text);
-  pm.setProgressValue(progress);
-  pm.setType(GenericMessage::MessageType::StatusMessageAndProgressValue);
+  GenericProgressMessage::Pointer pm = GenericProgressMessage::New(prefix, msg, progress);
   emit messageGenerated(pm);
 }

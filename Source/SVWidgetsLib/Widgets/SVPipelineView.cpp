@@ -67,7 +67,6 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "SIMPLib/Common/DocRequestManager.h"
-#include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/CoreFilters/Breakpoint.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
@@ -100,40 +99,6 @@
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/QtSupport/QtSRecentFileList.h"
 
-namespace
-{
-
-class JsonObserver : public IObserver
-{
-public:
-  JsonObserver() = default;
-  ~JsonObserver() override = default;
-
-  JsonObserver(const JsonObserver&) = delete;            // Copy Constructor Not Implemented
-  JsonObserver(JsonObserver&&) = delete;                 // Move Constructor Not Implemented
-  JsonObserver& operator=(const JsonObserver&) = delete; // Copy Assignment Not Implemented
-  JsonObserver& operator=(JsonObserver&&) = delete;      // Move Assignment Not Implemented
-
-  void processPipelineMessage(const PipelineMessage& pm) override
-  {
-    m_ErrorCode = pm.getCode();
-    m_ErrorMessage = pm.getText();
-  }
-
-  QString getErrorMessage()
-  {
-    return m_ErrorMessage;
-  }
-  int32_t getErrorCode()
-  {
-    return m_ErrorCode;
-  }
-
-private:
-  QString m_ErrorMessage;
-  int32_t m_ErrorCode = 0;
-};
-} // namespace
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -503,7 +468,7 @@ void SVPipelineView::executePipeline()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::processPipelineMessage(const PipelineMessage& msg)
+void SVPipelineView::processPipelineMessage(AbstractMessage::Pointer msg)
 {
   emit pipelineHasMessage(msg);
 }
@@ -1628,24 +1593,16 @@ FilterPipeline::Pointer SVPipelineView::readPipelineFromFile(const QString& file
   QFileInfo fi(filePath);
   QString ext = fi.suffix();
 
-  ::JsonObserver jsonObs;
-
   FilterPipeline::Pointer pipeline = FilterPipeline::NullPointer();
   if(ext == "dream3d")
   {
     H5FilterParametersReader::Pointer dream3dReader = H5FilterParametersReader::New();
-    pipeline = dream3dReader->readPipelineFromFile(filePath, &jsonObs);
+    pipeline = dream3dReader->readPipelineFromFile(filePath, this);
   }
   else if(ext == "json")
   {
     JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
-    pipeline = jsonReader->readPipelineFromFile(filePath, &jsonObs);
-  }
-
-  if(jsonObs.getErrorCode() != 0)
-  {
-    emit statusMessage(jsonObs.getErrorMessage());
-    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(jsonObs.getErrorMessage(), true));
+    pipeline = jsonReader->readPipelineFromFile(filePath, this);
   }
 
   return pipeline;

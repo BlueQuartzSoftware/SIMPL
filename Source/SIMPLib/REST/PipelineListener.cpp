@@ -1,5 +1,11 @@
 #include "PipelineListener.h"
 
+#include "REST/PipelineListenerMessageHandler.h"
+
+#include "SIMPLib/Messages/AbstractErrorMessage.h"
+#include "SIMPLib/Messages/AbstractWarningMessage.h"
+#include "SIMPLib/Messages/AbstractStatusMessage.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -23,7 +29,7 @@ PipelineListener::~PipelineListener()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<AbstractMessage> PipelineListener::getMessages()
+std::vector<AbstractMessage*> PipelineListener::getMessages()
 {
   return m_Messages;
 }
@@ -31,134 +37,45 @@ std::vector<AbstractMessage> PipelineListener::getMessages()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<AbstractMessage> PipelineListener::getErrorMessages()
+std::vector<AbstractErrorMessage*> PipelineListener::getErrorMessages()
 {
-  std::vector<AbstractMessage> errorMessages;
-
-  size_t numMessages = m_Messages.size();
-  for(size_t i = 0; i < numMessages; i++)
-  {
-    if(m_Messages[i].getType() == PipelineMessage::MessageType::Error)
-    {
-      errorMessages.push_back(m_Messages[i]);
-    }
-  }
-
-  return errorMessages;
+  return m_ErrorMessages;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<AbstractMessage> PipelineListener::getWarningMessages()
+std::vector<AbstractWarningMessage*> PipelineListener::getWarningMessages()
 {
-  std::vector<AbstractMessage> warningMessages;
-
-  size_t numMessages = m_Messages.size();
-  for(size_t i = 0; i < numMessages; i++)
-  {
-    if(m_Messages[i].getType() == PipelineMessage::MessageType::Warning)
-    {
-      warningMessages.push_back(m_Messages[i]);
-    }
-  }
-
-  return warningMessages;
+  return m_WarningMessages;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<AbstractMessage> PipelineListener::getStatusMessages()
+std::vector<AbstractStatusMessage*> PipelineListener::getStatusMessages()
 {
-  std::vector<AbstractMessage> statusMessages;
-
-  size_t numMessages = m_Messages.size();
-  for(size_t i = 0; i < numMessages; i++)
-  {
-    if(m_Messages[i].getType() == PipelineMessage::MessageType::StatusMessage)
-    {
-      statusMessages.push_back(m_Messages[i]);
-    }
-  }
-
-  return statusMessages;
+  return m_StatusMessages;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<AbstractMessage> PipelineListener::getStandardOutputMessages()
+std::vector<AbstractProgressMessage*> PipelineListener::getProgressMessages()
 {
-  std::vector<AbstractMessage> stdOutMessages;
-
-  size_t numMessages = m_Messages.size();
-  for(size_t i = 0; i < numMessages; i++)
-  {
-    if(m_Messages[i].getType() == PipelineMessage::MessageType::StandardOutputMessage)
-    {
-      stdOutMessages.push_back(m_Messages[i]);
-    }
-  }
-
-  return stdOutMessages;
+  return m_ProgressMessages;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineListener::processPipelineMessage(const AbstractMessage& pm)
+void PipelineListener::processPipelineMessage(AbstractMessage::Pointer pm)
 {
-  m_Messages.push_back(pm);
+  PipelineListenerMessageHandler msgHandler(this);
+  pm->visit(&msgHandler);
 
-  switch(pm.getType())
-  {
-  case PipelineMessage::MessageType::Error:
-    if(m_ErrorLog && m_ErrorLog->open(QIODevice::ReadWrite))
-    {
-      QTextStream stream(m_ErrorLog);
-      stream.readAll();
-      stream << pm.generateErrorString() << endl;
-      m_ErrorLog->close();
-    }
-    break;
-  case PipelineMessage::MessageType::Warning:
-    if(m_WarningLog && m_WarningLog->open(QIODevice::ReadWrite))
-    {
-      QTextStream stream(m_WarningLog);
-      stream.readAll();
-      stream << pm.generateWarningString() << endl;
-      m_WarningLog->close();
-    }
-    break;
-  case PipelineMessage::MessageType::StatusMessage:
-    if(m_StatusLog && m_StatusLog->open(QIODevice::ReadWrite))
-    {
-      QTextStream stream(m_StatusLog);
-      stream.readAll();
-      stream << pm.generateStatusString() << endl;
-      m_StatusLog->close();
-    }
-
-    qDebug() << pm.getText();
-    break;
-  case PipelineMessage::MessageType::StandardOutputMessage:
-    if(m_StandardOutputLog && m_StandardOutputLog->open(QIODevice::ReadWrite))
-    {
-      QTextStream stream(m_StandardOutputLog);
-      stream.readAll();
-      stream << pm.generateStandardOutputString() << endl;
-      m_StandardOutputLog->close();
-    }
-    break;
-  default:
-    break;
-  }
-
-  if(pm.getType() == PipelineMessage::MessageType::StandardOutputMessage)
-  {
-    qDebug() << pm.getText();
-  }
+  m_SharedMessages.push_back(pm);
+  m_Messages.push_back(pm.get());
 }
 
 // -----------------------------------------------------------------------------
@@ -166,13 +83,13 @@ void PipelineListener::processPipelineMessage(const AbstractMessage& pm)
 // -----------------------------------------------------------------------------
 QString PipelineListener::getErrorLog()
 {
-  std::vector<AbstractMessage> messages = getErrorMessages();
+  std::vector<AbstractErrorMessage*> messages = getErrorMessages();
   int count = messages.size();
   QString log;
 
   for(int i = 0; i < count; i++)
   {
-    log += messages[i].generateErrorString() + "\n";
+    log += messages[i]->generateMessageString() + "\n";
   }
 
   return log;
@@ -183,13 +100,13 @@ QString PipelineListener::getErrorLog()
 // -----------------------------------------------------------------------------
 QString PipelineListener::getWarningLog()
 {
-  std::vector<AbstractMessage> messages = getWarningMessages();
+  std::vector<AbstractWarningMessage*> messages = getWarningMessages();
   int count = messages.size();
   QString log;
 
   for(int i = 0; i < count; i++)
   {
-    log += messages[i].generateWarningString() + "\n";
+    log += messages[i]->generateMessageString() + "\n";
   }
 
   return log;
@@ -200,30 +117,13 @@ QString PipelineListener::getWarningLog()
 // -----------------------------------------------------------------------------
 QString PipelineListener::getStatusLog()
 {
-  std::vector<AbstractMessage> messages = getStatusMessages();
+  std::vector<AbstractStatusMessage*> messages = getStatusMessages();
   int count = messages.size();
   QString log;
 
   for(int i = 0; i < count; i++)
   {
-    log += messages[i].generateStatusString() + "\n";
-  }
-
-  return log;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString PipelineListener::getStandardOutputLog()
-{
-  std::vector<AbstractMessage> messages = getStandardOutputMessages();
-  int count = messages.size();
-  QString log;
-
-  for(int i = 0; i < count; i++)
-  {
-    log += messages[i].generateStandardOutputString() + "\n";
+    log += messages[i]->generateMessageString() + "\n";
   }
 
   return log;
@@ -269,20 +169,6 @@ void PipelineListener::createStatusLogFile(QString path)
   }
 
   m_StatusLog = new QFile(path);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineListener::createStandardOutputLogFile(QString path)
-{
-  if(m_StandardOutputLog)
-  {
-    m_StandardOutputLog->close();
-    delete m_StandardOutputLog;
-  }
-
-  m_StandardOutputLog = new QFile(path);
 }
 
 // -----------------------------------------------------------------------------

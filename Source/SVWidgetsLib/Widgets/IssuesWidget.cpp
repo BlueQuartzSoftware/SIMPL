@@ -144,7 +144,7 @@ void IssuesWidget::clearIssues()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IssuesWidget::processPipelineMessage(const AbstractMessage& msg)
+void IssuesWidget::processPipelineMessage(AbstractMessage::Pointer msg)
 {
   m_CachedMessages.push_back(msg);
 }
@@ -154,46 +154,18 @@ void IssuesWidget::processPipelineMessage(const AbstractMessage& msg)
 // -----------------------------------------------------------------------------
 void IssuesWidget::displayCachedMessages()
 {
-  // Figure out how many error and warning messages that we have. We ignore the rest
   int count = 0;
   int warnCount = 0;
   int errCount = 0;
-  for(int i = 0; i < m_CachedMessages.size(); i++)
-  {
-    AbstractMessage msg = m_CachedMessages[i];
-    switch(msg.getType())
-    {
-    case PipelineMessage::MessageType::Error:
-      count++;
-      errCount++;
-      break;
-    case PipelineMessage::MessageType::Warning:
-      count++;
-      warnCount++;
-      break;
-    case PipelineMessage::MessageType::StatusMessage:
-    case PipelineMessage::MessageType::StandardOutputMessage:
-    case PipelineMessage::MessageType::ProgressValue:
-    case PipelineMessage::MessageType::StatusMessageAndProgressValue:
-    case PipelineMessage::MessageType::UnknownMessageType:
-      break;
-    }
-  }
-
-  emit tableHasErrors(errCount > 0, errCount, warnCount);
-
-  // Now create the correct number of table rows.
-  ui->errorTableWidget->setRowCount(count);
-  int row = 0;
 
   // Add in the content for the cells of the table.
   for(int j = 0; j < m_CachedMessages.size(); j++)
   {
-    IssuesWidgetMessageHandler messageHandler(this);
-    m_CachedMessages[j].visit(&messageHandler);
-
-    row++;
+    IssuesWidgetMessageHandler messageHandler(this, &count, &errCount, &warnCount);
+    m_CachedMessages[j]->visit(&messageHandler);
   }
+
+  emit tableHasErrors(errCount > 0, errCount, warnCount);
 
   if (ui->errorTableWidget->rowCount() > 0)
   {

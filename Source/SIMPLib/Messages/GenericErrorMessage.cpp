@@ -33,25 +33,48 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#pragma once
+#include "GenericErrorMessage.h"
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/GenericMessage.h"
-#include "SIMPLib/Common/PipelineMessage.h"
-#include "SIMPLib/Common/FilterMessage.h"
+#include <QtCore/QMetaType>
+#include <QtCore/QString>
 
-/**
- * @class IMessageHandler IMessageHandler.h DREAM3DLib/Common/IMessageHandler.h
- * @brief This is the Message handler superclass that enables observers to handle messages that they receive from observable objects
- */
-class SIMPLib_EXPORT IMessageHandler
+#include "SIMPLib/Messages/AbstractMessageHandler.h"
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+GenericErrorMessage::GenericErrorMessage()
+: VisitableErrorMessage<GenericErrorMessage>()
 {
-  public:
-    virtual void processMessage(GenericMessage msg) = 0;
+}
 
-    virtual void processMessage(PipelineMessage msg) = 0;
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+GenericErrorMessage::GenericErrorMessage(const QString &prefix, const QString& msgText, int code)
+: VisitableErrorMessage<GenericErrorMessage>(prefix, msgText, code)
+{
+}
 
-    virtual void processMessage(FilterMessage msg) = 0;
-};
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+GenericErrorMessage::~GenericErrorMessage() = default;
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+GenericErrorMessage::Pointer GenericErrorMessage::New(const QString &prefix, const QString& msgText, int code)
+{
+  GenericErrorMessage::Pointer shared_ptr (new GenericErrorMessage(prefix, msgText, code));
+  return shared_ptr;
+}
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString GenericErrorMessage::generateMessageString() const
+{
+  QString ss = QObject::tr("Error (%1): %2: %3").arg(getCode()).arg(getPrefix()).arg(getMessageText());
+  return ss;
+}

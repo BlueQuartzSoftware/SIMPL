@@ -47,7 +47,54 @@
 #include "SIMPLib/Geometry/TetrahedralGeom.h"
 #include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/Math/SIMPLibRandom.h"
+#include "SIMPLib/Messages/AbstractMessageHandler.h"
+#include "SIMPLib/Messages/GenericProgressMessage.h"
+#include "SIMPLib/Messages/GenericStatusMessage.h"
+#include "SIMPLib/Messages/GenericErrorMessage.h"
+#include "SIMPLib/Messages/GenericWarningMessage.h"
 #include "SIMPLib/SIMPLibVersion.h"
+
+class FilterMessageHandler : public AbstractMessageHandler
+{
+  public:
+    explicit FilterMessageHandler(FindDerivatives* filter) : m_Filter(filter) {}
+
+    /**
+     * @brief Handle incoming GenericProgressMessages
+     */
+    void processMessage(GenericProgressMessage* msg) const override
+    {
+      emit m_Filter->notifyProgressMessage(msg->getPrefix(), msg->getMessageText(), msg->getProgressValue());
+    }
+
+    /**
+     * @brief Handle incoming GenericStatusMessages
+     */
+    void processMessage(GenericStatusMessage* msg) const override
+    {
+      QString messageText = QObject::tr("Computing Derivatives || %1").arg(msg->getMessageText());
+      emit m_Filter->notifyStatusMessage(msg->getPrefix(), messageText);
+    }
+
+    /**
+     * @brief Handle incoming GenericErrorMessages
+     */
+    void processMessage(GenericErrorMessage* msg) const override
+    {
+      emit m_Filter->notifyErrorMessage(msg->getPrefix(), msg->getMessageText(), msg->getCode());
+    }
+
+    /**
+     * @brief Handle incoming GenericWarningMessages
+     */
+    void processMessage(GenericWarningMessage* msg) const override
+    {
+      emit m_Filter->notifyWarningMessage(msg->getPrefix(), msg->getMessageText(), msg->getCode());
+    }
+
+  private:
+    FindDerivatives* m_Filter = nullptr;
+};
 
 // -----------------------------------------------------------------------------
 //
@@ -240,15 +287,13 @@ void FindDerivatives::dataCheck()
     if(inAttrMatType != AttributeMatrix::Type::Cell)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected DataArray does not belong to a CellAttributeMatrix").arg(geomName);
-      setErrorCondition(-11002);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      notifyErrorMessage("", ss, -11002);
       return;
     }
     if(destAttrMatType != AttributeMatrix::Type::Cell)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected destination AttributeMatrix is not a CellAttributeMatrix").arg(geomName);
-      setErrorCondition(-11002);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      notifyErrorMessage("", ss, -11002);
     }
   }
   else if(geomType == IGeometry::Type::Vertex) // validate AttributeMatrices for VertexGeom
@@ -256,14 +301,12 @@ void FindDerivatives::dataCheck()
     if(inAttrMatType != AttributeMatrix::Type::Vertex)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected DataArray does not belong to a VertexAttributeMatrix").arg(geomName);
-      setErrorCondition(-11002);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      notifyErrorMessage("", ss, -11002);
     }
     if(destAttrMatType != AttributeMatrix::Type::Vertex)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected destination AttributeMatrix is not a VertexAttributeMatrix").arg(geomName);
-      setErrorCondition(-11002);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      notifyErrorMessage("", ss, -11002);
     }
   }
   else // validate AttributeMatrices for all other geometries
@@ -277,16 +320,14 @@ void FindDerivatives::dataCheck()
        inAttrMatType != AttributeMatrix::Type::Cell)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected DataArray does not belong to a Cell, Face, Edge or Vertex AttributeMatrix").arg(geomName);
-      setErrorCondition(-11002);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      notifyErrorMessage("", ss, -11002);
     }
     if(geomName == SIMPL::Geometry::QuadGeometry || geomName == SIMPL::Geometry::TriangleGeometry)
     {
       if(destAttrMatType != AttributeMatrix::Type::Face)
       {
         ss = QObject::tr("The Geometry type is %1, but the selected destination Attribute Matrix is not a Face Attribute Matrix").arg(geomName);
-        setErrorCondition(-11002);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        notifyErrorMessage("", ss, -11002);
       }
     }
     else if(geomName == SIMPL::Geometry::TetrahedralGeometry || geomName == SIMPL::Geometry::HexahedralGeometry)
@@ -294,8 +335,7 @@ void FindDerivatives::dataCheck()
       if(destAttrMatType != AttributeMatrix::Type::Cell)
       {
         ss = QObject::tr("The Geometry type is %1, but the selected destination Attribute Matrix is not an Cell Attribute Matrix").arg(geomName);
-        setErrorCondition(-11002);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        notifyErrorMessage("", ss, -11002);
       }
     }
     else if(geomName == SIMPL::Geometry::EdgeGeometry)
@@ -303,8 +343,7 @@ void FindDerivatives::dataCheck()
       if(destAttrMatType != AttributeMatrix::Type::Edge)
       {
         ss = QObject::tr("The Geometry type is %1, but the selected destination Attribute Matrix is not an Edge Attribute Matrix").arg(geomName);
-        setErrorCondition(-11002);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        notifyErrorMessage("", ss, -11002);
       }
     }
   }
@@ -356,23 +395,27 @@ void FindDerivatives::execute()
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(m_SelectedArrayPath.getDataContainerName());
   IGeometry::Pointer geom = m->getGeometry();
 
-  geom->setMessagePrefix(getMessagePrefix());
-  geom->setMessageTitle("Computing Derivatives");
-
   if(m_Interpolate)
   {
     DoubleArrayType::Pointer interpolatedValues =
         DoubleArrayType::CreateArray(m_InArrayPtr.lock()->getNumberOfTuples(), m_InArrayPtr.lock()->getComponentDimensions(), "FIND_DERIVATIVES_INTERNAL_USE_ONLY");
     EXECUTE_FUNCTION_TEMPLATE(this, interpolateCellValues, m_InArrayPtr.lock(), m_InArrayPtr.lock(), interpolatedValues, m)
+
     geom->findDerivatives(interpolatedValues, m_DerivativesArrayPtr.lock(), this);
   }
   else
   {
     EXECUTE_FUNCTION_TEMPLATE(this, findDerivs, m_InArrayPtr.lock(), m_InArrayPtr.lock(), m_DerivativesArrayPtr.lock(), m, this);
   }
+}
 
-  geom->setMessagePrefix("");
-  geom->setMessageTitle("");
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FindDerivatives::processDerivativesMessage(AbstractMessage::Pointer msg)
+{
+  FilterMessageHandler msgHandler(this);
+  msg->visit(&msgHandler);
 }
 
 // -----------------------------------------------------------------------------

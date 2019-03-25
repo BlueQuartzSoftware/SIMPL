@@ -59,6 +59,8 @@
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
 #include "SIMPLib/Filtering/QMetaObjectUtilities.h"
+#include "SIMPLib/Messages/AbstractErrorMessage.h"
+#include "SIMPLib/Messages/AbstractWarningMessage.h"
 #include "SIMPLib/Plugin/PluginManager.h"
 #include "SIMPLib/Plugin/SIMPLPluginConstants.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
@@ -333,10 +335,10 @@ public:
 
       pipeline->execute();
 
-      std::vector<PipelineMessage> warningMessages = listener.getWarningMessages();
+      std::vector<AbstractWarningMessage*> warningMessages = listener.getWarningMessages();
       DREAM3D_REQUIRE_EQUAL(warningMessages.size(), 0);
 
-      std::vector<PipelineMessage> errorMessages = listener.getErrorMessages();
+      std::vector<AbstractErrorMessage*> errorMessages = listener.getErrorMessages();
       DREAM3D_REQUIRE_EQUAL(errorMessages.size(), 0);
     }
   }
@@ -527,10 +529,10 @@ public:
 
         pipeline->execute();
 
-        std::vector<PipelineMessage> warningMessages = listener.getWarningMessages();
+        std::vector<AbstractWarningMessage*> warningMessages = listener.getWarningMessages();
         DREAM3D_REQUIRE_EQUAL(warningMessages.size(), 0);
 
-        std::vector<PipelineMessage> errorMessages = listener.getErrorMessages();
+        std::vector<AbstractErrorMessage*> errorMessages = listener.getErrorMessages();
         DREAM3D_REQUIRE_EQUAL(errorMessages.size(), 0);
       }
       else
@@ -798,10 +800,10 @@ public:
 
         pipeline->execute();
 
-        std::vector<PipelineMessage> warningMessages = listener.getWarningMessages();
+        std::vector<AbstractWarningMessage*> warningMessages = listener.getWarningMessages();
         DREAM3D_REQUIRE_EQUAL(warningMessages.size(), 0);
 
-        std::vector<PipelineMessage> errorMessages = listener.getErrorMessages();
+        std::vector<AbstractErrorMessage*> errorMessages = listener.getErrorMessages();
         DREAM3D_REQUIRE_EQUAL(errorMessages.size(), 0);
       }
       else
@@ -1523,10 +1525,10 @@ public:
 
       pipeline->preflightPipeline();
 
-      std::vector<PipelineMessage> warningMessages = listener.getWarningMessages();
+      std::vector<AbstractWarningMessage*> warningMessages = listener.getWarningMessages();
       DREAM3D_REQUIRE_EQUAL(warningMessages.size(), 0);
 
-      std::vector<PipelineMessage> errorMessages = listener.getErrorMessages();
+      std::vector<AbstractErrorMessage*> errorMessages = listener.getErrorMessages();
       DREAM3D_REQUIRED(errorMessages.size(), >, 0);
 
       for(int i = 0; i < responseErrorsArray.size(); i++)
@@ -1536,12 +1538,12 @@ public:
         QJsonObject responseErrorObject = responseErrorsArray[i].toObject();
         DREAM3D_REQUIRE_EQUAL(responseErrorObject[SIMPL::JSON::Code].isDouble(), true);
         DREAM3D_REQUIRE_EQUAL(responseErrorObject[SIMPL::JSON::Message].isString(), true);
-        DREAM3D_REQUIRE_EQUAL(responseErrorObject[SIMPL::JSON::FilterHumanLabel].isString(), true);
+        DREAM3D_REQUIRE_EQUAL(responseErrorObject[SIMPL::JSON::HumanLabel].isString(), true);
         DREAM3D_REQUIRE_EQUAL(responseErrorObject[SIMPL::JSON::FilterIndex].isDouble(), true);
 
         int responseErrorCode = responseErrorObject[SIMPL::JSON::Code].toInt();
-        PipelineMessage errorMessage = errorMessages[i];
-        DREAM3D_REQUIRE_EQUAL(responseErrorCode, errorMessage.getCode());
+        AbstractErrorMessage* errorMessage = errorMessages[i];
+        DREAM3D_REQUIRE_EQUAL(responseErrorCode, errorMessage->getCode());
       }
     }
 
@@ -1593,10 +1595,10 @@ public:
 
       pipeline->preflightPipeline();
 
-      std::vector<PipelineMessage> warningMessages = listener.getWarningMessages();
+      std::vector<AbstractWarningMessage*> warningMessages = listener.getWarningMessages();
       DREAM3D_REQUIRE_EQUAL(warningMessages.size(), 0);
 
-      std::vector<PipelineMessage> errorMessages = listener.getErrorMessages();
+      std::vector<AbstractErrorMessage*> errorMessages = listener.getErrorMessages();
       DREAM3D_REQUIRE_EQUAL(errorMessages.size(), 0);
     }
   }
