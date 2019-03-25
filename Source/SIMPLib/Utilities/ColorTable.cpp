@@ -55,7 +55,7 @@ SIMPLColorTable::~SIMPLColorTable() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SIMPLColorTable::GetColorTable(int numColors, QVector<float>& colors)
+void SIMPLColorTable::GetColorTable(int numColors, QVector<float>& colorsOut)
 {
   static const int numColorNodes = 8;
   float color[numColorNodes][3] = {
@@ -69,19 +69,19 @@ void SIMPLColorTable::GetColorTable(int numColors, QVector<float>& colors)
       {255.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f} // red
   };
 
-  float step = 1.0 / float(numColors);
-  float nodeStep = 1.0f / float(numColorNodes - 1);
+  static const int maxNodeIndex = numColorNodes - 1;
+  const float stepSize = 1.0f / numColors;
+  const float nodeStepSize = 1.0f / (maxNodeIndex);
   for(int i = 0; i < numColors; i++)
   {
-    float val = i * step;
-    int currColorBin = static_cast<int>(val / nodeStep);
-    float currFraction = (val / nodeStep) - currColorBin;
+    float pos = i * stepSize; // [0, 1] range
+    int currColorBin = static_cast<int>(pos / nodeStepSize);
+    float currFraction = (pos / nodeStepSize) - currColorBin;
     
     float r;
     float g;
     float b;
-
-    currColorBin = std::max(currColorBin, numColorNodes - 1);
+    currColorBin = std::max(currColorBin, maxNodeIndex);
     // currColorBin + 1 causes this to step out of color[] bounds when currColorBin == (numColorNodes - 1)
     if(i < numColors - 1)
     {
@@ -95,9 +95,9 @@ void SIMPLColorTable::GetColorTable(int numColors, QVector<float>& colors)
       g = color[currColorBin][1];
       b = color[currColorBin][2];
     }
-    colors[3 * i] = r;
-    colors[3 * i + 1] = g;
-    colors[3 * i + 2] = b;
+    colorsOut[3 * i] = r;
+    colorsOut[3 * i + 1] = g;
+    colorsOut[3 * i + 2] = b;
   }
 }
 
