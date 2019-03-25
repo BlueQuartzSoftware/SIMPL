@@ -64,6 +64,7 @@ PipelineMessage::PipelineMessage(const QString& className, const char* msg, int 
 : m_FilterClassName(className)
 , m_Text(msg)
 , m_Code(code)
+, m_PipelineIndex(-1)
 , m_Type(msgType)
 , m_ProgressValue(progress)
 {
@@ -77,6 +78,7 @@ PipelineMessage::PipelineMessage(const QString& className, const QString& msg, i
 , m_FilterHumanLabel("")
 , m_Text(msg)
 , m_Code(code)
+, m_PipelineIndex(-1)
 , m_Type(msgType)
 , m_ProgressValue(progress)
 {
@@ -90,6 +92,7 @@ PipelineMessage::PipelineMessage(const QString& className, const QString& humanL
 , m_FilterHumanLabel(humanLabel)
 , m_Text(msg)
 , m_Code(code)
+, m_PipelineIndex(-1)
 , m_Type(msgType)
 , m_ProgressValue(progress)
 {

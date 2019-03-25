@@ -35,6 +35,7 @@
 
 #include "ColorTable.h"
 
+#include <algorithm>
 #include <iostream>
 
 #include <QtCore/QJsonArray>
@@ -68,21 +69,32 @@ void SIMPLColorTable::GetColorTable(int numColors, QVector<float>& colors)
       {255.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f} // red
   };
 
-  float val = 0.0f, r = 0.0f, g = 0.0f, b = 0.0f;
   float step = 1.0 / float(numColors);
   float nodeStep = 1.0f / float(numColorNodes - 1);
-  for(int i = 0; i < (numColors); i++)
+  for(int i = 0; i < numColors; i++)
   {
-    val = float(i) * step;
-    int currColorBin = int(val / nodeStep);
+    float val = i * step;
+    int currColorBin = static_cast<int>(val / nodeStep);
     float currFraction = (val / nodeStep) - currColorBin;
-    if(currColorBin > numColorNodes - 1)
+    
+    float r;
+    float g;
+    float b;
+
+    currColorBin = std::max(currColorBin, numColorNodes - 1);
+    // currColorBin + 1 causes this to step out of color[] bounds when currColorBin == (numColorNodes - 1)
+    if(i < numColors - 1)
     {
-      currColorBin = numColorNodes - 1;
+      r = color[currColorBin][0] * (1.0f - currFraction) + color[currColorBin + 1][0] * currFraction;
+      g = color[currColorBin][1] * (1.0f - currFraction) + color[currColorBin + 1][1] * currFraction;
+      b = color[currColorBin][2] * (1.0f - currFraction) + color[currColorBin + 1][2] * currFraction;
     }
-    r = color[currColorBin][0] * (1.0 - currFraction) + color[currColorBin + 1][0] * currFraction;
-    g = color[currColorBin][1] * (1.0 - currFraction) + color[currColorBin + 1][1] * currFraction;
-    b = color[currColorBin][2] * (1.0 - currFraction) + color[currColorBin + 1][2] * currFraction;
+    else
+    {
+      r = color[currColorBin][0];
+      g = color[currColorBin][1];
+      b = color[currColorBin][2];
+    }
     colors[3 * i] = r;
     colors[3 * i + 1] = g;
     colors[3 * i + 2] = b;
@@ -125,8 +137,8 @@ std::vector<unsigned char> SIMPLColorTable::GetColorTable(int numColors, QJsonAr
   float currFraction = 0.0f;
   float allColorVal = 0.0f;
   unsigned char r = 0, g = 0, b = 0;
-  float colorStep = 1.0 / float(numColors);
-  for(int i = 0; i < numColors; i++)
+  float colorStep = 1.0f / numColors;
+  for(size_t i = 0; i < numColors; i++)
   {
     // Calculate what point we are at in the entire color range
     allColorVal = float(i) * colorStep;
@@ -156,9 +168,10 @@ std::vector<unsigned char> SIMPLColorTable::GetColorTable(int numColors, QJsonAr
     }
 
     // Calculate the RGB values
-    r = (controlPoints[currentBinIndex][1] * (1.0 - currFraction) + controlPoints[currentBinIndex + 1][1] * currFraction) * 255;
-    g = (controlPoints[currentBinIndex][2] * (1.0 - currFraction) + controlPoints[currentBinIndex + 1][2] * currFraction) * 255;
-    b = (controlPoints[currentBinIndex][3] * (1.0 - currFraction) + controlPoints[currentBinIndex + 1][3] * currFraction) * 255;
+    size_t cbIndex = static_cast<size_t>(currentBinIndex);
+    r = (controlPoints[cbIndex][1] * (1.0 - currFraction) + controlPoints[cbIndex + 1][1] * currFraction) * 255;
+    g = (controlPoints[cbIndex][2] * (1.0 - currFraction) + controlPoints[cbIndex + 1][2] * currFraction) * 255;
+    b = (controlPoints[cbIndex][3] * (1.0 - currFraction) + controlPoints[cbIndex + 1][3] * currFraction) * 255;
 
     // Store the RGB values in the RGB generatedColors vector
     generatedColors[3 * i] = r;
