@@ -125,6 +125,14 @@ QString H5File()
 
 class DataContainerTest
 {
+
+  enum createdPathID : RenameDataPath::DataID_t
+  {
+    DataContainerID1 = 1,
+    DataContainerID2 = 2,
+    DataContainerID3 = 3
+  };
+
 public:
   DataContainerTest() = default;
   virtual ~DataContainerTest() = default;
@@ -286,21 +294,21 @@ public:
     // 1D VolumeDataContainer
     tupleDims.push_back(nx);
     {
-      DataContainer::Pointer dc = dca->createNonPrereqDataContainer<AbstractFilter>(nullptr, "1D_VolumeDataContainer");
+      DataContainer::Pointer dc = dca->createNonPrereqDataContainer<AbstractFilter>(nullptr, "1D_VolumeDataContainer", DataContainerID1);
       PopulateVolumeDataContainer(dc, tupleDims, "1D_AttributeMatrix");
     }
 
     // 2D VolumeDataContainer
     tupleDims.push_back(ny);
     {
-      DataContainer::Pointer dc = dca->createNonPrereqDataContainer<AbstractFilter>(nullptr, "2D_VolumeDataContainer");
+      DataContainer::Pointer dc = dca->createNonPrereqDataContainer<AbstractFilter>(nullptr, "2D_VolumeDataContainer", DataContainerID2);
       PopulateVolumeDataContainer(dc, tupleDims, "2D_AttributeMatrix");
     }
 
     // 3D VolumeDataContainer
     tupleDims.push_back(nz);
     {
-      DataContainer::Pointer dc = dca->createNonPrereqDataContainer<AbstractFilter>(nullptr, "3D_VolumeDataContainer");
+      DataContainer::Pointer dc = dca->createNonPrereqDataContainer<AbstractFilter>(nullptr, "3D_VolumeDataContainer", DataContainerID3);
       PopulateVolumeDataContainer(dc, tupleDims, "3D_AttributeMatrix");
     }
 
