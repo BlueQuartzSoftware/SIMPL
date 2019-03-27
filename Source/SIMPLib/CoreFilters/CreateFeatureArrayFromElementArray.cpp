@@ -173,7 +173,7 @@ template <typename T> IDataArray::Pointer copyCellData(AbstractFilter* filter, I
   T* fPtr = feature->getPointer(0);
   T* cPtr = cell->getPointer(0);
 
-  int32_t numComp = cell->getNumberOfComponents();
+  size_t numComp = static_cast<size_t>(cell->getNumberOfComponents());
   int32_t featureIdx = 0;
 
   size_t cells = inputData->getNumberOfTuples();
