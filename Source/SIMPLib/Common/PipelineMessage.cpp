@@ -106,6 +106,7 @@ PipelineMessage::PipelineMessage(const QString& humanLabel, int pipelineIndex, c
 , m_Text(msg)
 , m_PipelineIndex(pipelineIndex)
 , m_Type(msgType)
+, m_Code(0)
 {
 }
 
