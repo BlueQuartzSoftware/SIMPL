@@ -133,7 +133,7 @@ class SIMPLib_EXPORT H5FilterParametersWriter : public AbstractFilterParametersW
     int writeValue(const QString& name, AxisAngleInput_t v, int notUsed) override;
 
   private:
-    hid_t                                 m_CurrentGroupId;
+    hid_t                                 m_CurrentGroupId = -1;
 
   public:
     H5FilterParametersWriter(const H5FilterParametersWriter&) = delete; // Copy Constructor Not Implemented
