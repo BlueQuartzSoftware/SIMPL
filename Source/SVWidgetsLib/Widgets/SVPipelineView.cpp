@@ -552,18 +552,19 @@ void SVPipelineView::cancelPipeline()
 // -----------------------------------------------------------------------------
 void SVPipelineView::finishPipeline()
 {
-  if(m_PipelineInFlight->getExecutionResult() == FilterPipeline::ExecutionResult::Canceled)
+  switch(m_PipelineInFlight->getExecutionResult())
   {
+  case FilterPipeline::ExecutionResult::Canceled:
     emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE CANCELED ***************", true));
-  }
-  else if (m_PipelineInFlight->getExecutionResult() == FilterPipeline::ExecutionResult::Completed)
-  {
+    break;
+  case FilterPipeline::ExecutionResult::Completed:
     emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE FINISHED ***************", true));
-  }
-  else
-  {
-    // We should never hit this
-    return;
+    break;
+  case FilterPipeline::ExecutionResult::Failed:
+    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE FAILED ***************", true));
+    break;
+  case FilterPipeline::ExecutionResult::Invalid:
+    break;
   }
   emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("", false));
 
