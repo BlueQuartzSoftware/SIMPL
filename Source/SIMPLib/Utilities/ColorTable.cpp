@@ -81,7 +81,7 @@ void SIMPLColorTable::GetColorTable(int numColors, QVector<float>& colorsOut)
     float r;
     float g;
     float b;
-    currColorBin = std::max(currColorBin, maxNodeIndex);
+    currColorBin = std::min(currColorBin, maxNodeIndex);
     // currColorBin + 1 causes this to step out of color[] bounds when currColorBin == (numColorNodes - 1)
     if(i < numColors - 1)
     {
@@ -104,20 +104,20 @@ void SIMPLColorTable::GetColorTable(int numColors, QVector<float>& colorsOut)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<unsigned char> SIMPLColorTable::GetColorTable(int numColors, QJsonArray colorControlPoints)
+std::vector<unsigned char> SIMPLColorTable::GetColorTable(size_t numColors, QJsonArray colorControlPoints)
 {
-  int numControlColors = colorControlPoints.count() / 4;
-  int numComponents = 4;
-  std::vector<std::vector<double> > controlPoints(numControlColors, std::vector<double>(numComponents));
+  const size_t controlColorsCount = colorControlPoints.count() / 4;
+  const size_t numComponents = 4;
+  std::vector<std::vector<double> > controlPoints(controlColorsCount, std::vector<double>(numComponents));
 
   // Migrate colorControlPoints values from QJsonArray to 2D array.  Store A-values in binPoints vector.
-  QVector<float> binPoints;
-  for (int i=0; i<numControlColors; i++)
+  std::vector<float> binPoints;
+  for(size_t i = 0; i<controlColorsCount; i++)
   {
-    for (int j=0; j<numComponents; j++)
+    for(size_t j = 0; j<numComponents; j++)
     {
       controlPoints[i][j] = static_cast<float>(colorControlPoints[numComponents*i + j].toDouble());
-      if (j == 0)
+      if(j == 0)
       {
         binPoints.push_back(controlPoints[i][j]);
       }
@@ -125,33 +125,31 @@ std::vector<unsigned char> SIMPLColorTable::GetColorTable(int numColors, QJsonAr
   }
 
   // Normalize binPoints values
-  float min = binPoints[0];
-  float max = binPoints[binPoints.size() - 1];
-  for (int i=0; i<binPoints.size(); i++)
+  const float min = binPoints[0];
+  const float max = binPoints[binPoints.size() - 1];
+  for(size_t i=0; i<binPoints.size(); i++)
   {
     binPoints[i] = (binPoints[i] - min) / (max - min);
   }
 
   std::vector<unsigned char> generatedColors(numColors * 3);
-  int currentBinIndex = 0;
-  float currFraction = 0.0f;
-  float allColorVal = 0.0f;
-  unsigned char r = 0, g = 0, b = 0;
-  float colorStep = 1.0f / numColors;
+  size_t currentBinIndex = 0;
+  const float colorStepSize = 1.0f / numColors;
   for(size_t i = 0; i < numColors; i++)
   {
     // Calculate what point we are at in the entire color range
-    allColorVal = float(i) * colorStep;
+    const float allColorVal = static_cast<float>(i) * colorStepSize;
 
     // If we have crossed into the next color bin, increment the currentBinIndex variable.
-    if (currentBinIndex+1 < binPoints.size() && allColorVal > binPoints[currentBinIndex+1])
+    if(currentBinIndex+1 < binPoints.size() && allColorVal > binPoints[currentBinIndex+1])
     {
       // We have crossed into the next bin
       currentBinIndex++;
     }
 
     // Find the fractional distance traveled between the beginning and end of the current color bin
-    if (currentBinIndex + 1 < binPoints.size())
+    float currFraction = 0.0f;
+    if(currentBinIndex + 1 < binPoints.size())
     {
       currFraction = (allColorVal - binPoints[currentBinIndex]) / (binPoints[currentBinIndex+1] - binPoints[currentBinIndex]);
     }
@@ -162,16 +160,24 @@ std::vector<unsigned char> SIMPLColorTable::GetColorTable(int numColors, QJsonAr
 
     // If the current color bin index is larger than the total number of control colors, automatically set the currentBinIndex
     // to the last control color.
-    if(currentBinIndex > numControlColors - 1)
-    {
-      currentBinIndex = numControlColors - 1;
-    }
+    currentBinIndex = std::min(currentBinIndex, controlColorsCount - 1);
 
     // Calculate the RGB values
-    size_t cbIndex = static_cast<size_t>(currentBinIndex);
-    r = (controlPoints[cbIndex][1] * (1.0 - currFraction) + controlPoints[cbIndex + 1][1] * currFraction) * 255;
-    g = (controlPoints[cbIndex][2] * (1.0 - currFraction) + controlPoints[cbIndex + 1][2] * currFraction) * 255;
-    b = (controlPoints[cbIndex][3] * (1.0 - currFraction) + controlPoints[cbIndex + 1][3] * currFraction) * 255;
+    unsigned char r = 0;
+    unsigned char g = 0;
+    unsigned char b = 0;
+    if(currentBinIndex < controlColorsCount - 2)
+    {
+      r = (controlPoints[currentBinIndex][1] * (1.0 - currFraction) + controlPoints[currentBinIndex + 1][1] * currFraction) * 255;
+      g = (controlPoints[currentBinIndex][2] * (1.0 - currFraction) + controlPoints[currentBinIndex + 1][2] * currFraction) * 255;
+      b = (controlPoints[currentBinIndex][3] * (1.0 - currFraction) + controlPoints[currentBinIndex + 1][3] * currFraction) * 255;
+    }
+    else
+    {
+      r = controlPoints[currentBinIndex][1] * 255;
+      g = controlPoints[currentBinIndex][2] * 255;
+      b = controlPoints[currentBinIndex][3] * 255;
+    }
 
     // Store the RGB values in the RGB generatedColors vector
     generatedColors[3 * i] = r;
