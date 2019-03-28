@@ -72,6 +72,14 @@ class FilterPipelineMessageHandler : public AbstractMessageHandler
     FilterPipeline* m_Pipeline = nullptr;
 };
 
+struct PipelineIdleException : public std::exception
+{
+   const char* what () const throw ()
+   {
+      return "A pipeline that was finishing execution was marked as in the idle state.";
+   }
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -873,20 +881,25 @@ DataContainerArray::Pointer FilterPipeline::execute()
 
   disconnectSignalsSlots();
 
-  if(m_State == FilterPipeline::State::Canceling)
+  switch(m_State)
   {
-    m_ExecutionResult = FilterPipeline::ExecutionResult::Canceled;
-    notifyStatusMessage("", "Pipeline Canceled");
-  }
-  else if(m_State == FilterPipeline::State::Executing)
-  {
-    m_ExecutionResult = FilterPipeline::ExecutionResult::Completed;
-    notifyStatusMessage("", "Pipeline Complete");
-  }
-  else
-  {
-    // This should never get here
-    notifyErrorMessage("", "Unsupported Pipeline Execution Result", -210);
+    case FilterPipeline::State::Canceling:
+    {
+      m_ExecutionResult = FilterPipeline::ExecutionResult::Canceled;
+      notifyStatusMessage("", "Pipeline Canceled");
+      break;
+    }
+    case FilterPipeline::State::Executing:
+    {
+      m_ExecutionResult = FilterPipeline::ExecutionResult::Completed;
+      notifyStatusMessage("", "Pipeline Complete");
+      break;
+    }
+    case FilterPipeline::State::Idle:
+    {
+      throw PipelineIdleException();
+      break;
+    }
   }
 
   m_State = FilterPipeline::State::Idle;
