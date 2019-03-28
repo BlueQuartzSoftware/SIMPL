@@ -58,7 +58,8 @@ class FilterPipelineMessageHandler : public AbstractMessageHandler
     explicit FilterPipelineMessageHandler(FilterPipeline* pipeline) : m_Pipeline(pipeline) {}
 
     /**
-     * @brief Handle incoming FilterProgressMessage
+     * @brief Converts filter progress messages into pipeline progress messages.  This enables the overall pipeline
+     * progress to update along with the filter's progress updates
      */
     void processMessage(const FilterProgressMessage* msg) const override
     {

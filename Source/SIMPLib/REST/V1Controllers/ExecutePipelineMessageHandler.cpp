@@ -53,7 +53,7 @@ ExecutePipelineMessageHandler::ExecutePipelineMessageHandler(QJsonArray* errors,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ExecutePipelineMessageHandler::processMessage(FilterErrorMessage* msg) const
+void ExecutePipelineMessageHandler::processMessage(const FilterErrorMessage* msg) const
 {
   QJsonObject obj = writeToJson(msg->getCode(), msg->getMessageText());
   obj.insert(SIMPL::JSON::FilterIndex, msg->getPipelineIndex());
@@ -64,7 +64,7 @@ void ExecutePipelineMessageHandler::processMessage(FilterErrorMessage* msg) cons
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ExecutePipelineMessageHandler::processMessage(FilterWarningMessage* msg) const
+void ExecutePipelineMessageHandler::processMessage(const FilterWarningMessage* msg) const
 {
   QJsonObject obj = writeToJson(msg->getCode(), msg->getMessageText());
   obj.insert(SIMPL::JSON::FilterIndex, msg->getPipelineIndex());
@@ -75,7 +75,7 @@ void ExecutePipelineMessageHandler::processMessage(FilterWarningMessage* msg) co
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ExecutePipelineMessageHandler::processMessage(PipelineErrorMessage* msg) const
+void ExecutePipelineMessageHandler::processMessage(const PipelineErrorMessage* msg) const
 {
   QJsonObject obj = writeToJson(msg->getCode(), msg->getMessageText());
   m_Errors->push_back(obj);
@@ -84,7 +84,7 @@ void ExecutePipelineMessageHandler::processMessage(PipelineErrorMessage* msg) co
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ExecutePipelineMessageHandler::processMessage(PipelineWarningMessage* msg) const
+void ExecutePipelineMessageHandler::processMessage(const PipelineWarningMessage* msg) const
 {
   QJsonObject obj = writeToJson(msg->getCode(), msg->getMessageText());
   m_Warnings->push_back(obj);

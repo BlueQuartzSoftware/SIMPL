@@ -43,28 +43,30 @@ class SIMPLib_EXPORT PreflightPipelineMessageHandler : public AbstractMessageHan
     PreflightPipelineMessageHandler(QJsonArray* errors, QJsonArray* warnings);
 
     /**
-     * @brief processMessage
-     * @param msg
+     * @brief Stores pipeline index, human label, message text, and error code
+     *  of incoming FilterErrorMessages into a json object and stores the json
+     * object in the errors json array.
      */
-    void processMessage(FilterErrorMessage* msg) const;
+    void processMessage(const FilterErrorMessage* msg) const override;
 
     /**
-     * @brief processMessage
-     * @param msg
+     * @brief Stores pipeline index, human label, message text, and warning code
+     *  of incoming FilterWarningMessages into a json object and stores the json
+     * object in the warnings json array.
      */
-    void processMessage(FilterWarningMessage* msg) const;
+    void processMessage(const FilterWarningMessage* msg) const override;
 
     /**
-     * @brief processMessage
-     * @param msg
+     * @brief Stores message text and warning code of incoming PipelineErrorMessages
+     * into a json object and stores the json object in the errors json array.
      */
-    void processMessage(PipelineErrorMessage* msg) const;
+    void processMessage(const PipelineErrorMessage* msg) const override;
 
     /**
-     * @brief processMessage
-     * @param msg
+     * @brief Stores message text and warning code of incoming PipelineWarningMessages
+     * into a json object and stores the json object in the warnings json array.
      */
-    void processMessage(PipelineWarningMessage* msg) const;
+    void processMessage(const PipelineWarningMessage* msg) const override;
 
   private:
     QJsonArray* m_Errors = nullptr;

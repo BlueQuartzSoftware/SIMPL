@@ -53,7 +53,7 @@ PreflightPipelineMessageHandler::PreflightPipelineMessageHandler(QJsonArray* err
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PreflightPipelineMessageHandler::processMessage(FilterErrorMessage* msg) const
+void PreflightPipelineMessageHandler::processMessage(const FilterErrorMessage* msg) const
 {
   QJsonObject obj = writeToJson(msg->getCode(), msg->getMessageText());
   obj.insert(SIMPL::JSON::FilterIndex, msg->getPipelineIndex());
@@ -64,7 +64,7 @@ void PreflightPipelineMessageHandler::processMessage(FilterErrorMessage* msg) co
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PreflightPipelineMessageHandler::processMessage(FilterWarningMessage* msg) const
+void PreflightPipelineMessageHandler::processMessage(const FilterWarningMessage* msg) const
 {
   QJsonObject obj = writeToJson(msg->getCode(), msg->getMessageText());
   obj.insert(SIMPL::JSON::FilterIndex, msg->getPipelineIndex());
@@ -75,7 +75,7 @@ void PreflightPipelineMessageHandler::processMessage(FilterWarningMessage* msg) 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PreflightPipelineMessageHandler::processMessage(PipelineErrorMessage* msg) const
+void PreflightPipelineMessageHandler::processMessage(const PipelineErrorMessage* msg) const
 {
   QJsonObject obj = writeToJson(msg->getCode(), msg->getMessageText());
   m_Errors->push_back(obj);
@@ -84,7 +84,7 @@ void PreflightPipelineMessageHandler::processMessage(PipelineErrorMessage* msg) 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PreflightPipelineMessageHandler::processMessage(PipelineWarningMessage* msg) const
+void PreflightPipelineMessageHandler::processMessage(const PipelineWarningMessage* msg) const
 {
   QJsonObject obj = writeToJson(msg->getCode(), msg->getMessageText());
   m_Warnings->push_back(obj);

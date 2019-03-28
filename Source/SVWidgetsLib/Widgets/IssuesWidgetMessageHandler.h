@@ -51,13 +51,13 @@ class SIMPLib_EXPORT IssuesWidgetMessageHandler : public AbstractMessageHandler
     explicit IssuesWidgetMessageHandler(IssuesWidget* issuesWidget, int* count, int* errCount, int* warningCount);
 
     /**
-     * @brief processMessage
+     * @brief Adds incoming FilterErrorMessages to the issues table.
      * @param msg
      */
     void processMessage(const FilterErrorMessage* msg) const override;
 
     /**
-     * @brief processMessage
+     * @brief Adds incoming FilterWarningMessages to the issues table.
      * @param msg
      */
     void processMessage(const FilterWarningMessage* msg) const override;

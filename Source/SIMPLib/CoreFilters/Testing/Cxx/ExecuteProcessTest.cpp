@@ -67,12 +67,18 @@ public:
   {
   }
 
+ /**
+  * @brief Appends incoming FilterStatusMessages to the standard output string
+  */
   void processMessage(const FilterStatusMessage* msg) const override
   {
     QString str = msg->generateMessageString();
     m_StdOutput->append(str);
   }
 
+  /**
+   * @brief Appends incoming PipelineStatusMessages to the standard output string
+   */
   void processMessage(const PipelineStatusMessage* msg) const override
   {
     QString str = msg->generateMessageString();
