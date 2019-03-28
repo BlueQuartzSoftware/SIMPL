@@ -67,7 +67,7 @@ IssuesWidgetMessageHandler::IssuesWidgetMessageHandler(IssuesWidget* issuesWidge
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IssuesWidgetMessageHandler::processMessage(FilterErrorMessage* msg) const
+void IssuesWidgetMessageHandler::processMessage(const FilterErrorMessage* msg) const
 {
   QColor msgColor = QColor(255, 191, 193);
   addItemToIssuesTable(msg->getClassName(), msg->getHumanLabel(), msg->getPipelineIndex(), msg->getMessageText(), msg->getCode(), msgColor);
@@ -78,7 +78,7 @@ void IssuesWidgetMessageHandler::processMessage(FilterErrorMessage* msg) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IssuesWidgetMessageHandler::processMessage(FilterWarningMessage* msg) const
+void IssuesWidgetMessageHandler::processMessage(const FilterWarningMessage* msg) const
 {
   QColor msgColor = QColor(251, 254, 137);
   addItemToIssuesTable(msg->getClassName(), msg->getHumanLabel(), msg->getPipelineIndex(), msg->getMessageText(), msg->getCode(), msgColor);

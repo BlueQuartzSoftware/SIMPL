@@ -64,7 +64,7 @@ public:
    * subclass specific operations on messages that they receive.
    * @param msgHandler The observer's message handler
    */
-  virtual void visit(AbstractMessageHandler* msgHandler) = 0;
+  virtual void visit(AbstractMessageHandler* msgHandler) const = 0;
 
 protected:
   AbstractProgressMessage()

@@ -60,7 +60,7 @@ class FilterPipelineMessageHandler : public AbstractMessageHandler
     /**
      * @brief Handle incoming FilterProgressMessage
      */
-    void processMessage(FilterProgressMessage* msg) const override
+    void processMessage(const FilterProgressMessage* msg) const override
     {
       int filterProgress = msg->getProgressValue();
       float filterProgressStep = (1.0f / m_Pipeline->size()) * filterProgress / 100.0f;

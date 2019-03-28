@@ -52,7 +52,7 @@ AbstractMessageHandler::AbstractMessageHandler() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractMessageHandler::processMessage(GenericErrorMessage* msg) const
+void AbstractMessageHandler::processMessage(const GenericErrorMessage *msg) const
 {
   /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
    * should reimplement this method if they care about processing generic error messages. */
@@ -61,7 +61,7 @@ void AbstractMessageHandler::processMessage(GenericErrorMessage* msg) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractMessageHandler::processMessage(GenericProgressMessage* msg) const
+void AbstractMessageHandler::processMessage(const GenericProgressMessage* msg) const
 {
   /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
    * should reimplement this method if they care about processing generic progress messages. */
@@ -70,7 +70,7 @@ void AbstractMessageHandler::processMessage(GenericProgressMessage* msg) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractMessageHandler::processMessage(GenericStatusMessage* msg) const
+void AbstractMessageHandler::processMessage(const GenericStatusMessage* msg) const
 {
   /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
    * should reimplement this method if they care about processing generic status messages. */
@@ -79,7 +79,7 @@ void AbstractMessageHandler::processMessage(GenericStatusMessage* msg) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractMessageHandler::processMessage(GenericWarningMessage* msg) const
+void AbstractMessageHandler::processMessage(const GenericWarningMessage* msg) const
 {
   /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
    * should reimplement this method if they care about processing generic warning messages. */
@@ -88,7 +88,7 @@ void AbstractMessageHandler::processMessage(GenericWarningMessage* msg) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractMessageHandler::processMessage(PipelineErrorMessage* msg) const
+void AbstractMessageHandler::processMessage(const PipelineErrorMessage* msg) const
 {
   /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
    * should reimplement this method if they care about processing pipeline error messages. */
@@ -97,7 +97,7 @@ void AbstractMessageHandler::processMessage(PipelineErrorMessage* msg) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractMessageHandler::processMessage(PipelineProgressMessage* msg) const
+void AbstractMessageHandler::processMessage(const PipelineProgressMessage* msg) const
 {
   /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
    * should reimplement this method if they care about processing pipeline progress messages. */
@@ -106,7 +106,7 @@ void AbstractMessageHandler::processMessage(PipelineProgressMessage* msg) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractMessageHandler::processMessage(PipelineStatusMessage* msg) const
+void AbstractMessageHandler::processMessage(const PipelineStatusMessage* msg) const
 {
   /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
    * should reimplement this method if they care about processing pipeline status messages. */
@@ -115,7 +115,7 @@ void AbstractMessageHandler::processMessage(PipelineStatusMessage* msg) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractMessageHandler::processMessage(PipelineWarningMessage* msg) const
+void AbstractMessageHandler::processMessage(const PipelineWarningMessage* msg) const
 {
   /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
    * should reimplement this method if they care about processing pipeline warning messages. */
@@ -124,7 +124,7 @@ void AbstractMessageHandler::processMessage(PipelineWarningMessage* msg) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractMessageHandler::processMessage(FilterErrorMessage* msg) const
+void AbstractMessageHandler::processMessage(const FilterErrorMessage* msg) const
 {
   /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
    * should reimplement this method if they care about processing filter error messages. */
@@ -133,7 +133,7 @@ void AbstractMessageHandler::processMessage(FilterErrorMessage* msg) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractMessageHandler::processMessage(FilterProgressMessage* msg) const
+void AbstractMessageHandler::processMessage(const FilterProgressMessage* msg) const
 {
   /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
    * should reimplement this method if they care about processing filter progress messages. */
@@ -142,7 +142,7 @@ void AbstractMessageHandler::processMessage(FilterProgressMessage* msg) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractMessageHandler::processMessage(FilterStatusMessage* msg) const
+void AbstractMessageHandler::processMessage(const FilterStatusMessage* msg) const
 {
   /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
    * should reimplement this method if they care about processing filter status messages. */
@@ -151,7 +151,7 @@ void AbstractMessageHandler::processMessage(FilterStatusMessage* msg) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractMessageHandler::processMessage(FilterWarningMessage* msg) const
+void AbstractMessageHandler::processMessage(const FilterWarningMessage* msg) const
 {
   /* This is a default method that can be reimplemented in a subclass.  Subclassed message handlers
    * should reimplement this method if they care about processing filter warning messages. */

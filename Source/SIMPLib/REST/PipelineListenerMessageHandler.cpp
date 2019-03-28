@@ -27,7 +27,7 @@ PipelineListenerMessageHandler::PipelineListenerMessageHandler(PipelineListener*
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineListenerMessageHandler::processMessage(PipelineErrorMessage* msg) const
+void PipelineListenerMessageHandler::processMessage(const PipelineErrorMessage* msg) const
 {
   QFile* log = m_Listener->m_ErrorLog;
   QString msgString = msg->generateMessageString();
@@ -39,7 +39,7 @@ void PipelineListenerMessageHandler::processMessage(PipelineErrorMessage* msg) c
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineListenerMessageHandler::processMessage(PipelineWarningMessage* msg) const
+void PipelineListenerMessageHandler::processMessage(const PipelineWarningMessage* msg) const
 {
   QFile* log = m_Listener->m_WarningLog;
   QString msgString = msg->generateMessageString();
@@ -51,7 +51,7 @@ void PipelineListenerMessageHandler::processMessage(PipelineWarningMessage* msg)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineListenerMessageHandler::processMessage(PipelineStatusMessage* msg) const
+void PipelineListenerMessageHandler::processMessage(const PipelineStatusMessage* msg) const
 {
   QFile* log = m_Listener->m_StatusLog;
   QString msgString = msg->generateMessageString();
@@ -63,7 +63,7 @@ void PipelineListenerMessageHandler::processMessage(PipelineStatusMessage* msg) 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineListenerMessageHandler::processMessage(PipelineProgressMessage* msg) const
+void PipelineListenerMessageHandler::processMessage(const PipelineProgressMessage* msg) const
 {
   m_Listener->m_ProgressMessages.push_back(msg);
 }
@@ -71,7 +71,7 @@ void PipelineListenerMessageHandler::processMessage(PipelineProgressMessage* msg
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineListenerMessageHandler::processMessage(FilterErrorMessage* msg) const
+void PipelineListenerMessageHandler::processMessage(const FilterErrorMessage* msg) const
 {
   QFile* log = m_Listener->m_ErrorLog;
   QString msgString = msg->generateMessageString();
@@ -83,7 +83,7 @@ void PipelineListenerMessageHandler::processMessage(FilterErrorMessage* msg) con
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineListenerMessageHandler::processMessage(FilterWarningMessage* msg) const
+void PipelineListenerMessageHandler::processMessage(const FilterWarningMessage* msg) const
 {
   QFile* log = m_Listener->m_WarningLog;
   QString msgString = msg->generateMessageString();
@@ -95,7 +95,7 @@ void PipelineListenerMessageHandler::processMessage(FilterWarningMessage* msg) c
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineListenerMessageHandler::processMessage(FilterStatusMessage* msg) const
+void PipelineListenerMessageHandler::processMessage(const FilterStatusMessage* msg) const
 {
   QFile* log = m_Listener->m_StatusLog;
   QString msgString = msg->generateMessageString();
@@ -107,7 +107,7 @@ void PipelineListenerMessageHandler::processMessage(FilterStatusMessage* msg) co
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineListenerMessageHandler::processMessage(FilterProgressMessage* msg) const
+void PipelineListenerMessageHandler::processMessage(const FilterProgressMessage* msg) const
 {
   m_Listener->m_ProgressMessages.push_back(msg);
 }

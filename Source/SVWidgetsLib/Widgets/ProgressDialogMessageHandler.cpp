@@ -54,7 +54,7 @@ ProgressDialogMessageHandler::ProgressDialogMessageHandler(ProgressDialog* progr
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ProgressDialogMessageHandler::processMessage(FilterErrorMessage* msg) const
+void ProgressDialogMessageHandler::processMessage(const FilterErrorMessage* msg) const
 {
   m_ProgressDialog->m_Ui->label->setText(msg->getHumanLabel());
 }
@@ -62,7 +62,7 @@ void ProgressDialogMessageHandler::processMessage(FilterErrorMessage* msg) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ProgressDialogMessageHandler::processMessage(FilterWarningMessage* msg) const
+void ProgressDialogMessageHandler::processMessage(const FilterWarningMessage* msg) const
 {
 
 }

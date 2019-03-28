@@ -11,15 +11,15 @@ class SIMPLib_EXPORT PipelineListenerMessageHandler : public AbstractMessageHand
   public:
     PipelineListenerMessageHandler(PipelineListener* listener);
 
-    virtual void processMessage(PipelineErrorMessage* msg) const override;
-    virtual void processMessage(PipelineProgressMessage* msg) const override;
-    virtual void processMessage(PipelineStatusMessage* msg) const override;
-    virtual void processMessage(PipelineWarningMessage* msg) const override;
+    virtual void processMessage(const PipelineErrorMessage* msg) const override;
+    virtual void processMessage(const PipelineProgressMessage* msg) const override;
+    virtual void processMessage(const PipelineStatusMessage* msg) const override;
+    virtual void processMessage(const PipelineWarningMessage* msg) const override;
 
-    virtual void processMessage(FilterErrorMessage* msg) const override;
-    virtual void processMessage(FilterProgressMessage* msg) const override;
-    virtual void processMessage(FilterStatusMessage* msg) const override;
-    virtual void processMessage(FilterWarningMessage* msg) const override;
+    virtual void processMessage(const FilterErrorMessage* msg) const override;
+    virtual void processMessage(const FilterProgressMessage* msg) const override;
+    virtual void processMessage(const FilterStatusMessage* msg) const override;
+    virtual void processMessage(const FilterWarningMessage* msg) const override;
 
   private:
     PipelineListener* m_Listener = nullptr;

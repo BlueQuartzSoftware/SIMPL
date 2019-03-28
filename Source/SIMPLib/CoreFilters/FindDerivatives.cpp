@@ -62,7 +62,7 @@ class FilterMessageHandler : public AbstractMessageHandler
     /**
      * @brief Handle incoming GenericProgressMessages
      */
-    void processMessage(GenericProgressMessage* msg) const override
+    void processMessage(const GenericProgressMessage* msg) const override
     {
       emit m_Filter->notifyProgressMessage(msg->getPrefix(), msg->getMessageText(), msg->getProgressValue());
     }
@@ -70,7 +70,7 @@ class FilterMessageHandler : public AbstractMessageHandler
     /**
      * @brief Handle incoming GenericStatusMessages
      */
-    void processMessage(GenericStatusMessage* msg) const override
+    void processMessage(const GenericStatusMessage* msg) const override
     {
       QString messageText = QObject::tr("Computing Derivatives || %1").arg(msg->getMessageText());
       emit m_Filter->notifyStatusMessage(msg->getPrefix(), messageText);
@@ -79,7 +79,7 @@ class FilterMessageHandler : public AbstractMessageHandler
     /**
      * @brief Handle incoming GenericErrorMessages
      */
-    void processMessage(GenericErrorMessage* msg) const override
+    void processMessage(const GenericErrorMessage* msg) const override
     {
       emit m_Filter->notifyErrorMessage(msg->getPrefix(), msg->getMessageText(), msg->getCode());
     }
@@ -87,7 +87,7 @@ class FilterMessageHandler : public AbstractMessageHandler
     /**
      * @brief Handle incoming GenericWarningMessages
      */
-    void processMessage(GenericWarningMessage* msg) const override
+    void processMessage(const GenericWarningMessage* msg) const override
     {
       emit m_Filter->notifyWarningMessage(msg->getPrefix(), msg->getMessageText(), msg->getCode());
     }

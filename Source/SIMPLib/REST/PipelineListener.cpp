@@ -29,7 +29,7 @@ PipelineListener::~PipelineListener()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<AbstractMessage*> PipelineListener::getMessages()
+std::vector<const AbstractMessage*> PipelineListener::getMessages()
 {
   return m_Messages;
 }
@@ -37,7 +37,7 @@ std::vector<AbstractMessage*> PipelineListener::getMessages()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<AbstractErrorMessage*> PipelineListener::getErrorMessages()
+std::vector<const AbstractErrorMessage*> PipelineListener::getErrorMessages()
 {
   return m_ErrorMessages;
 }
@@ -45,7 +45,7 @@ std::vector<AbstractErrorMessage*> PipelineListener::getErrorMessages()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<AbstractWarningMessage*> PipelineListener::getWarningMessages()
+std::vector<const AbstractWarningMessage*> PipelineListener::getWarningMessages()
 {
   return m_WarningMessages;
 }
@@ -53,7 +53,7 @@ std::vector<AbstractWarningMessage*> PipelineListener::getWarningMessages()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<AbstractStatusMessage*> PipelineListener::getStatusMessages()
+std::vector<const AbstractStatusMessage*> PipelineListener::getStatusMessages()
 {
   return m_StatusMessages;
 }
@@ -61,7 +61,7 @@ std::vector<AbstractStatusMessage*> PipelineListener::getStatusMessages()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<AbstractProgressMessage*> PipelineListener::getProgressMessages()
+std::vector<const AbstractProgressMessage*> PipelineListener::getProgressMessages()
 {
   return m_ProgressMessages;
 }
@@ -83,7 +83,7 @@ void PipelineListener::processPipelineMessage(const AbstractMessage::Pointer& pm
 // -----------------------------------------------------------------------------
 QString PipelineListener::getErrorLog()
 {
-  std::vector<AbstractErrorMessage*> messages = getErrorMessages();
+  std::vector<const AbstractErrorMessage*> messages = getErrorMessages();
   int count = messages.size();
   QString log;
 
@@ -100,7 +100,7 @@ QString PipelineListener::getErrorLog()
 // -----------------------------------------------------------------------------
 QString PipelineListener::getWarningLog()
 {
-  std::vector<AbstractWarningMessage*> messages = getWarningMessages();
+  std::vector<const AbstractWarningMessage*> messages = getWarningMessages();
   int count = messages.size();
   QString log;
 
@@ -117,7 +117,7 @@ QString PipelineListener::getWarningLog()
 // -----------------------------------------------------------------------------
 QString PipelineListener::getStatusLog()
 {
-  std::vector<AbstractStatusMessage*> messages = getStatusMessages();
+  std::vector<const AbstractStatusMessage*> messages = getStatusMessages();
   int count = messages.size();
   QString log;
 

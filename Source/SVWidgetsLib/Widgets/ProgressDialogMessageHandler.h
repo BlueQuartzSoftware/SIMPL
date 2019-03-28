@@ -52,13 +52,13 @@ class SIMPLib_EXPORT ProgressDialogMessageHandler : public AbstractMessageHandle
      * @brief processMessage
      * @param msg
      */
-    void processMessage(FilterErrorMessage* msg) const override;
+    void processMessage(const FilterErrorMessage* msg) const override;
 
     /**
      * @brief processMessage
      * @param msg
      */
-    void processMessage(FilterWarningMessage* msg) const override;
+    void processMessage(const FilterWarningMessage* msg) const override;
 
   private:
     ProgressDialog* m_ProgressDialog = nullptr;

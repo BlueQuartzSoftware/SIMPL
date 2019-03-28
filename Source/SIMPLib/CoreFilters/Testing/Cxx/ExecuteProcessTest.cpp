@@ -67,13 +67,13 @@ public:
   {
   }
 
-  void processMessage(FilterStatusMessage* msg) const override
+  void processMessage(const FilterStatusMessage* msg) const override
   {
     QString str = msg->generateMessageString();
     m_StdOutput->append(str);
   }
 
-  void processMessage(PipelineStatusMessage* msg) const override
+  void processMessage(const PipelineStatusMessage* msg) const override
   {
     QString str = msg->generateMessageString();
     m_StdOutput->append(str);

@@ -32,11 +32,11 @@ public:
   void createStatusLogFile(QString path);
   void closeFiles();
 
-  std::vector<AbstractMessage*> getMessages();
-  std::vector<AbstractErrorMessage*> getErrorMessages();
-  std::vector<AbstractWarningMessage*> getWarningMessages();
-  std::vector<AbstractStatusMessage*> getStatusMessages();
-  std::vector<AbstractProgressMessage*> getProgressMessages();
+  std::vector<const AbstractMessage*> getMessages();
+  std::vector<const AbstractErrorMessage*> getErrorMessages();
+  std::vector<const AbstractWarningMessage*> getWarningMessages();
+  std::vector<const AbstractStatusMessage*> getStatusMessages();
+  std::vector<const AbstractProgressMessage*> getProgressMessages();
 
   QString getErrorLog();
   QString getWarningLog();
@@ -47,11 +47,11 @@ public slots:
 
 private:
   std::vector<AbstractMessage::Pointer> m_SharedMessages;
-  std::vector<AbstractMessage*> m_Messages;
-  std::vector<AbstractErrorMessage*> m_ErrorMessages;
-  std::vector<AbstractStatusMessage*> m_StatusMessages;
-  std::vector<AbstractProgressMessage*> m_ProgressMessages;
-  std::vector<AbstractWarningMessage*> m_WarningMessages;
+  std::vector<const AbstractMessage*> m_Messages;
+  std::vector<const AbstractErrorMessage*> m_ErrorMessages;
+  std::vector<const AbstractStatusMessage*> m_StatusMessages;
+  std::vector<const AbstractProgressMessage*> m_ProgressMessages;
+  std::vector<const AbstractWarningMessage*> m_WarningMessages;
 
   QFile* m_ErrorLog;
   QFile* m_WarningLog;

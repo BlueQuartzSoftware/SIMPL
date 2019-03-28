@@ -62,9 +62,9 @@ public:
    * subclass specific operations on messages that they receive.
    * @param msgHandler The observer's message handler
    */
-  virtual void visit(AbstractMessageHandler* msgHandler) override final
+  virtual void visit(AbstractMessageHandler* msgHandler) const override final
   {
-    msgHandler->processMessage(static_cast<T*>(this));
+    msgHandler->processMessage(static_cast<const T*>(this));
   }
 
 protected:

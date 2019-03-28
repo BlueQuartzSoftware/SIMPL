@@ -176,12 +176,12 @@ void PreflightPipelineController::service(HttpRequest& request, HttpResponse& re
   QJsonArray errors;
   QJsonArray warnings;
 
-  std::vector<AbstractErrorMessage*> errorMessages = listener.getErrorMessages();
+  std::vector<const AbstractErrorMessage*> errorMessages = listener.getErrorMessages();
   bool completed = (errorMessages.size() == 0);
   rootObj[SIMPL::JSON::Completed] = completed;
 
-  std::vector<AbstractMessage*> messages = listener.getMessages();
-  for(AbstractMessage* msg : messages)
+  std::vector<const AbstractMessage*> messages = listener.getMessages();
+  for(const AbstractMessage* msg : messages)
   {
     PreflightPipelineMessageHandler msgHandler(&errors, &warnings);
     msg->visit(&msgHandler);

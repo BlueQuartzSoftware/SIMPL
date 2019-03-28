@@ -196,12 +196,12 @@ void ExecutePipelineController::serviceJSON(QJsonObject pipelineObj)
   QJsonArray warnings;
   QJsonArray statusMsgs;
 
-  std::vector<AbstractErrorMessage*> errorMessages = listener.getErrorMessages();
+  std::vector<const AbstractErrorMessage*> errorMessages = listener.getErrorMessages();
   bool completed = (errorMessages.size() == 0);
   m_ResponseObj[SIMPL::JSON::Completed] = completed;
 
-  std::vector<AbstractMessage*> messages = listener.getMessages();
-  for(AbstractMessage* msg : messages)
+  std::vector<const AbstractMessage*> messages = listener.getMessages();
+  for(const AbstractMessage* msg : messages)
   {
     ExecutePipelineMessageHandler msgHandler(&errors, &warnings);
     msg->visit(&msgHandler);
