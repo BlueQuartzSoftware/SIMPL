@@ -57,7 +57,7 @@ void ExecutePipelineMessageHandler::processMessage(const FilterErrorMessage* msg
 {
   QJsonObject obj = writeToJson(msg->getCode(), msg->getMessageText());
   obj.insert(SIMPL::JSON::FilterIndex, msg->getPipelineIndex());
-  obj.insert(SIMPL::JSON::HumanLabel, msg->getHumanLabel());
+  obj.insert(SIMPL::JSON::FilterHumanLabel, msg->getHumanLabel());
   m_Errors->push_back(obj);
 }
 
@@ -68,7 +68,7 @@ void ExecutePipelineMessageHandler::processMessage(const FilterWarningMessage* m
 {
   QJsonObject obj = writeToJson(msg->getCode(), msg->getMessageText());
   obj.insert(SIMPL::JSON::FilterIndex, msg->getPipelineIndex());
-  obj.insert(SIMPL::JSON::HumanLabel, msg->getHumanLabel());
+  obj.insert(SIMPL::JSON::FilterHumanLabel, msg->getHumanLabel());
   m_Warnings->push_back(obj);
 }
 

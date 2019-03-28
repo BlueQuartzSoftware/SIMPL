@@ -21,7 +21,7 @@ const QString StatusLog("StatusLog");
 const QString OutputLinks("OutputLinks");
 const QString Message("Message");
 const QString Code("Code");
-const QString HumanLabel("HumanLabel");
+const QString FilterHumanLabel("FilterHumanLabel");
 const QString FilterIndex("FilterIndex");
 
 const QString ReleaseDate("ReleaseDate");

@@ -1538,7 +1538,7 @@ public:
         QJsonObject responseErrorObject = responseErrorsArray[i].toObject();
         DREAM3D_REQUIRE_EQUAL(responseErrorObject[SIMPL::JSON::Code].isDouble(), true);
         DREAM3D_REQUIRE_EQUAL(responseErrorObject[SIMPL::JSON::Message].isString(), true);
-        DREAM3D_REQUIRE_EQUAL(responseErrorObject[SIMPL::JSON::HumanLabel].isString(), true);
+        DREAM3D_REQUIRE_EQUAL(responseErrorObject[SIMPL::JSON::FilterHumanLabel].isString(), true);
         DREAM3D_REQUIRE_EQUAL(responseErrorObject[SIMPL::JSON::FilterIndex].isDouble(), true);
 
         int responseErrorCode = responseErrorObject[SIMPL::JSON::Code].toInt();
