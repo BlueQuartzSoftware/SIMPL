@@ -159,7 +159,7 @@ void MoveData::dataCheck()
 
     if(amSrcDataContainer->getName() == amDestDataContainer->getName())
     {
-            QString ss = QObject::tr("The source and destination Data Container are the same.  Is this what you meant to do?");
+      QString ss = QObject::tr("The source and destination Data Container are the same.  Is this what you meant to do?");
       notifyWarningMessage("", ss, -11018);
       return;
     }
@@ -188,7 +188,7 @@ void MoveData::dataCheck()
     }
     if(amSrcPath == amDestPath)
     {
-            QString ss = QObject::tr("The source and destination Attribute Matrix are the same.  Is this what you meant to do?");
+      QString ss = QObject::tr("The source and destination Attribute Matrix are the same.  Is this what you meant to do?");
       notifyWarningMessage("", ss, -11020);
       return;
     }
