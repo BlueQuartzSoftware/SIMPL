@@ -525,23 +525,20 @@ void SVPipelineView::cancelPipeline()
 // -----------------------------------------------------------------------------
 void SVPipelineView::finishPipeline()
 {
-  switch (m_PipelineInFlight->getExecutionResult())
+  switch(m_PipelineInFlight->getExecutionResult())
   {
-    case FilterPipeline::ExecutionResult::Canceled:
-    {
-      emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE CANCELED ***************", true));
-      break;
-    }
-    case FilterPipeline::ExecutionResult::Completed:
-    {
-      emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE FINISHED ***************", true));
-      break;
-    }
-    case FilterPipeline::ExecutionResult::Invalid:
-    {
-      throw ExecutionResultInvalidException();
-      break;
-    }
+  case FilterPipeline::ExecutionResult::Canceled:
+    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE CANCELED ***************", true));
+    break;
+  case FilterPipeline::ExecutionResult::Completed:
+    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE FINISHED ***************", true));
+    break;
+  case FilterPipeline::ExecutionResult::Failed:
+    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE FAILED ***************", true));
+    break;
+  case FilterPipeline::ExecutionResult::Invalid:
+    throw ExecutionResultInvalidException();
+    break;
   }
 
   emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("", false));

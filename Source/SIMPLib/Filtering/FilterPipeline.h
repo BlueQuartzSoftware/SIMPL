@@ -99,7 +99,8 @@ public:
   {
     Invalid,
     Completed,
-    Canceled
+    Canceled,
+    Failed
   };
 
   typedef QList<AbstractFilter::Pointer> FilterContainerType;

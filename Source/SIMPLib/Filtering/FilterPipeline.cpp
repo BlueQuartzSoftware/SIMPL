@@ -862,7 +862,8 @@ DataContainerArray::Pointer FilterPipeline::execute()
         emit filt->filterCompleted(filt.get());
         emit pipelineFinished();
         disconnectSignalsSlots();
-
+        m_State = FilterPipeline::State::Idle;
+        m_ExecutionResult = FilterPipeline::ExecutionResult::Failed;
         return m_Dca;
       }
     }
