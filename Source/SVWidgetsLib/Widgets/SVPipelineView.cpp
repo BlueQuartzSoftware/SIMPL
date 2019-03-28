@@ -99,6 +99,14 @@
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/QtSupport/QtSRecentFileList.h"
 
+struct ExecutionResultInvalidException : public std::exception
+{
+   const char* what () const throw ()
+   {
+      return "The execution result of a pipeline was invalid.";
+   }
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -517,19 +525,25 @@ void SVPipelineView::cancelPipeline()
 // -----------------------------------------------------------------------------
 void SVPipelineView::finishPipeline()
 {
-  if(m_PipelineInFlight->getExecutionResult() == FilterPipeline::ExecutionResult::Canceled)
+  switch (m_PipelineInFlight->getExecutionResult())
   {
-    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE CANCELED ***************", true));
+    case FilterPipeline::ExecutionResult::Canceled:
+    {
+      emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE CANCELED ***************", true));
+      break;
+    }
+    case FilterPipeline::ExecutionResult::Completed:
+    {
+      emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE FINISHED ***************", true));
+      break;
+    }
+    case FilterPipeline::ExecutionResult::Invalid:
+    {
+      throw ExecutionResultInvalidException();
+      break;
+    }
   }
-  else if (m_PipelineInFlight->getExecutionResult() == FilterPipeline::ExecutionResult::Completed)
-  {
-    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE FINISHED ***************", true));
-  }
-  else
-  {
-    // We should never hit this
-    return;
-  }
+
   emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("", false));
 
   // Put back the DataContainerArray for each filter at the conclusion of running
