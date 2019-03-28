@@ -167,8 +167,8 @@ public:
   /**
    * @brief This method adds a QObject based class that is capable of being connected with the following signals from
    * AbstractFilter:
-   * @li processPipelineMessage(AbstractMessage::Pointer)
-   * @param obj Class that implements needed processPipelineMessage(AbstractMessage::Pointer) method
+   * @li processPipelineMessage(const AbstractMessage::Pointer &)
+   * @param obj Class that implements needed processPipelineMessage(const AbstractMessage::Pointer &) method
    */
   void addMessageReceiver(QObject* obj);
 

@@ -107,7 +107,7 @@ public:
   }
 
 public slots:
-  void processPipelineMessage(AbstractMessage::Pointer pm) override
+  void processPipelineMessage(const AbstractMessage::Pointer& pm) override
   {
     ExecuteProcessMessageHandler msgHandler(&m_StdOutput);
     pm->visit(&msgHandler);
@@ -159,7 +159,7 @@ public:
       ExecuteProcess::Pointer filter = ExecuteProcess::New();
       ExecuteProcessObserver obs;
 
-      QObject::connect(filter.get(), SIGNAL(messageGenerated(AbstractMessage::Pointer)), &obs, SLOT(processPipelineMessage(AbstractMessage::Pointer)));
+      QObject::connect(filter.get(), SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), &obs, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
 
       filter->setArguments(QObject::tr("%1 -query QMAKE_VERSION").arg(UnitTest::ExecuteProcessTest::QMakeLocation));
       filter->execute();
@@ -181,7 +181,7 @@ public:
     //      ExecuteProcess::Pointer filter = ExecuteProcess::New();
     //      ExecuteProcessObserver obs;
 
-    //      QObject::connect(filter.get(), SIGNAL(messageGenerated(AbstractMessage::Pointer)), &obs, SLOT(processPipelineMessage(AbstractMessage::Pointer)));
+    //      QObject::connect(filter.get(), SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), &obs, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
 
     //      filter->setArguments(QObject::tr("%1 -version").arg(UnitTest::ExecuteProcessTest::CMakeLocation));
     //      filter->execute();
@@ -199,7 +199,7 @@ public:
       ExecuteProcess::Pointer filter = ExecuteProcess::New();
       ExecuteProcessObserver obs;
 
-      QObject::connect(filter.get(), SIGNAL(messageGenerated(AbstractMessage::Pointer)), &obs, SLOT(processPipelineMessage(AbstractMessage::Pointer)));
+      QObject::connect(filter.get(), SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), &obs, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
 
       filter->setArguments("sdhsdrtfn");
       filter->execute();

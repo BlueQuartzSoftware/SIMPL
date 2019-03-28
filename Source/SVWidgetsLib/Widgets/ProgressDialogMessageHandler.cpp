@@ -33,8 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#pragma once
-
 #include "ProgressDialogMessageHandler.h"
 
 #include "SIMPLib/Messages/FilterErrorMessage.h"

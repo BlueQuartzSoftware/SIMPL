@@ -144,7 +144,7 @@ void IssuesWidget::clearIssues()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IssuesWidget::processPipelineMessage(AbstractMessage::Pointer msg)
+void IssuesWidget::processPipelineMessage(const AbstractMessage::Pointer& msg)
 {
   m_CachedMessages.push_back(msg);
 }

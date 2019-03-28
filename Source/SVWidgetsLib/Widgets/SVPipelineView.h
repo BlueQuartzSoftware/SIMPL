@@ -327,7 +327,7 @@ public slots:
    * @brief processPipelineMessage
    * @param pm
    */
-  void processPipelineMessage(AbstractMessage::Pointer pm) override;
+  void processPipelineMessage(const AbstractMessage::Pointer& pm) override;
 
 signals:
   void displayIssuesTriggered();

@@ -412,7 +412,7 @@ void FindDerivatives::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FindDerivatives::processDerivativesMessage(AbstractMessage::Pointer msg)
+void FindDerivatives::processDerivativesMessage(const AbstractMessage::Pointer& msg)
 {
   FilterMessageHandler msgHandler(this);
   msg->visit(&msgHandler);

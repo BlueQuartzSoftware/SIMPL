@@ -173,7 +173,7 @@ protected:
    * @brief processDerivativesMessage
    * @param msg
    */
-  void processDerivativesMessage(AbstractMessage::Pointer msg);
+  void processDerivativesMessage(const AbstractMessage::Pointer& msg);
 
 private:
   DEFINE_IDATAARRAY_WEAKPTR(InArray)

@@ -639,7 +639,7 @@ void FilterPipeline::notifyProgressMessage(const QString &prefix, const QString&
 // -----------------------------------------------------------------------------
 void FilterPipeline::addMessageReceiver(QObject* obj)
 {
-  connect(this, SIGNAL(messageGenerated(AbstractMessage::Pointer)), obj, SLOT(processPipelineMessage(AbstractMessage::Pointer)));
+  connect(this, SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), obj, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
   m_MessageReceivers.push_back(obj);
 }
 
@@ -648,7 +648,7 @@ void FilterPipeline::addMessageReceiver(QObject* obj)
 // -----------------------------------------------------------------------------
 void FilterPipeline::removeMessageReceiver(QObject* obj)
 {
-  disconnect(this, SIGNAL(messageGenerated(AbstractMessage::Pointer)), obj, SLOT(processPipelineMessage(AbstractMessage::Pointer)));
+  disconnect(this, SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), obj, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
   m_MessageReceivers.removeAll(obj);
 }
 
@@ -659,7 +659,7 @@ void FilterPipeline::connectFilterNotifications(AbstractFilter* filter)
 {
   for(const auto& messageReceiver : m_MessageReceivers)
   {
-    connect(filter, SIGNAL(messageGenerated(AbstractMessage::Pointer)), messageReceiver, SLOT(processPipelineMessage(AbstractMessage::Pointer)));
+    connect(filter, SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), messageReceiver, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
   }
 
   connect(filter, &AbstractFilter::messageGenerated, [=] (AbstractMessage::Pointer msg) {
@@ -675,7 +675,7 @@ void FilterPipeline::disconnectFilterNotifications(AbstractFilter* filter)
 {
   for(const auto& messageReceiver : m_MessageReceivers)
   {
-    disconnect(filter, SIGNAL(messageGenerated(AbstractMessage::Pointer)), messageReceiver, SLOT(processPipelineMessage(AbstractMessage::Pointer)));
+    disconnect(filter, SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), messageReceiver, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
   }
 
   disconnect(filter, &AbstractFilter::messageGenerated, 0, 0);

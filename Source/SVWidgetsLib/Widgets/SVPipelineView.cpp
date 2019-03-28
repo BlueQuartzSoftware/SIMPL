@@ -468,7 +468,7 @@ void SVPipelineView::executePipeline()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::processPipelineMessage(AbstractMessage::Pointer msg)
+void SVPipelineView::processPipelineMessage(const AbstractMessage::Pointer& msg)
 {
   emit pipelineHasMessage(msg);
 }

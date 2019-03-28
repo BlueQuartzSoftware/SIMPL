@@ -61,7 +61,7 @@ class SVWidgetsLib_EXPORT ProgressDialog : public QDialog
   public slots:
 
     void setLabelText(const QString& text);
-    void processPipelineMessage(AbstractMessage::Pointer msg);
+    void processPipelineMessage(const AbstractMessage::Pointer& msg);
 
   protected:
 

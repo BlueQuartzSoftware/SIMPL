@@ -86,7 +86,7 @@ class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver
     QTableWidget* getIssuesTable();
 
   public slots:
-    void processPipelineMessage(AbstractMessage::Pointer msg) override;
+    void processPipelineMessage(const AbstractMessage::Pointer& msg) override;
     void clearIssues();
     void on_errorTableWidget_itemClicked( QTableWidgetItem* item );
     void displayCachedMessages();

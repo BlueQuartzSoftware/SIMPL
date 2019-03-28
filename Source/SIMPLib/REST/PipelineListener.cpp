@@ -69,7 +69,7 @@ std::vector<AbstractProgressMessage*> PipelineListener::getProgressMessages()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineListener::processPipelineMessage(AbstractMessage::Pointer pm)
+void PipelineListener::processPipelineMessage(const AbstractMessage::Pointer& pm)
 {
   PipelineListenerMessageHandler msgHandler(this);
   pm->visit(&msgHandler);

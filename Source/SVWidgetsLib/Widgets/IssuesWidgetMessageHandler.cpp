@@ -33,8 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#pragma once
-
 #include "IssuesWidgetMessageHandler.h"
 
 #include <QtWidgets/QTableWidgetItem>

@@ -50,7 +50,7 @@ IObserver::~IObserver() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IObserver::processPipelineMessage(AbstractMessage::Pointer pm)
+void IObserver::processPipelineMessage(const AbstractMessage::Pointer& pm)
 {
   QString str;
   QTextStream ss(&str);

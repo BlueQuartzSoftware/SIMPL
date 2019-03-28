@@ -63,7 +63,7 @@ void ProgressDialog::setLabelText(const QString& text)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ProgressDialog::processPipelineMessage(AbstractMessage::Pointer msg)
+void ProgressDialog::processPipelineMessage(const AbstractMessage::Pointer& msg)
 {
   ProgressDialogMessageHandler msgHandler(this);
   msg->visit(&msgHandler);

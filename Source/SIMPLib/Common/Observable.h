@@ -88,7 +88,7 @@ class SIMPLib_EXPORT Observable : public QObject
      * @brief messageGenerated This is a Qt Signal that is used when the filter generates Errors, Warnings, Status and Progress Messages
      * @param msg
      */
-    void messageGenerated(AbstractMessage::Pointer msg);
+    void messageGenerated(const AbstractMessage::Pointer& msg);
 };
 
 

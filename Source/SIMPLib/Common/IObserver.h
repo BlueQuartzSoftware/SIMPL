@@ -47,7 +47,7 @@ class SIMPLib_EXPORT IObserver
     virtual ~IObserver();
     SIMPL_TYPE_MACRO(IObserver)
 
-    virtual void processPipelineMessage(AbstractMessage::Pointer pm);
+    virtual void processPipelineMessage(const AbstractMessage::Pointer& pm);
 
   public:
     IObserver(const IObserver&) = delete;      // Copy Constructor Not Implemented

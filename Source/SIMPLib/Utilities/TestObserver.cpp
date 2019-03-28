@@ -46,7 +46,7 @@ TestObserver::~TestObserver() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TestObserver::processPipelineMessage(AbstractMessage::Pointer pm)
+void TestObserver::processPipelineMessage(const AbstractMessage::Pointer& pm)
 {
   std::cout << pm->generateMessageString().toStdString() << std::endl;
 }
