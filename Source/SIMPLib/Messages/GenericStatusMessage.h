@@ -35,8 +35,6 @@
 
 #include "SIMPLib/Messages/VisitableStatusMessage.h"
 
-class AbstractMessageHandler;
-
 /**
  * @class GenericStatusMessage GenericStatusMessage.h SIMPLib/Messages/GenericStatusMessage.h
  * @brief This class is a generic status message class that is responsible for holding all the details

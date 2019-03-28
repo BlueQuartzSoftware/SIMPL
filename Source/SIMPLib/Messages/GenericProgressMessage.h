@@ -35,8 +35,6 @@
 
 #include "SIMPLib/Messages/VisitableProgressMessage.h"
 
-class AbstractMessageHandler;
-
 /**
  * @class GenericProgressMessage GenericProgressMessage.h SIMPLib/Messages/GenericProgressMessage.h
  * @brief This class is a generic progress message class that is responsible for holding all the details

@@ -35,8 +35,6 @@
 
 #include "SIMPLib/Messages/VisitableErrorMessage.h"
 
-class AbstractMessageHandler;
-
 /**
  * @class GenericErrorMessage GenericErrorMessage.h SIMPLib/Messages/GenericErrorMessage.h
  * @brief This class is a generic error message class that is responsible for holding all the details

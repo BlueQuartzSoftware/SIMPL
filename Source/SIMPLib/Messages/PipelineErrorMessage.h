@@ -35,8 +35,6 @@
 
 #include "SIMPLib/Messages/VisitableErrorMessage.h"
 
-class AbstractMessageHandler;
-
 /**
  * @class PipelineErrorMessage PipelineErrorMessage.h SIMPLib/Messages/PipelineErrorMessage.h
  * @brief This class is a pipeline error message class that is responsible for holding all the details

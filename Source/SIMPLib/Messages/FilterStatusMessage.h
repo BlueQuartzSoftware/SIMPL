@@ -35,8 +35,6 @@
 
 #include "SIMPLib/Messages/VisitableStatusMessage.h"
 
-class AbstractMessageHandler;
-
 /**
  * @class FilterStatusMessage FilterStatusMessage.h SIMPLib/Messages/FilterStatusMessage.h
  * @brief This class is a filter status message class that is responsible for holding all the details

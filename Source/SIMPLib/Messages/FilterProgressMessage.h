@@ -35,8 +35,6 @@
 
 #include "SIMPLib/Messages/VisitableProgressMessage.h"
 
-class AbstractMessageHandler;
-
 /**
  * @class FilterProgressMessage FilterProgressMessage.h SIMPLib/Messages/FilterProgressMessage.h
  * @brief This class is a filter progress message class that is responsible for holding all the details

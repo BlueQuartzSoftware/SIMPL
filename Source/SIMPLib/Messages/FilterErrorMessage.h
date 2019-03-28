@@ -35,8 +35,6 @@
 
 #include "SIMPLib/Messages/VisitableErrorMessage.h"
 
-class AbstractMessageHandler;
-
 /**
  * @class FilterErrorMessage FilterErrorMessage.h SIMPLib/Messages/FilterErrorMessage.h
  * @brief This class is a filter error message class that is responsible for holding all the details

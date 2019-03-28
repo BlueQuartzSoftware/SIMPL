@@ -35,8 +35,6 @@
 
 #include "SIMPLib/Messages/VisitableProgressMessage.h"
 
-class AbstractMessageHandler;
-
 /**
  * @class PipelineProgressMessage PipelineProgressMessage.h SIMPLib/Messages/PipelineProgressMessage.h
  * @brief This class is a pipeline progress message class that is responsible for holding all the details

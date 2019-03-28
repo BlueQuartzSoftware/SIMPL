@@ -35,8 +35,6 @@
 
 #include "SIMPLib/Messages/VisitableWarningMessage.h"
 
-class AbstractMessageHandler;
-
 /**
  * @class FilterWarningMessage FilterWarningMessage.h SIMPLib/Messages/FilterWarningMessage.h
  * @brief This class is a filter warning message class that is responsible for holding all the details

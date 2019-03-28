@@ -33,11 +33,6 @@
 
 #include "GenericProgressMessage.h"
 
-#include <QtCore/QMetaType>
-#include <QtCore/QString>
-
-#include "SIMPLib/Messages/AbstractMessageHandler.h"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

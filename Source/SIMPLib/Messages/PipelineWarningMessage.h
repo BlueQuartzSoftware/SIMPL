@@ -35,8 +35,6 @@
 
 #include "SIMPLib/Messages/VisitableWarningMessage.h"
 
-class AbstractMessageHandler;
-
 /**
  * @class PipelineWarningMessage PipelineWarningMessage.h SIMPLib/Messages/PipelineWarningMessage.h
  * @brief This class is a pipeline warning message class that is responsible for holding all the details

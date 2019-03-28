@@ -35,8 +35,6 @@
 
 #include "SIMPLib/Messages/VisitableWarningMessage.h"
 
-class AbstractMessageHandler;
-
 /**
  * @class GenericWarningMessage GenericWarningMessage.h SIMPLib/Messages/GenericWarningMessage.h
  * @brief This class is a generic warning message class that is responsible for holding all the details
