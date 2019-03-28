@@ -37,6 +37,10 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Messages/AbstractMessageHandler.h"
 
+/**
+ * @brief This message handler is used by the PreflightPipeline class to store values from error and warning
+ * messages in json objects.  These json objects are stored in an error json array and a warning json array.
+ */
 class SIMPLib_EXPORT PreflightPipelineMessageHandler : public AbstractMessageHandler
 {
   public:

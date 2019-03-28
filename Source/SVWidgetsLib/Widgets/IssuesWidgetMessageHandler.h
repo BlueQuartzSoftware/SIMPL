@@ -42,8 +42,8 @@ class IssuesWidget;
 class QLabel;
 
 /**
- * @class IssuesWidgetMessageHandler IssuesWidgetMessageHandler.h DREAM3DLib/Common/IssuesWidgetMessageHandler.h
- * @brief This is the Message handler for the issues widget.  It is responsible for loading the issues table with new messages.
+ * @brief This message handler is used by the Issues Widget to load the issues table
+ * with filter error and warning messages.
  */
 class SIMPLib_EXPORT IssuesWidgetMessageHandler : public AbstractMessageHandler
 {

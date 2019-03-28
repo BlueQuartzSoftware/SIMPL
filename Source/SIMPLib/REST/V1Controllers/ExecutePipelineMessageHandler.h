@@ -37,8 +37,10 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Messages/AbstractMessageHandler.h"
 
-class ExecutePipelineController;
-
+/**
+ * @brief This message handler is used by the ExecutePipeline class to store values from error and warning
+ * messages in json objects.  These json objects are stored in an error json array and a warning json array.
+ */
 class SIMPLib_EXPORT ExecutePipelineMessageHandler : public AbstractMessageHandler
 {
   public:

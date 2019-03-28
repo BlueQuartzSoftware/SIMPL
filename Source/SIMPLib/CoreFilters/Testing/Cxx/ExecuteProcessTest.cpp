@@ -57,7 +57,8 @@
 #include "SIMPLib/CoreFilters/ExecuteProcess.h"
 
 /**
- * @brief The ExecuteProcessMessageHandler class
+ * @brief This message handler is used by the ExecuteProcessTest to append filter and pipeline status messages
+ * to a standard output string.
  */
 class ExecuteProcessMessageHandler : public AbstractMessageHandler
 {

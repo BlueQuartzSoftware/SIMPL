@@ -52,6 +52,9 @@
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/Utilities/StringOperations.h"
 
+/**
+ * @brief This message handler is used by FilterPipeline to re-emit filter progress messages as pipeline progress messages
+ */
 class FilterPipelineMessageHandler : public AbstractMessageHandler
 {
   public:

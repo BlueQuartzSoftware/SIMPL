@@ -6,6 +6,10 @@
 class QFile;
 class PipelineListener;
 
+/**
+ * @brief This message handler is used by the PipelineListener class to stream incoming error, warning,
+ * and status messages to the correct logs.  It also stores the incoming messages for later use.
+ */
 class SIMPLib_EXPORT PipelineListenerMessageHandler : public AbstractMessageHandler
 {
   public:

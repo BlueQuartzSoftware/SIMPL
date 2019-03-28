@@ -54,6 +54,11 @@
 #include "SIMPLib/Messages/GenericWarningMessage.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+/**
+ * @brief This message handler is used by the FindDerivatives filter to re-emit incoming generic
+ * messages from geometry classes as filter messages.  It also prepends text to status messages to show that it is
+ * computing derivatives.
+ */
 class FilterMessageHandler : public AbstractMessageHandler
 {
   public:
