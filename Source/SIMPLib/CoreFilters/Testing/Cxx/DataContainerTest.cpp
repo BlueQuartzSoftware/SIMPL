@@ -199,7 +199,7 @@ public:
     attrMat->insertOrAssign(foo);
 
     QString autoName = foo->getName() + "_Auto";
-    attrMat->createNonPrereqArray<DataArray<T>, AbstractFilter, T>(nullptr, autoName, static_cast<T>(10), compDims); /* @ADD_DATAARRAY_ID@ */
+    attrMat->createNonPrereqArray<DataArray<T>, AbstractFilter, T>(nullptr, autoName, static_cast<T>(10), compDims);
   }
 
   // -----------------------------------------------------------------------------

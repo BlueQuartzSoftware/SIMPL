@@ -282,5 +282,5 @@ ITK_IMAGE_READER_CLASS_NAME
     return;
   }
 
-  getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<ValueType>, AbstractFilter, ValueType>(this, dataArrayPath, 0, cDims); /* @ADD_DATAARRAY_ID@ */
+  getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<ValueType>, AbstractFilter, ValueType>(this, dataArrayPath, 0, cDims);
 }

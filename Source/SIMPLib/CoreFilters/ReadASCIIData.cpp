@@ -353,58 +353,58 @@ void ReadASCIIData::dataCheck()
 
     if(dataType == SIMPL::TypeNames::Double)
     {
-      DoubleArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter>(this, arrayPath, 0, cDims, ""); /* @ADD_DATAARRAY_ID@ */
-      m_ASCIIArrayMap.insert(i, ptr);                                                                                                                       /* @ADD_DATAARRAY_ID@ */
+      DoubleArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::Float)
     {
-      FloatArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<FloatArrayType, AbstractFilter>(this, arrayPath, 0, cDims, ""); /* @ADD_DATAARRAY_ID@ */
-      m_ASCIIArrayMap.insert(i, ptr);                                                                                                                     /* @ADD_DATAARRAY_ID@ */
+      FloatArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<FloatArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::Int8)
     {
-      Int8ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int8ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, ""); /* @ADD_DATAARRAY_ID@ */
-      m_ASCIIArrayMap.insert(i, ptr);                                                                                                                   /* @ADD_DATAARRAY_ID@ */
+      Int8ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int8ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::Int16)
     {
-      Int16ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int16ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, ""); /* @ADD_DATAARRAY_ID@ */
-      m_ASCIIArrayMap.insert(i, ptr);                                                                                                                     /* @ADD_DATAARRAY_ID@ */
+      Int16ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int16ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::Int32)
     {
-      Int32ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int32ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, ""); /* @ADD_DATAARRAY_ID@ */
-      m_ASCIIArrayMap.insert(i, ptr);                                                                                                                     /* @ADD_DATAARRAY_ID@ */
+      Int32ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int32ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::Int64)
     {
-      Int64ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int64ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, ""); /* @ADD_DATAARRAY_ID@ */
-      m_ASCIIArrayMap.insert(i, ptr);                                                                                                                     /* @ADD_DATAARRAY_ID@ */
+      Int64ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int64ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::UInt8)
     {
-      UInt8ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt8ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, ""); /* @ADD_DATAARRAY_ID@ */
-      m_ASCIIArrayMap.insert(i, ptr);                                                                                                                     /* @ADD_DATAARRAY_ID@ */
+      UInt8ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt8ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::UInt16)
     {
-      UInt16ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt16ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, ""); /* @ADD_DATAARRAY_ID@ */
-      m_ASCIIArrayMap.insert(i, ptr);                                                                                                                       /* @ADD_DATAARRAY_ID@ */
+      UInt16ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt16ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::UInt32)
     {
-      UInt32ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt32ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, ""); /* @ADD_DATAARRAY_ID@ */
-      m_ASCIIArrayMap.insert(i, ptr);                                                                                                                       /* @ADD_DATAARRAY_ID@ */
+      UInt32ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt32ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::UInt64)
     {
-      UInt64ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt64ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, ""); /* @ADD_DATAARRAY_ID@ */
-      m_ASCIIArrayMap.insert(i, ptr);                                                                                                                       /* @ADD_DATAARRAY_ID@ */
+      UInt64ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt64ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::String)
     {
-      StringDataArray::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<StringDataArray, AbstractFilter, QString>(this, arrayPath, "", cDims, ""); /* @ADD_DATAARRAY_ID@ */
-      m_ASCIIArrayMap.insert(i, ptr);                                                                                                                                 /* @ADD_DATAARRAY_ID@ */
+      StringDataArray::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<StringDataArray, AbstractFilter, QString>(this, arrayPath, "", cDims, "");
+      m_ASCIIArrayMap.insert(i, ptr);
     }
     else
     {

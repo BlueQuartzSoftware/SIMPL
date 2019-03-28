@@ -679,7 +679,7 @@ public:
 
       // If something goes wrong at this point the error message will be directly set in the 'filter' object so we just
       // simply return what ever is given to us.
-      dataArray = attrMat->createNonPrereqArray<ArrayType, Filter, T>(filter, path.getDataArrayName(), initValue, compDims, id); /* @ADD_DATAARRAY_ID@ */
+      dataArray = attrMat->createNonPrereqArray<ArrayType, Filter, T>(filter, path.getDataArrayName(), initValue, compDims, id);
       return dataArray;
     }
 

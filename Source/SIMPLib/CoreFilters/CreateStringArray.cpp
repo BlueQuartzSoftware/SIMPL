@@ -164,8 +164,7 @@ void CreateStringArray::dataCheck()
   }
   
   // Create the data array and initialize it to a placeholder value
-  m_OutputArrayPtr =
-      getDataContainerArray()->createNonPrereqArrayFromPath<StringDataArray, AbstractFilter, QString>(this, getNewArray(), m_InitializationValue, cDims, "", StringArrayID); /* @ADD_DATAARRAY_ID@ */
+  m_OutputArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<StringDataArray, AbstractFilter, QString>(this, getNewArray(), m_InitializationValue, cDims, "", StringArrayID);
 }
 
 // -----------------------------------------------------------------------------

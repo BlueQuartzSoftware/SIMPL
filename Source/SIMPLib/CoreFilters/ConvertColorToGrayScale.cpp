@@ -329,7 +329,7 @@ void ConvertColorToGrayScale::dataCheck()
     {
       outAM = dc->getPrereqAttributeMatrix(this, inputAMPath.getAttributeMatrixName(), -62105);
     }
-    outAM->createAndAddAttributeArray<UInt8ArrayType>(this, newName, 0, outCDims); /* @ADD_DATAARRAY_ID@ */
+    outAM->createAndAddAttributeArray<UInt8ArrayType>(this, newName, 0, outCDims);
     DataArrayPath newPath(dc->getName(), outAM->getName(), newName);
     m_OutputArrayPaths[i] = newPath;
   }

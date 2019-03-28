@@ -248,8 +248,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
 
     QVector<size_t> cDims(1, 1);
 
-    m_XBoundsPtr =
-        getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getXBoundsArrayPath(), 0, cDims, "", RectGrid_XBoundsID); /* @ADD_DATAARRAY_ID@ */
+    m_XBoundsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getXBoundsArrayPath(), 0, cDims, "", RectGrid_XBoundsID);
     if(m_XBoundsPtr.lock())
     {
       m_XBounds = m_XBoundsPtr.lock()->getPointer(0);
@@ -259,8 +258,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
       xarrays.push_back(m_XBoundsPtr.lock());
     }
 
-    m_YBoundsPtr =
-        getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getYBoundsArrayPath(), 0, cDims, "", RectGrid_YBoundsID); /* @ADD_DATAARRAY_ID@ */
+    m_YBoundsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getYBoundsArrayPath(), 0, cDims, "", RectGrid_YBoundsID);
     if(m_YBoundsPtr.lock())
     {
       m_YBounds = m_YBoundsPtr.lock()->getPointer(0);
@@ -270,8 +268,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
       yarrays.push_back(m_YBoundsPtr.lock());
     }
 
-    m_ZBoundsPtr =
-        getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getZBoundsArrayPath(), 0, cDims, "", RectGrid_ZBoundsID); /* @ADD_DATAARRAY_ID@ */
+    m_ZBoundsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getZBoundsArrayPath(), 0, cDims, "", RectGrid_ZBoundsID);
     if(m_ZBoundsPtr.lock())
     {
       m_ZBounds = m_ZBoundsPtr.lock()->getPointer(0);
@@ -296,8 +293,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
 
     QVector<size_t> cDims(1, 3);
 
-    m_VertsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getSharedVertexListArrayPath0(), 0, cDims, "",
-                                                                                                                Vert_SharedVertexID); /* @ADD_DATAARRAY_ID@ */
+    m_VertsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getSharedVertexListArrayPath0(), 0, cDims, "", Vert_SharedVertexID);
     if(m_VertsPtr.lock())
     {
       m_Verts = m_VertsPtr.lock()->getPointer(0);
@@ -322,8 +318,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
 
     QVector<size_t> cDims(1, 3);
 
-    m_VertsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getSharedVertexListArrayPath1(), 0, cDims, "",
-                                                                                                                Edge_SharedVertexID); /* @ADD_DATAARRAY_ID@ */
+    m_VertsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getSharedVertexListArrayPath1(), 0, cDims, "", Edge_SharedVertexID);
     if(m_VertsPtr.lock())
     {
       m_Verts = m_VertsPtr.lock()->getPointer(0);
@@ -335,8 +330,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
 
     cDims[0] = 2;
 
-    m_EdgesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(this, getSharedEdgeListArrayPath(), 0, cDims, "",
-                                                                                                                    Edge_SharedEdgeID); /* @ADD_DATAARRAY_ID@ */
+    m_EdgesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(this, getSharedEdgeListArrayPath(), 0, cDims, "", Edge_SharedEdgeID);
     if(m_EdgesPtr.lock())
     {
       m_Edges = m_EdgesPtr.lock()->getPointer(0);
@@ -362,8 +356,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
 
     QVector<size_t> cDims(1, 3);
 
-    m_VertsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getSharedVertexListArrayPath2(), 0, cDims, "",
-                                                                                                                Tri_SharedVertexID); /* @ADD_DATAARRAY_ID@ */
+    m_VertsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getSharedVertexListArrayPath2(), 0, cDims, "", Tri_SharedVertexID);
     if(m_VertsPtr.lock())
     {
       m_Verts = m_VertsPtr.lock()->getPointer(0);
@@ -373,8 +366,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
       varrays.push_back(m_VertsPtr.lock());
     }
 
-    m_TrisPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(this, getSharedTriListArrayPath(), 0, cDims, "",
-                                                                                                                   Tri_SharedTriangleID); /* @ADD_DATAARRAY_ID@ */
+    m_TrisPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(this, getSharedTriListArrayPath(), 0, cDims, "", Tri_SharedTriangleID);
     if(m_TrisPtr.lock())
     {
       m_Tris = m_TrisPtr.lock()->getPointer(0);
@@ -400,8 +392,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
 
     QVector<size_t> cDims(1, 3);
 
-    m_VertsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getSharedVertexListArrayPath3(), 0, cDims, "",
-                                                                                                                Quad_SharedVertexID); /* @ADD_DATAARRAY_ID@ */
+    m_VertsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getSharedVertexListArrayPath3(), 0, cDims, "", Quad_SharedVertexID);
     if(m_VertsPtr.lock())
     {
       m_Verts = m_VertsPtr.lock()->getPointer(0);
@@ -413,8 +404,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
 
     cDims[0] = 4;
 
-    m_QuadsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(this, getSharedQuadListArrayPath(), 0, cDims, "",
-                                                                                                                    Quad_SharedQuadID); /* @ADD_DATAARRAY_ID@ */
+    m_QuadsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(this, getSharedQuadListArrayPath(), 0, cDims, "", Quad_SharedQuadID);
     if(m_QuadsPtr.lock())
     {
       m_Quads = m_QuadsPtr.lock()->getPointer(0);
@@ -440,8 +430,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
 
     QVector<size_t> cDims(1, 3);
 
-    m_VertsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getSharedVertexListArrayPath4(), 0, cDims, "",
-                                                                                                                Tet_SharedVertexID); /* @ADD_DATAARRAY_ID@ */
+    m_VertsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getSharedVertexListArrayPath4(), 0, cDims, "", Tet_SharedVertexID);
     if(m_VertsPtr.lock())
     {
       m_Verts = m_VertsPtr.lock()->getPointer(0);
@@ -453,8 +442,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
 
     cDims[0] = 4;
 
-    m_TetsPtr =
-        getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(this, getSharedTetListArrayPath(), 0, cDims, "", Tet_SharedTetID); /* @ADD_DATAARRAY_ID@ */
+    m_TetsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(this, getSharedTetListArrayPath(), 0, cDims, "", Tet_SharedTetID);
     if(m_TetsPtr.lock())
     {
       m_Tets = m_TetsPtr.lock()->getPointer(0);
@@ -480,8 +468,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
 
     QVector<size_t> cDims(1, 3);
 
-    m_VertsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getSharedVertexListArrayPath5(), 0, cDims, "",
-                                                                                                                Hex_SharedVertexID); /* @ADD_DATAARRAY_ID@ */
+    m_VertsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(this, getSharedVertexListArrayPath5(), 0, cDims, "", Hex_SharedVertexID);
     if(m_VertsPtr.lock())
     {
       m_Verts = m_VertsPtr.lock()->getPointer(0);
@@ -493,8 +480,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
 
     cDims[0] = 8;
 
-    m_TetsPtr =
-        getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(this, getSharedHexListArrayPath(), 0, cDims, "", Hex_SharedHexID); /* @ADD_DATAARRAY_ID@ */
+    m_TetsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(this, getSharedHexListArrayPath(), 0, cDims, "", Hex_SharedHexID);
     if(m_TetsPtr.lock())
     {
       m_Tets = m_TetsPtr.lock()->getPointer(0);
