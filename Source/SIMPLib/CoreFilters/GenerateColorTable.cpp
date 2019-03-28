@@ -276,7 +276,7 @@ void GenerateColorTable::dataCheck()
   DataArrayPath tmpPath = getSelectedDataArrayPath();
   tmpPath.setDataArrayName(getRgbArrayName());
 
-  getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint8_t>, AbstractFilter, uint8_t>(this, tmpPath, 0, QVector<size_t>(1, 3), "", ColorArrayID);
+  getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint8_t>, AbstractFilter, uint8_t>(this, tmpPath, 0, QVector<size_t>(1, 3), "", ColorArrayID); /* @ADD_DATAARRAY_ID@ */
 }
 
 // -----------------------------------------------------------------------------

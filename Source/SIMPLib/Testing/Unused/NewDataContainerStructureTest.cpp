@@ -98,7 +98,7 @@ void BuildNewDream3dFile()
   AttributeMatrix::Pointer cellAttrMat = AttributeMatrix::New(tDims, "CellData", SIMPL::AttributeMatrixType::Cell);
   vdc->addAttributeMatrix(cellAttrMat);
   QVector<size_t> dims(1, 1);
-  cellAttrMat->createAndAddAttributeArray<DataArray<int64_t>, int64_t>("Ids", 1, dims);
+  cellAttrMat->createAndAddAttributeArray<DataArray<int64_t>, int64_t>("Ids", 1, dims); /* @ADD_DATAARRAY_ID@ */
 
   DataArray<int64_t>::WeakPointer m_FeatureIdsPtr;
   int64_t* m_FeatureIds;
@@ -120,7 +120,7 @@ void BuildNewDream3dFile()
   AttributeMatrix::Pointer cellEnsembleAttrMat = AttributeMatrix::New(tDims, "CellEnsembleData", SIMPL::AttributeMatrixType::CellEnsemble);
   vdc->addAttributeMatrix(cellEnsembleAttrMat);
 
-  cellEnsembleAttrMat->createAndAddAttributeArray<DataArray<unsigned int>, unsigned int>("PhaseTypes", SIMPL::PhaseType::PrimaryPhase, dims);
+  cellEnsembleAttrMat->createAndAddAttributeArray<DataArray<unsigned int>, unsigned int>("PhaseTypes", SIMPL::PhaseType::PrimaryPhase, dims); /* @ADD_DATAARRAY_ID@ */
   DataArray<unsigned int>::WeakPointer m_PhaseTypesPtr;
   unsigned int* m_PhaseTypes;
   m_PhaseTypesPtr =
@@ -131,7 +131,7 @@ void BuildNewDream3dFile()
     m_PhaseTypes[0] = SIMPL::PhaseType::UnknownPhaseType;
   }
 
-  cellEnsembleAttrMat->createAndAddAttributeArray<DataArray<unsigned int>, unsigned int>("ShapeTypes", SIMPL::ShapeType::EllipsoidShape, dims);
+  cellEnsembleAttrMat->createAndAddAttributeArray<DataArray<unsigned int>, unsigned int>("ShapeTypes", SIMPL::ShapeType::EllipsoidShape, dims); /* @ADD_DATAARRAY_ID@ */
   DataArray<unsigned int>::WeakPointer m_ShapeTypesPtr;
   unsigned int* m_ShapeTypes;
   m_ShapeTypesPtr =
@@ -142,7 +142,7 @@ void BuildNewDream3dFile()
     m_ShapeTypes[0] = SIMPL::ShapeType::UnknownShapeType;
   }
 
-  cellEnsembleAttrMat->createAndAddAttributeArray<DataArray<unsigned int>, unsigned int>("CrystalStructures", Ebsd::CrystalStructure::Cubic_High, dims);
+  cellEnsembleAttrMat->createAndAddAttributeArray<DataArray<unsigned int>, unsigned int>("CrystalStructures", Ebsd::CrystalStructure::Cubic_High, dims); /* @ADD_DATAARRAY_ID@ */
   DataArray<unsigned int>::WeakPointer m_CrystalStructuresPtr;
   unsigned int* m_CrystalStructures;
   m_CrystalStructuresPtr = cellEnsembleAttrMat->getPrereqArray<DataArray<unsigned int>, AbstractFilter>(filt.get(), "CrystalStructures", -300,

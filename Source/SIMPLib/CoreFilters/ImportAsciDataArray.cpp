@@ -444,50 +444,60 @@ void ImportAsciDataArray::dataCheck()
   QVector<size_t> cDims(1, m_NumberOfComponents);
   if(m_ScalarType == SIMPL::NumericTypes::Type::Int8)
   {
-    getDataContainerArray()->createNonPrereqArrayFromPath<Int8ArrayType, AbstractFilter, int8_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath", AsciiArrayID);
+    getDataContainerArray()->createNonPrereqArrayFromPath<Int8ArrayType, AbstractFilter, int8_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath",
+                                                                                                 AsciiArrayID); /* @ADD_DATAARRAY_ID@ */
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt8)
   {
-    getDataContainerArray()->createNonPrereqArrayFromPath<UInt8ArrayType, AbstractFilter, uint8_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath", AsciiArrayID);
+    getDataContainerArray()->createNonPrereqArrayFromPath<UInt8ArrayType, AbstractFilter, uint8_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath",
+                                                                                                   AsciiArrayID); /* @ADD_DATAARRAY_ID@ */
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Int16)
   {
-    getDataContainerArray()->createNonPrereqArrayFromPath<Int16ArrayType, AbstractFilter, int16_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath", AsciiArrayID);
+    getDataContainerArray()->createNonPrereqArrayFromPath<Int16ArrayType, AbstractFilter, int16_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath",
+                                                                                                   AsciiArrayID); /* @ADD_DATAARRAY_ID@ */
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt16)
   {
-    getDataContainerArray()->createNonPrereqArrayFromPath<UInt16ArrayType, AbstractFilter, uint16_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath", AsciiArrayID);
+    getDataContainerArray()->createNonPrereqArrayFromPath<UInt16ArrayType, AbstractFilter, uint16_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath",
+                                                                                                     AsciiArrayID); /* @ADD_DATAARRAY_ID@ */
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Int32)
   {
-    getDataContainerArray()->createNonPrereqArrayFromPath<Int32ArrayType, AbstractFilter, int32_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath", AsciiArrayID);
+    getDataContainerArray()->createNonPrereqArrayFromPath<Int32ArrayType, AbstractFilter, int32_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath",
+                                                                                                   AsciiArrayID); /* @ADD_DATAARRAY_ID@ */
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt32)
   {
-    getDataContainerArray()->createNonPrereqArrayFromPath<UInt32ArrayType, AbstractFilter, uint32_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath", AsciiArrayID);
+    getDataContainerArray()->createNonPrereqArrayFromPath<UInt32ArrayType, AbstractFilter, uint32_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath",
+                                                                                                     AsciiArrayID); /* @ADD_DATAARRAY_ID@ */
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Int64)
   {
-    getDataContainerArray()->createNonPrereqArrayFromPath<Int64ArrayType, AbstractFilter, int64_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath", AsciiArrayID);
+    getDataContainerArray()->createNonPrereqArrayFromPath<Int64ArrayType, AbstractFilter, int64_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath",
+                                                                                                   AsciiArrayID); /* @ADD_DATAARRAY_ID@ */
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt64)
   {
-    getDataContainerArray()->createNonPrereqArrayFromPath<UInt64ArrayType, AbstractFilter, uint64_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath", AsciiArrayID);
+    getDataContainerArray()->createNonPrereqArrayFromPath<UInt64ArrayType, AbstractFilter, uint64_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath",
+                                                                                                     AsciiArrayID); /* @ADD_DATAARRAY_ID@ */
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Float)
   {
-    getDataContainerArray()->createNonPrereqArrayFromPath<FloatArrayType, AbstractFilter, float>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath", AsciiArrayID);
+    getDataContainerArray()->createNonPrereqArrayFromPath<FloatArrayType, AbstractFilter, float>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath",
+                                                                                                 AsciiArrayID); /* @ADD_DATAARRAY_ID@ */
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Double)
   {
-    getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter, double>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath", AsciiArrayID);
+    getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter, double>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath",
+                                                                                                   AsciiArrayID); /* @ADD_DATAARRAY_ID@ */
   }
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Bool)
   {
-    getDataContainerArray()->createNonPrereqArrayFromPath<BoolArrayType, AbstractFilter, bool>(this, getCreatedAttributeArrayPath(), false, cDims, "CreatedAttributeArrayPath", AsciiArrayID);
+    getDataContainerArray()->createNonPrereqArrayFromPath<BoolArrayType, AbstractFilter, bool>(this, getCreatedAttributeArrayPath(), false, cDims, "CreatedAttributeArrayPath",
+                                                                                               AsciiArrayID); /* @ADD_DATAARRAY_ID@ */
   }
-  
-  
+
   readHeaderPortion();
   
   
