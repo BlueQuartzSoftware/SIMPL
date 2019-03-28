@@ -36,14 +36,14 @@
 
 #pragma once
 
-#include "SIMPLib/Messages/VisitableStatusMessage.h"
+#include "SIMPLib/Messages/AbstractStatusMessage.h"
 
 /**
  * @class GenericStatusMessage GenericStatusMessage.h SIMPLib/Messages/GenericStatusMessage.h
  * @brief This class is a generic status message class that is responsible for holding all the details
  * of a generic status message emitted by any observable object
  */
-class SIMPLib_EXPORT GenericStatusMessage : public VisitableStatusMessage<GenericStatusMessage>
+class SIMPLib_EXPORT GenericStatusMessage : public AbstractStatusMessage
 {
   public:
     SIMPL_SHARED_POINTERS(GenericStatusMessage)
@@ -64,6 +64,14 @@ class SIMPLib_EXPORT GenericStatusMessage : public VisitableStatusMessage<Generi
      * @brief This method creates and returns a string for generic status messages
      */
     virtual QString generateMessageString() const override;
+
+    /**
+     * @brief Method that allows the visitation of a message by a message handler.  This
+     * is part of the double-dispatch API that allows observers to be able to perform
+     * subclass specific operations on messages that they receive.
+     * @param msgHandler The observer's message handler
+     */
+    virtual void visit(AbstractMessageHandler* msgHandler) const override final;
 
   protected:
     GenericStatusMessage();

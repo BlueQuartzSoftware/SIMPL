@@ -36,11 +36,13 @@
 
 #include "GenericErrorMessage.h"
 
+#include "AbstractMessageHandler.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 GenericErrorMessage::GenericErrorMessage()
-: VisitableErrorMessage<GenericErrorMessage>()
+: AbstractErrorMessage()
 {
 }
 
@@ -48,7 +50,7 @@ GenericErrorMessage::GenericErrorMessage()
 //
 // -----------------------------------------------------------------------------
 GenericErrorMessage::GenericErrorMessage(const QString &prefix, const QString& msgText, int code)
-: VisitableErrorMessage<GenericErrorMessage>(prefix, msgText, code)
+: AbstractErrorMessage(prefix, msgText, code)
 {
 }
 
@@ -73,4 +75,12 @@ QString GenericErrorMessage::generateMessageString() const
 {
   QString ss = QObject::tr("Error (%1): %2: %3").arg(getCode()).arg(getPrefix()).arg(getMessageText());
   return ss;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void GenericErrorMessage::visit(AbstractMessageHandler* msgHandler) const
+{
+  msgHandler->processMessage(this);
 }

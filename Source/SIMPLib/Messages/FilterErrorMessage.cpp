@@ -36,11 +36,13 @@
 
 #include "FilterErrorMessage.h"
 
+#include "AbstractMessageHandler.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 FilterErrorMessage::FilterErrorMessage()
-: VisitableErrorMessage<FilterErrorMessage>()
+: AbstractErrorMessage()
 {
 }
 
@@ -48,7 +50,7 @@ FilterErrorMessage::FilterErrorMessage()
 //
 // -----------------------------------------------------------------------------
 FilterErrorMessage::FilterErrorMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString &prefix, const QString& msgText, int code)
-: VisitableErrorMessage<FilterErrorMessage>(prefix, msgText, code)
+: AbstractErrorMessage(prefix, msgText, code)
 , m_ClassName(className)
 , m_HumanLabel(humanLabel)
 , m_PipelineIndex(pipelineIndex)
@@ -76,4 +78,12 @@ QString FilterErrorMessage::generateMessageString() const
 {
   QString ss = QObject::tr("'%1' Error (%2): %3: %4").arg(getClassName()).arg(getCode()).arg(getHumanLabel()).arg(getMessageText());
   return ss;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterErrorMessage::visit(AbstractMessageHandler* msgHandler) const
+{
+  msgHandler->processMessage(this);
 }

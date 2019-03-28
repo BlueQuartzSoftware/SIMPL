@@ -36,11 +36,13 @@
 
 #include "FilterStatusMessage.h"
 
+#include "AbstractMessageHandler.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 FilterStatusMessage::FilterStatusMessage()
-: VisitableStatusMessage<FilterStatusMessage>()
+: AbstractStatusMessage()
 {
 }
 
@@ -48,7 +50,7 @@ FilterStatusMessage::FilterStatusMessage()
 //
 // -----------------------------------------------------------------------------
 FilterStatusMessage::FilterStatusMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString &prefix, const QString& msgText)
-: VisitableStatusMessage<FilterStatusMessage>(prefix, msgText)
+: AbstractStatusMessage(prefix, msgText)
 , m_ClassName(className)
 , m_HumanLabel(humanLabel)
 , m_PipelineIndex(pipelineIndex)
@@ -82,4 +84,12 @@ QString FilterStatusMessage::generateMessageString() const
   }
 
   return ss;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterStatusMessage::visit(AbstractMessageHandler* msgHandler) const
+{
+  msgHandler->processMessage(this);
 }

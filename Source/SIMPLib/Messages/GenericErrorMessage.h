@@ -36,14 +36,14 @@
 
 #pragma once
 
-#include "SIMPLib/Messages/VisitableErrorMessage.h"
+#include "SIMPLib/Messages/AbstractErrorMessage.h"
 
 /**
  * @class GenericErrorMessage GenericErrorMessage.h SIMPLib/Messages/GenericErrorMessage.h
  * @brief This class is a generic error message class that is responsible for holding all the details
  * of a generic error message emitted by any observable object
  */
-class SIMPLib_EXPORT GenericErrorMessage : public VisitableErrorMessage<GenericErrorMessage>
+class SIMPLib_EXPORT GenericErrorMessage : public AbstractErrorMessage
 {
   public:
     SIMPL_SHARED_POINTERS(GenericErrorMessage)
@@ -65,6 +65,14 @@ class SIMPLib_EXPORT GenericErrorMessage : public VisitableErrorMessage<GenericE
      * @brief This method creates and returns a string for generic error messages
      */
     virtual QString generateMessageString() const override;
+
+    /**
+     * @brief Method that allows the visitation of a message by a message handler.  This
+     * is part of the double-dispatch API that allows observers to be able to perform
+     * subclass specific operations on messages that they receive.
+     * @param msgHandler The observer's message handler
+     */
+    virtual void visit(AbstractMessageHandler* msgHandler) const override final;
 
   protected:
     GenericErrorMessage();

@@ -36,11 +36,13 @@
 
 #include "FilterProgressMessage.h"
 
+#include "AbstractMessageHandler.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 FilterProgressMessage::FilterProgressMessage()
-: VisitableProgressMessage<FilterProgressMessage>()
+: AbstractProgressMessage()
 {
 }
 
@@ -48,7 +50,7 @@ FilterProgressMessage::FilterProgressMessage()
 //
 // -----------------------------------------------------------------------------
 FilterProgressMessage::FilterProgressMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString &prefix, const QString& msgText, int progress)
-: VisitableProgressMessage<FilterProgressMessage>(humanLabel, msgText, progress)
+: AbstractProgressMessage(humanLabel, msgText, progress)
 , m_ClassName(className)
 , m_HumanLabel(humanLabel)
 , m_PipelineIndex(pipelineIndex)
@@ -82,4 +84,12 @@ QString FilterProgressMessage::generateMessageString() const
 
   QString ss = QObject::tr("%1: %2 %3%%").arg(getPrefix()).arg(getMessageText()).arg(getProgressValue());
   return ss;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterProgressMessage::visit(AbstractMessageHandler* msgHandler) const
+{
+  msgHandler->processMessage(this);
 }

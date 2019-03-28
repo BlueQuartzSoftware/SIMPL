@@ -36,11 +36,13 @@
 
 #include "GenericWarningMessage.h"
 
+#include "AbstractMessageHandler.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 GenericWarningMessage::GenericWarningMessage()
-: VisitableWarningMessage<GenericWarningMessage>()
+: AbstractWarningMessage()
 {
 }
 
@@ -48,7 +50,7 @@ GenericWarningMessage::GenericWarningMessage()
 //
 // -----------------------------------------------------------------------------
 GenericWarningMessage::GenericWarningMessage(const QString& prefix, const QString& msgText, int code)
-: VisitableWarningMessage<GenericWarningMessage>(prefix, msgText, code)
+: AbstractWarningMessage(prefix, msgText, code)
 {
 }
 
@@ -73,4 +75,12 @@ QString GenericWarningMessage::generateMessageString() const
 {
   QString ss = QObject::tr("Error (%1): %2: %3").arg(getCode()).arg(getPrefix()).arg(getMessageText());
   return ss;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void GenericWarningMessage::visit(AbstractMessageHandler* msgHandler) const
+{
+  msgHandler->processMessage(this);
 }

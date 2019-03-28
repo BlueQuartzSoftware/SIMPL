@@ -36,11 +36,13 @@
 
 #include "PipelineErrorMessage.h"
 
+#include "AbstractMessageHandler.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 PipelineErrorMessage::PipelineErrorMessage()
-: VisitableErrorMessage<PipelineErrorMessage>()
+: AbstractErrorMessage()
 {
 }
 
@@ -49,7 +51,7 @@ PipelineErrorMessage::PipelineErrorMessage()
 //
 // -----------------------------------------------------------------------------
 PipelineErrorMessage::PipelineErrorMessage(const QString &pipelineName, const QString& prefix, const QString& msgText, int code)
-: VisitableErrorMessage<PipelineErrorMessage>(prefix, msgText, code)
+: AbstractErrorMessage(prefix, msgText, code)
 , m_PipelineName(pipelineName)
 {
 }
@@ -75,4 +77,12 @@ QString PipelineErrorMessage::generateMessageString() const
 {
   QString ss = QObject::tr("Error (%1): %2: %3").arg(getCode()).arg(getPrefix()).arg(getMessageText());
   return ss;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineErrorMessage::visit(AbstractMessageHandler* msgHandler) const
+{
+  msgHandler->processMessage(this);
 }

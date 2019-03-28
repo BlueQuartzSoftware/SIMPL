@@ -36,14 +36,14 @@
 
 #pragma once
 
-#include "SIMPLib/Messages/VisitableProgressMessage.h"
+#include "SIMPLib/Messages/AbstractProgressMessage.h"
 
 /**
  * @class FilterProgressMessage FilterProgressMessage.h SIMPLib/Messages/FilterProgressMessage.h
  * @brief This class is a filter progress message class that is responsible for holding all the details
  * of a progress message emitted by an AbstractFilter
  */
-class SIMPLib_EXPORT FilterProgressMessage : public VisitableProgressMessage<FilterProgressMessage>
+class SIMPLib_EXPORT FilterProgressMessage : public AbstractProgressMessage
 {
   public:
     SIMPL_SHARED_POINTERS(FilterProgressMessage)
@@ -73,6 +73,14 @@ class SIMPLib_EXPORT FilterProgressMessage : public VisitableProgressMessage<Fil
      * @brief This method creates and returns a string for filter progress messages
      */
     virtual QString generateMessageString() const override;
+
+    /**
+     * @brief Method that allows the visitation of a message by a message handler.  This
+     * is part of the double-dispatch API that allows observers to be able to perform
+     * subclass specific operations on messages that they receive.
+     * @param msgHandler The observer's message handler
+     */
+    virtual void visit(AbstractMessageHandler* msgHandler) const override final;
 
   protected:
     FilterProgressMessage();

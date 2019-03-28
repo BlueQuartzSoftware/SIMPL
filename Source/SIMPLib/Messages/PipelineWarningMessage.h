@@ -36,14 +36,14 @@
 
 #pragma once
 
-#include "SIMPLib/Messages/VisitableWarningMessage.h"
+#include "SIMPLib/Messages/AbstractWarningMessage.h"
 
 /**
  * @class PipelineWarningMessage PipelineWarningMessage.h SIMPLib/Messages/PipelineWarningMessage.h
  * @brief This class is a pipeline warning message class that is responsible for holding all the details
  * of a pipeline warning message emitted by a FilterPipeline instance.
  */
-class SIMPLib_EXPORT PipelineWarningMessage : public VisitableWarningMessage<PipelineWarningMessage>
+class SIMPLib_EXPORT PipelineWarningMessage : public AbstractWarningMessage
 {
   public:
     SIMPL_SHARED_POINTERS(PipelineWarningMessage)
@@ -68,6 +68,14 @@ class SIMPLib_EXPORT PipelineWarningMessage : public VisitableWarningMessage<Pip
      * @brief This method creates and returns a string for pipeline warning messages
      */
     virtual QString generateMessageString() const override;
+
+    /**
+     * @brief Method that allows the visitation of a message by a message handler.  This
+     * is part of the double-dispatch API that allows observers to be able to perform
+     * subclass specific operations on messages that they receive.
+     * @param msgHandler The observer's message handler
+     */
+    virtual void visit(AbstractMessageHandler* msgHandler) const override final;
 
   protected:
     PipelineWarningMessage();

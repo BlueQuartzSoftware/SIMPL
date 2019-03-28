@@ -36,14 +36,14 @@
 
 #pragma once
 
-#include "SIMPLib/Messages/VisitableWarningMessage.h"
+#include "SIMPLib/Messages/AbstractWarningMessage.h"
 
 /**
  * @class FilterWarningMessage FilterWarningMessage.h SIMPLib/Messages/FilterWarningMessage.h
  * @brief This class is a filter warning message class that is responsible for holding all the details
  * of a warning message emitted by an AbstractFilter
  */
-class SIMPLib_EXPORT FilterWarningMessage : public VisitableWarningMessage<FilterWarningMessage>
+class SIMPLib_EXPORT FilterWarningMessage : public AbstractWarningMessage
 {
   public:
     SIMPL_SHARED_POINTERS(FilterWarningMessage)
@@ -73,6 +73,14 @@ class SIMPLib_EXPORT FilterWarningMessage : public VisitableWarningMessage<Filte
      * @brief This method creates and returns a string for filter warning messages
      */
     virtual QString generateMessageString() const override;
+
+    /**
+     * @brief Method that allows the visitation of a message by a message handler.  This
+     * is part of the double-dispatch API that allows observers to be able to perform
+     * subclass specific operations on messages that they receive.
+     * @param msgHandler The observer's message handler
+     */
+    virtual void visit(AbstractMessageHandler* msgHandler) const override final;
 
   protected:
     FilterWarningMessage();

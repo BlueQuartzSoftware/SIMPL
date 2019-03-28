@@ -36,11 +36,13 @@
 
 #include "GenericStatusMessage.h"
 
+#include "AbstractMessageHandler.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 GenericStatusMessage::GenericStatusMessage()
-: VisitableStatusMessage<GenericStatusMessage>()
+: AbstractStatusMessage()
 {
 }
 
@@ -48,7 +50,7 @@ GenericStatusMessage::GenericStatusMessage()
 //
 // -----------------------------------------------------------------------------
 GenericStatusMessage::GenericStatusMessage(const QString& prefix, const QString& msgText)
-: VisitableStatusMessage<GenericStatusMessage>(prefix, msgText)
+: AbstractStatusMessage(prefix, msgText)
 {
 }
 
@@ -79,4 +81,12 @@ QString GenericStatusMessage::generateMessageString() const
 
   QString ss = QObject::tr("%1: %2").arg(getPrefix()).arg(getMessageText());
   return ss;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void GenericStatusMessage::visit(AbstractMessageHandler* msgHandler) const
+{
+  msgHandler->processMessage(this);
 }

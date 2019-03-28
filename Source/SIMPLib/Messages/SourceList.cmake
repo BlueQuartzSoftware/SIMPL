@@ -32,10 +32,6 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PipelineProgressMessage.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PipelineStatusMessage.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PipelineWarningMessage.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/VisitableErrorMessage.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/VisitableProgressMessage.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/VisitableStatusMessage.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/VisitableWarningMessage.h
 )
 
 

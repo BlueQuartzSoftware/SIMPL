@@ -36,14 +36,14 @@
 
 #pragma once
 
-#include "SIMPLib/Messages/VisitableErrorMessage.h"
+#include "SIMPLib/Messages/AbstractErrorMessage.h"
 
 /**
  * @class FilterErrorMessage FilterErrorMessage.h SIMPLib/Messages/FilterErrorMessage.h
  * @brief This class is a filter error message class that is responsible for holding all the details
  * of an error message emitted by an AbstractFilter
  */
-class SIMPLib_EXPORT FilterErrorMessage : public VisitableErrorMessage<FilterErrorMessage>
+class SIMPLib_EXPORT FilterErrorMessage : public AbstractErrorMessage
 {
   public:
     SIMPL_SHARED_POINTERS(FilterErrorMessage)
@@ -73,6 +73,14 @@ class SIMPLib_EXPORT FilterErrorMessage : public VisitableErrorMessage<FilterErr
      * @brief This method creates and returns a string for filter error messages
      */
     virtual QString generateMessageString() const override;
+
+    /**
+     * @brief Method that allows the visitation of a message by a message handler.  This
+     * is part of the double-dispatch API that allows observers to be able to perform
+     * subclass specific operations on messages that they receive.
+     * @param msgHandler The observer's message handler
+     */
+    virtual void visit(AbstractMessageHandler* msgHandler) const override final;
 
   protected:
     FilterErrorMessage();

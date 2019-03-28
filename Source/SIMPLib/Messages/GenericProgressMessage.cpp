@@ -36,11 +36,13 @@
 
 #include "GenericProgressMessage.h"
 
+#include "AbstractMessageHandler.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 GenericProgressMessage::GenericProgressMessage()
-: VisitableProgressMessage<GenericProgressMessage>()
+: AbstractProgressMessage()
 {
 }
 
@@ -48,7 +50,7 @@ GenericProgressMessage::GenericProgressMessage()
 //
 // -----------------------------------------------------------------------------
 GenericProgressMessage::GenericProgressMessage(const QString& prefix, const QString& msgText, int progress)
-: VisitableProgressMessage<GenericProgressMessage>(prefix, msgText, progress)
+: AbstractProgressMessage(prefix, msgText, progress)
 {
 }
 
@@ -79,4 +81,12 @@ QString GenericProgressMessage::generateMessageString() const
 
   QString ss = QObject::tr("%1: %2 %3%%").arg(getPrefix()).arg(getMessageText()).arg(getProgressValue());
   return ss;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void GenericProgressMessage::visit(AbstractMessageHandler* msgHandler) const
+{
+  msgHandler->processMessage(this);
 }

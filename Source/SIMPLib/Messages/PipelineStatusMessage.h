@@ -36,14 +36,14 @@
 
 #pragma once
 
-#include "SIMPLib/Messages/VisitableStatusMessage.h"
+#include "SIMPLib/Messages/AbstractStatusMessage.h"
 
 /**
  * @class PipelineStatusMessage PipelineStatusMessage.h SIMPLib/Messages/PipelineStatusMessage.h
  * @brief This class is a pipeline status message class that is responsible for holding all the details
  * of a pipeline status message emitted by a FilterPipeline instance.
  */
-class SIMPLib_EXPORT PipelineStatusMessage : public VisitableStatusMessage<PipelineStatusMessage>
+class SIMPLib_EXPORT PipelineStatusMessage : public AbstractStatusMessage
 {
   public:
     SIMPL_SHARED_POINTERS(PipelineStatusMessage)
@@ -67,6 +67,14 @@ class SIMPLib_EXPORT PipelineStatusMessage : public VisitableStatusMessage<Pipel
      * @brief This method creates and returns a string for pipeline status messages
      */
     virtual QString generateMessageString() const override;
+
+    /**
+     * @brief Method that allows the visitation of a message by a message handler.  This
+     * is part of the double-dispatch API that allows observers to be able to perform
+     * subclass specific operations on messages that they receive.
+     * @param msgHandler The observer's message handler
+     */
+    virtual void visit(AbstractMessageHandler* msgHandler) const override final;
 
   protected:
     PipelineStatusMessage();

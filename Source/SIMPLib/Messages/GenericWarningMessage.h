@@ -36,14 +36,14 @@
 
 #pragma once
 
-#include "SIMPLib/Messages/VisitableWarningMessage.h"
+#include "SIMPLib/Messages/AbstractWarningMessage.h"
 
 /**
  * @class GenericWarningMessage GenericWarningMessage.h SIMPLib/Messages/GenericWarningMessage.h
  * @brief This class is a generic warning message class that is responsible for holding all the details
  * of a generic warning message emitted by any observable object
  */
-class SIMPLib_EXPORT GenericWarningMessage : public VisitableWarningMessage<GenericWarningMessage>
+class SIMPLib_EXPORT GenericWarningMessage : public AbstractWarningMessage
 {
   public:
     SIMPL_SHARED_POINTERS(GenericWarningMessage)
@@ -65,6 +65,14 @@ class SIMPLib_EXPORT GenericWarningMessage : public VisitableWarningMessage<Gene
      * @brief This method creates and returns a string for generic warning messages
      */
     virtual QString generateMessageString() const override;
+
+    /**
+     * @brief Method that allows the visitation of a message by a message handler.  This
+     * is part of the double-dispatch API that allows observers to be able to perform
+     * subclass specific operations on messages that they receive.
+     * @param msgHandler The observer's message handler
+     */
+    virtual void visit(AbstractMessageHandler* msgHandler) const override final;
 
   protected:
     GenericWarningMessage();

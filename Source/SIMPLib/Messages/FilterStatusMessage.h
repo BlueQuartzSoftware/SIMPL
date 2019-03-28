@@ -36,14 +36,14 @@
 
 #pragma once
 
-#include "SIMPLib/Messages/VisitableStatusMessage.h"
+#include "SIMPLib/Messages/AbstractStatusMessage.h"
 
 /**
  * @class FilterStatusMessage FilterStatusMessage.h SIMPLib/Messages/FilterStatusMessage.h
  * @brief This class is a filter status message class that is responsible for holding all the details
  * of a status message emitted by an AbstractFilter
  */
-class SIMPLib_EXPORT FilterStatusMessage : public VisitableStatusMessage<FilterStatusMessage>
+class SIMPLib_EXPORT FilterStatusMessage : public AbstractStatusMessage
 {
   public:
     SIMPL_SHARED_POINTERS(FilterStatusMessage)
@@ -72,6 +72,14 @@ class SIMPLib_EXPORT FilterStatusMessage : public VisitableStatusMessage<FilterS
      * @brief This method creates and returns a string for filter status messages
      */
     virtual QString generateMessageString() const override;
+
+    /**
+     * @brief Method that allows the visitation of a message by a message handler.  This
+     * is part of the double-dispatch API that allows observers to be able to perform
+     * subclass specific operations on messages that they receive.
+     * @param msgHandler The observer's message handler
+     */
+    virtual void visit(AbstractMessageHandler* msgHandler) const override final;
 
   protected:
     FilterStatusMessage();

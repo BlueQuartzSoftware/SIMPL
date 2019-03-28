@@ -36,11 +36,13 @@
 
 #include "PipelineWarningMessage.h"
 
+#include "AbstractMessageHandler.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 PipelineWarningMessage::PipelineWarningMessage()
-: VisitableWarningMessage<PipelineWarningMessage>()
+: AbstractWarningMessage()
 {
 }
 
@@ -48,7 +50,7 @@ PipelineWarningMessage::PipelineWarningMessage()
 //
 // -----------------------------------------------------------------------------
 PipelineWarningMessage::PipelineWarningMessage(const QString& pipelineName, const QString &prefix, const QString& msgText, int code)
-: VisitableWarningMessage<PipelineWarningMessage>(pipelineName, msgText, code)
+: AbstractWarningMessage(pipelineName, msgText, code)
 , m_PipelineName(pipelineName)
 {
 }
@@ -74,4 +76,12 @@ QString PipelineWarningMessage::generateMessageString() const
 {
   QString ss = QObject::tr("Error (%1): %2: %3").arg(getCode()).arg(getPrefix()).arg(getMessageText());
   return ss;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineWarningMessage::visit(AbstractMessageHandler* msgHandler) const
+{
+  msgHandler->processMessage(this);
 }

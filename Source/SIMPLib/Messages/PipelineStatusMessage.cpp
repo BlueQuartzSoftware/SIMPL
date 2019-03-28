@@ -36,11 +36,13 @@
 
 #include "PipelineStatusMessage.h"
 
+#include "AbstractMessageHandler.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 PipelineStatusMessage::PipelineStatusMessage()
-: VisitableStatusMessage<PipelineStatusMessage>()
+: AbstractStatusMessage()
 {
 }
 
@@ -48,7 +50,7 @@ PipelineStatusMessage::PipelineStatusMessage()
 //
 // -----------------------------------------------------------------------------
 PipelineStatusMessage::PipelineStatusMessage(const QString &pipelineName, const QString& prefix, const QString& msgText)
-: VisitableStatusMessage<PipelineStatusMessage>(prefix, msgText)
+: AbstractStatusMessage(prefix, msgText)
 , m_PipelineName(pipelineName)
 {
 }
@@ -80,4 +82,12 @@ QString PipelineStatusMessage::generateMessageString() const
 
   QString ss = QObject::tr("%1: %2").arg(getPrefix()).arg(getMessageText());
   return ss;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineStatusMessage::visit(AbstractMessageHandler* msgHandler) const
+{
+  msgHandler->processMessage(this);
 }

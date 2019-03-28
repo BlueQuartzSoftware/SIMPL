@@ -36,14 +36,14 @@
 
 #pragma once
 
-#include "SIMPLib/Messages/VisitableErrorMessage.h"
+#include "SIMPLib/Messages/AbstractErrorMessage.h"
 
 /**
  * @class PipelineErrorMessage PipelineErrorMessage.h SIMPLib/Messages/PipelineErrorMessage.h
  * @brief This class is a pipeline error message class that is responsible for holding all the details
  * of a pipeline error message emitted by a FilterPipeline instance.
  */
-class SIMPLib_EXPORT PipelineErrorMessage : public VisitableErrorMessage<PipelineErrorMessage>
+class SIMPLib_EXPORT PipelineErrorMessage : public AbstractErrorMessage
 {
   public:
     SIMPL_SHARED_POINTERS(PipelineErrorMessage)
@@ -68,6 +68,14 @@ class SIMPLib_EXPORT PipelineErrorMessage : public VisitableErrorMessage<Pipelin
      * @brief This method creates and returns a string for pipeline error messages
      */
     virtual QString generateMessageString() const override;
+
+    /**
+     * @brief Method that allows the visitation of a message by a message handler.  This
+     * is part of the double-dispatch API that allows observers to be able to perform
+     * subclass specific operations on messages that they receive.
+     * @param msgHandler The observer's message handler
+     */
+    virtual void visit(AbstractMessageHandler* msgHandler) const override final;
 
   protected:
     PipelineErrorMessage();

@@ -36,11 +36,13 @@
 
 #include "FilterWarningMessage.h"
 
+#include "AbstractMessageHandler.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 FilterWarningMessage::FilterWarningMessage()
-: VisitableWarningMessage<FilterWarningMessage>()
+: AbstractWarningMessage()
 {
 }
 
@@ -48,7 +50,7 @@ FilterWarningMessage::FilterWarningMessage()
 //
 // -----------------------------------------------------------------------------
 FilterWarningMessage::FilterWarningMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString &prefix, const QString& msgText, int code)
-: VisitableWarningMessage<FilterWarningMessage>(humanLabel, msgText, code)
+: AbstractWarningMessage(humanLabel, msgText, code)
 , m_ClassName(className)
 , m_HumanLabel(humanLabel)
 , m_PipelineIndex(pipelineIndex)
@@ -76,4 +78,12 @@ QString FilterWarningMessage::generateMessageString() const
 {
   QString ss = QObject::tr("'%1' Warning (%2): %3: %4").arg(getClassName()).arg(getCode()).arg(getPrefix()).arg(getMessageText());
   return ss;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterWarningMessage::visit(AbstractMessageHandler* msgHandler) const
+{
+  msgHandler->processMessage(this);
 }

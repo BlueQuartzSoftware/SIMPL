@@ -36,14 +36,14 @@
 
 #pragma once
 
-#include "SIMPLib/Messages/VisitableProgressMessage.h"
+#include "SIMPLib/Messages/AbstractProgressMessage.h"
 
 /**
  * @class GenericProgressMessage GenericProgressMessage.h SIMPLib/Messages/GenericProgressMessage.h
  * @brief This class is a generic progress message class that is responsible for holding all the details
  * of a generic progress message emitted by any observable object
  */
-class SIMPLib_EXPORT GenericProgressMessage : public VisitableProgressMessage<GenericProgressMessage>
+class SIMPLib_EXPORT GenericProgressMessage : public AbstractProgressMessage
 {
   public:
     SIMPL_SHARED_POINTERS(GenericProgressMessage)
@@ -66,6 +66,14 @@ class SIMPLib_EXPORT GenericProgressMessage : public VisitableProgressMessage<Ge
      * @brief This method creates and returns a string for generic progress messages
      */
     virtual QString generateMessageString() const override;
+
+    /**
+     * @brief Method that allows the visitation of a message by a message handler.  This
+     * is part of the double-dispatch API that allows observers to be able to perform
+     * subclass specific operations on messages that they receive.
+     * @param msgHandler The observer's message handler
+     */
+    virtual void visit(AbstractMessageHandler* msgHandler) const override final;
 
   protected:
     GenericProgressMessage();
