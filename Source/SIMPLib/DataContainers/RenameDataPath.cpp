@@ -41,5 +41,8 @@
 // -----------------------------------------------------------------------------
 void RenameDataPath::AlertFilterCreatedPath(AbstractFilter* filter, DataID_t id, const DataArrayPath& path)
 {
-  filter->checkIfPathRenamed(id, path);
+  if(filter != nullptr)
+  {
+    filter->checkIfPathRenamed(id, path);
+  }
 }
