@@ -115,7 +115,8 @@ void CreateFeatureArrayFromElementArray::dataCheck()
 
   if(getCreatedArrayName().isEmpty())
   {
-    notifyErrorMessage("", "The new Feature Array name must be set", -11002);
+    setErrorCondition(-11002);
+    notifyErrorMessage(getHumanLabel(), "The new Feature Array name must be set", getErrorCondition());
     return;
   }
 
@@ -201,8 +202,9 @@ template <typename T> IDataArray::Pointer copyCellData(AbstractFilter* filter, I
       if(currentDataPtr[j] != cSourcePtr[j] && !warningThrown)
       {
         // The values are inconsistent with the first values for this feature id, so throw a warning
+        filter->setWarningCondition(-1000);
         QString ss = QObject::tr("Elements from Feature %1 do not all have the same value. The last value copied into Feature %1 will be used").arg(featureIdx);
-        filter->notifyWarningMessage("", ss, -1000);
+        filter->notifyWarningMessage(filter->getHumanLabel(), ss, filter->getWarningCondition());
         warningThrown = true;
       }
     }
@@ -253,14 +255,16 @@ void CreateFeatureArrayFromElementArray::execute()
   if(mismatchedFeatures)
   {
     QString ss = QObject::tr("Attribute Matrix %1 has %2 tuples but the input array %3 has a Feature ID value of at least %4").arg(m_CellFeatureAttributeMatrixName.serialize("/")).arg(totalFeatures).arg(getFeatureIdsArrayPath().serialize("/")).arg(largestFeature);
-    notifyErrorMessage("", ss, -5555);
+    setErrorCondition(-5555);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
   if(largestFeature != (totalFeatures - 1))
   {
     QString ss = QObject::tr("The number of Features in the InArray array (%1) does not match the largest Feature Id in the FeatureIds array").arg(totalFeatures);
-    notifyErrorMessage("", ss, -5556);
+    setErrorCondition(-5556);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -313,7 +317,8 @@ void CreateFeatureArrayFromElementArray::execute()
   else
   {
     QString ss = QObject::tr("The selected array was of unsupported type. The path is %1").arg(m_SelectedCellArrayPath.serialize());
-    notifyErrorMessage("", ss, -14000);
+    setErrorCondition(-14000);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
   if(p.get() != nullptr)

@@ -98,7 +98,8 @@ void ExecuteProcess::dataCheck()
   if(arguments.empty())
   {
     QString ss = QObject::tr("No command line arguments have been specified.");
-    notifyErrorMessage("", ss, -4001);
+    setErrorCondition(-4001);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -108,7 +109,8 @@ void ExecuteProcess::dataCheck()
   //  if( !fi.exists())
   //  {
   //    QString ss = QObject::tr("The executable at %1 does not exist.").arg(prog);
-  //      //    notifyErrorMessage("", ss, -4000);
+  //    setErrorCondition(-4000);
+  //    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   //    return;
   //  }
 }
@@ -220,12 +222,14 @@ void ExecuteProcess::processHasFinished(int exitCode, QProcess::ExitStatus exitS
   else if(exitStatus == QProcess::CrashExit)
   {
     QString ss = QObject::tr("The process crashed during its exit.");
-    notifyErrorMessage("", ss, -4003);
+    setErrorCondition(-4003);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
   else if(exitCode < 0)
   {
     QString ss = QObject::tr("The process finished with exit code %1.").arg(QString::number(exitCode));
-    notifyErrorMessage("", ss, -4004);
+    setErrorCondition(-4004);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
   else if(getErrorCondition() >= 0)
   {
@@ -243,7 +247,8 @@ void ExecuteProcess::processHasErroredOut(QProcess::ProcessError error)
   if(getCancel())
   {
     QString ss = QObject::tr("The process was killed by the user.");
-        notifyWarningMessage("", ss, -4004);
+    setWarningCondition(-4004);
+    notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
   }
   else if(error == QProcess::FailedToStart)
   {
@@ -253,32 +258,38 @@ void ExecuteProcess::processHasErroredOut(QProcess::ProcessError error)
     QString ss = QObject::tr("The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program \
 or the path containing the executble is not in the system's environment path. PATH=%1.\n Try using the absolute path to the executable.")
                      .arg(pathEnv);
-    notifyErrorMessage("", ss, -4005);
+    setErrorCondition(-4005);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
   else if(error == QProcess::Crashed)
   {
     QString ss = QObject::tr("The process crashed some time after starting successfully.");
-    notifyErrorMessage("", ss, -4006);
+    setErrorCondition(-4006);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
   else if(error == QProcess::Timedout)
   {
     QString ss = QObject::tr("The process timed out.");
-    notifyErrorMessage("", ss, -4007);
+    setErrorCondition(-4007);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
   else if(error == QProcess::WriteError)
   {
     QString ss = QObject::tr("An error occurred when attempting to write to the process.");
-    notifyErrorMessage("", ss, -4008);
+    setErrorCondition(-4008);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
   else if(error == QProcess::ReadError)
   {
     QString ss = QObject::tr("An error occurred when attempting to read from the process.");
-    notifyErrorMessage("", ss, -4009);
+    setErrorCondition(-4009);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
   else
   {
     QString ss = QObject::tr("An unknown error occurred.");
-    notifyErrorMessage("", ss, -4010);
+    setErrorCondition(-4010);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
   m_Pause = false;
@@ -297,7 +308,7 @@ void ExecuteProcess::sendErrorOutput()
     {
       error.chop(1);
     }
-    notifyStatusMessage("", error);
+    notifyStandardOutputMessage(getHumanLabel(), getPipelineIndex() + 1, error);
     m_WaitCondition.wakeAll();
   }
 }
@@ -309,7 +320,7 @@ void ExecuteProcess::sendStandardOutput()
 {
   if(m_ProcessPtr.data() != nullptr)
   {
-    notifyStatusMessage("", m_ProcessPtr->readAllStandardOutput());
+    notifyStandardOutputMessage(getHumanLabel(), getPipelineIndex() + 1, m_ProcessPtr->readAllStandardOutput());
     m_WaitCondition.wakeAll();
   }
 }

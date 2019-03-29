@@ -328,6 +328,7 @@ void FilterPipeline::cancel()
   if(m_State != FilterPipeline::State::Executing)
   {
     // We cannot cancel a pipeline that is not executing
+    setErrorCondition(-201);
     QString ss;
     if(m_State == FilterPipeline::State::Idle)
     {

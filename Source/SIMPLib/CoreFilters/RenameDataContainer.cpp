@@ -100,8 +100,9 @@ void RenameDataContainer::dataCheck()
 
   if(getNewDataContainerName().isEmpty())
   {
+    setErrorCondition(-11001);
     QString ss = QObject::tr("The new Data Container name must be set");
-    notifyErrorMessage("", ss, -11001);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -114,8 +115,9 @@ void RenameDataContainer::dataCheck()
   bool check = getDataContainerArray()->renameDataContainer(getSelectedDataContainerName(), getNewDataContainerName());
   if(!check)
   {
+    setErrorCondition(-11006);
     QString ss = QObject::tr("Attempt to rename DataContainer '%1' to '%2' failed").arg(getSelectedDataContainerName()).arg(getNewDataContainerName());
-    notifyErrorMessage("", ss, -11006);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 }
 

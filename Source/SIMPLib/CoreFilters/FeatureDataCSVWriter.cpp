@@ -188,7 +188,8 @@ void FeatureDataCSVWriter::execute()
   if(!parentPath.mkpath("."))
   {
     QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath.absolutePath());
-    notifyErrorMessage("", ss, -1);
+    setErrorCondition(-1);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -196,7 +197,8 @@ void FeatureDataCSVWriter::execute()
   if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
   {
     QString ss = QObject::tr("Output file could not be opened: %1").arg(getFeatureDataFile());
-    notifyErrorMessage("", ss, -100);
+    setErrorCondition(-100);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -259,7 +261,7 @@ void FeatureDataCSVWriter::execute()
     if(percentIncrement > threshold)
     {
       QString ss = QObject::tr("Writing Feature Data || %1% Complete").arg(static_cast<double>(percentIncrement));
-      notifyStatusMessage(getMessagePrefix(), ss);
+      notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
       threshold = threshold + 5.0f;
       if(threshold < percentIncrement)
       {

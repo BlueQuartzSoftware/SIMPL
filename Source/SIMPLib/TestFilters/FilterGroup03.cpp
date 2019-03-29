@@ -110,7 +110,8 @@ void FilterGroup03::execute()
   if(getErrorCondition() < 0)
   {
     QString ss = QObject::tr("Some error message");
-    notifyErrorMessage("", ss, -99999999);
+    setErrorCondition(-99999999);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 

@@ -124,21 +124,24 @@ void ExtractVertexGeometry::dataCheck()
   if(m_ArrayHandling < 0)
   {
     QString ss = QObject::tr("'Array Handling' has not been selected.");
-    notifyErrorMessage("", ss, -2002);
+    setErrorCondition(-2002);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
   if(m_ArrayHandling > m_ArrayHandlingChoices.size() - 1)
   {
     QString ss = QObject::tr("'Array Handling' index is out of bounds. Valid values are 0 or 1.");
-    notifyErrorMessage("", ss, -2003);
+    setErrorCondition(-2003);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
   if(m_SelectedDataContainerName.isEmpty())
   {
     QString ss = QObject::tr("The name of the input DataContainer is empty. Please specify a value.");
-    notifyErrorMessage("", ss, -2004);
+    setErrorCondition(-2004);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -151,14 +154,16 @@ void ExtractVertexGeometry::dataCheck()
   if(getVertexDataContainerName().isEmpty())
   {
     QString ss = QObject::tr("The name of the created Vertex DataContainer is empty. Please specify a value.");
-    notifyErrorMessage("", ss, -2006);
+    setErrorCondition(-2006);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
   if(getDataContainerArray()->doesDataContainerExist(getVertexDataContainerName()))
   {
     QString ss = QObject::tr("A Data Container with name '%1' already exists.").arg(getVertexDataContainerName());
-    notifyErrorMessage("", ss, -2007);
+    setErrorCondition(-2007);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -167,7 +172,8 @@ void ExtractVertexGeometry::dataCheck()
   if(nullptr == fromGeometry.get())
   {
     QString ss = QObject::tr("Selected input DataContainer must contain either an Image Geometry or RectLinearGrid Geometry. The DataContainer did not contain a Geometry object.");
-    notifyErrorMessage("", ss, -2008);
+    setErrorCondition(-2008);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
   IGeometry::Type geomType = fromGeometry->getGeometryType();
@@ -184,7 +190,8 @@ void ExtractVertexGeometry::dataCheck()
   else
   {
     QString ss = QObject::tr("Data Container's Geometry type must be either an Image Geometry or RectLinearGrid Geometry. The Geomerty is of type %1").arg(fromGeometry->getGeometryTypeAsString());
-    notifyErrorMessage("", ss, -2010);
+    setErrorCondition(-2010);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -209,7 +216,8 @@ void ExtractVertexGeometry::dataCheck()
                        .arg(sourceCellAttrMat->getNumberOfTuples())
                        .arg(elementCount)
                        .arg(m_VertexDataContainerName);
-      notifyErrorMessage("", ss, -2009);
+      setErrorCondition(-2009);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }
 

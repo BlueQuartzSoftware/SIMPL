@@ -58,7 +58,8 @@ FileWriter::~FileWriter() = default;
 // -----------------------------------------------------------------------------
 int32_t FileWriter::writeHeader()
 {
-  notifyErrorMessage("", "FileWriter should be subclassed and functionality implemented there", -1);
+  setErrorCondition(-1);
+  notifyErrorMessage(getHumanLabel(), "FileWriter should be subclassed and functionality implemented there", -1);
   return -1;
 }
 
@@ -67,7 +68,8 @@ int32_t FileWriter::writeHeader()
 // -----------------------------------------------------------------------------
 int32_t FileWriter::writeFile()
 {
-  notifyErrorMessage("", "FileWriter should be subclassed and functionality implemented there", -1);
+  setErrorCondition(-1);
+  notifyErrorMessage(getHumanLabel(), "FileWriter should be subclassed and functionality implemented there", -1);
   return -1;
 }
 
@@ -86,8 +88,9 @@ void FileWriter::execute()
   QDir dir;
   if(!dir.mkpath(parentPath))
   {
+    setErrorCondition(-200);
     QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath);
-    notifyErrorMessage("", ss, -200);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -95,14 +98,16 @@ void FileWriter::execute()
   if(err < 0)
   {
     QString ss = QObject::tr("Error writing the header portion of the file");
-    notifyErrorMessage("", ss, err);
+    setErrorCondition(err);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
   err = writeFile();
   if(err < 0)
   {
     QString ss = QObject::tr("Error writing the data to the file");
-    notifyErrorMessage("", ss, err);
+    setErrorCondition(err);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 }

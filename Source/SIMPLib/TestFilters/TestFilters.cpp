@@ -92,8 +92,9 @@ void Filt0::execute()
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
   if(nullptr == m)
   {
+    setErrorCondition(-1);
     QString ss = QObject::tr(" DataContainer was nullptr");
-    notifyErrorMessage("", QObject::tr("VolumeDataContainer was nullptr. Returning from Execute Method for filter %1").arg(getHumanLabel()), -1);
+    notifyErrorMessage(getHumanLabel(), QObject::tr("VolumeDataContainer was nullptr. Returning from Execute Method for filter %1").arg(getHumanLabel()), -1);
     return;
   }
   setErrorCondition(0);
@@ -186,8 +187,9 @@ void Filt1::execute()
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
   if(nullptr == m.get())
   {
+    setErrorCondition(-1);
     QString ss = QObject::tr(" DataContainer was nullptr");
-    notifyErrorMessage("", QObject::tr("VolumeDataContainer was nullptr. Returning from Execute Method for filter %1").arg(getHumanLabel()), -1);
+    notifyErrorMessage(getHumanLabel(), QObject::tr("VolumeDataContainer was nullptr. Returning from Execute Method for filter %1").arg(getHumanLabel()), -1);
     return;
   }
   setErrorCondition(0);

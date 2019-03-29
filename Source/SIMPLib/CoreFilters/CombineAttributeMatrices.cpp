@@ -162,13 +162,15 @@ void CombineAttributeMatrices::dataCheck()
   if(getFirstAttributeMatrixPath().getDataContainerName().compare(getSecondAttributeMatrixPath().getDataContainerName()) != 0)
   {
     QString ss = QObject::tr("The selected attribute matrices must be in the same data container and currently are not");
-    notifyErrorMessage("", ss, -5557);
+    setErrorCondition(-5557);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
   if(getFirstAttributeMatrixPath().getAttributeMatrixName().compare(getSecondAttributeMatrixPath().getAttributeMatrixName()) == 0)
   {
     QString ss = QObject::tr("The selected attribute matrices must be different and currently are the same");
-    notifyErrorMessage("", ss, -5558);
+    setErrorCondition(-5558);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
   AttributeMatrix::Pointer firstAttrMat = m->getPrereqAttributeMatrix(this, getFirstAttributeMatrixPath().getAttributeMatrixName(), -301);
@@ -181,7 +183,8 @@ void CombineAttributeMatrices::dataCheck()
   if(firstAttrMat->getType() != secondAttrMat->getType())
   {
     QString ss = QObject::tr("The selected attribute matrices must be of the same type (ie Feature) and currently are not");
-    notifyErrorMessage("", ss, -5559);
+    setErrorCondition(-5559);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
   if(getErrorCondition() < 0)
@@ -326,7 +329,7 @@ void CombineAttributeMatrices::execute()
     else if(m_SecondIndex[i] > 0 && m_NewIndex[i] != 0)
     {
       QString ss = QObject::tr("When copying the indices, the indices of the two attribute matrices overlapped.  The index of the first attribute matrix was kept.");
-      notifyWarningMessage("", ss, -111);
+      notifyWarningMessage(getHumanLabel(), ss, -111);
     }
   }
 

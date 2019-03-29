@@ -160,8 +160,9 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
       // assert(amItem.get() != nullptr);
       if(amItem.get() == nullptr)
       {
+        setErrorCondition(-11008);
         QString ss = QObject::tr("The AttributeMatrix '%1' could not be removed because it was not found in DataContainer '%2'").arg(amName).arg(dcProxy.getName());
-        notifyErrorMessage("", ss, -11008);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         continue;
       }
       AttributeMatrixProxy attrProxy = attrMatsIter.value();
@@ -181,8 +182,9 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
         IDataArray::Pointer daItem = amItem->getAttributeArray(daName);
         if(daItem.get() == nullptr)
         {
-                    QString ss = QObject::tr("%1/%2/%3 was not found. This could be due to another filter removing the array.").arg(dcProxy.getName()).arg(amName).arg(daName);
-          notifyWarningMessage("", ss, -11009);
+          setWarningCondition(-11009);
+          QString ss = QObject::tr("%1/%2/%3 was not found. This could be due to another filter removing the array.").arg(dcProxy.getName()).arg(amName).arg(daName);
+          notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
           continue;
         }
         DataArrayProxy daProxy = dataArraysIter.value();

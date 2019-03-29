@@ -100,8 +100,9 @@ void RenameAttributeMatrix::dataCheck()
 
   if(m_NewAttributeMatrix.isEmpty())
   {
+    setErrorCondition(-11004);
     QString ss = QObject::tr("The new Attribute Matrix name must be set");
-    notifyErrorMessage("", ss, -11004);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -118,8 +119,9 @@ void RenameAttributeMatrix::dataCheck()
   bool check = dc->renameAttributeMatrix(amName, getNewAttributeMatrix());
   if(!check)
   {
+    setErrorCondition(-11006);
     QString ss = QObject::tr("Attempt to rename Attribute Matrix '%1' to '%2' failed").arg(amName).arg(getNewAttributeMatrix());
-    notifyErrorMessage("", ss, -11006);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 }
 

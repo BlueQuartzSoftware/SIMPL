@@ -231,7 +231,8 @@ void ArrayCalculator::dataCheck()
   if(m_InfixEquation.isEmpty() || m_InfixEquation.split(" ", QString::SkipEmptyParts).empty())
   {
     QString ss = QObject::tr("The infix expression is empty");
-    notifyErrorMessage("", ss, static_cast<int>(CalculatorItem::ErrorCode::EMPTY_EQUATION));
+    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::EMPTY_EQUATION));
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -250,15 +251,16 @@ void ArrayCalculator::dataCheck()
     if(errInt < 0)
     {
       setErrorCondition(errInt);
-      notifyErrorMessage("", errMsg, errInt);
+      notifyErrorMessage(getHumanLabel(), errMsg, getErrorCondition());
       return;
     }
   }
 
   if(!m_CalculatedArray.isValid())
   {
+    setErrorCondition(-4675);
     QString ss = QObject::tr("The output path must be valid");
-    notifyErrorMessage("", ss, -4675);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -279,7 +281,8 @@ void ArrayCalculator::dataCheck()
         if(!cDims.isEmpty() && resultType == ICalculatorArray::ValueType::Array && cDims != array1->getArray()->getComponentDimensions())
         {
           QString ss = QObject::tr("Attribute Array symbols in the infix expression have mismatching component dimensions");
-          notifyErrorMessage("", ss, static_cast<int>(CalculatorItem::ErrorCode::INCONSISTENT_COMP_DIMS));
+          setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INCONSISTENT_COMP_DIMS));
+          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
           return;
         }
 
@@ -297,7 +300,8 @@ void ArrayCalculator::dataCheck()
   if(resultType == ICalculatorArray::ValueType::Unknown)
   {
     QString ss = QObject::tr("The expression does not have any arguments that simplify down to a number.");
-    notifyErrorMessage("", ss, static_cast<int>(CalculatorItem::ErrorCode::NO_NUMERIC_ARGUMENTS));
+    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::NO_NUMERIC_ARGUMENTS));
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -307,7 +311,8 @@ void ArrayCalculator::dataCheck()
   {
     QString ss = QObject::tr("The AttributeMatrix at %1/%2 was not found")
                      .arg(calculatedAMPath.getDataContainerName(), calculatedAMPath.getAttributeMatrixName());
-    notifyErrorMessage("", ss, static_cast<int>(CalculatorItem::ErrorCode::LOST_ATTR_MATRIX));
+    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::LOST_ATTR_MATRIX));
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -316,7 +321,8 @@ void ArrayCalculator::dataCheck()
   {
     QString ss = QObject::tr("The result of the chosen expression will be a numeric value or contain one tuple."
                              " This numeric value will be stored in an array with the number of tuples equal to 1");
-    notifyWarningMessage("", ss, static_cast<int>(CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING));
+    setWarningCondition(static_cast<int>(CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING));
+    notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
 
     if(calculatedAM->getNumberOfTuples() > 1)
     {
@@ -324,14 +330,16 @@ void ArrayCalculator::dataCheck()
                                " expression evaluates to an array with a tuple count of 1, which does not match the output attribute matrix"
                                " tuple count.")
                        .arg(calculatedAMPath.getDataContainerName(), calculatedAMPath.getAttributeMatrixName());
-      notifyErrorMessage("", ss, static_cast<int>(CalculatorItem::ErrorCode::INCORRECT_TUPLE_COUNT));
+      setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INCORRECT_TUPLE_COUNT));
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }
   }
   else if(calculatedAM->getNumberOfTuples() != selectedAM->getNumberOfTuples())
   {
     QString ss = QObject::tr("The tuple count of the output Attribute Matrix is not equal to the tuple count of the selected Attribute Matrix");
-    notifyErrorMessage("", ss, static_cast<int>(CalculatorItem::ErrorCode::INCORRECT_TUPLE_COUNT));
+    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INCORRECT_TUPLE_COUNT));
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -378,7 +386,8 @@ void ArrayCalculator::dataCheck()
     break;
   default:
     QString ss = QObject::tr("The output array type is not valid.  No DataArray could be created.");
-    notifyErrorMessage("", ss, static_cast<int>(CalculatorItem::ErrorCode::InvalidOutputArrayType));
+    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::InvalidOutputArrayType));
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 }
@@ -420,7 +429,7 @@ void ArrayCalculator::execute()
   int totalItems = rpn.size();
   for(int rpnCount = 0; rpnCount < totalItems; rpnCount++)
   {
-    notifyStatusMessage(getMessagePrefix(), "Computing Operator " + QString::number(rpnCount + 1) + "/" + QString::number(totalItems));
+    notifyStatusMessage(getMessagePrefix(), getHumanLabel(), "Computing Operator " + QString::number(rpnCount + 1) + "/" + QString::number(totalItems));
 
     CalculatorItem::Pointer rpnItem = rpn[rpnCount];
     ICalculatorArray::Pointer calcArray = std::dynamic_pointer_cast<ICalculatorArray>(rpnItem);
@@ -452,7 +461,8 @@ void ArrayCalculator::execute()
   if(m_ExecutionStack.size() != 1)
   {
     QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
-    notifyErrorMessage("", ss, static_cast<int>(CalculatorItem::ErrorCode::INVALID_EQUATION));
+    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INVALID_EQUATION));
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
   if(!m_ExecutionStack.isEmpty())
@@ -480,7 +490,8 @@ void ArrayCalculator::execute()
   {
     QString ss = QObject::tr("Unexpected output item from chosen infix expression; the output item must be an array\n"
                              "Please contact the DREAM.3D developers for more information");
-    notifyErrorMessage("", ss, static_cast<int>(CalculatorItem::ErrorCode::UNEXPECTED_OUTPUT));
+    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::UNEXPECTED_OUTPUT));
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -735,7 +746,8 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation()
       else
       {
         QString ss = QObject::tr("An unrecognized item '%1' was found in the chosen infix expression").arg(strItem);
-        notifyErrorMessage("", ss, static_cast<int>(CalculatorItem::ErrorCode::UNRECOGNIZED_ITEM));
+        setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::UNRECOGNIZED_ITEM));
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         return QVector<CalculatorItem::Pointer>();
       }
     }
@@ -820,17 +832,20 @@ bool ArrayCalculator::parseIndexOperator(QString token, QVector<CalculatorItem::
   int errCode = static_cast<int>(CalculatorItem::ErrorCode::ORPHANED_COMPONENT);
   if(idx < 0)
   {
-    notifyErrorMessage("", errorMsg, errCode);
+    setErrorCondition(errCode);
+    notifyErrorMessage(getHumanLabel(), errorMsg, getErrorCondition());
     return false;
   }
   if(!parsedInfix[idx]->isICalculatorArray())
   {
-    notifyErrorMessage("", errorMsg, errCode);
+    setErrorCondition(errCode);
+    notifyErrorMessage(getHumanLabel(), errorMsg, getErrorCondition());
     return false;
   }
   if(parsedInfix[idx]->isNumber())
   {
-    notifyErrorMessage("", errorMsg, errCode);
+    setErrorCondition(errCode);
+    notifyErrorMessage(getHumanLabel(), errorMsg, getErrorCondition());
     return false;
   }
 
@@ -842,7 +857,8 @@ bool ArrayCalculator::parseIndexOperator(QString token, QVector<CalculatorItem::
   if(!ok)
   {
     QString ss = QObject::tr("The chosen infix expression is not a valid expression");
-    notifyErrorMessage("", ss, static_cast<int>(CalculatorItem::ErrorCode::INVALID_COMPONENT));
+    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INVALID_COMPONENT));
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return false;
   }
 
@@ -850,7 +866,8 @@ bool ArrayCalculator::parseIndexOperator(QString token, QVector<CalculatorItem::
   if(nullptr != calcArray && index >= calcArray->getArray()->getNumberOfComponents())
   {
     QString ss = QObject::tr("'%1' has an component index that is out of range").arg(calcArray->getArray()->getName());
-    notifyErrorMessage("", ss, static_cast<int>(CalculatorItem::ErrorCode::COMPONENT_OUT_OF_RANGE));
+    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::COMPONENT_OUT_OF_RANGE));
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return false;
   }
 
@@ -912,7 +929,8 @@ bool ArrayCalculator::parseArray(QString token, QVector<CalculatorItem::Pointer>
   if(!selectedAM->getAttributeArrayNames().contains(token))
   {
     QString ss = QObject::tr("The item '%1' is not the name of any valid array in the selected Attribute Matrix").arg(token);
-    notifyErrorMessage("", ss, static_cast<int>(CalculatorItem::ErrorCode::INVALID_ARRAY_NAME));
+    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INVALID_ARRAY_NAME));
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return false;
   }
 
@@ -925,7 +943,8 @@ bool ArrayCalculator::parseArray(QString token, QVector<CalculatorItem::Pointer>
   else if(dataArray->getNumberOfTuples() != firstArray_NumTuples)
   {
     QString ss = QObject::tr("Arrays '%1' and '%2' in the infix expression have an inconsistent number of tuples").arg(firstArray_Name).arg(dataArray->getName());
-    notifyErrorMessage("", ss, static_cast<int>(CalculatorItem::ErrorCode::INCONSISTENT_TUPLES));
+    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INCONSISTENT_TUPLES));
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return false;
   }
 
@@ -1016,7 +1035,8 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
     if(nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(item))
     {
       QString ss = QObject::tr("One or more parentheses are mismatched in the chosen infix expression '%1'").arg(m_InfixEquation);
-      notifyErrorMessage("", ss, static_cast<int>(CalculatorItem::ErrorCode::MISMATCHED_PARENTHESES));
+      setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::MISMATCHED_PARENTHESES));
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return QVector<CalculatorItem::Pointer>();
     }
 
@@ -1045,8 +1065,9 @@ void ArrayCalculator::checkForAmbiguousArrayName(QString strItem, QString warnin
     {
       IDataArray::Pointer dataArray = selectedAM->getAttributeArray(strItem);
 
+      setWarningCondition(static_cast<int>(CalculatorItem::WarningCode::AMBIGUOUS_NAME_WARNING));
       warningMsg.append("\nTo treat this item as an array name, please add double quotes around the item (i.e. \"" + strItem + "\").");
-      notifyWarningMessage("", warningMsg, static_cast<int>(CalculatorItem::WarningCode::AMBIGUOUS_NAME_WARNING));
+      notifyWarningMessage(getHumanLabel(), warningMsg, getWarningCondition());
     }
   }
 }

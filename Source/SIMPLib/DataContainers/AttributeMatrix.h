@@ -326,8 +326,9 @@ public:
       {
         if(filter)
         {
+          filter->setErrorCondition(err);
           ss = QObject::tr("AttributeMatrix:'%1' The name of a requested Attribute Array was empty. Please provide a name for this array").arg(getName());
-          filter->notifyErrorMessage("", ss, err);
+          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
       }
       // Now ask for the actual AttributeArray from the AttributeMatrix
@@ -335,8 +336,9 @@ public:
       {
         if(filter)
         {
+          filter->setErrorCondition(err);
           ss = QObject::tr("The AttributeMatrix named '%1' does NOT have a DataArray with name '%2'. This filter requires this DataArray in order to execute.").arg(getName()).arg(attributeArrayName);
-          filter->notifyErrorMessage("", ss, err);
+          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
         return attributeArray;
       }
@@ -354,8 +356,9 @@ public:
       attributeArray = std::dynamic_pointer_cast< ArrayType >(iDataArray);
       if(nullptr == attributeArray.get() && filter)
       {
+        filter->setErrorCondition(err);
         ss = QObject::tr("The AttributeMatrix named '%1' contains an array with name '%2' but the DataArray could not be downcast using std::dynamic_pointer_cast<T>.").arg(getName()).arg(attributeArrayName);
-        filter->notifyErrorMessage("", ss, err);
+        filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
       }
       return attributeArray;
     }
@@ -378,8 +381,9 @@ public:
       {
         if(filter)
         {
+          filter->setErrorCondition(err);
           ss = QObject::tr("AttributeMatrix:'%1' The name of a requested Attribute Array was empty. Please provide a name for this array").arg(getName());
-          filter->notifyErrorMessage("", ss, err);
+          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
       }
       // Now ask for the actual AttributeArray from the AttributeMatrix
@@ -387,8 +391,9 @@ public:
       {
         if(filter)
         {
+          filter->setErrorCondition(err);
           ss = QObject::tr("The AttributeMatrix named '%1' does NOT have a DataArray with name '%2'. This filter requires this DataArray in order to execute.").arg(getName()).arg(attributeArrayName);
-          filter->notifyErrorMessage("", ss, err);
+          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
         return attributeArray;
       }
@@ -399,8 +404,9 @@ public:
         return std::dynamic_pointer_cast<ArrayType>(ptr);
       }
 
+      filter->setErrorCondition(err);
       ss = QObject::tr("Unable to cast input array %1 to the necessary type.").arg(attributeArrayName);
-      filter->notifyErrorMessage("", ss, err);
+      filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
 
       return attributeArray;
     }
@@ -428,8 +434,9 @@ public:
       {
         if(filter)
         {
+          filter->setErrorCondition(-10001);
           ss = QObject::tr("The name of the array was empty. Please provide a name for this array.");
-          filter->notifyErrorMessage("", ss, -10001);
+          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
         return attributeArray;
       }
@@ -440,21 +447,24 @@ public:
       }
       else if (filter)
       {
+        filter->setErrorCondition(-10002);
         ss = QObject::tr("AttributeMatrix:'%1' An Attribute Array already exists with the name %2.").arg(getName()).arg(attributeArrayName);
-        filter->notifyErrorMessage("", ss, -10002);
+        filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         return attributeArray;
       }
       iDataArray = getAttributeArray(attributeArrayName);
       if(nullptr == iDataArray && filter)
       {
+        filter->setErrorCondition(-10003);
         ss = QObject::tr("AttributeMatrix:'%1' An array with name '%2' could not be created.").arg(getName()).arg(attributeArrayName);
-        filter->notifyErrorMessage("", ss, -10003);
+        filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
       }
       attributeArray = std::dynamic_pointer_cast< ArrayType >(iDataArray);
       if(nullptr == attributeArray.get() && filter)
       {
+        filter->setErrorCondition(-10004);
         ss = QObject::tr("AttributeMatrix:'%1' An array with name '%2' could not be downcast using std::dynamic_pointer_cast<T>.").arg(getName()).arg(attributeArrayName);
-        filter->notifyErrorMessage("", ss, -10004);
+        filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
       }
       return attributeArray;
     }
@@ -504,7 +514,8 @@ public:
           QString srcDesc = srcArray->getTypeAsString();
           QString desc = validTargetArray->getTypeAsString();
           QString ss = QObject::tr("The Filter '%1' requires an array of type '%2' but the data array '%3' has a type of '%4'").arg(filter->getHumanLabel()).arg(desc).arg(srcArray->getName()).arg(srcDesc);
-          filter->notifyErrorMessage("", ss, -501);
+          filter->setErrorCondition(-501);
+          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
         return false;
       }
@@ -515,7 +526,8 @@ public:
         {
           QString ss = QObject::tr("Filter '%1' requires array with name '%2' to have Number of Tuples = %3. The currently selected array "
                                    " has %4").arg(filter->getHumanLabel()).arg(arrayName).arg((getNumberOfTuples())).arg(targetDestArray->getNumberOfTuples());
-          filter->notifyErrorMessage("", ss, -502);
+          filter->setErrorCondition(-502);
+          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
         return false;
       }
@@ -526,7 +538,8 @@ public:
         {
           QString ss = QObject::tr("Filter '%1' is trying to use array '%2' where the number of components is %3 but the filter requires that array "
                                    " to have %4.").arg(filter->getHumanLabel()).arg(targetDestArray->getName()).arg(targetDestArray->getNumberOfComponents()).arg(numComp);
-          filter->notifyErrorMessage("", ss, -503);
+          filter->setErrorCondition(-503);
+          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
         return false;
       }
@@ -540,7 +553,8 @@ public:
                      .arg(arrayName).arg(dat->getTypeAsString()).arg(getNameOfClass()).arg(arrayName).arg(getNameOfClass()).arg(targetDestArray->getTypeAsString());
         if (nullptr != filter)
         {
-          filter->notifyErrorMessage("", ss, -504);
+          filter->setErrorCondition(-504);
+          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
         return false;
       }
@@ -576,7 +590,7 @@ public:
 
     /**
     * @brief creates and returns a copy of the attribute matrix
-    * @return On error, will return a null pointer.  It is the responsibility of the calling function to check for errors and return an error message using the AbstractMessage
+    * @return On error, will return a null pointer.  It is the responsibility of the calling function to check for errors and return an error message using the PipelineMessage
     */
     virtual AttributeMatrix::Pointer deepCopy(bool forceNoAllocate = false);
 

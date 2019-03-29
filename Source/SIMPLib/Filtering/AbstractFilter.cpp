@@ -127,7 +127,7 @@ void AbstractFilter::renameDataArrayPath(DataArrayPath::RenameType renamePath)
       {
         //QString ss = QString("Updated property '%1' in %2").arg(name).arg(getHumanLabel());
         //notifyStandardOutputMessage(getHumanLabel(), getPipelineIndex(), ss);
-        //notifyStatusMessage("", ss);
+        //notifyStatusMessage(getHumanLabel(), ss);
         var.setValue(path);
         this->setProperty(name, var);
         emit dataArrayPathUpdated(name, oldPath, newPath);
@@ -203,7 +203,8 @@ void AbstractFilter::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void AbstractFilter::execute()
 {
-  notifyErrorMessage(getNameOfClass(), "QAbstractFilter does not implement an execute method. Please use a subclass instead.", -3015);
+  setErrorCondition(-3015);
+  notifyErrorMessage(getNameOfClass(), "QAbstractFilter does not implement an execute method. Please use a subclass instead.", getErrorCondition());
 }
 
 // -----------------------------------------------------------------------------
@@ -212,7 +213,8 @@ void AbstractFilter::execute()
 void AbstractFilter::preflight()
 {
   setInPreflight(true);
-  notifyErrorMessage(getNameOfClass(), "AbstractFilter does not implement a preflight method. Please use a subclass instead.", -3016);
+  setErrorCondition(-3016);
+  notifyErrorMessage(getNameOfClass(), "AbstractFilter does not implement a preflight method. Please use a subclass instead.", getErrorCondition());
 }
 
 // -----------------------------------------------------------------------------
@@ -637,5 +639,6 @@ void AbstractFilter::notifyMissingProperty(FilterParameter* filterParameter)
           .arg(filterParameter->getPropertyName())
           .arg(getHumanLabel());
 
-    notifyWarningMessage("", ss, -1);
+  setWarningCondition(-1);
+  notifyWarningMessage(ss, getWarningCondition());
 }

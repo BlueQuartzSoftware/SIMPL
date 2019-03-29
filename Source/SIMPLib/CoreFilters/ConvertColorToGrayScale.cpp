@@ -269,20 +269,23 @@ void ConvertColorToGrayScale::dataCheck()
   setWarningCondition(0);
   if(!DataArrayPath::ValidateVector(getInputDataArrayVector()))
   {
+    setErrorCondition(-62100);
     QString ss = QObject::tr("All Attribute Arrays must belong to the same Data Container and Attribute Matrix");
-    notifyErrorMessage("", ss, -62100);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
   if(getOutputArrayPrefix().isEmpty())
   {
+    setErrorCondition(-62102);
     QString message = QObject::tr("Using a prefix (even a single alphanumeric value) is required so that the output Xdmf files can be written correctly");
-    notifyErrorMessage("", message, -62102);
+    notifyErrorMessage(getHumanLabel(), message, getErrorCondition());
   }
 
   if(getInputDataArrayVector().isEmpty())
   {
+    setErrorCondition(-62103);
     QString message = QObject::tr("At least one Attribute Array must be selected");
-    notifyErrorMessage("", message, -62103);
+    notifyErrorMessage(getHumanLabel(), message, getErrorCondition());
     return;
   }
 
@@ -338,8 +341,9 @@ void ConvertColorToGrayScale::dataCheck()
   {
     if(m_ColorChannel < 0 || m_ColorChannel > 2)
     {
+      setErrorCondition(-62104);
       QString message = QObject::tr("The color channel should be 0, 1 or 2");
-      notifyErrorMessage("", message, -62104);
+      notifyErrorMessage(getHumanLabel(), message, getErrorCondition());
       return;
     }
   }
@@ -370,8 +374,9 @@ void ConvertColorToGrayScale::execute()
   dataCheck();
   if(getErrorCondition() < 0)
   {
+    setErrorCondition(-62106);
     ss = QObject::tr("DataCheck did not pass during execute");
-    notifyErrorMessage("", ss, -62106);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -390,8 +395,9 @@ void ConvertColorToGrayScale::execute()
 
     if(nullptr == inputColorData.get())
     {
+      setErrorCondition(-62107);
       ss = QObject::tr("Input Color Data at ArrayPath '%1' was not available. This array will be skipped.").arg(arrayPath.serialize("/"));
-      notifyErrorMessage("", ss, -62107);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       continue;
     }
 
@@ -402,8 +408,9 @@ void ConvertColorToGrayScale::execute()
 
     if(nullptr == outputGrayData.get())
     {
+      setErrorCondition(-62108);
       ss = QObject::tr("Output Data at ArrayPath '%1' was not available. This array will be skipped.").arg(newPath.serialize("/"));
-      notifyErrorMessage("", ss, -62108);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       continue;
     }
 

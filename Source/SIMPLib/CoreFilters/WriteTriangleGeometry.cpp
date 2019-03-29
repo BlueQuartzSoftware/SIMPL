@@ -140,12 +140,14 @@ void WriteTriangleGeometry::dataCheck()
   // We MUST have Nodes
   if(nullptr == triangles->getVertices().get())
   {
-    notifyErrorMessage("", "DataContainer Geometry missing Vertices", -386);
+    setErrorCondition(-386);
+    notifyErrorMessage(getHumanLabel(), "DataContainer Geometry missing Vertices", getErrorCondition());
   }
   // We MUST have Triangles defined also.
   if(nullptr == triangles->getTriangles().get())
   {
-    notifyErrorMessage("", "DataContainer Geometry missing Triangles", -387);
+    setErrorCondition(-387);
+    notifyErrorMessage(getHumanLabel(), "DataContainer Geometry missing Triangles", getErrorCondition());
   }
 }
 
@@ -190,14 +192,15 @@ void WriteTriangleGeometry::execute()
   // Make sure any directory path is also available as the user may have just typed
   // in a path without actually creating the full path
 
-  notifyStatusMessage("", "Writing Nodes Text File");
+  notifyStatusMessage(getHumanLabel(), "Writing Nodes Text File");
   QFileInfo fi(getOutputNodesFile());
   QDir parentPath = fi.path();
 
   if(!parentPath.mkpath("."))
   {
     QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath.absolutePath());
-    notifyErrorMessage("", ss, -1);
+    setErrorCondition(-1);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
   
@@ -206,7 +209,8 @@ void WriteTriangleGeometry::execute()
   if (!fileNodes.open(QIODevice::WriteOnly | QIODevice::Text))
   {
     QString ss = QObject::tr("Output file could not be opened: %1").arg(getOutputNodesFile());
-    notifyErrorMessage("", ss, -100);
+    setErrorCondition(-100);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -237,14 +241,15 @@ void WriteTriangleGeometry::execute()
 
   // ++++++++++++++ Write the Triangles File +++++++++++++++++++++++++++++++++++++++++++
 
-  notifyStatusMessage("", "Writing Triangles Text File");
+  notifyStatusMessage(getHumanLabel(), "Writing Triangles Text File");
   QFileInfo triFI(getOutputTrianglesFile());
   parentPath = triFI.path();
 
   if(!parentPath.mkpath("."))
   {
     QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath.absolutePath());
-    notifyErrorMessage("", ss, -1);
+    setErrorCondition(-1);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -253,7 +258,8 @@ void WriteTriangleGeometry::execute()
   if (!fileTri.open(QIODevice::WriteOnly | QIODevice::Text))
   {
     QString ss = QObject::tr("Output file could not be opened: %1").arg(getOutputTrianglesFile());
-    notifyErrorMessage("", ss, -100);
+    setErrorCondition(-100);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 

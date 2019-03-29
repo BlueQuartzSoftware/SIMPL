@@ -293,13 +293,15 @@ void FindDerivatives::dataCheck()
     if(inAttrMatType != AttributeMatrix::Type::Cell)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected DataArray does not belong to a CellAttributeMatrix").arg(geomName);
-      notifyErrorMessage("", ss, -11002);
+      setErrorCondition(-11002);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }
     if(destAttrMatType != AttributeMatrix::Type::Cell)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected destination AttributeMatrix is not a CellAttributeMatrix").arg(geomName);
-      notifyErrorMessage("", ss, -11002);
+      setErrorCondition(-11002);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
   }
   else if(geomType == IGeometry::Type::Vertex) // validate AttributeMatrices for VertexGeom
@@ -307,12 +309,14 @@ void FindDerivatives::dataCheck()
     if(inAttrMatType != AttributeMatrix::Type::Vertex)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected DataArray does not belong to a VertexAttributeMatrix").arg(geomName);
-      notifyErrorMessage("", ss, -11002);
+      setErrorCondition(-11002);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
     if(destAttrMatType != AttributeMatrix::Type::Vertex)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected destination AttributeMatrix is not a VertexAttributeMatrix").arg(geomName);
-      notifyErrorMessage("", ss, -11002);
+      setErrorCondition(-11002);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
   }
   else // validate AttributeMatrices for all other geometries
@@ -326,14 +330,16 @@ void FindDerivatives::dataCheck()
        inAttrMatType != AttributeMatrix::Type::Cell)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected DataArray does not belong to a Cell, Face, Edge or Vertex AttributeMatrix").arg(geomName);
-      notifyErrorMessage("", ss, -11002);
+      setErrorCondition(-11002);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
     if(geomName == SIMPL::Geometry::QuadGeometry || geomName == SIMPL::Geometry::TriangleGeometry)
     {
       if(destAttrMatType != AttributeMatrix::Type::Face)
       {
         ss = QObject::tr("The Geometry type is %1, but the selected destination Attribute Matrix is not a Face Attribute Matrix").arg(geomName);
-        notifyErrorMessage("", ss, -11002);
+        setErrorCondition(-11002);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       }
     }
     else if(geomName == SIMPL::Geometry::TetrahedralGeometry || geomName == SIMPL::Geometry::HexahedralGeometry)
@@ -341,7 +347,8 @@ void FindDerivatives::dataCheck()
       if(destAttrMatType != AttributeMatrix::Type::Cell)
       {
         ss = QObject::tr("The Geometry type is %1, but the selected destination Attribute Matrix is not an Cell Attribute Matrix").arg(geomName);
-        notifyErrorMessage("", ss, -11002);
+        setErrorCondition(-11002);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       }
     }
     else if(geomName == SIMPL::Geometry::EdgeGeometry)
@@ -349,7 +356,8 @@ void FindDerivatives::dataCheck()
       if(destAttrMatType != AttributeMatrix::Type::Edge)
       {
         ss = QObject::tr("The Geometry type is %1, but the selected destination Attribute Matrix is not an Edge Attribute Matrix").arg(geomName);
-        notifyErrorMessage("", ss, -11002);
+        setErrorCondition(-11002);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       }
     }
   }

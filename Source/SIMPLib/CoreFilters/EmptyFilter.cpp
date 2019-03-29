@@ -100,7 +100,8 @@ void EmptyFilter::initialize()
 void EmptyFilter::dataCheck()
 {
   QString ss = QObject::tr("This filter does nothing and was inserted as a place holder for filter '%1' that does not exist anymore.").arg(getOriginalFilterName());
-  notifyErrorMessage("", ss, -9999);
+  setErrorCondition(-9999);
+  notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
 }
 
 // -----------------------------------------------------------------------------

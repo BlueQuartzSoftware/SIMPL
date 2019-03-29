@@ -162,13 +162,15 @@ void PostSlackMessage::execute()
   {
     if(getWarningsAsError())
     {
+      setErrorCondition(-76000);
       QString ss = QObject::tr("Slack returned the following error code: %1").arg(getErrorCondition());
-      notifyErrorMessage("", ss, -76000);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
     else
     {
-            QString ss = QObject::tr("Slack returned the following error code: %1").arg(getErrorCondition());
-      notifyWarningMessage("", ss, -76001);
+      setWarningCondition(-76001);
+      QString ss = QObject::tr("Slack returned the following error code: %1").arg(getErrorCondition());
+      notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
     }
   }
 

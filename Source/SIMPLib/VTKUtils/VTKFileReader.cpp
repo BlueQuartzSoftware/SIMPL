@@ -189,13 +189,15 @@ int VTKFileReader::readHeader()
   int err = 0;
   if(getInputFile().isEmpty())
   {
-    notifyErrorMessage("", "FileName was not set and must be valid", -1);
+    setErrorCondition(-1);
+    notifyErrorMessage(getHumanLabel(), "FileName was not set and must be valid", -1);
     return -1;
   }
 
   if(nullptr == getDataContainerArray()->getDataContainer(getDataContainerName()).get())
   {
-    notifyErrorMessage("", "DataContainer Pointer was nullptr and must be valid", -1);
+    setErrorCondition(-1);
+    notifyErrorMessage(getHumanLabel(), "DataContainer Pointer was nullptr and must be valid", -1);
     return -1;
   }
 
@@ -203,7 +205,8 @@ int VTKFileReader::readHeader()
   if(!in.open(QIODevice::ReadOnly | QIODevice::Text))
   {
     QString msg = QObject::tr("VTF file could not be opened: %1").arg(getInputFile());
-    notifyErrorMessage("", msg, -100);
+    setErrorCondition(-100);
+    notifyErrorMessage(getHumanLabel(), msg, getErrorCondition());
     return -100;
   }
 
@@ -253,7 +256,8 @@ int VTKFileReader::readHeader()
   {
     err = -1;
     QString ss = QObject::tr("The total number of elements '%1' is greater than this program can hold. Try the 64 bit version.").arg(dims[0] * dims[1] * dims[2]);
-    notifyErrorMessage("", ss, err);
+    setErrorCondition(err);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return err;
   }
 
@@ -261,7 +265,8 @@ int VTKFileReader::readHeader()
   {
     err = -1;
     QString ss = QObject::tr("One of the dimensions is greater than the max index for this sysem. Try the 64 bit version. dim[0]=%1  dim[1]=%2im[2]=%3").arg(dims[0]).arg(dims[1]).arg(dims[2]);
-    notifyErrorMessage("", ss, err);
+    setErrorCondition(err);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return err;
   }
 

@@ -156,6 +156,7 @@ void ThresholdExample::dataCheck()
   if (m_OutputFile.isEmpty() == true)
   {
     ss << "The output file must be set before executing this filter.";
+    setErrorCondition(-1);
     notifyErrorMessage(getNameOfClass(), ss.str(), -1);
   }
   */

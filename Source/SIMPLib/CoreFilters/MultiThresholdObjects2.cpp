@@ -107,7 +107,8 @@ void MultiThresholdObjects2::dataCheck()
 
   if(comparisonValues.empty())
   {
-    notifyErrorMessage("", "You must add at least 1 threshold value.", -12000);
+    setErrorCondition(-12000);
+    notifyErrorMessage(getHumanLabel(), "You must add at least 1 threshold value.", getErrorCondition());
   }
   else
   {
@@ -118,13 +119,15 @@ void MultiThresholdObjects2::dataCheck()
     // Enforce that right now all the arrays MUST come from the same data container and attribute matrix
     if(dcName.isEmpty())
     {
+      setErrorCondition(-13090);
       QString ss = QObject::tr("Threshold must have a DataContainer. None were selected");
-      notifyErrorMessage("", ss, -13090);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
     if(amName.isEmpty())
     {
+      setErrorCondition(-13091);
       QString ss = QObject::tr("Threshold must have an AttributeMatrix. None were selected");
-      notifyErrorMessage("", ss, -13091);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
 
     //AbstractComparison::Pointer comp = m_SelectedThresholds[0];
@@ -157,7 +160,8 @@ void MultiThresholdObjects2::dataCheck()
           if (numComp > 1)
           {
             QString ss = QObject::tr("Selected array '%1' is not a scalar array").arg(comp->getAttributeArrayName());
-            notifyErrorMessage("", ss, -11003);
+            setErrorCondition(-11003);
+            notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
           }
         }
       }
@@ -204,7 +208,8 @@ void MultiThresholdObjects2::execute()
   if (!m_SelectedThresholds.hasComparisonValue())
   {
     QString ss = QObject::tr("Error Executing threshold filter. There are no specified values to threshold against");
-    notifyErrorMessage("", ss, -13001);
+    setErrorCondition(-13001);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -404,7 +409,8 @@ void MultiThresholdObjects2::thresholdValue(ComparisonValue::Pointer comparisonV
   {
     DataArrayPath tempPath(m_SelectedThresholds.getDataContainerName(), m_SelectedThresholds.getAttributeMatrixName(), comparisonValue->getAttributeArrayName());
     QString ss = QObject::tr("Error Executing threshold filter on array. The path is %1").arg(tempPath.serialize());
-    notifyErrorMessage("", ss, -13002);
+    setErrorCondition(-13002);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
   

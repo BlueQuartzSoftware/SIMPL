@@ -98,8 +98,9 @@ void RenameAttributeArray::dataCheck()
 
   if(m_NewArrayName.isEmpty())
   {
+    setErrorCondition(-11009);
     QString ss = QObject::tr("The new Attribute Array name must be set");
-    notifyErrorMessage("", ss, -11009);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -116,14 +117,16 @@ void RenameAttributeArray::dataCheck()
   {
   case OLD_DOES_NOT_EXIST:
   {
+    setErrorCondition(-11016);
     QString ss = QObject::tr("A DataArray with the name '%1' was not found in the AttributeMatrix").arg(daName);
-    notifyErrorMessage("", ss, -11016);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
   case NEW_EXISTS:
   {
+    setErrorCondition(-11017);
     QString ss = QObject::tr("A DataArray with the name '%1' already exists in the AttributeMatrix").arg(m_NewArrayName);
-    notifyErrorMessage("", ss, -11017);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
   case SUCCESS:

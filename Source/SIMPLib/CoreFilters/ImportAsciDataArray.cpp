@@ -301,8 +301,9 @@ void ImportAsciDataArray::readHeaderPortion()
     std::ifstream in(filename.toLatin1().constData(), std::ios_base::in | std::ios_base::binary);
     if(!in.is_open())
     {
+      setErrorCondition(RBR_FILE_NOT_OPEN);
       QString errorMessage = QString("Error opening input file '%1'").arg(filename);
-      notifyErrorMessage("", errorMessage, RBR_FILE_NOT_OPEN);
+      notifyErrorMessage(getHumanLabel(), errorMessage, getErrorCondition());
       return;
     }
     
@@ -319,7 +320,8 @@ void ImportAsciDataArray::readHeaderPortion()
       if(err < 0)
       {
         QString errorMessage = QString("Error reading the input file at line %1 of the file").arg(i);
-        notifyErrorMessage("", errorMessage, RBR_READ_ERROR);
+        notifyErrorMessage(getHumanLabel(), errorMessage, getErrorCondition());
+        setErrorCondition(RBR_READ_ERROR);
         return;
       }
     }
@@ -327,7 +329,8 @@ void ImportAsciDataArray::readHeaderPortion()
     err = Detail::readLine(in, buffer, kBufferSize);
     if(err < 0)
     {
-      notifyErrorMessage("", "Error reading the first line of data from the input file", err);
+      setErrorCondition(err);
+      notifyErrorMessage(getHumanLabel(), "Error reading the first line of data from the input file", getErrorCondition());
     }
     
     setFirstLine(buf);
@@ -405,18 +408,21 @@ void ImportAsciDataArray::dataCheck()
   if(getInputFile().isEmpty())
   {
     QString ss = QObject::tr("The input file must be set");
-    notifyErrorMessage("", ss, -387);
+    setErrorCondition(-387);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
   else if(!fi.exists())
   {
     QString ss = QObject::tr("The input file does not exist");
-    notifyErrorMessage("", ss, -388);
+    setErrorCondition(-388);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
   if(m_NumberOfComponents < 1)
   {
     QString ss = QObject::tr("The number of components must be positive");
-    notifyErrorMessage("", ss, -391);
+    setErrorCondition(-391);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
   AttributeMatrix::Pointer attrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getCreatedAttributeArrayPath(), -30003);
@@ -617,23 +623,28 @@ void ImportAsciDataArray::execute()
 
   if(err == RBR_FILE_NOT_OPEN)
   {
-    notifyErrorMessage("", "Unable to open the specified file", RBR_FILE_NOT_OPEN);
+    setErrorCondition(RBR_FILE_NOT_OPEN);
+    notifyErrorMessage(getHumanLabel(), "Unable to open the specified file", getErrorCondition());
   }
   else if(err == RBR_FILE_TOO_SMALL)
   {
-    notifyErrorMessage("", "The file size is smaller than the allocated size", RBR_FILE_TOO_SMALL);
+    setErrorCondition(RBR_FILE_TOO_SMALL);
+    notifyErrorMessage(getHumanLabel(), "The file size is smaller than the allocated size", getErrorCondition());
   }
   else if(err == RBR_FILE_TOO_BIG)
   {
-    notifyWarningMessage("", "The file size is larger than the allocated size", RBR_FILE_TOO_BIG);
+    setWarningCondition(RBR_FILE_TOO_BIG);
+    notifyWarningMessage(getHumanLabel(), "The file size is larger than the allocated size", getWarningCondition());
   }
   else if(err == RBR_READ_ERROR)
   {
-    notifyErrorMessage("", "General read error while importing ASCI file.", RBR_READ_ERROR);
+    setErrorCondition(RBR_READ_ERROR);
+    notifyErrorMessage(getHumanLabel(), "General read error while importing ASCI file.", getErrorCondition());
   }
   else if(err == RBR_READ_EOF)
   {
-    notifyErrorMessage("", "ImportAsciDataArray read past the end of the specified file", RBR_READ_EOF);
+    setErrorCondition(RBR_READ_EOF);
+    notifyErrorMessage(getHumanLabel(), "ImportAsciDataArray read past the end of the specified file", getErrorCondition());
   }
 }
 

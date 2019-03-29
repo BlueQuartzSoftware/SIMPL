@@ -109,7 +109,8 @@ void ExtractComponentAsArray::dataCheck()
 
   if(m_NewArrayArrayName.isEmpty())
   {
-    notifyErrorMessage("", "New array name must be set.", -11003);
+    setErrorCondition(-11003);
+    notifyErrorMessage(getHumanLabel(), "New array name must be set.", getErrorCondition());
     return;
   }
 
@@ -123,24 +124,28 @@ void ExtractComponentAsArray::dataCheck()
     QString ss = QObject::tr("Selected array '%1' must have more than 1 component. The number of components is %2")
                      .arg(getSelectedArrayPath().getDataArrayName())
                      .arg(m_InArrayPtr.lock()->getNumberOfComponents());
-    notifyErrorMessage("", ss, -11002);
+    setErrorCondition(-11002);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
   if(m_CompNumber >= m_InArrayPtr.lock()->getNumberOfComponents())
   {
+    setErrorCondition(-11004);
     QString ss = QObject::tr("Error extracting component from DataArray '%3', Component to extract (%1) is greater than or equal to the number of components (%2).")
                      .arg(m_CompNumber)
                      .arg(m_InArrayPtr.lock()->getNumberOfComponents())
                      .arg(getSelectedArrayPath().getDataArrayName());
-    notifyErrorMessage("", ss, -11004);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
   if(m_CompNumber < 0)
   {
-    QString ss = QObject::tr("Component to extract (%1) is a negative value and this is not allowed. Value must be Zero (0) or greater.").arg(m_CompNumber);
-    notifyErrorMessage("", ss, -11005);
+    setErrorCondition(-11005);
+    QString ss = QObject::tr("Component to extract (%1) is a negative value and this is not allowed. Value must be Zero (0) or greater.")
+                     .arg(m_CompNumber);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 

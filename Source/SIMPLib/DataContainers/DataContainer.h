@@ -290,8 +290,9 @@ public:
     {
       if(filter)
       {
+        filter->setErrorCondition(-385);
         QString ss = QObject::tr("Data Container Geometry is missing.");
-        filter->notifyErrorMessage("", ss, -385);
+        filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
       }
       return geom;
     }
@@ -300,8 +301,9 @@ public:
     {
       if(filter)
       {
+        filter->setErrorCondition(-384);
         QString ss = QObject::tr("Data Container Geometry is not compatible. The selected Geometry type is %1").arg(igeom->getGeometryTypeAsString());
-        filter->notifyErrorMessage("", ss, -384);
+        filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
       }
       return geom;
     }
