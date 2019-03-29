@@ -71,7 +71,7 @@ public:
   }
   virtual void execute()
   {
-    setErrorCondition(0);
+    clearErrorCondition();
     VoxelDataContainer* m = getVoxelDataContainer();
     if(nullptr == m)
     {
@@ -115,7 +115,7 @@ private:
 
   void dataCheck()
   {
-    setErrorCondition(0);
+    clearErrorCondition();
     QStringstream ss;
     VoxelDataContainer* m = getVoxelDataContainer();
     m_GrainIdsPtr = attrMat->createNonPrereqArray<DataArray<int32_t>, AbstractFilter, int32_t>(this, m_CellAttributeMatrixName, m_GrainIdsArrayName, 0, voxels,

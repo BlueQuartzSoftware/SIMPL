@@ -265,8 +265,8 @@ void ConvertColorToGrayScale::initialize() { }
 // -----------------------------------------------------------------------------
 void ConvertColorToGrayScale::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
   if(!DataArrayPath::ValidateVector(getInputDataArrayVector()))
   {
     setErrorCondition(-62100);
@@ -368,8 +368,8 @@ void ConvertColorToGrayScale::preflight()
 void ConvertColorToGrayScale::execute()
 {
   initialize();
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
   QString ss;
   dataCheck();
   if(getErrorCondition() < 0)

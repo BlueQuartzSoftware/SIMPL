@@ -93,8 +93,8 @@ void LinkFeatureMapToElementArray::readFilterParameters(AbstractFilterParameters
 // -----------------------------------------------------------------------------
 void LinkFeatureMapToElementArray::updateFeatureInstancePointers()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
 
   if(nullptr != m_ActivePtr.lock()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
@@ -114,8 +114,8 @@ void LinkFeatureMapToElementArray::initialize()
 // -----------------------------------------------------------------------------
 void LinkFeatureMapToElementArray::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
   DataArrayPath tempPath;
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getSelectedCellArrayPath().getDataContainerName(), false);
@@ -167,8 +167,8 @@ void LinkFeatureMapToElementArray::preflight()
 // -----------------------------------------------------------------------------
 void LinkFeatureMapToElementArray::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
   dataCheck();
   if(getErrorCondition() < 0)
   {

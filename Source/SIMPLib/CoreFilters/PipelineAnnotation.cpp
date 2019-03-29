@@ -72,8 +72,8 @@ void PipelineAnnotation::initialize()
 // -----------------------------------------------------------------------------
 void PipelineAnnotation::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
 }
 
 // -----------------------------------------------------------------------------
@@ -95,8 +95,8 @@ void PipelineAnnotation::preflight()
 // -----------------------------------------------------------------------------
 void PipelineAnnotation::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
   dataCheck();
   if(getErrorCondition() < 0)
   {

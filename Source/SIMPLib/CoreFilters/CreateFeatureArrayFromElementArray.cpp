@@ -110,8 +110,8 @@ void CreateFeatureArrayFromElementArray::initialize()
 // -----------------------------------------------------------------------------
 void CreateFeatureArrayFromElementArray::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
 
   if(getCreatedArrayName().isEmpty())
   {
@@ -223,8 +223,8 @@ template <typename T> IDataArray::Pointer copyCellData(AbstractFilter* filter, I
 // -----------------------------------------------------------------------------
 void CreateFeatureArrayFromElementArray::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
   dataCheck();
   if(getErrorCondition() < 0)
   {

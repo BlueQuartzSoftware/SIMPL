@@ -108,8 +108,8 @@ void CropVertexGeometry::readFilterParameters(AbstractFilterParametersReader* re
 // -----------------------------------------------------------------------------
 void CropVertexGeometry::initialize()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
   setCancel(false);
   m_AttrMatList.clear();
 }
@@ -119,8 +119,8 @@ void CropVertexGeometry::initialize()
 // -----------------------------------------------------------------------------
 void CropVertexGeometry::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
   initialize();
 
   getDataContainerArray()->getPrereqGeometryFromDataContainer<VertexGeom, AbstractFilter>(this, getDataContainerName());
@@ -240,8 +240,8 @@ template <typename T> void copyDataToCroppedGeometry(IDataArray::Pointer inDataP
 // -----------------------------------------------------------------------------
 void CropVertexGeometry::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
   dataCheck();
   if(getErrorCondition() < 0)
   {

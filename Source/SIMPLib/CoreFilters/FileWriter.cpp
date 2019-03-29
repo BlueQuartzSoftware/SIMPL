@@ -78,8 +78,8 @@ int32_t FileWriter::writeFile()
 // -----------------------------------------------------------------------------
 void FileWriter::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
 
   // Make sure any directory path is also available as the user may have just typed
   // in a path without actually creating the full path

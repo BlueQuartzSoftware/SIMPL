@@ -161,8 +161,8 @@ void SetOriginResolutionImageGeom::initialize()
 // -----------------------------------------------------------------------------
 void SetOriginResolutionImageGeom::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
 
   ImageGeom::Pointer image = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, getDataContainerName());
   if(getErrorCondition() < 0)
@@ -197,8 +197,8 @@ void SetOriginResolutionImageGeom::preflight()
 // -----------------------------------------------------------------------------
 void SetOriginResolutionImageGeom::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
   dataCheck();
   if(getErrorCondition() < 0)
   {

@@ -95,8 +95,8 @@ void RenameAttributeMatrix::initialize()
 // -----------------------------------------------------------------------------
 void RenameAttributeMatrix::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
 
   if(m_NewAttributeMatrix.isEmpty())
   {
@@ -143,8 +143,8 @@ void RenameAttributeMatrix::preflight()
 // -----------------------------------------------------------------------------
 void RenameAttributeMatrix::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
   dataCheck(); // calling the dataCheck will rename the array, so nothing is required here
   if(getErrorCondition() < 0)
   {

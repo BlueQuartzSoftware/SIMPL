@@ -100,8 +100,8 @@ void MultiThresholdObjects::initialize()
 // -----------------------------------------------------------------------------
 void MultiThresholdObjects::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
 
   if(m_SelectedThresholds.size() == 0)
   {

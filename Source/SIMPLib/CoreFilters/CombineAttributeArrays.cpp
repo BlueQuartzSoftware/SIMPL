@@ -242,8 +242,8 @@ void CombineAttributeArrays::dataCheck()
 {
   m_SelectedWeakPtrVector.clear();
 
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
 
   if(getSelectedDataArrayPaths().size() < 2)
   {
@@ -318,8 +318,8 @@ void CombineAttributeArrays::preflight()
 // -----------------------------------------------------------------------------
 void CombineAttributeArrays::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
   dataCheck();
   if(getErrorCondition() < 0)
   {

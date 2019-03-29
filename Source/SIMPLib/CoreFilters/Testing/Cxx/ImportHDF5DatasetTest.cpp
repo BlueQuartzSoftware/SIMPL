@@ -261,21 +261,21 @@ public:
     // Check empty file path error
     filter->execute();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20001);
-    filter->setErrorCondition(0);
+    filter->clearErrorCondition();
 
     // Check incorrect extension error
     filter->setHDF5FilePath("foo.txt");
 
     filter->execute();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20002);
-    filter->setErrorCondition(0);
+    filter->clearErrorCondition();
 
     // Check non-existent file error
     filter->setHDF5FilePath("foo.h5");
 
     filter->execute();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20003);
-    filter->setErrorCondition(0);
+    filter->clearErrorCondition();
 
     // Put in the correct file path
     filter->setHDF5FilePath(m_FilePath);
@@ -283,7 +283,7 @@ public:
     // Check empty dataset path error
     filter->execute();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20004);
-    filter->setErrorCondition(0);
+    filter->clearErrorCondition();
 
     // Check incorrect dataset path error
     QList<ImportHDF5Dataset::DatasetImportInfo> importInfoList;
@@ -294,7 +294,7 @@ public:
 
     filter->execute();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20005);
-    filter->setErrorCondition(0);
+    filter->clearErrorCondition();
 
     // Fill in Dataset Path with a valid path so that we can continue our error checks
     importInfoList.clear();
@@ -307,7 +307,7 @@ public:
     // Check empty component dimensions
     filter->execute();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20006);
-    filter->setErrorCondition(0);
+    filter->clearErrorCondition();
 
     // Check incorrect component dimensions
     importInfoList.clear();
@@ -317,7 +317,7 @@ public:
 
     filter->execute();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20007);
-    filter->setErrorCondition(0);
+    filter->clearErrorCondition();
 
     return filter;
   }

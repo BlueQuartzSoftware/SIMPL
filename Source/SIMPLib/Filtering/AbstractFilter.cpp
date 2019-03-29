@@ -631,6 +631,22 @@ void AbstractFilter::notifyProgressMessage(const QString &prefix, const QString&
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void AbstractFilter::clearErrorCondition()
+{
+  m_ErrorCondition = 0;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AbstractFilter::clearWarningCondition()
+{
+  m_WarningCondition = 0;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void AbstractFilter::notifyMissingProperty(FilterParameter* filterParameter)
 {
   QString ss =

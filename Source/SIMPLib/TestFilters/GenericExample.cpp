@@ -375,8 +375,8 @@ void GenericExample::initialize()
 void GenericExample::dataCheck()
 {
   DataArrayPath tempPath;
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
 
   FileSystemPathHelper::CheckOutputFile(this, "Output File Name", getOutputFile(), true);
 

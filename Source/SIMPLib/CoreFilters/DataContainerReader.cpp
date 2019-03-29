@@ -250,8 +250,8 @@ void DataContainerReader::execute()
 // -----------------------------------------------------------------------------
 DataContainerArray::Pointer DataContainerReader::readData(DataContainerArrayProxy& proxy)
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
 
   SIMPLH5DataReader::Pointer simplReader = SIMPLH5DataReader::New();
   connect(simplReader.get(), &SIMPLH5DataReader::errorGenerated, [=](const QString& title, const QString& msg, const int& code) {

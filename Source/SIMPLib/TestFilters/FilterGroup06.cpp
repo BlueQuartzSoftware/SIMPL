@@ -52,8 +52,8 @@ FilterGroup06::~FilterGroup06() = default;
 // -----------------------------------------------------------------------------
 void FilterGroup06::initialize()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
   setCancel(false);
 }
 
@@ -72,8 +72,8 @@ void FilterGroup06::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void FilterGroup06::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
 }
 
 // -----------------------------------------------------------------------------

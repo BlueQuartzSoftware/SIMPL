@@ -112,8 +112,8 @@ void RemoveComponentFromArray::initialize()
 // -----------------------------------------------------------------------------
 void RemoveComponentFromArray::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
 
   m_InArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArrayPath());
 
@@ -267,8 +267,8 @@ template <typename T> void reduceArrayOnly(IDataArray::Pointer inputData, IDataA
 // -----------------------------------------------------------------------------
 void RemoveComponentFromArray::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
   dataCheck();
   if(getErrorCondition() < 0)
   {

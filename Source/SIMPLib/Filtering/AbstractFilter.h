@@ -270,6 +270,16 @@ public:
   SIMPL_INSTANCE_PROPERTY(AbstractFilter::WeakPointer, NextFilter)
 
   /**
+   * @brief clearErrorCondition
+   */
+  void clearErrorCondition();
+
+  /**
+   * @brief clearWarningCondition
+   */
+  void clearWarningCondition();
+
+  /**
    * @brief doesPipelineContainFilterBeforeThis
    * @param name
    * @return

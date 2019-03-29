@@ -260,8 +260,8 @@ void FindDerivatives::initialize()
 // -----------------------------------------------------------------------------
 void FindDerivatives::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
   initialize();
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, m_SelectedArrayPath.getDataContainerName(), false);
   if(getErrorCondition() < 0 || nullptr == m.get())
@@ -398,8 +398,8 @@ void FindDerivatives::preflight()
 // -----------------------------------------------------------------------------
 void FindDerivatives::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
   dataCheck();
   if(getErrorCondition() < 0)
   {

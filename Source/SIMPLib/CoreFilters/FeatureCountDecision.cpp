@@ -98,8 +98,8 @@ void FeatureCountDecision::initialize()
 // -----------------------------------------------------------------------------
 void FeatureCountDecision::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
 
   getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, getFeatureIdsArrayPath().getDataContainerName());
 
@@ -131,8 +131,8 @@ void FeatureCountDecision::preflight()
 // -----------------------------------------------------------------------------
 void FeatureCountDecision::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
   dataCheck();
   if(getErrorCondition() < 0)
   {

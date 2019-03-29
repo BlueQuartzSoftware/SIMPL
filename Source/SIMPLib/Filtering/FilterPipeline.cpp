@@ -711,7 +711,7 @@ int FilterPipeline::preflightPipeline()
   // Create the DataContainer object
   DataContainerArray::Pointer dca = DataContainerArray::New();
 
-  setErrorCondition(0);
+  clearErrorCondition();
   int preflightError = 0;
 
   DataArrayPath::RenameContainer renamedPaths;

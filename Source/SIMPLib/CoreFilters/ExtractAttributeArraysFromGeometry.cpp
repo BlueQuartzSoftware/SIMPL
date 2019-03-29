@@ -85,8 +85,8 @@ ExtractAttributeArraysFromGeometry::~ExtractAttributeArraysFromGeometry() = defa
 // -----------------------------------------------------------------------------
 void ExtractAttributeArraysFromGeometry::initialize()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
   setCancel(false);
 }
 
@@ -203,8 +203,8 @@ void ExtractAttributeArraysFromGeometry::readFilterParameters(AbstractFilterPara
 // -----------------------------------------------------------------------------
 void ExtractAttributeArraysFromGeometry::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
   initialize();
 
   IGeometry::Pointer igeom = getDataContainerArray()->getPrereqGeometryFromDataContainer<IGeometry, AbstractFilter>(this, getDataContainerName());

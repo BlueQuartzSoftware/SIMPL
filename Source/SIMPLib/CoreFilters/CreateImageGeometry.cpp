@@ -117,8 +117,8 @@ void CreateImageGeometry::initialize()
 // -----------------------------------------------------------------------------
 void CreateImageGeometry::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
 
   if(m_Dimensions.x == 0 || m_Dimensions.y == 0 || m_Dimensions.z == 0)
   {
@@ -165,8 +165,8 @@ void CreateImageGeometry::preflight()
 // -----------------------------------------------------------------------------
 void CreateImageGeometry::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
   dataCheck();
   if(getErrorCondition() < 0)
   {

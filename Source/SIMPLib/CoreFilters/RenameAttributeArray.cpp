@@ -93,8 +93,8 @@ void RenameAttributeArray::initialize()
 // -----------------------------------------------------------------------------
 void RenameAttributeArray::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
 
   if(m_NewArrayName.isEmpty())
   {
@@ -131,8 +131,8 @@ void RenameAttributeArray::dataCheck()
   }
   case SUCCESS:
   {
-    setErrorCondition(0);
-    setWarningCondition(0);
+    clearErrorCondition();
+    clearWarningCondition();
     return;
   }
   }
@@ -156,8 +156,8 @@ void RenameAttributeArray::preflight()
 // -----------------------------------------------------------------------------
 void RenameAttributeArray::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
   dataCheck(); // calling the dataCheck will rename the array, so nothing is required here
   if(getErrorCondition() < 0)
   {
