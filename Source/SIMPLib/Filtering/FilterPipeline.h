@@ -63,8 +63,8 @@ class SIMPLib_EXPORT FilterPipeline : public Observable
   Q_OBJECT
 
   PYB11_CREATE_BINDINGS(FilterPipeline)
-  PYB11_PROPERTY(int ErrorCode READ getErrorCode WRITE setErrorCode)
-  PYB11_PROPERTY(int WarningCode READ getWarningCode WRITE setWarningCode)
+  PYB11_PROPERTY(int ErrorCode READ getErrorCode)
+  PYB11_PROPERTY(int WarningCode READ getWarningCode)
   PYB11_PROPERTY(AbstractFilter CurrentFilter READ getCurrentFilter WRITE setCurrentFilter)
   PYB11_PROPERTY(State State READ getState)
   PYB11_PROPERTY(ExecutionResult ExecutionResult READ getExecutionResult)
@@ -108,8 +108,8 @@ public:
 
   SIMPL_GET_PROPERTY(FilterPipeline::ExecutionResult, ExecutionResult)
   SIMPL_GET_PROPERTY(FilterPipeline::State, State)
-  SIMPL_INSTANCE_PROPERTY(int, ErrorCode)
-  SIMPL_INSTANCE_PROPERTY(int, WarningCode)
+  SIMPL_GET_PROPERTY(int, ErrorCode)
+  SIMPL_GET_PROPERTY(int, WarningCode)
   SIMPL_INSTANCE_PROPERTY(AbstractFilter::Pointer, CurrentFilter)
 
   /**
@@ -209,6 +209,16 @@ public:
   void notifyProgressMessage(int progress, const QString& messageText);
 
   /**
+   * @brief clearErrorCondition
+   */
+  void clearErrorCondition();
+
+  /**
+   * @brief clearWarningCondition
+   */
+  void clearWarningCondition();
+
+  /**
    * @brief This method returns a deep copy of the FilterPipeline and all its filters
    * @return
    */
@@ -292,6 +302,9 @@ private:
   QVector<QObject*> m_MessageReceivers;
 
   DataContainerArray::Pointer m_Dca;
+
+  int m_ErrorCode = 0;
+  int m_WarningCode = 0;
 
   void connectSignalsSlots();
   void disconnectSignalsSlots();

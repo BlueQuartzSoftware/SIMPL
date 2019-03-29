@@ -591,7 +591,7 @@ public:
     // Run Filter
 
     extractAttributeArraysFromGeometry->execute();
-    DREAM3D_REQUIRED(extractAttributeArraysFromGeometry->getErrorCondition(), >=, 0);
+    DREAM3D_REQUIRED(extractAttributeArraysFromGeometry->getErrorCode(), >=, 0);
 
     // Check Filter Results
 

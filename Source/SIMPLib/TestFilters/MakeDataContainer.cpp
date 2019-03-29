@@ -103,20 +103,20 @@ void MakeDataContainer::dataCheck()
   clearErrorCondition();
   clearWarningCondition();
   DataContainer::Pointer m = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName());
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
   QVector<size_t> tDims(3, 64);
   AttributeMatrix::Pointer cellAttrMat = m->createNonPrereqAttributeMatrix(this, getCellAttributeMatrixName(), tDims, AttributeMatrix::Type::Cell);
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
   //  tDims.resize(1);
   //  tDims[0] = 0;
   //  AttributeMatrix::Pointer cellEnsembleAttrMat = m->createNonPrereqAttributeMatrix(this, getCellEnsembleAttributeMatrixName(), tDims, AttributeMatrix::Type::CellEnsemble);
-  //  if(getErrorCondition() < 0)
+  //  if(getErrorCode() < 0)
   //  {
   //    return;
   //  }
@@ -168,12 +168,12 @@ void MakeDataContainer::preflight()
 // -----------------------------------------------------------------------------
 void MakeDataContainer::execute()
 {
-  int err = 0;
-  setErrorCondition(err);
+  clearErrorCondition();
+  clearWarningCondition();
 
   // Run the data check to get references to all of our data arrays initialized to the values stored in memory
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

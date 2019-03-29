@@ -260,21 +260,21 @@ public:
 
     // Check empty file path error
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20001);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -20001);
     filter->clearErrorCondition();
 
     // Check incorrect extension error
     filter->setHDF5FilePath("foo.txt");
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20002);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -20002);
     filter->clearErrorCondition();
 
     // Check non-existent file error
     filter->setHDF5FilePath("foo.h5");
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20003);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -20003);
     filter->clearErrorCondition();
 
     // Put in the correct file path
@@ -282,7 +282,7 @@ public:
 
     // Check empty dataset path error
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20004);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -20004);
     filter->clearErrorCondition();
 
     // Check incorrect dataset path error
@@ -293,7 +293,7 @@ public:
     filter->setDatasetImportInfoList(importInfoList);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20005);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -20005);
     filter->clearErrorCondition();
 
     // Fill in Dataset Path with a valid path so that we can continue our error checks
@@ -306,7 +306,7 @@ public:
 
     // Check empty component dimensions
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20006);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -20006);
     filter->clearErrorCondition();
 
     // Check incorrect component dimensions
@@ -316,7 +316,7 @@ public:
     filter->setDatasetImportInfoList(importInfoList);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20007);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -20007);
     filter->clearErrorCondition();
 
     return filter;
@@ -412,7 +412,7 @@ public:
     }
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), errCode);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), errCode);
 
     // If we got through without errors, validate the results
     if(errCode == 0)

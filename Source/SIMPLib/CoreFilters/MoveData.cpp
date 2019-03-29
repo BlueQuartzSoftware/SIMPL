@@ -152,16 +152,15 @@ void MoveData::dataCheck()
     DataContainer::Pointer amSrcDataContainer = getDataContainerArray()->getPrereqDataContainer(this, amSrcPath.getDataContainerName());
     AttributeMatrix::Pointer amSrcAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, amSrcPath, -301);
 
-    if(getErrorCondition() < 0)
+    if(getErrorCode() < 0)
     {
       return;
     }
 
     if(amSrcDataContainer->getName() == amDestDataContainer->getName())
     {
-      setWarningCondition(-11018);
       QString ss = QObject::tr("The source and destination Data Container are the same.  Is this what you meant to do?");
-      notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+      setWarningCondition(-11018, ss);
       return;
     }
 
@@ -174,25 +173,23 @@ void MoveData::dataCheck()
     AttributeMatrix::Pointer daDestAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, amDestPath, -301);
     IDataArray::Pointer daSrcDataArray = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, daSrcPath);
 
-    if(getErrorCondition() < 0)
+    if(getErrorCode() < 0)
     {
       return;
     }
 
     if(daDestAttributeMatrix->getNumberOfTuples() != daSrcDataArray->getNumberOfTuples())
     {
-      setErrorCondition(-11019);
       QString ss = QObject::tr("The number of tuples of source Attribute Array (%1) and destination Attribute Matrix (%2) do not match")
                        .arg(daSrcDataArray->getNumberOfTuples())
                        .arg(daDestAttributeMatrix->getNumberOfTuples());
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-11019, ss);
       return;
     }
     if(amSrcPath == amDestPath)
     {
-      setWarningCondition(-11020);
       QString ss = QObject::tr("The source and destination Attribute Matrix are the same.  Is this what you meant to do?");
-      notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+      setWarningCondition(-11020, ss);
       return;
     }
 
@@ -201,9 +198,8 @@ void MoveData::dataCheck()
   }
   else
   {
-    setErrorCondition(-11021);
     QString ss = QObject::tr("Neither an Attribute Matrix nor an Attribute Array was selected to be moved");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-11021, ss);
     return;
   }
 }
@@ -230,7 +226,7 @@ void MoveData::execute()
   clearWarningCondition();
   // Simply running the preflight will do what we need it to.
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

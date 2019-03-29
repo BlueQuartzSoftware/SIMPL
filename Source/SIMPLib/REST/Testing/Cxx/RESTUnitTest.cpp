@@ -593,7 +593,7 @@ public:
     pipeline->pushBack(writer);
 
     DataContainerArray::Pointer dca = pipeline->execute();
-    int32_t err = pipeline->getErrorCondition();
+    int32_t err = pipeline->getErrorCode();
     DREAM3D_REQUIRE(err >= 0);
   }
   // -----------------------------------------------------------------------------

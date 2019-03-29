@@ -86,15 +86,13 @@ void Filt0::preflight()
 // -----------------------------------------------------------------------------
 void Filt0::execute()
 {
-  int err = 0;
-  setErrorCondition(err);
-  setErrorCondition(err);
+  clearErrorCondition();
+  clearWarningCondition();
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
   if(nullptr == m)
   {
-    setErrorCondition(-1);
     QString ss = QObject::tr(" DataContainer was nullptr");
-    notifyErrorMessage(getHumanLabel(), QObject::tr("VolumeDataContainer was nullptr. Returning from Execute Method for filter %1").arg(getHumanLabel()), -1);
+    setErrorCondition(-1, QObject::tr("VolumeDataContainer was nullptr. Returning from Execute Method for filter %1").arg(getHumanLabel()));
     return;
   }
   clearErrorCondition();
@@ -182,14 +180,13 @@ void Filt1::preflight()
 // -----------------------------------------------------------------------------
 void Filt1::execute()
 {
-  int err = 0;
-  setErrorCondition(err);
+  clearErrorCondition();
+  clearWarningCondition();
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
   if(nullptr == m.get())
   {
-    setErrorCondition(-1);
     QString ss = QObject::tr(" DataContainer was nullptr");
-    notifyErrorMessage(getHumanLabel(), QObject::tr("VolumeDataContainer was nullptr. Returning from Execute Method for filter %1").arg(getHumanLabel()), -1);
+    setErrorCondition(-1, QObject::tr("VolumeDataContainer was nullptr. Returning from Execute Method for filter %1").arg(getHumanLabel()));
     return;
   }
   clearErrorCondition();

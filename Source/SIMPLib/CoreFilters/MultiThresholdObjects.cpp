@@ -105,8 +105,7 @@ void MultiThresholdObjects::dataCheck()
 
   if(m_SelectedThresholds.size() == 0)
   {
-    setErrorCondition(-12000);
-    notifyErrorMessage(getHumanLabel(), "You must add at least 1 threshold value.", getErrorCondition());
+    setErrorCondition(-12000, "You must add at least 1 threshold value.");
   }
   else
   {
@@ -125,15 +124,13 @@ void MultiThresholdObjects::dataCheck()
     // Enforce that right now all the arrays MUST come from the same data container and attribute matrix
     if(dcSet.size() != 1)
     {
-      setErrorCondition(-13090);
       QString ss = QObject::tr("Threshold selections must come from the same DataContainer. %1 were selected").arg(dcSet.size());
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-13090, ss);
     }
     if(amSet.size() != 1)
     {
-      setErrorCondition(-13091);
       QString ss = QObject::tr("Threshold selections must come from the same AttributeMatrix. %1 were selected").arg(amSet.size());
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-13091, ss);
     }
 
     ComparisonInput_t comp = m_SelectedThresholds[0];
@@ -152,7 +149,7 @@ void MultiThresholdObjects::dataCheck()
       ComparisonInput_t comp = m_SelectedThresholds[i];
       tempPath.update(comp.dataContainerName, comp.attributeMatrixName, comp.attributeArrayName);
       IDataArray::Pointer inputData = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, tempPath);
-      if(getErrorCondition() >= 0)
+      if(getErrorCode() >= 0)
       {
         cDims = inputData->getComponentDimensions();
         int32_t numComp = static_cast<int32_t>(cDims[0]);
@@ -163,8 +160,7 @@ void MultiThresholdObjects::dataCheck()
         if(numComp > 1)
         {
           QString ss = QObject::tr("Selected array '%1' is not a scalar array").arg(m_SelectedThresholds[i].attributeArrayName);
-          setErrorCondition(-11003);
-          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+          setErrorCondition(-11003, ss);
         }
       }
     }
@@ -189,10 +185,10 @@ void MultiThresholdObjects::preflight()
 // -----------------------------------------------------------------------------
 void MultiThresholdObjects::execute()
 {
-  int32_t err = 0;
-  setErrorCondition(err);
+  clearErrorCondition();
+  clearWarningCondition();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -210,13 +206,12 @@ void MultiThresholdObjects::execute()
   {
     ThresholdFilterHelper filter(static_cast<SIMPL::Comparison::Enumeration>(comp_0.compOperator), comp_0.compValue, m_DestinationPtr.lock().get());
     // Run the first threshold and store the results in our output array
-    err = filter.execute(m->getAttributeMatrix(amName)->getAttributeArray(comp_0.attributeArrayName).get(), m_DestinationPtr.lock().get());
+    int err = filter.execute(m->getAttributeMatrix(amName)->getAttributeArray(comp_0.attributeArrayName).get(), m_DestinationPtr.lock().get());
     if(err < 0)
     {
       DataArrayPath tempPath(comp_0.dataContainerName, comp_0.attributeMatrixName, comp_0.attributeArrayName);
       QString ss = QObject::tr("Error Executing threshold filter on first array. The path is %1").arg(tempPath.serialize());
-      setErrorCondition(-13001);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-13001, ss);
       return;
     }
   }
@@ -239,13 +234,12 @@ void MultiThresholdObjects::execute()
 
       ThresholdFilterHelper filter(static_cast<SIMPL::Comparison::Enumeration>(compRef.compOperator), compRef.compValue, currentArrayPtr.get());
 
-      err = filter.execute(m->getAttributeMatrix(amName)->getAttributeArray(compRef.attributeArrayName).get(), currentArrayPtr.get());
+      int err = filter.execute(m->getAttributeMatrix(amName)->getAttributeArray(compRef.attributeArrayName).get(), currentArrayPtr.get());
       if(err < 0)
       {
         DataArrayPath tempPath(compRef.dataContainerName, compRef.attributeMatrixName, compRef.attributeArrayName);
         QString ss = QObject::tr("Error Executing threshold filter on array. The path is %1").arg(tempPath.serialize());
-        setErrorCondition(-13002);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        setErrorCondition(-13002, ss);
         return;
       }
       for(int64_t p = 0; p < totalTuples; ++p)

@@ -78,7 +78,7 @@ int H5FilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeli
   {
     if(!obs.empty())
     {
-      GenericErrorMessage::Pointer pm = GenericErrorMessage::New(JsonFilterParametersWriter::ClassName(), "FilterPipeline Object was nullptr for writing", -1);
+      GenericErrorMessage::Pointer pm = GenericErrorMessage::New(QObject::tr("%1: %2").arg(JsonFilterParametersWriter::ClassName()).arg("FilterPipeline Object was nullptr for writing"), -1);
 
       for (int i = 0; i < obs.size(); i++)
       {
@@ -108,7 +108,8 @@ int H5FilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeli
   {
     if(!obs.empty())
     {
-      PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New(pipeline->getName(), JsonFilterParametersWriter::ClassName(), "Output .dream3d file could not be created.", -1);
+      PipelineErrorMessage::Pointer pm =
+          PipelineErrorMessage::New(pipeline->getName(), QObject::tr("%1: %2").arg(JsonFilterParametersWriter::ClassName()).arg("Output .dream3d file could not be created."), -1);
 
       for (int i = 0; i < obs.size(); i++)
       {

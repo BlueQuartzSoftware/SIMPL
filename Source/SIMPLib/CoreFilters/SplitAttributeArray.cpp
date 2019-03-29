@@ -100,7 +100,7 @@ void SplitAttributeArray::dataCheck()
 
   m_InputArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getInputArrayPath());
 
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -111,8 +111,7 @@ void SplitAttributeArray::dataCheck()
     if(numComps <= 1)
     {
       QString ss = QObject::tr("Selected Attribute Array must have more than 1 component");
-      setErrorCondition(-11000);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-11000, ss);
       return;
     }
 
@@ -123,23 +122,21 @@ void SplitAttributeArray::dataCheck()
       QString arrayName = getInputArrayPath().getDataArrayName() + getSplitArraysSuffix() + QString::number(i);
       DataArrayPath path(getInputArrayPath().getDataContainerName(), getInputArrayPath().getAttributeMatrixName(), arrayName);
       IDataArray::WeakPointer ptr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, path, cDims, m_InputArrayPtr.lock());
-      if(getErrorCondition() >= 0)
+      if(getErrorCode() >= 0)
       {
         m_SplitArraysPtrVector.push_back(ptr.lock());
       }
       else
       {
         QString ss = QObject::tr("Unable to create an Attribute Array for component %1 in the selected multicomponent Attribute Array").arg(i);
-        setErrorCondition(-11051);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        setErrorCondition(-11051, ss);
       }
     }
 
     if(numComps != m_SplitArraysPtrVector.size())
     {
       QString ss = QObject::tr("The number of created arrays %1 does not match the number of components %2").arg(m_SplitArraysPtrVector.size()).arg(numComps);
-      setErrorCondition(-11001);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-11001, ss);
     }
   }
 }
@@ -194,7 +191,7 @@ void SplitAttributeArray::execute()
   clearErrorCondition();
   clearWarningCondition();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

@@ -145,7 +145,7 @@ void ThresholdExample::dataCheck()
   clearWarningCondition();
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerName(), false);
-  if(getErrorCondition() < 0 || nullptr == m)
+  if(getErrorCode() < 0 || nullptr == m)
   {
     return;
   }
@@ -156,8 +156,7 @@ void ThresholdExample::dataCheck()
   if (m_OutputFile.isEmpty() == true)
   {
     ss << "The output file must be set before executing this filter.";
-    setErrorCondition(-1);
-    notifyErrorMessage(getNameOfClass(), ss.str(), -1);
+    setErrorCondition(-1, ss.str());
   }
   */
 }

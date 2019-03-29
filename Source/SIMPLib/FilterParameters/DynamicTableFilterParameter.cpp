@@ -80,7 +80,6 @@ DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::New(const QStr
     }
   }
 
-  ptr->clearErrorCondition();
   ptr->setErrorMessage("There is no error.");
   return ptr;
 }

@@ -271,11 +271,11 @@ void SVPipelineView::listenFilterCompleted(AbstractFilter* filter)
   {
     model->setData(index, static_cast<int>(PipelineItem::WidgetState::Completed), PipelineModel::WidgetStateRole);
   }
-  if(filter->getWarningCondition() < 0)
+  if(filter->getWarningCode() < 0)
   {
     model->setData(index, static_cast<int>(PipelineItem::ErrorState::Warning), PipelineModel::ErrorStateRole);
   }
-  if(filter->getErrorCondition() < 0)
+  if(filter->getErrorCode() < 0)
   {
     model->setData(index, static_cast<int>(PipelineItem::ErrorState::Error), PipelineModel::ErrorStateRole);
   }
@@ -377,11 +377,11 @@ void SVPipelineView::preflightPipeline()
       AbstractFilter::Pointer filter = model->filter(childIndex);
       if(filter.get() != nullptr)
       {
-        if (filter->getWarningCondition() < 0)
+        if(filter->getWarningCode() < 0)
         {
           model->setData(childIndex, static_cast<int>(PipelineItem::ErrorState::Warning), PipelineModel::ErrorStateRole);
         }
-        if(filter->getErrorCondition() < 0)
+        if(filter->getErrorCode() < 0)
         {
           model->setData(childIndex, static_cast<int>(PipelineItem::ErrorState::Error), PipelineModel::ErrorStateRole);
         }

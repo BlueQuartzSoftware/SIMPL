@@ -166,7 +166,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     createGeometry->execute();
-    DREAM3D_REQUIRED(createGeometry->getErrorCondition(), >=, 0);
+    DREAM3D_REQUIRED(createGeometry->getErrorCode(), >=, 0);
 
     bool correctGeom = (geomType == dc->getGeometry()->getGeometryType());
     DREAM3D_REQUIRE_EQUAL(correctGeom, true)
@@ -221,11 +221,11 @@ public:
 
     if(treatWarningsAsErrors)
     {
-      DREAM3D_REQUIRED(createGeometry->getErrorCondition(), ==, -1)
+      DREAM3D_REQUIRED(createGeometry->getErrorCode(), ==, -1)
     }
     else
     {
-      DREAM3D_REQUIRED(createGeometry->getErrorCondition(), >=, 0);
+      DREAM3D_REQUIRED(createGeometry->getErrorCode(), >=, 0);
 
       bool correctGeom = (geomType == dc->getGeometry()->getGeometryType());
       DREAM3D_REQUIRE_EQUAL(correctGeom, true)
@@ -312,11 +312,11 @@ public:
 
     if(treatWarningsAsErrors && geomType != IGeometry::Type::Vertex)
     {
-      DREAM3D_REQUIRED(createGeometry->getErrorCondition(), ==, -1)
+      DREAM3D_REQUIRED(createGeometry->getErrorCode(), ==, -1)
     }
     else
     {
-      DREAM3D_REQUIRED(createGeometry->getErrorCondition(), >=, 0);
+      DREAM3D_REQUIRED(createGeometry->getErrorCode(), >=, 0);
 
       bool correctGeom = (geomType == dc->getGeometry()->getGeometryType());
 

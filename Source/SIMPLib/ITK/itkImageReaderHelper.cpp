@@ -114,7 +114,7 @@ ITK_IMAGE_READER_CLASS_NAME
     else
     {
       QString errorMessage = QString("Unsupported number of components: %1.").arg(nbComponents);
-      notifyErrorMessage("", errorMessage, -4);
+      setErrorCondition(-4, errorMessage);
       break;
     }
     break;
@@ -128,7 +128,7 @@ ITK_IMAGE_READER_CLASS_NAME
   case itk::ImageIOBase::MATRIX:
   default:
     QString errorMessage = QString("Unsupported pixel type: %1.").arg(itk::ImageIOBase::GetPixelTypeAsString(pixel).c_str());
-    notifyErrorMessage("", errorMessage, -4);
+    setErrorCondition(-4, errorMessage);
     break;
   }
 }
@@ -144,7 +144,7 @@ ITK_IMAGE_READER_CLASS_NAME
   DataContainer::Pointer container = getDataContainerArray()->getDataContainer(dataArrayPath.getDataContainerName());
   if(nullptr == container.get())
   {
-    notifyErrorMessage("", "Container not found.", -4);
+    setErrorCondition(-4, "Container not found.");
     return;
   }
 
@@ -185,7 +185,7 @@ ITK_IMAGE_READER_CLASS_NAME
     if(nullptr == imageIO)
     {
       QString errorMessage = "ITK could not read the given file \"%1\". Format is likely unsupported.";
-      notifyErrorMessage("", errorMessage.arg(filename), -5);
+      setErrorCondition(-5, errorMessage.arg(filename));
       return;
     }
     imageIO->SetFileName(filename.toLatin1());
@@ -227,13 +227,13 @@ ITK_IMAGE_READER_CLASS_NAME
       break;
     default:
       QString errorMessage = QString("Unsupported pixel component: %1.").arg(imageIO->GetComponentTypeAsString(component).c_str());
-      notifyErrorMessage("", errorMessage, -4);
+      setErrorCondition(-4, errorMessage);
       break;
     }
   } catch(itk::ExceptionObject& err)
   {
     QString errorMessage = "ITK exception was thrown while processing input file: %1";
-    notifyErrorMessage("", errorMessage.arg(err.what()), -55557);
+    setErrorCondition(-55557, errorMessage.arg(err.what()));
     return;
   }
 }
@@ -270,7 +270,7 @@ ITK_IMAGE_READER_CLASS_NAME
 
   QVector<size_t> cDims = ITKDream3DHelper::GetComponentsDimensions<TPixel>();
   AttributeMatrix::Pointer cellAttrMat = container->createNonPrereqAttributeMatrix(this, dataArrayPath.getAttributeMatrixName(), tDims, AttributeMatrix::Type::Cell);
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

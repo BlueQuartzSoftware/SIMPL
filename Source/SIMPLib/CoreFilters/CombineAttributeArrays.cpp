@@ -221,8 +221,7 @@ template <typename DataType> void verifyArrayList(AbstractFilter* filter, QVecto
   {
     if(!TemplateHelpers::CanDynamicCast<DataArray<DataType>>()((*it).lock()))
     {
-      filter->setErrorCondition(-90000);
-      filter->notifyErrorMessage(filter->getHumanLabel(), "Selected Attribute Arrays must all be of the same type", filter->getErrorCondition());
+      filter->setErrorCondition(-90000, "Selected Attribute Arrays must all be of the same type");
       return;
     }
   }
@@ -247,9 +246,8 @@ void CombineAttributeArrays::dataCheck()
 
   if(getSelectedDataArrayPaths().size() < 2)
   {
-    setErrorCondition(-11001);
     QString ss = QObject::tr("At least two Attribute Array must be selected");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-11001, ss);
     return;
   }
 
@@ -257,9 +255,8 @@ void CombineAttributeArrays::dataCheck()
 
   if(!DataArrayPath::ValidateVector(paths))
   {
-    setErrorCondition(-11002);
     QString ss = QObject::tr("There are Attribute Arrays selected that are not contained in the same Attribute Matrix. All selected Attribute Arrays must belong to the same Attribute Matrix");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-11002, ss);
   }
 
   int32_t totalComps = 0;
@@ -279,7 +276,7 @@ void CombineAttributeArrays::dataCheck()
   {
     EXECUTE_FUNCTION_TEMPLATE(this, verifyArrayList, m_SelectedWeakPtrVector[0].lock(), this, m_SelectedWeakPtrVector)
   }
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -321,7 +318,7 @@ void CombineAttributeArrays::execute()
   clearErrorCondition();
   clearWarningCondition();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

@@ -209,7 +209,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
 
   IGeometry::Pointer igeom = getDataContainerArray()->getPrereqGeometryFromDataContainer<IGeometry, AbstractFilter>(this, getDataContainerName());
 
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -236,7 +236,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
     {
       m_XBounds = m_XBoundsPtr.lock()->getPointer(0);
     }
-    if(getErrorCondition() >= 0)
+    if(getErrorCode() >= 0)
     {
       xarrays.push_back(m_XBoundsPtr.lock());
     }
@@ -246,7 +246,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
     {
       m_YBounds = m_YBoundsPtr.lock()->getPointer(0);
     }
-    if(getErrorCondition() >= 0)
+    if(getErrorCode() >= 0)
     {
       yarrays.push_back(m_YBoundsPtr.lock());
     }
@@ -256,7 +256,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
     {
       m_ZBounds = m_ZBoundsPtr.lock()->getPointer(0);
     }
-    if(getErrorCondition() >= 0)
+    if(getErrorCode() >= 0)
     {
       zarrays.push_back(m_ZBoundsPtr.lock());
     }
@@ -281,7 +281,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
     {
       m_Verts = m_VertsPtr.lock()->getPointer(0);
     }
-    if(getErrorCondition() >= 0)
+    if(getErrorCode() >= 0)
     {
       arrays.push_back(m_VertsPtr.lock());
     }
@@ -306,7 +306,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
     {
       m_Verts = m_VertsPtr.lock()->getPointer(0);
     }
-    if(getErrorCondition() >= 0)
+    if(getErrorCode() >= 0)
     {
       varrays.push_back(m_VertsPtr.lock());
     }
@@ -318,7 +318,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
     {
       m_Edges = m_EdgesPtr.lock()->getPointer(0);
     }
-    if(getErrorCondition() >= 0)
+    if(getErrorCode() >= 0)
     {
       earrays.push_back(m_EdgesPtr.lock());
     }
@@ -344,7 +344,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
     {
       m_Verts = m_VertsPtr.lock()->getPointer(0);
     }
-    if(getErrorCondition() >= 0)
+    if(getErrorCode() >= 0)
     {
       varrays.push_back(m_VertsPtr.lock());
     }
@@ -354,7 +354,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
     {
       m_Tris = m_TrisPtr.lock()->getPointer(0);
     }
-    if(getErrorCondition() >= 0)
+    if(getErrorCode() >= 0)
     {
       earrays.push_back(m_TrisPtr.lock());
     }
@@ -380,7 +380,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
     {
       m_Verts = m_VertsPtr.lock()->getPointer(0);
     }
-    if(getErrorCondition() >= 0)
+    if(getErrorCode() >= 0)
     {
       varrays.push_back(m_VertsPtr.lock());
     }
@@ -392,7 +392,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
     {
       m_Quads = m_QuadsPtr.lock()->getPointer(0);
     }
-    if(getErrorCondition() >= 0)
+    if(getErrorCode() >= 0)
     {
       earrays.push_back(m_QuadsPtr.lock());
     }
@@ -418,7 +418,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
     {
       m_Verts = m_VertsPtr.lock()->getPointer(0);
     }
-    if(getErrorCondition() >= 0)
+    if(getErrorCode() >= 0)
     {
       varrays.push_back(m_VertsPtr.lock());
     }
@@ -430,7 +430,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
     {
       m_Tets = m_TetsPtr.lock()->getPointer(0);
     }
-    if(getErrorCondition() >= 0)
+    if(getErrorCode() >= 0)
     {
       earrays.push_back(m_TetsPtr.lock());
     }
@@ -456,7 +456,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
     {
       m_Verts = m_VertsPtr.lock()->getPointer(0);
     }
-    if (getErrorCondition() >= 0)
+    if(getErrorCode() >= 0)
     {
       varrays.push_back(m_VertsPtr.lock());
     }
@@ -468,7 +468,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
     {
       m_Tets = m_TetsPtr.lock()->getPointer(0);
     }
-    if (getErrorCondition() >= 0)
+    if(getErrorCode() >= 0)
     {
       earrays.push_back(m_TetsPtr.lock());
     }
@@ -485,8 +485,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
                              "Valid Geometry Types: Rectilinear Grid, Vertex, Edge, Triangle, Quadrilateral, Tetrahedral")
                      .arg(getDataContainerName())
                      .arg(igeom->getGeometryTypeAsString());
-    setErrorCondition(-701);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-701, ss);
     break;
   }
   }
@@ -513,7 +512,7 @@ void ExtractAttributeArraysFromGeometry::execute()
 {
   initialize();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

@@ -328,7 +328,7 @@ public:
         DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
         createFeatureArrayFromElementArrayFilter->execute();
-        int err = createFeatureArrayFromElementArrayFilter->getErrorCondition();
+        int err = createFeatureArrayFromElementArrayFilter->getErrorCode();
         DREAM3D_REQUIRE_EQUAL(err, 0);
       }
       else

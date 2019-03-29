@@ -133,7 +133,7 @@ public:
       DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
       filter->preflight();
-      err = filter->getErrorCondition();
+      err = filter->getErrorCode();
       DREAM3D_REQUIRED(err, >=, 0)
     }
 
@@ -156,7 +156,7 @@ public:
       DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
       filter->preflight();
-      err = filter->getErrorCondition();
+      err = filter->getErrorCode();
       DREAM3D_REQUIRED(err, >=, 0)
     }
 
@@ -211,13 +211,13 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true);
 
     filter->preflight();
-    err = filter->getErrorCondition();
+    err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, k_NoError);
 
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
     filter->execute();
-    err = filter->getErrorCondition();
+    err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, k_NoError);
 
     {
@@ -239,14 +239,14 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     filter->preflight();
-    err = filter->getErrorCondition();
+    err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, k_NoError);
 
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
 
     filter->execute();
-    err = filter->getErrorCondition();
+    err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, k_NoError);
 
     {
@@ -306,7 +306,7 @@ public:
         DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
             filter->execute();
-        err = filter->getErrorCondition();
+        err = filter->getErrorCode();
         DREAM3D_REQUIRE_EQUAL(err, k_NoError);
 
         IDataArray::Pointer boolArray = m->getAttributeMatrix(path.getAttributeMatrixName())->getAttributeArray(path.getDataArrayName());
@@ -328,7 +328,7 @@ public:
         DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
             filter->execute();
-        err = filter->getErrorCondition();
+        err = filter->getErrorCode();
         DREAM3D_REQUIRE_EQUAL(err, k_Int8Error);
 
 #endif

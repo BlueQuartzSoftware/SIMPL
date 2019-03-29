@@ -146,7 +146,7 @@ FilterPipeline::Pointer H5FilterParametersReader::readPipelineFromFile(hid_t fid
     else if(nullptr != obs)
     {
       QString ss = QObject::tr("The input file contains an unrecognizable pipeline version number, and is therefore incompatible and cannot be read.");
-      PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New("[NOT_READABLE]", "H5FilterParametersReader::ReadPipelineFromFile(...)", ss, -66066);
+      PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New("[NOT_READABLE]", QObject::tr("%1: %2").arg("H5FilterParametersReader::ReadPipelineFromFile(...)").arg(ss), -66066);
       obs->processPipelineMessage(pm);
       return FilterPipeline::NullPointer();
     }
@@ -254,7 +254,7 @@ QString H5FilterParametersReader::getJsonFromFile(QString filePath, IObserver* o
     else if(nullptr != obs)
     {
       QString ss = QObject::tr("The input file contains an unrecognizable pipeline version number, and is therefore incompatible and cannot be read.");
-      PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New("[NOT_READABLE]", "H5FilterParametersReader::ReadPipelineFromFile(...)", ss, -66066);
+      PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New("[NOT_READABLE]", QObject::tr("%1: %2").arg("H5FilterParametersReader::ReadPipelineFromFile(...)").arg(ss), -66066);
       obs->processPipelineMessage(pm);
       return QString();
     }

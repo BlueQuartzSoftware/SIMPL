@@ -64,12 +64,12 @@ public:
   void TestErrorMessage()
   {
     AbstractFilter::Pointer f = AbstractFilter::New();
-    f->notifyErrorMessage("Some Test", "Description", -10);
+    f->setErrorCondition(-10, "Description");
 
-    FilterProgressMessage::Pointer progressMessage = FilterProgressMessage::New(f->getNameOfClass(), f->getHumanLabel(), -1, "Joey's Test", "Testing Warning Message...", -23);
-    FilterErrorMessage::Pointer errorMessage = FilterErrorMessage::New(f->getNameOfClass(), f->getHumanLabel(), -1, "Joey's Test", "Testing Error Message...", -23);
-    FilterStatusMessage::Pointer statusMessage = FilterStatusMessage::New(f->getNameOfClass(), f->getHumanLabel(), -1, "Joey's Test", "Testing Status Message...");
-    FilterWarningMessage::Pointer warningMessage = FilterWarningMessage::New(f->getNameOfClass(), f->getHumanLabel(), -1, "Joey's Test", "Testing Status Message...", 23);
+    FilterProgressMessage::Pointer progressMessage = FilterProgressMessage::New(f->getNameOfClass(), f->getHumanLabel(), -1, "Testing Warning Message...", -23);
+    FilterErrorMessage::Pointer errorMessage = FilterErrorMessage::New(f->getNameOfClass(), f->getHumanLabel(), -1, "Testing Error Message...", -23);
+    FilterStatusMessage::Pointer statusMessage = FilterStatusMessage::New(f->getNameOfClass(), f->getHumanLabel(), -1, "Testing Status Message...");
+    FilterWarningMessage::Pointer warningMessage = FilterWarningMessage::New(f->getNameOfClass(), f->getHumanLabel(), -1, "Testing Status Message...", 23);
     emit f->messageGenerated(progressMessage);
     emit f->messageGenerated(errorMessage);
     emit f->messageGenerated(statusMessage);

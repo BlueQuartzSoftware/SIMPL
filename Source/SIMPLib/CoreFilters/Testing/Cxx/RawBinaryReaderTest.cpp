@@ -260,14 +260,14 @@ public:
 
     // Preflight, get the error condition, and check that there are no errors
     filt->preflight();
-    err = filt->getErrorCondition();
+    err = filt->getErrorCode();
     DREAM3D_REQUIRED(err, >=, 0)
 
     am->clearAttributeArrays();
 
     // Execute the filter, check that there are no errors, and compare the data
     filt->execute();
-    err = filt->getErrorCondition();
+    err = filt->getErrorCode();
     DREAM3D_REQUIRED(err, >=, 0)
 
     IDataArray::Pointer iData = am->getAttributeArray("Test_Array");
@@ -365,14 +365,14 @@ public:
 
     // Preflight, get error condition, and check that the "file is too small" error is returned
     filt->preflight();
-    err = filt->getErrorCondition();
+    err = filt->getErrorCode();
     DREAM3D_REQUIRED(err, ==, RBRT_FILE_TOO_SMALL)
 
     am->clearAttributeArrays();
 
     // Execute, get error condition, and check that the "file is too small" error is returned
     filt->execute();
-    err = filt->getErrorCondition();
+    err = filt->getErrorCode();
     DREAM3D_REQUIRED(err, ==, RBRT_FILE_TOO_SMALL)
   }
 
@@ -465,14 +465,14 @@ public:
 
     // Preflight, get the error condition, and check that there are no errors
     filt->preflight();
-    err = filt->getErrorCondition();
+    err = filt->getErrorCode();
     DREAM3D_REQUIRED(err, >=, 0)
 
     am->clearAttributeArrays();
 
     // Execute, get the error condition, check that there are no errors, and compare the data
     filt->execute();
-    err = filt->getErrorCondition();
+    err = filt->getErrorCode();
     DREAM3D_REQUIRED(err, >=, 0)
 
     IDataArray::Pointer iData = am->getAttributeArray("Test_Array");
@@ -575,14 +575,14 @@ public:
 
     // Preflight, get error condition, and check that there are no errors
     filt->preflight();
-    err = filt->getErrorCondition();
+    err = filt->getErrorCode();
     DREAM3D_REQUIRED(err, >=, 0)
 
     am->clearAttributeArrays();
 
     // Execute, get error condition, check that there are no errors, and compare the data
     filt->execute();
-    err = filt->getErrorCondition();
+    err = filt->getErrorCode();
     DREAM3D_REQUIRED(err, >=, 0)
 
     IDataArray::Pointer iData = m->getAttributeMatrix(SIMPL::Defaults::AttributeMatrixName)->getAttributeArray("Test_Array");
@@ -613,14 +613,14 @@ public:
 
     // Preflight, get error condition, and check that there are errors
     filt2->preflight();
-    err = filt2->getErrorCondition();
+    err = filt2->getErrorCode();
     DREAM3D_REQUIRED(err, <, 0)
 
     am->clearAttributeArrays();
 
     // Execute, get error condition, and check that the "file too small" error occurred
     filt2->execute();
-    err = filt2->getErrorCondition();
+    err = filt2->getErrorCode();
     DREAM3D_REQUIRED(err, ==, RBRT_FILE_TOO_SMALL)
   }
 
@@ -713,14 +713,14 @@ public:
 
     // Preflight, get error condition, and check that there are no errors
     filt->preflight();
-    err = filt->getErrorCondition();
+    err = filt->getErrorCode();
     DREAM3D_REQUIRED(err, >=, 0)
 
     am->clearAttributeArrays();
 
     // Execute, get error condition, check that there are no errors, and compare the data
     filt->execute();
-    err = filt->getErrorCondition();
+    err = filt->getErrorCode();
     DREAM3D_REQUIRED(err, >=, 0)
 
     IDataArray::Pointer iData = m->getAttributeMatrix(SIMPL::Defaults::AttributeMatrixName)->getAttributeArray("Test_Array");
@@ -823,12 +823,12 @@ public:
 
     // Preflight, get error condition, and check that the "file too small" error has occurred
     filt->preflight();
-    err = filt->getErrorCondition();
+    err = filt->getErrorCode();
     DREAM3D_REQUIRED(err, ==, RBRT_FILE_TOO_SMALL)
 
     // Execute, get error condition, and check that there are errors
     filt->execute();
-    err = filt->getErrorCondition();
+    err = filt->getErrorCode();
     DREAM3D_REQUIRED(err, <, 0)
   }
 

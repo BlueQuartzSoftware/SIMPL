@@ -114,7 +114,8 @@ int JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline,
   {
     if(!obs.empty())
     {
-      PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New(pipeline->getName(), JsonFilterParametersWriter::ClassName(), "FilterPipeline Object was nullptr for writing", -1);
+      PipelineErrorMessage::Pointer pm =
+          PipelineErrorMessage::New(pipeline->getName(), QObject::tr("%1: FilterPipeline Object was nullptr for writing").arg(JsonFilterParametersWriter::ClassName()), -1);
 
       for (int i = 0; i < obs.size(); i++)
       {

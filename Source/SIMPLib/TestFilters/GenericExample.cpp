@@ -407,12 +407,12 @@ void computeEulerAngle(float pq, float* eulerAngle)
 // -----------------------------------------------------------------------------
 void GenericExample::execute()
 {
-  int err = 0;
-  setErrorCondition(err);
+  clearErrorCondition();
+  clearWarningCondition();
 
   // Run the data check to get references to all of our data arrays initialized to the values stored in memory
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

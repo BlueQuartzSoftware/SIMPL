@@ -301,7 +301,7 @@ int DataContainerArray::readDataContainersFromHDF5(bool preflight, hid_t dcaGid,
         QString ss =
             QObject::tr("A Data Container with name %1 already exists in Memory. Reading a Data Container with the same name would over write the one in memory. Currently this is not allowed.")
                 .arg(dcProxy.getName());
-        obs->notifyErrorMessage(getNameOfClass(), ss, -198745600);
+        obs->setErrorCondition(-198745600, ss);
       }
       return -198745600;
     }
@@ -315,7 +315,7 @@ int DataContainerArray::readDataContainersFromHDF5(bool preflight, hid_t dcaGid,
       if(nullptr != obs)
       {
         QString ss = QObject::tr("Error opening Group '%1'").arg(dcProxy.getName());
-        obs->notifyErrorMessage(getNameOfClass(), ss, -198745602);
+        obs->setErrorCondition(-198745602, ss);
       }
       return -198745602;
     }
@@ -326,7 +326,7 @@ int DataContainerArray::readDataContainersFromHDF5(bool preflight, hid_t dcaGid,
       if(nullptr != obs)
       {
         QString ss = QObject::tr("Error reading Mesh Data from '%1'").arg(dcProxy.getName());
-        obs->notifyErrorMessage(getNameOfClass(), ss, -198745603);
+        obs->setErrorCondition(-198745603, ss);
       }
       return -198745603;
     }
@@ -336,7 +336,7 @@ int DataContainerArray::readDataContainersFromHDF5(bool preflight, hid_t dcaGid,
       if(nullptr != obs)
       {
         QString ss = QObject::tr("Error reading AttributeMatrix Data from '%1'").arg(dcProxy.getName());
-        obs->notifyErrorMessage(getNameOfClass(), ss, -198745604);
+        obs->setErrorCondition(-198745604, ss);
       }
       return -198745604;
     }

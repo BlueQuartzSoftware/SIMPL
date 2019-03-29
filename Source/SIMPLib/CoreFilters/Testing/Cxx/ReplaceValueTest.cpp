@@ -82,7 +82,7 @@
     qDebug() << "Unable to set property ReplaceValue";                                                                                                                                                 \
   }                                                                                                                                                                                                    \
   filter->execute();                                                                                                                                                                                   \
-  err = filter->getErrorCondition();                                                                                                                                                                   \
+  err = filter->getErrorCode();                                                                                                                                                                        \
   DREAM3D_REQUIRE_EQUAL(err, errVal);
 
 #ifdef SET_PROPERTIES_AND_CHECK_EQ
@@ -109,7 +109,7 @@
     qDebug() << "Unable to set property ReplaceValue";                                                                                                                                                 \
   }                                                                                                                                                                                                    \
   filter->execute();                                                                                                                                                                                   \
-  err = filter->getErrorCondition();                                                                                                                                                                   \
+  err = filter->getErrorCode();                                                                                                                                                                        \
   DREAM3D_REQUIRE_EQUAL(err, 0);                                                                                                                                                                       \
   dataArray = dc->getAttributeMatrix(selectedArray.getAttributeMatrixName())->getAttributeArray(selectedArray.getDataArrayName());                                                                     \
   DREAM3D_REQUIRE_EQUAL(err, 0);                                                                                                                                                                       \

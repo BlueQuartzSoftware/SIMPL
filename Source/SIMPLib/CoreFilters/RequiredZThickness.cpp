@@ -102,13 +102,13 @@ void RequiredZThickness::dataCheck()
 {
   clearErrorCondition();
   clearWarningCondition();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
 
   DataContainer::Pointer dataContainer = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerSelection());
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -116,8 +116,7 @@ void RequiredZThickness::dataCheck()
   ImageGeom::Pointer image = dataContainer->getGeometryAs<ImageGeom>();
   if(nullptr == image.get())
   {
-    setErrorCondition(-7789);
-    notifyErrorMessage(getHumanLabel(), "Missing Image Geometry in the selected DataContainer", getErrorCondition());
+    setErrorCondition(-7789, "Missing Image Geometry in the selected DataContainer");
     return;
   }
 
@@ -126,14 +125,13 @@ void RequiredZThickness::dataCheck()
 
   if(dims[2] < getNumZVoxels() && m_PreflightCheck)
   {
-    setErrorCondition(-7787);
     QString str;
     QTextStream ss(&str);
     ss << "Number of Z Voxels does not meet required value during preflight of the filter. \n";
     ss << "  Required Z Voxels: " << m_NumZVoxels << "\n";
     ss << "  Current Z Voxels: " << dims[2];
 
-    notifyErrorMessage(getHumanLabel(), str, getErrorCondition());
+    setErrorCondition(-7787, str);
   }
   else if(dims[2] < getNumZVoxels() && !m_PreflightCheck)
   {
@@ -143,8 +141,7 @@ void RequiredZThickness::dataCheck()
     ss << "  Required Z Voxels: " << m_NumZVoxels << "\n";
     ss << "  Current Z Voxels: " << dims[2];
 
-    setWarningCondition(-7788);
-    notifyWarningMessage(getHumanLabel(), str, getWarningCondition());
+    setWarningCondition(-7788, str);
   }
 }
 
@@ -169,13 +166,13 @@ void RequiredZThickness::execute()
   clearErrorCondition();
   clearWarningCondition();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
 
   DataContainer::Pointer dataContainer = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerSelection());
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -193,8 +190,7 @@ void RequiredZThickness::execute()
     ss << "  Required Z Voxels: " << m_NumZVoxels << "\n";
     ss << "  Current Z Voxels: " << dims[2];
 
-    setErrorCondition(-7788);
-    notifyErrorMessage(getHumanLabel(), str, getErrorCondition());
+    setErrorCondition(-7788, str);
     bool needMoreData = true;
     emit decisionMade(needMoreData);
   }

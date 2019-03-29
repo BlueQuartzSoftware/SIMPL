@@ -69,7 +69,7 @@ class FilterPipelineMessageHandler : public AbstractMessageHandler
       int filterProgress = msg->getProgressValue();
       float filterProgressStep = (1.0f / m_Pipeline->size()) * filterProgress / 100.0f;
       int pipelineProgress = static_cast<int>((static_cast<float>(msg->getPipelineIndex()) / (m_Pipeline->size()) + filterProgressStep) * 100.0f);
-      m_Pipeline->notifyProgressMessage("", "", pipelineProgress);
+      m_Pipeline->notifyProgressMessage(pipelineProgress, "");
     }
 
   private:
@@ -88,8 +88,7 @@ struct PipelineIdleException : public std::exception
 //
 // -----------------------------------------------------------------------------
 FilterPipeline::FilterPipeline()
-: m_ErrorCondition(0)
-, m_PipelineName("")
+: m_PipelineName("")
 , m_Dca(nullptr)
 {
 }
@@ -313,7 +312,7 @@ void FilterPipeline::fromJson(const QJsonObject& json, IObserver* obs)
                                                                                                                                         blank filter has been inserted in its place. Possible error message is: %1")
                          .arg(filterName);
         QString prefix = "JsonFilterParametersReader::ReadPipelineFromFile()";
-        PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New(getName(), prefix, ss, -66066);
+        PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New(getName(), ss, -66066);
         obs->processPipelineMessage(pm);
       }
     }
@@ -328,7 +327,6 @@ void FilterPipeline::cancel()
   if(m_State != FilterPipeline::State::Executing)
   {
     // We cannot cancel a pipeline that is not executing
-    setErrorCondition(-201);
     QString ss;
     if(m_State == FilterPipeline::State::Idle)
     {
@@ -342,7 +340,7 @@ void FilterPipeline::cancel()
     {
       ss = QObject::tr("Pipeline '%1' could not be canceled.").arg(getName());
     }
-    notifyErrorMessage("", ss, -201);
+    setErrorCondition(-201, ss);
     return;
   }
 
@@ -374,7 +372,7 @@ bool FilterPipeline::pushFront(const AbstractFilter::Pointer& f)
   {
     // Do not allow anyone to add filters to a pipeline that is not idle
     QString ss = QObject::tr("Filter '%1' could not be added to pipeline '%2' because the pipeline is already executing.").arg(f->getHumanLabel()).arg(getName());
-    notifyErrorMessage("", ss, -202);
+    setErrorCondition(-202, ss);
     return false;
   }
 
@@ -394,7 +392,7 @@ bool FilterPipeline::popFront()
     AbstractFilter::Pointer f = m_Pipeline.front();
 
     QString ss = QObject::tr("Filter '%1' could not be removed from pipeline '%2' because the pipeline is already executing.").arg(f->getHumanLabel()).arg(getName());
-    notifyErrorMessage("", ss, -203);
+    setErrorCondition(-203, ss);
     return false;
   }
 
@@ -412,7 +410,7 @@ bool FilterPipeline::pushBack(const AbstractFilter::Pointer& f)
   {
     // Do not allow anyone to add filters to a pipeline that is not idle
     QString ss = QObject::tr("Filter '%1' could not be added to pipeline '%2' because the pipeline is already executing.").arg(f->getHumanLabel()).arg(getName());
-    notifyErrorMessage("", ss, -204);
+    setErrorCondition(-204, ss);
     return false;
   }
 
@@ -432,7 +430,7 @@ bool FilterPipeline::popBack()
     AbstractFilter::Pointer f = m_Pipeline.back();
 
     QString ss = QObject::tr("Filter '%1' could not be removed from pipeline '%2' because the pipeline is already executing.").arg(f->getHumanLabel()).arg(getName());
-    notifyErrorMessage("", ss, -205);
+    setErrorCondition(-205, ss);
     return false;
   }
 
@@ -450,7 +448,7 @@ bool FilterPipeline::insert(size_t index, const AbstractFilter::Pointer& f)
   {
     // Do not allow anyone to add filters to a pipeline that is not idle
     QString ss = QObject::tr("Filter '%1' could not be added to pipeline '%2' because the pipeline is already executing.").arg(f->getHumanLabel()).arg(getName());
-    notifyErrorMessage("", ss, -206);
+    setErrorCondition(-206, ss);
     return false;
   }
 
@@ -475,7 +473,7 @@ bool FilterPipeline::erase(size_t index)
     AbstractFilter::Pointer f = m_Pipeline[index];
 
     QString ss = QObject::tr("Filter '%1' could not be removed from pipeline '%2' because the pipeline is already executing.").arg(f->getHumanLabel()).arg(getName());
-    notifyErrorMessage("", ss, -207);
+    setErrorCondition(-207, ss);
     return false;
   }
 
@@ -498,7 +496,7 @@ bool FilterPipeline::clear()
   {
     // We cannot clear a pipeline that is not idle
     QString ss = QObject::tr("Pipeline '%1' could not be cleared because it is executing.").arg(getName());
-    notifyErrorMessage("", ss, -208);
+    setErrorCondition(-208, ss);
     return false;
   }
 
@@ -535,7 +533,7 @@ AbstractFilter::Pointer FilterPipeline::removeFirstFilterByName(const QString& n
   {
     // Do not allow anyone to remove filters from a pipeline that is not idle
     QString ss = QObject::tr("Filter '%1' could not be removed from pipeline '%2' because the pipeline is already executing.").arg(name).arg(getName());
-    notifyErrorMessage("", ss, -209);
+    setErrorCondition(-209, ss);
     return AbstractFilter::NullPointer();
   }
 
@@ -650,6 +648,22 @@ void FilterPipeline::notifyProgressMessage(int progress, const QString& messageT
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void FilterPipeline::clearErrorCondition()
+{
+  m_ErrorCode = 0;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterPipeline::clearWarningCondition()
+{
+  m_WarningCode = 0;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void FilterPipeline::addMessageReceiver(QObject* obj)
 {
   connect(this, SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), obj, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
@@ -704,7 +718,7 @@ int FilterPipeline::preflightPipeline()
     // We cannot preflight a pipeline that is not idle
     QString ss = QObject::tr("Pipeline '%1' could not be preflighted because it is already executing.").arg(getName());
     int err = -203;
-    notifyErrorMessage("", ss, err);
+    setErrorCondition(err, ss);
     return err;
   }
 
@@ -740,7 +754,7 @@ int FilterPipeline::preflightPipeline()
       disconnectFilterNotifications(filter.get());
 
       filter->setCancel(false); // Reset the cancel flag
-      preflightError |= filter->getErrorCondition();
+      preflightError |= filter->getErrorCode();
       filter->setDataContainerArray(dca->deepCopy(false));
       std::list<DataArrayPath> currentCreatedPaths = filter->getCreatedPaths();
 
@@ -820,7 +834,7 @@ DataContainerArray::Pointer FilterPipeline::execute()
   {
     // We cannot execute a pipeline that is not idle
     QString ss = QObject::tr("Pipeline '%1' could not be executed because it is already executing.").arg(getName());
-    notifyErrorMessage("", ss, -200);
+    setErrorCondition(-200, ss);
 
     disconnectSignalsSlots();
     return DataContainerArray::NullPointer();
@@ -855,13 +869,13 @@ DataContainerArray::Pointer FilterPipeline::execute()
       filt->execute();
       disconnectFilterNotifications(filt.get());
       filt->setDataContainerArray(DataContainerArray::NullPointer());
-      err = filt->getErrorCondition();
+      err = filt->getErrorCode();
       if(err < 0)
       {
         ss = QObject::tr("[%1/%2] %3 caused an error during execution.").arg(filtIndex+1).arg(m_Pipeline.size()).arg(filt->getHumanLabel());
-        notifyErrorMessage("", ss, err);
+        setErrorCondition(err, ss);
 
-        notifyProgressMessage("", "", 100);
+        notifyProgressMessage(100, "");
 
         emit filt->filterCompleted(filt.get());
         emit pipelineFinished();
@@ -882,7 +896,7 @@ DataContainerArray::Pointer FilterPipeline::execute()
     // Emit that the filter is completed for those objects that care, even the disabled ones.
     emit filt->filterCompleted(filt.get());
 
-    notifyProgressMessage("", "", static_cast<int>(static_cast<float>(filtIndex+1) / (m_Pipeline.size()) * 100.0f));
+    notifyProgressMessage(static_cast<int>(static_cast<float>(filtIndex + 1) / (m_Pipeline.size()) * 100.0f), "");
   }
 
   disconnectSignalsSlots();

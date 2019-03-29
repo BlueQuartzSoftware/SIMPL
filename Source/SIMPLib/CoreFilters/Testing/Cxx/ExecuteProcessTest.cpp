@@ -170,7 +170,7 @@ public:
 
       filter->setArguments(QObject::tr("%1 -query QMAKE_VERSION").arg(UnitTest::ExecuteProcessTest::QMakeLocation));
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0)
       QString stdOutput = obs.getStdOutput();
 #ifdef Q_OS_WIN
       stdOutput.remove('\r');
@@ -195,7 +195,7 @@ public:
     //      QString stdOutput = obs.getStdOutput();
     //      stdOutput.remove('\r');
     //      stdOutput.remove('\n');
-    //      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
+    //      DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0)
     //      QString versionString = UnitTest::ExecuteProcessTest::CMakeVersionString;
     //      versionString.remove('\r');
     //      versionString.remove('\n');
@@ -213,7 +213,7 @@ public:
       QString stdOutput = obs.getStdOutput();
       stdOutput.remove('\r');
       stdOutput.remove('\n');
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -4005)
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -4005)
     }
 
     return EXIT_SUCCESS;

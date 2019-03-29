@@ -116,13 +116,13 @@ public:
             &obs, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
 #endif
     filter->preflight();
-    DREAM3D_REQUIRED(filter->getErrorCondition(), >=, 0);
+    DREAM3D_REQUIRED(filter->getErrorCode(), >=, 0);
 
     attrMat->removeAttributeArray("ImportedData");
 
     filter->execute();
 
-    DREAM3D_REQUIRED(filter->getErrorCondition(), >=, 0);
+    DREAM3D_REQUIRED(filter->getErrorCode(), >=, 0);
 
     typename DataArray<T>::Pointer dataPtr = attrMat->getAttributeArrayAs<DataArray<T>>("ImportedData");
     T* ptr = dataPtr->getPointer(0);

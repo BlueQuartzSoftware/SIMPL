@@ -187,7 +187,7 @@ void ExecutePipelineController::serviceJSON(QJsonObject pipelineObj)
     qDebug() << "Pipeline About to Execute....";
     pipeline->execute();
 
-    qDebug() << "Pipeline Done Executing...." << pipeline->getErrorCondition();
+    qDebug() << "Pipeline Done Executing...." << pipeline->getErrorCode();
   }
 
 

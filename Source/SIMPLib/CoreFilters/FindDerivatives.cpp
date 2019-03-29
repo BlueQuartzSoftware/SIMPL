@@ -69,7 +69,7 @@ class FilterMessageHandler : public AbstractMessageHandler
      */
     void processMessage(const GenericProgressMessage* msg) const override
     {
-      emit m_Filter->notifyProgressMessage(msg->getPrefix(), msg->getMessageText(), msg->getProgressValue());
+      emit m_Filter->notifyProgressMessage(msg->getProgressValue(), msg->getMessageText());
     }
 
     /**
@@ -79,7 +79,7 @@ class FilterMessageHandler : public AbstractMessageHandler
     void processMessage(const GenericStatusMessage* msg) const override
     {
       QString messageText = QObject::tr("Computing Derivatives || %1").arg(msg->getMessageText());
-      emit m_Filter->notifyStatusMessageWithPrefix(msg->getPrefix(), messageText);
+      emit m_Filter->notifyStatusMessage(messageText);
     }
 
     /**
@@ -87,7 +87,7 @@ class FilterMessageHandler : public AbstractMessageHandler
      */
     void processMessage(const GenericErrorMessage* msg) const override
     {
-      emit m_Filter->notifyErrorMessage(msg->getPrefix(), msg->getMessageText(), msg->getCode());
+      emit m_Filter->setErrorCondition(msg->getCode(), msg->getMessageText());
     }
 
     /**
@@ -95,7 +95,7 @@ class FilterMessageHandler : public AbstractMessageHandler
      */
     void processMessage(const GenericWarningMessage* msg) const override
     {
-      emit m_Filter->notifyWarningMessage(msg->getPrefix(), msg->getMessageText(), msg->getCode());
+      emit m_Filter->setWarningCondition(msg->getCode(), msg->getMessageText());
     }
 
   private:
@@ -264,12 +264,12 @@ void FindDerivatives::dataCheck()
   clearWarningCondition();
   initialize();
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, m_SelectedArrayPath.getDataContainerName(), false);
-  if(getErrorCondition() < 0 || nullptr == m.get())
+  if(getErrorCode() < 0 || nullptr == m.get())
   {
     return;
   }
   IGeometry::Pointer geom = m->getPrereqGeometry<IGeometry>(this);
-  if(getErrorCondition() < 0 || nullptr == geom.get())
+  if(getErrorCode() < 0 || nullptr == geom.get())
   {
     return;
   }
@@ -277,7 +277,7 @@ void FindDerivatives::dataCheck()
   AttributeMatrix::Pointer inAttrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedArrayPath, -301);
   AttributeMatrix::Pointer destAttrMat = m->getPrereqAttributeMatrix(this, getDerivativesArrayPath().getAttributeMatrixName(), -301);
 
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -293,15 +293,13 @@ void FindDerivatives::dataCheck()
     if(inAttrMatType != AttributeMatrix::Type::Cell)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected DataArray does not belong to a CellAttributeMatrix").arg(geomName);
-      setErrorCondition(-11002);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-11002, ss);
       return;
     }
     if(destAttrMatType != AttributeMatrix::Type::Cell)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected destination AttributeMatrix is not a CellAttributeMatrix").arg(geomName);
-      setErrorCondition(-11002);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-11002, ss);
     }
   }
   else if(geomType == IGeometry::Type::Vertex) // validate AttributeMatrices for VertexGeom
@@ -309,14 +307,12 @@ void FindDerivatives::dataCheck()
     if(inAttrMatType != AttributeMatrix::Type::Vertex)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected DataArray does not belong to a VertexAttributeMatrix").arg(geomName);
-      setErrorCondition(-11002);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-11002, ss);
     }
     if(destAttrMatType != AttributeMatrix::Type::Vertex)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected destination AttributeMatrix is not a VertexAttributeMatrix").arg(geomName);
-      setErrorCondition(-11002);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-11002, ss);
     }
   }
   else // validate AttributeMatrices for all other geometries
@@ -330,16 +326,14 @@ void FindDerivatives::dataCheck()
        inAttrMatType != AttributeMatrix::Type::Cell)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected DataArray does not belong to a Cell, Face, Edge or Vertex AttributeMatrix").arg(geomName);
-      setErrorCondition(-11002);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-11002, ss);
     }
     if(geomName == SIMPL::Geometry::QuadGeometry || geomName == SIMPL::Geometry::TriangleGeometry)
     {
       if(destAttrMatType != AttributeMatrix::Type::Face)
       {
         ss = QObject::tr("The Geometry type is %1, but the selected destination Attribute Matrix is not a Face Attribute Matrix").arg(geomName);
-        setErrorCondition(-11002);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        setErrorCondition(-11002, ss);
       }
     }
     else if(geomName == SIMPL::Geometry::TetrahedralGeometry || geomName == SIMPL::Geometry::HexahedralGeometry)
@@ -347,8 +341,7 @@ void FindDerivatives::dataCheck()
       if(destAttrMatType != AttributeMatrix::Type::Cell)
       {
         ss = QObject::tr("The Geometry type is %1, but the selected destination Attribute Matrix is not an Cell Attribute Matrix").arg(geomName);
-        setErrorCondition(-11002);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        setErrorCondition(-11002, ss);
       }
     }
     else if(geomName == SIMPL::Geometry::EdgeGeometry)
@@ -356,14 +349,13 @@ void FindDerivatives::dataCheck()
       if(destAttrMatType != AttributeMatrix::Type::Edge)
       {
         ss = QObject::tr("The Geometry type is %1, but the selected destination Attribute Matrix is not an Edge Attribute Matrix").arg(geomName);
-        setErrorCondition(-11002);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        setErrorCondition(-11002, ss);
       }
     }
   }
 
   m_InArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArrayPath());
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -401,7 +393,7 @@ void FindDerivatives::execute()
   clearErrorCondition();
   clearWarningCondition();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

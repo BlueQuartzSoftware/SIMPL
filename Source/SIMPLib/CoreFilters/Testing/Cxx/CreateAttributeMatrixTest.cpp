@@ -166,7 +166,7 @@ public:
 
     setValues(filter, "DataContainer", amName, tableDims, type);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0)
     TestMatrixTupleDims(filter, tableDims, amName);
   }
 
@@ -305,7 +305,7 @@ public:
 
     setValues(filter, "DataContainer2", "AttributeMatrix", tableDims, AttributeMatrix::Type::Any);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -999);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -999);
   }
 
   // -----------------------------------------------------------------------------
@@ -320,11 +320,11 @@ public:
 
     setValues(filter, "DataContainer", "AttributeMatrix", tableDims, AttributeMatrix::Type::Any);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0);
     TestMatrixTupleDims(filter, tableDims, "AttributeMatrix");
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -10014);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -10014);
   }
 
   // -----------------------------------------------------------------------------
@@ -346,14 +346,14 @@ public:
 
     setValues(filter, "DataContainer", "AttributeMatrix", tableDims, AttributeMatrix::Type::Any);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11000);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -11000);
 
     tableDims.clear();
     tableDims.resize(0);
 
     setValues(filter, "DataContainer", "AttributeMatrix", tableDims, AttributeMatrix::Type::Any);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11000);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -11000);
   }
 
   // -----------------------------------------------------------------------------

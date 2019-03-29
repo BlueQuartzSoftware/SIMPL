@@ -161,7 +161,7 @@
   if(var_type.compare(quotedType) == 0)                                                                                                                                                                \
   {                                                                                                                                                                                                    \
     QString errorMessage = QString("Unsupported pixel type: %1.").arg(quotedType);                                                                                                                     \
-    notifyErrorMessage("", errorMessage, errorCondition);                                                                                                                                              \
+    setErrorCondition(errorCondition, errorMessage);                                                                                                                                                   \
   }
 
 // Type is accepted, select the dimension of the input and output images
@@ -199,7 +199,7 @@
     }                                                                                                                                                                                                  \
     else                                                                                                                                                                                               \
     {                                                                                                                                                                                                  \
-      notifyErrorMessage("", QString("Size of tuple not handled:%1").arg(cDims[0]), errorCondition);                                                                                                   \
+      setErrorCondition(errorCondition, QString("Size of tuple not handled:%1").arg(cDims[0]));                                                                                                        \
     }                                                                                                                                                                                                  \
   }
 
@@ -227,7 +227,7 @@
   Dream3DTemplateAliasMacroCaseScalarImage1_##Scalar(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension)
 // Scalar images not accepted, throw an error message if a scalar image is given.
 #define Dream3DTemplateAliasMacroCaseScalarImage1_0(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension)                                                                      \
-  notifyErrorMessage("", "Scalar images not supported. Try RGB/RGBA or vector images", errorCondition);
+  setErrorCondition(errorCondition, "Scalar images not supported. Try RGB/RGBA or vector images");
 // Scalar images accepted
 #define Dream3DTemplateAliasMacroCaseScalarImage1_1(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension)              \
   Dream3DTemplateAliasMacroCase_1_##isTypeOUT(typeIN, typeOUT, call, typeOUTTypename, dimension)
@@ -249,36 +249,32 @@
 #define Dream3DTemplateAliasMacroCaseVectorImage1(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension, Vector)        \
   Dream3DTemplateAliasMacroCaseVectorImage1_##Vector(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension)
 // Vector images not accepted, throw an error message if a vector image is given.
-#define Dream3DTemplateAliasMacroCaseVectorImage1_0(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension)              \
-  setErrorCondition(errorCondition);              \
-  notifyErrorMessage( \
-      getHumanLabel(),  \
-      "Vector not supported. Try converting the selected input image to an image with scalar components using 'ITK::RGB to Luminance ImageFilter' or 'Convert Rgb To GrayScale' filters",              \
-      getErrorCondition());
+#define Dream3DTemplateAliasMacroCaseVectorImage1_0(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension)                                                                      \
+  setErrorCondition(                                                                                                                                                                                   \
+      errorCondition,                                                                                                                                                                                  \
+      "Vector not supported. Try converting the selected input image to an image with scalar components using 'ITK::RGB to Luminance ImageFilter' or 'Convert Rgb To GrayScale' filters");             \
 // Vector images: Call the given function with the correct dimension after defining the input and output vector types.
-#define Dream3DTemplateAliasMacroCaseVectorImage1_1(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension)              \
-  if(cDims.size() == 2) \
-  {                   \
-    DefineVectorPixelTypes_##isTypeOUT(typeIN, typeOUT, 2);                   \
-    Dream3DTemplateAliasMacroCaseIf(InputPixelType, OutputPixelType, call, typeOUTTypename, dimension);            \
-  }                   \
-  else if(cDims.size() == 3)                      \
-  {                   \
-    DefineVectorPixelTypes_##isTypeOUT(typeIN, typeOUT, 3);                   \
-    Dream3DTemplateAliasMacroCaseIf(InputPixelType, OutputPixelType, call, typeOUTTypename, dimension);            \
-  }                   \
-  else if(cDims.size() == 36)                     \
-  {                   \
-    DefineVectorPixelTypes_##isTypeOUT(typeIN, typeOUT, 36);                  \
-    Dream3DTemplateAliasMacroCaseIf(InputPixelType, OutputPixelType, call, typeOUTTypename, dimension);            \
-  }                   \
-  else                \
-  {                   \
-    setErrorCondition(errorCondition);            \
-    notifyErrorMessage( \
-        getHumanLabel(),                          \
-        "Vector dimension not supported. Try converting the selected input image to an image with scalar components using 'ITK::RGB to Luminance ImageFilter' or 'Convert Rgb To GrayScale' filters",  \
-        getErrorCondition());                     \
+#define Dream3DTemplateAliasMacroCaseVectorImage1_1(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension)                                                                      \
+  if(cDims.size() == 2)                                                                                                                                                                                \
+  {                                                                                                                                                                                                    \
+    DefineVectorPixelTypes_##isTypeOUT(typeIN, typeOUT, 2);                                                                                                                                            \
+    Dream3DTemplateAliasMacroCaseIf(InputPixelType, OutputPixelType, call, typeOUTTypename, dimension);                                                                                                \
+  }                                                                                                                                                                                                    \
+  else if(cDims.size() == 3)                                                                                                                                                                           \
+  {                                                                                                                                                                                                    \
+    DefineVectorPixelTypes_##isTypeOUT(typeIN, typeOUT, 3);                                                                                                                                            \
+    Dream3DTemplateAliasMacroCaseIf(InputPixelType, OutputPixelType, call, typeOUTTypename, dimension);                                                                                                \
+  }                                                                                                                                                                                                    \
+  else if(cDims.size() == 36)                                                                                                                                                                          \
+  {                                                                                                                                                                                                    \
+    DefineVectorPixelTypes_##isTypeOUT(typeIN, typeOUT, 36);                                                                                                                                           \
+    Dream3DTemplateAliasMacroCaseIf(InputPixelType, OutputPixelType, call, typeOUTTypename, dimension);                                                                                                \
+  }                                                                                                                                                                                                    \
+  else                                                                                                                                                                                                 \
+  {                                                                                                                                                                                                    \
+    setErrorCondition(                                                                                                                                                                                 \
+        errorCondition,                                                                                                                                                                                \
+        "Vector dimension not supported. Try converting the selected input image to an image with scalar components using 'ITK::RGB to Luminance ImageFilter' or 'Convert Rgb To GrayScale' filters"); \
   }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -290,12 +286,10 @@
 #define Dream3DTemplateAliasMacroCaseRGBRGBAImage1(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension, RGBRGBA, nbComponents)                    \
   Dream3DTemplateAliasMacroCaseRGBRGBAImage1_##RGBRGBA(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension, nbComponents)
 // If RGB/RGBA not accepted by the current filter, prints an error message
-#define Dream3DTemplateAliasMacroCaseRGBRGBAImage1_0(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension, nbComponents) \
-  setErrorCondition(errorCondition);              \
-  notifyErrorMessage( \
-      getHumanLabel(),  \
-      "RGB/RGBA not supported. Try converting the selected input image to an image with scalar components using 'ITK::RGB to Luminance ImageFilter' or 'Convert Rgb To GrayScale' filters",            \
-      getErrorCondition());
+#define Dream3DTemplateAliasMacroCaseRGBRGBAImage1_0(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension, nbComponents)                                                       \
+  setErrorCondition(                                                                                                                                                                                   \
+      errorCondition,                                                                                                                                                                                  \
+      "RGB/RGBA not supported. Try converting the selected input image to an image with scalar components using 'ITK::RGB to Luminance ImageFilter' or 'Convert Rgb To GrayScale' filters");           \
 // If RGB/RGBA accepted by current filter, call the macro that will call the given function
 #define Dream3DTemplateAliasMacroCaseRGBRGBAImage1_1(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension, nbComponents) \
   if(nbComponents == 3) \
@@ -337,7 +331,7 @@
       {                                                                                                                                                                                                \
         QVector<size_t> tDims(3, 0);                                                                                                                                                                   \
         std::tie(tDims[0], tDims[1], tDims[2]) = imageGeometry->getDimensions();                                                                                                                       \
-        if(getErrorCondition() >= 0)                                                                                                                                                                   \
+        if(getErrorCode() >= 0)                                                                                                                                                                        \
         {                                                                                                                                                                                              \
           QString type = ptr->getTypeAsString();                                                                                                                                                       \
           Dream3DTemplateAliasMacro(call, type, typeOUT, tDims, errorCondition, isTypeOUT, typeOUTTypename);                                                                                           \
@@ -345,12 +339,12 @@
       }                                                                                                                                                                                                \
       else                                                                                                                                                                                             \
       {                                                                                                                                                                                                \
-        notifyErrorMessage("", "Geometry not found", errorCondition);                                                                                                                                  \
+        setErrorCondition(errorCondition, "Geometry not found");                                                                                                                                       \
       }                                                                                                                                                                                                \
     }                                                                                                                                                                                                  \
     else                                                                                                                                                                                               \
     {                                                                                                                                                                                                  \
-      notifyErrorMessage("", "Array not found", errorCondition);                                                                                                                                       \
+      setErrorCondition(errorCondition, "Array not found");                                                                                                                                            \
     }                                                                                                                                                                                                  \
   }
 
@@ -379,43 +373,42 @@
 // itk::ImageIOBase::IOComponentType '0' value is UNKNOWNCOMPONENTTYPE and therefore
 // should be skipped.
 //
-#define Dream3DArraySwitchOutputComponentMacro(call, type, path, errorCondition)       \
-  switch(type)        \
-  {                   \
-  case itk::ImageIOBase::IOComponentType::UCHAR - 1:                          \
-    Dream3DArraySwitchMacroOutputType(call, path, -4, uint8_t, 0);            \
-    break;            \
-  case itk::ImageIOBase::IOComponentType::CHAR - 1: \
-    Dream3DArraySwitchMacroOutputType(call, path, -4, int8_t, 0);             \
-    break;            \
-  case itk::ImageIOBase::IOComponentType::USHORT - 1:                         \
-    Dream3DArraySwitchMacroOutputType(call, path, -4, uint16_t, 0);           \
-    break;            \
-  case itk::ImageIOBase::IOComponentType::SHORT - 1:                          \
-    Dream3DArraySwitchMacroOutputType(call, path, -4, int16_t, 0);            \
-    break;            \
-  case itk::ImageIOBase::IOComponentType::UINT - 1: \
-    Dream3DArraySwitchMacroOutputType(call, path, -4, uint32_t, 0);           \
-    break;            \
-  case itk::ImageIOBase::IOComponentType::INT - 1:  \
-    Dream3DArraySwitchMacroOutputType(call, path, -4, int32_t, 0);            \
-    break;            \
-  case itk::ImageIOBase::IOComponentType::ULONG - 1:                          \
-    Dream3DArraySwitchMacroOutputType(call, path, -4, uint64_t, 0);           \
-    break;            \
-  case itk::ImageIOBase::IOComponentType::LONG - 1: \
-    Dream3DArraySwitchMacroOutputType(call, path, -4, int64_t, 0);            \
-    break;            \
-  case itk::ImageIOBase::IOComponentType::FLOAT - 1:                          \
-    Dream3DArraySwitchMacroOutputType(call, path, -4, float, 0);              \
-    break;            \
-  case itk::ImageIOBase::IOComponentType::DOUBLE - 1:                         \
-    Dream3DArraySwitchMacroOutputType(call, path, -4, double, 0);             \
-    break;            \
-  default:            \
-    setErrorCondition(-4);                        \
-    notifyErrorMessage(getHumanLabel(), "Unsupported pixel component", errorCondition);  \
-    break;            \
+#define Dream3DArraySwitchOutputComponentMacro(call, type, path, errorCondition)                                                                                                                       \
+  switch(type)                                                                                                                                                                                         \
+  {                                                                                                                                                                                                    \
+  case itk::ImageIOBase::IOComponentType::UCHAR - 1:                                                                                                                                                   \
+    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, uint8_t, 0);                                                                                                                                     \
+    break;                                                                                                                                                                                             \
+  case itk::ImageIOBase::IOComponentType::CHAR - 1:                                                                                                                                                    \
+    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, int8_t, 0);                                                                                                                                      \
+    break;                                                                                                                                                                                             \
+  case itk::ImageIOBase::IOComponentType::USHORT - 1:                                                                                                                                                  \
+    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, uint16_t, 0);                                                                                                                                    \
+    break;                                                                                                                                                                                             \
+  case itk::ImageIOBase::IOComponentType::SHORT - 1:                                                                                                                                                   \
+    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, int16_t, 0);                                                                                                                                     \
+    break;                                                                                                                                                                                             \
+  case itk::ImageIOBase::IOComponentType::UINT - 1:                                                                                                                                                    \
+    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, uint32_t, 0);                                                                                                                                    \
+    break;                                                                                                                                                                                             \
+  case itk::ImageIOBase::IOComponentType::INT - 1:                                                                                                                                                     \
+    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, int32_t, 0);                                                                                                                                     \
+    break;                                                                                                                                                                                             \
+  case itk::ImageIOBase::IOComponentType::ULONG - 1:                                                                                                                                                   \
+    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, uint64_t, 0);                                                                                                                                    \
+    break;                                                                                                                                                                                             \
+  case itk::ImageIOBase::IOComponentType::LONG - 1:                                                                                                                                                    \
+    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, int64_t, 0);                                                                                                                                     \
+    break;                                                                                                                                                                                             \
+  case itk::ImageIOBase::IOComponentType::FLOAT - 1:                                                                                                                                                   \
+    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, float, 0);                                                                                                                                       \
+    break;                                                                                                                                                                                             \
+  case itk::ImageIOBase::IOComponentType::DOUBLE - 1:                                                                                                                                                  \
+    Dream3DArraySwitchMacroOutputType(call, path, errorCondition, double, 0);                                                                                                                                      \
+    break;                                                                                                                                                                                             \
+  default:                                                                                                                                                                                             \
+    setErrorCondition(errorCondition, "Unsupported pixel component");                                                                                                                                 \
+    break;                                                                                                                                                                                             \
   }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -436,7 +429,7 @@
       {                                                                                                                                                                                                \
         QVector<size_t> tDims(3, 0);                                                                                                                                                                   \
         std::tie(tDims[0], tDims[1], tDims[2]) = imageGeometry->getDimensions();                                                                                                                       \
-        if(getErrorCondition() >= 0)                                                                                                                                                                   \
+        if(getErrorCode() >= 0)                                                                                                                                                                        \
         {                                                                                                                                                                                              \
           QString str_type = ptr->getTypeAsString();                                                                                                                                                   \
           itk::ImageIOBase::IOComponentType type = itk::ImageIOBase::GetComponentTypeFromString(str_type.toStdString());                                                                               \
@@ -445,11 +438,11 @@
       }                                                                                                                                                                                                \
       else                                                                                                                                                                                             \
       {                                                                                                                                                                                                \
-        notifyErrorMessage("", "Geometry not found", errorCondition);                                                                                                                                  \
+        setErrorCondition(errorCondition, "Geometry not found");                                                                                                                                       \
       }                                                                                                                                                                                                \
     }                                                                                                                                                                                                  \
     else                                                                                                                                                                                               \
     {                                                                                                                                                                                                  \
-      notifyErrorMessage("", "Array not found", errorCondition);                                                                                                                                       \
+      setErrorCondition(errorCondition, "Array not found");                                                                                                                                            \
     }                                                                                                                                                                                                  \
   }

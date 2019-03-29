@@ -322,7 +322,7 @@ void CreateDataArray::dataCheck()
   clearErrorCondition();
   clearWarningCondition();
 
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -330,31 +330,27 @@ void CreateDataArray::dataCheck()
   if(m_InitializationType == RandomWithRange && m_InitializationRange.first > m_InitializationRange.second)
   {
     QString ss = "Invalid initialization range.  Minimum value is larger than maximum value.";
-    setErrorCondition(-5550);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-5550, ss);
     return;
   }
 
   if(getNumberOfComponents() < 0)
   {
-    setErrorCondition(-8050);
     QString ss = QObject::tr("The number of components must non-negative");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-8050, ss);
   }
   if(getNumberOfComponents() == 0)
   {
-    setErrorCondition(-8051);
     QString ss = QObject::tr("The number of components is Zero. This will result in an array that has no memory allocated. Are you sure you wanted to do this?");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-8051, ss);
   }
   if(!getNewArray().isValid())
   {
-    setErrorCondition(-8051);
     QString ss = QObject::tr("The Created DataArrayPath is invalid. Please select the Data Container, Attribute Matrix and set an output DataArray name.");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-8051, ss);
   }
   QVector<size_t> cDims(1, getNumberOfComponents());
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -430,7 +426,7 @@ void CreateDataArray::execute()
   clearErrorCondition();
   clearWarningCondition();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -493,16 +489,14 @@ template <typename T> void CreateDataArray::checkInitialization(QString dataArra
     if(!ok)
     {
       QString ss = "Could not convert initialization value to a double.";
-      setErrorCondition(-5559);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-5559, ss);
       return;
     }
 
     if(input < static_cast<double>(std::numeric_limits<T>().lowest()) || input > static_cast<double>(std::numeric_limits<T>().max()))
     {
-      setErrorCondition(-4000);
       QString ss = QObject::tr("%1: Invalid initialization value. The valid range is %2 to %3").arg(dataArrayName).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-4000, ss);
       return;
     }
   }
@@ -513,22 +507,19 @@ template <typename T> void CreateDataArray::checkInitialization(QString dataArra
     if(min > max)
     {
       QString ss = dataArrayName + ": Invalid initialization range.  Minimum value is larger than maximum value.";
-      setErrorCondition(-5550);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-5550, ss);
       return;
     }
     if(min < static_cast<double>(std::numeric_limits<T>().lowest()) || max > static_cast<double>(std::numeric_limits<T>().max()))
     {
-      setErrorCondition(-4001);
       QString ss = QObject::tr("%1: The initialization range can only be from %2 to %3").arg(dataArrayName).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-4001, ss);
       return;
     }
     if(min == max)
     {
-      setErrorCondition(-4002);
       QString ss = dataArrayName + ": The initialization range must have differing values";
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-4002, ss);
       return;
     }
   }

@@ -93,8 +93,7 @@ IDataArrayWkPtr CreateNonPrereqArrayFromArrayType::operator()(AbstractFilter* f,
   else
   {
     QString msg = QObject::tr("The created array '%1' is of unsupported type. The following types are supported: %3").arg(arrayPath.getDataArrayName()).arg(SIMPL::TypeNames::SupportedTypeList);
-    f->setErrorCondition(Errors::UnsupportedType);
-    f->notifyErrorMessage(f->getHumanLabel(), msg, f->getErrorCondition());
+    f->setErrorCondition(Errors::UnsupportedType, msg);
   }
   return ptr;
 }
@@ -144,8 +143,7 @@ IDataArrayWkPtr CreateNonPrereqArrayFromTypeEnum::operator()(AbstractFilter* f, 
     break;
   default:
     QString msg = QObject::tr("The created array '%1' is of unsupported type. The following types are supported: %3").arg(arrayPath.getDataArrayName()).arg(SIMPL::TypeEnums::SupportedTypeList);
-    f->setErrorCondition(Errors::UnsupportedType);
-    f->notifyErrorMessage(f->getHumanLabel(), msg, f->getErrorCondition());
+    f->setErrorCondition(Errors::UnsupportedType, msg);
     break;
   }
   return ptr;
@@ -217,8 +215,7 @@ IDataArrayShPtr CreateArrayFromArrayType::operator()(AbstractFilter* f, const QV
   else
   {
     QString msg = QObject::tr("The created array is of unsupported type.");
-    f->setErrorCondition(Errors::UnsupportedType);
-    f->notifyErrorMessage(f->getHumanLabel(), msg, f->getErrorCondition());
+    f->setErrorCondition(Errors::UnsupportedType, msg);
   }
   return ptr;
 }
@@ -284,8 +281,7 @@ IDataArrayShPtr CreateArrayFromType::operator()(AbstractFilter* f, const QVector
   else
   {
     QString msg = QObject::tr("The created array is of unsupported type.");
-    f->setErrorCondition(Errors::UnsupportedType);
-    f->notifyErrorMessage(f->getHumanLabel(), msg, f->getErrorCondition());
+    f->setErrorCondition(Errors::UnsupportedType, msg);
   }
   return ptr;
 }
@@ -295,27 +291,24 @@ IDataArrayWkPtr GetPrereqArrayFromPath::operator()(AbstractFilter* f, const Data
 {
   IDataArrayShPtr retPtr = IDataArray::NullPointer();
   DataContainer::Pointer volDataCntr = f->getDataContainerArray()->template getPrereqDataContainer<AbstractFilter>(f, arrayPath.getDataContainerName(), false);
-  if(f->getErrorCondition() < 0 || nullptr == volDataCntr)
+  if(f->getErrorCode() < 0 || nullptr == volDataCntr)
   {
     QString ss = QObject::tr("The Data Container '%1' does not exist").arg(arrayPath.getDataContainerName());
-    f->setErrorCondition(Errors::MissingDataContainer);
-    f->notifyErrorMessage(f->getHumanLabel(), ss, f->getErrorCondition());
+    f->setErrorCondition(Errors::MissingDataContainer, ss);
     return retPtr;
   }
   AttributeMatrix::Pointer cell_attr_matrix = volDataCntr->getPrereqAttributeMatrix(f, arrayPath.getAttributeMatrixName(), Errors::MissingAttributeMatrix);
-  if(f->getErrorCondition() < 0 || nullptr == cell_attr_matrix.get())
+  if(f->getErrorCode() < 0 || nullptr == cell_attr_matrix.get())
   {
     QString ss = QObject::tr("The Attribute Matrix '%1' does not exist").arg(arrayPath.getAttributeMatrixName());
-    f->setErrorCondition(Errors::MissingAttributeMatrix);
-    f->notifyErrorMessage(f->getHumanLabel(), ss, f->getErrorCondition());
+    f->setErrorCondition(Errors::MissingAttributeMatrix, ss);
     return retPtr;
   }
   IDataArrayShPtr templ_ptr = cell_attr_matrix->getAttributeArray(arrayPath.getDataArrayName());
   if(nullptr == templ_ptr.get())
   {
     QString ss = QObject::tr("The input array '%1' was not found in the AttributeMatrix '%2'.").arg(arrayPath.getDataArrayName()).arg(arrayPath.getAttributeMatrixName());
-    f->setErrorCondition(Errors::MissingArray);
-    f->notifyErrorMessage(f->getHumanLabel(), ss, f->getErrorCondition());
+    f->setErrorCondition(Errors::MissingArray, ss);
     return retPtr;
   }
   if(compDims.isEmpty())
@@ -378,8 +371,7 @@ IDataArrayWkPtr GetPrereqArrayFromPath::operator()(AbstractFilter* f, const Data
                      .arg(arrayPath.getDataArrayName())
                      .arg(i_data_array->getTypeAsString())
                      .arg(SIMPL::TypeNames::SupportedTypeList);
-    f->setErrorCondition(Errors::UnsupportedType);
-    f->notifyErrorMessage(f->getHumanLabel(), ss, f->getErrorCondition());
+    f->setErrorCondition(Errors::UnsupportedType, ss);
   }
   return retPtr;
 }

@@ -214,7 +214,7 @@ public:
     }
 
     filter->execute();
-    err = filter->getErrorCondition();
+    err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, 0);
 
     auto outputArrayPtr = filter->getDataContainerArray()->getDataContainer("CombineAttributeArraysTest")->getAttributeMatrix("CombineAttributeArraysTest")->getAttributeArray("CombinedData");
@@ -242,7 +242,7 @@ public:
     }
 
     filter->execute();
-    err = filter->getErrorCondition();
+    err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, 0);
 
     outputArrayPtr = filter->getDataContainerArray()->getDataContainer("CombineAttributeArraysTest")->getAttributeMatrix("CombineAttributeArraysTest")->getAttributeArray("CombinedData");
@@ -272,7 +272,7 @@ public:
     }
 
     filter->execute();
-    err = filter->getErrorCondition();
+    err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, 0);
 
     outputArrayPtr = filter->getDataContainerArray()->getDataContainer("CombineAttributeArraysTest")->getAttributeMatrix("CombineAttributeArraysTest")->getAttributeArray("CombinedData");

@@ -79,7 +79,7 @@
     qDebug() << "Unable to set property DerivativesArrayPath for" << #dc;                                                                                                                              \
   }                                                                                                                                                                                                    \
   filter->execute();                                                                                                                                                                                   \
-  err = filter->getErrorCondition();                                                                                                                                                                   \
+  err = filter->getErrorCode();                                                                                                                                                                        \
   DREAM3D_REQUIRE_EQUAL(err, 0);                                                                                                                                                                       \
   data = dc->getAttributeMatrix(derivsName.getAttributeMatrixName())->getAttributeArray(derivsName.getDataArrayName());                                                                                \
   if(nullptr == std::dynamic_pointer_cast<DoubleArrayType>(data))                                                                                                                                      \
@@ -108,7 +108,7 @@
     qDebug() << "Unable to set property DerivativesArrayPath for" << #dc;                                                                                                                              \
   }                                                                                                                                                                                                    \
   filter->execute();                                                                                                                                                                                   \
-  err = filter->getErrorCondition();                                                                                                                                                                   \
+  err = filter->getErrorCode();                                                                                                                                                                        \
   DREAM3D_REQUIRE_NE(err, 0);
 
 class FindDerivativesFilterTest

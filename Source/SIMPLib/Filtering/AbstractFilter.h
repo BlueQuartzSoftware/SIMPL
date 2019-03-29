@@ -85,8 +85,8 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   PYB11_PROPERTY(bool Cancel READ getCancel WRITE setCancel)
   PYB11_PROPERTY(bool Enabled READ getEnabled WRITE setEnabled)
   PYB11_PROPERTY(QString MessagePrefix READ getMessagePrefix WRITE setMessagePrefix)
-  PYB11_PROPERTY(int ErrorCondition READ getErrorCondition WRITE setErrorCondition)
-  PYB11_PROPERTY(int WarningCondition READ getWarningCondition WRITE setWarningCondition)
+  PYB11_PROPERTY(int ErrorCondition READ getErrorCondition)
+  PYB11_PROPERTY(int WarningCondition READ getWarningCondition)
   PYB11_PROPERTY(bool InPreflight READ getInPreflight WRITE setInPreflight)
   PYB11_PROPERTY(int PipelineIndex READ getPipelineIndex WRITE setPipelineIndex)
 
@@ -241,9 +241,9 @@ public:
 
   SIMPL_INSTANCE_PROPERTY(QString, MessagePrefix)
 
-  SIMPL_INSTANCE_PROPERTY(int, ErrorCode)
+  SIMPL_GET_PROPERTY(int, ErrorCode)
 
-  SIMPL_INSTANCE_PROPERTY(int, WarningCode)
+  SIMPL_GET_PROPERTY(int, WarningCode)
 
   SIMPL_INSTANCE_PROPERTY(bool, InPreflight)
 
@@ -416,6 +416,8 @@ protected slots:
 private:
   bool m_Cancel;
   QUuid m_Uuid;
+  int m_ErrorCode = 0;
+  int m_WarningCode = 0;
 
 public:
   AbstractFilter(const AbstractFilter&) = delete; // Copy Constructor Not Implemented

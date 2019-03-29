@@ -50,9 +50,7 @@
 //
 // -----------------------------------------------------------------------------
 AbstractFilter::AbstractFilter()
-: m_ErrorCondition(0)
-, m_WarningCondition(0)
-, m_InPreflight(false)
+: m_InPreflight(false)
 , m_Enabled(true)
 , m_Removing(false)
 , m_PipelineIndex(0)
@@ -127,7 +125,7 @@ void AbstractFilter::renameDataArrayPath(DataArrayPath::RenameType renamePath)
       {
         //QString ss = QString("Updated property '%1' in %2").arg(name).arg(getHumanLabel());
         //notifyStandardOutputMessage(getHumanLabel(), getPipelineIndex(), ss);
-        //notifyWarningMessage("", ss);
+        //setWarningCondition(ss, "");
         var.setValue(path);
         this->setProperty(name, var);
         emit dataArrayPathUpdated(name, oldPath, newPath);
@@ -203,8 +201,7 @@ void AbstractFilter::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void AbstractFilter::execute()
 {
-  setErrorCondition(-3015);
-  notifyErrorMessage(getNameOfClass(), "QAbstractFilter does not implement an execute method. Please use a subclass instead.", getErrorCondition());
+  setErrorCondition(-3015, "QAbstractFilter does not implement an execute method. Please use a subclass instead.");
 }
 
 // -----------------------------------------------------------------------------
@@ -213,8 +210,7 @@ void AbstractFilter::execute()
 void AbstractFilter::preflight()
 {
   setInPreflight(true);
-  setErrorCondition(-3016);
-  notifyErrorMessage(getNameOfClass(), "AbstractFilter does not implement a preflight method. Please use a subclass instead.", getErrorCondition());
+  setErrorCondition(-3016, "AbstractFilter does not implement a preflight method. Please use a subclass instead.");
 }
 
 // -----------------------------------------------------------------------------
@@ -655,6 +651,5 @@ void AbstractFilter::notifyMissingProperty(FilterParameter* filterParameter)
           .arg(filterParameter->getPropertyName())
           .arg(getHumanLabel());
 
-  setWarningCondition(-1);
-  notifyWarningMessage(ss, getWarningCondition());
+  setWarningCondition(-1, ss);
 }

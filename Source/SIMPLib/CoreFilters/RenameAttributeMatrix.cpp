@@ -100,9 +100,8 @@ void RenameAttributeMatrix::dataCheck()
 
   if(m_NewAttributeMatrix.isEmpty())
   {
-    setErrorCondition(-11004);
     QString ss = QObject::tr("The new Attribute Matrix name must be set");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-11004, ss);
     return;
   }
 
@@ -111,7 +110,7 @@ void RenameAttributeMatrix::dataCheck()
   DataContainer::Pointer dc = getDataContainerArray()->getPrereqDataContainer(this, getSelectedAttributeMatrixPath().getDataContainerName());
   getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getSelectedAttributeMatrixPath(), -301);
 
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -119,9 +118,8 @@ void RenameAttributeMatrix::dataCheck()
   bool check = dc->renameAttributeMatrix(amName, getNewAttributeMatrix());
   if(!check)
   {
-    setErrorCondition(-11006);
     QString ss = QObject::tr("Attempt to rename Attribute Matrix '%1' to '%2' failed").arg(amName).arg(getNewAttributeMatrix());
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-11006, ss);
   }
 }
 
@@ -146,7 +144,7 @@ void RenameAttributeMatrix::execute()
   clearErrorCondition();
   clearWarningCondition();
   dataCheck(); // calling the dataCheck will rename the array, so nothing is required here
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

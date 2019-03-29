@@ -411,7 +411,7 @@ class ConvertColorToGrayScaleTest
   int RunTest(const uint8_t& algoMapIndex)
   {
     m_colorToGrayscaleFilter->execute();
-    int erred = m_colorToGrayscaleFilter->getErrorCondition();
+    int erred = m_colorToGrayscaleFilter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(erred, 0);
     int wrongValues = CompareResults(algoMapIndex);
     DREAM3D_REQUIRE_EQUAL(wrongValues, 0)

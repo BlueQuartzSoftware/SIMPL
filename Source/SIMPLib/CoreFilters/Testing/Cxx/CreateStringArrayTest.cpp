@@ -135,7 +135,7 @@ public:
     // Run Filter
 
     createStringArray->execute();
-    DREAM3D_REQUIRED(createStringArray->getErrorCondition(), >=, 0);
+    DREAM3D_REQUIRED(createStringArray->getErrorCode(), >=, 0);
 
     // Check Filter Results
 
@@ -156,7 +156,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     createStringArray->execute();
-    DREAM3D_REQUIRED(createStringArray->getErrorCondition(), ==, -5759);
+    DREAM3D_REQUIRED(createStringArray->getErrorCode(), ==, -5759);
 
     // Test invalid array path; should yield error -8152
 
@@ -170,7 +170,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     createStringArray->execute();
-    DREAM3D_REQUIRED(createStringArray->getErrorCondition(), ==, -8152);
+    DREAM3D_REQUIRED(createStringArray->getErrorCode(), ==, -8152);
 
     // Test negative number of components; should yield error -8150
 
@@ -184,7 +184,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     createStringArray->execute();
-    DREAM3D_REQUIRED(createStringArray->getErrorCondition(), ==, -8150);
+    DREAM3D_REQUIRED(createStringArray->getErrorCode(), ==, -8150);
 
     // Test zero components; should yield error -8151
 
@@ -193,7 +193,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     createStringArray->execute();
-    DREAM3D_REQUIRED(createStringArray->getErrorCondition(), ==, -8151);
+    DREAM3D_REQUIRED(createStringArray->getErrorCode(), ==, -8151);
   }
 
   // -----------------------------------------------------------------------------

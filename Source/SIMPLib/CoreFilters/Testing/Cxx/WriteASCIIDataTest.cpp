@@ -119,22 +119,22 @@ public:
     writer->setOutputStyle(WriteASCIIData::MultiFile);
 
     writer->preflight();
-    int err = writer->getErrorCondition();
+    int err = writer->getErrorCode();
     DREAM3D_REQUIRE(err >= 0)
 
     writer->execute();
-    err = writer->getErrorCondition();
+    err = writer->getErrorCode();
     DREAM3D_REQUIRE(err >= 0)
 
     // Test Single File mode
     writer->setOutputStyle(WriteASCIIData::SingleFile);
     writer->setOutputFilePath(UnitTest::TestTempDir + "/" + "SingleFileMode.csv");
     writer->preflight();
-    err = writer->getErrorCondition();
+    err = writer->getErrorCode();
     DREAM3D_REQUIRE(err >= 0)
 
     writer->execute();
-    err = writer->getErrorCondition();
+    err = writer->getErrorCode();
     DREAM3D_REQUIRE(err >= 0)
 
     // Back to MultiFile mode
@@ -146,11 +146,11 @@ public:
     paths = {DataArrayPath("DataContainer", "TestAttributeMatrix", "NeighborList")};
     writer->setSelectedDataArrayPaths(paths);
     writer->preflight();
-    err = writer->getErrorCondition();
+    err = writer->getErrorCode();
     DREAM3D_REQUIRE(err < 0)
 
     writer->execute();
-    err = writer->getErrorCondition();
+    err = writer->getErrorCode();
     DREAM3D_REQUIRE(err < 0)
 
     StructArray<int32_t>::Pointer structArray = StructArray<int32_t>::CreateArray(k_ArraySize, "StructArray", true);
@@ -158,11 +158,11 @@ public:
     paths = {DataArrayPath("DataContainer", "TestAttributeMatrix", "StructArray")};
     writer->setSelectedDataArrayPaths(paths);
     writer->preflight();
-    err = writer->getErrorCondition();
+    err = writer->getErrorCode();
     DREAM3D_REQUIRE(err < 0)
 
     writer->execute();
-    err = writer->getErrorCondition();
+    err = writer->getErrorCode();
     DREAM3D_REQUIRE(err < 0)
 
     StatsDataArray::Pointer statsDataArray = StatsDataArray::CreateArray(k_ArraySize, "StatsDataArray", true);
@@ -170,11 +170,11 @@ public:
     paths = {DataArrayPath("DataContainer", "TestAttributeMatrix", "StatsDataArray")};
     writer->setSelectedDataArrayPaths(paths);
     writer->preflight();
-    err = writer->getErrorCondition();
+    err = writer->getErrorCode();
     DREAM3D_REQUIRE(err < 0)
 
     writer->execute();
-    err = writer->getErrorCondition();
+    err = writer->getErrorCode();
     DREAM3D_REQUIRE(err < 0)
   }
 

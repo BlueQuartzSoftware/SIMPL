@@ -170,7 +170,7 @@ public:
     // Run filter
 
     copyFeatureArrayToElementArray->execute();
-    DREAM3D_REQUIRED(copyFeatureArrayToElementArray->getErrorCondition(), >=, 0);
+    DREAM3D_REQUIRED(copyFeatureArrayToElementArray->getErrorCode(), >=, 0);
 
     // Check filter results
 

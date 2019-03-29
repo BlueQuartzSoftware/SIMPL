@@ -75,10 +75,9 @@ public:
     VoxelDataContainer* m = getVoxelDataContainer();
     if(nullptr == m)
     {
-      setErrorCondition(-1);
       QStringstream ss;
       ss << " DataContainer was nullptr";
-      setErrorMessage(ss.str());
+      setErrorCondition(-1, ss.str());
       return;
     }
     int size = UnitTest::VtkGrainIdIOTest::XSize * UnitTest::VtkGrainIdIOTest::YSize * UnitTest::VtkGrainIdIOTest::ZSize;

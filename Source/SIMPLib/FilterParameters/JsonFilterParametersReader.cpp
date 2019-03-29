@@ -177,7 +177,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromFile(QString
         currentLine++;
       }
 
-      PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New("[NOT_READABLE]", JsonFilterParametersReader::ClassName(), msg, -1);
+      PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New("[NOT_READABLE]", QObject::tr("%1: %2").arg(JsonFilterParametersReader::ClassName()).arg(msg), -1);
       obs->processPipelineMessage(pm);
     }
     return FilterPipeline::NullPointer();
@@ -224,7 +224,7 @@ QString JsonFilterParametersReader::getJsonFromFile(QString filePath, IObserver*
       {
         QString msg = createErrorMessageFromJsonParseError(parseError);
         msg = QString("File '%1' had errors while parsing the json data.%2").arg(filePath) + msg;
-        PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New("[NOT_READABLE]", JsonFilterParametersReader::ClassName(), msg, -1);
+        PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New("[NOT_READABLE]", QObject::tr("%1: %2").arg(JsonFilterParametersReader::ClassName()).arg(msg), -1);
         obs->processPipelineMessage(pm);
       }
       return QString();
@@ -474,7 +474,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
                          .arg(filterName);
 
         QString prefix = "JsonFilterParametersReader::ReadPipelineFromFile()";
-        PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New(pipeline->getName(), prefix, ss, -66066);
+        PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New(pipeline->getName(), QObject::tr("%1: %2").arg(prefix).arg(ss), -66066);
         obs->processPipelineMessage(pm);
       }
     }
@@ -512,7 +512,7 @@ void JsonFilterParametersReader::readNameOfPipelineFromFile(QString filePath, QS
     {
       QString msg = createErrorMessageFromJsonParseError(parseError);
       msg = QString("File '%1' had errors while parsing the json data.%2").arg(fInfo.absoluteFilePath()) + msg;
-      PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New("[NOT_READABLE]", JsonFilterParametersReader::ClassName(), msg, -1);
+      PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New("[NOT_READABLE]", QObject::tr("%1: %2").arg(JsonFilterParametersReader::ClassName()).arg(msg), -1);
       obs->processPipelineMessage(pm);
     }
     name = QString("ERROR: Could not open file specified.");

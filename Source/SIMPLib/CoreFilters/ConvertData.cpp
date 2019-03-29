@@ -174,10 +174,9 @@ void ConvertData(AbstractFilter* filter, T* ptr, QVector<size_t> dims, DataConta
   }
   else
   {
-    filter->setErrorCondition(-399);
     QString ss =
         QString("Error Converting DataArray '%1/%2' from type %3 to type %4").arg(attributeMatrixName).arg(ptr->getName()).arg(static_cast<int>(ptr->getType())).arg(static_cast<int>(scalarType));
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+    filter->setErrorCondition(-399, ss);
   }
 }
 } // End Namespace Detail
@@ -249,21 +248,20 @@ void ConvertData::dataCheck()
   if(m_OutputArrayName.isEmpty())
   {
     ss = QObject::tr("The output array name must be set");
-    setErrorCondition(-398);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-398, ss);
     return;
   }
 
   if(getInPreflight())
   {
     AttributeMatrix::Pointer cellAttrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedCellArrayPath, -301);
-    if(getErrorCondition() < 0)
+    if(getErrorCode() < 0)
     {
       return;
     }
 
     IDataArray::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedCellArrayPath());
-    if(getErrorCondition() < 0)
+    if(getErrorCode() < 0)
     {
       return;
     }
@@ -339,7 +337,7 @@ void ConvertData::execute()
   clearErrorCondition();
   clearWarningCondition();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -351,7 +349,7 @@ void ConvertData::execute()
 
   if (nullptr == iArray.get())
   {
-    setErrorCondition(-90002);
+    setErrorCondition(-90002, tr("Data Array '%1' does not exist.").arg(m_SelectedCellArrayPath.getDataArrayName()));
     return;
   }
 

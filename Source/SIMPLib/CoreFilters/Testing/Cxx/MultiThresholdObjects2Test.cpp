@@ -165,7 +165,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     filter->execute();
-    DREAM3D_REQUIRED(filter->getErrorCondition(), >=, 0);
+    DREAM3D_REQUIRED(filter->getErrorCode(), >=, 0);
 
     DataArrayPath path = DataArrayPath(dataContainerName, SIMPL::Defaults::CellAttributeMatrixName, outputName);
     IDataArray::Pointer thresholdArray =
@@ -240,7 +240,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     filter->execute();
-    DREAM3D_REQUIRED(filter->getErrorCondition(), >=, 0);
+    DREAM3D_REQUIRED(filter->getErrorCode(), >=, 0);
 
     DataArrayPath path = DataArrayPath(dataContainerName, SIMPL::Defaults::CellAttributeMatrixName, outputName);
     IDataArray::Pointer thresholdArray =

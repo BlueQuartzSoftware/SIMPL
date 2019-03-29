@@ -198,12 +198,12 @@ public:
 
     setGeometryTest(filter, 1);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0);
 
     // test Z equal to minimum Z
     setGeometryTest(filter, 2);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0);
   }
 
   // -----------------------------------------------------------------------------
@@ -216,7 +216,7 @@ public:
 
     setGeometryTest(filter, 3);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -7788);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -7788);
   }
 
   // -----------------------------------------------------------------------------
@@ -229,7 +229,7 @@ public:
 
     setInvalidGeometry(filter, 3);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -7789);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -7789);
   }
 
   // -----------------------------------------------------------------------------
@@ -243,7 +243,7 @@ public:
     setNullDataContainer(filter);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -999);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -999);
   }
 
   // -----------------------------------------------------------------------------
