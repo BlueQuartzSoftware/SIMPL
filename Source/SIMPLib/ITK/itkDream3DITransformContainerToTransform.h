@@ -38,12 +38,9 @@
 #include "itkSimpleDataObjectDecorator.h"
 #include "itkTransformBase.h"
 
+// SIMPL / ITK
 #include "SIMPLib/Geometry/ITransformContainer.h"
-
-#if defined(ITK_VERSION_MAJOR) && ITK_VERSION_MAJOR == 4
-#define ITKv5_CONST
-#endif
-
+#include "SIMPLib/ITK/itkSupportConstants.h"
 
 namespace itk
 {

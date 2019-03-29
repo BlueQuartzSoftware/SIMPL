@@ -33,11 +33,8 @@
 
 #pragma once
 
+#include "SIMPLib/ITK/itkSupportConstants.h"
 #include "itkDream3DTransformContainerToTransform.h"
-
-#if defined(ITK_VERSION_MAJOR) && ITK_VERSION_MAJOR == 4
-#define ITKv5_CONST
-#endif
 
 namespace itk
 {

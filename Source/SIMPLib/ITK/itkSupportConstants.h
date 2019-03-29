@@ -45,6 +45,10 @@
 
 #include "SIMPLib/DataArrays/DataArray.hpp"
 
+#if defined(ITK_VERSION_MAJOR) && ITK_VERSION_MAJOR == 4
+#define ITKv5_CONST
+#endif
+
 /**
  * @brief This namespace is used to define some Constants for the plugin itself.
  */

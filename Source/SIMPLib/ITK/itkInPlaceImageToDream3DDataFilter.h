@@ -15,7 +15,8 @@
 
 namespace itk
 {
-template <typename PixelType, unsigned int VDimension> class InPlaceImageToDream3DDataFilter : public ProcessObject
+template <typename PixelType, unsigned int VDimension>
+class InPlaceImageToDream3DDataFilter : public ProcessObject
 {
 public:
   /** Standard class typedefs. */
@@ -76,4 +77,3 @@ private:
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkInPlaceImageToDream3DDataFilter.hxx"
 #endif
-
