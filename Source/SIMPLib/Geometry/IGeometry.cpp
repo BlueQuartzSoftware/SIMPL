@@ -424,7 +424,7 @@ void IGeometry::sendThreadSafeProgressMessage(int64_t counter, int64_t max)
   {
     int64_t progressInt = static_cast<int64_t>((static_cast<float>(m_ProgressCounter) / max) * 100.0f);
     QString ss = QObject::tr("%1% Complete").arg(progressInt);
-    notifyStatusMessage("", ss);
+    notifyStatusMessage(ss);
     prog += progIncrement;
   }
 

@@ -408,7 +408,7 @@ void WriteASCIIData::writeMultiFileOutput()
     IDataArray::Pointer selectedArrayPtr = m_SelectedWeakPtrVector.at(i).lock();
 
     QString message = QObject::tr("|| Exporting Dataset '%1'").arg(selectedArrayPtr->getName());
-    notifyStatusMessage(getMessagePrefix(), getHumanLabel(), message);
+    notifyStatusMessageWithPrefix(getMessagePrefix(), message);
 
     QString exportArrayFile = m_OutputPath + QDir::separator() + selectedArrayPtr->getName() + m_FileExtension; // the complete output file path, name and extension
 
@@ -519,7 +519,7 @@ void WriteASCIIData::writeSingleFileOutput()
     if(percentIncrement > threshold)
     {
       QString ss = QObject::tr("Writing Output: %1%").arg(static_cast<int32_t>(percentIncrement));
-      notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
+      notifyStatusMessageWithPrefix(getMessagePrefix(), ss);
       threshold = threshold + 5.0f;
       if(threshold < percentIncrement)
       {

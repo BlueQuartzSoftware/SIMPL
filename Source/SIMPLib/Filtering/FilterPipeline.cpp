@@ -841,7 +841,7 @@ DataContainerArray::Pointer FilterPipeline::execute()
   {
     int filtIndex = filt->getPipelineIndex();
     QString ss = QObject::tr("[%1/%2] %3").arg(filtIndex+1).arg(m_Pipeline.size()).arg(filt->getHumanLabel());
-    notifyStatusMessage("", ss);
+    notifyStatusMessage(ss);
 
     emit filt->filterInProgress(filt.get());
 
@@ -892,13 +892,13 @@ DataContainerArray::Pointer FilterPipeline::execute()
     case FilterPipeline::State::Canceling:
     {
       m_ExecutionResult = FilterPipeline::ExecutionResult::Canceled;
-      notifyStatusMessage("", "Pipeline Canceled");
+      notifyStatusMessage("Pipeline Canceled");
       break;
     }
     case FilterPipeline::State::Executing:
     {
       m_ExecutionResult = FilterPipeline::ExecutionResult::Completed;
-      notifyStatusMessage("", "Pipeline Complete");
+      notifyStatusMessage("Pipeline Complete");
       break;
     }
     case FilterPipeline::State::Idle:

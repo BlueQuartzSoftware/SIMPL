@@ -261,7 +261,7 @@ void FeatureDataCSVWriter::execute()
     if(percentIncrement > threshold)
     {
       QString ss = QObject::tr("Writing Feature Data || %1% Complete").arg(static_cast<double>(percentIncrement));
-      notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
+      notifyStatusMessageWithPrefix(getMessagePrefix(), ss);
       threshold = threshold + 5.0f;
       if(threshold < percentIncrement)
       {

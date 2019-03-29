@@ -79,7 +79,7 @@ class FilterMessageHandler : public AbstractMessageHandler
     void processMessage(const GenericStatusMessage* msg) const override
     {
       QString messageText = QObject::tr("Computing Derivatives || %1").arg(msg->getMessageText());
-      emit m_Filter->notifyStatusMessage(msg->getPrefix(), messageText);
+      emit m_Filter->notifyStatusMessageWithPrefix(msg->getPrefix(), messageText);
     }
 
     /**

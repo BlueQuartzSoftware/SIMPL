@@ -192,7 +192,7 @@ void WriteTriangleGeometry::execute()
   // Make sure any directory path is also available as the user may have just typed
   // in a path without actually creating the full path
 
-  notifyStatusMessage(getHumanLabel(), "Writing Nodes Text File");
+  notifyStatusMessage("Writing Nodes Text File");
   QFileInfo fi(getOutputNodesFile());
   QDir parentPath = fi.path();
 
@@ -241,7 +241,7 @@ void WriteTriangleGeometry::execute()
 
   // ++++++++++++++ Write the Triangles File +++++++++++++++++++++++++++++++++++++++++++
 
-  notifyStatusMessage(getHumanLabel(), "Writing Triangles Text File");
+  notifyStatusMessage("Writing Triangles Text File");
   QFileInfo triFI(getOutputTrianglesFile());
   parentPath = triFI.path();
 
