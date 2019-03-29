@@ -241,9 +241,9 @@ public:
 
   SIMPL_INSTANCE_PROPERTY(QString, MessagePrefix)
 
-  SIMPL_INSTANCE_PROPERTY(int, ErrorCondition)
+  SIMPL_INSTANCE_PROPERTY(int, ErrorCode)
 
-  SIMPL_INSTANCE_PROPERTY(int, WarningCondition)
+  SIMPL_INSTANCE_PROPERTY(int, WarningCode)
 
   SIMPL_INSTANCE_PROPERTY(bool, InPreflight)
 
@@ -311,35 +311,31 @@ public:
   virtual DataArrayPath::RenameContainer getRenamedPaths();
 
   /**
-   * @brief notifyErrorMessage
-   * @param humanLabel
-   * @param msg
+   * @brief setErrorCondition
    * @param code
+   * @param messageText
    */
-  void notifyErrorMessage(const QString &prefix, const QString& msg, int code) override;
+  void setErrorCondition(int code, const QString& messageText) override;
 
   /**
-   * @brief notifyWarningMessage
-   * @param humanLabel
-   * @param msg
+   * @brief setWarningCondition
    * @param code
+   * @param messageText
    */
-  void notifyWarningMessage(const QString &prefix, const QString& msg, int code) override;
+  void setWarningCondition(int code, const QString& messageText) override;
 
   /**
    * @brief notifyStatusMessage
-   * @param humanLabel
-   * @param msg
+   * @param messageText
    */
-  void notifyStatusMessage(const QString &prefix, const QString& msg) override;
+  void notifyStatusMessage(const QString& messageText) override;
 
   /**
    * @brief notifyProgressMessage
-   * @param humanLabel
-   * @param msg
    * @param progress
+   * @param messageText
    */
-  void notifyProgressMessage(const QString &prefix, const QString& msg, int progress);
+  void notifyProgressMessage(int progress, const QString& messageText);
 
   /**
    * @brief notifyMissingProperty

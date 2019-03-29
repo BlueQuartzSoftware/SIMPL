@@ -59,7 +59,7 @@ class SIMPLib_EXPORT GenericWarningMessage : public AbstractWarningMessage
      * @param code
      * @return
      */
-    static Pointer New(const QString& prefix, const QString& msgText, int code);
+    static Pointer New(const QString& msgText, int code);
 
     /**
      * @brief This method creates and returns a string for generic warning messages
@@ -76,7 +76,7 @@ class SIMPLib_EXPORT GenericWarningMessage : public AbstractWarningMessage
 
   protected:
     GenericWarningMessage();
-    GenericWarningMessage(const QString& prefix, const QString& msgText, int code);
+    GenericWarningMessage(const QString& msgText, int code);
 
   private:
 

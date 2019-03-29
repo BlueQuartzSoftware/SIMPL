@@ -49,8 +49,8 @@ FilterErrorMessage::FilterErrorMessage()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterErrorMessage::FilterErrorMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString &prefix, const QString& msgText, int code)
-: AbstractErrorMessage(prefix, msgText, code)
+FilterErrorMessage::FilterErrorMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText, int code)
+: AbstractErrorMessage(msgText, code)
 , m_ClassName(className)
 , m_HumanLabel(humanLabel)
 , m_PipelineIndex(pipelineIndex)
@@ -65,9 +65,9 @@ FilterErrorMessage::~FilterErrorMessage() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterErrorMessage::Pointer FilterErrorMessage::New(const QString& className, const QString& humanLabel, int pipelineIndex, const QString &prefix, const QString& msgText, int code)
+FilterErrorMessage::Pointer FilterErrorMessage::New(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText, int code)
 {
-  FilterErrorMessage::Pointer shared_ptr (new FilterErrorMessage(className, humanLabel, pipelineIndex, prefix, msgText, code));
+  FilterErrorMessage::Pointer shared_ptr (new FilterErrorMessage(className, humanLabel, pipelineIndex, msgText, code));
   return shared_ptr;
 }
 
@@ -76,7 +76,7 @@ FilterErrorMessage::Pointer FilterErrorMessage::New(const QString& className, co
 // -----------------------------------------------------------------------------
 QString FilterErrorMessage::generateMessageString() const
 {
-  QString ss = QObject::tr("'%1' Error (%2): %3: %4").arg(getClassName()).arg(getCode()).arg(getHumanLabel()).arg(getMessageText());
+  QString ss = QObject::tr("'%1' Error (%2): %3").arg(getClassName()).arg(getCode()).arg(getMessageText());
   return ss;
 }
 

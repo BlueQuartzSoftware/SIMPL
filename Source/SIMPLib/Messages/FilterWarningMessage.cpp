@@ -49,8 +49,8 @@ FilterWarningMessage::FilterWarningMessage()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterWarningMessage::FilterWarningMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString &prefix, const QString& msgText, int code)
-: AbstractWarningMessage(humanLabel, msgText, code)
+FilterWarningMessage::FilterWarningMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText, int code)
+: AbstractWarningMessage(msgText, code)
 , m_ClassName(className)
 , m_HumanLabel(humanLabel)
 , m_PipelineIndex(pipelineIndex)
@@ -65,9 +65,9 @@ FilterWarningMessage::~FilterWarningMessage() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterWarningMessage::Pointer FilterWarningMessage::New(const QString& className, const QString& humanLabel, int pipelineIndex, const QString &prefix, const QString& msgText, int code)
+FilterWarningMessage::Pointer FilterWarningMessage::New(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText, int code)
 {
-  FilterWarningMessage::Pointer shared_ptr (new FilterWarningMessage(className, humanLabel, pipelineIndex, prefix, msgText, code));
+  FilterWarningMessage::Pointer shared_ptr (new FilterWarningMessage(className, humanLabel, pipelineIndex, msgText, code));
   return shared_ptr;
 }
 
@@ -76,7 +76,7 @@ FilterWarningMessage::Pointer FilterWarningMessage::New(const QString& className
 // -----------------------------------------------------------------------------
 QString FilterWarningMessage::generateMessageString() const
 {
-  QString ss = QObject::tr("'%1' Warning (%2): %3: %4").arg(getClassName()).arg(getCode()).arg(getPrefix()).arg(getMessageText());
+  QString ss = QObject::tr("'%1' Warning (%2): %4").arg(getClassName()).arg(getCode()).arg(getMessageText());
   return ss;
 }
 

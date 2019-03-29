@@ -49,8 +49,8 @@ GenericWarningMessage::GenericWarningMessage()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-GenericWarningMessage::GenericWarningMessage(const QString& prefix, const QString& msgText, int code)
-: AbstractWarningMessage(prefix, msgText, code)
+GenericWarningMessage::GenericWarningMessage(const QString& msgText, int code)
+: AbstractWarningMessage(msgText, code)
 {
 }
 
@@ -62,9 +62,9 @@ GenericWarningMessage::~GenericWarningMessage() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-GenericWarningMessage::Pointer GenericWarningMessage::New(const QString& prefix, const QString& msgText, int code)
+GenericWarningMessage::Pointer GenericWarningMessage::New(const QString& msgText, int code)
 {
-  GenericWarningMessage::Pointer shared_ptr (new GenericWarningMessage(prefix, msgText, code));
+  GenericWarningMessage::Pointer shared_ptr (new GenericWarningMessage(msgText, code));
   return shared_ptr;
 }
 
@@ -73,7 +73,7 @@ GenericWarningMessage::Pointer GenericWarningMessage::New(const QString& prefix,
 // -----------------------------------------------------------------------------
 QString GenericWarningMessage::generateMessageString() const
 {
-  QString ss = QObject::tr("Error (%1): %2: %3").arg(getCode()).arg(getPrefix()).arg(getMessageText());
+  QString ss = QObject::tr("Error (%1): %2").arg(getCode()).arg(getMessageText());
   return ss;
 }
 

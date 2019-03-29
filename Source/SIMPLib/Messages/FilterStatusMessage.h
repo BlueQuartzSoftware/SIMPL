@@ -66,7 +66,7 @@ class SIMPLib_EXPORT FilterStatusMessage : public AbstractStatusMessage
      * @param msg
      * @return
      */
-    static Pointer New(const QString& className, const QString& humanLabel, int pipelineIndex, const QString &prefix, const QString& msgText);
+    static Pointer New(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText);
 
     /**
      * @brief This method creates and returns a string for filter status messages
@@ -83,7 +83,7 @@ class SIMPLib_EXPORT FilterStatusMessage : public AbstractStatusMessage
 
   protected:
     FilterStatusMessage();
-    FilterStatusMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString &prefix, const QString& msgText);
+    FilterStatusMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText);
 
   private:
 

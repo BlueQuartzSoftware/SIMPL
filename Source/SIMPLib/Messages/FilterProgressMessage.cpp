@@ -49,8 +49,8 @@ FilterProgressMessage::FilterProgressMessage()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterProgressMessage::FilterProgressMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString &prefix, const QString& msgText, int progress)
-: AbstractProgressMessage(humanLabel, msgText, progress)
+FilterProgressMessage::FilterProgressMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText, int progress)
+: AbstractProgressMessage(msgText, progress)
 , m_ClassName(className)
 , m_HumanLabel(humanLabel)
 , m_PipelineIndex(pipelineIndex)
@@ -65,9 +65,9 @@ FilterProgressMessage::~FilterProgressMessage() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterProgressMessage::Pointer FilterProgressMessage::New(const QString& className, const QString& humanLabel, int pipelineIndex, const QString &prefix, const QString& msgText, int progress)
+FilterProgressMessage::Pointer FilterProgressMessage::New(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText, int progress)
 {
-  FilterProgressMessage::Pointer shared_ptr (new FilterProgressMessage(className, humanLabel, pipelineIndex, prefix, msgText, progress));
+  FilterProgressMessage::Pointer shared_ptr (new FilterProgressMessage(className, humanLabel, pipelineIndex, msgText, progress));
   return shared_ptr;
 }
 
@@ -76,13 +76,7 @@ FilterProgressMessage::Pointer FilterProgressMessage::New(const QString& classNa
 // -----------------------------------------------------------------------------
 QString FilterProgressMessage::generateMessageString() const
 {
-  if(getPrefix().isEmpty())
-  {
-    QString ss = QObject::tr("%1 %2%%").arg(getMessageText()).arg(getProgressValue());
-    return ss;
-  }
-
-  QString ss = QObject::tr("%1: %2 %3%%").arg(getPrefix()).arg(getMessageText()).arg(getProgressValue());
+  QString ss = QObject::tr("%1 %2%%").arg(getMessageText()).arg(getProgressValue());
   return ss;
 }
 

@@ -50,8 +50,8 @@ PipelineErrorMessage::PipelineErrorMessage()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineErrorMessage::PipelineErrorMessage(const QString &pipelineName, const QString& prefix, const QString& msgText, int code)
-: AbstractErrorMessage(prefix, msgText, code)
+PipelineErrorMessage::PipelineErrorMessage(const QString &pipelineName, const QString& msgText, int code)
+: AbstractErrorMessage(msgText, code)
 , m_PipelineName(pipelineName)
 {
 }
@@ -64,9 +64,9 @@ PipelineErrorMessage::~PipelineErrorMessage() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineErrorMessage::Pointer PipelineErrorMessage::New(const QString &pipelineName, const QString& prefix, const QString& msgText, int code)
+PipelineErrorMessage::Pointer PipelineErrorMessage::New(const QString &pipelineName, const QString& msgText, int code)
 {
-  PipelineErrorMessage::Pointer shared_ptr (new PipelineErrorMessage(pipelineName, prefix, msgText, code));
+  PipelineErrorMessage::Pointer shared_ptr (new PipelineErrorMessage(pipelineName, msgText, code));
   return shared_ptr;
 }
 
@@ -75,7 +75,7 @@ PipelineErrorMessage::Pointer PipelineErrorMessage::New(const QString &pipelineN
 // -----------------------------------------------------------------------------
 QString PipelineErrorMessage::generateMessageString() const
 {
-  QString ss = QObject::tr("Error (%1): %2: %3").arg(getCode()).arg(getPrefix()).arg(getMessageText());
+  QString ss = QObject::tr("Error (%1): %2").arg(getCode()).arg(getMessageText());
   return ss;
 }
 

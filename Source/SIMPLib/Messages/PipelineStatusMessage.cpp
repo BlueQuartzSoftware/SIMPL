@@ -49,8 +49,8 @@ PipelineStatusMessage::PipelineStatusMessage()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineStatusMessage::PipelineStatusMessage(const QString &pipelineName, const QString& prefix, const QString& msgText)
-: AbstractStatusMessage(prefix, msgText)
+PipelineStatusMessage::PipelineStatusMessage(const QString &pipelineName, const QString& msgText)
+: AbstractStatusMessage(msgText)
 , m_PipelineName(pipelineName)
 {
 }
@@ -63,9 +63,9 @@ PipelineStatusMessage::~PipelineStatusMessage() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineStatusMessage::Pointer PipelineStatusMessage::New(const QString &pipelineName, const QString& prefix, const QString& msgText)
+PipelineStatusMessage::Pointer PipelineStatusMessage::New(const QString &pipelineName, const QString& msgText)
 {
-  PipelineStatusMessage::Pointer shared_ptr (new PipelineStatusMessage(pipelineName, prefix, msgText));
+  PipelineStatusMessage::Pointer shared_ptr (new PipelineStatusMessage(pipelineName, msgText));
   return shared_ptr;
 }
 
@@ -74,14 +74,7 @@ PipelineStatusMessage::Pointer PipelineStatusMessage::New(const QString &pipelin
 // -----------------------------------------------------------------------------
 QString PipelineStatusMessage::generateMessageString() const
 {
-  if(getPrefix().isEmpty())
-  {
-    QString ss = QObject::tr("%2").arg(getMessageText());
-    return ss;
-  }
-
-  QString ss = QObject::tr("%1: %2").arg(getPrefix()).arg(getMessageText());
-  return ss;
+  return getMessageText();
 }
 
 // -----------------------------------------------------------------------------

@@ -49,8 +49,8 @@ GenericProgressMessage::GenericProgressMessage()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-GenericProgressMessage::GenericProgressMessage(const QString& prefix, const QString& msgText, int progress)
-: AbstractProgressMessage(prefix, msgText, progress)
+GenericProgressMessage::GenericProgressMessage(const QString& msgText, int progress)
+: AbstractProgressMessage(msgText, progress)
 {
 }
 
@@ -62,9 +62,9 @@ GenericProgressMessage::~GenericProgressMessage() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-GenericProgressMessage::Pointer GenericProgressMessage::New(const QString& prefix, const QString& msgText, int progress)
+GenericProgressMessage::Pointer GenericProgressMessage::New(const QString& msgText, int progress)
 {
-  GenericProgressMessage::Pointer shared_ptr (new GenericProgressMessage(prefix, msgText, progress));
+  GenericProgressMessage::Pointer shared_ptr (new GenericProgressMessage(msgText, progress));
   return shared_ptr;
 }
 
@@ -73,13 +73,7 @@ GenericProgressMessage::Pointer GenericProgressMessage::New(const QString& prefi
 // -----------------------------------------------------------------------------
 QString GenericProgressMessage::generateMessageString() const
 {
-  if(getPrefix().isEmpty())
-  {
-    QString ss = QObject::tr("%1 %2%%").arg(getMessageText()).arg(getProgressValue());
-    return ss;
-  }
-
-  QString ss = QObject::tr("%1: %2 %3%%").arg(getPrefix()).arg(getMessageText()).arg(getProgressValue());
+  QString ss = QObject::tr("%1 %2%%").arg(getMessageText()).arg(getProgressValue());
   return ss;
 }
 

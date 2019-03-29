@@ -46,9 +46,8 @@ AbstractMessage::AbstractMessage()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractMessage::AbstractMessage(const QString& prefix, const QString &msgText)
-: m_Prefix(prefix)
-, m_MessageText(msgText)
+AbstractMessage::AbstractMessage(const QString &msgText)
+: m_MessageText(msgText)
 {
 }
 

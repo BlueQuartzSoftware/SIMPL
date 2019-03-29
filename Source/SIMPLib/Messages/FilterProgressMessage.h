@@ -67,7 +67,7 @@ class SIMPLib_EXPORT FilterProgressMessage : public AbstractProgressMessage
      * @param code
      * @return
      */
-    static Pointer New(const QString& className, const QString& humanLabel, int pipelineIndex, const QString &prefix, const QString& msgText, int code);
+    static Pointer New(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText, int code);
 
     /**
      * @brief This method creates and returns a string for filter progress messages
@@ -84,7 +84,7 @@ class SIMPLib_EXPORT FilterProgressMessage : public AbstractProgressMessage
 
   protected:
     FilterProgressMessage();
-    FilterProgressMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString &prefix, const QString& msgText, int progress);
+    FilterProgressMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText, int progress);
 
   private:
 

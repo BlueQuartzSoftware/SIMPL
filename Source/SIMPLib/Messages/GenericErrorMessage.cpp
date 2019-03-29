@@ -49,8 +49,8 @@ GenericErrorMessage::GenericErrorMessage()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-GenericErrorMessage::GenericErrorMessage(const QString &prefix, const QString& msgText, int code)
-: AbstractErrorMessage(prefix, msgText, code)
+GenericErrorMessage::GenericErrorMessage(const QString& msgText, int code)
+: AbstractErrorMessage(msgText, code)
 {
 }
 
@@ -62,9 +62,9 @@ GenericErrorMessage::~GenericErrorMessage() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-GenericErrorMessage::Pointer GenericErrorMessage::New(const QString &prefix, const QString& msgText, int code)
+GenericErrorMessage::Pointer GenericErrorMessage::New(const QString& msgText, int code)
 {
-  GenericErrorMessage::Pointer shared_ptr (new GenericErrorMessage(prefix, msgText, code));
+  GenericErrorMessage::Pointer shared_ptr (new GenericErrorMessage(msgText, code));
   return shared_ptr;
 }
 
@@ -73,7 +73,7 @@ GenericErrorMessage::Pointer GenericErrorMessage::New(const QString &prefix, con
 // -----------------------------------------------------------------------------
 QString GenericErrorMessage::generateMessageString() const
 {
-  QString ss = QObject::tr("Error (%1): %2: %3").arg(getCode()).arg(getPrefix()).arg(getMessageText());
+  QString ss = QObject::tr("Error (%1): %2").arg(getCode()).arg(getMessageText());
   return ss;
 }
 

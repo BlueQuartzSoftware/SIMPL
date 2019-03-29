@@ -62,7 +62,7 @@ class SIMPLib_EXPORT PipelineErrorMessage : public AbstractErrorMessage
      * @param code
      * @return
      */
-    static Pointer New(const QString &pipelineName, const QString& prefix, const QString& msgText, int code);
+    static Pointer New(const QString &pipelineName, const QString& msgText, int code);
 
     /**
      * @brief This method creates and returns a string for pipeline error messages
@@ -79,7 +79,7 @@ class SIMPLib_EXPORT PipelineErrorMessage : public AbstractErrorMessage
 
   protected:
     PipelineErrorMessage();
-    PipelineErrorMessage(const QString &pipelineName, const QString& prefix, const QString& msgText, int code);
+    PipelineErrorMessage(const QString &pipelineName, const QString& msgText, int code);
 
   private:
 

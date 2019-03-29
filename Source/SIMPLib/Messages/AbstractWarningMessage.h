@@ -76,8 +76,8 @@ protected:
   {
   }
 
-  AbstractWarningMessage(const QString& prefix, const QString& msgText, int code)
-  : AbstractMessage(prefix, msgText)
+  AbstractWarningMessage(const QString& msgText, int code)
+  : AbstractMessage(msgText)
   , m_Code(code)
   {
   }

@@ -62,7 +62,7 @@ class SIMPLib_EXPORT PipelineProgressMessage : public AbstractProgressMessage
      * @param progress
      * @return
      */
-    static Pointer New(const QString &pipelineName, const QString& prefix, const QString& msgText, int progress);
+    static Pointer New(const QString &pipelineName, const QString& msgText, int progress);
 
     /**
      * @brief This method creates and returns a string for pipeline progress messages
@@ -79,7 +79,7 @@ class SIMPLib_EXPORT PipelineProgressMessage : public AbstractProgressMessage
 
   protected:
     PipelineProgressMessage();
-    PipelineProgressMessage(const QString &pipelineName, const QString& prefix, const QString& msgText, int progress);
+    PipelineProgressMessage(const QString &pipelineName, const QString& msgText, int progress);
 
   private:
 

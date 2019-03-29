@@ -49,8 +49,8 @@ GenericStatusMessage::GenericStatusMessage()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-GenericStatusMessage::GenericStatusMessage(const QString& prefix, const QString& msgText)
-: AbstractStatusMessage(prefix, msgText)
+GenericStatusMessage::GenericStatusMessage(const QString& msgText)
+: AbstractStatusMessage(msgText)
 {
 }
 
@@ -62,9 +62,9 @@ GenericStatusMessage::~GenericStatusMessage() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-GenericStatusMessage::Pointer GenericStatusMessage::New(const QString& prefix, const QString& msgText)
+GenericStatusMessage::Pointer GenericStatusMessage::New(const QString& msgText)
 {
-  GenericStatusMessage::Pointer shared_ptr (new GenericStatusMessage(prefix, msgText));
+  GenericStatusMessage::Pointer shared_ptr (new GenericStatusMessage(msgText));
   return shared_ptr;
 }
 
@@ -73,14 +73,7 @@ GenericStatusMessage::Pointer GenericStatusMessage::New(const QString& prefix, c
 // -----------------------------------------------------------------------------
 QString GenericStatusMessage::generateMessageString() const
 {
-  if(getPrefix().isEmpty())
-  {
-    QString ss = QObject::tr("%2").arg(getMessageText());
-    return ss;
-  }
-
-  QString ss = QObject::tr("%1: %2").arg(getPrefix()).arg(getMessageText());
-  return ss;
+  return getMessageText();
 }
 
 // -----------------------------------------------------------------------------

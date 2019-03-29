@@ -127,7 +127,7 @@ void AbstractFilter::renameDataArrayPath(DataArrayPath::RenameType renamePath)
       {
         //QString ss = QString("Updated property '%1' in %2").arg(name).arg(getHumanLabel());
         //notifyStandardOutputMessage(getHumanLabel(), getPipelineIndex(), ss);
-        //notifyStatusMessage(getHumanLabel(), ss);
+        //notifyWarningMessage("", ss);
         var.setValue(path);
         this->setProperty(name, var);
         emit dataArrayPathUpdated(name, oldPath, newPath);
@@ -593,38 +593,38 @@ void AbstractFilter::cleanupFilter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::notifyErrorMessage(const QString &prefix, const QString& msg, int code)
+void AbstractFilter::setErrorCondition(int code, const QString &messageText)
 {
-  setErrorCondition(code);
-  FilterErrorMessage::Pointer pm = FilterErrorMessage::New(getNameOfClass(), getHumanLabel(), getPipelineIndex(), prefix, msg, code);
+  m_ErrorCode = code;
+  FilterErrorMessage::Pointer pm = FilterErrorMessage::New(getNameOfClass(), getHumanLabel(), getPipelineIndex(), messageText, code);
   emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::notifyStatusMessage(const QString &prefix, const QString& msg)
+void AbstractFilter::notifyStatusMessage(const QString& messageText)
 {
-  FilterStatusMessage::Pointer pm = FilterStatusMessage::New(getNameOfClass(), getHumanLabel(), getPipelineIndex(), prefix, msg);
+  FilterStatusMessage::Pointer pm = FilterStatusMessage::New(getNameOfClass(), getHumanLabel(), getPipelineIndex(), messageText);
   emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::notifyWarningMessage(const QString &prefix, const QString& msg, int code)
+void AbstractFilter::setWarningCondition(int code, const QString& messageText)
 {
-  setWarningCondition(code);
-  FilterWarningMessage::Pointer pm = FilterWarningMessage::New(getNameOfClass(), getHumanLabel(), getPipelineIndex(), prefix, msg, code);
+  m_WarningCode = code;
+  FilterWarningMessage::Pointer pm = FilterWarningMessage::New(getNameOfClass(), getHumanLabel(), getPipelineIndex(), messageText, code);
   emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::notifyProgressMessage(const QString &prefix, const QString& msg, int progress)
+void AbstractFilter::notifyProgressMessage(int progress, const QString& messageText)
 {
-  FilterProgressMessage::Pointer pm = FilterProgressMessage::New(getNameOfClass(), getHumanLabel(), getPipelineIndex(), prefix, msg, progress);
+  FilterProgressMessage::Pointer pm = FilterProgressMessage::New(getNameOfClass(), getHumanLabel(), getPipelineIndex(), messageText, progress);
   emit messageGenerated(pm);
 }
 
@@ -633,7 +633,7 @@ void AbstractFilter::notifyProgressMessage(const QString &prefix, const QString&
 // -----------------------------------------------------------------------------
 void AbstractFilter::clearErrorCondition()
 {
-  m_ErrorCondition = 0;
+  m_ErrorCode = 0;
 }
 
 // -----------------------------------------------------------------------------
@@ -641,7 +641,7 @@ void AbstractFilter::clearErrorCondition()
 // -----------------------------------------------------------------------------
 void AbstractFilter::clearWarningCondition()
 {
-  m_WarningCondition = 0;
+  m_WarningCode = 0;
 }
 
 // -----------------------------------------------------------------------------

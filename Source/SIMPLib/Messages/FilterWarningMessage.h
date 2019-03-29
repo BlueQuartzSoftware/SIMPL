@@ -67,7 +67,7 @@ class SIMPLib_EXPORT FilterWarningMessage : public AbstractWarningMessage
      * @param code
      * @return
      */
-    static Pointer New(const QString& className, const QString& humanLabel, int pipelineIndex, const QString &prefix, const QString& msgText, int code);
+    static Pointer New(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText, int code);
 
     /**
      * @brief This method creates and returns a string for filter warning messages
@@ -84,7 +84,7 @@ class SIMPLib_EXPORT FilterWarningMessage : public AbstractWarningMessage
 
   protected:
     FilterWarningMessage();
-    FilterWarningMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString &prefix, const QString& msgText, int code);
+    FilterWarningMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText, int code);
 
   private:
 

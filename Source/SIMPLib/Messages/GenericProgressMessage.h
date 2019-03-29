@@ -54,13 +54,11 @@ class SIMPLib_EXPORT GenericProgressMessage : public AbstractProgressMessage
 
     /**
      * @brief New
-     * @param humanLabel
-     * @param pipelineIndex
-     * @param msg
+     * @param msgText
      * @param progress
      * @return
      */
-    static Pointer New(const QString& prefix, const QString& msgText, int progress);
+    static Pointer New(const QString& msgText, int progress);
 
     /**
      * @brief This method creates and returns a string for generic progress messages
@@ -77,7 +75,7 @@ class SIMPLib_EXPORT GenericProgressMessage : public AbstractProgressMessage
 
   protected:
     GenericProgressMessage();
-    GenericProgressMessage(const QString& prefix, const QString& msgText, int progress);
+    GenericProgressMessage(const QString& msgText, int progress);
 
   private:
 

@@ -63,7 +63,8 @@ class SIMPLib_EXPORT FilterPipeline : public Observable
   Q_OBJECT
 
   PYB11_CREATE_BINDINGS(FilterPipeline)
-  PYB11_PROPERTY(int ErrorCondition READ getErrorCondition WRITE setErrorCondition)
+  PYB11_PROPERTY(int ErrorCode READ getErrorCode WRITE setErrorCode)
+  PYB11_PROPERTY(int WarningCode READ getWarningCode WRITE setWarningCode)
   PYB11_PROPERTY(AbstractFilter CurrentFilter READ getCurrentFilter WRITE setCurrentFilter)
   PYB11_PROPERTY(State State READ getState)
   PYB11_PROPERTY(ExecutionResult ExecutionResult READ getExecutionResult)
@@ -107,8 +108,8 @@ public:
 
   SIMPL_GET_PROPERTY(FilterPipeline::ExecutionResult, ExecutionResult)
   SIMPL_GET_PROPERTY(FilterPipeline::State, State)
-  SIMPL_INSTANCE_PROPERTY(int, ErrorCondition)
-  SIMPL_INSTANCE_PROPERTY(int, WarningCondition)
+  SIMPL_INSTANCE_PROPERTY(int, ErrorCode)
+  SIMPL_INSTANCE_PROPERTY(int, WarningCode)
   SIMPL_INSTANCE_PROPERTY(AbstractFilter::Pointer, CurrentFilter)
 
   /**
@@ -181,35 +182,31 @@ public:
   QString getName();
 
   /**
-   * @brief notifyErrorMessage
-   * @param humanLabel
-   * @param msg
+   * @brief setErrorCondition
    * @param code
+   * @param messageText
    */
-  void notifyErrorMessage(const QString &prefix, const QString& msg, int code) override;
+  void setErrorCondition(int code, const QString& messageText) override;
 
   /**
-   * @brief notifyWarningMessage
-   * @param humanLabel
-   * @param msg
+   * @brief setWarningCondition
    * @param code
+   * @param messageText
    */
-  void notifyWarningMessage(const QString &prefix, const QString& msg, int code) override;
+  void setWarningCondition(int code, const QString& messageText) override;
 
   /**
    * @brief notifyStatusMessage
-   * @param humanLabel
-   * @param msg
+   * @param messageText
    */
-  void notifyStatusMessage(const QString &prefix, const QString& msg) override;
+  void notifyStatusMessage(const QString& messageText) override;
 
   /**
    * @brief notifyProgressMessage
-   * @param humanLabel
-   * @param msg
    * @param progress
+   * @param messageText
    */
-  void notifyProgressMessage(const QString &prefix, const QString& msg, int progress);
+  void notifyProgressMessage(int progress, const QString& messageText);
 
   /**
    * @brief This method returns a deep copy of the FilterPipeline and all its filters

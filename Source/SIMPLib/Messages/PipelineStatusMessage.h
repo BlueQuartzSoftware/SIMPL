@@ -61,7 +61,7 @@ class SIMPLib_EXPORT PipelineStatusMessage : public AbstractStatusMessage
      * @param msg
      * @return
      */
-    static Pointer New(const QString &pipelineName, const QString& prefix, const QString& msgText);
+    static Pointer New(const QString &pipelineName, const QString& msgText);
 
     /**
      * @brief This method creates and returns a string for pipeline status messages
@@ -78,7 +78,7 @@ class SIMPLib_EXPORT PipelineStatusMessage : public AbstractStatusMessage
 
   protected:
     PipelineStatusMessage();
-    PipelineStatusMessage(const QString &pipelineName, const QString& prefix, const QString& msgText);
+    PipelineStatusMessage(const QString &pipelineName, const QString& msgText);
 
   private:
 

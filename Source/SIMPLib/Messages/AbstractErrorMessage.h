@@ -74,8 +74,8 @@ protected:
   {
   }
 
-  AbstractErrorMessage(const QString& prefix, const QString& msgText, int code)
-  : AbstractMessage(prefix, msgText)
+  AbstractErrorMessage(const QString& msgText, int code)
+  : AbstractMessage(msgText)
   , m_Code(code)
   {
   }

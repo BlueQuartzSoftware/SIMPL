@@ -73,8 +73,8 @@ protected:
   {
   }
 
-  AbstractStatusMessage(const QString& prefix, const QString& msgText)
-  : AbstractMessage(prefix, msgText)
+  AbstractStatusMessage(const QString& msgText)
+  : AbstractMessage(msgText)
   {
   }
 

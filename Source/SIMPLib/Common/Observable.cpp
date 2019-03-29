@@ -70,35 +70,79 @@ void Observable::operator=(const Observable&)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::notifyErrorMessage(const QString &prefix, const QString& msg, int code)
+void Observable::setErrorCondition(int code, const QString &messageText)
 {
-  GenericErrorMessage::Pointer pm = GenericErrorMessage::New(prefix, msg, code);
+  GenericErrorMessage::Pointer pm = GenericErrorMessage::New(messageText, code);
   emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::notifyStatusMessage(const QString &prefix, const QString& msg)
+void Observable::setErrorConditionWithPrefix(int code, const QString &prefix, const QString &messageText)
 {
-  GenericStatusMessage::Pointer pm = GenericStatusMessage::New(prefix, msg);
+  QString msg = messageText;
+  msg.prepend(tr("%1: ").arg(prefix));
+
+  setErrorCondition(code, msg);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void Observable::setWarningCondition(int code, const QString& messageText)
+{
+  GenericWarningMessage::Pointer pm = GenericWarningMessage::New(messageText, code);
   emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::notifyWarningMessage(const QString &prefix, const QString& msg, int code)
+void Observable::setWarningConditionWithPrefix(int code, const QString &prefix, const QString &messageText)
 {
-  GenericWarningMessage::Pointer pm = GenericWarningMessage::New(prefix, msg, code);
+  QString msg = messageText;
+  msg.prepend(tr("%1: ").arg(prefix));
+
+  setWarningCondition(code, msg);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void Observable::notifyStatusMessage(const QString& messageText)
+{
+  GenericStatusMessage::Pointer pm = GenericStatusMessage::New(messageText);
   emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::notifyProgressMessage(const QString& prefix, const QString& msg, int progress)
+void Observable::notifyStatusMessageWithPrefix(const QString &prefix, const QString &messageText)
 {
-  GenericProgressMessage::Pointer pm = GenericProgressMessage::New(prefix, msg, progress);
+  QString msg = messageText;
+  msg.prepend(tr("%1: ").arg(prefix));
+
+  notifyStatusMessage(msg);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void Observable::notifyProgressMessage(int progress, const QString& messageText)
+{
+  GenericProgressMessage::Pointer pm = GenericProgressMessage::New(messageText, progress);
   emit messageGenerated(pm);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void Observable::notifyProgressMessageWithPrefix(int progress, const QString &prefix, const QString &messageText)
+{
+  QString msg = messageText;
+  msg.prepend(tr("%1: ").arg(prefix));
+
+  notifyProgressMessage(progress, msg);
 }

@@ -62,7 +62,7 @@ class SIMPLib_EXPORT PipelineWarningMessage : public AbstractWarningMessage
      * @param code
      * @return
      */
-    static Pointer New(const QString &pipelineName, const QString& prefix, const QString& msgText, int code);
+    static Pointer New(const QString &pipelineName, const QString& msgText, int code);
 
     /**
      * @brief This method creates and returns a string for pipeline warning messages
@@ -79,7 +79,7 @@ class SIMPLib_EXPORT PipelineWarningMessage : public AbstractWarningMessage
 
   protected:
     PipelineWarningMessage();
-    PipelineWarningMessage(const QString &pipelineName, const QString& prefix, const QString& msgText, int code);
+    PipelineWarningMessage(const QString &pipelineName, const QString& msgText, int code);
 
   private:
 

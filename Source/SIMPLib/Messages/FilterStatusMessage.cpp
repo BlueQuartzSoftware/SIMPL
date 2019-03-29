@@ -49,8 +49,8 @@ FilterStatusMessage::FilterStatusMessage()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterStatusMessage::FilterStatusMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString &prefix, const QString& msgText)
-: AbstractStatusMessage(prefix, msgText)
+FilterStatusMessage::FilterStatusMessage(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText)
+: AbstractStatusMessage(msgText)
 , m_ClassName(className)
 , m_HumanLabel(humanLabel)
 , m_PipelineIndex(pipelineIndex)
@@ -65,9 +65,9 @@ FilterStatusMessage::~FilterStatusMessage() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterStatusMessage::Pointer FilterStatusMessage::New(const QString& className, const QString& humanLabel, int pipelineIndex, const QString &prefix, const QString& msgText)
+FilterStatusMessage::Pointer FilterStatusMessage::New(const QString& className, const QString& humanLabel, int pipelineIndex, const QString& msgText)
 {
-  FilterStatusMessage::Pointer shared_ptr (new FilterStatusMessage(className, humanLabel, pipelineIndex, prefix, msgText));
+  FilterStatusMessage::Pointer shared_ptr (new FilterStatusMessage(className, humanLabel, pipelineIndex, msgText));
   return shared_ptr;
 }
 
@@ -76,14 +76,7 @@ FilterStatusMessage::Pointer FilterStatusMessage::New(const QString& className, 
 // -----------------------------------------------------------------------------
 QString FilterStatusMessage::generateMessageString() const
 {
-  QString ss = QObject::tr("%2").arg(getMessageText());
-
-  if(!getPrefix().isEmpty())
-  {
-    ss.prepend(QObject::tr("%1: ").arg(getPrefix()));
-  }
-
-  return ss;
+  return getMessageText();
 }
 
 // -----------------------------------------------------------------------------

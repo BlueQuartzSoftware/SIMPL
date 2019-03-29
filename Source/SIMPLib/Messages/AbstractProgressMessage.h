@@ -76,8 +76,8 @@ protected:
   {
   }
 
-  AbstractProgressMessage(const QString& prefix, const QString& msgText, int progress)
-  : AbstractMessage(prefix, msgText)
+  AbstractProgressMessage(const QString& msgText, int progress)
+  : AbstractMessage(msgText)
   , m_ProgressValue(progress)
   {
   }

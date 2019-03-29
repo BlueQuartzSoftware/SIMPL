@@ -49,8 +49,8 @@ PipelineWarningMessage::PipelineWarningMessage()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineWarningMessage::PipelineWarningMessage(const QString& pipelineName, const QString &prefix, const QString& msgText, int code)
-: AbstractWarningMessage(pipelineName, msgText, code)
+PipelineWarningMessage::PipelineWarningMessage(const QString& pipelineName, const QString& msgText, int code)
+: AbstractWarningMessage(msgText, code)
 , m_PipelineName(pipelineName)
 {
 }
@@ -63,9 +63,9 @@ PipelineWarningMessage::~PipelineWarningMessage() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineWarningMessage::Pointer PipelineWarningMessage::New(const QString &pipelineName, const QString& prefix, const QString& msgText, int code)
+PipelineWarningMessage::Pointer PipelineWarningMessage::New(const QString &pipelineName, const QString& msgText, int code)
 {
-  PipelineWarningMessage::Pointer shared_ptr (new PipelineWarningMessage(pipelineName, prefix, msgText, code));
+  PipelineWarningMessage::Pointer shared_ptr (new PipelineWarningMessage(pipelineName, msgText, code));
   return shared_ptr;
 }
 
@@ -74,7 +74,7 @@ PipelineWarningMessage::Pointer PipelineWarningMessage::New(const QString &pipel
 // -----------------------------------------------------------------------------
 QString PipelineWarningMessage::generateMessageString() const
 {
-  QString ss = QObject::tr("Error (%1): %2: %3").arg(getCode()).arg(getPrefix()).arg(getMessageText());
+  QString ss = QObject::tr("Warning (%1): %2").arg(getCode()).arg(getMessageText());
   return ss;
 }
 

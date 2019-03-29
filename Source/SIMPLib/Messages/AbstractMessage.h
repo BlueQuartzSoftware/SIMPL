@@ -56,8 +56,6 @@ class SIMPLib_EXPORT AbstractMessage
 
     virtual ~AbstractMessage();
 
-    SIMPL_INSTANCE_STRING_PROPERTY(Prefix)
-
     SIMPL_INSTANCE_STRING_PROPERTY(MessageText)
 
     /**
@@ -75,7 +73,7 @@ class SIMPLib_EXPORT AbstractMessage
 
   protected:
     AbstractMessage();
-    AbstractMessage(const QString& prefix, const QString& msgText);
+    AbstractMessage(const QString& msgText);
 
   private:
 

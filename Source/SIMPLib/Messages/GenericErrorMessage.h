@@ -54,12 +54,11 @@ class SIMPLib_EXPORT GenericErrorMessage : public AbstractErrorMessage
 
     /**
      * @brief New
-     * @param humanLabel
-     * @param msg
+     * @param msgText
      * @param code
      * @return
      */
-    static Pointer New(const QString& prefix, const QString& msgText, int code);
+    static Pointer New(const QString& msgText, int code);
 
     /**
      * @brief This method creates and returns a string for generic error messages
@@ -76,7 +75,7 @@ class SIMPLib_EXPORT GenericErrorMessage : public AbstractErrorMessage
 
   protected:
     GenericErrorMessage();
-    GenericErrorMessage(const QString &prefix, const QString& msgText, int code);
+    GenericErrorMessage(const QString& msgText, int code);
 
   private:
 

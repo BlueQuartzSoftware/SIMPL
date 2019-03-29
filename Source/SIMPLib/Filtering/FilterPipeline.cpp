@@ -612,38 +612,38 @@ void FilterPipeline::updatePrevNextFilters()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::notifyErrorMessage(const QString &prefix, const QString& msg, int code)
+void FilterPipeline::setErrorCondition(int code, const QString &messageText)
 {
-  setErrorCondition(code);
-  PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New(getName(), prefix, msg, code);
+  m_ErrorCode = code;
+  PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New(getName(), messageText, code);
   emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::notifyStatusMessage(const QString &prefix, const QString& msg)
+void FilterPipeline::notifyStatusMessage(const QString& messageText)
 {
-  PipelineStatusMessage::Pointer pm = PipelineStatusMessage::New(getName(), prefix, msg);
+  PipelineStatusMessage::Pointer pm = PipelineStatusMessage::New(getName(), messageText);
   emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::notifyWarningMessage(const QString &prefix, const QString& msg, int code)
+void FilterPipeline::setWarningCondition(int code, const QString& messageText)
 {
-  setWarningCondition(code);
-  PipelineWarningMessage::Pointer pm = PipelineWarningMessage::New(getName(), prefix, msg, code);
+  m_WarningCode = code;
+  PipelineWarningMessage::Pointer pm = PipelineWarningMessage::New(getName(), messageText, code);
   emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::notifyProgressMessage(const QString &prefix, const QString& msg, int progress)
+void FilterPipeline::notifyProgressMessage(int progress, const QString& messageText)
 {
-  PipelineProgressMessage::Pointer pm = PipelineProgressMessage::New(getName(), prefix, msg, progress);
+  PipelineProgressMessage::Pointer pm = PipelineProgressMessage::New(getName(), messageText, progress);
   emit messageGenerated(pm);
 }
 

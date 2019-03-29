@@ -58,7 +58,7 @@ class SIMPLib_EXPORT GenericStatusMessage : public AbstractStatusMessage
      * @param msg
      * @return
      */
-    static Pointer New(const QString& prefix, const QString& msgText);
+    static Pointer New(const QString& msgText);
 
     /**
      * @brief This method creates and returns a string for generic status messages
@@ -75,7 +75,7 @@ class SIMPLib_EXPORT GenericStatusMessage : public AbstractStatusMessage
 
   protected:
     GenericStatusMessage();
-    GenericStatusMessage(const QString& prefix, const QString& msgText);
+    GenericStatusMessage(const QString& msgText);
 
   private:
 

@@ -74,13 +74,21 @@ class SIMPLib_EXPORT Observable : public QObject
     // ------------------------------
     // These are convenience methods that construct a @see AbstractMessage object and then 'emit' that object
     // ------------------------------
-    virtual void notifyErrorMessage(const QString &prefix, const QString& msg, int code);
+    virtual void setErrorCondition(int code, const QString& messageText);
 
-    virtual void notifyWarningMessage(const QString &prefix, const QString& msg, int code);
+    void setErrorConditionWithPrefix(int code, const QString &prefix, const QString& messageText);
 
-    virtual void notifyStatusMessage(const QString &prefix, const QString& msg);
+    virtual void setWarningCondition(int code, const QString& messageText);
 
-    virtual void notifyProgressMessage(const QString &prefix, const QString& msg, int progress);
+    void setWarningConditionWithPrefix(int code, const QString &prefix, const QString& messageText);
+
+    virtual void notifyStatusMessage(const QString& messageText);
+
+    void notifyStatusMessageWithPrefix(const QString &prefix, const QString& messageText);
+
+    virtual void notifyProgressMessage(int progress, const QString& messageText);
+
+    void notifyProgressMessageWithPrefix(int progress, const QString &prefix, const QString& messageText);
 
   signals:
 

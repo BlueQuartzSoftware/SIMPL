@@ -49,8 +49,8 @@ PipelineProgressMessage::PipelineProgressMessage()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineProgressMessage::PipelineProgressMessage(const QString &pipelineName, const QString& prefix, const QString& msgText, int progress)
-: AbstractProgressMessage(prefix, msgText, progress)
+PipelineProgressMessage::PipelineProgressMessage(const QString &pipelineName, const QString& msgText, int progress)
+: AbstractProgressMessage(msgText, progress)
 , m_PipelineName(pipelineName)
 {
 }
@@ -63,9 +63,9 @@ PipelineProgressMessage::~PipelineProgressMessage() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineProgressMessage::Pointer PipelineProgressMessage::New(const QString &pipelineName, const QString& prefix, const QString& msgText, int progress)
+PipelineProgressMessage::Pointer PipelineProgressMessage::New(const QString &pipelineName, const QString& msgText, int progress)
 {
-  PipelineProgressMessage::Pointer shared_ptr (new PipelineProgressMessage(pipelineName, prefix, msgText, progress));
+  PipelineProgressMessage::Pointer shared_ptr (new PipelineProgressMessage(pipelineName, msgText, progress));
   return shared_ptr;
 }
 
@@ -74,13 +74,7 @@ PipelineProgressMessage::Pointer PipelineProgressMessage::New(const QString &pip
 // -----------------------------------------------------------------------------
 QString PipelineProgressMessage::generateMessageString() const
 {
-  if(getPrefix().isEmpty())
-  {
-    QString ss = QObject::tr("%1 %2%%").arg(getMessageText()).arg(getProgressValue());
-    return ss;
-  }
-
-  QString ss = QObject::tr("%1: %2 %3%%").arg(getPrefix()).arg(getMessageText()).arg(getProgressValue());
+  QString ss = QObject::tr("%1 %2%%").arg(getMessageText()).arg(getProgressValue());
   return ss;
 }
 
