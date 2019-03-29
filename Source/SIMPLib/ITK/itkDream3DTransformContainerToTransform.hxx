@@ -35,6 +35,10 @@
 
 #include "itkDream3DTransformContainerToTransform.h"
 
+#if defined(ITK_VERSION_MAJOR) && ITK_VERSION_MAJOR == 4
+#define ITKv5_CONST
+#endif
+
 namespace itk
 {
 
@@ -90,7 +94,12 @@ Dream3DTransformContainerToTransform<ITKTransformType>
     itkExceptionMacro("Input transform container is empty");
   }
   const DecoratorType* outputPtr = this->GetOutput();
+#if defined(ITK_VERSION_MAJOR) && ITK_VERSION_MAJOR == 5
   typename ITKTransformType::ConstPointer transform = outputPtr->Get();
+#elif defined(ITK_VERSION_MAJOR) && ITK_VERSION_MAJOR == 4
+ typename ITKTransformType::Pointer transform = outputPtr->Get();
+#endif
+
   // Verifies that the number of Parameters and Fixed Parameters in the transform
   // match the expected number based on the transform type.
   if(transform->GetNumberOfParameters() != m_TransformContainer->getParameters().size())

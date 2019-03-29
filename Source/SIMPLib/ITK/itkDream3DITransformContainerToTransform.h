@@ -40,6 +40,11 @@
 
 #include "SIMPLib/Geometry/ITransformContainer.h"
 
+#if defined(ITK_VERSION_MAJOR) && ITK_VERSION_MAJOR == 4
+#define ITKv5_CONST
+#endif
+
+
 namespace itk
 {
 template <typename TParametersValueType = double, unsigned int CompositeNDimensions = 3>
