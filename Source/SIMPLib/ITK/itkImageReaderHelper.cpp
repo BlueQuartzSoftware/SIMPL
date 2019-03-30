@@ -82,9 +82,7 @@ ITK_IMAGE_READER_CLASS_NAME
 ::readImage(const DataArrayPath& dataArrayPath, const itk::ImageIOBase::Pointer& imageIO, const QString& filename, bool dataCheck)
 {
   using PixelTypeType = itk::ImageIOBase::IOPixelType;
-  // using ComponentType = itk::ImageIOBase::IOComponentType;
   PixelTypeType pixel = imageIO->GetPixelType();
-  // ComponentType compType = imageIO->GetComponentType();
 
   const unsigned int nbComponents = imageIO->GetNumberOfComponents();
   switch(pixel)
@@ -252,8 +250,8 @@ void
 ITK_IMAGE_READER_CLASS_NAME
 ::readImageOutputInformation(const DataArrayPath& dataArrayPath, typename itk::ImageFileReader<itk::Dream3DImage<TPixel, dimensions>>::Pointer& reader, DataContainer::Pointer& container)
 {
-  typedef itk::Dream3DImage<TPixel, dimensions> ImageType;
-  typedef typename itk::NumericTraits<TPixel>::ValueType ValueType;
+  using ImageType = itk::Dream3DImage<TPixel, dimensions>;
+  using ValueType = typename itk::NumericTraits<TPixel>::ValueType;
   reader->UpdateOutputInformation();
   const typename ImageType::PointType origin = reader->GetOutput()->GetOrigin();
   const typename ImageType::SizeType size = reader->GetOutput()->GetLargestPossibleRegion().GetSize();

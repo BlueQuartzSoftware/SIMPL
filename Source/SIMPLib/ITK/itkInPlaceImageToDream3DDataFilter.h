@@ -19,16 +19,16 @@ template <typename PixelType, unsigned int VDimension> class InPlaceImageToDream
 {
 public:
   /** Standard class typedefs. */
-  typedef InPlaceImageToDream3DDataFilter Self;
-  typedef ProcessObject Superclass;
-  typedef SmartPointer<Self> Pointer;
+  using Self = InPlaceImageToDream3DDataFilter;
+  using Superclass = ProcessObject;
+  using Pointer = SmartPointer<Self>;
 
-  typedef typename itk::Dream3DImage<PixelType, VDimension> ImageType;
-  typedef typename ImageType::Pointer ImagePointer;
-  typedef typename itk::NumericTraits<PixelType>::ValueType ValueType;
-  typedef typename ::DataArray<ValueType> DataArrayPixelType;
-  typedef typename itk::SimpleDataObjectDecorator<DataContainer::Pointer> DecoratorType;
-  typedef DecoratorType::Pointer DecoratorPointer;
+  using ImageType = typename itk::Dream3DImage<PixelType, VDimension>;
+  using ImagePointer = typename ImageType::Pointer;
+  using ValueType = typename itk::NumericTraits<PixelType>::ValueType;
+  using DataArrayPixelType = typename ::DataArray<ValueType>;
+  using DecoratorType = typename itk::SimpleDataObjectDecorator<DataContainer::Pointer>;
+  using DecoratorPointer = DecoratorType::Pointer;
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
   itkTypeMacro(InPlaceImageToDream3DDataFilter, ProcessObject);
