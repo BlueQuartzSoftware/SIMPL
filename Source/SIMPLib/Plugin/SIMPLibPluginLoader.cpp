@@ -71,7 +71,8 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool q
   QDir aPluginDir = QDir(qApp->applicationDirPath());
   if(!quiet)
   {
-    qDebug() << "Loading SIMPLib Plugins....";
+    qDebug() << "Loading SIMPLib Plugins.";
+    qDebug() << "Adding Folder " << aPluginDir.absolutePath();
   }
   // qDebug() << "aPluginDir: " << aPluginDir.absolutePath() << "\n";
   QString thePath;
@@ -127,6 +128,10 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool q
     thePath = aPluginDir.absolutePath();
     pluginDirs << thePath;
     aPluginDir.cdUp(); // Move back up a directory level
+    if(!quiet)
+    {
+      qDebug() << "Adding Folder " << thePath;
+    }
   }
   // On Linux installs the .plugin file is installed into the lib directory so search there also
   if(aPluginDir.cd("lib"))
@@ -134,12 +139,16 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool q
     thePath = aPluginDir.absolutePath();
     pluginDirs << thePath;
     aPluginDir.cdUp(); // Move back up a directory level
+    if(!quiet)
+    {
+      qDebug() << "Adding Folder " << thePath;
+    }
   }
 
   if(thePath.isEmpty())
   {
     // Now try moving up a directory which is what should happen when running from a
-    // proper distribution of DREAM3D
+    // proper distribution of SIMPL/DREAM3D
     aPluginDir.cdUp();
     if(aPluginDir.cd("Plugins"))
     {
@@ -150,6 +159,25 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool q
       if(no_error < 0)
       {
         if(!quiet) qDebug() << "Could not set the working directory.";
+      }
+      if(!quiet)
+      {
+        qDebug() << "Adding Folder " << thePath;
+      }
+    }
+    if(aPluginDir.cd("lib"))
+    {
+      thePath = aPluginDir.absolutePath();
+      pluginDirs << thePath;
+      aPluginDir.cdUp(); // Move back up a directory level
+      int no_error = chdir(aPluginDir.absolutePath().toLatin1().constData());
+      if(no_error < 0)
+      {
+        if(!quiet) qDebug() << "Could not set the working directory.";
+      }
+      if(!quiet)
+      {
+        qDebug() << "Adding Folder " << thePath;
       }
     }
   }
