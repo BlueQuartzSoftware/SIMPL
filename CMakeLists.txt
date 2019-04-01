@@ -34,7 +34,7 @@ cmake_minimum_required(VERSION 3.13.0)
 #------------------------------------------------------------------------------
 # Create the Top level Project
 #
-project(SIMPLProj VERSION 1.2.0.0)
+project(SIMPLProj VERSION 2.0.0.0)
 
 # ---------- Setup output Directories -------------------------
 if(NOT DEFINED CMAKE_LIBRARY_OUTPUT_DIRECTORY)
