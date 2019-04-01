@@ -225,7 +225,7 @@ public:
      * @param data The IDataArray::Pointer that will hold the data
      * @return Bool: True if the addition happened, FALSE if an IDataArray with the same name already exists.
      */
-    inline bool addOrReplaceAttributeArray(const IDataArray::Pointer& data)
+    bool addOrReplaceAttributeArray(const IDataArray::Pointer& data)
     {
       // Can not insert a null IDataArray object
       if(data.get() == nullptr)
@@ -246,7 +246,7 @@ public:
      * null pointer if the name does not exist.
      * @param name The name of the data array
      */
-    inline IDataArray::Pointer getAttributeArray(const QString& name)
+    IDataArray::Pointer getAttributeArray(const QString& name)
     {
       return getChildByName(name);
     }
@@ -256,7 +256,7 @@ public:
      * @param path
      * @return
      */
-    inline IDataArray::Pointer getAttributeArray(const DataArrayPath& path)
+    IDataArray::Pointer getAttributeArray(const DataArrayPath& path)
     {
       return getAttributeArray(path.getDataArrayName());
     }
@@ -267,7 +267,7 @@ public:
     * @param name The name of the array
     */
     template<class ArrayType>
-    inline typename ArrayType::Pointer getAttributeArrayAs(const QString& name)
+    typename ArrayType::Pointer getAttributeArrayAs(const QString& name)
     {
       IDataArray::Pointer iDataArray = getAttributeArray(name);
       return std::dynamic_pointer_cast< ArrayType >(iDataArray);
@@ -278,7 +278,7 @@ public:
      * @brief Returns bool of whether a named array exists
      * @param name The name of the data array
      */
-    inline bool doesAttributeArrayExist(const QString& name) const
+    bool doesAttributeArrayExist(const QString& name) const
     {
       return contains(name);
     }
@@ -308,7 +308,7 @@ public:
      * @brief Returns the collection of contained DataArrays
      * @return
      */
-    inline Container_t getAttributeArrays() const
+    Container_t getAttributeArrays() const
     {
       return getChildren();
     }
@@ -324,7 +324,7 @@ public:
     * @brief Returns the total number of arrays that are stored in the Cell group
     * @return
     */
-     int getNumAttributeArrays() const
+    int getNumAttributeArrays() const
     {
       return static_cast<int>(size());
     }
@@ -462,7 +462,7 @@ public:
      * @return A Shared Pointer to the newly created array
      */
     template<class ArrayType, class Filter, typename T>
-    inline typename ArrayType::Pointer createNonPrereqArray(Filter* filter,
+    typename ArrayType::Pointer createNonPrereqArray(Filter* filter,
                                                      const QString& attributeArrayName,
                                                      T initValue,
                                                      QVector<size_t> compDims,
@@ -523,7 +523,7 @@ public:
     * @param dims The size the data on each tuple
     */
     template<class ArrayType, class Filter, typename T>
-    inline void createAndAddAttributeArray(Filter* filter, const QString& name, T initValue, QVector<size_t> compDims, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
+    void createAndAddAttributeArray(Filter* filter, const QString& name, T initValue, QVector<size_t> compDims, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
     {
       bool allocateData = false;
       if(nullptr == filter) { allocateData = true; }

@@ -176,7 +176,7 @@ public:
    * @param matrix The IDataArray::Pointer that will hold the data
    * @return Bool TRUE if the addition was successful, FALSE Otherwise.
    */
-  inline bool addOrReplaceAttributeMatrix(const AttributeMatrixShPtr& matrix)
+  bool addOrReplaceAttributeMatrix(const AttributeMatrixShPtr& matrix)
   {
     return insertOrAssign(matrix);
   }
@@ -186,7 +186,7 @@ public:
    * null pointer if the name does not exist.
    * @param name The name of the data array
    */
-  inline AttributeMatrixShPtr getAttributeMatrix(const QString& name)
+  AttributeMatrixShPtr getAttributeMatrix(const QString& name)
   {
     return getChildByName(name);
   }
@@ -196,7 +196,7 @@ public:
    * null pointer if the name does not exist.
    * @param name The Name of the AttributeMatrix will be extracted from the DataArratPath object
    */
-  inline AttributeMatrixShPtr getAttributeMatrix(const DataArrayPath& path)
+  AttributeMatrixShPtr getAttributeMatrix(const DataArrayPath& path)
   {
     // Could this be sped-up if we hashed DataArrayPath as well?
     if(path.getDataContainerName() != getName())
@@ -210,7 +210,7 @@ public:
    * @brief Returns bool of whether a named array exists
    * @param name The name of the data array
    */
-  inline bool doesAttributeMatrixExist(const QString& name)
+  bool doesAttributeMatrixExist(const QString& name)
   {
     return contains(name);
   }
@@ -234,7 +234,7 @@ public:
    */
   virtual void clearAttributeMatrices();
 
-  inline Container_t getAttributeMatrices()
+  Container_t getAttributeMatrices()
   {
     return getChildren();
   }
@@ -250,7 +250,7 @@ public:
    * @brief Returns the total number of arrays that are stored in the Cell group
    * @return
    */
-  inline int getNumAttributeMatrices()
+  int getNumAttributeMatrices()
   {
     return static_cast<int>(size());
   }

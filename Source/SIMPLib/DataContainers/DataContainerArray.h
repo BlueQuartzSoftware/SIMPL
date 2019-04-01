@@ -106,7 +106,7 @@ public:
   /**
    * @brief
    */
-  inline bool addOrReplaceDataContainer(const DataContainerShPtr& f)
+  bool addOrReplaceDataContainer(const DataContainerShPtr& f)
   {
     return insertOrAssign(f);
   }
@@ -328,7 +328,7 @@ public:
      * @param id
      * @return
      */
-    template <class Filter> inline DataContainerShPtr createNonPrereqDataContainer(Filter* filter, const DataArrayPath& dap, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
+    template <class Filter> DataContainerShPtr createNonPrereqDataContainer(Filter* filter, const DataArrayPath& dap, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
     {
       return createNonPrereqDataContainer<Filter>(filter, dap.getDataContainerName(), id);
     }
@@ -340,7 +340,7 @@ public:
      * dataContainerName is empty in which case a Null DataContainer will be returned.
      */
     template<typename Filter>
-    inline DataContainerShPtr createNonPrereqDataContainer(Filter* filter, const QString& dataContainerName, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
+    DataContainerShPtr createNonPrereqDataContainer(Filter* filter, const QString& dataContainerName, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
     {
       if(dataContainerName.isEmpty())
       {
@@ -428,7 +428,7 @@ public:
      * @return
      */
     template<typename Filter>
-    inline AttributeMatrix::Pointer getPrereqAttributeMatrixFromPath(Filter* filter, const DataArrayPath& path, int err)
+    AttributeMatrix::Pointer getPrereqAttributeMatrixFromPath(Filter* filter, const DataArrayPath& path, int err)
     {
       // First try to get the Parent DataContainer. If an error occurs the error message will have been set
       // so just return a nullptr shared pointer
@@ -448,7 +448,7 @@ public:
      * @return Valid or nullptr shared pointer based on availability of the array
      */
     template<class ArrayType, class Filter>
-    inline typename ArrayType::Pointer getPrereqArrayFromPath(Filter* filter, const DataArrayPath& path, QVector<size_t> cDims)
+    typename ArrayType::Pointer getPrereqArrayFromPath(Filter* filter, const DataArrayPath& path, QVector<size_t> cDims)
     {
 
       QString ss;
@@ -516,7 +516,7 @@ public:
     * @return
     */
     template<class ArrayType, class Filter>
-    inline typename ArrayType::Pointer getPrereqIDataArrayFromPath(Filter* filter, const DataArrayPath& path)
+    typename ArrayType::Pointer getPrereqIDataArrayFromPath(Filter* filter, const DataArrayPath& path)
     {
 
       QString ss;
@@ -589,7 +589,7 @@ public:
      * @return A Shared Pointer to the newly created array
      */
     template<class ArrayType, class Filter, typename T>
-    inline typename ArrayType::Pointer createNonPrereqArrayFromPath(Filter* filter,
+    typename ArrayType::Pointer createNonPrereqArrayFromPath(Filter* filter,
                                                              const DataArrayPath& path,
                                                              T initValue,
                                                              QVector<size_t> compDims,

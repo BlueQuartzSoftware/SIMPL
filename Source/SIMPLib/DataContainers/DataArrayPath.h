@@ -188,22 +188,22 @@ private:
      * @brief Returns the DataType matching the current path.
      * @return
      */
-     DataArrayPathHelper::DataType getDataType() const
+    DataArrayPathHelper::DataType getDataType() const
     {
       return m_DataType;
     }
 
-    inline QString getDataContainerName() const
+    QString getDataContainerName() const
     {
       return m_DataContainerName;
     }
 
-    inline QString getAttributeMatrixName() const
+    QString getAttributeMatrixName() const
     {
       return m_AttributeMatrixName;
     }
 
-    inline QString getDataArrayName() const
+    QString getDataArrayName() const
     {
       return m_DataArrayName;
     }
@@ -259,7 +259,7 @@ private:
      * function and FALSE for isValid() also so this function is not a true indication of a valid path.
      * @return
      */
-     bool isEmpty() const
+    bool isEmpty() const
     {
       return m_DataType == DataArrayPathHelper::DataType::None;
     }
@@ -270,7 +270,7 @@ private:
      * serialized into a path actually refer to something in your DataContainer.
      * @return
      */
-     bool isValid() const
+    bool isValid() const
     {
       return m_DataType == DataArrayPathHelper::DataType::DataArray;
     }
@@ -331,7 +331,7 @@ private:
      * @param updated
      * @return
      */
-    inline bool possibleRename(const DataArrayPath& updated) const
+    bool possibleRename(const DataArrayPath& updated) const
     {
       // Empty DataArrayPaths are not considered renames
       // Neither are DataArrayPaths of different lengths
@@ -363,7 +363,7 @@ private:
      * @param renamePath
      * return
      */
-    inline bool updatePath(const DataArrayPath::RenameType& renamePath)
+    bool updatePath(const DataArrayPath::RenameType& renamePath)
     {
       const DataArrayPath& oldPath = std::get<0>(renamePath);
       const DataArrayPath& newPath = std::get<1>(renamePath);
@@ -419,7 +419,7 @@ private:
      * @param newRename
      * @return std::pair<success, resulting rename>
      */
-    static inline std::pair<bool, RenameType> CreateLinkingRename(const RenameType& oldRename, const RenameType& newRename)
+    static std::pair<bool, RenameType> CreateLinkingRename(const RenameType& oldRename, const RenameType& newRename)
     {
       const DataArrayPath& oldOldPath = std::get<0>(oldRename);
       const DataArrayPath& oldNewPath = std::get<1>(oldRename);

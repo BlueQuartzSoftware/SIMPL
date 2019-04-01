@@ -88,17 +88,17 @@ private:
   /**
    * @brief Clears the parent pointer and removes this from its parent constainer.
    */
-  inline void clearParentNode()
+  void clearParentNode()
   {
     setParentNode(nullptr);
   }
 
-  // inline void addParentNode(const ParentType& newParent);
-  // inline bool removeParentNode(const ParentType& removedParent);
+  // void addParentNode(const ParentType& newParent);
+  // bool removeParentNode(const ParentType& removedParent);
 
 protected:
   /**
-   * @brief Inline method for creating hashes from QString values.
+   * @brief Method for creating hashes from QString values.
    * @param string
    * @return
    */
@@ -116,7 +116,7 @@ public:
    * @param nameHash
    * @return
    */
-   bool checkNameHash(size_t nameHash) const
+  bool checkNameHash(size_t nameHash) const
   {
     return m_NameHash == nameHash;
   }
@@ -158,7 +158,7 @@ public:
    * @brief Returns true if a parent node exists.  Returns false otherwise.
    * @return
    */
-   bool hasParent() const
+  bool hasParent() const
   {
     return m_Parent != nullptr;
   }
