@@ -32,6 +32,8 @@
 #pragma once
 
 #include <array>
+#include <tuple>
+#include <cassert>
 
 #include <QtCore/QMetaObject>
 

@@ -324,7 +324,7 @@ public:
     * @brief Returns the total number of arrays that are stored in the Cell group
     * @return
     */
-    constexpr int getNumAttributeArrays() const
+     int getNumAttributeArrays() const
     {
       return static_cast<int>(size());
     }

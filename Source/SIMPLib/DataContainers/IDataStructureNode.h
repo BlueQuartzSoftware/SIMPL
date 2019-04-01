@@ -116,7 +116,7 @@ public:
    * @param nameHash
    * @return
    */
-  constexpr bool checkNameHash(size_t nameHash) const
+   bool checkNameHash(size_t nameHash) const
   {
     return m_NameHash == nameHash;
   }
@@ -158,7 +158,7 @@ public:
    * @brief Returns true if a parent node exists.  Returns false otherwise.
    * @return
    */
-  constexpr bool hasParent() const
+   bool hasParent() const
   {
     return m_Parent != nullptr;
   }
