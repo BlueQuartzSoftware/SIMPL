@@ -154,30 +154,30 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool q
     {
       thePath = aPluginDir.absolutePath();
       pluginDirs << thePath;
-      aPluginDir.cdUp(); // Move back up a directory level
-      int no_error = chdir(aPluginDir.absolutePath().toLatin1().constData());
-      if(no_error < 0)
-      {
-        if(!quiet) qDebug() << "Could not set the working directory.";
-      }
       if(!quiet)
       {
         qDebug() << "Adding Folder " << thePath;
+      }
+      aPluginDir.cdUp(); // Move back up a directory level
+      int no_error = chdir(aPluginDir.absolutePath().toLatin1().constData());
+      if(no_error < 0 && !quiet)
+      {
+        qDebug() << "Could not set the working directory.";
       }
     }
     if(aPluginDir.cd("lib"))
     {
       thePath = aPluginDir.absolutePath();
       pluginDirs << thePath;
-      aPluginDir.cdUp(); // Move back up a directory level
-      int no_error = chdir(aPluginDir.absolutePath().toLatin1().constData());
-      if(no_error < 0)
-      {
-        if(!quiet) qDebug() << "Could not set the working directory.";
-      }
       if(!quiet)
       {
         qDebug() << "Adding Folder " << thePath;
+      }
+      aPluginDir.cdUp(); // Move back up a directory level
+      int no_error = chdir(aPluginDir.absolutePath().toLatin1().constData());
+      if(no_error < 0  && !quiet)
+      {
+        qDebug() << "Could not set the working directory.";
       }
     }
   }
@@ -186,10 +186,7 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool q
   QByteArray pluginEnvPath = qgetenv("SIMPL_PLUGIN_PATH");
   if(!quiet)
   {
-    if(!quiet)
-    {
-      qDebug() << "SIMPL_PLUGIN_PATH:" << pluginEnvPath;
-    }
+    qDebug() << "SIMPL_PLUGIN_PATH:" << pluginEnvPath;
   }
 
   char sep = ';';
@@ -271,16 +268,13 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool q
       }
       pluginFileNames += fileName;
     }
-    else
+    else if(!quiet) 
     {
-      if(!quiet) 
-      {
-        QString message("The plugin did not load with the following error\n");
-        message.append(loader.errorString());
-        message.append("\n\n");
-        message.append("Possible causes include missing libraries that plugin depends on.");
-        qDebug() << message;
-      }
+      QString message("The plugin did not load with the following error\n");
+      message.append(loader.errorString());
+      message.append("\n\n");
+      message.append("Possible causes include missing libraries that plugin depends on.");
+      qDebug() << message;
     }
   }
 }
