@@ -97,7 +97,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable, public IDataStructureC
   PYB11_PROPERTY(QVector<size_t> TupleDimensions READ getTupleDimensions WRITE setTupleDimensions)
 
   PYB11_METHOD(bool doesAttributeArrayExist ARGS Name)
-  PYB11_METHOD(bool addOrReplaceAttributeArray OVERLOAD IDataArray::Pointer,Data)
+  PYB11_METHOD(bool addOrReplaceAttributeArray OVERLOAD const.IDataArray::Pointer.&,Data)
   PYB11_METHOD(bool insertOrAssign ARGS IDataArray::Pointer)
 
   PYB11_METHOD(IDataArray removeAttributeArray ARGS Name)
