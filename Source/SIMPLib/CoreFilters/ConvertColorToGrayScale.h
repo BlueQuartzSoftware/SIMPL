@@ -42,7 +42,7 @@
 /**
  * @brief The ConvertColorToGrayScale class. See [Filter documentation](@ref ConvertColorToGrayScale) for details.
  */
-class ConvertColorToGrayScale : public AbstractFilter
+class SIMPLib_EXPORT ConvertColorToGrayScale : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(ConvertColorToGrayScale SUPERCLASS AbstractFilter)
