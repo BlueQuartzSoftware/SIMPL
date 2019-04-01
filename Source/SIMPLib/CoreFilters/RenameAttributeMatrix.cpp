@@ -60,7 +60,7 @@ RenameAttributeMatrix::~RenameAttributeMatrix() = default;
 // -----------------------------------------------------------------------------
 void RenameAttributeMatrix::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
@@ -108,6 +108,16 @@ void RenameAttributeMatrix::dataCheck()
 
   QString amName = getSelectedAttributeMatrixPath().getAttributeMatrixName();
 
+  if(m_LastMatrixName != getNewAttributeMatrix())
+  {
+    DataArrayPath newMatrixPath = getSelectedAttributeMatrixPath();
+    newMatrixPath.setAttributeMatrixName(getNewAttributeMatrix());
+    DataArrayPath oldMatrixPath = getSelectedAttributeMatrixPath();
+    oldMatrixPath.setAttributeMatrixName(m_LastMatrixName);
+    addPathRename(oldMatrixPath, getSelectedAttributeMatrixPath());
+    m_LastMatrixName = getNewAttributeMatrix();
+  }
+
   DataContainer::Pointer dc = getDataContainerArray()->getPrereqDataContainer(this, getSelectedAttributeMatrixPath().getDataContainerName());
   getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getSelectedAttributeMatrixPath(), -301);
 
@@ -122,6 +132,12 @@ void RenameAttributeMatrix::dataCheck()
     setErrorCondition(-11006);
     QString ss = QObject::tr("Attempt to rename Attribute Matrix '%1' to '%2' failed").arg(amName).arg(getNewAttributeMatrix());
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  }
+  else
+  {
+    DataArrayPath newPath = getSelectedAttributeMatrixPath();
+    newPath.setAttributeMatrixName(getNewAttributeMatrix());
+    addPathRename(getSelectedAttributeMatrixPath(), newPath);
   }
 }
 
@@ -233,8 +249,8 @@ DataArrayPath::RenameContainer RenameAttributeMatrix::getRenamedPaths()
   DataArrayPath newPath = getSelectedAttributeMatrixPath();
   newPath.setAttributeMatrixName(getNewAttributeMatrix());
 
-  DataArrayPath::RenameContainer container;
-  container.push_back(DataArrayPath::RenameType(oldPath, newPath));
+  DataArrayPath::RenameContainer container = AbstractFilter::getRenamedPaths();
+  container.push_back(std::make_pair(oldPath, newPath));
 
   return container;
 }

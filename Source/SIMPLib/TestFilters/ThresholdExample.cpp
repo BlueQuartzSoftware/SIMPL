@@ -56,7 +56,7 @@ ThresholdExample::~ThresholdExample() = default;
 // -----------------------------------------------------------------------------
 void ThresholdExample::setupFilterParameters()
 {
-  QVector<FilterParameter::Pointer> parameters;
+  FilterParameterVectorType parameters;
 
   /* To Compare Arrays like a threshold filter */
   {

@@ -43,6 +43,10 @@
 #include "SIMPLib/Filtering/ThresholdFilterHelper.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t {
+  ThresholdArrayID = 1
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -61,7 +65,7 @@ MultiThresholdObjects::~MultiThresholdObjects() = default;
 // -----------------------------------------------------------------------------
 void MultiThresholdObjects::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   {
     ComparisonSelectionFilterParameter::Pointer parameter = ComparisonSelectionFilterParameter::New();
     parameter->setHumanLabel("Select Arrays to Threshold");
@@ -139,8 +143,7 @@ void MultiThresholdObjects::dataCheck()
     ComparisonInput_t comp = m_SelectedThresholds[0];
     QVector<size_t> cDims(1, 1);
     DataArrayPath tempPath(comp.dataContainerName, comp.attributeMatrixName, getDestinationArrayName());
-    m_DestinationPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, true,
-                                                                                                                    cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+    m_DestinationPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, true, cDims, "", ThresholdArrayID);
     if(nullptr != m_DestinationPtr.lock()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
     {
       m_Destination = m_DestinationPtr.lock()->getPointer(0);

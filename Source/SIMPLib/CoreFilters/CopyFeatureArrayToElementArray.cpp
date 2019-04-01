@@ -43,6 +43,10 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t {
+  ElementArrayID = 1
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -63,7 +67,7 @@ CopyFeatureArrayToElementArray::~CopyFeatureArrayToElementArray() = default;
 // -----------------------------------------------------------------------------
 void CopyFeatureArrayToElementArray::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   parameters.push_back(SeparatorFilterParameter::New("Feature Data", FilterParameter::RequiredArray));
 
   {
@@ -137,7 +141,7 @@ void CopyFeatureArrayToElementArray::dataCheck()
   }
 
   tempPath.update(getFeatureIdsArrayPath().getDataContainerName(), getFeatureIdsArrayPath().getAttributeMatrixName(), getCreatedArrayName());
-  TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, m_InArrayPtr.lock()->getComponentDimensions(), m_InArrayPtr.lock());
+  TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, m_InArrayPtr.lock()->getComponentDimensions(), m_InArrayPtr.lock(), ElementArrayID);
 }
 
 // -----------------------------------------------------------------------------
@@ -297,7 +301,7 @@ void CopyFeatureArrayToElementArray::execute()
   {
     p->setName(getCreatedArrayName());
     AttributeMatrix::Pointer am = getDataContainerArray()->getAttributeMatrix(getFeatureIdsArrayPath());
-    am->addAttributeArray(p->getName(), p);
+    am->insertOrAssign(p);
   }
 
 }

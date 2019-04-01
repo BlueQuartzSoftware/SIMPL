@@ -564,7 +564,7 @@ public:
     FilterPipeline::Pointer pipeline = FilterPipeline::New();
 
     CreateDataContainer::Pointer createDataContainer = CreateDataContainer::New();
-    createDataContainer->setDataContainerName("DataContainer");
+    createDataContainer->setDataContainerName(DataArrayPath("DataContainer", "", ""));
     pipeline->pushBack(createDataContainer);
 
     CreateAttributeMatrix::Pointer createAttrMat = CreateAttributeMatrix::New();
@@ -977,7 +977,7 @@ public:
       QJsonArray responseFPArray = responseObject[SIMPL::JSON::FilterParameters].toArray();
 
       CreateAttributeMatrix::Pointer filter = CreateAttributeMatrix::New();
-      QVector<FilterParameter::Pointer> parameters = filter->getFilterParameters();
+      FilterParameterVectorType parameters = filter->getFilterParameters();
 
       DREAM3D_REQUIRE_EQUAL(responseFPArray.size(), parameters.size());
 

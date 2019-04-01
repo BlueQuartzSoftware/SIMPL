@@ -52,6 +52,10 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t {
+  DataArrayID = 1
+};
+
 /**
 * @brief initializeArrayWithInts Initializes the array p with integers, either from the
 * manual value entered in the filter, or with a random number.  This function does not
@@ -256,7 +260,7 @@ CreateDataArray::~CreateDataArray() = default;
 // -----------------------------------------------------------------------------
 void CreateDataArray::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(SIMPL_NEW_SCALARTYPE_FP("Scalar Type", ScalarType, FilterParameter::Parameter, CreateDataArray));
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Number of Components", NumberOfComponents, FilterParameter::Parameter, CreateDataArray));
@@ -359,7 +363,7 @@ void CreateDataArray::dataCheck()
     return;
   }
   // Create the data array and initialize it to a placeholder value
-  m_OutputArrayPtr = TemplateHelpers::CreateNonPrereqArrayFromTypeEnum()(this, getNewArray(), cDims, static_cast<int>(getScalarType()), 0);
+  m_OutputArrayPtr = TemplateHelpers::CreateNonPrereqArrayFromTypeEnum()(this, getNewArray(), cDims, static_cast<int>(getScalarType()), 0, DataArrayID);
 
   QString dataArrayName = getNewArray().getDataArrayName();
 

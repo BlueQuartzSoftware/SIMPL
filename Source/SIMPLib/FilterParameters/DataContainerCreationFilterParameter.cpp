@@ -35,6 +35,8 @@
 
 #include "DataContainerCreationFilterParameter.h"
 
+#include "SIMPLib/Filtering/AbstractFilter.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -48,14 +50,16 @@ DataContainerCreationFilterParameter::~DataContainerCreationFilterParameter() = 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerCreationFilterParameter::Pointer DataContainerCreationFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
+DataContainerCreationFilterParameter::Pointer DataContainerCreationFilterParameter::New(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category,
                                                                                         SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
 {
 
   DataContainerCreationFilterParameter::Pointer ptr = DataContainerCreationFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
   ptr->setPropertyName(propertyName);
-  ptr->setDefaultValue(defaultValue);
+  QVariant v;
+  v.setValue(defaultValue);
+  ptr->setDefaultValue(v);
   ptr->setCategory(category);
   ptr->setGroupIndex(groupIndex);
   ptr->setSetterCallback(setterCallback);
@@ -80,7 +84,18 @@ void DataContainerCreationFilterParameter::readJson(const QJsonObject& json)
   QJsonValue jsonValue = json[getPropertyName()];
   if(!jsonValue.isUndefined() && m_SetterCallback)
   {
-    m_SetterCallback(jsonValue.toString(""));
+    QJsonObject obj = jsonValue.toObject();
+    DataArrayPath dap;
+    if(dap.readJson(obj))
+    {
+      m_SetterCallback(dap);
+    }
+    else // this is in here for historical where we used to save the value as a string
+    {
+      QString dcName = jsonValue.toString("");
+      DataArrayPath dap(dcName, "", "");
+      m_SetterCallback(dap);
+    }
   }
 }
 
@@ -91,6 +106,25 @@ void DataContainerCreationFilterParameter::writeJson(QJsonObject& json)
 {
   if(m_GetterCallback)
   {
-    json[getPropertyName()] = m_GetterCallback();
+    DataArrayPath dap = m_GetterCallback();
+    QJsonObject obj;
+    dap.writeJson(obj);
+    json[getPropertyName()] = obj;
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerCreationFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath)
+{
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
+  if(oldPath == m_GetterCallback() && oldPath.getDataContainerName() != newPath.getDataContainerName())
+  {
+    m_SetterCallback(newPath);
+    emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
 }

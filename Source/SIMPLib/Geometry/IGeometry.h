@@ -84,7 +84,7 @@ class SIMPLib_EXPORT IGeometry : public Observable
   PYB11_PROPERTY(uint32_t SpatialDimensionality READ getSpatialDimensionality WRITE setSpatialDimensionality)
   PYB11_METHOD(Pointer deepCopy ARGS forceNoAllocate)
   PYB11_METHOD(void initializeWithZeros)
-  PYB11_METHOD(void addAttributeMatrix ARGS Name AttributeMatrix)
+  PYB11_METHOD(void addOrReplaceAttributeMatrix ARGS Name AttributeMatrix)
   PYB11_METHOD(AttributeMatrix getAttributeMatrix ARGS Name)
   PYB11_METHOD(AttributeMatrix removeAttributeMatrix ARGS Name)
 
@@ -439,9 +439,9 @@ class SIMPLib_EXPORT IGeometry : public Observable
     virtual void initializeWithZeros() = 0;
 
     /**
-     * @brief addAttributeMatrix
+     * @brief addOrReplaceAttributeMatrix
      */
-    virtual void addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data) = 0;
+    virtual void addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data) = 0;
 
     /**
      * @brief getAttributeMatrix

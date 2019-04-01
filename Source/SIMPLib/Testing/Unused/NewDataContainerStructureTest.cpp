@@ -96,7 +96,7 @@ void BuildNewDream3dFile()
   tDims[1] = 128;
   tDims[2] = 128;
   AttributeMatrix::Pointer cellAttrMat = AttributeMatrix::New(tDims, "CellData", SIMPL::AttributeMatrixType::Cell);
-  vdc->addAttributeMatrix("CellData", cellAttrMat);
+  vdc->addAttributeMatrix(cellAttrMat);
   QVector<size_t> dims(1, 1);
   cellAttrMat->createAndAddAttributeArray<DataArray<int64_t>, int64_t>("Ids", 1, dims);
 
@@ -114,11 +114,11 @@ void BuildNewDream3dFile()
     m_FeatureIds[i] = i;
   }
   AttributeMatrix::Pointer cellFeatureAttrMat = AttributeMatrix::New(tDims, "CellFeatureData", SIMPL::AttributeMatrixType::CellFeature);
-  vdc->addAttributeMatrix("CellFeatureData", cellFeatureAttrMat);
+  vdc->addAttributeMatrix(cellFeatureAttrMat);
   tDims.resize(1);
   tDims[0] = 2;
   AttributeMatrix::Pointer cellEnsembleAttrMat = AttributeMatrix::New(tDims, "CellEnsembleData", SIMPL::AttributeMatrixType::CellEnsemble);
-  vdc->addAttributeMatrix("CellEnsembleData", cellEnsembleAttrMat);
+  vdc->addAttributeMatrix(cellEnsembleAttrMat);
 
   cellEnsembleAttrMat->createAndAddAttributeArray<DataArray<unsigned int>, unsigned int>("PhaseTypes", SIMPL::PhaseType::PrimaryPhase, dims);
   DataArray<unsigned int>::WeakPointer m_PhaseTypesPtr;
@@ -159,7 +159,7 @@ void BuildNewDream3dFile()
     StatsDataArray::Pointer p = StatsDataArray::New();
     m_StatsDataArray = p.get();
     m_StatsDataArray->fillArrayWithNewStatsData(cellEnsembleAttrMat->getNumberOfTuples(), m_PhaseTypes);
-    cellEnsembleAttrMat->addAttributeArray(SIMPL::EnsembleData::Statistics, p);
+    cellEnsembleAttrMat->insertOrAssign(p);
   }
 
   StatsDataArray& statsDataArray = *m_StatsDataArray;

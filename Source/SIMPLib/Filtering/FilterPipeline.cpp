@@ -43,6 +43,8 @@
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/Utilities/StringOperations.h"
 
+#define RENAME_ENABLED 1
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -687,78 +689,65 @@ int FilterPipeline::preflightPipeline()
   int preflightError = 0;
 
   DataArrayPath::RenameContainer renamedPaths;
-  DataArrayPath::RenameContainer filterRenamedPaths;
 
   // Start looping through each filter in the Pipeline and preflight everything
-  // for(FilterContainerType::iterator filter = m_Pipeline.begin(); filter != m_Pipeline.end(); ++filter)
   for(const auto& filter : m_Pipeline)
   {
     // Do not preflight disabled filters
     if(filter->getEnabled())
     {
-      // Update renamed paths before getting old created paths
-      DataContainerArray::Pointer oldDca = filter->getDataContainerArray();
-      oldDca->renameDataArrayPaths(filterRenamedPaths);
-      filter->setDataContainerArray(oldDca);
-      filter->renameDataArrayPaths(filterRenamedPaths);
-
-      std::list<DataArrayPath> oldCreatedPaths = filter->getCreatedPaths();
-
       filter->setDataContainerArray(dca);
+#if RENAME_ENABLED
       filter->renameDataArrayPaths(renamedPaths);
+#endif
       setCurrentFilter(filter);
       connectFilterNotifications(filter.get());
+      filter->clearRenamedPaths();
       filter->preflight();
       disconnectFilterNotifications(filter.get());
 
       filter->setCancel(false); // Reset the cancel flag
       preflightError |= filter->getErrorCondition();
       filter->setDataContainerArray(dca->deepCopy(false));
-      std::list<DataArrayPath> currentCreatedPaths = filter->getCreatedPaths();
+#if RENAME_ENABLED
+      const std::list<DataArrayPath> deletedPaths = filter->getDeletedPaths();
 
-      // Check if an existing renamed path was created by this filter
-      for(const DataArrayPath& createdPath : currentCreatedPaths)
+      // Check if an existing renamed path was deleted by this filter
+      for(const DataArrayPath& deletedPath : deletedPaths)
       {
-        // Filter Parameter changes
         for(const DataArrayPath::RenameType& rename : renamedPaths)
         {
-          DataArrayPath originalPath;
-          DataArrayPath renamePath;
-          std::tie(originalPath, renamePath) = rename;
-          if(originalPath == createdPath)
+          const DataArrayPath& originalPath = std::get<0>(rename);
+          const DataArrayPath& renamePath = std::get<1>(rename);
+          if(originalPath == deletedPath)
           {
-            renamedPaths.remove(rename);
-            break;
-          }
-        }
-        // Rename Filters
-        for(const DataArrayPath::RenameType& rename : filterRenamedPaths)
-        {
-          DataArrayPath originalPath;
-          DataArrayPath renamePath;
-          std::tie(originalPath, renamePath) = rename;
-          if(originalPath == createdPath)
-          {
-            filterRenamedPaths.remove(rename);
+            const auto iter = std::find(renamedPaths.begin(), renamedPaths.end(), rename);
+            renamedPaths.erase(iter);
             break;
           }
         }
       }
-
-      DataArrayPath::RenameContainer newRenamedPaths = DataArrayPath::CheckForRenamedPaths(oldDca, dca, oldCreatedPaths, currentCreatedPaths);
-      for(const DataArrayPath::RenameType& renameType : newRenamedPaths)
-      {
-        renamedPaths.push_back(renameType);
-      }
-
       // Filter renamed existing DataArrayPaths
-      DataArrayPath::RenameContainer hardRenamePaths = filter->getRenamedPaths();
-      for(const DataArrayPath::RenameType& renameType : hardRenamePaths)
+      const DataArrayPath::RenameContainer newRenamePaths = filter->getRenamedPaths();
+      for(const DataArrayPath::RenameType& newRename : newRenamePaths)
       {
-        renamedPaths.push_back(renameType);
-        filterRenamedPaths.push_back(renameType);
+        // Loop through all existing rename paths and update as appropriate
+        for(auto iter = renamedPaths.cbegin(); iter != renamedPaths.cend(); ++iter)
+        {
+          const auto& existingRename = (*iter);
+          const auto updatedRenameOpt = DataArrayPath::CreateLinkingRename(existingRename, newRename);
+          if(true == updatedRenameOpt.first)
+          {
+            // Remove the old rename, insert the updated one, and update the iterator
+            renamedPaths.insert(iter, updatedRenameOpt.second);
+          }
+        }
+        // Add the new rename path
+        renamedPaths.push_back(newRename);
       }
+#endif
     }
+#if RENAME_ENABLED
     else
     {
       // Some widgets require the updated path to be valid before it can be set in the widget
@@ -766,17 +755,16 @@ int FilterPipeline::preflightPipeline()
       filter->renameDataArrayPaths(renamedPaths);
 
       // Undo filter renaming
-      DataArrayPath::RenameContainer filterRenamedPaths = filter->getRenamedPaths();
-      for(DataArrayPath::RenameType renameType : filterRenamedPaths)
+      const DataArrayPath::RenameContainer filterRenamedPaths = filter->getRenamedPaths();
+      for(const DataArrayPath::RenameType& renameType : filterRenamedPaths)
       {
-        DataArrayPath oldPath;
-        DataArrayPath newPath;
-        std::tie(oldPath, newPath) = renameType;
-        renameType = std::make_pair(newPath, oldPath);
+        const DataArrayPath& oldPath = std::get<0>(renameType);
+        const DataArrayPath& newPath = std::get<1>(renameType);
 
-        renamedPaths.push_back(renameType);
+        renamedPaths.push_back(std::make_pair(newPath, oldPath));
       }
     }
+#endif
   }
   setCurrentFilter(AbstractFilter::NullPointer());
 

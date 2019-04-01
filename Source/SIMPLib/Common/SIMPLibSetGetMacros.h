@@ -311,16 +311,17 @@ public:     \
   public:\
   SIMPL_SET_PROPERTY(type, prpty)\
   SIMPL_GET_PROPERTY(type, prpty)
-  
-  
 
-#define SIMPL_POINTER_PROPERTY(type, prpty)\
-  private:\
-    type* m_##prpty = nullptr;\
-  public:\
-  void set##prpty(type* f) { m_##prpty = f; }\
-  SIMPL_GET_PROPERTY(type*, prpty)  
-  
+#define SIMPL_POINTER_PROPERTY(type, prpty)                                                                                                                                                            \
+private:                                                                                                                                                                                               \
+  type* m_##prpty = nullptr;                                                                                                                                                                           \
+                                                                                                                                                                                                       \
+public:                                                                                                                                                                                                \
+  void set##prpty(type* f)                                                                                                                                                                             \
+  {                                                                                                                                                                                                    \
+    m_##prpty = f;                                                                                                                                                                                     \
+  }                                                                                                                                                                                                    \
+  SIMPL_GET_PROPERTY(type*, prpty)
 
 #define SIMPL_PRIVATE_INSTANCE_PROPERTY(type, prpty)\
   private:\
@@ -329,15 +330,14 @@ public:     \
   public:\
   SIMPL_GET_PROPERTY(type, prpty)
 
-
 /* *****************************************************************************
  * *****************************************************************************
  * *****************************************************************************
- * 
+ *
  * PyBind11 Macros that we can use to explicitly define which setters & getters
  * will be exposed to the Python library
  */
- 
+
 /**
 * @brief PYB11_CREATE_BINDINGS This macro lets the wrapper know that we want to
 * wrap this class with Python bindings. It should only take a single argument
@@ -361,27 +361,34 @@ public:     \
 #define PYB11_NO_BINDINGS(...)
 
 /**
-* @brief PYB11_STATIC_CREATION This macro will wrap the "static New()" function
-* that most of the SIMPL classes implement as a way to instantiate the class in
-* addition to other static methods that are used for a class. The argument types
-* to the static method should be listed <b>WITHOUT</b> any spaces for each argument.
-* 
-* @code
-* PYB11_STATIC_CREATION(Create ARGS std::vector<std::vector<double>> std::list<std::string> std::list<std::string>)
-* @endcode
-*/
+ * @brief PYB11_STATIC_CREATION This macro will wrap the "static New()" function
+ * that most of the SIMPL classes implement as a way to instantiate the class in
+ * addition to other static methods that are used for a class. The argument types
+ * to the static method should be listed <b>WITHOUT</b> any spaces for each argument.
+ *
+ * @code
+ * PYB11_STATIC_CREATION(Create ARGS std::vector<std::vector<double>> std::list<std::string> std::list<std::string>)
+ * @endcode
+ *
+ * If there are several static creation methods that overload each other then the following form can be used:
+ *
+ * @code
+ * PYB11_STATIC_CREATION(New OVERLOAD QString)
+ * PYB11_STATIC_CREATION(New OVERLOAD DataArrayPath)
+ * @endcode
+ */
 #define PYB11_STATIC_CREATION(...)
 
 /**
-* @brief PYB11_CREATION This macro is used for non-static constructors that need
-* to be wrapped. The argument types need to be lists where each argument cannot
-* containe spaces. Use a typedef if needed, but using a typedef also has its
-* own issues. @see DataArrayPath for an example.
-* 
-* @code
-* PYB11_CREATION(ARGS QString QString QString)
-* @endcode
-*/ 
+ * @brief PYB11_CREATION This macro is used for non-static constructors that need
+ * to be wrapped. The argument types need to be lists where each argument cannot
+ * containe spaces. Use a typedef if needed, but using a typedef also has its
+ * own issues. @see DataArrayPath for an example.
+ *
+ * @code
+ * PYB11_CREATION(ARGS QString QString QString)
+ * @endcode
+ */
 #define PYB11_CREATION(...)
 
 /**
@@ -448,6 +455,14 @@ public:     \
  * Note that in order to get the (const QString &) correct we used the '.' charater
  * to declare the type. This is required as the macro is split using spaces. When
  * then end code is generated the '.' characters will be replaced with spaces.
+ *
+ * If the method that is being wrapped in python is a 'const' method then the last argument should be CONST_METHOD. In
+ * the example below there is a pair of overloaded methods that are both 'const'.
+ *
+ * @code
+ * PYB11_METHOD(bool doesDataContainerExist OVERLOAD const.QString.&,Name CONST_METHOD)
+ * PYB11_METHOD(bool doesDataContainerExist OVERLOAD const.DataArrayPath.&,Path CONST_METHOD)
+ * @endcode
  */
 #define PYB11_METHOD(...)
 
@@ -524,9 +539,6 @@ public:     \
   public:\
   void set##prpty(const type& value) { this->m_##prpty = value; }\
   type get##prpty() const { return m_##prpty; }
-  
-
-  
 
 // -----------------------------------------------------------------------------
 //
@@ -565,7 +577,7 @@ public:     \
     (varname)[0] = value_0; (varname)[1] = value_1; (varname)[2] = value_2; }\
   void set##prpty(const std::tuple<type, type, type> &var) {\
     (varname)[0] = std::get<0>(var); (varname)[1] = std::get<1>(var); (varname)[2] = std::get<2>(var); }
-        
+
 #define SIMPL_GET_VEC3_PROPERTY(type, prpty, varname)\
   void get##prpty(type value[3]) {\
     value[0] = (varname)[0]; value[1] = (varname)[1]; value[2] = (varname)[2]; }\
@@ -604,7 +616,7 @@ public:     \
   public:\
   SIMPL_SET_VEC3_PROPERTY_VO(type, prpty, m_##prpty)\
   SIMPL_GET_VEC3_PROPERTY_VO(type, prpty, m_##prpty)
-  
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

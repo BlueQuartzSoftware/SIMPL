@@ -45,6 +45,11 @@
 #include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t {
+  DataContainerID = 1,
+  AttributeMatrixID
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -79,7 +84,7 @@ void ExtractVertexGeometry::setupFilterParameters()
   m_NewDCGeometryChoices.clear();
   m_ArrayHandlingChoices.clear();
 
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   //  {
   //    m_NewDCGeometryChoices.push_back("Vertex Geometry");
@@ -145,7 +150,7 @@ void ExtractVertexGeometry::dataCheck()
     return;
   }
 
-  DataContainer::Pointer dc = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, m_SelectedDataContainerName);
+  DataContainer::Pointer dc = getDataContainerArray()->getPrereqDataContainer(this, getSelectedDataContainerName());
   if(getErrorCondition() < 0)
   {
     return;
@@ -161,7 +166,7 @@ void ExtractVertexGeometry::dataCheck()
 
   if(getDataContainerArray()->doesDataContainerExist(getVertexDataContainerName()))
   {
-    QString ss = QObject::tr("A Data Container with name '%1' already exists.").arg(getVertexDataContainerName());
+    QString ss = QObject::tr("A Data Container with name '%1' already exists.").arg(getVertexDataContainerName().getDataContainerName());
     setErrorCondition(-2007);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
@@ -180,7 +185,7 @@ void ExtractVertexGeometry::dataCheck()
   size_t elementCount = 0;
   if(IGeometry::Type::Image == geomType || IGeometry::Type::RectGrid == geomType)
   {
-    vertexDataContainer = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getVertexDataContainerName());
+    vertexDataContainer = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getVertexDataContainerName(), DataContainerID);
     IGeometryGrid::Pointer imageGeom = std::dynamic_pointer_cast<IGeometryGrid>(fromGeometry);
     SIMPL::Tuple3SVec imageDims = imageGeom->getDimensions();
     VertexGeom::Pointer vertexGeom = VertexGeom::CreateGeometry(static_cast<int64_t>(std::get<0>(imageDims) * std::get<1>(imageDims) * std::get<2>(imageDims)), "VertexGeometry", !getInPreflight());
@@ -199,7 +204,7 @@ void ExtractVertexGeometry::dataCheck()
   for(int i = 0; i < selectedArraysSize; i++)
   {
     DataArrayPath dap = m_IncludedDataArrayPaths[i];
-    dc = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, dap.getDataContainerName());
+    dc = getDataContainerArray()->getPrereqDataContainer(this, dap.getDataContainerName());
 
     int err = 0;
     AttributeMatrix::Pointer sourceCellAttrMat = dc->getPrereqAttributeMatrix(this, dap.getAttributeMatrixName(), err);
@@ -215,7 +220,7 @@ void ExtractVertexGeometry::dataCheck()
                        .arg(dap.serialize("/"))
                        .arg(sourceCellAttrMat->getNumberOfTuples())
                        .arg(elementCount)
-                       .arg(m_VertexDataContainerName);
+                       .arg(m_VertexDataContainerName.getDataContainerName());
       setErrorCondition(-2009);
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
@@ -237,17 +242,17 @@ void ExtractVertexGeometry::dataCheck()
       newArrayPtr = sourceCellAttrMat->removeAttributeArray(dap.getDataArrayName());
     }
 
-    DataArrayPath newDap(m_VertexDataContainerName);
+    DataArrayPath newDap = m_VertexDataContainerName;
     newDap.setAttributeMatrixName(sourceCellAttrMat->getName());
     newDap.setDataArrayName("");
 
     AttributeMatrix::Pointer vertexCellAttrMat = vertexDataContainer->getAttributeMatrix(newDap);
     if(vertexCellAttrMat == nullptr)
     {
-      vertexCellAttrMat = vertexDataContainer->createNonPrereqAttributeMatrix(this, sourceCellAttrMat->getName(), sourceCellAttrMat->getTupleDimensions(), AttributeMatrix::Type::Vertex);
+      vertexCellAttrMat = vertexDataContainer->createNonPrereqAttributeMatrix(this, sourceCellAttrMat->getName(), sourceCellAttrMat->getTupleDimensions(), AttributeMatrix::Type::Vertex, AttributeMatrixID);
     }
 
-    vertexCellAttrMat->addAttributeArray(newArrayPtr->getName(), newArrayPtr);
+    vertexCellAttrMat->insertOrAssign(newArrayPtr);
   }
 }
 

@@ -579,7 +579,7 @@ void MultiDataArraySelectionWidget::filterNeedsInputParameters(AbstractFilter* f
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
+void MultiDataArraySelectionWidget::updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath)
 {
   DataArrayPath oldPath;
   DataArrayPath newPath;

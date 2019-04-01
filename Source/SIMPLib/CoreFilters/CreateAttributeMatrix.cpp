@@ -42,6 +42,10 @@
 #include "SIMPLib/FilterParameters/DynamicTableFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t {
+  AttributeMatrixID = 1
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -61,7 +65,7 @@ CreateAttributeMatrix::~CreateAttributeMatrix() = default;
 // -----------------------------------------------------------------------------
 void CreateAttributeMatrix::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   {
     QVector<QString> choices;
@@ -143,7 +147,7 @@ void CreateAttributeMatrix::dataCheck()
     tDims[i] = static_cast<size_t>(cols[i]);
   }
 
-  m->createNonPrereqAttributeMatrix(this, getCreatedAttributeMatrix().getAttributeMatrixName(), tDims, static_cast<AttributeMatrix::Type>(getAttributeMatrixType()));
+  m->createNonPrereqAttributeMatrix(this, getCreatedAttributeMatrix().getAttributeMatrixName(), tDims, static_cast<AttributeMatrix::Type>(getAttributeMatrixType()), AttributeMatrixID);
   if(getErrorCondition() < 0)
   {
     return;

@@ -29,6 +29,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLibSetGetMacros.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ScopedFileMonitor.hpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ShapeType.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLArray.hpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/TemplateHelpers.h
 )
 
@@ -62,4 +63,11 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_${SUBDIR_NAME}_Generated_MOC_SRCS}
 )
 
+#-------------------------------------------------------------------------------
+# Add the unit testing sources
+# --------------------------------------------------------------------
+# If Testing is enabled, turn on the Unit Tests
+if(SIMPL_BUILD_TESTING)
+  include(${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Testing/Cxx/SourceList.cmake)
+endif()
 

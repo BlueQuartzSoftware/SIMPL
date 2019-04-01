@@ -202,7 +202,7 @@ void EdgeGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void EdgeGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
+void EdgeGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
   if(data->getType() != AttributeMatrix::Type::Vertex || data->getType() != AttributeMatrix::Type::Edge)
   {
@@ -217,11 +217,11 @@ void EdgeGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer 
   {
     return;
   }
-  if(data->getName().compare(name) != 0)
-  {
-    data->setName(name);
-  }
-  m_AttributeMatrices[name] = data;
+  //if(data->getName().compare(name) != 0)
+  //{
+  //  data->setName(name);
+  //}
+  m_AttributeMatrices[data->getName()] = data;
 }
 
 // -----------------------------------------------------------------------------

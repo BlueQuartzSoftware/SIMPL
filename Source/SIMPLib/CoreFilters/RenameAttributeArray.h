@@ -169,6 +169,8 @@ class SIMPLib_EXPORT RenameAttributeArray : public AbstractFilter
      */
     void initialize();
 
+  private:
+    QString m_LastArrayName = "";
 
   public:
     RenameAttributeArray(const RenameAttributeArray&) = delete; // Copy Constructor Not Implemented

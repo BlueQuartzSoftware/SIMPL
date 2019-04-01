@@ -150,7 +150,7 @@ public:
       filter->setErrorCondition(-2);
       QString message = QObject::tr("Unable to read image '%1'").arg(inputFile);
       filter->notifyErrorMessage(filter->getHumanLabel(), message, filter->getErrorCondition());
-      outputIDataArray->resize(0);
+      outputIDataArray->resizeTuples(0);
     }
 
     try
