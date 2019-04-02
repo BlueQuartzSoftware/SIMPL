@@ -89,7 +89,7 @@ public:
   * @brief Returns the type of DataArrayPath this widget can handle
   * @return
   */
-  DataArrayPath::DataType getDataType();
+  DataArrayPath::DataType getDataType() const;
 
   /**
   * @brief Sets the DataContainer requirements and sets the DataType to DataContainer

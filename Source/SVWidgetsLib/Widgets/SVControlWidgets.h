@@ -185,7 +185,7 @@ public:
 
 
 /**
-* @brief The SVTabWidget class
+* @brief The SVDialog class
 */
 class SVWidgetsLib_EXPORT SVDialog : public QDialog
 {
@@ -198,7 +198,7 @@ public:
 };
 
 /**
- * @brief The SVTabWidget class
+ * @brief The SVFrame class
  */
 class SVWidgetsLib_EXPORT SVFrame : public QFrame
 {

@@ -451,6 +451,12 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
 
     SIMPL_INSTANCE_PROPERTY(QColor, DataArrayPath_border_drag_disabled)
     Q_PROPERTY(QColor DataArrayPath_border_drag_disabled READ getDataArrayPath_border_drag_disabled WRITE setDataArrayPath_border_drag_disabled)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, DataPathLabel_color)
+    Q_PROPERTY(QColor DataPathLabel_color READ getDataPathLabel_color WRITE setDataPathLabel_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, DataPathLabel_color_disabled)
+    Q_PROPERTY(QColor DataPathLabel_color_disabled READ getDataPathLabel_color_disabled WRITE setDataPathLabel_color_disabled)
     
     SIMPL_INSTANCE_PROPERTY(QColor, SIMPLViewPipelineDockWidgetTitle_inactive_background_color)
     Q_PROPERTY(QColor SIMPLViewPipelineDockWidgetTitle_inactive_background_color READ getSIMPLViewPipelineDockWidgetTitle_inactive_background_color WRITE setSIMPLViewPipelineDockWidgetTitle_inactive_background_color)

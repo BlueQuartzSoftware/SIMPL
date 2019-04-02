@@ -326,7 +326,7 @@ DataArrayPath::RenameContainer DataArrayPath::CheckForRenamedPaths(DataContainer
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayPath::DataType DataArrayPath::getDataType()
+DataArrayPath::DataType DataArrayPath::getDataType() const
 {
   if(getDataContainerName().isEmpty())
   {

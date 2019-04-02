@@ -372,7 +372,7 @@ void DataArrayPathSelectionWidget::setupGui()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayPath::DataType DataArrayPathSelectionWidget::getDataType()
+DataArrayPath::DataType DataArrayPathSelectionWidget::getDataType() const
 {
   return m_DataType;
 }

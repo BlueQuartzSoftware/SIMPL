@@ -162,7 +162,7 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
     * @brief Returns the DataType matching the current path
     * @return
     */
-    DataType getDataType();
+    DataType getDataType() const;
 
     SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
     SIMPL_INSTANCE_STRING_PROPERTY(AttributeMatrixName)
