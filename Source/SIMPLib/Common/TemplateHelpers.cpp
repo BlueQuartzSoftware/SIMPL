@@ -93,7 +93,7 @@ IDataArrayWkPtr CreateNonPrereqArrayFromArrayType::operator()(AbstractFilter* f,
   else
   {
     QString msg = QObject::tr("The created array '%1' is of unsupported type. The following types are supported: %3").arg(arrayPath.getDataArrayName()).arg(SIMPL::TypeNames::SupportedTypeList);
-    f->setErrorCondition(Errors::UnsupportedType);
+    f->setErrorCondition(Errors::UnsupportedDataType);
     f->notifyErrorMessage(f->getHumanLabel(), msg, f->getErrorCondition());
   }
   return ptr;
@@ -144,7 +144,7 @@ IDataArrayWkPtr CreateNonPrereqArrayFromTypeEnum::operator()(AbstractFilter* f, 
     break;
   default:
     QString msg = QObject::tr("The created array '%1' is of unsupported type. The following types are supported: %3").arg(arrayPath.getDataArrayName()).arg(SIMPL::TypeEnums::SupportedTypeList);
-    f->setErrorCondition(Errors::UnsupportedType);
+    f->setErrorCondition(Errors::UnsupportedDataType);
     f->notifyErrorMessage(f->getHumanLabel(), msg, f->getErrorCondition());
     break;
   }
@@ -217,7 +217,7 @@ IDataArrayShPtr CreateArrayFromArrayType::operator()(AbstractFilter* f, const QV
   else
   {
     QString msg = QObject::tr("The created array is of unsupported type.");
-    f->setErrorCondition(Errors::UnsupportedType);
+    f->setErrorCondition(Errors::UnsupportedDataType);
     f->notifyErrorMessage(f->getHumanLabel(), msg, f->getErrorCondition());
   }
   return ptr;
@@ -284,7 +284,7 @@ IDataArrayShPtr CreateArrayFromType::operator()(AbstractFilter* f, const QVector
   else
   {
     QString msg = QObject::tr("The created array is of unsupported type.");
-    f->setErrorCondition(Errors::UnsupportedType);
+    f->setErrorCondition(Errors::UnsupportedDataType);
     f->notifyErrorMessage(f->getHumanLabel(), msg, f->getErrorCondition());
   }
   return ptr;
@@ -378,7 +378,7 @@ IDataArrayWkPtr GetPrereqArrayFromPath::operator()(AbstractFilter* f, const Data
                      .arg(arrayPath.getDataArrayName())
                      .arg(i_data_array->getTypeAsString())
                      .arg(SIMPL::TypeNames::SupportedTypeList);
-    f->setErrorCondition(Errors::UnsupportedType);
+    f->setErrorCondition(Errors::UnsupportedDataType);
     f->notifyErrorMessage(f->getHumanLabel(), ss, f->getErrorCondition());
   }
   return retPtr;

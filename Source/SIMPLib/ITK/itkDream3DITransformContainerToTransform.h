@@ -40,6 +40,11 @@
 
 #include "SIMPLib/Geometry/ITransformContainer.h"
 
+#if defined(ITK_VERSION_MAJOR) && ITK_VERSION_MAJOR == 4
+#define ITKv5_CONST
+#endif
+
+
 namespace itk
 {
 template <typename TParametersValueType = double, unsigned int CompositeNDimensions = 3>
@@ -66,7 +71,7 @@ protected:
   Dream3DITransformContainerToTransform();
   ~Dream3DITransformContainerToTransform() override;
 
-  void VerifyPreconditions() override;
+  void VerifyPreconditions() ITKv5_CONST;
 
   void GenerateData() override;
   ProcessObject::DataObjectPointer MakeOutput(ProcessObject::DataObjectPointerArraySizeType) override;

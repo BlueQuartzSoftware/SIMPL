@@ -562,7 +562,7 @@ int IGeometry::readGeometryFromHDF5(hid_t parentId, bool preflight)
   herr_t err = 0;
   std::string transformTypeName = SIMPL::Geometry::UnknownTransformContainer.toStdString();
 
-  QString transformName = QString::number(0).toLatin1().data();
+  QString transformName = SIMPL::Geometry::TransformContainerGroup.toLatin1().data();
   err = H5Lite::readStringAttribute(parentId, transformName.toLatin1().data(), SIMPL::Geometry::TransformContainerTypeName.toLatin1().data(), transformTypeName);
   // No transform information found.
   if(err < 0)

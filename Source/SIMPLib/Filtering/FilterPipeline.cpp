@@ -776,6 +776,14 @@ int FilterPipeline::preflightPipeline()
 // -----------------------------------------------------------------------------
 DataContainerArray::Pointer FilterPipeline::execute()
 {
+  return execute(DataContainerArray::New());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataContainerArray::Pointer FilterPipeline::execute(DataContainerArray::Pointer dca)
+{
   if(m_State != FilterPipeline::State::Idle)
   {
     // We cannot execute a pipeline that is not idle
@@ -800,7 +808,7 @@ DataContainerArray::Pointer FilterPipeline::execute()
 
   m_State = FilterPipeline::State::Executing;
 
-  m_Dca = DataContainerArray::New();
+  m_Dca = dca;
 
   // Start looping through the Pipeline
   float progress = 0.0f;
