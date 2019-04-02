@@ -101,7 +101,7 @@
 
 class ExecutionResultInvalidException : public std::exception
 {
-   const char* what () const throw ()
+   const char* what () const noexcept
    {
       return "The execution result of a pipeline was invalid.";
    }

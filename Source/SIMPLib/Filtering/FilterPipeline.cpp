@@ -80,7 +80,7 @@ class FilterPipelineMessageHandler : public AbstractMessageHandler
 
 class PipelineIdleException : public std::exception
 {
-   const char* what () const throw ()
+   const char* what () const noexcept
    {
       return "A pipeline that was finishing execution was marked as in the idle state.";
    }
