@@ -99,7 +99,7 @@
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/QtSupport/QtSRecentFileList.h"
 
-struct ExecutionResultInvalidException : public std::exception
+class ExecutionResultInvalidException : public std::exception
 {
    const char* what () const throw ()
    {

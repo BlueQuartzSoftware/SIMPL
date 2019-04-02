@@ -78,7 +78,7 @@ class FilterPipelineMessageHandler : public AbstractMessageHandler
     FilterPipeline* m_Pipeline = nullptr;
 };
 
-struct PipelineIdleException : public std::exception
+class PipelineIdleException : public std::exception
 {
    const char* what () const throw ()
    {
