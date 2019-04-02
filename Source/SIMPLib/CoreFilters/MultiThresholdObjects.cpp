@@ -209,7 +209,7 @@ void MultiThresholdObjects::execute()
   {
     ThresholdFilterHelper filter(static_cast<SIMPL::Comparison::Enumeration>(comp_0.compOperator), comp_0.compValue, m_DestinationPtr.lock().get());
     // Run the first threshold and store the results in our output array
-    int err = filter.execute(m->getAttributeMatrix(amName)->getAttributeArray(comp_0.attributeArrayName).get(), m_DestinationPtr.lock().get());
+    int32_t err = filter.execute(m->getAttributeMatrix(amName)->getAttributeArray(comp_0.attributeArrayName).get(), m_DestinationPtr.lock().get());
     if(err < 0)
     {
       DataArrayPath tempPath(comp_0.dataContainerName, comp_0.attributeMatrixName, comp_0.attributeArrayName);
@@ -237,7 +237,7 @@ void MultiThresholdObjects::execute()
 
       ThresholdFilterHelper filter(static_cast<SIMPL::Comparison::Enumeration>(compRef.compOperator), compRef.compValue, currentArrayPtr.get());
 
-      int err = filter.execute(m->getAttributeMatrix(amName)->getAttributeArray(compRef.attributeArrayName).get(), currentArrayPtr.get());
+      int32_t err = filter.execute(m->getAttributeMatrix(amName)->getAttributeArray(compRef.attributeArrayName).get(), currentArrayPtr.get());
       if(err < 0)
       {
         DataArrayPath tempPath(compRef.dataContainerName, compRef.attributeMatrixName, compRef.attributeArrayName);

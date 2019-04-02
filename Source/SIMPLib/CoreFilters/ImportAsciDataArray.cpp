@@ -518,7 +518,7 @@ void ImportAsciDataArray::execute()
   char delimiter = converSelectedDelimiter();
 
   QVector<size_t> cDims(1, m_NumberOfComponents);
-  int err = 0;
+  int32_t err = 0;
   if(m_ScalarType == SIMPL::NumericTypes::Type::Int8)
   {
     Int8ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<Int8ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());

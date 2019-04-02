@@ -219,7 +219,7 @@ void MultiThresholdObjects2::execute()
     createBoolArray(thresholdSize, thresholdArray);
     bool firstValueFound = false;
 
-    int err = 0;
+    int32_t err = 0;
 
     // Loop on the remaining Comparison objects updating our final result array as we go
     for(int32_t i = 0; i < m_SelectedThresholds.size() && err >= 0; ++i)

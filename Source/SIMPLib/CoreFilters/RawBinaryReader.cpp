@@ -379,7 +379,7 @@ void RawBinaryReader::execute()
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getCreatedAttributeArrayPath().getDataContainerName());
 
-  int err = 0;
+  int32_t err = 0;
   switch(m_ScalarType)
   {
   case SIMPL::NumericTypes::Type::Int8:
