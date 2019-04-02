@@ -449,7 +449,7 @@ AbstractFilter::Pointer ConvertColorToGrayScale::newFilterInstance(bool copyFilt
 // -----------------------------------------------------------------------------
 const QString ConvertColorToGrayScale::getCompiledLibraryName() const
 {
-  return Core::CoreBaseName;
+  return  Core::CoreBaseName;
 }
 
 // -----------------------------------------------------------------------------

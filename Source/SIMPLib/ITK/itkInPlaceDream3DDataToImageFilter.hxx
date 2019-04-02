@@ -37,7 +37,7 @@ InPlaceDream3DDataToImageFilter< PixelType, VDimension >
 template< typename PixelType, unsigned int VDimension>
 void
 InPlaceDream3DDataToImageFilter< PixelType, VDimension >
-::VerifyPreconditions()
+::VerifyPreconditions() ITKv5_CONST
 {
   if (m_DataContainer == DataContainer::NullPointer() )
   {

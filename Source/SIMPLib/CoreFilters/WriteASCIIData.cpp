@@ -303,15 +303,15 @@ void WriteASCIIData::dataCheck()
 
     if( ptr.lock()->getTypeAsString().compare("NeighborList<T>") == 0)
     {
-      setErrorCondition(TemplateHelpers::Errors::UnsupportedType, "NeighborList is unsupported when writing ASCII Data.");
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "NeighborList is unsupported when writing ASCII Data.");
     }
     else if( ptr.lock()->getTypeAsString().compare("struct") == 0)
     {
-      setErrorCondition(TemplateHelpers::Errors::UnsupportedType, "StructArray is unsupported when writing ASCII Data.");
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "StructArray is unsupported when writing ASCII Data.");
     }
     else if( ptr.lock()->getTypeAsString().compare("StatsDataArray") == 0)
     {
-      setErrorCondition(TemplateHelpers::Errors::UnsupportedType, "StatsDataArray is unsupported when writing ASCII Data.");
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "StatsDataArray is unsupported when writing ASCII Data.");
     }
     else
     {
@@ -406,15 +406,15 @@ void WriteASCIIData::writeMultiFileOutput()
     }
     else if( selectedArrayPtr->getTypeAsString().compare("NeighborList<T>") == 0)
     {
-      setErrorCondition(TemplateHelpers::Errors::UnsupportedType, "NeighborList is unsupported when writing ASCII Data.");
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "NeighborList is unsupported when writing ASCII Data.");
     }
     else if( selectedArrayPtr->getTypeAsString().compare("struct") == 0)
     {
-      setErrorCondition(TemplateHelpers::Errors::UnsupportedType, "StructArray is unsupported when writing ASCII Data.");
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "StructArray is unsupported when writing ASCII Data.");
     }
     else if( selectedArrayPtr->getTypeAsString().compare("StatsDataArray") == 0)
     {
-      setErrorCondition(TemplateHelpers::Errors::UnsupportedType, "StatsDataArray is unsupported when writing ASCII Data.");
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "StatsDataArray is unsupported when writing ASCII Data.");
     }
     else
       EXECUTE_TEMPLATE(this, WriteASCIIDataPrivate, selectedArrayPtr, this, selectedArrayPtr, delimiter, exportArrayFile, m_MaxValPerLine)

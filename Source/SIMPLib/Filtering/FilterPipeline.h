@@ -137,6 +137,11 @@ public:
   virtual DataContainerArray::Pointer execute();
 
   /**
+   * @brief An execute method using an existing data container array
+   */
+  DataContainerArray::Pointer execute(DataContainerArray::Pointer dca);
+
+  /**
    * @brief This will preflight the pipeline and report any errors that would occur during
    * execution of the pipeline
    */
@@ -315,3 +320,4 @@ public:
   FilterPipeline& operator=(const FilterPipeline&) = delete; // Copy Assignment Not Implemented
   FilterPipeline& operator=(FilterPipeline&&) = delete;      // Move Assignment Not Implemented
 };
+Q_DECLARE_METATYPE(FilterPipeline::Pointer);

@@ -93,7 +93,7 @@ IDataArrayWkPtr CreateNonPrereqArrayFromArrayType::operator()(AbstractFilter* f,
   else
   {
     QString msg = QObject::tr("The created array '%1' is of unsupported type. The following types are supported: %3").arg(arrayPath.getDataArrayName()).arg(SIMPL::TypeNames::SupportedTypeList);
-    f->setErrorCondition(Errors::UnsupportedType, msg);
+    f->setErrorCondition(Errors::UnsupportedDataType, msg);
   }
   return ptr;
 }
@@ -143,7 +143,7 @@ IDataArrayWkPtr CreateNonPrereqArrayFromTypeEnum::operator()(AbstractFilter* f, 
     break;
   default:
     QString msg = QObject::tr("The created array '%1' is of unsupported type. The following types are supported: %3").arg(arrayPath.getDataArrayName()).arg(SIMPL::TypeEnums::SupportedTypeList);
-    f->setErrorCondition(Errors::UnsupportedType, msg);
+    f->setErrorCondition(Errors::UnsupportedDataType, msg);
     break;
   }
   return ptr;
@@ -215,7 +215,7 @@ IDataArrayShPtr CreateArrayFromArrayType::operator()(AbstractFilter* f, const QV
   else
   {
     QString msg = QObject::tr("The created array is of unsupported type.");
-    f->setErrorCondition(Errors::UnsupportedType, msg);
+    f->setErrorCondition(Errors::UnsupportedDataType, msg);
   }
   return ptr;
 }
@@ -281,7 +281,7 @@ IDataArrayShPtr CreateArrayFromType::operator()(AbstractFilter* f, const QVector
   else
   {
     QString msg = QObject::tr("The created array is of unsupported type.");
-    f->setErrorCondition(Errors::UnsupportedType, msg);
+    f->setErrorCondition(Errors::UnsupportedDataType, msg);
   }
   return ptr;
 }
@@ -371,7 +371,7 @@ IDataArrayWkPtr GetPrereqArrayFromPath::operator()(AbstractFilter* f, const Data
                      .arg(arrayPath.getDataArrayName())
                      .arg(i_data_array->getTypeAsString())
                      .arg(SIMPL::TypeNames::SupportedTypeList);
-    f->setErrorCondition(Errors::UnsupportedType, ss);
+    f->setErrorCondition(Errors::UnsupportedDataType, ss);
   }
   return retPtr;
 }
