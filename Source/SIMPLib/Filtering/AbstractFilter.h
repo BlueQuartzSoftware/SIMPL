@@ -87,8 +87,8 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   PYB11_PROPERTY(QString CompiledLibraryName READ getCompiledLibraryName)
   PYB11_PROPERTY(bool Cancel READ getCancel WRITE setCancel)
   PYB11_PROPERTY(bool Enabled READ getEnabled WRITE setEnabled)
-  PYB11_PROPERTY(int ErrorCondition READ getErrorCondition)
-  PYB11_PROPERTY(int WarningCondition READ getWarningCondition)
+  PYB11_PROPERTY(int ErrorCode READ getErrorCode)
+  PYB11_PROPERTY(int WarningCode READ getWarningCode)
   PYB11_PROPERTY(bool InPreflight READ getInPreflight WRITE setInPreflight)
   PYB11_PROPERTY(int PipelineIndex READ getPipelineIndex WRITE setPipelineIndex)
 
