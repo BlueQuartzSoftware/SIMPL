@@ -79,6 +79,8 @@ class SIMPLib_EXPORT FilterPipeline : public Observable
   PYB11_METHOD(bool clear)
   PYB11_METHOD(size_t size)
   PYB11_METHOD(bool empty)
+  PYB11_METHOD(void clearErrorCode)
+  PYB11_METHOD(void clearWarningCode)
 
 public:
   SIMPL_SHARED_POINTERS(FilterPipeline)
