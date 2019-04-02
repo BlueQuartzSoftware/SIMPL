@@ -63,7 +63,7 @@ FeatureCountDecision::~FeatureCountDecision() = default;
 // -----------------------------------------------------------------------------
 void FeatureCountDecision::setupFilterParameters()
 {
-  FilterParameterVector parameters = getFilterParameters();
+  FilterParameterVectorType parameters = getFilterParameters();
   parameters.push_back(SeparatorFilterParameter::New("Cell Ensemble Data", FilterParameter::RequiredArray));
   {
     DataArraySelectionFilterParameter::RequirementType req =

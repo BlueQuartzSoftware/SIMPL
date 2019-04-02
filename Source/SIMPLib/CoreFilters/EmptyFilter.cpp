@@ -58,7 +58,7 @@ EmptyFilter::~EmptyFilter() = default;
 // -----------------------------------------------------------------------------
 void EmptyFilter::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   QString str;
   QTextStream ss(&str);

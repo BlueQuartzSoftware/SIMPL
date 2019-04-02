@@ -360,7 +360,7 @@ void ComparisonSelectionAdvancedWidget::populateButtonText()
   }
 
   // Check to see if we have any DataContainers to actually populate drop downs with.
-  if (dca->getDataContainers().isEmpty())
+  if (dca->getDataContainers().empty())
   {
     return;
   }
@@ -465,7 +465,7 @@ void ComparisonSelectionAdvancedWidget::presetAttributeMatrix(DataArrayPath amPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonSelectionAdvancedWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
+void ComparisonSelectionAdvancedWidget::updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath)
 {
   if(propertyName.compare(getFilterParameter()->getPropertyName()) == 0)
   {

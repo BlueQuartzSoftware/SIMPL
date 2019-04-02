@@ -40,7 +40,7 @@
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
-#include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
+#include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
@@ -60,7 +60,7 @@
 
 class ConvertColorToGrayScaleTest
 {
-  const FloatVec3_t m_defaultWeights{0.2125f, 0.7154f, 0.0721f};
+  const FloatVec3Type m_defaultWeights{0.2125f, 0.7154f, 0.0721f};
   const bool m_createNewAM = false;
   const QString m_filtName = "ConvertColorToGrayScale";
   const QString m_outputArrayPrefix = "grayTestImage";
@@ -299,18 +299,18 @@ class ConvertColorToGrayScaleTest
   static DataContainer::Pointer createVertexGeometryDataContainer(const DataArray<uint8_t>::Pointer& aa, const QVector<size_t>& tDims)
   {
     AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, SIMPL::Defaults::VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
-    am->addAttributeArray(aa->getName(), aa);
+    am->insertOrAssign(aa);
 
     DataContainer::Pointer dc = DataContainer::New(SIMPL::Defaults::VertexDataContainerName);
-    dc->addAttributeMatrix(SIMPL::Defaults::VertexAttributeMatrixName, am);
+    dc->insertOrAssign(am);
     dc->setGeometry(VertexGeom::CreateGeometry(static_cast<int64_t>(aa->getNumberOfTuples()), SIMPL::Geometry::VertexGeometry));
     return dc;
   }
 
-  int CheckFilterParameters(const QVariant& algorithm, const FloatVec3_t& cws, const uint8_t& cc)
+  int CheckFilterParameters(const QVariant& algorithm, const FloatVec3Type& cws, const uint8_t& cc)
   {
     QVariant conversionAlgorithm{m_colorToGrayscaleFilter->property("ConversionAlgorithm")};
-    FloatVec3_t colorWeights = (m_colorToGrayscaleFilter->property("ColorWeights").value<FloatVec3_t>());
+    FloatVec3Type colorWeights = (m_colorToGrayscaleFilter->property("ColorWeights").value<FloatVec3Type>());
     QVariant outputArrayPrefix{m_colorToGrayscaleFilter->property("OutputArrayPrefix")};
     QVariant colorChannel{m_colorToGrayscaleFilter->property("ColorChannel")};
     QVariant createNewAM{m_colorToGrayscaleFilter->property("CreateNewAttributeMatrix")};
@@ -319,7 +319,7 @@ class ConvertColorToGrayScaleTest
     int wrongParameters = 0;
     wrongParameters += (conversionAlgorithm == algorithm) ? 0 : 1;
     float epsilon = 0.000000001f;
-    wrongParameters += (abs(colorWeights.x - cws.x) < epsilon && abs(colorWeights.y - cws.y) < epsilon && abs(colorWeights.z - cws.z) < epsilon) ? 0 : 1;
+    wrongParameters += (abs(colorWeights.getX() - cws.getX()) < epsilon && abs(colorWeights.getY() - cws.getY()) < epsilon && abs(colorWeights.getZ() - cws.getZ()) < epsilon) ? 0 : 1;
     wrongParameters += (outputArrayPrefix == m_outputArrayPrefix) ? 0 : 1;
     wrongParameters += (colorChannel == cc) ? 0 : 1;
     wrongParameters += (createNewAM == m_createNewAM) ? 0 : 1;
@@ -331,10 +331,10 @@ class ConvertColorToGrayScaleTest
   int CompareResults(const uint8_t& algoMapIndex) const
   {
     QString amName = m_outputAMName;
-    DataContainer::Pointer dc = m_dca->getDataContainers().first();
+    DataContainer::Pointer dc = m_dca->getDataContainers().front();
     if(!m_createNewAM)
     {
-      amName = dc->getAttributeMatrices().first()->getName();
+      amName = dc->getAttributeMatrices().front()->getName();
     }
     AttributeMatrix::Pointer am = dc->getAttributeMatrix(amName);
 
@@ -367,9 +367,11 @@ class ConvertColorToGrayScaleTest
    of the desired geometry is passed in here this method will sort out the input
    data array path and should work as expected
    */
-  void SetUp(const QVariant& algorithm, const DataContainer::Pointer& dc, const FloatVec3_t& colorWeights = {0.2125f, 0.7154f, 0.0721f}, const uint8_t& colorChannel = 0)
+  void SetUp(const QVariant& algorithm, const DataContainer::Pointer& dc, const FloatVec3Type& colorWeights = {0.2125f, 0.7154f, 0.0721f}, const uint8_t& colorChannel = 0)
   {
-    m_dca->addDataContainer(dc);
+    m_dca = DataContainerArray::New();
+    m_dca->setName("TEST DATA CONTAINER ARRAY");
+    m_dca->insertOrAssign(dc);
     QVector<DataArrayPath> daps{};
     for(const AttributeMatrix::Pointer& eachAM : dc->getAttributeMatrices())
     {
@@ -410,6 +412,8 @@ class ConvertColorToGrayScaleTest
 
   int RunTest(const uint8_t& algoMapIndex)
   {
+    Observer obs;
+    m_colorToGrayscaleFilter->connect(m_colorToGrayscaleFilter.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)), &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
     m_colorToGrayscaleFilter->execute();
     int erred = m_colorToGrayscaleFilter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(erred, 0);
@@ -469,6 +473,8 @@ public:
 
   void operator()()
   {
+    std::cout << "#### ConvertColorToGrayScaleTest Starting ####" << std::endl;
+
     int err = 0;
 
     const QString aaName = SIMPL::VertexData::SurfaceMeshNodes;
@@ -490,7 +496,7 @@ public:
     TearDown(vertexDC);
 
     // Test custom
-    FloatVec3_t colorWeights{0.75, 0.75, 0.75};
+    FloatVec3Type colorWeights{0.75, 0.75, 0.75};
     qDebug() << "Custom weights (0.75, 0.75, 0.75)...";
     SetUp(Algorithms::LUMINOSITY, vertexDC, colorWeights);
     DREAM3D_REGISTER_TEST(RunTest(1))

@@ -98,11 +98,11 @@ void FloatVec3Widget::setupGui()
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
-    FloatVec3_t data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<FloatVec3_t>();
+    FloatVec3Type data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<FloatVec3Type>();
 
-    xData->setText(loc.toString(data.x));
-    yData->setText(loc.toString(data.y));
-    zData->setText(loc.toString(data.z));
+    xData->setText(loc.toString(data[0]));
+    yData->setText(loc.toString(data[1]));
+    zData->setText(loc.toString(data[2]));
   }
 
   errorLabel->hide();
@@ -142,39 +142,39 @@ void FloatVec3Widget::widgetChanged(const QString& text)
 void FloatVec3Widget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   bool ok = false;
-  FloatVec3_t defValue = m_FilterParameter->getDefaultValue().value<FloatVec3_t>();
-  FloatVec3_t data;
+  FloatVec3Type defValue = m_FilterParameter->getDefaultValue().value<FloatVec3Type>();
+  FloatVec3Type data;
 
   QLocale loc;
 
-  data.x = loc.toFloat(xData->text(), &ok);
+  data[0] = loc.toFloat(xData->text(), &ok);
   if(!ok)
   {
     SVStyle::Instance()->LineEditBackgroundErrorStyle(xData);
     SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);  
     errorLabel->setText("X Value entered is beyond the representable range for a double.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());
     errorLabel->show();
-    data.x = defValue.x;
+    data[0] = defValue[0];
   }
-  
-  data.y = loc.toFloat(yData->text(), &ok);
+
+  data[1] = loc.toFloat(yData->text(), &ok);
   if(!ok)
   {
     SVStyle::Instance()->LineEditBackgroundErrorStyle(yData);
     SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);  
     errorLabel->setText("Y Value entered is beyond the representable range for a double.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());
     errorLabel->show();
-    data.y = defValue.y;
+    data[1] = defValue[1];
   }
-  
-  data.z = loc.toFloat(zData->text(), &ok);
+
+  data[2] = loc.toFloat(zData->text(), &ok);
   if(!ok)
   {
     SVStyle::Instance()->LineEditBackgroundErrorStyle(zData);
     SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);
     errorLabel->setText("Z Value entered is beyond the representable range for a double.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());
     errorLabel->show();
-    data.z = defValue.z;
+    data[2] = defValue[2];
   }
 
   QVariant v;

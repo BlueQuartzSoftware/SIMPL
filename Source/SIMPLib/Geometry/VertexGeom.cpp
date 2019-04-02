@@ -112,7 +112,7 @@ void VertexGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void VertexGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
+void VertexGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
   if(data->getType() != AttributeMatrix::Type::Vertex)
   {
@@ -123,10 +123,10 @@ void VertexGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointe
   {
     return;
   }
-  if(data->getName().compare(name) != 0)
-  {
-    data->setName(name);
-  }
+  //if(data->getName().compare(name) != 0)
+  //{
+  //  data->setName(name);
+  //}
   m_AttributeMatrices[name] = data;
 }
 

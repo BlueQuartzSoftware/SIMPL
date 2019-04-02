@@ -44,6 +44,10 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t {
+  DataArrayID = 1
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -64,7 +68,7 @@ ExtractComponentAsArray::~ExtractComponentAsArray() = default;
 // -----------------------------------------------------------------------------
 void ExtractComponentAsArray::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Component Number to Extract", CompNumber, FilterParameter::Parameter, ExtractComponentAsArray));
 
@@ -147,7 +151,7 @@ void ExtractComponentAsArray::dataCheck()
 
   QVector<size_t> cDims(1, 1);
   DataArrayPath tempPath(getSelectedArrayPath().getDataContainerName(), getSelectedArrayPath().getAttributeMatrixName(), getNewArrayArrayName());
-  m_NewArrayPtr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, m_InArrayPtr.lock());
+  m_NewArrayPtr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, m_InArrayPtr.lock(), DataArrayID);
 }
 
 // -----------------------------------------------------------------------------

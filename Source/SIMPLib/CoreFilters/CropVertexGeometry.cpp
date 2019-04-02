@@ -40,11 +40,16 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/FloatFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
 #include "SIMPLib/SIMPLibVersion.h"
+
+enum createdPathID : RenameDataPath::DataID_t {
+  DataContainerID = 1
+};
 
 // -----------------------------------------------------------------------------
 //
@@ -71,7 +76,7 @@ CropVertexGeometry::~CropVertexGeometry() = default;
 // -----------------------------------------------------------------------------
 void CropVertexGeometry::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   DataContainerSelectionFilterParameter::RequirementType req;
   IGeometry::Types reqGeom = {IGeometry::Type::Vertex};
   req.dcGeometryTypes = reqGeom;
@@ -82,7 +87,7 @@ void CropVertexGeometry::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_FLOAT_FP("X Max", XMax, FilterParameter::Parameter, CropVertexGeometry));
   parameters.push_back(SIMPL_NEW_FLOAT_FP("Y Max", YMax, FilterParameter::Parameter, CropVertexGeometry));
   parameters.push_back(SIMPL_NEW_FLOAT_FP("Z Max", ZMax, FilterParameter::Parameter, CropVertexGeometry));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Cropped Data Container", CroppedDataContainerName, FilterParameter::CreatedArray, CropVertexGeometry));
+  parameters.push_back(SIMPL_NEW_DC_CREATION_FP("Cropped Data Container", CroppedDataContainerName, FilterParameter::CreatedArray, CropVertexGeometry));
   setFilterParameters(parameters);
 }
 
@@ -92,14 +97,14 @@ void CropVertexGeometry::setupFilterParameters()
 void CropVertexGeometry::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setDataContainerName(reader->readString("DataContainerName", getDataContainerName()));
+  setDataContainerName(reader->readDataArrayPath("DataContainerName", getDataContainerName()));
   setXMin(reader->readValue("XMin", getXMin()));
   setYMin(reader->readValue("YMin", getYMin()));
   setZMin(reader->readValue("ZMin", getZMin()));
   setXMax(reader->readValue("XMax", getXMax()));
   setYMax(reader->readValue("YMax", getYMax()));
   setZMax(reader->readValue("ZMax", getZMax()));
-  setCroppedDataContainerName(reader->readString("CroppedDataContainerName", getCroppedDataContainerName()));
+  setCroppedDataContainerName(reader->readDataArrayPath("CroppedDataContainerName", getCroppedDataContainerName()));
   reader->closeFilterGroup();
 }
 
@@ -141,7 +146,7 @@ void CropVertexGeometry::dataCheck()
     setErrorCondition(-5550, ss);
   }
 
-  DataContainer::Pointer dc = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getCroppedDataContainerName());
+  DataContainer::Pointer dc = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getCroppedDataContainerName(), DataContainerID);
 
   if(getErrorCode() < 0)
   {
@@ -172,7 +177,7 @@ void CropVertexGeometry::dataCheck()
       if(tempAttrMatType != AttributeMatrix::Type::Vertex)
       {
         AttributeMatrix::Pointer attrMat = tmpAttrMat->deepCopy(getInPreflight());
-        dc->addAttributeMatrix(attr_mat, attrMat);
+        dc->addOrReplaceAttributeMatrix(attrMat);
       }
       else
       {
@@ -180,7 +185,7 @@ void CropVertexGeometry::dataCheck()
         tempDataArrayList = tmpAttrMat->getAttributeArrayNames();
         for(auto&& data_array : tempDataArrayList)
         {
-          tempPath.update(getCroppedDataContainerName(), tmpAttrMat->getName(), data_array);
+          tempPath.update(getCroppedDataContainerName().getDataContainerName(), tmpAttrMat->getName(), data_array);
           IDataArray::Pointer tmpDataArray = tmpAttrMat->getPrereqIDataArray<IDataArray, AbstractFilter>(this, data_array, -90002);
           if(getErrorCode() >= 0)
           {

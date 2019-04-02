@@ -52,7 +52,7 @@ AbstractDecisionFilter::~AbstractDecisionFilter() = default;
 // -----------------------------------------------------------------------------
 void AbstractDecisionFilter::setupFilterParameters()
 {
-  // FilterParameterVector parameters;
+  // FilterParameterVectorType parameters;
 
   // setFilterParameters(parameters);
 }

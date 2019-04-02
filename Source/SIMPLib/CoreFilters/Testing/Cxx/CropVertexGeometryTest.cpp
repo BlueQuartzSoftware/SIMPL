@@ -129,22 +129,22 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     // Create AttributeMatrix
 
     QVector<size_t> dims(1, vertices.size());
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(dims, k_VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
-    dc->addAttributeMatrix(k_VertexAttributeMatrixName, vertexAM);
+    dc->addOrReplaceAttributeMatrix(vertexAM);
 
     AttributeMatrix::Pointer nonVertexAM = AttributeMatrix::New(m_Dims4, k_AttributeMatrixName, AttributeMatrix::Type::Generic);
-    dc->addAttributeMatrix(k_AttributeMatrixName, nonVertexAM);
+    dc->addOrReplaceAttributeMatrix(nonVertexAM);
 
     // Create DataArray used for geometry creation
 
     FloatArrayType::Pointer daVert = createDataArray<float>(k_VertexCoordinatesDAName, vertices, dims, m_Dims3);
-    vertexAM->addAttributeArray(k_VertexCoordinatesDAName, daVert);
+    vertexAM->insertOrAssign(daVert);
 
     // Manually create cropped DataArray for comparison
 
@@ -159,7 +159,7 @@ public:
     {
       da->setValue(i, i + 0.5f);
     }
-    nonVertexAM->addAttributeArray(k_DataArray0Name, da);
+    nonVertexAM->insertOrAssign(da);
 
     // Create Geometry
 
@@ -178,12 +178,13 @@ public:
     // Setup Filter
 
     QVariant var;
-
-    var.setValue(k_DataContainerName);
+    DataArrayPath dap(k_DataContainerName);
+    var.setValue(dap);
     bool propWasSet = cropVertexGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-    var.setValue(k_CroppedDataContainerName);
+    dap = DataArrayPath(k_CroppedDataContainerName);
+    var.setValue(dap);
     propWasSet = cropVertexGeometry->setProperty("CroppedDataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -230,7 +231,7 @@ public:
 
     DREAM3D_REQUIRE_EQUAL((daCroppedVert->getNumberOfTuples() == croppedVertexAM->getNumberOfTuples()), true)
 
-    FloatArrayType::Pointer croppedVerticesFromAM = croppedVertexAM->getAttributeArrayAs<FloatArrayType>(k_VertexCoordinatesDAName);
+    FloatArrayType::Pointer croppedVerticesFromAM = croppedVertexAM->getAttributeArrayAs<FloatArrayType>(SIMPL::Geometry::SharedVertexList);
 
     checkDataArray<float>(daCroppedVert, croppedVerticesFromAM);
 

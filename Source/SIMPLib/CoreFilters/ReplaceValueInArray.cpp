@@ -62,7 +62,7 @@ ReplaceValueInArray::~ReplaceValueInArray() = default;
 // -----------------------------------------------------------------------------
 void ReplaceValueInArray::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   parameters.push_back(SIMPL_NEW_DOUBLE_FP("Value to Replace", RemoveValue, FilterParameter::Parameter, ReplaceValueInArray));
 
   parameters.push_back(SIMPL_NEW_DOUBLE_FP("New Value", ReplaceValue, FilterParameter::Parameter, ReplaceValueInArray));

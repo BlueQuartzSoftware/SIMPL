@@ -54,7 +54,7 @@
 
 #define CREATE_DATA_ARRAY(type, attrMat, tDims, cDims, initVal, comps, err)                                                                                                                            \
   DataArray<type>::Pointer _##type##_##comps##_##attrMat##Array = DataArray<type>::CreateArray(tDims, cDims, #type #comps, true);                                                                      \
-  err = attrMat->addAttributeArray(#type #comps, _##type##_##comps##_##attrMat##Array);                                                                                                                \
+  err = attrMat->insertOrAssign(_##type##_##comps##_##attrMat##Array);                                                                                                                                 \
   _##type##_##comps##_##attrMat##Array->initializeWithValue(initVal);                                                                                                                                  \
   DREAM3D_REQUIRE(err >= 0);
 
@@ -154,9 +154,9 @@ public:
     QVector<size_t> tDims(1, 100);
     AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "ReplaceValueAttrMat", AttributeMatrix::Type::Cell);
 
-    m->addAttributeMatrix("ReplaceValueAttrMat", attrMat);
+    m->addOrReplaceAttributeMatrix(attrMat);
 
-    dca->addDataContainer(m);
+    dca->addOrReplaceDataContainer(m);
 
     QVector<size_t> cDims(1, 3);
     int32_t initVal = 10;

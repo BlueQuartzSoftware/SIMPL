@@ -44,6 +44,10 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t {
+  CombinedMatrixID = 1
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -67,7 +71,7 @@ CombineAttributeMatrices::~CombineAttributeMatrices() = default;
 // -----------------------------------------------------------------------------
 void CombineAttributeMatrices::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   parameters.push_back(SeparatorFilterParameter::New("Feature/Ensemble Data", FilterParameter::RequiredArray));
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
@@ -193,7 +197,7 @@ void CombineAttributeMatrices::dataCheck()
   // All Feature or Ensemble AMs should start from 1 and the zeroth tuple can be combined in the two AMs
   size_t totalTuples = firstAttrMat->getNumberOfTuples() + secondAttrMat->getNumberOfTuples() - 1;
   QVector<size_t> tDims(1, totalTuples);
-  m->createNonPrereqAttributeMatrix(this, getCombinedAttributeMatrixName(), tDims, firstAttrMat->getType());
+  m->createNonPrereqAttributeMatrix(this, getCombinedAttributeMatrixName(), tDims, firstAttrMat->getType(), CombinedMatrixID);
   if(getErrorCode() < 0)
   {
     return;
@@ -251,8 +255,7 @@ void CombineAttributeMatrices::dataCheck()
   }
 
   tempPath.update(getFirstIndexArrayPath().getDataContainerName(), getFirstIndexArrayPath().getAttributeMatrixName(), getNewIndexArrayName());
-  m_NewIndexPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this, tempPath, 0,
-                                                                                                                     cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  m_NewIndexPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this, tempPath, 0, cDims);
   if(nullptr != m_NewIndexPtr.lock()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_NewIndex = m_NewIndexPtr.lock()->getPointer(0);
@@ -349,6 +352,14 @@ void CombineAttributeMatrices::execute()
     EXECUTE_FUNCTION_TEMPLATE(this, copyData, fromDataArray, fromDataArray, toDataArray, location);
   }
 
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+std::list<DataArrayPath> CombineAttributeMatrices::getDeletedPaths()
+{
+  return { getFirstAttributeMatrixPath(), getSecondAttributeMatrixPath() };
 }
 
 // -----------------------------------------------------------------------------

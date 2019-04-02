@@ -70,7 +70,7 @@ WriteTriangleGeometry::~WriteTriangleGeometry() = default;
 // -----------------------------------------------------------------------------
 void WriteTriangleGeometry::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Output Nodes File", OutputNodesFile, FilterParameter::Parameter, WriteTriangleGeometry));
   parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Output Triangles File", OutputTrianglesFile, FilterParameter::Parameter, WriteTriangleGeometry));
@@ -89,7 +89,7 @@ void WriteTriangleGeometry::setupFilterParameters()
 void WriteTriangleGeometry::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setDataContainerSelection(reader->readString("DataContainerSelection", getDataContainerSelection()));
+  setDataContainerSelection(reader->readDataArrayPath("DataContainerSelection", getDataContainerSelection()));
   setOutputNodesFile(reader->readString("OutputNodesFile", getOutputNodesFile()));
   setOutputTrianglesFile(reader->readString("OutputTrianglesFile", getOutputTrianglesFile()));
   reader->closeFilterGroup();

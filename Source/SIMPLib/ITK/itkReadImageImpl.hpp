@@ -149,7 +149,7 @@ public:
     default:
       QString message = QObject::tr("Unable to read image '%1'").arg(inputFile);
       filter->setErrorCondition(-2, message);
-      outputIDataArray->resize(0);
+      outputIDataArray->resizeTuples(0);
     }
 
     try

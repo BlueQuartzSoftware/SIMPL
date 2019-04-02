@@ -70,7 +70,7 @@ FeatureDataCSVWriter::~FeatureDataCSVWriter() = default;
 // -----------------------------------------------------------------------------
 void FeatureDataCSVWriter::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Output File", FeatureDataFile, FilterParameter::Parameter, FeatureDataCSVWriter, "*.csv", "Comma Separated Data"));
   parameters.push_back(SIMPL_NEW_BOOL_FP("Write Neighbor Data", WriteNeighborListData, FilterParameter::Parameter, FeatureDataCSVWriter));
   parameters.push_back(SIMPL_NEW_BOOL_FP("Write Number of Features Line", WriteNumFeaturesLine, FilterParameter::Parameter, FeatureDataCSVWriter));

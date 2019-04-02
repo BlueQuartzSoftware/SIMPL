@@ -40,6 +40,10 @@
 #include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t {
+  DataContainerID = 1
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -58,7 +62,7 @@ CreateDataContainer::~CreateDataContainer() = default;
 // -----------------------------------------------------------------------------
 void CreateDataContainer::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   parameters.push_back(SIMPL_NEW_DC_CREATION_FP("Data Container Name", DataContainerName, FilterParameter::CreatedArray, CreateDataContainer));
   setFilterParameters(parameters);
 }
@@ -69,7 +73,6 @@ void CreateDataContainer::setupFilterParameters()
 void CreateDataContainer::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setDataContainerName(reader->readString("DataContainerName", getDataContainerName()));
   reader->closeFilterGroup();
 }
 
@@ -88,7 +91,7 @@ void CreateDataContainer::dataCheck()
   clearErrorCondition();
   clearWarningCondition();
 
-  getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName());
+  getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName(), DataContainerID);
 }
 
 // -----------------------------------------------------------------------------

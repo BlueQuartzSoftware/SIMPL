@@ -87,17 +87,17 @@ void ExecutePipelineController::serviceJSON(QJsonObject pipelineObj)
 //  SIMPLStaticFileController* staticFileController = SIMPLStaticFileController::Instance();
 //  QString docRoot = staticFileController->getDocRoot();
 
-//  QString newFilePath = docRoot + QDir::separator() + QString(sessionId) + QDir::separator();
-//  QJsonArray outputLinks;
+  //  QString newFilePath = docRoot + QDir::separator() + QString(sessionId) + QDir::separator();
+  //  QJsonArray outputLinks;
   //  // Look through the pipeline to find any input or output filter parameters.  Replace
   //  // the file paths in these filter parameters with session-id specific paths.
   //  QList<AbstractFilter::Pointer> filters = pipeline->getFilterContainer();
   //  for(int i = 0; i < filters.size(); i++)
   //  {
   //    AbstractFilter::Pointer filter = filters[i];
-  //    QVector<FilterParameter::Pointer> filterParams = filter->getFilterParameters();
+  //    FilterParameterVectorType filterParams = filter->getFilterParameters();
 
-  //    for(QVector<FilterParameter::Pointer>::iterator iter = filterParams.begin(); iter != filterParams.end(); ++iter)
+  //    for(FilterParameterVectorType::iterator iter = filterParams.begin(); iter != filterParams.end(); ++iter)
   //    {
   //      FilterParameter* parameter = (*iter).get();
   //      OutputFileFilterParameter* outFileParam = dynamic_cast<OutputFileFilterParameter*>(parameter);

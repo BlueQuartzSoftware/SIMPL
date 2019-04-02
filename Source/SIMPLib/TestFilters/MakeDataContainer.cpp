@@ -43,6 +43,11 @@
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
 
+enum createdPathID : RenameDataPath::DataID_t
+{
+  DataContainerID = 1
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -69,7 +74,7 @@ MakeDataContainer::~MakeDataContainer() = default;
 // -----------------------------------------------------------------------------
 void MakeDataContainer::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(SIMPL_NEW_STRING_FP("FeatureIds", FeatureIdsArrayName, FilterParameter::CreatedArray, MakeDataContainer));
   parameters.push_back(SIMPL_NEW_STRING_FP("Cell Euler Angles", CellEulerAnglesArrayName, FilterParameter::CreatedArray, MakeDataContainer));
@@ -99,10 +104,10 @@ void MakeDataContainer::initialize()
 // -----------------------------------------------------------------------------
 void MakeDataContainer::dataCheck()
 {
-  DataArrayPath tempPath;
   clearErrorCondition();
   clearWarningCondition();
-  DataContainer::Pointer m = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName());
+
+  DataContainer::Pointer m = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName(), DataContainerID);
   if(getErrorCode() < 0)
   {
     return;
@@ -130,7 +135,7 @@ void MakeDataContainer::dataCheck()
   }
 
   // ImageGeom::Pointer image = ImageGeom::CreateGeometry("TestImageGeom");
-  // image->setResolution(0.1f, 0.2f, 0.3f);
+  // image->setSpacing(0.1f, 0.2f, 0.3f);
   // image->setOrigin(100.3f, 987.234f, 0.0f);
   // image->setDimensions(64, 64, 64);
   // m->setGeometry(image);

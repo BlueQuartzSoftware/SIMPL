@@ -83,7 +83,7 @@ void PostSlackMessage::initialize()
 // -----------------------------------------------------------------------------
 void PostSlackMessage::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(SIMPL_NEW_STRING_FP("Slack User", SlackUser, FilterParameter::Parameter, PostSlackMessage));
   parameters.push_back(SIMPL_NEW_STRING_FP("Slack Url", SlackUrl, FilterParameter::Parameter, PostSlackMessage));

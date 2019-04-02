@@ -56,7 +56,7 @@ Breakpoint::~Breakpoint() = default;
 // -----------------------------------------------------------------------------
 void Breakpoint::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   setFilterParameters(parameters);
 }

@@ -203,7 +203,7 @@ void TetrahedralGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TetrahedralGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
+void TetrahedralGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
   if(data->getType() != AttributeMatrix::Type::Vertex
      || data->getType() != AttributeMatrix::Type::Edge
@@ -228,10 +228,10 @@ void TetrahedralGeom::addAttributeMatrix(const QString& name, AttributeMatrix::P
   {
     return;
   }
-  if(data->getName().compare(name) != 0)
-  {
-    data->setName(name);
-  }
+  //if(data->getName().compare(name) != 0)
+  //{
+  //  data->setName(name);
+  //}
   m_AttributeMatrices[name] = data;
 }
 

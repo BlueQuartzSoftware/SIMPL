@@ -44,6 +44,15 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+DataArrayPath::HashType DataArrayPath::GetHash(const QString& name)
+{
+  std::hash<std::string> hashFn;
+  return hashFn(name.toStdString());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 QDebug operator<<(QDebug out, const DataArrayPath& v)
 {
   out << v.getDataContainerName() << "|" << v.getAttributeMatrixName() << "|" << v.getDataArrayName();
@@ -63,7 +72,11 @@ DataArrayPath::DataArrayPath(const QString& dcName, const QString& amName, const
 : m_DataContainerName(dcName)
 , m_AttributeMatrixName(amName)
 , m_DataArrayName(daName)
+, m_DataContainerHash(GetHash(dcName))
+, m_AttributeMatrixHash(GetHash(amName))
+, m_DataArrayHash(GetHash(daName))
 {
+  updateDataType();
 }
 
 // -----------------------------------------------------------------------------
@@ -75,16 +88,18 @@ DataArrayPath::DataArrayPath(const QString& path)
 
   if(!tokens.empty())
   {
-    m_DataContainerName = tokens.at(0);
+    setDataContainerName(tokens.at(0));
   }
   if(tokens.size() > 1)
   {
-    m_AttributeMatrixName = tokens.at(1);
+    setAttributeMatrixName(tokens.at(1));
   }
   if(tokens.size() > 2)
   {
-    m_DataArrayName = tokens.at(2);
+    setDataArrayName(tokens.at(2));
   }
+
+  updateDataType();
 }
 
 // -----------------------------------------------------------------------------
@@ -92,9 +107,14 @@ DataArrayPath::DataArrayPath(const QString& path)
 // -----------------------------------------------------------------------------
 DataArrayPath::DataArrayPath(const DataArrayPath& rhs)
 {
-  m_DataContainerName = rhs.getDataContainerName();
-  m_AttributeMatrixName = rhs.getAttributeMatrixName();
-  m_DataArrayName = rhs.getDataArrayName();
+  m_DataContainerName = rhs.m_DataContainerName;
+  m_AttributeMatrixName = rhs.m_AttributeMatrixName;
+  m_DataArrayName = rhs.m_DataArrayName;
+  m_DataContainerHash = rhs.m_DataContainerHash;
+  m_AttributeMatrixHash = rhs.m_AttributeMatrixHash;
+  m_DataArrayHash = rhs.m_DataArrayHash;
+
+  updateDataType();
 }
 
 // -----------------------------------------------------------------------------
@@ -124,6 +144,11 @@ DataArrayPath& DataArrayPath::operator=(const DataArrayPath& rhs)
   m_DataContainerName = rhs.m_DataContainerName;
   m_AttributeMatrixName = rhs.m_AttributeMatrixName;
   m_DataArrayName = rhs.m_DataArrayName;
+  m_DataContainerHash = rhs.m_DataContainerHash;
+  m_AttributeMatrixHash = rhs.m_AttributeMatrixHash;
+  m_DataArrayHash = rhs.m_DataArrayHash;
+
+  updateDataType();
   return *this;
 }
 
@@ -132,13 +157,30 @@ DataArrayPath& DataArrayPath::operator=(const DataArrayPath& rhs)
 // -----------------------------------------------------------------------------
 bool DataArrayPath::operator==(const DataArrayPath& rhs) const
 {
-  return m_DataContainerName == rhs.m_DataContainerName && m_AttributeMatrixName == rhs.m_AttributeMatrixName && m_DataArrayName == rhs.m_DataArrayName;
+  return m_DataContainerHash == rhs.m_DataContainerHash && m_AttributeMatrixHash == rhs.m_AttributeMatrixHash && m_DataArrayHash == rhs.m_DataArrayHash;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataArrayPath::serialize(QString delimiter) const
+bool DataArrayPath::operator!=(const DataArrayPath& rhs) const
+{
+  bool b = (*this == rhs);
+  return !b;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool DataArrayPath::operator<(const DataArrayPath& rhs) const
+{
+  return serialize() < rhs.serialize();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString DataArrayPath::serialize(const QString& delimiter) const
 {
   QString s = "";
   if(!m_DataContainerName.isEmpty())
@@ -162,7 +204,7 @@ QString DataArrayPath::serialize(QString delimiter) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayPath DataArrayPath::Deserialize(QString str, QString delimiter)
+DataArrayPath DataArrayPath::Deserialize(const QString& str, const QString& delimiter)
 {
   if(str.isEmpty())
   {
@@ -193,13 +235,44 @@ DataArrayPath DataArrayPath::Deserialize(QString str, QString delimiter)
     break;
   }
 
+  path.updateDataType();
   return path;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataArrayPath::CheckRenamePath(DataContainerArrayShPtr oldDca, DataContainerArrayShPtr newDca, DataArrayPath oldPath, DataArrayPath newPath)
+void DataArrayPath::setDataContainerName(const QString& name)
+{
+  m_DataContainerName = name;
+  m_DataContainerHash = GetHash(m_DataContainerName);
+  updateDataType();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayPath::setAttributeMatrixName(const QString& name)
+{
+  m_AttributeMatrixName = name;
+  m_AttributeMatrixHash = GetHash(m_AttributeMatrixName);
+  updateDataType();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayPath::setDataArrayName(const QString& name)
+{
+  m_DataArrayName = name;
+  m_DataArrayHash = GetHash(m_DataArrayName);
+  updateDataType();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool DataArrayPath::CheckRenamePath(const DataContainerArrayShPtr& oldDca, const DataContainerArrayShPtr& newDca, const DataArrayPath& oldPath, const DataArrayPath& newPath)
 {
   // If the paths are not possible renames, return false
   if(!oldPath.possibleRename(newPath))
@@ -259,14 +332,14 @@ bool DataArrayPath::CheckRenamePath(DataContainerArrayShPtr oldDca, DataContaine
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayPath::RenameContainer DataArrayPath::CheckForRenamedPaths(DataContainerArrayShPtr oldDca, DataContainerArrayShPtr newDca, std::list<DataArrayPath> oldPaths, std::list<DataArrayPath> newPaths)
+DataArrayPath::RenameContainer DataArrayPath::CheckForRenamedPaths(const DataContainerArrayShPtr& oldDca, const DataContainerArrayShPtr& newDca, const std::list<DataArrayPath>& oldPaths, const std::list<DataArrayPath>& newPaths)
 {
   RenameContainer container;
   std::list<DataArrayPath> duplicatedPaths;
   std::list<DataArrayPath> usedNewPaths;
 
   // For each older path, check for any matching new paths.  If only one new path matches, add it as a possibility
-  for(DataArrayPath oldPath : oldPaths)
+  for(const DataArrayPath& oldPath : oldPaths)
   {
     // If the same path exists in both oldPaths and newPaths, it was not renamed
     if(std::find(newPaths.begin(), newPaths.end(), oldPath) != newPaths.end())
@@ -276,7 +349,7 @@ DataArrayPath::RenameContainer DataArrayPath::CheckForRenamedPaths(DataContainer
 
     // Find any potential renames in newPaths for the given oldPath
     std::list<DataArrayPath> matches;
-    for(DataArrayPath newPath : newPaths)
+    for(const DataArrayPath& newPath : newPaths)
     {
       // If the same path exists in both oldPaths and newPaths, it was not renamed
       if(std::find(oldPaths.begin(), oldPaths.end(), newPath) != oldPaths.end())
@@ -293,7 +366,7 @@ DataArrayPath::RenameContainer DataArrayPath::CheckForRenamedPaths(DataContainer
     // If this path was already used, mark it as duplicate and move on
     if(matches.size() == 1)
     {
-      DataArrayPath newPath = (*matches.begin());
+      const DataArrayPath& newPath = matches.front();
       if(usedNewPaths.end() != std::find(usedNewPaths.begin(), usedNewPaths.end(), newPath))
       {
         duplicatedPaths.push_back(newPath);
@@ -301,7 +374,7 @@ DataArrayPath::RenameContainer DataArrayPath::CheckForRenamedPaths(DataContainer
       else
       {
         usedNewPaths.push_back(newPath);
-        container.push_back(RenameType(oldPath, newPath));
+        container.push_back(std::make_pair(oldPath, newPath));
       }
     }
   }
@@ -309,7 +382,7 @@ DataArrayPath::RenameContainer DataArrayPath::CheckForRenamedPaths(DataContainer
   // Remove items with duplicated paths
   for(auto iter = container.begin(); iter != container.end(); )
   {
-    DataArrayPath checkPath = std::get<1>(*iter);
+    const DataArrayPath& checkPath = std::get<1>(*iter);
     if(duplicatedPaths.end() != std::find(duplicatedPaths.begin(), duplicatedPaths.end(), checkPath))
     {
       iter = container.erase(iter);
@@ -326,54 +399,52 @@ DataArrayPath::RenameContainer DataArrayPath::CheckForRenamedPaths(DataContainer
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayPath::DataType DataArrayPath::getDataType()
+void DataArrayPath::updateDataType()
 {
-  if(getDataContainerName().isEmpty())
+  const bool dcEmpty = m_DataContainerName.isEmpty();
+  const bool amEmpty = m_AttributeMatrixName.isEmpty();
+  const bool daEmpty = m_DataArrayName.isEmpty();
+
+  if(dcEmpty)
   {
-    return DataType::None;
+    m_DataType = DataArrayPathHelper::DataType::None;
+    return;
   }
-  if(getAttributeMatrixName().isEmpty() && getDataArrayName().isEmpty())
+  if(amEmpty)
   {
-    return DataType::DataContainer;
+    if(daEmpty)
+    {
+      m_DataType = DataArrayPathHelper::DataType::DataContainer;
+      return;
+    }
   }
-  if(getDataArrayName().isEmpty())
+  else
   {
-    return DataType::AttributeMatrix;
-  }
-  if(!getAttributeMatrixName().isEmpty())
-  {
-    return DataType::DataArray;
+    if(daEmpty)
+    {
+      m_DataType = DataArrayPathHelper::DataType::AttributeMatrix;
+      return;
+    }
+    if(!amEmpty)
+    {
+      m_DataType = DataArrayPathHelper::DataType::DataArray;
+      return;
+    }
   }
 
-  return DataType::None;
+  m_DataType = DataArrayPathHelper::DataType::None;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<QString> DataArrayPath::toQVector()
+QVector<QString> DataArrayPath::toQVector() const
 {
   QVector<QString> v(3);
-  v[0] = m_DataContainerName;
-  v[1] = m_AttributeMatrixName;
-  v[2] = m_DataArrayName;
+  v[0] = getDataContainerName();
+  v[1] = getAttributeMatrixName();
+  v[2] = getDataArrayName();
   return v;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool DataArrayPath::isEmpty() const
-{
-  return m_DataContainerName.isEmpty() && m_AttributeMatrixName.isEmpty() && m_DataArrayName.isEmpty();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool DataArrayPath::isValid() const
-{
-  return !m_DataContainerName.isEmpty() && !m_AttributeMatrixName.isEmpty() && !m_DataArrayName.isEmpty();
 }
 
 // -----------------------------------------------------------------------------
@@ -400,7 +471,7 @@ DataArrayPath DataArrayPath::GetAttributeMatrixPath(const QVector<DataArrayPath>
     return DataArrayPath();
   }
 
-    return DataArrayPath(paths.first().getDataContainerName(), paths.first().getAttributeMatrixName(), "");
+  return DataArrayPath(paths.first().getDataContainerName(), paths.first().getAttributeMatrixName(), "");
 }
 
 // -----------------------------------------------------------------------------
@@ -409,7 +480,7 @@ DataArrayPath DataArrayPath::GetAttributeMatrixPath(const QVector<DataArrayPath>
 QStringList DataArrayPath::toQStringList() const
 {
   QStringList l;
-  l << m_DataContainerName << m_AttributeMatrixName << m_DataArrayName;
+  l << getDataContainerName() << getAttributeMatrixName() << getDataArrayName();
   return l;
 }
 
@@ -418,9 +489,10 @@ QStringList DataArrayPath::toQStringList() const
 // -----------------------------------------------------------------------------
 void DataArrayPath::update(const QString& dcName, const QString& amName, const QString& daName)
 {
-  m_DataContainerName = dcName;
-  m_AttributeMatrixName = amName;
-  m_DataArrayName = daName;
+  setDataContainerName(dcName);
+  setAttributeMatrixName(amName);
+  setDataArrayName(daName);
+  updateDataType();
 }
 
 // -----------------------------------------------------------------------------
@@ -428,7 +500,7 @@ void DataArrayPath::update(const QString& dcName, const QString& amName, const Q
 // -----------------------------------------------------------------------------
 bool DataArrayPath::hasSameDataContainer(const DataArrayPath& other) const
 {
-  return (m_DataContainerName == other.m_DataContainerName);
+  return m_DataContainerHash == other.m_DataContainerHash;
 }
 
 // -----------------------------------------------------------------------------
@@ -436,7 +508,7 @@ bool DataArrayPath::hasSameDataContainer(const DataArrayPath& other) const
 // -----------------------------------------------------------------------------
 bool DataArrayPath::hasSameAttributeMatrix(const DataArrayPath& other) const
 {
-  return (m_AttributeMatrixName == other.m_AttributeMatrixName);
+  return m_AttributeMatrixHash == other.m_AttributeMatrixHash;
 }
 
 // -----------------------------------------------------------------------------
@@ -444,7 +516,7 @@ bool DataArrayPath::hasSameAttributeMatrix(const DataArrayPath& other) const
 // -----------------------------------------------------------------------------
 bool DataArrayPath::hasSameDataArray(const DataArrayPath& other) const
 {
-  return (m_DataArrayName == other.m_DataArrayName);
+  return m_DataArrayHash == other.m_DataArrayHash;
 }
 
 // -----------------------------------------------------------------------------
@@ -458,85 +530,58 @@ bool DataArrayPath::hasSameAttributeMatrixPath(const DataArrayPath& other) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataArrayPath::possibleRename(const DataArrayPath& updated) const
+bool DataArrayPath::isSubset(const DataArrayPath& other) const
 {
-  // Empty DataArrayPaths are not considered renames
-  // Neither are DataArrayPaths of different lengths
-  if(updated.getDataContainerName().isEmpty() || getDataContainerName().isEmpty())
+  // Check types
+  const DataArrayPathHelper::DataType type = getDataType();
+  const DataArrayPathHelper::DataType otherType = other.getDataType();
+
+  // If both are of the same DataType, require identical paths
+  if(type == otherType)
   {
-    return false;
-  }
-  if(updated.getAttributeMatrixName().isEmpty() != getAttributeMatrixName().isEmpty())
-  {
-    return false;
-  }
-  if(updated.getDataArrayName().isEmpty() != getDataArrayName().isEmpty())
-  {
-    return false;
+    return (*this) == other;
   }
 
-  // Check number of differences
-  int differences = 0;
-  if(!hasSameDataArray(updated))
+  switch(otherType)
   {
-    differences++;
-  }
-  if(!hasSameAttributeMatrix(updated))
-  {
-    differences++;
-  }
-  if(!hasSameDataContainer(updated))
-  {
-    differences++;
-  }
-
-  return 1 == differences;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool DataArrayPath::updatePath(const DataArrayPath::RenameType& renamePath)
-{
-  DataArrayPath oldPath;
-  DataArrayPath newPath;
-  std::tie(oldPath, newPath) = renamePath;
-
-  // Check for differences with original path
-  if(!hasSameDataArray(oldPath) && !oldPath.getDataArrayName().isEmpty())
-  {
-    return false;
-  }
-  if(!hasSameAttributeMatrix(oldPath) && !oldPath.getAttributeMatrixName().isEmpty())
-  {
-    return false;
-  }
-  if(!hasSameDataContainer(oldPath) && !oldPath.getDataContainerName().isEmpty())
-  {
-    return false;
-  }
-  if(oldPath.getDataContainerName().isEmpty() || newPath.getDataContainerName().isEmpty())
-  {
-    return false;
-  }
-
-  // Substitude in the new DataArrayPath
-  if(hasSameDataContainer(oldPath))
-  {
-    setDataContainerName(newPath.getDataContainerName());
-
-    if(hasSameAttributeMatrix(oldPath))
+  case DataArrayPathHelper::DataType::DataArray:
+    // [[fallthrough]];
+  case DataArrayPathHelper::DataType::AttributeMatrix:
+    if(type == DataArrayPathHelper::DataType::DataArray)
     {
-      setAttributeMatrixName(newPath.getAttributeMatrixName());
-
-      if(hasSameDataArray(oldPath))
-      {
-        setDataArrayName(newPath.getDataArrayName());
-      }
+      return false;
+    }
+    // [[fallthrough]];
+  case DataArrayPathHelper::DataType::DataContainer:
+    if(type == DataArrayPathHelper::DataType::AttributeMatrix || type == DataArrayPathHelper::DataType::DataArray)
+    {
+      return false;
+    }
+    break;
+  case DataArrayPathHelper::DataType::None:
+    if(type != DataArrayPathHelper::DataType::None)
+    {
+      return false;
     }
   }
-  
-  return true;
+
+  bool valid = true;
+  switch(type)
+  {
+  case DataArrayPathHelper::DataType::DataArray:
+    valid &= m_DataArrayHash == other.m_DataArrayHash;
+    // [[fallthrough]];
+  case DataArrayPathHelper::DataType::AttributeMatrix:
+    valid &= m_AttributeMatrixHash == other.m_AttributeMatrixHash;
+    // [[fallthrough]];
+  case DataArrayPathHelper::DataType::DataContainer:
+    valid &= m_DataContainerHash == other.m_DataContainerHash;
+    break;
+  case DataArrayPathHelper::DataType::None:
+    break;
+  }
+
+  return valid;
 }
 
 // -----------------------------------------------------------------------------
@@ -595,9 +640,9 @@ bool DataArrayPath::readJson(QJsonObject& json)
 {
   if(json["Data Container Name"].isString() && json["Attribute Matrix Name"].isString() && json["Data Array Name"].isString())
   {
-    m_DataContainerName = json["Data Container Name"].toString();
-    m_AttributeMatrixName = json["Attribute Matrix Name"].toString();
-    m_DataArrayName = json["Data Array Name"].toString();
+    setDataContainerName(json["Data Container Name"].toString());
+    setAttributeMatrixName(json["Attribute Matrix Name"].toString());
+    setDataArrayName(json["Data Array Name"].toString());
     return true;
   }
   return false;

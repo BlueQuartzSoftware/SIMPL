@@ -89,7 +89,7 @@ InitializeData::~InitializeData() = default;
 // -----------------------------------------------------------------------------
 void InitializeData::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(SeparatorFilterParameter::New("Cell Data", FilterParameter::RequiredArray));
   {

@@ -82,9 +82,7 @@ ITK_IMAGE_READER_CLASS_NAME
 ::readImage(const DataArrayPath& dataArrayPath, const itk::ImageIOBase::Pointer& imageIO, const QString& filename, bool dataCheck)
 {
   using PixelTypeType = itk::ImageIOBase::IOPixelType;
-  // using ComponentType = itk::ImageIOBase::IOComponentType;
   PixelTypeType pixel = imageIO->GetPixelType();
-  // ComponentType compType = imageIO->GetComponentType();
 
   const unsigned int nbComponents = imageIO->GetNumberOfComponents();
   switch(pixel)
@@ -246,15 +244,15 @@ void
 ITK_IMAGE_READER_CLASS_NAME
 ::readImageOutputInformation(const DataArrayPath& dataArrayPath, typename itk::ImageFileReader<itk::Dream3DImage<TPixel, dimensions>>::Pointer& reader, DataContainer::Pointer& container)
 {
-  typedef itk::Dream3DImage<TPixel, dimensions> ImageType;
-  typedef typename itk::NumericTraits<TPixel>::ValueType ValueType;
+  using ImageType = itk::Dream3DImage<TPixel, dimensions>;
+  using ValueType = typename itk::NumericTraits<TPixel>::ValueType;
   reader->UpdateOutputInformation();
   const typename ImageType::PointType origin = reader->GetOutput()->GetOrigin();
   const typename ImageType::SizeType size = reader->GetOutput()->GetLargestPossibleRegion().GetSize();
   const typename ImageType::SpacingType spacing = reader->GetOutput()->GetSpacing();
-  QVector<float> torigin(3, 0);
-  QVector<float> tspacing(3, 0);
-  QVector<size_t> tDims(3, 1);
+  FloatVec3Type torigin = {0.0f, 0.0f, 0.0f};
+  FloatVec3Type tspacing = {1.0f, 1.0f, 1.0f};
+  SizeVec3Type tDims = {0, 0, 0};
   // Initialize torigin/tspacing/tDims since arrays are always of size 3 and ITK image may have a different size.
   for(size_t i = 0; i < dimensions; i++)
   {
@@ -263,13 +261,14 @@ ITK_IMAGE_READER_CLASS_NAME
     tDims[i] = size[i];
   }
   ImageGeom::Pointer image = ImageGeom::CreateGeometry(SIMPL::Geometry::ImageGeometry);
-  image->setDimensions(tDims[0], tDims[1], tDims[2]);
-  image->setOrigin(torigin[0], torigin[1], torigin[2]);
-  image->setResolution(tspacing[0], tspacing[1], tspacing[2]);
+  image->setDimensions(tDims);
+  image->setOrigin(torigin);
+  image->setSpacing(tspacing);
   container->setGeometry(image);
 
   QVector<size_t> cDims = ITKDream3DHelper::GetComponentsDimensions<TPixel>();
-  AttributeMatrix::Pointer cellAttrMat = container->createNonPrereqAttributeMatrix(this, dataArrayPath.getAttributeMatrixName(), tDims, AttributeMatrix::Type::Cell);
+  QVector<size_t> qTdims = {tDims[0], tDims[1], tDims[2]};
+  AttributeMatrix::Pointer cellAttrMat = container->createNonPrereqAttributeMatrix(this, dataArrayPath.getAttributeMatrixName(), qTdims, AttributeMatrix::Type::Cell);
   if(getErrorCode() < 0)
   {
     return;

@@ -48,6 +48,10 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t {
+  StringArrayID = 1
+};
+
 /**
 * @brief initializeArrayWithInts Initializes the array p with integers, either from the
 * manual value entered in the filter, or with a random number.  This function does not
@@ -83,7 +87,7 @@ CreateStringArray::~CreateStringArray() = default;
 // -----------------------------------------------------------------------------
 void CreateStringArray::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   // Do not let the user change the number of components in a StringDataArray
   setNumberOfComponents(1);
@@ -156,7 +160,7 @@ void CreateStringArray::dataCheck()
   }
   
   // Create the data array and initialize it to a placeholder value
-  m_OutputArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<StringDataArray, AbstractFilter, QString>(this, getNewArray(), m_InitializationValue, cDims);
+  m_OutputArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<StringDataArray, AbstractFilter, QString>(this, getNewArray(), m_InitializationValue, cDims, "", StringArrayID);
 }
 
 // -----------------------------------------------------------------------------

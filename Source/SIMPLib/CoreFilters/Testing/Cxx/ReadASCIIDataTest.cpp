@@ -135,8 +135,8 @@ public:
     DataContainerArray::Pointer dca = DataContainerArray::New();
     DataContainer::Pointer dc = DataContainer::New(DataContainerName);
     AttributeMatrix::Pointer am = AttributeMatrix::New(QVector<size_t>(1, data.numberOfLines), AttributeMatrixName, AttributeMatrix::Type::Cell);
-    dc->addAttributeMatrix(AttributeMatrixName, am);
-    dca->addDataContainer(dc);
+    dc->addOrReplaceAttributeMatrix(am);
+    dca->addOrReplaceDataContainer(dc);
 
     // Now instantiate the DxWriter Filter from the FilterManager
     QString filtName = "ReadASCIIData";

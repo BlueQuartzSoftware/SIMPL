@@ -70,101 +70,101 @@ public:
   };
   Q_ENUM(State)
 
-  static const QPixmap CreateDragIcon(DataArrayPath path);
-  static const QPixmap CreateDragIcon(QString text, DataArrayPath::DataType dataType);
-  static const QPixmap CreateDragIcon(QString text, QColor backgroundColor);
-  static const QColor GetActiveColor(DataArrayPath::DataType type);
-  static const QColor GetCheckedColor(DataArrayPath::DataType type);
-  static bool CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, DataContainerSelectionFilterParameter::RequirementType reqs);
-  static bool CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, AttributeMatrixSelectionFilterParameter::RequirementType reqs);
-  static bool CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, DataArraySelectionFilterParameter::RequirementType reqs);
+  static const QPixmap CreateDragIcon(const DataArrayPath& path);
+  static const QPixmap CreateDragIcon(const QString& text, DataArrayPathHelper::DataType dataType);
+  static const QPixmap CreateDragIcon(const QString& text, const QColor& backgroundColor);
+  static const QColor GetActiveColor(DataArrayPathHelper::DataType type);
+  static const QColor GetCheckedColor(DataArrayPathHelper::DataType type);
+  static bool CheckPathRequirements(AbstractFilter* filter, const DataArrayPath& path, const DataContainerSelectionFilterParameter::RequirementType& reqs);
+  static bool CheckPathRequirements(AbstractFilter* filter, const DataArrayPath& path, const AttributeMatrixSelectionFilterParameter::RequirementType& reqs);
+  static bool CheckPathRequirements(AbstractFilter* filter, const DataArrayPath& path, const DataArraySelectionFilterParameter::RequirementType& reqs);
 
   DataArrayPathSelectionWidget(QWidget* parent = nullptr);
   ~DataArrayPathSelectionWidget() override = default;
 
-  Q_PROPERTY(DataArrayPath::DataType PathType READ getDataType)
+  Q_PROPERTY(DataArrayPathHelper::DataType PathType READ getDataType)
   Q_PROPERTY(State State READ getState)
 
   /**
   * @brief Returns the type of DataArrayPath this widget can handle
   * @return
   */
-  DataArrayPath::DataType getDataType();
+  DataArrayPathHelper::DataType getDataType() const;
 
   /**
   * @brief Sets the DataContainer requirements and sets the DataType to DataContainer
   * @param dcReqs
   */
-  void setDataContainerRequirements(DataContainerSelectionFilterParameter::RequirementType dcReqs);
+  void setDataContainerRequirements(const DataContainerSelectionFilterParameter::RequirementType& dcReqs);
 
   /**
   * @brief Sets the AttributeMatrix requirements and sets the DataType to AttributeMatrix
   * @param amReqs
   */
-  void setAttrMatrixRequirements(AttributeMatrixSelectionFilterParameter::RequirementType amReqs);
+  void setAttrMatrixRequirements(const AttributeMatrixSelectionFilterParameter::RequirementType& amReqs);
 
   /**
   * @brief Sets the DataArray requirements and sets the DataType to DataArray
   * @param daReqs
   */
-  void setDataArrayRequirements(DataArraySelectionFilterParameter::RequirementType daReqs);
+  void setDataArrayRequirements(const DataArraySelectionFilterParameter::RequirementType& daReqs);
 
   /**
   * @brief Returns the DataContainer requirements
   * @return
   */
-  DataContainerSelectionFilterParameter::RequirementType getDataContainerRequirements();
+  DataContainerSelectionFilterParameter::RequirementType getDataContainerRequirements() const;
 
   /**
   * @brief Returns the AttributeMatrix requirements
   * @return
   */
-  AttributeMatrixSelectionFilterParameter::RequirementType getAttrMatrixRequirements();
+  AttributeMatrixSelectionFilterParameter::RequirementType getAttrMatrixRequirements() const;
 
   /**
   * @brief Returns the DataArray requirements
   * @return
   */
-  DataArraySelectionFilterParameter::RequirementType getDataArrayRequirements();
+  DataArraySelectionFilterParameter::RequirementType getDataArrayRequirements() const;
 
   /**
   * @brief Checks the requirements for the current path
   * @return
   */
-  bool checkCurrentPath();
+  bool checkCurrentPath() const;
 
   /**
   * @brief Checks requirements against the given DataArrayPath
   * @param path
   * @return
   */
-  bool checkPathReqs(DataArrayPath path);
+  bool checkPathReqs(const DataArrayPath& path) const;
 
   /**
   * @brief Checks DataContainer requirements against the given DataArrayPath
   * @param path
   * @return
   */
-  bool checkDataContainerReqs(DataArrayPath path);
+  bool checkDataContainerReqs(const DataArrayPath& path) const;
 
   /**
   * @brief Checks AttributeMatrix requirements against the given DataArrayPath
   * @param path
   * @return
   */
-  bool checkAttributeMatrixReqs(DataArrayPath path);
+  bool checkAttributeMatrixReqs(const DataArrayPath& path) const;
 
   /**
    * @brief Sets the DataArrayPath without checking requirements
    * @param dap
    */
-  void setDataArrayPath(DataArrayPath dap);
+  void setDataArrayPath(const DataArrayPath& dap);
 
   /**
   * @brief Returns the DataArrayPath
   * @return
   */
-  DataArrayPath getDataArrayPath();
+  DataArrayPath getDataArrayPath() const;
 
   /**
   * @brief Sets the filter the selection widget operates on
@@ -196,7 +196,7 @@ public:
   * @brief Returns the property name set for this widget
   * @return
   */
-  QString getPropertyName();
+  QString getPropertyName() const;
 
   /**
   * @brief Sets the property name
@@ -270,7 +270,7 @@ protected:
    * @brief Returns the current State
    * @return
    */
-  State getState();
+  State getState() const;
 
   /**
   * @brief Change the stylesheet based on the widget state
@@ -329,7 +329,7 @@ protected:
   * @param path
   * @return
   */
-  bool checkDataArrayReqs(DataArrayPath path);
+  bool checkDataArrayReqs(const DataArrayPath& path) const;
 
   /**
   * @brief dragEnterEvent
@@ -353,41 +353,41 @@ protected:
    * @brief Creates and returns the header part of the tooltip HTML
    * @return
    */
-  QString createTooltipHeader();
+  QString createTooltipHeader() const;
 
   /**
    * @brief Creates and returns the closing part of the tooltip HTML
    * @return
    */
-  QString createTooltipFooter();
+  QString createTooltipFooter() const;
 
   /**
   * @brief Create the IGeometry::Type requirements part of the tooltip
   * @param geomTypes
   * @return
   */
-  QString createGeomReqString(QVector<IGeometry::Type> geomTypes);
+  QString createGeomReqString(QVector<IGeometry::Type> geomTypes) const;
 
   /**
   * @brief Create the AttributeMatrix::Type requirements part of the tooltip
   * @param amTypes
   * @return
   */
-  QString createAttrMatrixReqString(QVector<AttributeMatrix::Type> amTypes);
+  QString createAttrMatrixReqString(QVector<AttributeMatrix::Type> amTypes) const;
 
   /**
   * @brief Create the DataArray type requirements part of the tooltip
   * @param daTypes
   * @return
   */
-  QString createDataArrayTypeString(QVector<QString> daTypes);
+  QString createDataArrayTypeString(QVector<QString> daTypes) const;
 
   /**
   * @brief Create the component requirements part of the tooltip
   * @param compDims
   * @return
   */
-  QString createComponentReqString(QVector<QVector<size_t>> compDims);
+  QString createComponentReqString(QVector<QVector<size_t>> compDims) const;
 
   /**
   * @brief mouseMoveEvent
@@ -399,7 +399,7 @@ protected:
   * @brief Returns the color code for the given State
   * @param state
   */
-  const QColor getBorderColor(State state);
+  const QColor getBorderColor(State state) const;
 
   /**
   * @brief Override the paint event to mark the DataType required
@@ -418,7 +418,7 @@ protected:
   * @param path
   * @return
   */
-  bool isCreatedPath(DataArrayPath path);
+  bool isCreatedPath(const DataArrayPath& path) const;
 
 protected slots:
   /**
@@ -441,7 +441,7 @@ private slots:
   void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
 
 private:
-  DataArrayPath::DataType m_DataType = DataArrayPath::DataType::None;
+  DataArrayPathHelper::DataType m_DataType = DataArrayPathHelper::DataType::None;
   State m_State = State::Normal;
   AbstractFilter* m_Filter = nullptr;
   DataContainerSelectionFilterParameter::RequirementType m_DataContainerReqs;

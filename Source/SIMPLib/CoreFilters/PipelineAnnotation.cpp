@@ -53,7 +53,7 @@ PipelineAnnotation::~PipelineAnnotation() = default;
 // -----------------------------------------------------------------------------
 void PipelineAnnotation::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(SIMPL_NEW_PARAGRAPH_FP("", Summary, FilterParameter::Parameter, PipelineAnnotation, false));
 

@@ -61,15 +61,15 @@ public:
     DataContainer::Pointer dc = DataContainer::New("ImageDataContainer");
 
     ImageGeom::Pointer imageGeom = ImageGeom::New();
-    imageGeom->setDimensions(m_XDim, m_YDim, m_ZDim);
+    imageGeom->setDimensions(SizeVec3Type(m_XDim, m_YDim, m_ZDim));
 
     dc->setGeometry(imageGeom);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     QVector<size_t> tDims = {m_XDim, m_YDim, m_ZDim};
     AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "AttributeMatrix", AttributeMatrix::Type::Generic);
 
-    dc->addAttributeMatrix(attrMat->getName(), attrMat);
+    dc->addOrReplaceAttributeMatrix(attrMat);
 
     FilterManager* fm = FilterManager::Instance();
 

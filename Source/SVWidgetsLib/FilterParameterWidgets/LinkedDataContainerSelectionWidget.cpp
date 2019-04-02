@@ -193,14 +193,11 @@ void LinkedDataContainerSelectionWidget::createSelectionMenu()
 
   // Get the DataContainerArray object
   // Loop over the data containers until we find the proper data container
-  QList<DataContainer::Pointer> containers = dca->getDataContainers();
+  DataContainerArray::Container containers = dca->getDataContainers();
   IGeometry::Types geomTypes = m_FilterParameter->getDefaultGeometryTypes();
 
-  QListIterator<DataContainer::Pointer> containerIter(containers);
-  while(containerIter.hasNext())
+  for(DataContainer::Pointer dc : containers)
   {
-    DataContainer::Pointer dc = containerIter.next();
-
     IGeometry::Pointer geom = IGeometry::NullPointer();
     IGeometry::Type geomType = IGeometry::Type::Unknown;
     if(nullptr != dc.get())

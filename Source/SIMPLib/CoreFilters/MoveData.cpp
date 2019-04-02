@@ -55,7 +55,6 @@ const int32_t k_MoveDataArray = 1;
 // -----------------------------------------------------------------------------
 MoveData::MoveData()
 : m_WhatToMove(k_MoveAttributeMatrix)
-, m_DataContainerDestination("")
 {
 }
 
@@ -69,7 +68,7 @@ MoveData::~MoveData() = default;
 // -----------------------------------------------------------------------------
 void MoveData::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   QStringList linkedProps;
   linkedProps << "DataContainerDestination"
@@ -121,7 +120,7 @@ void MoveData::readFilterParameters(AbstractFilterParametersReader* reader, int 
 {
   reader->openFilterGroup(this, index);
   setWhatToMove(reader->readValue("WhatToMove", getWhatToMove()));
-  setDataContainerDestination(reader->readString("DataContainerDestination", getDataContainerDestination()));
+  setDataContainerDestination(reader->readDataArrayPath("DataContainerDestination", getDataContainerDestination()));
   setAttributeMatrixSource(reader->readDataArrayPath("AttributeMatrixSource", getAttributeMatrixSource()));
   setAttributeMatrixDestination(reader->readDataArrayPath("AttributeMatrixDestination", getAttributeMatrixDestination()));
   setDataArraySource(reader->readDataArrayPath("DataArraySource", getDataArraySource()));
@@ -164,8 +163,9 @@ void MoveData::dataCheck()
       return;
     }
 
-    amDestDataContainer->addAttributeMatrix(amSrcAttributeMatrix->getName(), amSrcAttributeMatrix);
-    amSrcDataContainer->removeAttributeMatrix(amSrcAttributeMatrix->getName());
+    amDestDataContainer->addOrReplaceAttributeMatrix(amSrcAttributeMatrix);
+    //amSrcDataContainer->removeAttributeMatrix(amSrcAttributeMatrix->getName());
+    addPathRename(amSrcPath, amSrcAttributeMatrix->getDataArrayPath());
   }
   else if(getWhatToMove() == k_MoveDataArray)
   {
@@ -193,8 +193,9 @@ void MoveData::dataCheck()
       return;
     }
 
-    daDestAttributeMatrix->addAttributeArray(daSrcPath.getDataArrayName(), daSrcDataArray);
-    daSrcAttributeMatrix->removeAttributeArray(daSrcPath.getDataArrayName());
+    daDestAttributeMatrix->insertOrAssign(daSrcDataArray);
+    //daSrcAttributeMatrix->removeAttributeArray(daSrcPath.getDataArrayName());
+    addPathRename(daSrcPath, daSrcDataArray->getDataArrayPath());
   }
   else
   {

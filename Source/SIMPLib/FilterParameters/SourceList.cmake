@@ -39,9 +39,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FileListInfoFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatFilterParameter.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatVec2.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatVec2FilterParameter.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatVec3.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatVec3FilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FourthOrderPolynomialFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/GenerateColorTableFilterParameter.h
@@ -52,7 +50,6 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/InputFileFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/InputPathFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IntFilterParameter.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IntVec3.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IntVec3FilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/JsonFilterParametersReader.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/JsonFilterParametersWriter.h

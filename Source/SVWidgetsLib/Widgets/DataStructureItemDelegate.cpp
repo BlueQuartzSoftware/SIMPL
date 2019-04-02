@@ -85,10 +85,10 @@ void DataStructureItemDelegate::createNewPathIcons()
   QImage daImage = baseImage.copy();
   QImage invalidImage = baseImage.copy();
 
-  QColor invalidColor = DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType::None);
-  QColor dcColor = DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType::DataContainer);
-  QColor amColor = DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType::AttributeMatrix);
-  QColor daColor = DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType::DataArray);
+  QColor invalidColor = DataArrayPathSelectionWidget::GetActiveColor(DataArrayPathHelper::DataType::None);
+  QColor dcColor = DataArrayPathSelectionWidget::GetActiveColor(DataArrayPathHelper::DataType::DataContainer);
+  QColor amColor = DataArrayPathSelectionWidget::GetActiveColor(DataArrayPathHelper::DataType::AttributeMatrix);
+  QColor daColor = DataArrayPathSelectionWidget::GetActiveColor(DataArrayPathHelper::DataType::DataArray);
 
   int height = baseImage.height();
   int width = baseImage.width();
@@ -160,7 +160,7 @@ void DataStructureItemDelegate::setActiveFilter(AbstractFilter::Pointer filter)
 void DataStructureItemDelegate::setViewRequirements(DataContainerSelectionFilterParameter::RequirementType reqs)
 {
   m_DcReqs = reqs;
-  m_ReqType = DataArrayPath::DataType::DataContainer;
+  m_ReqType = DataArrayPathHelper::DataType::DataContainer;
 }
 
 // -----------------------------------------------------------------------------
@@ -169,7 +169,7 @@ void DataStructureItemDelegate::setViewRequirements(DataContainerSelectionFilter
 void DataStructureItemDelegate::setViewRequirements(AttributeMatrixSelectionFilterParameter::RequirementType reqs)
 {
   m_AmReqs = reqs;
-  m_ReqType = DataArrayPath::DataType::AttributeMatrix;
+  m_ReqType = DataArrayPathHelper::DataType::AttributeMatrix;
 }
 
 // -----------------------------------------------------------------------------
@@ -178,7 +178,7 @@ void DataStructureItemDelegate::setViewRequirements(AttributeMatrixSelectionFilt
 void DataStructureItemDelegate::setViewRequirements(DataArraySelectionFilterParameter::RequirementType reqs)
 {
   m_DaReqs = reqs;
-  m_ReqType = DataArrayPath::DataType::DataArray;
+  m_ReqType = DataArrayPathHelper::DataType::DataArray;
 }
 
 // -----------------------------------------------------------------------------
@@ -186,7 +186,7 @@ void DataStructureItemDelegate::setViewRequirements(DataArraySelectionFilterPara
 // -----------------------------------------------------------------------------
 void DataStructureItemDelegate::clearRequirements()
 {
-  m_ReqType = DataArrayPath::DataType::None;
+  m_ReqType = DataArrayPathHelper::DataType::None;
 }
 
 // -----------------------------------------------------------------------------
@@ -194,7 +194,7 @@ void DataStructureItemDelegate::clearRequirements()
 // -----------------------------------------------------------------------------
 bool DataStructureItemDelegate::isFiltered()
 {
-  return m_ReqType != DataArrayPath::DataType::None;
+  return m_ReqType != DataArrayPathHelper::DataType::None;
 }
 
 // -----------------------------------------------------------------------------
@@ -305,7 +305,7 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
     mousePos = dynamic_cast<QWidget*>(parent())->mapFromGlobal(mousePos);
   }
 
-  bool filterData = (m_ReqType != DataArrayPath::DataType::None);
+  bool filterData = (m_ReqType != DataArrayPathHelper::DataType::None);
   bool isCreatedPath = std::find(m_CreatedPaths.begin(), m_CreatedPaths.end(), path) != m_CreatedPaths.end();
 
   // Check for a corresponding icon
@@ -423,13 +423,13 @@ void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewI
 
     switch(path.getDataType())
     {
-    case DataArrayPath::DataType::DataContainer:
+    case DataArrayPathHelper::DataType::DataContainer:
       m_CreatedDcIcon.paint(painter, imgRect);
       break;
-    case DataArrayPath::DataType::AttributeMatrix:
+    case DataArrayPathHelper::DataType::AttributeMatrix:
       m_CreatedAmIcon.paint(painter, imgRect);
       break;
-    case DataArrayPath::DataType::DataArray:
+    case DataArrayPathHelper::DataType::DataArray:
       m_CreatedDaIcon.paint(painter, imgRect);
       break;
     default:
@@ -492,11 +492,11 @@ bool DataStructureItemDelegate::pathMatchesReqs(DataArrayPath path) const
 {
   switch(m_ReqType)
   {
-  case DataArrayPath::DataType::DataContainer:
+  case DataArrayPathHelper::DataType::DataContainer:
     return DataArrayPathSelectionWidget::CheckPathRequirements(m_Filter.get(), path, m_DcReqs);
-  case DataArrayPath::DataType::AttributeMatrix:
+  case DataArrayPathHelper::DataType::AttributeMatrix:
     return DataArrayPathSelectionWidget::CheckPathRequirements(m_Filter.get(), path, m_AmReqs);
-  case DataArrayPath::DataType::DataArray:
+  case DataArrayPathHelper::DataType::DataArray:
     return DataArrayPathSelectionWidget::CheckPathRequirements(m_Filter.get(), path, m_DaReqs);
   default:
     return false;

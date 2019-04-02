@@ -190,7 +190,7 @@ RawBinaryReader::~RawBinaryReader() = default;
 // -----------------------------------------------------------------------------
 void RawBinaryReader::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("Input File", InputFile, FilterParameter::Parameter, RawBinaryReader, "*.raw *.bin"));
   parameters.push_back(SIMPL_NEW_NUMERICTYPE_FP("Scalar Type", ScalarType, FilterParameter::Parameter, RawBinaryReader));

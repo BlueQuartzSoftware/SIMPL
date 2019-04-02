@@ -60,7 +60,7 @@ ExecuteProcess::~ExecuteProcess() = default;
 // -----------------------------------------------------------------------------
 void ExecuteProcess::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(SIMPL_NEW_STRING_FP("Command Line Arguments", Arguments, FilterParameter::Parameter, ExecuteProcess));
 

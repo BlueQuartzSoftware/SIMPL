@@ -74,7 +74,7 @@ DataContainerReader::~DataContainerReader() = default;
 // -----------------------------------------------------------------------------
 void DataContainerReader::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(SIMPL_NEW_BOOL_FP("Overwrite Existing Data Containers", OverwriteExistingDataContainers, FilterParameter::Parameter, DataContainerReader));
   {
@@ -178,20 +178,16 @@ void DataContainerReader::dataCheck()
     return;
   }
 
-  QList<DataContainer::Pointer>& tempContainers = tempDCA->getDataContainers();
-
-  QListIterator<DataContainer::Pointer> iter(tempContainers);
-  while(iter.hasNext())
+  DataContainerArray::Container tempContainers = tempDCA->getDataContainers();
+  for(DataContainer::Pointer container : tempContainers)
   {
-    DataContainer::Pointer container = iter.next();
-
     if(getOverwriteExistingDataContainers())
     {
       if(dca->doesDataContainerExist(container->getName()))
       {
         dca->removeDataContainer(container->getName());
       }
-      dca->addDataContainer(container);
+      dca->addOrReplaceDataContainer(container);
     }
     else
     {
@@ -202,7 +198,7 @@ void DataContainerReader::dataCheck()
       }
       else
       {
-        dca->addDataContainer(container);
+        dca->addOrReplaceDataContainer(container);
       }
     }
   }
