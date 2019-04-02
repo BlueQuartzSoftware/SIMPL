@@ -62,8 +62,8 @@ ApplyImageTransforms::~ApplyImageTransforms() = default;
 // -----------------------------------------------------------------------------
 void ApplyImageTransforms::initialize()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
   setCancel(false);
 }
 
@@ -88,15 +88,14 @@ void ApplyImageTransforms::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void ApplyImageTransforms::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCondition();
+  clearWarningCondition();
 
   int selectedDCCount = getImageDataContainers().size();
   if(selectedDCCount < 1)
   {
-    setErrorCondition(-11001);
     QString ss = QObject::tr("At least one Data Container must be selected");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-11001, ss);
     return;
   }
 
@@ -105,7 +104,7 @@ void ApplyImageTransforms::dataCheck()
     QString dcName = m_ImageDataContainers[i];
 
     ImageGeom::Pointer imageGeom = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, dcName);
-    if(getErrorCondition() < 0)
+    if(getErrorCode() < 0)
     {
       return;
     }
@@ -133,7 +132,7 @@ void ApplyImageTransforms::execute()
 {
   initialize();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -172,7 +171,7 @@ void ApplyImageTransforms::execute()
     }
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
+  notifyStatusMessage("Complete");
 }
 
 // -----------------------------------------------------------------------------
