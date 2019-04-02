@@ -55,10 +55,14 @@ class SIMPLib_EXPORT Observable : public QObject
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(Observable)
-    PYB11_METHOD(void notifyErrorMessage ARGS humanLabel msg code)
-    PYB11_METHOD(void notifyWarningMessage ARGS humanLabel msg code)
-    PYB11_METHOD(void notifyStatusMessage ARGS humanLabel msg)
-    PYB11_METHOD(void notifyProgressMessage ARGS humanLabel msg progress)
+    PYB11_METHOD(void setErrorCondition ARGS code messageText)
+    PYB11_METHOD(void setErrorConditionWithPrefix ARGS code prefix messageText)
+    PYB11_METHOD(void setWarningCondition ARGS code messageText)
+    PYB11_METHOD(void setWarningConditionWithPrefix ARGS code prefix messageText)
+    PYB11_METHOD(void notifyStatusMessage ARGS messageText)
+    PYB11_METHOD(void notifyStatusMessageWithPrefix ARGS prefix messageText)
+    PYB11_METHOD(void notifyProgressMessage ARGS progress messageText)
+    PYB11_METHOD(void notifyProgressMessageWithPrefix ARGS progress prefix messageText)
 
   public:
     SIMPL_TYPE_MACRO(Observable)

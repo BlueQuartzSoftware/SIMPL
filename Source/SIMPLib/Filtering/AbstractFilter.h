@@ -96,6 +96,10 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   PYB11_METHOD(void execute)
   PYB11_METHOD(void preflight)
   PYB11_METHOD(void setDataContainerArray)
+  PYB11_METHOD(void setErrorCondition ARGS code messageText)
+  PYB11_METHOD(void setWarningCondition ARGS code messageText)
+  PYB11_METHOD(void notifyStatusMessage ARGS messageText)
+  PYB11_METHOD(void notifyProgressMessage ARGS progress messageText)
   
   // Friend declarations for RenameDataPath so that it can set and check the instance's created data by ID.
   friend void RenameDataPath::AlertFilterCreatedPath(AbstractFilter*, RenameDataPath::DataID_t, const DataArrayPath&);
