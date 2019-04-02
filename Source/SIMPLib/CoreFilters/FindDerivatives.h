@@ -169,6 +169,7 @@ protected:
    */
   void initialize();
 
+protected slots:
   /**
    * @brief processDerivativesMessage
    * @param msg
