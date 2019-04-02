@@ -104,8 +104,8 @@ void MakeDataContainer::initialize()
 // -----------------------------------------------------------------------------
 void MakeDataContainer::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   DataContainer::Pointer m = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName(), DataContainerID);
   if(getErrorCode() < 0)
@@ -173,8 +173,8 @@ void MakeDataContainer::preflight()
 // -----------------------------------------------------------------------------
 void MakeDataContainer::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   // Run the data check to get references to all of our data arrays initialized to the values stored in memory
   dataCheck();

@@ -52,8 +52,8 @@ TESTCLASSNAME::~TESTCLASSNAME() = default;
 // -----------------------------------------------------------------------------
 void TESTCLASSNAME::initialize()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   setCancel(false);
 }
 
@@ -72,8 +72,8 @@ void TESTCLASSNAME::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void TESTCLASSNAME::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 }
 
 // -----------------------------------------------------------------------------

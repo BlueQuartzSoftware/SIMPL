@@ -279,12 +279,12 @@ public:
   /**
    * @brief clearErrorCondition
    */
-  void clearErrorCondition();
+  void clearErrorCode();
 
   /**
    * @brief clearWarningCondition
    */
-  void clearWarningCondition();
+  void clearWarningCode();
 
   /**
    * @brief doesPipelineContainFilterBeforeThis

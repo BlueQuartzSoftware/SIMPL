@@ -107,8 +107,8 @@ void WriteTriangleGeometry::initialize()
 // -----------------------------------------------------------------------------
 void WriteTriangleGeometry::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
 
   QFileInfo fi(getOutputNodesFile());
@@ -167,8 +167,8 @@ void WriteTriangleGeometry::preflight()
 // -----------------------------------------------------------------------------
 void WriteTriangleGeometry::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   dataCheck();
   if(getErrorCode() < 0)

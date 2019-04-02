@@ -89,8 +89,8 @@ void MassCreateData::initialize()
 // -----------------------------------------------------------------------------
 void MassCreateData::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   const int iterations = 4000;
   for(int i = 0; i < iterations; i++)
@@ -118,8 +118,8 @@ void MassCreateData::preflight()
 // -----------------------------------------------------------------------------
 void MassCreateData::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   dataCheck();
   if(getErrorCode() < 0)

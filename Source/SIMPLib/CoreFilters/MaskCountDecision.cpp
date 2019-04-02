@@ -93,8 +93,8 @@ void MaskCountDecision::initialize()
 // -----------------------------------------------------------------------------
 void MaskCountDecision::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   QVector<size_t> cDims(1, 1);
 
@@ -124,8 +124,8 @@ void MaskCountDecision::preflight()
 // -----------------------------------------------------------------------------
 void MaskCountDecision::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

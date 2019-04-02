@@ -225,8 +225,8 @@ void WriteASCIIData::dataCheck()
   // Make sure the weak pointer vector is cleared before we begin...
   m_SelectedWeakPtrVector.clear();
 
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   //**************** MultiFile Checks ******************
   if(m_OutputStyle == MultiFile)
@@ -339,8 +339,8 @@ void WriteASCIIData::preflight()
 // -----------------------------------------------------------------------------
 void WriteASCIIData::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   initialize();
   dataCheck();
   if(getErrorCode() < 0)

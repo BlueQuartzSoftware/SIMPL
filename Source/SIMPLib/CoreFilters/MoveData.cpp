@@ -139,8 +139,8 @@ void MoveData::initialize()
 // -----------------------------------------------------------------------------
 void MoveData::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   DataArrayPath amSrcPath = getAttributeMatrixSource();
   DataArrayPath amDestPath = getAttributeMatrixDestination();
   DataArrayPath daSrcPath = getDataArraySource();
@@ -223,8 +223,8 @@ void MoveData::preflight()
 // -----------------------------------------------------------------------------
 void MoveData::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   // Simply running the preflight will do what we need it to.
   dataCheck();
   if(getErrorCode() < 0)

@@ -162,8 +162,8 @@ void InitializeData::initialize()
 // -----------------------------------------------------------------------------
 void InitializeData::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   if(m_CellAttributeMatrixPaths.empty())
   {
@@ -348,8 +348,8 @@ void InitializeData::preflight()
 // -----------------------------------------------------------------------------
 void InitializeData::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

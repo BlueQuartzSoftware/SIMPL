@@ -125,8 +125,8 @@ void CreateStringArray::initialize()
 // -----------------------------------------------------------------------------
 void CreateStringArray::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   if(getErrorCode() < 0)
   {
@@ -181,8 +181,8 @@ void CreateStringArray::preflight()
 // -----------------------------------------------------------------------------
 void CreateStringArray::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

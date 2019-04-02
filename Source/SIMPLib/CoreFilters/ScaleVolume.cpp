@@ -165,8 +165,8 @@ void ScaleVolume::initialize()
 // -----------------------------------------------------------------------------
 void ScaleVolume::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   if(m_ApplyToVoxelVolume)
   {
@@ -197,8 +197,8 @@ void ScaleVolume::preflight()
 // -----------------------------------------------------------------------------
 void ScaleVolume::updateSurfaceMesh()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   tbb::task_scheduler_init init;
@@ -261,8 +261,8 @@ void ScaleVolume::updateSurfaceMesh()
 // -----------------------------------------------------------------------------
 void ScaleVolume::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

@@ -111,8 +111,8 @@ void CopyFeatureArrayToElementArray::initialize()
 // -----------------------------------------------------------------------------
 void CopyFeatureArrayToElementArray::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   if(getCreatedArrayName().isEmpty())
   {
@@ -198,8 +198,8 @@ template <typename T> IDataArray::Pointer copyData(IDataArray::Pointer inputData
 // -----------------------------------------------------------------------------
 void CopyFeatureArrayToElementArray::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

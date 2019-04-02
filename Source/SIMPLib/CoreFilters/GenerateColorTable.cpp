@@ -232,8 +232,8 @@ GenerateColorTable::~GenerateColorTable() = default;
 // -----------------------------------------------------------------------------
 void GenerateColorTable::initialize()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   setCancel(false);
 }
 
@@ -268,8 +268,8 @@ void GenerateColorTable::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void GenerateColorTable::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedDataArrayPath());
 

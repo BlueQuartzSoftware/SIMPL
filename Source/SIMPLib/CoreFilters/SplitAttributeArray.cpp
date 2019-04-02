@@ -98,8 +98,8 @@ void SplitAttributeArray::initialize()
 // -----------------------------------------------------------------------------
 void SplitAttributeArray::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   initialize();
 
   m_InputArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getInputArrayPath());
@@ -192,8 +192,8 @@ template <typename T> void splitMulticomponentArray(IDataArray::Pointer inputArr
 // -----------------------------------------------------------------------------
 void SplitAttributeArray::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

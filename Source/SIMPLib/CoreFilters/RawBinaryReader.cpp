@@ -245,8 +245,8 @@ void RawBinaryReader::initialize()
 // -----------------------------------------------------------------------------
 void RawBinaryReader::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   QFileInfo fi(getInputFile());
   if(getInputFile().isEmpty())
@@ -369,8 +369,8 @@ void RawBinaryReader::preflight()
 // -----------------------------------------------------------------------------
 void RawBinaryReader::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

@@ -240,8 +240,8 @@ void ReadASCIIData::initialize()
 // -----------------------------------------------------------------------------
 void ReadASCIIData::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   m_ASCIIArrayMap.clear();
 
   ASCIIWizardData wizardData = getWizardData();
@@ -428,8 +428,8 @@ void ReadASCIIData::preflight()
 // -----------------------------------------------------------------------------
 void ReadASCIIData::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   initialize();
   dataCheck();
   if(getErrorCode() < 0)

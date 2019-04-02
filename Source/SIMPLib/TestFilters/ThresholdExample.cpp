@@ -141,8 +141,8 @@ void ThresholdExample::initialize()
 // -----------------------------------------------------------------------------
 void ThresholdExample::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerName(), false);
   if(getErrorCode() < 0 || nullptr == m)

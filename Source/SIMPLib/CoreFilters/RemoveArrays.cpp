@@ -95,8 +95,8 @@ void RemoveArrays::initialize()
 // -----------------------------------------------------------------------------
 void RemoveArrays::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   markSelectionsForDeletion(getDataContainerArray().get(), Qt::Checked);
 
@@ -215,8 +215,8 @@ std::list<DataArrayPath> RemoveArrays::getDeletedPaths()
 // -----------------------------------------------------------------------------
 void RemoveArrays::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   // Simply running the preflight will do what we need it to.
   dataCheck();
   if(getErrorCode() < 0)

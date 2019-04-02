@@ -223,8 +223,8 @@ void ArrayCalculator::initialize()
 // -----------------------------------------------------------------------------
 void ArrayCalculator::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedAttributeMatrix, -301);
   if(getErrorCode() < 0)
@@ -404,8 +404,8 @@ void ArrayCalculator::preflight()
 // -----------------------------------------------------------------------------
 void ArrayCalculator::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

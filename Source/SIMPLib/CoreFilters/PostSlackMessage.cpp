@@ -73,8 +73,8 @@ PostSlackMessage::~PostSlackMessage()
 // -----------------------------------------------------------------------------
 void PostSlackMessage::initialize()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   setCancel(false);
 }
 
@@ -98,8 +98,8 @@ void PostSlackMessage::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void PostSlackMessage::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 }
 
 // -----------------------------------------------------------------------------

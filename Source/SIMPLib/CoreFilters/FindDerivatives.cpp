@@ -264,8 +264,8 @@ void FindDerivatives::initialize()
 // -----------------------------------------------------------------------------
 void FindDerivatives::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   initialize();
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, m_SelectedArrayPath.getDataContainerName(), false);
   if(getErrorCode() < 0 || nullptr == m.get())
@@ -394,8 +394,8 @@ void FindDerivatives::preflight()
 // -----------------------------------------------------------------------------
 void FindDerivatives::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

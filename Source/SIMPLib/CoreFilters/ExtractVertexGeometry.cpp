@@ -71,8 +71,8 @@ ExtractVertexGeometry::~ExtractVertexGeometry() = default;
 // -----------------------------------------------------------------------------
 void ExtractVertexGeometry::initialize()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   setCancel(false);
 }
 
@@ -123,8 +123,8 @@ void ExtractVertexGeometry::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void ExtractVertexGeometry::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   if(m_ArrayHandling < 0)
   {

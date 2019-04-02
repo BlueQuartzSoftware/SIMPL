@@ -245,8 +245,8 @@ void CombineAttributeArrays::dataCheck()
 {
   m_SelectedWeakPtrVector.clear();
 
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   if(getSelectedDataArrayPaths().size() < 2)
   {
@@ -319,8 +319,8 @@ void CombineAttributeArrays::preflight()
 // -----------------------------------------------------------------------------
 void CombineAttributeArrays::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

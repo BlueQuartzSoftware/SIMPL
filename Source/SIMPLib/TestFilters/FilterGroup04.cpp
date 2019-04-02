@@ -52,8 +52,8 @@ FilterGroup04::~FilterGroup04() = default;
 // -----------------------------------------------------------------------------
 void FilterGroup04::initialize()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   setCancel(false);
 }
 
@@ -72,8 +72,8 @@ void FilterGroup04::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void FilterGroup04::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 }
 
 // -----------------------------------------------------------------------------

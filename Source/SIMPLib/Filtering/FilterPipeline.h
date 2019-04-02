@@ -216,12 +216,12 @@ public:
   /**
    * @brief clearErrorCondition
    */
-  void clearErrorCondition();
+  void clearErrorCode();
 
   /**
    * @brief clearWarningCondition
    */
-  void clearWarningCondition();
+  void clearWarningCode();
 
   /**
    * @brief This method returns a deep copy of the FilterPipeline and all its filters

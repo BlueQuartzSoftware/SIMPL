@@ -346,7 +346,7 @@ void SVPipelineView::preflightPipeline()
   FilterPipeline::FilterContainerType filters = pipeline->getFilterContainer();
   for(int i = 0; i < filters.size(); i++)
   {
-    filters.at(i)->clearErrorCondition();
+    filters.at(i)->clearErrorCode();
     filters.at(i)->setCancel(false);
 
     QModelIndex childIndex = model->index(i, PipelineItem::Contents);

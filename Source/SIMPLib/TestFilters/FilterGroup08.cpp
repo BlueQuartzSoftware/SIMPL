@@ -52,8 +52,8 @@ FilterGroup08::~FilterGroup08() = default;
 // -----------------------------------------------------------------------------
 void FilterGroup08::initialize()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   setCancel(false);
 }
 
@@ -72,8 +72,8 @@ void FilterGroup08::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void FilterGroup08::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 }
 
 // -----------------------------------------------------------------------------

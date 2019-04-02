@@ -375,8 +375,8 @@ void GenericExample::initialize()
 void GenericExample::dataCheck()
 {
   DataArrayPath tempPath;
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   FileSystemPathHelper::CheckOutputFile(this, "Output File Name", getOutputFile(), true);
 
@@ -407,8 +407,8 @@ void computeEulerAngle(float pq, float* eulerAngle)
 // -----------------------------------------------------------------------------
 void GenericExample::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   // Run the data check to get references to all of our data arrays initialized to the values stored in memory
   dataCheck();

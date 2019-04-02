@@ -120,8 +120,8 @@ void CreateAttributeMatrix::initialize()
 // -----------------------------------------------------------------------------
 void CreateAttributeMatrix::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getCreatedAttributeMatrix().getDataContainerName());
   if(getErrorCode() < 0)
@@ -172,8 +172,8 @@ void CreateAttributeMatrix::preflight()
 // -----------------------------------------------------------------------------
 void CreateAttributeMatrix::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

@@ -570,7 +570,7 @@ void AbstractFilter::notifyProgressMessage(int progress, const QString& messageT
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::clearErrorCondition()
+void AbstractFilter::clearErrorCode()
 {
   m_ErrorCode = 0;
 }
@@ -578,7 +578,7 @@ void AbstractFilter::clearErrorCondition()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::clearWarningCondition()
+void AbstractFilter::clearWarningCode()
 {
   m_WarningCode = 0;
 }

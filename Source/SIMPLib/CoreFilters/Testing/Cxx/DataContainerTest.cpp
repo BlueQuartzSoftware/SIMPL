@@ -653,28 +653,28 @@ public:
       T* ptr = m->createCellData<T, K, AbstractFilter>("Test", 10, dims, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(absFilt->getErrorCode(), 0);
       DREAM3D_TEST_POINTER(ptr, !=, nullptr);
-      absFilt->clearErrorCondition();
+      absFilt->clearErrorCode();
 
       // First try getting the array, but pass in a bad array name which should produce a null pointer
       // and negative error condition
       ptr =  m->getCellDataSizeCheck<T, K, AbstractFilter>("BAD_ARRAY_NAME", 10, 2, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(ptr , nullptr)
           DREAM3D_REQUIRE_EQUAL(0, absFilt->getErrorCode());
-      absFilt->clearErrorCondition();
+      absFilt->clearErrorCode();
 
       // Next try getting the array, but pass in a bad size name which should produce a null pointer
       // and negative error condition
       ptr =  m->getCellDataSizeCheck<T, K, AbstractFilter>("Test", 10, 1, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(ptr , nullptr)
           DREAM3D_REQUIRE_NE(0, absFilt->getErrorCode());
-      absFilt->clearErrorCondition();
+      absFilt->clearErrorCode();
 
       // Next try getting the array, but pass in a bad cast type which should produce a null pointer
       // and negative error condition
       bool* bool_ptr =  m->getCellDataSizeCheck<bool, BoolArrayType, AbstractFilter>("Test", 10, 2, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(bool_ptr , nullptr)
           DREAM3D_REQUIRE_NE(0, absFilt->getErrorCode());
-      absFilt->clearErrorCondition();
+      absFilt->clearErrorCode();
 
       // Next, pass in all the correct values which should produce a Non nullptr pointer value and
       // Zero Error Condition
@@ -689,28 +689,28 @@ public:
       ptr = m->createCellFeatureData<T, K, AbstractFilter>("Test", 10, dims, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(absFilt->getErrorCode(), 0);
       DREAM3D_TEST_POINTER(ptr, !=, nullptr);
-      absFilt->clearErrorCondition();
+      absFilt->clearErrorCode();
 
       // First try getting the array, but pass in a bad array name which should produce a null pointer
       // and negative error condition
       ptr =  m->getCellFeatureDataSizeCheck<T, K, AbstractFilter>("BAD_ARRAY_NAME", 10, 2, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(ptr , nullptr)
           DREAM3D_REQUIRE_EQUAL(0, absFilt->getErrorCode());
-      absFilt->clearErrorCondition();
+      absFilt->clearErrorCode();
 
       // Next try getting the array, but pass in a bad size name which should produce a null pointer
       // and negative error condition
       ptr =  m->getCellFeatureDataSizeCheck<T, K, AbstractFilter>("Test", 10, 1, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(ptr , nullptr)
           DREAM3D_REQUIRE_NE(0, absFilt->getErrorCode());
-      absFilt->clearErrorCondition();
+      absFilt->clearErrorCode();
 
       // Next try getting the array, but pass in a bad cast type which should produce a null pointer
       // and negative error condition
       bool_ptr =  m->getCellFeatureDataSizeCheck<bool, BoolArrayType, AbstractFilter>("Test", 10, 2, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(bool_ptr , nullptr)
           DREAM3D_REQUIRE_NE(0, absFilt->getErrorCode());
-      absFilt->clearErrorCondition();
+      absFilt->clearErrorCode();
 
       // Next, pass in all the correct values which should produce a Non nullptr pointer value and
       // Zero Error Condition
@@ -726,28 +726,28 @@ public:
       ptr = m->createCellEnsembleData<T, K, AbstractFilter>("Test", 10, dims, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(absFilt->getErrorCode(), 0);
       DREAM3D_TEST_POINTER(ptr, !=, nullptr);
-      absFilt->clearErrorCondition();
+      absFilt->clearErrorCode();
 
       // First try getting the array, but pass in a bad array name which should produce a null pointer
       // and negative error condition
       ptr =  m->getCellEnsembleDataSizeCheck<T, K, AbstractFilter>("BAD_ARRAY_NAME", 10, 2, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(ptr , nullptr)
           DREAM3D_REQUIRE_EQUAL(0, absFilt->getErrorCode());
-      absFilt->clearErrorCondition();
+      absFilt->clearErrorCode();
 
       // Next try getting the array, but pass in a bad size name which should produce a null pointer
       // and negative error condition
       ptr =  m->getCellEnsembleDataSizeCheck<T, K, AbstractFilter>("Test", 10, 1, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(ptr , nullptr)
           DREAM3D_REQUIRE_NE(0, absFilt->getErrorCode());
-      absFilt->clearErrorCondition();
+      absFilt->clearErrorCode();
 
       // Next try getting the array, but pass in a bad cast type which should produce a null pointer
       // and negative error condition
       bool_ptr =  m->getCellEnsembleDataSizeCheck<bool, BoolArrayType, AbstractFilter>("Test", 10, 2, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(bool_ptr , nullptr)
           DREAM3D_REQUIRE_NE(0, absFilt->getErrorCode());
-      absFilt->clearErrorCondition();
+      absFilt->clearErrorCode();
 
       // Next, pass in all the correct values which should produce a Non nullptr pointer value and
       // Zero Error Condition

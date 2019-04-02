@@ -116,8 +116,8 @@ void DataContainerWriter::initialize()
 // -----------------------------------------------------------------------------
 void DataContainerWriter::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   QString ss;
 
   QFileInfo fi(m_OutputFile);
@@ -147,8 +147,8 @@ void DataContainerWriter::preflight()
 // -----------------------------------------------------------------------------
 void DataContainerWriter::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

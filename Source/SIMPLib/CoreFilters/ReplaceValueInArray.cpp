@@ -160,8 +160,8 @@ void ReplaceValueInArray::initialize()
 // -----------------------------------------------------------------------------
 void ReplaceValueInArray::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   m_ArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArray());
   if(getErrorCode() < 0)
@@ -255,8 +255,8 @@ void ReplaceValueInArray::preflight()
 // -----------------------------------------------------------------------------
 void ReplaceValueInArray::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

@@ -62,8 +62,8 @@ ApplyImageTransforms::~ApplyImageTransforms() = default;
 // -----------------------------------------------------------------------------
 void ApplyImageTransforms::initialize()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   setCancel(false);
 }
 
@@ -88,8 +88,8 @@ void ApplyImageTransforms::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void ApplyImageTransforms::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   int selectedDCCount = getImageDataContainers().size();
   if(selectedDCCount < 1)

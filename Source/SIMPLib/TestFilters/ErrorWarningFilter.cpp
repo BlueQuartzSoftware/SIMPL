@@ -58,8 +58,8 @@ ErrorWarningFilter::~ErrorWarningFilter() = default;
 // -----------------------------------------------------------------------------
 void ErrorWarningFilter::initialize()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   setCancel(false);
 }
 

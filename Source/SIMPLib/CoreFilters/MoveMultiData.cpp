@@ -142,8 +142,8 @@ void MoveMultiData::initialize()
 // -----------------------------------------------------------------------------
 void MoveMultiData::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   QVector<DataArrayPath> amSrcPaths = getAttributeMatrixSources();
   DataArrayPath amDestPath = getAttributeMatrixDestination();
   QVector<DataArrayPath> daSrcPaths = getDataArraySources();
@@ -241,8 +241,8 @@ void MoveMultiData::preflight()
 // -----------------------------------------------------------------------------
 void MoveMultiData::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   // Simply running the preflight will do what we need it to.
   dataCheck();
   if(getErrorCode() < 0)

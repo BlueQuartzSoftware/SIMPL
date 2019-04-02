@@ -401,8 +401,8 @@ void ImportAsciDataArray::initialize()
 // -----------------------------------------------------------------------------
 void ImportAsciDataArray::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   QFileInfo fi(getInputFile());
   if(getInputFile().isEmpty())
@@ -504,8 +504,8 @@ void ImportAsciDataArray::preflight()
 // -----------------------------------------------------------------------------
 void ImportAsciDataArray::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   dataCheck();
   if(getErrorCode() < 0)

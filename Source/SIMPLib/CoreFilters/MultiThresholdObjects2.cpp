@@ -104,8 +104,8 @@ void MultiThresholdObjects2::initialize()
 // -----------------------------------------------------------------------------
 void MultiThresholdObjects2::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   QVector<AbstractComparison::Pointer> comparisonValues = m_SelectedThresholds.getComparisonValues();
 
@@ -186,8 +186,8 @@ void MultiThresholdObjects2::preflight()
 // -----------------------------------------------------------------------------
 void MultiThresholdObjects2::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

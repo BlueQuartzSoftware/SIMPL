@@ -650,7 +650,7 @@ void FilterPipeline::notifyProgressMessage(int progress, const QString& messageT
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::clearErrorCondition()
+void FilterPipeline::clearErrorCode()
 {
   m_ErrorCode = 0;
 }
@@ -658,7 +658,7 @@ void FilterPipeline::clearErrorCondition()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::clearWarningCondition()
+void FilterPipeline::clearWarningCode()
 {
   m_WarningCode = 0;
 }
@@ -727,7 +727,7 @@ int FilterPipeline::preflightPipeline()
   // Create the DataContainer object
   DataContainerArray::Pointer dca = DataContainerArray::New();
 
-  clearErrorCondition();
+  clearErrorCode();
   int preflightError = 0;
 
   DataArrayPath::RenameContainer renamedPaths;

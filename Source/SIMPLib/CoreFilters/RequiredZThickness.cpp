@@ -100,8 +100,8 @@ void RequiredZThickness::initialize()
 // -----------------------------------------------------------------------------
 void RequiredZThickness::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   if(getErrorCode() < 0)
   {
     return;
@@ -163,8 +163,8 @@ void RequiredZThickness::preflight()
 // -----------------------------------------------------------------------------
 void RequiredZThickness::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

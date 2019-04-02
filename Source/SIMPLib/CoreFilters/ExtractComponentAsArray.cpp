@@ -106,8 +106,8 @@ void ExtractComponentAsArray::initialize()
 // -----------------------------------------------------------------------------
 void ExtractComponentAsArray::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   m_InArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArrayPath());
 
@@ -196,8 +196,8 @@ template <typename T> void extractComponent(IDataArray::Pointer inputData, IData
 // -----------------------------------------------------------------------------
 void ExtractComponentAsArray::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

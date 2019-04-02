@@ -152,8 +152,8 @@ void ConditionalSetValue::initialize()
 // -----------------------------------------------------------------------------
 void ConditionalSetValue::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   QVector<DataArrayPath> dataArrayPaths;
 
@@ -263,8 +263,8 @@ void ConditionalSetValue::preflight()
 // -----------------------------------------------------------------------------
 void ConditionalSetValue::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

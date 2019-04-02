@@ -104,8 +104,8 @@ void MultiThresholdObjects::initialize()
 // -----------------------------------------------------------------------------
 void MultiThresholdObjects::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   if(m_SelectedThresholds.size() == 0)
   {
@@ -188,8 +188,8 @@ void MultiThresholdObjects::preflight()
 // -----------------------------------------------------------------------------
 void MultiThresholdObjects::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

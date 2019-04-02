@@ -68,8 +68,8 @@ void Filt0::initialize()
 // -----------------------------------------------------------------------------
 void Filt0::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 }
 
 // -----------------------------------------------------------------------------
@@ -86,8 +86,8 @@ void Filt0::preflight()
 // -----------------------------------------------------------------------------
 void Filt0::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
   if(nullptr == m)
   {
@@ -95,8 +95,8 @@ void Filt0::execute()
     setErrorCondition(-1, QObject::tr("VolumeDataContainer was nullptr. Returning from Execute Method for filter %1").arg(getHumanLabel()));
     return;
   }
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   /* Place all your code to execute your filter here. */
 }
@@ -162,8 +162,8 @@ void Filt1::initialize()
 // -----------------------------------------------------------------------------
 void Filt1::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 }
 
 // -----------------------------------------------------------------------------
@@ -180,8 +180,8 @@ void Filt1::preflight()
 // -----------------------------------------------------------------------------
 void Filt1::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
   if(nullptr == m.get())
   {
@@ -189,8 +189,8 @@ void Filt1::execute()
     setErrorCondition(-1, QObject::tr("VolumeDataContainer was nullptr. Returning from Execute Method for filter %1").arg(getHumanLabel()));
     return;
   }
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   /* Place all your code to execute your filter here. */
 }

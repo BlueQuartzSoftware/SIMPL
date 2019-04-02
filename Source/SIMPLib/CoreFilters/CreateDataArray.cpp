@@ -323,8 +323,8 @@ void CreateDataArray::initialize()
 // -----------------------------------------------------------------------------
 void CreateDataArray::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   if(getErrorCode() < 0)
   {
@@ -427,8 +427,8 @@ void CreateDataArray::preflight()
 // -----------------------------------------------------------------------------
 void CreateDataArray::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

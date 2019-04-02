@@ -91,8 +91,8 @@ void ExecuteProcess::initialize()
 // -----------------------------------------------------------------------------
 void ExecuteProcess::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   QStringList arguments = splitArgumentsString(m_Arguments);
   if(arguments.empty())
@@ -132,8 +132,8 @@ void ExecuteProcess::preflight()
 // -----------------------------------------------------------------------------
 void ExecuteProcess::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

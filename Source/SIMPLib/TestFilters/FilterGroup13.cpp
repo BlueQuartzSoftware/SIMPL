@@ -52,8 +52,8 @@ FilterGroup13::~FilterGroup13() = default;
 // -----------------------------------------------------------------------------
 void FilterGroup13::initialize()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   setCancel(false);
 }
 
@@ -72,8 +72,8 @@ void FilterGroup13::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void FilterGroup13::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 }
 
 // -----------------------------------------------------------------------------

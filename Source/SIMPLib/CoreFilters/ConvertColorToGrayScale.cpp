@@ -262,8 +262,8 @@ void ConvertColorToGrayScale::initialize() { }
 // -----------------------------------------------------------------------------
 void ConvertColorToGrayScale::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   if(!DataArrayPath::ValidateVector(getInputDataArrayVector()))
   {
     QString ss = QObject::tr("All Attribute Arrays must belong to the same Data Container and Attribute Matrix");
@@ -361,8 +361,8 @@ void ConvertColorToGrayScale::preflight()
 void ConvertColorToGrayScale::execute()
 {
   initialize();
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   QString ss;
   dataCheck();
   if(getErrorCode() < 0)

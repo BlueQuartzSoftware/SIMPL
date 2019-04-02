@@ -85,7 +85,7 @@ ImportHDF5Dataset::~ImportHDF5Dataset() = default;
 // -----------------------------------------------------------------------------
 void ImportHDF5Dataset::initialize()
 {
-  clearErrorCondition();
+  clearErrorCode();
   setCancel(false);
 }
 
@@ -117,7 +117,7 @@ void ImportHDF5Dataset::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void ImportHDF5Dataset::dataCheck()
 {
-  clearErrorCondition();
+  clearErrorCode();
   m_DatasetPathsWithErrors.clear();
 
   if(m_HDF5FilePath.isEmpty())

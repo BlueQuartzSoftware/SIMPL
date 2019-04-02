@@ -239,8 +239,8 @@ void ConvertData::initialize()
 // -----------------------------------------------------------------------------
 void ConvertData::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getSelectedCellArrayPath().getDataContainerName(), false);
 
@@ -334,8 +334,8 @@ void ConvertData::preflight()
 // -----------------------------------------------------------------------------
 void ConvertData::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

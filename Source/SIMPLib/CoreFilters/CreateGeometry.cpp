@@ -246,8 +246,8 @@ void CreateGeometry::initialize()
 // -----------------------------------------------------------------------------
 void CreateGeometry::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   initialize();
 
   DataContainer::Pointer dc = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerName());
@@ -622,8 +622,8 @@ void CreateGeometry::preflight()
 // -----------------------------------------------------------------------------
 void CreateGeometry::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

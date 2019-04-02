@@ -153,8 +153,8 @@ void CombineAttributeMatrices::initialize()
 // -----------------------------------------------------------------------------
 void CombineAttributeMatrices::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   DataArrayPath tempPath;
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getFirstAttributeMatrixPath().getDataContainerName(), false);
@@ -296,8 +296,8 @@ template <typename T> void copyData(IDataArray::Pointer fromData, IDataArray::Po
 // -----------------------------------------------------------------------------
 void CombineAttributeMatrices::execute()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
   if(getErrorCode() < 0)
   {

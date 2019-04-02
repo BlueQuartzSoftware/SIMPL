@@ -83,8 +83,8 @@ void Breakpoint::initialize()
 // -----------------------------------------------------------------------------
 void Breakpoint::dataCheck()
 {
-  clearErrorCondition();
-  clearWarningCondition();
+  clearErrorCode();
+  clearWarningCode();
 }
 
 // -----------------------------------------------------------------------------
