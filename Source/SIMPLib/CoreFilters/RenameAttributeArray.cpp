@@ -125,33 +125,33 @@ void RenameAttributeArray::dataCheck()
   RenameErrorCodes code = attrMat->renameAttributeArray(daName, m_NewArrayName, false);
   switch(code)
   {
-    case OLD_DOES_NOT_EXIST:
-    {
-      QString ss = QObject::tr("A DataArray with the name '%1' was not found in the AttributeMatrix").arg(daName);
-      setErrorCondition(-11016, ss);
-      return;
-    }
-    case NEW_EXISTS:
-    {
-      QString ss = QObject::tr("A DataArray with the name '%1' already exists in the AttributeMatrix").arg(m_NewArrayName);
-      setErrorCondition(-11017, ss);
-      return;
-    }
-    case RenameErrorCodes::SAME_PATH:
-    {
-      QString ss = QObject::tr("The new and original DataArray names cannot be identical");
-      setErrorCondition(-11018, ss);
-      return;
-    }
-    case SUCCESS:
-    {
-      clearErrorCondition();
-      clearWarningCondition();
-      DataArrayPath newPath = getSelectedArrayPath();
-      newPath.setDataArrayName(m_NewArrayName);
-      addPathRename(getSelectedArrayPath(), newPath);
-      return;
-    }
+  case OLD_DOES_NOT_EXIST:
+  {
+    QString ss = QObject::tr("A DataArray with the name '%1' was not found in the AttributeMatrix").arg(daName);
+    setErrorCondition(-11016, ss);
+    return;
+  }
+  case NEW_EXISTS:
+  {
+    QString ss = QObject::tr("A DataArray with the name '%1' already exists in the AttributeMatrix").arg(m_NewArrayName);
+    setErrorCondition(-11017, ss);
+    return;
+  }
+  case RenameErrorCodes::SAME_PATH:
+  {
+    QString ss = QObject::tr("The new and original DataArray names cannot be identical");
+    setErrorCondition(-11018, ss);
+    return;
+  }
+  case SUCCESS:
+  {
+    clearErrorCondition();
+    clearWarningCondition();
+    DataArrayPath newPath = getSelectedArrayPath();
+    newPath.setDataArrayName(m_NewArrayName);
+    addPathRename(getSelectedArrayPath(), newPath);
+    return;
+  }
   }
 }
 
