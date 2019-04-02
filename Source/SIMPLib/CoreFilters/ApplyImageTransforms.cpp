@@ -201,7 +201,7 @@ const QString ApplyImageTransforms::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 const QString ApplyImageTransforms::getBrandingString() const
 {
-  return "Processing";
+  return "SIMPLib Core Filter";
 }
 
 // -----------------------------------------------------------------------------

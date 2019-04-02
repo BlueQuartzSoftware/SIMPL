@@ -6,19 +6,18 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QFile>
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/CoreFilters/ApplyImageTransforms.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
-#include "SIMPLib/Filtering/FilterPipeline.h"
-#include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
+#include "SIMPLib/Filtering/FilterManager.h"
+#include "SIMPLib/Filtering/FilterPipeline.h"
+#include "SIMPLib/Filtering/QMetaObjectUtilities.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
-
-#include "SIMPLib/Filtering/QMetaObjectUtilities.h"
-
-#include "SIMPLib/Testing/UnitTestSupport.hpp"
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 class ApplyImageTransformsTest
 {
@@ -34,47 +33,18 @@ class ApplyImageTransformsTest
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  int TestFilterAvailability()
-  {
-    // Now instantiate the ApplyImageTransformsTest Filter from the FilterManager
-    QString filtName = "ApplyImageTransforms";
-    FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
-    if (nullptr == filterFactory.get())
+    void TestFilterAvailability()
     {
-      std::stringstream ss;
-      ss << "The ApplyImageTransformsTest Requires the use of the " << filtName.toStdString()
-         << " filter which is found in the Processing Plugin";
-      DREAM3D_TEST_THROW_EXCEPTION(ss.str())
+      ApplyImageTransforms::Pointer filter = ApplyImageTransforms::New();
+      filter->preflight();
     }
-    return 0;
-  }
 
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
   int TestApplyImageTransformsTest()
   {
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   /* Please write ApplyImageTransformsTest test code here.
-    *
-    * Your IO test files are:
-    * UnitTest::ApplyImageTransformsTest::TestFile1
-    * UnitTest::ApplyImageTransformsTest::TestFile2
-    *
-    * SIMPLib provides some macros that will throw exceptions when a test fails
-    * and thus report that during testing. These macros are located in the
-    * SIMPLib/Utilities/UnitTestSupport.hpp file. Some examples are:
-    *
-    * SIMPLib_REQUIRE_EQUAL(foo, 0)
-    * This means that if the variable foo is NOT equal to Zero then test will fail
-    * and the current test will exit immediately. If there are more tests registered
-    * with the SIMPLib_REGISTER_TEST() macro, the next test will execute. There are
-    * lots of examples in the SIMPLib/Test folder to look at.
-    */
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    int foo = -1;
+    int foo = 0;
     DREAM3D_REQUIRE_EQUAL(foo, 0)
 
     return EXIT_SUCCESS;
