@@ -419,7 +419,7 @@ void ArrayCalculator::execute()
   int totalItems = rpn.size();
   for(int rpnCount = 0; rpnCount < totalItems; rpnCount++)
   {
-    notifyStatusMessageWithPrefix(getMessagePrefix(), "Computing Operator " + QString::number(rpnCount + 1) + "/" + QString::number(totalItems));
+    notifyStatusMessage("Computing Operator " + QString::number(rpnCount + 1) + "/" + QString::number(totalItems));
 
     CalculatorItem::Pointer rpnItem = rpn[rpnCount];
     ICalculatorArray::Pointer calcArray = std::dynamic_pointer_cast<ICalculatorArray>(rpnItem);

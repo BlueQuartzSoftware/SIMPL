@@ -82,7 +82,7 @@ void Observable::setErrorCondition(int code, const QString &messageText)
 void Observable::setErrorConditionWithPrefix(int code, const QString &prefix, const QString &messageText)
 {
   QString msg = messageText;
-  msg.prepend(tr("%1: ").arg(prefix));
+  msg.prepend(tr("%1 - ").arg(prefix));
 
   setErrorCondition(code, msg);
 }
@@ -102,7 +102,7 @@ void Observable::setWarningCondition(int code, const QString& messageText)
 void Observable::setWarningConditionWithPrefix(int code, const QString &prefix, const QString &messageText)
 {
   QString msg = messageText;
-  msg.prepend(tr("%1: ").arg(prefix));
+  msg.prepend(tr("%1 - ").arg(prefix));
 
   setWarningCondition(code, msg);
 }
@@ -122,7 +122,7 @@ void Observable::notifyStatusMessage(const QString& messageText)
 void Observable::notifyStatusMessageWithPrefix(const QString &prefix, const QString &messageText)
 {
   QString msg = messageText;
-  msg.prepend(tr("%1: ").arg(prefix));
+  msg.prepend(tr("%1 - ").arg(prefix));
 
   notifyStatusMessage(msg);
 }

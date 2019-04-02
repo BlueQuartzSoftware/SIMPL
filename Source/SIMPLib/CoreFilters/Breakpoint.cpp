@@ -119,7 +119,7 @@ void Breakpoint::pause()
 
   m_Mutex.lock();
   QString ss = "The pipeline is paused - Press \"Resume\" to continue execution.";
-  notifyStatusMessageWithPrefix(getMessagePrefix(), ss);
+  notifyStatusMessage(ss);
   m_WaitCondition.wait(&m_Mutex);
   m_Mutex.unlock();
 }

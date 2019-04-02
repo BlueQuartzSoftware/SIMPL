@@ -573,7 +573,7 @@ void ReadASCIIData::execute()
       {
         // Print the status of the import
         QString ss = QObject::tr("Importing ASCII Data || %1% Complete").arg((static_cast<float>(lineNum) / numTuples) * 100.0f, 0, 'f', 0);
-        notifyStatusMessageWithPrefix(getMessagePrefix(), ss);
+        notifyStatusMessage(ss);
         threshold = threshold + 5.0f;
         if(threshold < (static_cast<float>(lineNum) / numTuples) * 100.0f)
         {

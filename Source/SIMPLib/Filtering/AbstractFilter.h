@@ -84,7 +84,6 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   PYB11_PROPERTY(QString CompiledLibraryName READ getCompiledLibraryName)
   PYB11_PROPERTY(bool Cancel READ getCancel WRITE setCancel)
   PYB11_PROPERTY(bool Enabled READ getEnabled WRITE setEnabled)
-  PYB11_PROPERTY(QString MessagePrefix READ getMessagePrefix WRITE setMessagePrefix)
   PYB11_PROPERTY(int ErrorCondition READ getErrorCondition)
   PYB11_PROPERTY(int WarningCondition READ getWarningCondition)
   PYB11_PROPERTY(bool InPreflight READ getInPreflight WRITE setInPreflight)
@@ -238,8 +237,6 @@ public:
   SIMPL_INSTANCE_PROPERTY(DataContainerArray::Pointer, DataContainerArray)
 
   SIMPL_INSTANCE_PROPERTY(QVector<FilterParameter::Pointer>, FilterParameters)
-
-  SIMPL_INSTANCE_PROPERTY(QString, MessagePrefix)
 
   SIMPL_GET_PROPERTY(int, ErrorCode)
 
