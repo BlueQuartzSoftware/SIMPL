@@ -60,6 +60,8 @@ class SVWidgetsLib_EXPORT LinkedPathCreationWidget : public FilterParameterWidge
   Q_OBJECT
 
 public:
+  Q_PROPERTY(int DataTypei READ getDataTypei)
+
   /**
    * @brief Constructor
    * @param parameter The FilterParameter object that this widget represents
@@ -74,6 +76,9 @@ public:
    * @brief This method does additional GUI widget connections
    */
   void setupGui() override;
+
+  DataArrayPath::DataType getDataType() const;
+  int getDataTypei() const;
 
 public slots:
   void beforePreflight();

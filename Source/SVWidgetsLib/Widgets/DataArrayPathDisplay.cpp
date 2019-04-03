@@ -114,7 +114,6 @@ void DataArrayPathDisplay::setupGui()
   m_Ui->dataArrayPathLabel->setDataType(DataArrayPath::DataType::DataArray);
 
   setDataArrayPath(DataArrayPath("", "", ""));
-
   updateStyle();
 }
 

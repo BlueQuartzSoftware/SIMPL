@@ -66,6 +66,8 @@ DataPathLabel::DataPathLabel(QWidget* parent)
 : QLabel(parent)
 {
   setAttribute(Qt::WA_MacShowFocusRect, false);
+  //setAutoFillBackground(true);
+  //setFrameShape(QFrame::StyledPanel);
 }
 
 // -----------------------------------------------------------------------------
@@ -87,9 +89,18 @@ DataArrayPath::DataType DataPathLabel::getDataType() const
 void DataPathLabel::setDataType(DataArrayPath::DataType type)
 {
   m_DataType = type;
+  ensurePolished();
 }
 
-// ---------------------------------------------------------------------------- -
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int DataPathLabel::getDataTypei() const
+{
+  return static_cast<int>(m_DataType);
+}
+
+// -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 int DataPathLabel::getYMargin() const
@@ -150,21 +161,21 @@ QRect DataPathLabel::getStyledBorderRect() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataPathLabel::paintEvent(QPaintEvent* event)
-{
-  const int radius = 4;
-  const int rectWidth = getStyledBorderRect().width() - margin() * 2;
-  const int yMargin = std::max(getYMargin(), 0);
-
-  QRect fillRect(margin(), yMargin / 2, rectWidth, rectWidth - yMargin);
-  QColor fillColor = isEnabled() ? GetBackgroundColor(getDataType()) : GetInactiveColor();
-
-  QPainter painter{ this };
-  painter.setPen(Qt::PenStyle::NoPen);
-  painter.setBrush(fillColor);
-  painter.drawRoundedRect(rect(), radius, radius);
-  painter.drawRect(fillRect.x(), fillRect.y(), fillRect.width(), fillRect.height());
-
-  // Call parent class's paint event
-  QLabel::paintEvent(event);
-}
+//void DataPathLabel::paintEvent(QPaintEvent* event)
+//{
+//  const int radius = 4;
+//  const int rectWidth = getStyledBorderRect().width() - margin() * 2;
+//  const int yMargin = std::max(getYMargin(), 0);
+//
+//  QRect fillRect(margin(), yMargin / 2, rectWidth, rectWidth - yMargin);
+//  QColor fillColor = isEnabled() ? GetBackgroundColor(getDataType()) : GetInactiveColor();
+//
+//  QPainter painter{ this };
+//  painter.setPen(Qt::PenStyle::NoPen);
+//  painter.setBrush(fillColor);
+//  painter.drawRoundedRect(rect(), radius, radius);
+//  painter.drawRect(fillRect.x(), fillRect.y(), fillRect.width(), fillRect.height());
+//
+//  // Call parent class's paint event
+//  QLabel::paintEvent(event);
+//}

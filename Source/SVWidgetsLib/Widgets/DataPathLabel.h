@@ -54,19 +54,20 @@ public:
   static QColor GetBackgroundColor(DataArrayPath::DataType type);
   static QColor GetInactiveColor();
 
-  Q_PROPERTY(DataArrayPath::DataType DataType READ getDataType WRITE setDataType)
+  Q_PROPERTY(int DataTypei READ getDataTypei)
 
   DataPathLabel(QWidget* parent = nullptr);
   ~DataPathLabel() override;
 
   DataArrayPath::DataType getDataType() const;
   void setDataType(DataArrayPath::DataType type);
+  int getDataTypei() const;
 
 protected:
   int getYMargin() const;
   QRect getStyledContentsRect() const;
   QRect getStyledBorderRect() const;
-  void paintEvent(QPaintEvent *) override;
+  //void paintEvent(QPaintEvent* event) override;
 
 private:
   DataArrayPath::DataType m_DataType = DataArrayPath::DataType::None;
