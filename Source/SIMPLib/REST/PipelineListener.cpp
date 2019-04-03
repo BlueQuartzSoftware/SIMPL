@@ -29,9 +29,9 @@ PipelineListener::~PipelineListener()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<const AbstractMessage*> PipelineListener::getMessages()
+std::vector<const AbstractMessage*> PipelineListener::getAllMessages()
 {
-  return m_Messages;
+  return m_AllMessages;
 }
 
 // -----------------------------------------------------------------------------
@@ -75,7 +75,7 @@ void PipelineListener::processPipelineMessage(const AbstractMessage::Pointer& pm
   pm->visit(&msgHandler);
 
   m_SharedMessages.push_back(pm);
-  m_Messages.push_back(pm.get());
+  m_AllMessages.push_back(pm.get());
 }
 
 // -----------------------------------------------------------------------------

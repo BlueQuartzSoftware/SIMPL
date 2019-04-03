@@ -180,8 +180,8 @@ void PreflightPipelineController::service(HttpRequest& request, HttpResponse& re
   bool completed = (errorMessages.size() == 0);
   rootObj[SIMPL::JSON::Completed] = completed;
 
-  std::vector<const AbstractMessage*> messages = listener.getMessages();
-  for(const AbstractMessage* msg : messages)
+  std::vector<const AbstractMessage*> allMessages = listener.getAllMessages();
+  for(const AbstractMessage* msg : allMessages)
   {
     PreflightPipelineMessageHandler msgHandler(&errors, &warnings);
     msg->visit(&msgHandler);

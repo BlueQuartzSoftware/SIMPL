@@ -32,7 +32,7 @@ public:
   void createStatusLogFile(QString path);
   void closeFiles();
 
-  std::vector<const AbstractMessage*> getMessages();
+  std::vector<const AbstractMessage*> getAllMessages();
   std::vector<const AbstractErrorMessage*> getErrorMessages();
   std::vector<const AbstractWarningMessage*> getWarningMessages();
   std::vector<const AbstractStatusMessage*> getStatusMessages();
@@ -47,7 +47,7 @@ public slots:
 
 private:
   std::vector<AbstractMessage::Pointer> m_SharedMessages;
-  std::vector<const AbstractMessage*> m_Messages;
+  std::vector<const AbstractMessage*> m_AllMessages;
   std::vector<const AbstractErrorMessage*> m_ErrorMessages;
   std::vector<const AbstractStatusMessage*> m_StatusMessages;
   std::vector<const AbstractProgressMessage*> m_ProgressMessages;
