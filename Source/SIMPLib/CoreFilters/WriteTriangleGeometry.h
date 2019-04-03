@@ -57,7 +57,7 @@ class SIMPLib_EXPORT WriteTriangleGeometry : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(WriteTriangleGeometry SUPERCLASS AbstractFilter)
-    PYB11_PROPERTY(QString DataContainerSelection READ getDataContainerSelection WRITE setDataContainerSelection)
+    PYB11_PROPERTY(DataArrayPath DataContainerSelection READ getDataContainerSelection WRITE setDataContainerSelection)
     PYB11_PROPERTY(QString OutputNodesFile READ getOutputNodesFile WRITE setOutputNodesFile)
     PYB11_PROPERTY(QString OutputTrianglesFile READ getOutputTrianglesFile WRITE setOutputTrianglesFile)
 
@@ -68,8 +68,8 @@ class SIMPLib_EXPORT WriteTriangleGeometry : public AbstractFilter
 
     ~WriteTriangleGeometry() override;
 
-    SIMPL_FILTER_PARAMETER(QString, DataContainerSelection)
-    Q_PROPERTY(QString DataContainerSelection READ getDataContainerSelection WRITE setDataContainerSelection)
+    SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerSelection)
+    Q_PROPERTY(DataArrayPath DataContainerSelection READ getDataContainerSelection WRITE setDataContainerSelection)
 
     SIMPL_FILTER_PARAMETER(QString, OutputNodesFile)
     Q_PROPERTY(QString OutputNodesFile READ getOutputNodesFile WRITE setOutputNodesFile)

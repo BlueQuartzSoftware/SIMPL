@@ -99,12 +99,14 @@ public:
 
     static const QString k_DataContainerName("DataContainer");
 
-    static const QString k_FeatureDataMatrixName("FeatureDataMatrix");
-    static const QString k_FeatureIDMatrixName("FeatureIDMatrix");
+    static const QString k_Cell_AMName("Cell Attribute Matrix");
+    static const QString k_Feature_AMName("Feature Attribute Matrix");
 
-    static const QString k_FeatureDataArrayName("FeatureData");
-    static const QString k_FeatureIDArrayName("FeatureIDArray");
-    static const QString k_ElementArrayName("ElementArray");
+
+    static const QString k_CellFeatureIdsArrayName("FeatureIds");
+    static const QString k_CellTempArrayName("Temperature");
+
+    static const QString k_FeatureDataArrayName("Temperature");
 
     // Create DataContainerArray
 
@@ -113,33 +115,36 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     // Create AttributeMatrices
+    QVector<size_t> tDims = {{10, 3}};
+    AttributeMatrix::Pointer cellAM = AttributeMatrix::New(tDims, k_Cell_AMName, AttributeMatrix::Type::Cell);
+    dc->addOrReplaceAttributeMatrix(cellAM);
 
-    AttributeMatrix::Pointer dataAM = AttributeMatrix::New(m_Dims10, k_FeatureDataMatrixName, AttributeMatrix::Type::VertexFeature);
-    dc->addAttributeMatrix(k_FeatureDataMatrixName, dataAM);
+    AttributeMatrix::Pointer featureAM = AttributeMatrix::New(m_Dims3, k_Feature_AMName, AttributeMatrix::Type::CellFeature);
+    dc->addOrReplaceAttributeMatrix(featureAM);
 
-    AttributeMatrix::Pointer idsAM = AttributeMatrix::New(m_Dims10, k_FeatureIDMatrixName, AttributeMatrix::Type::Vertex);
-    dc->addAttributeMatrix(k_FeatureIDMatrixName, idsAM);
+    // Create Cell FeatureIds array
+    typename DataArray<int32_t>::Pointer cellFeatureIds = DataArray<int32_t>::CreateArray(cellAM->getNumberOfTuples(), k_CellFeatureIdsArrayName);
+    cellAM->insertOrAssign(cellFeatureIds);
 
-    // Create feature data and feature IDs
-
-    typename DataArray<T>::Pointer daFeatures = DataArray<T>::CreateArray(m_Dims10, m_Dims3, k_FeatureDataArrayName);
-    for(int i = 0; i < daFeatures->getSize(); i++)
+    for(size_t y = 0; y < 3; y++)
     {
-      daFeatures->setValue(i, static_cast<T>(i + 2.13));
+      for(size_t x = 0; x < 10; x++)
+      {
+        size_t index = (10*y) + x;
+        cellFeatureIds->setValue(index, static_cast<int32_t>(y));
+      }
     }
-    dataAM->addAttributeArray(k_FeatureDataArrayName, daFeatures);
 
-    // Use reverse ordering on the ID list to test that the filter moves data to the appropriate location
-
-    DataArray<int32_t>::Pointer daIDList = DataArray<int32_t>::CreateArray(m_Dims10, m_Dims1, k_FeatureIDArrayName);
-    for(int i = 0; i < daIDList->getNumberOfTuples(); i++)
+    //Create an array in teh Feature Attribute Matrix with 3 values since we created 3 features in the cell attribute matrix
+    typename DataArray<T>::Pointer avgTempValue = DataArray<T>::CreateArray(3, k_FeatureDataArrayName);
+    featureAM->insertOrAssign(avgTempValue);
+    for(int i = 0; i < 3; i++)
     {
-      daIDList->setValue(daIDList->getNumberOfTuples() - i - 1, i);
+      avgTempValue->setValue(i, static_cast<T>(0));
     }
-    idsAM->addAttributeArray(k_FeatureIDArrayName, daIDList);
 
     // Create Filter
 
@@ -149,21 +154,19 @@ public:
 
     copyFeatureArrayToElementArray->setDataContainerArray(dca);
 
-    // Set up filter
-
     QVariant var;
 
-    DataArrayPath dap(k_DataContainerName, k_FeatureDataMatrixName, k_FeatureDataArrayName);
+    DataArrayPath dap(k_DataContainerName, k_Feature_AMName, k_FeatureDataArrayName);
     var.setValue(dap);
     bool propWasSet = copyFeatureArrayToElementArray->setProperty("SelectedFeatureArrayPath", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-    dap = DataArrayPath(k_DataContainerName, k_FeatureIDMatrixName, k_FeatureIDArrayName);
+    dap = DataArrayPath(k_DataContainerName, k_Cell_AMName, k_CellFeatureIdsArrayName);
     var.setValue(dap);
     propWasSet = copyFeatureArrayToElementArray->setProperty("FeatureIdsArrayPath", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-    var.setValue(k_ElementArrayName);
+    var.setValue(k_CellTempArrayName);
     propWasSet = copyFeatureArrayToElementArray->setProperty("CreatedArrayName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -173,18 +176,31 @@ public:
     DREAM3D_REQUIRED(copyFeatureArrayToElementArray->getErrorCondition(), >=, 0);
 
     // Check filter results
+    QString dbg;
+    QTextStream ss(&dbg);
+    typename DataArray<T>::Pointer createdElementArray = cellAM->getAttributeArrayAs<DataArray<T>>(k_CellTempArrayName);
 
-    typename DataArray<T>::Pointer createdElementArray = idsAM->getAttributeArrayAs<DataArray<T>>(k_ElementArrayName);
-
-    for(size_t i = 0; i < daFeatures->getNumberOfTuples(); i++)
+    for(size_t i = 0; i < createdElementArray->getNumberOfTuples(); i++)
     {
-      for(size_t j = 0; j < daFeatures->getNumberOfComponents(); j++)
-      {
-        T oldValue = daFeatures->getComponent(i, j);
-        T newValue = createdElementArray->getComponent(daIDList->getValue(i), j);
-        DREAM3D_REQUIRE_EQUAL(newValue, oldValue)
-      }
+//      daFeatures->printTuple(ss , i);
+//      createdElementArray->printTuple(ss, i);
+//      ss << "---\n";
+
+        int32_t featureId = cellFeatureIds->getValue(i);
+        T value = createdElementArray->getValue(i);
+        T featureValue = avgTempValue->getValue(featureId);
+        DREAM3D_REQUIRE_EQUAL(value, featureValue);
+
+//      for(size_t j = 0; j < daFeatures->getNumberOfComponents(); j++)
+//      {
+
+//        T oldValue = daFeatures->getComponent(i, j);
+//        T newValue = createdElementArray->getComponent(daIDList->getValue(i), j);
+//        DREAM3D_REQUIRE_EQUAL(newValue, oldValue)
+//      }
     }
+
+
   }
 
   // -----------------------------------------------------------------------------

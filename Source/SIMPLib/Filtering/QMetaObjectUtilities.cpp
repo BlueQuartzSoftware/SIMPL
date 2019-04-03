@@ -45,6 +45,7 @@
 #include "SIMPLib/CoreFilters/CreateDataArray.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
+#include "SIMPLib/Filtering/FilterPipeline.h"
 #include "SIMPLib/FilterParameters/AxisAngleFilterParameter.h"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
@@ -55,25 +56,25 @@
 #include "SIMPLib/Filtering/ComparisonInputsAdvanced.h"
 
 // These Streams need to be implemented so that our 3 Element Vectors can be read/write to disk/prefs files
-QDataStream& operator<<(QDataStream& out, const IntVec3_t& v)
+QDataStream& operator<<(QDataStream& out, const IntVec3Type& v)
 {
-  out << v.x << v.y << v.z;
+  out << v[0] << v[1] << v[2];
   return out;
 }
-QDataStream& operator>>(QDataStream& in, IntVec3_t& v)
+QDataStream& operator>>(QDataStream& in, IntVec3Type& v)
 {
-  in >> v.x >> v.y >> v.z;
+  in >> v[0] >> v[1] >> v[2];
   return in;
 }
 
-QDataStream& operator<<(QDataStream& out, const FloatVec3_t& v)
+QDataStream& operator<<(QDataStream& out, const FloatVec3Type& v)
 {
-  out << v.x << v.y << v.z;
+  out << v[0] << v[1] << v[2];
   return out;
 }
-QDataStream& operator>>(QDataStream& in, FloatVec3_t& v)
+QDataStream& operator>>(QDataStream& in, FloatVec3Type& v)
 {
-  in >> v.x >> v.y >> v.z;
+  in >> v[0] >> v[1] >> v[2];
   return in;
 }
 
@@ -152,14 +153,14 @@ void QMetaObjectUtilities::RegisterMetaTypes()
   qRegisterMetaType<ComparisonInputs>("ComparisonInputs");
   qRegisterMetaType<ComparisonInputsAdvanced>("ComparisonInputsAdvanced");
   qRegisterMetaType<DataContainerArrayProxy>("DataContainerArrayProxy");
-  qRegisterMetaType<IntVec3_t>("IntVec3_t");
-  qRegisterMetaType<FloatVec3_t>("FloatVec3_t");
+  qRegisterMetaType<IntVec3Type>("IntVec3Type");
+  qRegisterMetaType<FloatVec3Type>("FloatVec3Type");
   qRegisterMetaType<PipelineMessage>("PipelineMessage");
   qRegisterMetaType<FPRangePair>("FPRangePair");
   qRegisterMetaType<DynamicTableData>("DynamicTableData");
   qRegisterMetaType<PhaseType::Types>("PhaseType::Types");
-  qRegisterMetaTypeStreamOperators<IntVec3_t>("IntVec3_t");
-  qRegisterMetaTypeStreamOperators<FloatVec3_t>("FloatVec3_t");
+  qRegisterMetaTypeStreamOperators<IntVec3Type>("IntVec3Type");
+  qRegisterMetaTypeStreamOperators<FloatVec3Type>("FloatVec3Type");
   qRegisterMetaTypeStreamOperators<PhaseType::Types>("PhaseType::Types");
   qRegisterMetaTypeStreamOperators<EnsembleInfo>("EnsembleInfo");
 }

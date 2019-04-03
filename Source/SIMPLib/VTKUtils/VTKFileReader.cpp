@@ -297,7 +297,7 @@ int VTKFileReader::readHeader()
   resolution[0] = tokens[1].toFloat(&ok);
   resolution[1] = tokens[2].toFloat(&ok);
   resolution[2] = tokens[3].toFloat(&ok);
-  image->setResolution(resolution);
+  image->setSpacing(resolution);
 
   return err;
 }

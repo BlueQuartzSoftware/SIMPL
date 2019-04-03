@@ -59,9 +59,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrix::AttributeMatrix(QVector<size_t> tDims, const QString& name, AttributeMatrix::Type attrType)
-: m_Type(attrType)
-, m_Name(name)
+AttributeMatrix::AttributeMatrix(const QVector<size_t>& tDims, const QString& name, AttributeMatrix::Type attrType)
+: IDataStructureContainerNode(name)
+, m_Type(attrType)
 , m_TupleDims(tDims)
 {
 }
@@ -69,10 +69,7 @@ AttributeMatrix::AttributeMatrix(QVector<size_t> tDims, const QString& name, Att
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrix::~AttributeMatrix()
-{
-  // std::cout << "~AttributeMatrix" << std::endl;
-}
+AttributeMatrix::~AttributeMatrix() = default;
 
 // -----------------------------------------------------------------------------
 QString AttributeMatrix::TypeToString(AttributeMatrix::Type t)
@@ -290,9 +287,11 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool AttributeMatrix::doesAttributeArrayExist(const QString& name) const
+DataArrayPath AttributeMatrix::getDataArrayPath() const
 {
-  return m_AttributeArrays.contains(name);
+  DataArrayPath path = getParentPath();
+  path.setAttributeMatrixName(getName());
+  return path;
 }
 
 // -----------------------------------------------------------------------------
@@ -302,10 +301,10 @@ bool AttributeMatrix::validateAttributeArraySizes()
 {
   int64_t arraySize = 0;
   int64_t matrixSize = getNumberOfTuples();
-  for(QMap<QString, IDataArray::Pointer>::iterator iter = m_AttributeArrays.begin(); iter != m_AttributeArrays.end(); ++iter)
+  const AttributeMatrix::Container_t& dataArrays = getChildren();
+  for(const auto& dataArray : dataArrays)
   {
-    IDataArray::Pointer d = iter.value();
-    arraySize = d->getNumberOfTuples();
+    arraySize = dataArray->getNumberOfTuples();
     if(arraySize != matrixSize)
     {
       return false;
@@ -317,63 +316,16 @@ bool AttributeMatrix::validateAttributeArraySizes()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AttributeMatrix::addAttributeArray(const QString& name, const IDataArray::Pointer& data)
-{
-  if(data->getName().compare(name) != 0)
-  {
-    qDebug() << "Adding Attribute Array with different array name than key name"
-             << "\n";
-    qDebug() << "Key name: " << name << "\n";
-    qDebug() << "Array Name:" << data->getName() << "\n";
-    data->setName(name);
-  }
-  if(getNumberOfTuples() != data->getNumberOfTuples())
-  {
-    qDebug() << "AttributeMatrix::Name: " << getName() << "  dataArray::name:  " << data->getName() << " Type: " << data->getTypeAsString();
-    qDebug() << "getNumberOfTuples(): " << getNumberOfTuples() << "  data->getNumberOfTuples(): " << data->getNumberOfTuples();
-  }
-  Q_ASSERT(getNumberOfTuples() == data->getNumberOfTuples());
-
-  m_AttributeArrays[name] = data;
-  return 0;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IDataArray::Pointer AttributeMatrix::getAttributeArray(const QString& name)
-{
-  QMap<QString, IDataArray::Pointer>::iterator it;
-  it = m_AttributeArrays.find(name);
-  if(it == m_AttributeArrays.end())
-  {
-    return IDataArray::NullPointer();
-  }
-  return it.value();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IDataArray::Pointer AttributeMatrix::getAttributeArray(const DataArrayPath& path)
-{
-  return getAttributeArray(path.getDataArrayName());
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 IDataArray::Pointer AttributeMatrix::removeAttributeArray(const QString& name)
 {
-  QMap<QString, IDataArray::Pointer>::iterator it;
-  it = m_AttributeArrays.find(name);
-  if(it == m_AttributeArrays.end())
+  auto it = find(name);
+  if(it == end())
   {
     // DO NOT return a NullPointer for any reason other than "Data Array was not found"
     return IDataArray::NullPointer();
   }
-  IDataArray::Pointer p = it.value();
-  m_AttributeArrays.erase(it);
+  IDataArray::Pointer p = (*it);
+  erase(it);
   return p;
 }
 
@@ -382,25 +334,38 @@ IDataArray::Pointer AttributeMatrix::removeAttributeArray(const QString& name)
 // -----------------------------------------------------------------------------
 RenameErrorCodes AttributeMatrix::renameAttributeArray(const QString& oldname, const QString& newname, bool overwrite)
 {
-  QMap<QString, IDataArray::Pointer>::iterator itOld;
-  QMap<QString, IDataArray::Pointer>::iterator itNew;
-
-  itNew = m_AttributeArrays.find(newname);
-  // If new name doesn't exist or we want to overwrite one that does exist...
-  if(itNew == m_AttributeArrays.end() || overwrite)
+  // Cannot rename a DataArray when the name does not change.
+  if(oldname == newname)
   {
-    itOld = m_AttributeArrays.find(oldname);
-    // If old name doesn't exist...
-    if(itOld == m_AttributeArrays.end())
+    return SAME_PATH;
+  }
+
+  bool hasNewName = contains(newname);
+  if(hasNewName)
+  {
+    if(overwrite)
     {
-      return OLD_DOES_NOT_EXIST;
+      removeAttributeArray(newname);
     }
-    IDataArray::Pointer p = itOld.value();
-    p->setName(newname);
-    removeAttributeArray(oldname);
-    addAttributeArray(newname, p);
+    else
+    {
+      return NEW_EXISTS;
+    }
+  }
+
+  // If new name doesn't exist or we want to overwrite one that does exist...
+  auto oldArray = getChildByName(oldname);
+  // If old name doesn't exist...
+  if(nullptr == oldArray)
+  {
+    return OLD_DOES_NOT_EXIST;
+  }
+  if(oldArray->setName(newname))
+  {
     return SUCCESS;
   }
+  
+  // Rename not successful
   return NEW_EXISTS;
 }
 
@@ -522,10 +487,10 @@ void AttributeMatrix::resizeAttributeArrays(const QVector<size_t>& tDims)
     numTuples *= m_TupleDims[i];
   }
 
-  for(QMap<QString, IDataArray::Pointer>::iterator iter = m_AttributeArrays.begin(); iter != m_AttributeArrays.end(); ++iter)
+  const AttributeMatrix::Container_t& dataArrays = getChildren();
+  for(const auto& dataArray : dataArrays)
   {
-    IDataArray::Pointer d = iter.value();
-    d->resize(numTuples);
+    dataArray->resizeTuples(numTuples);
   }
 }
 
@@ -534,28 +499,15 @@ void AttributeMatrix::resizeAttributeArrays(const QVector<size_t>& tDims)
 // -----------------------------------------------------------------------------
 void AttributeMatrix::clearAttributeArrays()
 {
-  m_AttributeArrays.clear();
+  clear();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QList<QString> AttributeMatrix::getAttributeArrayNames()
+AttributeMatrix::NameList AttributeMatrix::getAttributeArrayNames()
 {
-  QList<QString> keys;
-  for(QMap<QString, IDataArray::Pointer>::iterator iter = m_AttributeArrays.begin(); iter != m_AttributeArrays.end(); ++iter)
-  {
-    keys.push_back(iter.key());
-  }
-  return keys;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int AttributeMatrix::getNumAttributeArrays() const
-{
-  return static_cast<int>(m_AttributeArrays.size());
+  return getNamesOfChildren();
 }
 
 // -----------------------------------------------------------------------------
@@ -565,15 +517,15 @@ AttributeMatrix::Pointer AttributeMatrix::deepCopy(bool forceNoAllocate)
 {
   AttributeMatrix::Pointer newAttrMat = AttributeMatrix::New(getTupleDimensions(), getName(), getType());
 
-  for(QMap<QString, IDataArray::Pointer>::iterator iter = m_AttributeArrays.begin(); iter != m_AttributeArrays.end(); ++iter)
+  const auto& dataArrays = getChildren();
+  for(const auto& d : dataArrays)
   {
-    IDataArray::Pointer d = iter.value();
     IDataArray::Pointer new_d = d->deepCopy(forceNoAllocate);
     if(new_d.get() == nullptr)
     {
       return AttributeMatrix::NullPointer();
     }
-    newAttrMat->addAttributeArray(new_d->getName(), new_d);
+    newAttrMat->insertOrAssign(new_d);
   }
 
   return newAttrMat;
@@ -583,10 +535,11 @@ AttributeMatrix::Pointer AttributeMatrix::deepCopy(bool forceNoAllocate)
 // -----------------------------------------------------------------------------
 int AttributeMatrix::writeAttributeArraysToHDF5(hid_t parentId)
 {
-  int err;
-  for(QMap<QString, IDataArray::Pointer>::iterator iter = m_AttributeArrays.begin(); iter != m_AttributeArrays.end(); ++iter)
+  int err = 0;
+
+  const auto& dataArrays = getChildren();
+  for(const auto& d : dataArrays)
   {
-    IDataArray::Pointer d = iter.value();
     err = d->writeH5Data(parentId, m_TupleDims);
     if(err < 0)
     {
@@ -612,7 +565,7 @@ int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, const QString& nam
     dPtr = H5DataArrayReader::ReadIDataArray(gid, name, preflight);
     if(preflight)
     {
-      dPtr->resize(getNumberOfTuples());
+      dPtr->resizeTuples(getNumberOfTuples());
     }
   }
   else if(classType.compare("StringDataArray") == 0)
@@ -620,7 +573,7 @@ int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, const QString& nam
     dPtr = H5DataArrayReader::ReadStringDataArray(gid, name, preflight);
     if(preflight)
     {
-      dPtr->resize(getNumberOfTuples());
+      dPtr->resizeTuples(getNumberOfTuples());
     }
   }
   else if(classType.compare("vector") == 0)
@@ -631,7 +584,7 @@ int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, const QString& nam
     dPtr = H5DataArrayReader::ReadNeighborListData(gid, name, preflight);
     if(preflight)
     {
-      dPtr->resize(getNumberOfTuples());
+      dPtr->resizeTuples(getNumberOfTuples());
     }
   }
   else if(name.compare(SIMPL::EnsembleData::Statistics) == 0)
@@ -642,13 +595,13 @@ int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, const QString& nam
     dPtr = statsData;
     if(preflight)
     {
-      dPtr->resize(getNumberOfTuples());
+      dPtr->resizeTuples(getNumberOfTuples());
     }
   }
 
   if(nullptr != dPtr.get())
   {
-    addAttributeArray(dPtr->getName(), dPtr);
+    addOrReplaceAttributeArray(dPtr);
   }
 
   return err;
@@ -697,7 +650,7 @@ int AttributeMatrix::readAttributeArraysFromHDF5(hid_t amGid, bool preflight, At
 
     if(nullptr != dPtr.get())
     {
-      addAttributeArray(dPtr->getName(), dPtr);
+      addOrReplaceAttributeArray(dPtr);
     }
   }
   H5Gclose(amGid); // Close the Cell Group
@@ -713,9 +666,9 @@ QString AttributeMatrix::generateXdmfText(const QString& centering, const QStrin
   QString block;
   QTextStream out(&xdmfText);
 
-  for(QMap<QString, IDataArray::Pointer>::iterator iter = m_AttributeArrays.begin(); iter != m_AttributeArrays.end(); ++iter)
+  for(auto iter = begin(); iter != end(); ++iter)
   {
-    IDataArray::Pointer d = iter.value();
+    IDataArray::Pointer d = (*iter);
     block = writeXdmfAttributeData(d, centering, dataContainerName, hdfFileName, gridType);
     out << block;
   }
@@ -737,7 +690,7 @@ QString AttributeMatrix::getInfoString(SIMPL::InfoStringFormat format)
     ss << "<tbody>\n";
     ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Attribute Matrix Info</th></tr>";
 
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Name:</th><td>" << getName() << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Name:</th><td>)" << getName() << "</td></tr>";
 
     QString typeString;
     switch(m_Type)
@@ -790,7 +743,7 @@ QString AttributeMatrix::getInfoString(SIMPL::InfoStringFormat format)
     }
 
     QLocale usa(QLocale::English, QLocale::UnitedStates);
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type:</th><td>" << typeString << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Type:</th><td>)" << typeString << "</td></tr>";
     QString tupleStr = "(";
     for(int i = 0; i < m_TupleDims.size(); i++)
     {
@@ -802,9 +755,9 @@ QString AttributeMatrix::getInfoString(SIMPL::InfoStringFormat format)
       }
     }
     tupleStr = tupleStr + ")";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Tuple Dimensions:</th><td>" << tupleStr << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Tuple Dimensions:</th><td>)" << tupleStr << "</td></tr>";
 
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Attribute Array Count:</th><td>" << getNumAttributeArrays() << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Attribute Array Count:</th><td>)" << getNumAttributeArrays() << "</td></tr>";
     ss << "</tbody></table>\n";
     ss << "</body></html>";
   }
@@ -816,7 +769,7 @@ QString AttributeMatrix::getInfoString(SIMPL::InfoStringFormat format)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString AttributeMatrix::writeXdmfAttributeDataHelper(int numComp, const QString& attrType, const QString& dataContainerName, IDataArray::Pointer array, const QString& centering, int precision,
+QString AttributeMatrix::writeXdmfAttributeDataHelper(int numComp, const QString& attrType, const QString& dataContainerName, const IDataArray::Pointer& array, const QString& centering, int precision,
                                                       const QString& xdmfTypeName, const QString& hdfFileName, uint8_t gridType)
 {
   QString buf;
@@ -838,7 +791,7 @@ QString AttributeMatrix::writeXdmfAttributeDataHelper(int numComp, const QString
     out << "Center=\"" << centering << "\">"
         << "\n";
     // Open the <DataItem> Tag
-    out << "      <DataItem Format=\"HDF\" Dimensions=\"" << dimStr << "\" ";
+    out << R"(      <DataItem Format="HDF" Dimensions=")" << dimStr << "\" ";
     out << "NumberType=\"" << xdmfTypeName << "\" "
         << "Precision=\"" << precision << "\" >"
         << "\n";
@@ -858,7 +811,7 @@ QString AttributeMatrix::writeXdmfAttributeDataHelper(int numComp, const QString
     out << "Center=\"" << centering << "\">"
         << "\n";
     // Open the <DataItem> Tag
-    out << "      <DataItem ItemType=\"HyperSlab\" Dimensions=\"" << dimStrHalf << "\" ";
+    out << R"(      <DataItem ItemType="HyperSlab" Dimensions=")" << dimStrHalf << "\" ";
     out << "Type=\"HyperSlab\" "
         << "Name=\"" << array->getName() << " (Feature 0)\" >"
         << "\n";
@@ -872,7 +825,7 @@ QString AttributeMatrix::writeXdmfAttributeDataHelper(int numComp, const QString
     out << "          " << dimStrHalf << " </DataItem>"
         << "\n";
     out << "\n";
-    out << "        <DataItem Format=\"HDF\" Dimensions=\"" << dimStr << "\" "
+    out << R"(        <DataItem Format="HDF" Dimensions=")" << dimStr << "\" "
         << "NumberType=\"" << xdmfTypeName << "\" "
         << "Precision=\"" << precision << "\" >"
         << "\n";
@@ -893,7 +846,7 @@ QString AttributeMatrix::writeXdmfAttributeDataHelper(int numComp, const QString
     out << "Center=\"" << centering << "\">"
         << "\n";
     // Open the <DataItem> Tag
-    out << "      <DataItem ItemType=\"HyperSlab\" Dimensions=\"" << dimStrHalf << "\" ";
+    out << R"(      <DataItem ItemType="HyperSlab" Dimensions=")" << dimStrHalf << "\" ";
     out << "Type=\"HyperSlab\" "
         << "Name=\"" << array->getName() << " (Feature 1)\" >"
         << "\n";
@@ -906,7 +859,7 @@ QString AttributeMatrix::writeXdmfAttributeDataHelper(int numComp, const QString
     out << "          " << dimStrHalf << " </DataItem>"
         << "\n";
     out << "\n";
-    out << "        <DataItem Format=\"HDF\" Dimensions=\"" << dimStr << "\" "
+    out << R"(        <DataItem Format="HDF" Dimensions=")" << dimStr << "\" "
         << "NumberType=\"" << xdmfTypeName << "\" "
         << "Precision=\"" << precision << "\" >"
         << "\n";

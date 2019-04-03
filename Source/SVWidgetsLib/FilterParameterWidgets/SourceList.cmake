@@ -34,6 +34,7 @@ set(SIMPLView_PARAMETER_WIDGETS
     LinkedBooleanWidget
     LinkedPathCreationWidget
     MultiAttributeMatrixSelectionWidget
+    MultiDataContainerSelectionWidget
     MultiDataArraySelectionWidget
     NumericTypeWidget
     ParagraphWidget

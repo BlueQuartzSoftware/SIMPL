@@ -58,7 +58,7 @@ class SIMPLib_EXPORT IDataContainerBundle : public QObject
 
     virtual QVector<QString> getDataContainerNames() = 0;
 
-    virtual void addDataContainer(DataContainer::Pointer dc) = 0;
+    virtual void addOrReplaceDataContainer(DataContainer::Pointer dc) = 0;
 
     virtual void removeDataContainer(DataContainer::Pointer dc) = 0;
     virtual void removeDataContainer(const QString& name) = 0;

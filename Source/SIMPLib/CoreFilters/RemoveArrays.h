@@ -133,6 +133,12 @@ class SIMPLib_EXPORT RemoveArrays : public AbstractFilter
      */
     void removeSelectionsFromDataContainerArray(DataContainerArray* dca, Qt::CheckState state);
 
+    /**
+     * @brief Returns the list of deleted data paths.
+     * @return
+     */
+    std::list<DataArrayPath> getDeletedPaths() override;
+
   signals:
     /**
      * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
@@ -179,5 +185,8 @@ class SIMPLib_EXPORT RemoveArrays : public AbstractFilter
     RemoveArrays(RemoveArrays&&) = delete;        // Move Constructor Not Implemented
     RemoveArrays& operator=(const RemoveArrays&) = delete; // Copy Assignment Not Implemented
     RemoveArrays& operator=(RemoveArrays&&) = delete;      // Move Assignment Not Implemented
+
+  private:
+    std::list<DataArrayPath> m_RemovedPaths;
 };
 

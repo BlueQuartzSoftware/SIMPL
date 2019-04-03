@@ -59,13 +59,13 @@ class DataArrayPathDisplay : public QWidget
 
 public:
 
-  static const QColor GetActiveColor(DataArrayPath::DataType type);
-  static const QColor GetCheckedColor(DataArrayPath::DataType type);
+  static const QColor GetActiveColor(DataArrayPathHelper::DataType type);
+  static const QColor GetCheckedColor(DataArrayPathHelper::DataType type);
 
   DataArrayPathDisplay(QWidget* parent = nullptr);
   ~DataArrayPathDisplay() override = default;
 
-  Q_PROPERTY(DataArrayPath::DataType PathType READ getDataType)
+  Q_PROPERTY(DataArrayPathHelper::DataType PathType READ getDataType)
 
   /**
    * @brief Sets the DataArrayPath displayed
@@ -91,7 +91,7 @@ public:
    * @brief Returns the DataType for the displayed DataArrayPath
    * @return
    */
-  DataArrayPath::DataType getDataType() const;
+  DataArrayPathHelper::DataType getDataType() const;
 
   /**
   * @brief Sets the filter the selection widget operates on

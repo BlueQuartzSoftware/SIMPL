@@ -178,9 +178,6 @@ public:
   /* **************** This is the interface for the IDataArray Class which MUST
    *  Be implemented. Most of it is useless and will simply ASSERT if called. */
 
-  void setName(const QString& name) override;
-  QString getName() override;
-
   /**
    * @brief getFullNameOfClass
    * @return
@@ -310,11 +307,10 @@ public:
   int32_t resizeTotalElements(size_t size) override;
 
   /**
-   * @brief Reseizes the internal array
-   * @param size The new size of the internal array
-   * @return 1 on success, 0 on failure
+   * @brief Resizes the internal array to accomondate numTuples
+   * @param numTuples
    */
-  int32_t resize(size_t numTuples) override;
+  void resizeTuples(size_t numTuples) override;
 
   /**
    * @brief printTuple
@@ -382,7 +378,6 @@ protected:
   StatsDataArray();
 
 private:
-  QString m_Name;
   bool m_IsAllocated;
 
 public:

@@ -348,25 +348,25 @@ QVector<double> AbstractFilterParametersReader::readArray(const QString name, QV
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IntVec3_t AbstractFilterParametersReader::readIntVec3(const QString name, IntVec3_t defaultValue)
+IntVec3Type AbstractFilterParametersReader::readIntVec3(const QString name, IntVec3Type defaultValue)
 {
   Q_UNUSED(name)
   Q_UNUSED(defaultValue)
 
   // This should never be executed
-  return IntVec3_t();
+  return IntVec3Type();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatVec3_t AbstractFilterParametersReader::readFloatVec3(const QString name, FloatVec3_t defaultValue)
+FloatVec3Type AbstractFilterParametersReader::readFloatVec3(const QString name, FloatVec3Type defaultValue)
 {
   Q_UNUSED(name)
   Q_UNUSED(defaultValue)
 
   // This should never be executed
-  return FloatVec3_t();
+  return FloatVec3Type();
 }
 
 // -----------------------------------------------------------------------------

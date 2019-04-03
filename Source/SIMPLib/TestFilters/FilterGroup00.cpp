@@ -62,7 +62,7 @@ void TESTCLASSNAME::initialize()
 // -----------------------------------------------------------------------------
 void TESTCLASSNAME::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   setFilterParameters(parameters);
 }

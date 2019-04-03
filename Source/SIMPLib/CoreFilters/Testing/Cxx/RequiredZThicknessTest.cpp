@@ -67,10 +67,10 @@ public:
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
     DataContainer::Pointer dc1 = DataContainer::New("DataContainer1");
-    dca->addDataContainer(dc1);
+    dca->addOrReplaceDataContainer(dc1);
 
     DataContainer::Pointer dc2 = DataContainer::New("DataContainer2");
-    dca->addDataContainer(dc2);
+    dca->addOrReplaceDataContainer(dc2);
 
     ImageGeom::Pointer imgGeom = ImageGeom::New();
     imgGeom->setDimensions(2, 2, 2);
@@ -143,7 +143,7 @@ public:
 
     QVariant value;
 
-    value.setValue(QString("DataContainer1"));
+    value.setValue(DataArrayPath("DataContainer1"));
     filter->setProperty("DataContainerSelection", value);
 
     value.setValue(numZVoxels);
@@ -162,7 +162,7 @@ public:
 
     QVariant value;
 
-    value.setValue(QString("DataContainer2"));
+    value.setValue(DataArrayPath("DataContainer2"));
     filter->setProperty("DataContainerSelection", value);
 
     value.setValue(numZVoxels);
@@ -181,7 +181,7 @@ public:
 
     QVariant value;
 
-    value.setValue(QString("DataContainer3"));
+    value.setValue(DataArrayPath("DataContainer3"));
     filter->setProperty("DataContainerSelection", value);
 
     value.setValue(0);

@@ -131,7 +131,7 @@ void ComparisonSelectionFilterParameter::writeJson(QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath)
+void ComparisonSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath)
 {
   DataArrayPath oldPath;
   DataArrayPath newPath;

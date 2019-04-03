@@ -51,7 +51,7 @@ class SVWidgetsLib_EXPORT DataPathLabel : public QLabel
   Q_OBJECT
 
 public:
-  static QColor GetBackgroundColor(DataArrayPath::DataType type);
+  static QColor GetBackgroundColor(DataArrayPathHelper::DataType type);
   static QColor GetInactiveColor();
 
   Q_PROPERTY(int DataTypei READ getDataTypei)
@@ -59,8 +59,8 @@ public:
   DataPathLabel(QWidget* parent = nullptr);
   ~DataPathLabel() override;
 
-  DataArrayPath::DataType getDataType() const;
-  void setDataType(DataArrayPath::DataType type);
+  DataArrayPathHelper::DataType getDataType() const;
+  void setDataType(DataArrayPathHelper::DataType type);
   int getDataTypei() const;
 
 protected:
@@ -70,5 +70,5 @@ protected:
   //void paintEvent(QPaintEvent* event) override;
 
 private:
-  DataArrayPath::DataType m_DataType = DataArrayPath::DataType::None;
+  DataArrayPathHelper::DataType m_DataType = DataArrayPathHelper::DataType::None;
 };

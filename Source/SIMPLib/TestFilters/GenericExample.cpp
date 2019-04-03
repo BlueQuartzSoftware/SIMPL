@@ -92,13 +92,13 @@ GenericExample::GenericExample()
 , m_AlgorithmSelection(0)
 , m_DistanceMetric(1)
 {
-  m_Dimensions.x = 0;
-  m_Dimensions.y = 0;
-  m_Dimensions.z = 0;
+  m_Dimensions[0] = 0;
+  m_Dimensions[1] = 0;
+  m_Dimensions[2] = 0;
 
-  m_Origin.x = 0.0;
-  m_Origin.y = 0.0;
-  m_Origin.z = 0.0;
+  m_Origin[0] = 0.0;
+  m_Origin[1] = 0.0;
+  m_Origin[2] = 0.0;
 
   FileListInfo_t flInfo;
   flInfo.PaddingDigits = 2;
@@ -123,7 +123,7 @@ GenericExample::~GenericExample() = default;
 // -----------------------------------------------------------------------------
 void GenericExample::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   /* Place all your option initialization code here */
   /* For String input use this code */
   parameters.push_back(SIMPL_NEW_STRING_FP("STL Output Prefix", StlFilePrefix, FilterParameter::Parameter, GenericExample));

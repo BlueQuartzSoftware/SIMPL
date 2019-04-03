@@ -64,7 +64,7 @@ class StructArray : public IDataArray
      */
     static Pointer CreateArray(size_t numElements, const QString& name, bool allocate = true)
     {
-      if (name.isEmpty() == true)
+      if(name.isEmpty())
       {
         return NullPointer();
       }
@@ -158,25 +158,6 @@ class StructArray : public IDataArray
       QString theType = getTypeAsString();
       theType = "StructArray<" + theType + ">";
       return theType;
-    }
-
-
-    /**
-     * @brief Gives this array a human readable name
-     * @param name The name of this array
-     */
-    void setName(const QString& name) override
-    {
-      m_Name = name;
-    }
-
-    /**
-     * @brief Returns the human readable name of this array
-     * @return
-     */
-    QString getName() override
-    {
-      return m_Name;
     }
 
     /**
@@ -292,7 +273,7 @@ class StructArray : public IDataArray
       size_t idxs_size = static_cast<size_t>(idxs.size());
       if (idxs_size >= getNumberOfTuples() )
       {
-        resize(0);
+        resizeTuples(0);
         return 0;
       }
 
@@ -611,20 +592,16 @@ class StructArray : public IDataArray
       {
         return 1;
       }
-      else
-      {
-        return 0;
-      }
+      return 0;
     }
 
     /**
-     * @brief Resize
+     * @brief Resizes the internal array to accomondate numTuples
      * @param numTuples
-     * @return
      */
-    int32_t resize(size_t numTuples) override
+    void resizeTuples(size_t numTuples) override
     {
-      return resizeTotalElements(numTuples );
+      resizeTotalElements(numTuples);
     }
 
     /**
@@ -899,7 +876,6 @@ class StructArray : public IDataArray
 
     bool m_IsAllocated;
     //   unsigned long long int MUD_FLAP_3;
-    QString m_Name;
     //  unsigned long long int MUD_FLAP_5;
 
     StructArray(const StructArray&); //Not Implemented

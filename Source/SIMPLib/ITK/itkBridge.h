@@ -108,7 +108,7 @@ public:
     region.SetSize(size);
     importFilter->SetRegion(region);
 
-    float sampleOrigin[3] = {0.0f, 0.0f, 0.0f};
+    FloatVec3Type sampleOrigin(0.0f, 0.0f, 0.0f);
     m->getGeometryAs<ImageGeom>()->getOrigin(sampleOrigin);
     double origin[ImageProcessingConstants::ImageDimension];
     origin[0] = sampleOrigin[0]; // X coordinate
@@ -116,8 +116,8 @@ public:
     origin[2] = sampleOrigin[2]; // Z coordinate
     importFilter->SetOrigin(origin);
 
-    float voxelResolution[3] = {0.0f, 0.0f, 0.0f};
-    m->getGeometryAs<ImageGeom>()->getResolution(voxelResolution);
+    FloatVec3Type voxelResolution(0.0f, 0.0f, 0.0f);
+    m->getGeometryAs<ImageGeom>()->getSpacing(voxelResolution);
     double spacing[ImageProcessingConstants::ImageDimension];
     spacing[0] = voxelResolution[0]; // along X direction
     spacing[1] = voxelResolution[1]; // along Y direction
@@ -188,7 +188,7 @@ class ItkBridge2
       importFilter->getGeometryAs<ImageGeom>()->setOrigin( origin );
 
       float voxelResolution[3] = {0.0f, 0.0f, 0.0f};
-      m->getGeometryAs<ImageGeom>()->getResolution(voxelResolution);
+      m->getGeometryAs<ImageGeom>()->getSpacing(voxelResolution);
       double spacing[ ImageProcessingConstants::ImageDimension ];
       spacing[0] = voxelResolution[0];    // along X direction
       spacing[1] = voxelResolution[1];    // along Y direction
@@ -212,19 +212,15 @@ class ItkBridge2
 template <typename ComponentType> class CreateItkWrapperForDataPointer
 {
 public:
-  CreateItkWrapperForDataPointer()
-  {
-  }
-  virtual ~CreateItkWrapperForDataPointer()
-  {
-  }
+  CreateItkWrapperForDataPointer() = default;
+  virtual ~CreateItkWrapperForDataPointer() = default;
 
-  typedef typename itk::Image<ComponentType, ImageProcessingConstants::ImageDimension> ScalarImageType; // 3D Scalar Image
-  typedef typename ScalarImageType::Pointer ScalarImagePointerType;
-  typedef itk::ImportImageFilter<ComponentType, ImageProcessingConstants::ImageDimension> ImportImageFilterType;
-  typedef typename ImportImageFilterType::Pointer ImportImageFilterPointerType;
+  using ScalarImageType = typename itk::Image<ComponentType, ImageProcessingConstants::ImageDimension>; // 3D Scalar Image
+  using ScalarImagePointerType = typename ScalarImageType::Pointer;
+  using ImportImageFilterType = itk::ImportImageFilter<ComponentType, ImageProcessingConstants::ImageDimension>;
+  using ImportImageFilterPointerType = typename ImportImageFilterType::Pointer;
 
-  ScalarImagePointerType operator()(DataContainer::Pointer m, QString attrMatName, ComponentType* data)
+  ScalarImagePointerType operator()(DataContainer::Pointer m, const QString& attrMatName, ComponentType* data)
   {
     AttributeMatrix::Pointer attrMat = m->getAttributeMatrix(attrMatName);
 
@@ -233,7 +229,7 @@ public:
     size_t totalPoints = attrMat->getNumberOfTuples();
 
     // create and setup import filter
-    typedef itk::ImportImageFilter<ComponentType, ImageProcessingConstants::ImageDimension> ImportImageFilterType;
+    using ImportImageFilterType = itk::ImportImageFilter<ComponentType, ImageProcessingConstants::ImageDimension>;
     typename ImportImageFilterType::Pointer importFilter = ImportImageFilterType::New();
 
     typename ImportImageFilterType::SizeType size;
@@ -257,7 +253,7 @@ public:
     region.SetSize(size);
     importFilter->SetRegion(region);
 
-    float sampleOrigin[3] = {0.0f, 0.0f, 0.0f};
+    FloatVec3Type sampleOrigin = {0.0f, 0.0f, 0.0f};
     m->getGeometryAs<ImageGeom>()->getOrigin(sampleOrigin);
     double origin[ImageProcessingConstants::ImageDimension];
     origin[0] = sampleOrigin[0]; // X coordinate
@@ -265,8 +261,8 @@ public:
     origin[2] = sampleOrigin[2]; // Z coordinate
     importFilter->SetOrigin(origin);
 
-    float voxelResolution[3] = {0.0f, 0.0f, 0.0f};
-    m->getGeometryAs<ImageGeom>()->getResolution(voxelResolution);
+    FloatVec3Type voxelResolution = {0.0f, 0.0f, 0.0f};
+    m->getGeometryAs<ImageGeom>()->getSpacing(voxelResolution);
     double spacing[ImageProcessingConstants::ImageDimension];
     spacing[0] = voxelResolution[0]; // along X direction
     spacing[1] = voxelResolution[1]; // along Y direction
@@ -284,9 +280,11 @@ public:
     return image;
   }
 
-private:
+public:
   CreateItkWrapperForDataPointer(const CreateItkWrapperForDataPointer&) = delete; // Copy Constructor Not Implemented
-  void operator=(const CreateItkWrapperForDataPointer&) = delete;                 // Move assignment Not Implemented
+  CreateItkWrapperForDataPointer(CreateItkWrapperForDataPointer&&) = delete;      // Move Constructor Not Implemented
+  CreateItkWrapperForDataPointer& operator=(const CreateItkWrapperForDataPointer&) = delete; // Copy Assignment Not Implemented
+  CreateItkWrapperForDataPointer& operator=(CreateItkWrapperForDataPointer&&) = delete;      // Move Assignment Not Implemented
 };
 
 /*
@@ -302,24 +300,21 @@ public:
   SIMPL_SHARED_POINTERS(ItkBridge<ComponentType>)
   SIMPL_TYPE_MACRO(ItkBridge<ComponentType>)
 
-  virtual ~ItkBridge()
-  {
-  }
-
+  virtual ~ItkBridge() = default;
   //*! Define all the Typedefs for this class
-  typedef DataArray<ComponentType> DataArrayType;
-  typedef typename DataArrayType::Pointer DataArrayPointerType;
+  using DataArrayType = DataArray<ComponentType>;
+  using DataArrayPointerType = typename DataArrayType::Pointer;
 
-  typedef typename itk::Image<ComponentType, ImageProcessingConstants::ImageDimension> ScalarImageType;               // 3D Scalar Image
-  typedef typename itk::Image<itk::RGBPixel<ComponentType>, ImageProcessingConstants::ImageDimension> RGBImageType;   // 3D RGB Image
-  typedef typename itk::Image<itk::RGBAPixel<ComponentType>, ImageProcessingConstants::ImageDimension> RGBAImageType; // 3D RGBA Image
+  using ScalarImageType = typename itk::Image<ComponentType, ImageProcessingConstants::ImageDimension>;               // 3D Scalar Image
+  using RGBImageType = typename itk::Image<itk::RGBPixel<ComponentType>, ImageProcessingConstants::ImageDimension>;   // 3D RGB Image
+  using RGBAImageType = typename itk::Image<itk::RGBAPixel<ComponentType>, ImageProcessingConstants::ImageDimension>; // 3D RGBA Image
 
-  typedef typename itk::Image<ComponentType, ImageProcessingConstants::SliceDimension> ScalarSliceImageType;               // 2D Scalar Image
-  typedef typename itk::Image<itk::RGBPixel<ComponentType>, ImageProcessingConstants::SliceDimension> RGBSliceImageType;   // 2D RGB Image
-  typedef typename itk::Image<itk::RGBAPixel<ComponentType>, ImageProcessingConstants::SliceDimension> RGBASliceImageType; // 2D RGBA Image
+  using ScalarSliceImageType = typename itk::Image<ComponentType, ImageProcessingConstants::SliceDimension>;               // 2D Scalar Image
+  using RGBSliceImageType = typename itk::Image<itk::RGBPixel<ComponentType>, ImageProcessingConstants::SliceDimension>;   // 2D RGB Image
+  using RGBASliceImageType = typename itk::Image<itk::RGBAPixel<ComponentType>, ImageProcessingConstants::SliceDimension>; // 2D RGBA Image
 
-  typedef itk::ImportImageFilter<ComponentType, ImageProcessingConstants::ImageDimension> ImportImageFilterType;
-  typedef typename ImportImageFilterType::Pointer ImportImageFilterPointerType;
+  using ImportImageFilterType = itk::ImportImageFilter<ComponentType, ImageProcessingConstants::ImageDimension>;
+  using ImportImageFilterPointerType = typename ImportImageFilterType::Pointer;
 
   /**
    * @brief Dream3DtoITKImportFilter Grayscale conversion / copying & conversion from dream3d arrays to importfilter
@@ -338,7 +333,7 @@ public:
     size_t totalPoints = attrMat->getNumberOfTuples();
 
     // create and setup import filter
-    typedef itk::ImportImageFilter<TPixel, ImageProcessingConstants::ImageDimension> ImportImageFilterType;
+    using ImportImageFilterType = itk::ImportImageFilter<TPixel, ImageProcessingConstants::ImageDimension>;
     typename ImportImageFilterType::Pointer importFilter = ImportImageFilterType::New();
 
     typename ImportImageFilterType::SizeType size;
@@ -362,7 +357,7 @@ public:
     region.SetSize(size);
     importFilter->SetRegion(region);
 
-    float sampleOrigin[3] = {0.0f, 0.0f, 0.0f};
+    FloatVec3Type sampleOrigin = {0.0f, 0.0f, 0.0f};
     m->getGeometryAs<ImageGeom>()->getOrigin(sampleOrigin);
     double origin[ImageProcessingConstants::ImageDimension];
     origin[0] = sampleOrigin[0]; // X coordinate
@@ -370,8 +365,8 @@ public:
     origin[2] = sampleOrigin[2]; // Z coordinate
     importFilter->SetOrigin(origin);
 
-    float voxelResolution[3] = {0.0f, 0.0f, 0.0f};
-    m->getGeometryAs<ImageGeom>()->getResolution(voxelResolution);
+    FloatVec3Type voxelResolution = {0.0f, 0.0f, 0.0f};
+    m->getGeometryAs<ImageGeom>()->getSpacing(voxelResolution);
     double spacing[ImageProcessingConstants::ImageDimension];
     spacing[0] = voxelResolution[0]; // along X direction
     spacing[1] = voxelResolution[1]; // along Y direction
@@ -395,7 +390,7 @@ public:
     //      size_t totalPoints = attrMat->getNumberOfTuples();
 
     // create and setup import filter
-    typedef itk::ImportImageFilter<TPixel, ImageProcessingConstants::ImageDimension> ImportImageFilterType;
+    using ImportImageFilterType = itk::ImportImageFilter<TPixel, ImageProcessingConstants::ImageDimension>;
     typename ImportImageFilterType::Pointer importFilter = ImportImageFilterType::New();
 
     typename ImportImageFilterType::SizeType size;
@@ -428,7 +423,7 @@ public:
     importFilter->SetOrigin(origin);
 
     //      float voxelResolution[3] = {0.0f, 0.0f, 0.0f};
-    //      m->getResolution(voxelResolution);
+    //      m->getSpacing(voxelResolution);
     double spacing[ImageProcessingConstants::ImageDimension];
     spacing[0] = voxelResolution[0]; // along X direction
     spacing[1] = voxelResolution[1]; // along Y direction
@@ -512,7 +507,7 @@ public:
    */
   static typename ScalarSliceImageType::Pointer ExtractSlice(typename ScalarImageType::Pointer image, int sliceType, int sliceNum)
   {
-    typedef typename itk::ExtractImageFilter<ScalarImageType, ScalarSliceImageType> SliceExtractFilter;
+    using SliceExtractFilter = typename itk::ExtractImageFilter<ScalarImageType, ScalarSliceImageType>;
     typename SliceExtractFilter::Pointer extractSlice = SliceExtractFilter::New();
     typename ScalarImageType::RegionType inputRegion = image->GetLargestPossibleRegion();
     typename ScalarImageType::SizeType size = inputRegion.GetSize();
@@ -566,13 +561,13 @@ public:
   }
 
 protected:
-  ItkBridge()
-  {
-  }
+  ItkBridge() = default;
 
-private:
-  ItkBridge(const ItkBridge&) = delete;      // Copy Constructor Not Implemented
-  void operator=(const ItkBridge&) = delete; // Move assignment Not Implemented
+public:
+  ItkBridge(const ItkBridge&) = delete;            // Copy Constructor Not Implemented
+  ItkBridge(ItkBridge&&) = delete;                 // Move Constructor Not Implemented
+  ItkBridge& operator=(const ItkBridge&) = delete; // Copy Assignment Not Implemented
+  ItkBridge& operator=(ItkBridge&&) = delete;      // Move Assignment Not Implemented
 };
 
 //// Create some typedefs for our convenience

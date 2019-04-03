@@ -77,7 +77,7 @@ public:
    */
   void setupGui() override;
 
-  DataArrayPath::DataType getDataType() const;
+  DataArrayPathHelper::DataType getDataType() const;
   int getDataTypei() const;
 
 public slots:

@@ -93,11 +93,11 @@ public:
 
     QVariant value;
 
-    QString dataContainerName = "DataContainer";
+    DataArrayPath dataContainerName("DataContainer");
     value.setValue(dataContainerName);
     filter->setProperty("SelectedDataContainerName", value);
 
-    QString newDataContainerName = "DataContainer_";
+    DataArrayPath newDataContainerName("DataContainer_");
     value.setValue(dataContainerName);
     filter->setProperty("NewDataContainerName", value);
 
@@ -117,17 +117,17 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     filter->setDataContainerArray(dca);
 
     QVariant value;
 
-    QString dataContainerName = "";
+    DataArrayPath dataContainerName;
     value.setValue(dataContainerName);
     filter->setProperty("SelectedDataContainerName", value);
 
-    QString newDataContainerName = "DataContainer_";
+    DataArrayPath newDataContainerName("DataContainer_");
     value.setValue(dataContainerName);
     filter->setProperty("NewDataContainerName", value);
 
@@ -147,24 +147,26 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     filter->setDataContainerArray(dca);
 
     QVariant value;
 
-    QString dataContainerName = "DataContainer";
+    DataArrayPath dataContainerName ("DataContainer");
     value.setValue(dataContainerName);
     filter->setProperty("SelectedDataContainerName", value);
 
-    QString newDataContainerName = "Container_2";
+    DataArrayPath newDataContainerName ("Container_2");
     value.setValue(newDataContainerName);
     filter->setProperty("NewDataContainerName", value);
 
     filter->execute();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
 
-    DREAM3D_REQUIRE_EQUAL(dc->getName(), newDataContainerName);
+    DataArrayPath dap(dc->getName());
+
+    DREAM3D_REQUIRE_EQUAL(dap, newDataContainerName);
   }
 
   // -----------------------------------------------------------------------------
@@ -179,17 +181,17 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     filter->setDataContainerArray(dca);
 
     QVariant value;
 
-    QString dataContainerName = "DataContainer";
+    DataArrayPath dataContainerName ( "DataContainer");
     value.setValue(dataContainerName);
     filter->setProperty("SelectedDataContainerName", value);
 
-    QString newDataContainerName = "";
+    DataArrayPath newDataContainerName;
     value.setValue(newDataContainerName);
     filter->setProperty("NewDataContainerName", value);
 
@@ -209,17 +211,17 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     filter->setDataContainerArray(dca);
 
     QVariant value;
 
-    QString dataContainerName = "DataContainer";
+    DataArrayPath dataContainerName("DataContainer");
     value.setValue(dataContainerName);
     filter->setProperty("SelectedDataContainerName", value);
 
-    QString newDataContainerName = "";
+    DataArrayPath newDataContainerName;
     value.setValue(newDataContainerName);
 
     filter->execute();

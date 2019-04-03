@@ -105,17 +105,17 @@ void LinkedPathCreationWidget::beforePreflight()
 void LinkedPathCreationWidget::afterPreflight()
 {
   dataPathDisplay->setDataArrayPath(m_FilterParameter->getLinkedDataArrayPath());
-  switch(DataArrayPath::DataType::DataArray)
-  {
-  case DataArrayPath::DataType::DataContainer:
+  //switch(DataArrayPathHelper::DataType::DataArray)
+  //{
+  //case DataArrayPathHelper::DataType::DataContainer:
 
-  }
+  //}
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayPath::DataType LinkedPathCreationWidget::getDataType() const
+DataArrayPathHelper::DataType LinkedPathCreationWidget::getDataType() const
 {
   return dataPathDisplay->getDataType();
 }

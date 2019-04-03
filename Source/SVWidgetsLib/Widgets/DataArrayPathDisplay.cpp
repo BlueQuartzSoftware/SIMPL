@@ -44,23 +44,23 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QColor DataArrayPathDisplay::GetActiveColor(DataArrayPath::DataType type)
+const QColor DataArrayPathDisplay::GetActiveColor(DataArrayPathHelper::DataType type)
 {
   QColor color;
   SVStyle* style = SVStyle::Instance();
 
   switch(type)
   {
-  case DataArrayPath::DataType::DataContainer:
+  case DataArrayPathHelper::DataType::DataContainer:
     color = style->getDataArrayPath_DataContainer_color();
     break;
-  case DataArrayPath::DataType::AttributeMatrix:
+  case DataArrayPathHelper::DataType::AttributeMatrix:
     color = style->getDataArrayPath_AttributeMatrix_color();
     break;
-  case DataArrayPath::DataType::DataArray:
+  case DataArrayPathHelper::DataType::DataArray:
     color = style->getDataArrayPath_DataArray_color();
     break;
-  case DataArrayPath::DataType::None:
+  case DataArrayPathHelper::DataType::None:
     break;
   }
 
@@ -70,23 +70,23 @@ const QColor DataArrayPathDisplay::GetActiveColor(DataArrayPath::DataType type)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QColor DataArrayPathDisplay::GetCheckedColor(DataArrayPath::DataType type)
+const QColor DataArrayPathDisplay::GetCheckedColor(DataArrayPathHelper::DataType type)
 {
   QColor color;
   SVStyle* style = SVStyle::Instance();
 
   switch(type)
   {
-  case DataArrayPath::DataType::DataContainer:
+  case DataArrayPathHelper::DataType::DataContainer:
     color = style->getDataArrayPath_DataContainer_background_color();
     break;
-  case DataArrayPath::DataType::AttributeMatrix:
+  case DataArrayPathHelper::DataType::AttributeMatrix:
     color = style->getDataArrayPath_AttributeMatrix_background_color();
     break;
-  case DataArrayPath::DataType::DataArray:
+  case DataArrayPathHelper::DataType::DataArray:
     color = style->getDataArrayPath_DataArray_background_color();
     break;
-  case DataArrayPath::DataType::None:
+  case DataArrayPathHelper::DataType::None:
     break;
   }
 
@@ -109,9 +109,9 @@ DataArrayPathDisplay::DataArrayPathDisplay(QWidget* parent)
 void DataArrayPathDisplay::setupGui()
 {
   m_Ui->setupUi(this);
-  m_Ui->dataConPathLabel->setDataType(DataArrayPath::DataType::DataContainer);
-  m_Ui->attrMatPathLabel->setDataType(DataArrayPath::DataType::AttributeMatrix);
-  m_Ui->dataArrayPathLabel->setDataType(DataArrayPath::DataType::DataArray);
+  m_Ui->dataConPathLabel->setDataType(DataArrayPathHelper::DataType::DataContainer);
+  m_Ui->attrMatPathLabel->setDataType(DataArrayPathHelper::DataType::AttributeMatrix);
+  m_Ui->dataArrayPathLabel->setDataType(DataArrayPathHelper::DataType::DataArray);
 
   setDataArrayPath(DataArrayPath("", "", ""));
   updateStyle();
@@ -130,7 +130,7 @@ void DataArrayPathDisplay::updateStyle()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayPath::DataType DataArrayPathDisplay::getDataType() const
+DataArrayPathHelper::DataType DataArrayPathDisplay::getDataType() const
 {
   return getDataArrayPath().getDataType();
 }
@@ -146,22 +146,22 @@ void DataArrayPathDisplay::setDataArrayPath(const DataArrayPath& path)
 
   switch(path.getDataType())
   {
-  case DataArrayPath::DataType::DataContainer:
+  case DataArrayPathHelper::DataType::DataContainer:
     m_Ui->dataConWidget->setVisible(true);
     m_Ui->attrMatWidget->setVisible(false);
     m_Ui->dataArrayPathLabel->setVisible(false);
     break;
-  case DataArrayPath::DataType::AttributeMatrix:
+  case DataArrayPathHelper::DataType::AttributeMatrix:
     m_Ui->dataConWidget->setVisible(true);
     m_Ui->attrMatWidget->setVisible(true);
     m_Ui->dataArrayPathLabel->setVisible(false);
     break;
-  case DataArrayPath::DataType::DataArray:
+  case DataArrayPathHelper::DataType::DataArray:
     m_Ui->dataConWidget->setVisible(true);
     m_Ui->attrMatWidget->setVisible(true);
     m_Ui->dataArrayPathLabel->setVisible(true);
     break;
-  case DataArrayPath::DataType::None:
+  case DataArrayPathHelper::DataType::None:
     m_Ui->dataConWidget->setVisible(false);
     m_Ui->attrMatWidget->setVisible(false);
     m_Ui->dataArrayPathLabel->setVisible(false);
@@ -221,19 +221,19 @@ void DataArrayPathDisplay::afterPreflight()
   bool found = false;
   switch(getDataType())
   {
-  case DataArrayPath::DataType::DataContainer:
+  case DataArrayPathHelper::DataType::DataContainer:
     if(dca->getDataContainer(getDataArrayPath()))
     {
       found = true;
     }
     break;
-  case DataArrayPath::DataType::AttributeMatrix:
+  case DataArrayPathHelper::DataType::AttributeMatrix:
     if(dca->getAttributeMatrix(getDataArrayPath()))
     {
       found = true;
     }
     break;
-  case DataArrayPath::DataType::DataArray:
+  case DataArrayPathHelper::DataType::DataArray:
   {
     AttributeMatrix::Pointer am = dca->getAttributeMatrix(getDataArrayPath());
     if(am && am->getAttributeArray(getDataArrayPath().getDataArrayName()))
@@ -242,7 +242,7 @@ void DataArrayPathDisplay::afterPreflight()
     }
   }
   break;
-  case DataArrayPath::DataType::None:
+  case DataArrayPathHelper::DataType::None:
     break;
   }
 

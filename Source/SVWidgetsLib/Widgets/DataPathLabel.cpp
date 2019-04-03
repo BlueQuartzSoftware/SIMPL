@@ -45,7 +45,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QColor DataPathLabel::GetBackgroundColor(DataArrayPath::DataType type)
+QColor DataPathLabel::GetBackgroundColor(DataArrayPathHelper::DataType type)
 {
   // Remain consistent with DataArrayPathSelectionWidget
   return DataArrayPathSelectionWidget::GetActiveColor(type);
@@ -78,7 +78,7 @@ DataPathLabel::~DataPathLabel() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayPath::DataType DataPathLabel::getDataType() const
+DataArrayPathHelper::DataType DataPathLabel::getDataType() const
 {
   return m_DataType;
 }
@@ -86,7 +86,7 @@ DataArrayPath::DataType DataPathLabel::getDataType() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataPathLabel::setDataType(DataArrayPath::DataType type)
+void DataPathLabel::setDataType(DataArrayPathHelper::DataType type)
 {
   m_DataType = type;
   ensurePolished();

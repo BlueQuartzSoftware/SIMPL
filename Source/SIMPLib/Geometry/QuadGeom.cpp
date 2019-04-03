@@ -205,7 +205,7 @@ void QuadGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QuadGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
+void QuadGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
   if(data->getType() != AttributeMatrix::Type::Vertex || data->getType() != AttributeMatrix::Type::Edge || data->getType() != AttributeMatrix::Type::Face)
   {
@@ -224,10 +224,10 @@ void QuadGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer 
   {
     return;
   }
-  if(data->getName().compare(name) != 0)
-  {
-    data->setName(name);
-  }
+  //if(data->getName().compare(name) != 0)
+  //{
+  //  data->setName(name);
+  //}
   m_AttributeMatrices[name] = data;
 }
 

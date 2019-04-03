@@ -101,7 +101,7 @@ void CalculatorFilterParameter::writeJson(QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void CalculatorFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath)
+void CalculatorFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath)
 {
   DataArrayPath oldPath;
   DataArrayPath newPath;

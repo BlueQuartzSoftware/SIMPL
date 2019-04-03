@@ -42,6 +42,8 @@
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 
+class AbstractFilter;
+
 /**
  * @brief SIMPL_NEW_DA_SELECTION_FP This macro is a short-form way of instantiating an instance of
  * DataArraySelectionFilterParameter. There are 5 required parameters and 1 optional parameter
@@ -196,6 +198,11 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
     * @return The GetterCallback
     */
     SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+
+    /**
+     * @brief Handle DataArrayPath changes if necessary
+     */
+    void dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath) override;
 
   protected:
       /**

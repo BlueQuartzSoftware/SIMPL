@@ -65,7 +65,7 @@ class SIMPLib_EXPORT ComparisonInputsAdvanced : public QObject
   PYB11_CREATION()
  
   PYB11_PROPERTY(QVector<AbstractComparison::Pointer> Inputs READ getInputs)
-  PYB11_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
+  PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
   PYB11_PROPERTY(QString AttributeMatrixName READ getAttributeMatrixName WRITE setAttributeMatrixName)
 
   PYB11_METHOD(void addInput OVERLOAD int,unionOperator const.QString,arrayName int,compOperator double,compValue)

@@ -55,7 +55,7 @@ RemoveArrays::~RemoveArrays() = default;
 // -----------------------------------------------------------------------------
 void RemoveArrays::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   {
     DataContainerArrayProxyFilterParameter::Pointer parameter = DataContainerArrayProxyFilterParameter::New();
@@ -129,6 +129,8 @@ void RemoveArrays::markSelectionsForDeletion(DataContainerArray* dca, Qt::CheckS
 // -----------------------------------------------------------------------------
 void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dca, Qt::CheckState state)
 {
+  m_RemovedPaths.clear();
+
   // Loop over the data containers until we find the proper data container
   QList<DataContainerProxy> containers = m_DataArraysToRemove.getDataContainers().values();
   QMutableListIterator<DataContainerProxy> containerIter(containers);
@@ -147,7 +149,8 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
     // the DataContainerArray
     if(dcProxy.getFlag() == state)
     {
-      dca->removeDataContainer(dcProxy.getName()); // Remove it out
+      auto dc = dca->removeDataContainer(dcProxy.getName()); // Remove it out
+      m_RemovedPaths.merge(dc->getDescendantPaths());
       continue;                               // Continue to the next DataContainer
     }
     QMap<QString, AttributeMatrixProxy> attrMats = dcProxy.getAttributeMatricies();
@@ -169,7 +172,8 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
       // Check to see if this AttributeMatrix is checked, if not then remove it from the DataContainer and go to the next loop
       if(attrProxy.getFlag() == state)
       {
-        dcItem->removeAttributeMatrix(amName);
+        auto am = dcItem->removeAttributeMatrix(amName);
+        m_RemovedPaths.merge(am->getDescendantPaths());
         continue;
       }
       // We found the selected AttributeMatrix, so loop over this attribute matrix arrays and populate the list widget
@@ -191,12 +195,21 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
         // Check to see if the user selected this item
         if(daProxy.getFlag() == state)
         {
-          amItem->removeAttributeArray(daName);
+          auto da = amItem->removeAttributeArray(daName);
+          m_RemovedPaths.push_back(da->getDataArrayPath());
           continue;
         }
       }
     }
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+std::list<DataArrayPath> RemoveArrays::getDeletedPaths()
+{
+  return m_RemovedPaths;
 }
 
 // -----------------------------------------------------------------------------

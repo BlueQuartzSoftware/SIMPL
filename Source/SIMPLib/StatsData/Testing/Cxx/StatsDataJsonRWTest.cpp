@@ -207,13 +207,13 @@ public:
     // Write the Misorientation Weights
     {
       FloatArrayType::Pointer angles = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Angle);
-      angles->initializeWithValue(45.0f, 0);
+      angles->initializeWithValue(45.0f);
       std::vector<size_t> vec;
       vec.push_back(3);
       FloatArrayType::Pointer axis = FloatArrayType::CreateArray(1, vec, SIMPL::StringConstants::Axis);
-      axis->initializeWithValue(1.0, 0);
+      axis->initializeWithValue(1.0);
       FloatArrayType::Pointer weight = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Weight);
-      weight->initializeWithValue(1000.0f, 0);
+      weight->initializeWithValue(1000.0f);
       arrays.clear();
       arrays.push_back(angles);
       arrays.push_back(axis);
@@ -224,15 +224,15 @@ public:
     // Write the ODF
     {
       FloatArrayType::Pointer e1 = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Euler1);
-      e1->initializeWithValue(45.0f, 0);
+      e1->initializeWithValue(45.0f);
       FloatArrayType::Pointer e2 = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Euler2);
-      e2->initializeWithValue(30.0f, 0);
+      e2->initializeWithValue(30.0f);
       FloatArrayType::Pointer e3 = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Euler3);
-      e3->initializeWithValue(60.0f, 0);
+      e3->initializeWithValue(60.0f);
       FloatArrayType::Pointer sigma = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Sigma);
-      sigma->initializeWithValue(2.0, 0);
+      sigma->initializeWithValue(2.0);
       FloatArrayType::Pointer weight = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Weight);
-      weight->initializeWithValue(100000.0f, 0);
+      weight->initializeWithValue(100000.0f);
       arrays.clear();
       arrays.push_back(e1);
       arrays.push_back(e2);

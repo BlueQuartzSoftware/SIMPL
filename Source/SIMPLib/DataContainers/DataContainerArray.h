@@ -46,6 +46,8 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/IDataContainerBundle.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
+#include "SIMPLib/DataContainers/RenameDataPath.h"
 
 
 class DataContainer;
@@ -60,26 +62,30 @@ using DataContainerShPtr = std::shared_ptr<DataContainer>;
  * @date Sep 28, 2011
  * @version 1.0
  */
-class SIMPLib_EXPORT DataContainerArray : public QObject
+class SIMPLib_EXPORT DataContainerArray : public QObject, public IDataStructureContainerNode<DataContainer>
 {
   Q_OBJECT
   // clang-format off
   PYB11_CREATE_BINDINGS(DataContainerArray)
 
-  PYB11_METHOD(void addDataContainer ARGS data_container)
-  //PYB11_METHOD(DataContainer::Pointer getDataContainer ARGS name)
-  PYB11_METHOD(bool doesDataContainerExist ARGS name)
-  PYB11_METHOD(DataContainer::Pointer removeDataContainer ARGS name)
-  PYB11_METHOD(bool renameDataContainer ARGS oldName newName)
+  PYB11_METHOD(bool addOrReplaceDataContainer ARGS DataContainer)
+  PYB11_METHOD(bool insertOrAssign ARGS DataContainer)
+  PYB11_METHOD(bool doesDataContainerExist OVERLOAD const.QString.&,Name CONST_METHOD)
+  PYB11_METHOD(bool doesDataContainerExist OVERLOAD const.DataArrayPath.&,Path CONST_METHOD)
+
+  PYB11_METHOD(DataContainer::Pointer removeDataContainer ARGS Name)
+  PYB11_METHOD(bool renameDataContainer OVERLOAD const.QString.&,OldName const.QString.&,NewName)
+  PYB11_METHOD(bool renameDataContainer OVERLOAD const.DataArrayPath.&,OldPath const.DataArrayPath.&,NewPath )
+
   PYB11_METHOD(void clearDataContainers)
   //PYB11_METHOD(XXXX getDataContainerNames)
   PYB11_METHOD(int getNumDataContainers)
-  PYB11_METHOD(void duplicateDataContainer ARGS oldName, newName)
+  PYB11_METHOD(void duplicateDataContainer ARGS OldName, NewName)
 
-  PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix ARGS dataArrayPath)
-  PYB11_METHOD(bool doesAttributeMatrixExist ARGS dataArrayPath)
+  PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix ARGS DataArrayPath)
+  PYB11_METHOD(bool doesAttributeMatrixExist ARGS DataArrayPath)
 
-  PYB11_METHOD(bool doesAttributeArrayExist ARGS dataArrayPath)
+  PYB11_METHOD(bool doesAttributeArrayExist ARGS DataArrayPath)
   // clang-format on
 
 public:
@@ -87,12 +93,23 @@ public:
   SIMPL_STATIC_NEW_MACRO(DataContainerArray)
   SIMPL_TYPE_MACRO(DataContainerArray)
 
+  using Container = ChildCollection;
+
   ~DataContainerArray() override;
+
+  /**
+   * @brief Creates and returns an empty DataArrayPath
+   * @return
+   */
+  DataArrayPath getDataArrayPath() const override;
 
   /**
    * @brief
    */
-  virtual void addDataContainer(DataContainerShPtr f);
+  bool addOrReplaceDataContainer(const DataContainerShPtr& f)
+  {
+    return insertOrAssign(f);
+  }
 
   /**
    * @brief getDataContainer
@@ -112,14 +129,21 @@ public:
    * @brief getDataContainers
    * @return
    */
-  QList<DataContainerShPtr>& getDataContainers();
+  Container getDataContainers();
 
   /**
    * @brief Returns if a DataContainer with the give name is in the array
    * @param name The name of the DataContiner to find
    * @return
    */
-  virtual bool doesDataContainerExist(const QString& name);
+  virtual bool doesDataContainerExist(const QString& name) const;
+
+  /**
+   * @brief doesDataContainerExist
+   * @param dap
+   * @return
+   */
+  virtual bool doesDataContainerExist(const DataArrayPath& dap) const;
 
   /**
    * @brief DataContainerArray::doesAttributeMatrixExist
@@ -149,6 +173,14 @@ public:
   bool renameDataContainer(const QString& oldName, const QString& newName);
 
   /**
+   * @brief renameDataContainer
+   * @param oldName
+   * @param newName
+   * @return
+   */
+  bool renameDataContainer(const DataArrayPath& oldName, const DataArrayPath& newName);
+
+  /**
    * @brief Removes all DataContainers from this DataContainerArray
    */
   virtual void clearDataContainers();
@@ -157,7 +189,7 @@ public:
    * @brief getDataContainerNames
    * @return
    */
-  QList<QString> getDataContainerNames();
+  NameList getDataContainerNames();
 
   /**
    * @brief Returns the number of DataContainers
@@ -253,6 +285,11 @@ public:
     */
     void renameDataArrayPaths(DataArrayPath::RenameContainer renamePaths);
 
+    template <class Filter> DataContainerShPtr getPrereqDataContainer(Filter* filter, const DataArrayPath& dap, bool createIfNotExists = false)
+    {
+      return getPrereqDataContainer(filter, dap.getDataContainerName(), createIfNotExists);
+    }
+
     /**
      * @brief getPrereqDataContainer
      * @param name
@@ -277,11 +314,23 @@ public:
       if(nullptr != dc && createIfNotExists)
       {
         DataContainerShPtr dataContainer = DataContainer::New(name); // Create a new Data Container
-        addDataContainer(dataContainer); // Put the new DataContainer into the array
+        addOrReplaceDataContainer(dataContainer); // Put the new DataContainer into the array
         return dataContainer; // Return the wrapped pointer
       }
       // The DataContainer we asked for was present and NON Null so return that.
       return dc;
+    }
+
+    /**
+     * @brief createNonPrereqDataContainer
+     * @param filter
+     * @param dap
+     * @param id
+     * @return
+     */
+    template <class Filter> DataContainerShPtr createNonPrereqDataContainer(Filter* filter, const DataArrayPath& dap, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
+    {
+      return createNonPrereqDataContainer<Filter>(filter, dap.getDataContainerName(), id);
     }
 
     /**
@@ -291,7 +340,7 @@ public:
      * dataContainerName is empty in which case a Null DataContainer will be returned.
      */
     template<typename Filter>
-    DataContainerShPtr createNonPrereqDataContainer(Filter* filter, const QString& dataContainerName)
+    DataContainerShPtr createNonPrereqDataContainer(Filter* filter, const QString& dataContainerName, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
     {
       if(dataContainerName.isEmpty())
       {
@@ -315,9 +364,12 @@ public:
         }
       }
 
-      if(doesDataContainerExist(dataContainerName))
+      
+      DataContainerShPtr dataContainer = DataContainer::New(dataContainerName);
+      bool dcExists = !push_back(dataContainer);
+      if(dcExists)
       {
-        if (filter)
+        if(filter)
         {
           filter->setErrorCondition(-889);
           QString ss = QObject::tr("The DataContainer Object with the specific name '%1' already exists.").arg(dataContainerName);
@@ -325,8 +377,8 @@ public:
           return DataContainer::NullPointer();
         }
       }
-      DataContainerShPtr dataContainer = DataContainer::New(dataContainerName);
-      addDataContainer(dataContainer);
+
+      RenameDataPath::AlertFilterCreatedPath(filter, id, DataArrayPath(dataContainerName, "", ""));
       return dataContainer;
     }
 
@@ -348,6 +400,24 @@ public:
       return dc->getPrereqGeometry<GeometryType>(filter);
     }
 
+    /**
+     * @brief getPrereqGeometryFromDataContainer Returns an IGeometry object of the templated type
+     * if it is available for the given DataContainer
+     * @param filter
+     * @param path
+     * @return
+     */
+    template <typename GeometryType, typename Filter> typename GeometryType::Pointer getPrereqGeometryFromDataContainer(Filter* filter, const DataArrayPath& path)
+    {
+      typename GeometryType::Pointer geom = GeometryType::NullPointer();
+      DataContainerShPtr dc = getPrereqDataContainer<Filter>(filter, path.getDataContainerName(), false);
+      if(nullptr == dc)
+      {
+        return geom;
+      }
+
+      return dc->getPrereqGeometry<GeometryType>(filter);
+    }
 
     /**
      * @brief getPrereqAttributeMatrixFromPath This function will return an AttributeMatrix if it is availabe
@@ -523,7 +593,8 @@ public:
                                                              const DataArrayPath& path,
                                                              T initValue,
                                                              QVector<size_t> compDims,
-                                                             const QString& property = "")
+                                                             const QString& property = "",
+                                                             RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
     {
       typename ArrayType::Pointer dataArray = ArrayType::NullPointer();
       QString ss;
@@ -608,7 +679,7 @@ public:
 
       // If something goes wrong at this point the error message will be directly set in the 'filter' object so we just
       // simply return what ever is given to us.
-      dataArray = attrMat->createNonPrereqArray<ArrayType, Filter, T>(filter, path.getDataArrayName(), initValue, compDims);
+      dataArray = attrMat->createNonPrereqArray<ArrayType, Filter, T>(filter, path.getDataArrayName(), initValue, compDims, id);
       return dataArray;
     }
 
@@ -735,7 +806,6 @@ public:
     DataContainerArray();
 
   private:
-    QList<DataContainerShPtr>  m_Array;
     QMap<QString, IDataContainerBundle::Pointer> m_DataContainerBundles;
 
   public:

@@ -44,6 +44,12 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t {
+  DataContainerID = 1,
+  AttributeMatrixID,
+  DataArrayID
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -66,7 +72,7 @@ CopyObject::~CopyObject() = default;
 // -----------------------------------------------------------------------------
 void CopyObject::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Object Type to Copy");
@@ -110,7 +116,7 @@ void CopyObject::readFilterParameters(AbstractFilterParametersReader* reader, in
 {
   reader->openFilterGroup(this, index);
   setObjectToCopy(reader->readValue("ObjectToCopy", getObjectToCopy()));
-  setDataContainerToCopy(reader->readString("DataContainerToCopy", getDataContainerToCopy()));
+  setDataContainerToCopy(reader->readDataArrayPath("DataContainerToCopy", getDataContainerToCopy()));
   setAttributeMatrixToCopy(reader->readDataArrayPath("AttributeMatrixToCopy", getAttributeMatrixToCopy()));
   setAttributeArrayToCopy(reader->readDataArrayPath("AttributeArrayToCopy", getAttributeArrayToCopy()));
   setCopiedObjectName(reader->readString("CopiedObjectName", getCopiedObjectName()));
@@ -160,7 +166,8 @@ void CopyObject::dataCheck()
 
     DataContainer::Pointer dcCopy = m->deepCopy(getInPreflight());
     dcCopy->setName(getCopiedObjectName());
-    getDataContainerArray()->addDataContainer(dcCopy);
+    getDataContainerArray()->addOrReplaceDataContainer(dcCopy);
+    RenameDataPath::AlertFilterCreatedPath(this, DataContainerID, dcCopy->getDataArrayPath());
 
     break;
   }
@@ -184,7 +191,8 @@ void CopyObject::dataCheck()
 
     AttributeMatrix::Pointer attrMatCopy = attrMat->deepCopy(getInPreflight());
     attrMatCopy->setName(getCopiedObjectName());
-    getDataContainerArray()->getDataContainer(getAttributeMatrixToCopy().getDataContainerName())->addAttributeMatrix(getCopiedObjectName(), attrMatCopy);
+    getDataContainerArray()->getDataContainer(getAttributeMatrixToCopy().getDataContainerName())->addOrReplaceAttributeMatrix(attrMatCopy);
+    RenameDataPath::AlertFilterCreatedPath(this, AttributeMatrixID, attrMatCopy->getDataArrayPath());
 
     break;
   }
@@ -208,10 +216,8 @@ void CopyObject::dataCheck()
 
     IDataArray::Pointer arrayCopy = array->deepCopy(getInPreflight());
     arrayCopy->setName(getCopiedObjectName());
-    getDataContainerArray()
-        ->getDataContainer(getAttributeArrayToCopy().getDataContainerName())
-        ->getAttributeMatrix(getAttributeArrayToCopy().getAttributeMatrixName())
-        ->addAttributeArray(getCopiedObjectName(), arrayCopy);
+    getDataContainerArray()->getDataContainer(getAttributeArrayToCopy().getDataContainerName())->getAttributeMatrix(getAttributeArrayToCopy().getAttributeMatrixName())->insertOrAssign(arrayCopy);
+    RenameDataPath::AlertFilterCreatedPath(this, DataArrayID, arrayCopy->getDataArrayPath());
 
     break;
   }

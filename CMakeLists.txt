@@ -34,7 +34,7 @@ cmake_minimum_required(VERSION 3.13.0)
 #------------------------------------------------------------------------------
 # Create the Top level Project
 #
-project(SIMPLProj VERSION 1.2.0.0)
+project(SIMPLProj VERSION 2.0.0.0)
 
 # ---------- Setup output Directories -------------------------
 if(NOT DEFINED CMAKE_LIBRARY_OUTPUT_DIRECTORY)
@@ -260,7 +260,8 @@ endif()
 set(SIMPL_USE_EIGEN "")
 Find_Package(Eigen3 REQUIRED)
 if(EIGEN3_FOUND)
-  message(STATUS "Eigen3: ${EIGEN3_VERSION_STRING}")
+  message(STATUS "Eigen3 Location: ${EIGEN3_ROOT_DIR}")
+  message(STATUS "Eigen3 Version: ${EIGEN3_VERSION_STRING}")
   set(SIMPL_USE_EIGEN "1" CACHE INTERNAL "")
 else()
   message(WARNING "The Eigen Library is required for some algorithms to execute. These algorithms will be disabled.")

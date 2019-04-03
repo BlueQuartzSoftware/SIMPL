@@ -49,6 +49,10 @@
 #include "SIMPLib/Math/SIMPLibRandom.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t {
+  DerivativesArrayID = 1
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -69,7 +73,7 @@ FindDerivatives::~FindDerivatives() = default;
 // -----------------------------------------------------------------------------
 void FindDerivatives::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   {
     DataArraySelectionFilterParameter::RequirementType req =
         DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
@@ -151,7 +155,7 @@ template <typename DataType> void interpolateCellValues(IDataArray::Pointer inDa
   {
     EdgeGeom::Pointer edgeGeom = m->getGeometryAs<EdgeGeom>();
     SharedVertexList::Pointer verts = edgeGeom->getVertices();
-    outDataPtr->resize(edgeGeom->getNumberOfVertices());
+    outDataPtr->resizeTuples(edgeGeom->getNumberOfVertices());
     GeometryHelpers::Generic::AverageCellArrayValues<int64_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
@@ -159,7 +163,7 @@ template <typename DataType> void interpolateCellValues(IDataArray::Pointer inDa
   {
     TriangleGeom::Pointer triGeom = m->getGeometryAs<TriangleGeom>();
     SharedVertexList::Pointer verts = triGeom->getVertices();
-    outDataPtr->resize(triGeom->getNumberOfVertices());
+    outDataPtr->resizeTuples(triGeom->getNumberOfVertices());
     GeometryHelpers::Generic::AverageCellArrayValues<int64_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
@@ -167,7 +171,7 @@ template <typename DataType> void interpolateCellValues(IDataArray::Pointer inDa
   {
     QuadGeom::Pointer quadGeom = m->getGeometryAs<QuadGeom>();
     SharedVertexList::Pointer verts = quadGeom->getVertices();
-    outDataPtr->resize(quadGeom->getNumberOfVertices());
+    outDataPtr->resizeTuples(quadGeom->getNumberOfVertices());
     GeometryHelpers::Generic::AverageCellArrayValues<int64_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
@@ -175,7 +179,7 @@ template <typename DataType> void interpolateCellValues(IDataArray::Pointer inDa
   {
     TetrahedralGeom::Pointer tets = m->getGeometryAs<TetrahedralGeom>();
     SharedVertexList::Pointer verts = tets->getVertices();
-    outDataPtr->resize(tets->getNumberOfVertices());
+    outDataPtr->resizeTuples(tets->getNumberOfVertices());
     GeometryHelpers::Generic::AverageCellArrayValues<int64_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
@@ -183,7 +187,7 @@ template <typename DataType> void interpolateCellValues(IDataArray::Pointer inDa
   {
     HexahedralGeom::Pointer hexas = m->getGeometryAs<HexahedralGeom>();
     SharedVertexList::Pointer verts = hexas->getVertices();
-    outDataPtr->resize(hexas->getNumberOfVertices());
+    outDataPtr->resizeTuples(hexas->getNumberOfVertices());
     GeometryHelpers::Generic::AverageCellArrayValues<int64_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
@@ -320,7 +324,7 @@ void FindDerivatives::dataCheck()
   QVector<size_t> dims(1, cDims);
 
   m_DerivativesArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(
-      this, getDerivativesArrayPath(), 0, dims);    /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+      this, getDerivativesArrayPath(), 0, dims, "", DerivativesArrayID);    /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if(nullptr != m_DerivativesArrayPtr.lock())       /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_DerivativesArray = m_DerivativesArrayPtr.lock()->getPointer(0);

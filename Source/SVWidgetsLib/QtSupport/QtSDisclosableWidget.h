@@ -33,7 +33,13 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
-#include <QtWidgets/QGroupBox>
+#include <QtCore/QParallelAnimationGroup>
+
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QFrame>
+#include <QtWidgets/QToolButton>
+#include <QtWidgets/QScrollArea>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
@@ -41,7 +47,7 @@ class QLayout;
 class QRect;
 
 /**
- * @class QtSDisclosableGroupBox QtSDisclosableGroupBox.h FilterWidgets/QtSDisclosableGroupBox.h
+ * @class QtSDisclosableWidget QtSDisclosableWidget.h FilterWidgets/QtSDisclosableWidget.h
  * @brief  This class is a subclass of the QGroupBox class and is used to display
  * Filter Options that the user can set. This class is capable of constructing a
  * default GUI widget set for each type of Filter Option that is available. If
@@ -51,21 +57,24 @@ class QRect;
  * @date Jan 6, 2012
  * @version 1.0
  */
-class SVWidgetsLib_EXPORT QtSDisclosableGroupBox : public QGroupBox
+class SVWidgetsLib_EXPORT QtSDisclosableWidget : public QWidget
 {
   Q_OBJECT
 public:
-  QtSDisclosableGroupBox(QWidget* parent = nullptr);
-  ~QtSDisclosableGroupBox() override;
+  QtSDisclosableWidget(QWidget* parent = nullptr);
+  ~QtSDisclosableWidget() override;
 
   virtual void setupGui();
 
+  void setContentLayout(QLayout* contentLayout);
+
+  void setTitle(const QString &title);
 
 signals:
-  void dragStarted(QtSDisclosableGroupBox* widget);
+  void dragStarted(QtSDisclosableWidget* widget);
 
 public slots:
-  void disclose(bool on);
+//  void disclose(bool on);
 
   /**
       * @brief Sets the style of the Widget to indicate a selected or non-selected
@@ -79,11 +88,18 @@ public slots:
       */
   void updateWidgetStyle();
 
+private:
+  QGridLayout mainLayout;
+  QToolButton toggleButton;
+  QFrame headerLine;
+  QParallelAnimationGroup toggleAnimation;
+  QScrollArea contentArea;
+  int animationDuration = 300;
 
 public:
-  QtSDisclosableGroupBox(const QtSDisclosableGroupBox&) = delete; // Copy Constructor Not Implemented
-  QtSDisclosableGroupBox(QtSDisclosableGroupBox&&) = delete;      // Move Constructor Not Implemented
-  QtSDisclosableGroupBox& operator=(const QtSDisclosableGroupBox&) = delete; // Copy Assignment Not Implemented
-  QtSDisclosableGroupBox& operator=(QtSDisclosableGroupBox&&) = delete;      // Move Assignment Not Implemented
+  QtSDisclosableWidget(const QtSDisclosableWidget&) = delete; // Copy Constructor Not Implemented
+  QtSDisclosableWidget(QtSDisclosableWidget&&) = delete;      // Move Constructor Not Implemented
+  QtSDisclosableWidget& operator=(const QtSDisclosableWidget&) = delete; // Copy Assignment Not Implemented
+  QtSDisclosableWidget& operator=(QtSDisclosableWidget&&) = delete;      // Move Assignment Not Implemented
 };
 

@@ -26,37 +26,23 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-15-D-5231
+ *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#pragma once
 
-#include <QtCore/QJsonObject>
+#include "RenameDataPath.h"
 
-typedef struct
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/DataContainers/DataArrayPath.h"
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RenameDataPath::AlertFilterCreatedPath(AbstractFilter* filter, DataID_t id, const DataArrayPath& path)
 {
-  float x;
-  float y;
-  float z;
-  void FloatVec2(const float& xx, const float& yy)
+  if(filter != nullptr)
   {
-    x = xx;
-    y = yy;
+    filter->checkIfPathRenamed(id, path);
   }
-  void writeJson(QJsonObject& json)
-  {
-    json["x"] = static_cast<double>(x);
-    json["y"] = static_cast<double>(y);
-  }
-
-  bool readJson(QJsonObject& json)
-  {
-    if(json["x"].isDouble() && json["y"].isDouble())
-    {
-      x = static_cast<float>(json["x"].toDouble());
-      y = static_cast<float>(json["y"].toDouble());
-      return true;
-    }
-    return false;
-  }
-} FloatVec2_t;
-
-Q_DECLARE_METATYPE(FloatVec2_t)
+}

@@ -48,7 +48,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(DataArrayPath path)
+const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(const DataArrayPath& path)
 {
   return CreateDragIcon(path.serialize(Detail::Delimiter), path.getDataType());
 }
@@ -56,7 +56,7 @@ const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(DataArrayPath path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(QString text, DataArrayPath::DataType dataType)
+const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(const QString& text, DataArrayPathHelper::DataType dataType)
 {
   return CreateDragIcon(text, GetActiveColor(dataType));
 }
@@ -64,7 +64,7 @@ const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(QString text, DataArr
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(QString text, QColor backgroundColor)
+const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(const QString& text, const QColor& backgroundColor)
 {
   int minHeight = 26;
 
@@ -113,23 +113,23 @@ const QPixmap DataArrayPathSelectionWidget::CreateDragIcon(QString text, QColor 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QColor DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataType type)
+const QColor DataArrayPathSelectionWidget::GetActiveColor(DataArrayPathHelper::DataType type)
 {
   QColor color;
   SVStyle* style = SVStyle::Instance();
 
   switch(type)
   {
-  case DataArrayPath::DataType::DataContainer:
+  case DataArrayPathHelper::DataType::DataContainer:
     color = style->getDataArrayPath_DataContainer_color();
     break;
-  case DataArrayPath::DataType::AttributeMatrix:
+  case DataArrayPathHelper::DataType::AttributeMatrix:
     color = style->getDataArrayPath_AttributeMatrix_color();
     break;
-  case DataArrayPath::DataType::DataArray:
+  case DataArrayPathHelper::DataType::DataArray:
     color = style->getDataArrayPath_DataArray_color();
     break;
-  case DataArrayPath::DataType::None:
+  case DataArrayPathHelper::DataType::None:
     break;
   }
 
@@ -139,23 +139,23 @@ const QColor DataArrayPathSelectionWidget::GetActiveColor(DataArrayPath::DataTyp
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QColor DataArrayPathSelectionWidget::GetCheckedColor(DataArrayPath::DataType type)
+const QColor DataArrayPathSelectionWidget::GetCheckedColor(DataArrayPathHelper::DataType type)
 {
   QColor color;
   SVStyle* style = SVStyle::Instance();
 
   switch(type)
   {
-  case DataArrayPath::DataType::DataContainer:
+  case DataArrayPathHelper::DataType::DataContainer:
     color = style->getDataArrayPath_DataContainer_background_color();
     break;
-  case DataArrayPath::DataType::AttributeMatrix:
+  case DataArrayPathHelper::DataType::AttributeMatrix:
     color = style->getDataArrayPath_AttributeMatrix_background_color();
     break;
-  case DataArrayPath::DataType::DataArray:
+  case DataArrayPathHelper::DataType::DataArray:
     color = style->getDataArrayPath_DataArray_background_color();
     break;
-  case DataArrayPath::DataType::None:
+  case DataArrayPathHelper::DataType::None:
     break;
   }
 
@@ -165,9 +165,9 @@ const QColor DataArrayPathSelectionWidget::GetCheckedColor(DataArrayPath::DataTy
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, DataContainerSelectionFilterParameter::RequirementType reqs)
+bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter, const DataArrayPath& path, const DataContainerSelectionFilterParameter::RequirementType& reqs)
 {
-  if(DataArrayPath::DataType::DataContainer != path.getDataType())
+  if(DataArrayPathHelper::DataType::DataContainer != path.getDataType())
   {
     return false;
   }
@@ -211,9 +211,9 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, AttributeMatrixSelectionFilterParameter::RequirementType reqs)
+bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter, const DataArrayPath& path, const AttributeMatrixSelectionFilterParameter::RequirementType& reqs)
 {
-  if(DataArrayPath::DataType::AttributeMatrix != path.getDataType())
+  if(DataArrayPathHelper::DataType::AttributeMatrix != path.getDataType())
   {
     return false;
   }
@@ -272,9 +272,9 @@ bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter, DataArrayPath path, DataArraySelectionFilterParameter::RequirementType reqs)
+bool DataArrayPathSelectionWidget::CheckPathRequirements(AbstractFilter* filter, const DataArrayPath& path, const DataArraySelectionFilterParameter::RequirementType& reqs)
 {
-  if(DataArrayPath::DataType::DataArray != path.getDataType())
+  if(DataArrayPathHelper::DataType::DataArray != path.getDataType())
   {
     return false;
   }
@@ -372,7 +372,7 @@ void DataArrayPathSelectionWidget::setupGui()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayPath::DataType DataArrayPathSelectionWidget::getDataType() const
+DataArrayPathHelper::DataType DataArrayPathSelectionWidget::getDataType() const
 {
   return m_DataType;
 }
@@ -380,9 +380,9 @@ DataArrayPath::DataType DataArrayPathSelectionWidget::getDataType() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayPathSelectionWidget::setDataContainerRequirements(DataContainerSelectionFilterParameter::RequirementType dcReqs)
+void DataArrayPathSelectionWidget::setDataContainerRequirements(const DataContainerSelectionFilterParameter::RequirementType& dcReqs)
 {
-  m_DataType = DataArrayPath::DataType::DataContainer;
+  m_DataType = DataArrayPathHelper::DataType::DataContainer;
   m_DataContainerReqs = dcReqs;
 
   QString html;
@@ -397,9 +397,9 @@ void DataArrayPathSelectionWidget::setDataContainerRequirements(DataContainerSel
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayPathSelectionWidget::setAttrMatrixRequirements(AttributeMatrixSelectionFilterParameter::RequirementType amReqs)
+void DataArrayPathSelectionWidget::setAttrMatrixRequirements(const AttributeMatrixSelectionFilterParameter::RequirementType& amReqs)
 {
-  m_DataType = DataArrayPath::DataType::AttributeMatrix;
+  m_DataType = DataArrayPathHelper::DataType::AttributeMatrix;
   m_AttrMatrixReqs = amReqs;
 
   QString html;
@@ -415,9 +415,9 @@ void DataArrayPathSelectionWidget::setAttrMatrixRequirements(AttributeMatrixSele
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayPathSelectionWidget::setDataArrayRequirements(DataArraySelectionFilterParameter::RequirementType daReqs)
+void DataArrayPathSelectionWidget::setDataArrayRequirements(const DataArraySelectionFilterParameter::RequirementType& daReqs)
 {
-  m_DataType = DataArrayPath::DataType::DataArray;
+  m_DataType = DataArrayPathHelper::DataType::DataArray;
   m_DataArrayReqs = daReqs;
 
   QString html;
@@ -435,7 +435,7 @@ void DataArrayPathSelectionWidget::setDataArrayRequirements(DataArraySelectionFi
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataArrayPathSelectionWidget::createTooltipHeader()
+QString DataArrayPathSelectionWidget::createTooltipHeader() const
 {
   QString html;
   QTextStream ss(&html);
@@ -451,7 +451,7 @@ QString DataArrayPathSelectionWidget::createTooltipHeader()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataArrayPathSelectionWidget::createTooltipFooter()
+QString DataArrayPathSelectionWidget::createTooltipFooter() const
 {
   QString html;
   QTextStream ss(&html);
@@ -464,7 +464,7 @@ QString DataArrayPathSelectionWidget::createTooltipFooter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataArrayPathSelectionWidget::createGeomReqString(QVector<IGeometry::Type> geomTypes)
+QString DataArrayPathSelectionWidget::createGeomReqString(QVector<IGeometry::Type> geomTypes) const
 {
   QString reqStr = "<tr><td><i>Required Geometries:</i></td>";
   if(geomTypes.empty())
@@ -518,7 +518,7 @@ QString DataArrayPathSelectionWidget::createGeomReqString(QVector<IGeometry::Typ
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataArrayPathSelectionWidget::createAttrMatrixReqString(QVector<AttributeMatrix::Type> amTypes)
+QString DataArrayPathSelectionWidget::createAttrMatrixReqString(QVector<AttributeMatrix::Type> amTypes) const
 {
   QString reqStr = "<tr><td><i>Required Matrix Type:</i></td>";
   if(amTypes.empty())
@@ -590,7 +590,7 @@ QString DataArrayPathSelectionWidget::createAttrMatrixReqString(QVector<Attribut
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataArrayPathSelectionWidget::createDataArrayTypeString(QVector<QString> daTypes)
+QString DataArrayPathSelectionWidget::createDataArrayTypeString(QVector<QString> daTypes) const
 {
   QString reqStr = "<tr><td><i>Required Array Type:</i></td>";
   if(daTypes.empty())
@@ -612,7 +612,7 @@ QString DataArrayPathSelectionWidget::createDataArrayTypeString(QVector<QString>
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataArrayPathSelectionWidget::createComponentReqString(QVector<QVector<size_t>> comps)
+QString DataArrayPathSelectionWidget::createComponentReqString(QVector<QVector<size_t>> comps) const
 {
   QString reqStr = "<tr><td><i>Required Component Size:</i></td>";
   if(comps.empty())
@@ -647,7 +647,7 @@ QString DataArrayPathSelectionWidget::createComponentReqString(QVector<QVector<s
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerSelectionFilterParameter::RequirementType DataArrayPathSelectionWidget::getDataContainerRequirements()
+DataContainerSelectionFilterParameter::RequirementType DataArrayPathSelectionWidget::getDataContainerRequirements() const
 {
   return m_DataContainerReqs;
 }
@@ -655,7 +655,7 @@ DataContainerSelectionFilterParameter::RequirementType DataArrayPathSelectionWid
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixSelectionFilterParameter::RequirementType DataArrayPathSelectionWidget::getAttrMatrixRequirements()
+AttributeMatrixSelectionFilterParameter::RequirementType DataArrayPathSelectionWidget::getAttrMatrixRequirements() const
 {
   return m_AttrMatrixReqs;
 }
@@ -663,7 +663,7 @@ AttributeMatrixSelectionFilterParameter::RequirementType DataArrayPathSelectionW
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArraySelectionFilterParameter::RequirementType DataArrayPathSelectionWidget::getDataArrayRequirements()
+DataArraySelectionFilterParameter::RequirementType DataArrayPathSelectionWidget::getDataArrayRequirements() const
 {
   return m_DataArrayReqs;
 }
@@ -671,7 +671,7 @@ DataArraySelectionFilterParameter::RequirementType DataArrayPathSelectionWidget:
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayPathSelectionWidget::setDataArrayPath(DataArrayPath path)
+void DataArrayPathSelectionWidget::setDataArrayPath(const DataArrayPath& path)
 {
   // Do not check the path if there are no changes
   if(getDataArrayPath() == path)
@@ -691,13 +691,13 @@ void DataArrayPathSelectionWidget::setDataArrayPath(DataArrayPath path)
     // Clear DataArrayPath
     switch(getDataType())
     {
-    case DataArrayPath::DataType::DataContainer:
+    case DataArrayPathHelper::DataType::DataContainer:
       setText("");
       break;
-    case DataArrayPath::DataType::AttributeMatrix:
+    case DataArrayPathHelper::DataType::AttributeMatrix:
       setText("\t / \t");
       break;
-    case DataArrayPath::DataType::DataArray:
+    case DataArrayPathHelper::DataType::DataArray:
       setText("\t / \t / \t");
       break;
     default:
@@ -729,7 +729,7 @@ void DataArrayPathSelectionWidget::setFilteredDataArrayPath(DataArrayPath path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayPath DataArrayPathSelectionWidget::getDataArrayPath()
+DataArrayPath DataArrayPathSelectionWidget::getDataArrayPath() const
 {
   return DataArrayPath::Deserialize(text(), Detail::Delimiter);
 }
@@ -737,7 +737,7 @@ DataArrayPath DataArrayPathSelectionWidget::getDataArrayPath()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataArrayPathSelectionWidget::checkCurrentPath()
+bool DataArrayPathSelectionWidget::checkCurrentPath() const
 {
   return checkPathReqs(getDataArrayPath());
 }
@@ -745,7 +745,7 @@ bool DataArrayPathSelectionWidget::checkCurrentPath()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataArrayPathSelectionWidget::checkPathReqs(DataArrayPath path)
+bool DataArrayPathSelectionWidget::checkPathReqs(const DataArrayPath& path) const
 {
   if(nullptr == m_Filter)
   {
@@ -762,13 +762,13 @@ bool DataArrayPathSelectionWidget::checkPathReqs(DataArrayPath path)
   // Check requirements
   switch(m_DataType)
   {
-  case DataArrayPath::DataType::DataContainer:
+  case DataArrayPathHelper::DataType::DataContainer:
     return checkDataContainerReqs(path);
-  case DataArrayPath::DataType::AttributeMatrix:
+  case DataArrayPathHelper::DataType::AttributeMatrix:
     return checkAttributeMatrixReqs(path);
-  case DataArrayPath::DataType::DataArray:
+  case DataArrayPathHelper::DataType::DataArray:
     return checkDataArrayReqs(path);
-  case DataArrayPath::DataType::None:
+  case DataArrayPathHelper::DataType::None:
     break;
   }
 
@@ -778,7 +778,7 @@ bool DataArrayPathSelectionWidget::checkPathReqs(DataArrayPath path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataArrayPathSelectionWidget::checkDataContainerReqs(DataArrayPath path)
+bool DataArrayPathSelectionWidget::checkDataContainerReqs(const DataArrayPath& path) const
 {
   return CheckPathRequirements(m_Filter, path, m_DataContainerReqs);
 }
@@ -786,7 +786,7 @@ bool DataArrayPathSelectionWidget::checkDataContainerReqs(DataArrayPath path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataArrayPathSelectionWidget::checkAttributeMatrixReqs(DataArrayPath path)
+bool DataArrayPathSelectionWidget::checkAttributeMatrixReqs(const DataArrayPath& path) const
 {
   return CheckPathRequirements(m_Filter, path, m_AttrMatrixReqs);
 }
@@ -794,7 +794,7 @@ bool DataArrayPathSelectionWidget::checkAttributeMatrixReqs(DataArrayPath path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataArrayPathSelectionWidget::checkDataArrayReqs(DataArrayPath path)
+bool DataArrayPathSelectionWidget::checkDataArrayReqs(const DataArrayPath& path) const
 {
   return CheckPathRequirements(m_Filter, path, m_DataArrayReqs);
 }
@@ -877,16 +877,16 @@ void DataArrayPathSelectionWidget::emitRequirements()
 
   switch(m_DataType)
   {
-  case DataArrayPath::DataType::DataContainer:
+  case DataArrayPathHelper::DataType::DataContainer:
     emit viewPathsMatchingReqs(m_DataContainerReqs);
     break;
-  case DataArrayPath::DataType::AttributeMatrix:
+  case DataArrayPathHelper::DataType::AttributeMatrix:
     emit viewPathsMatchingReqs(m_AttrMatrixReqs);
     break;
-  case DataArrayPath::DataType::DataArray:
+  case DataArrayPathHelper::DataType::DataArray:
     emit viewPathsMatchingReqs(m_DataArrayReqs);
     break;
-  case DataArrayPath::DataType::None:
+  case DataArrayPathHelper::DataType::None:
     break;
   }
 
@@ -1075,19 +1075,19 @@ void DataArrayPathSelectionWidget::afterPreflight()
   bool found = false;
   switch(getDataType())
   {
-  case DataArrayPath::DataType::DataContainer:
+  case DataArrayPathHelper::DataType::DataContainer:
     if(dca->getDataContainer(getDataArrayPath()))
     {
       found = true;
     }
     break;
-  case DataArrayPath::DataType::AttributeMatrix:
+  case DataArrayPathHelper::DataType::AttributeMatrix:
     if(dca->getAttributeMatrix(getDataArrayPath()))
     {
       found = true;
     }
     break;
-  case DataArrayPath::DataType::DataArray:
+  case DataArrayPathHelper::DataType::DataArray:
   {
     AttributeMatrix::Pointer am = dca->getAttributeMatrix(getDataArrayPath());
     if(am && am->getAttributeArray(getDataArrayPath().getDataArrayName()))
@@ -1096,7 +1096,7 @@ void DataArrayPathSelectionWidget::afterPreflight()
     }
   }
   break;
-  case DataArrayPath::DataType::None:
+  case DataArrayPathHelper::DataType::None:
     break;
   }
 
@@ -1172,7 +1172,7 @@ void DataArrayPathSelectionWidget::resetStyle()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QColor DataArrayPathSelectionWidget::getBorderColor(State state)
+const QColor DataArrayPathSelectionWidget::getBorderColor(State state) const
 {
   SVStyle* style = SVStyle::Instance();
   QColor color = "#000000";
@@ -1202,7 +1202,7 @@ const QColor DataArrayPathSelectionWidget::getBorderColor(State state)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayPathSelectionWidget::State DataArrayPathSelectionWidget::getState()
+DataArrayPathSelectionWidget::State DataArrayPathSelectionWidget::getState() const
 {
   return m_State;
 }
@@ -1404,7 +1404,7 @@ QSize DataArrayPathSelectionWidget::sizeHint() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataArrayPathSelectionWidget::getPropertyName()
+QString DataArrayPathSelectionWidget::getPropertyName() const
 {
   return m_PropName;
 }
@@ -1420,7 +1420,7 @@ void DataArrayPathSelectionWidget::setPropertyName(QString propName)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataArrayPathSelectionWidget::isCreatedPath(DataArrayPath path)
+bool DataArrayPathSelectionWidget::isCreatedPath(const DataArrayPath& path) const
 {
   if(nullptr == m_Filter)
   {
@@ -1455,7 +1455,7 @@ void DataArrayPathSelectionWidget::showContextMenu(const QPoint& pos)
 // -----------------------------------------------------------------------------
 QMenu* DataArrayPathSelectionWidget::createSelectionMenu()
 {
-  if(nullptr == m_Filter || DataArrayPath::DataType::None == m_DataType)
+  if(nullptr == m_Filter || DataArrayPathHelper::DataType::None == m_DataType)
   {
     return nullptr;
   }
@@ -1470,7 +1470,7 @@ QMenu* DataArrayPathSelectionWidget::createSelectionMenu()
   DataArrayPath path;
 
   // Populate Menu with DataContainers
-  QList<DataContainer::Pointer> containers = dca->getDataContainers();
+  DataContainerArray::Container containers = dca->getDataContainers();
   for(DataContainer::Pointer dc : containers)
   {
     path.setDataContainerName(dc->getName());
@@ -1479,7 +1479,7 @@ QMenu* DataArrayPathSelectionWidget::createSelectionMenu()
       continue;
     }
 
-    if(DataArrayPath::DataType::DataContainer == m_DataType)
+    if(DataArrayPathHelper::DataType::DataContainer == m_DataType)
     {
       QAction* action = menu->addAction(dc->getName());
       action->setEnabled(checkPathReqs(path));
@@ -1491,8 +1491,7 @@ QMenu* DataArrayPathSelectionWidget::createSelectionMenu()
       menu->addMenu(dcMenu);
       bool dcMenuEnabled = false;
 
-      DataContainer::AttributeMatrixMap_t attrMats = dc->getAttributeMatrices();
-      for(AttributeMatrix::Pointer am : attrMats)
+      for(const AttributeMatrix::Pointer& am : dc->getChildren())
       {
         path.setAttributeMatrixName(am->getName());
         if(isCreatedPath(path))
@@ -1501,7 +1500,7 @@ QMenu* DataArrayPathSelectionWidget::createSelectionMenu()
         }
 
         // Populate DataContainer menu
-        if(DataArrayPath::DataType::AttributeMatrix == m_DataType)
+        if(DataArrayPathHelper::DataType::AttributeMatrix == m_DataType)
         {
           QAction* action = dcMenu->addAction(am->getName());
           action->setEnabled(checkPathReqs(path));

@@ -440,7 +440,47 @@ RectGridGeom::Pointer RectGridGeom::CreateGeometry(const QString& name)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RectGridGeom::setXBounds(FloatArrayType::Pointer xBnds)
+SIMPL::Tuple3SVec RectGridGeom::getDimensions() const
+{
+  return m_Dimensions.toTuple();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RectGridGeom::getDimensions(SizeVec3Type& dims) const
+{
+  dims = m_Dimensions;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RectGridGeom::setDimensions(const SizeVec3Type& dims)
+{
+  m_Dimensions = dims;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RectGridGeom::setDimensions(SizeVec3Type& dims)
+{
+  m_Dimensions = dims;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RectGridGeom::setDimensions(const SIMPL::Tuple3SVec& dims)
+{
+  m_Dimensions = dims;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RectGridGeom::setXBounds(const FloatArrayType::Pointer& xBnds)
 {
   if(xBnds.get() != nullptr)
   {
@@ -455,7 +495,7 @@ void RectGridGeom::setXBounds(FloatArrayType::Pointer xBnds)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RectGridGeom::setYBounds(FloatArrayType::Pointer yBnds)
+void RectGridGeom::setYBounds(const FloatArrayType::Pointer& yBnds)
 {
   if(yBnds.get() != nullptr)
   {
@@ -470,7 +510,7 @@ void RectGridGeom::setYBounds(FloatArrayType::Pointer yBnds)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RectGridGeom::setZBounds(FloatArrayType::Pointer zBnds)
+void RectGridGeom::setZBounds(const FloatArrayType::Pointer& zBnds)
 {
   if(zBnds.get() != nullptr)
   {
@@ -480,6 +520,46 @@ void RectGridGeom::setZBounds(FloatArrayType::Pointer zBnds)
     }
   }
   m_zBounds = zBnds;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+FloatArrayType::Pointer RectGridGeom::getXBounds() const
+{
+  return m_xBounds;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+FloatArrayType::Pointer RectGridGeom::getYBounds() const
+{
+  return m_yBounds;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+FloatArrayType::Pointer RectGridGeom::getZBounds() const
+{
+  return m_zBounds;
+}
+
+// -----------------------------------------------------------------------------
+size_t RectGridGeom::getXPoints()
+{
+  return m_Dimensions[0];
+}
+// -----------------------------------------------------------------------------
+size_t RectGridGeom::getYPoints()
+{
+  return m_Dimensions[1];
+}
+// -----------------------------------------------------------------------------
+size_t RectGridGeom::getZPoints()
+{
+  return m_Dimensions[2];
 }
 
 // -----------------------------------------------------------------------------
@@ -683,7 +763,7 @@ void RectGridGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RectGridGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
+void RectGridGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
   if(data->getType() != AttributeMatrix::Type::Cell)
   {
@@ -694,10 +774,10 @@ void RectGridGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Poin
   {
     return;
   }
-  if(data->getName().compare(name) != 0)
-  {
-    data->setName(name);
-  }
+  //if(data->getName().compare(name) != 0)
+  //{
+  //  data->setName(name);
+  //}
   m_AttributeMatrices[name] = data;
 }
 
@@ -1064,7 +1144,7 @@ QString RectGridGeom::getInfoString(SIMPL::InfoStringFormat format)
     ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type</th><td>" << TypeToString(getGeometryType()) << "</td></tr>";
     ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Units</th><td>)" << LengthUnitToString(getUnits()) << "</td></tr>";
     ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Dimensions:</th><td>" << volDims[0] << " x " << volDims[1] << " x " << volDims[2] << "</td></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Resolution:</th><td>"
+    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Spacing:</th><td>"
        << "Variable"
        << "</td></tr>";
   }
