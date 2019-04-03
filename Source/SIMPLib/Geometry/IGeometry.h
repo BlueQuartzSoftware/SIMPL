@@ -76,8 +76,6 @@ class SIMPLib_EXPORT IGeometry : public Observable
   PYB11_METHOD(Type getGeometryType)
   PYB11_METHOD(QString getGeometryTypeAsString)
   PYB11_METHOD(QString getInfoString ARGS formatType)
-  PYB11_PROPERTY(QString MessageTitle READ getMessageTitle WRITE setMessageTitle)
-  PYB11_PROPERTY(QString MessageLabel READ getMessageLabel WRITE setMessageLabel)
   PYB11_METHOD(uint32_t getXdmfGridType)
   PYB11_METHOD(uint32_t getUnitDimensionality)
   PYB11_PROPERTY(uint32_t SpatialDimensionality READ getSpatialDimensionality WRITE setSpatialDimensionality)
