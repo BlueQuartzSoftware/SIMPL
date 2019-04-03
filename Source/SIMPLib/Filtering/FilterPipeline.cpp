@@ -899,23 +899,17 @@ DataContainerArray::Pointer FilterPipeline::execute(DataContainerArray::Pointer 
 
   switch(m_State)
   {
-    case FilterPipeline::State::Canceling:
-    {
-      m_ExecutionResult = FilterPipeline::ExecutionResult::Canceled;
-      notifyStatusMessage("Pipeline Canceled");
-      break;
-    }
-    case FilterPipeline::State::Executing:
-    {
-      m_ExecutionResult = FilterPipeline::ExecutionResult::Completed;
-      notifyStatusMessage("Pipeline Complete");
-      break;
-    }
-    case FilterPipeline::State::Idle:
-    {
-      throw PipelineIdleException();
-      break;
-    }
+  case FilterPipeline::State::Canceling:
+    m_ExecutionResult = FilterPipeline::ExecutionResult::Canceled;
+    notifyStatusMessage("Pipeline Canceled");
+    break;
+  case FilterPipeline::State::Executing:
+    m_ExecutionResult = FilterPipeline::ExecutionResult::Completed;
+    notifyStatusMessage("Pipeline Complete");
+    break;
+  case FilterPipeline::State::Idle:
+    throw PipelineIdleException();
+    break;
   }
 
   m_State = FilterPipeline::State::Idle;
