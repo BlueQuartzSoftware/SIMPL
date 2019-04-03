@@ -65,17 +65,17 @@
   LinkedPathCreationFilterParameter::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                             \
                                          SIMPL_NEW_LINKED_DC_STRING(Filter, this, LinkedDcProp, Index))
 
-#define SIMPL_NEW_DA_WITH_LINKED_AM_NoIndex(Desc, Prop, LinkedDcProp, LinkedAmProp, Category, Filter)                                                                                                   \
+#define SIMPL_NEW_DA_WITH_LINKED_AM_NoIndex(Desc, Prop, LinkedDcProp, LinkedAmProp, Category, Filter)                                                                                                  \
   LinkedPathCreationFilterParameter::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                             \
                                          SIMPL_NEW_LINKED_AM_STRING(Filter, this, LinkedDcProp, LinkedAmProp))
-#define SIMPL_NEW_DA_WITH_LINKED_AM_Index(Desc, Prop, LinkedDcProp, LinkedAmProp, Category, Filter, Index)                                                                                              \
+#define SIMPL_NEW_DA_WITH_LINKED_AM_Index(Desc, Prop, LinkedDcProp, LinkedAmProp, Category, Filter, Index)                                                                                             \
   LinkedPathCreationFilterParameter::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                             \
                                          SIMPL_NEW_LINKED_AM_STRING(Filter, this, LinkedDcProp, LinkedAmProp, Index))
 
-#define SIMPL_NEW_PATH_WITH_LINKED_PARENT_NoIndex(Desc, Prop, LinkedPathProp, Category, Filter)                                                                                                         \
+#define SIMPL_NEW_PATH_WITH_LINKED_PARENT_NoIndex(Desc, Prop, LinkedPathProp, Category, Filter)                                                                                                        \
   LinkedPathCreationFilterParameter::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                             \
                                          SIMPL_NEW_LINKED_DATA_PATH(Filter, this, LinkedPathProp))
-#define SIMPL_NEW_PATH_WITH_LINKED_PARENT_Index(Desc, Prop, LinkedPathProp, Category, Filter, Index)                                                                                                    \
+#define SIMPL_NEW_PATH_WITH_LINKED_PARENT_Index(Desc, Prop, LinkedPathProp, Category, Filter, Index)                                                                                                   \
   LinkedPathCreationFilterParameter::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                             \
                                          SIMPL_NEW_LINKED_DATA_PATH(Filter, this, LinkedPathProp, Index))
 
