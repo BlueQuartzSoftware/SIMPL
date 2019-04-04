@@ -77,7 +77,16 @@ public:
    */
   void setupGui() override;
 
+  /**
+   * @brief Returns the DataType for the created DataArrayPath
+   * @return
+   */
   DataArrayPathHelper::DataType getDataType() const;
+
+  /**
+   * @brief Returns the DataType for the created DataArrayPath as an integer for CSS styling.
+   * @return
+   */
   int getDataTypei() const;
 
 public slots:

@@ -132,7 +132,7 @@ void DataArrayPathDisplay::updateStyle()
 // -----------------------------------------------------------------------------
 DataArrayPathHelper::DataType DataArrayPathDisplay::getDataType() const
 {
-  return getDataArrayPath().getDataType();
+  return m_DataType;
 }
 
 // -----------------------------------------------------------------------------
@@ -144,7 +144,8 @@ void DataArrayPathDisplay::setDataArrayPath(const DataArrayPath& path)
   m_Ui->attrMatPathLabel->setText(path.getAttributeMatrixName());
   m_Ui->dataArrayPathLabel->setText(path.getDataArrayName());
 
-  switch(path.getDataType())
+  m_DataType = path.getDataType();
+  switch(m_DataType)
   {
   case DataArrayPathHelper::DataType::DataContainer:
     m_Ui->dataConWidget->setVisible(true);
@@ -182,9 +183,25 @@ void DataArrayPathDisplay::setDataArrayPath(const QString& dcName, const QString
 // -----------------------------------------------------------------------------
 DataArrayPath DataArrayPathDisplay::getDataArrayPath() const
 {
-  DataArrayPath path;
-  return path;
-  //return DataArrayPath::Deserialize(text(), Detail::Delimiter);
+  QString dcName;
+  QString amName;
+  QString daName;
+  switch(m_DataType)
+  {
+  case DataArrayPathHelper::DataType::DataArray:
+    daName = m_Ui->dataArrayPathLabel->text();
+    // [[fallthrough]]
+  case DataArrayPathHelper::DataType::AttributeMatrix:
+    amName = m_Ui->attrMatPathLabel->text();
+    // [[fallthrough]]
+  case DataArrayPathHelper::DataType::DataContainer:
+    dcName = m_Ui->dataConPathLabel->text();
+    break;
+  case DataArrayPathHelper::DataType::None:
+    break;
+  }
+  
+  return DataArrayPath(dcName, amName, daName);
 }
 
 // -----------------------------------------------------------------------------
@@ -212,7 +229,7 @@ void DataArrayPathDisplay::afterPreflight()
     return;
   }
 
-  if(nullptr != m_Filter && m_Filter->getDataContainerArray())
+  if(m_Filter->getDataContainerArray())
   {
     return;
   }

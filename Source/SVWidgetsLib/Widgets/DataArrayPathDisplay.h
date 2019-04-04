@@ -65,8 +65,6 @@ public:
   DataArrayPathDisplay(QWidget* parent = nullptr);
   ~DataArrayPathDisplay() override = default;
 
-  Q_PROPERTY(DataArrayPathHelper::DataType PathType READ getDataType)
-
   /**
    * @brief Sets the DataArrayPath displayed
    * @param dcName
@@ -168,20 +166,9 @@ protected:
    */
   QSize updatedSizeHint(QSize sizeHint) const;
 
-  /**
-   * @brief Creates and returns the header part of the tooltip HTML
-   * @return
-   */
-  QString createTooltipHeader();
-
-  /**
-   * @brief Creates and returns the closing part of the tooltip HTML
-   * @return
-   */
-  QString createTooltipFooter();
-
 private:
   AbstractFilter* m_Filter = nullptr;
   QString m_PropName;
   QSharedPointer<Ui::DataArrayPathDisplay> m_Ui;
+  DataArrayPathHelper::DataType m_DataType = DataArrayPathHelper::DataType::DataArray;
 };
