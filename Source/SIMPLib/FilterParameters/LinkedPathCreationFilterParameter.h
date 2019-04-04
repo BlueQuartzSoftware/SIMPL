@@ -42,6 +42,8 @@
 #define SIMPL_NEW_LINKED_DC_STRING(FILTER, PTR, DC_PROP) new LinkedPathCreationFilterParameter::LinkedStringPath(SIMPL_BIND_GETTER(FILTER, PTR, DC_PROP))
 #define SIMPL_NEW_LINKED_AM_STRING(FILTER, PTR, DC_PROP, AM_PROP)                                                                                                                                      \
   new LinkedPathCreationFilterParameter::LinkedStringPath(SIMPL_BIND_GETTER(FILTER, PTR, DC_PROP), SIMPL_BIND_GETTER(FILTER, PTR, AM_PROP))
+#define SIMPL_NEW_LINKED_AM_MIXED(FILTER, PTR, DC_PROP, AM_PROP)                                                                                                                                      \
+  new LinkedPathCreationFilterParameter::LinkedMixedPath(SIMPL_BIND_GETTER(FILTER, PTR, DC_PROP), SIMPL_BIND_GETTER(FILTER, PTR, AM_PROP))
 
 #define SIMPL_NEW_LINKED_DATA_PATH(FILTER, PTR, PATH_PROP) new LinkedPathCreationFilterParameter::LinkedDataPath(SIMPL_BIND_GETTER(FILTER, PTR, PATH_PROP))
 
@@ -71,6 +73,12 @@
 #define SIMPL_NEW_DA_WITH_LINKED_AM_Index(Desc, Prop, LinkedDcProp, LinkedAmProp, Category, Filter, Index)                                                                                             \
   LinkedPathCreationFilterParameter::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                             \
                                          SIMPL_NEW_LINKED_AM_STRING(Filter, this, LinkedDcProp, LinkedAmProp, Index))
+#define SIMPL_NEW_DA_WITH_MIXED_AM_NO_INDEX(Desc, Prop, LinkedDcProp, LinkedAmProp, Category, Filter)                                                                                                  \
+  LinkedPathCreationFilterParameter::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                             \
+                                         SIMPL_NEW_LINKED_AM_MIXED(Filter, this, LinkedDcProp, LinkedAmProp))
+#define SIMPL_NEW_DA_WITH_MIXED_AM_Index(Desc, Prop, LinkedDcProp, LinkedAmProp, Category, Filter, Index)                                                                                             \
+  LinkedPathCreationFilterParameter::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                             \
+                                         SIMPL_NEW_LINKED_AM_MIXED(Filter, this, LinkedDcProp, LinkedAmProp, Index))
 
 #define SIMPL_NEW_PATH_WITH_LINKED_PARENT_NoIndex(Desc, Prop, LinkedPathProp, Category, Filter)                                                                                                        \
   LinkedPathCreationFilterParameter::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                             \
@@ -84,6 +92,7 @@
 
 #define SIMPL_NEW_AM_WITH_LINKED_DC(...) SIMPL_EXPAND(_FP_GET_OVERRIDE6(__VA_ARGS__, SIMPL_NEW_AM_WITH_LINKED_DC_Index, SIMPL_NEW_AM_WITH_LINKED_DC_NoIndex)(__VA_ARGS__))
 #define SIMPL_NEW_DA_WITH_LINKED_AM(...) SIMPL_EXPAND(_FP_GET_OVERRIDE7(__VA_ARGS__, SIMPL_NEW_DA_WITH_LINKED_AM_Index, SIMPL_NEW_DA_WITH_LINKED_AM_NoIndex)(__VA_ARGS__))
+#define SIMPL_NEW_DA_WITH_MIXED_AM(...) SIMPL_EXPAND(_FP_GET_OVERRIDE7(__VA_ARGS__, SIMPL_NEW_DA_WITH_MIXED_AM_Index, SIMPL_NEW_DA_WITH_MIXED_AM_NO_INDEX)(__VA_ARGS__))
 #define SIMPL_NEW_PATH_WITH_LINKED_PARENT(...) SIMPL_EXPAND(_FP_GET_OVERRIDE6(__VA_ARGS__, SIMPL_NEW_PATH_WITH_LINKED_PARENT_Index, SIMPL_NEW_PATH_WITH_LINKED_PARENT_NoIndex)(__VA_ARGS__))
 
 /**
@@ -129,6 +138,30 @@ public:
     {
     }
     LinkedStringPath(GetterCallbackType getDc, GetterCallbackType getAm)
+    : dcGetter(getDc)
+    , amGetter(getAm)
+    {
+    }
+
+    /**
+     * @brief Generates a DataArrayPath to the target container
+     * @return
+     */
+    DataArrayPath generatePath() override;
+  };
+  /**
+   * @brief The LinkedStringPath struct stores getters for the DataContainer and AttributeMatrix string properties.
+   * These getters are used to generate a DataArrayPath to the target container.
+   */
+  class SIMPLib_EXPORT LinkedMixedPath : public ILinkedPath
+  {
+  public:
+    using StringGetterCallbackType = std::function<QString(void)>;
+    using PathGetterCallbackType = std::function<DataArrayPath(void)>;
+    PathGetterCallbackType dcGetter;
+    StringGetterCallbackType amGetter;
+
+    LinkedMixedPath(PathGetterCallbackType getDc, StringGetterCallbackType getAm)
     : dcGetter(getDc)
     , amGetter(getAm)
     {

@@ -117,6 +117,21 @@ DataArrayPath LinkedPathCreationFilterParameter::LinkedStringPath::generatePath(
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+DataArrayPath LinkedPathCreationFilterParameter::LinkedMixedPath::generatePath()
+{
+  DataArrayPath linkedPath;
+  // Use std::function operator bool to check if this is a callable function
+  if(dcGetter && amGetter)
+  {
+    linkedPath.setDataContainerName(dcGetter().getDataContainerName());
+    linkedPath.setAttributeMatrixName(amGetter());
+  }
+  return linkedPath;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 DataArrayPath LinkedPathCreationFilterParameter::LinkedDataPath::generatePath()
 {
   if(pathGetter)
