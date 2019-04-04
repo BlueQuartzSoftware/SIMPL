@@ -35,6 +35,8 @@
 
 #include "LinkedPathCreationFilterParameter.h"
 
+#include <stdexcept>
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -99,6 +101,58 @@ void LinkedPathCreationFilterParameter::writeJson(QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+LinkedPathCreationFilterParameter::LinkedStringPath::LinkedStringPath(GetterCallbackType getDc)
+  : dcGetter(getDc)
+{
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+LinkedPathCreationFilterParameter::LinkedStringPath::LinkedStringPath(GetterCallbackType getDc, GetterCallbackType getAm)
+  : dcGetter(getDc)
+  , amGetter(getAm)
+{
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+LinkedPathCreationFilterParameter::LinkedMixedPath::LinkedMixedPath(PathGetterCallbackType getDc, StringGetterCallbackType getAm)
+: dcGetter(getDc)
+, amGetter(getAm)
+{
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+LinkedPathCreationFilterParameter::LinkedMixedPath::LinkedMixedPath(PathGetterCallbackType dc, PathGetterCallbackType path)
+: dcGetter(dc)
+, amPathGetter(path)
+{
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+LinkedPathCreationFilterParameter::LinkedDataPath::LinkedDataPath(GetterCallbackType getPath)
+: pathGetter(getPath)
+{
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+LinkedPathCreationFilterParameter::LinkedDataPath::LinkedDataPath(GetterCallbackType getPath, DataArrayPathHelper::DataType targetLevel)
+: pathGetter(getPath)
+, m_TargetPathType(targetLevel)
+{
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 DataArrayPath LinkedPathCreationFilterParameter::LinkedStringPath::generatePath()
 {
   DataArrayPath linkedPath;
@@ -126,6 +180,15 @@ DataArrayPath LinkedPathCreationFilterParameter::LinkedMixedPath::generatePath()
     linkedPath.setDataContainerName(dcGetter().getDataContainerName());
     linkedPath.setAttributeMatrixName(amGetter());
   }
+  else if(dcGetter && amPathGetter)
+  {
+    linkedPath.setDataContainerName(dcGetter().getDataContainerName());
+    linkedPath.setAttributeMatrixName(amPathGetter().getAttributeMatrixName());
+  }
+  //else
+  //{
+  //  throw std::invalid_argument("Invalid linked AttributeMatrix path");
+  //}
   return linkedPath;
 }
 
@@ -134,9 +197,21 @@ DataArrayPath LinkedPathCreationFilterParameter::LinkedMixedPath::generatePath()
 // -----------------------------------------------------------------------------
 DataArrayPath LinkedPathCreationFilterParameter::LinkedDataPath::generatePath()
 {
-  if(pathGetter)
+  if(!pathGetter)
   {
-    return pathGetter();
+    return DataArrayPath();
+  }
+  DataArrayPath linkedPath = pathGetter();
+  switch(m_TargetPathType)
+  {
+  case DataArrayPathHelper::DataType::DataContainer:
+    return DataArrayPath(linkedPath.getDataContainerName(), "", "");
+  case DataArrayPathHelper::DataType::AttributeMatrix:
+    return DataArrayPath(linkedPath.getDataContainerName(), linkedPath.getAttributeMatrixName(), "");
+  case DataArrayPathHelper::DataType::DataArray:
+    throw std::domain_error("LinkedPathCreationFilterParameter cannot target a child path underneath DataArray");
+  case DataArrayPathHelper::DataType::None:
+    return linkedPath;
   }
   return DataArrayPath();
 }
