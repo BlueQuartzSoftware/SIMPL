@@ -40,6 +40,7 @@
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
@@ -77,7 +78,7 @@ void ExtractComponentAsArray::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Multicomponent Attribute Array", SelectedArrayPath, FilterParameter::RequiredArray, ExtractComponentAsArray, req));
   }
 
-  parameters.push_back(SIMPL_NEW_STRING_FP("Scalar Attribute Array", NewArrayArrayName, FilterParameter::CreatedArray, ExtractComponentAsArray));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_SUBPATH("Scalar Attribute Array", NewArrayArrayName, SelectedArrayPath, FilterParameter::CreatedArray, ExtractComponentAsArray));
 
   setFilterParameters(parameters);
 }
