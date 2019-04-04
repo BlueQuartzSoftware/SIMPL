@@ -38,6 +38,8 @@
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
+#include "SIMPLib/Filtering/ComparisonInputs.h"
+#include "SIMPLib/Filtering/ComparisonInputsAdvanced.h"
 
 // LinkedPath macros
 #define SIMPL_NEW_LINKED_DC_STRING(FILTER, PTR, DC_PROP) new LinkedPathCreationFilterParameter::LinkedStringPath(SIMPL_BIND_GETTER(FILTER, PTR, DC_PROP))
@@ -48,6 +50,8 @@
 
 #define SIMPL_NEW_LINKED_DATA_PATH(FILTER, PTR, PATH_PROP) new LinkedPathCreationFilterParameter::LinkedDataPath(SIMPL_BIND_GETTER(FILTER, PTR, PATH_PROP))
 #define SIMPL_NEW_LINKED_SUBPATH(FILTER, PTR, PATH_PROP, DATA_TYPE) new LinkedPathCreationFilterParameter::LinkedDataPath(SIMPL_BIND_GETTER(FILTER, PTR, PATH_PROP), DATA_TYPE)
+
+#define SIMPL_NEW_LINKED_ADV_COMPARE(FILTER, PTR, COMP_PROP) new LinkedPathCreationFilterParameter::LinkedAdvComparisonPath(SIMPL_BIND_GETTER(FILTER, PTR, COMP_PROP))
 
 // Index / NoIndex implementations
 #define SIMPL_NEW_AM_WITH_LINKED_DC_NoIndex(Desc, Prop, LinkedDcProp, Category, Filter)                                                                                                                \
@@ -92,6 +96,13 @@
 #define SIMPL_NEW_DA_WITH_LINKED_SUBPATH_Index(Desc, Prop, LinkedPathProp, Category, Filter, Index)                                                                                                    \
   SIMPL_NEW_PATH_WITH_LINKED_SUBPATH_NoIndex(Desc, Prop, LinkedPathProp, DataArrayPathHelper::DataType::AttributeMatrix, Category, Filter, Index)
 
+#define SIMPL_NEW_DA_FROM_ADV_COMPARISON_NoIndex(Desc, Prop, LinkedComp, Category, Filter)                                                                                        \
+  LinkedPathCreationFilterParameter::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                             \
+                                         SIMPL_NEW_LINKED_ADV_COMPARE(Filter, this, LinkedComp))
+#define SIMPL_NEW_DA_FROM_ADV_COMPARISON_Index(Desc, Prop, LinkedComp, Category, Filter, Index)                                                                                        \
+  LinkedPathCreationFilterParameter::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                             \
+                                         SIMPL_NEW_LINKED_ADV_COMPARE(Filter, this, LinkedComp), Index)
+
 #define _FP_GET_OVERRIDE6(A, B, C, D, E, F, NAME, ...) NAME
 #define _FP_GET_OVERRIDE7(A, B, C, D, E, F, G, NAME, ...) NAME
 
@@ -105,6 +116,9 @@
 #define SIMPL_NEW_AM_WITH_LINKED_SUBPATH(...) SIMPL_EXPAND(_FP_GET_OVERRIDE6(__VA_ARGS__, SIMPL_NEW_AM_WITH_LINKED_SUBPATH_Index, SIMPL_NEW_AM_WITH_LINKED_SUBPATH_NoIndex)(__VA_ARGS__))
 #define SIMPL_NEW_DA_WITH_LINKED_SUBPATH(...) SIMPL_EXPAND(_FP_GET_OVERRIDE6(__VA_ARGS__, SIMPL_NEW_DA_WITH_LINKED_SUBPATH_Index, SIMPL_NEW_DA_WITH_LINKED_SUBPATH_NoIndex)(__VA_ARGS__))
 #define SIMPL_NEW_DA_WITH_MIXED_SUBPATH(...) SIMPL_EXPAND(_FP_GET_OVERRIDE7(__VA_ARGS__, SIMPL_NEW_DA_WITH_MIXED_AM_Index, SIMPL_NEW_DA_WITH_MIXED_AM_NO_INDEX)(__VA_ARGS__))
+
+// Special cases
+#define SIMPL_NEW_DA_FROM_ADV_COMPARISON(...) SIMPL_EXPAND(_FP_GET_OVERRIDE6(__VA_ARGS__, SIMPL_NEW_DA_FROM_ADV_COMPARISON_Index, SIMPL_NEW_DA_FROM_ADV_COMPARISON_NoIndex)(__VA_ARGS__))
 
 /**
  * @brief The LinkedPathCreationFilterParameter class is used by filters to instantiate an StringWidget.  By instantiating an instance of
@@ -196,6 +210,24 @@ public:
   private:
     GetterCallbackType pathGetter;
     DataArrayPathHelper::DataType m_TargetPathType = DataArrayPathHelper::DataType::None;
+  };
+  /**
+   * @brief The LinkedAdvComparisonPath stores a getter for the target ComparisonInputsAdvanced DataArrayPath
+   */
+  class SIMPLib_EXPORT LinkedAdvComparisonPath : public ILinkedPath
+  {
+  public:
+    using GetterCallbackType = std::function<ComparisonInputsAdvanced(void)>;
+    LinkedAdvComparisonPath(GetterCallbackType comparison);
+
+    /**
+     * @brief Generates a DataArrayPath to the target container
+     * @return
+     */
+    DataArrayPath generatePath() override;
+
+  private:
+    GetterCallbackType compGetter;
   };
 
   /**

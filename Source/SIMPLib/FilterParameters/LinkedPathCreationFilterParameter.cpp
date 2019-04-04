@@ -153,6 +153,14 @@ LinkedPathCreationFilterParameter::LinkedDataPath::LinkedDataPath(GetterCallback
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+LinkedPathCreationFilterParameter::LinkedAdvComparisonPath::LinkedAdvComparisonPath(GetterCallbackType advComp)
+: compGetter(advComp)
+{
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 DataArrayPath LinkedPathCreationFilterParameter::LinkedStringPath::generatePath()
 {
   DataArrayPath linkedPath;
@@ -214,6 +222,25 @@ DataArrayPath LinkedPathCreationFilterParameter::LinkedDataPath::generatePath()
     return linkedPath;
   }
   return DataArrayPath();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataArrayPath LinkedPathCreationFilterParameter::LinkedAdvComparisonPath::generatePath()
+{
+  DataArrayPath linkedPath;
+  // Use std::function operator bool to check if this is a callable function
+  if(compGetter)
+  {
+    linkedPath.setDataContainerName(compGetter().getDataContainerName());
+    linkedPath.setAttributeMatrixName(compGetter().getAttributeMatrixName());
+  }
+  //else
+  //{
+  //  throw std::invalid_argument("Invalid linked AttributeMatrix path");
+  //}
+  return linkedPath;
 }
 
 // -----------------------------------------------------------------------------
