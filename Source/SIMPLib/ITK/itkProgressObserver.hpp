@@ -82,7 +82,7 @@ class ProgressObserver : public itk::Command
 
       if (m_Filter)
       {
-        m_Filter->notifyStatusMessage(m_Filter->getHumanLabel(), ss);
+        m_Filter->notifyStatusMessage(ss);
       }
     }
 
