@@ -179,7 +179,7 @@ public:
     // Run filter
 
     writeTriangleGeometry->execute();
-    DREAM3D_REQUIRED(writeTriangleGeometry->getErrorCondition(), >=, 0);
+    DREAM3D_REQUIRED(writeTriangleGeometry->getErrorCode(), >=, 0);
 
     // Test filter
 

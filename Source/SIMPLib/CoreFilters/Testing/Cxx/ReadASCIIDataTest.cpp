@@ -149,7 +149,7 @@ public:
       AbstractFilter::Pointer importASCIIData = filterFactory->create();
       importASCIIData->preflight();
 
-      int err = importASCIIData->getErrorCondition();
+      int err = importASCIIData->getErrorCode();
       DREAM3D_REQUIRE_EQUAL(err, ReadASCIIData::EMPTY_FILE)
 
       QVariant var;
@@ -158,7 +158,7 @@ public:
       DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
       importASCIIData->preflight();
-      err = importASCIIData->getErrorCondition();
+      err = importASCIIData->getErrorCode();
       DREAM3D_REQUIRE_EQUAL(err, ReadASCIIData::EMPTY_ATTR_MATRIX)
 
       importASCIIData->setDataContainerArray(dca);
@@ -199,7 +199,7 @@ public:
       DREAM3D_REQUIRE_VALID_POINTER(importASCIIData.get())
 
       importASCIIData->execute();
-      int err = importASCIIData->getErrorCondition();
+      int err = importASCIIData->getErrorCode();
       DREAM3D_REQUIRE_EQUAL(err, 0)
 
       AttributeMatrix::Pointer am = importASCIIData->getDataContainerArray()->getAttributeMatrix(DataArrayPath(DataContainerName, AttributeMatrixName, ""));
@@ -232,7 +232,7 @@ public:
       DREAM3D_REQUIRE_VALID_POINTER(importASCIIData.get())
 
       importASCIIData->execute();
-      int err = importASCIIData->getErrorCondition();
+      int err = importASCIIData->getErrorCode();
       DREAM3D_REQUIRE_EQUAL(err, 0)
 
       AttributeMatrix::Pointer am = importASCIIData->getDataContainerArray()->getAttributeMatrix(DataArrayPath(DataContainerName, AttributeMatrixName, ""));
@@ -264,7 +264,7 @@ public:
       DREAM3D_REQUIRE_VALID_POINTER(importASCIIData.get())
 
       importASCIIData->execute();
-      int err = importASCIIData->getErrorCondition();
+      int err = importASCIIData->getErrorCode();
       DREAM3D_REQUIRE_EQUAL(err, ReadASCIIData::CONVERSION_FAILURE)
     }
 
@@ -279,7 +279,7 @@ public:
       DREAM3D_REQUIRE_VALID_POINTER(importASCIIData.get())
 
       importASCIIData->execute();
-      int err = importASCIIData->getErrorCondition();
+      int err = importASCIIData->getErrorCode();
       DREAM3D_REQUIRE_EQUAL(err, 0)
 
       AttributeMatrix::Pointer am = importASCIIData->getDataContainerArray()->getAttributeMatrix(DataArrayPath(DataContainerName, AttributeMatrixName, ""));
@@ -313,7 +313,7 @@ public:
       DREAM3D_REQUIRE_VALID_POINTER(importASCIIData.get())
 
       importASCIIData->execute();
-      int err = importASCIIData->getErrorCondition();
+      int err = importASCIIData->getErrorCode();
       DREAM3D_REQUIRE_EQUAL(err, 0)
 
       AttributeMatrix::Pointer am = importASCIIData->getDataContainerArray()->getAttributeMatrix(DataArrayPath(DataContainerName, AttributeMatrixName, ""));
@@ -341,7 +341,7 @@ public:
       DREAM3D_REQUIRE_VALID_POINTER(importASCIIData.get())
 
       importASCIIData->execute();
-      int err = importASCIIData->getErrorCondition();
+      int err = importASCIIData->getErrorCode();
       DREAM3D_REQUIRE_EQUAL(err, 0)
 
       AttributeMatrix::Pointer am = importASCIIData->getDataContainerArray()->getAttributeMatrix(DataArrayPath(DataContainerName, AttributeMatrixName, ""));
@@ -369,7 +369,7 @@ public:
       DREAM3D_REQUIRE_VALID_POINTER(importASCIIData.get())
 
       importASCIIData->execute();
-      int err = importASCIIData->getErrorCondition();
+      int err = importASCIIData->getErrorCode();
       DREAM3D_REQUIRE_EQUAL(err, ReadASCIIData::CONVERSION_FAILURE)
     }
 
@@ -405,7 +405,7 @@ public:
       DREAM3D_REQUIRE_VALID_POINTER(importASCIIData.get())
 
       importASCIIData->execute();
-      int err = importASCIIData->getErrorCondition();
+      int err = importASCIIData->getErrorCode();
       DREAM3D_REQUIRE_EQUAL(err, ReadASCIIData::CONVERSION_FAILURE)
     }
   }

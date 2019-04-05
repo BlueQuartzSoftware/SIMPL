@@ -251,7 +251,7 @@ public:
     setGeometryTest(filter, true, false);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0);
 
     DataContainer::Pointer dc = filter->getDataContainerArray()->getDataContainer("DataContainer1");
     ImageGeom::Pointer imgGeom = std::dynamic_pointer_cast<ImageGeom>(dc->getGeometry());
@@ -277,7 +277,7 @@ public:
     setGeometryTest(filter, false, true);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0);
 
     DataContainer::Pointer dc = filter->getDataContainerArray()->getDataContainer("DataContainer2");
     TriangleGeom::Pointer triGeom = std::dynamic_pointer_cast<TriangleGeom>(dc->getGeometry());
@@ -310,7 +310,7 @@ public:
     setIncorrectGeometry(filter, true, false);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -384);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -384);
   }
 
   // -----------------------------------------------------------------------------
@@ -324,7 +324,7 @@ public:
     setIncorrectGeometry(filter, false, true);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -384);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -384);
   }
 
   // -----------------------------------------------------------------------------
@@ -338,7 +338,7 @@ public:
     setNullGeometry(filter, true, false);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -385);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -385);
   }
 
   // -----------------------------------------------------------------------------
@@ -352,7 +352,7 @@ public:
     setNullGeometry(filter, false, true);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -385);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -385);
   }
 
   // -----------------------------------------------------------------------------

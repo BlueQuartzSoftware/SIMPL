@@ -79,8 +79,8 @@ void AbstractDecisionFilter::initialize()
 // -----------------------------------------------------------------------------
 void AbstractDecisionFilter::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 }
 
 // -----------------------------------------------------------------------------
@@ -101,10 +101,10 @@ void AbstractDecisionFilter::preflight()
 // -----------------------------------------------------------------------------
 void AbstractDecisionFilter::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

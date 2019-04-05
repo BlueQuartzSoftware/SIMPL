@@ -135,14 +135,13 @@ void CopyObject::initialize()
 // -----------------------------------------------------------------------------
 void CopyObject::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 
   if(getCopiedObjectName().isEmpty())
   {
-    setErrorCondition(-11001);
     QString ss = QObject::tr("The copied object name must be set");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-11001, ss);
   }
 
   switch(getObjectToCopy())
@@ -152,14 +151,13 @@ void CopyObject::dataCheck()
   {
     if(getDataContainerArray()->doesDataContainerExist(getCopiedObjectName()))
     {
-      setErrorCondition(-11001);
       QString ss = QObject::tr("A Data Container already exists with the name %1").arg(getCopiedObjectName());
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-11001, ss);
     }
 
     DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerToCopy());
 
-    if(getErrorCondition() < 0)
+    if(getErrorCode() < 0)
     {
       return;
     }
@@ -177,14 +175,13 @@ void CopyObject::dataCheck()
     DataArrayPath path(getAttributeMatrixToCopy().getDataContainerName(), getCopiedObjectName(), "");
     if(getDataContainerArray()->doesAttributeMatrixExist(path))
     {
-      setErrorCondition(-11001);
       QString ss = QObject::tr("An Attribute Matrix already exists with the name %1").arg(getCopiedObjectName());
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-11001, ss);
     }
 
     AttributeMatrix::Pointer attrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getAttributeMatrixToCopy(), -301);
 
-    if(getErrorCondition() < 0)
+    if(getErrorCode() < 0)
     {
       return;
     }
@@ -202,14 +199,13 @@ void CopyObject::dataCheck()
     DataArrayPath path(getAttributeArrayToCopy().getDataContainerName(), getAttributeArrayToCopy().getAttributeMatrixName(), getCopiedObjectName());
     if(getDataContainerArray()->doesAttributeArrayExist(path))
     {
-      setErrorCondition(-11001);
       QString ss = QObject::tr("An Attribute Array already exists with the name %1").arg(getCopiedObjectName());
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-11001, ss);
     }
 
     IDataArray::Pointer array = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getAttributeArrayToCopy());
 
-    if(getErrorCondition() < 0)
+    if(getErrorCode() < 0)
     {
       return;
     }
@@ -247,10 +243,10 @@ void CopyObject::preflight()
 // -----------------------------------------------------------------------------
 void CopyObject::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

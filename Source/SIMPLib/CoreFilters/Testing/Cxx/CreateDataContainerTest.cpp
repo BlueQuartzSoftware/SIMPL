@@ -118,7 +118,7 @@ public:
 
     setValues(filter, dataContainer);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), errorCode)
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), errorCode)
   }
 
   // -----------------------------------------------------------------------------
@@ -141,10 +141,10 @@ public:
 
     setValues(filter, dataContainer);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0)
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -889)
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -889)
   }
 
   // -----------------------------------------------------------------------------

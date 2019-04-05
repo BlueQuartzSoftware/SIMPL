@@ -87,9 +87,8 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   PYB11_PROPERTY(QString CompiledLibraryName READ getCompiledLibraryName)
   PYB11_PROPERTY(bool Cancel READ getCancel WRITE setCancel)
   PYB11_PROPERTY(bool Enabled READ getEnabled WRITE setEnabled)
-  PYB11_PROPERTY(QString MessagePrefix READ getMessagePrefix WRITE setMessagePrefix)
-  PYB11_PROPERTY(int ErrorCondition READ getErrorCondition WRITE setErrorCondition)
-  PYB11_PROPERTY(int WarningCondition READ getWarningCondition WRITE setWarningCondition)
+  PYB11_PROPERTY(int ErrorCode READ getErrorCode)
+  PYB11_PROPERTY(int WarningCode READ getWarningCode)
   PYB11_PROPERTY(bool InPreflight READ getInPreflight WRITE setInPreflight)
   PYB11_PROPERTY(int PipelineIndex READ getPipelineIndex WRITE setPipelineIndex)
 
@@ -97,6 +96,12 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   PYB11_METHOD(void execute)
   PYB11_METHOD(void preflight)
   PYB11_METHOD(void setDataContainerArray)
+  PYB11_METHOD(void setErrorCondition ARGS code messageText)
+  PYB11_METHOD(void setWarningCondition ARGS code messageText)
+  PYB11_METHOD(void notifyStatusMessage ARGS messageText)
+  PYB11_METHOD(void notifyProgressMessage ARGS progress messageText)
+  PYB11_METHOD(void clearErrorCode)
+  PYB11_METHOD(void clearWarningCode)
   
   // Friend declarations for RenameDataPath so that it can set and check the instance's created data by ID.
   friend void RenameDataPath::AlertFilterCreatedPath(AbstractFilter*, RenameDataPath::DataID_t, const DataArrayPath&);
@@ -245,11 +250,9 @@ public:
 
   SIMPL_INSTANCE_PROPERTY(FilterParameterVectorType, FilterParameters)
 
-  SIMPL_INSTANCE_PROPERTY(QString, MessagePrefix)
+  SIMPL_GET_PROPERTY(int, ErrorCode)
 
-  SIMPL_INSTANCE_PROPERTY(int, ErrorCondition)
-
-  SIMPL_INSTANCE_PROPERTY(int, WarningCondition)
+  SIMPL_GET_PROPERTY(int, WarningCode)
 
   SIMPL_INSTANCE_PROPERTY(bool, InPreflight)
 
@@ -274,6 +277,16 @@ public:
   * @brief Returns the next filter in the pipeline
   */
   SIMPL_INSTANCE_PROPERTY(AbstractFilter::WeakPointer, NextFilter)
+
+  /**
+   * @brief clearErrorCondition
+   */
+  void clearErrorCode();
+
+  /**
+   * @brief clearWarningCondition
+   */
+  void clearWarningCode();
 
   /**
    * @brief doesPipelineContainFilterBeforeThis
@@ -312,58 +325,32 @@ public:
    */
   virtual DataArrayPath::RenameContainer getRenamedPaths();
 
-  // ------------------------------
-  // These methods are over ridden from the superclass in order to add the
-  // pipeline index to the PipelineMessage Object.
-  // ------------------------------
+  /**
+   * @brief setErrorCondition
+   * @param code
+   * @param messageText
+   */
+  void setErrorCondition(int code, const QString& messageText) override;
 
   /**
-   * @brief notifyErrorMessage
-   * @param humanLabel
-   * @param ss
+   * @brief setWarningCondition
    * @param code
+   * @param messageText
    */
-  void notifyErrorMessage(const QString& humanLabel, const QString& ss, int code) override;
-
-  /**
-   * @brief notifyWarningMessage
-   * @param humanLabel
-   * @param ss
-   * @param code
-   */
-  void notifyWarningMessage(const QString& humanLabel, const QString& ss, int code) override;
+  void setWarningCondition(int code, const QString& messageText) override;
 
   /**
    * @brief notifyStatusMessage
-   * @param humanLabel
-   * @param ss
+   * @param messageText
    */
-  void notifyStatusMessage(const QString& humanLabel, const QString& ss) override;
-
-  /**
-   * @brief notifyStandardOutputMessage
-   * @param humanLabel
-   * @param pipelineIndex
-   * @param ss
-   */
-  void notifyStandardOutputMessage(const QString& humanLabel, int pipelineIndex, const QString& ss) override;
-
-  /**
-   * @brief notifyStatusMessage
-   * @param prefix
-   * @param humanLabel
-   * @param ss
-   */
-  void notifyStatusMessage(const QString& prefix, const QString& humanLabel, const QString& ss) override;
+  void notifyStatusMessage(const QString& messageText) override;
 
   /**
    * @brief notifyProgressMessage
-   * @param prefix
-   * @param humanLabel
-   * @param str
    * @param progress
+   * @param messageText
    */
-  void notifyProgressMessage(const QString& prefix, const QString& humanLabel, const QString& str, int progress) override;
+  void notifyProgressMessage(int progress, const QString& messageText);
 
   /**
    * @brief notifyMissingProperty
@@ -471,6 +458,9 @@ protected slots:
 private:
   bool m_Cancel;
   QUuid m_Uuid;
+  int m_ErrorCode = 0;
+  int m_WarningCode = 0;
+
   std::map<RenameDataPath::DataID_t, DataArrayPath> m_CreatedPaths;
   DataArrayPath::RenameContainer m_RenamedPaths;
 

@@ -102,7 +102,7 @@ public:
     filter->setProperty("NewDataContainerName", value);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -999);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -999);
   }
 
   // -----------------------------------------------------------------------------
@@ -132,7 +132,7 @@ public:
     filter->setProperty("NewDataContainerName", value);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11001);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -11001);
   }
 
   // -----------------------------------------------------------------------------
@@ -162,7 +162,7 @@ public:
     filter->setProperty("NewDataContainerName", value);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0);
 
     DataArrayPath dap(dc->getName());
 
@@ -196,7 +196,7 @@ public:
     filter->setProperty("NewDataContainerName", value);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11001);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -11001);
   }
 
   // -----------------------------------------------------------------------------
@@ -225,7 +225,7 @@ public:
     value.setValue(newDataContainerName);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11001);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -11001);
   }
 
   // -----------------------------------------------------------------------------

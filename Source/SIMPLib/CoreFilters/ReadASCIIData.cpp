@@ -240,16 +240,15 @@ void ReadASCIIData::initialize()
 // -----------------------------------------------------------------------------
 void ReadASCIIData::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   m_ASCIIArrayMap.clear();
 
   ASCIIWizardData wizardData = getWizardData();
   if(wizardData.isEmpty())
   {
     QString ss = "A file has not been chosen to import. Please pick a file to import.";
-    setErrorCondition(EMPTY_FILE);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(EMPTY_FILE, ss);
     return;
   }
 
@@ -265,8 +264,7 @@ void ReadASCIIData::dataCheck()
   if(inputFilePath.isEmpty())
   {
     QString ss = QObject::tr("The input file must be set");
-    setErrorCondition(-387);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-387, ss);
   }
 
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
@@ -276,8 +274,7 @@ void ReadASCIIData::dataCheck()
   if(!fi.exists())
   {
     QString ss = QObject::tr("The input file does not exist");
-    setErrorCondition(-388);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-388, ss);
   }
 
   if(!automaticAM)
@@ -286,8 +283,7 @@ void ReadASCIIData::dataCheck()
     if(nullptr == am.get())
     {
       QString ss = "The attribute matrix input is empty. Please select an attribute matrix.";
-      setErrorCondition(EMPTY_ATTR_MATRIX);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(EMPTY_ATTR_MATRIX, ss);
       return;
     }
 
@@ -301,8 +297,7 @@ void ReadASCIIData::dataCheck()
         if(amArrayName == headerName)
         {
           QString ss = "The header name \"" + headerName + "\" matches an array name that already exists in the selected attribute matrix.";
-          setErrorCondition(DUPLICATE_NAMES);
-          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+          setErrorCondition(DUPLICATE_NAMES, ss);
           return;
         }
       }
@@ -318,8 +313,7 @@ void ReadASCIIData::dataCheck()
     //      QTextStream out(&ss);
     //      out << selectedPath.getAttributeMatrixName() << " tuple dims: " << am->getTupleDimensions().at(0) << "\n";
     //      out << fi.fileName() << "tuple dims: " << tDims[0] << "\n";
-    //      setErrorCondition(INCONSISTENT_TUPLES);
-    //      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    //      setErrorCondition(INCONSISTENT_TUPLES, ss);
     //      return;
     //    }
 
@@ -409,8 +403,7 @@ void ReadASCIIData::dataCheck()
     else
     {
       QString ss = "The data type that was chosen for column number " + QString::number(i + 1) + " is not a valid data array type.";
-      setErrorCondition(INVALID_ARRAY_TYPE);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(INVALID_ARRAY_TYPE, ss);
       return;
     }
   }
@@ -435,11 +428,11 @@ void ReadASCIIData::preflight()
 // -----------------------------------------------------------------------------
 void ReadASCIIData::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   initialize();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -558,8 +551,7 @@ void ReadASCIIData::execute()
         out << "Expecting " << dataTypes.size() << " but found " << tokens.size() << "\n";
         out << "Input line was:\n";
         out << line;
-        setErrorCondition(INCONSISTENT_COLS);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        setErrorCondition(INCONSISTENT_COLS, ss);
         return;
       }
 
@@ -573,8 +565,7 @@ void ReadASCIIData::execute()
         {
           QString errorMessage = obj.errorMessage;
           QString ss = errorMessage + "(line " + QString::number(lineNum) + ", column " + QString::number(index) + ").";
-          setErrorCondition(CONVERSION_FAILURE);
-          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+          setErrorCondition(CONVERSION_FAILURE, ss);
           return;
         }
       }
@@ -583,7 +574,7 @@ void ReadASCIIData::execute()
       {
         // Print the status of the import
         QString ss = QObject::tr("Importing ASCII Data || %1% Complete").arg((static_cast<float>(lineNum) / numTuples) * 100.0f, 0, 'f', 0);
-        notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
+        notifyStatusMessage(ss);
         threshold = threshold + 5.0f;
         if(threshold < (static_cast<float>(lineNum) / numTuples) * 100.0f)
         {

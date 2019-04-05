@@ -84,14 +84,13 @@ void RenameDataContainer::initialize()
 // -----------------------------------------------------------------------------
 void RenameDataContainer::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 
   if(getNewDataContainerName().isEmpty())
   {
-    setErrorCondition(-11001);
     QString ss = QObject::tr("The new Data Container name must be set");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-11001, ss);
     return;
   }
 
@@ -104,7 +103,7 @@ void RenameDataContainer::dataCheck()
   }
 
   getDataContainerArray()->getPrereqDataContainer(this, getSelectedDataContainerName());
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -112,9 +111,8 @@ void RenameDataContainer::dataCheck()
   bool check = getDataContainerArray()->renameDataContainer(getSelectedDataContainerName(), getNewDataContainerName());
   if(!check)
   {
-    setErrorCondition(-11006);
     QString ss = QObject::tr("Attempt to rename DataContainer '%1' to '%2' failed").arg(getSelectedDataContainerName().getDataContainerName()).arg(getNewDataContainerName().getDataContainerName());
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-11006, ss);
   }
   else
   {
@@ -142,10 +140,10 @@ void RenameDataContainer::preflight()
 // -----------------------------------------------------------------------------
 void RenameDataContainer::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   dataCheck(); // calling the dataCheck will rename the array, so nothing is required here
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

@@ -37,7 +37,10 @@
 
 #include <QtCore/QMetaProperty>
 
-#include "SIMPLib/Common/PipelineMessage.h"
+#include "SIMPLib/Messages/FilterErrorMessage.h"
+#include "SIMPLib/Messages/FilterProgressMessage.h"
+#include "SIMPLib/Messages/FilterStatusMessage.h"
+#include "SIMPLib/Messages/FilterWarningMessage.h"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/IFilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterPipeline.h"
@@ -49,9 +52,7 @@
 //
 // -----------------------------------------------------------------------------
 AbstractFilter::AbstractFilter()
-: m_ErrorCondition(0)
-, m_WarningCondition(0)
-, m_InPreflight(false)
+: m_InPreflight(false)
 , m_Enabled(true)
 , m_Removing(false)
 , m_PipelineIndex(0)
@@ -137,8 +138,7 @@ void AbstractFilter::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void AbstractFilter::execute()
 {
-  setErrorCondition(-3015);
-  notifyErrorMessage(getNameOfClass(), "QAbstractFilter does not implement an execute method. Please use a subclass instead.", getErrorCondition());
+  setErrorCondition(-3015, "QAbstractFilter does not implement an execute method. Please use a subclass instead.");
 }
 
 // -----------------------------------------------------------------------------
@@ -147,8 +147,7 @@ void AbstractFilter::execute()
 void AbstractFilter::preflight()
 {
   setInPreflight(true);
-  setErrorCondition(-3016);
-  notifyErrorMessage(getNameOfClass(), "AbstractFilter does not implement a preflight method. Please use a subclass instead.", getErrorCondition());
+  setErrorCondition(-3016, "AbstractFilter does not implement a preflight method. Please use a subclass instead.");
 }
 
 // -----------------------------------------------------------------------------
@@ -533,65 +532,55 @@ void AbstractFilter::cleanupFilter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::notifyErrorMessage(const QString& humanLabel, const QString& str, int code)
+void AbstractFilter::setErrorCondition(int code, const QString &messageText)
 {
-  PipelineMessage pm = PipelineMessage::CreateErrorMessage(getNameOfClass(), humanLabel, str, code);
-  pm.setPipelineIndex(getPipelineIndex());
-  emit filterGeneratedMessage(pm);
+  m_ErrorCode = code;
+  FilterErrorMessage::Pointer pm = FilterErrorMessage::New(getNameOfClass(), getHumanLabel(), getPipelineIndex(), messageText, code);
+  emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::notifyStatusMessage(const QString& humanLabel, const QString& str)
+void AbstractFilter::notifyStatusMessage(const QString& messageText)
 {
-  PipelineMessage pm = PipelineMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
-  pm.setPipelineIndex(getPipelineIndex());
-  emit filterGeneratedMessage(pm);
+  FilterStatusMessage::Pointer pm = FilterStatusMessage::New(getNameOfClass(), getHumanLabel(), getPipelineIndex(), messageText);
+  emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::notifyStatusMessage(const QString& prefix, const QString& humanLabel, const QString& str)
+void AbstractFilter::setWarningCondition(int code, const QString& messageText)
 {
-  PipelineMessage pm = PipelineMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
-  pm.setPrefix(prefix);
-  pm.setPipelineIndex(getPipelineIndex());
-  emit filterGeneratedMessage(pm);
+  m_WarningCode = code;
+  FilterWarningMessage::Pointer pm = FilterWarningMessage::New(getNameOfClass(), getHumanLabel(), getPipelineIndex(), messageText, code);
+  emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::notifyStandardOutputMessage(const QString& humanLabel, int pipelineIndex, const QString& str)
+void AbstractFilter::notifyProgressMessage(int progress, const QString& messageText)
 {
-  PipelineMessage pm = PipelineMessage::CreateStandardOutputMessage(humanLabel, pipelineIndex, str);
-  pm.setPipelineIndex(getPipelineIndex());
-  emit filterGeneratedMessage(pm);
+  FilterProgressMessage::Pointer pm = FilterProgressMessage::New(getNameOfClass(), getHumanLabel(), getPipelineIndex(), messageText, progress);
+  emit messageGenerated(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::notifyWarningMessage(const QString& humanLabel, const QString& str, int code)
+void AbstractFilter::clearErrorCode()
 {
-  PipelineMessage pm = PipelineMessage::CreateWarningMessage(getNameOfClass(), humanLabel, str, code);
-  pm.setPipelineIndex(getPipelineIndex());
-  emit filterGeneratedMessage(pm);
+  m_ErrorCode = 0;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::notifyProgressMessage(const QString& prefix, const QString& humanLabel, const QString& str, int progress)
+void AbstractFilter::clearWarningCode()
 {
-  PipelineMessage pm = PipelineMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
-  pm.setPrefix(prefix);
-  pm.setProgressValue(progress);
-  pm.setType(PipelineMessage::MessageType::StatusMessageAndProgressValue);
-  pm.setPipelineIndex(getPipelineIndex());
-  emit filterGeneratedMessage(pm);
+  m_WarningCode = 0;
 }
 
 // -----------------------------------------------------------------------------
@@ -605,8 +594,7 @@ void AbstractFilter::notifyMissingProperty(FilterParameter* filterParameter)
           .arg(filterParameter->getPropertyName())
           .arg(getHumanLabel());
 
-  setWarningCondition(-1);
-  notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+  setWarningCondition(-1, ss);
 }
 
 // -----------------------------------------------------------------------------

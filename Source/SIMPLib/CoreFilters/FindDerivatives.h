@@ -169,6 +169,13 @@ protected:
    */
   void initialize();
 
+protected slots:
+  /**
+   * @brief processDerivativesMessage
+   * @param msg
+   */
+  void processDerivativesMessage(const AbstractMessage::Pointer& msg);
+
 private:
   DEFINE_IDATAARRAY_WEAKPTR(InArray)
   DEFINE_DATAARRAY_VARIABLE(double, DerivativesArray)

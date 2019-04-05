@@ -91,15 +91,14 @@ void ExecuteProcess::initialize()
 // -----------------------------------------------------------------------------
 void ExecuteProcess::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 
   QStringList arguments = splitArgumentsString(m_Arguments);
   if(arguments.empty())
   {
     QString ss = QObject::tr("No command line arguments have been specified.");
-    setErrorCondition(-4001);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-4001, ss);
     return;
   }
 
@@ -109,8 +108,7 @@ void ExecuteProcess::dataCheck()
   //  if( !fi.exists())
   //  {
   //    QString ss = QObject::tr("The executable at %1 does not exist.").arg(prog);
-  //    setErrorCondition(-4000);
-  //    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  //    setErrorCondition(-4000, ss);
   //    return;
   //  }
 }
@@ -134,10 +132,10 @@ void ExecuteProcess::preflight()
 // -----------------------------------------------------------------------------
 void ExecuteProcess::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -222,16 +220,14 @@ void ExecuteProcess::processHasFinished(int exitCode, QProcess::ExitStatus exitS
   else if(exitStatus == QProcess::CrashExit)
   {
     QString ss = QObject::tr("The process crashed during its exit.");
-    setErrorCondition(-4003);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-4003, ss);
   }
   else if(exitCode < 0)
   {
     QString ss = QObject::tr("The process finished with exit code %1.").arg(QString::number(exitCode));
-    setErrorCondition(-4004);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-4004, ss);
   }
-  else if(getErrorCondition() >= 0)
+  else if(getErrorCode() >= 0)
   {
   }
 
@@ -247,8 +243,7 @@ void ExecuteProcess::processHasErroredOut(QProcess::ProcessError error)
   if(getCancel())
   {
     QString ss = QObject::tr("The process was killed by the user.");
-    setWarningCondition(-4004);
-    notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+    setWarningCondition(-4004, ss);
   }
   else if(error == QProcess::FailedToStart)
   {
@@ -258,38 +253,32 @@ void ExecuteProcess::processHasErroredOut(QProcess::ProcessError error)
     QString ss = QObject::tr("The process failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program \
 or the path containing the executble is not in the system's environment path. PATH=%1.\n Try using the absolute path to the executable.")
                      .arg(pathEnv);
-    setErrorCondition(-4005);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-4005, ss);
   }
   else if(error == QProcess::Crashed)
   {
     QString ss = QObject::tr("The process crashed some time after starting successfully.");
-    setErrorCondition(-4006);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-4006, ss);
   }
   else if(error == QProcess::Timedout)
   {
     QString ss = QObject::tr("The process timed out.");
-    setErrorCondition(-4007);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-4007, ss);
   }
   else if(error == QProcess::WriteError)
   {
     QString ss = QObject::tr("An error occurred when attempting to write to the process.");
-    setErrorCondition(-4008);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-4008, ss);
   }
   else if(error == QProcess::ReadError)
   {
     QString ss = QObject::tr("An error occurred when attempting to read from the process.");
-    setErrorCondition(-4009);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-4009, ss);
   }
   else
   {
     QString ss = QObject::tr("An unknown error occurred.");
-    setErrorCondition(-4010);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-4010, ss);
   }
 
   m_Pause = false;
@@ -308,7 +297,7 @@ void ExecuteProcess::sendErrorOutput()
     {
       error.chop(1);
     }
-    notifyStandardOutputMessage(getHumanLabel(), getPipelineIndex() + 1, error);
+    notifyStatusMessage(error);
     m_WaitCondition.wakeAll();
   }
 }
@@ -320,7 +309,7 @@ void ExecuteProcess::sendStandardOutput()
 {
   if(m_ProcessPtr.data() != nullptr)
   {
-    notifyStandardOutputMessage(getHumanLabel(), getPipelineIndex() + 1, m_ProcessPtr->readAllStandardOutput());
+    notifyStatusMessage(m_ProcessPtr->readAllStandardOutput());
     m_WaitCondition.wakeAll();
   }
 }

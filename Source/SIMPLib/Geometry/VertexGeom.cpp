@@ -52,9 +52,6 @@ VertexGeom::VertexGeom()
   m_GeometryTypeName = SIMPL::Geometry::VertexGeometry;
   m_GeometryType = IGeometry::Type::Vertex;
   m_XdmfGridType = SIMPL::XdmfGridType::PolyData;
-  m_MessagePrefix = "";
-  m_MessageTitle = "";
-  m_MessageLabel = "";
   m_UnitDimensionality = 0;
   m_SpatialDimensionality = 3;
   m_VertexList = VertexGeom::CreateSharedVertexList(0);

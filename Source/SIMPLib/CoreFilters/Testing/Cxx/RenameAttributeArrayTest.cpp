@@ -111,7 +111,7 @@ public:
     filter->setProperty("NewArrayName", value);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11016);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -11016);
   }
 
   // -----------------------------------------------------------------------------
@@ -149,7 +149,7 @@ public:
     filter->setProperty("NewArrayName", value);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11016);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -11016);
   }
 
   // -----------------------------------------------------------------------------
@@ -187,7 +187,7 @@ public:
     filter->setProperty("NewArrayName", value);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0);
 
     DREAM3D_REQUIRE_EQUAL(da->getName(), newAttributeArrayName);
   }
@@ -227,7 +227,7 @@ public:
     filter->setProperty("NewArrayName", value);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11009);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -11009);
   }
 
   // -----------------------------------------------------------------------------
@@ -264,7 +264,7 @@ public:
     value.setValue(newAttributeArrayName);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11009);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -11009);
   }
 
   // -----------------------------------------------------------------------------
@@ -304,7 +304,7 @@ public:
     filter->setProperty("NewArrayName", value);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11017);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -11017);
   }
 
   // -----------------------------------------------------------------------------

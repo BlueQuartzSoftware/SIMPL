@@ -246,13 +246,13 @@ void CreateGeometry::initialize()
 // -----------------------------------------------------------------------------
 void CreateGeometry::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   initialize();
 
   DataContainer::Pointer dc = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerName());
 
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -260,8 +260,7 @@ void CreateGeometry::dataCheck()
   if(dc->getGeometry())
   {
     QString ss = QObject::tr("Selected Data Container already contains a Geometry");
-    setErrorCondition(-701);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-701, ss);
     return;
   }
 
@@ -278,8 +277,7 @@ void CreateGeometry::dataCheck()
                        .arg(getDimensions().getX())
                        .arg(getDimensions().getY())
                        .arg(getDimensions().getZ());
-      setErrorCondition(-390);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-390, ss);
       return;
     }
 
@@ -316,7 +314,7 @@ void CreateGeometry::dataCheck()
       m_ZBounds = m_ZBoundsPtr.lock()->getPointer(0);
     }
 
-    if(getErrorCondition() < 0)
+    if(getErrorCode() < 0)
     {
       return;
     }
@@ -330,8 +328,7 @@ void CreateGeometry::dataCheck()
                        .arg(m_XBoundsPtr.lock()->getNumberOfTuples())
                        .arg(m_YBoundsPtr.lock()->getNumberOfTuples())
                        .arg(m_ZBoundsPtr.lock()->getNumberOfTuples());
-      setErrorCondition(-390);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-390, ss);
       return;
     }
 
@@ -367,7 +364,7 @@ void CreateGeometry::dataCheck()
 
     FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath0(), cDims);
 
-    if(getErrorCondition() < 0)
+    if(getErrorCode() < 0)
     {
       return;
     }
@@ -402,7 +399,7 @@ void CreateGeometry::dataCheck()
       m_Edges = m_EdgesPtr.lock()->getPointer(0);
     }
 
-    if(getErrorCondition() < 0)
+    if(getErrorCode() < 0)
     {
       return;
     }
@@ -442,7 +439,7 @@ void CreateGeometry::dataCheck()
       m_Tris = m_TrisPtr.lock()->getPointer(0);
     }
 
-    if(getErrorCondition() < 0)
+    if(getErrorCode() < 0)
     {
       return;
     }
@@ -483,7 +480,7 @@ void CreateGeometry::dataCheck()
       m_Quads = m_QuadsPtr.lock()->getPointer(0);
     }
 
-    if(getErrorCondition() < 0)
+    if(getErrorCode() < 0)
     {
       return;
     }
@@ -524,7 +521,7 @@ void CreateGeometry::dataCheck()
       m_Tets = m_TetsPtr.lock()->getPointer(0);
     }
 
-    if(getErrorCondition() < 0)
+    if(getErrorCode() < 0)
     {
       return;
     }
@@ -566,7 +563,7 @@ void CreateGeometry::dataCheck()
       m_Hexes = m_HexesPtr.lock()->getPointer(0);
     }
 
-    if (getErrorCondition() < 0)
+    if(getErrorCode() < 0)
     {
       return;
     }
@@ -600,8 +597,7 @@ void CreateGeometry::dataCheck()
   default:
   {
     QString ss = QObject::tr("Invalid selection for Geometry type");
-    setErrorCondition(-701);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-701, ss);
     break;
   }
   }
@@ -626,10 +622,10 @@ void CreateGeometry::preflight()
 // -----------------------------------------------------------------------------
 void CreateGeometry::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -657,13 +653,11 @@ void CreateGeometry::execute()
                          .arg(m_XBounds[i]);
         if(m_TreatWarningsAsErrors)
         {
-          setErrorCondition(-1);
-          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+          setErrorCondition(-1, ss);
         }
         else
         {
-          setWarningCondition(-1);
-          notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+          setWarningCondition(-1, ss);
         }
         return;
       }
@@ -684,13 +678,11 @@ void CreateGeometry::execute()
                          .arg(m_YBounds[i]);
         if(m_TreatWarningsAsErrors)
         {
-          setErrorCondition(-1);
-          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+          setErrorCondition(-1, ss);
         }
         else
         {
-          setWarningCondition(-1);
-          notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+          setWarningCondition(-1, ss);
         }
         return;
       }
@@ -711,13 +703,11 @@ void CreateGeometry::execute()
                          .arg(m_ZBounds[i]);
         if(m_TreatWarningsAsErrors)
         {
-          setErrorCondition(-1);
-          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+          setErrorCondition(-1, ss);
         }
         else
         {
-          setWarningCondition(-1);
-          notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+          setWarningCondition(-1, ss);
         }
         return;
       }
@@ -751,13 +741,11 @@ void CreateGeometry::execute()
                        .arg(m_NumVerts);
       if(m_TreatWarningsAsErrors)
       {
-        setErrorCondition(-1);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        setErrorCondition(-1, ss);
       }
       else
       {
-        setWarningCondition(-1);
-        notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+        setWarningCondition(-1, ss);
       }
       return;
     }
@@ -784,13 +772,11 @@ void CreateGeometry::execute()
                        .arg(m_NumVerts);
       if(m_TreatWarningsAsErrors)
       {
-        setErrorCondition(-1);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        setErrorCondition(-1, ss);
       }
       else
       {
-        setWarningCondition(-1);
-        notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+        setWarningCondition(-1, ss);
       }
       return;
     }
@@ -817,13 +803,11 @@ void CreateGeometry::execute()
                        .arg(m_NumVerts);
       if(m_TreatWarningsAsErrors)
       {
-        setErrorCondition(-1);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        setErrorCondition(-1, ss);
       }
       else
       {
-        setWarningCondition(-1);
-        notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+        setWarningCondition(-1, ss);
       }
       return;
     }
@@ -850,13 +834,11 @@ void CreateGeometry::execute()
                        .arg(m_NumVerts);
       if(m_TreatWarningsAsErrors)
       {
-        setErrorCondition(-1);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        setErrorCondition(-1, ss);
       }
       else
       {
-        setWarningCondition(-1);
-        notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+        setWarningCondition(-1, ss);
       }
       return;
     }
@@ -883,13 +865,11 @@ void CreateGeometry::execute()
         .arg(m_NumVerts);
       if (m_TreatWarningsAsErrors)
       {
-        setErrorCondition(-1);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        setErrorCondition(-1, ss);
       }
       else
       {
-        setWarningCondition(-1);
-        notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+        setWarningCondition(-1, ss);
       }
       return;
     }

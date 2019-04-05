@@ -62,7 +62,7 @@ public:
   ~DummyObserver() override = default;
   SIMPL_TYPE_MACRO(DummyObserver)
 
-  void processPipelineMessage(const PipelineMessage& pm) override
+  void processPipelineMessage(const AbstractMessage::Pointer& pm) override
   {
     // Don't do anything...this class only exists to stifle the messages being dumped to the console
   }
@@ -183,13 +183,13 @@ public:
     propWasSet = filter->setProperty("Units", units);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true);
     filter->execute();
-    if(filter->getErrorCondition() < 0 && expectedErrorCondition == CalculatorItem::ErrorCode::SUCCESS)
+    if(filter->getErrorCode() < 0 && expectedErrorCondition == CalculatorItem::ErrorCode::SUCCESS)
     {
-      std::cout << "    Error " << filter->getErrorCondition() << " executing filter." << std::endl;
+      std::cout << "    Error " << filter->getErrorCode() << " executing filter." << std::endl;
     }
 
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(expectedErrorCondition));
-    DREAM3D_REQUIRE_EQUAL(filter->getWarningCondition(), static_cast<int>(expectedWarningCondition));
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), static_cast<int>(expectedErrorCondition));
+    DREAM3D_REQUIRE_EQUAL(filter->getWarningCode(), static_cast<int>(expectedWarningCondition));
 
     DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), targetArrayPath);
 
@@ -234,7 +234,7 @@ public:
       propWasSet = filter->setProperty("InfixEquation", "MultiComponent Array1 + MultiComponent Array2");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
       DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == mcArray1->getNumberOfTuples());
       DREAM3D_REQUIRE(arrayPtr->getNumberOfComponents() == mcArray1->getNumberOfComponents());
@@ -260,7 +260,7 @@ public:
       propWasSet = filter->setProperty("InfixEquation", "MultiComponent Array1[1] + MultiComponent Array2[0]");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
       DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == mcArray1->getNumberOfTuples());
       DREAM3D_REQUIRE(arrayPtr->getNumberOfComponents() == 1);
@@ -285,7 +285,7 @@ public:
       propWasSet = filter->setProperty("InfixEquation", "\"4\" + 2");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
       DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == nArray->getNumberOfTuples());
       DREAM3D_REQUIRE(arrayPtr->getNumberOfComponents() == nArray->getNumberOfComponents());
@@ -311,7 +311,7 @@ public:
       propWasSet = filter->setProperty("InfixEquation", "\"4\" + \"*\"");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
       DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == nArray->getNumberOfTuples());
       DREAM3D_REQUIRE(arrayPtr->getNumberOfComponents() == nArray->getNumberOfComponents());
@@ -337,7 +337,7 @@ public:
       propWasSet = filter->setProperty("InfixEquation", "\"4\"[0] + \"*\"[1]");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
       DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == nArray->getNumberOfTuples());
       DREAM3D_REQUIRE(arrayPtr->getNumberOfComponents() == 1);
@@ -362,7 +362,7 @@ public:
       propWasSet = filter->setProperty("InfixEquation", "\"4\" + \"*\"[1]");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(CalculatorItem::ErrorCode::INCONSISTENT_COMP_DIMS));
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), static_cast<int>(CalculatorItem::ErrorCode::INCONSISTENT_COMP_DIMS));
     }
 
     // Out of bounds error
@@ -378,7 +378,7 @@ public:
       propWasSet = filter->setProperty("InfixEquation", "\"4\"[0] + \"*\"[3]");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(CalculatorItem::ErrorCode::COMPONENT_OUT_OF_RANGE));
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), static_cast<int>(CalculatorItem::ErrorCode::COMPONENT_OUT_OF_RANGE));
     }
   }
 
@@ -452,7 +452,7 @@ public:
       propWasSet = filter->setProperty("InfixEquation", "-InputArray1");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
       DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == inputArray1->getNumberOfTuples());
       for(int i = 0; i < arrayPtr->getNumberOfTuples(); i++)
@@ -469,7 +469,7 @@ public:
       propWasSet = filter->setProperty("InfixEquation", "InputArray2");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
       DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == inputArray2->getNumberOfTuples());
       for(int i = 0; i < arrayPtr->getNumberOfTuples(); i++)
@@ -491,8 +491,8 @@ public:
       propWasSet = filter->setProperty("InfixEquation", "Spaced Array + InputArray1");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
-      DREAM3D_REQUIRE_EQUAL(filter->getWarningCondition(), static_cast<int>(CalculatorItem::WarningCode::NONE));
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
+      DREAM3D_REQUIRE_EQUAL(filter->getWarningCode(), static_cast<int>(CalculatorItem::WarningCode::NONE));
       DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == spacedArray->getNumberOfTuples());
       for(int i = 0; i < arrayPtr->getNumberOfTuples(); i++)
@@ -512,8 +512,8 @@ public:
       propWasSet = filter->setProperty("InfixEquation", "sqrt((InputArray1^2)+(InputArray2^2))");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
-      DREAM3D_REQUIRE_EQUAL(filter->getWarningCondition(), static_cast<int>(CalculatorItem::WarningCode::NONE));
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
+      DREAM3D_REQUIRE_EQUAL(filter->getWarningCode(), static_cast<int>(CalculatorItem::WarningCode::NONE));
       DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == inputArray2->getNumberOfTuples());
       for(int i = 0; i < arrayPtr->getNumberOfTuples(); i++)

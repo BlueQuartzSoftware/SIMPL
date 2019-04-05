@@ -215,7 +215,7 @@ public:
     // Run Filter
 
     cropVertexGeometry->execute();
-    DREAM3D_REQUIRED(cropVertexGeometry->getErrorCondition(), >=, 0);
+    DREAM3D_REQUIRED(cropVertexGeometry->getErrorCode(), >=, 0);
 
     // Check filter results
 

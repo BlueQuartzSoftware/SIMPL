@@ -128,14 +128,14 @@ public:
     //
     extVertGeomFilter->setArrayHandling(-10);
     extVertGeomFilter->preflight();
-    int32_t err = extVertGeomFilter->getErrorCondition();
+    int32_t err = extVertGeomFilter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, -2002)
 
     dca = createDataContainerArray();
     extVertGeomFilter->setDataContainerArray(dca);
     extVertGeomFilter->setArrayHandling(10);
     extVertGeomFilter->preflight();
-    err = extVertGeomFilter->getErrorCondition();
+    err = extVertGeomFilter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, -2003)
 
     // Empty SelectedDataContainerName
@@ -143,7 +143,7 @@ public:
     extVertGeomFilter->setDataContainerArray(dca);
     extVertGeomFilter->setArrayHandling(k_MoveArrays);
     extVertGeomFilter->preflight();
-    err = extVertGeomFilter->getErrorCondition();
+    err = extVertGeomFilter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, -2004)
 
     // Empty VertexDataContainerName
@@ -152,7 +152,7 @@ public:
     extVertGeomFilter->setSelectedDataContainerName(k_ImageGeomDataContainerPath);
     extVertGeomFilter->setVertexDataContainerName(DataArrayPath("", "", ""));
     extVertGeomFilter->preflight();
-    err = extVertGeomFilter->getErrorCondition();
+    err = extVertGeomFilter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, -2006)
 
     // Set the Vertex Data Container to an existing DataContainer
@@ -160,7 +160,7 @@ public:
     extVertGeomFilter->setDataContainerArray(dca);
     extVertGeomFilter->setVertexDataContainerName(k_ImageGeomDataContainerPath);
     extVertGeomFilter->preflight();
-    err = extVertGeomFilter->getErrorCondition();
+    err = extVertGeomFilter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, -2007)
 
     // Set the Vertex Data Container to an existing DataContainer
@@ -170,7 +170,7 @@ public:
     extVertGeomFilter->setVertexDataContainerName(k_VertexDataContainerPath);
     extVertGeomFilter->setSelectedDataContainerName(k_BadDataContainerName);
     extVertGeomFilter->preflight();
-    err = extVertGeomFilter->getErrorCondition();
+    err = extVertGeomFilter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, -2008)
 
     // Set the Vertex Data Container to an existing DataContainer
@@ -180,7 +180,7 @@ public:
     extVertGeomFilter->setVertexDataContainerName(k_VertexDataContainerPath);
     extVertGeomFilter->setSelectedDataContainerName(k_WrongGeomDataContainerName);
     extVertGeomFilter->preflight();
-    err = extVertGeomFilter->getErrorCondition();
+    err = extVertGeomFilter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, -2010)
 
     // Set the Vertex Data Container to an existing DataContainer
@@ -194,7 +194,7 @@ public:
     includePaths.push_back(dap);
     extVertGeomFilter->setIncludedDataArrayPaths(includePaths);
     extVertGeomFilter->preflight();
-    err = extVertGeomFilter->getErrorCondition();
+    err = extVertGeomFilter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, -2009)
 
     // Set the correct paths.
@@ -204,14 +204,14 @@ public:
     includePaths[0] = dap;
     extVertGeomFilter->setIncludedDataArrayPaths(includePaths);
     extVertGeomFilter->preflight();
-    err = extVertGeomFilter->getErrorCondition();
+    err = extVertGeomFilter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, 0)
 
     // The preflight should be passing at this point so execute the filter
     dca = createDataContainerArray();
     extVertGeomFilter->setDataContainerArray(dca);
     extVertGeomFilter->execute();
-    err = extVertGeomFilter->getErrorCondition();
+    err = extVertGeomFilter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, 0)
 
     dap.update(k_ImageGeomDataContainerName, k_CellAttrMatName, k_FloatArrayName);
@@ -227,7 +227,7 @@ public:
     extVertGeomFilter->setDataContainerArray(dca);
     extVertGeomFilter->setArrayHandling(k_CopyArrays);
     extVertGeomFilter->execute();
-    err = extVertGeomFilter->getErrorCondition();
+    err = extVertGeomFilter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, 0)
 
     dap.update(k_ImageGeomDataContainerName, k_CellAttrMatName, k_FloatArrayName);
