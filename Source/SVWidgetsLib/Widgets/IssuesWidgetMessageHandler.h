@@ -35,7 +35,7 @@
 
 #pragma once
 
-#include "SIMPLib/SIMPLib.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SIMPLib/Messages/AbstractMessageHandler.h"
 
 class IssuesWidget;
@@ -45,7 +45,7 @@ class QLabel;
  * @brief This message handler is used by the Issues Widget to load the issues table
  * with filter error and warning messages.
  */
-class SIMPLib_EXPORT IssuesWidgetMessageHandler : public AbstractMessageHandler
+class SVWidgetsLib_EXPORT IssuesWidgetMessageHandler : public AbstractMessageHandler
 {
   public:
     explicit IssuesWidgetMessageHandler(IssuesWidget* issuesWidget, int* count, int* errCount, int* warningCount);
