@@ -89,12 +89,75 @@
 #define _FP_GET_OVERRIDE7(A, B, C, D, E, F, G, NAME, ...) NAME
 
 // Subpath linking
+/**
+ * @brief SIMPL_NEW_AM_WITH_LINKED_SUBPATH_FP This macro is a short-form way of instantiating an instance of
+ * LinkedPathCreationFilterParameter. There are 5 required parameters and 1 optional parameter
+ * that are passed to this macro in the following order: HumanLabel, PropertyName, LinkedProperty, Category,
+ * FilterName (class name), GroupIndex (optional)
+ *
+ * Therefore, the macro should be written like this (this is a concrete example):
+ * SIMPL_NEW_AM_WITH_LINKED_SUBPATH_FP("HumanLabel", PropertyName, LinkedDcProperty, Category, FilterName, GroupIndex)
+ *
+ * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
+ * SIMPL_NEW_AM_WITH_LINKED_SUBPATH_FP("Attribute Matrix", AttributeMatrixName, DataContainerPath, FilterParameter::Parameter, GenericExample);
+ */
 #define SIMPL_NEW_AM_WITH_LINKED_SUBPATH_FP(...) SIMPL_EXPAND(_FP_GET_OVERRIDE6(__VA_ARGS__, SIMPL_NEW_AM_WITH_LINKED_SUBPATH_Index, SIMPL_NEW_AM_WITH_LINKED_SUBPATH_NoIndex)(__VA_ARGS__))
+
+/**
+ * @brief SIMPL_NEW_AM_WITH_LINKED_STRING_FP This macro is a short-form way of instantiating an instance of
+ * LinkedPathCreationFilterParameter. There are 5 required parameters and 1 optional parameter
+ * that are passed to this macro in the following order: HumanLabel, PropertyName, LinkedProperty, Category,
+ * FilterName (class name), GroupIndex (optional)
+ *
+ * Therefore, the macro should be written like this (this is a concrete example):
+ * SIMPL_NEW_AM_WITH_LINKED_STRING_FP("HumanLabel", PropertyName, LinkedDcProperty, Category, FilterName, GroupIndex)
+ *
+ * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
+ * SIMPL_NEW_AM_WITH_LINKED_STRING_FP("Attribute Matrix", AttributeMatrixName, DataContainerName, FilterParameter::Parameter, GenericExample);
+ */
 #define SIMPL_NEW_AM_WITH_LINKED_STRING_FP(...) SIMPL_EXPAND(_FP_GET_OVERRIDE6(__VA_ARGS__, SIMPL_NEW_AM_WITH_LINKED_STRING_Index, SIMPL_NEW_AM_WITH_LINKED_STRING_NoIndex)(__VA_ARGS__))
+
+/**
+ * @brief SIMPL_NEW_DA_WITH_LINKED_SUBPATH_FP This macro is a short-form way of instantiating an instance of
+ * LinkedPathCreationFilterParameter. There are 5 required parameters and 1 optional parameter
+ * that are passed to this macro in the following order: HumanLabel, PropertyName, LinkedProperty, Category,
+ * FilterName (class name), GroupIndex (optional)
+ *
+ * Therefore, the macro should be written like this (this is a concrete example):
+ * SIMPL_NEW_DA_WITH_LINKED_SUBPATH_FP("HumanLabel", PropertyName, LinkedAmProperty, Category, FilterName, GroupIndex)
+ *
+ * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
+ * SIMPL_NEW_DA_WITH_LINKED_SUBPATH_FP("Data Array", DataArrayName, AttributeMatrixPath, FilterParameter::Parameter, GenericExample);
+ */
 #define SIMPL_NEW_DA_WITH_LINKED_SUBPATH_FP(...) SIMPL_EXPAND(_FP_GET_OVERRIDE6(__VA_ARGS__, SIMPL_NEW_DA_WITH_LINKED_SUBPATH_Index, SIMPL_NEW_DA_WITH_LINKED_SUBPATH_NoIndex)(__VA_ARGS__))
+
+/**
+ * @brief SIMPL_NEW_DA_WITH_MIXED_SUBPATH_FP This macro is a short-form way of instantiating an instance of
+ * LinkedPathCreationFilterParameter. There are 6 required parameters and 1 optional parameter
+ * that are passed to this macro in the following order: HumanLabel, PropertyName, LinkedDcProperty, LinkedAmProperty, Category,
+ * FilterName (class name), GroupIndex (optional)
+ *
+ * Therefore, the macro should be written like this (this is a concrete example):
+ * SIMPL_NEW_DA_WITH_MIXED_SUBPATH_FP("HumanLabel", PropertyName, LinkedDcProperty, LinkedAmProperty, Category, FilterName, GroupIndex)
+ *
+ * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
+ * SIMPL_NEW_DA_WITH_MIXED_SUBPATH_FP("Data Array", DataArrayName, DataContainerPath, AttributeMatrixPath, FilterParameter::Parameter, GenericExample);
+ */
 #define SIMPL_NEW_DA_WITH_MIXED_SUBPATH_FP(...) SIMPL_EXPAND(_FP_GET_OVERRIDE7(__VA_ARGS__, SIMPL_NEW_DA_WITH_MIXED_SUBPATH_Index, SIMPL_NEW_DA_WITH_MIXED_SUBPATH_NoIndex)(__VA_ARGS__))
 
 // Special cases
+/**
+ * @brief SIMPL_NEW_DA_FROM_ADV_COMPARISON_FP This macro is a short-form way of instantiating an instance of
+ * LinkedPathCreationFilterParameter. There are 5 required parameters and 1 optional parameter
+ * that are passed to this macro in the following order: HumanLabel, PropertyName, LinkedProperty, Category,
+ * FilterName (class name), GroupIndex (optional)
+ *
+ * Therefore, the macro should be written like this (this is a concrete example):
+ * SIMPL_NEW_DA_FROM_ADV_COMPARISON_FP("HumanLabel", PropertyName, LinkedAdvComparisonProperty, Category, FilterName, GroupIndex)
+ *
+ * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
+ * SIMPL_NEW_DA_FROM_ADV_COMPARISON_FP("Mask", MaskName, AdvComparison, FilterParameter::Parameter, GenericExample);
+ */
 #define SIMPL_NEW_DA_FROM_ADV_COMPARISON_FP(...) SIMPL_EXPAND(_FP_GET_OVERRIDE6(__VA_ARGS__, SIMPL_NEW_DA_FROM_ADV_COMPARISON_Index, SIMPL_NEW_DA_FROM_ADV_COMPARISON_NoIndex)(__VA_ARGS__))
 
 /**
