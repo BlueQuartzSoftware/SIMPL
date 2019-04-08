@@ -40,6 +40,7 @@
 #include "SIMPLib/SIMPLibVersion.h"
 
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 
@@ -75,8 +76,8 @@ void LinkFeatureMapToElementArray::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Element Attribute Array to Link", SelectedCellArrayPath, FilterParameter::RequiredArray, LinkFeatureMapToElementArray, req));
   }
   parameters.push_back(SeparatorFilterParameter::New("Feature Data", FilterParameter::CreatedArray));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Feature Attribute Matrix", CellFeatureAttributeMatrixName, FilterParameter::CreatedArray, LinkFeatureMapToElementArray));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Active", ActiveArrayName, FilterParameter::CreatedArray, LinkFeatureMapToElementArray));
+  parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_SUBPATH_FP("Feature Attribute Matrix", CellFeatureAttributeMatrixName, SelectedCellArrayPath, FilterParameter::CreatedArray, LinkFeatureMapToElementArray));
+  parameters.push_back(SIMPL_NEW_DA_WITH_MIXED_SUBPATH_FP("Active", ActiveArrayName, SelectedCellArrayPath, CellFeatureAttributeMatrixName, FilterParameter::CreatedArray, LinkFeatureMapToElementArray));
 
   setFilterParameters(parameters);
 }

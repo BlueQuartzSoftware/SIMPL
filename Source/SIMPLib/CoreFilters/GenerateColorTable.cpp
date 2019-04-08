@@ -259,7 +259,7 @@ void GenerateColorTable::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Data Array", SelectedDataArrayPath, FilterParameter::RequiredArray, GenerateColorTable, req));
   }
 
-  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_SUBPATH("RGB Array Name", RgbArrayName, SelectedDataArrayPath, FilterParameter::CreatedArray, GenerateColorTable));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_SUBPATH_FP("RGB Array Name", RgbArrayName, SelectedDataArrayPath, FilterParameter::CreatedArray, GenerateColorTable));
 
   setFilterParameters(parameters);
 }

@@ -78,7 +78,7 @@ void MultiThresholdObjects2::setupFilterParameters()
     parameter->setGetterCallback(SIMPL_BIND_GETTER(MultiThresholdObjects2, this, SelectedThresholds));
     parameters.push_back(parameter);
   }
-  parameters.push_back(SIMPL_NEW_DA_FROM_ADV_COMPARISON("Output Attribute Array", DestinationArrayName, SelectedThresholds, FilterParameter::CreatedArray, MultiThresholdObjects2));
+  parameters.push_back(SIMPL_NEW_DA_FROM_ADV_COMPARISON_FP("Output Attribute Array", DestinationArrayName, SelectedThresholds, FilterParameter::CreatedArray, MultiThresholdObjects2));
   setFilterParameters(parameters);
 }
 

@@ -37,6 +37,54 @@
 
 #include <stdexcept>
 
+ // -----------------------------------------------------------------------------
+ //
+ // -----------------------------------------------------------------------------
+LinkedPathCreationFilterParameter::ILinkedPath* LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedDataPath::GetterCallbackType callback, DataArrayPathHelper::DataType dataType)
+{
+  return new LinkedDataPath(callback, dataType);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+LinkedPathCreationFilterParameter::ILinkedPath* LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedStringPath::GetterCallbackType dcCallback)
+{
+  return new LinkedStringPath(dcCallback);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+LinkedPathCreationFilterParameter::ILinkedPath* LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedStringPath::GetterCallbackType dcCallback, LinkedStringPath::GetterCallbackType amCallback)
+{
+  return new LinkedStringPath(dcCallback, amCallback);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+LinkedPathCreationFilterParameter::ILinkedPath* LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedMixedPath::PathGetterCallbackType dcCallback, LinkedMixedPath::PathGetterCallbackType amCallback)
+{
+  return new LinkedMixedPath(dcCallback, amCallback);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+LinkedPathCreationFilterParameter::ILinkedPath* LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedMixedPath::PathGetterCallbackType dcCallback, LinkedMixedPath::StringGetterCallbackType amCallback)
+{
+  return new LinkedMixedPath(dcCallback, amCallback);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+LinkedPathCreationFilterParameter::ILinkedPath* LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedAdvComparisonPath::GetterCallbackType callback)
+{
+  return new LinkedAdvComparisonPath(callback);
+}
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -127,9 +175,9 @@ LinkedPathCreationFilterParameter::LinkedMixedPath::LinkedMixedPath(PathGetterCa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkedPathCreationFilterParameter::LinkedMixedPath::LinkedMixedPath(PathGetterCallbackType dc, PathGetterCallbackType path)
+LinkedPathCreationFilterParameter::LinkedMixedPath::LinkedMixedPath(PathGetterCallbackType dc, PathGetterCallbackType am)
 : dcGetter(dc)
-, amPathGetter(path)
+, amPathGetter(am)
 {
 }
 
