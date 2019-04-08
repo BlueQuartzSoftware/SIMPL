@@ -96,7 +96,7 @@
     qDebug() << "Unable to set property CombinedAttributeMatrixName";                                                                                                                                  \
   }                                                                                                                                                                                                    \
   filter->execute();                                                                                                                                                                                   \
-  err = filter->getErrorCondition();                                                                                                                                                                   \
+  err = filter->getErrorCode();                                                                                                                                                                        \
   DREAM3D_REQUIRE_EQUAL(err, errVal);
 
 #define CHECK_FOR_PASS1(filter, featureIds1, featureIds2, attrMat1, attrMat2, newIndex, newAttrMat)                                                                                                    \
@@ -137,7 +137,7 @@
     qDebug() << "Unable to set property CombinedAttributeMatrixName";                                                                                                                                  \
   }                                                                                                                                                                                                    \
   filter->execute();                                                                                                                                                                                   \
-  err = filter->getErrorCondition();                                                                                                                                                                   \
+  err = filter->getErrorCode();                                                                                                                                                                        \
   DREAM3D_REQUIRE_EQUAL(err, 0);                                                                                                                                                                       \
   validateCombinedEnsembleAMs(filter, featureIds1, featureIds2, attrMat1, attrMat2, newIndex, newAttrMat);
 
@@ -179,7 +179,7 @@
     qDebug() << "Unable to set property CombinedAttributeMatrixName";                                                                                                                                  \
   }                                                                                                                                                                                                    \
   filter->execute();                                                                                                                                                                                   \
-  err = filter->getErrorCondition();                                                                                                                                                                   \
+  err = filter->getErrorCode();                                                                                                                                                                        \
   DREAM3D_REQUIRE_EQUAL(err, 0);                                                                                                                                                                       \
   validateCombinedFeatureAMs(filter, featureIds1, featureIds2, attrMat1, attrMat2, newIndex, newAttrMat);
 

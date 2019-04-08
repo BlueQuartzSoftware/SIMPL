@@ -352,10 +352,10 @@ public:
     // Run filter
 
     featureDataCSVWriter->preflight();
-    DREAM3D_REQUIRED(featureDataCSVWriter->getErrorCondition(), >=, 0);
+    DREAM3D_REQUIRED(featureDataCSVWriter->getErrorCode(), >=, 0);
 
     featureDataCSVWriter->execute();
-    DREAM3D_REQUIRED(featureDataCSVWriter->getErrorCondition(), >=, 0);
+    DREAM3D_REQUIRED(featureDataCSVWriter->getErrorCode(), >=, 0);
 
     checkFilter(am, delimiterChoice, writeNumFeaturesLine, writeNeighborListData);
   }

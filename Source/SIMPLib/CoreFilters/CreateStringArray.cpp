@@ -125,40 +125,36 @@ void CreateStringArray::initialize()
 // -----------------------------------------------------------------------------
 void CreateStringArray::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
 
   if(getNumberOfComponents() < 0)
   {
-    setErrorCondition(-8150);
     QString ss = QObject::tr("The number of components must non-negative");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-8150, ss);
   }
   if(getNumberOfComponents() == 0)
   {
-    setErrorCondition(-8151);
     QString ss = QObject::tr("The number of components is Zero. This will result in an array that has no memory allocated. Are you sure you wanted to do this?");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-8151, ss);
   }
   if(!getNewArray().isValid())
   {
-    setErrorCondition(-8152);
     QString ss = QObject::tr("The Created DataArrayPath is invalid. Please select the Data Container, Attribute Matrix and set an output DataArray name.");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-8152, ss);
   }
   if (m_InitializationValue.isEmpty())
   {
     QString ss = "Empty initialization value.";
-    setErrorCondition(-5759);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-5759, ss);
   }
   QVector<size_t> cDims(1, getNumberOfComponents());
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -185,10 +181,10 @@ void CreateStringArray::preflight()
 // -----------------------------------------------------------------------------
 void CreateStringArray::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

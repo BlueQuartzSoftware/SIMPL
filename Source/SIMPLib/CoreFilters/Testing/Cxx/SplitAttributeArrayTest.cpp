@@ -224,7 +224,7 @@ public:
   {
     //    Observer obs;
     //    QObject::connect(
-    //          filter.get(), &AbstractFilter::filterGeneratedMessage,
+    //          filter.get(), &AbstractFilter::messageGenerated,
     //          &obs, &Observer::processPipelineMessage
     //          );
 
@@ -240,13 +240,13 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     filter->preflight();
-    err = filter->getErrorCondition();
+    err = filter->getErrorCode();
     DREAM3D_REQUIRED(err, >=, 0)
 
     dca = createDataContainerArray();
     filter->setDataContainerArray(dca);
     filter->execute();
-    err = filter->getErrorCondition();
+    err = filter->getErrorCode();
     DREAM3D_REQUIRED(err, >=, 0)
     using DataArrayPtrType = std::shared_ptr<DataArray<T>>;
     DataArrayPtrType mcArray_original =

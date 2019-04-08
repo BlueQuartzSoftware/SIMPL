@@ -111,9 +111,8 @@ ITK_IMAGE_READER_CLASS_NAME
     }
     else
     {
-      setErrorCondition(-4);
       QString errorMessage = QString("Unsupported number of components: %1.").arg(nbComponents);
-      notifyErrorMessage(getHumanLabel(), errorMessage, getErrorCondition());
+      setErrorCondition(-4, errorMessage);
       break;
     }
     break;
@@ -126,9 +125,8 @@ ITK_IMAGE_READER_CLASS_NAME
   case itk::ImageIOBase::FIXEDARRAY:
   case itk::ImageIOBase::MATRIX:
   default:
-    setErrorCondition(-4);
     QString errorMessage = QString("Unsupported pixel type: %1.").arg(itk::ImageIOBase::GetPixelTypeAsString(pixel).c_str());
-    notifyErrorMessage(getHumanLabel(), errorMessage, getErrorCondition());
+    setErrorCondition(-4, errorMessage);
     break;
   }
 }
@@ -144,8 +142,7 @@ ITK_IMAGE_READER_CLASS_NAME
   DataContainer::Pointer container = getDataContainerArray()->getDataContainer(dataArrayPath.getDataContainerName());
   if(nullptr == container.get())
   {
-    setErrorCondition(-4);
-    notifyErrorMessage(getHumanLabel(), "Container not found.", getErrorCondition());
+    setErrorCondition(-4, "Container not found.");
     return;
   }
 
@@ -185,9 +182,8 @@ ITK_IMAGE_READER_CLASS_NAME
     itk::ImageIOBase::Pointer imageIO = itk::ImageIOFactory::CreateImageIO(filename.toLatin1(), itk::ImageIOFactory::ReadMode);
     if(nullptr == imageIO)
     {
-      setErrorCondition(-5);
       QString errorMessage = "ITK could not read the given file \"%1\". Format is likely unsupported.";
-      notifyErrorMessage(getHumanLabel(), errorMessage.arg(filename), getErrorCondition());
+      setErrorCondition(-5, errorMessage.arg(filename));
       return;
     }
     imageIO->SetFileName(filename.toLatin1());
@@ -228,16 +224,14 @@ ITK_IMAGE_READER_CLASS_NAME
       readImage<double>(dataArrayPath, imageIO, filename, dataCheck);
       break;
     default:
-      setErrorCondition(-4);
       QString errorMessage = QString("Unsupported pixel component: %1.").arg(imageIO->GetComponentTypeAsString(component).c_str());
-      notifyErrorMessage(getHumanLabel(), errorMessage, getErrorCondition());
+      setErrorCondition(-4, errorMessage);
       break;
     }
   } catch(itk::ExceptionObject& err)
   {
-    setErrorCondition(-55557);
     QString errorMessage = "ITK exception was thrown while processing input file: %1";
-    notifyErrorMessage(getHumanLabel(), errorMessage.arg(err.what()), getErrorCondition());
+    setErrorCondition(-55557, errorMessage.arg(err.what()));
     return;
   }
 }
@@ -275,7 +269,7 @@ ITK_IMAGE_READER_CLASS_NAME
   QVector<size_t> cDims = ITKDream3DHelper::GetComponentsDimensions<TPixel>();
   QVector<size_t> qTdims = {tDims[0], tDims[1], tDims[2]};
   AttributeMatrix::Pointer cellAttrMat = container->createNonPrereqAttributeMatrix(this, dataArrayPath.getAttributeMatrixName(), qTdims, AttributeMatrix::Type::Cell);
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

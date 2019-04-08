@@ -89,8 +89,8 @@ void MassCreateData::initialize()
 // -----------------------------------------------------------------------------
 void MassCreateData::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 
   const int iterations = 4000;
   for(int i = 0; i < iterations; i++)
@@ -118,10 +118,11 @@ void MassCreateData::preflight()
 // -----------------------------------------------------------------------------
 void MassCreateData::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
+
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -131,7 +132,7 @@ void MassCreateData::execute()
     return;
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
+  notifyStatusMessage("Complete");
 }
 
 // -----------------------------------------------------------------------------

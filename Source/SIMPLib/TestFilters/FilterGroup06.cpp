@@ -52,8 +52,8 @@ FilterGroup06::~FilterGroup06() = default;
 // -----------------------------------------------------------------------------
 void FilterGroup06::initialize()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   setCancel(false);
 }
 
@@ -72,8 +72,8 @@ void FilterGroup06::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void FilterGroup06::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 }
 
 // -----------------------------------------------------------------------------
@@ -97,7 +97,7 @@ void FilterGroup06::execute()
 {
   initialize();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -107,11 +107,10 @@ void FilterGroup06::execute()
     return;
   }
 
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     QString ss = QObject::tr("Some error message");
-    setErrorCondition(-99999999);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-99999999, ss);
     return;
   }
 

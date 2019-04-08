@@ -161,7 +161,7 @@ public:
 
       filter->setDataContainerArray(dca);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0)
     }
 
     // Validate Results
@@ -242,7 +242,7 @@ public:
 
       filter->setDataContainerArray(dca);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0)
     }
 
     CheckPreset("Black, Blue and White", UnitTest::GenerateColorTableTest::BlackBlueWhiteFile, dca);

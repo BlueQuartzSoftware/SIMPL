@@ -33,14 +33,43 @@
 
 #include <iostream>
 
+#include "SIMPLib/Messages/AbstractMessageHandler.h"
+#include "SIMPLib/Messages/FilterErrorMessage.h"
+
 #include "ui_ProgressDialog.h"
+
+/**
+ * @brief This class is the message handler for the Progress Dialog class.  It is responsible
+ * for receiving any incoming messages that the progress dialog would like to know about.
+ */
+class ProgressDialogMessageHandler : public AbstractMessageHandler
+{
+public:
+  explicit ProgressDialogMessageHandler(ProgressDialog* progressDialog)
+  : m_ProgressDialog(progressDialog)
+  {
+  }
+
+  /**
+   * @brief Sets the text of the progress dialog's label to the human label of incoming
+   * FilterErrorMessages.
+   * @param msg
+   */
+  void processMessage(const FilterErrorMessage* msg) const override
+  {
+    m_ProgressDialog->m_Ui->label->setText(msg->getHumanLabel());
+  }
+
+private:
+  ProgressDialog* m_ProgressDialog = nullptr;
+};
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ProgressDialog::ProgressDialog(QWidget *parent, Qt::WindowFlags f)
-  : QDialog (parent, f)
-  , m_Ui(new Ui::ProgressDialog)
+ProgressDialog::ProgressDialog(QWidget* parent, Qt::WindowFlags f)
+: QDialog(parent, f)
+, m_Ui(new Ui::ProgressDialog)
 {
   m_Ui->setupUi(this);
 }
@@ -61,7 +90,8 @@ void ProgressDialog::setLabelText(const QString& text)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ProgressDialog::processPipelineMessage(const PipelineMessage& msg)
+void ProgressDialog::processPipelineMessage(const AbstractMessage::Pointer& msg)
 {
-  m_Ui->label->setText(msg.getFilterHumanLabel());
+  ProgressDialogMessageHandler msgHandler(this);
+  msg->visit(&msgHandler);
 }

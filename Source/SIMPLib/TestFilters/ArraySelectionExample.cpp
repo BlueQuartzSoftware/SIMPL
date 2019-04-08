@@ -89,8 +89,8 @@ void ArraySelectionExample::initialize()
 void ArraySelectionExample::dataCheck()
 {
   // std::cout << " ArraySelectionExample   Preflighting " << std::endl;
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 }
 
 // -----------------------------------------------------------------------------
@@ -114,10 +114,10 @@ void ArraySelectionExample::preflight()
 // -----------------------------------------------------------------------------
 void ArraySelectionExample::execute()
 {
-  int err = 0;
-  setErrorCondition(err);
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

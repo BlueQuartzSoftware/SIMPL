@@ -154,12 +154,12 @@ void CombineAttributeMatrices::initialize()
 // -----------------------------------------------------------------------------
 void CombineAttributeMatrices::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   DataArrayPath tempPath;
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getFirstAttributeMatrixPath().getDataContainerName(), false);
-  if(getErrorCondition() < 0 || nullptr == m.get())
+  if(getErrorCode() < 0 || nullptr == m.get())
   {
     return;
   }
@@ -167,20 +167,18 @@ void CombineAttributeMatrices::dataCheck()
   if(getFirstAttributeMatrixPath().getDataContainerName().compare(getSecondAttributeMatrixPath().getDataContainerName()) != 0)
   {
     QString ss = QObject::tr("The selected attribute matrices must be in the same data container and currently are not");
-    setErrorCondition(-5557);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-5557, ss);
   }
 
   if(getFirstAttributeMatrixPath().getAttributeMatrixName().compare(getSecondAttributeMatrixPath().getAttributeMatrixName()) == 0)
   {
     QString ss = QObject::tr("The selected attribute matrices must be different and currently are the same");
-    setErrorCondition(-5558);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-5558, ss);
   }
 
   AttributeMatrix::Pointer firstAttrMat = m->getPrereqAttributeMatrix(this, getFirstAttributeMatrixPath().getAttributeMatrixName(), -301);
   AttributeMatrix::Pointer secondAttrMat = m->getPrereqAttributeMatrix(this, getSecondAttributeMatrixPath().getAttributeMatrixName(), -301);
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -188,11 +186,10 @@ void CombineAttributeMatrices::dataCheck()
   if(firstAttrMat->getType() != secondAttrMat->getType())
   {
     QString ss = QObject::tr("The selected attribute matrices must be of the same type (ie Feature) and currently are not");
-    setErrorCondition(-5559);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-5559, ss);
   }
 
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -202,7 +199,7 @@ void CombineAttributeMatrices::dataCheck()
   size_t totalTuples = firstAttrMat->getNumberOfTuples() + secondAttrMat->getNumberOfTuples() - 1;
   QVector<size_t> tDims(1, totalTuples);
   m->createNonPrereqAttributeMatrix(this, getCombinedAttributeMatrixName(), tDims, firstAttrMat->getType(), CombinedMatrixID);
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -215,7 +212,7 @@ void CombineAttributeMatrices::dataCheck()
   {
     m_FirstIndex = m_FirstIndexPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -226,7 +223,7 @@ void CombineAttributeMatrices::dataCheck()
   {
     m_SecondIndex = m_SecondIndexPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -237,7 +234,7 @@ void CombineAttributeMatrices::dataCheck()
   {
     tempPath.update(getFirstAttributeMatrixPath().getDataContainerName(), getCombinedAttributeMatrixName(), *iter);
     IDataArray::Pointer tmpDataArray = firstAttrMat->getPrereqIDataArray<IDataArray, AbstractFilter>(this, *iter, -90001);
-    if(getErrorCondition() >= 0)
+    if(getErrorCode() >= 0)
     {
       QVector<size_t> cDims = tmpDataArray->getComponentDimensions();
       TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, tmpDataArray);
@@ -248,7 +245,7 @@ void CombineAttributeMatrices::dataCheck()
   {
     tempPath.update(getSecondAttributeMatrixPath().getDataContainerName(), getCombinedAttributeMatrixName(), *iter);
     IDataArray::Pointer tmpDataArray = secondAttrMat->getPrereqIDataArray<IDataArray, AbstractFilter>(this, *iter, -90001);
-    if(getErrorCondition() >= 0)
+    if(getErrorCode() >= 0)
     {
       if(!fArrayNames.contains(*iter))
       {
@@ -264,7 +261,7 @@ void CombineAttributeMatrices::dataCheck()
   {
     m_NewIndex = m_NewIndexPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -300,10 +297,10 @@ template <typename T> void copyData(IDataArray::Pointer fromData, IDataArray::Po
 // -----------------------------------------------------------------------------
 void CombineAttributeMatrices::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -333,7 +330,7 @@ void CombineAttributeMatrices::execute()
     else if(m_SecondIndex[i] > 0 && m_NewIndex[i] != 0)
     {
       QString ss = QObject::tr("When copying the indices, the indices of the two attribute matrices overlapped.  The index of the first attribute matrix was kept.");
-      notifyWarningMessage(getHumanLabel(), ss, -111);
+      setWarningCondition(-111, ss);
     }
   }
 

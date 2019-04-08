@@ -95,8 +95,8 @@ void RemoveArrays::initialize()
 // -----------------------------------------------------------------------------
 void RemoveArrays::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 
   markSelectionsForDeletion(getDataContainerArray().get(), Qt::Checked);
 
@@ -140,7 +140,7 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
     DataContainerProxy dcProxy = containerIter.next();
     dcList.push_back(dcProxy.getName());
     DataContainer::Pointer dcItem = dca->getPrereqDataContainer(this, dcProxy.getName());
-    if(getErrorCondition() < 0 || dcItem.get() == nullptr)
+    if(getErrorCode() < 0 || dcItem.get() == nullptr)
     {
       continue;
     }
@@ -163,9 +163,8 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
       // assert(amItem.get() != nullptr);
       if(amItem.get() == nullptr)
       {
-        setErrorCondition(-11008);
         QString ss = QObject::tr("The AttributeMatrix '%1' could not be removed because it was not found in DataContainer '%2'").arg(amName).arg(dcProxy.getName());
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        setErrorCondition(-11008, ss);
         continue;
       }
       AttributeMatrixProxy attrProxy = attrMatsIter.value();
@@ -186,9 +185,8 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
         IDataArray::Pointer daItem = amItem->getAttributeArray(daName);
         if(daItem.get() == nullptr)
         {
-          setWarningCondition(-11009);
           QString ss = QObject::tr("%1/%2/%3 was not found. This could be due to another filter removing the array.").arg(dcProxy.getName()).arg(amName).arg(daName);
-          notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+          setWarningCondition(-11009, ss);
           continue;
         }
         DataArrayProxy daProxy = dataArraysIter.value();
@@ -217,11 +215,11 @@ std::list<DataArrayPath> RemoveArrays::getDeletedPaths()
 // -----------------------------------------------------------------------------
 void RemoveArrays::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   // Simply running the preflight will do what we need it to.
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

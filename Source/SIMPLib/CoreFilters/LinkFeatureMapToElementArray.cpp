@@ -99,8 +99,8 @@ void LinkFeatureMapToElementArray::readFilterParameters(AbstractFilterParameters
 // -----------------------------------------------------------------------------
 void LinkFeatureMapToElementArray::updateFeatureInstancePointers()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 
   if(nullptr != m_ActivePtr.lock()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
@@ -120,12 +120,12 @@ void LinkFeatureMapToElementArray::initialize()
 // -----------------------------------------------------------------------------
 void LinkFeatureMapToElementArray::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   DataArrayPath tempPath;
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getSelectedCellArrayPath().getDataContainerName(), false);
-  if(getErrorCondition() < 0 || nullptr == m.get())
+  if(getErrorCode() < 0 || nullptr == m.get())
   {
     return;
   }
@@ -141,7 +141,7 @@ void LinkFeatureMapToElementArray::dataCheck()
     m_SelectedCellData = m_SelectedCellDataPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -172,10 +172,10 @@ void LinkFeatureMapToElementArray::preflight()
 // -----------------------------------------------------------------------------
 void LinkFeatureMapToElementArray::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

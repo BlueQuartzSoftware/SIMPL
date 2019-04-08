@@ -112,13 +112,12 @@ void CopyFeatureArrayToElementArray::initialize()
 // -----------------------------------------------------------------------------
 void CopyFeatureArrayToElementArray::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 
   if(getCreatedArrayName().isEmpty())
   {
-    setErrorCondition(-11002);
-    notifyErrorMessage(getHumanLabel(), "The new Element array name must be set", getErrorCondition());
+    setErrorCondition(-11002, "The new Element array name must be set");
     return;
   }
 
@@ -136,7 +135,7 @@ void CopyFeatureArrayToElementArray::dataCheck()
   DataArrayPath tempPath(getFeatureIdsArrayPath().getDataContainerName(), getFeatureIdsArrayPath().getAttributeMatrixName(), "");
   getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, tempPath, -301);
 
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -200,10 +199,10 @@ template <typename T> IDataArray::Pointer copyData(IDataArray::Pointer inputData
 // -----------------------------------------------------------------------------
 void CopyFeatureArrayToElementArray::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -232,16 +231,14 @@ void CopyFeatureArrayToElementArray::execute()
   if(mismatchedFeatures)
   {
     QString ss = QObject::tr("The largest Feature Id (%1) in the FeatureIds array is larger than the number of Features in the InArray array (%2)").arg(largestFeature).arg(numFeatures);
-    setErrorCondition(-5555);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-5555, ss);
     return;
   }
 
   if(largestFeature != (numFeatures - 1))
   {
     QString ss = QObject::tr("The number of Features in the InArray array (%1) does not match the largest Feature Id in the FeatureIds array").arg(numFeatures);
-    setErrorCondition(-5555);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-5555, ss);
     return;
   }
 
@@ -294,8 +291,7 @@ void CopyFeatureArrayToElementArray::execute()
   else
   {
     QString ss = QObject::tr("The selected array was of unsupported type. The path is %1").arg(m_SelectedFeatureArrayPath.serialize());
-    setErrorCondition(-14000);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-14000, ss);
   }
 
   if(p.get() != nullptr)

@@ -98,8 +98,7 @@ template <typename T> void checkValuesInt(AbstractFilter* filter, double replace
   if(!((replaceValue >= std::numeric_limits<T>::min()) && (replaceValue <= std::numeric_limits<T>::max())))
   {
     ss = QObject::tr("The %1 replace value was invalid. The valid range is %2 to %3").arg(strType).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
-    filter->setErrorCondition(-100);
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+    filter->setErrorCondition(-100, ss);
   }
 }
 
@@ -114,8 +113,7 @@ template <typename T> void checkValuesFloatDouble(AbstractFilter* filter, double
        ((replaceValue >= std::numeric_limits<T>::min()) && (replaceValue <= std::numeric_limits<T>::max()))))
   {
     ss = QObject::tr("The %1 replace value was invalid. The valid ranges are -%3 to -%2, 0, %2 to %3").arg(strType).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
-    filter->setErrorCondition(-101);
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+    filter->setErrorCondition(-101, ss);
   }
 }
 
@@ -154,17 +152,17 @@ void ConditionalSetValue::initialize()
 // -----------------------------------------------------------------------------
 void ConditionalSetValue::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 
   QVector<DataArrayPath> dataArrayPaths;
 
   m_ArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArrayPath());
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
-  if(getErrorCondition() >= 0)
+  if(getErrorCode() >= 0)
   {
     dataArrayPaths.push_back(getSelectedArrayPath());
   }
@@ -174,8 +172,7 @@ void ConditionalSetValue::dataCheck()
     QString ss = QObject::tr("Selected array '%1' must be a scalar array (1 component). The number of components is %2")
                      .arg(getSelectedArrayPath().getDataArrayName())
                      .arg(m_ArrayPtr.lock()->getNumberOfComponents());
-    setErrorCondition(-11002);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-11002, ss);
     return;
   }
 
@@ -186,7 +183,7 @@ void ConditionalSetValue::dataCheck()
   {
     m_ConditionalArray = m_ConditionalArrayPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
-  if(getErrorCondition() >= 0)
+  if(getErrorCode() >= 0)
   {
     dataArrayPaths.push_back(getConditionalArrayPath());
   }
@@ -243,9 +240,8 @@ void ConditionalSetValue::dataCheck()
   }
   else
   {
-    setErrorCondition(-4060);
     QString ss = QObject::tr("Incorrect data scalar type");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-4060, ss);
   }
 }
 
@@ -267,10 +263,10 @@ void ConditionalSetValue::preflight()
 // -----------------------------------------------------------------------------
 void ConditionalSetValue::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

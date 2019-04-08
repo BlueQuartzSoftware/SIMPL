@@ -215,7 +215,7 @@ public:
   {
     setValues(filter, arrayName, newType, newArrayName);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0);
 
     if(checkArray)
     {
@@ -583,7 +583,7 @@ public:
 
     setValues(filter, "Array1", SIMPL::NumericTypes::Type::Int8, newArrayName);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -90002);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -90002);
   }
 
   // -----------------------------------------------------------------------------
@@ -600,7 +600,7 @@ public:
 
     setValues(filter, "DataArray", SIMPL::NumericTypes::Type::Int8, newArrayName);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0);
   }
 
   // -----------------------------------------------------------------------------

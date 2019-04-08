@@ -277,11 +277,11 @@ public:
 
     if(err >= 0)
     {
-      DREAM3D_REQUIRED(moveMultiData->getErrorCondition(), >=, err)
+      DREAM3D_REQUIRED(moveMultiData->getErrorCode(), >=, err)
     }
     else
     {
-      DREAM3D_REQUIRED(moveMultiData->getErrorCondition(), ==, err)
+      DREAM3D_REQUIRED(moveMultiData->getErrorCode(), ==, err)
     }
 
     // Check filter results if filter successfully executed

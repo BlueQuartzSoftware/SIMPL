@@ -147,9 +147,8 @@ public:
     case itk::ImageIOBase::MATRIX:
       break;
     default:
-      filter->setErrorCondition(-2);
       QString message = QObject::tr("Unable to read image '%1'").arg(inputFile);
-      filter->notifyErrorMessage(filter->getHumanLabel(), message, filter->getErrorCondition());
+      filter->setErrorCondition(-2, message);
       outputIDataArray->resizeTuples(0);
     }
 
@@ -158,9 +157,8 @@ public:
       readerObject->Update();
     } catch(itk::ExceptionObject& err)
     {
-      filter->setErrorCondition(-5);
       QString ss = QObject::tr("Failed to read image '%1': %2").arg(inputFile).arg(err.GetDescription());
-      filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+      filter->setErrorCondition(-5, ss);
     }
   }
 

@@ -40,7 +40,7 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Common/PipelineMessage.h"
+#include "SIMPLib/Messages/AbstractMessage.h"
 
 
 /**
@@ -55,7 +55,14 @@ class SIMPLib_EXPORT Observable : public QObject
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(Observable)
-    PYB11_METHOD(void notifyErrorMessage ARGS humanLabel ss code)
+    PYB11_METHOD(void setErrorCondition ARGS code messageText)
+    PYB11_METHOD(void setErrorConditionWithPrefix ARGS code prefix messageText)
+    PYB11_METHOD(void setWarningCondition ARGS code messageText)
+    PYB11_METHOD(void setWarningConditionWithPrefix ARGS code prefix messageText)
+    PYB11_METHOD(void notifyStatusMessage ARGS messageText)
+    PYB11_METHOD(void notifyStatusMessageWithPrefix ARGS prefix messageText)
+    PYB11_METHOD(void notifyProgressMessage ARGS progress messageText)
+    PYB11_METHOD(void notifyProgressMessageWithPrefix ARGS progress prefix messageText)
 
   public:
     SIMPL_TYPE_MACRO(Observable)
@@ -69,38 +76,31 @@ class SIMPLib_EXPORT Observable : public QObject
     void operator=(const Observable&);
 
     // ------------------------------
-    // These are convenience methods that construct a @see PipelineMessage object and then 'emit' that object
+    // These are convenience methods that construct a @see AbstractMessage object and then 'emit' that object
     // ------------------------------
-    virtual void notifyErrorMessage(const QString& humanLabel, const QString& ss, int code);
+    virtual void setErrorCondition(int code, const QString& messageText);
 
-    virtual void notifyWarningMessage(const QString& humanLabel, const QString& ss, int code);
+    void setErrorConditionWithPrefix(int code, const QString &prefix, const QString& messageText);
 
-    virtual void notifyStatusMessage(const QString& humanLabel, const QString& ss);
+    virtual void setWarningCondition(int code, const QString& messageText);
 
-    virtual void notifyStandardOutputMessage(const QString& humanLabel, int pipelineIndex, const QString& ss);
+    void setWarningConditionWithPrefix(int code, const QString &prefix, const QString& messageText);
 
-    virtual void notifyStatusMessage(const QString& prefix, const QString& humanLabel, const QString& ss);
+    virtual void notifyStatusMessage(const QString& messageText);
 
-    virtual void notifyProgressMessage(const QString& prefix, const QString& humanLabel, const QString& str, int progress);
+    void notifyStatusMessageWithPrefix(const QString &prefix, const QString& messageText);
 
-  public slots:
+    virtual void notifyProgressMessage(int progress, const QString& messageText);
 
-    /**
-     * @brief This method will cause this object to 'emit' the filterGeneratedMessage() signal. This is useful if other
-     * classes need the filter to emit an error or warning messge from a class that is not able to emit the proper signals
-     * or the class is not connected to anything that would receive the signals
-     * @param msg
-     */
-    void broadcastPipelineMessage(const PipelineMessage& msg);
-
+    void notifyProgressMessageWithPrefix(int progress, const QString &prefix, const QString& messageText);
 
   signals:
 
     /**
-     * @brief filterGeneratedMessage This is a Qt Signal that is used when the filter generates Errors, Warnings, Status and Progress Messages
+     * @brief messageGenerated This is a Qt Signal that is used when the filter generates Errors, Warnings, Status and Progress Messages
      * @param msg
      */
-    void filterGeneratedMessage(const PipelineMessage& msg);
+    void messageGenerated(const AbstractMessage::Pointer& msg);
 };
 
 

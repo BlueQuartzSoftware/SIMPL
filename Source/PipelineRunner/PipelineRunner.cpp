@@ -154,7 +154,7 @@ int main(int argc, char* argv[])
   }
   // Now actually execute the pipeline
   pipeline->execute();
-  err = pipeline->getErrorCondition();
+  err = pipeline->getErrorCode();
   if(err < 0)
   {
     std::cout << "Error Condition of Pipeline: " << err << std::endl;

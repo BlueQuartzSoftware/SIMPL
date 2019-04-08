@@ -262,34 +262,31 @@ void ConvertColorToGrayScale::initialize() { }
 // -----------------------------------------------------------------------------
 void ConvertColorToGrayScale::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   if(!DataArrayPath::ValidateVector(getInputDataArrayVector()))
   {
-    setErrorCondition(-62100);
     QString ss = QObject::tr("All Attribute Arrays must belong to the same Data Container and Attribute Matrix");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-62100, ss);
   }
 
   if(getOutputArrayPrefix().isEmpty())
   {
-    setErrorCondition(-62102);
     QString message = QObject::tr("Using a prefix (even a single alphanumeric value) is required so that the output Xdmf files can be written correctly");
-    notifyErrorMessage(getHumanLabel(), message, getErrorCondition());
+    setErrorCondition(-62102, message);
   }
 
   if(getInputDataArrayVector().isEmpty())
   {
-    setErrorCondition(-62103);
     QString message = QObject::tr("At least one Attribute Array must be selected");
-    notifyErrorMessage(getHumanLabel(), message, getErrorCondition());
+    setErrorCondition(-62103, message);
     return;
   }
 
   DataArrayPath inputAMPath = DataArrayPath::GetAttributeMatrixPath(getInputDataArrayVector());
 
   AttributeMatrix::Pointer inAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, inputAMPath, -301);
-  if(getErrorCondition() < 0 || nullptr == inAM.get())
+  if(getErrorCode() < 0 || nullptr == inAM.get())
   {
     return;
   }
@@ -304,7 +301,7 @@ void ConvertColorToGrayScale::dataCheck()
     QVector<size_t> tDims = inAM->getTupleDimensions();
 
     outAM = dc->createNonPrereqAttributeMatrix(this, getOutputAttributeMatrixName(), tDims, AttributeMatrix::Type::Cell);
-    if(getErrorCondition() < 0 || nullptr == outAM.get())
+    if(getErrorCode() < 0 || nullptr == outAM.get())
     {
       return;
     }
@@ -320,7 +317,7 @@ void ConvertColorToGrayScale::dataCheck()
     QString newName = getOutputArrayPrefix() + arrayNames.at(i);
     inputAMPath.setDataArrayName(daName);
 
-    if(getErrorCondition() < 0)
+    if(getErrorCode() < 0)
     {
       return;
     }
@@ -338,9 +335,8 @@ void ConvertColorToGrayScale::dataCheck()
   {
     if(m_ColorChannel < 0 || m_ColorChannel > 2)
     {
-      setErrorCondition(-62104);
       QString message = QObject::tr("The color channel should be 0, 1 or 2");
-      notifyErrorMessage(getHumanLabel(), message, getErrorCondition());
+      setErrorCondition(-62104, message);
       return;
     }
   }
@@ -365,14 +361,14 @@ void ConvertColorToGrayScale::preflight()
 void ConvertColorToGrayScale::execute()
 {
   initialize();
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   QString ss;
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     ss = QObject::tr("DataCheck did not pass during execute");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-62106, ss);
     return;
   }
 
@@ -391,9 +387,8 @@ void ConvertColorToGrayScale::execute()
 
     if(nullptr == inputColorData.get())
     {
-      setErrorCondition(-62107);
       ss = QObject::tr("Input Color Data at ArrayPath '%1' was not available. This array will be skipped.").arg(arrayPath.serialize("/"));
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-62107, ss);
       continue;
     }
 
@@ -404,9 +399,8 @@ void ConvertColorToGrayScale::execute()
 
     if(nullptr == outputGrayData.get())
     {
-      setErrorCondition(-62108);
       ss = QObject::tr("Output Data at ArrayPath '%1' was not available. This array will be skipped.").arg(newPath.serialize("/"));
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-62108, ss);
       continue;
     }
 

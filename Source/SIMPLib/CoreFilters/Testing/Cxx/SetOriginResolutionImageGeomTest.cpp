@@ -245,7 +245,7 @@ public:
     changeOrigin(filter);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0);
 
     DataContainer::Pointer dc = filter->getDataContainerArray()->getDataContainer("DataContainer1");
     ImageGeom::Pointer imgGeom = std::dynamic_pointer_cast<ImageGeom>(dc->getGeometry());
@@ -271,7 +271,7 @@ public:
     changeResolution(filter);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0);
 
     DataContainer::Pointer dc = filter->getDataContainerArray()->getDataContainer("DataContainer1");
     ImageGeom::Pointer imgGeom = std::dynamic_pointer_cast<ImageGeom>(dc->getGeometry());
@@ -299,7 +299,7 @@ public:
     setInvalidGeometry(filter);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -384);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -384);
   }
 
   // -----------------------------------------------------------------------------
@@ -313,7 +313,7 @@ public:
     setNullGeometry(filter);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -385);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -385);
   }
 
   // -----------------------------------------------------------------------------
