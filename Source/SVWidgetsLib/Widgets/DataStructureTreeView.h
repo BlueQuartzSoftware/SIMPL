@@ -54,6 +54,8 @@
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
+class QStandardItemModel;
+
 class SVWidgetsLib_EXPORT DataStructureTreeView : public QTreeView
 {
   Q_OBJECT
@@ -108,6 +110,19 @@ public:
    */
   void clearViewRequirements();
 
+  /**
+   * @brief Returns a QVector of QModelIndex for all expanded children
+   * @param index
+   * @return
+   */
+  QVector<QModelIndex> getExpandedChildren(const QModelIndex& index);
+
+  /**
+   * @brief Collapses all items but the given index and its children.
+   * @param index
+   */
+  void collapseAllBut(const QModelIndex& index);
+
 signals:
   void filterPath(DataArrayPath path);
   void endDataStructureFiltering();
@@ -160,6 +175,20 @@ protected:
    * @brief End the drag process
    */
   void dragComplete();
+
+  /**
+   * @brief findExpandedChildren
+   * @param model
+   * @param index
+   * @param expandedVector
+   */
+  void findExpandedChildren(QStandardItemModel* model, const QModelIndex& index, QVector<QModelIndex>& expandedVector);
+
+  /**
+   * @brief Create custom context menu
+   * @param event
+   */
+  void contextMenuEvent(QContextMenuEvent* event) Q_DECL_OVERRIDE;
 
 private slots:
   /**
