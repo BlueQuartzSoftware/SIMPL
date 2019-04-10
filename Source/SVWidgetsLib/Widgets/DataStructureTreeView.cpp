@@ -366,6 +366,66 @@ void DataStructureTreeView::dropEvent(QDropEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void DataStructureTreeView::collapseAllBut(const QModelIndex& index)
+{
+  QVector<QModelIndex> expandedChildren = getExpandedChildren(index);
+  if(isExpanded(index))
+  {
+    expandedChildren.push_front(index);
+  }
+  collapseAll();
+  for(const QModelIndex& child : expandedChildren)
+  {
+    expand(child);
+  }
+  QModelIndex parentIndex = index.parent();
+  while(parentIndex.isValid())
+  {
+    expand(parentIndex);
+    parentIndex = parentIndex.parent();
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureTreeView::findExpandedChildren(QStandardItemModel* model, const QModelIndex& index, QVector<QModelIndex>& expandedVector)
+{
+  if(isExpanded(index))
+  {
+    expandedVector.push_back(index);
+  }
+  const int childCount = model->rowCount(index);
+  for(int i = 0; i < childCount; i++)
+  {
+    QModelIndex childIndex = model->index(i, 0, index);
+    if(isExpanded(childIndex))
+    {
+      expandedVector.push_back(childIndex);
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QVector<QModelIndex> DataStructureTreeView::getExpandedChildren(const QModelIndex& index)
+{
+  QVector<QModelIndex> expandedChildren;
+  QStandardItemModel* stdModel = dynamic_cast<QStandardItemModel*>(model());
+  const int childCount = stdModel->rowCount(index);
+  for(int i = 0; i < childCount; i++)
+  {
+    QModelIndex childIndex = stdModel->index(i, 0, index);
+    findExpandedChildren(stdModel, childIndex, expandedChildren);
+  }
+
+  return expandedChildren;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataStructureTreeView::mouseDoubleClickEvent(QMouseEvent* event)
 {
   QModelIndex index = indexAt(event->pos());
@@ -379,4 +439,35 @@ void DataStructureTreeView::mouseDoubleClickEvent(QMouseEvent* event)
   {
     emit applyPathToFilteringParameter(path);
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureTreeView::contextMenuEvent(QContextMenuEvent* event)
+{
+  const QPoint pos = event->pos();
+  const QModelIndex index = indexAt(pos);
+  QStandardItemModel* stdModel = dynamic_cast<QStandardItemModel*>(model());
+  const bool isValid = index.isValid();
+  const int numChildren = stdModel->rowCount(index);
+  const int numSiblings = stdModel->rowCount(index.parent());
+
+  QMenu menu;
+  QAction* expandAllAction = menu.addAction("Expand All");
+  QAction* collapseAllAction = menu.addAction("Collapse All");
+
+  connect(expandAllAction, &QAction::triggered, this, &DataStructureTreeView::expandAll);
+  connect(collapseAllAction, &QAction::triggered, this, &DataStructureTreeView::collapseAll);
+
+  if(isValid && numChildren > 0)
+  {
+    menu.addSeparator();
+    QAction* collapseAllButAction = menu.addAction("Collapse All But This");
+    connect(collapseAllButAction, &QAction::triggered, [=]{
+      collapseAllBut(index);
+    });
+  }
+
+  menu.exec(event->globalPos());
 }
