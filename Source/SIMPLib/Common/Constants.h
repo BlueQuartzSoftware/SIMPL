@@ -313,6 +313,8 @@ namespace SIMPL
     const QString MappingFilters("Mapping");
     const QString MiscFilters("Misc");
     const QString GeometryFilters("Geometry");
+    const QString ImportFilters("Import");
+    const QString ExportFilters("Export");
   }
 
   namespace GeneralData
