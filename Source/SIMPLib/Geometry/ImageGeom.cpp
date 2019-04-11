@@ -1019,8 +1019,7 @@ QString ImageGeom::getInfoString(SIMPL::InfoStringFormat format)
        << "<p>Z Extent: 0 to " << volDims[2] - 1 << " (dimension: " << volDims[2] << ")</p>"
        << "</td></tr>";
     ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Origin:</th><td>)" << origin[0] << ", " << origin[1] << ", " << origin[2] << "</td></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Spacing/Resolution:</th><td>)" << spacing[0] << ", " << spacing[1] << ", " << spacing[2] << "</td></tr>";
-
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Spacing:</th><td>)" << spacing[0] << ", " << spacing[1] << ", " << spacing[2] << "</td></tr>";
     ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Bounds:</th><td>)"
        << "<p>X Range: " << (origin[0] - halfRes[0]) << " to " << (origin[0] - halfRes[0] + volDims[0] * spacing[0]) << " (delta: " << (volDims[0] * spacing[0]) << ")</p>"
        << "<p>Y Range: " << (origin[1] - halfRes[1]) << " to " << (origin[1] - halfRes[1] + volDims[1] * spacing[1]) << " (delta: " << (volDims[1] * spacing[1]) << ")</p>"
