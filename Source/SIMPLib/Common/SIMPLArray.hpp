@@ -43,7 +43,8 @@
  * arrays used in some of the filter parameters. The devloper can extend this quite easily to more
  * elements should they need them
  */
-template <class T, unsigned int Dimension> class SIMPLArray
+template <class T, unsigned int Dimension>
+class SIMPLArray
 {
 public:
   SIMPLArray() = default;
@@ -65,56 +66,110 @@ public:
   using const_iterator = typename std::array<T, 3>::const_iterator;
   //========================================= END STL INTERFACE COMPATIBILITY ==============================
 
+  /**
+   * @brief access specified element
+   * @param index
+   * @return
+   */
   inline reference operator[](size_type index)
   {
     return m_Array[index];
   }
 
+  /**
+   * @brief access specified element
+   * @param index
+   * @return
+   */
   inline const_reference operator[](size_type index) const
   {
     return m_Array[index];
   }
 
+  /**
+   * @brief access specified element with bounds checking
+   * @param index
+   * @return
+   */
   inline reference at(size_type index)
   {
     assert(index < Dimension);
-    return m_Array[index];
+    return m_Array.at(index);
   }
 
+  /**
+   * @brief access specified element with bounds checking
+   * @param index
+   * @return
+   */
   inline const_reference at(size_type index) const
   {
     assert(index < Dimension);
-    return m_Array[index];
+    return m_Array.at(index);
   }
 
+  /**
+   * @brief returns an iterator to the beginning
+   * @return
+   */
   iterator begin()
   {
     return m_Array.begin();
   }
 
+  /**
+   * @brief returns an iterator to the end
+   * @return
+   */
   iterator end()
   {
     return m_Array.end();
   }
 
+  /**
+   * @brief returns an iterator to the beginning
+   * @return
+   */
   const_iterator begin() const
   {
     return m_Array.cbegin();
   }
 
+  /**
+   * @brief returns an iterator to the end
+   * @return
+   */
   const_iterator end() const
   {
     return m_Array.cend();
   }
 
+  /**
+   * @brief direct access to the underlying array
+   * @return
+   */
   pointer data()
   {
     return m_Array.data();
   }
 
+  /**
+   * @brief Returns the number of elements
+   * @return
+   */
   size_type size()
   {
     return Dimension;
+  }
+
+  /**
+   * @brief operator == Tests for an element by element equivelance of the underlying data
+   * @param rhs
+   * @return
+   */
+  bool operator==(const SIMPLArray& rhs) const
+  {
+    return m_Array == rhs.m_Array;
   }
 
 protected:
