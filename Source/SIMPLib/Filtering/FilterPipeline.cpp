@@ -760,7 +760,7 @@ int FilterPipeline::preflightPipeline()
         for(const DataArrayPath::RenameType& rename : renamedPaths)
         {
           const DataArrayPath& originalPath = std::get<0>(rename);
-          const DataArrayPath& renamePath = std::get<1>(rename);
+          // const DataArrayPath& renamePath = std::get<1>(rename);
           if(originalPath == deletedPath)
           {
             const auto iter = std::find(renamedPaths.begin(), renamedPaths.end(), rename);
