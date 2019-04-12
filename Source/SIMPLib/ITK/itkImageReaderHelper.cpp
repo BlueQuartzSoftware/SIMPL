@@ -250,10 +250,10 @@ ITK_IMAGE_READER_CLASS_NAME
   const typename ImageType::PointType origin = reader->GetOutput()->GetOrigin();
   const typename ImageType::SizeType size = reader->GetOutput()->GetLargestPossibleRegion().GetSize();
   const typename ImageType::SpacingType spacing = reader->GetOutput()->GetSpacing();
+  // Initialize torigin/tspacing/tDims since arrays are always of size 3 and ITK image may have a different size.
   FloatVec3Type torigin = {0.0f, 0.0f, 0.0f};
   FloatVec3Type tspacing = {1.0f, 1.0f, 1.0f};
-  SizeVec3Type tDims = {0, 0, 0};
-  // Initialize torigin/tspacing/tDims since arrays are always of size 3 and ITK image may have a different size.
+  SizeVec3Type tDims = {1, 1, 1};
   for(size_t i = 0; i < dimensions; i++)
   {
     torigin[i] = origin[i];

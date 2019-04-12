@@ -39,11 +39,12 @@
 
 /**
  * @brief This class is a facade pattern around a std::array<T,D> array to allow for some semantics
- * for either a 2D or 3D point such as X,Y,Z. We Provide 2 concrete implementations that are for 2 and 3 element
+ * for either a 2D or 3D point such as X,Y,Z. We Provide 3 concrete implementations that are for 2, 3 and 4 element
  * arrays used in some of the filter parameters. The devloper can extend this quite easily to more
  * elements should they need them
  */
-template <class T, unsigned int Dimension> class SIMPLArray
+template <class T, unsigned int Dimension>
+class SIMPLArray
 {
 public:
   SIMPLArray() = default;
@@ -65,56 +66,110 @@ public:
   using const_iterator = typename std::array<T, 3>::const_iterator;
   //========================================= END STL INTERFACE COMPATIBILITY ==============================
 
+  /**
+   * @brief access specified element
+   * @param index
+   * @return
+   */
   inline reference operator[](size_type index)
   {
     return m_Array[index];
   }
 
+  /**
+   * @brief access specified element
+   * @param index
+   * @return
+   */
   inline const_reference operator[](size_type index) const
   {
     return m_Array[index];
   }
 
+  /**
+   * @brief access specified element with bounds checking
+   * @param index
+   * @return
+   */
   inline reference at(size_type index)
   {
     assert(index < Dimension);
-    return m_Array[index];
+    return m_Array.at(index);
   }
 
+  /**
+   * @brief access specified element with bounds checking
+   * @param index
+   * @return
+   */
   inline const_reference at(size_type index) const
   {
     assert(index < Dimension);
-    return m_Array[index];
+    return m_Array.at(index);
   }
 
+  /**
+   * @brief returns an iterator to the beginning
+   * @return
+   */
   iterator begin()
   {
     return m_Array.begin();
   }
 
+  /**
+   * @brief returns an iterator to the end
+   * @return
+   */
   iterator end()
   {
     return m_Array.end();
   }
 
+  /**
+   * @brief returns an iterator to the beginning
+   * @return
+   */
   const_iterator begin() const
   {
     return m_Array.cbegin();
   }
 
+  /**
+   * @brief returns an iterator to the end
+   * @return
+   */
   const_iterator end() const
   {
     return m_Array.cend();
   }
 
+  /**
+   * @brief direct access to the underlying array
+   * @return
+   */
   pointer data()
   {
     return m_Array.data();
   }
 
+  /**
+   * @brief Returns the number of elements
+   * @return
+   */
   size_type size()
   {
     return Dimension;
+  }
+
+  /**
+   * @brief operator == Tests for an element by element equivelance of the underlying data
+   * @param rhs
+   * @return
+   */
+  bool operator==(const SIMPLArray& rhs) const
+  {
+    return m_Array == rhs.m_Array;
   }
 
 protected:
@@ -128,6 +183,81 @@ private:
 };
 
 // -----------------------------------------------------------------------------
+template <typename T>
+class IVec2 : public SIMPLArray<T, 2>
+{
+  using ParentType = SIMPLArray<T, 2>;
+
+public:
+  IVec2(const IVec2&) = default;
+  IVec2(IVec2&&) noexcept = default;
+  IVec2& operator=(const IVec2&) = default;
+  IVec2& operator=(IVec2&&) noexcept = default;
+  ~IVec2() = default;
+
+  /**
+   * @brief IVec2 Default constructor initializes all values to ZERO.
+   */
+  IVec2()
+  {
+    (*this)[0] = static_cast<T>(0);
+    (*this)[1] = static_cast<T>(0);
+  }
+
+  IVec2(T x, T y)
+  {
+    (*this)[0] = x;
+    (*this)[1] = y;
+  }
+
+  IVec2(std::array<T, 2> data)
+  {
+    (*this)[0] = data[0];
+    (*this)[1] = data[1];
+  }
+  IVec2(std::tuple<T, T> data)
+  {
+    (*this)[0] = std::get<0>(data);
+    (*this)[1] = std::get<1>(data);
+  }
+  IVec2(const T* data)
+  {
+    (*this)[0] = data[0];
+    (*this)[1] = data[1];
+  }
+
+  inline T getX() const
+  {
+    return ParentType::operator[](0);
+  }
+  inline T getY() const
+  {
+    return ParentType::operator[](1);
+  }
+  inline void setX(const T& x)
+  {
+    (*this)[0] = x;
+  }
+  inline void setY(const T& y)
+  {
+    (*this)[1] = y;
+  }
+
+  /**
+   * @brief toTuple Converts the internal data structure to a std::tuple<T, T, T>
+   * @return
+   */
+  std::tuple<T, T> toTuple() const
+  {
+    return std::make_tuple(getX(), getY());
+  }
+};
+
+using FloatVec2Type = IVec2<float>;
+using IntVec2Type = IVec2<int>;
+using SizeVec2Type = IVec2<size_t>;
+
+// -----------------------------------------------------------------------------
 template <typename T> class IVec3 : public SIMPLArray<T, 3>
 {
   using ParentType = SIMPLArray<T, 3>;
@@ -138,30 +268,40 @@ public:
   IVec3& operator=(IVec3&&) noexcept = default;
   ~IVec3() = default;
 
-  IVec3(T x = 0.0f, T y = 0.0f, T z = 0.0f)
+  /**
+   * @brief IVec3 Default constructor initializes all values to ZERO.
+   */
+  IVec3()
   {
-    this->setValue(0, x);
-    this->setValue(1, y);
-    this->setValue(2, z);
+    (*this)[0] = static_cast<T>(0);
+    (*this)[1] = static_cast<T>(0);
+    (*this)[2] = static_cast<T>(0);
+  }
+
+  IVec3(T x, T y, T z)
+  {
+    (*this)[0] = x;
+    (*this)[1] = y;
+    (*this)[2] = z;
   }
 
   IVec3(std::array<T, 3> data)
   {
-    this->setValue(0, data[0]);
-    this->setValue(1, data[1]);
-    this->setValue(2, data[2]);
+    (*this)[0] = data[0];
+    (*this)[1] = data[1];
+    (*this)[2] = data[2];
   }
   IVec3(std::tuple<T, T, T> data)
   {
-    this->setValue(0, std::get<0>(data));
-    this->setValue(1, std::get<1>(data));
-    this->setValue(2, std::get<2>(data));
+    (*this)[0] = std::get<0>(data);
+    (*this)[1] = std::get<1>(data);
+    (*this)[2] = std::get<2>(data);
   }
   IVec3(const T* data)
   {
-    this->setValue(0, data[0]);
-    this->setValue(1, data[1]);
-    this->setValue(2, data[2]);
+    (*this)[0] = data[0];
+    (*this)[1] = data[1];
+    (*this)[2] = data[2];
   }
 
   inline T getX() const
@@ -178,17 +318,21 @@ public:
   }
   inline void setX(const T& x)
   {
-    this->setValue(0, x);
+    (*this)[0] = x;
   }
   inline void setY(const T& y)
   {
-    this->setValue(1, y);
+    (*this)[1] = y;
   }
   inline void setZ(const T& z)
   {
-    this->setValue(2, z);
+    (*this)[2] = z;
   }
 
+  /**
+   * @brief toTuple Converts the internal data structure to a std::tuple<T, T, T>
+   * @return
+   */
   std::tuple<T, T, T> toTuple() const
   {
     return std::make_tuple(getX(), getY(), getZ());
@@ -198,66 +342,6 @@ public:
 using FloatVec3Type = IVec3<float>;
 using IntVec3Type = IVec3<int>;
 using SizeVec3Type = IVec3<size_t>;
-
-// -----------------------------------------------------------------------------
-template <typename T> class IVec2 : public SIMPLArray<T, 2>
-{
-  using ParentType = SIMPLArray<T, 2>;
-public:
-  IVec2(const IVec2&) = default;
-  IVec2(IVec2&&) noexcept = default;
-  IVec2& operator=(const IVec2&) = default;
-  IVec2& operator=(IVec2&&) noexcept = default;
-  ~IVec2() = default;
-
-  IVec2(T x = 0.0f, T y = 0.0f)
-  {
-    this->setValue(0, x);
-    this->setValue(1, y);
-  }
-
-  IVec2(std::array<T, 2> data)
-  {
-    this->setValue(0, data[0]);
-    this->setValue(1, data[1]);
-  }
-  IVec2(std::tuple<T, T> data)
-  {
-    this->setValue(0, std::get<0>(data));
-    this->setValue(1, std::get<1>(data));
-  }
-  IVec2(const T* data)
-  {
-    this->setValue(0, data[0]);
-    this->setValue(1, data[1]);
-  }
-
-  inline T getX() const
-  {
-    return ParentType::operator[](0);
-  }
-  inline T getY() const
-  {
-    return ParentType::operator[](1);
-  }
-  inline void setX(const T& x)
-  {
-    this->setValue(0, x);
-  }
-  inline void setY(const T& y)
-  {
-    this->setValue(1, y);
-  }
-
-  std::tuple<T, T> toTuple() const
-  {
-    return std::make_tuple(getX(), getY());
-  }
-};
-
-using FloatVec2Type = IVec2<float>;
-using IntVec2Type = IVec2<int>;
-using SizeVec2Type = IVec2<size_t>;
 
 // -----------------------------------------------------------------------------
 template <typename T> class IVec4 : public SIMPLArray<T, 4>
@@ -270,34 +354,45 @@ public:
   IVec4& operator=(IVec4&&) noexcept = default;
   ~IVec4() = default;
 
-  IVec4(T x = 0.0f, T y = 0.0f, T z = 0.0f, T w = 0.0f)
+  /**
+   * @brief IVec4 Default constructor initializes all values to ZERO.
+   */
+  IVec4()
   {
-    this->setValue(0, x);
-    this->setValue(1, y);
-    this->setValue(2, z);
-    this->setValue(3, w);
+    (*this)[0] = static_cast<T>(0);
+    (*this)[1] = static_cast<T>(0);
+    (*this)[2] = static_cast<T>(0);
+    (*this)[3] = static_cast<T>(0);
+  }
+
+  IVec4(T x, T y, T z, T w)
+  {
+    (*this)[0] = x;
+    (*this)[1] = y;
+    (*this)[2] = z;
+    (*this)[3] = w;
   }
 
   IVec4(std::array<T, 4> data)
   {
-    this->setValue(0, data[0]);
-    this->setValue(1, data[1]);
-    this->setValue(2, data[2]);
-    this->setValue(3, data[3]);
+    (*this)[0] = data[0];
+    (*this)[1] = data[1];
+    (*this)[2] = data[2];
+    (*this)[3] = data[3];
   }
   IVec4(std::tuple<T, T> data)
   {
-    this->setValue(0, std::get<0>(data));
-    this->setValue(1, std::get<1>(data));
-    this->setValue(2, std::get<2>(data));
-    this->setValue(3, std::get<3>(data));
+    (*this)[0] = std::get<0>(data);
+    (*this)[1] = std::get<1>(data);
+    (*this)[2] = std::get<2>(data);
+    (*this)[3] = std::get<3>(data);
   }
   IVec4(const T* data)
   {
-    this->setValue(0, data[0]);
-    this->setValue(1, data[1]);
-    this->setValue(2, data[2]);
-    this->setValue(3, data[3]);
+    (*this)[0] = data[0];
+    (*this)[1] = data[1];
+    (*this)[2] = data[2];
+    (*this)[3] = data[3];
   }
 
   inline T getX() const
@@ -318,19 +413,19 @@ public:
   }
   inline void setX(const T& x)
   {
-    this->setValue(0, x);
+    (*this)[0] = x;
   }
   inline void setY(const T& y)
   {
-    this->setValue(1, y);
+    (*this)[1] = y;
   }
   inline void setZ(const T& z)
   {
-    this->setValue(2, z);
+    (*this)[2] = z;
   }
   inline void setW(const T& w)
   {
-    this->setValue(3, w);
+    (*this)[3] = w;
   }
 
   std::tuple<T, T> toTuple() const
