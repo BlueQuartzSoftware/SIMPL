@@ -211,7 +211,7 @@ void ConvertData::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array to Convert", SelectedCellArrayPath, FilterParameter::RequiredArray, ConvertData, req));
   }
 
-  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_SUBPATH_FP("Converted Attribute Array", OutputArrayName, SelectedCellArrayPath, FilterParameter::CreatedArray, ConvertData));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Converted Attribute Array", OutputArrayName, SelectedCellArrayPath, SelectedCellArrayPath, FilterParameter::CreatedArray, ConvertData));
 
   setFilterParameters(parameters);
 }

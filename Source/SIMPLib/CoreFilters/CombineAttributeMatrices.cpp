@@ -120,9 +120,9 @@ void CombineAttributeMatrices::setupFilterParameters()
   }
 
   parameters.push_back(SeparatorFilterParameter::New("Cell/Feature Data", FilterParameter::CreatedArray));
-  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_SUBPATH_FP("New Index Array", NewIndexArrayName, FirstIndexArrayPath, FilterParameter::CreatedArray, CombineAttributeMatrices));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("New Index Array", NewIndexArrayName, FirstIndexArrayPath, FirstIndexArrayPath, FilterParameter::CreatedArray, CombineAttributeMatrices));
   parameters.push_back(SeparatorFilterParameter::New("Feature/Ensemble Data", FilterParameter::CreatedArray));
-  parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_SUBPATH_FP("Combined Attribute Matrix", CombinedAttributeMatrixName, FirstAttributeMatrixPath, FilterParameter::CreatedArray, CombineAttributeMatrices));
+  parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Combined Attribute Matrix", CombinedAttributeMatrixName, FirstAttributeMatrixPath, FilterParameter::CreatedArray, CombineAttributeMatrices));
 
   setFilterParameters(parameters);
 }

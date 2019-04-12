@@ -83,7 +83,7 @@ void CopyFeatureArrayToElementArray::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Feature Ids", FeatureIdsArrayPath, FilterParameter::RequiredArray, CopyFeatureArrayToElementArray, req));
   }
   parameters.push_back(SeparatorFilterParameter::New("Element Data", FilterParameter::CreatedArray));
-  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_SUBPATH_FP("Copied Attribute Array", CreatedArrayName, FeatureIdsArrayPath, FilterParameter::CreatedArray, CopyFeatureArrayToElementArray));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Copied Attribute Array", CreatedArrayName, FeatureIdsArrayPath, FeatureIdsArrayPath, FilterParameter::CreatedArray, CopyFeatureArrayToElementArray));
 
   setFilterParameters(parameters);
 }

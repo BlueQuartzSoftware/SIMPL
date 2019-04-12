@@ -80,6 +80,14 @@ LinkedPathCreationFilterParameter::ILinkedPath* LinkedPathCreationFilterParamete
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+LinkedPathCreationFilterParameter::ILinkedPath* LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedMixedPath::PathGetterCallbackType pathCallback)
+{
+  return new LinkedDataPath(pathCallback, DataArrayPathHelper::DataType::DataContainer);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 LinkedPathCreationFilterParameter::ILinkedPath* LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedAdvComparisonPath::GetterCallbackType callback)
 {
   return new LinkedAdvComparisonPath(callback);
