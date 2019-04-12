@@ -87,7 +87,12 @@ public:
   {
     return m_CompiledLibraryName;
   }
-  
+
+  QString getFilterHtmlSummary() const override
+  {
+    return m_HtmlSummary;
+  }
+
   QUuid getUuid() const override
   {
     return m_Uuid;
@@ -104,6 +109,7 @@ protected:
     m_BrandingString = w->getBrandingString();
     m_CompiledLibraryName = w->getCompiledLibraryName();
     m_Uuid = w->getUuid();
+    m_HtmlSummary = w->generateHtmlSummary();
   }
 
 private:
@@ -113,8 +119,12 @@ private:
   QString m_HumanName;
   QString m_BrandingString;
   QString m_CompiledLibraryName;
+  QString m_HtmlSummary;
   QUuid m_Uuid;
 
-  FilterFactory(const FilterFactory&);  // Copy Constructor Not Implemented
-  void operator=(const FilterFactory&); // Move assignment Not Implemented
+public:
+  FilterFactory(const FilterFactory&) = delete;            // Copy Constructor Not Implemented
+  FilterFactory(FilterFactory&&) = delete;                 // Move Constructor Not Implemented
+  FilterFactory& operator=(const FilterFactory&) = delete; // Copy Assignment Not Implemented
+  FilterFactory& operator=(FilterFactory&&) = delete;      // Move Assignment Not Implemented
 };

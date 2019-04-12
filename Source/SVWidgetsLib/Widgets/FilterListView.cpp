@@ -93,15 +93,15 @@ void FilterListView::connectSignalsSlots()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterListView::addFilter(AbstractFilter::Pointer filter)
+void FilterListView::addFilter(const IFilterFactory::Pointer& factory)
 {
-  addFilter(filter, QModelIndex());
+  addFilter(factory, QModelIndex());
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterListView::addFilter(AbstractFilter::Pointer filter, SearchGroup group)
+void FilterListView::addFilter(const IFilterFactory::Pointer& factory, SearchGroup group)
 {
   if(!m_SearchGroupIndexMap.contains(group))
   {
@@ -109,19 +109,19 @@ void FilterListView::addFilter(AbstractFilter::Pointer filter, SearchGroup group
   }
 
   QModelIndex groupIndex = m_SearchGroupIndexMap[group];
-  addFilter(filter, groupIndex);
+  addFilter(factory, groupIndex);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterListView::addFilter(AbstractFilter::Pointer filter, const QModelIndex &parent)
+void FilterListView::addFilter(const IFilterFactory::Pointer& factory, const QModelIndex& parent)
 {
-  QString humanName = filter->getHumanLabel();
+  QString humanName = factory->getFilterHumanLabel();
   QString iconName(":/Groups/");
-  iconName.append(filter->getGroupName());
+  iconName.append(factory->getFilterGroup());
 
-  QIcon icon = SVStyle::Instance()->IconForGroup(filter->getGroupName());
+  QIcon icon = SVStyle::Instance()->IconForGroup(factory->getFilterGroup());
 
   // Create the QListWidgetItem and add it to the filterListView
   FilterListModel* model = getFilterListModel();
@@ -137,10 +137,10 @@ void FilterListView::addFilter(AbstractFilter::Pointer filter, const QModelIndex
   // Set an "internal" QString that is the name of the filter. We need this value
   // when the item is clicked in order to retreive the Filter Widget from the
   // filter widget manager.
-  model->setData(index, filter->getNameOfClass(), FilterListModel::Roles::ClassNameRole);
+  model->setData(index, factory->getFilterClassName(), FilterListModel::Roles::ClassNameRole);
 
   // Allow a basic mouse hover tool tip that gives some summary information on the filter.
-  model->setData(index, filter->generateHtmlSummary(), Qt::ToolTipRole);
+  model->setData(index, factory->getFilterHtmlSummary(), Qt::ToolTipRole);
 }
 
 // -----------------------------------------------------------------------------
@@ -213,7 +213,7 @@ QModelIndex FilterListView::findIndexByName(const QString &name)
     }
   }
 
-  return QModelIndex();
+  return {};
 }
 
 // -----------------------------------------------------------------------------
@@ -327,9 +327,9 @@ QModelIndex FilterListView::findNextSelectableIndex()
       return selectedIndexes[0];
   }
 
-    return model->index(selectedIndexes[0].row() + 1, FilterListModel::Column::Contents, parent);
+  return model->index(selectedIndexes[0].row() + 1, FilterListModel::Column::Contents, parent);
 
-  return QModelIndex();
+  return {};
 }
 
 // -----------------------------------------------------------------------------
@@ -365,7 +365,7 @@ QModelIndex FilterListView::findPreviousSelectableIndex()
     return model->index(selectedIndexes[0].row() - 1, FilterListModel::Column::Contents, parent);
   }
 
-  return QModelIndex();
+  return {};
 }
 
 // -----------------------------------------------------------------------------
@@ -386,7 +386,7 @@ void FilterListView::mousePressEvent(QMouseEvent* event)
 // -----------------------------------------------------------------------------
 void FilterListView::mouseMoveEvent(QMouseEvent* event)
 {
-  if(event->buttons() & Qt::LeftButton)
+  if((event->buttons() & Qt::LeftButton) != 0)
   {
     int distance = (event->pos() - m_StartPos).manhattanLength();
     if(distance >= QApplication::startDragDistance())
