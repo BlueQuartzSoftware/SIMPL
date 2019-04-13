@@ -425,6 +425,14 @@ void FilterParameterWidget::hideBorder()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void FilterParameterWidget::setValidFilePath(const QString& filePath)
+{
+  m_CurrentlyValidPath = filePath;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void FilterParameterWidget::showFileInFileSystem()
 {
   QFileInfo fi(m_CurrentlyValidPath);

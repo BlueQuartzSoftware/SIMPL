@@ -72,10 +72,12 @@ AbstractIOFileWidget::AbstractIOFileWidget(FilterParameter* parameter, AbstractF
       // Store the last used directory into the private instance variable
       QFileInfo fi(currentPath);
       m_LineEdit->setText(fi.filePath());
+      setValidFilePath(m_LineEdit->text());
     }
     else
     {
       m_LineEdit->setText(QDir::homePath());
+      setValidFilePath(m_LineEdit->text());
     }
   }
 }
@@ -143,6 +145,7 @@ void AbstractIOFileWidget::setupGui()
 
     QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
     m_LineEdit->setText(currentPath);
+    setValidFilePath(m_LineEdit->text());
     on_m_LineEdit_fileDropped(currentPath);
     on_m_LineEdit_returnPressed();
   }
@@ -159,6 +162,7 @@ void AbstractIOFileWidget::keyPressEvent(QKeyEvent* event)
   {  
     SVStyle* style = SVStyle::Instance();
     m_LineEdit->setText(m_CurrentText);
+    setValidFilePath(m_LineEdit->text());
     style->LineEditClearStyle(m_LineEdit);
     m_LineEdit->setToolTip("");
   }
@@ -284,6 +288,7 @@ void AbstractIOFileWidget::on_m_LineEdit_fileDropped(const QString& text)
   QString inputPath = validator->convertToAbsolutePath(text);
 
   m_LineEdit->setText(text);
+  setValidFilePath(m_LineEdit->text());
   // Set/Remove the red outline if the file does exist
   QtSFileUtils::VerifyPathExists(inputPath, m_LineEdit);
 
@@ -327,6 +332,7 @@ void AbstractIOFileWidget::afterPreflight()
 void AbstractIOFileWidget::setValue(const QString& val)
 {
   m_LineEdit->setText(val);
+  setValidFilePath(m_LineEdit->text());
 }
 
 // -----------------------------------------------------------------------------
