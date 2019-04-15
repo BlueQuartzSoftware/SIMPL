@@ -41,7 +41,7 @@ set(TEST_${SUBDIR_NAME}_NAMES
   RenameAttributeArrayTest
   RenameAttributeMatrixTest
   RenameDataContainerTest
-  RenameTimingTest
+  # RenameTimingTest
   ReplaceValueTest
   RequiredZThicknessTest
   ScaleVolumeTest
