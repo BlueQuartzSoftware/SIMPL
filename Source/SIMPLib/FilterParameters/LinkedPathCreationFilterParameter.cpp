@@ -37,9 +37,9 @@
 
 #include <stdexcept>
 
- // -----------------------------------------------------------------------------
- //
- // -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 LinkedPathCreationFilterParameter::ILinkedPath* LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedDataPath::GetterCallbackType callback, DataArrayPathHelper::DataType dataType)
 {
   return new LinkedDataPath(callback, dataType);
@@ -64,7 +64,8 @@ LinkedPathCreationFilterParameter::ILinkedPath* LinkedPathCreationFilterParamete
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkedPathCreationFilterParameter::ILinkedPath* LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedMixedPath::PathGetterCallbackType dcCallback, LinkedMixedPath::PathGetterCallbackType amCallback)
+LinkedPathCreationFilterParameter::ILinkedPath* LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedMixedPath::PathGetterCallbackType dcCallback,
+                                                                                                    LinkedMixedPath::PathGetterCallbackType amCallback)
 {
   return new LinkedMixedPath(dcCallback, amCallback);
 }
@@ -72,7 +73,8 @@ LinkedPathCreationFilterParameter::ILinkedPath* LinkedPathCreationFilterParamete
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkedPathCreationFilterParameter::ILinkedPath* LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedMixedPath::PathGetterCallbackType dcCallback, LinkedMixedPath::StringGetterCallbackType amCallback)
+LinkedPathCreationFilterParameter::ILinkedPath* LinkedPathCreationFilterParameter::CreateLinkedPath(LinkedMixedPath::PathGetterCallbackType dcCallback,
+                                                                                                    LinkedMixedPath::StringGetterCallbackType amCallback)
 {
   return new LinkedMixedPath(dcCallback, amCallback);
 }
@@ -158,7 +160,7 @@ void LinkedPathCreationFilterParameter::writeJson(QJsonObject& json)
 //
 // -----------------------------------------------------------------------------
 LinkedPathCreationFilterParameter::LinkedStringPath::LinkedStringPath(GetterCallbackType getDc)
-  : dcGetter(getDc)
+: dcGetter(getDc)
 {
 }
 
@@ -166,8 +168,8 @@ LinkedPathCreationFilterParameter::LinkedStringPath::LinkedStringPath(GetterCall
 //
 // -----------------------------------------------------------------------------
 LinkedPathCreationFilterParameter::LinkedStringPath::LinkedStringPath(GetterCallbackType getDc, GetterCallbackType getAm)
-  : dcGetter(getDc)
-  , amGetter(getAm)
+: dcGetter(getDc)
+, amGetter(getAm)
 {
 }
 
@@ -249,7 +251,7 @@ DataArrayPath LinkedPathCreationFilterParameter::LinkedMixedPath::generatePath()
     linkedPath.setDataContainerName(dcGetter().getDataContainerName());
     linkedPath.setAttributeMatrixName(amPathGetter().getAttributeMatrixName());
   }
-  //else
+  // else
   //{
   //  throw std::invalid_argument("Invalid linked AttributeMatrix path");
   //}
@@ -292,7 +294,7 @@ DataArrayPath LinkedPathCreationFilterParameter::LinkedAdvComparisonPath::genera
     linkedPath.setDataContainerName(compGetter().getDataContainerName());
     linkedPath.setAttributeMatrixName(compGetter().getAttributeMatrixName());
   }
-  //else
+  // else
   //{
   //  throw std::invalid_argument("Invalid linked AttributeMatrix path");
   //}
