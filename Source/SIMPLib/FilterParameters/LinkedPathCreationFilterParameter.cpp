@@ -317,5 +317,5 @@ DataArrayPath LinkedPathCreationFilterParameter::getLinkedDataArrayPath() const
   {
     return m_LinkedPath->generatePath();
   }
-  return DataArrayPath("Test DC", "Test AM", "");
+  return DataArrayPath("", "", "");
 }

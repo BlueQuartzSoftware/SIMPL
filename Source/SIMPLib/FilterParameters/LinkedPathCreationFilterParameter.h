@@ -41,12 +41,12 @@
 #include "SIMPLib/Filtering/ComparisonInputs.h"
 #include "SIMPLib/Filtering/ComparisonInputsAdvanced.h"
 
-// LinkedPath macros
+// Helper macros: LinkedPath
 #define SIMPL_NEW_LINKED_DC_PATH(FILTER, PTR, LINKED_PROP) LinkedPathCreationFilterParameter::CreateLinkedPath(SIMPL_BIND_GETTER(FILTER, PTR, LINKED_PROP))
 #define SIMPL_NEW_LINKED_AM_PATH(FILTER, PTR, DC_PROP, AM_PROP) LinkedPathCreationFilterParameter::CreateLinkedPath(SIMPL_BIND_GETTER(FILTER, PTR, DC_PROP), SIMPL_BIND_GETTER(FILTER, PTR, AM_PROP))
 #define SIMPL_NEW_LINKED_ADV_COMPARE(FILTER, PTR, COMP_PROP) LinkedPathCreationFilterParameter::CreateLinkedPath(SIMPL_BIND_GETTER(FILTER, PTR, COMP_PROP))
 
-// Index / NoIndex implementations
+// Helper macros: Index / NoIndex implementations
 #define SIMPL_NEW_DA_FROM_ADV_COMPARISON_NoIndex(Desc, Prop, LinkedComp, Category, Filter)                                                                                                             \
   LinkedPathCreationFilterParameter::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                             \
                                          SIMPL_NEW_LINKED_ADV_COMPARE(Filter, this, LinkedComp))
@@ -67,7 +67,7 @@
   LinkedPathCreationFilterParameter::New(Desc, #Prop, get##Prop(), Category, SIMPL_BIND_SETTER(Filter, this, Prop), SIMPL_BIND_GETTER(Filter, this, Prop),                                             \
                                          SIMPL_NEW_LINKED_DC_PATH(Filter, this, LinkedProp))
 
-// Expansion Macros
+// Helper macros: Expansion
 #define _FP_GET_OVERRIDE6(A, B, C, D, E, F, NAME, ...) NAME
 #define _FP_GET_OVERRIDE7(A, B, C, D, E, F, G, NAME, ...) NAME
 
@@ -332,8 +332,16 @@ public:
    */
   SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
+  /**
+   * @brief Set the ILinkedPath for determining what the parent container is
+   * @param linkedPath
+   */
   void setLinkedPath(ILinkedPath* linkedPath);
 
+  /**
+   * @brief Returned the linked DataArrayPath
+   * @return
+   */
   DataArrayPath getLinkedDataArrayPath() const;
 
 protected:
