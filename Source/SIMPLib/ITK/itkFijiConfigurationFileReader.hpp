@@ -35,6 +35,10 @@
 
 #pragma once
 
+#if defined(ITK_VERSION_MAJOR) && ITK_VERSION_MAJOR == 4
+#error This file can ONLY be used if ITK Version 5 with the Montage module is being used.
+#endif
+
 #include <QtCore/QObject>
 #include <QtCore/QString>
 #include <QtCore/QPointF>
