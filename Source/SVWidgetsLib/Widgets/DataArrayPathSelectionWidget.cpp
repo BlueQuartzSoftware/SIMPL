@@ -1053,7 +1053,7 @@ void DataArrayPathSelectionWidget::setFilter(AbstractFilter* filter)
 // -----------------------------------------------------------------------------
 void DataArrayPathSelectionWidget::beforePreflight()
 {
-  m_SelectionMenu = createSelectionMenu();
+  //  m_SelectionMenu = createSelectionMenu();
 }
 
 // -----------------------------------------------------------------------------
@@ -1471,7 +1471,7 @@ QMenu* DataArrayPathSelectionWidget::createSelectionMenu()
 
   // Populate Menu with DataContainers
   DataContainerArray::Container containers = dca->getDataContainers();
-  for(DataContainer::Pointer dc : containers)
+  for(const auto& dc : containers)
   {
     path.setDataContainerName(dc->getName());
     if(isCreatedPath(path))
@@ -1519,7 +1519,7 @@ QMenu* DataArrayPathSelectionWidget::createSelectionMenu()
 
           // Populate AttributeMatrix menu
           QList<QString> attrArrayNames = am->getAttributeArrayNames();
-          for(QString daName : attrArrayNames)
+          for(const auto& daName : attrArrayNames)
           {
             path.setDataArrayName(daName);
             if(isCreatedPath(path))

@@ -75,7 +75,6 @@ set(_PublicFilters
   SplitAttributeArray
   WriteASCIIData
   WriteTriangleGeometry
-  MassCreateData
 )
 
 
@@ -103,6 +102,7 @@ set(_PrivateFilters
   EmptyFilter
   FileReader
   FileWriter
+  MassCreateData
 )
 
 #-----------------

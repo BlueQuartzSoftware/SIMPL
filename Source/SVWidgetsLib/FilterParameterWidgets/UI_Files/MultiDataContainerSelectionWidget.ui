@@ -52,8 +52,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/SIMPL/icons/images/arrow_up_green.png</normaloff>:/SIMPL/icons/images/arrow_up_green.png</iconset>
+        <iconset resource="../../../../Resources/SIMPL.qrc">
+         <normaloff>:/SIMPL/icons/images/arrow_up.png</normaloff>:/SIMPL/icons/images/arrow_up.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -87,8 +87,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/SIMPL/icons/images/arrow_down_green.png</normaloff>:/SIMPL/icons/images/arrow_down_green.png</iconset>
+        <iconset resource="../../../../Resources/SIMPL.qrc">
+         <normaloff>:/SIMPL/icons/images/arrow_down.png</normaloff>:/SIMPL/icons/images/arrow_down.png</iconset>
        </property>
        <property name="iconSize">
         <size>
