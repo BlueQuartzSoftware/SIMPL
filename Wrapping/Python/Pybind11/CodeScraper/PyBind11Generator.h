@@ -2,6 +2,7 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QString>
+#include <QtCore/QStringList>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
@@ -52,7 +53,11 @@ public:
    */
   void generateModuleInitPy();
 
-
+  /**
+  *
+  */
+  void readFilterList();
+  
 private:
   QDir m_TopLevelDir;
   QDir m_SourceDir;
@@ -64,6 +69,7 @@ private:
   PythonBindingsModule m_ModuleCode;
   QString m_IsSIMPLib;
   QString m_CfgIntDir;
+  QStringList m_FilterList;
 
   PyBind11Generator(const PyBind11Generator&) = delete; // Copy Constructor Not Implemented
   void operator=(const PyBind11Generator&) = delete;    // Operator '=' Not Implemented

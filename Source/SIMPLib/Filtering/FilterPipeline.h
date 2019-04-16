@@ -47,6 +47,7 @@
 #include "SIMPLib/SIMPLib.h"
 
 class IObserver;
+class FilterPipelineMessageHandler;
 
 /**
  * @class FilterPipeline FilterPipeline.h DREAM3DLib/Common/FilterPipeline.h
@@ -57,12 +58,13 @@ class IObserver;
  * @date Sep 28, 2011
  * @version 1.0
  */
-class SIMPLib_EXPORT FilterPipeline : public QObject
+class SIMPLib_EXPORT FilterPipeline : public Observable
 {
   Q_OBJECT
 
   PYB11_CREATE_BINDINGS(FilterPipeline)
-  PYB11_PROPERTY(int ErrorCondition READ getErrorCondition WRITE setErrorCondition)
+  PYB11_PROPERTY(int ErrorCode READ getErrorCode)
+  PYB11_PROPERTY(int WarningCode READ getWarningCode)
   PYB11_PROPERTY(AbstractFilter CurrentFilter READ getCurrentFilter WRITE setCurrentFilter)
   PYB11_PROPERTY(State State READ getState)
   PYB11_PROPERTY(ExecutionResult ExecutionResult READ getExecutionResult)
@@ -77,6 +79,8 @@ class SIMPLib_EXPORT FilterPipeline : public QObject
   PYB11_METHOD(bool clear)
   PYB11_METHOD(size_t size)
   PYB11_METHOD(bool empty)
+  PYB11_METHOD(void clearErrorCode)
+  PYB11_METHOD(void clearWarningCode)
 
 public:
   SIMPL_SHARED_POINTERS(FilterPipeline)
@@ -84,6 +88,8 @@ public:
   SIMPL_STATIC_NEW_MACRO(FilterPipeline)
 
   ~FilterPipeline() override;
+
+  friend FilterPipelineMessageHandler;
 
   enum class State : unsigned int
   {
@@ -96,14 +102,16 @@ public:
   {
     Invalid,
     Completed,
-    Canceled
+    Canceled,
+    Failed
   };
 
   typedef QList<AbstractFilter::Pointer> FilterContainerType;
 
   SIMPL_GET_PROPERTY(FilterPipeline::ExecutionResult, ExecutionResult)
   SIMPL_GET_PROPERTY(FilterPipeline::State, State)
-  SIMPL_INSTANCE_PROPERTY(int, ErrorCondition)
+  SIMPL_GET_PROPERTY(int, ErrorCode)
+  SIMPL_GET_PROPERTY(int, WarningCode)
   SIMPL_INSTANCE_PROPERTY(AbstractFilter::Pointer, CurrentFilter)
 
   /**
@@ -129,6 +137,11 @@ public:
    * are expected to create a concrete implementation of this method.
    */
   virtual DataContainerArray::Pointer execute();
+
+  /**
+   * @brief An execute method using an existing data container array
+   */
+  DataContainerArray::Pointer execute(DataContainerArray::Pointer dca);
 
   /**
    * @brief This will preflight the pipeline and report any errors that would occur during
@@ -172,21 +185,58 @@ public:
   /**
    * @brief This method adds a QObject based class that is capable of being connected with the following signals from
    * AbstractFilter:
-   * @li processPipelineMessage(PipelineMessage&)
-   * @param obj Class that implements needed processPipelineMessage(PipelineMessage&) method
+   * @li processPipelineMessage(const AbstractMessage::Pointer &)
+   * @param obj Class that implements needed processPipelineMessage(const AbstractMessage::Pointer &) method
    */
   void addMessageReceiver(QObject* obj);
 
   void removeMessageReceiver(QObject* obj);
 
-  void connectFilterNotifications(QObject* filter);
-  void disconnectFilterNotifications(QObject* filter);
+  void connectFilterNotifications(AbstractFilter* filter);
+  void disconnectFilterNotifications(AbstractFilter* filter);
 
   /**
    * @brief Returns the FilterPipeline's name
    * @return
    */
   QString getName();
+
+  /**
+   * @brief setErrorCondition
+   * @param code
+   * @param messageText
+   */
+  void setErrorCondition(int code, const QString& messageText) override;
+
+  /**
+   * @brief setWarningCondition
+   * @param code
+   * @param messageText
+   */
+  void setWarningCondition(int code, const QString& messageText) override;
+
+  /**
+   * @brief notifyStatusMessage
+   * @param messageText
+   */
+  void notifyStatusMessage(const QString& messageText) override;
+
+  /**
+   * @brief notifyProgressMessage
+   * @param progress
+   * @param messageText
+   */
+  void notifyProgressMessage(int progress, const QString& messageText);
+
+  /**
+   * @brief clearErrorCondition
+   */
+  void clearErrorCode();
+
+  /**
+   * @brief clearWarningCondition
+   */
+  void clearWarningCode();
 
   /**
    * @brief This method returns a deep copy of the FilterPipeline and all its filters
@@ -236,7 +286,7 @@ protected:
   void updatePrevNextFilters();
 
 signals:
-  void pipelineGeneratedMessage(const PipelineMessage& message);
+  void messageGenerated(AbstractMessage::Pointer message);
 
   /**
    * @brief This method is emitted from the pipeline and signals a pipeline pause
@@ -283,6 +333,9 @@ private:
 
   DataContainerArray::Pointer m_Dca;
 
+  int m_ErrorCode = 0;
+  int m_WarningCode = 0;
+
   void connectSignalsSlots();
   void disconnectSignalsSlots();
 
@@ -292,3 +345,4 @@ public:
   FilterPipeline& operator=(const FilterPipeline&) = delete; // Copy Assignment Not Implemented
   FilterPipeline& operator=(FilterPipeline&&) = delete;      // Move Assignment Not Implemented
 };
+Q_DECLARE_METATYPE(FilterPipeline::Pointer);

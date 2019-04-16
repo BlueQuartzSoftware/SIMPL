@@ -133,11 +133,11 @@ public:
           cellDataArray->initializeTuple(i, &temp);
         }
 
-        cellAttr->addAttributeArray("CellData", cellDataArray);
-        cellAttr->addAttributeArray("FeatureIds", featureIds);
-        dc->addAttributeMatrix("Cell Attribute Matrix", cellAttr);
-        dc->addAttributeMatrix("Feature Attribute Matrix", featureAttr);
-        dca->addDataContainer(dc);
+        cellAttr->insertOrAssign(cellDataArray);
+        cellAttr->insertOrAssign(featureIds);
+        dc->addOrReplaceAttributeMatrix(cellAttr);
+        dc->addOrReplaceAttributeMatrix(featureAttr);
+        dca->addOrReplaceDataContainer(dc);
 
         DataArrayPath path = DataArrayPath(dc->getName(), cellAttr->getName(), cellDataArray->getName());
         QVariant var;
@@ -224,11 +224,11 @@ public:
           cellDataArray->initializeTuple(i, &temp);
         }
 
-        cellAttr->addAttributeArray("CellData", cellDataArray);
-        cellAttr->addAttributeArray("FeatureIds", featureIds);
-        dc->addAttributeMatrix("Cell Attribute Matrix", cellAttr);
-        dc->addAttributeMatrix("Feature Attribute Matrix", featureAttr);
-        dca->addDataContainer(dc);
+        cellAttr->insertOrAssign(cellDataArray);
+        cellAttr->insertOrAssign(featureIds);
+        dc->addOrReplaceAttributeMatrix(cellAttr);
+        dc->addOrReplaceAttributeMatrix(featureAttr);
+        dca->addOrReplaceDataContainer(dc);
 
         DataArrayPath path = DataArrayPath(dc->getName(), cellAttr->getName(), cellDataArray->getName());
         QVariant var;
@@ -305,10 +305,10 @@ public:
         featureIds->initializeTuple(14, &value);
         featureIds->initializeTuple(15, &value);
 
-        cellAttr->addAttributeArray("FeatureIds", featureIds);
-        dc->addAttributeMatrix("Cell Attribute Matrix", cellAttr);
-        dc->addAttributeMatrix("Feature Attribute Matrix", featureAttr);
-        dca->addDataContainer(dc);
+        cellAttr->insertOrAssign(featureIds);
+        dc->addOrReplaceAttributeMatrix(cellAttr);
+        dc->addOrReplaceAttributeMatrix(featureAttr);
+        dca->addOrReplaceDataContainer(dc);
 
         DataArrayPath path = DataArrayPath(dc->getName(), cellAttr->getName(), featureIds->getName());
         QVariant var;
@@ -328,7 +328,7 @@ public:
         DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
         createFeatureArrayFromElementArrayFilter->execute();
-        int err = createFeatureArrayFromElementArrayFilter->getErrorCondition();
+        int err = createFeatureArrayFromElementArrayFilter->getErrorCode();
         DREAM3D_REQUIRE_EQUAL(err, 0);
       }
       else

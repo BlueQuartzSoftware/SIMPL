@@ -107,10 +107,10 @@ public:
       data1->setValue(i, inum); // int array
       inum += 1;
     }
-    am->addAttributeArray(data->getName(), data);   // float array
-    am->addAttributeArray(data1->getName(), data1); // int array
-    vdc->addAttributeMatrix(am->getName(), am);
-    dca->addDataContainer(vdc);
+    am->insertOrAssign(data);  // float array
+    am->insertOrAssign(data1); // int array
+    vdc->addOrReplaceAttributeMatrix(am);
+    dca->addOrReplaceDataContainer(vdc);
 
     // Now instantiate the MultiThresholdObjectsTest Filter from the FilterManager
     QString filtName = "MultiThresholdObjects";
@@ -144,7 +144,7 @@ public:
       DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
       filter->execute();
-      DREAM3D_REQUIRED(filter->getErrorCondition(), >=, 0);
+      DREAM3D_REQUIRED(filter->getErrorCode(), >=, 0);
 
       DataArrayPath path = DataArrayPath("dc1", SIMPL::Defaults::CellAttributeMatrixName, SIMPL::GeneralData::ThresholdArray);
       IDataArray::Pointer thresholdArray = vdc->getAttributeMatrix(path.getAttributeMatrixName())->getAttributeArray(path.getDataArrayName());
@@ -179,7 +179,7 @@ public:
       DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
       filter->execute();
-      DREAM3D_REQUIRED(filter->getErrorCondition(), >=, 0);
+      DREAM3D_REQUIRED(filter->getErrorCode(), >=, 0);
 
       DataArrayPath path1 = DataArrayPath("dc1", SIMPL::Defaults::CellAttributeMatrixName, "ThresholdArray1");
       IDataArray::Pointer thresholdArray1 = vdc->getAttributeMatrix(path1.getAttributeMatrixName())->getAttributeArray(path1.getDataArrayName());

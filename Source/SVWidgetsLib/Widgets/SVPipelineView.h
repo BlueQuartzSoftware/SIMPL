@@ -49,7 +49,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "SIMPLib/Common/Observer.h"
-#include "SIMPLib/Common/PipelineMessage.h"
+#include "SIMPLib/Messages/AbstractMessage.h"
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersWriter.h"
@@ -342,6 +342,12 @@ public slots:
    */
   void toStoppedState();
 
+  /**
+   * @brief processPipelineMessage
+   * @param pm
+   */
+  void processPipelineMessage(const AbstractMessage::Pointer& pm) override;
+
 signals:
   void displayIssuesTriggered();
   void clearIssuesTriggered();
@@ -359,7 +365,7 @@ signals:
   void pipelineStarted();
   void pipelineFinished();
 
-  void pipelineHasMessage(const PipelineMessage& msg);
+  void pipelineHasMessage(AbstractMessage::Pointer msg);
   void pipelineFilePathUpdated(const QString& name);
   void pipelineChanged();
   void filePathOpened(const QString& filePath);
@@ -442,12 +448,6 @@ private slots:
    * @brief endPipelineThread
    */
   void endPipelineThread();
-
-  /**
-   * @brief processPipelineMessage
-   * @param msg
-   */
-  void processPipelineMessage(const PipelineMessage& msg);
 
 private:
   QThread* m_WorkerThread = nullptr;

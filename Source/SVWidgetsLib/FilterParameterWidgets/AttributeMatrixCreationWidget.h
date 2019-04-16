@@ -123,9 +123,9 @@ protected:
   void setSelectedPath(QString dcName, QString attrMatName, QString attrArrName);
 
 protected slots:
-    void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
+  void updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath);
 
-  private slots:
+private slots:
 
 private:
   bool                                            m_DidCausePreflight;

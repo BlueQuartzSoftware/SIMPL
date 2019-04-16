@@ -36,12 +36,12 @@ namespace H5Support_NAMESPACE
   /**
    * @brief General Utilities for working with the HDF5 data files and API
    */
-  class H5Utilities
+  class H5Support_EXPORT H5Utilities
   {
 
     public:
 
-      virtual ~H5Utilities();
+      virtual ~H5Utilities() = default;
 
       enum CustomHDFDataTypes
       {
@@ -53,11 +53,11 @@ namespace H5Support_NAMESPACE
       };
 
       // -----------HDF5 File Operations
-      static H5Support_EXPORT hid_t openFile(const std::string& filename, bool readOnly = false);
+      static hid_t openFile(const std::string& filename, bool readOnly = false);
 
-      static H5Support_EXPORT hid_t createFile(const std::string& filename);
+      static hid_t createFile(const std::string& filename);
 
-      static H5Support_EXPORT herr_t closeFile(hid_t& fileId);
+      static herr_t closeFile(hid_t& fileId);
 
       // -------------- HDF Indentifier Methods ----------------------------
       /**
@@ -66,7 +66,7 @@ namespace H5Support_NAMESPACE
       * @param trim set to False to trim the path
       * @return  The path to the object relative to the objId
       */
-      static H5Support_EXPORT std::string getObjectPath(hid_t loc_id, bool trim = false);
+      static std::string getObjectPath(hid_t loc_id, bool trim = false);
 
       /**
       * @brief Returns the hdf object type
@@ -75,7 +75,7 @@ namespace H5Support_NAMESPACE
       * @param objType The type of the object
       * @return  Negative value on error
       */
-      static H5Support_EXPORT herr_t getObjectType(hid_t objId, const std::string& objName, int32_t* objType);
+      static herr_t getObjectType(hid_t objId, const std::string& objName, int32_t* objType);
 
       /**
       * @brief Retrieves the object name for a given index
@@ -84,7 +84,7 @@ namespace H5Support_NAMESPACE
       * @param name The variable to store the name
       * @return Negative value is error
       */
-      static H5Support_EXPORT herr_t objectNameAtIndex(hid_t fileId, int32_t idx, std::string& name);
+      static herr_t objectNameAtIndex(hid_t fileId, int32_t idx, std::string& name);
 
       /**
       * @brief Returns the path to an object's parent
@@ -92,7 +92,7 @@ namespace H5Support_NAMESPACE
       * @param trim set to False to trim the path
       * @return  The path to the object relative to the objId
       */
-      static H5Support_EXPORT std::string getParentPath(hid_t objId);
+      static std::string getParentPath(hid_t objId);
 
       /**
       * @brief Returns the path to an object's parent
@@ -100,14 +100,14 @@ namespace H5Support_NAMESPACE
       * @param trim set to False to trim the path
       * @return  The path to the object relative to the objId
       */
-      static H5Support_EXPORT std::string getParentPath(const std::string& objectPath);
+      static std::string getParentPath(const std::string& objectPath);
 
       /**
       * @brief Returns the object's name from object path
       * @param objectPath The HDF5 path to the object
       * @return  The object name
       */
-      static H5Support_EXPORT std::string getObjectNameFromPath(const std::string& objectPath);
+      static std::string getObjectNameFromPath(const std::string& objectPath);
 
       /**
       * @brief Returns if a given hdf5 object is a group
@@ -115,7 +115,7 @@ namespace H5Support_NAMESPACE
       * @param objName The name of the object to check
       * @return True if the given hdf5 object id is a group
       */
-      static H5Support_EXPORT bool isGroup(hid_t nodeId, const std::string& objName);
+      static bool isGroup(hid_t nodeId, const std::string& objName);
 
 
       /**
@@ -124,23 +124,23 @@ namespace H5Support_NAMESPACE
       * @param objectPath The path of the object to open
       * @return The hdf5 id of the opened object. Negative value is error.
       */
-      static H5Support_EXPORT hid_t openHDF5Object(hid_t loc_id, const std::string& objName);
+      static hid_t openHDF5Object(hid_t loc_id, const std::string& objName);
 
       /**
       * @brief Closes the object id
       * @param locId The object id to close
       * @return Negative value is error.
       */
-      static H5Support_EXPORT herr_t closeHDF5Object(hid_t obj_id);
+      static herr_t closeHDF5Object(hid_t obj_id);
 
 
-      static H5Support_EXPORT std::string HDFClassTypeAsStr(hid_t class_type);
+      static std::string HDFClassTypeAsStr(hid_t class_type);
 
       /**
       * @brief prints the class type of the given class
       * @param classT The Class Type to print
       */
-      static H5Support_EXPORT void printHDFClassType(H5T_class_t class_type);
+      static void printHDFClassType(H5T_class_t class_type);
 
       // -------------- HDF Group Methods ----------------------------
       /**
@@ -150,7 +150,7 @@ namespace H5Support_NAMESPACE
       * @param names Variable to store the list
       * @return
       */
-      static H5Support_EXPORT herr_t getGroupObjects(hid_t loc_id, int32_t typeFilter, std::list<std::string>& names);
+      static herr_t getGroupObjects(hid_t loc_id, int32_t typeFilter, std::list<std::string>& names);
 
       /**
        * @brief Creates a HDF Group by checking if the group already exists. If the
@@ -160,7 +160,7 @@ namespace H5Support_NAMESPACE
        * @param group The name of the group to create. Note that this group name should
        * not be any sort of 'path'. It should be a single group.
        */
-      static H5Support_EXPORT hid_t createGroup(hid_t loc_id, const std::string& group);
+      static hid_t createGroup(hid_t loc_id, const std::string& group);
 
       /**
        * @brief Given a path relative to the Parent ID, this method will create all
@@ -169,7 +169,7 @@ namespace H5Support_NAMESPACE
        * @param parent The HDF unique id for the parent
        * @return Error Condition: Negative is error. Positive is success.
        */
-      static H5Support_EXPORT hid_t  createGroupsFromPath(const std::string& pathToCheck, hid_t parent);
+      static hid_t  createGroupsFromPath(const std::string& pathToCheck, hid_t parent);
 
       /**
        * @brief Given a path relative to the Parent ID, this method will create all
@@ -178,14 +178,14 @@ namespace H5Support_NAMESPACE
        * @param parent The HDF unique id for the parent
        * @return Error Condition: Negative is error. Positive is success.
        */
-      static H5Support_EXPORT hid_t createGroupsForDataset(const std::string& datasetPath, hid_t parent);
+      static hid_t createGroupsForDataset(const std::string& datasetPath, hid_t parent);
 
       /**
       * @brief Extracts the object name from a given path
       * @param path The path which to extract the object name
       * @return The name of the object
       */
-      static H5Support_EXPORT std::string extractObjectName(const std::string& path);
+      static std::string extractObjectName(const std::string& path);
 
       // -------------- HDF Attribute Methods ----------------------------
       /**
@@ -195,7 +195,7 @@ namespace H5Support_NAMESPACE
       * @param attr_name The attribute to look for (by name)
       * @return True if the attribute exists.
       */
-      static H5Support_EXPORT bool probeForAttribute(hid_t loc_id,
+      static bool probeForAttribute(hid_t loc_id,
                                                      const std::string& obj_name,
                                                      const std::string& attr_name);
 
@@ -206,7 +206,7 @@ namespace H5Support_NAMESPACE
       * @param names Variable to hold the list of attribute names
       * @return Negate value is error
       */
-      static H5Support_EXPORT herr_t getAllAttributeNames(hid_t obj_id, std::list<std::string>& results);
+      static herr_t getAllAttributeNames(hid_t obj_id, std::list<std::string>& results);
 
       /**
       * @brief Returns a list of all the attribute names
@@ -215,7 +215,7 @@ namespace H5Support_NAMESPACE
       * @param names Variable to hold the list of attribute names
       * @return Negative value is error
       */
-      static H5Support_EXPORT herr_t getAllAttributeNames(hid_t loc_id, const std::string& obj_name,
+      static herr_t getAllAttributeNames(hid_t loc_id, const std::string& obj_name,
                                                           std::list<std::string>& names);
 
 

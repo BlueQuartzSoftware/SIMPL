@@ -290,12 +290,12 @@ void FilterInputWidget::layoutWidgets(AbstractFilter* filter)
   // Get the FilterWidgetManagere instance so we can instantiate new FilterParameterWidgets
   FilterWidgetManager* fwm = FilterWidgetManager::Instance();
   // Get a list of all the filterParameters from the filter.
-  QVector<FilterParameter::Pointer> filterParameters = filter->getFilterParameters();
+  FilterParameterVectorType filterParameters = filter->getFilterParameters();
   // Create all the FilterParameterWidget objects that can be displayed where ever the developer needs
   bool addSpacer = true;
 
   int pCount = 0, rCount = 0, cCount = 0;
-  for(QVector<FilterParameter::Pointer>::iterator iter = filterParameters.begin(); iter != filterParameters.end(); ++iter)
+  for(FilterParameterVectorType::iterator iter = filterParameters.begin(); iter != filterParameters.end(); ++iter)
   {
     FilterParameter* parameter = (*iter).get();
 
@@ -505,10 +505,10 @@ void FilterInputWidget::validateFileSystemFilterParameter(FilterParameter* param
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterInputWidget::linkConditionalWidgets(QVector<FilterParameter::Pointer>& filterParameters)
+void FilterInputWidget::linkConditionalWidgets(FilterParameterVectorType& filterParameters)
 {
   // Figure out if we have any "Linked Boolean Widgets" to hook up to other widgets
-  for(QVector<FilterParameter::Pointer>::iterator iter = filterParameters.begin(); iter != filterParameters.end(); ++iter)
+  for(FilterParameterVectorType::iterator iter = filterParameters.begin(); iter != filterParameters.end(); ++iter)
   {
     FilterParameter::Pointer filterParameter = (*iter);
     LinkedBooleanFilterParameter::Pointer filterParameterPtr = std::dynamic_pointer_cast<LinkedBooleanFilterParameter>(filterParameter);

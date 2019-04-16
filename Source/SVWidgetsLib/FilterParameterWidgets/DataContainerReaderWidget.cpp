@@ -360,7 +360,8 @@ void DataContainerReaderWidget::setupGui()
     QString path = m_Filter->getInputFile();
 
     m_LineEdit->setText(path);
-    
+    setValidFilePath(m_LineEdit->text());
+
     checkFilePath(path);
     updateStylingForPath(path);
 
@@ -608,24 +609,6 @@ void DataContainerReaderWidget::afterPreflight()
   updateModelFromProxy(p);
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataContainerReaderWidget::showFileInFileSystem()
-{
-  QFileInfo fi(m_CurrentlyValidPath);
-  QString path;
-  if (fi.isFile())
-  {
-    path = fi.absoluteFilePath();
-  }
-  else
-  {
-    path = fi.absolutePath();
-  }
-
-  QtSFileUtils::ShowPathInGui(this, path);
-}
 
 // -----------------------------------------------------------------------------
 //
@@ -783,6 +766,7 @@ void DataContainerReaderWidget::on_selectBtn_clicked()
   QFileInfo fi(filePath);
   m_OpenDialogLastFilePath = fi.filePath();
   m_LineEdit->setText(filePath);
+  setValidFilePath(m_LineEdit->text());
   updateDCAProxy(filePath);
 }
 

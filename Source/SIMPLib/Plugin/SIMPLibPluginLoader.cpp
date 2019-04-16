@@ -71,7 +71,8 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool q
   QDir aPluginDir = QDir(qApp->applicationDirPath());
   if(!quiet)
   {
-    qDebug() << "Loading SIMPLib Plugins....";
+    qDebug() << "Loading SIMPLib Plugins.";
+    qDebug() << "Adding Folder " << aPluginDir.absolutePath();
   }
   // qDebug() << "aPluginDir: " << aPluginDir.absolutePath() << "\n";
   QString thePath;
@@ -127,6 +128,10 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool q
     thePath = aPluginDir.absolutePath();
     pluginDirs << thePath;
     aPluginDir.cdUp(); // Move back up a directory level
+    if(!quiet)
+    {
+      qDebug() << "Adding Folder " << thePath;
+    }
   }
   // On Linux installs the .plugin file is installed into the lib directory so search there also
   if(aPluginDir.cd("lib"))
@@ -134,22 +139,45 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool q
     thePath = aPluginDir.absolutePath();
     pluginDirs << thePath;
     aPluginDir.cdUp(); // Move back up a directory level
+    if(!quiet)
+    {
+      qDebug() << "Adding Folder " << thePath;
+    }
   }
 
   if(thePath.isEmpty())
   {
     // Now try moving up a directory which is what should happen when running from a
-    // proper distribution of DREAM3D
+    // proper distribution of SIMPL/DREAM3D
     aPluginDir.cdUp();
     if(aPluginDir.cd("Plugins"))
     {
       thePath = aPluginDir.absolutePath();
       pluginDirs << thePath;
+      if(!quiet)
+      {
+        qDebug() << "Adding Folder " << thePath;
+      }
       aPluginDir.cdUp(); // Move back up a directory level
       int no_error = chdir(aPluginDir.absolutePath().toLatin1().constData());
-      if(no_error < 0)
+      if(no_error < 0 && !quiet)
       {
-        if(!quiet) qDebug() << "Could not set the working directory.";
+        qDebug() << "Could not set the working directory.";
+      }
+    }
+    if(aPluginDir.cd("lib"))
+    {
+      thePath = aPluginDir.absolutePath();
+      pluginDirs << thePath;
+      if(!quiet)
+      {
+        qDebug() << "Adding Folder " << thePath;
+      }
+      aPluginDir.cdUp(); // Move back up a directory level
+      int no_error = chdir(aPluginDir.absolutePath().toLatin1().constData());
+      if(no_error < 0  && !quiet)
+      {
+        qDebug() << "Could not set the working directory.";
       }
     }
   }
@@ -158,10 +186,7 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool q
   QByteArray pluginEnvPath = qgetenv("SIMPL_PLUGIN_PATH");
   if(!quiet)
   {
-    if(!quiet)
-    {
-      qDebug() << "SIMPL_PLUGIN_PATH:" << pluginEnvPath;
-    }
+    qDebug() << "SIMPL_PLUGIN_PATH:" << pluginEnvPath;
   }
 
   char sep = ';';
@@ -243,16 +268,13 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool q
       }
       pluginFileNames += fileName;
     }
-    else
+    else if(!quiet) 
     {
-      if(!quiet) 
-      {
-        QString message("The plugin did not load with the following error\n");
-        message.append(loader.errorString());
-        message.append("\n\n");
-        message.append("Possible causes include missing libraries that plugin depends on.");
-        qDebug() << message;
-      }
+      QString message("The plugin did not load with the following error\n");
+      message.append(loader.errorString());
+      message.append("\n\n");
+      message.append("Possible causes include missing libraries that plugin depends on.");
+      qDebug() << message;
     }
   }
 }

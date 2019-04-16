@@ -62,7 +62,7 @@ ReplaceValueInArray::~ReplaceValueInArray() = default;
 // -----------------------------------------------------------------------------
 void ReplaceValueInArray::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   parameters.push_back(SIMPL_NEW_DOUBLE_FP("Value to Replace", RemoveValue, FilterParameter::Parameter, ReplaceValueInArray));
 
   parameters.push_back(SIMPL_NEW_DOUBLE_FP("New Value", ReplaceValue, FilterParameter::Parameter, ReplaceValueInArray));
@@ -95,14 +95,12 @@ template <typename T> void checkValuesInt(AbstractFilter* filter, double removeV
   if(!((removeValue >= std::numeric_limits<T>::min()) && (removeValue <= std::numeric_limits<T>::max())))
   {
     ss = QObject::tr("The %1 remove value was invalid. The valid range is %2 to %3").arg(strType).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
-    filter->setErrorCondition(-100);
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+    filter->setErrorCondition(-100, ss);
   }
   if(!((replaceValue >= std::numeric_limits<T>::min()) && (replaceValue <= std::numeric_limits<T>::max())))
   {
     ss = QObject::tr("The %1 replace value was invalid. The valid range is %2 to %3").arg(strType).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
-    filter->setErrorCondition(-100);
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+    filter->setErrorCondition(-100, ss);
   }
 }
 
@@ -117,15 +115,13 @@ template <typename T> void checkValuesFloatDouble(AbstractFilter* filter, double
        ((removeValue >= std::numeric_limits<T>::min()) && (removeValue <= std::numeric_limits<T>::max()))))
   {
     ss = QObject::tr("The %1 remove value was invalid. The valid ranges are -%3 to -%2, 0, %2 to %3").arg(strType).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
-    filter->setErrorCondition(-101);
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+    filter->setErrorCondition(-101, ss);
   }
   if(!(((replaceValue >= static_cast<T>(-1) * std::numeric_limits<T>::max()) && (replaceValue <= static_cast<T>(-1) * std::numeric_limits<T>::min())) || (replaceValue == 0) ||
        ((replaceValue >= std::numeric_limits<T>::min()) && (replaceValue <= std::numeric_limits<T>::max()))))
   {
     ss = QObject::tr("The %1 replace value was invalid. The valid ranges are -%3 to -%2, 0, %2 to %3").arg(strType).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
-    filter->setErrorCondition(-101);
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+    filter->setErrorCondition(-101, ss);
   }
 }
 
@@ -164,11 +160,11 @@ void ReplaceValueInArray::initialize()
 // -----------------------------------------------------------------------------
 void ReplaceValueInArray::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 
   m_ArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArray());
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -178,8 +174,7 @@ void ReplaceValueInArray::dataCheck()
     QString ss = QObject::tr("Selected array '%1' must be a scalar array (1 component). The number of components is %2")
                      .arg(getSelectedArray().getDataArrayName())
                      .arg(m_ArrayPtr.lock()->getNumberOfComponents());
-    setErrorCondition(-11002);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-11002, ss);
     return;
   }
 
@@ -237,9 +232,8 @@ void ReplaceValueInArray::dataCheck()
   }
   else
   {
-    setErrorCondition(-4060);
     QString ss = QObject::tr("Incorrect data scalar type");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-4060, ss);
   }
 }
 
@@ -261,10 +255,10 @@ void ReplaceValueInArray::preflight()
 // -----------------------------------------------------------------------------
 void ReplaceValueInArray::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

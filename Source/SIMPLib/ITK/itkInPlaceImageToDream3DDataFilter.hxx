@@ -104,9 +104,9 @@ InPlaceImageToDream3DDataFilter<PixelType, VDimension>
 	  tspacing[i] = spacing[i];
 	  tDims[i] = size[i];
   }
-  imageGeom->setOrigin(torigin[0], torigin[1], torigin[2]);
-  imageGeom->setResolution(tspacing[0], tspacing[1], tspacing[2]);
-  imageGeom->setDimensions(tDims[0], tDims[1], tDims[2]);
+  imageGeom->setOrigin(FloatVec3Type(torigin[0], torigin[1], torigin[2]));
+  imageGeom->setSpacing(FloatVec3Type(tspacing[0], tspacing[1], tspacing[2]));
+  imageGeom->setDimensions(SizeVec3Type(tDims[0], tDims[1], tDims[2]));
   dataContainer->setGeometry(imageGeom);
 }
 
@@ -177,7 +177,7 @@ InPlaceImageToDream3DDataFilter<PixelType, VDimension>
       ::memcpy(data->getPointer(0), reinterpret_cast<ValueType*>(inputPtr->GetBufferPointer()), imageGeom->getNumberOfElements() * sizeof(ValueType));
     }
   }
-  attrMat->addAttributeArray(m_DataArrayName.c_str(), data);
+  attrMat->insertOrAssign(data);
   outputPtr->Set(dataContainer);
 }
 
@@ -185,7 +185,7 @@ InPlaceImageToDream3DDataFilter<PixelType, VDimension>
 template<typename PixelType, unsigned int VDimension>
 void
 InPlaceImageToDream3DDataFilter<PixelType, VDimension>
-::CheckValidArrayPathComponentName(std::string var)
+::CheckValidArrayPathComponentName(std::string var) const
 {
   if (var.find('/') != std::string::npos)
   {
@@ -202,7 +202,7 @@ InPlaceImageToDream3DDataFilter<PixelType, VDimension>
 template<typename PixelType, unsigned int VDimension>
 void
 InPlaceImageToDream3DDataFilter<PixelType, VDimension>
-::VerifyPreconditions()
+::VerifyPreconditions() ITKv5_CONST
 {
   //Test only works if image if of dimension 2 or 3
   if (VDimension != 2 && VDimension != 3)
@@ -212,7 +212,7 @@ InPlaceImageToDream3DDataFilter<PixelType, VDimension>
   CheckValidArrayPathComponentName(m_AttributeMatrixArrayName);
   CheckValidArrayPathComponentName(m_DataArrayName);
   // Verify data container
-  DecoratorType *outputPtr = this->GetOutput();
+  const DecoratorType *outputPtr = this->GetOutput();
   if (!outputPtr->Get())
   {
     itkExceptionMacro("Data container not set");
@@ -230,6 +230,14 @@ InPlaceImageToDream3DDataFilter<PixelType, VDimension>
 ::GetOutput()
 {
   return itkDynamicCastInDebugMode< DecoratorType * >(this->GetPrimaryOutput());
+}
+
+template<typename PixelType, unsigned int VDimension>
+const typename InPlaceImageToDream3DDataFilter<PixelType, VDimension>::DecoratorType*
+InPlaceImageToDream3DDataFilter<PixelType, VDimension>
+::GetOutput() const
+{
+  return itkDynamicCastInDebugMode< const DecoratorType * >(this->GetPrimaryOutput());
 }
 
 } // end of itk namespace

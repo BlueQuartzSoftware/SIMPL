@@ -102,7 +102,7 @@ class SVWidgetsLib_EXPORT AttributeMatrixSelectionWidget : public FilterParamete
     void attributeMatrixSelected(QString path);
 
   protected slots:
-    void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
+    void updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath);
 
   private:
 

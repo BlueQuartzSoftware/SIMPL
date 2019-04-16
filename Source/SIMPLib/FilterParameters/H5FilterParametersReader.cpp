@@ -52,6 +52,7 @@
 #include "SIMPLib/FilterParameters/H5FilterParametersConstants.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
+#include "SIMPLib/Messages/PipelineErrorMessage.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -145,8 +146,7 @@ FilterPipeline::Pointer H5FilterParametersReader::readPipelineFromFile(hid_t fid
     else if(nullptr != obs)
     {
       QString ss = QObject::tr("The input file contains an unrecognizable pipeline version number, and is therefore incompatible and cannot be read.");
-      PipelineMessage pm("", ss, -66066, PipelineMessage::MessageType::Error);
-      pm.setPrefix("H5FilterParametersReader::ReadPipelineFromFile(...)");
+      PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New("[NOT_READABLE]", QObject::tr("%1: %2").arg("H5FilterParametersReader::ReadPipelineFromFile(...)").arg(ss), -66066);
       obs->processPipelineMessage(pm);
       return FilterPipeline::NullPointer();
     }
@@ -254,8 +254,7 @@ QString H5FilterParametersReader::getJsonFromFile(QString filePath, IObserver* o
     else if(nullptr != obs)
     {
       QString ss = QObject::tr("The input file contains an unrecognizable pipeline version number, and is therefore incompatible and cannot be read.");
-      PipelineMessage pm("", ss, -66066, PipelineMessage::MessageType::Error);
-      pm.setPrefix("H5FilterParametersReader::ReadPipelineFromFile(...)");
+      PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New("[NOT_READABLE]", QObject::tr("%1: %2").arg("H5FilterParametersReader::ReadPipelineFromFile(...)").arg(ss), -66066);
       obs->processPipelineMessage(pm);
       return QString();
     }
@@ -782,10 +781,10 @@ QVector<double> H5FilterParametersReader::readArray(const QString name, QVector<
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IntVec3_t H5FilterParametersReader::readIntVec3(const QString name, IntVec3_t defaultValue)
+IntVec3Type H5FilterParametersReader::readIntVec3(const QString name, IntVec3Type defaultValue)
 {
   int err = 0;
-  IntVec3_t v;
+  IntVec3Type v;
   err = QH5Lite::readPointerDataset<int32_t>(m_CurrentGroupId, name, reinterpret_cast<int32_t*>(&v));
   if(err < 0)
   {
@@ -798,10 +797,10 @@ IntVec3_t H5FilterParametersReader::readIntVec3(const QString name, IntVec3_t de
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatVec3_t H5FilterParametersReader::readFloatVec3(const QString name, FloatVec3_t defaultValue)
+FloatVec3Type H5FilterParametersReader::readFloatVec3(const QString name, FloatVec3Type defaultValue)
 {
   int err = 0;
-  FloatVec3_t v;
+  FloatVec3Type v;
   err = QH5Lite::readPointerDataset<float>(m_CurrentGroupId, name, reinterpret_cast<float*>(&v));
   if(err < 0)
   {

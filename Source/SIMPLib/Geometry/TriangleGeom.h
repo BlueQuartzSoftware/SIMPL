@@ -316,9 +316,9 @@ public:
   IGeometry::Pointer deepCopy(bool forceNoAllocate = false) override;
 
   /**
-   * @brief addAttributeMatrix
+   * @brief addOrReplaceAttributeMatrix
    */
-  void addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data) override;
+  void addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data) override;
 
   // -----------------------------------------------------------------------------
   // Inherited from IGeometry2D

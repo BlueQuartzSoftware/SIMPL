@@ -59,6 +59,8 @@
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
 #include "SIMPLib/Filtering/QMetaObjectUtilities.h"
+#include "SIMPLib/Messages/AbstractErrorMessage.h"
+#include "SIMPLib/Messages/AbstractWarningMessage.h"
 #include "SIMPLib/Plugin/PluginManager.h"
 #include "SIMPLib/Plugin/SIMPLPluginConstants.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
@@ -333,10 +335,10 @@ public:
 
       pipeline->execute();
 
-      std::vector<PipelineMessage> warningMessages = listener.getWarningMessages();
+      std::vector<const AbstractWarningMessage*> warningMessages = listener.getWarningMessages();
       DREAM3D_REQUIRE_EQUAL(warningMessages.size(), 0);
 
-      std::vector<PipelineMessage> errorMessages = listener.getErrorMessages();
+      std::vector<const AbstractErrorMessage*> errorMessages = listener.getErrorMessages();
       DREAM3D_REQUIRE_EQUAL(errorMessages.size(), 0);
     }
   }
@@ -527,10 +529,10 @@ public:
 
         pipeline->execute();
 
-        std::vector<PipelineMessage> warningMessages = listener.getWarningMessages();
+        std::vector<const AbstractWarningMessage*> warningMessages = listener.getWarningMessages();
         DREAM3D_REQUIRE_EQUAL(warningMessages.size(), 0);
 
-        std::vector<PipelineMessage> errorMessages = listener.getErrorMessages();
+        std::vector<const AbstractErrorMessage*> errorMessages = listener.getErrorMessages();
         DREAM3D_REQUIRE_EQUAL(errorMessages.size(), 0);
       }
       else
@@ -564,7 +566,7 @@ public:
     FilterPipeline::Pointer pipeline = FilterPipeline::New();
 
     CreateDataContainer::Pointer createDataContainer = CreateDataContainer::New();
-    createDataContainer->setDataContainerName("DataContainer");
+    createDataContainer->setDataContainerName(DataArrayPath("DataContainer", "", ""));
     pipeline->pushBack(createDataContainer);
 
     CreateAttributeMatrix::Pointer createAttrMat = CreateAttributeMatrix::New();
@@ -591,7 +593,7 @@ public:
     pipeline->pushBack(writer);
 
     DataContainerArray::Pointer dca = pipeline->execute();
-    int32_t err = pipeline->getErrorCondition();
+    int32_t err = pipeline->getErrorCode();
     DREAM3D_REQUIRE(err >= 0);
   }
   // -----------------------------------------------------------------------------
@@ -798,10 +800,10 @@ public:
 
         pipeline->execute();
 
-        std::vector<PipelineMessage> warningMessages = listener.getWarningMessages();
+        std::vector<const AbstractWarningMessage*> warningMessages = listener.getWarningMessages();
         DREAM3D_REQUIRE_EQUAL(warningMessages.size(), 0);
 
-        std::vector<PipelineMessage> errorMessages = listener.getErrorMessages();
+        std::vector<const AbstractErrorMessage*> errorMessages = listener.getErrorMessages();
         DREAM3D_REQUIRE_EQUAL(errorMessages.size(), 0);
       }
       else
@@ -977,7 +979,7 @@ public:
       QJsonArray responseFPArray = responseObject[SIMPL::JSON::FilterParameters].toArray();
 
       CreateAttributeMatrix::Pointer filter = CreateAttributeMatrix::New();
-      QVector<FilterParameter::Pointer> parameters = filter->getFilterParameters();
+      FilterParameterVectorType parameters = filter->getFilterParameters();
 
       DREAM3D_REQUIRE_EQUAL(responseFPArray.size(), parameters.size());
 
@@ -1523,10 +1525,10 @@ public:
 
       pipeline->preflightPipeline();
 
-      std::vector<PipelineMessage> warningMessages = listener.getWarningMessages();
+      std::vector<const AbstractWarningMessage*> warningMessages = listener.getWarningMessages();
       DREAM3D_REQUIRE_EQUAL(warningMessages.size(), 0);
 
-      std::vector<PipelineMessage> errorMessages = listener.getErrorMessages();
+      std::vector<const AbstractErrorMessage*> errorMessages = listener.getErrorMessages();
       DREAM3D_REQUIRED(errorMessages.size(), >, 0);
 
       for(int i = 0; i < responseErrorsArray.size(); i++)
@@ -1540,8 +1542,8 @@ public:
         DREAM3D_REQUIRE_EQUAL(responseErrorObject[SIMPL::JSON::FilterIndex].isDouble(), true);
 
         int responseErrorCode = responseErrorObject[SIMPL::JSON::Code].toInt();
-        PipelineMessage errorMessage = errorMessages[i];
-        DREAM3D_REQUIRE_EQUAL(responseErrorCode, errorMessage.getCode());
+        const AbstractErrorMessage* errorMessage = errorMessages[i];
+        DREAM3D_REQUIRE_EQUAL(responseErrorCode, errorMessage->getCode());
       }
     }
 
@@ -1593,10 +1595,10 @@ public:
 
       pipeline->preflightPipeline();
 
-      std::vector<PipelineMessage> warningMessages = listener.getWarningMessages();
+      std::vector<const AbstractWarningMessage*> warningMessages = listener.getWarningMessages();
       DREAM3D_REQUIRE_EQUAL(warningMessages.size(), 0);
 
-      std::vector<PipelineMessage> errorMessages = listener.getErrorMessages();
+      std::vector<const AbstractErrorMessage*> errorMessages = listener.getErrorMessages();
       DREAM3D_REQUIRE_EQUAL(errorMessages.size(), 0);
     }
   }

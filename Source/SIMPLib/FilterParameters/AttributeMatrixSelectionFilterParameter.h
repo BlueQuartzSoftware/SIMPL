@@ -74,11 +74,11 @@ class SIMPLib_EXPORT AttributeMatrixSelectionFilterParameter : public FilterPara
     using SetterCallbackType = std::function<void(DataArrayPath)>;
     using GetterCallbackType = std::function<DataArrayPath(void)>;
 
-    typedef struct
+    using RequirementType = struct
     {
       IGeometry::Types dcGeometryTypes;
       AttributeMatrix::Types amTypes;
-    } RequirementType;
+    };
 
     /**
      * @brief New This function instantiates an instance of the AttributeMatrixSelectionFilterParameter.  Specifying a RequirementType will
@@ -100,10 +100,8 @@ class SIMPLib_EXPORT AttributeMatrixSelectionFilterParameter : public FilterPara
      * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
      * @return
      */
-    static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const DataArrayPath& defaultValue, Category category,
-                       SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-                       const RequirementType req, int groupIndex = -1);
+    static Pointer New(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category, const SetterCallbackType& setterCallback,
+                       const GetterCallbackType& getterCallback, const RequirementType& req, int groupIndex = -1);
 
     ~AttributeMatrixSelectionFilterParameter() override;
 
@@ -173,6 +171,11 @@ class SIMPLib_EXPORT AttributeMatrixSelectionFilterParameter : public FilterPara
     * @return The GetterCallback
     */
     SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+
+    /**
+     * @brief Handle DataArrayPath changes if necessary
+     */
+    void dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath) override;
 
   protected:
       /**

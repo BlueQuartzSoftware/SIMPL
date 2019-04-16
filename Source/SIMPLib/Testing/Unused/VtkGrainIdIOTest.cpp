@@ -71,14 +71,13 @@ public:
   }
   virtual void execute()
   {
-    setErrorCondition(0);
+    clearErrorCode();
     VoxelDataContainer* m = getVoxelDataContainer();
     if(nullptr == m)
     {
-      setErrorCondition(-1);
       QStringstream ss;
       ss << " DataContainer was nullptr";
-      setErrorMessage(ss.str());
+      setErrorCondition(-1, ss.str());
       return;
     }
     int size = UnitTest::VtkGrainIdIOTest::XSize * UnitTest::VtkGrainIdIOTest::YSize * UnitTest::VtkGrainIdIOTest::ZSize;
@@ -115,7 +114,7 @@ private:
 
   void dataCheck()
   {
-    setErrorCondition(0);
+    clearErrorCode();
     QStringstream ss;
     VoxelDataContainer* m = getVoxelDataContainer();
     m_GrainIdsPtr = attrMat->createNonPrereqArray<DataArray<int32_t>, AbstractFilter, int32_t>(this, m_CellAttributeMatrixName, m_GrainIdsArrayName, 0, voxels,

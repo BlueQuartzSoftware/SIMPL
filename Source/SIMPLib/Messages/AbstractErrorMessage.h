@@ -1,5 +1,5 @@
 /* ============================================================================
- * Copyright (c) 2019 BlueQuartz Software, LLC
+ * Copyright (c) 2009-2019 BlueQuartz Software, LLC
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -26,40 +26,60 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
+ * The code contained herein was partially funded by the following contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *    United States Air Force Prime Contract FA8650-15-D-5231
+ *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 #pragma once
 
-#include <QtCore/QJsonObject>
+#include "SIMPLib/Messages/AbstractMessage.h"
 
-typedef struct
+/**
+ * @class AbstractErrorMessage AbstractErrorMessage.h SIMPLib/Messages/AbstractErrorMessage.h
+ * @brief This class is an abstract error message superclass.
+ */
+class SIMPLib_EXPORT AbstractErrorMessage : public AbstractMessage
 {
-  int x;
-  int y;
-  int z;
-  void IntVec3(const int& x_, const int& y_, const int& z_)
+public:
+  SIMPL_SHARED_POINTERS(AbstractErrorMessage)
+  SIMPL_TYPE_MACRO(AbstractErrorMessage)
+
+  virtual ~AbstractErrorMessage()
   {
-    x = x_;
-    y = y_;
-    z = z_;
-  }
-  void writeJson(QJsonObject& json)
-  {
-    json["x"] = x;
-    json["y"] = y;
-    json["z"] = z;
   }
 
-  bool readJson(QJsonObject& json)
-  {
-    if(json["x"].isDouble() && json["y"].isDouble() && json["z"].isDouble())
-    {
-      x = json["x"].toInt();
-      y = json["y"].toInt();
-      z = json["z"].toInt();
-      return true;
-    }
-    return false;
-  }
-} IntVec3_t;
+  SIMPL_INSTANCE_PROPERTY(int, Code)
 
-Q_DECLARE_METATYPE(IntVec3_t)
+  /**
+   * @brief This method creates and returns a string for error messages
+   */
+  virtual QString generateMessageString() const = 0;
+
+  /**
+   * @brief Method that allows the visitation of a message by a message handler.  This
+   * is part of the double-dispatch API that allows observers to be able to perform
+   * subclass specific operations on messages that they receive.
+   * @param msgHandler The observer's message handler
+   */
+  virtual void visit(AbstractMessageHandler* msgHandler) const = 0;
+
+protected:
+  AbstractErrorMessage()
+  : AbstractMessage()
+  , m_Code(0)
+  {
+  }
+
+  AbstractErrorMessage(const QString& msgText, int code)
+  : AbstractMessage(msgText)
+  , m_Code(code)
+  {
+  }
+
+private:
+};
+Q_DECLARE_METATYPE(AbstractErrorMessage::Pointer)

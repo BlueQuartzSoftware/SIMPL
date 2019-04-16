@@ -53,8 +53,8 @@ AttributeMatrixSelectionFilterParameter::~AttributeMatrixSelectionFilterParamete
 //
 // -----------------------------------------------------------------------------
 AttributeMatrixSelectionFilterParameter::Pointer AttributeMatrixSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue,
-                                                                                              Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-                                                                                              const RequirementType req, int groupIndex)
+                                                                                              Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
+                                                                                              const RequirementType& req, int groupIndex)
 {
 
   AttributeMatrixSelectionFilterParameter::Pointer ptr = AttributeMatrixSelectionFilterParameter::New();
@@ -170,4 +170,24 @@ AttributeMatrixSelectionFilterParameter::RequirementType AttributeMatrixSelectio
   reqs.amTypes = getDefaultAttributeMatrixTypes();
 
   return reqs;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath)
+{
+  QVariant var = filter->property(qPrintable(getPropertyName()));
+  if(var.isValid() && var.canConvert<DataArrayPath>())
+  {
+    DataArrayPath path = var.value<DataArrayPath>();
+    if(path.updatePath(renamePath))
+    {
+      if(m_SetterCallback)
+      {
+        m_SetterCallback(path);
+      }
+      emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
+    }
+  }
 }

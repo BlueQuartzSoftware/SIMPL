@@ -41,6 +41,8 @@
 #include "QtWebApp/httpserver/httpresponse.h"
 
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Messages/AbstractMessageHandler.h"
+#include "SIMPLib/Plugin/SIMPLPluginConstants.h"
 
 /**
   @brief This class responds to REST API endpoint

@@ -1,7 +1,5 @@
 /* ============================================================================
- * Copyright (c) 2012 Michael A. Jackson (BlueQuartz Software)
- * Copyright (c) 2012 Dr. Michael A. Groeber (US Air Force Research Laboratories)
- * All rights reserved.
+ * Copyright (c) 2009-2019 BlueQuartz Software, LLC
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -13,10 +11,9 @@
  * list of conditions and the following disclaimer in the documentation and/or
  * other materials provided with the distribution.
  *
- * Neither the name of Michael A. Groeber, Michael A. Jackson, the US Air Force,
- * BlueQuartz Software nor the names of its contributors may be used to endorse
- * or promote products derived from this software without specific prior written
- * permission.
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -29,91 +26,61 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- *  This code was written under United States Air Force Contract number
- *                           FA8650-07-D-5800
+ * The code contained herein was partially funded by the following contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *    United States Air Force Prime Contract FA8650-15-D-5231
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "QtSDisclosableGroupBox.h"
+#include "PipelineStatusMessage.h"
 
-#include <iostream>
-
-#include <QtCore/QTimer>
-#include <QtGui/QPainter>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QFormLayout>
-#include <QtWidgets/QGridLayout>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QVBoxLayout>
-
-#include <QtGui/QMouseEvent>
-#include <QtWidgets/QFileDialog>
-#include <QtWidgets/QPushButton>
+#include "AbstractMessageHandler.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSDisclosableGroupBox::QtSDisclosableGroupBox(QWidget* parent)
-: QGroupBox(parent)
-{
-  connect(this, SIGNAL(toggled(bool)), this, SLOT(disclose(bool)));
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QtSDisclosableGroupBox::~QtSDisclosableGroupBox() = default;
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void QtSDisclosableGroupBox::changeStyle()
+PipelineStatusMessage::PipelineStatusMessage()
+: AbstractStatusMessage()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSDisclosableGroupBox::updateWidgetStyle()
+PipelineStatusMessage::PipelineStatusMessage(const QString &pipelineName, const QString& msgText)
+: AbstractStatusMessage(msgText)
+, m_PipelineName(pipelineName)
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSDisclosableGroupBox::setupGui()
+PipelineStatusMessage::~PipelineStatusMessage() = default;
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+PipelineStatusMessage::Pointer PipelineStatusMessage::New(const QString &pipelineName, const QString& msgText)
 {
-  setCheckable(true);
+  PipelineStatusMessage::Pointer shared_ptr (new PipelineStatusMessage(pipelineName, msgText));
+  return shared_ptr;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSDisclosableGroupBox::disclose(bool on)
+QString PipelineStatusMessage::generateMessageString() const
 {
-  if(on)
-  {
-    this->setMaximumHeight(260000);
-  }
-  else
-  {
-    this->setMaximumHeight(26);
-  }
+  return getMessageText();
+}
 
-  QObjectList objs = children();
-  foreach(QObject* obj, objs)
-  {
-    QWidget* w = qobject_cast<QWidget*>(obj);
-    if(nullptr != w)
-    {
-      if(on)
-      {
-        w->show();
-      }
-      else
-      {
-        w->hide();
-      }
-    }
-  }
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineStatusMessage::visit(AbstractMessageHandler* msgHandler) const
+{
+  msgHandler->processMessage(this);
 }

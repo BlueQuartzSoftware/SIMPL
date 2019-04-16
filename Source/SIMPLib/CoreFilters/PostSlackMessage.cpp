@@ -73,8 +73,8 @@ PostSlackMessage::~PostSlackMessage()
 // -----------------------------------------------------------------------------
 void PostSlackMessage::initialize()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   setCancel(false);
 }
 
@@ -83,7 +83,7 @@ void PostSlackMessage::initialize()
 // -----------------------------------------------------------------------------
 void PostSlackMessage::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(SIMPL_NEW_STRING_FP("Slack User", SlackUser, FilterParameter::Parameter, PostSlackMessage));
   parameters.push_back(SIMPL_NEW_STRING_FP("Slack Url", SlackUrl, FilterParameter::Parameter, PostSlackMessage));
@@ -98,8 +98,8 @@ void PostSlackMessage::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void PostSlackMessage::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 }
 
 // -----------------------------------------------------------------------------
@@ -123,7 +123,7 @@ void PostSlackMessage::execute()
 {
   initialize();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -162,15 +162,13 @@ void PostSlackMessage::execute()
   {
     if(getWarningsAsError())
     {
-      setErrorCondition(-76000);
-      QString ss = QObject::tr("Slack returned the following error code: %1").arg(getErrorCondition());
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      QString ss = QObject::tr("Slack returned the following error code: %1").arg(getErrorCode());
+      setErrorCondition(-76000, ss);
     }
     else
     {
-      setWarningCondition(-76001);
-      QString ss = QObject::tr("Slack returned the following error code: %1").arg(getErrorCondition());
-      notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+      QString ss = QObject::tr("Slack returned the following error code: %1").arg(getErrorCode());
+      setWarningCondition(-76001, ss);
     }
   }
 

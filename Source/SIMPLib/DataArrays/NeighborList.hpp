@@ -1,38 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
+ * Copyright (c) 2009-2019 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #pragma once
 
@@ -86,12 +85,15 @@ class NeighborList : public IDataArray
     static Pointer CreateArray(size_t numTuples, const QString& name, bool allocate = true)
     {
       //std::cout << "NeighborList::CreateArray  name= " << name.toStdString() << "   numTuples= " << numTuples << std::endl;
-      if (name.isEmpty() == true)
+      if(name.isEmpty())
       {
         return NullPointer();
       }
       Pointer ptr = Pointer(new NeighborList<T>(numTuples, name));
-      if (allocate) { ptr->resize(numTuples); }
+      if(allocate)
+      {
+        ptr->resizeTuples(numTuples);
+      }
       return ptr;
     }
 
@@ -107,7 +109,7 @@ class NeighborList : public IDataArray
     static Pointer CreateArray(size_t numTuples, int rank, size_t* dims, const QString& name, bool allocate = true)
     {
       //std::cout << "NeighborList::CreateArray  name= " << name.toStdString() << "   numTuples= " << numTuples << std::endl;
-      if (name.isEmpty() == true)
+      if(name.isEmpty())
       {
         return NullPointer();
       }
@@ -118,7 +120,10 @@ class NeighborList : public IDataArray
         numElements *= dims[iter];
       }
       Pointer ptr = Pointer(new NeighborList<T>(numElements, name));
-      if (allocate) { ptr->resize(numElements); }
+      if(allocate)
+      {
+        ptr->resizeTuples(numElements);
+      }
       return ptr;
     }
 
@@ -132,7 +137,7 @@ class NeighborList : public IDataArray
      */
     static Pointer CreateArray(size_t numTuples, std::vector<size_t> cDims, const QString& name, bool allocate = true)
     {
-      if (name.isEmpty() == true)
+      if(name.isEmpty())
       {
         return NullPointer();
       }
@@ -142,7 +147,10 @@ class NeighborList : public IDataArray
         numElements *= cDims[iter];
       }
       Pointer ptr = Pointer(new NeighborList<T>(numElements, name));
-      if (allocate) { ptr->resize(numElements); }
+      if(allocate)
+      {
+        ptr->resizeTuples(numElements);
+      }
       return ptr;
     }
 
@@ -156,7 +164,7 @@ class NeighborList : public IDataArray
      */
     static Pointer CreateArray(size_t numTuples, QVector<size_t> cDims, const QString& name, bool allocate = true)
     {
-      if (name.isEmpty() == true)
+      if(name.isEmpty())
       {
         return NullPointer();
       }
@@ -166,7 +174,10 @@ class NeighborList : public IDataArray
         numElements *= cDims[iter];
       }
       Pointer ptr = Pointer(new NeighborList<T>(numElements, name));
-      if (allocate) { ptr->resize(numElements); }
+      if(allocate)
+      {
+        ptr->resizeTuples(numElements);
+      }
       return ptr;
     }
 
@@ -180,7 +191,7 @@ class NeighborList : public IDataArray
      */
     static Pointer CreateArray(QVector<size_t> tDims, QVector<size_t> cDims, const QString& name, bool allocate = true)
     {
-      if (name.isEmpty() == true)
+      if(name.isEmpty())
       {
         return NullPointer();
       }
@@ -194,7 +205,10 @@ class NeighborList : public IDataArray
         numElements *= cDims[iter];
       }
       Pointer ptr = Pointer(new NeighborList<T>(numElements, name));
-      if (allocate) { ptr->resize(numElements); }
+      if(allocate)
+      {
+        ptr->resizeTuples(numElements);
+      }
       return ptr;
     }
 
@@ -235,14 +249,11 @@ class NeighborList : public IDataArray
       return NeighborList<T>::CreateArray(numElements, dims, name, allocate);
     }
 
+    using VectorType = std::vector<T>;
+    using SharedVectorType = std::shared_ptr<VectorType>;
 
-    typedef std::vector<T> VectorType;
-    typedef std::shared_ptr<VectorType> SharedVectorType;
-
-    ~NeighborList() override
-    {
-      //std::cout << "~NeighborList<T> size()=" << _data.size() << std::endl;
-    }
+    // -----------------------------------------------------------------------------
+    ~NeighborList() override = default;
 
     /**
      * @brief isAllocated
@@ -303,18 +314,6 @@ class NeighborList : public IDataArray
     QString getTypeAsString() override { return NeighborList<T>::ClassName();}
 
     /**
-     * @brief setName
-     * @param name
-     */
-    void setName(const QString& name) override { m_Name = name; }
-
-    /**
-     * @brief getName
-     * @return
-     */
-    QString getName() override { return m_Name; }
-
-    /**
      * @brief takeOwnership
      */
     void takeOwnership() override {    }
@@ -343,7 +342,7 @@ class NeighborList : public IDataArray
     {
       int err = 0;
       // If nothing is to be erased just return
-      if(idxs.size() == 0)
+      if(idxs.empty())
       {
         return 0;
       }
@@ -351,7 +350,7 @@ class NeighborList : public IDataArray
       size_t idxsSize = static_cast<size_t>(idxs.size());
       if (idxsSize >= getNumberOfTuples() )
       {
-        resize(0);
+        resizeTuples(0);
         return 0;
       }
 
@@ -560,7 +559,7 @@ class NeighborList : public IDataArray
     {
       typename NeighborList<T>::Pointer daCopyPtr = NeighborList<T>::CreateArray(getNumberOfTuples(), getName(), m_IsAllocated);
 
-      if(forceNoAllocate == false)
+      if(!forceNoAllocate)
       {
         size_t count = (m_IsAllocated ? getNumberOfTuples(): 0);
         for(size_t i = 0; i < count; i++)
@@ -594,11 +593,13 @@ class NeighborList : public IDataArray
     }
 
     /**
-     * @brief Resize
+     * @brief Resizes the internal array to accomondate numTuples
      * @param numTuples
-     * @return
      */
-    int32_t resize(size_t numTuples) override { return resizeTotalElements(numTuples); }
+    void resizeTuples(size_t numTuples) override
+    {
+      resizeTotalElements(numTuples);
+    }
 
     //FIXME: These need to be implemented
     void printTuple(QTextStream& out, size_t i, char delimiter = ',') override
@@ -638,6 +639,10 @@ class NeighborList : public IDataArray
       // can compare this with what is written in the file. If they are
       // different we are going to overwrite what is in the file with what
       // we compute here.
+      if(m_NumNeighborsArrayName.isEmpty())
+      {
+        m_NumNeighborsArrayName = getName() + "_NumNeighbors";
+      }
       Int32ArrayType::Pointer numNeighborsPtr = Int32ArrayType::CreateArray(m_Array.size(), m_NumNeighborsArrayName);
       int32_t* numNeighbors = numNeighborsPtr->getPointer(0);
       size_t total = 0;
@@ -649,7 +654,7 @@ class NeighborList : public IDataArray
 
       // Check to see if the NumNeighbors is already written to the file
       bool rewrite = false;
-      if (QH5Lite::datasetExists(parentId, m_NumNeighborsArrayName) == false)
+      if(!QH5Lite::datasetExists(parentId, m_NumNeighborsArrayName))
       {
         // The NumNeighbors Array is NOT already in the file so write it to the file
         numNeighborsPtr->writeH5Data(parentId, tDims);
@@ -681,7 +686,7 @@ class NeighborList : public IDataArray
 
       // Write out the NumNeighbors Array because something was different between what we computed at
       // the top of the function versus what is in memory
-      if(rewrite == true)
+      if(rewrite)
       {
         numNeighborsPtr->writeH5Data(parentId, tDims);
       }
@@ -694,10 +699,13 @@ class NeighborList : public IDataArray
       for(size_t dIdx = 0; dIdx < m_Array.size(); ++dIdx)
       {
         size_t nEle = m_Array[dIdx]->size();
-        if (nEle == 0) { continue; }
-        T* start = &(m_Array[dIdx]->front()); // get the pointer to the front of the array
+        if(nEle == 0)
+        {
+          continue;
+        }
+        T* start = m_Array[dIdx]->data(); // get the pointer to the front of the array
         //    T* end = start + nEle; // get the pointer to the end of the array
-        T* dst = &(flat.front()) + currentStart;
+        T* dst = flat.data() + currentStart;
         ::memcpy(dst, start, nEle * sizeof(T));
 
         currentStart += m_Array[dIdx]->size();
@@ -708,7 +716,7 @@ class NeighborList : public IDataArray
       hsize_t dims[1] = { total };
       if (total > 0)
       {
-        err = QH5Lite::writePointerDataset(parentId, getName(), rank, dims, &(flat.front()));
+        err = QH5Lite::writePointerDataset(parentId, getName(), rank, dims, flat.data());
         if(err < 0)
         {
           return -605;
@@ -819,31 +827,39 @@ class NeighborList : public IDataArray
     {
       int err = 0;
 
+      std::vector<T> flat;
+      err = QH5Lite::readVectorDataset(parentId, getName(), flat);
+      if(err < 0)
+      {
+        return err;
+      }
+
+      // Read the Attribute Off the data set to find the name of the array that holds all the sizes
+      err = QH5Lite::readStringAttribute(parentId, getName(), "Linked NumNeighbors Dataset", m_NumNeighborsArrayName);
+      if(err < 0)
+      {
+        return err;
+      }
       // Generate the number of neighbors array and also compute the total number
       // of elements that would be needed to flatten the array
       std::vector<int32_t> numNeighbors;
 
       // Check to see if the NumNeighbors exists in the file, which it must.
-      if(QH5Lite::datasetExists(parentId, m_NumNeighborsArrayName) == true)
+      if(QH5Lite::datasetExists(parentId, m_NumNeighborsArrayName))
       {
         err = QH5Lite::readVectorDataset(parentId, m_NumNeighborsArrayName, numNeighbors);
         if(err < 0)
         {
           return -702;
         }
-
       }
       else
       {
         return -703;
       }
 
-      std::vector<T> flat;
-      err = QH5Lite::readVectorDataset(parentId, getName(), flat);
-      if (err < 0)
-      {
-        return err;
-      }
+      // int32_t totalElements = std::accumulate(numNeighbors.begin(), numNeighbors.end(), 0);
+
       // Loop over all the entries and make new Vectors to hold the incoming data
       m_Array.resize(numNeighbors.size());
       m_IsAllocated = true;
@@ -856,9 +872,9 @@ class NeighborList : public IDataArray
         {
           m_Array[dIdx] = SharedVectorType(new VectorType(numNeighbors[dIdx]));
 
-          T* dst = &(m_Array[dIdx]->front()); // get the pointer to the front of the array
+          T* dst = m_Array[dIdx]->data(); // get the pointer to the front of the array
           //    T* end = start + nEle; // get the pointer to the end of the array
-          T* start = &(flat.front()) + currentStart;
+          T* start = flat.data() + currentStart;
           ::memcpy(dst, start, nEle * sizeof(T));
           currentStart += nEle;
         }
@@ -1035,26 +1051,26 @@ class NeighborList : public IDataArray
     /**
      * @brief NeighborList
      */
-    NeighborList(size_t numTuples, const QString name) :
-      m_NumNeighborsArrayName(SIMPL::FeatureData::NumNeighbors),
-      m_Name(name),
-      m_NumTuples(numTuples),
-      m_IsAllocated(false)
-    {    }
+    NeighborList(size_t numTuples, const QString name)
+    : IDataArray(name)
+    , m_NumNeighborsArrayName("")
+    , m_NumTuples(numTuples)
+    , m_IsAllocated(false)
+    {
+    }
 
   private:
     std::vector<SharedVectorType> m_Array;
-    QString m_Name;
     size_t m_NumTuples;
     bool m_IsAllocated;
     T m_InitValue;
 
-
-    NeighborList(const NeighborList&); // Copy Constructor Not Implemented
-    void operator=(const NeighborList&); // Move assignment Not Implemented
+  public:
+    NeighborList(const NeighborList&) = delete;            // Copy Constructor Not Implemented
+    NeighborList(NeighborList&&) = delete;                 // Move Constructor Not Implemented
+    NeighborList& operator=(const NeighborList&) = delete; // Copy Assignment Not Implemented
+    NeighborList& operator=(NeighborList&&) = delete;      // Move Assignment Not Implemented
 };
 
-typedef NeighborList<int32_t> Int32NeighborListType;
-typedef NeighborList<float> FloatNeighborListType;
-
-
+using Int32NeighborListType = NeighborList<int32_t>;
+using FloatNeighborListType = NeighborList<float>;

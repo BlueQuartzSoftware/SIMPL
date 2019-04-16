@@ -35,10 +35,12 @@
 
 #pragma once
 
+#include <functional>
+
 #include <QtCore/QJsonObject>
 
+#include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
-#include "SIMPLib/FilterParameters/IntVec3.h"
 
 /**
  * @brief SIMPL_NEW_INT_VEC3_FP This macro is a short-form way of instantiating an instance of
@@ -68,8 +70,8 @@ public:
     SIMPL_STATIC_NEW_MACRO(IntVec3FilterParameter)
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IntVec3FilterParameter, FilterParameter)
 
-    using SetterCallbackType = std::function<void(IntVec3_t)>;
-    using GetterCallbackType = std::function<IntVec3_t(void)>;
+    using SetterCallbackType = std::function<void(IntVec3Type)>;
+    using GetterCallbackType = std::function<IntVec3Type(void)>;
 
     /**
      * @brief New This function instantiates an instance of the IntVec3FilterParameter. Although this function is available to be used,
@@ -87,9 +89,8 @@ public:
      * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
      * @return
      */
-    static Pointer New(const QString& humanLabel, const QString& propertyName,
-    const IntVec3_t& defaultValue, Category category, SetterCallbackType setterCallback,
-    GetterCallbackType getterCallback, int groupIndex = -1);
+    static Pointer New(const QString& humanLabel, const QString& propertyName, const IntVec3Type& defaultValue, Category category, const SetterCallbackType& setterCallback,
+                       const GetterCallbackType& getterCallback, int groupIndex = -1);
 
     ~IntVec3FilterParameter() override;
 
@@ -140,3 +141,4 @@ public:
   IntVec3FilterParameter& operator=(IntVec3FilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 
+Q_DECLARE_METATYPE(IntVec3Type)

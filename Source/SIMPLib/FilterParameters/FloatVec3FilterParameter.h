@@ -36,14 +36,16 @@
 #pragma once
 
 #include <cmath>
+#include <functional>
 
 #include <QtCore/QString>
 #include <QtCore/QJsonObject>
 #include <QtCore/QMetaType>
 
+#include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
-#include "SIMPLib/FilterParameters/FloatVec3.h"
+
 #include "SIMPLib/SIMPLib.h"
 
 /**
@@ -74,8 +76,8 @@ public:
     SIMPL_STATIC_NEW_MACRO(FloatVec3FilterParameter)
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FloatVec3FilterParameter, FilterParameter)
 
-    using SetterCallbackType = std::function<void(FloatVec3_t)>;
-    using GetterCallbackType = std::function<FloatVec3_t(void)>;
+    using SetterCallbackType = std::function<void(FloatVec3Type)>;
+    using GetterCallbackType = std::function<FloatVec3Type(void)>;
 
     /**
      * @brief New This function instantiates an instance of the FloatVec3FilterParameter. Although this function is available to be used,
@@ -93,9 +95,8 @@ public:
      * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
      * @return
      */
-    static Pointer New(const QString& humanLabel, const QString& propertyName,
-    const FloatVec3_t& defaultValue, Category category, SetterCallbackType setterCallback,
-    GetterCallbackType getterCallback, int groupIndex = -1);
+    static Pointer New(const QString& humanLabel, const QString& propertyName, const FloatVec3Type& defaultValue, Category category, SetterCallbackType setterCallback,
+                       GetterCallbackType getterCallback, int groupIndex = -1);
 
     ~FloatVec3FilterParameter() override;
 
@@ -146,3 +147,4 @@ public:
   FloatVec3FilterParameter& operator=(FloatVec3FilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 
+Q_DECLARE_METATYPE(FloatVec3Type)

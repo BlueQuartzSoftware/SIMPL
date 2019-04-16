@@ -43,6 +43,10 @@
 #include "SIMPLib/Filtering/ThresholdFilterHelper.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t {
+  ThresholdArrayID = 1
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -61,7 +65,7 @@ MultiThresholdObjects2::~MultiThresholdObjects2() = default;
 // -----------------------------------------------------------------------------
 void MultiThresholdObjects2::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   {
     ComparisonSelectionAdvancedFilterParameter::Pointer parameter = ComparisonSelectionAdvancedFilterParameter::New();
     parameter->setHumanLabel("Select Arrays to Threshold");
@@ -100,15 +104,14 @@ void MultiThresholdObjects2::initialize()
 // -----------------------------------------------------------------------------
 void MultiThresholdObjects2::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 
   QVector<AbstractComparison::Pointer> comparisonValues = m_SelectedThresholds.getComparisonValues();
 
   if(comparisonValues.empty())
   {
-    setErrorCondition(-12000);
-    notifyErrorMessage(getHumanLabel(), "You must add at least 1 threshold value.", getErrorCondition());
+    setErrorCondition(-12000, "You must add at least 1 threshold value.");
   }
   else
   {
@@ -119,22 +122,19 @@ void MultiThresholdObjects2::dataCheck()
     // Enforce that right now all the arrays MUST come from the same data container and attribute matrix
     if(dcName.isEmpty())
     {
-      setErrorCondition(-13090);
       QString ss = QObject::tr("Threshold must have a DataContainer. None were selected");
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-13090, ss);
     }
     if(amName.isEmpty())
     {
-      setErrorCondition(-13091);
       QString ss = QObject::tr("Threshold must have an AttributeMatrix. None were selected");
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-13091, ss);
     }
 
     //AbstractComparison::Pointer comp = m_SelectedThresholds[0];
     QVector<size_t> cDims(1, 1);
     DataArrayPath tempPath(dcName, amName, getDestinationArrayName());
-    m_DestinationPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, true,
-                                                                                                                    cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+    m_DestinationPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, true, cDims, "", ThresholdArrayID);
     if(nullptr != m_DestinationPtr.lock()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
     {
       m_Destination = m_DestinationPtr.lock()->getPointer(0);
@@ -149,7 +149,7 @@ void MultiThresholdObjects2::dataCheck()
       {
         tempPath.update(dcName, amName, comp->getAttributeArrayName());
         IDataArray::Pointer inputData = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, tempPath);
-        if (getErrorCondition() >= 0)
+        if(getErrorCode() >= 0)
         {
           cDims = inputData->getComponentDimensions();
           int32_t numComp = static_cast<int32_t>(cDims[0]);
@@ -160,8 +160,7 @@ void MultiThresholdObjects2::dataCheck()
           if (numComp > 1)
           {
             QString ss = QObject::tr("Selected array '%1' is not a scalar array").arg(comp->getAttributeArrayName());
-            setErrorCondition(-11003);
-            notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+            setErrorCondition(-11003, ss);
           }
         }
       }
@@ -187,10 +186,10 @@ void MultiThresholdObjects2::preflight()
 // -----------------------------------------------------------------------------
 void MultiThresholdObjects2::execute()
 {
-  int32_t err = 0;
-  setErrorCondition(err);
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -208,8 +207,7 @@ void MultiThresholdObjects2::execute()
   if (!m_SelectedThresholds.hasComparisonValue())
   {
     QString ss = QObject::tr("Error Executing threshold filter. There are no specified values to threshold against");
-    setErrorCondition(-13001);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-13001, ss);
     return;
   }
 
@@ -220,6 +218,8 @@ void MultiThresholdObjects2::execute()
 
     createBoolArray(thresholdSize, thresholdArray);
     bool firstValueFound = false;
+
+    int32_t err = 0;
 
     // Loop on the remaining Comparison objects updating our final result array as we go
     for(int32_t i = 0; i < m_SelectedThresholds.size() && err >= 0; ++i)
@@ -409,8 +409,7 @@ void MultiThresholdObjects2::thresholdValue(ComparisonValue::Pointer comparisonV
   {
     DataArrayPath tempPath(m_SelectedThresholds.getDataContainerName(), m_SelectedThresholds.getAttributeMatrixName(), comparisonValue->getAttributeArrayName());
     QString ss = QObject::tr("Error Executing threshold filter on array. The path is %1").arg(tempPath.serialize());
-    setErrorCondition(-13002);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-13002, ss);
     return;
   }
   

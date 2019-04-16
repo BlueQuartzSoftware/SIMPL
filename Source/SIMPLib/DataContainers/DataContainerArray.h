@@ -46,6 +46,8 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/IDataContainerBundle.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
+#include "SIMPLib/DataContainers/RenameDataPath.h"
 
 
 class DataContainer;
@@ -60,26 +62,30 @@ using DataContainerShPtr = std::shared_ptr<DataContainer>;
  * @date Sep 28, 2011
  * @version 1.0
  */
-class SIMPLib_EXPORT DataContainerArray : public QObject
+class SIMPLib_EXPORT DataContainerArray : public QObject, public IDataStructureContainerNode<DataContainer>
 {
   Q_OBJECT
   // clang-format off
   PYB11_CREATE_BINDINGS(DataContainerArray)
 
-  PYB11_METHOD(void addDataContainer ARGS data_container)
-  //PYB11_METHOD(DataContainer::Pointer getDataContainer ARGS name)
-  PYB11_METHOD(bool doesDataContainerExist ARGS name)
-  PYB11_METHOD(DataContainer::Pointer removeDataContainer ARGS name)
-  PYB11_METHOD(bool renameDataContainer ARGS oldName newName)
+  PYB11_METHOD(bool addOrReplaceDataContainer ARGS DataContainer)
+  PYB11_METHOD(bool insertOrAssign ARGS DataContainer)
+  PYB11_METHOD(bool doesDataContainerExist OVERLOAD const.QString.&,Name CONST_METHOD)
+  PYB11_METHOD(bool doesDataContainerExist OVERLOAD const.DataArrayPath.&,Path CONST_METHOD)
+
+  PYB11_METHOD(DataContainer::Pointer removeDataContainer ARGS Name)
+  PYB11_METHOD(bool renameDataContainer OVERLOAD const.QString.&,OldName const.QString.&,NewName)
+  PYB11_METHOD(bool renameDataContainer OVERLOAD const.DataArrayPath.&,OldPath const.DataArrayPath.&,NewPath )
+
   PYB11_METHOD(void clearDataContainers)
   //PYB11_METHOD(XXXX getDataContainerNames)
   PYB11_METHOD(int getNumDataContainers)
-  PYB11_METHOD(void duplicateDataContainer ARGS oldName, newName)
+  PYB11_METHOD(void duplicateDataContainer ARGS OldName, NewName)
 
-  PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix ARGS dataArrayPath)
-  PYB11_METHOD(bool doesAttributeMatrixExist ARGS dataArrayPath)
+  PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix ARGS DataArrayPath)
+  PYB11_METHOD(bool doesAttributeMatrixExist ARGS DataArrayPath)
 
-  PYB11_METHOD(bool doesAttributeArrayExist ARGS dataArrayPath)
+  PYB11_METHOD(bool doesAttributeArrayExist ARGS DataArrayPath)
   // clang-format on
 
 public:
@@ -87,12 +93,23 @@ public:
   SIMPL_STATIC_NEW_MACRO(DataContainerArray)
   SIMPL_TYPE_MACRO(DataContainerArray)
 
+  using Container = ChildCollection;
+
   ~DataContainerArray() override;
+
+  /**
+   * @brief Creates and returns an empty DataArrayPath
+   * @return
+   */
+  DataArrayPath getDataArrayPath() const override;
 
   /**
    * @brief
    */
-  virtual void addDataContainer(DataContainerShPtr f);
+  bool addOrReplaceDataContainer(const DataContainerShPtr& f)
+  {
+    return insertOrAssign(f);
+  }
 
   /**
    * @brief getDataContainer
@@ -112,14 +129,21 @@ public:
    * @brief getDataContainers
    * @return
    */
-  QList<DataContainerShPtr>& getDataContainers();
+  Container getDataContainers();
 
   /**
    * @brief Returns if a DataContainer with the give name is in the array
    * @param name The name of the DataContiner to find
    * @return
    */
-  virtual bool doesDataContainerExist(const QString& name);
+  virtual bool doesDataContainerExist(const QString& name) const;
+
+  /**
+   * @brief doesDataContainerExist
+   * @param dap
+   * @return
+   */
+  virtual bool doesDataContainerExist(const DataArrayPath& dap) const;
 
   /**
    * @brief DataContainerArray::doesAttributeMatrixExist
@@ -149,6 +173,14 @@ public:
   bool renameDataContainer(const QString& oldName, const QString& newName);
 
   /**
+   * @brief renameDataContainer
+   * @param oldName
+   * @param newName
+   * @return
+   */
+  bool renameDataContainer(const DataArrayPath& oldName, const DataArrayPath& newName);
+
+  /**
    * @brief Removes all DataContainers from this DataContainerArray
    */
   virtual void clearDataContainers();
@@ -157,7 +189,7 @@ public:
    * @brief getDataContainerNames
    * @return
    */
-  QList<QString> getDataContainerNames();
+  NameList getDataContainerNames();
 
   /**
    * @brief Returns the number of DataContainers
@@ -253,6 +285,11 @@ public:
     */
     void renameDataArrayPaths(DataArrayPath::RenameContainer renamePaths);
 
+    template <class Filter> DataContainerShPtr getPrereqDataContainer(Filter* filter, const DataArrayPath& dap, bool createIfNotExists = false)
+    {
+      return getPrereqDataContainer(filter, dap.getDataContainerName(), createIfNotExists);
+    }
+
     /**
      * @brief getPrereqDataContainer
      * @param name
@@ -267,9 +304,8 @@ public:
       {
         if (filter)
         {
-          filter->setErrorCondition(-999);
           QString ss = "The DataContainer Object with the specific name '" + name + "' was not available.";
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-999, ss);
         }
         return dc;
       }
@@ -277,11 +313,23 @@ public:
       if(nullptr != dc && createIfNotExists)
       {
         DataContainerShPtr dataContainer = DataContainer::New(name); // Create a new Data Container
-        addDataContainer(dataContainer); // Put the new DataContainer into the array
+        addOrReplaceDataContainer(dataContainer); // Put the new DataContainer into the array
         return dataContainer; // Return the wrapped pointer
       }
       // The DataContainer we asked for was present and NON Null so return that.
       return dc;
+    }
+
+    /**
+     * @brief createNonPrereqDataContainer
+     * @param filter
+     * @param dap
+     * @param id
+     * @return
+     */
+    template <class Filter> DataContainerShPtr createNonPrereqDataContainer(Filter* filter, const DataArrayPath& dap, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
+    {
+      return createNonPrereqDataContainer<Filter>(filter, dap.getDataContainerName(), id);
     }
 
     /**
@@ -291,15 +339,14 @@ public:
      * dataContainerName is empty in which case a Null DataContainer will be returned.
      */
     template<typename Filter>
-    DataContainerShPtr createNonPrereqDataContainer(Filter* filter, const QString& dataContainerName)
+    DataContainerShPtr createNonPrereqDataContainer(Filter* filter, const QString& dataContainerName, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
     {
       if(dataContainerName.isEmpty())
       {
         if (filter)
         {
-          filter->setErrorCondition(-887);
           QString ss = QObject::tr("The DataContainer Object must have a name to be created.");
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-887, ss);
           return DataContainer::NullPointer();
         }
       }
@@ -308,25 +355,26 @@ public:
       {
         if (filter)
         {
-          filter->setErrorCondition(-888);
           QString ss = QObject::tr("The DataContainer Object has forward slashes in its name.");
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-888, ss);
           return DataContainer::NullPointer();
         }
       }
 
-      if(doesDataContainerExist(dataContainerName))
+      
+      DataContainerShPtr dataContainer = DataContainer::New(dataContainerName);
+      bool dcExists = !push_back(dataContainer);
+      if(dcExists)
       {
-        if (filter)
+        if(filter)
         {
-          filter->setErrorCondition(-889);
           QString ss = QObject::tr("The DataContainer Object with the specific name '%1' already exists.").arg(dataContainerName);
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-889, ss);
           return DataContainer::NullPointer();
         }
       }
-      DataContainerShPtr dataContainer = DataContainer::New(dataContainerName);
-      addDataContainer(dataContainer);
+
+      RenameDataPath::AlertFilterCreatedPath(filter, id, DataArrayPath(dataContainerName, "", ""));
       return dataContainer;
     }
 
@@ -348,6 +396,24 @@ public:
       return dc->getPrereqGeometry<GeometryType>(filter);
     }
 
+    /**
+     * @brief getPrereqGeometryFromDataContainer Returns an IGeometry object of the templated type
+     * if it is available for the given DataContainer
+     * @param filter
+     * @param path
+     * @return
+     */
+    template <typename GeometryType, typename Filter> typename GeometryType::Pointer getPrereqGeometryFromDataContainer(Filter* filter, const DataArrayPath& path)
+    {
+      typename GeometryType::Pointer geom = GeometryType::NullPointer();
+      DataContainerShPtr dc = getPrereqDataContainer<Filter>(filter, path.getDataContainerName(), false);
+      if(nullptr == dc)
+      {
+        return geom;
+      }
+
+      return dc->getPrereqGeometry<GeometryType>(filter);
+    }
 
     /**
      * @brief getPrereqAttributeMatrixFromPath This function will return an AttributeMatrix if it is availabe
@@ -388,9 +454,8 @@ public:
       {
         if(filter)
         {
-          filter->setErrorCondition(-80000);
           ss = QObject::tr("DataContainerArray::getPrereqArrayFromPath Error at line %1. The DataArrayPath object was empty").arg(__LINE__);
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-80000, ss);
         }
         return dataArray;
       }
@@ -399,9 +464,8 @@ public:
       {
         if(filter)
         {
-          filter->setErrorCondition(-80001);
           ss = QObject::tr("DataContainerArray::getPrereqArrayFromPath Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(path.serialize());
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-80001, ss);
         }
         return dataArray;
       }
@@ -416,9 +480,8 @@ public:
       {
         if(filter)
         {
-          filter->setErrorCondition(-80002);
           ss = QObject::tr("The DataContainer '%1' was not found in the DataContainerArray").arg(dcName);
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-80002, ss);
         }
         return dataArray;
       }
@@ -428,9 +491,8 @@ public:
       {
         if(filter)
         {
-          filter->setErrorCondition(-80003);
           ss = QObject::tr("The AttributeMatrix '%1' was not found in the DataContainer '%2'").arg(amName).arg(dcName);
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-80003, ss);
         }
         return dataArray;
       }
@@ -456,9 +518,8 @@ public:
       {
         if(filter)
         {
-          filter->setErrorCondition(-90000);
           ss = QObject::tr("DataContainerArray::getPrereqIDataArrayFromPath Error at line %1. The DataArrayPath object was empty").arg(__LINE__);
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-90000, ss);
         }
         return dataArray;
       }
@@ -467,9 +528,8 @@ public:
       {
         if(filter)
         {
-          filter->setErrorCondition(-90001);
           ss = QObject::tr("DataContainerArray::getPrereqIDataArrayFromPath Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(path.serialize());
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-90001, ss);
         }
         return dataArray;
       }
@@ -484,9 +544,8 @@ public:
       {
         if(filter)
         {
-          filter->setErrorCondition(-999);
           ss = QObject::tr("The DataContainer '%1' was not found in the DataContainerArray").arg(dcName);
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-999, ss);
         }
         return dataArray;
       }
@@ -496,9 +555,8 @@ public:
       {
         if(filter)
         {
-          filter->setErrorCondition(-307020);
           ss = QObject::tr("The AttributeMatrix '%1' was not found in the DataContainer '%2'").arg(amName).arg(dcName);
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-307020, ss);
         }
         return dataArray;
       }
@@ -523,7 +581,8 @@ public:
                                                              const DataArrayPath& path,
                                                              T initValue,
                                                              QVector<size_t> compDims,
-                                                             const QString& property = "")
+                                                             const QString& property = "",
+                                                             RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
     {
       typename ArrayType::Pointer dataArray = ArrayType::NullPointer();
       QString ss;
@@ -531,9 +590,8 @@ public:
       {
         if(filter)
         {
-          filter->setErrorCondition(-80010);
           ss = QObject::tr("Property '%1': The DataArrayPath is invalid because one of the elements was empty.\n  DataContainer: %2\n  AttributeMatrix: %3\n  DataArray: %4").arg(property).arg(path.getDataContainerName()).arg(path.getAttributeMatrixName()).arg(path.getDataArrayName());
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-80010, ss);
         }
         return dataArray;
       }
@@ -542,9 +600,8 @@ public:
       {
         if (filter)
         {
-          filter->setErrorCondition(-80005);
           ss = QObject::tr("The DataContainer '%1' has forward slashes in its name").arg(path.getDataContainerName());
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-80005, ss);
         }
         return dataArray;
       }
@@ -553,9 +610,8 @@ public:
       {
         if (filter)
         {
-          filter->setErrorCondition(-80006);
           ss = QObject::tr("The AttributeMatrix '%1' has forward slashes in its name").arg(path.getAttributeMatrixName());
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-80006, ss);
         }
         return dataArray;
       }
@@ -564,9 +620,8 @@ public:
       {
         if (filter)
         {
-          filter->setErrorCondition(-80007);
           ss = QObject::tr("The DataArray '%1' has forward slashes in its name").arg(path.getDataArrayName());
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-80007, ss);
         }
         return dataArray;
       }
@@ -575,9 +630,8 @@ public:
       {
         if (filter)
         {
-          filter->setErrorCondition(-80004);
           ss = QObject::tr("The DataContainer '%1' has forward slashes in its name").arg(path.getDataContainerName());
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-80004, ss);
         }
         return dataArray;
       }
@@ -587,9 +641,8 @@ public:
       {
         if(filter)
         {
-          filter->setErrorCondition(-80002);
           ss = QObject::tr("The DataContainer '%1' was not found in the DataContainerArray").arg(path.getDataContainerName());
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-80002, ss);
         }
         return dataArray;
       }
@@ -599,16 +652,15 @@ public:
       {
         if(filter)
         {
-          filter->setErrorCondition(-80003);
           ss = QObject::tr("The AttributeMatrix '%1' was not found in the DataContainer '%2'").arg(path.getAttributeMatrixName()).arg(path.getDataContainerName());
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-80003, ss);
         }
         return dataArray;
       }
 
       // If something goes wrong at this point the error message will be directly set in the 'filter' object so we just
       // simply return what ever is given to us.
-      dataArray = attrMat->createNonPrereqArray<ArrayType, Filter, T>(filter, path.getDataArrayName(), initValue, compDims);
+      dataArray = attrMat->createNonPrereqArray<ArrayType, Filter, T>(filter, path.getDataArrayName(), initValue, compDims, id);
       return dataArray;
     }
 
@@ -630,18 +682,16 @@ public:
       QString ss;
       if (!paths.at(0).isValid() && nullptr != filter)
       {
-        filter->setErrorCondition(-10000);
         ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(paths.at(0).serialize());
-        filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+        filter->setErrorCondition(-10000, ss);
         valid = false;
         return valid;
       }
       IDataArray::Pointer array0 = getPrereqIDataArrayFromPath<IDataArray, Filter>(filter, paths.at(0));
       if (nullptr == array0.get() && nullptr != filter)
       {
-        filter->setErrorCondition(-10100);
         ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available. The path is %2").arg(__LINE__).arg(paths.at(0).serialize());
-        filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+        filter->setErrorCondition(-10100, ss);
         valid = false;
         return valid;
       }
@@ -651,18 +701,16 @@ public:
       {
         if (!paths.at(i).isValid() && nullptr != filter)
         {
-          filter->setErrorCondition(-10000);
           ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(paths.at(i).serialize());
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-10000, ss);
           valid = false;
           return valid;
         }
         IDataArray::Pointer nextArray = getPrereqIDataArrayFromPath<IDataArray, Filter>(filter, paths.at(i));
         if (nullptr == nextArray.get() && nullptr != filter)
         {
-          filter->setErrorCondition(-10100);
           ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available. The path is %2").arg(__LINE__).arg(paths.at(i).serialize());
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-10100, ss);
           valid = false;
           return valid;
         }
@@ -674,10 +722,9 @@ public:
       {
         if (numTuples != dataArrays[i]->getNumberOfTuples() && nullptr != filter)
         {
-          filter->setErrorCondition(-10200);
           ss = QObject::tr("The number of tuples for the DataArray %1 is %2 and for DataArray %3 is %4. The number of tuples must match.")
                .arg(dataArrays[0]->getName()).arg(dataArrays[0]->getNumberOfTuples()).arg(dataArrays[i]->getName()).arg(dataArrays[i]->getNumberOfTuples());
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-10200, ss);
           valid = false;
         }
       }
@@ -703,9 +750,8 @@ public:
       {
         if (nullptr == dataArray && nullptr != filter)
         {
-          filter->setErrorCondition(-10100);
           ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available").arg(__LINE__);
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-10100, ss);
           valid = false;
         }
       }
@@ -714,10 +760,9 @@ public:
       {
         if (numTuples != dataArrays[i]->getNumberOfTuples() && nullptr != filter)
         {
-          filter->setErrorCondition(-10200);
           ss = QObject::tr("The number of tuples for the DataArray %1 is %2 and for DataArray %3 is %4. The number of tuples must match.")
                .arg(dataArrays[i - 1]->getName()).arg(dataArrays[i - 1]->getNumberOfTuples()).arg(dataArrays[i]->getName()).arg(dataArrays[i]->getNumberOfTuples());
-          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+          filter->setErrorCondition(-10200, ss);
           valid = false;
         }
       }
@@ -735,7 +780,6 @@ public:
     DataContainerArray();
 
   private:
-    QList<DataContainerShPtr>  m_Array;
     QMap<QString, IDataContainerBundle::Pointer> m_DataContainerBundles;
 
   public:

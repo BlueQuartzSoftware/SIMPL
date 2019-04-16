@@ -44,7 +44,7 @@
 #include <QtGui/QIcon>
 #include <QtWidgets/QMessageBox>
 
-#include "SIMPLib/Common/PipelineMessage.h"
+#include "SIMPLib/Messages/AbstractMessage.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
@@ -162,7 +162,7 @@ class SVWidgetsLib_EXPORT QtSPluginFrame : public QFrame
      * @brief Slot to add a message to display to the user
      * @param message
      */
-    virtual void addMessage(PipelineMessage msg) = 0;
+    virtual void addMessage(AbstractMessage::Pointer msg) = 0;
 
     /**
      * @brief Slot to add a Progress message to display to the user

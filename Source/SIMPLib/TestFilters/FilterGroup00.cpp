@@ -52,8 +52,8 @@ TESTCLASSNAME::~TESTCLASSNAME() = default;
 // -----------------------------------------------------------------------------
 void TESTCLASSNAME::initialize()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   setCancel(false);
 }
 
@@ -62,7 +62,7 @@ void TESTCLASSNAME::initialize()
 // -----------------------------------------------------------------------------
 void TESTCLASSNAME::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   setFilterParameters(parameters);
 }
@@ -72,8 +72,8 @@ void TESTCLASSNAME::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void TESTCLASSNAME::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 }
 
 // -----------------------------------------------------------------------------
@@ -110,8 +110,7 @@ void TESTCLASSNAME::execute()
   if(getErrorCondition() < 0)
   {
     QString ss = QObject::tr("Some error message");
-    setErrorCondition(-99999999);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-99999999, ss);
     return;
   }
 

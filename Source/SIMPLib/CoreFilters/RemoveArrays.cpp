@@ -55,7 +55,7 @@ RemoveArrays::~RemoveArrays() = default;
 // -----------------------------------------------------------------------------
 void RemoveArrays::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   {
     DataContainerArrayProxyFilterParameter::Pointer parameter = DataContainerArrayProxyFilterParameter::New();
@@ -95,8 +95,8 @@ void RemoveArrays::initialize()
 // -----------------------------------------------------------------------------
 void RemoveArrays::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 
   markSelectionsForDeletion(getDataContainerArray().get(), Qt::Checked);
 
@@ -129,6 +129,8 @@ void RemoveArrays::markSelectionsForDeletion(DataContainerArray* dca, Qt::CheckS
 // -----------------------------------------------------------------------------
 void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dca, Qt::CheckState state)
 {
+  m_RemovedPaths.clear();
+
   // Loop over the data containers until we find the proper data container
   QList<DataContainerProxy> containers = m_DataArraysToRemove.getDataContainers().values();
   QMutableListIterator<DataContainerProxy> containerIter(containers);
@@ -138,7 +140,7 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
     DataContainerProxy dcProxy = containerIter.next();
     dcList.push_back(dcProxy.getName());
     DataContainer::Pointer dcItem = dca->getPrereqDataContainer(this, dcProxy.getName());
-    if(getErrorCondition() < 0 || dcItem.get() == nullptr)
+    if(getErrorCode() < 0 || dcItem.get() == nullptr)
     {
       continue;
     }
@@ -147,7 +149,8 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
     // the DataContainerArray
     if(dcProxy.getFlag() == state)
     {
-      dca->removeDataContainer(dcProxy.getName()); // Remove it out
+      auto dc = dca->removeDataContainer(dcProxy.getName()); // Remove it out
+      m_RemovedPaths.merge(dc->getDescendantPaths());
       continue;                               // Continue to the next DataContainer
     }
     QMap<QString, AttributeMatrixProxy> attrMats = dcProxy.getAttributeMatricies();
@@ -160,16 +163,16 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
       // assert(amItem.get() != nullptr);
       if(amItem.get() == nullptr)
       {
-        setErrorCondition(-11008);
         QString ss = QObject::tr("The AttributeMatrix '%1' could not be removed because it was not found in DataContainer '%2'").arg(amName).arg(dcProxy.getName());
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        setErrorCondition(-11008, ss);
         continue;
       }
       AttributeMatrixProxy attrProxy = attrMatsIter.value();
       // Check to see if this AttributeMatrix is checked, if not then remove it from the DataContainer and go to the next loop
       if(attrProxy.getFlag() == state)
       {
-        dcItem->removeAttributeMatrix(amName);
+        auto am = dcItem->removeAttributeMatrix(amName);
+        m_RemovedPaths.merge(am->getDescendantPaths());
         continue;
       }
       // We found the selected AttributeMatrix, so loop over this attribute matrix arrays and populate the list widget
@@ -182,16 +185,16 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
         IDataArray::Pointer daItem = amItem->getAttributeArray(daName);
         if(daItem.get() == nullptr)
         {
-          setWarningCondition(-11009);
           QString ss = QObject::tr("%1/%2/%3 was not found. This could be due to another filter removing the array.").arg(dcProxy.getName()).arg(amName).arg(daName);
-          notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+          setWarningCondition(-11009, ss);
           continue;
         }
         DataArrayProxy daProxy = dataArraysIter.value();
         // Check to see if the user selected this item
         if(daProxy.getFlag() == state)
         {
-          amItem->removeAttributeArray(daName);
+          auto da = amItem->removeAttributeArray(daName);
+          m_RemovedPaths.push_back(da->getDataArrayPath());
           continue;
         }
       }
@@ -202,13 +205,21 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+std::list<DataArrayPath> RemoveArrays::getDeletedPaths()
+{
+  return m_RemovedPaths;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void RemoveArrays::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   // Simply running the preflight will do what we need it to.
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

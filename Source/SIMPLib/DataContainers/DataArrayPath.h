@@ -42,7 +42,7 @@
 
 #include <list>
 #include <set>
-#include <tuple>
+#include <utility>
 
 #include "SIMPLib/Common/SIMPLibDLLExport.h"     // for SIMPLib_EXPORT
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"  // for SIMPL_PIMPL_PROPERTY_DECL
@@ -51,16 +51,39 @@ class DataContainerArray;
 using DataContainerArrayShPtr = std::shared_ptr<DataContainerArray>;
 
 /**
+ * @brief The DataArrayPathHelper namespace is used to contain the QMetaType
+ * and enum DataType without requiring DataArrayPath to be a QObject.
+ */
+class SIMPLib_EXPORT DataArrayPathHelper final : public QObject
+{
+  Q_OBJECT
+
+public:
+  enum class DataType
+  {
+    DataContainer,
+    AttributeMatrix,
+    DataArray,
+    None
+  };
+  Q_ENUM(DataType)
+
+  ~DataArrayPathHelper() = default;
+
+private:
+  DataArrayPathHelper() = default;
+};
+
+/**
  * @brief The DataArrayPath class holds a complete or partial path to a data array starting at the DataContainer
  * level. The class is implemented using the PIMPL design pattern.
  */
-class SIMPLib_EXPORT DataArrayPath : public QObject
+class SIMPLib_EXPORT DataArrayPath
 {
-  Q_OBJECT
-  
+
   PYB11_CREATE_BINDINGS(DataArrayPath)
   PYB11_CREATION(ARGS QString QString QString)
-  PYB11_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
+  PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
   PYB11_PROPERTY(QString AttributeMatrixName READ getAttributeMatrixName WRITE setAttributeMatrixName)
   PYB11_PROPERTY(QString DataArrayName READ getDataArrayName WRITE setDataArrayName)
 
@@ -68,19 +91,22 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
   PYB11_METHOD(bool isValid)
   PYB11_METHOD(void update ARGS dcName amName daName)
 
+  using HashType = size_t;
+
+private:
+  QString m_DataContainerName;
+  QString m_AttributeMatrixName;
+  QString m_DataArrayName;
+  HashType m_DataContainerHash = 0;
+  HashType m_AttributeMatrixHash = 0;
+  HashType m_DataArrayHash = 0;
+
+  static HashType GetHash(const QString& name);
+
   public:
     // tuple <oldPath, newPath>
-    using RenameType = std::tuple<DataArrayPath, DataArrayPath>;
+    using RenameType = std::pair<DataArrayPath, DataArrayPath>;
     using RenameContainer = std::list<RenameType>;
-
-    enum class DataType
-    {
-      DataContainer,
-      AttributeMatrix,
-      DataArray,
-      None
-    };
-    Q_ENUM(DataType)
 
     DataArrayPath();
 
@@ -106,7 +132,7 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
     /**
      * @brief ~DataArrayPath
      */
-    ~DataArrayPath() override;
+    virtual ~DataArrayPath();
 
         /**
     * @brief checks that a vector of paths have the same data container and attribute matrix
@@ -139,7 +165,7 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
     * @param delimiter
     * @return
     */
-    static DataArrayPath Deserialize(QString str, QString delimiter);
+    static DataArrayPath Deserialize(const QString& str, const QString& delimiter);
 
     /**
      * @brief checks for and returns any updated DataArrayPaths between two sets
@@ -147,7 +173,7 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
      * @param newPaths
      * @return
      */
-    static RenameContainer CheckForRenamedPaths(DataContainerArrayShPtr oldDca, DataContainerArrayShPtr newDca, std::list<DataArrayPath> oldPaths, std::list<DataArrayPath> newPaths);
+    static RenameContainer CheckForRenamedPaths(const DataContainerArrayShPtr& oldDca, const DataContainerArrayShPtr& newDca, const std::list<DataArrayPath>& oldPaths, const std::list<DataArrayPath>& newPaths);
 
     /**
      * @brief checks if the targets of the old DataArrayPath and new DataArrayPath are compatible in their given DataContainerArrays
@@ -156,18 +182,37 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
      * @param oldPath
      * @param newPath
      */
-    static bool CheckRenamePath(DataContainerArrayShPtr oldDca, DataContainerArrayShPtr newDca, DataArrayPath oldPath, DataArrayPath newPath);
+    static bool CheckRenamePath(const DataContainerArrayShPtr& oldDca, const DataContainerArrayShPtr& newDca, const DataArrayPath& oldPath, const DataArrayPath& newPath);
 
     /**
-    * @brief Returns the DataType matching the current path
-    * @return
-    */
-    DataType getDataType();
+     * @brief Returns the DataType matching the current path.
+     * @return
+     */
+    DataArrayPathHelper::DataType getDataType() const
+    {
+      return m_DataType;
+    }
 
-    SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
-    SIMPL_INSTANCE_STRING_PROPERTY(AttributeMatrixName)
-    SIMPL_INSTANCE_STRING_PROPERTY(DataArrayName)
+    QString getDataContainerName() const
+    {
+      return m_DataContainerName;
+    }
 
+    QString getAttributeMatrixName() const
+    {
+      return m_AttributeMatrixName;
+    }
+
+    QString getDataArrayName() const
+    {
+      return m_DataArrayName;
+    }
+
+    void setDataContainerName(const QString& name);
+
+    void setAttributeMatrixName(const QString& name);
+
+    void setDataArrayName(const QString& name);
 
     /**
      * @brief operator =
@@ -182,25 +227,42 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
     bool operator==(const DataArrayPath& rhs) const;
 
     /**
+     * @brief operator !=
+     * @param rhs
+     * @return
+     */
+    bool operator!=(const DataArrayPath& rhs) const;
+
+    /**
+     * @brief operator < is required for std::set
+     * @param rhs
+     * @return
+     */
+    bool operator<(const DataArrayPath& rhs) const;
+
+    /**
      * @brief serialize Returns the path using the '|' charater by default. This can be over ridden by the programmer
      * @param delimiter
      * @return
      */
-    QString serialize(QString delimiter = "|") const;
+    QString serialize(const QString& delimiter = "|") const;
 
     /**
      * @brief getAsVector Returns the DataArrayPath represented as a QVector<String> where index[0] = DataContainer Name,
      * index[1] = AttributeMatrix Name and index[2] = DataArray Name
      * @return
      */
-    QVector<QString> toQVector();
+    QVector<QString> toQVector() const;
 
     /**
      * @brief isEmpty Returns if ALL of the string elements are empty. Note that a class could return FALSE for this
      * function and FALSE for isValid() also so this function is not a true indication of a valid path.
      * @return
      */
-    bool isEmpty() const;
+    bool isEmpty() const
+    {
+      return m_DataType == DataArrayPathHelper::DataType::None;
+    }
 
     /**
      * @brief isValid Returns if ALL of the string components have some value stored in them so 'valid' in this sense just
@@ -208,7 +270,10 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
      * serialized into a path actually refer to something in your DataContainer.
      * @return
      */
-    bool isValid() const;
+    bool isValid() const
+    {
+      return m_DataType == DataArrayPathHelper::DataType::DataArray;
+    }
 
     /**
      * @brief toQStringList Converts the DataArrayPath to a QStringList
@@ -253,20 +318,146 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
     bool hasSameDataArray(const DataArrayPath& other) const;
 
     /**
+     * @brief Returns true if this DataArrayPath is a subset of the given path.  Returns false otherwise.
+     * @param other
+     * @return
+     */
+    bool isSubset(const DataArrayPath& other) const;
+
+    /**
      * @brief checks if the given DataArrayPath could indicate a possible renamed path.
      * This requires that the given path be no longer than the current path and only one value is changed.
      * Returns true if this is a possible rename and returns false otherwise.
      * @param updated
      * @return
      */
-    bool possibleRename(const DataArrayPath& updated) const;
+    bool possibleRename(const DataArrayPath& updated) const
+    {
+      // Empty DataArrayPaths are not considered renames
+      // Neither are DataArrayPaths of different lengths
+      if(getDataType() != updated.getDataType())
+      {
+        return false;
+      }
+
+      // Check number of differences
+      int differences = 0;
+      if(!hasSameDataArray(updated))
+      {
+        differences++;
+      }
+      if(!hasSameAttributeMatrix(updated))
+      {
+        differences++;
+      }
+      if(!hasSameDataContainer(updated))
+      {
+        differences++;
+      }
+
+      return 1 == differences;
+    }
 
     /**
      * @brief updates the current path based on the newPath if it matches the given previous value
      * @param renamePath
      * return
      */
-    bool updatePath(const DataArrayPath::RenameType& renamePath);
+    bool updatePath(const DataArrayPath::RenameType& renamePath)
+    {
+      const DataArrayPath& oldPath = std::get<0>(renamePath);
+      const DataArrayPath& newPath = std::get<1>(renamePath);
+
+      bool valid = true;
+      // Check for differences with original path
+      switch(oldPath.getDataType())
+      {
+      case DataArrayPathHelper::DataType::DataArray:
+        valid &= hasSameDataArray(oldPath);
+        // [[fallthrough]];
+      case DataArrayPathHelper::DataType::AttributeMatrix:
+        valid &= hasSameAttributeMatrix(oldPath);
+        // [[fallthrough]];
+      case DataArrayPathHelper::DataType::DataContainer:
+        valid &= hasSameDataContainer(oldPath);
+        break;
+      default:
+        valid = false;
+        break;
+      }
+
+      if(!valid)
+      {
+        return false;
+      }
+
+      // Substitude in the new DataArrayPath
+      switch(oldPath.getDataType())
+      {
+      case DataArrayPathHelper::DataType::DataArray:
+        setDataArrayName(newPath.getDataArrayName());
+        // [[fallthrough]];
+      case DataArrayPathHelper::DataType::AttributeMatrix:
+        setAttributeMatrixName(newPath.getAttributeMatrixName());
+        // [[fallthrough]];
+      case DataArrayPathHelper::DataType::DataContainer:
+        setDataContainerName(newPath.getDataContainerName());
+        break;
+      case DataArrayPathHelper::DataType::None:
+        break;
+      }
+
+      return true;
+    }
+
+    /**
+     * @brief Creates the missing RenameType resulting from two other RenameTypes.
+     * This can fail if the previous and new RenameTypes are not adequately related.
+     * This returns a pair of a bool signifying the success of the operation and the
+     * resulting RenameType.
+     * @param oldRename
+     * @param newRename
+     * @return std::pair<success, resulting rename>
+     */
+    static std::pair<bool, RenameType> CreateLinkingRename(const RenameType& oldRename, const RenameType& newRename)
+    {
+      const DataArrayPath& oldOldPath = std::get<0>(oldRename);
+      const DataArrayPath& oldNewPath = std::get<1>(oldRename);
+
+      const DataArrayPath& newOldPath = std::get<0>(newRename);
+      const DataArrayPath& newNewPath = std::get<1>(newRename);
+
+      // Require newOldPath to be a subset of oldNewPath
+      // Require newOldPath != oldNewPath
+      const bool isSubset = newOldPath.isSubset(oldNewPath);
+      if(!isSubset || (newOldPath == oldNewPath))
+      {
+        return std::make_pair(false, RenameType{});
+      }
+
+      // Create output rename
+      DataArrayPath replacementOldPath = oldOldPath;
+      replacementOldPath.updatePath(newRename);
+      DataArrayPath replacementNewPath = oldNewPath;
+
+      DataArrayPathHelper::DataType newOldType = newOldPath.getDataType();
+      switch(newOldType)
+      {
+      case DataArrayPathHelper::DataType::DataArray:
+        replacementNewPath.setDataArrayName(newNewPath.getDataArrayName());
+        // [[fallthrough]];
+      case DataArrayPathHelper::DataType::AttributeMatrix:
+        replacementNewPath.setAttributeMatrixName(newNewPath.getAttributeMatrixName());
+        // [[fallthrough]];
+      case DataArrayPathHelper::DataType::DataContainer:
+        replacementNewPath.setDataContainerName(newNewPath.getDataContainerName());
+        break;
+      case DataArrayPathHelper::DataType::None:
+        break;
+      }
+
+      return std::make_pair(true, std::make_pair(replacementOldPath, replacementNewPath));
+    }
 
     /**
     * @brief Writes the contents of the proxy to the json object 'json'
@@ -288,19 +479,12 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
      */
     QJsonObject toJsonObject() const;
 
-
   protected:
-
-
+    void updateDataType();
 
   private:
-
-
+    DataArrayPathHelper::DataType m_DataType = DataArrayPathHelper::DataType::None;
 };
 
-
 Q_DECLARE_METATYPE(DataArrayPath)
-Q_DECLARE_METATYPE(DataArrayPath::DataType)
-
-
-
+Q_DECLARE_METATYPE(DataArrayPathHelper::DataType)

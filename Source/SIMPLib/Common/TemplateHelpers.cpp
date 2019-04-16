@@ -37,115 +37,113 @@
 using namespace TemplateHelpers;
 
 // -----------------------------------------------------------------------------
-IDataArrayWkPtr CreateNonPrereqArrayFromArrayType::operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const QVector<size_t>& compDims, const IDataArrayShPtr& sourceArrayType)
+IDataArrayWkPtr CreateNonPrereqArrayFromArrayType::operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const QVector<size_t>& compDims, const IDataArrayShPtr& sourceArrayType, RenameDataPath::DataID_t id)
 {
 
   IDataArrayShPtr ptr = IDataArray::NullPointer();
 
   if(CanDynamicCast<FloatArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(f, arrayPath, 0.0f, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(f, arrayPath, 0.0f, compDims, "", id);
   }
   else if(CanDynamicCast<DoubleArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(f, arrayPath, 0.0, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(f, arrayPath, 0.0, compDims, "", id);
   }
   else if(CanDynamicCast<Int8ArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int8_t>, AbstractFilter, int8_t>(f, arrayPath, 0, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int8_t>, AbstractFilter, int8_t>(f, arrayPath, 0, compDims, "", id);
   }
   else if(CanDynamicCast<UInt8ArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint8_t>, AbstractFilter, uint8_t>(f, arrayPath, 0, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint8_t>, AbstractFilter, uint8_t>(f, arrayPath, 0, compDims, "", id);
   }
   else if(CanDynamicCast<Int16ArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int16_t>, AbstractFilter, int16_t>(f, arrayPath, 0, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int16_t>, AbstractFilter, int16_t>(f, arrayPath, 0, compDims, "", id);
   }
   else if(CanDynamicCast<UInt16ArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint16_t>, AbstractFilter, uint16_t>(f, arrayPath, 0, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint16_t>, AbstractFilter, uint16_t>(f, arrayPath, 0, compDims, "", id);
   }
   else if(CanDynamicCast<Int32ArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(f, arrayPath, 0, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(f, arrayPath, 0, compDims, "", id);
   }
   else if(CanDynamicCast<UInt32ArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint32_t>, AbstractFilter, uint32_t>(f, arrayPath, 0, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint32_t>, AbstractFilter, uint32_t>(f, arrayPath, 0, compDims, "", id);
   }
   else if(CanDynamicCast<Int64ArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(f, arrayPath, 0, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(f, arrayPath, 0, compDims, "", id);
   }
   else if(CanDynamicCast<UInt64ArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint64_t>, AbstractFilter, uint64_t>(f, arrayPath, 0, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint64_t>, AbstractFilter, uint64_t>(f, arrayPath, 0, compDims, "", id);
   }
   else if(CanDynamicCast<BoolArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<BoolArrayType, AbstractFilter, bool>(f, arrayPath, false, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<BoolArrayType, AbstractFilter, bool>(f, arrayPath, false, compDims, "", id);
   }
   else if(CanDynamicCast<SizeTArrayType>()(sourceArrayType))
   {
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<SizeTArrayType, AbstractFilter, size_t>(f, arrayPath, 0, compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<SizeTArrayType, AbstractFilter, size_t>(f, arrayPath, 0, compDims, "", id);
   }
   else
   {
     QString msg = QObject::tr("The created array '%1' is of unsupported type. The following types are supported: %3").arg(arrayPath.getDataArrayName()).arg(SIMPL::TypeNames::SupportedTypeList);
-    f->setErrorCondition(Errors::UnsupportedType);
-    f->notifyErrorMessage(f->getHumanLabel(), msg, f->getErrorCondition());
+    f->setErrorCondition(Errors::UnsupportedDataType, msg);
   }
   return ptr;
 }
 
 // -----------------------------------------------------------------------------
-IDataArrayWkPtr CreateNonPrereqArrayFromTypeEnum::operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const QVector<size_t>& compDims, int arrayType, double initValue)
+IDataArrayWkPtr CreateNonPrereqArrayFromTypeEnum::operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const QVector<size_t>& compDims, int arrayType, double initValue, RenameDataPath::DataID_t id)
 {
   IDataArrayShPtr ptr = IDataArray::NullPointer();
 
   switch(arrayType)
   {
   case SIMPL::TypeEnums::Int8:
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int8_t>, AbstractFilter, int8_t>(f, arrayPath, static_cast<int8_t>(initValue), compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int8_t>, AbstractFilter, int8_t>(f, arrayPath, static_cast<int8_t>(initValue), compDims, "", id);
     break;
   case SIMPL::TypeEnums::UInt8:
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint8_t>, AbstractFilter, uint8_t>(f, arrayPath, static_cast<uint8_t>(initValue), compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint8_t>, AbstractFilter, uint8_t>(f, arrayPath, static_cast<uint8_t>(initValue), compDims, "", id);
     break;
   case SIMPL::TypeEnums::Int16:
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int16_t>, AbstractFilter, int16_t>(f, arrayPath, static_cast<int16_t>(initValue), compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int16_t>, AbstractFilter, int16_t>(f, arrayPath, static_cast<int16_t>(initValue), compDims, "", id);
     break;
   case SIMPL::TypeEnums::UInt16:
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint16_t>, AbstractFilter, uint16_t>(f, arrayPath, static_cast<uint16_t>(initValue), compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint16_t>, AbstractFilter, uint16_t>(f, arrayPath, static_cast<uint16_t>(initValue), compDims, "", id);
     break;
   case SIMPL::TypeEnums::Int32:
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(f, arrayPath, static_cast<int32_t>(initValue), compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(f, arrayPath, static_cast<int32_t>(initValue), compDims, "", id);
     break;
   case SIMPL::TypeEnums::UInt32:
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint32_t>, AbstractFilter, uint32_t>(f, arrayPath, static_cast<uint32_t>(initValue), compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint32_t>, AbstractFilter, uint32_t>(f, arrayPath, static_cast<uint32_t>(initValue), compDims, "", id);
     break;
   case SIMPL::TypeEnums::Int64:
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(f, arrayPath, static_cast<int64_t>(initValue), compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(f, arrayPath, static_cast<int64_t>(initValue), compDims, "", id);
     break;
   case SIMPL::TypeEnums::UInt64:
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint64_t>, AbstractFilter, uint64_t>(f, arrayPath, static_cast<uint64_t>(initValue), compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint64_t>, AbstractFilter, uint64_t>(f, arrayPath, static_cast<uint64_t>(initValue), compDims, "", id);
     break;
   case SIMPL::TypeEnums::Float:
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(f, arrayPath, static_cast<float>(initValue), compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(f, arrayPath, static_cast<float>(initValue), compDims, "", id);
     break;
   case SIMPL::TypeEnums::Double:
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(f, arrayPath, static_cast<double>(initValue), compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(f, arrayPath, static_cast<double>(initValue), compDims, "", id);
     break;
   case SIMPL::TypeEnums::Bool:
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(f, arrayPath, static_cast<bool>(initValue), compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(f, arrayPath, static_cast<bool>(initValue), compDims, "", id);
     break;
   case SIMPL::TypeEnums::SizeT:
-    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<SizeTArrayType, AbstractFilter, size_t>(f, arrayPath, static_cast<size_t>(initValue), compDims);
+    ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<SizeTArrayType, AbstractFilter, size_t>(f, arrayPath, static_cast<size_t>(initValue), compDims, "", id);
     break;
   default:
     QString msg = QObject::tr("The created array '%1' is of unsupported type. The following types are supported: %3").arg(arrayPath.getDataArrayName()).arg(SIMPL::TypeEnums::SupportedTypeList);
-    f->setErrorCondition(Errors::UnsupportedType);
-    f->notifyErrorMessage(f->getHumanLabel(), msg, f->getErrorCondition());
+    f->setErrorCondition(Errors::UnsupportedDataType, msg);
     break;
   }
   return ptr;
@@ -217,8 +215,7 @@ IDataArrayShPtr CreateArrayFromArrayType::operator()(AbstractFilter* f, const QV
   else
   {
     QString msg = QObject::tr("The created array is of unsupported type.");
-    f->setErrorCondition(Errors::UnsupportedType);
-    f->notifyErrorMessage(f->getHumanLabel(), msg, f->getErrorCondition());
+    f->setErrorCondition(Errors::UnsupportedDataType, msg);
   }
   return ptr;
 }
@@ -284,8 +281,7 @@ IDataArrayShPtr CreateArrayFromType::operator()(AbstractFilter* f, const QVector
   else
   {
     QString msg = QObject::tr("The created array is of unsupported type.");
-    f->setErrorCondition(Errors::UnsupportedType);
-    f->notifyErrorMessage(f->getHumanLabel(), msg, f->getErrorCondition());
+    f->setErrorCondition(Errors::UnsupportedDataType, msg);
   }
   return ptr;
 }
@@ -294,28 +290,25 @@ IDataArrayShPtr CreateArrayFromType::operator()(AbstractFilter* f, const QVector
 IDataArrayWkPtr GetPrereqArrayFromPath::operator()(AbstractFilter* f, const DataArrayPath& arrayPath, QVector<size_t>& compDims)
 {
   IDataArrayShPtr retPtr = IDataArray::NullPointer();
-  DataContainer::Pointer volDataCntr = f->getDataContainerArray()->template getPrereqDataContainer<AbstractFilter>(f, arrayPath.getDataContainerName(), false);
-  if(f->getErrorCondition() < 0 || nullptr == volDataCntr)
+  DataContainer::Pointer volDataCntr = f->getDataContainerArray()->getPrereqDataContainer(f, arrayPath.getDataContainerName(), false);
+  if(f->getErrorCode() < 0 || nullptr == volDataCntr)
   {
     QString ss = QObject::tr("The Data Container '%1' does not exist").arg(arrayPath.getDataContainerName());
-    f->setErrorCondition(Errors::MissingDataContainer);
-    f->notifyErrorMessage(f->getHumanLabel(), ss, f->getErrorCondition());
+    f->setErrorCondition(Errors::MissingDataContainer, ss);
     return retPtr;
   }
   AttributeMatrix::Pointer cell_attr_matrix = volDataCntr->getPrereqAttributeMatrix(f, arrayPath.getAttributeMatrixName(), Errors::MissingAttributeMatrix);
-  if(f->getErrorCondition() < 0 || nullptr == cell_attr_matrix.get())
+  if(f->getErrorCode() < 0 || nullptr == cell_attr_matrix.get())
   {
     QString ss = QObject::tr("The Attribute Matrix '%1' does not exist").arg(arrayPath.getAttributeMatrixName());
-    f->setErrorCondition(Errors::MissingAttributeMatrix);
-    f->notifyErrorMessage(f->getHumanLabel(), ss, f->getErrorCondition());
+    f->setErrorCondition(Errors::MissingAttributeMatrix, ss);
     return retPtr;
   }
   IDataArrayShPtr templ_ptr = cell_attr_matrix->getAttributeArray(arrayPath.getDataArrayName());
   if(nullptr == templ_ptr.get())
   {
     QString ss = QObject::tr("The input array '%1' was not found in the AttributeMatrix '%2'.").arg(arrayPath.getDataArrayName()).arg(arrayPath.getAttributeMatrixName());
-    f->setErrorCondition(Errors::MissingArray);
-    f->notifyErrorMessage(f->getHumanLabel(), ss, f->getErrorCondition());
+    f->setErrorCondition(Errors::MissingArray, ss);
     return retPtr;
   }
   if(compDims.isEmpty())
@@ -378,8 +371,7 @@ IDataArrayWkPtr GetPrereqArrayFromPath::operator()(AbstractFilter* f, const Data
                      .arg(arrayPath.getDataArrayName())
                      .arg(i_data_array->getTypeAsString())
                      .arg(SIMPL::TypeNames::SupportedTypeList);
-    f->setErrorCondition(Errors::UnsupportedType);
-    f->notifyErrorMessage(f->getHumanLabel(), ss, f->getErrorCondition());
+    f->setErrorCondition(Errors::UnsupportedDataType, ss);
   }
   return retPtr;
 }
