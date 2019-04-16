@@ -39,7 +39,7 @@ PyBind11Generator::~PyBind11Generator() = default;
 void PyBind11Generator::readFilterList()
 {
   QString libName = m_LibNameUpper;
-  if(m_IsSIMPLib.compare("TRUE") == 0)
+  if(m_IsSIMPLib =="TRUE")
   {
     libName = QString("SIMPLib");
   }
@@ -100,7 +100,7 @@ void PyBind11Generator::execute()
   
   genHeaderPath = QString("");
   QString libName = m_LibNameUpper;
-  if(m_IsSIMPLib.compare("TRUE") == 0)
+  if(m_IsSIMPLib =="TRUE")
   {
     libName = QString("simpl");
   }
@@ -110,7 +110,7 @@ void PyBind11Generator::execute()
   
   genHeaderPath = QString("");
   libName = m_LibNameUpper;
-  if(m_IsSIMPLib.compare("TRUE") == 0)
+  if(m_IsSIMPLib =="TRUE")
   {
     libName = QString("simpl");
   }
@@ -246,35 +246,39 @@ void PyBind11Generator::recursiveSearch(QDir currentDir)
   {
     return;
   }
-#if 0
-  // Get a list of all the directories
-  QFileInfoList dirList = currentDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
-  if(dirList.size() > 0)
+  // If the currently generated library is SIMPLib itself then ignore the list of
+  // files and do a recursive search for the PYBIND macros since everything in
+  // SIMPL is going to need to be wrapped.
+  if(m_IsSIMPLib =="TRUE")
   {
-    foreach(QFileInfo fi, dirList)
+    // Get a list of all the directories
+    QFileInfoList dirList = currentDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
+    if(dirList.size() > 0)
     {
-      recursiveSearch(QDir(fi.absoluteFilePath())); // Recursive call
+      foreach(QFileInfo fi, dirList)
+      {
+        recursiveSearch(QDir(fi.absoluteFilePath())); // Recursive call
+      }
+    }
+    QStringList filters;
+    filters.append("*.h");
+    QFileInfoList itemList = currentDir.entryInfoList(filters);
+    foreach(QFileInfo itemInfo, itemList)
+    {
+      QString headerFilePath = itemInfo.absoluteFilePath();
+      generatePybind11Header(headerFilePath);
+    }
+  } else {
+    for(const auto& item : m_FilterList)
+    {
+      QString filePath = currentDir.absolutePath() + QDir::separator() + item;
+      QFileInfo fi(filePath);
+      if(fi.exists())
+      {
+        generatePybind11Header(fi.absoluteFilePath());
+      }
     }
   }
-  QStringList filters;
-  filters.append("*.h");
-  QFileInfoList itemList = currentDir.entryInfoList(filters);
-  foreach(QFileInfo itemInfo, itemList)
-  {
-    QString headerFilePath = itemInfo.absoluteFilePath();
-    generatePybind11Header(headerFilePath);
-  }
-#else
-  for(const auto& item : m_FilterList)
-  {
-    QString filePath = currentDir.absolutePath() + QDir::separator() + item;
-    QFileInfo fi(filePath);
-    if(fi.exists())
-    {
-      generatePybind11Header(fi.absoluteFilePath());
-    }
-  }
-#endif
 
 }
 //-----------------------------------------------------------------------------
