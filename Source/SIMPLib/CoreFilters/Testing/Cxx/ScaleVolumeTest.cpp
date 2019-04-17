@@ -55,7 +55,7 @@
 
 namespace ScaleVolumeTestConsts
 {
-const FloatVec3_t SCALE = FloatVec3_t{3, 3, 3};
+const FloatVec3Type SCALE = FloatVec3Type{3, 3, 3};
 }
 
 class ScaleVolumeTest
@@ -72,16 +72,16 @@ public:
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
     DataContainer::Pointer dc1 = DataContainer::New("DataContainer1");
-    dca->addDataContainer(dc1);
+    dca->addOrReplaceDataContainer(dc1);
 
     DataContainer::Pointer dc2 = DataContainer::New("DataContainer2");
-    dca->addDataContainer(dc2);
+    dca->addOrReplaceDataContainer(dc2);
 
     DataContainer::Pointer dc3 = DataContainer::New("DataContainer3");
-    dca->addDataContainer(dc3);
+    dca->addOrReplaceDataContainer(dc3);
 
     DataContainer::Pointer dc4 = DataContainer::New("DataContainer4");
-    dca->addDataContainer(dc4);
+    dca->addOrReplaceDataContainer(dc4);
 
     ImageGeom::Pointer imgGeom = ImageGeom::New();
     imgGeom->setDimensions(2, 2, 2);
@@ -154,19 +154,24 @@ public:
     QVariant value;
 
     value.setValue(imageGeometry);
-    filter->setProperty("ApplyToVoxelVolume", value);
+    bool propWasSet = filter->setProperty("ApplyToVoxelVolume", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     value.setValue(surfaceGeometry);
-    filter->setProperty("ApplyToSurfaceMesh", value);
+    propWasSet = filter->setProperty("ApplyToSurfaceMesh", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     value.setValue(ScaleVolumeTestConsts::SCALE);
-    filter->setProperty("ScaleFactor", value);
+    propWasSet = filter->setProperty("ScaleFactor", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-    value.setValue(QString("DataContainer1"));
-    filter->setProperty("DataContainerName", value);
+    value.setValue(DataArrayPath("DataContainer1"));
+    propWasSet = filter->setProperty("DataContainerName", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-    value.setValue(QString("DataContainer2"));
-    filter->setProperty("SurfaceDataContainerName", value);
+    value.setValue(DataArrayPath("DataContainer2"));
+    propWasSet = filter->setProperty("SurfaceDataContainerName", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
   }
 
   // -----------------------------------------------------------------------------
@@ -182,19 +187,24 @@ public:
     QVariant value;
 
     value.setValue(imageGeometry);
-    filter->setProperty("ApplyToVoxelVolume", value);
+    bool propWasSet = filter->setProperty("ApplyToVoxelVolume", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     value.setValue(surfaceGeometry);
-    filter->setProperty("ApplyToSurfaceMesh", value);
+    propWasSet = filter->setProperty("ApplyToSurfaceMesh", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     value.setValue(ScaleVolumeTestConsts::SCALE);
-    filter->setProperty("ScaleFactor", value);
+    propWasSet = filter->setProperty("ScaleFactor", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-    value.setValue(QString("DataContainer2"));
-    filter->setProperty("DataContainerName", value);
+    value.setValue(DataArrayPath("DataContainer2"));
+    propWasSet = filter->setProperty("DataContainerName", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-    value.setValue(QString("DataContainer1"));
-    filter->setProperty("SurfaceDataContainerName", value);
+    value.setValue(DataArrayPath("DataContainer1"));
+    propWasSet = filter->setProperty("SurfaceDataContainerName", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
   }
 
   // -----------------------------------------------------------------------------
@@ -210,19 +220,24 @@ public:
     QVariant value;
 
     value.setValue(imageGeometry);
-    filter->setProperty("ApplyToVoxelVolume", value);
+    bool propWasSet = filter->setProperty("ApplyToVoxelVolume", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     value.setValue(surfaceGeometry);
-    filter->setProperty("ApplyToSurfaceMesh", value);
+    propWasSet = filter->setProperty("ApplyToSurfaceMesh", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     value.setValue(ScaleVolumeTestConsts::SCALE);
-    filter->setProperty("ScaleFactor", value);
+    propWasSet = filter->setProperty("ScaleFactor", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-    value.setValue(QString("DataContainer3"));
-    filter->setProperty("DataContainerName", value);
+    value.setValue(DataArrayPath("DataContainer3"));
+    propWasSet = filter->setProperty("DataContainerName", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-    value.setValue(QString("DataContainer4"));
-    filter->setProperty("SurfaceDataContainerName", value);
+    value.setValue(DataArrayPath("DataContainer4"));
+    propWasSet = filter->setProperty("SurfaceDataContainerName", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
   }
 
   // -----------------------------------------------------------------------------
@@ -236,21 +251,19 @@ public:
     setGeometryTest(filter, true, false);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0);
 
     DataContainer::Pointer dc = filter->getDataContainerArray()->getDataContainer("DataContainer1");
     ImageGeom::Pointer imgGeom = std::dynamic_pointer_cast<ImageGeom>(dc->getGeometry());
 
     DREAM3D_REQUIRE(imgGeom != nullptr);
 
-    float xRes = 0.0f;
-    float yRes = 0.0f;
-    float zRes = 0.0f;
-    std::tie(xRes, yRes, zRes) = imgGeom->getResolution();
+    FloatVec3Type spacing;
+    imgGeom->getSpacing(spacing);
 
-    DREAM3D_REQUIRE_EQUAL(xRes, ScaleVolumeTestConsts::SCALE.x);
-    DREAM3D_REQUIRE_EQUAL(yRes, ScaleVolumeTestConsts::SCALE.y);
-    DREAM3D_REQUIRE_EQUAL(zRes, ScaleVolumeTestConsts::SCALE.z);
+    DREAM3D_REQUIRE_EQUAL(spacing[0], ScaleVolumeTestConsts::SCALE[0]);
+    DREAM3D_REQUIRE_EQUAL(spacing[1], ScaleVolumeTestConsts::SCALE[1]);
+    DREAM3D_REQUIRE_EQUAL(spacing[2], ScaleVolumeTestConsts::SCALE[2]);
   }
 
   // -----------------------------------------------------------------------------
@@ -264,7 +277,7 @@ public:
     setGeometryTest(filter, false, true);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0);
 
     DataContainer::Pointer dc = filter->getDataContainerArray()->getDataContainer("DataContainer2");
     TriangleGeom::Pointer triGeom = std::dynamic_pointer_cast<TriangleGeom>(dc->getGeometry());
@@ -297,7 +310,7 @@ public:
     setIncorrectGeometry(filter, true, false);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -384);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -384);
   }
 
   // -----------------------------------------------------------------------------
@@ -311,7 +324,7 @@ public:
     setIncorrectGeometry(filter, false, true);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -384);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -384);
   }
 
   // -----------------------------------------------------------------------------
@@ -325,7 +338,7 @@ public:
     setNullGeometry(filter, true, false);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -385);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -385);
   }
 
   // -----------------------------------------------------------------------------
@@ -339,7 +352,7 @@ public:
     setNullGeometry(filter, false, true);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -385);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -385);
   }
 
   // -----------------------------------------------------------------------------

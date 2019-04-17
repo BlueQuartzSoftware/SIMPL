@@ -83,7 +83,7 @@ DataContainerWriter::~DataContainerWriter()
 // -----------------------------------------------------------------------------
 void DataContainerWriter::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Output File", OutputFile, FilterParameter::Parameter, DataContainerWriter, "*.dream3d", ""));
   parameters.push_back(SIMPL_NEW_BOOL_FP("Write Xdmf File", WriteXdmfFile, FilterParameter::Parameter, DataContainerWriter));
@@ -116,8 +116,8 @@ void DataContainerWriter::initialize()
 // -----------------------------------------------------------------------------
 void DataContainerWriter::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   QString ss;
 
   QFileInfo fi(m_OutputFile);
@@ -147,10 +147,10 @@ void DataContainerWriter::preflight()
 // -----------------------------------------------------------------------------
 void DataContainerWriter::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -165,8 +165,7 @@ void DataContainerWriter::execute()
   if(!dir.mkpath(parentPath))
   {
     QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath);
-    setErrorCondition(-11110);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-11110, ss);
     return;
   }
 
@@ -174,8 +173,7 @@ void DataContainerWriter::execute()
   if(err < 0)
   {
     QString ss = QObject::tr("The HDF5 file could not be opened or created.\n The given filename was:\n\t[%1]").arg(m_OutputFile);
-    setErrorCondition(-11112);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-11112, ss);
     return;
   }
   // qDebug() << "DREAM3D File: " << m_OutputFile;
@@ -214,8 +212,7 @@ void DataContainerWriter::execute()
   if(err < 0)
   {
     QString ss = QObject::tr("Error creating HDF5 Group '%1'").arg(SIMPL::StringConstants::DataContainerGroupName);
-    setErrorCondition(-60);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-60, ss);
     return;
   }
   hid_t dcaGid = H5Gopen(m_FileId, SIMPL::StringConstants::DataContainerGroupName.toLatin1().data(), H5P_DEFAULT);
@@ -230,26 +227,25 @@ void DataContainerWriter::execute()
     if(err < 0)
     {
       QString ss = QObject::tr("Error creating HDF5 Group '%1'").arg(dcNames[iter]);
-      setErrorCondition(-60);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(-60, ss);
       return;
     }
 
     hid_t dcGid = H5Gopen(dcaGid, dcNames[iter].toLatin1().data(), H5P_DEFAULT);
     H5ScopedGroupSentinel groupSentinel(&dcGid, false);
-    // QString ss = QObject::tr("%1 |--> Writing %2 DataContainer ").arg(getMessagePrefix()).arg(dcNames[iter]);
+    // QString ss = QObject::tr("Writing %2 DataContainer").arg(dcNames[iter]);
 
     // Have the DataContainer write all of its Attribute Matrices and its Mesh
     err = dc->writeAttributeMatricesToHDF5(dcGid);
     if(err < 0)
     {
-      notifyErrorMessage(getHumanLabel(), "Error writing DataContainer AttributeMatrices", -803);
+      setErrorCondition(-803, "Error writing DataContainer AttributeMatrices");
       return;
     }
     err = dc->writeMeshToHDF5(dcGid, m_WriteXdmfFile);
     if(err < 0)
     {
-      notifyErrorMessage(getHumanLabel(), "Error writing DataContainer Geometry", -804);
+      setErrorCondition(-804, "Error writing DataContainer Geometry");
       return;
     }
     if(m_WriteXdmfFile && geometry.get() != nullptr)
@@ -261,7 +257,7 @@ void DataContainerWriter::execute()
         dc->getGeometry()->setTimeValue(static_cast<float>(iter));
       }
 #if 0
-      dc->getGeometry()->addAttributeMatrix(SIMPL::StringConstants::MetaData, dc->getAttributeMatrix(SIMPL::StringConstants::MetaData));
+      dc->getGeometry()->addOrReplaceAttributeMatrix(SIMPL::StringConstants::MetaData, dc->getAttributeMatrix(SIMPL::StringConstants::MetaData));
       dc->getGeometry()->setTemporalDataPath(DataArrayPath(dc->getName(), SIMPL::StringConstants::MetaData, "Step #"));
 #endif
 
@@ -269,7 +265,7 @@ void DataContainerWriter::execute()
       err = dc->writeXdmf(xdmfOut, hdfFileName);
       if(err < 0)
       {
-        notifyErrorMessage(getHumanLabel(), "Error writing Xdmf File", -805);
+        setErrorCondition(-805, "Error writing Xdmf File");
         return;
       }
     }
@@ -280,8 +276,7 @@ void DataContainerWriter::execute()
   if(err < 0)
   {
     QString ss = QObject::tr("Error writing DataContainerBundles");
-    setErrorCondition(-11113);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-11113, ss);
     return;
   }
 
@@ -306,8 +301,7 @@ int DataContainerWriter::writeDataContainerBundles(hid_t fileId)
   if(err < 0)
   {
     QString ss = QObject::tr("Error creating HDF5 Group '%1'").arg(SIMPL::StringConstants::DataContainerBundleGroupName);
-    setErrorCondition(-61);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-61, ss);
     return -1;
   }
   hid_t dcbGid = H5Gopen(m_FileId, SIMPL::StringConstants::DataContainerBundleGroupName.toLatin1().data(), H5P_DEFAULT);

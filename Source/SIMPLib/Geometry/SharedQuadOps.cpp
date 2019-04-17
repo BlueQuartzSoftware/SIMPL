@@ -49,7 +49,7 @@ SharedQuadList::Pointer GEOM_CLASS_NAME::CreateSharedQuadList(int64_t numQuads, 
 // -----------------------------------------------------------------------------
 void GEOM_CLASS_NAME::resizeQuadList(int64_t newNumQuads)
 {
-  m_QuadList->resize(newNumQuads);
+  m_QuadList->resizeTuples(newNumQuads);
 }
 
 // -----------------------------------------------------------------------------

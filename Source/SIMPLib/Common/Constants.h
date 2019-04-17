@@ -302,7 +302,7 @@ namespace SIMPL
     const QString GroupingFilters("Grouping");
     const QString CropCutFilters("Croping/Cutting");
     const QString RotationTransformationFilters("Rotating/Transforming");
-    const QString ResolutionFilters("Resolution");
+    const QString ResolutionFilters("Spacing");
     const QString MorphologicalFilters("Morphological");
     const QString PackingFilters("Packing");
     const QString CrystallographyFilters("Crystallography");
@@ -313,6 +313,8 @@ namespace SIMPL
     const QString MappingFilters("Mapping");
     const QString MiscFilters("Misc");
     const QString GeometryFilters("Geometry");
+    const QString ImportFilters("Import");
+    const QString ExportFilters("Export");
   }
 
   namespace GeneralData

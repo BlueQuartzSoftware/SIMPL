@@ -32,201 +32,177 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#include "PipelineMessage.h"
 
-#include <QtCore/QMetaType>
-#include <QtCore/QString>
+#include "MassCreateData.h"
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-PipelineMessage::PipelineMessage() = default;
+#include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-PipelineMessage::PipelineMessage(const PipelineMessage& rhs)
-{
-  m_FilterClassName = rhs.m_FilterClassName;
-  m_FilterHumanLabel = rhs.m_FilterHumanLabel;
-  m_Prefix = rhs.m_Prefix;
-  m_Text = rhs.m_Text;
-  m_Code = rhs.m_Code;
-  m_Type = rhs.m_Type;
-  m_ProgressValue = rhs.m_ProgressValue;
-  m_PipelineIndex = rhs.m_PipelineIndex;
-}
+enum createdPathID : RenameDataPath::DataID_t {
+  DataContainerBaseID = 1
+};
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineMessage::PipelineMessage(const QString& className, const char* msg, int code, MessageType msgType, int progress)
-: m_FilterClassName(className)
-, m_Text(msg)
-, m_Code(code)
-, m_PipelineIndex(-1)
-, m_Type(msgType)
-, m_ProgressValue(progress)
+MassCreateData::MassCreateData()
+  : m_DataContainerName("DataContainer")
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineMessage::PipelineMessage(const QString& className, const QString& msg, int code, MessageType msgType, int progress)
-: m_FilterClassName(className)
-, m_FilterHumanLabel("")
-, m_Text(msg)
-, m_Code(code)
-, m_PipelineIndex(-1)
-, m_Type(msgType)
-, m_ProgressValue(progress)
+MassCreateData::~MassCreateData() = default;
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MassCreateData::setupFilterParameters()
+{
+  FilterParameterVectorType parameters;
+  parameters.push_back(SIMPL_NEW_DC_CREATION_FP("Data Container Name", DataContainerName, FilterParameter::CreatedArray, MassCreateData));
+  setFilterParameters(parameters);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MassCreateData::readFilterParameters(AbstractFilterParametersReader* reader, int index)
+{
+  reader->openFilterGroup(this, index);
+  setDataContainerName(reader->readDataArrayPath("DataContainerName", getDataContainerName()));
+  reader->closeFilterGroup();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MassCreateData::initialize()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineMessage::PipelineMessage(const QString& className, const QString& humanLabel, const QString& msg, int code, MessageType msgType, int progress)
-: m_FilterClassName(className)
-, m_FilterHumanLabel(humanLabel)
-, m_Text(msg)
-, m_Code(code)
-, m_PipelineIndex(-1)
-, m_Type(msgType)
-, m_ProgressValue(progress)
+void MassCreateData::dataCheck()
 {
-}
+  clearErrorCode();
+  clearWarningCode();
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-PipelineMessage::PipelineMessage(const QString& humanLabel, int pipelineIndex, const QString& msg, MessageType msgType)
-: m_FilterHumanLabel(humanLabel)
-, m_Text(msg)
-, m_PipelineIndex(pipelineIndex)
-, m_Type(msgType)
-, m_Code(0)
-{
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-PipelineMessage PipelineMessage::CreateErrorMessage(const QString className, const QString humanLabel, const QString msg, int code)
-{
-  PipelineMessage em(className, humanLabel, msg, code, MessageType::Error, -1);
-  return em;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-PipelineMessage PipelineMessage::CreateStatusMessage(const QString className, const QString humanLabel, const QString msg)
-{
-  PipelineMessage em(className, humanLabel, msg, 0, MessageType::StatusMessage, -1);
-  return em;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-PipelineMessage PipelineMessage::CreateWarningMessage(const QString className, const QString humanLabel, const QString msg, int code)
-{
-  PipelineMessage em(className, humanLabel, msg, code, MessageType::Warning, -1);
-  return em;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-PipelineMessage PipelineMessage::CreateStandardOutputMessage(const QString humanLabel, int pipelineIndex, const QString msg)
-{
-  PipelineMessage em(humanLabel, pipelineIndex, msg, MessageType::StandardOutputMessage);
-  return em;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-PipelineMessage::~PipelineMessage() = default;
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool PipelineMessage::operator==(const PipelineMessage& rhs)
-{
-  return (m_FilterClassName == rhs.m_FilterClassName && m_Prefix == rhs.m_Prefix && m_FilterHumanLabel == rhs.m_FilterHumanLabel && m_Text == rhs.m_Text && m_Code == rhs.m_Code &&
-          m_Type == rhs.m_Type && m_ProgressValue == rhs.m_ProgressValue && m_PipelineIndex == rhs.m_PipelineIndex);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineMessage::operator=(const PipelineMessage& rhs)
-{
-  m_FilterClassName = rhs.m_FilterClassName;
-  m_Prefix = rhs.m_Prefix;
-  m_FilterHumanLabel = rhs.m_FilterHumanLabel;
-  m_Text = rhs.m_Text;
-  m_Code = rhs.m_Code;
-  m_Type = rhs.m_Type;
-  m_ProgressValue = rhs.m_ProgressValue;
-  m_PipelineIndex = rhs.m_PipelineIndex;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString PipelineMessage::generateErrorString() const
-{
-  QString ss = QObject::tr("Error (%1): %2: %3").arg(m_Code).arg(m_Prefix).arg(m_Text);
-  return ss;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString PipelineMessage::generateWarningString() const
-{
-  QString ss = QObject::tr("Warning (%1): %2: %3").arg(m_Code).arg(m_Prefix).arg(m_Text);
-  return ss;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString PipelineMessage::generateStatusString() const
-{
-  if(m_Prefix.isEmpty())
+  const int iterations = 4000;
+  for(int i = 0; i < iterations; i++)
   {
-    QString ss = QObject::tr("%2").arg(m_Text);
-    return ss;
+    DataContainerShPtr dc = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName().getDataContainerName() + QString::number(i), DataContainerBaseID + i);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MassCreateData::preflight()
+{
+  // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
+  setInPreflight(true);              // Set the fact that we are preflighting.
+  emit preflightAboutToExecute();    // Emit this signal so that other widgets can do one file update
+  emit updateFilterParameters(this); // Emit this signal to have the widgets push their values down to the filter
+  dataCheck();                       // Run our DataCheck to make sure everthing is setup correctly
+  emit preflightExecuted();          // We are done preflighting this filter
+  setInPreflight(false);             // Inform the system this filter is NOT in preflight mode anymore.
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MassCreateData::execute()
+{
+  clearErrorCode();
+  clearWarningCode();
+
+  dataCheck();
+  if(getErrorCode() < 0)
+  {
+    return;
   }
 
-  QString ss = QObject::tr("%1: %2").arg(m_Prefix).arg(m_Text);
-  return ss;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString PipelineMessage::generateProgressString() const
-{
-  if(m_Prefix.isEmpty())
+  if(getCancel())
   {
-    QString ss = QObject::tr("%1 %2%%").arg(m_Text).arg(m_ProgressValue);
-    return ss;
+    return;
   }
 
-  QString ss = QObject::tr("%1: %2 %3%%").arg(m_Prefix).arg(m_Text).arg(m_ProgressValue);
-  return ss;
+  notifyStatusMessage("Complete");
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString PipelineMessage::generateStandardOutputString() const
+AbstractFilter::Pointer MassCreateData::newFilterInstance(bool copyFilterParameters) const
 {
-  return m_Text;
+  MassCreateData::Pointer filter = MassCreateData::New();
+  if(copyFilterParameters)
+  {
+    copyFilterParameterInstanceVariables(filter.get());
+  }
+  return filter;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString MassCreateData::getCompiledLibraryName() const
+{
+  return Core::CoreBaseName;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString MassCreateData::getBrandingString() const
+{
+  return "SIMPLib Core Filter";
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString MassCreateData::getFilterVersion() const
+{
+  QString version;
+  QTextStream vStream(&version);
+  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  return version;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString MassCreateData::getGroupName() const
+{
+  return SIMPL::FilterGroups::CoreFilters;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString MassCreateData::getHumanLabel() const
+{
+  return "Mass Create Data Containers";
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QUuid MassCreateData::getUuid()
+{
+  return QUuid("{816fbe6b-7c38-581b-b149-3f839fb65b95}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString MassCreateData::getSubGroupName() const
+{
+  return SIMPL::FilterSubGroups::GenerationFilters;
 }

@@ -82,9 +82,7 @@ ITK_IMAGE_READER_CLASS_NAME
 ::readImage(const DataArrayPath& dataArrayPath, const itk::ImageIOBase::Pointer& imageIO, const QString& filename, bool dataCheck)
 {
   using PixelTypeType = itk::ImageIOBase::IOPixelType;
-  // using ComponentType = itk::ImageIOBase::IOComponentType;
   PixelTypeType pixel = imageIO->GetPixelType();
-  // ComponentType compType = imageIO->GetComponentType();
 
   const unsigned int nbComponents = imageIO->GetNumberOfComponents();
   switch(pixel)
@@ -113,9 +111,8 @@ ITK_IMAGE_READER_CLASS_NAME
     }
     else
     {
-      setErrorCondition(-4);
       QString errorMessage = QString("Unsupported number of components: %1.").arg(nbComponents);
-      notifyErrorMessage(getHumanLabel(), errorMessage, getErrorCondition());
+      setErrorCondition(-4, errorMessage);
       break;
     }
     break;
@@ -128,9 +125,8 @@ ITK_IMAGE_READER_CLASS_NAME
   case itk::ImageIOBase::FIXEDARRAY:
   case itk::ImageIOBase::MATRIX:
   default:
-    setErrorCondition(-4);
     QString errorMessage = QString("Unsupported pixel type: %1.").arg(itk::ImageIOBase::GetPixelTypeAsString(pixel).c_str());
-    notifyErrorMessage(getHumanLabel(), errorMessage, getErrorCondition());
+    setErrorCondition(-4, errorMessage);
     break;
   }
 }
@@ -146,8 +142,7 @@ ITK_IMAGE_READER_CLASS_NAME
   DataContainer::Pointer container = getDataContainerArray()->getDataContainer(dataArrayPath.getDataContainerName());
   if(nullptr == container.get())
   {
-    setErrorCondition(-4);
-    notifyErrorMessage(getHumanLabel(), "Container not found.", getErrorCondition());
+    setErrorCondition(-4, "Container not found.");
     return;
   }
 
@@ -187,9 +182,8 @@ ITK_IMAGE_READER_CLASS_NAME
     itk::ImageIOBase::Pointer imageIO = itk::ImageIOFactory::CreateImageIO(filename.toLatin1(), itk::ImageIOFactory::ReadMode);
     if(nullptr == imageIO)
     {
-      setErrorCondition(-5);
       QString errorMessage = "ITK could not read the given file \"%1\". Format is likely unsupported.";
-      notifyErrorMessage(getHumanLabel(), errorMessage.arg(filename), getErrorCondition());
+      setErrorCondition(-5, errorMessage.arg(filename));
       return;
     }
     imageIO->SetFileName(filename.toLatin1());
@@ -230,16 +224,14 @@ ITK_IMAGE_READER_CLASS_NAME
       readImage<double>(dataArrayPath, imageIO, filename, dataCheck);
       break;
     default:
-      setErrorCondition(-4);
       QString errorMessage = QString("Unsupported pixel component: %1.").arg(imageIO->GetComponentTypeAsString(component).c_str());
-      notifyErrorMessage(getHumanLabel(), errorMessage, getErrorCondition());
+      setErrorCondition(-4, errorMessage);
       break;
     }
   } catch(itk::ExceptionObject& err)
   {
-    setErrorCondition(-55557);
     QString errorMessage = "ITK exception was thrown while processing input file: %1";
-    notifyErrorMessage(getHumanLabel(), errorMessage.arg(err.what()), getErrorCondition());
+    setErrorCondition(-55557, errorMessage.arg(err.what()));
     return;
   }
 }
@@ -252,16 +244,16 @@ void
 ITK_IMAGE_READER_CLASS_NAME
 ::readImageOutputInformation(const DataArrayPath& dataArrayPath, typename itk::ImageFileReader<itk::Dream3DImage<TPixel, dimensions>>::Pointer& reader, DataContainer::Pointer& container)
 {
-  typedef itk::Dream3DImage<TPixel, dimensions> ImageType;
-  typedef typename itk::NumericTraits<TPixel>::ValueType ValueType;
+  using ImageType = itk::Dream3DImage<TPixel, dimensions>;
+  using ValueType = typename itk::NumericTraits<TPixel>::ValueType;
   reader->UpdateOutputInformation();
   const typename ImageType::PointType origin = reader->GetOutput()->GetOrigin();
   const typename ImageType::SizeType size = reader->GetOutput()->GetLargestPossibleRegion().GetSize();
   const typename ImageType::SpacingType spacing = reader->GetOutput()->GetSpacing();
-  QVector<float> torigin(3, 0);
-  QVector<float> tspacing(3, 0);
-  QVector<size_t> tDims(3, 1);
   // Initialize torigin/tspacing/tDims since arrays are always of size 3 and ITK image may have a different size.
+  FloatVec3Type torigin = {0.0f, 0.0f, 0.0f};
+  FloatVec3Type tspacing = {1.0f, 1.0f, 1.0f};
+  SizeVec3Type tDims = {1, 1, 1};
   for(size_t i = 0; i < dimensions; i++)
   {
     torigin[i] = origin[i];
@@ -269,14 +261,15 @@ ITK_IMAGE_READER_CLASS_NAME
     tDims[i] = size[i];
   }
   ImageGeom::Pointer image = ImageGeom::CreateGeometry(SIMPL::Geometry::ImageGeometry);
-  image->setDimensions(tDims[0], tDims[1], tDims[2]);
-  image->setOrigin(torigin[0], torigin[1], torigin[2]);
-  image->setResolution(tspacing[0], tspacing[1], tspacing[2]);
+  image->setDimensions(tDims);
+  image->setOrigin(torigin);
+  image->setSpacing(tspacing);
   container->setGeometry(image);
 
   QVector<size_t> cDims = ITKDream3DHelper::GetComponentsDimensions<TPixel>();
-  AttributeMatrix::Pointer cellAttrMat = container->createNonPrereqAttributeMatrix(this, dataArrayPath.getAttributeMatrixName(), tDims, AttributeMatrix::Type::Cell);
-  if(getErrorCondition() < 0)
+  QVector<size_t> qTdims = {tDims[0], tDims[1], tDims[2]};
+  AttributeMatrix::Pointer cellAttrMat = container->createNonPrereqAttributeMatrix(this, dataArrayPath.getAttributeMatrixName(), qTdims, AttributeMatrix::Type::Cell);
+  if(getErrorCode() < 0)
   {
     return;
   }

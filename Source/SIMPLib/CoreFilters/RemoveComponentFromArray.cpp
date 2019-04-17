@@ -45,6 +45,11 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t {
+  NewDataArrayID = 1,
+  ReducedDataArrayID
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -66,7 +71,7 @@ RemoveComponentFromArray::~RemoveComponentFromArray() = default;
 // -----------------------------------------------------------------------------
 void RemoveComponentFromArray::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Component Number to Remove", CompNumber, FilterParameter::Parameter, RemoveComponentFromArray));
 
@@ -112,8 +117,8 @@ void RemoveComponentFromArray::initialize()
 // -----------------------------------------------------------------------------
 void RemoveComponentFromArray::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 
   m_InArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArrayPath());
 
@@ -121,42 +126,38 @@ void RemoveComponentFromArray::dataCheck()
   {
     if(m_NewArrayArrayName.isEmpty())
     {
-      setErrorCondition(-11001);
-      notifyErrorMessage(getHumanLabel(), "Removed Component array name must be set.", getErrorCondition());
+      setErrorCondition(-11001, "Removed Component array name must be set.");
       return;
     }
   }
 
   if(m_ReducedArrayArrayName.isEmpty())
   {
-    setErrorCondition(-11002);
-    notifyErrorMessage(getHumanLabel(), "Reduced array name must be set.", getErrorCondition());
+    setErrorCondition(-11002, "Reduced array name must be set.");
     return;
   }
 
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
 
   if(m_InArrayPtr.lock()->getNumberOfComponents() < 2)
   {
-    setErrorCondition(-11003);
     QString ss = QObject::tr("Selected array '%1' must have more than 1 component. The number of components is %2")
                      .arg(getSelectedArrayPath().getDataArrayName())
                      .arg(m_InArrayPtr.lock()->getNumberOfComponents());
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-11003, ss);
     return;
   }
 
   if(m_CompNumber >= m_InArrayPtr.lock()->getNumberOfComponents())
   {
-    setErrorCondition(-11004);
     QString ss = QObject::tr("Error removing component from DataArray '%3', Component to remove (%1) is greater than or equal to the number of components (%2) for array selected.")
                      .arg(m_CompNumber)
                      .arg(m_InArrayPtr.lock()->getNumberOfComponents())
                      .arg(getSelectedArrayPath().getDataArrayName());
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-11004, ss);
     return;
   }
 
@@ -164,12 +165,12 @@ void RemoveComponentFromArray::dataCheck()
   if(m_SaveRemovedComponent)
   {
     DataArrayPath tempPath(getSelectedArrayPath().getDataContainerName(), getSelectedArrayPath().getAttributeMatrixName(), getNewArrayArrayName());
-    m_NewArrayPtr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, m_InArrayPtr.lock());
+    m_NewArrayPtr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, m_InArrayPtr.lock(), NewDataArrayID);
   }
 
   cDims[0] = static_cast<size_t>(m_InArrayPtr.lock()->getNumberOfComponents()) - 1;
   DataArrayPath tempPath2(getSelectedArrayPath().getDataContainerName(), getSelectedArrayPath().getAttributeMatrixName(), getReducedArrayArrayName());
-  m_ReducedArrayPtr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath2, cDims, m_InArrayPtr.lock());
+  m_ReducedArrayPtr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath2, cDims, m_InArrayPtr.lock(), ReducedDataArrayID);
 }
 
 // -----------------------------------------------------------------------------
@@ -267,10 +268,10 @@ template <typename T> void reduceArrayOnly(IDataArray::Pointer inputData, IDataA
 // -----------------------------------------------------------------------------
 void RemoveComponentFromArray::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

@@ -178,7 +178,7 @@ class SIMPLib_EXPORT MultiAttributeMatrixSelectionFilterParameter : public Filte
      * @param filter
      * @param renamePath
      */
-    void dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath) override;
+    void dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath) override;
 
   protected:
       /**

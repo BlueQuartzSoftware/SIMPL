@@ -52,8 +52,8 @@ FilterGroup04::~FilterGroup04() = default;
 // -----------------------------------------------------------------------------
 void FilterGroup04::initialize()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   setCancel(false);
 }
 
@@ -62,7 +62,7 @@ void FilterGroup04::initialize()
 // -----------------------------------------------------------------------------
 void FilterGroup04::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   setFilterParameters(parameters);
 }
@@ -72,8 +72,8 @@ void FilterGroup04::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void FilterGroup04::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 }
 
 // -----------------------------------------------------------------------------
@@ -97,7 +97,7 @@ void FilterGroup04::execute()
 {
   initialize();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -107,11 +107,10 @@ void FilterGroup04::execute()
     return;
   }
 
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     QString ss = QObject::tr("Some error message");
-    setErrorCondition(-99999999);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-99999999, ss);
     return;
   }
 

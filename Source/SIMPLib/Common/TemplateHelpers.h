@@ -40,6 +40,7 @@
 #include <QtCore/QString>
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/DataContainers/RenameDataPath.h"
 
 class AbstractFilter;
 
@@ -106,7 +107,7 @@ namespace TemplateHelpers
   }                                                                                                                                                                                                    \
   else                                                                                                                                                                                                 \
   {                                                                                                                                                                                                    \
-    observableObj->notifyErrorMessage(#templateName, "The input array was of unsupported type", TemplateHelpers::Errors::UnsupportedType);                                                             \
+    observableObj->setErrorConditionWithPrefix(TemplateHelpers::Errors::UnsupportedDataType, #templateName, "The input array was of unsupported type");                                                    \
   }
 
 #define EXECUTE_TEMPLATE(observableObj, templateName, inputData, ...)                                                                                                                                  \
@@ -172,7 +173,7 @@ namespace TemplateHelpers
   }                                                                                                                                                                                                    \
   else                                                                                                                                                                                                 \
   {                                                                                                                                                                                                    \
-    observableObj->notifyErrorMessage(#templateName, "The input array was of unsupported type", TemplateHelpers::Errors::UnsupportedType);                                                             \
+    observableObj->setErrorConditionWithPrefix(TemplateHelpers::Errors::UnsupportedDataType, #templateName, "The input array was of unsupported type");                                                    \
   }
 
 /**
@@ -180,10 +181,11 @@ namespace TemplateHelpers
  */
 namespace Errors
 {
-const int UnsupportedType(-401);
-const int MissingDataContainer(-402);
-const int MissingAttributeMatrix(-403);
-const int MissingArray(-404);
+const int UnsupportedDataType(-401);
+const int UnsupportedImageType(-402);
+const int MissingDataContainer(-403);
+const int MissingAttributeMatrix(-404);
+const int MissingArray(-405);
 } // namespace Errors
 
 /**
@@ -228,7 +230,7 @@ public:
    * @param sourceArrayType
    * @return
    */
-  IDataArrayWkPtr operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const QVector<size_t>& compDims, const IDataArrayShPtr& sourceArrayType);
+  IDataArrayWkPtr operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const QVector<size_t>& compDims, const IDataArrayShPtr& sourceArrayType, RenameDataPath::DataID_t = RenameDataPath::k_Invalid_ID);
 };
 
 /**
@@ -254,7 +256,7 @@ public:
    * @param initValue
    * @return
    */
-  IDataArrayWkPtr operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const QVector<size_t>& compDims, int arrayType, double initValue);
+  IDataArrayWkPtr operator()(AbstractFilter* f, const DataArrayPath& arrayPath, const QVector<size_t>& compDims, int arrayType, double initValue, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID);
 };
 
 /**

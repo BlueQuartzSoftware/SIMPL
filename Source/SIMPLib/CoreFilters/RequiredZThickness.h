@@ -49,7 +49,7 @@ class SIMPLib_EXPORT RequiredZThickness : public AbstractDecisionFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(RequiredZThickness SUPERCLASS AbstractFilter)
-    PYB11_PROPERTY(QString DataContainerSelection READ getDataContainerSelection WRITE setDataContainerSelection)
+    PYB11_PROPERTY(DataArrayPath DataContainerSelection READ getDataContainerSelection WRITE setDataContainerSelection)
     PYB11_PROPERTY(int NumZVoxels READ getNumZVoxels WRITE setNumZVoxels)
     PYB11_PROPERTY(bool PreflightCheck READ getPreflightCheck WRITE setPreflightCheck)
 
@@ -60,8 +60,8 @@ class SIMPLib_EXPORT RequiredZThickness : public AbstractDecisionFilter
 
     ~RequiredZThickness() override;
 
-    SIMPL_FILTER_PARAMETER(QString, DataContainerSelection)
-    Q_PROPERTY(QString DataContainerSelection READ getDataContainerSelection WRITE setDataContainerSelection)
+    SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerSelection)
+    Q_PROPERTY(DataArrayPath DataContainerSelection READ getDataContainerSelection WRITE setDataContainerSelection)
 
     SIMPL_FILTER_PARAMETER(int, NumZVoxels)
     Q_PROPERTY(int NumZVoxels READ getNumZVoxels WRITE setNumZVoxels)

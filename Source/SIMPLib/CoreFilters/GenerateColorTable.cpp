@@ -18,6 +18,10 @@
 #include "SIMPLib/Utilities/ColorTable.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t {
+  ColorArrayID = 1
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -228,8 +232,8 @@ GenerateColorTable::~GenerateColorTable() = default;
 // -----------------------------------------------------------------------------
 void GenerateColorTable::initialize()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   setCancel(false);
 }
 
@@ -238,7 +242,7 @@ void GenerateColorTable::initialize()
 // -----------------------------------------------------------------------------
 void GenerateColorTable::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   {
     GenerateColorTableFilterParameter::Pointer parameter = GenerateColorTableFilterParameter::New();
@@ -264,15 +268,15 @@ void GenerateColorTable::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void GenerateColorTable::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 
   getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedDataArrayPath());
 
   DataArrayPath tmpPath = getSelectedDataArrayPath();
   tmpPath.setDataArrayName(getRgbArrayName());
 
-  getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint8_t>, AbstractFilter, uint8_t>(this, tmpPath, 0, QVector<size_t>(1, 3));
+  getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint8_t>, AbstractFilter, uint8_t>(this, tmpPath, 0, QVector<size_t>(1, 3), "", ColorArrayID);
 }
 
 // -----------------------------------------------------------------------------
@@ -296,7 +300,10 @@ void GenerateColorTable::execute()
 {
   initialize();
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCode() < 0)
+  {
+    return;
+  }
 
   if (getDataContainerArray()->getPrereqArrayFromPath<Int8ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), QVector<size_t>(1, 1)).get() != nullptr)
   {
@@ -356,8 +363,7 @@ void GenerateColorTable::execute()
   else
   {
     QString ss = QObject::tr("The selected array '%1' does not have a compatible type.").arg(getSelectedDataArrayPath().getDataArrayName());
-    setErrorCondition(-10000);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-10000, ss);
     return;
   }
 

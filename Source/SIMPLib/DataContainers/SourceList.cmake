@@ -57,6 +57,10 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainer.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerArrayProxy.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerProxy.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DsnIterators.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IDataStructureContainerNode.hpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IDataStructureNode.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RenameDataPath.h
 )
 
 set(SIMPLib_${SUBDIR_NAME}_SRCS
@@ -70,6 +74,8 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerProxy.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerBundle.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IDataContainerBundle.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IDataStructureNode.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RenameDataPath.cpp
 )
 
 cmp_IDE_SOURCE_PROPERTIES( "${SUBDIR_NAME}" "${SIMPLib_${SUBDIR_NAME}_HDRS};${SIMPLib_${SUBDIR_NAME}_Moc_HDRS}" "${SIMPLib_${SUBDIR_NAME}_SRCS}" "${PROJECT_INSTALL_HEADERS}")

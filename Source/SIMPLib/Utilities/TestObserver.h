@@ -38,7 +38,7 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/IObserver.h"
-#include "SIMPLib/Common/PipelineMessage.h"
+#include "SIMPLib/Messages/AbstractMessage.h"
 
 class SIMPLib_EXPORT TestObserver : public QObject, public IObserver
 {
@@ -50,13 +50,13 @@ class SIMPLib_EXPORT TestObserver : public QObject, public IObserver
     ~TestObserver() override;
 
  public slots:
-      void processPipelineMessage(const PipelineMessage& pm) override;
+   void processPipelineMessage(const AbstractMessage::Pointer& pm) override;
 
-    public:
-      TestObserver(const TestObserver&) = delete;            // Copy Constructor Not Implemented
-      TestObserver(TestObserver&&) = delete;                 // Move Constructor Not Implemented
-      TestObserver& operator=(const TestObserver&) = delete; // Copy Assignment Not Implemented
-      TestObserver& operator=(TestObserver&&) = delete;      // Move Assignment Not Implemented
+ public:
+   TestObserver(const TestObserver&) = delete;            // Copy Constructor Not Implemented
+   TestObserver(TestObserver&&) = delete;                 // Move Constructor Not Implemented
+   TestObserver& operator=(const TestObserver&) = delete; // Copy Assignment Not Implemented
+   TestObserver& operator=(TestObserver&&) = delete;      // Move Assignment Not Implemented
 };
 
 

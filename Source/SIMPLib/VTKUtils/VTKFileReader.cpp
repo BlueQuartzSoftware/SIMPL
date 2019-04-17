@@ -189,15 +189,13 @@ int VTKFileReader::readHeader()
   int err = 0;
   if(getInputFile().isEmpty())
   {
-    setErrorCondition(-1);
-    notifyErrorMessage(getHumanLabel(), "FileName was not set and must be valid", -1);
+    setErrorCondition(-1, "FileName was not set and must be valid");
     return -1;
   }
 
   if(nullptr == getDataContainerArray()->getDataContainer(getDataContainerName()).get())
   {
-    setErrorCondition(-1);
-    notifyErrorMessage(getHumanLabel(), "DataContainer Pointer was nullptr and must be valid", -1);
+    setErrorCondition(-1, "DataContainer Pointer was nullptr and must be valid");
     return -1;
   }
 
@@ -205,8 +203,7 @@ int VTKFileReader::readHeader()
   if(!in.open(QIODevice::ReadOnly | QIODevice::Text))
   {
     QString msg = QObject::tr("VTF file could not be opened: %1").arg(getInputFile());
-    setErrorCondition(-100);
-    notifyErrorMessage(getHumanLabel(), msg, getErrorCondition());
+    setErrorCondition(-100, msg);
     return -100;
   }
 
@@ -256,8 +253,7 @@ int VTKFileReader::readHeader()
   {
     err = -1;
     QString ss = QObject::tr("The total number of elements '%1' is greater than this program can hold. Try the 64 bit version.").arg(dims[0] * dims[1] * dims[2]);
-    setErrorCondition(err);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(err, ss);
     return err;
   }
 
@@ -265,8 +261,7 @@ int VTKFileReader::readHeader()
   {
     err = -1;
     QString ss = QObject::tr("One of the dimensions is greater than the max index for this sysem. Try the 64 bit version. dim[0]=%1  dim[1]=%2im[2]=%3").arg(dims[0]).arg(dims[1]).arg(dims[2]);
-    setErrorCondition(err);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(err, ss);
     return err;
   }
 
@@ -297,7 +292,7 @@ int VTKFileReader::readHeader()
   resolution[0] = tokens[1].toFloat(&ok);
   resolution[1] = tokens[2].toFloat(&ok);
   resolution[2] = tokens[3].toFloat(&ok);
-  image->setResolution(resolution);
+  image->setSpacing(resolution);
 
   return err;
 }

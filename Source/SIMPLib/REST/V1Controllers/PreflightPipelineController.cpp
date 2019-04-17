@@ -29,6 +29,7 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 #include "PreflightPipelineController.h"
 
 #include <QtCore/QDateTime>
@@ -48,6 +49,7 @@
 #include "QtWebApp/httpserver/httpsessionstore.h"
 #include "SIMPLib/REST/PipelineListener.h"
 #include "SIMPLib/REST/V1Controllers/SIMPLStaticFileController.h"
+#include "SIMPLib/REST/V1Controllers/PreflightPipelineMessageHandler.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -171,40 +173,23 @@ void PreflightPipelineController::service(HttpRequest& request, HttpResponse& re
   //   response.setCookie(HttpCookie("firstCookie","hello",600,QByteArray(),QByteArray(),QByteArray(),false,true));
   //   response.setCookie(HttpCookie("secondCookie","world",600));
 
-  // Return messages
-  std::vector<PipelineMessage> errorMessages = listener.getErrorMessages();
-  bool completed = (errorMessages.size() == 0);
-
   QJsonArray errors;
-  int numErrors = errorMessages.size();
-  for(int i = 0; i < numErrors; i++)
-  {
-    QJsonObject error;
-    error[SIMPL::JSON::Code] = errorMessages[i].getCode();
-    error[SIMPL::JSON::Message] = errorMessages[i].getText();
-    error[SIMPL::JSON::FilterHumanLabel] = errorMessages[i].getFilterHumanLabel();
-    error[SIMPL::JSON::FilterIndex] = errorMessages[i].getPipelineIndex();
-
-    errors.push_back(error);
-  }
-  rootObj[SIMPL::JSON::PipelineErrors] = errors;
-
-  std::vector<PipelineMessage> warningMessages = listener.getWarningMessages();
   QJsonArray warnings;
-  int numWarnings = warningMessages.size();
-  for(int i = 0; i < numWarnings; i++)
-  {
-    QJsonObject warning;
-    warning[SIMPL::JSON::Code] = warningMessages[i].getCode();
-    warning[SIMPL::JSON::Message] = warningMessages[i].getText();
-    warning[SIMPL::JSON::FilterHumanLabel] = warningMessages[i].getFilterHumanLabel();
-    warning[SIMPL::JSON::FilterIndex] = warningMessages[i].getPipelineIndex();
 
-    warnings.push_back(warning);
+  std::vector<const AbstractErrorMessage*> errorMessages = listener.getErrorMessages();
+  bool completed = (errorMessages.size() == 0);
+  rootObj[SIMPL::JSON::Completed] = completed;
+
+  std::vector<const AbstractMessage*> allMessages = listener.getAllMessages();
+  for(const AbstractMessage* msg : allMessages)
+  {
+    PreflightPipelineMessageHandler msgHandler(&errors, &warnings);
+    msg->visit(&msgHandler);
   }
+
+  rootObj[SIMPL::JSON::PipelineErrors] = errors;
   rootObj[SIMPL::JSON::PipelineWarnings] = warnings;
 
-  rootObj[SIMPL::JSON::Completed] = completed;
   QJsonDocument jdoc(rootObj);
 
   response.write(jdoc.toJson(), true);

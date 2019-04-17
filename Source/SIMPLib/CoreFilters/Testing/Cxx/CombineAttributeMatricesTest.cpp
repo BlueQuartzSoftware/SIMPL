@@ -54,7 +54,7 @@
 
 #define CREATE_DATA_ARRAY(type, attrMat, tDims, cDims, initVal, name, err)                                                                                                                             \
   DataArray<type>::Pointer name##Array = DataArray<type>::CreateArray(tDims, cDims, name, true);                                                                                                       \
-  err = attrMat->addAttributeArray(name, name##Array);                                                                                                                                                 \
+  err = attrMat->insertOrAssign(name##Array);                                                                                                                                                          \
   name##Array->initializeWithValue(initVal);                                                                                                                                                           \
   DREAM3D_REQUIRE(err >= 0);
 
@@ -96,7 +96,7 @@
     qDebug() << "Unable to set property CombinedAttributeMatrixName";                                                                                                                                  \
   }                                                                                                                                                                                                    \
   filter->execute();                                                                                                                                                                                   \
-  err = filter->getErrorCondition();                                                                                                                                                                   \
+  err = filter->getErrorCode();                                                                                                                                                                        \
   DREAM3D_REQUIRE_EQUAL(err, errVal);
 
 #define CHECK_FOR_PASS1(filter, featureIds1, featureIds2, attrMat1, attrMat2, newIndex, newAttrMat)                                                                                                    \
@@ -137,7 +137,7 @@
     qDebug() << "Unable to set property CombinedAttributeMatrixName";                                                                                                                                  \
   }                                                                                                                                                                                                    \
   filter->execute();                                                                                                                                                                                   \
-  err = filter->getErrorCondition();                                                                                                                                                                   \
+  err = filter->getErrorCode();                                                                                                                                                                        \
   DREAM3D_REQUIRE_EQUAL(err, 0);                                                                                                                                                                       \
   validateCombinedEnsembleAMs(filter, featureIds1, featureIds2, attrMat1, attrMat2, newIndex, newAttrMat);
 
@@ -179,7 +179,7 @@
     qDebug() << "Unable to set property CombinedAttributeMatrixName";                                                                                                                                  \
   }                                                                                                                                                                                                    \
   filter->execute();                                                                                                                                                                                   \
-  err = filter->getErrorCondition();                                                                                                                                                                   \
+  err = filter->getErrorCode();                                                                                                                                                                        \
   DREAM3D_REQUIRE_EQUAL(err, 0);                                                                                                                                                                       \
   validateCombinedFeatureAMs(filter, featureIds1, featureIds2, attrMat1, attrMat2, newIndex, newAttrMat);
 
@@ -230,7 +230,7 @@ public:
 
     // Make Cell AM
     AttributeMatrix::Pointer cellAttrMat = AttributeMatrix::New(tDims, "cellAttrMat", AttributeMatrix::Type::Cell);
-    m->addAttributeMatrix("cellAttrMat", cellAttrMat);
+    m->addOrReplaceAttributeMatrix(cellAttrMat);
 
     // Create 2 featureIds arrays in the Cell AM
     QString featureIds1 = "featureIds1";
@@ -258,14 +258,14 @@ public:
     tDims.resize(1);
     tDims[0] = 3;
     AttributeMatrix::Pointer featureAttrMat1 = AttributeMatrix::New(tDims, "featureAttrMat1", AttributeMatrix::Type::CellFeature);
-    m->addAttributeMatrix("featureAttrMat1", featureAttrMat1);
+    m->addOrReplaceAttributeMatrix(featureAttrMat1);
     QString fAM1AA1 = "ensembleIds";
     QString fAM1AA2 = "sizes";
     CREATE_DATA_ARRAY(int32_t, featureAttrMat1, tDims, cDims, initVal, fAM1AA1, err);
     CREATE_DATA_ARRAY(float, featureAttrMat1, tDims, cDims, initVal, fAM1AA2, err);
     tDims[0] = 2;
     AttributeMatrix::Pointer ensembleAttrMat1 = AttributeMatrix::New(tDims, "ensembleAttrMat1", AttributeMatrix::Type::CellEnsemble);
-    m->addAttributeMatrix("ensembleAttrMat1", ensembleAttrMat1);
+    m->addOrReplaceAttributeMatrix(ensembleAttrMat1);
     QString eAM1AA1 = "crystalStructures";
     CREATE_DATA_ARRAY(int32_t, ensembleAttrMat1, tDims, cDims, initVal, eAM1AA1, err);
 
@@ -288,14 +288,14 @@ public:
     // Make a feature and ensemble AM for the second featureIds array and add some arrays
     tDims[0] = 3;
     AttributeMatrix::Pointer featureAttrMat2 = AttributeMatrix::New(tDims, "featureAttrMat2", AttributeMatrix::Type::CellFeature);
-    m->addAttributeMatrix("featureAttrMat2", featureAttrMat2);
+    m->addOrReplaceAttributeMatrix(featureAttrMat2);
     QString fAM2AA1 = "ensembleIds";
     QString fAM2AA2 = "surfaceFeatures";
     CREATE_DATA_ARRAY(int32_t, featureAttrMat2, tDims, cDims, initVal, fAM2AA1, err);
     CREATE_DATA_ARRAY(bool, featureAttrMat2, tDims, cDims, initVal, fAM2AA2, err);
     tDims[0] = 2;
     AttributeMatrix::Pointer ensembleAttrMat2 = AttributeMatrix::New(tDims, "ensembleAttrMat2", AttributeMatrix::Type::CellEnsemble);
-    m->addAttributeMatrix("ensembleAttrMat2", ensembleAttrMat2);
+    m->addOrReplaceAttributeMatrix(ensembleAttrMat2);
     QString eAM2AA1 = "crystalStructures";
     CREATE_DATA_ARRAY(int32_t, ensembleAttrMat2, tDims, cDims, initVal, eAM2AA1, err);
 
@@ -315,11 +315,11 @@ public:
     crystStructs2[0] = 0;
     crystStructs2[1] = 1;
 
-    dca->addDataContainer(m);
+    dca->addOrReplaceDataContainer(m);
 
     // add a feature AM to the second DC to allow for check that AMs are in same DC
-    m2->addAttributeMatrix("featureAttrMat2", featureAttrMat2);
-    dca->addDataContainer(m2);
+    m2->addOrReplaceAttributeMatrix(featureAttrMat2->deepCopy());
+    dca->addOrReplaceDataContainer(m2);
 
     return dca;
   }

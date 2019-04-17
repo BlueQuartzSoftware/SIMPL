@@ -131,6 +131,10 @@
     itemPtr = CalculatorArray<bool>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                       \
   }
 
+enum createdPathID : RenameDataPath::DataID_t {
+  DataArrayID = 1
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -155,7 +159,7 @@ ArrayCalculator::~ArrayCalculator() = default;
 // -----------------------------------------------------------------------------
 void ArrayCalculator::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(AttributeMatrix::Type::Any, IGeometry::Type::Any);
     parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Cell Attribute Matrix", SelectedAttributeMatrix, FilterParameter::Parameter, ArrayCalculator, req));
@@ -219,11 +223,11 @@ void ArrayCalculator::initialize()
 // -----------------------------------------------------------------------------
 void ArrayCalculator::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 
   getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedAttributeMatrix, -301);
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -231,8 +235,7 @@ void ArrayCalculator::dataCheck()
   if(m_InfixEquation.isEmpty() || m_InfixEquation.split(" ", QString::SkipEmptyParts).empty())
   {
     QString ss = QObject::tr("The infix expression is empty");
-    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::EMPTY_EQUATION));
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::EMPTY_EQUATION), ss);
     return;
   }
 
@@ -250,17 +253,15 @@ void ArrayCalculator::dataCheck()
     int errInt = static_cast<int>(err);
     if(errInt < 0)
     {
-      setErrorCondition(errInt);
-      notifyErrorMessage(getHumanLabel(), errMsg, getErrorCondition());
+      setErrorCondition(errInt, errMsg);
       return;
     }
   }
 
   if(!m_CalculatedArray.isValid())
   {
-    setErrorCondition(-4675);
     QString ss = QObject::tr("The output path must be valid");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-4675, ss);
     return;
   }
 
@@ -281,8 +282,7 @@ void ArrayCalculator::dataCheck()
         if(!cDims.isEmpty() && resultType == ICalculatorArray::ValueType::Array && cDims != array1->getArray()->getComponentDimensions())
         {
           QString ss = QObject::tr("Attribute Array symbols in the infix expression have mismatching component dimensions");
-          setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INCONSISTENT_COMP_DIMS));
-          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+          setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INCONSISTENT_COMP_DIMS), ss);
           return;
         }
 
@@ -300,8 +300,7 @@ void ArrayCalculator::dataCheck()
   if(resultType == ICalculatorArray::ValueType::Unknown)
   {
     QString ss = QObject::tr("The expression does not have any arguments that simplify down to a number.");
-    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::NO_NUMERIC_ARGUMENTS));
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::NO_NUMERIC_ARGUMENTS), ss);
     return;
   }
 
@@ -311,8 +310,7 @@ void ArrayCalculator::dataCheck()
   {
     QString ss = QObject::tr("The AttributeMatrix at %1/%2 was not found")
                      .arg(calculatedAMPath.getDataContainerName(), calculatedAMPath.getAttributeMatrixName());
-    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::LOST_ATTR_MATRIX));
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::LOST_ATTR_MATRIX), ss);
     return;
   }
 
@@ -321,8 +319,7 @@ void ArrayCalculator::dataCheck()
   {
     QString ss = QObject::tr("The result of the chosen expression will be a numeric value or contain one tuple."
                              " This numeric value will be stored in an array with the number of tuples equal to 1");
-    setWarningCondition(static_cast<int>(CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING));
-    notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+    setWarningCondition(static_cast<int>(CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING), ss);
 
     if(calculatedAM->getNumberOfTuples() > 1)
     {
@@ -330,16 +327,14 @@ void ArrayCalculator::dataCheck()
                                " expression evaluates to an array with a tuple count of 1, which does not match the output attribute matrix"
                                " tuple count.")
                        .arg(calculatedAMPath.getDataContainerName(), calculatedAMPath.getAttributeMatrixName());
-      setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INCORRECT_TUPLE_COUNT));
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INCORRECT_TUPLE_COUNT), ss);
       return;
     }
   }
   else if(calculatedAM->getNumberOfTuples() != selectedAM->getNumberOfTuples())
   {
     QString ss = QObject::tr("The tuple count of the output Attribute Matrix is not equal to the tuple count of the selected Attribute Matrix");
-    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INCORRECT_TUPLE_COUNT));
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INCORRECT_TUPLE_COUNT), ss);
     return;
   }
 
@@ -352,42 +347,41 @@ void ArrayCalculator::dataCheck()
   switch(m_ScalarType)
   {
   case SIMPL::ScalarTypes::Type::Int8:
-    getDataContainerArray()->createNonPrereqArrayFromPath<Int8ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims);
+    getDataContainerArray()->createNonPrereqArrayFromPath<Int8ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::UInt8:
-    getDataContainerArray()->createNonPrereqArrayFromPath<UInt8ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims);
+    getDataContainerArray()->createNonPrereqArrayFromPath<UInt8ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::Int16:
-    getDataContainerArray()->createNonPrereqArrayFromPath<Int16ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims);
+    getDataContainerArray()->createNonPrereqArrayFromPath<Int16ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::UInt16:
-    getDataContainerArray()->createNonPrereqArrayFromPath<UInt16ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims);
+    getDataContainerArray()->createNonPrereqArrayFromPath<UInt16ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::Int32:
-    getDataContainerArray()->createNonPrereqArrayFromPath<Int32ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims);
+    getDataContainerArray()->createNonPrereqArrayFromPath<Int32ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::UInt32:
-    getDataContainerArray()->createNonPrereqArrayFromPath<UInt32ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims);
+    getDataContainerArray()->createNonPrereqArrayFromPath<UInt32ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::Int64:
-    getDataContainerArray()->createNonPrereqArrayFromPath<Int64ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims);
+    getDataContainerArray()->createNonPrereqArrayFromPath<Int64ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::UInt64:
-    getDataContainerArray()->createNonPrereqArrayFromPath<UInt64ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims);
+    getDataContainerArray()->createNonPrereqArrayFromPath<UInt64ArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::Float:
-    getDataContainerArray()->createNonPrereqArrayFromPath<FloatArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims);
+    getDataContainerArray()->createNonPrereqArrayFromPath<FloatArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::Double:
-    getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims);
+    getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   case SIMPL::ScalarTypes::Type::Bool:
-    getDataContainerArray()->createNonPrereqArrayFromPath<BoolArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims);
+    getDataContainerArray()->createNonPrereqArrayFromPath<BoolArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, cDims, "", DataArrayID);
     break;
   default:
     QString ss = QObject::tr("The output array type is not valid.  No DataArray could be created.");
-    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::InvalidOutputArrayType));
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::InvalidOutputArrayType), ss);
     return;
   }
 }
@@ -410,10 +404,10 @@ void ArrayCalculator::preflight()
 // -----------------------------------------------------------------------------
 void ArrayCalculator::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -429,7 +423,7 @@ void ArrayCalculator::execute()
   int totalItems = rpn.size();
   for(int rpnCount = 0; rpnCount < totalItems; rpnCount++)
   {
-    notifyStatusMessage(getMessagePrefix(), getHumanLabel(), "Computing Operator " + QString::number(rpnCount + 1) + "/" + QString::number(totalItems));
+    notifyStatusMessage("Computing Operator " + QString::number(rpnCount + 1) + "/" + QString::number(totalItems));
 
     CalculatorItem::Pointer rpnItem = rpn[rpnCount];
     ICalculatorArray::Pointer calcArray = std::dynamic_pointer_cast<ICalculatorArray>(rpnItem);
@@ -444,7 +438,7 @@ void ArrayCalculator::execute()
       CalculatorOperator::Pointer rpnOperator = std::dynamic_pointer_cast<CalculatorOperator>(rpnItem);
 
       rpnOperator->calculate(this, m_CalculatedArray, m_ExecutionStack);
-      if(getErrorCondition() < 0)
+      if(getErrorCode() < 0)
       {
         return;
       }
@@ -461,8 +455,7 @@ void ArrayCalculator::execute()
   if(m_ExecutionStack.size() != 1)
   {
     QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
-    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INVALID_EQUATION));
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INVALID_EQUATION), ss);
     return;
   }
   if(!m_ExecutionStack.isEmpty())
@@ -472,26 +465,28 @@ void ArrayCalculator::execute()
 
   if(arrayItem != ICalculatorArray::NullPointer())
   {
-    IDataArray::Pointer resultArray = IDataArray::NullPointer();
-    resultArray = arrayItem->getArray();
+    IDataArray::Pointer resultArray = arrayItem->getArray();
 
-    IDataArray::Pointer resultTypeArray = IDataArray::NullPointer();
-    resultTypeArray = convertArrayType(resultArray, m_ScalarType);
+    IDataArray::Pointer resultTypeArray = convertArrayType(resultArray, m_ScalarType);
 
     DataArrayPath createdAMPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
     AttributeMatrix::Pointer createdAM = getDataContainerArray()->getAttributeMatrix(createdAMPath);
     if(nullptr != createdAM)
     {
       resultTypeArray->setName(m_CalculatedArray.getDataArrayName());
-      createdAM->addAttributeArray(resultTypeArray->getName(), resultTypeArray);
+      if(!createdAM->insertOrAssign(resultTypeArray))
+      {
+        QString ss = QObject::tr("Error inserting Output Array into Attribute Matrix");
+        setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::AttributeMatrixInsertionError), ss);
+        return;
+      }
     }
   }
   else
   {
     QString ss = QObject::tr("Unexpected output item from chosen infix expression; the output item must be an array\n"
                              "Please contact the DREAM.3D developers for more information");
-    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::UNEXPECTED_OUTPUT));
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::UNEXPECTED_OUTPUT), ss);
     return;
   }
 
@@ -746,8 +741,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation()
       else
       {
         QString ss = QObject::tr("An unrecognized item '%1' was found in the chosen infix expression").arg(strItem);
-        setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::UNRECOGNIZED_ITEM));
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::UNRECOGNIZED_ITEM), ss);
         return QVector<CalculatorItem::Pointer>();
       }
     }
@@ -832,20 +826,17 @@ bool ArrayCalculator::parseIndexOperator(QString token, QVector<CalculatorItem::
   int errCode = static_cast<int>(CalculatorItem::ErrorCode::ORPHANED_COMPONENT);
   if(idx < 0)
   {
-    setErrorCondition(errCode);
-    notifyErrorMessage(getHumanLabel(), errorMsg, getErrorCondition());
+    setErrorCondition(errCode, errorMsg);
     return false;
   }
   if(!parsedInfix[idx]->isICalculatorArray())
   {
-    setErrorCondition(errCode);
-    notifyErrorMessage(getHumanLabel(), errorMsg, getErrorCondition());
+    setErrorCondition(errCode, errorMsg);
     return false;
   }
   if(parsedInfix[idx]->isNumber())
   {
-    setErrorCondition(errCode);
-    notifyErrorMessage(getHumanLabel(), errorMsg, getErrorCondition());
+    setErrorCondition(errCode, errorMsg);
     return false;
   }
 
@@ -857,8 +848,7 @@ bool ArrayCalculator::parseIndexOperator(QString token, QVector<CalculatorItem::
   if(!ok)
   {
     QString ss = QObject::tr("The chosen infix expression is not a valid expression");
-    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INVALID_COMPONENT));
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INVALID_COMPONENT), ss);
     return false;
   }
 
@@ -866,8 +856,7 @@ bool ArrayCalculator::parseIndexOperator(QString token, QVector<CalculatorItem::
   if(nullptr != calcArray && index >= calcArray->getArray()->getNumberOfComponents())
   {
     QString ss = QObject::tr("'%1' has an component index that is out of range").arg(calcArray->getArray()->getName());
-    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::COMPONENT_OUT_OF_RANGE));
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::COMPONENT_OUT_OF_RANGE), ss);
     return false;
   }
 
@@ -929,8 +918,7 @@ bool ArrayCalculator::parseArray(QString token, QVector<CalculatorItem::Pointer>
   if(!selectedAM->getAttributeArrayNames().contains(token))
   {
     QString ss = QObject::tr("The item '%1' is not the name of any valid array in the selected Attribute Matrix").arg(token);
-    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INVALID_ARRAY_NAME));
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INVALID_ARRAY_NAME), ss);
     return false;
   }
 
@@ -943,8 +931,7 @@ bool ArrayCalculator::parseArray(QString token, QVector<CalculatorItem::Pointer>
   else if(dataArray->getNumberOfTuples() != firstArray_NumTuples)
   {
     QString ss = QObject::tr("Arrays '%1' and '%2' in the infix expression have an inconsistent number of tuples").arg(firstArray_Name).arg(dataArray->getName());
-    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INCONSISTENT_TUPLES));
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::INCONSISTENT_TUPLES), ss);
     return false;
   }
 
@@ -1035,8 +1022,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
     if(nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(item))
     {
       QString ss = QObject::tr("One or more parentheses are mismatched in the chosen infix expression '%1'").arg(m_InfixEquation);
-      setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::MISMATCHED_PARENTHESES));
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(static_cast<int>(CalculatorItem::ErrorCode::MISMATCHED_PARENTHESES), ss);
       return QVector<CalculatorItem::Pointer>();
     }
 
@@ -1057,7 +1043,7 @@ void ArrayCalculator::checkForAmbiguousArrayName(QString strItem, QString warnin
   {
     int err = 0;
     AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedAttributeMatrix, err);
-    if(getErrorCondition() < 0)
+    if(getErrorCode() < 0)
     {
       return;
     }
@@ -1065,9 +1051,8 @@ void ArrayCalculator::checkForAmbiguousArrayName(QString strItem, QString warnin
     {
       IDataArray::Pointer dataArray = selectedAM->getAttributeArray(strItem);
 
-      setWarningCondition(static_cast<int>(CalculatorItem::WarningCode::AMBIGUOUS_NAME_WARNING));
       warningMsg.append("\nTo treat this item as an array name, please add double quotes around the item (i.e. \"" + strItem + "\").");
-      notifyWarningMessage(getHumanLabel(), warningMsg, getWarningCondition());
+      setWarningCondition(static_cast<int>(CalculatorItem::WarningCode::AMBIGUOUS_NAME_WARNING), warningMsg);
     }
   }
 }

@@ -169,6 +169,8 @@ class SIMPLib_EXPORT RenameAttributeMatrix : public AbstractFilter
      */
     void initialize();
 
+  private:
+    QString m_LastMatrixName = "";
 
   public:
     RenameAttributeMatrix(const RenameAttributeMatrix&) = delete; // Copy Constructor Not Implemented
