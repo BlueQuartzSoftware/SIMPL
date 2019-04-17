@@ -52,7 +52,7 @@ AbstractDecisionFilter::~AbstractDecisionFilter() = default;
 // -----------------------------------------------------------------------------
 void AbstractDecisionFilter::setupFilterParameters()
 {
-  // FilterParameterVectorType parameters;
+  // FilterParameterVector parameters;
 
   // setFilterParameters(parameters);
 }
@@ -79,8 +79,8 @@ void AbstractDecisionFilter::initialize()
 // -----------------------------------------------------------------------------
 void AbstractDecisionFilter::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 }
 
 // -----------------------------------------------------------------------------
@@ -101,10 +101,10 @@ void AbstractDecisionFilter::preflight()
 // -----------------------------------------------------------------------------
 void AbstractDecisionFilter::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }

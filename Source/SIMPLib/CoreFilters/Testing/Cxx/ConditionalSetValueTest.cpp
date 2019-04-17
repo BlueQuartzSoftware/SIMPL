@@ -54,7 +54,7 @@
 
 #define CREATE_DATA_ARRAY(type, attrMat, tDims, cDims, initVal, comps, err)                                                                                                                            \
   DataArray<type>::Pointer _##type##_##comps##_##attrMat##Array = DataArray<type>::CreateArray(tDims, cDims, #type #comps, true);                                                                      \
-  err = attrMat->insertOrAssign(_##type##_##comps##_##attrMat##Array);                                                                                                                                 \
+  err = attrMat->addAttributeArray(#type #comps, _##type##_##comps##_##attrMat##Array);                                                                                                                \
   _##type##_##comps##_##attrMat##Array->initializeWithValue(initVal);                                                                                                                                  \
   DREAM3D_REQUIRE(err >= 0);
 
@@ -82,7 +82,7 @@
     qDebug() << "Unable to set property ReplaceValue";                                                                                                                                                 \
   }                                                                                                                                                                                                    \
   filter->execute();                                                                                                                                                                                   \
-  err = filter->getErrorCode();                                                                                                                                                                        \
+  err = filter->getErrorCondition();                                                                                                                                                                   \
   DREAM3D_REQUIRE_EQUAL(err, errVal);
 
 #ifdef SET_PROPERTIES_AND_CHECK_EQ
@@ -109,7 +109,7 @@
     qDebug() << "Unable to set property ReplaceValue";                                                                                                                                                 \
   }                                                                                                                                                                                                    \
   filter->execute();                                                                                                                                                                                   \
-  err = filter->getErrorCode();                                                                                                                                                                        \
+  err = filter->getErrorCondition();                                                                                                                                                                   \
   DREAM3D_REQUIRE_EQUAL(err, 0);                                                                                                                                                                       \
   dataArray = dc->getAttributeMatrix(selectedArray.getAttributeMatrixName())->getAttributeArray(selectedArray.getDataArrayName());                                                                     \
   DREAM3D_REQUIRE_EQUAL(err, 0);                                                                                                                                                                       \
@@ -156,9 +156,9 @@ public:
     QVector<size_t> tDims(1, 10);
     AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "ConditionalSetValueAttrMat", AttributeMatrix::Type::Cell);
 
-    m->addOrReplaceAttributeMatrix(attrMat);
+    m->addAttributeMatrix("ConditionalSetValueAttrMat", attrMat);
 
-    dca->addOrReplaceDataContainer(m);
+    dca->addDataContainer(m);
 
     QVector<size_t> cDims(1, 3);
     int32_t initVal = 10;
@@ -192,7 +192,7 @@ public:
     // this is the conditional array
     QString name = "ConditionalArray";
     BoolArrayType::Pointer condArrayPtr = BoolArrayType::CreateArray(tDims, cDims, name);
-    attrMat->insertOrAssign(condArrayPtr);
+    attrMat->addAttributeArray(name, condArrayPtr);
     condArrayPtr->initializeWithValue(true);
     // Set some of the values to false int he conditional array
     bool* condArray = condArrayPtr->getPointer(0);

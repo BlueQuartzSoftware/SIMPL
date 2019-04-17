@@ -57,13 +57,12 @@ public:
   using Superclass::SetInput;
   virtual void SetInput(::TransformContainer::Pointer transformContainer);
   DecoratorType* GetOutput();
-  const DecoratorType* GetOutput() const;
 
 protected:
   Dream3DTransformContainerToTransform();
   ~Dream3DTransformContainerToTransform() override;
 
-  void VerifyPreconditions() ITKv5_CONST override;
+  void VerifyPreconditions() override;
 
   void GenerateData() override;
   ::TransformContainer::Pointer m_TransformContainer;

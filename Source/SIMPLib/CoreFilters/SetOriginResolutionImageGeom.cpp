@@ -96,13 +96,14 @@ SetOriginResolutionImageGeom::SetOriginResolutionImageGeom()
 , m_ChangeOrigin(false)
 , m_ChangeResolution(false)
 {
-  m_Origin[0] = 0.0f;
-  m_Origin[1] = 0.0f;
-  m_Origin[2] = 0.0f;
+  m_Origin.x = 0.0f;
+  m_Origin.y = 0.0f;
+  m_Origin.z = 0.0f;
 
-  m_Spacing[0] = 1.0f;
-  m_Spacing[1] = 1.0f;
-  m_Spacing[2] = 1.0f;
+  m_Resolution.x = 1.0f;
+  m_Resolution.y = 1.0f;
+  m_Resolution.z = 1.0f;
+
 }
 
 // -----------------------------------------------------------------------------
@@ -115,7 +116,7 @@ SetOriginResolutionImageGeom::~SetOriginResolutionImageGeom() = default;
 // -----------------------------------------------------------------------------
 void SetOriginResolutionImageGeom::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  FilterParameterVector parameters;
   {
     DataContainerSelectionFilterParameter::RequirementType req;
     req.dcGeometryTypes = IGeometry::Types(1, IGeometry::Type::Image);
@@ -127,9 +128,9 @@ void SetOriginResolutionImageGeom::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Origin", Origin, FilterParameter::Parameter, SetOriginResolutionImageGeom));
 
   linkedProps.clear();
-  linkedProps << "Spacing";
-  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Change Spacing", ChangeResolution, FilterParameter::Parameter, SetOriginResolutionImageGeom, linkedProps));
-  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Spacing", Spacing, FilterParameter::Parameter, SetOriginResolutionImageGeom));
+  linkedProps << "Resolution";
+  parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Change Resolution", ChangeResolution, FilterParameter::Parameter, SetOriginResolutionImageGeom, linkedProps));
+  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Resolution", Resolution, FilterParameter::Parameter, SetOriginResolutionImageGeom));
 
   setFilterParameters(parameters);
 }
@@ -143,8 +144,8 @@ void SetOriginResolutionImageGeom::readFilterParameters(AbstractFilterParameters
   setChangeOrigin(reader->readValue("ChangeOrigin", getChangeOrigin()));
   setChangeResolution(reader->readValue("ChangeResolution", getChangeResolution()));
   setOrigin(reader->readFloatVec3("Origin", getOrigin()));
-  setSpacing(reader->readFloatVec3("Spacing", getSpacing()));
-  setDataContainerName(reader->readDataArrayPath("DataContainerName", getDataContainerName()));
+  setResolution(reader->readFloatVec3("Resolution", getResolution()));
+  setDataContainerName(reader->readString("DataContainerName", getDataContainerName()));
   reader->closeFilterGroup();
 }
 
@@ -160,21 +161,21 @@ void SetOriginResolutionImageGeom::initialize()
 // -----------------------------------------------------------------------------
 void SetOriginResolutionImageGeom::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 
   ImageGeom::Pointer image = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, getDataContainerName());
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
   if(getChangeOrigin())
   {
-    image->setOrigin(std::make_tuple(m_Origin[0], m_Origin[1], m_Origin[2]));
+    image->setOrigin(std::make_tuple(m_Origin.x, m_Origin.y, m_Origin.z));
   }
   if(getChangeResolution())
   {
-    image->setSpacing(std::make_tuple(m_Spacing[0], m_Spacing[1], m_Spacing[2]));
+    image->setResolution(std::make_tuple(m_Resolution.x, m_Resolution.y, m_Resolution.z));
   }
 }
 
@@ -196,10 +197,10 @@ void SetOriginResolutionImageGeom::preflight()
 // -----------------------------------------------------------------------------
 void SetOriginResolutionImageGeom::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -275,5 +276,5 @@ const QString SetOriginResolutionImageGeom::getSubGroupName() const
 // -----------------------------------------------------------------------------
 const QString SetOriginResolutionImageGeom::getHumanLabel() const
 {
-  return "Set Origin & Spacing (Image)";
+  return "Set Origin & Resolution (Image)";
 }

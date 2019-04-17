@@ -398,17 +398,24 @@ private:
 //
 // -----------------------------------------------------------------------------
 ImageGeom::ImageGeom()
-: m_Spacing(1.0f, 1.0f, 1.0f)
-, m_Origin(0.0f, 0.0f, 0.0f)
 {
   m_GeometryTypeName = SIMPL::Geometry::ImageGeometry;
   m_GeometryType = IGeometry::Type::Image;
   m_XdmfGridType = SIMPL::XdmfGridType::RectilinearGrid;
+  m_MessagePrefix = "";
+  m_MessageTitle = "";
+  m_MessageLabel = "";
   m_UnitDimensionality = 3;
   m_SpatialDimensionality = 3;
   m_Dimensions[0] = 0;
   m_Dimensions[1] = 0;
   m_Dimensions[2] = 0;
+  m_Resolution[0] = 1.0f;
+  m_Resolution[1] = 1.0f;
+  m_Resolution[2] = 1.0f;
+  m_Origin[0] = 0.0f;
+  m_Origin[1] = 0.0f;
+  m_Origin[2] = 0.0f;
   m_VoxelSizes = FloatArrayType::NullPointer();
   m_ProgressCounter = 0;
 }
@@ -436,118 +443,15 @@ ImageGeom::Pointer ImageGeom::CreateGeometry(const QString& name)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPL::Tuple3FVec ImageGeom::getSpacing() const
-{
-  return m_Spacing.toTuple();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ImageGeom::getSpacing(FloatVec3Type& spacing) const
-{
-  spacing[0] = m_Spacing[0];
-  spacing[1] = m_Spacing[1];
-  spacing[2] = m_Spacing[2];
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ImageGeom::setSpacing(const FloatVec3Type& spacing)
-{
-  m_Spacing = spacing;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ImageGeom::setSpacing(FloatVec3Type& spacing)
-{
-  m_Spacing = spacing;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ImageGeom::setSpacing(float x, float y, float z)
-{
-  m_Spacing[0] = x;
-  m_Spacing[1] = y;
-  m_Spacing[2] = z;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-SIMPL::Tuple3FVec ImageGeom::getOrigin() const
-{
-  return m_Origin.toTuple();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ImageGeom::getOrigin(FloatVec3Type& origin) const
-{
-  origin[0] = m_Origin[0];
-  origin[1] = m_Origin[1];
-  origin[2] = m_Origin[2];
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ImageGeom::setOrigin(const FloatVec3Type& origin)
-{
-  m_Origin = origin;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ImageGeom::setOrigin(FloatVec3Type& origin)
-{
-  m_Origin = origin;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ImageGeom::setOrigin(float x, float y, float z)
-{
-  m_Origin[0] = x;
-  m_Origin[1] = y;
-  m_Origin[2] = z;
-}
-
-SIMPL::Tuple3SVec ImageGeom::getDimensions() const
-{
-  return m_Dimensions.toTuple();
-}
-void ImageGeom::getDimensions(SizeVec3Type& dims) const
-{
-  dims = m_Dimensions;
-}
-
-void ImageGeom::setDimensions(const SizeVec3Type& dims)
-{
-  m_Dimensions = dims;
-}
-void ImageGeom::setDimensions(SizeVec3Type& dims)
-{
-  m_Dimensions = dims;
-}
-void ImageGeom::setDimensions(const SIMPL::Tuple3SVec& dims)
-{
-  m_Dimensions = dims;
-}
-void ImageGeom::setDimensions(size_t x, size_t y, size_t z)
-{
-  m_Dimensions[0] = x;
-  m_Dimensions[1] = y;
-  m_Dimensions[2] = z;
-}
+//void ImageGeom::getBoundingBox(float &xMin, float &xMax, float &yMin, float &yMax, float &zMin, float &zMax)
+//{
+//    xMin = m_Origin[0];
+//    xMax = m_Origin[0] + (m_Dimensions[0] * m_Resolution[0]);
+//    yMin = m_Origin[1];
+//    yMax = m_Origin[1] + (m_Dimensions[1] * m_Resolution[1]);
+//    zMin = m_Origin[2];
+//    zMax = m_Origin[2] + (m_Dimensions[2] * m_Resolution[2]);
+//}
 
 // -----------------------------------------------------------------------------
 //
@@ -555,11 +459,11 @@ void ImageGeom::setDimensions(size_t x, size_t y, size_t z)
 void ImageGeom::getBoundingBox(float* boundingBox)
 {
     boundingBox[0] = m_Origin[0];
-    boundingBox[1] = m_Origin[0] + (m_Dimensions[0] * m_Spacing[0]);
+    boundingBox[1] = m_Origin[0] + (m_Dimensions[0] * m_Resolution[0]);
     boundingBox[2] = m_Origin[1];
-    boundingBox[3] = m_Origin[1] + (m_Dimensions[1] * m_Spacing[1]);
+    boundingBox[3] = m_Origin[1] + (m_Dimensions[1] * m_Resolution[1]);
     boundingBox[4] = m_Origin[2];
-    boundingBox[5] = m_Origin[2] + (m_Dimensions[2] * m_Spacing[2]);
+    boundingBox[5] = m_Origin[2] + (m_Dimensions[2] * m_Resolution[2]);
 }
 
 // -----------------------------------------------------------------------------
@@ -567,8 +471,13 @@ void ImageGeom::getBoundingBox(float* boundingBox)
 // -----------------------------------------------------------------------------
 SIMPL::Tuple6FVec ImageGeom::getBoundingBox()
 {
-  return std::make_tuple(m_Origin[0], m_Origin[0] + (m_Dimensions[0] * m_Spacing[0]), m_Origin[1], m_Origin[1] + (m_Dimensions[1] * m_Spacing[1]), m_Origin[2],
-                         m_Origin[2] + (m_Dimensions[2] * m_Spacing[2]));
+  return std::make_tuple(m_Origin[0],
+      m_Origin[0] + (m_Dimensions[0] * m_Resolution[0]),
+      m_Origin[1],
+      m_Origin[1] + (m_Dimensions[1] * m_Resolution[1]),
+      m_Origin[2],
+      m_Origin[2] + (m_Dimensions[2] * m_Resolution[2])
+      );
 }
 
 // -----------------------------------------------------------------------------
@@ -600,9 +509,9 @@ size_t ImageGeom::getZPoints()
 // -----------------------------------------------------------------------------
 void ImageGeom::getPlaneCoords(size_t idx[3], float coords[3])
 {
-  coords[0] = idx[0] * m_Spacing[0] + m_Origin[0];
-  coords[1] = idx[1] * m_Spacing[1] + m_Origin[1];
-  coords[2] = idx[2] * m_Spacing[2] + m_Origin[2];
+  coords[0] = idx[0] * m_Resolution[0] + m_Origin[0];
+  coords[1] = idx[1] * m_Resolution[1] + m_Origin[1];
+  coords[2] = idx[2] * m_Resolution[2] + m_Origin[2];
 }
 
 // -----------------------------------------------------------------------------
@@ -610,9 +519,9 @@ void ImageGeom::getPlaneCoords(size_t idx[3], float coords[3])
 // -----------------------------------------------------------------------------
 void ImageGeom::getPlaneCoords(size_t x, size_t y, size_t z, float coords[3])
 {
-  coords[0] = x * m_Spacing[0] + m_Origin[0];
-  coords[1] = y * m_Spacing[1] + m_Origin[1];
-  coords[2] = z * m_Spacing[2] + m_Origin[2];
+  coords[0] = x * m_Resolution[0] + m_Origin[0];
+  coords[1] = y * m_Resolution[1] + m_Origin[1];
+  coords[2] = z * m_Resolution[2] + m_Origin[2];
 }
 
 // -----------------------------------------------------------------------------
@@ -624,9 +533,9 @@ void ImageGeom::getPlaneCoords(size_t idx, float coords[3])
   size_t row = (idx / m_Dimensions[0]) % m_Dimensions[1];
   size_t plane = idx / (m_Dimensions[0] * m_Dimensions[1]);
 
-  coords[0] = column * m_Spacing[0] + m_Origin[0];
-  coords[1] = row * m_Spacing[1] + m_Origin[1];
-  coords[2] = plane * m_Spacing[2] + m_Origin[2];
+  coords[0] = column * m_Resolution[0] + m_Origin[0];
+  coords[1] = row * m_Resolution[1] + m_Origin[1];
+  coords[2] = plane * m_Resolution[2] + m_Origin[2];
 }
 
 // -----------------------------------------------------------------------------
@@ -634,9 +543,9 @@ void ImageGeom::getPlaneCoords(size_t idx, float coords[3])
 // -----------------------------------------------------------------------------
 void ImageGeom::getPlaneCoords(size_t idx[3], double coords[3])
 {
-  coords[0] = static_cast<double>(idx[0]) * m_Spacing[0] + m_Origin[0];
-  coords[1] = static_cast<double>(idx[1]) * m_Spacing[1] + m_Origin[1];
-  coords[2] = static_cast<double>(idx[2]) * m_Spacing[2] + m_Origin[2];
+  coords[0] = static_cast<double>(idx[0]) * m_Resolution[0] + m_Origin[0];
+  coords[1] = static_cast<double>(idx[1]) * m_Resolution[1] + m_Origin[1];
+  coords[2] = static_cast<double>(idx[2]) * m_Resolution[2] + m_Origin[2];
 }
 
 // -----------------------------------------------------------------------------
@@ -644,9 +553,9 @@ void ImageGeom::getPlaneCoords(size_t idx[3], double coords[3])
 // -----------------------------------------------------------------------------
 void ImageGeom::getPlaneCoords(size_t x, size_t y, size_t z, double coords[3])
 {
-  coords[0] = static_cast<double>(x) * m_Spacing[0] + m_Origin[0];
-  coords[1] = static_cast<double>(y) * m_Spacing[1] + m_Origin[1];
-  coords[2] = static_cast<double>(z) * m_Spacing[2] + m_Origin[2];
+  coords[0] = static_cast<double>(x) * m_Resolution[0] + m_Origin[0];
+  coords[1] = static_cast<double>(y) * m_Resolution[1] + m_Origin[1];
+  coords[2] = static_cast<double>(z) * m_Resolution[2] + m_Origin[2];
 }
 
 // -----------------------------------------------------------------------------
@@ -658,9 +567,9 @@ void ImageGeom::getPlaneCoords(size_t idx, double coords[3])
   size_t row = (idx / m_Dimensions[0]) % m_Dimensions[1];
   size_t plane = idx / (m_Dimensions[0] * m_Dimensions[1]);
 
-  coords[0] = static_cast<double>(column) * m_Spacing[0] + m_Origin[0];
-  coords[1] = static_cast<double>(row) * m_Spacing[1] + m_Origin[1];
-  coords[2] = static_cast<double>(plane) * m_Spacing[2] + m_Origin[2];
+  coords[0] = static_cast<double>(column) * m_Resolution[0] + m_Origin[0];
+  coords[1] = static_cast<double>(row) * m_Resolution[1] + m_Origin[1];
+  coords[2] = static_cast<double>(plane) * m_Resolution[2] + m_Origin[2];
 }
 
 // -----------------------------------------------------------------------------
@@ -668,9 +577,9 @@ void ImageGeom::getPlaneCoords(size_t idx, double coords[3])
 // -----------------------------------------------------------------------------
 void ImageGeom::getCoords(size_t idx[3], float coords[3])
 {
-  coords[0] = idx[0] * m_Spacing[0] + m_Origin[0] + (0.5f * m_Spacing[0]);
-  coords[1] = idx[1] * m_Spacing[1] + m_Origin[1] + (0.5f * m_Spacing[1]);
-  coords[2] = idx[2] * m_Spacing[2] + m_Origin[2] + (0.5f * m_Spacing[2]);
+  coords[0] = idx[0] * m_Resolution[0] + m_Origin[0] + (0.5f * m_Resolution[0]);
+  coords[1] = idx[1] * m_Resolution[1] + m_Origin[1] + (0.5f * m_Resolution[1]);
+  coords[2] = idx[2] * m_Resolution[2] + m_Origin[2] + (0.5f * m_Resolution[2]);
 }
 
 // -----------------------------------------------------------------------------
@@ -678,9 +587,9 @@ void ImageGeom::getCoords(size_t idx[3], float coords[3])
 // -----------------------------------------------------------------------------
 void ImageGeom::getCoords(size_t x, size_t y, size_t z, float coords[3])
 {
-  coords[0] = x * m_Spacing[0] + m_Origin[0] + (0.5f * m_Spacing[0]);
-  coords[1] = y * m_Spacing[1] + m_Origin[1] + (0.5f * m_Spacing[1]);
-  coords[2] = z * m_Spacing[2] + m_Origin[2] + (0.5f * m_Spacing[2]);
+  coords[0] = x * m_Resolution[0] + m_Origin[0] + (0.5f * m_Resolution[0]);
+  coords[1] = y * m_Resolution[1] + m_Origin[1] + (0.5f * m_Resolution[1]);
+  coords[2] = z * m_Resolution[2] + m_Origin[2] + (0.5f * m_Resolution[2]);
 }
 
 // -----------------------------------------------------------------------------
@@ -692,9 +601,9 @@ void ImageGeom::getCoords(size_t idx, float coords[3])
   size_t row = (idx / m_Dimensions[0]) % m_Dimensions[1];
   size_t plane = idx / (m_Dimensions[0] * m_Dimensions[1]);
 
-  coords[0] = column * m_Spacing[0] + m_Origin[0] + (0.5f * m_Spacing[0]);
-  coords[1] = row * m_Spacing[1] + m_Origin[1] + (0.5f * m_Spacing[1]);
-  coords[2] = plane * m_Spacing[2] + m_Origin[2] + (0.5f * m_Spacing[2]);
+  coords[0] = column * m_Resolution[0] + m_Origin[0] + (0.5f * m_Resolution[0]);
+  coords[1] = row * m_Resolution[1] + m_Origin[1] + (0.5f * m_Resolution[1]);
+  coords[2] = plane * m_Resolution[2] + m_Origin[2] + (0.5f * m_Resolution[2]);
 }
 
 // -----------------------------------------------------------------------------
@@ -702,9 +611,9 @@ void ImageGeom::getCoords(size_t idx, float coords[3])
 // -----------------------------------------------------------------------------
 void ImageGeom::getCoords(size_t idx[3], double coords[3])
 {
-  coords[0] = static_cast<double>(idx[0]) * m_Spacing[0] + m_Origin[0] + (0.5 * m_Spacing[0]);
-  coords[1] = static_cast<double>(idx[1]) * m_Spacing[1] + m_Origin[1] + (0.5 * m_Spacing[1]);
-  coords[2] = static_cast<double>(idx[2]) * m_Spacing[2] + m_Origin[2] + (0.5 * m_Spacing[2]);
+  coords[0] = static_cast<double>(idx[0]) * m_Resolution[0] + m_Origin[0] + (0.5 * m_Resolution[0]);
+  coords[1] = static_cast<double>(idx[1]) * m_Resolution[1] + m_Origin[1] + (0.5 * m_Resolution[1]);
+  coords[2] = static_cast<double>(idx[2]) * m_Resolution[2] + m_Origin[2] + (0.5 * m_Resolution[2]);
 }
 
 // -----------------------------------------------------------------------------
@@ -712,9 +621,9 @@ void ImageGeom::getCoords(size_t idx[3], double coords[3])
 // -----------------------------------------------------------------------------
 void ImageGeom::getCoords(size_t x, size_t y, size_t z, double coords[3])
 {
-  coords[0] = static_cast<double>(x) * m_Spacing[0] + m_Origin[0] + (0.5 * m_Spacing[0]);
-  coords[1] = static_cast<double>(y) * m_Spacing[1] + m_Origin[1] + (0.5 * m_Spacing[1]);
-  coords[2] = static_cast<double>(z) * m_Spacing[2] + m_Origin[2] + (0.5 * m_Spacing[2]);
+  coords[0] = static_cast<double>(x) * m_Resolution[0] + m_Origin[0] + (0.5 * m_Resolution[0]);
+  coords[1] = static_cast<double>(y) * m_Resolution[1] + m_Origin[1] + (0.5 * m_Resolution[1]);
+  coords[2] = static_cast<double>(z) * m_Resolution[2] + m_Origin[2] + (0.5 * m_Resolution[2]);
 }
 
 // -----------------------------------------------------------------------------
@@ -726,9 +635,9 @@ void ImageGeom::getCoords(size_t idx, double coords[3])
   size_t row = (idx / m_Dimensions[0]) % m_Dimensions[1];
   size_t plane = idx / (m_Dimensions[0] * m_Dimensions[1]);
 
-  coords[0] = static_cast<double>(column) * m_Spacing[0] + m_Origin[0] + (0.5 * m_Spacing[0]);
-  coords[1] = static_cast<double>(row) * m_Spacing[1] + m_Origin[1] + (0.5 * m_Spacing[1]);
-  coords[2] = static_cast<double>(plane) * m_Spacing[2] + m_Origin[2] + (0.5 * m_Spacing[2]);
+  coords[0] = static_cast<double>(column) * m_Resolution[0] + m_Origin[0] + (0.5 * m_Resolution[0]);
+  coords[1] = static_cast<double>(row) * m_Resolution[1] + m_Origin[1] + (0.5 * m_Resolution[1]);
+  coords[2] = static_cast<double>(plane) * m_Resolution[2] + m_Origin[2] + (0.5 * m_Resolution[2]);
 }
 
 // -----------------------------------------------------------------------------
@@ -739,7 +648,7 @@ void ImageGeom::initializeWithZeros()
   for(size_t i = 0; i < 3; i++)
   {
     m_Dimensions[i] = 0;
-    m_Spacing[i] = 1.0f;
+    m_Resolution[i] = 1.0f;
     m_Origin[i] = 0.0f;
   }
 }
@@ -747,7 +656,7 @@ void ImageGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImageGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
+void ImageGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
   if(data->getType() != AttributeMatrix::Type::Cell)
   {
@@ -758,10 +667,10 @@ void ImageGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix
   {
     return;
   }
-  // if(data->getName().compare(name) != 0)
-  //{
-  //  data->setName(name);
-  //}
+  if(data->getName().compare(name) != 0)
+  {
+    data->setName(name);
+  }
   m_AttributeMatrices[name] = data;
 }
 
@@ -868,8 +777,8 @@ void ImageGeom::deleteElementCentroids()
 // -----------------------------------------------------------------------------
 int ImageGeom::findElementSizes()
 {
-  FloatVec3Type res = {0.0f, 0.0f, 0.0f};
-  std::tie(res[0], res[1], res[2]) = getSpacing();
+  float res[3] = {0.0f, 0.0f, 0.0f};
+  std::tie(res[0], res[1], res[2]) = getResolution();
 
   if(res[0] <= 0.0f || res[1] <= 0.0f || res[2] <= 0.0f)
   {
@@ -969,7 +878,7 @@ void ImageGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType:
 
   if(observable != nullptr)
   {
-    connect(this, SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), observable, SLOT(processDerivativesMessage(const AbstractMessage::Pointer&)));
+    connect(this, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), observable, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
   }
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
@@ -1006,9 +915,9 @@ int ImageGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf
 {
   herr_t err = 0;
   int64_t volDims[3] = {static_cast<int64_t>(getXPoints()), static_cast<int64_t>(getYPoints()), static_cast<int64_t>(getZPoints())};
-  FloatVec3Type spacing = {0.0f, 0.0f, 0.0f};
-  std::tie(spacing[0], spacing[1], spacing[2]) = getSpacing();
-  FloatVec3Type origin = {0.0f, 0.0f, 0.0f};
+  float spacing[3] = {0.0f, 0.0f, 0.0f};
+  std::tie(spacing[0], spacing[1], spacing[2]) = getResolution();
+  float origin[3] = {0.0f, 0.0f, 0.0f};
   std::tie(origin[0], origin[1], origin[2]) = getOrigin();
 
   int32_t rank = 1;
@@ -1019,12 +928,12 @@ int ImageGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf
   {
     return err;
   }
-  err = H5Lite::writePointerDataset(parentId, H5_ORIGIN, rank, dims, origin.data());
+  err = H5Lite::writePointerDataset(parentId, H5_ORIGIN, rank, dims, origin);
   if(err < 0)
   {
     return err;
   }
-  err = H5Lite::writePointerDataset(parentId, H5_SPACING, rank, dims, spacing.data());
+  err = H5Lite::writePointerDataset(parentId, H5_SPACING, rank, dims, spacing);
   if(err < 0)
   {
     return err;
@@ -1051,9 +960,9 @@ int ImageGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
   herr_t err = 0;
 
   int64_t volDims[3] = {static_cast<int64_t>(getXPoints()), static_cast<int64_t>(getYPoints()), static_cast<int64_t>(getZPoints())};
-  FloatVec3Type spacing = {0.0f, 0.0f, 0.0f};
-  std::tie(spacing[0], spacing[1], spacing[2]) = getSpacing();
-  FloatVec3Type origin = {0.0f, 0.0f, 0.0f};
+  float spacing[3] = {0.0f, 0.0f, 0.0f};
+  std::tie(spacing[0], spacing[1], spacing[2]) = getResolution();
+  float origin[3] = {0.0f, 0.0f, 0.0f};
   std::tie(origin[0], origin[1], origin[2]) = getOrigin();
 
   out << "  <!-- *************** START OF " << dcName << " *************** -->"
@@ -1072,7 +981,7 @@ int ImageGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
       << "\n";
   out << R"(      <DataItem Format="XML" Dimensions="3">)" << origin[2] << " " << origin[1] << " " << origin[0] << "</DataItem>"
       << "\n";
-  out << "      <!-- DxDyDz (Spacing/Spacing) Z, Y, X -->"
+  out << "      <!-- DxDyDz (Spacing/Resolution) Z, Y, X -->"
       << "\n";
   out << R"(      <DataItem Format="XML" Dimensions="3">)" << spacing[2] << " " << spacing[1] << " " << spacing[0] << "</DataItem>"
       << "\n";
@@ -1091,10 +1000,10 @@ QString ImageGeom::getInfoString(SIMPL::InfoStringFormat format)
   QTextStream ss(&info);
 
   int64_t volDims[3] = {static_cast<int64_t>(getXPoints()), static_cast<int64_t>(getYPoints()), static_cast<int64_t>(getZPoints())};
-  FloatVec3Type spacing = {0.0f, 0.0f, 0.0f};
-  std::tie(spacing[0], spacing[1], spacing[2]) = getSpacing();
-  std::tie(spacing[0], spacing[1], spacing[2]) = getSpacing();
-  FloatVec3Type origin = {0.0f, 0.0f, 0.0f};
+  float spacing[3] = {0.0f, 0.0f, 0.0f};
+  std::tie(spacing[0], spacing[1], spacing[2]) = getResolution();
+  std::tie(spacing[0], spacing[1], spacing[2]) = getResolution();
+  float origin[3] = {0.0f, 0.0f, 0.0f};
   std::tie(origin[0], origin[1], origin[2]) = getOrigin();
 
   float halfRes[3] = {spacing[0] / 2.0f, spacing[1] / 2.0f, spacing[2] / 2.0f};
@@ -1110,7 +1019,7 @@ QString ImageGeom::getInfoString(SIMPL::InfoStringFormat format)
        << "<p>Z Extent: 0 to " << volDims[2] - 1 << " (dimension: " << volDims[2] << ")</p>"
        << "</td></tr>";
     ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Origin:</th><td>)" << origin[0] << ", " << origin[1] << ", " << origin[2] << "</td></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Spacing:</th><td>)" << spacing[0] << ", " << spacing[1] << ", " << spacing[2] << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Spacing/Resolution:</th><td>)" << spacing[0] << ", " << spacing[1] << ", " << spacing[2] << "</td></tr>";
 
     ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Bounds:</th><td>)"
        << "<p>X Range: " << (origin[0] - halfRes[0]) << " to " << (origin[0] - halfRes[0] + volDims[0] * spacing[0]) << " (delta: " << (volDims[0] * spacing[0]) << ")</p>"
@@ -1132,11 +1041,11 @@ int ImageGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 {
   int err = 0;
   size_t volDims[3] = {0, 0, 0};
-  FloatVec3Type spacing = {1.0f, 1.0f, 1.0f};
-  FloatVec3Type origin = {0.0f, 0.0f, 0.0f};
+  float spacing[3] = {1.0f, 1.0f, 1.0f};
+  float origin[3] = {0.0f, 0.0f, 0.0f};
   unsigned int spatialDims = 0;
   QString geomName = "";
-  err = gatherMetaData(parentId, volDims, spacing.data(), origin.data(), spatialDims, geomName, preflight);
+  err = gatherMetaData(parentId, volDims, spacing, origin, spatialDims, geomName, preflight);
   if(err < 0)
   {
     return err;
@@ -1156,10 +1065,10 @@ IGeometry::Pointer ImageGeom::deepCopy(bool forceNoAllocate)
   std::tuple<float, float, float> spacing = std::make_tuple(1.0f, 1.0f, 1.0f);
   std::tuple<float, float, float> origin = std::make_tuple(0.0f, 0.0f, 0.0f);
   volDims = getDimensions();
-  spacing = getSpacing();
+  spacing = getResolution();
   origin = getOrigin();
   imageCopy->setDimensions(volDims);
-  imageCopy->setSpacing(spacing);
+  imageCopy->setResolution(spacing);
   imageCopy->setOrigin(origin);
   FloatArrayType::Pointer elementSizes = std::dynamic_pointer_cast<FloatArrayType>((getElementSizes().get() == nullptr) ? nullptr : getElementSizes()->deepCopy(forceNoAllocate));
   imageCopy->setElementSizes(elementSizes);
@@ -1195,7 +1104,7 @@ int ImageGeom::gatherMetaData(hid_t parentId, size_t volDims[3], float spacing[3
     return -1;
   }
   setDimensions(volDims);
-  setSpacing(spacing);
+  setResolution(spacing);
   setOrigin(origin);
   setElementSizes(voxelSizes);
 
@@ -1214,11 +1123,11 @@ ImageGeom::ErrorType ImageGeom::computeCellIndex(float coords[3], size_t index[3
     {
       return static_cast<ImageGeom::ErrorType>(i * 2);
     }
-    if(coords[i] > (m_Origin[i] + m_Dimensions[i] * m_Spacing[i]))
+    if(coords[i] > (m_Origin[i] + m_Dimensions[i] * m_Resolution[i]))
     {
       return static_cast<ImageGeom::ErrorType>(i * 2 + 1);
     }
-    index[i] = static_cast<size_t>((coords[i] - m_Origin[i]) / m_Spacing[i]);
+    index[i] = static_cast<size_t>((coords[i] - m_Origin[i]) / m_Resolution[i]);
     if(index[i] > m_Dimensions[i])
     {
       return static_cast<ImageGeom::ErrorType>(i * 2 + 1);
@@ -1240,7 +1149,7 @@ ImageGeom::ErrorType ImageGeom::computeCellIndex(float coords[3], size_t& index)
     {
       return static_cast<ImageGeom::ErrorType>(i * 2);
     }
-    cell[i] = static_cast<size_t>((coords[i] - m_Origin[i]) / m_Spacing[i]);
+    cell[i] = static_cast<size_t>((coords[i] - m_Origin[i]) / m_Resolution[i]);
     if(cell[i] > m_Dimensions[i])
     {
       return static_cast<ImageGeom::ErrorType>(i * 2 + 1);

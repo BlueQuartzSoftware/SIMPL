@@ -270,11 +270,14 @@ void DataStructureWidget::refreshData()
   }
 
   // Loop over the data containers
-  DataContainerArray::Container containers = m_Dca->getDataContainers();
+  QList<DataContainer::Pointer> containers = m_Dca->getDataContainers();
   QStandardItem* rootItem = model->invisibleRootItem();
+  QListIterator<DataContainer::Pointer> containerIter(containers);
 
-  for(DataContainer::Pointer dc : containers)
+  while(containerIter.hasNext())
   {
+    DataContainer::Pointer dc = containerIter.next();
+
     QStandardItem* dcItem = findChildByName(rootItem, dc->getName(), 0);
     if(dcItem == nullptr)
     {
@@ -329,8 +332,14 @@ void DataStructureWidget::refreshData()
     }
 
     // We found the proper Data Container, now populate the AttributeMatrix List
-    for(const auto& am : dc->getChildren())
+    DataContainer::AttributeMatrixMap_t attrMats = dc->getAttributeMatrices();
+    QMapIterator<QString, AttributeMatrix::Pointer> attrMatsIter(attrMats);
+    while(attrMatsIter.hasNext())
     {
+      attrMatsIter.next();
+      // QString amName = attrMatsIter.key();
+      AttributeMatrix::Pointer am = attrMatsIter.value();
+
       QStandardItem* amItem = findChildByName(dcItem, am->getName(), 0);
       if(amItem == nullptr)
       {
@@ -445,8 +454,8 @@ QStandardItem* DataStructureWidget::findChildByName(QStandardItem* rootItem, con
 // -----------------------------------------------------------------------------
 QStandardItem* DataStructureWidget::findItemByPath(DataArrayPath path)
 {
-  DataArrayPathHelper::DataType dataType = path.getDataType();
-  if(dataType == DataArrayPathHelper::DataType::None)
+  DataArrayPath::DataType dataType = path.getDataType();
+  if(dataType == DataArrayPath::DataType::None)
   {
     return nullptr;
   }
@@ -461,14 +470,14 @@ QStandardItem* DataStructureWidget::findItemByPath(DataArrayPath path)
   QStandardItem* rootItem = model->invisibleRootItem();
   QStandardItem* targetItem = nullptr;
   QStandardItem* dcItem = findChildByName(rootItem, path.getDataContainerName(), 0);
-  if(dataType == DataArrayPathHelper::DataType::DataContainer)
+  if(dataType == DataArrayPath::DataType::DataContainer)
   {
     targetItem = dcItem;
   }
   else
   {
     QStandardItem* amItem = findChildByName(dcItem, path.getAttributeMatrixName(), 0);
-    if(dataType == DataArrayPathHelper::DataType::AttributeMatrix)
+    if(dataType == DataArrayPath::DataType::AttributeMatrix)
     {
       targetItem = amItem;
     }

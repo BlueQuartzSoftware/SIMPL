@@ -90,10 +90,10 @@ void IntVec3Widget::setupGui()
   {
     IntVec3WidgetLabel->setText(getFilterParameter()->getHumanLabel());
 
-    IntVec3Type data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<IntVec3Type>();
-    xData->setText(QString::number(data[0]));
-    yData->setText(QString::number(data[1]));
-    zData->setText(QString::number(data[2]));
+    IntVec3_t data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<IntVec3_t>();
+    xData->setText(QString::number(data.x));
+    yData->setText(QString::number(data.y));
+    zData->setText(QString::number(data.z));
   }
 }
 
@@ -111,10 +111,10 @@ void IntVec3Widget::widgetChanged(const QString& text)
 void IntVec3Widget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   bool ok = false;
-  IntVec3Type data;
-  data[0] = xData->text().toInt(&ok);
-  data[1] = yData->text().toInt(&ok);
-  data[2] = zData->text().toInt(&ok);
+  IntVec3_t data;
+  data.x = xData->text().toInt(&ok);
+  data.y = yData->text().toInt(&ok);
+  data.z = zData->text().toInt(&ok);
 
   QVariant v;
   v.setValue(data);

@@ -40,8 +40,6 @@
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 
-class AbstractFilter;
-
 // FP: Documentation incomplete because there isn't currently a way to instantiate this filter parameter
 //     in one line.
 /**
@@ -66,13 +64,13 @@ class SIMPLib_EXPORT LinkedDataContainerSelectionFilterParameter : public Filter
     SIMPL_STATIC_NEW_MACRO(LinkedDataContainerSelectionFilterParameter)
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(LinkedDataContainerSelectionFilterParameter, FilterParameter)
 
-     using SetterCallbackType = std::function<void(DataArrayPath)>;
-     using GetterCallbackType = std::function<DataArrayPath(void)>;
-
-     using RequirementType = struct
-     {
-       IGeometry::Types dcGeometryTypes;
-     };
+    using SetterCallbackType = std::function<void(QString)>;
+    using GetterCallbackType = std::function<QString(void)>;
+    
+    typedef struct
+    {
+      IGeometry::Types dcGeometryTypes;
+    } RequirementType;
 
     /**
      * @brief New This function instantiates an instance of the LinkedDataContainerSelectionFilterParameter. This function must be used to instantiate the class; the 
@@ -92,63 +90,62 @@ class SIMPLib_EXPORT LinkedDataContainerSelectionFilterParameter : public Filter
      * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
      * @return
      */
-     static Pointer New(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category, const SetterCallbackType& setterCallback,
-                        const GetterCallbackType& getterCallback, const RequirementType& req, const QStringList& linkedProperties, int groupIndex = -1);
+    static Pointer New(const QString& humanLabel, const QString& propertyName,
+                       const QString& defaultValue, Category category,
+                       SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                       const RequirementType req, QStringList linkedProperties,
+                       int groupIndex = -1);
 
-     ~LinkedDataContainerSelectionFilterParameter() override;
+    ~LinkedDataContainerSelectionFilterParameter() override;
 
-     SIMPL_INSTANCE_PROPERTY(QStringList, LinkedProperties)
-     SIMPL_INSTANCE_PROPERTY(IGeometry::Types, DefaultGeometryTypes)
+    SIMPL_INSTANCE_PROPERTY(QStringList, LinkedProperties)
+    SIMPL_INSTANCE_PROPERTY(IGeometry::Types, DefaultGeometryTypes)
 
-     /**
-      * @brief getWidgetType Returns the type of widget that displays and controls
-      * this FilterParameter subclass
-      * @return
-      */
-     QString getWidgetType() const override;
+    /**
+     * @brief getWidgetType Returns the type of widget that displays and controls
+     * this FilterParameter subclass
+     * @return
+     */
+    QString getWidgetType() const override;
 
-     /**
-      * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
-      * @param json The QJsonObject that the filter parameter reads from.
-      */
-     void readJson(const QJsonObject& json) override;
+    /**
+     * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
+     * @param json The QJsonObject that the filter parameter reads from.
+     */
+    void readJson(const QJsonObject& json) override;
 
-     /**
-      * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
-      * @param json The QJsonObject that the filter parameter writes to.
-      */
-     void writeJson(QJsonObject& json) override;
+    /**
+     * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
+     * @param json The QJsonObject that the filter parameter writes to.
+     */
+    void writeJson(QJsonObject& json) override;
 
-     /**
-      * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-      * that this FilterParameter subclass represents.
-      * from the filter parameter.
-      */
-     SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    /**
+    * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * from the filter parameter.
+    */
+    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
 
-     /**
-      * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-      * that this FilterParameter subclass represents.
-      * @return The GetterCallback
-      */
-     SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+    /**
+    * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * @return The GetterCallback
+    */
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
-     /**
-      * @brief Handle DataArrayPath changes if necessary
-      */
-     void dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath) override;
 
-   protected:
-     /**
-      * @brief LinkedDataContainerSelectionFilterParameter The default constructor.  It is protected because this
-      * filter parameter should only be instantiated using its New(...) function or short-form macro.
-      */
-     LinkedDataContainerSelectionFilterParameter();
+  protected:
+      /**
+       * @brief LinkedDataContainerSelectionFilterParameter The default constructor.  It is protected because this
+       * filter parameter should only be instantiated using its New(...) function or short-form macro.
+       */
+    LinkedDataContainerSelectionFilterParameter();
 
-   public:
-     LinkedDataContainerSelectionFilterParameter(const LinkedDataContainerSelectionFilterParameter&) = delete;            // Copy Constructor Not Implemented
-     LinkedDataContainerSelectionFilterParameter(LinkedDataContainerSelectionFilterParameter&&) = delete;                 // Move Constructor Not Implemented
-     LinkedDataContainerSelectionFilterParameter& operator=(const LinkedDataContainerSelectionFilterParameter&) = delete; // Copy Assignment Not Implemented
-     LinkedDataContainerSelectionFilterParameter& operator=(LinkedDataContainerSelectionFilterParameter&&) = delete;      // Move Assignment Not Implemented
+  public:
+    LinkedDataContainerSelectionFilterParameter(const LinkedDataContainerSelectionFilterParameter&) = delete; // Copy Constructor Not Implemented
+    LinkedDataContainerSelectionFilterParameter(LinkedDataContainerSelectionFilterParameter&&) = delete;      // Move Constructor Not Implemented
+    LinkedDataContainerSelectionFilterParameter& operator=(const LinkedDataContainerSelectionFilterParameter&) = delete; // Copy Assignment Not Implemented
+    LinkedDataContainerSelectionFilterParameter& operator=(LinkedDataContainerSelectionFilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 

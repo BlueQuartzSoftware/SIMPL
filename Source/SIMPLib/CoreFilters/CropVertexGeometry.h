@@ -46,8 +46,8 @@ class SIMPLib_EXPORT CropVertexGeometry : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(CropVertexGeometry SUPERCLASS AbstractFilter)
-  PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
-  PYB11_PROPERTY(DataArrayPath CroppedDataContainerName READ getCroppedDataContainerName WRITE setCroppedDataContainerName)
+  PYB11_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
+  PYB11_PROPERTY(QString CroppedDataContainerName READ getCroppedDataContainerName WRITE setCroppedDataContainerName)
   PYB11_PROPERTY(float XMin READ getXMin WRITE setXMin)
   PYB11_PROPERTY(float YMin READ getYMin WRITE setYMin)
   PYB11_PROPERTY(float ZMin READ getZMin WRITE setZMin)
@@ -62,11 +62,11 @@ public:
 
   ~CropVertexGeometry() override;
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerName)
-  Q_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
+  SIMPL_FILTER_PARAMETER(QString, DataContainerName)
+  Q_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, CroppedDataContainerName)
-  Q_PROPERTY(DataArrayPath CroppedDataContainerName READ getCroppedDataContainerName WRITE setCroppedDataContainerName)
+  SIMPL_FILTER_PARAMETER(QString, CroppedDataContainerName)
+  Q_PROPERTY(QString CroppedDataContainerName READ getCroppedDataContainerName WRITE setCroppedDataContainerName)
 
   SIMPL_FILTER_PARAMETER(float, XMin)
   Q_PROPERTY(float XMin READ getXMin WRITE setXMin)

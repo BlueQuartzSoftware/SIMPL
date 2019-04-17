@@ -71,14 +71,14 @@ public:
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
     // Create the DataContainer for the ImageGeometry
-    DataContainer::Pointer imageGeomDC = DataContainer::New(k_ImageGeomDataContainerPath);
-    dca->addOrReplaceDataContainer(imageGeomDC);
+    DataContainer::Pointer imageGeomDC = DataContainer::New(k_ImageGeomDataContainerName);
+    dca->addDataContainer(imageGeomDC);
 
     DataContainer::Pointer badDataContainer = DataContainer::New(k_BadDataContainerName);
-    dca->addOrReplaceDataContainer(badDataContainer);
+    dca->addDataContainer(badDataContainer);
 
     DataContainer::Pointer wrongGeomDataContainer = DataContainer::New(k_WrongGeomDataContainerName);
-    dca->addOrReplaceDataContainer(wrongGeomDataContainer);
+    dca->addDataContainer(wrongGeomDataContainer);
     TriangleGeom::Pointer triangleGeom = TriangleGeom::New();
     wrongGeomDataContainer->setGeometry(triangleGeom);
 
@@ -91,25 +91,25 @@ public:
 
     // Create the Cell AttributeMatrix
     AttributeMatrix::Pointer cellAttrMat = AttributeMatrix::Create(dims, k_CellAttrMatName, AttributeMatrix::Type::Cell);
-    imageGeomDC->addOrReplaceAttributeMatrix(cellAttrMat);
+    imageGeomDC->addAttributeMatrix(cellAttrMat->getName(), cellAttrMat);
 
     // Create a cell attribute array
     FloatArrayType::Pointer f32Data = FloatArrayType::CreateArray(cellCount, k_FloatArrayName, true);
     f32Data->initializeWithValue(45.243f);
-    cellAttrMat->insertOrAssign(f32Data);
+    cellAttrMat->addAttributeArray(f32Data->getName(), f32Data);
 
     // Create a Feature AttributeMatrix with different dimensions
     dims[0] = 1;
     dims[1] = 2;
     dims[2] = 3;
     AttributeMatrix::Pointer featureAttrMat = AttributeMatrix::Create(dims, k_FeatureAttrMatName, AttributeMatrix::Type::CellFeature);
-    imageGeomDC->addOrReplaceAttributeMatrix(featureAttrMat);
+    imageGeomDC->addAttributeMatrix(featureAttrMat->getName(), featureAttrMat);
 
     // Create a feature attribute array
     cellCount = std::accumulate(dims.begin(), dims.end(), static_cast<size_t>(1), std::multiplies<size_t>());
     Int32ArrayType::Pointer i32Data = Int32ArrayType::CreateArray(cellCount, k_FeatureArrayName, true);
     i32Data->initializeWithValue(1);
-    featureAttrMat->insertOrAssign(i32Data);
+    featureAttrMat->addAttributeArray(i32Data->getName(), i32Data);
     return dca;
   }
 
@@ -128,14 +128,14 @@ public:
     //
     extVertGeomFilter->setArrayHandling(-10);
     extVertGeomFilter->preflight();
-    int32_t err = extVertGeomFilter->getErrorCode();
+    int32_t err = extVertGeomFilter->getErrorCondition();
     DREAM3D_REQUIRE_EQUAL(err, -2002)
 
     dca = createDataContainerArray();
     extVertGeomFilter->setDataContainerArray(dca);
     extVertGeomFilter->setArrayHandling(10);
     extVertGeomFilter->preflight();
-    err = extVertGeomFilter->getErrorCode();
+    err = extVertGeomFilter->getErrorCondition();
     DREAM3D_REQUIRE_EQUAL(err, -2003)
 
     // Empty SelectedDataContainerName
@@ -143,58 +143,58 @@ public:
     extVertGeomFilter->setDataContainerArray(dca);
     extVertGeomFilter->setArrayHandling(k_MoveArrays);
     extVertGeomFilter->preflight();
-    err = extVertGeomFilter->getErrorCode();
+    err = extVertGeomFilter->getErrorCondition();
     DREAM3D_REQUIRE_EQUAL(err, -2004)
 
     // Empty VertexDataContainerName
     dca = createDataContainerArray();
     extVertGeomFilter->setDataContainerArray(dca);
-    extVertGeomFilter->setSelectedDataContainerName(k_ImageGeomDataContainerPath);
-    extVertGeomFilter->setVertexDataContainerName(DataArrayPath("", "", ""));
+    extVertGeomFilter->setSelectedDataContainerName(k_ImageGeomDataContainerName);
+    extVertGeomFilter->setVertexDataContainerName(QString(""));
     extVertGeomFilter->preflight();
-    err = extVertGeomFilter->getErrorCode();
+    err = extVertGeomFilter->getErrorCondition();
     DREAM3D_REQUIRE_EQUAL(err, -2006)
 
     // Set the Vertex Data Container to an existing DataContainer
     dca = createDataContainerArray();
     extVertGeomFilter->setDataContainerArray(dca);
-    extVertGeomFilter->setVertexDataContainerName(k_ImageGeomDataContainerPath);
+    extVertGeomFilter->setVertexDataContainerName(k_ImageGeomDataContainerName);
     extVertGeomFilter->preflight();
-    err = extVertGeomFilter->getErrorCode();
+    err = extVertGeomFilter->getErrorCondition();
     DREAM3D_REQUIRE_EQUAL(err, -2007)
 
     // Set the Vertex Data Container to an existing DataContainer
     // Set a DataContainer that does not have a Geometry
     dca = createDataContainerArray();
     extVertGeomFilter->setDataContainerArray(dca);
-    extVertGeomFilter->setVertexDataContainerName(k_VertexDataContainerPath);
+    extVertGeomFilter->setVertexDataContainerName(k_VertexDataContainerName);
     extVertGeomFilter->setSelectedDataContainerName(k_BadDataContainerName);
     extVertGeomFilter->preflight();
-    err = extVertGeomFilter->getErrorCode();
+    err = extVertGeomFilter->getErrorCondition();
     DREAM3D_REQUIRE_EQUAL(err, -2008)
 
     // Set the Vertex Data Container to an existing DataContainer
     // Set a DataContainer that does not have the proper geometry
     dca = createDataContainerArray();
     extVertGeomFilter->setDataContainerArray(dca);
-    extVertGeomFilter->setVertexDataContainerName(k_VertexDataContainerPath);
+    extVertGeomFilter->setVertexDataContainerName(k_VertexDataContainerName);
     extVertGeomFilter->setSelectedDataContainerName(k_WrongGeomDataContainerName);
     extVertGeomFilter->preflight();
-    err = extVertGeomFilter->getErrorCode();
+    err = extVertGeomFilter->getErrorCondition();
     DREAM3D_REQUIRE_EQUAL(err, -2010)
 
     // Set the Vertex Data Container to an existing DataContainer
     dca = createDataContainerArray();
     extVertGeomFilter->setDataContainerArray(dca);
-    extVertGeomFilter->setVertexDataContainerName(k_VertexDataContainerPath);
-    extVertGeomFilter->setSelectedDataContainerName(k_ImageGeomDataContainerPath);
+    extVertGeomFilter->setVertexDataContainerName(k_VertexDataContainerName);
+    extVertGeomFilter->setSelectedDataContainerName(k_ImageGeomDataContainerName);
     // Set an incorrect AttributeMatrix/DataArray Path
     QVector<DataArrayPath> includePaths;
     DataArrayPath dap(k_ImageGeomDataContainerName, k_FeatureAttrMatName, k_FeatureArrayName);
     includePaths.push_back(dap);
     extVertGeomFilter->setIncludedDataArrayPaths(includePaths);
     extVertGeomFilter->preflight();
-    err = extVertGeomFilter->getErrorCode();
+    err = extVertGeomFilter->getErrorCondition();
     DREAM3D_REQUIRE_EQUAL(err, -2009)
 
     // Set the correct paths.
@@ -204,14 +204,14 @@ public:
     includePaths[0] = dap;
     extVertGeomFilter->setIncludedDataArrayPaths(includePaths);
     extVertGeomFilter->preflight();
-    err = extVertGeomFilter->getErrorCode();
+    err = extVertGeomFilter->getErrorCondition();
     DREAM3D_REQUIRE_EQUAL(err, 0)
 
     // The preflight should be passing at this point so execute the filter
     dca = createDataContainerArray();
     extVertGeomFilter->setDataContainerArray(dca);
     extVertGeomFilter->execute();
-    err = extVertGeomFilter->getErrorCode();
+    err = extVertGeomFilter->getErrorCondition();
     DREAM3D_REQUIRE_EQUAL(err, 0)
 
     dap.update(k_ImageGeomDataContainerName, k_CellAttrMatName, k_FloatArrayName);
@@ -227,7 +227,7 @@ public:
     extVertGeomFilter->setDataContainerArray(dca);
     extVertGeomFilter->setArrayHandling(k_CopyArrays);
     extVertGeomFilter->execute();
-    err = extVertGeomFilter->getErrorCode();
+    err = extVertGeomFilter->getErrorCondition();
     DREAM3D_REQUIRE_EQUAL(err, 0)
 
     dap.update(k_ImageGeomDataContainerName, k_CellAttrMatName, k_FloatArrayName);
@@ -253,14 +253,12 @@ public:
   }
 
 private:
-  const DataArrayPath k_ImageGeomDataContainerPath = DataArrayPath("ImageGeomDataContainer", "", "");
   const QString k_ImageGeomDataContainerName = QString("ImageGeomDataContainer");
   const QString k_CellAttrMatName = QString("CellData");
   const QString k_FloatArrayName = QString("FloatArray");
   const QString k_VertexDataContainerName = QString("VertexDataContainer");
-  const DataArrayPath k_VertexDataContainerPath = DataArrayPath("VertexDataContainer", "", "");
-  const DataArrayPath k_BadDataContainerName = DataArrayPath("BadDataContainer", "", "");
-  const DataArrayPath k_WrongGeomDataContainerName = DataArrayPath("WrongGeomDataContainer", "", "");
+  const QString k_BadDataContainerName = QString("BadDataContainer");
+  const QString k_WrongGeomDataContainerName = QString("WrongGeomDataContainer");
   const QString k_FeatureAttrMatName = QString("Feature Attr Mat");
   const QString k_FeatureArrayName = QString("featureData");
 };

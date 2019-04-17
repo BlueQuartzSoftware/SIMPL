@@ -108,7 +108,7 @@ class SVWidgetsLib_EXPORT CalculatorWidget : public FilterParameterWidget, priva
     void on_vectorsBtn_clicked();
     void on_piBtn_clicked();
 
-    void updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath);
+    void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
   private:
     bool                              m_DidCausePreflight;

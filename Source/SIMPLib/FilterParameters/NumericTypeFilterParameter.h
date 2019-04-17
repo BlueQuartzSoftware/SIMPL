@@ -41,18 +41,18 @@
 #include "SIMPLib/Common/Constants.h"
 
 /**
- * @brief SIMPL_NEW_NUMERICTYPE_SELECTION_FP This macro is a short-form way of instantiating an instance of
- * NumericTypeFilterParameter. There are 6 required parameters and 1 optional parameter
- * that are always passed to this macro in the following order: HumanLabel, PropertyName, Category,
- * FilterName (class name), PhaseTypeCountProperty, PhaseTypeArrayPathProperty, GroupIndex (optional).
- *
- * Therefore, the macro should be written like this (this is a concrete example):
- * SIMPL_NEW_NUMERICTYPE_FP("HumanLabel", PropertyName, Category, FilterName,
- * PhaseTypeCountProperty, PhaseTypeArrayPathProperty, GroupIndex)
- *
- * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
- * SIMPL_NEW_NUMERICTYPE_FP("Shape Types", ShapeTypeData, FilterParameter::CreatedArray, EstablishShapeTypes, "PhaseCount", "InputPhaseTypesArrayPath");
- */
+* @brief SIMPL_NEW_NUMERICTYPE_SELECTION_FP This macro is a short-form way of instantiating an instance of
+* NumericTypeFilterParameter. There are 6 required parameters and 1 optional parameter
+* that are always passed to this macro in the following order: HumanLabel, PropertyName, Category,
+* FilterName (class name), PhaseTypeCountProperty, PhaseTypeArrayPathProperty, GroupIndex (optional).
+*
+* Therefore, the macro should be written like this (this is a concrete example):
+* SIMPL_NEW_SHAPETYPE_SELECTION_FP("HumanLabel", PropertyName, Category, FilterName,
+* PhaseTypeCountProperty, PhaseTypeArrayPathProperty, GroupIndex)
+*
+* Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
+* SIMPL_NEW_SHAPETYPE_SELECTION_FP("Shape Types", ShapeTypeData, FilterParameter::CreatedArray, EstablishShapeTypes, "PhaseCount", "InputPhaseTypesArrayPath");
+*/
 #define SIMPL_NEW_NUMERICTYPE_FP(...)                                                                                                                                                          \
   SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)(NumericTypeFilterParameter, __VA_ARGS__))
 
@@ -72,7 +72,7 @@ public:
 
   /**
   * @brief New This function instantiates an instance of the NumericTypeFilterParameter. Although this function is available to be used,
-  * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_NUMERICTYPE_FP(...) macro at the top of this file.
+  * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_SHAPETYPE_SELECTION_FP(...) macro at the top of this file.
 
   * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
   * @param propertyName The internal property name for this filter parameter.

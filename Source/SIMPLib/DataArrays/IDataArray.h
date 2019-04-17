@@ -21,10 +21,10 @@
 #include <QtCore/QtDebug>
 
 //SIMPLib Includes
-#include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/DataContainers/IDataStructureNode.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Common/Constants.h"
+
 
 /**
 * @class IDataArray IDataArray.h PathToHeader/IDataArray.h
@@ -37,7 +37,7 @@
 * @date Jan 3, 2008
 * @version $Revision: 1.2 $
 */
-class SIMPLib_EXPORT IDataArray : public IDataStructureNode
+class SIMPLib_EXPORT IDataArray
 {
   PYB11_CREATE_BINDINGS(IDataArray)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
@@ -58,7 +58,7 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
      * @code
      *    typedef DataArray<int32_t>  Int32ArrayType;
      *    int32_t* iPtr = IDataArray::SafeReinterpretCast<IDataArray*, Int32ArrayType*, int32_t*>(ptr.get());
-     *    Q_ASSERT(nullptr != iPtr);
+    *     Q_ASSERT(nullptr != iPtr);
      * @endcode
      * @param x The Pointer to IDataArray
      * @return
@@ -73,18 +73,16 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
       return reinterpret_cast<Raw>(x->getVoidPointer(0));
     }
 
-    IDataArray(const QString& name = "");
-    ~IDataArray() override;
+
+    IDataArray();
+    virtual ~IDataArray();
+
+    virtual void setName(const QString& name) = 0;
+    virtual QString getName() = 0;
 
     virtual Pointer createNewArray(size_t numElements, int rank, size_t* dims, const QString& name, bool allocate = true) = 0;
     virtual Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) = 0;
     virtual Pointer createNewArray(size_t numElements, QVector<size_t> dims, const QString& name, bool allocate = true) = 0;
-
-    /**
-     * @brief Creates and returns a DataArrayPath for the DataArray
-     * @return
-     */
-    DataArrayPath getDataArrayPath() const override;
 
     virtual int getClassVersion() = 0;
 
@@ -225,10 +223,11 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
     virtual int32_t resizeTotalElements(size_t size) = 0;
 
     /**
-     * @brief resize
-     * @param count
+     * @brief Reseizes the internal array
+     * @param size The new size of the internal array
+     * @return 1 on success, 0 on failure
      */
-    virtual void resizeTuples(size_t count) = 0;
+    virtual int32_t resize(size_t numTuples) = 0;
 
     /**
      * @brief printTuple

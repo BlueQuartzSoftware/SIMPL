@@ -466,7 +466,7 @@ public:
     }
 
     typename std::set<std::pair<T, T>>::iterator setIter;
-    edgeList->resizeTuples(edgeSet.size());
+    edgeList->resize(edgeSet.size());
     T* uEdges = edgeList->getPointer(0);
     T index = 0;
 
@@ -511,7 +511,7 @@ public:
     }
 
     typename std::set<std::pair<T, T>>::iterator setIter;
-    edgeList->resizeTuples(edgeSet.size());
+    edgeList->resize(edgeSet.size());
     T* uEdges = edgeList->getPointer(0);
     T index = 0;
 
@@ -528,8 +528,7 @@ public:
   * @param hexList
   * @param edgeList
   */
-  template <typename T>
-  static void FindHexEdges(typename DataArray<T>::Pointer hexList, typename DataArray<T>::Pointer edge_List)
+  template <typename T> static void FindHexEdges(typename DataArray<T>::Pointer hexList, typename DataArray<T>::Pointer edgeList)
   {
     size_t numElems = hexList->getNumberOfTuples();
 
@@ -567,8 +566,8 @@ public:
     }
 
     typename std::set<std::pair<T, T>>::iterator setIter;
-    edge_List->resizeTuples(edgeSet.size());
-    T* uEdges = edge_List->getPointer(0);
+    edgeList->resize(edgeSet.size());
+    T* uEdges = edgeList->getPointer(0);
     T index = 0;
 
     for(setIter = edgeSet.begin(); setIter != edgeSet.end(); ++setIter)
@@ -610,7 +609,7 @@ public:
     }
 
     typename std::set<std::tuple<T, T, T>>::iterator setIter;
-    faceList->resizeTuples(faceSet.size());
+    faceList->resize(faceSet.size());
     T* uFaces = faceList->getPointer(0);
     T index = 0;
 
@@ -657,7 +656,7 @@ public:
     }
 
     typename std::set<std::tuple<T, T, T, T>>::iterator setIter;
-    faceList->resizeTuples(faceSet.size());
+    faceList->resize(faceSet.size());
     T* uFaces = faceList->getPointer(0);
     T index = 0;
 
@@ -737,7 +736,7 @@ public:
       }
     }
 
-    edgeList->resizeTuples(edgeMap.size());
+    edgeList->resize(edgeMap.size());
     T* bEdges = edgeList->getPointer(0);
     T index = 0;
 
@@ -795,7 +794,7 @@ public:
       }
     }
 
-    edgeList->resizeTuples(edgeMap.size());
+    edgeList->resize(edgeMap.size());
     T* bEdges = edgeList->getPointer(0);
     T index = 0;
 
@@ -812,8 +811,7 @@ public:
   * @param hexList
   * @param edgeList
   */
-  template <typename T>
-  static void FindUnsharedHexEdges(typename DataArray<T>::Pointer& hexList, typename DataArray<T>::Pointer& edge_List)
+  template <typename T> static void FindUnsharedHexEdges(typename DataArray<T>::Pointer hexList, typename DataArray<T>::Pointer edgeList)
   {
     size_t numElems = hexList->getNumberOfTuples();
 
@@ -839,7 +837,8 @@ public:
       std::vector<T> edge10 = {verts[6], verts[7]};
       std::vector<T> edge11 = {verts[7], verts[4]};
 
-      std::list<std::vector<T>> edgeList = {edge0, edge1, edge2, edge3, edge4, edge5, edge6, edge7, edge8, edge9, edge10, edge11};
+      std::list<std::vector<T>> edgeList = {edge0, edge1, edge2, edge3, edge4, edge5,
+                                            edge6, edge7, edge8, edge9, edge10, edge11};
 
       for(auto&& uEdge : edgeList)
       {
@@ -863,8 +862,8 @@ public:
       }
     }
 
-    edge_List->resizeTuples(edgeMap.size());
-    T* bEdges = edge_List->getPointer(0);
+    edgeList->resize(edgeMap.size());
+    T* bEdges = edgeList->getPointer(0);
     T index = 0;
 
     for(mapIter = edgeMap.begin(); mapIter != edgeMap.end(); ++mapIter)
@@ -919,7 +918,7 @@ public:
       }
     }
 
-    faceList->resizeTuples(faceMap.size());
+    faceList->resize(faceMap.size());
     T* uFaces = faceList->getPointer(0);
     T index = 0;
 
@@ -979,7 +978,7 @@ public:
       }
     }
 
-    faceList->resizeTuples(faceMap.size());
+    faceList->resize(faceMap.size());
     T* uFaces = faceList->getPointer(0);
     T index = 0;
 

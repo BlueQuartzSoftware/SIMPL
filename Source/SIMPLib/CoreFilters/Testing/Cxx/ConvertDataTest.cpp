@@ -67,12 +67,12 @@ public:
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     QVector<size_t> dims;
     dims.push_back(2);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
-    dc->addOrReplaceAttributeMatrix(am);
+    dc->addAttributeMatrix("AttributeMatrix", am);
 
     QVector<size_t> cdims;
     cdims.push_back(2);
@@ -120,7 +120,7 @@ public:
       break;
     }
     da->initializeWithZeros();
-    am->insertOrAssign(da);
+    am->addAttributeArray("DataArray", da);
 
     return dca;
   }
@@ -215,7 +215,7 @@ public:
   {
     setValues(filter, arrayName, newType, newArrayName);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
 
     if(checkArray)
     {
@@ -583,7 +583,7 @@ public:
 
     setValues(filter, "Array1", SIMPL::NumericTypes::Type::Int8, newArrayName);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -90002);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -90002);
   }
 
   // -----------------------------------------------------------------------------
@@ -600,7 +600,7 @@ public:
 
     setValues(filter, "DataArray", SIMPL::NumericTypes::Type::Int8, newArrayName);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
   }
 
   // -----------------------------------------------------------------------------

@@ -131,7 +131,7 @@ public:
 
   AbstractFilter::Pointer m_Filter = nullptr;
   std::list<DataArrayPath> m_CreatedPaths;
-  DataArrayPathHelper::DataType m_ReqType = DataArrayPathHelper::DataType::None;
+  DataArrayPath::DataType m_ReqType = DataArrayPath::DataType::None;
   DataContainerSelectionFilterParameter::RequirementType m_DcReqs;
   AttributeMatrixSelectionFilterParameter::RequirementType m_AmReqs;
   DataArraySelectionFilterParameter::RequirementType m_DaReqs;

@@ -99,7 +99,7 @@ class SIMPLib_EXPORT DataContainerBundle : public IDataContainerBundle
      * @brief addDataContainer Adds a Data Container to the bundle
      * @param dc
      */
-    void addOrReplaceDataContainer(DataContainer::Pointer dc) override;
+    void addDataContainer(DataContainer::Pointer dc) override;
 
     /**
      * @brief removeDataContainer Removes a Data Container from the bundle by pointer

@@ -32,176 +32,201 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include "PipelineMessage.h"
 
-#include "Breakpoint.h"
-
-#include <QtCore/QCoreApplication>
-
-#include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/SIMPLibVersion.h"
+#include <QtCore/QMetaType>
+#include <QtCore/QString>
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Breakpoint::Breakpoint() = default;
+PipelineMessage::PipelineMessage() = default;
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Breakpoint::~Breakpoint() = default;
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void Breakpoint::setupFilterParameters()
+PipelineMessage::PipelineMessage(const PipelineMessage& rhs)
 {
-  FilterParameterVector parameters;
-
-  setFilterParameters(parameters);
+  m_FilterClassName = rhs.m_FilterClassName;
+  m_FilterHumanLabel = rhs.m_FilterHumanLabel;
+  m_Prefix = rhs.m_Prefix;
+  m_Text = rhs.m_Text;
+  m_Code = rhs.m_Code;
+  m_Type = rhs.m_Type;
+  m_ProgressValue = rhs.m_ProgressValue;
+  m_PipelineIndex = rhs.m_PipelineIndex;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Breakpoint::readFilterParameters(AbstractFilterParametersReader* reader, int index)
-{
-  reader->openFilterGroup(this, index);
-
-  reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void Breakpoint::initialize()
+PipelineMessage::PipelineMessage(const QString& className, const char* msg, int code, MessageType msgType, int progress)
+: m_FilterClassName(className)
+, m_Text(msg)
+, m_Code(code)
+, m_PipelineIndex(-1)
+, m_Type(msgType)
+, m_ProgressValue(progress)
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Breakpoint::dataCheck()
+PipelineMessage::PipelineMessage(const QString& className, const QString& msg, int code, MessageType msgType, int progress)
+: m_FilterClassName(className)
+, m_FilterHumanLabel("")
+, m_Text(msg)
+, m_Code(code)
+, m_PipelineIndex(-1)
+, m_Type(msgType)
+, m_ProgressValue(progress)
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Breakpoint::preflight()
+PipelineMessage::PipelineMessage(const QString& className, const QString& humanLabel, const QString& msg, int code, MessageType msgType, int progress)
+: m_FilterClassName(className)
+, m_FilterHumanLabel(humanLabel)
+, m_Text(msg)
+, m_Code(code)
+, m_PipelineIndex(-1)
+, m_Type(msgType)
+, m_ProgressValue(progress)
 {
-  // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
-  setInPreflight(true);              // Set the fact that we are preflighting.
-  emit preflightAboutToExecute();    // Emit this signal so that other widgets can do one file update
-  emit updateFilterParameters(this); // Emit this signal to have the widgets push their values down to the filter
-  dataCheck();                       // Run our DataCheck to make sure everthing is setup correctly
-  emit preflightExecuted();          // We are done preflighting this filter
-  setInPreflight(false);             // Inform the system this filter is NOT in preflight mode anymore.
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Breakpoint::execute()
+PipelineMessage::PipelineMessage(const QString& humanLabel, int pipelineIndex, const QString& msg, MessageType msgType)
+: m_FilterHumanLabel(humanLabel)
+, m_Text(msg)
+, m_PipelineIndex(pipelineIndex)
+, m_Type(msgType)
+, m_Code(0)
 {
-  pause();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Breakpoint::pause()
+PipelineMessage PipelineMessage::CreateErrorMessage(const QString className, const QString humanLabel, const QString msg, int code)
 {
-  // Pause the pipeline at this point until someone chooses to resume
-  emit pipelineHasPaused();
-
-  m_Mutex.lock();
-  QString ss = "The pipeline is paused - Press \"Resume\" to continue execution.";
-  notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
-  m_WaitCondition.wait(&m_Mutex);
-  m_Mutex.unlock();
+  PipelineMessage em(className, humanLabel, msg, code, MessageType::Error, -1);
+  return em;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Breakpoint::resumePipeline()
+PipelineMessage PipelineMessage::CreateStatusMessage(const QString className, const QString humanLabel, const QString msg)
 {
-  // Resume the pipeline
-  m_WaitCondition.wakeAll();
-  emit pipelineHasResumed();
+  PipelineMessage em(className, humanLabel, msg, 0, MessageType::StatusMessage, -1);
+  return em;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer Breakpoint::newFilterInstance(bool copyFilterParameters) const
+PipelineMessage PipelineMessage::CreateWarningMessage(const QString className, const QString humanLabel, const QString msg, int code)
 {
-  Breakpoint::Pointer filter = Breakpoint::New();
-  if(copyFilterParameters)
+  PipelineMessage em(className, humanLabel, msg, code, MessageType::Warning, -1);
+  return em;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+PipelineMessage PipelineMessage::CreateStandardOutputMessage(const QString humanLabel, int pipelineIndex, const QString msg)
+{
+  PipelineMessage em(humanLabel, pipelineIndex, msg, MessageType::StandardOutputMessage);
+  return em;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+PipelineMessage::~PipelineMessage() = default;
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool PipelineMessage::operator==(const PipelineMessage& rhs)
+{
+  return (m_FilterClassName == rhs.m_FilterClassName && m_Prefix == rhs.m_Prefix && m_FilterHumanLabel == rhs.m_FilterHumanLabel && m_Text == rhs.m_Text && m_Code == rhs.m_Code &&
+          m_Type == rhs.m_Type && m_ProgressValue == rhs.m_ProgressValue && m_PipelineIndex == rhs.m_PipelineIndex);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineMessage::operator=(const PipelineMessage& rhs)
+{
+  m_FilterClassName = rhs.m_FilterClassName;
+  m_Prefix = rhs.m_Prefix;
+  m_FilterHumanLabel = rhs.m_FilterHumanLabel;
+  m_Text = rhs.m_Text;
+  m_Code = rhs.m_Code;
+  m_Type = rhs.m_Type;
+  m_ProgressValue = rhs.m_ProgressValue;
+  m_PipelineIndex = rhs.m_PipelineIndex;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString PipelineMessage::generateErrorString() const
+{
+  QString ss = QObject::tr("Error (%1): %2: %3").arg(m_Code).arg(m_Prefix).arg(m_Text);
+  return ss;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString PipelineMessage::generateWarningString() const
+{
+  QString ss = QObject::tr("Warning (%1): %2: %3").arg(m_Code).arg(m_Prefix).arg(m_Text);
+  return ss;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString PipelineMessage::generateStatusString() const
+{
+  if(m_Prefix.isEmpty())
   {
-    copyFilterParameterInstanceVariables(filter.get());
+    QString ss = QObject::tr("%2").arg(m_Text);
+    return ss;
   }
-  return filter;
+
+  QString ss = QObject::tr("%1: %2").arg(m_Prefix).arg(m_Text);
+  return ss;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString Breakpoint::getCompiledLibraryName() const
+QString PipelineMessage::generateProgressString() const
 {
-  return Core::CoreBaseName;
+  if(m_Prefix.isEmpty())
+  {
+    QString ss = QObject::tr("%1 %2%%").arg(m_Text).arg(m_ProgressValue);
+    return ss;
+  }
+
+  QString ss = QObject::tr("%1: %2 %3%%").arg(m_Prefix).arg(m_Text).arg(m_ProgressValue);
+  return ss;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString Breakpoint::getBrandingString() const
+QString PipelineMessage::generateStandardOutputString() const
 {
-  return "SIMPLib Core Filter";
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-const QString Breakpoint::getFilterVersion() const
-{
-  QString version;
-  QTextStream vStream(&version);
-  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
-  return version;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-const QString Breakpoint::getGroupName() const
-{
-  return SIMPL::FilterGroups::CoreFilters;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-const QUuid Breakpoint::getUuid()
-{
-  return QUuid("{a6d82abf-7043-51c0-88ed-b8d0153bf8ab}");
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-const QString Breakpoint::getSubGroupName() const
-{
-  return SIMPL::FilterSubGroups::MiscFilters;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-const QString Breakpoint::getHumanLabel() const
-{
-  return "Breakpoint";
+  return m_Text;
 }

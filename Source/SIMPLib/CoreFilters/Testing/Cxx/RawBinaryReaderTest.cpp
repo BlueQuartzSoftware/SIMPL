@@ -207,7 +207,7 @@ public:
     // filt->setOrigin(origin);
     // FloatVec3Widget_t spacing;
     // spacing.x = spacing.y = spacing.z = 0.55f;
-    // filt->setSpacing(spacing);
+    // filt->setResolution(spacing);
     filt->setCreatedAttributeArrayPath(DataArrayPath("DataContainer", "AttributeMatrix", "Test_Array"));
 
     return filt;
@@ -250,9 +250,9 @@ public:
 
     // Create the data container
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    m->addOrReplaceAttributeMatrix(am);
+    m->addAttributeMatrix("AttributeMatrix", am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
-    dca->addOrReplaceDataContainer(m);
+    dca->addDataContainer(m);
 
     // Create the filter, passing in the skipHeaderBytes
     RawBinaryReader::Pointer filt = createRawBinaryReaderFilter(scalarType, N, skipHeaderBytes);
@@ -260,14 +260,14 @@ public:
 
     // Preflight, get the error condition, and check that there are no errors
     filt->preflight();
-    err = filt->getErrorCode();
+    err = filt->getErrorCondition();
     DREAM3D_REQUIRED(err, >=, 0)
 
     am->clearAttributeArrays();
 
     // Execute the filter, check that there are no errors, and compare the data
     filt->execute();
-    err = filt->getErrorCode();
+    err = filt->getErrorCondition();
     DREAM3D_REQUIRED(err, >=, 0)
 
     IDataArray::Pointer iData = am->getAttributeArray("Test_Array");
@@ -355,9 +355,9 @@ public:
 
     // Create the data container
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    m->addOrReplaceAttributeMatrix(am);
+    m->addAttributeMatrix("AttributeMatrix", am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
-    dca->addOrReplaceDataContainer(m);
+    dca->addDataContainer(m);
 
     // Create the filter, passing in the skipHeaderBytes
     RawBinaryReader::Pointer filt = createRawBinaryReaderFilter(scalarType, N, skipHeaderBytes);
@@ -365,14 +365,14 @@ public:
 
     // Preflight, get error condition, and check that the "file is too small" error is returned
     filt->preflight();
-    err = filt->getErrorCode();
+    err = filt->getErrorCondition();
     DREAM3D_REQUIRED(err, ==, RBRT_FILE_TOO_SMALL)
 
     am->clearAttributeArrays();
 
     // Execute, get error condition, and check that the "file is too small" error is returned
     filt->execute();
-    err = filt->getErrorCode();
+    err = filt->getErrorCondition();
     DREAM3D_REQUIRED(err, ==, RBRT_FILE_TOO_SMALL)
   }
 
@@ -455,9 +455,9 @@ public:
 
     // Create the data container
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    m->addOrReplaceAttributeMatrix(am);
+    m->addAttributeMatrix("AttributeMatrix", am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
-    dca->addOrReplaceDataContainer(m);
+    dca->addDataContainer(m);
 
     // Create the filter, passing in the skipHeaderBytes
     RawBinaryReader::Pointer filt = createRawBinaryReaderFilter(scalarType, N, skipHeaderBytes);
@@ -465,14 +465,14 @@ public:
 
     // Preflight, get the error condition, and check that there are no errors
     filt->preflight();
-    err = filt->getErrorCode();
+    err = filt->getErrorCondition();
     DREAM3D_REQUIRED(err, >=, 0)
 
     am->clearAttributeArrays();
 
     // Execute, get the error condition, check that there are no errors, and compare the data
     filt->execute();
-    err = filt->getErrorCode();
+    err = filt->getErrorCondition();
     DREAM3D_REQUIRED(err, >=, 0)
 
     IDataArray::Pointer iData = am->getAttributeArray("Test_Array");
@@ -565,9 +565,9 @@ public:
 
     // Create the data container
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    m->addOrReplaceAttributeMatrix(am);
+    m->addAttributeMatrix("AttributeMatrix", am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
-    dca->addOrReplaceDataContainer(m);
+    dca->addDataContainer(m);
 
     // Create the filter, passing in the skipHeaderBytes
     RawBinaryReader::Pointer filt = createRawBinaryReaderFilter(scalarType, N, skipHeaderBytes);
@@ -575,14 +575,14 @@ public:
 
     // Preflight, get error condition, and check that there are no errors
     filt->preflight();
-    err = filt->getErrorCode();
+    err = filt->getErrorCondition();
     DREAM3D_REQUIRED(err, >=, 0)
 
     am->clearAttributeArrays();
 
     // Execute, get error condition, check that there are no errors, and compare the data
     filt->execute();
-    err = filt->getErrorCode();
+    err = filt->getErrorCondition();
     DREAM3D_REQUIRED(err, >=, 0)
 
     IDataArray::Pointer iData = m->getAttributeMatrix(SIMPL::Defaults::AttributeMatrixName)->getAttributeArray("Test_Array");
@@ -601,9 +601,9 @@ public:
 
     // Create another data container
     DataContainer::Pointer m2 = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    m2->addOrReplaceAttributeMatrix(am);
+    m2->addAttributeMatrix("AttributeMatrix", am);
     DataContainerArray::Pointer dca2 = DataContainerArray::New();
-    dca2->addOrReplaceDataContainer(m2);
+    dca2->addDataContainer(m2);
 
     // Create another filter, passing in the skipHeaderBytes + 1
     RawBinaryReader::Pointer filt2 = createRawBinaryReaderFilter(scalarType, N, skipHeaderBytes + 1);
@@ -613,14 +613,14 @@ public:
 
     // Preflight, get error condition, and check that there are errors
     filt2->preflight();
-    err = filt2->getErrorCode();
+    err = filt2->getErrorCondition();
     DREAM3D_REQUIRED(err, <, 0)
 
     am->clearAttributeArrays();
 
     // Execute, get error condition, and check that the "file too small" error occurred
     filt2->execute();
-    err = filt2->getErrorCode();
+    err = filt2->getErrorCondition();
     DREAM3D_REQUIRED(err, ==, RBRT_FILE_TOO_SMALL)
   }
 
@@ -703,9 +703,9 @@ public:
 
     // Create the data container
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    m->addOrReplaceAttributeMatrix(am);
+    m->addAttributeMatrix("AttributeMatrix", am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
-    dca->addOrReplaceDataContainer(m);
+    dca->addDataContainer(m);
 
     // Create the filter, passing in the skipHeaderBytes
     RawBinaryReader::Pointer filt = createRawBinaryReaderFilter(scalarType, N, skipHeaderBytes);
@@ -713,14 +713,14 @@ public:
 
     // Preflight, get error condition, and check that there are no errors
     filt->preflight();
-    err = filt->getErrorCode();
+    err = filt->getErrorCondition();
     DREAM3D_REQUIRED(err, >=, 0)
 
     am->clearAttributeArrays();
 
     // Execute, get error condition, check that there are no errors, and compare the data
     filt->execute();
-    err = filt->getErrorCode();
+    err = filt->getErrorCondition();
     DREAM3D_REQUIRED(err, >=, 0)
 
     IDataArray::Pointer iData = m->getAttributeMatrix(SIMPL::Defaults::AttributeMatrixName)->getAttributeArray("Test_Array");
@@ -813,9 +813,9 @@ public:
 
     // Create the data container
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    m->addOrReplaceAttributeMatrix(am);
+    m->addAttributeMatrix("AttributeMatrix", am);
     DataContainerArray::Pointer dca = DataContainerArray::New();
-    dca->addOrReplaceDataContainer(m);
+    dca->addDataContainer(m);
 
     // Create the filter, passing in the skipHeaderBytes
     RawBinaryReader::Pointer filt = createRawBinaryReaderFilter(scalarType, N, skipHeaderBytes);
@@ -823,12 +823,12 @@ public:
 
     // Preflight, get error condition, and check that the "file too small" error has occurred
     filt->preflight();
-    err = filt->getErrorCode();
+    err = filt->getErrorCondition();
     DREAM3D_REQUIRED(err, ==, RBRT_FILE_TOO_SMALL)
 
     // Execute, get error condition, and check that there are errors
     filt->execute();
-    err = filt->getErrorCode();
+    err = filt->getErrorCondition();
     DREAM3D_REQUIRED(err, <, 0)
   }
 

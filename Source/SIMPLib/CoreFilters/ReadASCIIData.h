@@ -122,7 +122,7 @@ class SIMPLib_EXPORT ReadASCIIData : public AbstractFilter
     * For DataArrayPaths longer than the given path, only the specified values are modified
     * @param renamePath
     */
-    void renameDataArrayPath(const DataArrayPath::RenameType& renamePath) override;
+    void renameDataArrayPath(DataArrayPath::RenameType renamePath) override;
 
   signals:
     /**

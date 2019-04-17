@@ -152,7 +152,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void testCaseImage(AbstractFilter::Pointer createGeometry, DataContainer::Pointer dc, IGeometry::Type geomType, IntVec3Type numDimensions, FloatVec3Type originPos, FloatVec3Type imgResolution)
+  void testCaseImage(AbstractFilter::Pointer createGeometry, DataContainer::Pointer dc, IGeometry::Type geomType, IntVec3_t numDimensions, FloatVec3_t originPos, FloatVec3_t imgResolution)
   {
     if(geomType != IGeometry::Type::Image)
     {
@@ -166,7 +166,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     createGeometry->execute();
-    DREAM3D_REQUIRED(createGeometry->getErrorCode(), >=, 0);
+    DREAM3D_REQUIRED(createGeometry->getErrorCondition(), >=, 0);
 
     bool correctGeom = (geomType == dc->getGeometry()->getGeometryType());
     DREAM3D_REQUIRE_EQUAL(correctGeom, true)
@@ -175,19 +175,19 @@ public:
 
     SIMPL::Tuple3SVec dim = imageGeom->getDimensions();
     SIMPL::Tuple3FVec origin = imageGeom->getOrigin();
-    SIMPL::Tuple3FVec res = imageGeom->getSpacing();
+    SIMPL::Tuple3FVec res = imageGeom->getResolution();
 
-    DREAM3D_REQUIRE_EQUAL(std::get<0>(dim), numDimensions[0])
-    DREAM3D_REQUIRE_EQUAL(std::get<1>(dim), numDimensions[1])
-    DREAM3D_REQUIRE_EQUAL(std::get<2>(dim), numDimensions[2])
+    DREAM3D_REQUIRE_EQUAL(std::get<0>(dim), numDimensions.x)
+    DREAM3D_REQUIRE_EQUAL(std::get<1>(dim), numDimensions.y)
+    DREAM3D_REQUIRE_EQUAL(std::get<2>(dim), numDimensions.z)
 
-    DREAM3D_REQUIRE_EQUAL(std::get<0>(origin), originPos[0])
-    DREAM3D_REQUIRE_EQUAL(std::get<1>(origin), originPos[1])
-    DREAM3D_REQUIRE_EQUAL(std::get<2>(origin), originPos[2])
+    DREAM3D_REQUIRE_EQUAL(std::get<0>(origin), originPos.x)
+    DREAM3D_REQUIRE_EQUAL(std::get<1>(origin), originPos.y)
+    DREAM3D_REQUIRE_EQUAL(std::get<2>(origin), originPos.z)
 
-    DREAM3D_REQUIRE_EQUAL(std::get<0>(res), imgResolution[0])
-    DREAM3D_REQUIRE_EQUAL(std::get<1>(res), imgResolution[1])
-    DREAM3D_REQUIRE_EQUAL(std::get<2>(res), imgResolution[2])
+    DREAM3D_REQUIRE_EQUAL(std::get<0>(res), imgResolution.x)
+    DREAM3D_REQUIRE_EQUAL(std::get<1>(res), imgResolution.y)
+    DREAM3D_REQUIRE_EQUAL(std::get<2>(res), imgResolution.z)
 
     removeGeometry(dc);
   }
@@ -221,11 +221,11 @@ public:
 
     if(treatWarningsAsErrors)
     {
-      DREAM3D_REQUIRED(createGeometry->getErrorCode(), ==, -1)
+      DREAM3D_REQUIRED(createGeometry->getErrorCondition(), ==, -1)
     }
     else
     {
-      DREAM3D_REQUIRED(createGeometry->getErrorCode(), >=, 0);
+      DREAM3D_REQUIRED(createGeometry->getErrorCondition(), >=, 0);
 
       bool correctGeom = (geomType == dc->getGeometry()->getGeometryType());
       DREAM3D_REQUIRE_EQUAL(correctGeom, true)
@@ -312,11 +312,11 @@ public:
 
     if(treatWarningsAsErrors && geomType != IGeometry::Type::Vertex)
     {
-      DREAM3D_REQUIRED(createGeometry->getErrorCode(), ==, -1)
+      DREAM3D_REQUIRED(createGeometry->getErrorCondition(), ==, -1)
     }
     else
     {
-      DREAM3D_REQUIRED(createGeometry->getErrorCode(), >=, 0);
+      DREAM3D_REQUIRED(createGeometry->getErrorCondition(), >=, 0);
 
       bool correctGeom = (geomType == dc->getGeometry()->getGeometryType());
 
@@ -383,11 +383,10 @@ public:
         QList<QString> names = am->getAttributeArrayNames();
 
         DREAM3D_REQUIRE_EQUAL(names.contains(daVertices->getName()), false)
-        // daElements is renamed by the geometries, causing names.contains(daElements->getName()) to return true.
-        // if(geomType != IGeometry::Type::Vertex)
-        //{
-        //  DREAM3D_REQUIRE_EQUAL(names.contains(daElements->getName()), false)
-        //}
+        if(geomType != IGeometry::Type::Vertex)
+        {
+          DREAM3D_REQUIRE_EQUAL(names.contains(daElements->getName()), false)
+        }
       }
     }
 
@@ -422,24 +421,24 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     // ImageGeom Parameters
 
-    IntVec3Type numDimensions;
-    numDimensions[0] = 5;
-    numDimensions[1] = 15;
-    numDimensions[2] = 25;
+    IntVec3_t numDimensions;
+    numDimensions.x = 5;
+    numDimensions.y = 15;
+    numDimensions.z = 25;
 
-    FloatVec3Type originPos;
-    originPos[0] = 5;
-    originPos[1] = 15;
-    originPos[2] = 25;
+    FloatVec3_t originPos;
+    originPos.x = 5;
+    originPos.y = 15;
+    originPos.z = 25;
 
-    FloatVec3Type imgResolution;
-    imgResolution[0] = 5;
-    imgResolution[1] = 15;
-    imgResolution[2] = 25;
+    FloatVec3_t imgResolution;
+    imgResolution.x = 5;
+    imgResolution.y = 15;
+    imgResolution.z = 25;
 
     // Create Filter
 
@@ -462,7 +461,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(dap);
+    var.setValue(k_DataContainerName);
     propWasSet = createGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -481,7 +480,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     var.setValue(imgResolution);
-    propWasSet = createGeometry->setProperty("Spacing", var);
+    propWasSet = createGeometry->setProperty("Resolution", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     createGeometry->setDataContainerArray(dca);
@@ -500,9 +499,9 @@ public:
 
     static const QString k_DataContainerName("DataContainer");
     static const QString k_BoundsMatrixName("BoundsMatrix");
-    static const QString k_XBoundsDAName(SIMPL::Geometry::xBoundsList);
-    static const QString k_YBoundsDAName(SIMPL::Geometry::yBoundsList);
-    static const QString k_ZBoundsDAName(SIMPL::Geometry::zBoundsList);
+    static const QString k_XBoundsDAName("XBounds");
+    static const QString k_YBoundsDAName("YBounds");
+    static const QString k_ZBoundsDAName("ZBounds");
     static const QString k_BadXBoundsDAName("BadXBounds");
 
     // Create DataContainerArray
@@ -512,12 +511,12 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     // Create AttributeMatrices
 
     AttributeMatrix::Pointer boundsAM = AttributeMatrix::New(m_Dims4, k_BoundsMatrixName, AttributeMatrix::Type::Any);
-    dc->addOrReplaceAttributeMatrix(boundsAM);
+    dc->addAttributeMatrix(k_BoundsMatrixName, boundsAM);
 
     // Create Bounds Arrays
 
@@ -526,21 +525,21 @@ public:
     {
       daXBounds->setValue(i, i);
     }
-    boundsAM->insertOrAssign(daXBounds);
+    boundsAM->addAttributeArray(k_XBoundsDAName, daXBounds);
 
     DataArray<float>::Pointer daYBounds = DataArray<float>::CreateArray(m_Dims4, m_Dims1, k_YBoundsDAName);
     for(size_t i = 0; i < daYBounds->getSize(); i++)
     {
       daYBounds->setValue(i, i);
     }
-    boundsAM->insertOrAssign(daYBounds);
+    boundsAM->addAttributeArray(k_YBoundsDAName, daYBounds);
 
     DataArray<float>::Pointer daZBounds = DataArray<float>::CreateArray(m_Dims4, m_Dims1, k_ZBoundsDAName);
     for(size_t i = 0; i < daZBounds->getSize(); i++)
     {
       daZBounds->setValue(i, i);
     }
-    boundsAM->insertOrAssign(daZBounds);
+    boundsAM->addAttributeArray(k_ZBoundsDAName, daZBounds);
 
     // Create bad xBounds arrays
 
@@ -550,7 +549,7 @@ public:
       daBadXBounds->setValue(i, i);
     }
     daBadXBounds->setValue(0, 100);
-    boundsAM->insertOrAssign(daBadXBounds);
+    boundsAM->addAttributeArray(k_BadXBoundsDAName, daBadXBounds);
 
     // Create Filter
 
@@ -573,7 +572,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(dap);
+    var.setValue(k_DataContainerName);
     propWasSet = createGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -667,19 +666,19 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     // Create AttributeMatrices
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(m_Dims2, k_VertexMatrixName, AttributeMatrix::Type::Any);
-    dc->addOrReplaceAttributeMatrix(vertexAM);
+    dc->addAttributeMatrix(k_VertexMatrixName, vertexAM);
 
     // Create Vertex Data Arrays
 
     std::vector<std::vector<float>> vertices = {{1.0f, 1.0f, 0.0f}, {3.0f, 1.0f, 0.0f}};
 
     DataArray<float>::Pointer daVert = createDataArray<float>(k_VertexListDAName, vertices, m_Dims2, m_Dims3);
-    vertexAM->insertOrAssign(daVert);
+    vertexAM->addAttributeArray(k_VertexListDAName, daVert);
 
     // Create Filter
 
@@ -702,7 +701,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(dap);
+    var.setValue(k_DataContainerName);
     propWasSet = createGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -743,15 +742,15 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     // Create AttributeMatrices
 
     AttributeMatrix::Pointer edgeVertexAM = AttributeMatrix::New(m_Dims2, k_EdgeVertexMatrixName, AttributeMatrix::Type::Any);
-    dc->addOrReplaceAttributeMatrix(edgeVertexAM);
+    dc->addAttributeMatrix(k_EdgeVertexMatrixName, edgeVertexAM);
 
     AttributeMatrix::Pointer edgeElementAM = AttributeMatrix::New(m_Dims1, k_EdgeElementAttributeMatrixName, AttributeMatrix::Type::Any);
-    dc->addOrReplaceAttributeMatrix(edgeElementAM);
+    dc->addAttributeMatrix(k_EdgeElementAttributeMatrixName, edgeElementAM);
 
     // Create Edge Data Arrays
 
@@ -760,15 +759,15 @@ public:
 
     DataArray<float>::Pointer daEdgeVert = createDataArray<float>(k_EdgeVertexListDAName, vertices, m_Dims2, m_Dims3);
     DataArray<int64_t>::Pointer daEdgeList = createDataArray<int64_t>(k_EdgeListDAName, elements, m_Dims1, m_Dims2);
-    edgeVertexAM->insertOrAssign(daEdgeVert);
-    edgeElementAM->insertOrAssign(daEdgeList);
+    edgeVertexAM->addAttributeArray(k_EdgeVertexListDAName, daEdgeVert);
+    edgeElementAM->addAttributeArray(k_EdgeListDAName, daEdgeList);
 
     // Create Bad EdgeList
 
     elements = {{0, 2}};
 
     DataArray<int64_t>::Pointer daBadEdgeList = createDataArray<int64_t>(k_BadEdgeListDAName, elements, m_Dims1, m_Dims2);
-    edgeElementAM->insertOrAssign(daBadEdgeList);
+    edgeElementAM->addAttributeArray(k_BadEdgeListDAName, daBadEdgeList);
 
     // Create Filter
 
@@ -791,7 +790,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(dap);
+    var.setValue(k_DataContainerName);
     propWasSet = createGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -859,15 +858,15 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     // Create AttributeMatrices
 
     AttributeMatrix::Pointer triVertexAM = AttributeMatrix::New(m_Dims3, k_TriVertexMatrixName, AttributeMatrix::Type::Any);
-    dc->addOrReplaceAttributeMatrix(triVertexAM);
+    dc->addAttributeMatrix(k_TriVertexMatrixName, triVertexAM);
 
     AttributeMatrix::Pointer triElementAM = AttributeMatrix::New(m_Dims1, k_TriElementAttributeMatrixName, AttributeMatrix::Type::Any);
-    dc->addOrReplaceAttributeMatrix(triElementAM);
+    dc->addAttributeMatrix(k_TriElementAttributeMatrixName, triElementAM);
 
     // Create Triangle Data Arrays
 
@@ -876,15 +875,15 @@ public:
 
     DataArray<float>::Pointer daTriVert = createDataArray<float>(k_TriVertexListDAName, vertices, m_Dims3, m_Dims3);
     DataArray<int64_t>::Pointer daTriList = createDataArray<int64_t>(k_TriListDAName, elements, m_Dims1, m_Dims3);
-    triVertexAM->insertOrAssign(daTriVert);
-    triElementAM->insertOrAssign(daTriList);
+    triVertexAM->addAttributeArray(k_TriVertexListDAName, daTriVert);
+    triElementAM->addAttributeArray(k_TriListDAName, daTriList);
 
     // Create Bad TriangleList
 
     elements = {{0, 3, 2}};
 
     DataArray<int64_t>::Pointer daBadTriList = createDataArray<int64_t>(k_BadTriListDAName, elements, m_Dims1, m_Dims3);
-    triElementAM->insertOrAssign(daBadTriList);
+    triElementAM->addAttributeArray(k_BadTriListDAName, daBadTriList);
 
     // Create Filter
 
@@ -907,7 +906,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(dap);
+    var.setValue(k_DataContainerName);
     propWasSet = createGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -975,15 +974,15 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     // Create AttributeMatrices
 
     AttributeMatrix::Pointer quadVertexAM = AttributeMatrix::New(m_Dims4, k_QuadVertexMatrixName, AttributeMatrix::Type::Any);
-    dc->addOrReplaceAttributeMatrix(quadVertexAM);
+    dc->addAttributeMatrix(k_QuadVertexMatrixName, quadVertexAM);
 
     AttributeMatrix::Pointer quadElementAM = AttributeMatrix::New(m_Dims1, k_QuadElementAttributeMatrixName, AttributeMatrix::Type::Any);
-    dc->addOrReplaceAttributeMatrix(quadElementAM);
+    dc->addAttributeMatrix(k_QuadElementAttributeMatrixName, quadElementAM);
 
     // Create Quadrilateral Data Arrays
 
@@ -992,15 +991,15 @@ public:
 
     DataArray<float>::Pointer daQuadVert = createDataArray<float>(k_QuadVertexListDAName, vertices, m_Dims4, m_Dims3);
     DataArray<int64_t>::Pointer daQuadList = createDataArray<int64_t>(k_QuadListDAName, elements, m_Dims1, m_Dims4);
-    quadVertexAM->insertOrAssign(daQuadVert);
-    quadElementAM->insertOrAssign(daQuadList);
+    quadVertexAM->addAttributeArray(k_QuadVertexListDAName, daQuadVert);
+    quadElementAM->addAttributeArray(k_QuadListDAName, daQuadList);
 
     // Create Bad QuadrilateralList
 
     elements = {{0, 1, 7, 3}};
 
     DataArray<int64_t>::Pointer daBadQuadList = createDataArray<int64_t>(k_BadQuadListDAName, elements, m_Dims1, m_Dims4);
-    quadElementAM->insertOrAssign(daBadQuadList);
+    quadElementAM->addAttributeArray(k_BadQuadListDAName, daBadQuadList);
 
     // Create Filter
 
@@ -1023,7 +1022,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(dap);
+    var.setValue(k_DataContainerName);
     propWasSet = createGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -1091,15 +1090,15 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     // Create AttributeMatrices
 
     AttributeMatrix::Pointer tetVertexAM = AttributeMatrix::New(m_Dims4, k_TetVertexMatrixName, AttributeMatrix::Type::Any);
-    dc->addOrReplaceAttributeMatrix(tetVertexAM);
+    dc->addAttributeMatrix(k_TetVertexMatrixName, tetVertexAM);
 
     AttributeMatrix::Pointer tetElementAM = AttributeMatrix::New(m_Dims1, k_TetElementAttributeMatrixName, AttributeMatrix::Type::Any);
-    dc->addOrReplaceAttributeMatrix(tetElementAM);
+    dc->addAttributeMatrix(k_TetElementAttributeMatrixName, tetElementAM);
 
     // Create Tetrahedron Data Arrays
 
@@ -1109,15 +1108,15 @@ public:
 
     DataArray<float>::Pointer daTetVert = createDataArray<float>(k_TetVertexListDAName, vertices, m_Dims4, m_Dims3);
     DataArray<int64_t>::Pointer daTetList = createDataArray<int64_t>(k_TetListDAName, elements, m_Dims1, m_Dims4);
-    tetVertexAM->insertOrAssign(daTetVert);
-    tetElementAM->insertOrAssign(daTetList);
+    tetVertexAM->addAttributeArray(k_TetVertexListDAName, daTetVert);
+    tetElementAM->addAttributeArray(k_TetListDAName, daTetList);
 
     // Create Bad TetrahedronList
 
     elements = {{0, 10, 2, 3}};
 
     DataArray<int64_t>::Pointer daBadTetList = createDataArray<int64_t>(k_BadTetListDAName, elements, m_Dims1, m_Dims4);
-    tetElementAM->insertOrAssign(daBadTetList);
+    tetElementAM->addAttributeArray(k_BadTetListDAName, daBadTetList);
 
     // Create Filter
 
@@ -1140,7 +1139,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(dap);
+    var.setValue(k_DataContainerName);
     propWasSet = createGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -1208,15 +1207,15 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     // Create AttributeMatrices
 
     AttributeMatrix::Pointer hexVertexAM = AttributeMatrix::New(m_Dims8, k_HexVertexMatrixName, AttributeMatrix::Type::Any);
-    dc->addOrReplaceAttributeMatrix(hexVertexAM);
+    dc->addAttributeMatrix(k_HexVertexMatrixName, hexVertexAM);
 
     AttributeMatrix::Pointer hexElementAM = AttributeMatrix::New(m_Dims1, k_HexElementAttributeMatrixName, AttributeMatrix::Type::Any);
-    dc->addOrReplaceAttributeMatrix(hexElementAM);
+    dc->addAttributeMatrix(k_HexElementAttributeMatrixName, hexElementAM);
 
     // Create Hexahedron Data Arrays
 
@@ -1226,15 +1225,15 @@ public:
 
     DataArray<float>::Pointer daHexVert = createDataArray<float>(k_HexVertexListDAName, vertices, m_Dims8, m_Dims3);
     DataArray<int64_t>::Pointer daHexList = createDataArray<int64_t>(k_HexListDAName, elements, m_Dims1, m_Dims8);
-    hexVertexAM->insertOrAssign(daHexVert);
-    hexElementAM->insertOrAssign(daHexList);
+    hexVertexAM->addAttributeArray(k_HexVertexListDAName, daHexVert);
+    hexElementAM->addAttributeArray(k_HexListDAName, daHexList);
 
     // Create Bad HexahedronList
 
     elements = {{0, 1, 2, 32, 4, 5, 6, 7}};
 
     DataArray<int64_t>::Pointer daBadHexList = createDataArray<int64_t>(k_BadHexListDAName, elements, m_Dims1, m_Dims8);
-    hexElementAM->insertOrAssign(daBadHexList);
+    hexElementAM->addAttributeArray(k_BadHexListDAName, daBadHexList);
 
     // Create Filter
 
@@ -1257,7 +1256,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(dap);
+    var.setValue(k_DataContainerName);
     propWasSet = createGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 

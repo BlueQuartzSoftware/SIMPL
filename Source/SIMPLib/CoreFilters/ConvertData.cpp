@@ -76,7 +76,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, QVector<size_t> dims, DataConta
   if(scalarType == SIMPL::NumericTypes::Type::Int8)
   {
     Int8ArrayType::Pointer p = Int8ArrayType::CreateArray(voxels, dims, name);
-    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
+    m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
     for(size_t v = 0; v < size; ++v)
     {
       p->setValue(v, static_cast<int8_t>(ptr->getValue(v)));
@@ -85,7 +85,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, QVector<size_t> dims, DataConta
   else if(scalarType == SIMPL::NumericTypes::Type::UInt8)
   {
     UInt8ArrayType::Pointer p = UInt8ArrayType::CreateArray(voxels, dims, name);
-    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
+    m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
     for(size_t v = 0; v < size; ++v)
     {
       p->setValue(v, static_cast<uint8_t>(ptr->getValue(v)));
@@ -94,7 +94,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, QVector<size_t> dims, DataConta
   else if(scalarType == SIMPL::NumericTypes::Type::Int16)
   {
     Int16ArrayType::Pointer p = Int16ArrayType::CreateArray(voxels, dims, name);
-    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
+    m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
     for(size_t v = 0; v < size; ++v)
     {
       p->setValue(v, static_cast<int16_t>(ptr->getValue(v)));
@@ -103,7 +103,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, QVector<size_t> dims, DataConta
   else if(scalarType == SIMPL::NumericTypes::Type::UInt16)
   {
     UInt16ArrayType::Pointer p = UInt16ArrayType::CreateArray(voxels, dims, name);
-    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
+    m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
     for(size_t v = 0; v < size; ++v)
     {
       p->setValue(v, static_cast<uint16_t>(ptr->getValue(v)));
@@ -112,7 +112,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, QVector<size_t> dims, DataConta
   else if(scalarType == SIMPL::NumericTypes::Type::Int32)
   {
     Int32ArrayType::Pointer p = Int32ArrayType::CreateArray(voxels, dims, name);
-    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
+    m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
     for(size_t v = 0; v < size; ++v)
     {
       p->setValue(v, static_cast<int32_t>(ptr->getValue(v)));
@@ -121,7 +121,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, QVector<size_t> dims, DataConta
   else if(scalarType == SIMPL::NumericTypes::Type::UInt32)
   {
     UInt32ArrayType::Pointer p = UInt32ArrayType::CreateArray(voxels, dims, name);
-    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
+    m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
     for(size_t v = 0; v < size; ++v)
     {
       p->setValue(v, static_cast<uint32_t>(ptr->getValue(v)));
@@ -130,7 +130,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, QVector<size_t> dims, DataConta
   else if(scalarType == SIMPL::NumericTypes::Type::Int64)
   {
     Int64ArrayType::Pointer p = Int64ArrayType::CreateArray(voxels, dims, name);
-    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
+    m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
     for(size_t v = 0; v < size; ++v)
     {
       p->setValue(v, static_cast<int64_t>(ptr->getValue(v)));
@@ -139,7 +139,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, QVector<size_t> dims, DataConta
   else if(scalarType == SIMPL::NumericTypes::Type::UInt64)
   {
     UInt64ArrayType::Pointer p = UInt64ArrayType::CreateArray(voxels, dims, name);
-    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
+    m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
     for(size_t v = 0; v < size; ++v)
     {
       p->setValue(v, static_cast<uint64_t>(ptr->getValue(v)));
@@ -148,7 +148,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, QVector<size_t> dims, DataConta
   else if(scalarType == SIMPL::NumericTypes::Type::Float)
   {
     FloatArrayType::Pointer p = FloatArrayType::CreateArray(voxels, dims, name);
-    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
+    m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
     for(size_t v = 0; v < size; ++v)
     {
       p->setValue(v, static_cast<float>(ptr->getValue(v)));
@@ -157,7 +157,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, QVector<size_t> dims, DataConta
   else if(scalarType == SIMPL::NumericTypes::Type::Double)
   {
     DoubleArrayType::Pointer p = DoubleArrayType::CreateArray(voxels, dims, name);
-    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
+    m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
     for(size_t v = 0; v < size; ++v)
     {
       p->setValue(v, static_cast<double>(ptr->getValue(v)));
@@ -166,7 +166,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, QVector<size_t> dims, DataConta
   else if(scalarType == SIMPL::NumericTypes::Type::Bool)
   {
     BoolArrayType::Pointer p = BoolArrayType::CreateArray(voxels, dims, name);
-    m->getAttributeMatrix(attributeMatrixName)->insertOrAssign(p);
+    m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
     for(size_t v = 0; v < size; ++v)
     {
       p->setValue(v, static_cast<bool>(ptr->getValue(v)));
@@ -174,9 +174,10 @@ void ConvertData(AbstractFilter* filter, T* ptr, QVector<size_t> dims, DataConta
   }
   else
   {
+    filter->setErrorCondition(-399);
     QString ss =
         QString("Error Converting DataArray '%1/%2' from type %3 to type %4").arg(attributeMatrixName).arg(ptr->getName()).arg(static_cast<int>(ptr->getType())).arg(static_cast<int>(scalarType));
-    filter->setErrorCondition(-399, ss);
+    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
   }
 }
 } // End Namespace Detail
@@ -201,7 +202,7 @@ ConvertData::~ConvertData() = default;
 // -----------------------------------------------------------------------------
 void ConvertData::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  FilterParameterVector parameters;
 
   parameters.push_back(SIMPL_NEW_NUMERICTYPE_FP("Scalar Type", ScalarType, FilterParameter::Parameter, ConvertData));
 
@@ -239,8 +240,8 @@ void ConvertData::initialize()
 // -----------------------------------------------------------------------------
 void ConvertData::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getSelectedCellArrayPath().getDataContainerName(), false);
 
@@ -248,20 +249,21 @@ void ConvertData::dataCheck()
   if(m_OutputArrayName.isEmpty())
   {
     ss = QObject::tr("The output array name must be set");
-    setErrorCondition(-398, ss);
+    setErrorCondition(-398);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
   if(getInPreflight())
   {
     AttributeMatrix::Pointer cellAttrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedCellArrayPath, -301);
-    if(getErrorCode() < 0)
+    if(getErrorCondition() < 0)
     {
       return;
     }
 
     IDataArray::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedCellArrayPath());
-    if(getErrorCode() < 0)
+    if(getErrorCondition() < 0)
     {
       return;
     }
@@ -312,7 +314,7 @@ void ConvertData::dataCheck()
     {
       p = BoolArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
     }
-    cellAttrMat->insertOrAssign(p);
+    cellAttrMat->addAttributeArray(p->getName(), p);
   }
 }
 
@@ -334,10 +336,10 @@ void ConvertData::preflight()
 // -----------------------------------------------------------------------------
 void ConvertData::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -349,7 +351,7 @@ void ConvertData::execute()
 
   if (nullptr == iArray.get())
   {
-    setErrorCondition(-90002, tr("Data Array '%1' does not exist.").arg(m_SelectedCellArrayPath.getDataArrayName()));
+    setErrorCondition(-90002);
     return;
   }
 

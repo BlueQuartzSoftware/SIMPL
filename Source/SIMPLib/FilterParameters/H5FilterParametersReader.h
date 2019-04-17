@@ -127,8 +127,8 @@ class SIMPLib_EXPORT H5FilterParametersReader : public AbstractFilterParametersR
      QVector<float> readArray(const QString name, QVector<float> value) override;
      QVector<double> readArray(const QString name, QVector<double> value) override;
 
-     IntVec3Type readIntVec3(const QString name, IntVec3Type v) override;
-     FloatVec3Type readFloatVec3(const QString name, FloatVec3Type v) override;
+     IntVec3_t readIntVec3(const QString name, IntVec3_t v) override;
+     FloatVec3_t readFloatVec3(const QString name, FloatVec3_t v) override;
 
      Float2ndOrderPoly_t readFloat2ndOrderPoly(const QString name, Float2ndOrderPoly_t v) override;
      Float3rdOrderPoly_t readFloat3rdOrderPoly(const QString name, Float3rdOrderPoly_t v) override;

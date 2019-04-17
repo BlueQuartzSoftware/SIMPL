@@ -66,12 +66,12 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     QVector<size_t> dims;
     dims.push_back(2);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
-    dc->addOrReplaceAttributeMatrix(am);
+    dc->addAttributeMatrix("AttributeMatrix", am);
 
     QVector<size_t> cdims;
     cdims.push_back(2);
@@ -80,7 +80,7 @@ public:
     da->setComponent(0, 1, 2);
     da->setComponent(1, 0, 3);
     da->setComponent(1, 1, 4);
-    am->insertOrAssign(da);
+    am->addAttributeArray("DataArray", da);
 
     return dca;
   }
@@ -158,7 +158,7 @@ public:
 
     setValues(filter, "DataArray", 1, newArrayName);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
 
     DataContainerArray::Pointer dca = filter->getDataContainerArray();
     DataContainer::Pointer dc = dca->getDataContainer("DataContainer");
@@ -179,11 +179,11 @@ public:
 
     setValues(filter, "DataArray", 2, newArrayName);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -11004);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11004);
 
     setValues(filter, "DataArray", -1, newArrayName);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -11005);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11005);
   }
 
   // -----------------------------------------------------------------------------
@@ -198,7 +198,7 @@ public:
 
     setValues(filter, "DataArray1", 1, newArrayName);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -90002);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -90002);
   }
 
   // -----------------------------------------------------------------------------
@@ -213,7 +213,7 @@ public:
 
     setValues(filter, "DataArray", 1, newArrayName);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -10002);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -10002);
   }
 
   // -----------------------------------------------------------------------------

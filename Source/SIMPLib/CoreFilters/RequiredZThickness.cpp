@@ -64,7 +64,7 @@ RequiredZThickness::~RequiredZThickness() = default;
 // -----------------------------------------------------------------------------
 void RequiredZThickness::setupFilterParameters()
 {
-  FilterParameterVectorType parameters = getFilterParameters();
+  FilterParameterVector parameters = getFilterParameters();
 
   {
     DataContainerSelectionFilterParameter::RequirementType req;
@@ -82,7 +82,7 @@ void RequiredZThickness::readFilterParameters(AbstractFilterParametersReader* re
 {
   AbstractDecisionFilter::readFilterParameters(reader, index);
   reader->openFilterGroup(this, index);
-  setDataContainerSelection(reader->readDataArrayPath("DataContainerSelection", getDataContainerSelection()));
+  setDataContainerSelection(reader->readString("DataContainerSelection", getDataContainerSelection()));
   setNumZVoxels(reader->readValue("NumZVoxels", getNumZVoxels()));
   setPreflightCheck(reader->readValue("PreflightCheck", getPreflightCheck()));
   reader->closeFilterGroup();
@@ -100,15 +100,15 @@ void RequiredZThickness::initialize()
 // -----------------------------------------------------------------------------
 void RequiredZThickness::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
-  if(getErrorCode() < 0)
+  setErrorCondition(0);
+  setWarningCondition(0);
+  if(getErrorCondition() < 0)
   {
     return;
   }
 
   DataContainer::Pointer dataContainer = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerSelection());
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -116,7 +116,8 @@ void RequiredZThickness::dataCheck()
   ImageGeom::Pointer image = dataContainer->getGeometryAs<ImageGeom>();
   if(nullptr == image.get())
   {
-    setErrorCondition(-7789, "Missing Image Geometry in the selected DataContainer");
+    setErrorCondition(-7789);
+    notifyErrorMessage(getHumanLabel(), "Missing Image Geometry in the selected DataContainer", getErrorCondition());
     return;
   }
 
@@ -125,13 +126,14 @@ void RequiredZThickness::dataCheck()
 
   if(dims[2] < getNumZVoxels() && m_PreflightCheck)
   {
+    setErrorCondition(-7787);
     QString str;
     QTextStream ss(&str);
     ss << "Number of Z Voxels does not meet required value during preflight of the filter. \n";
     ss << "  Required Z Voxels: " << m_NumZVoxels << "\n";
     ss << "  Current Z Voxels: " << dims[2];
 
-    setErrorCondition(-7787, str);
+    notifyErrorMessage(getHumanLabel(), str, getErrorCondition());
   }
   else if(dims[2] < getNumZVoxels() && !m_PreflightCheck)
   {
@@ -141,7 +143,8 @@ void RequiredZThickness::dataCheck()
     ss << "  Required Z Voxels: " << m_NumZVoxels << "\n";
     ss << "  Current Z Voxels: " << dims[2];
 
-    setWarningCondition(-7788, str);
+    setWarningCondition(-7788);
+    notifyWarningMessage(getHumanLabel(), str, getWarningCondition());
   }
 }
 
@@ -163,16 +166,16 @@ void RequiredZThickness::preflight()
 // -----------------------------------------------------------------------------
 void RequiredZThickness::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
 
   DataContainer::Pointer dataContainer = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerSelection());
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -190,7 +193,8 @@ void RequiredZThickness::execute()
     ss << "  Required Z Voxels: " << m_NumZVoxels << "\n";
     ss << "  Current Z Voxels: " << dims[2];
 
-    setErrorCondition(-7788, str);
+    setErrorCondition(-7788);
+    notifyErrorMessage(getHumanLabel(), str, getErrorCondition());
     bool needMoreData = true;
     emit decisionMade(needMoreData);
   }

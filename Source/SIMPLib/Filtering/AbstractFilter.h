@@ -35,8 +35,6 @@
 
 #pragma once
 
-#include <map>
-
 #include <QtCore/QObject>
 #include <QtCore/QString>
 #include <QtCore/QVector>
@@ -45,7 +43,6 @@
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
-#include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/SIMPLib.h"
 
@@ -87,8 +84,9 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   PYB11_PROPERTY(QString CompiledLibraryName READ getCompiledLibraryName)
   PYB11_PROPERTY(bool Cancel READ getCancel WRITE setCancel)
   PYB11_PROPERTY(bool Enabled READ getEnabled WRITE setEnabled)
-  PYB11_PROPERTY(int ErrorCode READ getErrorCode)
-  PYB11_PROPERTY(int WarningCode READ getWarningCode)
+  PYB11_PROPERTY(QString MessagePrefix READ getMessagePrefix WRITE setMessagePrefix)
+  PYB11_PROPERTY(int ErrorCondition READ getErrorCondition WRITE setErrorCondition)
+  PYB11_PROPERTY(int WarningCondition READ getWarningCondition WRITE setWarningCondition)
   PYB11_PROPERTY(bool InPreflight READ getInPreflight WRITE setInPreflight)
   PYB11_PROPERTY(int PipelineIndex READ getPipelineIndex WRITE setPipelineIndex)
 
@@ -96,16 +94,7 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   PYB11_METHOD(void execute)
   PYB11_METHOD(void preflight)
   PYB11_METHOD(void setDataContainerArray)
-  PYB11_METHOD(void setErrorCondition ARGS code messageText)
-  PYB11_METHOD(void setWarningCondition ARGS code messageText)
-  PYB11_METHOD(void notifyStatusMessage ARGS messageText)
-  PYB11_METHOD(void notifyProgressMessage ARGS progress messageText)
-  PYB11_METHOD(void clearErrorCode)
-  PYB11_METHOD(void clearWarningCode)
-
-  // Friend declarations for RenameDataPath so that it can set and check the instance's created data by ID.
-  friend void RenameDataPath::AlertFilterCreatedPath(AbstractFilter*, RenameDataPath::DataID_t, const DataArrayPath&);
-
+  
 public:
   SIMPL_SHARED_POINTERS(AbstractFilter)
   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AbstractFilter, Observable)
@@ -248,11 +237,13 @@ public:
 
   SIMPL_INSTANCE_PROPERTY(DataContainerArray::Pointer, DataContainerArray)
 
-  SIMPL_INSTANCE_PROPERTY(FilterParameterVectorType, FilterParameters)
+  SIMPL_INSTANCE_PROPERTY(QVector<FilterParameter::Pointer>, FilterParameters)
 
-  SIMPL_GET_PROPERTY(int, ErrorCode)
+  SIMPL_INSTANCE_PROPERTY(QString, MessagePrefix)
 
-  SIMPL_GET_PROPERTY(int, WarningCode)
+  SIMPL_INSTANCE_PROPERTY(int, ErrorCondition)
+
+  SIMPL_INSTANCE_PROPERTY(int, WarningCondition)
 
   SIMPL_INSTANCE_PROPERTY(bool, InPreflight)
 
@@ -277,16 +268,6 @@ public:
   * @brief Returns the next filter in the pipeline
   */
   SIMPL_INSTANCE_PROPERTY(AbstractFilter::WeakPointer, NextFilter)
-
-  /**
-   * @brief clearErrorCondition
-   */
-  void clearErrorCode();
-
-  /**
-   * @brief clearWarningCondition
-   */
-  void clearWarningCode();
 
   /**
    * @brief doesPipelineContainFilterBeforeThis
@@ -314,43 +295,63 @@ public:
   std::list<DataArrayPath> getCreatedPaths();
 
   /**
-   * @brief Returns the list of deleted data paths.
-   * @return
-   */
-  virtual std::list<DataArrayPath> getDeletedPaths();
-
-  /**
    * @brief Returns a list of DataArrayPaths that have been renamed along with their corresponding renamed value
    * @return
    */
   virtual DataArrayPath::RenameContainer getRenamedPaths();
 
-  /**
-   * @brief setErrorCondition
-   * @param code
-   * @param messageText
-   */
-  void setErrorCondition(int code, const QString& messageText) override;
+  // ------------------------------
+  // These methods are over ridden from the superclass in order to add the
+  // pipeline index to the PipelineMessage Object.
+  // ------------------------------
 
   /**
-   * @brief setWarningCondition
+   * @brief notifyErrorMessage
+   * @param humanLabel
+   * @param ss
    * @param code
-   * @param messageText
    */
-  void setWarningCondition(int code, const QString& messageText) override;
+  void notifyErrorMessage(const QString& humanLabel, const QString& ss, int code) override;
+
+  /**
+   * @brief notifyWarningMessage
+   * @param humanLabel
+   * @param ss
+   * @param code
+   */
+  void notifyWarningMessage(const QString& humanLabel, const QString& ss, int code) override;
 
   /**
    * @brief notifyStatusMessage
-   * @param messageText
+   * @param humanLabel
+   * @param ss
    */
-  void notifyStatusMessage(const QString& messageText) override;
+  void notifyStatusMessage(const QString& humanLabel, const QString& ss) override;
+
+  /**
+   * @brief notifyStandardOutputMessage
+   * @param humanLabel
+   * @param pipelineIndex
+   * @param ss
+   */
+  void notifyStandardOutputMessage(const QString& humanLabel, int pipelineIndex, const QString& ss) override;
+
+  /**
+   * @brief notifyStatusMessage
+   * @param prefix
+   * @param humanLabel
+   * @param ss
+   */
+  void notifyStatusMessage(const QString& prefix, const QString& humanLabel, const QString& ss) override;
 
   /**
    * @brief notifyProgressMessage
+   * @param prefix
+   * @param humanLabel
+   * @param str
    * @param progress
-   * @param messageText
    */
-  void notifyProgressMessage(int progress, const QString& messageText);
+  void notifyProgressMessage(const QString& prefix, const QString& humanLabel, const QString& str, int progress) override;
 
   /**
    * @brief notifyMissingProperty
@@ -379,11 +380,6 @@ public:
    */
   virtual void copyFilterParameterInstanceVariables(AbstractFilter* filter) const;
 
-  /**
-   * @brief Clears the renamed paths for the filter instance.
-   */
-  void clearRenamedPaths();
-
 signals:
   /**
    * @brief Signal is emitted when filter has completed the execute() method
@@ -400,7 +396,7 @@ signals:
   * @param propertyName
   * @param renamePath
   */
-  void dataArrayPathUpdated(const QString& propertyName, const DataArrayPath::RenameType& renamePath);
+  void dataArrayPathUpdated(QString propertyName, DataArrayPath::RenameType renamePath);
 
 public slots:
 
@@ -414,39 +410,17 @@ public slots:
    * For DataArrayPaths longer than the given path, only the specified values are modified
    * @param renamePath
    */
-  virtual void renameDataArrayPath(const DataArrayPath::RenameType& renamePath);
+  virtual void renameDataArrayPath(DataArrayPath::RenameType renamePath);
 
   /**
   * @brief Updates any DataArrayPath properties from the old paths to their corresponding new paths.
   * For DataArrayPaths longer than the new path, only the values provided by the new path are modified
   * @param renamedPaths
   */
-  inline void renameDataArrayPaths(const DataArrayPath::RenameContainer& renamedPaths)
-  {
-    for(const DataArrayPath::RenameType& rename : renamedPaths)
-    {
-      renameDataArrayPath(rename);
-    }
-  }
+  virtual void renameDataArrayPaths(DataArrayPath::RenameContainer renamedPaths);
 
 protected:
   AbstractFilter();
-
-  /**
-   * @brief Checks if the path matches the one saved with the specified ID.  Index 0 is used for
-   * non-renamable DataArrayPaths, and any DataID 0 value will bypass the check and return false.
-   * If the path does not match and the ID is already used, return true and update the path.  If
-   * the ID is used and the paths match, return false.  If the ID has not been used, add the path
-   * to the createdPaths map.
-   */
-  bool checkIfPathRenamed(const RenameDataPath::DataID_t id, const DataArrayPath& path);
-
-  /**
-   * @brief Adds the specified change to the list of renamed DataArrayPaths.
-   * @param oldPath
-   * @param newPath
-   */
-  void addPathRename(const DataArrayPath& oldPath, const DataArrayPath& newPath);
 
 protected slots:
   /**
@@ -458,11 +432,6 @@ protected slots:
 private:
   bool m_Cancel;
   QUuid m_Uuid;
-  int m_ErrorCode = 0;
-  int m_WarningCode = 0;
-
-  std::map<RenameDataPath::DataID_t, DataArrayPath> m_CreatedPaths;
-  DataArrayPath::RenameContainer m_RenamedPaths;
 
 public:
   AbstractFilter(const AbstractFilter&) = delete; // Copy Constructor Not Implemented

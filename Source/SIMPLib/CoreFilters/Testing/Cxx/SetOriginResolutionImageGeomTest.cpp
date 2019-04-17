@@ -55,8 +55,8 @@
 
 namespace SetOriginResolutionImageGeometryTest
 {
-const FloatVec3Type ORIGIN = FloatVec3Type{1, 2, 3};
-const FloatVec3Type RESOLUTION = FloatVec3Type{4, 5, 6};
+const FloatVec3_t ORIGIN = FloatVec3_t{1, 2, 3};
+const FloatVec3_t RESOLUTION = FloatVec3_t{4, 5, 6};
 }
 
 class SetOriginResolutionImageGeomTest
@@ -73,13 +73,13 @@ public:
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
     DataContainer::Pointer dc1 = DataContainer::New("DataContainer1");
-    dca->addOrReplaceDataContainer(dc1);
+    dca->addDataContainer(dc1);
 
     DataContainer::Pointer dc2 = DataContainer::New("DataContainer2");
-    dca->addOrReplaceDataContainer(dc2);
+    dca->addDataContainer(dc2);
 
     DataContainer::Pointer dc3 = DataContainer::New("DataContainer3");
-    dca->addOrReplaceDataContainer(dc3);
+    dca->addDataContainer(dc3);
 
     ImageGeom::Pointer imgGeom = ImageGeom::New();
     imgGeom->setDimensions(2, 2, 2);
@@ -152,9 +152,8 @@ public:
 
     QVariant value;
 
-    value.setValue(DataArrayPath("DataContainer1"));
-    bool propWasSet = filter->setProperty("DataContainerName", value);
-    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+    value.setValue(QString("DataContainer1"));
+    filter->setProperty("DataContainerName", value);
   }
 
   // -----------------------------------------------------------------------------
@@ -169,9 +168,8 @@ public:
 
     QVariant value;
 
-    value.setValue(DataArrayPath("DataContainer2"));
-    bool propWasSet = filter->setProperty("DataContainerName", value);
-    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+    value.setValue(QString("DataContainer2"));
+    filter->setProperty("DataContainerName", value);
   }
 
   // -----------------------------------------------------------------------------
@@ -186,9 +184,8 @@ public:
 
     QVariant value;
 
-    value.setValue(DataArrayPath("DataContainer3"));
-    bool propWasSet = filter->setProperty("DataContainerName", value);
-    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+    value.setValue(QString("DataContainer3"));
+    filter->setProperty("DataContainerName", value);
   }
 
   // -----------------------------------------------------------------------------
@@ -204,12 +201,10 @@ public:
     QVariant value;
 
     value.setValue(true);
-    bool propWasSet = filter->setProperty("ChangeOrigin", value);
-    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+    filter->setProperty("ChangeOrigin", value);
 
     value.setValue(SetOriginResolutionImageGeometryTest::ORIGIN);
-    propWasSet = filter->setProperty("Origin", value);
-    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+    filter->setProperty("Origin", value);
   }
 
   // -----------------------------------------------------------------------------
@@ -225,12 +220,10 @@ public:
     QVariant value;
 
     value.setValue(true);
-    bool propWasSet = filter->setProperty("ChangeResolution", value);
-    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+    filter->setProperty("ChangeResolution", value);
 
     value.setValue(SetOriginResolutionImageGeometryTest::RESOLUTION);
-    propWasSet = filter->setProperty("Spacing", value);
-    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+    filter->setProperty("Resolution", value);
   }
 
   // -----------------------------------------------------------------------------
@@ -245,18 +238,18 @@ public:
     changeOrigin(filter);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
 
     DataContainer::Pointer dc = filter->getDataContainerArray()->getDataContainer("DataContainer1");
     ImageGeom::Pointer imgGeom = std::dynamic_pointer_cast<ImageGeom>(dc->getGeometry());
 
     DREAM3D_REQUIRE(imgGeom != nullptr);
 
-    FloatVec3Type origin;
+    float origin[3];
     imgGeom->getOrigin(origin);
-    DREAM3D_REQUIRE_EQUAL(origin[0], SetOriginResolutionImageGeometryTest::ORIGIN[0]);
-    DREAM3D_REQUIRE_EQUAL(origin[1], SetOriginResolutionImageGeometryTest::ORIGIN[1]);
-    DREAM3D_REQUIRE_EQUAL(origin[2], SetOriginResolutionImageGeometryTest::ORIGIN[2]);
+    DREAM3D_REQUIRE_EQUAL(origin[0], SetOriginResolutionImageGeometryTest::ORIGIN.x);
+    DREAM3D_REQUIRE_EQUAL(origin[1], SetOriginResolutionImageGeometryTest::ORIGIN.y);
+    DREAM3D_REQUIRE_EQUAL(origin[2], SetOriginResolutionImageGeometryTest::ORIGIN.z);
   }
 
   // -----------------------------------------------------------------------------
@@ -271,7 +264,7 @@ public:
     changeResolution(filter);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
 
     DataContainer::Pointer dc = filter->getDataContainerArray()->getDataContainer("DataContainer1");
     ImageGeom::Pointer imgGeom = std::dynamic_pointer_cast<ImageGeom>(dc->getGeometry());
@@ -281,11 +274,11 @@ public:
     float xRes = 0.0f;
     float yRes = 0.0f;
     float zRes = 0.0f;
-    std::tie(xRes, yRes, zRes) = imgGeom->getSpacing();
+    std::tie(xRes, yRes, zRes) = imgGeom->getResolution();
 
-    DREAM3D_REQUIRE_EQUAL(xRes, SetOriginResolutionImageGeometryTest::RESOLUTION[0]);
-    DREAM3D_REQUIRE_EQUAL(yRes, SetOriginResolutionImageGeometryTest::RESOLUTION[1]);
-    DREAM3D_REQUIRE_EQUAL(zRes, SetOriginResolutionImageGeometryTest::RESOLUTION[2]);
+    DREAM3D_REQUIRE_EQUAL(xRes, SetOriginResolutionImageGeometryTest::RESOLUTION.x);
+    DREAM3D_REQUIRE_EQUAL(yRes, SetOriginResolutionImageGeometryTest::RESOLUTION.y);
+    DREAM3D_REQUIRE_EQUAL(zRes, SetOriginResolutionImageGeometryTest::RESOLUTION.z);
   }
 
   // -----------------------------------------------------------------------------
@@ -299,7 +292,7 @@ public:
     setInvalidGeometry(filter);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -384);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -384);
   }
 
   // -----------------------------------------------------------------------------
@@ -313,7 +306,7 @@ public:
     setNullGeometry(filter);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -385);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -385);
   }
 
   // -----------------------------------------------------------------------------

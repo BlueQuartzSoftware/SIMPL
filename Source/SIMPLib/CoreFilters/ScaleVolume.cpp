@@ -60,10 +60,10 @@ class ScaleVolumeUpdateVerticesImpl
 {
   float* m_Nodes;
   float* m_Min;
-  FloatVec3Type m_ScaleFactor;
+  FloatVec3_t m_ScaleFactor;
 
 public:
-  ScaleVolumeUpdateVerticesImpl(float* nodes, float* min, FloatVec3Type scale)
+  ScaleVolumeUpdateVerticesImpl(float* nodes, float* min, FloatVec3_t scale)
   : m_Nodes(nodes)
   , m_Min(min)
   , m_ScaleFactor(scale)
@@ -75,9 +75,9 @@ public:
   {
     for(size_t i = start; i < end; i++)
     {
-      m_Nodes[3 * i] = m_Min[0] + (m_Nodes[3 * i] - m_Min[0]) * m_ScaleFactor[0];
-      m_Nodes[3 * i + 1] = m_Min[1] + (m_Nodes[3 * i + 1] - m_Min[1]) * m_ScaleFactor[1];
-      m_Nodes[3 * i + 2] = m_Min[2] + (m_Nodes[3 * i + 2] - m_Min[2]) * m_ScaleFactor[2];
+      m_Nodes[3 * i] = m_Min[0] + (m_Nodes[3 * i] - m_Min[0]) * m_ScaleFactor.x;
+      m_Nodes[3 * i + 1] = m_Min[1] + (m_Nodes[3 * i + 1] - m_Min[1]) * m_ScaleFactor.y;
+      m_Nodes[3 * i + 2] = m_Min[2] + (m_Nodes[3 * i + 2] - m_Min[2]) * m_ScaleFactor.z;
     }
   }
 
@@ -98,9 +98,10 @@ ScaleVolume::ScaleVolume()
 , m_ApplyToVoxelVolume(true)
 , m_ApplyToSurfaceMesh(true)
 {
-  m_ScaleFactor[0] = 1.0f;
-  m_ScaleFactor[1] = 1.0f;
-  m_ScaleFactor[2] = 1.0f;
+  m_ScaleFactor.x = 1.0f;
+  m_ScaleFactor.y = 1.0f;
+  m_ScaleFactor.z = 1.0f;
+
 }
 
 // -----------------------------------------------------------------------------
@@ -113,7 +114,7 @@ ScaleVolume::~ScaleVolume() = default;
 // -----------------------------------------------------------------------------
 void ScaleVolume::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  FilterParameterVector parameters;
 
   parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Scaling Factor", ScaleFactor, FilterParameter::Parameter, ScaleVolume));
 
@@ -148,8 +149,8 @@ void ScaleVolume::readFilterParameters(AbstractFilterParametersReader* reader, i
   setApplyToVoxelVolume(reader->readValue("ApplyToVoxelVolume", getApplyToVoxelVolume()));
   setApplyToSurfaceMesh(reader->readValue("ApplyToSurfaceMesh", getApplyToSurfaceMesh()));
   setScaleFactor(reader->readFloatVec3("ScaleFactor", getScaleFactor()));
-  setDataContainerName(reader->readDataArrayPath("DataContainerName", getDataContainerName()));
-  setSurfaceDataContainerName(reader->readDataArrayPath("SurfaceDataContainerName", getSurfaceDataContainerName()));
+  setDataContainerName(reader->readString("DataContainerName", getDataContainerName()));
+  setSurfaceDataContainerName(reader->readString("SurfaceDataContainerName", getSurfaceDataContainerName()));
   reader->closeFilterGroup();
 }
 
@@ -165,8 +166,8 @@ void ScaleVolume::initialize()
 // -----------------------------------------------------------------------------
 void ScaleVolume::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 
   if(m_ApplyToVoxelVolume)
   {
@@ -197,8 +198,8 @@ void ScaleVolume::preflight()
 // -----------------------------------------------------------------------------
 void ScaleVolume::updateSurfaceMesh()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   tbb::task_scheduler_init init;
@@ -261,10 +262,10 @@ void ScaleVolume::updateSurfaceMesh()
 // -----------------------------------------------------------------------------
 void ScaleVolume::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -274,12 +275,12 @@ void ScaleVolume::execute()
     DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
     ImageGeom::Pointer image = m->getGeometryAs<ImageGeom>();
 
-    FloatVec3Type spacing = {0.0f, 0.0f, 0.0f};
-    image->getSpacing(spacing);
-    spacing[0] *= m_ScaleFactor[0];
-    spacing[1] *= m_ScaleFactor[1];
-    spacing[2] *= m_ScaleFactor[2];
-    image->setSpacing(spacing);
+    float resolution[3] = {0.0f, 0.0f, 0.0f};
+    image->getResolution(resolution);
+    resolution[0] *= m_ScaleFactor.x;
+    resolution[1] *= m_ScaleFactor.y;
+    resolution[2] *= m_ScaleFactor.z;
+    image->setResolution(resolution);
   }
 
   if(m_ApplyToSurfaceMesh)

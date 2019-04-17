@@ -109,10 +109,10 @@ public:
       datai->setValue(i, inum); // int array
       inum += 1;
     }
-    am->insertOrAssign(dataf); // float array
-    am->insertOrAssign(datai); // int array
-    vdc->addOrReplaceAttributeMatrix(am);
-    dca->addOrReplaceDataContainer(vdc);
+    am->addAttributeArray(dataf->getName(), dataf); // float array
+    am->addAttributeArray(datai->getName(), datai); // int array
+    vdc->addAttributeMatrix(am->getName(), am);
+    dca->addDataContainer(vdc);
 
     // Now instantiate the MultiThresholdObjects2Test Filter from the FilterManager
     QString filtName = "MultiThresholdObjects2";
@@ -165,7 +165,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     filter->execute();
-    DREAM3D_REQUIRED(filter->getErrorCode(), >=, 0);
+    DREAM3D_REQUIRED(filter->getErrorCondition(), >=, 0);
 
     DataArrayPath path = DataArrayPath(dataContainerName, SIMPL::Defaults::CellAttributeMatrixName, outputName);
     IDataArray::Pointer thresholdArray =
@@ -240,7 +240,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     filter->execute();
-    DREAM3D_REQUIRED(filter->getErrorCode(), >=, 0);
+    DREAM3D_REQUIRED(filter->getErrorCondition(), >=, 0);
 
     DataArrayPath path = DataArrayPath(dataContainerName, SIMPL::Defaults::CellAttributeMatrixName, outputName);
     IDataArray::Pointer thresholdArray =

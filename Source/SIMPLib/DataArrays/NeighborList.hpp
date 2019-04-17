@@ -314,6 +314,18 @@ class NeighborList : public IDataArray
     QString getTypeAsString() override { return NeighborList<T>::ClassName();}
 
     /**
+     * @brief setName
+     * @param name
+     */
+    void setName(const QString& name) override { m_Name = name; }
+
+    /**
+     * @brief getName
+     * @return
+     */
+    QString getName() override { return m_Name; }
+
+    /**
      * @brief takeOwnership
      */
     void takeOwnership() override {    }
@@ -596,9 +608,18 @@ class NeighborList : public IDataArray
      * @brief Resizes the internal array to accomondate numTuples
      * @param numTuples
      */
-    void resizeTuples(size_t numTuples) override
+    void resizeTuples(size_t numTuples)
     {
       resizeTotalElements(numTuples);
+    }
+
+    /**
+     * @brief Resizes the internal array to accomondate numTuples
+     * @param numTuples
+     */
+    int32_t resize(size_t numTuples) override
+    {
+      return resizeTotalElements(numTuples);
     }
 
     //FIXME: These need to be implemented
@@ -1051,9 +1072,9 @@ class NeighborList : public IDataArray
     /**
      * @brief NeighborList
      */
-    NeighborList(size_t numTuples, const QString name)
-    : IDataArray(name)
-    , m_NumNeighborsArrayName("")
+    NeighborList(size_t numTuples, const QString& name)
+    : m_NumNeighborsArrayName()
+    , m_Name(name)
     , m_NumTuples(numTuples)
     , m_IsAllocated(false)
     {
@@ -1061,6 +1082,7 @@ class NeighborList : public IDataArray
 
   private:
     std::vector<SharedVectorType> m_Array;
+    QString m_Name;
     size_t m_NumTuples;
     bool m_IsAllocated;
     T m_InitValue;

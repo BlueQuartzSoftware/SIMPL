@@ -402,6 +402,9 @@ RectGridGeom::RectGridGeom()
   m_GeometryTypeName = SIMPL::Geometry::RectGridGeometry;
   m_GeometryType = IGeometry::Type::RectGrid;
   m_XdmfGridType = SIMPL::XdmfGridType::RectilinearGrid;
+  m_MessagePrefix = "";
+  m_MessageTitle = "";
+  m_MessageLabel = "";
   m_UnitDimensionality = 3;
   m_SpatialDimensionality = 3;
   m_Dimensions[0] = 0;
@@ -437,47 +440,7 @@ RectGridGeom::Pointer RectGridGeom::CreateGeometry(const QString& name)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPL::Tuple3SVec RectGridGeom::getDimensions() const
-{
-  return m_Dimensions.toTuple();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void RectGridGeom::getDimensions(SizeVec3Type& dims) const
-{
-  dims = m_Dimensions;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void RectGridGeom::setDimensions(const SizeVec3Type& dims)
-{
-  m_Dimensions = dims;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void RectGridGeom::setDimensions(SizeVec3Type& dims)
-{
-  m_Dimensions = dims;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void RectGridGeom::setDimensions(const SIMPL::Tuple3SVec& dims)
-{
-  m_Dimensions = dims;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void RectGridGeom::setXBounds(const FloatArrayType::Pointer& xBnds)
+void RectGridGeom::setXBounds(FloatArrayType::Pointer xBnds)
 {
   if(xBnds.get() != nullptr)
   {
@@ -492,7 +455,7 @@ void RectGridGeom::setXBounds(const FloatArrayType::Pointer& xBnds)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RectGridGeom::setYBounds(const FloatArrayType::Pointer& yBnds)
+void RectGridGeom::setYBounds(FloatArrayType::Pointer yBnds)
 {
   if(yBnds.get() != nullptr)
   {
@@ -507,7 +470,7 @@ void RectGridGeom::setYBounds(const FloatArrayType::Pointer& yBnds)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RectGridGeom::setZBounds(const FloatArrayType::Pointer& zBnds)
+void RectGridGeom::setZBounds(FloatArrayType::Pointer zBnds)
 {
   if(zBnds.get() != nullptr)
   {
@@ -517,46 +480,6 @@ void RectGridGeom::setZBounds(const FloatArrayType::Pointer& zBnds)
     }
   }
   m_zBounds = zBnds;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-FloatArrayType::Pointer RectGridGeom::getXBounds() const
-{
-  return m_xBounds;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-FloatArrayType::Pointer RectGridGeom::getYBounds() const
-{
-  return m_yBounds;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-FloatArrayType::Pointer RectGridGeom::getZBounds() const
-{
-  return m_zBounds;
-}
-
-// -----------------------------------------------------------------------------
-size_t RectGridGeom::getXPoints()
-{
-  return m_Dimensions[0];
-}
-// -----------------------------------------------------------------------------
-size_t RectGridGeom::getYPoints()
-{
-  return m_Dimensions[1];
-}
-// -----------------------------------------------------------------------------
-size_t RectGridGeom::getZPoints()
-{
-  return m_Dimensions[2];
 }
 
 // -----------------------------------------------------------------------------
@@ -760,7 +683,7 @@ void RectGridGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RectGridGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
+void RectGridGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
   if(data->getType() != AttributeMatrix::Type::Cell)
   {
@@ -771,10 +694,10 @@ void RectGridGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMat
   {
     return;
   }
-  // if(data->getName().compare(name) != 0)
-  //{
-  //  data->setName(name);
-  //}
+  if(data->getName().compare(name) != 0)
+  {
+    data->setName(name);
+  }
   m_AttributeMatrices[name] = data;
 }
 
@@ -1002,7 +925,7 @@ void RectGridGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayTy
 
   if(observable != nullptr)
   {
-    connect(this, SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), observable, SLOT(processDerivativesMessage(const AbstractMessage::Pointer&)));
+    connect(this, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), observable, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
   }
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
@@ -1141,7 +1064,7 @@ QString RectGridGeom::getInfoString(SIMPL::InfoStringFormat format)
     ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type</th><td>" << TypeToString(getGeometryType()) << "</td></tr>";
     ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Units</th><td>)" << LengthUnitToString(getUnits()) << "</td></tr>";
     ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Dimensions:</th><td>" << volDims[0] << " x " << volDims[1] << " x " << volDims[2] << "</td></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Spacing:</th><td>"
+    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Resolution:</th><td>"
        << "Variable"
        << "</td></tr>";
   }

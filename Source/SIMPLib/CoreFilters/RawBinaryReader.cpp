@@ -190,7 +190,7 @@ RawBinaryReader::~RawBinaryReader() = default;
 // -----------------------------------------------------------------------------
 void RawBinaryReader::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  FilterParameterVector parameters;
 
   parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("Input File", InputFile, FilterParameter::Parameter, RawBinaryReader, "*.raw *.bin"));
   parameters.push_back(SIMPL_NEW_NUMERICTYPE_FP("Scalar Type", ScalarType, FilterParameter::Parameter, RawBinaryReader));
@@ -245,29 +245,32 @@ void RawBinaryReader::initialize()
 // -----------------------------------------------------------------------------
 void RawBinaryReader::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 
   QFileInfo fi(getInputFile());
   if(getInputFile().isEmpty())
   {
     QString ss = QObject::tr("The input file must be set");
-    setErrorCondition(-387, ss);
+    setErrorCondition(-387);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
   else if(!fi.exists())
   {
     QString ss = QObject::tr("The input file does not exist");
-    setErrorCondition(-388, ss);
+    setErrorCondition(-388);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
   if(m_NumberOfComponents < 1)
   {
     QString ss = QObject::tr("The number of components must be positive");
-    setErrorCondition(-391, ss);
+    setErrorCondition(-391);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
   AttributeMatrix::Pointer attrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getCreatedAttributeArrayPath(), -30003);
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -338,7 +341,8 @@ void RawBinaryReader::dataCheck()
                              " Please adjust the input parameters to match the size of the file or select a different data file")
                      .arg(fileSize)
                      .arg(allocatedBytes);
-    setErrorCondition(RBR_FILE_TOO_SMALL, ss);
+    setErrorCondition(RBR_FILE_TOO_SMALL);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
   else if(check == 1)
   {
@@ -347,7 +351,8 @@ void RawBinaryReader::dataCheck()
                              " SIMPLView will read only the first part of the file into the array")
                      .arg(fileSize)
                      .arg(allocatedBytes);
-    setWarningCondition(RBR_FILE_TOO_BIG, ss);
+    setWarningCondition(RBR_FILE_TOO_BIG);
+    notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
   }
 }
 
@@ -369,17 +374,16 @@ void RawBinaryReader::preflight()
 // -----------------------------------------------------------------------------
 void RawBinaryReader::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  int32_t err = 0;
+  setErrorCondition(err);
   dataCheck();
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getCreatedAttributeArrayPath().getDataContainerName());
 
-  int32_t err = 0;
   switch(m_ScalarType)
   {
   case SIMPL::NumericTypes::Type::Int8:
@@ -424,19 +428,23 @@ void RawBinaryReader::execute()
 
   if(err == RBR_FILE_NOT_OPEN)
   {
-    setErrorCondition(RBR_FILE_NOT_OPEN, "Unable to open the specified file");
+    setErrorCondition(RBR_FILE_NOT_OPEN);
+    notifyErrorMessage(getHumanLabel(), "Unable to open the specified file", getErrorCondition());
   }
   else if(err == RBR_FILE_TOO_SMALL)
   {
-    setErrorCondition(RBR_FILE_TOO_SMALL, "The file size is smaller than the allocated size");
+    setErrorCondition(RBR_FILE_TOO_SMALL);
+    notifyErrorMessage(getHumanLabel(), "The file size is smaller than the allocated size", getErrorCondition());
   }
   else if(err == RBR_FILE_TOO_BIG)
   {
-    setWarningCondition(RBR_FILE_TOO_BIG, "The file size is larger than the allocated size");
+    setWarningCondition(RBR_FILE_TOO_BIG);
+    notifyWarningMessage(getHumanLabel(), "The file size is larger than the allocated size", getWarningCondition());
   }
   else if(err == RBR_READ_EOF)
   {
-    setErrorCondition(RBR_READ_EOF, "RawBinaryReader read past the end of the specified file");
+    setErrorCondition(RBR_READ_EOF);
+    notifyErrorMessage(getHumanLabel(), "RawBinaryReader read past the end of the specified file", getErrorCondition());
   }
 }
 

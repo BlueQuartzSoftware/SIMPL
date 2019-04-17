@@ -87,7 +87,7 @@ Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions
 template <typename TParametersValueType, unsigned int CompositeNDimensions>
 void
 Dream3DITransformContainerToTransform<TParametersValueType, CompositeNDimensions>
-::VerifyPreconditions() ITKv5_CONST
+::VerifyPreconditions()
 {
   if(!m_ITransformContainer)
   {

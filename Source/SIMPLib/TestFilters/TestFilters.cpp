@@ -28,7 +28,7 @@ Filt0::~Filt0() = default;
 // -----------------------------------------------------------------------------
 void Filt0::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  QVector<FilterParameter::Pointer> parameters;
   /* Place all your option initialization code here */
 
   /*  For an Integer use this code*/
@@ -68,8 +68,8 @@ void Filt0::initialize()
 // -----------------------------------------------------------------------------
 void Filt0::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 }
 
 // -----------------------------------------------------------------------------
@@ -86,17 +86,19 @@ void Filt0::preflight()
 // -----------------------------------------------------------------------------
 void Filt0::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  int err = 0;
+  setErrorCondition(err);
+  setErrorCondition(err);
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
   if(nullptr == m)
   {
+    setErrorCondition(-1);
     QString ss = QObject::tr(" DataContainer was nullptr");
-    setErrorCondition(-1, QObject::tr("VolumeDataContainer was nullptr. Returning from Execute Method for filter %1").arg(getHumanLabel()));
+    notifyErrorMessage(getHumanLabel(), QObject::tr("VolumeDataContainer was nullptr. Returning from Execute Method for filter %1").arg(getHumanLabel()), -1);
     return;
   }
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 
   /* Place all your code to execute your filter here. */
 }
@@ -122,7 +124,7 @@ Filt1::~Filt1() = default;
 // -----------------------------------------------------------------------------
 void Filt1::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  QVector<FilterParameter::Pointer> parameters;
   /* Place all your option initialization code here */
 
   /*  For an Integer use this code*/
@@ -162,8 +164,8 @@ void Filt1::initialize()
 // -----------------------------------------------------------------------------
 void Filt1::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 }
 
 // -----------------------------------------------------------------------------
@@ -180,17 +182,18 @@ void Filt1::preflight()
 // -----------------------------------------------------------------------------
 void Filt1::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  int err = 0;
+  setErrorCondition(err);
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
   if(nullptr == m.get())
   {
+    setErrorCondition(-1);
     QString ss = QObject::tr(" DataContainer was nullptr");
-    setErrorCondition(-1, QObject::tr("VolumeDataContainer was nullptr. Returning from Execute Method for filter %1").arg(getHumanLabel()));
+    notifyErrorMessage(getHumanLabel(), QObject::tr("VolumeDataContainer was nullptr. Returning from Execute Method for filter %1").arg(getHumanLabel()), -1);
     return;
   }
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 
   /* Place all your code to execute your filter here. */
 }

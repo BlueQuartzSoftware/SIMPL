@@ -91,7 +91,7 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     filter->setDataContainerArray(dca);
 
@@ -106,7 +106,7 @@ public:
     filter->setProperty("NewAttributeMatrix", value);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -307020);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -307020);
   }
 
   // -----------------------------------------------------------------------------
@@ -121,12 +121,12 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     QVector<size_t> dims = QVector<size_t>();
     dims.push_back(1);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
-    dc->addOrReplaceAttributeMatrix(am);
+    dc->addAttributeMatrix("AttributeMatrix", am);
 
     filter->setDataContainerArray(dca);
 
@@ -141,7 +141,7 @@ public:
     filter->setProperty("NewAttributeMatrix", value);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -301000);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -301000);
   }
 
   // -----------------------------------------------------------------------------
@@ -156,12 +156,12 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     QVector<size_t> dims = QVector<size_t>();
     dims.push_back(1);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
-    dc->addOrReplaceAttributeMatrix(am);
+    dc->addAttributeMatrix("AttributeMatrix", am);
 
     filter->setDataContainerArray(dca);
 
@@ -176,7 +176,7 @@ public:
     filter->setProperty("NewAttributeMatrix", value);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
 
     DREAM3D_REQUIRE_EQUAL(am->getName(), newAttributeMatrixName);
   }
@@ -193,12 +193,12 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     QVector<size_t> dims = QVector<size_t>();
     dims.push_back(1);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
-    dc->addOrReplaceAttributeMatrix(am);
+    dc->addAttributeMatrix("AttributeMatrix", am);
 
     filter->setDataContainerArray(dca);
 
@@ -213,7 +213,7 @@ public:
     filter->setProperty("NewAttributeMatrix", value);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -11004);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11004);
   }
 
   // -----------------------------------------------------------------------------
@@ -228,12 +228,12 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     QVector<size_t> dims = QVector<size_t>();
     dims.push_back(1);
     AttributeMatrix::Pointer am = AttributeMatrix::New(dims, "AttributeMatrix", AttributeMatrix::Type::Any);
-    dc->addOrReplaceAttributeMatrix(am);
+    dc->addAttributeMatrix("AttributeMatrix", am);
 
     filter->setDataContainerArray(dca);
 
@@ -247,7 +247,7 @@ public:
     value.setValue(newAttributeMatrixName);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -11004);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11004);
   }
 
   // -----------------------------------------------------------------------------

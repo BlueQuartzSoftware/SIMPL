@@ -44,13 +44,6 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
-enum createdPathID : RenameDataPath::DataID_t
-{
-  DataContainerID = 1,
-  AttributeMatrixID,
-  DataArrayID
-};
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -73,7 +66,7 @@ CopyObject::~CopyObject() = default;
 // -----------------------------------------------------------------------------
 void CopyObject::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  FilterParameterVector parameters;
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Object Type to Copy");
@@ -117,7 +110,7 @@ void CopyObject::readFilterParameters(AbstractFilterParametersReader* reader, in
 {
   reader->openFilterGroup(this, index);
   setObjectToCopy(reader->readValue("ObjectToCopy", getObjectToCopy()));
-  setDataContainerToCopy(reader->readDataArrayPath("DataContainerToCopy", getDataContainerToCopy()));
+  setDataContainerToCopy(reader->readString("DataContainerToCopy", getDataContainerToCopy()));
   setAttributeMatrixToCopy(reader->readDataArrayPath("AttributeMatrixToCopy", getAttributeMatrixToCopy()));
   setAttributeArrayToCopy(reader->readDataArrayPath("AttributeArrayToCopy", getAttributeArrayToCopy()));
   setCopiedObjectName(reader->readString("CopiedObjectName", getCopiedObjectName()));
@@ -136,13 +129,14 @@ void CopyObject::initialize()
 // -----------------------------------------------------------------------------
 void CopyObject::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 
   if(getCopiedObjectName().isEmpty())
   {
+    setErrorCondition(-11001);
     QString ss = QObject::tr("The copied object name must be set");
-    setErrorCondition(-11001, ss);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
   switch(getObjectToCopy())
@@ -152,21 +146,21 @@ void CopyObject::dataCheck()
   {
     if(getDataContainerArray()->doesDataContainerExist(getCopiedObjectName()))
     {
+      setErrorCondition(-11001);
       QString ss = QObject::tr("A Data Container already exists with the name %1").arg(getCopiedObjectName());
-      setErrorCondition(-11001, ss);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
 
     DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerToCopy());
 
-    if(getErrorCode() < 0)
+    if(getErrorCondition() < 0)
     {
       return;
     }
 
     DataContainer::Pointer dcCopy = m->deepCopy(getInPreflight());
     dcCopy->setName(getCopiedObjectName());
-    getDataContainerArray()->addOrReplaceDataContainer(dcCopy);
-    RenameDataPath::AlertFilterCreatedPath(this, DataContainerID, dcCopy->getDataArrayPath());
+    getDataContainerArray()->addDataContainer(dcCopy);
 
     break;
   }
@@ -176,21 +170,21 @@ void CopyObject::dataCheck()
     DataArrayPath path(getAttributeMatrixToCopy().getDataContainerName(), getCopiedObjectName(), "");
     if(getDataContainerArray()->doesAttributeMatrixExist(path))
     {
+      setErrorCondition(-11001);
       QString ss = QObject::tr("An Attribute Matrix already exists with the name %1").arg(getCopiedObjectName());
-      setErrorCondition(-11001, ss);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
 
     AttributeMatrix::Pointer attrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getAttributeMatrixToCopy(), -301);
 
-    if(getErrorCode() < 0)
+    if(getErrorCondition() < 0)
     {
       return;
     }
 
     AttributeMatrix::Pointer attrMatCopy = attrMat->deepCopy(getInPreflight());
     attrMatCopy->setName(getCopiedObjectName());
-    getDataContainerArray()->getDataContainer(getAttributeMatrixToCopy().getDataContainerName())->addOrReplaceAttributeMatrix(attrMatCopy);
-    RenameDataPath::AlertFilterCreatedPath(this, AttributeMatrixID, attrMatCopy->getDataArrayPath());
+    getDataContainerArray()->getDataContainer(getAttributeMatrixToCopy().getDataContainerName())->addAttributeMatrix(getCopiedObjectName(), attrMatCopy);
 
     break;
   }
@@ -200,21 +194,24 @@ void CopyObject::dataCheck()
     DataArrayPath path(getAttributeArrayToCopy().getDataContainerName(), getAttributeArrayToCopy().getAttributeMatrixName(), getCopiedObjectName());
     if(getDataContainerArray()->doesAttributeArrayExist(path))
     {
+      setErrorCondition(-11001);
       QString ss = QObject::tr("An Attribute Array already exists with the name %1").arg(getCopiedObjectName());
-      setErrorCondition(-11001, ss);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
 
     IDataArray::Pointer array = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getAttributeArrayToCopy());
 
-    if(getErrorCode() < 0)
+    if(getErrorCondition() < 0)
     {
       return;
     }
 
     IDataArray::Pointer arrayCopy = array->deepCopy(getInPreflight());
     arrayCopy->setName(getCopiedObjectName());
-    getDataContainerArray()->getDataContainer(getAttributeArrayToCopy().getDataContainerName())->getAttributeMatrix(getAttributeArrayToCopy().getAttributeMatrixName())->insertOrAssign(arrayCopy);
-    RenameDataPath::AlertFilterCreatedPath(this, DataArrayID, arrayCopy->getDataArrayPath());
+    getDataContainerArray()
+        ->getDataContainer(getAttributeArrayToCopy().getDataContainerName())
+        ->getAttributeMatrix(getAttributeArrayToCopy().getAttributeMatrixName())
+        ->addAttributeArray(getCopiedObjectName(), arrayCopy);
 
     break;
   }
@@ -244,10 +241,10 @@ void CopyObject::preflight()
 // -----------------------------------------------------------------------------
 void CopyObject::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }

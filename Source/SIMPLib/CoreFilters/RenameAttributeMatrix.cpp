@@ -60,7 +60,7 @@ RenameAttributeMatrix::~RenameAttributeMatrix() = default;
 // -----------------------------------------------------------------------------
 void RenameAttributeMatrix::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  FilterParameterVector parameters;
 
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
@@ -95,32 +95,23 @@ void RenameAttributeMatrix::initialize()
 // -----------------------------------------------------------------------------
 void RenameAttributeMatrix::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 
   if(m_NewAttributeMatrix.isEmpty())
   {
+    setErrorCondition(-11004);
     QString ss = QObject::tr("The new Attribute Matrix name must be set");
-    setErrorCondition(-11004, ss);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
   QString amName = getSelectedAttributeMatrixPath().getAttributeMatrixName();
 
-  if(m_LastMatrixName != getNewAttributeMatrix())
-  {
-    DataArrayPath newMatrixPath = getSelectedAttributeMatrixPath();
-    newMatrixPath.setAttributeMatrixName(getNewAttributeMatrix());
-    DataArrayPath oldMatrixPath = getSelectedAttributeMatrixPath();
-    oldMatrixPath.setAttributeMatrixName(m_LastMatrixName);
-    addPathRename(oldMatrixPath, getSelectedAttributeMatrixPath());
-    m_LastMatrixName = getNewAttributeMatrix();
-  }
-
   DataContainer::Pointer dc = getDataContainerArray()->getPrereqDataContainer(this, getSelectedAttributeMatrixPath().getDataContainerName());
   getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getSelectedAttributeMatrixPath(), -301);
 
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -128,14 +119,9 @@ void RenameAttributeMatrix::dataCheck()
   bool check = dc->renameAttributeMatrix(amName, getNewAttributeMatrix());
   if(!check)
   {
+    setErrorCondition(-11006);
     QString ss = QObject::tr("Attempt to rename Attribute Matrix '%1' to '%2' failed").arg(amName).arg(getNewAttributeMatrix());
-    setErrorCondition(-11006, ss);
-  }
-  else
-  {
-    DataArrayPath newPath = getSelectedAttributeMatrixPath();
-    newPath.setAttributeMatrixName(getNewAttributeMatrix());
-    addPathRename(getSelectedAttributeMatrixPath(), newPath);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 }
 
@@ -157,10 +143,10 @@ void RenameAttributeMatrix::preflight()
 // -----------------------------------------------------------------------------
 void RenameAttributeMatrix::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck(); // calling the dataCheck will rename the array, so nothing is required here
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -247,8 +233,8 @@ DataArrayPath::RenameContainer RenameAttributeMatrix::getRenamedPaths()
   DataArrayPath newPath = getSelectedAttributeMatrixPath();
   newPath.setAttributeMatrixName(getNewAttributeMatrix());
 
-  DataArrayPath::RenameContainer container = AbstractFilter::getRenamedPaths();
-  container.push_back(std::make_pair(oldPath, newPath));
+  DataArrayPath::RenameContainer container;
+  container.push_back(DataArrayPath::RenameType(oldPath, newPath));
 
   return container;
 }

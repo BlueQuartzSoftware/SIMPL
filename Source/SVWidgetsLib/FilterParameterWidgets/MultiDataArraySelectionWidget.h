@@ -127,7 +127,7 @@ class SVWidgetsLib_EXPORT MultiDataArraySelectionWidget : public FilterParameter
     void on_availableArraysListWidget_itemDoubleClicked(QListWidgetItem* item);
     void on_selectedArraysListWidget_itemDoubleClicked(QListWidgetItem* item);
 
-    void updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath);
+    void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
   private:
     bool m_DidCausePreflight;

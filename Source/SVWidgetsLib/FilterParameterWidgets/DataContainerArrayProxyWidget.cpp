@@ -378,7 +378,7 @@ void DataContainerArrayProxyWidget::toggleStrikeOutFont(QListWidgetItem* item, Q
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerArrayProxyWidget::updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath)
+void DataContainerArrayProxyWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
 {
   blockSignals(true);
 

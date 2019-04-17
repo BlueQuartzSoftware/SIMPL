@@ -52,6 +52,9 @@ VertexGeom::VertexGeom()
   m_GeometryTypeName = SIMPL::Geometry::VertexGeometry;
   m_GeometryType = IGeometry::Type::Vertex;
   m_XdmfGridType = SIMPL::XdmfGridType::PolyData;
+  m_MessagePrefix = "";
+  m_MessageTitle = "";
+  m_MessageLabel = "";
   m_UnitDimensionality = 0;
   m_SpatialDimensionality = 3;
   m_VertexList = VertexGeom::CreateSharedVertexList(0);
@@ -112,7 +115,7 @@ void VertexGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void VertexGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
+void VertexGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
   if(data->getType() != AttributeMatrix::Type::Vertex)
   {
@@ -123,10 +126,10 @@ void VertexGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatri
   {
     return;
   }
-  // if(data->getName().compare(name) != 0)
-  //{
-  //  data->setName(name);
-  //}
+  if(data->getName().compare(name) != 0)
+  {
+    data->setName(name);
+  }
   m_AttributeMatrices[name] = data;
 }
 

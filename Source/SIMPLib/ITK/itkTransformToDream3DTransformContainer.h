@@ -37,7 +37,6 @@
 #include "itkSimpleDataObjectDecorator.h"
 
 #include "SIMPLib/Geometry/TransformContainer.h"
-#include "SIMPLib/ITK/itkSupportConstants.h"
 
 namespace itk
 {
@@ -62,7 +61,7 @@ protected:
   TransformToDream3DTransformContainer();
   ~TransformToDream3DTransformContainer() override;
 
-  void VerifyPreconditions() ITKv5_CONST;
+  void VerifyPreconditions() override;
 
   void GenerateData() override;
   ProcessObject::DataObjectPointer MakeOutput(ProcessObject::DataObjectPointerArraySizeType) override;

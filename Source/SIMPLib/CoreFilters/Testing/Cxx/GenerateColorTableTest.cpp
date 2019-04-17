@@ -161,7 +161,7 @@ public:
 
       filter->setDataContainerArray(dca);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0)
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
     }
 
     // Validate Results
@@ -208,8 +208,8 @@ public:
     DataContainerArray::Pointer dca = DataContainerArray::New();
     DataContainer::Pointer dc = DataContainer::New(SIMPL::Defaults::ImageDataContainerName);
     AttributeMatrix::Pointer am = AttributeMatrix::New(QVector<size_t>(1, 37989), SIMPL::Defaults::CellAttributeMatrixName, AttributeMatrix::Type::Generic);
-    dc->addOrReplaceAttributeMatrix(am);
-    dca->addOrReplaceDataContainer(dc);
+    dc->addAttributeMatrix(SIMPL::Defaults::CellAttributeMatrixName, am);
+    dca->addDataContainer(dc);
 
     // Read Image File
     {
@@ -242,7 +242,7 @@ public:
 
       filter->setDataContainerArray(dca);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0)
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
     }
 
     CheckPreset("Black, Blue and White", UnitTest::GenerateColorTableTest::BlackBlueWhiteFile, dca);

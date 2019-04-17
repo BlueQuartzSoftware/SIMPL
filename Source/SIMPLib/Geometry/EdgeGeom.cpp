@@ -128,6 +128,9 @@ EdgeGeom::EdgeGeom()
   m_GeometryTypeName = SIMPL::Geometry::EdgeGeometry;
   m_GeometryType = IGeometry::Type::Edge;
   m_XdmfGridType = SIMPL::XdmfGridType::PolyData;
+  m_MessagePrefix = "";
+  m_MessageTitle = "";
+  m_MessageLabel = "";
   m_UnitDimensionality = 1;
   m_SpatialDimensionality = 3;
   m_VertexList = EdgeGeom::CreateSharedVertexList(0);
@@ -199,7 +202,7 @@ void EdgeGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void EdgeGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
+void EdgeGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
   if(data->getType() != AttributeMatrix::Type::Vertex && data->getType() != AttributeMatrix::Type::Edge)
   {
@@ -214,11 +217,11 @@ void EdgeGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix:
   {
     return;
   }
-  // if(data->getName().compare(name) != 0)
-  //{
-  //  data->setName(name);
-  //}
-  m_AttributeMatrices[data->getName()] = data;
+  if(data->getName().compare(name) != 0)
+  {
+    data->setName(name);
+  }
+  m_AttributeMatrices[name] = data;
 }
 
 // -----------------------------------------------------------------------------
@@ -433,7 +436,7 @@ void EdgeGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::
 
   if(observable != nullptr)
   {
-    connect(this, SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), observable, SLOT(processDerivativesMessage(const AbstractMessage::Pointer&)));
+    connect(this, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), observable, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
   }
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS

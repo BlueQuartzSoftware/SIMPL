@@ -131,7 +131,7 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget
      * @brief linkConditionalWidgets
      * @param filterParameters
      */
-    void linkConditionalWidgets(FilterParameterVectorType& filterParameters);
+    void linkConditionalWidgets(QVector<FilterParameter::Pointer>& filterParameters);
 
   public:
     FilterInputWidget(const FilterInputWidget&) = delete; // Copy Constructor Not Implemented

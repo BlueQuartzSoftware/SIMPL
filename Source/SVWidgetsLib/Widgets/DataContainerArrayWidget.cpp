@@ -156,12 +156,15 @@ void DataContainerArrayWidget::updateView()
   QStandardItem* rootItem = model->invisibleRootItem();
 
   // Loop over the data containers until we find the proper data container
-  DataContainerArray::Container containers = dca->getDataContainers();
+  QList<DataContainer::Pointer> containers = dca->getDataContainers();
 
+  QListIterator<DataContainer::Pointer> containerIter(containers);
   // QStringList dcList;
   int row0 = 0;
-  for(DataContainer::Pointer dc : containers)
+  while(containerIter.hasNext())
   {
+    DataContainer::Pointer dc = containerIter.next();
+
     QStandardItem* dcItem = new QStandardItem(dc->getName());
     rootItem->appendRow(dcItem);
 
@@ -173,10 +176,14 @@ void DataContainerArrayWidget::updateView()
     }
 
     // We found the proper Data Container, now populate the AttributeMatrix List
+    DataContainer::AttributeMatrixMap_t attrMats = dc->getAttributeMatrices();
+    QMapIterator<QString, AttributeMatrix::Pointer> attrMatsIter(attrMats);
     int row1 = 0;
-    for(const auto& am : dc->getChildren())
+    while(attrMatsIter.hasNext())
     {
-      QString amName = am->getName();
+      attrMatsIter.next();
+      QString amName = attrMatsIter.key();
+      AttributeMatrix::Pointer am = attrMatsIter.value();
 
       QStandardItem* amItem = new QStandardItem(am->getName());
       dcItem->appendRow(amItem);

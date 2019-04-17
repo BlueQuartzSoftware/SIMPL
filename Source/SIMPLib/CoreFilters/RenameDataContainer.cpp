@@ -37,8 +37,8 @@
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
 // -----------------------------------------------------------------------------
@@ -60,16 +60,27 @@ RenameDataContainer::~RenameDataContainer() = default;
 // -----------------------------------------------------------------------------
 void RenameDataContainer::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  FilterParameterVector parameters;
 
   {
     DataContainerSelectionFilterParameter::RequirementType req;
     parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container to Rename", SelectedDataContainerName, FilterParameter::RequiredArray, RenameDataContainer, req));
   }
 
-  parameters.push_back(SIMPL_NEW_DC_CREATION_FP("New Data Container Name", NewDataContainerName, FilterParameter::Parameter, RenameDataContainer));
+  parameters.push_back(SIMPL_NEW_STRING_FP("New Data Container Name", NewDataContainerName, FilterParameter::Parameter, RenameDataContainer));
 
   setFilterParameters(parameters);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RenameDataContainer::readFilterParameters(AbstractFilterParametersReader* reader, int index)
+{
+  reader->openFilterGroup(this, index);
+  setSelectedDataContainerName(reader->readString("SelectedDataContainerName", getSelectedDataContainerName()));
+  setNewDataContainerName(reader->readString("NewDataContainerName", getNewDataContainerName()));
+  reader->closeFilterGroup();
 }
 
 // -----------------------------------------------------------------------------
@@ -84,26 +95,19 @@ void RenameDataContainer::initialize()
 // -----------------------------------------------------------------------------
 void RenameDataContainer::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 
   if(getNewDataContainerName().isEmpty())
   {
+    setErrorCondition(-11001);
     QString ss = QObject::tr("The new Data Container name must be set");
-    setErrorCondition(-11001, ss);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
-  if(m_LastContainerName != m_NewDataContainerName)
-  {
-    DataArrayPath oldContainerPath = m_LastContainerName;
-    DataArrayPath newContainerPath = getNewDataContainerName();
-    addPathRename(oldContainerPath, newContainerPath);
-    m_LastContainerName = getNewDataContainerName();
-  }
-
   getDataContainerArray()->getPrereqDataContainer(this, getSelectedDataContainerName());
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -111,14 +115,9 @@ void RenameDataContainer::dataCheck()
   bool check = getDataContainerArray()->renameDataContainer(getSelectedDataContainerName(), getNewDataContainerName());
   if(!check)
   {
-    QString ss = QObject::tr("Attempt to rename DataContainer '%1' to '%2' failed").arg(getSelectedDataContainerName().getDataContainerName()).arg(getNewDataContainerName().getDataContainerName());
-    setErrorCondition(-11006, ss);
-  }
-  else
-  {
-    DataArrayPath oldPath = getSelectedDataContainerName();
-    DataArrayPath newPath = getNewDataContainerName();
-    addPathRename(oldPath, newPath);
+    setErrorCondition(-11006);
+    QString ss = QObject::tr("Attempt to rename DataContainer '%1' to '%2' failed").arg(getSelectedDataContainerName()).arg(getNewDataContainerName());
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 }
 
@@ -140,10 +139,10 @@ void RenameDataContainer::preflight()
 // -----------------------------------------------------------------------------
 void RenameDataContainer::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck(); // calling the dataCheck will rename the array, so nothing is required here
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -226,11 +225,11 @@ const QString RenameDataContainer::getHumanLabel() const
 // -----------------------------------------------------------------------------
 DataArrayPath::RenameContainer RenameDataContainer::getRenamedPaths()
 {
-  DataArrayPath oldPath = getSelectedDataContainerName();
-  DataArrayPath newPath = getNewDataContainerName();
+  DataArrayPath oldPath(getSelectedDataContainerName(), "", "");
+  DataArrayPath newPath(getNewDataContainerName(), "", "");
 
-  DataArrayPath::RenameContainer container = AbstractFilter::getRenamedPaths();
-  container.push_back(std::make_pair(oldPath, newPath));
+  DataArrayPath::RenameContainer container;
+  container.push_back(DataArrayPath::RenameType(oldPath, newPath));
 
   return container;
 }

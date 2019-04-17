@@ -33,13 +33,7 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
-#include <QtCore/QParallelAnimationGroup>
-
-#include <QtWidgets/QFrame>
-#include <QtWidgets/QGridLayout>
-#include <QtWidgets/QScrollArea>
-#include <QtWidgets/QToolButton>
-#include <QtWidgets/QWidget>
+#include <QtWidgets/QGroupBox>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
@@ -47,7 +41,7 @@ class QLayout;
 class QRect;
 
 /**
- * @class QtSDisclosableWidget QtSDisclosableWidget.h FilterWidgets/QtSDisclosableWidget.h
+ * @class QtSDisclosableGroupBox QtSDisclosableGroupBox.h FilterWidgets/QtSDisclosableGroupBox.h
  * @brief  This class is a subclass of the QGroupBox class and is used to display
  * Filter Options that the user can set. This class is capable of constructing a
  * default GUI widget set for each type of Filter Option that is available. If
@@ -57,48 +51,39 @@ class QRect;
  * @date Jan 6, 2012
  * @version 1.0
  */
-class SVWidgetsLib_EXPORT QtSDisclosableWidget : public QWidget
+class SVWidgetsLib_EXPORT QtSDisclosableGroupBox : public QGroupBox
 {
   Q_OBJECT
 public:
-  QtSDisclosableWidget(QWidget* parent = nullptr);
-  ~QtSDisclosableWidget() override;
+  QtSDisclosableGroupBox(QWidget* parent = nullptr);
+  ~QtSDisclosableGroupBox() override;
 
   virtual void setupGui();
 
-  void setContentLayout(QLayout* contentLayout);
-
-  void setTitle(const QString& title);
 
 signals:
-  void dragStarted(QtSDisclosableWidget* widget);
+  void dragStarted(QtSDisclosableGroupBox* widget);
 
 public slots:
-  //  void disclose(bool on);
+  void disclose(bool on);
 
   /**
-   * @brief Sets the style of the Widget to indicate a selected or non-selected
-   * state
-   * @param selected Is the widget selected or not.
-   */
+      * @brief Sets the style of the Widget to indicate a selected or non-selected
+      * state
+      * @param selected Is the widget selected or not.
+      */
   void changeStyle();
 
   /**
-   *@brief
-   */
+      *@brief
+      */
   void updateWidgetStyle();
 
-private:
-  QGridLayout mainLayout;
-  QToolButton toggleButton;
-  QFrame headerLine;
-  QParallelAnimationGroup toggleAnimation;
-  QScrollArea contentArea;
-  int animationDuration = 300;
 
 public:
-  QtSDisclosableWidget(const QtSDisclosableWidget&) = delete;            // Copy Constructor Not Implemented
-  QtSDisclosableWidget(QtSDisclosableWidget&&) = delete;                 // Move Constructor Not Implemented
-  QtSDisclosableWidget& operator=(const QtSDisclosableWidget&) = delete; // Copy Assignment Not Implemented
-  QtSDisclosableWidget& operator=(QtSDisclosableWidget&&) = delete;      // Move Assignment Not Implemented
+  QtSDisclosableGroupBox(const QtSDisclosableGroupBox&) = delete; // Copy Constructor Not Implemented
+  QtSDisclosableGroupBox(QtSDisclosableGroupBox&&) = delete;      // Move Constructor Not Implemented
+  QtSDisclosableGroupBox& operator=(const QtSDisclosableGroupBox&) = delete; // Copy Assignment Not Implemented
+  QtSDisclosableGroupBox& operator=(QtSDisclosableGroupBox&&) = delete;      // Move Assignment Not Implemented
 };
+

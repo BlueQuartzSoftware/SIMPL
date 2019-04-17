@@ -135,12 +135,12 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer boundsAM = AttributeMatrix::New(m_Dims4, SIMPL::Defaults::CellAttributeMatrixName, AttributeMatrix::Type::Cell);
-    dc->addOrReplaceAttributeMatrix(boundsAM);
+    dc->addAttributeMatrix(SIMPL::Defaults::CellAttributeMatrixName, boundsAM);
 
     // Create Geometry
 
@@ -183,7 +183,7 @@ public:
     QVariant var;
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(dap);
+    var.setValue(k_DataContainerName);
     bool propWasSet = extractAttributeArraysFromGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -205,7 +205,7 @@ public:
     // Run Filter
 
     extractAttributeArraysFromGeometry->execute();
-    DREAM3D_REQUIRED(extractAttributeArraysFromGeometry->getErrorCode(), >=, 0);
+    DREAM3D_REQUIRED(extractAttributeArraysFromGeometry->getErrorCondition(), >=, 0);
 
     // Check Filter Results
 
@@ -243,12 +243,12 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(m_Dims2, SIMPL::Defaults::VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
-    dc->addOrReplaceAttributeMatrix(vertexAM);
+    dc->addAttributeMatrix(SIMPL::Defaults::VertexAttributeMatrixName, vertexAM);
 
     // Create Geometry
 
@@ -273,7 +273,7 @@ public:
     QVariant var;
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(dap);
+    var.setValue(k_DataContainerName);
     bool propWasSet = extractAttributeArraysFromGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -285,7 +285,7 @@ public:
     // Run Filter
 
     extractAttributeArraysFromGeometry->execute();
-    DREAM3D_REQUIRED(extractAttributeArraysFromGeometry->getErrorCode(), >=, 0);
+    DREAM3D_REQUIRED(extractAttributeArraysFromGeometry->getErrorCondition(), >=, 0);
 
     // Check Filter Results
 
@@ -315,15 +315,15 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(m_Dims2, SIMPL::Defaults::VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
-    dc->addOrReplaceAttributeMatrix(vertexAM);
+    dc->addAttributeMatrix(SIMPL::Defaults::VertexAttributeMatrixName, vertexAM);
 
     AttributeMatrix::Pointer elementAM = AttributeMatrix::New(m_Dims1, SIMPL::Defaults::CellAttributeMatrixName, AttributeMatrix::Type::Edge);
-    dc->addOrReplaceAttributeMatrix(elementAM);
+    dc->addAttributeMatrix(SIMPL::Defaults::CellAttributeMatrixName, elementAM);
 
     // Create Geometry
 
@@ -351,7 +351,7 @@ public:
     QVariant var;
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(dap);
+    var.setValue(k_DataContainerName);
     bool propWasSet = extractAttributeArraysFromGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -368,7 +368,7 @@ public:
     // Run Filter
 
     extractAttributeArraysFromGeometry->execute();
-    DREAM3D_REQUIRED(extractAttributeArraysFromGeometry->getErrorCode(), >=, 0);
+    DREAM3D_REQUIRED(extractAttributeArraysFromGeometry->getErrorCondition(), >=, 0);
 
     // Check Filter Results
 
@@ -403,15 +403,15 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(m_Dims3, SIMPL::Defaults::VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
-    dc->addOrReplaceAttributeMatrix(vertexAM);
+    dc->addAttributeMatrix(SIMPL::Defaults::VertexAttributeMatrixName, vertexAM);
 
     AttributeMatrix::Pointer elementAM = AttributeMatrix::New(m_Dims1, SIMPL::Defaults::CellAttributeMatrixName, AttributeMatrix::Type::Face);
-    dc->addOrReplaceAttributeMatrix(elementAM);
+    dc->addAttributeMatrix(SIMPL::Defaults::CellAttributeMatrixName, elementAM);
 
     // Create Geometry
 
@@ -439,7 +439,7 @@ public:
     QVariant var;
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(dap);
+    var.setValue(k_DataContainerName);
     bool propWasSet = extractAttributeArraysFromGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -456,7 +456,7 @@ public:
     // Run Filter
 
     extractAttributeArraysFromGeometry->execute();
-    DREAM3D_REQUIRED(extractAttributeArraysFromGeometry->getErrorCode(), >=, 0);
+    DREAM3D_REQUIRED(extractAttributeArraysFromGeometry->getErrorCondition(), >=, 0);
 
     // Check Filter Results
 
@@ -491,15 +491,15 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(m_Dims4, SIMPL::Defaults::VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
-    dc->addOrReplaceAttributeMatrix(vertexAM);
+    dc->addAttributeMatrix(SIMPL::Defaults::VertexAttributeMatrixName, vertexAM);
 
     AttributeMatrix::Pointer elementAM = AttributeMatrix::New(m_Dims1, SIMPL::Defaults::CellAttributeMatrixName, AttributeMatrix::Type::Face);
-    dc->addOrReplaceAttributeMatrix(elementAM);
+    dc->addAttributeMatrix(SIMPL::Defaults::CellAttributeMatrixName, elementAM);
 
     // Create Geometry
 
@@ -527,7 +527,7 @@ public:
     QVariant var;
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(dap);
+    var.setValue(k_DataContainerName);
     bool propWasSet = extractAttributeArraysFromGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -544,7 +544,7 @@ public:
     // Run Filter
 
     extractAttributeArraysFromGeometry->execute();
-    DREAM3D_REQUIRED(extractAttributeArraysFromGeometry->getErrorCode(), >=, 0);
+    DREAM3D_REQUIRED(extractAttributeArraysFromGeometry->getErrorCondition(), >=, 0);
 
     // Check Filter Results
 
@@ -579,15 +579,15 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(m_Dims4, SIMPL::Defaults::VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
-    dc->addOrReplaceAttributeMatrix(vertexAM);
+    dc->addAttributeMatrix(SIMPL::Defaults::VertexAttributeMatrixName, vertexAM);
 
     AttributeMatrix::Pointer elementAM = AttributeMatrix::New(m_Dims1, SIMPL::Defaults::CellAttributeMatrixName, AttributeMatrix::Type::Cell);
-    dc->addOrReplaceAttributeMatrix(elementAM);
+    dc->addAttributeMatrix(SIMPL::Defaults::CellAttributeMatrixName, elementAM);
 
     // Create Geometry
 
@@ -615,7 +615,7 @@ public:
     QVariant var;
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(dap);
+    var.setValue(k_DataContainerName);
     bool propWasSet = extractAttributeArraysFromGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -632,7 +632,7 @@ public:
     // Run Filter
 
     extractAttributeArraysFromGeometry->execute();
-    DREAM3D_REQUIRED(extractAttributeArraysFromGeometry->getErrorCode(), >=, 0);
+    DREAM3D_REQUIRED(extractAttributeArraysFromGeometry->getErrorCondition(), >=, 0);
 
     // Check Filter Results
 
@@ -667,15 +667,15 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(m_Dims8, SIMPL::Defaults::VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
-    dc->addOrReplaceAttributeMatrix(vertexAM);
+    dc->addAttributeMatrix(SIMPL::Defaults::VertexAttributeMatrixName, vertexAM);
 
     AttributeMatrix::Pointer elementAM = AttributeMatrix::New(m_Dims1, SIMPL::Defaults::CellAttributeMatrixName, AttributeMatrix::Type::Cell);
-    dc->addOrReplaceAttributeMatrix(elementAM);
+    dc->addAttributeMatrix(SIMPL::Defaults::CellAttributeMatrixName, elementAM);
 
     // Create Geometry
 
@@ -703,7 +703,7 @@ public:
     QVariant var;
 
     DataArrayPath dap(k_DataContainerName);
-    var.setValue(dap);
+    var.setValue(k_DataContainerName);
     bool propWasSet = extractAttributeArraysFromGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -720,7 +720,7 @@ public:
     // Run Filter
 
     extractAttributeArraysFromGeometry->execute();
-    DREAM3D_REQUIRED(extractAttributeArraysFromGeometry->getErrorCode(), >=, 0);
+    DREAM3D_REQUIRED(extractAttributeArraysFromGeometry->getErrorCondition(), >=, 0);
 
     // Check Filter Results
 

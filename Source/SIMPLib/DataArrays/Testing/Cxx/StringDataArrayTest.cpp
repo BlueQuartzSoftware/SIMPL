@@ -190,7 +190,7 @@ public:
     StringDataArray::Pointer nodes = initializeStringDataArray();
 
     // Resize to a smaller Array
-    nodes->resizeTuples(k_ResizeSmaller);
+    nodes->resize(k_ResizeSmaller);
     size_t nTuples = nodes->getNumberOfTuples();
     DREAM3D_REQUIRE_EQUAL(k_ResizeSmaller, nTuples)
     size_t size = nodes->getSize();
@@ -205,14 +205,14 @@ public:
     DREAM3D_REQUIRE_EQUAL(nodes->getValue(4), ::_4);
 
     // Resize to a larger Array
-    nodes->resizeTuples(k_ResizeLarger);
+    nodes->resize(k_ResizeLarger);
     nTuples = nodes->getNumberOfTuples();
     DREAM3D_REQUIRE_EQUAL(k_ResizeLarger, nTuples)
     size = nodes->getSize();
     DREAM3D_REQUIRE_EQUAL(k_ResizeLarger, size)
 
     // Resize to a Zero Array
-    nodes->resizeTuples(k_InitSize);
+    nodes->resize(k_InitSize);
     nTuples = nodes->getNumberOfTuples();
     DREAM3D_REQUIRE_EQUAL(k_InitSize, nTuples)
     size = nodes->getSize();
@@ -276,7 +276,7 @@ public:
     StringDataArray::Pointer nodes = initializeStringDataArray();
     StringDataArray::Pointer copy = initializeStringDataArray();
 
-    nodes->resizeTuples(k_ArraySize * 2);
+    nodes->resize(k_ArraySize * 2);
     bool didCopy = nodes->copyFromArray(k_ArraySize, copy);
     DREAM3D_REQUIRE_EQUAL(didCopy, true)
     DREAM3D_REQUIRE_EQUAL(nodes->getNumberOfTuples(), k_ArraySize * 2);

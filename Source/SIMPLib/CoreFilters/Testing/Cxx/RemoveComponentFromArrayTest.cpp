@@ -134,7 +134,7 @@ public:
       DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
       filter->preflight();
-      err = filter->getErrorCode();
+      err = filter->getErrorCondition();
       DREAM3D_REQUIRED(err, >=, 0)
     }
 
@@ -157,7 +157,7 @@ public:
       DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
       filter->preflight();
-      err = filter->getErrorCode();
+      err = filter->getErrorCondition();
       DREAM3D_REQUIRED(err, >=, 0)
     }
 
@@ -171,9 +171,9 @@ public:
   {
     DataContainerArray::Pointer dca = DataContainerArray::New();
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    dca->addOrReplaceDataContainer(m);
+    dca->addDataContainer(m);
     AttributeMatrix::Pointer attrMatrix = AttributeMatrix::New(QVector<size_t>(1, numTuples), SIMPL::Defaults::AttributeMatrixName, AttributeMatrix::Type::Generic);
-    m->addOrReplaceAttributeMatrix(attrMatrix);
+    m->addAttributeMatrix(SIMPL::Defaults::AttributeMatrixName, attrMatrix);
     return dca;
   }
   // -----------------------------------------------------------------------------
@@ -214,7 +214,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     filter->execute();
-    err = filter->getErrorCode();
+    err = filter->getErrorCondition();
     DREAM3D_REQUIRE_EQUAL(err, k_NoError);
 
     IDataArray::Pointer ReducedArrayPtr = dca->getDataContainer(SIMPL::Defaults::DataContainerName)->getAttributeMatrix(path.getAttributeMatrixName())->getAttributeArray(ReducedArrayArrayName);
@@ -258,7 +258,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     filter->execute();
-    err = filter->getErrorCode();
+    err = filter->getErrorCondition();
     DREAM3D_REQUIRE_EQUAL(err, -11004);
 
     // Test to make sure sending in a single component array fails.
@@ -283,7 +283,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     filter->execute();
-    err = filter->getErrorCode();
+    err = filter->getErrorCondition();
     DREAM3D_REQUIRE_EQUAL(err, -11003);
   }
 
@@ -344,13 +344,13 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     filter->preflight();
-    err = filter->getErrorCode();
+    err = filter->getErrorCondition();
     DREAM3D_REQUIRE_EQUAL(err, k_NoError);
 
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
     filter->execute();
-    err = filter->getErrorCode();
+    err = filter->getErrorCondition();
     DREAM3D_REQUIRE_EQUAL(err, k_NoError);
 
     {
@@ -370,14 +370,14 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     filter->preflight();
-    err = filter->getErrorCode();
+    err = filter->getErrorCondition();
     DREAM3D_REQUIRE_EQUAL(err, k_NoError);
 
     dca = CreateDataContainerArray();
     filter->setDataContainerArray(dca);
 
     filter->execute();
-    err = filter->getErrorCode();
+    err = filter->getErrorCondition();
     DREAM3D_REQUIRE_EQUAL(err, k_NoError);
 
     IDataArray::Pointer testArrayPtr = dca->getDataContainer(SIMPL::Defaults::DataContainerName)->getAttributeMatrix(path.getAttributeMatrixName())->getAttributeArray(path.getDataArrayName());

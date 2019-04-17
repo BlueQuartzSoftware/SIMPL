@@ -42,6 +42,7 @@
 #include <QtWidgets/QWidget>
 
 #include "SIMPLib/Common/IObserver.h"
+#include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"

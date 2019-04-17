@@ -67,10 +67,10 @@ public:
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
     DataContainer::Pointer dc1 = DataContainer::New("DataContainer1");
-    dca->addOrReplaceDataContainer(dc1);
+    dca->addDataContainer(dc1);
 
     DataContainer::Pointer dc2 = DataContainer::New("DataContainer2");
-    dca->addOrReplaceDataContainer(dc2);
+    dca->addDataContainer(dc2);
 
     ImageGeom::Pointer imgGeom = ImageGeom::New();
     imgGeom->setDimensions(2, 2, 2);
@@ -143,7 +143,7 @@ public:
 
     QVariant value;
 
-    value.setValue(DataArrayPath("DataContainer1"));
+    value.setValue(QString("DataContainer1"));
     filter->setProperty("DataContainerSelection", value);
 
     value.setValue(numZVoxels);
@@ -162,7 +162,7 @@ public:
 
     QVariant value;
 
-    value.setValue(DataArrayPath("DataContainer2"));
+    value.setValue(QString("DataContainer2"));
     filter->setProperty("DataContainerSelection", value);
 
     value.setValue(numZVoxels);
@@ -181,7 +181,7 @@ public:
 
     QVariant value;
 
-    value.setValue(DataArrayPath("DataContainer3"));
+    value.setValue(QString("DataContainer3"));
     filter->setProperty("DataContainerSelection", value);
 
     value.setValue(0);
@@ -198,12 +198,12 @@ public:
 
     setGeometryTest(filter, 1);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
 
     // test Z equal to minimum Z
     setGeometryTest(filter, 2);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
   }
 
   // -----------------------------------------------------------------------------
@@ -216,7 +216,7 @@ public:
 
     setGeometryTest(filter, 3);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -7788);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -7788);
   }
 
   // -----------------------------------------------------------------------------
@@ -229,7 +229,7 @@ public:
 
     setInvalidGeometry(filter, 3);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -7789);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -7789);
   }
 
   // -----------------------------------------------------------------------------
@@ -243,7 +243,7 @@ public:
     setNullDataContainer(filter);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -999);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -999);
   }
 
   // -----------------------------------------------------------------------------

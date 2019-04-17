@@ -51,9 +51,9 @@ class SIMPLib_EXPORT ExtractVertexGeometry : public AbstractFilter
 
   PYB11_CREATE_BINDINGS(ExtractVertexGeometry SUPERCLASS AbstractFilter)
   PYB11_PROPERTY(int ArrayHandling READ getArrayHandling WRITE setArrayHandling)
-  PYB11_PROPERTY(DataArrayPath SelectedDataContainerName READ getSelectedDataContainerName WRITE setSelectedDataContainerName)
+  PYB11_PROPERTY(QString SelectedDataContainerName READ getSelectedDataContainerName WRITE setSelectedDataContainerName)
   PYB11_PROPERTY(QVector<DataArrayPath> IncludedDataArrayPaths READ getIncludedDataArrayPaths WRITE setIncludedDataArrayPaths)
-  PYB11_PROPERTY(DataArrayPath VertexDataContainerName READ getVertexDataContainerName WRITE setVertexDataContainerName)
+  PYB11_PROPERTY(QString VertexDataContainerName READ getVertexDataContainerName WRITE setVertexDataContainerName)
 
 public:
   SIMPL_SHARED_POINTERS(ExtractVertexGeometry)
@@ -63,14 +63,14 @@ public:
   SIMPL_FILTER_PARAMETER(int, ArrayHandling)
   Q_PROPERTY(int ArrayHandling READ getArrayHandling WRITE setArrayHandling)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedDataContainerName)
-  Q_PROPERTY(DataArrayPath SelectedDataContainerName READ getSelectedDataContainerName WRITE setSelectedDataContainerName)
+  SIMPL_FILTER_PARAMETER(QString, SelectedDataContainerName)
+  Q_PROPERTY(QString SelectedDataContainerName READ getSelectedDataContainerName WRITE setSelectedDataContainerName)
 
   SIMPL_FILTER_PARAMETER(QVector<DataArrayPath>, IncludedDataArrayPaths)
   Q_PROPERTY(QVector<DataArrayPath> IncludedDataArrayPaths READ getIncludedDataArrayPaths WRITE setIncludedDataArrayPaths)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, VertexDataContainerName)
-  Q_PROPERTY(DataArrayPath VertexDataContainerName READ getVertexDataContainerName WRITE setVertexDataContainerName)
+  SIMPL_FILTER_PARAMETER(QString, VertexDataContainerName)
+  Q_PROPERTY(QString VertexDataContainerName READ getVertexDataContainerName WRITE setVertexDataContainerName)
 
   ~ExtractVertexGeometry() override;
 

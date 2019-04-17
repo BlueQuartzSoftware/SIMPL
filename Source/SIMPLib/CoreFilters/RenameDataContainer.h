@@ -47,8 +47,8 @@ class SIMPLib_EXPORT RenameDataContainer : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(RenameDataContainer SUPERCLASS AbstractFilter)
-    PYB11_PROPERTY(DataArrayPath SelectedDataContainerName READ getSelectedDataContainerName WRITE setSelectedDataContainerName)
-    PYB11_PROPERTY(DataArrayPath NewDataContainerName READ getNewDataContainerName WRITE setNewDataContainerName)
+    PYB11_PROPERTY(QString SelectedDataContainerName READ getSelectedDataContainerName WRITE setSelectedDataContainerName)
+    PYB11_PROPERTY(QString NewDataContainerName READ getNewDataContainerName WRITE setNewDataContainerName)
 
   public:
     SIMPL_SHARED_POINTERS(RenameDataContainer)
@@ -57,11 +57,11 @@ class SIMPLib_EXPORT RenameDataContainer : public AbstractFilter
 
     ~RenameDataContainer() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedDataContainerName)
-    Q_PROPERTY(DataArrayPath SelectedDataContainerName READ getSelectedDataContainerName WRITE setSelectedDataContainerName)
+    SIMPL_FILTER_PARAMETER(QString, SelectedDataContainerName)
+    Q_PROPERTY(QString SelectedDataContainerName READ getSelectedDataContainerName WRITE setSelectedDataContainerName)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, NewDataContainerName)
-    Q_PROPERTY(DataArrayPath NewDataContainerName READ getNewDataContainerName WRITE setNewDataContainerName)
+    SIMPL_FILTER_PARAMETER(QString, NewDataContainerName)
+    Q_PROPERTY(QString NewDataContainerName READ getNewDataContainerName WRITE setNewDataContainerName)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
@@ -114,6 +114,11 @@ class SIMPLib_EXPORT RenameDataContainer : public AbstractFilter
     void setupFilterParameters() override;
 
     /**
+     * @brief readFilterParameters Reimplemented from @see AbstractFilter class
+     */
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+
+    /**
      * @brief execute Reimplemented from @see AbstractFilter class
      */
     void execute() override;
@@ -164,8 +169,6 @@ class SIMPLib_EXPORT RenameDataContainer : public AbstractFilter
      */
     void initialize();
 
-  private:
-    DataArrayPath m_LastContainerName;
 
   public:
     RenameDataContainer(const RenameDataContainer&) = delete; // Copy Constructor Not Implemented

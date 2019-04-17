@@ -48,11 +48,6 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
-enum createdPathID : RenameDataPath::DataID_t
-{
-  StringArrayID = 1
-};
-
 /**
 * @brief initializeArrayWithInts Initializes the array p with integers, either from the
 * manual value entered in the filter, or with a random number.  This function does not
@@ -88,7 +83,7 @@ CreateStringArray::~CreateStringArray() = default;
 // -----------------------------------------------------------------------------
 void CreateStringArray::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  FilterParameterVector parameters;
 
   // Do not let the user change the number of components in a StringDataArray
   setNumberOfComponents(1);
@@ -126,42 +121,46 @@ void CreateStringArray::initialize()
 // -----------------------------------------------------------------------------
 void CreateStringArray::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
 
   if(getNumberOfComponents() < 0)
   {
+    setErrorCondition(-8150);
     QString ss = QObject::tr("The number of components must non-negative");
-    setErrorCondition(-8150, ss);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
   if(getNumberOfComponents() == 0)
   {
+    setErrorCondition(-8151);
     QString ss = QObject::tr("The number of components is Zero. This will result in an array that has no memory allocated. Are you sure you wanted to do this?");
-    setErrorCondition(-8151, ss);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
   if(!getNewArray().isValid())
   {
+    setErrorCondition(-8152);
     QString ss = QObject::tr("The Created DataArrayPath is invalid. Please select the Data Container, Attribute Matrix and set an output DataArray name.");
-    setErrorCondition(-8152, ss);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
   if (m_InitializationValue.isEmpty())
   {
     QString ss = "Empty initialization value.";
-    setErrorCondition(-5759, ss);
+    setErrorCondition(-5759);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
   QVector<size_t> cDims(1, getNumberOfComponents());
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
   
   // Create the data array and initialize it to a placeholder value
-  m_OutputArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<StringDataArray, AbstractFilter, QString>(this, getNewArray(), m_InitializationValue, cDims, "", StringArrayID);
+  m_OutputArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<StringDataArray, AbstractFilter, QString>(this, getNewArray(), m_InitializationValue, cDims);
 }
 
 // -----------------------------------------------------------------------------
@@ -182,10 +181,10 @@ void CreateStringArray::preflight()
 // -----------------------------------------------------------------------------
 void CreateStringArray::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }

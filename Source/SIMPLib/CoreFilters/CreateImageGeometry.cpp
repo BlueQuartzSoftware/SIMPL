@@ -50,17 +50,18 @@
 CreateImageGeometry::CreateImageGeometry()
 : m_SelectedDataContainer("ImageGeomDataContainer")
 {
-  m_Dimensions[0] = 0;
-  m_Dimensions[1] = 0;
-  m_Dimensions[2] = 0;
+  m_Dimensions.x = 0;
+  m_Dimensions.y = 0;
+  m_Dimensions.z = 0;
 
-  m_Origin[0] = 0.0f;
-  m_Origin[1] = 0.0f;
-  m_Origin[2] = 0.0f;
+  m_Origin.x = 0.0f;
+  m_Origin.y = 0.0f;
+  m_Origin.z = 0.0f;
 
-  m_Spacing[0] = 1.0f;
-  m_Spacing[1] = 1.0f;
-  m_Spacing[2] = 1.0f;
+  m_Resolution.x = 1.0f;
+  m_Resolution.y = 1.0f;
+  m_Resolution.z = 1.0f;
+
 }
 
 // -----------------------------------------------------------------------------
@@ -73,7 +74,7 @@ CreateImageGeometry::~CreateImageGeometry() = default;
 // -----------------------------------------------------------------------------
 void CreateImageGeometry::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  FilterParameterVector parameters;
   {
     DataContainerSelectionFilterParameter::RequirementType req;
     parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container Destination", SelectedDataContainer, FilterParameter::Parameter, CreateImageGeometry, req));
@@ -81,7 +82,7 @@ void CreateImageGeometry::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_INT_VEC3_FP("Dimensions", Dimensions, FilterParameter::Parameter, CreateImageGeometry));
   parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Origin", Origin, FilterParameter::Parameter, CreateImageGeometry));
 
-  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Spacing", Spacing, FilterParameter::Parameter, CreateImageGeometry));
+  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Resolution", Resolution, FilterParameter::Parameter, CreateImageGeometry));
 
   PreflightUpdatedValueFilterParameter::Pointer param =
              SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("Box Size in Length Units", BoxDimensions, FilterParameter::Parameter, CreateImageGeometry);
@@ -99,8 +100,8 @@ void CreateImageGeometry::readFilterParameters(AbstractFilterParametersReader* r
   reader->openFilterGroup(this, index);
   setDimensions(reader->readIntVec3("Dimensions", getDimensions()));
   setOrigin(reader->readFloatVec3("Origin", getOrigin()));
-  setSpacing(reader->readFloatVec3("Spacing", getSpacing()));
-  setSelectedDataContainer(reader->readDataArrayPath("SelectedDataContainer", getSelectedDataContainer()));
+  setResolution(reader->readFloatVec3("Resolution", getResolution()));
+  setSelectedDataContainer(reader->readString("SelectedDataContainer", getSelectedDataContainer()));
   reader->closeFilterGroup();
 }
 
@@ -116,31 +117,33 @@ void CreateImageGeometry::initialize()
 // -----------------------------------------------------------------------------
 void CreateImageGeometry::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 
-  if(m_Dimensions[0] == 0 || m_Dimensions[1] == 0 || m_Dimensions[2] == 0)
+  if(m_Dimensions.x == 0 || m_Dimensions.y == 0 || m_Dimensions.z == 0)
   {
     QString ss = QObject::tr("One of the dimensions has a size less than or equal to zero. The minimum size must be postive");
-    setErrorCondition(-390, ss);
+    setErrorCondition(-390);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
   if(getSelectedDataContainer().isEmpty())
   {
     QString ss = QObject::tr("The Data Container must have a name");
-    setErrorCondition(-391, ss);
+    setErrorCondition(-391);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getSelectedDataContainer());
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
 
   ImageGeom::Pointer image = ImageGeom::CreateGeometry("ImageGeometry");
-  image->setDimensions(std::make_tuple(m_Dimensions[0], m_Dimensions[1], m_Dimensions[2]));
-  image->setSpacing(std::make_tuple(m_Spacing[0], m_Spacing[1], m_Spacing[2]));
-  image->setOrigin(std::make_tuple(m_Origin[0], m_Origin[1], m_Origin[2]));
+  image->setDimensions(std::make_tuple(m_Dimensions.x, m_Dimensions.y, m_Dimensions.z));
+  image->setResolution(std::make_tuple(m_Resolution.x, m_Resolution.y, m_Resolution.z));
+  image->setOrigin(std::make_tuple(m_Origin.x, m_Origin.y, m_Origin.z));
   m->setGeometry(image);
 }
 
@@ -162,10 +165,10 @@ void CreateImageGeometry::preflight()
 // -----------------------------------------------------------------------------
 void CreateImageGeometry::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -179,15 +182,15 @@ QString CreateImageGeometry::getBoxDimensions()
 {
   QString desc;
   QTextStream ss(&desc);
-  float halfRes[3] = {m_Spacing[0] / 2.0f, m_Spacing[1] / 2.0f, m_Spacing[2] / 2.0f};
+  float halfRes[3] = {m_Resolution.x / 2.0f, m_Resolution.y / 2.0f, m_Resolution.z / 2.0f};
   ss << "Extents:\n"
-     << "X Extent: 0 to " << m_Dimensions[0] - 1 << " (dimension: " << m_Dimensions[0] << ")\n"
-     << "Y Extent: 0 to " << m_Dimensions[1] - 1 << " (dimension: " << m_Dimensions[1] << ")\n"
-     << "Z Extent: 0 to " << m_Dimensions[2] - 1 << " (dimension: " << m_Dimensions[2] << ")\n"
+     << "X Extent: 0 to " << m_Dimensions.x - 1 << " (dimension: " << m_Dimensions.x << ")\n"
+     << "Y Extent: 0 to " << m_Dimensions.y - 1 << " (dimension: " << m_Dimensions.y << ")\n"
+     << "Z Extent: 0 to " << m_Dimensions.z - 1 << " (dimension: " << m_Dimensions.z << ")\n"
      << "Bounds:\n"
-     << "X Range: " << (m_Origin[0] - halfRes[0]) << " to " << (m_Origin[0] - halfRes[0] + m_Dimensions[0] * m_Spacing[0]) << " (delta: " << (m_Dimensions[0] * m_Spacing[0]) << ")\n"
-     << "Y Range: " << (m_Origin[1] - halfRes[1]) << " to " << (m_Origin[1] - halfRes[1] + m_Dimensions[1] * m_Spacing[1]) << " (delta: " << (m_Dimensions[1] * m_Spacing[1]) << ")\n"
-     << "Z Range: " << (m_Origin[2] - halfRes[2]) << " to " << (m_Origin[2] - halfRes[2] + m_Dimensions[2] * m_Spacing[2]) << " (delta: " << (m_Dimensions[2] * m_Spacing[2]) << ")\n";
+     << "X Range: " << (m_Origin.x - halfRes[0]) << " to " << (m_Origin.x - halfRes[0] + m_Dimensions.x * m_Resolution.x) << " (delta: " << (m_Dimensions.x * m_Resolution.x) << ")\n"
+     << "Y Range: " << (m_Origin.y - halfRes[1]) << " to " << (m_Origin.y - halfRes[1] + m_Dimensions.y * m_Resolution.y) << " (delta: " << (m_Dimensions.y * m_Resolution.y) << ")\n"
+     << "Z Range: " << (m_Origin.z - halfRes[2]) << " to " << (m_Origin.z - halfRes[2] + m_Dimensions.z * m_Resolution.z) << " (delta: " << (m_Dimensions.z * m_Resolution.z) << ")\n";
   return desc;
 }
 

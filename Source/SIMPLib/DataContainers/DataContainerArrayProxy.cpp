@@ -69,10 +69,10 @@ DataContainerArrayProxy::DataContainerArrayProxy(DataContainerArray* dca)
     return;
   }
 
-  DataContainerArray::Container containers = dca->getDataContainers();
-  for(DataContainer::Pointer dataContainer : containers) // Loop on each Data Container
+  QList<DataContainer::Pointer> containers = dca->getDataContainers();
+  for(const auto& container : containers)
   {
-    IGeometry::Pointer geo = dataContainer->getGeometry();
+    IGeometry::Pointer geo = container->getGeometry();
     IGeometry::Type dcType;
     if(geo != IGeometry::NullPointer())
     {
@@ -82,21 +82,25 @@ DataContainerArrayProxy::DataContainerArrayProxy(DataContainerArray* dca)
     {
       dcType = IGeometry::Type::Unknown;
     }
-    DataContainerProxy dcProxy(dataContainer->getName(), Qt::Checked, dcType); // Create a new DataContainerProxy
+    DataContainerProxy dcProxy(container->getName(), Qt::Checked, dcType); // Create a new DataContainerProxy
 
     // Now loop over each AttributeMatrix in the data container that was selected
-    DataContainer::Container_t attrMats = dataContainer->getAttributeMatrices();
-    for(auto iter = attrMats.begin(); iter != attrMats.end(); ++iter)
+    DataContainer::AttributeMatrixMap_t attrMats = container->getAttributeMatrices();
+    QMapIterator<QString, AttributeMatrix::Pointer> iter(attrMats);
+    while(iter.hasNext())
     {
-      AttributeMatrix::Pointer attrMat = *iter;
-      QString amName = attrMat->getName();
+      iter.next();
+      QString amName = iter.key();
+      AttributeMatrix::Pointer attrMat = iter.value();
       AttributeMatrixProxy amProxy(amName, Qt::Checked, attrMat->getType());
 
-      for(IDataArray::Pointer attrArray : attrMat->getAttributeArrays())
+      QList<QString> attrArrayNames = attrMat->getAttributeArrayNames();
+      QListIterator<QString> attrArrayNamesIter(attrArrayNames);
+      while(attrArrayNamesIter.hasNext())
       {
-        QString aaName = attrArray->getName();
-        QString daPath = dataContainer->getName() + "/" + amName + "/";
-
+        QString aaName = attrArrayNamesIter.next();
+        QString daPath = container->getName() + "/" + amName + "/";
+        IDataArray::Pointer attrArray = attrMat->getAttributeArray(aaName);
         DataArrayProxy daProxy(daPath, aaName, Qt::Checked, attrArray->getTypeAsString(), attrArray->getClassVersion());
         daProxy.setCompDims(attrArray->getComponentDimensions());
         daProxy.setTupleDims(attrMat->getTupleDimensions());

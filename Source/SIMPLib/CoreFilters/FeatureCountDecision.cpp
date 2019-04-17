@@ -63,7 +63,7 @@ FeatureCountDecision::~FeatureCountDecision() = default;
 // -----------------------------------------------------------------------------
 void FeatureCountDecision::setupFilterParameters()
 {
-  FilterParameterVectorType parameters = getFilterParameters();
+  FilterParameterVector parameters = getFilterParameters();
   parameters.push_back(SeparatorFilterParameter::New("Cell Ensemble Data", FilterParameter::RequiredArray));
   {
     DataArraySelectionFilterParameter::RequirementType req =
@@ -98,8 +98,8 @@ void FeatureCountDecision::initialize()
 // -----------------------------------------------------------------------------
 void FeatureCountDecision::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 
   getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, getFeatureIdsArrayPath().getDataContainerName());
 
@@ -131,10 +131,10 @@ void FeatureCountDecision::preflight()
 // -----------------------------------------------------------------------------
 void FeatureCountDecision::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }

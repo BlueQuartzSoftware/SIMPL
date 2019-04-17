@@ -53,7 +53,7 @@ PipelineAnnotation::~PipelineAnnotation() = default;
 // -----------------------------------------------------------------------------
 void PipelineAnnotation::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  FilterParameterVector parameters;
 
   parameters.push_back(SIMPL_NEW_PARAGRAPH_FP("", Summary, FilterParameter::Parameter, PipelineAnnotation, false));
 
@@ -72,8 +72,8 @@ void PipelineAnnotation::initialize()
 // -----------------------------------------------------------------------------
 void PipelineAnnotation::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 }
 
 // -----------------------------------------------------------------------------
@@ -95,10 +95,10 @@ void PipelineAnnotation::preflight()
 // -----------------------------------------------------------------------------
 void PipelineAnnotation::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }

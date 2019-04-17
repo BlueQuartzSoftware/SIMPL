@@ -46,7 +46,27 @@ TestObserver::~TestObserver() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TestObserver::processPipelineMessage(const AbstractMessage::Pointer& pm)
+void TestObserver::processPipelineMessage(const PipelineMessage& pm)
 {
-  std::cout << pm->generateMessageString().toStdString() << std::endl;
+  PipelineMessage msg = pm;
+  if(msg.getType() == PipelineMessage::MessageType::Error)
+  {
+      std::cout << msg.getFilterHumanLabel().toStdString() << ": " << msg.generateErrorString().toStdString() << std::endl;
+  }
+  else if(msg.getType() == PipelineMessage::MessageType::Warning)
+  {
+      std::cout << msg.getFilterHumanLabel().toStdString() << ": " << msg.generateWarningString().toStdString() << std::endl;
+  }
+  else if(msg.getType() == PipelineMessage::MessageType::StatusMessage)
+  {
+      // std::cout << msg.getFilterHumanLabel().toStdString() << ": " << msg.generateStatusString().toStdString()  << std::endl;
+  }
+  else if(msg.getType() == PipelineMessage::MessageType::ProgressValue)
+  {
+      // std::cout << msg.getFilterHumanLabel().toStdString() << ": " << msg.getProgressValue() << "%" << std::endl;
+  }
+  else if(msg.getType() == PipelineMessage::MessageType::StatusMessageAndProgressValue)
+  {
+      // std::cout << msg.getFilterHumanLabel().toStdString() << ": " << msg.getProgressValue() << "% " << msg.generateStatusString().toStdString() << std::endl;
+  }
 }

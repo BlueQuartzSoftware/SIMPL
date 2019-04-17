@@ -47,9 +47,7 @@
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataArrays/StructArray.hpp"
-#include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -125,14 +123,6 @@ QString H5File()
 
 class DataContainerTest
 {
-
-  enum createdPathID : RenameDataPath::DataID_t
-  {
-    DataContainerID1 = 1,
-    DataContainerID2 = 2,
-    DataContainerID3 = 3
-  };
-
 public:
   DataContainerTest() = default;
   virtual ~DataContainerTest() = default;
@@ -196,7 +186,7 @@ public:
     typename DataArray<T>::Pointer foo = DataArray<T>::CreateArray(attrMat->getTupleDimensions(), compDims, "RENAME_ME");
     foo->setName(foo->getFullNameOfClass() + name);
     foo->initializeWithValue(static_cast<T>(1));
-    attrMat->insertOrAssign(foo);
+    attrMat->addAttributeArray(foo->getName(), foo);
 
     QString autoName = foo->getName() + "_Auto";
     attrMat->createNonPrereqArray<DataArray<T>, AbstractFilter, T>(nullptr, autoName, static_cast<T>(10), compDims);
@@ -214,13 +204,13 @@ public:
       QString value = QString("string_%1").arg(i);
       data->setValue(i, value);
     }
-    attrMat->insertOrAssign(data);
+    attrMat->addAttributeArray(data->getName(), data);
   }
 
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void FillAttributeMatrix(const AttributeMatrix::Pointer& attrMat, const QVector<size_t>& compDims)
+  void FillAttributeMatrix(AttributeMatrix::Pointer attrMat, QVector<size_t> compDims)
   {
     CreateDataArray<int8_t>(attrMat, compDims);
     CreateDataArray<uint8_t>(attrMat, compDims);
@@ -238,7 +228,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void PopulateVolumeDataContainer(const DataContainer::Pointer& dc, QVector<size_t> tupleDims, const QString& name)
+  void PopulateVolumeDataContainer(DataContainer::Pointer dc, QVector<size_t> tupleDims, const QString& name)
   {
     // Create the attribute matrix with the dimensions and name
     AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tupleDims, name, AttributeMatrix::Type::Cell);
@@ -256,7 +246,7 @@ public:
     FillAttributeMatrix(attrMat, compDims);
 
     // Add the AttributeMatrix to the Data Container
-    dc->addOrReplaceAttributeMatrix(attrMat);
+    dc->addAttributeMatrix(attrMat->getName(), attrMat);
 
     QString autoAddName = name + QString::fromLatin1("_Auto");
     AttributeMatrix::Pointer autoAttrMat = dc->createNonPrereqAttributeMatrix(nullptr, autoAddName, tupleDims, AttributeMatrix::Type::Cell);
@@ -294,31 +284,31 @@ public:
     // 1D VolumeDataContainer
     tupleDims.push_back(nx);
     {
-      DataContainer::Pointer dc = dca->createNonPrereqDataContainer<AbstractFilter>(nullptr, "1D_VolumeDataContainer", DataContainerID1);
+      DataContainer::Pointer dc = dca->createNonPrereqDataContainer<AbstractFilter>(nullptr, "1D_VolumeDataContainer");
       PopulateVolumeDataContainer(dc, tupleDims, "1D_AttributeMatrix");
     }
 
     // 2D VolumeDataContainer
     tupleDims.push_back(ny);
     {
-      DataContainer::Pointer dc = dca->createNonPrereqDataContainer<AbstractFilter>(nullptr, "2D_VolumeDataContainer", DataContainerID2);
+      DataContainer::Pointer dc = dca->createNonPrereqDataContainer<AbstractFilter>(nullptr, "2D_VolumeDataContainer");
       PopulateVolumeDataContainer(dc, tupleDims, "2D_AttributeMatrix");
     }
 
     // 3D VolumeDataContainer
     tupleDims.push_back(nz);
     {
-      DataContainer::Pointer dc = dca->createNonPrereqDataContainer<AbstractFilter>(nullptr, "3D_VolumeDataContainer", DataContainerID3);
+      DataContainer::Pointer dc = dca->createNonPrereqDataContainer<AbstractFilter>(nullptr, "3D_VolumeDataContainer");
       PopulateVolumeDataContainer(dc, tupleDims, "3D_AttributeMatrix");
     }
 
     // A DataContainer that mimics some real data
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
-    dca->addOrReplaceDataContainer(m);
+    dca->addDataContainer(m);
     m->setGeometry(image);
 
     AttributeMatrix::Pointer attrMatrix = AttributeMatrix::New(tupleDims, getCellFeatureAttributeMatrixName(), AttributeMatrix::Type::CellFeature);
-    m->addOrReplaceAttributeMatrix(attrMatrix);
+    m->addAttributeMatrix(getCellFeatureAttributeMatrixName(), attrMatrix);
 
     int size = nx * ny * nz;
     Int32ArrayType::Pointer featureIds = Int32ArrayType::CreateArray(size, SIMPL::CellData::FeatureIds);
@@ -326,14 +316,14 @@ public:
     {
       featureIds->setValue(i, i + DataContainerIOTest::Offset);
     }
-    attrMatrix->insertOrAssign(featureIds);
+    attrMatrix->addAttributeArray(SIMPL::CellData::FeatureIds, featureIds);
 
     BoolArrayType::Pointer boolArray = BoolArrayType::CreateArray(size, SIMPL::CellData::BoundaryCells);
     for(int i = 0; i < size; ++i)
     {
       boolArray->setValue(i, i + DataContainerIOTest::Offset);
     }
-    attrMatrix->insertOrAssign(boolArray);
+    attrMatrix->addAttributeArray(SIMPL::CellData::BoundaryCells, boolArray);
 
     QVector<size_t> dims(1, 3);
     FloatArrayType::Pointer avgEuler = FloatArrayType::CreateArray(size, dims, SIMPL::FeatureData::AxisEulerAngles);
@@ -343,19 +333,19 @@ public:
       avgEuler->setComponent(i, 1, i * 0.325f);
       avgEuler->setComponent(i, 2, i * 0.165f);
     }
-    m->getAttributeMatrix(getCellFeatureAttributeMatrixName())->insertOrAssign(avgEuler);
+    m->getAttributeMatrix(getCellFeatureAttributeMatrixName())->addAttributeArray(SIMPL::FeatureData::AxisEulerAngles, avgEuler);
 
     tupleDims.resize(1);
     tupleDims[0] = 4;
     AttributeMatrix::Pointer ensemAttrMat = AttributeMatrix::New(tupleDims, getCellEnsembleAttributeMatrixName(), AttributeMatrix::Type::CellEnsemble);
-    m->addOrReplaceAttributeMatrix(ensemAttrMat);
+    m->addAttributeMatrix(getCellEnsembleAttributeMatrixName(), ensemAttrMat);
 
     FloatArrayType::Pointer surfArea = FloatArrayType::CreateArray(4, SIMPL::EnsembleData::TotalSurfaceAreas);
     for(int i = 0; i < 4; ++i)
     {
       surfArea->setValue(i, i + 41.2f);
     }
-    m->getAttributeMatrix(getCellEnsembleAttributeMatrixName())->insertOrAssign(surfArea);
+    m->getAttributeMatrix(getCellEnsembleAttributeMatrixName())->addAttributeArray(SIMPL::EnsembleData::TotalSurfaceAreas, surfArea);
 
     Observer obs;
     // Send progress messages from PipelineBuilder to this object for display
@@ -369,10 +359,10 @@ public:
     // manually. Normally the Pipeline Object would do this for us. We are NOT using a Pipeline Object because using the
     // Pipeline Object would over write the DataContainer Array that we have created with a blank one thus defeating the
     // entire purpose of the test.
-    QObject::connect(writer.get(), SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), &obs, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
+    QObject::connect(writer.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)), &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
 
     writer->execute();
-    int err = writer->getErrorCode();
+    int err = writer->getErrorCondition();
 
     DREAM3D_REQUIRE_EQUAL(err, 0);
   }
@@ -394,7 +384,7 @@ public:
     DataContainerArrayProxy dcaProxy = reader->readDataContainerArrayStructure(DataContainerIOTest::TestFile());
     reader->setInputFileDataContainerArrayProxy(dcaProxy);
     reader->execute();
-    int err = reader->getErrorCode();
+    int err = reader->getErrorCondition();
     DREAM3D_REQUIRE(err >= 0)
 
     Observer obs;
@@ -409,10 +399,10 @@ public:
     // manually. Normally the Pipeline Object would do this for us. We are NOT using a Pipeline Object because using the
     // Pipeline Object would over write the DataContainer Array that we have created with a blank one thus defeating the
     // entire purpose of the test.
-    QObject::connect(writer.get(), SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), &obs, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
+    QObject::connect(writer.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)), &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
 
     writer->execute();
-    err = writer->getErrorCode();
+    err = writer->getErrorCondition();
     DREAM3D_REQUIRE_EQUAL(err, 0);
 
     QMap<QString, DataContainerProxy>& dcsToRead = dcaProxy.getDataContainers();
@@ -457,16 +447,16 @@ public:
     reader2->setDataContainerArray(dca2);
     reader2->setInputFileDataContainerArrayProxy(dcaProxy);
     reader2->execute();
-    err = reader2->getErrorCode();
+    err = reader2->getErrorCondition();
     DREAM3D_REQUIRE(err >= 0)
 
     DataContainerWriter::Pointer writer2 = DataContainerWriter::New();
     writer2->setDataContainerArray(dca2);
     writer2->setOutputFile(DataContainerIOTest::TestFile3());
-    QObject::connect(writer.get(), SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), &obs, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
+    QObject::connect(writer.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)), &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
 
     writer2->execute();
-    err = writer2->getErrorCode();
+    err = writer2->getErrorCondition();
     DREAM3D_REQUIRE_EQUAL(err, 0);
   }
 
@@ -489,7 +479,7 @@ public:
 
     tDims[0] = 5;
     attrMat->resizeAttributeArrays(tDims);
-    int err = attrMat->insertOrAssign(p);
+    int err = attrMat->addAttributeArray("Test", p);
     DREAM3D_REQUIRED(err, >=, 0)
 
     // Now get it back out as the specific type that we put it in as
@@ -597,6 +587,8 @@ public:
   {
     DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
 
+    QList<QString> nameList;
+
     insertDeleteArray<Int8ArrayType>(m);
     insertDeleteArray<UInt16ArrayType>(m);
     insertDeleteArray<Int16ArrayType>(m);
@@ -651,72 +643,72 @@ public:
 
       QVector<int> dims(1, 2);
       T* ptr = m->createCellData<T, K, AbstractFilter>("Test", 10, dims, absFilt.get());
-      DREAM3D_REQUIRE_EQUAL(absFilt->getErrorCode(), 0);
+      DREAM3D_REQUIRE_EQUAL(absFilt->getErrorCondition(), 0);
       DREAM3D_TEST_POINTER(ptr, !=, nullptr);
-      absFilt->clearErrorCode();
+      absFilt->setErrorCondition(0);
 
       // First try getting the array, but pass in a bad array name which should produce a null pointer
       // and negative error condition
       ptr =  m->getCellDataSizeCheck<T, K, AbstractFilter>("BAD_ARRAY_NAME", 10, 2, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(ptr , nullptr)
-          DREAM3D_REQUIRE_EQUAL(0, absFilt->getErrorCode());
-      absFilt->clearErrorCode();
+          DREAM3D_REQUIRE_EQUAL(0, absFilt->getErrorCondition());
+      absFilt->setErrorCondition(0);
 
       // Next try getting the array, but pass in a bad size name which should produce a null pointer
       // and negative error condition
       ptr =  m->getCellDataSizeCheck<T, K, AbstractFilter>("Test", 10, 1, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(ptr , nullptr)
-          DREAM3D_REQUIRE_NE(0, absFilt->getErrorCode());
-      absFilt->clearErrorCode();
+          DREAM3D_REQUIRE_NE(0, absFilt->getErrorCondition());
+      absFilt->setErrorCondition(0);
 
       // Next try getting the array, but pass in a bad cast type which should produce a null pointer
       // and negative error condition
       bool* bool_ptr =  m->getCellDataSizeCheck<bool, BoolArrayType, AbstractFilter>("Test", 10, 2, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(bool_ptr , nullptr)
-          DREAM3D_REQUIRE_NE(0, absFilt->getErrorCode());
-      absFilt->clearErrorCode();
+          DREAM3D_REQUIRE_NE(0, absFilt->getErrorCondition());
+      absFilt->setErrorCondition(0);
 
       // Next, pass in all the correct values which should produce a Non nullptr pointer value and
       // Zero Error Condition
       ptr = m->getCellDataSizeCheck<T, K, AbstractFilter>("Test", 10, 2, absFilt.get());
       DREAM3D_TEST_POINTER(ptr, !=, nullptr);
-      DREAM3D_REQUIRE_EQUAL(0, absFilt->getErrorCode());
+      DREAM3D_REQUIRE_EQUAL(0, absFilt->getErrorCondition());
 
       IDataArray::Pointer t = attrMat->removeAttributeArray( "Test" );
       DREAM3D_TEST_POINTER(ptr, !=, nullptr);
 
       /********************************* Feature Data Tests *********************************************/
       ptr = m->createCellFeatureData<T, K, AbstractFilter>("Test", 10, dims, absFilt.get());
-      DREAM3D_REQUIRE_EQUAL(absFilt->getErrorCode(), 0);
+      DREAM3D_REQUIRE_EQUAL(absFilt->getErrorCondition(), 0);
       DREAM3D_TEST_POINTER(ptr, !=, nullptr);
-      absFilt->clearErrorCode();
+      absFilt->setErrorCondition(0);
 
       // First try getting the array, but pass in a bad array name which should produce a null pointer
       // and negative error condition
       ptr =  m->getCellFeatureDataSizeCheck<T, K, AbstractFilter>("BAD_ARRAY_NAME", 10, 2, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(ptr , nullptr)
-          DREAM3D_REQUIRE_EQUAL(0, absFilt->getErrorCode());
-      absFilt->clearErrorCode();
+          DREAM3D_REQUIRE_EQUAL(0, absFilt->getErrorCondition());
+      absFilt->setErrorCondition(0);
 
       // Next try getting the array, but pass in a bad size name which should produce a null pointer
       // and negative error condition
       ptr =  m->getCellFeatureDataSizeCheck<T, K, AbstractFilter>("Test", 10, 1, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(ptr , nullptr)
-          DREAM3D_REQUIRE_NE(0, absFilt->getErrorCode());
-      absFilt->clearErrorCode();
+          DREAM3D_REQUIRE_NE(0, absFilt->getErrorCondition());
+      absFilt->setErrorCondition(0);
 
       // Next try getting the array, but pass in a bad cast type which should produce a null pointer
       // and negative error condition
       bool_ptr =  m->getCellFeatureDataSizeCheck<bool, BoolArrayType, AbstractFilter>("Test", 10, 2, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(bool_ptr , nullptr)
-          DREAM3D_REQUIRE_NE(0, absFilt->getErrorCode());
-      absFilt->clearErrorCode();
+          DREAM3D_REQUIRE_NE(0, absFilt->getErrorCondition());
+      absFilt->setErrorCondition(0);
 
       // Next, pass in all the correct values which should produce a Non nullptr pointer value and
       // Zero Error Condition
       ptr = m->getCellFeatureDataSizeCheck<T, K, AbstractFilter>("Test", 10, 2, absFilt.get());
       DREAM3D_TEST_POINTER(ptr, !=, nullptr);
-      DREAM3D_REQUIRE_EQUAL(0, absFilt->getErrorCode());
+      DREAM3D_REQUIRE_EQUAL(0, absFilt->getErrorCondition());
 
       t = m->removeCellFeatureData( "Test" );
       DREAM3D_TEST_POINTER(ptr, !=, nullptr);
@@ -724,36 +716,36 @@ public:
 
       /********************************* Ensemble Data Tests *********************************************/
       ptr = m->createCellEnsembleData<T, K, AbstractFilter>("Test", 10, dims, absFilt.get());
-      DREAM3D_REQUIRE_EQUAL(absFilt->getErrorCode(), 0);
+      DREAM3D_REQUIRE_EQUAL(absFilt->getErrorCondition(), 0);
       DREAM3D_TEST_POINTER(ptr, !=, nullptr);
-      absFilt->clearErrorCode();
+      absFilt->setErrorCondition(0);
 
       // First try getting the array, but pass in a bad array name which should produce a null pointer
       // and negative error condition
       ptr =  m->getCellEnsembleDataSizeCheck<T, K, AbstractFilter>("BAD_ARRAY_NAME", 10, 2, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(ptr , nullptr)
-          DREAM3D_REQUIRE_EQUAL(0, absFilt->getErrorCode());
-      absFilt->clearErrorCode();
+          DREAM3D_REQUIRE_EQUAL(0, absFilt->getErrorCondition());
+      absFilt->setErrorCondition(0);
 
       // Next try getting the array, but pass in a bad size name which should produce a null pointer
       // and negative error condition
       ptr =  m->getCellEnsembleDataSizeCheck<T, K, AbstractFilter>("Test", 10, 1, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(ptr , nullptr)
-          DREAM3D_REQUIRE_NE(0, absFilt->getErrorCode());
-      absFilt->clearErrorCode();
+          DREAM3D_REQUIRE_NE(0, absFilt->getErrorCondition());
+      absFilt->setErrorCondition(0);
 
       // Next try getting the array, but pass in a bad cast type which should produce a null pointer
       // and negative error condition
       bool_ptr =  m->getCellEnsembleDataSizeCheck<bool, BoolArrayType, AbstractFilter>("Test", 10, 2, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(bool_ptr , nullptr)
-          DREAM3D_REQUIRE_NE(0, absFilt->getErrorCode());
-      absFilt->clearErrorCode();
+          DREAM3D_REQUIRE_NE(0, absFilt->getErrorCondition());
+      absFilt->setErrorCondition(0);
 
       // Next, pass in all the correct values which should produce a Non nullptr pointer value and
       // Zero Error Condition
       ptr = m->getCellEnsembleDataSizeCheck<T, K, AbstractFilter>("Test", 10, 2, absFilt.get());
       DREAM3D_TEST_POINTER(ptr, !=, nullptr);
-      DREAM3D_REQUIRE_EQUAL(0, absFilt->getErrorCode());
+      DREAM3D_REQUIRE_EQUAL(0, absFilt->getErrorCondition());
 
 
       t = m->removeCellEnsembleData( "Test" );
@@ -894,284 +886,6 @@ public:
 #endif
 
   // -----------------------------------------------------------------------------
-  void TestDataContainerArray()
-  {
-    bool result = false;
-    DataContainerArray::Pointer dca = DataContainerArray::New();
-    // addDataContainer
-    // insertOrAssign
-    // getDataContainer(QString | DataArrayPath)
-
-    // try adding or assigning a null DataContainer
-    DataContainer::Pointer nullDc = DataContainer::NullPointer();
-    result = dca->addOrReplaceDataContainer(nullDc);
-    DREAM3D_REQUIRED(false, ==, result)
-    result = dca->insertOrAssign(nullDc);
-    DREAM3D_REQUIRED(false, ==, result)
-    DREAM3D_REQUIRED(dca->size(), ==, 0)
-
-    const QString k_DC0("DCO");
-    const QString k_DC1("DC1");
-    DataContainer::Pointer dc0 = DataContainer::New(k_DC0);
-    DataContainer::Pointer dc1 = DataContainer::New(k_DC1);
-
-    result = dca->addOrReplaceDataContainer(dc0);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(dca->size(), ==, 1)
-
-    // Add the same DataContainer a second time. Still returns true. Size stays at 1
-    result = dca->insertOrAssign(dc0);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(dca->size(), ==, 1)
-
-    result = dca->push_back(dc0);
-    DREAM3D_REQUIRED(false, ==, result);
-    DREAM3D_REQUIRED(dca->size(), ==, 1)
-
-    result = dca->addOrReplaceDataContainer(dc1);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(dca->size(), ==, 2)
-
-    dc0 = dca->removeDataContainer(k_DC0);
-    dc1 = dca->removeDataContainer(k_DC1);
-    DREAM3D_REQUIRED(dca->empty(), ==, true)
-    DREAM3D_REQUIRE_NULL_POINTER(dc0->getParentNode())
-
-    dca->clear();
-    DREAM3D_REQUIRED(dca->empty(), ==, true)
-
-    result = dca->addOrReplaceDataContainer(dc0);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(dca->size(), ==, 1)
-
-    result = dca->push_back(dc0);
-    DREAM3D_REQUIRED(false, ==, result);
-    DREAM3D_REQUIRED(dca->size(), ==, 1)
-
-    result = dca->addOrReplaceDataContainer(dc1);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(dca->size(), ==, 2)
-
-    // getDataContainers
-    DataContainerArray::Container dcContainer = dca->getDataContainers();
-    DREAM3D_REQUIRED(dcContainer.size(), ==, 2)
-
-    dc0 = dca->getDataContainer(k_DC0);
-    DREAM3D_REQUIRE_VALID_POINTER(dc0.get())
-    DataArrayPath dap(k_DC0);
-    dc0 = dca->getDataContainer(dap);
-    DREAM3D_REQUIRE_VALID_POINTER(dc0.get())
-
-    DREAM3D_REQUIRED(dca->size(), ==, 2)
-    dca->clear();
-    DREAM3D_REQUIRED(dca->empty(), ==, true)
-    for(int i = 0; i < 10; i++)
-    {
-      DataContainer::Pointer dc = DataContainer::New("Foo" + QString::number(i));
-      dca->addOrReplaceDataContainer(dc);
-      //   std::cout << dca->size() << std::endl;
-      DREAM3D_REQUIRED(dca->size(), ==, i + 1)
-    }
-
-    result = dca->insertOrAssign(dc0);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(dca->size(), ==, 11)
-
-    result = dca->insertOrAssign(dc0);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(dca->size(), ==, 11)
-    result = dca->insertOrAssign(dc1);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(dca->size(), ==, 12)
-  }
-
-  // -----------------------------------------------------------------------------
-  void TestDataContainer()
-  {
-    bool result = false;
-    DataContainer::Pointer dc = DataContainer::New("DataContainer");
-    // addDataContainer
-    // insertOrAssign
-    // getDataContainer(QString | DataArrayPath)
-
-    // try adding or assigning a null DataContainer
-    AttributeMatrix::Pointer nullAttrMat = AttributeMatrix::NullPointer();
-    result = dc->addOrReplaceAttributeMatrix(nullAttrMat);
-    DREAM3D_REQUIRED(false, ==, result)
-    result = dc->insertOrAssign(nullAttrMat);
-    DREAM3D_REQUIRED(false, ==, result)
-    DREAM3D_REQUIRED(dc->empty(), ==, true)
-
-    const QString k_DC0("DCO");
-    const QString k_DC1("DC1");
-    QVector<size_t> tDims = {10, 10};
-    AttributeMatrix::Pointer am0 = AttributeMatrix::New(tDims, k_DC0, AttributeMatrix::Type::Generic);
-    AttributeMatrix::Pointer am1 = AttributeMatrix::New(tDims, k_DC1, AttributeMatrix::Type::Generic);
-
-    result = dc->addOrReplaceAttributeMatrix(am0);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(dc->size(), ==, 1)
-
-    // Add the same AttributeMatrix a second time. Still returns true. Size stays at 1
-    result = dc->insertOrAssign(am0);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(dc->size(), ==, 1)
-
-    result = dc->push_back(am0);
-    DREAM3D_REQUIRED(false, ==, result);
-    DREAM3D_REQUIRED(dc->size(), ==, 1)
-
-    result = dc->addOrReplaceAttributeMatrix(am1);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(dc->size(), ==, 2)
-
-    am0 = dc->removeAttributeMatrix(k_DC0);
-    am1 = dc->removeAttributeMatrix(k_DC1);
-    DREAM3D_REQUIRED(dc->empty(), ==, true)
-    DREAM3D_REQUIRE_NULL_POINTER(am0->getParentNode())
-
-    dc->clear();
-    DREAM3D_REQUIRED(dc->empty(), ==, true)
-
-    result = dc->addOrReplaceAttributeMatrix(am0);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(dc->size(), ==, 1)
-
-    result = dc->push_back(am0);
-    DREAM3D_REQUIRED(false, ==, result);
-    DREAM3D_REQUIRED(dc->size(), ==, 1)
-
-    result = dc->addOrReplaceAttributeMatrix(am1);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(dc->size(), ==, 2)
-
-    // getDataContainers
-    DataContainer::Container_t dcContainer = dc->getAttributeMatrices();
-    DREAM3D_REQUIRED(dcContainer.size(), ==, 2)
-
-    am0 = dc->getAttributeMatrix(k_DC0);
-    DREAM3D_REQUIRE_VALID_POINTER(am0.get())
-    DataArrayPath dap("DataContainer", k_DC0, "");
-    am0 = dc->getAttributeMatrix(dap);
-    DREAM3D_REQUIRE_VALID_POINTER(am0.get())
-
-    DREAM3D_REQUIRED(dc->size(), ==, 2)
-    dc->clear();
-    DREAM3D_REQUIRED(dc->empty(), ==, true)
-    for(int i = 0; i < 10; i++)
-    {
-      AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, "Foo" + QString::number(i), AttributeMatrix::Type::Generic);
-      dc->addOrReplaceAttributeMatrix(am);
-      //   std::cout << dca->size() << std::endl;
-      DREAM3D_REQUIRED(dc->size(), ==, i + 1)
-    }
-
-    result = dc->insertOrAssign(am0);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(dc->size(), ==, 11)
-
-    result = dc->insertOrAssign(am0);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(dc->size(), ==, 11)
-    result = dc->insertOrAssign(am1);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(dc->size(), ==, 12)
-  }
-
-  // -----------------------------------------------------------------------------
-  void TestAttributeMatrix()
-  {
-    bool result = false;
-    QVector<size_t> tDims = {10, 10};
-    AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, "AttributeMatrix", AttributeMatrix::Type::Generic);
-    // addDataContainer
-    // insertOrAssign
-    // getDataContainer(QString | DataArrayPath)
-
-    // try adding or assigning a null DataContainer
-    Int32ArrayType::Pointer nullAttrMat = Int32ArrayType::NullPointer();
-    result = am->addOrReplaceAttributeArray(nullAttrMat);
-    DREAM3D_REQUIRED(false, ==, result)
-    result = am->insertOrAssign(nullAttrMat);
-    DREAM3D_REQUIRED(false, ==, result)
-    DREAM3D_REQUIRED(am->empty(), ==, true)
-
-    const QString k_DC0("DCO");
-    const QString k_DC1("DC1");
-    Int32ArrayType::Pointer am0 = Int32ArrayType::CreateArray(100, k_DC0);
-    Int32ArrayType::Pointer am1 = Int32ArrayType::CreateArray(100, k_DC1);
-
-    result = am->addOrReplaceAttributeArray(am0);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(am->size(), ==, 1)
-
-    // Add the same AttributeMatrix a second time. Still returns true. Size stays at 1
-    result = am->insertOrAssign(am0);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(am->size(), ==, 1)
-
-    result = am->push_back(am0);
-    DREAM3D_REQUIRED(false, ==, result);
-    DREAM3D_REQUIRED(am->size(), ==, 1)
-
-    result = am->addOrReplaceAttributeArray(am1);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(am->size(), ==, 2)
-
-    IDataArray::Pointer da0 = am->removeAttributeArray(k_DC0);
-    IDataArray::Pointer da1 = am->removeAttributeArray(k_DC1);
-    DREAM3D_REQUIRED(am->empty(), ==, true)
-    DREAM3D_REQUIRE_NULL_POINTER(am0->getParentNode())
-
-    am->clear();
-    DREAM3D_REQUIRED(am->empty(), ==, true)
-
-    result = am->addOrReplaceAttributeArray(am0);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(am->size(), ==, 1)
-
-    result = am->push_back(am0);
-    DREAM3D_REQUIRED(false, ==, result);
-    DREAM3D_REQUIRED(am->size(), ==, 1)
-
-    result = am->addOrReplaceAttributeArray(am1);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(am->size(), ==, 2)
-
-    // getDataContainers
-    AttributeMatrix::Container_t dcContainer = am->getAttributeArrays();
-    DREAM3D_REQUIRED(dcContainer.size(), ==, 2)
-
-    da0 = am->getAttributeArray(k_DC0);
-    DREAM3D_REQUIRE_VALID_POINTER(am0.get())
-    DataArrayPath dap("DataContainer", "AttributeMatrix", k_DC0);
-    da0 = am->getAttributeArray(dap);
-    DREAM3D_REQUIRE_VALID_POINTER(am0.get())
-
-    DREAM3D_REQUIRED(am->size(), ==, 2)
-    am->clear();
-    DREAM3D_REQUIRED(am->empty(), ==, true)
-    for(int i = 0; i < 10; i++)
-    {
-      Int32ArrayType::Pointer aa = Int32ArrayType::CreateArray(100, "Foo" + QString::number(i));
-      am->addOrReplaceAttributeArray(aa);
-      //   std::cout << dca->size() << std::endl;
-      DREAM3D_REQUIRED(am->size(), ==, i + 1)
-    }
-
-    result = am->insertOrAssign(am0);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(am->size(), ==, 11)
-
-    result = am->insertOrAssign(am0);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(am->size(), ==, 11)
-    result = am->insertOrAssign(am1);
-    DREAM3D_REQUIRED(true, ==, result);
-    DREAM3D_REQUIRED(am->size(), ==, 12)
-  }
-
-  // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
   void operator()()
@@ -1185,11 +899,6 @@ public:
     DREAM3D_REGISTER_TEST(RemoveTestFiles())
 #endif
     int err = EXIT_SUCCESS;
-
-    DREAM3D_REGISTER_TEST(TestDataContainerArray())
-    DREAM3D_REGISTER_TEST(TestDataContainer())
-    DREAM3D_REGISTER_TEST(TestAttributeMatrix())
-
     DREAM3D_REGISTER_TEST(TestInsertDelete())
 
     DREAM3D_REGISTER_TEST(TestDataContainerWriter())

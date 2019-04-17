@@ -52,7 +52,7 @@ DynamicTableExample::~DynamicTableExample() = default;
 // -----------------------------------------------------------------------------
 void DynamicTableExample::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  QVector<FilterParameter::Pointer> parameters;
   /* Place all your option initialization code here */
 
   // Table 1 - Fixed rows and columns, no default data passed in

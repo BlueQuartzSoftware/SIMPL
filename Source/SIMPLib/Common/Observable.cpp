@@ -35,11 +35,6 @@
 
 #include "Observable.h"
 
-#include "SIMPLib/Messages/GenericErrorMessage.h"
-#include "SIMPLib/Messages/GenericProgressMessage.h"
-#include "SIMPLib/Messages/GenericStatusMessage.h"
-#include "SIMPLib/Messages/GenericWarningMessage.h"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -70,79 +65,65 @@ void Observable::operator=(const Observable&)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::setErrorCondition(int code, const QString& messageText)
+void Observable::broadcastPipelineMessage(const PipelineMessage& msg)
 {
-  GenericErrorMessage::Pointer pm = GenericErrorMessage::New(messageText, code);
-  emit messageGenerated(pm);
+  emit filterGeneratedMessage(msg);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::setErrorConditionWithPrefix(int code, const QString& prefix, const QString& messageText)
+void Observable::notifyErrorMessage(const QString& humanLabel, const QString& str, int code)
 {
-  QString msg = messageText;
-  msg.prepend(tr("%1 - ").arg(prefix));
-
-  setErrorCondition(code, msg);
+  PipelineMessage pm = PipelineMessage::CreateErrorMessage(getNameOfClass(), humanLabel, str, code);
+  emit filterGeneratedMessage(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::setWarningCondition(int code, const QString& messageText)
+void Observable::notifyStatusMessage(const QString& humanLabel, const QString& str)
 {
-  GenericWarningMessage::Pointer pm = GenericWarningMessage::New(messageText, code);
-  emit messageGenerated(pm);
+  PipelineMessage pm = PipelineMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
+  emit filterGeneratedMessage(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::setWarningConditionWithPrefix(int code, const QString& prefix, const QString& messageText)
+void Observable::notifyStatusMessage(const QString& prefix, const QString& humanLabel, const QString& str)
 {
-  QString msg = messageText;
-  msg.prepend(tr("%1 - ").arg(prefix));
-
-  setWarningCondition(code, msg);
+  PipelineMessage pm = PipelineMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
+  pm.setPrefix(prefix);
+  emit filterGeneratedMessage(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::notifyStatusMessage(const QString& messageText)
+void Observable::notifyStandardOutputMessage(const QString& humanLabel, int pipelineIndex, const QString& str)
 {
-  GenericStatusMessage::Pointer pm = GenericStatusMessage::New(messageText);
-  emit messageGenerated(pm);
+  PipelineMessage pm = PipelineMessage::CreateStandardOutputMessage(humanLabel, pipelineIndex, str);
+  emit filterGeneratedMessage(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::notifyStatusMessageWithPrefix(const QString& prefix, const QString& messageText)
+void Observable::notifyWarningMessage(const QString& humanLabel, const QString& str, int code)
 {
-  QString msg = messageText;
-  msg.prepend(tr("%1 - ").arg(prefix));
-
-  notifyStatusMessage(msg);
+  PipelineMessage pm = PipelineMessage::CreateWarningMessage(getNameOfClass(), humanLabel, str, code);
+  emit filterGeneratedMessage(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Observable::notifyProgressMessage(int progress, const QString& messageText)
+void Observable::notifyProgressMessage(const QString& prefix, const QString& humanLabel, const QString& str, int progress)
 {
-  GenericProgressMessage::Pointer pm = GenericProgressMessage::New(messageText, progress);
-  emit messageGenerated(pm);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void Observable::notifyProgressMessageWithPrefix(int progress, const QString& prefix, const QString& messageText)
-{
-  QString msg = messageText;
-  msg.prepend(tr("%1: ").arg(prefix));
-
-  notifyProgressMessage(progress, msg);
+  PipelineMessage pm = PipelineMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
+  pm.setPrefix(prefix);
+  pm.setProgressValue(progress);
+  pm.setType(PipelineMessage::MessageType::StatusMessageAndProgressValue);
+  emit filterGeneratedMessage(pm);
 }

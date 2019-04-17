@@ -1,42 +1,41 @@
 /* ============================================================================
- * Copyright (c) 2009-2016 BlueQuartz Software, LLC
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer.
- *
- * Redistributions in binary form must reproduce the above copyright notice, this
- * list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution.
- *
- * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
- * contributors may be used to endorse or promote products derived from this software
- * without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
- * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * The code contained herein was partially funded by the followig contracts:
- *    United States Air Force Prime Contract FA8650-07-D-5800
- *    United States Air Force Prime Contract FA8650-10-D-5210
- *    United States Prime Contract Navy N00173-07-C-2068
- *
- * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+*
+* Redistribution and use in source and binary forms, with or without modification,
+* are permitted provided that the following conditions are met:
+*
+* Redistributions of source code must retain the above copyright notice, this
+* list of conditions and the following disclaimer.
+*
+* Redistributions in binary form must reproduce the above copyright notice, this
+* list of conditions and the following disclaimer in the documentation and/or
+* other materials provided with the distribution.
+*
+* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+* contributors may be used to endorse or promote products derived from this software
+* without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* The code contained herein was partially funded by the followig contracts:
+*    United States Air Force Prime Contract FA8650-07-D-5800
+*    United States Air Force Prime Contract FA8650-10-D-5210
+*    United States Prime Contract Navy N00173-07-C-2068
+*
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include <cstdint>
-#include <cstdlib>
+#include <stdlib.h>
+
 #include <iostream>
-#include <map>
 #include <vector>
 
 #include <QtCore/QDir>
@@ -75,35 +74,6 @@
 #define DIM0 2
 #define DIM1 3
 #define DIM2 4
-
-//============================= These are for testing the STL Interface ================================================
-std::map<int, int> test;
-std::map<int, int>::value_type vt;
-
-bool mypredicate(int32_t i, int32_t j)
-{
-  return (i == j);
-}
-
-struct Sum
-{
-  Sum()
-  : sum{0}
-  {
-  }
-  void operator()(int n)
-  {
-    sum += n;
-  }
-  int sum;
-};
-
-template <typename T>
-void print(const T& v)
-{
-  std::cout << v << " ";
-}
-//======================================================================================================================
 
 class DataArrayTest
 {
@@ -414,8 +384,8 @@ public:
   {                                                                                                                                                                                                    \
     DataArray<type>::Pointer p_##type = DataArray<type>::CreateArray(1, "Test", false);                                                                                                                \
     QString s_##type = p_##type->getTypeAsString();                                                                                                                                                    \
-    s_##type = s_##type; /* qDebug() << #type << s_##type; */                                                                                                                                          \
-    auto value = static_cast<type>(1);                                                                                                                                                                 \
+    /* qDebug() << #type << s_##type; */                                                                                                                                                               \
+    type value = (type)(1);                                                                                                                                                                            \
     value = value;                                                                                                                                                                                     \
     /* qDebug() << TypeToString<type>(value); */                                                                                                                                                       \
   }
@@ -482,7 +452,7 @@ public:
       }
 
       // Resize Larger
-      int32Array->resizeTuples(NUM_TUPLES_2);
+      int32Array->resize(NUM_TUPLES_2);
       DREAM3D_REQUIRE_EQUAL(NUM_TUPLES_2, int32Array->getNumberOfTuples());
       DREAM3D_REQUIRE_EQUAL(NUM_ELEMENTS_2, int32Array->getSize());
       DREAM3D_REQUIRE_EQUAL(int32Array->isAllocated(), true);
@@ -497,7 +467,7 @@ public:
       }
 
       // Resize Smaller - Which should have still saved some of our data
-      int32Array->resizeTuples(NUM_TUPLES_3);
+      int32Array->resize(NUM_TUPLES_3);
       DREAM3D_REQUIRE_EQUAL(NUM_TUPLES_3, int32Array->getNumberOfTuples());
       DREAM3D_REQUIRE_EQUAL(NUM_ELEMENTS_3, int32Array->getSize());
       DREAM3D_REQUIRE_EQUAL(int32Array->isAllocated(), true);
@@ -702,13 +672,13 @@ public:
     }
     // Splat another value across the array starting at an offset into the array
     // and test those values made it into the array correctly
-    array->initializeWithValue(static_cast<T>(1));
-    for(size_t i = 0; i < numElements; i++)
+    array->initializeWithValue(static_cast<T>(1), numComp);
+    for(size_t i = numComp; i < numElements; i++)
     {
       DREAM3D_REQUIRE_EQUAL(static_cast<T>(1), ptr[i]);
     }
     // Initialize the entire array with a value (offset = 0);
-    array->initializeWithValue(static_cast<T>(2));
+    array->initializeWithValue(static_cast<T>(2), 0);
     for(size_t i = 0; i < numElements; i++)
     {
       DREAM3D_REQUIRE_EQUAL(static_cast<T>(2), ptr[i]);
@@ -757,15 +727,15 @@ public:
 
     ///     virtual QVector<size_t> getComponentDimensions()
     // Test resizing the array based on a give number of tuples. The number of Components will stay the same at each tuple
-    array->resizeTuples(numTuples);
+    array->resize(numTuples * 2);
     array->initializeWithZeros(); // Init the grown array to all Zeros
     nt = array->getNumberOfTuples();
-    DREAM3D_REQUIRED(nt, ==, (numTuples));
+    DREAM3D_REQUIRED(nt, ==, (numTuples * 2));
     nc = array->getNumberOfComponents();
     DREAM3D_REQUIRED(nc, ==, numComp);
 
     // Test resizing the array to a smaller size
-    array->resizeTuples(numTuples);
+    array->resize(numTuples);
     array->initializeWithZeros(); // Init the grown array to all Zeros
     nt = array->getNumberOfTuples();
     DREAM3D_REQUIRED(nt, ==, (numTuples));
@@ -787,7 +757,7 @@ public:
     DREAM3D_REQUIRED_PTR(ptr, ==, nullptr);
 
     // Test resizing the array to a any larger size
-    array->resizeTuples(numTuples);
+    array->resize(numTuples);
     array->initializeWithZeros(); // Init the grown array to all Zeros
     nt = array->getNumberOfTuples();
     DREAM3D_REQUIRED(nt, ==, (numTuples));
@@ -1032,7 +1002,7 @@ public:
     DREAM3D_REQUIRE_EQUAL(didCopy, false);
 
     // Resize the DataArray to accomondate the true amount of data that we want (20 Tuples)
-    src->resizeTuples(numTuples * 2);
+    src->resize(numTuples * 2);
     didCopy = src->copyFromArray(numTuples, copy);
     DREAM3D_REQUIRE_EQUAL(didCopy, true);
 
@@ -1197,10 +1167,10 @@ public:
 
     typename std::vector<std::vector<T>> data;
 
-    for(size_t i = 0; i < numTuples; i++)
+    for (size_t i = 0; i < numTuples; i++)
     {
       typename std::vector<T> tempVector;
-      for(size_t j = 0; j < cDims[0]; j++)
+      for (size_t j = 0; j < cDims[0]; j++)
       {
         tempVector.push_back(static_cast<T>(i + j));
       }
@@ -1211,16 +1181,16 @@ public:
 
     typename DataArray<T>::Pointer src = DataArray<T>::CreateArray(numTuples, cDims, name, true);
 
-    for(size_t i = 0; i < numTuples; i++)
+    for (size_t i = 0; i < numTuples; i++)
     {
       src->setTuple(i, data[i]);
     }
 
     // Check each element of the DataArray against the original vector
 
-    for(size_t i = 0; i < numTuples; i++)
+    for (size_t i = 0; i < numTuples; i++)
     {
-      for(size_t j = 0; j < cDims[0]; j++)
+      for (size_t j = 0; j < cDims[0]; j++)
       {
         T val = src->getComponent(i, j);
         DREAM3D_REQUIRE_EQUAL(data[i][j], val)
@@ -1243,150 +1213,6 @@ public:
     TestSetTupleForType<int64_t>();
     TestSetTupleForType<float>();
     TestSetTupleForType<double>();
-  }
-
-  // -----------------------------------------------------------------------------
-  void STLInterfaceTest()
-  {
-    std::cout << "STLInterfaceTest Test Starting...." << std::endl;
-
-    DataArray<int32_t> i32Array(10, "Test Array");
-    DataArray<int32_t> i32Array1(10, "Other Array");
-
-    // Initialize with a value
-    for(auto& value : i32Array)
-    {
-      value = 5;
-    }
-    // Initialize with a value
-    for(auto& value : i32Array1)
-    {
-      value = 5;
-    }
-
-    std::cout << "before:";
-    std::for_each(i32Array.begin(), i32Array.end(), print<int32_t>);
-    std::cout << '\n';
-
-    std::cout << "using default comparison:" << std::endl;
-    if(std::equal(i32Array.begin(), i32Array.end(), i32Array1.begin()))
-    {
-      std::cout << "The contents of both sequences are equal.\n";
-    }
-    else
-    {
-      std::cout << "The contents of both sequences differ.\n";
-    }
-
-    std::for_each(i32Array1.begin(), i32Array1.end(), [](int32_t& n) { n++; });
-
-    std::cout << "using predicate comparison:" << std::endl;
-    if(std::equal(i32Array.begin(), i32Array.end(), i32Array1.begin(), mypredicate))
-    {
-      std::cout << "The contents of both sequences are equal.\n";
-    }
-    else
-    {
-      std::cout << "The contents of both sequences differ.\n";
-    }
-
-    std::cout << "Using another predicate to sum the values" << std::endl;
-    // calls Sum::operator() for each number
-    Sum s = std::for_each(i32Array1.begin(), i32Array1.end(), Sum());
-
-    std::cout << "after: ";
-    std::for_each(i32Array1.begin(), i32Array1.end(), print<int32_t>);
-    std::cout << '\n';
-    std::cout << "sum: " << s.sum << '\n';
-
-    std::cout << "Modify Array using [] operator..." << std::endl;
-    for(DataArray<int32_t>::size_type i = 0; i < i32Array.size(); i++)
-    {
-      i32Array[i] = static_cast<int32_t>(i * 10);
-    }
-
-    std::cout << "Print using range based loop..." << std::endl;
-    for(const auto& value : i32Array)
-    {
-      std::cout << value << std::endl;
-    }
-
-    std::cout << "std::fill" << std::endl;
-    // std::fill the array with a set value
-    std::fill(i32Array.begin(), i32Array.end(), -1);
-    std::for_each(i32Array.begin(), i32Array.end(), print<int32_t>);
-    std::cout << "" << std::endl;
-
-    std::cout << "std::transform from int32_t to float using a back_inserter" << std::endl;
-    DataArray<float> f32Array(0, "Float Array");
-    std::transform(i32Array.begin(), i32Array.end(), std::back_inserter(f32Array), [](int32_t i) -> float { return i * 2.5; });
-    std::for_each(f32Array.begin(), f32Array.end(), print<float>);
-    std::cout << std::endl;
-
-    // Get the front and back
-    int32_t front = i32Array1.front();
-    float back = f32Array.back();
-    if(front != back)
-    {
-      // do nothing
-    }
-
-    std::cout << "## Assign Content(1)" << std::endl;
-    std::vector<int> foo(60, 33);
-    i32Array.assign(foo.begin(), foo.end());
-    std::cout << "i32Array.size() after assign(1): " << i32Array.size() << std::endl;
-
-    i32Array.assign(static_cast<size_t>(22), 333);
-    std::cout << "i32Array.size() after assign(2): " << i32Array.size() << std::endl;
-
-    i32Array.assign(std::initializer_list<int32_t>{
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-    });
-    std::cout << "i32Array.size() after assign(3): " << i32Array.size() << std::endl;
-
-    int32_t* data = i32Array.data();
-    if(data[0] != 3)
-    {
-    }
-    // Stick DataArray into a STL container
-    std::vector<DataArray<float>> vecOfFloatArrays;
-
-    // -----------------------------------------------------------------------------
-    // Let's try something that has components, like an ARGB array
-    using RgbaType = DataArray<uint8_t>;
-    using CompDimsType = RgbaType::comp_dims_type;
-    using RgbaIterator = RgbaType::tuple_iterator;
-
-    CompDimsType cDims = {4};
-    RgbaType rgba(static_cast<size_t>(10), cDims, "RGBA Array");
-
-    RgbaIterator begin = rgba.begin<RgbaIterator>();
-    rgba.initializeWithValue(0xFF);
-    rgba[0] = 0x65;
-    rgba[1] = 0x66;
-    rgba[2] = 0x67;
-    rgba[3] = 0x68;
-
-    for(RgbaIterator rgbaIter = begin; rgbaIter != rgba.end<RgbaIterator>(); rgbaIter++)
-    {
-      std::cout << "rgba: " << static_cast<int>(*rgbaIter) << std::endl;
-      std::cout << " rgba[0] " << static_cast<int>(rgbaIter.comp_value(0)) << " rgba[1] " << static_cast<int>(rgbaIter.comp_value(1)) << " rgba[2] " << static_cast<int>(rgbaIter.comp_value(2))
-                << " rgba[3] " << static_cast<int>(rgbaIter.comp_value(3)) << std::endl;
-
-      for(size_t i = 0; i < 4; i++)
-      {
-        rgbaIter.comp_value(i) = 55 + i;
-      }
-      std::cout << "rgba: " << static_cast<int>(*rgbaIter) << std::endl;
-      std::cout << " rgba[0] " << static_cast<int>(rgbaIter.comp_value(0)) << " rgba[1] " << static_cast<int>(rgbaIter.comp_value(1)) << " rgba[2] " << static_cast<int>(rgbaIter.comp_value(2))
-                << " rgba[3] " << static_cast<int>(rgbaIter.comp_value(3)) << std::endl;
-    }
   }
 
   // -----------------------------------------------------------------------------
@@ -1419,9 +1245,7 @@ public:
 #endif
   }
 
-public:
-  DataArrayTest(const DataArrayTest&) = delete;            // Copy Constructor Not Implemented
-  DataArrayTest(DataArrayTest&&) = delete;                 // Move Constructor Not Implemented
-  DataArrayTest& operator=(const DataArrayTest&) = delete; // Copy Assignment Not Implemented
-  DataArrayTest& operator=(DataArrayTest&&) = delete;      // Move Assignment Not Implemented
+private:
+  DataArrayTest(const DataArrayTest&);  // Copy Constructor Not Implemented
+  void operator=(const DataArrayTest&); // Move assignment Not Implemented
 };

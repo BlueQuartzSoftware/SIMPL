@@ -43,11 +43,11 @@
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
-#include "SIMPLib/Filtering/QMetaObjectUtilities.h"
-#include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 #include "SIMPLib/SIMPLib.h"
+
+#include "SIMPLib/Filtering/QMetaObjectUtilities.h"
 
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
@@ -275,8 +275,8 @@ public:
 
       // The data array added last in code will be the first printed and first in daList
 
-      checkDataList<int32_t>(am, daList[0]->getName(), tokens, i, 1);
-      checkDataList<float>(am, daList[1]->getName(), tokens, i, 1 + daList[0]->getNumberOfComponents());
+      checkDataList<float>(am, daList[0]->getName(), tokens, i, 1);
+      checkDataList<int32_t>(am, daList[1]->getName(), tokens, i, 1 + daList[0]->getNumberOfComponents());
     }
 
     if(writeNeighborListData)
@@ -352,10 +352,10 @@ public:
     // Run filter
 
     featureDataCSVWriter->preflight();
-    DREAM3D_REQUIRED(featureDataCSVWriter->getErrorCode(), >=, 0);
+    DREAM3D_REQUIRED(featureDataCSVWriter->getErrorCondition(), >=, 0);
 
     featureDataCSVWriter->execute();
-    DREAM3D_REQUIRED(featureDataCSVWriter->getErrorCode(), >=, 0);
+    DREAM3D_REQUIRED(featureDataCSVWriter->getErrorCondition(), >=, 0);
 
     checkFilter(am, delimiterChoice, writeNumFeaturesLine, writeNeighborListData);
   }
@@ -391,18 +391,18 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     // Create Image Geometry
 
     ImageGeom::Pointer ig = ImageGeom::New();
-    ig->setDimensions(SizeVec3Type(xDim, yDim, zDim));
+    ig->setDimensions(xDim, yDim, zDim);
     dc->setGeometry(ig);
 
     // Create AttributeMatrix
 
     AttributeMatrix::Pointer am = AttributeMatrix::New(tupleDims, k_AttributeMatrixName, AttributeMatrix::Type::CellFeature);
-    dc->addOrReplaceAttributeMatrix(am);
+    dc->addAttributeMatrix(k_AttributeMatrixName, am);
 
     // Create DataArrayInt (add in under checkFilter)
 
@@ -411,7 +411,7 @@ public:
     {
       da->setValue(i, i);
     }
-    am->insertOrAssign(da);
+    am->addAttributeArray(k_DataArrayIntName, da);
 
     // Create DataArrayFloat
 
@@ -427,7 +427,7 @@ public:
         daFloat->setValue(i, static_cast<float>(i) * -0.1);
       }
     }
-    am->insertOrAssign(daFloat);
+    am->addAttributeArray(k_DataArrayFloatName, daFloat);
 
     // Create NeighborLists (must be int32_t)
 
@@ -437,7 +437,7 @@ public:
       nl->addEntry(i, i);
       nl->addEntry(i, i * 2);
     }
-    am->insertOrAssign(nl);
+    am->addAttributeArray(k_NeighborListName, nl);
 
     NeighborList<int32_t>::Pointer nl2 = NeighborList<int32_t>::CreateArray(tupleDims, cDimsNeighbor, k_NeighborListName2);
     for(size_t i = 0; i < nl2->getNumberOfTuples(); i++)
@@ -446,7 +446,7 @@ public:
       nl2->addEntry(i, i);
       nl2->addEntry(i, i + 1);
     }
-    am->insertOrAssign(nl2);
+    am->addAttributeArray(k_NeighborListName2, nl2);
 
     // Create Filter
 

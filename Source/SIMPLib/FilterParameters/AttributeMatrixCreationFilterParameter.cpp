@@ -34,7 +34,6 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "AttributeMatrixCreationFilterParameter.h"
-#include "SIMPLib/Filtering/AbstractFilter.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -50,8 +49,8 @@ AttributeMatrixCreationFilterParameter::~AttributeMatrixCreationFilterParameter(
 //
 // -----------------------------------------------------------------------------
 AttributeMatrixCreationFilterParameter::Pointer AttributeMatrixCreationFilterParameter::New(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue,
-                                                                                            Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
-                                                                                            const RequirementType& req, int groupIndex)
+                                                                                            Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                                                                                            const RequirementType req, int groupIndex)
 {
   AttributeMatrixCreationFilterParameter::Pointer ptr = AttributeMatrixCreationFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -102,25 +101,5 @@ void AttributeMatrixCreationFilterParameter::writeJson(QJsonObject& json)
     QJsonObject obj;
     dap.writeJson(obj);
     json[getPropertyName()] = obj;
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void AttributeMatrixCreationFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath)
-{
-  QVariant var = filter->property(qPrintable(getPropertyName()));
-  if(var.isValid() && var.canConvert<DataArrayPath>())
-  {
-    DataArrayPath path = var.value<DataArrayPath>();
-    if(path.updatePath(renamePath))
-    {
-      if(m_SetterCallback)
-      {
-        m_SetterCallback(path);
-      }
-      emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
-    }
   }
 }

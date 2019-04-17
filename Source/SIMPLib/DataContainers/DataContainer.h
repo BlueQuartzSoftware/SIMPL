@@ -42,11 +42,8 @@
 #include <QtCore/QVector>
 
 #include "SIMPLib/Common/Observable.h"
-#include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
-#include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
-#include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 #include "SIMPLib/SIMPLib.h"
 
@@ -63,21 +60,19 @@ using AttributeMatrixShPtr = std::shared_ptr<AttributeMatrix>;
 /**
  * @brief The DataContainer class
  */
-class SIMPLib_EXPORT DataContainer : public Observable, public IDataStructureContainerNode<AttributeMatrix>
+class SIMPLib_EXPORT DataContainer : public Observable
 {
 
   // This line MUST be first when exposing a class and properties to Python
   // clang-format off
   PYB11_CREATE_BINDINGS(DataContainer)
-  PYB11_STATIC_CREATION(New OVERLOAD QString)
-  PYB11_STATIC_CREATION(New OVERLOAD DataArrayPath)
+  PYB11_STATIC_CREATION(New ARGS QString)
 
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
   PYB11_PROPERTY(IGeometry Geometry READ getGeometry WRITE setGeometry)
 
   PYB11_METHOD(QString getInfoString ARGS InfoStringFormat)
-  PYB11_METHOD(bool addOrReplaceAttributeMatrix ARGS AttributeMatrix)
-  PYB11_METHOD(bool insertOrAssign ARGS AttributeMatrix)
+  PYB11_METHOD(void addAttributeMatrix ARGS Name AttributeMatrix)
 
   PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix OVERLOAD const.QString.&,Name)
   PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix OVERLOAD const.DataArrayPath.&,Path)
@@ -113,12 +108,10 @@ public:
 
   using Types = QVector<Type>;
 
-  using Container_t = std::vector<AttributeMatrixShPtr>;
-
   /**
    * @brief AttributeMatrixMap_t
    */
-  // using AttributeMatrixMap_t = QMap<QString, AttributeMatrixShPtr>;
+  using AttributeMatrixMap_t = QMap<QString, AttributeMatrixShPtr>;
 
   /**
    * @brief Creates a new shared pointer instance of this class
@@ -126,13 +119,6 @@ public:
    * @return Shared Pointer to a DataContainer instance.
    */
   static Pointer New(const QString& name);
-
-  /**
-   * @brief Creates a new shared pointer instance of this class
-   * @param name The name to give to the DataContainer and must NOT be empty.
-   * @return Shared Pointer to a DataContainer instance.
-   */
-  static Pointer New(const DataArrayPath& name);
 
   /**
    * @brief Creates a new data container
@@ -148,10 +134,14 @@ public:
   static void ReadDataContainerStructure(hid_t dcArrayGroupId, DataContainerArrayProxy& proxy, SIMPLH5DataReaderRequirements* req, const QString& h5InternalPath);
 
   /**
-   * @brief Creates and returns a DataArrayPath for the DataContainer
-   * @return
+   * @brief Sets the name of the data container
    */
-  DataArrayPath getDataArrayPath() const override;
+  virtual void setName(const QString& name);
+
+  /**
+   * @brief Gets the name of the data container
+   */
+  virtual QString getName();
 
   /**
    * @brief Sets the geometry of the data container
@@ -171,49 +161,37 @@ public:
   virtual QString getInfoString(SIMPL::InfoStringFormat format);
 
   /**
-   * @brief Adds the data for a named array. If an AttributeMatrix with the same
-   * name already exists in the DataContainer then the add will fail.
-   * @param matrix The IDataArray::Pointer that will hold the data
-   * @return Bool TRUE if the addition was successful, FALSE Otherwise.
+   * @brief Adds/overwrites the data for a named array
+   * @param name The name that the array will be known by
+   * @param data The IDataArray::Pointer that will hold the data
    */
-  bool addOrReplaceAttributeMatrix(const AttributeMatrixShPtr& matrix)
-  {
-    return insertOrAssign(matrix);
-  }
+  virtual void addAttributeMatrix(const QString& name, const AttributeMatrixShPtr& matrix);
 
   /**
    * @brief Returns the array for a given named array or the equivelant to a
    * null pointer if the name does not exist.
    * @param name The name of the data array
    */
-  AttributeMatrixShPtr getAttributeMatrix(const QString& name)
-  {
-    return getChildByName(name);
-  }
+  virtual AttributeMatrixShPtr getAttributeMatrix(const QString& name);
 
   /**
    * @brief Returns the array for a given named array or the equivelant to a
    * null pointer if the name does not exist.
    * @param name The Name of the AttributeMatrix will be extracted from the DataArratPath object
    */
-  AttributeMatrixShPtr getAttributeMatrix(const DataArrayPath& path)
-  {
-    // Could this be sped-up if we hashed DataArrayPath as well?
-    if(path.getDataContainerName() != getName())
-    {
-      return nullptr;
-    }
-    return getChildByName(path.getAttributeMatrixName());
-  }
+  virtual AttributeMatrixShPtr getAttributeMatrix(const DataArrayPath& path);
+
+  /**
+   * @brief getAttributeMatrices
+   * @return
+   */
+  AttributeMatrixMap_t& getAttributeMatrices();
 
   /**
    * @brief Returns bool of whether a named array exists
    * @param name The name of the data array
    */
-  bool doesAttributeMatrixExist(const QString& name)
-  {
-    return contains(name);
-  }
+  virtual bool doesAttributeMatrixExist(const QString& name);
 
   /**
    * @brief Removes the named data array from the Data Container and returns it to the calling
@@ -234,26 +212,18 @@ public:
    */
   virtual void clearAttributeMatrices();
 
-  Container_t getAttributeMatrices()
-  {
-    return getChildren();
-  }
-
   /**
    * @brief Returns a list that contains the names of all the arrays currently stored in the
    * Cell (Formerly Cell) group
    * @return
    */
-  virtual NameList getAttributeMatrixNames();
+  virtual QList<QString> getAttributeMatrixNames();
 
   /**
    * @brief Returns the total number of arrays that are stored in the Cell group
    * @return
    */
-  int getNumAttributeMatrices()
-  {
-    return static_cast<int>(size());
-  }
+  virtual int getNumAttributeMatrices();
 
   /**
    * @brief getAllDataArrayPaths
@@ -283,19 +253,7 @@ public:
    * @param amType The Type of AttributeMatrix
    * @return A Shared Pointer to the AttributeMatrix
    */
-  AttributeMatrixShPtr createNonPrereqAttributeMatrix(AbstractFilter* filter, const DataArrayPath& path, const QVector<size_t>& tDims, AttributeMatrix::Type amType,
-                                                      RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID);
-
-  /**
-   * @brief createNonPrereqAttributeMatrix
-   * @param filter
-   * @param path
-   * @param tDims
-   * @param amType
-   * @param id
-   * @return
-   */
-  AttributeMatrixShPtr createNonPrereqAttributeMatrix(AbstractFilter* filter, const DataArrayPath& path, const SizeVec3Type& tDims, AttributeMatrix::Type amType, RenameDataPath::DataID_t id);
+  AttributeMatrixShPtr createNonPrereqAttributeMatrix(AbstractFilter* filter, const DataArrayPath& path, const QVector<size_t>& tDims, AttributeMatrix::Type amType);
 
   /**
    * @brief createNonPrereqAttributeMatrix This method will create a new AttributeMatrix with the given tuple dimensions
@@ -307,8 +265,7 @@ public:
    * @param amType The Type of AttributeMatrix
    * @return A Shared Pointer to the AttributeMatrix
    */
-  AttributeMatrixShPtr createNonPrereqAttributeMatrix(AbstractFilter* filter, const QString& attributeMatrixName, const QVector<size_t>& tDims, AttributeMatrix::Type amType,
-                                                      RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID);
+  AttributeMatrixShPtr createNonPrereqAttributeMatrix(AbstractFilter* filter, const QString& attributeMatrixName, const QVector<size_t>& tDims, AttributeMatrix::Type amType);
 
   /**
    * @brief Returns the geometry as the templated type
@@ -333,8 +290,9 @@ public:
     {
       if(filter)
       {
+        filter->setErrorCondition(-385);
         QString ss = QObject::tr("Data Container Geometry is missing.");
-        filter->setErrorCondition(-385, ss);
+        filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
       }
       return geom;
     }
@@ -343,8 +301,9 @@ public:
     {
       if(filter)
       {
+        filter->setErrorCondition(-384);
         QString ss = QObject::tr("Data Container Geometry is not compatible. The selected Geometry type is %1").arg(igeom->getGeometryTypeAsString());
-        filter->setErrorCondition(-384, ss);
+        filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
       }
       return geom;
     }
@@ -410,5 +369,7 @@ protected:
   explicit DataContainer(const QString& name);
 
 private:
+  AttributeMatrixMap_t m_AttributeMatrices;
   IGeometry::Pointer m_Geometry;
+  QString m_Name;
 };

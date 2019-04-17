@@ -37,8 +37,6 @@
 
 #include <QtCore/QJsonArray>
 
-#include "SIMPLib/Filtering/AbstractFilter.h"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -52,10 +50,10 @@ PhaseTypeSelectionFilterParameter::~PhaseTypeSelectionFilterParameter() = defaul
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PhaseTypeSelectionFilterParameter::Pointer PhaseTypeSelectionFilterParameter::New(const QString& humanLabel, const QString& phaseTypeDataProperty, const DataArrayPath& attributeMatrixDefault,
+PhaseTypeSelectionFilterParameter::Pointer PhaseTypeSelectionFilterParameter::New(const QString& humanLabel, const QString& phaseTypeDataProperty, const DataArrayPath attributeMatrixDefault,
                                                                                   Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
                                                                                   const QString& PhaseTypesArrayName, const QString& phaseTypeCountProperty, const QString& attributeMatrixProperty,
-                                                                                  const QStringList& phaseListChoices, int groupIndex)
+                                                                                  const QStringList phaseListChoices, int groupIndex)
 {
   PhaseTypeSelectionFilterParameter::Pointer ptr = PhaseTypeSelectionFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -115,23 +113,5 @@ void PhaseTypeSelectionFilterParameter::writeJson(QJsonObject& json)
     }
 
     json[getPropertyName()] = jsonArray;
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PhaseTypeSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath)
-{
-  QVariant var = filter->property(qPrintable(getAttributeMatrixPathProperty()));
-  if(var.isValid() && var.canConvert<DataArrayPath>())
-  {
-    DataArrayPath path = var.value<DataArrayPath>();
-    if(path.updatePath(renamePath))
-    {
-      var.setValue(path);
-      filter->setProperty(qPrintable(getAttributeMatrixPathProperty()), var);
-      emit filter->dataArrayPathUpdated(getAttributeMatrixPathProperty(), renamePath);
-    }
   }
 }

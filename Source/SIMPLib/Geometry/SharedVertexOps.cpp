@@ -49,7 +49,7 @@ SharedVertexList::Pointer GEOM_CLASS_NAME::CreateSharedVertexList(int64_t numVer
 // -----------------------------------------------------------------------------
 void GEOM_CLASS_NAME::resizeVertexList(int64_t newNumVertices)
 {
-  m_VertexList->resizeTuples(newNumVertices);
+  m_VertexList->resize(newNumVertices);
 }
 
 // -----------------------------------------------------------------------------

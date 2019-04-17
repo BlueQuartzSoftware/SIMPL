@@ -58,8 +58,6 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
-#include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
-#include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/SIMPLib.h"
 
 class AttributeMatrixProxy;
@@ -71,8 +69,7 @@ enum RenameErrorCodes
 {
   OLD_DOES_NOT_EXIST,
   SUCCESS,
-  NEW_EXISTS,
-  SAME_PATH
+  NEW_EXISTS
 };
 
 /**
@@ -84,7 +81,7 @@ enum RenameErrorCodes
  * @date
  * @version 1.0
  */
-class SIMPLib_EXPORT AttributeMatrix : public Observable, public IDataStructureContainerNode<IDataArray>
+class SIMPLib_EXPORT AttributeMatrix : public Observable
 {
   // clang-format off
   PYB11_CREATE_BINDINGS(AttributeMatrix)
@@ -96,10 +93,8 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable, public IDataStructureC
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
   PYB11_PROPERTY(QVector<size_t> TupleDimensions READ getTupleDimensions WRITE setTupleDimensions)
 
+  PYB11_METHOD(int addAttributeArray ARGS Name Array)
   PYB11_METHOD(bool doesAttributeArrayExist ARGS Name)
-  PYB11_METHOD(bool addOrReplaceAttributeArray OVERLOAD const.IDataArray::Pointer.&,Data)
-  PYB11_METHOD(bool insertOrAssign ARGS IDataArray::Pointer)
-
   PYB11_METHOD(IDataArray removeAttributeArray ARGS Name)
   PYB11_METHOD(int renameAttributeArray ARGS OldName NewName OverWrite)
   PYB11_METHOD(IDataArray::Pointer getAttributeArray OVERLOAD const.QString.&,Name)
@@ -113,7 +108,6 @@ public:
   ~AttributeMatrix() override;
 
   using EnumType = unsigned int;
-  using Container_t = std::vector<std::shared_ptr<IDataArray>>;
 
   /**
   * @brief The Type is an enum that describes the type of data that the AttributeMatrix holds
@@ -210,56 +204,37 @@ public:
     static void ReadAttributeMatrixStructure(hid_t containerId, DataContainerProxy* dcProxy, SIMPLH5DataReaderRequirements* req, const QString& h5InternalPath);
 
     /**
-     * @brief Creates and returns a DataArrayPath for the AttributeMatrix
-     * @return
-     */
-    DataArrayPath getDataArrayPath() const override;
-
-    /**
-     * @brief Type
-     */
+    * @brief Type
+    */
     SIMPL_INSTANCE_PROPERTY(AttributeMatrix::Type, Type)
 
     /**
-     * @brief Adds the IDataArray to the AttributeMatrix.
-     * @param data The IDataArray::Pointer that will hold the data
-     * @return Bool: True if the addition happened, FALSE if an IDataArray with the same name already exists.
-     */
-    bool addOrReplaceAttributeArray(const IDataArray::Pointer& data)
-    {
-      // Can not insert a null IDataArray object
-      if(data.get() == nullptr)
-      {
-        return false;
-      }
-      if(getNumberOfTuples() != data->getNumberOfTuples())
-      {
-        qDebug() << "AttributeMatrix::Name: " << getName() << "  dataArray::name:  " << data->getName() << " Type: " << data->getTypeAsString();
-        qDebug() << "getNumberOfTuples(): " << getNumberOfTuples() << "  data->getNumberOfTuples(): " << data->getNumberOfTuples();
-      }
-      Q_ASSERT(getNumberOfTuples() == data->getNumberOfTuples());
-      return insertOrAssign(data);
-    }
+    * @brief Name
+    */
+    SIMPL_INSTANCE_PROPERTY(QString, Name)
+
+
+    /**
+    * @brief Adds/overwrites the data for a named array
+    * @param name The name that the array will be known by
+    * @param data The IDataArray::Pointer that will hold the data
+    * @return error code if the addition did not work
+    */
+    virtual int addAttributeArray(const QString& name, const IDataArray::Pointer& data);
 
     /**
      * @brief Returns the array for a given named array or the equivelant to a
      * null pointer if the name does not exist.
      * @param name The name of the data array
      */
-    IDataArray::Pointer getAttributeArray(const QString& name)
-    {
-      return getChildByName(name);
-    }
+    virtual IDataArray::Pointer getAttributeArray(const QString& name);
 
     /**
      * @brief getAttributeArray
      * @param path
      * @return
      */
-    IDataArray::Pointer getAttributeArray(const DataArrayPath& path)
-    {
-      return getAttributeArray(path.getDataArrayName());
-    }
+    virtual IDataArray::Pointer getAttributeArray(const DataArrayPath& path);
 
     /**
     * @brief returns a IDataArray based object that is stored in the attribute matrix by a
@@ -278,10 +253,8 @@ public:
      * @brief Returns bool of whether a named array exists
      * @param name The name of the data array
      */
-    bool doesAttributeArrayExist(const QString& name) const
-    {
-      return contains(name);
-    }
+    virtual bool doesAttributeArrayExist(const QString& name) const;
+
 
     /**
     * @brief Removes the named data array from the Data Container and returns it to the calling
@@ -304,29 +277,18 @@ public:
     virtual void clearAttributeArrays();
 
     /**
-     * @brief Returns the collection of contained DataArrays
-     * @return
-     */
-    Container_t getAttributeArrays() const
-    {
-      return getChildren();
-    }
-
-    /**
     * @brief Returns a list that contains the names of all the arrays currently stored in the
     * Cell (Formerly Cell) group
     * @return
     */
-    virtual NameList getAttributeArrayNames();
+    virtual QList<QString> getAttributeArrayNames();
 
     /**
     * @brief Returns the total number of arrays that are stored in the Cell group
     * @return
     */
-    int getNumAttributeArrays() const
-    {
-      return static_cast<int>(size());
-    }
+    virtual int getNumAttributeArrays() const;
+
 
     /**
     * @brief Resizes an array from the Attribute Matrix
@@ -364,8 +326,9 @@ public:
       {
         if(filter)
         {
+          filter->setErrorCondition(err);
           ss = QObject::tr("AttributeMatrix:'%1' The name of a requested Attribute Array was empty. Please provide a name for this array").arg(getName());
-          filter->setErrorCondition(err, ss);
+          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
       }
       // Now ask for the actual AttributeArray from the AttributeMatrix
@@ -373,8 +336,9 @@ public:
       {
         if(filter)
         {
+          filter->setErrorCondition(err);
           ss = QObject::tr("The AttributeMatrix named '%1' does NOT have a DataArray with name '%2'. This filter requires this DataArray in order to execute.").arg(getName()).arg(attributeArrayName);
-          filter->setErrorCondition(err, ss);
+          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
         return attributeArray;
       }
@@ -392,8 +356,9 @@ public:
       attributeArray = std::dynamic_pointer_cast< ArrayType >(iDataArray);
       if(nullptr == attributeArray.get() && filter)
       {
+        filter->setErrorCondition(err);
         ss = QObject::tr("The AttributeMatrix named '%1' contains an array with name '%2' but the DataArray could not be downcast using std::dynamic_pointer_cast<T>.").arg(getName()).arg(attributeArrayName);
-        filter->setErrorCondition(err, ss);
+        filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
       }
       return attributeArray;
     }
@@ -416,8 +381,9 @@ public:
       {
         if(filter)
         {
+          filter->setErrorCondition(err);
           ss = QObject::tr("AttributeMatrix:'%1' The name of a requested Attribute Array was empty. Please provide a name for this array").arg(getName());
-          filter->setErrorCondition(err, ss);
+          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
       }
       // Now ask for the actual AttributeArray from the AttributeMatrix
@@ -425,8 +391,9 @@ public:
       {
         if(filter)
         {
+          filter->setErrorCondition(err);
           ss = QObject::tr("The AttributeMatrix named '%1' does NOT have a DataArray with name '%2'. This filter requires this DataArray in order to execute.").arg(getName()).arg(attributeArrayName);
-          filter->setErrorCondition(err, ss);
+          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
         return attributeArray;
       }
@@ -437,8 +404,9 @@ public:
         return std::dynamic_pointer_cast<ArrayType>(ptr);
       }
 
+      filter->setErrorCondition(err);
       ss = QObject::tr("Unable to cast input array %1 to the necessary type.").arg(attributeArrayName);
-      filter->setErrorCondition(err, ss);
+      filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
 
       return attributeArray;
     }
@@ -453,9 +421,11 @@ public:
      * @param dims The dimensions of the components of the AttributeArray
      * @return A Shared Pointer to the newly created array
      */
-    template <class ArrayType, class Filter, typename T>
-    typename ArrayType::Pointer createNonPrereqArray(Filter* filter, const QString& attributeArrayName, T initValue, QVector<size_t> compDims,
-                                                     RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
+    template<class ArrayType, class Filter, typename T>
+    typename ArrayType::Pointer createNonPrereqArray(Filter* filter,
+                                                     const QString& attributeArrayName,
+                                                     T initValue,
+                                                     QVector<size_t> compDims)
     {
       typename ArrayType::Pointer attributeArray = ArrayType::NullPointer();
 
@@ -464,8 +434,9 @@ public:
       {
         if(filter)
         {
+          filter->setErrorCondition(-10001);
           ss = QObject::tr("The name of the array was empty. Please provide a name for this array.");
-          filter->setErrorCondition(-10001, ss);
+          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
         return attributeArray;
       }
@@ -476,28 +447,24 @@ public:
       }
       else if (filter)
       {
+        filter->setErrorCondition(-10002);
         ss = QObject::tr("AttributeMatrix:'%1' An Attribute Array already exists with the name %2.").arg(getName()).arg(attributeArrayName);
-        filter->setErrorCondition(-10002, ss);
+        filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         return attributeArray;
       }
       iDataArray = getAttributeArray(attributeArrayName);
       if(nullptr == iDataArray && filter)
       {
+        filter->setErrorCondition(-10003);
         ss = QObject::tr("AttributeMatrix:'%1' An array with name '%2' could not be created.").arg(getName()).arg(attributeArrayName);
-        filter->setErrorCondition(-10003, ss);
+        filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
       }
       attributeArray = std::dynamic_pointer_cast< ArrayType >(iDataArray);
       if(nullptr == attributeArray.get() && filter)
       {
+        filter->setErrorCondition(-10004);
         ss = QObject::tr("AttributeMatrix:'%1' An array with name '%2' could not be downcast using std::dynamic_pointer_cast<T>.").arg(getName()).arg(attributeArrayName);
-        filter->setErrorCondition(-10004, ss);
-      }
-      else if(nullptr != attributeArray && filter)
-      {
-        // Check if path was renamed
-        // This will crash if no parent node is found
-        IDataStructureNode* parentPtr = getParentNode();
-        RenameDataPath::AlertFilterCreatedPath(filter, id, DataArrayPath(parentPtr->getName(), getName(), attributeArrayName));
+        filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
       }
       return attributeArray;
     }
@@ -507,8 +474,8 @@ public:
     * @param name The name that the array will be known by
     * @param dims The size the data on each tuple
     */
-    template <class ArrayType, class Filter, typename T>
-    void createAndAddAttributeArray(Filter* filter, const QString& name, T initValue, QVector<size_t> compDims, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
+    template<class ArrayType, class Filter, typename T>
+    void createAndAddAttributeArray(Filter* filter, const QString& name, T initValue, QVector<size_t> compDims)
     {
       bool allocateData = false;
       if(nullptr == filter) { allocateData = true; }
@@ -521,11 +488,7 @@ public:
           attributeArray->initializeWithValue(initValue);
         }
         attributeArray->setInitValue(initValue);
-        addOrReplaceAttributeArray(attributeArray);
-        // Check if path was renamed
-        DataArrayPath path = getDataArrayPath();
-        path.setDataArrayName(name);
-        RenameDataPath::AlertFilterCreatedPath(filter, id, path);
+        addAttributeArray(name, attributeArray);
       }
     }
 
@@ -551,7 +514,8 @@ public:
           QString srcDesc = srcArray->getTypeAsString();
           QString desc = validTargetArray->getTypeAsString();
           QString ss = QObject::tr("The Filter '%1' requires an array of type '%2' but the data array '%3' has a type of '%4'").arg(filter->getHumanLabel()).arg(desc).arg(srcArray->getName()).arg(srcDesc);
-          filter->setErrorCondition(-501, ss);
+          filter->setErrorCondition(-501);
+          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
         return false;
       }
@@ -562,7 +526,8 @@ public:
         {
           QString ss = QObject::tr("Filter '%1' requires array with name '%2' to have Number of Tuples = %3. The currently selected array "
                                    " has %4").arg(filter->getHumanLabel()).arg(arrayName).arg((getNumberOfTuples())).arg(targetDestArray->getNumberOfTuples());
-          filter->setErrorCondition(-502, ss);
+          filter->setErrorCondition(-502);
+          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
         return false;
       }
@@ -573,7 +538,8 @@ public:
         {
           QString ss = QObject::tr("Filter '%1' is trying to use array '%2' where the number of components is %3 but the filter requires that array "
                                    " to have %4.").arg(filter->getHumanLabel()).arg(targetDestArray->getName()).arg(targetDestArray->getNumberOfComponents()).arg(numComp);
-          filter->setErrorCondition(-503, ss);
+          filter->setErrorCondition(-503);
+          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
         return false;
       }
@@ -587,7 +553,8 @@ public:
                      .arg(arrayName).arg(dat->getTypeAsString()).arg(getNameOfClass()).arg(arrayName).arg(getNameOfClass()).arg(targetDestArray->getTypeAsString());
         if (nullptr != filter)
         {
-          filter->setErrorCondition(-504, ss);
+          filter->setErrorCondition(-504);
+          filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
         return false;
       }
@@ -671,7 +638,7 @@ public:
     virtual QString getInfoString(SIMPL::InfoStringFormat format);
 
   protected:
-    AttributeMatrix(const QVector<size_t>& tDims, const QString& name, AttributeMatrix::Type attrType);
+    AttributeMatrix(QVector<size_t> tDims, const QString& name, AttributeMatrix::Type attrType);
 
     /**
      * @brief writeXdmfAttributeData
@@ -697,11 +664,12 @@ public:
      * @param gridType
      * @return
      */
-    virtual QString writeXdmfAttributeDataHelper(int numComp, const QString& attrType, const QString& dataContainerName, const IDataArray::Pointer& array, const QString& centering, int precision,
+    virtual QString writeXdmfAttributeDataHelper(int numComp, const QString& attrType, const QString& dataContainerName, IDataArray::Pointer array, const QString& centering, int precision,
                                                  const QString& xdmfTypeName, const QString& hdfFileName, uint8_t gridType = 0);
 
   private:
     QVector<size_t> m_TupleDims;
+    QMap<QString, IDataArray::Pointer> m_AttributeArrays;
 
     AttributeMatrix(const AttributeMatrix&);
     void operator =(const AttributeMatrix&);

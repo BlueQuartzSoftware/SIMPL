@@ -332,7 +332,7 @@ bool SIMPLH5DataReader::readDataContainerBundles(hid_t fileId, const DataContain
         qDebug() << "Data Container '" << dcName << "' was nullptr"
                  << " " << __FILE__ << "(" << __LINE__ << ")";
       }
-      bundle->addOrReplaceDataContainer(dc);
+      bundle->addDataContainer(dc);
     }
 
     QString metaArrays;
@@ -357,7 +357,9 @@ bool SIMPLH5DataReader::readDataContainerBundles(hid_t fileId, const DataContain
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SIMPLH5DataReader::setErrorCondition(int code, const QString& str)
+void SIMPLH5DataReader::notifyErrorMessage(const QString& humanLabel, const QString& str, int code)
 {
+  Q_UNUSED(humanLabel)
+
   emit errorGenerated(Title, str, code);
 }

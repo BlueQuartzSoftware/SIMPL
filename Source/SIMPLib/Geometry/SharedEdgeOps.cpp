@@ -49,7 +49,7 @@ SharedEdgeList::Pointer GEOM_CLASS_NAME::CreateSharedEdgeList(int64_t numEdges, 
 // -----------------------------------------------------------------------------
 void GEOM_CLASS_NAME::resizeEdgeList(int64_t newNumEdges)
 {
-  m_EdgeList->resizeTuples(newNumEdges);
+  m_EdgeList->resize(newNumEdges);
 }
 
 // -----------------------------------------------------------------------------

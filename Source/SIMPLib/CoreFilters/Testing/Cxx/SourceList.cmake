@@ -2,7 +2,6 @@
 set(TEST_TESTFILES_DIR ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Testing/Cxx/TestFiles)
 
 set(TEST_${SUBDIR_NAME}_NAMES
-  ApplyImageTransformsTest
   ArrayCalculatorTest
   CombineAttributeArraysTest
   CombineAttributeMatricesTest
@@ -41,7 +40,6 @@ set(TEST_${SUBDIR_NAME}_NAMES
   RenameAttributeArrayTest
   RenameAttributeMatrixTest
   RenameDataContainerTest
-  # RenameTimingTest
   ReplaceValueTest
   RequiredZThicknessTest
   ScaleVolumeTest

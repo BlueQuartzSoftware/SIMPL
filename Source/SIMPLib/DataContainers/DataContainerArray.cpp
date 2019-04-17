@@ -50,9 +50,9 @@ DataContainerArray::~DataContainerArray() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayPath DataContainerArray::getDataArrayPath() const
+void DataContainerArray::addDataContainer(DataContainer::Pointer f)
 {
-  return DataArrayPath();
+  m_Array.push_back(f);
 }
 
 // -----------------------------------------------------------------------------
@@ -60,7 +60,7 @@ DataArrayPath DataContainerArray::getDataArrayPath() const
 // -----------------------------------------------------------------------------
 int DataContainerArray::getNumDataContainers()
 {
-  return static_cast<int>(size());
+  return m_Array.size();
 }
 
 // -----------------------------------------------------------------------------
@@ -68,7 +68,7 @@ int DataContainerArray::getNumDataContainers()
 // -----------------------------------------------------------------------------
 void DataContainerArray::clearDataContainers()
 {
-  clear();
+  m_Array.clear();
 }
 
 #if 0
@@ -122,15 +122,19 @@ bool DataContainerArray::empty()
 DataContainer::Pointer DataContainerArray::removeDataContainer(const QString& name)
 {
   removeDataContainerFromBundles(name);
-  auto it = find(name);
-  if(it == end())
+  DataContainer::Pointer f = DataContainer::NullPointer();
+  for(QList<DataContainer::Pointer>::iterator it = m_Array.begin(); it != m_Array.end(); ++it)
   {
-    // DO NOT return a NullPointer for any reason other than "DataContainer was not found"
-    return DataContainer::NullPointer();
+    if((*it)->getName().compare(name) == 0)
+    {
+      f = *it;
+      m_Array.erase(it);
+      return f;
+    }
   }
-  DataContainer::Pointer p = (*it);
-  erase(it);
-  return p;
+
+  // DO NOT return a NullPointer for any reason other than "DataContainer was not found"
+  return f;
 }
 
 // -----------------------------------------------------------------------------
@@ -138,17 +142,41 @@ DataContainer::Pointer DataContainerArray::removeDataContainer(const QString& na
 // -----------------------------------------------------------------------------
 bool DataContainerArray::renameDataContainer(const QString& oldName, const QString& newName)
 {
-  DataContainer::Pointer dc = getChildByName(oldName);
-  return dc && dc->setName(newName);
-}
+  DataContainer::Pointer dc = DataContainer::NullPointer();
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool DataContainerArray::renameDataContainer(const DataArrayPath& oldName, const DataArrayPath& newName)
-{
-  DataContainer::Pointer dc = getChildByName(oldName.getDataContainerName());
-  return dc && dc->setName(newName.getDataContainerName());
+  // Make sure we do not already have a DataContainer with the newname
+  for(const auto& iter : m_Array)
+  {
+    if(iter->getName().compare(newName) == 0)
+    {
+      dc = iter;
+      break;
+    }
+  }
+
+  if(nullptr == dc)
+  {
+    // We did not find any data container that matches the new name so we can rename if we find one that matches
+    // the 'oldname' argument
+    // Now find the data container we want to rename
+    for(const auto& iter : m_Array)
+    {
+      if(iter->getName() == oldName)
+      {
+        // we have an existing DataContainer that matches our "oldname" that we want to rename so all is good.
+        dc = iter;
+        dc->setName(newName);
+        return true;
+      }
+    }
+  }
+  else if(nullptr != dc)
+  {
+    // We found an existing Data Container with the 'newname' but we do NOT want to over write it so just bail out now
+    return false;
+  }
+
+  return false; // default (but we should just NEVER make it here)
 }
 
 // -----------------------------------------------------------------------------
@@ -156,7 +184,17 @@ bool DataContainerArray::renameDataContainer(const DataArrayPath& oldName, const
 // -----------------------------------------------------------------------------
 DataContainer::Pointer DataContainerArray::getDataContainer(const QString& name)
 {
-  return getChildByName(name);
+  DataContainer::Pointer f = DataContainer::NullPointer();
+  for(const auto& dc : m_Array)
+  {
+    if(dc->getName().compare(name) == 0)
+    {
+      f = dc;
+      break;
+    }
+  }
+
+  return f;
 }
 
 // -----------------------------------------------------------------------------
@@ -187,7 +225,16 @@ AttributeMatrix::Pointer DataContainerArray::getAttributeMatrix(const DataArrayP
 // -----------------------------------------------------------------------------
 void DataContainerArray::duplicateDataContainer(const QString& name, const QString& newName)
 {
-  DataContainer::Pointer f = getDataContainer(name);
+  DataContainer::Pointer f = DataContainer::NullPointer();
+  for(const auto& dc : m_Array)
+  {
+    if(dc->getName().compare(name) == 0)
+    {
+      f = dc;
+      break;
+    }
+  }
+
   if(f == nullptr)
   {
     return;
@@ -195,23 +242,28 @@ void DataContainerArray::duplicateDataContainer(const QString& name, const QStri
 
   DataContainer::Pointer new_f = f->deepCopy(false);
   new_f->setName(newName);
-  addOrReplaceDataContainer(new_f);
+  addDataContainer(new_f);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerArray::NameList DataContainerArray::getDataContainerNames()
+QList<QString> DataContainerArray::getDataContainerNames()
 {
-  return getNamesOfChildren();
+  QList<QString> names;
+  for(const auto& dc : m_Array)
+  {
+    names.push_back(dc->getName());
+  }
+  return names;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerArray::Container DataContainerArray::getDataContainers()
+QList<DataContainer::Pointer>& DataContainerArray::getDataContainers()
 {
-  return getChildren();
+  return m_Array;
 }
 
 // -----------------------------------------------------------------------------
@@ -220,8 +272,7 @@ DataContainerArray::Container DataContainerArray::getDataContainers()
 void DataContainerArray::printDataContainerNames(QTextStream& out)
 {
   out << "---------------------------------------------------------------------";
-  Container dcArray = getDataContainers();
-  for(DataContainer::Pointer dc : dcArray)
+  for(const auto& dc : m_Array)
   {
     out << dc->getNameOfClass();
   }
@@ -250,12 +301,12 @@ int DataContainerArray::readDataContainersFromHDF5(bool preflight, hid_t dcaGid,
         QString ss =
             QObject::tr("A Data Container with name %1 already exists in Memory. Reading a Data Container with the same name would over write the one in memory. Currently this is not allowed.")
                 .arg(dcProxy.getName());
-        obs->setErrorCondition(-198745600, ss);
+        obs->notifyErrorMessage(getNameOfClass(), ss, -198745600);
       }
       return -198745600;
     }
     DataContainer::Pointer dc = DataContainer::New(dcProxy.getName());
-    this->addOrReplaceDataContainer(dc);
+    this->addDataContainer(dc);
 
     // Now open the DataContainer Group in the HDF5 file
     hid_t dcGid = H5Gopen(dcaGid, dcProxy.getName().toLatin1().data(), H5P_DEFAULT);
@@ -264,7 +315,7 @@ int DataContainerArray::readDataContainersFromHDF5(bool preflight, hid_t dcaGid,
       if(nullptr != obs)
       {
         QString ss = QObject::tr("Error opening Group '%1'").arg(dcProxy.getName());
-        obs->setErrorCondition(-198745602, ss);
+        obs->notifyErrorMessage(getNameOfClass(), ss, -198745602);
       }
       return -198745602;
     }
@@ -275,7 +326,7 @@ int DataContainerArray::readDataContainersFromHDF5(bool preflight, hid_t dcaGid,
       if(nullptr != obs)
       {
         QString ss = QObject::tr("Error reading Mesh Data from '%1'").arg(dcProxy.getName());
-        obs->setErrorCondition(-198745603, ss);
+        obs->notifyErrorMessage(getNameOfClass(), ss, -198745603);
       }
       return -198745603;
     }
@@ -285,7 +336,7 @@ int DataContainerArray::readDataContainersFromHDF5(bool preflight, hid_t dcaGid,
       if(nullptr != obs)
       {
         QString ss = QObject::tr("Error reading AttributeMatrix Data from '%1'").arg(dcProxy.getName());
-        obs->setErrorCondition(-198745604, ss);
+        obs->notifyErrorMessage(getNameOfClass(), ss, -198745604);
       }
       return -198745604;
     }
@@ -296,17 +347,16 @@ int DataContainerArray::readDataContainersFromHDF5(bool preflight, hid_t dcaGid,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataContainerArray::doesDataContainerExist(const DataArrayPath& dap) const
+bool DataContainerArray::doesDataContainerExist(const QString& name)
 {
-  return contains(dap.getDataContainerName());
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool DataContainerArray::doesDataContainerExist(const QString& name) const
-{
-  return contains(name);
+  for(const auto& dc : m_Array)
+  {
+    if(dc->getName() == name)
+    {
+      return true;
+    }
+  }
+  return false;
 }
 
 // -----------------------------------------------------------------------------
@@ -365,7 +415,7 @@ IDataContainerBundle::Pointer DataContainerArray::getDataContainerBundle(const Q
   IDataContainerBundle::Pointer f = IDataContainerBundle::NullPointer();
   for(QMap<QString, IDataContainerBundle::Pointer>::iterator it = m_DataContainerBundles.begin(); it != m_DataContainerBundles.end(); ++it)
   {
-    if((*it)->getName() == name)
+    if((*it)->getName().compare(name) == 0)
     {
       f = *it;
       break;
@@ -430,9 +480,9 @@ bool DataContainerArray::renameDataContainerBundle(const QString& oldName, const
       return false;
     }
 
-    m_DataContainerBundles.insert(newName, iter.value());
-    iter.value()->setName(newName);
-    m_DataContainerBundles.remove(oldName);
+      m_DataContainerBundles.insert(newName, iter.value());
+      iter.value()->setName(newName);
+      m_DataContainerBundles.remove(oldName);
   }
   return false;
 }
@@ -443,13 +493,40 @@ bool DataContainerArray::renameDataContainerBundle(const QString& oldName, const
 DataContainerArray::Pointer DataContainerArray::deepCopy(bool forceNoAllocate)
 {
   DataContainerArray::Pointer dcaCopy = DataContainerArray::New();
-  const Container dcs = getDataContainers();
-  for(const auto& dc : dcs)
+  QList<DataContainer::Pointer> dcs = getDataContainers();
+  for(int i = 0; i < dcs.size(); i++)
   {
-    DataContainer::Pointer dcCopy = dc->deepCopy(forceNoAllocate);
+    DataContainer::Pointer dcCopy = dcs[i]->deepCopy(forceNoAllocate);
+#if 0
 
+    // Deep copy geometry if applicable
+    if(nullptr != dcs[i]->getGeometry().get())
+    {
+      dcCopy->setGeometry(dcs[i]->getGeometry()->deepCopy());
+    }
+
+    // Add AttributeMatrix copies
+    QMap<QString, AttributeMatrix::Pointer> ams = dcs[i]->getAttributeMatrices();
+    for(QMap<QString, AttributeMatrix::Pointer>::Iterator iter = ams.begin(); iter != ams.end(); iter++)
+    {
+      QVector<size_t> dims = (*iter)->getTupleDimensions();
+      AttributeMatrix::Pointer amCopy = AttributeMatrix::New(dims, (*iter)->getName(), (*iter)->getType());
+
+      // Add DataArray copies without allocating memory
+      QList<QString> daNames = (*iter)->getAttributeArrayNames();
+      for(int i = 0; i < daNames.size(); i++)
+      {
+        // Copy and add DataArray to AttributeMatrix copy without allocating memory
+        IDataArray::Pointer daCopy = (*iter)->getAttributeArray(daNames[i])->deepCopy(true);
+        amCopy->addAttributeArray(daNames[i], daCopy);
+      }
+
+      // End add AttributeMatrix
+      dcCopy->addAttributeMatrix(amCopy->getName(), amCopy);
+    }
+#endif
     // End add DataContainer
-    dcaCopy->push_back(dcCopy);
+    dcaCopy->addDataContainer(dcCopy);
   }
 
   return dcaCopy;

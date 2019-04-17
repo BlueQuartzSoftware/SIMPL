@@ -74,9 +74,9 @@ CreateGeometry::CreateGeometry()
 , m_XBoundsArrayPath("", "", "")
 , m_YBoundsArrayPath("", "", "")
 , m_ZBoundsArrayPath("", "", "")
-, m_Dimensions(0, 0, 0)
-, m_Origin(0.0f, 0.0f, 0.0f)
-, m_Spacing(1.0f, 1.0f, 1.0f)
+, m_Dimensions({0, 0, 0})
+, m_Origin({0.0f, 0.0f, 0.0f})
+, m_Resolution({1.0f, 1.0f, 1.0f})
 , m_ImageCellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
 , m_RectGridCellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
 , m_VertexAttributeMatrixName0(SIMPL::Defaults::VertexAttributeMatrixName)
@@ -94,6 +94,17 @@ CreateGeometry::CreateGeometry()
 , m_ArrayHandling(false)
 , m_NumVerts(0)
 {
+  m_Dimensions.x = 0;
+  m_Dimensions.y = 0;
+  m_Dimensions.z = 0;
+
+  m_Origin.x = 0.0f;
+  m_Origin.y = 0.0f;
+  m_Origin.z = 0.0f;
+
+  m_Resolution.x = 1.0f;
+  m_Resolution.y = 1.0f;
+  m_Resolution.z = 1.0f;
 }
 
 // -----------------------------------------------------------------------------
@@ -106,7 +117,7 @@ CreateGeometry::~CreateGeometry() = default;
 // -----------------------------------------------------------------------------
 void CreateGeometry::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  FilterParameterVector parameters;
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Geometry Type");
@@ -125,7 +136,7 @@ void CreateGeometry::setupFilterParameters()
     parameter->setChoices(choices);
     QStringList linkedProps = {"Dimensions",
                                "Origin",
-                               "Spacing",
+                               "Resolution",
                                "BoxDimensions",
                                "ImageCellAttributeMatrixName", // ImageGeom
                                "XBoundsArrayPath",
@@ -153,7 +164,7 @@ void CreateGeometry::setupFilterParameters()
                                "SharedVertexListArrayPath5",
                                "SharedHexListArrayPath",
                                "VertexAttributeMatrixName5",
-                               "HexCellAttributeMatrixName"}; // HexahedralGeom
+                               "HexCellAttributeMatrixName" }; // HexahedralGeom
     parameter->setLinkedProperties(linkedProps);
     parameter->setEditable(false);
     parameter->setCategory(FilterParameter::Parameter);
@@ -171,7 +182,7 @@ void CreateGeometry::setupFilterParameters()
   {
     parameters.push_back(SIMPL_NEW_INT_VEC3_FP("Dimensions", Dimensions, FilterParameter::Parameter, CreateGeometry, 0));
     parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Origin", Origin, FilterParameter::Parameter, CreateGeometry, 0));
-    parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Spacing", Spacing, FilterParameter::Parameter, CreateGeometry, 0));
+    parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Resolution", Resolution, FilterParameter::Parameter, CreateGeometry, 0));
     parameters.push_back(SIMPL_NEW_STRING_FP("Cell Attribute Matrix", ImageCellAttributeMatrixName, FilterParameter::CreatedArray, CreateGeometry, 0));
   }
   {
@@ -246,13 +257,13 @@ void CreateGeometry::initialize()
 // -----------------------------------------------------------------------------
 void CreateGeometry::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   initialize();
 
   DataContainer::Pointer dc = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerName());
 
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -260,7 +271,8 @@ void CreateGeometry::dataCheck()
   if(dc->getGeometry())
   {
     QString ss = QObject::tr("Selected Data Container already contains a Geometry");
-    setErrorCondition(-701, ss);
+    setErrorCondition(-701);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -268,29 +280,28 @@ void CreateGeometry::dataCheck()
   {
   case 0: // ImageGeom
   {
-    if(getDimensions().getX() <= 0 || getDimensions().getY() <= 0 || getDimensions().getZ() <= 0)
+    if(getDimensions().x <= 0 || getDimensions().y <= 0 || getDimensions().z <= 0)
     {
       QString ss = QObject::tr("One of the dimensions has a size less than or equal to zero; all dimensions must be positive\n"
                                "X Dimension: %1\n"
                                "Y Dimension: %2\n"
                                "Z Dimension: %3\n")
-                       .arg(getDimensions().getX())
-                       .arg(getDimensions().getY())
-                       .arg(getDimensions().getZ());
-      setErrorCondition(-390, ss);
+                       .arg(getDimensions().x)
+                       .arg(getDimensions().y)
+                       .arg(getDimensions().z);
+      setErrorCondition(-390);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }
 
     ImageGeom::Pointer image = ImageGeom::CreateGeometry(SIMPL::Geometry::ImageGeometry);
-    IntVec3Type dims = getDimensions();
-    image->setDimensions(SizeVec3Type(dims[0], dims[1], dims[2]));
-    image->setOrigin(getOrigin());
-    image->setSpacing(getSpacing());
+    image->setDimensions(getDimensions().x, getDimensions().y, getDimensions().z);
+    image->setOrigin(getOrigin().x, getOrigin().y, getOrigin().z);
+    image->setResolution(getResolution().x, getResolution().y, getResolution().z);
     dc->setGeometry(image);
 
     QVector<size_t> tDims = {image->getXPoints(), image->getYPoints(), image->getZPoints()};
-    DataArrayPath path = getDataContainerName();
-    path.setAttributeMatrixName(getImageCellAttributeMatrixName());
+    DataArrayPath path(getDataContainerName(), getImageCellAttributeMatrixName(), "");
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Cell);
     break;
   }
@@ -314,7 +325,7 @@ void CreateGeometry::dataCheck()
       m_ZBounds = m_ZBoundsPtr.lock()->getPointer(0);
     }
 
-    if(getErrorCode() < 0)
+    if(getErrorCondition() < 0)
     {
       return;
     }
@@ -328,7 +339,8 @@ void CreateGeometry::dataCheck()
                        .arg(m_XBoundsPtr.lock()->getNumberOfTuples())
                        .arg(m_YBoundsPtr.lock()->getNumberOfTuples())
                        .arg(m_ZBoundsPtr.lock()->getNumberOfTuples());
-      setErrorCondition(-390, ss);
+      setErrorCondition(-390);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }
 
@@ -349,12 +361,11 @@ void CreateGeometry::dataCheck()
       getDataContainerArray()->getAttributeMatrix(getYBoundsArrayPath())->removeAttributeArray(getYBoundsArrayPath().getDataArrayName());
       getDataContainerArray()->getAttributeMatrix(getZBoundsArrayPath())->removeAttributeArray(getZBoundsArrayPath().getDataArrayName());
     }
-    rectgrid->setDimensions(SizeVec3Type(m_XBoundsPtr.lock()->getNumberOfTuples() - 1, m_YBoundsPtr.lock()->getNumberOfTuples() - 1, m_ZBoundsPtr.lock()->getNumberOfTuples() - 1));
+    rectgrid->setDimensions(m_XBoundsPtr.lock()->getNumberOfTuples() - 1, m_YBoundsPtr.lock()->getNumberOfTuples() - 1, m_ZBoundsPtr.lock()->getNumberOfTuples() - 1);
     dc->setGeometry(rectgrid);
 
     QVector<size_t> tDims = {rectgrid->getXPoints(), rectgrid->getYPoints(), rectgrid->getZPoints()};
-    DataArrayPath path = getDataContainerName();
-    path.setAttributeMatrixName(getRectGridCellAttributeMatrixName());
+    DataArrayPath path(getDataContainerName(), getRectGridCellAttributeMatrixName(), "");
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Cell);
     break;
   }
@@ -364,7 +375,7 @@ void CreateGeometry::dataCheck()
 
     FloatArrayType::Pointer verts = getDataContainerArray()->getPrereqArrayFromPath<DataArray<float>, AbstractFilter>(this, getSharedVertexListArrayPath0(), cDims);
 
-    if(getErrorCode() < 0)
+    if(getErrorCondition() < 0)
     {
       return;
     }
@@ -382,8 +393,7 @@ void CreateGeometry::dataCheck()
     dc->setGeometry(vertex);
 
     QVector<size_t> tDims(1, vertex->getNumberOfVertices());
-    DataArrayPath path = getDataContainerName();
-    path.setAttributeMatrixName(getVertexAttributeMatrixName0());
+    DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName0(), "");
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
     break;
   }
@@ -399,7 +409,7 @@ void CreateGeometry::dataCheck()
       m_Edges = m_EdgesPtr.lock()->getPointer(0);
     }
 
-    if(getErrorCode() < 0)
+    if(getErrorCondition() < 0)
     {
       return;
     }
@@ -420,11 +430,10 @@ void CreateGeometry::dataCheck()
 
     m_NumVerts = edge->getNumberOfVertices();
     QVector<size_t> tDims(1, edge->getNumberOfVertices());
-    DataArrayPath path = getDataContainerName();
-    path.setAttributeMatrixName(getVertexAttributeMatrixName1());
+    DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName1(), "");
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
     tDims[0] = edge->getNumberOfEdges();
-    path.setAttributeMatrixName(getEdgeAttributeMatrixName());
+    path.update(getDataContainerName(), getEdgeAttributeMatrixName(), "");
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Edge);
     break;
   }
@@ -439,7 +448,7 @@ void CreateGeometry::dataCheck()
       m_Tris = m_TrisPtr.lock()->getPointer(0);
     }
 
-    if(getErrorCode() < 0)
+    if(getErrorCondition() < 0)
     {
       return;
     }
@@ -460,11 +469,10 @@ void CreateGeometry::dataCheck()
 
     m_NumVerts = triangle->getNumberOfVertices();
     QVector<size_t> tDims(1, triangle->getNumberOfVertices());
-    DataArrayPath path = getDataContainerName();
-    path.setAttributeMatrixName(getVertexAttributeMatrixName2());
+    DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName2(), "");
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
     tDims[0] = triangle->getNumberOfTris();
-    path.setAttributeMatrixName(getFaceAttributeMatrixName0());
+    path.update(getDataContainerName(), getFaceAttributeMatrixName0(), "");
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Face);
     break;
   }
@@ -480,7 +488,7 @@ void CreateGeometry::dataCheck()
       m_Quads = m_QuadsPtr.lock()->getPointer(0);
     }
 
-    if(getErrorCode() < 0)
+    if(getErrorCondition() < 0)
     {
       return;
     }
@@ -501,11 +509,10 @@ void CreateGeometry::dataCheck()
 
     m_NumVerts = quadrilateral->getNumberOfVertices();
     QVector<size_t> tDims(1, quadrilateral->getNumberOfVertices());
-    DataArrayPath path = getDataContainerName();
-    path.setAttributeMatrixName(getVertexAttributeMatrixName3());
+    DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName3(), "");
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
     tDims[0] = quadrilateral->getNumberOfQuads();
-    path.setAttributeMatrixName(getFaceAttributeMatrixName1());
+    path.update(getDataContainerName(), getFaceAttributeMatrixName1(), "");
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Face);
     break;
   }
@@ -521,7 +528,7 @@ void CreateGeometry::dataCheck()
       m_Tets = m_TetsPtr.lock()->getPointer(0);
     }
 
-    if(getErrorCode() < 0)
+    if(getErrorCondition() < 0)
     {
       return;
     }
@@ -543,11 +550,10 @@ void CreateGeometry::dataCheck()
 
     m_NumVerts = tetrahedral->getNumberOfVertices();
     QVector<size_t> tDims(1, tetrahedral->getNumberOfVertices());
-    DataArrayPath path = getDataContainerName();
-    path.setAttributeMatrixName(getVertexAttributeMatrixName4());
+    DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName4(), "");
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
     tDims[0] = tetrahedral->getNumberOfTets();
-    path.setAttributeMatrixName(getTetCellAttributeMatrixName());
+    path.update(getDataContainerName(), getTetCellAttributeMatrixName(), "");
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Cell);
     break;
   }
@@ -563,7 +569,7 @@ void CreateGeometry::dataCheck()
       m_Hexes = m_HexesPtr.lock()->getPointer(0);
     }
 
-    if(getErrorCode() < 0)
+    if (getErrorCondition() < 0)
     {
       return;
     }
@@ -586,18 +592,18 @@ void CreateGeometry::dataCheck()
 
     m_NumVerts = hexahedral->getNumberOfVertices();
     QVector<size_t> tDims(1, hexahedral->getNumberOfVertices());
-    DataArrayPath path = getDataContainerName();
-    path.setAttributeMatrixName(getVertexAttributeMatrixName5());
+    DataArrayPath path(getDataContainerName(), getVertexAttributeMatrixName5(), "");
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Vertex);
     tDims[0] = hexahedral->getNumberOfHexas();
-    path.setAttributeMatrixName(getHexCellAttributeMatrixName());
+    path.update(getDataContainerName(), getHexCellAttributeMatrixName(), "");
     dc->createNonPrereqAttributeMatrix(this, path, tDims, AttributeMatrix::Type::Cell);
     break;
   }
   default:
   {
     QString ss = QObject::tr("Invalid selection for Geometry type");
-    setErrorCondition(-701, ss);
+    setErrorCondition(-701);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     break;
   }
   }
@@ -622,10 +628,10 @@ void CreateGeometry::preflight()
 // -----------------------------------------------------------------------------
 void CreateGeometry::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -653,11 +659,13 @@ void CreateGeometry::execute()
                          .arg(m_XBounds[i]);
         if(m_TreatWarningsAsErrors)
         {
-          setErrorCondition(-1, ss);
+          setErrorCondition(-1);
+          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         }
         else
         {
-          setWarningCondition(-1, ss);
+          setWarningCondition(-1);
+          notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
         }
         return;
       }
@@ -678,11 +686,13 @@ void CreateGeometry::execute()
                          .arg(m_YBounds[i]);
         if(m_TreatWarningsAsErrors)
         {
-          setErrorCondition(-1, ss);
+          setErrorCondition(-1);
+          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         }
         else
         {
-          setWarningCondition(-1, ss);
+          setWarningCondition(-1);
+          notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
         }
         return;
       }
@@ -703,11 +713,13 @@ void CreateGeometry::execute()
                          .arg(m_ZBounds[i]);
         if(m_TreatWarningsAsErrors)
         {
-          setErrorCondition(-1, ss);
+          setErrorCondition(-1);
+          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         }
         else
         {
-          setWarningCondition(-1, ss);
+          setWarningCondition(-1);
+          notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
         }
         return;
       }
@@ -741,11 +753,13 @@ void CreateGeometry::execute()
                        .arg(m_NumVerts);
       if(m_TreatWarningsAsErrors)
       {
-        setErrorCondition(-1, ss);
+        setErrorCondition(-1);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       }
       else
       {
-        setWarningCondition(-1, ss);
+        setWarningCondition(-1);
+        notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
       }
       return;
     }
@@ -772,11 +786,13 @@ void CreateGeometry::execute()
                        .arg(m_NumVerts);
       if(m_TreatWarningsAsErrors)
       {
-        setErrorCondition(-1, ss);
+        setErrorCondition(-1);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       }
       else
       {
-        setWarningCondition(-1, ss);
+        setWarningCondition(-1);
+        notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
       }
       return;
     }
@@ -803,11 +819,13 @@ void CreateGeometry::execute()
                        .arg(m_NumVerts);
       if(m_TreatWarningsAsErrors)
       {
-        setErrorCondition(-1, ss);
+        setErrorCondition(-1);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       }
       else
       {
-        setWarningCondition(-1, ss);
+        setWarningCondition(-1);
+        notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
       }
       return;
     }
@@ -834,11 +852,13 @@ void CreateGeometry::execute()
                        .arg(m_NumVerts);
       if(m_TreatWarningsAsErrors)
       {
-        setErrorCondition(-1, ss);
+        setErrorCondition(-1);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       }
       else
       {
-        setWarningCondition(-1, ss);
+        setWarningCondition(-1);
+        notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
       }
       return;
     }
@@ -865,11 +885,13 @@ void CreateGeometry::execute()
         .arg(m_NumVerts);
       if (m_TreatWarningsAsErrors)
       {
-        setErrorCondition(-1, ss);
+        setErrorCondition(-1);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       }
       else
       {
-        setWarningCondition(-1, ss);
+        setWarningCondition(-1);
+        notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
       }
       return;
     }
@@ -891,15 +913,15 @@ QString CreateGeometry::getBoxDimensions()
 {
   QString desc;
   QTextStream ss(&desc);
-  float halfRes[3] = {m_Spacing[0] * 0.5f, m_Spacing[1] * 0.5f, m_Spacing[2] * 0.5f};
+  float halfRes[3] = {m_Resolution.x / 2.0f, m_Resolution.y / 2.0f, m_Resolution.z / 2.0f};
   ss << "Extents:\n"
-     << "X Extent: 0 to " << m_Dimensions[0] - 1 << " (dimension: " << m_Dimensions[0] << ")\n"
-     << "Y Extent: 0 to " << m_Dimensions[1] - 1 << " (dimension: " << m_Dimensions[1] << ")\n"
-     << "Z Extent: 0 to " << m_Dimensions[2] - 1 << " (dimension: " << m_Dimensions[2] << ")\n"
+     << "X Extent: 0 to " << m_Dimensions.x - 1 << " (dimension: " << m_Dimensions.x << ")\n"
+     << "Y Extent: 0 to " << m_Dimensions.y - 1 << " (dimension: " << m_Dimensions.y << ")\n"
+     << "Z Extent: 0 to " << m_Dimensions.z - 1 << " (dimension: " << m_Dimensions.z << ")\n"
      << "Bounds:\n"
-     << "X Range: " << (m_Origin[0] - halfRes[0]) << " to " << (m_Origin[0] - halfRes[0] + m_Dimensions[0] * m_Spacing[0]) << " (delta: " << (m_Dimensions[0] * m_Spacing[0]) << ")\n"
-     << "Y Range: " << (m_Origin[1] - halfRes[1]) << " to " << (m_Origin[1] - halfRes[1] + m_Dimensions[1] * m_Spacing[1]) << " (delta: " << (m_Dimensions[1] * m_Spacing[1]) << ")\n"
-     << "Z Range: " << (m_Origin[2] - halfRes[2]) << " to " << (m_Origin[2] - halfRes[2] + m_Dimensions[2] * m_Spacing[2]) << " (delta: " << (m_Dimensions[2] * m_Spacing[2]) << ")\n";
+     << "X Range: " << (m_Origin.x - halfRes[0]) << " to " << (m_Origin.x - halfRes[0] + m_Dimensions.x * m_Resolution.x) << " (delta: " << (m_Dimensions.x * m_Resolution.x) << ")\n"
+     << "Y Range: " << (m_Origin.y - halfRes[1]) << " to " << (m_Origin.y - halfRes[1] + m_Dimensions.y * m_Resolution.y) << " (delta: " << (m_Dimensions.y * m_Resolution.y) << ")\n"
+     << "Z Range: " << (m_Origin.z - halfRes[2]) << " to " << (m_Origin.z - halfRes[2] + m_Dimensions.z * m_Resolution.z) << " (delta: " << (m_Dimensions.z * m_Resolution.z) << ")\n";
   return desc;
   return desc;
 }

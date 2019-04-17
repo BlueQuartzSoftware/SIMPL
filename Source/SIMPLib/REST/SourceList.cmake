@@ -29,29 +29,23 @@ set_source_files_properties( ${SIMPLib_${SUBDIR_NAME}_Generated_MOC_SRCS} PROPER
 set_source_files_properties( ${SIMPLib_${SUBDIR_NAME}_Generated_MOC_SRCS} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 set(SIMPLib_${SUBDIR_NAME}_HDRS
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PipelineListenerMessageHandler.h
 
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/V1Controllers/ExecutePipelineMessageHandler.h
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/V1Controllers/PreflightPipelineMessageHandler.h
 )
 
 
 set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLRequestMapper.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PipelineListener.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PipelineListenerMessageHandler.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLDirectoryListing.cpp
 
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/V1Controllers/NumFiltersController.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/V1Controllers/V1RequestMapper.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/V1Controllers/ExecutePipelineController.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/V1Controllers/ExecutePipelineMessageHandler.cpp      
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/V1Controllers/ExecutePipelineController.cpp      
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/V1Controllers/NumFiltersController.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/V1Controllers/ListFilterParametersController.cpp 
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/V1Controllers/PluginInfoController.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/V1Controllers/LoadedPluginsController.cpp        
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/V1Controllers/PreflightPipelineController.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/V1Controllers/PreflightPipelineMessageHandler.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/V1Controllers/NamesOfFiltersController.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/V1Controllers/ApiNotFoundController.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/V1Controllers/SIMPLStaticFileController.cpp

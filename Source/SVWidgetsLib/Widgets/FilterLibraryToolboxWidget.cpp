@@ -141,8 +141,9 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
       {
         iter.next();
         IFilterFactory::Pointer factory = iter.value();
+        AbstractFilter::Pointer filter = factory->create();
         QTreeWidgetItem* filterTreeItem = new QTreeWidgetItem(filterSubGroup);
-        filterTreeItem->setText(0, factory->getFilterHumanLabel());
+        filterTreeItem->setText(0, filter->getHumanLabel());
 
 #if 0
         if(groupName.compare(SIMPL::FilterGroups::Unsupported) == 0)
@@ -169,8 +170,8 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
         filterTreeItem->setIcon(0, icon);
 #endif
         filterTreeItem->setData(0, Qt::UserRole, QVariant(FILTER_NODE_TYPE));
-        filterTreeItem->setData(0, Qt::UserRole + 1, QVariant(factory->getFilterClassName()));
-        filterTreeItem->setToolTip(0, factory->getFilterHtmlSummary());
+        filterTreeItem->setData(0, Qt::UserRole + 1, QVariant(filter->getNameOfClass()));
+        filterTreeItem->setToolTip(0, filter->generateHtmlSummary());
       }
     }
   }

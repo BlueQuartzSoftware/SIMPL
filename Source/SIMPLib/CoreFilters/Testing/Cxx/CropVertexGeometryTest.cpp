@@ -129,22 +129,22 @@ public:
     // Create DataContainer
 
     DataContainer::Pointer dc = DataContainer::New(k_DataContainerName);
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     // Create AttributeMatrix
 
     QVector<size_t> dims(1, vertices.size());
 
     AttributeMatrix::Pointer vertexAM = AttributeMatrix::New(dims, k_VertexAttributeMatrixName, AttributeMatrix::Type::Vertex);
-    dc->addOrReplaceAttributeMatrix(vertexAM);
+    dc->addAttributeMatrix(k_VertexAttributeMatrixName, vertexAM);
 
     AttributeMatrix::Pointer nonVertexAM = AttributeMatrix::New(m_Dims4, k_AttributeMatrixName, AttributeMatrix::Type::Generic);
-    dc->addOrReplaceAttributeMatrix(nonVertexAM);
+    dc->addAttributeMatrix(k_AttributeMatrixName, nonVertexAM);
 
     // Create DataArray used for geometry creation
 
     FloatArrayType::Pointer daVert = createDataArray<float>(k_VertexCoordinatesDAName, vertices, dims, m_Dims3);
-    vertexAM->insertOrAssign(daVert);
+    vertexAM->addAttributeArray(k_VertexCoordinatesDAName, daVert);
 
     // Manually create cropped DataArray for comparison
 
@@ -159,7 +159,7 @@ public:
     {
       da->setValue(i, i + 0.5f);
     }
-    nonVertexAM->insertOrAssign(da);
+    nonVertexAM->addAttributeArray(k_DataArray0Name, da);
 
     // Create Geometry
 
@@ -178,13 +178,12 @@ public:
     // Setup Filter
 
     QVariant var;
-    DataArrayPath dap(k_DataContainerName);
-    var.setValue(dap);
+
+    var.setValue(k_DataContainerName);
     bool propWasSet = cropVertexGeometry->setProperty("DataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-    dap = DataArrayPath(k_CroppedDataContainerName);
-    var.setValue(dap);
+    var.setValue(k_CroppedDataContainerName);
     propWasSet = cropVertexGeometry->setProperty("CroppedDataContainerName", var);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
@@ -215,7 +214,7 @@ public:
     // Run Filter
 
     cropVertexGeometry->execute();
-    DREAM3D_REQUIRED(cropVertexGeometry->getErrorCode(), >=, 0);
+    DREAM3D_REQUIRED(cropVertexGeometry->getErrorCondition(), >=, 0);
 
     // Check filter results
 
@@ -231,7 +230,7 @@ public:
 
     DREAM3D_REQUIRE_EQUAL((daCroppedVert->getNumberOfTuples() == croppedVertexAM->getNumberOfTuples()), true)
 
-    FloatArrayType::Pointer croppedVerticesFromAM = croppedVertexAM->getAttributeArrayAs<FloatArrayType>(SIMPL::Geometry::SharedVertexList);
+    FloatArrayType::Pointer croppedVerticesFromAM = croppedVertexAM->getAttributeArrayAs<FloatArrayType>(k_VertexCoordinatesDAName);
 
     checkDataArray<float>(daCroppedVert, croppedVerticesFromAM);
 

@@ -60,7 +60,7 @@ RenameAttributeArray::~RenameAttributeArray() = default;
 // -----------------------------------------------------------------------------
 void RenameAttributeArray::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  FilterParameterVector parameters;
 
   DataArraySelectionFilterParameter::RequirementType req;
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array to Rename", SelectedArrayPath, FilterParameter::RequiredArray, RenameAttributeArray, req));
@@ -93,31 +93,21 @@ void RenameAttributeArray::initialize()
 // -----------------------------------------------------------------------------
 void RenameAttributeArray::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 
   if(m_NewArrayName.isEmpty())
   {
+    setErrorCondition(-11009);
     QString ss = QObject::tr("The new Attribute Array name must be set");
-    setErrorCondition(-11009, ss);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
   QString daName = getSelectedArrayPath().getDataArrayName();
 
-  // Update the last array name.  This is important for creating rename paths.
-  if(m_LastArrayName != getNewArrayName())
-  {
-    DataArrayPath newArrayPath = getSelectedArrayPath();
-    newArrayPath.setAttributeMatrixName(m_NewArrayName);
-    DataArrayPath oldArrayPath = getSelectedArrayPath();
-    oldArrayPath.setAttributeMatrixName(m_LastArrayName);
-    addPathRename(oldArrayPath, newArrayPath);
-    m_LastArrayName = getNewArrayName();
-  }
-
   AttributeMatrix::Pointer attrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getSelectedArrayPath(), -301);
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -127,29 +117,22 @@ void RenameAttributeArray::dataCheck()
   {
   case OLD_DOES_NOT_EXIST:
   {
+    setErrorCondition(-11016);
     QString ss = QObject::tr("A DataArray with the name '%1' was not found in the AttributeMatrix").arg(daName);
-    setErrorCondition(-11016, ss);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
   case NEW_EXISTS:
   {
+    setErrorCondition(-11017);
     QString ss = QObject::tr("A DataArray with the name '%1' already exists in the AttributeMatrix").arg(m_NewArrayName);
-    setErrorCondition(-11017, ss);
-    return;
-  }
-  case RenameErrorCodes::SAME_PATH:
-  {
-    QString ss = QObject::tr("The new and original DataArray names cannot be identical");
-    setErrorCondition(-11018, ss);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
   case SUCCESS:
   {
-    clearErrorCode();
-    clearWarningCode();
-    DataArrayPath newPath = getSelectedArrayPath();
-    newPath.setDataArrayName(m_NewArrayName);
-    addPathRename(getSelectedArrayPath(), newPath);
+    setErrorCondition(0);
+    setWarningCondition(0);
     return;
   }
   }
@@ -173,10 +156,10 @@ void RenameAttributeArray::preflight()
 // -----------------------------------------------------------------------------
 void RenameAttributeArray::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck(); // calling the dataCheck will rename the array, so nothing is required here
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -263,8 +246,8 @@ DataArrayPath::RenameContainer RenameAttributeArray::getRenamedPaths()
   DataArrayPath newPath = getSelectedArrayPath();
   newPath.setDataArrayName(getNewArrayName());
 
-  DataArrayPath::RenameContainer container = AbstractFilter::getRenamedPaths();
-  container.push_back(std::make_pair(oldPath, newPath));
+  DataArrayPath::RenameContainer container;
+  container.push_back(DataArrayPath::RenameType(oldPath, newPath));
 
   return container;
 }

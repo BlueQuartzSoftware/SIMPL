@@ -31,9 +31,9 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
-#include <QtWidgets/QWidget>
+#include "SIMPLib/Common/PipelineMessage.h"
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include <QtWidgets/QWidget>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 

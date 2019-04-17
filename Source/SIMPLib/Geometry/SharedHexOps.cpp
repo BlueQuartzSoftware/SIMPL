@@ -14,7 +14,7 @@ SharedHexList::Pointer GEOM_CLASS_NAME::CreateSharedHexList(int64_t numHexas, bo
 // -----------------------------------------------------------------------------
 void GEOM_CLASS_NAME::resizeHexList(int64_t newNumHexas)
 {
-  m_HexList->resizeTuples(newNumHexas);
+  m_HexList->resize(newNumHexas);
 }
 
 // -----------------------------------------------------------------------------

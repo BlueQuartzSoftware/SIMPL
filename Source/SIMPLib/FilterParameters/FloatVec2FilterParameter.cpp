@@ -46,7 +46,7 @@ FloatVec2FilterParameter::~FloatVec2FilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatVec2FilterParameter::Pointer FloatVec2FilterParameter::New(const QString& humanLabel, const QString& propertyName, const FloatVec2Type& defaultValue, Category category,
+FloatVec2FilterParameter::Pointer FloatVec2FilterParameter::New(const QString& humanLabel, const QString& propertyName, const FloatVec2_t& defaultValue, Category category,
                                                                 SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
 {
 
@@ -75,18 +75,14 @@ QString FloatVec2FilterParameter::getWidgetType() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FloatVec2FilterParameter::readJson(const QJsonObject& obj)
+void FloatVec2FilterParameter::readJson(const QJsonObject& json)
 {
-  QJsonValue jsonValue = obj[getPropertyName()];
+  QJsonValue jsonValue = json[getPropertyName()];
   if(!jsonValue.isUndefined() && m_SetterCallback)
   {
-    QJsonObject json = jsonValue.toObject();
-    FloatVec2Type floatVec2;
-    if(json["x"].isDouble() && json["y"].isDouble())
-    {
-      floatVec2[0] = static_cast<float>(json["x"].toDouble());
-      floatVec2[1] = static_cast<float>(json["y"].toDouble());
-    }
+    QJsonObject obj = jsonValue.toObject();
+    FloatVec2_t floatVec2;
+    floatVec2.readJson(obj);
     m_SetterCallback(floatVec2);
   }
 }
@@ -94,14 +90,13 @@ void FloatVec2FilterParameter::readJson(const QJsonObject& obj)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FloatVec2FilterParameter::writeJson(QJsonObject& obj)
+void FloatVec2FilterParameter::writeJson(QJsonObject& json)
 {
   if (m_GetterCallback)
   {
-    FloatVec2Type floatVec2 = m_GetterCallback();
-    QJsonObject json;
-    json["x"] = static_cast<double>(floatVec2.getX());
-    json["y"] = static_cast<double>(floatVec2.getY());
-    obj[getPropertyName()] = json;
+    FloatVec2_t floatVec2 = m_GetterCallback();
+    QJsonObject obj;
+    floatVec2.writeJson(obj);
+    json[getPropertyName()] = obj;
   }
 }

@@ -35,8 +35,7 @@
 
 #pragma once
 
-#include <cassert>
-#include <cstdlib>
+#include <stdlib.h>
 
 #include "SIMPLib/Math/SIMPLibMath.h"
 #include "SIMPLib/Math/MatrixMath.h"
@@ -61,54 +60,16 @@ template<typename T>
 class QuaternionMath
 {
   public:
-    using size_type = size_t;
-    using value_type = T;
-    using reference = T&;
-
     /**
     * @brief
     */
-    using Quaternion = struct
+    typedef struct
     {
       T x;
       T y;
       T z;
       T w;
-
-      inline reference operator[](size_type index)
-      {
-        switch(index)
-        {
-        case 0:
-          return x;
-        case 1:
-          return y;
-        case 2:
-          return z;
-        case 3:
-          return w;
-        default:
-          throw std::range_error("Invalid Quaternion index");
-        }
-      }
-
-      inline const T& operator[](size_type index) const
-      {
-        switch(index)
-        {
-        case 0:
-          return x;
-        case 1:
-          return y;
-        case 2:
-          return z;
-        case 3:
-          return w;
-        default:
-          throw std::range_error("Invalid Quaternion index");
-        }
-      }
-    };
+    } Quaternion;
 
     enum Order
     {
@@ -504,19 +465,23 @@ class QuaternionMath
 /**
  * @brief QuaternionMathF Typedef for 32 bit floats for convenience
  */
-using QuaternionMathF = QuaternionMath<float>;
+typedef QuaternionMath<float> QuaternionMathF;
 
 /**
  * @brief QuaternionMathD Typedef for 64 bit floats for convenience
  */
-using QuaternionMathD = QuaternionMath<double>;
+typedef QuaternionMath<double> QuaternionMathD;
 
 /**
  * @brief QuatF 32 Bit Floating point Quaternion for convenience.
  */
-using QuatF = QuaternionMath<float>::Quaternion;
+typedef QuaternionMath<float>::Quaternion QuatF;
 
 /**
  * @brief QuatD 64 Bit Floating point Quaternion for convenience.
  */
-using QuatD = QuaternionMath<double>::Quaternion;
+typedef QuaternionMath<double>::Quaternion QuatD;
+
+
+
+

@@ -67,13 +67,13 @@ public:
     AttributeMatrix::Pointer am = AttributeMatrix::New(attributeMatrixSize, "Attribute Matrix", AttributeMatrix::Type::Any);
 
     DataContainer::Pointer dc = DataContainer::New("Data Container");
-    dc->addOrReplaceAttributeMatrix(am);
+    dc->addAttributeMatrix("Attribute Matrix", am);
 
     DataContainerArray::Pointer dca = DataContainerArray::New();
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     imageGeometry->setDataContainerArray(dca);
-    imageGeometry->setSelectedDataContainer(DataArrayPath("Data Container", "", ""));
+    imageGeometry->setSelectedDataContainer("Data Container");
     return imageGeometry;
   }
 
@@ -84,18 +84,18 @@ public:
   {
     CreateImageGeometry::Pointer imageGeometry = initializeData();
 
-    IntVec3Type numDimensions;
-    numDimensions[0] = 5;
-    numDimensions[1] = 15;
-    numDimensions[2] = 25;
+    IntVec3_t numDimensions;
+    numDimensions.x = 5;
+    numDimensions.y = 15;
+    numDimensions.z = 25;
 
     imageGeometry->setDimensions(numDimensions);
 
-    IntVec3Type dimensions = imageGeometry->getDimensions();
+    IntVec3_t dimensions = imageGeometry->getDimensions();
 
-    DREAM3D_REQUIRE_EQUAL(numDimensions[0], dimensions[0]);
-    DREAM3D_REQUIRE_EQUAL(numDimensions[1], dimensions[1]);
-    DREAM3D_REQUIRE_EQUAL(numDimensions[2], dimensions[2]);
+    DREAM3D_REQUIRE_EQUAL(numDimensions.x, dimensions.x);
+    DREAM3D_REQUIRE_EQUAL(numDimensions.y, dimensions.y);
+    DREAM3D_REQUIRE_EQUAL(numDimensions.z, dimensions.z);
   }
 
   // -----------------------------------------------------------------------------
@@ -105,18 +105,18 @@ public:
   {
     CreateImageGeometry::Pointer imageGeometry = initializeData();
 
-    FloatVec3Type originPos;
-    originPos[0] = 5;
-    originPos[1] = 15;
-    originPos[2] = 25;
+    FloatVec3_t originPos;
+    originPos.x = 5;
+    originPos.y = 15;
+    originPos.z = 25;
 
     imageGeometry->setOrigin(originPos);
 
-    FloatVec3Type origin = imageGeometry->getOrigin();
+    FloatVec3_t origin = imageGeometry->getOrigin();
 
-    DREAM3D_REQUIRE_EQUAL(originPos[0], origin[0]);
-    DREAM3D_REQUIRE_EQUAL(originPos[1], origin[1]);
-    DREAM3D_REQUIRE_EQUAL(originPos[2], origin[2]);
+    DREAM3D_REQUIRE_EQUAL(originPos.x, origin.x);
+    DREAM3D_REQUIRE_EQUAL(originPos.y, origin.y);
+    DREAM3D_REQUIRE_EQUAL(originPos.z, origin.z);
   }
 
   // -----------------------------------------------------------------------------
@@ -126,18 +126,18 @@ public:
   {
     CreateImageGeometry::Pointer imageGeometry = initializeData();
 
-    FloatVec3Type imgResolution;
-    imgResolution[0] = 5;
-    imgResolution[1] = 15;
-    imgResolution[2] = 25;
+    FloatVec3_t imgResolution;
+    imgResolution.x = 5;
+    imgResolution.y = 15;
+    imgResolution.z = 25;
 
-    imageGeometry->setSpacing(imgResolution);
+    imageGeometry->setResolution(imgResolution);
 
-    FloatVec3Type resolution = imageGeometry->getSpacing();
+    FloatVec3_t resolution = imageGeometry->getResolution();
 
-    DREAM3D_REQUIRE_EQUAL(imgResolution[0], resolution[0]);
-    DREAM3D_REQUIRE_EQUAL(imgResolution[1], resolution[1]);
-    DREAM3D_REQUIRE_EQUAL(imgResolution[2], resolution[2]);
+    DREAM3D_REQUIRE_EQUAL(imgResolution.x, resolution.x);
+    DREAM3D_REQUIRE_EQUAL(imgResolution.y, resolution.y);
+    DREAM3D_REQUIRE_EQUAL(imgResolution.z, resolution.z);
   }
 
   // -----------------------------------------------------------------------------
@@ -147,23 +147,23 @@ public:
   {
     CreateImageGeometry::Pointer imageGeometry = initializeData();
 
-    IntVec3Type numDimensions;
-    numDimensions[0] = 5;
-    numDimensions[1] = 15;
-    numDimensions[2] = 25;
+    IntVec3_t numDimensions;
+    numDimensions.x = 5;
+    numDimensions.y = 15;
+    numDimensions.z = 25;
     imageGeometry->setDimensions(numDimensions);
 
-    FloatVec3Type originPos;
-    originPos[0] = 5;
-    originPos[1] = 15;
-    originPos[2] = 25;
+    FloatVec3_t originPos;
+    originPos.x = 5;
+    originPos.y = 15;
+    originPos.z = 25;
     imageGeometry->setOrigin(originPos);
 
-    FloatVec3Type imgResolution;
-    imgResolution[0] = 5;
-    imgResolution[1] = 15;
-    imgResolution[2] = 25;
-    imageGeometry->setSpacing(imgResolution);
+    FloatVec3_t imgResolution;
+    imgResolution.x = 5;
+    imgResolution.y = 15;
+    imgResolution.z = 25;
+    imageGeometry->setResolution(imgResolution);
 
     imageGeometry->execute();
 
@@ -174,30 +174,36 @@ public:
     DREAM3D_REQUIRE(nullptr != geometry.get());
 
     {
-      FloatVec3Type res;
-      geometry->getSpacing(res);
+      float* res = new float[3];
+      geometry->getResolution(res);
 
-      DREAM3D_REQUIRE_EQUAL(res[0], imgResolution[0]);
-      DREAM3D_REQUIRE_EQUAL(res[1], imgResolution[1]);
-      DREAM3D_REQUIRE_EQUAL(res[2], imgResolution[2]);
+      DREAM3D_REQUIRE_EQUAL(res[0], imgResolution.x);
+      DREAM3D_REQUIRE_EQUAL(res[1], imgResolution.y);
+      DREAM3D_REQUIRE_EQUAL(res[2], imgResolution.z);
+
+      delete[] res;
     }
 
     {
-      FloatVec3Type origin;
+      float* origin = new float[3];
       geometry->getOrigin(origin);
 
-      DREAM3D_REQUIRE_EQUAL(origin[0], originPos[0]);
-      DREAM3D_REQUIRE_EQUAL(origin[1], originPos[1]);
-      DREAM3D_REQUIRE_EQUAL(origin[2], originPos[2]);
+      DREAM3D_REQUIRE_EQUAL(origin[0], originPos.x);
+      DREAM3D_REQUIRE_EQUAL(origin[1], originPos.y);
+      DREAM3D_REQUIRE_EQUAL(origin[2], originPos.z);
+
+      delete[] origin;
     }
 
     {
-      SizeVec3Type dims;
-      geometry->getDimensions(dims);
+      size_t* dims = new size_t[3];
+      std::tie(dims[0], dims[1], dims[2]) = geometry->getDimensions();
 
-      DREAM3D_REQUIRE_EQUAL(dims[0], numDimensions[0]);
-      DREAM3D_REQUIRE_EQUAL(dims[1], numDimensions[1]);
-      DREAM3D_REQUIRE_EQUAL(dims[2], numDimensions[2]);
+      DREAM3D_REQUIRE_EQUAL(dims[0], numDimensions.x);
+      DREAM3D_REQUIRE_EQUAL(dims[1], numDimensions.y);
+      DREAM3D_REQUIRE_EQUAL(dims[2], numDimensions.z);
+
+      delete[] dims;
     }
   }
 
@@ -229,9 +235,7 @@ public:
     DREAM3D_REGISTER_TEST(testExecution())
   }
 
-public:
-  CreateImageGeometryTest(const CreateImageGeometryTest&) = delete;            // Copy Constructor Not Implemented
-  CreateImageGeometryTest(CreateImageGeometryTest&&) = delete;                 // Move Constructor Not Implemented
-  CreateImageGeometryTest& operator=(const CreateImageGeometryTest&) = delete; // Copy Assignment Not Implemented
-  CreateImageGeometryTest& operator=(CreateImageGeometryTest&&) = delete;      // Move Assignment Not Implemented
+private:
+  CreateImageGeometryTest(const CreateImageGeometryTest&); // Copy Constructor Not Implemented
+  void operator=(const CreateImageGeometryTest&);          // Move assignment Not Implemented
 };

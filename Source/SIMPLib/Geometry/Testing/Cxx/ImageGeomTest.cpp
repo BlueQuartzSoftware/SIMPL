@@ -34,13 +34,13 @@ public:
   void TestIndexCalculation()
   {
     ImageGeom::Pointer geom = ImageGeom::CreateGeometry("Test Geometry");
-    SizeVec3Type dims(10, 20, 30);
-    FloatVec3Type res = {0.4f, 2.3f, 5.0f};
-    FloatVec3Type origin = {-1.0f, 6.0f, 10.0f};
+    size_t dims[3] = {10, 20, 30};
+    float res[3] = {0.4f, 2.3f, 5.0f};
+    float origin[3] = {-1.0f, 6.0f, 10.0f};
 
     geom->setDimensions(dims);
     geom->setOrigin(origin);
-    geom->getSpacing(res);
+    geom->getResolution(res);
 
     float coords[3] = {3.5f, 9.23f, 12.78f};
     size_t indices[3] = {0, 0, 0};

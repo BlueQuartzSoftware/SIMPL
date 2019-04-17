@@ -37,24 +37,24 @@
 
 #include <QtCore/QMetaProperty>
 
+#include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/Filtering/FilterManager.h"
-#include "SIMPLib/Filtering/FilterPipeline.h"
 #include "SIMPLib/Filtering/IFilterFactory.hpp"
-#include "SIMPLib/Messages/FilterErrorMessage.h"
-#include "SIMPLib/Messages/FilterProgressMessage.h"
-#include "SIMPLib/Messages/FilterStatusMessage.h"
-#include "SIMPLib/Messages/FilterWarningMessage.h"
+#include "SIMPLib/Filtering/FilterPipeline.h"
 #include "SIMPLib/Plugin/PluginManager.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 AbstractFilter::AbstractFilter()
-: m_InPreflight(false)
+: m_ErrorCondition(0)
+, m_WarningCondition(0)
+, m_InPreflight(false)
 , m_Enabled(true)
 , m_Removing(false)
 , m_PipelineIndex(0)
 , m_Cancel(false)
+
 {
   m_DataContainerArray = DataContainerArray::New();
   m_PreviousFilter = NullPointer();
@@ -100,27 +100,91 @@ void AbstractFilter::setCancel(bool value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::renameDataArrayPath(const DataArrayPath::RenameType& renamePath)
+void AbstractFilter::renameDataArrayPath(DataArrayPath::RenameType renamePath)
 {
+  // Updates any DataArrayPath or proxy property assigned to this filter.
+  // A signal is emitted if a change was required stating the property name, old path, and new path.
+  // No additional methods are required aside from a connecting slot in filter parameter widgets to update their UI.
+  // If all filters stored their data paths as DataArrayPaths instead of QString without delimiters,
+  // this would handle all required updates.  This was moved to FilterParameter::dataArrayRenamed.
+  // However, moving this to FilterParameter does not update any private properties that do not 
+  // have a FilterParameter assigned.
+#if 0
+  const QMetaObject* metaobject = metaObject();
+  int count = metaobject->propertyCount();
+  for(int i = 0; i < count; i++)
+  {
+    QMetaProperty metaproperty = metaobject->property(i);
+    const char* name = metaproperty.name();
+    QVariant var = property(name);
+    if(var.isValid() && var.canConvert<DataArrayPath>())
+    {
+      DataArrayPath path = var.value<DataArrayPath>();
+      if(path.updatePath(oldPath, newPath))
+      {
+        //QString ss = QString("Updated property '%1' in %2").arg(name).arg(getHumanLabel());
+        //notifyStandardOutputMessage(getHumanLabel(), getPipelineIndex(), ss);
+        //notifyStatusMessage(getHumanLabel(), ss);
+        var.setValue(path);
+        this->setProperty(name, var);
+        emit dataArrayPathUpdated(name, oldPath, newPath);
+      }
+    }
+    else if(var.isValid() && var.canConvert<DataContainerArrayProxy>())
+    {
+      DataContainerArrayProxy proxy = var.value<DataContainerArrayProxy>();
+      proxy.updatePath(oldPath, newPath);
+      var.setValue(proxy);
+      this->setProperty(name, var);
+      emit dataArrayPathUpdated(name, oldPath, newPath);
+    }
+    else if(var.isValid() && var.canConvert<DataContainerProxy>())
+    {
+      DataContainerProxy proxy = var.value<DataContainerProxy>();
+      proxy.updatePath(oldPath, newPath);
+      var.setValue(proxy);
+      this->setProperty(name, var);
+      emit dataArrayPathUpdated(name, oldPath, newPath);
+    }
+    else if(var.isValid() && var.canConvert<AttributeMatrixProxy>())
+    {
+      AttributeMatrixProxy proxy = var.value<AttributeMatrixProxy>();
+      proxy.updatePath(oldPath, newPath);
+      var.setValue(proxy);
+      this->setProperty(name, var);
+      emit dataArrayPathUpdated(name, oldPath, newPath);
+    }
+    else if(var.isValid() && var.canConvert<DataArrayProxy>())
+    {
+      DataArrayProxy proxy = var.value<DataArrayProxy>();
+      proxy.updatePath(oldPath, newPath);
+      var.setValue(proxy);
+      this->setProperty(name, var);
+      emit dataArrayPathUpdated(name, oldPath, newPath);
+    }
+  }
+#endif
+
   // Some filter parameters handle paths as nothing but a QString (i.e. DataContainerSelectionFilterParameter)
   // This does not store data in a way that represents what is stored or in a consistent manner with anything else.
   // Because this format cannot be quieried nicely like the above code, filter parameters have to be able to update
   // their own paths in these cases.  In cases where private properties need to be updated but do not have
   // assigned filter parameters, although this should not be the case, this code, unlike the above snippet, will not update them.
-  FilterParameterVectorType filterParams = getFilterParameters();
-  for(FilterParameter::Pointer& filterParam : filterParams)
+  FilterParameterVector filterParams = getFilterParameters();
+  for(FilterParameter::Pointer filterParam : filterParams)
   {
     filterParam->dataArrayPathRenamed(this, renamePath);
   }
+}
 
-  // Update created paths
-  for(const auto& createdPathItem : m_CreatedPaths)
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AbstractFilter::renameDataArrayPaths(DataArrayPath::RenameContainer renamedPaths)
+{
+  for(DataArrayPath::RenameType rename : renamedPaths)
   {
-    DataArrayPath createdPath = createdPathItem.second;
-    if(createdPath.updatePath(renamePath))
-    {
-      m_CreatedPaths[createdPathItem.first] = createdPath;
-    }
+    renameDataArrayPath(rename);
   }
 }
 
@@ -136,7 +200,8 @@ void AbstractFilter::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void AbstractFilter::execute()
 {
-  setErrorCondition(-3015, "QAbstractFilter does not implement an execute method. Please use a subclass instead.");
+  setErrorCondition(-3015);
+  notifyErrorMessage(getNameOfClass(), "QAbstractFilter does not implement an execute method. Please use a subclass instead.", getErrorCondition());
 }
 
 // -----------------------------------------------------------------------------
@@ -145,7 +210,8 @@ void AbstractFilter::execute()
 void AbstractFilter::preflight()
 {
   setInPreflight(true);
-  setErrorCondition(-3016, "AbstractFilter does not implement a preflight method. Please use a subclass instead.");
+  setErrorCondition(-3016);
+  notifyErrorMessage(getNameOfClass(), "AbstractFilter does not implement a preflight method. Please use a subclass instead.", getErrorCondition());
 }
 
 // -----------------------------------------------------------------------------
@@ -195,7 +261,7 @@ void insertAttributeMatrixPaths(DataContainer::Pointer dc, AttributeMatrix::Poin
 {
   paths.push_back(DataArrayPath(dc->getName(), am->getName(), ""));
   // Insert all DataArrayPaths
-  for(const QString& daName : am->getAttributeArrayNames())
+  for(QString daName : am->getAttributeArrayNames())
   {
     DataArrayPath daPath(dc->getName(), am->getName(), daName);
     paths.push_back(daPath);
@@ -205,11 +271,11 @@ void insertAttributeMatrixPaths(DataContainer::Pointer dc, AttributeMatrix::Poin
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void insertDataContainerPaths(const DataContainer::Pointer& dc, std::list<DataArrayPath>& paths)
+void insertDataContainerPaths(DataContainer::Pointer dc, std::list<DataArrayPath>& paths)
 {
-  paths.emplace_back(DataArrayPath(dc->getName(), "", ""));
+  paths.push_back(DataArrayPath(dc->getName(), "", ""));
   // Insert all AttributeMatrix paths
-  for(const AttributeMatrix::Pointer& am : dc->getAttributeMatrices())
+  for(AttributeMatrix::Pointer am : dc->getAttributeMatrices())
   {
     insertAttributeMatrixPaths(dc, am, paths);
   }
@@ -234,7 +300,7 @@ std::list<DataArrayPath> AbstractFilter::getCreatedPaths()
     DataContainerArray::Pointer dca = getDataContainerArray();
 
     // Check DataContainers
-    for(const DataContainer::Pointer& dc : dca->getDataContainers())
+    for(DataContainer::Pointer dc : dca->getDataContainers())
     {
       if(!prevDca->doesDataContainerExist(dc->getName()))
       {
@@ -243,7 +309,7 @@ std::list<DataArrayPath> AbstractFilter::getCreatedPaths()
       else
       {
         // Check AttributeMatrices
-        for(const AttributeMatrix::Pointer& am : dc->getAttributeMatrices())
+        for(AttributeMatrix::Pointer am : dc->getAttributeMatrices())
         {
           DataArrayPath amPath(dc->getName(), am->getName(), "");
           if(!prevDca->doesAttributeMatrixExist(amPath))
@@ -253,7 +319,7 @@ std::list<DataArrayPath> AbstractFilter::getCreatedPaths()
           else
           {
             // Check DataArrays
-            for(const QString& daName : am->getAttributeArrayNames())
+            for(QString daName : am->getAttributeArrayNames())
             {
               DataArrayPath daPath(dc->getName(), am->getName(), daName);
               if(!prevDca->doesAttributeArrayExist(daPath))
@@ -274,7 +340,7 @@ std::list<DataArrayPath> AbstractFilter::getCreatedPaths()
     if(dca)
     {
       // Add all paths if there is no previous filter to compare to
-      for(const DataContainer::Pointer& dc : dca->getDataContainers())
+      for(DataContainer::Pointer dc : dca->getDataContainers())
       {
         insertDataContainerPaths(dc, createdPaths);
       }
@@ -287,18 +353,11 @@ std::list<DataArrayPath> AbstractFilter::getCreatedPaths()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::list<DataArrayPath> AbstractFilter::getDeletedPaths()
-{
-  return std::list<DataArrayPath>();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 DataArrayPath::RenameContainer AbstractFilter::getRenamedPaths()
 {
   // Implemented in filters that rename existing paths
-  return m_RenamedPaths;
+  DataArrayPath::RenameContainer container;
+  return container;
 }
 
 // -----------------------------------------------------------------------------
@@ -316,9 +375,10 @@ void AbstractFilter::readFilterParameters(AbstractFilterParametersReader* reader
 // -----------------------------------------------------------------------------
 void AbstractFilter::readFilterParameters(QJsonObject& obj)
 {
-  FilterParameterVectorType filterParameters = getFilterParameters();
-  for(auto const& fp : filterParameters)
+  QVector<FilterParameter::Pointer> filterParameters = getFilterParameters();
+  for(int i = 0; i < filterParameters.size(); i++)
   {
+    FilterParameter::Pointer fp = filterParameters[i];
     fp->readJson(obj);
   }
 }
@@ -337,8 +397,8 @@ void AbstractFilter::preWriteFilterParameters(QJsonObject& obj, QJsonObject& roo
 // -----------------------------------------------------------------------------
 void AbstractFilter::writeFilterParameters(QJsonObject& obj) const
 {
-  FilterParameterVectorType filterParameters = getFilterParameters();
-  for(auto const& fp : filterParameters)
+  QVector<FilterParameter::Pointer> filterParameters = getFilterParameters();
+  for(auto const fp : filterParameters)
   {
     fp->writeJson(obj);
   }
@@ -530,55 +590,65 @@ void AbstractFilter::cleanupFilter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::setErrorCondition(int code, const QString& messageText)
+void AbstractFilter::notifyErrorMessage(const QString& humanLabel, const QString& str, int code)
 {
-  m_ErrorCode = code;
-  FilterErrorMessage::Pointer pm = FilterErrorMessage::New(getNameOfClass(), getHumanLabel(), getPipelineIndex(), messageText, code);
-  emit messageGenerated(pm);
+  PipelineMessage pm = PipelineMessage::CreateErrorMessage(getNameOfClass(), humanLabel, str, code);
+  pm.setPipelineIndex(getPipelineIndex());
+  emit filterGeneratedMessage(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::notifyStatusMessage(const QString& messageText)
+void AbstractFilter::notifyStatusMessage(const QString& humanLabel, const QString& str)
 {
-  FilterStatusMessage::Pointer pm = FilterStatusMessage::New(getNameOfClass(), getHumanLabel(), getPipelineIndex(), messageText);
-  emit messageGenerated(pm);
+  PipelineMessage pm = PipelineMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
+  pm.setPipelineIndex(getPipelineIndex());
+  emit filterGeneratedMessage(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::setWarningCondition(int code, const QString& messageText)
+void AbstractFilter::notifyStatusMessage(const QString& prefix, const QString& humanLabel, const QString& str)
 {
-  m_WarningCode = code;
-  FilterWarningMessage::Pointer pm = FilterWarningMessage::New(getNameOfClass(), getHumanLabel(), getPipelineIndex(), messageText, code);
-  emit messageGenerated(pm);
+  PipelineMessage pm = PipelineMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
+  pm.setPrefix(prefix);
+  pm.setPipelineIndex(getPipelineIndex());
+  emit filterGeneratedMessage(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::notifyProgressMessage(int progress, const QString& messageText)
+void AbstractFilter::notifyStandardOutputMessage(const QString& humanLabel, int pipelineIndex, const QString& str)
 {
-  FilterProgressMessage::Pointer pm = FilterProgressMessage::New(getNameOfClass(), getHumanLabel(), getPipelineIndex(), messageText, progress);
-  emit messageGenerated(pm);
+  PipelineMessage pm = PipelineMessage::CreateStandardOutputMessage(humanLabel, pipelineIndex, str);
+  pm.setPipelineIndex(getPipelineIndex());
+  emit filterGeneratedMessage(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::clearErrorCode()
+void AbstractFilter::notifyWarningMessage(const QString& humanLabel, const QString& str, int code)
 {
-  m_ErrorCode = 0;
+  PipelineMessage pm = PipelineMessage::CreateWarningMessage(getNameOfClass(), humanLabel, str, code);
+  pm.setPipelineIndex(getPipelineIndex());
+  emit filterGeneratedMessage(pm);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::clearWarningCode()
+void AbstractFilter::notifyProgressMessage(const QString& prefix, const QString& humanLabel, const QString& str, int progress)
 {
-  m_WarningCode = 0;
+  PipelineMessage pm = PipelineMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
+  pm.setPrefix(prefix);
+  pm.setProgressValue(progress);
+  pm.setType(PipelineMessage::MessageType::StatusMessageAndProgressValue);
+  pm.setPipelineIndex(getPipelineIndex());
+  emit filterGeneratedMessage(pm);
 }
 
 // -----------------------------------------------------------------------------
@@ -592,45 +662,6 @@ void AbstractFilter::notifyMissingProperty(FilterParameter* filterParameter)
           .arg(filterParameter->getPropertyName())
           .arg(getHumanLabel());
 
-  setWarningCondition(-1, ss);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool AbstractFilter::checkIfPathRenamed(const RenameDataPath::DataID_t id, const DataArrayPath& path)
-{
-  if(id == RenameDataPath::k_Invalid_ID)
-  {
-    return false;
-  }
-  else if(m_CreatedPaths.find(id) == m_CreatedPaths.end())
-  {
-    m_CreatedPaths[id] = path;
-    return false;
-  }
-  else if(m_CreatedPaths[id] == path)
-  {
-    return false;
-  }
-
-  m_RenamedPaths.push_back(std::make_pair(m_CreatedPaths[id], path));
-  m_CreatedPaths[id] = path;
-  return true;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void AbstractFilter::clearRenamedPaths()
-{
-  m_RenamedPaths.clear();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void AbstractFilter::addPathRename(const DataArrayPath& oldPath, const DataArrayPath& newPath)
-{
-  m_RenamedPaths.push_back(std::make_pair(oldPath, newPath));
+  setWarningCondition(-1);
+  notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
 }

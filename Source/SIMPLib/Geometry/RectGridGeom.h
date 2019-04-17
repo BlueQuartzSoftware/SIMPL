@@ -56,18 +56,18 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
      * @return
      */
     static Pointer CreateGeometry(const QString& name);
+    
+    void setXBounds(FloatArrayType::Pointer xBounds);
+    void setYBounds(FloatArrayType::Pointer yBounds);
+    void setZBounds(FloatArrayType::Pointer zBounds);
 
-    void setXBounds(const FloatArrayType::Pointer& xBounds);
-    void setYBounds(const FloatArrayType::Pointer& yBounds);
-    void setZBounds(const FloatArrayType::Pointer& zBounds);
+    inline FloatArrayType::Pointer getXBounds() { return m_xBounds; }
+    inline FloatArrayType::Pointer getYBounds() { return m_yBounds; }
+    inline FloatArrayType::Pointer getZBounds() { return m_zBounds; }
 
-    FloatArrayType::Pointer getXBounds() const;
-    FloatArrayType::Pointer getYBounds() const;
-    FloatArrayType::Pointer getZBounds() const;
-
-    // -----------------------------------------------------------------------------
-    // Inherited from IGeometry
-    // -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// Inherited from IGeometry
+// -----------------------------------------------------------------------------
 
     /**
      * @brief initializeWithZeros
@@ -207,23 +207,20 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
     IGeometry::Pointer deepCopy(bool forceNoAllocate = false) override;
 
     /**
-     * @brief addOrReplaceAttributeMatrix
+     * @brief addAttributeMatrix
      */
-    void addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data) override;
+    void addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data) override;
+    
+// -----------------------------------------------------------------------------
+// Inherited from IGeometryGrid
+// -----------------------------------------------------------------------------
 
-    // -----------------------------------------------------------------------------
-    // Inherited from IGeometryGrid
-    // -----------------------------------------------------------------------------
-    SIMPL::Tuple3SVec getDimensions() const override;
-    void getDimensions(SizeVec3Type& dims) const;
+    SIMPL_INSTANCE_VEC3_PROPERTY_VO(size_t, Dimensions)
 
-    void setDimensions(const SizeVec3Type& dims) override;
-    void setDimensions(SizeVec3Type& dims) override;
-    void setDimensions(const SIMPL::Tuple3SVec& dims) override;
-
-    size_t getXPoints() override;
-    size_t getYPoints() override;
-    size_t getZPoints() override;
+    
+    size_t getXPoints() override { return m_Dimensions[0]; }
+    size_t getYPoints() override { return m_Dimensions[1]; }
+    size_t getZPoints() override { return m_Dimensions[2]; }
 
     void getPlaneCoords(size_t idx[3], float coords[3]) override;
     void getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]) override;
@@ -282,7 +279,6 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
     FloatArrayType::Pointer m_yBounds;
     FloatArrayType::Pointer m_zBounds;
     FloatArrayType::Pointer m_VoxelSizes;
-    SizeVec3Type m_Dimensions;
 
     friend class FindRectGridDerivativesImpl;
 

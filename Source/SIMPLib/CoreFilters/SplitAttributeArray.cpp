@@ -42,11 +42,6 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
-enum createdPathID : RenameDataPath::DataID_t
-{
-  SplitArrayID = 1
-};
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -67,7 +62,7 @@ SplitAttributeArray::~SplitAttributeArray() = default;
 // -----------------------------------------------------------------------------
 void SplitAttributeArray::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  FilterParameterVector parameters;
   DataArraySelectionFilterParameter::RequirementType dasReq =
       DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Multicomponent Attribute Array", InputArrayPath, FilterParameter::RequiredArray, SplitAttributeArray, dasReq));
@@ -99,13 +94,13 @@ void SplitAttributeArray::initialize()
 // -----------------------------------------------------------------------------
 void SplitAttributeArray::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   initialize();
 
   m_InputArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getInputArrayPath());
 
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -116,7 +111,8 @@ void SplitAttributeArray::dataCheck()
     if(numComps <= 1)
     {
       QString ss = QObject::tr("Selected Attribute Array must have more than 1 component");
-      setErrorCondition(-11000, ss);
+      setErrorCondition(-11000);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }
 
@@ -126,22 +122,24 @@ void SplitAttributeArray::dataCheck()
     {
       QString arrayName = getInputArrayPath().getDataArrayName() + getSplitArraysSuffix() + QString::number(i);
       DataArrayPath path(getInputArrayPath().getDataContainerName(), getInputArrayPath().getAttributeMatrixName(), arrayName);
-      IDataArray::WeakPointer ptr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, path, cDims, m_InputArrayPtr.lock(), SplitArrayID + i);
-      if(getErrorCode() >= 0)
+      IDataArray::WeakPointer ptr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, path, cDims, m_InputArrayPtr.lock());
+      if(getErrorCondition() >= 0)
       {
         m_SplitArraysPtrVector.push_back(ptr.lock());
       }
       else
       {
         QString ss = QObject::tr("Unable to create an Attribute Array for component %1 in the selected multicomponent Attribute Array").arg(i);
-        setErrorCondition(-11051, ss);
+        setErrorCondition(-11051);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       }
     }
 
     if(numComps != m_SplitArraysPtrVector.size())
     {
       QString ss = QObject::tr("The number of created arrays %1 does not match the number of components %2").arg(m_SplitArraysPtrVector.size()).arg(numComps);
-      setErrorCondition(-11001, ss);
+      setErrorCondition(-11001);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
   }
 }
@@ -193,10 +191,10 @@ template <typename T> void splitMulticomponentArray(IDataArray::Pointer inputArr
 // -----------------------------------------------------------------------------
 void SplitAttributeArray::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }

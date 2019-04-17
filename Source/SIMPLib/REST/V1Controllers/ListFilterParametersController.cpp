@@ -74,7 +74,7 @@ void ListFilterParametersController::createFilterParametersJson(const QString& f
     return;
   }
 
-  FilterParameterVectorType parameters = filter->getFilterParameters();
+  QVector<FilterParameter::Pointer> parameters = filter->getFilterParameters();
   QJsonArray jsonParameters;
 
   for(int i = 0; i < parameters.size(); i++)

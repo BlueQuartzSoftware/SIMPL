@@ -38,7 +38,7 @@ ReadASCIIData::~ReadASCIIData() = default;
 // -----------------------------------------------------------------------------
 void ReadASCIIData::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  FilterParameterVector parameters;
 
   parameters.push_back(ReadASCIIDataFilterParameter::New("ASCII Wizard Data", "WizardData", "WizardData", FilterParameter::Parameter));
 
@@ -219,7 +219,7 @@ void ReadASCIIData::writeFilterParameters(QJsonObject& obj) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ReadASCIIData::renameDataArrayPath(const DataArrayPath::RenameType& renamePath)
+void ReadASCIIData::renameDataArrayPath(DataArrayPath::RenameType renamePath)
 {
   getWizardData().updateDataArrayPath(renamePath);
 
@@ -239,15 +239,16 @@ void ReadASCIIData::initialize()
 // -----------------------------------------------------------------------------
 void ReadASCIIData::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   m_ASCIIArrayMap.clear();
 
   ASCIIWizardData wizardData = getWizardData();
   if(wizardData.isEmpty())
   {
     QString ss = "A file has not been chosen to import. Please pick a file to import.";
-    setErrorCondition(EMPTY_FILE, ss);
+    setErrorCondition(EMPTY_FILE);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -263,7 +264,8 @@ void ReadASCIIData::dataCheck()
   if(inputFilePath.isEmpty())
   {
     QString ss = QObject::tr("The input file must be set");
-    setErrorCondition(-387, ss);
+    setErrorCondition(-387);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
   SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
@@ -273,7 +275,8 @@ void ReadASCIIData::dataCheck()
   if(!fi.exists())
   {
     QString ss = QObject::tr("The input file does not exist");
-    setErrorCondition(-388, ss);
+    setErrorCondition(-388);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
   if(!automaticAM)
@@ -282,7 +285,8 @@ void ReadASCIIData::dataCheck()
     if(nullptr == am.get())
     {
       QString ss = "The attribute matrix input is empty. Please select an attribute matrix.";
-      setErrorCondition(EMPTY_ATTR_MATRIX, ss);
+      setErrorCondition(EMPTY_ATTR_MATRIX);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }
 
@@ -296,7 +300,8 @@ void ReadASCIIData::dataCheck()
         if(amArrayName == headerName)
         {
           QString ss = "The header name \"" + headerName + "\" matches an array name that already exists in the selected attribute matrix.";
-          setErrorCondition(DUPLICATE_NAMES, ss);
+          setErrorCondition(DUPLICATE_NAMES);
+          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
           return;
         }
       }
@@ -312,7 +317,8 @@ void ReadASCIIData::dataCheck()
     //      QTextStream out(&ss);
     //      out << selectedPath.getAttributeMatrixName() << " tuple dims: " << am->getTupleDimensions().at(0) << "\n";
     //      out << fi.fileName() << "tuple dims: " << tDims[0] << "\n";
-    //      setErrorCondition(INCONSISTENT_TUPLES, ss);
+    //      setErrorCondition(INCONSISTENT_TUPLES);
+    //      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     //      return;
     //    }
 
@@ -346,63 +352,64 @@ void ReadASCIIData::dataCheck()
 
     if(dataType == SIMPL::TypeNames::Double)
     {
-      DoubleArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      DoubleArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter>(this, arrayPath, 0, cDims);
       m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::Float)
     {
-      FloatArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<FloatArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      FloatArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<FloatArrayType, AbstractFilter>(this, arrayPath, 0, cDims);
       m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::Int8)
     {
-      Int8ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int8ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      Int8ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int8ArrayType, AbstractFilter>(this, arrayPath, 0, cDims);
       m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::Int16)
     {
-      Int16ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int16ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      Int16ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int16ArrayType, AbstractFilter>(this, arrayPath, 0, cDims);
       m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::Int32)
     {
-      Int32ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int32ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      Int32ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int32ArrayType, AbstractFilter>(this, arrayPath, 0, cDims);
       m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::Int64)
     {
-      Int64ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int64ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      Int64ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<Int64ArrayType, AbstractFilter>(this, arrayPath, 0, cDims);
       m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::UInt8)
     {
-      UInt8ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt8ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      UInt8ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt8ArrayType, AbstractFilter>(this, arrayPath, 0, cDims);
       m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::UInt16)
     {
-      UInt16ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt16ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      UInt16ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt16ArrayType, AbstractFilter>(this, arrayPath, 0, cDims);
       m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::UInt32)
     {
-      UInt32ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt32ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      UInt32ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt32ArrayType, AbstractFilter>(this, arrayPath, 0, cDims);
       m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::UInt64)
     {
-      UInt64ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt64ArrayType, AbstractFilter>(this, arrayPath, 0, cDims, "");
+      UInt64ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt64ArrayType, AbstractFilter>(this, arrayPath, 0, cDims);
       m_ASCIIArrayMap.insert(i, ptr);
     }
     else if(dataType == SIMPL::TypeNames::String)
     {
-      StringDataArray::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<StringDataArray, AbstractFilter, QString>(this, arrayPath, "", cDims, "");
+      StringDataArray::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<StringDataArray, AbstractFilter, QString>(this, arrayPath, "", cDims);
       m_ASCIIArrayMap.insert(i, ptr);
     }
     else
     {
       QString ss = "The data type that was chosen for column number " + QString::number(i + 1) + " is not a valid data array type.";
-      setErrorCondition(INVALID_ARRAY_TYPE, ss);
+      setErrorCondition(INVALID_ARRAY_TYPE);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }
   }
@@ -427,11 +434,11 @@ void ReadASCIIData::preflight()
 // -----------------------------------------------------------------------------
 void ReadASCIIData::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   initialize();
   dataCheck();
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -550,7 +557,8 @@ void ReadASCIIData::execute()
         out << "Expecting " << dataTypes.size() << " but found " << tokens.size() << "\n";
         out << "Input line was:\n";
         out << line;
-        setErrorCondition(INCONSISTENT_COLS, ss);
+        setErrorCondition(INCONSISTENT_COLS);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         return;
       }
 
@@ -564,7 +572,8 @@ void ReadASCIIData::execute()
         {
           QString errorMessage = obj.errorMessage;
           QString ss = errorMessage + "(line " + QString::number(lineNum) + ", column " + QString::number(index) + ").";
-          setErrorCondition(CONVERSION_FAILURE, ss);
+          setErrorCondition(CONVERSION_FAILURE);
+          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
           return;
         }
       }
@@ -574,7 +583,7 @@ void ReadASCIIData::execute()
       {
         // Print the status of the import
         QString ss = QObject::tr("Importing ASCII Data || %1% Complete").arg(static_cast<double>(percentCompleted), 0, 'f', 0);
-        notifyStatusMessage(ss);
+        notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
         threshold = threshold + 5.0f;
         if(threshold < percentCompleted)
         {

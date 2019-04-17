@@ -61,7 +61,7 @@ MaskCountDecision::~MaskCountDecision() = default;
 // -----------------------------------------------------------------------------
 void MaskCountDecision::setupFilterParameters()
 {
-  FilterParameterVectorType parameters = getFilterParameters();
+  FilterParameterVector parameters = getFilterParameters();
   DataArraySelectionFilterParameter::RequirementType req =
       DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Bool, 1, AttributeMatrix::Type::Any, IGeometry::Type::Any);
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Mask", MaskArrayPath, FilterParameter::RequiredArray, MaskCountDecision, req));
@@ -93,8 +93,8 @@ void MaskCountDecision::initialize()
 // -----------------------------------------------------------------------------
 void MaskCountDecision::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 
   QVector<size_t> cDims(1, 1);
 
@@ -124,10 +124,10 @@ void MaskCountDecision::preflight()
 // -----------------------------------------------------------------------------
 void MaskCountDecision::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }

@@ -104,9 +104,9 @@ public:
     strArray->setValue(8, QString("Weird words"));
     strArray->setValue(9, QString("Sierra"));
 
-    am->insertOrAssign(strArray);
-    dc->addOrReplaceAttributeMatrix(am);
-    dca->addOrReplaceDataContainer(dc);
+    am->addAttributeArray(strArray->getName(), strArray);
+    dc->addAttributeMatrix(am->getName(), am);
+    dca->addDataContainer(dc);
 
     QVector<DataArrayPath> paths = {DataArrayPath("DataContainer", "TestAttributeMatrix", "ASCII_Data")};
     WriteASCIIData::Pointer writer = WriteASCIIData::New();
@@ -119,62 +119,62 @@ public:
     writer->setOutputStyle(WriteASCIIData::MultiFile);
 
     writer->preflight();
-    int err = writer->getErrorCode();
+    int err = writer->getErrorCondition();
     DREAM3D_REQUIRE(err >= 0)
 
     writer->execute();
-    err = writer->getErrorCode();
+    err = writer->getErrorCondition();
     DREAM3D_REQUIRE(err >= 0)
 
     // Test Single File mode
     writer->setOutputStyle(WriteASCIIData::SingleFile);
     writer->setOutputFilePath(UnitTest::TestTempDir + "/" + "SingleFileMode.csv");
     writer->preflight();
-    err = writer->getErrorCode();
+    err = writer->getErrorCondition();
     DREAM3D_REQUIRE(err >= 0)
 
     writer->execute();
-    err = writer->getErrorCode();
+    err = writer->getErrorCondition();
     DREAM3D_REQUIRE(err >= 0)
 
     // Back to MultiFile mode
     writer->setOutputStyle(WriteASCIIData::MultiFile);
 
     NeighborList<int32_t>::Pointer neighborList = NeighborList<int32_t>::CreateArray(k_ArraySize, "NeighborList", true);
-    am->insertOrAssign(neighborList);
+    am->addAttributeArray(neighborList->getName(), neighborList);
 
     paths = {DataArrayPath("DataContainer", "TestAttributeMatrix", "NeighborList")};
     writer->setSelectedDataArrayPaths(paths);
     writer->preflight();
-    err = writer->getErrorCode();
+    err = writer->getErrorCondition();
     DREAM3D_REQUIRE(err < 0)
 
     writer->execute();
-    err = writer->getErrorCode();
+    err = writer->getErrorCondition();
     DREAM3D_REQUIRE(err < 0)
 
     StructArray<int32_t>::Pointer structArray = StructArray<int32_t>::CreateArray(k_ArraySize, "StructArray", true);
-    am->insertOrAssign(structArray);
+    am->addAttributeArray(structArray->getName(), structArray);
     paths = {DataArrayPath("DataContainer", "TestAttributeMatrix", "StructArray")};
     writer->setSelectedDataArrayPaths(paths);
     writer->preflight();
-    err = writer->getErrorCode();
+    err = writer->getErrorCondition();
     DREAM3D_REQUIRE(err < 0)
 
     writer->execute();
-    err = writer->getErrorCode();
+    err = writer->getErrorCondition();
     DREAM3D_REQUIRE(err < 0)
 
     StatsDataArray::Pointer statsDataArray = StatsDataArray::CreateArray(k_ArraySize, "StatsDataArray", true);
-    am->insertOrAssign(statsDataArray);
+    am->addAttributeArray(statsDataArray->getName(), statsDataArray);
     paths = {DataArrayPath("DataContainer", "TestAttributeMatrix", "StatsDataArray")};
     writer->setSelectedDataArrayPaths(paths);
     writer->preflight();
-    err = writer->getErrorCode();
+    err = writer->getErrorCondition();
     DREAM3D_REQUIRE(err < 0)
 
     writer->execute();
-    err = writer->getErrorCode();
+    err = writer->getErrorCondition();
     DREAM3D_REQUIRE(err < 0)
   }
 

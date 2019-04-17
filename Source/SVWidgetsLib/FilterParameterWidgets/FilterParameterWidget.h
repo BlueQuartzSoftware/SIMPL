@@ -93,7 +93,6 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
     SIMPL_POINTER_PROPERTY(FilterParameter, FilterParameter)
     SIMPL_VIRTUAL_INSTANCE_PROPERTY(bool, WidgetIsExpanding)
 
-    void setValidFilePath(const QString& filePath);
 
     void fadeInWidget(QWidget* widget);
 

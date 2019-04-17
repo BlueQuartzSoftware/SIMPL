@@ -47,7 +47,7 @@ class SIMPLib_EXPORT CreateGeometry : public AbstractFilter
   Q_OBJECT
   PYB11_CREATE_BINDINGS(CreateGeometry SUPERCLASS AbstractFilter)
   PYB11_PROPERTY(int GeometryType READ getGeometryType WRITE setGeometryType)
-  PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
+  PYB11_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
   PYB11_PROPERTY(DataArrayPath SharedVertexListArrayPath0 READ getSharedVertexListArrayPath0 WRITE setSharedVertexListArrayPath0)
   PYB11_PROPERTY(DataArrayPath SharedVertexListArrayPath1 READ getSharedVertexListArrayPath1 WRITE setSharedVertexListArrayPath1)
   PYB11_PROPERTY(DataArrayPath SharedVertexListArrayPath2 READ getSharedVertexListArrayPath2 WRITE setSharedVertexListArrayPath2)
@@ -60,9 +60,9 @@ class SIMPLib_EXPORT CreateGeometry : public AbstractFilter
   PYB11_PROPERTY(DataArrayPath XBoundsArrayPath READ getXBoundsArrayPath WRITE setXBoundsArrayPath)
   PYB11_PROPERTY(DataArrayPath YBoundsArrayPath READ getYBoundsArrayPath WRITE setYBoundsArrayPath)
   PYB11_PROPERTY(DataArrayPath ZBoundsArrayPath READ getZBoundsArrayPath WRITE setZBoundsArrayPath)
-  PYB11_PROPERTY(IntVec3Type Dimensions READ getDimensions WRITE setDimensions)
-  PYB11_PROPERTY(FloatVec3Type Origin READ getOrigin WRITE setOrigin)
-  PYB11_PROPERTY(FloatVec3Type Spacing READ getSpacing WRITE setSpacing)
+  PYB11_PROPERTY(IntVec3_t Dimensions READ getDimensions WRITE setDimensions)
+  PYB11_PROPERTY(FloatVec3_t Origin READ getOrigin WRITE setOrigin)
+  PYB11_PROPERTY(FloatVec3_t Resolution READ getResolution WRITE setResolution)
   PYB11_PROPERTY(QString ImageCellAttributeMatrixName READ getImageCellAttributeMatrixName WRITE setImageCellAttributeMatrixName)
   PYB11_PROPERTY(QString RectGridCellAttributeMatrixName READ getRectGridCellAttributeMatrixName WRITE setRectGridCellAttributeMatrixName)
   PYB11_PROPERTY(QString VertexAttributeMatrixName0 READ getVertexAttributeMatrixName0 WRITE setVertexAttributeMatrixName0)
@@ -90,8 +90,8 @@ public:
   SIMPL_FILTER_PARAMETER(int, GeometryType)
   Q_PROPERTY(int GeometryType READ getGeometryType WRITE setGeometryType)
 
-  SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerName)
-  Q_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
+  SIMPL_FILTER_PARAMETER(QString, DataContainerName)
+  Q_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
   SIMPL_FILTER_PARAMETER(DataArrayPath, SharedVertexListArrayPath0)
   Q_PROPERTY(DataArrayPath SharedVertexListArrayPath0 READ getSharedVertexListArrayPath0 WRITE setSharedVertexListArrayPath0)
@@ -135,14 +135,14 @@ public:
   SIMPL_FILTER_PARAMETER(DataArrayPath, ZBoundsArrayPath)
   Q_PROPERTY(DataArrayPath ZBoundsArrayPath READ getZBoundsArrayPath WRITE setZBoundsArrayPath)
 
-  SIMPL_FILTER_PARAMETER(IntVec3Type, Dimensions)
-  Q_PROPERTY(IntVec3Type Dimensions READ getDimensions WRITE setDimensions)
+  SIMPL_FILTER_PARAMETER(IntVec3_t, Dimensions)
+  Q_PROPERTY(IntVec3_t Dimensions READ getDimensions WRITE setDimensions)
 
-  SIMPL_FILTER_PARAMETER(FloatVec3Type, Origin)
-  Q_PROPERTY(FloatVec3Type Origin READ getOrigin WRITE setOrigin)
+  SIMPL_FILTER_PARAMETER(FloatVec3_t, Origin)
+  Q_PROPERTY(FloatVec3_t Origin READ getOrigin WRITE setOrigin)
 
-  SIMPL_FILTER_PARAMETER(FloatVec3Type, Spacing)
-  Q_PROPERTY(FloatVec3Type Spacing READ getSpacing WRITE setSpacing)
+  SIMPL_FILTER_PARAMETER(FloatVec3_t, Resolution)
+  Q_PROPERTY(FloatVec3_t Resolution READ getResolution WRITE setResolution)
 
   SIMPL_FILTER_PARAMETER(QString, ImageCellAttributeMatrixName)
   Q_PROPERTY(QString ImageCellAttributeMatrixName READ getImageCellAttributeMatrixName WRITE setImageCellAttributeMatrixName)

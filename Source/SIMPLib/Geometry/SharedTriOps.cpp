@@ -49,7 +49,7 @@ SharedTriList::Pointer GEOM_CLASS_NAME::CreateSharedTriList(int64_t numTris, boo
 // -----------------------------------------------------------------------------
 void GEOM_CLASS_NAME::resizeTriList(int64_t newNumTris)
 {
-  m_TriList->resizeTuples(newNumTris);
+  m_TriList->resize(newNumTris);
 }
 
 // -----------------------------------------------------------------------------

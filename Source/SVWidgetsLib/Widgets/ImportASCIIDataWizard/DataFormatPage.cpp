@@ -450,14 +450,17 @@ void DataFormatPage::createAMSelectionMenu()
 
   // Get the DataContainerArray object
   // Loop over the data containers until we find the proper data container
-  DataContainerArray::Container containers = dca->getDataContainers();
+  QList<DataContainer::Pointer> containers = dca->getDataContainers();
   QVector<QString> daTypes;// = m_FilterParameter->getDefaultAttributeArrayTypes();
   QVector<QVector<size_t>> cDims;// = m_FilterParameter->getDefaultComponentDimensions();
   QVector<AttributeMatrix::Type> amTypes;// = m_FilterParameter->getDefaultAttributeMatrixTypes();
   IGeometry::Types geomTypes;// = m_FilterParameter->getDefaultGeometryTypes();
 
-  for(DataContainer::Pointer dc : containers)
+  QListIterator<DataContainer::Pointer> containerIter(containers);
+  while(containerIter.hasNext())
   {
+    DataContainer::Pointer dc = containerIter.next();
+
     IGeometry::Pointer geom = IGeometry::NullPointer();
     IGeometry::Type geomType = IGeometry::Type::Unknown;
     if(nullptr != dc.get())
@@ -478,9 +481,13 @@ void DataFormatPage::createAMSelectionMenu()
     }
 
     // We found the proper Data Container, now populate the AttributeMatrix List
-    for(const auto& am : dc->getChildren())
+    DataContainer::AttributeMatrixMap_t attrMats = dc->getAttributeMatrices();
+    QMapIterator<QString, AttributeMatrix::Pointer> attrMatsIter(attrMats);
+    while(attrMatsIter.hasNext())
     {
-      QString amName = am->getName();
+      attrMatsIter.next();
+      QString amName = attrMatsIter.key();
+      AttributeMatrix::Pointer am = attrMatsIter.value();
 
       QAction* amAction = dcMenu->addAction(amName); // dcMenu owns the created action
       // QAction* action = new QAction(amName, dcMenu);
@@ -532,11 +539,14 @@ void DataFormatPage::createDCSelectionMenu()
 
   // Get the DataContainerArray object
   // Loop over the data containers until we find the proper data container
-  DataContainerArray::Container containers = dca->getDataContainers();
+  QList<DataContainer::Pointer> containers = dca->getDataContainers();
   IGeometry::Types geomTypes;
 
-  for(DataContainer::Pointer dc : containers)
+  QListIterator<DataContainer::Pointer> containerIter(containers);
+  while(containerIter.hasNext())
   {
+    DataContainer::Pointer dc = containerIter.next();
+
     IGeometry::Pointer geom = IGeometry::NullPointer();
     IGeometry::Type geomType = IGeometry::Type::Unknown;
     if(nullptr != dc.get())

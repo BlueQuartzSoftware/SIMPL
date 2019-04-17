@@ -56,7 +56,6 @@
 #include "QtWebApp/httpserver/httpsessionstore.h"
 #include "SIMPLStaticFileController.h"
 #include "SIMPLib/REST/PipelineListener.h"
-#include "SIMPLib/REST/V1Controllers/ExecutePipelineMessageHandler.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -87,17 +86,17 @@ void ExecutePipelineController::serviceJSON(QJsonObject pipelineObj)
 //  SIMPLStaticFileController* staticFileController = SIMPLStaticFileController::Instance();
 //  QString docRoot = staticFileController->getDocRoot();
 
-  //  QString newFilePath = docRoot + QDir::separator() + QString(sessionId) + QDir::separator();
-  //  QJsonArray outputLinks;
+//  QString newFilePath = docRoot + QDir::separator() + QString(sessionId) + QDir::separator();
+//  QJsonArray outputLinks;
   //  // Look through the pipeline to find any input or output filter parameters.  Replace
   //  // the file paths in these filter parameters with session-id specific paths.
   //  QList<AbstractFilter::Pointer> filters = pipeline->getFilterContainer();
   //  for(int i = 0; i < filters.size(); i++)
   //  {
   //    AbstractFilter::Pointer filter = filters[i];
-  //    FilterParameterVectorType filterParams = filter->getFilterParameters();
+  //    QVector<FilterParameter::Pointer> filterParams = filter->getFilterParameters();
 
-  //    for(FilterParameterVectorType::iterator iter = filterParams.begin(); iter != filterParams.end(); ++iter)
+  //    for(QVector<FilterParameter::Pointer>::iterator iter = filterParams.begin(); iter != filterParams.end(); ++iter)
   //    {
   //      FilterParameter* parameter = (*iter).get();
   //      OutputFileFilterParameter* outFileParam = dynamic_cast<OutputFileFilterParameter*>(parameter);
@@ -187,28 +186,53 @@ void ExecutePipelineController::serviceJSON(QJsonObject pipelineObj)
     qDebug() << "Pipeline About to Execute....";
     pipeline->execute();
 
-    qDebug() << "Pipeline Done Executing...." << pipeline->getErrorCode();
+    qDebug() << "Pipeline Done Executing...." << pipeline->getErrorCondition();
   }
 
   // Return messages
-  QJsonArray errors;
-  QJsonArray warnings;
-  QJsonArray statusMsgs;
-
-  std::vector<const AbstractErrorMessage*> errorMessages = listener.getErrorMessages();
+  std::vector<PipelineMessage> errorMessages = listener.getErrorMessages();
   bool completed = (errorMessages.size() == 0);
-  m_ResponseObj[SIMPL::JSON::Completed] = completed;
 
-  std::vector<const AbstractMessage*> allMessages = listener.getAllMessages();
-  for(const AbstractMessage* msg : allMessages)
+  QJsonArray errors;
+  size_t numErrors = errorMessages.size();
+  for(size_t i = 0; i < numErrors; i++)
   {
-    ExecutePipelineMessageHandler msgHandler(&errors, &warnings);
-    msg->visit(&msgHandler);
+    QJsonObject error;
+    error[SIMPL::JSON::Code] = errorMessages[i].generateErrorString();
+    error[SIMPL::JSON::Message] = errorMessages[i].getText();
+    error[SIMPL::JSON::FilterHumanLabel] = errorMessages[i].getFilterHumanLabel();
+    error[SIMPL::JSON::FilterIndex] = errorMessages[i].getPipelineIndex();
+
+    errors.push_back(error);
+  }
+  m_ResponseObj[SIMPL::JSON::PipelineErrors] = errors;
+
+  std::vector<PipelineMessage> warningMessages = listener.getWarningMessages();
+  QJsonArray warnings;
+  size_t numWarnings = warningMessages.size();
+  for(size_t i = 0; i < numWarnings; i++)
+  {
+    QJsonObject warning;
+    warning[SIMPL::JSON::Code] = warningMessages[i].generateWarningString();
+    warning[SIMPL::JSON::Message] = warningMessages[i].getText();
+    warning[SIMPL::JSON::FilterHumanLabel] = warningMessages[i].getFilterHumanLabel();
+    warning[SIMPL::JSON::FilterIndex] = warningMessages[i].getPipelineIndex();
+
+    warnings.push_back(warning);
   }
 
-  m_ResponseObj[SIMPL::JSON::PipelineErrors] = errors;
+  std::vector<PipelineMessage> statusMessages = listener.getStatusMessages();
+  QJsonArray statusMsgs;
+  size_t numStatusMsgs = statusMessages.size();
+  for(size_t i = 0; i < numStatusMsgs; i++)
+  {
+    QJsonObject msg;
+    msg[SIMPL::JSON::Message] = statusMessages[i].generateStatusString();
+    statusMsgs.push_back(msg);
+  }
+  // responseObj["StatusMessages"] = statusMsgs;
   m_ResponseObj[SIMPL::JSON::PipelineWarnings] = warnings;
-  // m_ResponseObj["StatusMessages"] = statusMsgs;
+  m_ResponseObj[SIMPL::JSON::Completed] = completed;
 
   //  // **************************************************************************
   //  // This section archives the working directory for this session

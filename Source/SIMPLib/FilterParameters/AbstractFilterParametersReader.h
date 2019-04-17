@@ -109,8 +109,8 @@ class SIMPLib_EXPORT AbstractFilterParametersReader
     virtual QVector<float> readArray(const QString name, QVector<float> value);
     virtual QVector<double> readArray(const QString name, QVector<double> value);
 
-    virtual IntVec3Type readIntVec3(const QString name, IntVec3Type v);
-    virtual FloatVec3Type readFloatVec3(const QString name, FloatVec3Type v);
+    virtual IntVec3_t readIntVec3(const QString name, IntVec3_t v);
+    virtual FloatVec3_t readFloatVec3(const QString name, FloatVec3_t v);
     virtual Float2ndOrderPoly_t readFloat2ndOrderPoly(const QString name, Float2ndOrderPoly_t v);
     virtual Float3rdOrderPoly_t readFloat3rdOrderPoly(const QString name, Float3rdOrderPoly_t v);
     virtual Float4thOrderPoly_t readFloat4thOrderPoly(const QString name, Float4thOrderPoly_t v);

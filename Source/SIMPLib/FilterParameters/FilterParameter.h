@@ -105,7 +105,7 @@ class SIMPLib_EXPORT FilterParameter
      * @param filter
      * @param renamePath
      */
-    virtual void dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath);
+    virtual void dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath);
 
   protected:
     FilterParameter();
@@ -117,7 +117,7 @@ class SIMPLib_EXPORT FilterParameter
     FilterParameter& operator=(FilterParameter&&) = delete;      // Move Assignment Not Implemented
 };
 
-using FilterParameterVectorType = std::vector<FilterParameter::Pointer>;
+typedef QVector<FilterParameter::Pointer> FilterParameterVector;
 
 // -----------------------------------------------------------------------------
 // This section of Macros allows each FilterParameter subclass to create a macro

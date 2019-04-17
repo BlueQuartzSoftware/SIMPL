@@ -73,8 +73,8 @@ PostSlackMessage::~PostSlackMessage()
 // -----------------------------------------------------------------------------
 void PostSlackMessage::initialize()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   setCancel(false);
 }
 
@@ -83,7 +83,7 @@ void PostSlackMessage::initialize()
 // -----------------------------------------------------------------------------
 void PostSlackMessage::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  FilterParameterVector parameters;
 
   parameters.push_back(SIMPL_NEW_STRING_FP("Slack User", SlackUser, FilterParameter::Parameter, PostSlackMessage));
   parameters.push_back(SIMPL_NEW_STRING_FP("Slack Url", SlackUrl, FilterParameter::Parameter, PostSlackMessage));
@@ -98,8 +98,8 @@ void PostSlackMessage::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void PostSlackMessage::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 }
 
 // -----------------------------------------------------------------------------
@@ -123,7 +123,7 @@ void PostSlackMessage::execute()
 {
   initialize();
   dataCheck();
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -162,13 +162,15 @@ void PostSlackMessage::execute()
   {
     if(getWarningsAsError())
     {
-      QString ss = QObject::tr("Slack returned the following error code: %1").arg(getErrorCode());
-      setErrorCondition(-76000, ss);
+      setErrorCondition(-76000);
+      QString ss = QObject::tr("Slack returned the following error code: %1").arg(getErrorCondition());
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
     else
     {
-      QString ss = QObject::tr("Slack returned the following error code: %1").arg(getErrorCode());
-      setWarningCondition(-76001, ss);
+      setWarningCondition(-76001);
+      QString ss = QObject::tr("Slack returned the following error code: %1").arg(getErrorCondition());
+      notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
     }
   }
 

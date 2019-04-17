@@ -86,7 +86,7 @@ class SVWidgetsLib_EXPORT DataContainerSelectionWidget : public FilterParameterW
      * @param filt
      * @return
      */
-    QString checkStringValues(const QString& current, const QString& filtDcName);
+    QString checkStringValues(QString current, QString filtDcName);
 
     /**
      * @brief initializeWidget
@@ -111,7 +111,7 @@ class SVWidgetsLib_EXPORT DataContainerSelectionWidget : public FilterParameterW
     void dataContainerSelected(QString path);
 
   protected slots:
-    void updateDataArrayPath(const QString& propertyName, const DataArrayPath::RenameType& renamePath);
+    void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
   private:
 
@@ -119,9 +119,9 @@ class SVWidgetsLib_EXPORT DataContainerSelectionWidget : public FilterParameterW
 
     DataContainerSelectionFilterParameter* m_FilterParameter;
 
-    void setSelectedPath(const QString& path);
+    void setSelectedPath(QString path);
 
-    void setSelectedPath(const DataArrayPath& dcPath);
+    void setSelectedPath(DataArrayPath dcPath);
 
   public:
     DataContainerSelectionWidget(const DataContainerSelectionWidget&) = delete; // Copy Constructor Not Implemented

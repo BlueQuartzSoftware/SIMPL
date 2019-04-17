@@ -5,16 +5,9 @@
 #include <QtCore/QFile>
 
 #include "SIMPLib/Common/IObserver.h"
+#include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Messages/AbstractMessageHandler.h"
 #include "SIMPLib/SIMPLib.h"
-
-class PipelineListenerMessageHandler;
-
-class AbstractErrorMessage;
-class AbstractProgressMessage;
-class AbstractStatusMessage;
-class AbstractWarningMessage;
 
 class SIMPLib_EXPORT PipelineListener : public QObject, public IObserver
 {
@@ -25,33 +18,28 @@ public:
   PipelineListener(QObject* parent);
   virtual ~PipelineListener();
 
-  friend PipelineListenerMessageHandler;
-
   void createErrorLogFile(QString path);
   void createWarningLogFile(QString path);
   void createStatusLogFile(QString path);
+  void createStandardOutputLogFile(QString path);
   void closeFiles();
 
-  std::vector<const AbstractMessage*> getAllMessages();
-  std::vector<const AbstractErrorMessage*> getErrorMessages();
-  std::vector<const AbstractWarningMessage*> getWarningMessages();
-  std::vector<const AbstractStatusMessage*> getStatusMessages();
-  std::vector<const AbstractProgressMessage*> getProgressMessages();
+  std::vector<PipelineMessage> getMessages();
+  std::vector<PipelineMessage> getErrorMessages();
+  std::vector<PipelineMessage> getWarningMessages();
+  std::vector<PipelineMessage> getStatusMessages();
+  std::vector<PipelineMessage> getStandardOutputMessages();
 
   QString getErrorLog();
   QString getWarningLog();
   QString getStatusLog();
+  QString getStandardOutputLog();
 
 public slots:
-  void processPipelineMessage(const AbstractMessage::Pointer& pm);
+  void processPipelineMessage(const PipelineMessage& pm);
 
 private:
-  std::vector<AbstractMessage::Pointer> m_SharedMessages;
-  std::vector<const AbstractMessage*> m_AllMessages;
-  std::vector<const AbstractErrorMessage*> m_ErrorMessages;
-  std::vector<const AbstractStatusMessage*> m_StatusMessages;
-  std::vector<const AbstractProgressMessage*> m_ProgressMessages;
-  std::vector<const AbstractWarningMessage*> m_WarningMessages;
+  std::vector<PipelineMessage> m_Messages;
 
   QFile* m_ErrorLog;
   QFile* m_WarningLog;

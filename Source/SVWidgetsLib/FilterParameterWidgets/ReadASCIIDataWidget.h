@@ -85,7 +85,7 @@ class SVWidgetsLib_EXPORT ReadASCIIDataWidget : public FilterParameterWidget, pr
     void lineCountDidFinish();
     void updateProgress(double percentage);
 
-    void updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath);
+    void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
   private:
     ReadASCIIDataFilterParameter*                   m_FilterParameter;

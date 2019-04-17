@@ -74,7 +74,7 @@ QString ReadASCIIDataFilterParameter::getWidgetType() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ReadASCIIDataFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath)
+void ReadASCIIDataFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath)
 {
   DataArrayPath oldPath;
   DataArrayPath newPath;

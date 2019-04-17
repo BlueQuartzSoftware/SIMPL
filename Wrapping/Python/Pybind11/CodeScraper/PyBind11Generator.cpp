@@ -36,50 +36,8 @@ const QString& genDir, const QString& moduleTemplatePath, const QString& isSIMPL
 PyBind11Generator::~PyBind11Generator() = default;
 
 //-----------------------------------------------------------------------------
-void PyBind11Generator::readFilterList()
-{
-  QString libName = m_LibNameUpper;
-  if(m_IsSIMPLib == "TRUE")
-  {
-    libName = QString("SIMPLib");
-  }
-  QString listFilePath = SIMPL::PyBind11::SIMPLProjBinaryDir + "/" + libName + "PublicFilters.txt";
-  QFileInfo listFileInfo(listFilePath);
-  if(!listFileInfo.exists())
-  {
-    qDebug() << "Needed Input file to generate Python Bindings was not found for Plugin '" << libName << "'. The file should have been generated at " << listFileInfo.absoluteFilePath();
-  }
-
-  m_FilterList.clear();
-
-  // Read the Source File
-  QFile source(listFilePath);
-  source.open(QFile::ReadOnly);
-  QString contents = source.readAll();
-  source.close();
-
-  QStringList list = contents.split(QRegExp("\\n"));
-  QStringListIterator sourceLines(list);
-  while(sourceLines.hasNext())
-  {
-    QString line = sourceLines.next();
-    QString tLine = line.trimmed();
-    if(tLine.startsWith("#")) // Skip the comment line
-    {
-    }
-    else if(!tLine.isEmpty())
-    {
-      m_FilterList << tLine;
-    }
-  }
-  qDebug() << "[PyBind11Generator] " << libName << ": Generating " << m_FilterList.size() << " Pybind11 Headers ";
-}
-
-//-----------------------------------------------------------------------------
 void PyBind11Generator::execute()
 {
-  readFilterList();
-
   recursiveSearch(m_TopLevelDir);
 
   // If these extensions are changed be sure the WrappingFunctions.cmake file is updated
@@ -98,7 +56,7 @@ void PyBind11Generator::execute()
   
   genHeaderPath = QString("");
   QString libName = m_LibNameUpper;
-  if(m_IsSIMPLib == "TRUE")
+  if(m_IsSIMPLib.compare("TRUE") == 0)
   {
     libName = QString("simpl");
   }
@@ -108,7 +66,7 @@ void PyBind11Generator::execute()
   
   genHeaderPath = QString("");
   libName = m_LibNameUpper;
-  if(m_IsSIMPLib == "TRUE")
+  if(m_IsSIMPLib.compare("TRUE") == 0)
   {
     libName = QString("simpl");
   }
@@ -240,44 +198,28 @@ void PyBind11Generator::copyPyInitFiles()
 //-----------------------------------------------------------------------------
 void PyBind11Generator::recursiveSearch(QDir currentDir)
 {
+  QStringList filters;
+  filters.append("*.h");
+
   if(currentDir.dirName().compare("zRel") == 0 || currentDir.dirName().compare("Build") == 0 || currentDir.dirName().compare("pybind11") == 0)
   {
     return;
   }
-  // If the currently generated library is SIMPLib itself then ignore the list of
-  // files and do a recursive search for the PYBIND macros since everything in
-  // SIMPL is going to need to be wrapped.
-  if(m_IsSIMPLib == "TRUE")
+  // Get a list of all the directories
+  QFileInfoList dirList = currentDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
+  if(dirList.size() > 0)
   {
-    // Get a list of all the directories
-    QFileInfoList dirList = currentDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
-    if(dirList.size() > 0)
+    foreach(QFileInfo fi, dirList)
     {
-      foreach(QFileInfo fi, dirList)
-      {
-        recursiveSearch(QDir(fi.absoluteFilePath())); // Recursive call
-      }
-    }
-    QStringList filters;
-    filters.append("*.h");
-    QFileInfoList itemList = currentDir.entryInfoList(filters);
-    foreach(QFileInfo itemInfo, itemList)
-    {
-      QString headerFilePath = itemInfo.absoluteFilePath();
-      generatePybind11Header(headerFilePath);
+      recursiveSearch(QDir(fi.absoluteFilePath())); // Recursive call
     }
   }
-  else
+
+  QFileInfoList itemList = currentDir.entryInfoList(filters);
+  foreach(QFileInfo itemInfo, itemList)
   {
-    for(const auto& item : m_FilterList)
-    {
-      QString filePath = currentDir.absolutePath() + QDir::separator() + item;
-      QFileInfo fi(filePath);
-      if(fi.exists())
-      {
-        generatePybind11Header(fi.absoluteFilePath());
-      }
-    }
+    QString headerFilePath = itemInfo.absoluteFilePath();
+    generatePybind11Header(headerFilePath);
   }
 }
 //-----------------------------------------------------------------------------

@@ -49,7 +49,7 @@ ArraySelectionExample::~ArraySelectionExample() = default;
 // -----------------------------------------------------------------------------
 void ArraySelectionExample::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  QVector<FilterParameter::Pointer> parameters;
   DataContainerArrayProxy proxy;
   /* To select arrays */
   // parameters.push_back(DataContainerArrayProxyFilterParameter::New("Array to Select", "DataContainerArrayProxy", "", FilterParameter::Parameter, SIMPL_BIND_SETTER(ArraySelectionExample, this,
@@ -89,8 +89,8 @@ void ArraySelectionExample::initialize()
 void ArraySelectionExample::dataCheck()
 {
   // std::cout << " ArraySelectionExample   Preflighting " << std::endl;
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 }
 
 // -----------------------------------------------------------------------------
@@ -114,10 +114,10 @@ void ArraySelectionExample::preflight()
 // -----------------------------------------------------------------------------
 void ArraySelectionExample::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  int err = 0;
+  setErrorCondition(err);
   dataCheck();
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }

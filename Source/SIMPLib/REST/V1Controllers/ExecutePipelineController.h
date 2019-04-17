@@ -40,8 +40,6 @@
 #include "QtWebApp/httpserver/httprequesthandler.h"
 #include "QtWebApp/httpserver/httpresponse.h"
 
-#include "SIMPLib/Messages/AbstractMessageHandler.h"
-#include "SIMPLib/Plugin/SIMPLPluginConstants.h"
 #include "SIMPLib/SIMPLib.h"
 
 /**

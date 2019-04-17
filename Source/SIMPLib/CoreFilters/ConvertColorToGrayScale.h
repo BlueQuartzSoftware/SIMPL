@@ -34,20 +34,20 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The ConvertColorToGrayScale class. See [Filter documentation](@ref ConvertColorToGrayScale) for details.
  */
-class SIMPLib_EXPORT ConvertColorToGrayScale : public AbstractFilter
+class ConvertColorToGrayScale : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(ConvertColorToGrayScale SUPERCLASS AbstractFilter)
   PYB11_PROPERTY(int ConversionAlgorithm READ getConversionAlgorithm WRITE setConversionAlgorithm)
-  PYB11_PROPERTY(FloatVec3Type ColorWeights READ getColorWeights WRITE setColorWeights)
+  PYB11_PROPERTY(FloatVec3_t ColorWeights READ getColorWeights WRITE setColorWeights)
   PYB11_PROPERTY(int ColorChannel READ getColorChannel WRITE setColorChannel)
   PYB11_PROPERTY(QVector<DataArrayPath> InputDataArrayVector READ getInputDataArrayVector WRITE setInputDataArrayVector)
   PYB11_PROPERTY(bool CreateNewAttributeMatrix READ getCreateNewAttributeMatrix WRITE setCreateNewAttributeMatrix)
@@ -73,8 +73,8 @@ public:
   SIMPL_FILTER_PARAMETER(int, ConversionAlgorithm)
   Q_PROPERTY(int ConversionAlgorithm READ getConversionAlgorithm WRITE setConversionAlgorithm)
 
-  SIMPL_FILTER_PARAMETER(FloatVec3Type, ColorWeights)
-  Q_PROPERTY(FloatVec3Type ColorWeights READ getColorWeights WRITE setColorWeights)
+  SIMPL_FILTER_PARAMETER(FloatVec3_t, ColorWeights)
+  Q_PROPERTY(FloatVec3_t ColorWeights READ getColorWeights WRITE setColorWeights)
 
   SIMPL_FILTER_PARAMETER(int, ColorChannel)
   Q_PROPERTY(int ColorChannel READ getColorChannel WRITE setColorChannel)

@@ -72,13 +72,8 @@ void DataContainerCreationWidget::setupGui()
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
-    DataContainerCreationFilterParameter::GetterCallbackType getter = m_FilterParameter->getGetterCallback();
-    DataArrayPath dap;
-    if(getter)
-    {
-      dap = getter();
-    }
-    stringEdit->setText(dap.getDataContainerName(), true);
+    QString str = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
+    stringEdit->setText(str, true);
   }
   blockSignals(false);
 
@@ -124,18 +119,17 @@ void DataContainerCreationWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 void DataContainerCreationWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  DataArrayPath dap(stringEdit->getText());
-  DataContainerCreationFilterParameter::SetterCallbackType setter = m_FilterParameter->getSetterCallback();
-  if(setter)
+  bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, stringEdit->getText());
+  if(!ok)
   {
-    setter(dap);
+    getFilter()->notifyMissingProperty(getFilterParameter());
   }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerCreationWidget::updateDataArrayPath(const QString& propertyName, const DataArrayPath::RenameType& renamePath)
+void DataContainerCreationWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
 {
   if(propertyName.compare(PROPERTY_NAME_AS_CHAR) == 0)
   {

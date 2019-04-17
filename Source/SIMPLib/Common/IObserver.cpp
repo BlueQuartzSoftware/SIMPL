@@ -50,10 +50,34 @@ IObserver::~IObserver() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IObserver::processPipelineMessage(const AbstractMessage::Pointer& pm)
+void IObserver::processPipelineMessage(const PipelineMessage& pm)
 {
+  PipelineMessage msg = pm;
   QString str;
   QTextStream ss(&str);
-  ss << pm->generateMessageString();
-  std::cout << str.toStdString() << std::endl;
+  if(msg.getType() == PipelineMessage::MessageType::Error)
+  {
+    ss << msg.generateErrorString();
+  }
+  else if(msg.getType() == PipelineMessage::MessageType::Warning)
+  {
+    ss << msg.generateWarningString();
+  }
+  else if(msg.getType() == PipelineMessage::MessageType::StatusMessage)
+  {
+    ss << msg.generateStatusString();
+  }
+  else if(msg.getType() == PipelineMessage::MessageType::StandardOutputMessage)
+  {
+    ss << msg.generateStandardOutputString();
+  }
+  else if(msg.getType() == PipelineMessage::MessageType::ProgressValue)
+  {
+    ss << msg.getProgressValue() << "%";
+  }
+  else if(msg.getType() == PipelineMessage::MessageType::StatusMessageAndProgressValue)
+  {
+    ss << msg.getProgressValue() << msg.generateStatusString();
+  }
+  std::cout << msg.getFilterHumanLabel().toStdString() << ": " << str.toStdString() << std::endl;
 }

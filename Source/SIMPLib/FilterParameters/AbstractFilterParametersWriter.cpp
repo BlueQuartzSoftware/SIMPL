@@ -324,7 +324,7 @@ int AbstractFilterParametersWriter::writeValue(const QString& name, QVector<doub
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString& name, IntVec3Type v)
+int AbstractFilterParametersWriter::writeValue(const QString& name, IntVec3_t v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
@@ -336,7 +336,7 @@ int AbstractFilterParametersWriter::writeValue(const QString& name, IntVec3Type 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString& name, FloatVec3Type v)
+int AbstractFilterParametersWriter::writeValue(const QString& name, FloatVec3_t v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)

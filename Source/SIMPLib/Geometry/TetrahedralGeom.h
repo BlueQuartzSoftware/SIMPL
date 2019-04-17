@@ -363,13 +363,13 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
     IGeometry::Pointer deepCopy(bool forceNoAllocate = false) override;
 
     /**
-     * @brief addOrReplaceAttributeMatrix
+     * @brief addAttributeMatrix
      */
-    void addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data) override;
+    void addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data) override;
 
-    // -----------------------------------------------------------------------------
-    // Inherited from IGeometry3D
-    // -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// Inherited from IGeometry3D
+// -----------------------------------------------------------------------------
 
     /**
      * @brief resizeVertexList

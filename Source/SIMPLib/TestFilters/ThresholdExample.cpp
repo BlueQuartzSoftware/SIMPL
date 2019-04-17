@@ -56,7 +56,7 @@ ThresholdExample::~ThresholdExample() = default;
 // -----------------------------------------------------------------------------
 void ThresholdExample::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  QVector<FilterParameter::Pointer> parameters;
 
   /* To Compare Arrays like a threshold filter */
   {
@@ -141,11 +141,11 @@ void ThresholdExample::initialize()
 // -----------------------------------------------------------------------------
 void ThresholdExample::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerName(), false);
-  if(getErrorCode() < 0 || nullptr == m)
+  if(getErrorCondition() < 0 || nullptr == m)
   {
     return;
   }
@@ -156,7 +156,8 @@ void ThresholdExample::dataCheck()
   if (m_OutputFile.isEmpty() == true)
   {
     ss << "The output file must be set before executing this filter.";
-    setErrorCondition(-1, ss.str());
+    setErrorCondition(-1);
+    notifyErrorMessage(getNameOfClass(), ss.str(), -1);
   }
   */
 }

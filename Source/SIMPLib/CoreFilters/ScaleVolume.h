@@ -48,11 +48,11 @@ class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(ScaleVolume SUPERCLASS AbstractFilter)
-    PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
-    PYB11_PROPERTY(DataArrayPath SurfaceDataContainerName READ getSurfaceDataContainerName WRITE setSurfaceDataContainerName)
+    PYB11_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
+    PYB11_PROPERTY(QString SurfaceDataContainerName READ getSurfaceDataContainerName WRITE setSurfaceDataContainerName)
     PYB11_PROPERTY(bool ApplyToVoxelVolume READ getApplyToVoxelVolume WRITE setApplyToVoxelVolume)
     PYB11_PROPERTY(bool ApplyToSurfaceMesh READ getApplyToSurfaceMesh WRITE setApplyToSurfaceMesh)
-    PYB11_PROPERTY(FloatVec3Type ScaleFactor READ getScaleFactor WRITE setScaleFactor)
+    PYB11_PROPERTY(FloatVec3_t ScaleFactor READ getScaleFactor WRITE setScaleFactor)
 
   public:
     SIMPL_SHARED_POINTERS(ScaleVolume)
@@ -61,11 +61,11 @@ class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
 
     ~ScaleVolume() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, DataContainerName)
-    Q_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
+    SIMPL_FILTER_PARAMETER(QString, DataContainerName)
+    Q_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SurfaceDataContainerName)
-    Q_PROPERTY(DataArrayPath SurfaceDataContainerName READ getSurfaceDataContainerName WRITE setSurfaceDataContainerName)
+    SIMPL_FILTER_PARAMETER(QString, SurfaceDataContainerName)
+    Q_PROPERTY(QString SurfaceDataContainerName READ getSurfaceDataContainerName WRITE setSurfaceDataContainerName)
 
     SIMPL_FILTER_PARAMETER(bool, ApplyToVoxelVolume)
     Q_PROPERTY(bool ApplyToVoxelVolume READ getApplyToVoxelVolume WRITE setApplyToVoxelVolume)
@@ -73,8 +73,8 @@ class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
     SIMPL_FILTER_PARAMETER(bool, ApplyToSurfaceMesh)
     Q_PROPERTY(bool ApplyToSurfaceMesh READ getApplyToSurfaceMesh WRITE setApplyToSurfaceMesh)
 
-    SIMPL_FILTER_PARAMETER(FloatVec3Type, ScaleFactor)
-    Q_PROPERTY(FloatVec3Type ScaleFactor READ getScaleFactor WRITE setScaleFactor)
+    SIMPL_FILTER_PARAMETER(FloatVec3_t, ScaleFactor)
+    Q_PROPERTY(FloatVec3_t ScaleFactor READ getScaleFactor WRITE setScaleFactor)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class

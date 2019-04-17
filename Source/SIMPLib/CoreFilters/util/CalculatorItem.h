@@ -79,8 +79,7 @@ class SIMPLib_EXPORT CalculatorItem
       TOO_MANY_ARGUMENTS = -4034,
       INVALID_SYMBOL = -4035,
       NO_PRECEDING_UNARY_OPERATOR = -4036,
-      InvalidOutputArrayType = -4037,
-      AttributeMatrixInsertionError = -4038
+      InvalidOutputArrayType = -4037
     };
 
     enum class WarningCode : EnumType

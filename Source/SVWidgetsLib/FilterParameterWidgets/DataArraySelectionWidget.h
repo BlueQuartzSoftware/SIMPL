@@ -110,7 +110,7 @@ class SVWidgetsLib_EXPORT DataArraySelectionWidget : public FilterParameterWidge
     void dataArraySelected(QString path);
 
   protected slots:
-    void updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath);
+    void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
   private:
     bool m_DidCausePreflight;

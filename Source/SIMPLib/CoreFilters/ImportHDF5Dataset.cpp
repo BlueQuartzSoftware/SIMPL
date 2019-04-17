@@ -85,7 +85,7 @@ ImportHDF5Dataset::~ImportHDF5Dataset() = default;
 // -----------------------------------------------------------------------------
 void ImportHDF5Dataset::initialize()
 {
-  clearErrorCode();
+  setErrorCondition(0);
   setCancel(false);
 }
 
@@ -94,7 +94,7 @@ void ImportHDF5Dataset::initialize()
 // -----------------------------------------------------------------------------
 void ImportHDF5Dataset::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  FilterParameterVector parameters;
 
   ImportHDF5DatasetFilterParameter::Pointer parameter = ImportHDF5DatasetFilterParameter::New(QString("Select HDF5 File"), // Human Label
                                                                                               QString("ImportHDF5File"),   // Property Name
@@ -117,13 +117,14 @@ void ImportHDF5Dataset::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void ImportHDF5Dataset::dataCheck()
 {
-  clearErrorCode();
+  setErrorCondition(0);
   m_DatasetPathsWithErrors.clear();
 
   if(m_HDF5FilePath.isEmpty())
   {
     QString ss = "The HDF5 file path is empty.  Please select an HDF5 file.";
-    setErrorCondition(-20001, ss);
+    setErrorCondition(-20001);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -132,27 +133,30 @@ void ImportHDF5Dataset::dataCheck()
   if(ext != "h5" && ext != "hdf5" && ext != "dream3d")
   {
     QString ss = tr("The selected file '%1' is not an HDF5 file.").arg(hdf5FileInfo.fileName());
-    setErrorCondition(-20002, ss);
+    setErrorCondition(-20002);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
   if(!hdf5FileInfo.exists())
   {
     QString ss = tr("The selected file '%1' does not exist.").arg(hdf5FileInfo.fileName());
-    setErrorCondition(-20003, ss);
+    setErrorCondition(-20003);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
   if(m_DatasetImportInfoList.isEmpty())
   {
     QString ss = tr("No dataset has been checked.  Please check a dataset.");
-    setErrorCondition(-20004, ss);
+    setErrorCondition(-20004);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
   int err = 0;
   AttributeMatrix::Pointer am = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedAttributeMatrix, err);
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -200,7 +204,8 @@ void ImportHDF5Dataset::dataCheck()
     if(err < 0)
     {
       QString ss = tr("Error reading type info from dataset with path '%1'").arg(datasetPath);
-      setErrorCondition(-20005, ss);
+      setErrorCondition(-20005);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       m_DatasetPathsWithErrors.push_back(datasetPath);
       return;
     }
@@ -210,7 +215,8 @@ void ImportHDF5Dataset::dataCheck()
     {
       QString ss =
           tr("The component dimensions are empty for dataset with path '%1'.  Please enter the component dimensions, using comma-separated values (ex: 4x2 would be '4, 2').").arg(datasetPath);
-      setErrorCondition(-20006, ss);
+      setErrorCondition(-20006);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       m_DatasetPathsWithErrors.push_back(datasetPath);
       return;
     }
@@ -219,7 +225,8 @@ void ImportHDF5Dataset::dataCheck()
     if(cDims.isEmpty())
     {
       QString ss = tr("Component Dimensions are not in the right format for dataset with path '%1'. Use comma-separated values (ex: 4x2 would be '4, 2').").arg(datasetPath);
-      setErrorCondition(-20007, ss);
+      setErrorCondition(-20007);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       m_DatasetPathsWithErrors.push_back(datasetPath);
       return;
     }
@@ -310,33 +317,36 @@ void ImportHDF5Dataset::dataCheck()
                     .arg(locale.toString(numOfAMTuples * totalComponents))
                     .arg(locale.toString(hdf5TotalElements));
 
-      setErrorCondition(-20008, ss);
+      setErrorCondition(-20008);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       m_DatasetPathsWithErrors.push_back(datasetPath);
       return;
     }
 
     if(am->doesAttributeArrayExist(objectName))
     {
+      setErrorCondition(-20010);
       ss.clear();
 
       DataArrayPath dap = getSelectedAttributeMatrix();
       dap.setDataArrayName(objectName);
 
       stream << tr("The selected dataset '") << dap.serialize("/") << tr("' already exists.");
-      setErrorCondition(-20010, ss);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
     else
     {
       IDataArray::Pointer dPtr = readIDataArray(parentId, objectName, am->getNumberOfTuples(), cDims, getInPreflight());
       if(nullptr != dPtr)
       {
-        am->insertOrAssign(dPtr);
+        am->addAttributeArray(dPtr->getName(), dPtr);
       }
       else
       {
+        setErrorCondition(-20009);
         ss.clear();
         stream << tr("The selected datatset is not a supported type for importing. Please select a different data set");
-        setErrorCondition(-20009, ss);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       }
     }
   } // End For Loop over dataset imoprt info list
@@ -365,7 +375,7 @@ void ImportHDF5Dataset::execute()
 {
   initialize();
   dataCheck();
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }

@@ -15,21 +15,20 @@
 
 namespace itk
 {
-template <typename PixelType, unsigned int VDimension>
-class InPlaceImageToDream3DDataFilter : public ProcessObject
+template <typename PixelType, unsigned int VDimension> class InPlaceImageToDream3DDataFilter : public ProcessObject
 {
 public:
   /** Standard class typedefs. */
-  using Self = InPlaceImageToDream3DDataFilter;
-  using Superclass = ProcessObject;
-  using Pointer = SmartPointer<Self>;
+  typedef InPlaceImageToDream3DDataFilter Self;
+  typedef ProcessObject Superclass;
+  typedef SmartPointer<Self> Pointer;
 
-  using ImageType = typename itk::Dream3DImage<PixelType, VDimension>;
-  using ImagePointer = typename ImageType::Pointer;
-  using ValueType = typename itk::NumericTraits<PixelType>::ValueType;
-  using DataArrayPixelType = typename ::DataArray<ValueType>;
-  using DecoratorType = typename itk::SimpleDataObjectDecorator<DataContainer::Pointer>;
-  using DecoratorPointer = DecoratorType::Pointer;
+  typedef typename itk::Dream3DImage<PixelType, VDimension> ImageType;
+  typedef typename ImageType::Pointer ImagePointer;
+  typedef typename itk::NumericTraits<PixelType>::ValueType ValueType;
+  typedef typename ::DataArray<ValueType> DataArrayPixelType;
+  typedef typename itk::SimpleDataObjectDecorator<DataContainer::Pointer> DecoratorType;
+  typedef DecoratorType::Pointer DecoratorPointer;
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
   itkTypeMacro(InPlaceImageToDream3DDataFilter, ProcessObject);
@@ -37,7 +36,6 @@ public:
   virtual void SetInput(const ImageType* image);
 
   DecoratorType* GetOutput();
-  const DecoratorType* GetOutput() const;
 
   void SetDataContainer(DataContainer::Pointer dc);
 
@@ -56,13 +54,13 @@ protected:
   InPlaceImageToDream3DDataFilter();
   virtual ~InPlaceImageToDream3DDataFilter();
 
-  virtual void VerifyPreconditions() ITKv5_CONST override;
+  virtual void VerifyPreconditions() override;
   ProcessObject::DataObjectPointer MakeOutput(ProcessObject::DataObjectPointerArraySizeType) override;
 
-  void GenerateData() override;
-  void GenerateOutputInformation() override;
+  virtual void GenerateData() override;
+  virtual void GenerateOutputInformation() override;
 
-  void CheckValidArrayPathComponentName(std::string var) const;
+  void CheckValidArrayPathComponentName(std::string var);
 
 private:
   using Superclass::SetInput;
@@ -77,3 +75,4 @@ private:
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkInPlaceImageToDream3DDataFilter.hxx"
 #endif
+

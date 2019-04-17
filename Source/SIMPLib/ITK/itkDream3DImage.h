@@ -17,7 +17,6 @@
  *=========================================================================*/
 #pragma once
 
-// ITK Includes
 #include "itkDefaultPixelAccessor.h"
 #include "itkDefaultPixelAccessorFunctor.h"
 #include "itkFixedArray.h"
@@ -27,9 +26,6 @@
 #include "itkNeighborhoodAccessorFunctor.h"
 #include "itkPoint.h"
 #include "itkWeakPointer.h"
-
-// SIMPLib/ITK includes
-#include "SIMPLib/ITK/itkSupportConstants.h"
 
 namespace itk
 {

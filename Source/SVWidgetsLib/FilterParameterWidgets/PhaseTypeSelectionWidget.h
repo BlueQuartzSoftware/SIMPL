@@ -109,7 +109,7 @@ class SVWidgetsLib_EXPORT PhaseTypeSelectionWidget : public FilterParameterWidge
     void resetPhaseComboBoxes();
 
   protected slots:
-    void updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath);
+    void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
 
   private:
     bool              m_DidCausePreflight;

@@ -43,11 +43,6 @@
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
 
-enum createdPathID : RenameDataPath::DataID_t
-{
-  DataContainerID = 1
-};
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -74,7 +69,7 @@ MakeDataContainer::~MakeDataContainer() = default;
 // -----------------------------------------------------------------------------
 void MakeDataContainer::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  FilterParameterVector parameters;
 
   parameters.push_back(SIMPL_NEW_STRING_FP("FeatureIds", FeatureIdsArrayName, FilterParameter::CreatedArray, MakeDataContainer));
   parameters.push_back(SIMPL_NEW_STRING_FP("Cell Euler Angles", CellEulerAnglesArrayName, FilterParameter::CreatedArray, MakeDataContainer));
@@ -104,24 +99,24 @@ void MakeDataContainer::initialize()
 // -----------------------------------------------------------------------------
 void MakeDataContainer::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
-
-  DataContainer::Pointer m = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName(), DataContainerID);
-  if(getErrorCode() < 0)
+  DataArrayPath tempPath;
+  setErrorCondition(0);
+  setWarningCondition(0);
+  DataContainer::Pointer m = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName());
+  if(getErrorCondition() < 0)
   {
     return;
   }
   QVector<size_t> tDims(3, 64);
   AttributeMatrix::Pointer cellAttrMat = m->createNonPrereqAttributeMatrix(this, getCellAttributeMatrixName(), tDims, AttributeMatrix::Type::Cell);
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
   //  tDims.resize(1);
   //  tDims[0] = 0;
   //  AttributeMatrix::Pointer cellEnsembleAttrMat = m->createNonPrereqAttributeMatrix(this, getCellEnsembleAttributeMatrixName(), tDims, AttributeMatrix::Type::CellEnsemble);
-  //  if(getErrorCode() < 0)
+  //  if(getErrorCondition() < 0)
   //  {
   //    return;
   //  }
@@ -135,7 +130,7 @@ void MakeDataContainer::dataCheck()
   }
 
   // ImageGeom::Pointer image = ImageGeom::CreateGeometry("TestImageGeom");
-  // image->setSpacing(0.1f, 0.2f, 0.3f);
+  // image->setResolution(0.1f, 0.2f, 0.3f);
   // image->setOrigin(100.3f, 987.234f, 0.0f);
   // image->setDimensions(64, 64, 64);
   // m->setGeometry(image);
@@ -173,12 +168,12 @@ void MakeDataContainer::preflight()
 // -----------------------------------------------------------------------------
 void MakeDataContainer::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  int err = 0;
+  setErrorCondition(err);
 
   // Run the data check to get references to all of our data arrays initialized to the values stored in memory
   dataCheck();
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }

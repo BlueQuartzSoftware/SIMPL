@@ -111,7 +111,8 @@ void AttributeMatrixSelectionWidget::setupGui()
           this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
   // If the DataArrayPath is updated in the filter, update the widget
-  connect(getFilter(), &AbstractFilter::dataArrayPathUpdated, this, &AttributeMatrixSelectionWidget::updateDataArrayPath);
+  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)), 
+    this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
   connect(this, SIGNAL(filterPathInput(DataArrayPath)), m_SelectedAttributeMatrixPath, SLOT(checkDragPath(DataArrayPath)));
   connect(this, SIGNAL(endViewPathRequirements()), m_SelectedAttributeMatrixPath, SLOT(clearPathFiltering()));
@@ -174,7 +175,7 @@ bool AttributeMatrixSelectionWidget::eventFilter(QObject* obj, QEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AttributeMatrixSelectionWidget::updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath)
+void AttributeMatrixSelectionWidget::updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath)
 {
   if(propertyName.compare(PROPERTY_NAME_AS_CHAR) == 0)
   {

@@ -51,7 +51,7 @@
 //
 // -----------------------------------------------------------------------------
 StatsDataArray::StatsDataArray()
-: IDataArray(SIMPL::EnsembleData::Statistics)
+: m_Name(SIMPL::EnsembleData::Statistics)
 {
   m_IsAllocated = true;
 }
@@ -189,6 +189,21 @@ IDataArray::Pointer StatsDataArray::createNewArray(size_t numElements, QVector<s
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void StatsDataArray::setName(const QString& name)
+{
+  m_Name = name;
+}
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString StatsDataArray::getName()
+{
+  return m_Name;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 QString StatsDataArray::getFullNameOfClass()
 {
   return QString("Statistics");
@@ -282,7 +297,7 @@ int StatsDataArray::eraseTuples(QVector<size_t>& idxs)
 
   if(static_cast<size_t>(idxs.size()) >= getNumberOfTuples())
   {
-    resizeTuples(0);
+    resize(0);
     return 0;
   }
 
@@ -402,7 +417,7 @@ IDataArray::Pointer StatsDataArray::deepCopy(bool forceNoAllocate)
 {
   StatsDataArray::Pointer daCopyPtr = StatsDataArray::CreateArray(getNumberOfTuples() * getNumberOfComponents(), getName());
 
-  daCopyPtr->resizeTuples(getNumberOfTuples());
+  daCopyPtr->resize(getNumberOfTuples());
   for(size_t i = 0; i < getNumberOfTuples(); i++)
   {
     // This should be a Deep Copy of each of the StatsData subclasses instead of a reference copy
@@ -431,9 +446,9 @@ int32_t StatsDataArray::resizeTotalElements(size_t size)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StatsDataArray::resizeTuples(size_t numTuples)
+int32_t StatsDataArray::resize(size_t numTuples)
 {
-  resizeTotalElements(numTuples);
+  return resizeTotalElements(numTuples);
 }
 
 // -----------------------------------------------------------------------------
@@ -457,7 +472,7 @@ void StatsDataArray::printComponent(QTextStream& out, size_t i, int j)
 int StatsDataArray::writeH5Data(hid_t parentId, QVector<size_t> tDims)
 {
   herr_t err = 0;
-  hid_t gid = QH5Utilities::createGroup(parentId, getName());
+  hid_t gid = QH5Utilities::createGroup(parentId, m_Name);
   if(gid < 0)
   {
     return -1;
@@ -493,7 +508,7 @@ int StatsDataArray::readH5Data(hid_t parentId)
   bool ok = false;
   int err = 0;
   QString statsType;
-  hid_t gid = QH5Utilities::openHDF5Object(parentId, getName());
+  hid_t gid = QH5Utilities::openHDF5Object(parentId, m_Name);
   if(gid < 0)
   {
     return err;

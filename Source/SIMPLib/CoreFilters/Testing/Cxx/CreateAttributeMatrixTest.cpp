@@ -36,7 +36,7 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
 
-#include <cassert>
+#include <assert.h>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
@@ -67,7 +67,7 @@ public:
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     return dca;
   }
@@ -166,7 +166,7 @@ public:
 
     setValues(filter, "DataContainer", amName, tableDims, type);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0)
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
     TestMatrixTupleDims(filter, tableDims, amName);
   }
 
@@ -305,7 +305,7 @@ public:
 
     setValues(filter, "DataContainer2", "AttributeMatrix", tableDims, AttributeMatrix::Type::Any);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -999);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -999);
   }
 
   // -----------------------------------------------------------------------------
@@ -320,11 +320,11 @@ public:
 
     setValues(filter, "DataContainer", "AttributeMatrix", tableDims, AttributeMatrix::Type::Any);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
     TestMatrixTupleDims(filter, tableDims, "AttributeMatrix");
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -10014);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -10014);
   }
 
   // -----------------------------------------------------------------------------
@@ -346,27 +346,16 @@ public:
 
     setValues(filter, "DataContainer", "AttributeMatrix", tableDims, AttributeMatrix::Type::Any);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -11000);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11000);
 
     tableDims.clear();
     tableDims.resize(0);
 
     setValues(filter, "DataContainer", "AttributeMatrix", tableDims, AttributeMatrix::Type::Any);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -11000);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11000);
   }
 
-  // -----------------------------------------------------------------------------
-  //
-  // -----------------------------------------------------------------------------
-  void TestOperators()
-  {
-    QVector<size_t> tDims = {10, 10};
-    AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, "Test", AttributeMatrix::Type::Cell);
-
-    FloatArrayType::Pointer floatArray = FloatArrayType::CreateArray(100, "Float");
-    Int32ArrayType::Pointer int32Array = Int32ArrayType::CreateArray(100, "Int32");
-  }
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
@@ -375,7 +364,6 @@ public:
     std::cout << "#### CreateAttributeMatrixTest Starting ####" << std::endl;
 
     int err = EXIT_SUCCESS;
-    DREAM3D_REGISTER_TEST(TestOperators());
 
     DREAM3D_REGISTER_TEST(TestVertexMatrix());
     DREAM3D_REGISTER_TEST(TestVertexFeatureMatrix());

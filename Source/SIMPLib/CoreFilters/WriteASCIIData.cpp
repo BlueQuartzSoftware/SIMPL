@@ -83,7 +83,8 @@ public:
     if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
       QString ss = QObject::tr("The output file could not be opened: '%1'").arg(outputFile);
-      filter->setErrorCondition(-11012, ss);
+      filter->setErrorCondition(-11012);
+      filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
       return;
     }
 
@@ -142,7 +143,7 @@ WriteASCIIData::~WriteASCIIData() = default;
 // -----------------------------------------------------------------------------
 void WriteASCIIData::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  FilterParameterVector parameters;
 
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
@@ -225,30 +226,33 @@ void WriteASCIIData::dataCheck()
   // Make sure the weak pointer vector is cleared before we begin...
   m_SelectedWeakPtrVector.clear();
 
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 
   //**************** MultiFile Checks ******************
   if(m_OutputStyle == MultiFile)
   {
     if(m_OutputPath.isEmpty())
     {
+      setErrorCondition(-11002);
       QString ss = QObject::tr("The output path must be set");
-      setErrorCondition(-11002, ss);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }
 
     if(m_MaxValPerLine <= 0)
     {
+      setErrorCondition(-11003);
       QString ss = QObject::tr("The Maximum Tuples Per Line (%1) must be positive").arg(m_MaxValPerLine);
-      setErrorCondition(-11003, ss);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }
 
     if(m_FileExtension.isEmpty())
     {
+      setErrorCondition(-11004);
       QString ss = QObject::tr("The file extension must be set.");
-      setErrorCondition(-11004, ss);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }
   }
@@ -257,29 +261,33 @@ void WriteASCIIData::dataCheck()
   {
     if(m_OutputFilePath.isEmpty())
     {
+      setErrorCondition(-11005);
       QString ss = QObject::tr("The output file path must be set");
-      setErrorCondition(-11005, ss);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
 
     QFileInfo fi(m_OutputPath);
     QDir parentPath = fi.path();
     if(!parentPath.exists())
     {
+      setWarningCondition(-11006);
       QString ss = QObject::tr("The directory path for the output file does not exist. DREAM.3D will attempt to create this path during execution of the filter");
-      setWarningCondition(-11006, ss);
+      notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
     }
   }
   else
   {
     QString ss = QObject::tr("The type of output did not match either 0 (Multi-File) or 1 (Single File)");
-    setErrorCondition(-11009, ss);
+    setErrorCondition(-11009);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
   if(m_SelectedDataArrayPaths.isEmpty())
   {
+    setErrorCondition(-11007);
     QString ss = QObject::tr("At least one Attribute Array must be selected");
-    setErrorCondition(-11007, ss);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -287,8 +295,9 @@ void WriteASCIIData::dataCheck()
 
   if(!DataArrayPath::ValidateVector(paths))
   {
+    setErrorCondition(-11008);
     QString ss = QObject::tr("There are Attribute Arrays selected that are not contained in the same Attribute Matrix. All selected Attribute Arrays must belong to the same Attribute Matrix");
-    setErrorCondition(-11008, ss);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -296,22 +305,25 @@ void WriteASCIIData::dataCheck()
   {
     IDataArray::WeakPointer ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, path);
 
-    if(getErrorCode() < 0)
+    if(getErrorCondition() < 0)
     {
       return;
     }
 
     if( ptr.lock()->getTypeAsString().compare("NeighborList<T>") == 0)
     {
-      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "NeighborList is unsupported when writing ASCII Data.");
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedType);
+      notifyErrorMessage(getHumanLabel(), "NeighborList is unsupported when writing ASCII Data.", getErrorCondition());
     }
     else if( ptr.lock()->getTypeAsString().compare("struct") == 0)
     {
-      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "StructArray is unsupported when writing ASCII Data.");
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedType);
+      notifyErrorMessage(getHumanLabel(), "StructArray is unsupported when writing ASCII Data.", getErrorCondition());
     }
     else if( ptr.lock()->getTypeAsString().compare("StatsDataArray") == 0)
     {
-      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "StatsDataArray is unsupported when writing ASCII Data.");
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedType);
+      notifyErrorMessage(getHumanLabel(), "StatsDataArray is unsupported when writing ASCII Data.", getErrorCondition());
     }
     else
     {
@@ -339,11 +351,11 @@ void WriteASCIIData::preflight()
 // -----------------------------------------------------------------------------
 void WriteASCIIData::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   initialize();
   dataCheck();
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -351,7 +363,8 @@ void WriteASCIIData::execute()
   if(m_SelectedDataArrayPaths.count() != m_SelectedWeakPtrVector.count())
   {
     QString ss = QObject::tr("The number of selected Attribute Arrays does not equal the number of internal weak pointers");
-    setErrorCondition(-11010, ss);
+    setErrorCondition(-11010);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -366,7 +379,8 @@ void WriteASCIIData::execute()
   else
   {
     QString ss = QObject::tr("The type of output did not match either 0 (Multi-File) or 1 (Single File)");
-    setErrorCondition(-11009, ss);
+    setErrorCondition(-11009);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 }
@@ -379,7 +393,8 @@ void WriteASCIIData::writeMultiFileOutput()
   if(!dir.mkpath(m_OutputPath))
   {
     ss = QObject::tr("Error creating output path '%1'").arg(m_OutputPath);
-    setErrorCondition(-11004, ss);
+    setErrorCondition(-11004);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -393,7 +408,7 @@ void WriteASCIIData::writeMultiFileOutput()
     IDataArray::Pointer selectedArrayPtr = m_SelectedWeakPtrVector.at(i).lock();
 
     QString message = QObject::tr("|| Exporting Dataset '%1'").arg(selectedArrayPtr->getName());
-    notifyStatusMessage(message);
+    notifyStatusMessage(getMessagePrefix(), getHumanLabel(), message);
 
     QString exportArrayFile = m_OutputPath + QDir::separator() + selectedArrayPtr->getName() + m_FileExtension; // the complete output file path, name and extension
 
@@ -406,20 +421,24 @@ void WriteASCIIData::writeMultiFileOutput()
     }
     else if( selectedArrayPtr->getTypeAsString().compare("NeighborList<T>") == 0)
     {
-      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "NeighborList is unsupported when writing ASCII Data.");
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedType);
+      notifyErrorMessage(getHumanLabel(), "NeighborList is unsupported when writing ASCII Data.", getErrorCondition());
     }
     else if( selectedArrayPtr->getTypeAsString().compare("struct") == 0)
     {
-      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "StructArray is unsupported when writing ASCII Data.");
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedType);
+      notifyErrorMessage(getHumanLabel(), "StructArray is unsupported when writing ASCII Data.", getErrorCondition());
     }
     else if( selectedArrayPtr->getTypeAsString().compare("StatsDataArray") == 0)
     {
-      setErrorCondition(TemplateHelpers::Errors::UnsupportedDataType, "StatsDataArray is unsupported when writing ASCII Data.");
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedType);
+      notifyErrorMessage(getHumanLabel(), "StatsDataArray is unsupported when writing ASCII Data.", getErrorCondition());
     }
     else
       EXECUTE_TEMPLATE(this, WriteASCIIDataPrivate, selectedArrayPtr, this, selectedArrayPtr, delimiter, exportArrayFile, m_MaxValPerLine)
 
-    if(getErrorCode() < 0)
+
+    if(getErrorCondition() < 0)
     {
       break;
     }
@@ -437,7 +456,8 @@ void WriteASCIIData::writeSingleFileOutput()
   if(!parentPath.mkpath("."))
   {
     QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath.absolutePath());
-    setErrorCondition(-11020, ss);
+    setErrorCondition(-11020);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -445,7 +465,8 @@ void WriteASCIIData::writeSingleFileOutput()
   if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
   {
     QString ss = QObject::tr("Output file could not be opened: %1").arg(getOutputFilePath());
-    setErrorCondition(-11021, ss);
+    setErrorCondition(-11021);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -498,7 +519,7 @@ void WriteASCIIData::writeSingleFileOutput()
     if(percentIncrement > threshold)
     {
       QString ss = QObject::tr("Writing Output: %1%").arg(static_cast<int32_t>(percentIncrement));
-      notifyStatusMessage(ss);
+      notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
       threshold = threshold + 5.0f;
       if(threshold < percentIncrement)
       {
@@ -534,7 +555,8 @@ void WriteASCIIData::writeStringArray(const IDataArray::Pointer& inputData, cons
   if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
   {
     QString ss = QObject::tr("The output file could not be opened: '%1'").arg(outputFile);
-    setErrorCondition(-11011, ss);
+    setErrorCondition(-11011);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 

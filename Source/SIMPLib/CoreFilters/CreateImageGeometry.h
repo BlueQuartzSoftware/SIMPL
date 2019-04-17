@@ -49,10 +49,10 @@ class SIMPLib_EXPORT CreateImageGeometry : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(CreateImageGeometry SUPERCLASS AbstractFilter)
-    PYB11_PROPERTY(DataArrayPath SelectedDataContainer READ getSelectedDataContainer WRITE setSelectedDataContainer)
-    PYB11_PROPERTY(IntVec3Type Dimensions READ getDimensions WRITE setDimensions)
-    PYB11_PROPERTY(FloatVec3Type Origin READ getOrigin WRITE setOrigin)
-    PYB11_PROPERTY(FloatVec3Type Spacing READ getSpacing WRITE setSpacing)
+    PYB11_PROPERTY(QString SelectedDataContainer READ getSelectedDataContainer WRITE setSelectedDataContainer)
+    PYB11_PROPERTY(IntVec3_t Dimensions READ getDimensions WRITE setDimensions)
+    PYB11_PROPERTY(FloatVec3_t Origin READ getOrigin WRITE setOrigin)
+    PYB11_PROPERTY(FloatVec3_t Resolution READ getResolution WRITE setResolution)
 
   public:
     SIMPL_SHARED_POINTERS(CreateImageGeometry)
@@ -61,17 +61,17 @@ class SIMPLib_EXPORT CreateImageGeometry : public AbstractFilter
 
     ~CreateImageGeometry() override;
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedDataContainer)
-    Q_PROPERTY(DataArrayPath SelectedDataContainer READ getSelectedDataContainer WRITE setSelectedDataContainer)
+    SIMPL_FILTER_PARAMETER(QString, SelectedDataContainer)
+    Q_PROPERTY(QString SelectedDataContainer READ getSelectedDataContainer WRITE setSelectedDataContainer)
 
-    SIMPL_FILTER_PARAMETER(IntVec3Type, Dimensions)
-    Q_PROPERTY(IntVec3Type Dimensions READ getDimensions WRITE setDimensions)
+    SIMPL_FILTER_PARAMETER(IntVec3_t, Dimensions)
+    Q_PROPERTY(IntVec3_t Dimensions READ getDimensions WRITE setDimensions)
 
-    SIMPL_FILTER_PARAMETER(FloatVec3Type, Origin)
-    Q_PROPERTY(FloatVec3Type Origin READ getOrigin WRITE setOrigin)
+    SIMPL_FILTER_PARAMETER(FloatVec3_t, Origin)
+    Q_PROPERTY(FloatVec3_t Origin READ getOrigin WRITE setOrigin)
 
-    SIMPL_FILTER_PARAMETER(FloatVec3Type, Spacing)
-    Q_PROPERTY(FloatVec3Type Spacing READ getSpacing WRITE setSpacing)
+    SIMPL_FILTER_PARAMETER(FloatVec3_t, Resolution)
+    Q_PROPERTY(FloatVec3_t Resolution READ getResolution WRITE setResolution)
 
     QString getBoxDimensions();
     Q_PROPERTY(QString BoxDimensions READ getBoxDimensions)

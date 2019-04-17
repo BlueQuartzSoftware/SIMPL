@@ -67,6 +67,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "SIMPLib/Common/DocRequestManager.h"
+#include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/CoreFilters/Breakpoint.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
@@ -99,14 +100,40 @@
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/QtSupport/QtSRecentFileList.h"
 
-class ExecutionResultInvalidException : public std::exception
+namespace
 {
-  const char* what() const noexcept
-  {
-    return "The execution result of a pipeline was invalid.";
-  }
-};
 
+class JsonObserver : public IObserver
+{
+public:
+  JsonObserver() = default;
+  ~JsonObserver() override = default;
+
+  JsonObserver(const JsonObserver&) = delete;            // Copy Constructor Not Implemented
+  JsonObserver(JsonObserver&&) = delete;                 // Move Constructor Not Implemented
+  JsonObserver& operator=(const JsonObserver&) = delete; // Copy Assignment Not Implemented
+  JsonObserver& operator=(JsonObserver&&) = delete;      // Move Assignment Not Implemented
+
+  void processPipelineMessage(const PipelineMessage& pm) override
+  {
+    m_ErrorCode = pm.getCode();
+    m_ErrorMessage = pm.getText();
+  }
+
+  QString getErrorMessage()
+  {
+    return m_ErrorMessage;
+  }
+  int32_t getErrorCode()
+  {
+    return m_ErrorCode;
+  }
+
+private:
+  QString m_ErrorMessage;
+  int32_t m_ErrorCode = 0;
+};
+} // namespace
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -271,11 +298,11 @@ void SVPipelineView::listenFilterCompleted(AbstractFilter* filter)
   {
     model->setData(index, static_cast<int>(PipelineItem::WidgetState::Completed), PipelineModel::WidgetStateRole);
   }
-  if(filter->getWarningCode() < 0)
+  if(filter->getWarningCondition() < 0)
   {
     model->setData(index, static_cast<int>(PipelineItem::ErrorState::Warning), PipelineModel::ErrorStateRole);
   }
-  if(filter->getErrorCode() < 0)
+  if(filter->getErrorCondition() < 0)
   {
     model->setData(index, static_cast<int>(PipelineItem::ErrorState::Error), PipelineModel::ErrorStateRole);
   }
@@ -346,7 +373,7 @@ void SVPipelineView::preflightPipeline()
   FilterPipeline::FilterContainerType filters = pipeline->getFilterContainer();
   for(int i = 0; i < filters.size(); i++)
   {
-    filters.at(i)->clearErrorCode();
+    filters.at(i)->setErrorCondition(0);
     filters.at(i)->setCancel(false);
 
     QModelIndex childIndex = model->index(i, PipelineItem::Contents);
@@ -377,11 +404,11 @@ void SVPipelineView::preflightPipeline()
       AbstractFilter::Pointer filter = model->filter(childIndex);
       if(filter.get() != nullptr)
       {
-        if(filter->getWarningCode() < 0)
+        if (filter->getWarningCondition() < 0)
         {
           model->setData(childIndex, static_cast<int>(PipelineItem::ErrorState::Warning), PipelineModel::ErrorStateRole);
         }
-        if(filter->getErrorCode() < 0)
+        if(filter->getErrorCondition() < 0)
         {
           model->setData(childIndex, static_cast<int>(PipelineItem::ErrorState::Error), PipelineModel::ErrorStateRole);
         }
@@ -476,7 +503,7 @@ void SVPipelineView::executePipeline()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineView::processPipelineMessage(const AbstractMessage::Pointer& msg)
+void SVPipelineView::processPipelineMessage(const PipelineMessage& msg)
 {
   emit pipelineHasMessage(msg);
 }
@@ -525,22 +552,19 @@ void SVPipelineView::cancelPipeline()
 // -----------------------------------------------------------------------------
 void SVPipelineView::finishPipeline()
 {
-  switch(m_PipelineInFlight->getExecutionResult())
+  if(m_PipelineInFlight->getExecutionResult() == FilterPipeline::ExecutionResult::Canceled)
   {
-  case FilterPipeline::ExecutionResult::Canceled:
     emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE CANCELED ***************", true));
-    break;
-  case FilterPipeline::ExecutionResult::Completed:
-    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE FINISHED ***************", true));
-    break;
-  case FilterPipeline::ExecutionResult::Failed:
-    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE FAILED ***************", true));
-    break;
-  case FilterPipeline::ExecutionResult::Invalid:
-    throw ExecutionResultInvalidException();
-    break;
   }
-
+  else if (m_PipelineInFlight->getExecutionResult() == FilterPipeline::ExecutionResult::Completed)
+  {
+    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("*************** PIPELINE FINISHED ***************", true));
+  }
+  else
+  {
+    // We should never hit this
+    return;
+  }
   emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle("", false));
 
   // Put back the DataContainerArray for each filter at the conclusion of running
@@ -1604,16 +1628,24 @@ FilterPipeline::Pointer SVPipelineView::readPipelineFromFile(const QString& file
   QFileInfo fi(filePath);
   QString ext = fi.suffix();
 
+  ::JsonObserver jsonObs;
+
   FilterPipeline::Pointer pipeline = FilterPipeline::NullPointer();
   if(ext == "dream3d")
   {
     H5FilterParametersReader::Pointer dream3dReader = H5FilterParametersReader::New();
-    pipeline = dream3dReader->readPipelineFromFile(filePath, this);
+    pipeline = dream3dReader->readPipelineFromFile(filePath, &jsonObs);
   }
   else if(ext == "json")
   {
     JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
-    pipeline = jsonReader->readPipelineFromFile(filePath, this);
+    pipeline = jsonReader->readPipelineFromFile(filePath, &jsonObs);
+  }
+
+  if(jsonObs.getErrorCode() != 0)
+  {
+    emit statusMessage(jsonObs.getErrorMessage());
+    emit stdOutMessage(SVStyle::Instance()->WrapTextWithHtmlStyle(jsonObs.getErrorMessage(), true));
   }
 
   return pipeline;

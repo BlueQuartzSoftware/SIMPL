@@ -71,7 +71,7 @@ MoveMultiData::~MoveMultiData() = default;
 // -----------------------------------------------------------------------------
 void MoveMultiData::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  FilterParameterVector parameters;
 
   QStringList linkedProps;
   linkedProps << "DataContainerDestination"
@@ -123,7 +123,7 @@ void MoveMultiData::readFilterParameters(AbstractFilterParametersReader* reader,
 {
   reader->openFilterGroup(this, index);
   setWhatToMove(reader->readValue("WhatToMove", getWhatToMove()));
-  setDataContainerDestination(reader->readDataArrayPath("DataContainerDestination", getDataContainerDestination()));
+  setDataContainerDestination(reader->readString("DataContainerDestination", getDataContainerDestination()));
   setAttributeMatrixSources(reader->readDataArrayPathVector("AttributeMatrixSource", getAttributeMatrixSources()));
   setAttributeMatrixDestination(reader->readDataArrayPath("AttributeMatrixDestination", getAttributeMatrixDestination()));
   setDataArraySources(reader->readDataArrayPathVector("DataArraySources", getDataArraySources()));
@@ -142,8 +142,8 @@ void MoveMultiData::initialize()
 // -----------------------------------------------------------------------------
 void MoveMultiData::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   QVector<DataArrayPath> amSrcPaths = getAttributeMatrixSources();
   DataArrayPath amDestPath = getAttributeMatrixDestination();
   QVector<DataArrayPath> daSrcPaths = getDataArraySources();
@@ -158,7 +158,7 @@ void MoveMultiData::dataCheck()
       DataContainer::Pointer amSrcDataContainer = getDataContainerArray()->getPrereqDataContainer(this, amSrcPaths[i].getDataContainerName());
       AttributeMatrix::Pointer amSrcAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, amSrcPaths[i], -301);
 
-      if(getErrorCode() < 0)
+      if(getErrorCondition() < 0)
       {
         return;
       }
@@ -166,15 +166,15 @@ void MoveMultiData::dataCheck()
       // Source and Destination match
       if(amSrcDataContainer->getName() == amDestDataContainer->getName())
       {
+        setWarningCondition(-11018);
         QString ss = QObject::tr("The source and destination Data Container are the same.  Is this what you meant to do?");
-        setWarningCondition(-11018, ss);
+        notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
         return;
       }
 
       // Move Attribute Matrix
-      amDestDataContainer->addOrReplaceAttributeMatrix(amSrcAttributeMatrix);
-      // amSrcDataContainer->removeAttributeMatrix(amSrcAttributeMatrix->getName());
-      addPathRename(amSrcPaths[i], amSrcAttributeMatrix->getDataArrayPath());
+      amDestDataContainer->addAttributeMatrix(amSrcAttributeMatrix->getName(), amSrcAttributeMatrix);
+      amSrcDataContainer->removeAttributeMatrix(amSrcAttributeMatrix->getName());
     }
   }
   else if(getWhatToMove() == k_MoveMultiDataArray)
@@ -187,7 +187,7 @@ void MoveMultiData::dataCheck()
       AttributeMatrix::Pointer daSrcAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, daSrcPaths[i], -301);
       IDataArray::Pointer daSrcDataArray = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, daSrcPaths[i]);
 
-      if(getErrorCode() < 0)
+      if(getErrorCondition() < 0)
       {
         return;
       }
@@ -195,30 +195,32 @@ void MoveMultiData::dataCheck()
       // Number of tuples does not match
       if(daDestAttributeMatrix->getNumberOfTuples() != daSrcDataArray->getNumberOfTuples())
       {
+        setErrorCondition(-11019);
         QString ss = QObject::tr("The number of tuples of source Attribute Array (%1) and destination Attribute Matrix (%2) do not match")
           .arg(daSrcDataArray->getNumberOfTuples())
           .arg(daDestAttributeMatrix->getNumberOfTuples());
-        setErrorCondition(-11019, ss);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         return;
       }
       // Source and Destination match
       if(daSrcPaths[i].hasSameAttributeMatrix(amDestPath))
       {
+        setWarningCondition(-11020);
         QString ss = QObject::tr("The source and destination Attribute Matrix are the same.  Is this what you meant to do?");
-        setWarningCondition(-11020, ss);
+        notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
         return;
       }
 
       // Move Array
-      daDestAttributeMatrix->insertOrAssign(daSrcDataArray);
-      // daSrcAttributeMatrix->removeAttributeArray(daSrcPaths[i].getDataArrayName());
-      addPathRename(daSrcPaths[i], daSrcDataArray->getDataArrayPath());
+      daDestAttributeMatrix->addAttributeArray(daSrcPaths[i].getDataArrayName(), daSrcDataArray);
+      daSrcAttributeMatrix->removeAttributeArray(daSrcPaths[i].getDataArrayName());
     }
   }
   else
   {
+    setErrorCondition(-11021);
     QString ss = QObject::tr("Neither an Attribute Matrix nor an Attribute Array was selected to be moved");
-    setErrorCondition(-11021, ss);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 }
@@ -241,11 +243,11 @@ void MoveMultiData::preflight()
 // -----------------------------------------------------------------------------
 void MoveMultiData::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   // Simply running the preflight will do what we need it to.
   dataCheck();
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }

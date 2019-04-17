@@ -47,68 +47,7 @@
 #include "SIMPLib/Geometry/TetrahedralGeom.h"
 #include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/Math/SIMPLibRandom.h"
-#include "SIMPLib/Messages/AbstractMessageHandler.h"
-#include "SIMPLib/Messages/GenericErrorMessage.h"
-#include "SIMPLib/Messages/GenericProgressMessage.h"
-#include "SIMPLib/Messages/GenericStatusMessage.h"
-#include "SIMPLib/Messages/GenericWarningMessage.h"
 #include "SIMPLib/SIMPLibVersion.h"
-
-/**
- * @brief This message handler is used by the FindDerivatives filter to re-emit incoming generic
- * messages from geometry classes as filter messages.  It also prepends text to status messages to show that it is
- * computing derivatives.
- */
-class FilterMessageHandler : public AbstractMessageHandler
-{
-public:
-  explicit FilterMessageHandler(FindDerivatives* filter)
-  : m_Filter(filter)
-  {
-  }
-
-  /**
-   * @brief Re-emits incoming GenericProgressMessages as FilterProgressMessages.
-   */
-  void processMessage(const GenericProgressMessage* msg) const override
-  {
-    emit m_Filter->notifyProgressMessage(msg->getProgressValue(), msg->getMessageText());
-  }
-
-  /**
-   * @brief Re-emits incoming GenericStatusMessages as FilterStatusMessages.  Prepends text to the
-   * message text that explains that we are computing the derivatives
-   */
-  void processMessage(const GenericStatusMessage* msg) const override
-  {
-    QString messageText = QObject::tr("Computing Derivatives || %1").arg(msg->getMessageText());
-    emit m_Filter->notifyStatusMessage(messageText);
-  }
-
-  /**
-   * @brief Re-emits incoming GenericErrorMessages as FilterErrorMessages.
-   */
-  void processMessage(const GenericErrorMessage* msg) const override
-  {
-    emit m_Filter->setErrorCondition(msg->getCode(), msg->getMessageText());
-  }
-
-  /**
-   * @brief Re-emits incoming GenericWarningMessages as FilterWarningMessages.
-   */
-  void processMessage(const GenericWarningMessage* msg) const override
-  {
-    emit m_Filter->setWarningCondition(msg->getCode(), msg->getMessageText());
-  }
-
-private:
-  FindDerivatives* m_Filter = nullptr;
-};
-
-enum createdPathID : RenameDataPath::DataID_t
-{
-  DerivativesArrayID = 1
-};
 
 // -----------------------------------------------------------------------------
 //
@@ -130,7 +69,7 @@ FindDerivatives::~FindDerivatives() = default;
 // -----------------------------------------------------------------------------
 void FindDerivatives::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  FilterParameterVector parameters;
   {
     DataArraySelectionFilterParameter::RequirementType req =
         DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
@@ -212,7 +151,7 @@ template <typename DataType> void interpolateCellValues(IDataArray::Pointer inDa
   {
     EdgeGeom::Pointer edgeGeom = m->getGeometryAs<EdgeGeom>();
     SharedVertexList::Pointer verts = edgeGeom->getVertices();
-    outDataPtr->resizeTuples(edgeGeom->getNumberOfVertices());
+    outDataPtr->resize(edgeGeom->getNumberOfVertices());
     GeometryHelpers::Generic::AverageCellArrayValues<int64_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
@@ -220,7 +159,7 @@ template <typename DataType> void interpolateCellValues(IDataArray::Pointer inDa
   {
     TriangleGeom::Pointer triGeom = m->getGeometryAs<TriangleGeom>();
     SharedVertexList::Pointer verts = triGeom->getVertices();
-    outDataPtr->resizeTuples(triGeom->getNumberOfVertices());
+    outDataPtr->resize(triGeom->getNumberOfVertices());
     GeometryHelpers::Generic::AverageCellArrayValues<int64_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
@@ -228,7 +167,7 @@ template <typename DataType> void interpolateCellValues(IDataArray::Pointer inDa
   {
     QuadGeom::Pointer quadGeom = m->getGeometryAs<QuadGeom>();
     SharedVertexList::Pointer verts = quadGeom->getVertices();
-    outDataPtr->resizeTuples(quadGeom->getNumberOfVertices());
+    outDataPtr->resize(quadGeom->getNumberOfVertices());
     GeometryHelpers::Generic::AverageCellArrayValues<int64_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
@@ -236,7 +175,7 @@ template <typename DataType> void interpolateCellValues(IDataArray::Pointer inDa
   {
     TetrahedralGeom::Pointer tets = m->getGeometryAs<TetrahedralGeom>();
     SharedVertexList::Pointer verts = tets->getVertices();
-    outDataPtr->resizeTuples(tets->getNumberOfVertices());
+    outDataPtr->resize(tets->getNumberOfVertices());
     GeometryHelpers::Generic::AverageCellArrayValues<int64_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
@@ -244,7 +183,7 @@ template <typename DataType> void interpolateCellValues(IDataArray::Pointer inDa
   {
     HexahedralGeom::Pointer hexas = m->getGeometryAs<HexahedralGeom>();
     SharedVertexList::Pointer verts = hexas->getVertices();
-    outDataPtr->resizeTuples(hexas->getNumberOfVertices());
+    outDataPtr->resize(hexas->getNumberOfVertices());
     GeometryHelpers::Generic::AverageCellArrayValues<int64_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
@@ -268,16 +207,16 @@ void FindDerivatives::initialize()
 // -----------------------------------------------------------------------------
 void FindDerivatives::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   initialize();
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, m_SelectedArrayPath.getDataContainerName(), false);
-  if(getErrorCode() < 0 || nullptr == m.get())
+  if(getErrorCondition() < 0 || nullptr == m.get())
   {
     return;
   }
   IGeometry::Pointer geom = m->getPrereqGeometry<IGeometry>(this);
-  if(getErrorCode() < 0 || nullptr == geom.get())
+  if(getErrorCondition() < 0 || nullptr == geom.get())
   {
     return;
   }
@@ -285,7 +224,7 @@ void FindDerivatives::dataCheck()
   AttributeMatrix::Pointer inAttrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedArrayPath, -301);
   AttributeMatrix::Pointer destAttrMat = m->getPrereqAttributeMatrix(this, getDerivativesArrayPath().getAttributeMatrixName(), -301);
 
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -301,13 +240,15 @@ void FindDerivatives::dataCheck()
     if(inAttrMatType != AttributeMatrix::Type::Cell)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected DataArray does not belong to a CellAttributeMatrix").arg(geomName);
-      setErrorCondition(-11002, ss);
+      setErrorCondition(-11002);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }
     if(destAttrMatType != AttributeMatrix::Type::Cell)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected destination AttributeMatrix is not a CellAttributeMatrix").arg(geomName);
-      setErrorCondition(-11002, ss);
+      setErrorCondition(-11002);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
   }
   else if(geomType == IGeometry::Type::Vertex) // validate AttributeMatrices for VertexGeom
@@ -315,12 +256,14 @@ void FindDerivatives::dataCheck()
     if(inAttrMatType != AttributeMatrix::Type::Vertex)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected DataArray does not belong to a VertexAttributeMatrix").arg(geomName);
-      setErrorCondition(-11002, ss);
+      setErrorCondition(-11002);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
     if(destAttrMatType != AttributeMatrix::Type::Vertex)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected destination AttributeMatrix is not a VertexAttributeMatrix").arg(geomName);
-      setErrorCondition(-11002, ss);
+      setErrorCondition(-11002);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
   }
   else // validate AttributeMatrices for all other geometries
@@ -334,14 +277,16 @@ void FindDerivatives::dataCheck()
        inAttrMatType != AttributeMatrix::Type::Cell)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected DataArray does not belong to a Cell, Face, Edge or Vertex AttributeMatrix").arg(geomName);
-      setErrorCondition(-11002, ss);
+      setErrorCondition(-11002);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
     if(geomName == SIMPL::Geometry::QuadGeometry || geomName == SIMPL::Geometry::TriangleGeometry)
     {
       if(destAttrMatType != AttributeMatrix::Type::Face)
       {
         ss = QObject::tr("The Geometry type is %1, but the selected destination Attribute Matrix is not a Face Attribute Matrix").arg(geomName);
-        setErrorCondition(-11002, ss);
+        setErrorCondition(-11002);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       }
     }
     else if(geomName == SIMPL::Geometry::TetrahedralGeometry || geomName == SIMPL::Geometry::HexahedralGeometry)
@@ -349,7 +294,8 @@ void FindDerivatives::dataCheck()
       if(destAttrMatType != AttributeMatrix::Type::Cell)
       {
         ss = QObject::tr("The Geometry type is %1, but the selected destination Attribute Matrix is not an Cell Attribute Matrix").arg(geomName);
-        setErrorCondition(-11002, ss);
+        setErrorCondition(-11002);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       }
     }
     else if(geomName == SIMPL::Geometry::EdgeGeometry)
@@ -357,13 +303,14 @@ void FindDerivatives::dataCheck()
       if(destAttrMatType != AttributeMatrix::Type::Edge)
       {
         ss = QObject::tr("The Geometry type is %1, but the selected destination Attribute Matrix is not an Edge Attribute Matrix").arg(geomName);
-        setErrorCondition(-11002, ss);
+        setErrorCondition(-11002);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       }
     }
   }
 
   m_InArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArrayPath());
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -373,7 +320,7 @@ void FindDerivatives::dataCheck()
   QVector<size_t> dims(1, cDims);
 
   m_DerivativesArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(
-      this, getDerivativesArrayPath(), 0, dims, "", DerivativesArrayID); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+      this, getDerivativesArrayPath(), 0, dims);    /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if(nullptr != m_DerivativesArrayPtr.lock())       /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_DerivativesArray = m_DerivativesArrayPtr.lock()->getPointer(0);
@@ -398,10 +345,10 @@ void FindDerivatives::preflight()
 // -----------------------------------------------------------------------------
 void FindDerivatives::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -409,27 +356,23 @@ void FindDerivatives::execute()
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(m_SelectedArrayPath.getDataContainerName());
   IGeometry::Pointer geom = m->getGeometry();
 
+  geom->setMessagePrefix(getMessagePrefix());
+  geom->setMessageTitle("Computing Derivatives");
+
   if(m_Interpolate)
   {
     DoubleArrayType::Pointer interpolatedValues =
         DoubleArrayType::CreateArray(m_InArrayPtr.lock()->getNumberOfTuples(), m_InArrayPtr.lock()->getComponentDimensions(), "FIND_DERIVATIVES_INTERNAL_USE_ONLY");
     EXECUTE_FUNCTION_TEMPLATE(this, interpolateCellValues, m_InArrayPtr.lock(), m_InArrayPtr.lock(), interpolatedValues, m)
-
     geom->findDerivatives(interpolatedValues, m_DerivativesArrayPtr.lock(), this);
   }
   else
   {
     EXECUTE_FUNCTION_TEMPLATE(this, findDerivs, m_InArrayPtr.lock(), m_InArrayPtr.lock(), m_DerivativesArrayPtr.lock(), m, this);
   }
-}
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void FindDerivatives::processDerivativesMessage(const AbstractMessage::Pointer& msg)
-{
-  FilterMessageHandler msgHandler(this);
-  msg->visit(&msgHandler);
+  geom->setMessagePrefix("");
+  geom->setMessageTitle("");
 }
 
 // -----------------------------------------------------------------------------

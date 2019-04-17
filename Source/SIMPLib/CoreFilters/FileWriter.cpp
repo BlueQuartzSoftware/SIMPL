@@ -58,7 +58,8 @@ FileWriter::~FileWriter() = default;
 // -----------------------------------------------------------------------------
 int32_t FileWriter::writeHeader()
 {
-  setErrorCondition(-1, "FileWriter should be subclassed and functionality implemented there");
+  setErrorCondition(-1);
+  notifyErrorMessage(getHumanLabel(), "FileWriter should be subclassed and functionality implemented there", -1);
   return -1;
 }
 
@@ -67,7 +68,8 @@ int32_t FileWriter::writeHeader()
 // -----------------------------------------------------------------------------
 int32_t FileWriter::writeFile()
 {
-  setErrorCondition(-1, "FileWriter should be subclassed and functionality implemented there");
+  setErrorCondition(-1);
+  notifyErrorMessage(getHumanLabel(), "FileWriter should be subclassed and functionality implemented there", -1);
   return -1;
 }
 
@@ -76,8 +78,8 @@ int32_t FileWriter::writeFile()
 // -----------------------------------------------------------------------------
 void FileWriter::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 
   // Make sure any directory path is also available as the user may have just typed
   // in a path without actually creating the full path
@@ -86,8 +88,9 @@ void FileWriter::execute()
   QDir dir;
   if(!dir.mkpath(parentPath))
   {
+    setErrorCondition(-200);
     QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath);
-    setErrorCondition(-200, ss);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -95,14 +98,16 @@ void FileWriter::execute()
   if(err < 0)
   {
     QString ss = QObject::tr("Error writing the header portion of the file");
-    setErrorCondition(err, ss);
+    setErrorCondition(err);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
   err = writeFile();
   if(err < 0)
   {
     QString ss = QObject::tr("Error writing the data to the file");
-    setErrorCondition(err, ss);
+    setErrorCondition(err);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 }

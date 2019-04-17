@@ -76,12 +76,15 @@ class SIMPLib_EXPORT IGeometry : public Observable
   PYB11_METHOD(Type getGeometryType)
   PYB11_METHOD(QString getGeometryTypeAsString)
   PYB11_METHOD(QString getInfoString ARGS formatType)
+  PYB11_PROPERTY(QString MessagePrefix READ getMessagePrefix WRITE setMessagePrefix)
+  PYB11_PROPERTY(QString MessageTitle READ getMessageTitle WRITE setMessageTitle)
+  PYB11_PROPERTY(QString MessageLabel READ getMessageLabel WRITE setMessageLabel)
   PYB11_METHOD(uint32_t getXdmfGridType)
   PYB11_METHOD(uint32_t getUnitDimensionality)
   PYB11_PROPERTY(uint32_t SpatialDimensionality READ getSpatialDimensionality WRITE setSpatialDimensionality)
   PYB11_METHOD(Pointer deepCopy ARGS forceNoAllocate)
   PYB11_METHOD(void initializeWithZeros)
-  PYB11_METHOD(void addOrReplaceAttributeMatrix ARGS Name AttributeMatrix)
+  PYB11_METHOD(void addAttributeMatrix ARGS Name AttributeMatrix)
   PYB11_METHOD(AttributeMatrix getAttributeMatrix ARGS Name)
   PYB11_METHOD(AttributeMatrix removeAttributeMatrix ARGS Name)
 
@@ -340,6 +343,42 @@ class SIMPLib_EXPORT IGeometry : public Observable
     virtual QString getInfoString(SIMPL::InfoStringFormat) = 0;
 
     /**
+     * @brief setMessagePrefix
+     * @param prefix
+     */
+    virtual void setMessagePrefix(const QString& prefix) final;
+
+    /**
+     * @brief getMessagePrefix
+     * @return
+     */
+    virtual QString getMessagePrefix() final;
+
+    /**
+     * @brief setMessageTitle
+     * @param title
+     */
+    virtual void setMessageTitle(const QString& title) final;
+
+    /**
+     * @brief getMessageTitle
+     * @return
+     */
+    virtual QString getMessageTitle() final;
+
+    /**
+     * @brief setMessageLabel
+     * @param label
+     */
+    virtual void setMessageLabel(const QString& label) final;
+
+    /**
+     * @brief getMessageLabel
+     * @return
+     */
+    virtual QString getMessageLabel() final;
+
+    /**
      * @brief getXdmfGridType
      * @return
      */
@@ -400,9 +439,9 @@ class SIMPLib_EXPORT IGeometry : public Observable
     virtual void initializeWithZeros() = 0;
 
     /**
-     * @brief addOrReplaceAttributeMatrix
+     * @brief addAttributeMatrix
      */
-    virtual void addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data) = 0;
+    virtual void addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data) = 0;
 
     /**
      * @brief getAttributeMatrix
@@ -421,6 +460,9 @@ class SIMPLib_EXPORT IGeometry : public Observable
   protected:
     QString m_Name;
     QString m_GeometryTypeName;
+    QString m_MessagePrefix;
+    QString m_MessageTitle;
+    QString m_MessageLabel;
     Type m_GeometryType = Type::Unknown;
     unsigned int m_XdmfGridType = SIMPL::XdmfGridType::UnknownGrid;
     unsigned int m_UnitDimensionality = 0;

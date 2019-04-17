@@ -63,7 +63,7 @@
 #define FDTEST_CREATE_DATA_CONTAINER(name, geom, dca)                                                                                                                                                  \
   DataContainer::Pointer _##geom##Container = DataContainer::New(#name);                                                                                                                               \
   _##geom##Container->setGeometry(geom);                                                                                                                                                               \
-  dca->addOrReplaceDataContainer(_##geom##Container);
+  dca->addDataContainer(_##geom##Container);
 
 #define FDTEST_SET_PROPERTIES_AND_CHECK_EQ(filter, dc, path, derivsName, data)                                                                                                                         \
   var.setValue(path);                                                                                                                                                                                  \
@@ -79,7 +79,7 @@
     qDebug() << "Unable to set property DerivativesArrayPath for" << #dc;                                                                                                                              \
   }                                                                                                                                                                                                    \
   filter->execute();                                                                                                                                                                                   \
-  err = filter->getErrorCode();                                                                                                                                                                        \
+  err = filter->getErrorCondition();                                                                                                                                                                   \
   DREAM3D_REQUIRE_EQUAL(err, 0);                                                                                                                                                                       \
   data = dc->getAttributeMatrix(derivsName.getAttributeMatrixName())->getAttributeArray(derivsName.getDataArrayName());                                                                                \
   if(nullptr == std::dynamic_pointer_cast<DoubleArrayType>(data))                                                                                                                                      \
@@ -108,7 +108,7 @@
     qDebug() << "Unable to set property DerivativesArrayPath for" << #dc;                                                                                                                              \
   }                                                                                                                                                                                                    \
   filter->execute();                                                                                                                                                                                   \
-  err = filter->getErrorCode();                                                                                                                                                                        \
+  err = filter->getErrorCondition();                                                                                                                                                                   \
   DREAM3D_REQUIRE_NE(err, 0);
 
 class FindDerivativesFilterTest
@@ -123,41 +123,43 @@ public:
   // -----------------------------------------------------------------------------
   void initializeDataArrays(DataContainer::Pointer m, QVector<size_t> cDims)
   {
-    for(auto& am : m->getChildren())
+    QMap<QString, AttributeMatrix::Pointer> attrMats = m->getAttributeMatrices();
+    QMap<QString, AttributeMatrix::Pointer>::Iterator it;
+    for(it = attrMats.begin(); it != attrMats.end(); ++it)
     {
-      DoubleArrayType::Pointer dblArray = DoubleArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_D");
+      DoubleArrayType::Pointer dblArray = DoubleArrayType::CreateArray((*it)->getTupleDimensions(), cDims, "TEST_D");
       dblArray->initializeWithValue(5);
-      am->insertOrAssign(dblArray);
-      FloatArrayType::Pointer fltArray = FloatArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_F");
+      (*it)->addAttributeArray("TEST_D", dblArray);
+      FloatArrayType::Pointer fltArray = FloatArrayType::CreateArray((*it)->getTupleDimensions(), cDims, "TEST_F");
       fltArray->initializeWithValue(5);
-      am->insertOrAssign(fltArray);
-      Int8ArrayType::Pointer int8Array = Int8ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I8");
+      (*it)->addAttributeArray("TEST_F", fltArray);
+      Int8ArrayType::Pointer int8Array = Int8ArrayType::CreateArray((*it)->getTupleDimensions(), cDims, "TEST_I8");
       int8Array->initializeWithValue(5);
-      am->insertOrAssign(int8Array);
-      UInt8ArrayType::Pointer uint8Array = UInt8ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI8");
+      (*it)->addAttributeArray("TEST_I8", int8Array);
+      UInt8ArrayType::Pointer uint8Array = UInt8ArrayType::CreateArray((*it)->getTupleDimensions(), cDims, "TEST_UI8");
       uint8Array->initializeWithValue(5);
-      am->insertOrAssign(uint8Array);
-      Int16ArrayType::Pointer int16Array = Int16ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I16");
+      (*it)->addAttributeArray("TEST_UI8", uint8Array);
+      Int16ArrayType::Pointer int16Array = Int16ArrayType::CreateArray((*it)->getTupleDimensions(), cDims, "TEST_I16");
       int16Array->initializeWithValue(5);
-      am->insertOrAssign(int16Array);
-      UInt16ArrayType::Pointer uint16Array = UInt16ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI16");
+      (*it)->addAttributeArray("TEST_I16", int16Array);
+      UInt16ArrayType::Pointer uint16Array = UInt16ArrayType::CreateArray((*it)->getTupleDimensions(), cDims, "TEST_UI16");
       uint16Array->initializeWithValue(5);
-      am->insertOrAssign(uint16Array);
-      Int32ArrayType::Pointer int32Array = Int32ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I32");
+      (*it)->addAttributeArray("TEST_UI16", uint16Array);
+      Int32ArrayType::Pointer int32Array = Int32ArrayType::CreateArray((*it)->getTupleDimensions(), cDims, "TEST_I32");
       int32Array->initializeWithValue(5);
-      am->insertOrAssign(int32Array);
-      UInt32ArrayType::Pointer uint32Array = UInt32ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI32");
+      (*it)->addAttributeArray("TEST_I32", int32Array);
+      UInt32ArrayType::Pointer uint32Array = UInt32ArrayType::CreateArray((*it)->getTupleDimensions(), cDims, "TEST_UI32");
       uint32Array->initializeWithValue(5);
-      am->insertOrAssign(uint32Array);
-      Int64ArrayType::Pointer int64Array = Int64ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_I64");
+      (*it)->addAttributeArray("TEST_UI32", uint32Array);
+      Int64ArrayType::Pointer int64Array = Int64ArrayType::CreateArray((*it)->getTupleDimensions(), cDims, "TEST_I64");
       int64Array->initializeWithValue(5);
-      am->insertOrAssign(int64Array);
-      UInt64ArrayType::Pointer uint64Array = UInt64ArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_UI64");
+      (*it)->addAttributeArray("TEST_I64", int64Array);
+      UInt64ArrayType::Pointer uint64Array = UInt64ArrayType::CreateArray((*it)->getTupleDimensions(), cDims, "TEST_UI64");
       uint64Array->initializeWithValue(5);
-      am->insertOrAssign(uint64Array);
-      BoolArrayType::Pointer boolArray = BoolArrayType::CreateArray(am->getTupleDimensions(), cDims, "TEST_BOOL");
+      (*it)->addAttributeArray("TEST_UI64", uint64Array);
+      BoolArrayType::Pointer boolArray = BoolArrayType::CreateArray((*it)->getTupleDimensions(), cDims, "TEST_BOOL");
       boolArray->initializeWithZeros();
-      am->insertOrAssign(boolArray);
+      (*it)->addAttributeArray("TEST_BOOL", boolArray);
     }
   }
 
@@ -169,16 +171,16 @@ public:
     AttributeMatrix::Pointer attrMat;
     QString ss = QObject::tr("AttrMatType%1").arg(0);
     attrMat = AttributeMatrix::New(tDimsVert, ss, AttributeMatrix::Type::Vertex);
-    m->addOrReplaceAttributeMatrix(attrMat);
+    m->addAttributeMatrix(ss, attrMat);
     ss = QObject::tr("AttrMatType%1").arg(1);
     attrMat = AttributeMatrix::New(tDimsVert, ss, AttributeMatrix::Type::Edge);
-    m->addOrReplaceAttributeMatrix(attrMat);
+    m->addAttributeMatrix(ss, attrMat);
     ss = QObject::tr("AttrMatType%1").arg(2);
     attrMat = AttributeMatrix::New(tDimsVert, ss, AttributeMatrix::Type::Face);
-    m->addOrReplaceAttributeMatrix(attrMat);
+    m->addAttributeMatrix(ss, attrMat);
     ss = QObject::tr("AttrMatType%1").arg(3);
     attrMat = AttributeMatrix::New(tDimsCell, ss, AttributeMatrix::Type::Cell);
-    m->addOrReplaceAttributeMatrix(attrMat);
+    m->addAttributeMatrix(ss, attrMat);
   }
 
   // -----------------------------------------------------------------------------
@@ -205,7 +207,7 @@ public:
 
     image->setDimensions(std::make_tuple(10, 10, 10));
     image->setOrigin(std::make_tuple(0.0f, 0.0f, 0.0f));
-    image->setSpacing(std::make_tuple(1.0f, 1.0f, 1.0f));
+    image->setResolution(std::make_tuple(1.0f, 1.0f, 1.0f));
     rectGrid->setDimensions(std::make_tuple(10, 10, 10));
     FloatArrayType::Pointer xBounds = FloatArrayType::CreateArray(11, SIMPL::Geometry::xBoundsList);
     FloatArrayType::Pointer yBounds = FloatArrayType::CreateArray(11, SIMPL::Geometry::yBoundsList);

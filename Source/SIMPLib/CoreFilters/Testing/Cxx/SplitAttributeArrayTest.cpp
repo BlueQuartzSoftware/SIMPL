@@ -108,21 +108,21 @@ public:
     SizeTArrayType::Pointer mcArray13 = SizeTArrayType::CreateArray(QVector<size_t>(1, 10), QVector<size_t>(1, 5), "MultiComponent Array size_t");
     fillDataArray<size_t>(mcArray13);
 
-    am1->insertOrAssign(mcArray1);
-    am1->insertOrAssign(mcArray2);
-    am1->insertOrAssign(mcArray3);
-    am1->insertOrAssign(mcArray4);
-    am1->insertOrAssign(mcArray5);
-    am1->insertOrAssign(mcArray6);
-    am1->insertOrAssign(mcArray7);
-    am1->insertOrAssign(mcArray8);
-    am1->insertOrAssign(mcArray9);
-    am1->insertOrAssign(mcArray10);
-    am1->insertOrAssign(mcArray11);
-    am1->insertOrAssign(mcArray12);
-    am1->insertOrAssign(mcArray13);
-    dc->addOrReplaceAttributeMatrix(am1);
-    dca->addOrReplaceDataContainer(dc);
+    am1->addAttributeArray("MultiComponent Array uint32_t", mcArray1);
+    am1->addAttributeArray("MultiComponent Array bool", mcArray2);
+    am1->addAttributeArray("MultiComponent Array unsigned char", mcArray3);
+    am1->addAttributeArray("MultiComponent Array int8_t", mcArray4);
+    am1->addAttributeArray("MultiComponent Array uint8_t", mcArray5);
+    am1->addAttributeArray("MultiComponent Array int16_t", mcArray6);
+    am1->addAttributeArray("MultiComponent Array uint16_t", mcArray7);
+    am1->addAttributeArray("MultiComponent Array int32_t", mcArray8);
+    am1->addAttributeArray("MultiComponent Array int64_t", mcArray9);
+    am1->addAttributeArray("MultiComponent Array uint64_t", mcArray10);
+    am1->addAttributeArray("MultiComponent Array float", mcArray11);
+    am1->addAttributeArray("MultiComponent Array double", mcArray12);
+    am1->addAttributeArray("MultiComponent Array size_t", mcArray13);
+    dc->addAttributeMatrix("AttributeMatrix", am1);
+    dca->addDataContainer(dc);
 
     return dca;
   }
@@ -224,7 +224,7 @@ public:
   {
     //    Observer obs;
     //    QObject::connect(
-    //          filter.get(), &AbstractFilter::messageGenerated,
+    //          filter.get(), &AbstractFilter::filterGeneratedMessage,
     //          &obs, &Observer::processPipelineMessage
     //          );
 
@@ -240,13 +240,13 @@ public:
     DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
     filter->preflight();
-    err = filter->getErrorCode();
+    err = filter->getErrorCondition();
     DREAM3D_REQUIRED(err, >=, 0)
 
     dca = createDataContainerArray();
     filter->setDataContainerArray(dca);
     filter->execute();
-    err = filter->getErrorCode();
+    err = filter->getErrorCondition();
     DREAM3D_REQUIRED(err, >=, 0)
     using DataArrayPtrType = std::shared_ptr<DataArray<T>>;
     DataArrayPtrType mcArray_original =

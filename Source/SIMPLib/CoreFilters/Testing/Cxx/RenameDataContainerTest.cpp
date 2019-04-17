@@ -93,16 +93,16 @@ public:
 
     QVariant value;
 
-    DataArrayPath dataContainerName("DataContainer");
+    QString dataContainerName = "DataContainer";
     value.setValue(dataContainerName);
     filter->setProperty("SelectedDataContainerName", value);
 
-    DataArrayPath newDataContainerName("DataContainer_");
+    QString newDataContainerName = "DataContainer_";
     value.setValue(dataContainerName);
     filter->setProperty("NewDataContainerName", value);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -999);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -999);
   }
 
   // -----------------------------------------------------------------------------
@@ -117,22 +117,22 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     filter->setDataContainerArray(dca);
 
     QVariant value;
 
-    DataArrayPath dataContainerName;
+    QString dataContainerName = "";
     value.setValue(dataContainerName);
     filter->setProperty("SelectedDataContainerName", value);
 
-    DataArrayPath newDataContainerName("DataContainer_");
+    QString newDataContainerName = "DataContainer_";
     value.setValue(dataContainerName);
     filter->setProperty("NewDataContainerName", value);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -11001);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11001);
   }
 
   // -----------------------------------------------------------------------------
@@ -147,26 +147,24 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     filter->setDataContainerArray(dca);
 
     QVariant value;
 
-    DataArrayPath dataContainerName("DataContainer");
+    QString dataContainerName = "DataContainer";
     value.setValue(dataContainerName);
     filter->setProperty("SelectedDataContainerName", value);
 
-    DataArrayPath newDataContainerName("Container_2");
+    QString newDataContainerName = "Container_2";
     value.setValue(newDataContainerName);
     filter->setProperty("NewDataContainerName", value);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
 
-    DataArrayPath dap(dc->getName());
-
-    DREAM3D_REQUIRE_EQUAL(dap, newDataContainerName);
+    DREAM3D_REQUIRE_EQUAL(dc->getName(), newDataContainerName);
   }
 
   // -----------------------------------------------------------------------------
@@ -181,22 +179,22 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     filter->setDataContainerArray(dca);
 
     QVariant value;
 
-    DataArrayPath dataContainerName("DataContainer");
+    QString dataContainerName = "DataContainer";
     value.setValue(dataContainerName);
     filter->setProperty("SelectedDataContainerName", value);
 
-    DataArrayPath newDataContainerName;
+    QString newDataContainerName = "";
     value.setValue(newDataContainerName);
     filter->setProperty("NewDataContainerName", value);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -11001);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11001);
   }
 
   // -----------------------------------------------------------------------------
@@ -211,21 +209,21 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     filter->setDataContainerArray(dca);
 
     QVariant value;
 
-    DataArrayPath dataContainerName("DataContainer");
+    QString dataContainerName = "DataContainer";
     value.setValue(dataContainerName);
     filter->setProperty("SelectedDataContainerName", value);
 
-    DataArrayPath newDataContainerName;
+    QString newDataContainerName = "";
     value.setValue(newDataContainerName);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -11001);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11001);
   }
 
   // -----------------------------------------------------------------------------

@@ -260,30 +260,30 @@ public:
 
     // Check empty file path error
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -20001);
-    filter->clearErrorCode();
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20001);
+    filter->setErrorCondition(0);
 
     // Check incorrect extension error
     filter->setHDF5FilePath("foo.txt");
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -20002);
-    filter->clearErrorCode();
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20002);
+    filter->setErrorCondition(0);
 
     // Check non-existent file error
     filter->setHDF5FilePath("foo.h5");
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -20003);
-    filter->clearErrorCode();
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20003);
+    filter->setErrorCondition(0);
 
     // Put in the correct file path
     filter->setHDF5FilePath(m_FilePath);
 
     // Check empty dataset path error
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -20004);
-    filter->clearErrorCode();
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20004);
+    filter->setErrorCondition(0);
 
     // Check incorrect dataset path error
     QList<ImportHDF5Dataset::DatasetImportInfo> importInfoList;
@@ -293,8 +293,8 @@ public:
     filter->setDatasetImportInfoList(importInfoList);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -20005);
-    filter->clearErrorCode();
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20005);
+    filter->setErrorCondition(0);
 
     // Fill in Dataset Path with a valid path so that we can continue our error checks
     importInfoList.clear();
@@ -306,8 +306,8 @@ public:
 
     // Check empty component dimensions
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -20006);
-    filter->clearErrorCode();
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20006);
+    filter->setErrorCondition(0);
 
     // Check incorrect component dimensions
     importInfoList.clear();
@@ -316,8 +316,8 @@ public:
     filter->setDatasetImportInfoList(importInfoList);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -20007);
-    filter->clearErrorCode();
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -20007);
+    filter->setErrorCondition(0);
 
     return filter;
   }
@@ -331,10 +331,10 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dca->addOrReplaceDataContainer(dc);
+    dca->addDataContainer(dc);
 
     AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "AttributeMatrix", AttributeMatrix::Type::Generic);
-    dc->addOrReplaceAttributeMatrix(attrMat);
+    dc->addAttributeMatrix(attrMat->getName(), attrMat);
 
     return dca;
   }
@@ -412,7 +412,7 @@ public:
     }
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), errCode);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), errCode);
 
     // If we got through without errors, validate the results
     if(errCode == 0)

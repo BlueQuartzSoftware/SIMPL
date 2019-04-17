@@ -31,17 +31,20 @@ PYBIND11_MAKE_OPAQUE(std::vector<size_t>);
 
 #include <utility>
 
-#include <QtCore/QDateTime>
-#include <QtCore/QString>
-
 #include "SIMPLib/Common/PhaseType.h"
-#include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/Common/ShapeType.h"
 #include "SIMPLib/CoreFilters/ArrayCalculator.h"
 #include "SIMPLib/CoreFilters/ImportHDF5Dataset.h"
 #include "SIMPLib/FilterParameters/AxisAngleInput.h"
 #include "SIMPLib/FilterParameters/FileListInfo.h"
+#include "SIMPLib/FilterParameters/FloatVec2.h"
+#include "SIMPLib/FilterParameters/FloatVec3.h"
+#include "SIMPLib/FilterParameters/IntVec3.h"
 #include "SIMPLib/FilterParameters/ThirdOrderPolynomial.h"
+#include <QtCore/QDateTime>
+#include <QtCore/QString>
+
+//#include "OrientationLib/OrientationMath/OrientationConverter.hpp"
 
 namespace py = pybind11;
 
@@ -140,11 +143,15 @@ PYBIND11_MODULE(dream3d, m)
   //
   //
   //
-  py::class_<FloatVec3Type>(mod, "FloatVec3Type").def(py::init<const float&, const float&, const float&>());
-  py::class_<FloatVec2Type>(mod, "FloatVec2Type").def(py::init<const float&, const float&>());
-  py::class_<IntVec3Type>(mod, "IntVec3Type").def(py::init<const int&, const int&, const int&>());
-
-  py::class_<SizeVec3Type>(mod, "SizeVec3Type").def(py::init<const size_t&, const size_t&, const size_t&>());
+  py::class_<FloatVec3_t>(mod, "FloatVec3")
+      .def(py::init<const float &, const float &, const float &>())
+  ;
+  py::class_<FloatVec2_t>(mod, "FloatVec2")
+	  .def(py::init<const float &, const float &>())
+  ;
+  py::class_<IntVec3_t>(mod, "IntVec3")
+      .def(py::init<const int &, const int &, const int &>())
+  ;
 
   py::class_<AxisAngleInput_t>(mod, "AxisAngleInput")
 	  .def(py::init< const float &, const float &, const float &, const float &>())

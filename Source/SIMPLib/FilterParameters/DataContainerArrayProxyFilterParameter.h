@@ -136,7 +136,7 @@ class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParam
     /**
      * @brief Handle DataArrayPath changes if necessary
      */
-    void dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath) override;
+    void dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath) override;
 
   protected:
       /**

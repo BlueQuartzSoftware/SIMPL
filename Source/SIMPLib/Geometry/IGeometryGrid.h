@@ -37,7 +37,6 @@
 
 #include <tuple>
 
-#include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 
@@ -62,10 +61,10 @@ class SIMPLib_EXPORT IGeometryGrid : public IGeometry
 
     IGeometryGrid();
     ~IGeometryGrid() override;
-
-    virtual void setDimensions(const SizeVec3Type& dims) = 0;
-    virtual void setDimensions(SizeVec3Type& dims) = 0;
-    virtual void setDimensions(const SIMPL::Tuple3SVec& dims) = 0; // Needed for Python Interface
+    
+    virtual void setDimensions(size_t dims[3]) = 0;
+    virtual void setDimensions(size_t a, size_t b, size_t c) = 0;
+    virtual void setDimensions(const SIMPL::Tuple3SVec& dims) = 0;
 
     virtual SIMPL::Tuple3SVec getDimensions() const = 0;
 

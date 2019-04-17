@@ -95,10 +95,10 @@ void FloatVec2Widget::setupGui()
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
-    FloatVec2Type data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<FloatVec2Type>();
+    FloatVec2_t data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<FloatVec2_t>();
 
-    xData->setText(loc.toString(data[0]));
-    yData->setText(loc.toString(data[1]));
+    xData->setText(loc.toString(data.x));
+    yData->setText(loc.toString(data.y));
   }
 
   errorLabel->hide();
@@ -137,27 +137,27 @@ void FloatVec2Widget::widgetChanged(const QString& text)
 void FloatVec2Widget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   bool ok = false;
-  FloatVec2Type defValue = m_FilterParameter->getDefaultValue().value<FloatVec2Type>();
-  FloatVec2Type data;
+  FloatVec2_t defValue = m_FilterParameter->getDefaultValue().value<FloatVec2_t>();
+  FloatVec2_t data;
 
   QLocale loc;
 
-  data[0] = loc.toFloat(xData->text(), &ok);
+  data.x = loc.toFloat(xData->text(), &ok);
   if(!ok)
   {
     SVStyle::Instance()->LineEditBackgroundErrorStyle(xData);
     SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);    errorLabel->setText("X Value entered is beyond the representable range for a double.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());
     errorLabel->show();
-    data[0] = defValue[0];
+    data.x = defValue.x;
   }
 
-  data[1] = loc.toFloat(yData->text(), &ok);
+  data.y = loc.toFloat(yData->text(), &ok);
   if(!ok)
   {
     SVStyle::Instance()->LineEditBackgroundErrorStyle(yData);
     SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);    errorLabel->setText("Y Value entered is beyond the representable range for a double.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());
     errorLabel->show();
-    data[1] = defValue[1];
+    data.y = defValue.y;
   }
 
   QVariant v;

@@ -170,8 +170,6 @@ function(SIMPL_START_FILTER_GROUP)
   STRING(REPLACE "Filters" "" P_FILTER_GROUP ${P_FILTER_GROUP})
   
   set_property(GLOBAL APPEND PROPERTY DREAM3DDoc_GROUPS ${P_FILTER_GROUP})
-
-  file(WRITE ${SIMPLProj_BINARY_DIR}/${P_FILTER_GROUP}PublicFilters.txt "# ${P_FILTER_GROUP} Public Filters\n")
 endfunction()
 
 #-------------------------------------------------------------------------------
@@ -273,9 +271,6 @@ macro(ADD_SIMPL_FILTER FilterLib WidgetLib filterGroup filterName filterDocPath 
       get_property(DREAM3DDocRoot GLOBAL PROPERTY DREAM3DDocRoot)
       set_property(GLOBAL APPEND PROPERTY DREAM3DDoc_${filterGroup} ${filterDocPath})
   endif()
-
-  file(APPEND ${SIMPLProj_BINARY_DIR}/${FilterLib}PublicFilters.txt "${filterName}.h\n")
-
 endmacro()
 
 #-------------------------------------------------------------------------------

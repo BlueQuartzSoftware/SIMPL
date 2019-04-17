@@ -208,7 +208,7 @@ void MultiDataArraySelectionFilterParameter::writeJson(QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath)
+void MultiDataArraySelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath)
 {
   DataArrayPath oldPath;
   DataArrayPath newPath;

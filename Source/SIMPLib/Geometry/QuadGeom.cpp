@@ -129,6 +129,9 @@ QuadGeom::QuadGeom()
   m_GeometryTypeName = SIMPL::Geometry::QuadGeometry;
   m_GeometryType = IGeometry::Type::Quad;
   m_XdmfGridType = SIMPL::XdmfGridType::PolyData;
+  m_MessagePrefix = "";
+  m_MessageTitle = "";
+  m_MessageLabel = "";
   m_UnitDimensionality = 2;
   m_SpatialDimensionality = 3;
   m_VertexList = QuadGeom::CreateSharedVertexList(0);
@@ -202,7 +205,7 @@ void QuadGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QuadGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
+void QuadGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
   if(data->getType() != AttributeMatrix::Type::Vertex && data->getType() != AttributeMatrix::Type::Edge && data->getType() != AttributeMatrix::Type::Face)
   {
@@ -221,10 +224,10 @@ void QuadGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix:
   {
     return;
   }
-  // if(data->getName().compare(name) != 0)
-  //{
-  //  data->setName(name);
-  //}
+  if(data->getName().compare(name) != 0)
+  {
+    data->setName(name);
+  }
   m_AttributeMatrices[name] = data;
 }
 
@@ -501,7 +504,7 @@ void QuadGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::
 
   if(observable != nullptr)
   {
-    connect(this, SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), observable, SLOT(processDerivativesMessage(const AbstractMessage::Pointer&)));
+    connect(this, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), observable, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
   }
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS

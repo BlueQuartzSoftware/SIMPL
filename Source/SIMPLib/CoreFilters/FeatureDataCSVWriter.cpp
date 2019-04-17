@@ -70,7 +70,7 @@ FeatureDataCSVWriter::~FeatureDataCSVWriter() = default;
 // -----------------------------------------------------------------------------
 void FeatureDataCSVWriter::setupFilterParameters()
 {
-  FilterParameterVectorType parameters;
+  FilterParameterVector parameters;
   parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Output File", FeatureDataFile, FilterParameter::Parameter, FeatureDataCSVWriter, "*.csv", "Comma Separated Data"));
   parameters.push_back(SIMPL_NEW_BOOL_FP("Write Neighbor Data", WriteNeighborListData, FilterParameter::Parameter, FeatureDataCSVWriter));
   parameters.push_back(SIMPL_NEW_BOOL_FP("Write Number of Features Line", WriteNumFeaturesLine, FilterParameter::Parameter, FeatureDataCSVWriter));
@@ -119,8 +119,8 @@ void FeatureDataCSVWriter::initialize()
 // -----------------------------------------------------------------------------
 void FeatureDataCSVWriter::dataCheck()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
 
   getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getCellFeatureAttributeMatrixPath(), -301);
 
@@ -173,10 +173,10 @@ void FeatureDataCSVWriter::preflight()
 // -----------------------------------------------------------------------------
 void FeatureDataCSVWriter::execute()
 {
-  clearErrorCode();
-  clearWarningCode();
+  setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
-  if(getErrorCode() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -188,7 +188,8 @@ void FeatureDataCSVWriter::execute()
   if(!parentPath.mkpath("."))
   {
     QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath.absolutePath());
-    setErrorCondition(-1, ss);
+    setErrorCondition(-1);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -196,7 +197,8 @@ void FeatureDataCSVWriter::execute()
   if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
   {
     QString ss = QObject::tr("Output file could not be opened: %1").arg(getFeatureDataFile());
-    setErrorCondition(-100, ss);
+    setErrorCondition(-100);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
@@ -259,7 +261,7 @@ void FeatureDataCSVWriter::execute()
     if(percentIncrement > threshold)
     {
       QString ss = QObject::tr("Writing Feature Data || %1% Complete").arg(static_cast<double>(percentIncrement));
-      notifyStatusMessage(ss);
+      notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
       threshold = threshold + 5.0f;
       if(threshold < percentIncrement)
       {

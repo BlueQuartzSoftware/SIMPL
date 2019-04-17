@@ -86,7 +86,7 @@ QVector<QString> DataContainerBundle::getDataContainerNames()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerBundle::addOrReplaceDataContainer(DataContainer::Pointer dc)
+void DataContainerBundle::addDataContainer(DataContainer::Pointer dc)
 {
   m_DataContainers.append(dc);
 }

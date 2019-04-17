@@ -67,7 +67,8 @@ void FileReader::dataCheck()
 // -----------------------------------------------------------------------------
 int32_t FileReader::readHeader()
 {
-  setErrorCondition(-1, "FileReader should be subclassed and functionality implemented there");
+  setErrorCondition(-1);
+  notifyErrorMessage(getHumanLabel(), "FileReader should be subclassed and functionality implemented there", -1);
   return -1;
 }
 
@@ -76,7 +77,8 @@ int32_t FileReader::readHeader()
 // -----------------------------------------------------------------------------
 int32_t FileReader::readFile()
 {
-  setErrorCondition(-1, "FileReader should be subclassed and functionality implemented there");
+  setErrorCondition(-1);
+  notifyErrorMessage(getHumanLabel(), "FileReader should be subclassed and functionality implemented there", -1);
   return -1;
 }
 

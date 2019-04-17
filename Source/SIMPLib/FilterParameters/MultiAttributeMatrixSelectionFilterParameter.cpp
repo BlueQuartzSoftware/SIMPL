@@ -208,7 +208,7 @@ void MultiAttributeMatrixSelectionFilterParameter::writeJson(QJsonObject& json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiAttributeMatrixSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath)
+void MultiAttributeMatrixSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath)
 {
   DataArrayPath oldPath;
   DataArrayPath newPath;

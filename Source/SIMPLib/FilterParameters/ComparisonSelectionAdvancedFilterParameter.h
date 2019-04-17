@@ -143,7 +143,7 @@ class SIMPLib_EXPORT ComparisonSelectionAdvancedFilterParameter : public FilterP
      * @param filter
      * @param renamePath
      */
-    void dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath) override;
+    void dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath::RenameType renamePath) override;
 
   protected:
     /**

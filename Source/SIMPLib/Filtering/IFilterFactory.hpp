@@ -121,20 +121,10 @@ public:
     Q_ASSERT(false);
     return "";
   }
-
-  /**
-   * @brief getFilterHtmlSummary
-   * @return
-   */
-  virtual QString getFilterHtmlSummary() const
-  {
-    Q_ASSERT(false);
-    return "";
-  }
-
+  
   /**
    * @brief getUuid
-   * @return
+   * @return 
    */
   virtual QUuid getUuid() const
   {
@@ -145,10 +135,8 @@ public:
 protected:
   IFilterFactory() = default;
 
-public:
-  IFilterFactory(const IFilterFactory&) = delete;            // Copy Constructor Not Implemented
-  IFilterFactory(IFilterFactory&&) = delete;                 // Move Constructor Not Implemented
-  IFilterFactory& operator=(const IFilterFactory&) = delete; // Copy Assignment Not Implemented
-  IFilterFactory& operator=(IFilterFactory&&) = delete;      // Move Assignment Not Implemented
+private:
+  IFilterFactory(const IFilterFactory&); // Copy Constructor Not Implemented
+  void operator=(const IFilterFactory&); // Move assignment Not Implemented
 };
 

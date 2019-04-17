@@ -38,10 +38,9 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QMainWindow>
 
-#include "SIMPLib/Common/IObserver.h"
-#include "SIMPLib/Messages/AbstractMessage.h"
-#include "SIMPLib/Messages/AbstractMessageHandler.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/IObserver.h"
+#include "SIMPLib/Common/PipelineMessage.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
@@ -51,19 +50,17 @@ class FilterListToolboxWidget;
 class QLabel;
 class QTableWidgetItem;
 class QtSSettings;
-class QTableWidget;
 namespace Ui
 {
 class IssuesWidget;
 }
-
-class IssuesWidgetMessageHandler;
 
 /**
  * @brief The IssuesWidget class
  */
 class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver
 {
+
     Q_OBJECT
   public:
     static SIMPLView::DockWidgetSettings::HideDockSetting GetHideDockSetting();
@@ -72,21 +69,15 @@ class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver
     IssuesWidget(QWidget* parent = nullptr);
     ~IssuesWidget() override;
 
-    friend IssuesWidgetMessageHandler;
+    QLabel* createHyperlinkLabel(const PipelineMessage& msg);
 
     static const int FilterIndex = 0;
     static const int FilterName = 1;
     static const int Description = 2;
     static const int ErrorCode = 3;
 
-    /**
-     * @brief getIssuesTable
-     * @return
-     */
-    QTableWidget* getIssuesTable();
-
   public slots:
-    void processPipelineMessage(const AbstractMessage::Pointer& msg) override;
+    void processPipelineMessage(const PipelineMessage& msg) override;
     void clearIssues();
     void on_errorTableWidget_itemClicked( QTableWidgetItem* item );
     void displayCachedMessages();
@@ -106,7 +97,7 @@ class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver
 
   private:
     QSharedPointer<Ui::IssuesWidget> ui = nullptr;
-    std::vector<AbstractMessage::Pointer> m_CachedMessages;
+    QVector<PipelineMessage> m_CachedMessages;
 
   public:
     IssuesWidget(const IssuesWidget&) = delete;   // Copy Constructor Not Implemented
