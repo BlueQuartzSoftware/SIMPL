@@ -168,7 +168,7 @@ void RemoveComponentFromArray::dataCheck()
     m_NewArrayPtr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, m_InArrayPtr.lock(), NewDataArrayID);
   }
 
-  cDims[0] = m_InArrayPtr.lock()->getNumberOfComponents() - 1;
+  cDims[0] = static_cast<size_t>(m_InArrayPtr.lock()->getNumberOfComponents()) - 1;
   DataArrayPath tempPath2(getSelectedArrayPath().getDataContainerName(), getSelectedArrayPath().getAttributeMatrixName(), getReducedArrayArrayName());
   m_ReducedArrayPtr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath2, cDims, m_InArrayPtr.lock(), ReducedDataArrayID);
 }

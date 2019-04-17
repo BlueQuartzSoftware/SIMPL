@@ -175,7 +175,7 @@ class SIMPLib_EXPORT ExecuteProcess : public AbstractFilter
   private:
     QWaitCondition                                      m_WaitCondition;
     QMutex                                              m_Mutex;
-    bool                                                m_Pause;
+    bool                                                m_Pause = false;
     QSharedPointer<QProcess>                            m_ProcessPtr;
 
     /**

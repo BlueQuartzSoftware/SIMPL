@@ -339,7 +339,7 @@ QVector<double> DynamicTableData::flattenData() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-std::vector<std::vector<double>> DynamicTableData::ExpandData(std::vector<double> orig, int nRows, int nCols)
+std::vector<std::vector<double>> DynamicTableData::ExpandData(std::vector<double> orig, size_t nRows, size_t nCols)
 {
   std::vector<std::vector<double>> expand(nRows, std::vector<double>(nCols));
 
@@ -349,9 +349,9 @@ std::vector<std::vector<double>> DynamicTableData::ExpandData(std::vector<double
     return expand;
   }
 
-  for(int row = 0; row < nRows; row++)
+  for(size_t row = 0; row < nRows; row++)
   {
-    for(int col = 0; col < nCols; col++)
+    for(size_t col = 0; col < nCols; col++)
     {
       expand[row][col] = orig[row * nCols + col];
     }

@@ -88,7 +88,7 @@ class SIMPLib_EXPORT DynamicTableData : public QObject
     /**
     * @brief This does the reverse of the flattenData function.  It expands the data back into a 2D array.
     */
-    static std::vector<std::vector<double> > ExpandData(std::vector<double> orig, int nRows, int nCols);
+    static std::vector<std::vector<double> > ExpandData(std::vector<double> orig, size_t nRows, size_t nCols);
 
     /**
     * @brief This deserializes a string of headers and returns the original QStringList.

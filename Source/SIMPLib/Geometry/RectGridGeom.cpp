@@ -208,7 +208,7 @@ public:
 
           // Compute the actual derivatives
           index = (z * dims[1] * dims[0]) + (y * dims[0]) + x;
-          for(int32_t i = 0; i < numComps; i++)
+          for(size_t i = 0; i < numComps; i++)
           {
             derivsPtr[index * numComps * 3 + i * 3] = xix * dValuesdXi[i] + etax * dValuesdEta[i] + zetax * dValuesdZeta[i];
 
@@ -706,9 +706,9 @@ void RectGridGeom::getCoords(size_t idx[3], double coords[3])
   float* yBnds = m_yBounds->getPointer(0);
   float* zBnds = m_zBounds->getPointer(0);
 
-  coords[0] = static_cast<double>(0.5 * (xBnds[idx[0]] + xBnds[idx[0] + 1]));
-  coords[1] = static_cast<double>(0.5 * (yBnds[idx[1]] + yBnds[idx[1] + 1]));
-  coords[2] = static_cast<double>(0.5 * (zBnds[idx[2]] + zBnds[idx[2] + 1]));
+  coords[0] = 0.5 * (static_cast<double>(xBnds[idx[0]]) + xBnds[idx[0] + 1]);
+  coords[1] = 0.5 * (static_cast<double>(yBnds[idx[1]]) + yBnds[idx[1] + 1]);
+  coords[2] = 0.5 * (static_cast<double>(zBnds[idx[2]]) + zBnds[idx[2] + 1]);
 }
 
 // -----------------------------------------------------------------------------
@@ -720,9 +720,9 @@ void RectGridGeom::getCoords(size_t x, size_t y, size_t z, double coords[3])
   float* yBnds = m_yBounds->getPointer(0);
   float* zBnds = m_zBounds->getPointer(0);
 
-  coords[0] = static_cast<double>(0.5 * (xBnds[x] + xBnds[x + 1]));
-  coords[1] = static_cast<double>(0.5 * (yBnds[y] + yBnds[y + 1]));
-  coords[2] = static_cast<double>(0.5 * (zBnds[z] + zBnds[z + 1]));
+  coords[0] = 0.5 * (static_cast<double>(xBnds[x]) + xBnds[x + 1]);
+  coords[1] = 0.5 * (static_cast<double>(yBnds[y]) + yBnds[y + 1]);
+  coords[2] = 0.5 * (static_cast<double>(zBnds[z]) + zBnds[z + 1]);
 }
 
 // -----------------------------------------------------------------------------
@@ -738,9 +738,9 @@ void RectGridGeom::getCoords(size_t idx, double coords[3])
   float* yBnds = m_yBounds->getPointer(0);
   float* zBnds = m_zBounds->getPointer(0);
 
-  coords[0] = static_cast<double>(0.5f * (xBnds[column] + xBnds[column + 1]));
-  coords[1] = static_cast<double>(0.5f * (yBnds[row] + yBnds[row + 1]));
-  coords[2] = static_cast<double>(0.5f * (zBnds[plane] + zBnds[plane + 1]));
+  coords[0] = 0.5 * (static_cast<double>(xBnds[column]) + xBnds[column + 1]);
+  coords[1] = 0.5 * (static_cast<double>(yBnds[row]) + yBnds[row + 1]);
+  coords[2] = 0.5 * (static_cast<double>(zBnds[plane]) + zBnds[plane + 1]);
 }
 
 // -----------------------------------------------------------------------------

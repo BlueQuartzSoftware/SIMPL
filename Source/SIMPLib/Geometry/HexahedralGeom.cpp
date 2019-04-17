@@ -52,7 +52,7 @@ public:
     for(int64_t i = start; i < end; i++)
     {
       m_Hexas->getVertsAtHex(i, verts);
-      for(int32_t j = 0; j < cDims; j++)
+      for(size_t j = 0; j < cDims; j++)
       {
         for(size_t k = 0; k < 8; k++)
         {
@@ -171,8 +171,8 @@ void HexahedralGeom::initializeWithZeros()
 void HexahedralGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
   if(data->getType() != AttributeMatrix::Type::Vertex
-     || data->getType() != AttributeMatrix::Type::Edge
-     || data->getType() != AttributeMatrix::Type::Face || data->getType() != AttributeMatrix::Type::Cell)
+     && data->getType() != AttributeMatrix::Type::Edge
+     && data->getType() != AttributeMatrix::Type::Face || data->getType() != AttributeMatrix::Type::Cell)
   {
     // HexahedralGeom can only accept vertex, edge, face or cell Attribute Matrices
     return;
