@@ -54,11 +54,11 @@
 
 #define CREATE_DATA_ARRAY(type, attrMat, tDims, cDimsVec, cDimsScalar, vecName, scalarName, err)                                                                                                       \
   DataArray<type>::Pointer _##type##VectorArray = DataArray<type>::CreateArray(tDims, cDimsVec, #vecName, true);                                                                                       \
-  err = attrMat->addAttributeArray(#vecName, _##type##VectorArray);                                                                                                                                    \
+  err = attrMat->insertOrAssign(_##type##VectorArray);                                                                                                                                                 \
   _##type##VectorArray->initializeWithZeros();                                                                                                                                                         \
   DREAM3D_REQUIRE(err >= 0);                                                                                                                                                                           \
   DataArray<type>::Pointer _##type##ScalarArray = DataArray<type>::CreateArray(tDims, cDimsScalar, #scalarName, true);                                                                                 \
-  err = attrMat->addAttributeArray(#scalarName, _##type##ScalarArray);                                                                                                                                 \
+  err = attrMat->insertOrAssign(_##type##ScalarArray);                                                                                                                                                 \
   _##type##ScalarArray->initializeWithZeros();                                                                                                                                                         \
   DREAM3D_REQUIRE(err >= 0);
 
@@ -120,8 +120,8 @@ public:
 
     QVector<size_t> tDims(1, 100);
     AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "CombineAttributeArraysTest", AttributeMatrix::Type::Cell);
-    m->addAttributeMatrix("CombineAttributeArraysTest", attrMat);
-    dca->addDataContainer(m);
+    m->addOrReplaceAttributeMatrix(attrMat);
+    dca->addOrReplaceDataContainer(m);
 
     QVector<size_t> cDimsVec(1, 3);
     QVector<size_t> cDimsScalar(1, 1);
@@ -214,7 +214,7 @@ public:
     }
 
     filter->execute();
-    err = filter->getErrorCondition();
+    err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, 0);
 
     auto outputArrayPtr = filter->getDataContainerArray()->getDataContainer("CombineAttributeArraysTest")->getAttributeMatrix("CombineAttributeArraysTest")->getAttributeArray("CombinedData");
@@ -242,7 +242,7 @@ public:
     }
 
     filter->execute();
-    err = filter->getErrorCondition();
+    err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, 0);
 
     outputArrayPtr = filter->getDataContainerArray()->getDataContainer("CombineAttributeArraysTest")->getAttributeMatrix("CombineAttributeArraysTest")->getAttributeArray("CombinedData");
@@ -272,7 +272,7 @@ public:
     }
 
     filter->execute();
-    err = filter->getErrorCondition();
+    err = filter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(err, 0);
 
     outputArrayPtr = filter->getDataContainerArray()->getDataContainer("CombineAttributeArraysTest")->getAttributeMatrix("CombineAttributeArraysTest")->getAttributeArray("CombinedData");

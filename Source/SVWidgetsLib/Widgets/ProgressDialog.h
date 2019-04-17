@@ -31,8 +31,7 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
-
-#include "SIMPLib/Common/PipelineMessage.h"
+#include "SIMPLib/Messages/AbstractMessage.h"
 
 #include <QtWidgets/QDialog>
 
@@ -42,6 +41,8 @@
 namespace Ui {
 class ProgressDialog;
 }
+
+class ProgressDialogMessageHandler;
 
 /**
  * @brief The ProgressDialog class
@@ -54,10 +55,12 @@ class SVWidgetsLib_EXPORT ProgressDialog : public QDialog
     ProgressDialog(QWidget *parent = Q_NULLPTR, Qt::WindowFlags f = Qt::WindowFlags());
     ~ProgressDialog() override;
 
+    friend ProgressDialogMessageHandler;
+
   public slots:
 
     void setLabelText(const QString& text);
-    void processPipelineMessage(const PipelineMessage& msg);
+    void processPipelineMessage(const AbstractMessage::Pointer& msg);
 
   protected:
 

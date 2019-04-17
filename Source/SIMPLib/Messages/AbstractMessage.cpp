@@ -1,5 +1,5 @@
 /* ============================================================================
- * Copyright (c) 2019 BlueQuartz Software, LLC
+ * Copyright (c) 2009-2019 BlueQuartz Software, LLC
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -26,37 +26,32 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
+ * The code contained herein was partially funded by the following contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *    United States Air Force Prime Contract FA8650-15-D-5231
+ *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#pragma once
 
-#include <QtCore/QJsonObject>
+#include "AbstractMessage.h"
 
-typedef struct
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AbstractMessage::AbstractMessage()
 {
-  float x;
-  float y;
-  float z;
-  void FloatVec2(const float& xx, const float& yy)
-  {
-    x = xx;
-    y = yy;
-  }
-  void writeJson(QJsonObject& json)
-  {
-    json["x"] = static_cast<double>(x);
-    json["y"] = static_cast<double>(y);
-  }
+}
 
-  bool readJson(QJsonObject& json)
-  {
-    if(json["x"].isDouble() && json["y"].isDouble())
-    {
-      x = static_cast<float>(json["x"].toDouble());
-      y = static_cast<float>(json["y"].toDouble());
-      return true;
-    }
-    return false;
-  }
-} FloatVec2_t;
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AbstractMessage::AbstractMessage(const QString& msgText)
+: m_MessageText(msgText)
+{
+}
 
-Q_DECLARE_METATYPE(FloatVec2_t)
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AbstractMessage::~AbstractMessage() = default;

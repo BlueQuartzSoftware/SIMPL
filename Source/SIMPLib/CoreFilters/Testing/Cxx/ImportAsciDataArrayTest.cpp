@@ -61,15 +61,15 @@ public:
     DataContainer::Pointer dc = DataContainer::New("ImageDataContainer");
 
     ImageGeom::Pointer imageGeom = ImageGeom::New();
-    imageGeom->setDimensions(m_XDim, m_YDim, m_ZDim);
+    imageGeom->setDimensions(SizeVec3Type(m_XDim, m_YDim, m_ZDim));
 
     dc->setGeometry(imageGeom);
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     QVector<size_t> tDims = {m_XDim, m_YDim, m_ZDim};
     AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "AttributeMatrix", AttributeMatrix::Type::Generic);
 
-    dc->addAttributeMatrix(attrMat->getName(), attrMat);
+    dc->addOrReplaceAttributeMatrix(attrMat);
 
     FilterManager* fm = FilterManager::Instance();
 
@@ -112,17 +112,17 @@ public:
 
 #if 0
     Observer obs;
-    filter->connect(filter.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)),
-            &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
+    filter->connect(filter.get(), SIGNAL(messageGenerated(const AbstractMessage::Pointer&)),
+            &obs, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
 #endif
     filter->preflight();
-    DREAM3D_REQUIRED(filter->getErrorCondition(), >=, 0);
+    DREAM3D_REQUIRED(filter->getErrorCode(), >=, 0);
 
     attrMat->removeAttributeArray("ImportedData");
 
     filter->execute();
 
-    DREAM3D_REQUIRED(filter->getErrorCondition(), >=, 0);
+    DREAM3D_REQUIRED(filter->getErrorCode(), >=, 0);
 
     typename DataArray<T>::Pointer dataPtr = attrMat->getAttributeArrayAs<DataArray<T>>("ImportedData");
     T* ptr = dataPtr->getPointer(0);

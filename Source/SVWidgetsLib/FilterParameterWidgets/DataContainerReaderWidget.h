@@ -131,16 +131,10 @@ class SVWidgetsLib_EXPORT DataContainerReaderWidget : public FilterParameterWidg
 
   protected slots:
 
-    /**
-     * @brief showFileInFileSystem
-     */
-    void showFileInFileSystem() override;
-
 
   private:
     static QString                       m_OpenDialogLastFilePath;
     DataContainerReader*                 m_Filter = nullptr;
-    QString                              m_CurrentlyValidPath = "";
     QString                              m_CurrentText = "";
     DataContainerReaderFilterParameter*  m_FilterParameter;
     DataContainerArrayProxy              m_DcaProxy;

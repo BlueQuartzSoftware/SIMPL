@@ -43,6 +43,11 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t
+{
+  CombinedArrayID = 1
+};
+
 /**
  * @brief The CombineAttributeArraysTemplatePrivate class is a templated private implementation that deals with
  * combining the various input arrays into one contiguous array
@@ -187,7 +192,7 @@ CombineAttributeArrays::~CombineAttributeArrays() = default;
 // -----------------------------------------------------------------------------
 void CombineAttributeArrays::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   parameters.push_back(SIMPL_NEW_BOOL_FP("Normalize Data", NormalizeData, FilterParameter::Parameter, CombineAttributeArrays));
   parameters.push_back(SIMPL_NEW_BOOL_FP("Move Data", MoveValues, FilterParameter::Parameter, CombineAttributeArrays));
   {
@@ -221,8 +226,7 @@ template <typename DataType> void verifyArrayList(AbstractFilter* filter, QVecto
   {
     if(!TemplateHelpers::CanDynamicCast<DataArray<DataType>>()((*it).lock()))
     {
-      filter->setErrorCondition(-90000);
-      filter->notifyErrorMessage(filter->getHumanLabel(), "Selected Attribute Arrays must all be of the same type", filter->getErrorCondition());
+      filter->setErrorCondition(-90000, "Selected Attribute Arrays must all be of the same type");
       return;
     }
   }
@@ -242,14 +246,13 @@ void CombineAttributeArrays::dataCheck()
 {
   m_SelectedWeakPtrVector.clear();
 
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 
   if(getSelectedDataArrayPaths().size() < 2)
   {
-    setErrorCondition(-11001);
     QString ss = QObject::tr("At least two Attribute Array must be selected");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-11001, ss);
     return;
   }
 
@@ -257,9 +260,8 @@ void CombineAttributeArrays::dataCheck()
 
   if(!DataArrayPath::ValidateVector(paths))
   {
-    setErrorCondition(-11002);
     QString ss = QObject::tr("There are Attribute Arrays selected that are not contained in the same Attribute Matrix. All selected Attribute Arrays must belong to the same Attribute Matrix");
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-11002, ss);
   }
 
   int32_t totalComps = 0;
@@ -279,7 +281,7 @@ void CombineAttributeArrays::dataCheck()
   {
     EXECUTE_FUNCTION_TEMPLATE(this, verifyArrayList, m_SelectedWeakPtrVector[0].lock(), this, m_SelectedWeakPtrVector)
   }
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -287,7 +289,7 @@ void CombineAttributeArrays::dataCheck()
   QVector<size_t> cDims(1, totalComps);
 
   DataArrayPath tempPath(getSelectedDataArrayPaths()[0].getDataContainerName(), getSelectedDataArrayPaths()[0].getAttributeMatrixName(), getStackedDataArrayName());
-  m_StackedDataPtr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, m_SelectedWeakPtrVector[0].lock());
+  m_StackedDataPtr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, m_SelectedWeakPtrVector[0].lock(), CombinedArrayID);
 
   if(getMoveValues() && getInPreflight())
   {
@@ -318,10 +320,10 @@ void CombineAttributeArrays::preflight()
 // -----------------------------------------------------------------------------
 void CombineAttributeArrays::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -337,6 +339,18 @@ void CombineAttributeArrays::execute()
       attrMat->removeAttributeArray(path.getDataArrayName());
     }
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+std::list<DataArrayPath> CombineAttributeArrays::getDeletedPaths()
+{
+  if(getMoveValues())
+  {
+    return getSelectedDataArrayPaths().toList().toStdList();
+  }
+  return std::list<DataArrayPath>();
 }
 
 // -----------------------------------------------------------------------------

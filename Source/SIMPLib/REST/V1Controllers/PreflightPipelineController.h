@@ -31,11 +31,16 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
+#include <QtCore/QJsonObject>
+
 #include "QtWebApp/httpserver/httprequest.h"
 #include "QtWebApp/httpserver/httprequesthandler.h"
 #include "QtWebApp/httpserver/httpresponse.h"
 
+#include "SIMPLib/Plugin/SIMPLPluginConstants.h"
 #include "SIMPLib/SIMPLib.h"
+
+class PreflightPipelineMessageHandler;
 
 /**
   @brief This class responds to REST API endpoint
@@ -46,6 +51,8 @@ class SIMPLib_EXPORT PreflightPipelineController : public HttpRequestHandler
   Q_OBJECT
   Q_DISABLE_COPY(PreflightPipelineController)
 public:
+  friend PreflightPipelineMessageHandler;
+
   /** Constructor */
   PreflightPipelineController(const QHostAddress& hostAddress, const int hostPort);
 

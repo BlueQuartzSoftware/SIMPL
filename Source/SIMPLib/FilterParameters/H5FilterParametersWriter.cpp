@@ -43,10 +43,11 @@
 #include "H5Support/QH5Utilities.h"
 #include "H5Support/H5ScopedSentinel.h"
 
-
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersConstants.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
+#include "SIMPLib/Messages/GenericErrorMessage.h"
+#include "SIMPLib/Messages/PipelineErrorMessage.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
 // -----------------------------------------------------------------------------
@@ -76,7 +77,7 @@ int H5FilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeli
   {
     if(!obs.empty())
     {
-      PipelineMessage pm(JsonFilterParametersWriter::ClassName(), "FilterPipeline Object was nullptr for writing", -1, PipelineMessage::MessageType::Error);
+      GenericErrorMessage::Pointer pm = GenericErrorMessage::New(QObject::tr("%1: %2").arg(JsonFilterParametersWriter::ClassName()).arg("FilterPipeline Object was nullptr for writing"), -1);
 
       for (int i = 0; i < obs.size(); i++)
       {
@@ -106,7 +107,8 @@ int H5FilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeli
   {
     if(!obs.empty())
     {
-      PipelineMessage pm(JsonFilterParametersWriter::ClassName(), "Output .dream3d file could not be created.", -1, PipelineMessage::MessageType::Error);
+      PipelineErrorMessage::Pointer pm =
+          PipelineErrorMessage::New(pipeline->getName(), QObject::tr("%1: %2").arg(JsonFilterParametersWriter::ClassName()).arg("Output .dream3d file could not be created."), -1);
 
       for (int i = 0; i < obs.size(); i++)
       {
@@ -474,7 +476,7 @@ int H5FilterParametersWriter::writeValue(const QString& name, QVector<double> va
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5FilterParametersWriter::writeValue(const QString& name, IntVec3_t v)
+int H5FilterParametersWriter::writeValue(const QString& name, IntVec3Type v)
 {
   int err = 0;
   int32_t rank = 1;
@@ -486,7 +488,7 @@ int H5FilterParametersWriter::writeValue(const QString& name, IntVec3_t v)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5FilterParametersWriter::writeValue(const QString& name, FloatVec3_t v)
+int H5FilterParametersWriter::writeValue(const QString& name, FloatVec3Type v)
 {
   int err = 0;
   int32_t rank = 1;

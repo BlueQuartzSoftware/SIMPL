@@ -40,7 +40,7 @@
 #include <QtWidgets/QTreeView>
 
 #include "SIMPLib/Filtering/AbstractFilter.h"
-
+#include "SIMPLib/Filtering/IFilterFactory.hpp"
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 class FilterListModel;
@@ -78,14 +78,14 @@ class SVWidgetsLib_EXPORT FilterListView : public QTreeView
      * @brief addFilter
      * @param filter
      */
-    void addFilter(AbstractFilter::Pointer filter);
+    void addFilter(const IFilterFactory::Pointer& factory);
 
     /**
      * @brief addFilter
      * @param filter
      * @param group
      */
-    void addFilter(AbstractFilter::Pointer filter, SearchGroup group);
+    void addFilter(const IFilterFactory::Pointer& factory, SearchGroup group);
 
     /**
      * @brief addGroup
@@ -150,7 +150,7 @@ class SVWidgetsLib_EXPORT FilterListView : public QTreeView
      * @param filter
      * @param parent
      */
-    void addFilter(AbstractFilter::Pointer filter, const QModelIndex &parent);
+    void addFilter(const IFilterFactory::Pointer& factory, const QModelIndex& parent);
 
     /**
      * @brief connectSignalsSlots

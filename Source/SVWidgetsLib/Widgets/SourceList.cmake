@@ -50,6 +50,7 @@ set(SVWidgetsLib_Widgets_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksItem.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataStructureItem.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/ImportHDF5TreeModelItem.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/IssuesWidgetMessageHandler.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineFilterMimeData.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineItem.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineView.h
@@ -78,6 +79,7 @@ set(SVWidgetsLib_Widgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterListModel.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterListView.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/IssuesWidget.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/IssuesWidgetMessageHandler.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StandardOutputWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterInputWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/ImportHDF5TreeModel.cpp
@@ -94,7 +96,6 @@ set(SVWidgetsLib_Widgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarIssuesButton.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PopUpWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/ProgressDialog.cpp
-  
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVControlWidgets.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVOverlayWidgetButton.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVStyle.cpp

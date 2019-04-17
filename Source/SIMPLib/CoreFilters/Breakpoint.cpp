@@ -56,7 +56,7 @@ Breakpoint::~Breakpoint() = default;
 // -----------------------------------------------------------------------------
 void Breakpoint::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   setFilterParameters(parameters);
 }
@@ -83,8 +83,8 @@ void Breakpoint::initialize()
 // -----------------------------------------------------------------------------
 void Breakpoint::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 }
 
 // -----------------------------------------------------------------------------
@@ -119,7 +119,7 @@ void Breakpoint::pause()
 
   m_Mutex.lock();
   QString ss = "The pipeline is paused - Press \"Resume\" to continue execution.";
-  notifyStatusMessage(getMessagePrefix(), getHumanLabel(), ss);
+  notifyStatusMessage(ss);
   m_WaitCondition.wait(&m_Mutex);
   m_Mutex.unlock();
 }

@@ -166,7 +166,7 @@ class ComparisonSelectionAdvancedWidget : public FilterParameterWidget, private 
     * @param propertyName
     * @param renamePath
     */
-    void updateDataArrayPath(QString propertyName, DataArrayPath::RenameType renamePath);
+    void updateDataArrayPath(QString propertyName, const DataArrayPath::RenameType& renamePath);
 
     /**
     * @brief Handles AttributeMatrix path changes through DataArrayPathSelectionWidget

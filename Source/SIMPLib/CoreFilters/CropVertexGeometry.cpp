@@ -40,11 +40,17 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/FloatFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
 #include "SIMPLib/SIMPLibVersion.h"
+
+enum createdPathID : RenameDataPath::DataID_t
+{
+  DataContainerID = 1
+};
 
 // -----------------------------------------------------------------------------
 //
@@ -71,7 +77,7 @@ CropVertexGeometry::~CropVertexGeometry() = default;
 // -----------------------------------------------------------------------------
 void CropVertexGeometry::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   DataContainerSelectionFilterParameter::RequirementType req;
   IGeometry::Types reqGeom = {IGeometry::Type::Vertex};
   req.dcGeometryTypes = reqGeom;
@@ -82,7 +88,7 @@ void CropVertexGeometry::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_FLOAT_FP("X Max", XMax, FilterParameter::Parameter, CropVertexGeometry));
   parameters.push_back(SIMPL_NEW_FLOAT_FP("Y Max", YMax, FilterParameter::Parameter, CropVertexGeometry));
   parameters.push_back(SIMPL_NEW_FLOAT_FP("Z Max", ZMax, FilterParameter::Parameter, CropVertexGeometry));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Cropped Data Container", CroppedDataContainerName, FilterParameter::CreatedArray, CropVertexGeometry));
+  parameters.push_back(SIMPL_NEW_DC_CREATION_FP("Cropped Data Container", CroppedDataContainerName, FilterParameter::CreatedArray, CropVertexGeometry));
   setFilterParameters(parameters);
 }
 
@@ -92,14 +98,14 @@ void CropVertexGeometry::setupFilterParameters()
 void CropVertexGeometry::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setDataContainerName(reader->readString("DataContainerName", getDataContainerName()));
+  setDataContainerName(reader->readDataArrayPath("DataContainerName", getDataContainerName()));
   setXMin(reader->readValue("XMin", getXMin()));
   setYMin(reader->readValue("YMin", getYMin()));
   setZMin(reader->readValue("ZMin", getZMin()));
   setXMax(reader->readValue("XMax", getXMax()));
   setYMax(reader->readValue("YMax", getYMax()));
   setZMax(reader->readValue("ZMax", getZMax()));
-  setCroppedDataContainerName(reader->readString("CroppedDataContainerName", getCroppedDataContainerName()));
+  setCroppedDataContainerName(reader->readDataArrayPath("CroppedDataContainerName", getCroppedDataContainerName()));
   reader->closeFilterGroup();
 }
 
@@ -108,8 +114,8 @@ void CropVertexGeometry::readFilterParameters(AbstractFilterParametersReader* re
 // -----------------------------------------------------------------------------
 void CropVertexGeometry::initialize()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   setCancel(false);
   m_AttrMatList.clear();
 }
@@ -119,8 +125,8 @@ void CropVertexGeometry::initialize()
 // -----------------------------------------------------------------------------
 void CropVertexGeometry::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   initialize();
 
   getDataContainerArray()->getPrereqGeometryFromDataContainer<VertexGeom, AbstractFilter>(this, getDataContainerName());
@@ -128,25 +134,22 @@ void CropVertexGeometry::dataCheck()
   if(getXMax() < getXMin())
   {
     QString ss = QObject::tr("X Max (%1) less than X Min (%2)").arg(getXMax()).arg(getXMin());
-    setErrorCondition(-5550);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-5550, ss);
   }
   if(getYMax() < getYMin())
   {
     QString ss = QObject::tr("Y Max (%1) less than Y Min (%2)").arg(getYMax()).arg(getYMin());
-    setErrorCondition(-5550);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-5550, ss);
   }
   if(getZMax() < getZMin())
   {
     QString ss = QObject::tr("Z Max (%1) less than Z Min (%2)").arg(getZMax()).arg(getZMin());
-    setErrorCondition(-5550);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-5550, ss);
   }
 
-  DataContainer::Pointer dc = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getCroppedDataContainerName());
+  DataContainer::Pointer dc = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getCroppedDataContainerName(), DataContainerID);
 
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -161,7 +164,7 @@ void CropVertexGeometry::dataCheck()
   DataArrayPath tempPath;
   AttributeMatrix::Type tempAttrMatType = AttributeMatrix::Type::Vertex;
 
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -169,13 +172,13 @@ void CropVertexGeometry::dataCheck()
   for(auto&& attr_mat : m_AttrMatList)
   {
     AttributeMatrix::Pointer tmpAttrMat = m->getPrereqAttributeMatrix(this, attr_mat, -301);
-    if(getErrorCondition() >= 0)
+    if(getErrorCode() >= 0)
     {
       tempAttrMatType = tmpAttrMat->getType();
       if(tempAttrMatType != AttributeMatrix::Type::Vertex)
       {
         AttributeMatrix::Pointer attrMat = tmpAttrMat->deepCopy(getInPreflight());
-        dc->addAttributeMatrix(attr_mat, attrMat);
+        dc->addOrReplaceAttributeMatrix(attrMat);
       }
       else
       {
@@ -183,9 +186,9 @@ void CropVertexGeometry::dataCheck()
         tempDataArrayList = tmpAttrMat->getAttributeArrayNames();
         for(auto&& data_array : tempDataArrayList)
         {
-          tempPath.update(getCroppedDataContainerName(), tmpAttrMat->getName(), data_array);
+          tempPath.update(getCroppedDataContainerName().getDataContainerName(), tmpAttrMat->getName(), data_array);
           IDataArray::Pointer tmpDataArray = tmpAttrMat->getPrereqIDataArray<IDataArray, AbstractFilter>(this, data_array, -90002);
-          if(getErrorCondition() >= 0)
+          if(getErrorCode() >= 0)
           {
             QVector<size_t> cDims = tmpDataArray->getComponentDimensions();
             TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, tmpDataArray);
@@ -240,10 +243,10 @@ template <typename T> void copyDataToCroppedGeometry(IDataArray::Pointer inDataP
 // -----------------------------------------------------------------------------
 void CropVertexGeometry::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -290,7 +293,7 @@ void CropVertexGeometry::execute()
   for(auto&& attr_mat : m_AttrMatList)
   {
     AttributeMatrix::Pointer tmpAttrMat = dc->getPrereqAttributeMatrix(this, attr_mat, -301);
-    if(getErrorCondition() >= 0)
+    if(getErrorCode() >= 0)
     {
       AttributeMatrix::Type tempAttrMatType = tmpAttrMat->getType();
       if(tempAttrMatType == AttributeMatrix::Type::Vertex)

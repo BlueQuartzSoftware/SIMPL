@@ -40,6 +40,11 @@
 #include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t
+{
+  DataContainerID = 1
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -58,7 +63,7 @@ CreateDataContainer::~CreateDataContainer() = default;
 // -----------------------------------------------------------------------------
 void CreateDataContainer::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   parameters.push_back(SIMPL_NEW_DC_CREATION_FP("Data Container Name", DataContainerName, FilterParameter::CreatedArray, CreateDataContainer));
   setFilterParameters(parameters);
 }
@@ -69,7 +74,6 @@ void CreateDataContainer::setupFilterParameters()
 void CreateDataContainer::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setDataContainerName(reader->readString("DataContainerName", getDataContainerName()));
   reader->closeFilterGroup();
 }
 
@@ -85,10 +89,10 @@ void CreateDataContainer::initialize()
 // -----------------------------------------------------------------------------
 void CreateDataContainer::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 
-  getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName());
+  getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName(), DataContainerID);
 }
 
 // -----------------------------------------------------------------------------
@@ -110,10 +114,10 @@ void CreateDataContainer::preflight()
 // -----------------------------------------------------------------------------
 void CreateDataContainer::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

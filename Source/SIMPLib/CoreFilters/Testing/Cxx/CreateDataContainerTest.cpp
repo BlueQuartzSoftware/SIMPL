@@ -94,7 +94,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void setValues(CreateDataContainer::Pointer filter, QString dataContainer)
+  void setValues(CreateDataContainer::Pointer filter, const DataArrayPath& dataContainer)
   {
     if(nullptr == filter.get())
     {
@@ -104,20 +104,21 @@ public:
     QVariant value;
 
     value.setValue(dataContainer);
-    filter->setProperty("DataContainerName", value);
+    bool propWasSet = filter->setProperty("DataContainerName", value);
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true);
   }
 
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void TestFilter(QString dataContainer, int errorCode)
+  void TestFilter(const DataArrayPath& dataContainer, int errorCode)
   {
     CreateDataContainer::Pointer filter = createFilter();
     filter->setDataContainerArray(createDataContainerArray());
 
     setValues(filter, dataContainer);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), errorCode)
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), errorCode)
   }
 
   // -----------------------------------------------------------------------------
@@ -125,7 +126,7 @@ public:
   // -----------------------------------------------------------------------------
   void TestValidDataContainer()
   {
-    TestFilter("DataContainer", 0);
+    TestFilter(DataArrayPath("DataContainer", "", ""), 0);
   }
 
   // -----------------------------------------------------------------------------
@@ -133,17 +134,17 @@ public:
   // -----------------------------------------------------------------------------
   void TestExistingDataContainer()
   {
-    QString dataContainer = "DataContainer";
+    DataArrayPath dataContainer("DataContainer", "", "");
 
     CreateDataContainer::Pointer filter = createFilter();
     filter->setDataContainerArray(createDataContainerArray());
 
     setValues(filter, dataContainer);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0)
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -889)
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -889)
   }
 
   // -----------------------------------------------------------------------------
@@ -151,7 +152,7 @@ public:
   // -----------------------------------------------------------------------------
   void TestMissingDataContainerName()
   {
-    TestFilter("", -887);
+    TestFilter(DataArrayPath(), -887);
   }
 
   // -----------------------------------------------------------------------------
@@ -159,7 +160,7 @@ public:
   // -----------------------------------------------------------------------------
   void TestInvalidName()
   {
-    TestFilter("Data/Container", -888);
+    TestFilter(DataArrayPath("Data/Container", "", ""), -888);
   }
 
   // -----------------------------------------------------------------------------
@@ -179,6 +180,6 @@ public:
   }
 
 private:
-  CreateDataContainerTest(const CreateDataContainerTest&); // Copy Constructor Not Implemented
-  void operator=(const CreateDataContainerTest&);          // Move assignment Not Implemented
+  CreateDataContainerTest(const CreateDataContainerTest&) = delete; // Copy Constructor Not Implemented
+  void operator=(const CreateDataContainerTest&) = delete;          // Move assignment Not Implemented
 };

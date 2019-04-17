@@ -155,18 +155,6 @@ public:
   QString getTypeAsString() override;
 
   /**
-   * @brief Gives this array a human readable name
-   * @param name The name of this array
-   */
-  void setName(const QString& name) override;
-
-  /**
-   * @brief Returns the human readable name of this array
-   * @return
-   */
-  QString getName() override;
-
-  /**
    * @brief
    */
   void takeOwnership() override;
@@ -278,7 +266,7 @@ public:
    * @brief initializeWithValue
    * @param value
    */
-  virtual void initializeWithValue(QString value);
+  virtual void initializeWithValue(const QString& value);
 
   /**
    * @brief initializeWithValue
@@ -301,11 +289,10 @@ public:
   int32_t resizeTotalElements(size_t size) override;
 
   /**
-   * @brief Reseizes the internal array
-   * @param size The new size of the internal array
-   * @return 1 on success, 0 on failure
+   * @brief Resizes the internal array to accomondate numTuples
+   * @param numTuples
    */
-  int32_t resize(size_t numTuples) override;
+  void resizeTuples(size_t numTuples) override;
 
   /**
    * @brief Initializes this class to zero bytes freeing any data that it currently owns
@@ -385,12 +372,11 @@ protected:
    * @param numElements The number of elements in the internal array.
    * @param takeOwnership Will the class clean up the memory. Default=true
    */
-  StringDataArray(size_t numTuples, const QString name, bool allocate = true);
+  StringDataArray(size_t numTuples, const QString& name, bool allocate = true);
 
   StringDataArray();
 
 private:
-  QString m_Name;
   QString m_InitValue;
   std::vector<QString> m_Array;
   bool _ownsData;

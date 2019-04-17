@@ -36,9 +36,8 @@
 
 #pragma once
 
-
+#include "SIMPLib/Messages/AbstractMessage.h"
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/PipelineMessage.h"
 
 class SIMPLib_EXPORT IObserver
 {
@@ -47,7 +46,7 @@ class SIMPLib_EXPORT IObserver
     virtual ~IObserver();
     SIMPL_TYPE_MACRO(IObserver)
 
-    virtual void processPipelineMessage(const PipelineMessage& pm);
+    virtual void processPipelineMessage(const AbstractMessage::Pointer& pm);
 
   public:
     IObserver(const IObserver&) = delete;      // Copy Constructor Not Implemented

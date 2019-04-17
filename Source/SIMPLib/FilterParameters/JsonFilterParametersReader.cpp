@@ -1,37 +1,37 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "JsonFilterParametersReader.h"
 
 #include <QtCore/QDataStream>
@@ -45,6 +45,7 @@
 #include "SIMPLib/CoreFilters/EmptyFilter.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
+#include "SIMPLib/Messages/PipelineErrorMessage.h"
 #include "SIMPLib/Utilities/StringOperations.h"
 
 // -----------------------------------------------------------------------------
@@ -176,7 +177,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromFile(QString
         currentLine++;
       }
 
-      PipelineMessage pm(JsonFilterParametersReader::ClassName(), msg, -1, PipelineMessage::MessageType::Error);
+      PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New("[NOT_READABLE]", QObject::tr("%1: %2").arg(JsonFilterParametersReader::ClassName()).arg(msg), -1);
       obs->processPipelineMessage(pm);
     }
     return FilterPipeline::NullPointer();
@@ -223,7 +224,7 @@ QString JsonFilterParametersReader::getJsonFromFile(QString filePath, IObserver*
       {
         QString msg = createErrorMessageFromJsonParseError(parseError);
         msg = QString("File '%1' had errors while parsing the json data.%2").arg(filePath) + msg;
-        PipelineMessage pm(JsonFilterParametersReader::ClassName(), msg, -1, PipelineMessage::MessageType::Error);
+        PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New("[NOT_READABLE]", QObject::tr("%1: %2").arg(JsonFilterParametersReader::ClassName()).arg(msg), -1);
         obs->processPipelineMessage(pm);
       }
       return QString();
@@ -402,13 +403,13 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
   {
     return FilterPipeline::NullPointer();
   }
-  
+
   QJsonObject builderObj = m_Root[SIMPL::Settings::PipelineBuilderGroup].toObject();
   int filterCount = builderObj[SIMPL::Settings::NumFilters].toInt();
   m_MaxFilterIndex = filterCount - 1; // Zero based indexing
-  
+
   FilterPipeline::Pointer pipeline;
-  
+
   if(filterCount >= 0)
   {
     pipeline = FilterPipeline::New();
@@ -419,11 +420,11 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
   {
     pipeline = FilterPipeline::NullPointer();
   }
-  
+
   for(int i = 0; i < filterCount; ++i)
   {
     openFilterGroup(nullptr, i);
-    
+
     IFilterFactory::Pointer factory = IFilterFactory::NullPointer();
     QString filterName = m_CurrentFilterIndex[SIMPL::Settings::FilterName].toString();
     bool filterEnabled = m_CurrentFilterIndex[SIMPL::Settings::FilterEnabled].toBool(true);
@@ -443,11 +444,11 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
         factory = filtManager->getFactoryFromClassName(filterName);
       }
     }
-    
+
     if(nullptr != factory.get())
     {
       AbstractFilter::Pointer filter = factory->create();
-      
+
       if(nullptr != filter.get())
       {
         filter->setEnabled(filterEnabled);
@@ -456,7 +457,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
       }
     }
     else // Could not find the filter because the specific name has not been registered. This could
-      // be due to a name change for the filter.
+         // be due to a name change for the filter.
     {
       EmptyFilter::Pointer filter = EmptyFilter::New();
       QString humanLabel = QString("UNKNOWN FILTER: ") + filterName;
@@ -464,15 +465,16 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
       filter->setOriginalFilterName(filterName);
       filter->setEnabled(filterEnabled);
       pipeline->pushBack(filter);
-      
+
       if(nullptr != obs)
       {
         QString ss = QObject::tr("An attempt to instantiate a filter from the pipeline file resulted in an error.\
                                  Possible reasons include a name change of the filter, plugin not loading or a simple spelling mistake? A \
                                                                                                                                         blank filter has been inserted in its place. Possible error message is: %1")
-                                                                                                                                        .arg(filterName);
-            PipelineMessage pm(filterName, ss, -66066, PipelineMessage::MessageType::Error);
-        pm.setPrefix("JsonFilterParametersReader::ReadPipelineFromFile()");
+                         .arg(filterName);
+
+        QString prefix = "JsonFilterParametersReader::ReadPipelineFromFile()";
+        PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New(pipeline->getName(), QObject::tr("%1: %2").arg(prefix).arg(ss), -66066);
         obs->processPipelineMessage(pm);
       }
     }
@@ -510,7 +512,7 @@ void JsonFilterParametersReader::readNameOfPipelineFromFile(QString filePath, QS
     {
       QString msg = createErrorMessageFromJsonParseError(parseError);
       msg = QString("File '%1' had errors while parsing the json data.%2").arg(fInfo.absoluteFilePath()) + msg;
-      PipelineMessage pm(JsonFilterParametersReader::ClassName(), msg, -1, PipelineMessage::MessageType::Error);
+      PipelineErrorMessage::Pointer pm = PipelineErrorMessage::New("[NOT_READABLE]", QObject::tr("%1: %2").arg(JsonFilterParametersReader::ClassName()).arg(msg), -1);
       obs->processPipelineMessage(pm);
     }
     name = QString("ERROR: Could not open file specified.");
@@ -605,7 +607,7 @@ int JsonFilterParametersReader::openFilterGroup(AbstractFilter* unused, int inde
   Q_ASSERT(m_Root.isEmpty() == false);
   int err = 0;
   QString numStr = QString::number(index);
-  if(m_Root.find(numStr) != m_Root.end() )
+  if(m_Root.find(numStr) != m_Root.end())
   {
     m_CurrentFilterIndex = m_Root[numStr].toObject();
   }

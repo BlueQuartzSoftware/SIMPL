@@ -134,6 +134,12 @@ class SIMPLib_EXPORT CombineAttributeArrays : public AbstractFilter
     */
     void preflight() override;
 
+    /**
+     * @brief Returns the list of deleted data paths.
+     * @return
+     */
+    std::list<DataArrayPath> getDeletedPaths() override;
+
   signals:
     /**
       * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters

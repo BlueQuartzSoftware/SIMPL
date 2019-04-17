@@ -92,13 +92,13 @@ GenericExample::GenericExample()
 , m_AlgorithmSelection(0)
 , m_DistanceMetric(1)
 {
-  m_Dimensions.x = 0;
-  m_Dimensions.y = 0;
-  m_Dimensions.z = 0;
+  m_Dimensions[0] = 0;
+  m_Dimensions[1] = 0;
+  m_Dimensions[2] = 0;
 
-  m_Origin.x = 0.0;
-  m_Origin.y = 0.0;
-  m_Origin.z = 0.0;
+  m_Origin[0] = 0.0;
+  m_Origin[1] = 0.0;
+  m_Origin[2] = 0.0;
 
   FileListInfo_t flInfo;
   flInfo.PaddingDigits = 2;
@@ -123,7 +123,7 @@ GenericExample::~GenericExample() = default;
 // -----------------------------------------------------------------------------
 void GenericExample::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
   /* Place all your option initialization code here */
   /* For String input use this code */
   parameters.push_back(SIMPL_NEW_STRING_FP("STL Output Prefix", StlFilePrefix, FilterParameter::Parameter, GenericExample));
@@ -375,8 +375,8 @@ void GenericExample::initialize()
 void GenericExample::dataCheck()
 {
   DataArrayPath tempPath;
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 
   FileSystemPathHelper::CheckOutputFile(this, "Output File Name", getOutputFile(), true);
 
@@ -407,12 +407,12 @@ void computeEulerAngle(float pq, float* eulerAngle)
 // -----------------------------------------------------------------------------
 void GenericExample::execute()
 {
-  int err = 0;
-  setErrorCondition(err);
+  clearErrorCode();
+  clearWarningCode();
 
   // Run the data check to get references to all of our data arrays initialized to the values stored in memory
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

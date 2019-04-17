@@ -44,6 +44,9 @@
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
 #include "SIMPLib/Filtering/QMetaObjectUtilities.h"
+#include "SIMPLib/Messages/AbstractMessageHandler.h"
+#include "SIMPLib/Messages/FilterStatusMessage.h"
+#include "SIMPLib/Messages/PipelineStatusMessage.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 #include "SIMPLib/SIMPLib.h"
@@ -53,8 +56,42 @@
 #include "SIMPLib/CoreFilters/ExecuteProcess.h"
 
 /**
-* @brief
-*/
+ * @brief This message handler is used by the ExecuteProcessTest to append filter and pipeline status messages
+ * to a standard output string.
+ */
+class ExecuteProcessMessageHandler : public AbstractMessageHandler
+{
+public:
+  explicit ExecuteProcessMessageHandler(QString* stdOutput)
+  : m_StdOutput(stdOutput)
+  {
+  }
+
+  /**
+   * @brief Appends incoming FilterStatusMessages to the standard output string
+   */
+  void processMessage(const FilterStatusMessage* msg) const override
+  {
+    QString str = msg->generateMessageString();
+    m_StdOutput->append(str);
+  }
+
+  /**
+   * @brief Appends incoming PipelineStatusMessages to the standard output string
+   */
+  void processMessage(const PipelineStatusMessage* msg) const override
+  {
+    QString str = msg->generateMessageString();
+    m_StdOutput->append(str);
+  }
+
+private:
+  QString* m_StdOutput = nullptr;
+};
+
+/**
+ * @brief The ExecuteProcessObserver class
+ */
 class ExecuteProcessObserver : public QObject, public IObserver
 {
   Q_OBJECT
@@ -76,16 +113,10 @@ public:
   }
 
 public slots:
-  void processPipelineMessage(const PipelineMessage& pm) override
+  void processPipelineMessage(const AbstractMessage::Pointer& pm) override
   {
-    if(pm.getType() == PipelineMessage::MessageType::StandardOutputMessage)
-    {
-      PipelineMessage msg = pm;
-      QString str;
-      QTextStream ss(&str);
-      ss << msg.generateStandardOutputString();
-      m_StdOutput.append(str);
-    }
+    ExecuteProcessMessageHandler msgHandler(&m_StdOutput);
+    pm->visit(&msgHandler);
   }
 
 private:
@@ -97,6 +128,9 @@ private:
 
 #include "ExecuteProcessTest.moc"
 
+/**
+ * @brief The ExecuteProcessTest class
+ */
 class ExecuteProcessTest
 {
 
@@ -131,11 +165,11 @@ public:
       ExecuteProcess::Pointer filter = ExecuteProcess::New();
       ExecuteProcessObserver obs;
 
-      QObject::connect(filter.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)), &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
+      QObject::connect(filter.get(), SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), &obs, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
 
       filter->setArguments(QObject::tr("%1 -query QMAKE_VERSION").arg(UnitTest::ExecuteProcessTest::QMakeLocation));
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0)
       QString stdOutput = obs.getStdOutput();
 #ifdef Q_OS_WIN
       stdOutput.remove('\r');
@@ -153,14 +187,14 @@ public:
     //      ExecuteProcess::Pointer filter = ExecuteProcess::New();
     //      ExecuteProcessObserver obs;
 
-    //      QObject::connect(filter.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)), &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
+    //      QObject::connect(filter.get(), SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), &obs, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
 
     //      filter->setArguments(QObject::tr("%1 -version").arg(UnitTest::ExecuteProcessTest::CMakeLocation));
     //      filter->execute();
     //      QString stdOutput = obs.getStdOutput();
     //      stdOutput.remove('\r');
     //      stdOutput.remove('\n');
-    //      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
+    //      DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), 0)
     //      QString versionString = UnitTest::ExecuteProcessTest::CMakeVersionString;
     //      versionString.remove('\r');
     //      versionString.remove('\n');
@@ -171,14 +205,14 @@ public:
       ExecuteProcess::Pointer filter = ExecuteProcess::New();
       ExecuteProcessObserver obs;
 
-      QObject::connect(filter.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)), &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
+      QObject::connect(filter.get(), SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), &obs, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
 
       filter->setArguments("sdhsdrtfn");
       filter->execute();
       QString stdOutput = obs.getStdOutput();
       stdOutput.remove('\r');
       stdOutput.remove('\n');
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -4005)
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCode(), -4005)
     }
 
     return EXIT_SUCCESS;

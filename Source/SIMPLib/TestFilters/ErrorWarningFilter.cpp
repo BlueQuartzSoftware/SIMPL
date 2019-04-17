@@ -58,8 +58,8 @@ ErrorWarningFilter::~ErrorWarningFilter() = default;
 // -----------------------------------------------------------------------------
 void ErrorWarningFilter::initialize()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   setCancel(false);
 }
 
@@ -68,7 +68,7 @@ void ErrorWarningFilter::initialize()
 // -----------------------------------------------------------------------------
 void ErrorWarningFilter::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(SIMPL_NEW_BOOL_FP("Preflight Warning", PreflightWarning, FilterParameter::Parameter, ErrorWarningFilter));
   parameters.push_back(SIMPL_NEW_BOOL_FP("Preflight Error", PreflightError, FilterParameter::Parameter, ErrorWarningFilter));
@@ -88,14 +88,12 @@ void ErrorWarningFilter::dataCheck()
   if(getPreflightWarning())
   {
     QString ss = QObject::tr("Intentional preflight warning generated");
-    setWarningCondition(-666000);
-    notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+    setWarningCondition(-666000, ss);
   }
   if(getPreflightError())
   {
     QString ss = QObject::tr("Intentional preflight error generated");
-    setErrorCondition(-666001);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-666001, ss);
   }
   if(getPropertyError())
   {
@@ -124,7 +122,7 @@ void ErrorWarningFilter::execute()
 {
   initialize();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -137,14 +135,12 @@ void ErrorWarningFilter::execute()
   if(getExecuteWarning())
   {
     QString ss = QObject::tr("Intentional execute warning generated");
-    setWarningCondition(-666000);
-    notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+    setWarningCondition(-666000, ss);
   }
   if(getExecuteError())
   {
     QString ss = QObject::tr("Intentional execute error generated");
-    setErrorCondition(-666001);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-666001, ss);
   }
 
 }

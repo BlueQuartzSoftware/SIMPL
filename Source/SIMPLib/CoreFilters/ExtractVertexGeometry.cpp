@@ -45,6 +45,12 @@
 #include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t
+{
+  DataContainerID = 1,
+  AttributeMatrixID
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -66,8 +72,8 @@ ExtractVertexGeometry::~ExtractVertexGeometry() = default;
 // -----------------------------------------------------------------------------
 void ExtractVertexGeometry::initialize()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   setCancel(false);
 }
 
@@ -79,7 +85,7 @@ void ExtractVertexGeometry::setupFilterParameters()
   m_NewDCGeometryChoices.clear();
   m_ArrayHandlingChoices.clear();
 
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   //  {
   //    m_NewDCGeometryChoices.push_back("Vertex Geometry");
@@ -118,35 +124,32 @@ void ExtractVertexGeometry::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void ExtractVertexGeometry::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 
   if(m_ArrayHandling < 0)
   {
     QString ss = QObject::tr("'Array Handling' has not been selected.");
-    setErrorCondition(-2002);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-2002, ss);
     return;
   }
 
   if(m_ArrayHandling > m_ArrayHandlingChoices.size() - 1)
   {
     QString ss = QObject::tr("'Array Handling' index is out of bounds. Valid values are 0 or 1.");
-    setErrorCondition(-2003);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-2003, ss);
     return;
   }
 
   if(m_SelectedDataContainerName.isEmpty())
   {
     QString ss = QObject::tr("The name of the input DataContainer is empty. Please specify a value.");
-    setErrorCondition(-2004);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-2004, ss);
     return;
   }
 
-  DataContainer::Pointer dc = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, m_SelectedDataContainerName);
-  if(getErrorCondition() < 0)
+  DataContainer::Pointer dc = getDataContainerArray()->getPrereqDataContainer(this, getSelectedDataContainerName());
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -154,16 +157,14 @@ void ExtractVertexGeometry::dataCheck()
   if(getVertexDataContainerName().isEmpty())
   {
     QString ss = QObject::tr("The name of the created Vertex DataContainer is empty. Please specify a value.");
-    setErrorCondition(-2006);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-2006, ss);
     return;
   }
 
   if(getDataContainerArray()->doesDataContainerExist(getVertexDataContainerName()))
   {
-    QString ss = QObject::tr("A Data Container with name '%1' already exists.").arg(getVertexDataContainerName());
-    setErrorCondition(-2007);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    QString ss = QObject::tr("A Data Container with name '%1' already exists.").arg(getVertexDataContainerName().getDataContainerName());
+    setErrorCondition(-2007, ss);
     return;
   }
 
@@ -172,15 +173,14 @@ void ExtractVertexGeometry::dataCheck()
   if(nullptr == fromGeometry.get())
   {
     QString ss = QObject::tr("Selected input DataContainer must contain either an Image Geometry or RectLinearGrid Geometry. The DataContainer did not contain a Geometry object.");
-    setErrorCondition(-2008);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-2008, ss);
     return;
   }
   IGeometry::Type geomType = fromGeometry->getGeometryType();
   size_t elementCount = 0;
   if(IGeometry::Type::Image == geomType || IGeometry::Type::RectGrid == geomType)
   {
-    vertexDataContainer = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getVertexDataContainerName());
+    vertexDataContainer = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getVertexDataContainerName(), DataContainerID);
     IGeometryGrid::Pointer imageGeom = std::dynamic_pointer_cast<IGeometryGrid>(fromGeometry);
     SIMPL::Tuple3SVec imageDims = imageGeom->getDimensions();
     VertexGeom::Pointer vertexGeom = VertexGeom::CreateGeometry(static_cast<int64_t>(std::get<0>(imageDims) * std::get<1>(imageDims) * std::get<2>(imageDims)), "VertexGeometry", !getInPreflight());
@@ -190,8 +190,7 @@ void ExtractVertexGeometry::dataCheck()
   else
   {
     QString ss = QObject::tr("Data Container's Geometry type must be either an Image Geometry or RectLinearGrid Geometry. The Geomerty is of type %1").arg(fromGeometry->getGeometryTypeAsString());
-    setErrorCondition(-2010);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-2010, ss);
     return;
   }
 
@@ -199,11 +198,11 @@ void ExtractVertexGeometry::dataCheck()
   for(int i = 0; i < selectedArraysSize; i++)
   {
     DataArrayPath dap = m_IncludedDataArrayPaths[i];
-    dc = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, dap.getDataContainerName());
+    dc = getDataContainerArray()->getPrereqDataContainer(this, dap.getDataContainerName());
 
     int err = 0;
     AttributeMatrix::Pointer sourceCellAttrMat = dc->getPrereqAttributeMatrix(this, dap.getAttributeMatrixName(), err);
-    if(getErrorCondition() < 0)
+    if(getErrorCode() < 0)
     {
       return;
     }
@@ -215,14 +214,13 @@ void ExtractVertexGeometry::dataCheck()
                        .arg(dap.serialize("/"))
                        .arg(sourceCellAttrMat->getNumberOfTuples())
                        .arg(elementCount)
-                       .arg(m_VertexDataContainerName);
-      setErrorCondition(-2009);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+                       .arg(m_VertexDataContainerName.getDataContainerName());
+      setErrorCondition(-2009, ss);
       return;
     }
 
     IDataArray::Pointer iDataArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, dap);
-    if(getErrorCondition() < 0)
+    if(getErrorCode() < 0)
     {
       return;
     }
@@ -237,17 +235,18 @@ void ExtractVertexGeometry::dataCheck()
       newArrayPtr = sourceCellAttrMat->removeAttributeArray(dap.getDataArrayName());
     }
 
-    DataArrayPath newDap(m_VertexDataContainerName);
+    DataArrayPath newDap = m_VertexDataContainerName;
     newDap.setAttributeMatrixName(sourceCellAttrMat->getName());
     newDap.setDataArrayName("");
 
     AttributeMatrix::Pointer vertexCellAttrMat = vertexDataContainer->getAttributeMatrix(newDap);
     if(vertexCellAttrMat == nullptr)
     {
-      vertexCellAttrMat = vertexDataContainer->createNonPrereqAttributeMatrix(this, sourceCellAttrMat->getName(), sourceCellAttrMat->getTupleDimensions(), AttributeMatrix::Type::Vertex);
+      vertexCellAttrMat =
+          vertexDataContainer->createNonPrereqAttributeMatrix(this, sourceCellAttrMat->getName(), sourceCellAttrMat->getTupleDimensions(), AttributeMatrix::Type::Vertex, AttributeMatrixID);
     }
 
-    vertexCellAttrMat->addAttributeArray(newArrayPtr->getName(), newArrayPtr);
+    vertexCellAttrMat->insertOrAssign(newArrayPtr);
   }
 }
 
@@ -272,7 +271,7 @@ void ExtractVertexGeometry::execute()
 {
   initialize();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

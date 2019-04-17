@@ -44,9 +44,10 @@
 #include <QtGui/QKeyEvent>
 
 #include "SIMPLib/Filtering/FilterManager.h"
-#include "SVWidgetsLib/SVWidgetsLib.h"
+#include "SIMPLib/Filtering/IFilterFactory.hpp"
 
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
 
 #include "ui_FilterListToolboxWidget.h"
 
@@ -132,13 +133,13 @@ class SVWidgetsLib_EXPORT FilterListToolboxWidget : public QWidget, private Ui::
 
     FilterManager::Collection  m_LoadedFilters;
 
-    QMap<QString, AbstractFilter::Pointer> getHumanNameMap(QList<AbstractFilter::Pointer> list);
+    QMap<QString, IFilterFactory::Pointer> getHumanNameMap(const QList<IFilterFactory::Pointer>& list);
 
-    void matchFiltersToSearchGroup(std::vector<AbstractFilter::Pointer> filters, QSet<AbstractFilter*> &addedFiltersSet, QStringList searchTokens, FilterListView::SearchGroup searchGroup);
+    void matchFiltersToSearchGroup(std::vector<IFilterFactory::Pointer> filters, QSet<IFilterFactory*>& addedFiltersSet, const QStringList& searchTokens, FilterListView::SearchGroup searchGroup);
 
-    int getMatchingWordCountForFilter(QStringList searchTokens, AbstractFilter::Pointer filter, FilterListView::SearchGroup searchGroup);
+    int getMatchingWordCountForFilter(QStringList searchTokens, IFilterFactory::Pointer filter, FilterListView::SearchGroup searchGroup);
 
-    int getMatchingRelevanceForFilter(QStringList searchTokens, AbstractFilter::Pointer filter, FilterListView::SearchGroup searchGroup);
+    int getMatchingRelevanceForFilter(QStringList searchTokens, IFilterFactory::Pointer filter, FilterListView::SearchGroup searchGroup);
 
   public:
     FilterListToolboxWidget(const FilterListToolboxWidget&) = delete; // Copy Constructor Not Implemented

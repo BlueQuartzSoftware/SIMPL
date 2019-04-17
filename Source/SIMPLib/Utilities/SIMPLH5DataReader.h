@@ -102,12 +102,11 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
     bool readPipelineJson(QString &json);
 
     /**
-     * @brief notifyErrorMessage
-     * @param humanLabel
-     * @param str
+     * @brief setErrorCondition
      * @param code
+     * @param str
      */
-    void notifyErrorMessage(const QString& humanLabel, const QString& str, int code) override;
+    void setErrorCondition(int code, const QString& str) override;
 
   signals:
     void errorGenerated(const QString &title, const QString &msg, const int &code);

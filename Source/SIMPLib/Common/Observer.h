@@ -40,10 +40,10 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/IObserver.h"
-#include "SIMPLib/Common/PipelineMessage.h"
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Messages/AbstractMessage.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @class Observer Observer.h DREAM3D/Common/Observer.h
@@ -65,7 +65,7 @@ class SIMPLib_EXPORT Observer : public QObject, public IObserver
     ~Observer() override;
 
   public slots:
-    void processPipelineMessage(const PipelineMessage& pm) override;
+    void processPipelineMessage(const AbstractMessage::Pointer& pm) override;
 
   public:
     Observer(const Observer&) = delete;       // Copy Constructor Not Implemented

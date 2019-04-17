@@ -104,6 +104,8 @@ public:
     m_String1 = "This is the FilterParametersRWTest";
     m_ArrayPath1 = DataArrayPath("DataContainer", "AttributeMatrix", "DataArray");
 
+    m_Path1 = DataArrayPath("DataContainer Name", "", "");
+
     m_AxisAngle1.angle = 2.2f;
     m_AxisAngle1.h = 3.4f;
     m_AxisAngle1.k = 6.4f;
@@ -152,15 +154,15 @@ public:
     }
 
     {
-      m_FloatVec3_1.x = 3.0f;
-      m_FloatVec3_1.y = 6.7f;
-      m_FloatVec3_1.z = 32.42f;
+      m_FloatVec3_1[0] = 3.0f;
+      m_FloatVec3_1[1] = 6.7f;
+      m_FloatVec3_1[2] = 32.42f;
     }
 
     {
-      m_IntVec3_1.x = 3;
-      m_IntVec3_1.y = 6;
-      m_IntVec3_1.z = 32;
+      m_IntVec3_1[0] = 3;
+      m_IntVec3_1[1] = 6;
+      m_IntVec3_1[2] = 32;
     }
 
     {
@@ -250,6 +252,11 @@ public:
   SIMPL_INSTANCE_PROPERTY(QString, String2)
   Q_PROPERTY(QString String2 READ getString2 WRITE setString2)
 
+  SIMPL_INSTANCE_PROPERTY(DataArrayPath, Path1)
+  Q_PROPERTY(DataArrayPath Path1 READ getPath1 WRITE setPath1)
+  SIMPL_INSTANCE_PROPERTY(DataArrayPath, Path2)
+  Q_PROPERTY(DataArrayPath Path2 READ getPath2 WRITE setPath2)
+
   SIMPL_INSTANCE_PROPERTY(DataArrayPath, ArrayPath1)
   Q_PROPERTY(DataArrayPath ArrayPath1 READ getArrayPath1 WRITE setArrayPath1)
   SIMPL_INSTANCE_PROPERTY(DataArrayPath, ArrayPath2)
@@ -280,15 +287,15 @@ public:
   SIMPL_INSTANCE_PROPERTY(FileListInfo_t, FileListInfo2)
   Q_PROPERTY(FileListInfo_t FileListInfo2 READ getFileListInfo2 WRITE setFileListInfo2)
 
-  SIMPL_INSTANCE_PROPERTY(IntVec3_t, IntVec3_1)
-  Q_PROPERTY(IntVec3_t IntVec3_1 READ getIntVec3_1 WRITE setIntVec3_1)
-  SIMPL_INSTANCE_PROPERTY(IntVec3_t, IntVec3_2)
-  Q_PROPERTY(IntVec3_t IntVec3_2 READ getIntVec3_2 WRITE setIntVec3_2)
+  SIMPL_INSTANCE_PROPERTY(IntVec3Type, IntVec3_1)
+  Q_PROPERTY(IntVec3Type IntVec3_1 READ getIntVec3_1 WRITE setIntVec3_1)
+  SIMPL_INSTANCE_PROPERTY(IntVec3Type, IntVec3_2)
+  Q_PROPERTY(IntVec3Type IntVec3_2 READ getIntVec3_2 WRITE setIntVec3_2)
 
-  SIMPL_INSTANCE_PROPERTY(FloatVec3_t, FloatVec3_1)
-  Q_PROPERTY(FloatVec3_t FloatVec3_1 READ getFloatVec3_1 WRITE setFloatVec3_1)
-  SIMPL_INSTANCE_PROPERTY(FloatVec3_t, FloatVec3_2)
-  Q_PROPERTY(FloatVec3_t FloatVec3_2 READ getFloatVec3_2 WRITE setFloatVec3_2)
+  SIMPL_INSTANCE_PROPERTY(FloatVec3Type, FloatVec3_1)
+  Q_PROPERTY(FloatVec3Type FloatVec3_1 READ getFloatVec3_1 WRITE setFloatVec3_1)
+  SIMPL_INSTANCE_PROPERTY(FloatVec3Type, FloatVec3_2)
+  Q_PROPERTY(FloatVec3Type FloatVec3_2 READ getFloatVec3_2 WRITE setFloatVec3_2)
 
   SIMPL_INSTANCE_PROPERTY(Float2ndOrderPoly_t, Float2ndOrderPoly_1)
   Q_PROPERTY(Float2ndOrderPoly_t Float2ndOrderPoly_1 READ getFloat2ndOrderPoly_1 WRITE setFloat2ndOrderPoly_1)
@@ -513,13 +520,13 @@ public:
 
     {
       DataContainerCreationFilterParameter::Pointer fp = DataContainerCreationFilterParameter::New(
-          "Test", "String1", getString1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
+          "Test", "Path1", getPath1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Path2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, Path1));
 
       QJsonObject obj;
       fp->writeJson(obj);
       fp->readJson(obj);
 
-      DREAM3D_REQUIRE_EQUAL(m_String1, m_String2)
+      DREAM3D_REQUIRE_EQUAL(m_Path1, m_Path2)
 
       m_String2.clear();
     }
@@ -527,13 +534,13 @@ public:
     {
       DataContainerSelectionFilterParameter::RequirementType req;
       DataContainerSelectionFilterParameter::Pointer fp = DataContainerSelectionFilterParameter::New(
-          "Test", "String1", getString1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1), req);
+          "Test", "Path1", getPath1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Path2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, Path1), req);
 
       QJsonObject obj;
       fp->writeJson(obj);
       fp->readJson(obj);
 
-      DREAM3D_REQUIRE_EQUAL(m_String1, m_String2)
+      DREAM3D_REQUIRE_EQUAL(m_Path1, m_Path2)
 
       m_String2.clear();
     }
@@ -603,18 +610,18 @@ public:
     }
 
     {
-      FloatVec3FilterParameter::Pointer fp = FloatVec3FilterParameter::New("Test", "FloatVec3_1", FloatVec3_t(), FilterParameter::Parameter,
+      FloatVec3FilterParameter::Pointer fp = FloatVec3FilterParameter::New("Test", "FloatVec3_1", FloatVec3Type(), FilterParameter::Parameter,
                                                                            SIMPL_BIND_SETTER(FilterParametersRWTest, this, FloatVec3_2), SIMPL_BIND_GETTER(FilterParametersRWTest, this, FloatVec3_1));
 
       QJsonObject obj;
       fp->writeJson(obj);
       fp->readJson(obj);
 
-      DREAM3D_REQUIRE_EQUAL(m_FloatVec3_1.x, m_FloatVec3_2.x)
-      DREAM3D_REQUIRE_EQUAL(m_FloatVec3_1.y, m_FloatVec3_2.y)
-      DREAM3D_REQUIRE_EQUAL(m_FloatVec3_1.z, m_FloatVec3_2.z)
+      DREAM3D_REQUIRE_EQUAL(m_FloatVec3_1[0], m_FloatVec3_2[0])
+      DREAM3D_REQUIRE_EQUAL(m_FloatVec3_1[1], m_FloatVec3_2[1])
+      DREAM3D_REQUIRE_EQUAL(m_FloatVec3_1[2], m_FloatVec3_2[2])
 
-      m_FloatVec3_2 = FloatVec3_t();
+      m_FloatVec3_2 = FloatVec3Type();
     }
 
     {
@@ -685,18 +692,18 @@ public:
     }
 
     {
-      IntVec3FilterParameter::Pointer fp = IntVec3FilterParameter::New("Test", "IntVec3_1", IntVec3_t(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, IntVec3_2),
+      IntVec3FilterParameter::Pointer fp = IntVec3FilterParameter::New("Test", "IntVec3_1", IntVec3Type(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, IntVec3_2),
                                                                        SIMPL_BIND_GETTER(FilterParametersRWTest, this, IntVec3_1));
 
       QJsonObject obj;
       fp->writeJson(obj);
       fp->readJson(obj);
 
-      DREAM3D_REQUIRE_EQUAL(m_IntVec3_1.x, m_IntVec3_2.x)
-      DREAM3D_REQUIRE_EQUAL(m_IntVec3_1.y, m_IntVec3_2.y)
-      DREAM3D_REQUIRE_EQUAL(m_IntVec3_1.z, m_IntVec3_2.z)
+      DREAM3D_REQUIRE_EQUAL(m_IntVec3_1[0], m_IntVec3_2[0])
+      DREAM3D_REQUIRE_EQUAL(m_IntVec3_1[1], m_IntVec3_2[1])
+      DREAM3D_REQUIRE_EQUAL(m_IntVec3_1[2], m_IntVec3_2[2])
 
-      m_IntVec3_2 = IntVec3_t();
+      m_IntVec3_2 = IntVec3Type();
     }
 
     {
@@ -847,8 +854,6 @@ public:
       ShapeTypeSelectionFilterParameter::Pointer fp =
           ShapeTypeSelectionFilterParameter::New("Test", "String1", shapeData, FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, ShapeType::Types),
                                                  SIMPL_BIND_GETTER(FilterParametersRWTest, this, ShapeType::Types), "String1", "");
-
-      //SIMPL_NEW_SHAPETYPE_SELECTION_FP("Shape Types", ShapeTypeData, FilterParameter::CreatedArray, EstablishShapeTypes, "PhaseCount", "InputPhaseTypesArrayPath");
 
       QJsonObject obj;
       fp->writeJson(obj);

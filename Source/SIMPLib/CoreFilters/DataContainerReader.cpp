@@ -74,7 +74,7 @@ DataContainerReader::~DataContainerReader() = default;
 // -----------------------------------------------------------------------------
 void DataContainerReader::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   parameters.push_back(SIMPL_NEW_BOOL_FP("Overwrite Existing Data Containers", OverwriteExistingDataContainers, FilterParameter::Parameter, DataContainerReader));
   {
@@ -155,17 +155,15 @@ void DataContainerReader::dataCheck()
   if(getInputFile().isEmpty())
   {
     ss = QObject::tr("The input file must be set");
-    setErrorCondition(-387);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-387, ss);
   }
   else if(!fi.exists())
   {
     ss = QObject::tr("The input file %1 does not exist").arg(getInputFile());
-    setErrorCondition(-388);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-388, ss);
   }
 
-  if(getErrorCondition() != 0)
+  if(getErrorCode() != 0)
   {
     // something has gone wrong and errors were logged already so just return
     return;
@@ -180,32 +178,27 @@ void DataContainerReader::dataCheck()
     return;
   }
 
-  QList<DataContainer::Pointer>& tempContainers = tempDCA->getDataContainers();
-
-  QListIterator<DataContainer::Pointer> iter(tempContainers);
-  while(iter.hasNext())
+  DataContainerArray::Container tempContainers = tempDCA->getDataContainers();
+  for(DataContainer::Pointer container : tempContainers)
   {
-    DataContainer::Pointer container = iter.next();
-
     if(getOverwriteExistingDataContainers())
     {
       if(dca->doesDataContainerExist(container->getName()))
       {
         dca->removeDataContainer(container->getName());
       }
-      dca->addDataContainer(container);
+      dca->addOrReplaceDataContainer(container);
     }
     else
     {
       if(dca->doesDataContainerExist(container->getName()))
       {
         ss = QObject::tr("The input file has a DataContainer with a name (%1) that already exists in the current DataContainerArray structure").arg(container->getName());
-        setErrorCondition(-390);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        setErrorCondition(-390, ss);
       }
       else
       {
-        dca->addDataContainer(container);
+        dca->addOrReplaceDataContainer(container);
       }
     }
   }
@@ -250,14 +243,11 @@ void DataContainerReader::execute()
 // -----------------------------------------------------------------------------
 DataContainerArray::Pointer DataContainerReader::readData(DataContainerArrayProxy& proxy)
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 
   SIMPLH5DataReader::Pointer simplReader = SIMPLH5DataReader::New();
-  connect(simplReader.get(), &SIMPLH5DataReader::errorGenerated, [=](const QString& title, const QString& msg, const int& code) {
-    setErrorCondition(code);
-    notifyErrorMessage(getHumanLabel(), msg, getErrorCondition());
-  });
+  connect(simplReader.get(), &SIMPLH5DataReader::errorGenerated, [=](const QString& title, const QString& msg, const int& code) { setErrorCondition(code, msg); });
 
   if (!simplReader->openFile(getInputFile()))
   {
@@ -273,9 +263,8 @@ DataContainerArray::Pointer DataContainerReader::readData(DataContainerArrayProx
   hid_t fileId = QH5Utilities::openFile(getInputFile(), true); // Open the file Read Only
   if(fileId < 0)
   {
-    setErrorCondition(-150);
     QString ss = QObject::tr("Error opening input file '%1'").arg(getInputFile());
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-150, ss);
     return DataContainerArray::NullPointer();
   }
   H5ScopedFileSentinel sentinel(&fileId, true);
@@ -285,9 +274,8 @@ DataContainerArray::Pointer DataContainerReader::readData(DataContainerArrayProx
     int32_t err = readExistingPipelineFromFile(fileId);
     if(err < 0)
     {
-      setErrorCondition(err);
       QString ss = QObject::tr("Error trying to read the existing pipeline from the file '%1'").arg(getInputFile());
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      setErrorCondition(err, ss);
       return DataContainerArray::New();
     }
   }
@@ -417,10 +405,7 @@ bool DataContainerReader::syncProxies()
   SIMPLH5DataReaderRequirements req(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
 
   SIMPLH5DataReader::Pointer simplReader = SIMPLH5DataReader::New();
-  connect(simplReader.get(), &SIMPLH5DataReader::errorGenerated, [=](const QString& title, const QString& msg, const int& code) {
-    setErrorCondition(code);
-    notifyErrorMessage(getHumanLabel(), msg, getErrorCondition());
-  });
+  connect(simplReader.get(), &SIMPLH5DataReader::errorGenerated, [=](const QString& title, const QString& msg, const int& code) { setErrorCondition(code, msg); });
 
   if(!simplReader->openFile(getInputFile()))
   {

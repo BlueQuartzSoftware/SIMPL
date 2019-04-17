@@ -42,6 +42,11 @@
 #include "SIMPLib/FilterParameters/DynamicTableFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+enum createdPathID : RenameDataPath::DataID_t
+{
+  AttributeMatrixID = 1
+};
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -61,7 +66,7 @@ CreateAttributeMatrix::~CreateAttributeMatrix() = default;
 // -----------------------------------------------------------------------------
 void CreateAttributeMatrix::setupFilterParameters()
 {
-  FilterParameterVector parameters;
+  FilterParameterVectorType parameters;
 
   {
     QVector<QString> choices;
@@ -116,11 +121,11 @@ void CreateAttributeMatrix::initialize()
 // -----------------------------------------------------------------------------
 void CreateAttributeMatrix::dataCheck()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getCreatedAttributeMatrix().getDataContainerName());
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -131,8 +136,7 @@ void CreateAttributeMatrix::dataCheck()
   if(rows.size() != 1)
   {
     QString ss = QObject::tr("The number of rows of data must be 1. The data currently has %1").arg(rows.size());
-    setErrorCondition(-11000);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    setErrorCondition(-11000, ss);
     return;
   }
 
@@ -143,8 +147,8 @@ void CreateAttributeMatrix::dataCheck()
     tDims[i] = static_cast<size_t>(cols[i]);
   }
 
-  m->createNonPrereqAttributeMatrix(this, getCreatedAttributeMatrix().getAttributeMatrixName(), tDims, static_cast<AttributeMatrix::Type>(getAttributeMatrixType()));
-  if(getErrorCondition() < 0)
+  m->createNonPrereqAttributeMatrix(this, getCreatedAttributeMatrix().getAttributeMatrixName(), tDims, static_cast<AttributeMatrix::Type>(getAttributeMatrixType()), AttributeMatrixID);
+  if(getErrorCode() < 0)
   {
     return;
   }
@@ -169,10 +173,10 @@ void CreateAttributeMatrix::preflight()
 // -----------------------------------------------------------------------------
 void CreateAttributeMatrix::execute()
 {
-  setErrorCondition(0);
-  setWarningCondition(0);
+  clearErrorCode();
+  clearWarningCode();
   dataCheck();
-  if(getErrorCondition() < 0)
+  if(getErrorCode() < 0)
   {
     return;
   }

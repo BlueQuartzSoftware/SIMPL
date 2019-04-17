@@ -83,7 +83,7 @@ TransformToDream3DTransformContainer<ITKTransformType>
 template <typename ITKTransformType>
 void
 TransformToDream3DTransformContainer<ITKTransformType>
-::VerifyPreconditions()
+::VerifyPreconditions() ITKv5_CONST
 {
   if(!m_Transform)
   {

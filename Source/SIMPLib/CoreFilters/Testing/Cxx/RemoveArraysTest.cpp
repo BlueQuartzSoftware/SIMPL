@@ -81,14 +81,14 @@ public:
     sizeList.push_back(1);
 
     AttributeMatrix::Pointer am = AttributeMatrix::New(sizeList, "AttributeMatrix", AttributeMatrix::Type::Any);
-    am->addAttributeArray("DataArray", da);
+    am->insertOrAssign(da);
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-    dc->addAttributeMatrix("AttributeMatrix", am);
+    dc->addOrReplaceAttributeMatrix(am);
 
     DataContainerArray::Pointer dca = DataContainerArray::New();
-    dca->addDataContainer(dc);
+    dca->addOrReplaceDataContainer(dc);
 
     FilterManager* fm = FilterManager::Instance();
 

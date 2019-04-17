@@ -110,8 +110,8 @@ class SIMPLib_EXPORT AbstractFilterParametersWriter
     virtual int writeValue(const QString& name, QVector<float> value);
     virtual int writeValue(const QString& name, QVector<double> value);
 
-    virtual int writeValue(const QString& name, IntVec3_t v);
-    virtual int writeValue(const QString& name, FloatVec3_t v);
+    virtual int writeValue(const QString& name, IntVec3Type v);
+    virtual int writeValue(const QString& name, FloatVec3Type v);
     virtual int writeValue(const QString& name, Float2ndOrderPoly_t v);
     virtual int writeValue(const QString& name, Float3rdOrderPoly_t v);
     virtual int writeValue(const QString& name, Float4thOrderPoly_t v);
