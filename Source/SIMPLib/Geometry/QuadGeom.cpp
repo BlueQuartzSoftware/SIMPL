@@ -88,7 +88,7 @@ public:
     for(int64_t i = start; i < end; i++)
     {
       m_Quads->getVertsAtQuad(i, verts);
-      for(int32_t j = 0; j < cDims; j++)
+      for(size_t j = 0; j < cDims; j++)
       {
         for(size_t k = 0; k < 4; k++)
         {
@@ -207,7 +207,7 @@ void QuadGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 void QuadGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
-  if(data->getType() != AttributeMatrix::Type::Vertex || data->getType() != AttributeMatrix::Type::Edge || data->getType() != AttributeMatrix::Type::Face)
+  if(data->getType() != AttributeMatrix::Type::Vertex && data->getType() != AttributeMatrix::Type::Edge && data->getType() != AttributeMatrix::Type::Face)
   {
     // QuadGeom can only accept vertex, edge, or face Attribute Matrices
     return;

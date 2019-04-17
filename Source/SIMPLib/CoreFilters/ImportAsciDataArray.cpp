@@ -190,7 +190,7 @@ template <typename T, typename K> int32_t readAsciFile(typename DataArray<T>::Po
       {
         return err;
       }
-      if(err == RBR_READ_ERROR || err == RBR_READ_ERROR)
+      if(err == RBR_READ_ERROR)
       {
         return err;
       }
@@ -208,7 +208,7 @@ template <typename T, typename K> int32_t readAsciFile(typename DataArray<T>::Po
       {
         return err;
       }
-      if(err == RBR_READ_ERROR || err == RBR_READ_ERROR)
+      if(err == RBR_READ_ERROR)
       {
         return err;
       }

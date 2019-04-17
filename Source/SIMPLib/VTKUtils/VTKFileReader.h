@@ -176,7 +176,7 @@ class SIMPLib_EXPORT VTKFileReader : public FileReader
     }
 
     template<typename T>
-    int skipVolume(std::ifstream& inStream, int byteSize, int xDim, int yDim, int zDim)
+    int skipVolume(std::ifstream& inStream, int byteSize, size_t xDim, size_t yDim, size_t zDim)
     {
       int err = 0;
       if(getFileIsBinary() == true)
@@ -195,11 +195,11 @@ class SIMPLib_EXPORT VTKFileReader : public FileReader
       else
       {
         T tmp;
-        for (int z = 0; z < zDim; ++z)
+        for(size_t z = 0; z < zDim; ++z)
         {
-          for (int y = 0; y < yDim; ++y)
+          for(size_t y = 0; y < yDim; ++y)
           {
-            for (int x = 0; x < xDim; ++x)
+            for(size_t x = 0; x < xDim; ++x)
             {
               inStream >> tmp;
             }

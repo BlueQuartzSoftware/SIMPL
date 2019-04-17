@@ -172,7 +172,7 @@ template <typename T> IDataArray::Pointer copyData(IDataArray::Pointer inputData
   T* fPtr = feature->getPointer(0);
   T* cPtr = cell->getPointer(0);
 
-  int32_t numComp = feature->getNumberOfComponents();
+  size_t numComp = static_cast<size_t>(feature->getNumberOfComponents());
   int32_t featureIdx = 0;
 
   for(size_t i = 0; i < totalPoints; ++i)

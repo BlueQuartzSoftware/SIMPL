@@ -87,7 +87,7 @@ public:
     for(int64_t i = start; i < end; i++)
     {
       m_Tris->getVertsAtTri(i, verts);
-      for(int32_t j = 0; j < cDims; j++)
+      for(size_t j = 0; j < cDims; j++)
       {
         for(size_t k = 0; k < 3; k++)
         {
@@ -206,7 +206,7 @@ void TriangleGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 void TriangleGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
-  if(data->getType() != AttributeMatrix::Type::Vertex || data->getType() != AttributeMatrix::Type::Edge || data->getType() != AttributeMatrix::Type::Face)
+  if(data->getType() != AttributeMatrix::Type::Vertex && data->getType() != AttributeMatrix::Type::Edge && data->getType() != AttributeMatrix::Type::Face)
   {
     // TriangleGeom can only accept vertex, edge, or face Attribute Matrices
     return;

@@ -120,7 +120,7 @@ float CubeOctohedronOps::inside(float axis1comp, float axis2comp, float axis3com
   float plane3comp = ((axis1comp) + (axis2comp) + (axis3comp) - ((2.0f - (0.5f * Gvalue)) + (2.0f - (0.5f * Gvalue)) + 2.0f));
   plane3comp = plane3comp / ((1) + (1) + (1) - ((2.0f - (0.5f * Gvalue)) + (2.0f - (0.5f * Gvalue)) + 2.0f));
 
-  float plane4comp = static_cast<float>(((-axis1comp) + (axis2comp) + (axis3comp) - ((-0.5f * Gvalue) + (2.0f - (0.5 * Gvalue)) + 2.0f)));
+  float plane4comp = ((-axis1comp) + (axis2comp) + (axis3comp) - ((-0.5f * Gvalue) + (2.0f - (0.5f * Gvalue)) + 2.0f));
   plane4comp = plane4comp / ((-1) + (1) + (1) - ((-0.5f * Gvalue) + (2.0f - (0.5f * Gvalue)) + 2.0f));
 
   float plane5comp = ((-axis1comp) + (-axis2comp) + (-axis3comp) - ((-0.5f * Gvalue) + (-0.5f * Gvalue)));
@@ -130,7 +130,7 @@ float CubeOctohedronOps::inside(float axis1comp, float axis2comp, float axis3com
   plane6comp = plane6comp / ((1) + (-1) + (-1) - ((2.0f - (0.5f * Gvalue)) + (-0.5f * Gvalue)));
 
   float plane7comp = ((axis1comp) + (axis2comp) + (-axis3comp) - ((2.0f - (0.5f * Gvalue)) + (2.0f - (0.5f * Gvalue))));
-  plane7comp = static_cast<float>(plane7comp / ((1) + (1) + (-1) - ((2.0f - (0.5f * Gvalue)) + (2.0f - (0.5 * Gvalue)))));
+  plane7comp = plane7comp / ((1) + (1) + (-1) - ((2.0f - (0.5f * Gvalue)) + (2.0f - (0.5f * Gvalue))));
 
   float plane8comp = ((-axis1comp) + (axis2comp) + (-axis3comp) - ((-0.5f * Gvalue) + (2.0f - (0.5f * Gvalue))));
   plane8comp = plane8comp / ((-1) + (1) + (-1) - ((-0.5f * Gvalue) + (2 - (0.5f * Gvalue))));

@@ -208,7 +208,7 @@ public:
 
           // Compute the actual derivatives
           index = (z * dims[1] * dims[0]) + (y * dims[0]) + x;
-          for(int32_t i = 0; i < numComps; i++)
+          for(size_t i = 0; i < numComps; i++)
           {
             derivsPtr[index * numComps * 3 + i * 3] = xix * dValuesdXi[i] + etax * dValuesdEta[i] + zetax * dValuesdZeta[i];
 
