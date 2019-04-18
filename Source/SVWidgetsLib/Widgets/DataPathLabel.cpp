@@ -54,7 +54,8 @@ QColor DataPathLabel::GetBackgroundColor(DataArrayPathHelper::DataType type)
 // -----------------------------------------------------------------------------
 QColor DataPathLabel::GetInactiveColor()
 {
-  return QColor(221, 221, 221);
+  // Remain consistent with DataArrayPathSelectionWidget
+  return DataArrayPathSelectionWidget::GetActiveColor(DataArrayPathHelper::DataType::None);
 }
 
 // -----------------------------------------------------------------------------
