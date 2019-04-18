@@ -251,6 +251,24 @@ public:
   {
     return std::make_tuple(getX(), getY());
   }
+
+  template <typename OutType>
+  IVec2<OutType> convertType()
+  {
+    return IVec2<OutType>(static_cast<OutType>((*this)[0]), static_cast<OutType>((*this)[1]));
+  }
+
+  /**
+   * @brief Converts to a different container type such as std::vector or QVector. The container must have a constructor that takes a single value of size.
+   */
+  template <typename ContainerType>
+  ContainerType toContainer()
+  {
+    ContainerType c(2);
+    c[0] = (*this)[0];
+    c[1] = (*this)[1];
+    return c;
+  }
 };
 
 using FloatVec2Type = IVec2<float>;
@@ -258,7 +276,8 @@ using IntVec2Type = IVec2<int>;
 using SizeVec2Type = IVec2<size_t>;
 
 // -----------------------------------------------------------------------------
-template <typename T> class IVec3 : public SIMPLArray<T, 3>
+template <typename T>
+class IVec3 : public SIMPLArray<T, 3>
 {
   using ParentType = SIMPLArray<T, 3>;
 public:
@@ -337,11 +356,28 @@ public:
   {
     return std::make_tuple(getX(), getY(), getZ());
   }
-};
 
-using FloatVec3Type = IVec3<float>;
-using IntVec3Type = IVec3<int>;
-using SizeVec3Type = IVec3<size_t>;
+  /**
+   * @brief Converts to a new SIMPLArray with a different storage data type
+   */
+  template <typename OutType>
+  IVec3<OutType> convertType()
+  {
+    return IVec3<OutType>(static_cast<OutType>((*this)[0]), static_cast<OutType>((*this)[1]), static_cast<OutType>((*this)[2]));
+  }
+  /**
+   * @brief Converts to a different container type such as std::vector or QVector. The container must have a constructor that takes a single value of size.
+   */
+  template <typename ContainerType>
+  ContainerType toContainer()
+  {
+    ContainerType c(3);
+    c[0] = (*this)[0];
+    c[1] = (*this)[1];
+    c[2] = (*this)[2];
+    return c;
+  }
+};
 
 // -----------------------------------------------------------------------------
 template <typename T> class IVec4 : public SIMPLArray<T, 4>
@@ -432,9 +468,133 @@ public:
   {
     return std::make_tuple(getX(), getY(), getZ(), getW());
   }
+
+  /**
+   * @brief Converts this array into another array using a static_cast<OutType> mechanism
+   */
+  template <typename OutType>
+  IVec4<OutType> convertType()
+  {
+    return IVec4<OutType>(static_cast<OutType>((*this)[0]), static_cast<OutType>((*this)[1]), static_cast<OutType>((*this)[2]), static_cast<OutType>((*this)[3]));
+  }
+  /**
+   * @brief Converts to a different container type such as std::vector or QVector. The container must have a constructor that takes a single value of size.
+   */
+  template <typename ContainerType>
+  ContainerType toContainer()
+  {
+    ContainerType c(4);
+    c[0] = (*this)[0];
+    c[1] = (*this)[1];
+    c[2] = (*this)[2];
+    c[3] = (*this)[3];
+    return c;
+  }
 };
+
+// -----------------------------------------------------------------------------
+template <typename T>
+class IVec6 : public SIMPLArray<T, 6>
+{
+  using ParentType = SIMPLArray<T, 6>;
+
+public:
+  IVec6(const IVec6&) = default;
+  IVec6(IVec6&&) noexcept = default;
+  IVec6& operator=(const IVec6&) = default;
+  IVec6& operator=(IVec6&&) noexcept = default;
+  ~IVec6() = default;
+
+  /**
+   * @brief IVec6 Default constructor initializes all values to ZERO.
+   */
+  IVec6()
+  {
+    (*this)[0] = static_cast<T>(0);
+    (*this)[1] = static_cast<T>(0);
+    (*this)[2] = static_cast<T>(0);
+    (*this)[3] = static_cast<T>(0);
+    (*this)[4] = static_cast<T>(0);
+    (*this)[5] = static_cast<T>(0);
+  }
+
+  IVec6(T x, T y, T z, T a, T b, T c)
+  {
+    (*this)[0] = x;
+    (*this)[1] = y;
+    (*this)[2] = z;
+    (*this)[3] = a;
+    (*this)[4] = b;
+    (*this)[5] = c;
+  }
+
+  IVec6(std::array<T, 6> data)
+  {
+    (*this)[0] = data[0];
+    (*this)[1] = data[1];
+    (*this)[2] = data[2];
+    (*this)[3] = data[3];
+    (*this)[4] = data[4];
+    (*this)[5] = data[5];
+  }
+  IVec6(std::tuple<T, T> data)
+  {
+    (*this)[0] = std::get<0>(data);
+    (*this)[1] = std::get<1>(data);
+    (*this)[2] = std::get<2>(data);
+    (*this)[3] = std::get<3>(data);
+    (*this)[4] = std::get<4>(data);
+    (*this)[5] = std::get<5>(data);
+  }
+  IVec6(const T* data)
+  {
+    (*this)[0] = data[0];
+    (*this)[1] = data[1];
+    (*this)[2] = data[2];
+    (*this)[3] = data[3];
+    (*this)[4] = data[4];
+    (*this)[5] = data[5];
+  }
+
+  std::tuple<T, T> toTuple() const
+  {
+    return std::make_tuple((*this)[0], (*this)[1], (*this)[2], (*this)[3], (*this)[4], (*this)[5]);
+  }
+
+  /**
+   * @brief Converts this array into another array using a static_cast<OutType> mechanism
+   */
+  template <typename OutType>
+  IVec6<OutType> convertType()
+  {
+    return IVec6<OutType>(static_cast<OutType>((*this)[0]), static_cast<OutType>((*this)[1]), static_cast<OutType>((*this)[2]), static_cast<OutType>((*this)[3]), static_cast<OutType>((*this)[4]),
+                          static_cast<OutType>((*this)[5]));
+  }
+
+  /**
+   * @brief Converts to a different container type such as std::vector or QVector. The container must have a constructor that takes a single value of size.
+   */
+  template <typename ContainerType>
+  ContainerType toContainer()
+  {
+    ContainerType c(6);
+    c[0] = (*this)[0];
+    c[1] = (*this)[1];
+    c[2] = (*this)[2];
+    c[3] = (*this)[3];
+    c[4] = (*this)[4];
+    c[5] = (*this)[5];
+    return c;
+  }
+};
+
+using FloatVec3Type = IVec3<float>;
+using IntVec3Type = IVec3<int>;
+using SizeVec3Type = IVec3<size_t>;
 
 using QuaternionType = IVec4<float>;
 using FloatVec4Type = IVec4<float>;
 using IntVec4Type = IVec4<int>;
 using SizeVec4Type = IVec4<size_t>;
+
+using FloatVec6Type = IVec6<float>;

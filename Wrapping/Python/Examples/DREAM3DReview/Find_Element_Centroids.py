@@ -20,8 +20,8 @@ def find_element_centroids():
         print("DataContainer ErrorCondition: %d" % err)
 
     # Create Image Geometry
-    err = simplpy.create_image_geometry(dca, "ImageDataContainer", simpl.IntVec3(101, 101, 1), simpl.FloatVec3(0, 0, 0),
-                                        simpl.FloatVec3(1, 1, 1))
+    err = simplpy.create_image_geometry(dca, "ImageDataContainer", simpl.IntVec3Type(101, 101, 1), simpl.FloatVec3Type(0, 0, 0),
+                                        simpl.FloatVec3Type(1, 1, 1))
     if err < 0:
         print("ImageGeometry ErrorCondition: %d" % err)
 

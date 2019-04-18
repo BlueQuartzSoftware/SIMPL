@@ -141,8 +141,8 @@ def small_in100_cryst_stats():
     err = orientation_analysis.find_schmids(dca, simpl.DataArrayPath("Small IN100", "Grain Data", "Phases"),
                                             simpl.DataArrayPath("Small IN100", "Phase Data", "CrystalStructures"),
                                             simpl.DataArrayPath("Small IN100", "Grain Data", "AvgQuats"),
-                                            "Schmids", "SlipSystems", "Poles", "", "", simpl.FloatVec3(1, 1, 1),
-                                            False, False, simpl.FloatVec3(1, 1, 1), simpl.FloatVec3(1, 1, 1))
+                                            "Schmids", "SlipSystems", "Poles", "", "", simpl.FloatVec3Type(1, 1, 1),
+                                            False, False, simpl.FloatVec3Type(1, 1, 1), simpl.FloatVec3Type(1, 1, 1))
     if err < 0:
         print("FindSchmids ErrorCondition %d" % err)
 
@@ -177,7 +177,7 @@ def small_in100_cryst_stats():
                                                                simpl.DataArrayPath("Small IN100", "EBSD Scan Data",
                                                                                    "Quats"),
                                                                "KernelAverageMisorientations",
-                                                               simpl.IntVec3(1, 1, 1))
+                                                               simpl.IntVec3Type(1, 1, 1))
     if err < 0:
         print("FindKernelAvgMisorientations ErrorCondition %d" % err)
 

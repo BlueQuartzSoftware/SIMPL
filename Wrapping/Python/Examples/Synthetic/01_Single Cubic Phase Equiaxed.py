@@ -111,9 +111,9 @@ def single_cubic_phase_equiaxed():
 
     # Initialize Synthetic Volume
     err = syntheticbuilding.initialize_synthetic_volume(dca, "SyntheticVolumeDataContainer", "CellData",
-                                                        "CellEnsembleMatrixName", simpl.IntVec3(128, 128, 128),
-                                                        simpl.FloatVec3(0.5, 0.5, 0.5),
-                                                        simpl.FloatVec3(0, 0, 0),
+                                                        "CellEnsembleMatrixName", simpl.IntVec3Type(128, 128, 128),
+                                                        simpl.FloatVec3Type(0.5, 0.5, 0.5),
+                                                        simpl.FloatVec3Type(0, 0, 0),
                                                         simpl.DataArrayPath("StatsGeneratorDataContainer",
                                                                             "CellEnsembleData", "Statistics"),
                                                         simpl.DataArrayPath("StatsGeneratorDataContainer",
@@ -187,7 +187,7 @@ def single_cubic_phase_equiaxed():
         print("MatchCrystallography ErrorCondition: %d" % err)
 
     # Generate IPF Colors
-    err = orientationanalysis.generate_ipf_colors(dca, simpl.FloatVec3(0, 0, 1),
+    err = orientationanalysis.generate_ipf_colors(dca, simpl.FloatVec3Type(0, 0, 1),
                                                   simpl.DataArrayPath("SyntheticVolumeDataContainer",
                                                                       "CellData", "Phases"),
                                                   simpl.DataArrayPath("SyntheticVolumeDataContainer",

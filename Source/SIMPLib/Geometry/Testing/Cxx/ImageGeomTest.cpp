@@ -40,7 +40,7 @@ public:
 
     geom->setDimensions(dims);
     geom->setOrigin(origin);
-    geom->getSpacing(res);
+    geom->setSpacing(res);
 
     float coords[3] = {3.5f, 9.23f, 12.78f};
     size_t indices[3] = {0, 0, 0};

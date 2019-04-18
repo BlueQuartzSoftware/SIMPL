@@ -44,12 +44,12 @@ def misc_filters_test():
 
     # Rotate Sample Reference Frame
     err = samplingpy.rotate_sample_ref_frame(dca, simpl.DataArrayPath("Small IN100 Slice 1", "EBSD_Data", ""),
-                                             simpl.FloatVec3(0.0, 1.0, 0.0), 180.0, False)
+                                             simpl.FloatVec3Type(0.0, 1.0, 0.0), 180.0, False)
     if err < 0:
         print("RotateSampleRefFrame ErrorCondition: %d" % err)
 
     # Rotate Euler Reference Frame
-    err = orientationanalysispy.rotate_euler_ref_frame(dca, simpl.FloatVec3(0.0, 0.0, 1.0), 90.0,
+    err = orientationanalysispy.rotate_euler_ref_frame(dca, simpl.FloatVec3Type(0.0, 0.0, 1.0), 90.0,
                                                        simpl.DataArrayPath("Small IN100 Slice 1", "EBSD_Data",
                                                                            "EulerAngles"))
     if err < 0:

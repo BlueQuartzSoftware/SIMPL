@@ -42,8 +42,8 @@ def import_ascii():
 
     # Create Geometry
     err = sc.CreateGeometry(dca, sc.ArrayHandling.CopyArrays, simpl.IGeometry.Type.Image, "DataContainer", False, 
-                            dimensions=simpl.IntVec3(189, 201, 1), origin=simpl.FloatVec3(0, 0, 0),
-                            resolution=simpl.FloatVec3(0.25, 0.25, 1), cell_attribute_matrix_name="CellData")
+                            dimensions=simpl.IntVec3Type(189, 201, 1), origin=simpl.FloatVec3Type(0, 0, 0),
+                            resolution=simpl.FloatVec3Type(0.25, 0.25, 1), cell_attribute_matrix_name="CellData")
     if err < 0:
         print("Create Geometry -  ErrorCondition: %d" % err)
 
@@ -89,7 +89,7 @@ def import_ascii():
         print("ReplaceValueInArray ErrorCondition %d" % err)
 
     # Generate IPF Colors
-    err = orientationanalysispy.generate_ipf_colors(dca, simpl.FloatVec3(0, 0, 1),
+    err = orientationanalysispy.generate_ipf_colors(dca, simpl.FloatVec3Type(0, 0, 1),
                                                     simpl.DataArrayPath("DataContainer", "CellData", "Phase"),
                                                     simpl.DataArrayPath("DataContainer", "CellData", "Eulers"),
                                                     simpl.DataArrayPath("DataContainer",

@@ -258,8 +258,7 @@ public:
 
     DREAM3D_REQUIRE(imgGeom != nullptr);
 
-    FloatVec3Type spacing;
-    imgGeom->getSpacing(spacing);
+    FloatVec3Type spacing = imgGeom->getSpacing();
 
     DREAM3D_REQUIRE_EQUAL(spacing[0], ScaleVolumeTestConsts::SCALE[0]);
     DREAM3D_REQUIRE_EQUAL(spacing[1], ScaleVolumeTestConsts::SCALE[1]);

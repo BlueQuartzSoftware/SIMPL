@@ -36,9 +36,9 @@ def run_pipeline_test(dca):
     image_geom = simpl.CreateImageGeometry.New()
     image_geom.setDataContainerArray(dca)
     image_geom.SelectedDataContainer = "ImageDataContainer"
-    image_geom.Dimensions = simpl.IntVec3(101, 101, 1)
-    image_geom.Origin = simpl.FloatVec3(0, 0, 0)
-    image_geom.Resolution = simpl.FloatVec3(1, 1, 1)
+    image_geom.Dimensions = simpl.IntVec3Type(101, 101, 1)
+    image_geom.Origin = simpl.FloatVec3Type(0, 0, 0)
+    image_geom.Resolution = simpl.FloatVec3Type(1, 1, 1)
 
     # Create Attribute Matrix
     attribute_matrix = simpl.CreateAttributeMatrix.New()
@@ -110,8 +110,8 @@ def run_pythonic_test(dca):
     if err < 0:
         print("DataContainer ErrorCondition: %d" % err)
 
-    err = simplpy.create_image_geometry(dca, "ImageDataContainer", simpl.IntVec3(101, 101, 1), simpl.FloatVec3(0, 0, 0),
-                                        simpl.FloatVec3(1, 1, 1))
+    err = simplpy.create_image_geometry(dca, "ImageDataContainer", simpl.IntVec3Type(101, 101, 1), simpl.FloatVec3Type(0, 0, 0),
+                                        simpl.FloatVec3Type(1, 1, 1))
     if err < 0:
         print("ImageGeometry ErrorCondition: %d" % err)
 

@@ -231,9 +231,9 @@ def small_in100_test():
 
     # Initialize Synthetic Volume
     err = syntheticbuilding.initialize_synthetic_volume(dca, "SyntheticVolumeDataContainer", "EBSD Scan Data",
-                                                        "Phase Data", simpl.IntVec3(128, 128, 128),
-                                                        simpl.FloatVec3(0.25, 0.25, 0.25),
-                                                        simpl.FloatVec3(0, 0, 0),
+                                                        "Phase Data", simpl.IntVec3Type(128, 128, 128),
+                                                        simpl.FloatVec3Type(0.25, 0.25, 0.25),
+                                                        simpl.FloatVec3Type(0, 0, 0),
                                                         simpl.DataArrayPath("Small IN100",
                                                                             "Phase Data", "Statistics"),
                                                         simpl.DataArrayPath("Small IN100",
@@ -307,7 +307,7 @@ def small_in100_test():
         print("MatchCrystallography ErrorCondition: %d" % err)
 
     # Generate IPF Colors
-    err = orientationanalysis.generate_ipf_colors(dca, simpl.FloatVec3(0, 0, 1),
+    err = orientationanalysis.generate_ipf_colors(dca, simpl.FloatVec3Type(0, 0, 1),
                                                   simpl.DataArrayPath("SyntheticVolumeDataContainer",
                                                                       "EBSD Scan Data", "Phases"),
                                                   simpl.DataArrayPath("SyntheticVolumeDataContainer",

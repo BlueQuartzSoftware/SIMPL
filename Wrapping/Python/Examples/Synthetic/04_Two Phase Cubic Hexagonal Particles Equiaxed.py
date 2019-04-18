@@ -50,16 +50,16 @@ def two_phase_test():
                                simpl.DynamicTableData([simpl.VectorDouble([0, 0, 0, 0, 0])], ["Euler 1", "Euler 2",
                                                                                               "Euler 3", "Weight",
                                                                                               "Sigma"], ["0"]),
-                               simpl.FloatVec2(10, 80), 50, simpl.FloatVec3(100, 100, 100))
+                               simpl.FloatVec2Type(10, 80), 50, simpl.FloatVec3Type(100, 100, 100))
 
     if err < 0:
         print("Precipitate StatsData ErrorCondition: %d" % err)
 
     # Initialize Synthetic Volume
     err = syntheticbuilding.initialize_synthetic_volume(dca, "SyntheticVolumeDataContainer", "CellData",
-                                                        "CellEnsembleMatrixName", simpl.IntVec3(128, 128, 128),
-                                                        simpl.FloatVec3(0.5, 0.5, 0.5),
-                                                        simpl.FloatVec3(0, 0, 0),
+                                                        "CellEnsembleMatrixName", simpl.IntVec3Type(128, 128, 128),
+                                                        simpl.FloatVec3Type(0.5, 0.5, 0.5),
+                                                        simpl.FloatVec3Type(0, 0, 0),
                                                         simpl.DataArrayPath("StatsGeneratorDataContainer",
                                                                             "CellEnsembleData", "Statistics"),
                                                         simpl.DataArrayPath("StatsGeneratorDataContainer",
@@ -166,7 +166,7 @@ def two_phase_test():
         print("MatchCrystallography ErrorCondition: %d" % err)
 
     # Generate IPF Colors
-    err = orientationanalysis.generate_ipf_colors(dca, simpl.FloatVec3(0, 0, 1),
+    err = orientationanalysis.generate_ipf_colors(dca, simpl.FloatVec3Type(0, 0, 1),
                                                   simpl.DataArrayPath("SyntheticVolumeDataContainer",
                                                                       "CellData", "Phases"),
                                                   simpl.DataArrayPath("SyntheticVolumeDataContainer",

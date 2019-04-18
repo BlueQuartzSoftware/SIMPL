@@ -28,7 +28,7 @@ def txcopper_exposed():
 
     # Rotate Sample Reference Frame
     err = samplingpy.rotate_sample_ref_frame(dca, simpl.DataArrayPath(data_container_name, "EBSD Scan Data", ""),
-                                             simpl.FloatVec3(0.0, 1.0, 0.0), 180.0, False)
+                                             simpl.FloatVec3Type(0.0, 1.0, 0.0), 180.0, False)
     if err < 0:
         print("RotateSampleRefFrame ErrorCondition: %d" % err)
  
@@ -55,7 +55,7 @@ def txcopper_exposed():
         print("MultiThresholdObjects ErrorCondition: %d" % err)
     
     # Generate IPF Colors
-    err = orientationanalysispy.generate_ipf_colors(dca, simpl.FloatVec3(0, 0, 1),
+    err = orientationanalysispy.generate_ipf_colors(dca, simpl.FloatVec3Type(0, 0, 1),
                                                     simpl.DataArrayPath(data_container_name,
                                                                         "EBSD Scan Data", "Phases"),
                                                     simpl.DataArrayPath(data_container_name,

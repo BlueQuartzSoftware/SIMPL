@@ -37,9 +37,9 @@ def insert_transformation_phase():
 
     # Initialize Synthetic Volume
     err = syntheticbuildingpy.initialize_synthetic_volume(dca, "SyntheticVolumeDataContainer", "CellData",
-                                                          "CellEnsembleData", simpl.IntVec3(128, 128, 128),
-                                                          simpl.FloatVec3(0.5, 0.5, 0.5),
-                                                          simpl.FloatVec3(0, 0, 0),
+                                                          "CellEnsembleData", simpl.IntVec3Type(128, 128, 128),
+                                                          simpl.FloatVec3Type(0.5, 0.5, 0.5),
+                                                          simpl.FloatVec3Type(0, 0, 0),
                                                           simpl.DataArrayPath("StatsGeneratorDataContainer",
                                                                               "CellEnsembleData", "Statistics"),
                                                           simpl.DataArrayPath("StatsGeneratorDataContainer",
@@ -133,7 +133,7 @@ def insert_transformation_phase():
     # Possible enums: trans_crystal_struct
     # May want to use a "dictionary" for the numerical portion in helper function
     err = transformationphasepy.insert_transformation_phases(dca,
-                                                             1, 1, 60, simpl.FloatVec3(1, 1, 1), True, True, 1, 0.2, 1,
+                                                             1, 1, 60, simpl.FloatVec3Type(1, 1, 1), True, True, 1, 0.2, 1,
                                                              0,
                                                              simpl.DataArrayPath("StatsGeneratorDataContainer",
                                                                                  "CellEnsembleData", ""),
@@ -187,7 +187,7 @@ def insert_transformation_phase():
                           ("SyntheticVolumeDataContainer", "CellFeatureData", "Volumes2")])
 
     # Generate IPF Colors
-    err = orientationanalysispy.generate_ipf_colors(dca, simpl.FloatVec3(0, 0, 1),
+    err = orientationanalysispy.generate_ipf_colors(dca, simpl.FloatVec3Type(0, 0, 1),
                                                     simpl.DataArrayPath("SyntheticVolumeDataContainer",
                                                                         "CellData", "Phases"),
                                                     simpl.DataArrayPath("SyntheticVolumeDataContainer",

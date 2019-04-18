@@ -40,7 +40,7 @@ def adaptive_alignment():
     fileListInfo = simpl.FileListInfo(3, 0, 0, 9, 0, sd.GetBuildDirectory() + "/Debug/Data/Anisotropy/tif",
                                       "AlMgSc-TD_", "", "tif")
     err = itkimageprocessingpy.itk_import_image_stack(dca, "SEMAlMgSc Data", "EBSD SEM Scan Data",
-                                                      simpl.FloatVec3(0, 0, 0), simpl.FloatVec3(1, 1, 1),
+                                                      simpl.FloatVec3Type(0, 0, 0), simpl.FloatVec3Type(1, 1, 1),
                                                       "", fileListInfo, 10, "ImageData")
     if err < 0:
         print("ITK Import Image Stack ErrorCondition %d" % err)

@@ -173,21 +173,21 @@ public:
 
     ImageGeom::Pointer imageGeom = dc->getGeometryAs<ImageGeom>();
 
-    SIMPL::Tuple3SVec dim = imageGeom->getDimensions();
-    SIMPL::Tuple3FVec origin = imageGeom->getOrigin();
-    SIMPL::Tuple3FVec res = imageGeom->getSpacing();
+    SizeVec3Type dim = imageGeom->getDimensions();
+    FloatVec3Type origin = imageGeom->getOrigin();
+    FloatVec3Type res = imageGeom->getSpacing();
 
-    DREAM3D_REQUIRE_EQUAL(std::get<0>(dim), numDimensions[0])
-    DREAM3D_REQUIRE_EQUAL(std::get<1>(dim), numDimensions[1])
-    DREAM3D_REQUIRE_EQUAL(std::get<2>(dim), numDimensions[2])
+    DREAM3D_REQUIRE_EQUAL(dim[0], numDimensions[0])
+    DREAM3D_REQUIRE_EQUAL(dim[1], numDimensions[1])
+    DREAM3D_REQUIRE_EQUAL(dim[2], numDimensions[2])
 
-    DREAM3D_REQUIRE_EQUAL(std::get<0>(origin), originPos[0])
-    DREAM3D_REQUIRE_EQUAL(std::get<1>(origin), originPos[1])
-    DREAM3D_REQUIRE_EQUAL(std::get<2>(origin), originPos[2])
+    DREAM3D_REQUIRE_EQUAL(origin[0], originPos[0])
+    DREAM3D_REQUIRE_EQUAL(origin[1], originPos[1])
+    DREAM3D_REQUIRE_EQUAL(origin[2], originPos[2])
 
-    DREAM3D_REQUIRE_EQUAL(std::get<0>(res), imgResolution[0])
-    DREAM3D_REQUIRE_EQUAL(std::get<1>(res), imgResolution[1])
-    DREAM3D_REQUIRE_EQUAL(std::get<2>(res), imgResolution[2])
+    DREAM3D_REQUIRE_EQUAL(res[0], imgResolution[0])
+    DREAM3D_REQUIRE_EQUAL(res[1], imgResolution[1])
+    DREAM3D_REQUIRE_EQUAL(res[2], imgResolution[2])
 
     removeGeometry(dc);
   }

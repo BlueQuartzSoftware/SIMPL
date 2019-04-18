@@ -122,7 +122,7 @@ void TESTCLASSNAME::execute()
 AbstractFilter::Pointer TESTCLASSNAME::newFilterInstance(bool copyFilterParameters) const
 {
   TESTCLASSNAME::Pointer filter = TESTCLASSNAME::New();
-  if(true == copyFilterParameters)
+  if(copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }

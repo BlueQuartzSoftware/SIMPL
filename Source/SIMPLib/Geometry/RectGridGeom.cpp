@@ -90,8 +90,7 @@ public:
     std::vector<double> dValuesdEta(numComps);
     std::vector<double> dValuesdZeta(numComps);
 
-    size_t dims[3] = {0, 0, 0};
-    std::tie(dims[0], dims[1], dims[2]) = m_RectGrid->getDimensions();
+    SizeVec3Type dims = m_RectGrid->getDimensions();
 
     int64_t counter = 0;
     size_t totalElements = m_RectGrid->getNumberOfElements();
@@ -106,19 +105,19 @@ public:
           //  Xi derivatives (X)
           if(dims[0] == 1)
           {
-            findValuesForFiniteDifference(TwoDimensional, XDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(TwoDimensional, XDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
           else if(x == 0)
           {
-            findValuesForFiniteDifference(LeftSide, XDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(LeftSide, XDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
           else if(x == (dims[0] - 1))
           {
-            findValuesForFiniteDifference(RightSide, XDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(RightSide, XDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
           else
           {
-            findValuesForFiniteDifference(Centered, XDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(Centered, XDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
 
           xxi = factor * (xp[0] - xm[0]);
@@ -132,19 +131,19 @@ public:
           //  Eta derivatives (Y)
           if(dims[1] == 1)
           {
-            findValuesForFiniteDifference(TwoDimensional, YDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(TwoDimensional, YDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
           else if(y == 0)
           {
-            findValuesForFiniteDifference(LeftSide, YDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(LeftSide, YDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
           else if(y == (dims[1] - 1))
           {
-            findValuesForFiniteDifference(RightSide, YDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(RightSide, YDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
           else
           {
-            findValuesForFiniteDifference(Centered, YDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(Centered, YDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
 
           xeta = factor * (xp[0] - xm[0]);
@@ -158,19 +157,19 @@ public:
           //  Zeta derivatives (Z)
           if(dims[2] == 1)
           {
-            findValuesForFiniteDifference(TwoDimensional, ZDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(TwoDimensional, ZDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
           else if(z == 0)
           {
-            findValuesForFiniteDifference(LeftSide, ZDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(LeftSide, ZDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
           else if(z == (dims[2] - 1))
           {
-            findValuesForFiniteDifference(RightSide, ZDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(RightSide, ZDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
           else
           {
-            findValuesForFiniteDifference(Centered, ZDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(Centered, ZDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
 
           xzeta = factor * (xp[0] - xm[0]);
@@ -437,7 +436,7 @@ RectGridGeom::Pointer RectGridGeom::CreateGeometry(const QString& name)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPL::Tuple3SVec RectGridGeom::getDimensions() const
+SizeVec3Type RectGridGeom::getDimensions() const
 {
   return m_Dimensions.toTuple();
 }
@@ -445,31 +444,7 @@ SIMPL::Tuple3SVec RectGridGeom::getDimensions() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RectGridGeom::getDimensions(SizeVec3Type& dims) const
-{
-  dims = m_Dimensions;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void RectGridGeom::setDimensions(const SizeVec3Type& dims)
-{
-  m_Dimensions = dims;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void RectGridGeom::setDimensions(SizeVec3Type& dims)
-{
-  m_Dimensions = dims;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void RectGridGeom::setDimensions(const SIMPL::Tuple3SVec& dims)
 {
   m_Dimensions = dims;
 }
@@ -997,8 +972,7 @@ void RectGridGeom::getShapeFunctions(double pCoords[3], double* shape)
 void RectGridGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable)
 {
   m_ProgressCounter = 0;
-  size_t dims[3] = {0, 0, 0};
-  std::tie(dims[0], dims[1], dims[2]) = getDimensions();
+  SizeVec3Type dims = getDimensions();
 
   if(observable != nullptr)
   {
@@ -1179,8 +1153,7 @@ IGeometry::Pointer RectGridGeom::deepCopy(bool forceNoAllocate)
 
   RectGridGeom::Pointer copy = RectGridGeom::CreateGeometry(getName());
 
-  size_t volDims[3] = { 0, 0, 0 };
-  std::tie(volDims[0], volDims[1], volDims[2]) = getDimensions();
+  SizeVec3Type volDims = getDimensions();
   copy->setDimensions(volDims);
   copy->setXBounds(xBounds);
   copy->setYBounds(yBounds);

@@ -120,9 +120,9 @@ def compute_umeyama_transform_test():
     err = dream3dreviewpy.apply_transformation_to_geometry(dca, transformation_matrix,
                                                            simpl.DataArrayPath("", "", ""),
                                                            "DataContainer",
-                                                           2, simpl.FloatVec3(0.0, 0.0, 0.0),
-                                                           0, simpl.FloatVec3(0.0, 0.0, 0.0),
-                                                           simpl.FloatVec3(0.0, 0.0, 0.0))
+                                                           2, simpl.FloatVec3Type(0.0, 0.0, 0.0),
+                                                           0, simpl.FloatVec3Type(0.0, 0.0, 0.0),
+                                                           simpl.FloatVec3Type(0.0, 0.0, 0.0))
     if err < 0:
         print("ApplyTransformationToGeometry #1 -  ErrorCondition: %d" % err)
 
@@ -143,9 +143,9 @@ def compute_umeyama_transform_test():
                                                                                "TransformationData",
                                                                                "TransformationMatrix"),
                                                            "DataContainer",
-                                                           1, simpl.FloatVec3(0.0, 0.0, 0.0),
-                                                           0, simpl.FloatVec3(0.0, 0.0, 0.0),
-                                                           simpl.FloatVec3(0.0, 0.0, 0.0))
+                                                           1, simpl.FloatVec3Type(0.0, 0.0, 0.0),
+                                                           0, simpl.FloatVec3Type(0.0, 0.0, 0.0),
+                                                           simpl.FloatVec3Type(0.0, 0.0, 0.0))
     if err < 0:
         print("ApplyTransformationToGeometry #2 -  ErrorCondition: %d" % err)
 

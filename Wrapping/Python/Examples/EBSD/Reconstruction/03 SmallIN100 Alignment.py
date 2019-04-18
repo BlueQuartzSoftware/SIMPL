@@ -67,7 +67,7 @@ def small_in100_alignment():
         print("AlignSectionsFeatureCentroid %d" % err)
 
     # Generate IPF Colors
-    err = orientation_analysis.generate_ipf_colors(dca, simpl.FloatVec3(0, 0, 1),
+    err = orientation_analysis.generate_ipf_colors(dca, simpl.FloatVec3Type(0, 0, 1),
                                                    simpl.DataArrayPath("Small IN100", "EBSD Scan Data", "Phases"),
                                                    simpl.DataArrayPath("Small IN100", "EBSD Scan Data", "EulerAngles"),
                                                    simpl.DataArrayPath("Small IN100", "Phase Data",

@@ -209,8 +209,8 @@ def CreateDataContainerProxy(dca, data_array_paths):
     return dcap
 
 
-def CreateGeometry(data_container_array, array_handling, geometry_type, data_container_name, treat_warnings_as_errors, dimensions = simpl.IntVec3(0,0,0),
-origin = simpl.FloatVec3(0,0,0), resolution = simpl.FloatVec3(0,0,0), cell_attribute_matrix_name="", x_bounds_array_path = simpl.DataArrayPath("", "", ""),
+def CreateGeometry(data_container_array, array_handling, geometry_type, data_container_name, treat_warnings_as_errors, dimensions = simpl.IntVec3Type(0,0,0),
+origin = simpl.FloatVec3Type(0,0,0), resolution = simpl.FloatVec3Type(0,0,0), cell_attribute_matrix_name="", x_bounds_array_path = simpl.DataArrayPath("", "", ""),
 y_bounds_array_path = simpl.DataArrayPath("", "", ""), z_bounds_array_path = simpl.DataArrayPath("", "", ""), 
 shared_vertex_list_array_path = simpl.DataArrayPath("", "", ""), vertex_attribute_matrix_name = "", shared_edge_list_array_path = simpl.DataArrayPath("", "", ""),
 edge_attribute_matrix_name = "", shared_tri_list_array_path = simpl.DataArrayPath("", "", ""), face_attribute_matrix_name="",

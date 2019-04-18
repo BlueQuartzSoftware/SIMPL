@@ -29,11 +29,11 @@ def threshold2_move_data_test():
         print("ReadAngData ErrorCondition: %d" % err)
 
     err = sampling.rotate_sample_ref_frame(dca, simpl.DataArrayPath("Small IN100", "EBSD Scan Data", ""),
-                                           simpl.FloatVec3(0.0, 1.0, 0.0), 180.0, False)
+                                           simpl.FloatVec3Type(0.0, 1.0, 0.0), 180.0, False)
     if err < 0:
         print("RotateSampleRefFrame ErrorCondition: %d" % err)
 
-    err = orientationanalysis.rotate_euler_ref_frame(dca, simpl.FloatVec3(0.0, 0.0, 1.0), 90.0,
+    err = orientationanalysis.rotate_euler_ref_frame(dca, simpl.FloatVec3Type(0.0, 0.0, 1.0), 90.0,
                                                      simpl.DataArrayPath("Small IN100", "EBSD Scan Data",
                                                                          "EulerAngles"))
     if err < 0:
@@ -89,8 +89,8 @@ def threshold2_move_data_test():
         print("PipelineAnnotation 3 ErrorCondition: %d" % err)
 
         # Set Origin & Resolution (Image)
-    err = simplpy.set_origin_resolution_image_geom(dca, "Small IN100", True, simpl.FloatVec3(50, 25, 10),
-                                                   True, simpl.FloatVec3(1, 1, 25))
+    err = simplpy.set_origin_resolution_image_geom(dca, "Small IN100", True, simpl.FloatVec3Type(50, 25, 10),
+                                                   True, simpl.FloatVec3Type(1, 1, 25))
     if err < 0:
         print("SetOriginResolutionImageGeom ErrorCondition: %d" % err)
 
@@ -105,7 +105,7 @@ def threshold2_move_data_test():
         print("PipelineAnnotation 4 ErrorCondition: %d" % err)
 
         # Change Scaling of Volume
-    err = simplpy.scale_volume(dca, "Small IN100", "", True, False, simpl.FloatVec3(2, 2, 2))
+    err = simplpy.scale_volume(dca, "Small IN100", "", True, False, simpl.FloatVec3Type(2, 2, 2))
     if err < 0:
         print("ScaleVolume ErrorCondition: %d" % err)
 

@@ -114,9 +114,9 @@ def apply_transform_to_geom():
     err = dream3dreviewpy.apply_transformation_to_geometry(dca, transformation_matrix,
                                                            simpl.DataArrayPath("", "", ""),
                                                            "DataContainer",
-                                                           5, simpl.FloatVec3(0.0, 0.0, 0.0),
-                                                           0, simpl.FloatVec3(0.0, 0.0, 0.0),
-                                                           simpl.FloatVec3(1.0, 1.0, 2.5))
+                                                           5, simpl.FloatVec3Type(0.0, 0.0, 0.0),
+                                                           0, simpl.FloatVec3Type(0.0, 0.0, 0.0),
+                                                           simpl.FloatVec3Type(1.0, 1.0, 2.5))
     if err < 0:
         print("ApplyTransformationToGeometry -  ErrorCondition: %d" % err)
 

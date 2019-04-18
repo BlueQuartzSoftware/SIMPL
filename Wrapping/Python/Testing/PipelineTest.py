@@ -18,9 +18,9 @@ def Pipeline1():
 
   createImageGeom = simpl.CreateImageGeometry.New()
   createImageGeom.SelectedDataContainer = createDataContainer.DataContainerName
-  createImageGeom.Dimensions = simpl.IntVec3(101, 101, 1)
-  createImageGeom.Resolution = simpl.FloatVec3(1.0, 1.0, 1.0)
-  createImageGeom.Origin = simpl.FloatVec3(0.0, 0.0, 0.0)
+  createImageGeom.Dimensions = simpl.IntVec3Type(101, 101, 1)
+  createImageGeom.Resolution = simpl.FloatVec3Type(1.0, 1.0, 1.0)
+  createImageGeom.Origin = simpl.FloatVec3Type(0.0, 0.0, 0.0)
   pipeline.pushBack(createImageGeom)
 
   createAttributeMatrix = simpl.CreateAttributeMatrix.New()

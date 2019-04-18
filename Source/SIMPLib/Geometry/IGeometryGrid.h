@@ -41,12 +41,6 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 
-namespace SIMPL
-{
-using Tuple3FVec = std::tuple<float, float, float>;
-using Tuple6FVec = std::tuple<float, float, float, float, float, float>;
-using Tuple3SVec = std::tuple<size_t, size_t, size_t>;
-}
 
 /**
  * @brief The IGeometryGrid class extends IGeometry for grid type geometries
@@ -64,10 +58,7 @@ class SIMPLib_EXPORT IGeometryGrid : public IGeometry
     ~IGeometryGrid() override;
 
     virtual void setDimensions(const SizeVec3Type& dims) = 0;
-    virtual void setDimensions(SizeVec3Type& dims) = 0;
-    virtual void setDimensions(const SIMPL::Tuple3SVec& dims) = 0; // Needed for Python Interface
-
-    virtual SIMPL::Tuple3SVec getDimensions() const = 0;
+    virtual SizeVec3Type getDimensions() const = 0;
 
     virtual size_t getXPoints() = 0;
     virtual size_t getYPoints() = 0;

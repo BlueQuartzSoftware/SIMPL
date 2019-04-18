@@ -26,12 +26,12 @@ def color_data_change_test():
 
     # Rotate Sample Reference Frame
     err = samplingpy.rotate_sample_ref_frame(dca, simpl.DataArrayPath("EBSD Scan", "Scan Data", ""),
-                                             simpl.FloatVec3(0.0, 1.0, 0.0), 180.0, False)
+                                             simpl.FloatVec3Type(0.0, 1.0, 0.0), 180.0, False)
     if err < 0:
         print("RotateSampleRefFrame ErrorCondition: %d" % err)
 
     # Rotate Euler Reference Frame
-    err = orientationanalysispy.rotate_euler_ref_frame(dca, simpl.FloatVec3(0.0, 0.0, 1.0), 90.0,
+    err = orientationanalysispy.rotate_euler_ref_frame(dca, simpl.FloatVec3Type(0.0, 0.0, 1.0), 90.0,
                                                        simpl.DataArrayPath("EBSD Scan", "Scan Data", "EulerAngles"))
     if err < 0:
         print("RotateEulerRefFrame ErrorCondition: %d" % err)
@@ -42,7 +42,7 @@ def color_data_change_test():
         print("MultiThresholdObjects ErrorCondition: %d" % err)
 
     # Generate IPF Colors
-    err = orientationanalysispy.generate_ipf_colors(dca, simpl.FloatVec3(0, 0, 1),
+    err = orientationanalysispy.generate_ipf_colors(dca, simpl.FloatVec3Type(0, 0, 1),
                                                     simpl.DataArrayPath("EBSD Scan", "Scan Data", "Phases"),
                                                     simpl.DataArrayPath("EBSD Scan", "Scan Data", "EulerAngles"),
                                                     simpl.DataArrayPath("EBSD Scan",

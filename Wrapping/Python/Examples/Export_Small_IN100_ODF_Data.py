@@ -46,7 +46,7 @@ def pipeline_test(dca):
     rotate_euler_ref_frame = orientationanalysis.RotateEulerRefFrame.New()
     rotate_euler_ref_frame.setDataContainerArray(dca)
     rotate_euler_ref_frame.RotationAngle = 90.0
-    rotate_euler_ref_frame.RotationAxis = simpl.FloatVec3(0.0, 0.0, 1.0)
+    rotate_euler_ref_frame.RotationAxis = simpl.FloatVec3Type(0.0, 0.0, 1.0)
     rotate_euler_ref_frame.CellEulerAnglesArrayPath = simpl.DataArrayPath("Small IN100 Slice 1", "EBSD Scan Data",
                                                                        "EulerAngles")
     rotate_euler_ref_frame.preflight()
@@ -61,7 +61,7 @@ def pipeline_test(dca):
     rotate_sample_ref_frame = sampling.RotateSampleRefFrame.New()
     rotate_sample_ref_frame.setDataContainerArray(dca)
     rotate_sample_ref_frame.RotationAngle = 180.0
-    rotate_sample_ref_frame.RotationAxis = simpl.FloatVec3(0.0, 1.0, 0.0)
+    rotate_sample_ref_frame.RotationAxis = simpl.FloatVec3Type(0.0, 1.0, 0.0)
     rotate_sample_ref_frame.CellAttributeMatrixPath = simpl.DataArrayPath("Small IN100 Slice 1", "EBSD Scan Data", "")
     rotate_sample_ref_frame.preflight()
     print("  Preflight Error Code: %s" % rotate_sample_ref_frame.ErrorCondition)
@@ -143,7 +143,7 @@ def pythonic_test(dca):
     if err < 0:
         print("ReadAngData ErrorCondition: %d" % err)
 
-    err = orientationanalysis.rotate_euler_ref_frame(dca, simpl.FloatVec3(0.0, 0.0, 1.0), 90.0,
+    err = orientationanalysis.rotate_euler_ref_frame(dca, simpl.FloatVec3Type(0.0, 0.0, 1.0), 90.0,
                                                      simpl.DataArrayPath("Small IN100 Slice 1",
                                                                          "EBSD Scan Data", "EulerAngles"))
     if err < 0:
@@ -151,7 +151,7 @@ def pythonic_test(dca):
 
     err = sampling.rotate_sample_ref_frame(dca,
                                            simpl.DataArrayPath("Small IN100 Slice 1", "EBSD Scan Data", ""),
-                                           simpl.FloatVec3(0.0, 1.0, 0.0), 180.0, False)
+                                           simpl.FloatVec3Type(0.0, 1.0, 0.0), 180.0, False)
     if err < 0:
         print("RotateSampleRefFrame ErrorCondition: %d" % err)
 

@@ -229,8 +229,7 @@ void InitializeData::dataCheck()
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(attributeMatrixPath.getDataContainerName());
 
-  size_t udims[3] = {0, 0, 0};
-  std::tie(udims[0], udims[1], udims[2]) = m->getGeometryAs<ImageGeom>()->getDimensions();
+  // SizeVec3Type udims = m->getGeometryAs<ImageGeom>()->getDimensions();
 
   QString attrMatName = attributeMatrixPath.getAttributeMatrixName();
   QList<QString> voxelArrayNames = DataArrayPath::GetDataArrayNames(m_CellAttributeMatrixPaths);
@@ -359,8 +358,7 @@ void InitializeData::execute()
   DataArrayPath attributeMatrixPath(m_CellAttributeMatrixPaths[0].getDataContainerName(), m_CellAttributeMatrixPaths[0].getAttributeMatrixName(), "");
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(attributeMatrixPath.getDataContainerName());
 
-  size_t udims[3] = {0, 0, 0};
-  std::tie(udims[0], udims[1], udims[2]) = m->getGeometryAs<ImageGeom>()->getDimensions();
+  SizeVec3Type udims = m->getGeometryAs<ImageGeom>()->getDimensions();
 
   int64_t dims[3] = {
       static_cast<int64_t>(udims[0]), static_cast<int64_t>(udims[1]), static_cast<int64_t>(udims[2]),
