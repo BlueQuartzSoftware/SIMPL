@@ -208,7 +208,7 @@ public:
 
           // Compute the actual derivatives
           index = (z * dims[1] * dims[0]) + (y * dims[0]) + x;
-          for(int32_t i = 0; i < numComps; i++)
+          for(size_t i = 0; i < numComps; i++)
           {
             derivsPtr[index * numComps * 3 + i * 3] = xix * dValuesdXi[i] + etax * dValuesdEta[i] + zetax * dValuesdZeta[i];
 
@@ -634,9 +634,9 @@ void ImageGeom::getPlaneCoords(size_t idx, float coords[3])
 // -----------------------------------------------------------------------------
 void ImageGeom::getPlaneCoords(size_t idx[3], double coords[3])
 {
-  coords[0] = static_cast<double>(idx[0] * m_Spacing[0] + m_Origin[0]);
-  coords[1] = static_cast<double>(idx[1] * m_Spacing[1] + m_Origin[1]);
-  coords[2] = static_cast<double>(idx[2] * m_Spacing[2] + m_Origin[2]);
+  coords[0] = static_cast<double>(idx[0]) * m_Spacing[0] + m_Origin[0];
+  coords[1] = static_cast<double>(idx[1]) * m_Spacing[1] + m_Origin[1];
+  coords[2] = static_cast<double>(idx[2]) * m_Spacing[2] + m_Origin[2];
 }
 
 // -----------------------------------------------------------------------------
@@ -644,9 +644,9 @@ void ImageGeom::getPlaneCoords(size_t idx[3], double coords[3])
 // -----------------------------------------------------------------------------
 void ImageGeom::getPlaneCoords(size_t x, size_t y, size_t z, double coords[3])
 {
-  coords[0] = static_cast<double>(x * m_Spacing[0] + m_Origin[0]);
-  coords[1] = static_cast<double>(y * m_Spacing[1] + m_Origin[1]);
-  coords[2] = static_cast<double>(z * m_Spacing[2] + m_Origin[2]);
+  coords[0] = static_cast<double>(x) * m_Spacing[0] + m_Origin[0];
+  coords[1] = static_cast<double>(y) * m_Spacing[1] + m_Origin[1];
+  coords[2] = static_cast<double>(z) * m_Spacing[2] + m_Origin[2];
 }
 
 // -----------------------------------------------------------------------------
@@ -658,9 +658,9 @@ void ImageGeom::getPlaneCoords(size_t idx, double coords[3])
   size_t row = (idx / m_Dimensions[0]) % m_Dimensions[1];
   size_t plane = idx / (m_Dimensions[0] * m_Dimensions[1]);
 
-  coords[0] = static_cast<double>(column * m_Spacing[0] + m_Origin[0]);
-  coords[1] = static_cast<double>(row * m_Spacing[1] + m_Origin[1]);
-  coords[2] = static_cast<double>(plane * m_Spacing[2] + m_Origin[2]);
+  coords[0] = static_cast<double>(column) * m_Spacing[0] + m_Origin[0];
+  coords[1] = static_cast<double>(row) * m_Spacing[1] + m_Origin[1];
+  coords[2] = static_cast<double>(plane) * m_Spacing[2] + m_Origin[2];
 }
 
 // -----------------------------------------------------------------------------
@@ -702,9 +702,9 @@ void ImageGeom::getCoords(size_t idx, float coords[3])
 // -----------------------------------------------------------------------------
 void ImageGeom::getCoords(size_t idx[3], double coords[3])
 {
-  coords[0] = static_cast<double>(idx[0] * m_Spacing[0] + m_Origin[0] + (0.5f * m_Spacing[0]));
-  coords[1] = static_cast<double>(idx[1] * m_Spacing[1] + m_Origin[1] + (0.5f * m_Spacing[1]));
-  coords[2] = static_cast<double>(idx[2] * m_Spacing[2] + m_Origin[2] + (0.5f * m_Spacing[2]));
+  coords[0] = static_cast<double>(idx[0]) * m_Spacing[0] + m_Origin[0] + (0.5 * m_Spacing[0]);
+  coords[1] = static_cast<double>(idx[1]) * m_Spacing[1] + m_Origin[1] + (0.5 * m_Spacing[1]);
+  coords[2] = static_cast<double>(idx[2]) * m_Spacing[2] + m_Origin[2] + (0.5 * m_Spacing[2]);
 }
 
 // -----------------------------------------------------------------------------
@@ -712,9 +712,9 @@ void ImageGeom::getCoords(size_t idx[3], double coords[3])
 // -----------------------------------------------------------------------------
 void ImageGeom::getCoords(size_t x, size_t y, size_t z, double coords[3])
 {
-  coords[0] = static_cast<double>(x * m_Spacing[0] + m_Origin[0] + (0.5f * m_Spacing[0]));
-  coords[1] = static_cast<double>(y * m_Spacing[1] + m_Origin[1] + (0.5f * m_Spacing[1]));
-  coords[2] = static_cast<double>(z * m_Spacing[2] + m_Origin[2] + (0.5f * m_Spacing[2]));
+  coords[0] = static_cast<double>(x) * m_Spacing[0] + m_Origin[0] + (0.5 * m_Spacing[0]);
+  coords[1] = static_cast<double>(y) * m_Spacing[1] + m_Origin[1] + (0.5 * m_Spacing[1]);
+  coords[2] = static_cast<double>(z) * m_Spacing[2] + m_Origin[2] + (0.5 * m_Spacing[2]);
 }
 
 // -----------------------------------------------------------------------------
@@ -726,9 +726,9 @@ void ImageGeom::getCoords(size_t idx, double coords[3])
   size_t row = (idx / m_Dimensions[0]) % m_Dimensions[1];
   size_t plane = idx / (m_Dimensions[0] * m_Dimensions[1]);
 
-  coords[0] = static_cast<double>(column * m_Spacing[0] + m_Origin[0] + (0.5f * m_Spacing[0]));
-  coords[1] = static_cast<double>(row * m_Spacing[1] + m_Origin[1] + (0.5f * m_Spacing[1]));
-  coords[2] = static_cast<double>(plane * m_Spacing[2] + m_Origin[2] + (0.5f * m_Spacing[2]));
+  coords[0] = static_cast<double>(column) * m_Spacing[0] + m_Origin[0] + (0.5 * m_Spacing[0]);
+  coords[1] = static_cast<double>(row) * m_Spacing[1] + m_Origin[1] + (0.5 * m_Spacing[1]);
+  coords[2] = static_cast<double>(plane) * m_Spacing[2] + m_Origin[2] + (0.5 * m_Spacing[2]);
 }
 
 // -----------------------------------------------------------------------------

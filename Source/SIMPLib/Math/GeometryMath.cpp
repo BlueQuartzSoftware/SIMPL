@@ -1020,7 +1020,7 @@ LOOP:
     for(f = 0; f < numFaces; f++)
     {
       /* Begin check each face */
-      int32_t idx = 2 * faceId[f];
+      int64_t idx = 2 * static_cast<int64_t>(faceId[f]);
       float* v0 = faceBBs->getVertexPointer(idx);
       float* v1 = faceBBs->getVertexPointer(idx + 1);
       if(!RayIntersectsBox(q, r, v0, v1))
@@ -1113,7 +1113,7 @@ LOOP:
     for(f = 0; f < numFaces; f++)
     {
       /* Begin check each face */
-      int32_t idx = 2 * faceId[f];
+      int64_t idx = 2 * static_cast<int64_t>(faceId[f]);
       float* v0 = faceBBs->getVertexPointer(idx);
       float* v1 = faceBBs->getVertexPointer(idx + 1);
       faces->getVertCoordsAtTri(faceId[f], a, b, c);
