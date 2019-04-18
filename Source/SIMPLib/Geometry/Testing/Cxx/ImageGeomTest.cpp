@@ -1,12 +1,11 @@
 
-#include <stdlib.h>
+#include <cstdlib>
 
 #include <iostream>
 
 #include <QtCore/QFile>
 
 #include "SIMPLib/Geometry/ImageGeom.h"
-
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
 
@@ -42,7 +41,7 @@ public:
     geom->setOrigin(origin);
     geom->setSpacing(res);
 
-    float coords[3] = {3.5f, 9.23f, 12.78f};
+    float coords[3] = {2.5f, 9.23f, 12.78f};
     size_t indices[3] = {0, 0, 0};
     size_t index = 0;
     ImageGeom::ErrorType err = geom->computeCellIndex(coords, indices);
@@ -64,7 +63,7 @@ public:
     DREAM3D_REQUIRE(err == ImageGeom::ErrorType::XOutOfBoundsHigh)
 
     // Y Coord out of bounds
-    coords[0] = 3.5f;
+    coords[0] = 2.9f;
     coords[1] = 4.0f;
     err = geom->computeCellIndex(coords, indices);
     DREAM3D_REQUIRE(err == ImageGeom::ErrorType::YOutOfBoundsLow)
@@ -77,7 +76,7 @@ public:
     DREAM3D_REQUIRE(err == ImageGeom::ErrorType::YOutOfBoundsHigh)
 
     // Z Coord out of bounds
-    coords[0] = 3.5f;
+    coords[0] = 2.5f;
     coords[1] = 9.23f;
     coords[2] = 5.0f;
     err = geom->computeCellIndex(coords, indices);

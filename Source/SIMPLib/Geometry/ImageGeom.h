@@ -321,7 +321,7 @@ public:
    * @return Int error code. There can be multiple failure mechanisms when doing
    * this calculation. Any return value != ErrorType::NoError is a failure to compute the indices.
    */
-  ErrorType computeCellIndex(float coords[3], size_t index[3]);
+  ErrorType computeCellIndex(const float coords[], size_t index[3]);
 
   /**
    * @brief computeCellIndex This method will compute the X, Y & Z Index based
@@ -345,7 +345,7 @@ public:
    * @return Int error code. There can be multiple failure mechanisms when doing
    * this calculation. Any return value != ErrorType::NoError is a failure to compute the indices.
    */
-  ErrorType computeCellIndex(float coords[3], size_t& index);
+  ErrorType computeCellIndex(const float coords[3], size_t& index);
 
 protected:
   ImageGeom();
@@ -361,7 +361,7 @@ protected:
    * @param preflight
    * @return
    */
-  int gatherMetaData(hid_t parentid, size_t volDims[3], float spacing[3], float origin[3], unsigned int spatialDims, QString geomName, bool preflight);
+  int gatherMetaData(hid_t parentid, size_t volDims[3], float spacing[3], float origin[3], unsigned int spatialDims, const QString& geomName, bool preflight);
 
   /**
    * @brief setElementsContaingVert

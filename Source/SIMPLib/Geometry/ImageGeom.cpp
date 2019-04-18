@@ -63,7 +63,7 @@
 class FindImageDerivativesImpl
 {
 public:
-  FindImageDerivativesImpl(ImageGeom* image, DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivs)
+  FindImageDerivativesImpl(ImageGeom* image, const DoubleArrayType::Pointer& field, const DoubleArrayType::Pointer& derivs)
   : m_Image(image)
   , m_Field(field)
   , m_Derivatives(derivs)
@@ -234,7 +234,7 @@ public:
   }
 #endif
 
-  void computeIndices(int32_t differenceType, int32_t directionType, size_t& index1, size_t& index2, size_t dims[3], size_t x, size_t y, size_t z, double xp[3], double xm[3]) const
+  void computeIndices(int32_t differenceType, int32_t directionType, size_t& index1, size_t& index2, const size_t dims[3], size_t x, size_t y, size_t z, double xp[3], double xm[3]) const
 
   {
     size_t tmpIndex1 = 0;
@@ -337,7 +337,7 @@ public:
   }
 
   void findValuesForFiniteDifference(int32_t differenceType, int32_t directionType, size_t x, size_t y, size_t z, size_t dims[3], double xp[3], double xm[3], double& factor, int32_t numComps,
-                                     std::vector<double>& plusValues, std::vector<double>& minusValues, double* field) const
+                                     std::vector<double>& plusValues, std::vector<double>& minusValues, const double* field) const
   {
     size_t index1 = 0;
     size_t index2 = 0;
@@ -1003,11 +1003,11 @@ int ImageGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
 
   out << "  <!-- *************** START OF " << dcName << " *************** -->"
       << "\n";
-  out << "  <Grid Name=\"" << dcName << "\" GridType=\"Uniform\">"
+  out << "  <Grid Name=\"" << dcName << R"(" GridType="Uniform">)"
       << "\n";
   if(getEnableTimeSeries())
   {
-    out << "    <Time TimeType=\"Single\" Value=\"" << getTimeValue() << "\"/>\n";
+    out << R"(    <Time TimeType="Single" Value=")" << getTimeValue() << "\"/>\n";
   }
   out << "    <Topology TopologyType=\"3DCoRectMesh\" Dimensions=\"" << volDims[2] + 1 << " " << volDims[1] + 1 << " " << volDims[0] + 1 << " \"></Topology>"
       << "\n";
@@ -1111,7 +1111,7 @@ IGeometry::Pointer ImageGeom::deepCopy(bool forceNoAllocate)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int ImageGeom::gatherMetaData(hid_t parentId, size_t volDims[3], float spacing[3], float origin[3], unsigned int spatialDims, QString geomName, bool preflight)
+int ImageGeom::gatherMetaData(hid_t parentId, size_t volDims[3], float spacing[3], float origin[3], unsigned int spatialDims, const QString& geomName, bool preflight)
 {
   int err = QH5Lite::readPointerDataset(parentId, H5_DIMENSIONS, volDims);
   if(err < 0)
@@ -1144,7 +1144,7 @@ int ImageGeom::gatherMetaData(hid_t parentId, size_t volDims[3], float spacing[3
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ImageGeom::ErrorType ImageGeom::computeCellIndex(float coords[3], size_t index[3])
+ImageGeom::ErrorType ImageGeom::computeCellIndex(const float coords[3], size_t index[3])
 {
   ImageGeom::ErrorType err = ImageGeom::ErrorType::NoError;
   for(size_t i = 0; i < 3; i++)
@@ -1169,7 +1169,7 @@ ImageGeom::ErrorType ImageGeom::computeCellIndex(float coords[3], size_t index[3
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ImageGeom::ErrorType ImageGeom::computeCellIndex(float coords[3], size_t& index)
+ImageGeom::ErrorType ImageGeom::computeCellIndex(const float coords[], size_t& index)
 {
   ImageGeom::ErrorType err = ImageGeom::ErrorType::NoError;
   size_t cell[3] = {0, 0, 0};
