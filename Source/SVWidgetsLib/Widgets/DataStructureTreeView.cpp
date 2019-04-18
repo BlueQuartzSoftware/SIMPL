@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+* Copyright (c) 2009-2019 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -29,6 +29,7 @@
 * The code contained herein was partially funded by the followig contracts:
 *    United States Air Force Prime Contract FA8650-07-D-5800
 *    United States Air Force Prime Contract FA8650-10-D-5210
+*    United States Air Force Prime Contract FA8650-15-D-5280
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -42,6 +43,7 @@
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QMimeData>
+#include <QtCore/QSortFilterProxyModel>
 #include <QtGui/QDrag>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QStandardItemModel>
@@ -52,6 +54,7 @@
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h"
 #include "SVWidgetsLib/Widgets/DataStructureItemDelegate.h"
+#include "SVWidgetsLib/Widgets/DataStructureProxyModel.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -62,6 +65,13 @@ DataStructureTreeView::DataStructureTreeView(QWidget* parent)
   setAcceptDrops(true);
   setMouseTracking(true);
   setAttribute(Qt::WA_MacShowFocusRect, false);
+  // model
+  QStandardItemModel* model = new QStandardItemModel(this);
+  model->setColumnCount(1);
+  DataStructureProxyModel* proxyModel = new DataStructureProxyModel(this);
+  proxyModel->setSourceModel(model);
+  setModel(proxyModel);
+  
   m_Delegate = new DataStructureItemDelegate(this);
   setItemDelegate(m_Delegate);
 }
@@ -70,6 +80,22 @@ DataStructureTreeView::DataStructureTreeView(QWidget* parent)
 //
 // -----------------------------------------------------------------------------
 DataStructureTreeView::~DataStructureTreeView() = default;
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QStandardItemModel* DataStructureTreeView::getStandardModel()
+{
+  return dynamic_cast<QStandardItemModel*>(getProxyModel()->sourceModel());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataStructureProxyModel* DataStructureTreeView::getProxyModel()
+{
+  return dynamic_cast<DataStructureProxyModel*>(model());
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -470,4 +496,20 @@ void DataStructureTreeView::contextMenuEvent(QContextMenuEvent* event)
   }
 
   menu.exec(event->globalPos());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureTreeView::search(const QString& name)
+{
+  if(name.isEmpty())
+  {
+    getProxyModel()->setFilterRegExp(QRegExp());
+  }
+  else
+  {
+    getProxyModel()->setFilterRegExp(QRegExp(name, Qt::CaseInsensitive));
+  }
+  update();
 }

@@ -11,6 +11,7 @@ set(SVWidgetsLib_Widgets_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataStructureWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataStructureTreeView.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataStructureModel.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataStructureProxyModel.h
 
 
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksItemDelegate.h
@@ -64,6 +65,7 @@ set(SVWidgetsLib_Widgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataStructureWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataStructureTreeView.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataStructureModel.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataStructureProxyModel.cpp
 
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksItem.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksItemDelegate.cpp
