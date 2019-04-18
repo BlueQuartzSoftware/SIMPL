@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+* Copyright (c) 2009-2019 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -29,6 +29,7 @@
 * The code contained herein was partially funded by the followig contracts:
 *    United States Air Force Prime Contract FA8650-07-D-5800
 *    United States Air Force Prime Contract FA8650-10-D-5210
+*    United States Air Force Prime Contract FA8650-15-D-5280
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -198,11 +199,17 @@ void DataStructureWidget::setupGui()
   connect(m_Ui->dataBrowserTreeView, SIGNAL(filterPath(DataArrayPath)), this, SIGNAL(filterPath(DataArrayPath)));
   connect(m_Ui->dataBrowserTreeView, SIGNAL(endDataStructureFiltering()), this, SIGNAL(endDataStructureFiltering()));
   connect(m_Ui->dataBrowserTreeView, SIGNAL(applyPathToFilteringParameter(DataArrayPath)), this, SIGNAL(applyPathToFilteringParameter(DataArrayPath)));
+  
+  // Create toolbar menu
+  QMenu* toolbarMenu = new QMenu("... ");
+  QAction* expandAllAction = toolbarMenu->addAction("Expand All");
+  QAction* collapseAllAction = toolbarMenu->addAction("Collapse All");
+  connect(expandAllAction, &QAction::triggered, m_Ui->dataBrowserTreeView, &DataStructureTreeView::expandAll);
+  connect(collapseAllAction, &QAction::triggered, m_Ui->dataBrowserTreeView, &DataStructureTreeView::collapseAll);
+  m_Ui->toolbarMenuBtn->setMenu(toolbarMenu);
 
-  QStandardItemModel* model = new QStandardItemModel();
-  m_Ui->dataBrowserTreeView->setModel(model);
-  model->setColumnCount(1);
-  model->setParent(m_Ui->dataBrowserTreeView); // Set the parent so it gets cleaned up
+  // Search
+  connect(m_Ui->filterLineEdit, &QLineEdit::textChanged, m_Ui->dataBrowserTreeView, &DataStructureTreeView::search);
 
   QString css(" QToolTip {\
               border: 2px solid #434343;\
@@ -233,13 +240,13 @@ void DataStructureWidget::refreshData()
   // Get the DataContainerArray object
   if(m_Dca.get() == nullptr)
   {
-    QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
+    QStandardItemModel* model = m_Ui->dataBrowserTreeView->getStandardModel();
     QStandardItem* rootItem = model->invisibleRootItem();
     removeNonexistingEntries(rootItem, QStringList(), 0);
     return;
   }
 
-  QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
+  QStandardItemModel* model = m_Ui->dataBrowserTreeView->getStandardModel();
   QVector<QString> path;
   {
     QModelIndex currIndex = m_Ui->dataBrowserTreeView->currentIndex();
@@ -253,7 +260,7 @@ void DataStructureWidget::refreshData()
 
   }
 
-  model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
+  model = m_Ui->dataBrowserTreeView->getStandardModel();
 
   //  QItemSelectionModel* selectionModel = m_Ui->dataBrowserTreeView->selectionModel();
   //  if(selectionModel)
@@ -383,6 +390,7 @@ void DataStructureWidget::refreshData()
   }
   removeNonexistingEntries(rootItem, m_Dca->getDataContainerNames(), 0);
 
+  m_Ui->dataBrowserTreeView->expandAll();
   // repaint the DataStructureTreeView
   m_Ui->dataBrowserTreeView->repaint();
 }

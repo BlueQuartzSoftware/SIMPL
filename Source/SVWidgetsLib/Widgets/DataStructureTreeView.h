@@ -1,5 +1,5 @@
 /* ============================================================================
- * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ * Copyright (c) 2009-2019 BlueQuartz Software, LLC
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -29,6 +29,7 @@
  * The code contained herein was partially funded by the followig contracts:
  *    United States Air Force Prime Contract FA8650-07-D-5800
  *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Air Force Prime Contract FA8650-15-D-5280
  *    United States Prime Contract Navy N00173-07-C-2068
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -55,6 +56,7 @@
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 class QStandardItemModel;
+class DataStructureProxyModel;
 
 class SVWidgetsLib_EXPORT DataStructureTreeView : public QTreeView
 {
@@ -71,6 +73,19 @@ public:
    * @brief ~DataStructureTreeView()
    */
   ~DataStructureTreeView() override;
+
+  /**
+   * @brief Returns the QStandardItemModel backing the tree view.
+   * @return
+   */
+  QStandardItemModel* getStandardModel();
+
+  /**
+   * @brief Returns the DataStructureProxyModel used for searching the tree view
+   * and accessing the QStandardItemModel.
+   * @return
+   */
+  DataStructureProxyModel* getProxyModel();
 
   /**
    * @brief Returns the DataArrayPath for the given QModelIndex
@@ -122,6 +137,11 @@ public:
    * @param index
    */
   void collapseAllBut(const QModelIndex& index);
+
+  /**
+   * @brief Searches for items using the given name as part of their text.  All other items are hidden.
+   */
+  void search(const QString& name);
 
 signals:
   void filterPath(DataArrayPath path);

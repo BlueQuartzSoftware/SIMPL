@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Data Structure</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
@@ -29,7 +29,7 @@
    <property name="spacing">
     <number>0</number>
    </property>
-   <item row="0" column="0">
+   <item row="1" column="0">
     <widget class="DataStructureTreeView" name="dataBrowserTreeView">
      <property name="acceptDrops">
       <bool>true</bool>
@@ -78,6 +78,63 @@
      </attribute>
     </widget>
    </item>
+   <item row="0" column="0">
+    <widget class="SVFrame" name="toolbar">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="toolbarLayout">
+      <property name="leftMargin">
+       <number>1</number>
+      </property>
+      <property name="topMargin">
+       <number>1</number>
+      </property>
+      <property name="rightMargin">
+       <number>1</number>
+      </property>
+      <property name="bottomMargin">
+       <number>1</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QtSLineEdit" name="filterLineEdit">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>1</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="placeholderText">
+         <string>Search Data Structure</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="SVToolButton" name="toolbarMenuBtn">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>...  </string>
+        </property>
+        <property name="popupMode">
+         <enum>QToolButton::InstantPopup</enum>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextOnly</enum>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -85,6 +142,22 @@
    <class>DataStructureTreeView</class>
    <extends>QTreeView</extends>
    <header>DataStructureTreeView.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QtSLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">QtSLineEdit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SVToolButton</class>
+   <extends>QToolButton</extends>
+   <header location="global">SVWidgetsLib/Widgets/SVControlWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SVFrame</class>
+   <extends>QFrame</extends>
+   <header location="global">SVWidgetsLib/Widgets/SVControlWidgets.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
