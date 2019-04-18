@@ -48,9 +48,7 @@ protected:
 //
 // -----------------------------------------------------------------------------
 template <typename TComponent>
-void
-ITK_IMAGE_READER_CLASS_NAME
-::readImage(const DataArrayPath& dataArrayPath, const itk::ImageIOBase::Pointer& imageIO, const QString& filename, bool dataCheck)
+void ITK_IMAGE_READER_CLASS_NAME ::readImage(const DataArrayPath& dataArrayPath, const itk::ImageIOBase::Pointer& imageIO, const QString& filename, bool dataCheck)
 {
   const unsigned int dimensions = imageIO->GetNumberOfDimensions();
   switch(dimensions)
@@ -77,9 +75,7 @@ ITK_IMAGE_READER_CLASS_NAME
 //
 // -----------------------------------------------------------------------------
 template <typename TComponent, unsigned int dimensions>
-void
-ITK_IMAGE_READER_CLASS_NAME
-::readImage(const DataArrayPath& dataArrayPath, const itk::ImageIOBase::Pointer& imageIO, const QString& filename, bool dataCheck)
+void ITK_IMAGE_READER_CLASS_NAME ::readImage(const DataArrayPath& dataArrayPath, const itk::ImageIOBase::Pointer& imageIO, const QString& filename, bool dataCheck)
 {
   using PixelTypeType = itk::ImageIOBase::IOPixelType;
   PixelTypeType pixel = imageIO->GetPixelType();
@@ -135,9 +131,7 @@ ITK_IMAGE_READER_CLASS_NAME
 //
 // -----------------------------------------------------------------------------
 template <typename TPixel, unsigned int dimensions>
-void
-ITK_IMAGE_READER_CLASS_NAME
-::readImage(const DataArrayPath& dataArrayPath, const QString& filename, bool dataCheck)
+void ITK_IMAGE_READER_CLASS_NAME ::readImage(const DataArrayPath& dataArrayPath, const QString& filename, bool dataCheck)
 {
   DataContainer::Pointer container = getDataContainerArray()->getDataContainer(dataArrayPath.getDataContainerName());
   if(nullptr == container.get())
@@ -172,9 +166,7 @@ ITK_IMAGE_READER_CLASS_NAME
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void
-ITK_IMAGE_READER_CLASS_NAME
-::readImage(const DataArrayPath& dataArrayPath, bool dataCheck)
+void ITK_IMAGE_READER_CLASS_NAME ::readImage(const DataArrayPath& dataArrayPath, bool dataCheck)
 {
   try
   {
@@ -240,9 +232,8 @@ ITK_IMAGE_READER_CLASS_NAME
 //
 // -----------------------------------------------------------------------------
 template <typename TPixel, unsigned int dimensions>
-void
-ITK_IMAGE_READER_CLASS_NAME
-::readImageOutputInformation(const DataArrayPath& dataArrayPath, typename itk::ImageFileReader<itk::Dream3DImage<TPixel, dimensions>>::Pointer& reader, DataContainer::Pointer& container)
+void ITK_IMAGE_READER_CLASS_NAME ::readImageOutputInformation(const DataArrayPath& dataArrayPath, typename itk::ImageFileReader<itk::Dream3DImage<TPixel, dimensions>>::Pointer& reader,
+                                                              DataContainer::Pointer& container)
 {
   using ImageType = itk::Dream3DImage<TPixel, dimensions>;
   using ValueType = typename itk::NumericTraits<TPixel>::ValueType;
