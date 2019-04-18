@@ -253,12 +253,14 @@ ITK_IMAGE_READER_CLASS_NAME
   // Initialize torigin/tspacing/tDims since arrays are always of size 3 and ITK image may have a different size.
   FloatVec3Type torigin = {0.0f, 0.0f, 0.0f};
   FloatVec3Type tspacing = {1.0f, 1.0f, 1.0f};
-  SizeVec3Type tDims = {1, 1, 1};
+  SizeVec3Type tDims = {0, 0, 0};
+  QVector<size_t> qTdims;
   for(size_t i = 0; i < dimensions; i++)
   {
     torigin[i] = origin[i];
     tspacing[i] = spacing[i];
     tDims[i] = size[i];
+    qTdims.push_back(tDims[i]);
   }
   ImageGeom::Pointer image = ImageGeom::CreateGeometry(SIMPL::Geometry::ImageGeometry);
   image->setDimensions(tDims);
@@ -267,7 +269,6 @@ ITK_IMAGE_READER_CLASS_NAME
   container->setGeometry(image);
 
   QVector<size_t> cDims = ITKDream3DHelper::GetComponentsDimensions<TPixel>();
-  QVector<size_t> qTdims = {tDims[0], tDims[1], tDims[2]};
   AttributeMatrix::Pointer cellAttrMat = container->createNonPrereqAttributeMatrix(this, dataArrayPath.getAttributeMatrixName(), qTdims, AttributeMatrix::Type::Cell);
   if(getErrorCode() < 0)
   {
