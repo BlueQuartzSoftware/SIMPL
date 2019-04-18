@@ -30,7 +30,14 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <deque>
+#include <forward_list>
 #include <iostream>
+#include <list>
+#include <vector>
+
+#include <QtCore/QList>
+#include <QtCore/QVector>
 
 #include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/SIMPLib.h"
@@ -38,16 +45,16 @@
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
 #include "SIMPLib/Testing/UnitTestSupport.hpp"
 
-class AbstractVecTest
+class SIMPLArrayTest
 {
 public:
-  AbstractVecTest() = default;
-  virtual ~AbstractVecTest() = default;
+  SIMPLArrayTest() = default;
+  virtual ~SIMPLArrayTest() = default;
 
-  AbstractVecTest(const AbstractVecTest&) = delete;            // Copy Constructor Not Implemented
-  AbstractVecTest(AbstractVecTest&&) = delete;                 // Move Constructor Not Implemented
-  AbstractVecTest& operator=(const AbstractVecTest&) = delete; // Copy Assignment Not Implemented
-  AbstractVecTest& operator=(AbstractVecTest&&) = delete;      // Move Assignment Not Implemented
+  SIMPLArrayTest(const SIMPLArrayTest&) = delete;            // Copy Constructor Not Implemented
+  SIMPLArrayTest(SIMPLArrayTest&&) = delete;                 // Move Constructor Not Implemented
+  SIMPLArrayTest& operator=(const SIMPLArrayTest&) = delete; // Copy Assignment Not Implemented
+  SIMPLArrayTest& operator=(SIMPLArrayTest&&) = delete;      // Move Assignment Not Implemented
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
@@ -86,6 +93,13 @@ public:
     DREAM3D_REQUIRED(i3.size(), ==, 2)
     DREAM3D_REQUIRED(i3[0], ==, 4)
     DREAM3D_REQUIRED(i3[1], ==, 5)
+
+    std::vector<int32_t> oVec = i3.toContainer<std::vector<int32_t>>();
+    std::list<int32_t> oList = i3.toContainer<std::list<int32_t>>();
+    std::deque<int32_t> oDeque = i3.toContainer<std::deque<int32_t>>();
+
+    QVector<int32_t> oQVec = i3.toContainer<QVector<int32_t>>();
+    QList<int32_t> oQList = i3.toContainer<QList<int32_t>>();
   }
 
   // -----------------------------------------------------------------------------
@@ -120,6 +134,97 @@ public:
     DREAM3D_REQUIRED(i3[0], ==, 4)
     DREAM3D_REQUIRED(i3[1], ==, 5)
     DREAM3D_REQUIRED(i3[2], ==, 6)
+
+    std::vector<int32_t> oVec = i3.toContainer<std::vector<int32_t>>();
+    std::list<int32_t> oList = i3.toContainer<std::list<int32_t>>();
+    std::deque<int32_t> oDeque = i3.toContainer<std::deque<int32_t>>();
+
+    QVector<int32_t> oQVec = i3.toContainer<QVector<int32_t>>();
+    QList<int32_t> oQList = i3.toContainer<QList<int32_t>>();
+  }
+
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
+  void TestVec4()
+  {
+    FloatVec4Type f3(1.0f, 2.0f, 3.0f, 4.0f);
+
+    std::array<int32_t, 4> i32Array = {
+        1,
+        2,
+        3,
+        4,
+    };
+    IntVec4Type i3(i32Array);
+
+    std::tuple<int32_t, int32_t, int32_t, int32_t> tpl = std::make_tuple(1, 2, 3, 4);
+    i3 = tpl;
+
+    std::vector<int32_t> iv3 = {4, 5, 6, 7};
+    i3 = iv3.data();
+
+    int32_t x = i3.getX();
+    DREAM3D_REQUIRED(x, ==, 4)
+    int32_t y = i3.getY();
+    DREAM3D_REQUIRED(y, ==, 5)
+    int32_t z = i3.getZ();
+    DREAM3D_REQUIRED(z, ==, 6)
+
+    tpl = i3.toTuple();
+    DREAM3D_REQUIRED(std::get<0>(tpl), ==, 4)
+    DREAM3D_REQUIRED(std::get<1>(tpl), ==, 5)
+    DREAM3D_REQUIRED(std::get<2>(tpl), ==, 6)
+
+    DREAM3D_REQUIRED(i3.size(), ==, 4)
+    DREAM3D_REQUIRED(i3[0], ==, 4)
+    DREAM3D_REQUIRED(i3[1], ==, 5)
+    DREAM3D_REQUIRED(i3[2], ==, 6)
+    DREAM3D_REQUIRED(i3[3], ==, 7)
+
+    std::vector<int32_t> oVec = i3.toContainer<std::vector<int32_t>>();
+    std::list<int32_t> oList = i3.toContainer<std::list<int32_t>>();
+    std::deque<int32_t> oDeque = i3.toContainer<std::deque<int32_t>>();
+
+    QVector<int32_t> oQVec = i3.toContainer<QVector<int32_t>>();
+    QList<int32_t> oQList = i3.toContainer<QList<int32_t>>();
+  }
+
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
+  void TestVec6()
+  {
+    FloatVec6Type f3(1.0f, 2.0f, 3.0f, 6.0f, 7.0f, 8.0f);
+
+    std::array<int32_t, 6> i32Array = {1, 2, 3, 4, 5, 6};
+    IntVec6Type i3(i32Array);
+
+    std::tuple<int32_t, int32_t, int32_t, int32_t, int32_t, int32_t> tpl = std::make_tuple(1, 2, 3, 5, 6, 7);
+    i3 = tpl;
+
+    std::vector<int32_t> iv3 = {4, 5, 6, 7, 8, 9};
+    i3 = iv3.data();
+
+    tpl = i3.toTuple();
+    DREAM3D_REQUIRED(std::get<0>(tpl), ==, 4)
+    DREAM3D_REQUIRED(std::get<1>(tpl), ==, 5)
+    DREAM3D_REQUIRED(std::get<2>(tpl), ==, 6)
+
+    DREAM3D_REQUIRED(i3.size(), ==, 6)
+    DREAM3D_REQUIRED(i3[0], ==, 4)
+    DREAM3D_REQUIRED(i3[1], ==, 5)
+    DREAM3D_REQUIRED(i3[2], ==, 6)
+    DREAM3D_REQUIRED(i3[0], ==, 7)
+    DREAM3D_REQUIRED(i3[1], ==, 8)
+    DREAM3D_REQUIRED(i3[2], ==, 9)
+
+    std::vector<int32_t> oVec = i3.toContainer<std::vector<int32_t>>();
+    std::list<int32_t> oList = i3.toContainer<std::list<int32_t>>();
+    std::deque<int32_t> oDeque = i3.toContainer<std::deque<int32_t>>();
+
+    QVector<int32_t> oQVec = i3.toContainer<QVector<int32_t>>();
+    QList<int32_t> oQList = i3.toContainer<QList<int32_t>>();
   }
   // -----------------------------------------------------------------------------
   //
@@ -128,12 +233,14 @@ public:
   {
     int err = EXIT_SUCCESS;
 
-    std::cout << "#### AbstractVecTest Starting ####" << std::endl;
+    std::cout << "#### SIMPLArrayTest Starting ####" << std::endl;
 #if !REMOVE_TEST_FILES
     DREAM3D_REGISTER_TEST(RemoveTestFiles())
 #endif
     DREAM3D_REGISTER_TEST(TestVec2())
     DREAM3D_REGISTER_TEST(TestVec3())
+    DREAM3D_REGISTER_TEST(TestVec4())
+    DREAM3D_REGISTER_TEST(TestVec6())
 
 #if REMOVE_TEST_FILES
     DREAM3D_REGISTER_TEST(RemoveTestFiles())

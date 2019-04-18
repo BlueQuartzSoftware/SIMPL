@@ -379,6 +379,45 @@ QString IGeometry::LengthUnitToString(IGeometry::LengthUnit t)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QVector<QString> IGeometry::GetAllLengthUnitStrings()
+{
+  QVector<QString> lengthUnits;
+
+  lengthUnits.push_back(SIMPL::Geometry::k_Yoctometer);  // ("Yoctometer");
+  lengthUnits.push_back(SIMPL::Geometry::k_Zeptometer);  // ("Zeptometer");
+  lengthUnits.push_back(SIMPL::Geometry::k_Attometer);   // ("Attometer");
+  lengthUnits.push_back(SIMPL::Geometry::k_Femtometer);  // ("Femtometer");
+  lengthUnits.push_back(SIMPL::Geometry::k_Picometer);   // ("Picometer");
+  lengthUnits.push_back(SIMPL::Geometry::k_Nanometer);   // ("Nanometer");
+  lengthUnits.push_back(SIMPL::Geometry::k_Micrometer);  // ("Micrometer");
+  lengthUnits.push_back(SIMPL::Geometry::k_Millimeter);  // ("Millimeter");
+  lengthUnits.push_back(SIMPL::Geometry::k_Centimeter);  // ("Centimeter");
+  lengthUnits.push_back(SIMPL::Geometry::k_Decimeter);   // ("Decimeter");
+  lengthUnits.push_back(SIMPL::Geometry::k_Meter);       // ("Meter");
+  lengthUnits.push_back(SIMPL::Geometry::k_Decameter);   // ("Decameter");
+  lengthUnits.push_back(SIMPL::Geometry::k_Hectometer);  // ("Hectometer");
+  lengthUnits.push_back(SIMPL::Geometry::k_Kilometer);   // ("Kilometer");
+  lengthUnits.push_back(SIMPL::Geometry::k_Megameter);   // ("Megameter");
+  lengthUnits.push_back(SIMPL::Geometry::k_Gigameter);   // ("Gigameter");
+  lengthUnits.push_back(SIMPL::Geometry::k_Terameter);   // ("Terameter");
+  lengthUnits.push_back(SIMPL::Geometry::k_Petameter);   // ("Petameter");
+  lengthUnits.push_back(SIMPL::Geometry::k_Exameter);    // ("Exameter");
+  lengthUnits.push_back(SIMPL::Geometry::k_Zettameter);  // ("Zettameter");
+  lengthUnits.push_back(SIMPL::Geometry::k_Yottameter);  // ("Yottameter");
+  lengthUnits.push_back(SIMPL::Geometry::k_Angstrom);    // ("Angstrom");
+  lengthUnits.push_back(SIMPL::Geometry::k_Mil);         // ("Mil");
+  lengthUnits.push_back(SIMPL::Geometry::k_Inch);        // ("Inch");
+  lengthUnits.push_back(SIMPL::Geometry::k_Foot);        // ("Foot");
+  lengthUnits.push_back(SIMPL::Geometry::k_Mile);        // ("Mile");
+  lengthUnits.push_back(SIMPL::Geometry::k_Fathom);      // ("Fathom");
+  lengthUnits.push_back(SIMPL::Geometry::k_Unspecified); // ("Unspecified");
+  lengthUnits.push_back(SIMPL::Geometry::k_Unknown);     // ("Unknown");
+  return lengthUnits;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void IGeometry::setName(const QString& name)
 {
   m_Name = name;

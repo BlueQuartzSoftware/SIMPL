@@ -519,7 +519,8 @@ void ImageGeom::getBoundingBox(float* boundingBox)
 // -----------------------------------------------------------------------------
 FloatVec6Type ImageGeom::getBoundingBox()
 {
-  return {{m_Origin[0], m_Origin[0] + (m_Dimensions[0] * m_Spacing[0]), m_Origin[1], m_Origin[1] + (m_Dimensions[1] * m_Spacing[1]), m_Origin[2], m_Origin[2] + (m_Dimensions[2] * m_Spacing[2])}};
+  return FloatVec6Type(m_Origin[0], m_Origin[0] + (m_Dimensions[0] * m_Spacing[0]), m_Origin[1], m_Origin[1] + (m_Dimensions[1] * m_Spacing[1]), m_Origin[2],
+                       m_Origin[2] + (m_Dimensions[2] * m_Spacing[2]));
 }
 
 // -----------------------------------------------------------------------------
@@ -1034,6 +1035,7 @@ QString ImageGeom::getInfoString(SIMPL::InfoStringFormat format)
 {
   QString info;
   QTextStream ss(&info);
+  QString lengthUnit = IGeometry::LengthUnitToString(static_cast<IGeometry::LengthUnit>(getUnits()));
 
   int64_t volDims[3] = {static_cast<int64_t>(getXPoints()), static_cast<int64_t>(getYPoints()), static_cast<int64_t>(getZPoints())};
   FloatVec3Type spacing = getSpacing();
@@ -1054,7 +1056,14 @@ QString ImageGeom::getInfoString(SIMPL::InfoStringFormat format)
     ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Origin:</th><td>)" << origin[0] << ", " << origin[1] << ", " << origin[2] << "</td></tr>";
     ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Spacing:</th><td>)" << spacing[0] << ", " << spacing[1] << ", " << spacing[2] << "</td></tr>";
 
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Bounds:</th><td>)"
+    float vol = (volDims[0] * spacing[0]) * (volDims[1] * spacing[1]) * (volDims[2] * spacing[2]);
+    QLocale usa(QLocale::English, QLocale::UnitedStates);
+
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Volume:</th><td>)" << usa.toString(vol) << " " << lengthUnit
+       << "s ^3"
+          "</td></tr>";
+
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Bounds (Cell Centered):</th><td>)"
        << "<p>X Range: " << (origin[0] - halfRes[0]) << " to " << (origin[0] - halfRes[0] + volDims[0] * spacing[0]) << " (delta: " << (volDims[0] * spacing[0]) << ")</p>"
        << "<p>Y Range: " << (origin[1] - halfRes[1]) << " to " << (origin[1] - halfRes[1] + volDims[1] * spacing[1]) << " (delta: " << (volDims[1] * spacing[1]) << ")</p>"
        << "<p>Z Range: " << (origin[2] - halfRes[2]) << " to " << (origin[2] - halfRes[2] + volDims[2] * spacing[2]) << " (delta: " << (volDims[2] * spacing[2]) << ")</p>"

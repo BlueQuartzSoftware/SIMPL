@@ -54,6 +54,18 @@ public:
   SIMPLArray& operator=(SIMPLArray&&) noexcept = default;
   ~SIMPLArray() = default;
 
+  /**
+   * @brief Constructor using a random access container type as the input. This will copy the data
+   */
+  template <typename InType>
+  SIMPLArray(const InType& data)
+  {
+    for(size_t i = 0; i < Dimension; i++)
+    {
+      m_Array[i] = data[i];
+    }
+  }
+
   //========================================= STL INTERFACE COMPATIBILITY =================================
   using size_type = size_t;
   using value_type = T;
@@ -62,8 +74,8 @@ public:
   using iterator_category = std::input_iterator_tag;
   using pointer = T*;
   using difference_type = value_type;
-  using iterator = typename std::array<T, 3>::iterator;
-  using const_iterator = typename std::array<T, 3>::const_iterator;
+  using iterator = typename std::array<T, Dimension>::iterator;
+  using const_iterator = typename std::array<T, Dimension>::const_iterator;
   //========================================= END STL INTERFACE COMPATIBILITY ==============================
 
   /**
@@ -172,6 +184,22 @@ public:
     return m_Array == rhs.m_Array;
   }
 
+  /**
+   * @brief Converts to another container type. The output type that is being used needs to have the "push_back()" method implemented.
+   *
+   *   For STL containers this includes Vector, List, Deque. QVector and QList will also work.
+   */
+  template <typename OutContainerType>
+  OutContainerType toContainer()
+  {
+    OutContainerType dest;
+    for(const auto& value : m_Array)
+    {
+      dest.push_back(value);
+    }
+    return dest;
+  }
+
 protected:
   void setValue(size_t i, value_type value)
   {
@@ -203,24 +231,49 @@ public:
     (*this)[0] = static_cast<T>(0);
     (*this)[1] = static_cast<T>(0);
   }
-
+  /**
+   * @brief IVec2
+   * @param x
+   * @param y
+   */
   IVec2(T x, T y)
   {
     (*this)[0] = x;
     (*this)[1] = y;
   }
-
-  IVec2(std::array<T, 2> data)
+  /**
+   * @brief IVec2
+   * @param data
+   */
+  IVec2(const std::array<T, 2>& data)
   {
     (*this)[0] = data[0];
     (*this)[1] = data[1];
   }
-  IVec2(std::tuple<T, T> data)
+  /**
+   * @brief IVec2
+   * @param data
+   */
+  IVec2(const std::tuple<T, T>& data)
   {
     (*this)[0] = std::get<0>(data);
     (*this)[1] = std::get<1>(data);
   }
+  /**
+   * @brief IVec2
+   * @param data
+   */
   IVec2(const T* data)
+  {
+    (*this)[0] = data[0];
+    (*this)[1] = data[1];
+  }
+
+  /**
+   * @brief IVec2
+   * @param data
+   */
+  IVec2(const std::vector<T>& data)
   {
     (*this)[0] = data[0];
     (*this)[1] = data[1];
@@ -251,23 +304,13 @@ public:
   {
     return std::make_tuple(getX(), getY());
   }
-
+  /**
+   *
+   */
   template <typename OutType>
   IVec2<OutType> convertType()
   {
     return IVec2<OutType>(static_cast<OutType>((*this)[0]), static_cast<OutType>((*this)[1]));
-  }
-
-  /**
-   * @brief Converts to a different container type such as std::vector or QVector. The container must have a constructor that takes a single value of size.
-   */
-  template <typename ContainerType>
-  ContainerType toContainer()
-  {
-    ContainerType c(2);
-    c[0] = (*this)[0];
-    c[1] = (*this)[1];
-    return c;
   }
 };
 
@@ -296,27 +339,53 @@ public:
     (*this)[1] = static_cast<T>(0);
     (*this)[2] = static_cast<T>(0);
   }
-
+  /**
+   * @brief IVec3
+   * @param x
+   * @param y
+   * @param z
+   */
   IVec3(T x, T y, T z)
   {
     (*this)[0] = x;
     (*this)[1] = y;
     (*this)[2] = z;
   }
-
-  IVec3(std::array<T, 3> data)
+  /**
+   * @brief IVec3
+   * @param data
+   */
+  IVec3(const std::array<T, 3>& data)
   {
     (*this)[0] = data[0];
     (*this)[1] = data[1];
     (*this)[2] = data[2];
   }
-  IVec3(std::tuple<T, T, T> data)
+  /**
+   * @brief IVec3
+   * @param data
+   */
+  IVec3(const std::tuple<T, T, T>& data)
   {
     (*this)[0] = std::get<0>(data);
     (*this)[1] = std::get<1>(data);
     (*this)[2] = std::get<2>(data);
   }
+  /**
+   * @brief IVec3
+   * @param data
+   */
   IVec3(const T* data)
+  {
+    (*this)[0] = data[0];
+    (*this)[1] = data[1];
+    (*this)[2] = data[2];
+  }
+  /**
+   * @brief IVec3
+   * @param data
+   */
+  IVec3(const std::vector<T>& data)
   {
     (*this)[0] = data[0];
     (*this)[1] = data[1];
@@ -365,18 +434,6 @@ public:
   {
     return IVec3<OutType>(static_cast<OutType>((*this)[0]), static_cast<OutType>((*this)[1]), static_cast<OutType>((*this)[2]));
   }
-  /**
-   * @brief Converts to a different container type such as std::vector or QVector. The container must have a constructor that takes a single value of size.
-   */
-  template <typename ContainerType>
-  ContainerType toContainer()
-  {
-    ContainerType c(3);
-    c[0] = (*this)[0];
-    c[1] = (*this)[1];
-    c[2] = (*this)[2];
-    return c;
-  }
 };
 
 // -----------------------------------------------------------------------------
@@ -400,7 +457,13 @@ public:
     (*this)[2] = static_cast<T>(0);
     (*this)[3] = static_cast<T>(0);
   }
-
+  /**
+   * @brief IVec4
+   * @param x
+   * @param y
+   * @param z
+   * @param w
+   */
   IVec4(T x, T y, T z, T w)
   {
     (*this)[0] = x;
@@ -408,22 +471,44 @@ public:
     (*this)[2] = z;
     (*this)[3] = w;
   }
-
-  IVec4(std::array<T, 4> data)
+  /**
+   * @brief IVec4
+   * @param data
+   */
+  IVec4(const std::array<T, 4>& data)
   {
     (*this)[0] = data[0];
     (*this)[1] = data[1];
     (*this)[2] = data[2];
     (*this)[3] = data[3];
   }
-  IVec4(std::tuple<T, T> data)
+  /**
+   * @brief IVec4
+   * @param data
+   */
+  IVec4(const std::tuple<T, T, T, T>& data)
   {
     (*this)[0] = std::get<0>(data);
     (*this)[1] = std::get<1>(data);
     (*this)[2] = std::get<2>(data);
     (*this)[3] = std::get<3>(data);
   }
+  /**
+   * @brief IVec4
+   * @param data
+   */
   IVec4(const T* data)
+  {
+    (*this)[0] = data[0];
+    (*this)[1] = data[1];
+    (*this)[2] = data[2];
+    (*this)[3] = data[3];
+  }
+  /**
+   * @brief IVec4
+   * @param data
+   */
+  IVec4(const std::vector<T>& data)
   {
     (*this)[0] = data[0];
     (*this)[1] = data[1];
@@ -464,7 +549,7 @@ public:
     (*this)[3] = w;
   }
 
-  std::tuple<T, T> toTuple() const
+  std::tuple<T, T, T, T> toTuple() const
   {
     return std::make_tuple(getX(), getY(), getZ(), getW());
   }
@@ -476,19 +561,6 @@ public:
   IVec4<OutType> convertType()
   {
     return IVec4<OutType>(static_cast<OutType>((*this)[0]), static_cast<OutType>((*this)[1]), static_cast<OutType>((*this)[2]), static_cast<OutType>((*this)[3]));
-  }
-  /**
-   * @brief Converts to a different container type such as std::vector or QVector. The container must have a constructor that takes a single value of size.
-   */
-  template <typename ContainerType>
-  ContainerType toContainer()
-  {
-    ContainerType c(4);
-    c[0] = (*this)[0];
-    c[1] = (*this)[1];
-    c[2] = (*this)[2];
-    c[3] = (*this)[3];
-    return c;
   }
 };
 
@@ -517,7 +589,15 @@ public:
     (*this)[4] = static_cast<T>(0);
     (*this)[5] = static_cast<T>(0);
   }
-
+  /**
+   * @brief IVec6
+   * @param x
+   * @param y
+   * @param z
+   * @param a
+   * @param b
+   * @param c
+   */
   IVec6(T x, T y, T z, T a, T b, T c)
   {
     (*this)[0] = x;
@@ -527,8 +607,11 @@ public:
     (*this)[4] = b;
     (*this)[5] = c;
   }
-
-  IVec6(std::array<T, 6> data)
+  /**
+   * @brief IVec6
+   * @param data
+   */
+  IVec6(const std::array<T, 6>& data)
   {
     (*this)[0] = data[0];
     (*this)[1] = data[1];
@@ -537,7 +620,11 @@ public:
     (*this)[4] = data[4];
     (*this)[5] = data[5];
   }
-  IVec6(std::tuple<T, T> data)
+  /**
+   * @brief IVec6
+   * @param data
+   */
+  IVec6(const std::tuple<T, T, T, T, T, T>& data)
   {
     (*this)[0] = std::get<0>(data);
     (*this)[1] = std::get<1>(data);
@@ -546,6 +633,10 @@ public:
     (*this)[4] = std::get<4>(data);
     (*this)[5] = std::get<5>(data);
   }
+  /**
+   * @brief IVec6
+   * @param data
+   */
   IVec6(const T* data)
   {
     (*this)[0] = data[0];
@@ -555,8 +646,21 @@ public:
     (*this)[4] = data[4];
     (*this)[5] = data[5];
   }
+  /**
+   * @brief IVec6
+   * @param data
+   */
+  IVec6(const std::vector<T>& data)
+  {
+    (*this)[0] = data[0];
+    (*this)[1] = data[1];
+    (*this)[2] = data[2];
+    (*this)[3] = data[3];
+    (*this)[4] = data[4];
+    (*this)[5] = data[5];
+  }
 
-  std::tuple<T, T> toTuple() const
+  std::tuple<T, T, T, T, T, T> toTuple() const
   {
     return std::make_tuple((*this)[0], (*this)[1], (*this)[2], (*this)[3], (*this)[4], (*this)[5]);
   }
@@ -570,22 +674,6 @@ public:
     return IVec6<OutType>(static_cast<OutType>((*this)[0]), static_cast<OutType>((*this)[1]), static_cast<OutType>((*this)[2]), static_cast<OutType>((*this)[3]), static_cast<OutType>((*this)[4]),
                           static_cast<OutType>((*this)[5]));
   }
-
-  /**
-   * @brief Converts to a different container type such as std::vector or QVector. The container must have a constructor that takes a single value of size.
-   */
-  template <typename ContainerType>
-  ContainerType toContainer()
-  {
-    ContainerType c(6);
-    c[0] = (*this)[0];
-    c[1] = (*this)[1];
-    c[2] = (*this)[2];
-    c[3] = (*this)[3];
-    c[4] = (*this)[4];
-    c[5] = (*this)[5];
-    return c;
-  }
 };
 
 using FloatVec3Type = IVec3<float>;
@@ -598,3 +686,4 @@ using IntVec4Type = IVec4<int>;
 using SizeVec4Type = IVec4<size_t>;
 
 using FloatVec6Type = IVec6<float>;
+using IntVec6Type = IVec6<int32_t>;

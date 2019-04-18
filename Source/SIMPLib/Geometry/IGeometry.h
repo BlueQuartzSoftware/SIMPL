@@ -197,6 +197,12 @@ class SIMPLib_EXPORT IGeometry : public Observable
      */
     static QString LengthUnitToString(IGeometry::LengthUnit t);
 
+    /**
+     * @brief GetAllLengthUnitStrings Returns all the Length Units as a vector of strings. This would be suitable to display as a list to a user.
+     * @return
+     */
+    static QVector<QString> GetAllLengthUnitStrings();
+
     SIMPL_INSTANCE_PROPERTY(float, TimeValue)
     SIMPL_INSTANCE_PROPERTY(bool, EnableTimeSeries)
     SIMPL_INSTANCE_PROPERTY(ITransformContainer::Pointer, TransformContainer)
