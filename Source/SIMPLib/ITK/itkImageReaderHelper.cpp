@@ -245,13 +245,13 @@ void ITK_IMAGE_READER_CLASS_NAME ::readImageOutputInformation(const DataArrayPat
   FloatVec3Type torigin = {0.0f, 0.0f, 0.0f};
   FloatVec3Type tspacing = {1.0f, 1.0f, 1.0f};
   SizeVec3Type tDims = {0, 0, 0};
-  QVector<size_t> qTdims;
+  QVector<size_t> qTdims(dimensions);
   for(size_t i = 0; i < dimensions; i++)
   {
     torigin[i] = origin[i];
     tspacing[i] = spacing[i];
     tDims[i] = size[i];
-    qTdims.push_back(tDims[i]);
+    qTdims[i] = tDims[i];
   }
   ImageGeom::Pointer image = ImageGeom::CreateGeometry(SIMPL::Geometry::ImageGeometry);
   image->setDimensions(tDims);
