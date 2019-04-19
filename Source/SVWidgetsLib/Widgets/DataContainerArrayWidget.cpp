@@ -165,7 +165,7 @@ void DataContainerArrayWidget::updateView()
     QStandardItem* dcItem = new QStandardItem(dc->getName());
     rootItem->appendRow(dcItem);
 
-    dcItem->setData(dc->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
+    dcItem->setData(dc->getInfoString(SIMPL::ToolTipFormat), Qt::UserRole + 1);
 
     if(!path.empty() && dc->getName().compare(path[0]) == 0)
     {
@@ -180,7 +180,7 @@ void DataContainerArrayWidget::updateView()
 
       QStandardItem* amItem = new QStandardItem(am->getName());
       dcItem->appendRow(amItem);
-      amItem->setData(am->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
+      amItem->setData(am->getInfoString(SIMPL::ToolTipFormat), Qt::UserRole + 1);
 
       if(path.size() > 1 && am->getName().compare(path[1]) == 0)
       {
@@ -198,7 +198,7 @@ void DataContainerArrayWidget::updateView()
 
         QStandardItem* aaItem = new QStandardItem(attrArrayName);
         amItem->appendRow(aaItem);
-        aaItem->setData(attrArray->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
+        aaItem->setData(attrArray->getInfoString(SIMPL::ToolTipFormat), Qt::UserRole + 1);
 
         if(path.size() > 2 && attrArrayName.compare(path[2]) == 0)
         {

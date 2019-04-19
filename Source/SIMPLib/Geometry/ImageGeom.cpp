@@ -1099,29 +1099,45 @@ QString ImageGeom::getInfoString(SIMPL::InfoStringFormat format)
 
   float halfRes[3] = {spacing[0] / 2.0f, spacing[1] / 2.0f, spacing[2] / 2.0f};
 
-  if(format == SIMPL::HtmlFormat)
-  {
-    ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Geometry Info</th></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Type</th><td>)" << TypeToString(getGeometryType()) << "</td></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Units</th><td>)" << LengthUnitToString(getUnits()) << "</td></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Extents:</th><td>)"
-       << "<p>X Extent: 0 to " << volDims[0] - 1 << " (dimension: " << volDims[0] << ")</p>"
-       << "<p>Y Extent: 0 to " << volDims[1] - 1 << " (dimension: " << volDims[1] << ")</p>"
-       << "<p>Z Extent: 0 to " << volDims[2] - 1 << " (dimension: " << volDims[2] << ")</p>"
-       << "</td></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Origin:</th><td>)" << origin[0] << ", " << origin[1] << ", " << origin[2] << "</td></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Spacing:</th><td>)" << spacing[0] << ", " << spacing[1] << ", " << spacing[2] << "</td></tr>";
+  QString geomTypeString = TypeToString(getGeometryType());
+  QString lengthUnitString = LengthUnitToString(getUnits());
+  QString xExtentString = tr("X Extent: 0 to %1 (dimension: %2)").arg(volDims[0] - 1).arg(volDims[0]);
+  QString yExtentString = tr("Y Extent: 0 to %1 (dimension: %2)").arg(volDims[1] - 1).arg(volDims[1]);
+  QString zExtentString = tr("Z Extent: 0 to %1 (dimension: %2)").arg(volDims[2] - 1).arg(volDims[2]);
+  QString xRangeString = tr("X Range: %1 to %2 (delta: %3)").arg(origin[0] - halfRes[0]).arg(origin[0] - halfRes[0] + volDims[0] * spacing[0]).arg(volDims[0] * spacing[0]);
+  QString yRangeString = tr("Y Range: %1 to %2 (delta: %3)").arg(origin[1] - halfRes[1]).arg(origin[1] - halfRes[1] + volDims[1] * spacing[1]).arg(volDims[1] * spacing[1]);
+  QString zRangeString = tr("Z Range: %1 to %2 (delta: %3)").arg(origin[2] - halfRes[2]).arg(origin[2] - halfRes[2] + volDims[2] * spacing[2]).arg(volDims[2] * spacing[2]);
+  QString originString = tr("(%1, %2, %3)").arg(origin[0]).arg(origin[1]).arg(origin[2]);
+  QString spacingString = tr("(%1, %2, %3)").arg(spacing[0]).arg(spacing[1]).arg(spacing[2]);
+  QString bgColorLabel = "";
 
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Bounds:</th><td>)"
-       << "<p>X Range: " << (origin[0] - halfRes[0]) << " to " << (origin[0] - halfRes[0] + volDims[0] * spacing[0]) << " (delta: " << (volDims[0] * spacing[0]) << ")</p>"
-       << "<p>Y Range: " << (origin[1] - halfRes[1]) << " to " << (origin[1] - halfRes[1] + volDims[1] * spacing[1]) << " (delta: " << (volDims[1] * spacing[1]) << ")</p>"
-       << "<p>Z Range: " << (origin[2] - halfRes[2]) << " to " << (origin[2] - halfRes[2] + volDims[2] * spacing[2]) << " (delta: " << (volDims[2] * spacing[2]) << ")</p>"
-       << "</td></tr>";
-  }
-  else
+  switch(format)
   {
-    ss << "Requested InfoStringFormat is not supported. " << format;
+  case SIMPL::ToolTipFormat:
+    bgColorLabel = "bgcolor=\"#FFFCEA\"";
+  case SIMPL::HtmlFormat:
+    ss << "<tr " << bgColorLabel << "><th colspan=2>Geometry Info</th></tr>";
+    ss << "<tr " << bgColorLabel << "><th align=\"right\">Type: </th><td>" << geomTypeString << "</td></tr>";
+    ss << "<tr " << bgColorLabel << "><th align=\"right\">Units: </th><td>" << lengthUnitString << "</td></tr>";
+    ss << "<tr " << bgColorLabel << "><th align=\"right\">Extents: </th><td>"
+       << "<p>" << xExtentString << "</p>"
+       << "<p>" << yExtentString << "</p>"
+       << "<p>" << zExtentString << "</p>"
+       << "</td></tr>";
+    ss << "<tr " << bgColorLabel << "><th align=\"right\">Origin: </th><td>" << originString << "</td></tr>";
+    ss << "<tr " << bgColorLabel << "><th align=\"right\">Spacing: </th><td>" << spacingString << "</td></tr>";
+
+    ss << "<tr " << bgColorLabel << "><th align=\"right\">Bounds: </th><td>"
+       << "<p>" << xRangeString << "</p>"
+       << "<p>" << yRangeString << "</p>"
+       << "<p>" << zRangeString << "</p>"
+       << "</td></tr>";
+    break;
+  default:
+    ss << "Requested Image Geometry information string format is not supported. " << format;
+    break;
   }
+
   return info;
 }
 
