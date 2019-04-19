@@ -187,15 +187,15 @@ public:
   /**
    * @brief Converts to another container type. The output type that is being used needs to have the "push_back()" method implemented.
    *
-   *   For STL containers this includes Vector, List, Deque. QVector and QList will also work.
+   *   For STL containers this includes Vector, Deque. QVector will also work.
    */
   template <typename OutContainerType>
   OutContainerType toContainer()
   {
-    OutContainerType dest;
-    for(const auto& value : m_Array)
+    OutContainerType dest(Dimension);
+    for(typename OutContainerType::size_type i = 0; i < Dimension; i++)
     {
-      dest.push_back(value);
+      dest[i] = m_Array[i];
     }
     return dest;
   }

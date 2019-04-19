@@ -95,11 +95,9 @@ public:
     DREAM3D_REQUIRED(i3[1], ==, 5)
 
     std::vector<int32_t> oVec = i3.toContainer<std::vector<int32_t>>();
-    std::list<int32_t> oList = i3.toContainer<std::list<int32_t>>();
     std::deque<int32_t> oDeque = i3.toContainer<std::deque<int32_t>>();
 
     QVector<int32_t> oQVec = i3.toContainer<QVector<int32_t>>();
-    QList<int32_t> oQList = i3.toContainer<QList<int32_t>>();
   }
 
   // -----------------------------------------------------------------------------
@@ -136,11 +134,9 @@ public:
     DREAM3D_REQUIRED(i3[2], ==, 6)
 
     std::vector<int32_t> oVec = i3.toContainer<std::vector<int32_t>>();
-    std::list<int32_t> oList = i3.toContainer<std::list<int32_t>>();
     std::deque<int32_t> oDeque = i3.toContainer<std::deque<int32_t>>();
 
     QVector<int32_t> oQVec = i3.toContainer<QVector<int32_t>>();
-    QList<int32_t> oQList = i3.toContainer<QList<int32_t>>();
   }
 
   // -----------------------------------------------------------------------------
@@ -183,11 +179,9 @@ public:
     DREAM3D_REQUIRED(i3[3], ==, 7)
 
     std::vector<int32_t> oVec = i3.toContainer<std::vector<int32_t>>();
-    std::list<int32_t> oList = i3.toContainer<std::list<int32_t>>();
     std::deque<int32_t> oDeque = i3.toContainer<std::deque<int32_t>>();
 
     QVector<int32_t> oQVec = i3.toContainer<QVector<int32_t>>();
-    QList<int32_t> oQList = i3.toContainer<QList<int32_t>>();
   }
 
   // -----------------------------------------------------------------------------
@@ -215,16 +209,14 @@ public:
     DREAM3D_REQUIRED(i3[0], ==, 4)
     DREAM3D_REQUIRED(i3[1], ==, 5)
     DREAM3D_REQUIRED(i3[2], ==, 6)
-    DREAM3D_REQUIRED(i3[0], ==, 7)
-    DREAM3D_REQUIRED(i3[1], ==, 8)
-    DREAM3D_REQUIRED(i3[2], ==, 9)
+    DREAM3D_REQUIRED(i3[3], ==, 7)
+    DREAM3D_REQUIRED(i3[4], ==, 8)
+    DREAM3D_REQUIRED(i3[5], ==, 9)
 
     std::vector<int32_t> oVec = i3.toContainer<std::vector<int32_t>>();
-    std::list<int32_t> oList = i3.toContainer<std::list<int32_t>>();
     std::deque<int32_t> oDeque = i3.toContainer<std::deque<int32_t>>();
 
     QVector<int32_t> oQVec = i3.toContainer<QVector<int32_t>>();
-    QList<int32_t> oQList = i3.toContainer<QList<int32_t>>();
   }
   // -----------------------------------------------------------------------------
   //
