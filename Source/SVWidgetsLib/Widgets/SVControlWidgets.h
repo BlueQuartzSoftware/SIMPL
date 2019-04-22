@@ -11,6 +11,7 @@
 #include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QDialog>
+#include <QtWidgets/QScrollArea>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
@@ -211,3 +212,15 @@ public:
 
 };
 
+/**
+ * @brief The SVScrollArea class
+ */
+class SVWidgetsLib_EXPORT SVScrollArea : public QScrollArea
+{
+  Q_OBJECT
+
+public:
+  SVScrollArea(QWidget* parent = nullptr);
+  ~SVScrollArea() override;
+
+};

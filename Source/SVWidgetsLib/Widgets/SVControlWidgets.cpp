@@ -157,3 +157,14 @@ SVFrame::SVFrame(QWidget* parent)
 }
 
 SVFrame::~SVFrame() = default;
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+SVScrollArea::SVScrollArea(QWidget* parent)
+: QScrollArea(parent)
+{
+  setAttribute(Qt::WA_MacShowFocusRect, false);
+}
+
+SVScrollArea::~SVScrollArea() = default;
