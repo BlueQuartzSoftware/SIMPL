@@ -48,9 +48,7 @@ protected:
 //
 // -----------------------------------------------------------------------------
 template <typename TComponent>
-void
-ITK_IMAGE_READER_CLASS_NAME
-::readImage(const DataArrayPath& dataArrayPath, const itk::ImageIOBase::Pointer& imageIO, const QString& filename, bool dataCheck)
+void ITK_IMAGE_READER_CLASS_NAME ::readImage(const DataArrayPath& dataArrayPath, const itk::ImageIOBase::Pointer& imageIO, const QString& filename, bool dataCheck)
 {
   const unsigned int dimensions = imageIO->GetNumberOfDimensions();
   switch(dimensions)
@@ -77,9 +75,7 @@ ITK_IMAGE_READER_CLASS_NAME
 //
 // -----------------------------------------------------------------------------
 template <typename TComponent, unsigned int dimensions>
-void
-ITK_IMAGE_READER_CLASS_NAME
-::readImage(const DataArrayPath& dataArrayPath, const itk::ImageIOBase::Pointer& imageIO, const QString& filename, bool dataCheck)
+void ITK_IMAGE_READER_CLASS_NAME ::readImage(const DataArrayPath& dataArrayPath, const itk::ImageIOBase::Pointer& imageIO, const QString& filename, bool dataCheck)
 {
   using PixelTypeType = itk::ImageIOBase::IOPixelType;
   PixelTypeType pixel = imageIO->GetPixelType();
@@ -135,9 +131,7 @@ ITK_IMAGE_READER_CLASS_NAME
 //
 // -----------------------------------------------------------------------------
 template <typename TPixel, unsigned int dimensions>
-void
-ITK_IMAGE_READER_CLASS_NAME
-::readImage(const DataArrayPath& dataArrayPath, const QString& filename, bool dataCheck)
+void ITK_IMAGE_READER_CLASS_NAME ::readImage(const DataArrayPath& dataArrayPath, const QString& filename, bool dataCheck)
 {
   DataContainer::Pointer container = getDataContainerArray()->getDataContainer(dataArrayPath.getDataContainerName());
   if(nullptr == container.get())
@@ -172,9 +166,7 @@ ITK_IMAGE_READER_CLASS_NAME
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void
-ITK_IMAGE_READER_CLASS_NAME
-::readImage(const DataArrayPath& dataArrayPath, bool dataCheck)
+void ITK_IMAGE_READER_CLASS_NAME ::readImage(const DataArrayPath& dataArrayPath, bool dataCheck)
 {
   try
   {
@@ -240,9 +232,8 @@ ITK_IMAGE_READER_CLASS_NAME
 //
 // -----------------------------------------------------------------------------
 template <typename TPixel, unsigned int dimensions>
-void
-ITK_IMAGE_READER_CLASS_NAME
-::readImageOutputInformation(const DataArrayPath& dataArrayPath, typename itk::ImageFileReader<itk::Dream3DImage<TPixel, dimensions>>::Pointer& reader, DataContainer::Pointer& container)
+void ITK_IMAGE_READER_CLASS_NAME ::readImageOutputInformation(const DataArrayPath& dataArrayPath, typename itk::ImageFileReader<itk::Dream3DImage<TPixel, dimensions>>::Pointer& reader,
+                                                              DataContainer::Pointer& container)
 {
   using ImageType = itk::Dream3DImage<TPixel, dimensions>;
   using ValueType = typename itk::NumericTraits<TPixel>::ValueType;
@@ -253,12 +244,14 @@ ITK_IMAGE_READER_CLASS_NAME
   // Initialize torigin/tspacing/tDims since arrays are always of size 3 and ITK image may have a different size.
   FloatVec3Type torigin = {0.0f, 0.0f, 0.0f};
   FloatVec3Type tspacing = {1.0f, 1.0f, 1.0f};
-  SizeVec3Type tDims = {1, 1, 1};
+  SizeVec3Type tDims = {0, 0, 0};
+  QVector<size_t> qTdims(dimensions);
   for(size_t i = 0; i < dimensions; i++)
   {
     torigin[i] = origin[i];
     tspacing[i] = spacing[i];
     tDims[i] = size[i];
+    qTdims[i] = tDims[i];
   }
   ImageGeom::Pointer image = ImageGeom::CreateGeometry(SIMPL::Geometry::ImageGeometry);
   image->setDimensions(tDims);
@@ -267,7 +260,6 @@ ITK_IMAGE_READER_CLASS_NAME
   container->setGeometry(image);
 
   QVector<size_t> cDims = ITKDream3DHelper::GetComponentsDimensions<TPixel>();
-  QVector<size_t> qTdims = {tDims[0], tDims[1], tDims[2]};
   AttributeMatrix::Pointer cellAttrMat = container->createNonPrereqAttributeMatrix(this, dataArrayPath.getAttributeMatrixName(), qTdims, AttributeMatrix::Type::Cell);
   if(getErrorCode() < 0)
   {
