@@ -239,7 +239,7 @@ void PhaseTypeSelectionWidget::setSelectedPath(DataArrayPath amPath)
   if (dca->doesAttributeMatrixExist(amPath))
   {
     AttributeMatrix::Pointer am = dca->getAttributeMatrix(amPath);
-    QString html = am->getInfoString(SIMPL::HtmlFormat);
+    QString html = am->getInfoString(SIMPL::ToolTipFormat);
     m_SelectedAttributeMatrixPath->setToolTip(html);
     m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
   }

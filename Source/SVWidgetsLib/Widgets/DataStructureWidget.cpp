@@ -283,8 +283,8 @@ void DataStructureWidget::refreshData()
       //      dcItem->setBackground(QBrush(QColor(154, 136, 255)));
       m_Ui->dataBrowserTreeView->expand(dcItem->index());
     }
-    dcItem->setData(dc->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
-    dcItem->setToolTip(dc->getInfoString(SIMPL::HtmlFormat));
+    dcItem->setData(dc->getInfoString(SIMPL::ToolTipFormat), Qt::UserRole + 1);
+    dcItem->setToolTip(dc->getInfoString(SIMPL::ToolTipFormat));
     if(dc->getGeometry())
     {
       switch(dc->getGeometry()->getGeometryType())
@@ -339,8 +339,8 @@ void DataStructureWidget::refreshData()
         dcItem->appendRow(amItem);
         m_Ui->dataBrowserTreeView->expand(amItem->index());
       }
-      amItem->setData(am->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
-      amItem->setToolTip(am->getInfoString(SIMPL::HtmlFormat));
+      amItem->setData(am->getInfoString(SIMPL::ToolTipFormat), Qt::UserRole + 1);
+      amItem->setToolTip(am->getInfoString(SIMPL::ToolTipFormat));
       amItem->setIcon(QIcon());
 
       if(path.size() > 1 && am->getName().compare(path[1]) == 0)
@@ -367,8 +367,8 @@ void DataStructureWidget::refreshData()
         //        {
         //          aaItem->setBackground(QColor(255, 255, 255));
         //        }
-        aaItem->setData(attrArray->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
-        aaItem->setToolTip(attrArray->getInfoString(SIMPL::HtmlFormat));
+        aaItem->setData(attrArray->getInfoString(SIMPL::ToolTipFormat), Qt::UserRole + 1);
+        aaItem->setToolTip(attrArray->getInfoString(SIMPL::ToolTipFormat));
         aaItem->setIcon(QIcon());
 
         if(path.size() > 2 && attrArrayName.compare(path[2]) == 0)

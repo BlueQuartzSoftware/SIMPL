@@ -755,29 +755,38 @@ QString DataContainer::getInfoString(SIMPL::InfoStringFormat format)
 {
   QString info;
   QTextStream ss(&info);
-  if(format == SIMPL::HtmlFormat)
+
+  QString bgColor = "";
+
+  switch(format)
+  {
+  case SIMPL::ToolTipFormat:
+    bgColor = "bgcolor=\"#FFFCEA\"";
+  case SIMPL::HtmlFormat:
   {
     ss << "<html><head></head>\n";
     ss << "<body>\n";
     ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
     ss << "<tbody>\n";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Data Container Info</th></tr>";
+    ss << "<tr " << bgColor << "><th colspan=2>Data Container Info</th></tr>";
 
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Name:</th><td>)" << getName() << "</td></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Attribute Matrix Count:</th><td>)" << getNumAttributeMatrices() << "</td></tr>";
+    ss << "<tr " << bgColor << "><th align=\"right\">Name:</th><td>" << getName() << "</td></tr>";
+    ss << "<tr " << bgColor << "><th align=\"right\">Attribute Matrix Count:</th><td>" << getNumAttributeMatrices() << "</td></tr>";
     ss << "<tr><td></td><td></td></tr>";
     if(getGeometry().get() != nullptr)
     {
-      ss << getGeometry()->getInfoString(SIMPL::HtmlFormat);
+      ss << getGeometry()->getInfoString(SIMPL::ToolTipFormat);
     }
 
     ss << "</tbody></table>\n";
     ss << "</body></html>";
+    break;
   }
-  else
-  {
-    ss << "Requested InfoStringFormat is not supported. " << format;
+  default:
+    ss << "Requested DataContainer information string format is not supported. " << format;
+    break;
   }
+
   return info;
 }
 

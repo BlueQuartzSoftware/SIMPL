@@ -792,30 +792,41 @@ class NeighborList : public IDataArray
     {
       QString info;
       QTextStream ss (&info);
-      if(format == SIMPL::HtmlFormat)
+
+      QString bgColor = "";
+      QString nameBgColor = "";
+
+      switch(format)
+      {
+      case SIMPL::ToolTipFormat:
+        bgColor = "bgcolor=\"#FFFCEA\"";
+        nameBgColor = "bgcolor=\"#E9E7D6\"";
+      case SIMPL::HtmlFormat:
       {
         ss << "<html><head></head>\n";
         ss << "<body>\n";
         ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
         ss << "<tbody>\n";
-        ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Attribute Array Info</th></tr>";
+        ss << "<tr " << bgColor << "><th colspan=2>Attribute Array Info</th></tr>";
 
-        ss << "<tr bgcolor=\"#E9E7D6\"><th align=\"right\">Name:</th><td>" << getName() << "</td></tr>";
+        ss << "<tr " << nameBgColor << "><th align=\"right\">Name:</th><td>" << getName() << "</td></tr>";
 
-        ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type:</th><td>" << getTypeAsString() << "</td></tr>";
+        ss << "<tr " << bgColor << "><th align=\"right\">Type:</th><td>" << getTypeAsString() << "</td></tr>";
         QLocale usa(QLocale::English, QLocale::UnitedStates);
         QString numStr = usa.toString(static_cast<qlonglong>(getNumberOfTuples()));
-        ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Tuples:</th><td>" << numStr << "</td></tr>";
-        ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Lists:</th><td>" << getNumberOfLists() << "</td></tr>";
+        ss << "<tr " << bgColor << "><th align=\"right\">Number of Tuples:</th><td>" << numStr << "</td></tr>";
+        ss << "<tr " << bgColor << "><th align=\"right\">Number of Lists:</th><td>" << getNumberOfLists() << "</td></tr>";
 
         ss << "</tbody></table>\n";
         ss << "<br/>";
         ss << "</body></html>";
+        break;
       }
-      else
-      {
+      default:
+        ss << "Requested NeighborList information string format is not supported. " << format;
+        break;
+      }
 
-      }
       return info;
     }
     /**

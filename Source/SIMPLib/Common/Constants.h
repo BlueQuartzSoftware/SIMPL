@@ -62,9 +62,9 @@ namespace SIMPL
 
   enum InfoStringFormat
   {
-    HtmlFormat = 0,
+    ToolTipFormat = 0,
 //      JsonFormat,
-//      TextFormat,
+      HtmlFormat,
 //      XmlFormat,
     UnknownFormat
   };

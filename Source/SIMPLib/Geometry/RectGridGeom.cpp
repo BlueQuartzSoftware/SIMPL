@@ -1135,19 +1135,26 @@ QString RectGridGeom::getInfoString(SIMPL::InfoStringFormat format)
 
   int64_t volDims[3] = {static_cast<int64_t>(getXPoints()), static_cast<int64_t>(getYPoints()), static_cast<int64_t>(getZPoints())};
 
-  if(format == SIMPL::HtmlFormat)
+  QString bgColorLabel = "";
+
+  switch(format)
   {
-    ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Geometry Info</th></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type</th><td>" << TypeToString(getGeometryType()) << "</td></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Units</th><td>)" << LengthUnitToString(getUnits()) << "</td></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Dimensions:</th><td>" << volDims[0] << " x " << volDims[1] << " x " << volDims[2] << "</td></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Spacing:</th><td>"
+  case SIMPL::ToolTipFormat:
+    bgColorLabel = "bgcolor=\"#FFFCEA\"";
+  case SIMPL::HtmlFormat:
+    ss << "<tr " << bgColorLabel << "><th colspan=2>Geometry Info</th></tr>";
+    ss << "<tr " << bgColorLabel << "><th align=\"right\">Type</th><td>" << TypeToString(getGeometryType()) << "</td></tr>";
+    ss << "<tr " << bgColorLabel << "><th align=\"right\">Units</th><td>" << LengthUnitToString(getUnits()) << "</td></tr>";
+    ss << "<tr " << bgColorLabel << "><th align=\"right\">Dimensions:</th><td>" << volDims[0] << " x " << volDims[1] << " x " << volDims[2] << "</td></tr>";
+    ss << "<tr " << bgColorLabel << "><th align=\"right\">Spacing:</th><td>"
        << "Variable"
        << "</td></tr>";
+    break;
+  default:
+    ss << "Requested Rectilinear Grid Geometry information string format is not supported. " << format;
+    break;
   }
-  else
-  {
-  }
+
   return info;
 }
 

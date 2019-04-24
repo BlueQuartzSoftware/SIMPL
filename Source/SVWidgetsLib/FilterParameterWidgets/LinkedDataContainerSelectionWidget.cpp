@@ -281,7 +281,7 @@ void LinkedDataContainerSelectionWidget::setSelectedPath(DataArrayPath dcPath)
   if (dca->doesDataContainerExist(dcPath.getDataContainerName()))
   {
     DataContainer::Pointer dc = dca->getDataContainer(dcPath.getDataContainerName());
-    QString html = dc->getInfoString(SIMPL::HtmlFormat);
+    QString html = dc->getInfoString(SIMPL::ToolTipFormat);
     m_SelectedDataContainerPath->setToolTip(html);
     m_SelectedDataContainerPath->setText(dcPath.getDataContainerName());
   }
@@ -320,7 +320,7 @@ void LinkedDataContainerSelectionWidget::afterPreflight()
   {
     DataContainer::Pointer dc = dca->getDataContainer(m_SelectedDataContainerPath->text());
     if (nullptr != dc.get()) {
-      QString html = dc->getInfoString(SIMPL::HtmlFormat);
+      QString html = dc->getInfoString(SIMPL::ToolTipFormat);
       m_SelectedDataContainerPath->setToolTip(html);
       m_SelectedDataContainerPath->setStyleSheet(SVStyle::Instance()->QToolSelectionButtonStyle(true));
     }

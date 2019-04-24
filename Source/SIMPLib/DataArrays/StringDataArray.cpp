@@ -464,25 +464,35 @@ QString StringDataArray::getInfoString(SIMPL::InfoStringFormat format)
 {
   QString info;
   QTextStream ss(&info);
-  if(format == SIMPL::HtmlFormat)
+
+  QString bgColor = "";
+
+  switch(format)
+  {
+  case SIMPL::ToolTipFormat:
+    bgColor = "bgcolor=\"#FFFCEA\"";
+  case SIMPL::HtmlFormat:
   {
     ss << "<html><head></head>\n";
     ss << "<body>\n";
     ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
     ss << "<tbody>\n";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Attribute Array Info</th></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Name:</th><td>)" << getName() << R"(</td></tr>)";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type:</th><td>" << getTypeAsString() << R"(</td></tr>)";
+    ss << "<tr " << bgColor << "><th colspan=2>Attribute Array Info</th></tr>";
+    ss << "<tr " << bgColor << "><th align=\"right\">Name:</th><td>" << getName() << R"(</td></tr>)";
+    ss << "<tr " << bgColor << "><th align=\"right\">Type:</th><td>" << getTypeAsString() << R"(</td></tr>)";
     QLocale usa(QLocale::English, QLocale::UnitedStates);
     QString numStr = usa.toString(static_cast<qlonglong>(getNumberOfTuples()));
-    ss << R"(<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Tuples:</th><td>)" << numStr << R"(</td></tr>)";
+    ss << "<tr " << bgColor << "><th align=\"right\">Number of Tuples:</th><td>" << numStr << R"(</td></tr>)";
     ss << "</tbody></table>\n";
     ss << "<br/>";
     ss << "</body></html>";
+    break;
   }
-  else
-  {
+  default:
+    ss << "Requested StringDataArray information string format is not supported. " << format;
+    break;
   }
+
   return info;
 }
 
