@@ -267,7 +267,26 @@ DataArrayPathSelectionWidget:flat {
     /* Style all DataArrayPathSelectionWidgets' flat menu indicators */
 }
 
+DataPathLabel
+{
+    /* Style DataPathLabel */
+}
+DataPathLabel:disabled
+{
 
+}
+DataPathLabel:enabled[DataTypei="0"]
+{
+    /* DataContainer Style */
+}
+DataPathLabel:enabled[DataTypei="1"]
+{
+    /* AttributeMatrix Style */
+}
+DataPathLabel:enabled[DataTypei="2"]
+{
+    /* DataArray Style */
+}
 
 /* ----------------------------------------------------------------------------
 * QStatusBar Section

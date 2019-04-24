@@ -431,6 +431,9 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     SIMPL_INSTANCE_PROPERTY(QColor, DataArrayPath_DataArray_color)
     Q_PROPERTY(QColor DataArrayPath_DataArray_color READ getDataArrayPath_DataArray_color WRITE setDataArrayPath_DataArray_color)
 
+    SIMPL_INSTANCE_PROPERTY(QColor, DataArrayPath_Invalid_color)
+    Q_PROPERTY(QColor DataArrayPath_Invalid_color READ getDataArrayPath_Invalid_color WRITE setDataArrayPath_Invalid_color)
+
     SIMPL_INSTANCE_PROPERTY(QColor, DataArrayPath_DataContainer_background_color)
     Q_PROPERTY(QColor DataArrayPath_DataContainer_background_color READ getDataArrayPath_DataContainer_background_color WRITE setDataArrayPath_DataContainer_background_color)
 
@@ -439,6 +442,9 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
 
     SIMPL_INSTANCE_PROPERTY(QColor, DataArrayPath_DataArray_background_color)
     Q_PROPERTY(QColor DataArrayPath_DataArray_background_color READ getDataArrayPath_DataArray_background_color WRITE setDataArrayPath_DataArray_background_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, DataArrayPath_Invalid_background_color)
+    Q_PROPERTY(QColor DataArrayPath_Invalid_background_color READ getDataArrayPath_Invalid_background_color WRITE setDataArrayPath_Invalid_background_color)
 
     SIMPL_INSTANCE_PROPERTY(QColor, DataArrayPath_border_normal)
     Q_PROPERTY(QColor DataArrayPath_border_normal READ getDataArrayPath_border_normal WRITE setDataArrayPath_border_normal)
@@ -451,6 +457,12 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
 
     SIMPL_INSTANCE_PROPERTY(QColor, DataArrayPath_border_drag_disabled)
     Q_PROPERTY(QColor DataArrayPath_border_drag_disabled READ getDataArrayPath_border_drag_disabled WRITE setDataArrayPath_border_drag_disabled)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, DataPathLabel_color)
+    Q_PROPERTY(QColor DataPathLabel_color READ getDataPathLabel_color WRITE setDataPathLabel_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, DataPathLabel_Disabled_color)
+    Q_PROPERTY(QColor DataPathLabel_Disabled_color READ getDataPathLabel_Disabled_color WRITE setDataPathLabel_Disabled_color)
     
     SIMPL_INSTANCE_PROPERTY(QColor, SIMPLViewPipelineDockWidgetTitle_inactive_background_color)
     Q_PROPERTY(QColor SIMPLViewPipelineDockWidgetTitle_inactive_background_color READ getSIMPLViewPipelineDockWidgetTitle_inactive_background_color WRITE setSIMPLViewPipelineDockWidgetTitle_inactive_background_color)

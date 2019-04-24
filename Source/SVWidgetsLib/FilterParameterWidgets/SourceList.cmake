@@ -32,6 +32,7 @@ set(SIMPLView_PARAMETER_WIDGETS
     IntVec3Widget
     IntWidget
     LinkedBooleanWidget
+    LinkedPathCreationWidget
     MultiAttributeMatrixSelectionWidget
     MultiDataContainerSelectionWidget
     MultiDataArraySelectionWidget

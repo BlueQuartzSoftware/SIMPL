@@ -172,8 +172,8 @@ class SVWidgetsLib_EXPORT SVTreeWidget : public QTreeWidget
 };
 
 /**
-* @brief The SVTabWidget class
-*/
+ * @brief The SVTabWidget class
+ */
 class SVWidgetsLib_EXPORT SVTabWidget : public QTabWidget
 {
   Q_OBJECT
@@ -186,8 +186,8 @@ public:
 
 
 /**
-* @brief The SVTabWidget class
-*/
+ * @brief The SVDialog class
+ */
 class SVWidgetsLib_EXPORT SVDialog : public QDialog
 {
   Q_OBJECT
@@ -200,8 +200,8 @@ public:
 
 
 /**
-* @brief The SVFrame class 
-*/
+ * @brief The SVFrame class
+ */
 class SVWidgetsLib_EXPORT SVFrame : public QFrame
 {
   Q_OBJECT

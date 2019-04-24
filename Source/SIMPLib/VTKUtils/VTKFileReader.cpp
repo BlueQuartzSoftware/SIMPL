@@ -245,9 +245,9 @@ int VTKFileReader::readHeader()
   dims[1] = tokens[2].toLongLong(&ok, 10);
   dims[2] = tokens[3].toLongLong(&ok, 10);
 #if(CMP_SIZEOF_SSIZE_T == 4)
-  int64_t max = std::numeric_limits<size_t>::max();
+  constexpr int64_t max = std::numeric_limits<size_t>::max();
 #else
-  int64_t max = std::numeric_limits<int64_t>::max();
+  constexpr int64_t max = std::numeric_limits<int64_t>::max();
 #endif
   if(dims[0] * dims[1] * dims[2] > max)
   {

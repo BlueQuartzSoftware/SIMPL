@@ -121,7 +121,7 @@ class H5DataArrayWriter
       int err = 0;
 
       QVector<size_t> cDims = dataArray->getComponentDimensions();
-      hsize_t h5Rank = tDims.size() + cDims.size();
+      hsize_t h5Rank = static_cast<hsize_t>(tDims.size()) + cDims.size();
 
       QVector<hsize_t> h5Dims(tDims.size() + cDims.size());
 

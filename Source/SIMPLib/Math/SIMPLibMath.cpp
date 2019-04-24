@@ -360,8 +360,8 @@ float SIMPLibMath::erfc(float x)
 }
 float SIMPLibMath::incompletebeta(float a, float b, float x)
 {
-  float maxrealnumber = std::numeric_limits<float>::max();
-  float minrealnumber = std::numeric_limits<float>::min();
+  constexpr float maxrealnumber = std::numeric_limits<float>::max();
+  constexpr float minrealnumber = std::numeric_limits<float>::min();
   float result;
   float t;
   float xc;
@@ -696,8 +696,8 @@ float SIMPLibMath::incompletebetaps(float a, float b, float x, float maxgam)
   float z;
   float ai;
   float sg;
-  float maxrealnumber = std::numeric_limits<float>::max();
-  float minrealnumber = std::numeric_limits<float>::min();
+  constexpr float maxrealnumber = std::numeric_limits<float>::max();
+  constexpr float minrealnumber = std::numeric_limits<float>::min();
   ai = 1.0f / a;
   u = (1.0f - b) * x;
   v = u / (a + 1.0f);

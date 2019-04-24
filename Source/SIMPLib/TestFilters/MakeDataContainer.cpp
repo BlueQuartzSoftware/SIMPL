@@ -38,6 +38,7 @@
 #include "SIMPLib/DataArrays/StringDataArray.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 
+#include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
@@ -76,7 +77,7 @@ void MakeDataContainer::setupFilterParameters()
 {
   FilterParameterVectorType parameters;
 
-  parameters.push_back(SIMPL_NEW_STRING_FP("FeatureIds", FeatureIdsArrayName, FilterParameter::CreatedArray, MakeDataContainer));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("FeatureIds", FeatureIdsArrayName, DataContainerName, CellAttributeMatrixName, FilterParameter::CreatedArray, MakeDataContainer));
   parameters.push_back(SIMPL_NEW_STRING_FP("Cell Euler Angles", CellEulerAnglesArrayName, FilterParameter::CreatedArray, MakeDataContainer));
   parameters.push_back(SIMPL_NEW_STRING_FP("Cell Phases", CellPhasesArrayName, FilterParameter::CreatedArray, MakeDataContainer));
   parameters.push_back(SIMPL_NEW_STRING_FP("Crystal Structures", CrystalStructuresArrayName, FilterParameter::CreatedArray, MakeDataContainer));

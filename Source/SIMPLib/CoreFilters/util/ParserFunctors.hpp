@@ -51,7 +51,7 @@ public:
 
   struct ErrorObject
   {
-    bool ok;
+    bool ok = false;
     QString errorMessage;
   };
 };

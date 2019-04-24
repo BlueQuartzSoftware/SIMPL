@@ -87,7 +87,7 @@ public:
     for(int64_t i = start; i < end; i++)
     {
       m_Edges->getVertsAtEdge(i, verts);
-      for(int32_t j = 0; j < cDims; j++)
+      for(size_t j = 0; j < cDims; j++)
       {
         for(size_t k = 0; k < 2; k++)
         {
@@ -201,7 +201,7 @@ void EdgeGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 void EdgeGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
-  if(data->getType() != AttributeMatrix::Type::Vertex || data->getType() != AttributeMatrix::Type::Edge)
+  if(data->getType() != AttributeMatrix::Type::Vertex && data->getType() != AttributeMatrix::Type::Edge)
   {
     // EdgeGeom can only accept vertex or edge Attribute Matrices
     return;

@@ -87,7 +87,7 @@ public:
     for(int64_t i = start; i < end; i++)
     {
       m_Tets->getVertsAtTet(i, verts);
-      for(int32_t j = 0; j < cDims; j++)
+      for(size_t j = 0; j < cDims; j++)
       {
         for(size_t k = 0; k < 4; k++)
         {
@@ -206,8 +206,8 @@ void TetrahedralGeom::initializeWithZeros()
 void TetrahedralGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
   if(data->getType() != AttributeMatrix::Type::Vertex
-     || data->getType() != AttributeMatrix::Type::Edge
-     || data->getType() != AttributeMatrix::Type::Face || data->getType() != AttributeMatrix::Type::Cell)
+     && data->getType() != AttributeMatrix::Type::Edge
+     && data->getType() != AttributeMatrix::Type::Face || data->getType() != AttributeMatrix::Type::Cell)
   {
     // TetrahedralGeom can only accept vertex, edge, face or cell Attribute Matrices
     return;

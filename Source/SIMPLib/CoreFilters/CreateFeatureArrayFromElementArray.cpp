@@ -40,6 +40,7 @@
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
@@ -85,7 +86,7 @@ void CreateFeatureArrayFromElementArray::setupFilterParameters()
     AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(AttributeMatrix::Type::CellFeature, IGeometry::Type::Any);
     parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Feature Attribute Matrix", CellFeatureAttributeMatrixName, FilterParameter::CreatedArray, CreateFeatureArrayFromElementArray, req));
   }
-  parameters.push_back(SIMPL_NEW_STRING_FP("Copied Attribute Array", CreatedArrayName, FilterParameter::CreatedArray, CreateFeatureArrayFromElementArray));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Copied Attribute Array", CreatedArrayName, CellFeatureAttributeMatrixName, CellFeatureAttributeMatrixName, FilterParameter::CreatedArray, CreateFeatureArrayFromElementArray));
   setFilterParameters(parameters);
 }
 
@@ -176,7 +177,7 @@ template <typename T> IDataArray::Pointer copyCellData(AbstractFilter* filter, I
   T* fPtr = feature->getPointer(0);
   T* cPtr = cell->getPointer(0);
 
-  int32_t numComp = cell->getNumberOfComponents();
+  size_t numComp = static_cast<size_t>(cell->getNumberOfComponents());
   int32_t featureIdx = 0;
 
   size_t cells = inputData->getNumberOfTuples();
