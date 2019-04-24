@@ -41,6 +41,7 @@
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
@@ -79,9 +80,9 @@ void RemoveComponentFromArray::setupFilterParameters()
       DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Category::Any);
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Multicomponent Attribute Array", SelectedArrayPath, FilterParameter::RequiredArray, RemoveComponentFromArray, req));
 
-  parameters.push_back(SIMPL_NEW_STRING_FP("Removed Component Attribute Array", NewArrayArrayName, FilterParameter::CreatedArray, RemoveComponentFromArray));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Removed Component Attribute Array", NewArrayArrayName, SelectedArrayPath, SelectedArrayPath, FilterParameter::CreatedArray, RemoveComponentFromArray));
 
-  parameters.push_back(SIMPL_NEW_STRING_FP("Reduced Attribute Array", ReducedArrayArrayName, FilterParameter::CreatedArray, RemoveComponentFromArray));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("Reduced Attribute Array", ReducedArrayArrayName, SelectedArrayPath, SelectedArrayPath, FilterParameter::CreatedArray, RemoveComponentFromArray));
 
   QStringList linkedProps;
   linkedProps.clear();

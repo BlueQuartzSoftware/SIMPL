@@ -13,6 +13,7 @@
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/FilterParameters/GenerateColorTableFilterParameter.h"
 #include "SIMPLib/Utilities/ColorTable.h"
@@ -258,7 +259,7 @@ void GenerateColorTable::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Data Array", SelectedDataArrayPath, FilterParameter::RequiredArray, GenerateColorTable, req));
   }
 
-  parameters.push_back(SIMPL_NEW_STRING_FP("RGB Array Name", RgbArrayName, FilterParameter::CreatedArray, GenerateColorTable));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("RGB Array Name", RgbArrayName, SelectedDataArrayPath, SelectedDataArrayPath, FilterParameter::CreatedArray, GenerateColorTable));
 
   setFilterParameters(parameters);
 }

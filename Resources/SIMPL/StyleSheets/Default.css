@@ -114,6 +114,25 @@ DataArrayPathSelectionWidget > QToolTip {
   color: #000000;
  }
 
+DataPathLabel {
+    font-family: "Lato-Bold";
+    font-weight: bold;
+    font-size: Font_Size_Small;
+    border-radius: 4px;
+}
+DataPathLabel:disabled {
+    color: DataPathLabel_Disabled_color;
+}
+DataPathLabel:enabled[DataTypei="0"] {
+    color: DataArrayPath_DataContainer_color;
+}
+DataPathLabel:enabled[DataTypei="1"] {
+    color: DataArrayPath_AttributeMatrix_color;
+}
+DataPathLabel:enabled[DataTypei="2"] {
+    color: DataArrayPath_DataArray_color;
+}
+
 /* ----------------------------------------------------------------------------
 * SVPushButton Section
 * ----------------------------------------------------------------------------*/
