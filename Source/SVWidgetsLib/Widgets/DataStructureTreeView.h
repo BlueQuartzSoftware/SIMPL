@@ -55,6 +55,7 @@
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
+class QAbstractItemModel;
 class QStandardItemModel;
 class DataStructureProxyModel;
 
@@ -202,7 +203,7 @@ protected:
    * @param index
    * @param expandedVector
    */
-  void findExpandedChildren(QStandardItemModel* model, const QModelIndex& index, QVector<QModelIndex>& expandedVector);
+  void findExpandedChildren(QAbstractItemModel* model, const QModelIndex& index, QVector<QModelIndex>& expandedVector);
 
   /**
    * @brief Create custom context menu
