@@ -111,6 +111,9 @@ if(SIMPL_BUILD_TESTING)
     set(ANACONDA_DIR "" CACHE STRING "")
     message(FATAL_ERROR "Please set the ANACONDA_DIR variable either through the CMake-GUI or through the -DANACONDA_DIR=/path/to/Anaconda3")
   endif()
+  if(NOT SIMPL_ENABLE_ANACONDA_PACKAGE)
+    message(FATAL_ERROR "Please SIMPL_ENABLE_ANACONDA_PACKAGE=ON in order for the Python unit tests to execute correctly.")
+  endif()
 
   #------------------------------
   # Initialize the PYTHON_TEST_INPUT_DIR variable to point to the "Testing Directory"
@@ -126,6 +129,12 @@ if(SIMPL_BUILD_TESTING)
     ImageReadTest
     TestBindings
 
+    Create_Edge_Geometry
+    Create_Quad_Geometry
+    Create_RectilinearGrid
+    Create_Triangle_Geometry
+    Create_Vertex_Geometry
+    
     "Array_Calculator_Test"
     "Convert_Attribute_Array_Data_Type"
     "Copy_Object_Test"
@@ -133,7 +142,6 @@ if(SIMPL_BUILD_TESTING)
     "Export_Triangle_Geometry"
     "Import_Ascii_Data_Array"
     "Import_Hdf5_Dataset"
-    "Link_Feature_Attribute_Matrix_To_Element_Array"
     "Remove_Component_From_Array"
     "Rename_Attribute_Array"
     "Split_Attribute_Array"
@@ -143,7 +151,7 @@ if(SIMPL_BUILD_TESTING)
     set(SIMPL_PYTHON_TEST_DRIVER "${SIMPL_ANACONDA_OUTPUT_DIR}/UnitTest/SIMPL/${test}.sh")
     configure_file(${SIMPLPyBind11_SOURCE_DIR}/python_test_driver.sh
                   "${SIMPL_PYTHON_TEST_DRIVER}" @ONLY)
-    add_test(NAME SIMPL_${test} COMMAND "${SIMPL_PYTHON_TEST_DRIVER}" )
+    add_test(NAME PY_SIMPL_${test} COMMAND "${SIMPL_PYTHON_TEST_DRIVER}" )
   endforeach(test ${SIMPL_PYTHON_TESTS})
   
 endif()
@@ -151,7 +159,7 @@ endif()
 # --------------------------------------------------------------------------
 # Copy the recipe and egg info for the building Conda package to the 
 # output directory
-if (SIMPL_ENABLE_ANACONDA_PACKAGE)
+if (SIMPL_ENABLE_ANACONDA_PACKAGE AND SIMPL_ENABLE_ANACONDA_LOCAL_INSTALL)
   if("${ANACONDA_DIR}" STREQUAL "")
     set(ANACONDA_DIR "" CACHE STRING "")
     message(FATAL_ERROR "Please set the ANACONDA_DIR variable either through the CMake-GUI or through the -DANACONDA_DIR=/path/to/Anaconda3")
@@ -161,8 +169,6 @@ if (SIMPL_ENABLE_ANACONDA_PACKAGE)
     message(FATAL_ERROR "Please set the ANACONDA_ENVIRONMENT_NAME variable either through the CMake-GUI or through the -DANACONDA_ENVIRONMENT_NAME=ANACONDA_ENV_NAME")
   endif()   
   
-  option(SIMPL_ENABLE_ANACONDA_LOCAL_INSTALL "Install the dream3d Conda package locally" OFF)
-
     
   set(ANACONDA_SCRIPTS_DIR_NAME "bin")
   if(WIN32)

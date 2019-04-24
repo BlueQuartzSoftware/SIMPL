@@ -55,7 +55,7 @@ FeatureDataCSVWriter::FeatureDataCSVWriter()
 : m_CellFeatureAttributeMatrixPath("", "", "")
 , m_FeatureDataFile("")
 , m_WriteNeighborListData(false)
-, m_DelimiterChoice(SIMPL::DelimiterTypes::Type::Comma)
+, m_DelimiterChoice(0)
 , m_WriteNumFeaturesLine(true)
 , m_Delimiter(',')
 {
@@ -131,8 +131,8 @@ void FeatureDataCSVWriter::dataCheck()
   }
   FileSystemPathHelper::CheckOutputFile(this, "Output File Name", getFeatureDataFile(), true);
 
-
-  switch (getDelimiterChoice())
+  SIMPL::DelimiterTypes::Type delim = static_cast<SIMPL::DelimiterTypes::Type>(getDelimiterChoice());
+  switch(delim)
   {
   case SIMPL::DelimiterTypes::Type::Comma:
     setDelimiter(',');
@@ -396,10 +396,11 @@ int FeatureDataCSVWriter::getDelimiterChoiceInt() const
 // -----------------------------------------------------------------------------
 void FeatureDataCSVWriter::setDelimiterChoiceInt(const int& value)
 {
+  this->m_DelimiterChoice = 0; // Set the default and if the value falls within the correct range, use that.
   // Allowed integer values of the enum SIMPL::DelimiterTypes::Type; see defintion in Constants.h
   if (value >= 0 && value <= 4)
   {
-    this->m_DelimiterChoice = static_cast<SIMPL::DelimiterTypes::Type>(value);
+    this->m_DelimiterChoice = value;
   }
 }
 
