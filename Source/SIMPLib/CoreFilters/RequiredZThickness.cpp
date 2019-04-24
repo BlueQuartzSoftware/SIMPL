@@ -120,8 +120,7 @@ void RequiredZThickness::dataCheck()
     return;
   }
 
-  size_t dims[3] = {0, 0, 0};
-  std::tie(dims[0], dims[1], dims[2]) = image->getDimensions();
+  SizeVec3Type dims = image->getDimensions();
 
   if(dims[2] < getNumZVoxels() && m_PreflightCheck)
   {
@@ -179,8 +178,7 @@ void RequiredZThickness::execute()
 
   ImageGeom::Pointer image = dataContainer->getGeometryAs<ImageGeom>();
 
-  size_t dims[3] = {0, 0, 0};
-  std::tie(dims[0], dims[1], dims[2]) = image->getDimensions();
+  SizeVec3Type dims = image->getDimensions();
 
   if(dims[2] < getNumZVoxels())
   {

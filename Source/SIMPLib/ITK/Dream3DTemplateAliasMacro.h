@@ -329,8 +329,7 @@
       ImageGeom::Pointer imageGeometry = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, path.getDataContainerName());                                    \
       if(nullptr != imageGeometry)                                                                                                                                                                     \
       {                                                                                                                                                                                                \
-        QVector<size_t> tDims(3, 0);                                                                                                                                                                   \
-        std::tie(tDims[0], tDims[1], tDims[2]) = imageGeometry->getDimensions();                                                                                                                       \
+        QVector<size_t> tDims = imageGeometry->getDimensions().toContainer<QVector<size_t>>();                                                                                                         \
         if(getErrorCode() >= 0)                                                                                                                                                                        \
         {                                                                                                                                                                                              \
           QString type = ptr->getTypeAsString();                                                                                                                                                       \

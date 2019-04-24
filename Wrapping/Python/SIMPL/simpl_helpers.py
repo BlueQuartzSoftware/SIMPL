@@ -1,7 +1,7 @@
 
 from dream3d import simpl
 from dream3d import simplpy as d3d
-from dream3d import syntheticbuildingpy as synthetic_building
+#from dream3d import syntheticbuildingpy as synthetic_building
 from enum import IntEnum
 
 try:
@@ -25,7 +25,7 @@ def CreateDataContainer(name):
     Keyword arguments:
     name -- The name of the DataContainer    
     """
-    dc = simpl.DataContainer.New(name)
+    dc = simpl.DataContainer(name)
     return dc
 
 
@@ -59,9 +59,9 @@ def WriteDREAM3DFile(path, dca, verbose=False):
         print("Writing to file:", path)
     writer.setDataContainerArray(dca)
     writer.execute()
-    if(writer.ErrorCondition != 0):
-        print("Error %d writing DREAM.3D File to path %s" % writer.ErrorCondition, path)
-    return writer.ErrorCondition
+    if(writer.ErrorCode != 0):
+        print("Error %d writing DREAM.3D File to path %s" % writer.ErrorCode, path)
+    return writer.ErrorCode
 
 
 def CreateDataArray(name, shape, cDims, type):
@@ -200,17 +200,17 @@ def CreateDataContainerProxy(dca, data_array_paths):
         if data_container_name == "":
             continue
         elif attr_matrix_name == "":
-            dcap.getDataContainerProxy(data_container_name).flag = checked
+            dcap.getDataContainerProxy(data_container_name).Flag =checked
         elif data_array_name == "":
-            dcap.getDataContainerProxy(data_container_name).getAttributeMatrixProxy(attr_matrix_name).flag = checked
+            dcap.getDataContainerProxy(data_container_name).getAttributeMatrixProxy(attr_matrix_name).Flag =checked
         else:
             dcap.getDataContainerProxy(data_container_name).getAttributeMatrixProxy(attr_matrix_name) \
-            .getDataArrayProxy(data_array_name).flag = checked
+            .getDataArrayProxy(data_array_name).Flag =checked
     return dcap
 
 
-def CreateGeometry(data_container_array, array_handling, geometry_type, data_container_name, treat_warnings_as_errors, dimensions = simpl.IntVec3(0,0,0),
-origin = simpl.FloatVec3(0,0,0), resolution = simpl.FloatVec3(0,0,0), cell_attribute_matrix_name="", x_bounds_array_path = simpl.DataArrayPath("", "", ""),
+def CreateGeometry(data_container_array, array_handling, geometry_type, data_container_name, treat_warnings_as_errors, dimensions = simpl.IntVec3Type([0,0,0]),
+origin = simpl.FloatVec3Type([0,0,0]), spacing = simpl.FloatVec3Type([0,0,0]), cell_attribute_matrix_name="", x_bounds_array_path = simpl.DataArrayPath("", "", ""),
 y_bounds_array_path = simpl.DataArrayPath("", "", ""), z_bounds_array_path = simpl.DataArrayPath("", "", ""), 
 shared_vertex_list_array_path = simpl.DataArrayPath("", "", ""), vertex_attribute_matrix_name = "", shared_edge_list_array_path = simpl.DataArrayPath("", "", ""),
 edge_attribute_matrix_name = "", shared_tri_list_array_path = simpl.DataArrayPath("", "", ""), face_attribute_matrix_name="",
@@ -265,7 +265,7 @@ shared_quad_list_array_path = simpl.DataArrayPath("", "", ""), shared_tet_list_a
     # For all geometry types
     create_geometry = simpl.CreateGeometry.New()
     create_geometry.setDataContainerArray(data_container_array)
-    create_geometry.DataContainerName = data_container_name
+    create_geometry.DataContainerName = simpl.DataArrayPath(data_container_name, "", "")
     create_geometry.GeometryType = geometry_type
     create_geometry.TreatWarningsAsErrors = treat_warnings_as_errors
 
@@ -281,7 +281,7 @@ shared_quad_list_array_path = simpl.DataArrayPath("", "", ""), shared_tet_list_a
     if geometry_type == simpl.IGeometry.Type.Image:     
         create_geometry.Dimensions = dimensions
         create_geometry.Origin = origin
-        create_geometry.Resolution = resolution
+        create_geometry.Spacing= spacing
         create_geometry.ImageCellAttributeMatrixName = cell_attribute_matrix_name
     elif geometry_type == simpl.IGeometry.Type.RectGrid:
         create_geometry.XBoundsArrayPath = x_bounds_array_path
@@ -314,7 +314,7 @@ shared_quad_list_array_path = simpl.DataArrayPath("", "", ""), shared_tet_list_a
 
     # Execute the filter and return the error condition
     create_geometry.execute()
-    executeError = create_geometry.ErrorCondition
+    executeError = create_geometry.ErrorCode
     return executeError
 
 
@@ -411,13 +411,13 @@ def RemoveArray(dca, path):
     if datacontainername == "":
         return False
     elif attrmatrixname == "" and dataarrayname == "":
-        dcap.getDataContainerProxy(datacontainername).flag = 2
+        dcap.getDataContainerProxy(datacontainername).Flag =2
     elif dataarrayname == "":
-        dcap.getDataContainerProxy(datacontainername).getAttributeMatrixProxy(attrmatrixname).flag = 2
+        dcap.getDataContainerProxy(datacontainername).getAttributeMatrixProxy(attrmatrixname).Flag =2
     else:
-        dcap.getDataContainerProxy(datacontainername).flag = 0
-        dcap.getDataContainerProxy(datacontainername).getAttributeMatrixProxy(attrmatrixname).flag = 0
-        dcap.getDataContainerProxy(datacontainername).getAttributeMatrixProxy(attrmatrixname).getDataArrayProxy(dataarrayname).flag = 2
+        dcap.getDataContainerProxy(datacontainername).Flag =0
+        dcap.getDataContainerProxy(datacontainername).getAttributeMatrixProxy(attrmatrixname).Flag =0
+        dcap.getDataContainerProxy(datacontainername).getAttributeMatrixProxy(attrmatrixname).getDataArrayProxy(dataarrayname).Flag =2
 
     err = d3d.remove_arrays(dca, dcap)
     if err < 0:
@@ -526,7 +526,7 @@ def MultiThresholdObjects2(dca, source_path, destination_array_name, selected_th
     
     err = d3d.multi_threshold_objects2(dca, destination_array_name, thresholds)
     if err < 0:
-        print("MultiThresholdObjects ErrorCondition: %d" % err)
+        print("MultiThresholdObjects ErrorCode: %d" % err)
     return err
 
 
@@ -611,7 +611,7 @@ def MoveData(dca, what_to_move, source_path, destination_path):
     err = d3d.move_data(dca, what_to_move_number, destination_datacontainername, simpl.DataArrayPath(source_datacontainername, source_attrmatrixname, ""),
     simpl.DataArrayPath(destination_datacontainername, destination_attrmatrixname, ""), simpl.DataArrayPath(source_datacontainername, source_attrmatrixname, source_dataarrayname))
     if err < 0:
-        print("MoveData ErrorCondition %d: " % err)
+        print("MoveData ErrorCode %d: " % err)
     return err
     
 
@@ -630,52 +630,6 @@ def MoveMultiData(dca, what_to_move, source_paths, destination_path):
     for source_path in source_paths:
         err = MoveData(dca, what_to_move, source_path, destination_path)
     return err
-
-
-def GenerateStatsData(dca, stats_data_type, phase_name, phase_index, crystal_symmetry, micro_preset_model, phase_fraction,
- mu, sigma, min_cut_off, max_cut_off, bin_step_size, create_ensemble_attribute_matrix, data_container_name,
-  cell_ensemble_attribute_matrix_name, append_to_existing_attribute_matrix, selected_ensemble_attribute_matrix,
-   odf_data, mdf_data, axis_odf_data, rdf_min_max_distance=0, rdf_num_bins=0, rdf_box_size=0):
-   """
-   Generate StatsData for use in Synthetic Building filters
-   \ndca: Data Container Array to place data in
-   \nstats_data_type: The type of StatsData to generate, either "Primary" or "Precipitate"
-   \nphase_name: The name of the Phase
-   \nphase_index: The index of the Phase
-   \ncrystal_symmetry: The classification of the structure by symmetry
-   \nmicro_preset_model: The type of microstructure preset model (Equiaxed, Rolled, or Recrystallized (Primary only))
-   \nphase_fraction: The volume fraction of the Phase
-   \nmu: The average value of the lognormal grain size distribution
-   \nsigma: The standard deviation of the lognormal grain size distribution.
-   \nmin_cut_off: Minimum cutoff value of sigma
-   \nmax_cut_off: Maximum cutoff value of sigma
-   \nbin_step_size: The size of bin to use in segregating the Feature size distribution into classes for correlating other statistics to Feature size.
-   \ncreate_ensemble_attribute_matrix: Whether to create ensemble matrix
-   \ndata_container_name: The name of the new DataContainer holding the output
-   \ncell_ensemble_attribute_matrix_name: The name of the new Attribute Matrix holding output
-   \nappend_to_existing_attribute_matrix: Whether to append to an existing attribute matrix
-   \nselected_ensemble_attribute_matrix: The DataArrayPath of the Attribute Matrix to append data to
-   \nodf_data: DynamicTableData of weights for the ODF generation
-   \nmdf_data: DynamicTableData of weights for the MDF generation
-   \naxis_odf_data: DynamicTableData of weights for the AxisODF generation
-   \nrdf_min_max_distance: The min / max distance of RDF
-   \nrdf_num_bins: The number of bins
-   \nrdf_box_size: The (X, Y, Z) size of the box
-   """
-   if stats_data_type == "Primary":
-       err = synthetic_building.generate_primary_stats_data(dca, phase_name, phase_index, crystal_symmetry, micro_preset_model,
-            phase_fraction, mu, sigma, min_cut_off, max_cut_off, bin_step_size, create_ensemble_attribute_matrix,
-            data_container_name, cell_ensemble_attribute_matrix_name, append_to_existing_attribute_matrix,
-            selected_ensemble_attribute_matrix, odf_data, mdf_data, axis_odf_data)
-       return err
-   elif stats_data_type == "Precipitate":
-        err = synthetic_building.generate_precipitate_stats_data(dca, phase_name, phase_index, crystal_symmetry,
-            micro_preset_model, phase_fraction, mu, sigma, min_cut_off, max_cut_off, bin_step_size,
-            create_ensemble_attribute_matrix, data_container_name, cell_ensemble_attribute_matrix_name,
-            append_to_existing_attribute_matrix, selected_ensemble_attribute_matrix, odf_data, mdf_data,
-            axis_odf_data, rdf_min_max_distance, rdf_num_bins, rdf_box_size)
-        return err
-
 
 def is_number(s):
     try:

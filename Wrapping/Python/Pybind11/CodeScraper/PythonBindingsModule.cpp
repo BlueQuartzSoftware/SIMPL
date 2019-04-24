@@ -16,16 +16,11 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PythonBindingsModule::PythonBindingsModule()
-{
-}
-
+PythonBindingsModule::PythonBindingsModule() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PythonBindingsModule::~PythonBindingsModule()
-{
-}
+PythonBindingsModule::~PythonBindingsModule() = default;
 
 // -----------------------------------------------------------------------------
 //
@@ -197,7 +192,7 @@ QByteArray PythonBindingsModule::md5FileContents(const QString& filename)
 void PythonBindingsModule::writeOutput(bool didReplace, const QString& outLines, QString filename)
 {
   // qDebug() << "Writing File: " << filename;
-  if(didReplace == true)
+  if(didReplace)
   {
     QFileInfo fi2(filename);
     QString parentPath = fi2.path();
@@ -376,15 +371,24 @@ void PythonBindingsModule::generatePythonTestFile(const QString& outputPath, con
 // -----------------------------------------------------------------------------
 void PythonBindingsModule::generatePythonicInterface(const QString& outputPath, const QString& isSIMPLib)
 {
-  QFileInfo fi(outputPath);
+  QList<QString> classes = m_Headers.keys();
+  QListIterator<QString> iter(classes);
 
   QString code;
   QTextStream out(&code);
 
   out << "\"\"\"\n Pythonic Interface to SIMPL Plugin " << getLibNameUpper() << "\n";
   out << " This file is auto generated during the build of DREAM.3D and the plugin " << getLibNameUpper() << "\n";
-  out << "\"\"\""
-      << "\n";
+  out << " The code is generate from file " << __FILE__ << "(" << __LINE__ << ")\n";
+  out << " The Filters that have pythonic interfaces generated for them are:\n";
+
+  while(iter.hasNext())
+  {
+    QString aClass = iter.next();
+    out << "    " << aClass << "\n";
+  }
+
+  out << QStringLiteral("\"\"\"") << "\n";
   out << "\n";
   QString shortLibName = m_LibName;
   shortLibName.replace("_py", "");
@@ -395,17 +399,18 @@ void PythonBindingsModule::generatePythonicInterface(const QString& outputPath, 
   }
   out
       //<< "import dream3d\n"
+      << "from .dream3d import simpl\n"
       << "from .dream3d import " << shortLibName << "\n"
-      << "\n\n\n";
+      << "\n";
 
-  QList<QString> classes = m_Headers.keys();
-  QListIterator<QString> iter(classes);
+  iter.toFront();
   while(iter.hasNext())
   {
     QString aClass = iter.next();
     QVector<QString> pythonicCodes = m_PythonicCodes[aClass];
     QString initCodes;
     QString bodyCodes;
+    QString docCodes;
     if(pythonicCodes.size() >= 1)
     {
       initCodes = pythonicCodes[0];
@@ -414,21 +419,25 @@ void PythonBindingsModule::generatePythonicInterface(const QString& outputPath, 
     {
       bodyCodes = pythonicCodes[1];
     }
+    if(pythonicCodes.size() >= 3)
+    {
+      docCodes = pythonicCodes[2];
+    }
     bodyCodes = bodyCodes.replace("@shortLibName@", shortLibName);
     if(aClass.compare("AbstractFilter") == 0 && isSIMPLib.compare("FALSE") == 0)
     {
       continue;
     }
-    else if(bodyCodes.isEmpty())
+    if(bodyCodes.isEmpty())
     {
       continue;
     }
     out << "def " << SIMPL::Python::fromCamelCase(aClass) << initCodes << ":\n"
-        << "    \"\"\""
+        << R"(    ''')"
         << "\n"
         << "    Executes the filter " << aClass << " and returns the error.\n"
-        << "    \"\"\""
         << "\n"
+        << docCodes << "    '''\n\n"
         << bodyCodes << "\n"
 
         << "\n\n";

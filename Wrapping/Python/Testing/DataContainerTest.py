@@ -1,12 +1,10 @@
 """ This is a test for DataContainer """
 
 # These are the simpl_py python modules
-
-
+from dream3d import simplpy
 from dream3d import simpl
-
-import dream3d.utils.simpl_common as sc
-import dream3d.utils.simpl_test_dirs as sd
+from dream3d import simpl_helpers as sc
+from dream3d import simpl_test_dirs as sd
 
 
 def CreateAttributeMatrix():
@@ -25,7 +23,7 @@ def DataContainerTest() :
   dca = sc.CreateDataContainerArray()
 
   # Create a DataContainer
-  dc = simpl.DataContainer.New("Default Name")
+  dc = simpl.DataContainer("Default Name")
   assert dc.Name == "Default Name"
   dc.Name = "ImageDataContainer"
   assert dc.Name == "ImageDataContainer"
@@ -35,7 +33,7 @@ def DataContainerTest() :
   amName = "CellAttributeMatrix"
   am = sc.CreateAttributeMatrix(tupleDims, amName, amType)
 
-  dc.addAttributeMatrix(am.Name, am)
+  dc.addOrReplaceAttributeMatrix(am)
 
   exists = dc.doesAttributeMatrixExist("CellAttributeMatrix")
   

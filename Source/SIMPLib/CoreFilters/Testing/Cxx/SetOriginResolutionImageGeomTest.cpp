@@ -252,8 +252,7 @@ public:
 
     DREAM3D_REQUIRE(imgGeom != nullptr);
 
-    FloatVec3Type origin;
-    imgGeom->getOrigin(origin);
+    FloatVec3Type origin = imgGeom->getOrigin();
     DREAM3D_REQUIRE_EQUAL(origin[0], SetOriginResolutionImageGeometryTest::ORIGIN[0]);
     DREAM3D_REQUIRE_EQUAL(origin[1], SetOriginResolutionImageGeometryTest::ORIGIN[1]);
     DREAM3D_REQUIRE_EQUAL(origin[2], SetOriginResolutionImageGeometryTest::ORIGIN[2]);
@@ -278,14 +277,11 @@ public:
 
     DREAM3D_REQUIRE(imgGeom != nullptr);
 
-    float xRes = 0.0f;
-    float yRes = 0.0f;
-    float zRes = 0.0f;
-    std::tie(xRes, yRes, zRes) = imgGeom->getSpacing();
+    FloatVec3Type spacing = imgGeom->getSpacing();
 
-    DREAM3D_REQUIRE_EQUAL(xRes, SetOriginResolutionImageGeometryTest::RESOLUTION[0]);
-    DREAM3D_REQUIRE_EQUAL(yRes, SetOriginResolutionImageGeometryTest::RESOLUTION[1]);
-    DREAM3D_REQUIRE_EQUAL(zRes, SetOriginResolutionImageGeometryTest::RESOLUTION[2]);
+    DREAM3D_REQUIRE_EQUAL(spacing[0], SetOriginResolutionImageGeometryTest::RESOLUTION[0]);
+    DREAM3D_REQUIRE_EQUAL(spacing[1], SetOriginResolutionImageGeometryTest::RESOLUTION[1]);
+    DREAM3D_REQUIRE_EQUAL(spacing[2], SetOriginResolutionImageGeometryTest::RESOLUTION[2]);
   }
 
   // -----------------------------------------------------------------------------
@@ -332,7 +328,9 @@ public:
     DREAM3D_REGISTER_TEST(TestNullGeometry());
   }
 
-private:
-  SetOriginResolutionImageGeomTest(const SetOriginResolutionImageGeomTest&); // Copy Constructor Not Implemented
-  void operator=(const SetOriginResolutionImageGeomTest&);                   // Move assignment Not Implemented
+public:
+  SetOriginResolutionImageGeomTest(const SetOriginResolutionImageGeomTest&) = delete;            // Copy Constructor Not Implemented
+  SetOriginResolutionImageGeomTest(SetOriginResolutionImageGeomTest&&) = delete;                 // Move Constructor Not Implemented
+  SetOriginResolutionImageGeomTest& operator=(const SetOriginResolutionImageGeomTest&) = delete; // Copy Assignment Not Implemented
+  SetOriginResolutionImageGeomTest& operator=(SetOriginResolutionImageGeomTest&&) = delete;      // Move Assignment Not Implemented
 };

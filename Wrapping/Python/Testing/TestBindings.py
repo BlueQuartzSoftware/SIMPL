@@ -3,10 +3,10 @@ import time
 
 
 # These are the simpl_py python modules
+from dream3d import simplpy
 from dream3d import simpl
-
-import dream3d.utils.simpl_common as sc
-import dream3d.utils.simpl_test_dirs as sd
+from dream3d import simpl_helpers as sc
+from dream3d import simpl_test_dirs as sd
 
 def PipelineTest():
   inputPath = sd.GetTestTempDirectory() + "/SmallIN100.dream3d"
@@ -47,7 +47,7 @@ def PipelineTest():
   print("Preflight ErrorCondition: %d" % err)
 
   dataContainer = pipeline.run()
-  err = pipeline.ErrorCondition
+  err = pipeline.ErrorCode
   print("Execute ErrorCondition: %d" % err)
 
   pipeline.popFront()

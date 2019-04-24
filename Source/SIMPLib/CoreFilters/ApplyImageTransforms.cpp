@@ -145,8 +145,7 @@ void ApplyImageTransforms::execute()
     DataContainer::Pointer dc = getDataContainerArray()->getDataContainer(dcName);
     ImageGeom::Pointer imageGeom = dc->getGeometryAs<ImageGeom>();
 
-    FloatVec3Type origin;
-    imageGeom->getOrigin(origin);
+    FloatVec3Type origin = imageGeom->getOrigin();
 
     ::ITransformContainer::Pointer iTransformContainer = imageGeom->getTransformContainer();
     if (iTransformContainer)

@@ -2,28 +2,23 @@
 """ This is a test for DataContainerArray """
 
 
+from dream3d import simplpy
 from dream3d import simpl
+from dream3d import simpl_helpers as sc
+from dream3d import simpl_test_dirs as sd
 
-import dream3d.utils.simpl_common as sc
-import dream3d.utils.simpl_test_dirs as sd
 
-def create_data_container(data_container_array, data_container_name):
+
+def create_data_container(data_container_array, ):
     """
     Instantiates CreateDataContainer
     """
-    create_data_container = simpl.CreateDataContainer.New()
+    create_data_container = simpl.CreateDataContainer(data_container_name)
     create_data_container.setDataContainerArray(data_container_array)
     create_data_container.DataContainerName = data_container_name
-    create_data_container.execute()
-    executeError = create_data_container.ErrorCondition
-    return (executeError)
-
-
-def MiscTest():
-    print("Starting MiscTest")
-    dca = sc.CreateDataContainerArray()
-    (executeError) = create_data_container(dca, "My New DataContainer")
-    print("executeError %s" % executeError)
+    # create_data_container.execute()
+    # executeError = create_data_container.ErrorCondition
+    return 0
 
 
 def AttributeMatrixAccessTest():
@@ -34,12 +29,12 @@ def AttributeMatrixAccessTest():
     print("Starting AttributeMatrixAccessTest....")
     dca = sc.CreateDataContainerArray()
     dc = sc.CreateDataContainer("AM Test")
-    dca.addDataContainer(dc)
+    dca.addOrReplaceDataContainer(dc)
     
     amType = simpl.AttributeMatrix.Type.Cell
     tupleDims = simpl.VectorSizeT([5,4,3])
     am = simpl.AttributeMatrix.Create(tupleDims, "CellAttributeMatrix", amType)
-    dc.addAttributeMatrix(am.Name, am)
+    dc.addOrReplaceAttributeMatrix(am)
 
     # See if we can get the AttributeMatrix based on a DataArrayPath object
     dap = simpl.DataArrayPath("AM Test", "CellAttributeMatrix", "")
@@ -64,8 +59,8 @@ def DataContainerTest():
     dc0 = sc.CreateDataContainer("dc0")
     dc1 = sc.CreateDataContainer("dc1")
 
-    dca.addDataContainer(dc0)
-    dca.addDataContainer(dc1)
+    dca.addOrReplaceDataContainer(dc0)
+    dca.addOrReplaceDataContainer(dc1)
 
     exist = dca.doesDataContainerExist("dc0")
     assert exist is True
@@ -93,6 +88,11 @@ def DataContainerTest():
     numDC = dca.getNumDataContainers()
     assert numDC == 0
 
+def MiscTest():
+    print("Starting MiscTest")
+    dca = sc.CreateDataContainerArray()
+    dc = sc.CreateDataContainer("My New DataContainer")
+    dca.addOrReplaceDataContainer(dc)
 
 """
 Main entry point for python script

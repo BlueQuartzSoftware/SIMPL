@@ -42,17 +42,16 @@
 #pragma warning(disable: 4800) /*  warning C4800: 'double' : forcing value to bool 'true' or 'false' */
 #endif
 
-
 /* Cmake will define SIMPLib_EXPORTS on Windows when it
 configures to build a shared library. If you are going to use
 another build system on windows or create the visual studio
 projects by hand you need to define SIMPLib_EXPORTS when
-building the MXADatModel DLL on windows.
+building on Windows with MSVC.
 */
 
 #if defined (SIMPLib_BUILT_AS_DYNAMIC_LIB)
 
-#if defined (SIMPLib_EXPORTS)  /* Compiling the MXA DLL/Dylib */
+#if defined(SIMPLib_EXPORTS) /* Compiling the SIMPLib DLL/Dylib */
 #if defined (_MSC_VER)  /* MSVC Compiler Case */
 #define  SIMPLib_EXPORT __declspec(dllexport)
 #define EXPIMP_TEMPLATE

@@ -8,10 +8,10 @@ except ImportError:
 sure that it is installed properly.")
 
 # These are the SIMPL python modules
+from dream3d import simplpy
 from dream3d import simpl
-
-import dream3d.utils.simpl_common as sc
-import dream3d.utils.simpl_test_dirs as sd
+from dream3d import simpl_helpers as sc
+from dream3d import simpl_test_dirs as sd
 
 
 def DataArrayTest():
@@ -22,11 +22,11 @@ def DataArrayTest():
     dca = sc.CreateDataContainerArray()
 
     dc = sc.CreateDataContainer("ImageDataContainer")
-    dca.addDataContainer(dc)
+    dca.addOrReplaceDataContainer(dc)
 
     shape = simpl.VectorSizeT([4, 5, 2])
     cellAm = sc.CreateAttributeMatrix(shape, "CellAttributeMatrix", simpl.AttributeMatrix.Type.Cell)
-    dc.addAttributeMatrix(cellAm.Name, cellAm)
+    dc.addOrReplaceAttributeMatrix(cellAm)
 
     # Create the Component Dimensions for the Array, 1 Component in this case
     cDims = simpl.VectorSizeT([1])
@@ -40,12 +40,12 @@ def DataArrayTest():
     for index, item in enumerate(arrayTypes):
         # print("+++ Creating Array: %s" % item)
         z_flat, array = sc.CreateDataArray(arrayTypes[index].__name__, shape, cDims, item)
-        cellAm.addAttributeArray(array.Name, array)
+        cellAm.addOrReplaceAttributeArray(array)
         arrayList.append(z_flat)
         # Now add an array that is purely allocated on the C++/SIMPL side of things.
         # print ("  Creating Int32Array locally to the Loop.... Int32 SIMPL %s" % array.Name)
         array = simpl.Int32ArrayType(shape[0]*shape[1]*shape[2], "Int32 SIMPL " + array.Name, True)
-        # cellAm.addAttributeArray(array.Name, array)
+        # cellAm.addOrReplaceAttributeArray(array)
         # for x in range(shape[0]*shape[1]*shape[2]):
         #     array.setValue(x, x)
         # This will force cleanup the array that just got created.
@@ -55,7 +55,7 @@ def DataArrayTest():
     # Create a Geometry Object and store it in the DataContainer
     imageGeom = simpl.ImageGeom.CreateGeometry("ImageGeometry")
     imageGeom.setDimensions(shape[0], shape[1], shape[2])
-    imageGeom.setResolution(1.0, 2.0, 3.0)
+    imageGeom.setSpacing(1.0, 2.0, 3.0)
     imageGeom.setOrigin(5.5, -9.0, 0.0)
     dc.setGeometry(imageGeom)
 

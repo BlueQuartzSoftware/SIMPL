@@ -161,7 +161,7 @@ function(SIMPL_START_FILTER_GROUP)
   set(multiValueArgs)
 
   cmake_parse_arguments(P "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN} )
-
+  #message(STATUS "===> [1] Starting ${P_FILTER_GROUP}")
   file(APPEND ${P_ALL_FILTERS_HEADERFILE} "\n/* ------ ${P_FILTER_GROUP} --------- */\n")
   file(APPEND ${P_REGISTER_KNOWN_FILTERS_FILE} "\n    /* ------ ${P_FILTER_GROUP} --------- */\n")
 
@@ -171,7 +171,12 @@ function(SIMPL_START_FILTER_GROUP)
   
   set_property(GLOBAL APPEND PROPERTY DREAM3DDoc_GROUPS ${P_FILTER_GROUP})
 
-  file(WRITE ${SIMPLProj_BINARY_DIR}/${P_FILTER_GROUP}PublicFilters.txt "# ${P_FILTER_GROUP} Public Filters\n")
+  # This bit of code creates a text file that the Python Bindings Generator is going to read from. We have to
+  # special case the "Core" filters that are part of SIMPLib to get the file naming correct.
+  if("${P_FILTER_GROUP}" STREQUAL "Core")
+    set(P_FILTER_GROUP "SIMPLib")
+  endif()
+  file(WRITE "${SIMPLProj_BINARY_DIR}/${P_FILTER_GROUP}PublicFilters.txt" "# ${P_FILTER_GROUP} Public Filters\n")
 endfunction()
 
 #-------------------------------------------------------------------------------

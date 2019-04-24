@@ -55,10 +55,10 @@ class SIMPLib_EXPORT DataArrayProxy
 {
   PYB11_CREATE_BINDINGS(DataArrayProxy)
   PYB11_CREATION()
-  PYB11_PROPERTY(QVector<size_t> tupleDims)
-  PYB11_PROPERTY(QVector<size_t> compDims)
-  PYB11_PROPERTY(QString path)
-  PYB11_PROPERTY(QString Name)
+  PYB11_PROPERTY(QVector<size_t> TupleDims READ getTupleDims WRITE setTupleDims)
+  PYB11_PROPERTY(QVector<size_t> CompDims READ getCompDims WRITE setCompDims)
+  PYB11_PROPERTY(QString Path READ getPath WRITE setPath)
+  PYB11_PROPERTY(QString Name READ getName WRITE setName)
   PYB11_PROPERTY(uint8_t Flag READ getFlag WRITE setFlag)
 public:
   using CompDimsVector = QVector<QVector<size_t>>;

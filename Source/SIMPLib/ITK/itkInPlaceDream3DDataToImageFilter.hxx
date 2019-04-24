@@ -80,14 +80,11 @@ void InPlaceDream3DDataToImageFilter< PixelType, VDimension >::GenerateOutputInf
     itkExceptionMacro("Error casting geometry!!!");
   }
   // Get data container properties
-  FloatVec3Type torigin;
+  FloatVec3Type torigin = imageGeom->getOrigin();
   // Setting spacing to 0 means dimension is not used. Used to know if
   // image is 2D or 3D. Setting dimensions to 0 leads to crashes
-  FloatVec3Type tspacing;
-  SizeVec3Type tDims;
-  imageGeom->getOrigin(torigin);
-  imageGeom->getSpacing(tspacing);
-  std::tie(tDims[0], tDims[1], tDims[2]) = imageGeom->getDimensions();
+  FloatVec3Type tspacing = imageGeom->getSpacing();
+  SizeVec3Type tDims = imageGeom->getDimensions();
   typename ImageType::PointType origin;
   typename ImageType::SizeType size;
   typename ImageType::SpacingType spacing;

@@ -1,5 +1,5 @@
 /* Template file used is called DerivedSharedPointerClassInit.in.h */
-
+// clang-format off
 /**
  * @brief This defines a C++11 alias so loading the file by itself into an IDE
  * will allow the proper code completion for a wrapped std::shared_ptr<> class.
@@ -18,3 +18,4 @@ template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>
  */
 
 /* END TEMPLATE FILE DerivedSharedPointerClassInit.in.h */
+// clang-format on
