@@ -4,16 +4,25 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+- develop
 
 pool:
   name: BlueQuartz Self Hosted
 
+pr:
+  autoCancel: "true" # indicates whether additional pushes to a PR should cancel in-progress runs for the same PR. Defaults to true
+  branches:
+    include:
+    - topic/*
+    - feature/*
+
 steps:
-- script: echo Hello, world!
+- script: 
   displayName: 'Run a one-line script'
 
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    /usr/bin/git checkout -b develop https://www.github.com/bluequartzsoftware/CMP
+    /usr/bin/git checkout -b develop https://www.github.com/bluequartzsoftware/SIMPL
+    /usr/bin/git checkout -b develop https://www.github.com/bluequartzsoftware/SIMPLView
+    /usr/bin/git checkout -b develop https://www.github.com/bluequartzsoftware/DREAM3D
+  displayName: 'Checkout the Source codes'
