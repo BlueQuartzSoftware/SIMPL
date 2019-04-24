@@ -19,7 +19,7 @@ def crop_vertex_geometry_test():
         print("DataContainer ErrorCondition: %d" % err)
 
     # Import ASCII Data - #1 - Vertex Coordinates
-    import_file = sd.GetBuildDirectory() + "/Debug/Data/DREAM3DReview/VertexCoordinates.csv"
+    import_file = sd.GetBuildDirectory() + "/Data/SIMPL/VertexCoordinates.csv"
     wizard_data = {
         "inputFilePath": import_file,
         "beginIndex": 2,
@@ -81,7 +81,7 @@ def crop_vertex_geometry_test():
 
     # Write to DREAM.3D File
     err = simplpy.data_container_writer(dca, sd.GetBuildDirectory() +
-                                        "/Data/Output/CoreFilterTests/" +
+                                        "/Data/Output/CoreFilters/" +
                                         "CropVertexGeometry.dream3d", True, False)
     if err < 0:
         print("DataContainerWriter ErrorCondition: %d" % err)

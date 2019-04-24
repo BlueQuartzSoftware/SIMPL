@@ -71,9 +71,8 @@ class  SIMPLib_EXPORT FeatureDataCSVWriter : public AbstractFilter
     SIMPL_FILTER_PARAMETER(bool, WriteNeighborListData)
     Q_PROPERTY(bool WriteNeighborListData READ getWriteNeighborListData WRITE setWriteNeighborListData)
 
-    SIMPL_FILTER_PARAMETER(SIMPL::DelimiterTypes::Type, DelimiterChoice)
-    Q_PROPERTY(SIMPL::DelimiterTypes::Type DelimiterChoice READ getDelimiterChoice WRITE setDelimiterChoice)
-    Q_PROPERTY(int DelimiterChoiceInt READ getDelimiterChoiceInt WRITE setDelimiterChoiceInt)
+    SIMPL_FILTER_PARAMETER(int, DelimiterChoice)
+    Q_PROPERTY(int DelimiterChoice READ getDelimiterChoice WRITE setDelimiterChoice)
 
     SIMPL_FILTER_PARAMETER(bool, WriteNumFeaturesLine)
     Q_PROPERTY(bool WriteNumFeaturesLine READ getWriteNumFeaturesLine WRITE setWriteNumFeaturesLine)

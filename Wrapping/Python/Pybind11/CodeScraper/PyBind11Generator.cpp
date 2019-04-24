@@ -397,6 +397,11 @@ void PyBind11Generator::generatePybind11Header(const QString& hFile)
       line = line.trimmed();
       bindingClass.addProperty(line);
     }
+    else if(bindingClass.getNeedsWrapping() && line.contains(::kSIMPL_FILTER_PARAMETER))
+    {
+      line = line.trimmed();
+      bindingClass.addSimplFilterParam(line);
+    }
     else if(bindingClass.getNeedsWrapping() && line.contains(::kPYB11_METHOD))
     {
       line = line.trimmed();

@@ -275,21 +275,21 @@ PYBIND11_MODULE(dream3d, m)
 		  const int & endIndex, const int & incrementIndex, const py::str & inputPath, const py::str & filePrefix,
 		  const py::str & fileSuffix, const py::str &fileExtension)
       {
-	  FileListInfo_t fileListInfo;
-	  fileListInfo.PaddingDigits = paddingDigits;
-	  fileListInfo.Ordering = ordering;
-	  fileListInfo.StartIndex = startIndex;
-	  fileListInfo.EndIndex = endIndex;
-	  fileListInfo.IncrementIndex = incrementIndex;
-	  QString InputPath = QString::fromStdString(py::cast<std::string>(inputPath));
-	  QString FilePrefix = QString::fromStdString(py::cast<std::string>(filePrefix));
-	  QString FileSuffix = QString::fromStdString(py::cast<std::string>(fileSuffix));
-	  QString FileExtension = QString::fromStdString(py::cast<std::string>(fileExtension));
-	  fileListInfo.InputPath = InputPath;
-	  fileListInfo.FilePrefix = FilePrefix;
-	  fileListInfo.FileSuffix = FileSuffix;
-	  fileListInfo.FileExtension = FileExtension;
-	  return fileListInfo;
+				FileListInfo_t fileListInfo;
+				fileListInfo.PaddingDigits = paddingDigits;
+				fileListInfo.Ordering = ordering;
+				fileListInfo.StartIndex = startIndex;
+				fileListInfo.EndIndex = endIndex;
+				fileListInfo.IncrementIndex = incrementIndex;
+				QString InputPath = QString::fromStdString(py::cast<std::string>(inputPath));
+				QString FilePrefix = QString::fromStdString(py::cast<std::string>(filePrefix));
+				QString FileSuffix = QString::fromStdString(py::cast<std::string>(fileSuffix));
+				QString FileExtension = QString::fromStdString(py::cast<std::string>(fileExtension));
+				fileListInfo.InputPath = InputPath;
+				fileListInfo.FilePrefix = FilePrefix;
+				fileListInfo.FileSuffix = FileSuffix;
+				fileListInfo.FileExtension = FileExtension;
+				return fileListInfo;
       }))
   ;
 
