@@ -21,8 +21,8 @@ steps:
   displayName: 'Run a one-line script'
 
 - script: |
-    /usr/bin/git checkout -b develop https://www.github.com/bluequartzsoftware/CMP
-    /usr/bin/git checkout -b develop https://www.github.com/bluequartzsoftware/SIMPL
-    /usr/bin/git checkout -b develop https://www.github.com/bluequartzsoftware/SIMPLView
-    /usr/bin/git checkout -b develop https://www.github.com/bluequartzsoftware/DREAM3D
-  displayName: 'Checkout the Source codes'
+    /usr/bin/git clone -b develop https://www.github.com/bluequartzsoftware/CMP
+    /usr/bin/git clone -b develop https://www.github.com/bluequartzsoftware/SIMPL
+    /usr/bin/git clone -b develop https://www.github.com/bluequartzsoftware/SIMPLView
+    /usr/bin/git clone -b develop https://www.github.com/bluequartzsoftware/DREAM3D
+  displayName: 'clone the Source codes'
