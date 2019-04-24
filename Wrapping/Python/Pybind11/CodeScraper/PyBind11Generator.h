@@ -35,7 +35,7 @@ public:
  * @brief recursiveSearch
  * @param currentDir
  */
-  void recursiveSearch(QDir currentDir);
+  void recursiveSearch(const QDir& currentDir);
 
   /**
  * @brief generatePybind11Header
@@ -70,6 +70,8 @@ private:
   QString m_IsSIMPLib;
   QString m_CfgIntDir;
   QStringList m_FilterList;
+  int m_FileGenCount = 0;
+  QString m_DiagnosticMessage;
 
   PyBind11Generator(const PyBind11Generator&) = delete; // Copy Constructor Not Implemented
   void operator=(const PyBind11Generator&) = delete;    // Operator '=' Not Implemented

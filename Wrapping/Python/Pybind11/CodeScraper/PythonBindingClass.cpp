@@ -75,8 +75,9 @@ void PythonBindingClass::clearEnumerations()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PythonBindingClass::writeBindingFile(const QString& outputFilePath)
+bool PythonBindingClass::writeBindingFile(const QString& outputFilePath)
 {
+  bool didWrite = false;
   if(getNeedsWrapping())
   {
     QString output;
@@ -138,10 +139,7 @@ void PythonBindingClass::writeBindingFile(const QString& outputFilePath)
     out << generateEnumerationCode();
     out << generateFooterCode();
 
-    // -----------------------------------------------------------------------------
-    //
-    // -----------------------------------------------------------------------------
-    writeOutput(getNeedsWrapping(), output, outputFilePath);
+    didWrite = writeOutput(getNeedsWrapping(), output, outputFilePath);
 
     QString initCode;
     QTextStream init(&initCode);
@@ -172,6 +170,7 @@ void PythonBindingClass::writeBindingFile(const QString& outputFilePath)
     m_Module->addInitCode(getClassName(), initCode);
     m_Module->addPythonCodes(getClassName(), "");
   }
+  return didWrite;
 }
 
 // -----------------------------------------------------------------------------
@@ -205,8 +204,9 @@ QByteArray PythonBindingClass::md5FileContents(const QString& filename)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PythonBindingClass::writeOutput(bool didReplace, const QString& outLines, const QString& filename)
+bool PythonBindingClass::writeOutput(bool didReplace, const QString& outLines, const QString& filename)
 {
+  bool didWrite = false;
   if(didReplace)
   {
     QFileInfo fi2(filename);
@@ -217,7 +217,7 @@ void PythonBindingClass::writeOutput(bool didReplace, const QString& outLines, c
     {
       QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath);
       qDebug() << ss;
-      return;
+      return didWrite;
     }
 
     QTemporaryFile tempfile;
@@ -237,15 +237,16 @@ void PythonBindingClass::writeOutput(bool didReplace, const QString& outLines, c
       if(!tempfile.copy(filename))
       {
         std::cout << "[PythonBindingClass] Temp file '" << tempFileName.toStdString() << "' could not be copied to '" << filename.toStdString() << "'" << std::endl;
+        didWrite = false;
       }
       else
       {
         qDebug() << "[PythonBindingClass] Pybind11 Module Generated for: " << fi2.absoluteFilePath();
+        didWrite = true;
       }
     }
     else
     {
-
       QByteArray destMd5Hash = md5FileContents(filename);
       QByteArray sourceMd5Hash = md5FileContents(tempfile.fileName());
 
@@ -257,31 +258,22 @@ void PythonBindingClass::writeOutput(bool didReplace, const QString& outLines, c
         if(!didDelete)
         {
           qDebug() << "[PythonBindingClass] Dest File was NOT removed: " << filename;
+          didWrite = false;
         }
         if(!tempfile.copy(filename))
         {
           std::cout << "[PythonBindingClass] Temp file '" << tempFileName.toStdString() << "' could not be copied to '" << filename.toStdString() << "'" << std::endl;
+          didWrite = false;
         }
         else
         {
           qDebug() << "[PythonBindingClass]: New File Generated: " << fi2.absoluteFilePath();
+          didWrite = true;
         }
       }
     }
-
-#if 0
-#if OVERWRITE_SOURCE_FILE
-    QFile hOut(filename);
-#else
-    QString tmpPath = "/tmp/" + fi2.fileName();
-    QFile hOut(tmpPath);
-#endif
-    hOut.open(QFile::WriteOnly);
-    QTextStream stream(&hOut);
-    stream << outLines;
-    hOut.close();
-#endif
   }
+  return didWrite;
 }
 
 // -----------------------------------------------------------------------------
@@ -512,10 +504,13 @@ QString PythonBindingClass::generatePropertiesCode()
   QString code;
   QTextStream out(&code);
 
-  QString methodArgs;
-  QTextStream pcodes(&methodArgs);
-  pcodes << "(data_container_array, ";
+  QString args;
+  QTextStream argCode(&args);
+  argCode << "(data_container_array, ";
+  QString docString;
+  QTextStream docCode(&docString);
 
+  docCode << "    :param DataContainerArray data_container_array: The DataContainerArray that the filter will use.\n";
   QString bodyCodes;
   QTextStream bcodes(&bodyCodes);
   QString camelClassName = SIMPL::Python::fromCamelCase(getClassName());
@@ -527,7 +522,7 @@ QString PythonBindingClass::generatePropertiesCode()
     QString line = m_Properties.at(i);
     QStringList tokens = line.split("(");
     tokens = tokens[1].replace(")", "").trimmed().split(" ");
-    // QString pyType = tokens[0];
+    QString pyType = tokens[0];
     QString varName = tokens[1];
 
     if(tokens.size() == 7 && tokens[6] == ::kConstGetOverload)
@@ -536,24 +531,46 @@ QString PythonBindingClass::generatePropertiesCode()
       out << TAB << ".def_property(\"" << varName << "\", py::overload_cast<>(&" << getClassName() << "::get" << varName << ", py::const_), &" << getClassName() << "::set" << varName << ")"
           << NEWLINE_SIMPL;
 
-      pcodes << SIMPL::Python::fromCamelCase(varName);
+      argCode << SIMPL::Python::fromCamelCase(varName);
+      docCode << "    :param " << pyType << " " << SIMPL::Python::fromCamelCase(varName) << ": Sets the " << varName << " value.\n";
       if(i < m_Properties.size() - 1)
       {
-        pcodes << ", ";
+        argCode << ", ";
       }
-      bcodes << "    " << camelClassName << "." << varName << " = " << SIMPL::Python::fromCamelCase(varName) << NEWLINE_SIMPL;
+
+      bcodes << "    " << camelClassName << "." << varName << " = ";
+      if(pyType == "DataArrayPath")
+      {
+        bcodes << "simpl.DataArrayPath(" << SIMPL::Python::fromCamelCase(varName) << ")";
+      }
+      else
+      {
+        bcodes << SIMPL::Python::fromCamelCase(varName);
+      }
+      bcodes << NEWLINE_SIMPL;
     }
     else if(tokens.size() == 6)
     {
       out << TAB << "/* Property accessors for " << varName << " */" << NEWLINE_SIMPL;
       out << TAB << ".def_property(\"" << varName << "\", &" << getClassName() << "::get" << varName << ", &" << getClassName() << "::set" << varName << ")" << NEWLINE_SIMPL;
 
-      pcodes << SIMPL::Python::fromCamelCase(varName);
+      argCode << SIMPL::Python::fromCamelCase(varName);
+      docCode << "    :param " << pyType << " " << SIMPL::Python::fromCamelCase(varName) << ": Sets the " << varName << " value.\n";
+
       if(i < m_Properties.size() - 1)
       {
-        pcodes << ", ";
+        argCode << ", ";
       }
-      bcodes << "    " << camelClassName << "." << varName << " = " << SIMPL::Python::fromCamelCase(varName) << NEWLINE_SIMPL;
+      bcodes << "    " << camelClassName << "." << varName << " = ";
+      if(pyType == "DataArrayPath")
+      {
+        bcodes << "simpl.DataArrayPath(" << SIMPL::Python::fromCamelCase(varName) << ")";
+      }
+      else
+      {
+        bcodes << SIMPL::Python::fromCamelCase(varName);
+      }
+      bcodes << NEWLINE_SIMPL;
     }
     else if(tokens.size() == 4 && tokens[2] == ::kRead)
     {
@@ -566,27 +583,29 @@ QString PythonBindingClass::generatePropertiesCode()
       out << TAB << ".def(\"set" << varName << "\", &" << getClassName() << "::set" << varName << ", py::arg(\"" << varName << "\"))" << NEWLINE_SIMPL;
     }
   }
-  pcodes << ")";
+  argCode << ")";
 
   bcodes
       //     << "    " << camelClassName << ".preflight()" << NEWLINE_SIMPL
       //     << "    preflightError = " << camelClassName << ".ErrorCondition" << NEWLINE_SIMPL
       //     << "    if preflightError >= 0 :" << NEWLINE_SIMPL
-      << "    " << camelClassName << ".execute()" << NEWLINE_SIMPL << "    executeError = " << camelClassName << ".ErrorCondition" << NEWLINE_SIMPL << "    return executeError" << NEWLINE_SIMPL;
-
+      << "    " << camelClassName << ".execute()" << NEWLINE_SIMPL << "    executeError = " << camelClassName << ".ErrorCode" << NEWLINE_SIMPL << "    return executeError" << NEWLINE_SIMPL;
+  docCode << "    :return: ErrorCode produced by the filter\n"
+          << "    :rtype: int\n";
   /*
     Replace any Python keywords in arguments
      For now, just replace the occurence of 'lambda'
   */
-  if(methodArgs.contains("lambda") || bodyCodes.contains("lambda"))
+  if(args.contains("lambda") || bodyCodes.contains("lambda"))
   {
-    methodArgs.replace("lambda", "lambda_1");
+    args.replace("lambda", "lambda_1");
     bodyCodes.replace("lambda", "lambda_1");
   }
 
   QVector<QString> pythonicCodes;
-  pythonicCodes.push_back(methodArgs);
+  pythonicCodes.push_back(args);
   pythonicCodes.push_back(bodyCodes);
+  pythonicCodes.push_back(docString);
 
   m_Module->addPythonicCodes(getClassName(), pythonicCodes);
   return code;
@@ -715,10 +734,8 @@ QString PythonBindingClass::generateEnumerationCode()
 
   for(iter = m_Enumerations.begin(); iter != m_Enumerations.end(); iter++)
   {
-
-    out << "\n\n  /* Enumeration code for " << getClassName() << "::" << iter.key() << " ******************/\n";
-    QString n = iter.key(); // Get the variable name of the enumeration
-    out << "  py::enum_<" << getClassName() << "::" << n << ">(instance, \"" << n << "\")\n";
+    out << "\n\n  /* Enumeration code for " << getClassName() << "::" << iter.key() << "  */\n";
+    out << "  py::enum_<" << getClassName() << "::" << iter.key() << ">(instance, \"" << iter.key() << "\")\n";
     QStringList values = iter.value();
     for(auto v : values)
     {
@@ -726,11 +743,10 @@ QString PythonBindingClass::generateEnumerationCode()
       {
         v = v.remove(',');
       }
-      out << "    .value(\"" << v << "\", " << getClassName() << "::" << n << "::" << v << ")\n";
+      out << "    .value(\"" << v << "\", " << getClassName() << "::" << iter.key() << "::" << v << ")\n";
     }
     out << "    .export_values();\n";
   }
-  // qDebug() << code;
   return code;
 }
 

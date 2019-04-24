@@ -290,23 +290,6 @@ void ImportHDF5TreeModel::setupModelData()
   }
 
   m_RootItem->appendChild(new ImportHDF5TreeModelItem(m_FileId, QString("/"), m_RootItem));
-
-#if 0
-  std::list<std::string> itemList;
-  herr_t err = H5Utilities::getGroupObjects(_fileId, H5Utilities::MXA_ANY, itemList);
-  if (err < 0)
-  {
-    std::cout << "Error getting group objects. " <<__FILE__ << ":" << __LINE__ << std::endl;
-    return;
-  }
-
-
-  for (std::list<std::string>::iterator iter = itemList.begin(); iter != itemList.end(); ++iter )
-  {
-    rootItem->appendChild(new ImportHDF5TreeModelItem(_fileId, QString( (*iter).c_str() ), rootItem) );
-  }
-#endif
-  // parents.last()->appendChild(new ImportHDF5TreeModelItem(columnData, parents.last()));
 }
 
 // -----------------------------------------------------------------------------

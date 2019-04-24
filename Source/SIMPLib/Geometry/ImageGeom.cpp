@@ -63,7 +63,7 @@
 class FindImageDerivativesImpl
 {
 public:
-  FindImageDerivativesImpl(ImageGeom* image, DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivs)
+  FindImageDerivativesImpl(ImageGeom* image, const DoubleArrayType::Pointer& field, const DoubleArrayType::Pointer& derivs)
   : m_Image(image)
   , m_Field(field)
   , m_Derivatives(derivs)
@@ -90,8 +90,7 @@ public:
     std::vector<double> dValuesdEta(numComps);
     std::vector<double> dValuesdZeta(numComps);
 
-    size_t dims[3] = {0, 0, 0};
-    std::tie(dims[0], dims[1], dims[2]) = m_Image->getDimensions();
+    SizeVec3Type dims = m_Image->getDimensions();
 
     int64_t counter = 0;
     size_t totalElements = m_Image->getNumberOfElements();
@@ -106,19 +105,19 @@ public:
           //  Xi derivatives (X)
           if(dims[0] == 1)
           {
-            findValuesForFiniteDifference(TwoDimensional, XDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(TwoDimensional, XDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
           else if(x == 0)
           {
-            findValuesForFiniteDifference(LeftSide, XDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(LeftSide, XDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
           else if(x == (dims[0] - 1))
           {
-            findValuesForFiniteDifference(RightSide, XDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(RightSide, XDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
           else
           {
-            findValuesForFiniteDifference(Centered, XDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(Centered, XDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
 
           xxi = factor * (xp[0] - xm[0]);
@@ -132,19 +131,19 @@ public:
           //  Eta derivatives (Y)
           if(dims[1] == 1)
           {
-            findValuesForFiniteDifference(TwoDimensional, YDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(TwoDimensional, YDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
           else if(y == 0)
           {
-            findValuesForFiniteDifference(LeftSide, YDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(LeftSide, YDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
           else if(y == (dims[1] - 1))
           {
-            findValuesForFiniteDifference(RightSide, YDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(RightSide, YDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
           else
           {
-            findValuesForFiniteDifference(Centered, YDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(Centered, YDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
 
           xeta = factor * (xp[0] - xm[0]);
@@ -158,19 +157,19 @@ public:
           //  Zeta derivatives (Z)
           if(dims[2] == 1)
           {
-            findValuesForFiniteDifference(TwoDimensional, ZDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(TwoDimensional, ZDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
           else if(z == 0)
           {
-            findValuesForFiniteDifference(LeftSide, ZDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(LeftSide, ZDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
           else if(z == (dims[2] - 1))
           {
-            findValuesForFiniteDifference(RightSide, ZDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(RightSide, ZDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
           else
           {
-            findValuesForFiniteDifference(Centered, ZDirection, x, y, z, dims, xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
+            findValuesForFiniteDifference(Centered, ZDirection, x, y, z, dims.data(), xp, xm, factor, numComps, plusValues, minusValues, fieldPtr);
           }
 
           xzeta = factor * (xp[0] - xm[0]);
@@ -235,7 +234,7 @@ public:
   }
 #endif
 
-  void computeIndices(int32_t differenceType, int32_t directionType, size_t& index1, size_t& index2, size_t dims[3], size_t x, size_t y, size_t z, double xp[3], double xm[3]) const
+  void computeIndices(int32_t differenceType, int32_t directionType, size_t& index1, size_t& index2, const size_t dims[3], size_t x, size_t y, size_t z, double xp[3], double xm[3]) const
 
   {
     size_t tmpIndex1 = 0;
@@ -338,7 +337,7 @@ public:
   }
 
   void findValuesForFiniteDifference(int32_t differenceType, int32_t directionType, size_t x, size_t y, size_t z, size_t dims[3], double xp[3], double xm[3], double& factor, int32_t numComps,
-                                     std::vector<double>& plusValues, std::vector<double>& minusValues, double* field) const
+                                     std::vector<double>& plusValues, std::vector<double>& minusValues, const double* field) const
   {
     size_t index1 = 0;
     size_t index2 = 0;
@@ -436,33 +435,15 @@ ImageGeom::Pointer ImageGeom::CreateGeometry(const QString& name)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPL::Tuple3FVec ImageGeom::getSpacing() const
+FloatVec3Type ImageGeom::getSpacing() const
 {
-  return m_Spacing.toTuple();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ImageGeom::getSpacing(FloatVec3Type& spacing) const
-{
-  spacing[0] = m_Spacing[0];
-  spacing[1] = m_Spacing[1];
-  spacing[2] = m_Spacing[2];
+  return m_Spacing;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void ImageGeom::setSpacing(const FloatVec3Type& spacing)
-{
-  m_Spacing = spacing;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ImageGeom::setSpacing(FloatVec3Type& spacing)
 {
   m_Spacing = spacing;
 }
@@ -480,33 +461,15 @@ void ImageGeom::setSpacing(float x, float y, float z)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPL::Tuple3FVec ImageGeom::getOrigin() const
+FloatVec3Type ImageGeom::getOrigin() const
 {
-  return m_Origin.toTuple();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ImageGeom::getOrigin(FloatVec3Type& origin) const
-{
-  origin[0] = m_Origin[0];
-  origin[1] = m_Origin[1];
-  origin[2] = m_Origin[2];
+  return m_Origin;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void ImageGeom::setOrigin(const FloatVec3Type& origin)
-{
-  m_Origin = origin;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ImageGeom::setOrigin(FloatVec3Type& origin)
 {
   m_Origin = origin;
 }
@@ -521,27 +484,16 @@ void ImageGeom::setOrigin(float x, float y, float z)
   m_Origin[2] = z;
 }
 
-SIMPL::Tuple3SVec ImageGeom::getDimensions() const
+SizeVec3Type ImageGeom::getDimensions() const
 {
-  return m_Dimensions.toTuple();
-}
-void ImageGeom::getDimensions(SizeVec3Type& dims) const
-{
-  dims = m_Dimensions;
+  return m_Dimensions;
 }
 
 void ImageGeom::setDimensions(const SizeVec3Type& dims)
 {
   m_Dimensions = dims;
 }
-void ImageGeom::setDimensions(SizeVec3Type& dims)
-{
-  m_Dimensions = dims;
-}
-void ImageGeom::setDimensions(const SIMPL::Tuple3SVec& dims)
-{
-  m_Dimensions = dims;
-}
+
 void ImageGeom::setDimensions(size_t x, size_t y, size_t z)
 {
   m_Dimensions[0] = x;
@@ -565,10 +517,10 @@ void ImageGeom::getBoundingBox(float* boundingBox)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPL::Tuple6FVec ImageGeom::getBoundingBox()
+FloatVec6Type ImageGeom::getBoundingBox()
 {
-  return std::make_tuple(m_Origin[0], m_Origin[0] + (m_Dimensions[0] * m_Spacing[0]), m_Origin[1], m_Origin[1] + (m_Dimensions[1] * m_Spacing[1]), m_Origin[2],
-                         m_Origin[2] + (m_Dimensions[2] * m_Spacing[2]));
+  return FloatVec6Type(m_Origin[0], m_Origin[0] + (m_Dimensions[0] * m_Spacing[0]), m_Origin[1], m_Origin[1] + (m_Dimensions[1] * m_Spacing[1]), m_Origin[2],
+                       m_Origin[2] + (m_Dimensions[2] * m_Spacing[2]));
 }
 
 // -----------------------------------------------------------------------------
@@ -868,8 +820,7 @@ void ImageGeom::deleteElementCentroids()
 // -----------------------------------------------------------------------------
 int ImageGeom::findElementSizes()
 {
-  FloatVec3Type res = {0.0f, 0.0f, 0.0f};
-  std::tie(res[0], res[1], res[2]) = getSpacing();
+  FloatVec3Type res = getSpacing();
 
   if(res[0] <= 0.0f || res[1] <= 0.0f || res[2] <= 0.0f)
   {
@@ -964,8 +915,7 @@ void ImageGeom::getShapeFunctions(double pCoords[3], double* shape)
 void ImageGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable)
 {
   m_ProgressCounter = 0;
-  size_t dims[3] = {0, 0, 0};
-  std::tie(dims[0], dims[1], dims[2]) = getDimensions();
+  SizeVec3Type dims = getDimensions();
 
   if(observable != nullptr)
   {
@@ -1006,10 +956,8 @@ int ImageGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf
 {
   herr_t err = 0;
   int64_t volDims[3] = {static_cast<int64_t>(getXPoints()), static_cast<int64_t>(getYPoints()), static_cast<int64_t>(getZPoints())};
-  FloatVec3Type spacing = {0.0f, 0.0f, 0.0f};
-  std::tie(spacing[0], spacing[1], spacing[2]) = getSpacing();
-  FloatVec3Type origin = {0.0f, 0.0f, 0.0f};
-  std::tie(origin[0], origin[1], origin[2]) = getOrigin();
+  FloatVec3Type spacing = getSpacing();
+  FloatVec3Type origin = getOrigin();
 
   int32_t rank = 1;
   hsize_t dims[1] = {3};
@@ -1051,18 +999,16 @@ int ImageGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
   herr_t err = 0;
 
   int64_t volDims[3] = {static_cast<int64_t>(getXPoints()), static_cast<int64_t>(getYPoints()), static_cast<int64_t>(getZPoints())};
-  FloatVec3Type spacing = {0.0f, 0.0f, 0.0f};
-  std::tie(spacing[0], spacing[1], spacing[2]) = getSpacing();
-  FloatVec3Type origin = {0.0f, 0.0f, 0.0f};
-  std::tie(origin[0], origin[1], origin[2]) = getOrigin();
+  FloatVec3Type spacing = getSpacing();
+  FloatVec3Type origin = getOrigin();
 
   out << "  <!-- *************** START OF " << dcName << " *************** -->"
       << "\n";
-  out << "  <Grid Name=\"" << dcName << "\" GridType=\"Uniform\">"
+  out << "  <Grid Name=\"" << dcName << R"(" GridType="Uniform">)"
       << "\n";
   if(getEnableTimeSeries())
   {
-    out << "    <Time TimeType=\"Single\" Value=\"" << getTimeValue() << "\"/>\n";
+    out << R"(    <Time TimeType="Single" Value=")" << getTimeValue() << "\"/>\n";
   }
   out << "    <Topology TopologyType=\"3DCoRectMesh\" Dimensions=\"" << volDims[2] + 1 << " " << volDims[1] + 1 << " " << volDims[0] + 1 << " \"></Topology>"
       << "\n";
@@ -1089,13 +1035,11 @@ QString ImageGeom::getInfoString(SIMPL::InfoStringFormat format)
 {
   QString info;
   QTextStream ss(&info);
+  QString lengthUnit = IGeometry::LengthUnitToString(static_cast<IGeometry::LengthUnit>(getUnits()));
 
   int64_t volDims[3] = {static_cast<int64_t>(getXPoints()), static_cast<int64_t>(getYPoints()), static_cast<int64_t>(getZPoints())};
-  FloatVec3Type spacing = {0.0f, 0.0f, 0.0f};
-  std::tie(spacing[0], spacing[1], spacing[2]) = getSpacing();
-  std::tie(spacing[0], spacing[1], spacing[2]) = getSpacing();
-  FloatVec3Type origin = {0.0f, 0.0f, 0.0f};
-  std::tie(origin[0], origin[1], origin[2]) = getOrigin();
+  FloatVec3Type spacing = getSpacing();
+  FloatVec3Type origin = getOrigin();
 
   float halfRes[3] = {spacing[0] / 2.0f, spacing[1] / 2.0f, spacing[2] / 2.0f};
 
@@ -1112,7 +1056,14 @@ QString ImageGeom::getInfoString(SIMPL::InfoStringFormat format)
     ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Origin:</th><td>)" << origin[0] << ", " << origin[1] << ", " << origin[2] << "</td></tr>";
     ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Spacing:</th><td>)" << spacing[0] << ", " << spacing[1] << ", " << spacing[2] << "</td></tr>";
 
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Bounds:</th><td>)"
+    float vol = (volDims[0] * spacing[0]) * (volDims[1] * spacing[1]) * (volDims[2] * spacing[2]);
+    QLocale usa(QLocale::English, QLocale::UnitedStates);
+
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Volume:</th><td>)" << usa.toString(vol) << " " << lengthUnit
+       << "s ^3"
+          "</td></tr>";
+
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Bounds (Cell Centered):</th><td>)"
        << "<p>X Range: " << (origin[0] - halfRes[0]) << " to " << (origin[0] - halfRes[0] + volDims[0] * spacing[0]) << " (delta: " << (volDims[0] * spacing[0]) << ")</p>"
        << "<p>Y Range: " << (origin[1] - halfRes[1]) << " to " << (origin[1] - halfRes[1] + volDims[1] * spacing[1]) << " (delta: " << (volDims[1] * spacing[1]) << ")</p>"
        << "<p>Z Range: " << (origin[2] - halfRes[2]) << " to " << (origin[2] - halfRes[2] + volDims[2] * spacing[2]) << " (delta: " << (volDims[2] * spacing[2]) << ")</p>"
@@ -1152,12 +1103,9 @@ IGeometry::Pointer ImageGeom::deepCopy(bool forceNoAllocate)
 {
   ImageGeom::Pointer imageCopy = ImageGeom::CreateGeometry(getName());
 
-  std::tuple<size_t, size_t, size_t> volDims = std::make_tuple(static_cast<size_t>(0), static_cast<size_t>(0), static_cast<size_t>(0));
-  std::tuple<float, float, float> spacing = std::make_tuple(1.0f, 1.0f, 1.0f);
-  std::tuple<float, float, float> origin = std::make_tuple(0.0f, 0.0f, 0.0f);
-  volDims = getDimensions();
-  spacing = getSpacing();
-  origin = getOrigin();
+  SizeVec3Type volDims = getDimensions();
+  FloatVec3Type spacing = getSpacing();
+  FloatVec3Type origin = getOrigin();
   imageCopy->setDimensions(volDims);
   imageCopy->setSpacing(spacing);
   imageCopy->setOrigin(origin);
@@ -1172,7 +1120,7 @@ IGeometry::Pointer ImageGeom::deepCopy(bool forceNoAllocate)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int ImageGeom::gatherMetaData(hid_t parentId, size_t volDims[3], float spacing[3], float origin[3], unsigned int spatialDims, QString geomName, bool preflight)
+int ImageGeom::gatherMetaData(hid_t parentId, size_t volDims[3], float spacing[3], float origin[3], unsigned int spatialDims, const QString& geomName, bool preflight)
 {
   int err = QH5Lite::readPointerDataset(parentId, H5_DIMENSIONS, volDims);
   if(err < 0)
@@ -1205,7 +1153,7 @@ int ImageGeom::gatherMetaData(hid_t parentId, size_t volDims[3], float spacing[3
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ImageGeom::ErrorType ImageGeom::computeCellIndex(float coords[3], size_t index[3])
+ImageGeom::ErrorType ImageGeom::computeCellIndex(const float coords[3], size_t index[3])
 {
   ImageGeom::ErrorType err = ImageGeom::ErrorType::NoError;
   for(size_t i = 0; i < 3; i++)
@@ -1230,7 +1178,7 @@ ImageGeom::ErrorType ImageGeom::computeCellIndex(float coords[3], size_t index[3
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ImageGeom::ErrorType ImageGeom::computeCellIndex(float coords[3], size_t& index)
+ImageGeom::ErrorType ImageGeom::computeCellIndex(const float coords[], size_t& index)
 {
   ImageGeom::ErrorType err = ImageGeom::ErrorType::NoError;
   size_t cell[3] = {0, 0, 0};

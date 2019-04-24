@@ -1,4 +1,4 @@
-
+// clang-format off
 /* =============================================================================
  * BEGIN Template file SharedPointerClassInit.in.h
  * ========================================================================== */
@@ -24,3 +24,4 @@ PySharedPtrClass<@CLASS_NAME@> declare@CLASS_NAME@(py::module& m)
 /* =============================================================================
  * END Template file SharedPointerClassInit.in.h
  * ========================================================================== */
+  // clang-format on

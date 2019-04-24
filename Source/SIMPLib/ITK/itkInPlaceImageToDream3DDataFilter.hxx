@@ -122,8 +122,7 @@ InPlaceImageToDream3DDataFilter<PixelType, VDimension>
   QVector<size_t> cDims = ITKDream3DHelper::GetComponentsDimensions<PixelType>();
   IGeometry::Pointer geom = dataContainer->getGeometry();
   ImageGeom::Pointer imageGeom = std::dynamic_pointer_cast<ImageGeom>(geom);
-  QVector<size_t> tDims(3, 1);
-  std::tie(tDims[0], tDims[1], tDims[2]) = imageGeom->getDimensions();
+  QVector<size_t> tDims = imageGeom->getDimensions().toContainer<QVector<size_t>>();
   AttributeMatrix::Pointer attrMat;
   if( dataContainer->doesAttributeMatrixExist(m_AttributeMatrixArrayName.c_str()))
   {

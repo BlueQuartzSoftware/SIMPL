@@ -50,10 +50,9 @@ public:
   using EnumerationType = QMap<QString, QStringList>;
   SIMPL_INSTANCE_PROPERTY(EnumerationType, Enumerations)
   void addEnumeration(const QString& name, const QStringList& values);
-  void clearEnumerations(); 
-  
+  void clearEnumerations();
 
-  void writeBindingFile(const QString& outputFilePath);
+  bool writeBindingFile(const QString& outputFilePath);
 
   /**
   *@brief quote
@@ -68,7 +67,7 @@ public:
   *@param outLines
   *@param filename
   */
-  void writeOutput(bool didReplace, const QString& outLines, const QString& filename);
+  bool writeOutput(bool didReplace, const QString& outLines, const QString& filename);
 
 protected:
   PythonBindingClass() = delete;

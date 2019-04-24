@@ -1,9 +1,9 @@
 
 
+from dream3d import simplpy
 from dream3d import simpl
-
-import dream3d.utils.simpl_common as sc
-import dream3d.utils.simpl_test_dirs as sd
+from dream3d import simpl_helpers as sc
+from dream3d import simpl_test_dirs as sd
 
 
 def AttributeMatrixTest():

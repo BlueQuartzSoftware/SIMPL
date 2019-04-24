@@ -293,18 +293,18 @@ public:
         ImageGeom::Pointer oldImageGeom = std::dynamic_pointer_cast<ImageGeom>(oldGeom);
         ImageGeom::Pointer newImageGeom = std::dynamic_pointer_cast<ImageGeom>(newGeom);
 
-        SIMPL::Tuple3SVec oldDims = oldImageGeom->getDimensions();
-        SIMPL::Tuple3SVec newDims = newImageGeom->getDimensions();
+        SizeVec3Type oldDims = oldImageGeom->getDimensions();
+        SizeVec3Type newDims = newImageGeom->getDimensions();
         bool sameDims = (oldDims == newDims);
         DREAM3D_REQUIRE_EQUAL(sameDims, true)
 
-        SIMPL::Tuple3FVec oldRes = oldImageGeom->getSpacing();
-        SIMPL::Tuple3FVec newRes = newImageGeom->getSpacing();
+        FloatVec3Type oldRes = oldImageGeom->getSpacing();
+        FloatVec3Type newRes = newImageGeom->getSpacing();
         bool sameRes = (oldRes == newRes);
         DREAM3D_REQUIRE_EQUAL(sameRes, true)
 
-        SIMPL::Tuple3FVec oldOrigin = oldImageGeom->getOrigin();
-        SIMPL::Tuple3FVec newOrigin = newImageGeom->getOrigin();
+        FloatVec3Type oldOrigin = oldImageGeom->getOrigin();
+        FloatVec3Type newOrigin = newImageGeom->getOrigin();
         bool sameOrigin = (oldOrigin == newOrigin);
         DREAM3D_REQUIRE_EQUAL(sameOrigin, true)
       }
@@ -313,8 +313,8 @@ public:
         RectGridGeom::Pointer oldRectGridGeom = std::dynamic_pointer_cast<RectGridGeom>(oldGeom);
         RectGridGeom::Pointer newRectGridGeom = std::dynamic_pointer_cast<RectGridGeom>(newGeom);
 
-        SIMPL::Tuple3SVec oldDims = oldRectGridGeom->getDimensions();
-        SIMPL::Tuple3SVec newDims = newRectGridGeom->getDimensions();
+        SizeVec3Type oldDims = oldRectGridGeom->getDimensions();
+        SizeVec3Type newDims = newRectGridGeom->getDimensions();
         bool sameDims = (oldDims == newDims);
         DREAM3D_REQUIRE_EQUAL(sameDims, true)
 
@@ -766,7 +766,7 @@ public:
     // Image
 
     ImageGeom::Pointer imageGeom = ImageGeom::CreateGeometry(SIMPL::Geometry::ImageGeometry);
-    imageGeom->setDimensions(std::forward_as_tuple(5, 5, 5));
+    imageGeom->setDimensions(SizeVec3Type(5, 5, 5));
     imageGeom->setSpacing(FloatVec3Type(5, 5, 5));
     imageGeom->setOrigin(FloatVec3Type(5, 5, 5));
     imageGeom->setName("Image Geom");

@@ -1,3 +1,4 @@
+// clang-format off
 #include <QtCore/QString>
 
 #include <pybind11/numpy.h>
@@ -625,3 +626,4 @@ public:
 
 } // namespace detail
 } // namespace pybind11
+// clang-format on

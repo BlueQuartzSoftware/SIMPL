@@ -452,5 +452,5 @@ if(SIMPL_ENABLE_PYTHON)
   # --------------------------------------------------------------------
   # add the Pybind11 Python Wrapping
   add_subdirectory(${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Pybind11 ${PROJECT_BINARY_DIR}/Pybind11)
-
+ # include(${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Testing/SourceList.cmake)
 endif()

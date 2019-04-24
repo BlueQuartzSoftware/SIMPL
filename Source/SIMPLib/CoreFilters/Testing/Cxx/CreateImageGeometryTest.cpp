@@ -174,8 +174,7 @@ public:
     DREAM3D_REQUIRE(nullptr != geometry.get());
 
     {
-      FloatVec3Type res;
-      geometry->getSpacing(res);
+      FloatVec3Type res = geometry->getSpacing();
 
       DREAM3D_REQUIRE_EQUAL(res[0], imgResolution[0]);
       DREAM3D_REQUIRE_EQUAL(res[1], imgResolution[1]);
@@ -183,8 +182,7 @@ public:
     }
 
     {
-      FloatVec3Type origin;
-      geometry->getOrigin(origin);
+      FloatVec3Type origin = geometry->getOrigin();
 
       DREAM3D_REQUIRE_EQUAL(origin[0], originPos[0]);
       DREAM3D_REQUIRE_EQUAL(origin[1], originPos[1]);
@@ -192,8 +190,7 @@ public:
     }
 
     {
-      SizeVec3Type dims;
-      geometry->getDimensions(dims);
+      SizeVec3Type dims = geometry->getDimensions();
 
       DREAM3D_REQUIRE_EQUAL(dims[0], numDimensions[0]);
       DREAM3D_REQUIRE_EQUAL(dims[1], numDimensions[1]);

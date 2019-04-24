@@ -56,7 +56,7 @@
 configures to build a shared library. If you are going to use
 another build system on windows or create the visual studio
 projects by hand you need to define SVWidgetsLib_EXPORTS when
-building the MXADatModel DLL on windows.
+building on windows.
 */
 
 #if defined (SVWidgetsLib_BUILT_AS_DYNAMIC_LIB)

@@ -13,3 +13,4 @@ def GetTestTempDirectory():
 
 def GetDataDirectory():
   return "${DREAM3D_DATA_DIR}"
+
