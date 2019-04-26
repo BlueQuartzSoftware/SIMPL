@@ -200,27 +200,11 @@ void DataStructureWidget::setupGui()
   connect(m_Ui->dataBrowserTreeView, SIGNAL(endDataStructureFiltering()), this, SIGNAL(endDataStructureFiltering()));
   connect(m_Ui->dataBrowserTreeView, SIGNAL(applyPathToFilteringParameter(DataArrayPath)), this, SIGNAL(applyPathToFilteringParameter(DataArrayPath)));
   
-  // Create toolbar menu
-  QMenu* toolbarMenu = new QMenu("... ");
-  QAction* expandAllAction = toolbarMenu->addAction("Expand All");
-  QAction* collapseAllAction = toolbarMenu->addAction("Collapse All");
-  connect(expandAllAction, &QAction::triggered, m_Ui->dataBrowserTreeView, &DataStructureTreeView::expandAll);
-  connect(collapseAllAction, &QAction::triggered, m_Ui->dataBrowserTreeView, &DataStructureTreeView::collapseAll);
-  m_Ui->toolbarMenuBtn->setMenu(toolbarMenu);
+  connect(m_Ui->collapseAllBtn, &QPushButton::clicked, m_Ui->dataBrowserTreeView, &DataStructureTreeView::collapseAll);
+  connect(m_Ui->expandAllBtn, &QPushButton::clicked, m_Ui->dataBrowserTreeView, &DataStructureTreeView::expandAll);
 
   // Search
-  connect(m_Ui->filterLineEdit, &QLineEdit::textChanged, m_Ui->dataBrowserTreeView, &DataStructureTreeView::search);
-
-  QString css(" QToolTip {\
-              border: 2px solid #434343;\
-              padding: 2px;\
-              border-radius: 3px;\
-              opacity: 255;\
-              background-color: #FFFCEA;\
-              color: #000000;\
-              }");
-  this->setStyleSheet(css);
-
+  connect(m_Ui->dataStructureSearch, &QLineEdit::textChanged, m_Ui->dataBrowserTreeView, &DataStructureTreeView::search);
 }
 
 // -----------------------------------------------------------------------------
@@ -261,13 +245,6 @@ void DataStructureWidget::refreshData()
   }
 
   model = m_Ui->dataBrowserTreeView->getStandardModel();
-
-  //  QItemSelectionModel* selectionModel = m_Ui->dataBrowserTreeView->selectionModel();
-  //  if(selectionModel)
-  //  {
-  //    connect(selectionModel, SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)),
-  //      this, SLOT(dataBrowserTreeView_indexChanged(const QModelIndex&, const QModelIndex&)));
-  //  }
 
   // Sanity check model
   if(model == nullptr)
