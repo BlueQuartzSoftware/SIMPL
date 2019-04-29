@@ -93,7 +93,7 @@ public:
    * @param index
    * @return
    */
-  DataArrayPath getDataArrayPath(QModelIndex index);
+  DataArrayPath getDataArrayPath(const QModelIndex& index);
 
   /**
    * @brief Updates the active filter for use in preventing created

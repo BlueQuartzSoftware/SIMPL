@@ -146,19 +146,20 @@ void DataStructureTreeView::clearViewRequirements()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayPath DataStructureTreeView::getDataArrayPath(QModelIndex index)
+DataArrayPath DataStructureTreeView::getDataArrayPath(const QModelIndex& index)
 {
   DataArrayPath path;
-  QStandardItemModel* stdModel = dynamic_cast<QStandardItemModel*>(model());
+  DataStructureProxyModel* proxyModel = dynamic_cast<DataStructureProxyModel*>(getProxyModel());
+  QStandardItemModel* stdModel = dynamic_cast<QStandardItemModel*>(getStandardModel());
   
-  if(nullptr == stdModel)
+  if(nullptr == proxyModel || nullptr == stdModel)
   {
     return path;
   }
 
   if(index.isValid())
   {
-    QStandardItem* item = stdModel->itemFromIndex(index);
+    QStandardItem* item = stdModel->itemFromIndex(proxyModel->mapToSource(index));
     if(item->parent() != nullptr)
     {
       QStandardItem* parentItem = item->parent();
