@@ -16,9 +16,6 @@ else()
   set(SIMPL_ANACONDA_OUTPUT_DIR "${SIMPLProj_BINARY_DIR}/Anaconda")
 endif()
 
-set_property(GLOBAL PROPERTY SIMPL_ANACONDA_OUTPUT_DIR "${SIMPL_ANACONDA_OUTPUT_DIR}")
-
-
 # --------------------------------------------------------------------------
 # macro to convert a file system path to compatible C++ strings, i.e., on
 # Windows, convert the backslash to forward slash.
@@ -61,9 +58,14 @@ get_target_property(GeneratePythonBindings_RUNTIME_OUTPUT_DIR GeneratePythonBind
 get_filename_component(SIMPL_PYB11_PARENT_DIR  ${CMAKE_CURRENT_LIST_FILE} DIRECTORY)
 get_filename_component(SIMPL_PYB11_PARENT_DIR  ${SIMPL_PYB11_PARENT_DIR} DIRECTORY)
 
+ConvertPathToHeaderCompatible(${SIMPL_ANACONDA_OUTPUT_DIR})
 configure_file( ${SIMPLPyBind11_SOURCE_DIR}/CodeScraper/SIMPLPyBind11Config.h.in
                 ${SIMPLPyBind11_BINARY_DIR}/CodeScraper/SIMPLPyBind11Config.h
                 )
+file(TO_NATIVE_PATH "${SIMPL_ANACONDA_OUTPUT_DIR}" SIMPL_ANACONDA_OUTPUT_DIR)
+set_property(GLOBAL PROPERTY SIMPL_ANACONDA_OUTPUT_DIR "${SIMPL_ANACONDA_OUTPUT_DIR}")
+                
+
 
 target_sources(GeneratePythonBindings PRIVATE ${SIMPLPyBind11_BINARY_DIR}/CodeScraper/SIMPLPyBind11Config.h)
 
@@ -117,7 +119,7 @@ if(SIMPL_BUILD_TESTING)
 
   #------------------------------
   # Initialize the PYTHON_TEST_INPUT_DIR variable to point to the "Testing Directory"
-  file(TO_CMAKE_PATH "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Testing" PYTHON_TEST_INPUT_DIR)
+  file(TO_NATIVE_PATH "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Testing" PYTHON_TEST_INPUT_DIR)
 
   set(SIMPL_PYTHON_TESTS
     AbstractFilterTest
@@ -159,7 +161,7 @@ endif()
 # --------------------------------------------------------------------------
 # Copy the recipe and egg info for the building Conda package to the 
 # output directory
-if (SIMPL_ENABLE_ANACONDA_PACKAGE AND SIMPL_ENABLE_ANACONDA_LOCAL_INSTALL)
+if (SIMPL_ENABLE_ANACONDA_PACKAGE)
   if("${ANACONDA_DIR}" STREQUAL "")
     set(ANACONDA_DIR "" CACHE STRING "")
     message(FATAL_ERROR "Please set the ANACONDA_DIR variable either through the CMake-GUI or through the -DANACONDA_DIR=/path/to/Anaconda3")
