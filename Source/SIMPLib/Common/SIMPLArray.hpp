@@ -34,6 +34,7 @@
 #include <array>
 #include <tuple>
 #include <cassert>
+#include <vector>
 
 #include <QtCore/QMetaObject>
 
