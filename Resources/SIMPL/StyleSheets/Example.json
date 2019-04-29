@@ -93,10 +93,12 @@
     "DataArrayPath_DataContainer_color": "#056d00",
     "DataArrayPath_AttributeMatrix_color": "#6400b7",
     "DataArrayPath_DataArray_color": "#004dad",
+    "DataArrayPath_Invalid_color": "#dddddd",
 
     "DataArrayPath_DataContainer_background_color": "#a0ff9b",
     "DataArrayPath_AttributeMatrix_background_color": "#d9adff",
     "DataArrayPath_DataArray_background_color": "#afd3ff",
+    "DataArrayPath_Invalid_background_color": "#FFFFFF",
 
     "DataArrayPath_border_normal": "#8f8f91",
     "DataArrayPath_border_not_found": "#BC0000",

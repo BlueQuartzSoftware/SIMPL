@@ -38,6 +38,7 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/ComparisonSelectionAdvancedFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Filtering/ThresholdFilterHelper.h"
@@ -77,7 +78,7 @@ void MultiThresholdObjects2::setupFilterParameters()
     parameter->setGetterCallback(SIMPL_BIND_GETTER(MultiThresholdObjects2, this, SelectedThresholds));
     parameters.push_back(parameter);
   }
-  parameters.push_back(SIMPL_NEW_STRING_FP("Output Attribute Array", DestinationArrayName, FilterParameter::CreatedArray, MultiThresholdObjects2));
+  parameters.push_back(SIMPL_NEW_DA_FROM_ADV_COMPARISON_FP("Output Attribute Array", DestinationArrayName, SelectedThresholds, FilterParameter::CreatedArray, MultiThresholdObjects2));
   setFilterParameters(parameters);
 }
 

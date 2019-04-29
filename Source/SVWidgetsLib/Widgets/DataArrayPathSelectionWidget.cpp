@@ -130,6 +130,7 @@ const QColor DataArrayPathSelectionWidget::GetActiveColor(DataArrayPathHelper::D
     color = style->getDataArrayPath_DataArray_color();
     break;
   case DataArrayPathHelper::DataType::None:
+    color = style->getDataArrayPath_Invalid_color();
     break;
   }
 
@@ -156,6 +157,7 @@ const QColor DataArrayPathSelectionWidget::GetCheckedColor(DataArrayPathHelper::
     color = style->getDataArrayPath_DataArray_background_color();
     break;
   case DataArrayPathHelper::DataType::None:
+    color = style->getDataArrayPath_Invalid_background_color();
     break;
   }
 

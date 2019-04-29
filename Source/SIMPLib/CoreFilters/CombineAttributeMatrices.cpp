@@ -40,6 +40,7 @@
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
@@ -119,9 +120,9 @@ void CombineAttributeMatrices::setupFilterParameters()
   }
 
   parameters.push_back(SeparatorFilterParameter::New("Cell/Feature Data", FilterParameter::CreatedArray));
-  parameters.push_back(SIMPL_NEW_STRING_FP("New Index Array", NewIndexArrayName, FilterParameter::CreatedArray, CombineAttributeMatrices));
+  parameters.push_back(SIMPL_NEW_DA_WITH_LINKED_AM_FP("New Index Array", NewIndexArrayName, FirstIndexArrayPath, FirstIndexArrayPath, FilterParameter::CreatedArray, CombineAttributeMatrices));
   parameters.push_back(SeparatorFilterParameter::New("Feature/Ensemble Data", FilterParameter::CreatedArray));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Combined Attribute Matrix", CombinedAttributeMatrixName, FilterParameter::CreatedArray, CombineAttributeMatrices));
+  parameters.push_back(SIMPL_NEW_AM_WITH_LINKED_DC_FP("Combined Attribute Matrix", CombinedAttributeMatrixName, FirstAttributeMatrixPath, FilterParameter::CreatedArray, CombineAttributeMatrices));
 
   setFilterParameters(parameters);
 }
