@@ -27,6 +27,10 @@
     <file>SIMPL/StyleSheets/Default.json</file>
 
     <!-- Icon Resources -->
+    <file>SIMPL/icons/images/expand_all.png</file>
+    <file>SIMPL/icons/images/expand_all@2x.png</file>
+    <file>SIMPL/icons/images/collapse_all.png</file>
+    <file>SIMPL/icons/images/collapse_all@2x.png</file>
     <file>SIMPL/icons/images/add.png</file>
     <file>SIMPL/icons/images/add@2x.png</file>
     <file>SIMPL/icons/images/arrow_down.png</file>
