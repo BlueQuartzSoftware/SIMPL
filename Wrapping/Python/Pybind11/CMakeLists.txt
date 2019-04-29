@@ -148,8 +148,8 @@ if(SIMPL_BUILD_TESTING)
   )
 
   foreach(test ${SIMPL_PYTHON_TESTS})
-    set(SIMPL_PYTHON_TEST_DRIVER "${SIMPL_ANACONDA_OUTPUT_DIR}/UnitTest/SIMPL/${test}.sh")
-    configure_file(${SIMPLPyBind11_SOURCE_DIR}/python_test_driver.sh
+    set(SIMPL_PYTHON_TEST_DRIVER "${SIMPL_ANACONDA_OUTPUT_DIR}/UnitTest/SIMPL/${test}.${TEST_SCRIPT_FILE_EXT}")
+    configure_file(${SIMPLPyBind11_SOURCE_DIR}/python_test_driver.${TEST_SCRIPT_FILE_EXT}
                   "${SIMPL_PYTHON_TEST_DRIVER}" @ONLY)
     add_test(NAME PY_SIMPL_${test} COMMAND "${SIMPL_PYTHON_TEST_DRIVER}" )
   endforeach(test ${SIMPL_PYTHON_TESTS})
