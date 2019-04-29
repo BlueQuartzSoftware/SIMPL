@@ -401,6 +401,10 @@ void DataStructureTreeView::collapseAllBut(const QModelIndex& index)
     expandedChildren.push_front(index);
   }
   collapseAll();
+
+  // Disable Animation
+  bool prevAnimationState = isAnimated();
+  setAnimated(false);
   for(const QModelIndex& child : expandedChildren)
   {
     expand(child);
@@ -411,6 +415,8 @@ void DataStructureTreeView::collapseAllBut(const QModelIndex& index)
     expand(parentIndex);
     parentIndex = parentIndex.parent();
   }
+  // Reset animation
+  setAnimated(prevAnimationState);
 }
 
 // -----------------------------------------------------------------------------
