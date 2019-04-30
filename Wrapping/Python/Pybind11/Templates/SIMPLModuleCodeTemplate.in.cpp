@@ -35,7 +35,6 @@ PYBIND11_MAKE_OPAQUE(std::vector<size_t>);
 #include <QtCore/QString>
 
 #include "SIMPLib/Common/PhaseType.h"
-#include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/Common/ShapeType.h"
 #include "SIMPLib/CoreFilters/ArrayCalculator.h"
 #include "SIMPLib/CoreFilters/ImportHDF5Dataset.h"
@@ -220,35 +219,6 @@ PYBIND11_MODULE(dream3d, m)
 
   /* Define a python submodule for SIMPL */
   py::module mod = m.def_submodule("simpl", "  Python wrapping for SIMPL");
-
-#if 0
-  py::class_<SizeVec3Type>(mod, "SizeVec3Type")
-	  .def(py::init<>([](py::list values) {
-      SizeVec3Type sv3 = SizeVec3Type(py::cast<size_t>(values[0]), py::cast<size_t>(values[1]), py::cast<size_t>(values[2]));
-      return sv3;
-    }))
-	  .def("__repr__", [](const SizeVec3Type &inValues) {
-		  py::list outValues;
-		  for (size_t value : inValues)
-		  {
-			  outValues.append(value);
-		  }
-		  return outValues;
-	  })
-	  .def("__str__", [](const SizeVec3Type &inValues) {
-		  py::list outValues;
-		  for (size_t value : inValues)
-		  {
-			  outValues.append(value);
-		  }
-      return py::str(outValues);
-	  })
-	  .def("__getitem__", [](const SizeVec3Type &values, int index) {
-		  return values[index];
-	  })
-  ;
-#endif
-
 
   // SIMPLArray declarations/definitions
   PYB11_DEFINE_SIMPLARRAY_2_INIT(float, FloatVec2Type)

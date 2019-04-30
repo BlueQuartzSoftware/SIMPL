@@ -89,7 +89,7 @@ public:
     int32_t y = i3.getY();
     DREAM3D_REQUIRED(y, ==, 5)
 
-    tpl = i3.values();
+    tpl = i3.toTuple();
     DREAM3D_REQUIRED(std::get<0>(tpl), ==, 4)
     DREAM3D_REQUIRED(std::get<1>(tpl), ==, 5)
 
@@ -126,7 +126,7 @@ public:
     int32_t z = i3.getZ();
     DREAM3D_REQUIRED(z, ==, 6)
 
-    tpl = i3.values();
+    tpl = i3.toTuple();
     DREAM3D_REQUIRED(std::get<0>(tpl), ==, 4)
     DREAM3D_REQUIRED(std::get<1>(tpl), ==, 5)
     DREAM3D_REQUIRED(std::get<2>(tpl), ==, 6)
@@ -170,7 +170,7 @@ public:
     int32_t z = i3.getZ();
     DREAM3D_REQUIRED(z, ==, 6)
 
-    tpl = i3.values();
+    tpl = i3.toTuple();
     DREAM3D_REQUIRED(std::get<0>(tpl), ==, 4)
     DREAM3D_REQUIRED(std::get<1>(tpl), ==, 5)
     DREAM3D_REQUIRED(std::get<2>(tpl), ==, 6)
@@ -203,7 +203,7 @@ public:
     std::vector<int32_t> iv3 = {4, 5, 6, 7, 8, 9};
     i3 = iv3.data();
 
-    tpl = i3.values();
+    tpl = i3.toTuple();
     DREAM3D_REQUIRED(std::get<0>(tpl), ==, 4)
     DREAM3D_REQUIRED(std::get<1>(tpl), ==, 5)
     DREAM3D_REQUIRED(std::get<2>(tpl), ==, 6)

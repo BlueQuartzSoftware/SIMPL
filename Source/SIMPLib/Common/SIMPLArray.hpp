@@ -36,8 +36,6 @@
 #include <cassert>
 #include <vector>
 
-#include <QtCore/QMetaObject>
-
 /**
  * @brief This class is a facade pattern around a std::array<T,D> array to allow for some semantics
  * for either a 2D or 3D point such as X,Y,Z. We Provide 3 concrete implementations that are for 2, 3 and 4 element
@@ -307,10 +305,10 @@ public:
   }
 
   /**
-   * @brief values Converts the internal data structure to a std::tuple<T, T, T>
+   * @brief toTuple Converts the internal data structure to a std::tuple<T, T, T>
    * @return
    */
-  std::tuple<T, T> values() const
+  std::tuple<T, T> toTuple() const
   {
     return std::make_tuple(getX(), getY());
   }
@@ -438,10 +436,10 @@ public:
   }
 
   /**
-   * @brief values Converts the internal data structure to a std::tuple<T, T, T>
+   * @brief toTuple Converts the internal data structure to a std::tuple<T, T, T>
    * @return
    */
-  std::tuple<T, T, T> values() const
+  std::tuple<T, T, T> toTuple() const
   {
     return std::make_tuple(getX(), getY(), getZ());
   }
@@ -580,7 +578,11 @@ public:
     (*this)[3] = w;
   }
 
-  std::tuple<T, T, T, T> values() const
+  /**
+   * @brief toTuple Converts the internal data structure to a std::tuple<T, T, T>
+   * @return
+   */
+  std::tuple<T, T, T, T> toTuple() const
   {
     return std::make_tuple(getX(), getY(), getZ(), getW());
   }
@@ -704,7 +706,11 @@ public:
     (*this)[5] = k;
   }
 
-  std::tuple<T, T, T, T, T, T> values() const
+  /**
+   * @brief toTuple Converts the internal data structure to a std::tuple<T, T, T>
+   * @return
+   */
+  std::tuple<T, T, T, T, T, T> toTuple() const
   {
     return std::make_tuple((*this)[0], (*this)[1], (*this)[2], (*this)[3], (*this)[4], (*this)[5]);
   }
