@@ -1,37 +1,38 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2019 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Air Force Prime Contract FA8650-15-D-5280
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "DataStructureWidget.h"
 
@@ -198,22 +199,12 @@ void DataStructureWidget::setupGui()
   connect(m_Ui->dataBrowserTreeView, SIGNAL(filterPath(DataArrayPath)), this, SIGNAL(filterPath(DataArrayPath)));
   connect(m_Ui->dataBrowserTreeView, SIGNAL(endDataStructureFiltering()), this, SIGNAL(endDataStructureFiltering()));
   connect(m_Ui->dataBrowserTreeView, SIGNAL(applyPathToFilteringParameter(DataArrayPath)), this, SIGNAL(applyPathToFilteringParameter(DataArrayPath)));
+  
+  connect(m_Ui->collapseAllBtn, &QPushButton::clicked, m_Ui->dataBrowserTreeView, &DataStructureTreeView::collapseAll);
+  connect(m_Ui->expandAllBtn, &QPushButton::clicked, m_Ui->dataBrowserTreeView, &DataStructureTreeView::expandAll);
 
-  QStandardItemModel* model = new QStandardItemModel();
-  m_Ui->dataBrowserTreeView->setModel(model);
-  model->setColumnCount(1);
-  model->setParent(m_Ui->dataBrowserTreeView); // Set the parent so it gets cleaned up
-
-  QString css(" QToolTip {\
-              border: 2px solid #434343;\
-              padding: 2px;\
-              border-radius: 3px;\
-              opacity: 255;\
-              background-color: #FFFCEA;\
-              color: #000000;\
-              }");
-  this->setStyleSheet(css);
-
+  // Search
+  connect(m_Ui->dataStructureSearch, &QLineEdit::textChanged, m_Ui->dataBrowserTreeView, &DataStructureTreeView::search);
 }
 
 // -----------------------------------------------------------------------------
@@ -233,13 +224,13 @@ void DataStructureWidget::refreshData()
   // Get the DataContainerArray object
   if(m_Dca.get() == nullptr)
   {
-    QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
+    QStandardItemModel* model = m_Ui->dataBrowserTreeView->getStandardModel();
     QStandardItem* rootItem = model->invisibleRootItem();
     removeNonexistingEntries(rootItem, QStringList(), 0);
     return;
   }
 
-  QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
+  QStandardItemModel* model = m_Ui->dataBrowserTreeView->getStandardModel();
   QVector<QString> path;
   {
     QModelIndex currIndex = m_Ui->dataBrowserTreeView->currentIndex();
@@ -253,14 +244,7 @@ void DataStructureWidget::refreshData()
 
   }
 
-  model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
-
-  //  QItemSelectionModel* selectionModel = m_Ui->dataBrowserTreeView->selectionModel();
-  //  if(selectionModel)
-  //  {
-  //    connect(selectionModel, SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)),
-  //      this, SLOT(dataBrowserTreeView_indexChanged(const QModelIndex&, const QModelIndex&)));
-  //  }
+  model = m_Ui->dataBrowserTreeView->getStandardModel();
 
   // Sanity check model
   if(model == nullptr)
@@ -383,6 +367,7 @@ void DataStructureWidget::refreshData()
   }
   removeNonexistingEntries(rootItem, m_Dca->getDataContainerNames(), 0);
 
+  m_Ui->dataBrowserTreeView->expandAll();
   // repaint the DataStructureTreeView
   m_Ui->dataBrowserTreeView->repaint();
 }

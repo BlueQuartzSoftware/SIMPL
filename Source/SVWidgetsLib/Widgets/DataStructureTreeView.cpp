@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+* Copyright (c) 2009-2019 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -29,6 +29,7 @@
 * The code contained herein was partially funded by the followig contracts:
 *    United States Air Force Prime Contract FA8650-07-D-5800
 *    United States Air Force Prime Contract FA8650-10-D-5210
+*    United States Air Force Prime Contract FA8650-15-D-5280
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -42,6 +43,7 @@
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QMimeData>
+#include <QtCore/QSortFilterProxyModel>
 #include <QtGui/QDrag>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QStandardItemModel>
@@ -52,6 +54,7 @@
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h"
 #include "SVWidgetsLib/Widgets/DataStructureItemDelegate.h"
+#include "SVWidgetsLib/Widgets/DataStructureProxyModel.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -62,6 +65,13 @@ DataStructureTreeView::DataStructureTreeView(QWidget* parent)
   setAcceptDrops(true);
   setMouseTracking(true);
   setAttribute(Qt::WA_MacShowFocusRect, false);
+  // model
+  QStandardItemModel* model = new QStandardItemModel(this);
+  model->setColumnCount(1);
+  DataStructureProxyModel* proxyModel = new DataStructureProxyModel(this);
+  proxyModel->setSourceModel(model);
+  setModel(proxyModel);
+  
   m_Delegate = new DataStructureItemDelegate(this);
   setItemDelegate(m_Delegate);
 }
@@ -70,6 +80,22 @@ DataStructureTreeView::DataStructureTreeView(QWidget* parent)
 //
 // -----------------------------------------------------------------------------
 DataStructureTreeView::~DataStructureTreeView() = default;
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QStandardItemModel* DataStructureTreeView::getStandardModel()
+{
+  return dynamic_cast<QStandardItemModel*>(getProxyModel()->sourceModel());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataStructureProxyModel* DataStructureTreeView::getProxyModel()
+{
+  return dynamic_cast<DataStructureProxyModel*>(model());
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -120,19 +146,20 @@ void DataStructureTreeView::clearViewRequirements()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayPath DataStructureTreeView::getDataArrayPath(QModelIndex index)
+DataArrayPath DataStructureTreeView::getDataArrayPath(const QModelIndex& index)
 {
   DataArrayPath path;
-  QStandardItemModel* stdModel = dynamic_cast<QStandardItemModel*>(model());
+  DataStructureProxyModel* proxyModel = dynamic_cast<DataStructureProxyModel*>(getProxyModel());
+  QStandardItemModel* stdModel = dynamic_cast<QStandardItemModel*>(getStandardModel());
   
-  if(nullptr == stdModel)
+  if(nullptr == proxyModel || nullptr == stdModel)
   {
     return path;
   }
 
   if(index.isValid())
   {
-    QStandardItem* item = stdModel->itemFromIndex(index);
+    QStandardItem* item = stdModel->itemFromIndex(proxyModel->mapToSource(index));
     if(item->parent() != nullptr)
     {
       QStandardItem* parentItem = item->parent();
@@ -366,6 +393,72 @@ void DataStructureTreeView::dropEvent(QDropEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void DataStructureTreeView::collapseAllBut(const QModelIndex& index)
+{
+  QVector<QModelIndex> expandedChildren = getExpandedChildren(index);
+  if(isExpanded(index))
+  {
+    expandedChildren.push_front(index);
+  }
+  collapseAll();
+
+  // Disable Animation
+  bool prevAnimationState = isAnimated();
+  setAnimated(false);
+  for(const QModelIndex& child : expandedChildren)
+  {
+    expand(child);
+  }
+  QModelIndex parentIndex = index.parent();
+  while(parentIndex.isValid())
+  {
+    expand(parentIndex);
+    parentIndex = parentIndex.parent();
+  }
+  // Reset animation
+  setAnimated(prevAnimationState);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureTreeView::findExpandedChildren(QAbstractItemModel* model, const QModelIndex& index, QVector<QModelIndex>& expandedVector)
+{
+  if(isExpanded(index))
+  {
+    expandedVector.push_back(index);
+  }
+  const int childCount = model->rowCount(index);
+  for(int i = 0; i < childCount; i++)
+  {
+    QModelIndex childIndex = model->index(i, 0, index);
+    if(isExpanded(childIndex))
+    {
+      expandedVector.push_back(childIndex);
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QVector<QModelIndex> DataStructureTreeView::getExpandedChildren(const QModelIndex& index)
+{
+  QVector<QModelIndex> expandedChildren;
+  QAbstractItemModel* abstrModel = model();
+  const int childCount = abstrModel->rowCount(index);
+  for(int i = 0; i < childCount; i++)
+  {
+    QModelIndex childIndex = abstrModel->index(i, 0, index);
+    findExpandedChildren(abstrModel, childIndex, expandedChildren);
+  }
+
+  return expandedChildren;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataStructureTreeView::mouseDoubleClickEvent(QMouseEvent* event)
 {
   QModelIndex index = indexAt(event->pos());
@@ -379,4 +472,51 @@ void DataStructureTreeView::mouseDoubleClickEvent(QMouseEvent* event)
   {
     emit applyPathToFilteringParameter(path);
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureTreeView::contextMenuEvent(QContextMenuEvent* event)
+{
+  const QPoint pos = event->pos();
+  const QModelIndex index = indexAt(pos);
+  DataStructureProxyModel* proxyModel = getProxyModel();
+  const bool isValid = index.isValid();
+  const int numChildren = proxyModel->rowCount(index);
+  const int numSiblings = proxyModel->rowCount(index.parent());
+
+  QMenu menu;
+  QAction* expandAllAction = menu.addAction("Expand All");
+  QAction* collapseAllAction = menu.addAction("Collapse All");
+
+  connect(expandAllAction, &QAction::triggered, this, &DataStructureTreeView::expandAll);
+  connect(collapseAllAction, &QAction::triggered, this, &DataStructureTreeView::collapseAll);
+
+  if(isValid && numChildren > 0)
+  {
+    menu.addSeparator();
+    QAction* collapseAllButAction = menu.addAction("Collapse All But This");
+    connect(collapseAllButAction, &QAction::triggered, [=]{
+      collapseAllBut(index);
+    });
+  }
+
+  menu.exec(event->globalPos());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureTreeView::search(const QString& name)
+{
+  if(name.isEmpty())
+  {
+    getProxyModel()->setFilterRegExp(QRegExp());
+  }
+  else
+  {
+    getProxyModel()->setFilterRegExp(QRegExp(name, Qt::CaseInsensitive));
+  }
+  update();
 }
