@@ -208,7 +208,6 @@ bool QtSFileUtils::HasValidFilePath(const QString& filePath)
   }
 
   QString pathBuildUp;
-  QFileInfo fi(filePath);
 
   /* This block of code figures out, based on the current OS, how the built-up path should begin.
    * For Mac and Linux, it should start with a separator for absolute paths or a path part for relative paths.
@@ -218,7 +217,7 @@ bool QtSFileUtils::HasValidFilePath(const QString& filePath)
 #if defined(Q_OS_WIN)
     /* If there is at least one part, then add it to the pathBuildUp variable.
       A valid Windows path, absolute or relative, has to have at least one part. */
-    if(pathParts[0].isEmpty() == false)
+    if(!pathParts[0].isEmpty())
     {
       pathBuildUp.append(pathParts[0]);
     }
@@ -251,7 +250,7 @@ bool QtSFileUtils::HasValidFilePath(const QString& filePath)
   bool valid = false;
 
   QFileInfo buildingFi(pathBuildUp);
-  size_t pathPartsIdx = 1; // We already processed the first path part above
+  int32_t pathPartsIdx = 1; // We already processed the first path part above
   while(buildingFi.exists() && pathPartsIdx <= pathParts.size())
   {
     valid = true;
