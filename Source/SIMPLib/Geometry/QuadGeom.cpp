@@ -150,7 +150,7 @@ QuadGeom::~QuadGeom() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QuadGeom::Pointer QuadGeom::CreateGeometry(int64_t numQuads, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
+QuadGeom::Pointer QuadGeom::CreateGeometry(size_t numQuads, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
 {
   if(name.isEmpty())
   {

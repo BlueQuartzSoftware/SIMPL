@@ -24,7 +24,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param name
      * @return
      */
-    static Pointer CreateGeometry(int64_t numHexas, SharedVertexList::Pointer vertices, const QString& name, bool allocate = true);
+    static Pointer CreateGeometry(size_t numHexas, SharedVertexList::Pointer vertices, const QString& name, bool allocate = true);
 
     /**
      * @brief CreateGeometry
@@ -44,35 +44,35 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param numVertices
      * @return
      */
-    static SharedVertexList::Pointer CreateSharedVertexList(int64_t numVertices, bool allocate = true);
+    static SharedVertexList::Pointer CreateSharedVertexList(size_t numVertices, bool allocate = true);
 
-// -----------------------------------------------------------------------------
-// Inherited from SharedEdgeOps
-// -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
+    // Inherited from SharedEdgeOps
+    // -----------------------------------------------------------------------------
 
     /**
      * @brief CreateSharedEdgeList
      * @param numEdges
      * @return
      */
-    static SharedEdgeList::Pointer CreateSharedEdgeList(int64_t numEdges, bool allocate = true);
+    static SharedEdgeList::Pointer CreateSharedEdgeList(size_t numEdges, bool allocate = true);
 
-// -----------------------------------------------------------------------------
-// Inherited from SharedQuadOps
-// -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
+    // Inherited from SharedQuadOps
+    // -----------------------------------------------------------------------------
 
     /**
      * @brief CreateSharedQuadLost
      * @param numQuads
      * @return
      */
-    static SharedQuadList::Pointer CreateSharedQuadList(int64_t numQuads, bool allocate = true);
+    static SharedQuadList::Pointer CreateSharedQuadList(size_t numQuads, bool allocate = true);
 
     /**
      * @brief resizeQuadList
      * @param newNumQuads
      */
-    void resizeQuadList(int64_t newNumQuads);
+    void resizeQuadList(size_t newNumQuads);
 
     /**
      * @brief setQuads
@@ -91,14 +91,14 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param quadId
      * @param verts
      */
-    void setVertsAtQuad(int64_t quadId, int64_t verts[4]);
+    void setVertsAtQuad(size_t quadId, int64_t verts[4]);
 
     /**
      * @brief getVertsAtQuad
      * @param quadId
      * @param verts
      */
-    void getVertsAtQuad(int64_t quadId, int64_t verts[4]);
+    void getVertsAtQuad(size_t quadId, int64_t verts[4]);
 
     /**
      * @brief getVertCoordsAtQuad
@@ -108,37 +108,37 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param vert3
      * @param vert4
      */
-    void getVertCoordsAtQuad(int64_t quadId, float vert1[3], float vert2[3], float vert3[3], float vert4[3]);
+    void getVertCoordsAtQuad(size_t quadId, float vert1[3], float vert2[3], float vert3[3], float vert4[3]);
 
     /**
      * @brief getPointer
      * @param i
      * @return
      */
-    int64_t* getQuadPointer(int64_t i);
+    int64_t* getQuadPointer(size_t i);
 
     /**
      * @brief getNumberOfQuads
      * @return
      */
-    int64_t getNumberOfQuads();
+    size_t getNumberOfQuads();
 
-// -----------------------------------------------------------------------------
-// Inherited from SharedHexOps
-// -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
+    // Inherited from SharedHexOps
+    // -----------------------------------------------------------------------------
 
     /**
      * @brief CreateSharedHexList
      * @param numTets
      * @return
      */
-    static SharedHexList::Pointer CreateSharedHexList(int64_t numHexas, bool allocate = true);
+    static SharedHexList::Pointer CreateSharedHexList(size_t numHexas, bool allocate = true);
 
     /**
      * @brief resizeHexList
      * @param newNumHexas
      */
-    void resizeHexList(int64_t newNumHexas);
+    void resizeHexList(size_t newNumHexas);
 
     /**
      * @brief setHexahedra
@@ -157,14 +157,14 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param hexId
      * @param verts
      */
-    void setVertsAtHex(int64_t hexId, int64_t verts[7]);
+    void setVertsAtHex(size_t hexId, int64_t verts[7]);
 
     /**
      * @brief getVertsAtHex
      * @param hexId
      * @param verts
      */
-    void getVertsAtHex(int64_t hexId, int64_t verts[7]);
+    void getVertsAtHex(size_t hexId, int64_t verts[7]);
 
     /**
      * @brief getVertCoordsAtHex
@@ -176,24 +176,24 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param vert5
      * @param vert6
      */
-    void getVertCoordsAtHex(int64_t hexId, float vert1[3], float vert2[3], float vert3[3], float vert4[3], float vert5[3], float vert6[3], float vert7[3], float vert8[3]);
+    void getVertCoordsAtHex(size_t hexId, float vert1[3], float vert2[3], float vert3[3], float vert4[3], float vert5[3], float vert6[3], float vert7[3], float vert8[3]);
 
     /**
      * @brief getHexPointer
      * @param i
      * @return
      */
-    int64_t* getHexPointer(int64_t i);
+    int64_t* getHexPointer(size_t i);
 
     /**
      * @brief getNumberOfHexas
      * @return
      */
-    int64_t getNumberOfHexas();
+    size_t getNumberOfHexas();
 
-// -----------------------------------------------------------------------------
-// Inherited from IGeometry
-// -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
+    // Inherited from IGeometry
+    // -----------------------------------------------------------------------------
 
     /**
      * @brief initializeWithZeros
@@ -345,7 +345,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @brief resizeVertexList
      * @param newNumVertices
      */
-    void resizeVertexList(int64_t newNumVertices) override;
+    void resizeVertexList(size_t newNumVertices) override;
 
     /**
      * @brief setVertices
@@ -364,33 +364,33 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param vertId
      * @param coords
      */
-    void setCoords(int64_t vertId, float coords[3]) override;
+    void setCoords(size_t vertId, float coords[3]) override;
 
     /**
      * @brief getCoords
      * @param vertId
      * @param coords
      */
-    void getCoords(int64_t vertId, float coords[3]) override;
+    void getCoords(size_t vertId, float coords[3]) override;
 
     /**
      * @brief getVertexPointer
      * @param i
      * @return
      */
-    float* getVertexPointer(int64_t i) override;
+    float* getVertexPointer(size_t i) override;
 
     /**
      * @brief getNumberOfVertices
      * @return
      */
-    int64_t getNumberOfVertices() override;
+    size_t getNumberOfVertices() override;
 
     /**
      * @brief resizeEdgeList
      * @param newNumEdges
      */
-    void resizeEdgeList(int64_t newNumEdges) override;
+    void resizeEdgeList(size_t newNumEdges) override;
 
     /**
      * @brief getEdges
@@ -403,14 +403,14 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param edgeId
      * @param verts
      */
-    void setVertsAtEdge(int64_t edgeId, int64_t verts[2]) override;
+    void setVertsAtEdge(size_t edgeId, int64_t verts[2]) override;
 
     /**
      * @brief getVerts
      * @param edgeId
      * @param verts
      */
-    void getVertsAtEdge(int64_t edgeId, int64_t verts[2]) override;
+    void getVertsAtEdge(size_t edgeId, int64_t verts[2]) override;
 
     /**
      * @brief getVertCoordsAtEdge
@@ -418,20 +418,20 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param vert1
      * @param vert2
      */
-    void getVertCoordsAtEdge(int64_t edgeId, float vert1[3], float vert2[3]) override;
+    void getVertCoordsAtEdge(size_t edgeId, float vert1[3], float vert2[3]) override;
 
     /**
      * @brief getEdgePointer
      * @param i
      * @return
      */
-    int64_t* getEdgePointer(int64_t i) override;
+    int64_t* getEdgePointer(size_t i) override;
 
     /**
      * @brief getNumberOfEdges
      * @return
      */
-    int64_t getNumberOfEdges() override;
+    size_t getNumberOfEdges() override;
 
     /**
      * @brief findElementEdges

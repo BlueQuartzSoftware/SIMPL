@@ -147,7 +147,7 @@ EdgeGeom::~EdgeGeom() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-EdgeGeom::Pointer EdgeGeom::CreateGeometry(int64_t numEdges, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
+EdgeGeom::Pointer EdgeGeom::CreateGeometry(size_t numEdges, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
 {
   if(name.isEmpty())
   {

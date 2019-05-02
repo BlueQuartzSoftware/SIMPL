@@ -67,7 +67,7 @@ VertexGeom::~VertexGeom() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-VertexGeom::Pointer VertexGeom::CreateGeometry(int64_t numVertices, const QString& name, bool allocate)
+VertexGeom::Pointer VertexGeom::CreateGeometry(size_t numVertices, const QString& name, bool allocate)
 {
   if(name.isEmpty())
   {

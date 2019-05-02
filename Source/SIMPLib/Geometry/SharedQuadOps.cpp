@@ -36,7 +36,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SharedQuadList::Pointer GEOM_CLASS_NAME::CreateSharedQuadList(int64_t numQuads, bool allocate)
+SharedQuadList::Pointer GEOM_CLASS_NAME::CreateSharedQuadList(size_t numQuads, bool allocate)
 {
   QVector<size_t> quadDims(1, 4);
   SharedQuadList::Pointer quads = SharedEdgeList::CreateArray(numQuads, quadDims, SIMPL::Geometry::SharedQuadList, allocate);
@@ -47,7 +47,7 @@ SharedQuadList::Pointer GEOM_CLASS_NAME::CreateSharedQuadList(int64_t numQuads, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::resizeQuadList(int64_t newNumQuads)
+void GEOM_CLASS_NAME::resizeQuadList(size_t newNumQuads)
 {
   m_QuadList->resizeTuples(newNumQuads);
 }
@@ -78,7 +78,7 @@ SharedQuadList::Pointer GEOM_CLASS_NAME::getQuads()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::setVertsAtQuad(int64_t quadId, int64_t verts[4])
+void GEOM_CLASS_NAME::setVertsAtQuad(size_t quadId, int64_t verts[4])
 {
   int64_t* Quad = m_QuadList->getTuplePointer(quadId);
   Quad[0] = verts[0];
@@ -90,7 +90,7 @@ void GEOM_CLASS_NAME::setVertsAtQuad(int64_t quadId, int64_t verts[4])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::getVertsAtQuad(int64_t quadId, int64_t verts[4])
+void GEOM_CLASS_NAME::getVertsAtQuad(size_t quadId, int64_t verts[4])
 {
   int64_t* Quad = m_QuadList->getTuplePointer(quadId);
   verts[0] = Quad[0];
@@ -102,7 +102,7 @@ void GEOM_CLASS_NAME::getVertsAtQuad(int64_t quadId, int64_t verts[4])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::getVertCoordsAtQuad(int64_t quadId, float vert1[3], float vert2[3], float vert3[3], float vert4[3])
+void GEOM_CLASS_NAME::getVertCoordsAtQuad(size_t quadId, float vert1[3], float vert2[3], float vert3[3], float vert4[3])
 {
   int64_t* Quad = m_QuadList->getTuplePointer(quadId);
   float* tmp1 = m_VertexList->getTuplePointer(Quad[0]);
@@ -126,7 +126,7 @@ void GEOM_CLASS_NAME::getVertCoordsAtQuad(int64_t quadId, float vert1[3], float 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int64_t* GEOM_CLASS_NAME::getQuadPointer(int64_t i)
+int64_t* GEOM_CLASS_NAME::getQuadPointer(size_t i)
 {
   return m_QuadList->getTuplePointer(i);
 }
@@ -134,7 +134,7 @@ int64_t* GEOM_CLASS_NAME::getQuadPointer(int64_t i)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int64_t GEOM_CLASS_NAME::getNumberOfQuads()
+size_t GEOM_CLASS_NAME::getNumberOfQuads()
 {
   return m_QuadList->getNumberOfTuples();
 }

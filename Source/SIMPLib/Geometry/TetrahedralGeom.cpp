@@ -151,7 +151,7 @@ TetrahedralGeom::~TetrahedralGeom() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-TetrahedralGeom::Pointer TetrahedralGeom::CreateGeometry(int64_t numTets, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
+TetrahedralGeom::Pointer TetrahedralGeom::CreateGeometry(size_t numTets, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
 {
   if(name.isEmpty())
   {

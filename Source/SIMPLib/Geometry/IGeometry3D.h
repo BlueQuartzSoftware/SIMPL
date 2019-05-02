@@ -60,7 +60,7 @@ class SIMPLib_EXPORT IGeometry3D : public IGeometry
      * @brief resizeVertexList
      * @param newNumVertices
      */
-    virtual void resizeVertexList(int64_t newNumVertices) = 0;
+    virtual void resizeVertexList(size_t newNumVertices) = 0;
 
     /**
      * @brief setVertices
@@ -79,37 +79,37 @@ class SIMPLib_EXPORT IGeometry3D : public IGeometry
      * @param vertId
      * @param coords
      */
-    virtual void setCoords(int64_t vertId, float coords[3]) = 0;
+    virtual void setCoords(size_t vertId, float coords[3]) = 0;
 
     /**
      * @brief getCoords
      * @param vertId
      * @param coords
      */
-    virtual void getCoords(int64_t vertId, float coords[3]) = 0;
+    virtual void getCoords(size_t vertId, float coords[3]) = 0;
 
     /**
      * @brief getVertexPointer
      * @param i
      * @return
      */
-    virtual float* getVertexPointer(int64_t i) = 0;
+    virtual float* getVertexPointer(size_t i) = 0;
 
     /**
      * @brief getNumberOfVertices
      * @return
      */
-    virtual int64_t getNumberOfVertices() = 0;
+    virtual size_t getNumberOfVertices() = 0;
 
-// -----------------------------------------------------------------------------
-// Inherited from SharedEdgeOps
-// -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
+    // Inherited from SharedEdgeOps
+    // -----------------------------------------------------------------------------
 
     /**
      * @brief resizeEdgeList
      * @param newNumEdges
      */
-    virtual void resizeEdgeList(int64_t newNumEdges) = 0;
+    virtual void resizeEdgeList(size_t newNumEdges) = 0;
 
     /**
      * @brief getEdges
@@ -122,14 +122,14 @@ class SIMPLib_EXPORT IGeometry3D : public IGeometry
      * @param edgeId
      * @param verts
      */
-    virtual void setVertsAtEdge(int64_t edgeId, int64_t verts[2]) = 0;
+    virtual void setVertsAtEdge(size_t edgeId, int64_t verts[2]) = 0;
 
     /**
      * @brief getVerts
      * @param edgeId
      * @param verts
      */
-    virtual void getVertsAtEdge(int64_t edgeId, int64_t verts[2]) = 0;
+    virtual void getVertsAtEdge(size_t edgeId, int64_t verts[2]) = 0;
 
     /**
      * @brief getVertCoordsAtEdge
@@ -137,25 +137,24 @@ class SIMPLib_EXPORT IGeometry3D : public IGeometry
      * @param vert1
      * @param vert2
      */
-    virtual void getVertCoordsAtEdge(int64_t edgeId, float vert1[3], float vert2[3]) = 0;
+    virtual void getVertCoordsAtEdge(size_t edgeId, float vert1[3], float vert2[3]) = 0;
 
     /**
      * @brief getEdgePointer
      * @param i
      * @return
      */
-    virtual int64_t* getEdgePointer(int64_t i) = 0;
+    virtual int64_t* getEdgePointer(size_t i) = 0;
 
     /**
      * @brief getNumberOfEdges
      * @return
      */
-    virtual int64_t getNumberOfEdges() = 0;
+    virtual size_t getNumberOfEdges() = 0;
 
-
-// -----------------------------------------------------------------------------
-// Connectivity
-// -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
+    // Connectivity
+    // -----------------------------------------------------------------------------
 
     /**
      * @brief findElementEdges

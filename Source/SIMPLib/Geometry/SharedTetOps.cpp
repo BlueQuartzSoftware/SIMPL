@@ -36,7 +36,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SharedTetList::Pointer GEOM_CLASS_NAME::CreateSharedTetList(int64_t numTets, bool allocate)
+SharedTetList::Pointer GEOM_CLASS_NAME::CreateSharedTetList(size_t numTets, bool allocate)
 {
   QVector<size_t> tetDims(1, 4);
   SharedTetList::Pointer tets = SharedTetList::CreateArray(numTets, tetDims, SIMPL::Geometry::SharedTetList, allocate);
@@ -47,7 +47,7 @@ SharedTetList::Pointer GEOM_CLASS_NAME::CreateSharedTetList(int64_t numTets, boo
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::resizeTetList(int64_t newNumTets)
+void GEOM_CLASS_NAME::resizeTetList(size_t newNumTets)
 {
   m_TetList->resizeTuples(newNumTets);
 }
@@ -78,7 +78,7 @@ SharedTetList::Pointer GEOM_CLASS_NAME::getTetrahedra()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::setVertsAtTet(int64_t tetId, int64_t verts[4])
+void GEOM_CLASS_NAME::setVertsAtTet(size_t tetId, int64_t verts[4])
 {
   int64_t* tet = m_TetList->getTuplePointer(tetId);
   tet[0] = verts[0];
@@ -90,7 +90,7 @@ void GEOM_CLASS_NAME::setVertsAtTet(int64_t tetId, int64_t verts[4])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::getVertsAtTet(int64_t tetId, int64_t verts[4])
+void GEOM_CLASS_NAME::getVertsAtTet(size_t tetId, int64_t verts[4])
 {
   int64_t* tet = m_TetList->getTuplePointer(tetId);
   verts[0] = tet[0];
@@ -102,7 +102,7 @@ void GEOM_CLASS_NAME::getVertsAtTet(int64_t tetId, int64_t verts[4])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::getVertCoordsAtTet(int64_t tetId, float vert1[3], float vert2[3], float vert3[3], float vert4[3])
+void GEOM_CLASS_NAME::getVertCoordsAtTet(size_t tetId, float vert1[3], float vert2[3], float vert3[3], float vert4[3])
 {
   int64_t* tet = m_TetList->getTuplePointer(tetId);
   float* tmp1 = m_VertexList->getTuplePointer(tet[0]);
@@ -126,7 +126,7 @@ void GEOM_CLASS_NAME::getVertCoordsAtTet(int64_t tetId, float vert1[3], float ve
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int64_t* GEOM_CLASS_NAME::getTetPointer(int64_t i)
+int64_t* GEOM_CLASS_NAME::getTetPointer(size_t i)
 {
   return m_TetList->getTuplePointer(i);
 }
@@ -134,7 +134,7 @@ int64_t* GEOM_CLASS_NAME::getTetPointer(int64_t i)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int64_t GEOM_CLASS_NAME::getNumberOfTets()
+size_t GEOM_CLASS_NAME::getNumberOfTets()
 {
   return m_TetList->getNumberOfTuples();
 }

@@ -116,7 +116,7 @@ HexahedralGeom::~HexahedralGeom() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-HexahedralGeom::Pointer HexahedralGeom::CreateGeometry(int64_t numHexas, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
+HexahedralGeom::Pointer HexahedralGeom::CreateGeometry(size_t numHexas, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
 {
   if(name.isEmpty())
   {

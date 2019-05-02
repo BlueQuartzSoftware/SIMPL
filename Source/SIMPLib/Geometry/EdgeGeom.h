@@ -77,7 +77,7 @@ public:
    * @param name
    * @return
    */
-  static Pointer CreateGeometry(int64_t numEdges, SharedVertexList::Pointer vertices, const QString& name, bool allocate = true);
+  static Pointer CreateGeometry(size_t numEdges, SharedVertexList::Pointer vertices, const QString& name, bool allocate = true);
 
   /**
    * @brief CreateGeometry
@@ -97,13 +97,13 @@ public:
    * @param numVertices
    * @return
    */
-  static SharedVertexList::Pointer CreateSharedVertexList(int64_t numVertices, bool allocate = true);
+  static SharedVertexList::Pointer CreateSharedVertexList(size_t numVertices, bool allocate = true);
 
   /**
    * @brief resizeVertexList
    * @param newNumVertices
    */
-  void resizeVertexList(int64_t newNumVertices);
+  void resizeVertexList(size_t newNumVertices);
 
   /**
    * @brief setVertices
@@ -122,27 +122,27 @@ public:
    * @param vertId
    * @param coords
    */
-  void setCoords(int64_t vertId, float coords[3]);
+  void setCoords(size_t vertId, float coords[3]);
 
   /**
    * @brief getCoords
    * @param vertId
    * @param coords
    */
-  void getCoords(int64_t vertId, float coords[3]);
+  void getCoords(size_t vertId, float coords[3]);
 
   /**
    * @brief getVertexPointer
    * @param i
    * @return
    */
-  float* getVertexPointer(int64_t i);
+  float* getVertexPointer(size_t i);
 
   /**
    * @brief getNumberOfVertices
    * @return
    */
-  int64_t getNumberOfVertices();
+  size_t getNumberOfVertices();
 
   // -----------------------------------------------------------------------------
   // Inherited from SharedEdgeOps
@@ -153,13 +153,13 @@ public:
    * @param numEdges
    * @return
    */
-  static SharedEdgeList::Pointer CreateSharedEdgeList(int64_t numEdges, bool allocate = true);
+  static SharedEdgeList::Pointer CreateSharedEdgeList(size_t numEdges, bool allocate = true);
 
   /**
    * @brief resizeEdgeList
    * @param newNumEdges
    */
-  void resizeEdgeList(int64_t newNumEdges);
+  void resizeEdgeList(size_t newNumEdges);
 
   /**
    * @brief setEdges
@@ -178,14 +178,14 @@ public:
    * @param edgeId
    * @param verts
    */
-  void setVertsAtEdge(int64_t edgeId, int64_t verts[2]);
+  void setVertsAtEdge(size_t edgeId, int64_t verts[2]);
 
   /**
    * @brief getVerts
    * @param edgeId
    * @param verts
    */
-  void getVertsAtEdge(int64_t edgeId, int64_t verts[2]);
+  void getVertsAtEdge(size_t edgeId, int64_t verts[2]);
 
   /**
    * @brief getVertCoordsAtEdge
@@ -193,20 +193,20 @@ public:
    * @param vert1
    * @param vert2
    */
-  void getVertCoordsAtEdge(int64_t edgeId, float vert1[3], float vert2[3]);
+  void getVertCoordsAtEdge(size_t edgeId, float vert1[3], float vert2[3]);
 
   /**
    * @brief getEdgePointer
    * @param i
    * @return
    */
-  int64_t* getEdgePointer(int64_t i);
+  int64_t* getEdgePointer(size_t i);
 
   /**
    * @brief getNumberOfEdges
    * @return
    */
-  int64_t getNumberOfEdges();
+  size_t getNumberOfEdges();
 
   // -----------------------------------------------------------------------------
   // Inherited from IGeometry
