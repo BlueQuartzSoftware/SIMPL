@@ -226,6 +226,7 @@ bool QtSFileUtils::HasValidFilePath(const QString& filePath)
       return false;
     }
 #else
+    QFileInfo fi(filePath);
     /* If the first part is empty and the filePath is absolute, then that means that
      * we are starting with the root directory and need to add it to our pathBuildUp */
     if(pathParts[0].isEmpty() && fi.isAbsolute())
