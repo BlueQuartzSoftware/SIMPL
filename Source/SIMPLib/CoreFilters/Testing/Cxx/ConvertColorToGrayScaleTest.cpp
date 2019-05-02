@@ -413,7 +413,7 @@ class ConvertColorToGrayScaleTest
   int RunTest(const uint8_t& algoMapIndex)
   {
     Observer obs;
-    m_colorToGrayscaleFilter->connect(m_colorToGrayscaleFilter.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)), &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
+    m_colorToGrayscaleFilter->connect(m_colorToGrayscaleFilter.get(), SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), &obs, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
     m_colorToGrayscaleFilter->execute();
     int erred = m_colorToGrayscaleFilter->getErrorCode();
     DREAM3D_REQUIRE_EQUAL(erred, 0);

@@ -85,16 +85,16 @@ public:
     i3 = IntVec2Type(iv2);
 
     int32_t x = i3.getX();
-    DREAM3D_REQUIRED(x, ==, 4)
+    DREAM3D_REQUIRED(x, ==, 6)
     int32_t y = i3.getY();
     DREAM3D_REQUIRED(y, ==, 5)
 
     tpl = i3.toTuple();
-    DREAM3D_REQUIRED(std::get<0>(tpl), ==, 4)
+    DREAM3D_REQUIRED(std::get<0>(tpl), ==, 6)
     DREAM3D_REQUIRED(std::get<1>(tpl), ==, 5)
 
     DREAM3D_REQUIRED(i3.size(), ==, 2)
-    DREAM3D_REQUIRED(i3[0], ==, 4)
+    DREAM3D_REQUIRED(i3[0], ==, 6)
     DREAM3D_REQUIRED(i3[1], ==, 5)
 
     std::vector<int32_t> oVec = i3.toContainer<std::vector<int32_t>>();
