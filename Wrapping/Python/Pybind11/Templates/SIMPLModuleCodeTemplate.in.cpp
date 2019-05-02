@@ -1,4 +1,4 @@
-
+// clang-format off
 /* =============================================================================
  * BEGIN Template file SIMPLModuleCodeTemplate.in.cpp
  * ========================================================================== */
@@ -35,7 +35,6 @@ PYBIND11_MAKE_OPAQUE(std::vector<size_t>);
 #include <QtCore/QString>
 
 #include "SIMPLib/Common/PhaseType.h"
-#include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/Common/ShapeType.h"
 #include "SIMPLib/CoreFilters/ArrayCalculator.h"
 #include "SIMPLib/CoreFilters/ImportHDF5Dataset.h"
@@ -67,6 +66,7 @@ template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>
  *
  ******************************************************************************/
 #include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/Common/SIMPLArray.hpp"
 
 /**
  * @brief Initializes a template specialization of DataArray<T>
@@ -94,7 +94,7 @@ template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>
         })) /* Class instance method setValue */                                                                                                                                                       \
         .def("setValue", &DataArrayType::setValue, py::arg("index"), py::arg("value"))                                                                                                                 \
         .def("getValue", &DataArrayType::getValue, py::arg("index"))                                                                                                                                   \
-	    .def_property("Data", &DataArrayType::getArray, &DataArrayType::setArray, py::return_value_policy::reference)                                                                                  \
+	      .def_property("Data", &DataArrayType::getArray, &DataArrayType::setArray, py::return_value_policy::reference)                                                                                  \
         .def_property("Name", &DataArrayType::getName, &DataArrayType::setName)                                                                                                                        \
         .def("Cleanup", []() { return DataArrayType::NullPointer(); });                                                                                                                                \
     ;                                                                                                                                                                                                  \
@@ -117,6 +117,89 @@ PYB11_DEFINE_DATAARRAY_INIT(float, FloatArrayType);
 PYB11_DEFINE_DATAARRAY_INIT(double, DoubleArrayType);
 
 
+#define PYB11_DEFINE_SIMPLARRAY_2_INIT(T, NAME)\
+  py::class_<NAME>(mod, #NAME)\
+	  .def(py::init<>([](py::list values) {\
+      NAME vec = NAME(py::cast<T>(values[0]), py::cast<T>(values[1]));\
+      return vec;\
+    }))\
+	  .def("__repr__", [](const NAME &inValues) {\
+		  py::list outValues;\
+		  for (T value : inValues) { outValues.append(value); }\
+		  return outValues;\
+	  })\
+	  .def("__str__", [](const NAME &inValues) {\
+		  py::list outValues;\
+		  for (T value : inValues) { outValues.append(value); }\
+      return py::str(outValues);\
+	  })\
+	  .def("__getitem__", [](const NAME &values, int index) {\
+		  return values[index];\
+	  })\
+  ;
+
+#define PYB11_DEFINE_SIMPLARRAY_3_INIT(T, NAME)\
+  py::class_<NAME>(mod, #NAME)\
+	  .def(py::init<>([](py::list values) {\
+      NAME vec = NAME(py::cast<T>(values[0]), py::cast<T>(values[1]), py::cast<T>(values[2]));\
+      return vec;\
+    }))\
+	  .def("__repr__", [](const NAME &inValues) {\
+		  py::list outValues;\
+		  for (T value : inValues) { outValues.append(value); }\
+		  return outValues;\
+	  })\
+	  .def("__str__", [](const NAME &inValues) {\
+		  py::list outValues;\
+		  for (T value : inValues) { outValues.append(value); }\
+      return py::str(outValues);\
+	  })\
+	  .def("__getitem__", [](const NAME &values, int index) {\
+		  return values[index];\
+	  })\
+  ;
+
+#define PYB11_DEFINE_SIMPLARRAY_4_INIT(T, NAME)\
+  py::class_<NAME>(mod, #NAME)\
+	  .def(py::init<>([](py::list values) {\
+      NAME vec = NAME(py::cast<T>(values[0]), py::cast<T>(values[1]), py::cast<T>(values[2]), py::cast<T>(values[3]));\
+      return vec;\
+    }))\
+	  .def("__repr__", [](const NAME &inValues) {\
+		  py::list outValues;\
+		  for (T value : inValues) { outValues.append(value); }\
+		  return outValues;\
+	  })\
+	  .def("__str__", [](const NAME &inValues) {\
+		  py::list outValues;\
+		  for (T value : inValues) { outValues.append(value); }\
+      return py::str(outValues);\
+	  })\
+	  .def("__getitem__", [](const NAME &values, int index) {\
+		  return values[index];\
+	  })\
+  ;
+
+#define PYB11_DEFINE_SIMPLARRAY_6_INIT(T, NAME)\
+  py::class_<NAME>(mod, #NAME)\
+	  .def(py::init<>([](py::list values) {\
+      NAME vec = NAME(py::cast<T>(values[0]), py::cast<T>(values[1]), py::cast<T>(values[2]), py::cast<T>(values[3]), py::cast<T>(values[4]), py::cast<T>(values[5]));\
+      return vec;\
+    }))\
+	  .def("__repr__", [](const NAME &inValues) {\
+		  py::list outValues;\
+		  for (T value : inValues) { outValues.append(value); }\
+		  return outValues;\
+	  })\
+	  .def("__str__", [](const NAME &inValues) {\
+		  py::list outValues;\
+		  for (T value : inValues) { outValues.append(value); }\
+      return py::str(outValues);\
+	  })\
+	  .def("__getitem__", [](const NAME &values, int index) {\
+		  return values[index];\
+	  })\
+  ;
 
 //------------------------------------------------------------------------------
 // This header file is auto-generated and contains include directives for each
@@ -137,14 +220,21 @@ PYBIND11_MODULE(dream3d, m)
   /* Define a python submodule for SIMPL */
   py::module mod = m.def_submodule("simpl", "  Python wrapping for SIMPL");
 
-  //
-  //
-  //
-  py::class_<FloatVec3Type>(mod, "FloatVec3Type").def(py::init<const float&, const float&, const float&>());
-  py::class_<FloatVec2Type>(mod, "FloatVec2Type").def(py::init<const float&, const float&>());
-  py::class_<IntVec3Type>(mod, "IntVec3Type").def(py::init<const int&, const int&, const int&>());
+  // SIMPLArray declarations/definitions
+  PYB11_DEFINE_SIMPLARRAY_2_INIT(float, FloatVec2Type)
+  PYB11_DEFINE_SIMPLARRAY_2_INIT(int32_t, IntVec2Type)
+  PYB11_DEFINE_SIMPLARRAY_2_INIT(size_t, SizeVec2Type)
 
-  py::class_<SizeVec3Type>(mod, "SizeVec3Type").def(py::init<const size_t&, const size_t&, const size_t&>());
+  PYB11_DEFINE_SIMPLARRAY_3_INIT(float, FloatVec3Type)
+  PYB11_DEFINE_SIMPLARRAY_3_INIT(int, IntVec3Type)
+  PYB11_DEFINE_SIMPLARRAY_3_INIT(size_t, SizeVec3Type)
+
+  PYB11_DEFINE_SIMPLARRAY_4_INIT(float, FloatVec4Type)
+  PYB11_DEFINE_SIMPLARRAY_4_INIT(int, IntVec4Type)
+  PYB11_DEFINE_SIMPLARRAY_4_INIT(size_t, SizeVec4Type)
+
+  PYB11_DEFINE_SIMPLARRAY_6_INIT(float, FloatVec6Type)
+  PYB11_DEFINE_SIMPLARRAY_6_INIT(int32_t, IntVec6Type)
 
   py::class_<AxisAngleInput_t>(mod, "AxisAngleInput")
 	  .def(py::init< const float &, const float &, const float &, const float &>())
@@ -155,21 +245,21 @@ PYBIND11_MODULE(dream3d, m)
 		  const int & endIndex, const int & incrementIndex, const py::str & inputPath, const py::str & filePrefix,
 		  const py::str & fileSuffix, const py::str &fileExtension)
       {
-	  FileListInfo_t fileListInfo;
-	  fileListInfo.PaddingDigits = paddingDigits;
-	  fileListInfo.Ordering = ordering;
-	  fileListInfo.StartIndex = startIndex;
-	  fileListInfo.EndIndex = endIndex;
-	  fileListInfo.IncrementIndex = incrementIndex;
-	  QString InputPath = QString::fromStdString(py::cast<std::string>(inputPath));
-	  QString FilePrefix = QString::fromStdString(py::cast<std::string>(filePrefix));
-	  QString FileSuffix = QString::fromStdString(py::cast<std::string>(fileSuffix));
-	  QString FileExtension = QString::fromStdString(py::cast<std::string>(fileExtension));
-	  fileListInfo.InputPath = InputPath;
-	  fileListInfo.FilePrefix = FilePrefix;
-	  fileListInfo.FileSuffix = FileSuffix;
-	  fileListInfo.FileExtension = FileExtension;
-	  return fileListInfo;
+				FileListInfo_t fileListInfo;
+				fileListInfo.PaddingDigits = paddingDigits;
+				fileListInfo.Ordering = ordering;
+				fileListInfo.StartIndex = startIndex;
+				fileListInfo.EndIndex = endIndex;
+				fileListInfo.IncrementIndex = incrementIndex;
+				QString InputPath = QString::fromStdString(py::cast<std::string>(inputPath));
+				QString FilePrefix = QString::fromStdString(py::cast<std::string>(filePrefix));
+				QString FileSuffix = QString::fromStdString(py::cast<std::string>(fileSuffix));
+				QString FileExtension = QString::fromStdString(py::cast<std::string>(fileExtension));
+				fileListInfo.InputPath = InputPath;
+				fileListInfo.FilePrefix = FilePrefix;
+				fileListInfo.FileSuffix = FileSuffix;
+				fileListInfo.FileExtension = FileExtension;
+				return fileListInfo;
       }))
   ;
 
@@ -317,7 +407,23 @@ PYBIND11_MODULE(dream3d, m)
 	  .value("Any", ShapeType::Type::Any)
 	  .export_values();
 
-  /* Enumeration code for AttributeMatrix::Type ******************/
+  /* Enumeration code for Crystal Structures */
+  py::enum_<EnsembleInfo::CrystalStructure>(mod, "CrystalStructure")
+      .value("Hexagonal_High", EnsembleInfo::CrystalStructure::Hexagonal_High)
+      .value("Cubic_High", EnsembleInfo::CrystalStructure::Cubic_High)
+      .value("Hexagonal_Low", EnsembleInfo::CrystalStructure::Hexagonal_Low)
+      .value("Cubic_Low", EnsembleInfo::CrystalStructure::Cubic_Low)
+      .value("Triclinic", EnsembleInfo::CrystalStructure::Triclinic)
+      .value("Monoclinic", EnsembleInfo::CrystalStructure::Monoclinic)
+      .value("OrthoRhombic", EnsembleInfo::CrystalStructure::OrthoRhombic)
+      .value("Tetragonal_Low", EnsembleInfo::CrystalStructure::Tetragonal_Low)
+      .value("Tetragonal_High", EnsembleInfo::CrystalStructure::Tetragonal_High)
+      .value("Trigonal_Low", EnsembleInfo::CrystalStructure::Trigonal_Low)
+      .value("Trigonal_High", EnsembleInfo::CrystalStructure::Trigonal_High)
+      .value("UnknownCrystalStructure", EnsembleInfo::CrystalStructure::UnknownCrystalStructure)
+      .export_values();
+
+  /* Enumeration code for Data types ******************/
   py::enum_<SIMPL::ScalarTypes::Type>(mod, "ScalarTypes")
     .value("Int8", SIMPL::ScalarTypes::Type::Int8)
     .value("UInt8", SIMPL::ScalarTypes::Type::UInt8)
@@ -330,7 +436,6 @@ PYBIND11_MODULE(dream3d, m)
     .value("Float", SIMPL::ScalarTypes::Type::Float)
     .value("Double", SIMPL::ScalarTypes::Type::Double)
     .value("Bool", SIMPL::ScalarTypes::Type::Bool)
-
     .export_values();
 
   /* Enumeration code for Initialization Choices */
@@ -338,36 +443,6 @@ PYBIND11_MODULE(dream3d, m)
       .value("Manual", CreateDataArray::InitializationChoices::Manual)
       .value("RandomWithRange", CreateDataArray::InitializationChoices::RandomWithRange)
       .export_values();
-
-  /* Enumeration code for OrientationType */
-#if 0
-  py::enum_<OrientationConverter<float>::OrientationType>(mod, "OrientationType")
-	  .value("Euler", OrientationConverter<float>::Euler)
-	  .value("OrientationMatrix", OrientationConverter<float>::OrientationMatrix)
-	  .value("Quaternion", OrientationConverter<float>::Quaternion)
-	  .value("AxisAngle", OrientationConverter<float>::AxisAngle)
-	  .value("Rodrigues", OrientationConverter<float>::Rodrigues)
-	  .value("Homochoric", OrientationConverter<float>::Homochoric)
-	  .value("Cubochoric", OrientationConverter<float>::Cubochoric)
-	  .value("UnknownOrientationType", OrientationConverter<float>::UnknownOrientationType)
-	  .export_values();
-
-  /* Enumeration code for Crystal Structures */
-  py::enum_<EnsembleInfo::CrystalStructure>(mod, "CrystalStructure")
-	  .value("Hexagonal_High", EnsembleInfo::CrystalStructure::Hexagonal_High)
-	  .value("Cubic_High", EnsembleInfo::CrystalStructure::Cubic_High)
-	  .value("Hexagonal_Low", EnsembleInfo::CrystalStructure::Hexagonal_Low)
-	  .value("Cubic_Low", EnsembleInfo::CrystalStructure::Cubic_Low)
-	  .value("Triclinic", EnsembleInfo::CrystalStructure::Triclinic)
-	  .value("Monoclinic", EnsembleInfo::CrystalStructure::Monoclinic)
-	  .value("OrthoRhombic", EnsembleInfo::CrystalStructure::OrthoRhombic)
-	  .value("Tetragonal_Low", EnsembleInfo::CrystalStructure::Tetragonal_Low)
-	  .value("Tetragonal_High", EnsembleInfo::CrystalStructure::Tetragonal_High)
-	  .value("Trigonal_Low", EnsembleInfo::CrystalStructure::Trigonal_Low)
-	  .value("Trigonal_High", EnsembleInfo::CrystalStructure::Trigonal_High)
-	  .value("UnknownCrystalStructure", EnsembleInfo::CrystalStructure::UnknownCrystalStructure)
-	  .export_values();
-#endif
 
   /* Enumeration code for AngleUnits */
   py::enum_<ArrayCalculator::AngleUnits>(mod, "AngleUnits")
@@ -416,7 +491,7 @@ PYBIND11_MODULE(dream3d, m)
   
   //--------------------------------------------------------------------------
   // This header file is auto-generated and contains some C++ code to create
-  // a submole for each dream3d plugin
+  // a submodule for each dream3d plugin
   //--------------------------------------------------------------------------
   #include "DREAM3D_SubmoduleInit.hpp"
  
@@ -427,3 +502,4 @@ PYBIND11_MODULE(dream3d, m)
 /* =============================================================================
  * END Template file SIMPLModuleCodeTemplate.in.cpp
  * ========================================================================== */
+// clang-format on

@@ -15,8 +15,6 @@ elseif(TARGET SIMPLView)
 else()
   set(SIMPL_ANACONDA_OUTPUT_DIR "${SIMPLProj_BINARY_DIR}/Anaconda")
 endif()
-set_property(GLOBAL PROPERTY SIMPL_ANACONDA_OUTPUT_DIR "${SIMPL_ANACONDA_OUTPUT_DIR}")
-
 
 # --------------------------------------------------------------------------
 # macro to convert a file system path to compatible C++ strings, i.e., on
@@ -46,7 +44,12 @@ set(SIMPL_PYTHON_MODULE_SUFFIX "")
 set_property(GLOBAL PROPERTY SIMPL_PYTHON_MODULE_SUFFIX ${SIMPL_PYTHON_MODULE_SUFFIX})
 set(SIMPL_PYTHON_MODULE_NAME "dream3d")
 set(PYTHON_SITE_PACKAGES_NAME "site-packages")
-
+set_property(GLOBAL PROPERTY PYTHON_SITE_PACKAGES_NAME ${PYTHON_SITE_PACKAGES_NAME})
+set(TEST_SCRIPT_FILE_EXT "sh")
+if(WIN32)
+  set(TEST_SCRIPT_FILE_EXT "bat")
+endif()
+set_property(GLOBAL PROPERTY SIMPL_PYTHON_TEST_SCRIPT "${SIMPLPyBind11_SOURCE_DIR}/python_test_driver.${TEST_SCRIPT_FILE_EXT}")
 # --------------------------------------------------------------------------
 # Add an executable that will generate our python bindings
 add_executable(GeneratePythonBindings)
@@ -55,9 +58,14 @@ get_target_property(GeneratePythonBindings_RUNTIME_OUTPUT_DIR GeneratePythonBind
 get_filename_component(SIMPL_PYB11_PARENT_DIR  ${CMAKE_CURRENT_LIST_FILE} DIRECTORY)
 get_filename_component(SIMPL_PYB11_PARENT_DIR  ${SIMPL_PYB11_PARENT_DIR} DIRECTORY)
 
+ConvertPathToHeaderCompatible(${SIMPL_ANACONDA_OUTPUT_DIR})
 configure_file( ${SIMPLPyBind11_SOURCE_DIR}/CodeScraper/SIMPLPyBind11Config.h.in
                 ${SIMPLPyBind11_BINARY_DIR}/CodeScraper/SIMPLPyBind11Config.h
                 )
+file(TO_NATIVE_PATH "${SIMPL_ANACONDA_OUTPUT_DIR}" SIMPL_ANACONDA_OUTPUT_DIR)
+set_property(GLOBAL PROPERTY SIMPL_ANACONDA_OUTPUT_DIR "${SIMPL_ANACONDA_OUTPUT_DIR}")
+                
+
 
 target_sources(GeneratePythonBindings PRIVATE ${SIMPLPyBind11_BINARY_DIR}/CodeScraper/SIMPLPyBind11Config.h)
 
@@ -95,7 +103,60 @@ CreatePybind11Module(MODULE_NAME ${SIMPL_PYTHON_MODULE_NAME}
                     SIMPLIB
 )
 
+# --------------------------------------------------------------------------
+# Add each of the python scripts as a ctest unit test that should get run
+# during the normal CTest execution
+# --------------------------------------------------------------------------
+if(SIMPL_BUILD_TESTING)
 
+  if("${ANACONDA_DIR}" STREQUAL "")
+    set(ANACONDA_DIR "" CACHE STRING "")
+    message(FATAL_ERROR "Please set the ANACONDA_DIR variable either through the CMake-GUI or through the -DANACONDA_DIR=/path/to/Anaconda3")
+  endif()
+  if(NOT SIMPL_ENABLE_ANACONDA_PACKAGE)
+    message(FATAL_ERROR "Please SIMPL_ENABLE_ANACONDA_PACKAGE=ON in order for the Python unit tests to execute correctly.")
+  endif()
+
+  #------------------------------
+  # Initialize the PYTHON_TEST_INPUT_DIR variable to point to the "Testing Directory"
+  file(TO_NATIVE_PATH "${SIMPLProj_SOURCE_DIR}/Wrapping/Python/Testing" PYTHON_TEST_INPUT_DIR)
+
+  set(SIMPL_PYTHON_TESTS
+    AbstractFilterTest
+    AttributeMatrixTest
+    DataArrayTest
+    DataContainerArrayTest
+    DataContainerTest
+    GeometryTest
+    ImageReadTest
+    TestBindings
+
+    Create_Edge_Geometry
+    Create_Quad_Geometry
+    Create_RectilinearGrid
+    Create_Triangle_Geometry
+    Create_Vertex_Geometry
+    
+    "Array_Calculator_Test"
+    "Convert_Attribute_Array_Data_Type"
+    "Copy_Object_Test"
+    "Crop_Vertex_Geometry"
+    "Export_Triangle_Geometry"
+    "Import_Ascii_Data_Array"
+    "Import_Hdf5_Dataset"
+    "Remove_Component_From_Array"
+    "Rename_Attribute_Array"
+    "Split_Attribute_Array"
+  )
+
+  foreach(test ${SIMPL_PYTHON_TESTS})
+    set(SIMPL_PYTHON_TEST_DRIVER "${SIMPL_ANACONDA_OUTPUT_DIR}/UnitTest/SIMPL/${test}.${TEST_SCRIPT_FILE_EXT}")
+    configure_file(${SIMPLPyBind11_SOURCE_DIR}/python_test_driver.${TEST_SCRIPT_FILE_EXT}
+                  "${SIMPL_PYTHON_TEST_DRIVER}" @ONLY)
+    add_test(NAME PY_SIMPL_${test} COMMAND "${SIMPL_PYTHON_TEST_DRIVER}" )
+  endforeach(test ${SIMPL_PYTHON_TESTS})
+  
+endif()
 
 # --------------------------------------------------------------------------
 # Copy the recipe and egg info for the building Conda package to the 
@@ -110,8 +171,6 @@ if (SIMPL_ENABLE_ANACONDA_PACKAGE)
     message(FATAL_ERROR "Please set the ANACONDA_ENVIRONMENT_NAME variable either through the CMake-GUI or through the -DANACONDA_ENVIRONMENT_NAME=ANACONDA_ENV_NAME")
   endif()   
   
-  option(SIMPL_ENABLE_ANACONDA_LOCAL_INSTALL "Install the dream3d Conda package locally" OFF)
-
     
   set(ANACONDA_SCRIPTS_DIR_NAME "bin")
   if(WIN32)
@@ -173,4 +232,9 @@ if (SIMPL_ENABLE_ANACONDA_PACKAGE)
   #   add_custom_command(TARGET dream3d POST_BUILD COMMAND ${ANACONDA_DIR}/envs/${ANACONDA_ENVIRONMENT_NAME}/${ANACONDA_SCRIPTS_DIR_NAME}/conda install -y --use-local dream3d 
   #     COMMENT "Installing the dream3d Conda package")
   # endif()
+
+
+
 endif()
+
+

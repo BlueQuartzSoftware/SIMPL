@@ -2,9 +2,10 @@
 
 import time
 
-import dream3d
-
+from dream3d import simplpy
 from dream3d import simpl
+from dream3d import simpl_helpers as sc
+from dream3d import simpl_test_dirs as sd
 
 
 def BasicTest():
@@ -36,13 +37,14 @@ def BasicTest():
     b = filter.Enabled
     assert b is True
 
-    filter.ErrorCondition = -1000
-    e = filter.ErrorCondition
+    filter.setErrorCondition(-1000, "Foo")
+    e = filter.ErrorCode
     assert e == -1000
 
 """
 Main entry point for python script
 """
 if __name__ == "__main__":
+    print("AbstractFilter Test Starting")
     BasicTest()
     print("AbstractFilter Test Complete")

@@ -86,7 +86,6 @@
 herr_t testMakeStringDataset(hid_t file_id);
 herr_t testMakeStringAttribute(hid_t file_id);
 void QH5LiteTest();
-// MXADataModel::Pointer createModelTemplate();
 template <typename T> herr_t testWritePointer1DArrayAttribute(hid_t file_id, const QString& dsetName);
 
 class H5LiteTest
@@ -603,99 +602,6 @@ public:
     return err;
   }
 
-#if 0
-    // -----------------------------------------------------------------------------
-    //
-    // -----------------------------------------------------------------------------
-    template<typename T>
-    herr_t testMXAAttribute(hid_t file_id, const QString& dsetName)
-    {
-      T value = 0x0F;
-      herr_t err = -1;
-      QString attributeKey = QH5Lite::HDFTypeForPrimitiveAsStr(value);
-      DREAM3D_REQUIRE(attributeKey.isEmpty() == false);
-      attributeKey = "MXAAttribute<" + attributeKey + ">";
-      IMXAArray* array = MXAArrayTemplate<T>::New(10);
-      IMXAArray::Pointer arrayPtr (array);
-      T* p = static_cast<T*>(array->getVoidPointer(0));
-      for (int var = 0; var < 10; ++var)
-      {
-        p[var] = static_cast<T>(var + 65);
-      }
-      err = QH5Lite::writeMXAAttribute(file_id, dsetName, attributeKey, array);
-      DREAM3D_REQUIRE(err >= 0);
-
-      // Now Read the Attribute back into an MXAArray object and test against the previous for equality
-      IMXAArray* rArray = QH5Lite::readMXAAttribute(file_id, dsetName, attributeKey);
-      DREAM3D_REQUIRE (rArray != nullptr);
-      //hid_t t = rArray->getDataType();
-      IMXAArray::Pointer rArrayPtr(rArray); // Let boost clean up the pointer
-      T* r = static_cast<T*>(rArrayPtr->getVoidPointer(0));
-      //  for (int var = 0; var < 10; ++var) {
-      //    qDebug() << "p=" << p[var] << "  r=" << (r[var]) << "\n";
-      //  }
-      DREAM3D_REQUIRE( ::memcmp(r, p, sizeof(T) * 10) == 0);
-
-
-
-      AbstractH5Attribute::Pointer ptr = H5Attribute::ReadH5Attribute(file_id, dsetName, attributeKey);
-      DREAM3D_REQUIRE(ptr.get() != nullptr);
-      r = static_cast<T*>(ptr->getAttributeValue()->getVoidPointer(0));
-      DREAM3D_REQUIRE( ::memcmp(r, p, sizeof(T) * 10) == 0);
-
-      return err;
-    }
-
-
-    // -----------------------------------------------------------------------------
-    //
-    // -----------------------------------------------------------------------------
-    template<typename T>
-    herr_t testWriteMXAArray(hid_t file_id)
-    {
-      herr_t err = 1;
-      T value = 0x0F;
-
-      QString dsetName = QH5Lite::HDFTypeForPrimitiveAsStr<T>(value);
-      dsetName = "MXAArrayDataset<" + dsetName + ">";
-      qDebug() << "Running " << dsetName << " ... ";
-
-      IMXAArray* array = MXAArrayTemplate<T>::New(10);
-      IMXAArray::Pointer arrayPtr (array);
-      T* p = static_cast<T*>(array->getVoidPointer(0));
-      for (int var = 0; var < 10; ++var)
-      {
-        p[var] = static_cast<T>(var);
-      }
-      err = QH5Lite::writeMXAArray(file_id, dsetName, array);
-      DREAM3D_REQUIRE(err >= 0);
-
-      DREAM3D_REQUIRE ( testMXAAttribute<int8_t>(file_id, dsetName) >= 0 );
-      DREAM3D_REQUIRE ( testMXAAttribute<uint8_t>(file_id, dsetName) >= 0 );
-      DREAM3D_REQUIRE ( testMXAAttribute<int16_t>(file_id, dsetName) >= 0 );
-      DREAM3D_REQUIRE ( testMXAAttribute<uint16_t>(file_id, dsetName) >= 0 );
-      DREAM3D_REQUIRE ( testMXAAttribute<int32_t>(file_id, dsetName) >= 0 );
-      DREAM3D_REQUIRE ( testMXAAttribute<uint32_t>(file_id, dsetName) >= 0 );
-      DREAM3D_REQUIRE ( testMXAAttribute<int64_t>(file_id, dsetName) >= 0 );
-      DREAM3D_REQUIRE ( testMXAAttribute<uint64_t>(file_id, dsetName) >= 0 );
-      DREAM3D_REQUIRE ( testMXAAttribute<float32>(file_id, dsetName) >= 0 );
-      DREAM3D_REQUIRE ( testMXAAttribute<float64>(file_id, dsetName) >= 0 );
-
-      // Now Read the Attribute back into an MXAArray object and test against the previous for equality
-      IMXAArray* rArray = QH5Lite::readMXAArray(file_id, dsetName);
-      DREAM3D_REQUIRE (rArray != nullptr);
-      IMXAArray::Pointer rArrayPtr(rArray); // Let boost clean up the pointer
-      T* r = static_cast<T*>(rArrayPtr->getVoidPointer(0));
-      //  for (int var = 0; var < 10; ++var) {
-      //    qDebug() << "p=" << p[var] << "  r=" << (r[var]) << "\n";
-      //  }
-      DREAM3D_REQUIRE( ::memcmp(r, p, sizeof(T) * 10) == 0);
-
-      qDebug() << " Passed" << "\n";
-      return err;
-    }
-#endif
-
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
@@ -1121,18 +1027,7 @@ public:
 
     DREAM3D_REQUIRE(testWriteStringDatasetAndAttributes(file_id) >= 0);
 
-    //   DREAM3D_REQUIRE ( testWriteMXAArray<int8_t>(file_id) >= 0);
-    //   DREAM3D_REQUIRE ( testWriteMXAArray<uint8_t>(file_id) >= 0);
-    //   DREAM3D_REQUIRE ( testWriteMXAArray<int16_t>(file_id) >= 0);
-    //   DREAM3D_REQUIRE ( testWriteMXAArray<uint16_t>(file_id) >= 0);
-    //   DREAM3D_REQUIRE ( testWriteMXAArray<int32_t>(file_id) >= 0);
-    //   DREAM3D_REQUIRE ( testWriteMXAArray<uint32_t>(file_id) >= 0);
-    //   DREAM3D_REQUIRE ( testWriteMXAArray<int64_t>(file_id) >= 0);
-    //   DREAM3D_REQUIRE ( testWriteMXAArray<uint64_t>(file_id) >= 0);
-    //   DREAM3D_REQUIRE ( testWriteMXAArray<float32>(file_id) >= 0);
-    //   DREAM3D_REQUIRE ( testWriteMXAArray<float64>(file_id) >= 0);
-
-    //  // ******************* Test Reading Data *************************************
+    // ******************* Test Reading Data *************************************
     DREAM3D_REQUIRE(testReadPointer2DArrayDataset<int8_t>(file_id) >= 0);
     DREAM3D_REQUIRE(testReadPointer2DArrayDataset<uint8_t>(file_id) >= 0);
     DREAM3D_REQUIRE(testReadPointer2DArrayDataset<int16_t>(file_id) >= 0);

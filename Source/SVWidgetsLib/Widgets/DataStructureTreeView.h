@@ -1,5 +1,5 @@
 /* ============================================================================
- * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ * Copyright (c) 2009-2019 BlueQuartz Software, LLC
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -29,6 +29,7 @@
  * The code contained herein was partially funded by the followig contracts:
  *    United States Air Force Prime Contract FA8650-07-D-5800
  *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Air Force Prime Contract FA8650-15-D-5280
  *    United States Prime Contract Navy N00173-07-C-2068
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -54,6 +55,10 @@
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
+class QAbstractItemModel;
+class QStandardItemModel;
+class DataStructureProxyModel;
+
 class SVWidgetsLib_EXPORT DataStructureTreeView : public QTreeView
 {
   Q_OBJECT
@@ -71,11 +76,24 @@ public:
   ~DataStructureTreeView() override;
 
   /**
+   * @brief Returns the QStandardItemModel backing the tree view.
+   * @return
+   */
+  QStandardItemModel* getStandardModel();
+
+  /**
+   * @brief Returns the DataStructureProxyModel used for searching the tree view
+   * and accessing the QStandardItemModel.
+   * @return
+   */
+  DataStructureProxyModel* getProxyModel();
+
+  /**
    * @brief Returns the DataArrayPath for the given QModelIndex
    * @param index
    * @return
    */
-  DataArrayPath getDataArrayPath(QModelIndex index);
+  DataArrayPath getDataArrayPath(const QModelIndex& index);
 
   /**
    * @brief Updates the active filter for use in preventing created
@@ -107,6 +125,24 @@ public:
    * @param reqs
    */
   void clearViewRequirements();
+
+  /**
+   * @brief Returns a QVector of QModelIndex for all expanded children
+   * @param index
+   * @return
+   */
+  QVector<QModelIndex> getExpandedChildren(const QModelIndex& index);
+
+  /**
+   * @brief Collapses all items but the given index and its children.
+   * @param index
+   */
+  void collapseAllBut(const QModelIndex& index);
+
+  /**
+   * @brief Searches for items using the given name as part of their text.  All other items are hidden.
+   */
+  void search(const QString& name);
 
 signals:
   void filterPath(DataArrayPath path);
@@ -160,6 +196,20 @@ protected:
    * @brief End the drag process
    */
   void dragComplete();
+
+  /**
+   * @brief findExpandedChildren
+   * @param model
+   * @param index
+   * @param expandedVector
+   */
+  void findExpandedChildren(QAbstractItemModel* model, const QModelIndex& index, QVector<QModelIndex>& expandedVector);
+
+  /**
+   * @brief Create custom context menu
+   * @param event
+   */
+  void contextMenuEvent(QContextMenuEvent* event) Q_DECL_OVERRIDE;
 
 private slots:
   /**

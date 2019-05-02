@@ -274,8 +274,7 @@ void ScaleVolume::execute()
     DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
     ImageGeom::Pointer image = m->getGeometryAs<ImageGeom>();
 
-    FloatVec3Type spacing = {0.0f, 0.0f, 0.0f};
-    image->getSpacing(spacing);
+    FloatVec3Type spacing = image->getSpacing();
     spacing[0] *= m_ScaleFactor[0];
     spacing[1] *= m_ScaleFactor[1];
     spacing[2] *= m_ScaleFactor[2];

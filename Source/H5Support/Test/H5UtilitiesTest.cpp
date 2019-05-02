@@ -414,9 +414,6 @@ public:
     for(int i = 0; i < 100; ++i)
     {
       qDebug() << QDateTime::currentDateTime() << "Outer Loop: " << i;
-      //    err = H5Fclose(file_id);
-      //    DREAM3D_REQUIRE(err >= 0);
-      //    file_id = H5Fopen(MXAUnitTest::H5UtilTest::GroupTest.toStdString().c_str(), H5F_ACC_RDWR, H5P_DEFAULT);
       ::memset(path, 0, 64);
       snprintf(path, 64, "/%03d", i);
       grpId = QH5Utilities::createGroup(file_id, path);

@@ -71,6 +71,7 @@ class SIMPLib_EXPORT IGeometry : public Observable
 
   PYB11_ENUMERATION(Type)
   PYB11_ENUMERATION(VtkCellType)
+  PYB11_ENUMERATION(LengthUnit)
 
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
   PYB11_METHOD(Type getGeometryType)
@@ -196,6 +197,12 @@ class SIMPLib_EXPORT IGeometry : public Observable
      * @return
      */
     static QString LengthUnitToString(IGeometry::LengthUnit t);
+
+    /**
+     * @brief GetAllLengthUnitStrings Returns all the Length Units as a vector of strings. This would be suitable to display as a list to a user.
+     * @return
+     */
+    static QVector<QString> GetAllLengthUnitStrings();
 
     SIMPL_INSTANCE_PROPERTY(float, TimeValue)
     SIMPL_INSTANCE_PROPERTY(bool, EnableTimeSeries)

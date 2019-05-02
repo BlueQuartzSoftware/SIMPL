@@ -108,16 +108,14 @@ public:
     region.SetSize(size);
     importFilter->SetRegion(region);
 
-    FloatVec3Type sampleOrigin(0.0f, 0.0f, 0.0f);
-    m->getGeometryAs<ImageGeom>()->getOrigin(sampleOrigin);
+    FloatVec3Type sampleOrigin = m->getGeometryAs<ImageGeom>()->getOrigin();
     double origin[ImageProcessingConstants::ImageDimension];
     origin[0] = sampleOrigin[0]; // X coordinate
     origin[1] = sampleOrigin[1]; // Y coordinate
     origin[2] = sampleOrigin[2]; // Z coordinate
     importFilter->SetOrigin(origin);
 
-    FloatVec3Type voxelResolution(0.0f, 0.0f, 0.0f);
-    m->getGeometryAs<ImageGeom>()->getSpacing(voxelResolution);
+    FloatVec3Type voxelResolution = m->getGeometryAs<ImageGeom>()->getSpacing();
     double spacing[ImageProcessingConstants::ImageDimension];
     spacing[0] = voxelResolution[0]; // along X direction
     spacing[1] = voxelResolution[1]; // along Y direction
@@ -253,16 +251,14 @@ public:
     region.SetSize(size);
     importFilter->SetRegion(region);
 
-    FloatVec3Type sampleOrigin = {0.0f, 0.0f, 0.0f};
-    m->getGeometryAs<ImageGeom>()->getOrigin(sampleOrigin);
+    FloatVec3Type sampleOrigin = m->getGeometryAs<ImageGeom>()->getOrigin();
     double origin[ImageProcessingConstants::ImageDimension];
     origin[0] = sampleOrigin[0]; // X coordinate
     origin[1] = sampleOrigin[1]; // Y coordinate
     origin[2] = sampleOrigin[2]; // Z coordinate
     importFilter->SetOrigin(origin);
 
-    FloatVec3Type voxelResolution = {0.0f, 0.0f, 0.0f};
-    m->getGeometryAs<ImageGeom>()->getSpacing(voxelResolution);
+    FloatVec3Type voxelResolution = m->getGeometryAs<ImageGeom>()->getSpacing();
     double spacing[ImageProcessingConstants::ImageDimension];
     spacing[0] = voxelResolution[0]; // along X direction
     spacing[1] = voxelResolution[1]; // along Y direction
@@ -357,16 +353,14 @@ public:
     region.SetSize(size);
     importFilter->SetRegion(region);
 
-    FloatVec3Type sampleOrigin = {0.0f, 0.0f, 0.0f};
-    m->getGeometryAs<ImageGeom>()->getOrigin(sampleOrigin);
+    FloatVec3Type sampleOrigin = m->getGeometryAs<ImageGeom>()->getOrigin();
     double origin[ImageProcessingConstants::ImageDimension];
     origin[0] = sampleOrigin[0]; // X coordinate
     origin[1] = sampleOrigin[1]; // Y coordinate
     origin[2] = sampleOrigin[2]; // Z coordinate
     importFilter->SetOrigin(origin);
 
-    FloatVec3Type voxelResolution = {0.0f, 0.0f, 0.0f};
-    m->getGeometryAs<ImageGeom>()->getSpacing(voxelResolution);
+    FloatVec3Type voxelResolution = m->getGeometryAs<ImageGeom>()->getSpacing();
     double spacing[ImageProcessingConstants::ImageDimension];
     spacing[0] = voxelResolution[0]; // along X direction
     spacing[1] = voxelResolution[1]; // along Y direction

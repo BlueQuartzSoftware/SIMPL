@@ -74,7 +74,8 @@ void PyBind11Generator::readFilterList()
       m_FilterList << tLine;
     }
   }
-  qDebug() << "[PyBind11Generator] " << libName << ": Generating " << m_FilterList.size() << " Pybind11 Headers ";
+  QTextStream out(&m_DiagnosticMessage);
+  out << "Files To Consider: " << m_FilterList.size();
 }
 
 //-----------------------------------------------------------------------------
@@ -104,7 +105,7 @@ void PyBind11Generator::execute()
   {
     libName = QString("simpl");
   }
-  ss << SIMPL::PyBind11::RuntimeOutputDir << "/UnitTest/" << libName << "_UnitTest.py";
+  ss << SIMPL::PyBind11::RuntimeOutputDir << "/UnitTest/" << libName << "/" << libName << "_UnitTest.py";
   genHeaderPath = genHeaderPath.replace("/./", "/");
   m_ModuleCode.generatePythonTestFile(genHeaderPath, m_IsSIMPLib);
   
@@ -120,7 +121,11 @@ void PyBind11Generator::execute()
   m_ModuleCode.generatePythonicInterface(genHeaderPath, m_IsSIMPLib);
 
   generateModuleInitPy();
+  QTextStream out(&m_DiagnosticMessage);
+  out << "    Generated " << m_FileGenCount;
+  std::cout << "[PyBind11Generator] " << m_DiagnosticMessage.toStdString() << std::endl;
 }
+
 //-----------------------------------------------------------------------------
 void PyBind11Generator::generateModuleInitPy()
 {
@@ -198,7 +203,7 @@ void PyBind11Generator::copyPyInitFiles()
 
   QStringList filters;
   filters.append("*.py");
-  QFileInfoList dirList = currentDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
+  // QFileInfoList dirList = currentDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
 
   QFileInfoList itemList = currentDir.entryInfoList(filters);
 
@@ -228,19 +233,36 @@ void PyBind11Generator::copyPyInitFiles()
       QTextStream stream(&hOut);
       stream << contents;
       hOut.close();
-
     }
     else
     {
       QFile pyFile(pyFilePath);
-      pyFile.copy(outputPath + "/" + itemInfo.fileName());
+      QFileInfo outputFileInfo(outputPath + "/" + itemInfo.fileName());
+      if(outputFileInfo.exists())
+      {
+        std::cout << "[PyBind11Generator] Dest File Exists: " << outputFileInfo.absoluteFilePath().toStdString() << std::endl;
+        QFile outputFile(outputPath + "/" + itemInfo.fileName());
+        bool didDelete = outputFile.remove();
+        if(!didDelete)
+        {
+          qDebug() << "[PyBind11Generator] File was NOT removed: " << outputFileInfo.absoluteFilePath();
+        }
+      }
+      if(!pyFile.copy(outputFileInfo.absoluteFilePath()))
+      {
+        std::cout << "[PyBind11Generator] File '" << pyFilePath.toStdString() << "' could not be copied to '" << outputFileInfo.absoluteFilePath().toStdString() << "'" << std::endl;
+      }
+      else
+      {
+        qDebug() << "[PyBind11Generator] File Copied: " << outputFileInfo.absoluteFilePath();
+      }
     }
   }
 
 }
 
 //-----------------------------------------------------------------------------
-void PyBind11Generator::recursiveSearch(QDir currentDir)
+void PyBind11Generator::recursiveSearch(const QDir& currentDir)
 {
   if(currentDir.dirName().compare("zRel") == 0 || currentDir.dirName().compare("Build") == 0 || currentDir.dirName().compare("pybind11") == 0)
   {
@@ -253,7 +275,7 @@ void PyBind11Generator::recursiveSearch(QDir currentDir)
   {
     // Get a list of all the directories
     QFileInfoList dirList = currentDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
-    if(dirList.size() > 0)
+    if(!dirList.empty())
     {
       foreach(QFileInfo fi, dirList)
       {
@@ -287,7 +309,7 @@ void PyBind11Generator::generatePybind11Header(const QString& hFile)
   QString contents;
   QFileInfo fi(hFile);
 
-  if(fi.baseName().compare("SIMPLibSetGetMacros") == 0)
+  if(fi.baseName() == "SIMPLibSetGetMacros")
   {
     return;
   }
@@ -375,6 +397,11 @@ void PyBind11Generator::generatePybind11Header(const QString& hFile)
       line = line.trimmed();
       bindingClass.addProperty(line);
     }
+    else if(bindingClass.getNeedsWrapping() && line.contains(::kSIMPL_FILTER_PARAMETER))
+    {
+      line = line.trimmed();
+      bindingClass.addSimplFilterParam(line);
+    }
     else if(bindingClass.getNeedsWrapping() && line.contains(::kPYB11_METHOD))
     {
       line = line.trimmed();
@@ -391,22 +418,14 @@ void PyBind11Generator::generatePybind11Header(const QString& hFile)
       bindingClass.addConstructor(line);
     }
 
-    if(enumerations.size() != 0)
-    { 
-      bool foundEnumerationCode = false;
-      for(auto e : enumerations)
+    if(!enumerations.empty())
+    {
+      for(const auto& enum_ : enumerations)
       {
-        QString search = QString("enum class %1").arg(e);
+        QString search = QString("enum class %1").arg(enum_);
+
         if(tLine.contains(search))
         {
-          //qDebug() << "Found Enumeration Definition.... " << tLine;
-          enumerations.removeAll(e);
-          foundEnumerationCode = true;
-        }
-        
-        if(foundEnumerationCode)
-        {
-          //qDebug() << "Looking for opening brace... ";
           // Find where the opening brace is at.
           while(!tLine.contains("{"))
           {
@@ -416,23 +435,25 @@ void PyBind11Generator::generatePybind11Header(const QString& hFile)
           // Grab the first value. They MUST be one value per line.
           line = sourceLines.next();
           tLine = line.trimmed();
-          // qDebug() << "Finding enumeration values.....";
+
           // Grab lines until the closing brace
           QStringList values;
           while(!tLine.contains("};"))
           {
             QStringList tokens = tLine.split(" ");
             values << tokens[0];
-            // qDebug() << tokens[0];
             line = sourceLines.next();
             tLine = line.trimmed();
-          }  
-         // qDebug() << "... Complete";
-          bindingClass.addEnumeration(e, values);
+          }
+          bindingClass.addEnumeration(enum_, values);
+          enumerations.removeAll(enum_);
         }    
       }
     }
   }
 
-  bindingClass.writeBindingFile(genHeaderPath);
+  if(bindingClass.writeBindingFile(genHeaderPath))
+  {
+    m_FileGenCount++;
+  }
 }

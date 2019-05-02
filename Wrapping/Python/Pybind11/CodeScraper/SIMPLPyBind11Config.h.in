@@ -66,6 +66,8 @@ namespace SIMPL
       static const QString TestTempDirectory("@SIMPLProj_BINARY_DIR@/Testing/Temporary");
 
       static const QString DataDirectory("@DREAM3D_DATA_DIR@");
+
+      static const QString IsMSVC("@MSVC_IDE@");
   }
   
 }

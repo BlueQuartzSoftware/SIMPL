@@ -17,7 +17,7 @@ class PythonBindingClass : public QObject
 
 public:
   PythonBindingClass(PythonBindingsModule* moduleCode, const QString& isSIMPLib);
-  ~PythonBindingClass();
+  ~PythonBindingClass() override;
 
   SIMPL_INSTANCE_PROPERTY(QString, ClassName)
   SIMPL_INSTANCE_PROPERTY(QString, SuperClass)
@@ -30,6 +30,10 @@ public:
   SIMPL_INSTANCE_PROPERTY(bool, HasSuperClass)
   SIMPL_INSTANCE_PROPERTY(bool, IsSharedPointer)
   SIMPL_INSTANCE_PROPERTY(bool, HasStaticNewMacro)
+
+  SIMPL_INSTANCE_PROPERTY(QVector<QString>, SimplFilterParams)
+  void addSimplFilterParam(const QString& property);
+  void clearSimplFilterParams();
 
   SIMPL_INSTANCE_PROPERTY(QVector<QString>, Properties)
   void addProperty(const QString& property);
@@ -50,10 +54,9 @@ public:
   using EnumerationType = QMap<QString, QStringList>;
   SIMPL_INSTANCE_PROPERTY(EnumerationType, Enumerations)
   void addEnumeration(const QString& name, const QStringList& values);
-  void clearEnumerations(); 
-  
+  void clearEnumerations();
 
-  void writeBindingFile(const QString& outputFilePath);
+  bool writeBindingFile(const QString& outputFilePath);
 
   /**
   *@brief quote
@@ -68,7 +71,7 @@ public:
   *@param outLines
   *@param filename
   */
-  void writeOutput(bool didReplace, const QString& outLines, const QString& filename);
+  bool writeOutput(bool didReplace, const QString& outLines, const QString& filename);
 
 protected:
   PythonBindingClass() = delete;

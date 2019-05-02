@@ -175,7 +175,7 @@ class SIMPLib_EXPORT VTKFileReader : public FileReader
       return err;
     }
 
-    template<typename T>
+    template <typename T>
     int skipVolume(std::ifstream& inStream, int byteSize, size_t xDim, size_t yDim, size_t zDim)
     {
       int err = 0;

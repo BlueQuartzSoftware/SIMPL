@@ -214,12 +214,8 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
 // -----------------------------------------------------------------------------
 // Inherited from IGeometryGrid
 // -----------------------------------------------------------------------------
-    SIMPL::Tuple3SVec getDimensions() const override;
-    void getDimensions(SizeVec3Type& dims) const;
-
     void setDimensions(const SizeVec3Type& dims) override;
-    void setDimensions(SizeVec3Type& dims) override;
-    void setDimensions(const SIMPL::Tuple3SVec& dims) override;
+    SizeVec3Type getDimensions() const override;
 
     size_t getXPoints() override;
     size_t getYPoints() override;

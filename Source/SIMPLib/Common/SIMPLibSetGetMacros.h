@@ -258,27 +258,28 @@ public:     \
 #define SIMPL_GET_PROPERTY_DECL(type, prpty)\
   type get##prpty() const;
 
-#define SIMPL_INSTANCE_PROPERTY_DECL(type, prpty)\
-  private:\
-  type   m_##prpty = {};\
-  public:\
-  SIMPL_SET_PROPERTY_DECL(type, prpty)\
+#define SIMPL_INSTANCE_PROPERTY_DECL(type, prpty)                                                                                                                                                      \
+private:                                                                                                                                                                                               \
+  type m_##prpty = {};                                                                                                                                                                                 \
+                                                                                                                                                                                                       \
+public:                                                                                                                                                                                                \
+  SIMPL_SET_PROPERTY_DECL(type, prpty)                                                                                                                                                                 \
   SIMPL_GET_PROPERTY_DECL(type, prpty)
 
-#define SIMPL_INSTANCE_PROPERTY_DECL(type, prpty)\
-  private:\
-  type   m_##prpty = {};\
-  public:\
-  SIMPL_SET_PROPERTY_DECL(type, prpty)\
+#define SIMPL_INSTANCE_PROPERTY_DECL(type, prpty)                                                                                                                                                      \
+private:                                                                                                                                                                                               \
+  type m_##prpty = {};                                                                                                                                                                                 \
+                                                                                                                                                                                                       \
+public:                                                                                                                                                                                                \
+  SIMPL_SET_PROPERTY_DECL(type, prpty)                                                                                                                                                                 \
   SIMPL_GET_PROPERTY_DECL(type, prpty)
 
-#define SIMPL_VIRTUAL_INSTANCE_PROPERTY_DECL(type, prpty)\
-  private:\
-  type   m_##prpty = {};\
-  public:\
-  virtual SIMPL_SET_PROPERTY_DECL(type, prpty)\
-  virtual SIMPL_GET_PROPERTY_DECL(type, prpty)
-
+#define SIMPL_VIRTUAL_INSTANCE_PROPERTY_DECL(type, prpty)                                                                                                                                              \
+private:                                                                                                                                                                                               \
+  type m_##prpty = {};                                                                                                                                                                                 \
+                                                                                                                                                                                                       \
+public:                                                                                                                                                                                                \
+  virtual SIMPL_SET_PROPERTY_DECL(type, prpty) virtual SIMPL_GET_PROPERTY_DECL(type, prpty)
 
 #define SIMPL_SET_PROPERTY_DEF(class, type, prpty)\
   void class::set##prpty(const type& value) { this->m_##prpty = value; }
@@ -297,19 +298,19 @@ public:     \
 /**
 * @brief
 */
-#define SIMPL_VIRTUAL_INSTANCE_PROPERTY(type, prpty)\
-  private:\
-  type   m_##prpty = {};\
-  public:\
-  virtual SIMPL_SET_PROPERTY(type, prpty)\
-  virtual SIMPL_GET_PROPERTY(type, prpty)
+#define SIMPL_VIRTUAL_INSTANCE_PROPERTY(type, prpty)                                                                                                                                                   \
+private:                                                                                                                                                                                               \
+  type m_##prpty = {};                                                                                                                                                                                 \
+                                                                                                                                                                                                       \
+public:                                                                                                                                                                                                \
+  virtual SIMPL_SET_PROPERTY(type, prpty) virtual SIMPL_GET_PROPERTY(type, prpty)
 
-
-#define SIMPL_INSTANCE_PROPERTY(type, prpty)\
-  private:\
-  type   m_##prpty = {};\
-  public:\
-  SIMPL_SET_PROPERTY(type, prpty)\
+#define SIMPL_INSTANCE_PROPERTY(type, prpty)                                                                                                                                                           \
+private:                                                                                                                                                                                               \
+  type m_##prpty = {};                                                                                                                                                                                 \
+                                                                                                                                                                                                       \
+public:                                                                                                                                                                                                \
+  SIMPL_SET_PROPERTY(type, prpty)                                                                                                                                                                      \
   SIMPL_GET_PROPERTY(type, prpty)
 
 #define SIMPL_POINTER_PROPERTY(type, prpty)                                                                                                                                                            \
@@ -323,11 +324,11 @@ public:                                                                         
   }                                                                                                                                                                                                    \
   SIMPL_GET_PROPERTY(type*, prpty)
 
-#define SIMPL_PRIVATE_INSTANCE_PROPERTY(type, prpty)\
-  private:\
-  type   m_##prpty = {};\
-  SIMPL_SET_PROPERTY(type, prpty)\
-  public:\
+#define SIMPL_PRIVATE_INSTANCE_PROPERTY(type, prpty)                                                                                                                                                   \
+private:                                                                                                                                                                                               \
+  type m_##prpty = {};                                                                                                                                                                                 \
+  SIMPL_SET_PROPERTY(type, prpty)                                                                                                                                                                      \
+public:                                                                                                                                                                                                \
   SIMPL_GET_PROPERTY(type, prpty)
 
 /* *****************************************************************************
@@ -502,26 +503,27 @@ public:                                                                         
     return d->m_##prpty;\
   }
 
-#define SIMPL_PIMPL_SET_PROPERTY_DEF(Class, type, prpty)\
-  void Class::set##prpty(const type& value) {\
-    Q_D(Class);\
-    d->m_##prpty = value;\
-  }\
+#define SIMPL_PIMPL_SET_PROPERTY_DEF(Class, type, prpty)                                                                                                                                               \
+  void Class::set##prpty(const type& value)                                                                                                                                                            \
+  {                                                                                                                                                                                                    \
+    Q_D(Class);                                                                                                                                                                                        \
+    d->m_##prpty = value;                                                                                                                                                                              \
+  }
 
-
-#define SIMPL_OVERLOAD_PROPERTY(type, prpty, overload)\
-  private:\
-  type m_##prpty = {};\
-  public:\
-  SIMPL_SET_PROPERTY(overload, prpty)\
+#define SIMPL_OVERLOAD_PROPERTY(type, prpty, overload)                                                                                                                                                 \
+private:                                                                                                                                                                                               \
+  type m_##prpty = {};                                                                                                                                                                                 \
+                                                                                                                                                                                                       \
+public:                                                                                                                                                                                                \
+  SIMPL_SET_PROPERTY(overload, prpty)                                                                                                                                                                  \
   SIMPL_GET_PROPERTY(overload, prpty)
 
-#define SIMPL_BOOL_PROPERTY(prpty)\
-  private:\
-  bool m_##prpty = false;\
-  public:\
-  virtual SIMPL_SET_PROPERTY(bool, prpty)\
-  SIMPL_GET_BOOL_PROPERTY(prpty)\
+#define SIMPL_BOOL_PROPERTY(prpty)                                                                                                                                                                     \
+private:                                                                                                                                                                                               \
+  bool m_##prpty = false;                                                                                                                                                                              \
+                                                                                                                                                                                                       \
+public:                                                                                                                                                                                                \
+  virtual SIMPL_SET_PROPERTY(bool, prpty) SIMPL_GET_BOOL_PROPERTY(prpty)
 
 #define SIMPL_GET_BOOL_PROPERTY(prpty)\
   public:\

@@ -64,7 +64,7 @@ xcopy /i /q /y /s %BUILD_DIR%\Data %ANACONDA_PACKAGE_DIR%\%PYTHON_SITE_PACKAGES_
 xcopy /i /q /y /s %BUILD_DIR%\Help %ANACONDA_PACKAGE_DIR%\%PYTHON_SITE_PACKAGES_NAME%\%SIMPL_PYTHON_MODULE_NAME%\Help
 xcopy /i /q /y /s %BUILD_DIR%\PrebuiltPipelines %ANACONDA_PACKAGE_DIR%\%PYTHON_SITE_PACKAGES_NAME%\%SIMPL_PYTHON_MODULE_NAME%\PrebuiltPipelines
 
-@echo "Preparing to build the Conda %PYTHON_SITE_PACKAGES_NAME% of DREAM3D using Conda environment: %ANACONDA_ENVIRONMENT_NAME% and Conda installation: %ANACONDA_DIR%. Activating the environment..."
+@echo "Preparing to build the Conda package %PYTHON_SITE_PACKAGES_NAME% using Conda environment: %ANACONDA_ENVIRONMENT_NAME% and Conda installation: %ANACONDA_DIR%. Activating the environment..."
 call %ANACONDA_DIR%\%ANACONDA_SCRIPTS_DIR_NAME%\activate.bat %ANACONDA_ENVIRONMENT_NAME% 
 
 @echo "Ensuring conda-build is installed..."         
@@ -92,5 +92,5 @@ IF "@SIMPL_ENABLE_ANACONDA_LOCAL_INSTALL@" == "ON" (
 )
 
 echo "====================================================================="
-echo "       COMPELTED      "
+echo "       COMPLETED      "
 echo "====================================================================="

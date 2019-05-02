@@ -138,9 +138,9 @@ void CreateImageGeometry::dataCheck()
   }
 
   ImageGeom::Pointer image = ImageGeom::CreateGeometry("ImageGeometry");
-  image->setDimensions(std::make_tuple(m_Dimensions[0], m_Dimensions[1], m_Dimensions[2]));
-  image->setSpacing(std::make_tuple(m_Spacing[0], m_Spacing[1], m_Spacing[2]));
-  image->setOrigin(std::make_tuple(m_Origin[0], m_Origin[1], m_Origin[2]));
+  image->setDimensions(m_Dimensions.convertType<size_t>());
+  image->setSpacing(m_Spacing);
+  image->setOrigin(m_Origin);
   m->setGeometry(image);
 }
 

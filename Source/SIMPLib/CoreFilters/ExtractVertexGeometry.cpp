@@ -181,10 +181,10 @@ void ExtractVertexGeometry::dataCheck()
   {
     vertexDataContainer = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getVertexDataContainerName(), DataContainerID);
     IGeometryGrid::Pointer imageGeom = std::dynamic_pointer_cast<IGeometryGrid>(fromGeometry);
-    SIMPL::Tuple3SVec imageDims = imageGeom->getDimensions();
-    VertexGeom::Pointer vertexGeom = VertexGeom::CreateGeometry(static_cast<int64_t>(std::get<0>(imageDims) * std::get<1>(imageDims) * std::get<2>(imageDims)), "VertexGeometry", !getInPreflight());
+    SizeVec3Type imageDims = imageGeom->getDimensions();
+    VertexGeom::Pointer vertexGeom = VertexGeom::CreateGeometry(imageDims[0] * imageDims[1] * imageDims[2], "VertexGeometry", !getInPreflight());
     vertexDataContainer->setGeometry(vertexGeom);
-    elementCount = std::get<0>(imageDims) * std::get<1>(imageDims) * std::get<2>(imageDims);
+    elementCount = imageDims[0] * imageDims[1] * imageDims[2];
   }
   else
   {
@@ -277,12 +277,9 @@ void ExtractVertexGeometry::execute()
   IGeometryGrid::Pointer sourceGeometry = getDataContainerArray()->getDataContainer(getSelectedDataContainerName())->getGeometryAs<IGeometryGrid>();
 
   float coords[3] = {0.0f, 0.0f, 0.0f};
-  size_t xPoints = 0;
-  size_t yPoints = 0;
-  size_t zPoints = 0;
 
-  std::tie(xPoints, yPoints, zPoints) = sourceGeometry->getDimensions();
-  size_t cellCount = xPoints * yPoints * zPoints;
+  SizeVec3Type dims = sourceGeometry->getDimensions();
+  size_t cellCount = std::accumulate(dims.begin(), dims.end(), static_cast<size_t>(1), std::multiplies<size_t>());
 
   VertexGeom::Pointer vertexGeom = getDataContainerArray()->getDataContainer(getVertexDataContainerName())->getGeometryAs<VertexGeom>();
   SharedVertexList::Pointer vertices = vertexGeom->getVertices();
@@ -294,9 +291,6 @@ void ExtractVertexGeometry::execute()
     sourceGeometry->getCoords(idx, coords);
     vertices->setTuple(idx, coords);
   }
-
-  // The moving or copying of the Cell DataArrays was already handled in the dataCheck() method.
-
 }
 
 // -----------------------------------------------------------------------------
