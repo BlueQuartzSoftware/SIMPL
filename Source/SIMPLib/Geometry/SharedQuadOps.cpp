@@ -59,7 +59,7 @@ void GEOM_CLASS_NAME::setQuads(SharedQuadList::Pointer quads)
 {
   if(quads.get() != nullptr)
   {
-    if(quads->getName().compare(SIMPL::Geometry::SharedQuadList) != 0)
+    if(quads->getName() != SIMPL::Geometry::SharedQuadList)
     {
       quads->setName(SIMPL::Geometry::SharedQuadList);
     }

@@ -59,7 +59,7 @@ void GEOM_CLASS_NAME::setVertices(SharedVertexList::Pointer vertices)
 {
   if(vertices.get() != nullptr)
   {
-    if(vertices->getName().compare(SIMPL::Geometry::SharedVertexList) != 0)
+    if(vertices->getName() != SIMPL::Geometry::SharedVertexList)
     {
       vertices->setName(SIMPL::Geometry::SharedVertexList);
     }

@@ -59,7 +59,7 @@ void GEOM_CLASS_NAME::setTetrahedra(SharedTetList::Pointer tets)
 {
   if(tets.get() != nullptr)
   {
-    if(tets->getName().compare(SIMPL::Geometry::SharedTetList) != 0)
+    if(tets->getName() != SIMPL::Geometry::SharedTetList)
     {
       tets->setName(SIMPL::Geometry::SharedTetList);
     }

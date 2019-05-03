@@ -24,7 +24,7 @@ void GEOM_CLASS_NAME::setHexahedra(SharedHexList::Pointer hexas)
 {
   if(hexas.get() != nullptr)
   {
-    if(hexas->getName().compare(SIMPL::Geometry::SharedHexList) != 0)
+    if(hexas->getName() != SIMPL::Geometry::SharedHexList)
     {
       hexas->setName(SIMPL::Geometry::SharedHexList);
     }

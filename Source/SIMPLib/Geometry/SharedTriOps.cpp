@@ -59,7 +59,7 @@ void GEOM_CLASS_NAME::setTriangles(SharedTriList::Pointer triangles)
 {
   if(triangles.get() != nullptr)
   {
-    if(triangles->getName().compare(SIMPL::Geometry::SharedTriList) != 0)
+    if(triangles->getName() != SIMPL::Geometry::SharedTriList)
     {
       triangles->setName(SIMPL::Geometry::SharedTriList);
     }
