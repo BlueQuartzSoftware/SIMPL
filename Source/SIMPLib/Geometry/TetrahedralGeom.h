@@ -125,14 +125,14 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param triId
      * @param verts
      */
-    void setVertsAtTri(size_t triId, int64_t verts[3]);
+    void setVertsAtTri(size_t triId, size_t verts[3]);
 
     /**
      * @brief getVertsAtTri
      * @param triId
      * @param verts
      */
-    void getVertsAtTri(size_t triId, int64_t verts[3]);
+    void getVertsAtTri(size_t triId, size_t verts[3]);
 
     /**
      * @brief getVertCoordsAtTri
@@ -148,7 +148,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param i
      * @return
      */
-    int64_t* getTriPointer(size_t i);
+    size_t* getTriPointer(size_t i);
 
     /**
      * @brief getNumberOfTris
@@ -190,14 +190,14 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param tetId
      * @param verts
      */
-    void setVertsAtTet(size_t tetId, int64_t verts[4]);
+    void setVertsAtTet(size_t tetId, size_t verts[4]);
 
     /**
      * @brief getVertsAtTet
      * @param tetId
      * @param verts
      */
-    void getVertsAtTet(size_t tetId, int64_t verts[4]);
+    void getVertsAtTet(size_t tetId, size_t verts[4]);
 
     /**
      * @brief getVertCoordsAtTet
@@ -213,7 +213,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param i
      * @return
      */
-    int64_t* getTetPointer(size_t i);
+    size_t* getTetPointer(size_t i);
 
     /**
      * @brief getNumberOfTets
@@ -433,14 +433,14 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param edgeId
      * @param verts
      */
-    void setVertsAtEdge(size_t edgeId, int64_t verts[2]) override;
+    void setVertsAtEdge(size_t edgeId, size_t verts[2]) override;
 
     /**
      * @brief getVerts
      * @param edgeId
      * @param verts
      */
-    void getVertsAtEdge(size_t edgeId, int64_t verts[2]) override;
+    void getVertsAtEdge(size_t edgeId, size_t verts[2]) override;
 
     /**
      * @brief getVertCoordsAtEdge
@@ -455,7 +455,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param i
      * @return
      */
-    int64_t* getEdgePointer(size_t i) override;
+    size_t* getEdgePointer(size_t i) override;
 
     /**
      * @brief getNumberOfEdges

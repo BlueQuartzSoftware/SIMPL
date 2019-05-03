@@ -139,7 +139,7 @@ public:
       }
     }
 
-    Int64ArrayType::Pointer daTriList = Int64ArrayType::CreateArray(k_NumTriangles, k_Dims3, k_TriListDAName);
+    SharedTriList::Pointer daTriList = SharedTriList::CreateArray(k_NumTriangles, k_Dims3, k_TriListDAName);
     for (size_t i = 0; i < daTriList->getNumberOfTuples(); i++)
     {
       for (int j = 0; j < daTriList->getNumberOfComponents(); j++)

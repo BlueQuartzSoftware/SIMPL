@@ -43,9 +43,9 @@ SharedHexList::Pointer GEOM_CLASS_NAME::getHexahedra()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::setVertsAtHex(size_t hexId, int64_t verts[8])
+void GEOM_CLASS_NAME::setVertsAtHex(size_t hexId, size_t verts[8])
 {
-  int64_t* hex = m_HexList->getTuplePointer(hexId);
+  size_t* hex = m_HexList->getTuplePointer(hexId);
   hex[0] = verts[0];
   hex[1] = verts[1];
   hex[2] = verts[2];
@@ -59,9 +59,9 @@ void GEOM_CLASS_NAME::setVertsAtHex(size_t hexId, int64_t verts[8])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::getVertsAtHex(size_t hexId, int64_t verts[8])
+void GEOM_CLASS_NAME::getVertsAtHex(size_t hexId, size_t verts[8])
 {
-  int64_t* hex = m_HexList->getTuplePointer(hexId);
+  size_t* hex = m_HexList->getTuplePointer(hexId);
   verts[0] = hex[0];
   verts[1] = hex[1];
   verts[2] = hex[2];
@@ -77,7 +77,7 @@ void GEOM_CLASS_NAME::getVertsAtHex(size_t hexId, int64_t verts[8])
 // -----------------------------------------------------------------------------
 void GEOM_CLASS_NAME::getVertCoordsAtHex(size_t hexId, float vert1[3], float vert2[3], float vert3[3], float vert4[3], float vert5[3], float vert6[3], float vert7[3], float vert8[3])
 {
-  int64_t* hex = m_HexList->getTuplePointer(hexId);
+  size_t* hex = m_HexList->getTuplePointer(hexId);
   float* tmp1 = m_VertexList->getTuplePointer(hex[0]);
   float* tmp2 = m_VertexList->getTuplePointer(hex[1]);
   float* tmp3 = m_VertexList->getTuplePointer(hex[2]);
@@ -115,7 +115,7 @@ void GEOM_CLASS_NAME::getVertCoordsAtHex(size_t hexId, float vert1[3], float ver
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int64_t* GEOM_CLASS_NAME::getHexPointer(size_t i)
+size_t* GEOM_CLASS_NAME::getHexPointer(size_t i)
 {
   return m_HexList->getTuplePointer(i);
 }

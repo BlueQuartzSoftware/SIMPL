@@ -46,7 +46,7 @@ class SIMPLib_EXPORT QuadGeom : public IGeometry2D
   // clang-format off
   PYB11_CREATE_BINDINGS(QuadGeom SUPERCLASS IGeometry2D)
 
-  PYB11_CREATION(CreateGeometry ARGS OVERLOAD int64_t SharedVertexList::Pointer QString bool)
+  PYB11_CREATION(CreateGeometry ARGS OVERLOAD size_t SharedVertexList::Pointer QString bool)
   PYB11_CREATION(CreateGeometry ARGS OVERLOAD SharedQuadList::Pointer SharedVertexList::Pointer QString)
 
   PYB11_METHOD(void setVertices SharedVertexList::Pointer,vertices)
@@ -58,12 +58,12 @@ class SIMPLib_EXPORT QuadGeom : public IGeometry2D
   PYB11_METHOD(void setQuads SharedQuadList::Pointer,quads)
   PYB11_METHOD(SharedQuadList::Pointer getQuads)
 
-  PYB11_METHOD(void setCoords int64_t,vertId float,coords[3])
-  PYB11_METHOD(void getCoords int64_t,vertId float,coords[3])
+  PYB11_METHOD(void setCoords size_t,vertId float,coords[3])
+  PYB11_METHOD(void getCoords size_t,vertId float,coords[3])
 
-  PYB11_METHOD(int64_t getNumberOfVertices)
-  PYB11_METHOD(int64_t getNumberOfEdges)
-  PYB11_METHOD(int64_t getNumberOfQuads)
+  PYB11_METHOD(size_t getNumberOfVertices)
+  PYB11_METHOD(size_t getNumberOfEdges)
+  PYB11_METHOD(size_t getNumberOfQuads)
   PYB11_METHOD(size_t getNumberOfElements)
   // clang-format on
 
@@ -148,14 +148,14 @@ public:
    * @param quadId
    * @param verts
    */
-  void setVertsAtQuad(size_t quadId, int64_t verts[4]);
+  void setVertsAtQuad(size_t quadId, size_t verts[4]);
 
   /**
    * @brief getVertsAtQuad
    * @param quadId
    * @param verts
    */
-  void getVertsAtQuad(size_t quadId, int64_t verts[4]);
+  void getVertsAtQuad(size_t quadId, size_t verts[4]);
 
   /**
    * @brief getVertCoordsAtQuad
@@ -172,7 +172,7 @@ public:
    * @param i
    * @return
    */
-  int64_t* getQuadPointer(size_t i);
+  size_t* getQuadPointer(size_t i);
 
   /**
    * @brief getNumberOfQuads
@@ -392,14 +392,14 @@ public:
    * @param edgeId
    * @param verts
    */
-  void setVertsAtEdge(size_t edgeId, int64_t verts[2]) override;
+  void setVertsAtEdge(size_t edgeId, size_t verts[2]) override;
 
   /**
    * @brief getVerts
    * @param edgeId
    * @param verts
    */
-  void getVertsAtEdge(size_t edgeId, int64_t verts[2]) override;
+  void getVertsAtEdge(size_t edgeId, size_t verts[2]) override;
 
   /**
    * @brief getVertCoordsAtEdge
@@ -414,7 +414,7 @@ public:
    * @param i
    * @return
    */
-  int64_t* getEdgePointer(size_t i) override;
+  size_t* getEdgePointer(size_t i) override;
 
   /**
    * @brief getNumberOfEdges

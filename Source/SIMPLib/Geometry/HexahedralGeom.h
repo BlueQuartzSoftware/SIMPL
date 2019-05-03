@@ -91,14 +91,14 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param quadId
      * @param verts
      */
-    void setVertsAtQuad(size_t quadId, int64_t verts[4]);
+    void setVertsAtQuad(size_t quadId, size_t verts[4]);
 
     /**
      * @brief getVertsAtQuad
      * @param quadId
      * @param verts
      */
-    void getVertsAtQuad(size_t quadId, int64_t verts[4]);
+    void getVertsAtQuad(size_t quadId, size_t verts[4]);
 
     /**
      * @brief getVertCoordsAtQuad
@@ -115,7 +115,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param i
      * @return
      */
-    int64_t* getQuadPointer(size_t i);
+    size_t* getQuadPointer(size_t i);
 
     /**
      * @brief getNumberOfQuads
@@ -157,14 +157,14 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param hexId
      * @param verts
      */
-    void setVertsAtHex(size_t hexId, int64_t verts[7]);
+    void setVertsAtHex(size_t hexId, size_t verts[7]);
 
     /**
      * @brief getVertsAtHex
      * @param hexId
      * @param verts
      */
-    void getVertsAtHex(size_t hexId, int64_t verts[7]);
+    void getVertsAtHex(size_t hexId, size_t verts[7]);
 
     /**
      * @brief getVertCoordsAtHex
@@ -183,7 +183,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param i
      * @return
      */
-    int64_t* getHexPointer(size_t i);
+    size_t* getHexPointer(size_t i);
 
     /**
      * @brief getNumberOfHexas
@@ -403,14 +403,14 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param edgeId
      * @param verts
      */
-    void setVertsAtEdge(size_t edgeId, int64_t verts[2]) override;
+    void setVertsAtEdge(size_t edgeId, size_t verts[2]) override;
 
     /**
      * @brief getVerts
      * @param edgeId
      * @param verts
      */
-    void getVertsAtEdge(size_t edgeId, int64_t verts[2]) override;
+    void getVertsAtEdge(size_t edgeId, size_t verts[2]) override;
 
     /**
      * @brief getVertCoordsAtEdge
@@ -425,7 +425,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param i
      * @return
      */
-    int64_t* getEdgePointer(size_t i) override;
+    size_t* getEdgePointer(size_t i) override;
 
     /**
      * @brief getNumberOfEdges

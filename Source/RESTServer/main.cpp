@@ -142,7 +142,7 @@ int main(int argc, char* argv[])
   ServerSettings serverSettings(config);
 
   HttpSessionStore* sessionStore = HttpSessionStore::CreateInstance(&serverSettings, &app);
-
+  sessionStore = nullptr; // This is here to quiet the compiler about unused variable.
   // Configure static file controller
   SIMPLStaticFileController::CreateInstance(&serverSettings, &app);
 

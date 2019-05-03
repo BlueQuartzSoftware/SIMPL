@@ -209,7 +209,7 @@ template <typename DataType> void interpolateCellValues(IDataArray::Pointer inDa
     EdgeGeom::Pointer edgeGeom = m->getGeometryAs<EdgeGeom>();
     SharedVertexList::Pointer verts = edgeGeom->getVertices();
     outDataPtr->resizeTuples(edgeGeom->getNumberOfVertices());
-    GeometryHelpers::Generic::AverageCellArrayValues<int64_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
+    GeometryHelpers::Generic::AverageCellArrayValues<size_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
   case IGeometry::Type::Triangle:
@@ -217,7 +217,7 @@ template <typename DataType> void interpolateCellValues(IDataArray::Pointer inDa
     TriangleGeom::Pointer triGeom = m->getGeometryAs<TriangleGeom>();
     SharedVertexList::Pointer verts = triGeom->getVertices();
     outDataPtr->resizeTuples(triGeom->getNumberOfVertices());
-    GeometryHelpers::Generic::AverageCellArrayValues<int64_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
+    GeometryHelpers::Generic::AverageCellArrayValues<size_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
   case IGeometry::Type::Quad:
@@ -225,7 +225,7 @@ template <typename DataType> void interpolateCellValues(IDataArray::Pointer inDa
     QuadGeom::Pointer quadGeom = m->getGeometryAs<QuadGeom>();
     SharedVertexList::Pointer verts = quadGeom->getVertices();
     outDataPtr->resizeTuples(quadGeom->getNumberOfVertices());
-    GeometryHelpers::Generic::AverageCellArrayValues<int64_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
+    GeometryHelpers::Generic::AverageCellArrayValues<size_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
   case IGeometry::Type::Tetrahedral:
@@ -233,7 +233,7 @@ template <typename DataType> void interpolateCellValues(IDataArray::Pointer inDa
     TetrahedralGeom::Pointer tets = m->getGeometryAs<TetrahedralGeom>();
     SharedVertexList::Pointer verts = tets->getVertices();
     outDataPtr->resizeTuples(tets->getNumberOfVertices());
-    GeometryHelpers::Generic::AverageCellArrayValues<int64_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
+    GeometryHelpers::Generic::AverageCellArrayValues<size_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
   case IGeometry::Type::Hexahedral:
@@ -241,7 +241,7 @@ template <typename DataType> void interpolateCellValues(IDataArray::Pointer inDa
     HexahedralGeom::Pointer hexas = m->getGeometryAs<HexahedralGeom>();
     SharedVertexList::Pointer verts = hexas->getVertices();
     outDataPtr->resizeTuples(hexas->getNumberOfVertices());
-    GeometryHelpers::Generic::AverageCellArrayValues<int64_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
+    GeometryHelpers::Generic::AverageCellArrayValues<size_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
   default:

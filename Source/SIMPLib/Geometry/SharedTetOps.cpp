@@ -78,9 +78,9 @@ SharedTetList::Pointer GEOM_CLASS_NAME::getTetrahedra()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::setVertsAtTet(size_t tetId, int64_t verts[4])
+void GEOM_CLASS_NAME::setVertsAtTet(size_t tetId, size_t verts[4])
 {
-  int64_t* tet = m_TetList->getTuplePointer(tetId);
+  size_t* tet = m_TetList->getTuplePointer(tetId);
   tet[0] = verts[0];
   tet[1] = verts[1];
   tet[2] = verts[2];
@@ -90,9 +90,9 @@ void GEOM_CLASS_NAME::setVertsAtTet(size_t tetId, int64_t verts[4])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::getVertsAtTet(size_t tetId, int64_t verts[4])
+void GEOM_CLASS_NAME::getVertsAtTet(size_t tetId, size_t verts[4])
 {
-  int64_t* tet = m_TetList->getTuplePointer(tetId);
+  size_t* tet = m_TetList->getTuplePointer(tetId);
   verts[0] = tet[0];
   verts[1] = tet[1];
   verts[2] = tet[2];
@@ -104,7 +104,7 @@ void GEOM_CLASS_NAME::getVertsAtTet(size_t tetId, int64_t verts[4])
 // -----------------------------------------------------------------------------
 void GEOM_CLASS_NAME::getVertCoordsAtTet(size_t tetId, float vert1[3], float vert2[3], float vert3[3], float vert4[3])
 {
-  int64_t* tet = m_TetList->getTuplePointer(tetId);
+  size_t* tet = m_TetList->getTuplePointer(tetId);
   float* tmp1 = m_VertexList->getTuplePointer(tet[0]);
   float* tmp2 = m_VertexList->getTuplePointer(tet[1]);
   float* tmp3 = m_VertexList->getTuplePointer(tet[2]);
@@ -126,7 +126,7 @@ void GEOM_CLASS_NAME::getVertCoordsAtTet(size_t tetId, float vert1[3], float ver
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int64_t* GEOM_CLASS_NAME::getTetPointer(size_t i)
+size_t* GEOM_CLASS_NAME::getTetPointer(size_t i)
 {
   return m_TetList->getTuplePointer(i);
 }

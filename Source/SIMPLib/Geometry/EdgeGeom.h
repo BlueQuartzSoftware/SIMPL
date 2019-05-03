@@ -46,7 +46,7 @@ class SIMPLib_EXPORT EdgeGeom : public IGeometry
   // clang-format off
   PYB11_CREATE_BINDINGS(EdgeGeom SUPERCLASS IGeometry)
 
-  PYB11_CREATION(CreateGeometry ARGS int64_t SharedVertexList::Pointer QString bool)
+  PYB11_CREATION(CreateGeometry ARGS size_t SharedVertexList::Pointer QString bool)
   PYB11_CREATION(CreateGeometry ARGS SharedEdgeList::Pointer SharedVertexList::Pointer QString)
 
   PYB11_METHOD(void setVertices SharedVertexList::Pointer,vertices)
@@ -55,11 +55,11 @@ class SIMPLib_EXPORT EdgeGeom : public IGeometry
   PYB11_METHOD(void setEdges SharedEdgeList::Pointer,edges)
   PYB11_METHOD(SharedEdgeList::Pointer getEdges)
 
-  PYB11_METHOD(void setCoords int64_t,vertId float,coords[3])
-  PYB11_METHOD(void getCoords int64_t,vertId float,coords[3])
+  PYB11_METHOD(void setCoords size_t,vertId float,coords[3])
+  PYB11_METHOD(void getCoords size_t,vertId float,coords[3])
 
-  PYB11_METHOD(int64_t getNumberOfVertices)
-  PYB11_METHOD(int64_t getNumberOfEdges)
+  PYB11_METHOD(size_t getNumberOfVertices)
+  PYB11_METHOD(size_t getNumberOfEdges)
   PYB11_METHOD(size_t getNumberOfElements)
   // clang-format on
 
@@ -178,14 +178,14 @@ public:
    * @param edgeId
    * @param verts
    */
-  void setVertsAtEdge(size_t edgeId, int64_t verts[2]);
+  void setVertsAtEdge(size_t edgeId, size_t verts[2]);
 
   /**
    * @brief getVerts
    * @param edgeId
    * @param verts
    */
-  void getVertsAtEdge(size_t edgeId, int64_t verts[2]);
+  void getVertsAtEdge(size_t edgeId, size_t verts[2]);
 
   /**
    * @brief getVertCoordsAtEdge
@@ -200,7 +200,7 @@ public:
    * @param i
    * @return
    */
-  int64_t* getEdgePointer(size_t i);
+  size_t* getEdgePointer(size_t i);
 
   /**
    * @brief getNumberOfEdges

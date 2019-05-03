@@ -329,10 +329,10 @@ public:
 
     std::vector<std::vector<float>> vertices = {{1.0, 1.0, 0.0}, {3.0, 1.0, 0.0}};
 
-    std::vector<std::vector<int64_t>> elements = {{0, 1}};
+    std::vector<std::vector<MeshIndexType>> elements = {{0, 1}};
 
     DataArray<float>::Pointer daVert = createDataArray<float>("Vertices", vertices, m_Dims2, m_Dims3);
-    DataArray<int64_t>::Pointer daList = createDataArray<int64_t>("List", elements, m_Dims1, m_Dims2);
+    SharedEdgeList::Pointer daList = createDataArray<MeshIndexType>("List", elements, m_Dims1, m_Dims2);
 
     EdgeGeom::Pointer geom = EdgeGeom::CreateGeometry(daList, daVert, SIMPL::Geometry::EdgeGeometry);
 
@@ -378,13 +378,13 @@ public:
     DREAM3D_REQUIRE_EQUAL(elementNames.contains(k_ElementListDAName), true)
 
     FloatArrayType::Pointer originalVertices = geom->getVertices();
-    Int64ArrayType::Pointer originalConnectivity = geom->getEdges();
+    SharedEdgeList::Pointer originalConnectivity = geom->getEdges();
 
     FloatArrayType::Pointer newVertices = vertexAM->getAttributeArrayAs<FloatArrayType>(k_VerticesDAName);
-    Int64ArrayType::Pointer newConnectivity = elementAM->getAttributeArrayAs<Int64ArrayType>(k_ElementListDAName);
+    SharedEdgeList::Pointer newConnectivity = elementAM->getAttributeArrayAs<SharedEdgeList>(k_ElementListDAName);
 
     checkDataArray<float>(originalVertices, newVertices);
-    checkDataArray<int64_t>(originalConnectivity, newConnectivity);
+    checkDataArray<MeshIndexType>(originalConnectivity, newConnectivity);
   }
 
   // -----------------------------------------------------------------------------
@@ -417,10 +417,10 @@ public:
 
     std::vector<std::vector<float>> vertices = {{1.0, 1.0, 0.0}, {3.0, 1.0, 0.0}, {2.0, 3.0, 0.0}};
 
-    std::vector<std::vector<int64_t>> elements = {{0, 1, 2}};
+    std::vector<std::vector<MeshIndexType>> elements = {{0, 1, 2}};
 
     DataArray<float>::Pointer daVert = createDataArray<float>("Vertices", vertices, m_Dims3, m_Dims3);
-    DataArray<int64_t>::Pointer daList = createDataArray<int64_t>("List", elements, m_Dims1, m_Dims3);
+    SharedTriList::Pointer daList = createDataArray<MeshIndexType>("List", elements, m_Dims1, m_Dims3);
 
     TriangleGeom::Pointer geom = TriangleGeom::CreateGeometry(daList, daVert, SIMPL::Geometry::TriangleGeometry);
 
@@ -466,13 +466,13 @@ public:
     DREAM3D_REQUIRE_EQUAL(elementNames.contains(k_ElementListDAName), true)
 
     FloatArrayType::Pointer originalVertices = geom->getVertices();
-    Int64ArrayType::Pointer originalConnectivity = geom->getTriangles();
+    SharedTriList::Pointer originalConnectivity = geom->getTriangles();
 
     FloatArrayType::Pointer newVertices = vertexAM->getAttributeArrayAs<FloatArrayType>(k_VerticesDAName);
-    Int64ArrayType::Pointer newConnectivity = elementAM->getAttributeArrayAs<Int64ArrayType>(k_ElementListDAName);
+    SharedTriList::Pointer newConnectivity = elementAM->getAttributeArrayAs<SharedTriList>(k_ElementListDAName);
 
     checkDataArray<float>(originalVertices, newVertices);
-    checkDataArray<int64_t>(originalConnectivity, newConnectivity);
+    checkDataArray<MeshIndexType>(originalConnectivity, newConnectivity);
   }
 
   // -----------------------------------------------------------------------------
@@ -505,10 +505,10 @@ public:
 
     std::vector<std::vector<float>> vertices = {{1.0, 1.0, 0.0}, {3.0, 1.0, 0.0}, {2.0, 3.0, 0.0}, {2.0, 2.0, 0.0}};
 
-    std::vector<std::vector<int64_t>> elements = {{0, 1, 2, 3}};
+    std::vector<std::vector<MeshIndexType>> elements = {{0, 1, 2, 3}};
 
     DataArray<float>::Pointer daVert = createDataArray<float>("Vertices", vertices, m_Dims4, m_Dims3);
-    DataArray<int64_t>::Pointer daList = createDataArray<int64_t>("List", elements, m_Dims1, m_Dims4);
+    SharedQuadList::Pointer daList = createDataArray<MeshIndexType>("List", elements, m_Dims1, m_Dims4);
 
     QuadGeom::Pointer geom = QuadGeom::CreateGeometry(daList, daVert, SIMPL::Geometry::QuadGeometry);
 
@@ -554,13 +554,13 @@ public:
     DREAM3D_REQUIRE_EQUAL(elementNames.contains(k_ElementListDAName), true)
 
     FloatArrayType::Pointer originalVertices = geom->getVertices();
-    Int64ArrayType::Pointer originalConnectivity = geom->getQuads();
+    SharedQuadList::Pointer originalConnectivity = geom->getQuads();
 
     FloatArrayType::Pointer newVertices = vertexAM->getAttributeArrayAs<FloatArrayType>(k_VerticesDAName);
-    Int64ArrayType::Pointer newConnectivity = elementAM->getAttributeArrayAs<Int64ArrayType>(k_ElementListDAName);
+    SharedQuadList::Pointer newConnectivity = elementAM->getAttributeArrayAs<SharedQuadList>(k_ElementListDAName);
 
     checkDataArray<float>(originalVertices, newVertices);
-    checkDataArray<int64_t>(originalConnectivity, newConnectivity);
+    checkDataArray<MeshIndexType>(originalConnectivity, newConnectivity);
   }
 
   // -----------------------------------------------------------------------------
@@ -593,10 +593,10 @@ public:
 
     std::vector<std::vector<float>> vertices = {{1.0f, 1.0f, 1.55f}, {3.0f, 1.0f, 1.55f}, {2.0f, 3.0f, 1.55f}, {2.0f, 2.0f, 3.55f}};
 
-    std::vector<std::vector<int64_t>> elements = {{0, 1, 2, 3}};
+    std::vector<std::vector<MeshIndexType>> elements = {{0, 1, 2, 3}};
 
     DataArray<float>::Pointer daVert = createDataArray<float>("Vertices", vertices, m_Dims4, m_Dims3);
-    DataArray<int64_t>::Pointer daList = createDataArray<int64_t>("List", elements, m_Dims1, m_Dims4);
+    SharedTetList::Pointer daList = createDataArray<MeshIndexType>("List", elements, m_Dims1, m_Dims4);
 
     TetrahedralGeom::Pointer geom = TetrahedralGeom::CreateGeometry(daList, daVert, SIMPL::Geometry::TetrahedralGeometry);
 
@@ -642,13 +642,13 @@ public:
     DREAM3D_REQUIRE_EQUAL(elementNames.contains(k_ElementListDAName), true)
 
     FloatArrayType::Pointer originalVertices = geom->getVertices();
-    Int64ArrayType::Pointer originalConnectivity = geom->getTetrahedra();
+    SharedTetList::Pointer originalConnectivity = geom->getTetrahedra();
 
     FloatArrayType::Pointer newVertices = vertexAM->getAttributeArrayAs<FloatArrayType>(k_VerticesDAName);
-    Int64ArrayType::Pointer newConnectivity = elementAM->getAttributeArrayAs<Int64ArrayType>(k_ElementListDAName);
+    SharedTetList::Pointer newConnectivity = elementAM->getAttributeArrayAs<SharedTetList>(k_ElementListDAName);
 
     checkDataArray<float>(originalVertices, newVertices);
-    checkDataArray<int64_t>(originalConnectivity, newConnectivity);
+    checkDataArray<MeshIndexType>(originalConnectivity, newConnectivity);
   }
 
   // -----------------------------------------------------------------------------
@@ -681,10 +681,10 @@ public:
 
     std::vector<std::vector<float>> vertices = {{1.0f, 1.0f, 1.55f}, {3.0f, 1.0f, 1.55f}, {2.0f, 3.0f, 1.55f}, {2.0f, 2.0f, 3.55f}, {2.5f, 1.0f, 1.55f}, {4.3f, 1.0f, 1.55f}, {5.1f, 3.0f, 1.55f}, {7.63f, 2.0f, 3.55f}};
 
-    std::vector<std::vector<int64_t>> elements = {{0, 1, 2, 3, 4, 5, 6, 7}};
+    std::vector<std::vector<MeshIndexType>> elements = {{0, 1, 2, 3, 4, 5, 6, 7}};
 
     DataArray<float>::Pointer daVert = createDataArray<float>("Vertices", vertices, m_Dims8, m_Dims3);
-    DataArray<int64_t>::Pointer daList = createDataArray<int64_t>("List", elements, m_Dims1, m_Dims8);
+    SharedHexList::Pointer daList = createDataArray<MeshIndexType>("List", elements, m_Dims1, m_Dims8);
 
     HexahedralGeom::Pointer geom = HexahedralGeom::CreateGeometry(daList, daVert, SIMPL::Geometry::HexahedralGeometry);
 
@@ -730,13 +730,13 @@ public:
     DREAM3D_REQUIRE_EQUAL(elementNames.contains(k_ElementListDAName), true)
 
     FloatArrayType::Pointer originalVertices = geom->getVertices();
-    Int64ArrayType::Pointer originalConnectivity = geom->getHexahedra();
+    SharedHexList::Pointer originalConnectivity = geom->getHexahedra();
 
     FloatArrayType::Pointer newVertices = vertexAM->getAttributeArrayAs<FloatArrayType>(k_VerticesDAName);
-    Int64ArrayType::Pointer newConnectivity = elementAM->getAttributeArrayAs<Int64ArrayType>(k_ElementListDAName);
+    SharedHexList::Pointer newConnectivity = elementAM->getAttributeArrayAs<SharedHexList>(k_ElementListDAName);
 
     checkDataArray<float>(originalVertices, newVertices);
-    checkDataArray<int64_t>(originalConnectivity, newConnectivity);
+    checkDataArray<MeshIndexType>(originalConnectivity, newConnectivity);
   }
 
   // -----------------------------------------------------------------------------

@@ -123,14 +123,14 @@ class SIMPLib_EXPORT IGeometry2D : public IGeometry
      * @param edgeId
      * @param verts
      */
-    virtual void setVertsAtEdge(size_t edgeId, int64_t verts[2]) = 0;
+    virtual void setVertsAtEdge(size_t edgeId, size_t verts[2]) = 0;
 
     /**
      * @brief getVerts
      * @param edgeId
      * @param verts
      */
-    virtual void getVertsAtEdge(size_t edgeId, int64_t verts[2]) = 0;
+    virtual void getVertsAtEdge(size_t edgeId, size_t verts[2]) = 0;
 
     /**
      * @brief getVertCoordsAtEdge
@@ -145,7 +145,7 @@ class SIMPLib_EXPORT IGeometry2D : public IGeometry
      * @param i
      * @return
      */
-    virtual int64_t* getEdgePointer(size_t i) = 0;
+    virtual size_t* getEdgePointer(size_t i) = 0;
 
     /**
      * @brief getNumberOfEdges
