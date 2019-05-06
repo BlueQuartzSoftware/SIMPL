@@ -404,7 +404,7 @@ public:
 
         SharedQuadList::Pointer oldQuads = oldQuadGeom->getQuads();
         SharedQuadList::Pointer newQuads = newQuadGeom->getQuads();
-        checkDataArray<int64_t>(oldQuads, newQuads, false);
+        checkDataArray<MeshIndexType>(oldQuads, newQuads, false);
 
         FloatArrayType::Pointer oldVertices = oldQuadGeom->getVertices();
         FloatArrayType::Pointer newVertices = newQuadGeom->getVertices();

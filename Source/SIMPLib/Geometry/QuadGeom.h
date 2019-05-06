@@ -81,7 +81,7 @@ public:
    * @param name
    * @return
    */
-  static Pointer CreateGeometry(size_t numQuads, SharedVertexList::Pointer vertices, const QString& name, bool allocate = true);
+  static Pointer CreateGeometry(size_t numQuads, const SharedVertexList::Pointer& vertices, const QString& name, bool allocate = true);
 
   /**
    * @brief CreateGeometry
@@ -90,7 +90,7 @@ public:
    * @param name
    * @return
    */
-  static Pointer CreateGeometry(SharedQuadList::Pointer quads, SharedVertexList::Pointer vertices, const QString& name);
+  static Pointer CreateGeometry(const SharedQuadList::Pointer& quads, const SharedVertexList::Pointer& vertices, const QString& name);
 
   // -----------------------------------------------------------------------------
   // Inherited from SharedVertexOps

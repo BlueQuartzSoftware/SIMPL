@@ -65,7 +65,7 @@
 class FindQuadDerivativesImpl
 {
 public:
-  FindQuadDerivativesImpl(QuadGeom* quads, DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivs)
+  FindQuadDerivativesImpl(QuadGeom* quads, const DoubleArrayType::Pointer& field, const DoubleArrayType::Pointer& derivs)
   : m_Quads(quads)
   , m_Field(field)
   , m_Derivatives(derivs)
@@ -150,7 +150,7 @@ QuadGeom::~QuadGeom() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QuadGeom::Pointer QuadGeom::CreateGeometry(size_t numQuads, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
+QuadGeom::Pointer QuadGeom::CreateGeometry(size_t numQuads, const SharedVertexList::Pointer& vertices, const QString& name, bool allocate)
 {
   if(name.isEmpty())
   {
@@ -168,7 +168,7 @@ QuadGeom::Pointer QuadGeom::CreateGeometry(size_t numQuads, SharedVertexList::Po
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QuadGeom::Pointer QuadGeom::CreateGeometry(SharedQuadList::Pointer quads, SharedVertexList::Pointer vertices, const QString& name)
+QuadGeom::Pointer QuadGeom::CreateGeometry(const SharedQuadList::Pointer& quads, const SharedVertexList::Pointer& vertices, const QString& name)
 {
   if(name.isEmpty())
   {
@@ -669,10 +669,10 @@ QString QuadGeom::getInfoString(SIMPL::InfoStringFormat format)
   if(format == SIMPL::HtmlFormat)
   {
     ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Geometry Info</th></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type</th><td>" << TypeToString(getGeometryType()) << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Type</th><td>)" << TypeToString(getGeometryType()) << "</td></tr>";
     ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Units</th><td>)" << LengthUnitToString(getUnits()) << "</td></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Quads</th><td>" << getNumberOfQuads() << "</td></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Vertices</th><td>" << getNumberOfVertices() << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Number of Quads</th><td>)" << getNumberOfQuads() << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Number of Vertices</th><td>)" << getNumberOfVertices() << "</td></tr>";
     ss << "</tbody></table>";
   }
   else
@@ -688,19 +688,39 @@ int QuadGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 {
   herr_t err = 0;
   SharedVertexList::Pointer vertices = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedVertexList>(SIMPL::Geometry::SharedVertexList, parentId, preflight, err);
-  SharedQuadList::Pointer quads = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedQuadList>(SIMPL::Geometry::SharedQuadList, parentId, preflight, err);
+  // The cast from the method is going to fail so create a temp DataArray<uint64_t>
+  DataArray<uint64_t>::Pointer tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<DataArray<uint64_t>>(SIMPL::Geometry::SharedQuadList, parentId, preflight, err);
+  // Now create the correct type and pass in the pointer to tempTris.
+  SharedQuadList::Pointer quads =
+      SharedTriList::WrapPointer(reinterpret_cast<size_t*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
+  // Release the ownership of the memory from TempTris and essentially pass it to tris.
+  tempUInt64->releaseOwnership();
   if(quads.get() == nullptr || vertices.get() == nullptr)
   {
     return -1;
   }
   size_t numQuads = quads->getNumberOfTuples();
   size_t numVerts = vertices->getNumberOfTuples();
-  SharedEdgeList::Pointer edges = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedEdgeList>(SIMPL::Geometry::SharedEdgeList, parentId, preflight, err);
+
+  // The cast from the method is going to fail so create a temp DataArray<uint64_t>
+  tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<DataArray<uint64_t>>(SIMPL::Geometry::SharedEdgeList, parentId, preflight, err);
+  // Now create the correct type and pass in the pointer to tempTris.
+  SharedEdgeList::Pointer edges =
+      SharedEdgeList::WrapPointer(reinterpret_cast<size_t*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
+  // Release the ownership of the memory from TempTris and essentially pass it to tris.
+  tempUInt64->releaseOwnership();
   if(err < 0 && err != -2)
   {
     return -1;
   }
-  SharedEdgeList::Pointer bEdges = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedEdgeList>(SIMPL::Geometry::UnsharedEdgeList, parentId, preflight, err);
+
+  // The cast from the method is going to fail so create a temp DataArray<uint64_t>
+  tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<DataArray<uint64_t>>(SIMPL::Geometry::UnsharedEdgeList, parentId, preflight, err);
+  // Now create the correct type and pass in the pointer to tempTris.
+  SharedEdgeList::Pointer bEdges =
+      SharedEdgeList::WrapPointer(reinterpret_cast<size_t*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
+  // Release the ownership of the memory from TempTris and essentially pass it to tris.
+  tempUInt64->releaseOwnership();
   if(err < 0 && err != -2)
   {
     return -1;
@@ -715,12 +735,13 @@ int QuadGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   {
     return -1;
   }
-  ElementDynamicList::Pointer quadNeighbors = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, size_t>(SIMPL::StringConstants::QuadNeighbors, parentId, numQuads, preflight, err);
+  ElementDynamicList::Pointer quadNeighbors = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, MeshIndexType>(SIMPL::StringConstants::QuadNeighbors, parentId, numQuads, preflight, err);
   if(err < 0 && err != -2)
   {
     return -1;
   }
-  ElementDynamicList::Pointer quadsContainingVert = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, size_t>(SIMPL::StringConstants::QuadsContainingVert, parentId, numVerts, preflight, err);
+  ElementDynamicList::Pointer quadsContainingVert =
+      GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, MeshIndexType>(SIMPL::StringConstants::QuadsContainingVert, parentId, numVerts, preflight, err);
   if(err < 0 && err != -2)
   {
     return -1;

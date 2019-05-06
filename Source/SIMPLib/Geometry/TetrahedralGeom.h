@@ -58,7 +58,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param name
      * @return
      */
-    static Pointer CreateGeometry(size_t numTets, SharedVertexList::Pointer vertices, const QString& name, bool allocate = true);
+    static Pointer CreateGeometry(size_t numTets, const SharedVertexList::Pointer& vertices, const QString& name, bool allocate = true);
 
     /**
      * @brief CreateGeometry
@@ -67,11 +67,11 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param name
      * @return
      */
-    static Pointer CreateGeometry(SharedTetList::Pointer tets, SharedVertexList::Pointer vertices, const QString& name);
+    static Pointer CreateGeometry(const SharedTetList::Pointer& tets, const SharedVertexList::Pointer& vertices, const QString& name);
 
-// -----------------------------------------------------------------------------
-// Inherited from SharedVertexOps
-// -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
+    // Inherited from SharedVertexOps
+    // -----------------------------------------------------------------------------
 
     /**
      * @brief CreateSharedVertexList

@@ -28,7 +28,7 @@
 class FindHexDerivativesImpl
 {
 public:
-  FindHexDerivativesImpl(HexahedralGeom* hexas, DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivs)
+  FindHexDerivativesImpl(HexahedralGeom* hexas, const DoubleArrayType::Pointer& field, const DoubleArrayType::Pointer& derivs)
   : m_Hexas(hexas)
   , m_Field(field)
   , m_Derivatives(derivs)
@@ -116,7 +116,7 @@ HexahedralGeom::~HexahedralGeom() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-HexahedralGeom::Pointer HexahedralGeom::CreateGeometry(size_t numHexas, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
+HexahedralGeom::Pointer HexahedralGeom::CreateGeometry(size_t numHexas, const SharedVertexList::Pointer& vertices, const QString& name, bool allocate)
 {
   if(name.isEmpty())
   {
@@ -134,7 +134,7 @@ HexahedralGeom::Pointer HexahedralGeom::CreateGeometry(size_t numHexas, SharedVe
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-HexahedralGeom::Pointer HexahedralGeom::CreateGeometry(SharedHexList::Pointer hexas, SharedVertexList::Pointer vertices, const QString& name)
+HexahedralGeom::Pointer HexahedralGeom::CreateGeometry(const SharedHexList::Pointer& hexas, const SharedVertexList::Pointer& vertices, const QString& name)
 {
   if(name.isEmpty())
   {
@@ -745,10 +745,10 @@ QString HexahedralGeom::getInfoString(SIMPL::InfoStringFormat format)
   if(format == SIMPL::HtmlFormat)
   {
     ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Geometry Info</th></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type</th><td>" << TypeToString(getGeometryType()) << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Type</th><td>)" << TypeToString(getGeometryType()) << "</td></tr>";
     ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Units</th><td>)" << LengthUnitToString(getUnits()) << "</td></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Hexahedra</th><td>" << getNumberOfHexas() << "</td></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Vertices</th><td>" << getNumberOfVertices() << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Number of Hexahedra</th><td>)" << getNumberOfHexas() << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Number of Vertices</th><td>)" << getNumberOfVertices() << "</td></tr>";
   }
   else
   {
@@ -763,29 +763,60 @@ int HexahedralGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 {
   herr_t err = 0;
   SharedVertexList::Pointer vertices = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedVertexList>(SIMPL::Geometry::SharedVertexList, parentId, preflight, err);
-  SharedHexList::Pointer hexas = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedHexList>(SIMPL::Geometry::SharedHexList, parentId, preflight, err);
+  // The cast from the method is going to fail so create a temp DataArray<uint64_t>
+  DataArray<uint64_t>::Pointer tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<DataArray<uint64_t>>(SIMPL::Geometry::SharedHexList, parentId, preflight, err);
+  // Now create the correct type and pass in the pointer to tempTris.
+  SharedHexList::Pointer hexas =
+      SharedHexList::WrapPointer(reinterpret_cast<size_t*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
+  // Release the ownership of the memory from TempTris and essentially pass it to tris.
+  tempUInt64->releaseOwnership();
   if(hexas.get() == nullptr || vertices.get() == nullptr)
   {
     return -1;
   }
   size_t numHexas = hexas->getNumberOfTuples();
   size_t numVerts = vertices->getNumberOfTuples();
-  SharedQuadList::Pointer quads = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedQuadList>(SIMPL::Geometry::SharedQuadList, parentId, preflight, err);
+  // The cast from the method is going to fail so create a temp DataArray<uint64_t>
+  tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<DataArray<uint64_t>>(SIMPL::Geometry::SharedQuadList, parentId, preflight, err);
+  // Now create the correct type and pass in the pointer to tempTris.
+  SharedQuadList::Pointer quads =
+      SharedQuadList::WrapPointer(reinterpret_cast<size_t*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
+  // Release the ownership of the memory from TempTris and essentially pass it to tris.
+  tempUInt64->releaseOwnership();
   if(err < 0 && err != -2)
   {
     return -1;
   }
-  SharedQuadList::Pointer bQuads = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedQuadList>(SIMPL::Geometry::UnsharedFaceList, parentId, preflight, err);
+  // The cast from the method is going to fail so create a temp DataArray<uint64_t>
+  tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<DataArray<uint64_t>>(SIMPL::Geometry::UnsharedFaceList, parentId, preflight, err);
+  // Now create the correct type and pass in the pointer to tempTris.
+  SharedQuadList::Pointer bQuads =
+      SharedQuadList::WrapPointer(reinterpret_cast<size_t*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
+  // Release the ownership of the memory from TempTris and essentially pass it to tris.
+  tempUInt64->releaseOwnership();
   if(err < 0 && err != -2)
   {
     return -1;
   }
-  SharedEdgeList::Pointer edges = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedEdgeList>(SIMPL::Geometry::SharedEdgeList, parentId, preflight, err);
+  // The cast from the method is going to fail so create a temp DataArray<uint64_t>
+  tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<DataArray<uint64_t>>(SIMPL::Geometry::SharedEdgeList, parentId, preflight, err);
+  // Now create the correct type and pass in the pointer to tempTris.
+  SharedEdgeList::Pointer edges =
+      SharedEdgeList::WrapPointer(reinterpret_cast<size_t*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
+  // Release the ownership of the memory from TempTris and essentially pass it to tris.
+  tempUInt64->releaseOwnership();
   if(err < 0 && err != -2)
   {
     return -1;
   }
-  SharedEdgeList::Pointer bEdges = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedEdgeList>(SIMPL::Geometry::UnsharedEdgeList, parentId, preflight, err);
+
+  // The cast from the method is going to fail so create a temp DataArray<uint64_t>
+  tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<DataArray<uint64_t>>(SIMPL::Geometry::UnsharedEdgeList, parentId, preflight, err);
+  // Now create the correct type and pass in the pointer to tempTris.
+  SharedEdgeList::Pointer bEdges =
+      SharedEdgeList::WrapPointer(reinterpret_cast<size_t*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
+  // Release the ownership of the memory from TempTris and essentially pass it to tris.
+  tempUInt64->releaseOwnership();
   if(err < 0 && err != -2)
   {
     return -1;
@@ -800,12 +831,13 @@ int HexahedralGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   {
     return -1;
   }
-  ElementDynamicList::Pointer hexNeighbors = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, size_t>(SIMPL::StringConstants::HexNeighbors, parentId, numHexas, preflight, err);
+  ElementDynamicList::Pointer hexNeighbors = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, MeshIndexType>(SIMPL::StringConstants::HexNeighbors, parentId, numHexas, preflight, err);
   if(err < 0 && err != -2)
   {
     return -1;
   }
-  ElementDynamicList::Pointer hexasContainingVert = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, size_t>(SIMPL::StringConstants::HexasContainingVert, parentId, numVerts, preflight, err);
+  ElementDynamicList::Pointer hexasContainingVert =
+      GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, MeshIndexType>(SIMPL::StringConstants::HexasContainingVert, parentId, numVerts, preflight, err);
   if(err < 0 && err != -2)
   {
     return -1;

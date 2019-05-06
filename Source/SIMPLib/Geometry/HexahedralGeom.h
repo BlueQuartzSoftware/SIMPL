@@ -24,7 +24,7 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param name
      * @return
      */
-    static Pointer CreateGeometry(size_t numHexas, SharedVertexList::Pointer vertices, const QString& name, bool allocate = true);
+    static Pointer CreateGeometry(size_t numHexas, const SharedVertexList::Pointer& vertices, const QString& name, bool allocate = true);
 
     /**
      * @brief CreateGeometry
@@ -33,11 +33,11 @@ class SIMPLib_EXPORT HexahedralGeom : public IGeometry3D
      * @param name
      * @return
      */
-    static Pointer CreateGeometry(SharedHexList::Pointer hexas, SharedVertexList::Pointer vertices, const QString& name);
+    static Pointer CreateGeometry(const SharedHexList::Pointer& hexas, const SharedVertexList::Pointer& vertices, const QString& name);
 
-// -----------------------------------------------------------------------------
-// Inherited from SharedVertexOps
-// -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
+    // Inherited from SharedVertexOps
+    // -----------------------------------------------------------------------------
 
     /**
      * @brief CreateSharedVertexList

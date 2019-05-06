@@ -76,7 +76,7 @@ public:
    * @param name
    * @return
    */
-  static Pointer CreateGeometry(size_t numTriangles, SharedVertexList::Pointer vertices, const QString& name, bool allocate = true);
+  static Pointer CreateGeometry(size_t numTriangles, const SharedVertexList::Pointer& vertices, const QString& name, bool allocate = true);
 
   /**
    * @brief CreateGeometry
@@ -85,7 +85,7 @@ public:
    * @param name
    * @return
    */
-  static Pointer CreateGeometry(SharedTriList::Pointer triangles, SharedVertexList::Pointer vertices, const QString& name);
+  static Pointer CreateGeometry(const SharedTriList::Pointer& triangles, const SharedVertexList::Pointer& vertices, const QString& name);
 
   // -----------------------------------------------------------------------------
   // Inherited from SharedVertexOps

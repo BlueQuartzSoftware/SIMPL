@@ -84,7 +84,7 @@ VertexGeom::Pointer VertexGeom::CreateGeometry(size_t numVertices, const QString
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-VertexGeom::Pointer VertexGeom::CreateGeometry(SharedVertexList::Pointer vertices, const QString& name)
+VertexGeom::Pointer VertexGeom::CreateGeometry(const SharedVertexList::Pointer& vertices, const QString& name)
 {
   if(name.isEmpty())
   {

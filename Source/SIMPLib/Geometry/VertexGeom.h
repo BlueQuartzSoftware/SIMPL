@@ -84,7 +84,7 @@ public:
    * @param name
    * @return
    */
-  static Pointer CreateGeometry(SharedVertexList::Pointer vertices, const QString& name);
+  static Pointer CreateGeometry(const SharedVertexList::Pointer& vertices, const QString& name);
 
   // -----------------------------------------------------------------------------
   // Inherited from SharedVertexOps

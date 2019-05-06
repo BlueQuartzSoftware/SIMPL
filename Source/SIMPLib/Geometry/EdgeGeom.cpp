@@ -63,7 +63,7 @@
 class FindEdgeDerivativesImpl
 {
 public:
-  FindEdgeDerivativesImpl(EdgeGeom* edges, DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivs)
+  FindEdgeDerivativesImpl(EdgeGeom* edges, const DoubleArrayType::Pointer& field, const DoubleArrayType::Pointer& derivs)
   : m_Edges(edges)
   , m_Field(field)
   , m_Derivatives(derivs)
@@ -584,10 +584,10 @@ QString EdgeGeom::getInfoString(SIMPL::InfoStringFormat format)
   if(format == SIMPL::HtmlFormat)
   {
     ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Geometry Info</th></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type</th><td>" << TypeToString(getGeometryType()) << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Type</th><td>)" << TypeToString(getGeometryType()) << "</td></tr>";
     ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Units</th><td>)" << LengthUnitToString(getUnits()) << "</td></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Edges</th><td>" << getNumberOfEdges() << "</td></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Vertices</th><td>" << getNumberOfVertices() << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Number of Edges</th><td>)" << getNumberOfEdges() << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Number of Vertices</th><td>)" << getNumberOfVertices() << "</td></tr>";
     ss << "</tbody></table>";
   }
   else
@@ -603,7 +603,13 @@ int EdgeGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 {
   herr_t err = 0;
   SharedVertexList::Pointer vertices = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedVertexList>(SIMPL::Geometry::SharedVertexList, parentId, preflight, err);
-  SharedEdgeList::Pointer edges = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedEdgeList>(SIMPL::Geometry::SharedEdgeList, parentId, preflight, err);
+  // The cast from the method is going to fail so create a temp DataArray<uint64_t>
+  DataArray<uint64_t>::Pointer tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<DataArray<uint64_t>>(SIMPL::Geometry::SharedEdgeList, parentId, preflight, err);
+  // Now create the correct type and pass in the pointer to tempTris.
+  SharedEdgeList::Pointer edges =
+      SharedEdgeList::WrapPointer(reinterpret_cast<size_t*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
+  // Release the ownership of the memory from TempTris and essentially pass it to tris.
+  tempUInt64->releaseOwnership();
   if(edges.get() == nullptr || vertices.get() == nullptr)
   {
     return -1;
@@ -620,12 +626,13 @@ int EdgeGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   {
     return -1;
   }
-  ElementDynamicList::Pointer edgeNeighbors = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, size_t>(SIMPL::StringConstants::EdgeNeighbors, parentId, numEdges, preflight, err);
+  ElementDynamicList::Pointer edgeNeighbors = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, MeshIndexType>(SIMPL::StringConstants::EdgeNeighbors, parentId, numEdges, preflight, err);
   if(err < 0 && err != -2)
   {
     return -1;
   }
-  ElementDynamicList::Pointer edgesContainingVert = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, size_t>(SIMPL::StringConstants::EdgesContainingVert, parentId, numVerts, preflight, err);
+  ElementDynamicList::Pointer edgesContainingVert =
+      GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, MeshIndexType>(SIMPL::StringConstants::EdgesContainingVert, parentId, numVerts, preflight, err);
   if(err < 0 && err != -2)
   {
     return -1;
