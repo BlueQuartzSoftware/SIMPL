@@ -873,11 +873,11 @@ DataContainerArray::Pointer FilterPipeline::execute(DataContainerArray::Pointer 
 
         notifyProgressMessage(100, "");
 
-        emit filt->filterCompleted(filt.get());
-        emit pipelineFinished();
         disconnectSignalsSlots();
         m_State = FilterPipeline::State::Idle;
         m_ExecutionResult = FilterPipeline::ExecutionResult::Failed;
+        emit filt->filterCompleted(filt.get());
+        emit pipelineFinished();
         return m_Dca;
       }
     }
