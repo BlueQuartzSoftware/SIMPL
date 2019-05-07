@@ -66,14 +66,14 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DerivativeHelpers::EdgeDeriv::operator()(EdgeGeom* edges, int64_t edgeId, double values[2], double derivs[3])
+void DerivativeHelpers::EdgeDeriv::operator()(EdgeGeom* edges, size_t edgeId, double values[2], double derivs[3])
 {
   float vert0_f[3] = {0.0f, 0.0f, 0.0f};
   float vert1_f[3] = {0.0f, 0.0f, 0.0f};
   double vert0[3] = {0.0, 0.0, 0.0};
   double vert1[3] = {0.0, 0.0, 0.0};
   double delta[3] = {0.0, 0.0, 0.0};
-  int64_t verts[2] = {0, 0};
+  size_t verts[2] = {0, 0};
 
   edges->getVertsAtEdge(edgeId, verts);
   edges->getCoords(verts[0], vert0_f);
@@ -103,7 +103,7 @@ void DerivativeHelpers::EdgeDeriv::operator()(EdgeGeom* edges, int64_t edgeId, d
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DerivativeHelpers::TriangleDeriv::operator()(TriangleGeom* triangles, int64_t triId, double values[3], double derivs[3])
+void DerivativeHelpers::TriangleDeriv::operator()(TriangleGeom* triangles, size_t triId, double values[3], double derivs[3])
 {
   float vert0_f[3] = {0.0f, 0.0f, 0.0f};
   float vert1_f[3] = {0.0f, 0.0f, 0.0f};
@@ -124,7 +124,7 @@ void DerivativeHelpers::TriangleDeriv::operator()(TriangleGeom* triangles, int64
   double sum[2] = {0.0, 0.0};
   double dBydx = 0.0;
   double dBydy = 0.0;
-  int64_t verts[3] = {0, 0, 0};
+  size_t verts[3] = {0, 0, 0};
 
   triangles->getVertsAtTri(triId, verts);
   triangles->getCoords(verts[0], vert0_f);
@@ -206,7 +206,7 @@ void DerivativeHelpers::TriangleDeriv::operator()(TriangleGeom* triangles, int64
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DerivativeHelpers::QuadDeriv::operator()(QuadGeom* quads, int64_t quadId, double values[4], double derivs[3])
+void DerivativeHelpers::QuadDeriv::operator()(QuadGeom* quads, size_t quadId, double values[4], double derivs[3])
 {
   float vert0_f[3] = {0.0f, 0.0f, 0.0f};
   float vert1_f[3] = {0.0f, 0.0f, 0.0f};
@@ -232,7 +232,7 @@ void DerivativeHelpers::QuadDeriv::operator()(QuadGeom* quads, int64_t quadId, d
   double sum[2] = {0.0, 0.0};
   double dBydx = 0.0;
   double dBydy = 0.0;
-  int64_t verts[4] = {0, 0, 0, 0};
+  size_t verts[4] = {0, 0, 0, 0};
 
   quads->getVertsAtQuad(quadId, verts);
   quads->getCoords(verts[0], vert0_f);
@@ -336,10 +336,10 @@ void DerivativeHelpers::QuadDeriv::operator()(QuadGeom* quads, int64_t quadId, d
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DerivativeHelpers::TetDeriv::operator()(TetrahedralGeom* tets, int64_t tetId, double values[4], double derivs[3])
+void DerivativeHelpers::TetDeriv::operator()(TetrahedralGeom* tets, size_t tetId, double values[4], double derivs[3])
 {
   double shapeFunctions[12] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-  int64_t verts[4] = {0, 0, 0, 0};
+  size_t verts[4] = {0, 0, 0, 0};
   double sum[3] = {0.0, 0.0, 0.0};
 
   tets->getShapeFunctions(nullptr, shapeFunctions);
@@ -397,11 +397,11 @@ void DerivativeHelpers::TetDeriv::operator()(TetrahedralGeom* tets, int64_t tetI
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DerivativeHelpers::HexDeriv::operator()(HexahedralGeom* hexas, int64_t hexId, double values[8], double derivs[3])
+void DerivativeHelpers::HexDeriv::operator()(HexahedralGeom* hexas, size_t hexId, double values[8], double derivs[3])
 {
   double shapeFunctions[24] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-  int64_t verts[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+  size_t verts[8] = {0, 0, 0, 0, 0, 0, 0, 0};
   double sum[3] = {0.0, 0.0, 0.0};
   double pCoords[3] = {0.0, 0.0, 0.0};
 

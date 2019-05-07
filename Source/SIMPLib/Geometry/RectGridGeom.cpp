@@ -1068,11 +1068,11 @@ int RectGridGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileNam
 
   out << "  <!-- *************** START OF " << dcName << " *************** -->"
       << "\n";
-  out << "  <Grid Name=\"" << dcName << "\" GridType=\"Uniform\">"
+  out << "  <Grid Name=\"" << dcName << R"(" GridType="Uniform">)"
       << "\n";
   if(getEnableTimeSeries())
   {
-    out << "    <Time TimeType=\"Single\" Value=\"" << getTimeValue() << "\"/>\n";
+    out << R"(    <Time TimeType="Single" Value=")" << getTimeValue() << "\"/>\n";
   }
   out << "    <Topology TopologyType=\"3DRectMesh\" Dimensions=\"" << volDims[2] + 1 << " " << volDims[1] + 1 << " " << volDims[0] + 1 << " \"></Topology>"
       << "\n";
@@ -1112,10 +1112,10 @@ QString RectGridGeom::getInfoString(SIMPL::InfoStringFormat format)
   if(format == SIMPL::HtmlFormat)
   {
     ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Geometry Info</th></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type</th><td>" << TypeToString(getGeometryType()) << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Type</th><td>)" << TypeToString(getGeometryType()) << "</td></tr>";
     ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Units</th><td>)" << LengthUnitToString(getUnits()) << "</td></tr>";
     ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Dimensions:</th><td>" << volDims[0] << " x " << volDims[1] << " x " << volDims[2] << "</td></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Spacing:</th><td>"
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Spacing:</th><td>)"
        << "Variable"
        << "</td></tr>";
   }

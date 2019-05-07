@@ -67,7 +67,7 @@ VertexGeom::~VertexGeom() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-VertexGeom::Pointer VertexGeom::CreateGeometry(int64_t numVertices, const QString& name, bool allocate)
+VertexGeom::Pointer VertexGeom::CreateGeometry(size_t numVertices, const QString& name, bool allocate)
 {
   if(name.isEmpty())
   {
@@ -84,7 +84,7 @@ VertexGeom::Pointer VertexGeom::CreateGeometry(int64_t numVertices, const QStrin
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-VertexGeom::Pointer VertexGeom::CreateGeometry(SharedVertexList::Pointer vertices, const QString& name)
+VertexGeom::Pointer VertexGeom::CreateGeometry(const SharedVertexList::Pointer& vertices, const QString& name)
 {
   if(name.isEmpty())
   {
@@ -317,8 +317,8 @@ int VertexGeom::writeGeometryToHDF5(hid_t parentId, bool writeXdmf)
     if(writeXdmf)
     {
       QVector<size_t> cDims(1, 1);
-      DataArray<int64_t>::Pointer vertsPtr = DataArray<int64_t>::CreateArray(getNumberOfVertices(), cDims, SIMPL::StringConstants::VertsName);
-      int64_t* verts = vertsPtr->getPointer(0);
+      DataArray<size_t>::Pointer vertsPtr = DataArray<size_t>::CreateArray(getNumberOfVertices(), cDims, SIMPL::StringConstants::VertsName);
+      size_t* verts = vertsPtr->getPointer(0);
       for(size_t i = 0; i < vertsPtr->getNumberOfTuples(); i++)
       {
         verts[i] = i;

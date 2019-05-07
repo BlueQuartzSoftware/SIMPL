@@ -228,10 +228,10 @@ public:
     float* verts3 = vertices3->getPointer(0);
     float* verts4 = vertices4->getPointer(0);
     float* verts5 = vertices5->getPointer(0);
-    int64_t* edge = edges->getEdgePointer(0);
-    int64_t* tri = tris->getTriPointer(0);
-    int64_t* quad = quads->getQuadPointer(0);
-    int64_t* tet = tets->getTetPointer(0);
+    MeshIndexType* edge = edges->getEdgePointer(0);
+    MeshIndexType* tri = tris->getTriPointer(0);
+    MeshIndexType* quad = quads->getQuadPointer(0);
+    MeshIndexType* tet = tets->getTetPointer(0);
 
     for(size_t i = 0; i < 3; i++) // first vertex at (0,0,0)
     {

@@ -110,11 +110,12 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void checkDataArray(std::shared_ptr<DataArray<T>> originalData, std::shared_ptr<DataArray<T>> newData)
+  template <typename T>
+  void checkDataArray(std::shared_ptr<DataArray<T>> originalData, std::shared_ptr<DataArray<T>> newData)
   {
     DREAM3D_REQUIRE_EQUAL(originalData->getSize(), newData->getSize())
 
-    for(int i = 0; i < originalData->getSize(); i++)
+    for(size_t i = 0; i < originalData->getSize(); i++)
     {
       T* valueOld = originalData->getPointer(i);
       T* valueNew = newData->getPointer(i);
@@ -255,7 +256,7 @@ public:
   //
   // -----------------------------------------------------------------------------
   void testCase(AbstractFilter::Pointer createGeometry, DataContainer::Pointer dc, AttributeMatrix::Pointer am, IGeometry::Type geomType, FloatArrayType::Pointer daVertices,
-                Int64ArrayType::Pointer daElements, bool treatWarningsAsErrors, bool arrayHandling)
+                MeshIndexArrayType::Pointer daElements, bool treatWarningsAsErrors, bool arrayHandling)
   {
     int geomChoice = 2;
 
@@ -263,11 +264,13 @@ public:
     {
       return;
     }
-    else if(geomType == IGeometry::Type::RectGrid)
+
+    if(geomType == IGeometry::Type::RectGrid)
     {
       return;
     }
-    else if(geomType == IGeometry::Type::Vertex)
+
+    if(geomType == IGeometry::Type::Vertex)
     {
       geomChoice = 2;
     }
@@ -323,7 +326,7 @@ public:
       DREAM3D_REQUIRE_EQUAL(correctGeom, true)
 
       FloatArrayType::Pointer vert = FloatArrayType::NullPointer();
-      Int64ArrayType::Pointer elements = Int64ArrayType::NullPointer();
+      MeshIndexArrayType::Pointer elements = MeshIndexArrayType::NullPointer();
 
       if(geomType == IGeometry::Type::Vertex)
       {
@@ -336,46 +339,46 @@ public:
       {
         EdgeGeom::Pointer edgeGeom = dc->getGeometryAs<EdgeGeom>();
         FloatArrayType::Pointer vert = edgeGeom->getVertices();
-        Int64ArrayType::Pointer edges = edgeGeom->getEdges();
+        SharedEdgeList::Pointer edges = edgeGeom->getEdges();
 
         checkDataArray<float>(vert, daVertices);
-        checkDataArray<int64_t>(edges, daElements);
+        checkDataArray<MeshIndexType>(edges, daElements);
       }
       else if(geomType == IGeometry::Type::Triangle)
       {
         TriangleGeom::Pointer triGeom = dc->getGeometryAs<TriangleGeom>();
         FloatArrayType::Pointer vert = triGeom->getVertices();
-        Int64ArrayType::Pointer triangles = triGeom->getTriangles();
+        SharedTriList::Pointer triangles = triGeom->getTriangles();
 
         checkDataArray<float>(vert, daVertices);
-        checkDataArray<int64_t>(triangles, daElements);
+        checkDataArray<MeshIndexType>(triangles, daElements);
       }
       else if(geomType == IGeometry::Type::Quad)
       {
         QuadGeom::Pointer quadGeom = dc->getGeometryAs<QuadGeom>();
         FloatArrayType::Pointer vert = quadGeom->getVertices();
-        Int64ArrayType::Pointer quads = quadGeom->getQuads();
+        SharedQuadList::Pointer quads = quadGeom->getQuads();
 
         checkDataArray<float>(vert, daVertices);
-        checkDataArray<int64_t>(quads, daElements);
+        checkDataArray<MeshIndexType>(quads, daElements);
       }
       else if(geomType == IGeometry::Type::Tetrahedral)
       {
         TetrahedralGeom::Pointer tetraGeom = dc->getGeometryAs<TetrahedralGeom>();
         FloatArrayType::Pointer vert = tetraGeom->getVertices();
-        Int64ArrayType::Pointer tetrahedra = tetraGeom->getTetrahedra();
+        SharedTetList::Pointer tetrahedra = tetraGeom->getTetrahedra();
 
         checkDataArray<float>(vert, daVertices);
-        checkDataArray<int64_t>(tetrahedra, daElements);
+        checkDataArray<MeshIndexType>(tetrahedra, daElements);
       }
       else if(geomType == IGeometry::Type::Hexahedral)
       {
         HexahedralGeom::Pointer hexaGeom = dc->getGeometryAs<HexahedralGeom>();
         FloatArrayType::Pointer vert = hexaGeom->getVertices();
-        Int64ArrayType::Pointer hexahedra = hexaGeom->getHexahedra();
+        SharedHexList::Pointer hexahedra = hexaGeom->getHexahedra();
 
         checkDataArray<float>(vert, daVertices);
-        checkDataArray<int64_t>(hexahedra, daElements);
+        checkDataArray<MeshIndexType>(hexahedra, daElements);
       }
 
       if(arrayHandling)
@@ -719,7 +722,7 @@ public:
 
     // Vertex test cases
 
-    testCase(createGeometry, dc, vertexAM, IGeometry::Type::Vertex, daVert, Int64ArrayType::NullPointer(), false, false);
+    testCase(createGeometry, dc, vertexAM, IGeometry::Type::Vertex, daVert, MeshIndexArrayType::NullPointer(), false, false);
   }
 
   // -----------------------------------------------------------------------------
@@ -756,10 +759,10 @@ public:
     // Create Edge Data Arrays
 
     std::vector<std::vector<float>> vertices = {{1.0f, 1.0f, 0.0f}, {3.0f, 1.0f, 0.0f}};
-    std::vector<std::vector<int64_t>> elements = {{0, 1}};
+    std::vector<std::vector<MeshIndexType>> elements = {{0, 1}};
 
     DataArray<float>::Pointer daEdgeVert = createDataArray<float>(k_EdgeVertexListDAName, vertices, m_Dims2, m_Dims3);
-    DataArray<int64_t>::Pointer daEdgeList = createDataArray<int64_t>(k_EdgeListDAName, elements, m_Dims1, m_Dims2);
+    SharedEdgeList::Pointer daEdgeList = createDataArray<MeshIndexType>(k_EdgeListDAName, elements, m_Dims1, m_Dims2);
     edgeVertexAM->insertOrAssign(daEdgeVert);
     edgeElementAM->insertOrAssign(daEdgeList);
 
@@ -767,7 +770,7 @@ public:
 
     elements = {{0, 2}};
 
-    DataArray<int64_t>::Pointer daBadEdgeList = createDataArray<int64_t>(k_BadEdgeListDAName, elements, m_Dims1, m_Dims2);
+    SharedEdgeList::Pointer daBadEdgeList = createDataArray<MeshIndexType>(k_BadEdgeListDAName, elements, m_Dims1, m_Dims2);
     edgeElementAM->insertOrAssign(daBadEdgeList);
 
     // Create Filter
@@ -872,10 +875,10 @@ public:
     // Create Triangle Data Arrays
 
     std::vector<std::vector<float>> vertices = {{1.0, 1.0, 0.0}, {3.0, 1.0, 0.0}, {2.0, 3.0, 0.0}};
-    std::vector<std::vector<int64_t>> elements = {{0, 1, 2}};
+    std::vector<std::vector<MeshIndexType>> elements = {{0, 1, 2}};
 
     DataArray<float>::Pointer daTriVert = createDataArray<float>(k_TriVertexListDAName, vertices, m_Dims3, m_Dims3);
-    DataArray<int64_t>::Pointer daTriList = createDataArray<int64_t>(k_TriListDAName, elements, m_Dims1, m_Dims3);
+    SharedTriList::Pointer daTriList = createDataArray<MeshIndexType>(k_TriListDAName, elements, m_Dims1, m_Dims3);
     triVertexAM->insertOrAssign(daTriVert);
     triElementAM->insertOrAssign(daTriList);
 
@@ -883,7 +886,7 @@ public:
 
     elements = {{0, 3, 2}};
 
-    DataArray<int64_t>::Pointer daBadTriList = createDataArray<int64_t>(k_BadTriListDAName, elements, m_Dims1, m_Dims3);
+    SharedTriList::Pointer daBadTriList = createDataArray<MeshIndexType>(k_BadTriListDAName, elements, m_Dims1, m_Dims3);
     triElementAM->insertOrAssign(daBadTriList);
 
     // Create Filter
@@ -988,10 +991,10 @@ public:
     // Create Quadrilateral Data Arrays
 
     std::vector<std::vector<float>> vertices = {{1.0, 1.0, 0.0}, {3.0, 1.0, 0.0}, {2.0, 3.0, 0.0}, {2.0, 2.0, 0.0}};
-    std::vector<std::vector<int64_t>> elements = {{0, 1, 2, 3}};
+    std::vector<std::vector<MeshIndexType>> elements = {{0, 1, 2, 3}};
 
     DataArray<float>::Pointer daQuadVert = createDataArray<float>(k_QuadVertexListDAName, vertices, m_Dims4, m_Dims3);
-    DataArray<int64_t>::Pointer daQuadList = createDataArray<int64_t>(k_QuadListDAName, elements, m_Dims1, m_Dims4);
+    SharedQuadList::Pointer daQuadList = createDataArray<MeshIndexType>(k_QuadListDAName, elements, m_Dims1, m_Dims4);
     quadVertexAM->insertOrAssign(daQuadVert);
     quadElementAM->insertOrAssign(daQuadList);
 
@@ -999,7 +1002,7 @@ public:
 
     elements = {{0, 1, 7, 3}};
 
-    DataArray<int64_t>::Pointer daBadQuadList = createDataArray<int64_t>(k_BadQuadListDAName, elements, m_Dims1, m_Dims4);
+    SharedQuadList::Pointer daBadQuadList = createDataArray<MeshIndexType>(k_BadQuadListDAName, elements, m_Dims1, m_Dims4);
     quadElementAM->insertOrAssign(daBadQuadList);
 
     // Create Filter
@@ -1105,10 +1108,10 @@ public:
 
     std::vector<std::vector<float>> vertices = {{1.0f, 1.0f, 1.55f}, {3.0f, 1.0f, 1.55f}, {2.0f, 3.0f, 1.55f}, {2.0f, 2.0f, 3.55f}};
 
-    std::vector<std::vector<int64_t>> elements = {{0, 1, 2, 3}};
+    std::vector<std::vector<MeshIndexType>> elements = {{0, 1, 2, 3}};
 
     DataArray<float>::Pointer daTetVert = createDataArray<float>(k_TetVertexListDAName, vertices, m_Dims4, m_Dims3);
-    DataArray<int64_t>::Pointer daTetList = createDataArray<int64_t>(k_TetListDAName, elements, m_Dims1, m_Dims4);
+    SharedTetList::Pointer daTetList = createDataArray<MeshIndexType>(k_TetListDAName, elements, m_Dims1, m_Dims4);
     tetVertexAM->insertOrAssign(daTetVert);
     tetElementAM->insertOrAssign(daTetList);
 
@@ -1116,7 +1119,7 @@ public:
 
     elements = {{0, 10, 2, 3}};
 
-    DataArray<int64_t>::Pointer daBadTetList = createDataArray<int64_t>(k_BadTetListDAName, elements, m_Dims1, m_Dims4);
+    SharedTetList::Pointer daBadTetList = createDataArray<MeshIndexType>(k_BadTetListDAName, elements, m_Dims1, m_Dims4);
     tetElementAM->insertOrAssign(daBadTetList);
 
     // Create Filter
@@ -1222,10 +1225,10 @@ public:
 
     std::vector<std::vector<float>> vertices = {{1.0f, 1.0f, 1.55f}, {3.0f, 1.0f, 1.55f}, {2.0f, 3.0f, 1.55f}, {2.0f, 2.0f, 3.55f}, {2.5f, 1.0f, 1.55f}, {4.3f, 1.0f, 1.55f}, {5.1f, 3.0f, 1.55f}, {7.63f, 2.0f, 3.55f}};
 
-    std::vector<std::vector<int64_t>> elements = {{0, 1, 2, 3, 4, 5, 6, 7}};
+    std::vector<std::vector<MeshIndexType>> elements = {{0, 1, 2, 3, 4, 5, 6, 7}};
 
     DataArray<float>::Pointer daHexVert = createDataArray<float>(k_HexVertexListDAName, vertices, m_Dims8, m_Dims3);
-    DataArray<int64_t>::Pointer daHexList = createDataArray<int64_t>(k_HexListDAName, elements, m_Dims1, m_Dims8);
+    SharedHexList::Pointer daHexList = createDataArray<MeshIndexType>(k_HexListDAName, elements, m_Dims1, m_Dims8);
     hexVertexAM->insertOrAssign(daHexVert);
     hexElementAM->insertOrAssign(daHexList);
 
@@ -1233,7 +1236,7 @@ public:
 
     elements = {{0, 1, 2, 32, 4, 5, 6, 7}};
 
-    DataArray<int64_t>::Pointer daBadHexList = createDataArray<int64_t>(k_BadHexListDAName, elements, m_Dims1, m_Dims8);
+    SharedHexList::Pointer daBadHexList = createDataArray<MeshIndexType>(k_BadHexListDAName, elements, m_Dims1, m_Dims8);
     hexElementAM->insertOrAssign(daBadHexList);
 
     // Create Filter

@@ -80,7 +80,7 @@ using HexJacobian = Eigen::Matrix<double, 3, 3, Eigen::RowMajor>;
 class EdgeDeriv
 {
 public:
-  void operator()(EdgeGeom* edges, int64_t edgeId, double values[2], double derivs[3]);
+  void operator()(EdgeGeom* edges, size_t edgeId, double values[2], double derivs[3]);
   };
 
   /**
@@ -89,8 +89,7 @@ public:
   class TriangleDeriv
   {
     public:
-
-      void operator()(TriangleGeom* triangles, int64_t triId, double values[3], double derivs[3]);
+      void operator()(TriangleGeom* triangles, size_t triId, double values[3], double derivs[3]);
   };
 
   /**
@@ -99,8 +98,7 @@ public:
   class QuadDeriv
   {
     public:
-
-      void operator()(QuadGeom* quads, int64_t quadId, double values[4], double derivs[3]);
+      void operator()(QuadGeom* quads, size_t quadId, double values[4], double derivs[3]);
   };
 
   /**
@@ -109,8 +107,7 @@ public:
   class TetDeriv
   {
     public:
-
-      void operator()(TetrahedralGeom* tets, int64_t tetId, double values[4], double derivs[3]);
+      void operator()(TetrahedralGeom* tets, size_t tetId, double values[4], double derivs[3]);
   };
 
   /**
@@ -119,8 +116,7 @@ public:
   class HexDeriv
   {
     public:
-
-      void operator()(HexahedralGeom* hexas, int64_t hexId, double values[8], double derivs[3]);
+      void operator()(HexahedralGeom* hexas, size_t hexId, double values[8], double derivs[3]);
   };
 
 }

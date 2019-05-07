@@ -96,7 +96,7 @@ public:
 
     QVector<size_t> dims2;
     dims2.push_back(3);
-    DataArray<int64_t>::Pointer tris = DataArray<int64_t>::CreateArray(1, dims2, "Triangles");
+    SharedTriList::Pointer tris = SharedTriList::CreateArray(1, dims2, "Triangles");
 
     tris->setComponent(0, 0, 0);
     tris->setComponent(0, 1, 1);

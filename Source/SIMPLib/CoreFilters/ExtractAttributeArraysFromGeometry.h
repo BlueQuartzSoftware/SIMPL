@@ -218,10 +218,10 @@ private:
   DEFINE_DATAARRAY_VARIABLE(float, YBounds)
   DEFINE_DATAARRAY_VARIABLE(float, ZBounds)
   DEFINE_DATAARRAY_VARIABLE(float, Verts)
-  DEFINE_DATAARRAY_VARIABLE(int64_t, Edges)
-  DEFINE_DATAARRAY_VARIABLE(int64_t, Tris)
-  DEFINE_DATAARRAY_VARIABLE(int64_t, Quads)
-  DEFINE_DATAARRAY_VARIABLE(int64_t, Tets)
+  DEFINE_DATAARRAY_VARIABLE(MeshIndexType, Edges)
+  DEFINE_DATAARRAY_VARIABLE(MeshIndexType, Tris)
+  DEFINE_DATAARRAY_VARIABLE(MeshIndexType, Quads)
+  DEFINE_DATAARRAY_VARIABLE(MeshIndexType, Tets)
 
 public:
   ExtractAttributeArraysFromGeometry(const ExtractAttributeArraysFromGeometry&) = delete;            // Copy Constructor Not Implemented

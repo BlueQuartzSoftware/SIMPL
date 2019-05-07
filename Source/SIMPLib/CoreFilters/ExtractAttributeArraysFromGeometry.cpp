@@ -330,7 +330,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
 
     cDims[0] = 2;
 
-    m_EdgesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(this, getSharedEdgeListArrayPath(), 0, cDims, "", Edge_SharedEdgeID);
+    m_EdgesPtr = getDataContainerArray()->createNonPrereqArrayFromPath<SharedEdgeList, AbstractFilter, MeshIndexType>(this, getSharedEdgeListArrayPath(), 0, cDims, "", Edge_SharedEdgeID);
     if(m_EdgesPtr.lock())
     {
       m_Edges = m_EdgesPtr.lock()->getPointer(0);
@@ -366,7 +366,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
       varrays.push_back(m_VertsPtr.lock());
     }
 
-    m_TrisPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(this, getSharedTriListArrayPath(), 0, cDims, "", Tri_SharedTriangleID);
+    m_TrisPtr = getDataContainerArray()->createNonPrereqArrayFromPath<SharedTriList, AbstractFilter, MeshIndexType>(this, getSharedTriListArrayPath(), 0, cDims, "", Tri_SharedTriangleID);
     if(m_TrisPtr.lock())
     {
       m_Tris = m_TrisPtr.lock()->getPointer(0);
@@ -404,7 +404,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
 
     cDims[0] = 4;
 
-    m_QuadsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(this, getSharedQuadListArrayPath(), 0, cDims, "", Quad_SharedQuadID);
+    m_QuadsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<SharedQuadList, AbstractFilter, MeshIndexType>(this, getSharedQuadListArrayPath(), 0, cDims, "", Quad_SharedQuadID);
     if(m_QuadsPtr.lock())
     {
       m_Quads = m_QuadsPtr.lock()->getPointer(0);
@@ -442,7 +442,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
 
     cDims[0] = 4;
 
-    m_TetsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(this, getSharedTetListArrayPath(), 0, cDims, "", Tet_SharedTetID);
+    m_TetsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<SharedTetList, AbstractFilter, MeshIndexType>(this, getSharedTetListArrayPath(), 0, cDims, "", Tet_SharedTetID);
     if(m_TetsPtr.lock())
     {
       m_Tets = m_TetsPtr.lock()->getPointer(0);
@@ -480,7 +480,7 @@ void ExtractAttributeArraysFromGeometry::dataCheck()
 
     cDims[0] = 8;
 
-    m_TetsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(this, getSharedHexListArrayPath(), 0, cDims, "", Hex_SharedHexID);
+    m_TetsPtr = getDataContainerArray()->createNonPrereqArrayFromPath<SharedHexList, AbstractFilter, MeshIndexType>(this, getSharedHexListArrayPath(), 0, cDims, "", Hex_SharedHexID);
     if(m_TetsPtr.lock())
     {
       m_Tets = m_TetsPtr.lock()->getPointer(0);

@@ -36,7 +36,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SharedTriList::Pointer GEOM_CLASS_NAME::CreateSharedTriList(int64_t numTris, bool allocate)
+SharedTriList::Pointer GEOM_CLASS_NAME::CreateSharedTriList(size_t numTris, bool allocate)
 {
   QVector<size_t> triDims(1, 3);
   SharedTriList::Pointer triangles = SharedTriList::CreateArray(numTris, triDims, SIMPL::Geometry::SharedTriList, allocate);
@@ -47,7 +47,7 @@ SharedTriList::Pointer GEOM_CLASS_NAME::CreateSharedTriList(int64_t numTris, boo
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::resizeTriList(int64_t newNumTris)
+void GEOM_CLASS_NAME::resizeTriList(size_t newNumTris)
 {
   m_TriList->resizeTuples(newNumTris);
 }
@@ -59,7 +59,7 @@ void GEOM_CLASS_NAME::setTriangles(SharedTriList::Pointer triangles)
 {
   if(triangles.get() != nullptr)
   {
-    if(triangles->getName().compare(SIMPL::Geometry::SharedTriList) != 0)
+    if(triangles->getName() != SIMPL::Geometry::SharedTriList)
     {
       triangles->setName(SIMPL::Geometry::SharedTriList);
     }
@@ -78,9 +78,9 @@ SharedTriList::Pointer GEOM_CLASS_NAME::getTriangles()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::setVertsAtTri(int64_t triId, int64_t verts[3])
+void GEOM_CLASS_NAME::setVertsAtTri(size_t triId, size_t verts[3])
 {
-  int64_t* Tri = m_TriList->getTuplePointer(triId);
+  size_t* Tri = m_TriList->getTuplePointer(triId);
   Tri[0] = verts[0];
   Tri[1] = verts[1];
   Tri[2] = verts[2];
@@ -89,9 +89,9 @@ void GEOM_CLASS_NAME::setVertsAtTri(int64_t triId, int64_t verts[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::getVertsAtTri(int64_t triId, int64_t verts[3])
+void GEOM_CLASS_NAME::getVertsAtTri(size_t triId, size_t verts[3])
 {
-  int64_t* Tri = m_TriList->getTuplePointer(triId);
+  size_t* Tri = m_TriList->getTuplePointer(triId);
   verts[0] = Tri[0];
   verts[1] = Tri[1];
   verts[2] = Tri[2];
@@ -100,9 +100,9 @@ void GEOM_CLASS_NAME::getVertsAtTri(int64_t triId, int64_t verts[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::getVertCoordsAtTri(int64_t triId, float vert1[3], float vert2[3], float vert3[3])
+void GEOM_CLASS_NAME::getVertCoordsAtTri(size_t triId, float vert1[3], float vert2[3], float vert3[3])
 {
-  int64_t* Tri = m_TriList->getTuplePointer(triId);
+  size_t* Tri = m_TriList->getTuplePointer(triId);
   float* tmp1 = m_VertexList->getTuplePointer(Tri[0]);
   float* tmp2 = m_VertexList->getTuplePointer(Tri[1]);
   float* tmp3 = m_VertexList->getTuplePointer(Tri[2]);
@@ -120,7 +120,7 @@ void GEOM_CLASS_NAME::getVertCoordsAtTri(int64_t triId, float vert1[3], float ve
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int64_t* GEOM_CLASS_NAME::getTriPointer(int64_t i)
+size_t* GEOM_CLASS_NAME::getTriPointer(size_t i)
 {
   return m_TriList->getTuplePointer(i);
 }
@@ -128,7 +128,7 @@ int64_t* GEOM_CLASS_NAME::getTriPointer(int64_t i)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int64_t GEOM_CLASS_NAME::getNumberOfTris()
+size_t GEOM_CLASS_NAME::getNumberOfTris()
 {
   return m_TriList->getNumberOfTuples();
 }

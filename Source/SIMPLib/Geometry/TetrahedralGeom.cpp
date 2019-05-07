@@ -63,7 +63,7 @@
 class FindTetDerivativesImpl
 {
 public:
-  FindTetDerivativesImpl(TetrahedralGeom* tets, DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivs)
+  FindTetDerivativesImpl(TetrahedralGeom* tets, const DoubleArrayType::Pointer& field, const DoubleArrayType::Pointer& derivs)
   : m_Tets(tets)
   , m_Field(field)
   , m_Derivatives(derivs)
@@ -71,20 +71,20 @@ public:
   }
   virtual ~FindTetDerivativesImpl() = default;
 
-  void compute(int64_t start, int64_t end) const
+  void compute(size_t start, size_t end) const
   {
     int32_t cDims = m_Field->getNumberOfComponents();
     double* fieldPtr = m_Field->getPointer(0);
     double* derivsPtr = m_Derivatives->getPointer(0);
     double values[4] = {0.0, 0.0, 0.0, 0.0};
     double derivs[3] = {0.0, 0.0, 0.0};
-    int64_t verts[4]{0, 0, 0, 0};
+    size_t verts[4]{0, 0, 0, 0};
 
-    int64_t counter = 0;
-    int64_t totalElements = m_Tets->getNumberOfTets();
-    int64_t progIncrement = static_cast<int64_t>(totalElements / 100);
+    size_t counter = 0;
+    size_t totalElements = m_Tets->getNumberOfTets();
+    size_t progIncrement = static_cast<size_t>(totalElements / 100);
 
-    for(int64_t i = start; i < end; i++)
+    for(size_t i = start; i < end; i++)
     {
       m_Tets->getVertsAtTet(i, verts);
       for(size_t j = 0; j < cDims; j++)
@@ -109,7 +109,7 @@ public:
   }
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  void operator()(const tbb::blocked_range<int64_t>& r) const
+  void operator()(const tbb::blocked_range<size_t>& r) const
   {
     compute(r.begin(), r.end());
   }
@@ -151,7 +151,7 @@ TetrahedralGeom::~TetrahedralGeom() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-TetrahedralGeom::Pointer TetrahedralGeom::CreateGeometry(int64_t numTets, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
+TetrahedralGeom::Pointer TetrahedralGeom::CreateGeometry(size_t numTets, const SharedVertexList::Pointer& vertices, const QString& name, bool allocate)
 {
   if(name.isEmpty())
   {
@@ -169,7 +169,7 @@ TetrahedralGeom::Pointer TetrahedralGeom::CreateGeometry(int64_t numTets, Shared
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-TetrahedralGeom::Pointer TetrahedralGeom::CreateGeometry(SharedTetList::Pointer tets, SharedVertexList::Pointer vertices, const QString& name)
+TetrahedralGeom::Pointer TetrahedralGeom::CreateGeometry(const SharedTetList::Pointer& tets, const SharedVertexList::Pointer& vertices, const QString& name)
 {
   if(name.isEmpty())
   {
@@ -211,15 +211,15 @@ void TetrahedralGeom::addOrReplaceAttributeMatrix(const QString& name, Attribute
     // TetrahedralGeom can only accept vertex, edge, face or cell Attribute Matrices
     return;
   }
-  if(data->getType() == AttributeMatrix::Type::Vertex && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfVertices())
+  if(data->getType() == AttributeMatrix::Type::Vertex && static_cast<size_t>(data->getNumberOfTuples()) != getNumberOfVertices())
   {
     return;
   }
-  if(data->getType() == AttributeMatrix::Type::Edge && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfEdges())
+  if(data->getType() == AttributeMatrix::Type::Edge && static_cast<size_t>(data->getNumberOfTuples()) != getNumberOfEdges())
   {
     return;
   }
-  if(data->getType() == AttributeMatrix::Type::Face && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfTris())
+  if(data->getType() == AttributeMatrix::Type::Face && static_cast<size_t>(data->getNumberOfTuples()) != getNumberOfTris())
   {
     return;
   }
@@ -248,7 +248,7 @@ size_t TetrahedralGeom::getNumberOfElements()
 int TetrahedralGeom::findEdges()
 {
   m_EdgeList = CreateSharedEdgeList(0);
-  GeometryHelpers::Connectivity::FindTetEdges<int64_t>(m_TetList, m_EdgeList);
+  GeometryHelpers::Connectivity::FindTetEdges<size_t>(m_TetList, m_EdgeList);
   if(m_EdgeList.get() == nullptr)
   {
     return -1;
@@ -270,7 +270,7 @@ void TetrahedralGeom::deleteEdges()
 int TetrahedralGeom::findFaces()
 {
   m_TriList = CreateSharedTriList(0);
-  GeometryHelpers::Connectivity::FindTetFaces<int64_t>(m_TetList, m_TriList);
+  GeometryHelpers::Connectivity::FindTetFaces<size_t>(m_TetList, m_TriList);
   if(m_TriList.get() == nullptr)
   {
     return -1;
@@ -292,7 +292,7 @@ void TetrahedralGeom::deleteFaces()
 int TetrahedralGeom::findElementsContainingVert()
 {
   m_TetsContainingVert = ElementDynamicList::New();
-  GeometryHelpers::Connectivity::FindElementsContainingVert<uint16_t, int64_t>(m_TetList, m_TetsContainingVert, getNumberOfVertices());
+  GeometryHelpers::Connectivity::FindElementsContainingVert<uint16_t, size_t>(m_TetList, m_TetsContainingVert, getNumberOfVertices());
   if(m_TetsContainingVert.get() == nullptr)
   {
     return -1;
@@ -339,7 +339,7 @@ int TetrahedralGeom::findElementNeighbors()
     }
   }
   m_TetNeighbors = ElementDynamicList::New();
-  err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_TetList, m_TetsContainingVert, m_TetNeighbors, IGeometry::Type::Tetrahedral);
+  err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, size_t>(m_TetList, m_TetsContainingVert, m_TetNeighbors, IGeometry::Type::Tetrahedral);
   if(m_TetNeighbors.get() == nullptr)
   {
     return -1;
@@ -378,7 +378,7 @@ int TetrahedralGeom::findElementCentroids()
 {
   QVector<size_t> cDims(1, 3);
   m_TetCentroids = FloatArrayType::CreateArray(getNumberOfTets(), cDims, SIMPL::StringConstants::TetCentroids);
-  GeometryHelpers::Topology::FindElementCentroids<int64_t>(m_TetList, m_VertexList, m_TetCentroids);
+  GeometryHelpers::Topology::FindElementCentroids<size_t>(m_TetList, m_VertexList, m_TetCentroids);
   if(m_TetCentroids.get() == nullptr)
   {
     return -1;
@@ -418,7 +418,7 @@ int TetrahedralGeom::findElementSizes()
 {
   QVector<size_t> cDims(1, 1);
   m_TetSizes = FloatArrayType::CreateArray(getNumberOfTets(), cDims, SIMPL::StringConstants::TetVolumes);
-  GeometryHelpers::Topology::FindTetVolumes<int64_t>(m_TetList, m_VertexList, m_TetSizes);
+  GeometryHelpers::Topology::FindTetVolumes<size_t>(m_TetList, m_VertexList, m_TetSizes);
   if(m_TetSizes.get() == nullptr)
   {
     return -1;
@@ -457,7 +457,7 @@ int TetrahedralGeom::findUnsharedEdges()
 {
   QVector<size_t> cDims(1, 2);
   m_UnsharedEdgeList = SharedEdgeList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedEdgeList);
-  GeometryHelpers::Connectivity::FindUnsharedTetEdges<int64_t>(m_TetList, m_UnsharedEdgeList);
+  GeometryHelpers::Connectivity::FindUnsharedTetEdges<size_t>(m_TetList, m_UnsharedEdgeList);
   if(m_UnsharedEdgeList.get() == nullptr)
   {
     return -1;
@@ -496,7 +496,7 @@ int TetrahedralGeom::findUnsharedFaces()
 {
   QVector<size_t> cDims(1, 3);
   m_UnsharedTriList = SharedTriList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedFaceList);
-  GeometryHelpers::Connectivity::FindUnsharedTetFaces<int64_t>(m_TetList, m_UnsharedTriList);
+  GeometryHelpers::Connectivity::FindUnsharedTetFaces<size_t>(m_TetList, m_UnsharedTriList);
   if(m_UnsharedTriList.get() == nullptr)
   {
     return -1;
@@ -570,7 +570,7 @@ void TetrahedralGeom::getShapeFunctions(double pCoords[3], double* shape)
 void TetrahedralGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable)
 {
   m_ProgressCounter = 0;
-  int64_t numTets = getNumberOfTets();
+  size_t numTets = getNumberOfTets();
 
   if(observable != nullptr)
   {
@@ -585,7 +585,7 @@ void TetrahedralGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArra
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   if(doParallel)
   {
-    tbb::parallel_for(tbb::blocked_range<int64_t>(0, numTets), FindTetDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());
+    tbb::parallel_for(tbb::blocked_range<size_t>(0, numTets), FindTetDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());
   }
   else
 #endif
@@ -677,7 +677,7 @@ int TetrahedralGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(wri
   if(m_TetNeighbors.get() != nullptr)
   {
     size_t numTets = getNumberOfTets();
-    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_TetNeighbors, numTets, SIMPL::StringConstants::TetNeighbors);
+    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, size_t>(parentId, m_TetNeighbors, numTets, SIMPL::StringConstants::TetNeighbors);
     if(err < 0)
     {
       return err;
@@ -687,7 +687,7 @@ int TetrahedralGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(wri
   if(m_TetsContainingVert.get() != nullptr)
   {
     size_t numVerts = getNumberOfVertices();
-    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_TetsContainingVert, numVerts, SIMPL::StringConstants::TetsContainingVert);
+    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, size_t>(parentId, m_TetsContainingVert, numVerts, SIMPL::StringConstants::TetsContainingVert);
     if(err < 0)
     {
       return err;
@@ -761,10 +761,10 @@ QString TetrahedralGeom::getInfoString(SIMPL::InfoStringFormat format)
   if(format == SIMPL::HtmlFormat)
   {
     ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Geometry Info</th></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type</th><td>" << TypeToString(getGeometryType()) << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Type</th><td>)" << TypeToString(getGeometryType()) << "</td></tr>";
     ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Units</th><td>)" << LengthUnitToString(getUnits()) << "</td></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Tetrahedra</th><td>" << getNumberOfTets() << "</td></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Vertices</th><td>" << getNumberOfVertices() << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Number of Tetrahedra</th><td>)" << getNumberOfTets() << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Number of Vertices</th><td>)" << getNumberOfVertices() << "</td></tr>";
   }
   else
   {
@@ -779,29 +779,62 @@ int TetrahedralGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 {
   herr_t err = 0;
   SharedVertexList::Pointer vertices = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedVertexList>(SIMPL::Geometry::SharedVertexList, parentId, preflight, err);
-  SharedTetList::Pointer tets = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedTetList>(SIMPL::Geometry::SharedTetList, parentId, preflight, err);
+
+  // The cast from the method is going to fail so create a temp DataArray<uint64_t>
+  DataArray<uint64_t>::Pointer tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<DataArray<uint64_t>>(SIMPL::Geometry::SharedTetList, parentId, preflight, err);
+  // Now create the correct type and pass in the pointer to tempTris.
+  SharedTetList::Pointer tets =
+      SharedTetList::WrapPointer(reinterpret_cast<size_t*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
+  // Release the ownership of the memory from TempTris and essentially pass it to tris.
+  tempUInt64->releaseOwnership();
   if(tets.get() == nullptr || vertices.get() == nullptr)
   {
     return -1;
   }
   size_t numTets = tets->getNumberOfTuples();
   size_t numVerts = vertices->getNumberOfTuples();
-  SharedTriList::Pointer tris = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedTriList>(SIMPL::Geometry::SharedTriList, parentId, preflight, err);
+  // The cast from the method is going to fail so create a temp DataArray<uint64_t>
+  tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<DataArray<uint64_t>>(SIMPL::Geometry::SharedTriList, parentId, preflight, err);
+  // Now create the correct type and pass in the pointer to tempTris.
+  SharedTriList::Pointer tris =
+      SharedTriList::WrapPointer(reinterpret_cast<size_t*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
+  // Release the ownership of the memory from TempTris and essentially pass it to tris.
+  tempUInt64->releaseOwnership();
   if(err < 0 && err != -2)
   {
     return -1;
   }
-  SharedTriList::Pointer bTris = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedTriList>(SIMPL::Geometry::UnsharedFaceList, parentId, preflight, err);
+  // The cast from the method is going to fail so create a temp DataArray<uint64_t>
+  tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<DataArray<uint64_t>>(SIMPL::Geometry::UnsharedFaceList, parentId, preflight, err);
+  // Now create the correct type and pass in the pointer to tempTris.
+  SharedTriList::Pointer bTris =
+      SharedTriList::WrapPointer(reinterpret_cast<size_t*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
+  // Release the ownership of the memory from TempTris and essentially pass it to tris.
+  tempUInt64->releaseOwnership();
   if(err < 0 && err != -2)
   {
     return -1;
   }
-  SharedEdgeList::Pointer edges = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedEdgeList>(SIMPL::Geometry::SharedEdgeList, parentId, preflight, err);
+
+  // The cast from the method is going to fail so create a temp DataArray<uint64_t>
+  tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<DataArray<uint64_t>>(SIMPL::Geometry::SharedEdgeList, parentId, preflight, err);
+  // Now create the correct type and pass in the pointer to tempTris.
+  SharedEdgeList::Pointer edges =
+      SharedEdgeList::WrapPointer(reinterpret_cast<size_t*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
+  // Release the ownership of the memory from TempTris and essentially pass it to tris.
+  tempUInt64->releaseOwnership();
   if(err < 0 && err != -2)
   {
     return -1;
   }
-  SharedEdgeList::Pointer bEdges = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedEdgeList>(SIMPL::Geometry::UnsharedEdgeList, parentId, preflight, err);
+
+  // The cast from the method is going to fail so create a temp DataArray<uint64_t>
+  tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<DataArray<uint64_t>>(SIMPL::Geometry::UnsharedEdgeList, parentId, preflight, err);
+  // Now create the correct type and pass in the pointer to tempTris.
+  SharedEdgeList::Pointer bEdges =
+      SharedEdgeList::WrapPointer(reinterpret_cast<size_t*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
+  // Release the ownership of the memory from TempTris and essentially pass it to tris.
+  tempUInt64->releaseOwnership();
   if(err < 0 && err != -2)
   {
     return -1;
@@ -816,12 +849,13 @@ int TetrahedralGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   {
     return -1;
   }
-  ElementDynamicList::Pointer tetNeighbors = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::TetNeighbors, parentId, numTets, preflight, err);
+  ElementDynamicList::Pointer tetNeighbors = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, MeshIndexType>(SIMPL::StringConstants::TetNeighbors, parentId, numTets, preflight, err);
   if(err < 0 && err != -2)
   {
     return -1;
   }
-  ElementDynamicList::Pointer tetsContainingVert = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::TetsContainingVert, parentId, numVerts, preflight, err);
+  ElementDynamicList::Pointer tetsContainingVert =
+      GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, MeshIndexType>(SIMPL::StringConstants::TetsContainingVert, parentId, numVerts, preflight, err);
   if(err < 0 && err != -2)
   {
     return -1;
