@@ -50,16 +50,16 @@ class SIMPLib_EXPORT VertexGeom : public IGeometry
 
   PYB11_CREATE_BINDINGS(VertexGeom SUPERCLASS IGeometry)
   
-  PYB11_CREATION(CreateGeometry ARGS int64_t QString bool)
+  PYB11_CREATION(CreateGeometry ARGS size_t QString bool)
   PYB11_CREATION(CreateGeometry ARGS SharedVertexList::Pointer QString)
 
   PYB11_METHOD(void setVertices SharedVertexList::Pointer,vertices)
   PYB11_METHOD(SharedVertexList::Pointer getVertices)
 
-  PYB11_METHOD(void setCoords int64_t,vertId float,coords[3])
-  PYB11_METHOD(void getCoords int64_t,vertId float,coords[3])
+  PYB11_METHOD(void setCoords size_t,vertId float,coords[3])
+  PYB11_METHOD(void getCoords size_t,vertId float,coords[3])
 
-  PYB11_METHOD(int64_t getNumberOfVertices)
+  PYB11_METHOD(size_t getNumberOfVertices)
   PYB11_METHOD(size_t getNumberOfElements)
   // clang-format on
 
@@ -76,7 +76,7 @@ public:
    * @param name
    * @return
    */
-  static Pointer CreateGeometry(int64_t numVertices, const QString& name, bool allocate = true);
+  static Pointer CreateGeometry(size_t numVertices, const QString& name, bool allocate = true);
 
   /**
    * @brief CreateGeometry
@@ -84,7 +84,7 @@ public:
    * @param name
    * @return
    */
-  static Pointer CreateGeometry(SharedVertexList::Pointer vertices, const QString& name);
+  static Pointer CreateGeometry(const SharedVertexList::Pointer& vertices, const QString& name);
 
   // -----------------------------------------------------------------------------
   // Inherited from SharedVertexOps
@@ -95,13 +95,13 @@ public:
    * @param numVertices
    * @return
    */
-  static SharedVertexList::Pointer CreateSharedVertexList(int64_t numVertices, bool allocate = true);
+  static SharedVertexList::Pointer CreateSharedVertexList(size_t numVertices, bool allocate = true);
 
   /**
    * @brief resizeVertexList
    * @param newNumVertices
    */
-  void resizeVertexList(int64_t newNumVertices);
+  void resizeVertexList(size_t newNumVertices);
 
   /**
    * @brief setVertices
@@ -120,27 +120,27 @@ public:
    * @param vertId
    * @param coords
    */
-  void setCoords(int64_t vertId, float coords[3]);
+  void setCoords(size_t vertId, float coords[3]);
 
   /**
    * @brief getCoords
    * @param vertId
    * @param coords
    */
-  void getCoords(int64_t vertId, float coords[3]);
+  void getCoords(size_t vertId, float coords[3]);
 
   /**
    * @brief getVertexPointer
    * @param i
    * @return
    */
-  float* getVertexPointer(int64_t i);
+  float* getVertexPointer(size_t i);
 
   /**
    * @brief getNumberOfVertices
    * @return
    */
-  int64_t getNumberOfVertices();
+  size_t getNumberOfVertices();
 
   // -----------------------------------------------------------------------------
   // Inherited from IGeometry

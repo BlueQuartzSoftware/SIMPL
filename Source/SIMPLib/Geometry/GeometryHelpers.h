@@ -158,7 +158,7 @@ public:
       err = -2;
       return dynamicList = DynamicListArray<T, K>::NullPointer();
     }
-    if(preflight == true)
+    if(preflight)
     {
       if(err < 0)
       {
@@ -242,7 +242,8 @@ public:
    * @param dynamicList
    * @param numVerts
    */
-  template <typename T, typename K> static void FindElementsContainingVert(typename DataArray<K>::Pointer elemList, typename DynamicListArray<T, K>::Pointer dynamicList, size_t numVerts)
+  template <typename T, typename K>
+  static void FindElementsContainingVert(typename DataArray<K>::Pointer elemList, typename DynamicListArray<T, K>::Pointer dynamicList, size_t numVerts)
   {
     size_t numElems = elemList->getNumberOfTuples();
     size_t numVertsPerElem = elemList->getNumberOfComponents();

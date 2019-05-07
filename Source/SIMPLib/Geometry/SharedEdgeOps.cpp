@@ -36,7 +36,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SharedEdgeList::Pointer GEOM_CLASS_NAME::CreateSharedEdgeList(int64_t numEdges, bool allocate)
+SharedEdgeList::Pointer GEOM_CLASS_NAME::CreateSharedEdgeList(size_t numEdges, bool allocate)
 {
   QVector<size_t> edgeDims(1, 2);
   SharedEdgeList::Pointer edges = SharedEdgeList::CreateArray(numEdges, edgeDims, SIMPL::Geometry::SharedEdgeList, allocate);
@@ -47,7 +47,7 @@ SharedEdgeList::Pointer GEOM_CLASS_NAME::CreateSharedEdgeList(int64_t numEdges, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::resizeEdgeList(int64_t newNumEdges)
+void GEOM_CLASS_NAME::resizeEdgeList(size_t newNumEdges)
 {
   m_EdgeList->resizeTuples(newNumEdges);
 }
@@ -59,7 +59,7 @@ void GEOM_CLASS_NAME::setEdges(SharedEdgeList::Pointer edges)
 {
   if(edges.get() != nullptr)
   {
-    if(edges->getName().compare(SIMPL::Geometry::SharedEdgeList) != 0)
+    if(edges->getName() != SIMPL::Geometry::SharedEdgeList)
     {
       edges->setName(SIMPL::Geometry::SharedEdgeList);
     }
@@ -78,9 +78,9 @@ SharedEdgeList::Pointer GEOM_CLASS_NAME::getEdges()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::setVertsAtEdge(int64_t edgeId, int64_t verts[2])
+void GEOM_CLASS_NAME::setVertsAtEdge(size_t edgeId, size_t verts[2])
 {
-  int64_t* Edge = m_EdgeList->getTuplePointer(edgeId);
+  size_t* Edge = m_EdgeList->getTuplePointer(edgeId);
   Edge[0] = verts[0];
   Edge[1] = verts[1];
 }
@@ -88,9 +88,9 @@ void GEOM_CLASS_NAME::setVertsAtEdge(int64_t edgeId, int64_t verts[2])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::getVertsAtEdge(int64_t edgeId, int64_t verts[2])
+void GEOM_CLASS_NAME::getVertsAtEdge(size_t edgeId, size_t verts[2])
 {
-  int64_t* Edge = m_EdgeList->getTuplePointer(edgeId);
+  size_t* Edge = m_EdgeList->getTuplePointer(edgeId);
   verts[0] = Edge[0];
   verts[1] = Edge[1];
 }
@@ -98,9 +98,9 @@ void GEOM_CLASS_NAME::getVertsAtEdge(int64_t edgeId, int64_t verts[2])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::getVertCoordsAtEdge(int64_t edgeId, float vert1[3], float vert2[3])
+void GEOM_CLASS_NAME::getVertCoordsAtEdge(size_t edgeId, float vert1[3], float vert2[3])
 {
-  int64_t* Edge = m_EdgeList->getTuplePointer(edgeId);
+  size_t* Edge = m_EdgeList->getTuplePointer(edgeId);
   float* tmp1 = m_VertexList->getTuplePointer(Edge[0]);
   float* tmp2 = m_VertexList->getTuplePointer(Edge[1]);
   vert1[0] = tmp1[0];
@@ -114,7 +114,7 @@ void GEOM_CLASS_NAME::getVertCoordsAtEdge(int64_t edgeId, float vert1[3], float 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int64_t* GEOM_CLASS_NAME::getEdgePointer(int64_t i)
+size_t* GEOM_CLASS_NAME::getEdgePointer(size_t i)
 {
   return m_EdgeList->getTuplePointer(i);
 }
@@ -122,7 +122,7 @@ int64_t* GEOM_CLASS_NAME::getEdgePointer(int64_t i)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int64_t GEOM_CLASS_NAME::getNumberOfEdges()
+size_t GEOM_CLASS_NAME::getNumberOfEdges()
 {
   return m_EdgeList->getNumberOfTuples();
 }

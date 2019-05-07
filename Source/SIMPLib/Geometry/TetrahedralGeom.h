@@ -58,7 +58,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param name
      * @return
      */
-    static Pointer CreateGeometry(int64_t numTets, SharedVertexList::Pointer vertices, const QString& name, bool allocate = true);
+    static Pointer CreateGeometry(size_t numTets, const SharedVertexList::Pointer& vertices, const QString& name, bool allocate = true);
 
     /**
      * @brief CreateGeometry
@@ -67,46 +67,46 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param name
      * @return
      */
-    static Pointer CreateGeometry(SharedTetList::Pointer tets, SharedVertexList::Pointer vertices, const QString& name);
+    static Pointer CreateGeometry(const SharedTetList::Pointer& tets, const SharedVertexList::Pointer& vertices, const QString& name);
 
-// -----------------------------------------------------------------------------
-// Inherited from SharedVertexOps
-// -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
+    // Inherited from SharedVertexOps
+    // -----------------------------------------------------------------------------
 
     /**
      * @brief CreateSharedVertexList
      * @param numVertices
      * @return
      */
-    static SharedVertexList::Pointer CreateSharedVertexList(int64_t numVertices, bool allocate = true);
+    static SharedVertexList::Pointer CreateSharedVertexList(size_t numVertices, bool allocate = true);
 
-// -----------------------------------------------------------------------------
-// Inherited from SharedEdgeOps
-// -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
+    // Inherited from SharedEdgeOps
+    // -----------------------------------------------------------------------------
 
     /**
      * @brief CreateSharedEdgeList
      * @param numEdges
      * @return
      */
-    static SharedEdgeList::Pointer CreateSharedEdgeList(int64_t numEdges, bool allocate = true);
+    static SharedEdgeList::Pointer CreateSharedEdgeList(size_t numEdges, bool allocate = true);
 
-// -----------------------------------------------------------------------------
-// Inherited from SharedTriOps
-// -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
+    // Inherited from SharedTriOps
+    // -----------------------------------------------------------------------------
 
     /**
      * @brief CreateSharedTriList
      * @param numTris
      * @return
      */
-    static SharedTriList::Pointer CreateSharedTriList(int64_t numTris, bool allocate = true);
+    static SharedTriList::Pointer CreateSharedTriList(size_t numTris, bool allocate = true);
 
     /**
      * @brief resizeTriList
      * @param newNumTris
      */
-    void resizeTriList(int64_t newNumTris);
+    void resizeTriList(size_t newNumTris);
 
     /**
      * @brief setTriangles
@@ -125,14 +125,14 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param triId
      * @param verts
      */
-    void setVertsAtTri(int64_t triId, int64_t verts[3]);
+    void setVertsAtTri(size_t triId, size_t verts[3]);
 
     /**
      * @brief getVertsAtTri
      * @param triId
      * @param verts
      */
-    void getVertsAtTri(int64_t triId, int64_t verts[3]);
+    void getVertsAtTri(size_t triId, size_t verts[3]);
 
     /**
      * @brief getVertCoordsAtTri
@@ -141,37 +141,37 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param vert2
      * @param vert3
      */
-    void getVertCoordsAtTri(int64_t triId, float vert1[3], float vert2[3], float vert3[3]);
+    void getVertCoordsAtTri(size_t triId, float vert1[3], float vert2[3], float vert3[3]);
 
     /**
      * @brief getTriPointer
      * @param i
      * @return
      */
-    int64_t* getTriPointer(int64_t i);
+    size_t* getTriPointer(size_t i);
 
     /**
      * @brief getNumberOfTris
      * @return
      */
-    int64_t getNumberOfTris();
+    size_t getNumberOfTris();
 
-// -----------------------------------------------------------------------------
-// Inherited from SharedTetOps
-// -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
+    // Inherited from SharedTetOps
+    // -----------------------------------------------------------------------------
 
     /**
      * @brief CreateSharedTetList
      * @param numTets
      * @return
      */
-    static SharedTriList::Pointer CreateSharedTetList(int64_t numTets, bool allocate = true);
+    static SharedTriList::Pointer CreateSharedTetList(size_t numTets, bool allocate = true);
 
     /**
      * @brief resizeTetList
      * @param newNumTets
      */
-    void resizeTetList(int64_t newNumTets);
+    void resizeTetList(size_t newNumTets);
 
     /**
      * @brief setTetrahedra
@@ -190,14 +190,14 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param tetId
      * @param verts
      */
-    void setVertsAtTet(int64_t tetId, int64_t verts[4]);
+    void setVertsAtTet(size_t tetId, size_t verts[4]);
 
     /**
      * @brief getVertsAtTet
      * @param tetId
      * @param verts
      */
-    void getVertsAtTet(int64_t tetId, int64_t verts[4]);
+    void getVertsAtTet(size_t tetId, size_t verts[4]);
 
     /**
      * @brief getVertCoordsAtTet
@@ -206,24 +206,24 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param vert2
      * @param vert3
      */
-    void getVertCoordsAtTet(int64_t tetId, float vert1[3], float vert2[3], float vert3[3], float vert4[3]);
+    void getVertCoordsAtTet(size_t tetId, float vert1[3], float vert2[3], float vert3[3], float vert4[3]);
 
     /**
      * @brief getTetPointer
      * @param i
      * @return
      */
-    int64_t* getTetPointer(int64_t i);
+    size_t* getTetPointer(size_t i);
 
     /**
      * @brief getNumberOfTets
      * @return
      */
-    int64_t getNumberOfTets();
+    size_t getNumberOfTets();
 
-// -----------------------------------------------------------------------------
-// Inherited from IGeometry
-// -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
+    // Inherited from IGeometry
+    // -----------------------------------------------------------------------------
 
     /**
      * @brief initializeWithZeros
@@ -375,7 +375,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @brief resizeVertexList
      * @param newNumVertices
      */
-    void resizeVertexList(int64_t newNumVertices) override;
+    void resizeVertexList(size_t newNumVertices) override;
 
     /**
      * @brief setVertices
@@ -394,33 +394,33 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param vertId
      * @param coords
      */
-    void setCoords(int64_t vertId, float coords[3]) override;
+    void setCoords(size_t vertId, float coords[3]) override;
 
     /**
      * @brief getCoords
      * @param vertId
      * @param coords
      */
-    void getCoords(int64_t vertId, float coords[3]) override;
+    void getCoords(size_t vertId, float coords[3]) override;
 
     /**
      * @brief getVertexPointer
      * @param i
      * @return
      */
-    float* getVertexPointer(int64_t i) override;
+    float* getVertexPointer(size_t i) override;
 
     /**
      * @brief getNumberOfVertices
      * @return
      */
-    int64_t getNumberOfVertices() override;
+    size_t getNumberOfVertices() override;
 
     /**
      * @brief resizeEdgeList
      * @param newNumEdges
      */
-    void resizeEdgeList(int64_t newNumEdges) override;
+    void resizeEdgeList(size_t newNumEdges) override;
 
     /**
      * @brief getEdges
@@ -433,14 +433,14 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param edgeId
      * @param verts
      */
-    void setVertsAtEdge(int64_t edgeId, int64_t verts[2]) override;
+    void setVertsAtEdge(size_t edgeId, size_t verts[2]) override;
 
     /**
      * @brief getVerts
      * @param edgeId
      * @param verts
      */
-    void getVertsAtEdge(int64_t edgeId, int64_t verts[2]) override;
+    void getVertsAtEdge(size_t edgeId, size_t verts[2]) override;
 
     /**
      * @brief getVertCoordsAtEdge
@@ -448,20 +448,20 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param vert1
      * @param vert2
      */
-    void getVertCoordsAtEdge(int64_t edgeId, float vert1[3], float vert2[3]) override;
+    void getVertCoordsAtEdge(size_t edgeId, float vert1[3], float vert2[3]) override;
 
     /**
      * @brief getEdgePointer
      * @param i
      * @return
      */
-    int64_t* getEdgePointer(int64_t i) override;
+    size_t* getEdgePointer(size_t i) override;
 
     /**
      * @brief getNumberOfEdges
      * @return
      */
-    int64_t getNumberOfEdges() override;
+    size_t getNumberOfEdges() override;
 
     /**
      * @brief findElementEdges

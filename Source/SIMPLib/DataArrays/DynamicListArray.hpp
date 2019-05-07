@@ -289,11 +289,7 @@ public:
   }
 
 protected:
-  DynamicListArray()
-  : m_Array(nullptr)
-  , m_Size(0)
-  {
-  }
+  DynamicListArray() = default;
 
   //----------------------------------------------------------------------------
   // This will allocate memory to hold all the NeighborList structures where each
@@ -328,8 +324,8 @@ protected:
   }
 
 private:
-  ElementList* m_Array; // pointer to data
-  size_t m_Size;
+  ElementList* m_Array = nullptr; // pointer to data
+  size_t m_Size = 0;
 };
 
 typedef DynamicListArray<int32_t, int32_t> Int32Int32DynamicListArray;

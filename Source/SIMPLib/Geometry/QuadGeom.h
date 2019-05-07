@@ -46,7 +46,7 @@ class SIMPLib_EXPORT QuadGeom : public IGeometry2D
   // clang-format off
   PYB11_CREATE_BINDINGS(QuadGeom SUPERCLASS IGeometry2D)
 
-  PYB11_CREATION(CreateGeometry ARGS OVERLOAD int64_t SharedVertexList::Pointer QString bool)
+  PYB11_CREATION(CreateGeometry ARGS OVERLOAD size_t SharedVertexList::Pointer QString bool)
   PYB11_CREATION(CreateGeometry ARGS OVERLOAD SharedQuadList::Pointer SharedVertexList::Pointer QString)
 
   PYB11_METHOD(void setVertices SharedVertexList::Pointer,vertices)
@@ -58,12 +58,12 @@ class SIMPLib_EXPORT QuadGeom : public IGeometry2D
   PYB11_METHOD(void setQuads SharedQuadList::Pointer,quads)
   PYB11_METHOD(SharedQuadList::Pointer getQuads)
 
-  PYB11_METHOD(void setCoords int64_t,vertId float,coords[3])
-  PYB11_METHOD(void getCoords int64_t,vertId float,coords[3])
+  PYB11_METHOD(void setCoords size_t,vertId float,coords[3])
+  PYB11_METHOD(void getCoords size_t,vertId float,coords[3])
 
-  PYB11_METHOD(int64_t getNumberOfVertices)
-  PYB11_METHOD(int64_t getNumberOfEdges)
-  PYB11_METHOD(int64_t getNumberOfQuads)
+  PYB11_METHOD(size_t getNumberOfVertices)
+  PYB11_METHOD(size_t getNumberOfEdges)
+  PYB11_METHOD(size_t getNumberOfQuads)
   PYB11_METHOD(size_t getNumberOfElements)
   // clang-format on
 
@@ -81,7 +81,7 @@ public:
    * @param name
    * @return
    */
-  static Pointer CreateGeometry(int64_t numQuads, SharedVertexList::Pointer vertices, const QString& name, bool allocate = true);
+  static Pointer CreateGeometry(size_t numQuads, const SharedVertexList::Pointer& vertices, const QString& name, bool allocate = true);
 
   /**
    * @brief CreateGeometry
@@ -90,7 +90,7 @@ public:
    * @param name
    * @return
    */
-  static Pointer CreateGeometry(SharedQuadList::Pointer quads, SharedVertexList::Pointer vertices, const QString& name);
+  static Pointer CreateGeometry(const SharedQuadList::Pointer& quads, const SharedVertexList::Pointer& vertices, const QString& name);
 
   // -----------------------------------------------------------------------------
   // Inherited from SharedVertexOps
@@ -101,7 +101,7 @@ public:
    * @param numVertices
    * @return
    */
-  static SharedVertexList::Pointer CreateSharedVertexList(int64_t numVertices, bool allocate = true);
+  static SharedVertexList::Pointer CreateSharedVertexList(size_t numVertices, bool allocate = true);
 
   // -----------------------------------------------------------------------------
   // Inherited from SharedEdgeOps
@@ -112,7 +112,7 @@ public:
    * @param numEdges
    * @return
    */
-  static SharedEdgeList::Pointer CreateSharedEdgeList(int64_t numEdges, bool allocate = true);
+  static SharedEdgeList::Pointer CreateSharedEdgeList(size_t numEdges, bool allocate = true);
 
   // -----------------------------------------------------------------------------
   // Inherited from SharedQuadOps
@@ -123,13 +123,13 @@ public:
    * @param numQuads
    * @return
    */
-  static SharedQuadList::Pointer CreateSharedQuadList(int64_t numQuads, bool allocate = true);
+  static SharedQuadList::Pointer CreateSharedQuadList(size_t numQuads, bool allocate = true);
 
   /**
    * @brief resizeQuadList
    * @param newNumQuads
    */
-  void resizeQuadList(int64_t newNumQuads);
+  void resizeQuadList(size_t newNumQuads);
 
   /**
    * @brief setQuads
@@ -148,14 +148,14 @@ public:
    * @param quadId
    * @param verts
    */
-  void setVertsAtQuad(int64_t quadId, int64_t verts[4]);
+  void setVertsAtQuad(size_t quadId, size_t verts[4]);
 
   /**
    * @brief getVertsAtQuad
    * @param quadId
    * @param verts
    */
-  void getVertsAtQuad(int64_t quadId, int64_t verts[4]);
+  void getVertsAtQuad(size_t quadId, size_t verts[4]);
 
   /**
    * @brief getVertCoordsAtQuad
@@ -165,20 +165,20 @@ public:
    * @param vert3
    * @param vert4
    */
-  void getVertCoordsAtQuad(int64_t quadId, float vert1[3], float vert2[3], float vert3[3], float vert4[3]);
+  void getVertCoordsAtQuad(size_t quadId, float vert1[3], float vert2[3], float vert3[3], float vert4[3]);
 
   /**
    * @brief getPointer
    * @param i
    * @return
    */
-  int64_t* getQuadPointer(int64_t i);
+  size_t* getQuadPointer(size_t i);
 
   /**
    * @brief getNumberOfQuads
    * @return
    */
-  int64_t getNumberOfQuads();
+  size_t getNumberOfQuads();
 
   // -----------------------------------------------------------------------------
   // Inherited from IGeometry
@@ -334,7 +334,7 @@ public:
    * @brief resizeVertexList
    * @param newNumVertices
    */
-  void resizeVertexList(int64_t newNumVertices) override;
+  void resizeVertexList(size_t newNumVertices) override;
 
   /**
    * @brief setVertices
@@ -353,33 +353,33 @@ public:
    * @param vertId
    * @param coords
    */
-  void setCoords(int64_t vertId, float coords[3]) override;
+  void setCoords(size_t vertId, float coords[3]) override;
 
   /**
    * @brief getCoords
    * @param vertId
    * @param coords
    */
-  void getCoords(int64_t vertId, float coords[3]) override;
+  void getCoords(size_t vertId, float coords[3]) override;
 
   /**
    * @brief getVertexPointer
    * @param i
    * @return
    */
-  float* getVertexPointer(int64_t i) override;
+  float* getVertexPointer(size_t i) override;
 
   /**
    * @brief getNumberOfVertices
    * @return
    */
-  int64_t getNumberOfVertices() override;
+  size_t getNumberOfVertices() override;
 
   /**
    * @brief resizeEdgeList
    * @param newNumEdges
    */
-  void resizeEdgeList(int64_t newNumEdges) override;
+  void resizeEdgeList(size_t newNumEdges) override;
 
   /**
    * @brief getEdges
@@ -392,14 +392,14 @@ public:
    * @param edgeId
    * @param verts
    */
-  void setVertsAtEdge(int64_t edgeId, int64_t verts[2]) override;
+  void setVertsAtEdge(size_t edgeId, size_t verts[2]) override;
 
   /**
    * @brief getVerts
    * @param edgeId
    * @param verts
    */
-  void getVertsAtEdge(int64_t edgeId, int64_t verts[2]) override;
+  void getVertsAtEdge(size_t edgeId, size_t verts[2]) override;
 
   /**
    * @brief getVertCoordsAtEdge
@@ -407,20 +407,20 @@ public:
    * @param vert1
    * @param vert2
    */
-  void getVertCoordsAtEdge(int64_t edgeId, float vert1[3], float vert2[3]) override;
+  void getVertCoordsAtEdge(size_t edgeId, float vert1[3], float vert2[3]) override;
 
   /**
    * @brief getEdgePointer
    * @param i
    * @return
    */
-  int64_t* getEdgePointer(int64_t i) override;
+  size_t* getEdgePointer(size_t i) override;
 
   /**
    * @brief getNumberOfEdges
    * @return
    */
-  int64_t getNumberOfEdges() override;
+  size_t getNumberOfEdges() override;
 
   /**
    * @brief findElementEdges

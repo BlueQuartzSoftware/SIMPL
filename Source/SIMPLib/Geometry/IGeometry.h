@@ -52,14 +52,16 @@ class QTextStream;
 // -----------------------------------------------------------------------------
 // Typedefs
 // -----------------------------------------------------------------------------
+using MeshIndexType = size_t;
+using MeshIndexArrayType = DataArray<MeshIndexType>;
 using SharedVertexList = FloatArrayType;
-using SharedEdgeList = Int64ArrayType;
-using SharedTriList = Int64ArrayType;
-using SharedQuadList = Int64ArrayType;
-using SharedTetList = Int64ArrayType;
-using SharedHexList = Int64ArrayType;
-using SharedFaceList = Int64ArrayType;
-using ElementDynamicList = UInt16Int64DynamicListArray;
+using SharedEdgeList = DataArray<MeshIndexType>;
+using SharedTriList = DataArray<MeshIndexType>;
+using SharedQuadList = DataArray<MeshIndexType>;
+using SharedTetList = DataArray<MeshIndexType>;
+using SharedHexList = DataArray<MeshIndexType>;
+using SharedFaceList = DataArray<MeshIndexType>;
+using ElementDynamicList = DynamicListArray<uint16_t, MeshIndexType>;
 
 /**
  * @brief The IGeometry class

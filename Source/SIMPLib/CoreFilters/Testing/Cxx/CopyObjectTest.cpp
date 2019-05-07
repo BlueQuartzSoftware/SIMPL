@@ -344,9 +344,9 @@ public:
         EdgeGeom::Pointer oldEdgeGeom = std::dynamic_pointer_cast<EdgeGeom>(oldGeom);
         EdgeGeom::Pointer newEdgeGeom = std::dynamic_pointer_cast<EdgeGeom>(newGeom);
 
-        Int64ArrayType::Pointer oldEdges = oldEdgeGeom->getEdges();
-        Int64ArrayType::Pointer newEdges = newEdgeGeom->getEdges();
-        checkDataArray<int64_t>(oldEdges, newEdges, false);
+        SharedEdgeList::Pointer oldEdges = oldEdgeGeom->getEdges();
+        SharedEdgeList::Pointer newEdges = newEdgeGeom->getEdges();
+        checkDataArray<MeshIndexType>(oldEdges, newEdges, false);
 
         FloatArrayType::Pointer oldVertices = oldEdgeGeom->getVertices();
         FloatArrayType::Pointer newVertices = newEdgeGeom->getVertices();
@@ -369,21 +369,21 @@ public:
         TriangleGeom::Pointer oldTriangleGeom = std::dynamic_pointer_cast<TriangleGeom>(oldGeom);
         TriangleGeom::Pointer newTriangleGeom = std::dynamic_pointer_cast<TriangleGeom>(newGeom);
 
-        Int64ArrayType::Pointer oldTriangles = oldTriangleGeom->getTriangles();
-        Int64ArrayType::Pointer newTriangles = newTriangleGeom->getTriangles();
-        checkDataArray<int64_t>(oldTriangles, newTriangles, false);
+        SharedTriList::Pointer oldTriangles = oldTriangleGeom->getTriangles();
+        SharedTriList::Pointer newTriangles = newTriangleGeom->getTriangles();
+        checkDataArray<MeshIndexType>(oldTriangles, newTriangles, false);
 
         FloatArrayType::Pointer oldVertices = oldTriangleGeom->getVertices();
         FloatArrayType::Pointer newVertices = newTriangleGeom->getVertices();
         checkDataArray<float>(oldVertices, newVertices, false);
 
-        Int64ArrayType::Pointer oldEdges = oldTriangleGeom->getEdges();
-        Int64ArrayType::Pointer newEdges = newTriangleGeom->getEdges();
-        checkDataArray<int64_t>(oldEdges, newEdges, false);
+        SharedEdgeList::Pointer oldEdges = oldTriangleGeom->getEdges();
+        SharedEdgeList::Pointer newEdges = newTriangleGeom->getEdges();
+        checkDataArray<MeshIndexType>(oldEdges, newEdges, false);
 
-        Int64ArrayType::Pointer oldUnsharedEdges = oldTriangleGeom->getUnsharedEdges();
-        Int64ArrayType::Pointer newUnsharedEdges = newTriangleGeom->getUnsharedEdges();
-        checkDataArray<int64_t>(oldUnsharedEdges, newUnsharedEdges, false);
+        SharedEdgeList::Pointer oldUnsharedEdges = oldTriangleGeom->getUnsharedEdges();
+        SharedEdgeList::Pointer newUnsharedEdges = newTriangleGeom->getUnsharedEdges();
+        checkDataArray<MeshIndexType>(oldUnsharedEdges, newUnsharedEdges, false);
 
         ElementDynamicList::Pointer oldElementsContainingVert = oldTriangleGeom->getElementsContainingVert();
         ElementDynamicList::Pointer newElementsContainingVert = newTriangleGeom->getElementsContainingVert();
@@ -402,21 +402,21 @@ public:
         QuadGeom::Pointer oldQuadGeom = std::dynamic_pointer_cast<QuadGeom>(oldGeom);
         QuadGeom::Pointer newQuadGeom = std::dynamic_pointer_cast<QuadGeom>(newGeom);
 
-        Int64ArrayType::Pointer oldQuads = oldQuadGeom->getQuads();
-        Int64ArrayType::Pointer newQuads = newQuadGeom->getQuads();
-        checkDataArray<int64_t>(oldQuads, newQuads, false);
+        SharedQuadList::Pointer oldQuads = oldQuadGeom->getQuads();
+        SharedQuadList::Pointer newQuads = newQuadGeom->getQuads();
+        checkDataArray<MeshIndexType>(oldQuads, newQuads, false);
 
         FloatArrayType::Pointer oldVertices = oldQuadGeom->getVertices();
         FloatArrayType::Pointer newVertices = newQuadGeom->getVertices();
         checkDataArray<float>(oldVertices, newVertices, false);
 
-        Int64ArrayType::Pointer oldEdges = oldQuadGeom->getEdges();
-        Int64ArrayType::Pointer newEdges = newQuadGeom->getEdges();
-        checkDataArray<int64_t>(oldEdges, newEdges, false);
+        SharedEdgeList::Pointer oldEdges = oldQuadGeom->getEdges();
+        SharedEdgeList::Pointer newEdges = newQuadGeom->getEdges();
+        checkDataArray<MeshIndexType>(oldEdges, newEdges, false);
 
-        Int64ArrayType::Pointer oldUnsharedEdges = oldQuadGeom->getUnsharedEdges();
-        Int64ArrayType::Pointer newUnsharedEdges = newQuadGeom->getUnsharedEdges();
-        checkDataArray<int64_t>(oldUnsharedEdges, newUnsharedEdges, false);
+        SharedEdgeList::Pointer oldUnsharedEdges = oldQuadGeom->getUnsharedEdges();
+        SharedEdgeList::Pointer newUnsharedEdges = newQuadGeom->getUnsharedEdges();
+        checkDataArray<MeshIndexType>(oldUnsharedEdges, newUnsharedEdges, false);
 
         ElementDynamicList::Pointer oldElementsContainingVert = oldQuadGeom->getElementsContainingVert();
         ElementDynamicList::Pointer newElementsContainingVert = newQuadGeom->getElementsContainingVert();
@@ -435,29 +435,29 @@ public:
         TetrahedralGeom::Pointer oldTetrahedralGeom = std::dynamic_pointer_cast<TetrahedralGeom>(oldGeom);
         TetrahedralGeom::Pointer newTetrahedralGeom = std::dynamic_pointer_cast<TetrahedralGeom>(newGeom);
 
-        Int64ArrayType::Pointer oldTetrahedra = oldTetrahedralGeom->getTetrahedra();
-        Int64ArrayType::Pointer newTetrahedra = newTetrahedralGeom->getTetrahedra();
-        checkDataArray<int64_t>(oldTetrahedra, newTetrahedra, false);
+        SharedTetList::Pointer oldTetrahedra = oldTetrahedralGeom->getTetrahedra();
+        SharedTetList::Pointer newTetrahedra = newTetrahedralGeom->getTetrahedra();
+        checkDataArray<MeshIndexType>(oldTetrahedra, newTetrahedra, false);
 
         FloatArrayType::Pointer oldVertices = oldTetrahedralGeom->getVertices();
         FloatArrayType::Pointer newVertices = newTetrahedralGeom->getVertices();
         checkDataArray<float>(oldVertices, newVertices, false);
 
-        Int64ArrayType::Pointer oldEdges = oldTetrahedralGeom->getEdges();
-        Int64ArrayType::Pointer newEdges = newTetrahedralGeom->getEdges();
-        checkDataArray<int64_t>(oldEdges, newEdges, false);
+        SharedEdgeList::Pointer oldEdges = oldTetrahedralGeom->getEdges();
+        SharedEdgeList::Pointer newEdges = newTetrahedralGeom->getEdges();
+        checkDataArray<MeshIndexType>(oldEdges, newEdges, false);
 
-        Int64ArrayType::Pointer oldUnsharedEdges = oldTetrahedralGeom->getUnsharedEdges();
-        Int64ArrayType::Pointer newUnsharedEdges = newTetrahedralGeom->getUnsharedEdges();
-        checkDataArray<int64_t>(oldUnsharedEdges, newUnsharedEdges, false);
+        SharedEdgeList::Pointer oldUnsharedEdges = oldTetrahedralGeom->getUnsharedEdges();
+        SharedEdgeList::Pointer newUnsharedEdges = newTetrahedralGeom->getUnsharedEdges();
+        checkDataArray<MeshIndexType>(oldUnsharedEdges, newUnsharedEdges, false);
 
-        Int64ArrayType::Pointer oldTriangles = oldTetrahedralGeom->getTriangles();
-        Int64ArrayType::Pointer newTriangles = newTetrahedralGeom->getTriangles();
-        checkDataArray<int64_t>(oldTriangles, newTriangles, false);
+        SharedTriList::Pointer oldTriangles = oldTetrahedralGeom->getTriangles();
+        SharedTriList::Pointer newTriangles = newTetrahedralGeom->getTriangles();
+        checkDataArray<MeshIndexType>(oldTriangles, newTriangles, false);
 
-        Int64ArrayType::Pointer oldUnsharedFaces = oldTetrahedralGeom->getUnsharedFaces();
-        Int64ArrayType::Pointer newUnsharedFaces = newTetrahedralGeom->getUnsharedFaces();
-        checkDataArray<int64_t>(oldUnsharedFaces, newUnsharedFaces, false);
+        SharedTriList::Pointer oldUnsharedFaces = oldTetrahedralGeom->getUnsharedFaces();
+        SharedTriList::Pointer newUnsharedFaces = newTetrahedralGeom->getUnsharedFaces();
+        checkDataArray<MeshIndexType>(oldUnsharedFaces, newUnsharedFaces, false);
 
         ElementDynamicList::Pointer oldElementsContainingVert = oldTetrahedralGeom->getElementsContainingVert();
         ElementDynamicList::Pointer newElementsContainingVert = newTetrahedralGeom->getElementsContainingVert();
@@ -476,29 +476,29 @@ public:
         HexahedralGeom::Pointer oldHexahedralGeom = std::dynamic_pointer_cast<HexahedralGeom>(oldGeom);
         HexahedralGeom::Pointer newHexahedralGeom = std::dynamic_pointer_cast<HexahedralGeom>(newGeom);
 
-        Int64ArrayType::Pointer oldHexahedra = oldHexahedralGeom->getHexahedra();
-        Int64ArrayType::Pointer newHexahedra = newHexahedralGeom->getHexahedra();
-        checkDataArray<int64_t>(oldHexahedra, newHexahedra, false);
+        SharedHexList::Pointer oldHexahedra = oldHexahedralGeom->getHexahedra();
+        SharedHexList::Pointer newHexahedra = newHexahedralGeom->getHexahedra();
+        checkDataArray<MeshIndexType>(oldHexahedra, newHexahedra, false);
 
         FloatArrayType::Pointer oldVertices = oldHexahedralGeom->getVertices();
         FloatArrayType::Pointer newVertices = newHexahedralGeom->getVertices();
         checkDataArray<float>(oldVertices, newVertices, false);
 
-        Int64ArrayType::Pointer oldEdges = oldHexahedralGeom->getEdges();
-        Int64ArrayType::Pointer newEdges = newHexahedralGeom->getEdges();
-        checkDataArray<int64_t>(oldEdges, newEdges, false);
+        SharedEdgeList::Pointer oldEdges = oldHexahedralGeom->getEdges();
+        SharedEdgeList::Pointer newEdges = newHexahedralGeom->getEdges();
+        checkDataArray<MeshIndexType>(oldEdges, newEdges, false);
 
-        Int64ArrayType::Pointer oldUnsharedEdges = oldHexahedralGeom->getUnsharedEdges();
-        Int64ArrayType::Pointer newUnsharedEdges = newHexahedralGeom->getUnsharedEdges();
-        checkDataArray<int64_t>(oldUnsharedEdges, newUnsharedEdges, false);
+        SharedEdgeList::Pointer oldUnsharedEdges = oldHexahedralGeom->getUnsharedEdges();
+        SharedEdgeList::Pointer newUnsharedEdges = newHexahedralGeom->getUnsharedEdges();
+        checkDataArray<MeshIndexType>(oldUnsharedEdges, newUnsharedEdges, false);
 
-        Int64ArrayType::Pointer oldQuads = oldHexahedralGeom->getQuads();
-        Int64ArrayType::Pointer newQuads = newHexahedralGeom->getQuads();
-        checkDataArray<int64_t>(oldQuads, newQuads, false);
+        SharedQuadList::Pointer oldQuads = oldHexahedralGeom->getQuads();
+        SharedQuadList::Pointer newQuads = newHexahedralGeom->getQuads();
+        checkDataArray<MeshIndexType>(oldQuads, newQuads, false);
 
-        Int64ArrayType::Pointer oldUnsharedFaces = oldHexahedralGeom->getUnsharedFaces();
-        Int64ArrayType::Pointer newUnsharedFaces = newHexahedralGeom->getUnsharedFaces();
-        checkDataArray<int64_t>(oldUnsharedFaces, newUnsharedFaces, false);
+        SharedQuadList::Pointer oldUnsharedFaces = oldHexahedralGeom->getUnsharedFaces();
+        SharedQuadList::Pointer newUnsharedFaces = newHexahedralGeom->getUnsharedFaces();
+        checkDataArray<MeshIndexType>(oldUnsharedFaces, newUnsharedFaces, false);
 
         ElementDynamicList::Pointer oldElementsContainingVert = oldHexahedralGeom->getElementsContainingVert();
         ElementDynamicList::Pointer newElementsContainingVert = newHexahedralGeom->getElementsContainingVert();
@@ -795,10 +795,10 @@ public:
     // Edge
 
     vertices = {{1.0f, 1.0f, 0.0f}, {3.0f, 1.0f, 0.0f}};
-    std::vector<std::vector<int64_t>> elements = {{0, 1}};
+    std::vector<std::vector<MeshIndexType>> elements = {{0, 1}};
 
     DataArray<float>::Pointer daEdgeVert = createDataArray<float>(k_VerticesDAName, vertices, m_Dims2, m_Dims3);
-    DataArray<int64_t>::Pointer daEdgeList = createDataArray<int64_t>(k_ElementListDAName, elements, m_Dims1, m_Dims2);
+    SharedEdgeList::Pointer daEdgeList = createDataArray<MeshIndexType>(k_ElementListDAName, elements, m_Dims1, m_Dims2);
 
     EdgeGeom::Pointer edgeGeom = EdgeGeom::CreateGeometry(daEdgeList, daEdgeVert, SIMPL::Geometry::EdgeGeometry);
 
@@ -808,7 +808,7 @@ public:
     elements = {{0, 1, 2}};
 
     DataArray<float>::Pointer daTriVert = createDataArray<float>(k_VerticesDAName, vertices, m_Dims3, m_Dims3);
-    DataArray<int64_t>::Pointer daTriList = createDataArray<int64_t>(k_ElementListDAName, elements, m_Dims1, m_Dims3);
+    SharedTriList::Pointer daTriList = createDataArray<MeshIndexType>(k_ElementListDAName, elements, m_Dims1, m_Dims3);
 
     TriangleGeom::Pointer triGeom = TriangleGeom::CreateGeometry(daTriList, daTriVert, SIMPL::Geometry::TriangleGeometry);
     triGeom->setName("triGeom");
@@ -819,7 +819,7 @@ public:
     elements = {{0, 1, 2, 3}};
 
     DataArray<float>::Pointer daQuadVert = createDataArray<float>(k_VerticesDAName, vertices, m_Dims4, m_Dims3);
-    DataArray<int64_t>::Pointer daQuadList = createDataArray<int64_t>(k_ElementListDAName, elements, m_Dims1, m_Dims4);
+    SharedQuadList::Pointer daQuadList = createDataArray<MeshIndexType>(k_ElementListDAName, elements, m_Dims1, m_Dims4);
 
     QuadGeom::Pointer quadGeom = QuadGeom::CreateGeometry(daQuadList, daQuadVert, SIMPL::Geometry::QuadGeometry);
     quadGeom->setName("quadGeom");
@@ -831,7 +831,7 @@ public:
     elements = {{0, 1, 2, 3}};
 
     DataArray<float>::Pointer daTetVert = createDataArray<float>(k_VerticesDAName, vertices, m_Dims4, m_Dims3);
-    DataArray<int64_t>::Pointer daTetList = createDataArray<int64_t>(k_ElementListDAName, elements, m_Dims1, m_Dims4);
+    SharedTetList::Pointer daTetList = createDataArray<MeshIndexType>(k_ElementListDAName, elements, m_Dims1, m_Dims4);
 
     TetrahedralGeom::Pointer tetGeom = TetrahedralGeom::CreateGeometry(daTetList, daTetVert, SIMPL::Geometry::TetrahedralGeometry);
     tetGeom->setName("tetGeom");
@@ -843,7 +843,7 @@ public:
     elements = {{0, 1, 2, 3, 4, 5, 6, 7}};
 
     DataArray<float>::Pointer daHexVert = createDataArray<float>(k_VerticesDAName, vertices, m_Dims8, m_Dims3);
-    DataArray<int64_t>::Pointer daHexList = createDataArray<int64_t>(k_ElementListDAName, elements, m_Dims1, m_Dims8);
+    SharedHexList::Pointer daHexList = createDataArray<MeshIndexType>(k_ElementListDAName, elements, m_Dims1, m_Dims8);
 
     HexahedralGeom::Pointer hexGeom = HexahedralGeom::CreateGeometry(daHexList, daHexVert, SIMPL::Geometry::HexahedralGeometry);
     hexGeom->setName("hexGeom");

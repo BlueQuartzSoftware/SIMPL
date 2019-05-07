@@ -65,27 +65,27 @@
 class FindQuadDerivativesImpl
 {
 public:
-  FindQuadDerivativesImpl(QuadGeom* quads, DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivs)
+  FindQuadDerivativesImpl(QuadGeom* quads, const DoubleArrayType::Pointer& field, const DoubleArrayType::Pointer& derivs)
   : m_Quads(quads)
   , m_Field(field)
   , m_Derivatives(derivs)
   {
   }
 
-  void compute(int64_t start, int64_t end) const
+  void compute(size_t start, size_t end) const
   {
     int32_t cDims = m_Field->getNumberOfComponents();
     double* fieldPtr = m_Field->getPointer(0);
     double* derivsPtr = m_Derivatives->getPointer(0);
     double values[4] = {0.0, 0.0, 0.0, 0.0};
     double derivs[3] = {0.0, 0.0, 0.0};
-    int64_t verts[4] = {0, 0, 0, 0};
+    size_t verts[4] = {0, 0, 0, 0};
 
-    int64_t counter = 0;
-    int64_t totalElements = m_Quads->getNumberOfQuads();
-    int64_t progIncrement = static_cast<int64_t>(totalElements / 100);
+    size_t counter = 0;
+    size_t totalElements = m_Quads->getNumberOfQuads();
+    size_t progIncrement = static_cast<size_t>(totalElements / 100);
 
-    for(int64_t i = start; i < end; i++)
+    for(size_t i = start; i < end; i++)
     {
       m_Quads->getVertsAtQuad(i, verts);
       for(size_t j = 0; j < cDims; j++)
@@ -110,7 +110,7 @@ public:
   }
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  void operator()(const tbb::blocked_range<int64_t>& r) const
+  void operator()(const tbb::blocked_range<size_t>& r) const
   {
     compute(r.begin(), r.end());
   }
@@ -150,7 +150,7 @@ QuadGeom::~QuadGeom() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QuadGeom::Pointer QuadGeom::CreateGeometry(int64_t numQuads, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
+QuadGeom::Pointer QuadGeom::CreateGeometry(size_t numQuads, const SharedVertexList::Pointer& vertices, const QString& name, bool allocate)
 {
   if(name.isEmpty())
   {
@@ -168,7 +168,7 @@ QuadGeom::Pointer QuadGeom::CreateGeometry(int64_t numQuads, SharedVertexList::P
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QuadGeom::Pointer QuadGeom::CreateGeometry(SharedQuadList::Pointer quads, SharedVertexList::Pointer vertices, const QString& name)
+QuadGeom::Pointer QuadGeom::CreateGeometry(const SharedQuadList::Pointer& quads, const SharedVertexList::Pointer& vertices, const QString& name)
 {
   if(name.isEmpty())
   {
@@ -209,11 +209,11 @@ void QuadGeom::addOrReplaceAttributeMatrix(const QString& name, AttributeMatrix:
     // QuadGeom can only accept vertex, edge, or face Attribute Matrices
     return;
   }
-  if(data->getType() == AttributeMatrix::Type::Vertex && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfVertices())
+  if(data->getType() == AttributeMatrix::Type::Vertex && static_cast<size_t>(data->getNumberOfTuples()) != getNumberOfVertices())
   {
     return;
   }
-  if(data->getType() == AttributeMatrix::Type::Edge && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfEdges())
+  if(data->getType() == AttributeMatrix::Type::Edge && static_cast<size_t>(data->getNumberOfTuples()) != getNumberOfEdges())
   {
     return;
   }
@@ -242,7 +242,7 @@ size_t QuadGeom::getNumberOfElements()
 int QuadGeom::findEdges()
 {
   m_EdgeList = CreateSharedEdgeList(0);
-  GeometryHelpers::Connectivity::Find2DElementEdges<int64_t>(m_QuadList, m_EdgeList);
+  GeometryHelpers::Connectivity::Find2DElementEdges<size_t>(m_QuadList, m_EdgeList);
   if(m_EdgeList.get() == nullptr)
   {
     return -1;
@@ -264,7 +264,7 @@ void QuadGeom::deleteEdges()
 int QuadGeom::findElementsContainingVert()
 {
   m_QuadsContainingVert = ElementDynamicList::New();
-  GeometryHelpers::Connectivity::FindElementsContainingVert<uint16_t, int64_t>(m_QuadList, m_QuadsContainingVert, getNumberOfVertices());
+  GeometryHelpers::Connectivity::FindElementsContainingVert<uint16_t, size_t>(m_QuadList, m_QuadsContainingVert, getNumberOfVertices());
   if(m_QuadsContainingVert.get() == nullptr)
   {
     return -1;
@@ -311,7 +311,7 @@ int QuadGeom::findElementNeighbors()
     }
   }
   m_QuadNeighbors = ElementDynamicList::New();
-  err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_QuadList, m_QuadsContainingVert, m_QuadNeighbors, IGeometry::Type::Quad);
+  err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, size_t>(m_QuadList, m_QuadsContainingVert, m_QuadNeighbors, IGeometry::Type::Quad);
   if(m_QuadNeighbors.get() == nullptr)
   {
     return -1;
@@ -350,7 +350,7 @@ int QuadGeom::findElementCentroids()
 {
   QVector<size_t> cDims(1, 3);
   m_QuadCentroids = FloatArrayType::CreateArray(getNumberOfQuads(), cDims, SIMPL::StringConstants::QuadCentroids);
-  GeometryHelpers::Topology::FindElementCentroids<int64_t>(m_QuadList, m_VertexList, m_QuadCentroids);
+  GeometryHelpers::Topology::FindElementCentroids<size_t>(m_QuadList, m_VertexList, m_QuadCentroids);
   if(m_QuadCentroids.get() == nullptr)
   {
     return -1;
@@ -389,7 +389,7 @@ int QuadGeom::findElementSizes()
 {
   QVector<size_t> cDims(1, 1);
   m_QuadSizes = FloatArrayType::CreateArray(getNumberOfQuads(), cDims, SIMPL::StringConstants::QuadAreas);
-  GeometryHelpers::Topology::Find2DElementAreas<int64_t>(m_QuadList, m_VertexList, m_QuadSizes);
+  GeometryHelpers::Topology::Find2DElementAreas<size_t>(m_QuadList, m_VertexList, m_QuadSizes);
   if(m_QuadSizes.get() == nullptr)
   {
     return -1;
@@ -428,7 +428,7 @@ int QuadGeom::findUnsharedEdges()
 {
   QVector<size_t> cDims(1, 2);
   m_UnsharedEdgeList = SharedEdgeList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedEdgeList);
-  GeometryHelpers::Connectivity::Find2DUnsharedEdges<int64_t>(m_QuadList, m_UnsharedEdgeList);
+  GeometryHelpers::Connectivity::Find2DUnsharedEdges<size_t>(m_QuadList, m_UnsharedEdgeList);
   if(m_UnsharedEdgeList.get() == nullptr)
   {
     return -1;
@@ -497,7 +497,7 @@ void QuadGeom::getShapeFunctions(double pCoords[3], double* shape)
 void QuadGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable)
 {
   m_ProgressCounter = 0;
-  int64_t numQuads = getNumberOfQuads();
+  size_t numQuads = getNumberOfQuads();
 
   if(observable != nullptr)
   {
@@ -512,7 +512,7 @@ void QuadGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   if(doParallel)
   {
-    tbb::parallel_for(tbb::blocked_range<int64_t>(0, numQuads), FindQuadDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());
+    tbb::parallel_for(tbb::blocked_range<size_t>(0, numQuads), FindQuadDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());
   }
   else
 #endif
@@ -586,7 +586,7 @@ int QuadGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
   if(m_QuadNeighbors.get() != nullptr)
   {
     size_t numQuads = getNumberOfQuads();
-    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_QuadNeighbors, numQuads, SIMPL::StringConstants::QuadNeighbors);
+    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, size_t>(parentId, m_QuadNeighbors, numQuads, SIMPL::StringConstants::QuadNeighbors);
     if(err < 0)
     {
       return err;
@@ -596,7 +596,7 @@ int QuadGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
   if(m_QuadsContainingVert.get() != nullptr)
   {
     size_t numVerts = getNumberOfVertices();
-    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_QuadsContainingVert, numVerts, SIMPL::StringConstants::QuadsContainingVert);
+    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, size_t>(parentId, m_QuadsContainingVert, numVerts, SIMPL::StringConstants::QuadsContainingVert);
     if(err < 0)
     {
       return err;
@@ -669,10 +669,10 @@ QString QuadGeom::getInfoString(SIMPL::InfoStringFormat format)
   if(format == SIMPL::HtmlFormat)
   {
     ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Geometry Info</th></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type</th><td>" << TypeToString(getGeometryType()) << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Type</th><td>)" << TypeToString(getGeometryType()) << "</td></tr>";
     ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Units</th><td>)" << LengthUnitToString(getUnits()) << "</td></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Quads</th><td>" << getNumberOfQuads() << "</td></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Vertices</th><td>" << getNumberOfVertices() << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Number of Quads</th><td>)" << getNumberOfQuads() << "</td></tr>";
+    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Number of Vertices</th><td>)" << getNumberOfVertices() << "</td></tr>";
     ss << "</tbody></table>";
   }
   else
@@ -688,19 +688,39 @@ int QuadGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 {
   herr_t err = 0;
   SharedVertexList::Pointer vertices = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedVertexList>(SIMPL::Geometry::SharedVertexList, parentId, preflight, err);
-  SharedQuadList::Pointer quads = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedQuadList>(SIMPL::Geometry::SharedQuadList, parentId, preflight, err);
+  // The cast from the method is going to fail so create a temp DataArray<uint64_t>
+  DataArray<uint64_t>::Pointer tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<DataArray<uint64_t>>(SIMPL::Geometry::SharedQuadList, parentId, preflight, err);
+  // Now create the correct type and pass in the pointer to tempTris.
+  SharedQuadList::Pointer quads =
+      SharedTriList::WrapPointer(reinterpret_cast<size_t*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
+  // Release the ownership of the memory from TempTris and essentially pass it to tris.
+  tempUInt64->releaseOwnership();
   if(quads.get() == nullptr || vertices.get() == nullptr)
   {
     return -1;
   }
   size_t numQuads = quads->getNumberOfTuples();
   size_t numVerts = vertices->getNumberOfTuples();
-  SharedEdgeList::Pointer edges = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedEdgeList>(SIMPL::Geometry::SharedEdgeList, parentId, preflight, err);
+
+  // The cast from the method is going to fail so create a temp DataArray<uint64_t>
+  tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<DataArray<uint64_t>>(SIMPL::Geometry::SharedEdgeList, parentId, preflight, err);
+  // Now create the correct type and pass in the pointer to tempTris.
+  SharedEdgeList::Pointer edges =
+      SharedEdgeList::WrapPointer(reinterpret_cast<size_t*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
+  // Release the ownership of the memory from TempTris and essentially pass it to tris.
+  tempUInt64->releaseOwnership();
   if(err < 0 && err != -2)
   {
     return -1;
   }
-  SharedEdgeList::Pointer bEdges = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedEdgeList>(SIMPL::Geometry::UnsharedEdgeList, parentId, preflight, err);
+
+  // The cast from the method is going to fail so create a temp DataArray<uint64_t>
+  tempUInt64 = GeometryHelpers::GeomIO::ReadListFromHDF5<DataArray<uint64_t>>(SIMPL::Geometry::UnsharedEdgeList, parentId, preflight, err);
+  // Now create the correct type and pass in the pointer to tempTris.
+  SharedEdgeList::Pointer bEdges =
+      SharedEdgeList::WrapPointer(reinterpret_cast<size_t*>(tempUInt64->data()), tempUInt64->getNumberOfTuples(), tempUInt64->getComponentDimensions(), tempUInt64->getName(), true);
+  // Release the ownership of the memory from TempTris and essentially pass it to tris.
+  tempUInt64->releaseOwnership();
   if(err < 0 && err != -2)
   {
     return -1;
@@ -715,13 +735,13 @@ int QuadGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   {
     return -1;
   }
-  ElementDynamicList::Pointer quadNeighbors = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::QuadNeighbors, parentId, numQuads, preflight, err);
+  ElementDynamicList::Pointer quadNeighbors = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, MeshIndexType>(SIMPL::StringConstants::QuadNeighbors, parentId, numQuads, preflight, err);
   if(err < 0 && err != -2)
   {
     return -1;
   }
   ElementDynamicList::Pointer quadsContainingVert =
-      GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::QuadsContainingVert, parentId, numVerts, preflight, err);
+      GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, MeshIndexType>(SIMPL::StringConstants::QuadsContainingVert, parentId, numVerts, preflight, err);
   if(err < 0 && err != -2)
   {
     return -1;

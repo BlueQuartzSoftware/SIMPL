@@ -36,7 +36,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SharedVertexList::Pointer GEOM_CLASS_NAME::CreateSharedVertexList(int64_t numVertices, bool allocate)
+SharedVertexList::Pointer GEOM_CLASS_NAME::CreateSharedVertexList(size_t numVertices, bool allocate)
 {
   QVector<size_t> vertDims(1, 3);
   SharedVertexList::Pointer vertices = SharedVertexList::CreateArray(numVertices, vertDims, SIMPL::Geometry::SharedVertexList, allocate);
@@ -47,7 +47,7 @@ SharedVertexList::Pointer GEOM_CLASS_NAME::CreateSharedVertexList(int64_t numVer
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::resizeVertexList(int64_t newNumVertices)
+void GEOM_CLASS_NAME::resizeVertexList(size_t newNumVertices)
 {
   m_VertexList->resizeTuples(newNumVertices);
 }
@@ -59,7 +59,7 @@ void GEOM_CLASS_NAME::setVertices(SharedVertexList::Pointer vertices)
 {
   if(vertices.get() != nullptr)
   {
-    if(vertices->getName().compare(SIMPL::Geometry::SharedVertexList) != 0)
+    if(vertices->getName() != SIMPL::Geometry::SharedVertexList)
     {
       vertices->setName(SIMPL::Geometry::SharedVertexList);
     }
@@ -78,7 +78,7 @@ SharedVertexList::Pointer GEOM_CLASS_NAME::getVertices()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::setCoords(int64_t vertId, float coords[3])
+void GEOM_CLASS_NAME::setCoords(size_t vertId, float coords[3])
 {
   float* Vert = m_VertexList->getTuplePointer(vertId);
   Vert[0] = coords[0];
@@ -89,7 +89,7 @@ void GEOM_CLASS_NAME::setCoords(int64_t vertId, float coords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GEOM_CLASS_NAME::getCoords(int64_t vertId, float coords[3])
+void GEOM_CLASS_NAME::getCoords(size_t vertId, float coords[3])
 {
   float* Vert = m_VertexList->getTuplePointer(vertId);
   coords[0] = Vert[0];
@@ -100,7 +100,7 @@ void GEOM_CLASS_NAME::getCoords(int64_t vertId, float coords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-float* GEOM_CLASS_NAME::getVertexPointer(int64_t i)
+float* GEOM_CLASS_NAME::getVertexPointer(size_t i)
 {
   return m_VertexList->getTuplePointer(i);
 }
@@ -108,7 +108,7 @@ float* GEOM_CLASS_NAME::getVertexPointer(int64_t i)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int64_t GEOM_CLASS_NAME::getNumberOfVertices()
+size_t GEOM_CLASS_NAME::getNumberOfVertices()
 {
   return m_VertexList->getNumberOfTuples();
 }

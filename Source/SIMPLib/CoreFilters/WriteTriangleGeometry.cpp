@@ -180,11 +180,11 @@ void WriteTriangleGeometry::execute()
   TriangleGeom::Pointer triangleGeom = dataContainer->getGeometryAs<TriangleGeom>();
   QString geometryType = triangleGeom->getGeometryTypeAsString();
   float* nodes = triangleGeom->getVertexPointer(0);
-  int64_t* triangles = triangleGeom->getTriPointer(0);
+  size_t* triangles = triangleGeom->getTriPointer(0);
 
-  int64_t numNodes = triangleGeom->getNumberOfVertices();
-  int64_t maxNodeId = numNodes - 1;
-  int64_t numTriangles = triangleGeom->getNumberOfTris();
+  size_t numNodes = triangleGeom->getNumberOfVertices();
+  size_t maxNodeId = numNodes - 1;
+  size_t numTriangles = triangleGeom->getNumberOfTris();
 
   // ++++++++++++++ Write the Nodes File +++++++++++++++++++++++++++++++++++++++++++
   // Make sure any directory path is also available as the user may have just typed
@@ -222,7 +222,7 @@ void WriteTriangleGeometry::execute()
   outFileNodes.setRealNumberPrecision(5);
   outFileNodes.setRealNumberNotation(QTextStream::FixedNotation);
 
-  for(int64_t i = 0; i < numNodes; i++)
+  for(size_t i = 0; i < numNodes; i++)
   {
     outFileNodes.setFieldWidth(8);
     outFileNodes << nodes[i * 3] << qSetFieldWidth(0);
@@ -270,7 +270,7 @@ void WriteTriangleGeometry::execute()
   outFileTri << "Triangle Count: " << numTriangles << "\n";
 
   int n1, n2, n3;
-  for(int64_t j = 0; j < numTriangles; ++j)
+  for(size_t j = 0; j < numTriangles; ++j)
   {
     n1 = triangles[j * 3];
     n2 = triangles[j * 3 + 1];
