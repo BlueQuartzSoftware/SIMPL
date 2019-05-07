@@ -206,6 +206,14 @@ protected:
   void findExpandedChildren(QAbstractItemModel* model, const QModelIndex& index, QVector<QModelIndex>& expandedVector);
 
   /**
+   * @brief rowsInserted
+   * @param parent
+   * @param start
+   * @param end
+   */
+  void rowsInserted(const QModelIndex& parent, int start, int end) override;
+
+  /**
    * @brief Create custom context menu
    * @param event
    */

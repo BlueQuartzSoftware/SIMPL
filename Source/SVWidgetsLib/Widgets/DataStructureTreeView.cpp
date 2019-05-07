@@ -520,3 +520,17 @@ void DataStructureTreeView::search(const QString& name)
   }
   update();
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureTreeView::rowsInserted(const QModelIndex& parent, int start, int end)
+{
+  QTreeView::rowsInserted(parent, start, end);
+
+  // Expand if the specified parent did not have children previously
+  if(0 == start && !parent.child(end + 1, 0).isValid())
+  {
+    expand(parent);
+  }
+}

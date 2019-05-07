@@ -241,7 +241,6 @@ void DataStructureWidget::refreshData()
       path.push_front(item->text());
       item = item->parent();
     }
-
   }
 
   model = m_Ui->dataBrowserTreeView->getStandardModel();
@@ -263,8 +262,7 @@ void DataStructureWidget::refreshData()
     if(dcItem == nullptr)
     {
       dcItem = new QStandardItem(dc->getName());
-      rootItem->appendRow(dcItem);
-      //      dcItem->setBackground(QBrush(QColor(154, 136, 255)));
+      model->appendRow(dcItem);
       m_Ui->dataBrowserTreeView->expand(dcItem->index());
     }
     dcItem->setData(dc->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
@@ -319,7 +317,6 @@ void DataStructureWidget::refreshData()
       if(amItem == nullptr)
       {
         amItem = new QStandardItem(am->getName());
-        //          amItem->setBackground(QColor(128, 224, 138));
         dcItem->appendRow(amItem);
         m_Ui->dataBrowserTreeView->expand(amItem->index());
       }
@@ -344,13 +341,8 @@ void DataStructureWidget::refreshData()
         if(aaItem == nullptr)
         {
           aaItem = new QStandardItem(attrArrayName);
-          // aaItem->setBackground(QColor(255, 210, 173));
           amItem->appendRow(aaItem);
         }
-        //        else
-        //        {
-        //          aaItem->setBackground(QColor(255, 255, 255));
-        //        }
         aaItem->setData(attrArray->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
         aaItem->setToolTip(attrArray->getInfoString(SIMPL::HtmlFormat));
         aaItem->setIcon(QIcon());
@@ -367,7 +359,6 @@ void DataStructureWidget::refreshData()
   }
   removeNonexistingEntries(rootItem, m_Dca->getDataContainerNames(), 0);
 
-  m_Ui->dataBrowserTreeView->expandAll();
   // repaint the DataStructureTreeView
   m_Ui->dataBrowserTreeView->repaint();
 }
