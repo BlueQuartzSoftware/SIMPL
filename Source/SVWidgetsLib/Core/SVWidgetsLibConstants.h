@@ -80,6 +80,9 @@ namespace SIMPLView
     const QString GroupName("DockWidgetSettings");
     const QString IssuesDockGroupName("Issues Dock Widget");
     const QString StandardOutputGroupName("Standard Output Dock Widget");
+    const QString RenderPropertiesGroupName("Render Properties Dock Widget");
+    const QString VisualizationFiltersGroupName("Visualization Filters Dock Widget");
+    const QString VisualizationSliderGroupName("Visualization Slider");
     const QString KeyName("Show / Hide On Error");
     enum class HideDockSetting : int
     {
