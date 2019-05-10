@@ -119,7 +119,10 @@ class SVWidgetsLib_EXPORT SVStyle : public QObject
     Q_PROPERTY(QColor QGroupBoxTitle_background_color READ getQGroupBoxTitle_background_color WRITE setQGroupBoxTitle_background_color)    
     
     SIMPL_INSTANCE_PROPERTY(QColor, QGroupBox_background_color)    
-    Q_PROPERTY(QColor QGroupBox_background_color READ getQGroupBox_background_color WRITE setQGroupBox_background_color)    
+    Q_PROPERTY(QColor QGroupBox_background_color READ getQGroupBox_background_color WRITE setQGroupBox_background_color)
+
+    SIMPL_INSTANCE_PROPERTY(QColor, QGroupBox_border_color)
+    Q_PROPERTY(QColor QGroupBox_border_color READ getQGroupBox_border_color WRITE setQGroupBox_border_color)
     
     SIMPL_INSTANCE_PROPERTY(QColor, QDockWidget_border_color)    
     Q_PROPERTY(QColor QDockWidget_border_color READ getQDockWidget_border_color WRITE setQDockWidget_border_color)    
