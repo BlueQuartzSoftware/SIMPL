@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+* Copyright (c) 2009-2019 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -62,7 +62,10 @@ class SVWidgetsLib_EXPORT StatusBarWidget : public QFrame, private Ui::StatusBar
       Pipeline = 3,
       FilterList = 4,
       FilterLibrary = 5,
-      Bookmarks = 6
+      Bookmarks = 6,
+      RenderProperties,
+      VisualFilters,
+      VisualFilterSettings
     };
 
     /**
@@ -80,7 +83,7 @@ class SVWidgetsLib_EXPORT StatusBarWidget : public QFrame, private Ui::StatusBar
      * @param action
      * @param btn
      */
-    void setButtonAction(QDockWidget *dock, Button btn);
+    void setButtonAction(QDockWidget* dock, Button btn);
 
     /**
      * @brief updateStyle
@@ -136,6 +139,24 @@ class SVWidgetsLib_EXPORT StatusBarWidget : public QFrame, private Ui::StatusBar
     void bookmarksVisibilityChanged(bool b);
     
     /**
+     * @brief renderPropVisibilityChanged
+     * @param b
+     */
+    void renderPropVisibilityChanged(bool b);
+
+    /**
+     * @brief visualFiltersVisibilityChanged
+     * @param b
+     */
+    void visualFiltersVisibilityChanged(bool b);
+
+    /**
+     * @brief visualFilterSettingsVisibilityChanged
+     * @param b
+     */
+    void visualFilterSettingsVisibilityChanged(bool b);
+    
+    /**
      * @brief issuesTableHasErrors
      * @param b
      */
@@ -158,6 +179,9 @@ class SVWidgetsLib_EXPORT StatusBarWidget : public QFrame, private Ui::StatusBar
     QAction* m_FilterListBtnToggleAction = nullptr;
     QAction* m_FilterLibraryBtnToggleAction = nullptr;
     QAction* m_BookmarksBtnToggleAction = nullptr;
+    QAction* m_RenderPropBtnToggleAction = nullptr;
+    QAction* m_VisualFiltersBtnToggleAction = nullptr;
+    QAction* m_VisualFilterSettingsBtnToggleAction = nullptr;
 
     /**
      * @brief addButtonVisibilityAction

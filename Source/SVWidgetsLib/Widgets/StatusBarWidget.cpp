@@ -44,6 +44,22 @@
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
+namespace Constants
+{
+  const QString StatusBarGroup = "Status Bar Widget";
+  const QString VisibilityGroup = "Button Visibility";
+  const QString FilterListPref = "Filter List";
+  const QString FilterLibraryPref = "Filter Library";
+  const QString BookmarksPref = "Bookmarks";
+  const QString PipelinePref = "Pipeline";
+  const QString IssuesPref = "Issues";
+  const QString DataBrowserPref = "Data Browser";
+  const QString ConsolePref = "Console";
+  const QString RenderPropPref = "Render Properties";
+  const QString VisualFiltersPref = "Visual Filters";
+  const QString VisualFilterSettingsPref = "Visual Filter Settings";
+}
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -70,6 +86,17 @@ void StatusBarWidget::setupGui()
 //  issuesBtn->setStyleSheet(style);
 //  dataBrowserBtn->setStyleSheet(style);
 
+  issuesBtn->setVisible(false);
+  consoleBtn->setVisible(false);
+  dataBrowserBtn->setVisible(false);
+  pipelineBtn->setVisible(false);
+  filterListBtn->setVisible(false);
+  filterLibraryBtn->setVisible(false);
+  bookmarksBtn->setVisible(false);
+  renderPropBtn->setVisible(false);
+  visualFiltersBtn->setVisible(false);
+  visualFilterSettingsBtn->setVisible(false);
+
   m_ButtonListMenu = new QMenu(buttonListBtn);
 
   connect(buttonListBtn, &QPushButton::clicked, [=] {
@@ -84,16 +111,19 @@ void StatusBarWidget::readSettings()
 {
   QSharedPointer<QtSSettings> prefs = QSharedPointer<QtSSettings>(new QtSSettings());
 
-  prefs->beginGroup("Status Bar Widget");
+  prefs->beginGroup(Constants::StatusBarGroup);
 
-  prefs->beginGroup("Button Visibility");
-  m_FilterListBtnToggleAction->setChecked(prefs->value("Filter List", QVariant(false)).toBool());
-  m_FilterLibraryBtnToggleAction->setChecked(prefs->value("Filter Library", QVariant(false)).toBool());
-  m_BookmarksBtnToggleAction->setChecked(prefs->value("Bookmarks", QVariant(false)).toBool());
-  m_PipelineBtnToggleAction->setChecked(prefs->value("Pipeline", QVariant(true)).toBool());
-  m_IssuesBtnToggleAction->setChecked(prefs->value("Issues", QVariant(true)).toBool());
-  m_DataBrowserBtnToggleAction->setChecked(prefs->value("Data Browser", QVariant(true)).toBool());
-  m_ConsoleBtnToggleAction->setChecked(prefs->value("Console", QVariant(true)).toBool());
+  prefs->beginGroup(Constants::VisibilityGroup);
+  //m_FilterListBtnToggleAction->setChecked(prefs->value(Constants::FilterListPref, QVariant(false)).toBool());
+  //m_FilterLibraryBtnToggleAction->setChecked(prefs->value(Constants::FilterLibraryPref, QVariant(false)).toBool());
+  //m_BookmarksBtnToggleAction->setChecked(prefs->value(Constants::BookmarksPref, QVariant(false)).toBool());
+  //m_PipelineBtnToggleAction->setChecked(prefs->value(Constants::PipelinePref, QVariant(true)).toBool());
+  m_IssuesBtnToggleAction->setChecked(prefs->value(Constants::IssuesPref, QVariant(true)).toBool());
+  //m_DataBrowserBtnToggleAction->setChecked(prefs->value(Constants::DataBrowserPref, QVariant(true)).toBool());
+  m_ConsoleBtnToggleAction->setChecked(prefs->value(Constants::ConsolePref, QVariant(true)).toBool());
+  m_RenderPropBtnToggleAction->setChecked(prefs->value(Constants::RenderPropPref, QVariant(true)).toBool());
+  m_VisualFiltersBtnToggleAction->setChecked(prefs->value(Constants::VisualFiltersPref, QVariant(true)).toBool());
+  m_VisualFilterSettingsBtnToggleAction->setChecked(prefs->value(Constants::VisualFilterSettingsPref, QVariant(true)).toBool());
   prefs->endGroup();
 
   prefs->endGroup();
@@ -106,16 +136,19 @@ void StatusBarWidget::writeSettings()
 {
   QSharedPointer<QtSSettings> prefs = QSharedPointer<QtSSettings>(new QtSSettings());
 
-  prefs->beginGroup("Status Bar Widget");
+  prefs->beginGroup(Constants::StatusBarGroup);
 
-  prefs->beginGroup("Button Visibility");
-  prefs->setValue("Filter List", m_FilterListBtnToggleAction->isChecked());
-  prefs->setValue("Filter Library", m_FilterLibraryBtnToggleAction->isChecked());
-  prefs->setValue("Bookmarks", m_BookmarksBtnToggleAction->isChecked());
-  prefs->setValue("Pipeline", m_PipelineBtnToggleAction->isChecked());
-  prefs->setValue("Issues", m_IssuesBtnToggleAction->isChecked());
-  prefs->setValue("Data Browser", m_DataBrowserBtnToggleAction->isChecked());
-  prefs->setValue("Console", m_ConsoleBtnToggleAction->isChecked());
+  prefs->beginGroup(Constants::VisibilityGroup);
+  //prefs->setValue(Constants::FilterListPref, m_FilterListBtnToggleAction->isChecked());
+  //prefs->setValue(Constants::FilterLibraryPref, m_FilterLibraryBtnToggleAction->isChecked());
+  //prefs->setValue(Constants::BookmarksPref, m_BookmarksBtnToggleAction->isChecked());
+  //prefs->setValue(Constants::PipelinePref, m_PipelineBtnToggleAction->isChecked());
+  prefs->setValue(Constants::IssuesPref, m_IssuesBtnToggleAction->isChecked());
+  //prefs->setValue(Constants::DataBrowserPref, m_DataBrowserBtnToggleAction->isChecked());
+  prefs->setValue(Constants::ConsolePref, m_ConsoleBtnToggleAction->isChecked());
+  prefs->setValue(Constants::RenderPropPref, m_RenderPropBtnToggleAction->isChecked());
+  prefs->setValue(Constants::VisualFiltersPref, m_VisualFiltersBtnToggleAction->isChecked());
+  prefs->setValue(Constants::VisualFilterSettingsPref, m_VisualFilterSettingsBtnToggleAction->isChecked());
   prefs->endGroup();
 
   prefs->endGroup();
@@ -283,12 +316,43 @@ void StatusBarWidget::bookmarksVisibilityChanged(bool b)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void StatusBarWidget::renderPropVisibilityChanged(bool b)
+{
+  renderPropBtn->blockSignals(true);
+  renderPropBtn->setChecked(b);
+  renderPropBtn->blockSignals(false);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void StatusBarWidget::visualFiltersVisibilityChanged(bool b)
+{
+  visualFiltersBtn->blockSignals(true);
+  visualFiltersBtn->setChecked(b);
+  visualFiltersBtn->blockSignals(false);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void StatusBarWidget::visualFilterSettingsVisibilityChanged(bool b)
+{
+  visualFilterSettingsBtn->blockSignals(true);
+  visualFilterSettingsBtn->setChecked(b);
+  visualFilterSettingsBtn->blockSignals(false);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void StatusBarWidget::setButtonAction(QDockWidget* dock, Button btn)
 {
   switch(btn)
   {
     case Button::Issues:
     {
+      issuesBtn->setVisible(true);
       connect(issuesBtn, &StatusBarButton::toggled, dock->toggleViewAction(), &QAction::trigger);
       connect(dock->toggleViewAction(), &QAction::toggled, this, &StatusBarWidget::issuesVisibilityChanged);
       m_IssuesBtnToggleAction = addButtonVisibilityAction(issuesBtn);
@@ -296,6 +360,7 @@ void StatusBarWidget::setButtonAction(QDockWidget* dock, Button btn)
     }
     case Button::Console:
     {
+      consoleBtn->setVisible(true);
       connect(consoleBtn, &StatusBarButton::toggled, dock->toggleViewAction(), &QAction::trigger);
       connect(dock->toggleViewAction(), &QAction::toggled, this, &StatusBarWidget::consoleVisibilityChanged);
       m_ConsoleBtnToggleAction = addButtonVisibilityAction(consoleBtn);
@@ -303,6 +368,7 @@ void StatusBarWidget::setButtonAction(QDockWidget* dock, Button btn)
     }
     case Button::DataStructure:
     {
+      dataBrowserBtn->setVisible(true);
       connect(dataBrowserBtn, &StatusBarButton::toggled, dock->toggleViewAction(), &QAction::trigger);
       connect(dock->toggleViewAction(), &QAction::toggled, this, &StatusBarWidget::dataBrowserVisibilityChanged);
       m_DataBrowserBtnToggleAction = addButtonVisibilityAction(dataBrowserBtn);
@@ -310,6 +376,7 @@ void StatusBarWidget::setButtonAction(QDockWidget* dock, Button btn)
     }
     case Button::Pipeline:
     {
+      pipelineBtn->setVisible(true);
       connect(pipelineBtn, &StatusBarButton::toggled, dock->toggleViewAction(), &QAction::trigger);
       connect(dock->toggleViewAction(), &QAction::toggled, this, &StatusBarWidget::pipelineVisibilityChanged);
       m_PipelineBtnToggleAction = addButtonVisibilityAction(pipelineBtn);
@@ -317,6 +384,7 @@ void StatusBarWidget::setButtonAction(QDockWidget* dock, Button btn)
     }
     case Button::FilterList:
     {
+      filterListBtn->setVisible(true);
       connect(filterListBtn, &StatusBarButton::toggled, dock->toggleViewAction(), &QAction::trigger);
       connect(dock->toggleViewAction(), &QAction::toggled, this, &StatusBarWidget::filterListVisibilityChanged);
       m_FilterListBtnToggleAction = addButtonVisibilityAction(filterListBtn);
@@ -324,6 +392,7 @@ void StatusBarWidget::setButtonAction(QDockWidget* dock, Button btn)
     }
     case Button::FilterLibrary:
     {
+      filterLibraryBtn->setVisible(true);
       connect(filterLibraryBtn, &StatusBarButton::toggled, dock->toggleViewAction(), &QAction::trigger);
       connect(dock->toggleViewAction(), &QAction::toggled, this, &StatusBarWidget::filterLibraryVisibilityChanged);
       m_FilterLibraryBtnToggleAction = addButtonVisibilityAction(filterLibraryBtn);
@@ -331,11 +400,30 @@ void StatusBarWidget::setButtonAction(QDockWidget* dock, Button btn)
     }
     case Button::Bookmarks:
     {
+      bookmarksBtn->setVisible(true);
       connect(bookmarksBtn, &StatusBarButton::toggled, dock->toggleViewAction(), &QAction::trigger);
       connect(dock->toggleViewAction(), &QAction::toggled, this, &StatusBarWidget::bookmarksVisibilityChanged);
       m_BookmarksBtnToggleAction = addButtonVisibilityAction(bookmarksBtn);
       break;
     }
+    case Button::RenderProperties:
+      renderPropBtn->setVisible(true);
+      connect(renderPropBtn, &StatusBarButton::toggled, dock->toggleViewAction(), &QAction::trigger);
+      connect(dock->toggleViewAction(), &QAction::toggled, this, &StatusBarWidget::renderPropVisibilityChanged);
+      m_RenderPropBtnToggleAction = addButtonVisibilityAction(renderPropBtn);
+      break;
+    case Button::VisualFilters:
+      visualFiltersBtn->setVisible(true);
+      connect(visualFiltersBtn, &StatusBarButton::toggled, dock->toggleViewAction(), &QAction::trigger);
+      connect(dock->toggleViewAction(), &QAction::toggled, this, &StatusBarWidget::visualFiltersVisibilityChanged);
+      m_VisualFiltersBtnToggleAction = addButtonVisibilityAction(visualFiltersBtn);
+      break;
+    case Button::VisualFilterSettings:
+      visualFilterSettingsBtn->setVisible(true);
+      connect(visualFilterSettingsBtn, &StatusBarButton::toggled, dock->toggleViewAction(), &QAction::trigger);
+      connect(dock->toggleViewAction(), &QAction::toggled, this, &StatusBarWidget::visualFilterSettingsVisibilityChanged);
+      m_VisualFilterSettingsBtnToggleAction = addButtonVisibilityAction(visualFilterSettingsBtn);
+      break;
   }
 }
 
