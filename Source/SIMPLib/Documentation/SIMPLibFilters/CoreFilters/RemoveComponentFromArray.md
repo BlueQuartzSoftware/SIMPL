@@ -1,5 +1,5 @@
-Remove Component From Array 
-=============
+# Remove Component From Array  #
+
 
 ## Group (Subgroup) ##
 

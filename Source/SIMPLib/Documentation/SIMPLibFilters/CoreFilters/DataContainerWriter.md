@@ -1,5 +1,5 @@
-Write DREAM.3D Data File 
-=============
+# Write DREAM.3D Data File  #
+
 
 ## Group (Subgroup) ##
 

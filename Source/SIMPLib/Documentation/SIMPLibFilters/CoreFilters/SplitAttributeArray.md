@@ -1,5 +1,5 @@
-Split Multicomponent Attribute Array 
-=============
+# Split Multicomponent Attribute Array  #
+
 
 ## Group (Subgroup) ##
 
