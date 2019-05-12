@@ -114,10 +114,10 @@ void StatusBarWidget::readSettings()
   prefs->beginGroup(Constants::StatusBarGroup);
 
   prefs->beginGroup(Constants::VisibilityGroup);
-  //m_FilterListBtnToggleAction->setChecked(prefs->value(Constants::FilterListPref, QVariant(false)).toBool());
-  //m_FilterLibraryBtnToggleAction->setChecked(prefs->value(Constants::FilterLibraryPref, QVariant(false)).toBool());
-  //m_BookmarksBtnToggleAction->setChecked(prefs->value(Constants::BookmarksPref, QVariant(false)).toBool());
-  //m_PipelineBtnToggleAction->setChecked(prefs->value(Constants::PipelinePref, QVariant(true)).toBool());
+  m_FilterListBtnToggleAction->setChecked(prefs->value(Constants::FilterListPref, QVariant(false)).toBool());
+  m_FilterLibraryBtnToggleAction->setChecked(prefs->value(Constants::FilterLibraryPref, QVariant(false)).toBool());
+  m_BookmarksBtnToggleAction->setChecked(prefs->value(Constants::BookmarksPref, QVariant(false)).toBool());
+  m_PipelineBtnToggleAction->setChecked(prefs->value(Constants::PipelinePref, QVariant(false)).toBool());
   m_IssuesBtnToggleAction->setChecked(prefs->value(Constants::IssuesPref, QVariant(true)).toBool());
   //m_DataBrowserBtnToggleAction->setChecked(prefs->value(Constants::DataBrowserPref, QVariant(true)).toBool());
   m_ConsoleBtnToggleAction->setChecked(prefs->value(Constants::ConsolePref, QVariant(true)).toBool());
@@ -139,10 +139,10 @@ void StatusBarWidget::writeSettings()
   prefs->beginGroup(Constants::StatusBarGroup);
 
   prefs->beginGroup(Constants::VisibilityGroup);
-  //prefs->setValue(Constants::FilterListPref, m_FilterListBtnToggleAction->isChecked());
-  //prefs->setValue(Constants::FilterLibraryPref, m_FilterLibraryBtnToggleAction->isChecked());
-  //prefs->setValue(Constants::BookmarksPref, m_BookmarksBtnToggleAction->isChecked());
-  //prefs->setValue(Constants::PipelinePref, m_PipelineBtnToggleAction->isChecked());
+  prefs->setValue(Constants::FilterListPref, m_FilterListBtnToggleAction->isChecked());
+  prefs->setValue(Constants::FilterLibraryPref, m_FilterLibraryBtnToggleAction->isChecked());
+  prefs->setValue(Constants::BookmarksPref, m_BookmarksBtnToggleAction->isChecked());
+  prefs->setValue(Constants::PipelinePref, m_PipelineBtnToggleAction->isChecked());
   prefs->setValue(Constants::IssuesPref, m_IssuesBtnToggleAction->isChecked());
   //prefs->setValue(Constants::DataBrowserPref, m_DataBrowserBtnToggleAction->isChecked());
   prefs->setValue(Constants::ConsolePref, m_ConsoleBtnToggleAction->isChecked());
