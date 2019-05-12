@@ -1650,7 +1650,11 @@ void SVPipelineView::toStoppedState()
 // -----------------------------------------------------------------------------
 int SVPipelineView::openPipeline(const QString& filePath, int insertIndex)
 {
-  m_CurrentPath = filePath;
+  const bool hasCurrentPipeline = (nullptr != m_SavedPipeline && !m_SavedPipeline->empty() && !m_SavedPipeline->getName().isEmpty());
+  if(!hasCurrentPipeline)
+  {
+    m_CurrentPath = filePath;
+  }
 
   QFileInfo fi(filePath);
   if(!fi.exists())
@@ -1690,8 +1694,11 @@ int SVPipelineView::openPipeline(const QString& filePath, int insertIndex)
 
   // Read the pipeline from the file
   FilterPipeline::Pointer pipeline = readPipelineFromFile(filePath);
-  m_TempPipeline = pipeline;
-  m_SavedPipeline = pipeline->deepCopy();
+  if(!hasCurrentPipeline)
+  {
+    m_TempPipeline = pipeline;
+    m_SavedPipeline = pipeline->deepCopy();
+  }
   m_PipelineInFlight = nullptr;
 
   // Check that a valid extension was read...
