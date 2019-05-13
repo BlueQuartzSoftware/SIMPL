@@ -57,6 +57,7 @@ void PipelineListWidget::setupGui()
   startPipelineBtn->setDisabled(true);
 
   connect(pipelineView, &SVPipelineView::pipelineOutput, this, &PipelineListWidget::pipelineOutput);
+  connect(clearSelectionBtn, &QPushButton::clicked, pipelineView, &SVPipelineView::clearPipelineSelection);
 }
 
 // -----------------------------------------------------------------------------

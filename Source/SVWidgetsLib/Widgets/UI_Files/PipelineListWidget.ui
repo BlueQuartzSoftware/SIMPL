@@ -31,6 +31,12 @@
    </property>
    <item row="1" column="0">
     <widget class="QPushButton" name="startPipelineBtn">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>1</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -61,7 +67,14 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="0">
+   <item row="1" column="1">
+    <widget class="QPushButton" name="clearSelectionBtn">
+     <property name="text">
+      <string>Clear Selection</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="2">
     <widget class="SVPipelineView" name="pipelineView">
      <property name="mouseTracking">
       <bool>true</bool>

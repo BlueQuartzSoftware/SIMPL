@@ -328,6 +328,11 @@ public slots:
   void clearPipeline();
 
   /**
+   * @brief Clears the item selection.
+   */
+  void clearPipelineSelection();
+
+  /**
    * @brief toReadyState
    */
   void toReadyState();
@@ -469,6 +474,7 @@ private:
   QAction* m_ActionCopy = nullptr;
   QAction* m_ActionPaste = nullptr;
   QAction* m_ActionClearPipeline = new QAction("Clear Pipeline", this);
+  QAction* m_ActionClearSelection = new QAction("Clear Selection", this);
 
   FilterPipeline::Pointer m_SavedPipeline = nullptr;
   FilterPipeline::Pointer m_TempPipeline = nullptr;

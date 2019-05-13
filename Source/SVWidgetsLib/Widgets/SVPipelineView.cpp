@@ -187,6 +187,7 @@ void SVPipelineView::connectSignalsSlots()
   connect(m_ActionPaste, &QAction::triggered, this, &SVPipelineView::listenPasteTriggered);
 
   connect(m_ActionClearPipeline, &QAction::triggered, this, &SVPipelineView::listenClearPipelineTriggered);
+  connect(m_ActionClearSelection, &QAction::triggered, this, &SVPipelineView::clearSelection);
 }
 
 // -----------------------------------------------------------------------------
@@ -942,6 +943,15 @@ void SVPipelineView::clearPipeline()
   m_TempPipeline = FilterPipeline::New();
   m_SavedPipeline = FilterPipeline::New();
   m_PipelineInFlight = nullptr;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineView::clearPipelineSelection()
+{
+  clearSelection();
+  selectionModel()->clearCurrentIndex();
 }
 
 // -----------------------------------------------------------------------------
@@ -1920,6 +1930,7 @@ void SVPipelineView::requestFilterItemContextMenu(const QPoint& pos, const QMode
   menu.addSeparator();
 
   menu.addAction(m_ActionClearPipeline);
+  menu.addAction(m_ActionClearSelection);
 
   menu.addSeparator();
 
@@ -1969,6 +1980,7 @@ void SVPipelineView::requestSinglePipelineContextMenu(QMenu& menu)
   menu.addSeparator();
 
   menu.addAction(m_ActionClearPipeline);
+  menu.addAction(m_ActionClearSelection);
 }
 
 // -----------------------------------------------------------------------------
@@ -2060,6 +2072,7 @@ void SVPipelineView::requestDefaultContextMenu(const QPoint& pos)
   menu.addAction(m_ActionPaste);
   menu.addSeparator();
   menu.addAction(m_ActionClearPipeline);
+  menu.addAction(m_ActionClearSelection);
 
   menu.exec(pos);
 }
