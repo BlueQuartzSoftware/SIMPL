@@ -1,5 +1,5 @@
-DataContainerArrayProxy Example 
-=====
+# DataContainerArrayProxy Example  #
+
 
 ## Group (Subgroup) ##
 

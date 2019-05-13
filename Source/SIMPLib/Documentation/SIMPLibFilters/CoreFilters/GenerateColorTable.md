@@ -1,5 +1,5 @@
-GenerateColorTable 
-=============
+# GenerateColorTable  #
+
 
 ## Group (Subgroup) ##
 

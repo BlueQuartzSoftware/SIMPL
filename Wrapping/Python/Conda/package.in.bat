@@ -4,7 +4,7 @@
 :: then we need an additional argument to tell this script which configuration
 :: directory to use as the source for the compiled files.
 set CONFIG_DIR=
-IF "@MSVC_IDE@" == "1"\ (\
+IF "@MSVC_IDE@" == "1" (
     if "%1" == "" goto usage
     if "%1" == "Debug" goto Debug
     if "%1" == "Release" goto Release

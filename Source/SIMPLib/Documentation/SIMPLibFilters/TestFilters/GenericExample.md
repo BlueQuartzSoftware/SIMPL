@@ -1,5 +1,5 @@
-Generic Example 
-=====
+# Generic Example  #
+
 
 ## Group (Subgroup) ##
 

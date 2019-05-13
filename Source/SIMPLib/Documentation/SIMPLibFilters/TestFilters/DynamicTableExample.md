@@ -1,5 +1,5 @@
-Dynamic Table Example 
-=====
+# Dynamic Table Example  #
+
 
 ## Group (Subgroup) ##
 

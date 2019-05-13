@@ -138,6 +138,8 @@ public:
      * @return
      */
     virtual DataArrayPath generatePath() = 0;
+
+    virtual ~ILinkedPath() = default;
   };
 
   /**

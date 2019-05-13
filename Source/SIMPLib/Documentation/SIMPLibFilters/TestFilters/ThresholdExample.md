@@ -1,5 +1,5 @@
-Threshold Example 
-=====
+# Threshold Example  #
+
 
 ## Group (Subgroup) ##
 

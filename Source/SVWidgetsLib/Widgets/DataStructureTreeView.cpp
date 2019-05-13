@@ -484,7 +484,6 @@ void DataStructureTreeView::contextMenuEvent(QContextMenuEvent* event)
   DataStructureProxyModel* proxyModel = getProxyModel();
   const bool isValid = index.isValid();
   const int numChildren = proxyModel->rowCount(index);
-  const int numSiblings = proxyModel->rowCount(index.parent());
 
   QMenu menu;
   QAction* expandAllAction = menu.addAction("Expand All");

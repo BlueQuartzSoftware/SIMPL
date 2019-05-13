@@ -379,7 +379,9 @@ void PythonBindingsModule::generatePythonicInterface(const QString& outputPath, 
 
   out << "\"\"\"\n Pythonic Interface to SIMPL Plugin " << getLibNameUpper() << "\n";
   out << " This file is auto generated during the build of DREAM.3D and the plugin " << getLibNameUpper() << "\n";
-  out << " The code is generate from file " << __FILE__ << "(" << __LINE__ << ")\n";
+  QString fromFile = QString::fromLatin1(__FILE__);
+  fromFile = fromFile.replace("\\", "/");
+  out << " The code is generate from file " << fromFile << "(" << __LINE__ << ")\n";
   out << " The Filters that have pythonic interfaces generated for them are:\n";
 
   while(iter.hasNext())
