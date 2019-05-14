@@ -643,7 +643,7 @@ void SVPipelineView::updatePipelineFromView(FilterPipeline::Pointer pipeline)
       Breakpoint::Pointer breakpoint = std::dynamic_pointer_cast<Breakpoint>(filter);
       if(nullptr != breakpoint)
       {
-        connect(pipeline.get(), SIGNAL(pipelineCanceled()), breakpoint.get(), SLOT(resumePipeline()));
+        connect(pipeline.get(), SIGNAL(pipelineCanceled()), breakpoint.get(), SLOT(resumePipeline()), Qt::UniqueConnection);
       }
 
       pipeline->pushBack(filter);

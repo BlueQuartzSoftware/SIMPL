@@ -669,7 +669,7 @@ void FilterPipeline::clearWarningCode()
 // -----------------------------------------------------------------------------
 void FilterPipeline::addMessageReceiver(QObject* obj)
 {
-  connect(this, SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), obj, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
+  connect(this, SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), obj, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)), Qt::UniqueConnection);
   m_MessageReceivers.push_back(obj);
 }
 
@@ -689,7 +689,7 @@ void FilterPipeline::connectFilterNotifications(AbstractFilter* filter)
 {
   for(const auto& messageReceiver : m_MessageReceivers)
   {
-    connect(filter, SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), messageReceiver, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)));
+    connect(filter, SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), messageReceiver, SLOT(processPipelineMessage(const AbstractMessage::Pointer&)), Qt::UniqueConnection);
   }
 
   connect(filter, &AbstractFilter::messageGenerated, [=] (AbstractMessage::Pointer msg) {
