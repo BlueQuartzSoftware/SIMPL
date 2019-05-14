@@ -350,7 +350,7 @@ public:
    * @param progress
    * @param messageText
    */
-  void notifyProgressMessage(int progress, const QString& messageText);
+  void notifyProgressMessage(int progress, const QString& messageText) override;
 
   /**
    * @brief notifyMissingProperty
