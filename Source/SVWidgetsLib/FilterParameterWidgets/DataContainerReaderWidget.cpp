@@ -69,7 +69,7 @@ namespace Detail
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QList<QStandardItem*> findChildItems(QStandardItem* parent, QString text)
+QList<QStandardItem*> findChildItems(QStandardItem* parent, const QString& text)
 {
   QList<QStandardItem*> list;
   if(!parent->hasChildren())
@@ -92,7 +92,7 @@ QList<QStandardItem*> findChildItems(QStandardItem* parent, QString text)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void removeNonExistantChildren(QStandardItem* parent, QStringList possibleNames)
+void removeNonExistantChildren(QStandardItem* parent, const QStringList& possibleNames)
 {
   int childCount = parent->rowCount();
 
@@ -623,6 +623,7 @@ void DataContainerReaderWidget::checkFilePath(const QString& text)
   {
     absPathLabel->setText(path);
     absPathLabel->show();
+    setValidFilePath(path);
   }
   else
   {

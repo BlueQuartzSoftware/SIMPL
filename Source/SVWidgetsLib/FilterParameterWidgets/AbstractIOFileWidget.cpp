@@ -231,6 +231,7 @@ void AbstractIOFileWidget::on_m_LineEdit_editingFinished()
 
   QtSFileUtils::VerifyPathExists(path, m_LineEdit);
   m_CurrentText = m_LineEdit->text();
+  setValidFilePath(m_LineEdit->text());
   emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }
 
@@ -259,6 +260,7 @@ void AbstractIOFileWidget::on_m_LineEdit_textChanged(const QString& text)
   if(QtSFileUtils::HasValidFilePath(inputPath))
   {
     m_ShowFileAction->setEnabled(true);
+    setValidFilePath(m_LineEdit->text());
   }
   else
   {
