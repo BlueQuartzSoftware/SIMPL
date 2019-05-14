@@ -24,6 +24,7 @@ set(SIMPLib_Utilities_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLDataPathValidator.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLH5DataReaderRequirements.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLibEndian.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLibParallelAlgorithm.hpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/StringOperations.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/TimeUtilities.h
 )
