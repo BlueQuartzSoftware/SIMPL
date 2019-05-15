@@ -41,30 +41,32 @@
 
 #include "SIMPLib/Common/SIMPLArray.hpp"
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-#include <tbb/blocked_range.h>
+#include <tbb/blocked_range3d.h>
 #endif
 
-class SIMPLib_EXPORT SIMPLRange
+class SIMPLib_EXPORT SIMPLRange3D
 {
 public:
-  using RangeType = std::array<size_t, 2>;
+  using RangeType = std::array<size_t, 6>;
+  using DimensionRange = std::array<size_t, 2>;
 
-  SIMPLRange()
-  : m_Range({0,0})
+  SIMPLRange3D()
+  : m_Range({ 0,0,0,0,0,0 })
   {
   }
-  SIMPLRange(size_t begin, size_t end)
-  : m_Range({ begin, end })
+  SIMPLRange3D(size_t x, size_t y, size_t z)
+  : m_Range({0, x, 0, y, 0, z})
   {
   }
-  template<typename Type, size_t Dimension>
-  SIMPLRange(SIMPLArray<Type, Dimension> array)
-  : m_Range({ 0, Dimension })
+  SIMPLRange3D(size_t xMin, size_t xMax, size_t yMin, size_t yMax, size_t zMin, size_t zMax)
+  : m_Range({ xMin, xMax, yMin, yMax, zMin, zMax })
   {
   }
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  SIMPLRange(tbb::blocked_range<size_t>& r)
-  : m_Range({ r.begin(), r.end() })
+  SIMPLRange3D(tbb::blocked_range3d<size_t>& r)
+  : m_Range({ r.pages().begin(), r.pages().end(),
+    r.rows().begin(), r.rows().end(),
+    r.cols().begin(), r.cols().end()})
   {
   }
 #endif
@@ -79,30 +81,30 @@ public:
   }
 
   /**
-   * @brief Returns the minimum index in the range.
+   * @brief Returns the range along the X dimension
    * @return
    */
-  size_t min() const
+  DimensionRange getXRange() const
   {
-    return m_Range[0];
+    return { m_Range[0], m_Range[1] };
   }
 
   /**
-   * @brief Returns the maximum index in the range.
+   * @brief Returns the range along the Y dimension
    * @return
    */
-  size_t max() const
+  DimensionRange getYRange() const
   {
-    return m_Range[1];
+    return { m_Range[2], m_Range[3] };
   }
 
   /**
-   * @brief Returns the number of indices in the range.
+   * @brief Returns the range along the Z dimension
    * @return
    */
-  size_t size() const
+  DimensionRange getZRange() const
   {
-    return m_Range[1] - m_Range[0];
+    return { m_Range[4], m_Range[5] };
   }
 
   /**
@@ -111,24 +113,23 @@ public:
    */
   bool empty() const
   {
-    return size() == 0;
+    return (m_Range[0] == m_Range[1]) && (m_Range[2] == m_Range[3]) && (m_Range[4] == m_Range[5]);
   }
 
   /**
-   * @brief Returns the range based on the specified index.  The range is
-   * organized as [min, max]
+   * @brief Returns the specified part of the range.  The range is organized as
+   * [xMin, xMax, yMin, yMax, zMin, zMax].
+   * @param index
+   * @return
    */
   size_t operator[](size_t index) const
   {
-    switch(index)
+    if(index < 6)
     {
-    case 0:
-      return min();
-    case 1:
-      return max();
-    default:
-      throw std::range_error("Range must be 0 or 1");
+      return m_Range[index];
     }
+    
+    throw std::range_error("Range must be 0 or 1");
   }
 
 private:

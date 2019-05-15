@@ -38,7 +38,7 @@
 
 #include <array>
 
-#include "SIMPLib/Common/SIMPLRange.hpp"
+#include "SIMPLib/Common/SIMPLRange3D.hpp"
 #include "SIMPLib/SIMPLib.h"
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
@@ -48,17 +48,17 @@
 #include <tbb/task_scheduler_init.h>
 #endif
 
-/**
- * @brief The ParallelDataAlgorithm class handles parallelization across data-based algorithms.
- * A range is required, as well as an object with a matching function operator.  This class
- * utilizes TBB for parallelization and will fallback to non-parallelization if it is not
- * available or the parallelization is disabled.
- */
-class SIMPLib_EXPORT ParallelDataAlgorithm
+ /**
+  * @brief The ParallelDataAlgorithm class handles parallelization across data-based algorithms.
+  * A range is required, as well as an object with a matching function operator.  This class
+  * utilizes TBB for parallelization and will fallback to non-parallelization if it is not
+  * available or the parallelization is disabled.
+  */
+class SIMPLib_EXPORT ParallelData3DAlgorithm
 {
 public:
-  ParallelDataAlgorithm();
-  virtual ~ParallelDataAlgorithm();
+  ParallelData3DAlgorithm();
+  virtual ~ParallelData3DAlgorithm();
 
   /**
    * @brief Returns true if parallelization is enabled.  Returns false otherwise.
@@ -76,20 +76,31 @@ public:
    * @brief Returns the range to operate over.
    * @return
    */
-  SIMPLRange getRange() const;
+  SIMPLRange3D getRange() const;
 
   /**
    * @brief Sets the range to operate over.
-   * @param range2D
+   * @param range3D
    */
-  void setRange(const SIMPLRange& range);
+  void setRange(const SIMPLRange3D& range);
 
   /**
    * @brief Sets the range to operate over.
-   * @param min
-   * @param max
+   * @param range3D
    */
-  void setRange(size_t min, size_t max);
+  void setRange(size_t xMax, size_t yMax, size_t zMax);
+
+  /**
+   * @brief Returns the grain size.
+   * @return
+   */
+  size_t getGrain() const;
+
+  /**
+   * @brief Sets the grain size.
+   * @param grain
+   */
+  void setGrain(size_t grain);
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   /**
@@ -98,7 +109,7 @@ public:
    */
   void setPartitioner(const tbb::auto_partitioner& partitioner);
 #endif
-  
+
   /**
    * @brief Runs the data algorithm.  Parallelization is used if appropriate.
    * @param body
@@ -111,7 +122,7 @@ public:
     doParallel = m_RunParallel;
     if(doParallel)
     {
-      tbb::blocked_range<size_t> tbbRange(m_Range[0], m_Range[1]);
+      tbb::blocked_range3d<size_t, size_t, size_t> tbbRange(m_Range[0], m_Range[1], m_Grain, m_Range[2], m_Range[3], m_Range[3], m_Range[4], m_Range[5], m_Range[5]);
       tbb::parallel_for(tbbRange, body, m_Partitioner);
     }
 #endif
@@ -124,7 +135,8 @@ public:
   }
 
 private:
-  SIMPLRange m_Range;
+  SIMPLRange3D m_Range;
+  size_t m_Grain = 1;
   bool m_RunParallel = false;
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   tbb::auto_partitioner m_Partitioner;

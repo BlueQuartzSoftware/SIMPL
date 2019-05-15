@@ -34,13 +34,13 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "ParallelDataAlgorithm.h"
+#include "ParallelData3DAlgorithm.h"
 
  // -----------------------------------------------------------------------------
  //
  // -----------------------------------------------------------------------------
-ParallelDataAlgorithm::ParallelDataAlgorithm()
-: m_Range(SIMPLRange())
+ParallelData3DAlgorithm::ParallelData3DAlgorithm()
+: m_Range(SIMPLRange3D())
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
 , m_RunParallel(true)
 , m_Partitioner(tbb::auto_partitioner())
@@ -51,12 +51,12 @@ ParallelDataAlgorithm::ParallelDataAlgorithm()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ParallelDataAlgorithm::~ParallelDataAlgorithm() = default;
+ParallelData3DAlgorithm::~ParallelData3DAlgorithm() = default;
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool ParallelDataAlgorithm::getParallelizationEnabled() const
+bool ParallelData3DAlgorithm::getParallelizationEnabled() const
 {
   return m_RunParallel;
 }
@@ -64,7 +64,7 @@ bool ParallelDataAlgorithm::getParallelizationEnabled() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ParallelDataAlgorithm::setParallelizationEnabled(bool doParallel)
+void ParallelData3DAlgorithm::setParallelizationEnabled(bool doParallel)
 {
   m_RunParallel = doParallel;
 }
@@ -72,7 +72,7 @@ void ParallelDataAlgorithm::setParallelizationEnabled(bool doParallel)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPLRange ParallelDataAlgorithm::getRange() const
+SIMPLRange3D ParallelData3DAlgorithm::getRange() const
 {
   return m_Range;
 }
@@ -80,7 +80,7 @@ SIMPLRange ParallelDataAlgorithm::getRange() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ParallelDataAlgorithm::setRange(const SIMPLRange& range)
+void ParallelData3DAlgorithm::setRange(const SIMPLRange3D& range)
 {
   m_Range = range;
 }
@@ -88,16 +88,32 @@ void ParallelDataAlgorithm::setRange(const SIMPLRange& range)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ParallelDataAlgorithm::setRange(size_t min, size_t max)
+void ParallelData3DAlgorithm::setRange(size_t xMax, size_t yMax, size_t zMax)
 {
-  m_Range = { min, max };
+  m_Range = { 0, xMax, 0, yMax, 0, zMax };
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+size_t ParallelData3DAlgorithm::getGrain() const
+{
+  return m_Grain;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ParallelData3DAlgorithm::setGrain(size_t grain)
+{
+  m_Grain = grain;
 }
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ParallelDataAlgorithm::setPartitioner(const tbb::auto_partitioner& partitioner)
+void ParallelData3DAlgorithm::setPartitioner(const tbb::auto_partitioner& partitioner)
 {
   m_Partitioner = partitioner;
 }
