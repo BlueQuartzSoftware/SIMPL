@@ -35,15 +35,9 @@
 
 #include "SetOriginResolutionImageGeom.h"
 
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-#include <tbb/blocked_range.h>
-#include <tbb/parallel_for.h>
-#include <tbb/partitioner.h>
-#include <tbb/task_scheduler_init.h>
-#endif
-
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/Utilities/ParallelDataAlgorithm.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
@@ -80,12 +74,10 @@ public:
     }
   }
 
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  void operator()(const tbb::blocked_range<size_t>& r) const
+  void operator()(const SIMPLRange& range) const
   {
-    generate(r.begin(), r.end());
+    generate(range.min(), range.max());
   }
-#endif
 };
 
 // -----------------------------------------------------------------------------

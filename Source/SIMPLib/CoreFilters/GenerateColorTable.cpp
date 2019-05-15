@@ -4,19 +4,13 @@
 
 #include "GenerateColorTable.h"
 
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-#include <tbb/blocked_range.h>
-#include <tbb/parallel_for.h>
-#include <tbb/partitioner.h>
-#include <tbb/task_scheduler_init.h>
-#endif
-
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedPathCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/FilterParameters/GenerateColorTableFilterParameter.h"
 #include "SIMPLib/Utilities/ColorTable.h"
+#include "SIMPLib/Utilities/ParallelDataAlgorithm.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
 enum createdPathID : RenameDataPath::DataID_t {
@@ -132,12 +126,10 @@ public:
     }
   }
 
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  void operator()(const tbb::blocked_range<size_t>& r) const
+  void operator()(const SIMPLRange& r) const
   {
-    convert(r.begin(), r.end());
+    convert(r.min(), r.max());
   }
-#endif
 private:
   typename DataArray<T>::Pointer                        m_ArrayPtr;
   QVector<float>                                        m_BinPoints;
@@ -193,22 +185,9 @@ void generateColorArray(typename DataArray<T>::Pointer arrayPtr, QJsonArray pres
   UInt8ArrayType::Pointer colorArray = dca->getPrereqArrayFromPath<UInt8ArrayType, AbstractFilter>(nullptr, tmpPath, QVector<size_t>(1, 3));
   if (colorArray.get() == nullptr) { return; }
 
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  bool doParallel = true;
-#endif
-
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  if(doParallel)
-  {
-    tbb::parallel_for(tbb::blocked_range<size_t>(0, arrayPtr->getNumberOfTuples()), GenerateColorTableImpl<T>(arrayPtr, binPoints, controlPoints, numControlColors, colorArray),
-                      tbb::auto_partitioner());
-  }
-  else
-#endif
-  {
-    GenerateColorTableImpl<T> serial(arrayPtr, binPoints, controlPoints, numControlColors, colorArray);
-    serial.convert(0, arrayPtr->getNumberOfTuples());
-  }
+  ParallelDataAlgorithm dataAlg;
+  dataAlg.setRange(0, arrayPtr->getNumberOfTuples());
+  dataAlg.execute(GenerateColorTableImpl<T>(arrayPtr, binPoints, controlPoints, numControlColors, colorArray));
 }
 
 // -----------------------------------------------------------------------------
