@@ -290,7 +290,8 @@ public:
  * @date Feb 26, 2014
  * @version 1.0
  */
-template <typename ComponentType> class ItkBridge
+template <typename ComponentType>
+class ItkBridge
 {
 public:
   SIMPL_SHARED_POINTERS(ItkBridge<ComponentType>)
@@ -320,7 +321,8 @@ public:
    * @return
    */
   template <typename TPixel>
-  static typename itk::ImportImageFilter<TPixel, ImageProcessingConstants::ImageDimension>::Pointer Dream3DtoITKImportFilter(DataContainer::Pointer m, QString attrMatName, ComponentType* data)
+  static typename itk::ImportImageFilter<TPixel, ImageProcessingConstants::ImageDimension>::Pointer Dream3DtoITKImportFilter(const DataContainer::Pointer& m, const QString& attrMatName,
+                                                                                                                             ComponentType* data)
   {
     AttributeMatrix::Pointer attrMat = m->getAttributeMatrix(attrMatName);
 
@@ -373,16 +375,16 @@ public:
     return importFilter;
   }
 
+  // clang-format off
   template <typename TPixel>
-  static typename itk::ImportImageFilter<TPixel, ImageProcessingConstants::ImageDimension>::Pointer Dream3DtoITKImportFilterDataArray(size_t totalPoints, QVector<size_t> udims, float sampleOrigin[3],
-                                                                                                                                      float voxelResolution[3], ComponentType* data)
+  static typename itk::ImportImageFilter<TPixel, ImageProcessingConstants::ImageDimension>::Pointer
+  Dream3DtoITKImportFilterDataArray(size_t totalPoints,
+                                    const SizeVec3Type& udims,
+                                    const FloatVec3Type& sampleOrigin,
+                                    const FloatVec3Type& voxelResolution,
+                                    const typename DataArray<TPixel>::Pointer& data)
   {
-    //      AttributeMatrix::Pointer attrMat = m->getAttributeMatrix(attrMatName);
-
-    // get size+dimensions of dataset
-    //      QVector<size_t> udims = attrMat->getTupleDimensions();
-    //      size_t totalPoints = attrMat->getNumberOfTuples();
-
+    // clang-format on
     // create and setup import filter
     using ImportImageFilterType = itk::ImportImageFilter<TPixel, ImageProcessingConstants::ImageDimension>;
     typename ImportImageFilterType::Pointer importFilter = ImportImageFilterType::New();
@@ -425,7 +427,7 @@ public:
     importFilter->SetSpacing(spacing);
 
     const bool importImageFilterWillOwnTheBuffer = false;
-    importFilter->SetImportPointer(reinterpret_cast<TPixel*>(data), totalPoints, importImageFilterWillOwnTheBuffer);
+    importFilter->SetImportPointer(reinterpret_cast<TPixel*>(data->getPointer(0)), totalPoints, importImageFilterWillOwnTheBuffer);
     importFilter->Update();
     return importFilter;
   }

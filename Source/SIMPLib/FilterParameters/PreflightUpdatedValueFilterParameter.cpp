@@ -69,14 +69,3 @@ QString PreflightUpdatedValueFilterParameter::getWidgetType() const
 {
   return QString("PreflightUpdatedValueWidget");
 }
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PreflightUpdatedValueFilterParameter::writeJson(QJsonObject& json)
-{
-  if(m_GetterCallback)
-  {
-    json[getPropertyName()] = m_GetterCallback();
-  }
-}

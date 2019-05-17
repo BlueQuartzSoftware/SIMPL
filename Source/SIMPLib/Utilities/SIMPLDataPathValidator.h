@@ -57,7 +57,9 @@ class SIMPLib_EXPORT SIMPLDataPathValidator : public QObject
     void setSIMPLDataDirectory(const QString &path);
 
     /**
-     * @brief sanityCheckRelativePath
+     * @brief This function creates an absolute path based on the location of the application executing the code BUT more
+     * assumes that this code is running from a packaged application in which case there are more assumptions made about
+     * where certain directories. We may try to navigate up/down directories based on platform.
      * @param relativePath
      * @return
      */
