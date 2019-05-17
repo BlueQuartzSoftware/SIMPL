@@ -87,7 +87,11 @@ endMacro()
 
 #------------------------------------------------------------------------------
 # Set up the directories that are used for each Group
-set(SIMPL_Group_BASE_MODULES Common DataArrays DataContainers Geometry HDF5 Math Messages StatsData Utilities ITK)
+set(SIMPL_Group_BASE_MODULES Common DataArrays DataContainers Geometry HDF5 Math Messages StatsData Utilities)
+if (SIMPL_USE_ITK)
+  set(SIMPL_Group_BASE_MODULES ${SIMPL_Group_BASE_MODULES} ITK)
+endif()
+
 set(SIMPL_Group_FILTERS_MODULES Filtering FilterParameters VTKUtils)
 set(SIMPL_Group_PLUGIN_MODULES Plugin)
 set(SIMPL_Group_REST_MODULES REST)
