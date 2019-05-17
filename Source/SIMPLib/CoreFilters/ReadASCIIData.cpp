@@ -273,7 +273,7 @@ void ReadASCIIData::dataCheck()
 
   if(!fi.exists())
   {
-    QString ss = QObject::tr("The input file does not exist");
+    QString ss = QObject::tr("The input file does not exist: '%1'").arg(inputFilePath);
     setErrorCondition(-388, ss);
   }
 
