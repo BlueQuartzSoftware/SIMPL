@@ -267,8 +267,6 @@ void ReadASCIIData::dataCheck()
     setErrorCondition(-387, ss);
   }
 
-  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
-  inputFilePath = validator->convertToAbsolutePath(inputFilePath);
   fi.setFile(inputFilePath);
 
   if(!fi.exists())
@@ -521,9 +519,6 @@ void ReadASCIIData::execute()
   }
 
   int insertIndex = 0;
-
-  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
-  inputFilePath = validator->convertToAbsolutePath(inputFilePath);
 
   QFile inputFile(inputFilePath);
   if(inputFile.open(QIODevice::ReadOnly))
