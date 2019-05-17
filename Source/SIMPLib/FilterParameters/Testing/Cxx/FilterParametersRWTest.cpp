@@ -800,6 +800,8 @@ public:
       //      m_PhaseTypeVector_2 = PhaseTypeVector_t(); // Does this line do anything?
     }
 
+#if 0
+This Filter Parameter is NOT tesed since nothing is read or written for the filter parameter.
     {
       PreflightUpdatedValueFilterParameter::Pointer fp =
           PreflightUpdatedValueFilterParameter::New("Test", "String2", getString1(), FilterParameter::Parameter, SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
@@ -816,7 +818,7 @@ public:
 
       DREAM3D_REQUIRE_EQUAL(m_String1, result)
     }
-
+#endif
     {
       RangeFilterParameter::Pointer fp = RangeFilterParameter::New("Test", "Pair1", getPair1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, Pair2),
                                                                    SIMPL_BIND_GETTER(FilterParametersRWTest, this, Pair1));

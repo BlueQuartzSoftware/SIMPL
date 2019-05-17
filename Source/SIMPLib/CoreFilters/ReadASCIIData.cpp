@@ -267,13 +267,11 @@ void ReadASCIIData::dataCheck()
     setErrorCondition(-387, ss);
   }
 
-  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
-  inputFilePath = validator->convertToAbsolutePath(inputFilePath);
   fi.setFile(inputFilePath);
 
   if(!fi.exists())
   {
-    QString ss = QObject::tr("The input file does not exist");
+    QString ss = QObject::tr("The input file does not exist: '%1'").arg(inputFilePath);
     setErrorCondition(-388, ss);
   }
 
@@ -521,9 +519,6 @@ void ReadASCIIData::execute()
   }
 
   int insertIndex = 0;
-
-  SIMPLDataPathValidator* validator = SIMPLDataPathValidator::Instance();
-  inputFilePath = validator->convertToAbsolutePath(inputFilePath);
 
   QFile inputFile(inputFilePath);
   if(inputFile.open(QIODevice::ReadOnly))

@@ -256,7 +256,7 @@ void RawBinaryReader::dataCheck()
   }
   else if(!fi.exists())
   {
-    QString ss = QObject::tr("The input file does not exist");
+    QString ss = QObject::tr("The input file does not exist: %1").arg(getInputFile());
     setErrorCondition(-388, ss);
   }
 

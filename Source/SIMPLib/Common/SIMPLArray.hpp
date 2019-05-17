@@ -168,7 +168,7 @@ public:
    * @brief Returns the number of elements
    * @return
    */
-  size_type size()
+  size_type size() const
   {
     return Dimension;
   }
@@ -189,7 +189,7 @@ public:
    *   For STL containers this includes Vector, Deque. QVector will also work.
    */
   template <typename OutContainerType>
-  OutContainerType toContainer()
+  OutContainerType toContainer() const
   {
     OutContainerType dest(Dimension);
     for(typename OutContainerType::size_type i = 0; i < Dimension; i++)

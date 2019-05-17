@@ -97,8 +97,8 @@ int main(int argc, char* argv[])
 
   QString pipelineFile = parser.value(pipelineFileArg);
 
-  std::cout << "PipelineRunner Starting. " << std::endl;
-  std::cout << "   " << SIMPLib::Version::PackageComplete().toStdString() << std::endl;
+  std::cout << "PipelineRunner " << SIMPLib::Version::PackageComplete().toStdString() << std::endl;
+  std::cout << "Input File: " << pipelineFile.toStdString() << std::endl;
 
   // Register all the filters including trying to load those from Plugins
   FilterManager* fm = FilterManager::Instance();
