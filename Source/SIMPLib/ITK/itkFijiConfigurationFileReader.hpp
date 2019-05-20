@@ -57,8 +57,8 @@ struct FijiImageTileData
   int col;
 };
 
-typedef std::vector<FijiImageTileData> FijiRowData;
-typedef std::vector<FijiRowData> FijiFileData;
+using FijiRowData = std::vector<FijiImageTileData>;
+using FijiFileData = std::vector<FijiRowData>;
 
 class FijiConfigurationFileReader : public QObject
 {
