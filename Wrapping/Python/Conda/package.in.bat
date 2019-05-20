@@ -68,7 +68,7 @@ xcopy /i /q /y /s %BUILD_DIR%\PrebuiltPipelines %ANACONDA_PACKAGE_DIR%\%PYTHON_S
 call %ANACONDA_DIR%\%ANACONDA_SCRIPTS_DIR_NAME%\activate.bat %ANACONDA_ENVIRONMENT_NAME% 
 
 @echo "Ensuring conda-build is installed..."         
-call %ENV_CONDA_EXE% install conda-build 
+call %ENV_CONDA_EXE% install --update-all conda-build 
 
 @echo "Creating output directory for the Conda Package..."
 mkdir %ANACONDA_PACKAGE_DIR%\conda-package
