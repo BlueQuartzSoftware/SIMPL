@@ -52,7 +52,12 @@ ParallelTaskAlgorithm::ParallelTaskAlgorithm()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ParallelTaskAlgorithm::~ParallelTaskAlgorithm() = default;
+ParallelTaskAlgorithm::~ParallelTaskAlgorithm()
+{
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
+  m_TaskGroup->wait();
+#endif
+}
 
 // -----------------------------------------------------------------------------
 //

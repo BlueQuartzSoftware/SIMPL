@@ -95,7 +95,7 @@ public:
     {
       m_TaskGroup->run(body);
       m_CurThreads++;
-      if(m_CurThreads == m_MaxThreads)
+      if(m_CurThreads >= m_MaxThreads)
       {
         wait();
       }
