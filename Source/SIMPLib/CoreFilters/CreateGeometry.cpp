@@ -724,7 +724,7 @@ void CreateGeometry::execute()
   }
   case 3: // EdgeGeom
   {
-    int64_t idx = 0;
+    size_t idx = 0;
     for(size_t i = 0; i < m_EdgesPtr.lock()->getSize(); i++)
     {
       if(m_Edges[i] > idx)
@@ -755,7 +755,7 @@ void CreateGeometry::execute()
   }
   case 4: // TriangleGeom
   {
-    int64_t idx = 0;
+    size_t idx = 0;
     for(size_t i = 0; i < m_TrisPtr.lock()->getSize(); i++)
     {
       if(m_Tris[i] > idx)
@@ -786,7 +786,7 @@ void CreateGeometry::execute()
   }
   case 5: // QuadGeom
   {
-    int64_t idx = 0;
+    size_t idx = 0;
     for(size_t i = 0; i < m_QuadsPtr.lock()->getSize(); i++)
     {
       if(m_Quads[i] > idx)
@@ -817,7 +817,7 @@ void CreateGeometry::execute()
   }
   case 6: // TetrahedralGeom
   {
-    int64_t idx = 0;
+    size_t idx = 0;
     for(size_t i = 0; i < m_TetsPtr.lock()->getSize(); i++)
     {
       if(m_Tets[i] > idx)
@@ -848,7 +848,7 @@ void CreateGeometry::execute()
   }
   case 7: // HexahedralGeom
   {
-    int64_t idx = 0;
+    size_t idx = 0;
     for (size_t i = 0; i < m_HexesPtr.lock()->getSize(); i++)
     {
       if (m_Hexes[i] > idx)
@@ -901,7 +901,6 @@ QString CreateGeometry::getBoxDimensions()
      << "X Range: " << (m_Origin[0] - halfRes[0]) << " to " << (m_Origin[0] - halfRes[0] + m_Dimensions[0] * m_Spacing[0]) << " (delta: " << (m_Dimensions[0] * m_Spacing[0]) << ")\n"
      << "Y Range: " << (m_Origin[1] - halfRes[1]) << " to " << (m_Origin[1] - halfRes[1] + m_Dimensions[1] * m_Spacing[1]) << " (delta: " << (m_Dimensions[1] * m_Spacing[1]) << ")\n"
      << "Z Range: " << (m_Origin[2] - halfRes[2]) << " to " << (m_Origin[2] - halfRes[2] + m_Dimensions[2] * m_Spacing[2]) << " (delta: " << (m_Dimensions[2] * m_Spacing[2]) << ")\n";
-  return desc;
   return desc;
 }
 

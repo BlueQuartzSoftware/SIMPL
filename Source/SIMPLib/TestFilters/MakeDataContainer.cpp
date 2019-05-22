@@ -146,7 +146,7 @@ void MakeDataContainer::dataCheck()
   {
     SharedVertexList::Pointer test = vertices->getVertices();
     float* verts = test->getPointer(0);
-    for(int64_t i = 0; i < vertices->getNumberOfVertices(); i++)
+    for(size_t i = 0; i < vertices->getNumberOfVertices(); i++)
     {
       verts[3 * i] = float(0.1 + i);
       verts[3 * i + 1] = float(0.2 + i);
@@ -204,9 +204,9 @@ void MakeDataContainer::execute()
 
   VertexGeom::Pointer verts = getDataContainerArray()->getDataContainer(getDataContainerName())->getGeometryAs<VertexGeom>();
 
-  for(int64_t i = 0; i < verts->getNumberOfVertices(); i++)
+  for(size_t i = 0; i < verts->getNumberOfVertices(); i++)
   {
-    m_FeatureIds[i] = i;
+    m_FeatureIds[i] = static_cast<int32_t>(i);
   }
 }
 // -----------------------------------------------------------------------------

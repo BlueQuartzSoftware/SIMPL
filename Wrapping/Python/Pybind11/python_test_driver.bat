@@ -8,8 +8,9 @@
 
 @set PATH=%PATH%;%ANACONDA_DIR%;%ANACONDA_DIR%\Scripts
 
-@echo "Activating anaconda base Environment... "
+
 @set ANACONDA_ENVIRONMENT_NAME=@ANACONDA_ENVIRONMENT_NAME@
+@echo "Activating anaconda %ANACONDA_ENVIRONMENT_NAME% Environment... "
 CALL %ANACONDA_DIR%\condabin\conda.bat activate %ANACONDA_ENVIRONMENT_NAME%
 
 @set PYTHONPATH=@SIMPL_ANACONDA_OUTPUT_DIR@\@PYTHON_SITE_PACKAGES_NAME@
