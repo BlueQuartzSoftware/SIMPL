@@ -46,15 +46,9 @@
 
 #include "SIMPLib/Geometry/EdgeGeom.h"
 
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-#include <tbb/blocked_range.h>
-#include <tbb/parallel_for.h>
-#include <tbb/partitioner.h>
-#include <tbb/task_scheduler_init.h>
-#endif
-
 #include "SIMPLib/Geometry/DerivativeHelpers.h"
 #include "SIMPLib/Geometry/GeometryHelpers.h"
+#include "SIMPLib/Utilities/ParallelDataAlgorithm.h"
 
 /**
  * @brief The FindEdgeDerivativesImpl class implements a threaded algorithm that computes the
@@ -108,12 +102,10 @@ public:
     }
   }
 
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  void operator()(const tbb::blocked_range<size_t>& r) const
+  void operator()(const SIMPLRange& range) const
   {
-    compute(r.begin(), r.end());
+    compute(range.min(), range.max());
   }
-#endif
 private:
   EdgeGeom* m_Edges;
   DoubleArrayType::Pointer m_Field;
@@ -436,22 +428,9 @@ void EdgeGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::
     connect(this, SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), observable, SLOT(processDerivativesMessage(const AbstractMessage::Pointer&)));
   }
 
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  tbb::task_scheduler_init init;
-  bool doParallel = true;
-#endif
-
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  if(doParallel)
-  {
-    tbb::parallel_for(tbb::blocked_range<size_t>(0, numEdges), FindEdgeDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());
-  }
-  else
-#endif
-  {
-    FindEdgeDerivativesImpl serial(this, field, derivatives);
-    serial.compute(0, numEdges);
-  }
+  ParallelDataAlgorithm dataAlg;
+  dataAlg.setRange(0, numEdges);
+  dataAlg.execute(FindEdgeDerivativesImpl(this, field, derivatives));
 }
 
 // -----------------------------------------------------------------------------

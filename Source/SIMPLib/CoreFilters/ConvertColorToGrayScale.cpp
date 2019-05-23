@@ -38,12 +38,6 @@
 
 #include "ConvertColorToGrayScale.h"
 
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-#include <tbb/blocked_range.h>
-#include <tbb/parallel_for.h>
-#include <tbb/partitioner.h>
-#include <tbb/task_scheduler_init.h>
-#endif
 #include <algorithm>
 
 #include "SIMPLib/Common/Constants.h"
@@ -56,6 +50,7 @@
 #include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/Utilities/ParallelDataAlgorithm.h"
 
 class LuminosityImpl
 {
@@ -88,9 +83,7 @@ public:
     }
   }
 
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-   void operator()(const tbb::blocked_range<size_t>& r) const { convert(r.begin(), r.end()); }
-#endif
+   void operator()(const SIMPLRange& range) const { convert(range.min(), range.max()); }
 };
 
 class LightnessImpl
@@ -124,9 +117,7 @@ public:
     }
   }
 
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  void operator()(const tbb::blocked_range<size_t>& r) const { convert(r.begin(), r.end()); }
-#endif
+  void operator()(const SIMPLRange& range) const { convert(range.min(), range.max()); }
 };
 
 class SingleChannelImpl
@@ -159,9 +150,7 @@ public:
     }
   }
 
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-   void operator()(const tbb::blocked_range<size_t>& r) const { convert(r.begin(), r.end()); }
-#endif
+   void operator()(const SIMPLRange& range) const { convert(range.min(), range.max()); }
 
 };
 
@@ -177,11 +166,9 @@ class ParallelWrapper
     template<typename T>
     static void Run(T impl, size_t totalPoints)
     {
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-      tbb::parallel_for(tbb::blocked_range<size_t>(0, totalPoints), impl, tbb::auto_partitioner());
-#else
-      impl.convert(0, totalPoints);
-#endif
+      ParallelDataAlgorithm dataAlg;
+      dataAlg.setRange(0, totalPoints);
+      dataAlg.execute(impl);
     }
 
   protected:
@@ -408,10 +395,6 @@ void ConvertColorToGrayScale::execute()
 
     size_t comp = inputColorData->getNumberOfComponents();
     size_t totalPoints = inputColorData->getNumberOfTuples();
-
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  tbb::task_scheduler_init init;
-#endif
 
     switch (convType)
     {

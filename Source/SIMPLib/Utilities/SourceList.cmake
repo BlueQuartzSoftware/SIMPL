@@ -21,6 +21,10 @@ set(SIMPLib_Utilities_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilePathGenerator.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FileSystemPathHelper.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatSummation.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ParallelDataAlgorithm.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ParallelData2DAlgorithm.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ParallelData3DAlgorithm.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ParallelTaskAlgorithm.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLDataPathValidator.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLH5DataReaderRequirements.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLibEndian.h
@@ -34,6 +38,10 @@ set(SIMPLib_Utilities_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilePathGenerator.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FileSystemPathHelper.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatSummation.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ParallelDataAlgorithm.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ParallelData2DAlgorithm.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ParallelData3DAlgorithm.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ParallelTaskAlgorithm.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLDataPathValidator.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLH5DataReader.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLH5DataReaderRequirements.cpp

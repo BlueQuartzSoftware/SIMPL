@@ -35,15 +35,9 @@
 
 #include "ScaleVolume.h"
 
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-#include <tbb/blocked_range.h>
-#include <tbb/parallel_for.h>
-#include <tbb/partitioner.h>
-#include <tbb/task_scheduler_init.h>
-#endif
-
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/Utilities/ParallelDataAlgorithm.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
@@ -81,12 +75,10 @@ public:
     }
   }
 
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  void operator()(const tbb::blocked_range<size_t>& r) const
+  void operator()(const SIMPLRange& range) const
   {
-    generate(r.begin(), r.end());
+    generate(range.min(), range.max());
   }
-#endif
 };
 
 // -----------------------------------------------------------------------------
@@ -200,11 +192,6 @@ void ScaleVolume::updateSurfaceMesh()
   clearErrorCode();
   clearWarningCode();
 
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  tbb::task_scheduler_init init;
-  bool doParallel = true;
-#endif
-
   IGeometry2D::Pointer geom2D = getDataContainerArray()->getDataContainer(getSurfaceDataContainerName())->getGeometryAs<IGeometry2D>();
   float* nodes = geom2D->getVertexPointer(0);
 
@@ -243,17 +230,9 @@ void ScaleVolume::updateSurfaceMesh()
     }
   }
 
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  if(doParallel)
-  {
-    tbb::parallel_for(tbb::blocked_range<size_t>(0, count), ScaleVolumeUpdateVerticesImpl(nodes, min, m_ScaleFactor), tbb::auto_partitioner());
-  }
-  else
-#endif
-  {
-    ScaleVolumeUpdateVerticesImpl serial(nodes, min, m_ScaleFactor);
-    serial.generate(0, count);
-  }
+  ParallelDataAlgorithm dataAlg = ParallelDataAlgorithm();
+  dataAlg.setRange(0, count);
+  dataAlg.execute(ScaleVolumeUpdateVerticesImpl(nodes, min, m_ScaleFactor));
 }
 
 // -----------------------------------------------------------------------------
