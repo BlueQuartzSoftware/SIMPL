@@ -297,7 +297,7 @@ private:
   DEFINE_DATAARRAY_VARIABLE(size_t, Tets)
   DEFINE_DATAARRAY_VARIABLE(size_t, Hexes)
 
-  int64_t m_NumVerts;
+  size_t m_NumVerts;
 
 public:
   CreateGeometry(const CreateGeometry&) = delete;            // Copy Constructor Not Implemented

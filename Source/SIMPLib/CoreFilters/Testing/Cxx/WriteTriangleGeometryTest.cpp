@@ -210,16 +210,16 @@ public:
     QStringList list = line.split(':');
     DREAM3D_REQUIRE(list[0].trimmed() == "Node Count")
 
-    qlonglong nodeCount = list[1].trimmed().toLongLong();
+    MeshIndexType nodeCount = list[1].trimmed().toULongLong();
     DREAM3D_REQUIRE(nodeCount == triGeom->getNumberOfVertices())
 
     // Check vertices
 
-    for(int64_t i = 0; i < triGeom->getNumberOfVertices(); i++)
+    for(MeshIndexType i = 0; i < triGeom->getNumberOfVertices(); i++)
     {
       line = inFileNodes.readLine();
       list = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-      for(int j = 0; j < daTriVert->getNumberOfComponents(); j++)
+      for(MeshIndexType j = 0; j < daTriVert->getNumberOfComponents(); j++)
       {
         DREAM3D_REQUIRE(list[j] == QString::number(daTriVert->getComponent(i, j), 'f', 5))
       }
@@ -282,13 +282,13 @@ public:
 
     // Check triangles
 
-    for(int64_t i = 0; i < triGeom->getNumberOfTris(); i++)
+    for(MeshIndexType i = 0; i < triGeom->getNumberOfTris(); i++)
     {
       line = inFileTriangles.readLine();
       list = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-      for(int j = 0; j < daTriList->getNumberOfComponents(); j++)
+      for(MeshIndexType j = 0; j < daTriList->getNumberOfComponents(); j++)
       {
-        DREAM3D_REQUIRE(list[j].toLongLong() == daTriList->getComponent(i, j))
+        DREAM3D_REQUIRE(list[j].toULongLong() == daTriList->getComponent(i, j))
       }
     }
 
