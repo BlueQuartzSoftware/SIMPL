@@ -79,23 +79,16 @@
 * during an MSVC build */
 #cmakedefine SIMPLib_DISABLE_MSVC_WARNINGS @SIMPLib_DISABLE_MSVC_WARNINGS@
 
-#define __SHOW_DEBUG_MSG__ false
-
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Winconsistent-missing-override"
-#endif
 
 #if (_MSC_VER >= 1)
-
-  #pragma warning (error: 4715) /* Not all control points return a value */
-  #pragma warning (error: 4258) /* Nested Variable Definitions are ignored */
+    #pragma warning (error: 4715) /* Not all control points return a value */
+    #pragma warning (error: 4258) /* Nested Variable Definitions are ignored */
     #ifdef SIMPLib_DISABLE_MSVC_WARNINGS
-      #pragma warning(disable:4244)
-      #pragma warning(disable:4267)
-      #pragma warning(disable:4305)
+        #pragma warning(disable:4244)  /* 'argument' : conversion from 'type1' to 'type2', possible loss of data */
+        #pragma warning(disable:4305)  /* 'context' : truncation from 'type1' to 'type2' */
+        #pragma warning(disable:4267)  /* 'var' : conversion from 'size_t' to 'type', possible loss of data */
+        #pragma warning(disable:4800)  /* 'double' : forcing value to bool 'true' or 'false' */
     #endif
-
 #endif
 
 #ifdef QT_CORE_LIB

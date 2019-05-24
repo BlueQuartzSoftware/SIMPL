@@ -237,10 +237,6 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
   {
     if(attributeMatrixName.compare(SIMPL::Geometry::Geometry) != 0)
     {
-      if(__SHOW_DEBUG_MSG__)
-      {
-        std::cout << "    AttributeMatrix: " << attributeMatrixName.toStdString() << std::endl;
-      }
       hid_t attrMatGid = H5Gopen(containerId, attributeMatrixName.toLatin1().constData(), H5P_DEFAULT);
       if(attrMatGid < 0)
       {

@@ -37,11 +37,6 @@
 #pragma once
 
 
-#if defined (_MSC_VER)
-#pragma warning(disable: 4267)
-#pragma warning(disable: 4800) /*  warning C4800: 'double' : forcing value to bool 'true' or 'false' */
-#endif
-
 /* Cmake will define SIMPLib_EXPORTS on Windows when it
 configures to build a shared library. If you are going to use
 another build system on windows or create the visual studio
