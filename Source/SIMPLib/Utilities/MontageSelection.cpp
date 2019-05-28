@@ -119,7 +119,7 @@ int MontageSelection::getPadding() const
 // -----------------------------------------------------------------------------
 void MontageSelection::setPadding(int padding)
 {
-  m_Padding = std::max(padding, 0);
+  m_Padding = std::max(padding, 1);
 }
 
 // -----------------------------------------------------------------------------

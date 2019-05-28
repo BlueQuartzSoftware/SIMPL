@@ -88,6 +88,7 @@ public:
 
   /**
    * @brief Sets the padding used for digits in DataContainer names.
+   * The minimum value allowed is 1, and values under that will be bumped up.
    * @param padding
    */
   void setPadding(int padding);

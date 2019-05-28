@@ -1,5 +1,5 @@
 /* ============================================================================
- * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ * Copyright (c) 2019 BlueQuartz Software, LLC
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -115,31 +115,17 @@ void MontageSelectionWidget::setupGui()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QStringList MontageSelectionWidget::getDataContainerNames() const
+MontageSelection MontageSelectionWidget::getMontageSelection() const
 {
-  QStringList dcNames;
-
-  const QString rowChar = "r";
-  const QString colChar = "c";
-  const QString prefix = m_Ui->prefixStringEdit->getText();
-  const QString suffix = m_Ui->suffixStringEdit->getText();
-  const int padding = m_Ui->paddingSpinBox->value();
-  const int rowStart = m_Ui->rowStartSpinBox->value();
-  const int rowEnd = m_Ui->rowEndSpinBox->value();
-  const int colStart = m_Ui->colStartSpinBox->value();
-  const int colEnd = m_Ui->colEndSpinBox->value();
-
-  for(int row = rowStart; row <= rowEnd; row++)
-  {
-    for(int col = colStart; col <= colEnd; col++)
-    {
-      QString rowStr = QString::number(row).rightJustified(padding, '0');
-      QString colStr = QString::number(col).rightJustified(padding, '0');
-      dcNames.push_back(prefix + rowChar + rowStr + colChar + colStr + suffix);
-    }
-  }
-
-  return dcNames;
+  MontageSelection montage;
+  montage.setPrefix(m_Ui->prefixStringEdit->getText());
+  montage.setSuffix(m_Ui->suffixStringEdit->getText());
+  montage.setPadding(m_Ui->paddingSpinBox->value());
+  montage.setRowStart(m_Ui->rowStartSpinBox->value());
+  montage.setRowEnd(m_Ui->rowEndSpinBox->value());
+  montage.setColStart(m_Ui->colStartSpinBox->value());
+  montage.setColEnd(m_Ui->colEndSpinBox->value());
+  return montage;
 }
 
 // -----------------------------------------------------------------------------
@@ -154,6 +140,10 @@ void MontageSelectionWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void MontageSelectionWidget::afterPreflight()
 {
+  MontageSelection selection = getMontageSelection();
+  QStringList dcNames = selection.getDataContainerNames();
+  m_Ui->dataContainerListWidget->clear();
+  m_Ui->dataContainerListWidget->addItems(dcNames);
 }
 
 // -----------------------------------------------------------------------------
@@ -171,10 +161,10 @@ void MontageSelectionWidget::causePreflight()
 // -----------------------------------------------------------------------------
 void MontageSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  QStringList dcNames = getDataContainerNames();
+  MontageSelection selection = getMontageSelection();
 
   QVariant var;
-  var.setValue(dcNames);
+  var.setValue(selection);
   bool ok = false;
 
   // Set the value into the Filter

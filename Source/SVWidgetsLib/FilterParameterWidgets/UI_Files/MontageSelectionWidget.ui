@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>450</width>
-    <height>100</height>
+    <height>166</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -202,6 +202,9 @@
       <number>999</number>
      </property>
     </widget>
+   </item>
+   <item row="5" column="0" colspan="5">
+    <widget class="QListWidget" name="dataContainerListWidget"/>
    </item>
   </layout>
  </widget>

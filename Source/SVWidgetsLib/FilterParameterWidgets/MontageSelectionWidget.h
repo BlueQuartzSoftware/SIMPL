@@ -1,5 +1,5 @@
 /* ============================================================================
- * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ * Copyright (c) 2019 BlueQuartz Software, LLC
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -38,16 +38,17 @@
 #include <QtCore/QString>
 #include <QtWidgets/QWidget>
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
+#include "SIMPLib/Utilities/MontageSelection.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
 
 class MontageSelectionFilterParameter;
 namespace Ui
 {
-  class MontageSelectionWidget;
+class MontageSelectionWidget;
 }
 
- /**
+/**
  * @brief
  * @author
  * @version
@@ -60,7 +61,11 @@ public:
   MontageSelectionWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
   MontageSelectionWidget(QWidget* parent = nullptr);
 
-  QStringList getDataContainerNames() const;
+  /**
+   * @brief Creates and returns a MontageSelection based on the the current values.
+   * @return
+   */
+  MontageSelection getMontageSelection() const;
 
 public slots:
   void beforePreflight();
@@ -68,10 +73,23 @@ public slots:
   void filterNeedsInputParameters(AbstractFilter* filter);
 
 protected:
+  /**
+   * @brief Helper method for triggering the preflight signal and toggling
+   * the values consistently based on signals.
+   */
   void causePreflight();
 
 private:
+  /**
+   * @brief Performs initial setup for signals.
+   */
   void setupGui();
+
+  /**
+   * @brief Initializes the widget for the given FilterParameter and AbstractFilter
+   * @param parameter
+   * @param filter
+   */
   void initializeWidget(FilterParameter* parameter, AbstractFilter* filter);
 
   bool m_DidCausePreflight;
@@ -80,8 +98,8 @@ private:
   MontageSelectionFilterParameter* m_FilterParameter;
 
 public:
-  MontageSelectionWidget(const MontageSelectionWidget&) = delete; // Copy Constructor Not Implemented
-  MontageSelectionWidget(MontageSelectionWidget&&) = delete;      // Move Constructor Not Implemented
+  MontageSelectionWidget(const MontageSelectionWidget&) = delete;            // Copy Constructor Not Implemented
+  MontageSelectionWidget(MontageSelectionWidget&&) = delete;                 // Move Constructor Not Implemented
   MontageSelectionWidget& operator=(const MontageSelectionWidget&) = delete; // Copy Assignment Not Implemented
   MontageSelectionWidget& operator=(MontageSelectionWidget&&) = delete;      // Move Assignment Not Implemented
 };
