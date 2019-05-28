@@ -49,6 +49,7 @@
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/FourthOrderPolynomialFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
+#include "SIMPLib/FilterParameters/MontageSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/SecondOrderPolynomialFilterParameter.h"
 #include "SIMPLib/FilterParameters/ThirdOrderPolynomialFilterParameter.h"
 #include "SIMPLib/Filtering/ComparisonInputs.h"
@@ -119,6 +120,8 @@ class SIMPLib_EXPORT AbstractFilterParametersWriter
 
     virtual int writeValue(const QString& name, ComparisonInput_t v);
     virtual int writeValue(const QString& name, ComparisonInputs v);
+
+    virtual int writeValue(const QString& name, MontageSelection v);
 
     virtual int writeValue(const QString& name, QVector<AxisAngleInput_t> v);
 

@@ -48,6 +48,7 @@
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/FourthOrderPolynomialFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
+#include "SIMPLib/FilterParameters/MontageSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/SecondOrderPolynomialFilterParameter.h"
 #include "SIMPLib/FilterParameters/ThirdOrderPolynomialFilterParameter.h"
 #include "SIMPLib/Filtering/ComparisonInputs.h"
@@ -118,6 +119,7 @@ class SIMPLib_EXPORT AbstractFilterParametersReader
     virtual ComparisonInput_t readComparisonInput(const QString name, ComparisonInput_t v, int vectorPos);
     virtual ComparisonInputs readComparisonInputs(const QString name, ComparisonInputs v);
     virtual ComparisonInputsAdvanced readComparisonInputsAdvanced(const QString name, ComparisonInputsAdvanced v);
+    virtual MontageSelection readMontageSelection(const QString name, MontageSelection v);
     virtual AxisAngleInput_t readAxisAngle(const QString name, AxisAngleInput_t v, int vectorPos);
     virtual QVector<AxisAngleInput_t> readAxisAngles(const QString name, QVector<AxisAngleInput_t> v);
     virtual QSet<QString> readArraySelections(const QString name, QSet<QString> v);

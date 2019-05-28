@@ -457,6 +457,18 @@ ComparisonInputsAdvanced AbstractFilterParametersReader::readComparisonInputsAdv
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+MontageSelection AbstractFilterParametersReader::readMontageSelection(const QString name, MontageSelection defValue)
+{
+  Q_UNUSED(name)
+  Q_UNUSED(defValue)
+
+  // This should never be executed
+  return MontageSelection();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 AxisAngleInput_t AbstractFilterParametersReader::readAxisAngle(const QString name, AxisAngleInput_t v, int vectorPos)
 {
   Q_UNUSED(name)

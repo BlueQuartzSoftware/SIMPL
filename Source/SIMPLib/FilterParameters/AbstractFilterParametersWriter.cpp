@@ -420,6 +420,18 @@ int AbstractFilterParametersWriter::writeValue(const QString& name, ComparisonIn
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+int AbstractFilterParametersWriter::writeValue(const QString& name, MontageSelection v)
+{
+  Q_UNUSED(name)
+  Q_UNUSED(v)
+
+  // This should never be executed
+  return -1;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 int AbstractFilterParametersWriter::writeValue(const QString& name, AxisAngleInput_t v)
 {
   Q_UNUSED(name)

@@ -115,6 +115,8 @@ class SIMPLib_EXPORT H5FilterParametersWriter : public AbstractFilterParametersW
     int writeValue(const QString& name, ComparisonInput_t v) override;
     int writeValue(const QString& name, ComparisonInputs v) override;
 
+    int writeValue(const QString& name, MontageSelection v) override;
+
     int writeValue(const QString& name, AxisAngleInput_t v) override;
     int writeValue(const QString& name, QVector<AxisAngleInput_t> v) override;
 
