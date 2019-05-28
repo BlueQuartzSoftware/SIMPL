@@ -781,6 +781,22 @@ QVector<double> H5FilterParametersReader::readArray(const QString name, QVector<
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+IntVec2Type H5FilterParametersReader::readIntVec2(const QString name, IntVec2Type defaultValue)
+{
+  int err = 0;
+  IntVec2Type v;
+  err = QH5Lite::readPointerDataset<int32_t>(m_CurrentGroupId, name, reinterpret_cast<int32_t*>(&v));
+  if(err < 0)
+  {
+    return defaultValue;
+  }
+
+  return v;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 IntVec3Type H5FilterParametersReader::readIntVec3(const QString name, IntVec3Type defaultValue)
 {
   int err = 0;

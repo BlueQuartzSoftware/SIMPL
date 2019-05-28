@@ -48,6 +48,7 @@
 #include "SIMPLib/FilterParameters/FileListInfoFilterParameter.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/FourthOrderPolynomialFilterParameter.h"
+#include "SIMPLib/FilterParameters/IntVec2FilterParameter.h"
 #include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/SecondOrderPolynomialFilterParameter.h"
 #include "SIMPLib/FilterParameters/ThirdOrderPolynomialFilterParameter.h"
@@ -110,6 +111,7 @@ class SIMPLib_EXPORT AbstractFilterParametersWriter
     virtual int writeValue(const QString& name, QVector<float> value);
     virtual int writeValue(const QString& name, QVector<double> value);
 
+    virtual int writeValue(const QString& name, IntVec2Type v);
     virtual int writeValue(const QString& name, IntVec3Type v);
     virtual int writeValue(const QString& name, FloatVec3Type v);
     virtual int writeValue(const QString& name, Float2ndOrderPoly_t v);
