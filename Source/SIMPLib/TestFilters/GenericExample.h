@@ -45,6 +45,7 @@
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/FourthOrderPolynomialFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
+#include "SIMPLib/FilterParameters/MontageSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/SecondOrderPolynomialFilterParameter.h"
 #include "SIMPLib/FilterParameters/ThirdOrderPolynomialFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
@@ -104,6 +105,7 @@ class SIMPLib_EXPORT GenericExample : public AbstractFilter
   PYB11_PROPERTY(bool Bool2 READ getBool2 WRITE setBool2)
   PYB11_PROPERTY(int AlgorithmSelection READ getAlgorithmSelection WRITE setAlgorithmSelection)
   PYB11_PROPERTY(int DistanceMetric READ getDistanceMetric WRITE setDistanceMetric)
+  PYB11_PROPERTY(QStringList MontageSelection READ getMontageSelection WRITE setMontageSelection)
 
 public:
   SIMPL_SHARED_POINTERS(GenericExample)
@@ -233,6 +235,9 @@ public:
 
   SIMPL_FILTER_PARAMETER(int, DistanceMetric)
   Q_PROPERTY(int DistanceMetric READ getDistanceMetric WRITE setDistanceMetric)
+    
+  SIMPL_FILTER_PARAMETER(MontageSelection, MontageSelection)
+  Q_PROPERTY(MontageSelection MontageSelection READ getMontageSelection WRITE setMontageSelection)
 
   const QString getCompiledLibraryName() const override;
   AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;

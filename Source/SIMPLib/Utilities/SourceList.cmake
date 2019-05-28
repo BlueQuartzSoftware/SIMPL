@@ -21,6 +21,7 @@ set(SIMPLib_Utilities_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilePathGenerator.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FileSystemPathHelper.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatSummation.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MontageSelection.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLDataPathValidator.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLH5DataReaderRequirements.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLibEndian.h
@@ -34,6 +35,7 @@ set(SIMPLib_Utilities_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilePathGenerator.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FileSystemPathHelper.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatSummation.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MontageSelection.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLDataPathValidator.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLH5DataReader.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLH5DataReaderRequirements.cpp

@@ -67,8 +67,12 @@ public slots:
   void afterPreflight();
   void filterNeedsInputParameters(AbstractFilter* filter);
 
+protected:
+  void causePreflight();
+
 private:
   void setupGui();
+  void initializeWidget(FilterParameter* parameter, AbstractFilter* filter);
 
   bool m_DidCausePreflight;
   QSharedPointer<Ui::MontageSelectionWidget> m_Ui;

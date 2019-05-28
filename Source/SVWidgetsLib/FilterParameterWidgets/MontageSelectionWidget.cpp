@@ -35,6 +35,8 @@
 
 #include "MontageSelectionWidget.h"
 
+#include "SIMPLib/FilterParameters/MontageSelectionFilterParameter.h"
+
 #include "SVWidgetsLib/ui_MontageSelectionWidget.h"
 
 // -----------------------------------------------------------------------------
@@ -49,6 +51,28 @@ MontageSelectionWidget::MontageSelectionWidget(FilterParameter* parameter, Abstr
   Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "MontageSelectionWidget can ONLY be used with a MontageSelectionFilterParameter object");
 
   m_Ui->setupUi(this);
+  setupGui();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+MontageSelectionWidget::MontageSelectionWidget(QWidget* parent)
+: FilterParameterWidget(nullptr, nullptr, parent)
+, m_DidCausePreflight(false)
+{
+  m_Ui->setupUi(this);
+  setupGui();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MontageSelectionWidget::initializeWidget(FilterParameter* parameter, AbstractFilter* filter)
+{
+  setFilter(filter);
+  setFilterParameter(parameter);
+  setupGui();
 }
 
 // -----------------------------------------------------------------------------
@@ -78,6 +102,14 @@ void MontageSelectionWidget::setupGui()
 
   // If the DataArrayPath is updated in the filter, update the widget
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)), this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
+
+  connect(m_Ui->prefixStringEdit, &QtSStringEdit::valueChanged, this, &MontageSelectionWidget::causePreflight);
+  connect(m_Ui->suffixStringEdit, &QtSStringEdit::valueChanged, this, &MontageSelectionWidget::causePreflight);
+  connect(m_Ui->paddingSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, &MontageSelectionWidget::causePreflight);
+  connect(m_Ui->rowStartSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, &MontageSelectionWidget::causePreflight);
+  connect(m_Ui->rowEndSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, &MontageSelectionWidget::causePreflight);
+  connect(m_Ui->colStartSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, &MontageSelectionWidget::causePreflight);
+  connect(m_Ui->colEndSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, &MontageSelectionWidget::causePreflight);
 }
 
 // -----------------------------------------------------------------------------
@@ -97,9 +129,9 @@ QStringList MontageSelectionWidget::getDataContainerNames() const
   const int colStart = m_Ui->colStartSpinBox->value();
   const int colEnd = m_Ui->colEndSpinBox->value();
 
-  for(int row = rowStart; row < rowEnd; row++)
+  for(int row = rowStart; row <= rowEnd; row++)
   {
-    for(int col = colStart; col < colEnd; col++)
+    for(int col = colStart; col <= colEnd; col++)
     {
       QString rowStr = QString::number(row).rightJustified(padding, '0');
       QString colStr = QString::number(col).rightJustified(padding, '0');
@@ -122,6 +154,16 @@ void MontageSelectionWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void MontageSelectionWidget::afterPreflight()
 {
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MontageSelectionWidget::causePreflight()
+{
+  m_DidCausePreflight = true;
+  emit parametersChanged();
+  m_DidCausePreflight = false;
 }
 
 // -----------------------------------------------------------------------------
