@@ -162,14 +162,25 @@ endif()
 # Copy the recipe and egg info for the building Conda package to the 
 # output directory
 if (SIMPL_ENABLE_ANACONDA_PACKAGE)
-  if("${ANACONDA_DIR}" STREQUAL "")
-    set(ANACONDA_DIR "" CACHE STRING "")
-    message(FATAL_ERROR "Please set the ANACONDA_DIR variable either through the CMake-GUI or through the -DANACONDA_DIR=/path/to/Anaconda3")
+  if("${ANACONDA_DIR}" STREQUAL "" OR "${ANACONDA_ENVIRONMENT_NAME}" STREQUAL "")
+    message(FATAL_ERROR "You have enabled Anaconda3 style packaging by setting SIMPL_ENABLE_ANACONDA_PACKAGE=ON, but some required variables are empty or OFF.\
+    The following CMake variables need to be set either through the CMake-Gui, ccmake or the command line:\n\
+    [VAR NAME] = [CURRENT VALUE]\n\
+    ANACONDA_DIR = ${ANACONDA_DIR}\n\
+    ANACONDA_ENVIRONMENT_NAME = ${ANACONDA_ENVIRONMENT_NAME}\n\
+    SIMPL_ENABLE_ANACONDA_PACKAGE = ${SIMPL_ENABLE_ANACONDA_PACKAGE}\n\
+    SIMPL_ENABLE_ANACONDA_LOCAL_INSTALL = ${SIMPL_ENABLE_ANACONDA_LOCAL_INSTALL}\n\
+    **********************************************************\n\
+    ANACONDA_DIR is the top level directory to Anaconda3 such as /usr/local/anaconda3 or C:/Anaconda3\n\
+    ANACONDA_ENVIRONMENT_NAME is the virtual environment name. Leaving this blank might work....\n\
+    SIMPL_ENABLE_ANACONDA_PACKAGE This will enable the creation of a script that will create an Anaconda3 package for DREAM3D/SIMPL\n\
+    SIMPL_ENABLE_ANACONDA_LOCAL_INSTALL Will install the python package to the ANACONDA_ENVIRONMENT_NAME name on your local computer. Use this with caution.\n\
+    ")
   endif()
-  if("${ANACONDA_ENVIRONMENT_NAME}" STREQUAL "")
-    set(ANACONDA_ENVIRONMENT_NAME "" CACHE STRING "")
-    message(FATAL_ERROR "Please set the ANACONDA_ENVIRONMENT_NAME variable either through the CMake-GUI or through the -DANACONDA_ENVIRONMENT_NAME=ANACONDA_ENV_NAME")
-  endif()   
+  #if()
+  #  set(ANACONDA_ENVIRONMENT_NAME "" CACHE STRING "")
+  #  message(FATAL_ERROR "Please set the ANACONDA_ENVIRONMENT_NAME variable either through the CMake-GUI or through the -DANACONDA_ENVIRONMENT_NAME=ANACONDA_ENV_NAME")
+  #endif()   
   
     
   set(ANACONDA_SCRIPTS_DIR_NAME "bin")

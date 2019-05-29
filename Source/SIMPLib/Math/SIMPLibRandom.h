@@ -198,7 +198,7 @@ private:
 #define SIMPL_RANDOMNG_NEW()                                                                                                                                                                           \
   SIMPLibRandom rg;                                                                                                                                                                                    \
   {                                                                                                                                                                                                    \
-    unsigned long long int millisSinceEpoch = QDateTime::currentMSecsSinceEpoch();                                                                                                                     \
+    unsigned long long int millisSinceEpoch = static_cast<unsigned long long int>(QDateTime::currentMSecsSinceEpoch());                                                                                                                     \
     unsigned long long int* millisSinceEpochPtr = &millisSinceEpoch;                                                                                                                                   \
     unsigned int* seedPtr = reinterpret_cast<unsigned int*>(millisSinceEpochPtr);                                                                                                                      \
     rg.init_genrand(seedPtr[AIMRNG_OFFSET]);                                                                                                                                                           \

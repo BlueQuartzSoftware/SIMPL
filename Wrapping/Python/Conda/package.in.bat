@@ -64,31 +64,41 @@ xcopy /i /q /y /s %BUILD_DIR%\Data %ANACONDA_PACKAGE_DIR%\%PYTHON_SITE_PACKAGES_
 xcopy /i /q /y /s %BUILD_DIR%\Help %ANACONDA_PACKAGE_DIR%\%PYTHON_SITE_PACKAGES_NAME%\%SIMPL_PYTHON_MODULE_NAME%\Help
 xcopy /i /q /y /s %BUILD_DIR%\PrebuiltPipelines %ANACONDA_PACKAGE_DIR%\%PYTHON_SITE_PACKAGES_NAME%\%SIMPL_PYTHON_MODULE_NAME%\PrebuiltPipelines
 
-@echo "Preparing to build the Conda package %PYTHON_SITE_PACKAGES_NAME% using Conda environment: %ANACONDA_ENVIRONMENT_NAME% and Conda installation: %ANACONDA_DIR%. Activating the environment..."
-call %ANACONDA_DIR%\%ANACONDA_SCRIPTS_DIR_NAME%\activate.bat %ANACONDA_ENVIRONMENT_NAME% 
+::-----------------------------------------------------------------------------
+:: The ANACONDA_PREPARE_PACKAGE_ONLY should ONLY be set by CTest Cache files so
+:: that the proper libraries are copied from the build directory into the 
+:: site packages directory. This allows the unit tests to correctly execute on 
+:: Windows due to the DLL path issues. The ANACONDA_PREPARE_PACKAGE_ONLY should
+:: NEVER set by a normal cmake configuration process.
 
-@echo "Ensuring conda-build is installed..."         
-call %ENV_CONDA_EXE% install conda-build 
+IF "@ANACONDA_PREPARE_PACKAGE_ONLY@" == "" (
+    @echo "Preparing to build the Conda package %PYTHON_SITE_PACKAGES_NAME% using Conda environment: %ANACONDA_ENVIRONMENT_NAME% and Conda installation: %ANACONDA_DIR%. Activating the environment..."
+    call %ANACONDA_DIR%\%ANACONDA_SCRIPTS_DIR_NAME%\activate.bat %ANACONDA_ENVIRONMENT_NAME% 
 
-@echo "Creating output directory for the Conda Package..."
-mkdir %ANACONDA_PACKAGE_DIR%\conda-package
+    @echo "Ensuring conda-build is installed..."         
+    call %ENV_CONDA_EXE% install --update-all conda-build 
 
-@echo "Building the Conda %PYTHON_SITE_PACKAGES_NAME%..."
-cd %ANACONDA_PACKAGE_DIR%\conda-recipe
-call %ENV_CONDA_EXE% build --output-folder %ANACONDA_PACKAGE_DIR%\conda-package .  
+    @echo "Creating output directory for the Conda Package..."
+    mkdir %ANACONDA_PACKAGE_DIR%\conda-package
 
-@echo "Purging the Anaconda Build directory...."
-call %ENV_CONDA_EXE% build purge 
+    @echo "Building the Conda %PYTHON_SITE_PACKAGES_NAME%..."
+    cd %ANACONDA_PACKAGE_DIR%\conda-recipe
+    call %ENV_CONDA_EXE% build --output-folder %ANACONDA_PACKAGE_DIR%\conda-package .  
+
+    @echo "Purging the Anaconda Build directory...."
+    call %ENV_CONDA_EXE% build purge 
 
 
-IF "@SIMPL_ENABLE_ANACONDA_LOCAL_INSTALL@" == "ON" (
-    echo "====================================================================="
-    echo "        Starting Local Install of %SIMPL_PYTHON_MODULE_NAME% into %ANACONDA_DIR%\envs\%ANACONDA_ENVIRONMENT_NAME%"
-    echo "====================================================================="
-    echo "Removing any existing dream3d Conda package"
-    call %ENV_CONDA_EXE% remove -y %SIMPL_PYTHON_MODULE_NAME% 
-    echo "Installing the dream3d Conda package"
-    call %ENV_CONDA_EXE% install -y --use-local  %SIMPL_PYTHON_MODULE_NAME% 
+    IF "@SIMPL_ENABLE_ANACONDA_LOCAL_INSTALL@" == "ON" (
+        echo "====================================================================="
+        echo "        Starting Local Install of %SIMPL_PYTHON_MODULE_NAME% into %ANACONDA_DIR%\envs\%ANACONDA_ENVIRONMENT_NAME%"
+        echo "====================================================================="
+        echo "Removing any existing dream3d Conda package"
+        call %ENV_CONDA_EXE% remove -y %SIMPL_PYTHON_MODULE_NAME% 
+        echo "Installing the dream3d Conda package"
+        call %ENV_CONDA_EXE% install -y --use-local  %SIMPL_PYTHON_MODULE_NAME% 
+    )
+
 )
 
 echo "====================================================================="

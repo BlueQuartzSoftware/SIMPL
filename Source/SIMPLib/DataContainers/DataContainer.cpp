@@ -118,10 +118,6 @@ void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContain
   QH5Utilities::getGroupObjects(dcArrayGroupId, H5Utilities::H5Support_GROUP, dataContainers);
   foreach(QString dataContainerName, dataContainers)
   {
-    if(__SHOW_DEBUG_MSG__)
-    {
-      std::cout << "Data Container:" << dataContainerName.toStdString() << std::endl;
-    }
     hid_t containerGid = H5Gopen(dcArrayGroupId, dataContainerName.toLatin1().constData(), H5P_DEFAULT);
     if(containerGid < 0)
     {
