@@ -103,6 +103,17 @@ void MontageSelectionWidget::setupGui()
   // If the DataArrayPath is updated in the filter, update the widget
   connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath::RenameType)), this, SLOT(updateDataArrayPath(QString, DataArrayPath::RenameType)));
 
+  // Set FilterParameter values
+  MontageSelection selection = dynamic_cast<MontageSelectionFilterParameter*>(getFilterParameter())->getGetterCallback()();
+  m_Ui->prefixStringEdit->setText(selection.getPrefix());
+  m_Ui->suffixStringEdit->setText(selection.getSuffix());
+  m_Ui->paddingSpinBox->setValue(selection.getPadding());
+  m_Ui->rowStartSpinBox->setValue(selection.getRowStart());
+  m_Ui->rowEndSpinBox->setValue(selection.getRowEnd());
+  m_Ui->colStartSpinBox->setValue(selection.getColStart());
+  m_Ui->colEndSpinBox->setValue(selection.getColEnd());
+
+  // Connect widget signals
   connect(m_Ui->prefixStringEdit, &QtSStringEdit::valueChanged, this, &MontageSelectionWidget::causePreflight);
   connect(m_Ui->suffixStringEdit, &QtSStringEdit::valueChanged, this, &MontageSelectionWidget::causePreflight);
   connect(m_Ui->paddingSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, &MontageSelectionWidget::causePreflight);
@@ -140,10 +151,43 @@ void MontageSelectionWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void MontageSelectionWidget::afterPreflight()
 {
+  populateDataContainerTable();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MontageSelectionWidget::populateDataContainerTable()
+{
   MontageSelection selection = getMontageSelection();
-  QStringList dcNames = selection.getDataContainerNames();
-  m_Ui->dataContainerListWidget->clear();
-  m_Ui->dataContainerListWidget->addItems(dcNames);
+  const int rowCount = selection.getRowEnd() - selection.getRowStart() + 1;
+  const int colCount = selection.getColEnd() - selection.getColStart() + 1;
+
+  m_Ui->dataContainerTableWidget->clear();
+  m_Ui->dataContainerTableWidget->setRowCount(rowCount);
+  m_Ui->dataContainerTableWidget->setColumnCount(colCount);
+  for(int row = 0; row < rowCount; row++)
+  {
+    for(int col = 0; col < colCount; col++)
+    {
+      QString dcName = selection.getDataContainerName(row + selection.getRowStart(), col + selection.getColStart());
+      m_Ui->dataContainerTableWidget->setItem(row, col, new QTableWidgetItem(getDcIcon(dcName), dcName));
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QIcon MontageSelectionWidget::getDcIcon(const QString& dcName) const
+{
+  // Do not recreate the variables with every call, and these are not variables
+  // that make sense to be available outside of this method.
+  static QIcon dcFoundIcon = QIcon(":SIMPL/icons/images/bullet_ball_green.png");
+  static QIcon dcNotFoundIcon = QIcon(":SIMPL/icons/images/bullet_ball_red.png");
+
+  bool dcExists = (getFilter()->getDataContainerArray()->getDataContainer(dcName) != nullptr);
+  return dcExists ? dcFoundIcon : dcNotFoundIcon;
 }
 
 // -----------------------------------------------------------------------------

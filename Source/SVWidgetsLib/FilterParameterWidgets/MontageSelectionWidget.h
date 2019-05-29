@@ -79,6 +79,15 @@ protected:
    */
   void causePreflight();
 
+  /**
+   * @brief Returns the corresponding QIcon for the given DataContainer name.
+   * The icon returned is determined from the presence of the given DataContainer
+   * in the given filter's DataContainerArray.
+   * @param dcName
+   * @return
+   */
+  QIcon getDcIcon(const QString& dcName) const;
+
 private:
   /**
    * @brief Performs initial setup for signals.
@@ -86,11 +95,16 @@ private:
   void setupGui();
 
   /**
-   * @brief Initializes the widget for the given FilterParameter and AbstractFilter
+   * @brief Initializes the widget for the given FilterParameter and AbstractFilter.
    * @param parameter
    * @param filter
    */
   void initializeWidget(FilterParameter* parameter, AbstractFilter* filter);
+
+  /**
+   * @brief Populate the DataContainer table with names based on the current values.
+   */
+  void populateDataContainerTable();
 
   bool m_DidCausePreflight;
   QSharedPointer<Ui::MontageSelectionWidget> m_Ui;

@@ -39,6 +39,8 @@
 
 namespace
 {
+const QString RowChar = "r";
+const QString ColChar = "c";
 const QString Prefix = "PrefixStr";
 const QString Suffix = "SuffixStr";
 const QString Padding = "Padding";
@@ -207,24 +209,59 @@ void MontageSelection::setColRange(int colStart, int colEnd)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QStringList MontageSelection::getDataContainerNames() const
+QString MontageSelection::getDataContainerName(int row, int col) const
+{
+  const QString rowStr = QString::number(row).rightJustified(m_Padding, '0');
+  const QString colStr = QString::number(col).rightJustified(m_Padding, '0');
+  return m_Prefix + ::RowChar + rowStr + ::ColChar + colStr + m_Suffix;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QStringList MontageSelection::getDataContainerNamesCombOrder() const
 {
   QStringList dcNames;
-
-  const QString rowChar = "r";
-  const QString colChar = "c";
-
   for(int row = m_RowStart; row <= m_RowEnd; row++)
   {
     const QString rowStr = QString::number(row).rightJustified(m_Padding, '0');
-
     for(int col = m_ColStart; col <= m_ColEnd; col++)
     {
       const QString colStr = QString::number(col).rightJustified(m_Padding, '0');
-      dcNames.push_back(m_Prefix + rowChar + rowStr + colChar + colStr + m_Suffix);
+      dcNames.push_back(m_Prefix + ::RowChar + rowStr + ::ColChar + colStr + m_Suffix);
     }
   }
+  return dcNames;
+}
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QStringList MontageSelection::getDataContainerNamesSnakeOrder() const
+{
+  QStringList dcNames;
+  bool snakeBack = false;
+  for(int row = m_RowStart; row <= m_RowEnd; row++)
+  {
+    const QString rowStr = QString::number(row).rightJustified(m_Padding, '0');
+    if(snakeBack)
+    {
+      for(int col = m_ColEnd; col <= m_ColStart; col--)
+      {
+        const QString colStr = QString::number(col).rightJustified(m_Padding, '0');
+        dcNames.push_back(m_Prefix + ::RowChar + rowStr + ::ColChar + colStr + m_Suffix);
+      }
+    }
+    else
+    {
+      for(int col = m_ColStart; col <= m_ColEnd; col++)
+      {
+        const QString colStr = QString::number(col).rightJustified(m_Padding, '0');
+        dcNames.push_back(m_Prefix + ::RowChar + rowStr + ::ColChar + colStr + m_Suffix);
+      }
+    }
+    snakeBack = !snakeBack;
+  }
   return dcNames;
 }
 

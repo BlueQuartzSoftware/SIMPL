@@ -164,10 +164,24 @@ public:
   void setColRange(int colStart, int colEnd);
 
   /**
-   * @brief Returns a QStringList of the target DataContainer names.
+   * @brief Returns the DataContainer name for the tile at the given row and column.
+   * @param row
+   * @param col
    * @return
    */
-  QStringList getDataContainerNames() const;
+  QString getDataContainerName(int row, int col) const;
+
+  /**
+   * @brief Returns a QStringList of the target DataContainer names in comb order.
+   * @return
+   */
+  QStringList getDataContainerNamesCombOrder() const;
+
+  /**
+   * @brief Returns a QStringList of the target DataContainer names in snake order.
+   * @return
+   */
+  QStringList getDataContainerNamesSnakeOrder() const;
 
   /**
    * @brief Returns a QJsonObject corresponding to the current values.
