@@ -43,16 +43,16 @@
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 /**
- * @brief SIMPL_NEW_INT_VEC3_FP This macro is a short-form way of instantiating an instance of
+ * @brief SIMPL_NEW_INT_VEC2_FP This macro is a short-form way of instantiating an instance of
  * IntVec2FilterParameter. There are 4 required parameters and 2 optional parameter
  * that are always passed to this macro in the following order: HumanLabel, PropertyName, Category,
  * FilterName (class name), Units (optional), GroupIndex (optional).
  *
  * Therefore, the macro should be written like this (this is a concrete example):
- * SIMPL_NEW_INT_VEC3_FP("HumanLabel", PropertyName, Category, FilterName, Units, GroupIndex)
+ * SIMPL_NEW_INT_VEC2_FP("HumanLabel", PropertyName, Category, FilterName, Units, GroupIndex)
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional parameters):
- * SIMPL_NEW_INT_VEC3_FP("Dimensions (XYZ)", Dimensions, FilterParameter::Parameter, GenericExample);
+ * SIMPL_NEW_INT_VEC2_FP("Dimensions (XY)", Dimensions, FilterParameter::Parameter, GenericExample);
  */
 #define SIMPL_NEW_INT_VEC2_FP(...)                                                                                                                                                                     \
   SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)(IntVec2FilterParameter, __VA_ARGS__))
@@ -73,7 +73,7 @@ public:
 
   /**
    * @brief New This function instantiates an instance of the IntVec2FilterParameter. Although this function is available to be used,
-   * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_INT_VEC3_FP(...) macro at the top of this file.
+   * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_INT_VEC2_FP(...) macro at the top of this file.
 
    * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
    * @param propertyName The internal property name for this filter parameter.
@@ -81,9 +81,9 @@ public:
    * @param category The category for the filter parameter in the DREAM.3D user interface.  There
    * are three categories: Parameter, Required Arrays, and Created Arrays.
    * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-  * that this FilterParameter subclass represents.
+   * that this FilterParameter subclass represents.
    * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-  * that this FilterParameter subclass represents.
+   * that this FilterParameter subclass represents.
    * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
