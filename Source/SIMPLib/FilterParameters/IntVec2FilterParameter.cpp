@@ -84,7 +84,7 @@ void IntVec2FilterParameter::readJson(const QJsonObject& obj)
   {
     QJsonObject json = jsonValue.toObject();
     IntVec2Type intVec2;
-    if(json["x"].isDouble() && json["y"].isDouble() && json["z"].isDouble())
+    if(json["x"].isDouble() && json["y"].isDouble())
     {
       intVec2[0] = json["x"].toInt();
       intVec2[1] = json["y"].toInt();
