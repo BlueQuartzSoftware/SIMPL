@@ -59,7 +59,7 @@ public:
   SIMPLRange2D();
   SIMPLRange2D(size_t initRow, size_t initCol, size_t endRow, size_t endCol);
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  SIMPLRange2D(tbb::blocked_range2d<size_t, size_t>& r);
+  SIMPLRange2D(const tbb::blocked_range2d<size_t, size_t>& r);
 #endif
 
   /**

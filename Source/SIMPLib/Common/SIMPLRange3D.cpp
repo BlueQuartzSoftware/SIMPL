@@ -61,7 +61,7 @@ SIMPLRange3D::SIMPLRange3D(size_t xMin, size_t xMax, size_t yMin, size_t yMax, s
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPLRange3D::SIMPLRange3D(tbb::blocked_range3d<size_t>& r)
+SIMPLRange3D::SIMPLRange3D(const tbb::blocked_range3d<size_t>& r)
 : m_Range({r.pages().begin(), r.pages().end(), r.rows().begin(), r.rows().end(), r.cols().begin(), r.cols().end()})
 {
 }

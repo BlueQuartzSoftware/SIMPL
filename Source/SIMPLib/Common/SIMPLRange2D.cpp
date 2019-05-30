@@ -53,7 +53,7 @@ SIMPLRange2D::SIMPLRange2D(size_t initRow, size_t initCol, size_t endRow, size_t
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPLRange2D::SIMPLRange2D(tbb::blocked_range2d<size_t, size_t>& r)
+SIMPLRange2D::SIMPLRange2D(const tbb::blocked_range2d<size_t, size_t>& r)
 : m_Range({r.rows().begin(), r.cols().begin(), r.rows().end(), r.cols().end()})
 {
 }

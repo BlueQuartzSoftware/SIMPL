@@ -59,7 +59,7 @@ public:
   SIMPLRange();
   SIMPLRange(size_t begin, size_t end);
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  SIMPLRange(tbb::blocked_range<size_t>& r);
+  SIMPLRange(const tbb::blocked_range<size_t>& r);
 #endif
 
   /**

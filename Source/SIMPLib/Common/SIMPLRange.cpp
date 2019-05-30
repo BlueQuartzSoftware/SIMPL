@@ -53,7 +53,7 @@ SIMPLRange::SIMPLRange(size_t begin, size_t end)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPLRange::SIMPLRange(tbb::blocked_range<size_t>& r)
+SIMPLRange::SIMPLRange(const tbb::blocked_range<size_t>& r)
 : m_Range({r.begin(), r.end()})
 {
 }
