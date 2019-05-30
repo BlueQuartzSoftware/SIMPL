@@ -477,18 +477,6 @@ int H5FilterParametersWriter::writeValue(const QString& name, QVector<double> va
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5FilterParametersWriter::writeValue(const QString& name, IntVec2Type v)
-{
-  int err = 0;
-  int32_t rank = 1;
-  hsize_t dims[1] = { 2 };
-  err = QH5Lite::writePointerDataset<int32_t>(m_CurrentGroupId, name, rank, dims, reinterpret_cast<int32_t*>(&v));
-  return err;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 int H5FilterParametersWriter::writeValue(const QString& name, IntVec3Type v)
 {
   int err = 0;

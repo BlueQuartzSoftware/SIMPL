@@ -104,7 +104,6 @@ class SIMPLib_EXPORT H5FilterParametersWriter : public AbstractFilterParametersW
     int writeValue(const QString& name, QVector<float> value) override;
     int writeValue(const QString& name, QVector<double> value) override;
 
-    int writeValue(const QString& name, IntVec2Type v) override;
     int writeValue(const QString& name, IntVec3Type v) override;
     int writeValue(const QString& name, FloatVec3Type v) override;
 

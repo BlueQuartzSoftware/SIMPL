@@ -324,18 +324,6 @@ int AbstractFilterParametersWriter::writeValue(const QString& name, QVector<doub
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString& name, IntVec2Type v)
-{
-  Q_UNUSED(name)
-  Q_UNUSED(v)
-
-  // This should never be executed
-  return -1;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 int AbstractFilterParametersWriter::writeValue(const QString& name, IntVec3Type v)
 {
   Q_UNUSED(name)

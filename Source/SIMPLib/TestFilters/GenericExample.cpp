@@ -332,7 +332,6 @@ void GenericExample::readFilterParameters(AbstractFilterParametersReader* reader
   setOutputPath(reader->readString("OutputPath", getOutputPath()));
   setWriteAlignmentShifts(reader->readValue("WriteAlignmentShifts", getWriteAlignmentShifts()));
   setConversionType(reader->readValue("ConversionType", getConversionType()));
-  setRange(reader->readIntVec2("Range", getRange()));
   setDimensions(reader->readIntVec3("Dimensions", getDimensions()));
   setOrigin(reader->readFloatVec3("Origin", getOrigin()));
 

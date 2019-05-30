@@ -348,18 +348,6 @@ QVector<double> AbstractFilterParametersReader::readArray(const QString name, QV
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IntVec2Type AbstractFilterParametersReader::readIntVec2(const QString name, IntVec2Type defaultValue)
-{
-  Q_UNUSED(name)
-  Q_UNUSED(defaultValue)
-
-  // This should never be executed
-  return IntVec2Type();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 IntVec3Type AbstractFilterParametersReader::readIntVec3(const QString name, IntVec3Type defaultValue)
 {
   Q_UNUSED(name)
