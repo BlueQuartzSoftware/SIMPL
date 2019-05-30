@@ -74,6 +74,16 @@ MontageSelection::MontageSelection(const QString& prefix, const QString& suffix,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+MontageSelection MontageSelection::Create(const std::string& prefix, const std::string& suffix, int padding, int rowStart, int rowEnd, int colStart, int colEnd)
+{
+  QString prefixStr = QString::fromStdString(prefix);
+  QString suffixStr = QString::fromStdString(suffix);
+  return MontageSelection(prefixStr, suffixStr, padding, rowStart, rowEnd, colStart, colEnd);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 MontageSelection::~MontageSelection() = default;
 
 // -----------------------------------------------------------------------------

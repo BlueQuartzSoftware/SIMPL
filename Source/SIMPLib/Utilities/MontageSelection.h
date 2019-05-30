@@ -40,6 +40,7 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/SIMPLib.h"
 
 /**
@@ -51,10 +52,22 @@
  */
 class SIMPLib_EXPORT MontageSelection
 {
+  PYB11_CREATE_BINDINGS(MontageSelection)
+  PYB11_STATIC_CREATION(Create ARGS std::string std::string int int int int int)
+  PYB11_PROPERTY(QString Prefix READ getPrefix WRITE setPrefix)
+  PYB11_PROPERTY(QString Suffix READ getSuffix WRITE setSuffix)
+  PYB11_PROPERTY(int Padding READ getPadding WRITE setPadding)
+  PYB11_PROPERTY(int RowStart READ getRowStart WRITE setRowStart)
+  PYB11_PROPERTY(int RowEnd READ getRowEnd WRITE setRowEnd)
+  PYB11_PROPERTY(int ColStart READ getColStart WRITE setColStart)
+  PYB11_PROPERTY(int ColEnd READ getColEnd WRITE setColEnd)
+
 public:
   MontageSelection();
   MontageSelection(const QString& prefix, const QString& suffix, int padding, int rowStart, int rowEnd, int colStart, int colEnd);
   virtual ~MontageSelection();
+
+  static MontageSelection Create(const std::string& prefix, const std::string& suffix, int padding, int rowStart, int rowEnd, int colStart, int colEnd);
 
   /**
    * @brief Returns the prefix used for generating DataContainer names.
