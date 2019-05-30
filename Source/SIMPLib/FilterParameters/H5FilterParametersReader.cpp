@@ -1027,40 +1027,6 @@ ComparisonInputsAdvanced H5FilterParametersReader::readComparisonInputsAdvanced(
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MontageSelection H5FilterParametersReader::readMontageSelection(const QString name, MontageSelection defValue)
-{
-  QString strData;
-
-  herr_t err = QH5Lite::readStringDataset(m_CurrentGroupId, name, strData);
-  if(err < 0)
-  {
-    return defValue; // If the data set does not exist no point in going any further
-  }
-
-  QStringList strVector = strData.split('\n', QString::SkipEmptyParts);
-  qint32 strVecSize = strVector.size();
-  if(0 == strVecSize)
-  {
-    // Something has gone wrong in the tokenization and the number of tokens does not match what
-    // was written to the HDF5 file.
-    return defValue;
-  }
-
-  MontageSelection montage;
-  montage.setPrefix(strVector[0]);
-  montage.setSuffix(strVector[1]);
-  montage.setPadding(strVector[2].toInt());
-  montage.setRowStart(strVector[3].toInt());
-  montage.setRowEnd(strVector[4].toInt());
-  montage.setColStart(strVector[5].toInt());
-  montage.setColEnd(strVector[6].toInt());
-
-  return defValue;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 AxisAngleInput_t H5FilterParametersReader::readAxisAngle(const QString name, AxisAngleInput_t v, int vectorPos)
 {
   int err = 0;

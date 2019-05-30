@@ -602,32 +602,6 @@ int H5FilterParametersWriter::writeValue(const QString& name, ComparisonInputs v
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5FilterParametersWriter::writeValue(const QString& name, MontageSelection v)
-{
-  int err = 0;
-  QString buf;
-  QTextStream ss(&buf);
-
-  ss << v.getPrefix() << "\n";
-  ss << v.getSuffix() << "\n";
-  ss << v.getPadding() << "\n";
-  ss << v.getRowStart() << "\n";
-  ss << v.getRowEnd() << "\n";
-  ss << v.getColStart() << "\n";
-  ss << v.getColEnd() << "\n";
-
-  err = QH5Lite::writeStringDataset(m_CurrentGroupId, name, buf);
-  if(err < 0)
-  {
-    return err;
-  }
-
-  return err;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 int H5FilterParametersWriter::writeValue(const QString& name, AxisAngleInput_t v)
 {
   int numQFilters = static_cast<int>(1);

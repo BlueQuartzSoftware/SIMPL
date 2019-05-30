@@ -137,7 +137,6 @@ class SIMPLib_EXPORT H5FilterParametersReader : public AbstractFilterParametersR
      ComparisonInput_t readComparisonInput(const QString name, ComparisonInput_t v, int vectorPos) override;
      ComparisonInputs readComparisonInputs(const QString name, ComparisonInputs v) override;
      ComparisonInputsAdvanced readComparisonInputsAdvanced(const QString name, ComparisonInputsAdvanced v) override;
-     MontageSelection readMontageSelection(const QString name, MontageSelection v) override;
      AxisAngleInput_t readAxisAngle(const QString name, AxisAngleInput_t v, int vectorPos) override;
      QVector<AxisAngleInput_t> readAxisAngles(const QString name, QVector<AxisAngleInput_t> defValue) override;
      QSet<QString> readArraySelections(const QString name, QSet<QString> v) override;
