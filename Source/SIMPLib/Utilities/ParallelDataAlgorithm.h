@@ -39,11 +39,16 @@
 #include "SIMPLib/Common/SIMPLRange.h"
 #include "SIMPLib/SIMPLib.h"
 
+// SIMPLib.h MUST be included before this or the guard will block the include but not its uses below.
+// This is consistent with previous behavior, only earlier parallelization split the includes between
+// the corresponding .h and .cpp files.
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
+// clang-format off
 #include <tbb/blocked_range.h>
 #include <tbb/parallel_for.h>
 #include <tbb/partitioner.h>
 #include <tbb/task_scheduler_init.h>
+// clang-format on
 #endif
 
 /**

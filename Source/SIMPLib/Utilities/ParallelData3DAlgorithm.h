@@ -39,19 +39,24 @@
 #include "SIMPLib/Common/SIMPLRange3D.h"
 #include "SIMPLib/SIMPLib.h"
 
+// SIMPLib.h MUST be included before this or the guard will block the include but not its uses below.
+// This is consistent with previous behavior, only earlier parallelization split the includes between
+// the corresponding .h and .cpp files.
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
+// clang-format off
 #include <tbb/blocked_range.h>
 #include <tbb/parallel_for.h>
 #include <tbb/partitioner.h>
 #include <tbb/task_scheduler_init.h>
+// clang-format on
 #endif
 
- /**
-  * @brief The ParallelDataAlgorithm class handles parallelization across data-based algorithms.
-  * A range is required, as well as an object with a matching function operator.  This class
-  * utilizes TBB for parallelization and will fallback to non-parallelization if it is not
-  * available or the parallelization is disabled.
-  */
+/**
+ * @brief The ParallelDataAlgorithm class handles parallelization across data-based algorithms.
+ * A range is required, as well as an object with a matching function operator.  This class
+ * utilizes TBB for parallelization and will fallback to non-parallelization if it is not
+ * available or the parallelization is disabled.
+ */
 class SIMPLib_EXPORT ParallelData3DAlgorithm
 {
 public:
@@ -112,7 +117,7 @@ public:
    * @brief Runs the data algorithm.  Parallelization is used if appropriate.
    * @param body
    */
-  template<typename Body>
+  template <typename Body>
   void execute(const Body& body)
   {
     bool doParallel = false;

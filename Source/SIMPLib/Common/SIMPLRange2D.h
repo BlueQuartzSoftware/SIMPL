@@ -38,8 +38,13 @@
 #include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/SIMPLib.h"
 
+// SIMPLib.h MUST be included before this or the guard will block the include but not its uses below.
+// This is consistent with previous behavior, only earlier parallelization split the includes between
+// the corresponding .h and .cpp files.
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
+// clang-format off
 #include <tbb/blocked_range2d.h>
+// clang-format on
 #endif
 
 /**
