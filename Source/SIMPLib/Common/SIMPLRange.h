@@ -36,6 +36,7 @@
 #include <array>
 
 #include "SIMPLib/Common/SIMPLArray.hpp"
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/SIMPLib.h"
 
 // SIMPLib.h MUST be included before this or the guard will block the include but not its uses below.
@@ -58,6 +59,13 @@
  */
 class SIMPLib_EXPORT SIMPLRange
 {
+  PYB11_CREATE_BINDINGS(SIMPLRange)
+  PYB11_STATIC_CREATION(Create ARGS size_t size_t)
+  PYB11_METHOD(size_t min)
+  PYB11_METHOD(size_t max)
+  PYB11_METHOD(size_t size)
+  PYB11_METHOD(bool empty)
+
 public:
   using RangeType = std::array<size_t, 2>;
 
@@ -66,6 +74,8 @@ public:
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   SIMPLRange(const tbb::blocked_range<size_t>& r);
 #endif
+
+  static SIMPLRange Create(size_t begin, size_t end);
 
   /**
    * @brief Returns an array representation of the range.

@@ -62,6 +62,14 @@ SIMPLRange2D::SIMPLRange2D(const tbb::blocked_range2d<size_t, size_t>& r)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+SIMPLRange2D SIMPLRange2D::Create(size_t initRow, size_t initCol, size_t endRow, size_t endCol)
+{
+  return SIMPLRange2D(initRow, initCol, endRow, endCol);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 SIMPLRange2D::RangeType SIMPLRange2D::getRange() const
 {
   return m_Range;

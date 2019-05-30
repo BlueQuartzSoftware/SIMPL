@@ -36,6 +36,7 @@
 #include <array>
 
 #include "SIMPLib/Common/SIMPLArray.hpp"
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/SIMPLib.h"
 
 // SIMPLib.h MUST be included before this or the guard will block the include but not its uses below.
@@ -58,6 +59,17 @@
  */
 class SIMPLib_EXPORT SIMPLRange2D
 {
+  PYB11_CREATE_BINDINGS(SIMPLRange2D)
+  PYB11_STATIC_CREATION(Create ARGS size_t size_t size_t size_t)
+  PYB11_METHOD(size_t minRow)
+  PYB11_METHOD(size_t maxRow)
+  PYB11_METHOD(size_t minCol)
+  PYB11_METHOD(size_t maxCol)
+  PYB11_METHOD(size_t numRows)
+  PYB11_METHOD(size_t numCols)
+  PYB11_METHOD(size_t size)
+  PYB11_METHOD(bool empty)
+
 public:
   using RangeType = std::array<size_t, 4>; // { init row, init col, final row, final col }
 
@@ -66,6 +78,8 @@ public:
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   SIMPLRange2D(const tbb::blocked_range2d<size_t, size_t>& r);
 #endif
+
+  static SIMPLRange2D Create(size_t initRow, size_t initCol, size_t endRow, size_t endCol);
 
   /**
    * @brief Returns an array representation of the range.
