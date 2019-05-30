@@ -39,12 +39,11 @@
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
 
-#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
-
 #include "SIMPLib/FilterParameters/IntVec2FilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
+#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 #include "SVWidgetsLib/ui_IntVec2Widget.h"
