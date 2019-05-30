@@ -35,133 +35,92 @@
 
 #include <array>
 
+#include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/SIMPLib.h"
 
-#include "SIMPLib/Common/SIMPLArray.hpp"
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
 #include <tbb/blocked_range2d.h>
 #endif
 
+/**
+ * @class SIMPLRange2D SIMPLRange2D.h SIMPLib/Common/SIMPLRange2D.h
+ * @brief The SIMPLRange2D class defines a range between set of minimum and
+ * maximum values. The purpose of this class is mainly to allow a more unified
+ * control flow during parallelization between builds using TBB and those that
+ * do not.  Because tbb::blocked_range is used in an implicit conversion constructor,
+ * a single operator accepting a SIMPLRange can be used TBB parallelized and
+ * non-paralleled versions without a branching code base.
+ */
 class SIMPLib_EXPORT SIMPLRange2D
 {
 public:
   using RangeType = std::array<size_t, 4>; // { init row, init col, final row, final col }
 
-  SIMPLRange2D()
-  : m_Range({ 0,0,0,0 })
-  {
-  }
-  SIMPLRange2D(size_t initRow, size_t initCol, size_t endRow, size_t endCol)
-  : m_Range({ initRow, initCol, endRow, endCol })
-  {
-  }
-  template<typename Type>
-  SIMPLRange2D(IVec2<Type> array)
-  : m_Range({ 0, array[0], 0, array[1] })
-  {
-  }
+  SIMPLRange2D();
+  SIMPLRange2D(size_t initRow, size_t initCol, size_t endRow, size_t endCol);
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  SIMPLRange2D(tbb::blocked_range2d<size_t, size_t>& r)
-  : m_Range({ r.rows().begin(), r.cols().begin(), r.rows().end(), r.cols().end() })
-  {
-  }
+  SIMPLRange2D(tbb::blocked_range2d<size_t, size_t>& r);
 #endif
 
   /**
    * @brief Returns an array representation of the range.
    * @return
    */
-  RangeType getRange() const
-  {
-    return m_Range;
-  }
+  RangeType getRange() const;
 
   /**
    * @brief Returns the minimum row index in the range.
    * @return
    */
-  size_t minRow() const
-  {
-    return m_Range[0];
-  }
+  size_t minRow() const;
 
   /**
    * @brief Returns the minimum column index in the range.
    * @return
    */
-  size_t minCol() const
-  {
-    return m_Range[1];
-  }
+  size_t minCol() const;
 
   /**
    * @brief Returns the maximum row index in the range.
    * @return
    */
-  size_t maxRow() const
-  {
-    return m_Range[2];
-  }
+  size_t maxRow() const;
 
   /**
    * @brief Returns the maximum column index in the range.
    * @return
    */
-  size_t maxCol() const
-  {
-    return m_Range[3];
-  }
+  size_t maxCol() const;
 
   /**
    * @brief Returns the number of rows in the range.
    * @return
    */
-  size_t numRows() const
-  {
-    return maxRow() - minRow();
-  }
+  size_t numRows() const;
 
   /**
    * @brief Returns the number of columns in the range.
    * @return
    */
-  size_t numCols() const
-  {
-    return maxCol() - minCol();
-  }
+  size_t numCols() const;
 
   /**
    * @brief Returns the number of indices in the range.
    * @return
    */
-  size_t size() const
-  {
-    return numRows() * numCols();
-  }
+  size_t size() const;
 
   /**
    * @brief Returns true if the range is empty.  Returns false otherwise.
    * @return
    */
-  bool empty() const
-  {
-    const bool emptyRows = (m_Range[0] == m_Range[2]) && (m_Range[0] == 0);
-    const bool emptyCols = (m_Range[1] == m_Range[3]) && (m_Range[1] == 0);
-    return emptyRows && emptyCols;
-  }
+  bool empty() const;
 
   /**
    * @brief Returns the range based on the specified index.  The range is
    * organized as [min, max]
    */
-  size_t operator[](size_t index) const
-  {
-    if(index < 4)
-    {
-      return m_Range[index];
-    }
-    throw std::range_error("Range out of bounds");
-  }
+  size_t operator[](size_t index) const;
 
 private:
   RangeType m_Range;

@@ -36,7 +36,7 @@
 
 #include <array>
 
-#include "SIMPLib/Common/SIMPLRange3D.hpp"
+#include "SIMPLib/Common/SIMPLRange3D.h"
 #include "SIMPLib/SIMPLib.h"
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS

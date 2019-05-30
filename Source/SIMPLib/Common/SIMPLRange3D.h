@@ -35,99 +35,72 @@
 
 #include <array>
 
+#include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/SIMPLib.h"
 
-#include "SIMPLib/Common/SIMPLArray.hpp"
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-#include <tbb/blocked_range.h>
+#include <tbb/blocked_range3d.h>
 #endif
 
-class SIMPLib_EXPORT SIMPLRange
+/**
+ * @class SIMPLRange3D SIMPLRange3D.h SIMPLib/Common/SIMPLRange3D.h
+ * @brief The SIMPLRange3D class defines a range between set of minimum and
+ * maximum values. The purpose of this class is mainly to allow a more unified
+ * control flow during parallelization between builds using TBB and those that
+ * do not.  Because tbb::blocked_range is used in an implicit conversion constructor,
+ * a single operator accepting a SIMPLRange can be used TBB parallelized and
+ * non-paralleled versions without a branching code base.
+ */
+class SIMPLib_EXPORT SIMPLRange3D
 {
 public:
-  using RangeType = std::array<size_t, 2>;
+  using RangeType = std::array<size_t, 6>;
+  using DimensionRange = std::array<size_t, 2>;
 
-  SIMPLRange()
-  : m_Range({0,0})
-  {
-  }
-  SIMPLRange(size_t begin, size_t end)
-  : m_Range({ begin, end })
-  {
-  }
-  template<typename Type, size_t Dimension>
-  SIMPLRange(SIMPLArray<Type, Dimension> array)
-  : m_Range({ 0, Dimension })
-  {
-  }
+  SIMPLRange3D();
+  SIMPLRange3D(size_t x, size_t y, size_t z);
+  SIMPLRange3D(size_t xMin, size_t xMax, size_t yMin, size_t yMax, size_t zMin, size_t zMax);
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  SIMPLRange(tbb::blocked_range<size_t>& r)
-  : m_Range({ r.begin(), r.end() })
-  {
-  }
+  SIMPLRange3D(tbb::blocked_range3d<size_t>& r);
 #endif
 
   /**
    * @brief Returns an array representation of the range.
    * @return
    */
-  RangeType getRange() const
-  {
-    return m_Range;
-  }
+  RangeType getRange() const;
 
   /**
-   * @brief Returns the minimum index in the range.
+   * @brief Returns the range along the X dimension
    * @return
    */
-  size_t min() const
-  {
-    return m_Range[0];
-  }
+  DimensionRange getXRange() const;
 
   /**
-   * @brief Returns the maximum index in the range.
+   * @brief Returns the range along the Y dimension
    * @return
    */
-  size_t max() const
-  {
-    return m_Range[1];
-  }
+  DimensionRange getYRange() const;
 
   /**
-   * @brief Returns the number of indices in the range.
+   * @brief Returns the range along the Z dimension
    * @return
    */
-  size_t size() const
-  {
-    return m_Range[1] - m_Range[0];
-  }
+  DimensionRange getZRange() const;
 
   /**
    * @brief Returns true if the range is empty.  Returns false otherwise.
    * @return
    */
-  bool empty() const
-  {
-    return size() == 0;
-  }
+  bool empty() const;
 
   /**
-   * @brief Returns the range based on the specified index.  The range is
-   * organized as [min, max]
+   * @brief Returns the specified part of the range.  The range is organized as
+   * [xMin, xMax, yMin, yMax, zMin, zMax].
+   * @param index
+   * @return
    */
-  size_t operator[](size_t index) const
-  {
-    switch(index)
-    {
-    case 0:
-      return min();
-    case 1:
-      return max();
-    default:
-      throw std::range_error("Range must be 0 or 1");
-    }
-  }
+  size_t operator[](size_t index) const;
 
 private:
   RangeType m_Range;

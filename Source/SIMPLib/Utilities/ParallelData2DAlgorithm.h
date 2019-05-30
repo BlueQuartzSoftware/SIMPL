@@ -36,7 +36,7 @@
 
 #include <array>
 
-#include "SIMPLib/Common/SIMPLRange2D.hpp"
+#include "SIMPLib/Common/SIMPLRange2D.h"
 #include "SIMPLib/SIMPLib.h"
 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
