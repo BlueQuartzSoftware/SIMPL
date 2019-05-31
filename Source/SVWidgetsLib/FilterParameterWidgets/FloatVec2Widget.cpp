@@ -77,8 +77,8 @@ void FloatVec2Widget::setupGui()
   // Catch when the filter wants its values updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  connect(xData, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
-  connect(yData, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
+  connect(xData, SIGNAL(textChanged(const QString&)), this, SLOT(xDataChanged(const QString&)));
+  connect(yData, SIGNAL(textChanged(const QString&)), this, SLOT(yDataChanged(const QString&)));
 
   QLocale loc = QLocale::system();
 
@@ -105,27 +105,39 @@ void FloatVec2Widget::setupGui()
 }
 
 // -----------------------------------------------------------------------------
+void FloatVec2Widget::xDataChanged(const QString& value)
+{
+  widgetChanged(xData, value);
+}
+
+// -----------------------------------------------------------------------------
+void FloatVec2Widget::yDataChanged(const QString& value)
+{
+  widgetChanged(yData, value);
+}
+
+// -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FloatVec2Widget::widgetChanged(const QString& text)
+void FloatVec2Widget::widgetChanged(QLineEdit* le, const QString& msg)
 {
-  Q_UNUSED(text);
-
-  QLineEdit* le = nullptr;
-  (sender() == xData) ? le = xData : le = nullptr;
-  (sender() == yData) ? le = yData : le = nullptr;
-
+  Q_UNUSED(msg);
+  if(nullptr == le)
+  {
+    return;
+  }
   errorLabel->hide();
 
-  if(le != nullptr)
+  if(le->text().isEmpty())
   {
-    if(le->text().isEmpty())
-    {
-      SVStyle::Instance()->LineEditErrorStyle(le);
-      SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);
-      errorLabel->setText("No value entered. Filter will use default value of " + getFilterParameter()->getDefaultValue().toString());
-      errorLabel->show();
-    }
+    SVStyle::Instance()->LineEditBackgroundErrorStyle(le);
+    SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);
+    errorLabel->setText("No value entered. Filter will use default value of " + getFilterParameter()->getDefaultValue().toString());
+    errorLabel->show();
+  }
+  else
+  {
+    SVStyle::Instance()->LineEditClearStyle(le);
   }
 
   emit parametersChanged();
@@ -146,7 +158,8 @@ void FloatVec2Widget::filterNeedsInputParameters(AbstractFilter* filter)
   if(!ok)
   {
     SVStyle::Instance()->LineEditBackgroundErrorStyle(xData);
-    SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);    errorLabel->setText("X Value entered is beyond the representable range for a double.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());
+    SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);
+    errorLabel->setText("X Value entered is beyond the representable range for a float.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());
     errorLabel->show();
     data[0] = defValue[0];
   }
@@ -155,7 +168,8 @@ void FloatVec2Widget::filterNeedsInputParameters(AbstractFilter* filter)
   if(!ok)
   {
     SVStyle::Instance()->LineEditBackgroundErrorStyle(yData);
-    SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);    errorLabel->setText("Y Value entered is beyond the representable range for a double.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());
+    SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);
+    errorLabel->setText("Y Value entered is beyond the representable range for a float.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());
     errorLabel->show();
     data[1] = defValue[1];
   }

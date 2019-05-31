@@ -40,17 +40,17 @@
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
 
-#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
-
+#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
 
 #include "SVWidgetsLib/ui_FloatVec3Widget.h"
 
+class QLineEdit;
 
 /**
 * @brief
@@ -78,10 +78,16 @@ class SVWidgetsLib_EXPORT FloatVec3Widget : public FilterParameterWidget, privat
     void setupGui() override;
 
   public slots:
-    void widgetChanged(const QString& msg);
     void filterNeedsInputParameters(AbstractFilter* filter); // When the filter is ready for us to update its input parameter(s) that we are responsible for
     void beforePreflight(); // Called just before the "dataCheck()" is called
-    void afterPreflight(); // Called just after the dataCheck() is called.
+    void afterPreflight();  // Called just after the dataCheck() is called.
+
+    void xDataChanged(const QString& value);
+    void yDataChanged(const QString& value);
+    void zDataChanged(const QString& value);
+
+  protected:
+    void widgetChanged(QLineEdit* le, const QString& msg);
 
   private:
     FloatVec3FilterParameter* m_FilterParameter;

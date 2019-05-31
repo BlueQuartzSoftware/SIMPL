@@ -198,21 +198,18 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
     errorLabel->setText("No value entered. Filter will use default value of " + getFilterParameter()->getDefaultValue().toString());\
     errorLabel->show();\
   }\
-}\
+}
 
-
-
-#define FOPW_EXTRACT_VALUE(cell)\
-  data.cell = loc.toFloat(cell->text(), &ok);\
-  if(!ok)\
-  {\
-    if(errorLabel) {\
-    SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);\
-    errorLabel->setText("Value entered is beyond the representable range for a double.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());\
-    errorLabel->show();\
-    }\
-    SVStyle::Instance()->LineEditErrorStyle(cell);\
-    data.cell = defValue.cell;\
-  }\
-
-
+#define FOPW_EXTRACT_VALUE(cell)                                                                                                                                                                       \
+  data.cell = loc.toFloat(cell->text(), &ok);                                                                                                                                                          \
+  if(!ok)                                                                                                                                                                                              \
+  {                                                                                                                                                                                                    \
+    if(errorLabel)                                                                                                                                                                                     \
+    {                                                                                                                                                                                                  \
+      SVStyle::Instance()->SetErrorColor("QLabel", errorLabel);                                                                                                                                        \
+      errorLabel->setText("Value entered is beyond the representable range for the value type.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());      \
+      errorLabel->show();                                                                                                                                                                              \
+    }                                                                                                                                                                                                  \
+    SVStyle::Instance()->LineEditErrorStyle(cell);                                                                                                                                                     \
+    data.cell = defValue.cell;                                                                                                                                                                         \
+  }
