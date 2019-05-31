@@ -105,7 +105,7 @@ class SIMPLib_EXPORT GenericExample : public AbstractFilter
   PYB11_PROPERTY(bool Bool2 READ getBool2 WRITE setBool2)
   PYB11_PROPERTY(int AlgorithmSelection READ getAlgorithmSelection WRITE setAlgorithmSelection)
   PYB11_PROPERTY(int DistanceMetric READ getDistanceMetric WRITE setDistanceMetric)
-  PYB11_PROPERTY(QStringList MontageSelection READ getMontageSelection WRITE setMontageSelection)
+  PYB11_PROPERTY(MontageSelection MontageSelection READ getMontageSelection WRITE setMontageSelection)
 
 public:
   SIMPL_SHARED_POINTERS(GenericExample)
