@@ -61,6 +61,10 @@ class SIMPLib_EXPORT SIMPLRange3D
 {
   PYB11_CREATE_BINDINGS(SIMPLRange3D)
   PYB11_STATIC_CREATION(Create ARGS size_t size_t size_t)
+  PYB11_METHOD(std::array<size_t, 6> getRange)
+  PYB11_METHOD(std::array<size_t, 2> getXRange)
+  PYB11_METHOD(std::array<size_t, 2> getYRange)
+  PYB11_METHOD(std::array<size_t, 2> getZRange)
   PYB11_METHOD(bool empty)
 
 public:
