@@ -62,14 +62,6 @@ SIMPLRange::SIMPLRange(const tbb::blocked_range<size_t>& r)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPLRange SIMPLRange::Create(size_t begin, size_t end)
-{
-  return SIMPLRange(begin, end);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 SIMPLRange::RangeType SIMPLRange::getRange() const
 {
   return m_Range;

@@ -70,14 +70,6 @@ SIMPLRange3D::SIMPLRange3D(const tbb::blocked_range3d<size_t>& r)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPLRange3D SIMPLRange3D::Create(size_t x, size_t y, size_t z)
-{
-  return SIMPLRange3D(x, y, z);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 SIMPLRange3D::RangeType SIMPLRange3D::getRange() const
 {
   return m_Range;

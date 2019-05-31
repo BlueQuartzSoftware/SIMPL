@@ -59,26 +59,16 @@
  */
 class SIMPLib_EXPORT SIMPLRange3D
 {
-  PYB11_CREATE_BINDINGS(SIMPLRange3D)
-  PYB11_STATIC_CREATION(Create ARGS size_t size_t size_t)
-  PYB11_METHOD(std::array<size_t, 6> getRange)
-  PYB11_METHOD(std::array<size_t, 2> getXRange)
-  PYB11_METHOD(std::array<size_t, 2> getYRange)
-  PYB11_METHOD(std::array<size_t, 2> getZRange)
-  PYB11_METHOD(bool empty)
-
 public:
   using RangeType = std::array<size_t, 6>;
   using DimensionRange = std::array<size_t, 2>;
 
   SIMPLRange3D();
   SIMPLRange3D(size_t x, size_t y, size_t z);
-  SIMPLRange3D(size_t xMin, size_t xMax, size_t yMin, size_t yMax, size_t zMin, size_t zMax);
+  SIMPLRange3D(size_t xMin, size_t xMax, size_t yMin, size_t yMax, size_t zMin, size_t zMax); 
 #ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   SIMPLRange3D(const tbb::blocked_range3d<size_t>& r);
 #endif
-
-  static SIMPLRange3D Create(size_t x, size_t y, size_t z);
 
   /**
    * @brief Returns an array representation of the range.
