@@ -50,7 +50,7 @@ MontageSelectionFilterParameter::~MontageSelectionFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 MontageSelectionFilterParameter::Pointer MontageSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const MontageSelection& defaultValue, Category category,
-                                                                              SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+                                                                              const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
 {
   MontageSelectionFilterParameter::Pointer ptr = MontageSelectionFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
