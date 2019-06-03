@@ -55,7 +55,6 @@
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
 #include "SIMPLib/FilterParameters/InputPathFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
-#include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 #include "SIMPLib/FilterParameters/MontageSelectionFilterParameter.h"
@@ -177,6 +176,7 @@ void GenericExample::setupFilterParameters()
 
   /* Display a group of 3 text boxes to collect 3 integer values */
   parameters.push_back(SIMPL_NEW_INT_VEC3_FP("Dimensions (XYZ)", Dimensions, FilterParameter::Parameter, GenericExample));
+  parameters.push_back(SIMPL_NEW_INT_VEC2_FP("Range (XY)", Range, FilterParameter::Parameter, GenericExample));
 
   parameters.push_back(SIMPL_NEW_RANGE_FP("Initialization Range", InitRange, FilterParameter::Parameter, GenericExample));
 

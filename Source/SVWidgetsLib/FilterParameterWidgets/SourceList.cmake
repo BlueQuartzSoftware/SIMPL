@@ -29,6 +29,7 @@ set(SIMPLView_PARAMETER_WIDGETS
     FloatWidget
     FourthOrderPolynomialWidget
     GenerateColorTableWidget
+    IntVec2Widget
     IntVec3Widget
     IntWidget
     LinkedBooleanWidget
