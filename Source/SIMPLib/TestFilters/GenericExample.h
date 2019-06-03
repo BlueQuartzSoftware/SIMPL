@@ -44,6 +44,7 @@
 #include "SIMPLib/FilterParameters/FileListInfoFilterParameter.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/FourthOrderPolynomialFilterParameter.h"
+#include "SIMPLib/FilterParameters/IntVec2FilterParameter.h"
 #include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/SecondOrderPolynomialFilterParameter.h"
 #include "SIMPLib/FilterParameters/ThirdOrderPolynomialFilterParameter.h"
@@ -89,6 +90,7 @@ class SIMPLib_EXPORT GenericExample : public AbstractFilter
   PYB11_PROPERTY(bool WriteAlignmentShifts READ getWriteAlignmentShifts WRITE setWriteAlignmentShifts)
   PYB11_PROPERTY(int ConversionType READ getConversionType WRITE setConversionType)
   PYB11_PROPERTY(IntVec3Type Dimensions READ getDimensions WRITE setDimensions)
+  PYB11_PROPERTY(IntVec2Type Range READ getRange WRITE setRange)
   PYB11_PROPERTY(FloatVec3Type Origin READ getOrigin WRITE setOrigin)
   PYB11_PROPERTY(AxisAngleInput_t CrystalSymmetryRotations READ getCrystalSymmetryRotations WRITE setCrystalSymmetryRotations)
   PYB11_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
@@ -188,6 +190,9 @@ public:
 
   SIMPL_FILTER_PARAMETER(IntVec3Type, Dimensions)
   Q_PROPERTY(IntVec3Type Dimensions READ getDimensions WRITE setDimensions)
+
+  SIMPL_FILTER_PARAMETER(IntVec2Type, Range)
+  Q_PROPERTY(IntVec2Type Range READ getRange WRITE setRange)
 
   SIMPL_FILTER_PARAMETER(FloatVec3Type, Origin)
   Q_PROPERTY(FloatVec3Type Origin READ getOrigin WRITE setOrigin)
