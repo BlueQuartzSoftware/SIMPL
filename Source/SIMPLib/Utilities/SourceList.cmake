@@ -21,6 +21,7 @@ set(SIMPLib_Utilities_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilePathGenerator.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FileSystemPathHelper.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatSummation.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MontageSelection.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ParallelDataAlgorithm.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ParallelData2DAlgorithm.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ParallelData3DAlgorithm.h
@@ -38,6 +39,7 @@ set(SIMPLib_Utilities_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilePathGenerator.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FileSystemPathHelper.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatSummation.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MontageSelection.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ParallelDataAlgorithm.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ParallelData2DAlgorithm.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ParallelData3DAlgorithm.cpp

@@ -57,6 +57,7 @@
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
+#include "SIMPLib/FilterParameters/MontageSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
 #include "SIMPLib/FilterParameters/OutputPathFilterParameter.h"
@@ -308,6 +309,9 @@ void GenericExample::setupFilterParameters()
     MultiDataArraySelectionFilterParameter::RequirementType req;
     parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Multi Data Array Test", SelectedMultiArrayPaths, FilterParameter::Parameter, GenericExample, req, 0));
   }
+
+  parameters.push_back(SeparatorFilterParameter::New("Montage Selection Example", FilterParameter::Parameter));
+  parameters.push_back(SIMPL_NEW_MONTAGE_SELECTION_FP("Montage Selection", MontageSelection, FilterParameter::Parameter, GenericExample));
 
   setFilterParameters(parameters);
 }
