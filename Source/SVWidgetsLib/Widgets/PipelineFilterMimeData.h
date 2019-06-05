@@ -44,9 +44,10 @@ class SVWidgetsLib_EXPORT PipelineFilterMimeData : public QMimeData
     PipelineFilterMimeData();
     ~PipelineFilterMimeData() override;
 
-    typedef std::pair<AbstractFilter::Pointer, int> FilterDragMetadata;
+    using FilterDragMetadata = std::pair<AbstractFilter::Pointer, int>;
+    using FilterDragMetadataContainer = std::vector<PipelineFilterMimeData::FilterDragMetadata>;
 
-    SIMPL_INSTANCE_PROPERTY(std::vector<FilterDragMetadata>, FilterDragData)
+    SIMPL_INSTANCE_PROPERTY(PipelineFilterMimeData::FilterDragMetadataContainer, FilterDragData)
 
   public:
     PipelineFilterMimeData(const PipelineFilterMimeData&) = delete; // Copy Constructor Not Implemented
