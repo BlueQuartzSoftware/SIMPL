@@ -79,7 +79,7 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
     SIMPL_FILTER_PARAMETER(DataArrayPath, CalculatedArray)
     Q_PROPERTY(DataArrayPath CalculatedArray READ getCalculatedArray WRITE setCalculatedArray)
 
-    SIMPL_FILTER_PARAMETER(AngleUnits, Units)
+    SIMPL_FILTER_PARAMETER(ArrayCalculator::AngleUnits, Units)
     Q_PROPERTY(AngleUnits Units READ getUnits WRITE setUnits)
 
     SIMPL_FILTER_PARAMETER(SIMPL::ScalarTypes::Type, ScalarType)
