@@ -39,6 +39,7 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractMessage.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractErrorMessage.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractMessageHandler.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractProgressMessage.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractStatusMessage.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractWarningMessage.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilterErrorMessage.cpp
