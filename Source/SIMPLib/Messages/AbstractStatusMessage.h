@@ -27,14 +27,13 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * The code contained herein was partially funded by the following contracts:
- *    United States Air Force Prime Contract FA8650-07-D-5800
- *    United States Air Force Prime Contract FA8650-10-D-5210
- *    United States Prime Contract Navy N00173-07-C-2068
  *    United States Air Force Prime Contract FA8650-15-D-5231
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #pragma once
+
+#include <QtCore/QString>
 
 #include "SIMPLib/Messages/AbstractMessage.h"
 
@@ -50,14 +49,12 @@ public:
   SIMPL_SHARED_POINTERS(AbstractStatusMessage)
   SIMPL_TYPE_MACRO(AbstractStatusMessage)
 
-  virtual ~AbstractStatusMessage()
-  {
-  }
+  ~AbstractStatusMessage() override;
 
   /**
    * @brief This method creates and returns a string for status messages
    */
-  virtual QString generateMessageString() const = 0;
+  QString generateMessageString() const override = 0;
 
   /**
    * @brief Method that allows the visitation of a message by a message handler.  This
@@ -65,18 +62,12 @@ public:
    * subclass specific operations on messages that they receive.
    * @param msgHandler The observer's message handler
    */
-  virtual void visit(AbstractMessageHandler* msgHandler) const = 0;
+  void visit(AbstractMessageHandler* msgHandler) const override = 0;
 
 protected:
-  AbstractStatusMessage()
-  : AbstractMessage()
-  {
-  }
+  AbstractStatusMessage();
 
-  AbstractStatusMessage(const QString& msgText)
-  : AbstractMessage(msgText)
-  {
-  }
+  AbstractStatusMessage(const QString& msgText);
 
 private:
 };

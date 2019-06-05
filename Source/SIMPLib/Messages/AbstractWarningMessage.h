@@ -50,16 +50,14 @@ public:
   SIMPL_SHARED_POINTERS(AbstractWarningMessage)
   SIMPL_TYPE_MACRO(AbstractWarningMessage)
 
-  virtual ~AbstractWarningMessage()
-  {
-  }
+  ~AbstractWarningMessage() override;
 
   SIMPL_INSTANCE_PROPERTY(int, Code)
 
   /**
    * @brief This method creates and returns a string for warning messages
    */
-  virtual QString generateMessageString() const = 0;
+   QString generateMessageString() const override = 0;
 
   /**
    * @brief Method that allows the visitation of a message by a message handler.  This
@@ -67,20 +65,12 @@ public:
    * subclass specific operations on messages that they receive.
    * @param msgHandler The observer's message handler
    */
-  virtual void visit(AbstractMessageHandler* msgHandler) const = 0;
+   void visit(AbstractMessageHandler* msgHandler) const override = 0;
 
 protected:
-  AbstractWarningMessage()
-  : AbstractMessage()
-  , m_Code(0)
-  {
-  }
+  AbstractWarningMessage();
 
-  AbstractWarningMessage(const QString& msgText, int code)
-  : AbstractMessage(msgText)
-  , m_Code(code)
-  {
-  }
+  AbstractWarningMessage(const QString& msgText, int code);
 
 private:
 };

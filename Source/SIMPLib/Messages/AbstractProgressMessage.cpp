@@ -30,45 +30,14 @@
  *    United States Air Force Prime Contract FA8650-15-D-5231
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include "AbstractProgressMessage.h"
 
-#pragma once
+AbstractProgressMessage::AbstractProgressMessage() = default;
 
-#include "SIMPLib/Messages/AbstractMessage.h"
-
-class AbstractMessageHandler;
-
-/**
- * @class AbstractProgressMessage AbstractProgressMessage.h SIMPLib/Messages/AbstractProgressMessage.h
- * @brief This class is an abstract progress message superclass.
- */
-class SIMPLib_EXPORT AbstractProgressMessage : public AbstractMessage
+AbstractProgressMessage::  AbstractProgressMessage(const QString& msgText, int progress)
+: AbstractMessage(msgText)
+, m_ProgressValue(progress)
 {
-public:
-  SIMPL_SHARED_POINTERS(AbstractProgressMessage)
-  SIMPL_TYPE_MACRO(AbstractProgressMessage)
+}
 
-  ~AbstractProgressMessage() override;
-
-  SIMPL_INSTANCE_PROPERTY(int, ProgressValue)
-
-  /**
-   * @brief This method creates and returns a string for progress messages
-   */
-  QString generateMessageString() const override = 0;
-
-  /**
-   * @brief Method that allows the visitation of a message by a message handler.  This
-   * is part of the double-dispatch API that allows observers to be able to perform
-   * subclass specific operations on messages that they receive.
-   * @param msgHandler The observer's message handler
-   */
- void visit(AbstractMessageHandler* msgHandler) const override= 0;
-
-protected:
-  AbstractProgressMessage();
-
-  AbstractProgressMessage(const QString& msgText, int progress);
-
-private:
-};
-Q_DECLARE_METATYPE(AbstractProgressMessage::Pointer)
+  AbstractProgressMessage::~AbstractProgressMessage() = default;

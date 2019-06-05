@@ -31,44 +31,13 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#pragma once
+#include "AbstractWarningMessage.h"
 
-#include "SIMPLib/Messages/AbstractMessage.h"
+AbstractWarningMessage::AbstractWarningMessage() = default;
 
-class AbstractMessageHandler;
-
-/**
- * @class AbstractProgressMessage AbstractProgressMessage.h SIMPLib/Messages/AbstractProgressMessage.h
- * @brief This class is an abstract progress message superclass.
- */
-class SIMPLib_EXPORT AbstractProgressMessage : public AbstractMessage
+AbstractWarningMessage::AbstractWarningMessage(const QString& msgText, int32_t code)
+: AbstractMessage(msgText)
 {
-public:
-  SIMPL_SHARED_POINTERS(AbstractProgressMessage)
-  SIMPL_TYPE_MACRO(AbstractProgressMessage)
+}
 
-  ~AbstractProgressMessage() override;
-
-  SIMPL_INSTANCE_PROPERTY(int, ProgressValue)
-
-  /**
-   * @brief This method creates and returns a string for progress messages
-   */
-  QString generateMessageString() const override = 0;
-
-  /**
-   * @brief Method that allows the visitation of a message by a message handler.  This
-   * is part of the double-dispatch API that allows observers to be able to perform
-   * subclass specific operations on messages that they receive.
-   * @param msgHandler The observer's message handler
-   */
- void visit(AbstractMessageHandler* msgHandler) const override= 0;
-
-protected:
-  AbstractProgressMessage();
-
-  AbstractProgressMessage(const QString& msgText, int progress);
-
-private:
-};
-Q_DECLARE_METATYPE(AbstractProgressMessage::Pointer)
+AbstractWarningMessage::~AbstractWarningMessage() = default;
