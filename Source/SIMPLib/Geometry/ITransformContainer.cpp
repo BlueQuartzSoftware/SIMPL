@@ -30,30 +30,8 @@
 *    United States Air Force Prime Contract FA8650-15-D-5231
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#pragma once
+#include "ITransformContainer.h"
 
-#include "SIMPLib/Common/Observable.h"
-#include "SIMPLib/SIMPLib.h"
+ITransformContainer::ITransformContainer() = default;
 
-#include "H5Support/H5Lite.h"
-
-class SIMPLib_EXPORT ITransformContainer : public Observable
-{
-public:
-  SIMPL_SHARED_POINTERS(ITransformContainer)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ITransformContainer, Observable)
-  
-  ITransformContainer();
-  ~ITransformContainer() override;
-
-  virtual int writeTransformContainerToHDF5(hid_t parentId, const std::string& transformContainerName) = 0;
-  virtual int readTransformContainerFromHDF5(hid_t parentId, bool metaDataOnly, const std::string& transformContainerName) = 0;
-
-  
-public:
-  ITransformContainer(const ITransformContainer&) = delete; // Copy Constructor Not Implemented
-  ITransformContainer(ITransformContainer&&) = delete;      // Move Constructor Not Implemented
-  ITransformContainer& operator=(const ITransformContainer&) = delete; // Copy Assignment Not Implemented
-  ITransformContainer& operator=(ITransformContainer&&) = delete;      // Move Assignment Not Implemented
-
-};
+ITransformContainer::~ITransformContainer() = default;
