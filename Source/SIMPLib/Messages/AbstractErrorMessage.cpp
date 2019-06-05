@@ -30,43 +30,15 @@
  *    United States Air Force Prime Contract FA8650-15-D-5231
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include "AbstractErrorMessage.h"
 
-#pragma once
+AbstractErrorMessage::AbstractErrorMessage() = default;
 
-#include "SIMPLib/Messages/AbstractMessage.h"
-
-/**
- * @class AbstractErrorMessage AbstractErrorMessage.h SIMPLib/Messages/AbstractErrorMessage.h
- * @brief This class is an abstract error message superclass.
- */
-class SIMPLib_EXPORT AbstractErrorMessage : public AbstractMessage
+AbstractErrorMessage::AbstractErrorMessage(const QString& msgText, int code)
+: AbstractMessage(msgText)
+, m_Code(code)
 {
-public:
-  SIMPL_SHARED_POINTERS(AbstractErrorMessage)
-  SIMPL_TYPE_MACRO(AbstractErrorMessage)
+}
 
-  ~AbstractErrorMessage() override;
+AbstractErrorMessage::~AbstractErrorMessage() = default;
 
-  SIMPL_INSTANCE_PROPERTY(int, Code)
-
-  /**
-   * @brief This method creates and returns a string for error messages
-   */
-  QString generateMessageString() const override = 0;
-
-  /**
-   * @brief Method that allows the visitation of a message by a message handler.  This
-   * is part of the double-dispatch API that allows observers to be able to perform
-   * subclass specific operations on messages that they receive.
-   * @param msgHandler The observer's message handler
-   */
-  void visit(AbstractMessageHandler* msgHandler) const override = 0;
-
-protected:
-  AbstractErrorMessage();
-
-  AbstractErrorMessage(const QString& msgText, int code);
-
-private:
-};
-Q_DECLARE_METATYPE(AbstractErrorMessage::Pointer)
