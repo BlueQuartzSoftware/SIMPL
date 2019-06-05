@@ -83,7 +83,7 @@ class SIMPLib_EXPORT FilterParameter
     virtual QString getWidgetType() const = 0;
 
     SIMPL_VIRTUAL_INSTANCE_PROPERTY(QVariant, DefaultValue)
-    SIMPL_INSTANCE_PROPERTY(Category, Category)
+    SIMPL_INSTANCE_PROPERTY(FilterParameter::Category, Category)
     SIMPL_INSTANCE_PROPERTY(bool, ReadOnly)
     SIMPL_INSTANCE_PROPERTY(int, GroupIndex)
 
