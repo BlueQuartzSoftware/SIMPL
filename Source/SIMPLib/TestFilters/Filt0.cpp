@@ -7,7 +7,6 @@
 #include "SIMPLib/FilterParameters/FloatFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -101,3 +100,4 @@ void Filt0::execute()
 
   /* Place all your code to execute your filter here. */
 }
+

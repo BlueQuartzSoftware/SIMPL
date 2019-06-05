@@ -18,59 +18,16 @@ class SIMPLib_EXPORT Filt0 : public AbstractFilter
 {
   Q_OBJECT
 public:
-    using Self = Filt0;
-    using Pointer = std::shared_ptr<Self>;
-    using ConstPointer = std::shared_ptr<const Self>;
-    using WeakPointer = std::weak_ptr<Filt0>;
-    using ConstWeakPointer = std::weak_ptr<Filt0>;
-    static Pointer NullPointer(void);
-
-    static std::shared_ptr<Filt0> New();
-
+  SIMPL_SHARED_POINTERS(Filt0)
+  SIMPL_FILTER_NEW_MACRO(Filt0)
   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(Filt0, AbstractFilter)
 
   ~Filt0() override;
-    /**
-    * @brief Setter property for DataContainerName
-    */
-    void setDataContainerName(const QString& value) ;
-    /**
-    * @brief Getter property for DataContainerName
-    * @return Value of DataContainerName
-    */
-    QString getDataContainerName() const ;
+  SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
+  SIMPL_INSTANCE_STRING_PROPERTY(CellAttributeMatrixName)
 
-    /**
-    * @brief Setter property for CellAttributeMatrixName
-    */
-    void setCellAttributeMatrixName(const QString& value) ;
-    /**
-    * @brief Getter property for CellAttributeMatrixName
-    * @return Value of CellAttributeMatrixName
-    */
-    QString getCellAttributeMatrixName() const ;
-
-
-    /**
-    * @brief Setter property for Filt0_Float
-    */
-    void setFilt0_Float(const float& value); 
-    /**
-    * @brief Getter property for Filt0_Float
-    * @return Value of Filt0_Float
-    */
-    float getFilt0_Float() const;
-
-    /**
-    * @brief Setter property for Filt0_Integer
-    */
-    void setFilt0_Integer(const int32_t& value); 
-    /**
-    * @brief Getter property for Filt0_Integer
-    * @return Value of Filt0_Integer
-    */
-    int32_t getFilt0_Integer() const;
-
+  SIMPL_INSTANCE_PROPERTY(float, Filt0_Float)
+  SIMPL_INSTANCE_PROPERTY(int32_t, Filt0_Integer)
 
   /**
   * @brief This returns the group that the filter belonds to. You can select
@@ -146,6 +103,3 @@ private:
   Filt0(const Filt0&) = delete;          // Copy Constructor Not Implemented
   void operator=(const Filt0&) = delete; // Move assignment Not Implemented
 };
-
-
-
