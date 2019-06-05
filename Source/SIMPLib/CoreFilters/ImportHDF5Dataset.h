@@ -78,7 +78,7 @@ public:
   SIMPL_FILTER_PARAMETER(QString, HDF5FilePath)
   Q_PROPERTY(QString HDF5FilePath READ getHDF5FilePath WRITE setHDF5FilePath)
 
-  SIMPL_FILTER_PARAMETER(QList<DatasetImportInfo>, DatasetImportInfoList)
+  SIMPL_FILTER_PARAMETER(QList<ImportHDF5Dataset::DatasetImportInfo>, DatasetImportInfoList)
   Q_PROPERTY(QList<DatasetImportInfo> DatasetImportInfoList READ getDatasetImportInfoList WRITE setDatasetImportInfoList)
 
   QString getHDF5Dimensions();
