@@ -29,23 +29,20 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
 #pragma once
-
-#include <QtCore/QStringList>
 
 #include <hdf5.h>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Observable.h"
-#include "SIMPLib/DataContainers/DataArrayPath.h"
-#include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 
 
 class IObserver;
 class DataContainerArrayProxy;
 class SIMPLH5DataReaderRequirements;
+class DataContainerArray;
+using DataContainerArrayShPtrType = std::shared_ptr<DataContainerArray>;
 
 /**
  * @brief The SIMPLH5DataReader class
@@ -92,7 +89,7 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
      * @param preflight
      * @return
      */
-    DataContainerArray::Pointer readSIMPLDataUsingProxy(DataContainerArrayProxy& proxy, bool preflight);
+    DataContainerArrayShPtrType readSIMPLDataUsingProxy(DataContainerArrayProxy& proxy, bool preflight);
 
     /**
      * @brief readPipelineJson
@@ -121,7 +118,7 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
      * @param dca
      * @return
      */
-    bool readDataContainerBundles(hid_t fileId, const DataContainerArray::Pointer& dca);
+    bool readDataContainerBundles(hid_t fileId, const DataContainerArrayShPtrType& dca);
 
   public:
     SIMPLH5DataReader(const SIMPLH5DataReader&) = delete; // Copy Constructor Not Implemented
