@@ -45,16 +45,10 @@
 
 #include "SIMPLib/Geometry/RectGridGeom.h"
 
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-#include <tbb/blocked_range3d.h>
-#include <tbb/parallel_for.h>
-#include <tbb/partitioner.h>
-#include <tbb/task_scheduler_init.h>
-#endif
-
 #include "H5Support/H5Lite.h"
 #include "SIMPLib/Geometry/GeometryHelpers.h"
 #include "SIMPLib/HDF5/VTKH5Constants.h"
+#include "SIMPLib/Utilities/ParallelData3DAlgorithm.h"
 
 /**
  * @brief The FindImageDerivativesImpl class implements a threaded algorithm that computes the
@@ -227,12 +221,10 @@ public:
     }
   }
 
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  void operator()(const tbb::blocked_range3d<size_t, size_t, size_t>& r) const
+  void operator()(const SIMPLRange3D& r) const
   {
-    compute(r.pages().begin(), r.pages().end(), r.rows().begin(), r.rows().end(), r.cols().begin(), r.cols().end());
+    compute(r[0], r[1], r[2], r[3], r[4], r[5]);
   }
-#endif
 
   void computeIndices(int32_t differenceType, int32_t directionType, size_t& index1, size_t& index2, size_t dims[3], size_t x, size_t y, size_t z, double xp[3], double xm[3]) const
 
@@ -979,28 +971,16 @@ void RectGridGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayTy
     connect(this, SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), observable, SLOT(processDerivativesMessage(const AbstractMessage::Pointer&)));
   }
 
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  tbb::task_scheduler_init init;
-  bool doParallel = true;
-#endif
-
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   size_t grain = dims[2] == 1 ? 1 : dims[2] / tbb::task_scheduler_init::default_num_threads();
   if(grain == 0)
   {
     grain = 1;
   }
-  if(doParallel)
-  {
-    tbb::parallel_for(tbb::blocked_range3d<size_t, size_t, size_t>(0, dims[2], grain, 0, dims[1], dims[1], 0, dims[0], dims[0]),
-                      FindRectGridDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());
-  }
-  else
-#endif
-  {
-    FindRectGridDerivativesImpl serial(this, field, derivatives);
-    serial.compute(0, dims[2], 0, dims[1], 0, dims[0]);
-  }
+
+  ParallelData3DAlgorithm dataAlg;
+  dataAlg.setRange(dims[2], dims[1], dims[0]);
+  dataAlg.setGrain(grain);
+  dataAlg.execute(FindRectGridDerivativesImpl(this, field, derivatives));
 }
 
 // -----------------------------------------------------------------------------

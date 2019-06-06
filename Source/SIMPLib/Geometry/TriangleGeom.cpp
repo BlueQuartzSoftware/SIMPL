@@ -46,15 +46,9 @@
 
 #include "SIMPLib/Geometry/TriangleGeom.h"
 
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-#include <tbb/blocked_range.h>
-#include <tbb/parallel_for.h>
-#include <tbb/partitioner.h>
-#include <tbb/task_scheduler_init.h>
-#endif
-
 #include "SIMPLib/Geometry/DerivativeHelpers.h"
 #include "SIMPLib/Geometry/GeometryHelpers.h"
+#include "SIMPLib/Utilities/ParallelDataAlgorithm.h"
 
 /**
  * @brief The FindTriangleDerivativesImpl class implements a threaded algorithm that computes the
@@ -108,12 +102,10 @@ public:
     }
   }
 
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  void operator()(const tbb::blocked_range<size_t>& r) const
+  void operator()(const SIMPLRange& range) const
   {
-    compute(r.begin(), r.end());
+    compute(range.min(), range.max());
   }
-#endif
 private:
   TriangleGeom* m_Tris;
   DoubleArrayType::Pointer m_Field;
@@ -500,22 +492,9 @@ void TriangleGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayTy
     connect(this, SIGNAL(messageGenerated(const AbstractMessage::Pointer&)), observable, SLOT(processDerivativesMessage(const AbstractMessage::Pointer&)));
   }
 
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  tbb::task_scheduler_init init;
-  bool doParallel = true;
-#endif
-
-#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
-  if(doParallel)
-  {
-    tbb::parallel_for(tbb::blocked_range<size_t>(0, numTris), FindTriangleDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());
-  }
-  else
-#endif
-  {
-    FindTriangleDerivativesImpl serial(this, field, derivatives);
-    serial.compute(0, numTris);
-  }
+  ParallelDataAlgorithm dataAlg;
+  dataAlg.setRange(0, numTris);
+  dataAlg.execute(FindTriangleDerivativesImpl(this, field, derivatives));
 }
 
 // -----------------------------------------------------------------------------
