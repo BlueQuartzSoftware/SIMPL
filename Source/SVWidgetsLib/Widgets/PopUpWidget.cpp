@@ -33,9 +33,6 @@
 
 #include <QtGui/QPainter>
 
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QScrollArea>
-#include <QtWidgets/QGridLayout>
 
 #include "moc_PopUpWidget.cpp"
 

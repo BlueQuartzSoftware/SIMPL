@@ -40,6 +40,7 @@
 #include <QtGui/QDesktopServices>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMessageBox>
+#include <QtWidgets/QWidget>
 
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/IFilterFactory.hpp"

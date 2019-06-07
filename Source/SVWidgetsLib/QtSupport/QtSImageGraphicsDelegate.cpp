@@ -41,13 +41,8 @@
 //-- Qt Includes
 #include <QtCore/QPoint>
 #include <QtGui/QPixmap>
-#include <QtWidgets/QGraphicsItem>
-#include <QtWidgets/QGraphicsPixmapItem>
 #include <QtWidgets/QGraphicsScene>
 #include <QtWidgets/QGraphicsView>
-#include <QtWidgets/QHeaderView>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QTableWidget>
 
 #define ZOOM_INDEX_MAX 9
 #define ZOOM_INDEX_MIN 0

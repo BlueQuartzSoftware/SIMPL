@@ -35,7 +35,6 @@
 
 #pragma once
 
-#include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
 
 #include "SIMPLib/SIMPLib.h"

@@ -37,10 +37,7 @@
 #include "DataStructureWidget.h"
 
 
-#include <QtCore/QMetaProperty>
-#include <QtCore/QItemSelectionModel>
 #include <QtGui/QStandardItemModel>
-#include <QtWidgets/QHeaderView>
 
 #include "SIMPLib/Filtering/AbstractFilter.h"
 

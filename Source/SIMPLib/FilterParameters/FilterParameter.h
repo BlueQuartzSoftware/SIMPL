@@ -39,7 +39,6 @@
 #include <functional>
 
 
-#include <QtCore/QVector>
 #include <QtCore/QVariant>
 #include <QtCore/QString>
 

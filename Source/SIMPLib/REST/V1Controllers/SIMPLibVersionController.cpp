@@ -32,8 +32,6 @@
 
 #include "SIMPLibVersionController.h"
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 

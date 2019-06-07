@@ -37,8 +37,6 @@
 #include <chrono>
 #include <iostream>
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
@@ -153,4 +151,3 @@ public:
 private:
   RenameTimingTest(const RenameTimingTest&); // Copy Constructor Not Implemented
   void operator=(const RenameTimingTest&);          // Move assignment Not Implemented
-};

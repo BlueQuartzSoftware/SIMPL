@@ -37,9 +37,7 @@
 
 #include <QtCore/QString>
 #include <QtCore/QDateTime>
-#include <QtCore/QSettings>
 #include <QtWidgets/QWidget>
-#include <QtWidgets/QDialog>
 
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"

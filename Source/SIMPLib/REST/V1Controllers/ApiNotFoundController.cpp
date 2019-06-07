@@ -37,8 +37,6 @@
 #include "SIMPLib/Plugin/SIMPLPluginConstants.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 
-#include <QtCore/QDateTime>
-#include <QtCore/QVariant>
 
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QtCore/QObject>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/Widgets/StatusBarButton.h"

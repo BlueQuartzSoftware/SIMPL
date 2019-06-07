@@ -33,7 +33,6 @@
 #include "PostSlackMessage.h"
 
 #include <QtCore/QEventLoop>
-#include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 

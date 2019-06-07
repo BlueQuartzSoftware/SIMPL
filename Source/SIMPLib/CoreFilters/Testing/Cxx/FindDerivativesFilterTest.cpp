@@ -33,12 +33,9 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
+#include <QtCore/QDebug>
 #include <QtCore/QFile>
-#include <QtCore/QSettings>
 #include <QtCore/QString>
-#include <QtCore/QtDebug>
 
 #include "SIMPLib/Common/Constants.h"
 

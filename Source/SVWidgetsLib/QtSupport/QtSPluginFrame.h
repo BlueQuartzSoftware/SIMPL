@@ -36,12 +36,10 @@
 
 #pragma once
 
-#include <QtCore/QObject>
 #include <QtCore/QString>
 #include <QtWidgets/QFrame>
 #include <QtCore/QSettings>
 #include <QtWidgets/QStatusBar>
-#include <QtGui/QIcon>
 #include <QtWidgets/QMessageBox>
 
 #include "SIMPLib/Messages/AbstractMessage.h"

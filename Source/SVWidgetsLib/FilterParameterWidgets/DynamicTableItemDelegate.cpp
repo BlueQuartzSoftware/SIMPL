@@ -34,7 +34,6 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "DynamicTableItemDelegate.h"
-#include <QtGui/QIntValidator>
 #include <QtWidgets/QLineEdit>
 
 // -----------------------------------------------------------------------------

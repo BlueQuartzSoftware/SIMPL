@@ -38,7 +38,6 @@
 #include <QtCore/QDebug>
 
 #include <QtWidgets/QDockWidget>
-#include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 
 #include "SVWidgetsLib/Widgets/SVStyle.h"

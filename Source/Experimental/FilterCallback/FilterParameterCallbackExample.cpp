@@ -4,7 +4,6 @@
 #include <iostream>
 
 #include <QtCore/QDebug>
-#include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"

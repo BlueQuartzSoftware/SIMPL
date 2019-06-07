@@ -37,9 +37,7 @@
 
 #include <map>
 
-#include <QtCore/QObject>
 #include <QtCore/QString>
-#include <QtCore/QVector>
 #include <QtCore/QUuid>
 
 #include "SIMPLib/Common/Observable.h"

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QtCore/QObject>
 #include <QtWidgets/QToolButton>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"

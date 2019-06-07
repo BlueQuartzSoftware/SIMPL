@@ -36,7 +36,6 @@
 #include <iostream>
 
 #include <QtCore/QFile>
-#include <QtCore/QObject>
 
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
 #include "SIMPLib/CoreFilters/DataContainerWriter.h"

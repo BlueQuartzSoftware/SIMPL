@@ -38,7 +38,6 @@
 
 #include <QtCore/QModelIndex>
 #include <QtCore/QVariant>
-#include <QtCore/QFileSystemWatcher>
 #include <QtGui/QStandardItemModel>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"

@@ -35,7 +35,6 @@
 #pragma once
 
 #include <QtCore/QJsonObject>
-#include <QtCore/QMetaType>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 

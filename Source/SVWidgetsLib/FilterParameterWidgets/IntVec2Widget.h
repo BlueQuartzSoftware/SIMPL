@@ -33,8 +33,6 @@
 
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
 
 #include "SIMPLib/FilterParameters/IntVec2FilterParameter.h"

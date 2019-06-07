@@ -35,7 +35,6 @@
 
 #pragma once
 
-#include <QtCore/QVariant>
 
 #include <QtWidgets/QUndoCommand>
 

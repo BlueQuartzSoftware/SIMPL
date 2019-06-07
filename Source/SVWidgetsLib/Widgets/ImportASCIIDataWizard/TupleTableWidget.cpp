@@ -34,9 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "TupleTableWidget.h"
 
-#include <QtCore/QMetaProperty>
 
-#include <QtWidgets/QMessageBox>
 #include <QtWidgets/QTableWidgetItem>
 
 #include "TupleTableItemDelegate.h"

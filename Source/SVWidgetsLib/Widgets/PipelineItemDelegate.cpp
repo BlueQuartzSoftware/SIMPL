@@ -29,15 +29,11 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include <QtCore/QFileInfo>
 
-#include <QtWidgets/QLineEdit>
 
-#include <QtGui/QIntValidator>
 #include <QtGui/QPainter>
 #include <QtGui/QMouseEvent>
 
-#include <QtWidgets/QStylePainter>
 
 #include "SVWidgetsLib/Widgets/PipelineItem.h"
 #include "SVWidgetsLib/Widgets/PipelineItemDelegate.h"

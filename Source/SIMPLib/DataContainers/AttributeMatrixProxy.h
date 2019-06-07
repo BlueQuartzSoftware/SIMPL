@@ -36,7 +36,6 @@
 #pragma once
 
 #include <QtCore/QMap>
-#include <QtCore/QMetaType>
 #include <QtCore/QString>
 
 #include "SIMPLib/DataContainers/AttributeMatrix.h"

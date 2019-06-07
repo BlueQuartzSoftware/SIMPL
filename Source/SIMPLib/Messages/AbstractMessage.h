@@ -37,7 +37,6 @@
 #pragma once
 
 #include <QtCore/QString>
-#include <QtCore/QMetaType>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"

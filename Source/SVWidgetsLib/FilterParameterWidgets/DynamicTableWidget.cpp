@@ -34,10 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "DynamicTableWidget.h"
 
-#include <QtCore/QMetaProperty>
-#include <QtGui/QFontMetrics>
 #include <QtWidgets/QMessageBox>
-#include <QtWidgets/QScrollBar>
 
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
 #include "SIMPLib/FilterParameters/DynamicTableFilterParameter.h"

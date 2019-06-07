@@ -37,9 +37,8 @@
 
 #include <iostream>
 
-#include <QtCore/QStringList>
 #include <QtCore/QFile>
-#include <QtCore/QDir>
+#include <QtCore/QJsonArray>
 #include <QtCore/QJsonParseError>
 
 #include <QtGui/QPixmap>

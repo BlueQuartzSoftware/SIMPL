@@ -40,7 +40,6 @@
 
 #include <QtCore/QObject> // for Q_OBJECT
 #include <QtCore/QString>
-#include <QtCore/QList>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"

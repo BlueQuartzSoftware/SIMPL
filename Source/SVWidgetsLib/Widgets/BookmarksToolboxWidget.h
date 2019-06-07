@@ -34,10 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
-#include <QtCore/QFileInfo>
 #include <QtCore/QSettings>
 #include <QtCore/QString>
-#include <QtWidgets/QDockWidget>
 #include <QtWidgets/QTreeWidgetItem>
 
 #include "SVWidgetsLib/QtSupport/QtSFileDragMessageBox.h"

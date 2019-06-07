@@ -32,7 +32,6 @@
 #pragma once
 
 //Qt Includes
-#include <QtCore/QString>
 
 //SIMPLib Includes
 #include "SIMPLib/SIMPLib.h"

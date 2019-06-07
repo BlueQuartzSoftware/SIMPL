@@ -32,7 +32,6 @@
 #pragma once
 
 #include <QtWidgets/QAbstractButton>
-#include <QtWidgets/QLineEdit>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"

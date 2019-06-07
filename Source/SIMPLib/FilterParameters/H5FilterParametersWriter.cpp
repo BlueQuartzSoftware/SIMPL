@@ -35,9 +35,8 @@
 
 #include "H5FilterParametersWriter.h"
 
-#include <QtCore/QDir>
 #include <QtCore/QFile>
-#include <QtCore/QJsonDocument>
+#include <QtCore/QFileInfo>
 
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"

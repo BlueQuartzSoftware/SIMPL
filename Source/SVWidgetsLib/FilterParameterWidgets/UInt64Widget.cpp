@@ -33,7 +33,6 @@
 
 #include "UInt64Widget.h"
 
-#include <QtCore/QMetaProperty>
 
 #include "SIMPLib/FilterParameters/UInt64FilterParameter.h"
 

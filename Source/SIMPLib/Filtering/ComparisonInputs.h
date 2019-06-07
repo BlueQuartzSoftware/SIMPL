@@ -36,7 +36,6 @@
 #pragma once
 
 #include <QtCore/QJsonObject>
-#include <QtCore/QMetaType>
 #include <QtCore/QObject>
 #include <QtCore/QVector>
 

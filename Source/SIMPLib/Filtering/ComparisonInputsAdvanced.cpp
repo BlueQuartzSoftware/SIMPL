@@ -35,6 +35,8 @@
 
 #include "ComparisonInputsAdvanced.h"
 
+#include <QtCore/QJsonArray>
+
 #include "SIMPLib/Filtering/ComparisonSet.h"
 #include "SIMPLib/Filtering/ComparisonValue.h"
 

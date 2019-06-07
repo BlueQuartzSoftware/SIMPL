@@ -38,7 +38,6 @@
 #include <cassert>
 
 #include <QtCore/QDataStream>
-#include <QtCore/QVector>
 
 #include "SIMPLib/Common/EnsembleInfo.h"
 #include "SIMPLib/CoreFilters/CreateDataArray.h"

@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include <QtCore/QCoreApplication>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"

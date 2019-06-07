@@ -36,10 +36,7 @@
 
 
 #include <QtCore/QObject>
-#include <QtCore/QPointer>
-#include <QtCore/QAbstractTableModel>
 
-#include <QtWidgets/QWidget>
 
 #include "SIMPLib/Filtering/AbstractFilter.h"
 

@@ -37,7 +37,6 @@
 
 #include <cassert>
 
-#include <QtCore/QMetaProperty>
 
 #include <QtGui/QBrush>
 #include <QtGui/QColor>

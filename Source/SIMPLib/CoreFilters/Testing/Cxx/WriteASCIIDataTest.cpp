@@ -38,7 +38,6 @@
 #include <iostream>
 #include <string>
 
-#include <QtCore/QDir>
 #include <QtCore/QString>
 
 #include "SIMPLib/Common/Constants.h"

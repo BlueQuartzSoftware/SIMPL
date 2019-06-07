@@ -38,15 +38,12 @@
 #include <QtCore/QMimeData>
 #include <QtCore/QPropertyAnimation>
 #include <QtCore/QString>
-#include <QtGui/QMouseEvent>
 #include <QtGui/QPaintEvent>
 #include <QtGui/QPainter>
 #include <QtWidgets/QAbstractButton>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
-#include <QtWidgets/QLabel>
 #include <QtWidgets/QMenu>
-#include <QtWidgets/QStyle>
 
 /**
  * @brief execMenuAtWidget

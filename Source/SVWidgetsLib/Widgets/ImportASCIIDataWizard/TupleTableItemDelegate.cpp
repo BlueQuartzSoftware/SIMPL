@@ -34,7 +34,6 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "TupleTableItemDelegate.h"
-#include <QtGui/QIntValidator>
 #include <QtWidgets/QLineEdit>
 
 // -----------------------------------------------------------------------------

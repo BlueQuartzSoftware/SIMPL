@@ -35,7 +35,6 @@
 
 #pragma once
 
-#include <QtCore/QVector>
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"

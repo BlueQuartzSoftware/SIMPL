@@ -35,9 +35,6 @@
 
 #include "AddFilterCommand.h"
 
-#include <QtCore/QJsonArray>
-#include <QtCore/QJsonDocument>
-#include <QtCore/QJsonParseError>
 #include <QtCore/QObject>
 
 #include "SIMPLib/CoreFilters/Breakpoint.h"
