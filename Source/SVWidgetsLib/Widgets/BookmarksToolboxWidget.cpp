@@ -37,16 +37,10 @@
 
 #include <QtCore/QDebug>
 #include <QtCore/QDir>
-#include <QtCore/QDirIterator>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
-#include <QtCore/QFileInfoList>
-#include <QtCore/QUrl>
 
-#include <QtWidgets/QAction>
 #include <QtWidgets/QFileDialog>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMenu>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QTreeWidgetItem>
 

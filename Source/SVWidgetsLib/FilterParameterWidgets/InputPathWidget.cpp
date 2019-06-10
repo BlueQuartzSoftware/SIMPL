@@ -35,7 +35,6 @@
 
 #include "InputPathWidget.h"
 
-#include <QtCore/QMetaProperty>
 
 #include <QtWidgets/QFileDialog>
 

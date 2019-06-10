@@ -37,13 +37,11 @@
 #include <QtCore/QPropertyAnimation>
 #include <QtCore/QTimer>
 #include <QtCore/QFileInfo>
-#include <QtCore/QDir>
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QGraphicsOpacityEffect>
 #include <QtWidgets/QMenu>
-#include <QtWidgets/QLineEdit>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"

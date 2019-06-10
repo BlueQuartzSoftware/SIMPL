@@ -35,9 +35,7 @@
 
 #include "ArrayCalculator.h"
 
-#include <QtCore/QMapIterator>
 #include <QtCore/QRegularExpression>
-#include <QtCore/QVectorIterator>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.h"

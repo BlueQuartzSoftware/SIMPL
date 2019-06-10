@@ -33,11 +33,8 @@
 
 #include "ParagraphWidget.h"
 
-#include <QtCore/QMetaProperty>
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
-#include <QtCore/QPropertyAnimation>
-#include <QtCore/QSequentialAnimationGroup>
 
 #include "FilterParameterWidgetsDialogs.h"
 

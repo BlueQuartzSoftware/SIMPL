@@ -30,8 +30,6 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include <QtGui/QIcon>
-#include <QtGui/QPixmap>
 
 #include "H5Support/H5Utilities.h"
 

@@ -33,7 +33,6 @@
 
 #include "IntVec2Widget.h"
 
-#include <QtCore/QMetaProperty>
 
 #include "SIMPLib/FilterParameters/IntVec2FilterParameter.h"
 

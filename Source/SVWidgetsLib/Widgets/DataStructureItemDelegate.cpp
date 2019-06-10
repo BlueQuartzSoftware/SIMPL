@@ -33,16 +33,11 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include <QtWidgets/QApplication>
-#include <QtCore/QFileInfo>
 
-#include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QLineEdit>
 
-#include <QtGui/QIntValidator>
 #include <QtGui/QPainter>
 #include <QtGui/QPalette>
-#include <QtGui/QStaticText>
 
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 #include "SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h"

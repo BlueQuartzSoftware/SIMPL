@@ -31,16 +31,11 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "ExecutePipelineController.h"
 
-#include <QtCore/QDateTime>
 #include <QtCore/QDir>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
-#include <QtCore/QMimeDatabase>
 #include <QtCore/QProcess>
-#include <QtCore/QVariant>
-#include <QtNetwork/QNetworkInterface>
-#include <QtWidgets/QApplication>
 
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
 #include "SIMPLib/FilterParameters/InputPathFilterParameter.h"

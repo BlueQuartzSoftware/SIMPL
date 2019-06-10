@@ -37,7 +37,6 @@
 
 #include <QtCore/QJsonArray>
 #include <QtCore/QMap>
-#include <QtCore/QMetaType>
 #include <QtCore/QString>
 
 #include "SIMPLib/Common/Constants.h"

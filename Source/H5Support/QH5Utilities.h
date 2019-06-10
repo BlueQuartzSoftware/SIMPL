@@ -45,7 +45,6 @@
 
 
 #include <QtCore/QString>
-#include <QtCore/QVector>
 #include <QtCore/QList>
 
 

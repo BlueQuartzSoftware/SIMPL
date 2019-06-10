@@ -35,7 +35,6 @@
 
 #include "IntVec3Widget.h"
 
-#include <QtCore/QMetaProperty>
 
 #include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
 

@@ -35,11 +35,8 @@
 
 #include "SVUserManualDialog.h"
 
-#include <QtCore/QDir>
-#include <QtCore/QFileInfo>
 
 #include <QtWidgets/QAction>
-#include <QtWidgets/QMessageBox>
 
 #include <QtWebEngineWidgets/QWebEngineHistory>
 

@@ -36,12 +36,9 @@
 #include "PhaseTypeSelectionWidget.h"
 
 #include <QtCore/QList>
-#include <QtCore/QMetaProperty>
 #include <QtCore/QSignalMapper>
 
 #include <QtWidgets/QComboBox>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QMenu>
 
 #include "SIMPLib/Common/PhaseType.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"

@@ -36,13 +36,11 @@
 #include "AbstractIOFileWidget.h"
 
 #include <QtCore/QDir>
-#include <QtCore/QMetaProperty>
 #include <QtCore/QFileInfo>
 
 #include <QtGui/QPainter>
 #include <QtGui/QKeyEvent>
 
-#include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMenu>
 
 #include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"

@@ -35,7 +35,6 @@
 
 #include "IntWidget.h"
 
-#include <QtCore/QMetaProperty>
 
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 

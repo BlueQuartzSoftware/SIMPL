@@ -10,7 +10,6 @@
 
 
 #include <QtCore/QJsonObject>
-#include <QtCore/QJsonValue>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"

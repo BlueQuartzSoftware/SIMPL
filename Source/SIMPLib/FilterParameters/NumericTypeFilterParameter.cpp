@@ -35,7 +35,6 @@
 
 #include "NumericTypeFilterParameter.h"
 
-#include <QtCore/QJsonArray>
 
 // -----------------------------------------------------------------------------
 //

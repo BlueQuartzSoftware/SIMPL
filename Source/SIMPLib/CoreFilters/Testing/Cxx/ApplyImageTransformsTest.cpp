@@ -3,8 +3,6 @@
 // -----------------------------------------------------------------------------
 #pragma once
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QFile>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/CoreFilters/ApplyImageTransforms.h"

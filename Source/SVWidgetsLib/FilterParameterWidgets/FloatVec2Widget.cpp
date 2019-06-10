@@ -35,7 +35,6 @@
 
 #include "FloatVec2Widget.h"
 
-#include <QtCore/QMetaProperty>
 
 #include "SIMPLib/FilterParameters/FloatVec2FilterParameter.h"
 

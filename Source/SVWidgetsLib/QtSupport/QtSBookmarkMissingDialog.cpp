@@ -35,7 +35,6 @@
 
 #include "QtSBookmarkMissingDialog.h"
 
-#include <QtWidgets/QFileDialog>
 
 // -----------------------------------------------------------------------------
 //

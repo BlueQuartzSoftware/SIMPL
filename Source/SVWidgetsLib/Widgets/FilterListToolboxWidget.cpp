@@ -35,11 +35,9 @@
 #include "FilterListToolboxWidget.h"
 
 #include <QtCore/QBitArray>
-#include <QtCore/QFileInfo>
 #include <QtCore/QMapIterator>
+#include <QtGui/QKeyEvent>
 #include <QtGui/QPainter>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QTreeWidgetItem>
 
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"

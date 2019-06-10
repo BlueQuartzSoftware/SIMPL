@@ -43,7 +43,6 @@
 #include <QtGui/QPainter>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QLineEdit>
-#include <QtWidgets/QStyleOptionViewItemV4>
 
 #include "SVWidgetsLib/FilterParameterWidgets/ComparisonSelectionTableModel.h"
 

@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include <QtCore/QJsonObject>
 #include <QtCore/QJsonArray>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"

@@ -36,7 +36,6 @@
 #pragma once
 
 
-#include <QtCore/QObject>
 
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
 

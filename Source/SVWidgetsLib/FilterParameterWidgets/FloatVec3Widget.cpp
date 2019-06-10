@@ -35,7 +35,6 @@
 
 #include "FloatVec3Widget.h"
 
-#include <QtCore/QMetaProperty>
 
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 

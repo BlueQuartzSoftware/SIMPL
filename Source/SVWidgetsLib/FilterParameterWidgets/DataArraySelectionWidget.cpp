@@ -35,16 +35,6 @@
 
 #include "DataArraySelectionWidget.h"
 
-#include <QtCore/QMimeData>
-#include <QtCore/QList>
-#include <QtCore/QMetaProperty>
-#include <QtCore/QSignalMapper>
-#include <QtGui/QPainter>
-#include <QtGui/QStandardItemModel>
-#include <QtWidgets/QAction>
-#include <QtWidgets/QDesktopWidget>
-#include <QtWidgets/QListWidgetItem>
-#include <QtWidgets/QMenu>
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"

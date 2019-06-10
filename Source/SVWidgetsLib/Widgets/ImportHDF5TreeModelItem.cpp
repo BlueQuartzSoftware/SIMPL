@@ -32,7 +32,6 @@
 
 #include "ImportHDF5TreeModelItem.h"
 
-#include <QtCore/QStringList>
 
 #include "H5Support/H5Utilities.h"
 

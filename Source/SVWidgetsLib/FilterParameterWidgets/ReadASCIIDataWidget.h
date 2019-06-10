@@ -38,7 +38,6 @@
 
 #include <QtCore/QThread>
 
-#include <QtGui/QMovie>
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 

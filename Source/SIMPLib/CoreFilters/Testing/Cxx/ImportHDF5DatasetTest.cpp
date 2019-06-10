@@ -5,7 +5,6 @@
 #include <fstream>
 #include <iostream>
 
-#include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 

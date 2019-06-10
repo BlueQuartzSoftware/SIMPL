@@ -37,10 +37,10 @@
 
 #pragma once
 
-#include <QtWidgets/QWidget>
 
 #if defined (QT_CORE_LIB)
-#include <QtCore/QMetaType>
+#include <QtCore/QObject>
+#include <QtCore/QString>
 #endif
 
 #include "SVWidgetsLib/SVWidgetsLib.h"

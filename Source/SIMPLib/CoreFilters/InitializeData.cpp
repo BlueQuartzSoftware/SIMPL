@@ -39,7 +39,7 @@
 #include <chrono>
 
 #include <QtCore/QCoreApplication>
-#include <QtCore/QDateTime>
+#include <QtCore/QTime>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"

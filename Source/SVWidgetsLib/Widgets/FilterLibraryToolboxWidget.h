@@ -36,7 +36,6 @@
 #pragma once
 
 
-#include <QtWidgets/QDockWidget>
 #include <QtWidgets/QMenu>
 
 #include <QtCore/QSignalMapper>

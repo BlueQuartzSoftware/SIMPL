@@ -31,8 +31,6 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "V1RequestMapper.h"
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QJsonDocument>
 
 #include "QtWebApp/logging/filelogger.h"
 

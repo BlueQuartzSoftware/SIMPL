@@ -41,7 +41,6 @@
 #include <QtCore/QSignalMapper>
 #include <QtCore/QList>
 
-#include <QtGui/QKeyEvent>
 
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/IFilterFactory.hpp"

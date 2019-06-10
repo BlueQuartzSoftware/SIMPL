@@ -54,11 +54,9 @@
 #error THIS FILE SHOULD NOT BE INCLUDED UNLESS THE H5Support_USE_QT is also defined
 #endif
 
-
-#include <QtCore/QtDebug>
+#include <QtCore/QDebug>
 #include <QtCore/QString>
 #include <QtCore/QVector>
-#include <QtCore/QList>
 
 
 #if defined (H5Support_NAMESPACE)

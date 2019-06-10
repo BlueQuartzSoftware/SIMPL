@@ -38,7 +38,6 @@
 #include <QtCore/QModelIndex>
 #include <QtCore/QScopedPointer>
 
-#include <QtWidgets/QDialog>
 
 #include "SVWidgetsLib/Dialogs/ColorPresetsDialogTableModel.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"

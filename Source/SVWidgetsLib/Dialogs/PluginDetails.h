@@ -34,7 +34,6 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
-#include <QtCore/QObject>
 
 #include "SIMPLib/Plugin/PluginManager.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"

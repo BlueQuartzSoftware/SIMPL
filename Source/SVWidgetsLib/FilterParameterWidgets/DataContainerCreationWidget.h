@@ -38,10 +38,7 @@
 
 
 
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
-#include <QtGui/QKeyEvent>
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 

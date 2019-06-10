@@ -35,7 +35,6 @@
 
 #include "CreateStringArray.h"
 
-#include <QtCore/QDateTime>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataArrays/StringDataArray.h"

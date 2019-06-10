@@ -35,8 +35,6 @@
 
 #pragma once
 
-#include <QtCore/QMetaType>
-#include <QtCore/QVector>
 
 #include "SIMPLib/SIMPLib.h"
 

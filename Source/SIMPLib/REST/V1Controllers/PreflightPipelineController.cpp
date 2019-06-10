@@ -32,12 +32,10 @@
 
 #include "PreflightPipelineController.h"
 
-#include <QtCore/QDateTime>
 #include <QtCore/QDir>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
-#include <QtCore/QVariant>
 
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"

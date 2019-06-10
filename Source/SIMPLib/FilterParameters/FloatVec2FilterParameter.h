@@ -40,7 +40,6 @@
 
 #include <QtCore/QString>
 #include <QtCore/QJsonObject>
-#include <QtCore/QMetaType>
 
 #include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"

@@ -35,10 +35,6 @@
 
 #include "ColorPresetsDialog.h"
 
-#include <QtCore/QList>
-#include <QtCore/QPointer>
-#include <QtCore/QSize>
-#include <QtCore/QSortFilterProxyModel>
 
 #include <QtGui/QPixmap>
 

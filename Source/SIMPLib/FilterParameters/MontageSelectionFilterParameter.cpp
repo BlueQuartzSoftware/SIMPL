@@ -34,7 +34,6 @@
 
 #include "MontageSelectionFilterParameter.h"
 
-#include <QtCore/QJsonArray>
 
 // -----------------------------------------------------------------------------
 //

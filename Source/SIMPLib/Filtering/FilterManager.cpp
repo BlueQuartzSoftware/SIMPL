@@ -35,6 +35,8 @@
 
 #include "FilterManager.h"
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/CorePlugin.h"
 

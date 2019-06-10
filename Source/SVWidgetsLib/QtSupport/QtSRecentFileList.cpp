@@ -38,8 +38,6 @@
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
-#include <QtCore/QSettings>
-#include <QtWidgets/QMenu>
 
 QtSRecentFileList* QtSRecentFileList::self = nullptr;
 

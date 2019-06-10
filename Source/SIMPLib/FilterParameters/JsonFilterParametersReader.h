@@ -34,7 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
-#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonParseError>
 #include <QtCore/QString>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"

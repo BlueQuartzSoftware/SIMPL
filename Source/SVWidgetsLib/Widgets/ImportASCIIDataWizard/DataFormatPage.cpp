@@ -37,8 +37,8 @@
 
 #include <QtCore/QSignalMapper>
 
-#include <QtWidgets/QMenu>
 #include <QtWidgets/QDesktopWidget>
+#include <QtWidgets/QMenu>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Utilities/StringOperations.h"
