@@ -48,24 +48,11 @@ class SIMPLib_EXPORT AbstractWarningMessage : public AbstractMessage
 {
 public:
   SIMPL_SHARED_POINTERS(AbstractWarningMessage)
-  SIMPL_TYPE_MACRO(AbstractWarningMessage)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AbstractWarningMessage, AbstractMessage)
 
   ~AbstractWarningMessage() override;
 
   SIMPL_INSTANCE_PROPERTY(int, Code)
-
-  /**
-   * @brief This method creates and returns a string for warning messages
-   */
-   QString generateMessageString() const override = 0;
-
-  /**
-   * @brief Method that allows the visitation of a message by a message handler.  This
-   * is part of the double-dispatch API that allows observers to be able to perform
-   * subclass specific operations on messages that they receive.
-   * @param msgHandler The observer's message handler
-   */
-   void visit(AbstractMessageHandler* msgHandler) const override = 0;
 
 protected:
   AbstractWarningMessage();

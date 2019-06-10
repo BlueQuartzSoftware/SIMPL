@@ -47,7 +47,7 @@ class SIMPLib_EXPORT AbstractStatusMessage : public AbstractMessage
 {
 public:
   SIMPL_SHARED_POINTERS(AbstractStatusMessage)
-  SIMPL_TYPE_MACRO(AbstractStatusMessage)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AbstractStatusMessage, AbstractMessage)
 
   ~AbstractStatusMessage() override;
 

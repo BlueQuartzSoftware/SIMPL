@@ -43,24 +43,11 @@ class SIMPLib_EXPORT AbstractErrorMessage : public AbstractMessage
 {
 public:
   SIMPL_SHARED_POINTERS(AbstractErrorMessage)
-  SIMPL_TYPE_MACRO(AbstractErrorMessage)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AbstractErrorMessage, AbstractMessage)
 
   ~AbstractErrorMessage() override;
 
   SIMPL_INSTANCE_PROPERTY(int, Code)
-
-  /**
-   * @brief This method creates and returns a string for error messages
-   */
-  QString generateMessageString() const override = 0;
-
-  /**
-   * @brief Method that allows the visitation of a message by a message handler.  This
-   * is part of the double-dispatch API that allows observers to be able to perform
-   * subclass specific operations on messages that they receive.
-   * @param msgHandler The observer's message handler
-   */
-  void visit(AbstractMessageHandler* msgHandler) const override = 0;
 
 protected:
   AbstractErrorMessage();

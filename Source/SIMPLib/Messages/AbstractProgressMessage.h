@@ -45,24 +45,11 @@ class SIMPLib_EXPORT AbstractProgressMessage : public AbstractMessage
 {
 public:
   SIMPL_SHARED_POINTERS(AbstractProgressMessage)
-  SIMPL_TYPE_MACRO(AbstractProgressMessage)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AbstractProgressMessage, AbstractMessage)
 
   ~AbstractProgressMessage() override;
 
   SIMPL_INSTANCE_PROPERTY(int, ProgressValue)
-
-  /**
-   * @brief This method creates and returns a string for progress messages
-   */
-  QString generateMessageString() const override = 0;
-
-  /**
-   * @brief Method that allows the visitation of a message by a message handler.  This
-   * is part of the double-dispatch API that allows observers to be able to perform
-   * subclass specific operations on messages that they receive.
-   * @param msgHandler The observer's message handler
-   */
- void visit(AbstractMessageHandler* msgHandler) const override= 0;
 
 protected:
   AbstractProgressMessage();
