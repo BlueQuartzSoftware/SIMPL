@@ -35,7 +35,7 @@
 
 #include "SIMPLDirectoryListing.h"
 
-#include <QtCore/QDateTIme>
+#include <QtCore/QDateTime>
 #include <QtCore/QFileInfoList>
 #include <QtCore/QTextStream>
 
