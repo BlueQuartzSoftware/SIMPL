@@ -51,12 +51,13 @@
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
-#include "SVWidgetsLib/Widgets/DataStructureItemDelegate.h"
-
+#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"
+#include "SVWidgetsLib/Widgets/DataStructureItemDelegate.h"
 
 class QAbstractItemModel;
 class QStandardItemModel;
+class QStandardItem;
 class DataStructureProxyModel;
 
 class SVWidgetsLib_EXPORT DataStructureTreeView : public QTreeView
@@ -64,6 +65,16 @@ class SVWidgetsLib_EXPORT DataStructureTreeView : public QTreeView
   Q_OBJECT
 
 public:
+  //-------- Setup some QProperties that we can use from the CSS theme files to set the proper icon
+  Q_PROPERTY(QIcon ImageGeomIcon READ getImageGeomIcon WRITE setImageGeomIcon)
+  Q_PROPERTY(QIcon VertexGeomIcon READ getVertexGeomIcon WRITE setVertexGeomIcon)
+  Q_PROPERTY(QIcon EdgeGeomIcon READ getEdgeGeomIcon WRITE setEdgeGeomIcon)
+  Q_PROPERTY(QIcon TriangleGeomIcon READ getTriangleGeomIcon WRITE setTriangleGeomIcon)
+  Q_PROPERTY(QIcon QuadGeomIcon READ getQuadGeomIcon WRITE setQuadGeomIcon)
+  Q_PROPERTY(QIcon TetrahedralGeomIcon READ getTetrahedralGeomIcon WRITE setTetrahedralGeomIcon)
+  Q_PROPERTY(QIcon HexahedralGeomIcon READ getHexahedralGeomIcon WRITE setHexahedralGeomIcon)
+  Q_PROPERTY(QIcon RectilinearGeomIcon READ getRectilinearGeomIcon WRITE setRectilinearGeomIcon)
+
   /**
    * @brief DataStructureTreeView
    * @param parent
@@ -103,9 +114,9 @@ public:
   void setActiveFilter(AbstractFilter::Pointer filter);
 
   /**
-  * @brief Sets the filter requirements and forces a repaint
-  * @param reqs
-  */
+   * @brief Sets the filter requirements and forces a repaint
+   * @param reqs
+   */
   void setViewRequirements(DataContainerSelectionFilterParameter::RequirementType reqs);
 
   /**
@@ -126,6 +137,8 @@ public:
    */
   void clearViewRequirements();
 
+  QIcon getDataContainerIcon(IGeometry::Type type) const;
+
   /**
    * @brief Returns a QVector of QModelIndex for all expanded children
    * @param index
@@ -143,6 +156,27 @@ public:
    * @brief Searches for items using the given name as part of their text.  All other items are hidden.
    */
   void search(const QString& name);
+
+public slots:
+  void displayDataContainers(const DataContainerArray::Pointer& dca);
+  void displayMontages(const DataContainerArray::Pointer& dca);
+
+  void setImageGeomIcon(const QIcon& path);
+  void setVertexGeomIcon(const QIcon& path);
+  void setEdgeGeomIcon(const QIcon& path);
+  void setTriangleGeomIcon(const QIcon& path);
+  void setQuadGeomIcon(const QIcon& path);
+  void setTetrahedralGeomIcon(const QIcon& path);
+  void setHexahedralGeomIcon(const QIcon& path);
+  void setRectilinearGeomIcon(const QIcon& path);
+  QIcon getImageGeomIcon() const;
+  QIcon getVertexGeomIcon() const;
+  QIcon getEdgeGeomIcon() const;
+  QIcon getTriangleGeomIcon() const;
+  QIcon getQuadGeomIcon() const;
+  QIcon getTetrahedralGeomIcon() const;
+  QIcon getHexahedralGeomIcon() const;
+  QIcon getRectilinearGeomIcon() const;
 
 signals:
   void filterPath(DataArrayPath path);
@@ -205,6 +239,18 @@ protected:
    */
   void findExpandedChildren(QAbstractItemModel* model, const QModelIndex& index, QVector<QModelIndex>& expandedVector);
 
+  QStandardItem* findChildByName(QStandardItem* rootItem, const QString& name, int column);
+
+  QStandardItem* findItemByPath(DataArrayPath path);
+
+  QStandardItem* getOrCreateItem(QStandardItem* parentItem, const QString& name);
+  QStandardItem* generateMontageItem(QStandardItem* rootItem, const AbstractMontage::Pointer& montage);
+  QStandardItem* generateDataContainerItem(QStandardItem* rootItem, const DataContainer::Pointer& dc);
+  QStandardItem* generateAttrMatrixItem(QStandardItem* dcItem, const AttributeMatrix::Pointer& am);
+  QStandardItem* generateDataArrayItem(QStandardItem* amItem, const AttributeMatrix::Pointer& am, const QString& name);
+
+  void removeNonexistingEntries(QStandardItem* rootItem, QList<QString> existing, int column);
+
   /**
    * @brief rowsInserted
    * @param parent
@@ -231,10 +277,17 @@ private:
   bool m_Dragging = false;
   AbstractFilter::Pointer m_Filter = nullptr;
   DataStructureItemDelegate* m_Delegate = nullptr;
+  QIcon m_ImageGeomIcon = QIcon(SIMPLView::GeometryIcons::Image);
+  QIcon m_VertexGeomIcon = QIcon(SIMPLView::GeometryIcons::Vertex);
+  QIcon m_EdgeGeomIcon = QIcon(SIMPLView::GeometryIcons::Edge);
+  QIcon m_TriangleGeomIcon = QIcon(SIMPLView::GeometryIcons::Triangle);
+  QIcon m_QuadGeomIcon = QIcon(SIMPLView::GeometryIcons::Quad);
+  QIcon m_TetrahedralGeomIcon = QIcon(SIMPLView::GeometryIcons::Tetetrahedral);
+  QIcon m_HexahedralGeomIcon = QIcon(SIMPLView::GeometryIcons::Hexahedral);
+  QIcon m_RectilinearGeomIcon = QIcon(SIMPLView::GeometryIcons::Rectilinear);
 
   /**
    * @brief performDrag
    */
   void performDrag();
 };
-

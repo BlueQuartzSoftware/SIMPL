@@ -22,6 +22,9 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Constants.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/CreatedArrayHelpIndexEntry.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IObserver.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/INamedCollection.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/INamedObject.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/NamedCollection.hpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PhaseType.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLibDLLExport.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLibSetGetMacros.h
@@ -41,6 +44,8 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DocRequestManager.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/EnsembleInfo.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IObserver.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/INamedCollection.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/INamedObject.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Observable.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Observer.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PhaseType.cpp

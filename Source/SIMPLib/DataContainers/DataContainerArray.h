@@ -40,9 +40,10 @@
 
 #include <QtCore/QObject> // for Q_OBJECT
 #include <QtCore/QString>
-#include <QtCore/QList>
+#include <QtCore/QStringList>
 
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/NamedCollection.hpp"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/IDataContainerBundle.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
@@ -52,6 +53,9 @@
 
 class DataContainer;
 using DataContainerShPtr = std::shared_ptr<DataContainer>;
+
+class AbstractMontage;
+using AbstractMontageShPtr = std::shared_ptr<AbstractMontage>;
 
 /**
  * @class DataContainerArray DataContainerArray.h DREAM3DLib/Common/DataContainerArray.h
@@ -94,6 +98,7 @@ public:
   SIMPL_TYPE_MACRO(DataContainerArray)
 
   using Container = ChildCollection;
+  using MontageCollection = NamedCollection<AbstractMontage>;
 
   ~DataContainerArray() override;
 
@@ -278,6 +283,14 @@ public:
      * @param name
      */
     void removeDataContainerFromBundles(const QString& name);
+
+    MontageCollection getMontageCollection() const;
+    bool addMontage(const AbstractMontageShPtr& montage);
+    void addOrReplaceMontage(const AbstractMontageShPtr& montage);
+    void removeMontage(const AbstractMontageShPtr& montage);
+    void removeMontage(const QString& name);
+    AbstractMontageShPtr getMontage(const QString& name) const;
+    QStringList getMontageNames() const;
 
     /**
     * @brief renameDataArrayPaths
@@ -781,6 +794,7 @@ public:
 
   private:
     QMap<QString, IDataContainerBundle::Pointer> m_DataContainerBundles;
+    MontageCollection m_MontageCollection;
 
   public:
     DataContainerArray(const DataContainerArray&) = delete; // Copy Constructor Not Implemented

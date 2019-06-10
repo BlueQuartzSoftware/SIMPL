@@ -49,7 +49,6 @@
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/SIMPLib.h"
 
-#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 #include "ui_DataStructureWidget.h"
@@ -69,16 +68,6 @@ public:
   DataStructureWidget(QWidget* parent = nullptr);
   ~DataStructureWidget() override;
 
-  //-------- Setup some QProperties that we can use from the CSS theme files to set the proper icon
-  Q_PROPERTY(QIcon ImageGeomIcon READ getImageGeomIcon WRITE setImageGeomIcon)
-  Q_PROPERTY(QIcon VertexGeomIcon READ getVertexGeomIcon WRITE setVertexGeomIcon)
-  Q_PROPERTY(QIcon EdgeGeomIcon READ getEdgeGeomIcon WRITE setEdgeGeomIcon)
-  Q_PROPERTY(QIcon TriangleGeomIcon READ getTriangleGeomIcon WRITE setTriangleGeomIcon)
-  Q_PROPERTY(QIcon QuadGeomIcon READ getQuadGeomIcon WRITE setQuadGeomIcon)
-  Q_PROPERTY(QIcon TetrahedralGeomIcon READ getTetrahedralGeomIcon WRITE setTetrahedralGeomIcon)
-  Q_PROPERTY(QIcon HexahedralGeomIcon READ getHexahedralGeomIcon WRITE setHexahedralGeomIcon)
-  Q_PROPERTY(QIcon RectilinearGeomIcon READ getRectilinearGeomIcon WRITE setRectilinearGeomIcon)
-
   void setImageGeomIcon(const QIcon& path);
   void setVertexGeomIcon(const QIcon& path);
   void setEdgeGeomIcon(const QIcon& path);
@@ -87,15 +76,6 @@ public:
   void setTetrahedralGeomIcon(const QIcon& path);
   void setHexahedralGeomIcon(const QIcon& path);
   void setRectilinearGeomIcon(const QIcon& path);
-
-  QIcon getImageGeomIcon();
-  QIcon getVertexGeomIcon();
-  QIcon getEdgeGeomIcon();
-  QIcon getTriangleGeomIcon();
-  QIcon getQuadGeomIcon();
-  QIcon getTetrahedralGeomIcon();
-  QIcon getHexahedralGeomIcon();
-  QIcon getRectilinearGeomIcon();
 
 public slots:
   /**
@@ -157,41 +137,10 @@ protected:
    */
   void setupGui();
 
-  /**
-   * @brief findChildByName
-   * @param rootItem
-   * @param name
-   * @param column
-   * @return
-   */
-  QStandardItem* findChildByName(QStandardItem* rootItem, const QString& name, int column);
-
-  /**
-   * @brief Syncs up the QTreeView with the heirarchy from the DataContainerArray
-   * @param rootItem RootItem to start the sync
-   * @param existing List of existing objects
-   * @param column Column to update
-   */
-  void removeNonexistingEntries(QStandardItem* rootItem, QList<QString> existing, int column);
-
-  /**
-   * @brief Returns a QStandardItem from the given DataArrayPath
-   * @param path
-   * @return
-   */
-  QStandardItem* findItemByPath(DataArrayPath path);
-
 private:
   DataContainerArray::Pointer  m_Dca = nullptr;
   QSharedPointer<Ui::DataStructureWidget>       m_Ui;
-  QIcon m_ImageGeomIcon = QIcon(SIMPLView::GeometryIcons::Image);
-  QIcon m_VertexGeomIcon = QIcon(SIMPLView::GeometryIcons::Vertex);
-  QIcon m_EdgeGeomIcon = QIcon(SIMPLView::GeometryIcons::Edge);
-  QIcon m_TriangleGeomIcon = QIcon(SIMPLView::GeometryIcons::Triangle);
-  QIcon m_QuadGeomIcon = QIcon(SIMPLView::GeometryIcons::Quad);
-  QIcon m_TetrahedralGeomIcon = QIcon(SIMPLView::GeometryIcons::Tetetrahedral);
-  QIcon m_HexahedralGeomIcon = QIcon(SIMPLView::GeometryIcons::Hexahedral);
-  QIcon m_RectilinearGeomIcon = QIcon(SIMPLView::GeometryIcons::Rectilinear);
+  
 public:
   DataStructureWidget(const DataStructureWidget&) = delete; // Copy Constructor Not Implemented
   DataStructureWidget(DataStructureWidget&&) = delete;      // Move Constructor Not Implemented

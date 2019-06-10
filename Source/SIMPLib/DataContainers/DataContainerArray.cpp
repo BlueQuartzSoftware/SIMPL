@@ -34,6 +34,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "DataContainerArray.h"
 
+#include "SIMPLib/DataContainers/AbstractMontage.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
 
@@ -440,6 +441,74 @@ bool DataContainerArray::renameDataContainerBundle(const QString& oldName, const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+DataContainerArray::MontageCollection DataContainerArray::getMontageCollection() const
+{
+  return m_MontageCollection;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool DataContainerArray::addMontage(const AbstractMontageShPtr& montage)
+{
+  return m_MontageCollection.insert(montage);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArray::addOrReplaceMontage(const AbstractMontageShPtr& montage)
+{
+  m_MontageCollection.erase(montage->getName());
+  m_MontageCollection.insert(montage);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArray::removeMontage(const AbstractMontageShPtr& montage)
+{
+  if(nullptr == montage)
+  {
+    return;
+  }
+  m_MontageCollection.erase(montage->getName());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArray::removeMontage(const QString& name)
+{
+  m_MontageCollection.erase(name);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AbstractMontageShPtr DataContainerArray::getMontage(const QString& name) const
+{
+  auto iter = m_MontageCollection.find(name);
+  return (*iter);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QStringList DataContainerArray::getMontageNames() const
+{
+  QStringList names;
+  for(const auto& montage : m_MontageCollection)
+  {
+    names.push_back(montage->getName());
+  }
+
+  return names;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 DataContainerArray::Pointer DataContainerArray::deepCopy(bool forceNoAllocate)
 {
   DataContainerArray::Pointer dcaCopy = DataContainerArray::New();
@@ -450,6 +519,14 @@ DataContainerArray::Pointer DataContainerArray::deepCopy(bool forceNoAllocate)
 
     // End add DataContainer
     dcaCopy->push_back(dcCopy);
+  }
+
+  const MontageCollection montageCollection = getMontageCollection();
+  MontageCollection mccopy = MontageCollection();
+  for(const auto& montage : montageCollection)
+  {
+    AbstractMontage::Pointer montageCopy = montage->propagate(dcaCopy);
+    dcaCopy->addMontage(montageCopy);
   }
 
   return dcaCopy;

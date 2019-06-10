@@ -66,134 +66,6 @@ DataStructureWidget::~DataStructureWidget() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataStructureWidget::setImageGeomIcon(const QIcon& path)
-{
-  m_ImageGeomIcon = path;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataStructureWidget::setVertexGeomIcon(const QIcon& path)
-{
-  m_VertexGeomIcon = path;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataStructureWidget::setEdgeGeomIcon(const QIcon& path)
-{
-  m_EdgeGeomIcon = path;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataStructureWidget::setTriangleGeomIcon(const QIcon& path)
-{
-  m_TriangleGeomIcon = path;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataStructureWidget::setQuadGeomIcon(const QIcon& path)
-{
-  m_QuadGeomIcon = path;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataStructureWidget::setTetrahedralGeomIcon(const QIcon& path)
-{
-  m_TetrahedralGeomIcon = path;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataStructureWidget::setHexahedralGeomIcon(const QIcon& path)
-{
-  m_HexahedralGeomIcon = path;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataStructureWidget::setRectilinearGeomIcon(const QIcon &path)
-{
-  m_RectilinearGeomIcon = path;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QIcon DataStructureWidget::getImageGeomIcon()
-{
-  return m_ImageGeomIcon;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QIcon DataStructureWidget::getVertexGeomIcon()
-{
-  return m_VertexGeomIcon;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QIcon DataStructureWidget::getEdgeGeomIcon()
-{
-  return m_EdgeGeomIcon;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QIcon DataStructureWidget::getTriangleGeomIcon()
-{
-  return m_TriangleGeomIcon;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QIcon DataStructureWidget::getQuadGeomIcon()
-{
-  return m_QuadGeomIcon;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QIcon DataStructureWidget::getTetrahedralGeomIcon()
-{
-  return m_TetrahedralGeomIcon;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QIcon DataStructureWidget::getHexahedralGeomIcon()
-{
-  return m_HexahedralGeomIcon;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QIcon DataStructureWidget::getRectilinearGeomIcon()
-{
-  return m_RectilinearGeomIcon;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void DataStructureWidget::setupGui()
 {
   connect(m_Ui->dataBrowserTreeView, SIGNAL(filterPath(DataArrayPath)), this, SIGNAL(filterPath(DataArrayPath)));
@@ -205,6 +77,7 @@ void DataStructureWidget::setupGui()
 
   // Search
   connect(m_Ui->dataStructureSearch, &QLineEdit::textChanged, m_Ui->dataBrowserTreeView, &DataStructureTreeView::search);
+  connect(m_Ui->dataStructureSearch, &QLineEdit::textChanged, m_Ui->montageTreeView, &DataStructureTreeView::search);
 }
 
 // -----------------------------------------------------------------------------
@@ -221,146 +94,8 @@ void DataStructureWidget::updateDataContainerArray(DataContainerArray::Pointer d
 // -----------------------------------------------------------------------------
 void DataStructureWidget::refreshData()
 {
-  // Get the DataContainerArray object
-  if(m_Dca.get() == nullptr)
-  {
-    QStandardItemModel* model = m_Ui->dataBrowserTreeView->getStandardModel();
-    QStandardItem* rootItem = model->invisibleRootItem();
-    removeNonexistingEntries(rootItem, QStringList(), 0);
-    return;
-  }
-
-  QStandardItemModel* model = m_Ui->dataBrowserTreeView->getStandardModel();
-  QVector<QString> path;
-  {
-    QModelIndex currIndex = m_Ui->dataBrowserTreeView->currentIndex();
-    QStandardItem* item = model->itemFromIndex(currIndex);
-    // Get what is selected and save it
-    while(nullptr != item)
-    {
-      path.push_front(item->text());
-      item = item->parent();
-    }
-  }
-
-  model = m_Ui->dataBrowserTreeView->getStandardModel();
-
-  // Sanity check model
-  if(model == nullptr)
-  {
-    Q_ASSERT_X(model, "Model was not a QStandardItemModel in QColumnView", "");
-    return;
-  }
-
-  // Loop over the data containers
-  DataContainerArray::Container containers = m_Dca->getDataContainers();
-  QStandardItem* rootItem = model->invisibleRootItem();
-
-  for(DataContainer::Pointer dc : containers)
-  {
-    QStandardItem* dcItem = findChildByName(rootItem, dc->getName(), 0);
-    if(dcItem == nullptr)
-    {
-      dcItem = new QStandardItem(dc->getName());
-      model->appendRow(dcItem);
-      m_Ui->dataBrowserTreeView->expand(dcItem->index());
-    }
-    dcItem->setData(dc->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
-    dcItem->setToolTip(dc->getInfoString(SIMPL::HtmlFormat));
-    if(dc->getGeometry())
-    {
-      switch(dc->getGeometry()->getGeometryType())
-      {
-      case IGeometry::Type::Image:
-        dcItem->setIcon(m_ImageGeomIcon);
-        break;
-      case IGeometry::Type::Vertex:
-        dcItem->setIcon(m_VertexGeomIcon);
-        break;
-      case IGeometry::Type::Edge:
-        dcItem->setIcon(m_EdgeGeomIcon);
-        break;
-      case IGeometry::Type::Triangle:
-        dcItem->setIcon(m_TriangleGeomIcon);
-        break;
-      case IGeometry::Type::Quad:
-        dcItem->setIcon(m_QuadGeomIcon);
-        break;
-      case IGeometry::Type::Tetrahedral:
-        dcItem->setIcon(m_TetrahedralGeomIcon);
-        break;
-      case IGeometry::Type::Hexahedral:
-        dcItem->setIcon(m_HexahedralGeomIcon);
-        break;
-      case IGeometry::Type::RectGrid:
-        dcItem->setIcon(m_RectilinearGeomIcon);
-        break;
-      default:
-        dcItem->setIcon(QIcon());
-        break;
-      }
-    }
-    else
-    {
-      dcItem->setIcon(QIcon());
-    }
-
-    if(!path.empty() && dc->getName().compare(path[0]) == 0)
-    {
-      m_Ui->dataBrowserTreeView->setCurrentIndex(model->indexFromItem(dcItem));
-    }
-
-    // We found the proper Data Container, now populate the AttributeMatrix List
-    for(const auto& am : dc->getChildren())
-    {
-      QStandardItem* amItem = findChildByName(dcItem, am->getName(), 0);
-      if(amItem == nullptr)
-      {
-        amItem = new QStandardItem(am->getName());
-        dcItem->appendRow(amItem);
-        m_Ui->dataBrowserTreeView->expand(amItem->index());
-      }
-      amItem->setData(am->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
-      amItem->setToolTip(am->getInfoString(SIMPL::HtmlFormat));
-      amItem->setIcon(QIcon());
-
-      if(path.size() > 1 && am->getName().compare(path[1]) == 0)
-      {
-        m_Ui->dataBrowserTreeView->setCurrentIndex(model->indexFromItem(amItem));
-      }
-
-      // We found the selected AttributeMatrix, so loop over this attribute matrix arrays and populate the list widget
-      QList<QString> attrArrayNames = am->getAttributeArrayNames();
-      QListIterator<QString> dataArraysIter(attrArrayNames);
-      while(dataArraysIter.hasNext())
-      {
-        QString attrArrayName = dataArraysIter.next();
-        IDataArray::Pointer attrArray = am->getAttributeArray(attrArrayName);
-
-        QStandardItem* aaItem = findChildByName(amItem, attrArray->getName(), 0);
-        if(aaItem == nullptr)
-        {
-          aaItem = new QStandardItem(attrArrayName);
-          amItem->appendRow(aaItem);
-        }
-        aaItem->setData(attrArray->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
-        aaItem->setToolTip(attrArray->getInfoString(SIMPL::HtmlFormat));
-        aaItem->setIcon(QIcon());
-
-        if(path.size() > 2 && attrArrayName.compare(path[2]) == 0)
-        {
-          QModelIndex idx = model->indexFromItem(aaItem);
-          m_Ui->dataBrowserTreeView->setCurrentIndex(idx);
-        }
-      }
-      removeNonexistingEntries(amItem, attrArrayNames, 0);
-    }
-    removeNonexistingEntries(dcItem, dc->getAttributeMatrixNames(), 0);
-  }
-  removeNonexistingEntries(rootItem, m_Dca->getDataContainerNames(), 0);
-
-  // repaint the DataStructureTreeView
-  m_Ui->dataBrowserTreeView->repaint();
+  m_Ui->dataBrowserTreeView->displayDataContainers(m_Dca);
+  m_Ui->montageTreeView->displayMontages(m_Dca);
 }
 
 // -----------------------------------------------------------------------------
@@ -370,6 +105,7 @@ void DataStructureWidget::filterActivated(AbstractFilter::Pointer filter)
 {
   m_Dca = DataContainerArray::NullPointer();
   m_Ui->dataBrowserTreeView->setActiveFilter(filter);
+  m_Ui->montageTreeView->setActiveFilter(filter);
   if(filter.get() != nullptr)
   {
     DataContainerArray::Pointer dca = filter->getDataContainerArray();
@@ -390,87 +126,6 @@ void DataStructureWidget::handleFilterRemoved(PipelineFilterObject* object)
   Q_UNUSED(object);
   m_Dca = DataContainerArray::NullPointer();
   refreshData();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QStandardItem* DataStructureWidget::findChildByName(QStandardItem* rootItem, const QString &name, int column)
-{
-  if(nullptr == rootItem)
-  {
-    return nullptr;
-  }
-
-  QStandardItem* item = nullptr;
-  int rowCount = rootItem->rowCount();
-  for (int row = 0; row < rowCount; ++row)
-  {
-    QStandardItem* anItem = rootItem->child(row, column);
-    if(anItem->text().compare(name) == 0)
-    {
-      item = anItem;
-      break;
-    }
-  }
-  return item;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QStandardItem* DataStructureWidget::findItemByPath(DataArrayPath path)
-{
-  DataArrayPathHelper::DataType dataType = path.getDataType();
-  if(dataType == DataArrayPathHelper::DataType::None)
-  {
-    return nullptr;
-  }
-
-  QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
-  if(model == nullptr)
-  {
-    Q_ASSERT_X(model, "Model was not a QStandardItemModel in QColumnView", "");
-    return nullptr;
-  }
-
-  QStandardItem* rootItem = model->invisibleRootItem();
-  QStandardItem* targetItem = nullptr;
-  QStandardItem* dcItem = findChildByName(rootItem, path.getDataContainerName(), 0);
-  if(dataType == DataArrayPathHelper::DataType::DataContainer)
-  {
-    targetItem = dcItem;
-  }
-  else
-  {
-    QStandardItem* amItem = findChildByName(dcItem, path.getAttributeMatrixName(), 0);
-    if(dataType == DataArrayPathHelper::DataType::AttributeMatrix)
-    {
-      targetItem = amItem;
-    }
-    else
-    {
-      targetItem = findChildByName(amItem, path.getDataArrayName(), 0);
-    }
-  }
-
-  return targetItem;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataStructureWidget::removeNonexistingEntries(QStandardItem* rootItem, QList<QString> existing, int column)
-{
-  int rowCount = rootItem->rowCount();
-  for (int row = rowCount-1; row >= 0; row--)
-  {
-    QStandardItem* anItem = rootItem->child(row, column);
-    if(!existing.contains(anItem->text()))
-    {
-      rootItem->removeRow(row);
-    }
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -505,3 +160,66 @@ void DataStructureWidget::clearViewRequirements()
   m_Ui->dataBrowserTreeView->clearViewRequirements();
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureWidget::setImageGeomIcon(const QIcon& path)
+{
+  m_Ui->dataBrowserTreeView->setImageGeomIcon(path);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureWidget::setVertexGeomIcon(const QIcon& path)
+{
+  m_Ui->dataBrowserTreeView->setVertexGeomIcon(path);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureWidget::setEdgeGeomIcon(const QIcon& path)
+{
+  m_Ui->dataBrowserTreeView->setEdgeGeomIcon(path);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureWidget::setTriangleGeomIcon(const QIcon& path)
+{
+  m_Ui->dataBrowserTreeView->setTriangleGeomIcon(path);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureWidget::setQuadGeomIcon(const QIcon& path)
+{
+  m_Ui->dataBrowserTreeView->setQuadGeomIcon(path);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureWidget::setTetrahedralGeomIcon(const QIcon& path)
+{
+  m_Ui->dataBrowserTreeView->setTetrahedralGeomIcon(path);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureWidget::setHexahedralGeomIcon(const QIcon& path)
+{
+  m_Ui->dataBrowserTreeView->setHexahedralGeomIcon(path);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataStructureWidget::setRectilinearGeomIcon(const QIcon &path)
+{
+  m_Ui->dataBrowserTreeView->setRectilinearGeomIcon(path);
+}
