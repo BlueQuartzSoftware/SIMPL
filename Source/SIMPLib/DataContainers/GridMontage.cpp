@@ -400,7 +400,7 @@ IGeometry::LengthUnit GridMontage::getLengthUnit() const
 {
   for(const auto& dc : m_DataContainers)
   {
-    if(nullptr == dc->getGeometry())
+    if(nullptr == dc || nullptr == dc->getGeometry())
     {
       continue;
     }
@@ -436,16 +436,20 @@ GridMontage::DimensionsType GridMontage::getDimensions() const
 // -----------------------------------------------------------------------------
 GridMontage::BoundsType GridMontage::getBounds() const
 {
-  double minX;
-  double maxX;
-  double minY;
-  double maxY;
-  double minZ;
-  double maxZ;
+  double minX = 0.0;
+  double maxX = 0.0;
+  double minY = 0.0;
+  double maxY = 0.0;
+  double minZ = 0.0;
+  double maxZ = 0.0;
   bool hasValues = false;
 
   for(const auto& dc : m_DataContainers)
   {
+    if(nullptr == dc)
+    {
+      continue;
+    }
     IGeometry::Pointer geom = dc->getGeometry();
     if(nullptr == geom)
     {

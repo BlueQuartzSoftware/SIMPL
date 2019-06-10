@@ -732,13 +732,22 @@ void DataStructureTreeView::displayMontages(const DataContainerArray::Pointer& d
     DataContainerArray::Container containers = montage->getDataContainers();
     for(DataContainer::Pointer dc : containers)
     {
-      AbstractTileIndexShPtr dcIndex = montage->getTileIndexFor(dc);
-      ToolTipGenerator dcToolTip = dcIndex->getToolTipGenerator();
-      dcToolTip.append(dc->getToolTipGenerator());
+      QStandardItem* dcItem;
+      if(nullptr == dc)
+      {
+        dcItem = new QStandardItem("[Missing Data Container]");
+        montageItem->appendRow(dcItem);
+      }
+      else
+      {
+        dcItem = generateDataContainerItem(montageItem, dc);
+        dcItem->setData(false, ::MontageRole);
 
-      QStandardItem* dcItem = generateDataContainerItem(montageItem, dc);
-      dcItem->setData(false, ::MontageRole);
-      dcItem->setToolTip(dcToolTip.generateHTML());
+        AbstractTileIndexShPtr dcIndex = montage->getTileIndexFor(dc);
+        ToolTipGenerator dcToolTip = dcIndex->getToolTipGenerator();
+        dcToolTip.append(dc->getToolTipGenerator());
+        dcItem->setToolTip(dcToolTip.generateHTML());
+      }
 
       if(!path.empty() && dc->getName().compare(path[0]) == 0)
       {
