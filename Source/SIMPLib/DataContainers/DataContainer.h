@@ -49,6 +49,7 @@
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Utilities/ToolTipGenerator.h"
 
 class QTextStream;
 class DataArrayPath;
@@ -171,6 +172,13 @@ public:
   virtual QString getInfoString(SIMPL::InfoStringFormat format);
 
   /**
+   * @brief Returns a ToolTipGenerator for creating HTML tooltip tables
+   * with values populated to match the current DataContainer.
+   * @return
+   */
+  virtual ToolTipGenerator getToolTipGenerator();
+
+  /**
    * @brief Adds the data for a named array. If an AttributeMatrix with the same
    * name already exists in the DataContainer then the add will fail.
    * @param matrix The IDataArray::Pointer that will hold the data
@@ -250,7 +258,7 @@ public:
    * @brief Returns the total number of arrays that are stored in the Cell group
    * @return
    */
-  int getNumAttributeMatrices()
+  int getNumAttributeMatrices() const
   {
     return static_cast<int>(size());
   }

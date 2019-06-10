@@ -95,6 +95,12 @@ public:
    */
   bool isValid() const override;
 
+  /**
+   * @brief Creates and returns a ToolTipGenerator with the relevant values set for the tile index.
+   * @return
+   */
+  ToolTipGenerator getToolTipGenerator() const override;
+
 protected:
   /**
    * @param "Valid" constructor is only accessible from within GridMontage.

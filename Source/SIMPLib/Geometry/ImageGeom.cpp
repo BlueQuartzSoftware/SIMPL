@@ -1011,47 +1011,50 @@ int ImageGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
 // -----------------------------------------------------------------------------
 QString ImageGeom::getInfoString(SIMPL::InfoStringFormat format)
 {
+  if(format == SIMPL::HtmlFormat)
+  {
+    return getToolTipGenerator().generateHTML();
+  }
+  
   QString info;
   QTextStream ss(&info);
-  QString lengthUnit = IGeometry::LengthUnitToString(static_cast<IGeometry::LengthUnit>(getUnits()));
+  ss << "Requested InfoStringFormat is not supported. " << format;
 
-  int64_t volDims[3] = {static_cast<int64_t>(getXPoints()), static_cast<int64_t>(getYPoints()), static_cast<int64_t>(getZPoints())};
+  return info;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+ToolTipGenerator ImageGeom::getToolTipGenerator()
+{
+  ToolTipGenerator toolTipGen;
+
+  QString lengthUnit = IGeometry::LengthUnitToString(static_cast<IGeometry::LengthUnit>(getUnits()));
+  int64_t volDims[3] = { static_cast<int64_t>(getXPoints()), static_cast<int64_t>(getYPoints()), static_cast<int64_t>(getZPoints()) };
   FloatVec3Type spacing = getSpacing();
   FloatVec3Type origin = getOrigin();
 
-  float halfRes[3] = {spacing[0] / 2.0f, spacing[1] / 2.0f, spacing[2] / 2.0f};
+  float halfRes[3] = { spacing[0] / 2.0f, spacing[1] / 2.0f, spacing[2] / 2.0f };
+  float vol = (volDims[0] * spacing[0]) * (volDims[1] * spacing[1]) * (volDims[2] * spacing[2]);
+  QLocale usa(QLocale::English, QLocale::UnitedStates);
 
-  if(format == SIMPL::HtmlFormat)
-  {
-    ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Geometry Info</th></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Type</th><td>)" << TypeToString(getGeometryType()) << "</td></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Units</th><td>)" << LengthUnitToString(getUnits()) << "</td></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Extents:</th><td>)"
-       << "<p>X Extent: 0 to " << volDims[0] - 1 << " (dimension: " << volDims[0] << ")</p>"
-       << "<p>Y Extent: 0 to " << volDims[1] - 1 << " (dimension: " << volDims[1] << ")</p>"
-       << "<p>Z Extent: 0 to " << volDims[2] - 1 << " (dimension: " << volDims[2] << ")</p>"
-       << "</td></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Origin:</th><td>)" << origin[0] << ", " << origin[1] << ", " << origin[2] << "</td></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Spacing:</th><td>)" << spacing[0] << ", " << spacing[1] << ", " << spacing[2] << "</td></tr>";
+  toolTipGen.addTitle("Geometry Info");
+  toolTipGen.addValue("Type", TypeToString(getGeometryType()));
+  toolTipGen.addValue("Units", LengthUnitToString(getUnits()));
+  toolTipGen.addTitle("Extents");
+  toolTipGen.addValue("X", "0 to " + QString::number(volDims[0] - 1) + " (dimension: " + QString::number(volDims[0]));
+  toolTipGen.addValue("Y", "0 to " + QString::number(volDims[1] - 1) + " (dimension: " + QString::number(volDims[1]));
+  toolTipGen.addValue("Z", "0 to " + QString::number(volDims[2] - 1) + " (dimension: " + QString::number(volDims[2]));
+  toolTipGen.addValue("Origin", QString::number(origin[0]) + ", " + QString::number(origin[1]) + ", " + QString::number(origin[2]));
+  toolTipGen.addValue("Spacing", QString::number(spacing[0]) + ", " + QString::number(spacing[1]) + ", " + QString::number(spacing[2]));
+  toolTipGen.addValue("Volume", usa.toString(vol) + " " + lengthUnit + "s ^3");
+  toolTipGen.addTitle("Bounds (Cell Centered)");
+  toolTipGen.addValue("X Range", QString::number(origin[0] - halfRes[0]) + " to " + QString::number(origin[0] - halfRes[0] + volDims[0] * spacing[0]) + " (delta: " + QString::number(volDims[0] * spacing[0]) + ")");
+  toolTipGen.addValue("Y Range", QString::number(origin[1] - halfRes[1]) + " to " + QString::number(origin[1] - halfRes[1] + volDims[1] * spacing[1]) + " (delta: " + QString::number(volDims[1] * spacing[1]) + ")");
+  toolTipGen.addValue("Z Range", QString::number(origin[2] - halfRes[2]) + " to " + QString::number(origin[2] - halfRes[2] + volDims[2] * spacing[2]) + " (delta: " + QString::number(volDims[2] * spacing[2]) + ")");
 
-    float vol = (volDims[0] * spacing[0]) * (volDims[1] * spacing[1]) * (volDims[2] * spacing[2]);
-    QLocale usa(QLocale::English, QLocale::UnitedStates);
-
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Volume:</th><td>)" << usa.toString(vol) << " " << lengthUnit
-       << "s ^3"
-          "</td></tr>";
-
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Bounds (Cell Centered):</th><td>)"
-       << "<p>X Range: " << (origin[0] - halfRes[0]) << " to " << (origin[0] - halfRes[0] + volDims[0] * spacing[0]) << " (delta: " << (volDims[0] * spacing[0]) << ")</p>"
-       << "<p>Y Range: " << (origin[1] - halfRes[1]) << " to " << (origin[1] - halfRes[1] + volDims[1] * spacing[1]) << " (delta: " << (volDims[1] * spacing[1]) << ")</p>"
-       << "<p>Z Range: " << (origin[2] - halfRes[2]) << " to " << (origin[2] - halfRes[2] + volDims[2] * spacing[2]) << " (delta: " << (volDims[2] * spacing[2]) << ")</p>"
-       << "</td></tr>";
-  }
-  else
-  {
-    ss << "Requested InfoStringFormat is not supported. " << format;
-  }
-  return info;
+  return toolTipGen;
 }
 
 // -----------------------------------------------------------------------------

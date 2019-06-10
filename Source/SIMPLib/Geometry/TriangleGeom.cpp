@@ -640,21 +640,28 @@ int TriangleGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileNam
 // -----------------------------------------------------------------------------
 QString TriangleGeom::getInfoString(SIMPL::InfoStringFormat format)
 {
-  QString info;
-  QTextStream ss(&info);
-
   if(format == SIMPL::HtmlFormat)
   {
-    ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Geometry Info</th></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Type</th><td>)" << TypeToString(getGeometryType()) << "</td></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Units</th><td>)" << LengthUnitToString(getUnits()) << "</td></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Number of Triangles</th><td>)" << getNumberOfTris() << "</td></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Number of Vertices</th><td>)" << getNumberOfVertices() << "</td></tr>";
+    return getToolTipGenerator().generateHTML();
   }
-  else
-  {
-  }
-  return info;
+
+  return QString();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+ToolTipGenerator TriangleGeom::getToolTipGenerator()
+{
+  ToolTipGenerator toolTipGen;
+
+  toolTipGen.addTitle("Geometry Info");
+  toolTipGen.addValue("Type", TypeToString(getGeometryType()));
+  toolTipGen.addValue("Units", LengthUnitToString(getUnits()));
+  toolTipGen.addValue("Number of Triangles", QString::number(getNumberOfTris()));
+  toolTipGen.addValue("Number of Vertices", QString::number(getNumberOfVertices()));
+
+  return toolTipGen;
 }
 
 // -----------------------------------------------------------------------------

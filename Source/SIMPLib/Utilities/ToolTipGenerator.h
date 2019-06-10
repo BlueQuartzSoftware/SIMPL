@@ -85,6 +85,12 @@ public:
   void addSpacer();
 
   /**
+   * @brief Append the rows from another ToolTipGenerator to the end of this generator.
+   * @param other
+   */
+  void append(const ToolTipGenerator& other);
+
+  /**
    * @brief Clears the row data.
    */
   void clear();
@@ -118,10 +124,4 @@ protected:
 private:
   QString m_RowColorStr = "#FFFCEA";
   std::vector<RowItem> m_Rows;
-
-public:
-  ToolTipGenerator(const ToolTipGenerator&) = delete;            // Copy Constructor Not Implemented
-  ToolTipGenerator& operator=(const ToolTipGenerator&) = delete; // Copy Assignment Not Implemented
-  ToolTipGenerator(ToolTipGenerator&&) = delete;                 // Move Constructor Not Implemented
-  ToolTipGenerator& operator=(ToolTipGenerator&&) = delete;      // Move Assignment Not Implemented
 };

@@ -37,6 +37,7 @@
 #include <QtCore/QString>
 
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Utilities/ToolTipGenerator.h"
 
 class AbstractMontage;
 
@@ -81,6 +82,12 @@ public:
    * @return
    */
   virtual bool isValid() const;
+
+  /**
+   * @brief Creates and returns a ToolTipGenerator with the relevant values set for the tile index.
+   * @return
+   */
+  virtual ToolTipGenerator getToolTipGenerator() const = 0;
 
 protected:
   AbstractTileIndex(const AbstractMontage* montage);

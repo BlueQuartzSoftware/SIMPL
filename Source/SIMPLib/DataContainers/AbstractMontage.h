@@ -40,6 +40,9 @@
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/SIMPLib.h"
 
+class AbstractTileIndex;
+using AbstractTileIndexShPtr = std::shared_ptr<AbstractTileIndex>;
+
 class DataContainer;
 using DataContainerShPtr = std::shared_ptr<DataContainer>;
 
@@ -104,6 +107,13 @@ public:
    * @return
    */
   virtual QString getInfoString() const = 0;
+
+  /**
+   * @brief Returns a shared_ptr for the tile index for the given DataContainer.
+   * @param dc
+   * @return
+   */
+  virtual AbstractTileIndexShPtr getTileIndexFor(const DataContainerShPtr& dc) const = 0;
 
   /**
    * @brief Creates and returns a copy of the montage with all DataContainer references

@@ -124,3 +124,18 @@ bool GridTileIndex::isValid() const
   
   return AbstractTileIndex::isValid() && sizeCheck;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+ToolTipGenerator GridTileIndex::getToolTipGenerator() const
+{
+  ToolTipGenerator toolTipGen;
+
+  SizeVec3Type tilePos = getTilePos();
+
+  toolTipGen.addTitle("Grid Tile Index");
+  toolTipGen.addValue("Index", "(" + QString::number(tilePos[0]) + ", " + QString::number(tilePos[1]) + ", " + QString::number(tilePos[2]) + ")");
+
+  return toolTipGen;
+}

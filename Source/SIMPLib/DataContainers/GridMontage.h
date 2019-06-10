@@ -137,6 +137,13 @@ public:
   GridTileIndex getTileIndexForDataContainer(const DataContainerShPtr& dc) const;
 
   /**
+   * @brief Returns a shared_ptr for the tile index for the given DataContainer.
+   * @param dc
+   * @return
+   */
+  AbstractTileIndexShPtr getTileIndexFor(const DataContainerShPtr& dc) const override;
+
+  /**
    * @brief Returns a collection of DataContainers in the montage
    * @return
    */

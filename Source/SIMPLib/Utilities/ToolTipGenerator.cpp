@@ -85,6 +85,18 @@ void ToolTipGenerator::addSpacer()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void ToolTipGenerator::append(const ToolTipGenerator& other)
+{
+  addSpacer();
+  for(const auto& row : other.m_Rows)
+  {
+    m_Rows.push_back(row);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void ToolTipGenerator::clear()
 {
   m_Rows.clear();

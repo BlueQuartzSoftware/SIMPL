@@ -205,6 +205,16 @@ GridTileIndex GridMontage::getTileIndexForDataContainer(const DataContainerShPtr
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+AbstractTileIndexShPtr GridMontage::getTileIndexFor(const DataContainerShPtr& dc) const
+{
+  GridTileIndex gridIndex = getTileIndexForDataContainer(dc);
+  GridTileIndex* indexPtr = new GridTileIndex(gridIndex);
+  return AbstractTileIndexShPtr(indexPtr);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 AbstractMontage::CollectionType GridMontage::getDataContainers() const
 {
   return m_DataContainers;

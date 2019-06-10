@@ -405,21 +405,27 @@ int VertexGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
 // -----------------------------------------------------------------------------
 QString VertexGeom::getInfoString(SIMPL::InfoStringFormat format)
 {
-  QString info;
-  QTextStream ss(&info);
-
   if(format == SIMPL::HtmlFormat)
   {
-    ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Geometry Info</th></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Type</th><td>)" << TypeToString(getGeometryType()) << "</td></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Units</th><td>)" << LengthUnitToString(getUnits()) << "</td></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Number of Vertices</th><td>)" << getNumberOfVertices() << "</td></tr>";
-    ss << "</tbody></table>";
+    return getToolTipGenerator().generateHTML();
   }
-  else
-  {
-  }
-  return info;
+
+  return QString();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+ToolTipGenerator VertexGeom::getToolTipGenerator()
+{
+  ToolTipGenerator toolTipGen;
+
+  toolTipGen.addTitle("Geometry Info");
+  toolTipGen.addValue("Type", TypeToString(getGeometryType()));
+  toolTipGen.addValue("Units", LengthUnitToString(getUnits()));
+  toolTipGen.addValue("Number of Vertices", QString::number(getNumberOfVertices()));
+
+  return toolTipGen;
 }
 
 // -----------------------------------------------------------------------------

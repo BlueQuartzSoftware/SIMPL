@@ -51,6 +51,8 @@
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
 
+#include "SIMPLib/DataContainers/AbstractTileIndex.h"
+
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/DataArrayPathSelectionWidget.h"
 #include "SVWidgetsLib/Widgets/DataStructureItemDelegate.h"
@@ -730,8 +732,13 @@ void DataStructureTreeView::displayMontages(const DataContainerArray::Pointer& d
     DataContainerArray::Container containers = montage->getDataContainers();
     for(DataContainer::Pointer dc : containers)
     {
+      AbstractTileIndexShPtr dcIndex = montage->getTileIndexFor(dc);
+      ToolTipGenerator dcToolTip = dcIndex->getToolTipGenerator();
+      dcToolTip.append(dc->getToolTipGenerator());
+
       QStandardItem* dcItem = generateDataContainerItem(montageItem, dc);
       dcItem->setData(false, ::MontageRole);
+      dcItem->setToolTip(dcToolTip.generateHTML());
 
       if(!path.empty() && dc->getName().compare(path[0]) == 0)
       {

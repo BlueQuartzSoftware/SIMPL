@@ -332,6 +332,13 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
     QString getInfoString(SIMPL::InfoStringFormat format) override;
 
     /**
+     * @brief Returns a ToolTipGenerator for creating HTML tooltip tables
+     * with values populated to match the geometry.
+     * @return
+     */
+    ToolTipGenerator getToolTipGenerator() override;
+
+    /**
      * @brief writeGeometryToHDF5
      * @param parentId
      * @param writeXdmf

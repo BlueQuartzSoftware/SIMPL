@@ -46,6 +46,7 @@
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/Geometry/ITransformContainer.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Utilities/ToolTipGenerator.h"
 
 class QTextStream;
 
@@ -347,6 +348,13 @@ class SIMPLib_EXPORT IGeometry : public Observable
      * the instance of the object.
      */
     virtual QString getInfoString(SIMPL::InfoStringFormat) = 0;
+
+    /**
+     * @brief Returns a ToolTipGenerator for creating HTML tooltip tables
+     * with values populated to match the geometry.
+     * @return
+     */
+    virtual ToolTipGenerator getToolTipGenerator() = 0;
 
     /**
      * @brief getXdmfGridType

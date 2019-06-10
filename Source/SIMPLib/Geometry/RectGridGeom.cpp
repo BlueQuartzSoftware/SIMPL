@@ -1084,25 +1084,30 @@ int RectGridGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileNam
 // -----------------------------------------------------------------------------
 QString RectGridGeom::getInfoString(SIMPL::InfoStringFormat format)
 {
-  QString info;
-  QTextStream ss(&info);
-
-  int64_t volDims[3] = {static_cast<int64_t>(getXPoints()), static_cast<int64_t>(getYPoints()), static_cast<int64_t>(getZPoints())};
-
   if(format == SIMPL::HtmlFormat)
   {
-    ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Geometry Info</th></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Type</th><td>)" << TypeToString(getGeometryType()) << "</td></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Units</th><td>)" << LengthUnitToString(getUnits()) << "</td></tr>";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Dimensions:</th><td>" << volDims[0] << " x " << volDims[1] << " x " << volDims[2] << "</td></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Spacing:</th><td>)"
-       << "Variable"
-       << "</td></tr>";
+    return getToolTipGenerator().generateHTML();
   }
-  else
-  {
-  }
-  return info;
+  
+  return QString();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+ToolTipGenerator RectGridGeom::getToolTipGenerator()
+{
+  ToolTipGenerator toolTipGen;
+
+  int64_t volDims[3] = { static_cast<int64_t>(getXPoints()), static_cast<int64_t>(getYPoints()), static_cast<int64_t>(getZPoints()) };
+
+  toolTipGen.addTitle("Geometry Info");
+  toolTipGen.addValue("Type", TypeToString(getGeometryType()));
+  toolTipGen.addValue("Units", LengthUnitToString(getUnits()));
+  toolTipGen.addValue("Dimmensions", QString::number(volDims[0]) + " x " + QString::number(volDims[1]) + " x " + QString::number(volDims[2]));
+  toolTipGen.addValue("Spacing", "Variable");
+
+  return toolTipGen;
 }
 
 // -----------------------------------------------------------------------------
