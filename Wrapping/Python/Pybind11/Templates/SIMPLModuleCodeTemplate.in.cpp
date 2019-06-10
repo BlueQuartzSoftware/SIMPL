@@ -82,24 +82,89 @@ template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>
         .def(py::init([](T* ptr, size_t numElements, std::vector<size_t> cDims, QString name, bool ownsData) {                                                                                         \
           return DataArrayType::WrapPointer(ptr, numElements, cDims, name, ownsData);                                                                                  \
         }))                                                                                                                                                                                            \
-        .def(py::init([](py::array_t<T, py::array::c_style> b, std::vector<size_t> cDims, QString name, bool ownsData) {                                                                               \
-          ssize_t numElements = 1;                                                                                                                                                                     \
-          ssize_t nDims = b.ndim();                                                                                                                                                                    \
-          for(ssize_t e = 0; e < nDims; e++)                                                                                                                                                           \
+        .def(py::init([](py::array_t<T, py::array::c_style> b, QString name, bool ownsData) {                                                                                                          \
+          py::buffer_info buf = b.request();                                                                                                                                                           \
+          std::vector<ssize_t> shape = buf.shape;                                                                                                                                                      \
+          ssize_t ndim = buf.ndim;                                                                                                                                                                     \
+          size_t numTuples = 0;                                                                                                                                                                        \
+          QVector<size_t> cDims;                                                                                                                                                                       \
+          if(ndim == 0)                                                                                                                                                                                \
           {                                                                                                                                                                                            \
-            numElements *= b.shape(e);                                                                                                                                                                 \
+            numTuples = 1;                                                                                                                                                                             \
+            cDims.resize(1);                                                                                                                                                                           \
+            cDims[0] = 1;                                                                                                                                                                              \
           }                                                                                                                                                                                            \
-          numElements /= cDims[0];                                                                                                                                                                     \
-          return DataArrayType::WrapPointer(reinterpret_cast<T*>(b.mutable_data(0)), static_cast<size_t>(numElements), cDims, name, ownsData);                         \
+          else if(ndim == 1)                                                                                                                                                                           \
+          {                                                                                                                                                                                            \
+            numTuples = static_cast<size_t>(shape.front());                                                                                                                                            \
+            cDims.resize(1);                                                                                                                                                                           \
+            cDims[0] = 1;                                                                                                                                                                              \
+          }                                                                                                                                                                                            \
+          else                                                                                                                                                                                         \
+          {                                                                                                                                                                                            \
+            numTuples = static_cast<size_t>(shape.front());                                                                                                                                            \
+            cDims.resize(ndim - 1);                                                                                                                                                                    \
+            for(ssize_t e = 0; e < ndim - 1; e++)                                                                                                                                                      \
+            {                                                                                                                                                                                          \
+              cDims[e] = static_cast<size_t>(shape[e + 1]);                                                                                                                                            \
+            }                                                                                                                                                                                          \
+          }                                                                                                                                                                                            \
+          return DataArrayType::WrapPointer(reinterpret_cast<T*>(b.mutable_data(0)), numTuples, cDims, name, ownsData);                                                                                \
         })) /* Class instance method setValue */                                                                                                                                                       \
         .def("setValue", &DataArrayType::setValue, py::arg("index"), py::arg("value"))                                                                                                                 \
         .def("getValue", &DataArrayType::getValue, py::arg("index"))                                                                                                                                   \
-	      .def_property("Data", &DataArrayType::getArray, &DataArrayType::setArray, py::return_value_policy::reference)                                                                                  \
+        .def_property("Data", &DataArrayType::getArray, &DataArrayType::setArray, py::return_value_policy::reference)                                                                                  \
         .def_property("Name", &DataArrayType::getName, &DataArrayType::setName)                                                                                                                        \
-        .def("Cleanup", []() { return DataArrayType::NullPointer(); });                                                                                                                                \
+        .def("Cleanup", []() { return DataArrayType::NullPointer(); })                                                                                                                                 \
+        .def_buffer([](DataArrayType &m) -> py::buffer_info {                                                                                                                                          \
+          int nComp = m.getNumberOfComponents();                                                                                                                                                       \
+          size_t numTuples = m.getNumberOfTuples();                                                                                                                                                    \
+          ssize_t ndim = 0;                                                                                                                                                                            \
+          std::vector<ssize_t> shape;                                                                                                                                                                  \
+          std::vector<ssize_t> strides;                                                                                                                                                                \
+          if(nComp == 1)                                                                                                                                                                               \
+          {                                                                                                                                                                                            \
+            ndim = 1;                                                                                                                                                                                  \
+            shape.resize(ndim);                                                                                                                                                                        \
+            shape[0] = numTuples;                                                                                                                                                                      \
+            strides.resize(ndim);                                                                                                                                                                      \
+            strides[0] = sizeof(T);                                                                                                                                                                    \
+          }                                                                                                                                                                                            \
+          else                                                                                                                                                                                         \
+          {                                                                                                                                                                                            \
+            QVector<size_t> cDims = m.getComponentDimensions();                                                                                                                                        \
+            ndim = static_cast<ssize_t>(cDims.size()) + 1;                                                                                                                                             \
+            shape.resize(ndim);                                                                                                                                                                        \
+            shape[0] = numTuples;                                                                                                                                                                      \
+            for(ssize_t e = 0; e < ndim - 1; e++)                                                                                                                                                      \
+            {                                                                                                                                                                                          \
+              shape[e + 1] = static_cast<ssize_t>(cDims[e]);                                                                                                                                           \
+            }                                                                                                                                                                                          \
+            ssize_t cur = 1;                                                                                                                                                                           \
+            std::vector<ssize_t> rshape(shape);                                                                                                                                                        \
+            std::reverse(std::begin(rshape), std::end(rshape));                                                                                                                                        \
+            for(auto val : rshape)                                                                                                                                                                     \
+            {                                                                                                                                                                                          \
+              strides.push_back(cur * val * sizeof(T));                                                                                                                                                \
+              cur *= val;                                                                                                                                                                              \
+            }                                                                                                                                                                                          \
+            strides.pop_back();                                                                                                                                                                        \
+            auto front = std::begin(strides);                                                                                                                                                          \
+            strides.insert(front, sizeof(T));                                                                                                                                                          \
+            std::reverse(std::begin(strides), std::end(strides));                                                                                                                                      \
+          }                                                                                                                                                                                            \
+          return py::buffer_info(                                                                                                                                                                      \
+            m.getPointer(0),                                                                                                                                                                           \
+            sizeof(T),                                                                                                                                                                                 \
+            py::format_descriptor<T>::format(),                                                                                                                                                        \
+            ndim,                                                                                                                                                                                      \
+            shape,                                                                                                                                                                                     \
+            strides                                                                                                                                                                                    \
+          );                                                                                                                                                                                           \
+        });                                                                                                                                                                                            \
     ;                                                                                                                                                                                                  \
     return instance;                                                                                                                                                                                   \
-  }
+}
 
 PYB11_DEFINE_DATAARRAY_INIT(int8_t, Int8ArrayType);
 PYB11_DEFINE_DATAARRAY_INIT(uint8_t, UInt8ArrayType);
