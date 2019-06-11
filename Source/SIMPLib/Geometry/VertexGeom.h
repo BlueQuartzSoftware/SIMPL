@@ -35,7 +35,6 @@
 
 #pragma once
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Geometry/IGeometry.h"
@@ -48,6 +47,8 @@ class SIMPLib_EXPORT VertexGeom : public IGeometry
 {
   // clang-format off
 
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(VertexGeom SUPERCLASS IGeometry)
   
   PYB11_CREATION(CreateGeometry ARGS size_t QString bool)
@@ -61,6 +62,8 @@ class SIMPLib_EXPORT VertexGeom : public IGeometry
 
   PYB11_METHOD(size_t getNumberOfVertices)
   PYB11_METHOD(size_t getNumberOfElements)
+#endif
+
   // clang-format on
 
 public:

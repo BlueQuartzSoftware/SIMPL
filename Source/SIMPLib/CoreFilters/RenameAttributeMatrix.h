@@ -36,9 +36,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The RenameAttributeMatrix class. See [Filter documentation](@ref renameattributematrix) for details.
@@ -46,9 +46,12 @@
 class SIMPLib_EXPORT RenameAttributeMatrix : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(RenameAttributeMatrix SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(DataArrayPath SelectedAttributeMatrixPath READ getSelectedAttributeMatrixPath WRITE setSelectedAttributeMatrixPath)
     PYB11_PROPERTY(QString NewAttributeMatrix READ getNewAttributeMatrix WRITE setNewAttributeMatrix)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(RenameAttributeMatrix)

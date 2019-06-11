@@ -34,9 +34,9 @@
 
 #include <QtCore/QJsonObject>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The ImportHDF5Dataset class. See [Filter documentation](@ref readhdf5file) for details.
@@ -44,11 +44,14 @@
 class SIMPLib_EXPORT ImportHDF5Dataset : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(ImportHDF5Dataset SUPERCLASS AbstractFilter)
   PYB11_PROPERTY(QString HDF5FilePath READ getHDF5FilePath WRITE setHDF5FilePath)
   PYB11_PROPERTY(QString HDF5Dimensions READ getHDF5Dimensions)
   PYB11_PROPERTY(QList<ImportHDF5Dataset::DatasetImportInfo> DatasetImportInfoList READ getDatasetImportInfoList WRITE setDatasetImportInfoList)
   PYB11_PROPERTY(DataArrayPath SelectedAttributeMatrix READ getSelectedAttributeMatrix WRITE setSelectedAttributeMatrix)
+#endif
 
 public:
   SIMPL_SHARED_POINTERS(ImportHDF5Dataset)

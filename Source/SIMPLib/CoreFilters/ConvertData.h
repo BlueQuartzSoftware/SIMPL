@@ -36,9 +36,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The ConvertData class. See [Filter documentation](@ref convertdata) for details.
@@ -46,10 +46,13 @@
 class SIMPLib_EXPORT ConvertData : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(ConvertData SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(SIMPL::NumericTypes::Type ScalarType READ getScalarType WRITE setScalarType)
     PYB11_PROPERTY(QString OutputArrayName READ getOutputArrayName WRITE setOutputArrayName)
     PYB11_PROPERTY(DataArrayPath SelectedCellArrayPath READ getSelectedCellArrayPath WRITE setSelectedCellArrayPath)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(ConvertData)

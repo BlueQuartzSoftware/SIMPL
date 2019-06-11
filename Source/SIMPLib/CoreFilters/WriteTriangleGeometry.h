@@ -38,7 +38,6 @@
 
 #include <QtCore/QString>
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
@@ -56,10 +55,13 @@
 class SIMPLib_EXPORT WriteTriangleGeometry : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(WriteTriangleGeometry SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(DataArrayPath DataContainerSelection READ getDataContainerSelection WRITE setDataContainerSelection)
     PYB11_PROPERTY(QString OutputNodesFile READ getOutputNodesFile WRITE setOutputNodesFile)
     PYB11_PROPERTY(QString OutputTrianglesFile READ getOutputTrianglesFile WRITE setOutputTrianglesFile)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(WriteTriangleGeometry)

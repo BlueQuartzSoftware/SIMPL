@@ -41,10 +41,10 @@
 #include <QtCore/QString>
 #include <QtCore/QTextStream>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Observer.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 class IObserver;
 class FilterPipelineMessageHandler;
@@ -62,6 +62,7 @@ class SIMPLib_EXPORT FilterPipeline : public Observable
 {
   Q_OBJECT
 
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(FilterPipeline)
   PYB11_PROPERTY(int ErrorCode READ getErrorCode)
   PYB11_PROPERTY(int WarningCode READ getWarningCode)
@@ -81,6 +82,7 @@ class SIMPLib_EXPORT FilterPipeline : public Observable
   PYB11_METHOD(bool empty)
   PYB11_METHOD(void clearErrorCode)
   PYB11_METHOD(void clearWarningCode)
+#endif
 
 public:
   SIMPL_SHARED_POINTERS(FilterPipeline)

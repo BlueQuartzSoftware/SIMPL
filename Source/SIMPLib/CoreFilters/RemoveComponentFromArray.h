@@ -36,9 +36,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The RemoveComponentFromArray class. See [Filter documentation](@ref RemoveComponentFromArray) for details.
@@ -46,12 +46,15 @@
 class SIMPLib_EXPORT RemoveComponentFromArray : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(RemoveComponentFromArray SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
     PYB11_PROPERTY(int CompNumber READ getCompNumber WRITE setCompNumber)
     PYB11_PROPERTY(bool SaveRemovedComponent READ getSaveRemovedComponent WRITE setSaveRemovedComponent)
     PYB11_PROPERTY(QString NewArrayArrayName READ getNewArrayArrayName WRITE setNewArrayArrayName)
     PYB11_PROPERTY(QString ReducedArrayArrayName READ getReducedArrayArrayName WRITE setReducedArrayArrayName)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(RemoveComponentFromArray)

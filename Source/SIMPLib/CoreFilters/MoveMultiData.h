@@ -36,9 +36,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The MoveMultiData class. See [Filter documentation](@ref MoveMultiData) for details.
@@ -46,12 +46,15 @@
 class SIMPLib_EXPORT MoveMultiData : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(MoveMultiData SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(int WhatToMove READ getWhatToMove WRITE setWhatToMove)
     PYB11_PROPERTY(DataArrayPath DataContainerDestination READ getDataContainerDestination WRITE setDataContainerDestination)
     PYB11_PROPERTY(QVector<DataArrayPath> AttributeMatrixSources READ getAttributeMatrixSources WRITE setAttributeMatrixSources)
     PYB11_PROPERTY(DataArrayPath AttributeMatrixDestination READ getAttributeMatrixDestination WRITE setAttributeMatrixDestination)
     PYB11_PROPERTY(QVector<DataArrayPath> DataArraySources READ getDataArraySources WRITE setDataArraySources)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(MoveMultiData)

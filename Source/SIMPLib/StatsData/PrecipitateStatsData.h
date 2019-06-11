@@ -39,7 +39,6 @@
 #include <hdf5.h>
 
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/PhaseType.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
@@ -85,6 +84,8 @@ typedef QVector<FloatArrayType::Pointer> VectorOfFloatArray;
  */
 class SIMPLib_EXPORT PrecipitateStatsData : public StatsData
 {
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(PrecipitateStatsData SUPERCLASS StatsData)
   PYB11_STATIC_CREATION(initialize)
 
@@ -99,6 +100,7 @@ class SIMPLib_EXPORT PrecipitateStatsData : public StatsData
   PYB11_PROPERTY(float BoundaryArea READ getBoundaryArea WRITE setBoundaryArea)
   PYB11_PROPERTY(float PrecipBoundaryFraction READ getPrecipBoundaryFraction WRITE setPrecipBoundaryFraction)
   PYB11_METHOD(QString getStatsType)
+#endif
 
 public:
   SIMPL_SHARED_POINTERS(PrecipitateStatsData)

@@ -36,9 +36,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 #include "SIMPLib/Common/Constants.h"
 
@@ -48,12 +48,15 @@
 class  SIMPLib_EXPORT FeatureDataCSVWriter : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(FeatureDataCSVWriter SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(DataArrayPath CellFeatureAttributeMatrixPath READ getCellFeatureAttributeMatrixPath WRITE setCellFeatureAttributeMatrixPath)
     PYB11_PROPERTY(QString FeatureDataFile READ getFeatureDataFile WRITE setFeatureDataFile)
     PYB11_PROPERTY(bool WriteNeighborListData READ getWriteNeighborListData WRITE setWriteNeighborListData)
     PYB11_PROPERTY(int DelimiterChoice READ getDelimiterChoice WRITE setDelimiterChoice)
     PYB11_PROPERTY(bool WriteNumFeaturesLine READ getWriteNumFeaturesLine WRITE setWriteNumFeaturesLine)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(FeatureDataCSVWriter)

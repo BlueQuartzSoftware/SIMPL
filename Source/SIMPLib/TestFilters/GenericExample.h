@@ -37,6 +37,7 @@
 
 #include <QtCore/QString>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/ShapeType.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
@@ -52,7 +53,6 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Filtering/ComparisonInputs.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @class GenericExample GenericExample.h ExamplePlugin/Code/ExamplePluginFilters/GenericExample.h
@@ -64,6 +64,8 @@
 class SIMPLib_EXPORT GenericExample : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(GenericExample SUPERCLASS AbstractFilter)
 
   PYB11_PROPERTY(QString StlFilePrefix READ getStlFilePrefix WRITE setStlFilePrefix)
@@ -108,6 +110,7 @@ class SIMPLib_EXPORT GenericExample : public AbstractFilter
   PYB11_PROPERTY(int AlgorithmSelection READ getAlgorithmSelection WRITE setAlgorithmSelection)
   PYB11_PROPERTY(int DistanceMetric READ getDistanceMetric WRITE setDistanceMetric)
   PYB11_PROPERTY(MontageSelection MontageSelection READ getMontageSelection WRITE setMontageSelection)
+#endif
 
 public:
   SIMPL_SHARED_POINTERS(GenericExample)

@@ -36,9 +36,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The CreateStringArray class. See [Filter documentation](@ref CreateStringArray) for details.
@@ -46,10 +46,13 @@
 class SIMPLib_EXPORT CreateStringArray : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(CreateStringArray SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
     PYB11_PROPERTY(DataArrayPath NewArray READ getNewArray WRITE setNewArray)
     PYB11_PROPERTY(QString InitializationValue READ getInitializationValue WRITE setInitializationValue)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(CreateStringArray)

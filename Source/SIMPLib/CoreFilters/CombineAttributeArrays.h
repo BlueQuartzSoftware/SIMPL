@@ -35,9 +35,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The CombineAttributeArrays class. See [Filter documentation](@ref combineattributearrays) for details.
@@ -45,146 +45,148 @@
 class SIMPLib_EXPORT CombineAttributeArrays : public AbstractFilter
 {
   Q_OBJECT
-    PYB11_CREATE_BINDINGS(CombineAttributeArrays SUPERCLASS AbstractFilter)
-    PYB11_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
-    PYB11_PROPERTY(QString StackedDataArrayName READ getStackedDataArrayName WRITE setStackedDataArrayName)
-    PYB11_PROPERTY(bool NormalizeData READ getNormalizeData WRITE setNormalizeData)
 
-  public:
-    SIMPL_SHARED_POINTERS(CombineAttributeArrays)
-    SIMPL_FILTER_NEW_MACRO(CombineAttributeArrays)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CombineAttributeArrays, AbstractFilter)
+#ifdef SIMPL_ENABLE_PYTHON
+  PYB11_CREATE_BINDINGS(CombineAttributeArrays SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
+  PYB11_PROPERTY(QString StackedDataArrayName READ getStackedDataArrayName WRITE setStackedDataArrayName)
+  PYB11_PROPERTY(bool NormalizeData READ getNormalizeData WRITE setNormalizeData)
+#endif
 
-    ~CombineAttributeArrays() override;
+public:
+  SIMPL_SHARED_POINTERS(CombineAttributeArrays)
+  SIMPL_FILTER_NEW_MACRO(CombineAttributeArrays)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CombineAttributeArrays, AbstractFilter)
 
-    SIMPL_FILTER_PARAMETER(QVector<DataArrayPath>, SelectedDataArrayPaths)
-    Q_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
+  ~CombineAttributeArrays() override;
 
-    SIMPL_FILTER_PARAMETER(QString, StackedDataArrayName)
-    Q_PROPERTY(QString StackedDataArrayName READ getStackedDataArrayName WRITE setStackedDataArrayName)
+  SIMPL_FILTER_PARAMETER(QVector<DataArrayPath>, SelectedDataArrayPaths)
+  Q_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
 
-    SIMPL_FILTER_PARAMETER(bool, NormalizeData)
-    Q_PROPERTY(bool NormalizeData READ getNormalizeData WRITE setNormalizeData)
+  SIMPL_FILTER_PARAMETER(QString, StackedDataArrayName)
+  Q_PROPERTY(QString StackedDataArrayName READ getStackedDataArrayName WRITE setStackedDataArrayName)
 
-    SIMPL_FILTER_PARAMETER(bool, MoveValues)
-    Q_PROPERTY(bool MoveValues READ getMoveValues WRITE setMoveValues)
+  SIMPL_FILTER_PARAMETER(bool, NormalizeData)
+  Q_PROPERTY(bool NormalizeData READ getNormalizeData WRITE setNormalizeData)
 
-    /**
-     * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
-     */
-    const QString getCompiledLibraryName() const override;
+  SIMPL_FILTER_PARAMETER(bool, MoveValues)
+  Q_PROPERTY(bool MoveValues READ getMoveValues WRITE setMoveValues)
 
-    /**
-     * @brief getBrandingString Returns the branding string for the filter, which is a tag
-     * used to denote the filter's association with specific plugins
-     * @return Branding string
-    */
-    const QString getBrandingString() const override;
+  /**
+   * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
+   */
+  const QString getCompiledLibraryName() const override;
 
-    /**
-     * @brief getFilterVersion Returns a version string for this filter. Default
-     * value is an empty string.
-     * @return
-     */
-    const QString getFilterVersion() const override;
+  /**
+   * @brief getBrandingString Returns the branding string for the filter, which is a tag
+   * used to denote the filter's association with specific plugins
+   * @return Branding string
+   */
+  const QString getBrandingString() const override;
 
-    /**
-     * @brief newFilterInstance Reimplemented from @see AbstractFilter class
-     */
-    AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
+  /**
+   * @brief getFilterVersion Returns a version string for this filter. Default
+   * value is an empty string.
+   * @return
+   */
+  const QString getFilterVersion() const override;
 
-    /**
-     * @brief getGroupName Reimplemented from @see AbstractFilter class
-     */
-    const QString getGroupName() const override;
+  /**
+   * @brief newFilterInstance Reimplemented from @see AbstractFilter class
+   */
+  AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
 
-    /**
-     * @brief getSubGroupName Reimplemented from @see AbstractFilter class
-     */
-    const QString getSubGroupName() const override;
+  /**
+   * @brief getGroupName Reimplemented from @see AbstractFilter class
+   */
+  const QString getGroupName() const override;
 
-    /**
-     * @brief getUuid Return the unique identifier for this filter.
-     * @return A QUuid object.
-     */
-    const QUuid getUuid() override;
+  /**
+   * @brief getSubGroupName Reimplemented from @see AbstractFilter class
+   */
+  const QString getSubGroupName() const override;
 
-    /**
-     * @brief getHumanLabel Reimplemented from @see AbstractFilter class
-     */
-    const QString getHumanLabel() const override;
+  /**
+   * @brief getUuid Return the unique identifier for this filter.
+   * @return A QUuid object.
+   */
+  const QUuid getUuid() override;
 
-    /**
-     * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    void setupFilterParameters() override;
+  /**
+   * @brief getHumanLabel Reimplemented from @see AbstractFilter class
+   */
+  const QString getHumanLabel() const override;
 
-    /**
-     * @brief readFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+  /**
+   * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  void setupFilterParameters() override;
 
-    /**
-     * @brief execute Reimplemented from @see AbstractFilter class
-     */
-    void execute() override;
+  /**
+   * @brief readFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
-    /**
-    * @brief preflight Reimplemented from @see AbstractFilter class
-    */
-    void preflight() override;
+  /**
+   * @brief execute Reimplemented from @see AbstractFilter class
+   */
+  void execute() override;
 
-    /**
-     * @brief Returns the list of deleted data paths.
-     * @return
-     */
-    std::list<DataArrayPath> getDeletedPaths() override;
+  /**
+   * @brief preflight Reimplemented from @see AbstractFilter class
+   */
+  void preflight() override;
 
-  signals:
-    /**
-      * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
-     * be pushed from a user-facing control (such as a widget)
-     * @param filter Filter instance pointer
-     */
-    void updateFilterParameters(AbstractFilter* filter);
+  /**
+   * @brief Returns the list of deleted data paths.
+   * @return
+   */
+  std::list<DataArrayPath> getDeletedPaths() override;
 
-    /**
-     * @brief parametersChanged Emitted when any Filter parameter is changed internally
-     */
-    void parametersChanged();
+signals:
+  /**
+   * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
+   * be pushed from a user-facing control (such as a widget)
+   * @param filter Filter instance pointer
+   */
+  void updateFilterParameters(AbstractFilter* filter);
 
-    /**
-     * @brief preflightAboutToExecute Emitted just before calling dataCheck()
-     */
-    void preflightAboutToExecute();
+  /**
+   * @brief parametersChanged Emitted when any Filter parameter is changed internally
+   */
+  void parametersChanged();
 
-    /**
-     * @brief preflightExecuted Emitted just after calling dataCheck()
-     */
-    void preflightExecuted();
+  /**
+   * @brief preflightAboutToExecute Emitted just before calling dataCheck()
+   */
+  void preflightAboutToExecute();
 
-  protected:
-    CombineAttributeArrays();
-    /**
-     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-     */
-    void dataCheck();
+  /**
+   * @brief preflightExecuted Emitted just after calling dataCheck()
+   */
+  void preflightExecuted();
 
-    /**
-     * @brief Initializes all the private instance variables.
-     */
-    void initialize();
+protected:
+  CombineAttributeArrays();
+  /**
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
+  void dataCheck();
 
+  /**
+   * @brief Initializes all the private instance variables.
+   */
+  void initialize();
 
-  private:
-    DEFINE_IDATAARRAY_WEAKPTR(StackedData)
+private:
+  DEFINE_IDATAARRAY_WEAKPTR(StackedData)
 
-    QVector<IDataArray::WeakPointer> m_SelectedWeakPtrVector;
+  QVector<IDataArray::WeakPointer> m_SelectedWeakPtrVector;
 
-  public:
-    CombineAttributeArrays(const CombineAttributeArrays&) = delete; // Copy Constructor Not Implemented
-    CombineAttributeArrays(CombineAttributeArrays&&) = delete;      // Move Constructor Not Implemented
-    CombineAttributeArrays& operator=(const CombineAttributeArrays&) = delete; // Copy Assignment Not Implemented
-    CombineAttributeArrays& operator=(CombineAttributeArrays&&) = delete;      // Move Assignment Not Implemented
+public:
+  CombineAttributeArrays(const CombineAttributeArrays&) = delete;            // Copy Constructor Not Implemented
+  CombineAttributeArrays(CombineAttributeArrays&&) = delete;                 // Move Constructor Not Implemented
+  CombineAttributeArrays& operator=(const CombineAttributeArrays&) = delete; // Copy Assignment Not Implemented
+  CombineAttributeArrays& operator=(CombineAttributeArrays&&) = delete;      // Move Assignment Not Implemented
 };
 

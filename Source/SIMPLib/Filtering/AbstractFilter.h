@@ -40,12 +40,12 @@
 #include <QtCore/QString>
 #include <QtCore/QUuid>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
-#include "SIMPLib/SIMPLib.h"
 
 class AbstractFilterParametersReader;
 class ISIMPLibPlugin;
@@ -76,6 +76,8 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   Q_PROPERTY(bool Removing READ getRemoving WRITE setRemoving)
   
   // This line MUST be first when exposing a class and properties to Python
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(AbstractFilter)
   PYB11_PROPERTY(QString NameOfClass READ getNameOfClass)  
   PYB11_PROPERTY(QString GroupName READ getGroupName)
@@ -100,7 +102,8 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   PYB11_METHOD(void notifyProgressMessage ARGS progress messageText)
   PYB11_METHOD(void clearErrorCode)
   PYB11_METHOD(void clearWarningCode)
-  
+#endif
+
   // Friend declarations for RenameDataPath so that it can set and check the instance's created data by ID.
   friend void RenameDataPath::AlertFilterCreatedPath(AbstractFilter*, RenameDataPath::DataID_t, const DataArrayPath&);
 

@@ -32,9 +32,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The ErrorWarningFilter class. See [Filter documentation](@ref ErrorWarningFilter) for details.
@@ -42,12 +42,16 @@
 class SIMPLib_EXPORT ErrorWarningFilter : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(ErrorWarningFilter SUPERCLASS AbstractFilter)
   PYB11_PROPERTY(bool PreflightWarning READ getPreflightWarning WRITE setPreflightWarning)
   PYB11_PROPERTY(bool PreflightError READ getPreflightError WRITE setPreflightError)
   PYB11_PROPERTY(bool ExecuteWarning READ getExecuteWarning WRITE setExecuteWarning)
   PYB11_PROPERTY(bool ExecuteError READ getExecuteError WRITE setExecuteError)
   PYB11_PROPERTY(bool PropertyError READ getPropertyError WRITE setPropertyError)
+#endif
+
 public:
   SIMPL_SHARED_POINTERS(ErrorWarningFilter)
   SIMPL_FILTER_NEW_MACRO(ErrorWarningFilter)

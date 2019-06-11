@@ -36,9 +36,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 #include "SIMPLib/Filtering/AbstractDecisionFilter.h"
 
@@ -48,9 +48,12 @@
 class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(FeatureCountDecision SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
     PYB11_PROPERTY(int MaxGrains READ getMaxGrains WRITE setMaxGrains)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(FeatureCountDecision)

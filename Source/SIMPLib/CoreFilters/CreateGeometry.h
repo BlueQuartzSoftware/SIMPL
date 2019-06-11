@@ -33,11 +33,11 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The CreateGeometry class. See [Filter documentation](@ref creategeometry) for details.
@@ -45,6 +45,8 @@
 class SIMPLib_EXPORT CreateGeometry : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(CreateGeometry SUPERCLASS AbstractFilter)
   PYB11_PROPERTY(int GeometryType READ getGeometryType WRITE setGeometryType)
   PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
@@ -76,6 +78,7 @@ class SIMPLib_EXPORT CreateGeometry : public AbstractFilter
   PYB11_PROPERTY(QString TetCellAttributeMatrixName READ getTetCellAttributeMatrixName WRITE setTetCellAttributeMatrixName)
   PYB11_PROPERTY(bool TreatWarningsAsErrors READ getTreatWarningsAsErrors WRITE setTreatWarningsAsErrors)
   PYB11_PROPERTY(bool ArrayHandling READ getArrayHandling WRITE setArrayHandling)
+#endif
 
 public:
   SIMPL_SHARED_POINTERS(CreateGeometry)

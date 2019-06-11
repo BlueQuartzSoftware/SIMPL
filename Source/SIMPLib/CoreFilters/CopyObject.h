@@ -35,9 +35,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The CopyObject class. See [Filter documentation](@ref copyobject) for details.
@@ -45,12 +45,15 @@
 class SIMPLib_EXPORT CopyObject : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(CopyObject SUPERCLASS AbstractFilter)
   PYB11_PROPERTY(int ObjectToCopy READ getObjectToCopy WRITE setObjectToCopy)
   PYB11_PROPERTY(DataArrayPath DataContainerToCopy READ getDataContainerToCopy WRITE setDataContainerToCopy)
   PYB11_PROPERTY(DataArrayPath AttributeMatrixToCopy READ getAttributeMatrixToCopy WRITE setAttributeMatrixToCopy)
   PYB11_PROPERTY(DataArrayPath AttributeArrayToCopy READ getAttributeArrayToCopy WRITE setAttributeArrayToCopy)
   PYB11_PROPERTY(QString CopiedObjectName READ getCopiedObjectName WRITE setCopiedObjectName)
+#endif
 
 public:
   SIMPL_SHARED_POINTERS(CopyObject)

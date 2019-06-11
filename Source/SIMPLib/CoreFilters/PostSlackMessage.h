@@ -34,9 +34,9 @@
 
 #include <QtCore/QWaitCondition>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 class QNetworkAccessManager;
 class QNetworkReply;
@@ -47,18 +47,21 @@ class QNetworkReply;
 class SIMPLib_EXPORT PostSlackMessage : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(PostSlackMessage SUPERCLASS AbstractFilter)
   PYB11_PROPERTY(QString SlackUser READ getSlackUser WRITE setSlackUser)
   PYB11_PROPERTY(QString SlackUrl READ getSlackUrl WRITE setSlackUrl)
   PYB11_PROPERTY(QString SlackMessage READ getSlackMessage WRITE setSlackMessage)
   PYB11_PROPERTY(bool WarningsAsError READ getWarningsAsError WRITE setWarningsAsError)
+#endif
 
-  public:
-    SIMPL_SHARED_POINTERS(PostSlackMessage)
-    SIMPL_FILTER_NEW_MACRO(PostSlackMessage)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PostSlackMessage, AbstractFilter)
+public:
+  SIMPL_SHARED_POINTERS(PostSlackMessage)
+  SIMPL_FILTER_NEW_MACRO(PostSlackMessage)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PostSlackMessage, AbstractFilter)
 
-    ~PostSlackMessage() override;
+  ~PostSlackMessage() override;
 
   SIMPL_FILTER_PARAMETER(QString, SlackUser)
   Q_PROPERTY(QString SlackUser READ getSlackUser WRITE setSlackUser)

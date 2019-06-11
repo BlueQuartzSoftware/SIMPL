@@ -36,9 +36,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The CombineAttributeMatrices class. See [Filter documentation](@ref CombineAttributeMatrices) for details.
@@ -46,6 +46,8 @@
 class SIMPLib_EXPORT CombineAttributeMatrices : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(CombineAttributeMatrices SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(DataArrayPath FirstAttributeMatrixPath READ getFirstAttributeMatrixPath WRITE setFirstAttributeMatrixPath)
     PYB11_PROPERTY(DataArrayPath SecondAttributeMatrixPath READ getSecondAttributeMatrixPath WRITE setSecondAttributeMatrixPath)
@@ -53,6 +55,7 @@ class SIMPLib_EXPORT CombineAttributeMatrices : public AbstractFilter
     PYB11_PROPERTY(DataArrayPath SecondIndexArrayPath READ getSecondIndexArrayPath WRITE setSecondIndexArrayPath)
     PYB11_PROPERTY(QString CombinedAttributeMatrixName READ getCombinedAttributeMatrixName WRITE setCombinedAttributeMatrixName)
     PYB11_PROPERTY(QString NewIndexArrayName READ getNewIndexArrayName WRITE setNewIndexArrayName)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(CombineAttributeMatrices)

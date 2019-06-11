@@ -37,9 +37,9 @@
 
 #include <QtCore/QScopedPointer>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 // our PIMPL private class for caching
 class ImportAsciDataArrayPrivate;
@@ -51,6 +51,8 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(ImportAsciDataArray)
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(ImportAsciDataArray SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(DataArrayPath CreatedAttributeArrayPath READ getCreatedAttributeArrayPath WRITE setCreatedAttributeArrayPath)
     PYB11_PROPERTY(SIMPL::NumericTypes::Type ScalarType READ getScalarType WRITE setScalarType)
@@ -58,6 +60,7 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
     PYB11_PROPERTY(int SkipHeaderLines READ getSkipHeaderLines WRITE setSkipHeaderLines)
     PYB11_PROPERTY(QString InputFile READ getInputFile WRITE setInputFile)
     PYB11_PROPERTY(int Delimiter READ getDelimiter WRITE setDelimiter)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(ImportAsciDataArray)

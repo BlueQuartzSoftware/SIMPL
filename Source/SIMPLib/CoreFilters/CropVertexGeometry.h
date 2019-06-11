@@ -35,9 +35,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The CropVertexGeometry class. See [Filter documentation](@ref cropvertexgeometry) for details.
@@ -45,6 +45,8 @@
 class SIMPLib_EXPORT CropVertexGeometry : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(CropVertexGeometry SUPERCLASS AbstractFilter)
   PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
   PYB11_PROPERTY(DataArrayPath CroppedDataContainerName READ getCroppedDataContainerName WRITE setCroppedDataContainerName)
@@ -54,6 +56,7 @@ class SIMPLib_EXPORT CropVertexGeometry : public AbstractFilter
   PYB11_PROPERTY(float XMax READ getXMax WRITE setXMax)
   PYB11_PROPERTY(float YMax READ getYMax WRITE setYMax)
   PYB11_PROPERTY(float ZMax READ getZMax WRITE setZMax)
+#endif
 
 public:
   SIMPL_SHARED_POINTERS(CropVertexGeometry)

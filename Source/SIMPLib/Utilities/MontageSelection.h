@@ -38,8 +38,8 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 /**
  * @class MontageSelection MontageSelection.h SIMPLib/Utilities/MontageSelection.h
@@ -50,6 +50,8 @@
  */
 class SIMPLib_EXPORT MontageSelection
 {
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(MontageSelection)
   PYB11_STATIC_CREATION(Create ARGS std::string std::string int int int int int)
   PYB11_PROPERTY(QString Prefix READ getPrefix WRITE setPrefix)
@@ -59,6 +61,7 @@ class SIMPLib_EXPORT MontageSelection
   PYB11_PROPERTY(int RowEnd READ getRowEnd WRITE setRowEnd)
   PYB11_PROPERTY(int ColStart READ getColStart WRITE setColStart)
   PYB11_PROPERTY(int ColEnd READ getColEnd WRITE setColEnd)
+#endif
 
 public:
   MontageSelection();

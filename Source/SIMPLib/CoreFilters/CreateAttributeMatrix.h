@@ -36,10 +36,10 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The CreateAttributeMatrix class. See [Filter documentation](@ref createattributematrix) for details.
@@ -47,10 +47,13 @@
 class SIMPLib_EXPORT CreateAttributeMatrix : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(CreateAttributeMatrix SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(DataArrayPath CreatedAttributeMatrix READ getCreatedAttributeMatrix WRITE setCreatedAttributeMatrix)
     PYB11_PROPERTY(int AttributeMatrixType READ getAttributeMatrixType WRITE setAttributeMatrixType)
     PYB11_PROPERTY(DynamicTableData TupleDimensions READ getTupleDimensions WRITE setTupleDimensions)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(CreateAttributeMatrix)

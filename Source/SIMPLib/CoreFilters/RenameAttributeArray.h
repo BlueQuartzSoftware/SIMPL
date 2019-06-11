@@ -36,9 +36,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The RenameAttributeArray class. See [Filter documentation](@ref renameattributearray) for details.
@@ -46,9 +46,12 @@
 class SIMPLib_EXPORT RenameAttributeArray : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(RenameAttributeArray SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
     PYB11_PROPERTY(QString NewArrayName READ getNewArrayName WRITE setNewArrayName)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(RenameAttributeArray)

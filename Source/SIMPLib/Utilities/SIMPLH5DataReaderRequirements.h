@@ -35,7 +35,6 @@
 #include <vector>
 
 #include "SIMPLib/SIMPLib.h"
-
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/Geometry/IGeometry.h"
@@ -46,22 +45,24 @@
 class SIMPLib_EXPORT SIMPLH5DataReaderRequirements
 {
 
-    PYB11_CREATE_BINDINGS(SIMPLH5DataReaderRequirements)
+#ifdef SIMPL_ENABLE_PYTHON
+  PYB11_CREATE_BINDINGS(SIMPLH5DataReaderRequirements)
+#endif
 
-  public:
-    SIMPLH5DataReaderRequirements();
-    SIMPLH5DataReaderRequirements(const QString &primitiveType, size_t allowedCompDim, AttributeMatrix::Type attributeMatrixType, IGeometry::Type geometryType);
-    
-    virtual ~SIMPLH5DataReaderRequirements();
+public:
+  SIMPLH5DataReaderRequirements();
+  SIMPLH5DataReaderRequirements(const QString& primitiveType, size_t allowedCompDim, AttributeMatrix::Type attributeMatrixType, IGeometry::Type geometryType);
 
-    using QVectorSizeT = std::vector<std::vector<size_t>>;
+  virtual ~SIMPLH5DataReaderRequirements();
 
-    SIMPL_INSTANCE_PROPERTY(IGeometry::Types, DCGeometryTypes)
-    SIMPL_INSTANCE_PROPERTY(AttributeMatrix::Types, AMTypes)
-    SIMPL_INSTANCE_PROPERTY(QVector<QString>, DATypes)
-    SIMPL_INSTANCE_PROPERTY(SIMPLH5DataReaderRequirements::QVectorSizeT, ComponentDimensions)
+  using QVectorSizeT = QVector<QVector<size_t>>;
 
-  private:
+  SIMPL_INSTANCE_PROPERTY(IGeometry::Types, DCGeometryTypes)
+  SIMPL_INSTANCE_PROPERTY(AttributeMatrix::Types, AMTypes)
+  SIMPL_INSTANCE_PROPERTY(QVector<QString>, DATypes)
+  SIMPL_INSTANCE_PROPERTY(SIMPLH5DataReaderRequirements::QVectorSizeT, ComponentDimensions)
+
+private:
 
 };
 

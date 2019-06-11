@@ -36,9 +36,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The RawBinaryReader class. See [Filter documentation](@ref rawbinaryreader) for details.
@@ -46,6 +46,8 @@
 class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(RawBinaryReader SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(DataArrayPath CreatedAttributeArrayPath READ getCreatedAttributeArrayPath WRITE setCreatedAttributeArrayPath)
     PYB11_PROPERTY(SIMPL::NumericTypes::Type ScalarType READ getScalarType WRITE setScalarType)
@@ -53,6 +55,7 @@ class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
     PYB11_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
     PYB11_PROPERTY(uint64_t SkipHeaderBytes READ getSkipHeaderBytes WRITE setSkipHeaderBytes)
     PYB11_PROPERTY(QString InputFile READ getInputFile WRITE setInputFile)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(RawBinaryReader)

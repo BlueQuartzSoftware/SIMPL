@@ -36,9 +36,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The CopyFeatureArrayToElementArray class. See [Filter documentation](@ref copyfeaturearraytoelementArray) for details.
@@ -46,10 +46,13 @@
 class SIMPLib_EXPORT CopyFeatureArrayToElementArray : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(CopyFeatureArrayToElementArray SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(DataArrayPath SelectedFeatureArrayPath READ getSelectedFeatureArrayPath WRITE setSelectedFeatureArrayPath)
     PYB11_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
     PYB11_PROPERTY(QString CreatedArrayName READ getCreatedArrayName WRITE setCreatedArrayName)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(CopyFeatureArrayToElementArray)

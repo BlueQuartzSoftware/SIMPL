@@ -36,10 +36,10 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Filtering/ComparisonInputs.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The MultiThresholdObjects class. See [Filter documentation](@ref multithresholdobjects) for details.
@@ -47,9 +47,12 @@
 class SIMPLib_EXPORT MultiThresholdObjects : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(MultiThresholdObjects SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(QString DestinationArrayName READ getDestinationArrayName WRITE setDestinationArrayName)
     PYB11_PROPERTY(ComparisonInputs SelectedThresholds READ getSelectedThresholds WRITE setSelectedThresholds)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(MultiThresholdObjects)

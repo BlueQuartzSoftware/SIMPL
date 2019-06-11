@@ -35,10 +35,10 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
 * @class DynamicTableExample DynamicTableExample.h ExamplePlugin/Code/ExamplePluginFilters/DynamicTableExample.h
@@ -50,6 +50,8 @@
 class SIMPLib_EXPORT DynamicTableExample : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(DynamicTableExample SUPERCLASS AbstractFilter)
 
   PYB11_PROPERTY(DynamicTableData DynamicData1 READ getDynamicData1 WRITE setDynamicData1)
@@ -57,6 +59,8 @@ class SIMPLib_EXPORT DynamicTableExample : public AbstractFilter
   PYB11_PROPERTY(DynamicTableData DynamicData3 READ getDynamicData3 WRITE setDynamicData3)
   PYB11_PROPERTY(DynamicTableData DynamicData4 READ getDynamicData4 WRITE setDynamicData4)
   PYB11_PROPERTY(DynamicTableData DynamicData5 READ getDynamicData5 WRITE setDynamicData5)
+#endif
+
 public:
   SIMPL_SHARED_POINTERS(DynamicTableExample)
   SIMPL_FILTER_NEW_MACRO(DynamicTableExample)

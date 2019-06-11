@@ -41,7 +41,6 @@
 #include <QtCore/QObject> // for Q_OBJECT
 #include <QtCore/QString>
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/IDataContainerBundle.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
@@ -65,6 +64,8 @@ class SIMPLib_EXPORT DataContainerArray : public QObject, public IDataStructureC
 {
   Q_OBJECT
   // clang-format off
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(DataContainerArray)
 
   PYB11_METHOD(bool addOrReplaceDataContainer ARGS DataContainer)
@@ -88,6 +89,8 @@ class SIMPLib_EXPORT DataContainerArray : public QObject, public IDataStructureC
   PYB11_METHOD(bool doesAttributeMatrixExist ARGS DataArrayPath)
 
   PYB11_METHOD(bool doesAttributeArrayExist ARGS DataArrayPath)
+#endif
+
   // clang-format on
 
 public:

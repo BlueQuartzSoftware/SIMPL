@@ -21,7 +21,6 @@
 #include <QtCore/QString>
 
 //SIMPLib Includes
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataContainers/IDataStructureNode.h"
@@ -40,6 +39,8 @@
 */
 class SIMPLib_EXPORT IDataArray : public IDataStructureNode
 {
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(IDataArray)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
 
@@ -47,31 +48,30 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
   PYB11_METHOD(std::vector<size_t> getComponentDimensions)
   PYB11_METHOD(size_t getNumberOfTuples)
   PYB11_METHOD(int getNumberOfComponents)
+#endif
 
-  public:
-    SIMPL_SHARED_POINTERS(IDataArray)
-    SIMPL_TYPE_MACRO_SUPER(IDataArray, IDataStructureNode)
+public:
+  SIMPL_SHARED_POINTERS(IDataArray)
+  SIMPL_TYPE_MACRO(IDataArray)
 
-    /**
-     * This templated method is used to get at the low level pointer that points
-     * to the actual data by testing the conversion with dynamic_cast<> first to
-     * see if it can be done, the finally returns the low level pointer.
-     * @code
-     *    typedef DataArray<int32_t>  Int32ArrayType;
-     *    int32_t* iPtr = IDataArray::SafeReinterpretCast<IDataArray*, Int32ArrayType*, int32_t*>(ptr.get());
-     *    Q_ASSERT(nullptr != iPtr);
-     * @endcode
-     * @param x The Pointer to IDataArray
-     * @return
-     */
-    template <class Source, class Target, typename Raw>
-    static Raw SafeReinterpretCast(Source x)
+  /**
+   * This templated method is used to get at the low level pointer that points
+   * to the actual data by testing the conversion with dynamic_cast<> first to
+   * see if it can be done, the finally returns the low level pointer.
+   * @code
+   *    typedef DataArray<int32_t>  Int32ArrayType;
+   *    int32_t* iPtr = IDataArray::SafeReinterpretCast<IDataArray*, Int32ArrayType*, int32_t*>(ptr.get());
+   *    Q_ASSERT(nullptr != iPtr);
+   * @endcode
+   * @param x The Pointer to IDataArray
+   * @return
+   */
+  template <class Source, class Target, typename Raw>
+  static Raw SafeReinterpretCast(Source x)
+  {
+    if(dynamic_cast<Target>(x) != x)
     {
-      if( dynamic_cast<Target>(x) != x )
-      {
-        return 0;
-      }
-      return reinterpret_cast<Raw>(x->getVoidPointer(0));
+      return 0;
     }
 
 

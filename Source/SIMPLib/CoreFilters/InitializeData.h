@@ -37,10 +37,10 @@
 
 #include <QtCore/QVector>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/RangeFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The InitializeData class. See [Filter documentation](@ref initializedata) for details.
@@ -48,18 +48,22 @@
 class SIMPLib_EXPORT InitializeData : public AbstractFilter
 {
   Q_OBJECT
-    PYB11_CREATE_BINDINGS(InitializeData SUPERCLASS AbstractFilter)
-    PYB11_PROPERTY(QVector<DataArrayPath> CellAttributeMatrixPaths READ getCellAttributeMatrixPaths WRITE setCellAttributeMatrixPaths)
-    PYB11_PROPERTY(int XMin READ getXMin WRITE setXMin)
-    PYB11_PROPERTY(int YMin READ getYMin WRITE setYMin)
-    PYB11_PROPERTY(int ZMin READ getZMin WRITE setZMin)
-    PYB11_PROPERTY(int XMax READ getXMax WRITE setXMax)
-    PYB11_PROPERTY(int YMax READ getYMax WRITE setYMax)
-    PYB11_PROPERTY(int ZMax READ getZMax WRITE setZMax)
-    PYB11_PROPERTY(int InitType READ getInitType WRITE setInitType)
-    PYB11_PROPERTY(bool Random READ getRandom WRITE setRandom)
-    PYB11_PROPERTY(double InitValue READ getInitValue WRITE setInitValue)
-    PYB11_PROPERTY(FPRangePair InitRange READ getInitRange WRITE setInitRange)
+
+#ifdef SIMPL_ENABLE_PYTHON
+  PYB11_CREATE_BINDINGS(InitializeData SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(QVector<DataArrayPath> CellAttributeMatrixPaths READ getCellAttributeMatrixPaths WRITE setCellAttributeMatrixPaths)
+  PYB11_PROPERTY(int XMin READ getXMin WRITE setXMin)
+  PYB11_PROPERTY(int YMin READ getYMin WRITE setYMin)
+  PYB11_PROPERTY(int ZMin READ getZMin WRITE setZMin)
+  PYB11_PROPERTY(int XMax READ getXMax WRITE setXMax)
+  PYB11_PROPERTY(int YMax READ getYMax WRITE setYMax)
+  PYB11_PROPERTY(int ZMax READ getZMax WRITE setZMax)
+  PYB11_PROPERTY(int InitType READ getInitType WRITE setInitType)
+  PYB11_PROPERTY(bool Random READ getRandom WRITE setRandom)
+  PYB11_PROPERTY(double InitValue READ getInitValue WRITE setInitValue)
+  PYB11_PROPERTY(FPRangePair InitRange READ getInitRange WRITE setInitRange)
+#endif
+
 public:
   SIMPL_SHARED_POINTERS(InitializeData)
   SIMPL_FILTER_NEW_MACRO(InitializeData)

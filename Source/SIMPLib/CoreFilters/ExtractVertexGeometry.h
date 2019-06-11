@@ -35,12 +35,12 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/RectGridGeom.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The ExtractVertexGeometry class. See [Filter documentation](@ref convertdatacontainergeometry) for details.
@@ -49,11 +49,13 @@ class SIMPLib_EXPORT ExtractVertexGeometry : public AbstractFilter
 {
   Q_OBJECT
 
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(ExtractVertexGeometry SUPERCLASS AbstractFilter)
   PYB11_PROPERTY(int ArrayHandling READ getArrayHandling WRITE setArrayHandling)
   PYB11_PROPERTY(DataArrayPath SelectedDataContainerName READ getSelectedDataContainerName WRITE setSelectedDataContainerName)
   PYB11_PROPERTY(QVector<DataArrayPath> IncludedDataArrayPaths READ getIncludedDataArrayPaths WRITE setIncludedDataArrayPaths)
   PYB11_PROPERTY(DataArrayPath VertexDataContainerName READ getVertexDataContainerName WRITE setVertexDataContainerName)
+#endif
 
 public:
   SIMPL_SHARED_POINTERS(ExtractVertexGeometry)

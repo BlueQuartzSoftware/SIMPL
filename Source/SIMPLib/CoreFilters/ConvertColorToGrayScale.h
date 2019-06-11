@@ -34,10 +34,10 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The ConvertColorToGrayScale class. See [Filter documentation](@ref ConvertColorToGrayScale) for details.
@@ -45,6 +45,8 @@
 class SIMPLib_EXPORT ConvertColorToGrayScale : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(ConvertColorToGrayScale SUPERCLASS AbstractFilter)
   PYB11_PROPERTY(int ConversionAlgorithm READ getConversionAlgorithm WRITE setConversionAlgorithm)
   PYB11_PROPERTY(FloatVec3Type ColorWeights READ getColorWeights WRITE setColorWeights)
@@ -53,6 +55,7 @@ class SIMPLib_EXPORT ConvertColorToGrayScale : public AbstractFilter
   PYB11_PROPERTY(bool CreateNewAttributeMatrix READ getCreateNewAttributeMatrix WRITE setCreateNewAttributeMatrix)
   PYB11_PROPERTY(QString OutputAttributeMatrixName READ getOutputAttributeMatrixName WRITE setOutputAttributeMatrixName)
   PYB11_PROPERTY(QString OutputArrayPrefix READ getOutputArrayPrefix WRITE setOutputArrayPrefix)
+#endif
 
 public:
   SIMPL_SHARED_POINTERS(ConvertColorToGrayScale)

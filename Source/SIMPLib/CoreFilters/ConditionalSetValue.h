@@ -36,9 +36,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The ConditionalSetValue class. See [Filter documentation](@ref conditionalsetvalue) for details.
@@ -46,10 +46,13 @@
 class SIMPLib_EXPORT ConditionalSetValue : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(ConditionalSetValue SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
     PYB11_PROPERTY(DataArrayPath ConditionalArrayPath READ getConditionalArrayPath WRITE setConditionalArrayPath)
     PYB11_PROPERTY(double ReplaceValue READ getReplaceValue WRITE setReplaceValue)
+#endif
 
   public:
 

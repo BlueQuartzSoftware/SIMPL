@@ -36,9 +36,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The CreateDataContainer class. See [Filter documentation](@ref createdatacontainer) for details.
@@ -46,8 +46,11 @@
 class SIMPLib_EXPORT CreateDataContainer : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(CreateDataContainer SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(CreateDataContainer)

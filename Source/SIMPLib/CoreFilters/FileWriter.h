@@ -35,9 +35,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The FileWriter class serves as a superclass for writer filters
@@ -45,9 +45,12 @@
 class SIMPLib_EXPORT FileWriter : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(FileWriter SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
-    
+#endif
+
   public:
     SIMPL_SHARED_POINTERS(FileWriter)
     SIMPL_FILTER_NEW_MACRO(FileWriter)

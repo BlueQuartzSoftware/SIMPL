@@ -36,11 +36,11 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The CreateImageGeometry class. See [Filter documentation](@ref adjustvolumeorigin) for details.
@@ -48,11 +48,14 @@
 class SIMPLib_EXPORT CreateImageGeometry : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(CreateImageGeometry SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(DataArrayPath SelectedDataContainer READ getSelectedDataContainer WRITE setSelectedDataContainer)
     PYB11_PROPERTY(IntVec3Type Dimensions READ getDimensions WRITE setDimensions)
     PYB11_PROPERTY(FloatVec3Type Origin READ getOrigin WRITE setOrigin)
     PYB11_PROPERTY(FloatVec3Type Spacing READ getSpacing WRITE setSpacing)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(CreateImageGeometry)

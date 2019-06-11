@@ -36,10 +36,10 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The SetOriginResolutionImageGeom class. See [Filter documentation](@ref adjustvolumeorigin) for details.
@@ -47,12 +47,15 @@
 class SIMPLib_EXPORT SetOriginResolutionImageGeom : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(SetOriginResolutionImageGeom SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
     PYB11_PROPERTY(bool ChangeOrigin READ getChangeOrigin WRITE setChangeOrigin)
     PYB11_PROPERTY(FloatVec3Type Origin READ getOrigin WRITE setOrigin)
     PYB11_PROPERTY(bool ChangeResolution READ getChangeResolution WRITE setChangeResolution)
     PYB11_PROPERTY(FloatVec3Type Spacing READ getSpacing WRITE setSpacing)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(SetOriginResolutionImageGeom)

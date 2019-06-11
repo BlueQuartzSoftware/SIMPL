@@ -36,10 +36,10 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The RemoveArrays class. See [Filter documentation](@ref removearrays) for details.
@@ -47,8 +47,11 @@
 class SIMPLib_EXPORT RemoveArrays : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(RemoveArrays SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(DataContainerArrayProxy DataArraysToRemove READ getDataArraysToRemove WRITE setDataArraysToRemove)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(RemoveArrays)

@@ -35,9 +35,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The ExtractAttributeArraysFromGeometry class. See [Filter documentation](@ref ExtractAttributeArraysFromGeometry) for details.
@@ -45,6 +45,8 @@
 class SIMPLib_EXPORT ExtractAttributeArraysFromGeometry : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(ExtractAttributeArraysFromGeometry SUPERCLASS AbstractFilter)
   PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
   PYB11_PROPERTY(DataArrayPath SharedVertexListArrayPath0 READ getSharedVertexListArrayPath0 WRITE setSharedVertexListArrayPath0)
@@ -59,6 +61,7 @@ class SIMPLib_EXPORT ExtractAttributeArraysFromGeometry : public AbstractFilter
   PYB11_PROPERTY(DataArrayPath XBoundsArrayPath READ getXBoundsArrayPath WRITE setXBoundsArrayPath)
   PYB11_PROPERTY(DataArrayPath YBoundsArrayPath READ getYBoundsArrayPath WRITE setYBoundsArrayPath)
   PYB11_PROPERTY(DataArrayPath ZBoundsArrayPath READ getZBoundsArrayPath WRITE setZBoundsArrayPath)
+#endif
 
 public:
   SIMPL_SHARED_POINTERS(ExtractAttributeArraysFromGeometry)

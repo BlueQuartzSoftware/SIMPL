@@ -39,10 +39,10 @@
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/PhaseType.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
-#include "SIMPLib/SIMPLib.h"
 
 typedef QVector<FloatArrayType::Pointer> VectorOfFloatArray;
 
@@ -88,10 +88,13 @@ typedef QVector<FloatArrayType::Pointer> VectorOfFloatArray;
  */
 class SIMPLib_EXPORT StatsData
 {
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(StatsData)
   PYB11_METHOD(QString getStatsType)
   PYB11_METHOD(PhaseType::Type getPhaseType)
   PYB11_PROPERTY(float PhaseFraction READ getPhaseFraction WRITE setPhaseFraction)
+#endif
 
 public:
   SIMPL_SHARED_POINTERS(StatsData)

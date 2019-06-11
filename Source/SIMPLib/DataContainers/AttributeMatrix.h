@@ -51,6 +51,7 @@
 #include <QtCore/QVector>
 
 //-- DREAM3D Includes
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -58,7 +59,6 @@
 #include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
-#include "SIMPLib/SIMPLib.h"
 
 class AttributeMatrixProxy;
 class DataContainerProxy;
@@ -85,6 +85,8 @@ enum RenameErrorCodes
 class SIMPLib_EXPORT AttributeMatrix : public Observable, public IDataStructureContainerNode<IDataArray>
 {
   // clang-format off
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(AttributeMatrix)
   PYB11_STATIC_CREATION(New ARGS std::vector<size_t> QString AttributeMatrix::Type)
   
@@ -102,6 +104,8 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable, public IDataStructureC
   PYB11_METHOD(int renameAttributeArray ARGS OldName NewName OverWrite)
   PYB11_METHOD(IDataArray::Pointer getAttributeArray OVERLOAD const.QString.&,Name)
   PYB11_METHOD(IDataArray::Pointer getAttributeArray OVERLOAD const.DataArrayPath.&,Path)
+#endif
+
   // clang-format on
 
 public:

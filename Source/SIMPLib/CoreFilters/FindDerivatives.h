@@ -37,9 +37,9 @@
 
 #include <QtCore/QString>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The FindDerivatives class. See [Filter documentation](@ref findderivatives) for details.
@@ -47,16 +47,19 @@
 class SIMPLib_EXPORT FindDerivatives : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(FindDerivatives SUPERCLASS AbstractFilter)
   PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
   PYB11_PROPERTY(DataArrayPath DerivativesArrayPath READ getDerivativesArrayPath WRITE setDerivativesArrayPath)
+#endif
 
-  public:
-    SIMPL_SHARED_POINTERS(FindDerivatives)
-    SIMPL_FILTER_NEW_MACRO(FindDerivatives)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FindDerivatives, AbstractFilter)
+public:
+  SIMPL_SHARED_POINTERS(FindDerivatives)
+  SIMPL_FILTER_NEW_MACRO(FindDerivatives)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FindDerivatives, AbstractFilter)
 
-    ~FindDerivatives() override;
+  ~FindDerivatives() override;
 
   SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
   Q_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)

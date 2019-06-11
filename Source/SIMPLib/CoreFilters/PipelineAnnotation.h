@@ -33,9 +33,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The PipelineAnnotation class. See [Filter documentation](@ref PipelineAnnotation) for details.
@@ -43,8 +43,11 @@
 class SIMPLib_EXPORT PipelineAnnotation : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(PipelineAnnotation SUPERCLASS AbstractFilter)
   PYB11_PROPERTY(QString Summary READ getSummary WRITE setSummary)
+#endif
 
 public:
   SIMPL_SHARED_POINTERS(PipelineAnnotation)

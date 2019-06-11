@@ -36,9 +36,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 #include "SIMPLib/Filtering/AbstractDecisionFilter.h"
 
@@ -48,10 +48,13 @@
 class SIMPLib_EXPORT RequiredZThickness : public AbstractDecisionFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(RequiredZThickness SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(DataArrayPath DataContainerSelection READ getDataContainerSelection WRITE setDataContainerSelection)
     PYB11_PROPERTY(int NumZVoxels READ getNumZVoxels WRITE setNumZVoxels)
     PYB11_PROPERTY(bool PreflightCheck READ getPreflightCheck WRITE setPreflightCheck)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(RequiredZThickness)

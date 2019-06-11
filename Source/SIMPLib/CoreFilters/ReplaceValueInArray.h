@@ -36,9 +36,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The ReplaceValueInArray class. See [Filter documentation](@ref replacevalueinarray) for details.
@@ -46,10 +46,13 @@
 class SIMPLib_EXPORT ReplaceValueInArray : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(ReplaceValueInArray SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(DataArrayPath SelectedArray READ getSelectedArray WRITE setSelectedArray)
     PYB11_PROPERTY(double RemoveValue READ getRemoveValue WRITE setRemoveValue)
     PYB11_PROPERTY(double ReplaceValue READ getReplaceValue WRITE setReplaceValue)
+#endif
 
   public:
 

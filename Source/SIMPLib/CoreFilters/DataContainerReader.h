@@ -38,12 +38,12 @@
 
 #include <QtCore/QDateTime>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
 #include "SIMPLib/Utilities/SIMPLH5DataReader.h"
-#include "SIMPLib/SIMPLib.h"
 
 class SIMPLH5DataReader;
 
@@ -55,13 +55,16 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
     Q_OBJECT
     
     // This line MUST be first when exposing a class and properties to Python
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(DataContainerReader SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(QString InputFile READ getInputFile WRITE setInputFile)
     PYB11_PROPERTY(bool OverwriteExistingDataContainers READ getOverwriteExistingDataContainers WRITE setOverwriteExistingDataContainers)
     PYB11_PROPERTY(DataContainerArrayProxy InputFileDataContainerArrayProxy READ getInputFileDataContainerArrayProxy WRITE setInputFileDataContainerArrayProxy)
 
     PYB11_METHOD(DataContainerArrayProxy readDataContainerArrayStructure ARGS path)
-  
+#endif
+
   public:
     SIMPL_SHARED_POINTERS(DataContainerReader)
     SIMPL_FILTER_NEW_MACRO(DataContainerReader)

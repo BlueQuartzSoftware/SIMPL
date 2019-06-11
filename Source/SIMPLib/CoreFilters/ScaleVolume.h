@@ -36,10 +36,10 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The ScaleVolume class. See [Filter documentation](@ref scalevolume) for details.
@@ -47,12 +47,15 @@
 class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(ScaleVolume SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(DataArrayPath DataContainerName READ getDataContainerName WRITE setDataContainerName)
     PYB11_PROPERTY(DataArrayPath SurfaceDataContainerName READ getSurfaceDataContainerName WRITE setSurfaceDataContainerName)
     PYB11_PROPERTY(bool ApplyToVoxelVolume READ getApplyToVoxelVolume WRITE setApplyToVoxelVolume)
     PYB11_PROPERTY(bool ApplyToSurfaceMesh READ getApplyToSurfaceMesh WRITE setApplyToSurfaceMesh)
     PYB11_PROPERTY(FloatVec3Type ScaleFactor READ getScaleFactor WRITE setScaleFactor)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(ScaleVolume)

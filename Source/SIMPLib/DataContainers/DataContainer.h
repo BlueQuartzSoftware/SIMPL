@@ -41,6 +41,7 @@
 #include <QtCore/QString>
 #include <QtCore/QVector>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -48,7 +49,6 @@
 #include "SIMPLib/DataContainers/IDataStructureContainerNode.hpp"
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/Geometry/IGeometry.h"
-#include "SIMPLib/SIMPLib.h"
 
 class QTextStream;
 class DataArrayPath;
@@ -68,6 +68,8 @@ class SIMPLib_EXPORT DataContainer : public Observable, public IDataStructureCon
 
   // This line MUST be first when exposing a class and properties to Python
   // clang-format off
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(DataContainer)
   PYB11_STATIC_CREATION(New OVERLOAD QString)
   PYB11_STATIC_CREATION(New OVERLOAD DataArrayPath)
@@ -87,6 +89,8 @@ class SIMPLib_EXPORT DataContainer : public Observable, public IDataStructureCon
 
   PYB11_METHOD(bool doesAttributeMatrixExist ARGS Name)
   PYB11_METHOD(void setGeometry ARGS Geometry)
+#endif
+
   // clang-format on
 public:
   SIMPL_SHARED_POINTERS(DataContainer)

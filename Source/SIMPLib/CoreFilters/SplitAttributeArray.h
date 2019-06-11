@@ -35,9 +35,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The SplitAttributeArray class. See [Filter documentation](@ref splitattributearray) for details.
@@ -45,9 +45,12 @@
 class SIMPLib_EXPORT SplitAttributeArray : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(SplitAttributeArray SUPERCLASS AbstractFilter)
   PYB11_PROPERTY(DataArrayPath InputArrayPath READ getInputArrayPath WRITE setInputArrayPath)
   PYB11_PROPERTY(QString SplitArraysSuffix READ getSplitArraysSuffix WRITE setSplitArraysSuffix)
+#endif
 
 public:
   SIMPL_SHARED_POINTERS(SplitAttributeArray)

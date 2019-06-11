@@ -40,7 +40,7 @@
 #cmakedefine SIMPL_NTFS_FILE_CHECK @SIMPL_NTFS_FILE_CHECK@
 
 /* define to 1 if we are enabling Python Wrapping through Pybind11 */
-#cmakedefine SIMPL_ENABLE_PYTHON @SIMPL_ENABLE_PYTHON@
+#cmakedefine SIMPL_ENABLE_PYTHON
 
 /* ****************************************************************************
 * These define what source groups are being compiled

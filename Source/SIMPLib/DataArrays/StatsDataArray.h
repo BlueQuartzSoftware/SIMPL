@@ -36,7 +36,6 @@
 
 #include <QtCore/QJsonObject>
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/StatsData/StatsData.h"
@@ -48,6 +47,8 @@
 class SIMPLib_EXPORT StatsDataArray : public IDataArray
 {
   // clang-format off
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(StatsDataArray SUPER IDataArray)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t QString bool)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t int size_t* QString bool)
@@ -58,6 +59,8 @@ class SIMPLib_EXPORT StatsDataArray : public IDataArray
   PYB11_METHOD(StatsData::Pointer getStatsData ARGS int,index)
   PYB11_METHOD(void fillArrayWithNewStatsData OVERLOAD size_t,n PhaseType::Type*,phase_types)
   PYB11_METHOD(void fillArrayWithNewStatsData OVERLOAD size_t,n PhaseType::EnumType*,phase_types)
+#endif
+
   // clang-format on
 
 public:

@@ -33,7 +33,6 @@
 
 #include <hdf5.h>
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 
@@ -50,12 +49,15 @@ using DataContainerArrayShPtrType = std::shared_ptr<DataContainerArray>;
 class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(SIMPLH5DataReader)
 
     PYB11_METHOD(bool openFile ARGS filePath)
     PYB11_METHOD(bool closeFile)
     PYB11_METHOD(DataContainerArrayProxy readDataContainerArrayStructure ARGS SIMPLH5DataReaderRequirements err)
-    
+#endif
+
   public:
     SIMPL_SHARED_POINTERS(SIMPLH5DataReader)
     SIMPL_STATIC_NEW_MACRO(SIMPLH5DataReader)

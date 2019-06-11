@@ -42,9 +42,9 @@
 
 #include "H5Support/H5Lite.h"
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @class StringDataArray StringDataArray.h DREAM3DLib/Common/StringDataArray.h
@@ -56,6 +56,8 @@
 class SIMPLib_EXPORT StringDataArray : public IDataArray
 {
   // clang-format off
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(StringDataArray SUPER IDataArray)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t QString bool)
   PYB11_STATIC_CREATION(CreateArray OVERLOAD size_t std::vector<size_t> QString bool)
@@ -64,6 +66,8 @@ class SIMPLib_EXPORT StringDataArray : public IDataArray
   PYB11_METHOD(void setValue ARGS size_t,i const.QString.&,value)
   PYB11_METHOD(size_t getSize)
   PYB11_METHOD(size_t getNumberOfTuples)
+#endif
+
   // clang-format on
 
 public:

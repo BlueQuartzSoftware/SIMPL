@@ -36,9 +36,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The ExtractComponentAsArray class. See [Filter documentation](@ref extractcomponentasarray) for details.
@@ -46,10 +46,13 @@
 class SIMPLib_EXPORT ExtractComponentAsArray : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(ExtractComponentAsArray SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
     PYB11_PROPERTY(int CompNumber READ getCompNumber WRITE setCompNumber)
     PYB11_PROPERTY(QString NewArrayArrayName READ getNewArrayArrayName WRITE setNewArrayArrayName)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(ExtractComponentAsArray)

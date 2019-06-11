@@ -36,9 +36,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The WriteASCIIData class. See [Filter documentation](@ref writeasciidata) for details.
@@ -46,6 +46,8 @@
 class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(WriteASCIIData SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
     PYB11_PROPERTY(QString OutputPath READ getOutputPath WRITE setOutputPath)
@@ -54,6 +56,7 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
     PYB11_PROPERTY(QString FileExtension READ getFileExtension WRITE setFileExtension)
     PYB11_PROPERTY(int MaxValPerLine READ getMaxValPerLine WRITE setMaxValPerLine)
     PYB11_PROPERTY(int OutputStyle READ getOutputStyle WRITE setOutputStyle)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(WriteASCIIData)

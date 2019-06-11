@@ -4,9 +4,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 #include "SIMPLib/CoreFilters/util/ASCIIWizardData.hpp"
 
@@ -16,15 +16,18 @@
 class SIMPLib_EXPORT ReadASCIIData : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(ReadASCIIData SUPERCLASS AbstractFilter)
   PYB11_PROPERTY(ASCIIWizardData WizardData READ getWizardData WRITE setWizardData)
+#endif
 
-  public:
-    SIMPL_SHARED_POINTERS(ReadASCIIData)
-    SIMPL_FILTER_NEW_MACRO(ReadASCIIData)
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ReadASCIIData, AbstractFilter)
+public:
+  SIMPL_SHARED_POINTERS(ReadASCIIData)
+  SIMPL_FILTER_NEW_MACRO(ReadASCIIData)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ReadASCIIData, AbstractFilter)
 
-    ~ReadASCIIData() override;
+  ~ReadASCIIData() override;
 
   SIMPL_FILTER_PARAMETER(ASCIIWizardData, WizardData)
   Q_PROPERTY(ASCIIWizardData WizardData READ getWizardData WRITE setWizardData)

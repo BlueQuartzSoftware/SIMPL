@@ -36,10 +36,10 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/RangeFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The CreateDataArray class. See [Filter documentation](@ref createdataarray) for details.
@@ -47,6 +47,8 @@
 class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(CreateDataArray SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(SIMPL::ScalarTypes::Type ScalarType READ getScalarType WRITE setScalarType)
     PYB11_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
@@ -54,6 +56,7 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
     PYB11_PROPERTY(int InitializationType READ getInitializationType WRITE setInitializationType)
     PYB11_PROPERTY(QString InitializationValue READ getInitializationValue WRITE setInitializationValue)
     PYB11_PROPERTY(FPRangePair InitializationRange READ getInitializationRange WRITE setInitializationRange)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(CreateDataArray)

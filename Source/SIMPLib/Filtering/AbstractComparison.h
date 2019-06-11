@@ -35,9 +35,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
-#include "SIMPLib/SIMPLib.h"
 
 #include <QtCore/QJsonObject>
 
@@ -47,8 +47,12 @@
 */
 class SIMPLib_EXPORT AbstractComparison
 {
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(AbstractComparison)
   PYB11_PROPERTY(int UnionOperator READ getUnionOperator WRITE setUnionOperator)
+#endif
+
 public:
   SIMPL_SHARED_POINTERS(AbstractComparison)
   SIMPL_TYPE_MACRO(AbstractComparison)

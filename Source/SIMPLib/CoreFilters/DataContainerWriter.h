@@ -36,9 +36,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The DataContainerWriter class. See [Filter documentation](@ref datacontainerwriter) for details.
@@ -48,10 +48,13 @@ class SIMPLib_EXPORT DataContainerWriter : public AbstractFilter
     Q_OBJECT
     
     // This line MUST be first when exposing a class and properties to Python
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(DataContainerWriter SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
     PYB11_PROPERTY(bool WriteXdmfFile READ getWriteXdmfFile WRITE setWriteXdmfFile)
     PYB11_PROPERTY(bool WriteTimeSeries READ getWriteTimeSeries WRITE setWriteTimeSeries)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(DataContainerWriter)

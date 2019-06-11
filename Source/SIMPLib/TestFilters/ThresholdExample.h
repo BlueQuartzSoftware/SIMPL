@@ -37,11 +37,11 @@
 
 #include <QtCore/QString>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @class ThresholdExample ThresholdExample.h ExamplePlugin/Code/ExamplePluginFilters/ThresholdExample.h
@@ -53,8 +53,11 @@
 class SIMPLib_EXPORT ThresholdExample : public AbstractFilter
 {
   Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
   PYB11_CREATE_BINDINGS(ThresholdExample SUPERCLASS AbstractFilter)
   PYB11_PROPERTY(ComparisonInputs CellComparisonInputs READ getCellComparisonInputs WRITE setCellComparisonInputs)
+#endif
 
 public:
   SIMPL_SHARED_POINTERS(ThresholdExample)

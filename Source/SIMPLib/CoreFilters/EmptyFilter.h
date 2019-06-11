@@ -36,9 +36,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The EmptyFilter class serves as an empty, non-functional filter
@@ -46,7 +46,10 @@
 class SIMPLib_EXPORT EmptyFilter : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(EmptyFilter SUPERCLASS AbstractFilter)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(EmptyFilter)

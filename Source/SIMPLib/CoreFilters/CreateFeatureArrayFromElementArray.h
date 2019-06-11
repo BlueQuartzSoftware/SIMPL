@@ -36,9 +36,9 @@
 
 #pragma once
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
-#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The CreateFeatureArrayFromElementArray class. See [Filter documentation](@ref createfeaturearrayfromelementarray) for details.
@@ -46,11 +46,14 @@
 class SIMPLib_EXPORT CreateFeatureArrayFromElementArray : public AbstractFilter
 {
     Q_OBJECT
+
+#ifdef SIMPL_ENABLE_PYTHON
     PYB11_CREATE_BINDINGS(CreateFeatureArrayFromElementArray SUPERCLASS AbstractFilter)
     PYB11_PROPERTY(DataArrayPath CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
     PYB11_PROPERTY(DataArrayPath SelectedCellArrayPath READ getSelectedCellArrayPath WRITE setSelectedCellArrayPath)
     PYB11_PROPERTY(QString CreatedArrayName READ getCreatedArrayName WRITE setCreatedArrayName)
     PYB11_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
+#endif
 
   public:
     SIMPL_SHARED_POINTERS(CreateFeatureArrayFromElementArray)
