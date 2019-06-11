@@ -39,6 +39,7 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/Geometry/IGeometry3D.cpp
   ${SIMPLib_SOURCE_DIR}/Geometry/IGeometryGrid.cpp
   ${SIMPLib_SOURCE_DIR}/Geometry/ImageGeom.cpp
+  ${SIMPLib_SOURCE_DIR}/Geometry/ITransformContainer.cpp
   ${SIMPLib_SOURCE_DIR}/Geometry/QuadGeom.cpp
   ${SIMPLib_SOURCE_DIR}/Geometry/RectGridGeom.cpp
   ${SIMPLib_SOURCE_DIR}/Geometry/ShapeOps/CubeOctohedronOps.cpp

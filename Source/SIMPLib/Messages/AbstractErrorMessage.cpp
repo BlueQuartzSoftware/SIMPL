@@ -1,5 +1,5 @@
 /* ============================================================================
- * Copyright (c) 2009-2019 BlueQuartz Software, LLC
+ * Copyright (c) 2019-2019 BlueQuartz Software, LLC
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -30,32 +30,15 @@
  *    United States Air Force Prime Contract FA8650-15-D-5231
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include "AbstractErrorMessage.h"
 
-#pragma once
+AbstractErrorMessage::AbstractErrorMessage() = default;
 
-#include <QtCore/QString>
-
-#include "SIMPLib/Messages/AbstractMessage.h"
-
-class AbstractMessageHandler;
-
-/**
- * @class AbstractStatusMessage AbstractStatusMessage.h SIMPLib/Messages/AbstractStatusMessage.h
- * @brief This class is an abstract status message superclass.
- */
-class SIMPLib_EXPORT AbstractStatusMessage : public AbstractMessage
+AbstractErrorMessage::AbstractErrorMessage(const QString& msgText, int code)
+: AbstractMessage(msgText)
+, m_Code(code)
 {
-public:
-  SIMPL_SHARED_POINTERS(AbstractStatusMessage)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AbstractStatusMessage, AbstractMessage)
+}
 
-  ~AbstractStatusMessage() override;
+AbstractErrorMessage::~AbstractErrorMessage() = default;
 
-protected:
-  AbstractStatusMessage();
-
-  AbstractStatusMessage(const QString& msgText);
-
-private:
-};
-Q_DECLARE_METATYPE(AbstractStatusMessage::Pointer)

@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+* Copyright (c) 2009-2018 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -27,48 +27,11 @@
 * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
 * The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
+*    United States Air Force Prime Contract FA8650-15-D-5231
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include "ITransformContainer.h"
 
-#pragma once
+ITransformContainer::ITransformContainer() = default;
 
-#include <vector>
-
-#include "SIMPLib/SIMPLib.h"
-
-/**
- * @brief The RadialDistributionFunction class can generate different types of distributions
- * for a Radial Distribution Function
- */
-class SIMPLib_EXPORT RadialDistributionFunction
-{
-  public:
-
-    virtual ~RadialDistributionFunction();
-
-    /**
-     * @brief GenerateRandomDistribution This will generate a random distribution
-     * binned up and normalized.
-     * @param minDistance The minimum distance between objects
-     * @param maxDistance The maximum distance between objects
-     * @param numBins The number of bins to generate
-     * @param boxdims
-     * @param boxres
-     * @return An array of values that are the frequency values for the histogram
-     */
-    static std::vector<float> GenerateRandomDistribution(float minDistance, float maxDistance, int numBins, std::vector<float> boxdims, std::vector<float> boxres);
-
-  protected:
-    RadialDistributionFunction();
-
-  public:
-    RadialDistributionFunction(const RadialDistributionFunction&) = delete; // Copy Constructor Not Implemented
-    RadialDistributionFunction(RadialDistributionFunction&&) = delete;      // Move Constructor Not Implemented
-    RadialDistributionFunction& operator=(const RadialDistributionFunction&) = delete; // Copy Assignment Not Implemented
-    RadialDistributionFunction& operator=(RadialDistributionFunction&&) = delete;      // Move Assignment Not Implemented
-};
-
-
+ITransformContainer::~ITransformContainer() = default;

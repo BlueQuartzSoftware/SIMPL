@@ -37,38 +37,57 @@
 
 #include <vector>
 
-#include "SIMPLib/SIMPLib.h"
+#include <QtCore/QJsonObject>
 
-/**
- * @brief The RadialDistributionFunction class can generate different types of distributions
- * for a Radial Distribution Function
- */
-class SIMPLib_EXPORT RadialDistributionFunction
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+
+
+
+
+class SIMPLib_EXPORT RdfData
 {
   public:
+    SIMPL_SHARED_POINTERS(RdfData)
+    SIMPL_STATIC_NEW_MACRO(RdfData)
+    SIMPL_TYPE_MACRO(RdfData)
 
-    virtual ~RadialDistributionFunction();
+    virtual ~RdfData();
+
+    SIMPL_INSTANCE_PROPERTY(std::vector<float>, Frequencies)
+    SIMPL_INSTANCE_PROPERTY(float, MinDistance)
+    SIMPL_INSTANCE_PROPERTY(float, MaxDistance)
+    SIMPL_INSTANCE_PROPERTY(int, NumberOfBins)
+    SIMPL_INSTANCE_STRING_PROPERTY(DistributionType)
+    SIMPL_INSTANCE_VEC3_PROPERTY(float, BoxSize)
+    SIMPL_INSTANCE_VEC3_PROPERTY(float, BoxResolution)
+
+    int getFrequencyCount();
 
     /**
-     * @brief GenerateRandomDistribution This will generate a random distribution
-     * binned up and normalized.
-     * @param minDistance The minimum distance between objects
-     * @param maxDistance The maximum distance between objects
-     * @param numBins The number of bins to generate
-     * @param boxdims
-     * @param boxres
-     * @return An array of values that are the frequency values for the histogram
+     * @brief deepCopy
+     * @return
      */
-    static std::vector<float> GenerateRandomDistribution(float minDistance, float maxDistance, int numBins, std::vector<float> boxdims, std::vector<float> boxres);
+    Pointer deepCopy();
+
+    /**
+     * @brief readJson
+     * @param json
+     * @return
+     */
+    int readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @param json
+     * @return
+     */
+    int writeJson(QJsonObject &json);
 
   protected:
-    RadialDistributionFunction();
+    RdfData();
 
-  public:
-    RadialDistributionFunction(const RadialDistributionFunction&) = delete; // Copy Constructor Not Implemented
-    RadialDistributionFunction(RadialDistributionFunction&&) = delete;      // Move Constructor Not Implemented
-    RadialDistributionFunction& operator=(const RadialDistributionFunction&) = delete; // Copy Assignment Not Implemented
-    RadialDistributionFunction& operator=(RadialDistributionFunction&&) = delete;      // Move Assignment Not Implemented
+  private:
+    RdfData(const RdfData&) = delete;        // Copy Constructor Not Implemented
+    void operator=(const RdfData&) = delete; // Move assignment Not Implemented
 };
-
-

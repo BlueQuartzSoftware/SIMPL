@@ -74,7 +74,7 @@ class SVWidgetsLib_EXPORT PipelineItem
       Remove
     };
 
-    SIMPL_INSTANCE_PROPERTY(AnimationType, CurrentAnimationType)
+    SIMPL_INSTANCE_PROPERTY(PipelineItem::AnimationType, CurrentAnimationType)
 
     enum PipelineItemData
     {
@@ -90,7 +90,7 @@ class SVWidgetsLib_EXPORT PipelineItem
       Completed = 2, //!<
       Disabled = 3
     };
-    SIMPL_INSTANCE_PROPERTY(WidgetState, WidgetState)
+    SIMPL_INSTANCE_PROPERTY(PipelineItem::WidgetState, WidgetState)
 
     enum class PipelineState : EnumType
     {
@@ -98,7 +98,7 @@ class SVWidgetsLib_EXPORT PipelineItem
       Stopped = 1,
       Paused = 4,
     };
-    SIMPL_INSTANCE_PROPERTY(PipelineState, PipelineState)
+    SIMPL_INSTANCE_PROPERTY(PipelineItem::PipelineState, PipelineState)
 
     enum class ErrorState : EnumType
     {
@@ -106,7 +106,7 @@ class SVWidgetsLib_EXPORT PipelineItem
       Error = 1,
       Warning = 2,
     };
-    SIMPL_INSTANCE_PROPERTY(ErrorState, ErrorState)
+    SIMPL_INSTANCE_PROPERTY(PipelineItem::ErrorState, ErrorState)
 
     enum class ItemType : EnumType
     {
@@ -115,7 +115,7 @@ class SVWidgetsLib_EXPORT PipelineItem
       DropIndicator,
       Unknown
     };
-    SIMPL_INSTANCE_PROPERTY(ItemType, ItemType)
+    SIMPL_INSTANCE_PROPERTY(PipelineItem::ItemType, ItemType)
 
     PipelineItem* child(int number);
     PipelineItem* parent();

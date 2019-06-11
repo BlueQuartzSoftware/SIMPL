@@ -30,32 +30,14 @@
  *    United States Air Force Prime Contract FA8650-15-D-5231
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include "AbstractProgressMessage.h"
 
-#pragma once
+AbstractProgressMessage::AbstractProgressMessage() = default;
 
-#include <QtCore/QString>
-
-#include "SIMPLib/Messages/AbstractMessage.h"
-
-class AbstractMessageHandler;
-
-/**
- * @class AbstractStatusMessage AbstractStatusMessage.h SIMPLib/Messages/AbstractStatusMessage.h
- * @brief This class is an abstract status message superclass.
- */
-class SIMPLib_EXPORT AbstractStatusMessage : public AbstractMessage
+AbstractProgressMessage::  AbstractProgressMessage(const QString& msgText, int progress)
+: AbstractMessage(msgText)
+, m_ProgressValue(progress)
 {
-public:
-  SIMPL_SHARED_POINTERS(AbstractStatusMessage)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AbstractStatusMessage, AbstractMessage)
+}
 
-  ~AbstractStatusMessage() override;
-
-protected:
-  AbstractStatusMessage();
-
-  AbstractStatusMessage(const QString& msgText);
-
-private:
-};
-Q_DECLARE_METATYPE(AbstractStatusMessage::Pointer)
+  AbstractProgressMessage::~AbstractProgressMessage() = default;

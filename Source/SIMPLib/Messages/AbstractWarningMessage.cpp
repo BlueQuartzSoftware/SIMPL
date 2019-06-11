@@ -31,31 +31,13 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#pragma once
+#include "AbstractWarningMessage.h"
 
-#include <QtCore/QString>
+AbstractWarningMessage::AbstractWarningMessage() = default;
 
-#include "SIMPLib/Messages/AbstractMessage.h"
-
-class AbstractMessageHandler;
-
-/**
- * @class AbstractStatusMessage AbstractStatusMessage.h SIMPLib/Messages/AbstractStatusMessage.h
- * @brief This class is an abstract status message superclass.
- */
-class SIMPLib_EXPORT AbstractStatusMessage : public AbstractMessage
+AbstractWarningMessage::AbstractWarningMessage(const QString& msgText, int32_t code)
+: AbstractMessage(msgText)
 {
-public:
-  SIMPL_SHARED_POINTERS(AbstractStatusMessage)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AbstractStatusMessage, AbstractMessage)
+}
 
-  ~AbstractStatusMessage() override;
-
-protected:
-  AbstractStatusMessage();
-
-  AbstractStatusMessage(const QString& msgText);
-
-private:
-};
-Q_DECLARE_METATYPE(AbstractStatusMessage::Pointer)
+AbstractWarningMessage::~AbstractWarningMessage() = default;

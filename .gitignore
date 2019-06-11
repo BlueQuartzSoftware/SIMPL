@@ -6,6 +6,7 @@ CMakeLists.txt.*
 /Build-ninja/
 /Build-Xcode/
 /zRel/
+/Release/
 /CleanBuild/
 .cproject
 .project
