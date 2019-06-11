@@ -220,14 +220,8 @@ class FilterParameterWidgetUtils
     template <typename T>
     static bool VectorContains(const std::vector<std::vector<T>>& container, const std::vector<T>& comparison)
     {
-      for(const auto& value : container)
-      {
-        if(value == comparison)
-        {
-          return true;
-        }
-      }
-      return false;
+      typename std::vector<T>::iterator pos = std::find(container.begin(), container.end(), comparison);
+      return (pos != container.end());
     }
     /**
      * @brief PopulateAttributeArrayList This method populates a QListWidget with
