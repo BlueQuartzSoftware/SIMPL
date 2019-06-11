@@ -49,7 +49,8 @@ namespace Detail
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T> IDataArray::Pointer readH5Dataset(hid_t locId, const QString& datasetPath, const size_t& numOfTuples, const QVector<size_t>& cDims)
+template <typename T>
+IDataArray::Pointer readH5Dataset(hid_t locId, const QString& datasetPath, const size_t& numOfTuples, const std::vector<size_t>& cDims)
 {
   herr_t err = -1;
   IDataArray::Pointer ptr;
@@ -215,8 +216,8 @@ void ImportHDF5Dataset::dataCheck()
       return;
     }
 
-    QVector<size_t> cDims = createComponentDimensions(cDimsStr);
-    if(cDims.isEmpty())
+    std::vector<size_t> cDims = createComponentDimensions(cDimsStr);
+    if(cDims.empty())
     {
       QString ss = tr("Component Dimensions are not in the right format for dataset with path '%1'. Use comma-separated values (ex: 4x2 would be '4, 2').").arg(datasetPath);
       setErrorCondition(-20007, ss);
@@ -256,8 +257,8 @@ void ImportHDF5Dataset::dataCheck()
     stream << tr("Attribute Matrix Path: %1\n").arg(m_SelectedAttributeMatrix.serialize("/"));
 
     size_t userEnteredTotalElements = 1;
-    QVector<size_t> amTupleDims = am->getTupleDimensions();
-    stream << tr("No. of Attribute Matrix Dimension(s): ") << locale.toString(amTupleDims.size()) << "\n";
+    std::vector<size_t> amTupleDims = am->getTupleDimensions();
+    stream << tr("No. of Attribute Matrix Dimension(s): ") << locale.toString(static_cast<quint64>(amTupleDims.size())) << "\n";
     stream << "Attribute Matrix Dimension(s): ";
     for(int i = 0; i < amTupleDims.size(); i++)
     {
@@ -274,7 +275,7 @@ void ImportHDF5Dataset::dataCheck()
     int numOfAMTuples = am->getNumberOfTuples();
     stream << tr("Total Attribute Matrix Tuple Count: %1\n").arg(locale.toString(numOfAMTuples));
 
-    stream << tr("No. of Component Dimension(s): ") << locale.toString(cDims.size()) << "\n";
+    stream << tr("No. of Component Dimension(s): ") << locale.toString(static_cast<quint64>(cDims.size())) << "\n";
     stream << "Component Dimension(s): ";
 
     int totalComponents = 1;
@@ -375,9 +376,9 @@ void ImportHDF5Dataset::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<size_t> ImportHDF5Dataset::createComponentDimensions(const QString& cDimsStr)
+std::vector<size_t> ImportHDF5Dataset::createComponentDimensions(const QString& cDimsStr)
 {
-  QVector<size_t> cDims;
+  std::vector<size_t> cDims;
   QStringList dimsStrVec = cDimsStr.split(',', QString::SkipEmptyParts);
   for(int i = 0; i < dimsStrVec.size(); i++)
   {
@@ -388,7 +389,7 @@ QVector<size_t> ImportHDF5Dataset::createComponentDimensions(const QString& cDim
     int val = dimsStr.toInt(&ok);
     if(!ok)
     {
-      return QVector<size_t>();
+      return std::vector<size_t>();
     }
 
     cDims.push_back(val);
@@ -400,7 +401,7 @@ QVector<size_t> ImportHDF5Dataset::createComponentDimensions(const QString& cDim
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataArray::Pointer ImportHDF5Dataset::readIDataArray(hid_t gid, const QString& name, size_t numOfTuples, QVector<size_t> cDims, bool metaDataOnly)
+IDataArray::Pointer ImportHDF5Dataset::readIDataArray(hid_t gid, const QString& name, size_t numOfTuples, std::vector<size_t> cDims, bool metaDataOnly)
 {
   herr_t err = -1;
   // herr_t retErr = 1;

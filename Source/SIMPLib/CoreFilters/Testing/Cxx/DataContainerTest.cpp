@@ -181,7 +181,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void CreateDataArray(AttributeMatrix::Pointer attrMat, QVector<size_t> compDims)
+  template <typename T>
+  void CreateDataArray(AttributeMatrix::Pointer attrMat, std::vector<size_t> compDims)
   {
     QString name("[");
     for(int i = 0; i < compDims.size(); i++)
@@ -205,7 +206,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void CreateStringArray(AttributeMatrix::Pointer attrMat, QVector<size_t> compDims)
+  void CreateStringArray(AttributeMatrix::Pointer attrMat, std::vector<size_t> compDims)
   {
     QString name("ExampleStringDataArray");
     StringDataArray::Pointer data = StringDataArray::CreateArray(attrMat->getNumberOfTuples(), name);
@@ -220,7 +221,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void FillAttributeMatrix(const AttributeMatrix::Pointer& attrMat, const QVector<size_t>& compDims)
+  void FillAttributeMatrix(const AttributeMatrix::Pointer& attrMat, const std::vector<size_t>& compDims)
   {
     CreateDataArray<int8_t>(attrMat, compDims);
     CreateDataArray<uint8_t>(attrMat, compDims);
@@ -238,11 +239,11 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void PopulateVolumeDataContainer(const DataContainer::Pointer& dc, QVector<size_t> tupleDims, const QString& name)
+  void PopulateVolumeDataContainer(const DataContainer::Pointer& dc, std::vector<size_t> tupleDims, const QString& name)
   {
     // Create the attribute matrix with the dimensions and name
     AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tupleDims, name, AttributeMatrix::Type::Cell);
-    QVector<size_t> compDims(1, 1); // Create a Single Scalar Component (numComp = 1) Data Array
+    std::vector<size_t> compDims(1, 1); // Create a Single Scalar Component (numComp = 1) Data Array
     FillAttributeMatrix(attrMat, compDims);
 
     // Add Data Arrays that have a [1x3] component dimensions
@@ -280,7 +281,7 @@ public:
   // -----------------------------------------------------------------------------
   void TestDataContainerWriter()
   {
-    QVector<size_t> tupleDims;
+    std::vector<size_t> tupleDims;
     DataContainerArray::Pointer dca = DataContainerArray::New();
     size_t nx = DataContainerIOTest::XSize;
     size_t ny = DataContainerIOTest::YSize;
@@ -335,7 +336,7 @@ public:
     }
     attrMatrix->insertOrAssign(boolArray);
 
-    QVector<size_t> dims(1, 3);
+    std::vector<size_t> dims(1, 3);
     FloatArrayType::Pointer avgEuler = FloatArrayType::CreateArray(size, dims, SIMPL::FeatureData::AxisEulerAngles);
     for(int32_t i = 0; i < size; ++i)
     {
@@ -480,7 +481,7 @@ public:
     DREAM3D_REQUIRE_NULL_POINTER(attrMatrix.get())
 
     // Now add an AttributeMatrix to the DataContainer
-    QVector<size_t> tDims(1, 0);
+    std::vector<size_t> tDims(1, 0);
     AttributeMatrix::Pointer attrMat = m->createAndAddAttributeMatrix(tDims, getCellAttributeMatrixName(), AttributeMatrix::Type::Cell);
     DREAM3D_REQUIRE_VALID_POINTER(attrMat.get())
 
@@ -500,7 +501,7 @@ public:
     IDataArray::Pointer ida = attrMat->getAttributeArray("Test");
     DREAM3D_REQUIRE_VALID_POINTER(ida.get());
 
-    QVector<size_t> dims(1, 1);
+    std::vector<size_t> dims(1, 1);
     t = attrMat->getPrereqArray<T, AbstractFilter>(nullptr, "Test", -723, dims);
     DREAM3D_REQUIRE_VALID_POINTER(ida.get());
 
@@ -1004,7 +1005,7 @@ public:
 
     const QString k_DC0("DCO");
     const QString k_DC1("DC1");
-    QVector<size_t> tDims = {10, 10};
+    std::vector<size_t> tDims = {10, 10};
     AttributeMatrix::Pointer am0 = AttributeMatrix::New(tDims, k_DC0, AttributeMatrix::Type::Generic);
     AttributeMatrix::Pointer am1 = AttributeMatrix::New(tDims, k_DC1, AttributeMatrix::Type::Generic);
 
@@ -1082,7 +1083,7 @@ public:
   void TestAttributeMatrix()
   {
     bool result = false;
-    QVector<size_t> tDims = {10, 10};
+    std::vector<size_t> tDims = {10, 10};
     AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, "AttributeMatrix", AttributeMatrix::Type::Generic);
     // addDataContainer
     // insertOrAssign

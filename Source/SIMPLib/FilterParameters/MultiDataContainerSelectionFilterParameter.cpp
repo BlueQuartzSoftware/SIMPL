@@ -94,7 +94,7 @@ QString MultiDataContainerSelectionFilterParameter::getWidgetType() const
 MultiDataContainerSelectionFilterParameter::RequirementType MultiDataContainerSelectionFilterParameter::CreateCategoryRequirement(const QString& primitiveType, size_t allowedCompDim,
 	AttributeMatrix::Category attributeMatrixCategory)
 {
-  using QVectorOfSizeType = QVector<size_t>;
+  using QVectorOfSizeType = std::vector<size_t>;
   MultiDataContainerSelectionFilterParameter::RequirementType req;
 	AttributeMatrix::Types amTypes;
 	if (attributeMatrixCategory == AttributeMatrix::Category::Element)
@@ -121,17 +121,17 @@ MultiDataContainerSelectionFilterParameter::RequirementType MultiDataContainerSe
 	req.amTypes = amTypes;
 	if (primitiveType.compare(SIMPL::Defaults::AnyPrimitive) != 0)
 	{
-		req.daTypes = QVector<QString>(1, primitiveType);
-	}
-	if (SIMPL::Defaults::AnyComponentSize != allowedCompDim)
-	{
-		req.componentDimensions = QVector<QVectorOfSizeType>(1, QVectorOfSizeType(1, allowedCompDim));
-	}
-	//  if(IGeometry::Type::Unknown != geometryType)
-	//  {
-	//    req.dcGeometryTypes = IGeometry::Types(1, geometryType);
-	//  }
-	return req;
+    req.daTypes = QVector<QString>(1, primitiveType);
+  }
+  if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
+  {
+    req.componentDimensions = std::vector<QVectorOfSizeType>(1, QVectorOfSizeType(1, allowedCompDim));
+  }
+  //  if(IGeometry::Type::Unknown != geometryType)
+  //  {
+  //    req.dcGeometryTypes = IGeometry::Types(1, geometryType);
+  //  }
+  return req;
 }
 
 // -----------------------------------------------------------------------------
@@ -140,7 +140,7 @@ MultiDataContainerSelectionFilterParameter::RequirementType MultiDataContainerSe
 MultiDataContainerSelectionFilterParameter::RequirementType MultiDataContainerSelectionFilterParameter::CreateRequirement(const QString& primitiveType, size_t allowedCompDim, AttributeMatrix::Type attributeMatrixType,
 	IGeometry::Type geometryType)
 {
-  using QVectorOfSizeType = QVector<size_t>;
+  using QVectorOfSizeType = std::vector<size_t>;
   MultiDataContainerSelectionFilterParameter::RequirementType req;
   if(primitiveType.compare(SIMPL::Defaults::AnyPrimitive) != 0)
   {
@@ -148,10 +148,10 @@ MultiDataContainerSelectionFilterParameter::RequirementType MultiDataContainerSe
   }
   if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
   {
-		req.componentDimensions = QVector<QVectorOfSizeType>(1, QVectorOfSizeType(1, allowedCompDim));
-	}
-	if (AttributeMatrix::Type::Any != attributeMatrixType)
-	{
+    req.componentDimensions = std::vector<QVectorOfSizeType>(1, QVectorOfSizeType(1, allowedCompDim));
+  }
+  if(AttributeMatrix::Type::Any != attributeMatrixType)
+  {
 		QVector<AttributeMatrix::Type> amTypes(1, attributeMatrixType);
 		req.amTypes = amTypes;
 	}

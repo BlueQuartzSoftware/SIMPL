@@ -182,7 +182,7 @@
 
 // Select vector, RGB/RGBA, or scalar images
 #define Dream3DTemplateAliasMacroPixelType(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension)                                                                               \
-  QVector<size_t> cDims = ptr->getComponentDimensions();                                                                                                                                               \
+  std::vector<size_t> cDims = ptr->getComponentDimensions();                                                                                                                                           \
   if(cDims.size() > 1)                                                                                                                                                                                 \
   {                                                                                                                                                                                                    \
     Dream3DTemplateAliasMacroCaseVectorImage0(typeIN, typeOUT, call, errorCondition, isTypeOUT, typeOUTTypename, dimension, DREAM3D_USE_Vector);                                                       \
@@ -329,7 +329,7 @@
       ImageGeom::Pointer imageGeometry = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, path.getDataContainerName());                                    \
       if(nullptr != imageGeometry)                                                                                                                                                                     \
       {                                                                                                                                                                                                \
-        QVector<size_t> tDims = imageGeometry->getDimensions().toContainer<QVector<size_t>>();                                                                                                         \
+        std::vector<size_t> tDims = imageGeometry->getDimensions().toContainer<std::vector<size_t>>();                                                                                                     \
         if(getErrorCode() >= 0)                                                                                                                                                                        \
         {                                                                                                                                                                                              \
           QString type = ptr->getTypeAsString();                                                                                                                                                       \
@@ -426,7 +426,7 @@
       ImageGeom::Pointer imageGeometry = getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, input2_path.getDataContainerName());                             \
       if(imageGeometry.get() != nullptr)                                                                                                                                                               \
       {                                                                                                                                                                                                \
-        QVector<size_t> tDims(3, 0);                                                                                                                                                                   \
+        std::vector<size_t> tDims(3, 0);                                                                                                                                                               \
         std::tie(tDims[0], tDims[1], tDims[2]) = imageGeometry->getDimensions();                                                                                                                       \
         if(getErrorCode() >= 0)                                                                                                                                                                        \
         {                                                                                                                                                                                              \

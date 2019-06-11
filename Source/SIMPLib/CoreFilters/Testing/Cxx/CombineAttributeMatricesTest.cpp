@@ -219,11 +219,11 @@ public:
     DataContainer::Pointer m2 = DataContainer::New("CombineAttributeMatricesTest2");
 
     // Create Attribute Matrices with different tDims to test validation of tuple compatibility
-    QVector<size_t> tDims(3, 0);
+    std::vector<size_t> tDims(3, 0);
     tDims[0] = 2;
     tDims[1] = 2;
     tDims[2] = 1;
-    QVector<size_t> cDims(1, 1);
+    std::vector<size_t> cDims(1, 1);
     int32_t initVal = 10;
 
     // Make Cell AM

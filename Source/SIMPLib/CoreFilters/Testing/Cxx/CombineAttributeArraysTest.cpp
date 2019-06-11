@@ -117,13 +117,13 @@ public:
 
     DataContainer::Pointer m = DataContainer::New("CombineAttributeArraysTest");
 
-    QVector<size_t> tDims(1, 100);
+    std::vector<size_t> tDims(1, 100);
     AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "CombineAttributeArraysTest", AttributeMatrix::Type::Cell);
     m->addOrReplaceAttributeMatrix(attrMat);
     dca->addOrReplaceDataContainer(m);
 
-    QVector<size_t> cDimsVec(1, 3);
-    QVector<size_t> cDimsScalar(1, 1);
+    std::vector<size_t> cDimsVec(1, 3);
+    std::vector<size_t> cDimsScalar(1, 1);
 
     CREATE_DATA_ARRAY(uint8_t, attrMat, tDims, cDimsVec, cDimsScalar, uint8_tVectorArray, uint8_tScalarArray, err);
     CREATE_DATA_ARRAY(int8_t, attrMat, tDims, cDimsVec, cDimsScalar, int8_tVectorArray, int8_tScalarArray, err);

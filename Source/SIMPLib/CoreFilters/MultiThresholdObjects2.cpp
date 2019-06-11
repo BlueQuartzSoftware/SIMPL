@@ -133,7 +133,7 @@ void MultiThresholdObjects2::dataCheck()
     }
 
     //AbstractComparison::Pointer comp = m_SelectedThresholds[0];
-    QVector<size_t> cDims(1, 1);
+    std::vector<size_t> cDims(1, 1);
     DataArrayPath tempPath(dcName, amName, getDestinationArrayName());
     m_DestinationPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, true, cDims, "", ThresholdArrayID);
     if(nullptr != m_DestinationPtr.lock()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */

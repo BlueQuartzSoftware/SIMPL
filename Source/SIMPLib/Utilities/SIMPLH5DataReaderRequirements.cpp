@@ -51,7 +51,7 @@ SIMPLH5DataReaderRequirements::SIMPLH5DataReaderRequirements(const QString &prim
   }
   if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
   {
-    m_ComponentDimensions = QVector<QVector<size_t> >(1, QVector<size_t>(1, allowedCompDim));
+    m_ComponentDimensions = std::vector<std::vector<size_t>>(1, std::vector<size_t>(1, allowedCompDim));
   }
   if(AttributeMatrix::Type::Any != attributeMatrixType)
   {

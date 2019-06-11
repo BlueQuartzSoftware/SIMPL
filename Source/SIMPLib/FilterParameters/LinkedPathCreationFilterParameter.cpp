@@ -107,7 +107,7 @@ LinkedPathCreationFilterParameter::~LinkedPathCreationFilterParameter() = defaul
 //
 // -----------------------------------------------------------------------------
 LinkedPathCreationFilterParameter::Pointer LinkedPathCreationFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
-                                                                                  SetterCallbackType setterCallback, GetterCallbackType getterCallback, ILinkedPath* linkedPath, int groupIndex)
+                                                                                  const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, ILinkedPath* linkedPath, int groupIndex)
 {
 
   LinkedPathCreationFilterParameter::Pointer ptr = LinkedPathCreationFilterParameter::New();

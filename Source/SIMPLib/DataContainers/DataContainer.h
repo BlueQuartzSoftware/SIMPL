@@ -283,7 +283,8 @@ public:
    * @param amType The Type of AttributeMatrix
    * @return A Shared Pointer to the AttributeMatrix
    */
-  AttributeMatrixShPtr createNonPrereqAttributeMatrix(AbstractFilter* filter, const DataArrayPath& path, const QVector<size_t>& tDims, AttributeMatrix::Type amType, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID);
+  AttributeMatrixShPtr createNonPrereqAttributeMatrix(AbstractFilter* filter, const DataArrayPath& path, const std::vector<size_t>& tDims, AttributeMatrix::Type amType,
+                                                      RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID);
 
   /**
    * @brief createNonPrereqAttributeMatrix
@@ -306,7 +307,8 @@ public:
    * @param amType The Type of AttributeMatrix
    * @return A Shared Pointer to the AttributeMatrix
    */
-  AttributeMatrixShPtr createNonPrereqAttributeMatrix(AbstractFilter* filter, const QString& attributeMatrixName, const QVector<size_t>& tDims, AttributeMatrix::Type amType, RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID);
+  AttributeMatrixShPtr createNonPrereqAttributeMatrix(AbstractFilter* filter, const QString& attributeMatrixName, const std::vector<size_t>& tDims, AttributeMatrix::Type amType,
+                                                      RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID);
 
   /**
    * @brief Returns the geometry as the templated type
@@ -358,7 +360,7 @@ public:
    * @param attrType The Type of AttributeMatrix to create
    * @return
    */
-  virtual AttributeMatrixShPtr createAndAddAttributeMatrix(const QVector<size_t>& tDims, const QString& attrMatName, AttributeMatrix::Type attrType);
+  virtual AttributeMatrixShPtr createAndAddAttributeMatrix(const std::vector<size_t>& tDims, const QString& attrMatName, AttributeMatrix::Type attrType);
 
   /**
    * @brief Writes all the Attribute Matrices to HDF5 file

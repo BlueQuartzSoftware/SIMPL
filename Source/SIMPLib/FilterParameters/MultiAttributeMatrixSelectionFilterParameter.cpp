@@ -57,8 +57,8 @@ MultiAttributeMatrixSelectionFilterParameter::~MultiAttributeMatrixSelectionFilt
 //
 // -----------------------------------------------------------------------------
 MultiAttributeMatrixSelectionFilterParameter::Pointer MultiAttributeMatrixSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QVector<DataArrayPath>& defaultValue,
-                                                                                            Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-                                                                                            const RequirementType req, int groupIndex)
+                                                                                            Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
+                                                                                            RequirementType req, int groupIndex)
 {
 
   MultiAttributeMatrixSelectionFilterParameter::Pointer ptr = MultiAttributeMatrixSelectionFilterParameter::New();
@@ -93,7 +93,7 @@ QString MultiAttributeMatrixSelectionFilterParameter::getWidgetType() const
 MultiAttributeMatrixSelectionFilterParameter::RequirementType MultiAttributeMatrixSelectionFilterParameter::CreateCategoryRequirement(const QString& primitiveType, size_t allowedCompDim,
                                                                                                                           AttributeMatrix::Category attributeMatrixCategory)
 {
-  typedef QVector<size_t> QVectorOfSizeType;
+  typedef std::vector<size_t> QVectorOfSizeType;
   MultiAttributeMatrixSelectionFilterParameter::RequirementType req;
   AttributeMatrix::Types amTypes;
   if(attributeMatrixCategory == AttributeMatrix::Category::Element)
@@ -139,7 +139,7 @@ MultiAttributeMatrixSelectionFilterParameter::RequirementType MultiAttributeMatr
 MultiAttributeMatrixSelectionFilterParameter::RequirementType MultiAttributeMatrixSelectionFilterParameter::CreateRequirement(const QString& primitiveType, size_t allowedCompDim, AttributeMatrix::Type attributeMatrixType,
                                                                                                                   IGeometry::Type geometryType)
 {
-  typedef QVector<size_t> QVectorOfSizeType;
+  typedef std::vector<size_t> QVectorOfSizeType;
   MultiAttributeMatrixSelectionFilterParameter::RequirementType req;
   if(primitiveType.compare(SIMPL::Defaults::AnyPrimitive) != 0)
   {

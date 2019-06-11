@@ -88,7 +88,7 @@ public:
   * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
   * @return
   */
-  static Pointer New(const QString& humanLabel, const QString& propertyName, ShapeType::Types defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+  static Pointer New(const QString& humanLabel, const QString& propertyName, ShapeType::Types defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback,
                      const QString& phaseTypeCountProperty, const QString& phaseTypeArrayPathProperty, int groupIndex = -1);
 
   ~ShapeTypeSelectionFilterParameter() override;

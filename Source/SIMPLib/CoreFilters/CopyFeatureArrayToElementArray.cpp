@@ -121,7 +121,7 @@ void CopyFeatureArrayToElementArray::dataCheck()
     return;
   }
 
-  QVector<size_t> cDims(1, 1);
+  std::vector<size_t> cDims(1, 1);
   m_FeatureIdsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFeatureIdsArrayPath(),
                                                                                                         cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
   if(nullptr != m_FeatureIdsPtr.lock())                                                                         /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
@@ -170,7 +170,7 @@ template <typename T> IDataArray::Pointer copyData(IDataArray::Pointer inputData
     return IDataArray::NullPointer();
   }
 
-  QVector<size_t> cDims = inputData->getComponentDimensions();
+  std::vector<size_t> cDims = inputData->getComponentDimensions();
   typename DataArray<T>::Pointer cell = DataArray<T>::CreateArray(totalPoints, cDims, cellArrayName);
 
   T* fPtr = feature->getPointer(0);

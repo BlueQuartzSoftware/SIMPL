@@ -48,8 +48,8 @@ BooleanFilterParameter::~BooleanFilterParameter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-BooleanFilterParameter::Pointer BooleanFilterParameter::New(const QString& humanLabel, const QString& propertyName, const bool& defaultValue, Category category, SetterCallbackType setterCallback,
-                                                            GetterCallbackType getterCallback, int groupIndex)
+BooleanFilterParameter::Pointer BooleanFilterParameter::New(const QString& humanLabel, const QString& propertyName, const bool& defaultValue, Category category,
+                                                            const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex)
 {
 
   BooleanFilterParameter::Pointer ptr = BooleanFilterParameter::New();

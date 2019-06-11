@@ -87,8 +87,7 @@ class SIMPLib_EXPORT StringFilterParameter : public FilterParameter
      * @return
      */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const QString& defaultValue, Category category, SetterCallbackType setterCallback,
-                       GetterCallbackType getterCallback, int groupIndex = -1);
+                       const QString& defaultValue, Category category, const SetterCallbackType& setterCallback, const GetterCallbackType& getterCallback, int groupIndex = -1);
 
     ~StringFilterParameter() override;
 

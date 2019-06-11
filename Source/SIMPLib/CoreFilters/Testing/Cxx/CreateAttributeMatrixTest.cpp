@@ -359,7 +359,7 @@ public:
   // -----------------------------------------------------------------------------
   void TestOperators()
   {
-    QVector<size_t> tDims = {10, 10};
+    std::vector<size_t> tDims = {10, 10};
     AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, "Test", AttributeMatrix::Type::Cell);
 
     FloatArrayType::Pointer floatArray = FloatArrayType::CreateArray(100, "Float");

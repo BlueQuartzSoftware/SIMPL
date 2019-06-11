@@ -136,7 +136,7 @@ class ImportASCIIDataWizard : public QWizard
     QStringList getDataTypes();
     int getBeginningLineNum();
     QString getInputFilePath();
-    QVector<size_t> getTupleDims();
+    std::vector<size_t> getTupleDims();
     bool getAutomaticAM();
     DataArrayPath getSelectedPath();
     int getAttributeMatrixType();

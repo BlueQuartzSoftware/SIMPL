@@ -17,8 +17,8 @@
 #include <hdf5.h>
 
 //--Qt Includes
+#include <QtCore/QDebug>
 #include <QtCore/QString>
-#include <QtCore/QtDebug>
 
 //SIMPLib Includes
 #include "SIMPLib/SIMPLib.h"
@@ -44,7 +44,7 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
 
   PYB11_METHOD(QString getTypeAsString)
-  PYB11_METHOD(QVector<size_t> getComponentDimensions)
+  PYB11_METHOD(std::vector<size_t> getComponentDimensions)
   PYB11_METHOD(size_t getNumberOfTuples)
   PYB11_METHOD(int getNumberOfComponents)
 
@@ -78,9 +78,9 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
     IDataArray(const QString& name = "");
     ~IDataArray() override;
 
-    virtual Pointer createNewArray(size_t numElements, int rank, size_t* dims, const QString& name, bool allocate = true) = 0;
-    virtual Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) = 0;
-    virtual Pointer createNewArray(size_t numElements, QVector<size_t> dims, const QString& name, bool allocate = true) = 0;
+    virtual Pointer createNewArray(size_t numElements, int rank, const size_t* dims, const QString& name, bool allocate = true) = 0;
+    virtual Pointer createNewArray(size_t numElements, const std::vector<size_t>& dims, const QString& name, bool allocate = true) = 0;
+    // virtual Pointer createNewArray(size_t numElements, std::vector<size_t> dims, const QString& name, bool allocate = true) = 0;
 
     /**
      * @brief Creates and returns a DataArrayPath for the DataArray
@@ -129,8 +129,7 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
     virtual size_t getSize() = 0;
 
     virtual int getNumberOfComponents() = 0;
-    virtual QVector<size_t> getComponentDimensions() = 0;
-
+    virtual std::vector<size_t> getComponentDimensions() = 0;
 
     /**
      * @brief Returns the number of bytes that make up the data type.
@@ -153,7 +152,7 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
      * @param idxs The indices to erase
      * @return
      */
-    virtual int eraseTuples(QVector<size_t>& idxs) = 0;
+    virtual int eraseTuples(std::vector<size_t>& idxs) = 0;
 
     /**
      * @brief Copies a Tuple from one position to another.
@@ -261,7 +260,7 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
      * @param tDims
      * @return
      */
-    virtual int writeH5Data(hid_t parentId, QVector<size_t> tDims) = 0;
+    virtual int writeH5Data(hid_t parentId, std::vector<size_t> tDims) = 0;
 
     /**
      * @brief readH5Data

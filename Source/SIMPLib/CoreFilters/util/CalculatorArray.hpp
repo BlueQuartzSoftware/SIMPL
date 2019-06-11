@@ -68,15 +68,12 @@ class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
       {
         return static_cast<double>(m_Array->getValue(i));
       }
-      else if (m_Array->getNumberOfTuples() == 1)
+      if(m_Array->getNumberOfTuples() == 1)
       {
         return static_cast<double>(m_Array->getValue(0));
       }
-      else
-      {
-        // ERROR: The array is empty!
-        return 0.0;
-      }
+      // ERROR: The array is empty!
+      return 0.0;
     }
 
     ICalculatorArray::ValueType getType() override
@@ -90,7 +87,7 @@ class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
       {
         if(m_Array->getNumberOfComponents() > 1)
         {
-          DoubleArrayType::Pointer newArray = DoubleArrayType::CreateArray(m_Array->getNumberOfTuples(), QVector<size_t>(1, 1), m_Array->getName(), allocate);
+          DoubleArrayType::Pointer newArray = DoubleArrayType::CreateArray(m_Array->getNumberOfTuples(), {1}, m_Array->getName(), allocate);
           if(allocate)
           {
             for(int i = 0; i < m_Array->getNumberOfTuples(); i++)
@@ -122,7 +119,7 @@ class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
       m_Type(type)
     {
       m_Array = DoubleArrayType::CreateArray(dataArray->getNumberOfTuples(), dataArray->getComponentDimensions(), dataArray->getName(), allocate);
-      if (allocate == true)
+      if(allocate)
       {
         for (int i = 0; i < dataArray->getSize(); i++)
         {
@@ -135,7 +132,10 @@ class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
     DoubleArrayType::Pointer                                  m_Array;
     ValueType                                                 m_Type;
 
-    CalculatorArray(const CalculatorArray&); // Copy Constructor Not Implemented
-    void operator=(const CalculatorArray&);  // Move assignment Not Implemented
+  public:
+    CalculatorArray(const CalculatorArray&) = delete;            // Copy Constructor Not Implemented
+    CalculatorArray(CalculatorArray&&) = delete;                 // Move Constructor Not Implemented
+    CalculatorArray& operator=(const CalculatorArray&) = delete; // Copy Assignment Not Implemented
+    CalculatorArray& operator=(CalculatorArray&&) = delete;      // Move Assignment Not Implemented
 };
 

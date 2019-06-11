@@ -121,7 +121,7 @@ void ReadASCIIDataWidget::setupGui()
 
     m_LineCounter = new LineCounterObject(m_FilePath, m_Filter->getWizardData().numberOfLines);
 
-    QVector<size_t> tupleDimsArray = m_Filter->getWizardData().tupleDims;
+    std::vector<size_t> tupleDimsArray = m_Filter->getWizardData().tupleDims;
 
     if(!tupleDimsArray.empty())
     {
@@ -177,7 +177,7 @@ void ReadASCIIDataWidget::on_editImportSettings_clicked()
       int beginIndex = m_ImportWizard->getBeginningLineNum();
       int numOfDataLines = numOfLines - beginIndex + 1;
       tupleCount->setText(QString::number(numOfDataLines));
-      QVector<size_t> dims = m_ImportWizard->getTupleDims();
+      std::vector<size_t> dims = m_ImportWizard->getTupleDims();
 
       QString tupleDimsStr = "";
       for(int i = 0; i < dims.size(); i++)
@@ -403,7 +403,7 @@ void ReadASCIIDataWidget::lineCountDidFinish()
     int beginIndex = m_ImportWizard->getBeginningLineNum();
     int numOfDataLines = numOfLines - beginIndex + 1;
     tupleCount->setText(QString::number(numOfDataLines));
-    QVector<size_t> dims = m_ImportWizard->getTupleDims();
+    std::vector<size_t> dims = m_ImportWizard->getTupleDims();
 
     QString tupleDimsStr = "";
     for(int i = 0; i < dims.size(); i++)

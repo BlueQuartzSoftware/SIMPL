@@ -387,7 +387,7 @@ protected:
   * @param compDims
   * @return
   */
-  QString createComponentReqString(QVector<QVector<size_t>> compDims) const;
+  QString createComponentReqString(std::vector<std::vector<size_t>> compDims) const;
 
   /**
   * @brief mouseMoveEvent

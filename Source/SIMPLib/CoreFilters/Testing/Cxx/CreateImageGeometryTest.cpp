@@ -60,7 +60,7 @@ public:
   {
     CreateImageGeometry::Pointer imageGeometry = CreateImageGeometry::New();
 
-    QVector<size_t> attributeMatrixSize = QVector<size_t>();
+    std::vector<size_t> attributeMatrixSize = std::vector<size_t>();
     attributeMatrixSize.push_back(3);
     attributeMatrixSize.push_back(3);
     attributeMatrixSize.push_back(3);

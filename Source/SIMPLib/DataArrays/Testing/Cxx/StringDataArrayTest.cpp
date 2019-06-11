@@ -297,7 +297,7 @@ public:
   {
     // Create an Array of 10 Structs
     StringDataArray::Pointer nodes = initializeStringDataArray();
-    QVector<size_t> idxs(k_ArraySize + 1, 0);
+    std::vector<size_t> idxs(k_ArraySize + 1, 0);
     // Try to erase more indices than there are in the struct array
     int err = nodes->eraseTuples(idxs);
     DREAM3D_REQUIRE_EQUAL(err, 0)

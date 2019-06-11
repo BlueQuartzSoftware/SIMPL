@@ -81,7 +81,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> std::shared_ptr<DataArray<T>> createDataArray(const QString& daName, const std::vector<std::vector<T>>& data, const QVector<size_t>& tupleDims, const QVector<size_t>& cDims)
+  template <typename T>
+  std::shared_ptr<DataArray<T>> createDataArray(const QString& daName, const std::vector<std::vector<T>>& data, const std::vector<size_t>& tupleDims, const std::vector<size_t>& cDims)
   {
     typename DataArray<T>::Pointer da = DataArray<T>::CreateArray(tupleDims, cDims, daName);
     for(int i = 0; i < da->getNumberOfTuples(); i++)
@@ -116,7 +117,7 @@ public:
     dca->addOrReplaceDataContainer(dc);
 
     // Create AttributeMatrices
-    QVector<size_t> tDims = {{10, 3}};
+    std::vector<size_t> tDims = {{10, 3}};
     AttributeMatrix::Pointer cellAM = AttributeMatrix::New(tDims, k_Cell_AMName, AttributeMatrix::Type::Cell);
     dc->addOrReplaceAttributeMatrix(cellAM);
 
@@ -234,7 +235,7 @@ public:
 
 private:
   QString m_FilterName = QString("CopyFeatureArrayToElementArray");
-  QVector<size_t> m_Dims1 = {1};
-  QVector<size_t> m_Dims3 = {3};
-  QVector<size_t> m_Dims10 = {10};
+  std::vector<size_t> m_Dims1 = {1};
+  std::vector<size_t> m_Dims3 = {3};
+  std::vector<size_t> m_Dims10 = {10};
 };

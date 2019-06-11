@@ -388,7 +388,7 @@ public:
   {
     // Create an Array of 10 Structs
     Vec3IntListPointer_t nodes = initializeStructArray();
-    QVector<size_t> idxs(k_ArraySize + 1, 0);
+    std::vector<size_t> idxs(k_ArraySize + 1, 0);
     // Try to erase more indices than there are in the struct array
     int err = nodes->eraseTuples(idxs);
     DREAM3D_REQUIRE_EQUAL(err, 0)
@@ -461,7 +461,7 @@ public:
   template <typename T> void _TestDeepCopyStructArray()
   {
     size_t numTuples = 10;
-    QVector<size_t> cDims(1, 1);
+    std::vector<size_t> cDims(1, 1);
     QString name("Source Array");
     typename StructArray<T>::Pointer src = StructArray<T>::CreateArray(numTuples, name, false);
     typename StructArray<T>::Pointer copy = std::dynamic_pointer_cast<StructArray<T>>(src->deepCopy());

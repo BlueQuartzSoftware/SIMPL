@@ -149,7 +149,7 @@ public:
    * @return Valid or nullptr shared pointer based on availability of the array
    */
   template <class ArrayType, class Filter>
-  typename ArrayType::Pointer getPrereqArrayFromPath(const DataContainerArrayShPtrType& dca, Filter* filter, const DataArrayPath& path, QVector<size_t> cDims)
+  typename ArrayType::Pointer getPrereqArrayFromPath(const DataContainerArrayShPtrType& dca, Filter* filter, const DataArrayPath& path, std::vector<size_t> cDims)
   {
 
     QString ss;
@@ -284,7 +284,7 @@ public:
    * @return A Shared Pointer to the newly created array
    */
   template <class ArrayType, class Filter, typename T>
-  typename ArrayType::Pointer createNonPrereqArrayFromPath(const DataContainerArrayShPtrType& dca, Filter* filter, const DataArrayPath& path, T initValue, QVector<size_t> compDims,
+  typename ArrayType::Pointer createNonPrereqArrayFromPath(const DataContainerArrayShPtrType& dca, Filter* filter, const DataArrayPath& path, T initValue, std::vector<size_t> compDims,
                                                            const QString& property = "", RenameDataPath::DataID_t id = RenameDataPath::k_Invalid_ID)
   {
     typename ArrayType::Pointer dataArray = ArrayType::NullPointer();

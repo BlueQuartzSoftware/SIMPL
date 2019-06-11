@@ -152,7 +152,7 @@ void CreateStringArray::dataCheck()
     QString ss = "Empty initialization value.";
     setErrorCondition(-5759, ss);
   }
-  QVector<size_t> cDims(1, getNumberOfComponents());
+  std::vector<size_t> cDims(1, getNumberOfComponents());
   if(getErrorCode() < 0)
   {
     return;

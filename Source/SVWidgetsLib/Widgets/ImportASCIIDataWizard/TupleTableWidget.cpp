@@ -78,17 +78,17 @@ void TupleTableWidget::setupGui()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<size_t> TupleTableWidget::getData()
+std::vector<size_t> TupleTableWidget::getData()
 {
   int cCount = tupleTable->columnCount();
-  QVector<size_t> data(cCount, 0);
+  std::vector<size_t> data(cCount, 0);
 
   for(int col = 0; col < cCount; col++)
   {
     QTableWidgetItem* item = tupleTable->item(0, col);
     if(nullptr == item)
     {
-      return QVector<size_t>();
+      return std::vector<size_t>();
     }
     data[col] = item->data(Qt::DisplayRole).toInt();
   }
@@ -99,7 +99,7 @@ QVector<size_t> TupleTableWidget::getData()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TupleTableWidget::addTupleDimensions(QVector<size_t> tupleDims)
+void TupleTableWidget::addTupleDimensions(std::vector<size_t> tupleDims)
 {
   if(!m_UserEdited)
   {
