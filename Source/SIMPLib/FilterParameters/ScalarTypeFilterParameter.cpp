@@ -35,7 +35,6 @@
 
 #include "ScalarTypeFilterParameter.h"
 
-#include <QtCore/QJsonArray>
 
 // -----------------------------------------------------------------------------
 //

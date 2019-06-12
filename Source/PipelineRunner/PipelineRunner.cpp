@@ -43,13 +43,12 @@
 // Qt Includes
 #include <QtCore/QCommandLineOption>
 #include <QtCore/QCommandLineParser>
+#include <QtCore/QFileInfo>
 
 #include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
+#include <QtCore/QDebug>
 #include <QtCore/QFile>
-#include <QtCore/QSettings>
 #include <QtCore/QString>
-#include <QtCore/QtDebug>
 
 // DREAM3DLib includes
 #include "SIMPLib/Common/Constants.h"

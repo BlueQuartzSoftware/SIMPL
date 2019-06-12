@@ -38,7 +38,6 @@
 
 
 
-#include <QtCore/QObject>
 #include <QtWidgets/QWidget>
 
 #include "SIMPLib/Filtering/AbstractFilter.h"

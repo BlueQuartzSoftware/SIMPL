@@ -34,11 +34,8 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "JsonFilterParametersReader.h"
 
-#include <QtCore/QDataStream>
 #include <QtCore/QFileInfo>
-#include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
-#include <QtCore/QMetaType>
 #include <QtCore/QStringList>
 
 #include "SIMPLib/Common/Constants.h"

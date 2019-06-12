@@ -35,7 +35,6 @@
 
 #pragma once
 
-#include <QtCore/QDateTime>
 #include <QtCore/QDir>
 #include <QtCore/QString>
 #include <QtCore/QVector>

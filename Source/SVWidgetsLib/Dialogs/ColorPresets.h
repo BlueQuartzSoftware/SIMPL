@@ -47,7 +47,6 @@
 #pragma once
 
 #include <QtCore/QString>
-#include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"

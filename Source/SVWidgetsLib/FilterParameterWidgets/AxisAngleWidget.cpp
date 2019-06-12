@@ -35,7 +35,6 @@
 
 #include "AxisAngleWidget.h"
 
-#include <QtCore/QMetaProperty>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"

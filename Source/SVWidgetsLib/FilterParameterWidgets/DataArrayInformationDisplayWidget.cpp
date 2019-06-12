@@ -35,9 +35,6 @@
 
 #include "DataArrayInformationDisplayWidget.h"
 
-#include <QtCore/QList>
-#include <QtCore/QMetaProperty>
-#include <QtWidgets/QListWidgetItem>
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"

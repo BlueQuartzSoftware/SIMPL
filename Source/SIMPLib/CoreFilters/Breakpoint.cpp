@@ -35,7 +35,6 @@
 
 #include "Breakpoint.h"
 
-#include <QtCore/QCoreApplication>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"

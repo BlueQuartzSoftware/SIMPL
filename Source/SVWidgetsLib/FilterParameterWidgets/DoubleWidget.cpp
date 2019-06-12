@@ -35,7 +35,6 @@
 
 #include "DoubleWidget.h"
 
-#include <QtCore/QMetaProperty>
 
 #include "SVWidgetsLib/Widgets/SVStyle.h"
 

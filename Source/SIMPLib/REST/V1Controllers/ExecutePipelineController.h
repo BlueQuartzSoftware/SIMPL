@@ -34,7 +34,6 @@
 
 #include <QtCore/QJsonObject>
 #include <QtCore/QTemporaryDir>
-#include <QtCore/QTemporaryFile>
 
 #include "QtWebApp/httpserver/httprequest.h"
 #include "QtWebApp/httpserver/httprequesthandler.h"

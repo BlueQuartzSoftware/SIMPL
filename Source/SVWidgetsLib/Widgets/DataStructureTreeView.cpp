@@ -38,18 +38,11 @@
 
 #include <iostream>
 
-#include <QtCore/QDir>
-#include <QtCore/QFileInfo>
-#include <QtCore/QJsonDocument>
-#include <QtCore/QJsonObject>
 #include <QtCore/QMimeData>
-#include <QtCore/QSortFilterProxyModel>
 #include <QtGui/QDrag>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QStandardItemModel>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QFileDialog>
-#include <QtWidgets/QMessageBox>
 
 #include "SIMPLib/DataContainers/AbstractTileIndex.h"
 

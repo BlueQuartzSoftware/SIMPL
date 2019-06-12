@@ -35,15 +35,10 @@
 #include "MultiDataContainerSelectionWidget.h"
 
 #include <QtCore/QList>
-#include <QtCore/QMetaProperty>
-#include <QtCore/QSignalMapper>
 #include <QtCore/QModelIndex>
 
-#include <QtGui/QStandardItemModel>
 
 #include <QtWidgets/QListWidgetItem>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QStyledItemDelegate>
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"

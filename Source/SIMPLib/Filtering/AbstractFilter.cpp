@@ -35,7 +35,6 @@
 
 #include "AbstractFilter.h"
 
-#include <QtCore/QMetaProperty>
 
 #include "SIMPLib/Messages/FilterErrorMessage.h"
 #include "SIMPLib/Messages/FilterProgressMessage.h"

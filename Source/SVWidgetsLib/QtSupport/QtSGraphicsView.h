@@ -41,7 +41,6 @@
 #include <QtCore/QVector>
 #include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QGraphicsItem>
-#include <QtWidgets/QRubberBand>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 

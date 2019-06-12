@@ -35,7 +35,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-#include <QtCore/QObject>
 #include <QtCore/QString>
 #include <QtWidgets/QMessageBox>
 

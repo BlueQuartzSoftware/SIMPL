@@ -36,7 +36,6 @@
 #include "OutputFileWidget.h"
 
 #include <QtCore/QDir>
-#include <QtCore/QMetaProperty>
 
 #include <QtWidgets/QFileDialog>
 

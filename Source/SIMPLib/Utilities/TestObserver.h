@@ -32,8 +32,6 @@
 #pragma once
 
 #include <QtCore/QObject>
-#include <QtCore/QVector>
-#include <QtCore/QString>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"

@@ -37,7 +37,6 @@
 #pragma once
 
 #include <QtCore/QStack>
-#include <QtCore/QQueue>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"

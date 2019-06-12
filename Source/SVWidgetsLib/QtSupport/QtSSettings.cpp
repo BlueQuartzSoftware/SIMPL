@@ -39,11 +39,9 @@
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
+#include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QSettings>
-#include <QtCore/QTextCodec>
-
-#include <QtWidgets/QTreeWidgetItemIterator>
 
 // -----------------------------------------------------------------------------
 //

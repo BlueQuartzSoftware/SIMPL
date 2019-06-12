@@ -41,10 +41,10 @@
 
 // Qt Includes
 #include <QtCore/QCoreApplication>
+#include <QtCore/QDebug>
 #include <QtCore/QDir>
 #include <QtCore/QPluginLoader>
 #include <QtCore/QStringList>
-#include <QtCore/QtDebug>
 
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"

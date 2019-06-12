@@ -36,7 +36,6 @@
 
 
 #include <QtCore/QSettings>
-#include <QtCore/QtPlugin>
 #include <QtCore/QString>
 
 #include "SIMPLib/SIMPLib.h"

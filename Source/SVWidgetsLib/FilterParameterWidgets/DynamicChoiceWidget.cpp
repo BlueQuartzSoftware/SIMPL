@@ -35,7 +35,6 @@
 
 #include "DynamicChoiceWidget.h"
 
-#include <QtCore/QMetaProperty>
 
 #include "SIMPLib/FilterParameters/DynamicChoiceFilterParameter.h"
 

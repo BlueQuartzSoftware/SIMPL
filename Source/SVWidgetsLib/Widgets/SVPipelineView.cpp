@@ -37,14 +37,10 @@
 #include <iostream>
 #include <utility>
 
-#include <QtCore/QDir>
 #include <QtCore/QFileInfo>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QMimeData>
-#include <QtCore/QSharedPointer>
-#include <QtCore/QSignalMapper>
-#include <QtCore/QTemporaryFile>
 #include <QtCore/QThread>
 #include <QtCore/QUrl>
 
@@ -55,16 +51,11 @@
 #include <QtGui/QDragMoveEvent>
 #include <QtGui/QDropEvent>
 #include <QtGui/QMouseEvent>
+#include <QtGui/QPainter>
 #include <QtGui/QPixmap>
 
-#include <QtWidgets/QHeaderView>
-#include <QtWidgets/QLabel>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMessageBox>
-#include <QtWidgets/QProgressDialog>
-#include <QtWidgets/QScrollArea>
-#include <QtWidgets/QScrollBar>
-#include <QtWidgets/QVBoxLayout>
 
 #include "SIMPLib/Common/DocRequestManager.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"

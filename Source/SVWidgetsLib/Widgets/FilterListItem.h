@@ -36,8 +36,6 @@
 #pragma once
 
 #include <QtCore/QList>
-#include <QtCore/QVariant>
-#include <QtCore/QVector>
 
 #include <QtGui/QIcon>
 

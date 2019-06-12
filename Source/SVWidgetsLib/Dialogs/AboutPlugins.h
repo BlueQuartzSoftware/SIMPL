@@ -38,7 +38,6 @@
 
 #include <QtWidgets/QCheckBox>
 
-#include <QtCore/QObject>
 
 #include "SIMPLib/Plugin/PluginProxy.h"
 #include "SIMPLib/Plugin/PluginManager.h"

@@ -35,7 +35,6 @@
 
 #include "CreateDataArray.h"
 
-#include <QtCore/QDateTime>
 
 #include <limits>
 #include <random>

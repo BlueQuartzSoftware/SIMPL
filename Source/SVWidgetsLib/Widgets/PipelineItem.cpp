@@ -31,8 +31,6 @@
 
 #include "PipelineItem.h"
 
-#include <QtCore/QStringList>
-#include <QtGui/QColor>
 
 #include "SVWidgetsLib/Widgets/FilterInputWidget.h"
 

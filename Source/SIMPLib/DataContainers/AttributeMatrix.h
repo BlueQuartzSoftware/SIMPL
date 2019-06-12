@@ -47,9 +47,7 @@
 #include <hdf5.h>
 
 #include <QtCore/QObject>
-#include <QtCore/QList>
 #include <QtCore/QString>
-#include <QtCore/QMap>
 #include <QtCore/QVector>
 
 //-- DREAM3D Includes

@@ -36,8 +36,7 @@
 
 #pragma once
 
-#include <QtWidgets/QWizardPage>
-#include <QtWidgets/QButtonGroup>
+#include <QtCore/QPointer>
 
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 

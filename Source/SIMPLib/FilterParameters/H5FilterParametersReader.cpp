@@ -37,8 +37,6 @@
 
 #include <limits>
 
-#include <QtCore/QFileInfo>
-#include <QtCore/QJsonDocument>
 #include <QtCore/QStringList>
 
 #include "H5Support/H5ScopedSentinel.h"

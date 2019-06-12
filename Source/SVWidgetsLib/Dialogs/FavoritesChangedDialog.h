@@ -35,7 +35,6 @@
 
 #pragma once
 
-#include <QtWidgets/QDialog>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/Widgets/SVControlWidgets.h"

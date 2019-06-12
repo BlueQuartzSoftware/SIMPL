@@ -36,9 +36,7 @@
 #pragma once
 
 #include <QtCore/QModelIndex>
-#include <QtCore/QScopedPointer>
 
-#include <QtWidgets/QDialog>
 
 #include "SVWidgetsLib/Dialogs/ColorPresets.h"
 

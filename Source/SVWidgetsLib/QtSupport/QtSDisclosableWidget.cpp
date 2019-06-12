@@ -38,20 +38,10 @@
 
 #include <iostream>
 
-#include <QtCore/QTimer>
 #include <QtCore/QPropertyAnimation>
 
-#include <QtGui/QPainter>
 
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QFormLayout>
-#include <QtWidgets/QGridLayout>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QVBoxLayout>
 
-#include <QtGui/QMouseEvent>
-#include <QtWidgets/QFileDialog>
-#include <QtWidgets/QPushButton>
 
 // -----------------------------------------------------------------------------
 //

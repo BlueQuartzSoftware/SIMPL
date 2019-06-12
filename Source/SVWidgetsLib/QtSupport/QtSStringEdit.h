@@ -36,7 +36,6 @@
 #pragma once
 
 #include <QtWidgets/QWidget>
-#include <QtGui/QKeyEvent>
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 

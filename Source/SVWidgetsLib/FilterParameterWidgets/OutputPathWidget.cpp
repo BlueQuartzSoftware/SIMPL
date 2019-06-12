@@ -35,7 +35,6 @@
 
 #include "OutputPathWidget.h"
 
-#include <QtCore/QMetaProperty>
 
 #include <QtWidgets/QFileDialog>
 

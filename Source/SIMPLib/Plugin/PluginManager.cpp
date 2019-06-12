@@ -36,6 +36,7 @@
 #include "PluginManager.h"
 
 #include <QtCore/QJsonArray>
+#include <QtCore/QJsonObject>
 
 #include "SIMPLib/Filtering/CorePlugin.h"
 #include "SIMPLib/Plugin/SIMPLPluginConstants.h"

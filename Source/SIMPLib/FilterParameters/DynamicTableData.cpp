@@ -37,6 +37,7 @@
 
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
+#include <QtCore/QSize>
 
 // -----------------------------------------------------------------------------
 //

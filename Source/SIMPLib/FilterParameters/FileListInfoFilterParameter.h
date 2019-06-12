@@ -37,7 +37,6 @@
 
 #include <QtCore/QString>
 #include <QtCore/QJsonObject>
-#include <QtCore/QMetaType>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/FileListInfo.h"

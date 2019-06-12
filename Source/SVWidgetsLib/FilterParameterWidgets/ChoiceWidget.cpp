@@ -35,7 +35,6 @@
 
 #include "ChoiceWidget.h"
 
-#include <QtCore/QMetaProperty>
 
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"

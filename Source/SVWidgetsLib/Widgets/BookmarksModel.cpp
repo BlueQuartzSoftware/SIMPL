@@ -35,6 +35,7 @@
 
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 
+#include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
 #include <QtCore/QDirIterator>
 

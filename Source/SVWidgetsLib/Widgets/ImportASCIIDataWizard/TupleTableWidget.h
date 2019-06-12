@@ -34,8 +34,6 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
 
 #include "ui_TupleTableWidget.h"

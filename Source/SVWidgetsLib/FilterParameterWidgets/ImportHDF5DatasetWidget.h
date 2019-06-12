@@ -32,7 +32,6 @@
 
 #pragma once
 
-#include <QtWidgets/QMainWindow>
 #include <QtWidgets/QWidget>
 
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"

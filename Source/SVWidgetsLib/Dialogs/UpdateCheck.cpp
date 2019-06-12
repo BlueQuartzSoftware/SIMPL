@@ -36,14 +36,10 @@
 #include "UpdateCheck.h"
 
 #include <QtCore/QDate>
-#include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
-#include <QtCore/QSettings>
 #include <QtCore/QSysInfo>
 
-#include <QtWidgets/QMessageBox>
-#include <QtWidgets/QWidget>
 
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>

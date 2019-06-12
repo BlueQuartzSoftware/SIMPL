@@ -35,7 +35,6 @@
 
 #include "TupleSelectionPage.h"
 
-#include <QtCore/QFile>
 
 #include "SIMPLib/Common/Constants.h"
 

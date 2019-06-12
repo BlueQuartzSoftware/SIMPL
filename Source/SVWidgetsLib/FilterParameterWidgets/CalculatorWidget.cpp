@@ -35,9 +35,6 @@
 
 #include "CalculatorWidget.h"
 
-#include <QtCore/QMetaProperty>
-#include <QtCore/QPropertyAnimation>
-#include <QtCore/QSequentialAnimationGroup>
 
 #include <QtWidgets/QMenu>
 

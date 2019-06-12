@@ -35,13 +35,9 @@
 
 #include "LinkedDataContainerSelectionWidget.h"
 
-#include <QtCore/QList>
-#include <QtCore/QMetaProperty>
 #include <QtCore/QSignalMapper>
 
-#include <QtGui/QStandardItemModel>
 
-#include <QtWidgets/QListWidgetItem>
 #include <QtWidgets/QMenu>
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"

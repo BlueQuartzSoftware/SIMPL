@@ -36,7 +36,6 @@
 #pragma once
 
 #include <QtCore/QString>
-#include <QtCore/QTextStream>
 
 namespace DREAM3D
 {

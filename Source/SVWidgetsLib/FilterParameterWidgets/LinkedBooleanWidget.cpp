@@ -35,7 +35,6 @@
 
 #include "LinkedBooleanWidget.h"
 
-#include <QtCore/QMetaProperty>
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 

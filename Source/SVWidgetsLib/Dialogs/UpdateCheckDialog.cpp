@@ -38,17 +38,11 @@
 #include <iostream>
 
 #include <QtCore/QDate>
-#include <QtCore/QDir>
 #include <QtCore/QString>
-#include <QtCore/QStringList>
 
-#include <QtGui/QDesktopServices>
 
 #include <QtWidgets/QAction>
 
-#include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkReply>
-#include <QtNetwork/QNetworkRequest>
 
 #include "SVWidgetsLib/Dialogs/UpdateCheckData.h"
 

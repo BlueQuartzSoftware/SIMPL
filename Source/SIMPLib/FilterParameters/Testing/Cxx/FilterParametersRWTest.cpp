@@ -33,10 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDir>
 #include <QtCore/QPair>
-#include <QtCore/QSet>
 
 #include "SIMPLib/Common/PhaseType.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"

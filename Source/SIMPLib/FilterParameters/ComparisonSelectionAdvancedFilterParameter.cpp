@@ -35,7 +35,6 @@
 
 #include "ComparisonSelectionAdvancedFilterParameter.h"
 
-#include <QtCore/QJsonArray>
 
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Filtering/ComparisonValue.h"

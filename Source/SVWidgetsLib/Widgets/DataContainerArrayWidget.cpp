@@ -34,7 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "DataContainerArrayWidget.h"
 
-#include <QtCore/QMetaProperty>
+#include <QtGui/QStandardItem>
+#include <QtGui/QStandardItemModel>
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
