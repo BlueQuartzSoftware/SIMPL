@@ -82,7 +82,7 @@ public:
 
   using IndexedFilterObject = std::pair<int, PipelineFilterObject*>;
 
-  SIMPL_INSTANCE_PROPERTY(PipelineViewState, PipelineState)
+  SIMPL_INSTANCE_PROPERTY(SVPipelineView::PipelineViewState, PipelineState)
 
   SIMPL_GET_PROPERTY(QAction*, ActionEnableFilter)
   SIMPL_GET_PROPERTY(QAction*, ActionCut)

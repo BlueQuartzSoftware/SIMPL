@@ -210,7 +210,7 @@ class SIMPLib_EXPORT IGeometry : public Observable
     SIMPL_INSTANCE_PROPERTY(float, TimeValue)
     SIMPL_INSTANCE_PROPERTY(bool, EnableTimeSeries)
     SIMPL_INSTANCE_PROPERTY(ITransformContainer::Pointer, TransformContainer)
-    SIMPL_INSTANCE_PROPERTY(LengthUnit, Units)
+    SIMPL_INSTANCE_PROPERTY(IGeometry::LengthUnit, Units)
 
     // -----------------------------------------------------------------------------
     // Connectivity

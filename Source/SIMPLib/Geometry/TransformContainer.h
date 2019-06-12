@@ -41,21 +41,27 @@
 class SIMPLib_EXPORT TransformContainer : public ITransformContainer
 {
 public:
-  typedef double ParametersValueType;
-  typedef std::vector<ParametersValueType> TransformParametersType;
-  typedef std::vector<ParametersValueType> TransformFixedParametersType;
+
+  using ParametersValueType = double;
+  using TransformParametersType = std::vector<ParametersValueType>;
+  using TransformFixedParametersType = std::vector<ParametersValueType>;
+
+  TransformContainer();
+  ~TransformContainer() override;
+
   SIMPL_SHARED_POINTERS(TransformContainer)
   SIMPL_STATIC_NEW_MACRO(TransformContainer)
   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(TransformContainer, ITransformContainer)
-  TransformContainer();
-  ~TransformContainer() override;
-  TransformContainer& operator=(const TransformContainer&);
-  int writeTransformContainerToHDF5(hid_t parentId, const std::string& transformContainerName) override;
-  int readTransformContainerFromHDF5(hid_t parentId, bool metaDataOnly, const std::string& transformContainerName) override;
 
-  SIMPL_INSTANCE_PROPERTY(TransformParametersType, Parameters)
-  SIMPL_INSTANCE_PROPERTY(TransformFixedParametersType, FixedParameters)
+  SIMPL_INSTANCE_PROPERTY(TransformContainer::TransformParametersType, Parameters)
+  SIMPL_INSTANCE_PROPERTY(TransformContainer::TransformFixedParametersType, FixedParameters)
   SIMPL_INSTANCE_PROPERTY(std::string, TransformTypeAsString)
   SIMPL_INSTANCE_PROPERTY(std::string, MovingName)
   SIMPL_INSTANCE_PROPERTY(std::string, ReferenceName)
+
+  TransformContainer& operator=(const TransformContainer&);
+
+  int writeTransformContainerToHDF5(hid_t parentId, const std::string& transformContainerName) override;
+  
+  int readTransformContainerFromHDF5(hid_t parentId, bool metaDataOnly, const std::string& transformContainerName) override;
 };
