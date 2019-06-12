@@ -61,6 +61,7 @@
 #include "SIMPLib/DataContainers/RenameDataPath.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Utilities/ToolTipGenerator.h"
 
 class AttributeMatrixProxy;
 class DataContainerProxy;
@@ -674,6 +675,13 @@ public:
      * @return
      */
     virtual QString getInfoString(SIMPL::InfoStringFormat format);
+
+    /**
+     * @brief Returns a ToolTipGenerator for creating HTML tooltip tables
+     * with values populated to match the current AttributeMatrix.
+     * @return
+     */
+    virtual ToolTipGenerator getToolTipGenerator();
 
   protected:
     AttributeMatrix(const QVector<size_t>& tDims, const QString& name, AttributeMatrix::Type attrType);

@@ -462,28 +462,30 @@ int StringDataArray::writeXdmfAttribute(QTextStream& out, int64_t* volDims, cons
 // -----------------------------------------------------------------------------
 QString StringDataArray::getInfoString(SIMPL::InfoStringFormat format)
 {
-  QString info;
-  QTextStream ss(&info);
   if(format == SIMPL::HtmlFormat)
   {
-    ss << "<html><head></head>\n";
-    ss << "<body>\n";
-    ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
-    ss << "<tbody>\n";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Attribute Array Info</th></tr>";
-    ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Name:</th><td>)" << getName() << R"(</td></tr>)";
-    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type:</th><td>" << getTypeAsString() << R"(</td></tr>)";
-    QLocale usa(QLocale::English, QLocale::UnitedStates);
-    QString numStr = usa.toString(static_cast<qlonglong>(getNumberOfTuples()));
-    ss << R"(<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Tuples:</th><td>)" << numStr << R"(</td></tr>)";
-    ss << "</tbody></table>\n";
-    ss << "<br/>";
-    ss << "</body></html>";
+    return getToolTipGenerator().generateHTML();
   }
   else
   {
   }
-  return info;
+  return QString();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+ToolTipGenerator StringDataArray::getToolTipGenerator()
+{
+  ToolTipGenerator toolTipGen;
+  QLocale usa(QLocale::English, QLocale::UnitedStates);
+
+  toolTipGen.addTitle("Attribute Array Info");
+  toolTipGen.addValue("Name", getName());
+  toolTipGen.addValue("Type", getTypeAsString());
+  toolTipGen.addValue("Number of Tuples", usa.toString(static_cast<qlonglong>(getNumberOfTuples())));
+
+  return toolTipGen;
 }
 
 // -----------------------------------------------------------------------------

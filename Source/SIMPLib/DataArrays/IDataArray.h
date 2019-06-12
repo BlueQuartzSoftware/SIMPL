@@ -25,6 +25,7 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataContainers/IDataStructureNode.h"
+#include "SIMPLib/Utilities/ToolTipGenerator.h"
 
 
 /**
@@ -293,6 +294,13 @@ class SIMPLib_EXPORT IDataArray : public IDataStructureNode
      * the instance of the object.
      */
     virtual QString getInfoString(SIMPL::InfoStringFormat format) = 0;
+
+    /**
+     * @brief Returns a ToolTipGenerator for creating HTML tooltip tables
+     * with values populated to match the current DataArray.
+     * @return
+     */
+    virtual ToolTipGenerator getToolTipGenerator() = 0;
 
   protected:
 

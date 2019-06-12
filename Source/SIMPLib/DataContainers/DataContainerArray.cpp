@@ -466,18 +466,6 @@ void DataContainerArray::addOrReplaceMontage(const AbstractMontageShPtr& montage
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerArray::removeMontage(const AbstractMontageShPtr& montage)
-{
-  if(nullptr == montage)
-  {
-    return;
-  }
-  m_MontageCollection.erase(montage->getName());
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void DataContainerArray::removeMontage(const QString& name)
 {
   m_MontageCollection.erase(name);

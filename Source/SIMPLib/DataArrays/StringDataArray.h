@@ -346,6 +346,13 @@ public:
   QString getInfoString(SIMPL::InfoStringFormat format) override;
 
   /**
+   * @brief Returns a ToolTipGenerator for creating HTML tooltip tables
+   * with values populated to match the current DataArray.
+   * @return
+   */
+  ToolTipGenerator getToolTipGenerator() override;
+
+  /**
    * @brief readH5Data
    * @param parentId
    * @return

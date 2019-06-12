@@ -284,18 +284,52 @@ public:
      */
     void removeDataContainerFromBundles(const QString& name);
 
+    /**
+     * @brief Returns a copy of the Montage collection.
+     * @return
+     */
     MontageCollection getMontageCollection() const;
+
+    /**
+     * @brief Attempts to add the given montage to the collection.
+     * This will fail if a montage by the same name already exists in the collection.
+     * Returns true if it succeded.  Returns false otherwise.
+     * @param montage
+     * @return
+     */
     bool addMontage(const AbstractMontageShPtr& montage);
+
+    /**
+     * @brief Adds the given montage to the collection if no montages of the same name exist yet.
+     * Otherwise, the current montage is replaced with the one provided.
+     * @param montage
+     */
     void addOrReplaceMontage(const AbstractMontageShPtr& montage);
-    void removeMontage(const AbstractMontageShPtr& montage);
+
+    /**
+     * @brief Removes any montage of the given name from the collection.
+     * @param name
+     */
     void removeMontage(const QString& name);
+
+    /**
+     * @brief Finds and returns a shared pointer to a montage with the given name.
+     * If none are found, this returns nullptr.
+     * @param name
+     * @return
+     */
     AbstractMontageShPtr getMontage(const QString& name) const;
+
+    /**
+     * @brief Returns a list of names for all montages in the collection.
+     * @return
+     */
     QStringList getMontageNames() const;
 
     /**
-    * @brief renameDataArrayPaths
-    * @param renamePaths
-    */
+     * @brief renameDataArrayPaths
+     * @param renamePaths
+     */
     void renameDataArrayPaths(DataArrayPath::RenameContainer renamePaths);
 
     template <class Filter> DataContainerShPtr getPrereqDataContainer(Filter* filter, const DataArrayPath& dap, bool createIfNotExists = false)

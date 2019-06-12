@@ -1369,53 +1369,51 @@ public:
   }
 
   /**
+   * @brief Returns a ToolTipGenerator for creating HTML tooltip tables
+   * with values populated to match the current DataArray.
+   * @return
+   */
+  ToolTipGenerator getToolTipGenerator() override
+  {
+    ToolTipGenerator toolTipGen;
+    QLocale usa(QLocale::English, QLocale::UnitedStates);
+
+    toolTipGen.addTitle("Attribute Array Info");
+    toolTipGen.addValue("Name", getName());
+    toolTipGen.addValue("Type", getTypeAsString());
+    toolTipGen.addValue("Number of Tuples", usa.toString(static_cast<qlonglong>(getNumberOfTuples())));
+
+    QString compDimStr = "(";
+    for(int i = 0; i < m_CompDims.size(); i++)
+    {
+      compDimStr = compDimStr + QString::number(m_CompDims[i]);
+      if(i < m_CompDims.size() - 1)
+      {
+        compDimStr = compDimStr + QString(", ");
+      }
+    }
+    toolTipGen.addValue("Component Dimensions", compDimStr);
+    toolTipGen.addValue("Total Elements", usa.toString(static_cast<qlonglong>(m_Size)));
+    toolTipGen.addValue("Total Memory Required", usa.toString(static_cast<qlonglong>(m_Size * sizeof(T))));
+
+    return toolTipGen;
+  }
+
+  /**
    * @brief getInfoString
    * @return Returns a formatted string that contains general infomation about
    * the instance of the object.
    */
   QString getInfoString(SIMPL::InfoStringFormat format) override
   {
-
-    QLocale usa(QLocale::English, QLocale::UnitedStates);
-
-    QString info;
-    QTextStream ss(&info);
     if(format == SIMPL::HtmlFormat)
     {
-      ss << "<html><head></head>\n";
-      ss << "<body>\n";
-      ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
-      ss << "<tbody>\n";
-      ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Attribute Array Info</th></tr>";
-
-      ss << R"(<tr bgcolor="#E9E7D6"><th align="right">Name:</th><td>)" << getName() << "</td></tr>";
-
-      ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Type:</th><td> DataArray&lt;)" << getTypeAsString() << "&gt;</td></tr>";
-      QString numStr = usa.toString(static_cast<qlonglong>(getNumberOfTuples()));
-      ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Number of Tuples:</th><td>)" << numStr << "</td></tr>";
-
-      QString compDimStr = "(";
-      for(int i = 0; i < m_CompDims.size(); i++)
-      {
-        compDimStr = compDimStr + QString::number(m_CompDims[i]);
-        if(i < m_CompDims.size() - 1)
-        {
-          compDimStr = compDimStr + QString(", ");
-        }
-      }
-      compDimStr = compDimStr + ")";
-      ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Component Dimensions:</th><td>)" << compDimStr << "</td></tr>";
-      numStr = usa.toString(static_cast<qlonglong>(m_Size));
-      ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Total Elements:</th><td>)" << numStr << "</td></tr>";
-      numStr = usa.toString(static_cast<qlonglong>(m_Size * sizeof(T)));
-      ss << R"(<tr bgcolor="#FFFCEA"><th align="right">Total Memory Required:</th><td>)" << numStr << "</td></tr>";
-      ss << "</tbody></table>\n";
-      ss << "</body></html>";
+      return getToolTipGenerator().generateHTML();
     }
     else
     {
     }
-    return info;
+    return QString();
   }
 
   /**
