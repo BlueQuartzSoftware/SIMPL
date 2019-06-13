@@ -1,5 +1,5 @@
 /* ============================================================================
- * Copyright (c) 2019 BlueQuartz Software, LLC
+ * Copyright (c) 2019-2019 BlueQuartz Software, LLC
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -27,150 +27,105 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * The code contained herein was partially funded by the followig contracts:
- *    United States Air Force Prime Contract FA8650-15-D-5231
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "IDataStructureNode.h"
+#include "DataContainerGridSelectionFilterParameter.h"
 
-#include <sstream>
-#include <stdexcept>
-#include <string>
-
-//#include "SIMPLib/DataContainers/DsnIterators.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataStructureNode::HashType IDataStructureNode::CreateStringHash(const QString& string)
+DataContainerGridSelectionFilterParameter::DataContainerGridSelectionFilterParameter() = default;
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataContainerGridSelectionFilterParameter::~DataContainerGridSelectionFilterParameter() = default;
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataContainerGridSelectionFilterParameter::Pointer DataContainerGridSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const DataContainerGrid& defaultValue,
+                                                                                                  Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                                                                                                  int groupIndex)
 {
-  std::hash<std::string> hashFn;
-  std::string stdStr = std::string(string.toStdString());
-  HashType hash = hashFn(stdStr);
-  return hash;
+  DataContainerGridSelectionFilterParameter::Pointer ptr = DataContainerGridSelectionFilterParameter::New();
+  ptr->setHumanLabel(humanLabel);
+  ptr->setPropertyName(propertyName);
+  QVariant v;
+  v.setValue(defaultValue);
+  ptr->setDefaultValue(v);
+  ptr->setCategory(category);
+  ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
+
+  return ptr;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataStructureNode::IDataStructureNode(const QString& name)
-: m_Name(name)
-, m_Parent(nullptr)
+QString DataContainerGridSelectionFilterParameter::getWidgetType() const
 {
-  updateNameHash();
+  return QString("DataContainerGridSelectionWidget");
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataStructureNode::IDataStructureNode(ParentType* parent, const QString& name)
-: m_Name(name)
-, m_Parent(parent)
+void DataContainerGridSelectionFilterParameter::readJson(const QJsonObject& json)
 {
-  updateNameHash();
-
-  // Add to parent's children
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IDataStructureNode::~IDataStructureNode()
-{
-  if(m_Parent != nullptr)
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
-    m_Parent->removeChildNode(this);
+    QJsonObject obj = jsonValue.toObject();
+    DataArrayPath dap;
+    if(dap.readJson(obj))
+    {
+      //m_SetterCallback(dap);
+    }
+    else // this is in here for historical where we used to save the value as a string
+    {
+      QString dcName = jsonValue.toString("");
+      DataArrayPath dap(dcName, "", "");
+      //m_SetterCallback(dap);
+    }
   }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IDataStructureNode::updateNameHash()
+void DataContainerGridSelectionFilterParameter::writeJson(QJsonObject& json)
 {
-  m_NameHash = CreateStringHash(getName());
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString IDataStructureNode::getName() const
-{
-  return m_Name;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool IDataStructureNode::setName(const QString& newName)
-{
-  if(nullptr == m_Parent)
+  if(m_GetterCallback)
   {
-    m_Name = newName;
-    updateNameHash();
-    return true;
+    /*
+    DataArrayPath dap = m_GetterCallback();
+    QJsonObject obj;
+    dap.writeJson(obj);
+    json[getPropertyName()] = obj;
+    */
   }
-  else if(!m_Parent->hasChildWithName(newName))
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerGridSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, const DataArrayPath::RenameType& renamePath)
+{
+  DataArrayPath oldPath;
+  DataArrayPath newPath;
+  std::tie(oldPath, newPath) = renamePath;
+
+  /*
+  if(oldPath == m_GetterCallback() && oldPath.getDataContainerName() != newPath.getDataContainerName())
   {
-    m_Name = newName;
-    updateNameHash();
-    return true;
+    m_SetterCallback(newPath);
+    emit filter->dataArrayPathUpdated(getPropertyName(), renamePath);
   }
-
-  return false;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IDataStructureNode::ParentType* IDataStructureNode::getParentNode() const
-{
-  return m_Parent;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void IDataStructureNode::setParentNode(ParentType* const parent)
-{
-  if(parent == m_Parent)
-  {
-    return;
-  }
-
-  // Remove from parent's children
-  if(nullptr != m_Parent)
-  {
-    m_Parent->removeChildNode(this);
-  }
-
-  m_Parent = parent;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-DataArrayPath IDataStructureNode::getParentPath() const
-{
-  if(!hasParent())
-  {
-    return DataArrayPath();
-  }
-  return getParentNode()->getDataArrayPath();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void AbstractDataStructureContainer::createParentConnection(IDataStructureNode* child, AbstractDataStructureContainer* parent) const
-{
-  child->setParentNode(parent);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void AbstractDataStructureContainer::destroyParentConnection(IDataStructureNode* child) const
-{
-  child->clearParentNode();
+  */
 }

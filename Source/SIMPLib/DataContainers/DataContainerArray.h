@@ -337,6 +337,13 @@ public:
     }
 
     /**
+     * @brief getPrereqMontage
+     * @param filter
+     * @param name
+     */
+    AbstractMontageShPtr getPrereqMontage(AbstractFilter* filter, const QString& name);
+
+    /**
      * @brief getPrereqDataContainer
      * @param name
      * @param createIfNotExists
@@ -365,6 +372,15 @@ public:
       // The DataContainer we asked for was present and NON Null so return that.
       return dc;
     }
+
+    /**
+     * @brief createNonPrereqGridMontage
+     * @param filter
+     * @param montageName
+     * @param size
+     * @param dcNames
+     */
+    AbstractMontageShPtr createNonPrereqGridMontage(AbstractFilter* filter, const QString& montageName, IntVec3Type size, const QStringList& dcNames = QStringList());
 
     /**
      * @brief createNonPrereqDataContainer

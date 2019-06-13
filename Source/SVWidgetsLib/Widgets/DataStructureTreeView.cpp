@@ -550,7 +550,7 @@ QStandardItem* DataStructureTreeView::findChildByName(QStandardItem* rootItem, c
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QStandardItem* DataStructureTreeView::findItemByPath(DataArrayPath path)
+QStandardItem* DataStructureTreeView::findItemByPath(const DataArrayPath& path)
 {
   DataArrayPathHelper::DataType dataType = path.getDataType();
   if(dataType == DataArrayPathHelper::DataType::None)
@@ -591,13 +591,13 @@ QStandardItem* DataStructureTreeView::findItemByPath(DataArrayPath path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataStructureTreeView::removeNonexistingEntries(QStandardItem* rootItem, QList<QString> existing, int column)
+void DataStructureTreeView::removeNonexistingEntries(QStandardItem* rootItem, const QStringList& existingItems, int column)
 {
   int rowCount = rootItem->rowCount();
   for(int row = rowCount - 1; row >= 0; row--)
   {
     QStandardItem* anItem = rootItem->child(row, column);
-    if(!existing.contains(anItem->text()))
+    if(!existingItems.contains(anItem->text()))
     {
       rootItem->removeRow(row);
     }

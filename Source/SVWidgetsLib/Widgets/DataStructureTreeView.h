@@ -236,17 +236,68 @@ protected:
    */
   void findExpandedChildren(QAbstractItemModel* model, const QModelIndex& index, QVector<QModelIndex>& expandedVector);
 
+  /**
+   * @brief findChildByName
+   * @param rootItem
+   * @param name
+   * @param column
+   */
   QStandardItem* findChildByName(QStandardItem* rootItem, const QString& name, int column);
 
-  QStandardItem* findItemByPath(DataArrayPath path);
+  /**
+   * @brief findItemByPath
+   * @param path
+   * @return
+   */
+  QStandardItem* findItemByPath(const DataArrayPath& path);
 
+  /**
+   * @brief getOrCreateItem
+   * @param parentItem
+   * @param name
+   * @return
+   */
   QStandardItem* getOrCreateItem(QStandardItem* parentItem, const QString& name);
+
+  /**
+   * @brief generateMontageItem
+   * @param rootItem
+   * @param montage
+   * @return
+   */
   QStandardItem* generateMontageItem(QStandardItem* rootItem, const AbstractMontage::Pointer& montage);
+
+  /**
+   * @brief generateDataContainerItem
+   * @param rootItem
+   * @param dc
+   */
   QStandardItem* generateDataContainerItem(QStandardItem* rootItem, const DataContainer::Pointer& dc);
+
+  /**
+   * @brief generateAttrMatrixItem
+   * @param dcItem
+   * @param am
+   * @return
+   */
   QStandardItem* generateAttrMatrixItem(QStandardItem* dcItem, const AttributeMatrix::Pointer& am);
+
+  /**
+   * @brief generateDataArrayItem
+   * @param amItem
+   * @param am
+   * @param name
+   * @return
+   */
   QStandardItem* generateDataArrayItem(QStandardItem* amItem, const AttributeMatrix::Pointer& am, const QString& name);
 
-  void removeNonexistingEntries(QStandardItem* rootItem, QList<QString> existing, int column);
+  /**
+   * @brief removeNonexistingEntries
+   * @param rootItem
+   * @param existingItems
+   * @param column
+   */
+  void removeNonexistingEntries(QStandardItem* rootItem, const QStringList& existingItems, int column);
 
   /**
    * @brief rowsInserted

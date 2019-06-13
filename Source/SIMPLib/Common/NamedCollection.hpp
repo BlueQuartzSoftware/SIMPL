@@ -200,6 +200,10 @@ public:
    */
   bool insert(const ChildType& newItem)
   {
+    if(nullptr == newItem)
+    {
+      return false;
+    }
     if(!m_Items.insert(newItem).second)
     {
       return false;

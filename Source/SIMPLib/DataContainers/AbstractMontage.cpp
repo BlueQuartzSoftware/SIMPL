@@ -50,17 +50,16 @@ AbstractMontage::~AbstractMontage() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatVec3Type AbstractMontage::getOrigin() const
+QStringList AbstractMontage::getDataContainerNames() const
 {
-  return m_Origin;
-}
+  CollectionType dataContainers = getDataContainers();
+  QStringList dcNames;
+  for(const auto& dc : dataContainers)
+  {
+    dcNames.push_back(dc->getName());
+  }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void AbstractMontage::setOrigin(FloatVec3Type origin)
-{
-  m_Origin = origin;
+  return dcNames;
 }
 
 // -----------------------------------------------------------------------------

@@ -35,7 +35,6 @@
 #include <QtCore/QString>
 
 #include "SIMPLib/Common/INamedObject.h"
-#include "SIMPLib/Common/SIMPLArray.hpp"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/SIMPLib.h"
@@ -79,22 +78,16 @@ public:
   virtual size_t getTileCount() const = 0;
 
   /**
-   * @brief Returns the origin of the montage.
-   * @return
-   */
-  FloatVec3Type getOrigin() const;
-
-  /**
-   * @brief Sets the montage's origin.
-   * @param origin
-   */
-  void setOrigin(FloatVec3Type origin);
-
-  /**
    * @brief Returns the collection of DataContainers used by the montage.
    * @return
    */
   virtual CollectionType getDataContainers() const = 0;
+
+  /**
+   * @brief Returns a QStringList of the DataContainer names in the montage.
+   * @return
+   */
+  QStringList getDataContainerNames() const;
 
   /**
    * @brief Returns a vector of DataArrayPaths for the Montage.
@@ -130,7 +123,4 @@ protected:
    * @param name
    */
   AbstractMontage(const QString& name);
-
-private:
-  FloatVec3Type m_Origin;
 };

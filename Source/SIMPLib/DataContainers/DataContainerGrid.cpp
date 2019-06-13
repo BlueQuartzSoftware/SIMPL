@@ -1,5 +1,5 @@
 /* ============================================================================
- * Copyright (c) 2019 BlueQuartz Software, LLC
+ * Copyright (c) 2019-2019 BlueQuartz Software, LLC
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -27,150 +27,146 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * The code contained herein was partially funded by the followig contracts:
- *    United States Air Force Prime Contract FA8650-15-D-5231
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "IDataStructureNode.h"
+#include "DataContainerGrid.h"
 
-#include <sstream>
-#include <stdexcept>
-#include <string>
+#include <algorithm>
 
-//#include "SIMPLib/DataContainers/DsnIterators.h"
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IDataStructureNode::HashType IDataStructureNode::CreateStringHash(const QString& string)
+ // -----------------------------------------------------------------------------
+ //
+ // -----------------------------------------------------------------------------
+DataContainerGrid::DataContainerGrid(SizeVec3Type dims)
+: m_Dims(dims)
+, m_DataContainerNames(dims[0] * dims[1] * dims[2])
 {
-  std::hash<std::string> hashFn;
-  std::string stdStr = std::string(string.toStdString());
-  HashType hash = hashFn(stdStr);
-  return hash;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataStructureNode::IDataStructureNode(const QString& name)
-: m_Name(name)
-, m_Parent(nullptr)
+DataContainerGrid::DataContainerGrid(SizeVec3Type dims, const std::vector<QString>& dcList)
+: m_Dims(dims)
+, m_DataContainerNames(dims[0] * dims[1] * dims[2])
 {
-  updateNameHash();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IDataStructureNode::IDataStructureNode(ParentType* parent, const QString& name)
-: m_Name(name)
-, m_Parent(parent)
-{
-  updateNameHash();
-
-  // Add to parent's children
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IDataStructureNode::~IDataStructureNode()
-{
-  if(m_Parent != nullptr)
+  size_t size = std::min(dcList.size(), m_DataContainerNames.size());
+  for(size_t i = 0; i < size; i++)
   {
-    m_Parent->removeChildNode(this);
+    m_DataContainerNames[i] = dcList[i];
   }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IDataStructureNode::updateNameHash()
+DataContainerGrid::DataContainerGrid(const DataContainerGrid& other)
+: m_Dims(other.m_Dims)
+, m_DataContainerNames(other.m_DataContainerNames)
 {
-  m_NameHash = CreateStringHash(getName());
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString IDataStructureNode::getName() const
+DataContainerGrid::~DataContainerGrid() = default;
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+size_t getOffsetForSize(SizeVec3Type pos, SizeVec3Type size)
 {
-  return m_Name;
+  size_t row = pos[0];
+  size_t col = pos[1];
+  size_t depth = pos[2];
+
+  size_t rowCount = size[0];
+  size_t colCount = size[1];
+
+  size_t offset = row + col * rowCount + depth * rowCount * colCount;
+  return offset;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool IDataStructureNode::setName(const QString& newName)
+size_t DataContainerGrid::getOffset(SizeVec3Type pos) const
 {
-  if(nullptr == m_Parent)
+  return getOffsetForSize(pos, m_Dims);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+size_t DataContainerGrid::size() const
+{
+  return m_Dims[0] * m_Dims[1] * m_Dims[2];
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+SizeVec3Type DataContainerGrid::getDimensions() const
+{
+  return m_Dims;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerGrid::resizeDimensions(SizeVec3Type newSize)
+{
+  const SizeVec3Type oldSize = m_Dims;
+  const NameCollectionType oldNames = m_DataContainerNames;
+
+  m_DataContainerNames.resize(newSize[0] * newSize[1] * newSize[2]);
+  m_DataContainerNames.clear();
+
+  for(size_t row = 0; row < newSize[0] && row < oldSize[0]; row++)
   {
-    m_Name = newName;
-    updateNameHash();
-    return true;
-  }
-  else if(!m_Parent->hasChildWithName(newName))
-  {
-    m_Name = newName;
-    updateNameHash();
-    return true;
+    for(size_t col = 0; col < newSize[1] && col < oldSize[1]; col++)
+    {
+      for(size_t depth = 0; depth < newSize[2] && depth < oldSize[2]; depth++)
+      {
+        SizeVec3Type pos(row, col, depth);
+        size_t oldOffset = getOffsetForSize(pos, oldSize);
+        size_t newOffset = getOffsetForSize(pos, newSize);
+        m_DataContainerNames[newOffset] = oldNames[oldOffset];
+      }
+    }
   }
 
-  return false;
+  emit dimensionsChanged(newSize);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataStructureNode::ParentType* IDataStructureNode::getParentNode() const
+QString DataContainerGrid::getDataContainerName(SizeVec3Type pos) const
 {
-  return m_Parent;
+  size_t offset = getOffset(pos);
+  return m_DataContainerNames[offset];
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IDataStructureNode::setParentNode(ParentType* const parent)
+void DataContainerGrid::setDataContainerName(SizeVec3Type pos, const QString& name)
 {
-  if(parent == m_Parent)
-  {
-    return;
-  }
+  size_t offset = getOffset(pos);
+  m_DataContainerNames[offset] = name;
 
-  // Remove from parent's children
-  if(nullptr != m_Parent)
-  {
-    m_Parent->removeChildNode(this);
-  }
-
-  m_Parent = parent;
+  emit dataContainerNameChanged();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayPath IDataStructureNode::getParentPath() const
+DataContainerGrid& DataContainerGrid::operator=(const DataContainerGrid& other)
 {
-  if(!hasParent())
-  {
-    return DataArrayPath();
-  }
-  return getParentNode()->getDataArrayPath();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void AbstractDataStructureContainer::createParentConnection(IDataStructureNode* child, AbstractDataStructureContainer* parent) const
-{
-  child->setParentNode(parent);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void AbstractDataStructureContainer::destroyParentConnection(IDataStructureNode* child) const
-{
-  child->clearParentNode();
+  m_Dims = other.m_Dims;
+  m_DataContainerNames = other.m_DataContainerNames;
+  
+  emit dimensionsChanged(m_Dims);
+  return *this;
 }
